@@ -94,15 +94,19 @@ abstract class Configuration extends string {
   predicate isBarrierGuard(BarrierGuard guard) { none() }
 
   /**
-   * Holds if the additional flow step from `node1` to `node2` must be taken
-   * into account in the analysis.
+   * Holds if data flow through nodes guarded by `guard` is prohibited when
+   * the flow state is `state`
+   */
+  predicate isBarrierGuard(BarrierGuard guard, FlowState state) { none() }
+
+  /**
+   * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
    */
   predicate isAdditionalFlowStep(Node node1, Node node2) { none() }
 
   /**
-   * Holds if the additional flow step from `node1` to `node2` must be taken
-   * into account in the analysis. This step is only applicable in `state1` and
-   * updates the flow state to `state2`.
+   * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
+   * This step is only applicable in `state1` and updates the flow state to `state2`.
    */
   predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
     none()
@@ -345,9 +349,13 @@ private predicate fullBarrier(NodeEx node, Configuration config) {
 
 pragma[nomagic]
 private predicate stateBarrier(NodeEx node, FlowState state, Configuration config) {
-  exists(Node n |
-    node.asNode() = n and
+  exists(Node n | node.asNode() = n |
     config.isBarrier(n, state)
+    or
+    exists(BarrierGuard g |
+      config.isBarrierGuard(g, state) and
+      n = g.getAGuardedNode()
+    )
   )
 }
 
@@ -1110,8 +1118,8 @@ private module Stage2 {
     if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
   }
 
-  bindingset[node, cc, config]
-  private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) { any() }
+  bindingset[node, cc]
+  private LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
 
   bindingset[node1, state1, config]
   bindingset[node2, state2, config]
@@ -1198,7 +1206,7 @@ private module Stage2 {
     or
     exists(NodeEx mid, FlowState state0, Ap ap0, LocalCc localCc |
       fwdFlow(mid, state0, cc, argAp, ap0, config) and
-      localCc = getLocalCc(mid, cc, config)
+      localCc = getLocalCc(mid, cc)
     |
       localStep(mid, state0, node, state, true, _, config, localCc) and
       ap = ap0
@@ -1706,18 +1714,31 @@ private module LocalFlowBigStep {
    * Holds if `node` can be the first node in a maximal subsequence of local
    * flow steps in a dataflow path.
    */
-  predicate localFlowEntry(NodeEx node, FlowState state, Configuration config) {
+  private predicate localFlowEntry(NodeEx node, FlowState state, Configuration config) {
     Stage2::revFlow(node, state, config) and
     (
-      sourceNode(node, state, config) or
-      jumpStep(_, node, config) or
-      additionalJumpStep(_, node, config) or
-      additionalJumpStateStep(_, _, node, state, config) or
-      node instanceof ParamNodeEx or
-      node.asNode() instanceof OutNodeExt or
-      store(_, _, node, _, config) or
-      read(_, _, node, config) or
+      sourceNode(node, state, config)
+      or
+      jumpStep(_, node, config)
+      or
+      additionalJumpStep(_, node, config)
+      or
+      additionalJumpStateStep(_, _, node, state, config)
+      or
+      node instanceof ParamNodeEx
+      or
+      node.asNode() instanceof OutNodeExt
+      or
+      store(_, _, node, _, config)
+      or
+      read(_, _, node, config)
+      or
       node instanceof FlowCheckNode
+      or
+      exists(FlowState s |
+        additionalLocalStateStep(_, s, node, state, config) and
+        s != state
+      )
     )
   }
 
@@ -1737,6 +1758,9 @@ private module LocalFlowBigStep {
     or
     exists(NodeEx next, FlowState s | Stage2::revFlow(next, s, config) |
       additionalJumpStateStep(node, state, next, s, config)
+      or
+      additionalLocalStateStep(node, state, next, s, config) and
+      s != state
     )
     or
     Stage2::revFlow(node, state, config) and
@@ -1770,42 +1794,40 @@ private module LocalFlowBigStep {
    */
   pragma[nomagic]
   private predicate localFlowStepPlus(
-    NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-    DataFlowType t, Configuration config, LocalCallContext cc
+    NodeEx node1, FlowState state, NodeEx node2, boolean preservesValue, DataFlowType t,
+    Configuration config, LocalCallContext cc
   ) {
     not isUnreachableInCallCached(node2.asNode(), cc.(LocalCallContextSpecificCall).getCall()) and
     (
-      localFlowEntry(node1, pragma[only_bind_into](state1), pragma[only_bind_into](config)) and
+      localFlowEntry(node1, pragma[only_bind_into](state), pragma[only_bind_into](config)) and
       (
         localFlowStepNodeCand1(node1, node2, config) and
-        state1 = state2 and
         preservesValue = true and
-        t = node1.getDataFlowType() // irrelevant dummy value
+        t = node1.getDataFlowType() and // irrelevant dummy value
+        Stage2::revFlow(node2, pragma[only_bind_into](state), pragma[only_bind_into](config))
         or
-        additionalLocalFlowStepNodeCand2(node1, state1, node2, state2, config) and
+        additionalLocalFlowStepNodeCand2(node1, state, node2, state, config) and
         preservesValue = false and
         t = node2.getDataFlowType()
       ) and
       node1 != node2 and
       cc.relevantFor(node1.getEnclosingCallable()) and
-      not isUnreachableInCallCached(node1.asNode(), cc.(LocalCallContextSpecificCall).getCall()) and
-      Stage2::revFlow(node2, pragma[only_bind_into](state2), pragma[only_bind_into](config))
+      not isUnreachableInCallCached(node1.asNode(), cc.(LocalCallContextSpecificCall).getCall())
       or
       exists(NodeEx mid |
-        localFlowStepPlus(node1, state1, mid, pragma[only_bind_into](state2), preservesValue, t,
+        localFlowStepPlus(node1, pragma[only_bind_into](state), mid, preservesValue, t,
           pragma[only_bind_into](config), cc) and
         localFlowStepNodeCand1(mid, node2, config) and
         not mid instanceof FlowCheckNode and
-        Stage2::revFlow(node2, pragma[only_bind_into](state2), pragma[only_bind_into](config))
+        Stage2::revFlow(node2, pragma[only_bind_into](state), pragma[only_bind_into](config))
       )
       or
-      exists(NodeEx mid, FlowState st |
-        localFlowStepPlus(node1, state1, mid, st, _, _, pragma[only_bind_into](config), cc) and
-        additionalLocalFlowStepNodeCand2(mid, st, node2, state2, config) and
+      exists(NodeEx mid |
+        localFlowStepPlus(node1, state, mid, _, _, pragma[only_bind_into](config), cc) and
+        additionalLocalFlowStepNodeCand2(mid, state, node2, state, config) and
         not mid instanceof FlowCheckNode and
         preservesValue = false and
-        t = node2.getDataFlowType() and
-        Stage2::revFlow(node2, state2, pragma[only_bind_into](config))
+        t = node2.getDataFlowType()
       )
     )
   }
@@ -1819,9 +1841,19 @@ private module LocalFlowBigStep {
     NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
     AccessPathFrontNil apf, Configuration config, LocalCallContext callContext
   ) {
-    localFlowStepPlus(node1, state1, node2, state2, preservesValue, apf.getType(), config,
-      callContext) and
-    localFlowExit(node2, state2, config)
+    localFlowStepPlus(node1, state1, node2, preservesValue, apf.getType(), config, callContext) and
+    localFlowExit(node2, state1, config) and
+    state1 = state2
+    or
+    additionalLocalFlowStepNodeCand2(node1, state1, node2, state2, config) and
+    state1 != state2 and
+    preservesValue = false and
+    apf = TFrontNil(node2.getDataFlowType()) and
+    callContext.relevantFor(node1.getEnclosingCallable()) and
+    not exists(DataFlowCall call | call = callContext.(LocalCallContextSpecificCall).getCall() |
+      isUnreachableInCallCached(node1.asNode(), call) or
+      isUnreachableInCallCached(node2.asNode(), call)
+    )
   }
 }
 
@@ -1879,8 +1911,8 @@ private module Stage3 {
   bindingset[call, c, innercc]
   private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) { any() }
 
-  bindingset[node, cc, config]
-  private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) { any() }
+  bindingset[node, cc]
+  private LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
 
   private predicate localStep(
     NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
@@ -1963,7 +1995,7 @@ private module Stage3 {
     or
     exists(NodeEx mid, FlowState state0, Ap ap0, LocalCc localCc |
       fwdFlow(mid, state0, cc, argAp, ap0, config) and
-      localCc = getLocalCc(mid, cc, config)
+      localCc = getLocalCc(mid, cc)
     |
       localStep(mid, state0, node, state, true, _, config, localCc) and
       ap = ap0
@@ -2693,9 +2725,8 @@ private module Stage4 {
     if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
   }
 
-  bindingset[node, cc, config]
-  private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) {
-    localFlowEntry(node, _, config) and
+  bindingset[node, cc]
+  private LocalCc getLocalCc(NodeEx node, Cc cc) {
     result =
       getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)),
         node.getEnclosingCallable())
@@ -2791,7 +2822,7 @@ private module Stage4 {
     or
     exists(NodeEx mid, FlowState state0, Ap ap0, LocalCc localCc |
       fwdFlow(mid, state0, cc, argAp, ap0, config) and
-      localCc = getLocalCc(mid, cc, config)
+      localCc = getLocalCc(mid, cc)
     |
       localStep(mid, state0, node, state, true, _, config, localCc) and
       ap = ap0
@@ -4976,6 +5007,7 @@ private module FlowExploration {
     )
   }
 
+  pragma[nomagic]
   private predicate revPartialPathStep(
     PartialPathNodeRev mid, NodeEx node, FlowState state, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2,
     TRevSummaryCtx3 sc3, RevPartialAccessPath ap, Configuration config

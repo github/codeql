@@ -33,7 +33,7 @@ string getDescriptionForAlertCandidate(
 ) {
   result = "excluded[reason=" + getAReasonSinkExcluded(sinkCandidate, query) + "]"
   or
-  getATMCfg(query).isKnownSink(sinkCandidate) and
+  getAtmCfg(query).isKnownSink(sinkCandidate) and
   result = "excluded[reason=known-sink]"
   or
   not exists(getAReasonSinkExcluded(sinkCandidate, query)) and

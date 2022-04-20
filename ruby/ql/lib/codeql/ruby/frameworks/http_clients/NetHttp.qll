@@ -7,6 +7,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.dataflow.internal.DataFlowPublic
+private import codeql.ruby.DataFlow
 
 /**
  * A `Net::HTTP` call which initiates an HTTP request.
@@ -50,7 +51,7 @@ class NetHttpRequest extends HTTP::Client::Request::Range {
    * Gets the node representing the URL of the request.
    * Currently unused, but may be useful in future, e.g. to filter out certain requests.
    */
-  override DataFlow::Node getURL() { result = request.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = request.getArgument(0) }
 
   override DataFlow::Node getResponseBody() { result = responseBody }
 

@@ -212,7 +212,7 @@ private module TypeScriptOutDir {
    * Gets a folder of TypeScript files that is compiled to JavaScript files in `outdir` relative to a `parent`.
    */
   string getOriginalTypeScriptFolder(string outdir, Folder parent) {
-    exists(JSONObject tsconfig |
+    exists(JsonObject tsconfig |
       outdir = removeLeadingSlash(getOutDir(tsconfig, parent)) and
       result = removeLeadingSlash(getEffectiveRootDirFromTSConfig(tsconfig))
     )
@@ -229,7 +229,7 @@ private module TypeScriptOutDir {
   /**
    * Gets the `outDir` option from a tsconfig file from the folder `parent`.
    */
-  private string getOutDir(JSONObject tsconfig, Folder parent) {
+  private string getOutDir(JsonObject tsconfig, Folder parent) {
     tsconfig.getFile().getBaseName().regexpMatch("tsconfig.*\\.json") and
     tsconfig.isTopLevel() and
     tsconfig.getFile().getParentContainer() = parent and
@@ -241,7 +241,7 @@ private module TypeScriptOutDir {
    * Based on the tsconfig.json file `tsconfig`.
    */
   pragma[inline]
-  private string getEffectiveRootDirFromTSConfig(JSONObject tsconfig) {
+  private string getEffectiveRootDirFromTSConfig(JsonObject tsconfig) {
     // if an explicit "rootDir" option exists, then use that.
     result = getRootDir(tsconfig)
     or
@@ -273,7 +273,7 @@ private module TypeScriptOutDir {
    * Can have multiple results if the includes are from multiple folders.
    */
   pragma[inline]
-  private string getARootDirFromInclude(JSONObject tsconfig) {
+  private string getARootDirFromInclude(JsonObject tsconfig) {
     result =
       getRootFolderFromPath(tsconfig.getPropValue("include").getElementValue(_).getStringValue())
   }
@@ -282,7 +282,7 @@ private module TypeScriptOutDir {
    * Gets the value of the "rootDir" option from a tsconfig.json.
    */
   pragma[inline]
-  private string getRootDir(JSONObject tsconfig) {
+  private string getRootDir(JsonObject tsconfig) {
     result = tsconfig.getPropValue("compilerOptions").getPropValue("rootDir").getStringValue()
   }
 }

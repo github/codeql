@@ -59,7 +59,7 @@
 | redos.py:220:25:220:29 | [^X]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'W'. |
 | redos.py:223:30:223:30 | b | This part of the regular expression may cause exponential backtracking on strings starting with 'W' and containing many repetitions of 'bW'. |
 | redos.py:229:30:229:30 | b | This part of the regular expression may cause exponential backtracking on strings starting with 'W' and containing many repetitions of 'bW'. |
-| redos.py:241:27:241:27 | b | This part of the regular expression may cause exponential backtracking on strings starting with 'a' and containing many repetitions of 'ba'. |
+| redos.py:241:26:241:27 | ab | This part of the regular expression may cause exponential backtracking on strings starting with 'a' and containing many repetitions of 'ab'. |
 | redos.py:247:25:247:31 | [\\n\\s]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\n'. |
 | redos.py:256:25:256:27 | \\w* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'foobarbazfoobarbazfoobarbazfoobarbazfoobarbazfoobarbaz'. |
 | redos.py:256:37:256:39 | \\w* | This part of the regular expression may cause exponential backtracking on strings starting with 'foobarbaz' and containing many repetitions of 'foobarbazfoobarbazfoobarbazfoobarbazfoobarbazfoobarbaz'. |

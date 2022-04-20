@@ -12,7 +12,7 @@
 import javascript
 import semmle.javascript.RestrictedLocations
 
-predicate isRepeatedDependency(AngularJS::InjectableFunction f, string name, ASTNode location) {
+predicate isRepeatedDependency(AngularJS::InjectableFunction f, string name, AstNode location) {
   exists(int i, int j |
     i < j and
     exists(f.getDependencyDeclaration(i, name)) and
@@ -20,7 +20,7 @@ predicate isRepeatedDependency(AngularJS::InjectableFunction f, string name, AST
   )
 }
 
-from AngularJS::InjectableFunction f, ASTNode node, string name
+from AngularJS::InjectableFunction f, AstNode node, string name
 where
   isRepeatedDependency(f, name, node) and
   not count(f.asFunction().getParameterByName(name)) > 1 // avoid duplicating reports from js/duplicate-parameter-name

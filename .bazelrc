@@ -1,0 +1,3 @@
+build --copt="-std=c++17"
+
+try-import %workspace%/local.bazelrc

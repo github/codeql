@@ -1,3 +1,39 @@
+## 0.0.13
+
+## 0.0.12
+
+### Minor Analysis Improvements
+
+* The `cpp/overflow-destination`, `cpp/unclear-array-index-validation`, and `cpp/uncontrolled-allocation-size` queries have been modernized and converted to `path-problem` queries and provide more true positive results.
+* The `cpp/system-data-exposure` query has been increased from `medium` to `high` precision, following a number of improvements to the query logic.
+
+## 0.0.11
+
+### Breaking Changes
+
+* The deprecated queries `cpp/duplicate-block`, `cpp/duplicate-function`, `cpp/duplicate-class`, `cpp/duplicate-file`, `cpp/mostly-duplicate-function`,`cpp/similar-file`, `cpp/duplicated-lines-in-files` have been removed.
+
+### Deprecated Predicates and Classes
+
+* The predicates and classes in the `CodeDuplication` library have been deprecated.
+
+### New Queries
+
+* A new query titled "Use of expired stack-address" (`cpp/using-expired-stack-address`) has been added.
+  This query finds accesses to expired stack-allocated memory that escaped via a global variable.
+* A new `cpp/insufficient-key-size` query has been added to the default query suite for C/C++. The query finds uses of certain cryptographic algorithms where the key size is too small to provide adequate encryption strength.
+
+### Minor Analysis Improvements
+
+* The "Failure to use HTTPS URLs" (`cpp/non-https-url`) has been improved reducing false positive results, and its precision has been increased to 'high'.
+* The `cpp/system-data-exposure` query has been modernized and has converted to a `path-problem` query. There are now fewer false positive results.
+
+## 0.0.10
+
+### Deprecated Classes
+
+* The `CodeDuplication.Copy`, `CodeDuplication.DuplicateBlock`, and `CodeDuplication.SimilarBlock` classes have been deprecated.
+
 ## 0.0.9
 
 ### New Queries

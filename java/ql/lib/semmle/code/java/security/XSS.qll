@@ -50,8 +50,8 @@ private class DefaultXssSink extends XssSink {
 }
 
 /** A default sanitizer that considers numeric and boolean typed data safe for writing to output. */
-private class DefaultXSSSanitizer extends XssSanitizer {
-  DefaultXSSSanitizer() {
+private class DefaultXssSanitizer extends XssSanitizer {
+  DefaultXssSanitizer() {
     this.getType() instanceof NumericType or
     this.getType() instanceof BooleanType or
     // Match `org.springframework.web.util.HtmlUtils.htmlEscape` and possibly other methods like it.
@@ -79,7 +79,7 @@ private class XssVulnerableWriterSourceToWritingMethodFlowConfig extends TaintTr
 /** A method that can be used to output data to an output stream or writer. */
 private class WritingMethod extends Method {
   WritingMethod() {
-    this.getDeclaringType().getASupertype*().hasQualifiedName("java.io", _) and
+    this.getDeclaringType().getAnAncestor().hasQualifiedName("java.io", _) and
     (
       this.getName().matches("print%") or
       this.getName() = "append" or

@@ -1,3 +1,34 @@
+## 0.0.13
+
+## 0.0.12
+
+### New Queries
+
+* The query "Insertion of sensitive information into log files" (`java/sensitive-logging`) has been promoted from experimental to the main query pack. This query was originally [submitted as an experimental query by @luchua-bc](https://github.com/github/codeql/pull/3090).
+
+### Minor Analysis Improvements
+
+ * Updated "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) to remove false-positives when OS is properly used as logical guard.
+
+## 0.0.11
+
+## 0.0.10
+
+### Breaking Changes
+
+* Add more classes to Netty request/response splitting. Change identification to `java/netty-http-request-or-response-splitting`.
+  Identify request splitting differently from response splitting in query results.
+  Support addional classes:
+  * `io.netty.handler.codec.http.CombinedHttpHeaders`
+  * `io.netty.handler.codec.http.DefaultHttpRequest`
+  * `io.netty.handler.codec.http.DefaultFullHttpRequest`
+
+### New Queries
+
+* A new query titled "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) has been added.
+  This query finds uses of APIs that leak potentially sensitive information to other local users via the system temporary directory.
+  This query was originally [submitted as query by @JLLeitschuh](https://github.com/github/codeql/pull/4388).
+
 ## 0.0.9
 
 ### New Queries

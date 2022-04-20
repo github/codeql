@@ -89,7 +89,7 @@ private ControlFlowNode getControlFlowEntry(ControlFlowNode node) {
  * graph so that we can use the dominator tree to find the most recent
  * side-effect.
  */
-private predicate sideEffectCFG(ControlFlowNode src, ControlFlowNode dst) {
+private predicate sideEffectCfg(ControlFlowNode src, ControlFlowNode dst) {
   src.getASuccessor() = dst
   or
   // Add an edge from the entry point to any node that might have a side
@@ -103,7 +103,7 @@ private predicate sideEffectCFG(ControlFlowNode src, ControlFlowNode dst) {
  * the side-effect CFG.
  */
 private predicate iDomEffect(ControlFlowNode dominator, ControlFlowNode node) =
-  idominance(functionEntry/1, sideEffectCFG/2)(_, dominator, node)
+  idominance(functionEntry/1, sideEffectCfg/2)(_, dominator, node)
 
 /**
  * Gets the most recent side effect. To be more precise, `result` is a

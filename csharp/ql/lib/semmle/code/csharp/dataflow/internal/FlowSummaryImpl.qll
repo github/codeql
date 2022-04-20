@@ -806,10 +806,10 @@ module Private {
   module External {
     /** Holds if `spec` is a relevant external specification. */
     private predicate relevantSpec(string spec) {
-      summaryElement(_, spec, _, _) or
-      summaryElement(_, _, spec, _) or
-      sourceElement(_, spec, _) or
-      sinkElement(_, spec, _)
+      summaryElement(_, spec, _, _, _) or
+      summaryElement(_, _, spec, _, _) or
+      sourceElement(_, spec, _, _) or
+      sinkElement(_, spec, _, _)
     }
 
     private class AccessPathRange extends AccessPath::Range {
@@ -875,13 +875,20 @@ module Private {
     }
 
     private class SummarizedCallableExternal extends SummarizedCallable {
-      SummarizedCallableExternal() { summaryElement(this, _, _, _) }
+      SummarizedCallableExternal() { summaryElement(this, _, _, _, _) }
+
+      private predicate relevantSummaryElement(AccessPath inSpec, AccessPath outSpec, string kind) {
+        summaryElement(this, inSpec, outSpec, kind, false)
+        or
+        summaryElement(this, inSpec, outSpec, kind, true) and
+        not summaryElement(this, _, _, _, false)
+      }
 
       override predicate propagatesFlow(
         SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
       ) {
         exists(AccessPath inSpec, AccessPath outSpec, string kind |
-          summaryElement(this, inSpec, outSpec, kind) and
+          this.relevantSummaryElement(inSpec, outSpec, kind) and
           interpretSpec(inSpec, input) and
           interpretSpec(outSpec, output)
         |
@@ -910,7 +917,7 @@ module Private {
 
     private predicate sourceElementRef(InterpretNode ref, AccessPath output, string kind) {
       exists(SourceOrSinkElement e |
-        sourceElement(e, output, kind) and
+        sourceElement(e, output, kind, _) and
         if outputNeedsReference(output.getToken(0))
         then e = ref.getCallTarget()
         else e = ref.asElement()
@@ -919,7 +926,7 @@ module Private {
 
     private predicate sinkElementRef(InterpretNode ref, AccessPath input, string kind) {
       exists(SourceOrSinkElement e |
-        sinkElement(e, input, kind) and
+        sinkElement(e, input, kind, _) and
         if inputNeedsReference(input.getToken(0))
         then e = ref.getCallTarget()
         else e = ref.asElement()
@@ -1056,8 +1063,8 @@ module Private {
       |
         c.relevantSummary(input, output, preservesValue) and
         csv =
-          c.getCallableCsv() + ";;" + getComponentStackCsv(input) + ";" +
-            getComponentStackCsv(output) + ";" + renderKind(preservesValue)
+          c.getCallableCsv() + getComponentStackCsv(input) + ";" + getComponentStackCsv(output) +
+            ";" + renderKind(preservesValue)
       )
     }
   }

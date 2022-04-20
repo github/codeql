@@ -62,13 +62,6 @@ private module Cached {
     )
   }
 
-  private predicate containerContent(DataFlow::Content c) {
-    c instanceof DataFlow::ArrayContent or
-    c instanceof DataFlow::CollectionContent or
-    c instanceof DataFlow::MapKeyContent or
-    c instanceof DataFlow::MapValueContent
-  }
-
   /**
    * Holds if taint can flow in one local step from `src` to `sink` excluding
    * local data flow steps. That is, `src` and `sink` are likely to represent
@@ -283,7 +276,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.getName().matches("read%")
   or
   m instanceof GetterMethod and
-  m.getDeclaringType().getASubtype*() instanceof SpringUntrustedDataType and
+  m.getDeclaringType().getADescendant() instanceof SpringUntrustedDataType and
   not m.getDeclaringType() instanceof TypeObject
   or
   m.(TaintPreservingCallable).returnsTaintFrom(-1)
@@ -607,7 +600,7 @@ private SrcRefType entrypointType() {
     s instanceof DataFlow::ExplicitParameterNode and
     t = pragma[only_bind_out](s).getType() and
     not t instanceof TypeObject and
-    result = t.getASubtype*().getSourceDeclaration()
+    result = t.getADescendant().getSourceDeclaration()
   )
   or
   result = entrypointType().getAField().getType().(RefType).getSourceDeclaration()

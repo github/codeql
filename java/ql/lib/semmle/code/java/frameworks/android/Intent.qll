@@ -26,6 +26,9 @@ class TypeActivity extends Class {
  * The class `android.content.Context`.
  */
 class TypeContext extends RefType {
+  // Not inlining this makes it more likely to be used as a sentinel,
+  // which is useful when running Android queries on non-Android projects.
+  pragma[noinline]
   TypeContext() { this.hasQualifiedName("android.content", "Context") }
 }
 
@@ -84,7 +87,7 @@ class IntentGetParcelableExtraMethod extends Method {
 
 /** The class `android.os.BaseBundle`, or a class that extends it. */
 class AndroidBundle extends Class {
-  AndroidBundle() { this.getASupertype*().hasQualifiedName("android.os", "BaseBundle") }
+  AndroidBundle() { this.getAnAncestor().hasQualifiedName("android.os", "BaseBundle") }
 }
 
 /**

@@ -19,6 +19,10 @@ public class Sources {
         return socket.accept().getInputStream();
     }
 
+    public InputStream wrappedSocketStream() throws IOException {
+        return socketStream();
+    }
+
     public void sourceToParameter(InputStream[] streams, List<InputStream> otherStreams) throws IOException {
         ServerSocket socket = new ServerSocket(123);
         streams[0] = socket.accept().getInputStream();

@@ -786,6 +786,8 @@ class MemberKind extends string {
   predicate isAccessor() { this = MemberKind::accessor() }
 }
 
+private import internal.StepSummary
+
 module MemberKind {
   /** Gets the kind of a method, such as `m() {}` */
   MemberKind method() { result = "method" }
@@ -960,7 +962,16 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
       result.getAstNode().getFile() = this.getAstNode().getFile()
     )
     or
-    exists(DataFlow::TypeTracker t2 | result = this.getAClassReference(t2).track(t2, t))
+    result = this.getAClassReferenceRec(t)
+  }
+
+  pragma[noopt]
+  private DataFlow::SourceNode getAClassReferenceRec(DataFlow::TypeTracker t) {
+    exists(DataFlow::TypeTracker t2, StepSummary summary, DataFlow::SourceNode prev |
+      prev = this.getAClassReference(t2) and
+      StepSummary::step(prev, result, summary) and
+      t = t2.append(summary)
+    )
   }
 
   /**
@@ -1404,13 +1415,6 @@ module PartialInvokeNode {
     DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) { none() }
 
     /**
-     * DEPRECATED. Use the one-argument version of `getBoundReceiver` instead.
-     *
-     * Gets the node holding the receiver to be passed to the bound function, if specified.
-     */
-    deprecated DataFlow::Node getBoundReceiver() { none() }
-
-    /**
      * Gets the node holding the receiver to be passed to `callback`.
      */
     DataFlow::Node getBoundReceiver(DataFlow::Node callback) { none() }
@@ -1540,16 +1544,6 @@ module PartialInvokeNode {
     }
   }
 }
-
-/**
- * DEPRECATED. Subclasses should extend `PartialInvokeNode::Range` instead,
- * and predicates should use `PartialInvokeNode` instead.
- *
- * An invocation that is modeled as a partial function application.
- *
- * This contributes additional argument-passing flow edges that should be added to all data flow configurations.
- */
-deprecated class AdditionalPartialInvokeNode = PartialInvokeNode::Range;
 
 /**
  * An invocation of the `RegExp` constructor.

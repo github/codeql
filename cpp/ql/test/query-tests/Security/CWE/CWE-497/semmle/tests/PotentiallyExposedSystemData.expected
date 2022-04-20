@@ -1,0 +1,109 @@
+edges
+| tests.cpp:48:15:48:20 | call to getenv | tests.cpp:48:15:48:36 | (const char *)... |
+| tests.cpp:49:15:49:20 | call to getenv | tests.cpp:49:15:49:36 | (const char *)... |
+| tests.cpp:50:15:50:20 | call to getenv | tests.cpp:50:15:50:36 | (const char *)... |
+| tests.cpp:57:18:57:23 | call to getenv | tests.cpp:57:18:57:39 | (const char_type *)... |
+| tests.cpp:58:41:58:46 | call to getenv | tests.cpp:58:41:58:62 | (const char_type *)... |
+| tests.cpp:59:43:59:48 | call to getenv | tests.cpp:59:43:59:64 | (const char *)... |
+| tests.cpp:86:29:86:31 | *msg | tests.cpp:88:15:88:17 | msg |
+| tests.cpp:86:29:86:31 | msg | tests.cpp:88:15:88:17 | msg |
+| tests.cpp:97:13:97:18 | call to getenv | tests.cpp:97:13:97:34 | (const char *)... |
+| tests.cpp:97:13:97:18 | call to getenv | tests.cpp:97:13:97:34 | call to getenv |
+| tests.cpp:97:13:97:18 | call to getenv | tests.cpp:97:13:97:34 | call to getenv indirection |
+| tests.cpp:97:13:97:34 | call to getenv | tests.cpp:86:29:86:31 | msg |
+| tests.cpp:97:13:97:34 | call to getenv indirection | tests.cpp:86:29:86:31 | *msg |
+| tests.cpp:107:30:107:32 | *msg | tests.cpp:111:15:111:17 | tmp |
+| tests.cpp:107:30:107:32 | msg | tests.cpp:111:15:111:17 | tmp |
+| tests.cpp:114:30:114:32 | *msg | tests.cpp:119:7:119:12 | (const char *)... |
+| tests.cpp:114:30:114:32 | msg | tests.cpp:119:7:119:12 | (const char *)... |
+| tests.cpp:122:30:122:32 | *msg | tests.cpp:124:15:124:17 | msg |
+| tests.cpp:122:30:122:32 | msg | tests.cpp:124:15:124:17 | msg |
+| tests.cpp:131:14:131:19 | call to getenv | tests.cpp:131:14:131:35 | call to getenv |
+| tests.cpp:131:14:131:19 | call to getenv | tests.cpp:131:14:131:35 | call to getenv indirection |
+| tests.cpp:131:14:131:35 | call to getenv | tests.cpp:107:30:107:32 | msg |
+| tests.cpp:131:14:131:35 | call to getenv indirection | tests.cpp:107:30:107:32 | *msg |
+| tests.cpp:132:14:132:19 | call to getenv | tests.cpp:132:14:132:35 | call to getenv |
+| tests.cpp:132:14:132:19 | call to getenv | tests.cpp:132:14:132:35 | call to getenv indirection |
+| tests.cpp:132:14:132:35 | call to getenv | tests.cpp:114:30:114:32 | msg |
+| tests.cpp:132:14:132:35 | call to getenv indirection | tests.cpp:114:30:114:32 | *msg |
+| tests.cpp:133:14:133:19 | call to getenv | tests.cpp:133:14:133:35 | (const char *)... |
+| tests.cpp:133:14:133:19 | call to getenv | tests.cpp:133:14:133:35 | call to getenv |
+| tests.cpp:133:14:133:19 | call to getenv | tests.cpp:133:14:133:35 | call to getenv indirection |
+| tests.cpp:133:14:133:35 | call to getenv | tests.cpp:122:30:122:32 | msg |
+| tests.cpp:133:14:133:35 | call to getenv indirection | tests.cpp:122:30:122:32 | *msg |
+| tests_passwd.cpp:16:8:16:15 | call to getpwnam | tests_passwd.cpp:18:29:18:31 | pwd |
+| tests_passwd.cpp:16:8:16:15 | call to getpwnam | tests_passwd.cpp:19:26:19:28 | pwd |
+nodes
+| tests.cpp:48:15:48:20 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:48:15:48:20 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:48:15:48:36 | (const char *)... | semmle.label | (const char *)... |
+| tests.cpp:49:15:49:20 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:49:15:49:20 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:49:15:49:36 | (const char *)... | semmle.label | (const char *)... |
+| tests.cpp:50:15:50:20 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:50:15:50:20 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:50:15:50:36 | (const char *)... | semmle.label | (const char *)... |
+| tests.cpp:57:18:57:23 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:57:18:57:23 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:57:18:57:39 | (const char_type *)... | semmle.label | (const char_type *)... |
+| tests.cpp:58:41:58:46 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:58:41:58:46 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:58:41:58:62 | (const char_type *)... | semmle.label | (const char_type *)... |
+| tests.cpp:59:43:59:48 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:59:43:59:48 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:59:43:59:64 | (const char *)... | semmle.label | (const char *)... |
+| tests.cpp:86:29:86:31 | *msg | semmle.label | *msg |
+| tests.cpp:86:29:86:31 | msg | semmle.label | msg |
+| tests.cpp:88:15:88:17 | msg | semmle.label | msg |
+| tests.cpp:97:13:97:18 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:97:13:97:18 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:97:13:97:34 | (const char *)... | semmle.label | (const char *)... |
+| tests.cpp:97:13:97:34 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:97:13:97:34 | call to getenv indirection | semmle.label | call to getenv indirection |
+| tests.cpp:107:30:107:32 | *msg | semmle.label | *msg |
+| tests.cpp:107:30:107:32 | msg | semmle.label | msg |
+| tests.cpp:111:15:111:17 | tmp | semmle.label | tmp |
+| tests.cpp:114:30:114:32 | *msg | semmle.label | *msg |
+| tests.cpp:114:30:114:32 | msg | semmle.label | msg |
+| tests.cpp:119:7:119:12 | (const char *)... | semmle.label | (const char *)... |
+| tests.cpp:122:30:122:32 | *msg | semmle.label | *msg |
+| tests.cpp:122:30:122:32 | msg | semmle.label | msg |
+| tests.cpp:124:15:124:17 | msg | semmle.label | msg |
+| tests.cpp:131:14:131:19 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:131:14:131:35 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:131:14:131:35 | call to getenv indirection | semmle.label | call to getenv indirection |
+| tests.cpp:132:14:132:19 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:132:14:132:35 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:132:14:132:35 | call to getenv indirection | semmle.label | call to getenv indirection |
+| tests.cpp:133:14:133:19 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:133:14:133:19 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:133:14:133:35 | (const char *)... | semmle.label | (const char *)... |
+| tests.cpp:133:14:133:35 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:133:14:133:35 | call to getenv indirection | semmle.label | call to getenv indirection |
+| tests_passwd.cpp:16:8:16:15 | call to getpwnam | semmle.label | call to getpwnam |
+| tests_passwd.cpp:18:29:18:31 | pwd | semmle.label | pwd |
+| tests_passwd.cpp:19:26:19:28 | pwd | semmle.label | pwd |
+subpaths
+#select
+| tests.cpp:48:15:48:20 | call to getenv | tests.cpp:48:15:48:20 | call to getenv | tests.cpp:48:15:48:20 | call to getenv | This operation potentially exposes sensitive system data from $@. | tests.cpp:48:15:48:20 | call to getenv | call to getenv |
+| tests.cpp:48:15:48:36 | (const char *)... | tests.cpp:48:15:48:20 | call to getenv | tests.cpp:48:15:48:36 | (const char *)... | This operation potentially exposes sensitive system data from $@. | tests.cpp:48:15:48:20 | call to getenv | call to getenv |
+| tests.cpp:49:15:49:20 | call to getenv | tests.cpp:49:15:49:20 | call to getenv | tests.cpp:49:15:49:20 | call to getenv | This operation potentially exposes sensitive system data from $@. | tests.cpp:49:15:49:20 | call to getenv | call to getenv |
+| tests.cpp:49:15:49:36 | (const char *)... | tests.cpp:49:15:49:20 | call to getenv | tests.cpp:49:15:49:36 | (const char *)... | This operation potentially exposes sensitive system data from $@. | tests.cpp:49:15:49:20 | call to getenv | call to getenv |
+| tests.cpp:50:15:50:20 | call to getenv | tests.cpp:50:15:50:20 | call to getenv | tests.cpp:50:15:50:20 | call to getenv | This operation potentially exposes sensitive system data from $@. | tests.cpp:50:15:50:20 | call to getenv | call to getenv |
+| tests.cpp:50:15:50:36 | (const char *)... | tests.cpp:50:15:50:20 | call to getenv | tests.cpp:50:15:50:36 | (const char *)... | This operation potentially exposes sensitive system data from $@. | tests.cpp:50:15:50:20 | call to getenv | call to getenv |
+| tests.cpp:57:18:57:23 | call to getenv | tests.cpp:57:18:57:23 | call to getenv | tests.cpp:57:18:57:23 | call to getenv | This operation potentially exposes sensitive system data from $@. | tests.cpp:57:18:57:23 | call to getenv | call to getenv |
+| tests.cpp:57:18:57:39 | (const char_type *)... | tests.cpp:57:18:57:23 | call to getenv | tests.cpp:57:18:57:39 | (const char_type *)... | This operation potentially exposes sensitive system data from $@. | tests.cpp:57:18:57:23 | call to getenv | call to getenv |
+| tests.cpp:58:41:58:46 | call to getenv | tests.cpp:58:41:58:46 | call to getenv | tests.cpp:58:41:58:46 | call to getenv | This operation potentially exposes sensitive system data from $@. | tests.cpp:58:41:58:46 | call to getenv | call to getenv |
+| tests.cpp:58:41:58:62 | (const char_type *)... | tests.cpp:58:41:58:46 | call to getenv | tests.cpp:58:41:58:62 | (const char_type *)... | This operation potentially exposes sensitive system data from $@. | tests.cpp:58:41:58:46 | call to getenv | call to getenv |
+| tests.cpp:59:43:59:48 | call to getenv | tests.cpp:59:43:59:48 | call to getenv | tests.cpp:59:43:59:48 | call to getenv | This operation potentially exposes sensitive system data from $@. | tests.cpp:59:43:59:48 | call to getenv | call to getenv |
+| tests.cpp:59:43:59:64 | (const char *)... | tests.cpp:59:43:59:48 | call to getenv | tests.cpp:59:43:59:64 | (const char *)... | This operation potentially exposes sensitive system data from $@. | tests.cpp:59:43:59:48 | call to getenv | call to getenv |
+| tests.cpp:88:15:88:17 | msg | tests.cpp:97:13:97:18 | call to getenv | tests.cpp:88:15:88:17 | msg | This operation potentially exposes sensitive system data from $@. | tests.cpp:97:13:97:18 | call to getenv | call to getenv |
+| tests.cpp:97:13:97:18 | call to getenv | tests.cpp:97:13:97:18 | call to getenv | tests.cpp:97:13:97:18 | call to getenv | This operation potentially exposes sensitive system data from $@. | tests.cpp:97:13:97:18 | call to getenv | call to getenv |
+| tests.cpp:97:13:97:34 | (const char *)... | tests.cpp:97:13:97:18 | call to getenv | tests.cpp:97:13:97:34 | (const char *)... | This operation potentially exposes sensitive system data from $@. | tests.cpp:97:13:97:18 | call to getenv | call to getenv |
+| tests.cpp:111:15:111:17 | tmp | tests.cpp:131:14:131:19 | call to getenv | tests.cpp:111:15:111:17 | tmp | This operation potentially exposes sensitive system data from $@. | tests.cpp:131:14:131:19 | call to getenv | call to getenv |
+| tests.cpp:119:7:119:12 | (const char *)... | tests.cpp:132:14:132:19 | call to getenv | tests.cpp:119:7:119:12 | (const char *)... | This operation potentially exposes sensitive system data from $@. | tests.cpp:132:14:132:19 | call to getenv | call to getenv |
+| tests.cpp:124:15:124:17 | msg | tests.cpp:133:14:133:19 | call to getenv | tests.cpp:124:15:124:17 | msg | This operation potentially exposes sensitive system data from $@. | tests.cpp:133:14:133:19 | call to getenv | call to getenv |
+| tests.cpp:133:14:133:19 | call to getenv | tests.cpp:133:14:133:19 | call to getenv | tests.cpp:133:14:133:19 | call to getenv | This operation potentially exposes sensitive system data from $@. | tests.cpp:133:14:133:19 | call to getenv | call to getenv |
+| tests.cpp:133:14:133:35 | (const char *)... | tests.cpp:133:14:133:19 | call to getenv | tests.cpp:133:14:133:35 | (const char *)... | This operation potentially exposes sensitive system data from $@. | tests.cpp:133:14:133:19 | call to getenv | call to getenv |
+| tests_passwd.cpp:18:29:18:31 | pwd | tests_passwd.cpp:16:8:16:15 | call to getpwnam | tests_passwd.cpp:18:29:18:31 | pwd | This operation potentially exposes sensitive system data from $@. | tests_passwd.cpp:16:8:16:15 | call to getpwnam | call to getpwnam |
+| tests_passwd.cpp:19:26:19:28 | pwd | tests_passwd.cpp:16:8:16:15 | call to getpwnam | tests_passwd.cpp:19:26:19:28 | pwd | This operation potentially exposes sensitive system data from $@. | tests_passwd.cpp:16:8:16:15 | call to getpwnam | call to getpwnam |

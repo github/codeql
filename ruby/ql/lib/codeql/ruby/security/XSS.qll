@@ -141,7 +141,7 @@ private module Shared {
     exists(RenderCall call, Pair kvPair |
       call.getLocals().getAKeyValuePair() = kvPair and
       kvPair.getValue() = value and
-      kvPair.getKey().getConstantValue().isStringOrSymbol(hashKey) and
+      kvPair.getKey().getConstantValue().isStringlikeValue(hashKey) and
       call.getTemplateFile() = erb
     )
   }
@@ -154,7 +154,7 @@ private module Shared {
       argNode.asExpr() = refNode.getArgument(0) and
       refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
       argNode.getALocalSource() = DataFlow::exprNode(strNode) and
-      strNode.getExpr().getConstantValue().isStringOrSymbol(hashKey) and
+      strNode.getExpr().getConstantValue().isStringlikeValue(hashKey) and
       erb = refNode.getFile()
     )
   }
@@ -245,7 +245,7 @@ private module Shared {
   /**
    * An additional step that is preserves dataflow in the context of XSS.
    */
-  predicate isAdditionalXSSFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalXssFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     isFlowFromLocals(node1, node2)
     or
     isFlowFromControllerInstanceVariable(node1, node2)
@@ -254,6 +254,9 @@ private module Shared {
     or
     isFlowFromHelperMethod(node1, node2)
   }
+
+  /** DEPRECATED: Alias for isAdditionalXssFlowStep */
+  deprecated predicate isAdditionalXSSFlowStep = isAdditionalXssFlowStep/2;
 }
 
 /**
@@ -261,7 +264,7 @@ private module Shared {
  * "reflected cross-site scripting" vulnerabilities, as well as
  * extension points for adding your own.
  */
-module ReflectedXSS {
+module ReflectedXss {
   /** A data flow source for stored XSS vulnerabilities. */
   abstract class Source extends Shared::Source { }
 
@@ -277,13 +280,19 @@ module ReflectedXSS {
   /**
    * An additional step that is preserves dataflow in the context of reflected XSS.
    */
-  predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSFlowStep/2;
+  predicate isAdditionalXssTaintStep = Shared::isAdditionalXssFlowStep/2;
+
+  /** DEPRECATED: Alias for isAdditionalXssTaintStep */
+  deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
 
   /**
    * A source of remote user input, considered as a flow source.
    */
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
 }
+
+/** DEPRECATED: Alias for ReflectedXss */
+deprecated module ReflectedXSS = ReflectedXss;
 
 private module OrmTracking {
   /**
@@ -298,7 +307,7 @@ private module OrmTracking {
     override predicate isSink(DataFlow2::Node sink) { sink instanceof DataFlow2::CallNode }
 
     override predicate isAdditionalFlowStep(DataFlow2::Node node1, DataFlow2::Node node2) {
-      Shared::isAdditionalXSSFlowStep(node1, node2)
+      Shared::isAdditionalXssFlowStep(node1, node2)
       or
       // Propagate flow through arbitrary method calls
       node2.(DataFlow2::CallNode).getReceiver() = node1
@@ -309,7 +318,8 @@ private module OrmTracking {
   }
 }
 
-module StoredXSS {
+/** Provides default sources, sinks and sanitizers for detecting stored cross-site scripting (XSS) vulnerabilities. */
+module StoredXss {
   /** A data flow source for stored XSS vulnerabilities. */
   abstract class Source extends Shared::Source { }
 
@@ -325,7 +335,10 @@ module StoredXSS {
   /**
    * An additional step that preserves dataflow in the context of stored XSS.
    */
-  predicate isAdditionalXSSTaintStep = Shared::isAdditionalXSSFlowStep/2;
+  predicate isAdditionalXssTaintStep = Shared::isAdditionalXssFlowStep/2;
+
+  /** DEPRECATED: Alias for isAdditionalXssTaintStep */
+  deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
 
   private class OrmFieldAsSource extends Source instanceof DataFlow2::CallNode {
     OrmFieldAsSource() {
@@ -341,3 +354,6 @@ module StoredXSS {
   private class FileSystemReadAccessAsSource extends Source instanceof FileSystemReadAccess { }
   // TODO: Consider `FileNameSource` flowing to script tag `src` attributes and similar
 }
+
+/** DEPRECATED: Alias for StoredXss */
+deprecated module StoredXSS = StoredXss;

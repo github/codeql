@@ -59,8 +59,6 @@ module PropertyProjection {
   }
 }
 
-deprecated class CustomPropertyProjection = PropertyProjection::Range;
-
 /**
  * Gets a callee of a simple property projection call.
  * This predicate is used exclusively in `SimplePropertyProjection`.

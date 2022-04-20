@@ -25,9 +25,9 @@ def expects_string(x): # $ str=field SPURIOUS: int=field
 
 def test_incompatible_types():
     x = SomeClass() # $int,str=field
-    x.field = int(5) # $int=field int SPURIOUS: str=field str
+    x.field = int(5) # $int=field int SPURIOUS: str=field
     expects_int(x) # $int=field SPURIOUS: str=field
-    x.field = str("Hello") # $str=field str SPURIOUS: int=field int
+    x.field = str("Hello") # $str=field str SPURIOUS: int=field
     expects_string(x) # $ str=field SPURIOUS: int=field
 
 # set in different function

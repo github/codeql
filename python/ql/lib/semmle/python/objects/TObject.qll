@@ -5,6 +5,7 @@ private import semmle.python.types.Builtins
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
+private import semmle.python.internal.CachedStages
 
 /**
  * Internal type backing `ObjectInternal` and `Value`
@@ -453,7 +454,7 @@ predicate common_module_name(string name) { name = ["zope.interface", "six.moves
  * This acts as a helper for ClassObjectInternal allowing some lookup without
  * recursion.
  */
-library class ClassDecl extends @py_object {
+class ClassDecl extends @py_object {
   ClassDecl() {
     this.(Builtin).isClass() and not this = Builtin::unknownType()
     or

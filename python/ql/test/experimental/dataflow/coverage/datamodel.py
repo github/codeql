@@ -90,11 +90,11 @@ def gen(x, count):
     n -= 1
 
 iter = gen(SOURCE, 1)
-SINK(iter.__next__())
+SINK(iter.__next__()) # $ MISSING: flow
 # SINK_F(iter.__next__()) # throws StopIteration, FP
 
 oiter = c.gen(SOURCE, 1)
-SINK(oiter.__next__())
+SINK(oiter.__next__()) # $ MISSING: flow
 # SINK_F(oiter.__next__()) # throws StopIteration, FP
 
 # Coroutine functions
@@ -103,8 +103,8 @@ async def coro(x):
   return x
 
 import asyncio
-SINK(asyncio.run(coro(SOURCE)))
-SINK(asyncio.run(c.coro(SOURCE)))
+SINK(asyncio.run(coro(SOURCE))) # $ MISSING: flow
+SINK(asyncio.run(c.coro(SOURCE))) # $ MISSING: flow
 
 class A:
 
@@ -116,7 +116,7 @@ async def agen(x):
   a = A()
   return await a
 
-SINK(asyncio.run(agen(SOURCE)))
+SINK(asyncio.run(agen(SOURCE))) # $ MISSING: flow
 
 # Asynchronous generator functions
 # A function or method which is defined using async def and which uses the yield statement is called a asynchronous generator function. Such a function, when called, returns an asynchronous iterator object which can be used in an async for statement to execute the body of the function.

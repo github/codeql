@@ -109,3 +109,16 @@ class Sub extends Super {
 		$("#id").get(0).innerHTML = "<a src=\"" + this.el.src + "\">foo</a>"; // NOT OK. Attack: `<mytag id="id" src="x:&quot;&gt;&lt;img src=1 onerror=&quot;alert(1)&quot;&gt;" />`
 	}
 }
+
+(function () {
+    const src = document.getElementById("#link").src;
+	$("#id").html(src); // NOT OK.
+
+    $("#id").attr("src", src); // OK
+
+    $("input.foo")[0].onchange = function (ev) {
+        $("#id").html(ev.target.files[0].name); // NOT OK.
+
+        $("img#id").attr("src", URL.createObjectURL(ev.target.files[0])); // NOT OK
+    }
+})();

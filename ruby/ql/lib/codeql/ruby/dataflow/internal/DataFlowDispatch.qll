@@ -203,7 +203,7 @@ private module Cached {
           result = lookupMethod(tp, method) and
           if result.(Method).isPrivate()
           then
-            exists(Self self |
+            exists(SelfVariableAccess self |
               self = call.getReceiver().getExpr() and
               pragma[only_bind_out](self.getEnclosingModule().getModule().getSuperClass*()) =
                 pragma[only_bind_out](result.getEnclosingModule().getModule())
@@ -232,6 +232,18 @@ private module Cached {
     )
   }
 
+  /** Gets a viable run-time target for the call `call`. */
+  cached
+  DataFlowCallable viableCallable(DataFlowCall call) {
+    result = TCfgScope(getTarget(call.asCall())) and
+    not call.asCall().getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
+    or
+    exists(LibraryCallable callable |
+      result = TLibraryCallable(callable) and
+      call.asCall().getExpr() = callable.getACall()
+    )
+  }
+
   cached
   newtype TArgumentPosition =
     TSelfArgumentPosition() or
@@ -245,6 +257,8 @@ private module Cached {
       name = any(KeywordParameter kp).getName()
       or
       exists(any(Call c).getKeywordArgument(name))
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
     }
 
   cached
@@ -258,7 +272,11 @@ private module Cached {
       or
       FlowSummaryImplSpecific::ParsePositions::isParsedArgumentPosition(_, pos)
     } or
-    TKeywordParameterPosition(string name) { name = any(KeywordParameter kp).getName() }
+    TKeywordParameterPosition(string name) {
+      name = any(KeywordParameter kp).getName()
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
+    }
 }
 
 import Cached
@@ -300,28 +318,14 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
     )
     or
     // `self` in method
-    exists(Self self, Method enclosing |
-      self = result.asExpr().getExpr() and
-      enclosing = self.getEnclosingMethod() and
-      tp = enclosing.getEnclosingModule().getModule() and
-      not self.getEnclosingModule().getEnclosingMethod() = enclosing
-    )
+    tp = result.(SsaSelfDefinitionNode).getSelfScope().(Method).getEnclosingModule().getModule()
     or
     // `self` in singleton method
-    exists(Self self, MethodBase enclosing |
-      self = result.asExpr().getExpr() and
-      flowsToSingletonMethodObject(trackInstance(tp), enclosing) and
-      enclosing = self.getEnclosingMethod() and
-      not self.getEnclosingModule().getEnclosingMethod() = enclosing
-    )
+    flowsToSingletonMethodObject(trackInstance(tp), result.(SsaSelfDefinitionNode).getSelfScope())
     or
     // `self` in top-level
-    exists(Self self, Toplevel enclosing |
-      self = result.asExpr().getExpr() and
-      enclosing = self.getEnclosingModule() and
-      tp = TResolved("Object") and
-      not self.getEnclosingMethod().getEnclosingModule() = enclosing
-    )
+    result.(SsaSelfDefinitionNode).getSelfScope() instanceof Toplevel and
+    tp = TResolved("Object")
     or
     // a module or class
     exists(Module m |
@@ -371,7 +375,7 @@ private predicate singletonMethod(MethodBase method, Expr object) {
 
 pragma[nomagic]
 private predicate flowsToSingletonMethodObject(DataFlow::LocalSourceNode nodeFrom, MethodBase method) {
-  exists(DataFlow::LocalSourceNode nodeTo |
+  exists(DataFlow::Node nodeTo |
     nodeFrom.flowsTo(nodeTo) and
     singletonMethod(method, nodeTo.asExpr().getExpr())
   )
@@ -409,13 +413,8 @@ private DataFlow::LocalSourceNode trackSingletonMethod(MethodBase m, string name
   name = m.getName()
 }
 
-private DataFlow::Node selfInModule(Module tp) {
-  exists(Self self, ModuleBase enclosing |
-    self = result.asExpr().getExpr() and
-    enclosing = self.getEnclosingModule() and
-    tp = enclosing.getModule() and
-    not self.getEnclosingMethod().getEnclosingModule() = enclosing
-  )
+private SsaSelfDefinitionNode selfInModule(Module tp) {
+  tp = result.getSelfScope().(ModuleBase).getModule()
 }
 
 private DataFlow::LocalSourceNode trackModule(Module tp, TypeTracker t) {
@@ -440,17 +439,6 @@ private DataFlow::LocalSourceNode trackModuleRec(Module tp, TypeTracker t, StepS
 
 private DataFlow::LocalSourceNode trackModule(Module tp) {
   result = trackModule(tp, TypeTracker::end())
-}
-
-/** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowCall call) {
-  result = TCfgScope(getTarget(call.asCall())) and
-  not call.asCall().getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
-  or
-  exists(LibraryCallable callable |
-    result = TLibraryCallable(callable) and
-    call.asCall().getExpr() = callable.getACall()
-  )
 }
 
 /**

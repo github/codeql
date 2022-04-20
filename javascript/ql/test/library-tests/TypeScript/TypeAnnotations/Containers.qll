@@ -1,6 +1,6 @@
 import javascript
 
-abstract class Violation extends ASTNode {
+abstract class Violation extends AstNode {
   abstract string reason();
 }
 

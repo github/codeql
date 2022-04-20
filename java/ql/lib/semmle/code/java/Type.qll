@@ -37,6 +37,16 @@ predicate hasSubtype(RefType t, Type sub) {
   typeVarSubtypeBound(t, sub) and t != sub
 }
 
+/**
+ * Holds if reference type `anc` is a direct or indirect supertype of `sub`, including itself.
+ */
+cached
+predicate hasDescendant(RefType anc, Type sub) {
+  anc = sub
+  or
+  exists(RefType mid | hasSubtype(anc, mid) and hasDescendant(mid, sub))
+}
+
 private predicate typeVarSubtypeBound(RefType t, TypeVariable tv) {
   if tv.hasTypeBound() then t = tv.getATypeBound().getType() else t instanceof TypeObject
 }
@@ -394,11 +404,17 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   /** Gets a direct subtype of this type. */
   RefType getASubtype() { hasSubtype(this, result) }
 
+  /** Gets a direct or indirect descendant of this type, including itself. */
+  RefType getADescendant() { hasDescendant(this, result) }
+
   /** Gets a direct supertype of this type. */
   RefType getASupertype() { hasSubtype(result, this) }
 
   /** Gets a direct or indirect supertype of this type, including itself. */
-  RefType getAnAncestor() { hasSubtype*(result, this) }
+  RefType getAnAncestor() { hasDescendant(result, this) }
+
+  /** Gets a direct or indirect supertype of this type, not including itself. */
+  RefType getAStrictAncestor() { result = this.getAnAncestor() and result != this }
 
   /**
    * Gets the source declaration of a direct supertype of this type, excluding itself.

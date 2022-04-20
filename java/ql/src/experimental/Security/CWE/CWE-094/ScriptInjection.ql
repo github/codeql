@@ -17,13 +17,13 @@ import DataFlow::PathGraph
 /** A method of ScriptEngine that allows code injection. */
 class ScriptEngineMethod extends Method {
   ScriptEngineMethod() {
-    this.getDeclaringType().getASupertype*().hasQualifiedName("javax.script", "ScriptEngine") and
+    this.getDeclaringType().getAnAncestor().hasQualifiedName("javax.script", "ScriptEngine") and
     this.hasName("eval")
     or
-    this.getDeclaringType().getASupertype*().hasQualifiedName("javax.script", "Compilable") and
+    this.getDeclaringType().getAnAncestor().hasQualifiedName("javax.script", "Compilable") and
     this.hasName("compile")
     or
-    this.getDeclaringType().getASupertype*().hasQualifiedName("javax.script", "ScriptEngineFactory") and
+    this.getDeclaringType().getAnAncestor().hasQualifiedName("javax.script", "ScriptEngineFactory") and
     this.hasName(["getProgram", "getMethodCallSyntax"])
   }
 }
@@ -50,7 +50,7 @@ class RhinoEvaluateExpressionMethod extends Method {
 class RhinoCompileClassMethod extends Method {
   RhinoCompileClassMethod() {
     this.getDeclaringType()
-        .getASupertype*()
+        .getAnAncestor()
         .hasQualifiedName("org.mozilla.javascript.optimizer", "ClassCompiler") and
     this.hasName("compileToClassFiles")
   }
@@ -63,7 +63,7 @@ class RhinoCompileClassMethod extends Method {
 class RhinoDefineClassMethod extends Method {
   RhinoDefineClassMethod() {
     this.getDeclaringType()
-        .getASupertype*()
+        .getAnAncestor()
         .hasQualifiedName("org.mozilla.javascript", "GeneratedClassLoader") and
     this.hasName("defineClass")
   }
@@ -76,7 +76,7 @@ class RhinoDefineClassMethod extends Method {
 predicate isScriptArgument(MethodAccess ma, Expr sink) {
   exists(ScriptEngineMethod m |
     m = ma.getMethod() and
-    if m.getDeclaringType().getASupertype*().hasQualifiedName("javax.script", "ScriptEngineFactory")
+    if m.getDeclaringType().getAnAncestor().hasQualifiedName("javax.script", "ScriptEngineFactory")
     then sink = ma.getArgument(_) // all arguments allow script injection
     else sink = ma.getArgument(0)
   )

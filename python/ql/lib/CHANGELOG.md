@@ -1,3 +1,42 @@
+## 0.0.13
+
+## 0.0.12
+
+### Breaking Changes
+
+* The flow state variants of `isBarrier` and `isAdditionalFlowStep` are no longer exposed in the taint tracking library. The `isSanitizer` and `isAdditionalTaintStep` predicates should be used instead.
+
+### Deprecated APIs
+
+* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+* Some modules that started with a lowercase letter have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### New Features
+
+* The data flow and taint tracking libraries have been extended with versions of `isBarrierIn`, `isBarrierOut`, and `isBarrierGuard`, respectively `isSanitizerIn`, `isSanitizerOut`, and `isSanitizerGuard`, that support flow states.
+
+### Minor Analysis Improvements
+
+* All deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+
+## 0.0.11
+
+### Minor Analysis Improvements
+
+* Added new SSRF sinks for `httpx`, `pycurl`, `urllib`, `urllib2`, `urllib3`, and `libtaxii`. This improvement was [submitted by @haby0](https://github.com/github/codeql/pull/8275).
+* The regular expression parser now groups sequences of normal characters. This reduces the number of instances of `RegExpNormalChar`.
+* Fixed taint propagation for attribute assignment. In the assignment `x.foo = tainted` we no longer treat the entire object `x` as tainted, just because the attribute `foo` contains tainted data. This leads to slightly fewer false positives.
+* Improved analysis of attributes for data-flow and taint tracking queries, so `getattr`/`setattr` are supported, and a write to an attribute properly stops flow for the old value in that attribute.
+* Added post-update nodes (`DataFlow::PostUpdateNode`) for arguments in calls that can't be resolved.
+
+## 0.0.10
+
+### Deprecated APIs
+
+* The old points-to based modeling has been deprecated. Use the new type-tracking/API-graphs based modeling instead.
+
 ## 0.0.9
 
 ## 0.0.8

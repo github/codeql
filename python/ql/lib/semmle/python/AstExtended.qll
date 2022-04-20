@@ -1,6 +1,7 @@
 import python
+private import semmle.python.internal.CachedStages
 
-/** Syntactic node (Class, Function, Module, Expr, Stmt or Comprehension) corresponding to a flow node */
+/** A syntactic node (Class, Function, Module, Expr, Stmt or Comprehension) corresponding to a flow node */
 abstract class AstNode extends AstNode_ {
   /*
    * Special comment for documentation generation.
@@ -17,9 +18,14 @@ abstract class AstNode extends AstNode_ {
    * NOTE: For some statements and other purely syntactic elements,
    * there may not be a `ControlFlowNode`
    */
-  ControlFlowNode getAFlowNode() { py_flow_bb_node(result, this, _, _) }
+  cached
+  ControlFlowNode getAFlowNode() {
+    Stages::AST::ref() and
+    py_flow_bb_node(result, this, _, _)
+  }
 
   /** Gets the location for this AST node */
+  cached
   Location getLocation() { none() }
 
   /**
@@ -35,6 +41,7 @@ abstract class AstNode extends AstNode_ {
    * Expr.getASubExpression(), Stmt.getASubStatement(), Stmt.getASubExpression() or
    * Scope.getAStmt().
    */
+  cached
   abstract AstNode getAChildNode();
 
   /**
@@ -44,12 +51,16 @@ abstract class AstNode extends AstNode_ {
    * Expr.getASubExpression(), Stmt.getASubStatement(), Stmt.getASubExpression() or
    * Scope.getAStmt() applied to the parent.
    */
-  AstNode getParentNode() { result.getAChildNode() = this }
+  cached
+  AstNode getParentNode() {
+    Stages::AST::ref() and
+    result.getAChildNode() = this
+  }
 
   /** Whether this contains `inner` syntactically */
   predicate contains(AstNode inner) { this.getAChildNode+() = inner }
 
-  pragma[noinline]
+  pragma[nomagic]
   private predicate containsInScope(AstNode inner, Scope scope) {
     this.contains(inner) and
     not inner instanceof Scope and
@@ -61,31 +72,31 @@ abstract class AstNode extends AstNode_ {
 }
 
 /* Parents */
-/** Internal implementation class */
+/** The parent of a `Function`. Internal implementation class */
 class FunctionParent extends FunctionParent_ { }
 
-/** Internal implementation class */
+/** The parent of an `Arguments` node. Internal implementation class */
 class ArgumentsParent extends ArgumentsParent_ { }
 
-/** Internal implementation class */
+/** The parent of an `ExprList`. Internal implementation class */
 class ExprListParent extends ExprListParent_ { }
 
-/** Internal implementation class */
+/** The parent of an `ExprContext`. Internal implementation class */
 class ExprContextParent extends ExprContextParent_ { }
 
-/** Internal implementation class */
+/** The parent of a `StmtList`. Internal implementation class */
 class StmtListParent extends StmtListParent_ { }
 
-/** Internal implementation class */
+/** The parent of a `StrList`. Internal implementation class */
 class StrListParent extends StrListParent_ { }
 
-/** Internal implementation class */
+/** The parent of an `Expr`. Internal implementation class */
 class ExprParent extends ExprParent_ { }
 
-/** Internal implementation class */
+/** The parent of a `PatternList`. Internal implementation class */
 class PatternListParent extends PatternListParent_ { }
 
-/** Internal implementation class */
+/** The parent of a `Pattern`. Internal implementation class */
 class PatternParent extends PatternParent_ { }
 
 class DictItem extends DictItem_, AstNode {
@@ -106,9 +117,16 @@ class Comprehension extends Comprehension_, AstNode {
 
   override string toString() { result = "Comprehension" }
 
-  override Location getLocation() { result = Comprehension_.super.getLocation() }
+  override Location getLocation() {
+    Stages::AST::ref() and
+    result = Comprehension_.super.getLocation()
+  }
 
-  override AstNode getAChildNode() { result = this.getASubExpression() }
+  pragma[nomagic]
+  override AstNode getAChildNode() {
+    Stages::AST::ref() and
+    result = this.getASubExpression()
+  }
 
   Expr getASubExpression() {
     result = this.getIter() or
@@ -120,7 +138,7 @@ class Comprehension extends Comprehension_, AstNode {
 class BytesOrStr extends BytesOrStr_ { }
 
 /**
- * Part of a string literal formed by implicit concatenation.
+ * A part of a string literal formed by implicit concatenation.
  * For example the string literal "abc" expressed in the source as `"a" "b" "c"`
  * would be composed of three `StringPart`s.
  */

@@ -51,7 +51,7 @@ class OnActivityResultIncomingIntent extends DataFlow::Node {
         ma.getMethod().hasName("show") and
         ma.getMethod()
             .getDeclaringType()
-            .getASupertype*()
+            .getAnAncestor()
             .hasQualifiedName(["android.app", "android.support.v4.app", "androidx.fragment.app"],
               "DialogFragment") and
         startingType = ma.getQualifier().getType()
@@ -78,7 +78,7 @@ private class ImplicitStartActivityForResultConf extends DataFlowForOnActivityRe
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess startActivityForResult |
       startActivityForResult.getMethod().hasName("startActivityForResult") and
-      startActivityForResult.getMethod().getDeclaringType().getASupertype*() instanceof
+      startActivityForResult.getMethod().getDeclaringType().getAnAncestor() instanceof
         ActivityOrFragment and
       sink.asExpr() = startActivityForResult.getArgument(0)
     )

@@ -77,3 +77,10 @@ function veryLongFunctionBody() {
   // We should name the anonymous function here that's passed as an argument to `identity`.
   identity(() => console.log("someData"));
 }
+
+
+function effectiveSinkAndNotASink(foo) {
+  $.ajax({
+    "url": foo.bar,
+  });
+}

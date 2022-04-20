@@ -295,7 +295,7 @@ class NewInstance extends MethodAccess {
       // If we cast the result of this method, then this is either the type specified, or a
       // sub-type of that type. Make sure we exclude overly generic types such as `Object`.
       not overlyGenericType(cast.getType()) and
-      hasSubtype*(cast.getType(), result)
+      hasDescendant(cast.getType(), result)
     )
   }
 }
@@ -355,9 +355,11 @@ class ReflectiveMethodAccess extends ClassMethodAccess {
       then
         // The method must be declared on the type itself.
         result.getDeclaringType() = this.getInferredClassType()
-      else
-        // The method may be declared on an inferred type or a super-type.
+      else (
+        // The method must be public, and declared or inherited by the inferred class type.
+        result.isPublic() and
         this.getInferredClassType().inherits(result)
+      )
     ) and
     // Only consider instances where the method name is provided as a `StringLiteral`.
     result.hasName(this.getArgument(0).(StringLiteral).getValue())

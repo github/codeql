@@ -124,7 +124,9 @@ abstract class InlineExpectationsTest extends string {
   abstract predicate hasActualResult(Location location, string element, string tag, string value);
 
   /**
-   * Like `hasActualResult`, but returns results that do not require a matching annotation.
+   * Holds if there is an optional result on the specified location.
+   *
+   * This is similar to `hasActualResult`, but returns results that do not require a matching annotation.
    * A failure will still arise if there is an annotation that does not match any results, but not vice versa.
    * Override this predicate to specify optional results.
    */
