@@ -132,6 +132,22 @@ class LocalSourceNode extends Node {
   LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
+/**
+ * A node associated with an object after an operation that might have
+ * changed its state.
+ *
+ * This can be either the argument to a callable after the callable returns
+ * (which might have mutated the argument), or the qualifier of a field after
+ * an update to the field.
+ *
+ * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
+ * to the value before the update.
+ */
+class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
+  /** Gets the node before the state update. */
+  Node getPreUpdateNode() { result = super.getPreUpdateNode() }
+}
+
 cached
 private predicate hasLocalSource(Node sink, Node source) {
   // Declaring `source` to be a `SourceNode` currently causes a redundant check in the

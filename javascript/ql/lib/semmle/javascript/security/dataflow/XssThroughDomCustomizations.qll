@@ -162,6 +162,11 @@ module XssThroughDom {
     }
   }
 
+  /** The `files` property of an `<input />` element */
+  class FilesSource extends Source {
+    FilesSource() { this = DOM::domValueRef().getAPropertyRead("files") }
+  }
+
   /**
    * A module for form inputs seen as sources for xss-through-dom.
    */
