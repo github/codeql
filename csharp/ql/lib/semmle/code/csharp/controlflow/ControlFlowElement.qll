@@ -6,7 +6,6 @@ private import semmle.code.csharp.commons.Compilation
 private import ControlFlow
 private import ControlFlow::BasicBlocks
 private import SuccessorTypes
-private import semmle.code.csharp.Caching
 private import internal.ControlFlowGraphImpl
 
 /**
@@ -173,7 +172,6 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
   private predicate controlsBlockSplit(
     BasicBlock controlled, ConditionalSuccessor s, ConditionBlock cb
   ) {
-    Stages::GuardsStage::forceCachingInSameStage() and
     this.immediatelyControlsBlockSplit(controlled, s, cb)
     or
     // Equivalent with

@@ -1,7 +1,6 @@
 private import csharp
 private import TaintTrackingPublic
 private import FlowSummaryImpl as FlowSummaryImpl
-private import semmle.code.csharp.Caching
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.ControlFlowReachability
 private import semmle.code.csharp.dispatch.Dispatch
@@ -97,9 +96,6 @@ private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node n
 cached
 private module Cached {
   private import DataFlowImplCommon as DataFlowImplCommon
-
-  cached
-  predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
 
   /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local

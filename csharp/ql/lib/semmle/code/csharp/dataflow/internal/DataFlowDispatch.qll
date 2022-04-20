@@ -95,7 +95,6 @@ private module Cached {
   cached
   newtype TDataFlowCall =
     TNonDelegateCall(ControlFlow::Nodes::ElementNode cfn, DispatchCall dc) {
-      DataFlowImplCommon::forceCachingInSameStage() and
       cfn.getElement() = dc.getCall()
     } or
     TExplicitDelegateLikeCall(ControlFlow::Nodes::ElementNode cfn, DelegateLikeCall dc) {

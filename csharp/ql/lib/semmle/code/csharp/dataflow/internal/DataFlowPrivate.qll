@@ -41,7 +41,6 @@ abstract class NodeImpl extends Node {
 
   /** Gets the type of this node used for type pruning. */
   Gvn::GvnType getDataFlowType() {
-    forceCachingInSameStage() and
     exists(Type t0 | result = Gvn::getGlobalValueNumber(t0) |
       t0 = getCSharpType(this.getType())
       or
@@ -70,21 +69,13 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
     result = this.getControlFlowNodeImpl().getEnclosingCallable()
   }
 
-  override DotNet::Type getTypeImpl() {
-    forceCachingInSameStage() and
-    result = this.getExpr().getType()
-  }
+  override DotNet::Type getTypeImpl() { result = this.getExpr().getType() }
 
-  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() {
-    forceCachingInSameStage() and this = TExprNode(result)
-  }
+  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { this = TExprNode(result) }
 
-  override Location getLocationImpl() {
-    forceCachingInSameStage() and result = this.getExpr().getLocation()
-  }
+  override Location getLocationImpl() { result = this.getExpr().getLocation() }
 
   override string toStringImpl() {
-    forceCachingInSameStage() and
     result = this.getControlFlowNodeImpl().toString()
     or
     exists(CIL::Expr e |
@@ -674,7 +665,6 @@ private module Cached {
   // Add artificial dependencies to enforce all cached predicates are evaluated
   // in the "DataFlowImplCommon stage"
   private predicate forceCaching() {
-    TaintTrackingPrivate::forceCachingInSameStage() or
     exists(any(NodeImpl n).getTypeImpl()) or
     exists(any(NodeImpl n).getControlFlowNodeImpl()) or
     exists(any(NodeImpl n).getLocationImpl()) or

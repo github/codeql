@@ -1,6 +1,5 @@
 import csharp
 private import Conversion
-private import Caching
 
 /**
  * INTERNAL: Do not use.
@@ -157,7 +156,6 @@ module Gvn {
     /** Gets a textual representation of this GVN. */
     cached
     string toString() {
-      Stages::UnificationStage::forceCachingInSameStage() and
       exists(LeafType t | this = TLeafGvnType(t) | result = t.toString())
       or
       this instanceof TTypeParameterGvnType and
@@ -448,7 +446,7 @@ module Gvn {
   private module Cached {
     cached
     newtype TCompoundTypeKind =
-      TPointerTypeKind() { Stages::UnificationStage::forceCachingInSameStage() } or
+      TPointerTypeKind() or
       TNullableTypeKind() or
       TArrayTypeKind(int dim, int rnk) {
         exists(ArrayType at | dim = at.getDimension() and rnk = at.getRank())

@@ -3,7 +3,6 @@ private import ControlFlowGraphImpl as Impl
 private import Completion as Comp
 private import Splitting as Splitting
 private import SuccessorType as ST
-private import semmle.code.csharp.Caching
 
 class ControlFlowTreeBase = Impl::ControlFlowTree::Range;
 
@@ -29,10 +28,7 @@ predicate completionIsValidFor(Completion c, ControlFlowElement e) { c.isValidFo
 class CfgScope = Impl::CfgScope;
 
 /** Gets the CFG scope for `e`. */
-CfgScope getCfgScope(ControlFlowElement e) {
-  Stages::ControlFlowStage::forceCachingInSameStage() and
-  result = e.getEnclosingCallable()
-}
+CfgScope getCfgScope(ControlFlowElement e) { result = e.getEnclosingCallable() }
 
 predicate scopeFirst = Impl::scopeFirst/2;
 

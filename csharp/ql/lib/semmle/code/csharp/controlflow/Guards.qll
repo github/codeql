@@ -1415,8 +1415,6 @@ module Internal {
 
     cached
     private module CachedWithCfg {
-      private import semmle.code.csharp.Caching
-
       cached
       predicate isGuard(Expr e, AbstractValue val) {
         (
@@ -1826,7 +1824,6 @@ module Internal {
 
   cached
   private module Cached {
-    private import semmle.code.csharp.Caching
     private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 
     /**
@@ -1855,7 +1852,6 @@ module Internal {
       ControlFlow::Node guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
       AccessOrCallExpr sub, AbstractValue v
     ) {
-      Stages::GuardsStage::forceCachingInSameStage() and
       guardedCfn = guarded.getAControlFlowNode() and
       guardedBB = guardedCfn.getBasicBlock() and
       guardControls(g, guardedBB, v) and

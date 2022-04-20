@@ -13,13 +13,8 @@ private import semmle.code.csharp.controlflow.internal.PreSsa
 
 cached
 private module Cached {
-  private import semmle.code.csharp.Caching
-
   cached
-  newtype TBooleanSplitSubKind =
-    TSsaBooleanSplitSubKind(PreSsa::Definition def) {
-      Stages::ControlFlowStage::forceCachingInSameStage()
-    }
+  newtype TBooleanSplitSubKind = TSsaBooleanSplitSubKind(PreSsa::Definition def)
 
   cached
   newtype TSplitKind =

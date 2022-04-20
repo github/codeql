@@ -4,9 +4,6 @@ private import SsaImplCommon
 cached
 private module Cached {
   cached
-  predicate forceCachingInSameStage() { any() }
-
-  cached
   ReadAccess getARead(Definition def) {
     exists(BasicBlock bb, int i |
       ssaDefReachesRead(_, def, bb, i) and

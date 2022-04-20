@@ -6,11 +6,10 @@
 
 import csharp
 private import Completion
-private import semmle.code.csharp.Caching
 
 cached
 private newtype TSuccessorType =
-  TSuccessorSuccessor() { Stages::ControlFlowStage::forceCachingInSameStage() } or
+  TSuccessorSuccessor() or
   TBooleanSuccessor(boolean b) { b = true or b = false } or
   TNullnessSuccessor(boolean isNull) { isNull = true or isNull = false } or
   TMatchingSuccessor(boolean isMatch) { isMatch = true or isMatch = false } or
