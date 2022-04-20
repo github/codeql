@@ -6,6 +6,7 @@ import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
+import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.IrConst
@@ -48,29 +49,33 @@ open class KotlinUsesExtractor(
         TypeResult(fakeKotlinType(), "", "")
     )
 
-    @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
-    fun extractFileClass(f: IrFile): Label<out DbClass> {
-        val fileName = f.fileEntry.name
-        val pkg = f.fqName.asString()
-        val defaultName = fileName.replaceFirst(Regex(""".*[/\\]"""), "").replaceFirst(Regex("""\.kt$"""), "").replaceFirstChar({ it.uppercase() }) + "Kt"
-        var jvmName = defaultName
-        for(a: IrConstructorCall in f.annotations) {
+    fun getJvmName(container: IrAnnotationContainer): String? {
+        for(a: IrConstructorCall in container.annotations) {
             val t = a.type
-            if(t is IrSimpleType && a.valueArgumentsCount == 1) {
+            if (t is IrSimpleType && a.valueArgumentsCount == 1) {
                 val owner = t.classifier.owner
                 val v = a.getValueArgument(0)
-                if(owner is IrClass) {
+                if (owner is IrClass) {
                     val aPkg = owner.packageFqName?.asString()
                     val name = owner.name.asString()
                     if(aPkg == "kotlin.jvm" && name == "JvmName" && v is IrConst<*>) {
                         val value = v.value
-                        if(value is String) {
-                            jvmName = value
+                        if (value is String) {
+                            return value
                         }
                     }
                 }
             }
         }
+        return null
+    }
+
+    @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
+    fun extractFileClass(f: IrFile): Label<out DbClass> {
+        val fileName = f.fileEntry.name
+        val pkg = f.fqName.asString()
+        val defaultName = fileName.replaceFirst(Regex(""".*[/\\]"""), "").replaceFirst(Regex("""\.kt$"""), "").replaceFirstChar({ it.uppercase() }) + "Kt"
+        var jvmName = getJvmName(f) ?: defaultName
         val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
         val label = "@\"class;$qualClassName\""
         val id: Label<DbClass> = tw.getLabelFor(label, {
@@ -668,14 +673,31 @@ open class KotlinUsesExtractor(
 
     private val IrDeclaration.isAnonymousFunction get() = this is IrSimpleFunction && name == SpecialNames.NO_NAME_PROVIDED
 
-    fun getFunctionShortName(f: IrFunction) : String {
+    data class FunctionNames(val nameInDB: String, val kotlinName: String)
+
+    fun getFunctionShortName(f: IrFunction) : FunctionNames {
         if (f.origin == IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA || f.isAnonymousFunction)
-            return OperatorNameConventions.INVOKE.asString()
+            return FunctionNames(
+                OperatorNameConventions.INVOKE.asString(),
+                OperatorNameConventions.INVOKE.asString())
         (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
             val propName = it.owner.name.asString()
-            when(f) {
-                it.owner.getter -> return JvmAbi.getterName(propName)
-                it.owner.setter -> return JvmAbi.setterName(propName)
+            val getter = it.owner.getter
+            val setter = it.owner.setter
+
+            if (it.owner.parentClassOrNull?.kind == ClassKind.ANNOTATION_CLASS) {
+                if (getter == null) {
+                    logger.error("Expected to find a getter for a property inside an annotation class")
+                    return FunctionNames(propName, propName)
+                } else {
+                    val jvmName = getJvmName(getter)
+                    return FunctionNames(jvmName ?: propName, propName)
+                }
+            }
+
+            when (f) {
+                getter -> return FunctionNames(getJvmName(getter) ?: JvmAbi.getterName(propName), JvmAbi.getterName(propName))
+                setter -> return FunctionNames(getJvmName(setter) ?: JvmAbi.setterName(propName), JvmAbi.setterName(propName))
                 else -> {
                     logger.error(
                         "Function has a corresponding property, but is neither the getter nor the setter"
@@ -683,7 +705,7 @@ open class KotlinUsesExtractor(
                 }
             }
         }
-        return f.name.asString()
+        return FunctionNames(getJvmName(f) ?: f.name.asString(), f.name.asString())
     }
 
     // This excludes class type parameters that show up in (at least) constructors' typeParameters list.
@@ -727,7 +749,7 @@ open class KotlinUsesExtractor(
      * allow it to be passed in.
     */
     fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        getFunctionLabel(f.parent, maybeParentId, getFunctionShortName(f), f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArgsIncludingOuterClasses)
+        getFunctionLabel(f.parent, maybeParentId, getFunctionShortName(f).nameInDB, f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArgsIncludingOuterClasses)
 
     /*
      * This function actually generates the label for a function.

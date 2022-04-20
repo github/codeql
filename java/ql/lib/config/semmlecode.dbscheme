@@ -1228,3 +1228,8 @@ compiler_generated(
   int kind: int ref
   // 1: Declaring classes of adapter functions in Kotlin
 )
+
+ktFunctionOriginalNames(
+  unique int id: @method ref,
+  string name: string ref
+)

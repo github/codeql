@@ -721,11 +721,15 @@ open class KotlinFileExtractor(
                     val returnType = useType(substReturnType, TypeContext.RETURN)
                     val shortName = getFunctionShortName(f)
                     val methodId = id.cast<DbMethod>()
-                    tw.writeMethods(methodId, shortName, "$shortName$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration.cast<DbMethod>())
+                    tw.writeMethods(methodId, shortName.nameInDB, "${shortName.nameInDB}$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration.cast<DbMethod>())
                     tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
 
                     if (!isExternalDeclaration(f)) {
                         extractTypeAccessRecursive(f.returnType, locId, id, -1)
+                    }
+
+                    if (shortName.nameInDB != shortName.kotlinName) {
+                        tw.writeKtFunctionOriginalNames(methodId, shortName.kotlinName)
                     }
                 }
 

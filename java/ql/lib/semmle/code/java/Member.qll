@@ -466,6 +466,17 @@ class Method extends Callable, @method {
   /** Holds if this method is a Kotlin local function. */
   predicate isLocal() { ktLocalFunction(this) }
 
+  /**
+   * Gets the Kotlin name of this method, that is either the name of this method, or
+   * if `JvmName` annotation was applied to the declaration, then the original name.
+   */
+  string getKotlinName() {
+    ktFunctionOriginalNames(this, result)
+    or
+    not exists(string n | ktFunctionOriginalNames(this, n)) and
+    result = this.getName()
+  }
+
   override string getAPrimaryQlClass() { result = "Method" }
 }
 
