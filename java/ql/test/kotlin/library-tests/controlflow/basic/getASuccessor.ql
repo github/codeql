@@ -45,3 +45,10 @@ where
   m = maybeSuccessor(n) and
   n.getFile().(CompilationUnit).fromSource()
 select n, n.getPrimaryQlClasses(), m, m.getPrimaryQlClasses()
+
+query predicate missingSuccessor(Expr n) {
+  maybeSuccessor(n) instanceof NoMaybeControlFlowNode and
+  n.getFile().(CompilationUnit).fromSource() and
+  not n instanceof TypeAccess and
+  not n instanceof LValue
+}

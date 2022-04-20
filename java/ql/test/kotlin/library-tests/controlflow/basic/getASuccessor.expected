@@ -1,3 +1,8 @@
+missingSuccessor
+| Test.kt:101:22:101:30 | false |
+| Test.kt:113:14:113:14 | false |
+| Test.kt:122:12:122:16 | false |
+#select
 | Test.kt:0:0:0:0 | TestKt | Class | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:3:1:80:1 | Test | Class | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:3:1:80:1 | super(...) | SuperConstructorInvocationStmt | Test.kt:3:8:80:1 | { ... } | BlockStmt |
@@ -225,3 +230,47 @@
 | Test.kt:108:9:108:29 | ConsoleKt | TypeAccess | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:108:9:108:29 | println(...) | MethodAccess | Test.kt:100:1:110:1 | fn | Method |
 | Test.kt:108:18:108:27 | y not null | StringLiteral | Test.kt:108:9:108:29 | println(...) | MethodAccess |
+| Test.kt:112:1:116:1 | Unit | TypeAccess | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:112:1:116:1 | fn | Method | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:112:8:112:17 | boolean | TypeAccess | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:112:8:112:17 | x | Parameter | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:112:20:112:29 | boolean | TypeAccess | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:112:20:112:29 | y | Parameter | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:112:32:116:1 | { ... } | BlockStmt | Test.kt:113:5:115:5 | <Expr>; | ExprStmt |
+| Test.kt:113:5:115:5 | ... -> ... | WhenBranch | Test.kt:113:9:113:14 | when ... | WhenExpr |
+| Test.kt:113:5:115:5 | <Expr>; | ExprStmt | Test.kt:113:5:115:5 | when ... | WhenExpr |
+| Test.kt:113:5:115:5 | when ... | WhenExpr | Test.kt:113:5:115:5 | ... -> ... | WhenBranch |
+| Test.kt:113:9:113:9 | x | VarAccess | Test.kt:113:14:113:14 | ... -> ... | WhenBranch |
+| Test.kt:113:9:113:9 | x | VarAccess | Test.kt:113:14:113:14 | <Expr>; | ExprStmt |
+| Test.kt:113:9:113:14 | ... -> ... | WhenBranch | Test.kt:113:9:113:9 | x | VarAccess |
+| Test.kt:113:9:113:14 | when ... | WhenExpr | Test.kt:113:9:113:14 | ... -> ... | WhenBranch |
+| Test.kt:113:14:113:14 | ... -> ... | WhenBranch | Test.kt:113:14:113:14 | true | BooleanLiteral |
+| Test.kt:113:14:113:14 | <Expr>; | ExprStmt | Test.kt:113:14:113:14 | false | BooleanLiteral |
+| Test.kt:113:14:113:14 | <Expr>; | ExprStmt | Test.kt:113:14:113:14 | y | VarAccess |
+| Test.kt:113:14:113:14 | false | BooleanLiteral | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:113:14:113:14 | true | BooleanLiteral | Test.kt:113:14:113:14 | <Expr>; | ExprStmt |
+| Test.kt:113:14:113:14 | y | VarAccess | Test.kt:112:1:116:1 | fn | Method |
+| Test.kt:113:14:113:14 | y | VarAccess | Test.kt:113:17:115:5 | { ... } | BlockStmt |
+| Test.kt:113:17:115:5 | { ... } | BlockStmt | Test.kt:112:1:116:1 | fn | Method |
+| Test.kt:118:1:124:1 | Unit | TypeAccess | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:118:1:124:1 | fn_when | Method | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:118:13:118:22 | boolean | TypeAccess | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:118:13:118:22 | x | Parameter | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:118:25:118:34 | boolean | TypeAccess | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:118:25:118:34 | y | Parameter | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:118:37:124:1 | { ... } | BlockStmt | Test.kt:119:2:123:12 | <Expr>; | ExprStmt |
+| Test.kt:119:2:123:12 | <Expr>; | ExprStmt | Test.kt:119:2:123:12 | when ... | WhenExpr |
+| Test.kt:119:2:123:12 | when ... | WhenExpr | Test.kt:120:3:123:10 | ... -> ... | WhenBranch |
+| Test.kt:120:3:123:3 | when ... | WhenExpr | Test.kt:121:4:121:9 | ... -> ... | WhenBranch |
+| Test.kt:120:3:123:10 | ... -> ... | WhenBranch | Test.kt:120:3:123:3 | when ... | WhenExpr |
+| Test.kt:121:4:121:4 | x | VarAccess | Test.kt:121:9:121:9 | <Expr>; | ExprStmt |
+| Test.kt:121:4:121:4 | x | VarAccess | Test.kt:122:12:122:16 | ... -> ... | WhenBranch |
+| Test.kt:121:4:121:9 | ... -> ... | WhenBranch | Test.kt:121:4:121:4 | x | VarAccess |
+| Test.kt:121:9:121:9 | <Expr>; | ExprStmt | Test.kt:121:9:121:9 | y | VarAccess |
+| Test.kt:121:9:121:9 | y | VarAccess | Test.kt:118:1:124:1 | fn_when | Method |
+| Test.kt:121:9:121:9 | y | VarAccess | Test.kt:123:8:123:10 | { ... } | BlockStmt |
+| Test.kt:122:12:122:16 | ... -> ... | WhenBranch | Test.kt:122:12:122:16 | true | BooleanLiteral |
+| Test.kt:122:12:122:16 | <Expr>; | ExprStmt | Test.kt:122:12:122:16 | false | BooleanLiteral |
+| Test.kt:122:12:122:16 | false | BooleanLiteral | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:122:12:122:16 | true | BooleanLiteral | Test.kt:122:12:122:16 | <Expr>; | ExprStmt |
+| Test.kt:123:8:123:10 | { ... } | BlockStmt | Test.kt:118:1:124:1 | fn_when | Method |

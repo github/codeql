@@ -108,3 +108,17 @@ fun fn(x:Any?, y: Any?) {
         println("y not null")
     }
 }
+
+fun fn(x: Boolean, y: Boolean) {
+    if (x && y) {
+
+    }
+}
+
+fun fn_when(x: Boolean, y: Boolean) {
+	when {
+		when {
+			x -> y
+			else -> false
+		} -> { } }
+}
