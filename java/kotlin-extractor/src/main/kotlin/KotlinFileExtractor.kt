@@ -2635,8 +2635,15 @@ open class KotlinFileExtractor(
                     }
                 }
                 is IrWhen -> {
-                    if (e.origin == IrStatementOrigin.ANDAND ||
-                        e.origin == IrStatementOrigin.OROR) {
+                    val isAndAnd = e.origin == IrStatementOrigin.ANDAND
+                    val isOrOr = e.origin == IrStatementOrigin.OROR
+
+                    if ((isAndAnd || isOrOr) &&
+                        e.branches.size == 2 &&
+                        e.branches[1].condition is IrConst<*> &&
+                        (e.branches[1].condition as IrConst<*>).value == true &&
+                        e.branches[if (e.origin == IrStatementOrigin.ANDAND) 1 else 0].result is IrConst<*> &&
+                        (e.branches[if (e.origin == IrStatementOrigin.ANDAND) 1 else 0].result as IrConst<*>).value == isOrOr) {
 
                         // resugar binary logical operators:
 
@@ -2660,14 +2667,9 @@ open class KotlinFileExtractor(
                         tw.writeCallableEnclosingExpr(id, callable)
                         tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
-                        if (e.branches.size != 2) {
-                            logger.errorElement("Expected to find 2 when branches for ${e.origin}, found ${e.branches.size}", e)
-                            return
-                        }
-
                         extractExpressionExpr(e.branches[0].condition, callable, id, 0, exprParent.enclosingStmt)
 
-                        var rhsIdx =  if (e.origin == IrStatementOrigin.ANDAND) 0 else 1
+                        var rhsIdx = if (e.origin == IrStatementOrigin.ANDAND) 0 else 1
                         extractExpressionExpr(e.branches[rhsIdx].result, callable, id, 1, exprParent.enclosingStmt)
 
                         return
