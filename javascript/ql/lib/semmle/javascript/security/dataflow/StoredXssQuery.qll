@@ -28,16 +28,6 @@ class Configuration extends TaintTracking::Configuration {
   }
 }
 
-/** A file name, considered as a flow source for stored XSS. */
-class FileNameSourceAsSource extends Source {
-  FileNameSourceAsSource() { this instanceof FileNameSource }
-}
-
-/** An instance of user-controlled torrent information, considered as a flow source for stored XSS. */
-class UserControlledTorrentInfoAsSource extends Source {
-  UserControlledTorrentInfoAsSource() { this instanceof ParseTorrent::UserControlledTorrentInfo }
-}
-
 private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
   QuoteGuard() { this = this }
 }

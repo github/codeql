@@ -27,6 +27,16 @@ module StoredXss {
     AnySink() { this instanceof Shared::Sink }
   }
 
+  /** A file name, considered as a flow source for stored XSS. */
+  class FileNameSourceAsSource extends Source {
+    FileNameSourceAsSource() { this instanceof FileNameSource }
+  }
+
+  /** An instance of user-controlled torrent information, considered as a flow source for stored XSS. */
+  class UserControlledTorrentInfoAsSource extends Source {
+    UserControlledTorrentInfoAsSource() { this instanceof ParseTorrent::UserControlledTorrentInfo }
+  }
+
   /**
    * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
    * XSS vulnerabilities.
