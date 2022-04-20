@@ -204,7 +204,7 @@ QL::AstNode toQL(AST::AstNode n) {
 class TPredicate =
   TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation or TNewTypeBranch;
 
-class TPredOrBuiltin = TPredicate or TNewTypeBranch or TBuiltin;
+class TPredOrBuiltin = TPredicate or TBuiltin;
 
 class TBuiltin = TBuiltinClassless or TBuiltinMember;
 

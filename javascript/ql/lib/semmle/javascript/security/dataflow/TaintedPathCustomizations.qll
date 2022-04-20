@@ -850,7 +850,7 @@ module TaintedPath {
 
   /**
    * Holds if we should include a step from `src -> dst` with labels `srclabel -> dstlabel`, and the
-   * standard taint step `src -> dst` should be suppresesd.
+   * standard taint step `src -> dst` should be suppressed.
    */
   private predicate isPosixPathStep(
     DataFlow::Node src, DataFlow::Node dst, Label::PosixPath srclabel, Label::PosixPath dstlabel
