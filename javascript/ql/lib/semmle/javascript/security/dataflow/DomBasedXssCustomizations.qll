@@ -322,7 +322,7 @@ module DomBasedXss {
   /**
    * A flow-label representing tainted values where the prefix is attacker controlled.
    */
-  class PrefixString extends DataFlow::FlowLabel {
+  abstract class PrefixString extends DataFlow::FlowLabel {
     PrefixString() { this = "PrefixString" }
   }
 

@@ -132,6 +132,10 @@ private class PrefixStringSanitizerActivated extends TaintTracking::SanitizerGua
   PrefixStringSanitizerActivated() { this = this }
 }
 
+private class PrefixStringActivated extends DataFlow::FlowLabel, PrefixString {
+  PrefixStringActivated() { this = this }
+}
+
 private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
   QuoteGuard() { this = this }
 }

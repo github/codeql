@@ -54,6 +54,10 @@ private class PrefixStringSanitizer extends TaintTracking::SanitizerGuardNode,
   PrefixStringSanitizer() { this = this }
 }
 
+private class PrefixString extends DataFlow::FlowLabel, DomBasedXss::PrefixString {
+  PrefixString() { this = this }
+}
+
 private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
   QuoteGuard() { this = this }
 }
