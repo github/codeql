@@ -4,7 +4,7 @@
  */
 
 import javascript
-import Xss::StoredXss
+import StoredXssCustomizations::StoredXss
 
 /**
  * A taint-tracking configuration for reasoning about XSS.
