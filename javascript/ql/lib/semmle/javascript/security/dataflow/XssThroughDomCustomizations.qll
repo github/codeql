@@ -11,7 +11,7 @@ import javascript
 module XssThroughDom {
   import Xss::XssThroughDom
   private import semmle.javascript.dataflow.InferredTypes
-  private import semmle.javascript.security.dataflow.Xss::DomBasedXss as DomBasedXss
+  private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 
   /**
    * Gets an attribute name that could store user-controlled data.

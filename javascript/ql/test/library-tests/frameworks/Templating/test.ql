@@ -1,5 +1,5 @@
 import javascript
-import semmle.javascript.security.dataflow.Xss
+import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 
 query Templating::TemplateSyntax getTemplateInstantiationSyntax(

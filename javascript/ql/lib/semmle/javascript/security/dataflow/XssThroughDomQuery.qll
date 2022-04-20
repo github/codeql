@@ -7,7 +7,7 @@ import javascript
 private import semmle.javascript.dataflow.InferredTypes
 import Xss::XssThroughDom
 private import XssThroughDomCustomizations::XssThroughDom
-private import semmle.javascript.security.dataflow.Xss::DomBasedXss as DomBasedXss
+private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 private import semmle.javascript.security.dataflow.UnsafeJQueryPluginCustomizations::UnsafeJQueryPlugin as UnsafeJQuery
 
 /**
