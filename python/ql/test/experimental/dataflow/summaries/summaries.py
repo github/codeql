@@ -62,4 +62,4 @@ SINK(tainted_mapped_summary[0])  # $ flow="SOURCE, l:-1 -> tainted_mapped_summar
 
 from json import loads as json_loads
 tainted_resultlist = json_loads(SOURCE)
-SINK(tainted_resultlist[0])  # $ MISSING: flow
+SINK(tainted_resultlist[0])  # $ flow="SOURCE, l:-1 -> tainted_resultlist[0]"
