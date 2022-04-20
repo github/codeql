@@ -6,7 +6,6 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.internal.CachedStages
 
 /**
  * INTERNAL: Do not use.
@@ -15,7 +14,6 @@ private import semmle.python.internal.CachedStages
  */
 cached
 DataFlow::Node awaited(DataFlow::Node awaitedValue) {
-  Stages::DataFlow::ref() and
   // `await` x
   // - `awaitedValue` is `x`
   // - `result` is `await x`

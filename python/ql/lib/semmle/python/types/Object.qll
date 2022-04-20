@@ -2,11 +2,9 @@ import python
 private import semmle.python.objects.ObjectAPI
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.Builtins
-private import semmle.python.internal.CachedStages
 
 cached
 private predicate is_an_object(@py_object obj) {
-  Stages::DataFlow::ref() and
   /* CFG nodes for numeric literals, all of which have a @py_cobject for the value of that literal */
   obj instanceof ControlFlowNode and
   not obj.(ControlFlowNode).getNode() instanceof IntegerLiteral and
@@ -79,7 +77,6 @@ class Object extends @py_object {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    Stages::DataFlow::ref() and
     this.hasOrigin() and
     this.getOrigin()
         .getLocation()
@@ -99,7 +96,6 @@ class Object extends @py_object {
   /** Gets a textual representation of this element. */
   cached
   string toString() {
-    Stages::DataFlow::ref() and
     not this = undefinedVariable() and
     not this = unknownValue() and
     exists(ClassObject type | type.asBuiltin() = this.asBuiltin().getClass() |

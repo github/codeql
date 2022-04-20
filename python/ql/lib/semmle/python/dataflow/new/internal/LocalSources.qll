@@ -9,7 +9,6 @@
 import python
 import DataFlowPublic
 private import DataFlowPrivate
-private import semmle.python.internal.CachedStages
 
 /**
  * A data flow node that is a source of local flow. This includes things like
@@ -34,7 +33,6 @@ private import semmle.python.internal.CachedStages
 class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
-    Stages::DataFlow::ref() and
     this instanceof ExprNode and
     not simpleLocalFlowStep(_, this)
     or
@@ -178,7 +176,6 @@ private module Cached {
    */
   cached
   predicate hasLocalSource(Node sink, LocalSourceNode source) {
-    Stages::DataFlow::ref() and
     source = sink
     or
     exists(Node second |

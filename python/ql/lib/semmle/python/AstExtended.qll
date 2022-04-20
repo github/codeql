@@ -1,5 +1,4 @@
 import python
-private import semmle.python.internal.CachedStages
 
 /** A syntactic node (Class, Function, Module, Expr, Stmt or Comprehension) corresponding to a flow node */
 abstract class AstNode extends AstNode_ {
@@ -19,10 +18,7 @@ abstract class AstNode extends AstNode_ {
    * there may not be a `ControlFlowNode`
    */
   cached
-  ControlFlowNode getAFlowNode() {
-    Stages::AST::ref() and
-    py_flow_bb_node(result, this, _, _)
-  }
+  ControlFlowNode getAFlowNode() { py_flow_bb_node(result, this, _, _) }
 
   /** Gets the location for this AST node */
   cached
@@ -52,10 +48,7 @@ abstract class AstNode extends AstNode_ {
    * Scope.getAStmt() applied to the parent.
    */
   cached
-  AstNode getParentNode() {
-    Stages::AST::ref() and
-    result.getAChildNode() = this
-  }
+  AstNode getParentNode() { result.getAChildNode() = this }
 
   /** Whether this contains `inner` syntactically */
   predicate contains(AstNode inner) { this.getAChildNode+() = inner }
@@ -117,16 +110,10 @@ class Comprehension extends Comprehension_, AstNode {
 
   override string toString() { result = "Comprehension" }
 
-  override Location getLocation() {
-    Stages::AST::ref() and
-    result = Comprehension_.super.getLocation()
-  }
+  override Location getLocation() { result = Comprehension_.super.getLocation() }
 
   pragma[nomagic]
-  override AstNode getAChildNode() {
-    Stages::AST::ref() and
-    result = this.getASubExpression()
-  }
+  override AstNode getAChildNode() { result = this.getASubExpression() }
 
   Expr getASubExpression() {
     result = this.getIter() or
