@@ -30,14 +30,14 @@
       <code>chage -E0 `username` </code>
       and then trying to log in.
     </p>
-    <sample src="PamAuthorizationBad.c" />
+    <sample src="PamAuthorizationBad.cpp" />
 
     <p>
       This can be avoided by calling
       <code>pam_acct_mgmt</code>
       call to verify access as has been done in the snippet shown below.
     </p>
-    <sample src="PamAuthorizationGood.c" />
+    <sample src="PamAuthorizationGood.cpp" />
   </example>
 
   <references>

@@ -7,6 +7,7 @@
  * @tags security
  *       external/cwe/cwe-285
  */
+
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
