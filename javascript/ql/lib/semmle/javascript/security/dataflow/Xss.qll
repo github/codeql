@@ -170,10 +170,12 @@ deprecated module StoredXss {
   import StoredXssCustomizations::StoredXss
 }
 
-/** Provides classes and predicates for the XSS through DOM query. */
-module XssThroughDom {
-  /** A data flow source for XSS through DOM vulnerabilities. */
-  abstract class Source extends Shared::Source { }
+/**
+ * DEPRECATED: Use the `XssThroughDomCustomizations.qll` file instead.
+ * Provides classes and predicates for the XSS through DOM query.
+ */
+deprecated module XssThroughDom {
+  import XssThroughDomCustomizations::XssThroughDom
 }
 
 /** Provides classes for customizing the `ExceptionXss` query. */

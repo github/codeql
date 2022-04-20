@@ -9,9 +9,12 @@ import javascript
  * Sources for cross-site scripting vulnerabilities through the DOM.
  */
 module XssThroughDom {
-  import Xss::XssThroughDom
+  private import Xss::Shared as Shared
   private import semmle.javascript.dataflow.InferredTypes
   private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
+
+  /** A data flow source for XSS through DOM vulnerabilities. */
+  abstract class Source extends Shared::Source { }
 
   /**
    * Gets an attribute name that could store user-controlled data.
