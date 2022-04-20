@@ -104,7 +104,7 @@ predicate allBackslashesEscaped(DataFlow::Node node) {
   allBackslashesEscaped(node.getAPredecessor())
   or
   // general data flow from a (destructive) [g]sub!
-  exists(DataFlowPrivate::PostUpdateNode post, StringSubstitutionCall sub |
+  exists(DataFlow::PostUpdateNode post, StringSubstitutionCall sub |
     sub.isDestructive() and
     allBackslashesEscaped(sub) and
     post.getPreUpdateNode() = sub.getReceiver() and
@@ -135,7 +135,7 @@ DataFlow::CallNode getAMethodCall(StringSubstitutionCall call) {
       // for a destructive string substitution, is there flow from its
       // post-update receiver to the receiver of another method call?
       call.isDestructive() and
-      exists(DataFlowPrivate::PostUpdateNode post | post.getPreUpdateNode() = call.getReceiver() |
+      exists(DataFlow::PostUpdateNode post | post.getPreUpdateNode() = call.getReceiver() |
         post.(DataFlow::LocalSourceNode).flowsTo(receiver)
       )
     )
