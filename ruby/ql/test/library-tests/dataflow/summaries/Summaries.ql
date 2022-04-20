@@ -78,6 +78,8 @@ private class StepsFromModel extends ModelInput::SummaryModelCsv {
         ";;Member[Foo].Method[onlyWithBlock].WithBlock;Argument[0];ReturnValue;taint",
         ";;Member[Foo].Method[blockArg].Argument[block].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
         ";;Member[Foo].Method[namedArg];Argument[foo:];ReturnValue;taint",
+        ";;Member[Foo].Method[anyArg];Argument[any];ReturnValue;taint",
+        ";;Member[Foo].Method[anyPositionFromOne];Argument[1..];ReturnValue;taint",
         ";;Member[Foo].Method[intoNamedCallback];Argument[0];Argument[foo:].Parameter[0];taint",
         ";;Member[Foo].Method[intoNamedParameter];Argument[0];Argument[0].Parameter[foo:];taint",
         ";;Member[Foo].Method[startInNamedCallback].Argument[foo:].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
