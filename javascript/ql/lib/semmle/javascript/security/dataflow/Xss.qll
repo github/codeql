@@ -3,7 +3,6 @@
  */
 
 import javascript
-private import semmle.javascript.dataflow.InferredTypes // TODO: Try to remove.
 
 /** Provides classes and predicates shared between the XSS queries. */
 module Shared {
