@@ -4,15 +4,17 @@
  *              sizes or durations can cause resource exhaustion.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @id js/resource-exhaustion
  * @precision high
  * @tags security
+ *       external/cwe/cwe-400
  *       external/cwe/cwe-770
  */
 
 import javascript
 import DataFlow::PathGraph
-import experimental.semmle.javascript.security.dataflow.ResourceExhaustion::ResourceExhaustion
+import semmle.javascript.security.dataflow.ResourceExhaustionQuery
 
 from Configuration dataflow, DataFlow::PathNode source, DataFlow::PathNode sink
 where dataflow.hasFlowPath(source, sink)
