@@ -75,7 +75,11 @@ private DataFlow::Node getANotASink(NotASinkReason reason) {
  */
 private DataFlow::Node getAnUnknown(Query query) {
   getAtmCfg(query).isEffectiveSink(result) and
+  // Effective sinks should exclude sinks but this is a defensive requirement
   not result = getASink(query) and
+  // Effective sinks should exclude NotASink but for some queries (e.g. Xss) this is currently not always the case and
+  // so this is a defensive requirement
+  not result = getANotASink(_) and
   // Only consider the source code for the project being analyzed.
   exists(result.getFile().getRelativePath())
 }

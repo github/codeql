@@ -13365,6 +13365,200 @@ ir.cpp:
 # 1717|   <params>: 
 # 1717|   getEntryPoint(): [BlockStmt] { ... }
 # 1717|     getStmt(0): [ReturnStmt] return ...
+# 1721| [CopyAssignmentOperator] CopyConstructorWithImplicitArgumentClass& CopyConstructorWithImplicitArgumentClass::operator=(CopyConstructorWithImplicitArgumentClass const&)
+# 1721|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorWithImplicitArgumentClass &
+# 1724| [Constructor] void CopyConstructorWithImplicitArgumentClass::CopyConstructorWithImplicitArgumentClass()
+# 1724|   <params>: 
+# 1724|   <initializations>: 
+# 1724|   getEntryPoint(): [BlockStmt] { ... }
+# 1724|     getStmt(0): [ReturnStmt] return ...
+# 1725| [CopyConstructor] void CopyConstructorWithImplicitArgumentClass::CopyConstructorWithImplicitArgumentClass(CopyConstructorWithImplicitArgumentClass const&)
+# 1725|   <params>: 
+# 1725|     getParameter(0): [Parameter] c
+# 1725|         Type = [LValueReferenceType] const CopyConstructorWithImplicitArgumentClass &
+# 1725|   <initializations>: 
+# 1725|   getEntryPoint(): [BlockStmt] { ... }
+# 1726|     getStmt(0): [ExprStmt] ExprStmt
+# 1726|       getExpr(): [AssignExpr] ... = ...
+# 1726|           Type = [IntType] int
+# 1726|           ValueCategory = lvalue
+# 1726|         getLValue(): [PointerFieldAccess] x
+# 1726|             Type = [IntType] int
+# 1726|             ValueCategory = lvalue
+# 1726|           getQualifier(): [ThisExpr] this
+# 1726|               Type = [PointerType] CopyConstructorWithImplicitArgumentClass *
+# 1726|               ValueCategory = prvalue(load)
+# 1726|         getRValue(): [ReferenceFieldAccess] x
+# 1726|             Type = [IntType] int
+# 1726|             ValueCategory = prvalue(load)
+# 1726|           getQualifier(): [VariableAccess] c
+# 1726|               Type = [LValueReferenceType] const CopyConstructorWithImplicitArgumentClass &
+# 1726|               ValueCategory = prvalue(load)
+# 1726|           getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1726|               Type = [SpecifiedType] const CopyConstructorWithImplicitArgumentClass
+# 1726|               ValueCategory = lvalue
+# 1727|     getStmt(1): [ReturnStmt] return ...
+# 1730| [CopyAssignmentOperator] CopyConstructorWithBitwiseCopyClass& CopyConstructorWithBitwiseCopyClass::operator=(CopyConstructorWithBitwiseCopyClass const&)
+# 1730|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorWithBitwiseCopyClass &
+# 1730| [MoveAssignmentOperator] CopyConstructorWithBitwiseCopyClass& CopyConstructorWithBitwiseCopyClass::operator=(CopyConstructorWithBitwiseCopyClass&&)
+# 1730|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CopyConstructorWithBitwiseCopyClass &&
+# 1730| [CopyConstructor] void CopyConstructorWithBitwiseCopyClass::CopyConstructorWithBitwiseCopyClass(CopyConstructorWithBitwiseCopyClass const&)
+# 1730|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorWithBitwiseCopyClass &
+# 1730| [MoveConstructor] void CopyConstructorWithBitwiseCopyClass::CopyConstructorWithBitwiseCopyClass(CopyConstructorWithBitwiseCopyClass&&)
+# 1730|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CopyConstructorWithBitwiseCopyClass &&
+# 1733| [Constructor] void CopyConstructorWithBitwiseCopyClass::CopyConstructorWithBitwiseCopyClass()
+# 1733|   <params>: 
+# 1733|   <initializations>: 
+# 1733|   getEntryPoint(): [BlockStmt] { ... }
+# 1733|     getStmt(0): [ReturnStmt] return ...
+# 1736| [CopyAssignmentOperator] CopyConstructorTestNonVirtualClass& CopyConstructorTestNonVirtualClass::operator=(CopyConstructorTestNonVirtualClass const&)
+# 1736|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorTestNonVirtualClass &
+# 1736| [MoveAssignmentOperator] CopyConstructorTestNonVirtualClass& CopyConstructorTestNonVirtualClass::operator=(CopyConstructorTestNonVirtualClass&&)
+# 1736|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CopyConstructorTestNonVirtualClass &&
+# 1736| [CopyConstructor] void CopyConstructorTestNonVirtualClass::CopyConstructorTestNonVirtualClass(CopyConstructorTestNonVirtualClass const&)
+# 1736|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorTestNonVirtualClass &
+# 1736|   <initializations>: 
+# 1736|     getInitializer(0): [ConstructorDirectInit] call to CopyConstructorWithImplicitArgumentClass
+# 1736|         Type = [VoidType] void
+# 1736|         ValueCategory = prvalue
+# 1736|       getArgument(0): [VariableAccess] (unnamed parameter 0)
+# 1736|           Type = [LValueReferenceType] const CopyConstructorTestNonVirtualClass &
+# 1736|           ValueCategory = prvalue(load)
+# 1736|       getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1736|           Type = [LValueReferenceType] const CopyConstructorWithImplicitArgumentClass &
+# 1736|           ValueCategory = prvalue
+# 1736|         getExpr(): [CStyleCast] (const CopyConstructorWithImplicitArgumentClass)...
+# 1736|             Conversion = [BaseClassConversion] base class conversion
+# 1736|             Type = [SpecifiedType] const CopyConstructorWithImplicitArgumentClass
+# 1736|             ValueCategory = lvalue
+# 1736|           getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1736|               Type = [SpecifiedType] const CopyConstructorTestNonVirtualClass
+# 1736|               ValueCategory = lvalue
+# 1736|     getInitializer(1): (no string representation)
+# 1736|         Type = [VirtualBaseClass] CopyConstructorWithBitwiseCopyClass
+# 1736|         ValueCategory = prvalue
+# 1736|   getEntryPoint(): [BlockStmt] { ... }
+# 1736|     getStmt(0): [ReturnStmt] return ...
+# 1736| [MoveConstructor] void CopyConstructorTestNonVirtualClass::CopyConstructorTestNonVirtualClass(CopyConstructorTestNonVirtualClass&&)
+# 1736|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CopyConstructorTestNonVirtualClass &&
+# 1740| [Constructor] void CopyConstructorTestNonVirtualClass::CopyConstructorTestNonVirtualClass()
+# 1740|   <params>: 
+# 1740|   <initializations>: 
+# 1740|     getInitializer(0): [ConstructorDirectInit] call to CopyConstructorWithImplicitArgumentClass
+# 1740|         Type = [VoidType] void
+# 1740|         ValueCategory = prvalue
+# 1740|     getInitializer(1): [ConstructorDirectInit] call to CopyConstructorWithBitwiseCopyClass
+# 1740|         Type = [VoidType] void
+# 1740|         ValueCategory = prvalue
+# 1740|   getEntryPoint(): [BlockStmt] { ... }
+# 1740|     getStmt(0): [ReturnStmt] return ...
+# 1743| [CopyAssignmentOperator] CopyConstructorTestVirtualClass& CopyConstructorTestVirtualClass::operator=(CopyConstructorTestVirtualClass const&)
+# 1743|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorTestVirtualClass &
+# 1743| [MoveAssignmentOperator] CopyConstructorTestVirtualClass& CopyConstructorTestVirtualClass::operator=(CopyConstructorTestVirtualClass&&)
+# 1743|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CopyConstructorTestVirtualClass &&
+# 1743| [CopyConstructor] void CopyConstructorTestVirtualClass::CopyConstructorTestVirtualClass(CopyConstructorTestVirtualClass const&)
+# 1743|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorTestVirtualClass &
+# 1743|   <initializations>: 
+# 1743|     getInitializer(0): [ConstructorVirtualInit] call to CopyConstructorWithImplicitArgumentClass
+# 1743|         Type = [VoidType] void
+# 1743|         ValueCategory = prvalue
+# 1743|       getArgument(0): [VariableAccess] (unnamed parameter 0)
+# 1743|           Type = [LValueReferenceType] const CopyConstructorTestVirtualClass &
+# 1743|           ValueCategory = prvalue(load)
+# 1743|       getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1743|           Type = [LValueReferenceType] const CopyConstructorWithImplicitArgumentClass &
+# 1743|           ValueCategory = prvalue
+# 1743|         getExpr(): [CStyleCast] (const CopyConstructorWithImplicitArgumentClass)...
+# 1743|             Conversion = [BaseClassConversion] base class conversion
+# 1743|             Type = [SpecifiedType] const CopyConstructorWithImplicitArgumentClass
+# 1743|             ValueCategory = lvalue
+# 1743|           getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1743|               Type = [SpecifiedType] const CopyConstructorTestVirtualClass
+# 1743|               ValueCategory = lvalue
+# 1743|     getInitializer(1): (no string representation)
+# 1743|         Type = [VirtualBaseClass] CopyConstructorWithBitwiseCopyClass
+# 1743|         ValueCategory = prvalue
+# 1743|   getEntryPoint(): [BlockStmt] { ... }
+# 1743|     getStmt(0): [ReturnStmt] return ...
+# 1743| [MoveConstructor] void CopyConstructorTestVirtualClass::CopyConstructorTestVirtualClass(CopyConstructorTestVirtualClass&&)
+# 1743|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CopyConstructorTestVirtualClass &&
+# 1747| [Constructor] void CopyConstructorTestVirtualClass::CopyConstructorTestVirtualClass()
+# 1747|   <params>: 
+# 1747|   <initializations>: 
+# 1747|     getInitializer(0): [ConstructorVirtualInit] call to CopyConstructorWithImplicitArgumentClass
+# 1747|         Type = [VoidType] void
+# 1747|         ValueCategory = prvalue
+# 1747|     getInitializer(1): [ConstructorVirtualInit] call to CopyConstructorWithBitwiseCopyClass
+# 1747|         Type = [VoidType] void
+# 1747|         ValueCategory = prvalue
+# 1747|   getEntryPoint(): [BlockStmt] { ... }
+# 1747|     getStmt(0): [ReturnStmt] return ...
+# 1750| [TopLevelFunction] int implicit_copy_constructor_test(CopyConstructorTestNonVirtualClass const&, CopyConstructorTestVirtualClass const&)
+# 1750|   <params>: 
+# 1751|     getParameter(0): [Parameter] x
+# 1751|         Type = [LValueReferenceType] const CopyConstructorTestNonVirtualClass &
+# 1752|     getParameter(1): [Parameter] y
+# 1752|         Type = [LValueReferenceType] const CopyConstructorTestVirtualClass &
+# 1752|   getEntryPoint(): [BlockStmt] { ... }
+# 1753|     getStmt(0): [DeclStmt] declaration
+# 1753|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of cx
+# 1753|           Type = [Class] CopyConstructorTestNonVirtualClass
+# 1753|         getVariable().getInitializer(): [Initializer] initializer for cx
+# 1753|           getExpr(): [ConstructorCall] call to CopyConstructorTestNonVirtualClass
+# 1753|               Type = [VoidType] void
+# 1753|               ValueCategory = prvalue
+# 1753|             getArgument(0): [VariableAccess] x
+# 1753|                 Type = [LValueReferenceType] const CopyConstructorTestNonVirtualClass &
+# 1753|                 ValueCategory = prvalue(load)
+# 1753|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1753|                 Type = [LValueReferenceType] const CopyConstructorTestNonVirtualClass &
+# 1753|                 ValueCategory = prvalue
+# 1753|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1753|                   Type = [SpecifiedType] const CopyConstructorTestNonVirtualClass
+# 1753|                   ValueCategory = lvalue
+# 1754|     getStmt(1): [DeclStmt] declaration
+# 1754|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of cy
+# 1754|           Type = [Class] CopyConstructorTestVirtualClass
+# 1754|         getVariable().getInitializer(): [Initializer] initializer for cy
+# 1754|           getExpr(): [ConstructorCall] call to CopyConstructorTestVirtualClass
+# 1754|               Type = [VoidType] void
+# 1754|               ValueCategory = prvalue
+# 1754|             getArgument(0): [VariableAccess] y
+# 1754|                 Type = [LValueReferenceType] const CopyConstructorTestVirtualClass &
+# 1754|                 ValueCategory = prvalue(load)
+# 1754|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1754|                 Type = [LValueReferenceType] const CopyConstructorTestVirtualClass &
+# 1754|                 ValueCategory = prvalue
+# 1754|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1754|                   Type = [SpecifiedType] const CopyConstructorTestVirtualClass
+# 1754|                   ValueCategory = lvalue
+# 1755|     getStmt(2): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

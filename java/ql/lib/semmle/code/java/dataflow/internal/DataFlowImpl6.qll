@@ -1158,8 +1158,8 @@ private module Stage2 {
     if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
   }
 
-  bindingset[node, cc, config]
-  private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) { any() }
+  bindingset[node, cc]
+  private LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
 
   bindingset[node1, state1, config]
   bindingset[node2, state2, config]
@@ -1246,7 +1246,7 @@ private module Stage2 {
     or
     exists(NodeEx mid, FlowState state0, Ap ap0, LocalCc localCc |
       fwdFlow(mid, state0, cc, argAp, ap0, config) and
-      localCc = getLocalCc(mid, cc, config)
+      localCc = getLocalCc(mid, cc)
     |
       localStep(mid, state0, node, state, true, _, config, localCc) and
       ap = ap0
@@ -1951,8 +1951,8 @@ private module Stage3 {
   bindingset[call, c, innercc]
   private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) { any() }
 
-  bindingset[node, cc, config]
-  private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) { any() }
+  bindingset[node, cc]
+  private LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
 
   private predicate localStep(
     NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
@@ -2035,7 +2035,7 @@ private module Stage3 {
     or
     exists(NodeEx mid, FlowState state0, Ap ap0, LocalCc localCc |
       fwdFlow(mid, state0, cc, argAp, ap0, config) and
-      localCc = getLocalCc(mid, cc, config)
+      localCc = getLocalCc(mid, cc)
     |
       localStep(mid, state0, node, state, true, _, config, localCc) and
       ap = ap0
@@ -2765,12 +2765,11 @@ private module Stage4 {
     if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
   }
 
-  bindingset[node, cc, config]
-  private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) {
+  bindingset[node, cc]
+  private LocalCc getLocalCc(NodeEx node, Cc cc) {
     result =
       getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)),
-        node.getEnclosingCallable()) and
-    exists(config)
+        node.getEnclosingCallable())
   }
 
   private predicate localStep(
@@ -2863,7 +2862,7 @@ private module Stage4 {
     or
     exists(NodeEx mid, FlowState state0, Ap ap0, LocalCc localCc |
       fwdFlow(mid, state0, cc, argAp, ap0, config) and
-      localCc = getLocalCc(mid, cc, config)
+      localCc = getLocalCc(mid, cc)
     |
       localStep(mid, state0, node, state, true, _, config, localCc) and
       ap = ap0
@@ -5048,6 +5047,7 @@ private module FlowExploration {
     )
   }
 
+  pragma[nomagic]
   private predicate revPartialPathStep(
     PartialPathNodeRev mid, NodeEx node, FlowState state, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2,
     TRevSummaryCtx3 sc3, RevPartialAccessPath ap, Configuration config

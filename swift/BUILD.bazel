@@ -1,0 +1,67 @@
+load("@rules_pkg//:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
+load("@rules_pkg//:install.bzl", "pkg_install")
+load("//:defs.bzl", "codeql_platform")
+
+pkg_files(
+    name = "dbscheme",
+    srcs = [
+        "ql/lib/swift.dbscheme",
+        "ql/lib/swift.dbscheme.stats",
+    ],
+)
+
+pkg_files(
+    name = "qltest",
+    srcs = ["tools/qltest.sh"],
+    attributes = pkg_attributes(mode = "0755"),
+    prefix = "tools",
+)
+
+pkg_files(
+    name = "manifest",
+    srcs = ["codeql-extractor.yml"],
+)
+
+pkg_filegroup(
+    name = "extractor-pack-generic",
+    srcs = [
+        ":dbscheme",
+        ":manifest",
+        ":qltest",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "extractor",
+    srcs = ["//swift/extractor"],
+    attributes = pkg_attributes(mode = "0755"),
+    prefix = "tools/" + codeql_platform,
+)
+
+pkg_filegroup(
+    name = "extractor-pack-arch",
+    srcs = [":extractor"],
+    visibility = ["//visibility:public"],
+)
+
+pkg_filegroup(
+    name = "extractor-pack",
+    srcs = [
+        ":extractor-pack-arch",
+        ":extractor-pack-generic",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+pkg_install(
+    name = "_create_extractor_pack",
+    srcs = ["//swift:extractor-pack"],
+)
+
+py_binary(
+    name = "create-extractor-pack",
+    srcs = ["tools/create_extractor_pack.py"],
+    main = "tools/create_extractor_pack.py",
+    deps = [":_create_extractor_pack"],
+)

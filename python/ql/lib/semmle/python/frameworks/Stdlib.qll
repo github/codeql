@@ -1934,7 +1934,7 @@ private module StdlibPrivate {
 
     /** A HttpRequestHandler class definition (most likely in project code). */
     class HttpRequestHandlerClassDef extends Class {
-      HttpRequestHandlerClassDef() { this.getParent() = subclassRef().getAUse().asExpr() }
+      HttpRequestHandlerClassDef() { this.getParent() = subclassRef().getAnImmediateUse().asExpr() }
     }
 
     /** DEPRECATED: Alias for HttpRequestHandlerClassDef */
@@ -2027,12 +2027,12 @@ private module StdlibPrivate {
   private module WsgirefSimpleServer {
     class WsgiServerSubclass extends Class, SelfRefMixin {
       WsgiServerSubclass() {
-        this.getABase() =
+        this.getParent() =
           API::moduleImport("wsgiref")
               .getMember("simple_server")
               .getMember("WSGIServer")
               .getASubclass*()
-              .getAUse()
+              .getAnImmediateUse()
               .asExpr()
       }
     }

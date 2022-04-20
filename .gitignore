@@ -31,5 +31,8 @@ csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
 # Compiled class file
 *.class
 
-# links create by bazel
+# links created by bazel
 /bazel-*
+
+# CLion project files
+/.clwb
