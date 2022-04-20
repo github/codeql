@@ -615,7 +615,6 @@ import Cached
  * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
  */
 predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
-  DataFlowImplCommon::forceCachingInSameStage() and
   exists(Def def |
     def.hasIndexInBlock(bb, i) and
     v = def.getSourceVariable() and

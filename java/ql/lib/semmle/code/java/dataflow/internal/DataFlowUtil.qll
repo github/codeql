@@ -118,7 +118,6 @@ predicate localFlowStep(Node node1, Node node2) {
  */
 cached
 predicate simpleLocalFlowStep(Node node1, Node node2) {
-  TaintTrackingUtil::forceCachingInSameStage() and
   // Variable flow steps through adjacent def-use and use-use pairs.
   exists(SsaExplicitUpdate upd |
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or

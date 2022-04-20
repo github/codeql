@@ -12,7 +12,7 @@ cached
 private module Cached {
   cached
   newtype TSplitKind =
-    TConditionalCompletionSplitKind() { forceCachingInSameStage() } or
+    TConditionalCompletionSplitKind() or
     TEnsureSplitKind(int nestLevel) { nestLevel = any(Trees::BodyStmtTree t).getNestLevel() }
 
   cached

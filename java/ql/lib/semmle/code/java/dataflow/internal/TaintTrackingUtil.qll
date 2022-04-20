@@ -37,9 +37,6 @@ cached
 private module Cached {
   private import DataFlowImplCommon as DataFlowImplCommon
 
-  cached
-  predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
-
   /**
    * Holds if taint can flow in one local step from `src` to `sink`.
    */

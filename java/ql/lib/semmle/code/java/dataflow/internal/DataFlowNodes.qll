@@ -9,7 +9,6 @@ private import DataFlowImplCommon as DataFlowImplCommon
 cached
 newtype TNode =
   TExprNode(Expr e) {
-    DataFlowImplCommon::forceCachingInSameStage() and
     not e.getType() instanceof VoidType and
     not e.getParent*() instanceof Annotation
   } or

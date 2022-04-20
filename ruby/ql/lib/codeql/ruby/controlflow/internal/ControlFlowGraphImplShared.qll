@@ -742,14 +742,6 @@ private module Reachability {
 
 cached
 private module Cached {
-  /**
-   * If needed, call this predicate from `ControlFlowGraphImplSpecific.qll` in order to
-   * force a stage-dependency on the `ControlFlowGraphImplShared.qll` stage and therby
-   * collapsing the two stages.
-   */
-  cached
-  predicate forceCachingInSameStage() { any() }
-
   cached
   newtype TSplits =
     TSplitsNil() or

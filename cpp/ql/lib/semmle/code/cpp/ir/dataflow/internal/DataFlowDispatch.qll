@@ -10,7 +10,6 @@ private import DataFlowImplCommon as DataFlowImplCommon
  */
 cached
 Function viableCallable(CallInstruction call) {
-  DataFlowImplCommon::forceCachingInSameStage() and
   result = call.getStaticCallTarget()
   or
   // If the target of the call does not have a body in the snapshot, it might
