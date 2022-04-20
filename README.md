@@ -15,7 +15,7 @@ We welcome contributions to our standard library and standard checks. Do you hav
 
 The code in this repository is licensed under the [MIT License](LICENSE) by [GitHub](https://github.com).
 
-The CodeQL CLI (including the CodeQL engine) is hosted in a [different repository](https://github.com/github/codeql-cli-binaries) and is [licensed separately](https://github.com/github/codeql-cli-binaries/blob/main/LICENSE.md). If you'd like to use the CodeQL CLI to analyze closed-source code, please [contact us](https://github.com/enterprise/contact) for further help.
+The CodeQL CLI (including the CodeQL engine) is hosted in a [different repository](https://github.com/github/codeql-cli-binaries) and is [licensed separately](https://github.com/github/codeql-cli-binaries/blob/main/LICENSE.md). If you'd like to use the CodeQL CLI to analyze closed-source code, you will need a separate commercial license; please [contact us](https://github.com/enterprise/contact) for further help.
 
 ## Visual Studio Code integration
 
