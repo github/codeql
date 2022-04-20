@@ -18,9 +18,6 @@ module DomBasedXss {
   /** A sanitizer for DOM-based XSS vulnerabilities. */
   abstract class Sanitizer extends Shared::Sanitizer { }
 
-  /** A sanitizer guard for DOM-based XSS vulnerabilities. */
-  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
-
   /**
    * An expression whose value is interpreted as HTML
    * and may be inserted into the DOM through a library.
@@ -287,8 +284,6 @@ module DomBasedXss {
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
-  private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
-
   /**
    * Holds if there exists two dataflow edges to `succ`, where one edges is sanitized, and the other edge starts with `pred`.
    */
@@ -319,8 +314,6 @@ module DomBasedXss {
     )
   }
 
-  private class ContainsHtmlGuard extends SanitizerGuard, Shared::ContainsHtmlGuard { }
-
   /** A source of remote user input, considered as a flow source for DOM-based XSS. */
   class RemoteFlowSourceAsSource extends Source {
     RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
@@ -335,4 +328,16 @@ module DomBasedXss {
 
   /** Gets the flow-label representing tainted values where the prefix is attacker controlled. */
   PrefixString prefixLabel() { any() }
+
+  /**
+   * A sanitizer that blocks the `PrefixString` label when the start of the string is being tested as being of a particular prefix.
+   */
+  abstract class PrefixStringSanitizer extends TaintTracking::SanitizerGuardNode,
+    TaintTracking::LabeledSanitizerGuardNode instanceof StringOps::StartsWith {
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      e = super.getBaseString().asExpr() and
+      label = prefixLabel() and
+      outcome = super.getPolarity()
+    }
+  }
 }

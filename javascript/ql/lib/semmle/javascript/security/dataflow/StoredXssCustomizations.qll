@@ -17,9 +17,6 @@ module StoredXss {
   /** A sanitizer for stored XSS vulnerabilities. */
   abstract class Sanitizer extends Shared::Sanitizer { }
 
-  /** A sanitizer guard for stored XSS vulnerabilities. */
-  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
-
   /** An arbitrary XSS sink, considered as a flow sink for stored XSS. */
   private class AnySink extends Sink {
     AnySink() { this instanceof Shared::Sink }
@@ -40,8 +37,4 @@ module StoredXss {
   }
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
-
-  private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
-
-  private class ContainsHtmlGuard extends SanitizerGuard, Shared::ContainsHtmlGuard { }
 }

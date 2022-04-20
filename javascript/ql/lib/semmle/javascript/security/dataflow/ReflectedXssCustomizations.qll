@@ -17,9 +17,6 @@ module ReflectedXss {
   /** A sanitizer for reflected XSS vulnerabilities. */
   abstract class Sanitizer extends Shared::Sanitizer { }
 
-  /** A sanitizer guard for reflected XSS vulnerabilities. */
-  abstract class SanitizerGuard extends Shared::SanitizerGuard { }
-
   /**
    * An expression that is sent as part of an HTTP response, considered as an XSS sink.
    *
@@ -109,10 +106,6 @@ module ReflectedXss {
   }
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
-
-  private class QuoteGuard extends SanitizerGuard, Shared::QuoteGuard { }
-
-  private class ContainsHtmlGuard extends SanitizerGuard, Shared::ContainsHtmlGuard { }
 
   /** A third-party controllable request input, considered as a flow source for reflected XSS. */
   class ThirdPartyRequestInputAccessAsSource extends Source {

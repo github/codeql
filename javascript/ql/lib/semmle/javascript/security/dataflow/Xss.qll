@@ -23,9 +23,6 @@ module Shared {
   /** A sanitizer for XSS vulnerabilities. */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A sanitizer guard for XSS vulnerabilities. */
-  abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode { }
-
   /**
    * A global regexp replacement involving the `<`, `'`, or `"` meta-character, viewed as a sanitizer for
    * XSS vulnerabilities.
@@ -70,7 +67,7 @@ module Shared {
   /**
    * A guard that checks if a string can contain quotes, which is a guard for strings that are inside a HTML attribute.
    */
-  class QuoteGuard extends SanitizerGuard, StringOps::Includes {
+  abstract class QuoteGuard extends TaintTracking::SanitizerGuardNode, StringOps::Includes {
     QuoteGuard() {
       this.getSubstring().mayHaveStringValue("\"") and
       this.getBaseString()
@@ -87,7 +84,7 @@ module Shared {
    * A sanitizer guard that checks for the existence of HTML chars in a string.
    * E.g. `/["'&<>]/.exec(str)`.
    */
-  class ContainsHtmlGuard extends SanitizerGuard, StringOps::RegExpTest {
+  abstract class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, StringOps::RegExpTest {
     ContainsHtmlGuard() {
       exists(RegExpCharacterClass regExp |
         regExp = this.getRegExp() and

@@ -28,7 +28,9 @@ class Configuration extends TaintTracking::Configuration {
     guard instanceof TypeTestGuard or
     guard instanceof UnsafeJQuery::PropertyPresenceSanitizer or
     guard instanceof UnsafeJQuery::NumberGuard or
-    guard instanceof DomBasedXss::SanitizerGuard
+    guard instanceof PrefixStringSanitizer or
+    guard instanceof QuoteGuard or
+    guard instanceof ContainsHtmlGuard
   }
 
   override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
@@ -48,4 +50,19 @@ class Configuration extends TaintTracking::Configuration {
       src.getNode().(DomPropertySource).getPropertyName() = "src"
     )
   }
+}
+
+private import semmle.javascript.security.dataflow.Xss::Shared as Shared
+
+private class PrefixStringSanitizer extends TaintTracking::SanitizerGuardNode,
+  DomBasedXss::PrefixStringSanitizer {
+  PrefixStringSanitizer() { this = this }
+}
+
+private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
+  QuoteGuard() { this = this }
+}
+
+private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard {
+  ContainsHtmlGuard() { this = this }
 }
