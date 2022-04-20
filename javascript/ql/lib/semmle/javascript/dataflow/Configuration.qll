@@ -2043,11 +2043,9 @@ private class BarrierGuardFunction extends Function {
         // ad hoc support for conjunctions:
         getALogicalAndParent(guard) = returnExpr and guardOutcome = true
         or
-        // getALogicalAndOperand+(returnExpr) = guard.asExpr() and guardOutcome = true
         // ad hoc support for disjunctions:
         getALogicalOrParent(guard) = returnExpr and guardOutcome = false
       |
-        // getALogicalOrOperand+(returnExpr) = guard.asExpr() and guardOutcome = false
         exists(SsaExplicitDefinition ssa |
           ssa.getDef().getSource() = returnExpr and
           ssa.getVariable().getAUse() = getAReturnedExpr()
