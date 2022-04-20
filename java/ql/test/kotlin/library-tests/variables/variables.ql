@@ -35,3 +35,11 @@ MaybeExpr initializer(Variable v) {
 from Variable v
 where v.fromSource()
 select v, v.getType().toString(), initializer(v)
+
+query predicate isFinal(LocalVariableDecl v, string isFinal) {
+  if v.hasModifier("final") then isFinal = "final" else isFinal = "non-final"
+}
+
+query predicate compileTimeConstant(CompileTimeConstantExpr e) {
+  exists(Variable v | v.getAnAccess() = e)
+}

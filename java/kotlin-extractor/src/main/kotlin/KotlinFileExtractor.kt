@@ -973,8 +973,11 @@ open class KotlinFileExtractor(
             tw.writeCallableEnclosingExpr(exprId, callable)
             tw.writeStatementEnclosingExpr(exprId, enclosingStmt)
             val i = v.initializer
-            if(i != null) {
+            if (i != null) {
                 extractExpressionExpr(i, callable, exprId, 0, enclosingStmt)
+            }
+            if (!v.isVar) {
+                addModifiers(varId, "final")
             }
         }
     }

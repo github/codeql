@@ -3,7 +3,12 @@ class Foo {
     val prop: Int = 1
 
     fun myFunction(param: Int) {
-        val local = 2 + 3
+        val local1 = 2 + 3
+        println(local1)
+        var local2 = 2 + 3
+        println(local2)
+        val local3 = param
+        println(local3)
     }
 }
 
