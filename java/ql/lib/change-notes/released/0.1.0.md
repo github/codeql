@@ -2,7 +2,7 @@
 
 ### Breaking Changes
 
-The recently added flow-state versions of `isBarrierIn`, `isBarrierOut`, `isSanitizerIn`, and `isSanitizerOut` in the data flow and taint tracking libraries have been removed.
+* The recently added flow-state versions of `isBarrierIn`, `isBarrierOut`, `isSanitizerIn`, and `isSanitizerOut` in the data flow and taint tracking libraries have been removed.
 * The `getUrl` predicate of `DeclaredRepository` in `MavenPom.qll` has been renamed to `getRepositoryUrl`. 
 
 ### New Features
