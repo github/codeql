@@ -484,8 +484,15 @@ module Public {
      */
     FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
 
-    /** Gets the name of the function or method being called, if it can be determined. */
-    string getCalleeName() { result = expr.getTarget().getName() or result = expr.getCalleeName() }
+    /**
+     * Gets the name of the function, method or variable that is being called.
+     *
+     * Note that if we are calling a variable then this gets the variable name.
+     * It does not attempt to get the name of the function or method that is
+     * assigned to the variable. To do that, use
+     * `getACalleeIncludingExternals().asFunction().getName()`.
+     */
+    string getCalleeName() { result = expr.getCalleeName() }
 
     /** Gets the data flow node specifying the function to be called. */
     Node getCalleeNode() { result = DataFlow::exprNode(expr.getCalleeExpr()) }
