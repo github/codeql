@@ -335,8 +335,7 @@ module DomBasedXss {
   /**
    * A sanitizer that blocks the `PrefixString` label when the start of the string is being tested as being of a particular prefix.
    */
-  abstract class PrefixStringSanitizer extends TaintTracking::SanitizerGuardNode,
-    TaintTracking::LabeledSanitizerGuardNode instanceof StringOps::StartsWith {
+  abstract class PrefixStringSanitizer extends TaintTracking::LabeledSanitizerGuardNode instanceof StringOps::StartsWith {
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       e = super.getBaseString().asExpr() and
       label = prefixLabel() and
