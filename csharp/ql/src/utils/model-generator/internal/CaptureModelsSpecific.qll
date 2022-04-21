@@ -7,6 +7,7 @@ private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.frameworks.System as System
+private import semmle.code.csharp.frameworks.system.linq.Expressions
 import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
@@ -22,7 +23,7 @@ class Type = CS::Type;
  */
 private predicate isHigherOrder(CS::Callable api) {
   exists(Type t | t = api.getAParameter().getType().getUnboundDeclaration() |
-    t instanceof System::SystemFuncDelegateType
+    t instanceof SystemLinqExpressions::DelegateExtType
   )
 }
 
@@ -55,6 +56,8 @@ predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
 /**
  * Holds for type `t` for fields that are relevant as an intermediate
  * read or write step in the data flow analysis.
+ * That is, flow through any data-flow node that does not have a relevant type
+ * will be excluded.
  */
 predicate isRelevantType(CS::Type t) {
   not t instanceof CS::SimpleType and
