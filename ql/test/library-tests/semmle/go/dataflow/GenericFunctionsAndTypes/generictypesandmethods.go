@@ -39,13 +39,30 @@ func main() {
 	}
 	{
 		gs1 := GenericStruct1[string]{""}
+		f := gs1.Identity
+		sink(f(source())) // $ hasValueFlow="call to f"
+	}
+	{
+		gs1 := GenericStruct1[string]{""}
 		gs1.Field = source()
 		sink(gs1.Getter()) // $ hasValueFlow="call to Getter"
 	}
 	{
 		gs1 := GenericStruct1[string]{""}
+		gs1.Field = source()
+		f := gs1.Getter
+		sink(f()) // $ MISSING: hasValueFlow="call to f"
+	}
+	{
+		gs1 := GenericStruct1[string]{""}
 		gs1.Setter(source())
 		sink(gs1.Field) // $ hasValueFlow="selection of Field"
+	}
+	{
+		gs1 := GenericStruct1[string]{""}
+		f := gs1.Setter
+		f(source())
+		sink(gs1.Field) // $ MISSING: hasValueFlow="selection of Field"
 	}
 
 	{
@@ -58,13 +75,30 @@ func main() {
 	}
 	{
 		gs2 := GenericStruct2[string, string]{"", ""}
+		f := gs2.Identity1
+		sink(f(source())) // $ hasValueFlow="call to f"
+	}
+	{
+		gs2 := GenericStruct2[string, string]{"", ""}
 		gs2.Field1 = source()
 		sink(gs2.Getter1()) // $ hasValueFlow="call to Getter1"
 	}
 	{
 		gs2 := GenericStruct2[string, string]{"", ""}
+		gs2.Field1 = source()
+		f := gs2.Getter1
+		sink(f()) // $ MISSING: hasValueFlow="call to f"
+	}
+	{
+		gs2 := GenericStruct2[string, string]{"", ""}
 		gs2.Setter1(source())
 		sink(gs2.Field1) // $ hasValueFlow="selection of Field1"
+	}
+	{
+		gs2 := GenericStruct2[string, string]{"", ""}
+		f := gs2.Setter1
+		f(source())
+		sink(gs2.Field1) // $ MISSING: hasValueFlow="selection of Field1"
 	}
 
 	{
@@ -77,12 +111,29 @@ func main() {
 	}
 	{
 		gs2 := GenericStruct2[string, string]{"", ""}
+		f := gs2.Identity2
+		sink(f(source())) // $ hasValueFlow="call to f"
+	}
+	{
+		gs2 := GenericStruct2[string, string]{"", ""}
 		gs2.Field2 = source()
 		sink(gs2.Getter2()) // $ hasValueFlow="call to Getter2"
 	}
 	{
 		gs2 := GenericStruct2[string, string]{"", ""}
+		gs2.Field2 = source()
+		f := gs2.Getter2
+		sink(f()) // $ MISSING: hasValueFlow="call to f"
+	}
+	{
+		gs2 := GenericStruct2[string, string]{"", ""}
 		gs2.Setter2(source())
 		sink(gs2.Field2) // $ hasValueFlow="selection of Field2"
+	}
+	{
+		gs2 := GenericStruct2[string, string]{"", ""}
+		f := gs2.Setter2
+		f(source())
+		sink(gs2.Field2) // $ MISSING: hasValueFlow="selection of Field2"
 	}
 }
