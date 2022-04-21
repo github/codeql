@@ -410,7 +410,7 @@ private predicate irrelevantBound(TypeFlowNode n, RefType t) {
     typeFlow(n, bound) and
     t = bound.getAStrictAncestor() and
     typeBound(t) and
-    typeFlow(n, t) and
+    typeFlow(n, pragma[only_bind_into](t)) and
     not t.getAnAncestor() = bound
     or
     n.getType() = pragma[only_bind_into](bound) and
