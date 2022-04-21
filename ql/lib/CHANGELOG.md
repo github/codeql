@@ -1,3 +1,9 @@
+## 0.1.0
+
+### Minor Analysis Improvements
+
+* Fixed a bug where dataflow steps were ignored if both ends were inside the initialiser routine of a file-level variable.
+
 ## 0.0.12
 
 ## 0.0.11
