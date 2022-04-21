@@ -1,6 +1,2 @@
 missingCallee
-| test.go:44:2:44:8 | call to f1 | test.go:17:1:20:1 | function declaration |
-| test.go:48:2:48:8 | call to f2 | test.go:17:1:20:1 | function declaration |
-| test.go:48:2:48:8 | call to f2 | test.go:36:1:39:1 | function declaration |
-| test.go:52:2:52:5 | call to f3 | test.go:11:1:11:28 | function declaration |
 spuriousCallee
