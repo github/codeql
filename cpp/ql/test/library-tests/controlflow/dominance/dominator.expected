@@ -181,7 +181,6 @@
 | test | 70 | ExprStmt | 70 | 40 |
 | test | 70 | w | 70 | ... = ... |
 | test | 71 | return ... | 71 | w |
-| test2 | 0 | { ... } | 86 | ExprStmt |
 | test2 | 74 | { ... } | 76 | declaration |
 | test2 | 76 | declaration | 77 | for(...;...;...) ... |
 | test2 | 77 | for(...;...;...) ... | 77 | { ... } |
@@ -211,11 +210,12 @@
 | test2 | 83 | if (...) ...  | 83 | a |
 | test2 | 84 | break; | 87 | label ...: |
 | test2 | 85 | 20 | 85 | ... == ... |
-| test2 | 85 | ... == ... | 0 | { ... } |
+| test2 | 85 | ... == ... | 86 | { ... } |
 | test2 | 85 | a | 85 | 20 |
 | test2 | 85 | if (...) ...  | 85 | a |
 | test2 | 86 | ExprStmt | 86 | c |
 | test2 | 86 | c | 86 | return ... |
+| test2 | 86 | { ... } | 86 | ExprStmt |
 | test2 | 87 | label ...: | 88 | ExprStmt |
 | test2 | 88 | ExprStmt | 88 | b |
 | test2 | 88 | b | 88 | return ... |
