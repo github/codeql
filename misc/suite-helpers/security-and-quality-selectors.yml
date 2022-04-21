@@ -28,4 +28,6 @@
     query path:
       - /^experimental\/.*/
       - Metrics/Summaries/FrameworkCoverage.ql
-
+- exclude:
+    tags contain:
+      - model-generator
