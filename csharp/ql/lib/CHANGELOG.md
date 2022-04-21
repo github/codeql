@@ -1,3 +1,9 @@
+## 0.1.0
+
+### Breaking Changes
+
+The recently added flow-state versions of `isBarrierIn`, `isBarrierOut`, `isSanitizerIn`, and `isSanitizerOut` in the data flow and taint tracking libraries have been removed.
+
 ## 0.0.13
 
 ## 0.0.12
