@@ -10,7 +10,7 @@ private predicate isInterfaceCallReceiver(
 ) {
   call.getReceiver() = recv and
   recv.getType().getUnderlyingType() = tp and
-  m = call.getCalleeName()
+  m = call.getACalleeIncludingExternals().asFunction().getName()
 }
 
 /** Gets a data-flow node that may flow into the receiver value of `call`, which is an interface value. */

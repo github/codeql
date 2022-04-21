@@ -784,7 +784,14 @@ class CallExpr extends CallOrConversionExpr {
   /** Gets the number of argument expressions of this call. */
   int getNumArgument() { result = count(this.getAnArgument()) }
 
-  /** Gets the name of the invoked function or method if it can be determined syntactically. */
+  /**
+   * Gets the name of the invoked function, method or variable if it can be
+   * determined syntactically.
+   *
+   * Note that if a variable is being called then this gets the variable name
+   * rather than the name of the function or method that has been assigned to
+   * the variable.
+   */
   string getCalleeName() {
     exists(Expr callee | callee = this.getCalleeExpr().stripParens() |
       result = callee.(Ident).getName()

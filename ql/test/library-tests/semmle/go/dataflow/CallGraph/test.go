@@ -40,10 +40,20 @@ func (_ MockWriter) Write(p []byte) (n int, err error) { // name: MockWriter.Wri
 
 func test5(h hash.Hash, w io.Writer) { // name: test5
 	h.Write(nil) // callee: MockHash.Write
+	f1 := h.Write
+	f1(nil) // callee: MockHash.Write
+
 	w.Write(nil) // callee: MockWriter.Write callee: MockHash.Write
-	h.Reset()    // callee: Resetter.Reset
+	f2 := w.Write
+	f2(nil) // callee: MockWriter.Write callee: MockHash.Write
+
+	h.Reset() // callee: Resetter.Reset
+	f3 := h.Reset
+	f3() // callee: Resetter.Reset
 }
 
 func test6(h MockHash, w MockWriter) {
 	test5(h, w) // callee: test5
+	f := test5
+	f(h, w) // callee: test5
 }
