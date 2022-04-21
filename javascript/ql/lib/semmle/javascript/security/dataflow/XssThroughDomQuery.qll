@@ -35,4 +35,18 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
     DomBasedXss::isOptionallySanitizedEdge(pred, succ)
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    succ = DataFlow::globalVarRef("URL").getAMemberCall("createObjectURL") and
+    pred = succ.(DataFlow::InvokeNode).getArgument(0)
+  }
+
+  override predicate hasFlowPath(DataFlow::SourcePathNode src, DataFlow::SinkPathNode sink) {
+    super.hasFlowPath(src, sink) and
+    // filtering away readings of `src` that end in a URL sink.
+    not (
+      sink.getNode() instanceof DomBasedXss::WriteURLSink and
+      src.getNode().(DomPropertySource).getPropertyName() = "src"
+    )
+  }
 }

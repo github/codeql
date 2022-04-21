@@ -20,13 +20,24 @@ private class ExactStringPathMatchGuard extends PathTraversalBarrierGuard instan
   }
 }
 
+/**
+ * Given input `e` = `v.method1(...).method2(...)...`, returns `v` where `v` is a `VarAccess`.
+ *
+ * This is used to look through field accessors such as `uri.getPath()`.
+ */
+private Expr getUnderlyingVarAccess(Expr e) {
+  result = getUnderlyingVarAccess(e.(MethodAccess).getQualifier())
+  or
+  result = e.(VarAccess)
+}
+
 private class AllowListGuard extends Guard instanceof MethodAccess {
   AllowListGuard() {
     (isStringPartialMatch(this) or isPathPartialMatch(this)) and
     not isDisallowedWord(super.getAnArgument())
   }
 
-  Expr getCheckedExpr() { result = super.getQualifier() }
+  Expr getCheckedExpr() { result = getUnderlyingVarAccess(super.getQualifier()) }
 }
 
 /**
@@ -73,7 +84,7 @@ private class BlockListGuard extends Guard instanceof MethodAccess {
     isDisallowedWord(super.getAnArgument())
   }
 
-  Expr getCheckedExpr() { result = super.getQualifier() }
+  Expr getCheckedExpr() { result = getUnderlyingVarAccess(super.getQualifier()) }
 }
 
 /**
@@ -144,7 +155,7 @@ class PathTraversalGuard extends Guard instanceof MethodAccess {
     super.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".."
   }
 
-  Expr getCheckedExpr() { result = super.getQualifier() }
+  Expr getCheckedExpr() { result = getUnderlyingVarAccess(super.getQualifier()) }
 }
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */

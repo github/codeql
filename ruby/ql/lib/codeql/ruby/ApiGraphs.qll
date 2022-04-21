@@ -473,36 +473,6 @@ module API {
     /** Gets a data flow node that flows to the RHS of a def-node. */
     private DataFlow::LocalSourceNode defCand() { result = defCand(TypeBackTracker::end()) }
 
-    private Label::ApiLabel getLabelFromArgumentPosition(DataFlowDispatch::ArgumentPosition pos) {
-      exists(int n |
-        pos.isPositional(n) and
-        result = Label::parameter(n)
-      )
-      or
-      exists(string name |
-        pos.isKeyword(name) and
-        result = Label::keywordParameter(name)
-      )
-      or
-      pos.isBlock() and
-      result = Label::blockParameter()
-    }
-
-    private Label::ApiLabel getLabelFromParameterPosition(DataFlowDispatch::ParameterPosition pos) {
-      exists(int n |
-        pos.isPositional(n) and
-        result = Label::parameter(n)
-      )
-      or
-      exists(string name |
-        pos.isKeyword(name) and
-        result = Label::keywordParameter(name)
-      )
-      or
-      pos.isBlock() and
-      result = Label::blockParameter()
-    }
-
     /**
      * Holds if there should be a `lbl`-edge from the given call to an argument.
      */
@@ -512,7 +482,7 @@ module API {
     ) {
       exists(DataFlowDispatch::ArgumentPosition argPos |
         argument.sourceArgumentOf(call.asExpr(), argPos) and
-        lbl = getLabelFromArgumentPosition(argPos)
+        lbl = Label::getLabelFromArgumentPosition(argPos)
       )
     }
 
@@ -525,7 +495,7 @@ module API {
     ) {
       exists(DataFlowDispatch::ParameterPosition paramPos |
         paramNode.isSourceParameterOf(callable.asExpr().getExpr(), paramPos) and
-        lbl = getLabelFromParameterPosition(paramPos)
+        lbl = Label::getLabelFromParameterPosition(paramPos)
       )
     }
 
@@ -689,7 +659,7 @@ module API {
       private import Impl
 
       /** A label for a member, for example a constant. */
-      class LabelMember extends ApiLabel {
+      class LabelMember extends ApiLabel, MkLabelMember {
         private string member;
 
         LabelMember() { this = MkLabelMember(member) }
@@ -701,14 +671,12 @@ module API {
       }
 
       /** A label for a member with an unknown name. */
-      class LabelUnknownMember extends ApiLabel {
-        LabelUnknownMember() { this = MkLabelUnknownMember() }
-
+      class LabelUnknownMember extends ApiLabel, MkLabelUnknownMember {
         override string toString() { result = "getUnknownMember()" }
       }
 
       /** A label for a method. */
-      class LabelMethod extends ApiLabel {
+      class LabelMethod extends ApiLabel, MkLabelMethod {
         private string method;
 
         LabelMethod() { this = MkLabelMethod(method) }
@@ -720,21 +688,17 @@ module API {
       }
 
       /** A label for the return value of a method. */
-      class LabelReturn extends ApiLabel {
-        LabelReturn() { this = MkLabelReturn() }
-
+      class LabelReturn extends ApiLabel, MkLabelReturn {
         override string toString() { result = "getReturn()" }
       }
 
       /** A label for the subclass relationship. */
-      class LabelSubclass extends ApiLabel {
-        LabelSubclass() { this = MkLabelSubclass() }
-
+      class LabelSubclass extends ApiLabel, MkLabelSubclass {
         override string toString() { result = "getASubclass()" }
       }
 
       /** A label for a keyword parameter. */
-      class LabelKeywordParameter extends ApiLabel {
+      class LabelKeywordParameter extends ApiLabel, MkLabelKeywordParameter {
         private string name;
 
         LabelKeywordParameter() { this = MkLabelKeywordParameter(name) }
@@ -746,7 +710,7 @@ module API {
       }
 
       /** A label for a parameter. */
-      class LabelParameter extends ApiLabel {
+      class LabelParameter extends ApiLabel, MkLabelParameter {
         private int n;
 
         LabelParameter() { this = MkLabelParameter(n) }
@@ -758,14 +722,12 @@ module API {
       }
 
       /** A label for a block parameter. */
-      class LabelBlockParameter extends ApiLabel {
-        LabelBlockParameter() { this = MkLabelBlockParameter() }
-
+      class LabelBlockParameter extends ApiLabel, MkLabelBlockParameter {
         override string toString() { result = "getBlock()" }
       }
 
       /** A label from the root node to a custom entry point. */
-      class LabelEntryPoint extends ApiLabel {
+      class LabelEntryPoint extends ApiLabel, MkLabelEntryPoint {
         private API::EntryPoint name;
 
         LabelEntryPoint() { this = MkLabelEntryPoint(name) }
@@ -803,5 +765,37 @@ module API {
 
     /** Gets the label for the edge from the root node to a custom entry point of the given name. */
     LabelEntryPoint entryPoint(API::EntryPoint name) { result.getName() = name }
+
+    /** Gets the API graph label corresponding to the given argument position. */
+    Label::ApiLabel getLabelFromArgumentPosition(DataFlowDispatch::ArgumentPosition pos) {
+      exists(int n |
+        pos.isPositional(n) and
+        result = Label::parameter(n)
+      )
+      or
+      exists(string name |
+        pos.isKeyword(name) and
+        result = Label::keywordParameter(name)
+      )
+      or
+      pos.isBlock() and
+      result = Label::blockParameter()
+    }
+
+    /** Gets the API graph label corresponding to the given parameter position. */
+    Label::ApiLabel getLabelFromParameterPosition(DataFlowDispatch::ParameterPosition pos) {
+      exists(int n |
+        pos.isPositional(n) and
+        result = Label::parameter(n)
+      )
+      or
+      exists(string name |
+        pos.isKeyword(name) and
+        result = Label::keywordParameter(name)
+      )
+      or
+      pos.isBlock() and
+      result = Label::blockParameter()
+    }
   }
 }

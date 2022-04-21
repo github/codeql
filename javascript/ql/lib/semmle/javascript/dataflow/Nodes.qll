@@ -786,6 +786,8 @@ class MemberKind extends string {
   predicate isAccessor() { this = MemberKind::accessor() }
 }
 
+private import internal.StepSummary
+
 module MemberKind {
   /** Gets the kind of a method, such as `m() {}` */
   MemberKind method() { result = "method" }
@@ -960,7 +962,16 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
       result.getAstNode().getFile() = this.getAstNode().getFile()
     )
     or
-    exists(DataFlow::TypeTracker t2 | result = this.getAClassReference(t2).track(t2, t))
+    result = this.getAClassReferenceRec(t)
+  }
+
+  pragma[noopt]
+  private DataFlow::SourceNode getAClassReferenceRec(DataFlow::TypeTracker t) {
+    exists(DataFlow::TypeTracker t2, StepSummary summary, DataFlow::SourceNode prev |
+      prev = this.getAClassReference(t2) and
+      StepSummary::step(prev, result, summary) and
+      t = t2.append(summary)
+    )
   }
 
   /**

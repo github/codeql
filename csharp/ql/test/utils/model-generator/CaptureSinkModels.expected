@@ -1,0 +1,4 @@
+| Sinks;NewSinks;false;WrapFieldResponseWriteFile;();;Argument[Qualifier];generated:html |
+| Sinks;NewSinks;false;WrapPropResponseWriteFile;();;Argument[Qualifier];generated:html |
+| Sinks;NewSinks;false;WrapResponseWrite;(System.Object);;Argument[0];generated:html |
+| Sinks;NewSinks;false;WrapResponseWriteFile;(System.String);;Argument[0];generated:html |

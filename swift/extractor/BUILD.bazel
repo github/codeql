@@ -1,0 +1,20 @@
+alias(
+    name = "swift-llvm-support",
+    actual = select({
+        "@bazel_tools//src/conditions:%s" % arch: "@swift_prebuilt_%s//:swift-llvm-support" % arch
+        for arch in ("linux", "darwin_x86_64", "darwin_arm64")
+    }),
+)
+
+cc_binary(
+    name = "extractor",
+    srcs = ["main.cpp"],
+    target_compatible_with = select({
+        "@platforms//os:linux": [],
+        "@platforms//os:macos": [],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    visibility = ["//swift:__pkg__"],
+    deps = [":swift-llvm-support"],
+    features = ["-universal_binaries"],
+)

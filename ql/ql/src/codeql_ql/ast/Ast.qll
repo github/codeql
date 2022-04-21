@@ -79,6 +79,7 @@ class AstNode extends TAstNode {
 
   /** Gets an annotation of this AST node. */
   Annotation getAnAnnotation() {
+    not this instanceof Annotation and // avoid cyclic parent-child relationship
     toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent()
   }
 
@@ -125,6 +126,9 @@ class TopLevel extends TTopLevel, AstNode {
   /** Gets a `newtype` defined at the top-level of this module. */
   NewType getANewType() { result = this.getAMember() }
 
+  /** Gets a `select` clause in the top-level of this module. */
+  Select getASelect() { result = this.getAMember() }
+
   override ModuleMember getAChild(string pred) {
     pred = directMember("getAnImport") and result = this.getAnImport()
     or
@@ -135,6 +139,10 @@ class TopLevel extends TTopLevel, AstNode {
     pred = directMember("getAModule") and result = this.getAModule()
     or
     pred = directMember("getANewType") and result = this.getANewType()
+    or
+    pred = directMember("getQLDoc") and result = this.getQLDoc()
+    or
+    pred = directMember("getASelect") and result = this.getASelect()
   }
 
   QLDoc getQLDocFor(ModuleMember m) {
@@ -544,6 +552,9 @@ class VarDef extends TVarDef, AstNode {
   string getName() { none() }
 
   Type getType() { none() }
+
+  /** Gets a variable access to this `VarDef` */
+  VarAccess getAnAccess() { result.getDeclaration() = this }
 
   override string getAPrimaryQlClass() { result = "VarDef" }
 
@@ -1125,6 +1136,21 @@ class Import extends TImport, ModuleMember, ModuleRef {
    */
   string getQualifiedName(int i) {
     result = imp.getChild(0).(QL::ImportModuleExpr).getChild().getName(i).getValue()
+  }
+
+  /**
+   * Gets the full string specifying the module being imported.
+   */
+  string getImportString() {
+    exists(string selec |
+      not exists(getSelectionName(_)) and selec = ""
+      or
+      selec =
+        "::" + strictconcat(int i, string q | q = this.getSelectionName(i) | q, "::" order by i)
+    |
+      result =
+        strictconcat(int i, string q | q = this.getQualifiedName(i) | q, "." order by i) + selec
+    )
   }
 
   final override FileOrModule getResolvedModule() { resolve(this, result) }

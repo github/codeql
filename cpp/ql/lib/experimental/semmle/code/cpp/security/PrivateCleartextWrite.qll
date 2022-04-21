@@ -4,7 +4,7 @@
 
 import cpp
 import semmle.code.cpp.dataflow.TaintTracking
-import experimental.semmle.code.cpp.security.PrivateData
+import semmle.code.cpp.security.PrivateData
 import semmle.code.cpp.security.FileWrite
 import semmle.code.cpp.security.BufferWrite
 

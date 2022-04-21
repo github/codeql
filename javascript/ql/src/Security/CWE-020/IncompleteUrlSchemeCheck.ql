@@ -14,6 +14,7 @@
  */
 
 import javascript
+import semmle.javascript.security.IncompleteBlacklistSanitizer as IncompleteBlacklistSanitizer
 
 /** A URL scheme that can be used to represent executable code. */
 class DangerousScheme extends string {
@@ -55,6 +56,21 @@ DataFlow::SourceNode schemeOf(DataFlow::Node url) {
   )
 }
 
+/**
+ * A chain of replace calls that replaces one or more dangerous schemes.
+ */
+class SchemeReplacementChain extends IncompleteBlacklistSanitizer::StringReplaceCallSequence {
+  SchemeReplacementChain() { this.getAMember().getAReplacedString() instanceof DangerousScheme }
+
+  /**
+   * Gets the source node that the replacement happens on.
+   * The result is the receiver of the first call in the chain.
+   */
+  DataFlow::Node getReplacementSource() {
+    result = this.getReceiver+() and not result instanceof DataFlow::MethodCallNode
+  }
+}
+
 /** Gets a data-flow node that checks `nd` against the given `scheme`. */
 DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
   // check of the form `nd.startsWith(scheme)`
@@ -71,6 +87,11 @@ DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
   |
     candidate.getAMemberString() = scheme.getWithOrWithoutColon() and
     schemeOf(nd).flowsTo(candidate)
+  )
+  or
+  exists(SchemeReplacementChain chain | result = chain |
+    scheme = chain.getAMember().getAReplacedString() and
+    nd = chain.getReplacementSource()
   )
   or
   // propagate through trimming, case conversion, and regexp replace

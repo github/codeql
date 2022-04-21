@@ -192,8 +192,8 @@ class Test {
         sink(StringUtils.rotate(taint(), 0)); // $hasTaintFlow
         sink(StringUtils.split(taint())); // $hasTaintFlow
         sink(StringUtils.split(taint(), ' ')); // $hasTaintFlow
-        sink(StringUtils.split(taint(), " ,; // $hasTaintFlow")); // $hasTaintFlow
-        sink(StringUtils.split(taint(), " ,; // $hasTaintFlow", 0)); // $hasTaintFlow
+        sink(StringUtils.split(taint(), " ,;")); // $hasTaintFlow
+        sink(StringUtils.split(taint(), " ,;", 0)); // $hasTaintFlow
         sink(StringUtils.splitByCharacterType(taint())); // $hasTaintFlow
         sink(StringUtils.splitByCharacterTypeCamelCase(taint())); // $hasTaintFlow
         sink(StringUtils.splitByWholeSeparator(taint(), "separator")); // $hasTaintFlow

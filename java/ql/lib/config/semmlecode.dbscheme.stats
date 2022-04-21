@@ -1,5 +1,6 @@
 <dbstats>
-  <typesizes><e>
+    <typesizes>
+        <e>
             <k>@compilation</k>
             <v>8629</v>
         </e>
@@ -21,7 +22,7 @@
         </e>
         <e>
             <k>@location_default</k>
-            <v>13306607</v>
+            <v>17430587</v>
         </e>
         <e>
             <k>@file</k>
@@ -149,7 +150,7 @@
         </e>
         <e>
             <k>@emptystmt</k>
-            <v>886</v>
+            <v>1562</v>
         </e>
         <e>
             <k>@exprstmt</k>
@@ -189,6 +190,10 @@
         </e>
         <e>
             <k>@yieldstmt</k>
+            <v>1</v>
+        </e>
+        <e>
+            <k>@errorstmt</k>
             <v>1</v>
         </e>
         <e>
@@ -265,7 +270,7 @@
         </e>
         <e>
             <k>@mulexpr</k>
-            <v>85898</v>
+            <v>204610</v>
         </e>
         <e>
             <k>@divexpr</k>
@@ -281,7 +286,7 @@
         </e>
         <e>
             <k>@subexpr</k>
-            <v>57171</v>
+            <v>84397</v>
         </e>
         <e>
             <k>@lshiftexpr</k>
@@ -484,6 +489,10 @@
             <v>1</v>
         </e>
         <e>
+            <k>@errorexpr</k>
+            <v>1</v>
+        </e>
+        <e>
             <k>@localvar</k>
             <v>385335</v>
         </e>
@@ -520,16 +529,16 @@
             <v>335863</v>
         </e>
         <e>
-            <k>@javadocText</k>
-            <v>2503256</v>
-        </e>
-        <e>
             <k>@xmldtd</k>
             <v>569</v>
         </e>
         <e>
             <k>@xmlelement</k>
             <v>1199832</v>
+        </e>
+        <e>
+            <k>@javadocText</k>
+            <v>2503256</v>
         </e>
         <e>
             <k>@xmlattribute</k>
@@ -560,7 +569,8 @@
             <v>1</v>
         </e>
     </typesizes>
-  <stats><relation>
+    <stats>
+        <relation>
             <name>compilations</name>
             <cardinality>8629</cardinality>
             <columnsizes>
@@ -16749,11 +16759,11 @@
         </relation>
         <relation>
             <name>isParenthesized</name>
-            <cardinality>84274</cardinality>
+            <cardinality>94666</cardinality>
             <columnsizes>
                 <e>
                     <k>id</k>
-                    <v>84274</v>
+                    <v>94666</v>
                 </e>
                 <e>
                     <k>parentheses</k>
@@ -16771,7 +16781,7 @@
                                 <b>
                                     <a>1</a>
                                     <b>2</b>
-                                    <v>84274</v>
+                                    <v>94666</v>
                                 </b>
                             </bs>
                         </hist>
@@ -16785,13 +16795,13 @@
                             <budget>12</budget>
                             <bs>
                                 <b>
-                                    <a>12</a>
-                                    <b>13</b>
+                                    <a>58</a>
+                                    <b>59</b>
                                     <v>2</v>
                                 </b>
                                 <b>
-                                    <a>31863</a>
-                                    <b>31864</b>
+                                    <a>34605</a>
+                                    <b>34606</b>
                                     <v>2</v>
                                 </b>
                             </bs>

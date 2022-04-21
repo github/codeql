@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Exposing system data or debugging information may help a malicious user learn about the system and form an attack plan.  An attacker can use error messages that reveal technologies, operating systems, and product versions to tune their attack against known vulnerabilities in the software.</p>
+
+<p>This query finds locations where system configuration information that is particularly sensitive might be revealed to a user.</p>
+</overview>
+
+<recommendation>
+<p>Do not expose system configuration information to users.  Be wary of the difference between information that could be helpful to users, and unnecessary details that could be useful to a malicious user.</p>
+</recommendation>
+
+<example>
+<p>In this example the value of the <code>PATH</code> environment variable is revealed in full to the user when a particular error occurs.  This might reveal information such as the software installed on your system to a malicious user who does not have legitimate access to that information.</p>
+
+<sample src="PotentiallyExposedSystemDataIncorrect.cpp" />
+
+<p>The message should be rephrased without this information, for example:</p>
+
+<sample src="PotentiallyExposedSystemDataCorrect.cpp" />
+</example>
+
+<references>
+</references>
+
+</qhelp>

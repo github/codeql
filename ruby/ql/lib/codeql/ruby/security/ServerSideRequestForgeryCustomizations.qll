@@ -43,7 +43,7 @@ module ServerSideRequestForgery {
 
   /** The URL of an HTTP request, considered as a sink. */
   class HttpRequestAsSink extends Sink {
-    HttpRequestAsSink() { exists(HTTP::Client::Request req | req.getURL() = this) }
+    HttpRequestAsSink() { exists(HTTP::Client::Request req | req.getAUrlPart() = this) }
   }
 
   /** A string interpolation with a fixed prefix, considered as a flow sanitizer. */

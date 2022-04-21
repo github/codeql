@@ -413,10 +413,10 @@ predicate isValidNoArgumentTokenInIdentifyingAccessPath(string name) {
 bindingset[name, argument]
 predicate isValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
   name = ["Argument", "Parameter"] and
-  argument.regexpMatch("(N-|-)?\\d+(\\.\\.(N-|-)?\\d+)?")
+  argument.regexpMatch("(N-|-)?\\d+(\\.\\.((N-|-)?\\d+)?)?")
   or
   name = "WithArity" and
-  argument.regexpMatch("\\d+(\\.\\.\\d+)?")
+  argument.regexpMatch("\\d+(\\.\\.(\\d+)?)?")
   or
   Specific::isExtraValidTokenArgumentInIdentifyingAccessPath(name, argument)
 }

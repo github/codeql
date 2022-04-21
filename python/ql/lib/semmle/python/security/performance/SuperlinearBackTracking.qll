@@ -255,17 +255,6 @@ class Trace extends TTrace {
 }
 
 /**
- * Gets a string corresponding to the trace `t`.
- */
-string concretise(Trace t) {
-  t = Nil() and result = ""
-  or
-  exists(InputSymbol s1, InputSymbol s2, InputSymbol s3, Trace rest | t = Step(s1, s2, s3, rest) |
-    result = concretise(rest) + getAThreewayIntersect(s1, s2, s3)
-  )
-}
-
-/**
  * Holds if there exists a transition from `r` to `q` in the product automaton.
  * Notice that the arguments are flipped, and thus the direction is backwards.
  */
@@ -332,6 +321,51 @@ StateTuple getAnEndTuple(State pivot, State succ) {
   result = MkStateTuple(pivot, succ, succ)
 }
 
+private predicate hasSuffix(Trace suffix, Trace t, int i) {
+  // Declaring `t` to be a `RelevantTrace` currently causes a redundant check in the
+  // recursive case, so instead we check it explicitly here.
+  t instanceof RelevantTrace and
+  i = 0 and
+  suffix = t
+  or
+  hasSuffix(Step(_, _, _, suffix), t, i - 1)
+}
+
+pragma[noinline]
+private predicate hasTuple(InputSymbol s1, InputSymbol s2, InputSymbol s3, Trace t, int i) {
+  hasSuffix(Step(s1, s2, s3, _), t, i)
+}
+
+private class RelevantTrace extends Trace, Step {
+  RelevantTrace() {
+    exists(State pivot, State succ, StateTuple q |
+      isReachableFromStartTuple(pivot, succ, q, this, _) and
+      q = getAnEndTuple(pivot, succ)
+    )
+  }
+
+  pragma[noinline]
+  private string getAThreewayIntersect(int i) {
+    exists(InputSymbol s1, InputSymbol s2, InputSymbol s3 |
+      hasTuple(s1, s2, s3, this, i) and
+      result = getAThreewayIntersect(s1, s2, s3)
+    )
+  }
+
+  /** Gets a string corresponding to this trace. */
+  // the pragma is needed for the case where `getAThreewayIntersect(s1, s2, s3)` has multiple values,
+  // not for recursion
+  language[monotonicAggregates]
+  string concretise() {
+    result =
+      strictconcat(int i |
+        hasTuple(_, _, _, this, i)
+      |
+        this.getAThreewayIntersect(i) order by i desc
+      )
+  }
+}
+
 /**
  * Holds if matching repetitions of `pump` can:
  * 1) Transition from `pivot` back to `pivot`.
@@ -345,10 +379,10 @@ StateTuple getAnEndTuple(State pivot, State succ) {
  * available in the `hasReDoSResult` predicate.
  */
 predicate isPumpable(State pivot, State succ, string pump) {
-  exists(StateTuple q, Trace t |
+  exists(StateTuple q, RelevantTrace t |
     isReachableFromStartTuple(pivot, succ, q, t, _) and
     q = getAnEndTuple(pivot, succ) and
-    pump = concretise(t)
+    pump = t.concretise()
   )
 }
 
