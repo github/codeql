@@ -5,6 +5,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.dataflow.SSA
 private import FlowSummaryImpl as FlowSummaryImpl
+private import SsaImpl as SsaImpl
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -256,6 +257,26 @@ abstract class BarrierGuard extends CfgNodes::ExprCfgNode {
    */
   abstract predicate checks(CfgNode expr, boolean branch);
 
+  /**
+   * Gets an implicit entry definition for a captured variable that
+   * may be guarded, because a call to the capturing callable is guarded.
+   *
+   * This is restricted to calls where the variable is captured inside a
+   * block.
+   */
+  private Ssa::Definition getAMaybeGuardedCapturedDef() {
+    exists(
+      boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def,
+      CfgNodes::ExprNodes::CallCfgNode call
+    |
+      def.getARead() = testedNode and
+      this.checks(testedNode, branch) and
+      SsaImpl::captureFlowIn(call, def, result) and
+      this.controlsBlock(call.getBasicBlock(), branch) and
+      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
+    )
+  }
+
   final Node getAGuardedNode() {
     exists(boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def |
       def.getARead() = testedNode and
@@ -263,5 +284,7 @@ abstract class BarrierGuard extends CfgNodes::ExprCfgNode {
       this.checks(testedNode, branch) and
       this.controlsBlock(result.asExpr().getBasicBlock(), branch)
     )
+    or
+    result.asExpr() = this.getAMaybeGuardedCapturedDef().getARead()
   }
 }
