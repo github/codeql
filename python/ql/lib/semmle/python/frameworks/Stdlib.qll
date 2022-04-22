@@ -2539,6 +2539,56 @@ private module StdlibPrivate {
     PathLibOpenCall() { attrbuteName = "open" }
   }
 
+  /**
+   * A call to the `link_to`, `hardlink_to`, or `symlink_to` method on a `pathlib.Path` instance.
+   *
+   * See
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.link_to
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.hardlink_to
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.symlink_to
+   */
+  private class PathLibLinkToCall extends PathlibFileAccess, API::CallNode {
+    PathLibLinkToCall() { attrbuteName in ["link_to", "hardlink_to", "symlink_to"] }
+
+    override DataFlow::Node getAPathArgument() {
+      result = super.getAPathArgument()
+      or
+      result = this.getParameter(0, "target").getARhs()
+    }
+  }
+
+  /**
+   * A call to the `replace` or `rename` method on a `pathlib.Path` instance.
+   *
+   * See
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.replace
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.rename
+   */
+  private class PathLibReplaceCall extends PathlibFileAccess, API::CallNode {
+    PathLibReplaceCall() { attrbuteName in ["replace", "rename"] }
+
+    override DataFlow::Node getAPathArgument() {
+      result = super.getAPathArgument()
+      or
+      result = this.getParameter(0, "target").getARhs()
+    }
+  }
+
+  /**
+   * A call to the `samefile` method on a `pathlib.Path` instance.
+   *
+   * See https://docs.python.org/3/library/pathlib.html#pathlib.Path.samefile
+   */
+  private class PathLibSameFileCall extends PathlibFileAccess, API::CallNode {
+    PathLibSameFileCall() { attrbuteName = "samefile" }
+
+    override DataFlow::Node getAPathArgument() {
+      result = super.getAPathArgument()
+      or
+      result = this.getParameter(0, "other_path").getARhs()
+    }
+  }
+
   /** An additional taint steps for objects of type `pathlib.Path` */
   private class PathlibPathTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
