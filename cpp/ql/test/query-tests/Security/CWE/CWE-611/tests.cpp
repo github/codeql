@@ -149,7 +149,7 @@ void test10(InputSource &data) {
 void test11(InputSource &data) {
 	LSParser *p = createLSParser();
 
-	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
+	p->parse(data); // BAD (parser not correctly configured)
 }
 
 void test12(InputSource &data) {

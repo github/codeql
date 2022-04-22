@@ -164,6 +164,13 @@ class ParseFunction extends Function {
 }
 
 /**
+ * The `createLSParser` function that returns a newly created `LSParser` object.
+ */
+class CreateLSParser extends Function {
+  CreateLSParser() { this.hasName("createLSParser") }
+}
+
+/**
  * Configuration for tracking XML objects and their states.
  */
 class XXEConfiguration extends DataFlow::Configuration {
@@ -176,6 +183,13 @@ class XXEConfiguration extends DataFlow::Configuration {
       call.getStaticCallTarget() = any(XercesDOMParserClass c).getAConstructor() and
       node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
         call.getThisArgument() and
+      encodeXercesDOMFlowState(flowstate, 0, 1) // default configuration
+    )
+    or
+    // source is the result of a call to `createLSParser`.
+    exists(Call call |
+      call.getTarget() instanceof CreateLSParser and
+      call = node.asExpr() and
       encodeXercesDOMFlowState(flowstate, 0, 1) // default configuration
     )
   }
@@ -208,5 +222,4 @@ class XXEConfiguration extends DataFlow::Configuration {
 from XXEConfiguration conf, DataFlow::PathNode source, DataFlow::PathNode sink
 where conf.hasFlowPath(source, sink)
 select sink, source, sink,
-  "This $@ is not configured to prevent an XML external entity (XXE) attack.", source,
-  "XML parser"
+  "This $@ is not configured to prevent an XML external entity (XXE) attack.", source, "XML parser"
