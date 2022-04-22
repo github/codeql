@@ -13,7 +13,7 @@
  */
 
 import python
-import semmle.python.security.dataflow.WeakSensitiveDataHashing
+import semmle.python.security.dataflow.WeakSensitiveDataHashingQuery
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import DataFlow::PathGraph

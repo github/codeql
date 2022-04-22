@@ -30,7 +30,7 @@ class Yaml extends RefType {
   Yaml() { this.getAnAncestor().hasQualifiedName("org.yaml.snakeyaml", "Yaml") }
 }
 
-private class SafeYamlConstructionFlowConfig extends DataFlow2::Configuration {
+private class SafeYamlConstructionFlowConfig extends DataFlow3::Configuration {
   SafeYamlConstructionFlowConfig() { this = "SnakeYaml::SafeYamlConstructionFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) {
@@ -65,7 +65,7 @@ private class SnakeYamlParse extends MethodAccess {
   }
 }
 
-private class SafeYamlFlowConfig extends DataFlow3::Configuration {
+private class SafeYamlFlowConfig extends DataFlow2::Configuration {
   SafeYamlFlowConfig() { this = "SnakeYaml::SafeYamlFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeYaml }

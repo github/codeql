@@ -45,9 +45,20 @@ module ArrayTaintTracking {
     )
     or
     // `array.reduce` with tainted value in callback
+    // The callback parameters are: (previousValue, currentValue, currentIndex, array)
     call.(DataFlow::MethodCallNode).getMethodName() = "reduce" and
-    pred = call.getArgument(0).(DataFlow::FunctionNode).getAReturn() and // Require the argument to be a closure to avoid spurious call/return flow
-    succ = call
+    exists(DataFlow::FunctionNode callback |
+      callback = call.getArgument(0) // Require the argument to be a closure to avoid spurious call/return flow
+    |
+      pred = callback.getAReturn() and
+      succ = call
+      or
+      pred = call.getReceiver() and
+      succ = callback.getParameter([1, 3]) // into currentValue or array
+      or
+      pred = [call.getArgument(1), callback.getAReturn()] and
+      succ = callback.getParameter(0) // into previousValue
+    )
     or
     // `array.push(e)`, `array.unshift(e)`: if `e` is tainted, then so is `array`.
     pred = call.getAnArgument() and

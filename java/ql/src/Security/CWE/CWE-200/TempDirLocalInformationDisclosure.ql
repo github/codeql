@@ -105,23 +105,21 @@ private class FileCreateTempFileSink extends FileCreationSink {
 }
 
 /**
- * A guard that holds when the program is definitely running under some version of Windows.
+ * A sanitizer that holds when the program is definitely running under some version of Windows.
  */
-abstract private class WindowsOsBarrierGuard extends DataFlow::BarrierGuard { }
+abstract private class WindowsOsSanitizer extends DataFlow::Node { }
 
-private class IsNotUnixBarrierGuard extends WindowsOsBarrierGuard instanceof IsUnixGuard {
-  override predicate checks(Expr e, boolean branch) {
-    this.controls(e.getBasicBlock(), branch.booleanNot())
-  }
+private class IsNotUnixSanitizer extends WindowsOsSanitizer {
+  IsNotUnixSanitizer() { any(IsUnixGuard guard).controls(this.asExpr().getBasicBlock(), false) }
 }
 
-private class IsWindowsBarrierGuard extends WindowsOsBarrierGuard instanceof IsWindowsGuard {
-  override predicate checks(Expr e, boolean branch) { this.controls(e.getBasicBlock(), branch) }
+private class IsWindowsSanitizer extends WindowsOsSanitizer {
+  IsWindowsSanitizer() { any(IsWindowsGuard guard).controls(this.asExpr().getBasicBlock(), true) }
 }
 
-private class IsSpecificWindowsBarrierGuard extends WindowsOsBarrierGuard instanceof IsSpecificWindowsVariant {
-  override predicate checks(Expr e, boolean branch) {
-    branch = true and this.controls(e.getBasicBlock(), branch)
+private class IsSpecificWindowsSanitizer extends WindowsOsSanitizer {
+  IsSpecificWindowsSanitizer() {
+    any(IsSpecificWindowsVariant guard).controls(this.asExpr().getBasicBlock(), true)
   }
 }
 
@@ -155,10 +153,8 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
     exists(FilesSanitizingCreationMethodAccess sanitisingMethodAccess |
       sanitizer.asExpr() = sanitisingMethodAccess.getArgument(0)
     )
-  }
-
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof WindowsOsBarrierGuard
+    or
+    sanitizer instanceof WindowsOsSanitizer
   }
 }
 

@@ -14,6 +14,73 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 
+/** Provides classes for modeling copying file related APIs. */
+module CopyFile {
+  /**
+   * A data flow node for copying file.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `CopyFile` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the path.
+     */
+    abstract DataFlow::Node getAPathArgument();
+
+    /**
+     * Gets fsrc argument.
+     */
+    abstract DataFlow::Node getfsrcArgument();
+  }
+}
+
+/**
+ * A data flow node for copying file.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `CopyFile::Range` instead.
+ */
+class CopyFile extends DataFlow::Node {
+  CopyFile::Range range;
+
+  CopyFile() { this = range }
+
+  DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
+
+  DataFlow::Node getfsrcArgument() { result = range.getfsrcArgument() }
+}
+
+/** Provides classes for modeling log related APIs. */
+module LogOutput {
+  /**
+   * A data flow node for log output.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `LogOutput` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Get the parameter value of the log output function.
+     */
+    abstract DataFlow::Node getAnInput();
+  }
+}
+
+/**
+ * A data flow node for log output.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `LogOutput::Range` instead.
+ */
+class LogOutput extends DataFlow::Node {
+  LogOutput::Range range;
+
+  LogOutput() { this = range }
+
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
+
 /**
  * Since there is both XML module in normal and experimental Concepts,
  * we have to rename the experimental module as this.
