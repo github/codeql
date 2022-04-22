@@ -502,7 +502,7 @@ pragma[inline]
 private predicate read(NodeEx node1, Content c, NodeEx node2, Configuration config) {
   exists(ContentSet cs |
     readSet(node1, cs, node2, config) and
-    c = cs.getAReadContent()
+    pragma[only_bind_out](c) = pragma[only_bind_into](cs).getAReadContent()
   )
 }
 
@@ -511,9 +511,21 @@ pragma[inline]
 private predicate clearsContentEx(NodeEx n, Content c) {
   exists(ContentSet cs |
     clearsContentCached(n.asNode(), cs) and
-    c = cs.getAReadContent()
+    pragma[only_bind_out](c) = pragma[only_bind_into](cs).getAReadContent()
   )
 }
+
+// inline to reduce fan-out via `getAReadContent`
+pragma[inline]
+private predicate expectsContentEx(NodeEx n, Content c) {
+  exists(ContentSet cs |
+    expectsContentCached(n.asNode(), cs) and
+    pragma[only_bind_out](c) = pragma[only_bind_into](cs).getAReadContent()
+  )
+}
+
+pragma[nomagic]
+private predicate notExpectsContent(NodeEx n) { not expectsContentCached(n.asNode(), _) }
 
 pragma[nomagic]
 private predicate store(
@@ -793,7 +805,7 @@ private module Stage1 {
    * by `revFlow`.
    */
   pragma[nomagic]
-  private predicate revFlowIsReadAndStored(Content c, Configuration conf) {
+  predicate revFlowIsReadAndStored(Content c, Configuration conf) {
     revFlowConsCand(c, conf) and
     revFlowStore(c, _, _, conf)
   }
@@ -891,7 +903,7 @@ private module Stage1 {
 
   pragma[nomagic]
   predicate readStepCand(NodeEx n1, Content c, NodeEx n2, Configuration config) {
-    revFlowIsReadAndStored(pragma[only_bind_into](c), pragma[only_bind_into](config)) and
+    revFlowIsReadAndStored(c, pragma[only_bind_into](config)) and
     read(n1, c, n2, pragma[only_bind_into](config)) and
     revFlow(n2, pragma[only_bind_into](config))
   }
@@ -1181,11 +1193,26 @@ private module Stage2 {
 
   private predicate flowIntoCall = flowIntoCallNodeCand1/5;
 
+  pragma[nomagic]
+  private predicate expectsContentCand(NodeEx node, Configuration config) {
+    exists(Content c |
+      PrevStage::revFlow(node, pragma[only_bind_into](config)) and
+      PrevStage::revFlowIsReadAndStored(c, pragma[only_bind_into](config)) and
+      expectsContentEx(node, c)
+    )
+  }
+
   bindingset[node, state, ap, config]
   private predicate filter(NodeEx node, FlowState state, Ap ap, Configuration config) {
     PrevStage::revFlowState(state, pragma[only_bind_into](config)) and
     exists(ap) and
-    not stateBarrier(node, state, config)
+    not stateBarrier(node, state, config) and
+    (
+      notExpectsContent(node)
+      or
+      ap = true and
+      expectsContentCand(node, config)
+    )
   }
 
   bindingset[ap, contentType]
@@ -1740,7 +1767,8 @@ private module LocalFlowBigStep {
   private class FlowCheckNode extends NodeEx {
     FlowCheckNode() {
       castNode(this.asNode()) or
-      clearsContentCached(this.asNode(), _)
+      clearsContentCached(this.asNode(), _) or
+      expectsContentCached(this.asNode(), _)
     }
   }
 
@@ -1980,6 +2008,16 @@ private module Stage3 {
   }
 
   pragma[nomagic]
+  private predicate expectsContentCand(NodeEx node, Ap ap, Configuration config) {
+    exists(Content c |
+      PrevStage::revFlow(node, pragma[only_bind_into](config)) and
+      PrevStage::readStepCand(_, c, _, pragma[only_bind_into](config)) and
+      expectsContentEx(node, c) and
+      c = ap.getHead().getContent()
+    )
+  }
+
+  pragma[nomagic]
   private predicate castingNodeEx(NodeEx node) { node.asNode() instanceof CastingNode }
 
   bindingset[node, state, ap, config]
@@ -1987,7 +2025,12 @@ private module Stage3 {
     exists(state) and
     exists(config) and
     not clear(node, ap, config) and
-    if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), ap.getType()) else any()
+    (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), ap.getType()) else any()) and
+    (
+      notExpectsContent(node)
+      or
+      expectsContentCand(node, ap, config)
+    )
   }
 
   bindingset[ap, contentType]
@@ -4609,6 +4652,10 @@ private module FlowExploration {
       exists(PartialPathNodeRev mid |
         revPartialPathStep(mid, node, state, sc1, sc2, sc3, ap, config) and
         not clearsContentEx(node, ap.getHead()) and
+        (
+          notExpectsContent(node) or
+          expectsContentEx(node, ap.getHead())
+        ) and
         not fullBarrier(node, config) and
         not stateBarrier(node, state, config) and
         distSink(node.getEnclosingCallable(), config) <= config.explorationLimit()
@@ -4625,6 +4672,10 @@ private module FlowExploration {
       not fullBarrier(node, config) and
       not stateBarrier(node, state, config) and
       not clearsContentEx(node, ap.getHead().getContent()) and
+      (
+        notExpectsContent(node) or
+        expectsContentEx(node, ap.getHead().getContent())
+      ) and
       if node.asNode() instanceof CastingNode
       then compatibleTypes(node.getDataFlowType(), ap.getType())
       else any()
