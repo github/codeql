@@ -1,3 +1,12 @@
+## 0.0.13
+
+## 0.0.12
+
+### New Queries
+
+* Added a new query, `rb/clear-text-storage-sensitive-data`. The query finds cases where sensitive information, such as user credentials, are stored as cleartext.
+* Added a new query, `rb/incomplete-hostname-regexp`. The query finds instances where a hostname is incompletely sanitized due to an unescaped character in a regular expression.
+
 ## 0.0.11
 
 ## 0.0.10

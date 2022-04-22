@@ -1,0 +1,6 @@
+name: codeql-swift-tests
+version: 0.0.0
+dependencies:
+    codeql/swift-all: "*"
+tests: .
+extractor: swift

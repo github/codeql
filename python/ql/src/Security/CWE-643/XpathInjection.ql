@@ -12,9 +12,9 @@
  */
 
 import python
-import semmle.python.security.dataflow.XpathInjection
+import semmle.python.security.dataflow.XpathInjectionQuery
 import DataFlow::PathGraph
 
-from XpathInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink, source, sink, "This Xpath query depends on $@.", source, "a user-provided value"

@@ -10,9 +10,6 @@ edges
 | array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:2:9:2:20 | * ... :  |
 | array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:2:9:2:20 | * ... [array element 0] :  |
 | array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:2:9:2:20 | * ... [array element 0] :  |
-| array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:3:10:3:10 | a :  |
-| array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:4:10:4:10 | a :  |
-| array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:5:10:5:10 | a :  |
 | array_flow.rb:3:10:3:10 | a :  | array_flow.rb:3:10:3:13 | ...[...] |
 | array_flow.rb:3:10:3:10 | a [array element 0] :  | array_flow.rb:3:10:3:13 | ...[...] |
 | array_flow.rb:3:10:3:10 | a [array element 0] :  | array_flow.rb:3:10:3:13 | ...[...] |

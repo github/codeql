@@ -1718,4 +1718,40 @@ void captured_lambda2(TrivialLambdaClass p1, TrivialLambdaClass &p2, TrivialLamb
     };
 }
 
+class CopyConstructorWithImplicitArgumentClass {
+    int x;
+public:
+    CopyConstructorWithImplicitArgumentClass() {}
+    CopyConstructorWithImplicitArgumentClass(const CopyConstructorWithImplicitArgumentClass &c) {
+        x = c.x;
+    }
+};
+
+class CopyConstructorWithBitwiseCopyClass {
+    int y;
+public:
+    CopyConstructorWithBitwiseCopyClass() {}
+};
+
+class CopyConstructorTestNonVirtualClass :
+        public CopyConstructorWithImplicitArgumentClass,
+        public CopyConstructorWithBitwiseCopyClass {
+public:
+    CopyConstructorTestNonVirtualClass() {}
+};
+
+class CopyConstructorTestVirtualClass :
+        public virtual CopyConstructorWithImplicitArgumentClass,
+        public virtual CopyConstructorWithBitwiseCopyClass {
+public:
+    CopyConstructorTestVirtualClass() {}
+};
+
+int implicit_copy_constructor_test(
+        const CopyConstructorTestNonVirtualClass &x,
+        const CopyConstructorTestVirtualClass &y) {
+    CopyConstructorTestNonVirtualClass cx = x;
+    CopyConstructorTestVirtualClass cy = y;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

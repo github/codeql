@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.dataflow.DataFlow4
 private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.TaintTracking2
 private import semmle.code.java.security.SensitiveActions
 
 /** A sink representing persistent storage that saves data in clear text. */
@@ -39,7 +40,7 @@ abstract class Storable extends Call {
   abstract Expr getAStore();
 }
 
-private class SensitiveSourceFlowConfig extends TaintTracking::Configuration {
+private class SensitiveSourceFlowConfig extends TaintTracking2::Configuration {
   SensitiveSourceFlowConfig() { this = "SensitiveSourceFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SensitiveExpr }

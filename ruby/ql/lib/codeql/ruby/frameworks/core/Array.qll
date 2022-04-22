@@ -507,7 +507,7 @@ module Array {
     ConcatSummary() { this = "concat" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[_].ArrayElement" and
+      input = "Argument[0..].ArrayElement" and
       output = "Argument[self].ArrayElement[?]" and
       preservesValue = true
     }

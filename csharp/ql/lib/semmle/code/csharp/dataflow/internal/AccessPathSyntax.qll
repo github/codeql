@@ -42,9 +42,7 @@ module AccessPath {
    * Parses a lower-bounded interval `n..` and gets the lower bound.
    */
   bindingset[arg]
-  private int parseLowerBound(string arg) {
-    result = arg.regexpCapture("(-?\\d+)\\.\\.", 1).toInt()
-  }
+  int parseLowerBound(string arg) { result = arg.regexpCapture("(-?\\d+)\\.\\.", 1).toInt() }
 
   /**
    * Parses an integer constant or interval (bounded or unbounded) that explicitly

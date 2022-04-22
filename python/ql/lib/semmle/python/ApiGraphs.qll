@@ -779,7 +779,7 @@ module API {
         MkLabelAwait()
 
       /** A label for a module. */
-      class LabelModule extends ApiLabel {
+      class LabelModule extends ApiLabel, MkLabelModule {
         string mod;
 
         LabelModule() { this = MkLabelModule(mod) }
@@ -791,7 +791,7 @@ module API {
       }
 
       /** A label for the member named `prop`. */
-      class LabelMember extends ApiLabel {
+      class LabelMember extends ApiLabel, MkLabelMember {
         string member;
 
         LabelMember() { this = MkLabelMember(member) }
@@ -803,14 +803,12 @@ module API {
       }
 
       /** A label for a member with an unknown name. */
-      class LabelUnknownMember extends ApiLabel {
-        LabelUnknownMember() { this = MkLabelUnknownMember() }
-
+      class LabelUnknownMember extends ApiLabel, MkLabelUnknownMember {
         override string toString() { result = "getUnknownMember()" }
       }
 
       /** A label for parameter `i`. */
-      class LabelParameter extends ApiLabel {
+      class LabelParameter extends ApiLabel, MkLabelParameter {
         int i;
 
         LabelParameter() { this = MkLabelParameter(i) }
@@ -822,7 +820,7 @@ module API {
       }
 
       /** A label for a keyword parameter `name`. */
-      class LabelKeywordParameter extends ApiLabel {
+      class LabelKeywordParameter extends ApiLabel, MkLabelKeywordParameter {
         string name;
 
         LabelKeywordParameter() { this = MkLabelKeywordParameter(name) }
@@ -834,23 +832,17 @@ module API {
       }
 
       /** A label that gets the return value of a function. */
-      class LabelReturn extends ApiLabel {
-        LabelReturn() { this = MkLabelReturn() }
-
+      class LabelReturn extends ApiLabel, MkLabelReturn {
         override string toString() { result = "getReturn()" }
       }
 
       /** A label that gets the subclass of a class. */
-      class LabelSubclass extends ApiLabel {
-        LabelSubclass() { this = MkLabelSubclass() }
-
+      class LabelSubclass extends ApiLabel, MkLabelSubclass {
         override string toString() { result = "getASubclass()" }
       }
 
       /** A label for awaited values. */
-      class LabelAwait extends ApiLabel {
-        LabelAwait() { this = MkLabelAwait() }
-
+      class LabelAwait extends ApiLabel, MkLabelAwait {
         override string toString() { result = "getAwaited()" }
       }
     }

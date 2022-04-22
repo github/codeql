@@ -231,6 +231,50 @@ endpoints
 | index.js:78:30:78:39 | "someData" | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
 | index.js:78:30:78:39 | "someData" | Xss | notASinkReason | LoggerMethod | string |
 | index.js:78:30:78:39 | "someData" | Xss | sinkLabel | NotASink | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | isConstantExpression | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | notASinkReason | ClientRequest | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | notASinkReason | JQueryArgument | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | NosqlInjection | sinkLabel | NotASink | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | hasFlowFromSource | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | isConstantExpression | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | notASinkReason | ClientRequest | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | notASinkReason | JQueryArgument | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | SqlInjection | sinkLabel | NotASink | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | hasFlowFromSource | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | isConstantExpression | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | notASinkReason | ClientRequest | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | notASinkReason | JQueryArgument | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | TaintedPath | sinkLabel | NotASink | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | hasFlowFromSource | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | isConstantExpression | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | notASinkReason | ClientRequest | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | notASinkReason | JQueryArgument | string |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | Xss | sinkLabel | NotASink | string |
+| index.js:84:12:84:18 | foo.bar | NosqlInjection | hasFlowFromSource | false | boolean |
+| index.js:84:12:84:18 | foo.bar | NosqlInjection | isConstantExpression | false | boolean |
+| index.js:84:12:84:18 | foo.bar | NosqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:84:12:84:18 | foo.bar | NosqlInjection | notASinkReason | ClientRequest | string |
+| index.js:84:12:84:18 | foo.bar | NosqlInjection | sinkLabel | NotASink | string |
+| index.js:84:12:84:18 | foo.bar | SqlInjection | hasFlowFromSource | false | boolean |
+| index.js:84:12:84:18 | foo.bar | SqlInjection | isConstantExpression | false | boolean |
+| index.js:84:12:84:18 | foo.bar | SqlInjection | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:84:12:84:18 | foo.bar | SqlInjection | notASinkReason | ClientRequest | string |
+| index.js:84:12:84:18 | foo.bar | SqlInjection | sinkLabel | NotASink | string |
+| index.js:84:12:84:18 | foo.bar | TaintedPath | hasFlowFromSource | false | boolean |
+| index.js:84:12:84:18 | foo.bar | TaintedPath | isConstantExpression | false | boolean |
+| index.js:84:12:84:18 | foo.bar | TaintedPath | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:84:12:84:18 | foo.bar | TaintedPath | notASinkReason | ClientRequest | string |
+| index.js:84:12:84:18 | foo.bar | TaintedPath | sinkLabel | NotASink | string |
+| index.js:84:12:84:18 | foo.bar | Xss | hasFlowFromSource | false | boolean |
+| index.js:84:12:84:18 | foo.bar | Xss | isConstantExpression | false | boolean |
+| index.js:84:12:84:18 | foo.bar | Xss | isExcludedFromEndToEndEvaluation | false | boolean |
+| index.js:84:12:84:18 | foo.bar | Xss | notASinkReason | ClientRequest | string |
+| index.js:84:12:84:18 | foo.bar | Xss | sinkLabel | NotASink | string |
 tokenFeatures
 | index.js:1:25:1:33 | "express" | argumentIndex | 0 |
 | index.js:1:25:1:33 | "express" | calleeAccessPath |  |
@@ -384,3 +428,19 @@ tokenFeatures
 | index.js:78:30:78:39 | "someData" | enclosingFunctionBody | console log someData |
 | index.js:78:30:78:39 | "someData" | enclosingFunctionName | identity#functionalargument |
 | index.js:78:30:78:39 | "someData" | receiverName | console |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | argumentIndex | 0 |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | calleeAccessPath |  |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | calleeAccessPathWithStructuralInfo |  |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | calleeApiName |  |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | calleeName | ajax |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | enclosingFunctionBody | foo $ ajax url foo bar |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | enclosingFunctionName | effectiveSinkAndNotASink |
+| index.js:83:10:85:3 | {\\n    " ... ar,\\n  } | receiverName | $ |
+| index.js:84:12:84:18 | foo.bar | argumentIndex |  |
+| index.js:84:12:84:18 | foo.bar | calleeAccessPath |  |
+| index.js:84:12:84:18 | foo.bar | calleeAccessPathWithStructuralInfo |  |
+| index.js:84:12:84:18 | foo.bar | calleeApiName |  |
+| index.js:84:12:84:18 | foo.bar | calleeName |  |
+| index.js:84:12:84:18 | foo.bar | enclosingFunctionBody | foo $ ajax url foo bar |
+| index.js:84:12:84:18 | foo.bar | enclosingFunctionName | effectiveSinkAndNotASink |
+| index.js:84:12:84:18 | foo.bar | receiverName |  |

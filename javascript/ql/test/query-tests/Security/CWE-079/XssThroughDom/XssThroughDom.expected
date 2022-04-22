@@ -129,6 +129,16 @@ nodes
 | xss-through-dom.js:115:16:115:18 | src |
 | xss-through-dom.js:117:26:117:28 | src |
 | xss-through-dom.js:117:26:117:28 | src |
+| xss-through-dom.js:120:23:120:37 | ev.target.files |
+| xss-through-dom.js:120:23:120:37 | ev.target.files |
+| xss-through-dom.js:120:23:120:40 | ev.target.files[0] |
+| xss-through-dom.js:120:23:120:45 | ev.targ ... 0].name |
+| xss-through-dom.js:120:23:120:45 | ev.targ ... 0].name |
+| xss-through-dom.js:122:33:122:71 | URL.cre ... les[0]) |
+| xss-through-dom.js:122:33:122:71 | URL.cre ... les[0]) |
+| xss-through-dom.js:122:53:122:67 | ev.target.files |
+| xss-through-dom.js:122:53:122:67 | ev.target.files |
+| xss-through-dom.js:122:53:122:70 | ev.target.files[0] |
 edges
 | forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values |
 | forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values |
@@ -207,6 +217,14 @@ edges
 | xss-through-dom.js:114:11:114:52 | src | xss-through-dom.js:117:26:117:28 | src |
 | xss-through-dom.js:114:17:114:52 | documen ... k").src | xss-through-dom.js:114:11:114:52 | src |
 | xss-through-dom.js:114:17:114:52 | documen ... k").src | xss-through-dom.js:114:11:114:52 | src |
+| xss-through-dom.js:120:23:120:37 | ev.target.files | xss-through-dom.js:120:23:120:40 | ev.target.files[0] |
+| xss-through-dom.js:120:23:120:37 | ev.target.files | xss-through-dom.js:120:23:120:40 | ev.target.files[0] |
+| xss-through-dom.js:120:23:120:40 | ev.target.files[0] | xss-through-dom.js:120:23:120:45 | ev.targ ... 0].name |
+| xss-through-dom.js:120:23:120:40 | ev.target.files[0] | xss-through-dom.js:120:23:120:45 | ev.targ ... 0].name |
+| xss-through-dom.js:122:53:122:67 | ev.target.files | xss-through-dom.js:122:53:122:70 | ev.target.files[0] |
+| xss-through-dom.js:122:53:122:67 | ev.target.files | xss-through-dom.js:122:53:122:70 | ev.target.files[0] |
+| xss-through-dom.js:122:53:122:70 | ev.target.files[0] | xss-through-dom.js:122:33:122:71 | URL.cre ... les[0]) |
+| xss-through-dom.js:122:53:122:70 | ev.target.files[0] | xss-through-dom.js:122:33:122:71 | URL.cre ... les[0]) |
 #select
 | forms.js:9:31:9:40 | values.foo | forms.js:8:23:8:28 | values | forms.js:9:31:9:40 | values.foo | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:8:23:8:28 | values | DOM text |
 | forms.js:12:31:12:40 | values.bar | forms.js:11:24:11:29 | values | forms.js:12:31:12:40 | values.bar | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:11:24:11:29 | values | DOM text |
@@ -242,3 +260,5 @@ edges
 | xss-through-dom.js:96:17:96:47 | $("#foo ... ].value | xss-through-dom.js:96:17:96:47 | $("#foo ... ].value | xss-through-dom.js:96:17:96:47 | $("#foo ... ].value | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:96:17:96:47 | $("#foo ... ].value | DOM text |
 | xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" | xss-through-dom.js:109:45:109:55 | this.el.src | xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:109:45:109:55 | this.el.src | DOM text |
 | xss-through-dom.js:115:16:115:18 | src | xss-through-dom.js:114:17:114:52 | documen ... k").src | xss-through-dom.js:115:16:115:18 | src | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:114:17:114:52 | documen ... k").src | DOM text |
+| xss-through-dom.js:120:23:120:45 | ev.targ ... 0].name | xss-through-dom.js:120:23:120:37 | ev.target.files | xss-through-dom.js:120:23:120:45 | ev.targ ... 0].name | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:120:23:120:37 | ev.target.files | DOM text |
+| xss-through-dom.js:122:33:122:71 | URL.cre ... les[0]) | xss-through-dom.js:122:53:122:67 | ev.target.files | xss-through-dom.js:122:33:122:71 | URL.cre ... les[0]) | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:122:53:122:67 | ev.target.files | DOM text |

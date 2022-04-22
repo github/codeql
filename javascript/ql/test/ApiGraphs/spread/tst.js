@@ -2,7 +2,7 @@ const lib = require('something');
 
 function f() {
     return {
-        x: new Object() /* def (member x (parameter 0 (member m1 (member exports (module something))))) */
+        x: new Object() /* def=moduleImport("something").getMember("exports").getMember("m1").getParameter(0).getMember("x") */
     }
 }
 

@@ -86,7 +86,11 @@ private module Cached {
     exists(CfgNodes::ExprNodes::OperationCfgNode op |
       op = nodeTo.asExpr() and
       op.getAnOperand() = nodeFrom.asExpr() and
-      not op.getExpr() instanceof AssignExpr
+      not op.getExpr() =
+        any(Expr e |
+          e instanceof AssignExpr or
+          e instanceof SplatExpr
+        )
     )
     or
     // string interpolation of `nodeFrom` into `nodeTo`

@@ -268,15 +268,17 @@ private module Cached {
     TPositionalParameterPosition(int pos) {
       pos = any(Parameter p).getPosition()
       or
-      pos in [0 .. 100] // TODO: remove once `Argument[_]` summaries are replaced with `Argument[i..]`
-      or
       FlowSummaryImplSpecific::ParsePositions::isParsedArgumentPosition(_, pos)
+    } or
+    TPositionalParameterLowerBoundPosition(int pos) {
+      FlowSummaryImplSpecific::ParsePositions::isParsedArgumentLowerBoundPosition(_, pos)
     } or
     TKeywordParameterPosition(string name) {
       name = any(KeywordParameter kp).getName()
       or
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
-    }
+    } or
+    TAnyParameterPosition()
 }
 
 import Cached
@@ -468,8 +470,17 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a positional parameter at position `pos`. */
   predicate isPositional(int pos) { this = TPositionalParameterPosition(pos) }
 
+  /** Holds if this position represents any positional parameter starting from position `pos`. */
+  predicate isPositionalLowerBound(int pos) { this = TPositionalParameterLowerBoundPosition(pos) }
+
   /** Holds if this position represents a keyword parameter named `name`. */
   predicate isKeyword(string name) { this = TKeywordParameterPosition(name) }
+
+  /**
+   * Holds if this position represents any parameter. This includes both positional
+   * and named parameters.
+   */
+  predicate isAny() { this = TAnyParameterPosition() }
 
   /** Gets a textual representation of this position. */
   string toString() {
@@ -479,7 +490,11 @@ class ParameterPosition extends TParameterPosition {
     or
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
     or
+    exists(int pos | this.isPositionalLowerBound(pos) and result = "position " + pos + "..")
+    or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
+    or
+    this.isAny() and result = "any"
   }
 }
 
@@ -518,5 +533,11 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   exists(int pos | ppos.isPositional(pos) and apos.isPositional(pos))
   or
+  exists(int pos1, int pos2 |
+    ppos.isPositionalLowerBound(pos1) and apos.isPositional(pos2) and pos2 >= pos1
+  )
+  or
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
+  or
+  ppos.isAny() and exists(apos)
 }
