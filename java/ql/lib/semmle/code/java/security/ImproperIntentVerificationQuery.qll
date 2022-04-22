@@ -72,6 +72,11 @@ class SystemActionName extends Top {
 
   /** Gets the name of the system intent that this expression or attriute represents. */
   string getName() { result = name }
+
+  override string toString() {
+    result =
+      [this.(StringLiteral).toString(), this.(FieldRead).toString(), this.(XMLAttribute).toString()]
+  }
 }
 
 /** A call to `Context.registerReceiver` */
@@ -140,10 +145,10 @@ predicate xmlUnverifiedSystemReceiver(
     filter.hasName("intent-filter") and
     action.hasName("action") and
     filter = rec.getAChild() and
-    action = rec.getAChild() and
+    action = filter.getAChild() and
     ormty = orm.getDeclaringType() and
-    rec.getAttribute("android:name").getValue() = ["." + ormty.getName(), ormty.getQualifiedName()] and
-    action.getAttribute("android:name") = sa
+    rec.getAttribute("name").getValue() = ["." + ormty.getName(), ormty.getQualifiedName()] and
+    action.getAttribute("name") = sa
   )
 }
 
