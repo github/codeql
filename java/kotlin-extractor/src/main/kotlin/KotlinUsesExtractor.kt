@@ -4,8 +4,9 @@ import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
-import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
+import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.ir.declarations.*
@@ -19,6 +20,7 @@ import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -49,6 +51,41 @@ open class KotlinUsesExtractor(
         TypeResult(fakeKotlinType(), "", "")
     )
 
+    private data class MethodKey(val className: FqName, val functionName: Name)
+
+    private fun makeDescription(className: FqName, functionName: String) = MethodKey(className, Name.guessByFirstCharacter(functionName))
+
+    // This essentially mirrors SpecialBridgeMethods.kt, a backend pass which isn't easily available to our extractor.
+    private val specialFunctions = mapOf(
+        makeDescription(StandardNames.FqNames.collection, "<get-size>") to "size",
+        makeDescription(FqName("java.util.Collection"), "<get-size>") to "size",
+        makeDescription(StandardNames.FqNames.map, "<get-size>") to "size",
+        makeDescription(FqName("java.util.Map"), "<get-size>") to "size",
+        makeDescription(StandardNames.FqNames.charSequence.toSafe(), "<get-length>") to "length",
+        makeDescription(FqName("java.lang.CharSequence"), "<get-length>") to "length",
+        makeDescription(StandardNames.FqNames.map, "<get-keys>") to "keys",
+        makeDescription(FqName("java.util.Map"), "<get-keys>") to "keys",
+        makeDescription(StandardNames.FqNames.map, "<get-values>") to "values",
+        makeDescription(FqName("java.util.Map"), "<get-values>") to "values",
+        makeDescription(StandardNames.FqNames.map, "<get-entries>") to "entries",
+        makeDescription(FqName("java.util.Map"), "<get-entries>") to "entries"
+    )
+
+    private val specialFunctionShortNames = specialFunctions.keys.map { it.functionName }.toSet()
+
+    fun getSpecialJvmName(f: IrFunction): String? {
+        if (specialFunctionShortNames.contains(f.name) && f is IrSimpleFunction) {
+            f.allOverridden(true).forEach { overriddenFunc ->
+                overriddenFunc.parentAsClass.fqNameWhenAvailable?.let { parentFqName ->
+                    specialFunctions[MethodKey(parentFqName, f.name)]?.let {
+                        return it
+                    }
+                }
+            }
+        }
+        return null
+    }
+
     fun getJvmName(container: IrAnnotationContainer): String? {
         for(a: IrConstructorCall in container.annotations) {
             val t = a.type
@@ -67,7 +104,7 @@ open class KotlinUsesExtractor(
                 }
             }
         }
-        return null
+        return (container as? IrFunction)?.let { getSpecialJvmName(container) }
     }
 
     @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
