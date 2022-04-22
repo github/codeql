@@ -786,31 +786,37 @@ private module Cached {
   cached
   predicate readSet(Node node1, ContentSet c, Node node2) { readStep(node1, c, node2) }
 
+  private predicate store(
+    Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
+  ) {
+    exists(ContentSet cs | c = cs.getAStoreContent() |
+      storeStep(node1, cs, node2) and
+      contentType = getNodeDataFlowType(node1) and
+      containerType = getNodeDataFlowType(node2)
+      or
+      exists(Node n1, Node n2 |
+        n1 = node1.(PostUpdateNode).getPreUpdateNode() and
+        n2 = node2.(PostUpdateNode).getPreUpdateNode()
+      |
+        argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, cs, contentType), n1)
+        or
+        readSet(n2, cs, n1) and
+        contentType = getNodeDataFlowType(n1) and
+        containerType = getNodeDataFlowType(n2)
+      )
+    )
+  }
+
   /**
    * Holds if data can flow from `node1` to `node2` via a direct assignment to
-   * `c`.
+   * `f`.
    *
    * This includes reverse steps through reads when the result of the read has
    * been stored into, in order to handle cases like `x.f1.f2 = y`.
    */
   cached
-  predicate storeSet(
-    Node node1, ContentSet c, Node node2, DataFlowType contentType, DataFlowType containerType
-  ) {
-    storeStep(node1, c, node2) and
-    contentType = getNodeDataFlowType(node1) and
-    containerType = getNodeDataFlowType(node2)
-    or
-    exists(Node n1, Node n2 |
-      n1 = node1.(PostUpdateNode).getPreUpdateNode() and
-      n2 = node2.(PostUpdateNode).getPreUpdateNode()
-    |
-      argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, c, contentType), n1)
-      or
-      readSet(n2, c, n1) and
-      contentType = getNodeDataFlowType(n1) and
-      containerType = getNodeDataFlowType(n2)
-    )
+  predicate store(Node node1, TypedContent tc, Node node2, DataFlowType contentType) {
+    store(node1, tc.getContent(), node2, contentType, tc.getContainerType())
   }
 
   /**
@@ -900,13 +906,7 @@ private module Cached {
     TDataFlowCallSome(DataFlowCall call)
 
   cached
-  newtype TTypedContent =
-    MkTypedContent(Content c, DataFlowType t) {
-      exists(ContentSet cs |
-        storeSet(_, cs, _, _, t) and
-        c = cs.getAStoreContent()
-      )
-    }
+  newtype TTypedContent = MkTypedContent(Content c, DataFlowType t) { store(_, c, _, _, t) }
 
   cached
   newtype TAccessPathFront =

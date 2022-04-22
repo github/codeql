@@ -516,25 +516,12 @@ private predicate clearsContentEx(NodeEx n, Content c) {
 }
 
 pragma[nomagic]
-private predicate storeSet(
-  NodeEx node1, ContentSet c, NodeEx node2, DataFlowType contentType, DataFlowType containerType,
-  Configuration config
-) {
-  storeSet(node1.asNode(), c, node2.asNode(), contentType, containerType) and
-  stepFilter(node1, node2, config) and
-  read(_, c.getAStoreContent(), _, config)
-}
-
-// inline to reduce fan-out via `getAStoreContent`
-pragma[inline]
 private predicate store(
-  NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType,
-  Configuration config
+  NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType, Configuration config
 ) {
-  exists(ContentSet cs |
-    storeSet(node1, cs, node2, contentType, containerType, config) and
-    c = cs.getAStoreContent()
-  )
+  store(node1.asNode(), tc, node2.asNode(), contentType) and
+  read(_, tc.getContent(), _, config) and
+  stepFilter(node1, node2, config)
 }
 
 pragma[nomagic]
@@ -602,7 +589,7 @@ private module Stage1 {
     exists(NodeEx mid |
       useFieldFlow(config) and
       fwdFlow(mid, cc, config) and
-      storeSet(mid, _, node, _, _, config)
+      store(mid, _, node, _, config)
     )
     or
     // read
@@ -644,11 +631,12 @@ private module Stage1 {
    */
   pragma[nomagic]
   private predicate fwdFlowConsCand(Content c, Configuration config) {
-    exists(NodeEx mid, NodeEx node |
+    exists(NodeEx mid, NodeEx node, TypedContent tc |
       not fullBarrier(node, config) and
       useFieldFlow(config) and
       fwdFlow(mid, _, config) and
-      store(mid, c, node, _, _, config)
+      store(mid, tc, node, _, config) and
+      c = tc.getContent()
     )
   }
 
@@ -748,9 +736,9 @@ private module Stage1 {
     )
     or
     // store
-    exists(ContentSet c |
-      revFlowStoreSet(c, node, toReturn, config) and
-      revFlowConsCandSet(c, config)
+    exists(Content c |
+      revFlowStore(c, node, toReturn, config) and
+      revFlowConsCand(c, config)
     )
     or
     // read
@@ -791,18 +779,12 @@ private module Stage1 {
   }
 
   pragma[nomagic]
-  private predicate revFlowConsCandSet(ContentSet c, Configuration config) {
-    revFlowConsCand(c.getAStoreContent(), config)
-  }
-
-  pragma[nomagic]
-  private predicate revFlowStoreSet(
-    ContentSet c, NodeEx node, boolean toReturn, Configuration config
-  ) {
-    exists(NodeEx mid |
+  private predicate revFlowStore(Content c, NodeEx node, boolean toReturn, Configuration config) {
+    exists(NodeEx mid, TypedContent tc |
       revFlow(mid, toReturn, pragma[only_bind_into](config)) and
-      fwdFlowConsCandSet(c, _, pragma[only_bind_into](config)) and
-      storeSet(node, c, mid, _, _, config)
+      fwdFlowConsCandSet(_, c, pragma[only_bind_into](config)) and
+      store(node, tc, mid, _, config) and
+      c = tc.getContent()
     )
   }
 
@@ -812,11 +794,8 @@ private module Stage1 {
    */
   pragma[nomagic]
   private predicate revFlowIsReadAndStored(Content c, Configuration conf) {
-    revFlowConsCand(c, pragma[only_bind_into](conf)) and
-    exists(ContentSet cs |
-      revFlowStoreSet(cs, _, _, pragma[only_bind_into](conf)) and
-      c = cs.getAStoreContent()
-    )
+    revFlowConsCand(c, conf) and
+    revFlowStore(c, _, _, conf)
   }
 
   pragma[nomagic]
@@ -901,11 +880,11 @@ private module Stage1 {
     NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType,
     Configuration config
   ) {
-    exists(Content c, DataFlowType containerType |
-      revFlowIsReadAndStored(pragma[only_bind_into](c), pragma[only_bind_into](config)) and
-      store(node1, c, node2, contentType, containerType, config) and
+    exists(Content c |
+      revFlowIsReadAndStored(c, pragma[only_bind_into](config)) and
       revFlow(node2, pragma[only_bind_into](config)) and
-      tc = MkTypedContent(c, containerType) and
+      store(node1, tc, node2, contentType, config) and
+      c = tc.getContent() and
       exists(ap1)
     )
   }
@@ -1978,7 +1957,7 @@ private module Stage3 {
   private predicate flowIntoCall = flowIntoCallNodeCand2/5;
 
   pragma[nomagic]
-  predicate clearSet(NodeEx node, ContentSet c, Configuration config) {
+  private predicate clearSet(NodeEx node, ContentSet c, Configuration config) {
     PrevStage::revFlow(node, config) and
     clearsContentCached(node.asNode(), c)
   }
@@ -4270,7 +4249,7 @@ private module Subpaths {
     result.isHidden() and
     exists(NodeEx n1, NodeEx n2 | n1 = n.getNodeEx() and n2 = result.getNodeEx() |
       localFlowBigStep(n1, _, n2, _, _, _, _, _) or
-      storeSet(n1, _, n2, _, _, _) or
+      store(n1, _, n2, _, _) or
       readSet(n1, _, n2, _)
     )
   }
@@ -4921,11 +4900,10 @@ private module FlowExploration {
     PartialPathNodeFwd mid, PartialAccessPath ap1, TypedContent tc, NodeEx node,
     PartialAccessPath ap2
   ) {
-    exists(NodeEx midNode, Content c, DataFlowType contentType, DataFlowType containerType |
+    exists(NodeEx midNode, DataFlowType contentType |
       midNode = mid.getNodeEx() and
       ap1 = mid.getAp() and
-      store(midNode, c, node, contentType, containerType, mid.getConfiguration()) and
-      tc = MkTypedContent(c, containerType) and
+      store(midNode, tc, node, contentType, mid.getConfiguration()) and
       ap2.getHead() = tc and
       ap2.len() = unbindInt(ap1.len() + 1) and
       compatibleTypes(ap1.getType(), contentType)
@@ -4947,11 +4925,10 @@ private module FlowExploration {
     PartialPathNodeFwd mid, PartialAccessPath ap, TypedContent tc, NodeEx node, CallContext cc,
     Configuration config
   ) {
-    exists(NodeEx midNode, Content c |
+    exists(NodeEx midNode |
       midNode = mid.getNodeEx() and
       ap = mid.getAp() and
-      read(midNode, c, node, pragma[only_bind_into](config)) and
-      tc.getContent() = c and
+      read(midNode, tc.getContent(), node, pragma[only_bind_into](config)) and
       ap.getHead() = tc and
       pragma[only_bind_into](config) = mid.getConfiguration() and
       cc = mid.getCallContext()
@@ -5202,12 +5179,13 @@ private module FlowExploration {
   private predicate revPartialPathStoreStep(
     PartialPathNodeRev mid, RevPartialAccessPath ap, Content c, NodeEx node, Configuration config
   ) {
-    exists(NodeEx midNode, DataFlowType contentType, DataFlowType containerType, TypedContent tc |
+    exists(NodeEx midNode, TypedContent tc |
       midNode = mid.getNodeEx() and
       ap = mid.getAp() and
-      store(node, c, midNode, contentType, containerType, config) and
-      tc = MkTypedContent(c, containerType) and
-      config = mid.getConfiguration()
+      store(node, tc, midNode, _, config) and
+      ap.getHead() = c and
+      config = mid.getConfiguration() and
+      tc.getContent() = c
     )
   }
 
