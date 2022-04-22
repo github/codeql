@@ -61,11 +61,8 @@ private predicate parameterJSDocMentionsRisk(DataFlow::ParameterNode p) {
 class LibInputAsSource extends TaintedPath::Source instanceof DataFlow::ParameterNode {
   LibInputAsSource() {
     this = getALibraryInputParameter() and
-    if this instanceof DataFlow::ParameterNode
-    then
-      not parameterJSDocMentionsRisk(this) and
-      not isSafeName(this.(DataFlow::ParameterNode).getName())
-    else any()
+    not parameterJSDocMentionsRisk(this) and
+    not isSafeName(this.(DataFlow::ParameterNode).getName())
   }
 }
 
