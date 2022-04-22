@@ -33,7 +33,7 @@ class Configuration extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink instanceof StringConcatLeafEndingInSink and label = any(DataFlow::FlowLabel f)
+    sink instanceof StringConcatLeafEndingInSink and exists(label)
   }
 
   override predicate isBarrier(DataFlow::Node node) {

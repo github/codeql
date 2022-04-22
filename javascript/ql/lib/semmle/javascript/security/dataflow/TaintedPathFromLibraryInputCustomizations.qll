@@ -58,7 +58,7 @@ private predicate parameterJSDocMentionsRisk(DataFlow::ParameterNode p) {
  * it is a parameter with a name that hints at it being
  * intended to be a path.
  */
-class LibInputAsSource extends TaintedPath::Source {
+class LibInputAsSource extends TaintedPath::Source instanceof DataFlow::ParameterNode {
   LibInputAsSource() {
     this = getALibraryInputParameter() and
     if this instanceof DataFlow::ParameterNode
@@ -86,11 +86,11 @@ private DataFlow::Node isFlowingToTaintedPathSink(DataFlow::TypeBackTracker t) {
  * a sink often do so intentionally.
  */
 class StringConcatLeafEndingInSink extends StringOps::ConcatenationLeaf {
-  StringOps::ConcatenationRoot root;
-
   StringConcatLeafEndingInSink() {
-    this = root.getALeaf() and
-    root = isFlowingToTaintedPathSink()
+    exists(StringOps::ConcatenationRoot root |
+      this = root.getALeaf() and
+      root = isFlowingToTaintedPathSink()
+    )
   }
 }
 
