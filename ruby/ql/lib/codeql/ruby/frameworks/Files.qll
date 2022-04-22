@@ -28,7 +28,7 @@ private DataFlow::Node ioInstance() {
 // will execute a shell command and read its output rather than reading from the
 // filesystem.
 private predicate pathArgSpawnsSubprocess(Expr arg) {
-  arg.getConstantValue().getStringOrSymbol().charAt(0) = "|"
+  arg.getConstantValue().getStringlikeValue().charAt(0) = "|"
 }
 
 private DataFlow::Node fileInstanceInstantiation() {
@@ -390,7 +390,7 @@ module File {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[_]" and
+      input = "Argument[0..]" and
       output = "ReturnValue" and
       preservesValue = false
     }

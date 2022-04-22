@@ -767,10 +767,10 @@ private module OutNodes {
 import OutNodes
 
 predicate jumpStep(Node pred, Node succ) {
-  SsaImpl::captureFlowIn(pred.(SsaDefinitionNode).getDefinition(),
+  SsaImpl::captureFlowIn(_, pred.(SsaDefinitionNode).getDefinition(),
     succ.(SsaDefinitionNode).getDefinition())
   or
-  SsaImpl::captureFlowOut(pred.(SsaDefinitionNode).getDefinition(),
+  SsaImpl::captureFlowOut(_, pred.(SsaDefinitionNode).getDefinition(),
     succ.(SsaDefinitionNode).getDefinition())
   or
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
@@ -820,24 +820,13 @@ string ppReprType(DataFlowType t) { result = t.toString() }
 pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
-/**
- * A node associated with an object after an operation that might have
- * changed its state.
- *
- * This can be either the argument to a callable after the callable returns
- * (which might have mutated the argument), or the qualifier of a field after
- * an update to the field.
- *
- * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
- * to the value before the update.
- */
-abstract class PostUpdateNode extends Node {
+abstract class PostUpdateNodeImpl extends Node {
   /** Gets the node before the state update. */
   abstract Node getPreUpdateNode();
 }
 
 private module PostUpdateNodes {
-  class ExprPostUpdateNode extends PostUpdateNode, NodeImpl, TExprPostUpdateNode {
+  class ExprPostUpdateNode extends PostUpdateNodeImpl, NodeImpl, TExprPostUpdateNode {
     private CfgNodes::ExprCfgNode e;
 
     ExprPostUpdateNode() { this = TExprPostUpdateNode(e) }
@@ -851,7 +840,7 @@ private module PostUpdateNodes {
     override string toStringImpl() { result = "[post] " + e.toString() }
   }
 
-  private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
+  private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNodeImpl {
     private Node pre;
 
     SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }

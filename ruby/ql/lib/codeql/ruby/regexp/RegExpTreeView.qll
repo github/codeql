@@ -194,16 +194,22 @@ class RegExpTerm extends RegExpParent {
    */
   Location getLocation() { result = re.getLocation() }
 
+  pragma[noinline]
+  private predicate componentHasLocationInfo(
+    int i, string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    re.getComponent(i)
+        .getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
   /** Holds if this term is found at the specified location offsets. */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     exists(int re_start, int re_end |
-      re.getComponent(0).getLocation().hasLocationInfo(filepath, startline, re_start, _, _) and
-      re.getComponent(re.getNumberOfComponents() - 1)
-          .getLocation()
-          .hasLocationInfo(filepath, _, _, endline, re_end)
-    |
+      this.componentHasLocationInfo(0, filepath, startline, re_start, _, _) and
+      this.componentHasLocationInfo(re.getNumberOfComponents() - 1, filepath, _, _, endline, re_end) and
       startcolumn = re_start + start and
       endcolumn = re_start + end - 1
     )

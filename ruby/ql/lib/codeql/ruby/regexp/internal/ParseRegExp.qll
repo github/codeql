@@ -5,7 +5,7 @@
  * the `x` (free-spacing) flag.
  */
 
-private import codeql.ruby.ast.Literal as AST
+private import codeql.ruby.AST as AST
 private import codeql.Locations
 
 /**
@@ -254,7 +254,11 @@ abstract class RegExp extends AST::StringlikeLiteral {
   }
 
   /** Gets the text of this regex */
-  string getText() { result = this.getConstantValue().getString() }
+  string getText() {
+    exists(AST::ConstantValue c | c = this.getConstantValue() |
+      result = [this.getConstantValue().getString(), this.getConstantValue().getRegExp()]
+    )
+  }
 
   /** Gets the `i`th character of this regex */
   string getChar(int i) { result = this.getText().charAt(i) }

@@ -268,7 +268,7 @@ module HTTP {
         string getUrlPattern() {
           exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
             this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getConstantValue().getStringOrSymbol()
+            result = strNode.getExpr().getConstantValue().getStringlikeValue()
           )
         }
 
@@ -431,7 +431,7 @@ module HTTP {
         string getMimetype() {
           exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
             this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getConstantValue().getStringOrSymbol().splitAt(";", 0)
+            result = strNode.getExpr().getConstantValue().getStringlikeValue().splitAt(";", 0)
           )
           or
           not exists(this.getMimetypeOrContentTypeArg()) and
@@ -814,5 +814,56 @@ module Logging {
   abstract class Range extends DataFlow::Node {
     /** Gets an input that is logged. */
     abstract DataFlow::Node getAnInput();
+  }
+}
+
+/**
+ * Provides models for cryptographic concepts.
+ *
+ * Note: The `CryptographicAlgorithm` class currently doesn't take weak keys into
+ * consideration for the `isWeak` member predicate. So RSA is always considered
+ * secure, although using a low number of bits will actually make it insecure. We plan
+ * to improve our libraries in the future to more precisely capture this aspect.
+ */
+module Cryptography {
+  import security.CryptoAlgorithms
+
+  /**
+   * A data-flow node that is an application of a cryptographic algorithm. For example,
+   * encryption, decryption, signature-validation.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `CryptographicOperation::Range` instead.
+   */
+  class CryptographicOperation extends DataFlow::Node instanceof CryptographicOperation::Range {
+    /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
+    CryptographicAlgorithm getAlgorithm() { result = super.getAlgorithm() }
+
+    /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
+    DataFlow::Node getAnInput() { result = super.getAnInput() }
+
+    /** Holds if this encryption operation is known to be weak. */
+    predicate isWeak() { super.isWeak() }
+  }
+
+  /** Provides classes for modeling new applications of a cryptographic algorithms. */
+  module CryptographicOperation {
+    /**
+     * A data-flow node that is an application of a cryptographic algorithm. For example,
+     * encryption, decryption, signature-validation.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `CryptographicOperation` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
+      abstract CryptographicAlgorithm getAlgorithm();
+
+      /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
+      abstract DataFlow::Node getAnInput();
+
+      /** Holds if this encryption operation is known to be weak. */
+      abstract predicate isWeak();
+    }
   }
 }

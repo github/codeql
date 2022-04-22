@@ -67,7 +67,7 @@ private predicate isSslVerifyPeerFalsePair(CfgNodes::ExprNodes::PairCfgNode p) {
 /** Holds if `node` represents the symbol literal `verify` or `verify_peer`. */
 private predicate isSslVerifyPeerLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol("ssl_verifypeer") and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("ssl_verifypeer") and
     literal.flowsTo(node)
   )
 }

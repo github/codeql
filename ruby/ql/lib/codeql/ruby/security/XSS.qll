@@ -141,7 +141,7 @@ private module Shared {
     exists(RenderCall call, Pair kvPair |
       call.getLocals().getAKeyValuePair() = kvPair and
       kvPair.getValue() = value and
-      kvPair.getKey().getConstantValue().isStringOrSymbol(hashKey) and
+      kvPair.getKey().getConstantValue().isStringlikeValue(hashKey) and
       call.getTemplateFile() = erb
     )
   }
@@ -154,7 +154,7 @@ private module Shared {
       argNode.asExpr() = refNode.getArgument(0) and
       refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
       argNode.getALocalSource() = DataFlow::exprNode(strNode) and
-      strNode.getExpr().getConstantValue().isStringOrSymbol(hashKey) and
+      strNode.getExpr().getConstantValue().isStringlikeValue(hashKey) and
       erb = refNode.getFile()
     )
   }

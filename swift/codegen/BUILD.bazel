@@ -1,0 +1,4 @@
+py_binary(
+    name = "codegen",
+    srcs = glob(["**/*.py"]),
+)

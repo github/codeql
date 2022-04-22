@@ -87,20 +87,8 @@ abstract class Configuration extends string {
   /** Holds if data flow into `node` is prohibited. */
   predicate isBarrierIn(Node node) { none() }
 
-  /**
-   * Holds if data flow into `node` is prohibited when the flow state is
-   * `state`
-   */
-  predicate isBarrierIn(Node node, FlowState state) { none() }
-
   /** Holds if data flow out of `node` is prohibited. */
   predicate isBarrierOut(Node node) { none() }
-
-  /**
-   * Holds if data flow out of `node` is prohibited when the flow state is
-   * `state`
-   */
-  predicate isBarrierOut(Node node, FlowState state) { none() }
 
   /** Holds if data flow through nodes guarded by `guard` is prohibited. */
   predicate isBarrierGuard(BarrierGuard guard) { none() }
@@ -112,15 +100,13 @@ abstract class Configuration extends string {
   predicate isBarrierGuard(BarrierGuard guard, FlowState state) { none() }
 
   /**
-   * Holds if the additional flow step from `node1` to `node2` must be taken
-   * into account in the analysis.
+   * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
    */
   predicate isAdditionalFlowStep(Node node1, Node node2) { none() }
 
   /**
-   * Holds if the additional flow step from `node1` to `node2` must be taken
-   * into account in the analysis. This step is only applicable in `state1` and
-   * updates the flow state to `state2`.
+   * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
+   * This step is only applicable in `state1` and updates the flow state to `state2`.
    */
   predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
     none()
@@ -323,7 +309,7 @@ private class RetNodeEx extends NodeEx {
   ReturnKindExt getKind() { result = this.asNode().(ReturnNodeExt).getKind() }
 }
 
-private predicate fullInBarrier(NodeEx node, Configuration config) {
+private predicate inBarrier(NodeEx node, Configuration config) {
   exists(Node n |
     node.asNode() = n and
     config.isBarrierIn(n)
@@ -332,30 +318,12 @@ private predicate fullInBarrier(NodeEx node, Configuration config) {
   )
 }
 
-private predicate stateInBarrier(NodeEx node, FlowState state, Configuration config) {
-  exists(Node n |
-    node.asNode() = n and
-    config.isBarrierIn(n, state)
-  |
-    config.isSource(n, state)
-  )
-}
-
-private predicate fullOutBarrier(NodeEx node, Configuration config) {
+private predicate outBarrier(NodeEx node, Configuration config) {
   exists(Node n |
     node.asNode() = n and
     config.isBarrierOut(n)
   |
     config.isSink(n) or config.isSink(n, _)
-  )
-}
-
-private predicate stateOutBarrier(NodeEx node, FlowState state, Configuration config) {
-  exists(Node n |
-    node.asNode() = n and
-    config.isBarrierOut(n, state)
-  |
-    config.isSink(n, state)
   )
 }
 
@@ -383,12 +351,6 @@ pragma[nomagic]
 private predicate stateBarrier(NodeEx node, FlowState state, Configuration config) {
   exists(Node n | node.asNode() = n |
     config.isBarrier(n, state)
-    or
-    config.isBarrierIn(n, state) and
-    not config.isSource(n, state)
-    or
-    config.isBarrierOut(n, state) and
-    not config.isSink(n, state)
     or
     exists(BarrierGuard g |
       config.isBarrierGuard(g, state) and
@@ -422,8 +384,8 @@ private predicate sinkNode(NodeEx node, FlowState state, Configuration config) {
 /** Provides the relevant barriers for a step from `node1` to `node2`. */
 pragma[inline]
 private predicate stepFilter(NodeEx node1, NodeEx node2, Configuration config) {
-  not fullOutBarrier(node1, config) and
-  not fullInBarrier(node2, config) and
+  not outBarrier(node1, config) and
+  not inBarrier(node2, config) and
   not fullBarrier(node1, config) and
   not fullBarrier(node2, config)
 }
@@ -476,8 +438,6 @@ private predicate additionalLocalStateStep(
     config.isAdditionalFlowStep(n1, s1, n2, s2) and
     getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config) and
-    not stateOutBarrier(node1, s1, config) and
-    not stateInBarrier(node2, s2, config) and
     not stateBarrier(node1, s1, config) and
     not stateBarrier(node2, s2, config)
   )
@@ -519,8 +479,6 @@ private predicate additionalJumpStateStep(
     config.isAdditionalFlowStep(n1, s1, n2, s2) and
     getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config) and
-    not stateOutBarrier(node1, s1, config) and
-    not stateInBarrier(node2, s2, config) and
     not stateBarrier(node1, s1, config) and
     not stateBarrier(node2, s2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
@@ -920,8 +878,8 @@ private module Stage1 {
   private predicate throughFlowNodeCand(NodeEx node, Configuration config) {
     revFlow(node, true, config) and
     fwdFlow(node, true, config) and
-    not fullInBarrier(node, config) and
-    not fullOutBarrier(node, config)
+    not inBarrier(node, config) and
+    not outBarrier(node, config)
   }
 
   /** Holds if flow may return from `callable`. */
@@ -1016,8 +974,8 @@ private predicate flowOutOfCallNodeCand1(
 ) {
   viableReturnPosOutNodeCand1(call, ret.getReturnPosition(), out, config) and
   Stage1::revFlow(ret, config) and
-  not fullOutBarrier(ret, config) and
-  not fullInBarrier(out, config)
+  not outBarrier(ret, config) and
+  not inBarrier(out, config)
 }
 
 pragma[nomagic]
@@ -1038,8 +996,8 @@ private predicate flowIntoCallNodeCand1(
 ) {
   viableParamArgNodeCand1(call, p, arg, config) and
   Stage1::revFlow(p, config) and
-  not fullOutBarrier(arg, config) and
-  not fullInBarrier(p, config)
+  not outBarrier(arg, config) and
+  not inBarrier(p, config)
 }
 
 /**
@@ -1160,8 +1118,8 @@ private module Stage2 {
     if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
   }
 
-  bindingset[node, cc, config]
-  private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) { any() }
+  bindingset[node, cc]
+  private LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
 
   bindingset[node1, state1, config]
   bindingset[node2, state2, config]
@@ -1248,7 +1206,7 @@ private module Stage2 {
     or
     exists(NodeEx mid, FlowState state0, Ap ap0, LocalCc localCc |
       fwdFlow(mid, state0, cc, argAp, ap0, config) and
-      localCc = getLocalCc(mid, cc, config)
+      localCc = getLocalCc(mid, cc)
     |
       localStep(mid, state0, node, state, true, _, config, localCc) and
       ap = ap0
@@ -1953,8 +1911,8 @@ private module Stage3 {
   bindingset[call, c, innercc]
   private CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) { any() }
 
-  bindingset[node, cc, config]
-  private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) { any() }
+  bindingset[node, cc]
+  private LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
 
   private predicate localStep(
     NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
@@ -2037,7 +1995,7 @@ private module Stage3 {
     or
     exists(NodeEx mid, FlowState state0, Ap ap0, LocalCc localCc |
       fwdFlow(mid, state0, cc, argAp, ap0, config) and
-      localCc = getLocalCc(mid, cc, config)
+      localCc = getLocalCc(mid, cc)
     |
       localStep(mid, state0, node, state, true, _, config, localCc) and
       ap = ap0
@@ -2767,12 +2725,11 @@ private module Stage4 {
     if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
   }
 
-  bindingset[node, cc, config]
-  private LocalCc getLocalCc(NodeEx node, Cc cc, Configuration config) {
+  bindingset[node, cc]
+  private LocalCc getLocalCc(NodeEx node, Cc cc) {
     result =
       getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)),
-        node.getEnclosingCallable()) and
-    exists(config)
+        node.getEnclosingCallable())
   }
 
   private predicate localStep(
@@ -2865,7 +2822,7 @@ private module Stage4 {
     or
     exists(NodeEx mid, FlowState state0, Ap ap0, LocalCc localCc |
       fwdFlow(mid, state0, cc, argAp, ap0, config) and
-      localCc = getLocalCc(mid, cc, config)
+      localCc = getLocalCc(mid, cc)
     |
       localStep(mid, state0, node, state, true, _, config, localCc) and
       ap = ap0
@@ -5050,6 +5007,7 @@ private module FlowExploration {
     )
   }
 
+  pragma[nomagic]
   private predicate revPartialPathStep(
     PartialPathNodeRev mid, NodeEx node, FlowState state, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2,
     TRevSummaryCtx3 sc3, RevPartialAccessPath ap, Configuration config
