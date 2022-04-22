@@ -509,6 +509,12 @@ use-use steps. If local flow is implemented using def-use steps, then
 
 Note that `clearsContent(n, cs)` is interpreted using `cs.getAReadContent()`.
 
+Dually, there exists a predicate
+```ql
+predicate expectsContent(Node n, ContentSet c);
+```
+which acts as a barrier when data is _not_ stored inside one of `c.getAReadContent()`.
+
 ## Type pruning
 
 The library supports pruning paths when a sequence of value-preserving steps
