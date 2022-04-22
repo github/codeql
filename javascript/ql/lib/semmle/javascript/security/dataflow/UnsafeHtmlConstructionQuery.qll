@@ -35,8 +35,4 @@ class Configration extends TaintTracking::Configuration {
     super.hasFlowPath(source, sink) and
     DataFlow::hasPathWithoutUnmatchedReturn(source, sink)
   }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    DataFlow::localFieldStep(pred, succ)
-  }
 }

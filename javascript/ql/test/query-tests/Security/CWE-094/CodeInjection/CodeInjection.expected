@@ -100,6 +100,15 @@ nodes
 | react.js:10:56:10:77 | documen ... on.hash |
 | react.js:10:56:10:77 | documen ... on.hash |
 | react.js:10:56:10:77 | documen ... on.hash |
+| rxjs.js:9:9:9:35 | taint |
+| rxjs.js:9:17:9:35 | req.param("wobble") |
+| rxjs.js:9:17:9:35 | req.param("wobble") |
+| rxjs.js:12:16:12:20 | taint |
+| rxjs.js:14:12:14:12 | v |
+| rxjs.js:15:12:15:12 | v |
+| rxjs.js:15:12:15:12 | v |
+| rxjs.js:19:10:19:22 | subject.value |
+| rxjs.js:19:10:19:22 | subject.value |
 | template-sinks.js:17:9:17:31 | tainted |
 | template-sinks.js:17:19:17:31 | req.query.foo |
 | template-sinks.js:17:19:17:31 | req.query.foo |
@@ -213,6 +222,14 @@ edges
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react.js:10:56:10:77 | documen ... on.hash | react.js:10:56:10:77 | documen ... on.hash |
+| rxjs.js:9:9:9:35 | taint | rxjs.js:12:16:12:20 | taint |
+| rxjs.js:9:17:9:35 | req.param("wobble") | rxjs.js:9:9:9:35 | taint |
+| rxjs.js:9:17:9:35 | req.param("wobble") | rxjs.js:9:9:9:35 | taint |
+| rxjs.js:12:16:12:20 | taint | rxjs.js:14:12:14:12 | v |
+| rxjs.js:12:16:12:20 | taint | rxjs.js:19:10:19:22 | subject.value |
+| rxjs.js:12:16:12:20 | taint | rxjs.js:19:10:19:22 | subject.value |
+| rxjs.js:14:12:14:12 | v | rxjs.js:15:12:15:12 | v |
+| rxjs.js:14:12:14:12 | v | rxjs.js:15:12:15:12 | v |
 | template-sinks.js:17:9:17:31 | tainted | template-sinks.js:19:17:19:23 | tainted |
 | template-sinks.js:17:9:17:31 | tainted | template-sinks.js:19:17:19:23 | tainted |
 | template-sinks.js:17:9:17:31 | tainted | template-sinks.js:20:16:20:22 | tainted |
@@ -293,6 +310,8 @@ edges
 | react-native.js:8:32:8:38 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:32:8:38 | tainted | $@ flows to here and is interpreted as code. | react-native.js:7:17:7:33 | req.param("code") | User-provided value |
 | react-native.js:10:23:10:29 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:10:23:10:29 | tainted | $@ flows to here and is interpreted as code. | react-native.js:7:17:7:33 | req.param("code") | User-provided value |
 | react.js:10:56:10:77 | documen ... on.hash | react.js:10:56:10:77 | documen ... on.hash | react.js:10:56:10:77 | documen ... on.hash | $@ flows to here and is interpreted as code. | react.js:10:56:10:77 | documen ... on.hash | User-provided value |
+| rxjs.js:15:12:15:12 | v | rxjs.js:9:17:9:35 | req.param("wobble") | rxjs.js:15:12:15:12 | v | $@ flows to here and is interpreted as code. | rxjs.js:9:17:9:35 | req.param("wobble") | User-provided value |
+| rxjs.js:19:10:19:22 | subject.value | rxjs.js:9:17:9:35 | req.param("wobble") | rxjs.js:19:10:19:22 | subject.value | $@ flows to here and is interpreted as code. | rxjs.js:9:17:9:35 | req.param("wobble") | User-provided value |
 | template-sinks.js:19:17:19:23 | tainted | template-sinks.js:17:19:17:31 | req.query.foo | template-sinks.js:19:17:19:23 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:17:19:17:31 | req.query.foo | User-provided value |
 | template-sinks.js:20:16:20:22 | tainted | template-sinks.js:17:19:17:31 | req.query.foo | template-sinks.js:20:16:20:22 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:17:19:17:31 | req.query.foo | User-provided value |
 | template-sinks.js:21:18:21:24 | tainted | template-sinks.js:17:19:17:31 | req.query.foo | template-sinks.js:21:18:21:24 | tainted | $@ flows to here and is interpreted as a template, which may contain code. | template-sinks.js:17:19:17:31 | req.query.foo | User-provided value |

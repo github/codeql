@@ -1059,6 +1059,14 @@ module API {
       result = awaited(call, DataFlow::TypeTracker::end())
     }
 
+    cached
+    predicate memberEdge(TApiNode pred, string member, TApiNode succ) {
+      edge(pred, Label::member(member), succ)
+    }
+
+    cached
+    predicate anyMemberEdge(TApiNode pred, TApiNode succ) { memberEdge(pred, _, succ) }
+
     /**
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */

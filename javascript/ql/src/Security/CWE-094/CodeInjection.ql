@@ -17,6 +17,7 @@
 import javascript
 import semmle.javascript.security.dataflow.CodeInjectionQuery
 import DataFlow::PathGraph
+import semmle.javascript.heuristics.AdditionalSources
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)

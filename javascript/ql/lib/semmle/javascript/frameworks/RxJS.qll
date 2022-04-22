@@ -102,3 +102,44 @@ private class RxJsPipeMapStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/**
+ * Gets a instance of the `Subject` class from RxJS.
+ */
+private API::Node getARxJSSubject() {
+  result =
+    API::moduleImport("rxjs")
+        .getMember(["Subject", "BehaviorSubject", "ReplaySubject", "AsyncSubject"])
+        .getInstance()
+  or
+  result =
+    API::Node::ofType("rxjs", ["Subject", "BehaviorSubject", "ReplaySubject", "AsyncSubject"])
+}
+
+/**
+ * A step from a call to the `next` method of a `Subject` to a read of the value.
+ */
+private class RxJSNextStep extends DataFlow::SharedFlowStep {
+  override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    exists(API::CallNode call |
+      call = getARxJSSubject().getMember("next").getACall() and
+      pred = call.getArgument(0) and
+      succ = call.getReceiver().getALocalSource() and
+      prop = "value"
+    )
+  }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::Node subject |
+      subject = getARxJSSubject() and
+      pred = subject.getMember("next").getACall().getArgument(0) and
+      succ =
+        subject
+            .getMember("subscribe")
+            .getParameter(0)
+            .getMember("next")
+            .getParameter(0)
+            .getAnImmediateUse()
+    )
+  }
+}
