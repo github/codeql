@@ -117,11 +117,10 @@ private DataFlow::Node getAValueExportedByPackage() {
   // }));
   // ```
   // Such files are not recognized as modules, so we manually use `NodeModule::resolveMainModule` to resolve the file against a `package.json` file.
-  exists(ImmediatelyInvokedFunctionExpr func, DataFlow::ParameterNode prev, int i |
-    prev.getName() = "factory" and
-    func.getParameter(i) = prev.getParameter() and
-    DataFlow::globalVarRef("define").getACall().getArgument(any(int a | a >= 1)) =
-      prev.getALocalUse() and
+  exists(ImmediatelyInvokedFunctionExpr func, DataFlow::ParameterNode factory, int i |
+    factory.getName() = "factory" and
+    func.getParameter(i) = factory.getParameter() and
+    DataFlow::globalVarRef("define").getACall().getAnArgument() = factory.getALocalUse() and
     func.getFile() =
       min(int j, File f |
         f = NodeModule::resolveMainModule(any(PackageJSON pack | exists(pack.getPackageName())), j)
