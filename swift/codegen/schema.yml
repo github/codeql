@@ -308,7 +308,7 @@ ArrowExpr:
 AssignExpr:
   _extends: Expr
   dest: Expr
-  src: Expr
+  source: Expr
 
 BindOptionalExpr:
   _extends: Expr
@@ -661,7 +661,7 @@ PrefixUnaryExpr:
 
 SelfApplyExpr:
   _extends: ApplyExpr
-  base: Expr
+  base_expr: Expr
 
 ArrayExpr:
   _extends: CollectionExpr
@@ -843,12 +843,12 @@ StmtCondition:
 
 RepeatWhileStmt:
   _extends: LabeledStmt
-  cond: Expr
+  condition: Expr
   body: Stmt
 
 SwitchStmt:
   _extends: LabeledStmt
-  subject_expr: Expr
+  expr: Expr
   cases: CaseStmt*
 
 BoundGenericClassType:
