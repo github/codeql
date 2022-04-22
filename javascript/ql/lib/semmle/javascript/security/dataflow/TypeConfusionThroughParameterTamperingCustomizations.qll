@@ -5,7 +5,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 private import semmle.javascript.dataflow.InferredTypes
 
 module TypeConfusionThroughParameterTampering {

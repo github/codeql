@@ -3,7 +3,6 @@
  */
 
 import javascript
-import semmle.javascript.frameworks.xUnit
 import semmle.javascript.frameworks.TestingCustomizations
 
 /**

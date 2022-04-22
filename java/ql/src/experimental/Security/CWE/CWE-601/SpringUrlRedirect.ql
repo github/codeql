@@ -12,7 +12,6 @@
 
 import java
 import SpringUrlRedirect
-import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
 private class StartsWithSanitizer extends DataFlow::BarrierGuard {

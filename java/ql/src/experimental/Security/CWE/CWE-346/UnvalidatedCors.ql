@@ -11,7 +11,6 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
 import DataFlow::PathGraph

@@ -15,7 +15,6 @@ import java
 import DataFlow::PathGraph
 import MyBatisCommonLib
 import MyBatisAnnotationSqlInjectionLib
-import semmle.code.java.dataflow.FlowSources
 
 private class MyBatisAnnotationSqlInjectionConfiguration extends TaintTracking::Configuration {
   MyBatisAnnotationSqlInjectionConfiguration() { this = "MyBatis annotation sql injection" }

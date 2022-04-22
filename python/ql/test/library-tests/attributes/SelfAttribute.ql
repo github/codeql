@@ -1,5 +1,4 @@
 import python
-import semmle.python.SelfAttribute
 
 from SelfAttributeRead sa, int line, string g, string l
 where

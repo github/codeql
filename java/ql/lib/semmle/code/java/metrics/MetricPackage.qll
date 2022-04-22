@@ -5,7 +5,6 @@
 import semmle.code.java.Package
 import MetricElement
 import MetricRefType
-import semmle.code.java.Dependency
 import MetricCallable
 
 /** This class provides access to metrics information for packages. */

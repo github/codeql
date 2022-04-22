@@ -1,6 +1,5 @@
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
-private import codeql.ruby.ast.Constant
 private import internal.AST
 private import internal.Constant
 private import internal.Expr

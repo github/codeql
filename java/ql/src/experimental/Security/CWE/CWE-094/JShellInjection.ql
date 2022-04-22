@@ -12,7 +12,6 @@
 
 import java
 import JShellInjection
-import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
 class JShellInjectionConfiguration extends TaintTracking::Configuration {

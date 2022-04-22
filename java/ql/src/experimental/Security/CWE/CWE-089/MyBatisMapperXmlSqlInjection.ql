@@ -15,8 +15,6 @@ import java
 import DataFlow::PathGraph
 import MyBatisCommonLib
 import MyBatisMapperXmlSqlInjectionLib
-import semmle.code.xml.MyBatisMapperXML
-import semmle.code.java.dataflow.FlowSources
 
 private class MyBatisMapperXmlSqlInjectionConfiguration extends TaintTracking::Configuration {
   MyBatisMapperXmlSqlInjectionConfiguration() { this = "MyBatis mapper xml sql injection" }

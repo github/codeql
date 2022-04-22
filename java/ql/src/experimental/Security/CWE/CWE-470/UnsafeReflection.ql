@@ -14,7 +14,6 @@ import java
 import DataFlow
 import UnsafeReflectionLib
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
 private class ContainsSanitizer extends DataFlow::BarrierGuard {

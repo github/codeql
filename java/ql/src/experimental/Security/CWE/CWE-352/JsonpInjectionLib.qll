@@ -2,10 +2,7 @@ import java
 import DataFlow
 import JsonStringLib
 import semmle.code.java.security.XSS
-import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow3
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.frameworks.spring.SpringController
 
 /**
  * A method that is called to handle an HTTP GET request.

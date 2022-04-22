@@ -3,7 +3,6 @@
 import java
 import semmle.code.java.security.HttpsUrls
 import semmle.code.java.security.InsecureBasicAuth
-import semmle.code.java.dataflow.TaintTracking
 
 /**
  * A taint tracking configuration for the Basic authentication scheme

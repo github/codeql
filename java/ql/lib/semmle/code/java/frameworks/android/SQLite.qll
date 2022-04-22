@@ -3,7 +3,6 @@
 import java
 import Android
 import semmle.code.java.dataflow.FlowSteps
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * The class `android.database.sqlite.SQLiteDatabase`.

@@ -8,7 +8,6 @@
 
 import java
 import ExternalApi
-import semmle.code.java.GeneratedFiles
 
 from ExternalApi api, int usages
 where

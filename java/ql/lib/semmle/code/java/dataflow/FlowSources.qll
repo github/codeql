@@ -27,7 +27,6 @@ import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
-private import semmle.code.java.dataflow.ExternalFlow
 
 /** A data flow source of remote user input. */
 abstract class RemoteFlowSource extends DataFlow::Node {

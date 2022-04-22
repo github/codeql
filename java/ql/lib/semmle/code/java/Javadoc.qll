@@ -3,7 +3,6 @@
  */
 
 import semmle.code.Location
-import Element
 
 /** A Javadoc parent is an element whose child can be some Javadoc documentation. */
 class JavadocParent extends @javadocParent, Top {

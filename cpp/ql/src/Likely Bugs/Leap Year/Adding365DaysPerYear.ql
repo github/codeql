@@ -13,7 +13,6 @@
 
 import cpp
 import LeapYear
-import semmle.code.cpp.dataflow.DataFlow
 
 from Expr source, Expr sink, PossibleYearArithmeticOperationCheckConfiguration config
 where config.hasFlow(DataFlow::exprNode(source), DataFlow::exprNode(sink))

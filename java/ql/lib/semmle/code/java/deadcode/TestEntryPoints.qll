@@ -3,7 +3,6 @@ import semmle.code.java.deadcode.DeadCode
 import semmle.code.java.frameworks.Cucumber
 import semmle.code.java.deadcode.frameworks.FitNesseEntryPoints
 import semmle.code.java.frameworks.Mockito
-import semmle.code.java.UnitTests
 
 /**
  * A test method, suite, or an associated setup/teardown method.

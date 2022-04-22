@@ -13,7 +13,6 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.frameworks.spring.SpringController
 import DataFlow::PathGraph
 
 /** The class `org.python.util.PythonInterpreter`. */

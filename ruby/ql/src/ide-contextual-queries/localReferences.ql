@@ -9,7 +9,6 @@
 
 import codeql.IDEContextual
 import codeql.ruby.AST
-import codeql.ruby.ast.Variable
 
 external string selectedSourceFile();
 
