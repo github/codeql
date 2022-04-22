@@ -533,6 +533,15 @@ private module SyntacticUtilities {
  * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
  *
  * This feature is intended as a superior version of the many `Callee*` features.
+ *
+ * Examples:
+ * ```
+ * foo(endpoint); // -> foo
+ * foo.bar(endpoint); // -> foo.bar
+ * foo.bar({ baz: endpoint }); // -> foo.bar
+ * this.foo.bar(endpoint); // -> this.foo.bar
+ * foo[complex()].bar(endpoint); // -> foo.?.bar
+ * ```
  */
 class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
   override string getName() { result = "Callee_AccessPath" }
@@ -558,6 +567,13 @@ class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
  * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
  *
  * This feature is intended as a superior version of the `ArgumentIndexFeature`.
+ *
+ * Examples:
+ * ```
+ * foo(endpoint); // -> 0
+ * foo({ bar: endpoint }); // -> 0.bar
+ * foo(x, { bar: { baz: endpoint } }); // -> 1.bar.baz
+ * ```
  */
 class Input_ArgumentIndexAndAccessPathFromCallee extends EndpointFeature,
   TInput_ArgumentIndexAndAccessPathFromCallee {
@@ -582,6 +598,12 @@ class Input_ArgumentIndexAndAccessPathFromCallee extends EndpointFeature,
  * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
  *
  * This feature is intended as a superior version of the `ArgumentIndexFeature`.
+ *
+ * Examples:
+ * ```
+ * foo({ bar: endpoint }); // -> bar
+ * foo(x, { bar: { baz: endpoint } }); // -> bar.baz
+ * ```
  */
 class Input_AccessPathFromCallee extends EndpointFeature, TInput_AccessPathFromCallee {
   override string getName() { result = "Input_AccessPathFromCallee" }
@@ -602,6 +624,13 @@ class Input_AccessPathFromCallee extends EndpointFeature, TInput_AccessPathFromC
  * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
  *
  * This feature is intended as a superior version of the `ArgumentIndexFeature`.
+ *
+ * Examples:
+ * ```
+ * foo(endpoint); // -> 0
+ * foo({ bar: endpoint }); // -> 0
+ * foo(x, { bar: { baz: endpoint } }); // -> 1
+ * ```
  */
 class Input_ArgumentIndex extends EndpointFeature, TInput_ArgumentIndex {
   override string getName() { result = "Input_ArgumentIndex" }
