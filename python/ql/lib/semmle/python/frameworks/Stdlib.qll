@@ -959,13 +959,18 @@ private module StdlibPrivate {
     }
   }
 
-  /** A call to `os.path.samefile` will raise an exception if an `os.stat()` call on either pathname fails. */
+  /**
+   * A call to `os.path.samefile` will raise an exception if an `os.stat()` call on either pathname fails.
+   *
+   * See https://docs.python.org/3.10/library/os.path.html#os.path.samefile
+   */
   private class OsPathSamefileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
     OsPathSamefileCall() { this = OS::path().getMember("samefile").getACall() }
 
     override DataFlow::Node getAPathArgument() {
       result in [
-          this.getArg(0), this.getArgByName("path1"), this.getArg(1), this.getArgByName("path2")
+          // note that the f1/f2 names doesn't match the documentation, but is what actually works (tested on 3.8.10)
+          this.getArg(0), this.getArgByName("f1"), this.getArg(1), this.getArgByName("f2")
         ]
     }
   }
