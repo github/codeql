@@ -8,6 +8,7 @@ file_types:
     display_name: Ruby files
     extensions:
        - .rb
+       - .rbi
   - name: erb
     display_name: Ruby templates
     extensions:
