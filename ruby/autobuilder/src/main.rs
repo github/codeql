@@ -16,7 +16,6 @@ fn main() -> std::io::Result<()> {
     cmd.arg("database")
         .arg("index-files")
         .arg("--include-extension=.rb")
-        .arg("--include-extension=.rbi")
         .arg("--include-extension=.erb")
         .arg("--include-extension=.gemspec")
         .arg("--include=**/Gemfile")
