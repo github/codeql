@@ -751,4 +751,23 @@ module ExprNodes {
     /** Gets a pair of this hash literal. */
     PairCfgNode getAKeyValuePair() { result = this.getAnArgument() }
   }
+
+  private class CallableExprChildMapping extends ExprChildMapping, Callable {
+    // TODO: parameters?, callable body?
+    override predicate relevantChild(AstNode n) { none() }
+  }
+
+  /** A control-flow node that wraps a `Callable` AST expression. */
+  class CallableCfgNode extends ExprCfgNode {
+    override CallableExprChildMapping e;
+
+    override Callable getExpr() { result = super.getExpr() }
+  }
+
+  /** A control-flow node that wraps a `MethodBase` AST expression. */
+  class MethodBaseCfgNode extends CallableCfgNode {
+    MethodBaseCfgNode() { super.getExpr() instanceof MethodBase }
+
+    override MethodBase getExpr() { result = super.getExpr() }
+  }
 }
