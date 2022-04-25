@@ -14,7 +14,7 @@ class Observer : public swift::FrontendObserver {
   explicit Observer(const codeql::Configuration& config) : config{config} {}
 
   void performedSemanticAnalysis(swift::CompilerInstance& instance) override {
-    codeql::Extractor extractor{config, instance};
+    codeql::Extractor extractor(config, instance);
     extractor.extract();
   }
 
