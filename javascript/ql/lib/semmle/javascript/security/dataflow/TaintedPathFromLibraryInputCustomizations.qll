@@ -20,6 +20,8 @@ private predicate isSafeName(string name) {
         "location", //
         "path", //
         "root", //
+        "src", //
+        "source", //
       ])
 }
 
