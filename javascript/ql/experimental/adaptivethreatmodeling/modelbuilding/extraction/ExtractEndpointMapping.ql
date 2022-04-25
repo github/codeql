@@ -27,10 +27,10 @@ where
     queryName = "XssATM.ql" and c instanceof XssATM::DomBasedXssAtmConfig
     or
     queryName = "StoredXssATM.ql" and
-    c instanceof StoredXssATM::StoredXssATMConfig
+    c instanceof StoredXssATM::StoredXssAtmConfig
     or
     queryName = "XssThroughDomATM.ql" and
-    c instanceof XssThroughDomATM::XssThroughDOMATMConfig
+    c instanceof XssThroughDomATM::XssThroughDomAtmConfig
   ) and
   e = c.getASinkEndpointType()
 select queryName, e.getEncoding() as endpointTypeEncoded

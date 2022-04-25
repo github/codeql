@@ -31,13 +31,13 @@ AtmConfig getAtmCfg(Query query) {
   or
   query instanceof SqlInjectionQuery and result instanceof SqlInjectionATM::SqlInjectionAtmConfig
   or
-  query instanceof StoredXssQuery and result instanceof StoredXssATM::StoredXssATMConfig
+  query instanceof StoredXssQuery and result instanceof StoredXssATM::StoredXssAtmConfig
   or
   query instanceof TaintedPathQuery and result instanceof TaintedPathATM::TaintedPathATMConfig
   or
   query instanceof XssQuery and result instanceof XssATM::DomBasedXssATMConfig
   or
-  query instanceof XssThroughDomQuery and result instanceof XssThroughDomATM::XssThroughDOMATMConfig
+  query instanceof XssThroughDomQuery and result instanceof XssThroughDomATM::XssThroughDomAtmConfig
 }
 
 /** DEPRECATED: Alias for getAtmCfg */
