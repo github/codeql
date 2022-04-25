@@ -67,16 +67,16 @@ private DataFlow::SourceNode taintedEvent(DataFlow::TypeTracker t, string event)
  * Gets a reference to a DataTransfer object.
  * https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent/clipboardData
  */
-private DataFlow::SourceNode taintedDataTransfer(DataFlow::TypeTracker t) {
+private DataFlow::SourceNode taintedDataTransfer(DataFlow::TypeTracker t, string event) {
   t.start() and
-  result = taintedEvent(DataFlow::TypeTracker::end(), "paste").getAPropertyRead("clipboardData")
+  result = taintedEvent(DataFlow::TypeTracker::end(), event).getAPropertyRead("clipboardData") and
+  event = "paste"
   or
   t.start() and
-  result =
-    taintedEvent(DataFlow::TypeTracker::end(), ["drop", "beforeinput"])
-        .getAPropertyRead("dataTransfer")
+  result = taintedEvent(DataFlow::TypeTracker::end(), event).getAPropertyRead("dataTransfer") and
+  event = ["drop", "beforeinput"]
   or
-  exists(DataFlow::TypeTracker t2 | result = taintedDataTransfer(t2).track(t2, t))
+  exists(DataFlow::TypeTracker t2 | result = taintedDataTransfer(t2, event).track(t2, t))
 }
 
 /**
@@ -84,9 +84,20 @@ private DataFlow::SourceNode taintedDataTransfer(DataFlow::TypeTracker t) {
  * Seen as a source for DOM-based XSS.
  */
 private class TaintedDataTransfer extends RemoteFlowSource {
+  string event;
+
   TaintedDataTransfer() {
-    this = taintedDataTransfer(DataFlow::TypeTracker::end()).getAMethodCall("getData")
+    this = taintedDataTransfer(DataFlow::TypeTracker::end(), event).getAMethodCall("getData")
   }
 
-  override string getSourceType() { result = "Clipboard data" }
+  override string getSourceType() {
+    event = "paste" and
+    result = "Clipboard data"
+    or
+    event = "drop" and
+    result = "Drag&Drop data"
+    or
+    event = "beforeinput" and
+    result = "Input data"
+  }
 }
