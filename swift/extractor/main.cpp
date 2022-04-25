@@ -40,7 +40,9 @@ int main(int argc, char** argv) {
   if ("-frontend"s != argv[1]) {
     return 0;
   }
+  // Required by Swift/LLVM
   PROGRAM_START(argc, argv);
+  INITIALIZE_LLVM();
 
   codeql::Configuration configuration{};
   configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", ".");
@@ -55,6 +57,5 @@ int main(int argc, char** argv) {
   std::copy(std::begin(args), std::end(args), std::back_inserter(configuration.frontendOptions));
   Observer observer(configuration);
   int frontend_rc = swift::performFrontend(args, "swift-extractor", (void*)main, &observer);
-  llvm::llvm_shutdown();
   return frontend_rc;
 }
