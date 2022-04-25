@@ -32,7 +32,7 @@ predicate loopExit(LoopStmt loop, Stmt exit) {
   exit.getEnclosingStmt*() = loop.getBody() and
   (
     exit instanceof ReturnStmt or
-    exit.(BreakStmt).(JumpStmt).getTarget() = loop.getEnclosingStmt*()
+    exit.(BreakStmt).getTarget() = loop.getEnclosingStmt*()
   )
 }
 

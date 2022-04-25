@@ -5,6 +5,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.dataflow.SSA
 private import FlowSummaryImpl as FlowSummaryImpl
+private import SsaImpl as SsaImpl
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -210,14 +211,46 @@ module Content {
   class UnknownArrayElementContent extends ArrayElementContent, TUnknownArrayElementContent {
     override string toString() { result = "array element" }
   }
+}
 
-  /**
-   * Used internally only, to represent the union of `KnownArrayElementContent`
-   * and `UnknownArrayElementContent`, to avoid combinatorial explosions in
-   * `SummaryComponentStack`s in flow summaries.
-   */
-  private class AnyArrayElementContent extends Content, TAnyArrayElementContent {
-    override string toString() { result = "any array element" }
+/**
+ * An entity that represents a set of `Content`s.
+ *
+ * The set may be interpreted differently depending on whether it is
+ * stored into (`getAStoreContent`) or read from (`getAReadContent`).
+ */
+class ContentSet extends TContentSet {
+  /** Holds if this content set is the singleton `{c}`. */
+  predicate isSingleton(Content c) { this = TSingletonContent(c) }
+
+  /** Holds if this content set represent all `ArrayElementContent`s. */
+  predicate isAnyArrayElement() { this = TAnyArrayElementContent() }
+
+  /** Gets a textual representation of this content set. */
+  string toString() {
+    exists(Content c |
+      this.isSingleton(c) and
+      result = c.toString()
+    )
+    or
+    this.isAnyArrayElement() and
+    result = "any array element"
+  }
+
+  /** Gets a content that may be stored into when storing into this set. */
+  Content getAStoreContent() {
+    this.isSingleton(result)
+    or
+    this.isAnyArrayElement() and
+    result = TUnknownArrayElementContent()
+  }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() {
+    this.isSingleton(result)
+    or
+    this.isAnyArrayElement() and
+    result instanceof Content::ArrayElementContent
   }
 }
 
@@ -256,6 +289,26 @@ abstract class BarrierGuard extends CfgNodes::ExprCfgNode {
    */
   abstract predicate checks(CfgNode expr, boolean branch);
 
+  /**
+   * Gets an implicit entry definition for a captured variable that
+   * may be guarded, because a call to the capturing callable is guarded.
+   *
+   * This is restricted to calls where the variable is captured inside a
+   * block.
+   */
+  private Ssa::Definition getAMaybeGuardedCapturedDef() {
+    exists(
+      boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def,
+      CfgNodes::ExprNodes::CallCfgNode call
+    |
+      def.getARead() = testedNode and
+      this.checks(testedNode, branch) and
+      SsaImpl::captureFlowIn(call, def, result) and
+      this.controlsBlock(call.getBasicBlock(), branch) and
+      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
+    )
+  }
+
   final Node getAGuardedNode() {
     exists(boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def |
       def.getARead() = testedNode and
@@ -263,5 +316,7 @@ abstract class BarrierGuard extends CfgNodes::ExprCfgNode {
       this.checks(testedNode, branch) and
       this.controlsBlock(result.asExpr().getBasicBlock(), branch)
     )
+    or
+    result.asExpr() = this.getAMaybeGuardedCapturedDef().getARead()
   }
 }

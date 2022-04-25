@@ -317,10 +317,14 @@ private module Cached {
   }
 
   cached
+  newtype TContentSet =
+    TSingletonContent(Content c) or
+    TAnyArrayElementContent()
+
+  cached
   newtype TContent =
     TKnownArrayElementContent(int i) { i in [0 .. 10] } or
-    TUnknownArrayElementContent() or
-    TAnyArrayElementContent()
+    TUnknownArrayElementContent()
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
@@ -767,27 +771,21 @@ private module OutNodes {
 import OutNodes
 
 predicate jumpStep(Node pred, Node succ) {
-  SsaImpl::captureFlowIn(pred.(SsaDefinitionNode).getDefinition(),
+  SsaImpl::captureFlowIn(_, pred.(SsaDefinitionNode).getDefinition(),
     succ.(SsaDefinitionNode).getDefinition())
   or
-  SsaImpl::captureFlowOut(pred.(SsaDefinitionNode).getDefinition(),
+  SsaImpl::captureFlowOut(_, pred.(SsaDefinitionNode).getDefinition(),
     succ.(SsaDefinitionNode).getDefinition())
   or
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
 }
 
-predicate storeStep(Node node1, Content c, Node node2) {
+predicate storeStep(Node node1, ContentSet c, Node node2) {
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
 
-predicate readStep(Node node1, Content c, Node node2) {
-  exists(Content c0 | FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c0, node2) |
-    if c0 = TAnyArrayElementContent()
-    then
-      c instanceof TUnknownArrayElementContent or
-      c instanceof TKnownArrayElementContent
-    else c = c0
-  )
+predicate readStep(Node node1, ContentSet c, Node node2) {
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
 }
 
 /**
@@ -795,7 +793,7 @@ predicate readStep(Node node1, Content c, Node node2) {
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
 
@@ -864,7 +862,7 @@ int accessPathLimit() { result = 5 }
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) { none() }
+predicate forceHighPrecision(Content c) { c instanceof Content::ArrayElementContent }
 
 /** The unit type. */
 private newtype TUnit = TMkUnit()

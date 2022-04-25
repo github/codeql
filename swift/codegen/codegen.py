@@ -3,6 +3,7 @@
 
 from lib import generator
 import dbschemegen
+import qlgen
 
 if __name__ == "__main__":
-    generator.run(dbschemegen.generate)
+    generator.run(dbschemegen.generate, qlgen.generate)

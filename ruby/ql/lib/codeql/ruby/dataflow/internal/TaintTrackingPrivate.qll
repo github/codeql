@@ -22,7 +22,7 @@ predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
 
 private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
   CfgNodes::ExprNodes::CasePatternCfgNode p
@@ -86,7 +86,11 @@ private module Cached {
     exists(CfgNodes::ExprNodes::OperationCfgNode op |
       op = nodeTo.asExpr() and
       op.getAnOperand() = nodeFrom.asExpr() and
-      not op.getExpr() instanceof AssignExpr
+      not op.getExpr() =
+        any(Expr e |
+          e instanceof AssignExpr or
+          e instanceof SplatExpr
+        )
     )
     or
     // string interpolation of `nodeFrom` into `nodeTo`
@@ -95,10 +99,14 @@ private module Cached {
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
     or
-    // Although flow through arrays is modelled precisely using stores/reads, we still
-    // allow flow out of a _tainted_ array. This is needed in order to support taint-
-    // tracking configurations where the source is an array.
-    readStep(nodeFrom, any(DataFlow::Content::ArrayElementContent c), nodeTo)
+    // Although flow through collections is modelled precisely using stores/reads, we still
+    // allow flow out of a _tainted_ collection. This is needed in order to support taint-
+    // tracking configurations where the source is a collection.
+    exists(DataFlow::ContentSet c | readStep(nodeFrom, c, nodeTo) |
+      c.isSingleton(any(DataFlow::Content::ArrayElementContent aec))
+      or
+      c.isAnyArrayElement()
+    )
   }
 
   /**

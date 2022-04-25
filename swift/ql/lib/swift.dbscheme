@@ -9,7 +9,6 @@ sourceLocationPrefix(
 );
 
 
-
 // from codegen/schema.yml
 
 files(
@@ -656,7 +655,7 @@ arrow_exprs(
 assign_exprs(
   unique int id: @assign_expr,
   int dest: @expr ref,
-  int src: @expr ref
+  int source: @expr ref
 );
 
 bind_optional_exprs(
@@ -1321,7 +1320,7 @@ prefix_unary_exprs(
 #keyset[id]
 self_apply_exprs(
   int id: @self_apply_expr ref,
-  int base: @expr ref
+  int base_expr: @expr ref
 );
 
 array_exprs(
@@ -1622,13 +1621,13 @@ stmt_condition_elements(
 
 repeat_while_stmts(
   unique int id: @repeat_while_stmt,
-  int cond: @expr ref,
+  int condition: @expr ref,
   int body: @stmt ref
 );
 
 switch_stmts(
   unique int id: @switch_stmt,
-  int subject_expr: @expr ref
+  int expr: @expr ref
 );
 
 #keyset[id, index]

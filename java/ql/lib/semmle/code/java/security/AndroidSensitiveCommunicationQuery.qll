@@ -142,7 +142,7 @@ class SensitiveCommunicationConfig extends TaintTracking::Configuration {
    */
   override predicate isSanitizer(DataFlow::Node node) { node instanceof ExplicitIntentSanitizer }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     super.allowImplicitRead(node, c)
     or
     this.isSink(node)
