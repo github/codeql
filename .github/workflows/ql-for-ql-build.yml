@@ -140,7 +140,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        folder: [cpp, csharp, java, javascript, python, ql, ruby]
+        folder: [cpp, csharp, java, javascript, python, ql, ruby, swift]
 
     needs:
       - package
