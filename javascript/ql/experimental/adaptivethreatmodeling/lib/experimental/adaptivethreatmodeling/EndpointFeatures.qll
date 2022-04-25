@@ -231,7 +231,6 @@ private newtype TEndpointFeature =
   TCalleeAccessPathWithStructuralInfo() or
   TEnclosingFunctionBody() or
   TCallee_AccessPath() or
-  TInput_ArgumentIndexAndAccessPathFromCallee() or
   TInput_AccessPathFromCallee() or
   TInput_ArgumentIndex()
 
@@ -562,42 +561,11 @@ class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
 }
 
 /**
- * The feature for how a callee can refer to a the endpoint that is "contained" in an argument to a call
- *
- * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
- *
- * This feature is intended as a superior version of the `ArgumentIndexFeature`.
- *
- * Examples:
- * ```
- * foo(endpoint); // -> 0
- * foo({ bar: endpoint }); // -> 0.bar
- * foo(x, { bar: { baz: endpoint } }); // -> 1.bar.baz
- * ```
- */
-class Input_ArgumentIndexAndAccessPathFromCallee extends EndpointFeature,
-  TInput_ArgumentIndexAndAccessPathFromCallee {
-  override string getName() { result = "Input_ArgumentIndexAndAccessPathFromCallee" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    exists(DataFlow::InvokeNode invk |
-      result = SyntacticUtilities::getSimpleParameterAccessPath(endpoint) and
-      (
-        invk.getAnArgument() = endpoint or
-        SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
-              .asExpr()
-              .getUnderlyingValue()).flow() = endpoint
-      )
-    )
-  }
-}
-
-/**
  * The feature for how a callee can refer to a the endpoint that is "contained" in some argument to a call
  *
  * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
  *
- * This feature is intended as a superior version of the `ArgumentIndexFeature`.
+ * This feature, together with `Input_ArgumentIndex` is intended as a far superior version of the `ArgumentIndexFeature`.
  *
  * Examples:
  * ```
