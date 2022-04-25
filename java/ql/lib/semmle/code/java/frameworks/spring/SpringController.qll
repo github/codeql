@@ -154,9 +154,7 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
   }
 
   /** Gets the "value" @RequestMapping annotation value, if present. */
-  string getValue() {
-    result = requestMappingAnnotation.getStringValue("value")
-  }
+  string getValue() { result = requestMappingAnnotation.getStringValue("value") }
 
   /** Holds if this is considered an `@ResponseBody` method. */
   predicate isResponseBody() {
