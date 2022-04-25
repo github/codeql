@@ -498,13 +498,13 @@ private EssaVariable potential_input(EssaNodeRefinement ref) {
 
 /** An assignment to a variable `v = val` */
 class AssignmentDefinition extends EssaNodeDefinition {
+  ControlFlowNode value;
+
   AssignmentDefinition() {
-    SsaSource::assignment_definition(this.getSourceVariable(), this.getDefiningNode(), _)
+    SsaSource::assignment_definition(this.getSourceVariable(), this.getDefiningNode(), value)
   }
 
-  ControlFlowNode getValue() {
-    SsaSource::assignment_definition(this.getSourceVariable(), this.getDefiningNode(), result)
-  }
+  ControlFlowNode getValue() { result = value }
 
   override string getRepresentation() { result = this.getValue().getNode().toString() }
 
