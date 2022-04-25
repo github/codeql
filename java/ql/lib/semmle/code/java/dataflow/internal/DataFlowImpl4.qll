@@ -782,7 +782,7 @@ private module Stage1 {
   private predicate revFlowStore(Content c, NodeEx node, boolean toReturn, Configuration config) {
     exists(NodeEx mid, TypedContent tc |
       revFlow(mid, toReturn, pragma[only_bind_into](config)) and
-      fwdFlowConsCandSet(_, c, pragma[only_bind_into](config)) and
+      fwdFlowConsCand(c, pragma[only_bind_into](config)) and
       store(node, tc, mid, _, config) and
       c = tc.getContent()
     )
