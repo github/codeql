@@ -26,10 +26,8 @@ module Rbi {
     abstract class RbiType extends DataFlow::Node { }
 
     class ConstantReadAccessAsRbiType extends RbiType {
-      private ExprNodes::ConstantReadAccessCfgNode acc;
-
       ConstantReadAccessAsRbiType() {
-        acc = this.asExpr()
+        this.asExpr() instanceof ExprNodes::ConstantReadAccessCfgNode
         // TODO: should this class be more restrictive?
       }
     }
