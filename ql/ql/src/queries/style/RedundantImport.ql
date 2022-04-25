@@ -1,9 +1,9 @@
 /**
  * @name Redundant import
- * @description
+ * @description An import that is redundant due to an earlier import
  * @kind problem
  * @problem.severity warning
- * @id ql/abstract-class-import
+ * @id ql/redundant-import
  * @tags correctness
  *       performance
  * @precision high
