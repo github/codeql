@@ -53,7 +53,7 @@ private predicate returnStep(Node n1, Node n2) {
   exists(ReturnStmt ret, Method m |
     ret.getEnclosingCallable() = m and
     ret.getResult() = n1.asExpr() and
-    m = dispatchCand(n2.asExpr())
+    pragma[only_bind_out](m) = dispatchCand(n2.asExpr())
   )
 }
 
