@@ -23,5 +23,5 @@ jobs:
         run: |
           pip install -r swift/codegen/requirements.txt
           bazel run //swift/codegen
-          git add .
+          git add swift
           git diff --exit-code --stat HEAD
