@@ -31,9 +31,7 @@ predicate isVettedFeature(string featureName) {
       f instanceof CalleeApiName or
       f instanceof CalleeAccessPath or
       f instanceof CalleeAccessPathWithStructuralInfo or
-      f instanceof EnclosingFunctionBody or
-      f instanceof ContextSurroundingFunctionParametersInFile or
-      f instanceof ContextFunctionInterfacesInFile
+      f instanceof EnclosingFunctionBody
     ).getName()
 }
 
