@@ -66,6 +66,16 @@ predicate hasOriginCheck(PostMessageHandler handler) {
   or
   // set.includes(event.source)
   exists(InclusionTest test | sourceOrOrigin(handler).flowsTo(test.getContainedNode()))
+  or
+  // "safeOrigin".startsWith(event.origin)
+  exists(StringOps::StartsWith starts |
+    origin(DataFlow::TypeTracker::end(), handler).flowsTo(starts.getSubstring())
+  )
+  or
+  // "safeOrigin".endsWith(event.origin)
+  exists(StringOps::EndsWith ends |
+    origin(DataFlow::TypeTracker::end(), handler).flowsTo(ends.getSubstring())
+  )
 }
 
 from PostMessageHandler handler

@@ -62,3 +62,9 @@ function is_valid_origin(origin) {
     }
     return valid;
 }
+
+window.onmessage = event => { // OK - the check is OK
+    if ("https://www.example.com".startsWith(event.origin)) {
+      // do something
+    }
+}
