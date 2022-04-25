@@ -7,8 +7,7 @@
 
 <p>
 The <code>"message"</code> event is used to send messages between windows. 
-An untrusted origin is allowed to send messages to a trusted window, and if the origin 
-is not checked that can lead to various security issues.
+An untrusted window can send a message to a trusted window, and it is up to the receiver to verify the legitimacy of the message. One way of doing that verification is to check the <code>origin</code> of the message ensure that it origins from a trusted window.
 </p>
 </overview>
 
