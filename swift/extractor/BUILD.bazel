@@ -13,9 +13,10 @@ cc_binary(
         "Extractor.cpp",
         "Configuration.h",
         "main.cpp",
-    ],
+    ] + glob(["trap/*.h"]),
     copts = [
         "-fno-rtti",
+        "-Iswift/extractor",
     ],
     target_compatible_with = select({
         "@platforms//os:linux": [],

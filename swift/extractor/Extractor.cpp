@@ -1,4 +1,5 @@
 #include "Extractor.h"
+#include "trap/Trap.h"
 
 #include <filesystem>
 #include <fstream>
@@ -84,8 +85,10 @@ void Extractor::extractFile(swift::SourceFile& file) {
   ss << "\n";
   trap << "// frontend-options: " << ss.str();
 
-  trap << "#0=*\n";
-  trap << "files(#0, " << std::quoted(srcFilePath.str().str()) << ")\n";
+  trap::Arena arena{trap};
+  std::string filepath = srcFilePath.str().str();
+  auto fileLabel = arena.getLabel<trap::FileTag>(filepath);
+  arena.emit(trap::Files{fileLabel, filepath});
 
   /// TODO: Pick a better name to avoid collisions
   std::string trapName = file.getFilename().str() + ".trap";
