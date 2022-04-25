@@ -1,4 +1,4 @@
-/*
+/**
  * This model covers JMS API versions 1 and 2.
  *
  * https://docs.oracle.com/javaee/6/api/javax/jms/package-summary.html
