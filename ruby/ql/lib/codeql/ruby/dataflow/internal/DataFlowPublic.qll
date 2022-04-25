@@ -211,14 +211,46 @@ module Content {
   class UnknownArrayElementContent extends ArrayElementContent, TUnknownArrayElementContent {
     override string toString() { result = "array element" }
   }
+}
 
-  /**
-   * Used internally only, to represent the union of `KnownArrayElementContent`
-   * and `UnknownArrayElementContent`, to avoid combinatorial explosions in
-   * `SummaryComponentStack`s in flow summaries.
-   */
-  private class AnyArrayElementContent extends Content, TAnyArrayElementContent {
-    override string toString() { result = "any array element" }
+/**
+ * An entity that represents a set of `Content`s.
+ *
+ * The set may be interpreted differently depending on whether it is
+ * stored into (`getAStoreContent`) or read from (`getAReadContent`).
+ */
+class ContentSet extends TContentSet {
+  /** Holds if this content set is the singleton `{c}`. */
+  predicate isSingleton(Content c) { this = TSingletonContent(c) }
+
+  /** Holds if this content set represent all `ArrayElementContent`s. */
+  predicate isAnyArrayElement() { this = TAnyArrayElementContent() }
+
+  /** Gets a textual representation of this content set. */
+  string toString() {
+    exists(Content c |
+      this.isSingleton(c) and
+      result = c.toString()
+    )
+    or
+    this.isAnyArrayElement() and
+    result = "any array element"
+  }
+
+  /** Gets a content that may be stored into when storing into this set. */
+  Content getAStoreContent() {
+    this.isSingleton(result)
+    or
+    this.isAnyArrayElement() and
+    result = TUnknownArrayElementContent()
+  }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() {
+    this.isSingleton(result)
+    or
+    this.isAnyArrayElement() and
+    result instanceof Content::ArrayElementContent
   }
 }
 
