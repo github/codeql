@@ -4,7 +4,7 @@ import java
 import semmle.code.java.dataflow.ExternalFlow
 
 /**
- * All `java.io.File::createTempFile` methods.
+ * A `java.io.File::createTempFile` method.
  */
 class MethodFileCreateTempFile extends Method {
   MethodFileCreateTempFile() {
@@ -14,7 +14,7 @@ class MethodFileCreateTempFile extends Method {
 }
 
 /**
- * All methods on the class `java.io.File` that create directories.
+ * A method on the class `java.io.File` that create directories.
  */
 class MethodFileCreatesDirs extends Method {
   MethodFileCreatesDirs() {
