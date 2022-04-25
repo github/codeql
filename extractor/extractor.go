@@ -918,13 +918,21 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		if expr == nil {
 			return
 		}
-		if _, ok := typeOf(tw, expr.X).Underlying().(*types.Signature); ok {
-			kind = dbscheme.GenericFunctionInstantiationExpr.Index()
-		} else {
-			// Can't distinguish between actual index expressions (into a map,
-			// array, slice, string or pointer to array) and generic type
-			// specialization expression, so we do it later in QL.
+		typeofx := typeOf(tw, expr.X)
+		if typeofx == nil {
+			// We are missing type information for `expr.X`, so we cannot
+			// determine whether this is a generic function instantiation
+			// or not.
 			kind = dbscheme.IndexExpr.Index()
+		} else {
+			if _, ok := typeofx.Underlying().(*types.Signature); ok {
+				kind = dbscheme.GenericFunctionInstantiationExpr.Index()
+			} else {
+				// Can't distinguish between actual index expressions (into a
+				// map, array, slice, string or pointer to array) and generic
+				// type specialization expression, so we do it later in QL.
+				kind = dbscheme.IndexExpr.Index()
+			}
 		}
 		extractExpr(tw, expr.X, lbl, 0)
 		extractExpr(tw, expr.Index, lbl, 1)
