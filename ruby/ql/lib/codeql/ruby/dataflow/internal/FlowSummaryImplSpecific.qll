@@ -74,20 +74,18 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   )
   or
   c.getName() = "Element" and
-  (
-    c.getNumArgument() = 0 and
+  exists(string arg | arg = c.getAnArgument() |
+    arg = "?" and
+    result = FlowSummary::SummaryComponent::elementUnknown()
+    or
+    arg = "any" and
     result = FlowSummary::SummaryComponent::elementAny()
     or
-    exists(string arg | arg = c.getAnArgument() |
-      arg = "?" and
-      result = FlowSummary::SummaryComponent::elementUnknown()
+    exists(ConstantValue cv | result = FlowSummary::SummaryComponent::elementKnown(cv) |
+      cv.isInt(AccessPath::parseInt(arg))
       or
-      exists(ConstantValue cv | result = FlowSummary::SummaryComponent::elementKnown(cv) |
-        cv.isInt(AccessPath::parseInt(arg))
-        or
-        not exists(AccessPath::parseInt(arg)) and
-        cv.serialize() = c.getAnArgument()
-      )
+      not exists(AccessPath::parseInt(arg)) and
+      cv.serialize() = c.getAnArgument()
     )
   )
 }

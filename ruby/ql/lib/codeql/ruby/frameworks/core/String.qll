@@ -133,7 +133,7 @@ module String {
     FormatSummary() { this = "%" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Argument[self]", "Argument[0]", "Argument[0].Element"] and
+      input = ["Argument[self]", "Argument[0]", "Argument[0].Element[any]"] and
       output = "ReturnValue" and
       preservesValue = false
     }
