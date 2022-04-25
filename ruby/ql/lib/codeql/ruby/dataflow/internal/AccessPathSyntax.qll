@@ -149,7 +149,7 @@ class AccessPath extends string instanceof AccessPath::Range {
  * An access part token such as `Argument[1]` or `ReturnValue`, appearing in one or more access paths.
  */
 class AccessPathToken extends string {
-  AccessPathToken() { this = getRawToken(any(AccessPath path), _) }
+  AccessPathToken() { this = getRawToken(_, _) }
 
   private string getPart(int part) {
     result = this.regexpCapture("([^\\[]+)(?:\\[([^\\]]*)\\])?", part)
