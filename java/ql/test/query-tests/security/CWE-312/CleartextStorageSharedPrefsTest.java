@@ -89,9 +89,16 @@ public class CleartextStorageSharedPrefsTest extends Activity {
 				.create(context, "secret_shared_prefs", masterKey,
 						EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
 						EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
-				.edit().putString("name", name) /// Safe
+				.edit().putString("name", name) // Safe
 				.putString("password", password); // Safe
 
 		editor.commit();
+	}
+
+	public void testSetSharedPrefs7(Context context, String name, String password) {
+		SharedPreferences sharedPrefs =
+				context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+		sharedPrefs.edit().putString("name", name).apply(); // Safe
+		sharedPrefs.edit().putString("password", password).apply(); // $hasCleartextStorageSharedPrefs
 	}
 }
