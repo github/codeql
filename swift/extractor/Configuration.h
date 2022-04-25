@@ -6,9 +6,12 @@
 
 namespace codeql {
 struct Configuration {
+  // The location for storing TRAP files to be imported by CodeQL engine.
   std::string trapDir;
+  // The location for storing extracted source files.
   std::string sourceArchiveDir;
-  std::vector<const char*> frontendOptions;
+  // The arguments passed to the extractor. Used for debugging.
+  std::vector<std::string> frontendOptions;
 };
 }  // namespace codeql
 

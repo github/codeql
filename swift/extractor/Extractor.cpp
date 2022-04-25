@@ -18,11 +18,13 @@ Extractor::Extractor(const Configuration& config, swift::CompilerInstance& insta
     : config{config}, compiler{instance} {}
 
 void Extractor::extract() {
+  // Swift frontend can be called in several different modes, we are interested
+  // only in the cases when either a primary or a main source file is present
   if (compiler.getPrimarySourceFiles().empty()) {
     swift::ModuleDecl* module = compiler.getMainModule();
     if (!module->getFiles().empty() &&
         module->getFiles().front()->getKind() == swift::FileUnitKind::Source) {
-      /// We can only call getMainSourceFile if the first file is of a Source kind
+      // We can only call getMainSourceFile if the first file is of a Source kind
       swift::SourceFile& file = module->getMainSourceFile();
       extractFile(file);
     }
@@ -63,7 +65,10 @@ void Extractor::extractFile(swift::SourceFile& file) {
     return;
   }
 
-  /// TODO: find a more robust approach to avoid collisions?
+  // The extractor can be called several times from different processes with
+  // the same input file(s)
+  // We are using PID to avoid concurrent access
+  // TODO: find a more robust approach to avoid collisions?
   std::string tempTrapName = file.getFilename().str() + '.' + std::to_string(getpid()) + ".trap";
   llvm::SmallString<PATH_MAX> tempTrapPath(config.trapDir);
   llvm::sys::path::append(tempTrapPath, tempTrapName);
@@ -87,12 +92,12 @@ void Extractor::extractFile(swift::SourceFile& file) {
   trap << "#0=*\n";
   trap << "files(#0, " << std::quoted(srcFilePath.str().str()) << ")\n";
 
-  /// TODO: Pick a better name to avoid collisions
+  // TODO: Pick a better name to avoid collisions
   std::string trapName = file.getFilename().str() + ".trap";
   llvm::SmallString<PATH_MAX> trapPath(config.trapDir);
   llvm::sys::path::append(trapPath, trapName);
 
-  /// TODO: The last process wins. Should we do better than that?
+  // TODO: The last process wins. Should we do better than that?
   if (std::error_code ec = llvm::sys::fs::rename(tempTrapPath, trapPath)) {
     std::cerr << "Cannot rename temp trap file '" << tempTrapPath.str().str() << "' -> '"
               << trapPath.str().str() << "': " << ec.message() << "\n";

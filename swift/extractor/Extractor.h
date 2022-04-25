@@ -8,6 +8,7 @@
 
 namespace codeql {
 
+// TODO: add documentation for the class and its public methods
 class Extractor {
  public:
   explicit Extractor(const Configuration& config, swift::CompilerInstance& instance);
