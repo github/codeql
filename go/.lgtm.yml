@@ -1,5 +1,0 @@
-path_classifiers:
-  test:
-    - ql/test
-  example:
-    - ql/src

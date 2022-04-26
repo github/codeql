@@ -6,6 +6,8 @@
         "*/ql/examples/qlpack.yml",
         "*/ql/consistency-queries/qlpack.yml",
         "cpp/ql/test/query-tests/Security/CWE/CWE-190/semmle/tainted/qlpack.yml",
+        "go/ql/config/legacy-support/qlpack.yml",
+        "go/build/codeql-extractor-go/codeql-extractor.yml",
         "javascript/ql/experimental/adaptivethreatmodeling/lib/qlpack.yml",
         "javascript/ql/experimental/adaptivethreatmodeling/modelbuilding/qlpack.yml",
         "javascript/ql/experimental/adaptivethreatmodeling/src/qlpack.yml",

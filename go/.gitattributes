@@ -1,6 +1,0 @@
-# Force git not to modify line endings for go or html files under the ql directory
-ql/**/*.go -text
-ql/**/*.html -text
-
-# Force git not to modify line endings for dbschemes
-*.dbscheme -text
