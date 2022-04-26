@@ -69,10 +69,16 @@ predicate isRelevantType(CS::Type t) {
  */
 string qualifierString() { result = "Argument[Qualifier]" }
 
+private string getTypeBasedSuffix(Type t) {
+  if Collections::isCollectionType(t) then result = ".Element" else result = ""
+}
+
 private string parameterAccess(CS::Parameter p) {
-  if Collections::isCollectionType(p.getType())
-  then result = "Argument[" + p.getPosition() + "].Element"
-  else result = "Argument[" + p.getPosition() + "]"
+  result = "Argument[" + p.getPosition() + "]" + getTypeBasedSuffix(p.getType())
+}
+
+private string returnValueAccess(CS::Callable c) {
+  result = "ReturnValue" + getTypeBasedSuffix(c.getReturnType())
 }
 
 /**
@@ -94,7 +100,7 @@ private CS::Parameter getParameter(DataFlowImplCommon::ReturnNodeExt node, Param
  */
 string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
   if node.getKind() instanceof DataFlowImplCommon::ValueReturnKind
-  then result = "ReturnValue"
+  then result = returnValueAccess(node.getEnclosingCallable())
   else
     exists(ParameterPosition pos |
       pos = node.getKind().(DataFlowImplCommon::ParamUpdateReturnKind).getPosition()

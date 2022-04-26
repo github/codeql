@@ -38,7 +38,7 @@
 | p;ParamFlow;true;writeChunked;(char[],OutputStream);;Argument[0];Argument[1];generated:taint |
 | p;Pojo;false;fillIn;(List);;Argument[-1];Argument[0].Element;generated:taint |
 | p;Pojo;false;getBoxedBytes;();;Argument[-1];ReturnValue;generated:taint |
-| p;Pojo;false;getBoxedChars;();;Argument[-1];ReturnValue;generated:taint |
+| p;Pojo;false;getBoxedChars;();;Argument[-1];ReturnValue.Element;generated:taint |
 | p;Pojo;false;getByteArray;();;Argument[-1];ReturnValue;generated:taint |
 | p;Pojo;false;getCharArray;();;Argument[-1];ReturnValue;generated:taint |
 | p;Pojo;false;getValue;();;Argument[-1];ReturnValue;generated:taint |

@@ -144,15 +144,23 @@ predicate isRelevantType(J::Type t) {
  */
 string qualifierString() { result = "Argument[-1]" }
 
-private string parameterAccess(J::Parameter p) {
+private string getTypeBasedSuffix(Type t) {
   if
-    p.getType() instanceof J::Array and
-    not isPrimitiveTypeUsedForBulkData(p.getType().(J::Array).getElementType())
-  then result = "Argument[" + p.getPosition() + "].ArrayElement"
+    t instanceof J::Array and
+    not isPrimitiveTypeUsedForBulkData(t.(J::Array).getElementType())
+  then result = ".ArrayElement"
   else
-    if p.getType() instanceof ContainerFlow::ContainerType
-    then result = "Argument[" + p.getPosition() + "].Element"
-    else result = "Argument[" + p.getPosition() + "]"
+    if t instanceof ContainerFlow::ContainerType
+    then result = ".Element"
+    else result = ""
+}
+
+private string parameterAccess(J::Parameter p) {
+  result = "Argument[" + p.getPosition() + "]" + getTypeBasedSuffix(p.getType())
+}
+
+private string returnValueAccess(J::Callable c) {
+  result = "ReturnValue" + getTypeBasedSuffix(c.getReturnType())
 }
 
 /**
@@ -169,7 +177,7 @@ string parameterNodeAsInput(DataFlow::ParameterNode p) {
  */
 string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
   if node.getKind() instanceof DataFlowImplCommon::ValueReturnKind
-  then result = "ReturnValue"
+  then result = returnValueAccess(node.getEnclosingCallable())
   else
     exists(int pos |
       pos = node.getKind().(DataFlowImplCommon::ParamUpdateReturnKind).getPosition()
