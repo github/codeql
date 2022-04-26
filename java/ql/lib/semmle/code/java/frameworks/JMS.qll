@@ -107,6 +107,6 @@ private class Jms2Source extends SourceModelCsv {
 /** Defines additional taint propagation steps in JMS 2. */
 private class Jms2FlowStep extends SummaryModelCsv {
   override predicate row(string row) {
-    row = ["javax.jms;Message;true;getBody;();;Argument[-1];ReturnValue;taint",]
+    row = "javax.jms;Message;true;getBody;();;Argument[-1];ReturnValue;taint"
   }
 }
