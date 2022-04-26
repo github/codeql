@@ -7,7 +7,7 @@
  * @scored
  * @problem.severity error
  * @security-severity 6.1
- * @id adaptive-threat-modeling/js/stored-xss
+ * @id js/ml-powered/stored-xss
  * @tags experimental security external/cwe/cwe-079 external/cwe/cwe-116
  */
 

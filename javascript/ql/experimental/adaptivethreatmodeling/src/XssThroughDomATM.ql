@@ -7,7 +7,7 @@
  * @scored
  * @problem.severity warning
  * @security-severity 6.1
- * @id adaptive-threat-modeling/js/xss-through-dom
+ * @id js/ml-powered/xss-through-dom
  * @tags experimental security external/cwe/cwe-079 external/cwe/cwe-116
  */
 
