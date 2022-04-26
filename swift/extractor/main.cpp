@@ -9,6 +9,9 @@
 
 using namespace std::string_literals;
 
+// This is part of the swiftFrontendTool interface, we hook into the
+// compilation pipeline and extract files after the Swift frontend performed
+// semantic analysys
 class Observer : public swift::FrontendObserver {
  public:
   explicit Observer(const codeql::SwiftExtractorConfiguration& config) : config{config} {}
