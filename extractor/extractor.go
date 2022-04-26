@@ -1815,6 +1815,9 @@ func extractNumLines(tw *trap.Writer, fileName string, ast *ast.File) {
 // of an interface must be a method signature, an embedded interface type or a
 // type set literal.
 func isNonUnionTypeSetLiteral(t types.Type) bool {
+	if t == nil {
+		return false
+	}
 	switch t.Underlying().(type) {
 	case *types.Interface, *types.Union, *types.Signature:
 		return false
