@@ -1,4 +1,5 @@
 import java
+import semmle.code.xml.XML
 
 /**
  * Holds if any struts XML files are included in this snapshot.

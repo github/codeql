@@ -12,6 +12,7 @@
 
 import java
 import JsonpInjectionLib
+import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.deadcode.WebEntryPoints
 import DataFlow::PathGraph
 

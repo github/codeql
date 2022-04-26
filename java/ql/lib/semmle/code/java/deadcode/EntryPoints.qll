@@ -9,6 +9,7 @@ import semmle.code.java.deadcode.WebEntryPoints
 import semmle.code.java.frameworks.javaee.JavaServerFaces
 import semmle.code.java.frameworks.JAXB
 import semmle.code.java.frameworks.JaxWS
+import semmle.code.java.JMX
 import semmle.code.java.Reflection
 import semmle.code.java.frameworks.JavaxAnnotations
 import semmle.code.java.frameworks.Selenium

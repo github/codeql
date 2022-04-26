@@ -3,6 +3,8 @@
  */
 
 import java
+import semmle.code.java.Type
+import semmle.code.java.Member
 
 /*--- Types ---*/
 /** The interface `com.unboundid.ldap.sdk.ReadOnlySearchRequest`. */

@@ -15,6 +15,7 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.FlowSteps
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.java.frameworks.JaxWS
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more

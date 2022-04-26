@@ -12,6 +12,7 @@
 
 import java
 import BeanShellInjection
+import semmle.code.java.dataflow.FlowSources
 import DataFlow::PathGraph
 
 class BeanShellInjectionConfig extends TaintTracking::Configuration {

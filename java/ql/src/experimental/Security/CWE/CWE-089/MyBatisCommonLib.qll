@@ -6,6 +6,7 @@ import java
 import semmle.code.xml.MyBatisMapperXML
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.MyBatis
+import semmle.code.java.frameworks.Properties
 
 private predicate propertiesKey(DataFlow::Node prop, string key) {
   exists(MethodAccess m |

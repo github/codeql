@@ -5,6 +5,7 @@
 import java
 import semmle.code.configfiles.ConfigFiles
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.frameworks.Properties
 
 private string possibleSecretName() {
   result =
