@@ -6,7 +6,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** Defines sources of tainted data in JMS 1. */
 private class Jms1Source extends SourceModelCsv {
