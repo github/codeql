@@ -40,3 +40,10 @@ repos:
         language: system
         entry: bazel run //swift/codegen
         pass_filenames: false
+
+      - id: swift-codegen-unit-tests
+        name: Run Swift code generation unit tests
+        files: ^swift/codegen
+        language: system
+        entry: bazel test //swift/codegen:tests
+        pass_filenames: false

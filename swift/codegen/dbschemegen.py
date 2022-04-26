@@ -3,8 +3,8 @@ import pathlib
 
 import inflection
 
-from lib import paths, schema, generator
-from lib.dbscheme import *
+from swift.codegen.lib import paths, schema, generator
+from swift.codegen.lib.dbscheme import *
 
 log = logging.getLogger(__name__)
 
@@ -60,7 +60,7 @@ def cls_to_dbscheme(cls: schema.Class):
 
 
 def get_declarations(data: schema.Schema):
-    return [d for cls in data.classes.values() for d in cls_to_dbscheme(cls)]
+    return [d for cls in data.classes for d in cls_to_dbscheme(cls)]
 
 
 def get_includes(data: schema.Schema, include_dir: pathlib.Path):
@@ -73,11 +73,10 @@ def get_includes(data: schema.Schema, include_dir: pathlib.Path):
 
 
 def generate(opts, renderer):
-    input = opts.schema.resolve()
-    out = opts.dbscheme.resolve()
+    input = opts.schema
+    out = opts.dbscheme
 
-    with open(input) as src:
-        data = schema.load(src)
+    data = schema.load(input)
 
     dbscheme = DbScheme(src=input.relative_to(paths.swift_dir),
                         includes=get_includes(data, include_dir=input.parent),

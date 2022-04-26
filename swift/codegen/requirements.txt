@@ -1,3 +1,4 @@
 pystache
 pyyaml
 inflection
+pytest

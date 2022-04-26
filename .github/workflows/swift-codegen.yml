@@ -19,9 +19,14 @@ jobs:
           cache: 'pip'
       - uses: ./.github/actions/fetch-codeql
       - uses: bazelbuild/setup-bazelisk@v2
-      - name: Check code generation
+      - name: Install dependencies
         run: |
           pip install -r swift/codegen/requirements.txt
+      - name: Run unit tests
+        run: |
+          bazel test //swift/codegen:tests --test_output=errors
+      - name: Check that code was generated
+        run: |
           bazel run //swift/codegen
           git add swift
           git diff --exit-code --stat HEAD
