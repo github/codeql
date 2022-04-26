@@ -25,8 +25,8 @@ module SinkEndpointFilter {
   }
 }
 
-class StoredXssATMConfig extends ATMConfig {
-  StoredXssATMConfig() { this = "StoredXssATMConfig" }
+class StoredXssAtmConfig extends ATMConfig {
+  StoredXssAtmConfig() { this = "StoredXssAtmConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof Source }
 
@@ -43,12 +43,12 @@ class StoredXssATMConfig extends ATMConfig {
  * A taint-tracking configuration for reasoning about XSS.
  */
 class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "StoredXssATMConfig" }
+  Configuration() { this = "StoredXssAtmConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   override predicate isSink(DataFlow::Node sink) {
-    (sink instanceof Sink or any(StoredXssATMConfig cfg).isEffectiveSink(sink))
+    (sink instanceof Sink or any(StoredXssAtmConfig cfg).isEffectiveSink(sink))
   }
 
   override predicate isSanitizer(DataFlow::Node node) {

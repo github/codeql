@@ -22,7 +22,7 @@ where
     c instanceof SqlInjectionAtm::SqlInjectionAtmConfig
     or
     queryName = "StoredXssATM.ql" and
-    c instanceof StoredXssAtm::StoredXssATMConfig
+    c instanceof StoredXssAtm::StoredXssAtmConfig
     or
     queryName = "TaintedPathInjectionATM.ql" and
     c instanceof TaintedPathAtm::TaintedPathAtmConfig
@@ -30,7 +30,7 @@ where
     queryName = "XssATM.ql" and c instanceof XssAtm::DomBasedXssAtmConfig
     or
     queryName = "XssThroughDomATM.ql" and
-    c instanceof XssThroughDomAtm::XssThroughDOMATMConfig
+    c instanceof XssThroughDomAtm::XssThroughDomAtmConfig
   ) and
   e = c.getASinkEndpointType()
 select queryName, e.getEncoding() as endpointTypeEncoded
