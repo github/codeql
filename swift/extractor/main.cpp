@@ -5,21 +5,21 @@
 #include <swift/Basic/LLVMInitialize.h>
 #include <swift/FrontendTool/FrontendTool.h>
 
-#include "Extractor.h"
+#include "SwiftExtractor.h"
 
 using namespace std::string_literals;
 
 class Observer : public swift::FrontendObserver {
  public:
-  explicit Observer(const codeql::Configuration& config) : config{config} {}
+  explicit Observer(const codeql::SwiftExtractorConfiguration& config) : config{config} {}
 
   void performedSemanticAnalysis(swift::CompilerInstance& instance) override {
-    codeql::Extractor extractor(config, instance);
+    codeql::SwiftExtractor extractor(config, instance);
     extractor.extract();
   }
 
  private:
-  const codeql::Configuration& config;
+  const codeql::SwiftExtractorConfiguration& config;
 };
 
 static std::string getenv_or(const char* envvar, const std::string& def) {
@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
   PROGRAM_START(argc, argv);
   INITIALIZE_LLVM();
 
-  codeql::Configuration configuration{};
+  codeql::SwiftExtractorConfiguration configuration{};
   configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", ".");
   configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
   std::vector<const char*> args;

@@ -5,7 +5,7 @@
 #include <vector>
 
 namespace codeql {
-struct Configuration {
+struct SwiftExtractorConfiguration {
   // The location for storing TRAP files to be imported by CodeQL engine.
   std::string trapDir;
   // The location for storing extracted source files.

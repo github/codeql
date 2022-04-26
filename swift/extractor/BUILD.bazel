@@ -9,9 +9,9 @@ alias(
 cc_binary(
     name = "extractor",
     srcs = [
-        "Extractor.h",
-        "Extractor.cpp",
-        "Configuration.h",
+        "SwiftExtractor.h",
+        "SwiftExtractor.cpp",
+        "SwiftExtractorConfiguration.h",
         "main.cpp",
     ],
     copts = [

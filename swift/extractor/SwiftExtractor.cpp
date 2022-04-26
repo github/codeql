@@ -1,4 +1,4 @@
-#include "Extractor.h"
+#include "SwiftExtractor.h"
 
 #include <filesystem>
 #include <fstream>
@@ -14,10 +14,11 @@
 
 using namespace codeql;
 
-Extractor::Extractor(const Configuration& config, swift::CompilerInstance& instance)
+SwiftExtractor::SwiftExtractor(const SwiftExtractorConfiguration& config,
+                               swift::CompilerInstance& instance)
     : config{config}, compiler{instance} {}
 
-void Extractor::extract() {
+void SwiftExtractor::extract() {
   // Swift frontend can be called in several different modes, we are interested
   // only in the cases when either a primary or a main source file is present
   if (compiler.getPrimarySourceFiles().empty()) {
@@ -35,7 +36,7 @@ void Extractor::extract() {
   }
 }
 
-void Extractor::extractFile(swift::SourceFile& file) {
+void SwiftExtractor::extractFile(swift::SourceFile& file) {
   if (std::error_code ec = llvm::sys::fs::create_directories(config.trapDir)) {
     std::cerr << "Cannot create TRAP directory: " << ec.message() << "\n";
     return;
@@ -102,4 +103,3 @@ void Extractor::extractFile(swift::SourceFile& file) {
               << trapPath.str().str() << "': " << ec.message() << "\n";
   }
 }
-
