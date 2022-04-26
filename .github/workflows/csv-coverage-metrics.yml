@@ -50,7 +50,7 @@ jobs:
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
       - name: Create empty database
-      run: |
+        run: |
           DATABASE="${{ runner.temp }}/csharp-database"
           PROJECT="${{ runner.temp }}/csharp-project"
           dotnet new classlib --language=C# --output="$PROJECT"
