@@ -339,6 +339,9 @@ module API {
       result = callee.getReturn() and
       result.getAnImmediateUse() = this
     }
+
+    /** Gets the number of arguments of this call. */
+    int getNumArgument() { result = count(this.getArg(_)) }
   }
 
   /**

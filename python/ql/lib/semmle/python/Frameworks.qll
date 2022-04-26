@@ -12,6 +12,7 @@ private import semmle.python.frameworks.Asyncpg
 private import semmle.python.frameworks.ClickhouseDriver
 private import semmle.python.frameworks.Cryptodome
 private import semmle.python.frameworks.Cryptography
+private import semmle.python.frameworks.data.ModelsAsData
 private import semmle.python.frameworks.Dill
 private import semmle.python.frameworks.Django
 private import semmle.python.frameworks.Fabric

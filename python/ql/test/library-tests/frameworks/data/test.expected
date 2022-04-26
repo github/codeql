@@ -1,0 +1,18 @@
+taintFlow
+| test.py:3:5:3:15 | ControlFlowNode for getSource() | test.py:4:8:4:8 | ControlFlowNode for x |
+isSink
+| test.py:4:8:4:8 | ControlFlowNode for x | test-sink |
+isSource
+| test.py:3:5:3:15 | ControlFlowNode for getSource() | test-source |
+syntaxErrors
+| Member[foo |
+| Member[foo] .Member[bar] |
+| Member[foo] Member[bar] |
+| Member[foo], Member[bar] |
+| Member[foo],Member[bar] |
+| Member[foo]. Member[bar] |
+| Member[foo]..Member[bar] |
+| Member[foo]Member[bar] |
+| Member[foo]] |
+| Member[foo]].Member[bar] |
+warning
