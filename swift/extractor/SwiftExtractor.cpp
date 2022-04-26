@@ -14,29 +14,7 @@
 
 using namespace codeql;
 
-SwiftExtractor::SwiftExtractor(const SwiftExtractorConfiguration& config,
-                               swift::CompilerInstance& instance)
-    : config{config}, compiler{instance} {}
-
-void SwiftExtractor::extract() {
-  // Swift frontend can be called in several different modes, we are interested
-  // only in the cases when either a primary or a main source file is present
-  if (compiler.getPrimarySourceFiles().empty()) {
-    swift::ModuleDecl* module = compiler.getMainModule();
-    if (!module->getFiles().empty() &&
-        module->getFiles().front()->getKind() == swift::FileUnitKind::Source) {
-      // We can only call getMainSourceFile if the first file is of a Source kind
-      swift::SourceFile& file = module->getMainSourceFile();
-      extractFile(file);
-    }
-  } else {
-    for (auto s : compiler.getPrimarySourceFiles()) {
-      extractFile(*s);
-    }
-  }
-}
-
-void SwiftExtractor::extractFile(swift::SourceFile& file) {
+static void extractFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
   if (std::error_code ec = llvm::sys::fs::create_directories(config.trapDir)) {
     std::cerr << "Cannot create TRAP directory: " << ec.message() << "\n";
     return;
@@ -101,5 +79,24 @@ void SwiftExtractor::extractFile(swift::SourceFile& file) {
   if (std::error_code ec = llvm::sys::fs::rename(tempTrapPath, trapPath)) {
     std::cerr << "Cannot rename temp trap file '" << tempTrapPath.str().str() << "' -> '"
               << trapPath.str().str() << "': " << ec.message() << "\n";
+  }
+}
+
+void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
+                               swift::CompilerInstance& compiler) {
+  // Swift frontend can be called in several different modes, we are interested
+  // only in the cases when either a primary or a main source file is present
+  if (compiler.getPrimarySourceFiles().empty()) {
+    swift::ModuleDecl* module = compiler.getMainModule();
+    if (!module->getFiles().empty() &&
+        module->getFiles().front()->getKind() == swift::FileUnitKind::Source) {
+      // We can only call getMainSourceFile if the first file is of a Source kind
+      swift::SourceFile& file = module->getMainSourceFile();
+      extractFile(config, file);
+    }
+  } else {
+    for (auto s : compiler.getPrimarySourceFiles()) {
+      extractFile(config, *s);
+    }
   }
 }
