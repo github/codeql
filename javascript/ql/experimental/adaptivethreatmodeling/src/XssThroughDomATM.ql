@@ -1,14 +1,14 @@
 /**
  * For internal use only.
  *
- * @name DOM text reinterpreted as HTML (boosted)
+ * @name DOM text reinterpreted as HTML (experimental)
  * @description Reinterpreting text from the DOM as HTML can lead to a cross-site scripting vulnerability.
  * @kind path-problem
  * @scored
  * @problem.severity warning
  * @security-severity 6.1
  * @id adaptive-threat-modeling/js/xss-through-dom
- * @tags experimental experimental/atm security external/cwe/cwe-079 external/cwe/cwe-116
+ * @tags experimental security external/cwe/cwe-079 external/cwe/cwe-116
  */
 
 import experimental.adaptivethreatmodeling.XssThroughDomATM
@@ -24,6 +24,6 @@ where
   score = getScoreForFlow(source.getNode(), sink.getNode()) and
   scoreString = getScoreStringForFlow(source.getNode(), sink.getNode())
 select sink.getNode(), source, sink,
-  "[Score = " + scoreString + "] This may be a js/xss-through-dom result depending on $@ " +
+  "(Experimental) This may be a js/xss-through-dom result due to $@ " +
     getAdditionalAlertInfo(source.getNode(), sink.getNode()), source.getNode(),
-  "a user-provided value", score
+  " Identified using machine learning."

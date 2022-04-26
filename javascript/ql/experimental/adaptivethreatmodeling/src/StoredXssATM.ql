@@ -1,14 +1,14 @@
 /**
  * For internal use only.
  *
- * @name Stored cross-site scripting (boosted)
+ * @name Stored cross-site scripting (experimental)
  * @description Using uncontrolled stored values in HTML allows for a stored cross-site scripting vulnerability.
  * @kind path-problem
  * @scored
  * @problem.severity error
  * @security-severity 6.1
  * @id adaptive-threat-modeling/js/stored-xss
- * @tags experimental experimental/atm security external/cwe/cwe-079 external/cwe/cwe-116
+ * @tags experimental security external/cwe/cwe-079 external/cwe/cwe-116
  */
 
 import experimental.adaptivethreatmodeling.StoredXssATM
@@ -24,6 +24,6 @@ where
   score = getScoreForFlow(source.getNode(), sink.getNode()) and
   scoreString = getScoreStringForFlow(source.getNode(), sink.getNode())
 select sink.getNode(), source, sink,
-  "[Score = " + scoreString + "] This may be a js/stored-xss result depending on $@ " +
+  "(Experimental) This may be a js/stored-xss result due to $@ " +
     getAdditionalAlertInfo(source.getNode(), sink.getNode()), source.getNode(),
-  "a user-provided value", score
+  " Identified using machine learning"
