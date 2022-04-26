@@ -82,12 +82,11 @@ void Extractor::extractFile(swift::SourceFile& file) {
     return;
   }
   std::stringstream ss;
-  ss << "-frontend ";
   for (auto opt : config.frontendOptions) {
     ss << std::quoted(opt) << " ";
   }
   ss << "\n";
-  trap << "// frontend-options: " << ss.str();
+  trap << "// extractor-args: " << ss.str();
 
   trap << "#0=*\n";
   trap << "files(#0, " << std::quoted(srcFilePath.str().str()) << ")\n";

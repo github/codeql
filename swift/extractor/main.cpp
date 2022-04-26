@@ -34,12 +34,6 @@ int main(int argc, char** argv) {
     // TODO: print usage
     return 1;
   }
-  // The frontend can be called in different modes, we are only interested
-  // in -frontend mode
-  // TODO: filter out at the tracer level
-  if ("-frontend"s != argv[1]) {
-    return 0;
-  }
   // Required by Swift/LLVM
   PROGRAM_START(argc, argv);
   INITIALIZE_LLVM();
@@ -49,9 +43,6 @@ int main(int argc, char** argv) {
   configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
   std::vector<const char*> args;
   for (int i = 1; i < argc; i++) {
-    if ("-frontend"s == argv[i]) {
-      continue;
-    }
     args.push_back(argv[i]);
   }
   std::copy(std::begin(args), std::end(args), std::back_inserter(configuration.frontendOptions));
