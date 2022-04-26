@@ -73,3 +73,9 @@ class C<T> {
         println(c.prop)
     }
 }
+
+
+val Int.x : Int
+    get() = 5
+val Double.x : Int
+    get() = 5

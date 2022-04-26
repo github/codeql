@@ -795,14 +795,14 @@ open class KotlinFileExtractor(
         return id
     }
 
-    fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgs: List<IrTypeArgument>?) {
+    fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
         with("property", p) {
             if (isFake(p)) return
 
             DeclarationStackAdjuster(p).use {
 
-                val id = useProperty(p, parentId)
-                val locId = getLocation(p, classTypeArgs)
+                val id = useProperty(p, parentId, classTypeArgsIncludingOuterClasses)
+                val locId = getLocation(p, classTypeArgsIncludingOuterClasses)
                 tw.writeKtProperties(id, p.name.asString())
                 tw.writeHasLocation(id, locId)
 
@@ -811,7 +811,7 @@ open class KotlinFileExtractor(
                 val setter = p.setter
 
                 if (getter != null) {
-                    val getterId = extractFunction(getter, parentId, extractBackingField, typeSubstitution, classTypeArgs)?.cast<DbMethod>()
+                    val getterId = extractFunction(getter, parentId, extractBackingField, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
                     if (getterId != null) {
                         tw.writeKtPropertyGetters(id, getterId)
                     }
@@ -825,7 +825,7 @@ open class KotlinFileExtractor(
                     if (!p.isVar) {
                         logger.errorElement("!isVar property with a setter", p)
                     }
-                    val setterId = extractFunction(setter, parentId, extractBackingField, typeSubstitution, classTypeArgs)?.cast<DbMethod>()
+                    val setterId = extractFunction(setter, parentId, extractBackingField, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
                     if (setterId != null) {
                         tw.writeKtPropertySetters(id, setterId)
                     }

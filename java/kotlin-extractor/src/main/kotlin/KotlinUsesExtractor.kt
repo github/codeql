@@ -7,16 +7,12 @@ import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
 import org.jetbrains.kotlin.builtins.StandardNames
-import org.jetbrains.kotlin.descriptors.ClassKind
-import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
+import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.expressions.IrConst
-import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
-import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
-import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
+import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
-import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
-import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
+import org.jetbrains.kotlin.ir.types.impl.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.name.FqName
@@ -808,7 +804,9 @@ open class KotlinUsesExtractor(
         // The type parameters of the function. This does not include type parameters of enclosing classes.
         functionTypeParameters: List<IrTypeParameter>,
         // The type arguments of enclosing classes of the function.
-        classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
+        classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
+        // The prefix used in the label. "callable", unless a property label is created, then it's "property".
+        prefix: String = "callable"
     ): String {
         val parentId = maybeParentId ?: useDeclarationParent(parent, false, classTypeArgsIncludingOuterClasses, true)
         val allParams = if (extensionReceiverParameter == null) {
@@ -844,7 +842,7 @@ open class KotlinUsesExtractor(
         // method (and presumably that disambiguation is never needed when the method belongs to a parameterized
         // instance of a generic class), but as of now I don't know when the raw method would be referred to.
         val typeArgSuffix = if (functionTypeParameters.isNotEmpty() && classTypeArgsIncludingOuterClasses.isNullOrEmpty()) "<${functionTypeParameters.size}>" else "";
-        return "@\"callable;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
+        return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
     }
 
     protected fun IrFunction.isLocalFunction(): Boolean {
@@ -1174,24 +1172,29 @@ open class KotlinUsesExtractor(
         if (parentId == null) {
             return null
         } else {
-            return getPropertyLabel(p, parentId)
+            return getPropertyLabel(p, parentId, null)
         }
     }
 
-    fun getPropertyLabel(p: IrProperty, parentId: Label<out DbElement>) =
-        "@\"property;{$parentId};${p.name.asString()}\""
+    private fun getPropertyLabel(p: IrProperty, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): String {
+        val getter = p.getter
+        val setter = p.setter
 
-    fun useProperty(p: IrProperty): Label<out DbKt_property>? {
-        val label = getPropertyLabel(p)
-        if (label == null) {
-            return null
+        val func = getter ?: setter
+        val ext = func?.extensionReceiverParameter
+
+        return if (ext == null) {
+            "@\"property;{$parentId};${p.name.asString()}\""
         } else {
-            return tw.getLabelFor<DbKt_property>(label).also { extractPropertyLaterIfExternalFileMember(p) }
+            val returnType = getter?.returnType ?: setter?.valueParameters?.singleOrNull()?.type ?: pluginContext.irBuiltIns.unitType
+            val typeParams = getFunctionTypeParameters(func)
+
+            getFunctionLabel(p.parent, parentId, p.name.asString(), listOf(), returnType, ext, typeParams, classTypeArgsIncludingOuterClasses, "property")
         }
     }
 
-    fun useProperty(p: IrProperty, parentId: Label<out DbElement>): Label<out DbKt_property> =
-        tw.getLabelFor<DbKt_property>(getPropertyLabel(p, parentId)).also { extractPropertyLaterIfExternalFileMember(p) }
+    fun useProperty(p: IrProperty, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbKt_property> =
+        tw.getLabelFor<DbKt_property>(getPropertyLabel(p, parentId, classTypeArgsIncludingOuterClasses)).also { extractPropertyLaterIfExternalFileMember(p) }
 
     fun getEnumEntryLabel(ee: IrEnumEntry): String {
         val parentId = useDeclarationParent(ee.parent, false)
