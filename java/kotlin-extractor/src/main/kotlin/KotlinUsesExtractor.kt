@@ -923,7 +923,7 @@ open class KotlinUsesExtractor(
                             decl.valueParameters.size == f.valueParameters.size
                         } ?:
                         run {
-                            logger.warn("Couldn't find a Java equivalent function to ${f.name}")
+                            logger.warn("Couldn't find a Java equivalent function to ${parentClass.fqNameWhenAvailable}.${f.name} in ${javaClass.fqNameWhenAvailable}")
                             null
                         }
                     else
