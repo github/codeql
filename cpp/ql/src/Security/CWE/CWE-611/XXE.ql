@@ -109,9 +109,8 @@ class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
   }
 
   final override XXEFlowState transform(XXEFlowState flowstate) {
-    exists(int disabledDefaultEntityResolution, int createEntityReferenceNodes |
-      encodeXercesDOMFlowState(flowstate, disabledDefaultEntityResolution,
-        createEntityReferenceNodes) and
+    exists(int createEntityReferenceNodes |
+      encodeXercesDOMFlowState(flowstate, _, createEntityReferenceNodes) and
       (
         newValue.getValue().toInt() = 1 and // true
         encodeXercesDOMFlowState(result, 1, createEntityReferenceNodes)
@@ -142,9 +141,8 @@ class CreateEntityReferenceNodesTranformer extends XXEFlowStateTranformer {
   }
 
   final override XXEFlowState transform(XXEFlowState flowstate) {
-    exists(int disabledDefaultEntityResolution, int createEntityReferenceNodes |
-      encodeXercesDOMFlowState(flowstate, disabledDefaultEntityResolution,
-        createEntityReferenceNodes) and
+    exists(int disabledDefaultEntityResolution |
+      encodeXercesDOMFlowState(flowstate, disabledDefaultEntityResolution, _) and
       (
         newValue.getValue().toInt() = 1 and // true
         encodeXercesDOMFlowState(result, disabledDefaultEntityResolution, 1)
@@ -208,5 +206,4 @@ class XXEConfiguration extends DataFlow::Configuration {
 from XXEConfiguration conf, DataFlow::PathNode source, DataFlow::PathNode sink
 where conf.hasFlowPath(source, sink)
 select sink, source, sink,
-  "This $@ is not configured to prevent an XML external entity (XXE) attack.", source,
-  "XML parser"
+  "This $@ is not configured to prevent an XML external entity (XXE) attack.", source, "XML parser"
