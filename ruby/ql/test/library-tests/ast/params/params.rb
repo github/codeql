@@ -82,3 +82,5 @@ def anonymous_block_parameter(array, &)
   proc(&)
   array.each(&)
 end
+
+run_block { |x; y, z | puts x }
