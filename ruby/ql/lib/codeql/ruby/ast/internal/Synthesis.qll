@@ -197,11 +197,8 @@ private module ImplicitSelfSynthesis {
   private predicate regularMethodCallSelfSynthesis(TRegularMethodCall mc, int i, Child child) {
     exists(Ruby::AstNode g |
       mc = TRegularMethodCall(g) and
-      // If there's no explicit receiver (or scope resolution that acts like a
-      // receiver), then the receiver is implicitly `self`.  N.B.  `::Foo()` is
-      // not valid Ruby.
-      not exists(g.(Ruby::Call).getReceiver()) and
-      not exists(g.(Ruby::Call).getMethod().(Ruby::ScopeResolution).getScope())
+      // If there's no explicit receiver, then the receiver is implicitly `self`.
+      not exists(g.(Ruby::Call).getReceiver())
     ) and
     child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc)).getEnclosingSelfScope()))) and
     i = 0

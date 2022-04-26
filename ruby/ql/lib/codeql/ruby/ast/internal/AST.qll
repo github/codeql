@@ -138,7 +138,9 @@ private module Cached {
     TFalseLiteral(Ruby::False g) or
     TFile(Ruby::File g) or
     TFindPattern(Ruby::FindPattern g) or
-    TFloatLiteral(Ruby::Float g) { not any(Ruby::Rational r).getChild() = g } or
+    TFloatLiteral(Ruby::Float g) {
+      not any(Ruby::Complex r).getChild() = g and not any(Ruby::Rational r).getChild() = g
+    } or
     TForExpr(Ruby::For g) or
     TForwardParameter(Ruby::ForwardParameter g) or
     TForwardArgument(Ruby::ForwardArgument g) or
@@ -169,7 +171,9 @@ private module Cached {
     TInstanceVariableAccessSynth(AST::AstNode parent, int i, AST::InstanceVariable v) {
       mkSynthChild(InstanceVariableAccessKind(v), parent, i)
     } or
-    TIntegerLiteralReal(Ruby::Integer g) { not any(Ruby::Rational r).getChild() = g } or
+    TIntegerLiteralReal(Ruby::Integer g) {
+      not any(Ruby::Complex r).getChild() = g and not any(Ruby::Rational r).getChild() = g
+    } or
     TIntegerLiteralSynth(AST::AstNode parent, int i, int value) {
       mkSynthChild(IntegerLiteralKind(value), parent, i)
     } or
@@ -223,7 +227,7 @@ private module Cached {
     TRangeLiteralSynth(AST::AstNode parent, int i, boolean inclusive) {
       mkSynthChild(RangeLiteralKind(inclusive), parent, i)
     } or
-    TRationalLiteral(Ruby::Rational g) or
+    TRationalLiteral(Ruby::Rational g) { not any(Ruby::Complex r).getChild() = g } or
     TRedoStmt(Ruby::Redo g) or
     TRegExpLiteral(Ruby::Regex g) or
     TRegExpMatchExpr(Ruby::Binary g) { g instanceof @ruby_binary_equaltilde } or
@@ -247,9 +251,6 @@ private module Cached {
         or
         casePattern(g)
       )
-    } or
-    TScopeResolutionMethodCall(Ruby::ScopeResolution g, Ruby::Identifier i) {
-      isScopeResolutionMethodCall(g, i)
     } or
     TSelfReal(Ruby::Self g) or
     TSelfSynth(AST::AstNode parent, int i, AST::SelfVariable v) {
@@ -356,15 +357,15 @@ private module Cached {
         TRShiftExprReal or TRangeLiteralReal or TRationalLiteral or TRedoStmt or TRegExpLiteral or
         TRegExpMatchExpr or TRegularArrayLiteral or TRegularMethodCall or TRegularStringLiteral or
         TRegularSuperCall or TRescueClause or TRescueModifierExpr or TRetryStmt or TReturnStmt or
-        TScopeResolutionConstantAccess or TScopeResolutionMethodCall or TSelfReal or
-        TSimpleParameterReal or TSimpleSymbolLiteral or TSingletonClass or TSingletonMethod or
-        TSpaceshipExpr or TSplatExprReal or TSplatParameter or TStringArrayLiteral or
-        TStringConcatenation or TStringEscapeSequenceComponent or TStringInterpolationComponent or
-        TStringTextComponent or TSubExprReal or TSubshellLiteral or TSymbolArrayLiteral or
-        TTernaryIfExpr or TThen or TTokenConstantAccess or TTokenMethodName or TTokenSuperCall or
-        TToplevel or TTrueLiteral or TUnaryMinusExpr or TUnaryPlusExpr or TUndefStmt or
-        TUnlessExpr or TUnlessModifierExpr or TUntilExpr or TUntilModifierExpr or
-        TReferencePattern or TWhenClause or TWhileExpr or TWhileModifierExpr or TYieldCall;
+        TScopeResolutionConstantAccess or TSelfReal or TSimpleParameterReal or
+        TSimpleSymbolLiteral or TSingletonClass or TSingletonMethod or TSpaceshipExpr or
+        TSplatExprReal or TSplatParameter or TStringArrayLiteral or TStringConcatenation or
+        TStringEscapeSequenceComponent or TStringInterpolationComponent or TStringTextComponent or
+        TSubExprReal or TSubshellLiteral or TSymbolArrayLiteral or TTernaryIfExpr or TThen or
+        TTokenConstantAccess or TTokenMethodName or TTokenSuperCall or TToplevel or TTrueLiteral or
+        TUnaryMinusExpr or TUnaryPlusExpr or TUndefStmt or TUnlessExpr or TUnlessModifierExpr or
+        TUntilExpr or TUntilModifierExpr or TReferencePattern or TWhenClause or TWhileExpr or
+        TWhileModifierExpr or TYieldCall;
 
   class TAstNodeSynth =
     TAddExprSynth or TAssignExprSynth or TBitwiseAndExprSynth or TBitwiseOrExprSynth or
@@ -498,7 +499,6 @@ private module Cached {
     n = TReturnStmt(result) or
     n = TRShiftExprReal(result) or
     n = TScopeResolutionConstantAccess(result, _) or
-    n = TScopeResolutionMethodCall(result, _) or
     n = TSelfReal(result) or
     n = TSimpleParameterReal(result) or
     n = TSimpleSymbolLiteral(result) or
@@ -659,8 +659,8 @@ class TCall = TMethodCall or TYieldCall;
 class TCase = TCaseExpr or TCaseMatch;
 
 class TMethodCall =
-  TMethodCallSynth or TIdentifierMethodCall or TScopeResolutionMethodCall or TRegularMethodCall or
-      TElementReference or TSuperCall or TUnaryOperation or TBinaryOperation;
+  TMethodCallSynth or TIdentifierMethodCall or TRegularMethodCall or TElementReference or
+      TSuperCall or TUnaryOperation or TBinaryOperation;
 
 class TSuperCall = TTokenSuperCall or TRegularSuperCall;
 

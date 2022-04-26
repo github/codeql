@@ -7,11 +7,6 @@ predicate isIdentifierMethodCall(Ruby::Identifier g) { vcall(g) and not access(g
 
 predicate isRegularMethodCall(Ruby::Call g) { not g.getMethod() instanceof Ruby::Super }
 
-predicate isScopeResolutionMethodCall(Ruby::ScopeResolution g, Ruby::Identifier i) {
-  i = g.getName() and
-  not exists(Ruby::Call c | c.getMethod() = g)
-}
-
 abstract class CallImpl extends Expr, TCall {
   abstract AstNode getArgumentImpl(int n);
 
@@ -69,23 +64,6 @@ class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
   final override Block getBlockImpl() { none() }
 }
 
-class ScopeResolutionMethodCall extends MethodCallImpl, TScopeResolutionMethodCall {
-  private Ruby::ScopeResolution g;
-  private Ruby::Identifier i;
-
-  ScopeResolutionMethodCall() { this = TScopeResolutionMethodCall(g, i) }
-
-  final override string getMethodNameImpl() { result = i.getValue() }
-
-  final override Expr getReceiverImpl() { toGenerated(result) = g.getScope() }
-
-  final override Expr getArgumentImpl(int n) { none() }
-
-  final override int getNumberOfArgumentsImpl() { result = 0 }
-
-  final override Block getBlockImpl() { none() }
-}
-
 class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
   private Ruby::Call g;
 
@@ -94,33 +72,21 @@ class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
   final override Expr getReceiverImpl() {
     toGenerated(result) = g.getReceiver()
     or
-    not exists(g.getReceiver()) and
-    toGenerated(result) = g.getMethod().(Ruby::ScopeResolution).getScope()
-    or
     result = TSelfSynth(this, 0, _)
   }
 
   final override string getMethodNameImpl() {
     isRegularMethodCall(g) and
     (
-      result = "call" and g.getMethod() instanceof Ruby::ArgumentList
+      result = "call" and not exists(g.getMethod())
       or
       result = g.getMethod().(Ruby::Token).getValue()
-      or
-      result = g.getMethod().(Ruby::ScopeResolution).getName().(Ruby::Token).getValue()
     )
   }
 
-  final override Expr getArgumentImpl(int n) {
-    toGenerated(result) = g.getArguments().getChild(n)
-    or
-    toGenerated(result) = g.getMethod().(Ruby::ArgumentList).getChild(n)
-  }
+  final override Expr getArgumentImpl(int n) { toGenerated(result) = g.getArguments().getChild(n) }
 
-  final override int getNumberOfArgumentsImpl() {
-    result =
-      count(g.getArguments().getChild(_)) + count(g.getMethod().(Ruby::ArgumentList).getChild(_))
-  }
+  final override int getNumberOfArgumentsImpl() { result = count(g.getArguments().getChild(_)) }
 
   final override Block getBlockImpl() { toGenerated(result) = g.getBlock() }
 }
