@@ -24,8 +24,8 @@ query predicate nodes(Module node, string key, string value) {
 }
 
 query predicate edges(Module source, Module target, string key, string value) {
-  key = "semmle.value" and
-  value = "superclass" and
+  key = "semmle.label" and
+  value = "" and
   target = source.getSuperClass()
   or
   key = "semmle.order" and
