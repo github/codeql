@@ -62,6 +62,14 @@ module FileSystemAccess {
     /** Gets an argument to this file system access that is interpreted as a path. */
     abstract DataFlow::Node getAPathArgument();
   }
+
+  private import semmle.python.frameworks.data.ModelsAsData
+
+  private class DataAsFileAccess extends Range {
+    DataAsFileAccess() { this = ModelOutput::getASinkNode("file-access").getARhs() }
+
+    override DataFlow::Node getAPathArgument() { result = this }
+  }
 }
 
 /**
@@ -363,6 +371,14 @@ module SqlExecution {
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the SQL statements to be executed. */
     abstract DataFlow::Node getSql();
+  }
+
+  private import semmle.python.frameworks.data.ModelsAsData
+
+  private class DataAsSqlExecution extends Range {
+    DataAsSqlExecution() { this = ModelOutput::getASinkNode("sql-injection").getARhs() }
+
+    override DataFlow::Node getSql() { result = this }
   }
 }
 

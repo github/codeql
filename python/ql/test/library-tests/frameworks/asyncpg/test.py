@@ -27,11 +27,11 @@ async def test_prepared_statement():
     conn = await asyncpg.connect()
 
     try:
-        pstmt = await conn.prepare("psql")  # $ constructedSql="psql"
-        pstmt.executemany()  # $ getSql="psql"
-        pstmt.fetch()  # $ getSql="psql"
-        pstmt.fetchrow()  # $ getSql="psql"
-        pstmt.fetchval()  # $ getSql="psql"
+        pstmt = await conn.prepare("psql")  # $ getSql="psql"
+        pstmt.executemany()  
+        pstmt.fetch()  
+        pstmt.fetchrow()
+        pstmt.fetchval()
 
     finally:
         await conn.close()
@@ -46,7 +46,7 @@ async def test_cursor():
             cursor = await conn.cursor("sql")  # $ getSql="sql" constructedSql="sql"
             await cursor.fetch()
 
-            pstmt = await conn.prepare("psql")  # $ constructedSql="psql"
+            pstmt = await conn.prepare("psql")  # $ getSql="psql"
             pcursor = await pstmt.cursor()  # $ getSql="psql"
             await pcursor.fetch()
 
