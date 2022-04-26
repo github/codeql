@@ -1234,3 +1234,7 @@ ktFunctionOriginalNames(
   unique int id: @method ref,
   string name: string ref
 )
+
+ktDataClasses(
+  unique int id: @class ref
+)
