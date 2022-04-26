@@ -903,7 +903,10 @@ private module Stage1 {
   predicate revFlow(
     NodeEx node, FlowState state, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
   ) {
-    revFlow(node, toReturn, config) and exists(state) and exists(returnAp) and exists(ap)
+    revFlow(node, toReturn, pragma[only_bind_into](config)) and
+    exists(state) and
+    exists(returnAp) and
+    exists(ap)
   }
 
   private predicate throughFlowNodeCand(NodeEx node, Configuration config) {
@@ -1180,7 +1183,7 @@ private module Stage2 {
 
   bindingset[node, state, ap, config]
   private predicate filter(NodeEx node, FlowState state, Ap ap, Configuration config) {
-    PrevStage::revFlowState(state, config) and
+    PrevStage::revFlowState(state, pragma[only_bind_into](config)) and
     exists(ap) and
     not stateBarrier(node, state, config)
   }
