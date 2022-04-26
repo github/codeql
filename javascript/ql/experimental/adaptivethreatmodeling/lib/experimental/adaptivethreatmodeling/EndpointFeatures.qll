@@ -202,7 +202,16 @@ string getASupportedFeatureName() {
       f instanceof CalleeApiName or
       f instanceof CalleeAccessPath or
       f instanceof CalleeAccessPathWithStructuralInfo or
-      f instanceof EnclosingFunctionBody
+      f instanceof EnclosingFunctionBody or
+      f instanceof ContextFunctionInterfaces or
+      f instanceof ContextSurroundingFunctionParameters or
+      f instanceof FileImports or
+      f instanceof CalleeImports or
+      f instanceof CalleeFlexibleAccessPath or
+      f instanceof InputAccessPathFromCallee or
+      f instanceof InputArgumentIndex or
+      f instanceof AssignedToPropName or
+      f instanceof StringConcatenatedWith
     ).getName()
 }
 
