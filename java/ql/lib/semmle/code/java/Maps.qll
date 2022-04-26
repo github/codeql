@@ -59,7 +59,9 @@ class MapMutation extends MethodAccess {
 /** A method that queries the contents of the map it belongs to without mutating it. */
 class MapQueryMethod extends MapMethod {
   MapQueryMethod() {
-    pragma[only_bind_into](this).getName().regexpMatch("get|containsKey|containsValue|entrySet|keySet|values|isEmpty|size")
+    pragma[only_bind_into](this)
+        .getName()
+        .regexpMatch("get|containsKey|containsValue|entrySet|keySet|values|isEmpty|size")
   }
 }
 
