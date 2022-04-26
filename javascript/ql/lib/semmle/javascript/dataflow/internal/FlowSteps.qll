@@ -139,7 +139,7 @@ private module CachedSteps {
    * Holds if `invk` may invoke `f`.
    */
   cached
-  predicate calls(DataFlow::SourceNode invk, Function f) {
+  predicate calls(DataFlow::Node invk, Function f) {
     f = invk.(DataFlow::InvokeNode).getACallee(0)
     or
     f = invk.(DataFlow::PropRef).getAnAccessorCallee().getFunction()

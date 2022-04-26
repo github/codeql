@@ -32,7 +32,9 @@ module SummaryComponent {
   SummaryComponent block() { result = argument(any(ParameterPosition pos | pos.isBlock())) }
 
   /** Gets a summary component that represents an element in an array at an unknown index. */
-  SummaryComponent arrayElementUnknown() { result = SC::content(TUnknownArrayElementContent()) }
+  SummaryComponent arrayElementUnknown() {
+    result = SC::content(TSingletonContent(TUnknownArrayElementContent()))
+  }
 
   /**
    * Gets a summary component that represents an element in an array at a known index.
@@ -42,7 +44,7 @@ module SummaryComponent {
    */
   bindingset[i]
   SummaryComponent arrayElementKnown(int i) {
-    result = SC::content(TKnownArrayElementContent(i))
+    result = SC::content(TSingletonContent(TKnownArrayElementContent(i)))
     or
     // `i` may be out of range
     i >= 0 and
@@ -134,7 +136,7 @@ abstract class SummarizedCallable extends LibraryCallable {
    * arguments at position `pos` to this callable.
    */
   pragma[nomagic]
-  predicate clearsContent(ParameterPosition pos, DataFlow::Content content) { none() }
+  predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) { none() }
 }
 
 /**
@@ -161,7 +163,7 @@ private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable
     sc.propagatesFlow(input, output, preservesValue)
   }
 
-  final override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+  final override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
     sc.clearsContent(pos, content)
   }
 }

@@ -959,13 +959,18 @@ private module StdlibPrivate {
     }
   }
 
-  /** A call to `os.path.samefile` will raise an exception if an `os.stat()` call on either pathname fails. */
+  /**
+   * A call to `os.path.samefile` will raise an exception if an `os.stat()` call on either pathname fails.
+   *
+   * See https://docs.python.org/3.10/library/os.path.html#os.path.samefile
+   */
   private class OsPathSamefileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
     OsPathSamefileCall() { this = OS::path().getMember("samefile").getACall() }
 
     override DataFlow::Node getAPathArgument() {
       result in [
-          this.getArg(0), this.getArgByName("path1"), this.getArg(1), this.getArgByName("path2")
+          // note that the f1/f2 names doesn't match the documentation, but is what actually works (tested on 3.8.10)
+          this.getArg(0), this.getArgByName("f1"), this.getArg(1), this.getArgByName("f2")
         ]
     }
   }
@@ -2532,6 +2537,56 @@ private module StdlibPrivate {
   /** A call to the `open` method on a `pathlib.Path` instance. */
   private class PathLibOpenCall extends PathlibFileAccess, Stdlib::FileLikeObject::InstanceSource {
     PathLibOpenCall() { attrbuteName = "open" }
+  }
+
+  /**
+   * A call to the `link_to`, `hardlink_to`, or `symlink_to` method on a `pathlib.Path` instance.
+   *
+   * See
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.link_to
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.hardlink_to
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.symlink_to
+   */
+  private class PathLibLinkToCall extends PathlibFileAccess, API::CallNode {
+    PathLibLinkToCall() { attrbuteName in ["link_to", "hardlink_to", "symlink_to"] }
+
+    override DataFlow::Node getAPathArgument() {
+      result = super.getAPathArgument()
+      or
+      result = this.getParameter(0, "target").getARhs()
+    }
+  }
+
+  /**
+   * A call to the `replace` or `rename` method on a `pathlib.Path` instance.
+   *
+   * See
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.replace
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.rename
+   */
+  private class PathLibReplaceCall extends PathlibFileAccess, API::CallNode {
+    PathLibReplaceCall() { attrbuteName in ["replace", "rename"] }
+
+    override DataFlow::Node getAPathArgument() {
+      result = super.getAPathArgument()
+      or
+      result = this.getParameter(0, "target").getARhs()
+    }
+  }
+
+  /**
+   * A call to the `samefile` method on a `pathlib.Path` instance.
+   *
+   * See https://docs.python.org/3/library/pathlib.html#pathlib.Path.samefile
+   */
+  private class PathLibSameFileCall extends PathlibFileAccess, API::CallNode {
+    PathLibSameFileCall() { attrbuteName = "samefile" }
+
+    override DataFlow::Node getAPathArgument() {
+      result = super.getAPathArgument()
+      or
+      result = this.getParameter(0, "other_path").getARhs()
+    }
   }
 
   /** An additional taint steps for objects of type `pathlib.Path` */

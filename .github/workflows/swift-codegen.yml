@@ -1,0 +1,27 @@
+name: "Swift: Check code generation"
+
+on:
+  pull_request:
+    paths:
+      - "swift/**"
+      - .github/workflows/swift-codegen.yml
+    branches:
+      - main
+
+jobs:
+  codegen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '~3.7'
+          cache: 'pip'
+      - uses: ./.github/actions/fetch-codeql
+      - uses: bazelbuild/setup-bazelisk@v2
+      - name: Check code generation
+        run: |
+          pip install -r swift/codegen/requirements.txt
+          bazel run //swift/codegen
+          git add swift
+          git diff --exit-code --stat HEAD

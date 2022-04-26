@@ -383,8 +383,8 @@ module API {
       exists(Node pred, Label::ApiLabel lbl, string predpath |
         Impl::edge(pred, lbl, this) and
         predpath = pred.getAPath(length - 1) and
-        exists(string space | if length = 1 then space = "" else space = " " |
-          result = "(" + lbl + space + predpath + ")" and
+        exists(string dot | if length = 1 then dot = "" else dot = "." |
+          result = predpath + dot + lbl and
           // avoid producing strings longer than 1MB
           result.length() < 1000 * 1000
         )
@@ -1330,22 +1330,22 @@ module API {
         /** Gets the EntryPoint associated with this label. */
         API::EntryPoint getEntryPoint() { result = e }
 
-        override string toString() { result = e }
+        override string toString() { result = "getASuccessor(Label::entryPoint(\"" + e + "\"))" }
       }
 
       /** A label that gets a promised value. */
       class LabelPromised extends ApiLabel, MkLabelPromised {
-        override string toString() { result = "promised" }
+        override string toString() { result = "getPromised()" }
       }
 
       /** A label that gets a rejected promise. */
       class LabelPromisedError extends ApiLabel, MkLabelPromisedError {
-        override string toString() { result = "promisedError" }
+        override string toString() { result = "getPromisedError()" }
       }
 
       /** A label that gets the return value of a function. */
       class LabelReturn extends ApiLabel, MkLabelReturn {
-        override string toString() { result = "return" }
+        override string toString() { result = "getReturn()" }
       }
 
       /** A label for a module. */
@@ -1357,12 +1357,13 @@ module API {
         /** Gets the module associated with this label. */
         string getMod() { result = mod }
 
-        override string toString() { result = "module " + mod }
+        // moduleImport is not neccesarilly the predicate to use, but it's close enough for most cases.
+        override string toString() { result = "moduleImport(\"" + mod + "\")" }
       }
 
       /** A label that gets an instance from a `new` call. */
       class LabelInstance extends ApiLabel, MkLabelInstance {
-        override string toString() { result = "instance" }
+        override string toString() { result = "getInstance()" }
       }
 
       /** A label for the member named `prop`. */
@@ -1374,14 +1375,14 @@ module API {
         /** Gets the property associated with this label. */
         string getProperty() { result = prop }
 
-        override string toString() { result = "member " + prop }
+        override string toString() { result = "getMember(\"" + prop + "\")" }
       }
 
       /** A label for a member with an unknown name. */
       class LabelUnknownMember extends ApiLabel, MkLabelUnknownMember {
         LabelUnknownMember() { this = MkLabelUnknownMember() }
 
-        override string toString() { result = "member *" }
+        override string toString() { result = "getUnknownMember()" }
       }
 
       /** A label for parameter `i`. */
@@ -1390,7 +1391,7 @@ module API {
 
         LabelParameter() { this = MkLabelParameter(i) }
 
-        override string toString() { result = "parameter " + i }
+        override string toString() { result = "getParameter(" + i + ")" }
 
         /** Gets the index of the parameter for this label. */
         int getIndex() { result = i }
@@ -1398,22 +1399,22 @@ module API {
 
       /** A label for the receiver of call, that is, the value passed as `this`. */
       class LabelReceiver extends ApiLabel, MkLabelReceiver {
-        override string toString() { result = "receiver" }
+        override string toString() { result = "getReceiver()" }
       }
 
       /** A label for a class decorated by the current value. */
       class LabelDecoratedClass extends ApiLabel, MkLabelDecoratedClass {
-        override string toString() { result = "decorated-class" }
+        override string toString() { result = "getADecoratedClass()" }
       }
 
       /** A label for a method, field, or accessor decorated by the current value. */
       class LabelDecoratedMethod extends ApiLabel, MkLabelDecoratedMember {
-        override string toString() { result = "decorated-member" }
+        override string toString() { result = "decoratedMember()" }
       }
 
       /** A label for a parameter decorated by the current value. */
       class LabelDecoratedParameter extends ApiLabel, MkLabelDecoratedParameter {
-        override string toString() { result = "decorated-parameter" }
+        override string toString() { result = "decoratedParameter()" }
       }
     }
   }

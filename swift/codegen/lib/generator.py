@@ -23,7 +23,5 @@ def run(*generators, tags=None):
     `generators` should be callables taking as input an option namespace and a `render.Renderer` instance
     """
     opts = _parse(tags)
-    renderer = render.Renderer(dryrun=opts.check)
     for g in generators:
-        g(opts, renderer)
-    sys.exit(1 if opts.check and renderer.done_something else 0)
+        g(opts, render.Renderer())

@@ -21,7 +21,7 @@ Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSumma
 SummaryCall summaryDataFlowCall(Node receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
-DataFlowType getContentType(Content c) { any() }
+DataFlowType getContentType(ContentSet c) { any() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c, rk]

@@ -2,6 +2,7 @@
 | stmts.c:3:5:3:10 | declaration | true | true |
 | stmts.c:4:5:4:18 | declaration | true | true |
 | stmts.c:5:5:5:16 | declaration | false | true |
+| stmts.c:7:5:7:5 | { ... } | true | true |
 | stmts.c:7:5:14:5 | switch (...) ...  | true | true |
 | stmts.c:7:15:14:5 | { ... } | true | true |
 | stmts.c:8:9:8:15 | case ...: | true | true |

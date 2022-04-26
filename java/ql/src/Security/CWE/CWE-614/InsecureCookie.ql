@@ -20,7 +20,7 @@ where
   not exists(Variable cookie, MethodAccess m |
     add.getArgument(0) = cookie.getAnAccess() and
     m.getMethod().getName() = "setSecure" and
-    m.getArgument(0).(BooleanLiteral).getBooleanValue() = true and
+    m.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
     m.getQualifier() = cookie.getAnAccess()
   )
 select add, "Cookie is added to response without the 'secure' flag being set."
