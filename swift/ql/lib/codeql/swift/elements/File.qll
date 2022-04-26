@@ -2,10 +2,10 @@ private import codeql.swift.generated.File
 
 class File extends FileBase {
   /** toString */
-  string toString() { result = getAbsolutePath() }
+  override string toString() { result = getAbsolutePath() }
 
   /** Gets the name of this file. */
-  string getName() { files(this, result) }
+  override string getName() { files(this, result) }
 
   /** Gets the absolute path of this file. */
   string getAbsolutePath() { result = getName() }
