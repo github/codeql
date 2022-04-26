@@ -76,7 +76,7 @@ class CollectionSizeMethod extends CollectionMethod {
 
 /** A method that mutates the collection it belongs to. */
 class CollectionMutator extends CollectionMethod {
-  CollectionMutator() { this.getName().regexpMatch("add.*|remove.*|push|pop|clear") }
+  CollectionMutator() { pragma[only_bind_into](this).getName().regexpMatch("add.*|remove.*|push|pop|clear") }
 }
 
 /** A method call that mutates a collection. */
@@ -89,7 +89,7 @@ class CollectionMutation extends MethodAccess {
 
 /** A method that queries the contents of a collection without mutating it. */
 class CollectionQueryMethod extends CollectionMethod {
-  CollectionQueryMethod() { this.getName().regexpMatch("contains|containsAll|get|size|peek") }
+  CollectionQueryMethod() { pragma[only_bind_into](this).getName().regexpMatch("contains|containsAll|get|size|peek") }
 }
 
 /** A `new` expression that allocates a fresh, empty collection. */
