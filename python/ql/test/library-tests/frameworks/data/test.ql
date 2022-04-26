@@ -3,6 +3,7 @@ import semmle.python.frameworks.data.internal.AccessPathSyntax as AccessPathSynt
 import semmle.python.frameworks.data.ModelsAsData
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.DataFlow
+private import semmle.python.ApiGraphs
 
 // TODO:
 /*
@@ -23,10 +24,21 @@ import semmle.python.dataflow.new.DataFlow
  * }
  */
 
+class Types extends ModelInput::TypeModelCsv {
+  override predicate row(string row) {
+    // package1;type1;package2;type2;path
+    row =
+      [
+        "testlib;Alias;testlib;;Member[alias].ReturnValue",
+        "testlib;Alias;testlib;Alias;Member[chain].ReturnValue",
+      ]
+  }
+}
+
 class Sinks extends ModelInput::SinkModelCsv {
   override predicate row(string row) {
     // package;type;path;kind
-    row = ["testlib;;Member[mySink].Argument[0];test-sink"]
+    row = ["testlib;;Member[mySink].Argument[0,sinkName:];test-sink"]
   }
 }
 
@@ -37,7 +49,11 @@ class Sinks extends ModelInput::SinkModelCsv {
 class Sources extends ModelInput::SourceModelCsv {
   // package;type;path;kind
   override predicate row(string row) {
-    row = ["testlib;;Member[getSource].ReturnValue;test-source"]
+    row =
+      [
+        "testlib;;Member[getSource].ReturnValue;test-source", //
+        "testlib;Alias;;test-source"
+      ]
   }
 }
 

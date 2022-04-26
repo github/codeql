@@ -1,9 +1,26 @@
 taintFlow
 | test.py:3:5:3:15 | ControlFlowNode for getSource() | test.py:4:8:4:8 | ControlFlowNode for x |
+| test.py:3:5:3:15 | ControlFlowNode for getSource() | test.py:7:17:7:17 | ControlFlowNode for x |
+| test.py:9:8:9:14 | ControlFlowNode for alias() | test.py:9:8:9:14 | ControlFlowNode for alias() |
+| test.py:10:8:10:22 | ControlFlowNode for Attribute() | test.py:10:8:10:22 | ControlFlowNode for Attribute() |
+| test.py:11:8:11:30 | ControlFlowNode for Attribute() | test.py:11:8:11:30 | ControlFlowNode for Attribute() |
 isSink
 | test.py:4:8:4:8 | ControlFlowNode for x | test-sink |
+| test.py:7:17:7:17 | ControlFlowNode for x | test-sink |
+| test.py:9:8:9:14 | ControlFlowNode for alias() | test-sink |
+| test.py:10:8:10:22 | ControlFlowNode for Attribute() | test-sink |
+| test.py:11:8:11:30 | ControlFlowNode for Attribute() | test-sink |
+| test.py:12:8:12:34 | ControlFlowNode for Attribute() | test-sink |
 isSource
 | test.py:3:5:3:15 | ControlFlowNode for getSource() | test-source |
+| test.py:9:8:9:14 | ControlFlowNode for alias() | test-source |
+| test.py:10:8:10:14 | ControlFlowNode for alias() | test-source |
+| test.py:10:8:10:22 | ControlFlowNode for Attribute() | test-source |
+| test.py:11:8:11:14 | ControlFlowNode for alias() | test-source |
+| test.py:11:8:11:22 | ControlFlowNode for Attribute() | test-source |
+| test.py:11:8:11:30 | ControlFlowNode for Attribute() | test-source |
+| test.py:12:8:12:14 | ControlFlowNode for alias() | test-source |
+| test.py:12:8:12:22 | ControlFlowNode for Attribute() | test-source |
 syntaxErrors
 | Member[foo |
 | Member[foo] .Member[bar] |
