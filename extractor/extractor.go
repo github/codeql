@@ -940,10 +940,18 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		if expr == nil {
 			return
 		}
-		if _, ok := typeOf(tw, expr.X).Underlying().(*types.Signature); ok {
-			kind = dbscheme.GenericFunctionInstantiationExpr.Index()
-		} else {
+		typeofx := typeOf(tw, expr.X)
+		if typeofx == nil {
+			// We are missing type information for `expr.X`, so we cannot
+			// determine whether this is a generic function instantiation
+			// or not.
 			kind = dbscheme.GenericTypeInstantiationExpr.Index()
+		} else {
+			if _, ok := typeofx.Underlying().(*types.Signature); ok {
+				kind = dbscheme.GenericFunctionInstantiationExpr.Index()
+			} else {
+				kind = dbscheme.GenericTypeInstantiationExpr.Index()
+			}
 		}
 		extractExpr(tw, expr.X, lbl, 0)
 		extractExprs(tw, expr.Indices, lbl, 1, 1)
