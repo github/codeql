@@ -12,9 +12,9 @@ class LocationBase extends @location, Element {
     )
   }
 
-  int getBeginLine() { locations(this, _, result, _, _, _) }
+  int getStartLine() { locations(this, _, result, _, _, _) }
 
-  int getBeginColumn() { locations(this, _, _, result, _, _) }
+  int getStartColumn() { locations(this, _, _, result, _, _) }
 
   int getEndLine() { locations(this, _, _, _, result, _) }
 
