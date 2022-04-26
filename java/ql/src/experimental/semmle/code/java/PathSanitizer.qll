@@ -1,6 +1,7 @@
 import java
-import semmle.code.java.controlflow.Guards
-import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.controlflow.Guards
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** A barrier guard that protects against path traversal vulnerabilities. */
 abstract class PathTraversalBarrierGuard extends DataFlow::BarrierGuard { }
