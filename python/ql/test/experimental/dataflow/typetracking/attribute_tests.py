@@ -49,6 +49,22 @@ def test_create_with_foo():
     x = create_with_foo() # $ tracked=foo
     print(x.foo) # $ tracked=foo tracked
 
+def test_global_attribute_assignment():
+    global global_var
+    global_var.foo = tracked # $ tracked tracked=foo
+
+def test_global_attribute_read():
+    x = global_var.foo # $ MISSING: tracked tracked=foo
+
+def test_local_attribute_assignment():
+    # Same as `test_global_attribute_assignment`, but the assigned variable is not global
+    local_var = object() # $ tracked=foo
+    local_var.foo = tracked # $ tracked tracked=foo
+
+def test_local_attribute_read():
+    x = local_var.foo
+
+
 # ------------------------------------------------------------------------------
 # Attributes assigned statically to a class
 # ------------------------------------------------------------------------------
