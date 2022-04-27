@@ -71,7 +71,7 @@ if (version != "latest"):
     cmd.append(version)
 run_cmd(cmd)
 
-sdk_version = '6.0.101'
+sdk_version = '6.0.202'
 print("\n* Creating new global.json file and setting SDK to " + sdk_version)
 run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version, '--output', workDir])
 
