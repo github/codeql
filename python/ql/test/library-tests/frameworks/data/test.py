@@ -51,3 +51,11 @@ class Sub2Class (CommonTokens.Class):
 sub2 = Sub2Class()
 
 val = inst.foo()
+
+from testlib import ArgPos
+
+val = ArgPos.selfThing(arg, named=2)
+
+class SubClass (ArgPos.MyClass):
+    def foo(self, arg, named=2):
+        pass

@@ -49,11 +49,12 @@ class Sinks extends ModelInput::SinkModelCsv {
         // callsite filter.
         "testlib;;Member[CallFilter].Member[arityOne].WithArity[1].Argument[0..];test-source", //
         "testlib;;Member[CallFilter].Member[twoOrMore].WithArity[2..].Argument[0..];test-source", //
+        // testing non-positional arguments
+        "testlib;;Member[ArgPos].Member[selfThing].Argument[self];test-source", //
       ]
   }
 }
 
-// TODO: Uniform tokens for fields
 // TODO: Non-positional arguments (including Named parameters)
 // TODO: Any argument
 // TODO: Test taint steps.
@@ -75,6 +76,8 @@ class Sources extends ModelInput::SourceModelCsv {
         "testlib;;Member[CommonTokens].Member[Super].Subclass.Instance;test-source", //
         // method
         "testlib;;Member[CommonTokens].Member[Class].Instance.Method[foo];test-source", //
+        // testing non-positional arguments
+        "testlib;;Member[ArgPos].Member[MyClass].Subclass.Member[foo].Parameter[self];test-source", //
       ]
   }
 }

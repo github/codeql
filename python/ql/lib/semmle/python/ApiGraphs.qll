@@ -136,6 +136,9 @@ module API {
       result = this.getASuccessor(Label::keywordParameter(name))
     }
 
+    /** Gets the node representing the self parameter */
+    Node getSelfParameter() { result = this.getASuccessor(Label::selfParameter()) }
+
     /**
      * Gets the number of parameters of the function represented by this node.
      */
@@ -314,6 +317,12 @@ module API {
 
     /** Gets the API node for a parameter of this invocation. */
     Node getAParameter() { result = this.getParameter(_) }
+
+    /** Gets the object that this method-call is being called on, if this is a method-call */
+    Node getSelfParameter() {
+      result.getARhs() = this.(DataFlow::MethodCallNode).getObject() and
+      result = callee.getSelfParameter()
+    }
 
     /** Gets the API node for the keyword parameter `name` of this invocation. */
     Node getKeywordParameter(string name) {
@@ -595,6 +604,9 @@ module API {
           lbl = Label::keywordParameter(name) and
           ref.asExpr() = fn.getInnerScope().getArgByName(name)
         )
+        or
+        lbl = Label::selfParameter() and
+        ref.asExpr() = any(PY::Parameter p | p = fn.getInnerScope().getAnArg() and p.isSelf())
       )
       or
       // Built-ins, treated as members of the module `builtins`
@@ -661,6 +673,9 @@ module API {
         exists(string name | lbl = Label::keywordParameter(name) |
           arg = pred.getACall().getArgByName(name)
         )
+        or
+        lbl = Label::selfParameter() and
+        arg = pred.getACall().(DataFlow::MethodCallNode).getObject()
       )
     }
 
@@ -777,6 +792,7 @@ module API {
           or
           exists(any(PY::Function f).getArgByName(name))
         } or
+        MkLabelSelfParameter() or
         MkLabelReturn() or
         MkLabelSubclass() or
         MkLabelAwait()
@@ -834,6 +850,11 @@ module API {
         string getName() { result = name }
       }
 
+      /** A label for the self parameter. */
+      class LabelSelfParameter extends ApiLabel, MkLabelSelfParameter {
+        override string toString() { result = "getSelfParameter()" }
+      }
+
       /** A label that gets the return value of a function. */
       class LabelReturn extends ApiLabel, MkLabelReturn {
         override string toString() { result = "getReturn()" }
@@ -872,6 +893,9 @@ module API {
 
     /** Gets the `parameter` edge label for the keyword parameter `name`. */
     LabelKeywordParameter keywordParameter(string name) { result.getName() = name }
+
+    /** Gets the edge label for the self parameter. */
+    LabelSelfParameter selfParameter() { any() }
 
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }

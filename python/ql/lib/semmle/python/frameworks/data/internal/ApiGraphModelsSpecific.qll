@@ -63,6 +63,10 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   or
   token.getName() = "Method" and
   result = node.getMember(token.getAnArgument()).getReturn()
+  or
+  token.getName() = ["Argument", "Parameter"] and
+  token.getAnArgument() = "self" and
+  result = node.getSelfParameter()
   // Some features don't have MaD tokens yet, they would need to be added to API-graphs first.
   // - decorators ("DecoratedClass", "DecoratedMember", "DecoratedParameter")
   // - Array/Map elements ("ArrayElement", "Element", "MapKey", "MapValue")
@@ -78,7 +82,7 @@ API::Node getExtraSuccessorFromInvoke(API::CallNode node, AccessPathToken token)
   or
   token.getName() = "Argument" and
   token.getAnArgument() = "self" and
-  result.getARhs() = node.(DataFlow::MethodCallNode).getObject() // TODO: Get proper support for this in API-graphs?
+  result = node.getSelfParameter()
   or
   token.getName() = "Argument" and
   exists(string arg | arg + ":" = token.getAnArgument() | result = node.getKeywordParameter(arg))
