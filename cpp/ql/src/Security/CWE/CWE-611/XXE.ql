@@ -169,7 +169,7 @@ class ParseFunction extends Function {
 class CreateLSParser extends Function {
   CreateLSParser() {
     this.hasName("createLSParser") and
-    this.getType().(PointerType).getBaseType().getName() = "DOMLSParser" // returns a `DOMLSParser *`.
+    this.getUnderlyingType().(PointerType).getBaseType().getName() = "DOMLSParser" // returns a `DOMLSParser *`.
   }
 }
 
