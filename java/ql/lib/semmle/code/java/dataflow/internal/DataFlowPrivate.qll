@@ -164,7 +164,9 @@ predicate clearsContent(Node n, Content c) {
  * Holds if the value that is being tracked is expected to be stored inside content `c`
  * at node `n`.
  */
-predicate expectsContent(Node n, ContentSet c) { none() }
+predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
+}
 
 /**
  * Gets a representative (boxed) type for `t` for the purpose of pruning
