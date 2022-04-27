@@ -91,7 +91,7 @@ class XercesDOMParserFlowState extends XXEFlowState {
 }
 
 /**
- * Flow state transformer for a call to
+ * A flow state transformer for a call to
  * `AbstractDOMParser.setDisableDefaultEntityResolution`. Transforms the flow
  * state through the qualifier according to the setting in the parameter.
  */
@@ -123,7 +123,7 @@ class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
 }
 
 /**
- * Flow state transformer for a call to
+ * A flow state transformer for a call to
  * `AbstractDOMParser.setCreateEntityReferenceNodes`. Transforms the flow
  * state through the qualifier according to the setting in the parameter.
  */
@@ -162,7 +162,17 @@ class ParseFunction extends Function {
 }
 
 /**
- * Configuration for tracking XML objects and their states.
+ * The `createLSParser` function that returns a newly created `LSParser` object.
+ */
+class CreateLSParser extends Function {
+  CreateLSParser() {
+    this.hasName("createLSParser") and
+    this.getUnspecifiedType().(PointerType).getBaseType().getName() = "DOMLSParser" // returns a `DOMLSParser *`.
+  }
+}
+
+/**
+ * A configuration for tracking XML objects and their states.
  */
 class XXEConfiguration extends DataFlow::Configuration {
   XXEConfiguration() { this = "XXEConfiguration" }
@@ -174,6 +184,13 @@ class XXEConfiguration extends DataFlow::Configuration {
       call.getStaticCallTarget() = any(XercesDOMParserClass c).getAConstructor() and
       node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
         call.getThisArgument() and
+      encodeXercesDOMFlowState(flowstate, 0, 1) // default configuration
+    )
+    or
+    // source is the result of a call to `createLSParser`.
+    exists(Call call |
+      call.getTarget() instanceof CreateLSParser and
+      call = node.asExpr() and
       encodeXercesDOMFlowState(flowstate, 0, 1) // default configuration
     )
   }
