@@ -167,7 +167,10 @@ class ParseFunction extends Function {
  * The `createLSParser` function that returns a newly created `LSParser` object.
  */
 class CreateLSParser extends Function {
-  CreateLSParser() { this.hasName("createLSParser") }
+  CreateLSParser() {
+    this.hasName("createLSParser") and
+    this.getType().(PointerType).getBaseType().getName() = "DOMLSParser" // returns a `DOMLSParser *`.
+  }
 }
 
 /**
