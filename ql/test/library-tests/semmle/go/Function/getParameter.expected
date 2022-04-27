@@ -5,11 +5,10 @@
 | genericFunctions.go:93:35:93:36 | f2 | -1 | genericFunctions.go:93:7:93:7 | x |
 | genericFunctions.go:96:36:96:37 | g2 | -1 | genericFunctions.go:96:7:96:7 | x |
 | genericFunctions.go:118:19:118:23 | MyLen | -1 | genericFunctions.go:118:7:118:7 | l |
-| genericFunctions.go:122:6:122:18 | outerFunction | 0 | genericFunctions.go:122:34:122:35 | x1 |
-| genericFunctions.go:145:6:145:8 | New | 0 | genericFunctions.go:145:64:145:68 | nodes |
-| genericFunctions.go:149:29:149:40 | ShortestPath | 0 | genericFunctions.go:149:42:149:45 | from |
-| genericFunctions.go:149:29:149:40 | ShortestPath | 1 | genericFunctions.go:149:48:149:49 | to |
-| genericFunctions.go:149:29:149:40 | ShortestPath | -1 | genericFunctions.go:149:7:149:7 | g |
+| genericFunctions.go:132:6:132:8 | New | 0 | genericFunctions.go:132:64:132:68 | nodes |
+| genericFunctions.go:136:29:136:40 | ShortestPath | 0 | genericFunctions.go:136:42:136:45 | from |
+| genericFunctions.go:136:29:136:40 | ShortestPath | 1 | genericFunctions.go:136:48:136:49 | to |
+| genericFunctions.go:136:29:136:40 | ShortestPath | -1 | genericFunctions.go:136:7:136:7 | g |
 | main.go:7:6:7:7 | f1 | 0 | main.go:7:9:7:9 | x |
 | main.go:9:12:9:13 | f2 | 0 | main.go:9:15:9:15 | x |
 | main.go:9:12:9:13 | f2 | 1 | main.go:9:18:9:18 | y |

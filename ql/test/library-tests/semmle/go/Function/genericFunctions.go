@@ -119,19 +119,6 @@ func (l *List[U]) MyLen() int {
 	return 0
 }
 
-func outerFunction[A comparable](x1 A) {
-	type innerStruct[B1 any] struct {
-		x1 A
-		x2 B1
-	}
-	type innerMap[B2 any] map[A]B2
-
-	var x innerStruct[string]
-	_ = x
-	var y innerMap[bool]
-	_ = y
-}
-
 type NodeConstraint[Edge any] interface {
 	Edges() []Edge
 }

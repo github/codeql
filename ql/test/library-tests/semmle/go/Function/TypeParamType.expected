@@ -1,6 +1,3 @@
-| A | comparable |
-| B1 | interface { } |
-| B2 | interface { } |
 | Edge | EdgeConstraint |
 | Edge | interface { } |
 | K | comparable |
