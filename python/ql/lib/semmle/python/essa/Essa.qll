@@ -764,7 +764,8 @@ class CallsiteRefinement extends EssaNodeRefinement {
 /** An implicit (possible) modification of the object referred at a method call */
 class MethodCallsiteRefinement extends EssaNodeRefinement {
   MethodCallsiteRefinement() {
-    SsaSource::method_call_refinement(this.getSourceVariable(), _, this.getDefiningNode()) and
+    SsaSource::method_call_refinement(pragma[only_bind_into](this.getSourceVariable()), _,
+      this.getDefiningNode()) and
     not this instanceof SingleSuccessorGuard
   }
 
