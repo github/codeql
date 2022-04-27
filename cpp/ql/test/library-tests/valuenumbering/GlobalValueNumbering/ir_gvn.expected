@@ -71,20 +71,20 @@ test.cpp:
 
 #   10| int global01
 #   10|   Block 0
-#   10|     v10_1(void)       = EnterFunction             : 
-#   10|     m10_2(unknown)    = AliasedDefinition         : 
+#   10|     v10_1(void)       = EnterFunction     : 
+#   10|     m10_2(unknown)    = AliasedDefinition : 
 #   10|         valnum = unique
-#   10|     r10_3(glval<int>) = VariableAddress[global01] : 
+#   10|     r10_3(glval<int>) = VariableAddress   : 
 #   10|         valnum = unique
-#   10|     r10_4(int)        = Constant[1]               : 
+#   10|     r10_4(int)        = Constant[1]       : 
 #   10|         valnum = m10_5, r10_4
-#   10|     m10_5(int)        = Store[global01]           : &:r10_3, r10_4
+#   10|     m10_5(int)        = Store[?]          : &:r10_3, r10_4
 #   10|         valnum = m10_5, r10_4
-#   10|     m10_6(unknown)    = Chi                       : total:~m?, partial:m10_5
+#   10|     m10_6(unknown)    = Chi               : total:m10_2, partial:m10_5
 #   10|         valnum = unique
-#   10|     v10_7(void)       = ReturnVoid                : 
-#   10|     v10_8(void)       = AliasedUse                : ~m10_2
-#   10|     v10_9(void)       = ExitFunction              : 
+#   10|     v10_7(void)       = ReturnVoid        : 
+#   10|     v10_8(void)       = AliasedUse        : ~m10_6
+#   10|     v10_9(void)       = ExitFunction      : 
 
 #   12| void test01(int, int)
 #   12|   Block 0
@@ -170,20 +170,20 @@ test.cpp:
 
 #   21| int global02
 #   21|   Block 0
-#   21|     v21_1(void)       = EnterFunction             : 
-#   21|     m21_2(unknown)    = AliasedDefinition         : 
+#   21|     v21_1(void)       = EnterFunction     : 
+#   21|     m21_2(unknown)    = AliasedDefinition : 
 #   21|         valnum = unique
-#   21|     r21_3(glval<int>) = VariableAddress[global02] : 
+#   21|     r21_3(glval<int>) = VariableAddress   : 
 #   21|         valnum = unique
-#   21|     r21_4(int)        = Constant[2]               : 
+#   21|     r21_4(int)        = Constant[2]       : 
 #   21|         valnum = m21_5, r21_4
-#   21|     m21_5(int)        = Store[global02]           : &:r21_3, r21_4
+#   21|     m21_5(int)        = Store[?]          : &:r21_3, r21_4
 #   21|         valnum = m21_5, r21_4
-#   21|     m21_6(unknown)    = Chi                       : total:~m?, partial:m21_5
+#   21|     m21_6(unknown)    = Chi               : total:m21_2, partial:m21_5
 #   21|         valnum = unique
-#   21|     v21_7(void)       = ReturnVoid                : 
-#   21|     v21_8(void)       = AliasedUse                : ~m21_2
-#   21|     v21_9(void)       = ExitFunction              : 
+#   21|     v21_7(void)       = ReturnVoid        : 
+#   21|     v21_8(void)       = AliasedUse        : ~m21_6
+#   21|     v21_9(void)       = ExitFunction      : 
 
 #   25| void test02(int, int)
 #   25|   Block 0
@@ -276,20 +276,20 @@ test.cpp:
 
 #   35| int global03
 #   35|   Block 0
-#   35|     v35_1(void)       = EnterFunction             : 
-#   35|     m35_2(unknown)    = AliasedDefinition         : 
+#   35|     v35_1(void)       = EnterFunction     : 
+#   35|     m35_2(unknown)    = AliasedDefinition : 
 #   35|         valnum = unique
-#   35|     r35_3(glval<int>) = VariableAddress[global03] : 
+#   35|     r35_3(glval<int>) = VariableAddress   : 
 #   35|         valnum = unique
-#   35|     r35_4(int)        = Constant[3]               : 
+#   35|     r35_4(int)        = Constant[3]       : 
 #   35|         valnum = m35_5, r35_4
-#   35|     m35_5(int)        = Store[global03]           : &:r35_3, r35_4
+#   35|     m35_5(int)        = Store[?]          : &:r35_3, r35_4
 #   35|         valnum = m35_5, r35_4
-#   35|     m35_6(unknown)    = Chi                       : total:~m?, partial:m35_5
+#   35|     m35_6(unknown)    = Chi               : total:m35_2, partial:m35_5
 #   35|         valnum = unique
-#   35|     v35_7(void)       = ReturnVoid                : 
-#   35|     v35_8(void)       = AliasedUse                : ~m35_2
-#   35|     v35_9(void)       = ExitFunction              : 
+#   35|     v35_7(void)       = ReturnVoid        : 
+#   35|     v35_8(void)       = AliasedUse        : ~m35_6
+#   35|     v35_9(void)       = ExitFunction      : 
 
 #   39| void test03(int, int, int*)
 #   39|   Block 0
