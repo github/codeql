@@ -3,6 +3,7 @@
  * @description The Android application uses a Broadcast Receiver that receives an Intent but does not properly verify that the Intent came from an authorized source.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 8.2
  * @precision high
  * @id java/improper-intent-verification
  * @tags security
