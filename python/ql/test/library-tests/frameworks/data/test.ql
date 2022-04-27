@@ -54,6 +54,7 @@ class Sinks extends ModelInput::SinkModelCsv {
 }
 
 // TODO: Commonly used tokens
+// TODO: Should `instance()` be shorthand for `subClass*().getReturn()`?
 // TODO: Uniform tokens for fields
 // TODO: Non-positional arguments (including Named parameters)
 // TODO: Any argument
@@ -74,6 +75,7 @@ class Sources extends ModelInput::SourceModelCsv {
         // Common tokens.
         "testlib;;Member[CommonTokens].Member[makePromise].ReturnValue.Awaited;test-source", //
         "testlib;;Member[CommonTokens].Member[Class].Instance;test-source", //
+        "testlib;;Member[CommonTokens].Member[Super].Subclass.Instance;test-source", //
       ]
   }
 }

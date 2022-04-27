@@ -39,3 +39,8 @@ async def async_func():
     val = await prom
 
 inst = CommonTokens.Class()
+
+class SubClass (CommonTokens.Super):
+    pass
+
+sub = SubClass()
