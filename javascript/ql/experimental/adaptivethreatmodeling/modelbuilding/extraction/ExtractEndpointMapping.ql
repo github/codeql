@@ -19,7 +19,7 @@ where
     queryName = "NosqlInjection" and
     c instanceof NosqlInjectionATM::NosqlInjectionAtmConfig
     or
-    queryName = "TaintedPathInjection" and
+    queryName = "TaintedPath" and
     c instanceof TaintedPathATM::TaintedPathAtmConfig
     or
     queryName = "Xss" and c instanceof XssATM::DomBasedXssAtmConfig
