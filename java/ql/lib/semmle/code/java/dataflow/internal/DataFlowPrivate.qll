@@ -205,6 +205,11 @@ private predicate canContainBool(Type t) {
   any(BooleanType b).(RefType).getASourceSupertype+() = t
 }
 
+private predicate isArray(Type t) {
+  t instanceof Array or
+  t.(RefType).getSourceDeclaration().hasQualifiedName("kotlin", "Array")
+}
+
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
@@ -221,6 +226,9 @@ predicate compatibleTypes(Type t1, Type t2) {
     erasedHaveIntersection(e1, e2)
     or
     canContainBool(e1) and canContainBool(e2)
+    or
+    // Make java array and `kotlin.Array` types compatible.
+    isArray(e1) and isArray(e2)
   )
 }
 
