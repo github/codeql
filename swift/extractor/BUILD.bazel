@@ -8,7 +8,12 @@ alias(
 
 cc_binary(
     name = "extractor",
-    srcs = ["main.cpp"],
+    srcs = [
+        "SwiftExtractor.h",
+        "SwiftExtractor.cpp",
+        "SwiftExtractorConfiguration.h",
+        "main.cpp",
+    ],
     target_compatible_with = select({
         "@platforms//os:linux": [],
         "@platforms//os:macos": [],
