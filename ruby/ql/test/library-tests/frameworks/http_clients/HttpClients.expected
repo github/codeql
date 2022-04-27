@@ -48,9 +48,13 @@
 | NetHttp.rb:6:8:6:50 | call to post | Net::HTTP | NetHttp.rb:6:23:6:36 | call to parse | NetHttp.rb:7:1:7:9 | call to body |
 | NetHttp.rb:6:8:6:50 | call to post | Net::HTTP | NetHttp.rb:6:23:6:36 | call to parse | NetHttp.rb:8:1:8:14 | call to read_body |
 | NetHttp.rb:6:8:6:50 | call to post | Net::HTTP | NetHttp.rb:6:23:6:36 | call to parse | NetHttp.rb:9:1:9:11 | call to entity |
+| NetHttp.rb:13:6:13:17 | call to get | Net::HTTP | NetHttp.rb:11:21:11:41 | "https://example.com" | NetHttp.rb:18:1:18:7 | call to body |
 | NetHttp.rb:13:6:13:17 | call to get | Net::HTTP | NetHttp.rb:13:14:13:16 | "/" | NetHttp.rb:18:1:18:7 | call to body |
+| NetHttp.rb:14:6:14:18 | call to post | Net::HTTP | NetHttp.rb:11:21:11:41 | "https://example.com" | NetHttp.rb:19:1:19:12 | call to read_body |
 | NetHttp.rb:14:6:14:18 | call to post | Net::HTTP | NetHttp.rb:14:15:14:17 | "/" | NetHttp.rb:19:1:19:12 | call to read_body |
+| NetHttp.rb:15:6:15:17 | call to put | Net::HTTP | NetHttp.rb:11:21:11:41 | "https://example.com" | NetHttp.rb:20:1:20:9 | call to entity |
 | NetHttp.rb:15:6:15:17 | call to put | Net::HTTP | NetHttp.rb:15:14:15:16 | "/" | NetHttp.rb:20:1:20:9 | call to entity |
+| NetHttp.rb:24:3:24:33 | call to get | Net::HTTP | NetHttp.rb:24:17:24:22 | domain | NetHttp.rb:27:1:27:28 | call to body |
 | NetHttp.rb:24:3:24:33 | call to get | Net::HTTP | NetHttp.rb:24:29:24:32 | path | NetHttp.rb:27:1:27:28 | call to body |
 | OpenURI.rb:3:9:3:41 | call to open | OpenURI | OpenURI.rb:3:21:3:40 | "http://example.com" | OpenURI.rb:4:1:4:10 | call to read |
 | OpenURI.rb:6:9:6:34 | call to open | OpenURI | OpenURI.rb:6:14:6:33 | "http://example.com" | OpenURI.rb:7:1:7:15 | call to readlines |
