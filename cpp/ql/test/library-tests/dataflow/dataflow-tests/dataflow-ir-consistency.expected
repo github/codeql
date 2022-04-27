@@ -1,16 +1,20 @@
 uniqueEnclosingCallable
 | globals.cpp:9:5:9:19 | Address | Node should have one enclosing callable but has 0. |
+| globals.cpp:9:5:9:19 | AliasedDefinition | Node should have one enclosing callable but has 0. |
 | globals.cpp:9:5:9:19 | VariableAddress | Node should have one enclosing callable but has 0. |
 | globals.cpp:9:5:9:19 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
 | globals.cpp:9:23:9:23 | 0 | Node should have one enclosing callable but has 0. |
 | globals.cpp:9:23:9:23 | ChiPartial | Node should have one enclosing callable but has 0. |
+| globals.cpp:9:23:9:23 | ChiTotal | Node should have one enclosing callable but has 0. |
 | globals.cpp:9:23:9:23 | Store | Node should have one enclosing callable but has 0. |
 | globals.cpp:9:23:9:23 | StoreValue | Node should have one enclosing callable but has 0. |
 | globals.cpp:16:12:16:26 | Address | Node should have one enclosing callable but has 0. |
+| globals.cpp:16:12:16:26 | AliasedDefinition | Node should have one enclosing callable but has 0. |
 | globals.cpp:16:12:16:26 | VariableAddress | Node should have one enclosing callable but has 0. |
 | globals.cpp:16:12:16:26 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
 | globals.cpp:16:30:16:30 | 0 | Node should have one enclosing callable but has 0. |
 | globals.cpp:16:30:16:30 | ChiPartial | Node should have one enclosing callable but has 0. |
+| globals.cpp:16:30:16:30 | ChiTotal | Node should have one enclosing callable but has 0. |
 | globals.cpp:16:30:16:30 | Store | Node should have one enclosing callable but has 0. |
 | globals.cpp:16:30:16:30 | StoreValue | Node should have one enclosing callable but has 0. |
 uniqueType
@@ -234,10 +238,10 @@ postWithInFlow
 | lambdas.cpp:20:11:20:11 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:20:11:20:11 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:20:11:20:11 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| lambdas.cpp:23:3:23:3 | (reference dereference) [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:23:3:23:14 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:23:3:23:14 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:23:3:23:14 | v [post update] | PostUpdateNode should not be the target of local flow. |
-| lambdas.cpp:23:15:23:15 | (reference dereference) [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:28:7:28:7 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:28:10:31:2 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:28:10:31:2 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |

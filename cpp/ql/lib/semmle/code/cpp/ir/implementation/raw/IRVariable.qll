@@ -18,7 +18,7 @@ private import Imports::IRType
  * by the AST-to-IR translation (`IRTempVariable`).
  */
 class IRVariable extends TIRVariable {
-  Language::Function func;
+  Language::Declaration func;
 
   IRVariable() {
     this = TIRUserVariable(_, _, func) or
@@ -79,7 +79,7 @@ class IRVariable extends TIRVariable {
   /**
    * Gets the function that references this variable.
    */
-  final Language::Function getEnclosingFunction() { result = func }
+  final Language::Declaration getEnclosingFunction() { result = func }
 }
 
 /**
@@ -246,7 +246,7 @@ class IREllipsisVariable extends IRTempVariable, IRParameter {
 
   final override string toString() { result = "#ellipsis" }
 
-  final override int getIndex() { result = func.getNumberOfParameters() }
+  final override int getIndex() { result = func.(Language::Function).getNumberOfParameters() }
 }
 
 /**

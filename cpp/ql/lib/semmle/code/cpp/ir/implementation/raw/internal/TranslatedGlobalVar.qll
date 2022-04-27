@@ -89,7 +89,8 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
 
   override IRUserVariable getInstructionVariable(InstructionTag tag) {
     tag = InitializerVariableAddressTag() and
-    result.getVariable() = var
+    result.getVariable() = var and
+    result.getEnclosingFunction() = var
   }
 
   override Instruction getTargetAddress() {
