@@ -15,6 +15,16 @@ answer_to_life_the_universe_and_everything(
 
 // from codegen/schema.yml
 
+@element =
+  @argument
+| @file
+| @generic_context
+| @iterable_decl_context
+| @locatable
+| @location
+| @type
+;
+
 files(
   unique int id: @file,
   string name: string ref
@@ -1886,13 +1896,3 @@ integer_literal_exprs(
   unique int id: @integer_literal_expr,
   string string_value: string ref
 );
-
-@element =
-  @argument
-| @file
-| @generic_context
-| @iterable_decl_context
-| @locatable
-| @location
-| @type
-;

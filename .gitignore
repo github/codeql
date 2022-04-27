@@ -20,6 +20,9 @@
 # python virtual environment folder
 .venv/
 
+# binary files created by pytest-cov
+.coverage
+
 # It's useful (though not required) to be able to unpack codeql in the ql checkout itself
 /codeql/
 

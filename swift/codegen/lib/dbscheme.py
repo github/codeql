@@ -10,7 +10,7 @@ dbscheme_keywords = {"case", "boolean", "int", "string", "type"}
 
 
 @dataclass
-class DbColumn:
+class Column:
     schema_name: str
     type: str
     binding: bool = False
@@ -36,33 +36,33 @@ class DbColumn:
 
 
 @dataclass
-class DbKeySetId:
+class KeySetId:
     id: str
     first: bool = False
 
 
 @dataclass
-class DbKeySet:
-    ids: List[DbKeySetId]
+class KeySet:
+    ids: List[KeySetId]
 
     def __post_init__(self):
         assert self.ids
-        self.ids = [DbKeySetId(x) for x in self.ids]
+        self.ids = [KeySetId(x) for x in self.ids]
         self.ids[0].first = True
 
 
-class DbDecl:
+class Decl:
     is_table = False
     is_union = False
 
 
 @dataclass
-class DbTable(DbDecl):
+class Table(Decl):
     is_table: ClassVar = True
 
     name: str
-    columns: List[DbColumn]
-    keyset: DbKeySet = None
+    columns: List[Column]
+    keyset: KeySet = None
 
     def __post_init__(self):
         if self.columns:
@@ -70,35 +70,35 @@ class DbTable(DbDecl):
 
 
 @dataclass
-class DbUnionCase:
+class UnionCase:
     type: str
     first: bool = False
 
 
 @dataclass
-class DbUnion(DbDecl):
+class Union(Decl):
     is_union: ClassVar = True
 
     lhs: str
-    rhs: List[DbUnionCase]
+    rhs: List[UnionCase]
 
     def __post_init__(self):
         assert self.rhs
-        self.rhs = [DbUnionCase(x) for x in self.rhs]
+        self.rhs = [UnionCase(x) for x in self.rhs]
         self.rhs.sort(key=lambda c: c.type)
         self.rhs[0].first = True
 
 
 @dataclass
-class DbSchemeInclude:
+class SchemeInclude:
     src: str
     data: str
 
 
 @dataclass
-class DbScheme:
+class Scheme:
     template: ClassVar = 'dbscheme'
 
     src: str
-    includes: List[DbSchemeInclude]
-    declarations: List[DbDecl]
+    includes: List[SchemeInclude]
+    declarations: List[Decl]
