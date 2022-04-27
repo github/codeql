@@ -22,7 +22,7 @@ jobs:
           - github/codeql-go
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Find codeql
         id: find-codeql
@@ -41,7 +41,7 @@ jobs:
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Checkout ${{ matrix.repo }}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: ${{ matrix.repo }}
           path: ${{ github.workspace }}/repo
@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: measure
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/download-artifact@v2
         with:
           name: measurements
