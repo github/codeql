@@ -122,7 +122,7 @@ module IO {
     override predicate isShellInterpreted(DataFlow::Node arg) { this.argument(arg, true) }
 
     /**
-     * A helper predicate that holds if `arg` is an argument to this call. `shell` is true if the argument is passed to a subshell.
+     * Holds if `arg` is an argument to this call. `shell` is true if the argument is passed to a subshell.
      */
     private predicate argument(DataFlow::Node arg, boolean shell) {
       exists(ExprCfgNode n | n = arg.asExpr() |
@@ -136,13 +136,15 @@ module IO {
           // This increases the sensitivity of the CommandInjection query at the risk of some FPs.
           if n.getConstantValue().getString() = "-" then shell = false else shell = true
           or
-          // IO.popen({var: "a"}, [{var: "b"}, "cmd", "arg1", "arg2", {some: :opt}])
+          // IO.popen([{var: "b"}, "cmd", "arg1", "arg2", {some: :opt}])
+          // IO.popen({var: "a"}, ["cmd", "arg1", "arg2", {some: :opt}])
           shell = false and
           exists(ExprNodes::ArrayLiteralCfgNode arr | this.getArgument([0, 1]).asExpr() = arr |
             n = arr.getAnArgument()
             or
-            // IO.popen({var: "a"}, [{var: "b"}, ["cmd", "argv0"], "arg1", "arg2", {some: :opt}])
-            n = arr.getArgument(0).(ExprNodes::ArrayLiteralCfgNode).getArgument(0)
+            // IO.popen([{var: "b"}, ["cmd", "argv0"], "arg1", "arg2", {some: :opt}])
+            // IO.popen([["cmd", "argv0"], "arg1", "arg2", {some: :opt}])
+            n = arr.getArgument([0, 1]).(ExprNodes::ArrayLiteralCfgNode).getArgument(0)
           )
         )
       )

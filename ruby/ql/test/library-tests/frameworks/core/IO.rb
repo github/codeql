@@ -9,6 +9,7 @@ IO.popen([{some_env_var: "123"}, "cat", "foo.txt"], {some: :opt})
 IO.popen([["cat", "argv0"], "foo.txt"])
 IO.popen([{some_env_var: "123"}, ["cat", "argv0"], "foo.txt"])
 IO.popen([{some_env_var: "123"}, ["cat", "argv0"], "foo.txt"], {some: :opt})
+IO.popen({some_env_var: "123"}, [["cat", "argv0"], "foo.txt"], {some: :opt})
 
 IO.popen("-")
 IO.popen({some_env_var: "123"}, "-")
