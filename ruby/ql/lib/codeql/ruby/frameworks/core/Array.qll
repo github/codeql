@@ -741,19 +741,14 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "Argument[self].ArrayElement[?]" and
-        output = ["ReturnValue", "Argument[self].ArrayElement[?]"]
-        or
-        exists(ArrayIndex j | input = "Argument[self].ArrayElement[" + j + "]" |
-          j = i and output = "ReturnValue"
-          or
-          j != i and output = "Argument[self].ArrayElement[" + j + "]"
-        )
+        input = "Argument[self].ArrayElement[?," + i + "]" and
+        output = "ReturnValue"
         or
         input = "Argument[0]" and
         output = "Argument[block].Parameter[0]"
         or
-        input = "Argument[1]" and output = "ReturnValue"
+        input = "Argument[1]" and
+        output = "ReturnValue"
       ) and
       preservesValue = true
     }
