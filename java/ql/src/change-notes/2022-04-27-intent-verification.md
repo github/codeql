@@ -1,0 +1,6 @@
+---
+category: newQuery
+---
+* A new query "Improper Verification of Intent by Broadcast Receiver" (`java/improper-intent-verification`) has been added. 
+This query finds instances of Android `BroadcastReceiver`s that don't verify the action string of received Intents when registered
+to receive system intents.
