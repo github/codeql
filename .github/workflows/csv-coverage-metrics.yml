@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
       - name: Create empty database
@@ -32,7 +32,7 @@ jobs:
         run: |
           DATABASE="${{ runner.temp }}/java-database"
           codeql database analyze --format=sarif-latest --output=metrics.sarif -- "$DATABASE" ./java/ql/src/Metrics/Summaries/FrameworkCoverage.ql
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: metrics.sarif
           path: metrics.sarif

@@ -15,22 +15,22 @@ import experimental.adaptivethreatmodeling.AdaptiveThreatModeling
 from string queryName, AtmConfig c, EndpointType e
 where
   (
-    queryName = "NosqlInjectionATM.ql" and
+    queryName = "NosqlInjection" and
     c instanceof NosqlInjectionAtm::NosqlInjectionAtmConfig
     or
-    queryName = "SqlInjectionATM.ql" and
+    queryName = "SqlInjection" and
     c instanceof SqlInjectionAtm::SqlInjectionAtmConfig
     or
-    queryName = "StoredXssATM.ql" and
+    queryName = "StoredXss" and
     c instanceof StoredXssAtm::StoredXssAtmConfig
     or
-    queryName = "TaintedPathInjectionATM.ql" and
+    queryName = "TaintedPath" and
     c instanceof TaintedPathAtm::TaintedPathAtmConfig
     or
-    queryName = "XssATM.ql" and c instanceof XssAtm::DomBasedXssAtmConfig
+    queryName = "Xss" and c instanceof XssAtm::DomBasedXssAtmConfig
     or
-    queryName = "XssThroughDomATM.ql" and
+    queryName = "XssThroughDom" and
     c instanceof XssThroughDomAtm::XssThroughDomAtmConfig
   ) and
   e = c.getASinkEndpointType()
-select queryName, e.getEncoding() as endpointTypeEncoded
+select queryName, e.getEncoding() as label

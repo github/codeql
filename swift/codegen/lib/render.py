@@ -19,8 +19,7 @@ class Renderer:
     """ Template renderer using mustache templates in the `templates` directory """
 
     def __init__(self):
-        self.r = pystache.Renderer(search_dirs=str(paths.lib_dir / "templates"), escape=lambda u: u)
-        self.generator = paths.exe_file.relative_to(paths.swift_dir)
+        self._r = pystache.Renderer(search_dirs=str(paths.lib_dir / "templates"), escape=lambda u: u)
         self.written = set()
 
     def render(self, data, output: pathlib.Path):
@@ -32,7 +31,7 @@ class Renderer:
         """
         mnemonic = type(data).__name__
         output.parent.mkdir(parents=True, exist_ok=True)
-        data = self.r.render_name(data.template, data, generator=self.generator)
+        data = self._r.render_name(data.template, data, generator=paths.exe_file)
         with open(output, "w") as out:
             out.write(data)
         log.debug(f"generated {mnemonic} {output.name}")
@@ -41,6 +40,5 @@ class Renderer:
     def cleanup(self, existing):
         """ Remove files in `existing` for which no `render` has been called """
         for f in existing - self.written:
-            if f.is_file():
-                f.unlink()
-                log.info(f"removed {f.name}")
+            f.unlink(missing_ok=True)
+            log.info(f"removed {f.name}")

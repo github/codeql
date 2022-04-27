@@ -9,7 +9,6 @@
 
 import ql
 import Definitions
-import codeql.IDEContextual
 
 external string selectedSourceFile();
 

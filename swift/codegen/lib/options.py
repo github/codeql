@@ -10,11 +10,15 @@ from . import paths
 
 def _init_options():
     Option("--verbose", "-v", action="store_true")
-    Option("--schema", tags=["schema"], type=pathlib.Path, default=paths.swift_dir / "codegen/schema.yml")
-    Option("--dbscheme", tags=["dbscheme"], type=pathlib.Path, default=paths.swift_dir / "ql/lib/swift.dbscheme")
-    Option("--ql-output", tags=["ql"], type=pathlib.Path, default=paths.swift_dir / "ql/lib/codeql/swift/generated")
-    Option("--ql-stub-output", tags=["ql"], type=pathlib.Path, default=paths.swift_dir / "ql/lib/codeql/swift/elements")
+    Option("--schema", tags=["schema"], type=_abspath, default=paths.swift_dir / "codegen/schema.yml")
+    Option("--dbscheme", tags=["dbscheme"], type=_abspath, default=paths.swift_dir / "ql/lib/swift.dbscheme")
+    Option("--ql-output", tags=["ql"], type=_abspath, default=paths.swift_dir / "ql/lib/codeql/swift/generated")
+    Option("--ql-stub-output", tags=["ql"], type=_abspath, default=paths.swift_dir / "ql/lib/codeql/swift/elements")
     Option("--codeql-binary", tags=["ql"], default="codeql")
+
+
+def _abspath(x):
+    return pathlib.Path(x).resolve()
 
 
 _options = collections.defaultdict(list)

@@ -15,7 +15,7 @@ jobs:
   qlformat:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/fetch-codeql
       - name: Check QL formatting
         run: find ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql query format --check-only
@@ -26,7 +26,7 @@ jobs:
       matrix:
         os : [ubuntu-20.04, macos-latest]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/fetch-codeql
       - uses: bazelbuild/setup-bazelisk@v2
       - name: Build Swift extractor

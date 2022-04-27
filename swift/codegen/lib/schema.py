@@ -3,7 +3,6 @@
 import pathlib
 import re
 from dataclasses import dataclass, field
-from enum import Enum, auto
 from typing import List, Set, Dict, ClassVar
 
 import yaml
@@ -47,7 +46,7 @@ class Class:
 
 @dataclass
 class Schema:
-    classes: Dict[str, Class]
+    classes: List[Class]
     includes: Set[str] = field(default_factory=set)
 
 
@@ -65,6 +64,7 @@ def _parse_property(name, type):
 
 class _DirSelector:
     """ Default output subdirectory selector for generated QL files, based on the `_directories` global field"""
+
     def __init__(self, dir_to_patterns):
         self.selector = [(re.compile(p), pathlib.Path(d)) for d, p in dir_to_patterns]
         self.selector.append((re.compile(""), pathlib.Path()))
@@ -73,19 +73,19 @@ class _DirSelector:
         return next(d for p, d in self.selector if p.search(name))
 
 
-def load(file):
-    """ Parse the schema from `file` """
-    data = yaml.load(file, Loader=yaml.SafeLoader)
+def load(path):
+    """ Parse the schema from the file at `path` """
+    with open(path) as input:
+        data = yaml.load(input, Loader=yaml.SafeLoader)
     grouper = _DirSelector(data.get("_directories", {}).items())
-    ret = Schema(classes={cls: Class(cls, dir=grouper.get(cls)) for cls in data if not cls.startswith("_")},
-                 includes=set(data.get("_includes", [])))
-    assert root_class_name not in ret.classes
-    ret.classes[root_class_name] = Class(root_class_name)
+    classes = {root_class_name: Class(root_class_name)}
+    assert root_class_name not in data
+    classes.update((cls, Class(cls, dir=grouper.get(cls))) for cls in data if not cls.startswith("_"))
     for name, info in data.items():
         if name.startswith("_"):
             continue
         assert name[0].isupper()
-        cls = ret.classes[name]
+        cls = classes[name]
         for k, v in info.items():
             if not k.startswith("_"):
                 cls.properties.append(_parse_property(k, v))
@@ -94,11 +94,11 @@ def load(file):
                     v = [v]
                 for base in v:
                     cls.bases.add(base)
-                    ret.classes[base].derived.add(name)
+                    classes[base].derived.add(name)
             elif k == "_dir":
                 cls.dir = pathlib.Path(v)
         if not cls.bases:
             cls.bases.add(root_class_name)
-            ret.classes[root_class_name].derived.add(name)
+            classes[root_class_name].derived.add(name)
 
-    return ret
+    return Schema(classes=list(classes.values()), includes=set(data.get("_includes", [])))
