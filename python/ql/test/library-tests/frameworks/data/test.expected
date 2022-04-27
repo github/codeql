@@ -17,6 +17,12 @@ isSink
 | test.py:17:31:17:34 | ControlFlowNode for four | test-source |
 | test.py:18:37:18:40 | ControlFlowNode for five | test-source |
 | test.py:19:21:19:26 | ControlFlowNode for second | test-source |
+| test.py:30:21:30:23 | ControlFlowNode for one | test-source |
+| test.py:32:22:32:24 | ControlFlowNode for one | test-source |
+| test.py:32:27:32:29 | ControlFlowNode for two | test-source |
+| test.py:33:22:33:24 | ControlFlowNode for one | test-source |
+| test.py:33:27:33:29 | ControlFlowNode for two | test-source |
+| test.py:33:32:33:36 | ControlFlowNode for three | test-source |
 isSource
 | test.py:3:5:3:15 | ControlFlowNode for getSource() | test-source |
 | test.py:9:8:9:14 | ControlFlowNode for alias() | test-source |

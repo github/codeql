@@ -23,3 +23,11 @@ from testlib import Callbacks
 Callbacks.first(lambda one, two, three, four, five: 0)
 Callbacks.param1to3(lambda one, two, three, four, five: 0)
 Callbacks.nonFirst(lambda first, second: 0)
+
+from testlib import CallFilter
+
+CallFilter.arityOne(one, two) # NO match
+CallFilter.arityOne(one) # Match
+CallFilter.twoOrMore(one) # NO match
+CallFilter.twoOrMore(one, two) # Match
+CallFilter.twoOrMore(one, two, three) # Match
