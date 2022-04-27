@@ -44,3 +44,8 @@ class SubClass (CommonTokens.Super):
     pass
 
 sub = SubClass()
+
+class Sub2Class (CommonTokens.Class):
+    pass
+
+sub2 = Sub2Class()

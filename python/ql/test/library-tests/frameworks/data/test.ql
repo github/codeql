@@ -53,8 +53,6 @@ class Sinks extends ModelInput::SinkModelCsv {
   }
 }
 
-// TODO: Commonly used tokens
-// TODO: Should `instance()` be shorthand for `subClass*().getReturn()`?
 // TODO: Uniform tokens for fields
 // TODO: Non-positional arguments (including Named parameters)
 // TODO: Any argument
