@@ -29,6 +29,7 @@ import (
 )
 
 var MaxGoRoutines int
+var typeParamParent map[*types.TypeParam]types.Object = make(map[*types.TypeParam]types.Object)
 
 func init() {
 	// this sets the number of threads that the Go runtime will spawn; this is separate
@@ -365,13 +366,13 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 			// do not appear as objects in any scope, so they have to be dealt
 			// with separately in extractMethods.
 			if funcObj, ok := obj.(*types.Func); ok {
-				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).TypeParams(), lbl)
-				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).RecvTypeParams(), lbl)
+				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).TypeParams(), obj)
+				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).RecvTypeParams(), obj)
 			}
 			// Populate type parameter parents for named types.
 			if typeNameObj, ok := obj.(*types.TypeName); ok {
 				if tp, ok := typeNameObj.Type().(*types.Named); ok {
-					populateTypeParamParents(tw, tp.TypeParams(), lbl)
+					populateTypeParamParents(tw, tp.TypeParams(), obj)
 				}
 			}
 			extractObject(tw, obj, lbl)
@@ -397,8 +398,8 @@ func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 	if !exists {
 		// Populate type parameter parents for methods. They do not appear as
 		// objects in any scope, so they have to be dealt with separately here.
-		populateTypeParamParents(tw, meth.Type().(*types.Signature).TypeParams(), methlbl)
-		populateTypeParamParents(tw, meth.Type().(*types.Signature).RecvTypeParams(), methlbl)
+		populateTypeParamParents(tw, meth.Type().(*types.Signature).TypeParams(), meth)
+		populateTypeParamParents(tw, meth.Type().(*types.Signature).RecvTypeParams(), meth)
 		extractObject(tw, meth, methlbl)
 	}
 
@@ -1099,6 +1100,7 @@ func extractExprs(tw *trap.Writer, exprs []ast.Expr, parent trap.Label, idx int,
 func extractTypeOf(tw *trap.Writer, expr ast.Expr, lbl trap.Label) {
 	tp := typeOf(tw, expr)
 	if tp != nil {
+		// log.Printf("Extracting type of expr %v", expr)
 		tplbl := extractType(tw, tp)
 		dbscheme.TypeOfTable.Emit(tw, lbl, tplbl)
 	}
@@ -1574,10 +1576,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			}
 		case *types.TypeParam:
 			kind = dbscheme.TypeParamType.Index()
-			parentlbl, exists := tw.TypeParamParent[tp]
-			if !exists {
-				log.Fatalf("Parent of type parameter does not exist: %s", tp.String())
-			}
+			parentlbl := getTypeParamParentLabel(tw, tp)
 			constraintLabel := extractType(tw, tp.Constraint())
 			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), constraintLabel, parentlbl, tp.Index())
 		case *types.Union:
@@ -1718,7 +1717,7 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};namedtype", entitylbl))
 		case *types.TypeParam:
-			parentlbl := tw.TypeParamParent[tp]
+			parentlbl := getTypeParamParentLabel(tw, tp)
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%s;typeparamtype", parentlbl, tp.Obj().Name()))
 		case *types.Union:
 			var b strings.Builder
@@ -1903,11 +1902,11 @@ func extractTypeParamDecls(tw *trap.Writer, fields *ast.FieldList, parent trap.L
 	}
 }
 
-// populateTypeParamParents sets `parentlbl` as the parent of the elements of `typeparams`
-func populateTypeParamParents(tw *trap.Writer, typeparams *types.TypeParamList, parentlbl trap.Label) {
+// populateTypeParamParents sets `parent` as the parent of the elements of `typeparams`
+func populateTypeParamParents(tw *trap.Writer, typeparams *types.TypeParamList, parent types.Object) {
 	if typeparams != nil {
 		for idx := 0; idx < typeparams.Len(); idx++ {
-			tw.TypeParamParent[typeparams.At(idx)] = parentlbl
+			setTypeParamParent(typeparams.At(idx), parent)
 		}
 	}
 }
@@ -1997,5 +1996,26 @@ func trackInstantiatedStructFields(tw *trap.Writer, tp, origintp *types.Named) {
 		for i := 0; i < instantiatedStruct.NumFields(); i++ {
 			tw.ObjectsOverride[instantiatedStruct.Field(i)] = genericStruct.Field(i)
 		}
+	}
+}
+
+func getTypeParamParentLabel(tw *trap.Writer, tp *types.TypeParam) trap.Label {
+	parent, exists := typeParamParent[tp]
+	if !exists {
+		log.Fatalf("Parent of type parameter does not exist: %s %s", tp.String(), tp.Constraint().String())
+	}
+	parentlbl, _ := tw.Labeler.ScopedObjectID(parent, func() trap.Label {
+		log.Fatalf("getTypeLabel() called for parent of type parameter %s", tp.String())
+		return trap.InvalidLabel
+	})
+	return parentlbl
+}
+
+func setTypeParamParent(tp *types.TypeParam, newobj types.Object) {
+	obj, exists := typeParamParent[tp]
+	if !exists {
+		typeParamParent[tp] = newobj
+	} else if newobj != obj {
+		log.Fatalf("Parent of type parameter '%s %s' being set to a different value: '%s' vs '%s'", tp.String(), tp.Constraint().String(), obj, newobj)
 	}
 }
