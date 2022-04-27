@@ -37,12 +37,12 @@ jobs:
       run: |
         PATH="$PATH:codeql-cli/codeql" python script/misc/scripts/library-coverage/generate-report.py ci codeqlModels script
     - name: Upload CSV package list
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: framework-coverage-csv
         path: framework-coverage-*.csv
     - name: Upload RST package list
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: framework-coverage-rst
         path: framework-coverage-*.rst
