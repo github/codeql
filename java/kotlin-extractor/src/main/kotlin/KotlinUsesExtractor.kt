@@ -899,6 +899,13 @@ open class KotlinUsesExtractor(
         return id
     }
 
+    // These are classes with Java equivalents, but whose methods don't all exist on those Java equivalents--
+    // for example, the numeric classes define arithmetic functions (Int.plus, Long.or and so on) that lower to
+    // primitive arithmetic on the JVM, but which we extract as calls to reflect the source syntax more closely.
+    private val expectedMissingEquivalents = setOf(
+        "kotlin.Boolean", "kotlin.Byte", "kotlin.Char", "kotlin.Double", "kotlin.Float", "kotlin.Int", "kotlin.Long", "kotlin.Number", "kotlin.Short"
+    )
+
     fun kotlinFunctionToJavaEquivalent(f: IrFunction, noReplace: Boolean) =
         if (noReplace)
             f
@@ -923,7 +930,10 @@ open class KotlinUsesExtractor(
                             decl.valueParameters.size == f.valueParameters.size
                         } ?:
                         run {
-                            logger.warn("Couldn't find a Java equivalent function to ${parentClass.fqNameWhenAvailable}.${f.name} in ${javaClass.fqNameWhenAvailable}")
+                            val parentFqName = parentClass.fqNameWhenAvailable?.asString()
+                            if (!expectedMissingEquivalents.contains(parentFqName)) {
+                                logger.warn("Couldn't find a Java equivalent function to $parentFqName.${f.name} in ${javaClass.fqNameWhenAvailable}")
+                            }
                             null
                         }
                     else
