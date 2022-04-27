@@ -1,0 +1,10 @@
+/**
+ * The source location of the snapshot.
+ */
+sourceLocationPrefix(
+  string prefix: string ref
+);
+
+answer_to_life_the_universe_and_everything(
+   int answer: int ref
+);

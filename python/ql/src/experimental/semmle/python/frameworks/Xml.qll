@@ -119,7 +119,7 @@ private module SaxBasedParsing {
    *
    * See https://docs.python.org/3.10/library/xml.sax.reader.html#xml.sax.xmlreader.XMLReader.setFeature
    */
-  class SaxParserSetFeatureCall extends DataFlow::MethodCallNode {
+  class SaxParserSetFeatureCall extends API::CallNode, DataFlow::MethodCallNode {
     SaxParserSetFeatureCall() {
       this =
         API::moduleImport("xml")
@@ -132,27 +132,9 @@ private module SaxBasedParsing {
 
     // The keyword argument names does not match documentation. I checked (with Python
     // 3.9.5) that the names used here actually works.
-    DataFlow::Node getFeatureArg() { result in [this.getArg(0), this.getArgByName("name")] }
+    API::Node getFeatureArg() { result = this.getParameter(0, "name") }
 
-    DataFlow::Node getStateArg() { result in [this.getArg(1), this.getArgByName("state")] }
-  }
-
-  /** Gets a back-reference to the `setFeature` state argument `arg`. */
-  private DataFlow::TypeTrackingNode saxParserSetFeatureStateArgBacktracker(
-    DataFlow::TypeBackTracker t, DataFlow::Node arg
-  ) {
-    t.start() and
-    arg = any(SaxParserSetFeatureCall c).getStateArg() and
-    result = arg.getALocalSource()
-    or
-    exists(DataFlow::TypeBackTracker t2 |
-      result = saxParserSetFeatureStateArgBacktracker(t2, arg).backtrack(t2, t)
-    )
-  }
-
-  /** Gets a back-reference to the `setFeature` state argument `arg`. */
-  DataFlow::LocalSourceNode saxParserSetFeatureStateArgBacktracker(DataFlow::Node arg) {
-    result = saxParserSetFeatureStateArgBacktracker(DataFlow::TypeBackTracker::end(), arg)
+    API::Node getStateArg() { result = this.getParameter(1, "state") }
   }
 
   /**
@@ -163,16 +145,13 @@ private module SaxBasedParsing {
   private DataFlow::Node saxParserWithFeatureExternalGesTurnedOn(DataFlow::TypeTracker t) {
     t.start() and
     exists(SaxParserSetFeatureCall call |
-      call.getFeatureArg() =
+      call.getFeatureArg().getARhs() =
         API::moduleImport("xml")
             .getMember("sax")
             .getMember("handler")
             .getMember("feature_external_ges")
             .getAUse() and
-      saxParserSetFeatureStateArgBacktracker(call.getStateArg())
-          .asExpr()
-          .(BooleanLiteral)
-          .booleanValue() = true and
+      call.getStateArg().getAValueReachingRhs().asExpr().(BooleanLiteral).booleanValue() = true and
       result = call.getObject()
     )
     or
@@ -182,16 +161,13 @@ private module SaxBasedParsing {
     // take account of that we can set the feature to False, which makes the parser safe again
     not exists(SaxParserSetFeatureCall call |
       call.getObject() = result and
-      call.getFeatureArg() =
+      call.getFeatureArg().getARhs() =
         API::moduleImport("xml")
             .getMember("sax")
             .getMember("handler")
             .getMember("feature_external_ges")
             .getAUse() and
-      saxParserSetFeatureStateArgBacktracker(call.getStateArg())
-          .asExpr()
-          .(BooleanLiteral)
-          .booleanValue() = false
+      call.getStateArg().getAValueReachingRhs().asExpr().(BooleanLiteral).booleanValue() = false
     )
   }
 

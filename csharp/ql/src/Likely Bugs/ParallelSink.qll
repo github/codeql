@@ -1,5 +1,4 @@
 import csharp
-import semmle.code.csharp.dataflow.DataFlow
 
 abstract class ParallelSink extends DataFlow::Node { }
 

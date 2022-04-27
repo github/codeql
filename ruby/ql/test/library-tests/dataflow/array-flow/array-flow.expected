@@ -10,9 +10,6 @@ edges
 | array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:2:9:2:20 | * ... :  |
 | array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:2:9:2:20 | * ... [array element 0] :  |
 | array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:2:9:2:20 | * ... [array element 0] :  |
-| array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:3:10:3:10 | a :  |
-| array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:4:10:4:10 | a :  |
-| array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:5:10:5:10 | a :  |
 | array_flow.rb:3:10:3:10 | a :  | array_flow.rb:3:10:3:13 | ...[...] |
 | array_flow.rb:3:10:3:10 | a [array element 0] :  | array_flow.rb:3:10:3:13 | ...[...] |
 | array_flow.rb:3:10:3:10 | a [array element 0] :  | array_flow.rb:3:10:3:13 | ...[...] |
@@ -824,18 +821,10 @@ edges
 | array_flow.rb:466:19:466:30 | call to source :  | array_flow.rb:471:9:471:9 | a [array element 3] :  |
 | array_flow.rb:466:19:466:30 | call to source :  | array_flow.rb:473:9:473:9 | a [array element 3] :  |
 | array_flow.rb:466:19:466:30 | call to source :  | array_flow.rb:473:9:473:9 | a [array element 3] :  |
-| array_flow.rb:466:19:466:30 | call to source :  | array_flow.rb:475:9:475:9 | a [array element 3] :  |
-| array_flow.rb:466:19:466:30 | call to source :  | array_flow.rb:475:9:475:9 | a [array element 3] :  |
 | array_flow.rb:466:19:466:30 | call to source :  | array_flow.rb:477:9:477:9 | a [array element 3] :  |
 | array_flow.rb:466:19:466:30 | call to source :  | array_flow.rb:477:9:477:9 | a [array element 3] :  |
 | array_flow.rb:466:33:466:44 | call to source :  | array_flow.rb:467:9:467:9 | a [array element 4] :  |
 | array_flow.rb:466:33:466:44 | call to source :  | array_flow.rb:467:9:467:9 | a [array element 4] :  |
-| array_flow.rb:466:33:466:44 | call to source :  | array_flow.rb:471:9:471:9 | a [array element 4] :  |
-| array_flow.rb:466:33:466:44 | call to source :  | array_flow.rb:471:9:471:9 | a [array element 4] :  |
-| array_flow.rb:466:33:466:44 | call to source :  | array_flow.rb:473:9:473:9 | a [array element 4] :  |
-| array_flow.rb:466:33:466:44 | call to source :  | array_flow.rb:473:9:473:9 | a [array element 4] :  |
-| array_flow.rb:466:33:466:44 | call to source :  | array_flow.rb:475:9:475:9 | a [array element 4] :  |
-| array_flow.rb:466:33:466:44 | call to source :  | array_flow.rb:475:9:475:9 | a [array element 4] :  |
 | array_flow.rb:466:33:466:44 | call to source :  | array_flow.rb:477:9:477:9 | a [array element 4] :  |
 | array_flow.rb:466:33:466:44 | call to source :  | array_flow.rb:477:9:477:9 | a [array element 4] :  |
 | array_flow.rb:467:9:467:9 | a [array element 3] :  | array_flow.rb:467:9:469:7 | call to fetch :  |
@@ -848,38 +837,16 @@ edges
 | array_flow.rb:467:17:467:28 | call to source :  | array_flow.rb:467:35:467:35 | x :  |
 | array_flow.rb:467:35:467:35 | x :  | array_flow.rb:468:14:468:14 | x |
 | array_flow.rb:467:35:467:35 | x :  | array_flow.rb:468:14:468:14 | x |
-| array_flow.rb:471:9:471:9 | [post] a [array element 4] :  | array_flow.rb:473:9:473:9 | a [array element 4] :  |
-| array_flow.rb:471:9:471:9 | [post] a [array element 4] :  | array_flow.rb:473:9:473:9 | a [array element 4] :  |
-| array_flow.rb:471:9:471:9 | [post] a [array element 4] :  | array_flow.rb:475:9:475:9 | a [array element 4] :  |
-| array_flow.rb:471:9:471:9 | [post] a [array element 4] :  | array_flow.rb:475:9:475:9 | a [array element 4] :  |
-| array_flow.rb:471:9:471:9 | [post] a [array element 4] :  | array_flow.rb:477:9:477:9 | a [array element 4] :  |
-| array_flow.rb:471:9:471:9 | [post] a [array element 4] :  | array_flow.rb:477:9:477:9 | a [array element 4] :  |
 | array_flow.rb:471:9:471:9 | a [array element 3] :  | array_flow.rb:471:9:471:18 | call to fetch :  |
 | array_flow.rb:471:9:471:9 | a [array element 3] :  | array_flow.rb:471:9:471:18 | call to fetch :  |
-| array_flow.rb:471:9:471:9 | a [array element 4] :  | array_flow.rb:471:9:471:9 | [post] a [array element 4] :  |
-| array_flow.rb:471:9:471:9 | a [array element 4] :  | array_flow.rb:471:9:471:9 | [post] a [array element 4] :  |
 | array_flow.rb:471:9:471:18 | call to fetch :  | array_flow.rb:472:10:472:10 | b |
 | array_flow.rb:471:9:471:18 | call to fetch :  | array_flow.rb:472:10:472:10 | b |
-| array_flow.rb:473:9:473:9 | [post] a [array element 4] :  | array_flow.rb:475:9:475:9 | a [array element 4] :  |
-| array_flow.rb:473:9:473:9 | [post] a [array element 4] :  | array_flow.rb:475:9:475:9 | a [array element 4] :  |
-| array_flow.rb:473:9:473:9 | [post] a [array element 4] :  | array_flow.rb:477:9:477:9 | a [array element 4] :  |
-| array_flow.rb:473:9:473:9 | [post] a [array element 4] :  | array_flow.rb:477:9:477:9 | a [array element 4] :  |
 | array_flow.rb:473:9:473:9 | a [array element 3] :  | array_flow.rb:473:9:473:32 | call to fetch :  |
 | array_flow.rb:473:9:473:9 | a [array element 3] :  | array_flow.rb:473:9:473:32 | call to fetch :  |
-| array_flow.rb:473:9:473:9 | a [array element 4] :  | array_flow.rb:473:9:473:9 | [post] a [array element 4] :  |
-| array_flow.rb:473:9:473:9 | a [array element 4] :  | array_flow.rb:473:9:473:9 | [post] a [array element 4] :  |
 | array_flow.rb:473:9:473:32 | call to fetch :  | array_flow.rb:474:10:474:10 | b |
 | array_flow.rb:473:9:473:32 | call to fetch :  | array_flow.rb:474:10:474:10 | b |
 | array_flow.rb:473:20:473:31 | call to source :  | array_flow.rb:473:9:473:32 | call to fetch :  |
 | array_flow.rb:473:20:473:31 | call to source :  | array_flow.rb:473:9:473:32 | call to fetch :  |
-| array_flow.rb:475:9:475:9 | [post] a [array element 3] :  | array_flow.rb:477:9:477:9 | a [array element 3] :  |
-| array_flow.rb:475:9:475:9 | [post] a [array element 3] :  | array_flow.rb:477:9:477:9 | a [array element 3] :  |
-| array_flow.rb:475:9:475:9 | [post] a [array element 4] :  | array_flow.rb:477:9:477:9 | a [array element 4] :  |
-| array_flow.rb:475:9:475:9 | [post] a [array element 4] :  | array_flow.rb:477:9:477:9 | a [array element 4] :  |
-| array_flow.rb:475:9:475:9 | a [array element 3] :  | array_flow.rb:475:9:475:9 | [post] a [array element 3] :  |
-| array_flow.rb:475:9:475:9 | a [array element 3] :  | array_flow.rb:475:9:475:9 | [post] a [array element 3] :  |
-| array_flow.rb:475:9:475:9 | a [array element 4] :  | array_flow.rb:475:9:475:9 | [post] a [array element 4] :  |
-| array_flow.rb:475:9:475:9 | a [array element 4] :  | array_flow.rb:475:9:475:9 | [post] a [array element 4] :  |
 | array_flow.rb:475:9:475:34 | call to fetch :  | array_flow.rb:476:10:476:10 | b |
 | array_flow.rb:475:9:475:34 | call to fetch :  | array_flow.rb:476:10:476:10 | b |
 | array_flow.rb:475:22:475:33 | call to source :  | array_flow.rb:475:9:475:34 | call to fetch :  |
@@ -3401,6 +3368,16 @@ edges
 | array_flow.rb:1604:10:1604:10 | c [array element] :  | array_flow.rb:1604:10:1604:13 | ...[...] |
 | array_flow.rb:1605:10:1605:10 | c [array element] :  | array_flow.rb:1605:10:1605:13 | ...[...] |
 | array_flow.rb:1605:10:1605:10 | c [array element] :  | array_flow.rb:1605:10:1605:13 | ...[...] |
+| array_flow.rb:1610:5:1610:5 | [post] a [array element, array element 0] :  | array_flow.rb:1611:10:1611:10 | a [array element, array element 0] :  |
+| array_flow.rb:1610:5:1610:5 | [post] a [array element, array element 0] :  | array_flow.rb:1611:10:1611:10 | a [array element, array element 0] :  |
+| array_flow.rb:1610:5:1610:8 | [post] ...[...] [array element 0] :  | array_flow.rb:1610:5:1610:5 | [post] a [array element, array element 0] :  |
+| array_flow.rb:1610:5:1610:8 | [post] ...[...] [array element 0] :  | array_flow.rb:1610:5:1610:5 | [post] a [array element, array element 0] :  |
+| array_flow.rb:1610:15:1610:27 | call to source :  | array_flow.rb:1610:5:1610:8 | [post] ...[...] [array element 0] :  |
+| array_flow.rb:1610:15:1610:27 | call to source :  | array_flow.rb:1610:5:1610:8 | [post] ...[...] [array element 0] :  |
+| array_flow.rb:1611:10:1611:10 | a [array element, array element 0] :  | array_flow.rb:1611:10:1611:13 | ...[...] [array element 0] :  |
+| array_flow.rb:1611:10:1611:10 | a [array element, array element 0] :  | array_flow.rb:1611:10:1611:13 | ...[...] [array element 0] :  |
+| array_flow.rb:1611:10:1611:13 | ...[...] [array element 0] :  | array_flow.rb:1611:10:1611:16 | ...[...] |
+| array_flow.rb:1611:10:1611:13 | ...[...] [array element 0] :  | array_flow.rb:1611:10:1611:16 | ...[...] |
 nodes
 | array_flow.rb:2:9:2:20 | * ... :  | semmle.label | * ... :  |
 | array_flow.rb:2:9:2:20 | * ... [array element 0] :  | semmle.label | * ... [array element 0] :  |
@@ -4339,36 +4316,20 @@ nodes
 | array_flow.rb:468:14:468:14 | x | semmle.label | x |
 | array_flow.rb:470:10:470:10 | b | semmle.label | b |
 | array_flow.rb:470:10:470:10 | b | semmle.label | b |
-| array_flow.rb:471:9:471:9 | [post] a [array element 4] :  | semmle.label | [post] a [array element 4] :  |
-| array_flow.rb:471:9:471:9 | [post] a [array element 4] :  | semmle.label | [post] a [array element 4] :  |
 | array_flow.rb:471:9:471:9 | a [array element 3] :  | semmle.label | a [array element 3] :  |
 | array_flow.rb:471:9:471:9 | a [array element 3] :  | semmle.label | a [array element 3] :  |
-| array_flow.rb:471:9:471:9 | a [array element 4] :  | semmle.label | a [array element 4] :  |
-| array_flow.rb:471:9:471:9 | a [array element 4] :  | semmle.label | a [array element 4] :  |
 | array_flow.rb:471:9:471:18 | call to fetch :  | semmle.label | call to fetch :  |
 | array_flow.rb:471:9:471:18 | call to fetch :  | semmle.label | call to fetch :  |
 | array_flow.rb:472:10:472:10 | b | semmle.label | b |
 | array_flow.rb:472:10:472:10 | b | semmle.label | b |
-| array_flow.rb:473:9:473:9 | [post] a [array element 4] :  | semmle.label | [post] a [array element 4] :  |
-| array_flow.rb:473:9:473:9 | [post] a [array element 4] :  | semmle.label | [post] a [array element 4] :  |
 | array_flow.rb:473:9:473:9 | a [array element 3] :  | semmle.label | a [array element 3] :  |
 | array_flow.rb:473:9:473:9 | a [array element 3] :  | semmle.label | a [array element 3] :  |
-| array_flow.rb:473:9:473:9 | a [array element 4] :  | semmle.label | a [array element 4] :  |
-| array_flow.rb:473:9:473:9 | a [array element 4] :  | semmle.label | a [array element 4] :  |
 | array_flow.rb:473:9:473:32 | call to fetch :  | semmle.label | call to fetch :  |
 | array_flow.rb:473:9:473:32 | call to fetch :  | semmle.label | call to fetch :  |
 | array_flow.rb:473:20:473:31 | call to source :  | semmle.label | call to source :  |
 | array_flow.rb:473:20:473:31 | call to source :  | semmle.label | call to source :  |
 | array_flow.rb:474:10:474:10 | b | semmle.label | b |
 | array_flow.rb:474:10:474:10 | b | semmle.label | b |
-| array_flow.rb:475:9:475:9 | [post] a [array element 3] :  | semmle.label | [post] a [array element 3] :  |
-| array_flow.rb:475:9:475:9 | [post] a [array element 3] :  | semmle.label | [post] a [array element 3] :  |
-| array_flow.rb:475:9:475:9 | [post] a [array element 4] :  | semmle.label | [post] a [array element 4] :  |
-| array_flow.rb:475:9:475:9 | [post] a [array element 4] :  | semmle.label | [post] a [array element 4] :  |
-| array_flow.rb:475:9:475:9 | a [array element 3] :  | semmle.label | a [array element 3] :  |
-| array_flow.rb:475:9:475:9 | a [array element 3] :  | semmle.label | a [array element 3] :  |
-| array_flow.rb:475:9:475:9 | a [array element 4] :  | semmle.label | a [array element 4] :  |
-| array_flow.rb:475:9:475:9 | a [array element 4] :  | semmle.label | a [array element 4] :  |
 | array_flow.rb:475:9:475:34 | call to fetch :  | semmle.label | call to fetch :  |
 | array_flow.rb:475:9:475:34 | call to fetch :  | semmle.label | call to fetch :  |
 | array_flow.rb:475:22:475:33 | call to source :  | semmle.label | call to source :  |
@@ -7049,6 +7010,18 @@ nodes
 | array_flow.rb:1605:10:1605:10 | c [array element] :  | semmle.label | c [array element] :  |
 | array_flow.rb:1605:10:1605:13 | ...[...] | semmle.label | ...[...] |
 | array_flow.rb:1605:10:1605:13 | ...[...] | semmle.label | ...[...] |
+| array_flow.rb:1610:5:1610:5 | [post] a [array element, array element 0] :  | semmle.label | [post] a [array element, array element 0] :  |
+| array_flow.rb:1610:5:1610:5 | [post] a [array element, array element 0] :  | semmle.label | [post] a [array element, array element 0] :  |
+| array_flow.rb:1610:5:1610:8 | [post] ...[...] [array element 0] :  | semmle.label | [post] ...[...] [array element 0] :  |
+| array_flow.rb:1610:5:1610:8 | [post] ...[...] [array element 0] :  | semmle.label | [post] ...[...] [array element 0] :  |
+| array_flow.rb:1610:15:1610:27 | call to source :  | semmle.label | call to source :  |
+| array_flow.rb:1610:15:1610:27 | call to source :  | semmle.label | call to source :  |
+| array_flow.rb:1611:10:1611:10 | a [array element, array element 0] :  | semmle.label | a [array element, array element 0] :  |
+| array_flow.rb:1611:10:1611:10 | a [array element, array element 0] :  | semmle.label | a [array element, array element 0] :  |
+| array_flow.rb:1611:10:1611:13 | ...[...] [array element 0] :  | semmle.label | ...[...] [array element 0] :  |
+| array_flow.rb:1611:10:1611:13 | ...[...] [array element 0] :  | semmle.label | ...[...] [array element 0] :  |
+| array_flow.rb:1611:10:1611:16 | ...[...] | semmle.label | ...[...] |
+| array_flow.rb:1611:10:1611:16 | ...[...] | semmle.label | ...[...] |
 subpaths
 #select
 | array_flow.rb:3:10:3:13 | ...[...] | array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:3:10:3:13 | ...[...] | $@ | array_flow.rb:2:10:2:20 | call to source :  | call to source :  |
@@ -7735,3 +7708,4 @@ subpaths
 | array_flow.rb:1604:10:1604:13 | ...[...] | array_flow.rb:1601:13:1601:25 | call to source :  | array_flow.rb:1604:10:1604:13 | ...[...] | $@ | array_flow.rb:1601:13:1601:25 | call to source :  | call to source :  |
 | array_flow.rb:1605:10:1605:13 | ...[...] | array_flow.rb:1600:16:1600:28 | call to source :  | array_flow.rb:1605:10:1605:13 | ...[...] | $@ | array_flow.rb:1600:16:1600:28 | call to source :  | call to source :  |
 | array_flow.rb:1605:10:1605:13 | ...[...] | array_flow.rb:1601:13:1601:25 | call to source :  | array_flow.rb:1605:10:1605:13 | ...[...] | $@ | array_flow.rb:1601:13:1601:25 | call to source :  | call to source :  |
+| array_flow.rb:1611:10:1611:16 | ...[...] | array_flow.rb:1610:15:1610:27 | call to source :  | array_flow.rb:1611:10:1611:16 | ...[...] | $@ | array_flow.rb:1610:15:1610:27 | call to source :  | call to source :  |

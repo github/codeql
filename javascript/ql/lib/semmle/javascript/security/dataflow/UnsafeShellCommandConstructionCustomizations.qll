@@ -5,7 +5,6 @@
  */
 
 import javascript
-private import semmle.javascript.security.dataflow.RemoteFlowSources
 private import semmle.javascript.PackageExports as Exports
 private import semmle.javascript.dataflow.InferredTypes
 

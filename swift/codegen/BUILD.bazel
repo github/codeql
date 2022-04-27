@@ -1,0 +1,31 @@
+py_binary(
+    name = "codegen",
+    srcs = glob([
+        "lib/*.py",
+        "*.py",
+    ]),
+)
+
+py_library(
+    name = "test_utils",
+    testonly = True,
+    srcs = ["test/utils.py"],
+    deps = [":codegen"],
+)
+
+[
+    py_test(
+        name = src[len("test/"):-len(".py")],
+        size = "small",
+        srcs = [src],
+        deps = [
+            ":codegen",
+            ":test_utils",
+        ],
+    )
+    for src in glob(["test/test_*.py"])
+]
+
+test_suite(
+    name = "tests",
+)

@@ -1,0 +1,1025 @@
+# add dbscheme files to be added verbatim
+_includes:
+  - prefix.dbscheme
+
+# organize generated class files in subdirectories according to these regexp rules
+# a class can override this specifying `_dir`
+_directories:
+  decl: Decl$|Context$
+  pattern: Pattern$
+  type: Type$
+  typerepr: TypeRepr$
+  expr: Expr$
+  stmt: Stmt$
+
+File:
+  name: string
+
+IterableDeclContext:
+  members: Decl*
+
+Locatable:
+  location: Location
+
+Location:
+  file: File
+  start_line: int
+  start_column: int
+  end_line: int
+  end_column: int
+
+Type:
+  diagnostics_name: string
+  canonical_type: Type
+
+ExtensionDecl:
+  _extends:
+    - GenericContext
+    - IterableDeclContext
+    - Decl
+
+NominalTypeDecl:
+  _extends:
+    - IterableDeclContext
+    - GenericTypeDecl
+  type: Type
+
+AstNode:
+  _extends: Locatable
+
+ConditionElement:
+  _extends: Locatable
+  boolean: Expr?
+  pattern: Pattern?
+  initializer: Expr?
+  _dir: stmt
+
+AnyFunctionType:
+  _extends: Type
+  result: Type
+  param_types: Type*
+  param_labels: string*
+
+AnyGenericType:
+  _extends: Type
+  parent: Type?
+  declaration: Decl
+
+AnyMetatypeType:
+  _extends: Type
+
+BuiltinType:
+  _extends: Type
+
+DependentMemberType:
+  _extends: Type
+
+DynamicSelfType:
+  _extends: Type
+
+ErrorType:
+  _extends: Type
+
+InOutType:
+  _extends: Type
+
+LValueType:
+  _extends: Type
+  object_type: Type
+
+ModuleType:
+  _extends: Type
+
+PlaceholderType:
+  _extends: Type
+
+ProtocolCompositionType:
+  _extends: Type
+
+ExistentialType:
+  _extends: Type
+
+ReferenceStorageType:
+  _extends: Type
+
+SilBlockStorageType:
+  _extends: Type
+
+SilBoxType:
+  _extends: Type
+
+SilFunctionType:
+  _extends: Type
+
+SilTokenType:
+  _extends: Type
+
+SubstitutableType:
+  _extends: Type
+
+SugarType:
+  _extends: Type
+
+TupleType:
+  _extends: Type
+
+TypeVariableType:
+  _extends: Type
+
+UnknownType:
+  _extends: Type
+  name: string
+
+UnresolvedType:
+  _extends: Type
+
+ClassDecl:
+  _extends: NominalTypeDecl
+
+EnumDecl:
+  _extends: NominalTypeDecl
+
+ProtocolDecl:
+  _extends: NominalTypeDecl
+
+StructDecl:
+  _extends: NominalTypeDecl
+
+Decl:
+  _extends: AstNode
+
+Expr:
+  _extends: AstNode
+  type: Type?
+
+Pattern:
+  _extends: AstNode
+
+Stmt:
+  _extends: AstNode
+
+TypeRepr:
+  _extends: AstNode
+
+FunctionType:
+  _extends: AnyFunctionType
+
+GenericFunctionType:
+  _extends: AnyFunctionType
+  generic_params: GenericTypeParamType*
+
+NominalOrBoundGenericNominalType:
+  _extends: AnyGenericType
+
+UnboundGenericType:
+  _extends: AnyGenericType
+
+ExistentialMetatypeType:
+  _extends: AnyMetatypeType
+
+MetatypeType:
+  _extends: AnyMetatypeType
+
+AnyBuiltinIntegerType:
+  _extends: BuiltinType
+
+BuiltinBridgeObjectType:
+  _extends: BuiltinType
+
+BuiltinDefaultActorStorageType:
+  _extends: BuiltinType
+
+BuiltinExecutorType:
+  _extends: BuiltinType
+
+BuiltinFloatType:
+  _extends: BuiltinType
+
+BuiltinJobType:
+  _extends: BuiltinType
+
+BuiltinNativeObjectType:
+  _extends: BuiltinType
+
+BuiltinRawPointerType:
+  _extends: BuiltinType
+
+BuiltinRawUnsafeContinuationType:
+  _extends: BuiltinType
+
+BuiltinUnsafeValueBufferType:
+  _extends: BuiltinType
+
+BuiltinVectorType:
+  _extends: BuiltinType
+
+UnmanagedStorageType:
+  _extends: ReferenceStorageType
+
+UnownedStorageType:
+  _extends: ReferenceStorageType
+
+WeakStorageType:
+  _extends: ReferenceStorageType
+
+ArchetypeType:
+  _extends: SubstitutableType
+
+GenericTypeParamType:
+  _extends: SubstitutableType
+  name: string
+
+ParenType:
+  _extends: SugarType
+
+SyntaxSugarType:
+  _extends: SugarType
+
+TypeAliasType:
+  _extends: SugarType
+
+EnumCaseDecl:
+  _extends: Decl
+  elements: EnumElementDecl*
+
+IfConfigDecl:
+  _extends: Decl
+
+ImportDecl:
+  _extends: Decl
+
+MissingMemberDecl:
+  _extends: Decl
+
+OperatorDecl:
+  _extends: Decl
+
+PatternBindingDecl:
+  _extends: Decl
+  inits: Expr*
+  patterns: Pattern*
+
+PoundDiagnosticDecl:
+  _extends: Decl
+
+PrecedenceGroupDecl:
+  _extends: Decl
+
+TopLevelCodeDecl:
+  _extends: Decl
+  body: BraceStmt
+
+UnknownAstNode:
+  _extends:
+    - Decl
+    - Expr
+    - Pattern
+    - Stmt
+    - TypeRepr
+  name: string
+
+ValueDecl:
+  _extends: Decl
+  interface_type: Type
+
+AbstractClosureExpr:
+  _extends: Expr
+
+AnyTryExpr:
+  _extends: Expr
+  sub_expr: Expr
+
+AppliedPropertyWrapperExpr:
+  _extends: Expr
+
+Argument:
+  label: string
+  expr: Expr
+  _dir: expr
+
+ApplyExpr:
+  _extends: Expr
+  function: Expr
+  arguments: Argument*
+
+ArrowExpr:
+  _extends: Expr
+
+AssignExpr:
+  _extends: Expr
+  dest: Expr
+  source: Expr
+
+BindOptionalExpr:
+  _extends: Expr
+  sub_expr: Expr
+
+CaptureListExpr:
+  _extends: Expr
+  binding_decls: PatternBindingDecl*
+  closure_body: ClosureExpr
+
+CodeCompletionExpr:
+  _extends: Expr
+
+CollectionExpr:
+  _extends: Expr
+
+DeclRefExpr:
+  _extends: Expr
+  decl: Decl
+  replacement_types: Type*
+
+DefaultArgumentExpr:
+  _extends: Expr
+  param_decl: ParamDecl
+  param_index: int
+  caller_side_default: Expr?
+
+DiscardAssignmentExpr:
+  _extends: Expr
+
+DotSyntaxBaseIgnoredExpr:
+  _extends: Expr
+  qualifier: Expr
+  sub_expr: Expr
+
+DynamicTypeExpr:
+  _extends: Expr
+  base_expr: Expr
+
+EditorPlaceholderExpr:
+  _extends: Expr
+
+EnumIsCaseExpr:
+  _extends: Expr
+  sub_expr: Expr
+  type_repr: TypeRepr
+  element: EnumElementDecl
+
+ErrorExpr:
+  _extends: Expr
+
+ExplicitCastExpr:
+  _extends: Expr
+  sub_expr: Expr
+
+ForceValueExpr:
+  _extends: Expr
+  sub_expr: Expr
+
+IdentityExpr:
+  _extends: Expr
+  sub_expr: Expr
+
+IfExpr:
+  _extends: Expr
+  condition: Expr
+  then_expr: Expr
+  else_expr: Expr
+
+ImplicitConversionExpr:
+  _extends: Expr
+  sub_expr: Expr
+
+InOutExpr:
+  _extends: Expr
+  sub_expr: Expr
+
+KeyPathApplicationExpr:
+  _extends: Expr
+
+KeyPathDotExpr:
+  _extends: Expr
+
+KeyPathExpr:
+  _extends: Expr
+  parsed_root: Expr?
+  parsed_path: Expr?
+
+LazyInitializerExpr:
+  _extends: Expr
+  sub_expr: Expr
+
+LiteralExpr:
+  _extends: Expr
+
+LookupExpr:
+  _extends: Expr
+
+MakeTemporarilyEscapableExpr:
+  _extends: Expr
+  escaping_closure: OpaqueValueExpr
+  nonescaping_closure: Expr
+  sub_expr: Expr
+
+ObjCSelectorExpr:
+  _extends: Expr
+  sub_expr: Expr
+  method: AbstractFunctionDecl
+
+OneWayExpr:
+  _extends: Expr
+  sub_expr: Expr
+
+OpaqueValueExpr:
+  _extends: Expr
+
+OpenExistentialExpr:
+  _extends: Expr
+  sub_expr: Expr
+  existential: Expr
+  opaque_expr: OpaqueValueExpr
+
+OptionalEvaluationExpr:
+  _extends: Expr
+  sub_expr: Expr
+
+OtherConstructorDeclRefExpr:
+  _extends: Expr
+
+OverloadSetRefExpr:
+  _extends: Expr
+
+PropertyWrapperValuePlaceholderExpr:
+  _extends: Expr
+
+RebindSelfInConstructorExpr:
+  _extends: Expr
+  sub_expr: Expr
+  self: VarDecl
+
+SequenceExpr:
+  _extends: Expr
+
+SuperRefExpr:
+  _extends: Expr
+  self: VarDecl
+
+TapExpr:
+  _extends: Expr
+  sub_expr: Expr?
+  var: VarDecl
+  body: BraceStmt
+
+TupleElementExpr:
+  _extends: Expr
+  sub_expr: Expr
+  index: int
+
+TupleExpr:
+  _extends: Expr
+  elements: Expr*
+
+TypeExpr:
+  _extends: Expr
+  type_repr: TypeRepr?
+
+UnresolvedDeclRefExpr:
+  _extends: Expr
+
+UnresolvedDotExpr:
+  _extends: Expr
+
+UnresolvedMemberExpr:
+  _extends: Expr
+
+UnresolvedPatternExpr:
+  _extends: Expr
+
+UnresolvedSpecializeExpr:
+  _extends: Expr
+
+VarargExpansionExpr:
+  _extends: Expr
+  sub_expr: Expr
+
+AnyPattern:
+  _extends: Pattern
+
+BindingPattern:
+  _extends: Pattern
+  sub_pattern: Pattern
+
+BoolPattern:
+  _extends: Pattern
+  value: boolean
+
+EnumElementPattern:
+  _extends: Pattern
+  element: EnumElementDecl
+  sub_pattern: Pattern?
+
+ExprPattern:
+  _extends: Pattern
+  sub_expr: Expr
+
+IsPattern:
+  _extends: Pattern
+  cast_type_repr: TypeRepr
+  sub_pattern: Pattern?
+
+NamedPattern:
+  _extends: Pattern
+  name: string
+
+OptionalSomePattern:
+  _extends: Pattern
+  sub_pattern: Pattern
+
+ParenPattern:
+  _extends: Pattern
+  sub_pattern: Pattern
+
+TuplePattern:
+  _extends: Pattern
+  elements: Pattern*
+
+TypedPattern:
+  _extends: Pattern
+  sub_pattern: Pattern
+  type_repr: TypeRepr?
+
+BraceStmt:
+  _extends: Stmt
+  elements: AstNode*
+
+BreakStmt:
+  _extends: Stmt
+  target_name: string?
+  target: Stmt?
+
+CaseStmt:
+  _extends: Stmt
+  body: Stmt
+  labels: CaseLabelItem*
+  variables: VarDecl*
+
+CaseLabelItem:
+  _extends: AstNode
+  pattern: Pattern
+  guard: Expr?
+  _dir: stmt
+
+ContinueStmt:
+  _extends: Stmt
+  target_name: string?
+  target: Stmt?
+
+DeferStmt:
+  _extends: Stmt
+  body: BraceStmt
+
+FailStmt:
+  _extends: Stmt
+
+FallthroughStmt:
+  _extends: Stmt
+  fallthrough_source: CaseStmt
+  fallthrough_dest: CaseStmt
+
+LabeledStmt:
+  _extends: Stmt
+  label: string?
+
+PoundAssertStmt:
+  _extends: Stmt
+
+ReturnStmt:
+  _extends: Stmt
+  result: Expr?
+
+ThrowStmt:
+  _extends: Stmt
+  sub_expr: Expr
+
+YieldStmt:
+  _extends: Stmt
+
+BoundGenericType:
+  _extends: NominalOrBoundGenericNominalType
+
+NominalType:
+  _extends: NominalOrBoundGenericNominalType
+
+BuiltinIntegerLiteralType:
+  _extends: AnyBuiltinIntegerType
+
+BuiltinIntegerType:
+  _extends: AnyBuiltinIntegerType
+
+NestedArchetypeType:
+  _extends: ArchetypeType
+
+SequenceArchetypeType:
+  _extends: ArchetypeType
+
+OpaqueTypeArchetypeType:
+  _extends: ArchetypeType
+
+OpenedArchetypeType:
+  _extends: ArchetypeType
+
+PrimaryArchetypeType:
+  _extends: ArchetypeType
+  interface_type: GenericTypeParamType
+
+DictionaryType:
+  _extends: SyntaxSugarType
+
+UnarySyntaxSugarType:
+  _extends: SyntaxSugarType
+
+InfixOperatorDecl:
+  _extends: OperatorDecl
+
+PostfixOperatorDecl:
+  _extends: OperatorDecl
+
+PrefixOperatorDecl:
+  _extends: OperatorDecl
+
+AbstractFunctionDecl:
+  _extends:
+    - GenericContext
+    - ValueDecl
+  name: string
+  body: BraceStmt?
+  params: ParamDecl*
+
+AbstractStorageDecl:
+  _extends: ValueDecl
+
+EnumElementDecl:
+  _extends: ValueDecl
+  name: string
+  params: ParamDecl*
+
+TypeDecl:
+  _extends: ValueDecl
+  name: string
+
+AutoClosureExpr:
+  _extends: AbstractClosureExpr
+
+ClosureExpr:
+  _extends: AbstractClosureExpr
+  body: BraceStmt
+
+ForceTryExpr:
+  _extends: AnyTryExpr
+
+OptionalTryExpr:
+  _extends: AnyTryExpr
+
+TryExpr:
+  _extends: AnyTryExpr
+
+BinaryExpr:
+  _extends: ApplyExpr
+
+CallExpr:
+  _extends: ApplyExpr
+
+PostfixUnaryExpr:
+  _extends: ApplyExpr
+
+PrefixUnaryExpr:
+  _extends: ApplyExpr
+
+SelfApplyExpr:
+  _extends: ApplyExpr
+  base_expr: Expr
+
+ArrayExpr:
+  _extends: CollectionExpr
+  elements: Expr*
+
+DictionaryExpr:
+  _extends: CollectionExpr
+  elements: Expr*
+
+CheckedCastExpr:
+  _extends: ExplicitCastExpr
+
+CoerceExpr:
+  _extends: ExplicitCastExpr
+
+AwaitExpr:
+  _extends: IdentityExpr
+
+DotSelfExpr:
+  _extends: IdentityExpr
+
+ParenExpr:
+  _extends: IdentityExpr
+
+UnresolvedMemberChainResultExpr:
+  _extends: IdentityExpr
+
+AnyHashableErasureExpr:
+  _extends: ImplicitConversionExpr
+
+ArchetypeToSuperExpr:
+  _extends: ImplicitConversionExpr
+
+ArrayToPointerExpr:
+  _extends: ImplicitConversionExpr
+
+BridgeFromObjCExpr:
+  _extends: ImplicitConversionExpr
+
+BridgeToObjCExpr:
+  _extends: ImplicitConversionExpr
+
+ClassMetatypeToObjectExpr:
+  _extends: ImplicitConversionExpr
+
+CollectionUpcastConversionExpr:
+  _extends: ImplicitConversionExpr
+
+ConditionalBridgeFromObjCExpr:
+  _extends: ImplicitConversionExpr
+
+CovariantFunctionConversionExpr:
+  _extends: ImplicitConversionExpr
+
+CovariantReturnConversionExpr:
+  _extends: ImplicitConversionExpr
+
+DerivedToBaseExpr:
+  _extends: ImplicitConversionExpr
+
+DestructureTupleExpr:
+  _extends: ImplicitConversionExpr
+
+DifferentiableFunctionExpr:
+  _extends: ImplicitConversionExpr
+
+DifferentiableFunctionExtractOriginalExpr:
+  _extends: ImplicitConversionExpr
+
+ErasureExpr:
+  _extends: ImplicitConversionExpr
+
+ExistentialMetatypeToObjectExpr:
+  _extends: ImplicitConversionExpr
+
+ForeignObjectConversionExpr:
+  _extends: ImplicitConversionExpr
+
+FunctionConversionExpr:
+  _extends: ImplicitConversionExpr
+
+InOutToPointerExpr:
+  _extends: ImplicitConversionExpr
+
+InjectIntoOptionalExpr:
+  _extends: ImplicitConversionExpr
+
+LinearFunctionExpr:
+  _extends: ImplicitConversionExpr
+
+LinearFunctionExtractOriginalExpr:
+  _extends: ImplicitConversionExpr
+
+LinearToDifferentiableFunctionExpr:
+  _extends: ImplicitConversionExpr
+
+LoadExpr:
+  _extends: ImplicitConversionExpr
+
+MetatypeConversionExpr:
+  _extends: ImplicitConversionExpr
+
+PointerToPointerExpr:
+  _extends: ImplicitConversionExpr
+
+ProtocolMetatypeToObjectExpr:
+  _extends: ImplicitConversionExpr
+
+StringToPointerExpr:
+  _extends: ImplicitConversionExpr
+
+UnderlyingToOpaqueExpr:
+  _extends: ImplicitConversionExpr
+
+UnevaluatedInstanceExpr:
+  _extends: ImplicitConversionExpr
+
+UnresolvedTypeConversionExpr:
+  _extends: ImplicitConversionExpr
+
+BuiltinLiteralExpr:
+  _extends: LiteralExpr
+
+InterpolatedStringLiteralExpr:
+  _extends: LiteralExpr
+  interpolation_expr: OpaqueValueExpr?
+  interpolation_count_expr: Expr?
+  literal_capacity_expr: Expr?
+  appending_expr: TapExpr?
+
+RegexLiteralExpr:
+  _extends: LiteralExpr
+
+NilLiteralExpr:
+  _extends: LiteralExpr
+
+ObjectLiteralExpr:
+  _extends: LiteralExpr
+
+DynamicLookupExpr:
+  _extends: LookupExpr
+
+MemberRefExpr:
+  _extends: LookupExpr
+  base_expr: Expr
+
+SubscriptExpr:
+  _extends:
+    - GenericContext
+    - LookupExpr
+  base_expr: Expr
+  arguments: Argument*
+
+OverloadedDeclRefExpr:
+  _extends: OverloadSetRefExpr
+
+DoCatchStmt:
+  _extends: LabeledStmt
+  body: Stmt
+  catches: CaseStmt*
+
+DoStmt:
+  _extends: LabeledStmt
+  body: BraceStmt
+
+ForEachStmt:
+  _extends: LabeledStmt
+  body: BraceStmt
+  where: Expr?
+
+LabeledConditionalStmt:
+  _extends: LabeledStmt
+  condition: StmtCondition
+
+StmtCondition:
+  _extends: AstNode
+  elements: ConditionElement*
+  _dir: stmt
+
+RepeatWhileStmt:
+  _extends: LabeledStmt
+  condition: Expr
+  body: Stmt
+
+SwitchStmt:
+  _extends: LabeledStmt
+  expr: Expr
+  cases: CaseStmt*
+
+BoundGenericClassType:
+  _extends: BoundGenericType
+
+BoundGenericEnumType:
+  _extends: BoundGenericType
+
+BoundGenericStructType:
+  _extends: BoundGenericType
+
+ClassType:
+  _extends: NominalType
+  decl: ClassDecl
+
+EnumType:
+  _extends: NominalType
+
+ProtocolType:
+  _extends: NominalType
+
+StructType:
+  _extends: NominalType
+  decl: StructDecl
+
+ArraySliceType:
+  _extends: UnarySyntaxSugarType
+
+OptionalType:
+  _extends: UnarySyntaxSugarType
+
+VariadicSequenceType:
+  _extends: UnarySyntaxSugarType
+
+ConstructorDecl:
+  _extends: AbstractFunctionDecl
+
+DestructorDecl:
+  _extends: AbstractFunctionDecl
+
+FuncDecl:
+  _extends: AbstractFunctionDecl
+
+SubscriptDecl:
+  _extends: AbstractStorageDecl
+
+VarDecl:
+  _extends: AbstractStorageDecl
+  name: string
+  type: Type
+
+AbstractTypeParamDecl:
+  _extends: TypeDecl
+
+GenericContext:
+  generic_type_params: GenericTypeParamDecl*
+
+GenericTypeDecl:
+  _extends:
+    - GenericContext
+    - TypeDecl
+
+ModuleDecl:
+  _extends: TypeDecl
+
+ConstructorRefCallExpr:
+  _extends: SelfApplyExpr
+
+DotSyntaxCallExpr:
+  _extends: SelfApplyExpr
+
+ConditionalCheckedCastExpr:
+  _extends: CheckedCastExpr
+
+ForcedCheckedCastExpr:
+  _extends: CheckedCastExpr
+
+IsExpr:
+  _extends: CheckedCastExpr
+
+BooleanLiteralExpr:
+  _extends: BuiltinLiteralExpr
+  value: boolean
+
+MagicIdentifierLiteralExpr:
+  _extends: BuiltinLiteralExpr
+  kind: string
+
+NumberLiteralExpr:
+  _extends: BuiltinLiteralExpr
+
+StringLiteralExpr:
+  _extends: BuiltinLiteralExpr
+  value: string
+
+DynamicMemberRefExpr:
+  _extends: DynamicLookupExpr
+
+DynamicSubscriptExpr:
+  _extends: DynamicLookupExpr
+
+GuardStmt:
+  _extends: LabeledConditionalStmt
+  body: BraceStmt
+
+IfStmt:
+  _extends: LabeledConditionalStmt
+  then: Stmt
+  else: Stmt?
+
+WhileStmt:
+  _extends: LabeledConditionalStmt
+  body: Stmt
+
+AccessorDecl:
+  _extends: FuncDecl
+
+ConcreteFuncDecl:
+  _extends: FuncDecl
+
+ConcreteVarDecl:
+  _extends: VarDecl
+  introducer_int: int
+
+ParamDecl:
+  _extends: VarDecl
+
+AssociatedTypeDecl:
+  _extends: AbstractTypeParamDecl
+
+GenericTypeParamDecl:
+  _extends: AbstractTypeParamDecl
+
+OpaqueTypeDecl:
+  _extends: GenericTypeDecl
+
+TypeAliasDecl:
+  _extends: GenericTypeDecl
+
+FloatLiteralExpr:
+  _extends: NumberLiteralExpr
+  string_value: string
+
+IntegerLiteralExpr:
+  _extends: NumberLiteralExpr
+  string_value: string

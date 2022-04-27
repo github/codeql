@@ -334,9 +334,9 @@ module Array {
       preservesValue = true
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content = c
+      content.isSingleton(c)
     }
   }
 
@@ -380,9 +380,9 @@ module Array {
       )
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::KnownArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -458,9 +458,9 @@ module Array {
   private class ClearSummary extends SimpleSummarizedCallable {
     ClearSummary() { this = "clear" }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -507,7 +507,7 @@ module Array {
     ConcatSummary() { this = "concat" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[_].ArrayElement" and
+      input = "Argument[0..].ArrayElement" and
       output = "Argument[self].ArrayElement[?]" and
       preservesValue = true
     }
@@ -540,9 +540,9 @@ module Array {
       preservesValue = true
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -552,9 +552,9 @@ module Array {
     bindingset[this]
     DeleteAtSummary() { mc.getMethodName() = "delete_at" }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
 
     override MethodCall getACall() { result = mc }
@@ -612,9 +612,9 @@ module Array {
       preservesValue = true
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -741,19 +741,14 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "Argument[self].ArrayElement[?]" and
-        output = ["ReturnValue", "Argument[self].ArrayElement[?]"]
-        or
-        exists(ArrayIndex j | input = "Argument[self].ArrayElement[" + j + "]" |
-          j = i and output = "ReturnValue"
-          or
-          j != i and output = "Argument[self].ArrayElement[" + j + "]"
-        )
+        input = "Argument[self].ArrayElement[?," + i + "]" and
+        output = "ReturnValue"
         or
         input = "Argument[0]" and
         output = "Argument[block].Parameter[0]"
         or
-        input = "Argument[1]" and output = "ReturnValue"
+        input = "Argument[1]" and
+        output = "ReturnValue"
       ) and
       preservesValue = true
     }
@@ -798,9 +793,9 @@ module Array {
       if exists(mc.getBlock()) then mc.getNumberOfArguments() = 0 else mc.getNumberOfArguments() = 1
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -848,9 +843,9 @@ module Array {
       preservesValue = true
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -910,9 +905,9 @@ module Array {
       )
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::KnownArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -966,9 +961,9 @@ module Array {
       preservesValue = true
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -1089,9 +1084,9 @@ module Array {
       )
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::KnownArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -1147,9 +1142,9 @@ module Array {
       preservesValue = true
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -1168,9 +1163,9 @@ module Array {
       )
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -1253,9 +1248,9 @@ module Array {
 
     override MethodCall getACall() { result = mc }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -1314,9 +1309,9 @@ module Array {
       preservesValue = true
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -1328,9 +1323,9 @@ module Array {
 
     override MethodCall getACall() { result = mc }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -1415,9 +1410,9 @@ module Array {
     bindingset[this]
     SliceBangSummary() { mc.getMethodName() = "slice!" }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::ArrayElementContent
+      content.isAnyArrayElement()
     }
 
     override Call getACall() { result = mc }
@@ -1564,9 +1559,9 @@ module Array {
       preservesValue = true
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::KnownArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -1583,9 +1578,9 @@ module Array {
       preservesValue = true
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::KnownArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 
@@ -1619,9 +1614,9 @@ module Array {
       preservesValue = true
     }
 
-    override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+    override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
       pos.isSelf() and
-      content instanceof DataFlow::Content::KnownArrayElementContent
+      content.isAnyArrayElement()
     }
   }
 

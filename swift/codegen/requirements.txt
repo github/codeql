@@ -1,0 +1,4 @@
+pystache
+pyyaml
+inflection
+pytest

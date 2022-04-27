@@ -48,6 +48,9 @@ os.path.islink(path="path")  # $ getAPathArgument="path"
 os.path.ismount("path")  # $ getAPathArgument="path"
 os.path.ismount(path="path")  # $ getAPathArgument="path"
 
+os.path.samefile("f1", "f2")  # $ getAPathArgument="f1" getAPathArgument="f2"
+os.path.samefile(f1="f1", f2="f2")  # $ getAPathArgument="f1" getAPathArgument="f2"
+
 # actual os.path implementations
 import posixpath
 import ntpath

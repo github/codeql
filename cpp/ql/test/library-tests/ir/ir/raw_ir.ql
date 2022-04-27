@@ -7,5 +7,5 @@ private import semmle.code.cpp.ir.implementation.raw.PrintIR
 private import PrintConfig
 
 private class PrintConfig extends PrintIRConfiguration {
-  override predicate shouldPrintFunction(Function func) { shouldDumpFunction(func) }
+  override predicate shouldPrintFunction(Declaration decl) { shouldDumpFunction(decl) }
 }

@@ -40,7 +40,7 @@ class GetContentIntentConfig extends TaintTracking2::Configuration {
     )
   }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content content) {
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
     super.allowImplicitRead(node, content)
     or
     // Allow the wrapped intent created by Intent.getChooser to be consumed

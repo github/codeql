@@ -1,6 +1,7 @@
 import java
-import experimental.semmle.code.java.frameworks.Jsf
-import semmle.code.java.dataflow.FlowSources
+private import experimental.semmle.code.java.frameworks.Jsf
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 
 /** A sink for unsafe URL forward vulnerabilities. */
