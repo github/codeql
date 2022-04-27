@@ -54,7 +54,7 @@ def test_global_attribute_assignment():
     global_var.foo = tracked # $ tracked tracked=foo
 
 def test_global_attribute_read():
-    x = global_var.foo # $ MISSING: tracked tracked=foo
+    x = global_var.foo # $ tracked tracked=foo
 
 def test_local_attribute_assignment():
     # Same as `test_global_attribute_assignment`, but the assigned variable is not global
