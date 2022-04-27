@@ -61,6 +61,10 @@ class Sources extends ModelInput::SourceModelCsv {
       [
         "testlib;;Member[getSource].ReturnValue;test-source", //
         "testlib;Alias;;test-source",
+        // testing parameter syntax
+        "testlib;;Member[Callbacks].Member[first].Argument[0].Parameter[0];test-source", //
+        "testlib;;Member[Callbacks].Member[param1to3].Argument[0].Parameter[1..3];test-source", //
+        "testlib;;Member[Callbacks].Member[nonFirst].Argument[0].Parameter[1..];test-source", //
       ]
   }
 }

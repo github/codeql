@@ -27,6 +27,11 @@ isSource
 | test.py:11:8:11:30 | ControlFlowNode for Attribute() | test-source |
 | test.py:12:8:12:14 | ControlFlowNode for alias() | test-source |
 | test.py:12:8:12:22 | ControlFlowNode for Attribute() | test-source |
+| test.py:23:24:23:26 | ControlFlowNode for one | test-source |
+| test.py:24:33:24:35 | ControlFlowNode for two | test-source |
+| test.py:24:38:24:42 | ControlFlowNode for three | test-source |
+| test.py:24:45:24:48 | ControlFlowNode for four | test-source |
+| test.py:25:34:25:39 | ControlFlowNode for second | test-source |
 syntaxErrors
 | Member[foo |
 | Member[foo] .Member[bar] |
