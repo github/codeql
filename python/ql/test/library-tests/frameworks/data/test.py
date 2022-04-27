@@ -70,3 +70,10 @@ from testlib import Steps
 
 mySink(Steps.preserveTaint(getSource())) # FLOW
 mySink(Steps.preserveTaint("safe", getSource())) # NO FLOW
+
+Steps.taintIntoCallback(
+    getSource(), 
+    lambda x: mySink(x), # FLOW
+    lambda y: mySink(y), # FLOW
+    lambda z: mySink(z) # NO FLOW
+)
