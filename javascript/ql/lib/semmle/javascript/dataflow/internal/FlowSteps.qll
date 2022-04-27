@@ -270,7 +270,7 @@ private module CachedSteps {
    * Gets a data-flow node that refers to the `i`th parameter of `f` through its `...rest` argument.
    *
    * If there is normal arguments before `...rest`, we have to account for them.
-   * Eg., a function `function f(a, ...rest) { console.log(rest[1]); }`:
+   * For example, a function `function f(a, ...rest) { console.log(rest[1]); }`:
    * Here, `restParameterAccess(_, 2)` will return `rest[1]`, because there is the leading
    * `a` parameter.
    */
