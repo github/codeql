@@ -194,7 +194,7 @@ class Instruction extends Construction::TStageInstruction {
   /**
    * Gets the function that contains this instruction.
    */
-  final Language::Declaration getEnclosingFunction() {
+  final Language::Function getEnclosingFunction() {
     result = this.getEnclosingIRFunction().getFunction()
   }
 
