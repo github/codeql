@@ -27,17 +27,8 @@ module ExperimentalFlask {
   }
 
   /** Gets a reference to a header instance. */
-  private DataFlow::LocalSourceNode headerInstance(DataFlow::TypeTracker t) {
-    t.start() and
-    result.(DataFlow::AttrRead).getObject().getALocalSource() =
-      [Flask::Response::classRef(), flaskMakeResponse()].getReturn().getAUse()
-    or
-    exists(DataFlow::TypeTracker t2 | result = headerInstance(t2).track(t2, t))
-  }
-
-  /** Gets a reference to a header instance use. */
-  private DataFlow::Node headerInstance() {
-    headerInstance(DataFlow::TypeTracker::end()).flowsTo(result)
+  private DataFlow::LocalSourceNode headerInstance() {
+    result = [Flask::Response::classRef(), flaskMakeResponse()].getReturn().getAMember().getAUse()
   }
 
   /** Gets a reference to a header instance call/subscript */

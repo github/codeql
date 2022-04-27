@@ -64,7 +64,7 @@ private module NoSql {
       or
       result.(DataFlow::AttrRead).getObject() = mongoInstance().getAUse()
       or
-      result = mongoDBInstance().getAUse()
+      result = mongoDBInstance().getAnImmediateUse()
     )
     or
     exists(DataFlow::TypeTracker t2 | result = mongoDB(t2).track(t2, t))
