@@ -3,6 +3,7 @@ private import experimental.semmle.code.java.frameworks.Jsf
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
+private import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
 
 /** A sink for unsafe URL forward vulnerabilities. */
 abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
@@ -23,7 +24,7 @@ private class RequestDispatcherSink extends UnsafeUrlForwardSink {
 /** The `getResource` method of `Class`. */
 class GetClassResourceMethod extends Method {
   GetClassResourceMethod() {
-    this.getSourceDeclaration().getDeclaringType().hasQualifiedName("java.lang", "Class") and
+    this.getDeclaringType() instanceof TypeClass and
     this.hasName("getResource")
   }
 }
@@ -31,7 +32,7 @@ class GetClassResourceMethod extends Method {
 /** The `getResourceAsStream` method of `Class`. */
 class GetClassResourceAsStreamMethod extends Method {
   GetClassResourceAsStreamMethod() {
-    this.getSourceDeclaration().getDeclaringType().hasQualifiedName("java.lang", "Class") and
+    this.getDeclaringType() instanceof TypeClass and
     this.hasName("getResourceAsStream")
   }
 }
@@ -39,7 +40,7 @@ class GetClassResourceAsStreamMethod extends Method {
 /** The `getResource` method of `ClassLoader`. */
 class GetClassLoaderResourceMethod extends Method {
   GetClassLoaderResourceMethod() {
-    this.getDeclaringType().hasQualifiedName("java.lang", "ClassLoader") and
+    this.getDeclaringType() instanceof ClassLoaderClass and
     this.hasName("getResource")
   }
 }
@@ -47,7 +48,7 @@ class GetClassLoaderResourceMethod extends Method {
 /** The `getResourceAsStream` method of `ClassLoader`. */
 class GetClassLoaderResourceAsStreamMethod extends Method {
   GetClassLoaderResourceAsStreamMethod() {
-    this.getDeclaringType().hasQualifiedName("java.lang", "ClassLoader") and
+    this.getDeclaringType() instanceof ClassLoaderClass and
     this.hasName("getResourceAsStream")
   }
 }
@@ -73,8 +74,8 @@ class VirtualFile extends RefType {
 }
 
 /** The JBoss method `getChild` of `FileResourceManager`. */
-class GetVirtualFileMethod extends Method {
-  GetVirtualFileMethod() {
+class GetVirtualFileChildMethod extends Method {
+  GetVirtualFileChildMethod() {
     this.getDeclaringType().getASupertype*() instanceof VirtualFile and
     this.hasName("getChild")
   }
@@ -91,7 +92,7 @@ private class GetResourceSink extends UnsafeUrlForwardSink {
         ma.getMethod() instanceof GetFacesResourceAsStreamMethod or
         ma.getMethod() instanceof GetClassResourceAsStreamMethod or
         ma.getMethod() instanceof GetClassLoaderResourceAsStreamMethod or
-        ma.getMethod() instanceof GetVirtualFileMethod
+        ma.getMethod() instanceof GetVirtualFileChildMethod
       ) and
       ma.getArgument(0) = this.asExpr()
     )

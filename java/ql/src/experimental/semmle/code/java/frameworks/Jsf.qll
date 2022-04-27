@@ -5,7 +5,7 @@
 import semmle.code.java.Type
 
 /**
- * The JSF class `FacesContext` for processing HTTP requests.
+ * The JSF class `ExternalContext` for processing HTTP requests.
  */
 class ExternalContext extends RefType {
   ExternalContext() {

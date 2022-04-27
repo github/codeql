@@ -381,7 +381,7 @@ class RequestDispatchMethod extends Method {
 /**
  * The interface `javax.servlet.ServletContext`.
  */
-library class ServletContext extends RefType {
+class ServletContext extends RefType {
   ServletContext() { this.hasQualifiedName("javax.servlet", "ServletContext") }
 }
 

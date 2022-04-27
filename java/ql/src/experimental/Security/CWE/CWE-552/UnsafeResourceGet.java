@@ -1,5 +1,5 @@
 // BAD: no URI validation
-URL url = servletContext.getResource(requestUrl);
+URL url = request.getServletContext().getResource(requestUrl);
 url = getClass().getResource(requestUrl);
 InputStream in = url.openStream();
 
@@ -13,4 +13,6 @@ if (!requestPath.contains("..") && requestPath.startsWith("/trusted")) {
 }
 
 Path path = Paths.get(requestUrl).normalize().toRealPath();
-URL url = sc.getResource(path.toString());
+if (path.startsWith("/trusted")) {
+	URL url = request.getServletContext().getResource(path.toString());
+}

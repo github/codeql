@@ -14,6 +14,7 @@ import java
 import UnsafeUrlForward
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
+import experimental.semmle.code.java.frameworks.Jsf
 import experimental.semmle.code.java.PathSanitizer
 import DataFlow::PathGraph
 
