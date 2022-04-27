@@ -38,7 +38,15 @@ class Types extends ModelInput::TypeModelCsv {
 class Sinks extends ModelInput::SinkModelCsv {
   override predicate row(string row) {
     // package;type;path;kind
-    row = ["testlib;;Member[mySink].Argument[0,sinkName:];test-sink"]
+    row =
+      [
+        "testlib;;Member[mySink].Argument[0,sinkName:];test-sink",
+        // testing argument syntax
+        "testlib;;Member[Args].Member[arg0].Argument[0];test-source", //
+        "testlib;;Member[Args].Member[arg1to3].Argument[1..3];test-source", //
+        "testlib;;Member[Args].Member[lastarg].Argument[N-1];test-source", //
+        "testlib;;Member[Args].Member[nonFist].Argument[1..];test-source", //
+      ]
   }
 }
 
@@ -52,7 +60,7 @@ class Sources extends ModelInput::SourceModelCsv {
     row =
       [
         "testlib;;Member[getSource].ReturnValue;test-source", //
-        "testlib;Alias;;test-source"
+        "testlib;Alias;;test-source",
       ]
   }
 }

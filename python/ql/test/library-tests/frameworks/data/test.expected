@@ -11,6 +11,12 @@ isSink
 | test.py:10:8:10:22 | ControlFlowNode for Attribute() | test-sink |
 | test.py:11:8:11:30 | ControlFlowNode for Attribute() | test-sink |
 | test.py:12:8:12:34 | ControlFlowNode for Attribute() | test-sink |
+| test.py:16:11:16:13 | ControlFlowNode for one | test-source |
+| test.py:17:19:17:21 | ControlFlowNode for two | test-source |
+| test.py:17:24:17:28 | ControlFlowNode for three | test-source |
+| test.py:17:31:17:34 | ControlFlowNode for four | test-source |
+| test.py:18:37:18:40 | ControlFlowNode for five | test-source |
+| test.py:19:21:19:26 | ControlFlowNode for second | test-source |
 isSource
 | test.py:3:5:3:15 | ControlFlowNode for getSource() | test-source |
 | test.py:9:8:9:14 | ControlFlowNode for alias() | test-source |
