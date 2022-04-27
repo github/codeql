@@ -22,7 +22,7 @@ const f = require('lib3');
     (f() ? f : o.m)(endpoint);
 });
 
-function f(endpoint) {}
+function f({ endpoint }) {}
 
 const g = async () => undefined;
 
