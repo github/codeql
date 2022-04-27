@@ -235,8 +235,8 @@ private newtype TEndpointFeature =
   TCalleeFlexibleAccessPath() or
   TInputAccessPathFromCallee() or
   TInputArgumentIndex() or
-  TContextFunctionInterfacesInFile() or
-  TContextSurroundingFunctionParametersInFile()
+  TContextFunctionInterfaces() or
+  TContextSurroundingFunctionParameters()
 
 /**
  * An implementation of an endpoint feature: produces feature names and values for used in ML.
@@ -444,10 +444,20 @@ class FileImports extends EndpointFeature, TFileImports {
 
 /**
  * The feature for the function parameters of the functions that enclose an endpoint.
+ *
+ * ### Example
+ * ```javascript
+ * function f(a, b) {
+ *   // ...
+ *   const g = (c, d) => x.foo(endpoint);
+ * //                          ^^^^^^^^
+ * }
+ * ```
+ * In the above example, the feature for the marked endpoint has value '(a, b)\n(c, d)'.
  */
-class ContextSurroundingFunctionParametersInFile extends EndpointFeature,
-  TContextSurroundingFunctionParametersInFile {
-  override string getName() { result = "contextSurroundingFunctionParametersInFile" }
+class ContextSurroundingFunctionParameters extends EndpointFeature,
+  TContextSurroundingFunctionParameters {
+  override string getName() { result = "contextSurroundingFunctionParameters" }
 
   Function getRelevantFunction(DataFlow::Node endpoint) {
     result = endpoint.asExpr().getEnclosingFunction*()
@@ -501,12 +511,24 @@ class CalleeImports extends EndpointFeature, TCalleeImports {
   }
 }
 
-/*
+/**
  * The feature for the interfaces of all named functions in the same file as the endpoint.
+ *
+ * ### Example
+ * ```javascript
+ * // Will return: "f(a, b, c)\ng(x, y, z)\nh(u, v)" for this file.
+ * function f(a, b, c) { ... }
+ *
+ * function g(x, y, z) {
+ *   function h(u, v) { ... }
+ *   ...
+ * }
+ * ```
+ *
+ * The feature value for the marked endpoint will be `f(a, b, c)\ng(x, y, z)\nh(u, v)`.
  */
-
-class ContextFunctionInterfacesInFile extends EndpointFeature, TContextFunctionInterfacesInFile {
-  override string getName() { result = "contextFunctionInterfacesInFile" }
+class ContextFunctionInterfaces extends EndpointFeature, TContextFunctionInterfaces {
+  override string getName() { result = "contextFunctionInterfaces" }
 
   override string getValue(DataFlow::Node endpoint) {
     result = SyntacticUtilities::getFunctionInterfacesForFile(endpoint.getFile())

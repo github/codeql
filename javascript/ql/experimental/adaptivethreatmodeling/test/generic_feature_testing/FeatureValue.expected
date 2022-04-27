@@ -5,7 +5,7 @@
 | test.html:2:61:2:68 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.html:2:61:2:68 | endpoint | calleeName | item |
 | test.html:2:61:2:68 | endpoint | contextFunctionInterfacesInFile |  |
-| test.html:2:61:2:68 | endpoint | contextSurroundingFunctionParametersInFile |  |
+| test.html:2:61:2:68 | endpoint | contextSurroundingFunctionParameters |  |
 | test.html:2:61:2:68 | endpoint | fileImports |  |
 | test.js:6:7:6:14 | endpoint | CalleeFlexibleAccessPath | f |
 | test.js:6:7:6:14 | endpoint | InputArgumentIndex | 0 |
@@ -16,7 +16,7 @@
 | test.js:6:7:6:14 | endpoint | calleeImports | ? lib3 |
 | test.js:6:7:6:14 | endpoint | calleeName | f |
 | test.js:6:7:6:14 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:6:7:6:14 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:6:7:6:14 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:6:7:6:14 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:6:7:6:14 | endpoint | enclosingFunctionName |  |
 | test.js:6:7:6:14 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -27,7 +27,7 @@
 | test.js:7:11:7:18 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:7:11:7:18 | endpoint | calleeImports | ? lib3 |
 | test.js:7:11:7:18 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:7:11:7:18 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:7:11:7:18 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:7:11:7:18 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:7:11:7:18 | endpoint | enclosingFunctionName |  |
 | test.js:7:11:7:18 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -38,7 +38,7 @@
 | test.js:8:15:8:22 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:8:15:8:22 | endpoint | calleeImports | ? lib3 |
 | test.js:8:15:8:22 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:8:15:8:22 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:8:15:8:22 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:8:15:8:22 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:8:15:8:22 | endpoint | enclosingFunctionName |  |
 | test.js:8:15:8:22 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -51,7 +51,7 @@
 | test.js:9:9:9:16 | endpoint | calleeImports | ? lib2 |
 | test.js:9:9:9:16 | endpoint | calleeName | m |
 | test.js:9:9:9:16 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:9:9:9:16 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:9:9:9:16 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:9:9:9:16 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:9:9:9:16 | endpoint | enclosingFunctionName |  |
 | test.js:9:9:9:16 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -63,7 +63,7 @@
 | test.js:10:13:10:20 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:10:13:10:20 | endpoint | calleeImports | ? lib2 |
 | test.js:10:13:10:20 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:10:13:10:20 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:10:13:10:20 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:10:13:10:20 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:10:13:10:20 | endpoint | enclosingFunctionName |  |
 | test.js:10:13:10:20 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -74,7 +74,7 @@
 | test.js:11:17:11:24 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:11:17:11:24 | endpoint | calleeImports | ? lib2 |
 | test.js:11:17:11:24 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:11:17:11:24 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:11:17:11:24 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:11:17:11:24 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:11:17:11:24 | endpoint | enclosingFunctionName |  |
 | test.js:11:17:11:24 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -84,7 +84,7 @@
 | test.js:12:11:12:18 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:12:11:12:18 | endpoint | calleeImports | lib1 |
 | test.js:12:11:12:18 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:12:11:12:18 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:12:11:12:18 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:12:11:12:18 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:12:11:12:18 | endpoint | enclosingFunctionName |  |
 | test.js:12:11:12:18 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -97,7 +97,7 @@
 | test.js:13:17:13:24 | endpoint | calleeImports | ? lib2 |
 | test.js:13:17:13:24 | endpoint | calleeName | m |
 | test.js:13:17:13:24 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:13:17:13:24 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:13:17:13:24 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:13:17:13:24 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:13:17:13:24 | endpoint | enclosingFunctionName |  |
 | test.js:13:17:13:24 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -109,7 +109,7 @@
 | test.js:14:9:14:16 | endpoint | calleeApiName | lib3 |
 | test.js:14:9:14:16 | endpoint | calleeImports | ? lib3 |
 | test.js:14:9:14:16 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:14:9:14:16 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:14:9:14:16 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:14:9:14:16 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:14:9:14:16 | endpoint | enclosingFunctionName |  |
 | test.js:14:9:14:16 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -122,7 +122,7 @@
 | test.js:15:12:15:19 | endpoint | calleeImports | ? lib2 |
 | test.js:15:12:15:19 | endpoint | calleeName | m |
 | test.js:15:12:15:19 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:15:12:15:19 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:15:12:15:19 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:15:12:15:19 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:15:12:15:19 | endpoint | enclosingFunctionName |  |
 | test.js:15:12:15:19 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -135,7 +135,7 @@
 | test.js:16:16:16:23 | endpoint | calleeImports | ? lib2 |
 | test.js:16:16:16:23 | endpoint | calleeName | m |
 | test.js:16:16:16:23 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:16:16:16:23 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:16:16:16:23 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:16:16:16:23 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:16:16:16:23 | endpoint | enclosingFunctionName |  |
 | test.js:16:16:16:23 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -147,7 +147,7 @@
 | test.js:17:15:17:22 | endpoint | calleeApiName | lib1 |
 | test.js:17:15:17:22 | endpoint | calleeImports | lib1 |
 | test.js:17:15:17:22 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:17:15:17:22 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:17:15:17:22 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:17:15:17:22 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:17:15:17:22 | endpoint | enclosingFunctionName |  |
 | test.js:17:15:17:22 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -160,7 +160,7 @@
 | test.js:18:27:18:34 | endpoint | calleeImports | foo |
 | test.js:18:27:18:34 | endpoint | calleeName | baz |
 | test.js:18:27:18:34 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:18:27:18:34 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:18:27:18:34 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:18:27:18:34 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:18:27:18:34 | endpoint | enclosingFunctionName |  |
 | test.js:18:27:18:34 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -173,7 +173,7 @@
 | test.js:20:13:20:20 | endpoint | calleeImports | lib1 |
 | test.js:20:13:20:20 | endpoint | calleeName | bar |
 | test.js:20:13:20:20 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:20:13:20:20 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:20:13:20:20 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:20:13:20:20 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:20:13:20:20 | endpoint | enclosingFunctionName |  |
 | test.js:20:13:20:20 | endpoint | fileImports | foo lib1 lib2 lib3 |
@@ -184,7 +184,7 @@
 | test.js:22:21:22:28 | endpoint | calleeApiName | lib3 |
 | test.js:22:21:22:28 | endpoint | calleeImports | ? lib2 lib3 |
 | test.js:22:21:22:28 | endpoint | contextFunctionInterfacesInFile | f(endpoint)\nfoo()\ng()\nm() |
-| test.js:22:21:22:28 | endpoint | contextSurroundingFunctionParametersInFile | () |
+| test.js:22:21:22:28 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:22:21:22:28 | endpoint | enclosingFunctionBody | f endpoint f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:22:21:22:28 | endpoint | enclosingFunctionName |  |
 | test.js:22:21:22:28 | endpoint | fileImports | foo lib1 lib2 lib3 |
