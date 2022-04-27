@@ -1,23 +1,20 @@
-import io
-import pathlib
 import sys
 
-import mock
-import pytest
-
-import swift.codegen.lib.schema as schema
 from swift.codegen.test.utils import *
 
 root_name = schema.root_class_name
 
+
 @pytest.fixture
 def load(tmp_path):
     file = tmp_path / "schema.yml"
+
     def ret(yml):
         write(file, yml)
         return schema.load(file)
 
     return ret
+
 
 def test_empty_schema(load):
     ret = load("{}")

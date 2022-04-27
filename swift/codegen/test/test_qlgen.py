@@ -1,8 +1,6 @@
 import subprocess
 import sys
 
-import mock
-
 from swift.codegen import qlgen
 from swift.codegen.lib import ql, paths
 from swift.codegen.test.utils import *

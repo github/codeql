@@ -1,12 +1,13 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
-exclude: /test/.*$(?<!\.ql)(?<!\.qll)(?<!\.qlref)
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
       - id: trailing-whitespace
+        exclude: /test/.*$(?<!\.ql)(?<!\.qll)(?<!\.qlref)
       - id: end-of-file-fixer
+        exclude: /test/.*$(?<!\.ql)(?<!\.qll)(?<!\.qlref)
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v13.0.1
@@ -24,6 +25,7 @@ repos:
 
       - id: sync-files
         name: Fix files required to be identical
+        files: \.(qll?|qhelp)$
         language: system
         entry: python3 config/sync-files.py --latest
         pass_filenames: false
@@ -43,7 +45,7 @@ repos:
 
       - id: swift-codegen-unit-tests
         name: Run Swift code generation unit tests
-        files: ^swift/codegen
+        files: ^swift/codegen/.*\.py$
         language: system
         entry: bazel test //swift/codegen:tests
         pass_filenames: false
