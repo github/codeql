@@ -24,6 +24,5 @@ where
   score = getScoreForFlow(source.getNode(), sink.getNode()) and
   scoreString = getScoreStringForFlow(source.getNode(), sink.getNode())
 select sink.getNode(), source, sink,
-  "(Experimental) This may be a js/xss-through-dom result due to $@ " +
-    getAdditionalAlertInfo(source.getNode(), sink.getNode()), source.getNode(),
-  " Identified using machine learning."
+  "(Experimental) $@ may be reinterpreted as HTML without escaping meta-characters. Identified using machine learning.",
+  source.getNode(), "DOM text"

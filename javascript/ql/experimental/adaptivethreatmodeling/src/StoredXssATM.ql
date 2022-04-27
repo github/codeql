@@ -24,6 +24,5 @@ where
   score = getScoreForFlow(source.getNode(), sink.getNode()) and
   scoreString = getScoreStringForFlow(source.getNode(), sink.getNode())
 select sink.getNode(), source, sink,
-  "(Experimental) This may be a js/stored-xss result due to $@ " +
-    getAdditionalAlertInfo(source.getNode(), sink.getNode()), source.getNode(),
-  " Identified using machine learning"
+  "(Experimental) This may be a stored cross-site scripting vulnerability due to $@. Identified using machine learning.",
+  source.getNode(), "stored value"
