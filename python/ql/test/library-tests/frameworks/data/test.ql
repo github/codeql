@@ -53,12 +53,13 @@ class Sinks extends ModelInput::SinkModelCsv {
   }
 }
 
-// TODO: Named parameters?
 // TODO: Commonly used tokens
 // TODO: Uniform tokens for fields
-// TODO: Non-positional arguments
+// TODO: Non-positional arguments (including Named parameters)
 // TODO: Any argument
 // TODO: Test taint steps.
+// TODO: Should `instance()` be shorthand for `subClass*().getReturn()`?
+// TODO: // There are no API-graph edges for: ArrayElement, Element, MapKey, MapValue (remove from valid tokens list)
 class Sources extends ModelInput::SourceModelCsv {
   // package;type;path;kind
   override predicate row(string row) {
@@ -70,6 +71,8 @@ class Sources extends ModelInput::SourceModelCsv {
         "testlib;;Member[Callbacks].Member[first].Argument[0].Parameter[0];test-source", //
         "testlib;;Member[Callbacks].Member[param1to3].Argument[0].Parameter[1..3];test-source", //
         "testlib;;Member[Callbacks].Member[nonFirst].Argument[0].Parameter[1..];test-source", //
+        // Common tokens.
+        "testlib;;Member[CommonTokens].Member[makePromise].ReturnValue.Awaited;test-source", //
       ]
   }
 }

@@ -31,3 +31,9 @@ CallFilter.arityOne(one) # Match
 CallFilter.twoOrMore(one) # NO match
 CallFilter.twoOrMore(one, two) # Match
 CallFilter.twoOrMore(one, two, three) # Match
+
+from testlib import CommonTokens
+
+async def async_func():
+    prom = CommonTokens.makePromise(1);
+    val = await prom
