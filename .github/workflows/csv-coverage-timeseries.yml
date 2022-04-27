@@ -10,11 +10,11 @@ jobs:
 
     steps:
     - name: Clone self (github/codeql)
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: script
     - name: Clone self (github/codeql) for analysis
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: codeqlModels
         fetch-depth: 0

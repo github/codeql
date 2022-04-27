@@ -13,7 +13,7 @@ jobs:
   queries:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Find codeql
         id: find-codeql
         uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Cache entire extractor
         id: cache-extractor
         uses: actions/cache@v3
@@ -108,7 +108,7 @@ jobs:
       - queries
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/download-artifact@v2
         with:
           name: query-pack-zip
@@ -166,7 +166,7 @@ jobs:
           PACK: ${{ runner.temp }}/pack
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Create CodeQL config file
         run: |
           echo "paths:" > ${CONF}
