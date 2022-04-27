@@ -1,5 +1,5 @@
 /**
- * Provides a taint tracking configuration for reasoning about download of sensitive file through insecure connection.
+ * Provides a dataflow configuration for reasoning about the download of sensitive file through insecure connection.
  *
  * Note, for performance reasons: only import this file if
  * `InsecureDownload::Configuration` is needed, otherwise

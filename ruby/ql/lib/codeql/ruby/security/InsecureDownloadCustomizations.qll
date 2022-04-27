@@ -71,7 +71,7 @@ module InsecureDownload {
   }
 
   /**
-   * A HTTP or FTP url.
+   * A HTTP or FTP URL.
    */
   class InsecureUrl extends DataFlow::Node {
     string str;
@@ -99,8 +99,8 @@ module InsecureDownload {
    * A string containing a sensitive file extension,
    * seen as a source for downloads of sensitive files through an insecure connection.
    */
-  class SensitiveFileUrl extends Source {
-    SensitiveFileUrl() { hasUnsafeExtension(this.asExpr().getConstantValue().getString()) }
+  class SensitiveFileName extends Source {
+    SensitiveFileName() { hasUnsafeExtension(this.asExpr().getConstantValue().getString()) }
 
     override DataFlow::FlowState getALabel() { result instanceof Label::Sensitive }
   }
