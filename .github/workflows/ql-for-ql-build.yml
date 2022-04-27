@@ -44,7 +44,7 @@ jobs:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
           PACKZIP: ${{ runner.temp }}/query-pack.zip
       - name: Upload query pack
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: query-pack-zip
           path: ${{ runner.temp }}/query-pack.zip
@@ -91,7 +91,7 @@ jobs:
       - name: Generate dbscheme
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: ql/target/release/ql-generator --dbscheme ql/ql/src/ql.dbscheme --library ql/ql/src/codeql_ql/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: extractor-ubuntu-latest
           path: |
@@ -131,7 +131,7 @@ jobs:
           fi
           cd pack
           zip -rq ../codeql-ql.zip .
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: codeql-ql-pack
           path: codeql-ql.zip
@@ -196,7 +196,7 @@ jobs:
       - name: Copy sarif file to CWD
         run: cp ../results/ql.sarif ./${{ matrix.folder }}.sarif
       - name: Sarif as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.folder }}.sarif
           path: ${{ matrix.folder }}.sarif

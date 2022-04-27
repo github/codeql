@@ -35,7 +35,7 @@ jobs:
         echo $CLI
         PATH="$PATH:$CLI" python script/misc/scripts/library-coverage/generate-timeseries.py codeqlModels
     - name: Upload timeseries CSV
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: framework-coverage-timeseries
         path: framework-coverage-timeseries-*.csv

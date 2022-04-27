@@ -91,12 +91,12 @@ jobs:
             name="diff_${basename/_main.qll/""}"
             (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
           done
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: models
           path: tmp-models/*.qll
           retention-days: 20
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: diffs
           path: tmp-models/*.html
