@@ -53,10 +53,12 @@ class Sinks extends ModelInput::SinkModelCsv {
   }
 }
 
-// TODO: Test taint steps (include that the base path may end with ".Call")
-// TODO: Ctrl + f: TODO
-// TODO: // There are no API-graph edges for: ArrayElement, Element, MapKey, MapValue (remove from valid tokens list)
-// TODO: Verify that the list of valid tokens matches the implementation.
+// TODO: Named parameters?
+// TODO: Commonly used tokens
+// TODO: Uniform tokens for fields
+// TODO: Non-positional arguments
+// TODO: Any argument
+// TODO: Test taint steps.
 class Sources extends ModelInput::SourceModelCsv {
   // package;type;path;kind
   override predicate row(string row) {
