@@ -92,12 +92,19 @@ API::Node getExtraSuccessorFromInvoke(API::CallNode node, AccessPathToken token)
   token.getName() = "Instance" and
   result = node.getReturn()
   or
-  token.getName() = "Argument" and
-  token.getAnArgument() = "self" and
-  result = node.getSelfParameter()
-  or
-  token.getName() = "Argument" and
-  exists(string arg | arg + ":" = token.getAnArgument() | result = node.getKeywordParameter(arg))
+  token.getName() = ["Argument", "Parameter"] and
+  (
+    token.getAnArgument() = "self" and
+    result = node.getSelfParameter()
+    or
+    token.getAnArgument() = "any" and
+    result = [node.getParameter(_), node.getKeywordParameter(_)]
+    or
+    token.getAnArgument() = "any-named" and
+    result = node.getKeywordParameter(_)
+    or
+    exists(string arg | arg + ":" = token.getAnArgument() | result = node.getKeywordParameter(arg))
+  )
 }
 
 /**

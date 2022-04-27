@@ -58,8 +58,7 @@ class Sinks extends ModelInput::SinkModelCsv {
   }
 }
 
-// TODO: Any argument
-// TODO: Test taint steps.
+// TODO: Test taint steps (include that the base path may end with ".Call")
 // TODO: // There are no API-graph edges for: ArrayElement, Element, MapKey, MapValue (remove from valid tokens list)
 class Sources extends ModelInput::SourceModelCsv {
   // package;type;path;kind
