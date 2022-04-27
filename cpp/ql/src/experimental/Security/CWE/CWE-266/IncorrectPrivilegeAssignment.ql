@@ -16,7 +16,6 @@
  */
 
 import cpp
-import semmle.code.cpp.exprs.BitwiseOperation
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**

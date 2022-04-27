@@ -1,5 +1,4 @@
 import python
-private import semmle.python.objects.ObjectAPI
 private import semmle.python.objects.Modules
 private import semmle.python.internal.CachedStages
 
