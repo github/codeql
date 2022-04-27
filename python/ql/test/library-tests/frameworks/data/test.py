@@ -65,3 +65,8 @@ class SubClass (ArgPos.MyClass):
 
 ArgPos.anyParam(arg1, arg2, name=namedThing)
 ArgPos.anyNamed(arg4, arg5, name=secondNamed)
+
+from testlib import Steps
+
+mySink(Steps.preserveTaint(getSource())) # FLOW
+mySink(Steps.preserveTaint("safe", getSource())) # NO FLOW

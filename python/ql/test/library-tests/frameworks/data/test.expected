@@ -4,6 +4,7 @@ taintFlow
 | test.py:9:8:9:14 | ControlFlowNode for alias() | test.py:9:8:9:14 | ControlFlowNode for alias() |
 | test.py:10:8:10:22 | ControlFlowNode for Attribute() | test.py:10:8:10:22 | ControlFlowNode for Attribute() |
 | test.py:11:8:11:30 | ControlFlowNode for Attribute() | test.py:11:8:11:30 | ControlFlowNode for Attribute() |
+| test.py:71:28:71:38 | ControlFlowNode for getSource() | test.py:71:8:71:39 | ControlFlowNode for Attribute() |
 isSink
 | test.py:4:8:4:8 | ControlFlowNode for x | test-sink |
 | test.py:7:17:7:17 | ControlFlowNode for x | test-sink |
@@ -28,6 +29,8 @@ isSink
 | test.py:66:23:66:26 | ControlFlowNode for arg2 | test-source |
 | test.py:66:34:66:43 | ControlFlowNode for namedThing | test-source |
 | test.py:67:34:67:44 | ControlFlowNode for secondNamed | test-source |
+| test.py:71:8:71:39 | ControlFlowNode for Attribute() | test-sink |
+| test.py:72:8:72:47 | ControlFlowNode for Attribute() | test-sink |
 isSource
 | test.py:3:5:3:15 | ControlFlowNode for getSource() | test-source |
 | test.py:9:8:9:14 | ControlFlowNode for alias() | test-source |
@@ -54,6 +57,8 @@ isSource
 | test.py:63:42:63:45 | ControlFlowNode for arg3 | test-source |
 | test.py:63:48:63:51 | ControlFlowNode for arg4 | test-source |
 | test.py:63:54:63:57 | ControlFlowNode for arg5 | test-source |
+| test.py:71:28:71:38 | ControlFlowNode for getSource() | test-source |
+| test.py:72:36:72:46 | ControlFlowNode for getSource() | test-source |
 syntaxErrors
 | Member[foo |
 | Member[foo] .Member[bar] |

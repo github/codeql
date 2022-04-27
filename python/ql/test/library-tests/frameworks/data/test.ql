@@ -5,24 +5,21 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.ApiGraphs
 
-// TODO:
-/*
- * class Steps extends ModelInput::SummaryModelCsv {
- *  override predicate row(string row) {
- *    // package;type;path;input;output;kind
- *    row =
- *      [
- *        "testlib;;Member[preserveTaint];Argument[0];ReturnValue;taint",
- *        "testlib;;Member[taintIntoCallback];Argument[0];Argument[1..2].Parameter[0];taint",
- *        "testlib;;Member[taintIntoCallbackThis];Argument[0];Argument[1..2].Parameter[this];taint",
- *        "testlib;;Member[preserveArgZeroAndTwo];Argument[0,2];ReturnValue;taint",
- *        "testlib;;Member[preserveAllButFirstArgument];Argument[1..];ReturnValue;taint",
- *        "testlib;;Member[preserveAllIfCall].Call;Argument[0..];ReturnValue;taint",
- *        "testlib;;Member[getSource].ReturnValue.Member[continue];Argument[this];ReturnValue;taint",
- *      ]
- *  }
- * }
- */
+class Steps extends ModelInput::SummaryModelCsv {
+  override predicate row(string row) {
+    // package;type;path;input;output;kind
+    row =
+      [
+        "testlib;;Member[Steps].Member[preserveTaint];Argument[0];ReturnValue;taint",
+        // "testlib;;Member[Steps].Member[taintIntoCallback];Argument[0];Argument[1..2].Parameter[0];taint",
+        // "testlib;;Member[Steps].Member[taintIntoCallbackThis];Argument[0];Argument[1..2].Parameter[this];taint",
+        // "testlib;;Member[Steps].Member[preserveArgZeroAndTwo];Argument[0,2];ReturnValue;taint",
+        // "testlib;;Member[Steps].Member[preserveAllButFirstArgument];Argument[1..];ReturnValue;taint",
+        // "testlib;;Member[Steps].Member[preserveAllIfCall].Call;Argument[0..];ReturnValue;taint",
+        // "testlib;;Member[Steps].Member[getSource].ReturnValue.Member[continue];Argument[this];ReturnValue;taint",
+      ]
+  }
+}
 
 class Types extends ModelInput::TypeModelCsv {
   override predicate row(string row) {
