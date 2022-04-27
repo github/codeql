@@ -91,7 +91,7 @@ class XercesDOMParserFlowState extends XXEFlowState {
 }
 
 /**
- * Flow state transformer for a call to
+ * A flow state transformer for a call to
  * `AbstractDOMParser.setDisableDefaultEntityResolution`. Transforms the flow
  * state through the qualifier according to the setting in the parameter.
  */
@@ -124,7 +124,7 @@ class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
 }
 
 /**
- * Flow state transformer for a call to
+ * A flow state transformer for a call to
  * `AbstractDOMParser.setCreateEntityReferenceNodes`. Transforms the flow
  * state through the qualifier according to the setting in the parameter.
  */
@@ -171,7 +171,7 @@ class CreateLSParser extends Function {
 }
 
 /**
- * Configuration for tracking XML objects and their states.
+ * A configuration for tracking XML objects and their states.
  */
 class XXEConfiguration extends DataFlow::Configuration {
   XXEConfiguration() { this = "XXEConfiguration" }
