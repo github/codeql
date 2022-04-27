@@ -42,6 +42,25 @@ class LogMessage(private val kind: String, private val message: String) {
     fun toText(): String {
         return "[$timestamp K] [$kind] $message"
     }
+
+    private fun escape(str: String): String {
+        return str.replace("\\", "\\\\")
+                  .replace("\"", "\\\"")
+                  .replace("/", "\\/")
+                  .replace("\b", "\\b")
+                  .replace("\u000C", "\\f")
+                  .replace("\n", "\\n")
+                  .replace("\r", "\\r")
+                  .replace("\t", "\\t")
+    }
+
+    fun toJsonLine(): String {
+        val kvs = listOf(Pair("origin", "CodeQL Kotlin extractor"),
+                         Pair("timestamp", timestamp),
+                         Pair("kind", kind),
+                         Pair("message", message))
+        return "{ " + kvs.map { p -> "\"${p.first}\": \"${escape(p.second)}\""}.joinToString(", ") + " }\n"
+    }
 }
 
 data class ExtractorContext(val kind: String, val element: IrElement, val name: String, val loc: String)
@@ -127,14 +146,14 @@ open class LoggerBase(val logCounter: LogCounter) {
         val diagLabel = tw.getFreshIdLabel<DbDiagnostic>()
         tw.writeDiagnostics(diagLabel, "CodeQL Kotlin extractor", severity.sev, "", msg, "${logMessage.timestamp} $fullMsg", locationId)
         tw.writeDiagnostic_for(diagLabel, StringLabel("compilation"), file_number, file_number_diagnostic_number++)
-        logStream.write(logMessage.toText() + "\n")
+        logStream.write(logMessage.toJsonLine())
     }
 
     fun trace(tw: TrapWriter, msg: String) {
         if (verbosity >= 4) {
             val logMessage = LogMessage("TRACE", msg)
             tw.writeComment(logMessage.toText())
-            logStream.write(logMessage.toText() + "\n")
+            logStream.write(logMessage.toJsonLine())
         }
     }
 
@@ -142,7 +161,7 @@ open class LoggerBase(val logCounter: LogCounter) {
         if (verbosity >= 4) {
             val logMessage = LogMessage("DEBUG", msg)
             tw.writeComment(logMessage.toText())
-            logStream.write(logMessage.toText() + "\n")
+            logStream.write(logMessage.toJsonLine())
         }
     }
 
@@ -150,7 +169,7 @@ open class LoggerBase(val logCounter: LogCounter) {
         if (verbosity >= 3) {
             val logMessage = LogMessage("INFO", msg)
             tw.writeComment(logMessage.toText())
-            logStream.write(logMessage.toText() + "\n")
+            logStream.write(logMessage.toJsonLine())
         }
     }
 
@@ -173,7 +192,7 @@ open class LoggerBase(val logCounter: LogCounter) {
                 // to be an error regardless.
                 val logMessage = LogMessage("ERROR", "Total of $count diagnostics from $caller.")
                 tw.writeComment(logMessage.toText())
-                logStream.write(logMessage.toText() + "\n")
+                logStream.write(logMessage.toJsonLine())
             }
         }
     }
