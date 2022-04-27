@@ -37,3 +37,5 @@ from testlib import CommonTokens
 async def async_func():
     prom = CommonTokens.makePromise(1);
     val = await prom
+
+inst = CommonTokens.Class()

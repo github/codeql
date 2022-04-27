@@ -73,6 +73,7 @@ class Sources extends ModelInput::SourceModelCsv {
         "testlib;;Member[Callbacks].Member[nonFirst].Argument[0].Parameter[1..];test-source", //
         // Common tokens.
         "testlib;;Member[CommonTokens].Member[makePromise].ReturnValue.Awaited;test-source", //
+        "testlib;;Member[CommonTokens].Member[Class].Instance;test-source", //
       ]
   }
 }
