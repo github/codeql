@@ -1,5 +1,7 @@
 package main
 
+import "github.com/anotherpkg"
+
 type T1 map[string][]string
 type T2 T1
 
@@ -134,3 +136,13 @@ func New[Node NodeConstraint[Edge], Edge EdgeConstraint[Node]](nodes []Node) *Gr
 }
 
 func (g *Graph[Node, Edge]) ShortestPath(from, to Node) []Edge { return []Edge{} }
+
+func callFunctionsInAnotherFile() {
+	_ = GenericFunctionInAnotherFile[string]("world")
+	_ = GenericFunctionInAnotherFile("world")
+}
+
+func callFunctionsInAnotherPackage() {
+	_ = anotherpkg.GenericFunctionInAnotherPackage[string]("world")
+	_ = anotherpkg.GenericFunctionInAnotherPackage("world")
+}
