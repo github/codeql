@@ -57,7 +57,6 @@ class Sinks extends ModelInput::SinkModelCsv {
 // TODO: Non-positional arguments (including Named parameters)
 // TODO: Any argument
 // TODO: Test taint steps.
-// TODO: Should `instance()` be shorthand for `subClass*().getReturn()`?
 // TODO: // There are no API-graph edges for: ArrayElement, Element, MapKey, MapValue (remove from valid tokens list)
 class Sources extends ModelInput::SourceModelCsv {
   // package;type;path;kind
@@ -74,6 +73,8 @@ class Sources extends ModelInput::SourceModelCsv {
         "testlib;;Member[CommonTokens].Member[makePromise].ReturnValue.Awaited;test-source", //
         "testlib;;Member[CommonTokens].Member[Class].Instance;test-source", //
         "testlib;;Member[CommonTokens].Member[Super].Subclass.Instance;test-source", //
+        // method
+        "testlib;;Member[CommonTokens].Member[Class].Instance.Method[foo];test-source", //
       ]
   }
 }

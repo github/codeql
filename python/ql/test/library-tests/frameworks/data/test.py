@@ -49,3 +49,5 @@ class Sub2Class (CommonTokens.Class):
     pass
 
 sub2 = Sub2Class()
+
+val = inst.foo()

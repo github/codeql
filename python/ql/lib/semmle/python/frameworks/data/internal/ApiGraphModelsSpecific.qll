@@ -60,6 +60,9 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   or
   token.getName() = "Subclass" and
   result = node.getASubclass*()
+  or
+  token.getName() = "Method" and
+  result = node.getMember(token.getAnArgument()).getReturn()
   // Some features don't have MaD tokens yet, they would need to be added to API-graphs first.
   // - decorators ("DecoratedClass", "DecoratedMember", "DecoratedParameter")
   // - Array/Map elements ("ArrayElement", "Element", "MapKey", "MapValue")
@@ -164,7 +167,7 @@ predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
  */
 bindingset[name, argument]
 predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
-  name = ["Member"] and
+  name = ["Member", "Method"] and
   exists(argument)
   or
   name = ["Argument", "Parameter"] and
