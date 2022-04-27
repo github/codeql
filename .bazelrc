@@ -1,3 +1,4 @@
-build --copt="-std=c++17"
+# -fno-rtti is required by LLVM/Swift
+build --repo_env=CC=clang --repo_env=CXX=clang++ --copt="-std=c++17" --copt="-fno-rtti"
 
 try-import %workspace%/local.bazelrc

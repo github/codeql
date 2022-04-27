@@ -8,9 +8,6 @@ sourceLocationPrefix(
   string prefix: string ref
 );
 
-answer_to_life_the_universe_and_everything(
-   int answer: int ref
-);
 
 
 // from codegen/schema.yml
@@ -1032,7 +1029,12 @@ expr_patterns(
 );
 
 is_patterns(
-  unique int id: @is_pattern,
+  unique int id: @is_pattern
+);
+
+#keyset[id]
+is_pattern_cast_type_reprs(
+  int id: @is_pattern ref,
   int cast_type_repr: @type_repr ref
 );
 
@@ -1324,7 +1326,8 @@ type_decls(
 );
 
 auto_closure_exprs(
-  unique int id: @auto_closure_expr
+  unique int id: @auto_closure_expr,
+  int body: @brace_stmt ref
 );
 
 closure_exprs(
@@ -1635,7 +1638,8 @@ do_stmts(
 
 for_each_stmts(
   unique int id: @for_each_stmt,
-  int body: @brace_stmt ref
+  int body: @brace_stmt ref,
+  int sequence: @expr ref
 );
 
 #keyset[id]

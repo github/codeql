@@ -516,7 +516,7 @@ ExprPattern:
 
 IsPattern:
   _extends: Pattern
-  cast_type_repr: TypeRepr
+  cast_type_repr: TypeRepr?
   sub_pattern: Pattern?
 
 NamedPattern:
@@ -661,6 +661,7 @@ TypeDecl:
 
 AutoClosureExpr:
   _extends: AbstractClosureExpr
+  body: BraceStmt
 
 ClosureExpr:
   _extends: AbstractClosureExpr
@@ -858,6 +859,7 @@ DoStmt:
 ForEachStmt:
   _extends: LabeledStmt
   body: BraceStmt
+  sequence: Expr
   where: Expr?
 
 LabeledConditionalStmt:

@@ -22,10 +22,10 @@ public:
 	XercesDOMParser();
 };
 
-class LSParser: public AbstractDOMParser {
+class DOMLSParser : public AbstractDOMParser {
 };
 
-LSParser *createLSParser();
+DOMLSParser *createLSParser();
 
 // ---
 
@@ -147,20 +147,20 @@ void test10(InputSource &data) {
 }
 
 void test11(InputSource &data) {
-	LSParser *p = createLSParser();
+	DOMLSParser *p = createLSParser();
 
-	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
+	p->parse(data); // BAD (parser not correctly configured)
 }
 
 void test12(InputSource &data) {
-	LSParser *p = createLSParser();
+	DOMLSParser *p = createLSParser();
 
 	p->setDisableDefaultEntityResolution(true);
 	p->parse(data); // GOOD
 }
 
-LSParser *g_p1 = createLSParser();
-LSParser *g_p2 = createLSParser();
+DOMLSParser *g_p1 = createLSParser();
+DOMLSParser *g_p2 = createLSParser();
 InputSource *g_data;
 
 void test13() {
