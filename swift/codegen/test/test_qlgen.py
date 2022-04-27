@@ -12,12 +12,13 @@ def run_mock():
         yield ret
 
 
+# these are lambdas so that they will use patched paths when called
 stub_path = lambda: paths.swift_dir / "ql/lib/stub/path"
 ql_output_path = lambda: paths.swift_dir / "ql/lib/other/path"
 import_file = lambda: stub_path().with_suffix(".qll")
 stub_import_prefix = "stub.path."
 gen_import_prefix = "other.path."
-index_param = ql.QlParam("index", "int")
+index_param = ql.Param("index", "int")
 
 
 def generate(opts, renderer, written=None):
@@ -29,7 +30,7 @@ def generate(opts, renderer, written=None):
 
 def test_empty(opts, input, renderer):
     assert generate(opts, renderer) == {
-        import_file(): ql.QlImportList()
+        import_file(): ql.ImportList()
     }
 
 
@@ -38,9 +39,9 @@ def test_one_empty_class(opts, input, renderer):
         schema.Class("A")
     ]
     assert generate(opts, renderer) == {
-        import_file(): ql.QlImportList([stub_import_prefix + "A"]),
-        stub_path() / "A.qll": ql.QlStub(name="A", base_import=gen_import_prefix + "A"),
-        ql_output_path() / "A.qll": ql.QlClass(name="A", final=True),
+        import_file(): ql.ImportList([stub_import_prefix + "A"]),
+        stub_path() / "A.qll": ql.Stub(name="A", base_import=gen_import_prefix + "A"),
+        ql_output_path() / "A.qll": ql.Class(name="A", final=True),
     }
 
 
@@ -52,16 +53,16 @@ def test_hierarchy(opts, input, renderer):
         schema.Class("A", derived={"B", "C"}),
     ]
     assert generate(opts, renderer) == {
-        import_file(): ql.QlImportList([stub_import_prefix + cls for cls in "ABCD"]),
-        stub_path() / "A.qll": ql.QlStub(name="A", base_import=gen_import_prefix + "A"),
-        stub_path() / "B.qll": ql.QlStub(name="B", base_import=gen_import_prefix + "B"),
-        stub_path() / "C.qll": ql.QlStub(name="C", base_import=gen_import_prefix + "C"),
-        stub_path() / "D.qll": ql.QlStub(name="D", base_import=gen_import_prefix + "D"),
-        ql_output_path() / "A.qll": ql.QlClass(name="A"),
-        ql_output_path() / "B.qll": ql.QlClass(name="B", bases=["A"], imports=[stub_import_prefix + "A"]),
-        ql_output_path() / "C.qll": ql.QlClass(name="C", bases=["A"], imports=[stub_import_prefix + "A"]),
-        ql_output_path() / "D.qll": ql.QlClass(name="D", final=True, bases=["B", "C"],
-                                               imports=[stub_import_prefix + cls for cls in "BC"]),
+        import_file(): ql.ImportList([stub_import_prefix + cls for cls in "ABCD"]),
+        stub_path() / "A.qll": ql.Stub(name="A", base_import=gen_import_prefix + "A"),
+        stub_path() / "B.qll": ql.Stub(name="B", base_import=gen_import_prefix + "B"),
+        stub_path() / "C.qll": ql.Stub(name="C", base_import=gen_import_prefix + "C"),
+        stub_path() / "D.qll": ql.Stub(name="D", base_import=gen_import_prefix + "D"),
+        ql_output_path() / "A.qll": ql.Class(name="A"),
+        ql_output_path() / "B.qll": ql.Class(name="B", bases=["A"], imports=[stub_import_prefix + "A"]),
+        ql_output_path() / "C.qll": ql.Class(name="C", bases=["A"], imports=[stub_import_prefix + "A"]),
+        ql_output_path() / "D.qll": ql.Class(name="D", final=True, bases=["B", "C"],
+                                             imports=[stub_import_prefix + cls for cls in "BC"]),
 
     }
 
@@ -71,10 +72,10 @@ def test_single_property(opts, input, renderer):
         schema.Class("MyObject", properties=[schema.SingleProperty("foo", "bar")]),
     ]
     assert generate(opts, renderer) == {
-        import_file(): ql.QlImportList([stub_import_prefix + "MyObject"]),
-        stub_path() / "MyObject.qll": ql.QlStub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-        ql_output_path() / "MyObject.qll": ql.QlClass(name="MyObject", final=True, properties=[
-            ql.QlProperty(singular="Foo", type="bar", tablename="my_objects", tableparams=["this", "result"]),
+        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
+        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
+            ql.Property(singular="Foo", type="bar", tablename="my_objects", tableparams=["this", "result"]),
         ])
     }
 
@@ -88,12 +89,12 @@ def test_single_properties(opts, input, renderer):
         ]),
     ]
     assert generate(opts, renderer) == {
-        import_file(): ql.QlImportList([stub_import_prefix + "MyObject"]),
-        stub_path() / "MyObject.qll": ql.QlStub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-        ql_output_path() / "MyObject.qll": ql.QlClass(name="MyObject", final=True, properties=[
-            ql.QlProperty(singular="One", type="x", tablename="my_objects", tableparams=["this", "result", "_", "_"]),
-            ql.QlProperty(singular="Two", type="y", tablename="my_objects", tableparams=["this", "_", "result", "_"]),
-            ql.QlProperty(singular="Three", type="z", tablename="my_objects", tableparams=["this", "_", "_", "result"]),
+        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
+        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
+            ql.Property(singular="One", type="x", tablename="my_objects", tableparams=["this", "result", "_", "_"]),
+            ql.Property(singular="Two", type="y", tablename="my_objects", tableparams=["this", "_", "result", "_"]),
+            ql.Property(singular="Three", type="z", tablename="my_objects", tableparams=["this", "_", "_", "result"]),
         ])
     }
 
@@ -103,10 +104,10 @@ def test_optional_property(opts, input, renderer):
         schema.Class("MyObject", properties=[schema.OptionalProperty("foo", "bar")]),
     ]
     assert generate(opts, renderer) == {
-        import_file(): ql.QlImportList([stub_import_prefix + "MyObject"]),
-        stub_path() / "MyObject.qll": ql.QlStub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-        ql_output_path() / "MyObject.qll": ql.QlClass(name="MyObject", final=True, properties=[
-            ql.QlProperty(singular="Foo", type="bar", tablename="my_object_foos", tableparams=["this", "result"]),
+        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
+        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
+            ql.Property(singular="Foo", type="bar", tablename="my_object_foos", tableparams=["this", "result"]),
         ])
     }
 
@@ -116,11 +117,11 @@ def test_repeated_property(opts, input, renderer):
         schema.Class("MyObject", properties=[schema.RepeatedProperty("foo", "bar")]),
     ]
     assert generate(opts, renderer) == {
-        import_file(): ql.QlImportList([stub_import_prefix + "MyObject"]),
-        stub_path() / "MyObject.qll": ql.QlStub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-        ql_output_path() / "MyObject.qll": ql.QlClass(name="MyObject", final=True, properties=[
-            ql.QlProperty(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos", params=[index_param],
-                          tableparams=["this", "index", "result"]),
+        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
+        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
+            ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos", params=[index_param],
+                        tableparams=["this", "index", "result"]),
         ])
     }
 
@@ -131,15 +132,15 @@ def test_single_class_property(opts, input, renderer):
         schema.Class("Bar"),
     ]
     assert generate(opts, renderer) == {
-        import_file(): ql.QlImportList([stub_import_prefix + cls for cls in ("Bar", "MyObject")]),
-        stub_path() / "MyObject.qll": ql.QlStub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-        stub_path() / "Bar.qll": ql.QlStub(name="Bar", base_import=gen_import_prefix + "Bar"),
-        ql_output_path() / "MyObject.qll": ql.QlClass(
+        import_file(): ql.ImportList([stub_import_prefix + cls for cls in ("Bar", "MyObject")]),
+        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        stub_path() / "Bar.qll": ql.Stub(name="Bar", base_import=gen_import_prefix + "Bar"),
+        ql_output_path() / "MyObject.qll": ql.Class(
             name="MyObject", final=True, imports=[stub_import_prefix + "Bar"], properties=[
-                ql.QlProperty(singular="Foo", type="Bar", tablename="my_objects", tableparams=["this", "result"]),
+                ql.Property(singular="Foo", type="Bar", tablename="my_objects", tableparams=["this", "result"]),
             ],
         ),
-        ql_output_path() / "Bar.qll": ql.QlClass(name="Bar", final=True)
+        ql_output_path() / "Bar.qll": ql.Class(name="Bar", final=True)
     }
 
 
@@ -150,15 +151,15 @@ def test_class_dir(opts, input, renderer):
         schema.Class("B", bases={"A"}),
     ]
     assert generate(opts, renderer) == {
-        import_file(): ql.QlImportList([
+        import_file(): ql.ImportList([
             stub_import_prefix + "another.rel.path.A",
             stub_import_prefix + "B",
         ]),
-        stub_path() / dir / "A.qll": ql.QlStub(name="A", base_import=gen_import_prefix + "another.rel.path.A"),
-        stub_path() / "B.qll": ql.QlStub(name="B", base_import=gen_import_prefix + "B"),
-        ql_output_path() / dir / "A.qll": ql.QlClass(name="A", dir=dir),
-        ql_output_path() / "B.qll": ql.QlClass(name="B", final=True, bases=["A"],
-                                               imports=[stub_import_prefix + "another.rel.path.A"])
+        stub_path() / dir / "A.qll": ql.Stub(name="A", base_import=gen_import_prefix + "another.rel.path.A"),
+        stub_path() / "B.qll": ql.Stub(name="B", base_import=gen_import_prefix + "B"),
+        ql_output_path() / dir / "A.qll": ql.Class(name="A", dir=dir),
+        ql_output_path() / "B.qll": ql.Class(name="B", final=True, bases=["A"],
+                                             imports=[stub_import_prefix + "another.rel.path.A"])
     }
 
 

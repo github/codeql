@@ -6,20 +6,20 @@ import inflection
 
 
 @dataclass
-class QlParam:
+class Param:
     param: str
     type: str = None
     first: bool = False
 
 
 @dataclass
-class QlProperty:
+class Property:
     singular: str
     type: str
     tablename: str
-    tableparams: List[QlParam]
+    tableparams: List[Param]
     plural: str = None
-    params: List[QlParam] = field(default_factory=list)
+    params: List[Param] = field(default_factory=list)
     first: bool = False
     local_var: str = "x"
 
@@ -31,7 +31,7 @@ class QlProperty:
         assert self.tableparams
         if self.type_is_class:
             self.tableparams = [x if x != "result" else self.local_var for x in self.tableparams]
-        self.tableparams = [QlParam(x) for x in self.tableparams]
+        self.tableparams = [Param(x) for x in self.tableparams]
         self.tableparams[0].first = True
 
     @property
@@ -45,13 +45,13 @@ class QlProperty:
 
 
 @dataclass
-class QlClass:
+class Class:
     template: ClassVar = 'ql_class'
 
     name: str
     bases: List[str] = field(default_factory=list)
     final: bool = False
-    properties: List[QlProperty] = field(default_factory=list)
+    properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
     imports: List[str] = field(default_factory=list)
 
@@ -74,7 +74,7 @@ class QlClass:
 
 
 @dataclass
-class QlStub:
+class Stub:
     template: ClassVar = 'ql_stub'
 
     name: str
@@ -82,7 +82,7 @@ class QlStub:
 
 
 @dataclass
-class QlImportList:
+class ImportList:
     template: ClassVar = 'ql_imports'
 
     imports: List[str] = field(default_factory=list)

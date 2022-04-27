@@ -12,32 +12,32 @@ log = logging.getLogger(__name__)
 
 def get_ql_property(cls: schema.Class, prop: schema.Property):
     if prop.is_single:
-        return ql.QlProperty(
+        return ql.Property(
             singular=inflection.camelize(prop.name),
             type=prop.type,
             tablename=inflection.tableize(cls.name),
             tableparams=["this"] + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
         )
     elif prop.is_optional:
-        return ql.QlProperty(
+        return ql.Property(
             singular=inflection.camelize(prop.name),
             type=prop.type,
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "result"],
         )
     elif prop.is_repeated:
-        return ql.QlProperty(
+        return ql.Property(
             singular=inflection.singularize(inflection.camelize(prop.name)),
             plural=inflection.pluralize(inflection.camelize(prop.name)),
             type=prop.type,
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "index", "result"],
-            params=[ql.QlParam("index", type="int")],
+            params=[ql.Param("index", type="int")],
         )
 
 
 def get_ql_class(cls: schema.Class):
-    return ql.QlClass(
+    return ql.Class(
         name=cls.name,
         bases=cls.bases,
         final=not cls.derived,
@@ -51,7 +51,7 @@ def get_import(file):
     return str(stem).replace("/", ".")
 
 
-def get_types_used_by(cls: ql.QlClass):
+def get_types_used_by(cls: ql.Class):
     for b in cls.bases:
         yield b
     for p in cls.properties:
@@ -60,7 +60,7 @@ def get_types_used_by(cls: ql.QlClass):
             yield param.type
 
 
-def get_classes_used_by(cls: ql.QlClass):
+def get_classes_used_by(cls: ql.Class):
     return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper()))
 
 
@@ -98,12 +98,12 @@ def generate(opts, renderer):
         renderer.render(c, qll)
         stub_file = (stub_out / c.path).with_suffix(".qll")
         if not stub_file.is_file() or is_generated(stub_file):
-            stub = ql.QlStub(name=c.name, base_import=get_import(qll))
+            stub = ql.Stub(name=c.name, base_import=get_import(qll))
             renderer.render(stub, stub_file)
 
     # for example path/to/syntax/generated -> path/to/syntax.qll
     include_file = stub_out.with_suffix(".qll")
-    all_imports = ql.QlImportList([v for _, v in sorted(imports.items())])
+    all_imports = ql.ImportList([v for _, v in sorted(imports.items())])
     renderer.render(all_imports, include_file)
 
     renderer.cleanup(existing)

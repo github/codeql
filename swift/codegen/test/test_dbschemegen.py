@@ -1,9 +1,9 @@
-import pathlib
 import sys
 
 from swift.codegen import dbschemegen
-from swift.codegen.lib import dbscheme, paths
+from swift.codegen.lib import dbscheme
 from swift.codegen.test.utils import *
+
 
 def generate(opts, renderer):
     (out, data), = run_generation(dbschemegen.generate, opts, renderer).items()
@@ -12,7 +12,7 @@ def generate(opts, renderer):
 
 
 def test_empty(opts, input, renderer):
-    assert generate(opts, renderer) == dbscheme.DbScheme(
+    assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[],
@@ -25,10 +25,10 @@ def test_includes(opts, input, renderer):
     for i in includes:
         write(opts.schema.parent / i, i + " data")
 
-    assert generate(opts, renderer) == dbscheme.DbScheme(
+    assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
         includes=[
-            dbscheme.DbSchemeInclude(
+            dbscheme.SchemeInclude(
                 src=schema_dir / i,
                 data=i + " data",
             ) for i in includes
@@ -41,14 +41,14 @@ def test_empty_final_class(opts, input, renderer):
     input.classes = [
         schema.Class("Object"),
     ]
-    assert generate(opts, renderer) == dbscheme.DbScheme(
+    assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="objects",
                 columns=[
-                    dbscheme.DbColumn('id', '@object', binding=True),
+                    dbscheme.Column('id', '@object', binding=True),
                 ]
             )
         ],
@@ -62,15 +62,15 @@ def test_final_class_with_single_scalar_field(opts, input, renderer):
             schema.SingleProperty("foo", "bar"),
         ]),
     ]
-    assert generate(opts, renderer) == dbscheme.DbScheme(
+    assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="objects",
                 columns=[
-                    dbscheme.DbColumn('id', '@object', binding=True),
-                    dbscheme.DbColumn('foo', 'bar'),
+                    dbscheme.Column('id', '@object', binding=True),
+                    dbscheme.Column('foo', 'bar'),
                 ]
             )
         ],
@@ -83,15 +83,15 @@ def test_final_class_with_single_class_field(opts, input, renderer):
             schema.SingleProperty("foo", "Bar"),
         ]),
     ]
-    assert generate(opts, renderer) == dbscheme.DbScheme(
+    assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="objects",
                 columns=[
-                    dbscheme.DbColumn('id', '@object', binding=True),
-                    dbscheme.DbColumn('foo', '@bar'),
+                    dbscheme.Column('id', '@object', binding=True),
+                    dbscheme.Column('foo', '@bar'),
                 ]
             )
         ],
@@ -104,22 +104,22 @@ def test_final_class_with_optional_field(opts, input, renderer):
             schema.OptionalProperty("foo", "bar"),
         ]),
     ]
-    assert generate(opts, renderer) == dbscheme.DbScheme(
+    assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="objects",
                 columns=[
-                    dbscheme.DbColumn('id', '@object', binding=True),
+                    dbscheme.Column('id', '@object', binding=True),
                 ]
             ),
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="object_foos",
-                keyset=dbscheme.DbKeySet(["id"]),
+                keyset=dbscheme.KeySet(["id"]),
                 columns=[
-                    dbscheme.DbColumn('id', '@object'),
-                    dbscheme.DbColumn('foo', 'bar'),
+                    dbscheme.Column('id', '@object'),
+                    dbscheme.Column('foo', 'bar'),
                 ]
             ),
         ],
@@ -132,23 +132,23 @@ def test_final_class_with_repeated_field(opts, input, renderer):
             schema.RepeatedProperty("foo", "bar"),
         ]),
     ]
-    assert generate(opts, renderer) == dbscheme.DbScheme(
+    assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="objects",
                 columns=[
-                    dbscheme.DbColumn('id', '@object', binding=True),
+                    dbscheme.Column('id', '@object', binding=True),
                 ]
             ),
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="object_foos",
-                keyset=dbscheme.DbKeySet(["id", "index"]),
+                keyset=dbscheme.KeySet(["id", "index"]),
                 columns=[
-                    dbscheme.DbColumn('id', '@object'),
-                    dbscheme.DbColumn('index', 'int'),
-                    dbscheme.DbColumn('foo', 'bar'),
+                    dbscheme.Column('id', '@object'),
+                    dbscheme.Column('index', 'int'),
+                    dbscheme.Column('foo', 'bar'),
                 ]
             ),
         ],
@@ -164,33 +164,33 @@ def test_final_class_with_more_fields(opts, input, renderer):
             schema.RepeatedProperty("four", "w"),
         ]),
     ]
-    assert generate(opts, renderer) == dbscheme.DbScheme(
+    assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="objects",
                 columns=[
-                    dbscheme.DbColumn('id', '@object', binding=True),
-                    dbscheme.DbColumn('one', 'x'),
-                    dbscheme.DbColumn('two', 'y'),
+                    dbscheme.Column('id', '@object', binding=True),
+                    dbscheme.Column('one', 'x'),
+                    dbscheme.Column('two', 'y'),
                 ]
             ),
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="object_threes",
-                keyset=dbscheme.DbKeySet(["id"]),
+                keyset=dbscheme.KeySet(["id"]),
                 columns=[
-                    dbscheme.DbColumn('id', '@object'),
-                    dbscheme.DbColumn('three', 'z'),
+                    dbscheme.Column('id', '@object'),
+                    dbscheme.Column('three', 'z'),
                 ]
             ),
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="object_fours",
-                keyset=dbscheme.DbKeySet(["id", "index"]),
+                keyset=dbscheme.KeySet(["id", "index"]),
                 columns=[
-                    dbscheme.DbColumn('id', '@object'),
-                    dbscheme.DbColumn('index', 'int'),
-                    dbscheme.DbColumn('four', 'w'),
+                    dbscheme.Column('id', '@object'),
+                    dbscheme.Column('index', 'int'),
+                    dbscheme.Column('four', 'w'),
                 ]
             ),
         ],
@@ -203,11 +203,11 @@ def test_empty_class_with_derived(opts, input, renderer):
             name="Base",
             derived={"Left", "Right"}),
     ]
-    assert generate(opts, renderer) == dbscheme.DbScheme(
+    assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
-            dbscheme.DbUnion(
+            dbscheme.Union(
                 lhs="@base",
                 rhs=["@left", "@right"],
             ),
@@ -224,20 +224,20 @@ def test_class_with_derived_and_single_property(opts, input, renderer):
                 schema.SingleProperty("single", "Prop"),
             ]),
     ]
-    assert generate(opts, renderer) == dbscheme.DbScheme(
+    assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
-            dbscheme.DbUnion(
+            dbscheme.Union(
                 lhs="@base",
                 rhs=["@left", "@right"],
             ),
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="bases",
-                keyset=dbscheme.DbKeySet(["id"]),
+                keyset=dbscheme.KeySet(["id"]),
                 columns=[
-                    dbscheme.DbColumn('id', '@base'),
-                    dbscheme.DbColumn('single', '@prop'),
+                    dbscheme.Column('id', '@base'),
+                    dbscheme.Column('single', '@prop'),
                 ]
             )
         ],
@@ -253,20 +253,20 @@ def test_class_with_derived_and_optional_property(opts, input, renderer):
                 schema.OptionalProperty("opt", "Prop"),
             ]),
     ]
-    assert generate(opts, renderer) == dbscheme.DbScheme(
+    assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
-            dbscheme.DbUnion(
+            dbscheme.Union(
                 lhs="@base",
                 rhs=["@left", "@right"],
             ),
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="base_opts",
-                keyset=dbscheme.DbKeySet(["id"]),
+                keyset=dbscheme.KeySet(["id"]),
                 columns=[
-                    dbscheme.DbColumn('id', '@base'),
-                    dbscheme.DbColumn('opt', '@prop'),
+                    dbscheme.Column('id', '@base'),
+                    dbscheme.Column('opt', '@prop'),
                 ]
             )
         ],
@@ -282,46 +282,25 @@ def test_class_with_derived_and_repeated_property(opts, input, renderer):
                 schema.RepeatedProperty("rep", "Prop"),
             ]),
     ]
-    assert generate(opts, renderer) == dbscheme.DbScheme(
+    assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
-            dbscheme.DbUnion(
+            dbscheme.Union(
                 lhs="@base",
                 rhs=["@left", "@right"],
             ),
-            dbscheme.DbTable(
+            dbscheme.Table(
                 name="base_reps",
-                keyset=dbscheme.DbKeySet(["id", "index"]),
+                keyset=dbscheme.KeySet(["id", "index"]),
                 columns=[
-                    dbscheme.DbColumn('id', '@base'),
-                    dbscheme.DbColumn('index', 'int'),
-                    dbscheme.DbColumn('rep', '@prop'),
+                    dbscheme.Column('id', '@base'),
+                    dbscheme.Column('index', 'int'),
+                    dbscheme.Column('rep', '@prop'),
                 ]
             )
         ],
     )
-
-
-def test_dbcolumn_name():
-    assert dbscheme.DbColumn("foo", "some_type").name == "foo"
-
-
-@pytest.mark.parametrize("keyword", dbscheme.dbscheme_keywords)
-def test_dbcolumn_keyword_name(keyword):
-    assert dbscheme.DbColumn(keyword, "some_type").name == keyword + "_"
-
-
-@pytest.mark.parametrize("type,binding,lhstype,rhstype", [
-    ("builtin_type", False, "builtin_type", "builtin_type ref"),
-    ("builtin_type", True, "builtin_type", "builtin_type ref"),
-    ("@at_type", False, "int", "@at_type ref"),
-    ("@at_type", True, "unique int", "@at_type"),
-])
-def test_dbcolumn_types(type, binding, lhstype, rhstype):
-    col = dbscheme.DbColumn("foo", type, binding)
-    assert col.lhstype == lhstype
-    assert col.rhstype == rhstype
 
 
 if __name__ == '__main__':
