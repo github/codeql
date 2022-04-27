@@ -563,7 +563,7 @@ private module SyntacticUtilities {
     result =
       "(" +
         concat(string parameter, int i |
-          parameter = f.getParameter(i).getName()
+          parameter = getParameterNameOrUnknown(f.getParameter(i))
         |
           parameter, ", " order by i
         ) + ")"
@@ -726,6 +726,13 @@ private module SyntacticUtilities {
     if exists(ref.getPropertyName())
     then result = ref.getPropertyName()
     else result = getUnknownSymbol()
+  }
+
+  /**
+   * Gets the parameter name if it exists, or `?` if it is unknown.
+   */
+  string getParameterNameOrUnknown(Parameter p) {
+    if exists(p.getName()) then result = p.getName() else result = getUnknownSymbol()
   }
 }
 
