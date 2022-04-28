@@ -74,7 +74,7 @@ open class KotlinFileExtractor(
                 }
             }
 
-            file.declarations.map { extractDeclaration(it) }
+            file.declarations.map { extractDeclaration(it, extractPrivateMembers = true) }
             extractStaticInitializer(file, null)
             CommentExtractor(this, file, tw.fileId).extract()
         }
@@ -91,14 +91,23 @@ open class KotlinFileExtractor(
         return false
     }
 
-    fun extractDeclaration(declaration: IrDeclaration) {
+    private fun shouldExtractDecl(declaration: IrDeclaration, extractPrivateMembers: Boolean) =
+        extractPrivateMembers ||
+        when(declaration) {
+            is IrDeclarationWithVisibility -> declaration.visibility.let { it != DescriptorVisibilities.PRIVATE && it != DescriptorVisibilities.PRIVATE_TO_THIS }
+            else -> true
+        }
+
+    fun extractDeclaration(declaration: IrDeclaration, extractPrivateMembers: Boolean) {
         with("declaration", declaration) {
+            if (!shouldExtractDecl(declaration, extractPrivateMembers))
+                return
             when (declaration) {
                 is IrClass -> {
                     if (isExternalDeclaration(declaration)) {
                         extractExternalClassLater(declaration)
                     } else {
-                        extractClassSource(declaration, extractDeclarations = true, extractStaticInitializer = true)
+                        extractClassSource(declaration, extractDeclarations = true, extractStaticInitializer = true, extractPrivateMembers = extractPrivateMembers)
                     }
                 }
                 is IrFunction -> {
@@ -320,7 +329,7 @@ open class KotlinFileExtractor(
 
     // `argsIncludingOuterClasses` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun extractMemberPrototypes(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, id: Label<out DbClassorinterface>) {
+    fun extractNonPrivateMemberPrototypes(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, id: Label<out DbClassorinterface>) {
         with("member prototypes", c) {
             val typeParamSubstitution =
                 when (argsIncludingOuterClasses) {
@@ -339,17 +348,19 @@ open class KotlinFileExtractor(
                 }
 
             c.declarations.map {
-                when(it) {
-                    is IrFunction -> extractFunction(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
-                    is IrProperty -> extractProperty(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
-                    else -> {}
+                if (shouldExtractDecl(it, false)) {
+                    when(it) {
+                        is IrFunction -> extractFunction(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
+                        is IrProperty -> extractProperty(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
+                        else -> {}
+                    }
                 }
             }
         }
     }
 
     private fun extractLocalTypeDeclStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
-        val id = extractClassSource(c, extractDeclarations = true, extractStaticInitializer = true).cast<DbClass>()
+        val id = extractClassSource(c, extractDeclarations = true, extractStaticInitializer = true, extractPrivateMembers = true).cast<DbClass>()
         extractLocalTypeDeclStmt(id, c, callable, parent, idx)
     }
 
@@ -361,7 +372,7 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(stmtId, locId)
     }
 
-    fun extractClassSource(c: IrClass, extractDeclarations: Boolean, extractStaticInitializer: Boolean): Label<out DbClassorinterface> {
+    fun extractClassSource(c: IrClass, extractDeclarations: Boolean, extractStaticInitializer: Boolean, extractPrivateMembers: Boolean): Label<out DbClassorinterface> {
         with("class source", c) {
             DeclarationStackAdjuster(c).use {
 
@@ -399,7 +410,7 @@ open class KotlinFileExtractor(
 
                 c.typeParameters.mapIndexed { idx, param -> extractTypeParameter(param, idx) }
                 if (extractDeclarations) {
-                    c.declarations.map { extractDeclaration(it) }
+                    c.declarations.map { extractDeclaration(it, extractPrivateMembers) }
                     if (extractStaticInitializer)
                         extractStaticInitializer(c, id)
                 }
