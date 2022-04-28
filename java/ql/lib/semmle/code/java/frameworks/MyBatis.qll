@@ -105,10 +105,6 @@ class TypeParam extends Interface {
   TypeParam() { this.hasQualifiedName("org.apache.ibatis.annotations", "Param") }
 }
 
-private class MyBatisAbstractSql extends RefType {
-  MyBatisAbstractSql() { this.hasQualifiedName("org.apache.ibatis.jdbc", "AbstractSQL") }
-}
-
 private class MyBatisProvider extends RefType {
   MyBatisProvider() {
     this.hasQualifiedName("org.apache.ibatis.annotations",
@@ -129,7 +125,7 @@ class MyBatisInjectionSink extends DataFlow::Node {
       a.getType() instanceof MyBatisProvider and
       m.getDeclaringType() = a.getValue(["type", "value"]).(TypeLiteral).getTypeName().getType() and
       m.hasName(a.getValue("method").(StringLiteral).getValue()) and
-      this.asExpr() = m.getBody().getAStmt().(ReturnStmt).getResult()
+      this.asExpr() = m.getBody().getAStmt().(ReturnStmt).getEnclosingCallable()
     )
   }
 }
@@ -157,41 +153,67 @@ private class MyBatisAbstractSqlToStringStep extends SummaryModelCsv {
   }
 }
 
-private class MyBatisAbstractSqlMethod extends string {
-  string taintedArgs;
-  string signature;
-
-  MyBatisAbstractSqlMethod() {
-    this in [
-        "UPDATE", "SET", "INSERT_INTO", "SELECT", "OFFSET_ROWS", "LIMIT", "OFFSET",
-        "FETCH_FIRST_ROWS_ONLY", "DELETE_FROM", "INNER_JOIN", "ORDER_BY", "WHERE", "HAVING",
-        "OUTER_JOIN", "LEFT_OUTER_JOIN", "RIGHT_OUTER_JOIN", "GROUP_BY", "FROM", "SELECT_DISTINCT"
-      ] and
-    taintedArgs = "Argument[0]" and
-    signature = "String"
-    or
-    this in [
-        "SET", "INTO_COLUMNS", "INTO_VALUES", "SELECT_DISTINCT", "FROM", "JOIN", "INNER_JOIN",
-        "LEFT_OUTER_JOIN", "RIGHT_OUTER_JOIN", "OUTER_JOIN", "WHERE", "GROUP_BY", "HAVING",
-        "ORDER_BY"
-      ] and
-    taintedArgs = "Argument[0].ArrayElement" and
-    signature = "String[]"
-    or
-    this = "VALUES" and taintedArgs = "Argument[0..1]" and signature = "String,String"
-  }
-
-  string getTaintedArgs() { result = taintedArgs }
-
-  string getCsvSignature() { result = signature }
-}
-
 private class MyBatisAbstractSqlMethodsStep extends SummaryModelCsv {
   override predicate row(string row) {
-    exists(MyBatisAbstractSqlMethod m |
-      row =
-        "org.apache.ibatis.jdbc;AbstractSQL;true;" + m + ";(" + m.getCsvSignature() + ");;" +
-          m.getTaintedArgs() + ";Argument[-1];taint"
-    )
+    row =
+      [
+        "org.apache.ibatis.jdbc;AbstractSQL;true;toString;;;Argument[-1];ReturnValue;taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;WHERE;(String[]);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;WHERE;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;WHERE;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;WHERE;(String);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;VALUES;(String,String);;Argument[0..1];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;UPDATE;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;SET;(String[]);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;SET;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;SET;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;SET;(String);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;SELECT_DISTINCT;(String[]);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;SELECT_DISTINCT;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;SELECT_DISTINCT;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;SELECT_DISTINCT;(String);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;SELECT;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;RIGHT_OUTER_JOIN;(String[]);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;RIGHT_OUTER_JOIN;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;RIGHT_OUTER_JOIN;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;RIGHT_OUTER_JOIN;(String);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;OUTER_JOIN;(String[]);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;OUTER_JOIN;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;OUTER_JOIN;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;OUTER_JOIN;(String);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;ORDER_BY;(String[]);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;ORDER_BY;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;ORDER_BY;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;ORDER_BY;(String);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;OFFSET_ROWS;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;OFFSET;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;LIMIT;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;LEFT_OUTER_JOIN;(String[]);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;LEFT_OUTER_JOIN;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;LEFT_OUTER_JOIN;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;LEFT_OUTER_JOIN;(String);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;JOIN;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;INTO_VALUES;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;INTO_COLUMNS;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;INSERT_INTO;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;INNER_JOIN;(String[]);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;INNER_JOIN;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;INNER_JOIN;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;INNER_JOIN;(String);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;HAVING;(String[]);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;HAVING;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;HAVING;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;HAVING;(String);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;GROUP_BY;(String[]);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;GROUP_BY;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;GROUP_BY;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;GROUP_BY;(String);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;FROM;(String[]);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;FROM;(String[]);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;FROM;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;FROM;(String);;Argument[0].ArrayElement;Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;FETCH_FIRST_ROWS_ONLY;(String);;Argument[0];Argument[-1];taint",
+        "org.apache.ibatis.jdbc;AbstractSQL;true;DELETE_FROM;(String);;Argument[0];Argument[-1];taint"
+      ]
   }
 }
