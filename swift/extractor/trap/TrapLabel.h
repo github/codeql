@@ -1,5 +1,4 @@
-#ifndef SWIFT_EXTRACTOR_TRAP_LABEL_H
-#define SWIFT_EXTRACTOR_TRAP_LABEL_H
+#pragma once
 
 #include <iomanip>
 #include <iostream>
@@ -65,4 +64,3 @@ struct hash<codeql::UntypedTrapLabel> {
   }
 };
 }  // namespace std
-#endif  // SWIFT_EXTRACTOR_LIB_EXTRACTOR_CPP_TRAP_LABEL_H_

@@ -1,5 +1,4 @@
 import sys
-import pathlib
 from unittest import mock
 
 import pytest
@@ -41,7 +40,7 @@ def test_render(pystache_renderer, sut):
     with mock.patch("builtins.open", mock.mock_open()) as output_stream:
         sut.render(data, output)
     assert pystache_renderer.mock_calls == [
-        mock.call.render_name(data.template, data, generator=paths.exe_file, guard=None),
+        mock.call.render_name(data.template, data, generator=paths.exe_file),
     ]
     assert output_stream.mock_calls == [
         mock.call(output, 'w'),
@@ -50,17 +49,6 @@ def test_render(pystache_renderer, sut):
         mock.call().__exit__(None, None, None),
     ]
     assert sut.written == {output}
-
-
-def test_render_with_guard(pystache_renderer, sut):
-    guard_base = pathlib.Path("test", "guard")
-    data = mock.Mock()
-    output = guard_base / "this" / "is" / "a" / "header.h"
-    with mock.patch("builtins.open", mock.mock_open()) as output_stream:
-        sut.render(data, output, guard_base=guard_base)
-    assert pystache_renderer.mock_calls == [
-        mock.call.render_name(data.template, data, generator=paths.exe_file, guard="THIS_IS_A_HEADER_H"),
-    ]
 
 
 def test_written(sut):

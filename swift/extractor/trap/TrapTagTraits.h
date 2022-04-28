@@ -1,5 +1,4 @@
-#ifndef SWIFT_EXTRACTOR_INCLUDE_EXTRACTOR_TRAP_TAGTRAITS_H
-#define SWIFT_EXTRACTOR_INCLUDE_EXTRACTOR_TRAP_TAGTRAITS_H
+#pragma once
 
 #include <type_traits>
 
@@ -14,5 +13,3 @@ template <typename T>
 using ToTag = typename ToTagOverride<std::remove_const_t<T>>::type;
 
 }  // namespace codeql::trap
-
-#endif  // SWIFT_EXTRACTOR_INCLUDE_EXTRACTOR_TRAP_TAGTRAITS_H

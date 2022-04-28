@@ -1,5 +1,4 @@
-#ifndef SWIFT_EXTRACTOR_CONFIGURATION_H_
-#define SWIFT_EXTRACTOR_CONFIGURATION_H_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -14,5 +13,3 @@ struct SwiftExtractorConfiguration {
   std::vector<std::string> frontendOptions;
 };
 }  // namespace codeql
-
-#endif  // SWIFT_EXTRACTOR_CONFIGURATION_H_

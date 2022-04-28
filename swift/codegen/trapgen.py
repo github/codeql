@@ -117,7 +117,7 @@ def generate(opts, renderer):
                     tag_graph[e.lhs]["derived"].append(d.type)
                     tag_graph[d.type]["bases"].append(e.lhs)
 
-    renderer.render(cpp.TrapList(traps), out / "TrapEntries.h", guard_base=out)
+    renderer.render(cpp.TrapList(traps), out / "TrapEntries.h")
 
     tags = []
     for index, tag in enumerate(get_topologically_ordered_tags(tag_graph)):
@@ -127,7 +127,7 @@ def generate(opts, renderer):
             index=index,
             id=tag,
         ))
-    renderer.render(cpp.TagList(tags), out / "TrapTags.h", guard_base=out)
+    renderer.render(cpp.TagList(tags), out / "TrapTags.h")
 
 
 tags = ("trap", "dbscheme")

@@ -1,5 +1,4 @@
-#ifndef SWIFT_EXTRACTOR_H_
-#define SWIFT_EXTRACTOR_H_
+#pragma once
 
 #include "SwiftExtractorConfiguration.h"
 #include <swift/AST/SourceFile.h>
@@ -10,5 +9,3 @@ namespace codeql {
 void extractSwiftFiles(const SwiftExtractorConfiguration& config,
                        swift::CompilerInstance& compiler);
 }  // namespace codeql
-
-#endif  // SWIFT_EXTRACTOR_H_
