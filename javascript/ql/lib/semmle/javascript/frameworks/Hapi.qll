@@ -25,18 +25,18 @@ module Hapi {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    DataFlow::ParameterNode getRequestParameter() { result = getParameter(0) }
+    DataFlow::ParameterNode getRequestParameter() { result = this.getParameter(0) }
 
     /**
      * Gets the parameter of the route handler that contains the "request toolkit",
      * usually named `h`.
      */
-    DataFlow::ParameterNode getRequestToolkitParameter() { result = getParameter(1) }
+    DataFlow::ParameterNode getRequestToolkitParameter() { result = this.getParameter(1) }
 
     /**
      * Gets a source node referring to the request toolkit parameter, usually named `h`.
      */
-    DataFlow::SourceNode getRequestToolkit() { result = getRequestToolkitParameter() }
+    DataFlow::SourceNode getRequestToolkit() { result = this.getRequestToolkitParameter() }
   }
 
   /**
@@ -203,24 +203,24 @@ module Hapi {
       server.ref().getAMethodCall() = this and
       (
         // server.route({ handler: fun })
-        getMethodName() = "route" and
-        getOptionArgument(0, "handler") = handler
+        this.getMethodName() = "route" and
+        this.getOptionArgument(0, "handler") = handler
         or
         // server.ext('/', fun)
-        getMethodName() = "ext" and
-        handler = getArgument(1)
+        this.getMethodName() = "ext" and
+        handler = this.getArgument(1)
       )
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result = getARouteHandler(DataFlow::TypeBackTracker::end())
+      result = this.getARouteHandler(DataFlow::TypeBackTracker::end())
     }
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = getRouteHandler().getALocalSource()
+      result = this.getRouteHandler().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
+      exists(DataFlow::TypeBackTracker t2 | result = this.getARouteHandler(t2).backtrack(t2, t))
     }
 
     pragma[noinline]
@@ -268,9 +268,9 @@ module Hapi {
 
     override DataFlow::SourceNode getOutput() { none() }
 
-    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
+    override DataFlow::Node getTemplateFileNode() { result = this.getArgument(0) }
 
-    override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
+    override DataFlow::Node getTemplateParamsNode() { result = this.getArgument(1) }
   }
 
   /**

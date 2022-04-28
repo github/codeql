@@ -158,7 +158,9 @@ module Express {
      * This differs from `getARouteHandler` in that the argument expression is
      * returned, not its dataflow source.
      */
-    deprecated Expr getRouteHandlerExpr(int index) { result = getRouteHandlerNode(index).asExpr() }
+    deprecated Expr getRouteHandlerExpr(int index) {
+      result = this.getRouteHandlerNode(index).asExpr()
+    }
 
     /**
      * Gets the `n`th handler registered by this setup, with 0 being the first.

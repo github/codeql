@@ -162,7 +162,7 @@ module Restify {
       server.ref().getAMethodCall(any(HTTP::RequestMethodName m).toLowerCase()) = this
     }
 
-    override DataFlow::SourceNode getARouteHandler() { result.flowsTo(getArgument(1)) }
+    override DataFlow::SourceNode getARouteHandler() { result.flowsTo(this.getArgument(1)) }
 
     override DataFlow::Node getServer() { result = server }
   }

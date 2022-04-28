@@ -114,13 +114,13 @@ module Firebase {
     class QueryListenCall extends DataFlow::MethodCallNode {
       QueryListenCall() {
         this = query().getAMethodCall() and
-        (getMethodName() = "on" or getMethodName() = "once")
+        (this.getMethodName() = "on" or this.getMethodName() = "once")
       }
 
       /**
        * Gets the argument in which the callback is passed.
        */
-      DataFlow::Node getCallbackNode() { result = getArgument(1) }
+      DataFlow::Node getCallbackNode() { result = this.getArgument(1) }
     }
 
     /**
@@ -183,13 +183,13 @@ module Firebase {
     class RefBuilderListenCall extends DataFlow::MethodCallNode {
       RefBuilderListenCall() {
         this = ref().getAMethodCall() and
-        getMethodName() = "on" + any(string s)
+        this.getMethodName() = "on" + any(string s)
       }
 
       /**
        * Gets the data flow node holding the listener callback.
        */
-      DataFlow::Node getCallbackNode() { result = getArgument(0) }
+      DataFlow::Node getCallbackNode() { result = this.getArgument(0) }
     }
 
     /**
@@ -199,14 +199,14 @@ module Firebase {
       RouteSetup() { this = namespace().getAPropertyRead("https").getAMemberCall("onRequest") }
 
       override DataFlow::SourceNode getARouteHandler() {
-        result = getARouteHandler(DataFlow::TypeBackTracker::end())
+        result = this.getARouteHandler(DataFlow::TypeBackTracker::end())
       }
 
       private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
         t.start() and
-        result = getArgument(0).getALocalSource()
+        result = this.getArgument(0).getALocalSource()
         or
-        exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
+        exists(DataFlow::TypeBackTracker t2 | result = this.getARouteHandler(t2).backtrack(t2, t))
       }
 
       override DataFlow::Node getServer() { none() }

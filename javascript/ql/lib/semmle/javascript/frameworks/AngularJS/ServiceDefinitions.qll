@@ -27,7 +27,7 @@ private newtype TServiceReference =
  */
 abstract class ServiceReference extends TServiceReference {
   /** Gets a textual representation of this element. */
-  string toString() { result = getName() }
+  string toString() { result = this.getName() }
 
   /**
    * Gets the name of this reference.
@@ -51,13 +51,13 @@ abstract class ServiceReference extends TServiceReference {
   /**
    * Gets a call that invokes the referenced service.
    */
-  DataFlow::CallNode getACall() { result.getCalleeNode() = getAnAccess() }
+  DataFlow::CallNode getACall() { result.getCalleeNode() = this.getAnAccess() }
 
   /**
    * Gets a method call that invokes method `methodName` on the referenced service.
    */
   DataFlow::MethodCallNode getAMethodCall(string methodName) {
-    result.getReceiver() = getAnAccess() and
+    result.getReceiver() = this.getAnAccess() and
     result.getMethodName() = methodName
   }
 
@@ -65,7 +65,7 @@ abstract class ServiceReference extends TServiceReference {
    * Gets an access to property `propertyName` on the referenced service.
    */
   DataFlow::PropRef getAPropertyAccess(string propertyName) {
-    result.getBase() = getAnAccess() and
+    result.getBase() = this.getAnAccess() and
     result.getPropertyName() = propertyName
   }
 
@@ -244,17 +244,17 @@ abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinit
       this = moduleRef(_).getAMethodCall(methodName) or
       this = builtinServiceRef("$provide").getAMethodCall(methodName)
     ) and
-    getArgument(0).mayHaveStringValue(name)
+    this.getArgument(0).mayHaveStringValue(name)
   }
 
   override string getName() { result = name }
 
-  override DataFlow::SourceNode getAFactoryFunction() { result.flowsTo(getArgument(1)) }
+  override DataFlow::SourceNode getAFactoryFunction() { result.flowsTo(this.getArgument(1)) }
 
   override DataFlow::Node getAnInjectableFunction() {
     methodName != "value" and
     methodName != "constant" and
-    result = getAFactoryFunction()
+    result = this.getAFactoryFunction()
   }
 }
 
@@ -269,7 +269,7 @@ abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinit
  */
 abstract private class CustomSpecialServiceDefinition extends CustomServiceDefinition,
   DependencyInjection {
-  override DataFlow::Node getAnInjectableFunction() { result = getAFactoryFunction() }
+  override DataFlow::Node getAnInjectableFunction() { result = this.getAFactoryFunction() }
 }
 
 /**
@@ -498,7 +498,9 @@ class InjectableFunctionServiceRequest extends ServiceRequestNode {
   /**
    * Gets a name of a requested service.
    */
-  string getAServiceName() { exists(getAnInjectedFunction().getADependencyDeclaration(result)) }
+  string getAServiceName() {
+    exists(this.getAnInjectedFunction().getADependencyDeclaration(result))
+  }
 
   /**
    * Gets a service with the specified name, relative to this request.
@@ -576,7 +578,7 @@ class ServiceRecipeDefinition extends RecipeDefinition {
      */
 
     exists(InjectableFunction f |
-      f = getAFactoryFunction() and
+      f = this.getAFactoryFunction() and
       result = f.asFunction()
     )
   }
@@ -589,7 +591,7 @@ class ServiceRecipeDefinition extends RecipeDefinition {
 class ValueRecipeDefinition extends RecipeDefinition {
   ValueRecipeDefinition() { methodName = "value" }
 
-  override DataFlow::SourceNode getAService() { result = getAFactoryFunction() }
+  override DataFlow::SourceNode getAService() { result = this.getAFactoryFunction() }
 }
 
 /**
@@ -599,7 +601,7 @@ class ValueRecipeDefinition extends RecipeDefinition {
 class ConstantRecipeDefinition extends RecipeDefinition {
   ConstantRecipeDefinition() { methodName = "constant" }
 
-  override DataFlow::SourceNode getAService() { result = getAFactoryFunction() }
+  override DataFlow::SourceNode getAService() { result = this.getAFactoryFunction() }
 }
 
 /**
@@ -622,7 +624,7 @@ class ProviderRecipeDefinition extends RecipeDefinition {
      */
 
     exists(DataFlow::ThisNode thiz, InjectableFunction f |
-      f = getAFactoryFunction() and
+      f = this.getAFactoryFunction() and
       thiz.getBinder() = f.asFunction() and
       result = thiz.getAPropertySource("$get")
     )
@@ -647,7 +649,9 @@ class ConfigMethodDefinition extends ModuleApiCall {
   /**
    * Gets a provided configuration method.
    */
-  InjectableFunction getConfigMethod() { result.(DataFlow::SourceNode).flowsTo(getArgument(0)) }
+  InjectableFunction getConfigMethod() {
+    result.(DataFlow::SourceNode).flowsTo(this.getArgument(0))
+  }
 }
 
 /**
@@ -660,12 +664,12 @@ class RunMethodDefinition extends ModuleApiCall {
   /**
    * Gets a provided run method.
    */
-  InjectableFunction getRunMethod() { result.(DataFlow::SourceNode).flowsTo(getArgument(0)) }
+  InjectableFunction getRunMethod() { result.(DataFlow::SourceNode).flowsTo(this.getArgument(0)) }
 }
 
 /**
  * The `$scope` or `$rootScope` service.
  */
 class ScopeServiceReference extends BuiltinServiceReference {
-  ScopeServiceReference() { getName() = "$scope" or getName() = "$rootScope" }
+  ScopeServiceReference() { this.getName() = "$scope" or this.getName() = "$rootScope" }
 }

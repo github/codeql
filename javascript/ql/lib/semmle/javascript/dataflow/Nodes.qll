@@ -474,7 +474,7 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
 
   /** Gets the parameter named `name` of this function, if any. */
   DataFlow::ParameterNode getParameterByName(string name) {
-    result = getAParameter() and
+    result = this.getAParameter() and
     result.getName() = name
   }
 
