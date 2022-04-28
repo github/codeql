@@ -1,16 +1,8 @@
-// test cases for rule CWE-611
+// test cases for rule CWE-611 (SAX2XMLReader)
 
 #include "tests.h"
 
 // ---
-
-typedef unsigned int XMLCh;
-
-class XMLUni
-{
-public:
-	static const XMLCh fgXercesDisableDefaultEntityResolution[];
-};
 
 class SAX2XMLReader
 {
@@ -24,6 +16,14 @@ class XMLReaderFactory
 public:
 	static SAX2XMLReader *createXMLReader();
 };
+
+
+
+
+
+
+
+
 
 // ---
 

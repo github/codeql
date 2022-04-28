@@ -12,3 +12,11 @@ public:
 	void setSecurityManager(SecurityManager *const manager);
 	void parse(const InputSource &data);
 };
+
+typedef unsigned int XMLCh;
+
+class XMLUni
+{
+public:
+	static const XMLCh fgXercesDisableDefaultEntityResolution[];
+};
