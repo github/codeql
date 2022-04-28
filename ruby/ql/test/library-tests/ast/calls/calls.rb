@@ -356,3 +356,8 @@ h = -> (x) do
   y
   unknown_call
 end
+
+# calls with various call operators
+list.empty?
+list&.empty?
+list::empty?
