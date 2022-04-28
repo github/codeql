@@ -1,4 +1,4 @@
-| Test.qll:2:1:2:27 | ClasslessPredicate isXML | Acronyms should be PascalCase/camelCase |
-| Test.qll:8:1:10:15 | NewType TXMLElements | Acronyms should be PascalCase/camelCase |
-| Test.qll:10:3:10:15 | NewTypeBranch TXMLElement | Acronyms should be PascalCase/camelCase |
-| Test.qll:13:1:14:16 | NewType TIRFunction | Acronyms should be PascalCase/camelCase |
+| Test.qll:2:1:2:27 | ClasslessPredicate isXML | Acronyms in isXML should be PascalCase/camelCase |
+| Test.qll:8:1:10:15 | NewType TXMLElements | Acronyms in TXMLElements should be PascalCase/camelCase |
+| Test.qll:10:3:10:15 | NewTypeBranch TXMLElement | Acronyms in TXMLElement should be PascalCase/camelCase |
+| Test.qll:13:1:14:16 | NewType TIRFunction | Acronyms in TIRFunction should be PascalCase/camelCase |
