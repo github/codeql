@@ -133,9 +133,6 @@ Requirements: `codeql` should both appear on your path.
 
     def asCsvModel(self, superclass, kind, rows):
         classTemplate = """
-/**
- * THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
- */
 private class {0}{1}Csv extends {2} {{
     override predicate row(string row) {{
         row =
@@ -170,7 +167,10 @@ private class {0}{1}Csv extends {2} {{
             sourceCsv = ""
 
         return f"""
-/** Definitions of taint steps in the {self.shortname} framework */
+/** 
+ * THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+ * Definitions of taint steps in the {self.shortname} framework.
+ */
 
 import {self.language}
 private import semmle.code.{self.language}.dataflow.ExternalFlow
