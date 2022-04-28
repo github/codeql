@@ -9,6 +9,6 @@ newtype TXMLElements =
   TXmlElement() or // GOOD
   TXMLElement() // BAD
 
-// GOOD [ FALSE POSITIVE ]
+// GOOD
 newtype TIRFunction =
   MkIRFunction()
