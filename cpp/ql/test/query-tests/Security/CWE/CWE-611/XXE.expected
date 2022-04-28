@@ -27,7 +27,7 @@ edges
 | tests.cpp:140:23:140:43 | XercesDOMParser output argument | tests.cpp:146:18:146:18 | q |
 | tests.cpp:144:18:144:18 | q | tests.cpp:130:39:130:39 | p |
 | tests.cpp:146:18:146:18 | q | tests.cpp:134:39:134:39 | p |
-| tests.cpp:150:19:150:32 | call to createLSParser | tests.cpp:152:2:152:2 | p |
+| tests.cpp:150:25:150:38 | call to createLSParser | tests.cpp:152:2:152:2 | p |
 nodes
 | tests2.cpp:20:17:20:31 | SAXParser output argument | semmle.label | SAXParser output argument |
 | tests2.cpp:22:2:22:2 | p | semmle.label | p |
@@ -68,7 +68,7 @@ nodes
 | tests.cpp:140:23:140:43 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
 | tests.cpp:144:18:144:18 | q | semmle.label | q |
 | tests.cpp:146:18:146:18 | q | semmle.label | q |
-| tests.cpp:150:19:150:32 | call to createLSParser | semmle.label | call to createLSParser |
+| tests.cpp:150:25:150:38 | call to createLSParser | semmle.label | call to createLSParser |
 | tests.cpp:152:2:152:2 | p | semmle.label | p |
 subpaths
 #select
@@ -85,4 +85,4 @@ subpaths
 | tests.cpp:122:3:122:3 | q | tests.cpp:118:24:118:44 | XercesDOMParser output argument | tests.cpp:122:3:122:3 | q | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:118:24:118:44 | XercesDOMParser output argument | XML parser |
 | tests.cpp:131:2:131:2 | p | tests.cpp:140:23:140:43 | XercesDOMParser output argument | tests.cpp:131:2:131:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:140:23:140:43 | XercesDOMParser output argument | XML parser |
 | tests.cpp:135:2:135:2 | p | tests.cpp:140:23:140:43 | XercesDOMParser output argument | tests.cpp:135:2:135:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:140:23:140:43 | XercesDOMParser output argument | XML parser |
-| tests.cpp:152:2:152:2 | p | tests.cpp:150:19:150:32 | call to createLSParser | tests.cpp:152:2:152:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:150:19:150:32 | call to createLSParser | XML parser |
+| tests.cpp:152:2:152:2 | p | tests.cpp:150:25:150:38 | call to createLSParser | tests.cpp:152:2:152:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:150:25:150:38 | call to createLSParser | XML parser |

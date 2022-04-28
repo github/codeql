@@ -4,9 +4,6 @@
 
 // ---
 
-
-
-
 class AbstractDOMParser {
 public:
 	AbstractDOMParser();
@@ -25,7 +22,10 @@ public:
 class DOMLSParser : public AbstractDOMParser {
 };
 
-DOMLSParser *createLSParser();
+class DOMImplementationLS {
+public:
+	DOMLSParser *createLSParser();
+};
 
 // ---
 
@@ -146,25 +146,33 @@ void test10(InputSource &data) {
 	test10_doParseC(q, data);
 }
 
-void test11(InputSource &data) {
-	DOMLSParser *p = createLSParser();
+void test11(DOMImplementationLS *impl, InputSource &data) {
+	DOMLSParser *p = impl->createLSParser();
 
 	p->parse(data); // BAD (parser not correctly configured)
 }
 
-void test12(InputSource &data) {
-	DOMLSParser *p = createLSParser();
+void test12(DOMImplementationLS *impl, InputSource &data) {
+	DOMLSParser *p = impl->createLSParser();
 
 	p->setDisableDefaultEntityResolution(true);
 	p->parse(data); // GOOD
 }
 
-DOMLSParser *g_p1 = createLSParser();
-DOMLSParser *g_p2 = createLSParser();
+DOMImplementationLS *g_impl;
+DOMLSParser *g_p1, *g_p2;
 InputSource *g_data;
 
-void test13() {
+void test13_init() {
+	g_p1 = g_impl->createLSParser();
 	g_p1->setDisableDefaultEntityResolution(true);
+
+	g_p2 = g_impl->createLSParser();
+}
+
+void test13() {
+	test13_init();
+
 	g_p1->parse(*g_data); // GOOD
 	g_p2->parse(*g_data); // BAD (parser not correctly configured) [NOT DETECTED]
 }
