@@ -203,24 +203,32 @@ class Content extends TContent {
 
 /** Provides different sub classes of `Content`. */
 module Content {
-  /** An element in an array. */
-  class ArrayElementContent extends Content, TArrayElementContent { }
+  /** An element in a collection, for example an element in an array or in a hash. */
+  class ElementContent extends Content, TElementContent { }
 
-  /** An element in an array at a known index. */
-  class KnownArrayElementContent extends ArrayElementContent, TKnownArrayElementContent {
-    private int i;
+  /** An element in a collection at a known index. */
+  class KnownElementContent extends ElementContent, TKnownElementContent {
+    private ConstantValue cv;
 
-    KnownArrayElementContent() { this = TKnownArrayElementContent(i) }
+    KnownElementContent() { this = TKnownElementContent(cv) }
 
-    /** Gets the index in the array. */
-    int getIndex() { result = i }
+    /** Gets the index in the collection. */
+    ConstantValue getIndex() { result = cv }
 
-    override string toString() { result = "array element " + i }
+    override string toString() { result = "element " + cv }
   }
 
-  /** An element in an array at an unknown index. */
-  class UnknownArrayElementContent extends ArrayElementContent, TUnknownArrayElementContent {
-    override string toString() { result = "array element" }
+  /** An element in a collection at an unknown index. */
+  class UnknownElementContent extends ElementContent, TUnknownElementContent {
+    override string toString() { result = "element" }
+  }
+
+  /** Gets the element content corresponding to constant value `cv`. */
+  ElementContent getElementContent(ConstantValue cv) {
+    result = TKnownElementContent(cv)
+    or
+    not exists(TKnownElementContent(cv)) and
+    result = TUnknownElementContent()
   }
 }
 
@@ -234,8 +242,8 @@ class ContentSet extends TContentSet {
   /** Holds if this content set is the singleton `{c}`. */
   predicate isSingleton(Content c) { this = TSingletonContent(c) }
 
-  /** Holds if this content set represent all `ArrayElementContent`s. */
-  predicate isAnyArrayElement() { this = TAnyArrayElementContent() }
+  /** Holds if this content set represents all `ElementContent`s. */
+  predicate isAnyElement() { this = TAnyElementContent() }
 
   /** Gets a textual representation of this content set. */
   string toString() {
@@ -244,7 +252,7 @@ class ContentSet extends TContentSet {
       result = c.toString()
     )
     or
-    this.isAnyArrayElement() and
+    this.isAnyElement() and
     result = "any array element"
   }
 
@@ -252,16 +260,16 @@ class ContentSet extends TContentSet {
   Content getAStoreContent() {
     this.isSingleton(result)
     or
-    this.isAnyArrayElement() and
-    result = TUnknownArrayElementContent()
+    this.isAnyElement() and
+    result = TUnknownElementContent()
   }
 
   /** Gets a content that may be read from when reading from this set. */
   Content getAReadContent() {
     this.isSingleton(result)
     or
-    this.isAnyArrayElement() and
-    result instanceof Content::ArrayElementContent
+    this.isAnyElement() and
+    result instanceof Content::ElementContent
   }
 }
 
