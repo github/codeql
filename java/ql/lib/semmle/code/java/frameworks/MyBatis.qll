@@ -125,7 +125,7 @@ class MyBatisInjectionSink extends DataFlow::Node {
       a.getType() instanceof MyBatisProvider and
       m.getDeclaringType() = a.getValue(["type", "value"]).(TypeLiteral).getTypeName().getType() and
       m.hasName(a.getValue("method").(StringLiteral).getValue()) and
-      this.asExpr() = m.getBody().getAStmt().(ReturnStmt).getEnclosingCallable()
+      this.getEnclosingCallable() = m.getBody().getAStmt().(ReturnStmt).getEnclosingCallable()
     )
   }
 }
