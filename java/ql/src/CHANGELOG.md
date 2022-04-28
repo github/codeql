@@ -2,9 +2,7 @@
 
 ### Minor Analysis Improvements
 
-* Query `java/insecure-cookie` no longer produces a false positive if 
-`cookie.setSecure(...)` is called passing a constant that always equals 
-`true`.
+* Query `java/insecure-cookie` no longer produces a false positive if `cookie.setSecure(...)` is called passing a constant that always equals `true`.
 
 ## 0.1.0
 
@@ -28,7 +26,7 @@ this respect.
 
 ### Minor Analysis Improvements
 
- * Updated "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) to remove false-positives when OS is properly used as logical guard.
+* Updated "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) to remove false-positives when OS is properly used as logical guard.
 
 ## 0.0.11
 

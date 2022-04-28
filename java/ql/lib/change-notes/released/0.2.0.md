@@ -2,14 +2,14 @@
 
 ### Breaking Changes
 
-The signature of `allowImplicitRead` on `DataFlow::Configuration` and `TaintTracking::Configuration` has changed from `allowImplicitRead(DataFlow::Node node, DataFlow::Content c)` to `allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c)`.
+* The signature of `allowImplicitRead` on `DataFlow::Configuration` and `TaintTracking::Configuration` has changed from `allowImplicitRead(DataFlow::Node node, DataFlow::Content c)` to `allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c)`.
 
 ### Minor Analysis Improvements
 
-Improved the data flow support for the Android class `SharedPreferences$Editor`. Specifically, the fluent logic of some of its methods is now taken into account when calculating data flow.
- * Added flow sources and steps for JMS versions 1 and 2.
- * Added flow sources and steps for RabbitMQ.
- * Added flow steps for `java.io.DataInput` and `java.io.ObjectInput` implementations.
+* Improved the data flow support for the Android class `SharedPreferences$Editor`. Specifically, the fluent logic of some of its methods is now taken into account when calculating data flow.
+  * Added flow sources and steps for JMS versions 1 and 2.
+  * Added flow sources and steps for RabbitMQ.
+  * Added flow steps for `java.io.DataInput` and `java.io.ObjectInput` implementations.
 * Added data-flow models for the Spring Framework component `spring-beans`.
 
 ### Bug Fixes
