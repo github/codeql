@@ -17,11 +17,12 @@ def _parse(tags):
     return ret
 
 
-def run(*generators, tags=None):
-    """ run generation functions in `generators`, parsing options tagged with `tags` (all if unspecified)
-
-    `generators` should be callables taking as input an option namespace and a `render.Renderer` instance
+def run(*modules):
+    """ run generation functions in specified in `modules`, or in current module by default
     """
-    opts = _parse(tags)
-    for g in generators:
-        g(opts, render.Renderer())
+    if modules:
+        opts = _parse({t for m in modules for t in m.tags})
+        for m in modules:
+            m.generate(opts, render.Renderer())
+    else:
+        run(sys.modules["__main__"])

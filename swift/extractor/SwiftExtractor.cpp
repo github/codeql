@@ -12,6 +12,8 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 
+#include "swift/extractor/trap/TrapEntries.h"
+
 using namespace codeql;
 
 static void extractFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
@@ -67,15 +69,15 @@ static void extractFile(const SwiftExtractorConfiguration& config, swift::Source
               << "': " << ec.message() << "\n";
     return;
   }
-  std::stringstream ss;
+  trap << "// extractor-args: ";
   for (auto opt : config.frontendOptions) {
-    ss << std::quoted(opt) << " ";
+    trap << std::quoted(opt) << " ";
   }
-  ss << "\n";
-  trap << "// extractor-args: " << ss.str();
+  trap << "\n\n";
 
-  trap << "#0=*\n";
-  trap << "files(#0, " << std::quoted(srcFilePath.str().str()) << ")\n";
+  TrapLabel<FileTag> label{};
+  trap << label << "=*\n";
+  trap << FilesTrap{label, srcFilePath.str().str()} << "\n";
 
   // TODO: Pick a better name to avoid collisions
   std::string trapName = file.getFilename().str() + ".trap";

@@ -1,0 +1,23 @@
+py_library(
+    name = "utils",
+    testonly = True,
+    srcs = ["utils.py"],
+    deps = ["//swift/codegen/lib"],
+)
+
+[
+    py_test(
+        name = src[:-len(".py")],
+        size = "small",
+        srcs = [src],
+        deps = [
+            ":utils",
+            "//swift/codegen",
+        ],
+    )
+    for src in glob(["test_*.py"])
+]
+
+test_suite(
+    name = "test",
+)

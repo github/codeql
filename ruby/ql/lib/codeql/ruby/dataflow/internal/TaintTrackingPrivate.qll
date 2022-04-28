@@ -103,9 +103,9 @@ private module Cached {
     // allow flow out of a _tainted_ collection. This is needed in order to support taint-
     // tracking configurations where the source is a collection.
     exists(DataFlow::ContentSet c | readStep(nodeFrom, c, nodeTo) |
-      c.isSingleton(any(DataFlow::Content::ArrayElementContent aec))
+      c.isSingleton(any(DataFlow::Content::ElementContent ec))
       or
-      c.isAnyArrayElement()
+      c.isAnyElement()
     )
   }
 

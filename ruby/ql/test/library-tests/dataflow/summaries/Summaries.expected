@@ -133,7 +133,6 @@ nodes
 | summaries.rb:71:26:71:56 | call to source :  | semmle.label | call to source :  |
 subpaths
 invalidSpecComponent
-invalidOutputSpecComponent
 #select
 | summaries.rb:2:6:2:12 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:2:6:2:12 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
 | summaries.rb:2:6:2:12 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:2:6:2:12 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
