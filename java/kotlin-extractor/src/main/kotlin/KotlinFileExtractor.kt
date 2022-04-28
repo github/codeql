@@ -1347,6 +1347,23 @@ open class KotlinFileExtractor(
         return result
     }
 
+    private fun findTopLevelFunctionOrWarn(functionFilter: String, type: String, warnAgainstElement: IrElement): IrFunction? {
+
+        val fn = pluginContext.referenceFunctions(FqName(functionFilter))
+            .firstOrNull { it.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type }
+            ?.owner
+
+        if (fn != null) {
+            if (fn.parentClassOrNull != null) {
+                extractExternalClassLater(fn.parentAsClass)
+            }
+        } else {
+            logger.errorElement("Couldn't find JVM intrinsic function $functionFilter in $type", warnAgainstElement)
+        }
+
+        return fn
+    }
+
     val javaLangString by lazy {
         val result = pluginContext.referenceClass(FqName("java.lang.String"))?.owner
         result?.let { extractExternalClassLater(it) }
@@ -1858,6 +1875,11 @@ open class KotlinFileExtractor(
                             tw.writeStatementEnclosingExpr(dimId, enclosingStmt)
                             tw.writeNamestrings(dim.toString(), dim.toString(), dimId)
                         }
+                    }
+                }
+                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "iterator") && c.origin == IrStatementOrigin.FOR_LOOP_ITERATOR -> {
+                    findTopLevelFunctionOrWarn("kotlin.jvm.internal.iterator", "kotlin.jvm.internal.ArrayIteratorKt", c)?.let { iteratorFn ->
+                        extractRawMethodAccess(iteratorFn, c, callable, parent, idx, enclosingStmt, listOf(c.dispatchReceiver), null, null, listOf((c.dispatchReceiver!!.type as IrSimpleType).arguments.first().typeOrNull!!))
                     }
                 }
                 isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "get") && c.origin == IrStatementOrigin.GET_ARRAY_ELEMENT -> {
