@@ -10,5 +10,4 @@ newtype TXMLElements =
   TXMLElement() // BAD
 
 // GOOD
-newtype TIRFunction =
-  MkIRFunction()
+newtype TIRFunction = MkIRFunction()
