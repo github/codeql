@@ -16,6 +16,14 @@ class Observer : public swift::FrontendObserver {
  public:
   explicit Observer(const codeql::SwiftExtractorConfiguration& config) : config{config} {}
 
+  void parsedArgs(swift::CompilerInvocation& invocation) override {
+    // Original compiler and the extractor-compiler get into conflicts when
+    // both produce the same output files.
+    // TODO: change the final arifact destinations instead of disabling
+    // the artifact generation completely?
+    invocation.getFrontendOptions().RequestedAction = swift::FrontendOptions::ActionType::Typecheck;
+  }
+
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
     codeql::extractSwiftFiles(config, compiler);
   }
