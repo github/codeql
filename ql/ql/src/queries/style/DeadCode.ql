@@ -11,5 +11,5 @@ import ql
 import codeql_ql.style.DeadCodeQuery
 
 from AstNode node
-where isDead(node)
+where isDead(node) and none() // TODO: Disabled until we get good Parameterized Modules support
 select node, "Code is dead"
