@@ -2,13 +2,12 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.xml.AndroidManifest
+import semmle.code.java.frameworks.android.Intent
 
 /** An `onReceive` method of a `BroadcastReceiver` */
 private class OnReceiveMethod extends Method {
-  OnReceiveMethod() {
-    this.getASourceOverriddenMethod*()
-        .hasQualifiedName("android.content", "BroadcastReceiver", "onReceive")
-  }
+  OnReceiveMethod() { this.getASourceOverriddenMethod*() instanceof AndroidReceiveIntentMethod }
 
   /** Gets the parameter of this method that holds the received `Intent`. */
   Parameter getIntentParameter() { result = this.getParameter(1) }
@@ -31,7 +30,7 @@ private class VerifiedIntentConfig extends DataFlow::Configuration {
 }
 
 /** An `onReceive` method that doesn't verify the action of the intent it receives. */
-class UnverifiedOnReceiveMethod extends OnReceiveMethod {
+private class UnverifiedOnReceiveMethod extends OnReceiveMethod {
   UnverifiedOnReceiveMethod() {
     not any(VerifiedIntentConfig c).hasFlow(DataFlow::parameterNode(this.getIntentParameter()), _)
   }
@@ -62,21 +61,18 @@ class SystemActionName extends Top {
   SystemActionName() {
     name = getASystemActionName() and
     (
-      this.(StringLiteral).getValue() = "android.intent.action." + name
+      this.(CompileTimeConstantExpr).getStringValue() = "android.intent.action." + name
       or
       this.(FieldRead).getField().hasQualifiedName("android.content", "Intent", "ACTION_" + name)
       or
-      this.(XMLAttribute).getValue() = "android.intent.action." + name
+      this.(AndroidActionXmlElement).getActionName() = "android.intent.action." + name
     )
   }
 
   /** Gets the name of the system intent that this expression or attribute represents. */
   string getName() { result = name }
 
-  override string toString() {
-    result =
-      [this.(StringLiteral).toString(), this.(FieldRead).toString(), this.(XMLAttribute).toString()]
-  }
+  override string toString() { result = [this.(Expr).toString(), this.(XMLAttribute).toString()] }
 }
 
 /** A call to `Context.registerReceiver` */
@@ -138,17 +134,12 @@ private predicate registeredUnverifiedSystemReceiver(
 
 /** Holds if the XML element `rec` declares a receiver `orm` to receive the system action named `sa` that doesn't verify intents it receives. */
 private predicate xmlUnverifiedSystemReceiver(
-  XMLElement rec, UnverifiedOnReceiveMethod orm, SystemActionName sa
+  AndroidReceiverXmlElement rec, UnverifiedOnReceiveMethod orm, SystemActionName sa
 ) {
-  exists(XMLElement filter, XMLElement action, Class ormty |
-    rec.hasName("receiver") and
-    filter.hasName("intent-filter") and
-    action.hasName("action") and
-    filter = rec.getAChild() and
-    action = filter.getAChild() and
+  exists(Class ormty |
     ormty = orm.getDeclaringType() and
-    rec.getAttribute("name").getValue() = ["." + ormty.getName(), ormty.getQualifiedName()] and
-    action.getAttribute("name") = sa
+    rec.getComponentName() = ["." + ormty.getName(), ormty.getQualifiedName()] and
+    rec.getAnIntentFilterElement().getAnActionElement() = sa
   )
 }
 

@@ -15,5 +15,5 @@ import semmle.code.java.security.ImproperIntentVerificationQuery
 
 from Top reg, Method orm, SystemActionName sa
 where unverifiedSystemReceiver(reg, orm, sa)
-select orm, "This reciever doesn't verify intents it recieves, and is registered $@ to recieve $@.",
+select orm, "This reciever doesn't verify intents it receives, and is registered $@ to receive $@.",
   reg, "here", sa, "the system action " + sa.getName()
