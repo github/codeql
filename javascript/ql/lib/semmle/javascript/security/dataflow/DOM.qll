@@ -155,10 +155,14 @@ class DomMethodCallNode extends DataFlow::MethodCallNode {
   }
 
   /** DEPRECATED: Alias for interpretsArgumentsAsUrl */
-  deprecated predicate interpretsArgumentsAsURL(DataFlow::Node arg) { this.interpretsArgumentsAsUrl(arg) }
+  deprecated predicate interpretsArgumentsAsURL(DataFlow::Node arg) {
+    this.interpretsArgumentsAsUrl(arg)
+  }
 
   /** DEPRECATED: Alias for interpretsArgumentsAsHtml */
-  deprecated predicate interpretsArgumentsAsHTML(DataFlow::Node arg) { this.interpretsArgumentsAsHtml(arg) }
+  deprecated predicate interpretsArgumentsAsHTML(DataFlow::Node arg) {
+    this.interpretsArgumentsAsHtml(arg)
+  }
 }
 
 /**
