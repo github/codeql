@@ -81,3 +81,7 @@ Steps.taintIntoCallback(
 mySink(Steps.preserveArgZeroAndTwo(getSource())) # FLOW
 mySink(Steps.preserveArgZeroAndTwo("foo", getSource())) # NO FLOW
 mySink(Steps.preserveArgZeroAndTwo("foo", "bar", getSource())) # FLOW
+
+mySink(Steps.preserveAllButFirstArgument(getSource())) # NO FLOW
+mySink(Steps.preserveAllButFirstArgument("foo", getSource())) # FLOW
+mySink(Steps.preserveAllButFirstArgument("foo", "bar", getSource())) # FLOW
