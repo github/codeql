@@ -203,7 +203,7 @@ class Content extends TContent {
 
 /** Provides different sub classes of `Content`. */
 module Content {
-  /** An element in an collection, for example an element in array or in a hash. */
+  /** An element in a collection, for example an element in an array or in a hash. */
   class ElementContent extends Content, TElementContent { }
 
   /** An element in a collection at a known index. */

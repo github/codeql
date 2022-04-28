@@ -128,6 +128,11 @@ class ConstantValue extends TConstantValue {
     or
     result = ":" + this.getSymbol()
     or
+    exists(string s, string flags |
+      this.isRegExpWithFlags(s, flags) and
+      result = "/" + s + "/" + flags
+    )
+    or
     result = this.getBoolean().toString()
     or
     this.isNil() and result = "nil"
