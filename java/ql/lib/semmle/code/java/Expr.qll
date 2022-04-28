@@ -1110,7 +1110,7 @@ class GreaterThanComparison extends ComparisonExpr {
  * An equality test is a binary expression using
  * Java's `==` or `!=` operators, or Kotlin's `==`, `!=`, `===` or `!==` operators.
  *
- * This could be a reference- or a value-in/equality test.
+ * This could be a reference- or a value-(in)equality test.
  */
 class EqualityTest extends BinaryExpr {
   EqualityTest() {
