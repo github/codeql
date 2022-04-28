@@ -10,7 +10,7 @@ private class OnReceiveMethod extends Method {
         .hasQualifiedName("android.content", "BroadcastReceiver", "onReceive")
   }
 
-  /** Gets the paramter of this method that holds the received `Intent`. */
+  /** Gets the parameter of this method that holds the received `Intent`. */
   Parameter getIntentParameter() { result = this.getParameter(1) }
 }
 
@@ -30,7 +30,7 @@ private class VerifiedIntentConfig extends DataFlow::Configuration {
   }
 }
 
-/** An `onReceive` method that doesn't verify the action of the intent it recieves. */
+/** An `onReceive` method that doesn't verify the action of the intent it receives. */
 class UnverifiedOnReceiveMethod extends OnReceiveMethod {
   UnverifiedOnReceiveMethod() {
     not any(VerifiedIntentConfig c).hasFlow(DataFlow::parameterNode(this.getIntentParameter()), _)
@@ -70,7 +70,7 @@ class SystemActionName extends Top {
     )
   }
 
-  /** Gets the name of the system intent that this expression or attriute represents. */
+  /** Gets the name of the system intent that this expression or attribute represents. */
   string getName() { result = name }
 
   override string toString() {
@@ -125,8 +125,8 @@ private class RegisterSystemActionConfig extends DataFlow::Configuration {
   }
 }
 
-/** Holds if `rrc` registers a reciever `orm` to recieve the system action `sa` that doesn't verifiy intents it recieves. */
-predicate registeredUnverifiedSystemReceiver(
+/** Holds if `rrc` registers a receiver `orm` to receive the system action `sa` that doesn't verify the intents it receives. */
+private predicate registeredUnverifiedSystemReceiver(
   RegisterReceiverCall rrc, UnverifiedOnReceiveMethod orm, SystemActionName sa
 ) {
   exists(RegisterSystemActionConfig conf, ConstructorCall cc |
@@ -136,8 +136,8 @@ predicate registeredUnverifiedSystemReceiver(
   )
 }
 
-/** Holds if the XML element `rec` declares a reciever `orm` to recieve the system action named `sa` that doesn't verifiy intents it recieves. */
-predicate xmlUnverifiedSystemReceiver(
+/** Holds if the XML element `rec` declares a receiver `orm` to receive the system action named `sa` that doesn't verify intents it receives. */
+private predicate xmlUnverifiedSystemReceiver(
   XMLElement rec, UnverifiedOnReceiveMethod orm, SystemActionName sa
 ) {
   exists(XMLElement filter, XMLElement action, Class ormty |
@@ -152,7 +152,7 @@ predicate xmlUnverifiedSystemReceiver(
   )
 }
 
-/** Holds if `reg` registers (either explicitly or through XML) a reciever `orm` to recieve the system action named `sa` that doesn't verify intents it recieves. */
+/** Holds if `reg` registers (either explicitly or through XML) a receiver `orm` to receive the system action named `sa` that doesn't verify the intents it receives. */
 predicate unverifiedSystemReceiver(Top reg, Method orm, SystemActionName sa) {
   registeredUnverifiedSystemReceiver(reg, orm, sa) or
   xmlUnverifiedSystemReceiver(reg, orm, sa)
