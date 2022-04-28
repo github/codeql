@@ -19,19 +19,25 @@ class Renderer:
     """ Template renderer using mustache templates in the `templates` directory """
 
     def __init__(self):
-        self._r = pystache.Renderer(search_dirs=str(paths.lib_dir / "templates"), escape=lambda u: u)
+        self._r = pystache.Renderer(search_dirs=str(paths.templates_dir), escape=lambda u: u)
         self.written = set()
 
-    def render(self, data, output: pathlib.Path):
+    def render(self, data, output: pathlib.Path, guard_base: pathlib.Path = None):
         """ Render `data` to `output`.
 
         `data` must have a `template` attribute denoting which template to use from the template directory.
 
         If the file is unchanged, then no write is performed (and `done_something` remains unchanged)
+
+        If `guard_base` is provided, it must be a path at the root of `output` and a header guard will be injected in
+        the template based off of the relative path of `output` in `guard_base`
         """
         mnemonic = type(data).__name__
         output.parent.mkdir(parents=True, exist_ok=True)
-        data = self._r.render_name(data.template, data, generator=paths.exe_file)
+        guard = None
+        if guard_base is not None:
+            guard = str(output.relative_to(guard_base)).replace("/", "_").replace(".", "_").upper()
+        data = self._r.render_name(data.template, data, generator=paths.exe_file, guard=guard)
         with open(output, "w") as out:
             out.write(data)
         log.debug(f"generated {mnemonic} {output.name}")

@@ -79,11 +79,13 @@ def generate(opts, renderer):
     data = schema.load(input)
 
     dbscheme = Scheme(src=input.relative_to(paths.swift_dir),
-                        includes=get_includes(data, include_dir=input.parent),
-                        declarations=get_declarations(data))
+                      includes=get_includes(data, include_dir=input.parent),
+                      declarations=get_declarations(data))
 
     renderer.render(dbscheme, out)
 
 
+tags = ("schema", "dbscheme")
+
 if __name__ == "__main__":
-    generator.run(generate, tags=["schema", "dbscheme"])
+    generator.run()

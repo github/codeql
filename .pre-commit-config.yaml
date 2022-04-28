@@ -47,5 +47,5 @@ repos:
         name: Run Swift code generation unit tests
         files: ^swift/codegen/.*\.py$
         language: system
-        entry: bazel test //swift/codegen:tests
+        entry: bazel test //swift/codegen/test
         pass_filenames: false
