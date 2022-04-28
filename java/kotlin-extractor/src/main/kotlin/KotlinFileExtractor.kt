@@ -113,7 +113,7 @@ open class KotlinFileExtractor(
                 is IrFunction -> {
                     val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
                     if (parentId != null) {
-                        extractFunction(declaration, parentId, extractFunctionBodies, null, listOf())
+                        extractFunction(declaration, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, null, listOf())
                     }
                     Unit
                 }
@@ -123,7 +123,7 @@ open class KotlinFileExtractor(
                 is IrProperty -> {
                     val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
                     if (parentId != null) {
-                        extractProperty(declaration, parentId, true, null, listOf())
+                        extractProperty(declaration, parentId, extractBackingField = true, extractFunctionBodies = extractFunctionBodies, null, listOf())
                     }
                     Unit
                 }
@@ -350,8 +350,8 @@ open class KotlinFileExtractor(
             c.declarations.map {
                 if (shouldExtractDecl(it, false)) {
                     when(it) {
-                        is IrFunction -> extractFunction(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
-                        is IrProperty -> extractProperty(it, id, false, typeParamSubstitution, argsIncludingOuterClasses)
+                        is IrFunction -> extractFunction(it, id, extractBody = false, extractMethodAndParameterTypeAccesses = false, typeParamSubstitution, argsIncludingOuterClasses)
+                        is IrProperty -> extractProperty(it, id, extractBackingField = false, extractFunctionBodies = false, typeParamSubstitution, argsIncludingOuterClasses)
                         else -> {}
                     }
                 }
@@ -680,7 +680,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null): Label<out DbCallable>? {
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null): Label<out DbCallable>? {
         if (isFake(f)) return null
 
         with("function", f) {
@@ -706,13 +706,13 @@ open class KotlinFileExtractor(
                 val extReceiver = f.extensionReceiverParameter
                 val idxOffset = if (extReceiver != null) 1 else 0
                 val paramTypes = f.valueParameters.mapIndexed { i, vp ->
-                    extractValueParameter(vp, id, i + idxOffset, typeSubstitution, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractBody)
+                    extractValueParameter(vp, id, i + idxOffset, typeSubstitution, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses)
                 }
                 val allParamTypes = if (extReceiver != null) {
                     val extendedType = useType(extReceiver.type)
                     tw.writeKtExtensionFunctions(id.cast<DbMethod>(), extendedType.javaResult.id, extendedType.kotlinResult.id)
 
-                    val t = extractValueParameter(extReceiver, id, 0, null, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractBody)
+                    val t = extractValueParameter(extReceiver, id, 0, null, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses)
                     listOf(t) + paramTypes
                 } else {
                     paramTypes
@@ -741,7 +741,7 @@ open class KotlinFileExtractor(
                     tw.writeMethods(methodId, shortName.nameInDB, "${shortName.nameInDB}$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration.cast<DbMethod>())
                     tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
 
-                    if (extractBody) {
+                    if (extractMethodAndParameterTypeAccesses) {
                         extractTypeAccessRecursive(f.returnType, locId, id, -1)
                     }
 
@@ -808,7 +808,7 @@ open class KotlinFileExtractor(
         return id
     }
 
-    fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
+    fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, extractFunctionBodies: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
         with("property", p) {
             if (isFake(p)) return
 
@@ -824,7 +824,7 @@ open class KotlinFileExtractor(
                 val setter = p.setter
 
                 if (getter != null) {
-                    val getterId = extractFunction(getter, parentId, extractBackingField, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
+                    val getterId = extractFunction(getter, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
                     if (getterId != null) {
                         tw.writeKtPropertyGetters(id, getterId)
                     }
@@ -838,7 +838,7 @@ open class KotlinFileExtractor(
                     if (!p.isVar) {
                         logger.errorElement("!isVar property with a setter", p)
                     }
-                    val setterId = extractFunction(setter, parentId, extractBackingField, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
+                    val setterId = extractFunction(setter, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
                     if (setterId != null) {
                         tw.writeKtPropertySetters(id, setterId)
                     }
@@ -4015,7 +4015,7 @@ open class KotlinFileExtractor(
                     helper.extractParameterToFieldAssignmentInConstructor("<fn>", functionType, fieldId, 0, 1)
 
                     // add implementation function
-                    extractFunction(samMember, classId, false, null, null, ids.function)
+                    extractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, null, null, ids.function)
 
                     //body
                     val blockId = tw.getFreshIdLabel<DbBlock>()
@@ -4191,7 +4191,7 @@ open class KotlinFileExtractor(
             val id = extractGeneratedClass(ids, superTypes, tw.getLocation(localFunction), localFunction)
 
             // Extract local function as a member
-            extractFunction(localFunction, id, true, null, listOf())
+            extractFunction(localFunction, id, extractBody = true, extractMethodAndParameterTypeAccesses = true, null, listOf())
 
             return id
         }
