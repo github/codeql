@@ -2,3 +2,5 @@
 
 class SecurityManager;
 class InputSource;
+
+#define NULL (0)
