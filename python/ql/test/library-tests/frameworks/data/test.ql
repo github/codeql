@@ -10,10 +10,10 @@ class Steps extends ModelInput::SummaryModelCsv {
     // package;type;path;input;output;kind
     row =
       [
-        "testlib;;Member[Steps].Member[preserveTaint];Argument[0];ReturnValue;taint",
+        "testlib;;Member[Steps].Member[preserveTaint].Call;Argument[0];ReturnValue;taint",
         "testlib;;Member[Steps].Member[taintIntoCallback];Argument[0];Argument[1..2].Parameter[0];taint",
         "testlib;;Member[Steps].Member[preserveArgZeroAndTwo];Argument[0,2];ReturnValue;taint",
-        "testlib;;Member[Steps].Member[preserveAllButFirstArgument];Argument[1..];ReturnValue;taint",
+        "testlib;;Member[Steps].Member[preserveAllButFirstArgument].Call;Argument[1..];ReturnValue;taint",
       ]
   }
 }
@@ -52,7 +52,6 @@ class Sinks extends ModelInput::SinkModelCsv {
   }
 }
 
-// TODO: Test taint steps (include that the base path may end with ".Call")
 class Sources extends ModelInput::SourceModelCsv {
   // package;type;path;kind
   override predicate row(string row) {
