@@ -19,7 +19,7 @@ public:
 void test2_1(InputSource &data) {
 	SAXParser *p = new SAXParser();
 
-	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
+	p->parse(data); // BAD (parser not correctly configured)
 }
 
 void test2_2(InputSource &data) {
@@ -34,7 +34,7 @@ void test2_3(InputSource &data) {
 	bool v = false;
 
 	p->setDisableDefaultEntityResolution(v);
-	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
+	p->parse(data); // BAD (parser not correctly configured)
 }
 
 void test2_4(InputSource &data) {
@@ -42,5 +42,5 @@ void test2_4(InputSource &data) {
 	bool v = true;
 
 	p->setDisableDefaultEntityResolution(v);
-	p->parse(data); // GOOD
+	p->parse(data); // GOOD [FALSE POSITIVE]
 }
