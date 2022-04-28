@@ -54,6 +54,13 @@ static void extractFile(const SwiftExtractorConfiguration& config, swift::Source
   llvm::SmallString<PATH_MAX> tempTrapPath(config.trapDir);
   llvm::sys::path::append(tempTrapPath, tempTrapName);
 
+  llvm::StringRef trapParent = llvm::sys::path::parent_path(tempTrapPath);
+  if (std::error_code ec = llvm::sys::fs::create_directories(trapParent)) {
+    std::cerr << "Cannot create trap directory '" << trapParent.str() << "': " << ec.message()
+              << "\n";
+    return;
+  }
+
   std::ofstream trap(tempTrapPath.str().str());
   if (!trap) {
     std::error_code ec;

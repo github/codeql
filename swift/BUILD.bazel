@@ -24,6 +24,12 @@ pkg_files(
 )
 
 pkg_files(
+    name = "tracing-config",
+    srcs = ["tools/tracing-config.lua"],
+    prefix = "tools",
+)
+
+pkg_files(
     name = "manifest",
     srcs = ["codeql-extractor.yml"],
 )
@@ -34,6 +40,7 @@ pkg_filegroup(
         ":dbscheme_files",
         ":manifest",
         ":qltest",
+        ":tracing-config",
     ],
     visibility = ["//visibility:public"],
 )
