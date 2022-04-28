@@ -77,3 +77,7 @@ Steps.taintIntoCallback(
     lambda y: mySink(y), # FLOW
     lambda z: mySink(z) # NO FLOW
 )
+
+mySink(Steps.preserveArgZeroAndTwo(getSource())) # FLOW
+mySink(Steps.preserveArgZeroAndTwo("foo", getSource())) # NO FLOW
+mySink(Steps.preserveArgZeroAndTwo("foo", "bar", getSource())) # FLOW
