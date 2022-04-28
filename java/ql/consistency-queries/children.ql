@@ -46,8 +46,7 @@ predicate gapInChildren(Element e, int i) {
 
 predicate lateFirstChild(Element e, int i) {
   i > 0 and
-  exists(nthChildOf(e, i)) and
-  forex(int j | exists(nthChildOf(e, j)) | j >= i) and
+  i = min(int j | exists(nthChildOf(e, j))) and
   // A wildcard type access can be `?` with no children,
   // `? extends T` with only a child 0, or `? super T`
   // with only a child 1.

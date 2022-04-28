@@ -9,8 +9,6 @@ import java
  * This always returns a constant expression and can be considered as such.
  */
 class LiveLiteral extends MethodAccess {
-  CompileTimeConstantExpr value;
-
   LiveLiteral() {
     this.getMethod() instanceof LiveLiteralMethod and
     not this.getEnclosingCallable() instanceof LiveLiteralMethod

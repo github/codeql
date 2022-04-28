@@ -3,7 +3,7 @@
  */
 
 import java
-import semmle.code.java.frameworks.android.Compose
+private import semmle.code.java.frameworks.android.Compose
 
 /** A common super-class that represents all kinds of expressions. */
 class Expr extends ExprParent, @expr {
@@ -2349,10 +2349,9 @@ class Argument extends Expr {
    */
   predicate isNthVararg(int arrayindex) {
     not this.isExplicitVarargsArray() and
-    exists(Callable tgt, Parameter varargsParam, int varargsParamPos |
+    exists(Callable tgt, int varargsParamPos |
       call.getCallee() = tgt and
-      tgt.getParameter(varargsParamPos) = varargsParam and
-      varargsParam.isVarargs() and
+      tgt.getParameter(varargsParamPos).isVarargs() and
       arrayindex = pos - varargsParamPos and
       arrayindex >= 0 and
       arrayindex <= (call.getNumArgument() - tgt.getNumberOfParameters())
