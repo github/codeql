@@ -5,28 +5,23 @@
 private import IRFunctionBaseInternal
 
 private newtype TIRFunction =
-  TFunctionIRFunction(Language::Function func) { IRConstruction::Raw::functionHasIR(func) } or
-  TVarInitIRFunction(Language::GlobalVariable var) { IRConstruction::Raw::varHasIRFunc(var) }
+  MkIRFunction(Language::Function func) { IRConstruction::Raw::functionHasIR(func) }
 
 /**
  * The IR for a function. This base class contains only the predicates that are the same between all
  * phases of the IR. Each instantiation of `IRFunction` extends this class.
  */
 class IRFunctionBase extends TIRFunction {
-  Language::Declaration decl;
+  Language::Function func;
 
-  IRFunctionBase() {
-    this = TFunctionIRFunction(decl)
-    or
-    this = TVarInitIRFunction(decl)
-  }
+  IRFunctionBase() { this = MkIRFunction(func) }
 
   /** Gets a textual representation of this element. */
-  final string toString() { result = "IR: " + decl.toString() }
+  final string toString() { result = "IR: " + func.toString() }
 
   /** Gets the function whose IR is represented. */
-  final Language::Declaration getFunction() { result = decl }
+  final Language::Function getFunction() { result = func }
 
   /** Gets the location of the function. */
-  final Language::Location getLocation() { result = decl.getLocation() }
+  final Language::Location getLocation() { result = func.getLocation() }
 }

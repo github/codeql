@@ -97,7 +97,7 @@ class IRBlockBase extends TIRBlock {
   /**
    * Gets the `Function` that contains this block.
    */
-  final Language::Declaration getEnclosingFunction() {
+  final Language::Function getEnclosingFunction() {
     result = getFirstInstruction(this).getEnclosingFunction()
   }
 }
