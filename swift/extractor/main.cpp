@@ -19,7 +19,7 @@ class Observer : public swift::FrontendObserver {
   void parsedArgs(swift::CompilerInvocation& invocation) override {
     // Original compiler and the extractor-compiler get into conflicts when
     // both produce the same output files.
-    // TODO: change the final arifact destinations instead of disabling
+    // TODO: change the final artifact destinations instead of disabling
     // the artifact generation completely?
     invocation.getFrontendOptions().RequestedAction = swift::FrontendOptions::ActionType::Typecheck;
   }
