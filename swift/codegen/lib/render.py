@@ -22,7 +22,7 @@ class Renderer:
         self._r = pystache.Renderer(search_dirs=str(paths.templates_dir), escape=lambda u: u)
         self.written = set()
 
-    def render(self, data, output: pathlib.Path, guard_base: pathlib.Path = None):
+    def render(self, data, output: pathlib.Path):
         """ Render `data` to `output`.
 
         `data` must have a `template` attribute denoting which template to use from the template directory.
@@ -34,10 +34,7 @@ class Renderer:
         """
         mnemonic = type(data).__name__
         output.parent.mkdir(parents=True, exist_ok=True)
-        guard = None
-        if guard_base is not None:
-            guard = str(output.relative_to(guard_base)).replace("/", "_").replace(".", "_").upper()
-        data = self._r.render_name(data.template, data, generator=paths.exe_file, guard=guard)
+        data = self._r.render_name(data.template, data, generator=paths.exe_file)
         with open(output, "w") as out:
             out.write(data)
         log.debug(f"generated {mnemonic} {output.name}")
