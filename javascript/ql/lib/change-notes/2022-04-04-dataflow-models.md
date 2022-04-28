@@ -5,7 +5,7 @@ category: breaking
   The types of some classes have been changed, and these changes may break existing code.
   Other classes and predicates have been renamed, in these cases the old name is still available as a deprecated feature.
 
-* The basetype of the following list of classes has changed from an expression to a dataflow node, and and thus code using these classes might break. 
+* The basetype of the following list of classes has changed from an expression to a dataflow node, and thus code using these classes might break. 
   The fix to these breakages is usually to use `asExpr()` to get an expression from a dataflow node, or to use `.flow()` to get a dataflow node from an expression.  
    - DOM.qll#WebStorageWrite
    - CryptoLibraries.qll#CryptographicOperation
