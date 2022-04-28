@@ -1,23 +1,3 @@
-calls.rb:
-#  102| Hash
-#-----| super -> Object
-
-#   77| Integer
-#-----| super -> Numeric
-
-#   86| Kernel
-
-#   90| Module
-#-----| super -> Object
-
-#   97| Object
-#-----| include -> Kernel
-#-----| super -> BasicObject
-#-----| prepend -> A
-
-#  106| Array
-#-----| super -> Object
-
 #-----| BasicObject
 
 #-----| Class
@@ -48,16 +28,36 @@ calls.rb:
 #-----| TrueClass
 #-----| super -> Object
 
+calls.rb:
 #   15| M
 
 #   29| C
-#-----| super -> Object
 #-----| include -> M
+#-----| super -> Object
 
 #   51| D
 #-----| super -> C
 
+#   77| Integer
+#-----| super -> Numeric
+
 #   82| String
+#-----| super -> Object
+
+#   86| Kernel
+
+#   90| Module
+#-----| super -> Object
+
+#   97| Object
+#-----| super -> BasicObject
+#-----| include -> Kernel
+#-----| prepend -> A
+
+#  102| Hash
+#-----| super -> Object
+
+#  106| Array
 #-----| super -> Object
 
 #  144| S
@@ -86,39 +86,10 @@ modules.rb:
 
 #    4| Foo
 
-#   37| Bar
-#-----| super -> Object
-
-#   60| MyModuleInGlobalScope
-
-#   63| Test
-
-#   83| Other
-
-#   88| IncludeTest
-#-----| include -> Test
-
-#   95| IncludeTest2
-#-----| include -> Test
-
-#  101| PrependTest
-#-----| prepend -> Test
-
-#  107| MM
-
-#  112| YY
-#-----| super -> Object
-
-#  115| XX
-
-private.rb:
-#    1| E
-#-----| super -> Object
-
-#   42| F
-
-modules.rb:
 #    5| Foo::Bar
+
+#    6| Foo::Bar::ClassInFooBar
+#-----| super -> Object
 
 #   19| Foo::ClassInFoo
 #-----| super -> Object
@@ -126,21 +97,62 @@ modules.rb:
 #   30| Foo::ClassInAnotherDefinitionOfFoo
 #-----| super -> Object
 
-#  116| XX::YY
-#-----| super -> YY
+#   37| Bar
+#-----| super -> Object
+
+#   49| Foo::Bar::ClassInAnotherDefinitionOfFooBar
+#-----| super -> Object
+
+#   60| MyModuleInGlobalScope
+
+#   63| Test
 
 #   65| Test::Foo1
 
+#   66| Test::Foo1::Bar
+#-----| super -> Object
+
 #   70| Test::Foo2
+
+#   71| Test::Foo2::Foo2
+
+#   72| Test::Foo2::Foo2::Bar
+#-----| super -> Object
 
 #   76| Test::Foo3
 
+#   83| Other
+
 #   84| Other::Foo1
 
-#    6| Foo::Bar::ClassInFooBar
+#   88| IncludeTest
+#-----| include -> Test
+
+#   91| Test::Foo1::Y
+
+#   95| IncludeTest2
+#-----| include -> Test
+
+#   97| Test::Foo1::Z
+
+#  101| PrependTest
+#-----| prepend -> Test
+
+#  103| Test::Foo2::Y
+
+#  107| MM
+
+#  108| MM::MM
+
+#  112| YY
 #-----| super -> Object
 
-#   71| Test::Foo2::Foo2
+#  115| XX
+
+#  116| XX::YY
+#-----| super -> YY
+
+#  120| Test::Foo1::Bar::Baz
 
 modules_rec.rb:
 #    1| B::A
@@ -149,22 +161,8 @@ modules_rec.rb:
 #    4| A::B
 #-----| super -> Object
 
-modules.rb:
-#  108| MM::MM
-
-#   49| Foo::Bar::ClassInAnotherDefinitionOfFooBar
+private.rb:
+#    1| E
 #-----| super -> Object
 
-#   66| Test::Foo1::Bar
-#-----| super -> Object
-
-#   91| Test::Foo1::Y
-
-#   97| Test::Foo1::Z
-
-#  103| Test::Foo2::Y
-
-#   72| Test::Foo2::Foo2::Bar
-#-----| super -> Object
-
-#  120| Test::Foo1::Bar::Baz
+#   42| F

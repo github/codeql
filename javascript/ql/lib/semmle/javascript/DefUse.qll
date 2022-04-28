@@ -249,8 +249,9 @@ class VarUse extends ControlFlowNode, @varref {
 /**
  * Holds if the definition of `v` in `def` reaches `use` along some control flow path
  * without crossing another definition of `v`.
+ * DEPRECATED: Use the `SSA.qll` library instead.
  */
-predicate definitionReaches(Variable v, VarDef def, VarUse use) {
+deprecated predicate definitionReaches(Variable v, VarDef def, VarUse use) {
   v = use.getVariable() and
   exists(BasicBlock bb, int i, int next | next = nextDefAfter(bb, v, i, def) |
     exists(int j | j in [i + 1 .. next - 1] | bb.useAt(j, v, use))
@@ -265,16 +266,20 @@ predicate definitionReaches(Variable v, VarDef def, VarUse use) {
 /**
  * Holds if the definition of local variable `v` in `def` reaches `use` along some control flow path
  * without crossing another definition of `v`.
+ * DEPRECATED: Use the `SSA.qll` library instead.
  */
-predicate localDefinitionReaches(LocalVariable v, VarDef def, VarUse use) {
+deprecated predicate localDefinitionReaches(LocalVariable v, VarDef def, VarUse use) {
   exists(SsaExplicitDefinition ssa |
     ssa.defines(def, v) and
     ssa = getAPseudoDefinitionInput*(use.getSsaVariable().getDefinition())
   )
 }
 
-/** Holds if `nd` is a pseudo-definition and the result is one of its inputs. */
-private SsaDefinition getAPseudoDefinitionInput(SsaDefinition nd) {
+/**
+ * Holds if `nd` is a pseudo-definition and the result is one of its inputs.
+ * DEPRECATED: Use the `SSA.qll` library instead.
+ */
+deprecated private SsaDefinition getAPseudoDefinitionInput(SsaDefinition nd) {
   result = nd.(SsaPseudoDefinition).getAnInput()
 }
 
@@ -282,7 +287,7 @@ private SsaDefinition getAPseudoDefinitionInput(SsaDefinition nd) {
  * Holds if `d` is a definition of `v` at index `i` in `bb`, and the result is the next index
  * in `bb` after `i` at which the same variable is defined, or `bb.length()` if there is none.
  */
-private int nextDefAfter(BasicBlock bb, Variable v, int i, VarDef d) {
+deprecated private int nextDefAfter(BasicBlock bb, Variable v, int i, VarDef d) {
   bb.defAt(i, v, d) and
   result =
     min(int jj |
@@ -296,8 +301,9 @@ private int nextDefAfter(BasicBlock bb, Variable v, int i, VarDef d) {
  *
  * This is the case if there is a path from `earlier` to `later` that does not cross
  * another definition of `v`.
+ * DEPRECATED: Use the `SSA.qll` library instead.
  */
-predicate localDefinitionOverwrites(LocalVariable v, VarDef earlier, VarDef later) {
+deprecated predicate localDefinitionOverwrites(LocalVariable v, VarDef earlier, VarDef later) {
   exists(BasicBlock bb, int i, int next | next = nextDefAfter(bb, v, i, earlier) |
     bb.defAt(next, v, later)
     or

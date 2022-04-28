@@ -1,4 +1,5 @@
-| 0 | whilestmt.c:15:22:21:1 | { ... } | 1 | whilestmt.c:16:3:19:3 | while (...) ... |
+| 0 | whilestmt.c:15:22:21:1 | { ... } | 1 | whilestmt.c:16:3:16:3 | { ... } |
+| 1 | whilestmt.c:16:3:16:3 | { ... } | 1 | whilestmt.c:16:3:19:3 | while (...) ... |
 | 1 | whilestmt.c:16:3:19:3 | while (...) ... | 1 | whilestmt.c:16:9:16:9 | 1 |
 | 1 | whilestmt.c:16:9:16:9 | 1 | 1 | whilestmt.c:16:12:19:3 | { ... } |
 | 1 | whilestmt.c:16:12:19:3 | { ... } | 2 | whilestmt.c:17:5:17:7 | label ...: |

@@ -39,7 +39,7 @@ int funcTest3()
   FILE *fp;
   char filename[80];
   strcat(filename, "/tmp/tmp.name");
-  fp = fopen(filename,"w"); // BAD
+  fp = fopen(filename,"w"); // BAD [NOT DETECTED]
   fprintf(fp,"%s\n","data to file");
   fclose(fp);
   return 0;

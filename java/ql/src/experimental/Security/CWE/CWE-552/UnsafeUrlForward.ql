@@ -12,6 +12,8 @@
 
 import java
 import UnsafeUrlForward
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking
 import experimental.semmle.code.java.PathSanitizer
 import DataFlow::PathGraph
 
@@ -23,7 +25,7 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
     not exists(MethodAccess ma, Method m | ma.getMethod() = m |
       (
         m instanceof HttpServletRequestGetRequestURIMethod or
-        m instanceof HttpServletRequestGetRequestURLMethod or
+        m instanceof HttpServletRequestGetRequestUrlMethod or
         m instanceof HttpServletRequestGetPathMethod
       ) and
       ma = source.asExpr()

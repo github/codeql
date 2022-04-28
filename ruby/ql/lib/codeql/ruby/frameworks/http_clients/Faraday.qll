@@ -45,7 +45,7 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range {
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 
-  override DataFlow::Node getURL() {
+  override DataFlow::Node getAUrlPart() {
     result = requestUse.getArgument(0) or
     result = connectionUse.(DataFlow::CallNode).getArgument(0) or
     result = connectionUse.(DataFlow::CallNode).getKeywordArgument("url")
@@ -96,7 +96,7 @@ private predicate isSslOptionsPairDisablingValidation(CfgNodes::ExprNodes::PairC
 /** Holds if `node` represents the symbol literal with the given `valueText`. */
 private predicate isSymbolLiteral(DataFlow::Node node, string valueText) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol(valueText) and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue(valueText) and
     literal.flowsTo(node)
   )
 }

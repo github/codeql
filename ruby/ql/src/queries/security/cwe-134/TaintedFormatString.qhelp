@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Methods like <code>Kernel.printf</code> accept a format string that is used to format
+the remaining arguments by providing inline format specifiers. If the format string
+contains unsanitized input from an untrusted source, then that string may contain
+unexpected format specifiers that cause garbled output or throw an exception.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Either sanitize the input before including it in the format string, or use a
+<code>%s</code> specifier in the format string, and pass the untrusted data as corresponding
+argument.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following program snippet logs information about an unauthorized access attempt. The
+log message includes the user name, and the user's IP address is passed as an additional
+argument to <code>Kernel.printf</code> to be appended to the message:
+</p>
+<sample src="examples/tainted_format_string_bad.rb"/>
+<p>
+However, if a malicious user provides a format specified such as <code>%s</code>
+as their user name, <code>Kernel.printf</code> will throw an exception as there
+are too few arguments to satisfy the format. This can result in denial of
+service or leaking of internal information to the attacker via a stack trace.
+</p>
+<p>
+Instead, the user name should be included using the <code>%s</code> specifier:
+</p>
+<sample src="examples/tainted_format_string_good.rb"/>
+
+<p>
+Alternatively, string interpolation should be used exclusively:
+</p>
+<sample src="examples/tainted_format_string_interpolation.rb"/>
+</example>
+
+<references>
+<li>Ruby documentation for <a href="https://docs.ruby-lang.org/en/3.1/Kernel.html#method-i-sprintf">format strings</a>.</li>
+</references>
+</qhelp>

@@ -1263,11 +1263,14 @@ case.rb:
 #-----|  -> ... == ...
 
 #   86| in ... then ...
-#-----|  -> :foo
+#-----|  -> foo
 
 #   86| :foo
 #-----| match -> case ...
 #-----| no-match -> in ... then ...
+
+#   86| foo
+#-----|  -> :foo
 
 #   87| in ... then ...
 #-----|  -> foo bar
@@ -1435,13 +1438,16 @@ cfg.html.erb:
 #-----|  -> application
 
 #    6| "application"
-#-----|  -> :media
+#-----|  -> media
 
 #    6| application
 #-----|  -> "application"
 
 #    6| :media
 #-----|  -> all
+
+#    6| media
+#-----|  -> :media
 
 #    6| Pair
 #-----|  -> call to stylesheet_link_tag
@@ -1465,13 +1471,16 @@ cfg.html.erb:
 #-----|  -> "A"
 
 #   12| call to a
-#-----|  -> :id
+#-----|  -> id
 
 #   12| self
 #-----|  -> call to a
 
 #   12| :id
 #-----|  -> a
+
+#   12| id
+#-----|  -> :id
 
 #   12| Pair
 #-----|  -> call to link_to
@@ -1749,13 +1758,16 @@ cfg.rb:
 #-----|  -> Proc
 
 #   27| self
-#-----|  -> :puts
+#-----|  -> puts
 
 #   27| &...
 #-----|  -> call to puts
 
 #   27| :puts
 #-----|  -> &...
+
+#   27| puts
+#-----|  -> :puts
 
 #   29| Proc
 #-----|  -> { ... }
@@ -2461,7 +2473,7 @@ cfg.rb:
 #-----|  -> d
 
 #   97| Pair
-#-----|  -> :e
+#-----|  -> e
 
 #   97| c
 #-----|  -> "c"
@@ -2474,6 +2486,9 @@ cfg.rb:
 
 #   97| :e
 #-----|  -> f
+
+#   97| e
+#-----|  -> :e
 
 #   97| Pair
 #-----|  -> call to []
@@ -3113,13 +3128,16 @@ cfg.rb:
 #-----|  -> `cat "#{...}"`
 
 #  162| symbol
-#-----|  -> :hello
+#-----|  -> hello
 
 #  162| ... = ...
 #-----|  -> delimited_symbol
 
 #  162| :hello
 #-----|  -> ... = ...
+
+#  162| hello
+#-----|  -> :hello
 
 #  164| delimited_symbol
 #-----|  -> goodbye-
@@ -3591,14 +3609,8 @@ desugar.rb:
 #    6| call to foo
 #-----|  -> __synth__0
 
-#    6| ... = ...
-#-----|  -> call to count=
-
 #    6| __synth__0
 #-----|  -> ...
-
-#    6| __synth__0
-#-----|  -> 1
 
 #    6| call to count=
 #-----|  -> __synth__0
@@ -3606,8 +3618,14 @@ desugar.rb:
 #    6| ...
 #-----|  -> exit m2 (normal)
 
+#    6| ... = ...
+#-----|  -> call to count=
+
 #    6| 1
 #-----|  -> ... = ...
+
+#    6| __synth__0
+#-----|  -> 1
 
 #    9| enter m3
 #-----|  -> x
@@ -3629,14 +3647,8 @@ desugar.rb:
 #   10| call to foo
 #-----|  -> 0
 
-#   10| ... = ...
-#-----|  -> call to []=
-
 #   10| __synth__0
 #-----|  -> ...
-
-#   10| __synth__0
-#-----|  -> 1
 
 #   10| call to []=
 #-----|  -> __synth__0
@@ -3647,8 +3659,14 @@ desugar.rb:
 #   10| 0
 #-----|  -> __synth__0
 
+#   10| ... = ...
+#-----|  -> call to []=
+
 #   10| 1
 #-----|  -> ... = ...
+
+#   10| __synth__0
+#-----|  -> 1
 
 #   13| enter m4
 #-----|  -> x

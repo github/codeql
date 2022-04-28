@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Parsing untrusted XML files with a weakly configured XML parser may lead to attacks such as XML External Entity (XXE),
+Billion Laughs, Quadratic Blowup and DTD retrieval.
+This type of attack uses external entity references to access arbitrary files on a system, carry out denial of
+service, or server side request forgery. Even when the result of parsing is not returned to the user, out-of-band
+data retrieval techniques may allow attackers to steal sensitive data. Denial of services can also be carried out
+in this situation.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use <a href="https://pypi.org/project/defusedxml/">defusedxml</a>, a Python package aimed
+to prevent any potentially malicious operation.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example calls <code>xml.etree.ElementTree.fromstring</code> using a parser (<code>lxml.etree.XMLParser</code>)
+that is not safely configured on untrusted data, and is therefore inherently unsafe.
+</p>
+<sample src="XmlEntityInjection.py"/>
+<p>
+Providing an input (<code>xml_content</code>) like the following XML content against /bad, the request response would contain the contents of
+<code>/etc/passwd</code>.
+</p>
+<sample src="XXE.xml"/>
+</example>
+
+<references>
+<li>Python 3 <a href="https://docs.python.org/3/library/xml.html#xml-vulnerabilities">XML Vulnerabilities</a>.</li>
+<li>Python 2 <a href="https://docs.python.org/2/library/xml.html#xml-vulnerabilities">XML Vulnerabilities</a>.</li>
+<li>Python <a href="https://www.edureka.co/blog/python-xml-parser-tutorial/">XML Parsing</a>.</li>
+<li>OWASP vulnerability description: <a href="https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing">XML External Entity (XXE) Processing</a>.</li>
+<li>OWASP guidance on parsing xml files: <a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#python">XXE Prevention Cheat Sheet</a>.</li>
+<li>Paper by Timothy Morgen: <a href="https://research.nccgroup.com/2014/05/19/xml-schema-dtd-and-entity-attacks-a-compendium-of-known-techniques/">XML Schema, DTD, and Entity Attacks</a></li>
+<li>Out-of-band data retrieval: Timur Yunusov &amp; Alexey Osipov, Black hat EU 2013: <a href="https://www.slideshare.net/qqlan/bh-ready-v4">XML Out-Of-Band Data Retrieval</a>.</li>
+<li>Denial of service attack (Billion laughs): <a href="https://en.wikipedia.org/wiki/Billion_laughs">Billion Laughs.</a></li>
+</references>
+
+</qhelp>

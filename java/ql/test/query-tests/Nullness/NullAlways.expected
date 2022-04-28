@@ -12,4 +12,5 @@
 | A.java:250:24:250:35 | methodaccess | Variable $@ is always null here. | A.java:246:5:246:31 | Object methodaccess | methodaccess |
 | A.java:264:21:264:30 | for_always | Variable $@ is always null here. | A.java:263:5:263:35 | List<String> for_always | for_always |
 | A.java:266:24:266:33 | for_always | Variable $@ is always null here. | A.java:263:5:263:35 | List<String> for_always | for_always |
+| A.java:293:5:293:5 | s | Variable $@ is always null here. | A.java:291:5:291:33 | Object s | s |
 | B.java:304:7:304:9 | ioe | Variable $@ is always null here. | B.java:297:5:297:25 | Exception ioe | ioe |

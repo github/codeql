@@ -434,11 +434,6 @@ module PromiseFlow {
   }
 }
 
-/**
- * DEPRECATED. Use `TaintTracking::promiseStep` instead.
- */
-deprecated predicate promiseTaintStep = TaintTracking::promiseStep/2;
-
 private class PromiseTaintStep extends TaintTracking::SharedTaintStep {
   override predicate promiseStep(DataFlow::Node pred, DataFlow::Node succ) {
     // from `x` to `new Promise((res, rej) => res(x))`

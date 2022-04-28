@@ -13,7 +13,7 @@
 
 import python
 
-/** Subset of ControlFlowNodes which might raise an exception */
+/** The subset of ControlFlowNodes which might raise an exception */
 class RaisingNode extends ControlFlowNode {
   RaisingNode() {
     exists(this.getAnExceptionalSuccessor())
@@ -363,7 +363,7 @@ predicate scope_raises_unknown(Scope s) {
   )
 }
 
-/** ControlFlowNode for an 'except' statement. */
+/** The ControlFlowNode for an 'except' statement. */
 class ExceptFlowNode extends ControlFlowNode {
   ExceptFlowNode() { this.getNode() instanceof ExceptStmt }
 

@@ -64,11 +64,6 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     result = this.getExpressionBody()
   }
 
-  /**
-   * DEPRECATED: Use `getBody()` instead.
-   */
-  deprecated final ControlFlowElement getABody() { result = this.getBody() }
-
   override predicate hasBody() { exists(this.getBody()) }
 
   /**
@@ -150,11 +145,6 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     result = this.getAChildExpr() and
     not result = this.(Constructor).getInitializer()
   }
-
-  /**
-   * DEPRECATED: Use `getExpressionBody()` instead.
-   */
-  deprecated final Expr getAnExpressionBody() { result = this.getExpressionBody() }
 
   /** Holds if this callable has an expression body. */
   final predicate hasExpressionBody() { exists(this.getExpressionBody()) }
@@ -470,6 +460,11 @@ class Operator extends Callable, Member, Attributable, @operator {
   override string toString() { result = Callable.super.toString() }
 
   override Parameter getRawParameter(int i) { result = this.getParameter(i) }
+
+  override predicate hasQualifiedName(string qualifier, string name) {
+    super.hasQualifiedName(qualifier, _) and
+    name = this.getFunctionName()
+  }
 }
 
 /** A clone method on a record. */

@@ -6,7 +6,6 @@
  */
 
 import cpp
-import semmle.code.cpp.commons.Alloc
 import semmle.code.cpp.commons.Buffer
 import semmle.code.cpp.commons.Scanf
 import semmle.code.cpp.models.implementations.Strcat

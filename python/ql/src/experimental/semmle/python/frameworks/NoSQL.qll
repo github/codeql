@@ -10,7 +10,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
-private module NoSQL {
+private module NoSql {
   // API Nodes returning `Mongo` instances.
   /** Gets a reference to `pymongo.MongoClient` */
   private API::Node pyMongo() {
@@ -64,7 +64,7 @@ private module NoSQL {
       or
       result.(DataFlow::AttrRead).getObject() = mongoInstance().getAUse()
       or
-      result = mongoDBInstance().getAUse()
+      result = mongoDBInstance().getAnImmediateUse()
     )
     or
     exists(DataFlow::TypeTracker t2 | result = mongoDB(t2).track(t2, t))
@@ -153,7 +153,7 @@ private module NoSQL {
    *
    * `mongo.db.user.find({'name': safe_search})` would be a collection method call, and so the result.
    */
-  private class MongoCollectionCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
+  private class MongoCollectionCall extends DataFlow::CallCfgNode, NoSqlQuery::Range {
     MongoCollectionCall() { this.getFunction() = mongoCollectionMethod() }
 
     override DataFlow::Node getQuery() { result = this.getArg(0) }
@@ -174,7 +174,7 @@ private module NoSQL {
    *
    * `Movie.objects(__raw__=json_search)` would be the result.
    */
-  private class MongoEngineObjectsCall extends DataFlow::CallCfgNode, NoSQLQuery::Range {
+  private class MongoEngineObjectsCall extends DataFlow::CallCfgNode, NoSqlQuery::Range {
     MongoEngineObjectsCall() {
       this =
         [mongoEngine(), flask_MongoEngine()]
@@ -188,7 +188,7 @@ private module NoSQL {
   }
 
   /** Gets a reference to `mongosanitizer.sanitizer.sanitize` */
-  private class MongoSanitizerCall extends DataFlow::CallCfgNode, NoSQLSanitizer::Range {
+  private class MongoSanitizerCall extends DataFlow::CallCfgNode, NoSqlSanitizer::Range {
     MongoSanitizerCall() {
       this =
         API::moduleImport("mongosanitizer").getMember("sanitizer").getMember("sanitize").getACall()
@@ -202,7 +202,7 @@ private module NoSQL {
    * If at any time ObjectId can't parse it's input (like when a tainted dict in passed in),
    * then ObjectId will throw an error preventing the query from running.
    */
-  private class BsonObjectIdCall extends DataFlow::CallCfgNode, NoSQLSanitizer::Range {
+  private class BsonObjectIdCall extends DataFlow::CallCfgNode, NoSqlSanitizer::Range {
     BsonObjectIdCall() {
       this =
         API::moduleImport(["bson", "bson.objectid", "bson.json_util"])

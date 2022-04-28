@@ -3,7 +3,7 @@ import lib.RecordedCalls
 // column i is just used for sorting
 from string text, float number, float ratio, int i
 where
-  exists(int all_rcs | all_rcs = count(XMLRecordedCall rc) and ratio = number / all_rcs |
+  exists(int all_rcs | all_rcs = count(XmlRecordedCall rc) and ratio = number / all_rcs |
     text = "XMLRecordedCall" and number = all_rcs and i = 0
     or
     text = "IgnoredRecordedCall" and number = count(IgnoredRecordedCall rc) and i = 1
@@ -17,7 +17,7 @@ where
   i = 10
   or
   exists(int all_not_ignored_rcs |
-    all_not_ignored_rcs = count(XMLRecordedCall rc | not rc instanceof IgnoredRecordedCall) and
+    all_not_ignored_rcs = count(XmlRecordedCall rc | not rc instanceof IgnoredRecordedCall) and
     ratio = number / all_not_ignored_rcs
   |
     text = "IdentifiedRecordedCall" and

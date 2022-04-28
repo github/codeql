@@ -1,0 +1,5 @@
+filegroup(
+    name = "cpp",
+    srcs = glob(["cpp_*.mustache"]),
+    visibility = ["//swift:__subpackages__"],
+)

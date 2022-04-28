@@ -235,19 +235,22 @@ module ServerWebSocket {
   /**
    * The `req` parameter of a `socket.on("connection", (msg, req) => {})` call.
    */
-  class ServerHTTPRequest extends HTTP::Servers::RequestSource {
+  class ServerHttpRequest extends HTTP::Servers::RequestSource {
     ConnectionCallAsRouteHandler handler;
 
-    ServerHTTPRequest() { this = handler.getCallback(1).getParameter(1) }
+    ServerHttpRequest() { this = handler.getCallback(1).getParameter(1) }
 
     override HTTP::RouteHandler getRouteHandler() { result = handler }
   }
+
+  /** DEPRECATED: Alias for ServerHttpRequest */
+  deprecated class ServerHTTPRequest = ServerHttpRequest;
 
   /**
    * An access user-controlled HTTP request input in a request to a WebSocket server.
    */
   class WebSocketRequestInput extends HTTP::RequestInputAccess {
-    ServerHTTPRequest request;
+    ServerHttpRequest request;
     string kind;
 
     WebSocketRequestInput() {

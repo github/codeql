@@ -518,3 +518,15 @@ function usingDefineProperty(dst, src) {
         }
     }
 }
+
+function copyUsingForInAndRest(...args) {
+    const dst = args[0];
+    const src = args[1];
+    for (let key in src) {
+        if (dst[key]) {
+            copyUsingForInAndRest(dst[key], src[key]);
+        } else {
+            dst[key] = src[key]; // NOT OK
+        }
+    }
+}

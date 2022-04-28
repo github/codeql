@@ -2,13 +2,13 @@
  * Provides classes related to the Entity Framework namespace `System.Data.Entity`.
  */
 
-private import csharp as csharp
+private import csharp as CSharp
 private import semmle.code.csharp.frameworks.system.Data as Data
 
 /** Definitions relating to the `System.Data.Entity` namespace. */
 module SystemDataEntity {
   /** The `System.Data.Entity` namespace. */
-  class Namespace extends csharp::Namespace {
+  class Namespace extends CSharp::Namespace {
     Namespace() {
       this.getParentNamespace() instanceof Data::SystemDataNamespace and
       this.hasName("Entity")
@@ -16,7 +16,7 @@ module SystemDataEntity {
   }
 
   /** A class in the `System.Data.Entity` namespace. */
-  class Class extends csharp::Class {
+  class Class extends CSharp::Class {
     Class() { this.getNamespace() instanceof Namespace }
   }
 
@@ -25,28 +25,28 @@ module SystemDataEntity {
     Database() { this.hasName("Database") }
 
     /** Gets the `ExecuteSqlCommand` method. */
-    csharp::Method getExecuteSqlCommandMethod() { result = this.getAMethod("ExecuteSqlCommand") }
+    CSharp::Method getExecuteSqlCommandMethod() { result = this.getAMethod("ExecuteSqlCommand") }
 
     /** Gets the `ExecuteSqlCommandAsync` method. */
-    csharp::Method getExecuteSqlCommandAsyncMethod() {
+    CSharp::Method getExecuteSqlCommandAsyncMethod() {
       result = this.getAMethod("ExecuteSqlCommandAsync")
     }
 
     /** Gets the `SqlQuery` method. */
-    csharp::Method getSqlQueryMethod() { result = this.getAMethod("SqlQuery") }
+    CSharp::Method getSqlQueryMethod() { result = this.getAMethod("SqlQuery") }
   }
 
   /** The `System.Data.Entity.DbSet` class. */
   class DbSet extends Class {
     DbSet() {
-      this.getUnboundDeclaration().(csharp::UnboundGenericClass).getUndecoratedName() = "DbSet"
+      this.getUnboundDeclaration().(CSharp::UnboundGenericClass).getUndecoratedName() = "DbSet"
     }
 
     /** Gets the `SqlQuery` method. */
-    csharp::Method getSqlQueryMethod() { result = this.getAMethod("SqlQuery") }
+    CSharp::Method getSqlQueryMethod() { result = this.getAMethod("SqlQuery") }
 
     /** Gets the `DbSet` type, if any. */
-    csharp::Type getDbSetType() { result = this.(csharp::ConstructedType).getTypeArgument(0) }
+    CSharp::Type getDbSetType() { result = this.(CSharp::ConstructedType).getTypeArgument(0) }
   }
 
   /** The `System.Data.Entity.DbContext` class. */
@@ -55,23 +55,23 @@ module SystemDataEntity {
   }
 
   /** A user provided sub type of `DbContext`. */
-  class CustomDbContext extends csharp::Class {
+  class CustomDbContext extends CSharp::Class {
     CustomDbContext() {
       this.fromSource() and
       this.getABaseType+() instanceof DbContext
     }
 
     /** Gets a property that has the type `DbSet`. */
-    csharp::Property getADbSetProperty() {
+    CSharp::Property getADbSetProperty() {
       result = this.getAProperty() and
       result.getType() instanceof DbSet
     }
   }
 
   /** An Entity Framework entity, as referenced from a `CustomDbContext`. */
-  class Entity extends csharp::Class {
+  class Entity extends CSharp::Class {
     Entity() {
-      exists(CustomDbContext dbContext, csharp::Property p |
+      exists(CustomDbContext dbContext, CSharp::Property p |
         p = dbContext.getADbSetProperty() and
         this = p.getType().(DbSet).getDbSetType()
       )
@@ -82,7 +82,7 @@ module SystemDataEntity {
 /** Definitions relating to the `System.Data.Entity.Infrastructure` namespace. */
 module SystemDataEntityInfrastructure {
   /** The `System.Data.Entity.Infrastructure` namespace. */
-  class Namespace extends csharp::Namespace {
+  class Namespace extends CSharp::Namespace {
     Namespace() {
       this.getParentNamespace() instanceof SystemDataEntity::Namespace and
       this.hasName("Infrastructure")
@@ -90,7 +90,7 @@ module SystemDataEntityInfrastructure {
   }
 
   /** A class in the `System.Data.Entity.Infrastructure` namespace. */
-  class Class extends csharp::Class {
+  class Class extends CSharp::Class {
     Class() { this.getNamespace() instanceof Namespace }
   }
 
@@ -99,7 +99,7 @@ module SystemDataEntityInfrastructure {
     DbRawSqlQuery() {
       this.getABaseType*()
           .getUnboundDeclaration()
-          .(csharp::UnboundGenericClass)
+          .(CSharp::UnboundGenericClass)
           .getUndecoratedName() = "DbRawSqlQuery"
     }
   }

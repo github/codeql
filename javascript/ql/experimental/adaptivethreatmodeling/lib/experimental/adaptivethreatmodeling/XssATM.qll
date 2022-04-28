@@ -60,8 +60,8 @@ module SinkEndpointFilter {
   }
 }
 
-class DomBasedXssATMConfig extends ATMConfig {
-  DomBasedXssATMConfig() { this = "DomBasedXssATMConfig" }
+class DomBasedXssAtmConfig extends AtmConfig {
+  DomBasedXssAtmConfig() { this = "DomBasedXssATMConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof DomBasedXss::Source }
 
@@ -73,6 +73,9 @@ class DomBasedXssATMConfig extends ATMConfig {
 
   override EndpointType getASinkEndpointType() { result instanceof XssSinkType }
 }
+
+/** DEPRECATED: Alias for DomBasedXssAtmConfig */
+deprecated class DomBasedXssATMConfig = DomBasedXssAtmConfig;
 
 /**
  * A taint-tracking configuration for reasoning about XSS vulnerabilities.
@@ -87,7 +90,7 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof DomBasedXss::Sink or
-    any(DomBasedXssATMConfig cfg).isEffectiveSink(sink)
+    any(DomBasedXssAtmConfig cfg).isEffectiveSink(sink)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {

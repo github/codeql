@@ -74,13 +74,6 @@ abstract class ModuleObject extends Object {
    */
   predicate exports(string name) { this.theModule().exports(name) }
 
-  /**
-   * Whether the complete set of names "exported" by this module can be accurately determined
-   *
-   * DEPRECATED: Use ModuleValue::hasCompleteExportInfo instead
-   */
-  abstract deprecated predicate exportsComplete();
-
   /** Gets the short name of the module. For example the short name of module x.y.z is 'z' */
   string getShortName() {
     result = this.getName().suffix(this.getPackage().getName().length() + 1)
@@ -117,8 +110,6 @@ class BuiltinModuleObject extends ModuleObject {
   }
 
   override predicate hasAttribute(string name) { exists(this.asBuiltin().getMember(name)) }
-
-  deprecated override predicate exportsComplete() { any() }
 }
 
 class PythonModuleObject extends ModuleObject {
@@ -131,18 +122,6 @@ class PythonModuleObject extends ModuleObject {
   override Module getSourceModule() { result = this.getOrigin() }
 
   override Container getPath() { result = this.getModule().getFile() }
-
-  deprecated override predicate exportsComplete() {
-    exists(Module m | m = this.getModule() |
-      not exists(Call modify, Attribute attr, GlobalVariable all |
-        modify.getScope() = m and
-        modify.getFunc() = attr and
-        all.getId() = "__all__"
-      |
-        attr.getObject().(Name).uses(all)
-      )
-    )
-  }
 }
 
 /**
@@ -196,12 +175,6 @@ class PackageObject extends ModuleObject {
     )
   }
 
-  deprecated override predicate exportsComplete() {
-    not exists(this.getInitModule())
-    or
-    this.getInitModule().exportsComplete()
-  }
-
   override predicate hasAttribute(string name) {
     exists(this.submodule(name))
     or
@@ -211,7 +184,7 @@ class PackageObject extends ModuleObject {
   Location getLocation() { none() }
 
   override predicate hasLocationInfo(string path, int bl, int bc, int el, int ec) {
-    path = this.getPath().getName() and
+    path = this.getPath().getAbsolutePath() and
     bl = 0 and
     bc = 0 and
     el = 0 and

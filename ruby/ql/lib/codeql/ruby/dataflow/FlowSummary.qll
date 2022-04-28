@@ -2,6 +2,8 @@
 
 import ruby
 import codeql.ruby.DataFlow
+private import codeql.ruby.frameworks.data.ModelsAsData
+private import codeql.ruby.ApiGraphs
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch
 private import internal.DataFlowPrivate
@@ -29,31 +31,27 @@ module SummaryComponent {
   /** Gets a summary component that represents a block argument. */
   SummaryComponent block() { result = argument(any(ParameterPosition pos | pos.isBlock())) }
 
-  /** Gets a summary component that represents an element in an array at an unknown index. */
-  SummaryComponent arrayElementUnknown() { result = SC::content(TUnknownArrayElementContent()) }
+  /** Gets a summary component that represents an element in a collection at an unknown index. */
+  SummaryComponent elementUnknown() {
+    result = SC::content(TSingletonContent(TUnknownElementContent()))
+  }
 
-  /**
-   * Gets a summary component that represents an element in an array at a known index.
-   *
-   * Has no result for negative indices. Wrap-around interpretation of negative indices should be
-   * handled by the caller, if modeling a function that has such behavior.
-   */
-  bindingset[i]
-  SummaryComponent arrayElementKnown(int i) {
-    result = SC::content(TKnownArrayElementContent(i))
-    or
-    // `i` may be out of range
-    i >= 0 and
-    not exists(TKnownArrayElementContent(i)) and
-    result = arrayElementUnknown()
+  /** Gets a summary component that represents an element in a collection at a known index. */
+  SummaryComponent elementKnown(ConstantValue cv) {
+    result = SC::content(TSingletonContent(DataFlow::Content::getElementContent(cv)))
   }
 
   /**
-   * Gets a summary component that represents an element in an array at either an unknown
-   * index or known index. This predicate should never be used in the output specification
-   * of a flow summary; use `arrayElementUnknown()` instead.
+   * Gets a summary component that represents an element in a collection at either an unknown
+   * index or known index. This has the same semantics as
+   *
+   * ```ql
+   * elementKnown() or elementUnknown(_)
+   * ```
+   *
+   * but is more efficient, because it is represented by a single value.
    */
-  SummaryComponent arrayElementAny() { result = SC::content(TAnyArrayElementContent()) }
+  SummaryComponent elementAny() { result = SC::content(TAnyElementContent()) }
 
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = SC::return(any(NormalReturnKind rk)) }
@@ -132,7 +130,7 @@ abstract class SummarizedCallable extends LibraryCallable {
    * arguments at position `pos` to this callable.
    */
   pragma[nomagic]
-  predicate clearsContent(ParameterPosition pos, DataFlow::Content content) { none() }
+  predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) { none() }
 }
 
 /**
@@ -159,9 +157,39 @@ private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable
     sc.propagatesFlow(input, output, preservesValue)
   }
 
-  final override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+  final override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
     sc.clearsContent(pos, content)
   }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
+
+private class SummarizedCallableFromModel extends SummarizedCallable {
+  string package;
+  string type;
+  string path;
+
+  SummarizedCallableFromModel() {
+    ModelOutput::relevantSummaryModel(package, type, path, _, _, _) and
+    this = package + ";" + type + ";" + path
+  }
+
+  override Call getACall() {
+    exists(API::MethodAccessNode base |
+      ModelOutput::resolvedSummaryBase(package, type, path, base) and
+      result = base.getCallNode().asExpr().getExpr()
+    )
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    exists(string kind |
+      ModelOutput::relevantSummaryModel(package, type, path, input, output, kind)
+    |
+      kind = "value" and
+      preservesValue = true
+      or
+      kind = "taint" and
+      preservesValue = false
+    )
+  }
+}

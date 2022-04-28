@@ -122,7 +122,9 @@ module Flask {
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
       ClassInstantiation() { this = classRef().getACall() }
 
-      override DataFlow::Node getBody() { result = this.getArg(0) }
+      override DataFlow::Node getBody() {
+        result in [this.getArg(0), this.getArgByName("response")]
+      }
 
       override string getMimetypeDefault() { result = "text/html" }
 
@@ -192,8 +194,8 @@ module Flask {
     API::Node api_node;
 
     FlaskViewClass() {
-      this.getABase() = Views::View::subclassRef().getAUse().asExpr() and
-      api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
+      api_node = Views::View::subclassRef() and
+      this.getParent() = api_node.getAnImmediateUse().asExpr()
     }
 
     /** Gets a function that could handle incoming requests, if any. */
@@ -217,8 +219,8 @@ module Flask {
    */
   class FlaskMethodViewClass extends FlaskViewClass {
     FlaskMethodViewClass() {
-      this.getABase() = Views::MethodView::subclassRef().getAUse().asExpr() and
-      api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
+      api_node = Views::MethodView::subclassRef() and
+      this.getParent() = api_node.getAnImmediateUse().asExpr()
     }
 
     override Function getARequestHandler() {
@@ -299,7 +301,7 @@ module Flask {
     override Function getARequestHandler() {
       exists(DataFlow::LocalSourceNode func_src |
         func_src.flowsTo(this.getViewArg()) and
-        func_src.asExpr().(CallableExpr) = result.getDefinition()
+        func_src.asExpr() = result.getDefinition()
       )
       or
       exists(FlaskViewClass vc |
@@ -401,11 +403,8 @@ module Flask {
   }
 
   private class RequestAttrMultiDict extends Werkzeug::MultiDict::InstanceSource {
-    string attr_name;
-
     RequestAttrMultiDict() {
-      attr_name in ["args", "values", "form", "files"] and
-      this.(DataFlow::AttrRead).accesses(request().getAUse(), attr_name)
+      this = request().getMember(["args", "values", "form", "files"]).getAnImmediateUse()
     }
   }
 
@@ -419,7 +418,7 @@ module Flask {
       // TODO: This approach for identifying member-access is very adhoc, and we should
       // be able to do something more structured for providing modeling of the members
       // of a container-object.
-      exists(DataFlow::AttrRead files | files.accesses(request().getAUse(), "files") |
+      exists(DataFlow::AttrRead files | files = request().getMember("files").getAnImmediateUse() |
         this.asCfgNode().(SubscriptNode).getObject() = files.asCfgNode()
         or
         this.(DataFlow::MethodCallNode).calls(files, "get")
@@ -433,15 +432,13 @@ module Flask {
 
   /** An `Headers` instance that originates from a flask request. */
   private class FlaskRequestHeadersInstances extends Werkzeug::Headers::InstanceSource {
-    FlaskRequestHeadersInstances() {
-      this.(DataFlow::AttrRead).accesses(request().getAUse(), "headers")
-    }
+    FlaskRequestHeadersInstances() { this = request().getMember("headers").getAnImmediateUse() }
   }
 
   /** An `Authorization` instance that originates from a flask request. */
   private class FlaskRequestAuthorizationInstances extends Werkzeug::Authorization::InstanceSource {
     FlaskRequestAuthorizationInstances() {
-      this.(DataFlow::AttrRead).accesses(request().getAUse(), "authorization")
+      this = request().getMember("authorization").getAnImmediateUse()
     }
   }
 

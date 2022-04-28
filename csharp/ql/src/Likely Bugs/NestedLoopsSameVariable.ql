@@ -15,18 +15,6 @@ import csharp
 import semmle.code.csharp.commons.ComparisonTest
 import semmle.code.csharp.commons.StructuralComparison as SC
 
-/** A structural comparison configuration for comparing the conditions of nested `for` loops. */
-class NestedForConditions extends SC::StructuralComparisonConfiguration {
-  NestedForConditions() { this = "Compare nested for conditions" }
-
-  override predicate candidate(ControlFlowElement e1, ControlFlowElement e2) {
-    exists(NestedForLoopSameVariable nested |
-      e1 = nested.getInnerForStmt().getCondition() and
-      e2 = nested.getOuterForStmt().getCondition()
-    )
-  }
-}
-
 private predicate hasChild(Stmt outer, Element child) {
   outer = child.getParent() and
   (outer instanceof ForStmt or outer = any(ForStmt f).getBody())
@@ -61,9 +49,7 @@ class NestedForLoopSameVariable extends ForStmt {
   }
 
   private predicate haveSameCondition() {
-    exists(NestedForConditions config |
-      config.same(this.getInnerForStmt().getCondition(), this.getOuterForStmt().getCondition())
-    )
+    SC::sameGvn(this.getInnerForStmt().getCondition(), this.getOuterForStmt().getCondition())
   }
 
   private predicate haveSameUpdate() {

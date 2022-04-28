@@ -55,9 +55,6 @@ class ElementBase extends @element {
   cached
   string toString() { none() }
 
-  /** DEPRECATED: use `getAPrimaryQlClass` instead. */
-  deprecated string getCanonicalQLClass() { result = this.getAPrimaryQlClass() }
-
   /**
    * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
    */
@@ -91,13 +88,6 @@ class Element extends ElementBase {
    */
   predicate fromSource() { this.getFile().fromSource() }
 
-  /**
-   * Holds if this element may be from a library.
-   *
-   * DEPRECATED: always true.
-   */
-  deprecated predicate fromLibrary() { this.getFile().fromLibrary() }
-
   /** Gets the primary location of this element. */
   Location getLocation() { none() }
 
@@ -119,10 +109,7 @@ class Element extends ElementBase {
     then
       exists(MacroInvocation mi |
         this = mi.getAGeneratedElement() and
-        not exists(MacroInvocation closer |
-          this = closer.getAGeneratedElement() and
-          mi = closer.getParentInvocation+()
-        ) and
+        not hasCloserMacroInvocation(this, mi) and
         result = mi.getMacro()
       )
     else result = this
@@ -244,6 +231,14 @@ class Element extends ElementBase {
       this.(DeclarationEntry).getDeclaration() = e
     )
   }
+}
+
+pragma[noinline]
+private predicate hasCloserMacroInvocation(Element elem, MacroInvocation mi) {
+  exists(MacroInvocation closer |
+    elem = closer.getAGeneratedElement() and
+    mi = closer.getParentInvocation()
+  )
 }
 
 private predicate isFromTemplateInstantiationRec(Element e, Element instantiation) {

@@ -34,7 +34,7 @@ private module NotExposed {
         concat(string newModelFullyQualified |
           newModel(any(MySpec spec), newModelFullyQualified, _, _, _)
         |
-          fullyQualifiedToAPIGraphPath(newModelFullyQualified), " or this = API::"
+          fullyQualifiedToApiGraphPath(newModelFullyQualified), " or this = API::"
         )
   }
 
@@ -69,8 +69,13 @@ private module NotExposed {
   //
   //
   bindingset[fullyQaulified]
-  string fullyQualifiedToAPIGraphPath(string fullyQaulified) {
+  string fullyQualifiedToApiGraphPath(string fullyQaulified) {
     result = "moduleImport(\"" + fullyQaulified.replaceAll(".", "\").getMember(\"") + "\")"
+  }
+
+  /** DEPRECATED: Alias for fullyQualifiedToApiGraphPath */
+  deprecated string fullyQualifiedToAPIGraphPath(string fullyQaulified) {
+    result = fullyQualifiedToApiGraphPath(fullyQaulified)
   }
 
   bindingset[this]
@@ -99,13 +104,13 @@ private module NotExposed {
     or
     exists(string newSubclassName |
       newModel(spec, newSubclassName, _, _, _) and
-      result.getPath() = fullyQualifiedToAPIGraphPath(newSubclassName)
+      result.getPath() = fullyQualifiedToApiGraphPath(newSubclassName)
     )
   }
 
   bindingset[fullyQualifiedName]
   predicate alreadyModeled(FindSubclassesSpec spec, string fullyQualifiedName) {
-    fullyQualifiedToAPIGraphPath(fullyQualifiedName) = spec.getAlreadyModeledClass().getPath()
+    fullyQualifiedToApiGraphPath(fullyQualifiedName) = spec.getAlreadyModeledClass().getPath()
   }
 
   predicate isNonTestProjectCode(AstNode ast) {
@@ -199,7 +204,7 @@ private module NotExposed {
     FindSubclassesSpec spec, string newSubclassQualified, ClassExpr classExpr, Module mod,
     Location loc
   ) {
-    classExpr = newOrExistingModeling(spec).getASubclass*().getAUse().asExpr() and
+    classExpr = newOrExistingModeling(spec).getASubclass*().getAnImmediateUse().asExpr() and
     classExpr.getScope() = mod and
     newSubclassQualified = mod.getName() + "." + classExpr.getName() and
     loc = classExpr.getLocation() and

@@ -1,3 +1,27 @@
+## 0.1.0
+
+### New Queries
+
+* The `js/resource-exhaustion` query has been added. It highlights locations where an attacker can cause a large amount of resources to be consumed. 
+  The query previously existed as an experimental query.
+
+### Minor Analysis Improvements
+
+* Improved handling of custom DOM elements, potentially leading to more alerts for the XSS queries.
+* Improved taint tracking through calls to the `Array.prototype.reduce` function.
+
+## 0.0.14
+
+## 0.0.13
+
+### Minor Analysis Improvements
+
+* Fixed an issue that would sometimes prevent the data-flow analysis from finding flow
+  paths through a function that stores its result on an object.
+  This may lead to more results for the security queries.
+
+## 0.0.12
+
 ## 0.0.11
 
 ### New Queries

@@ -119,11 +119,6 @@ class BuiltInNoOp extends BuiltInOperation, @noopexpr {
 }
 
 /**
- * DEPRECATED: Use `BuiltInOperationBuiltInOffsetOf` instead.
- */
-deprecated class BuiltInOperationOffsetOf = BuiltInOperationBuiltInOffsetOf;
-
-/**
  * A C/C++ `__builtin_offsetof` built-in operation (used by some implementations
  * of `offsetof`).  The operation retains its semantics even in the presence
  * of an overloaded `operator &`).  This is a GNU/Clang extension.
@@ -464,11 +459,6 @@ class BuiltInOperationIsUnion extends BuiltInOperation, @isunionexpr {
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationIsUnion" }
 }
-
-/**
- * DEPRECATED: Use `BuiltInOperationBuiltInTypesCompatibleP` instead.
- */
-deprecated class BuiltInOperationBuiltInTypes = BuiltInOperationBuiltInTypesCompatibleP;
 
 /**
  * A C++ `__builtin_types_compatible_p` built-in operation (used by some

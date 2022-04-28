@@ -31,8 +31,6 @@ predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
 
-deprecated predicate localAdditionalTaintStep = defaultAdditionalTaintStep/2;
-
 private CIL::DataFlowNode asCilDataFlowNode(DataFlow::Node node) {
   result = node.asParameter() or
   result = node.asExpr()

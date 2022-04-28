@@ -329,7 +329,7 @@ private class ClassListList extends TClassListList {
       result = ConsList(removed_head, removed_tail)
     )
     or
-    this = EmptyList() and result = EmptyList()
+    this = EmptyList() and result = EmptyList() and exists(cls)
   }
 
   pragma[nomagic]

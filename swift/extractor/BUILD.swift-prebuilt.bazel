@@ -1,0 +1,39 @@
+load("@rules_pkg//:mappings.bzl", "pkg_files", "strip_prefix")
+
+cc_library(
+    name = "swift-llvm-support",
+    srcs = [
+        "libCodeQLSwiftFrontendTool.a",
+    ] + select({
+        "@platforms//os:linux": [
+            "libCodeQLSwiftFrontendTool.so",
+        ],
+        "@platforms//os:macos": [
+            "libCodeQLSwiftFrontendTool.dylib",
+        ],
+    }),
+    hdrs = glob(["include/**/*"]),
+    linkopts = [
+        "-lm",
+        "-lz",
+    ] + select({
+        "@platforms//os:linux": [
+            "-luuid",
+            "-lrt",
+            "-lpthread",
+            "-ldl",
+        ],
+        "//conditions:default": [],
+    }),
+    strip_include_prefix = "include",
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "swift-test-sdk",
+    srcs = glob([
+        "sdk/**/*",
+    ]),
+    strip_prefix = strip_prefix.from_pkg(),
+    visibility = ["//visibility:public"],
+)

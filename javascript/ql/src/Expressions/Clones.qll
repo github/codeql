@@ -7,7 +7,7 @@ import javascript
 /**
  * Gets an opaque integer value encoding the type of AST node `nd`.
  */
-private int kindOf(ASTNode nd) {
+private int kindOf(AstNode nd) {
   // map expression kinds to even non-negative numbers
   result = nd.(Expr).getKind() * 2
   or
@@ -25,7 +25,7 @@ private int kindOf(ASTNode nd) {
 /**
  * Holds if `nd` has the given `kind`, and its number of children is `arity`.
  */
-private predicate kindAndArity(ASTNode nd, int kind, int arity) {
+private predicate kindAndArity(AstNode nd, int kind, int arity) {
   kindOf(nd) = kind and arity = nd.getNumChild()
 }
 
@@ -35,7 +35,7 @@ private predicate kindAndArity(ASTNode nd, int kind, int arity) {
  *
  * Every AST node has at most one value.
  */
-private string valueOf(ASTNode nd) {
+private string valueOf(AstNode nd) {
   result = nd.(Literal).getRawValue() or
   result = nd.(TemplateElement).getRawValue() or
   result = nd.(Identifier).getName()
@@ -47,18 +47,18 @@ private string valueOf(ASTNode nd) {
  * Clients must override the `candidate()` method to identify the
  * nodes for which structural comparison will be interesting.
  */
-abstract class StructurallyCompared extends ASTNode {
+abstract class StructurallyCompared extends AstNode {
   /**
    * Gets a candidate node that we may want to structurally compare this node to.
    */
-  abstract ASTNode candidate();
+  abstract AstNode candidate();
 
   /**
    * Gets a node that structurally corresponds to this node, either because it is
    * a candidate node, or because it is at the same position relative to a
    * candidate node as this node.
    */
-  ASTNode candidateInternal() {
+  AstNode candidateInternal() {
     // in order to correspond, nodes need to have the same kind and shape
     exists(int kind, int numChildren | kindAndArity(this, kind, numChildren) |
       result = this.candidateKind(kind, numChildren)
@@ -71,18 +71,18 @@ abstract class StructurallyCompared extends ASTNode {
    * Gets a node that structurally corresponds to the parent node of this node,
    * where this node is the `i`th child of its parent.
    */
-  private ASTNode getAStructuralUncle(int i) {
+  private AstNode getAStructuralUncle(int i) {
     exists(StructurallyCompared parent | this = parent.getChild(i) |
       result = parent.candidateInternal()
     )
   }
 
-  private ASTNode candidateKind(int kind, int numChildren) {
+  private AstNode candidateKind(int kind, int numChildren) {
     result = this.candidate() and kindAndArity(result, kind, numChildren)
   }
 
   pragma[noinline]
-  private ASTNode uncleKind(int kind, int numChildren) {
+  private AstNode uncleKind(int kind, int numChildren) {
     exists(int i | result = this.getAStructuralUncle(i).getChild(i)) and
     kindAndArity(result, kind, numChildren)
   }
@@ -92,7 +92,7 @@ abstract class StructurallyCompared extends ASTNode {
    * rooted at node `that`, where `that` structurally corresponds to `this` as
    * determined by `candidateInternal`.
    */
-  private predicate sameInternal(ASTNode that) {
+  private predicate sameInternal(AstNode that) {
     that = this.candidateInternal() and
     /*
      * Check that `this` and `that` bind to the same variable, if any.
@@ -120,7 +120,7 @@ abstract class StructurallyCompared extends ASTNode {
    * rooted at node `that`, which must be a candidate node as determined by
    * `candidate`.
    */
-  predicate same(ASTNode that) {
+  predicate same(AstNode that) {
     that = this.candidate() and
     this.sameInternal(that)
   }
@@ -132,7 +132,7 @@ abstract class StructurallyCompared extends ASTNode {
 private class InternalCandidate extends StructurallyCompared {
   InternalCandidate() { exists(this.getParent().(StructurallyCompared).candidateInternal()) }
 
-  override ASTNode candidate() { none() }
+  override AstNode candidate() { none() }
 }
 
 /**

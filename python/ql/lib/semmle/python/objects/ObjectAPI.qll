@@ -18,7 +18,7 @@ private import semmle.python.types.Builtins
 
 class ObjectSource = Object;
 
-/* Aliases for scopes */
+/** An alias for Function used for scopes */
 class FunctionScope = Function;
 
 class ClassScope = Class;
@@ -26,7 +26,7 @@ class ClassScope = Class;
 class ModuleScope = Module;
 
 /**
- * Class representing values in the Python program
+ * A value in the Python program.
  * Each `Value` is a static approximation to a set of one or more real objects.
  */
 class Value extends TObject {
@@ -144,7 +144,7 @@ class Value extends TObject {
 }
 
 /**
- * Class representing modules in the Python program
+ * A module in the Python program.
  * Each `ModuleValue` represents a module object in the Python program.
  */
 class ModuleValue extends Value instanceof ModuleObjectInternal {
@@ -339,7 +339,7 @@ module Value {
 }
 
 /**
- * Class representing callables in the Python program
+ * A callable in the Python program.
  * Callables include Python functions, built-in functions and bound-methods,
  * but not classes.
  */
@@ -447,7 +447,7 @@ class CallableValue extends Value {
 }
 
 /**
- * Class representing bound-methods, such as `o.func`, where `o` is an instance
+ * A bound-method, such as `o.func`, where `o` is an instance
  * of a class that has a callable attribute `func`.
  */
 class BoundMethodValue extends CallableValue instanceof BoundMethodObjectInternal {
@@ -468,7 +468,7 @@ class BoundMethodValue extends CallableValue instanceof BoundMethodObjectInterna
 }
 
 /**
- * Class representing classes in the Python program, both Python and built-in.
+ * A class in the Python program, both Python and built-in.
  */
 class ClassValue extends Value {
   ClassValue() { this.(ObjectInternal).isClass() = true }
@@ -655,7 +655,7 @@ class ClassValue extends Value {
 }
 
 /**
- * Class representing functions in the Python program, both Python and built-in.
+ * A function in the Python program, both Python and built-in.
  * Note that this does not include other callables such as bound-methods.
  */
 abstract class FunctionValue extends CallableValue {
@@ -721,7 +721,7 @@ abstract class FunctionValue extends CallableValue {
   predicate isLambda() { this.getOrigin().getNode() instanceof Lambda }
 }
 
-/** Class representing Python functions */
+/** A Python function. */
 class PythonFunctionValue extends FunctionValue {
   PythonFunctionValue() { this instanceof PythonFunctionObjectInternal }
 
@@ -769,7 +769,7 @@ class PythonFunctionValue extends FunctionValue {
   }
 }
 
-/** Class representing builtin functions, such as `len` or `print` */
+/** A builtin function, such as `len` or `print`. */
 class BuiltinFunctionValue extends FunctionValue {
   BuiltinFunctionValue() { this instanceof BuiltinFunctionObjectInternal }
 
@@ -796,7 +796,7 @@ class BuiltinFunctionValue extends FunctionValue {
   }
 }
 
-/** Class representing builtin methods, such as `list.append` or `set.add` */
+/** A builtin method, such as `list.append` or `set.add` */
 class BuiltinMethodValue extends FunctionValue {
   BuiltinMethodValue() { this instanceof BuiltinMethodObjectInternal }
 

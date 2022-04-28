@@ -14,10 +14,9 @@
 
 import ruby
 import codeql.ruby.security.StoredXSSQuery
-import codeql.ruby.DataFlow
 import DataFlow::PathGraph
 
-from StoredXSS::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from StoredXss::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to $@",
   source.getNode(), "stored value"

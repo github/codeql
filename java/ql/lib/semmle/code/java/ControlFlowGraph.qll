@@ -185,7 +185,7 @@ private module ControlFlowGraphImpl {
    * Bind `t` to an unchecked exception that may occur in a precondition check.
    */
   private predicate uncheckedExceptionFromMethod(MethodAccess ma, ThrowableType t) {
-    conditionCheck(ma, _) and
+    conditionCheckArgument(ma, _, _) and
     (t instanceof TypeError or t instanceof TypeRuntimeException)
   }
 

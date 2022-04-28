@@ -8,7 +8,7 @@ import experimental.semmle.python.templates.SSTISink
 deprecated ClassValue theMakoTemplateClass() { result = Value::named("mako.template.Template") }
 
 /**
- * Sink representing the `mako.template.Template` class instantiation argument.
+ * A sink representing the `mako.template.Template` class instantiation argument.
  *
  *  from mako.template import Template
  *  mytemplate = Template("hello world!")

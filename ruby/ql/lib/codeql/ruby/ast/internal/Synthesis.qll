@@ -7,7 +7,6 @@ private import codeql.ruby.ast.internal.Expr
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.ast.internal.Pattern
 private import codeql.ruby.ast.internal.Scope
-private import codeql.ruby.ast.internal.TreeSitter
 private import codeql.ruby.AST
 
 /** A synthesized AST node kind. */
@@ -303,6 +302,14 @@ private module SetterDesugar {
     }
 
     final override predicate location(AstNode n, Location l) {
+      exists(SetterMethodCall sae, Assignment arg, AstNode lhs, AstNode rhs |
+        arg = sae.getArgument(sae.getNumberOfArguments() - 1) and
+        lhs = arg.getLeftOperand() and
+        rhs = arg.getRightOperand() and
+        n = [arg, lhs] and
+        hasLocation(rhs, l)
+      )
+      or
       exists(SetterAssignExpr sae, StmtSequence seq |
         seq = sae.getDesugared() and
         l = sae.getMethodCallLocation() and

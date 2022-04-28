@@ -27,14 +27,14 @@ jobs:
   qlformat:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/fetch-codeql
       - name: Check QL formatting
         run: find ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 codeql query format --check-only
   qlcompile:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/fetch-codeql
       - name: Check QL compilation
         run: |
@@ -44,7 +44,7 @@ jobs:
   qlupgrade:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/fetch-codeql
       - name: Check DB upgrade scripts
         run: |
@@ -67,7 +67,7 @@ jobs:
       matrix:
         slice: ["1/2", "2/2"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/fetch-codeql
       - uses: ./ruby/actions/create-extractor-pack
       - name: Run QL tests
