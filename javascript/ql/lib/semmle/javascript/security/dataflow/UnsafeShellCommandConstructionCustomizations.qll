@@ -273,7 +273,7 @@ module UnsafeShellCommandConstruction {
   }
 
   /**
-   * A guard of the form `typeof x === "<T>"`, where <T> is  "number", or "boolean",
+   * A guard of the form `typeof x === "<T>"`, where `<T>` is  "number", or "boolean",
    * which sanitizes `x` in its "then" branch.
    */
   class TypeOfSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
