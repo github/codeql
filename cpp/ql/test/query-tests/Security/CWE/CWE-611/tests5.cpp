@@ -4,7 +4,16 @@
 
 // ---
 
-class DOMLSParser : public AbstractDOMParser {
+class DOMConfiguration {
+public:
+	void setParameter(const XMLCh *parameter, bool value);
+};
+
+class DOMLSParser {
+public:
+	DOMConfiguration *getDomConfig();
+
+	void parse(const InputSource &data);
 };
 
 class DOMImplementationLS {
@@ -17,13 +26,13 @@ public:
 void test5_1(DOMImplementationLS *impl, InputSource &data) {
 	DOMLSParser *p = impl->createLSParser();
 
-	p->parse(data); // BAD (parser not correctly configured)
+	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
 }
 
 void test5_2(DOMImplementationLS *impl, InputSource &data) {
 	DOMLSParser *p = impl->createLSParser();
 
-	p->setDisableDefaultEntityResolution(true);
+	p->getDomConfig()->setParameter(XMLUni::fgXercesDisableDefaultEntityResolution, true);
 	p->parse(data); // GOOD
 }
 
@@ -33,7 +42,7 @@ InputSource *g_data;
 
 void test5_3_init() {
 	g_p1 = g_impl->createLSParser();
-	g_p1->setDisableDefaultEntityResolution(true);
+	g_p1->getDomConfig()->setParameter(XMLUni::fgXercesDisableDefaultEntityResolution, true);
 
 	g_p2 = g_impl->createLSParser();
 }
