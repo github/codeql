@@ -1,3 +1,9 @@
+## 0.1.1
+
+### Minor Analysis Improvements
+
+* Query `java/insecure-cookie` no longer produces a false positive if `cookie.setSecure(...)` is called passing a constant that always equals `true`.
+
 ## 0.1.0
 
 ### Query Metadata Changes
