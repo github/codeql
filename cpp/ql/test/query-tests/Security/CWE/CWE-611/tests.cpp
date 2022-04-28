@@ -1,31 +1,31 @@
-// test cases for rule CWE-611
+// test cases for rule CWE-611 (XercesDOMParser)
 
 #include "tests.h"
 
 // ---
-
-class AbstractDOMParser {
-public:
-	AbstractDOMParser();
-
-	void setDisableDefaultEntityResolution(bool); // default is false
-	void setCreateEntityReferenceNodes(bool); // default is true
-	void setSecurityManager(SecurityManager *const manager);
-	void parse(const InputSource &data);
-};
 
 class XercesDOMParser: public AbstractDOMParser {
 public:
 	XercesDOMParser();
 };
 
-class DOMLSParser : public AbstractDOMParser {
-};
 
-class DOMImplementationLS {
-public:
-	DOMLSParser *createLSParser();
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ---
 
@@ -144,35 +144,4 @@ void test10(InputSource &data) {
 	test10_doParseB(q, data);
 	test10_doParseC(p, data);
 	test10_doParseC(q, data);
-}
-
-void test11(DOMImplementationLS *impl, InputSource &data) {
-	DOMLSParser *p = impl->createLSParser();
-
-	p->parse(data); // BAD (parser not correctly configured)
-}
-
-void test12(DOMImplementationLS *impl, InputSource &data) {
-	DOMLSParser *p = impl->createLSParser();
-
-	p->setDisableDefaultEntityResolution(true);
-	p->parse(data); // GOOD
-}
-
-DOMImplementationLS *g_impl;
-DOMLSParser *g_p1, *g_p2;
-InputSource *g_data;
-
-void test13_init() {
-	g_p1 = g_impl->createLSParser();
-	g_p1->setDisableDefaultEntityResolution(true);
-
-	g_p2 = g_impl->createLSParser();
-}
-
-void test13() {
-	test13_init();
-
-	g_p1->parse(*g_data); // GOOD
-	g_p2->parse(*g_data); // BAD (parser not correctly configured) [NOT DETECTED]
 }
