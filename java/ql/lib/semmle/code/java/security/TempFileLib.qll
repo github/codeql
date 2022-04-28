@@ -18,8 +18,8 @@ class MethodFileCreateTempFile extends Method {
  */
 class MethodFileCreatesDirs extends Method {
   MethodFileCreatesDirs() {
-    getDeclaringType() instanceof TypeFile and
-    hasName(["mkdir", "mkdirs"])
+    this.getDeclaringType() instanceof TypeFile and
+    this.hasName(["mkdir", "mkdirs"])
   }
 }
 
