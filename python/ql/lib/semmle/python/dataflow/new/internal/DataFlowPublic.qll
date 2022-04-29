@@ -401,8 +401,15 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 private predicate isAccessedThroughImportStar(Module m) { m = ImportStar::getStarImported(_) }
 
 private ModuleVariableNode import_star_read(Node n) {
-  ImportStar::importStarResolvesTo(n.asCfgNode(), result.getModule()) and
-  n.asCfgNode().(NameNode).getId() = result.getVariable().getId()
+  resolved_import_star_module(result.getModule(), result.getVariable().getId(), n)
+}
+
+pragma[nomagic]
+private predicate resolved_import_star_module(Module m, string name, Node n) {
+  exists(NameNode nn | nn = n.asCfgNode() |
+    ImportStar::importStarResolvesTo(pragma[only_bind_into](nn), m) and
+    nn.getId() = name
+  )
 }
 
 /**
