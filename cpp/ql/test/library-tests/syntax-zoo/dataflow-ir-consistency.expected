@@ -1,45 +1,4 @@
 uniqueEnclosingCallable
-| cpp11.cpp:35:11:35:22 | Address | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:35:11:35:22 | AliasedDefinition | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:35:11:35:22 | VariableAddress | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:35:11:35:22 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:35:26:35:26 | 5 | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:35:26:35:26 | ChiPartial | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:35:26:35:26 | ChiTotal | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:35:26:35:26 | Store | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:35:26:35:26 | StoreValue | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:36:5:36:14 | Address | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:36:5:36:14 | VariableAddress | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:36:5:36:14 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:36:18:36:18 | 5 | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:36:18:36:18 | ChiPartial | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:36:18:36:18 | Store | Node should have one enclosing callable but has 0. |
-| cpp11.cpp:36:18:36:18 | StoreValue | Node should have one enclosing callable but has 0. |
-| misc.c:10:5:10:13 | Address | Node should have one enclosing callable but has 0. |
-| misc.c:10:5:10:13 | AliasedDefinition | Node should have one enclosing callable but has 0. |
-| misc.c:10:5:10:13 | VariableAddress | Node should have one enclosing callable but has 0. |
-| misc.c:10:5:10:13 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
-| misc.c:10:17:10:17 | 1 | Node should have one enclosing callable but has 0. |
-| misc.c:10:17:10:17 | ChiPartial | Node should have one enclosing callable but has 0. |
-| misc.c:10:17:10:17 | ChiTotal | Node should have one enclosing callable but has 0. |
-| misc.c:10:17:10:17 | Store | Node should have one enclosing callable but has 0. |
-| misc.c:10:17:10:17 | StoreValue | Node should have one enclosing callable but has 0. |
-| misc.c:11:5:11:13 | Address | Node should have one enclosing callable but has 0. |
-| misc.c:11:5:11:13 | AliasedDefinition | Node should have one enclosing callable but has 0. |
-| misc.c:11:5:11:13 | VariableAddress | Node should have one enclosing callable but has 0. |
-| misc.c:11:5:11:13 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
-| misc.c:11:17:11:21 | ... + ... | Node should have one enclosing callable but has 0. |
-| misc.c:11:17:11:21 | ChiPartial | Node should have one enclosing callable but has 0. |
-| misc.c:11:17:11:21 | ChiTotal | Node should have one enclosing callable but has 0. |
-| misc.c:11:17:11:21 | Store | Node should have one enclosing callable but has 0. |
-| misc.c:11:17:11:21 | StoreValue | Node should have one enclosing callable but has 0. |
-| misc.c:210:5:210:20 | Address | Node should have one enclosing callable but has 0. |
-| misc.c:210:5:210:20 | VariableAddress | Node should have one enclosing callable but has 0. |
-| misc.c:210:5:210:20 | VariableAddress [post update] | Node should have one enclosing callable but has 0. |
-| misc.c:210:24:210:28 | ... + ... | Node should have one enclosing callable but has 0. |
-| misc.c:210:24:210:28 | ChiPartial | Node should have one enclosing callable but has 0. |
-| misc.c:210:24:210:28 | Store | Node should have one enclosing callable but has 0. |
-| misc.c:210:24:210:28 | StoreValue | Node should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 | aggregateinitializer.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |

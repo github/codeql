@@ -4841,6 +4841,9 @@
 | ir.cpp:1043:24:1043:24 | SideEffect | ~m1043_20 |
 | ir.cpp:1043:31:1043:31 | Address | &:r1043_9 |
 | ir.cpp:1043:36:1043:55 | Address | &:r1043_11 |
+| ir.cpp:1043:43:1043:43 | Address | &:r1043_16 |
+| ir.cpp:1043:43:1043:43 | Arg(this) | this:r1043_16 |
+| ir.cpp:1043:43:1043:43 | SideEffect | ~m1043_20 |
 | ir.cpp:1043:43:1043:54 | Address | &:r1043_22 |
 | ir.cpp:1043:43:1043:54 | Address | &:r1043_24 |
 | ir.cpp:1043:43:1043:54 | Address | &:r1043_25 |
@@ -4861,11 +4864,8 @@
 | ir.cpp:1043:45:1043:49 | SideEffect | ~m1043_4 |
 | ir.cpp:1043:45:1043:49 | Unary | r1043_13 |
 | ir.cpp:1043:45:1043:49 | Unary | r1043_15 |
-| ir.cpp:1043:52:1043:52 | Address | &:r1043_16 |
-| ir.cpp:1043:52:1043:52 | Arg(this) | this:r1043_16 |
-| ir.cpp:1043:52:1043:52 | SideEffect | ~m1043_20 |
-| ir.cpp:1043:54:1043:54 | Load | ~m1043_20 |
-| ir.cpp:1043:54:1043:54 | Right | r1043_26 |
+| ir.cpp:1043:53:1043:53 | Load | ~m1043_20 |
+| ir.cpp:1043:53:1043:53 | Right | r1043_26 |
 | ir.cpp:1043:58:1043:58 | ChiPartial | partial:m1043_9 |
 | ir.cpp:1043:58:1043:58 | ChiTotal | total:m1043_3 |
 | ir.cpp:1043:58:1043:58 | StoreValue | r1043_8 |
@@ -4980,6 +4980,9 @@
 | ir.cpp:1047:34:1047:34 | SideEffect | ~m1047_20 |
 | ir.cpp:1047:41:1047:41 | Address | &:r1047_9 |
 | ir.cpp:1047:46:1047:65 | Address | &:r1047_11 |
+| ir.cpp:1047:53:1047:53 | Address | &:r1047_16 |
+| ir.cpp:1047:53:1047:53 | Arg(this) | this:r1047_16 |
+| ir.cpp:1047:53:1047:53 | SideEffect | ~m1047_20 |
 | ir.cpp:1047:53:1047:64 | Address | &:r1047_23 |
 | ir.cpp:1047:53:1047:64 | Load | ~m1047_20 |
 | ir.cpp:1047:53:1047:64 | StoreValue | r1047_24 |
@@ -4994,9 +4997,6 @@
 | ir.cpp:1047:55:1047:59 | SideEffect | ~m1047_4 |
 | ir.cpp:1047:55:1047:59 | Unary | r1047_13 |
 | ir.cpp:1047:55:1047:59 | Unary | r1047_15 |
-| ir.cpp:1047:62:1047:62 | Address | &:r1047_16 |
-| ir.cpp:1047:62:1047:62 | Arg(this) | this:r1047_16 |
-| ir.cpp:1047:62:1047:62 | SideEffect | ~m1047_20 |
 | ir.cpp:1047:63:1047:63 | Right | r1047_22 |
 | ir.cpp:1047:68:1047:68 | StoreValue | r1047_8 |
 | ir.cpp:1047:68:1047:68 | Unary | r1047_7 |
@@ -5105,6 +5105,9 @@
 | ir.cpp:1051:39:1051:39 | SideEffect | ~m1051_20 |
 | ir.cpp:1051:46:1051:46 | Address | &:r1051_9 |
 | ir.cpp:1051:51:1051:70 | Address | &:r1051_11 |
+| ir.cpp:1051:58:1051:58 | Address | &:r1051_16 |
+| ir.cpp:1051:58:1051:58 | Arg(this) | this:r1051_16 |
+| ir.cpp:1051:58:1051:58 | SideEffect | ~m1051_20 |
 | ir.cpp:1051:58:1051:69 | Address | &:r1051_22 |
 | ir.cpp:1051:58:1051:69 | Address | &:r1051_24 |
 | ir.cpp:1051:58:1051:69 | Address | &:r1051_26 |
@@ -5125,9 +5128,6 @@
 | ir.cpp:1051:60:1051:64 | SideEffect | ~m1051_4 |
 | ir.cpp:1051:60:1051:64 | Unary | r1051_13 |
 | ir.cpp:1051:60:1051:64 | Unary | r1051_15 |
-| ir.cpp:1051:67:1051:67 | Address | &:r1051_16 |
-| ir.cpp:1051:67:1051:67 | Arg(this) | this:r1051_16 |
-| ir.cpp:1051:67:1051:67 | SideEffect | ~m1051_20 |
 | ir.cpp:1051:73:1051:73 | ChiPartial | partial:m1051_9 |
 | ir.cpp:1051:73:1051:73 | ChiTotal | total:m1051_3 |
 | ir.cpp:1051:73:1051:73 | StoreValue | r1051_8 |
@@ -5192,6 +5192,9 @@
 | ir.cpp:1054:49:1054:49 | SideEffect | ~m1054_20 |
 | ir.cpp:1054:56:1054:56 | Address | &:r1054_9 |
 | ir.cpp:1054:61:1054:88 | Address | &:r1054_11 |
+| ir.cpp:1054:68:1054:68 | Address | &:r1054_16 |
+| ir.cpp:1054:68:1054:68 | Arg(this) | this:r1054_16 |
+| ir.cpp:1054:68:1054:68 | SideEffect | ~m1054_20 |
 | ir.cpp:1054:68:1054:87 | Address | &:r1054_37 |
 | ir.cpp:1054:68:1054:87 | Load | ~m1054_20 |
 | ir.cpp:1054:68:1054:87 | StoreValue | r1054_38 |
@@ -5206,9 +5209,6 @@
 | ir.cpp:1054:70:1054:74 | SideEffect | ~m1054_4 |
 | ir.cpp:1054:70:1054:74 | Unary | r1054_13 |
 | ir.cpp:1054:70:1054:74 | Unary | r1054_15 |
-| ir.cpp:1054:77:1054:77 | Address | &:r1054_16 |
-| ir.cpp:1054:77:1054:77 | Arg(this) | this:r1054_16 |
-| ir.cpp:1054:77:1054:77 | SideEffect | ~m1054_20 |
 | ir.cpp:1054:78:1054:82 | Address | &:r1054_22 |
 | ir.cpp:1054:78:1054:82 | Address | &:r1054_24 |
 | ir.cpp:1054:78:1054:82 | Left | r1054_25 |
