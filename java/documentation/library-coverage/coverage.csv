@@ -85,7 +85,7 @@ org.json,,,236,,,,,,,,,,,,,,,,,,,,,,,,,,,198,38
 org.mvel2,16,,,,,,,,,,,,,,16,,,,,,,,,,,,,,,,
 org.scijava.log,13,,,,,,,,,,,,,13,,,,,,,,,,,,,,,,,
 org.slf4j,55,,6,,,,,,,,,,,55,,,,,,,,,,,,,,,,2,4
-org.springframework.beans,,,26,,,,,,,,,,,,,,,,,,,,,,,,,,,,26
+org.springframework.beans,,,30,,,,,,,,,,,,,,,,,,,,,,,,,,,,30
 org.springframework.boot.jdbc,1,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,,
 org.springframework.cache,,,13,,,,,,,,,,,,,,,,,,,,,,,,,,,,13
 org.springframework.context,,,3,,,,,,,,,,,,,,,,,,,,,,,,,,,3,
