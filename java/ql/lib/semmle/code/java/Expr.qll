@@ -1382,6 +1382,9 @@ class LambdaExpr extends FunctionalExpr, @lambdaexpr {
     result.getNumberOfParameters() = 1
   }
 
+  /**
+   * Holds if this expression is a big-arity lambda expression in Kotlin.
+   */
   predicate isKotlinFunctionN() {
     exists(RefType r |
       this.getAnonymousClass().extendsOrImplements(r) and
