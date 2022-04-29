@@ -114,6 +114,7 @@ callsWithArguments
 | calls.rb:346:1:346:10 | call to foo | foo | 0 | calls.rb:346:5:346:9 | Pair |
 | calls.rb:347:1:347:7 | call to foo | foo | 0 | calls.rb:347:5:347:6 | Pair |
 | calls.rb:352:13:352:17 | call to foo | foo | 0 | calls.rb:352:17:352:17 | x |
+| calls.rb:362:5:362:6 | call to == | == | 0 | calls.rb:362:1:362:4 | __synth__0__1 |
 callsWithReceiver
 | calls.rb:2:1:2:5 | call to foo | calls.rb:2:1:2:5 | self |
 | calls.rb:5:1:5:10 | call to bar | calls.rb:5:1:5:3 | Foo |
@@ -375,7 +376,9 @@ callsWithReceiver
 | calls.rb:361:1:361:4 | call to list | calls.rb:361:1:361:4 | self |
 | calls.rb:361:1:361:11 | call to empty? | calls.rb:361:1:361:4 | call to list |
 | calls.rb:362:1:362:4 | call to list | calls.rb:362:1:362:4 | self |
+| calls.rb:362:1:362:12 | call to empty? | calls.rb:362:1:362:4 | __synth__0__1 |
 | calls.rb:362:1:362:12 | call to empty? | calls.rb:362:1:362:4 | call to list |
+| calls.rb:362:5:362:6 | call to == | calls.rb:362:5:362:6 | nil |
 | calls.rb:363:1:363:4 | call to list | calls.rb:363:1:363:4 | self |
 | calls.rb:363:1:363:12 | call to empty? | calls.rb:363:1:363:4 | call to list |
 callsWithBlock

@@ -279,6 +279,19 @@ calls/calls.rb:
 #  340|             getArgument: [IntegerLiteral] 4
 #  340|             getArgument: [IntegerLiteral] 5
 #  340|             getArgument: [IntegerLiteral] 6
+#  362| [MethodCall] call to empty?
+#  362|   getDesugared: [StmtSequence] ...
+#  362|     getStmt: [AssignExpr] ... = ...
+#  362|       getAnOperand/getRightOperand: [MethodCall] call to list
+#  362|         getReceiver: [SelfVariableAccess] self
+#  362|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
+#  362|     getStmt: [IfExpr] if ...
+#  362|       getBranch/getElse: [MethodCall] call to empty?
+#  362|         getReceiver: [LocalVariableAccess] __synth__0__1
+#  362|       getBranch/getThen: [NilLiteral] nil
+#  362|       getCondition: [MethodCall] call to ==
+#  362|         getArgument: [LocalVariableAccess] __synth__0__1
+#  362|         getReceiver: [NilLiteral] nil
 control/cases.rb:
 #   90| [ArrayLiteral] %w(...)
 #   90|   getDesugared: [MethodCall] call to []
