@@ -6,6 +6,7 @@
 private import ruby
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.FlowSummary
 
 /**
  * Modeling for `ActiveSupport`.
@@ -31,6 +32,28 @@ module ActiveSupport {
         }
 
         override DataFlow::Node getCode() { result = this.getReceiver() }
+      }
+
+      /**
+       * Flow summary for methods which transform the receiver in some way, possibly preserving taint.
+       */
+      private class StringTransformSummary extends SummarizedCallable {
+        // We're modelling a lot of different methods, so we make up a name for this summary.
+        StringTransformSummary() { this = "ActiveSupportStringTransform" }
+
+        override MethodCall getACall() {
+          result.getMethodName() =
+            [
+              "camelize", "camelcase", "classify", "dasherize", "deconstantize", "demodulize",
+              "foreign_key", "humanize", "indent", "parameterize", "pluralize", "singularize",
+              "squish", "strip_heredoc", "tableize", "titlecase", "titleize", "underscore",
+              "upcase_first"
+            ]
+        }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self]" and output = "ReturnValue" and preservesValue = false
+        }
       }
     }
   }
