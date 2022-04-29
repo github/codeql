@@ -100,7 +100,7 @@ class Node extends TIRDataFlowNode {
   Declaration getEnclosingCallable() { none() } // overridden in subclasses
 
   /** Gets the function to which this node belongs, if any. */
-  Function getFunction() { none() } // overridden in subclasses
+  Declaration getFunction() { none() } // overridden in subclasses
 
   /** Gets the type of this node. */
   IRType getType() { none() } // overridden in subclasses
@@ -196,7 +196,7 @@ class InstructionNode extends Node, TInstructionNode {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Function getFunction() { result = instr.getEnclosingFunction() }
+  override Declaration getFunction() { result = instr.getEnclosingFunction() }
 
   override IRType getType() { result = instr.getResultIRType() }
 
@@ -222,7 +222,7 @@ class OperandNode extends Node, TOperandNode {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Function getFunction() { result = op.getUse().getEnclosingFunction() }
+  override Declaration getFunction() { result = op.getUse().getEnclosingFunction() }
 
   override IRType getType() { result = op.getIRType() }
 
@@ -274,7 +274,7 @@ class StoreNodeInstr extends StoreNode, TStoreNodeInstr {
   /** Gets the underlying instruction. */
   Instruction getInstruction() { result = instr }
 
-  override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
+  override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
 
   override IRType getType() { result = this.getInstruction().getResultIRType() }
 
@@ -328,7 +328,7 @@ class StoreNodeOperand extends StoreNode, TStoreNodeOperand {
   /** Gets the underlying operand. */
   Operand getOperand() { result = operand }
 
-  override Function getFunction() { result = operand.getDef().getEnclosingFunction() }
+  override Declaration getFunction() { result = operand.getDef().getEnclosingFunction() }
 
   override IRType getType() { result = operand.getIRType() }
 
@@ -384,7 +384,7 @@ class ReadNode extends Node, TReadNode {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
+  override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
 
   override IRType getType() { result = this.getInstruction().getResultIRType() }
 
@@ -436,7 +436,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Function getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
+  override Declaration getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
 
   override IRType getType() { result instanceof IRVoidType }
 
@@ -673,7 +673,7 @@ class VariableNode extends Node, TVariableNode {
   /** Gets the variable corresponding to this node. */
   Variable getVariable() { result = v }
 
-  override Function getFunction() { none() }
+  override Declaration getFunction() { none() }
 
   override Declaration getEnclosingCallable() {
     // When flow crosses from one _enclosing callable_ to another, the

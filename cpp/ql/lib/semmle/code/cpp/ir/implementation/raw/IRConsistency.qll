@@ -524,4 +524,23 @@ module InstructionConsistency {
         "' has a `this` argument operand that is not an address, in function '$@'." and
     irFunc = getInstructionIRFunction(instr, irFuncText)
   }
+
+  query predicate nonUniqueIRVariable(
+    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
+    exists(VariableInstruction vi, IRVariable v1, IRVariable v2 |
+      instr = vi and vi.getIRVariable() = v1 and vi.getIRVariable() = v2 and v1 != v2
+    ) and
+    message =
+      "Variable instruction '" + instr.toString() +
+        "' has multiple associated variables, in function '$@'." and
+    irFunc = getInstructionIRFunction(instr, irFuncText)
+    or
+    instr.getOpcode() instanceof Opcode::VariableAddress and
+    not instr instanceof VariableInstruction and
+    message =
+      "Variable address instruction '" + instr.toString() +
+        "' has no associated variable, in function '$@'." and
+    irFunc = getInstructionIRFunction(instr, irFuncText)
+  }
 }

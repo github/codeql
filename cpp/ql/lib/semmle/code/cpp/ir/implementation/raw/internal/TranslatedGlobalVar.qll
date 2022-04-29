@@ -6,6 +6,7 @@ private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.CppType
 private import TranslatedInitialization
 private import InstructionTag
+private import semmle.code.cpp.ir.internal.IRUtilities
 
 class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
   TTranslatedGlobalOrNamespaceVarInit, InitializationContext {
@@ -98,6 +99,33 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
   }
 
   override Type getTargetType() { result = var.getUnspecifiedType() }
+
+  /**
+   * Holds if this variable defines or accesses variable `var` with type `type`. This includes all
+   * parameters and local variables, plus any global variables or static data members that are
+   * directly accessed by the function.
+   */
+  final predicate hasUserVariable(Variable varUsed, CppType type) {
+    (
+      (
+        varUsed instanceof GlobalOrNamespaceVariable
+        or
+        varUsed instanceof MemberVariable and not varUsed instanceof Field
+      ) and
+      exists(VariableAccess access |
+        access.getTarget() = varUsed and
+        access.getEnclosingVariable() = var
+      )
+      or
+      var = varUsed
+      or
+      varUsed.(LocalScopeVariable).getEnclosingElement*() = var
+      or
+      varUsed.(Parameter).getCatchBlock().getEnclosingElement*() = var
+    ) and
+    type = getTypeForPRValue(getVariableType(varUsed))
+  }
+
 }
 
 TranslatedGlobalOrNamespaceVarInit getTranslatedVarInit(GlobalOrNamespaceVariable var) {
