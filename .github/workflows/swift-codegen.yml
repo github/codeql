@@ -13,18 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
-        with:
-          python-version: '~3.8'
-          cache: 'pip'
       - uses: ./.github/actions/fetch-codeql
       - uses: bazelbuild/setup-bazelisk@v2
-      - name: Install dependencies
-        run: |
-          pip install -r swift/codegen/requirements.txt
       - name: Run unit tests
         run: |
-          bazel test //swift/codegen:tests --test_output=errors
+          bazel test //swift/codegen/test --test_output=errors
       - name: Check that code was generated
         run: |
           bazel run //swift/codegen

@@ -113,8 +113,8 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   result =
     node.getASuccessor(API::Label::getLabelFromArgumentPosition(FlowSummaryImplSpecific::parseParamBody(token
               .getAnArgument())))
-  // Note: The "ArrayElement" token is not implemented yet, as it ultimately requires type-tracking and
-  // API graphs to be aware of the steps involving ArrayElement contributed by the standard library model.
+  // Note: The "Element" token is not implemented yet, as it ultimately requires type-tracking and
+  // API graphs to be aware of the steps involving Element contributed by the standard library model.
   // Type-tracking cannot summarize function calls on its own, so it doesn't benefit from synthesized callables.
 }
 

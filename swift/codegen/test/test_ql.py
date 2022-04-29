@@ -85,13 +85,16 @@ def test_class_db_id():
     cls = ql.Class("ThisIsMyClass")
     assert cls.db_id == "@this_is_my_class"
 
+
 def test_root_class():
     cls = ql.Class("Class")
     assert cls.root
 
+
 def test_non_root_class():
     cls = ql.Class("Class", bases=["A"])
     assert not cls.root
+
 
 if __name__ == '__main__':
     sys.exit(pytest.main())

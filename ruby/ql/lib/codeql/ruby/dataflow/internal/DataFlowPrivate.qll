@@ -319,12 +319,15 @@ private module Cached {
   cached
   newtype TContentSet =
     TSingletonContent(Content c) or
-    TAnyArrayElementContent()
+    TAnyElementContent()
 
   cached
   newtype TContent =
-    TKnownArrayElementContent(int i) { i in [0 .. 10] } or
-    TUnknownArrayElementContent()
+    TKnownElementContent(ConstantValue cv) {
+      not cv.isInt(_) or
+      cv.getInt() in [0 .. 10]
+    } or
+    TUnknownElementContent()
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
@@ -341,7 +344,7 @@ private module Cached {
   }
 }
 
-class TArrayElementContent = TKnownArrayElementContent or TUnknownArrayElementContent;
+class TElementContent = TKnownElementContent or TUnknownElementContent;
 
 import Cached
 
@@ -862,7 +865,7 @@ int accessPathLimit() { result = 5 }
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) { c instanceof Content::ArrayElementContent }
+predicate forceHighPrecision(Content c) { c instanceof Content::ElementContent }
 
 /** The unit type. */
 private newtype TUnit = TMkUnit()

@@ -3,7 +3,7 @@
 import argparse
 import collections
 import pathlib
-from typing import Tuple
+from typing import Set
 
 from . import paths
 
@@ -15,6 +15,7 @@ def _init_options():
     Option("--ql-output", tags=["ql"], type=_abspath, default=paths.swift_dir / "ql/lib/codeql/swift/generated")
     Option("--ql-stub-output", tags=["ql"], type=_abspath, default=paths.swift_dir / "ql/lib/codeql/swift/elements")
     Option("--codeql-binary", tags=["ql"], default="codeql")
+    Option("--trap-output", tags=["trap"], type=_abspath, required=True)
 
 
 def _abspath(x):
@@ -42,13 +43,10 @@ class Option:
 _init_options()
 
 
-def get(tags: Tuple[str]):
+def get(tags: Set[str]):
     """ get options marked by `tags`
 
-    Return all options if tags is falsy. Options tagged by wildcard '*' are always returned
+    Options tagged by wildcard '*' are always returned
     """
-    if not tags:
-        return (o for tagged_opts in _options.values() for o in tagged_opts)
-    else:
-        # use specifically tagged options + those tagged with wildcard *
-        return (o for tag in ('*',) + tags for o in _options[tag])
+    # use specifically tagged options + those tagged with wildcard *
+    return (o for tag in ('*',) + tuple(tags) for o in _options[tag])

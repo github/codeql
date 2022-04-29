@@ -63,6 +63,9 @@ class RegExpParent extends TRegExpParent {
   /** Gets the number of child terms. */
   int getNumChild() { result = count(this.getAChild()) }
 
+  /** Gets the last child term of this element. */
+  RegExpTerm getLastChild() { result = this.getChild(this.getNumChild() - 1) }
+
   /**
    * Gets the name of a primary CodeQL class to which this regular
    * expression term belongs.
@@ -579,6 +582,15 @@ class RegExpWordBoundary extends RegExpSpecialChar {
 }
 
 /**
+ * A non-word boundary, that is, a regular expression term of the form `\B`.
+ */
+class RegExpNonWordBoundary extends RegExpSpecialChar {
+  RegExpNonWordBoundary() { this.getChar() = "\\B" }
+
+  override string getAPrimaryQlClass() { result = "RegExpNonWordBoundary" }
+}
+
+/**
  * A character class escape in a regular expression.
  * That is, an escaped character that denotes multiple characters.
  *
@@ -858,6 +870,21 @@ class RegExpDot extends RegExpSpecialChar {
 }
 
 /**
+ * A term that matches a specific position between characters in the string.
+ *
+ * Example:
+ *
+ * ```
+ * \A
+ * ```
+ */
+class RegExpAnchor extends RegExpSpecialChar {
+  RegExpAnchor() { this.getChar() = ["^", "$", "\\A", "\\Z", "\\z"] }
+
+  override string getAPrimaryQlClass() { result = "RegExpAnchor" }
+}
+
+/**
  * A dollar assertion `$` or `\Z` matching the end of a line.
  *
  * Example:
@@ -866,7 +893,7 @@ class RegExpDot extends RegExpSpecialChar {
  * $
  * ```
  */
-class RegExpDollar extends RegExpSpecialChar {
+class RegExpDollar extends RegExpAnchor {
   RegExpDollar() { this.getChar() = ["$", "\\Z", "\\z"] }
 
   override string getAPrimaryQlClass() { result = "RegExpDollar" }
@@ -881,7 +908,7 @@ class RegExpDollar extends RegExpSpecialChar {
  * ^
  * ```
  */
-class RegExpCaret extends RegExpSpecialChar {
+class RegExpCaret extends RegExpAnchor {
   RegExpCaret() { this.getChar() = ["^", "\\A"] }
 
   override string getAPrimaryQlClass() { result = "RegExpCaret" }
