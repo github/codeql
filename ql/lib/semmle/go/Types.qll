@@ -86,7 +86,7 @@ class Type extends @type {
         tslit.includesType(this)
       ) and
       (
-        not i.hasMethod(_, _)
+        hasNoMethods(i)
         or
         this.hasMethod(getExampleMethodName(i), _) and
         forall(string m, SignatureType t | i.hasMethod(m, t) | this.hasMethod(m, t))
@@ -708,7 +708,7 @@ class TypeSetLiteralType extends @typesetliteraltype, CompositeType {
   InterfaceType getInterfaceType() {
     this = result.getDirectlyEmbeddedTypeSetLiteral(0) and
     not exists(result.getDirectlyEmbeddedTypeSetLiteral(1)) and
-    not result.hasMethod(_, _) and
+    hasNoMethods(result) and
     not exists(result.getADirectlyEmbeddedInterface())
   }
 
@@ -834,6 +834,10 @@ class InterfaceType extends @interfacetype, CompositeType {
   override string toString() { result = "interface type" }
 }
 
+// This predicate is needed for performance reasons.
+pragma[noinline]
+private predicate hasNoMethods(InterfaceType i) { not i.hasMethod(_, _) }
+
 /**
  * A basic interface type.
  *
@@ -857,7 +861,7 @@ class BasicInterfaceType extends InterfaceType {
  * `comparable`. This is done by extending `BasicInterfaceType`.
  */
 class EmptyInterfaceType extends BasicInterfaceType {
-  EmptyInterfaceType() { not this.hasMethod(_, _) }
+  EmptyInterfaceType() { hasNoMethods(this) }
 }
 
 /**
