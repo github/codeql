@@ -94,10 +94,10 @@ abstract class SummarizedCallable extends LibraryCallable {
 
   /**
    * Holds if values stored inside `content` are cleared on objects passed as
-   * the `i`th argument to this callable.
+   * arguments at position `pos` to this callable.
    */
   pragma[nomagic]
-  predicate clearsContent(int i, DataFlow::Content content) { none() }
+  predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) { none() }
 }
 
 private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable {
@@ -111,7 +111,7 @@ private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable
     sc.propagatesFlow(input, output, preservesValue)
   }
 
-  final override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+  final override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
     sc.clearsContent(pos, content)
   }
 }
