@@ -2357,7 +2357,7 @@ class Argument extends Expr {
       tgt.getParameter(varargsParamPos).isVarargs() and
       arrayindex = pos - varargsParamPos and
       arrayindex >= 0 and
-      arrayindex <= (call.getNumArgument() - tgt.getNumberOfParameters())
+      arrayindex <= call.getNumArgument() - tgt.getNumberOfParameters()
     )
   }
 }

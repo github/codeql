@@ -623,8 +623,6 @@ private module ControlFlowGraphImpl {
     or
     result = first(n.(InstanceOfExpr).getExpr())
     or
-    result = first(n.(NotInstanceOfExpr).getExpr())
-    or
     result = first(n.(SynchronizedStmt).getExpr())
     or
     result = n and
