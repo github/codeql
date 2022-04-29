@@ -1281,6 +1281,24 @@ calls/calls.rb:
 #  363|     0: [Identifier] list
 #  363|     1: [ReservedWord] ::
 #  363|     2: [Identifier] empty?
+#  364|   120: [Call] Call
+#  364|     0: [Identifier] foo
+#  364|     1: [ReservedWord] &.
+#  364|     2: [Identifier] bar
+#  364|     3: [ArgumentList] ArgumentList
+#  364|       0: [ReservedWord] (
+#  364|       1: [Integer] 1
+#  364|       2: [ReservedWord] ,
+#  364|       3: [Integer] 2
+#  364|       4: [ReservedWord] )
+#  364|     4: [Block] Block
+#  364|       0: [ReservedWord] {
+#  364|       1: [BlockParameters] BlockParameters
+#  364|         0: [ReservedWord] |
+#  364|         1: [Identifier] x
+#  364|         2: [ReservedWord] |
+#  364|       2: [Identifier] x
+#  364|       3: [ReservedWord] }
 #    1| [Comment] # call with no receiver, arguments, or block
 #    4| [Comment] # call whose name is a scope resolution
 #    7| [Comment] # call whose name is a global scope resolution

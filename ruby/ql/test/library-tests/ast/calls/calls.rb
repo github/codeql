@@ -361,3 +361,4 @@ end
 list.empty?
 list&.empty?
 list::empty?
+foo&.bar(1,2) { |x| x }
