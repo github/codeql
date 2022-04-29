@@ -59,7 +59,7 @@ module DomBasedXss {
   }
 
   /**
-   * Holds if `prefix` is a prefix of `htmlString`, which may be intepreted as
+   * Holds if `prefix` is a prefix of `htmlString`, which may be interpreted as
    * HTML by a jQuery method.
    */
   predicate isPrefixOfJQueryHtmlString(DataFlow::Node htmlString, DataFlow::Node prefix) {
@@ -67,7 +67,7 @@ module DomBasedXss {
   }
 
   /**
-   * Holds if `prefix` is a prefix of `htmlString`, which may be intepreted as
+   * Holds if `prefix` is a prefix of `htmlString`, which may be interpreted as
    * HTML by a jQuery method.
    */
   private DataFlow::Node getAPrefixOfJQuerySelectorString(DataFlow::Node htmlString) {
