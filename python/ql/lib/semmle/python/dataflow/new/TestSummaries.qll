@@ -1,3 +1,8 @@
+/**
+ * Provides a set of flow summaries to be used for debugging.
+ * Import this file in FlowSummary.qll.
+ */
+
 private import python
 private import semmle.python.dataflow.new.FlowSummary
 private import semmle.python.ApiGraphs
@@ -58,16 +63,19 @@ private class SummarizedCallableMap extends SummarizedCallable {
     preservesValue = true
   }
 }
+
 // Typetracking needs to use a local flow step not including summaries
 // Typetracking needs to use a call graph not including summaries
-// private class SummarizedCallableJsonLoads extends SummarizedCallable {
-//   SummarizedCallableJsonLoads() { this = "json.loads" }
-//   override Call getACall() {
-//     result = API::moduleImport("json").getMember("loads").getACall().asExpr()
-//   }
-//   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-//     input = "Argument[0]" and
-//     output = "ReturnValue.ListElement" and
-//     preservesValue = true
-//   }
-// }
+private class SummarizedCallableJsonLoads extends SummarizedCallable {
+  SummarizedCallableJsonLoads() { this = "json.loads" }
+
+  override Call getACall() {
+    result = API::moduleImport("json").getMember("loads").getACall().asExpr()
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "Argument[0]" and
+    output = "ReturnValue.ListElement" and
+    preservesValue = true
+  }
+}
