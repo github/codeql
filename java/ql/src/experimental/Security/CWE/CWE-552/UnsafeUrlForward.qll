@@ -168,6 +168,7 @@ private class FilePathFlowStep extends SummaryModelCsv {
         "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint",
         "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint",
         "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint",
+        "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint",
         "io.undertow.server.handlers.resource;Resource;true;getFile;;;Argument[-1];ReturnValue;taint",
         "io.undertow.server.handlers.resource;Resource;true;getFilePath;;;Argument[-1];ReturnValue;taint",
         "io.undertow.server.handlers.resource;Resource;true;getPath;;;Argument[-1];ReturnValue;taint"
