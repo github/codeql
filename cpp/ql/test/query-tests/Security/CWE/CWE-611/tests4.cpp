@@ -23,7 +23,7 @@ void xmlFreeDoc(xmlDoc *ptr);
 void test4_1(const char *fileName) {
 	xmlDoc *p;
 
-	p = xmlReadFile(fileName, NULL, XML_PARSE_NOENT); // BAD (parser not correctly configured) [NOT DETECTED]
+	p = xmlReadFile(fileName, NULL, XML_PARSE_NOENT); // BAD (parser not correctly configured)
 	if (p != NULL)
 	{
 		xmlFreeDoc(p);
@@ -33,7 +33,7 @@ void test4_1(const char *fileName) {
 void test4_2(const char *fileName) {
 	xmlDoc *p;
 
-	p = xmlReadFile(fileName, NULL, XML_PARSE_DTDLOAD); // BAD (parser not correctly configured) [NOT DETECTED]
+	p = xmlReadFile(fileName, NULL, XML_PARSE_DTDLOAD); // BAD (parser not correctly configured)
 	if (p != NULL)
 	{
 		xmlFreeDoc(p);
@@ -43,7 +43,7 @@ void test4_2(const char *fileName) {
 void test4_3(const char *fileName) {
 	xmlDoc *p;
 
-	p = xmlReadFile(fileName, NULL, XML_PARSE_NOENT | XML_PARSE_DTDLOAD); // BAD (parser not correctly configured) [NOT DETECTED]
+	p = xmlReadFile(fileName, NULL, XML_PARSE_NOENT | XML_PARSE_DTDLOAD); // BAD (parser not correctly configured)
 	if (p != NULL)
 	{
 		xmlFreeDoc(p);
@@ -74,7 +74,7 @@ void test4_6(const char *fileName) {
 	xmlDoc *p;
 	int flags = XML_PARSE_NOENT;
 
-	p = xmlReadFile(fileName, NULL, flags); // BAD (parser not correctly configured) [NOT DETECTED]
+	p = xmlReadFile(fileName, NULL, flags); // BAD (parser not correctly configured)
 	if (p != NULL)
 	{
 		xmlFreeDoc(p);
@@ -127,7 +127,7 @@ void test4_10(const char *ptr, int sz) {
 void test4_11(const char *ptr, int sz) {
 	xmlDoc *p;
 
-	p = xmlReadMemory(ptr, sz, "", NULL, XML_PARSE_DTDLOAD); // BAD (parser not correctly configured) [NOT DETECTED]
+	p = xmlReadMemory(ptr, sz, "", NULL, XML_PARSE_DTDLOAD); // BAD (parser not correctly configured)
 	if (p != NULL)
 	{
 		xmlFreeDoc(p);
