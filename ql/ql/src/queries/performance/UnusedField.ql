@@ -16,8 +16,7 @@ where
   implClz.getASuperType*() = clz and
   // The field is not accessed in the charpred (of any of the classes)
   not exists(FieldAccess access |
-    access.getEnclosingPredicate() =
-      [clz.getDeclaration().getCharPred(), implClz.getDeclaration().getCharPred()]
+    access.getEnclosingPredicate() = [clz, implClz].getDeclaration().getCharPred()
   ) and
   // The implementation class is not abstract, and the field is not an override
   not implClz.getDeclaration().isAbstract() and
