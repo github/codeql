@@ -59,8 +59,8 @@ class XercesDOMParserClass extends Class {
 /**
  * The `SAXParser` class.
  */
-class SAXParser extends Class {
-  SAXParser() { this.hasName("SAXParser") }
+class SAXParserClass extends Class {
+  SAXParserClass() { this.hasName("SAXParser") }
 }
 
 /**
@@ -112,7 +112,7 @@ class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
       call.getTarget() = f and
       (
         f.getDeclaringType() instanceof AbstractDOMParserClass or
-        f.getDeclaringType() instanceof SAXParser
+        f.getDeclaringType() instanceof SAXParserClass
       ) and
       f.hasName("setDisableDefaultEntityResolution") and
       this = call.getQualifier() and
@@ -172,7 +172,7 @@ class CreateEntityReferenceNodesTranformer extends XXEFlowStateTranformer {
 class ParseFunction extends Function {
   ParseFunction() {
     this.getClassAndName("parse") instanceof AbstractDOMParserClass or
-    this.getClassAndName("parse") instanceof SAXParser
+    this.getClassAndName("parse") instanceof SAXParserClass
   }
 }
 
@@ -213,9 +213,9 @@ class XXEConfiguration extends DataFlow::Configuration {
     // source is the write on `this` of a call to the `SAXParser`
     // constructor.
     exists(CallInstruction call |
+      call.getStaticCallTarget() = any(SAXParserClass c).getAConstructor() and
       node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
         call.getThisArgument() and
-      call.getStaticCallTarget().(Constructor).getDeclaringType() instanceof SAXParser and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
   }
