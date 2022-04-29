@@ -2,7 +2,7 @@
  * Provides classes and predicates for working with the Java Server Faces (JSF).
  */
 
-import semmle.code.java.Type
+import java
 
 /**
  * The JSF class `ExternalContext` for processing HTTP requests.
