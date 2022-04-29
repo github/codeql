@@ -91,7 +91,7 @@ predicate encodeXercesFlowState(
 }
 
 /**
- * A flow state representing the configuration of a `AbstractDOMParser` or
+ * A flow state representing the configuration of an `AbstractDOMParser` or
  * `SAXParser` object.
  */
 class XercesFlowState extends XXEFlowState {
