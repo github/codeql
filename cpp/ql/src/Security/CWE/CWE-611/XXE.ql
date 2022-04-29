@@ -16,6 +16,7 @@ import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
 import DataFlow::PathGraph
 import semmle.code.cpp.ir.IR
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**
  * A flow state representing a possible configuration of an XML object.
@@ -124,10 +125,10 @@ class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
     exists(int createEntityReferenceNodes |
       encodeXercesFlowState(flowstate, _, createEntityReferenceNodes) and
       (
-        newValue.getValue().toInt() = 1 and // true
+        globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // true
         encodeXercesFlowState(result, 1, createEntityReferenceNodes)
         or
-        not newValue.getValue().toInt() = 1 and // false or unknown
+        not globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // false or unknown
         encodeXercesFlowState(result, 0, createEntityReferenceNodes)
       )
     )
@@ -156,10 +157,10 @@ class CreateEntityReferenceNodesTranformer extends XXEFlowStateTranformer {
     exists(int disabledDefaultEntityResolution |
       encodeXercesFlowState(flowstate, disabledDefaultEntityResolution, _) and
       (
-        newValue.getValue().toInt() = 1 and // true
+        globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // true
         encodeXercesFlowState(result, disabledDefaultEntityResolution, 1)
         or
-        not newValue.getValue().toInt() = 1 and // false or unknown
+        not globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // false or unknown
         encodeXercesFlowState(result, disabledDefaultEntityResolution, 0)
       )
     )

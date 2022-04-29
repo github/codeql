@@ -42,5 +42,5 @@ void test2_4(InputSource &data) {
 	bool v = true;
 
 	p->setDisableDefaultEntityResolution(v);
-	p->parse(data); // GOOD [FALSE POSITIVE]
+	p->parse(data); // GOOD
 }
