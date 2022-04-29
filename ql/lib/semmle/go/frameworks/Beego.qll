@@ -9,7 +9,7 @@ private import semmle.go.security.SafeUrlFlowCustomizations
 
 /**
  * Provides classes for working with untrusted flow sources, sinks and taint propagators
- * from the [Beego](`github.com/beego/beego`) package.
+ * from the [Beego](https://github.com/beego/beego) package.
  */
 module Beego {
   /** Gets the module path `github.com/astaxie/beego` or `github.com/beego/beego`. */
