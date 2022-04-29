@@ -1,8 +1,13 @@
+load("@swift_codegen_deps//:requirements.bzl", "requirement")
+
 py_library(
     name = "utils",
     testonly = True,
     srcs = ["utils.py"],
-    deps = ["//swift/codegen/lib"],
+    deps = [
+        "//swift/codegen/lib",
+        requirement("pytest"),
+    ],
 )
 
 [
