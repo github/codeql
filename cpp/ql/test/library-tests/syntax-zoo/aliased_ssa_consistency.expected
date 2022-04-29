@@ -4,8 +4,6 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
-| cpp11.cpp:36:18:36:18 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | cpp11.cpp:36:5:36:14 | int global_int | int global_int |
-| misc.c:210:24:210:28 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | misc.c:210:5:210:20 | int global_with_init | int global_with_init |
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
@@ -93,8 +91,6 @@ useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
-| cpp11.cpp:36:18:36:18 | Chi: 5 | Instruction 'Chi: 5' should not be marked as having a conflated result in function '$@'. | cpp11.cpp:36:5:36:14 | int global_int | int global_int |
-| misc.c:210:24:210:28 | Chi: ... + ... | Instruction 'Chi: ... + ...' should not be marked as having a conflated result in function '$@'. | misc.c:210:5:210:20 | int global_with_init | int global_with_init |
 invalidOverlap
 nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
@@ -102,6 +98,9 @@ thisArgumentIsNonPointer
 | pmcallexpr.cpp:8:2:8:15 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
 | pointer_to_member.cpp:23:5:23:54 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
 | pointer_to_member.cpp:24:5:24:49 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
+nonUniqueIRVariable
+| misc.c:178:22:178:40 | VariableAddress: __PRETTY_FUNCTION__ | Variable address instruction 'VariableAddress: __PRETTY_FUNCTION__' has no associated variable, in function '$@'. | misc.c:177:6:177:14 | void magicvars() | void magicvars() |
+| misc.c:179:27:179:34 | VariableAddress: __func__ | Variable address instruction 'VariableAddress: __func__' has no associated variable, in function '$@'. | misc.c:177:6:177:14 | void magicvars() | void magicvars() |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

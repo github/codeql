@@ -28,13 +28,6 @@ nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 nonUniqueIRVariable
-| ir.cpp:1038:6:1038:8 | VariableAddress: lam | Variable address instruction 'VariableAddress: lam' has no associated variable, in function '$@'. | ir.cpp:1038:6:1038:8 | (lambda [] type at line 1038, col. 12) lam | (lambda [] type at line 1038, col. 12) lam |
-| ir.cpp:1759:5:1759:12 | VariableAddress: global_2 | Variable address instruction 'VariableAddress: global_2' has no associated variable, in function '$@'. | ir.cpp:1759:5:1759:12 | int global_2 | int global_2 |
-| ir.cpp:1761:11:1761:18 | VariableAddress: global_3 | Variable address instruction 'VariableAddress: global_3' has no associated variable, in function '$@'. | ir.cpp:1761:11:1761:18 | int const global_3 | int const global_3 |
-| ir.cpp:1763:18:1763:25 | VariableAddress: global_4 | Variable address instruction 'VariableAddress: global_4' has no associated variable, in function '$@'. | ir.cpp:1763:18:1763:25 | constructor_only global_4 | constructor_only global_4 |
-| ir.cpp:1765:18:1765:25 | VariableAddress: global_5 | Variable address instruction 'VariableAddress: global_5' has no associated variable, in function '$@'. | ir.cpp:1765:18:1765:25 | constructor_only global_5 | constructor_only global_5 |
-| ir.cpp:1767:7:1767:19 | VariableAddress: global_string | Variable address instruction 'VariableAddress: global_string' has no associated variable, in function '$@'. | ir.cpp:1767:7:1767:19 | char* global_string | char* global_string |
-| struct_init.cpp:9:13:9:25 | VariableAddress: infos_in_file | Variable address instruction 'VariableAddress: infos_in_file' has no associated variable, in function '$@'. | struct_init.cpp:9:13:9:25 | Info infos_in_file[] | Info infos_in_file[] |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType
