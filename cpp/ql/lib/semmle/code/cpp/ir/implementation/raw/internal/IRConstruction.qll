@@ -13,6 +13,7 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedStmt
 private import TranslatedFunction
+private import TranslatedGlobalVar
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
   instruction = TRawInstruction(result, _)
@@ -44,8 +45,10 @@ module Raw {
   }
 
   cached
-  predicate hasUserVariable(Function func, Variable var, CppType type) {
-    getTranslatedFunction(func).hasUserVariable(var, type)
+  predicate hasUserVariable(Declaration decl, Variable var, CppType type) {
+    getTranslatedFunction(decl).hasUserVariable(var, type)
+    or
+    getTranslatedVarInit(decl).hasUserVariable(var, type)
   }
 
   cached
