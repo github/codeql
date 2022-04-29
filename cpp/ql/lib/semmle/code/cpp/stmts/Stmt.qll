@@ -1513,6 +1513,28 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
   override string getAPrimaryQlClass() { result = "SwitchStmt" }
 
   /**
+   * Gets the initialization statement of this 'switch' statement.
+   *
+   * For example, for
+   * ```
+   * switch (x = y; b) { }
+   * ```
+   * the result is `x = y;`.
+   *
+   * Does not hold if the initialization statement is missing or an empty statement, as in
+   * ```
+   * switch (b) { }
+   * ```
+   * or
+   * ```
+   * switch (; b) { }
+   * ```
+   */
+  Stmt getInitialization() {
+    switch_initialization(underlyingElement(this), unresolveElement(result))
+  }
+
+  /**
    * Gets the expression that this 'switch' statement switches on.
    *
    * For example, for
@@ -1527,7 +1549,7 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
    * ```
    * the result is `i`.
    */
-  Expr getExpr() { result = this.getChild(0) }
+  Expr getExpr() { result = this.getChild(1) }
 
   override Expr getControllingExpr() { result = this.getExpr() }
 

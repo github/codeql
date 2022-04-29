@@ -679,6 +679,8 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     or
     s.(IfStmt).getElse() = e and pred = "getElse()"
     or
+    s.(SwitchStmt).getInitialization() = e and pred = "getInitialization()"
+    or
     s.(SwitchStmt).getExpr() = e and pred = "getExpr()"
     or
     s.(SwitchStmt).getStmt() = e and pred = "getStmt()"

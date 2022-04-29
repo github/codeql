@@ -13776,6 +13776,205 @@ ir.cpp:
 # 1781|                 Type = [IntType] int
 # 1781|                 ValueCategory = prvalue(load)
 # 1783|     getStmt(8): [ReturnStmt] return ...
+# 1785| [TopLevelFunction] void switch_initialization(int)
+# 1785|   <params>: 
+# 1785|     getParameter(0): [Parameter] x
+# 1785|         Type = [IntType] int
+# 1785|   getEntryPoint(): [BlockStmt] { ... }
+# 1786|     getStmt(0): [SwitchStmt] switch (...) ... 
+# 1786|       getInitialization(): [DeclStmt] declaration
+# 1786|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 1786|             Type = [IntType] int
+# 1786|           getVariable().getInitializer(): [Initializer] initializer for y
+# 1786|             getExpr(): [VariableAccess] x
+# 1786|                 Type = [IntType] int
+# 1786|                 ValueCategory = prvalue(load)
+# 1786|       getExpr(): [AddExpr] ... + ...
+# 1786|           Type = [IntType] int
+# 1786|           ValueCategory = prvalue
+# 1786|         getLeftOperand(): [VariableAccess] x
+# 1786|             Type = [IntType] int
+# 1786|             ValueCategory = prvalue(load)
+# 1786|         getRightOperand(): [Literal] 1
+# 1786|             Type = [IntType] int
+# 1786|             Value = [Literal] 1
+# 1786|             ValueCategory = prvalue
+# 1786|       getStmt(): [BlockStmt] { ... }
+# 1787|         getStmt(0): [SwitchCase] default: 
+# 1788|         getStmt(1): [ExprStmt] ExprStmt
+# 1788|           getExpr(): [AssignExpr] ... = ...
+# 1788|               Type = [IntType] int
+# 1788|               ValueCategory = lvalue
+# 1788|             getLValue(): [VariableAccess] x
+# 1788|                 Type = [IntType] int
+# 1788|                 ValueCategory = lvalue
+# 1788|             getRValue(): [AddExpr] ... + ...
+# 1788|                 Type = [IntType] int
+# 1788|                 ValueCategory = prvalue
+# 1788|               getLeftOperand(): [VariableAccess] x
+# 1788|                   Type = [IntType] int
+# 1788|                   ValueCategory = prvalue(load)
+# 1788|               getRightOperand(): [VariableAccess] y
+# 1788|                   Type = [IntType] int
+# 1788|                   ValueCategory = prvalue(load)
+# 1791|     getStmt(1): [DeclStmt] declaration
+# 1791|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
+# 1791|           Type = [IntType] int
+# 1792|     getStmt(2): [SwitchStmt] switch (...) ... 
+# 1792|       getInitialization(): [ExprStmt] ExprStmt
+# 1792|         getExpr(): [AssignExpr] ... = ...
+# 1792|             Type = [IntType] int
+# 1792|             ValueCategory = lvalue
+# 1792|           getLValue(): [VariableAccess] w
+# 1792|               Type = [IntType] int
+# 1792|               ValueCategory = lvalue
+# 1792|           getRValue(): [VariableAccess] x
+# 1792|               Type = [IntType] int
+# 1792|               ValueCategory = prvalue(load)
+# 1792|       getExpr(): [AddExpr] ... + ...
+# 1792|           Type = [IntType] int
+# 1792|           ValueCategory = prvalue
+# 1792|         getLeftOperand(): [VariableAccess] x
+# 1792|             Type = [IntType] int
+# 1792|             ValueCategory = prvalue(load)
+# 1792|         getRightOperand(): [Literal] 1
+# 1792|             Type = [IntType] int
+# 1792|             Value = [Literal] 1
+# 1792|             ValueCategory = prvalue
+# 1792|       getStmt(): [BlockStmt] { ... }
+# 1793|         getStmt(0): [SwitchCase] default: 
+# 1794|         getStmt(1): [ExprStmt] ExprStmt
+# 1794|           getExpr(): [AssignExpr] ... = ...
+# 1794|               Type = [IntType] int
+# 1794|               ValueCategory = lvalue
+# 1794|             getLValue(): [VariableAccess] x
+# 1794|                 Type = [IntType] int
+# 1794|                 ValueCategory = lvalue
+# 1794|             getRValue(): [AddExpr] ... + ...
+# 1794|                 Type = [IntType] int
+# 1794|                 ValueCategory = prvalue
+# 1794|               getLeftOperand(): [VariableAccess] x
+# 1794|                   Type = [IntType] int
+# 1794|                   ValueCategory = prvalue(load)
+# 1794|               getRightOperand(): [VariableAccess] w
+# 1794|                   Type = [IntType] int
+# 1794|                   ValueCategory = prvalue(load)
+# 1797|     getStmt(3): [SwitchStmt] switch (...) ... 
+# 1797|       getInitialization(): [ExprStmt] ExprStmt
+# 1797|         getExpr(): [AssignExpr] ... = ...
+# 1797|             Type = [IntType] int
+# 1797|             ValueCategory = lvalue
+# 1797|           getLValue(): [VariableAccess] w
+# 1797|               Type = [IntType] int
+# 1797|               ValueCategory = lvalue
+# 1797|           getRValue(): [VariableAccess] x
+# 1797|               Type = [IntType] int
+# 1797|               ValueCategory = prvalue(load)
+# 1797|       getExpr(): [ConditionDeclExpr] (condition decl)
+# 1797|           Type = [IntType] int
+# 1797|           ValueCategory = prvalue
+# 1797|         getVariableAccess(): [VariableAccess] w2
+# 1797|             Type = [IntType] int
+# 1797|             ValueCategory = prvalue(load)
+# 1797|       getStmt(): [BlockStmt] { ... }
+# 1798|         getStmt(0): [SwitchCase] default: 
+# 1799|         getStmt(1): [ExprStmt] ExprStmt
+# 1799|           getExpr(): [AssignExpr] ... = ...
+# 1799|               Type = [IntType] int
+# 1799|               ValueCategory = lvalue
+# 1799|             getLValue(): [VariableAccess] x
+# 1799|                 Type = [IntType] int
+# 1799|                 ValueCategory = lvalue
+# 1799|             getRValue(): [AddExpr] ... + ...
+# 1799|                 Type = [IntType] int
+# 1799|                 ValueCategory = prvalue
+# 1799|               getLeftOperand(): [VariableAccess] x
+# 1799|                   Type = [IntType] int
+# 1799|                   ValueCategory = prvalue(load)
+# 1799|               getRightOperand(): [VariableAccess] w
+# 1799|                   Type = [IntType] int
+# 1799|                   ValueCategory = prvalue(load)
+# 1802|     getStmt(4): [SwitchStmt] switch (...) ... 
+# 1802|       getInitialization(): [DeclStmt] declaration
+# 1802|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
+# 1802|             Type = [IntType] int
+# 1802|           getVariable().getInitializer(): [Initializer] initializer for v
+# 1802|             getExpr(): [VariableAccess] x
+# 1802|                 Type = [IntType] int
+# 1802|                 ValueCategory = prvalue(load)
+# 1802|       getExpr(): [ConditionDeclExpr] (condition decl)
+# 1802|           Type = [IntType] int
+# 1802|           ValueCategory = prvalue
+# 1802|         getVariableAccess(): [VariableAccess] v2
+# 1802|             Type = [IntType] int
+# 1802|             ValueCategory = prvalue(load)
+# 1802|       getStmt(): [BlockStmt] { ... }
+# 1803|         getStmt(0): [SwitchCase] default: 
+# 1804|         getStmt(1): [ExprStmt] ExprStmt
+# 1804|           getExpr(): [AssignExpr] ... = ...
+# 1804|               Type = [IntType] int
+# 1804|               ValueCategory = lvalue
+# 1804|             getLValue(): [VariableAccess] x
+# 1804|                 Type = [IntType] int
+# 1804|                 ValueCategory = lvalue
+# 1804|             getRValue(): [AddExpr] ... + ...
+# 1804|                 Type = [IntType] int
+# 1804|                 ValueCategory = prvalue
+# 1804|               getLeftOperand(): [VariableAccess] x
+# 1804|                   Type = [IntType] int
+# 1804|                   ValueCategory = prvalue(load)
+# 1804|               getRightOperand(): [VariableAccess] v
+# 1804|                   Type = [IntType] int
+# 1804|                   ValueCategory = prvalue(load)
+# 1807|     getStmt(5): [DeclStmt] declaration
+# 1807|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of z
+# 1807|           Type = [IntType] int
+# 1807|         getVariable().getInitializer(): [Initializer] initializer for z
+# 1807|           getExpr(): [VariableAccess] x
+# 1807|               Type = [IntType] int
+# 1807|               ValueCategory = prvalue(load)
+# 1808|     getStmt(6): [SwitchStmt] switch (...) ... 
+# 1808|       getExpr(): [VariableAccess] z
+# 1808|           Type = [IntType] int
+# 1808|           ValueCategory = prvalue(load)
+# 1808|       getStmt(): [BlockStmt] { ... }
+# 1809|         getStmt(0): [SwitchCase] default: 
+# 1810|         getStmt(1): [ExprStmt] ExprStmt
+# 1810|           getExpr(): [AssignExpr] ... = ...
+# 1810|               Type = [IntType] int
+# 1810|               ValueCategory = lvalue
+# 1810|             getLValue(): [VariableAccess] x
+# 1810|                 Type = [IntType] int
+# 1810|                 ValueCategory = lvalue
+# 1810|             getRValue(): [AddExpr] ... + ...
+# 1810|                 Type = [IntType] int
+# 1810|                 ValueCategory = prvalue
+# 1810|               getLeftOperand(): [VariableAccess] x
+# 1810|                   Type = [IntType] int
+# 1810|                   ValueCategory = prvalue(load)
+# 1810|               getRightOperand(): [VariableAccess] z
+# 1810|                   Type = [IntType] int
+# 1810|                   ValueCategory = prvalue(load)
+# 1813|     getStmt(7): [SwitchStmt] switch (...) ... 
+# 1813|       getExpr(): [ConditionDeclExpr] (condition decl)
+# 1813|           Type = [IntType] int
+# 1813|           ValueCategory = prvalue
+# 1813|         getVariableAccess(): [VariableAccess] z2
+# 1813|             Type = [IntType] int
+# 1813|             ValueCategory = prvalue(load)
+# 1813|       getStmt(): [BlockStmt] { ... }
+# 1814|         getStmt(0): [SwitchCase] default: 
+# 1815|         getStmt(1): [ExprStmt] ExprStmt
+# 1815|           getExpr(): [AssignAddExpr] ... += ...
+# 1815|               Type = [IntType] int
+# 1815|               ValueCategory = lvalue
+# 1815|             getLValue(): [VariableAccess] x
+# 1815|                 Type = [IntType] int
+# 1815|                 ValueCategory = lvalue
+# 1815|             getRValue(): [VariableAccess] z2
+# 1815|                 Type = [IntType] int
+# 1815|                 ValueCategory = prvalue(load)
+# 1817|     getStmt(8): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

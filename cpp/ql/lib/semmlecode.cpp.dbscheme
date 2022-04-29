@@ -1903,6 +1903,11 @@ do_body(
     int body_id: @stmt ref
 );
 
+switch_initialization(
+    unique int switch_stmt: @stmt_switch ref,
+    int init_id: @stmt ref
+);
+
 #keyset[switch_stmt, index]
 switch_case(
     int switch_stmt: @stmt_switch ref,
