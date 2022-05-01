@@ -323,7 +323,7 @@ module SqlAlchemy {
      * A construction of a `sqlalchemy.sql.expression.TextClause`, which represents a
      * textual SQL string directly.
      */
-    abstract class TextClauseConstruction extends SqlConstruction::Range, DataFlow::CallCfgNode {
+    abstract class TextClauseConstruction extends SqlExecution::Range, DataFlow::CallCfgNode {
       /** Gets the argument that specifies the SQL text. */
       override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("text")] }
     }

@@ -50,7 +50,7 @@ private module Aiomysql {
    * A query. Calling `execute` on a `Cursor` constructs a query.
    * See https://aiomysql.readthedocs.io/en/stable/cursors.html#Cursor.execute
    */
-  class CursorExecuteCall extends SqlConstruction::Range, API::CallNode {
+  class CursorExecuteCall extends SqlExecution::Range, API::CallNode {
     CursorExecuteCall() { this = cursor().getMember("execute").getACall() }
 
     override DataFlow::Node getSql() { result = this.getParameter(0, "operation").getARhs() }
@@ -91,7 +91,7 @@ private module Aiomysql {
    * A query. Calling `execute` on a `SAConnection` constructs a query.
    * See https://aiomysql.readthedocs.io/en/stable/sa.html#aiomysql.sa.SAConnection.execute
    */
-  class SAConnectionExecuteCall extends SqlConstruction::Range, API::CallNode {
+  class SAConnectionExecuteCall extends SqlExecution::Range, API::CallNode {
     SAConnectionExecuteCall() { this = saConnection().getMember("execute").getACall() }
 
     override DataFlow::Node getSql() { result = this.getParameter(0, "query").getARhs() }

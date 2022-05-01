@@ -43,20 +43,20 @@ async def test_cursor():
 
     try:
         async with conn.transaction():
-            cursor = await conn.cursor("sql")  # $ getSql="sql" constructedSql="sql"
+            cursor = await conn.cursor("sql")  # $ getSql="sql"
             await cursor.fetch()
 
             pstmt = await conn.prepare("psql")  # $ getSql="psql"
             pcursor = await pstmt.cursor()  # $ getSql="psql"
             await pcursor.fetch()
 
-            async for record in conn.cursor("sql"):  # $ getSql="sql" constructedSql="sql"
+            async for record in conn.cursor("sql"):  # $ getSql="sql"
                 pass
 
             async for record in pstmt.cursor():  # $ getSql="psql"
                 pass
 
-            cursor_factory = conn.cursor("sql")  # $ constructedSql="sql"
+            cursor_factory = conn.cursor("sql")  # $ getSql="sql"
             cursor = await cursor_factory  # $ getSql="sql"
 
             pcursor_factory = pstmt.cursor()
