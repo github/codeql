@@ -1,0 +1,18 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Find access to an array with a Uint16 when the array has a size lower than 256.</p>
+</overview>
+
+<recommendation>
+<p>Use a Uint8 instead</p>
+</recommendation>
+
+<example>
+<sample src="WrongUintAcess.cpp" />
+</example>
+
+</qhelp>
