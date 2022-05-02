@@ -313,6 +313,8 @@ class SourceParameterNode extends ParameterNode, CfgNode {
   Parameter getParameter() { result = def.getParameter() }
 }
 
+class LocalSourceParameterNode extends SourceParameterNode, LocalSourceNode { }
+
 /** Gets a node corresponding to parameter `p`. */
 SourceParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
