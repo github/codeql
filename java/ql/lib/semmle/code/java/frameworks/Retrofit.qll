@@ -3,7 +3,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 private class RetrofitOpenUrlSinks extends SinkModelCsv {
   override predicate row(string row) {
