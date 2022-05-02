@@ -7,6 +7,9 @@ private import ruby
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
+private import codeql.ruby.Concepts
+private import codeql.ruby.ApiGraphs
+private import codeql.ruby.frameworks.stdlib.Logger::Logger as StdlibLogger
 
 /**
  * Modeling for `ActiveSupport`.
@@ -120,6 +123,17 @@ module ActiveSupport {
         }
       }
       // TODO: index_by, index_with, pick, pluck (they require Hash dataflow)
+    }
+  }
+
+  /**
+   * `ActiveSupport::Logger`
+   */
+  module Logger {
+    private class ActiveSupportLoggerInstance extends StdlibLogger::LoggerInstance {
+      ActiveSupportLoggerInstance() {
+        this = API::getTopLevelMember("ActiveSupport").getMember("Logger").getAnInstantiation()
+      }
     }
   }
 }

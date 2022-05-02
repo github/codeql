@@ -34,10 +34,24 @@ module Logger {
   }
 
   /**
+   * An instance of a logger that responds to the std lib logging methods.
+   * This can be extended to recognise additional instances that conform to the
+   * same interface.
+   */
+  abstract class LoggerInstance extends DataFlow::Node { }
+
+  /**
+   * An instance of the std lib `Logger` class.
+   */
+  private class StdlibLoggerInstance extends LoggerInstance {
+    StdlibLoggerInstance() { this = loggerInstance() }
+  }
+
+  /**
    * A call to a `Logger` instance method that causes a message to be logged.
    */
   abstract class LoggerLoggingCall extends Logging::Range, DataFlow::CallNode {
-    LoggerLoggingCall() { this.getReceiver() = loggerInstance() }
+    LoggerLoggingCall() { this.getReceiver() instanceof LoggerInstance }
   }
 
   /**
