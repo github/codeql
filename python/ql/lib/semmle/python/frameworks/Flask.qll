@@ -418,7 +418,7 @@ module Flask {
       // TODO: This approach for identifying member-access is very adhoc, and we should
       // be able to do something more structured for providing modeling of the members
       // of a container-object.
-      exists(DataFlow::AttrRead files | files = request().getMember("files").getAnImmediateUse() |
+      exists(DataFlow::Node files | files = request().getMember("files").getAUse() |
         this.asCfgNode().(SubscriptNode).getObject() = files.asCfgNode()
         or
         this.(DataFlow::MethodCallNode).calls(files, "get")

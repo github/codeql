@@ -204,7 +204,7 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         b.getlist('key'), # $ tainted
         gl('key'), # $ tainted
 
-        files.get('key').filename, # $ MISSING: tainted
+        files.get('key').filename, # $ tainted
     )
 
     # aliasing tests
