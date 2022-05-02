@@ -59,25 +59,25 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
     kind instanceof GotoEdge and
     (
       tag = EnterFunctionTag() and
-      result = getInstruction(AliasedDefinitionTag())
+      result = this.getInstruction(AliasedDefinitionTag())
       or
       tag = AliasedDefinitionTag() and
-      result = getInstruction(InitializerVariableAddressTag())
+      result = this.getInstruction(InitializerVariableAddressTag())
       or
       tag = InitializerVariableAddressTag() and
       result = getChild(1).getFirstInstruction()
       or
       tag = ReturnTag() and
-      result = getInstruction(AliasedUseTag())
+      result = this.getInstruction(AliasedUseTag())
       or
       tag = AliasedUseTag() and
-      result = getInstruction(ExitFunctionTag())
+      result = this.getInstruction(ExitFunctionTag())
     )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getChild(1) and
-    result = getInstruction(ReturnTag())
+    child = this.getChild(1) and
+    result = this.getInstruction(ReturnTag())
   }
 
   final override CppType getInstructionMemoryOperandType(
@@ -95,7 +95,7 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
   }
 
   override Instruction getTargetAddress() {
-    result = getInstruction(InitializerVariableAddressTag())
+    result = this.getInstruction(InitializerVariableAddressTag())
   }
 
   override Type getTargetType() { result = var.getUnspecifiedType() }
