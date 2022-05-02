@@ -841,7 +841,7 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    result = getIRUserVariable(expr.getEnclosingFunction(), expr.getTarget())
+    result = getIRUserVariable(expr.getEnclosingDeclaration(), expr.getTarget())
   }
 }
 

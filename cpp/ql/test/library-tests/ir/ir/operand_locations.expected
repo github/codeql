@@ -8260,6 +8260,13 @@
 | ir.cpp:1767:23:1767:37 | StoreValue | r1767_6 |
 | ir.cpp:1767:23:1767:37 | Unary | r1767_4 |
 | ir.cpp:1767:23:1767:37 | Unary | r1767_5 |
+| ir.cpp:1769:5:1769:12 | Address | &:r1769_3 |
+| ir.cpp:1769:5:1769:12 | SideEffect | ~m1769_7 |
+| ir.cpp:1769:16:1769:23 | Address | &:r1769_4 |
+| ir.cpp:1769:16:1769:23 | ChiPartial | partial:m1769_6 |
+| ir.cpp:1769:16:1769:23 | ChiTotal | total:m1769_2 |
+| ir.cpp:1769:16:1769:23 | Load | ~m1769_2 |
+| ir.cpp:1769:16:1769:23 | StoreValue | r1769_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_7 |

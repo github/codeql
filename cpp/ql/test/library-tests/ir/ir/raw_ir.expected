@@ -9499,8 +9499,8 @@ ir.cpp:
 # 1769|     v1769_1(void)       = EnterFunction             : 
 # 1769|     mu1769_2(unknown)   = AliasedDefinition         : 
 # 1769|     r1769_3(glval<int>) = VariableAddress[global_6] : 
-# 1769|     r1769_4(glval<int>) = VariableAddress           : 
-# 1769|     r1769_5(int)        = Load[?]                   : &:r1769_4, ~m?
+# 1769|     r1769_4(glval<int>) = VariableAddress[global_2] : 
+# 1769|     r1769_5(int)        = Load[global_2]            : &:r1769_4, ~m?
 # 1769|     mu1769_6(int)       = Store[global_6]           : &:r1769_3, r1769_5
 # 1769|     v1769_7(void)       = ReturnVoid                : 
 # 1769|     v1769_8(void)       = AliasedUse                : ~m?
