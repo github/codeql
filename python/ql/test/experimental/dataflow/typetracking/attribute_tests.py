@@ -58,6 +58,8 @@ def test_global_attribute_read():
 
 def test_local_attribute_assignment():
     # Same as `test_global_attribute_assignment`, but the assigned variable is not global
+    # In this case, we don't want flow going to the `ModuleVariableNode` for `local_var` 
+    # (which is referenced in `test_local_attribute_read`).
     local_var = object() # $ tracked=foo
     local_var.foo = tracked # $ tracked tracked=foo
 
