@@ -1,6 +1,7 @@
 /** Provides classes and predicates related to handling APIs from external libraries. */
 
 private import csharp
+private import dotnet
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
@@ -24,8 +25,8 @@ class TestLibrary extends RefType {
 /**
  * An external API from either the C# Standard Library or a 3rd party library.
  */
-class ExternalApi extends DataFlowDispatch::DataFlowCallable {
-  ExternalApi() { this.fromLibrary() }
+class ExternalApi extends DotNet::Callable {
+  ExternalApi() { this.isUnboundDeclaration() and this.fromLibrary() }
 
   /**
    * Gets the unbound type, name and parameter types of this API.

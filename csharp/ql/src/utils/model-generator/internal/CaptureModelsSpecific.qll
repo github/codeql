@@ -3,6 +3,7 @@
  */
 
 private import csharp as CS
+private import dotnet
 private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
@@ -44,9 +45,10 @@ private predicate isRelevantForModels(CS::Callable api) {
  * In the Standard library and 3rd party libraries it the callables that can be called
  * from outside the library itself.
  */
-class TargetApiSpecific extends DataFlowCallable {
+class TargetApiSpecific extends DotNet::Callable {
   TargetApiSpecific() {
     this.fromSource() and
+    this.isUnboundDeclaration() and
     isRelevantForModels(this)
   }
 }
@@ -86,7 +88,7 @@ string parameterNodeAsInput(DataFlow::ParameterNode p) {
 
 pragma[nomagic]
 private CS::Parameter getParameter(DataFlowImplCommon::ReturnNodeExt node, ParameterPosition pos) {
-  result = node.getEnclosingCallable().getParameter(pos.getPosition())
+  result = node.getEnclosingCallable().asCallable().getParameter(pos.getPosition())
 }
 
 /**
@@ -110,7 +112,7 @@ string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
  * Gets the enclosing callable of `ret`.
  */
 CS::Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
-  result = DataFlowImplCommon::getNodeEnclosingCallable(ret)
+  result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
 }
 
 /**
@@ -140,7 +142,7 @@ class PropagateToSinkConfigurationSpecific extends CS::TaintTracking::Configurat
 
   override predicate isSource(DataFlow::Node source) {
     (isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode) and
-    isRelevantForModels(source.getEnclosingCallable())
+    isRelevantForModels(source.getEnclosingCallable().asCallable())
   }
 }
 

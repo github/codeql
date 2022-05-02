@@ -99,7 +99,7 @@ predicate mayNotBeDisposed(LocalScopeDisposableCreation disposable) {
     not exists(DataFlow::Node sink | conf.hasFlow(DataFlow::exprNode(disposable), sink) |
       sink instanceof ReturnNode
       implies
-      sink.getEnclosingCallable() = disposable.getEnclosingCallable()
+      sink.getEnclosingCallable().asCallable() = disposable.getEnclosingCallable()
     )
   )
 }

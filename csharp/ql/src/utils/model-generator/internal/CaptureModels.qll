@@ -131,7 +131,7 @@ private class ThroughFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
     source instanceof DataFlow::ParameterNode and
-    source.getEnclosingCallable() instanceof TargetApi and
+    source.getEnclosingCallable().asCallable() instanceof TargetApi and
     state.(TaintRead).getStep() = 0
   }
 
@@ -181,7 +181,7 @@ string captureThroughFlow(TargetApi api) {
     DataFlowImplCommon::ReturnNodeExt returnNodeExt, string input, string output
   |
     config.hasFlow(p, returnNodeExt) and
-    returnNodeExt.getEnclosingCallable() = api and
+    returnNodeExt.getEnclosingCallable().asCallable() = api and
     input = parameterNodeAsInput(p) and
     output = returnNodeAsOutput(returnNodeExt) and
     input != output and
@@ -204,7 +204,7 @@ private class FromSourceConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(TargetApi c |
       sink instanceof DataFlowImplCommon::ReturnNodeExt and
-      sink.getEnclosingCallable() = c
+      sink.getEnclosingCallable().asCallable() = c
     )
   }
 
@@ -224,7 +224,7 @@ string captureSource(TargetApi api) {
   exists(DataFlow::Node source, DataFlow::Node sink, FromSourceConfiguration config, string kind |
     config.hasFlow(source, sink) and
     ExternalFlow::sourceNode(source, kind) and
-    api = sink.getEnclosingCallable() and
+    api = sink.getEnclosingCallable().asCallable() and
     result = asSourceModel(api, returnNodeAsOutput(sink), kind)
   )
 }
@@ -253,7 +253,7 @@ string captureSink(TargetApi api) {
   exists(DataFlow::Node src, DataFlow::Node sink, PropagateToSinkConfiguration config, string kind |
     config.hasFlow(src, sink) and
     ExternalFlow::sinkNode(sink, kind) and
-    api = src.getEnclosingCallable() and
+    api = src.getEnclosingCallable().asCallable() and
     isRelevantSinkKind(kind) and
     result = asSinkModel(api, asInputArgument(src), kind)
   )

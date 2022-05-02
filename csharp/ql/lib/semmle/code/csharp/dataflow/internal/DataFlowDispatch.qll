@@ -13,11 +13,11 @@ private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 
 private predicate summarizedCallable(DataFlowCallable c) {
-  c instanceof FlowSummary::SummarizedCallable
+  exists(c.asSummarizedCallable())
   or
   FlowSummaryImpl::Private::summaryReturnNode(_, TJumpReturnKind(c, _))
   or
-  c = interpretElement(_, _, _, _, _, _)
+  c.asCallable() = interpretElement(_, _, _, _, _, _)
 }
 
 /**
@@ -29,7 +29,7 @@ private predicate summarizedCallable(DataFlowCallable c) {
  */
 DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
   exists(DotNet::Callable unboundDecl | unboundDecl = c.getUnboundDeclaration() |
-    summarizedCallable(unboundDecl) and
+    summarizedCallable(TDotNetCallable(unboundDecl)) and
     result = unboundDecl
     or
     result.hasBody() and
@@ -84,11 +84,11 @@ newtype TReturnKind =
   TJumpReturnKind(DataFlowCallable target, ReturnKind rk) {
     rk instanceof NormalReturnKind and
     (
-      target instanceof Constructor or
-      not target.getReturnType() instanceof VoidType
+      target.asCallable() instanceof Constructor or
+      not target.asCallable().getReturnType() instanceof VoidType
     )
     or
-    exists(target.getParameter(rk.(OutRefReturnKind).getPosition()))
+    exists(target.asCallable().getParameter(rk.(OutRefReturnKind).getPosition()))
   }
 
 private module Cached {
@@ -108,7 +108,7 @@ private module Cached {
       // No need to include calls that are compiled from source
       not call.getImplementation().getMethod().compiledFromSource()
     } or
-    TSummaryCall(FlowSummary::SummarizedCallable c, Node receiver) {
+    TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
     }
 
@@ -145,7 +145,7 @@ private module DispatchImpl {
    * the enclosing callable `c` (including the implicit `this` parameter).
    */
   predicate mayBenefitFromCallContext(NonDelegateDataFlowCall call, Callable c) {
-    c = call.getEnclosingCallable() and
+    c = call.getEnclosingCallable().asCallable() and
     call.getDispatchCall().mayBenefitFromCallContext()
   }
 
@@ -154,7 +154,7 @@ private module DispatchImpl {
    * restricted to those `call`s for which a context might make a difference.
    */
   DataFlowCallable viableImplInCallContext(NonDelegateDataFlowCall call, DataFlowCall ctx) {
-    result =
+    result.asCallable() =
       call.getDispatchCall()
           .getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall).getDispatchCall())
           .getUnboundDeclaration()
@@ -256,7 +256,7 @@ newtype TDataFlowCallable =
 
 class DataFlowCallable extends TDataFlowCallable {
   /** Get the underlying source code callable, if any. */
-  Callable asCallable() { this = TDotNetCallable(result) }
+  DotNet::Callable asCallable() { this = TDotNetCallable(result) }
 
   /** Get the underlying summarized callable, if any. */
   FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
@@ -327,18 +327,20 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   DispatchCall getDispatchCall() { result = dc }
 
   override DataFlowCallable getARuntimeTarget() {
-    result = getCallableForDataFlow(dc.getADynamicTarget())
+    result.asCallable() = getCallableForDataFlow(dc.getADynamicTarget())
     or
-    result = dc.getAStaticTarget().getUnboundDeclaration() and
+    result.asCallable() = dc.getAStaticTarget().getUnboundDeclaration() and
     summarizedCallable(result) and
-    not result instanceof RuntimeCallable
+    not result.asCallable() instanceof RuntimeCallable
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
-  override DataFlowCallable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asCallable() = cfn.getEnclosingCallable()
+  }
 
   override string toString() { result = cfn.toString() }
 
@@ -366,7 +368,9 @@ class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDe
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
-  override DataFlowCallable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asCallable() = cfn.getEnclosingCallable()
+  }
 
   override string toString() { result = cfn.toString() }
 
@@ -384,13 +388,15 @@ class TransitiveCapturedDataFlowCall extends DataFlowCall, TTransitiveCapturedCa
 
   TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn, target) }
 
-  override DataFlowCallable getARuntimeTarget() { result = target }
+  override DataFlowCallable getARuntimeTarget() { result.asCallable() = target }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 
   override DataFlow::ExprNode getNode() { none() }
 
-  override DataFlowCallable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asCallable() = cfn.getEnclosingCallable()
+  }
 
   override string toString() { result = "[transitive] " + cfn.toString() }
 
@@ -405,14 +411,16 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
 
   override DataFlowCallable getARuntimeTarget() {
     // There is no dispatch library for CIL, so do not consider overrides for now
-    result = getCallableForDataFlow(call.getTarget())
+    result.asCallable() = getCallableForDataFlow(call.getTarget())
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { none() }
 
   override DataFlow::ExprNode getNode() { result.getExpr() = call }
 
-  override DataFlowCallable getEnclosingCallable() { result = call.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asCallable() = call.getEnclosingCallable()
+  }
 
   override string toString() { result = call.toString() }
 
@@ -427,7 +435,7 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
  * the method `Select`.
  */
 class SummaryCall extends DelegateDataFlowCall, TSummaryCall {
-  private FlowSummary::SummarizedCallable c;
+  private FlowSummaryImpl::Public::SummarizedCallable c;
   private Node receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }

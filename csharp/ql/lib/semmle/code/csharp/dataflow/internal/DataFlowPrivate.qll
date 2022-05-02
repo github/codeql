@@ -65,9 +65,9 @@ abstract class NodeImpl extends Node {
 
 private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallableImpl() {
-    result = this.getExpr().(CIL::Expr).getEnclosingCallable()
+    result.asCallable() = this.getExpr().(CIL::Expr).getEnclosingCallable()
     or
-    result = this.getControlFlowNodeImpl().getEnclosingCallable()
+    result.asCallable() = this.getControlFlowNodeImpl().getEnclosingCallable()
   }
 
   override DotNet::Type getTypeImpl() {
@@ -693,7 +693,9 @@ private module Cached {
       not def.(Ssa::ExplicitDefinition).getADefinition() instanceof
         AssignableDefinitions::ImplicitParameterDefinition
     } or
-    TExplicitParameterNode(DotNet::Parameter p) { p = any(DataFlowCallable c).getAParameter() } or
+    TExplicitParameterNode(DotNet::Parameter p) {
+      p = any(DataFlowCallable c).asCallable().getAParameter()
+    } or
     TInstanceParameterNode(Callable c) {
       c.isUnboundDeclaration() and not c.(Modifiable).isStatic()
     } or
@@ -736,7 +738,10 @@ private module Cached {
         )
       )
     } or
-    TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
+    TSummaryNode(
+      FlowSummaryImpl::Public::SummarizedCallable c,
+      FlowSummaryImpl::Private::SummaryNodeState state
+    ) {
       FlowSummaryImpl::Private::summaryNodeRange(c, state)
     } or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
@@ -845,7 +850,9 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
   /** Gets the underlying SSA definition. */
   Ssa::Definition getDefinition() { result = def }
 
-  override DataFlowCallable getEnclosingCallableImpl() { result = def.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallableImpl() {
+    result.asCallable() = def.getEnclosingCallable()
+  }
 
   override Type getTypeImpl() { result = def.getSourceVariable().getType() }
 
@@ -877,10 +884,12 @@ private module ParameterNodes {
     }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      c.getParameter(pos.getPosition()) = parameter
+      c.asCallable().getParameter(pos.getPosition()) = parameter
     }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result = parameter.getCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() {
+      result.asCallable() = parameter.getCallable()
+    }
 
     override DotNet::Type getTypeImpl() { result = parameter.getType() }
 
@@ -901,10 +910,10 @@ private module ParameterNodes {
     Callable getCallable() { result = callable }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      callable = c and pos.isThisParameter()
+      callable = c.asCallable() and pos.isThisParameter()
     }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result = callable }
+    override DataFlowCallable getEnclosingCallableImpl() { result.asCallable() = callable }
 
     override Type getTypeImpl() { result = callable.getDeclaringType() }
 
@@ -1039,7 +1048,9 @@ private module ArgumentNodes {
       call.getControlFlowNode() = cfn
     }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() {
+      result.asCallable() = cfn.getEnclosingCallable()
+    }
 
     override Type getTypeImpl() { result = v.getType() }
 
@@ -1066,7 +1077,9 @@ private module ArgumentNodes {
 
     override ControlFlow::Node getControlFlowNodeImpl() { result = cfn }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() {
+      result.asCallable() = cfn.getEnclosingCallable()
+    }
 
     override Type getTypeImpl() { result = cfn.getElement().(Expr).getType() }
 
@@ -1103,7 +1116,9 @@ private module ArgumentNodes {
       pos.getPosition() = this.getParameter().getPosition()
     }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result = callCfn.getEnclosingCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() {
+      result.asCallable() = callCfn.getEnclosingCallable()
+    }
 
     override Type getTypeImpl() { result = this.getParameter().getType() }
 
@@ -1182,7 +1197,9 @@ private module ReturnNodes {
 
     override NormalReturnKind getKind() { any() }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result = yrs.getEnclosingCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() {
+      result.asCallable() = yrs.getEnclosingCallable()
+    }
 
     override Type getTypeImpl() { result = yrs.getEnclosingCallable().getReturnType() }
 
@@ -1206,7 +1223,9 @@ private module ReturnNodes {
 
     override NormalReturnKind getKind() { any() }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result = expr.getEnclosingCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() {
+      result.asCallable() = expr.getEnclosingCallable()
+    }
 
     override Type getTypeImpl() { result = expr.getEnclosingCallable().getReturnType() }
 
@@ -1365,7 +1384,7 @@ private module OutNodes {
         additionalCalls = false and call = csharpCall(_, cfn)
         or
         additionalCalls = true and
-        call = TTransitiveCapturedCall(cfn, n.getEnclosingCallable())
+        call = TTransitiveCapturedCall(cfn, n.getEnclosingCallable().asCallable())
       )
     }
 
@@ -1408,7 +1427,7 @@ import OutNodes
 
 /** A data-flow node used to model flow summaries. */
 class SummaryNode extends NodeImpl, TSummaryNode {
-  private FlowSummary::SummarizedCallable c;
+  private FlowSummaryImpl::Public::SummarizedCallable c;
   private FlowSummaryImpl::Private::SummaryNodeState state;
 
   SummaryNode() { this = TSummaryNode(c, state) }
@@ -1854,7 +1873,9 @@ private module PostUpdateNodes {
           .hasExprPath(_, cfn, _, call.getControlFlowNode())
     }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() {
+      result.asCallable() = cfn.getEnclosingCallable()
+    }
 
     override DotNet::Type getTypeImpl() { result = oc.getType() }
 
@@ -1872,7 +1893,9 @@ private module PostUpdateNodes {
 
     override ExprNode getPreUpdateNode() { cfn = result.getControlFlowNode() }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
+    override DataFlowCallable getEnclosingCallableImpl() {
+      result.asCallable() = cfn.getEnclosingCallable()
+    }
 
     override Type getTypeImpl() { result = cfn.getElement().(Expr).getType() }
 
@@ -1960,11 +1983,12 @@ class LambdaCallKind = Unit;
 /** Holds if `creation` is an expression that creates a delegate for `c`. */
 predicate lambdaCreation(ExprNode creation, LambdaCallKind kind, DataFlowCallable c) {
   exists(Expr e | e = creation.getExpr() |
-    c = e.(AnonymousFunctionExpr)
+    c.asCallable() = e.(AnonymousFunctionExpr)
     or
-    c = e.(CallableAccess).getTarget().getUnboundDeclaration()
+    c.asCallable() = e.(CallableAccess).getTarget().getUnboundDeclaration()
     or
-    c = e.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration()
+    c.asCallable() =
+      e.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration()
   ) and
   kind = TMkUnit()
 }
@@ -2047,7 +2071,7 @@ abstract class SyntheticField extends string {
 predicate containerContent(DataFlow::Content c) { c instanceof DataFlow::ElementContent }
 
 /** Gets the string representation of the parameters of `c`. */
-string parameterQualifiedTypeNamesToString(DataFlowCallable c) {
+string parameterQualifiedTypeNamesToString(DotNet::Callable c) {
   result =
     concat(Parameter p, int i |
       p = c.getParameter(i)
@@ -2061,7 +2085,7 @@ string parameterQualifiedTypeNamesToString(DataFlowCallable c) {
  */
 module Csv {
   /** Holds if the summary should apply for all overrides of `c`. */
-  predicate isBaseCallableOrPrototype(DataFlowCallable c) {
+  predicate isBaseCallableOrPrototype(DotNet::Callable c) {
     c.getDeclaringType() instanceof Interface
     or
     exists(Modifiable m | m = [c.(Modifiable), c.(Accessor).getDeclaration()] |
@@ -2072,12 +2096,12 @@ module Csv {
   }
 
   /** Gets a string representing whether the summary should apply for all overrides of `c`. */
-  private string getCallableOverride(DataFlowCallable c) {
+  private string getCallableOverride(DotNet::Callable c) {
     if isBaseCallableOrPrototype(c) then result = "true" else result = "false"
   }
 
   /** Computes the first 6 columns for CSV rows of `c`. */
-  string asPartialModel(DataFlowCallable c) {
+  string asPartialModel(DotNet::Callable c) {
     exists(string namespace, string type, string name |
       c.getDeclaringType().hasQualifiedName(namespace, type) and
       c.hasQualifiedName(_, name) and

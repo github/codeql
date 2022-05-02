@@ -103,7 +103,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
   DotNet::Parameter getParameter() {
     exists(DataFlowCallable c, ParameterPosition ppos |
       super.isParameterOf(c, ppos) and
-      result = c.getParameter(ppos.getPosition())
+      result = c.asCallable().getParameter(ppos.getPosition())
     )
   }
 

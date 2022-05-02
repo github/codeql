@@ -269,7 +269,7 @@ deprecated private predicate flowIntoDelegateCall(DelegateLikeCall call, Callabl
 
 pragma[noinline]
 private predicate flowOutOfNonDelegateCall(NonDelegateCall call, NormalReturnNode ret) {
-  call.getARuntimeTarget() = ret.getEnclosingCallable()
+  call.getARuntimeTarget() = ret.getEnclosingCallable().asCallable()
 }
 
 pragma[noinline]
@@ -278,7 +278,7 @@ deprecated private predicate flowOutOfDelegateCall(
 ) {
   exists(DelegateLikeFlowSource dfs, DelegateLikeCallExpr dce, Callable c |
     flowsFrom(dce, dfs, _, lastCall) and
-    ret.getEnclosingCallable() = c and
+    ret.getEnclosingCallable().asCallable() = c and
     c = dfs.getCallable() and
     dc = dce.getCall()
   )

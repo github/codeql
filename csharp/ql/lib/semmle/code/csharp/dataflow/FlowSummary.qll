@@ -68,7 +68,7 @@ module SummaryComponent {
   SummaryComponent jump(Callable c) {
     result =
       return(any(DataFlowDispatch::JumpReturnKind jrk |
-          jrk.getTarget() = c.getUnboundDeclaration() and
+          jrk.getTarget().asCallable() = c.getUnboundDeclaration() and
           jrk.getTargetReturnKind() instanceof DataFlowDispatch::NormalReturnKind
         ))
   }
