@@ -28,7 +28,6 @@ nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 nonUniqueIRVariable
-| ir.cpp:1831:16:1831:23 | VariableAddress: global_2 | Variable address instruction 'VariableAddress: global_2' has no associated variable, in function '$@'. | ir.cpp:1831:5:1831:12 | int global_6 | int global_6 |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

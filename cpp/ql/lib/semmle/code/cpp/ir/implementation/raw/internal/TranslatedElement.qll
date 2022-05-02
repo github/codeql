@@ -25,9 +25,9 @@ private Element getRealParent(Expr expr) {
   result.(Destructor).getADestruction() = expr
 }
 
-IRUserVariable getIRUserVariable(Function func, Variable var) {
+IRUserVariable getIRUserVariable(Declaration decl, Variable var) {
   result.getVariable() = var and
-  result.getEnclosingFunction() = func
+  result.getEnclosingFunction() = decl
 }
 
 IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {

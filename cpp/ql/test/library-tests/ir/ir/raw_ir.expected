@@ -9801,8 +9801,8 @@ ir.cpp:
 # 1831|     v1831_1(void)       = EnterFunction             : 
 # 1831|     mu1831_2(unknown)   = AliasedDefinition         : 
 # 1831|     r1831_3(glval<int>) = VariableAddress[global_6] : 
-# 1831|     r1831_4(glval<int>) = VariableAddress           : 
-# 1831|     r1831_5(int)        = Load[?]                   : &:r1831_4, ~m?
+# 1831|     r1831_4(glval<int>) = VariableAddress[global_2] : 
+# 1831|     r1831_5(int)        = Load[global_2]            : &:r1831_4, ~m?
 # 1831|     mu1831_6(int)       = Store[global_6]           : &:r1831_3, r1831_5
 # 1831|     v1831_7(void)       = ReturnVoid                : 
 # 1831|     v1831_8(void)       = AliasedUse                : ~m?
