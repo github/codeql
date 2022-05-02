@@ -1828,4 +1828,6 @@ constructor_only global_5 = constructor_only(2);
 
 char *global_string = "global string";
 
+int global_6 = global_2;
+
 // semmle-extractor-options: -std=c++17 --clang

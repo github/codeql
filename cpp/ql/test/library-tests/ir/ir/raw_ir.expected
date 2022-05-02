@@ -9796,6 +9796,18 @@ ir.cpp:
 # 1829|     v1829_9(void)            = AliasedUse                      : ~m?
 # 1829|     v1829_10(void)           = ExitFunction                    : 
 
+# 1831| int global_6
+# 1831|   Block 0
+# 1831|     v1831_1(void)       = EnterFunction             : 
+# 1831|     mu1831_2(unknown)   = AliasedDefinition         : 
+# 1831|     r1831_3(glval<int>) = VariableAddress[global_6] : 
+# 1831|     r1831_4(glval<int>) = VariableAddress           : 
+# 1831|     r1831_5(int)        = Load[?]                   : &:r1831_4, ~m?
+# 1831|     mu1831_6(int)       = Store[global_6]           : &:r1831_3, r1831_5
+# 1831|     v1831_7(void)       = ReturnVoid                : 
+# 1831|     v1831_8(void)       = AliasedUse                : ~m?
+# 1831|     v1831_9(void)       = ExitFunction              : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
