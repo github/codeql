@@ -219,7 +219,7 @@ module XssThroughDom {
 
 
   /**
-   * A call to window.getSelection
+   * Gets a reference to a value obtained by calling `window.getSelection()`. 
    * https://developer.mozilla.org/en-US/docs/Web/API/Selection
    */
   DataFlow::SourceNode getSelectionCall(DataFlow::TypeTracker t) {
