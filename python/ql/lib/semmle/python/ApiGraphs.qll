@@ -595,8 +595,12 @@ module API {
       exists(DataFlow::Node def, PY::CallableExpr fn |
         rhs(base, def) and fn = trackDefNode(def).asExpr()
       |
-        exists(int i |
-          lbl = Label::parameter(i) and
+        exists(int i, int offset |
+          if exists(PY::Parameter p | p = fn.getInnerScope().getAnArg() and p.isSelf())
+          then offset = 1
+          else offset = 0
+        |
+          lbl = Label::parameter(i - offset) and
           ref.asExpr() = fn.getInnerScope().getArg(i)
         )
         or
