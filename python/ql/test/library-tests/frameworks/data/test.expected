@@ -24,6 +24,10 @@ isSink
 | test.py:33:27:33:29 | ControlFlowNode for two | test-source |
 | test.py:33:32:33:36 | ControlFlowNode for three | test-source |
 | test.py:57:7:57:12 | ControlFlowNode for ArgPos | test-source |
+| test.py:66:17:66:20 | ControlFlowNode for arg1 | test-source |
+| test.py:66:23:66:26 | ControlFlowNode for arg2 | test-source |
+| test.py:66:34:66:43 | ControlFlowNode for namedThing | test-source |
+| test.py:67:34:67:44 | ControlFlowNode for secondNamed | test-source |
 isSource
 | test.py:3:5:3:15 | ControlFlowNode for getSource() | test-source |
 | test.py:9:8:9:14 | ControlFlowNode for alias() | test-source |
@@ -45,6 +49,11 @@ isSource
 | test.py:51:8:51:18 | ControlFlowNode for Sub2Class() | test-source |
 | test.py:53:7:53:16 | ControlFlowNode for Attribute() | test-source |
 | test.py:60:13:60:16 | ControlFlowNode for self | test-source |
+| test.py:60:24:60:28 | ControlFlowNode for named | test-source |
+| test.py:63:36:63:39 | ControlFlowNode for arg2 | test-source |
+| test.py:63:42:63:45 | ControlFlowNode for arg3 | test-source |
+| test.py:63:48:63:51 | ControlFlowNode for arg4 | test-source |
+| test.py:63:54:63:57 | ControlFlowNode for arg5 | test-source |
 syntaxErrors
 | Member[foo |
 | Member[foo] .Member[bar] |

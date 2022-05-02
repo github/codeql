@@ -51,6 +51,9 @@ class Sinks extends ModelInput::SinkModelCsv {
         "testlib;;Member[CallFilter].Member[twoOrMore].WithArity[2..].Argument[0..];test-source", //
         // testing non-positional arguments
         "testlib;;Member[ArgPos].Member[selfThing].Argument[self];test-source", //
+        // any argument
+        "testlib;;Member[ArgPos].Member[anyParam].Argument[any];test-source", //
+        "testlib;;Member[ArgPos].Member[anyNamed].Argument[any-named];test-source", //
       ]
   }
 }

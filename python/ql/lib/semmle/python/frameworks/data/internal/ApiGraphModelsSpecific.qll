@@ -72,6 +72,12 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
     exists(string name | token.getAnArgument() = name + ":" |
       result = node.getKeywordParameter(name)
     )
+    or
+    token.getAnArgument() = "any" and
+    result = [node.getParameter(_), node.getKeywordParameter(_)]
+    or
+    token.getAnArgument() = "any-named" and
+    result = node.getKeywordParameter(_)
   )
   // Some features don't have MaD tokens yet, they would need to be added to API-graphs first.
   // - decorators ("DecoratedClass", "DecoratedMember", "DecoratedParameter")
@@ -182,7 +188,7 @@ predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string a
   or
   name = ["Argument", "Parameter"] and
   (
-    argument = "self"
+    argument = ["self", "any", "any-named"]
     or
     argument.regexpMatch("\\w+:") // keyword argument
   )

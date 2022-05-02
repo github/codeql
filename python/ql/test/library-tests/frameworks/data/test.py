@@ -62,3 +62,6 @@ class SubClass (ArgPos.MyClass):
 
     def secondAndAfter(self, arg1, arg2, arg3, arg4, arg5): 
         pass
+
+ArgPos.anyParam(arg1, arg2, name=namedThing)
+ArgPos.anyNamed(arg4, arg5, name=secondNamed)
