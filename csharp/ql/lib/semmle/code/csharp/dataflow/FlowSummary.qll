@@ -1,6 +1,7 @@
 /** Provides classes and predicates for defining flow summaries. */
 
 import csharp
+private import dotnet
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch as DataFlowDispatch
 
@@ -113,7 +114,41 @@ module SummaryComponentStack {
   SummaryComponentStack jump(Callable c) { result = singleton(SummaryComponent::jump(c)) }
 }
 
-class SummarizedCallable = Impl::Public::SummarizedCallable;
+abstract class SummarizedCallable extends DotNet::Callable {
+  /**
+   * Holds if data may flow from `input` to `output` through this callable.
+   *
+   * `preservesValue` indicates whether this is a value-preserving step
+   * or a taint-step.
+   *
+   * Input specifications are restricted to stacks that end with
+   * `SummaryComponent::argument(_)`, preceded by zero or more
+   * `SummaryComponent::return(_)` or `SummaryComponent::content(_)` components.
+   *
+   * Output specifications are restricted to stacks that end with
+   * `SummaryComponent::return(_)` or `SummaryComponent::argument(_)`.
+   *
+   * Output stacks ending with `SummaryComponent::return(_)` can be preceded by zero
+   * or more `SummaryComponent::content(_)` components.
+   *
+   * Output stacks ending with `SummaryComponent::argument(_)` can be preceded by an
+   * optional `SummaryComponent::parameter(_)` component, which in turn can be preceded
+   * by zero or more `SummaryComponent::content(_)` components.
+   */
+  pragma[nomagic]
+  predicate propagatesFlow(
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+  ) {
+    none()
+  }
+
+  /**
+   * Holds if values stored inside `content` are cleared on objects passed as
+   * arguments at position `pos` to this callable.
+   */
+  pragma[nomagic]
+  predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) { none() }
+}
 
 private predicate recordConstructorFlow(Constructor c, int i, Property p) {
   c = any(RecordType r).getAMember() and
@@ -121,6 +156,22 @@ private predicate recordConstructorFlow(Constructor c, int i, Property p) {
     c.getParameter(i).getName() = name and
     c.getDeclaringType().getAMember(name) = p
   )
+}
+
+private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable {
+  private SummarizedCallable sc;
+
+  SummarizedCallableAdapter() { this = DataFlowDispatch::TSummarizedCallable(sc) }
+
+  final override predicate propagatesFlow(
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+  ) {
+    sc.propagatesFlow(input, output, preservesValue)
+  }
+
+  final override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
+    sc.clearsContent(pos, content)
+  }
 }
 
 private class RecordConstructorFlow extends SummarizedCallable {

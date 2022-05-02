@@ -247,8 +247,29 @@ class JumpReturnKind extends ReturnKind, TJumpReturnKind {
   override string toString() { result = "jump to " + target }
 }
 
-class DataFlowCallable extends DotNet::Callable {
-  DataFlowCallable() { this.isUnboundDeclaration() }
+/**
+ * A type for modeling dataflow callables.
+ */
+newtype TDataFlowCallable =
+  TDotNetCallable(DotNet::Callable c) { c.isUnboundDeclaration() } or
+  TSummarizedCallable(FlowSummary::SummarizedCallable c)
+
+class DataFlowCallable extends TDataFlowCallable {
+  /** Get the underlying source code callable, if any. */
+  Callable asCallable() { this = TDotNetCallable(result) }
+
+  /** Get the underlying summarized callable, if any. */
+  FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
+
+  /** Gets a textual representation of this dataflow callable. */
+  string toString() {
+    result = [this.asCallable().toString(), this.asSummarizedCallable().toString()]
+  }
+
+  /** Get the location of this dataflow callable, if any. */
+  Location getLocation() {
+    result = this.asCallable().getLocation() or result = this.asSummarizedCallable().getLocation()
+  }
 }
 
 /** A call relevant for data flow. */
