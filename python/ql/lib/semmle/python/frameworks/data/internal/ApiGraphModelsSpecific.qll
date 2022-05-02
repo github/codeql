@@ -65,8 +65,14 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   result = node.getMember(token.getAnArgument()).getReturn()
   or
   token.getName() = ["Argument", "Parameter"] and
-  token.getAnArgument() = "self" and
-  result = node.getSelfParameter()
+  (
+    token.getAnArgument() = "self" and
+    result = node.getSelfParameter()
+    or
+    exists(string name | token.getAnArgument() = name + ":" |
+      result = node.getKeywordParameter(name)
+    )
+  )
   // Some features don't have MaD tokens yet, they would need to be added to API-graphs first.
   // - decorators ("DecoratedClass", "DecoratedMember", "DecoratedParameter")
   // - Array/Map elements ("ArrayElement", "Element", "MapKey", "MapValue")

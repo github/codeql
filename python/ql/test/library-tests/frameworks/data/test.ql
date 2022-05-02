@@ -55,7 +55,6 @@ class Sinks extends ModelInput::SinkModelCsv {
   }
 }
 
-// TODO: Non-positional arguments (including Named parameters)
 // TODO: Any argument
 // TODO: Test taint steps.
 // TODO: // There are no API-graph edges for: ArrayElement, Element, MapKey, MapValue (remove from valid tokens list)
@@ -78,6 +77,8 @@ class Sources extends ModelInput::SourceModelCsv {
         "testlib;;Member[CommonTokens].Member[Class].Instance.Method[foo];test-source", //
         // testing non-positional arguments
         "testlib;;Member[ArgPos].Member[MyClass].Subclass.Member[foo].Parameter[self];test-source", //
+        "testlib;;Member[ArgPos].Member[MyClass].Subclass.Member[foo].Parameter[named:];test-source", //
+        "testlib;;Member[ArgPos].Member[MyClass].Subclass.Member[secondAndAfter].Parameter[1..];test-source", //
       ]
   }
 }

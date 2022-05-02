@@ -57,5 +57,8 @@ from testlib import ArgPos
 val = ArgPos.selfThing(arg, named=2)
 
 class SubClass (ArgPos.MyClass):
-    def foo(self, arg, named=2):
+    def foo(self, arg, named=2, otherName=3):
+        pass
+
+    def secondAndAfter(self, arg1, arg2, arg3, arg4, arg5): 
         pass
