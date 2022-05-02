@@ -15,7 +15,6 @@
  */
 
 import semmle.code.cpp.security.BufferWrite
-import semmle.code.cpp.commons.Alloc
 
 /*
  * See CWE-120/UnboundedWrite.ql for a summary of CWE-120 alert cases.

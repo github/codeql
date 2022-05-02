@@ -3,8 +3,8 @@
  */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.xml.AndroidManifest
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.xml.AndroidManifest
 
 /**
  * Gets a reflexive/transitive superType

@@ -1802,5 +1802,3 @@ module SimpleRangeAnalysisInternal {
     defMightOverflowNegatively(def, v) and result = varMaxVal(v)
   }
 }
-
-private import SimpleRangeAnalysisInternal

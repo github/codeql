@@ -82,6 +82,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.android.ContentProviders
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.android.Notifications
+  private import semmle.code.java.frameworks.android.SharedPreferences
   private import semmle.code.java.frameworks.android.Slice
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.android.Widget
@@ -137,7 +138,8 @@ private module Frameworks {
   private import semmle.code.java.frameworks.MyBatis
   private import semmle.code.java.frameworks.Hibernate
   private import semmle.code.java.frameworks.jOOQ
-  private import semmle.code.java.frameworks.spring.SpringHttp
+  private import semmle.code.java.frameworks.JMS
+  private import semmle.code.java.frameworks.RabbitMQ
 }
 
 private predicate sourceModelCsv(string row) {

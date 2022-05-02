@@ -404,7 +404,7 @@ cached
 private module Cached {
   cached
   newtype TConstantValue =
-    TInt(int i) { isInt(_, i) or isIntExpr(_, i) } or
+    TInt(int i) { isInt(_, i) or isIntExpr(_, i) or i in [0 .. 100] } or
     TFloat(float f) { isFloat(_, f) or isFloatExpr(_, f) } or
     TRational(int numerator, int denominator) {
       isRational(_, numerator, denominator) or

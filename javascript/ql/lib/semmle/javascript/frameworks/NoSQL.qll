@@ -3,7 +3,6 @@
  */
 
 import javascript
-import semmle.javascript.Promises
 
 /** Provices classes for modelling NoSQL query sinks. */
 module NoSql {

@@ -390,7 +390,7 @@ module File {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[_]" and
+      input = "Argument[0..]" and
       output = "ReturnValue" and
       preservesValue = false
     }

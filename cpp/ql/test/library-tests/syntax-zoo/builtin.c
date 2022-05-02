@@ -1,4 +1,4 @@
-// semmle-extractor-options: --clang
+// semmle-extractor-options: --clang --edg --clang_version --edg 30500
 
 #define vector(elcount, type)  __attribute__((vector_size((elcount)*sizeof(type)))) type
 

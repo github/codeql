@@ -12,7 +12,6 @@
  */
 
 import java
-import semmle.code.java.JDKAnnotations
 import semmle.code.java.Collections
 import semmle.code.java.Maps
 import semmle.code.java.frameworks.javaee.ejb.EJB

@@ -18,12 +18,6 @@ query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) 
 
 query predicate warning = ModelOutput::getAWarning/0;
 
-query predicate invalidOutputSpecComponent(SummarizedCallable sc, AccessPath s, AccessPathToken c) {
-  sc.propagatesFlowExt(_, s, _) and
-  c = s.getToken(_) and
-  c = "ArrayElement" // not allowed in output specs; use `ArrayElement[?] instead
-}
-
 private class SummarizedCallableIdentity extends SummarizedCallable {
   SummarizedCallableIdentity() { this = "identity" }
 
@@ -78,6 +72,8 @@ private class StepsFromModel extends ModelInput::SummaryModelCsv {
         ";;Member[Foo].Method[onlyWithBlock].WithBlock;Argument[0];ReturnValue;taint",
         ";;Member[Foo].Method[blockArg].Argument[block].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
         ";;Member[Foo].Method[namedArg];Argument[foo:];ReturnValue;taint",
+        ";;Member[Foo].Method[anyArg];Argument[any];ReturnValue;taint",
+        ";;Member[Foo].Method[anyPositionFromOne];Argument[1..];ReturnValue;taint",
         ";;Member[Foo].Method[intoNamedCallback];Argument[0];Argument[foo:].Parameter[0];taint",
         ";;Member[Foo].Method[intoNamedParameter];Argument[0];Argument[0].Parameter[foo:];taint",
         ";;Member[Foo].Method[startInNamedCallback].Argument[foo:].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",

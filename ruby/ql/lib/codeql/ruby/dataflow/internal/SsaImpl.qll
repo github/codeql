@@ -72,16 +72,18 @@ private predicate hasVariableWriteWithCapturedRead(BasicBlock bb, LocalVariable 
  * Holds if the call `call` at index `i` in basic block `bb` may reach
  * a callable that reads captured variable `v`.
  */
-private predicate capturedCallRead(Call call, BasicBlock bb, int i, LocalVariable v) {
+private predicate capturedCallRead(
+  CfgNodes::ExprNodes::CallCfgNode call, BasicBlock bb, int i, LocalVariable v
+) {
   exists(CfgScope scope |
     hasVariableWriteWithCapturedRead(bb.getAPredecessor*(), v, scope) and
-    call = bb.getNode(i).getNode()
+    call = bb.getNode(i)
   |
     // If the read happens inside a block, we restrict to the call that
     // contains the block
     not scope instanceof Block
     or
-    scope = call.(MethodCall).getBlock()
+    scope = call.getExpr().(MethodCall).getBlock()
   )
 }
 
@@ -148,16 +150,18 @@ private module Cached {
    * that writes captured variable `v`.
    */
   cached
-  predicate capturedCallWrite(Call call, BasicBlock bb, int i, LocalVariable v) {
+  predicate capturedCallWrite(
+    CfgNodes::ExprNodes::CallCfgNode call, BasicBlock bb, int i, LocalVariable v
+  ) {
     exists(CfgScope scope |
       hasVariableReadWithCapturedWrite(bb.getASuccessor*(), v, scope) and
-      call = bb.getNode(i).getNode()
+      call = bb.getNode(i)
     |
       // If the write happens inside a block, we restrict to the call that
       // contains the block
       not scope instanceof Block
       or
-      scope = call.(MethodCall).getBlock()
+      scope = call.getExpr().(MethodCall).getBlock()
     )
   }
 
@@ -189,7 +193,7 @@ private module Cached {
 
   pragma[noinline]
   private predicate defReachesCallReadInOuterScope(
-    Definition def, Call call, LocalVariable v, CfgScope scope
+    Definition def, CfgNodes::ExprNodes::CallCfgNode call, LocalVariable v, CfgScope scope
   ) {
     exists(BasicBlock bb, int i |
       ssaDefReachesRead(v, def, bb, i) and
@@ -217,8 +221,8 @@ private module Cached {
    * ```
    */
   cached
-  predicate captureFlowIn(Definition def, Definition entry) {
-    exists(Call call, LocalVariable v, CfgScope scope |
+  predicate captureFlowIn(CfgNodes::ExprNodes::CallCfgNode call, Definition def, Definition entry) {
+    exists(LocalVariable v, CfgScope scope |
       defReachesCallReadInOuterScope(def, call, v, scope) and
       hasCapturedEntryWrite(entry, v, scope)
     |
@@ -226,7 +230,7 @@ private module Cached {
       // contains the block
       not scope instanceof Block
       or
-      scope = call.(MethodCall).getBlock()
+      scope = call.getExpr().(MethodCall).getBlock()
     )
   }
 
@@ -242,7 +246,9 @@ private module Cached {
   }
 
   pragma[noinline]
-  private predicate hasCapturedExitRead(Definition exit, Call call, LocalVariable v, CfgScope scope) {
+  private predicate hasCapturedExitRead(
+    Definition exit, CfgNodes::ExprNodes::CallCfgNode call, LocalVariable v, CfgScope scope
+  ) {
     exists(BasicBlock bb, int i |
       capturedCallWrite(call, bb, i, v) and
       exit.definesAt(v, bb, i) and
@@ -261,8 +267,8 @@ private module Cached {
    * ```
    */
   cached
-  predicate captureFlowOut(Definition def, Definition exit) {
-    exists(Call call, LocalVariable v, CfgScope scope |
+  predicate captureFlowOut(CfgNodes::ExprNodes::CallCfgNode call, Definition def, Definition exit) {
+    exists(LocalVariable v, CfgScope scope |
       defReachesExitReadInInnerScope(def, v, scope) and
       hasCapturedExitRead(exit, call, v, _)
     |
@@ -270,7 +276,7 @@ private module Cached {
       // contains the block
       not scope instanceof Block
       or
-      scope = call.(MethodCall).getBlock()
+      scope = call.getExpr().(MethodCall).getBlock()
     )
   }
 

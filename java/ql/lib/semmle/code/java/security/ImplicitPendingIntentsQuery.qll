@@ -36,7 +36,7 @@ class ImplicitPendingIntentStartConf extends TaintTracking::Configuration {
     any(ImplicitPendingIntentAdditionalTaintStep c).step(node1, state1, node2, state2)
   }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     super.allowImplicitRead(node, c)
     or
     this.isSink(node, _) and

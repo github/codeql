@@ -5,7 +5,6 @@
 
 import semmle.code.cpp.Function
 import semmle.code.cpp.models.interfaces.ArrayFunction
-import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.Taint

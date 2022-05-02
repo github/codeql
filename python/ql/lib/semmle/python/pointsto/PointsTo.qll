@@ -2129,7 +2129,7 @@ module Conditionals {
 /** INTERNAL: Do not use. */
 predicate declaredAttributeVar(PythonClassObjectInternal cls, string name, EssaVariable var) {
   name = var.getName() and
-  var.getAUse() = cls.getScope().getANormalExit()
+  pragma[only_bind_into](pragma[only_bind_into](var).getAUse()) = cls.getScope().getANormalExit()
 }
 
 cached

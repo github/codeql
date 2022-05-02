@@ -8,7 +8,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 import UrlConcatenation
 import ClientSideUrlRedirectCustomizations::ClientSideUrlRedirect
 

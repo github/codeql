@@ -9,7 +9,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 import DifferentKindsComparisonBypassCustomizations::DifferentKindsComparisonBypass
 
 /**
