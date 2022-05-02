@@ -554,7 +554,7 @@ module PrivateDjango {
 
       /** A `django.db.connection` is a PEP249 compliant DB connection. */
       class DjangoDbConnection extends PEP249::Connection::InstanceSource {
-        DjangoDbConnection() { this = connection().getAUse() }
+        DjangoDbConnection() { this = connection().getAnImmediateUse() }
       }
 
       // -------------------------------------------------------------------------

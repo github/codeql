@@ -1,5 +1,4 @@
 import python
-import semmle.python.objects.ObjectAPI
 
 from int line, ControlFlowNode f, Value v
 where

@@ -21,7 +21,7 @@ Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSumma
 SummaryCall summaryDataFlowCall(Node receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
-DataFlowType getContentType(Content c) { any() }
+DataFlowType getContentType(ContentSet c) { any() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c, rk]
@@ -61,21 +61,32 @@ predicate summaryElement(
  *
  * This covers all the Ruby-specific components of a flow summary.
  */
-bindingset[c]
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
-  c = "Argument[_]" and
-  result = FlowSummary::SummaryComponent::argument(any(ParameterPosition pos | pos.isPositional(_)))
+  c.getName() = "Argument" and
+  exists(string arg, ParameterPosition ppos |
+    arg = c.getAnArgument() and
+    result = FlowSummary::SummaryComponent::argument(ppos)
+  |
+    arg = "any" and
+    ppos.isAny()
+    or
+    ppos.isPositionalLowerBound(AccessPath::parseLowerBound(arg))
+  )
   or
-  c = "ArrayElement" and
-  result = FlowSummary::SummaryComponent::arrayElementAny()
-  or
-  c = "ArrayElement[?]" and
-  result = FlowSummary::SummaryComponent::arrayElementUnknown()
-  or
-  exists(int i |
-    c.getName() = "ArrayElement" and
-    i = AccessPath::parseInt(c.getAnArgument()) and
-    result = FlowSummary::SummaryComponent::arrayElementKnown(i)
+  c.getName() = "Element" and
+  exists(string arg | arg = c.getAnArgument() |
+    arg = "?" and
+    result = FlowSummary::SummaryComponent::elementUnknown()
+    or
+    arg = "any" and
+    result = FlowSummary::SummaryComponent::elementAny()
+    or
+    exists(ConstantValue cv | result = FlowSummary::SummaryComponent::elementKnown(cv) |
+      cv.isInt(AccessPath::parseInt(arg))
+      or
+      not exists(AccessPath::parseInt(arg)) and
+      cv.serialize() = c.getAnArgument()
+    )
   )
 }
 
@@ -201,6 +212,11 @@ module ParsePositions {
     i = AccessPath::parseInt(c)
   }
 
+  predicate isParsedArgumentLowerBoundPosition(string c, int i) {
+    isArgBody(c) and
+    i = AccessPath::parseLowerBound(c)
+  }
+
   predicate isParsedKeywordParameterPosition(string c, string paramName) {
     isParamBody(c) and
     c = paramName + ":"
@@ -236,6 +252,11 @@ ParameterPosition parseArgBody(string s) {
   exists(int i |
     ParsePositions::isParsedArgumentPosition(s, i) and
     result.isPositional(i)
+  )
+  or
+  exists(int i |
+    ParsePositions::isParsedArgumentLowerBoundPosition(s, i) and
+    result.isPositionalLowerBound(i)
   )
   or
   exists(string name |

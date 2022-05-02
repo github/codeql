@@ -1,8 +1,8 @@
 /** Provides classes and predicates for working with Android widgets. */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSources
 
 private class AndroidWidgetSourceModels extends SourceModelCsv {
   override predicate row(string row) {

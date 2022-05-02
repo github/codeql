@@ -3,7 +3,6 @@
 private import csharp
 private import AssignableDefinitions
 private import SsaImpl as SsaImpl
-private import semmle.code.csharp.dataflow.SSA
 
 class BasicBlock = ControlFlow::BasicBlock;
 

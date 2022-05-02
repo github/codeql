@@ -1,0 +1,80 @@
+edges
+| tests.cpp:33:23:33:43 | XercesDOMParser output argument | tests.cpp:35:2:35:2 | p |
+| tests.cpp:46:23:46:43 | XercesDOMParser output argument | tests.cpp:49:2:49:2 | p |
+| tests.cpp:53:19:53:19 | VariableAddress [post update] | tests.cpp:55:2:55:2 | p |
+| tests.cpp:53:23:53:43 | XercesDOMParser output argument | tests.cpp:53:19:53:19 | VariableAddress [post update] |
+| tests.cpp:55:2:55:2 | p | tests.cpp:56:2:56:2 | p |
+| tests.cpp:56:2:56:2 | p | tests.cpp:57:2:57:2 | p |
+| tests.cpp:69:19:69:19 | VariableAddress [post update] | tests.cpp:71:2:71:2 | p |
+| tests.cpp:69:23:69:43 | XercesDOMParser output argument | tests.cpp:69:19:69:19 | VariableAddress [post update] |
+| tests.cpp:71:2:71:2 | p | tests.cpp:72:2:72:2 | p |
+| tests.cpp:72:2:72:2 | p | tests.cpp:73:2:73:2 | p |
+| tests.cpp:73:2:73:2 | p | tests.cpp:74:2:74:2 | p |
+| tests.cpp:73:2:73:2 | p | tests.cpp:74:2:74:2 | p |
+| tests.cpp:74:2:74:2 | p | tests.cpp:75:2:75:2 | p |
+| tests.cpp:75:2:75:2 | p | tests.cpp:76:2:76:2 | p |
+| tests.cpp:76:2:76:2 | p | tests.cpp:77:2:77:2 | p |
+| tests.cpp:77:2:77:2 | p | tests.cpp:78:2:78:2 | p |
+| tests.cpp:84:23:84:43 | XercesDOMParser output argument | tests.cpp:87:2:87:2 | p |
+| tests.cpp:91:23:91:43 | XercesDOMParser output argument | tests.cpp:98:2:98:2 | p |
+| tests.cpp:103:24:103:44 | XercesDOMParser output argument | tests.cpp:106:3:106:3 | q |
+| tests.cpp:118:24:118:44 | XercesDOMParser output argument | tests.cpp:122:3:122:3 | q |
+| tests.cpp:130:39:130:39 | p | tests.cpp:131:2:131:2 | p |
+| tests.cpp:134:39:134:39 | p | tests.cpp:135:2:135:2 | p |
+| tests.cpp:140:23:140:43 | XercesDOMParser output argument | tests.cpp:144:18:144:18 | q |
+| tests.cpp:140:23:140:43 | XercesDOMParser output argument | tests.cpp:146:18:146:18 | q |
+| tests.cpp:144:18:144:18 | q | tests.cpp:130:39:130:39 | p |
+| tests.cpp:146:18:146:18 | q | tests.cpp:134:39:134:39 | p |
+| tests.cpp:150:19:150:32 | call to createLSParser | tests.cpp:152:2:152:2 | p |
+nodes
+| tests.cpp:33:23:33:43 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
+| tests.cpp:35:2:35:2 | p | semmle.label | p |
+| tests.cpp:46:23:46:43 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
+| tests.cpp:49:2:49:2 | p | semmle.label | p |
+| tests.cpp:53:19:53:19 | VariableAddress [post update] | semmle.label | VariableAddress [post update] |
+| tests.cpp:53:23:53:43 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
+| tests.cpp:55:2:55:2 | p | semmle.label | p |
+| tests.cpp:56:2:56:2 | p | semmle.label | p |
+| tests.cpp:57:2:57:2 | p | semmle.label | p |
+| tests.cpp:69:19:69:19 | VariableAddress [post update] | semmle.label | VariableAddress [post update] |
+| tests.cpp:69:23:69:43 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
+| tests.cpp:71:2:71:2 | p | semmle.label | p |
+| tests.cpp:72:2:72:2 | p | semmle.label | p |
+| tests.cpp:73:2:73:2 | p | semmle.label | p |
+| tests.cpp:74:2:74:2 | p | semmle.label | p |
+| tests.cpp:74:2:74:2 | p | semmle.label | p |
+| tests.cpp:75:2:75:2 | p | semmle.label | p |
+| tests.cpp:76:2:76:2 | p | semmle.label | p |
+| tests.cpp:77:2:77:2 | p | semmle.label | p |
+| tests.cpp:78:2:78:2 | p | semmle.label | p |
+| tests.cpp:84:23:84:43 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
+| tests.cpp:87:2:87:2 | p | semmle.label | p |
+| tests.cpp:91:23:91:43 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
+| tests.cpp:98:2:98:2 | p | semmle.label | p |
+| tests.cpp:103:24:103:44 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
+| tests.cpp:106:3:106:3 | q | semmle.label | q |
+| tests.cpp:118:24:118:44 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
+| tests.cpp:122:3:122:3 | q | semmle.label | q |
+| tests.cpp:130:39:130:39 | p | semmle.label | p |
+| tests.cpp:131:2:131:2 | p | semmle.label | p |
+| tests.cpp:134:39:134:39 | p | semmle.label | p |
+| tests.cpp:135:2:135:2 | p | semmle.label | p |
+| tests.cpp:140:23:140:43 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
+| tests.cpp:144:18:144:18 | q | semmle.label | q |
+| tests.cpp:146:18:146:18 | q | semmle.label | q |
+| tests.cpp:150:19:150:32 | call to createLSParser | semmle.label | call to createLSParser |
+| tests.cpp:152:2:152:2 | p | semmle.label | p |
+subpaths
+#select
+| tests.cpp:35:2:35:2 | p | tests.cpp:33:23:33:43 | XercesDOMParser output argument | tests.cpp:35:2:35:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:33:23:33:43 | XercesDOMParser output argument | XML parser |
+| tests.cpp:49:2:49:2 | p | tests.cpp:46:23:46:43 | XercesDOMParser output argument | tests.cpp:49:2:49:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:46:23:46:43 | XercesDOMParser output argument | XML parser |
+| tests.cpp:57:2:57:2 | p | tests.cpp:53:23:53:43 | XercesDOMParser output argument | tests.cpp:57:2:57:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:53:23:53:43 | XercesDOMParser output argument | XML parser |
+| tests.cpp:74:2:74:2 | p | tests.cpp:69:23:69:43 | XercesDOMParser output argument | tests.cpp:74:2:74:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:69:23:69:43 | XercesDOMParser output argument | XML parser |
+| tests.cpp:78:2:78:2 | p | tests.cpp:69:23:69:43 | XercesDOMParser output argument | tests.cpp:78:2:78:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:69:23:69:43 | XercesDOMParser output argument | XML parser |
+| tests.cpp:87:2:87:2 | p | tests.cpp:84:23:84:43 | XercesDOMParser output argument | tests.cpp:87:2:87:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:84:23:84:43 | XercesDOMParser output argument | XML parser |
+| tests.cpp:98:2:98:2 | p | tests.cpp:91:23:91:43 | XercesDOMParser output argument | tests.cpp:98:2:98:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:91:23:91:43 | XercesDOMParser output argument | XML parser |
+| tests.cpp:106:3:106:3 | q | tests.cpp:103:24:103:44 | XercesDOMParser output argument | tests.cpp:106:3:106:3 | q | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:103:24:103:44 | XercesDOMParser output argument | XML parser |
+| tests.cpp:122:3:122:3 | q | tests.cpp:118:24:118:44 | XercesDOMParser output argument | tests.cpp:122:3:122:3 | q | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:118:24:118:44 | XercesDOMParser output argument | XML parser |
+| tests.cpp:131:2:131:2 | p | tests.cpp:140:23:140:43 | XercesDOMParser output argument | tests.cpp:131:2:131:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:140:23:140:43 | XercesDOMParser output argument | XML parser |
+| tests.cpp:135:2:135:2 | p | tests.cpp:140:23:140:43 | XercesDOMParser output argument | tests.cpp:135:2:135:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:140:23:140:43 | XercesDOMParser output argument | XML parser |
+| tests.cpp:152:2:152:2 | p | tests.cpp:150:19:150:32 | call to createLSParser | tests.cpp:152:2:152:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:150:19:150:32 | call to createLSParser | XML parser |

@@ -9,7 +9,7 @@ class SliceValueFlowConf extends DefaultValueFlowConf {
 }
 
 class SliceTaintFlowConf extends DefaultTaintFlowConf {
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     super.allowImplicitRead(node, c)
     or
     isSink(node) and

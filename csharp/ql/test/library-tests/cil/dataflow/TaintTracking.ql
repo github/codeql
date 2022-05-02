@@ -1,5 +1,4 @@
 import csharp
-import semmle.code.csharp.dataflow.TaintTracking
 // Test that all the copies of the taint tracking library can be imported
 // simultaneously without errors.
 import semmle.code.csharp.dataflow.TaintTracking2

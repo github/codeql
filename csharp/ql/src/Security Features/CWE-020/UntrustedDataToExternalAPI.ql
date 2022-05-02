@@ -10,7 +10,6 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.TaintTracking
 import semmle.code.csharp.security.dataflow.ExternalAPIsQuery
 import DataFlow::PathGraph
 

@@ -42,9 +42,7 @@ module AccessPath {
    * Parses a lower-bounded interval `n..` and gets the lower bound.
    */
   bindingset[arg]
-  private int parseLowerBound(string arg) {
-    result = arg.regexpCapture("(-?\\d+)\\.\\.", 1).toInt()
-  }
+  int parseLowerBound(string arg) { result = arg.regexpCapture("(-?\\d+)\\.\\.", 1).toInt() }
 
   /**
    * Parses an integer constant or interval (bounded or unbounded) that explicitly
@@ -151,7 +149,7 @@ class AccessPath extends string instanceof AccessPath::Range {
  * An access part token such as `Argument[1]` or `ReturnValue`, appearing in one or more access paths.
  */
 class AccessPathToken extends string {
-  AccessPathToken() { this = getRawToken(any(AccessPath path), _) }
+  AccessPathToken() { this = getRawToken(_, _) }
 
   private string getPart(int part) {
     result = this.regexpCapture("([^\\[]+)(?:\\[([^\\]]*)\\])?", part)

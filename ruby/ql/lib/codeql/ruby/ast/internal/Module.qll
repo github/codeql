@@ -1,11 +1,5 @@
 private import codeql.Locations
 private import codeql.ruby.AST
-private import codeql.ruby.ast.Call
-private import codeql.ruby.ast.Constant
-private import codeql.ruby.ast.Expr
-private import codeql.ruby.ast.Module
-private import codeql.ruby.ast.Operation
-private import codeql.ruby.ast.Scope
 
 // Names of built-in modules and classes
 private string builtin() {

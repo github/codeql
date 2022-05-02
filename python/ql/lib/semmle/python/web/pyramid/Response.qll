@@ -3,7 +3,6 @@ import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Basic
 import semmle.python.web.Http
 private import semmle.python.web.pyramid.View
-private import semmle.python.web.Http
 
 /**
  * A pyramid response, which is vulnerable to any sort of
