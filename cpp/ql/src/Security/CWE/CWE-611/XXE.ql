@@ -65,6 +65,13 @@ class SAXParserClass extends Class {
 }
 
 /**
+ * The `SAX2XMLReader` class.
+ */
+class SAX2XMLReader extends Class {
+  SAX2XMLReader() { this.hasName("SAX2XMLReader") }
+}
+
+/**
  * Gets a valid flow state for `AbstractDOMParser` or `SAXParser` flow.
  *
  * These flow states take the form `Xerces-A-B`, where:
@@ -168,12 +175,57 @@ class CreateEntityReferenceNodesTranformer extends XXEFlowStateTranformer {
 }
 
 /**
- * The `AbstractDOMParser.parse` or `SAXParser.parse` method.
+ * The `XMLUni.fgXercesDisableDefaultEntityResolution` constant.
+ */
+class FeatureDisableDefaultEntityResolution extends Variable {
+  FeatureDisableDefaultEntityResolution() {
+    this.getName() = "fgXercesDisableDefaultEntityResolution" and
+    this.getDeclaringType().getName() = "XMLUni"
+  }
+}
+
+/**
+ * A flow state transformer for a call to `SAX2XMLReader.setFeature(XMLUni::fgXercesDisableDefaultEntityResolution, *)`. Transforms the flow
+ * state through the qualifier according to this setting.
+ */
+class SetFeatureTranformer extends XXEFlowStateTranformer {
+  Expr newValue;
+
+  SetFeatureTranformer() {
+    exists(Call call, Function f |
+      call.getTarget() = f and
+      f.getDeclaringType() instanceof SAX2XMLReader and
+      f.hasName("setFeature") and
+      this = call.getQualifier() and
+      globalValueNumber(call.getArgument(0)).getAnExpr().(VariableAccess).getTarget() instanceof
+        FeatureDisableDefaultEntityResolution and
+      newValue = call.getArgument(1)
+    )
+  }
+
+  final override XXEFlowState transform(XXEFlowState flowstate) {
+    exists(int createEntityReferenceNodes |
+      encodeXercesFlowState(flowstate, _, createEntityReferenceNodes) and
+      (
+        globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // true
+        encodeXercesFlowState(result, 1, createEntityReferenceNodes)
+        or
+        not globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // false or unknown
+        encodeXercesFlowState(result, 0, createEntityReferenceNodes)
+      )
+    )
+  }
+}
+
+/**
+ * The `AbstractDOMParser.parse`, `SAXParser.parse` or `SAX2XMLReader.parse`
+ * method.
  */
 class ParseFunction extends Function {
   ParseFunction() {
     this.getClassAndName("parse") instanceof AbstractDOMParserClass or
-    this.getClassAndName("parse") instanceof SAXParserClass
+    this.getClassAndName("parse") instanceof SAXParserClass or
+    this.getClassAndName("parse") instanceof SAX2XMLReader
   }
 }
 
@@ -185,6 +237,17 @@ class CreateLSParser extends Function {
   CreateLSParser() {
     this.hasName("createLSParser") and
     this.getUnspecifiedType().(PointerType).getBaseType().getName() = "DOMLSParser" // returns a `DOMLSParser *`.
+  }
+}
+
+/**
+ * The `createXMLReader` function that returns a newly created `SAX2XMLReader`
+ * object.
+ */
+class CreateXMLReader extends Function {
+  CreateXMLReader() {
+    this.hasName("createXMLReader") and
+    this.getUnspecifiedType().(PointerType).getBaseType() instanceof SAX2XMLReader // returns a `SAX2XMLReader *`.
   }
 }
 
@@ -253,6 +316,13 @@ class XXEConfiguration extends DataFlow::Configuration {
       call.getStaticCallTarget() = any(SAXParserClass c).getAConstructor() and
       node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
         call.getThisArgument() and
+      encodeXercesFlowState(flowstate, 0, 1) // default configuration
+    )
+    or
+    // source is the result of a call to `createXMLReader`.
+    exists(Call call |
+      call.getTarget() instanceof CreateXMLReader and
+      call = node.asExpr() and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
     or

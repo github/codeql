@@ -60,14 +60,14 @@ void test3_6(InputSource &data) {
 	SAX2XMLReader *p = XMLReaderFactory::createXMLReader();
 
 	p->setFeature(XMLUni::fgXercesDisableDefaultEntityResolution, false);
-	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
+	p->parse(data); // BAD (parser not correctly configured)
 }
 
 void test3_7(InputSource &data) {
 	SAX2XMLReader *p = XMLReaderFactory::createXMLReader();
 
 	p->setFeature(XMLUni::fgXercesHarmlessOption, true);
-	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
+	p->parse(data); // BAD (parser not correctly configured)
 }
 
 void test3_8(InputSource &data) {
