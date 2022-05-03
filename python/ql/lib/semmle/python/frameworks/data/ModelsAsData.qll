@@ -24,7 +24,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private class RemoteFlowSourceFromCsv extends RemoteFlowSource {
   RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").getAnImmediateUse() }
 
-  override string getSourceType() { result = "Remote flow" }
+  override string getSourceType() { result = "Remote flow (from model)" }
 }
 
 /**
