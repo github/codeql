@@ -163,11 +163,11 @@ private predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
 
 private predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 
-bindingset[input]
-private predicate getKind(string input, string kind, boolean generated) {
-  input.splitAt(":", 0) = "generated" and kind = input.splitAt(":", 1) and generated = true
+bindingset[provenance]
+private boolean isGenerated(string provenance) {
+  provenance = "generated" and result = true
   or
-  not input.matches("%:%") and kind = input and generated = false
+  provenance != "generated" and result = false
 }
 
 /** Holds if a source model exists for the given parameters. */
@@ -185,7 +185,10 @@ predicate sourceModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = output and
-    exists(string k | row.splitAt(";", 7) = k and getKind(k, kind, generated))
+    row.splitAt(";", 7) = kind and
+    exists(string provenance |
+      row.splitAt(";", 8) = provenance and generated = isGenerated(provenance)
+    )
   )
 }
 
@@ -204,7 +207,10 @@ predicate sinkModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
-    exists(string k | row.splitAt(";", 7) = k and getKind(k, kind, generated))
+    row.splitAt(";", 7) = kind and
+    exists(string provenance |
+      row.splitAt(";", 8) = provenance and generated = isGenerated(provenance)
+    )
   )
 }
 
@@ -224,7 +230,10 @@ predicate summaryModel(
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
     row.splitAt(";", 7) = output and
-    exists(string k | row.splitAt(";", 8) = k and getKind(k, kind, generated))
+    row.splitAt(";", 8) = kind and
+    exists(string provenance |
+      row.splitAt(";", 9) = provenance and generated = isGenerated(provenance)
+    )
   )
 }
 
@@ -359,23 +368,20 @@ module CsvValidation {
       )
     )
     or
-    exists(string row, string k, string kind | summaryModel(row) |
-      k = row.splitAt(";", 8) and
-      getKind(k, kind, _) and
+    exists(string row, string kind | summaryModel(row) |
+      kind = row.splitAt(";", 8) and
       not kind = ["taint", "value"] and
       msg = "Invalid kind \"" + kind + "\" in summary model."
     )
     or
-    exists(string row, string k, string kind | sinkModel(row) |
-      k = row.splitAt(";", 7) and
-      getKind(k, kind, _) and
+    exists(string row, string kind | sinkModel(row) |
+      kind = row.splitAt(";", 7) and
       not kind = ["code", "sql", "xss", "remote", "html"] and
       msg = "Invalid kind \"" + kind + "\" in sink model."
     )
     or
-    exists(string row, string k, string kind | sourceModel(row) |
-      k = row.splitAt(";", 7) and
-      getKind(k, kind, _) and
+    exists(string row, string kind | sourceModel(row) |
+      kind = row.splitAt(";", 7) and
       not kind = "local" and
       msg = "Invalid kind \"" + kind + "\" in source model."
     )
