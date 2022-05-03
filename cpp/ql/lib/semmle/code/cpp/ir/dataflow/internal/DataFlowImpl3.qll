@@ -4206,10 +4206,11 @@ private module Subpaths {
   pragma[nomagic]
   private predicate subpaths01(
     PathNodeImpl arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
-    NodeEx out, FlowState sout, AccessPath apout
+    NodeEx out, FlowState sout, CallContext ccout, AccessPath apout
   ) {
     exists(Configuration config |
-      pathThroughCallable(arg, out, pragma[only_bind_into](sout), _, pragma[only_bind_into](apout)) and
+      pathThroughCallable(arg, out, pragma[only_bind_into](sout), ccout,
+        pragma[only_bind_into](apout)) and
       pathIntoCallable(arg, par, _, _, innercc, sc, _, config) and
       paramFlowsThrough(kind, pragma[only_bind_into](sout), innercc, sc,
         pragma[only_bind_into](apout), _, unbindConf(config)) and
@@ -4224,10 +4225,11 @@ private module Subpaths {
   pragma[nomagic]
   private predicate subpaths02(
     PathNode arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
-    NodeEx out, FlowState sout, AccessPath apout
+    NodeEx out, FlowState sout, CallContext ccout, AccessPath apout, Configuration config
   ) {
-    subpaths01(arg, par, sc, innercc, kind, out, sout, apout) and
-    out.asNode() = kind.getAnOutNode(_)
+    subpaths01(arg, par, sc, innercc, kind, out, sout, ccout, apout) and
+    out.asNode() = kind.getAnOutNode(_) and
+    config = getPathNodeConf(arg)
   }
 
   pragma[nomagic]
@@ -4238,12 +4240,14 @@ private module Subpaths {
    */
   pragma[nomagic]
   private predicate subpaths03(
-    PathNode arg, ParamNodeEx par, PathNodeMid ret, NodeEx out, FlowState sout, AccessPath apout
+    PathNodeMid arg, ParamNodeEx par, PathNodeMid ret, NodeEx out, FlowState sout,
+    CallContext ccout, AccessPath apout, SummaryCtx scout, Configuration config
   ) {
     exists(SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind, RetNodeEx retnode |
-      subpaths02(arg, par, sc, innercc, kind, out, sout, apout) and
-      pathNode(ret, retnode, sout, innercc, sc, apout, unbindConf(getPathNodeConf(arg)), _) and
-      kind = retnode.getKind()
+      subpaths02(arg, par, sc, innercc, kind, out, sout, ccout, apout, config) and
+      pathNode(ret, retnode, sout, innercc, sc, apout, config, _) and
+      kind = retnode.getKind() and
+      scout = arg.getSummaryCtx()
     )
   }
 
@@ -4263,16 +4267,17 @@ private module Subpaths {
    * `ret -> out` is summarized as the edge `arg -> out`.
    */
   predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeImpl ret, PathNode out) {
-    exists(ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout, PathNodeMid out0 |
+    exists(
+      ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout, CallContext ccout,
+      SummaryCtx scout, PathNodeMid out0, Configuration config
+    |
       pragma[only_bind_into](arg).getASuccessor() = par and
-      pragma[only_bind_into](arg).getASuccessor() = out0 and
-      subpaths03(arg, p, localStepToHidden*(ret), o, sout, apout) and
+      subpaths03(arg, p, localStepToHidden*(ret), o, sout, ccout, apout, scout, config) and
+      pathNode(out0, o, sout, ccout, scout, apout, config, _) and
       not ret.isHidden() and
-      par.getNodeEx() = p and
-      out0.getNodeEx() = o and
-      out0.getState() = sout and
-      out0.getAp() = apout and
-      (out = out0 or out = out0.projectToSink())
+      par.getNodeEx() = p
+    |
+      out = out0 or out = out0.projectToSink()
     )
   }
 
