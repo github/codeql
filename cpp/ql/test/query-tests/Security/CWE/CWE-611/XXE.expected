@@ -1,4 +1,6 @@
 edges
+| tests2.cpp:20:17:20:31 | SAXParser output argument | tests2.cpp:22:2:22:2 | p |
+| tests2.cpp:33:17:33:31 | SAXParser output argument | tests2.cpp:37:2:37:2 | p |
 | tests.cpp:33:23:33:43 | XercesDOMParser output argument | tests.cpp:35:2:35:2 | p |
 | tests.cpp:46:23:46:43 | XercesDOMParser output argument | tests.cpp:49:2:49:2 | p |
 | tests.cpp:53:19:53:19 | VariableAddress [post update] | tests.cpp:55:2:55:2 | p |
@@ -27,6 +29,10 @@ edges
 | tests.cpp:146:18:146:18 | q | tests.cpp:134:39:134:39 | p |
 | tests.cpp:150:19:150:32 | call to createLSParser | tests.cpp:152:2:152:2 | p |
 nodes
+| tests2.cpp:20:17:20:31 | SAXParser output argument | semmle.label | SAXParser output argument |
+| tests2.cpp:22:2:22:2 | p | semmle.label | p |
+| tests2.cpp:33:17:33:31 | SAXParser output argument | semmle.label | SAXParser output argument |
+| tests2.cpp:37:2:37:2 | p | semmle.label | p |
 | tests.cpp:33:23:33:43 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
 | tests.cpp:35:2:35:2 | p | semmle.label | p |
 | tests.cpp:46:23:46:43 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
@@ -66,6 +72,8 @@ nodes
 | tests.cpp:152:2:152:2 | p | semmle.label | p |
 subpaths
 #select
+| tests2.cpp:22:2:22:2 | p | tests2.cpp:20:17:20:31 | SAXParser output argument | tests2.cpp:22:2:22:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests2.cpp:20:17:20:31 | SAXParser output argument | XML parser |
+| tests2.cpp:37:2:37:2 | p | tests2.cpp:33:17:33:31 | SAXParser output argument | tests2.cpp:37:2:37:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests2.cpp:33:17:33:31 | SAXParser output argument | XML parser |
 | tests.cpp:35:2:35:2 | p | tests.cpp:33:23:33:43 | XercesDOMParser output argument | tests.cpp:35:2:35:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:33:23:33:43 | XercesDOMParser output argument | XML parser |
 | tests.cpp:49:2:49:2 | p | tests.cpp:46:23:46:43 | XercesDOMParser output argument | tests.cpp:49:2:49:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:46:23:46:43 | XercesDOMParser output argument | XML parser |
 | tests.cpp:57:2:57:2 | p | tests.cpp:53:23:53:43 | XercesDOMParser output argument | tests.cpp:57:2:57:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:53:23:53:43 | XercesDOMParser output argument | XML parser |

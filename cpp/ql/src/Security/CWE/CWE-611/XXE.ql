@@ -16,6 +16,7 @@ import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
 import DataFlow::PathGraph
 import semmle.code.cpp.ir.IR
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**
  * A flow state representing a possible configuration of an XML object.
@@ -57,42 +58,51 @@ class XercesDOMParserClass extends Class {
 }
 
 /**
- * Gets a valid flow state for `XercesDOMParser` flow.
+ * The `SAXParser` class.
+ */
+class SAXParserClass extends Class {
+  SAXParserClass() { this.hasName("SAXParser") }
+}
+
+/**
+ * Gets a valid flow state for `AbstractDOMParser` or `SAXParser` flow.
  *
- * These flow states take the form `XercesDOM-A-B`, where:
+ * These flow states take the form `Xerces-A-B`, where:
  *  - A is 1 if `setDisableDefaultEntityResolution` is `true`, 0 otherwise.
  *  - B is 1 if `setCreateEntityReferenceNodes` is `true`, 0 otherwise.
  */
-predicate encodeXercesDOMFlowState(
+predicate encodeXercesFlowState(
   string flowstate, int disabledDefaultEntityResolution, int createEntityReferenceNodes
 ) {
-  flowstate = "XercesDOM-0-0" and
+  flowstate = "Xerces-0-0" and
   disabledDefaultEntityResolution = 0 and
   createEntityReferenceNodes = 0
   or
-  flowstate = "XercesDOM-0-1" and
+  flowstate = "Xerces-0-1" and
   disabledDefaultEntityResolution = 0 and
   createEntityReferenceNodes = 1
   or
-  flowstate = "XercesDOM-1-0" and
+  flowstate = "Xerces-1-0" and
   disabledDefaultEntityResolution = 1 and
   createEntityReferenceNodes = 0
   or
-  flowstate = "XercesDOM-1-1" and
+  flowstate = "Xerces-1-1" and
   disabledDefaultEntityResolution = 1 and
   createEntityReferenceNodes = 1
 }
 
 /**
- * A flow state representing the configuration of a `XercesDOMParser` object.
+ * A flow state representing the configuration of an `AbstractDOMParser` or
+ * `SAXParser` object.
  */
-class XercesDOMParserFlowState extends XXEFlowState {
-  XercesDOMParserFlowState() { encodeXercesDOMFlowState(this, _, _) }
+class XercesFlowState extends XXEFlowState {
+  XercesFlowState() { encodeXercesFlowState(this, _, _) }
 }
 
 /**
  * A flow state transformer for a call to
- * `AbstractDOMParser.setDisableDefaultEntityResolution`. Transforms the flow
+ * `AbstractDOMParser.setDisableDefaultEntityResolution` or
+ * `SAXParser.setDisableDefaultEntityResolution`. Transforms the flow
  * state through the qualifier according to the setting in the parameter.
  */
 class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
@@ -101,7 +111,10 @@ class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
   DisableDefaultEntityResolutionTranformer() {
     exists(Call call, Function f |
       call.getTarget() = f and
-      f.getDeclaringType() instanceof AbstractDOMParserClass and
+      (
+        f.getDeclaringType() instanceof AbstractDOMParserClass or
+        f.getDeclaringType() instanceof SAXParserClass
+      ) and
       f.hasName("setDisableDefaultEntityResolution") and
       this = call.getQualifier() and
       newValue = call.getArgument(0)
@@ -110,13 +123,13 @@ class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
 
   final override XXEFlowState transform(XXEFlowState flowstate) {
     exists(int createEntityReferenceNodes |
-      encodeXercesDOMFlowState(flowstate, _, createEntityReferenceNodes) and
+      encodeXercesFlowState(flowstate, _, createEntityReferenceNodes) and
       (
-        newValue.getValue().toInt() = 1 and // true
-        encodeXercesDOMFlowState(result, 1, createEntityReferenceNodes)
+        globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // true
+        encodeXercesFlowState(result, 1, createEntityReferenceNodes)
         or
-        not newValue.getValue().toInt() = 1 and // false or unknown
-        encodeXercesDOMFlowState(result, 0, createEntityReferenceNodes)
+        not globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // false or unknown
+        encodeXercesFlowState(result, 0, createEntityReferenceNodes)
       )
     )
   }
@@ -142,27 +155,31 @@ class CreateEntityReferenceNodesTranformer extends XXEFlowStateTranformer {
 
   final override XXEFlowState transform(XXEFlowState flowstate) {
     exists(int disabledDefaultEntityResolution |
-      encodeXercesDOMFlowState(flowstate, disabledDefaultEntityResolution, _) and
+      encodeXercesFlowState(flowstate, disabledDefaultEntityResolution, _) and
       (
-        newValue.getValue().toInt() = 1 and // true
-        encodeXercesDOMFlowState(result, disabledDefaultEntityResolution, 1)
+        globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // true
+        encodeXercesFlowState(result, disabledDefaultEntityResolution, 1)
         or
-        not newValue.getValue().toInt() = 1 and // false or unknown
-        encodeXercesDOMFlowState(result, disabledDefaultEntityResolution, 0)
+        not globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // false or unknown
+        encodeXercesFlowState(result, disabledDefaultEntityResolution, 0)
       )
     )
   }
 }
 
 /**
- * The `AbstractDOMParser.parse` method.
+ * The `AbstractDOMParser.parse` or `SAXParser.parse` method.
  */
 class ParseFunction extends Function {
-  ParseFunction() { this.getClassAndName("parse") instanceof AbstractDOMParserClass }
+  ParseFunction() {
+    this.getClassAndName("parse") instanceof AbstractDOMParserClass or
+    this.getClassAndName("parse") instanceof SAXParserClass
+  }
 }
 
 /**
- * The `createLSParser` function that returns a newly created `LSParser` object.
+ * The `createLSParser` function that returns a newly created `DOMLSParser`
+ * object.
  */
 class CreateLSParser extends Function {
   CreateLSParser() {
@@ -184,14 +201,23 @@ class XXEConfiguration extends DataFlow::Configuration {
       call.getStaticCallTarget() = any(XercesDOMParserClass c).getAConstructor() and
       node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
         call.getThisArgument() and
-      encodeXercesDOMFlowState(flowstate, 0, 1) // default configuration
+      encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
     or
     // source is the result of a call to `createLSParser`.
     exists(Call call |
       call.getTarget() instanceof CreateLSParser and
       call = node.asExpr() and
-      encodeXercesDOMFlowState(flowstate, 0, 1) // default configuration
+      encodeXercesFlowState(flowstate, 0, 1) // default configuration
+    )
+    or
+    // source is the write on `this` of a call to the `SAXParser`
+    // constructor.
+    exists(CallInstruction call |
+      call.getStaticCallTarget() = any(SAXParserClass c).getAConstructor() and
+      node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
+        call.getThisArgument() and
+      encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
   }
 
@@ -201,8 +227,8 @@ class XXEConfiguration extends DataFlow::Configuration {
       call.getTarget() instanceof ParseFunction and
       call.getQualifier() = node.asConvertedExpr()
     ) and
-    flowstate instanceof XercesDOMParserFlowState and
-    not encodeXercesDOMFlowState(flowstate, 1, 1) // safe configuration
+    flowstate instanceof XercesFlowState and
+    not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
   }
 
   override predicate isAdditionalFlowStep(

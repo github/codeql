@@ -4,8 +4,8 @@
 
 // ---
 
-class SecurityManager;
-class InputSource;
+
+
 
 class AbstractDOMParser {
 public:
