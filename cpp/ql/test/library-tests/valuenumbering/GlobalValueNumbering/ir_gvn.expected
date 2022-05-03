@@ -941,10 +941,6 @@ test.cpp:
 #  124|     v124_13(void)      = AliasedUse                : m124_3
 #  124|     v124_14(void)      = ExitFunction              : 
 
-#  132| A* global_a
-
-#  133| int global_n
-
 #  135| void test_read_global_same()
 #  135|   Block 0
 #  135|     v135_1(void)       = EnterFunction             : 

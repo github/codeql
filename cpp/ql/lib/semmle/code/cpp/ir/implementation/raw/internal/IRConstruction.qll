@@ -37,7 +37,14 @@ module Raw {
   predicate functionHasIR(Function func) { exists(getTranslatedFunction(func)) }
 
   cached
-  predicate varHasIRFunc(GlobalOrNamespaceVariable var) { any() } // TODO: restrict?
+  predicate varHasIRFunc(GlobalOrNamespaceVariable var) {
+    var.hasInitializer() and
+    (
+      not var.getType().isDeeplyConst()
+      or
+      var.getInitializer().getExpr() instanceof StringLiteral
+    )
+  }
 
   cached
   predicate hasInstruction(TranslatedElement element, InstructionTag tag) {

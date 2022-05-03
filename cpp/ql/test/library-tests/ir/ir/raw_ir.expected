@@ -9744,17 +9744,6 @@ ir.cpp:
 # 1821|     v1821_7(void)       = AliasedUse                : ~m?
 # 1821|     v1821_8(void)       = ExitFunction              : 
 
-# 1823| int const global_3
-# 1823|   Block 0
-# 1823|     v1823_1(void)       = EnterFunction             : 
-# 1823|     mu1823_2(unknown)   = AliasedDefinition         : 
-# 1823|     r1823_3(glval<int>) = VariableAddress[global_3] : 
-# 1823|     r1823_4(int)        = Constant[2]               : 
-# 1823|     mu1823_5(int)       = Store[global_3]           : &:r1823_3, r1823_4
-# 1823|     v1823_6(void)       = ReturnVoid                : 
-# 1823|     v1823_7(void)       = AliasedUse                : ~m?
-# 1823|     v1823_8(void)       = ExitFunction              : 
-
 # 1825| constructor_only global_4
 # 1825|   Block 0
 # 1825|     v1825_1(void)                    = EnterFunction                     : 

@@ -119,7 +119,7 @@ private predicate ignoreExprOnly(Expr expr) {
   exists(NewOrNewArrayExpr new | expr = new.getAllocatorCall().getArgument(0))
   or
   not translateFunction(expr.getEnclosingFunction()) and
-  not expr.getEnclosingVariable() instanceof GlobalOrNamespaceVariable
+  not Raw::varHasIRFunc(expr.getEnclosingVariable())
   or
   // We do not yet translate destructors properly, so for now we ignore the
   // destructor call. We do, however, translate the expression being
@@ -665,7 +665,7 @@ newtype TTranslatedElement =
   } or
   // The side effect that initializes newly-allocated memory.
   TTranslatedAllocationSideEffect(AllocationExpr expr) { not ignoreSideEffects(expr) } or
-  TTranslatedGlobalOrNamespaceVarInit(GlobalOrNamespaceVariable var) { var.hasInitializer() }
+  TTranslatedGlobalOrNamespaceVarInit(GlobalOrNamespaceVariable var) { Raw::varHasIRFunc(var) }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`
