@@ -85,3 +85,8 @@ mySink(Steps.preserveArgZeroAndTwo("foo", "bar", getSource())) # FLOW
 mySink(Steps.preserveAllButFirstArgument(getSource())) # NO FLOW
 mySink(Steps.preserveAllButFirstArgument("foo", getSource())) # FLOW
 mySink(Steps.preserveAllButFirstArgument("foo", "bar", getSource())) # FLOW
+
+CallFilter.arityOne(one) # match
+CallFilter.arityOne(one=one) # match
+CallFilter.arityOne(one, two=two) # NO match
+CallFilter.arityOne(one=one, two=two) # NO match

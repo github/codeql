@@ -349,8 +349,8 @@ module API {
       result.getAnImmediateUse() = this
     }
 
-    /** Gets the number of arguments of this call. */
-    int getNumArgument() { result = count(this.getArg(_)) }
+    /** Gets the number of arguments of this call. Both positional and named arguments are counted. */
+    int getNumArgument() { result = count([this.getArg(_), this.getArgByName(_)]) }
   }
 
   /**
