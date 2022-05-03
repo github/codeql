@@ -17,14 +17,6 @@ public:
 	static SAX2XMLReader *createXMLReader();
 };
 
-
-
-
-
-
-
-
-
 // ---
 
 void test3_1(InputSource &data) {

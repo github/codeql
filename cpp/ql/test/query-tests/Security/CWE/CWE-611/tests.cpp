@@ -9,24 +9,6 @@ public:
 	XercesDOMParser();
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ---
 
 void test1(InputSource &data) {
