@@ -80,6 +80,7 @@ enclosing
 | stmts.kt:18:52:18:52 | <Expr>; | ExprStmt |
 | stmts.kt:19:5:19:16 | return ... | ReturnStmt |
 | stmts.kt:22:27:30:1 | { ... } | BlockStmt |
+| stmts.kt:23:11:27:5 | <Label>: ... | LabeledStmt |
 | stmts.kt:23:11:27:5 | while (...) | WhileStmt |
 | stmts.kt:23:27:27:5 | { ... } | BlockStmt |
 | stmts.kt:24:9:26:25 | do ... while (...) | DoStmt |

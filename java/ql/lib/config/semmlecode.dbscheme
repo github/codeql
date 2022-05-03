@@ -1165,17 +1165,6 @@ ktCommentOwners(
   int owner: @top ref
 )
 
-@breakcontinuestmt = @breakstmt
-                   | @continuestmt;
-
-@ktloopstmt = @whilestmt
-            | @dostmt;
-
-ktBreakContinueTargets(
-  unique int id: @breakcontinuestmt ref,
-  int target: @ktloopstmt ref
-)
-
 ktExtensionFunctions(
   unique int id: @method ref,
   int typeid: @type ref,
