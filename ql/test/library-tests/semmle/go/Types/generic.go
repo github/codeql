@@ -78,3 +78,8 @@ func accessFieldsOfInstantiatedStruct(x GenericStruct1[string]) {
 	_ = x.sliceField
 	_ = x.mapField
 }
+
+type TypeAlias = GenericArray[int]
+
+type GenericSignature[T any] func(t T) T
+type GenericSignatureAlias = GenericSignature[string]

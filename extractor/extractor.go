@@ -369,8 +369,10 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).TypeParams(), obj)
 				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).RecvTypeParams(), obj)
 			}
-			// Populate type parameter parents for named types.
-			if typeNameObj, ok := obj.(*types.TypeName); ok {
+			// Populate type parameter parents for named types. Note that we
+			// skip type aliases as the original type should be the parent
+			// of any type parameters.
+			if typeNameObj, ok := obj.(*types.TypeName); ok && !typeNameObj.IsAlias() {
 				if tp, ok := typeNameObj.Type().(*types.Named); ok {
 					populateTypeParamParents(tw, tp.TypeParams(), obj)
 				}

@@ -19,6 +19,7 @@
 | GenericMap2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericMap2 |
 | GenericNamed | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericNamed |
 | GenericPointer | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericPointer |
+| GenericSignature | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericSignature |
 | GenericSlice | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericSlice |
 | GenericStruct1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct1 |
 | GenericStruct2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct2 |

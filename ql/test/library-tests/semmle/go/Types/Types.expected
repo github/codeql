@@ -19,6 +19,7 @@
 | GenericMap2 | GenericMap2 |
 | GenericNamed | GenericNamed |
 | GenericPointer | GenericPointer |
+| GenericSignature | GenericSignature |
 | GenericSlice | GenericSlice |
 | GenericStruct1 | GenericStruct1 |
 | GenericStruct2 | GenericStruct2 |

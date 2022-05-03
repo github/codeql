@@ -16,3 +16,4 @@
 | generic.go:62:12:62:26 | generic type instantiation expression | generic.go:62:12:62:23 | GenericNamed | 0 | generic.go:62:25:62:25 | U |
 | generic.go:70:42:70:64 | generic type instantiation expression | generic.go:70:42:70:57 | GenericInterface | 0 | generic.go:70:59:70:63 | int32 |
 | generic.go:74:41:74:62 | generic type instantiation expression | generic.go:74:41:74:54 | GenericStruct1 | 0 | generic.go:74:56:74:61 | string |
+| generic.go:82:18:82:34 | generic type instantiation expression | generic.go:82:18:82:29 | GenericArray | 0 | generic.go:82:31:82:33 | int |
