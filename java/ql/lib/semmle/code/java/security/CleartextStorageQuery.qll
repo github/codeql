@@ -85,18 +85,3 @@ private class EncryptedValueFlowConfig extends DataFlow4::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SensitiveExpr }
 }
-
-/** A taint step for `EditText.toString` in Android. */
-private class AndroidEditTextCleartextStorageStep extends CleartextStorageAdditionalTaintStep {
-  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    // EditText.getText() return type is parsed as `Object`, so we need to
-    // add a taint step for `Object.toString` to model `editText.getText().toString()`
-    exists(MethodAccess ma, Method m |
-      ma.getMethod() = m and
-      m.getDeclaringType() instanceof TypeObject and
-      m.hasName("toString")
-    |
-      n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma
-    )
-  }
-}

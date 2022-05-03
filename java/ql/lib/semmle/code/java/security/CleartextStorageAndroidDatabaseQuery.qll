@@ -11,20 +11,6 @@ private class LocalDatabaseCleartextStorageSink extends CleartextStorageSink {
   LocalDatabaseCleartextStorageSink() { localDatabaseInput(_, this.asExpr()) }
 }
 
-private class LocalDatabaseCleartextStorageStep extends CleartextStorageAdditionalTaintStep {
-  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    // EditText.getText() return type is parsed as `Object`, so we need to
-    // add a taint step for `Object.toString` to model `editText.getText().toString()`
-    exists(MethodAccess ma, Method m |
-      ma.getMethod() = m and
-      m.getDeclaringType() instanceof TypeObject and
-      m.hasName("toString")
-    |
-      n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma
-    )
-  }
-}
-
 /** The creation of an object that can be used to store data in a local database. */
 class LocalDatabaseOpenMethodAccess extends Storable, Call {
   LocalDatabaseOpenMethodAccess() {
