@@ -114,6 +114,9 @@ module SummaryComponentStack {
   SummaryComponentStack jump(Callable c) { result = singleton(SummaryComponent::jump(c)) }
 }
 
+/**
+ * A class for synthesized callables given by a summary.
+ */
 abstract class SummarizedCallable extends DotNet::Callable {
   /**
    * Holds if data may flow from `input` to `output` through this callable.
