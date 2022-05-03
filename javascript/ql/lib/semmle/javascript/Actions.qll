@@ -16,7 +16,7 @@ module Actions {
       this.getLocation()
           .getFile()
           .getRelativePath()
-          .matches(["experimental/Security/CWE-094/.github/workflows/%", ".github/workflows/%"])
+          .regexpMatch("(^|.*/)\\.github/workflows/.*\\.yml$")
     }
   }
 
