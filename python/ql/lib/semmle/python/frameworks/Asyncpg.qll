@@ -56,7 +56,7 @@ private module Asyncpg {
    * The creation of the `Cursor` executes the query.
    */
   module Cursor {
-    class CursorConstruction extends SqlExecution::Range, API::CallNode {
+    class CursorConstruction extends SqlConstruction::Range, API::CallNode {
       CursorConstruction() {
         this = ModelOutput::getATypeNode("asyncpg", "Connection").getMember("cursor").getACall()
       }

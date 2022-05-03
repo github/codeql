@@ -6,7 +6,7 @@ import sqlalchemy.orm
 # either v1.4 or v2.0, such that we cover both.
 
 raw_sql = "select 'FOO'"
-text_sql = sqlalchemy.text(raw_sql)  # $ getSql=raw_sql
+text_sql = sqlalchemy.text(raw_sql)  # $ constructedSql=raw_sql
 
 Base = sqlalchemy.orm.declarative_base()
 
@@ -176,7 +176,7 @@ assert session.query(For14).all()[0].id == 14
 
 # and now we can do the actual querying
 
-text_foo = sqlalchemy.text("'FOO'")  # $ getSql="'FOO'"
+text_foo = sqlalchemy.text("'FOO'")  # $ constructedSql="'FOO'"
 
 # filter_by is only vulnerable to injection if sqlalchemy.text is used, which is evident
 # from the logs produced if this file is run
@@ -305,7 +305,7 @@ with engine.connect() as conn:
     assert scalar_result == "FOO"
 
     # This is a contrived example
-    select = sqlalchemy.select(sqlalchemy.text("'BAR'"))  # $ getSql="'BAR'"
+    select = sqlalchemy.select(sqlalchemy.text("'BAR'"))  # $ constructedSql="'BAR'"
     result = conn.execute(select) # $ getSql=select
     assert result.fetchall() == [("BAR",)]
 
