@@ -1,6 +1,6 @@
 /**
  * @name Missing documentation for exception
- * @description Exceptions thrown by the method should be documented using '<exception cref="..."> </exception>' tags.
+ * @description Exceptions thrown by the method should be documented using `<exception cref="..."> </exception>` tags.
  *              Ensure that the correct type of the exception is given in the 'cref' attribute.
  * @kind problem
  * @problem.severity recommendation

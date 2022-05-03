@@ -1,6 +1,6 @@
 /**
  * @name Incorrect type parameter name in documentation
- * @description The type parameter name given in a '<typeparam>' tag does not exist. Rename the parameter or
+ * @description The type parameter name given in a `<typeparam>` tag does not exist. Rename the parameter or
  *              change the name in the documentation to ensure that they are the same.
  * @kind problem
  * @problem.severity recommendation

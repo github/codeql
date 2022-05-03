@@ -1,5 +1,7 @@
 // library/common functions for rule CWE-611
 
+#define NULL (0)
+
 class SecurityManager;
 class InputSource;
 
@@ -20,3 +22,4 @@ class XMLUni
 public:
 	static const XMLCh fgXercesDisableDefaultEntityResolution[];
 };
+

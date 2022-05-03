@@ -1,0 +1,16 @@
+genrule(
+    name = "gen",
+    srcs = ["//swift:dbscheme"],
+    outs = [
+        "TrapEntries.h",
+        "TrapTags.h",
+    ],
+    cmd = "$(location //swift/codegen:trapgen) --dbscheme $< --trap-output $(RULEDIR)",
+    exec_tools = ["//swift/codegen:trapgen"],
+)
+
+cc_library(
+    name = "trap",
+    hdrs = glob(["*.h"]) + [":gen"],
+    visibility = ["//visibility:public"],
+)

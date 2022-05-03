@@ -97,7 +97,11 @@ predicate alert(Class ab, string msg, Class sub, Class sub2) {
     )
   ) and
   // exclude results in experimental
-  not experimentalFile(sub.getLocation().getFile())
+  not experimentalFile(sub.getLocation().getFile()) and
+  // exclude trivially empty classes
+  not sub.getCharPred().getBody() instanceof NoneCall and
+  // exclude test/example queries
+  not sub.getLocation().getFile().getRelativePath().matches("%/" + ["examples", "test"] + "/%.ql")
 }
 
 from Class ab, string msg, Class sub, Class sub2

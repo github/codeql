@@ -68,4 +68,25 @@ public class MybatisSqlInjection {
 		List<Test> result = mybatisSqlInjectionService.good1(id);
 		return result;
 	}
+
+	// using providers
+	@GetMapping(value = "badSelect")
+	public String badSelect(@RequestParam String name) {
+		return mybatisSqlInjectionService.badSelect(name);
+	}
+
+	@GetMapping(value = "badDelete")
+	public void badDelete(@RequestParam String name) {
+		mybatisSqlInjectionService.badDelete(name);
+	}
+	
+	@GetMapping(value = "badUpdate")
+	public void badUpdate(@RequestParam String name) {
+		mybatisSqlInjectionService.badUpdate(name);
+	}
+
+	@GetMapping(value = "badInsert")
+	public void badInsert(@RequestParam String name) {
+		mybatisSqlInjectionService.badInsert(name);
+	}
 }

@@ -109,11 +109,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: query-pack-zip
           path: query-pack-zip
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: extractor-ubuntu-latest
           path: linux64
@@ -147,7 +147,7 @@ jobs:
 
     steps:
       - name: Download pack
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: codeql-ql-pack
           path: ${{ runner.temp }}/codeql-ql-pack-artifact

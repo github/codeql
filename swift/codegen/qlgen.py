@@ -110,5 +110,7 @@ def generate(opts, renderer):
     format(opts.codeql_binary, renderer.written)
 
 
+tags = ("schema", "ql")
+
 if __name__ == "__main__":
-    generator.run(generate, tags=["schema", "ql"])
+    generator.run()

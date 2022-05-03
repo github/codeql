@@ -1,7 +1,7 @@
 /** Provides classes and predicates to work with File objects. */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 private class CreateFileSinkModels extends SinkModelCsv {
   override predicate row(string row) {

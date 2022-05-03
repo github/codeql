@@ -49,9 +49,6 @@ class Expr extends StmtParent, @expr {
   /** Gets the enclosing variable of this expression, if any. */
   Variable getEnclosingVariable() { result = exprEnclosingElement(this) }
 
-  /** Gets the enclosing variable or function of this expression. */
-  Declaration getEnclosingDeclaration() { result = exprEnclosingElement(this) }
-
   /** Gets a child of this expression. */
   Expr getAChild() { exists(int n | result = this.getChild(n)) }
 

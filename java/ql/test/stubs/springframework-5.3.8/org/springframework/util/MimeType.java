@@ -7,7 +7,7 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Map;
 
-public class MimeType implements Comparable<MimeType>, Serializable
+public class MimeType
 {
     protected MimeType() {}
     protected MimeType(MimeType p0){}

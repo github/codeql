@@ -1,6 +1,7 @@
 """ dbscheme format representation """
 
 import logging
+import re
 from dataclasses import dataclass
 from typing import ClassVar, List
 
@@ -102,3 +103,54 @@ class Scheme:
     src: str
     includes: List[SchemeInclude]
     declarations: List[Decl]
+
+
+class Re:
+    entity = re.compile(
+        "(?m)"
+        r"(?:^#keyset\[(?P<tablekeys>[\w\s,]+)\][\s\n]*)?^(?P<table>\w+)\((?P<tablebody>[^\)]*)\);?"
+        "|"
+        r"^(?P<union>@\w+)\s*=\s*(?P<unionbody>@\w+(?:\s*\|\s*@\w+)*)\s*;?"
+    )
+    field = re.compile(r"(?m)[\w\s]*\s(?P<field>\w+)\s*:\s*(?P<type>@?\w+)(?P<ref>\s+ref)?")
+    key = re.compile(r"@\w+")
+    comment = re.compile(r"(?m)(?s)/\*.*?\*/|//[^\n]*$")
+
+
+def get_column(match):
+    return Column(
+        schema_name=match["field"].rstrip("_"),
+        type=match["type"],
+        binding=not match["ref"],
+    )
+
+
+def get_table(match):
+    keyset = None
+    if match["tablekeys"]:
+        keyset = KeySet(k.strip() for k in match["tablekeys"].split(","))
+    return Table(
+        name=match["table"],
+        columns=[get_column(f) for f in Re.field.finditer(match["tablebody"])],
+        keyset=keyset,
+    )
+
+
+def get_union(match):
+    return Union(
+        lhs=match["union"],
+        rhs=(d[0] for d in Re.key.finditer(match["unionbody"])),
+    )
+
+
+def iterload(file):
+    data = Re.comment.sub("", file.read())
+    for e in Re.entity.finditer(data):
+        if e["table"]:
+            yield get_table(e)
+        elif e["union"]:
+            yield get_union(e)
+
+
+def load(file):
+    return list(iterload(file))

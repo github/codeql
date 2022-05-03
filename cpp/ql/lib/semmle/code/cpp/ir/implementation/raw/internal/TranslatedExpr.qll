@@ -12,7 +12,6 @@ private import TranslatedElement
 private import TranslatedFunction
 private import TranslatedInitialization
 private import TranslatedStmt
-private import TranslatedGlobalVar
 import TranslatedCall
 
 /**
@@ -79,7 +78,7 @@ abstract class TranslatedExpr extends TranslatedElement {
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = this.getAst() }
 
-  final override Declaration getFunction() { result = expr.getEnclosingDeclaration() }
+  final override Function getFunction() { result = expr.getEnclosingFunction() }
 
   /**
    * Gets the expression from which this `TranslatedExpr` is generated.
@@ -89,10 +88,8 @@ abstract class TranslatedExpr extends TranslatedElement {
   /**
    * Gets the `TranslatedFunction` containing this expression.
    */
-  final TranslatedRootElement getEnclosingFunction() {
+  final TranslatedFunction getEnclosingFunction() {
     result = getTranslatedFunction(expr.getEnclosingFunction())
-    or
-    result = getTranslatedVarInit(expr.getEnclosingVariable())
   }
 }
 
@@ -790,7 +787,7 @@ class TranslatedThisExpr extends TranslatedNonConstantExpr {
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = ThisAddressTag() and
-    result = this.getEnclosingFunction().(TranslatedFunction).getThisVariable()
+    result = this.getEnclosingFunction().getThisVariable()
   }
 }
 
@@ -2525,7 +2522,7 @@ class TranslatedVarArgsStart extends TranslatedNonConstantExpr {
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = VarArgsStartEllipsisAddressTag() and
-    result = this.getEnclosingFunction().(TranslatedFunction).getEllipsisVariable()
+    result = this.getEnclosingFunction().getEllipsisVariable()
   }
 
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {

@@ -41,7 +41,7 @@ def test_render(pystache_renderer, sut):
         sut.render(data, output)
     assert pystache_renderer.mock_calls == [
         mock.call.render_name(data.template, data, generator=paths.exe_file),
-    ], pystache_renderer.mock_calls
+    ]
     assert output_stream.mock_calls == [
         mock.call(output, 'w'),
         mock.call().__enter__(),
