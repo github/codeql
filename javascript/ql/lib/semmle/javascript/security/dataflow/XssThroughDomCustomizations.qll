@@ -236,7 +236,8 @@ module XssThroughDom {
   }
   
   /**
-   * A source for text from the DOM from a Selection object toString method call
+   * A source for text from the DOM from calling `toString()` on a `Selection` object.
+   * The `toString()` method returns the currently selected text in the DOM.
    * https://developer.mozilla.org/en-US/docs/Web/API/Selection
    */
   class SelectionSource extends Source {
