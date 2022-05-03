@@ -12,16 +12,21 @@
 
 		</p>
 
+        <p>
+            Code injection in GitHub actions may allow an attacker to 
+            exfiltrate the temporary GitHub repository authorization token. 
+            The token has write access to the repository, and thus an attacker
+            can use it to modify the repository.
+        </p>
+
 	</overview>
 
 	<recommendation>
 
 		<p>
-
 			The best practice to avoid code injection vulnerabilities
 			in GitHub workflows is to set the untrusted input value of the expression
 			to an intermediate environment variable.
-
 		</p>
 
 	</recommendation>
@@ -49,6 +54,7 @@
 
 	<references>
 		<li>GitHub Security Lab Research: <a href="https://securitylab.github.com/research/github-actions-untrusted-input">Keeping your GitHub Actions and workflows secure: Untrusted input</a>.</li>
+        <li>GitHub Docs: <a href="https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions">Security hardening for GitHub Actions</a>.</li>
 	</references>
 
 </qhelp>
