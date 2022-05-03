@@ -196,9 +196,9 @@ class Libxml2ParseCall extends FunctionCall {
 
   Libxml2ParseCall() {
     exists(string fname | this.getTarget().getName() = fname |
-      fname = ["xmlCtxtUseOptions"] and optionsArg = 1
+      fname = "xmlCtxtUseOptions" and optionsArg = 1
       or
-      fname = ["xmlReadFile"] and optionsArg = 2
+      fname = "xmlReadFile" and optionsArg = 2
       or
       fname = ["xmlCtxtReadFile", "xmlParseInNodeContext", "xmlReadDoc", "xmlReadFd"] and
       optionsArg = 3
@@ -207,7 +207,7 @@ class Libxml2ParseCall extends FunctionCall {
       or
       fname = ["xmlCtxtReadMemory", "xmlReadIO"] and optionsArg = 5
       or
-      fname = ["xmlCtxtReadIO"] and optionsArg = 6
+      fname = "xmlCtxtReadIO" and optionsArg = 6
     )
   }
 
@@ -221,7 +221,7 @@ class Libxml2ParseCall extends FunctionCall {
  * An `xmlParserOption` for `libxml2` that is considered unsafe.
  */
 class Libxml2BadOption extends EnumConstant {
-  Libxml2BadOption() { this.getName().matches(["XML_PARSE_NOENT", "XML_PARSE_DTDLOAD"]) }
+  Libxml2BadOption() { this.getName() = ["XML_PARSE_NOENT", "XML_PARSE_DTDLOAD"] }
 }
 
 /**
