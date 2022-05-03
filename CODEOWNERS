@@ -4,6 +4,7 @@
 /javascript/ @github/codeql-javascript
 /python/ @github/codeql-python
 /ruby/ @github/codeql-ruby
+/swift/ @github/codeql-c
 
 # ML-powered queries
 /javascript/ql/experimental/adaptivethreatmodeling/ @github/codeql-ml-powered-queries-reviewers
