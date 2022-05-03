@@ -21,6 +21,8 @@ module Actions {
   }
 
   /**
+   * A YAML node that may contain sub-nodes.
+   *
    * Actions are quite flexible in parsing YAML.
    *
    * For example:
@@ -48,6 +50,7 @@ module Actions {
       this instanceof YAMLScalar
     }
 
+    /** Gets sub-name identified by `name`. */
     YAMLNode getNode(string name) {
       exists(YAMLMapping mapping |
         mapping = this and
@@ -68,6 +71,7 @@ module Actions {
       )
     }
 
+    /** Gets the number of elements in this mapping or sequence. */
     int getElementCount() {
       exists(YAMLMapping mapping |
         mapping = this and
@@ -113,6 +117,7 @@ module Actions {
 
     On() { workflow.lookup("on") = this }
 
+    /** Gets the workflow that this trigger is in. */
     Workflow getWorkflow() { result = workflow }
   }
 
@@ -283,6 +288,7 @@ module Actions {
 
     Ref() { with.lookup("ref") = this }
 
+    /** Gets the `with` field this field belongs to. */
     With getWith() { result = with }
   }
 
