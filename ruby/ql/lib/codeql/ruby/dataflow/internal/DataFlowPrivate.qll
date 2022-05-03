@@ -302,6 +302,11 @@ private module Cached {
     or
     n instanceof PostUpdateNodes::ExprPostUpdateNode
     or
+    // TODO: Explain why SynthReturnNode is needed!
+    // if we don't include this, we are not able to find this call:
+    // https://github.com/github/codeql/blob/976daddd36a63bf46836d141d04172e90bb4b33c/ruby/ql/test/library-tests/frameworks/http_clients/NetHttp.rb#L24
+    n instanceof SynthReturnNode
+    or
     // Expressions that can't be reached from another entry definition or expression.
     n instanceof ExprNode and
     not localFlowStepTypeTracker+(any(Node n0 |
