@@ -372,14 +372,6 @@ module SqlExecution {
     /** Gets the argument that specifies the SQL statements to be executed. */
     abstract DataFlow::Node getSql();
   }
-
-  private import semmle.python.frameworks.data.ModelsAsData
-
-  private class DataAsSqlExecution extends Range {
-    DataAsSqlExecution() { this = ModelOutput::getASinkNode("sql-injection").getARhs() }
-
-    override DataFlow::Node getSql() { result = this }
-  }
 }
 
 /**

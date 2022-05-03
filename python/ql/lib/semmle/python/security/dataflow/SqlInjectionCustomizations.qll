@@ -60,4 +60,11 @@ module SqlInjection {
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
   class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
+
+  private import semmle.python.frameworks.data.ModelsAsData
+
+  /** A sink for sql-injection from model data. */
+  private class DataAsSqlSink extends Sink {
+    DataAsSqlSink() { this = ModelOutput::getASinkNode("sql-injection").getARhs() }
+  }
 }
