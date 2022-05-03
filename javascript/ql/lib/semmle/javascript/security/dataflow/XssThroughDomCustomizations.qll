@@ -226,6 +226,8 @@ module XssThroughDom {
     t.start() and
     exists(DataFlow::CallNode call |
       call = DataFlow::globalVarRef("getSelection").getACall()
+      or
+      call = DOM::documentRef().getAMemberCall("getSelection")
     |
       result = call
     )
