@@ -37,5 +37,8 @@ csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
 # links created by bazel
 /bazel-*
 
+# local bazel options
+/local.bazelrc
+
 # CLion project files
 /.clwb
