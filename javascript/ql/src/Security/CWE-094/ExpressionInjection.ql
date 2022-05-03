@@ -23,14 +23,18 @@ private predicate isExternalUserControlledIssue(string context) {
 
 bindingset[context]
 private predicate isExternalUserControlledPullRequest(string context) {
-  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*title\\b") or
-  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*body\\b") or
-  context
-      .regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*label\\b") or
-  context
-      .regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*repo\\s*\\.\\s*default_branch\\b") or
-  context
-      .regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*ref\\b")
+  exists(string reg |
+    reg =
+      [
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*title\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*body\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*label\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*repo\\s*\\.\\s*default_branch\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*ref\\b",
+      ]
+  |
+    context.regexpMatch(reg)
+  )
 }
 
 bindingset[context]
@@ -52,18 +56,20 @@ private predicate isExternalUserControlledGollum(string context) {
 
 bindingset[context]
 private predicate isExternalUserControlledCommit(string context) {
-  context
-      .regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits(?:\\[[0-9]\\]|\\s*\\.\\s*\\*)+\\s*\\.\\s*message\\b") or
-  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*message\\b") or
-  context
-      .regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*author\\s*\\.\\s*email\\b") or
-  context
-      .regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*author\\s*\\.\\s*name\\b") or
-  context
-      .regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits(?:\\[[0-9]\\]|\\s*\\.\\s*\\*)+\\s*\\.\\s*author\\s*\\.\\s*email\\b") or
-  context
-      .regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits(?:\\[[0-9]\\]|\\s*\\.\\s*\\*)+\\s*\\.\\s*author\\s*\\.\\s*name\\b") or
-  context.regexpMatch("\\bgithub\\s*\\.\\s*head_ref\\b")
+  exists(string reg |
+    reg =
+      [
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits(?:\\[[0-9]\\]|\\s*\\.\\s*\\*)+\\s*\\.\\s*message\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*message\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*author\\s*\\.\\s*email\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*author\\s*\\.\\s*name\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits(?:\\[[0-9]\\]|\\s*\\.\\s*\\*)+\\s*\\.\\s*author\\s*\\.\\s*email\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits(?:\\[[0-9]\\]|\\s*\\.\\s*\\*)+\\s*\\.\\s*author\\s*\\.\\s*name\\b",
+        "\\bgithub\\s*\\.\\s*head_ref\\b"
+      ]
+  |
+    context.regexpMatch(reg)
+  )
 }
 
 bindingset[context]
