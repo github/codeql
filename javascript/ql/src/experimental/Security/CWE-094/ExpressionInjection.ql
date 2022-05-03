@@ -12,7 +12,7 @@
  */
 
 import javascript
-import experimental.semmle.javascript.Actions
+import semmle.javascript.Actions
 
 bindingset[context]
 private predicate isExternalUserControlledIssue(string context) {

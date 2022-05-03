@@ -13,7 +13,7 @@
  */
 
 import javascript
-import experimental.semmle.javascript.Actions
+import semmle.javascript.Actions
 
 /**
  * An action step that doesn't contain `actor` or `label` check in `if:` or
