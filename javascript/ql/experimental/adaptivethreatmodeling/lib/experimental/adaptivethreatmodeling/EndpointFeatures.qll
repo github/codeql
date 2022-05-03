@@ -207,9 +207,9 @@ string getASupportedFeatureName() {
       f instanceof ContextSurroundingFunctionParameters or
       f instanceof FileImports or
       f instanceof CalleeImports or
-      f instanceof Callee_AccessPath or
-      f instanceof Input_AccessPathFromCallee or
-      f instanceof Input_ArgumentIndex
+      f instanceof CalleeFlexibleAccessPath or
+      f instanceof InputAccessPathFromCallee or
+      f instanceof InputArgumentIndex
     ).getName()
 }
 
@@ -239,9 +239,9 @@ private newtype TEndpointFeature =
   TEnclosingFunctionBody() or
   TFileImports() or
   TCalleeImports() or
-  TCallee_AccessPath() or
-  TInput_AccessPathFromCallee() or
-  TInput_ArgumentIndex() or
+  TCalleeFlexibleAccessPath() or
+  TInputAccessPathFromCallee() or
+  TInputArgumentIndex() or
   TContextFunctionInterfaces() or
   TContextSurroundingFunctionParameters()
 
@@ -759,8 +759,8 @@ private module SyntacticUtilities {
  * foo[complex()].bar(endpoint); // -> foo.?.bar
  * ```
  */
-class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
-  override string getName() { result = "Callee_AccessPath" }
+class CalleeFlexibleAccessPath extends EndpointFeature, TCalleeFlexibleAccessPath {
+  override string getName() { result = "CalleeFlexibleAccessPath" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
@@ -782,7 +782,7 @@ class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
  *
  * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
  *
- * This feature, together with `Input_ArgumentIndex` is intended as a far superior version of the `ArgumentIndexFeature`.
+ * This feature, together with `InputArgumentIndex` is intended as a far superior version of the `ArgumentIndexFeature`.
  *
  * Examples:
  * ```
@@ -790,8 +790,8 @@ class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
  * foo(x, { bar: { baz: endpoint } }); // -> bar.baz
  * ```
  */
-class Input_AccessPathFromCallee extends EndpointFeature, TInput_AccessPathFromCallee {
-  override string getName() { result = "Input_AccessPathFromCallee" }
+class InputAccessPathFromCallee extends EndpointFeature, TInputAccessPathFromCallee {
+  override string getName() { result = "InputAccessPathFromCallee" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
@@ -817,8 +817,8 @@ class Input_AccessPathFromCallee extends EndpointFeature, TInput_AccessPathFromC
  * foo(x, { bar: { baz: endpoint } }); // -> 1
  * ```
  */
-class Input_ArgumentIndex extends EndpointFeature, TInput_ArgumentIndex {
-  override string getName() { result = "Input_ArgumentIndex" }
+class InputArgumentIndex extends EndpointFeature, TInputArgumentIndex {
+  override string getName() { result = "InputArgumentIndex" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk, DataFlow::Node arg, int i | arg = invk.getArgument(i) |
