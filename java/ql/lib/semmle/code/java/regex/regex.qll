@@ -62,7 +62,7 @@ abstract class RegexString extends StringLiteral {
 
   /**
    * Helper predicate for `quote`.
-   * Holds if the char at `pos` is the one-based `index`th occourence of a quote delimiter (`\Q` or `\E`)
+   * Holds if the char at `pos` is the one-based `index`th occurence of a quote delimiter (`\Q` or `\E`)
    * Result is `true` for `\Q` and `false` for `\E`.
    */
   private boolean quoteDelimiter(int index, int pos) {
@@ -73,7 +73,7 @@ abstract class RegexString extends StringLiteral {
   /** Holds if a quoted sequence is found between `start` and `end` */
   predicate quote(int start, int end) { this.quote(start, end, _, _) }
 
-  /** Holds if a quoted sequence is found between `start` and `end`, with ontent found between `inner_start` and `inner_end`. */
+  /** Holds if a quoted sequence is found between `start` and `end`, with content found between `inner_start` and `inner_end`. */
   predicate quote(int start, int end, int inner_start, int inner_end) {
     exists(int index |
       this.quoteDelimiter(index, start) = true and
@@ -98,178 +98,13 @@ abstract class RegexString extends StringLiteral {
   }
 
   /**
-   * A control sequence, `\cx`
+   * Holds if there is a control sequence, `\cx`, between `start` and `end`.
    * `x` may be any ascii character including special characters.
    */
   predicate controlEscape(int start, int end) {
     this.escapingChar(start) and
     this.getChar(start + 1) = "c" and
     end = start + 3
-  }
-
-  private string nonEscapedCharAt(int i) {
-    result = this.getChar(i) and
-    not exists(int x, int y | this.escapedCharacter(x, y) and i in [x .. y - 1]) and
-    not exists(int x, int y | this.quote(x, y) and i in [x .. y - 1])
-  }
-
-  /** Holds if a character set starts between `start` and `end`, including any negation character (`^`). */
-  private predicate charSetStart0(int start, int end) {
-    this.nonEscapedCharAt(start) = "[" and
-    (if this.getChar(start + 1) = "^" then end = start + 2 else end = start + 1)
-  }
-
-  /** Holds if the character at `pos` marks the end of a character class. */
-  private predicate charSetEnd0(int pos) {
-    this.nonEscapedCharAt(pos) = "]" and
-    /* special case: `[]]` and `[^]]` are valid char classes.  */
-    not this.charSetStart0(_, pos)
-  }
-
-  /**
-   * Holds if the character at `pos` starts a character set delimiter.
-   * Result is 1 for `[` and 0 for `]`.
-   */
-  private int charSetDelimiter(int pos) {
-    result = 1 and this.charSetStart0(pos, _)
-    or
-    result = -1 and this.charSetEnd0(pos)
-  }
-
-  /**
-   * Holds if the char at `pos` is the one-based `index`th occourence of a character set delimiter (`[` or `]`).
-   * Result is 1 for `[` and -1 for `]`.
-   */
-  private int charSetDelimiter(int index, int pos) {
-    result = this.charSetDelimiter(pos) and
-    pos = rank[index](int p | exists(this.charSetDelimiter(p)))
-  }
-
-  bindingset[x]
-  private int max_zero(int x) { result = max([x, 0]) }
-
-  /**
-   * Gets the nesting depth of character classes after position `pos`,
-   * where `pos` is the position of a character set delimiter.
-   */
-  private int charSetDepth(int index, int pos) {
-    index = 1 and result = max_zero(charSetDelimiter(index, pos))
-    or
-    result = max_zero(charSetDelimiter(index, pos) + charSetDepth(index - 1, _))
-  }
-
-  /** Hold if a top-level character set starts between `start` and `end`. */
-  predicate charSetStart(int start, int end) {
-    this.charSetStart0(start, end) and
-    this.charSetDepth(_, start) = 1
-  }
-
-  /** Holds if a top-level character set ends at `pos`. */
-  predicate charSetEnd(int pos) {
-    this.charSetEnd0(pos) and
-    this.charSetDepth(_, pos) = 0
-  }
-
-  /**
-   * Holds if there is a top-level character class beginning at `start` (inclusive) and ending at `end` (exclusive)
-   *
-   * For now, nested character classes are approximated by only considering the top-level class for parsing.
-   * This leads to very similar results for ReDoS queries.
-   */
-  predicate charSet(int start, int end) {
-    exists(int inner_start, int inner_end | this.charSetStart(start, inner_start) |
-      end = inner_end + 1 and
-      inner_end =
-        min(int end_delimiter | this.charSetEnd(end_delimiter) and end_delimiter > inner_start)
-    )
-  }
-
-  /** Either a char or a - */
-  private predicate charSetToken(int charset_start, int start, int end) {
-    this.charSetStart(charset_start, start) and
-    (
-      this.escapedCharacter(start, end)
-      or
-      exists(this.nonEscapedCharAt(start)) and end = start + 1
-      or
-      this.quote(start, end)
-    )
-    or
-    this.charSetToken(charset_start, _, start) and
-    (
-      this.escapedCharacter(start, end)
-      or
-      exists(this.nonEscapedCharAt(start)) and
-      end = start + 1 and
-      not this.charSetEnd(start)
-      or
-      this.quote(start, end)
-    )
-  }
-
-  /** An indexed version of `charSetToken/3` */
-  private predicate charSetToken(int charset_start, int index, int token_start, int token_end) {
-    token_start =
-      rank[index](int start, int end | this.charSetToken(charset_start, start, end) | start) and
-    this.charSetToken(charset_start, token_start, token_end)
-  }
-
-  /**
-   * Holds if the character set starting at `charset_start` contains either
-   * a character or a range found between `start` and `end`.
-   */
-  predicate charSetChild(int charset_start, int start, int end) {
-    this.charSetToken(charset_start, start, end) and
-    not exists(int range_start, int range_end |
-      this.charRange(charset_start, range_start, _, _, range_end) and
-      range_start <= start and
-      range_end >= end
-    )
-    or
-    this.charRange(charset_start, start, _, _, end)
-  }
-
-  /**
-   * Helper predicate for `charRange`.
-   * We can determine where character ranges end by a left to right sweep.
-   *
-   * To avoid negative recursion we return a boolean. See `escaping`,
-   * the helper for `escapingChar`, for a clean use of this pattern.
-   */
-  private boolean charRangeEnd(int charset_start, int index) {
-    this.charSetToken(charset_start, index, _, _) and
-    (
-      index in [1, 2] and result = false
-      or
-      index > 2 and
-      exists(int connector_start |
-        this.charSetToken(charset_start, index - 1, connector_start, _) and
-        this.nonEscapedCharAt(connector_start) = "-" and
-        result =
-          this.charRangeEnd(charset_start, index - 2)
-              .booleanNot()
-              .booleanAnd(this.charRangeEnd(charset_start, index - 1).booleanNot())
-      )
-      or
-      not exists(int connector_start |
-        this.charSetToken(charset_start, index - 1, connector_start, _) and
-        this.nonEscapedCharAt(connector_start) = "-"
-      ) and
-      result = false
-    )
-  }
-
-  /**
-   * Holds if the character set starting at `charset_start` contains a character range
-   * with lower bound found between `start` and `lower_end`
-   * and upper bound found between `upper_start` and `end`.
-   */
-  predicate charRange(int charset_start, int start, int lower_end, int upper_start, int end) {
-    exists(int index |
-      this.charRangeEnd(charset_start, index) = true and
-      this.charSetToken(charset_start, index - 2, start, lower_end) and
-      this.charSetToken(charset_start, index, upper_start, end)
-    )
   }
 
   pragma[inline]
@@ -329,6 +164,167 @@ abstract class RegexString extends StringLiteral {
       not exists(this.getChar(start + 1).toInt()) and
       end = start + 2
     )
+  }
+
+  private string nonEscapedCharAt(int i) {
+    result = this.getChar(i) and
+    not exists(int x, int y | this.escapedCharacter(x, y) and i in [x .. y - 1]) and
+    not exists(int x, int y | this.quote(x, y) and i in [x .. y - 1])
+  }
+
+  /** Holds if a character set starts between `start` and `end`, including any negation character (`^`). */
+  private predicate charSetStart0(int start, int end) {
+    this.nonEscapedCharAt(start) = "[" and
+    (if this.getChar(start + 1) = "^" then end = start + 2 else end = start + 1)
+  }
+
+  /** Holds if the character at `pos` marks the end of a character class. */
+  private predicate charSetEnd0(int pos) {
+    this.nonEscapedCharAt(pos) = "]" and
+    /* special case: `[]]` and `[^]]` are valid char classes.  */
+    not this.charSetStart0(_, pos)
+  }
+
+  /**
+   * Holds if the character at `pos` starts a character set delimiter.
+   * Result is 1 for `[` and -1 for `]`.
+   */
+  private int charSetDelimiter(int pos) {
+    result = 1 and this.charSetStart0(pos, _)
+    or
+    result = -1 and this.charSetEnd0(pos)
+  }
+
+  /**
+   * Holds if the char at `pos` is the one-based `index`th occourence of a character set delimiter (`[` or `]`).
+   * Result is 1 for `[` and -1 for `]`.
+   */
+  private int charSetDelimiter(int index, int pos) {
+    result = this.charSetDelimiter(pos) and
+    pos = rank[index](int p | exists(this.charSetDelimiter(p)))
+  }
+
+  /**
+   * Gets the nesting depth of character classes after position `pos`,
+   * where `pos` is the position of a character set delimiter.
+   */
+  private int charSetDepth(int index, int pos) {
+    index = 1 and result = 0.maximum(this.charSetDelimiter(index, pos))
+    or
+    result = 0.maximum(this.charSetDelimiter(index, pos) + this.charSetDepth(index - 1, _))
+  }
+
+  /** Hold if a top-level character set starts between `start` and `end`. */
+  predicate charSetStart(int start, int end) {
+    this.charSetStart0(start, end) and
+    this.charSetDepth(_, start) = 1
+  }
+
+  /** Holds if a top-level character set ends at `pos`. */
+  predicate charSetEnd(int pos) {
+    this.charSetEnd0(pos) and
+    this.charSetDepth(_, pos) = 0
+  }
+
+  /**
+   * Holds if there is a top-level character class beginning at `start` (inclusive) and ending at `end` (exclusive)
+   *
+   * For now, nested character classes are approximated by only considering the top-level class for parsing.
+   * This leads to very similar results for ReDoS queries.
+   */
+  predicate charSet(int start, int end) {
+    exists(int inner_start, int inner_end | this.charSetStart(start, inner_start) |
+      end = inner_end + 1 and
+      inner_end =
+        min(int end_delimiter | this.charSetEnd(end_delimiter) and end_delimiter > inner_start)
+    )
+  }
+
+  /** Either a char or a - */
+  private predicate charSetToken(int charset_start, int start, int end) {
+    this.charSetStart(charset_start, start) and
+    (
+      this.escapedCharacter(start, end)
+      or
+      exists(this.nonEscapedCharAt(start)) and end = start + 1
+      or
+      this.quote(start, end)
+    )
+    or
+    this.charSetToken(charset_start, _, start) and
+    (
+      this.escapedCharacter(start, end)
+      or
+      exists(this.nonEscapedCharAt(start)) and
+      end = start + 1 and
+      not this.charSetEnd(start)
+      or
+      this.quote(start, end)
+    )
+  }
+
+  /** An indexed version of `charSetToken/3` */
+  private predicate charSetToken(int charset_start, int index, int token_start, int token_end) {
+    token_start = rank[index](int start | this.charSetToken(charset_start, start, _) | start) and
+    this.charSetToken(charset_start, token_start, token_end)
+  }
+
+  /**
+   * Helper predicate for `charRange`.
+   * We can determine where character ranges end by a left to right sweep.
+   *
+   * To avoid negative recursion we return a boolean. See `escaping`,
+   * the helper for `escapingChar`, for a clean use of this pattern.
+   */
+  private boolean charRangeEnd(int charset_start, int index) {
+    this.charSetToken(charset_start, index, _, _) and
+    (
+      index in [1, 2] and result = false
+      or
+      index > 2 and
+      exists(int connector_start |
+        this.charSetToken(charset_start, index - 1, connector_start, _) and
+        this.nonEscapedCharAt(connector_start) = "-" and
+        result =
+          this.charRangeEnd(charset_start, index - 2)
+              .booleanNot()
+              .booleanAnd(this.charRangeEnd(charset_start, index - 1).booleanNot())
+      )
+      or
+      not exists(int connector_start |
+        this.charSetToken(charset_start, index - 1, connector_start, _) and
+        this.nonEscapedCharAt(connector_start) = "-"
+      ) and
+      result = false
+    )
+  }
+
+  /**
+   * Holds if the character set starting at `charset_start` contains a character range
+   * with lower bound found between `start` and `lower_end`
+   * and upper bound found between `upper_start` and `end`.
+   */
+  predicate charRange(int charset_start, int start, int lower_end, int upper_start, int end) {
+    exists(int index |
+      this.charRangeEnd(charset_start, index) = true and
+      this.charSetToken(charset_start, index - 2, start, lower_end) and
+      this.charSetToken(charset_start, index, upper_start, end)
+    )
+  }
+
+  /**
+   * Holds if the character set starting at `charset_start` contains either
+   * a character or a range found between `start` and `end`.
+   */
+  predicate charSetChild(int charset_start, int start, int end) {
+    this.charSetToken(charset_start, start, end) and
+    not exists(int range_start, int range_end |
+      this.charRange(charset_start, range_start, _, _, range_end) and
+      range_start <= start and
+      range_end >= end
+    )
+    or
+    this.charRange(charset_start, start, _, _, end)
   }
 
   /** Holds if `index` is inside a character set. */
@@ -871,9 +867,9 @@ abstract class RegexString extends StringLiteral {
    * Holds if a character is represented between `start` and `end` in the source literal.
    */
   private predicate sourceCharacter(int start, int end) {
-    sourceEscapedCharacter(start, end)
+    this.sourceEscapedCharacter(start, end)
     or
-    sourceNonEscapedCharacter(start) and
+    this.sourceNonEscapedCharacter(start) and
     end = start + 1
   }
 
@@ -885,8 +881,8 @@ abstract class RegexString extends StringLiteral {
    */
   predicate sourceCharacter(int pos, int start, int end) {
     exists(this.getChar(pos)) and
-    sourceCharacter(start, end) and
-    start = rank[pos + 2](int s | sourceCharacter(s, _))
+    this.sourceCharacter(start, end) and
+    start = rank[pos + 2](int s | this.sourceCharacter(s, _))
   }
 }
 

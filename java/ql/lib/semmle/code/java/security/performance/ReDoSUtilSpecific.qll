@@ -3,7 +3,7 @@
  * This is the interface to the shared ReDoS library.
  */
 
-import java
+private import java
 import semmle.code.java.regex.RegexTreeView
 
 /**

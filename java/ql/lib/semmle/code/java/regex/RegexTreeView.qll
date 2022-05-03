@@ -1,6 +1,6 @@
 /** Provides a class hierarchy corresponding to a parse tree of regular expressions. */
 
-import java
+private import java
 private import semmle.code.java.regex.regex
 
 /**
