@@ -78,7 +78,7 @@ private predicate webViewLoadUrl(Argument urlArg, DataFlow::Node webview) {
     webview = DataFlow::getInstanceArgument(loadUrl)
     or
     // `webview` is received as a parameter of an event method in a custom `WebViewClient`,
-    // so we need to find WebViews that use that specific `WebViewClient`.
+    // so we need to find `WebViews` that use that specific `WebViewClient`.
     exists(WebViewClientEventMethod eventMethod, MethodAccess setWebClient |
       setWebClient.getMethod() instanceof WebViewSetWebViewClientMethod and
       setWebClient.getArgument(0).getType() = eventMethod.getDeclaringType() and
