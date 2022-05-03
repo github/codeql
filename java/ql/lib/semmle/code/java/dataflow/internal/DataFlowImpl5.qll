@@ -498,7 +498,7 @@ private predicate readSet(NodeEx node1, ContentSet c, NodeEx node2, Configuratio
 }
 
 // inline to reduce fan-out via `getAReadContent`
-pragma[inline]
+bindingset[c]
 private predicate read(NodeEx node1, Content c, NodeEx node2, Configuration config) {
   exists(ContentSet cs |
     readSet(node1, cs, node2, config) and
@@ -507,7 +507,7 @@ private predicate read(NodeEx node1, Content c, NodeEx node2, Configuration conf
 }
 
 // inline to reduce fan-out via `getAReadContent`
-pragma[inline]
+bindingset[c]
 private predicate clearsContentEx(NodeEx n, Content c) {
   exists(ContentSet cs |
     clearsContentCached(n.asNode(), cs) and
@@ -516,7 +516,7 @@ private predicate clearsContentEx(NodeEx n, Content c) {
 }
 
 // inline to reduce fan-out via `getAReadContent`
-pragma[inline]
+bindingset[c]
 private predicate expectsContentEx(NodeEx n, Content c) {
   exists(ContentSet cs |
     expectsContentCached(n.asNode(), cs) and
