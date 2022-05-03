@@ -132,7 +132,10 @@ module ActiveSupport {
   module Logger {
     private class ActiveSupportLoggerInstance extends StdlibLogger::LoggerInstance {
       ActiveSupportLoggerInstance() {
-        this = API::getTopLevelMember("ActiveSupport").getMember("Logger").getAnInstantiation()
+        this =
+          API::getTopLevelMember("ActiveSupport")
+              .getMember(["Logger", "TaggedLogging"])
+              .getAnInstantiation()
       }
     }
   }
