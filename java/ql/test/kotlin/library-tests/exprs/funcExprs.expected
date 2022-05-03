@@ -13,14 +13,14 @@ lambdaExpr
 | funcExprs.kt:33:28:33:51 | ...->... | stmt body | funcExprs.kt:33:28:33:51 | invoke | invoke(int) | funcExprs.kt:33:28:33:51 | new Function1<Integer,Function1<Integer,Double>>(...) { ... } |
 | funcExprs.kt:33:37:33:47 | ...->... | stmt body | funcExprs.kt:33:37:33:47 | invoke | invoke(int) | funcExprs.kt:33:37:33:47 | new Function1<Integer,Double>(...) { ... } |
 | funcExprs.kt:35:29:35:112 | ...->... | stmt body | funcExprs.kt:35:29:35:112 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:35:29:35:112 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>(...) { ... } |
-| funcExprs.kt:36:29:36:117 | ...->... | stmt body | funcExprs.kt:36:29:36:117 | invoke | invoke(java.lang.Object[]) | funcExprs.kt:36:29:36:117 | new FunctionN<String>(...) { ... } |
+| funcExprs.kt:36:29:36:117 | ...->... | stmt body | funcExprs.kt:36:29:36:117 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:36:29:36:117 | new FunctionN<String>(...) { ... } |
 | funcExprs.kt:75:12:75:22 | ...->... | stmt body | funcExprs.kt:75:12:75:22 | invoke | invoke(Class3.Generic) | funcExprs.kt:75:12:75:22 | new Function1<Generic<Generic<Integer>>,String>(...) { ... } |
 | samConversion.kt:2:31:2:45 | ...->... | stmt body | samConversion.kt:2:31:2:45 | invoke | invoke(int) | samConversion.kt:2:31:2:45 | new Function1<Integer,Boolean>(...) { ... } |
 | samConversion.kt:4:27:4:42 | ...->... | stmt body | samConversion.kt:4:27:4:42 | invoke | invoke(int,int) | samConversion.kt:4:27:4:42 | new Function2<Integer,Integer,Unit>(...) { ... } |
 | samConversion.kt:7:29:7:46 | ...->... | stmt body | samConversion.kt:7:29:7:46 | invoke | invoke(java.lang.String,int) | samConversion.kt:7:29:7:46 | new Function2<String,Integer,Boolean>(...) { ... } |
 | samConversion.kt:9:33:11:5 | ...->... | stmt body | samConversion.kt:9:33:11:5 | invoke | invoke(int) | samConversion.kt:9:33:11:5 | new Function1<Integer,Boolean>(...) { ... } |
 | samConversion.kt:11:12:13:5 | ...->... | stmt body | samConversion.kt:11:12:13:5 | invoke | invoke(int) | samConversion.kt:11:12:13:5 | new Function1<Integer,Boolean>(...) { ... } |
-| samConversion.kt:43:31:45:68 | ...->... | stmt body | samConversion.kt:43:31:45:68 | invoke | invoke(java.lang.Object[]) | samConversion.kt:43:31:45:68 | new FunctionN<Boolean>(...) { ... } |
+| samConversion.kt:43:31:45:68 | ...->... | stmt body | samConversion.kt:43:31:45:68 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | samConversion.kt:43:31:45:68 | new FunctionN<Boolean>(...) { ... } |
 | samConversion.kt:46:32:46:44 | ...->... | stmt body | samConversion.kt:46:32:46:44 | invoke | invoke(int) | samConversion.kt:46:32:46:44 | new Function1<Integer,Boolean>(...) { ... } |
 memberRefExprs
 | funcExprs.kt:38:26:38:38 | ...::... | funcExprs.kt:38:26:38:38 | invoke | invoke() | funcExprs.kt:38:26:38:38 | new Function0<Integer>(...) { ... } |

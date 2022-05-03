@@ -1379,7 +1379,7 @@ class LambdaExpr extends FunctionalExpr, @lambdaexpr {
     or
     isKotlinFunctionN() and
     result = this.getAnonymousClass().getAMethod() and
-    result.getNumberOfParameters() = 1
+    result.getNumberOfParameters() > 1
   }
 
   /**
