@@ -35,7 +35,6 @@ private class OKHttpSummaries extends SummaryModelCsv {
         "okhttp3;HttpUrl$Builder;false;encodedQuery;;;Argument[-1];ReturnValue;value",
         "okhttp3;HttpUrl$Builder;false;encodedUsername;;;Argument[-1];ReturnValue;value",
         "okhttp3;HttpUrl$Builder;false;fragment;;;Argument[-1];ReturnValue;value",
-        "okhttp3;HttpUrl$Builder;false;fragment;;;Argument[-1];ReturnValue;value",
         "okhttp3;HttpUrl$Builder;false;host;;;Argument[-1];ReturnValue;value",
         "okhttp3;HttpUrl$Builder;false;password;;;Argument[-1];ReturnValue;value",
         "okhttp3;HttpUrl$Builder;false;port;;;Argument[-1];ReturnValue;value",
