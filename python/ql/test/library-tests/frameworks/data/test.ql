@@ -48,6 +48,9 @@ class Sinks extends ModelInput::SinkModelCsv {
         // any argument
         "testlib;;Member[ArgPos].Member[anyParam].Argument[any];test-source", //
         "testlib;;Member[ArgPos].Member[anyNamed].Argument[any-named];test-source", //
+        // testing package syntax
+        "foo1.bar;;Member[baz1].Argument[any];test-source", //
+        "foo2;;Member[bar].Member[baz2].Argument[any];test-source", //
       ]
   }
 }

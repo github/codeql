@@ -90,3 +90,9 @@ CallFilter.arityOne(one) # match
 CallFilter.arityOne(one=one) # match
 CallFilter.arityOne(one, two=two) # NO match
 CallFilter.arityOne(one=one, two=two) # NO match
+
+from foo1.bar import baz1
+baz1(baz1) # match
+
+from foo2.bar import baz2
+baz2(baz2) # match
