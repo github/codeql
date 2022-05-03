@@ -409,6 +409,7 @@ class EnclosingFunctionBody extends EndpointFeature, TEnclosingFunctionBody {
   override string getName() { result = "enclosingFunctionBody" }
 
   override string getValue(DataFlow::Node endpoint) {
+    endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
     result =
       FunctionBodyFeatures::getBodyTokensFeature(FunctionBodyFeatures::getRepresentativeFunctionForEndpoint(endpoint))
   }
@@ -433,12 +434,7 @@ class FileImports extends EndpointFeature, TFileImports {
   override string getName() { result = "fileImports" }
 
   override string getValue(DataFlow::Node endpoint) {
-    result =
-      concat(string importPath |
-        importPath = SyntacticUtilities::getImportPathForFile(endpoint.getFile())
-      |
-        importPath, " " order by importPath
-      )
+    result = SyntacticUtilities::getImportPathsForFile(endpoint.getFile())
   }
 }
 
@@ -539,6 +535,16 @@ class ContextFunctionInterfaces extends EndpointFeature, TContextFunctionInterfa
  * Syntactic utilities for feature value computation.
  */
 private module SyntacticUtilities {
+  /** Gets all the imports defined in the file containing the endpoint. */
+  string getImportPathsForFile(File file) {
+    result =
+      concat(string importPath |
+        importPath = SyntacticUtilities::getImportPathForFile(file)
+      |
+        importPath, " " order by importPath
+      )
+  }
+
   /** Gets an import located in `file`. */
   string getImportPathForFile(File file) {
     result = any(Import imp | imp.getFile() = file).getImportedPath().getValue()
