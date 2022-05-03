@@ -1,6 +1,11 @@
+load("@swift_codegen_deps//:requirements.bzl", "requirement")
+
 py_binary(
     name = "codegen",
-    srcs = glob(["*.py"]),
+    srcs = glob(
+        ["*.py"],
+        exclude = ["trapgen.py"],
+    ),
     visibility = ["//swift/codegen/test:__pkg__"],
     deps = ["//swift/codegen/lib"],
 )
@@ -12,5 +17,8 @@ py_binary(
     srcs = ["trapgen.py"],
     data = ["//swift/codegen/templates:cpp"],
     visibility = ["//swift:__subpackages__"],
-    deps = ["//swift/codegen/lib"],
+    deps = [
+        "//swift/codegen/lib",
+        requirement("toposort"),
+    ],
 )
