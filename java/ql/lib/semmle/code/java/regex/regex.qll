@@ -107,6 +107,51 @@ abstract class RegexString extends StringLiteral {
     end = start + 3
   }
 
+  private predicate namedBackreference(int start, int end, string name) {
+    this.escapingChar(start) and
+    this.getChar(start + 1) = "k" and
+    this.getChar(start + 2) = "<" and
+    end = min(int i | i > start + 2 and this.getChar(i) = ">") + 1 and
+    name = this.getText().substring(start + 3, end - 2)
+  }
+
+  private predicate numberedBackreference(int start, int end, int value) {
+    this.escapingChar(start) and
+    // starting with 0 makes it an octal escape
+    not this.getChar(start + 1) = "0" and
+    exists(string text, string svalue, int len |
+      end = start + len and
+      text = this.getText() and
+      len in [2 .. 3]
+    |
+      svalue = text.substring(start + 1, start + len) and
+      value = svalue.toInt() and
+      // value is composed of digits
+      forall(int i | i in [start + 1 .. start + len - 1] | this.getChar(i) = [0 .. 9].toString()) and
+      // a longer reference is not possible
+      not (
+        len = 2 and
+        exists(text.substring(start + 1, start + len + 1).toInt())
+      ) and
+      // 3 octal digits makes it an octal escape
+      not forall(int i | i in [start + 1 .. start + 4] | this.isOctal(i))
+      // TODO: Inside a character set, all numeric escapes are treated as characters.
+    )
+  }
+
+  /** Holds if the text in the range start,end is a back reference */
+  predicate backreference(int start, int end) {
+    this.numberedBackreference(start, end, _)
+    or
+    this.namedBackreference(start, end, _)
+  }
+
+  /** Gets the number of the back reference in start,end */
+  int getBackrefNumber(int start, int end) { this.numberedBackreference(start, end, result) }
+
+  /** Gets the name, if it has one, of the back reference in start,end */
+  string getBackrefName(int start, int end) { this.namedBackreference(start, end, result) }
+
   pragma[inline]
   private predicate isOctal(int index) { this.getChar(index) = [0 .. 7].toString() }
 
@@ -591,51 +636,6 @@ abstract class RegexString extends StringLiteral {
     or
     this.positiveLookbehindAssertionGroup(start, end)
   }
-
-  private predicate namedBackreference(int start, int end, string name) {
-    this.escapingChar(start) and
-    this.getChar(start + 1) = "k" and
-    this.getChar(start + 2) = "<" and
-    end = min(int i | i > start + 2 and this.getChar(i) = ">") + 1 and
-    name = this.getText().substring(start + 3, end - 2)
-  }
-
-  private predicate numberedBackreference(int start, int end, int value) {
-    this.escapingChar(start) and
-    // starting with 0 makes it an octal escape
-    not this.getChar(start + 1) = "0" and
-    exists(string text, string svalue, int len |
-      end = start + len and
-      text = this.getText() and
-      len in [2 .. 3]
-    |
-      svalue = text.substring(start + 1, start + len) and
-      value = svalue.toInt() and
-      // value is composed of digits
-      forall(int i | i in [start + 1 .. start + len - 1] | this.getChar(i) = [0 .. 9].toString()) and
-      // a longer reference is not possible
-      not (
-        len = 2 and
-        exists(text.substring(start + 1, start + len + 1).toInt())
-      ) and
-      // 3 octal digits makes it an octal escape
-      not forall(int i | i in [start + 1 .. start + 4] | this.isOctal(i))
-      // TODO: Inside a character set, all numeric escapes are treated as characters.
-    )
-  }
-
-  /** Holds if the text in the range start,end is a back reference */
-  predicate backreference(int start, int end) {
-    this.numberedBackreference(start, end, _)
-    or
-    this.namedBackreference(start, end, _)
-  }
-
-  /** Gets the number of the back reference in start,end */
-  int getBackrefNumber(int start, int end) { this.numberedBackreference(start, end, result) }
-
-  /** Gets the name, if it has one, of the back reference in start,end */
-  string getBackrefName(int start, int end) { this.namedBackreference(start, end, result) }
 
   private predicate baseItem(int start, int end) {
     this.character(start, end) and
