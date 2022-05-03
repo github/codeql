@@ -88,7 +88,7 @@ string parameterNodeAsInput(DataFlow::ParameterNode p) {
 
 pragma[nomagic]
 private CS::Parameter getParameter(DataFlowImplCommon::ReturnNodeExt node, ParameterPosition pos) {
-  result = node.getEnclosingCallable().asCallable().getParameter(pos.getPosition())
+  result = node.getEnclosingCallable().getParameter(pos.getPosition())
 }
 
 /**
@@ -142,7 +142,7 @@ class PropagateToSinkConfigurationSpecific extends CS::TaintTracking::Configurat
 
   override predicate isSource(DataFlow::Node source) {
     (isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode) and
-    isRelevantForModels(source.getEnclosingCallable().asCallable())
+    isRelevantForModels(source.getEnclosingCallable())
   }
 }
 

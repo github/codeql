@@ -40,8 +40,8 @@ class Node extends TNode {
   final DotNet::Type getType() { result = this.(NodeImpl).getTypeImpl() }
 
   /** Gets the enclosing callable of this node. */
-  final DataFlowCallable getEnclosingCallable() {
-    result = this.(NodeImpl).getEnclosingCallableImpl()
+  final Callable getEnclosingCallable() {
+    result = this.(NodeImpl).getEnclosingCallableImpl().asCallable()
   }
 
   /** Gets the control flow node corresponding to this node, if any. */

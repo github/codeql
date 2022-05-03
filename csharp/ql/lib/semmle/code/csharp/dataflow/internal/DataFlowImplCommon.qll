@@ -698,7 +698,7 @@ private module Cached {
      */
     pragma[nomagic]
     private predicate mayBenefitFromCallContextExt(DataFlowCall call, DataFlowCallable callable) {
-      mayBenefitFromCallContext(call, callable.asCallable())
+      mayBenefitFromCallContext(call, callable)
       or
       callEnclosingCallable(call, callable) and
       exists(viableCallableLambda(call, TDataFlowCallSome(_)))

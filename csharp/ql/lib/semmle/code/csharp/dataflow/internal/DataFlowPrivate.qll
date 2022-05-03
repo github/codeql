@@ -19,7 +19,7 @@ private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result.asCallable() = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
 predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
@@ -960,7 +960,7 @@ private module ParameterNodes {
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       pos.isImplicitCapturedParameterPosition(def.getSourceVariable().getAssignable()) and
-      c = this.getEnclosingCallable()
+      c.asCallable() = this.getEnclosingCallable()
     }
   }
 }
@@ -1384,7 +1384,7 @@ private module OutNodes {
         additionalCalls = false and call = csharpCall(_, cfn)
         or
         additionalCalls = true and
-        call = TTransitiveCapturedCall(cfn, n.getEnclosingCallable().asCallable())
+        call = TTransitiveCapturedCall(cfn, n.getEnclosingCallable())
       )
     }
 

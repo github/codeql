@@ -144,8 +144,8 @@ private module DispatchImpl {
    * call is a delegate call, or if the qualifier accesses a parameter of
    * the enclosing callable `c` (including the implicit `this` parameter).
    */
-  predicate mayBenefitFromCallContext(NonDelegateDataFlowCall call, Callable c) {
-    c = call.getEnclosingCallable().asCallable() and
+  predicate mayBenefitFromCallContext(NonDelegateDataFlowCall call, DataFlowCallable c) {
+    c = call.getEnclosingCallable() and
     call.getDispatchCall().mayBenefitFromCallContext()
   }
 
