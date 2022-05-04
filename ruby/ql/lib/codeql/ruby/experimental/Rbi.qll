@@ -75,8 +75,8 @@ module Rbi {
        * Gets the type aliased by this call.
        */
       RbiType getAliasedType() {
-        result.asExpr().getExpr() =
-          this.getBlock().asExpr().(ExprNodes::StmtSequenceCfgNode).getExpr().getLastStmt()
+        result.asExpr() =
+          this.getBlock().asExpr().(ExprNodes::StmtSequenceCfgNode).getLastStmt()
       }
     }
 
