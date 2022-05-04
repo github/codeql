@@ -292,31 +292,12 @@ func main() {
 
 	if depMode == GoGetWithModules {
 		// stat go.mod and go.sum
-		var beforeGoModFileInfo, beforeGoSumFileInfo os.FileInfo
-
-		beforeGoMod, beforeGoModerr := os.Open("go.mod")
-		if beforeGoModerr == nil {
-			var beforeGoModStatErr error
-			beforeGoModFileInfo, beforeGoModStatErr = beforeGoMod.Stat()
-			if beforeGoModStatErr != nil {
-				log.Println("Failed to stat go.mod before running `go mod tidy -e`")
-			}
-		} else {
-			log.Println("Failed to read go.mod before running `go mod tidy -e`")
+		beforeGoModFileInfo, beforeGoModErr := os.Stat("go.mod")
+		if beforeGoModErr != nil {
+			log.Println("Failed to stat go.mod before running `go mod tidy -e`")
 		}
-		beforeGoMod.Close()
 
-		beforeGoSum, beforeGoSumErr := os.Open("go.sum")
-		if beforeGoSumErr == nil {
-			var beforeGoSumStatErr error
-			beforeGoSumFileInfo, beforeGoSumStatErr = beforeGoSum.Stat()
-			if beforeGoSumStatErr != nil {
-				log.Println("Failed to stat go.sum before running `go mod tidy -e`")
-			}
-		}
-		// don't print a warning if beforeGoSumErr != nil as it may be that the
-		// file doesn't exist
-		beforeGoSum.Close()
+		beforeGoSumFileInfo, beforeGoSumErr := os.Stat("go.sum")
 
 		// run `go mod tidy -e`
 		res := util.RunCmd(exec.Command("go", "mod", "tidy", "-e"))
@@ -325,38 +306,24 @@ func main() {
 			log.Println("Failed to run `go mod tidy -e`")
 		} else {
 			if beforeGoModFileInfo != nil {
-				afterGoMod, afterGoModErr := os.Open("go.mod")
+				afterGoModFileInfo, afterGoModErr := os.Stat("go.mod")
 				if afterGoModErr != nil {
-					log.Println("Failed to read go.mod after running `go mod tidy -e`")
-				} else {
-					afterGoModFileInfo, afterGoModStatErr := afterGoMod.Stat()
-					if afterGoModStatErr != nil {
-						log.Println("Failed to stat go.mod after running `go mod tidy -e`")
-					} else {
-						if afterGoModFileInfo.ModTime().After(beforeGoModFileInfo.ModTime()) {
-							// if go.mod has been changed then notify the user
-							log.Println("We have run `go mod tidy -e` and it altered go.mod. You may wish to check these changes into version control. ")
-						}
-					}
+					log.Println("Failed to stat go.mod after running `go mod tidy -e`")
+				} else if afterGoModFileInfo.ModTime().After(beforeGoModFileInfo.ModTime()) {
+					// if go.mod has been changed then notify the user
+					log.Println("We have run `go mod tidy -e` and it altered go.mod. You may wish to check these changes into version control. ")
 				}
-				afterGoMod.Close()
 			}
 
-			afterGoSum, afterGoSumErr := os.Open("go.sum")
+			afterGoSumFileInfo, afterGoSumErr := os.Stat("go.sum")
 			if afterGoSumErr != nil {
-				log.Println("Failed to read go.sum after running `go mod tidy -e`")
+				log.Println("Failed to stat go.sum after running `go mod tidy -e`")
 			} else {
-				afterGoSumFileInfo, afterGoSumStatErr := afterGoSum.Stat()
-				if afterGoSumStatErr != nil {
-					log.Println("Failed to stat go.sum after running `go mod tidy -e`")
-				} else {
-					if beforeGoSumErr != nil || afterGoSumFileInfo.ModTime().After(beforeGoSumFileInfo.ModTime()) {
-						// if go.sum has been changed then notify the user
-						log.Println("We have run `go mod tidy -e` and it altered go.sum. You may wish to check these changes into version control. ")
-					}
+				if beforeGoSumErr != nil || afterGoSumFileInfo.ModTime().After(beforeGoSumFileInfo.ModTime()) {
+					// if go.sum has been changed then notify the user
+					log.Println("We have run `go mod tidy -e` and it altered go.sum. You may wish to check these changes into version control. ")
 				}
 			}
-			afterGoSum.Close()
 
 		}
 	}
