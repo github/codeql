@@ -11,7 +11,7 @@ Java:
   - change-notes/**/*java.*
 
 JS:
-  - javascript/**/*
+  - any: [ 'javascript/**/*', '!javascript/ql/experimental/adaptivethreatmodeling/**/*' ]
   - change-notes/**/*javascript*
 
 Python:
