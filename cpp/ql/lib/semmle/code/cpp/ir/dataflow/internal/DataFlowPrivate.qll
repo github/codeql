@@ -354,6 +354,14 @@ predicate nodeIsHidden(Node n) {
   ReadNodeFlow::flowThrough(n, _) and
   not ReadNodeFlow::flowOutOf(n, _) and
   not ReadNodeFlow::flowInto(_, n)
+  or
+  n.asInstruction() instanceof ReturnValueInstruction
+}
+
+predicate nodeIsShown(Node n) {
+  exists(ReturnStmt r |
+    n.asExpr() = r.getExpr()
+  )
 }
 
 class LambdaCallKind = Unit;
