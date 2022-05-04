@@ -192,12 +192,17 @@ module Array {
     }
   }
 
+  private class ElementReferenceReadMethodName extends string {
+    ElementReferenceReadMethodName() { this = ["[]", "slice"] }
+  }
+
   /** A call to `[]`, or its alias, `slice`. */
   abstract private class ElementReferenceReadSummary extends SummarizedCallable {
     MethodCall mc;
+    ElementReferenceReadMethodName methodName; // adding this as a field helps give a better join order
 
     bindingset[this]
-    ElementReferenceReadSummary() { mc.getMethodName() = ["[]", "slice"] }
+    ElementReferenceReadSummary() { mc.getMethodName() = methodName }
 
     override MethodCall getACall() { result = mc }
   }
@@ -207,7 +212,7 @@ module Array {
     private ConstantValue cv;
 
     ElementReferenceReadKnownSummary() {
-      this = mc.getMethodName() + "(" + cv.serialize() + ")" and
+      this = methodName + "(" + cv.serialize() + ")" and
       mc.getNumberOfArguments() = 1 and
       cv = getKnownElementIndex(mc.getArgument(0))
     }
@@ -225,7 +230,7 @@ module Array {
    */
   private class ElementReferenceReadUnknownSummary extends ElementReferenceReadSummary {
     ElementReferenceReadUnknownSummary() {
-      this = mc.getMethodName() + "(index)" and
+      this = methodName + "(index)" and
       mc.getNumberOfArguments() = 1 and
       isUnknownElementIndex(mc.getArgument(0))
     }
@@ -267,7 +272,7 @@ module Array {
           or
           rl.isExclusive() and end = e - 1
         ) and
-        this = "[](" + start + ".." + end + ")"
+        this = methodName + "(" + start + ".." + end + ")"
       )
     }
 
@@ -291,7 +296,7 @@ module Array {
    */
   private class ElementReferenceRangeReadUnknownSummary extends ElementReferenceReadSummary {
     ElementReferenceRangeReadUnknownSummary() {
-      this = "[](range_unknown)" and
+      this = methodName + "(range_unknown)" and
       (
         mc.getNumberOfArguments() = 2 and
         (
@@ -2007,17 +2012,22 @@ module Enumerable {
     }
   }
 
+  private class GrepMethodName extends string {
+    GrepMethodName() { this = ["grep", "grep_v"] }
+  }
+
   abstract private class GrepSummary extends SummarizedCallable {
     MethodCall mc;
+    GrepMethodName methodName; // adding this as a field helps give a better join order
 
     bindingset[this]
-    GrepSummary() { mc.getMethodName() = ["grep", "grep_v"] }
+    GrepSummary() { mc.getMethodName() = methodName }
 
     override MethodCall getACall() { result = mc }
   }
 
   private class GrepBlockSummary extends GrepSummary {
-    GrepBlockSummary() { this = mc.getMethodName() + "(block)" and exists(mc.getBlock()) }
+    GrepBlockSummary() { this = methodName + "(block)" and exists(mc.getBlock()) }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -2032,7 +2042,7 @@ module Enumerable {
   }
 
   private class GrepNoBlockSummary extends GrepSummary {
-    GrepNoBlockSummary() { this = mc.getMethodName() + "(no_block)" and not exists(mc.getBlock()) }
+    GrepNoBlockSummary() { this = methodName + "(no_block)" and not exists(mc.getBlock()) }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any]" and
@@ -2052,18 +2062,23 @@ module Enumerable {
     }
   }
 
+  private class InjectMethodName extends string {
+    // `reduce` is an alias for `inject`.
+    InjectMethodName() { this = ["inject", "reduce"] }
+  }
+
   abstract private class InjectSummary extends SummarizedCallable {
     MethodCall mc;
+    InjectMethodName methodName; // adding this as a field helps give a better join order
 
-    // `reduce` is an alias for `inject`.
     bindingset[this]
-    InjectSummary() { mc.getMethodName() = ["inject", "reduce"] }
+    InjectSummary() { mc.getMethodName() = methodName }
 
     override MethodCall getACall() { result = mc }
   }
 
   private class InjectNoArgSummary extends InjectSummary {
-    InjectNoArgSummary() { this = mc.getMethodName() + "_no_arg" and mc.getNumberOfArguments() = 0 }
+    InjectNoArgSummary() { this = methodName + "_no_arg" and mc.getNumberOfArguments() = 0 }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       // The no-argument variant of inject passes element 0 to the first block
@@ -2083,7 +2098,7 @@ module Enumerable {
   }
 
   private class InjectArgSummary extends InjectSummary {
-    InjectArgSummary() { this = mc.getMethodName() + "_arg" and mc.getNumberOfArguments() > 0 }
+    InjectArgSummary() { this = methodName + "_arg" and mc.getNumberOfArguments() > 0 }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -2101,18 +2116,23 @@ module Enumerable {
     }
   }
 
+  private class MinOrMaxByMethodName extends string {
+    MinOrMaxByMethodName() { this = ["min_by", "max_by"] }
+  }
+
   abstract private class MinOrMaxBySummary extends SummarizedCallable {
     MethodCall mc;
+    MinOrMaxByMethodName methodName; // adding this as a field helps give a better join order
 
     bindingset[this]
-    MinOrMaxBySummary() { mc.getMethodName() = ["min_by", "max_by"] }
+    MinOrMaxBySummary() { mc.getMethodName() = methodName }
 
     override MethodCall getACall() { result = mc }
   }
 
   private class MinOrMaxByNoArgSummary extends MinOrMaxBySummary {
     MinOrMaxByNoArgSummary() {
-      this = mc.getMethodName() + "_no_arg" and
+      this = methodName + "_no_arg" and
       mc.getNumberOfArguments() = 0
     }
 
@@ -2125,7 +2145,7 @@ module Enumerable {
 
   private class MinOrMaxByArgSummary extends MinOrMaxBySummary {
     MinOrMaxByArgSummary() {
-      this = mc.getMethodName() + "_arg" and
+      this = methodName + "_arg" and
       mc.getNumberOfArguments() > 0
     }
 
@@ -2136,18 +2156,23 @@ module Enumerable {
     }
   }
 
+  private class MinOrMaxMethodName extends string {
+    MinOrMaxMethodName() { this = ["min", "max"] }
+  }
+
   abstract private class MinOrMaxSummary extends SummarizedCallable {
     MethodCall mc;
+    MinOrMaxMethodName methodName; // adding this as a field helps give a better join order
 
     bindingset[this]
-    MinOrMaxSummary() { mc.getMethodName() = ["min", "max"] }
+    MinOrMaxSummary() { mc.getMethodName() = methodName }
 
     override MethodCall getACall() { result = mc }
   }
 
   private class MinOrMaxNoArgNoBlockSummary extends MinOrMaxSummary {
     MinOrMaxNoArgNoBlockSummary() {
-      this = mc.getMethodName() + "_no_arg_no_block" and
+      this = methodName + "_no_arg_no_block" and
       mc.getNumberOfArguments() = 0 and
       not exists(mc.getBlock())
     }
@@ -2161,7 +2186,7 @@ module Enumerable {
 
   private class MinOrMaxArgNoBlockSummary extends MinOrMaxSummary {
     MinOrMaxArgNoBlockSummary() {
-      this = mc.getMethodName() + "_arg_no_block" and
+      this = methodName + "_arg_no_block" and
       mc.getNumberOfArguments() > 0 and
       not exists(mc.getBlock())
     }
@@ -2175,7 +2200,7 @@ module Enumerable {
 
   private class MinOrMaxNoArgBlockSummary extends MinOrMaxSummary {
     MinOrMaxNoArgBlockSummary() {
-      this = mc.getMethodName() + "_no_arg_block" and
+      this = methodName + "_no_arg_block" and
       mc.getNumberOfArguments() = 0 and
       exists(mc.getBlock())
     }
@@ -2189,7 +2214,7 @@ module Enumerable {
 
   private class MinOrMaxArgBlockSummary extends MinOrMaxSummary {
     MinOrMaxArgBlockSummary() {
-      this = mc.getMethodName() + "_arg_block" and
+      this = methodName + "_arg_block" and
       mc.getNumberOfArguments() > 0 and
       exists(mc.getBlock())
     }
