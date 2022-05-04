@@ -1,34 +1,15 @@
 #!/usr/bin/env python3
 
 import logging
-import os
 import re
-import sys
 
 import inflection
 from toposort import toposort_flatten
 
-sys.path.append(os.path.dirname(__file__))
+from swift.codegen.lib import dbscheme, generator, cpp
 
-from swift.codegen.lib import paths, dbscheme, generator, cpp
-
-field_overrides = [
-    (re.compile(r"locations.*::(start|end).*|.*::(index|num_.*)"), {"type": "unsigned"}),
-    (re.compile(r".*::(.*)_"), lambda m: {"name": m[1]}),
-]
 
 log = logging.getLogger(__name__)
-
-
-def get_field_override(table, field):
-    spec = f"{table}::{field}"
-    for r, o in field_overrides:
-        m = r.fullmatch(spec)
-        if m and callable(o):
-            return o(m)
-        elif m:
-            return o
-    return {}
 
 
 def get_tag_name(s):
@@ -52,7 +33,7 @@ def get_field(c: dbscheme.Column, table: str):
         "name": c.schema_name,
         "type": c.type,
     }
-    args.update(get_field_override(table, c.schema_name))
+    args.update(cpp.get_field_override(c.schema_name))
     args["type"] = get_cpp_type(args["type"])
     return cpp.Field(**args)
 
@@ -78,7 +59,7 @@ def get_trap(t: dbscheme.Table):
 
 def generate(opts, renderer):
     tag_graph = {}
-    out = opts.trap_output
+    out = opts.cpp_output
 
     traps = []
     for e in dbscheme.iterload(opts.dbscheme):
@@ -102,7 +83,7 @@ def generate(opts, renderer):
     renderer.render(cpp.TagList(tags), out / "TrapTags.h")
 
 
-tags = ("trap", "dbscheme")
+tags = ("cpp", "dbscheme")
 
 if __name__ == "__main__":
     generator.run()

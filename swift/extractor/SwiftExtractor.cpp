@@ -12,7 +12,7 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 
-#include "swift/extractor/trap/TrapEntries.h"
+#include "swift/extractor/trap/TrapClasses.h"
 
 using namespace codeql;
 
@@ -75,9 +75,10 @@ static void extractFile(const SwiftExtractorConfiguration& config, swift::Source
   }
   trap << "\n\n";
 
-  TrapLabel<FileTag> label{};
-  trap << label << "=*\n";
-  trap << FilesTrap{label, srcFilePath.str().str()} << "\n";
+  File f;
+  f.id = TrapLabel<FileTag>{};
+  f.name = srcFilePath.str().str();
+  trap << f.id << "=*\n" << f;
 
   // TODO: Pick a better name to avoid collisions
   std::string trapName = file.getFilename().str() + ".trap";

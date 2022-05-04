@@ -9,7 +9,7 @@ output_dir = pathlib.Path("path", "to", "output")
 
 @pytest.fixture
 def generate(opts, renderer, dbscheme_input):
-    opts.trap_output = output_dir
+    opts.cpp_output = output_dir
 
     def ret(entities):
         dbscheme_input.entities = entities
@@ -105,27 +105,21 @@ def test_one_table_special_types(generate_traps, column, field):
     ]
 
 
-@pytest.mark.parametrize("table,name,column,field", [
-    ("locations", "Locations", dbscheme.Column(
-        "startWhatever", "bar"), cpp.Field("startWhatever", "unsigned")),
-    ("locations", "Locations", dbscheme.Column(
-        "endWhatever", "bar"), cpp.Field("endWhatever", "unsigned")),
-    ("foos", "Foos", dbscheme.Column("startWhatever", "bar"),
-     cpp.Field("startWhatever", "bar")),
-    ("foos", "Foos", dbscheme.Column("endWhatever", "bar"),
-     cpp.Field("endWhatever", "bar")),
-    ("foos", "Foos", dbscheme.Column("index", "bar"), cpp.Field("index", "unsigned")),
-    ("foos", "Foos", dbscheme.Column("num_whatever", "bar"),
-     cpp.Field("num_whatever", "unsigned")),
-    ("foos", "Foos", dbscheme.Column("whatever_", "bar"), cpp.Field("whatever", "bar")),
-])
-def test_one_table_overridden_fields(generate_traps, table, name, column, field):
+@pytest.mark.parametrize("name", ["start_line", "start_column", "end_line", "end_column", "index", "num_whatever"])
+def test_one_table_overridden_unsigned_field(generate_traps, name):
     assert generate_traps([
-        dbscheme.Table(name=table, columns=[column]),
+        dbscheme.Table(name="foos", columns=[dbscheme.Column(name, "bar")]),
     ]) == [
-        cpp.Trap(table, name=name, fields=[field]),
+        cpp.Trap("foos", name="Foos", fields=[cpp.Field(name, "unsigned")]),
     ]
 
+
+def test_one_table_overridden_underscore_named_field(generate_traps):
+    assert generate_traps([
+        dbscheme.Table(name="foos", columns=[dbscheme.Column("whatever_", "bar")]),
+    ]) == [
+               cpp.Trap("foos", name="Foos", fields=[cpp.Field("whatever", "bar")]),
+           ]
 
 def test_one_table_no_tags(generate_tags):
     assert generate_tags([
@@ -160,4 +154,4 @@ def test_multiple_union_tags(generate_tags):
 
 
 if __name__ == '__main__':
-    sys.exit(pytest.main())
+    sys.exit(pytest.main([__file__] + sys.argv[1:]))

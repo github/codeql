@@ -195,4 +195,4 @@ def test_empty_cleanup(opts, input, renderer, tmp_path):
 
 
 if __name__ == '__main__':
-    sys.exit(pytest.main())
+    sys.exit(pytest.main([__file__] + sys.argv[1:]))

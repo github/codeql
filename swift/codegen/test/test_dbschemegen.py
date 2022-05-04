@@ -304,4 +304,4 @@ def test_class_with_derived_and_repeated_property(opts, input, renderer):
 
 
 if __name__ == '__main__':
-    sys.exit(pytest.main())
+    sys.exit(pytest.main([__file__] + sys.argv[1:]))
