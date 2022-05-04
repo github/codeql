@@ -565,6 +565,15 @@ private module SpannerCsv {
           "@google-cloud/spanner;~SqlExecutorDirect;@google-cloud/spanner;Database;Member[run,runPartitionedUpdate,runStream]",
           "@google-cloud/spanner;~SqlExecutorDirect;@google-cloud/spanner;Transaction;Member[run,runStream,runUpdate]",
           "@google-cloud/spanner;~SqlExecutorDirect;@google-cloud/spanner;BatchTransaction;Member[createQueryPartitions]",
+          "@google-cloud/spanner;~SqlExecutorBatch;@google-cloud/spanner;Transaction;Member[batchUpdate]",
+          "@google-cloud/spanner;~SqlExecutorV1;@google-cloud/spanner;v1.SpannerClient;Member[executeSql,executeStreamingSql]",
+          // Populate DatabaseAccess
+          "codeql;DatabaseAccess;@google-cloud/spanner;~SqlExecutorDirect;",
+          "codeql;DatabaseAccess.getAQueryArgument;@google-cloud/spanner;~SqlExecutorDirect;Argument[0]",
+          "codeql;DatabaseAccess.getAQueryArgument;@google-cloud/spanner;~SqlExecutorDirect;Argument[0].Member[sql]",
+          "codeql;DatabaseAccess.getAResult;@google-cloud/spanner;~SqlExecutorDirect;Argument[0..].Parameter[1]",
+          "codeql;DatabaseAccess.getAResult;@google-cloud/spanner;~SqlExecutorDirect;ReturnValue.Awaited",
+          // SpannerObject
           "@google-cloud/spanner;~SpannerObject;@google-cloud/spanner;v1.SpannerClient;",
           "@google-cloud/spanner;~SpannerObject;@google-cloud/spanner;Database;",
           "@google-cloud/spanner;~SpannerObject;@google-cloud/spanner;Transaction;",

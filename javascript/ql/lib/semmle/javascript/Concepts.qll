@@ -32,6 +32,26 @@ abstract class SystemCommandExecution extends DataFlow::Node {
   abstract DataFlow::Node getOptionsArg();
 }
 
+private class SystemCommandExecutionFromModel extends SystemCommandExecution {
+  private API::Node apiNode;
+
+  SystemCommandExecutionFromModel() {
+    apiNode = ModelOutput::getATypeNode("~codeql", "SystemCommandExecution") and
+    this = apiNode.getAnImmediateUse()
+  }
+
+  override DataFlow::Node getACommandArgument() {
+    result =
+      ModelOutput::getATypeNode("~codeql", "SystemCommandExecution.getACommandArgument", apiNode).getARhs()
+  }
+
+  override DataFlow::Node getOptionsArg() {
+    result = ModelOutput::getATypeNode("~codeql", "SystemCommandExecution.getOptionsArg", apiNode).getARhs()
+  }
+
+  override predicate isSync() { any() }
+}
+
 /**
  * A data flow node that performs a file system access (read, write, copy, permissions, stats, etc).
  */
@@ -88,6 +108,23 @@ abstract class DatabaseAccess extends DataFlow::Node {
   /** Gets a node to which a result of the access may flow. */
   DataFlow::Node getAResult() {
     none() // Overridden in subclass
+  }
+}
+
+private class DatabaseAccessFromModel extends DatabaseAccess {
+  API::Node apiNode;
+
+  DatabaseAccessFromModel() {
+    apiNode = ModelOutput::getATypeNode("codeql", "DatabaseAccess") and
+    this = apiNode.getAnImmediateUse()
+  }
+
+  override DataFlow::Node getAQueryArgument() {
+    result = ModelOutput::getATypeNode("codeql", "DatabaseAccess.getAQueryArgument", apiNode).getARhs()
+  }
+
+  override DataFlow::Node getAResult() {
+    result = ModelOutput::getATypeNode("codeql", "DatabaseAccess.getAResult", apiNode).getAnImmediateUse()
   }
 }
 
