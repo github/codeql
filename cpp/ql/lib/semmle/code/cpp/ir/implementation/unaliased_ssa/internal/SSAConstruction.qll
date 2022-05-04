@@ -1001,6 +1001,13 @@ predicate canReuseSsaForMemoryResult(Instruction instruction) {
   // We don't support reusing SSA for any location that could create a `Chi` instruction.
 }
 
+string getPhiLocationString(PhiInstruction phi) {
+  exists(Alias::MemoryLocation loc |
+    phi = getPhi(_, loc) and
+    result = loc.toString()
+  )
+}
+
 /** DEPRECATED: Alias for canReuseSsaForMemoryResult */
 deprecated predicate canReuseSSAForMemoryResult = canReuseSsaForMemoryResult/1;
 

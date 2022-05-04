@@ -41,7 +41,7 @@ class Instruction extends Construction::TStageInstruction {
   }
 
   /** Gets a textual representation of this element. */
-  final string toString() { result = this.getOpcode().toString() + ": " + this.getAst().toString() }
+  string toString() { result = this.getOpcode().toString() + ": " + this.getAst().toString() }
 
   /**
    * Gets a string showing the result, opcode, and operands of the instruction, equivalent to what
@@ -2034,6 +2034,11 @@ class PhiInstruction extends Instruction {
   final PhiInputOperand getInputOperand(IRBlock predecessorBlock) {
     result = this.getAnOperand() and
     result.getPredecessorBlock() = predecessorBlock
+  }
+
+  
+  override string toString() {
+    result = "Phi: " + Construction::getPhiLocationString(this)
   }
 }
 
