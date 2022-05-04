@@ -199,7 +199,7 @@ module Array {
   /** A call to `[]`, or its alias, `slice`. */
   abstract private class ElementReferenceReadSummary extends SummarizedCallable {
     MethodCall mc;
-    ElementReferenceReadMethodName methodName;
+    ElementReferenceReadMethodName methodName; // adding this as a field helps give a better join order
 
     bindingset[this]
     ElementReferenceReadSummary() { mc.getMethodName() = methodName }
@@ -2018,7 +2018,7 @@ module Enumerable {
 
   abstract private class GrepSummary extends SummarizedCallable {
     MethodCall mc;
-    GrepMethodName methodName;
+    GrepMethodName methodName; // adding this as a field helps give a better join order
 
     bindingset[this]
     GrepSummary() { mc.getMethodName() = methodName }
@@ -2162,7 +2162,7 @@ module Enumerable {
 
   abstract private class MinOrMaxSummary extends SummarizedCallable {
     MethodCall mc;
-    MinOrMaxMethodName methodName;
+    MinOrMaxMethodName methodName; // adding this as a field helps give a better join order
 
     bindingset[this]
     MinOrMaxSummary() { mc.getMethodName() = methodName }
