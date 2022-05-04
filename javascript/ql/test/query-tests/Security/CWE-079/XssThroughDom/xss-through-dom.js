@@ -125,8 +125,10 @@ class Sub extends Super {
 
 (function () {
 	let elem = document.createElement('a');
-	const selection = getSelection();
-	let linkText = selection.toString() || '';
+	const wSelection = getSelection();
+	const dSelection = document.getSelection();
+	let linkText = wSelection.toString() || dSelection.toString() || '';
 	elem.innerHTML = linkText; // NOT OK
+	$("#id").html(linkText); // NOT OK
 	elem.innerText = linkText; // OK
 })();
