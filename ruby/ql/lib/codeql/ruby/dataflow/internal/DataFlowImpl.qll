@@ -4264,9 +4264,9 @@ private module Subpaths {
    */
   predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeImpl ret, PathNode out) {
     exists(ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout, PathNodeMid out0 |
-      pragma[only_bind_into](arg).getASuccessor() = par and
+      pragma[only_bind_into](arg).getASuccessor() = pragma[only_bind_into](par) and
       pragma[only_bind_into](arg).getASuccessor() = out0 and
-      subpaths03(arg, p, localStepToHidden*(ret), o, sout, apout) and
+      subpaths03(pragma[only_bind_into](arg), p, localStepToHidden*(ret), o, sout, apout) and
       not ret.isHidden() and
       par.getNodeEx() = p and
       out0.getNodeEx() = o and
