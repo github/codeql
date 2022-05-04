@@ -5,7 +5,7 @@ import semmle.code.java.security.performance.PolynomialReDoSQuery
 class HasPolyRedos extends InlineExpectationsTest {
   HasPolyRedos() { this = "HasPolyRedos" }
 
-  override string getARelevantTag() { result = ["hasPolyRedos"] }
+  override string getARelevantTag() { result = "hasPolyRedos" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasPolyRedos" and
