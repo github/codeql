@@ -26,8 +26,8 @@ abstract class UrlResourceSink extends DataFlow::Node {
 private class CrossOriginUrlResourceSink extends JavaScriptEnabledUrlResourceSink {
   CrossOriginUrlResourceSink() {
     exists(WebViewRef webview |
-      webViewLoadUrl(this.asExpr(), webview.getAnAccess()) and
-      isAllowFileAccessEnabled(webview.getAnAccess())
+      webViewLoadUrl(this.asExpr(), webview) and
+      isAllowFileAccessEnabled(webview)
     )
   }
 
@@ -42,8 +42,8 @@ private class CrossOriginUrlResourceSink extends JavaScriptEnabledUrlResourceSin
 private class JavaScriptEnabledUrlResourceSink extends UrlResourceSink {
   JavaScriptEnabledUrlResourceSink() {
     exists(WebViewRef webview |
-      webViewLoadUrl(this.asExpr(), webview.getAnAccess()) and
-      isJSEnabled(webview.getAnAccess())
+      webViewLoadUrl(this.asExpr(), webview) and
+      isJSEnabled(webview)
     )
   }
 
@@ -67,15 +67,15 @@ private class WebViewRef extends Element {
 }
 
 /**
- * Holds if a `WebViewLoadUrlMethod` is called on `webview`
+ * Holds if a `WebViewLoadUrlMethod` is called on an access of `webview`
  * with `urlArg` as its first argument.
  */
-private predicate webViewLoadUrl(Argument urlArg, DataFlow::Node webview) {
+private predicate webViewLoadUrl(Argument urlArg, WebViewRef webview) {
   exists(MethodAccess loadUrl |
     loadUrl.getArgument(0) = urlArg and
     loadUrl.getMethod() instanceof WebViewLoadUrlMethod
   |
-    webview = DataFlow::getInstanceArgument(loadUrl)
+    webview.getAnAccess() = DataFlow::getInstanceArgument(loadUrl)
     or
     // `webview` is received as a parameter of an event method in a custom `WebViewClient`,
     // so we need to find `WebViews` that use that specific `WebViewClient`.
@@ -84,37 +84,37 @@ private predicate webViewLoadUrl(Argument urlArg, DataFlow::Node webview) {
       setWebClient.getArgument(0).getType() = eventMethod.getDeclaringType() and
       loadUrl.getQualifier() = eventMethod.getWebViewParameter().getAnAccess()
     |
-      webview = DataFlow::getInstanceArgument(setWebClient)
+      webview.getAnAccess() = DataFlow::getInstanceArgument(setWebClient)
     )
   )
 }
 
 /**
- * Holds if `webview` is a `WebView` and its option `setJavascriptEnabled`
+ * Holds if `webview`'s option `setJavascriptEnabled`
  * has been set to `true` via a `WebSettings` object obtained from it.
  */
-private predicate isJSEnabled(DataFlow::Node webview) {
-  webview.getType().(RefType).getASupertype*() instanceof TypeWebView and
+private predicate isJSEnabled(WebViewRef webview) {
   exists(MethodAccess allowJs, MethodAccess settings |
     allowJs.getMethod() instanceof AllowJavaScriptMethod and
     allowJs.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
     settings.getMethod() instanceof WebViewGetSettingsMethod and
     DataFlow::localExprFlow(settings, allowJs.getQualifier()) and
-    DataFlow::localFlow(webview, DataFlow::getInstanceArgument(settings))
+    DataFlow::localFlow(webview.getAnAccess(), DataFlow::getInstanceArgument(settings))
   )
 }
 
 /**
- * Holds if `webview` is a `WebView` and its options `setAllowUniversalAccessFromFileURLs` or
- * `setAllowFileAccessFromFileURLs` have been set to `true`.
+ * Holds if `webview`'s options `setAllowUniversalAccessFromFileURLs` or
+ * `setAllowFileAccessFromFileURLs` have been set to `true` via a `WebSettings` object
+ *  obtained from it.
  */
-private predicate isAllowFileAccessEnabled(DataFlow::Node webview) {
+private predicate isAllowFileAccessEnabled(WebViewRef webview) {
   exists(MethodAccess allowFileAccess, MethodAccess settings |
     allowFileAccess.getMethod() instanceof CrossOriginAccessMethod and
     allowFileAccess.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
     settings.getMethod() instanceof WebViewGetSettingsMethod and
     DataFlow::localExprFlow(settings, allowFileAccess.getQualifier()) and
-    DataFlow::localFlow(webview, DataFlow::getInstanceArgument(settings))
+    DataFlow::localFlow(webview.getAnAccess(), DataFlow::getInstanceArgument(settings))
   )
 }
 
