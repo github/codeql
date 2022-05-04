@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Using a PendingIntent Constructed with implicit Intent and without PendingIntent.FLAG_IMMUTABLE(value:0x4000000) flag could lead to leaking sensitive data or privilege escalation operations.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do not Construct PendingIntent with implicit Intent otherwise add a PendingIntent.FLAG_IMMUTABLE flag.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following examples show a bad situation and its commit patch. In the patch, it adds a PendingIntent.FLAG_IMMUTABLE flag while constructing the PendingIntent. This ql script also suits for other PendingIntent vulnerabilities searched from Google such as CVE-2020-0417, CVE-2014-8609, CVE-2021-0692 etc.
+</p>
+<sample src="PendingIntentTestActivity.java" />
+</example>
+
+<references>
+<li>
+CVE-2020-0422 Google Patch:
+<a href="https://source.android.com/security/bulletin/2020-10-01">Android Security Bulletins Oct</a>.
+<a href="https://android.googlesource.com/platform/packages/apps/Contacts/+/c987095255ee953de27ea1de360c44aa99b1b856%5E%21/#F1">commit patch</a>.
+</li>
+<li>
+CVE:
+<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=2020-0422">CVE-2020-0422: In constructImportFailureNotification of NotificationImportExportListener.java, there is a possible permissions bypass due to an unsafe PendingIntent. This could lead to local information disclosure of contact data with User execution privileges needed.</a>.
+</li>
+</references>
+</qhelp>
