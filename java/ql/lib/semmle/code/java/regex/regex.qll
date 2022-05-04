@@ -112,7 +112,7 @@ abstract class RegexString extends StringLiteral {
     this.getChar(start + 1) = "k" and
     this.getChar(start + 2) = "<" and
     end = min(int i | i > start + 2 and this.getChar(i) = ">") + 1 and
-    name = this.getText().substring(start + 3, end - 2)
+    name = this.getText().substring(start + 3, end - 1)
   }
 
   private predicate numberedBackreference(int start, int end, int value) {

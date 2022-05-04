@@ -4,6 +4,7 @@
  */
 
 private import java
+import semmle.code.FileSystem
 import semmle.code.java.regex.RegexTreeView
 
 /**

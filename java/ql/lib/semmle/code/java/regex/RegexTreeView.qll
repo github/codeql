@@ -258,6 +258,9 @@ class RegExpQuantifier extends RegExpTerm, TRegExpQuantifier {
     result.occursInRegex(re, start, part_end)
   }
 
+  /** Holds if this term may match zero times. */
+  predicate mayBeEmpty() { maybe_empty = true }
+
   /** Holds if this term may match an unlimited number of times. */
   predicate mayRepeatForever() { may_repeat_forever = true }
 
