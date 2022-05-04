@@ -29,11 +29,25 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "okhttp3;HttpUrl$Builder;false;addEncodedPathSegment;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.addEncodedPathSegment(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "okhttp3;HttpUrl$Builder;false;addEncodedPathSegments;;;Argument[-1];ReturnValue;value"
 			HttpUrl.Builder out = null;
 			HttpUrl.Builder in = (HttpUrl.Builder) source();
 			out = in.addEncodedPathSegments(null);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "okhttp3;HttpUrl$Builder;false;addEncodedPathSegments;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.addEncodedPathSegments(in);
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "okhttp3;HttpUrl$Builder;false;addEncodedQueryParameter;;;Argument[-1];ReturnValue;value"
@@ -43,11 +57,25 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "okhttp3;HttpUrl$Builder;false;addEncodedQueryParameter;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.addEncodedQueryParameter(in, null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "okhttp3;HttpUrl$Builder;false;addPathSegment;;;Argument[-1];ReturnValue;value"
 			HttpUrl.Builder out = null;
 			HttpUrl.Builder in = (HttpUrl.Builder) source();
 			out = in.addPathSegment(null);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "okhttp3;HttpUrl$Builder;false;addPathSegment;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.addPathSegment(in);
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "okhttp3;HttpUrl$Builder;false;addPathSegments;;;Argument[-1];ReturnValue;value"
@@ -57,11 +85,32 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "okhttp3;HttpUrl$Builder;false;addPathSegments;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.addPathSegments(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "okhttp3;HttpUrl$Builder;false;addQueryParameter;;;Argument[-1];ReturnValue;value"
 			HttpUrl.Builder out = null;
 			HttpUrl.Builder in = (HttpUrl.Builder) source();
 			out = in.addQueryParameter(null, null);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "okhttp3;HttpUrl$Builder;false;addQueryParameter;;;Argument[0..1];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.addQueryParameter(in, null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "okhttp3;HttpUrl$Builder;false;addQueryParameter;;;Argument[0..1];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.addQueryParameter(null, in);
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "okhttp3;HttpUrl$Builder;false;build;;;Argument[-1];ReturnValue;taint"
@@ -78,6 +127,13 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "okhttp3;HttpUrl$Builder;false;encodedFragment;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.encodedFragment(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "okhttp3;HttpUrl$Builder;false;encodedPassword;;;Argument[-1];ReturnValue;value"
 			HttpUrl.Builder out = null;
 			HttpUrl.Builder in = (HttpUrl.Builder) source();
@@ -92,11 +148,25 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "okhttp3;HttpUrl$Builder;false;encodedPath;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.encodedPath(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "okhttp3;HttpUrl$Builder;false;encodedQuery;;;Argument[-1];ReturnValue;value"
 			HttpUrl.Builder out = null;
 			HttpUrl.Builder in = (HttpUrl.Builder) source();
 			out = in.encodedQuery(null);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "okhttp3;HttpUrl$Builder;false;encodedQuery;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.encodedQuery(in);
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "okhttp3;HttpUrl$Builder;false;encodedUsername;;;Argument[-1];ReturnValue;value"
@@ -113,11 +183,25 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "okhttp3;HttpUrl$Builder;false;fragment;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.fragment(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "okhttp3;HttpUrl$Builder;false;host;;;Argument[-1];ReturnValue;value"
 			HttpUrl.Builder out = null;
 			HttpUrl.Builder in = (HttpUrl.Builder) source();
 			out = in.host(null);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "okhttp3;HttpUrl$Builder;false;host;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.host(in);
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "okhttp3;HttpUrl$Builder;false;password;;;Argument[-1];ReturnValue;value"
@@ -134,11 +218,25 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "okhttp3;HttpUrl$Builder;false;port;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			int in = (int) source();
+			out.port(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "okhttp3;HttpUrl$Builder;false;query;;;Argument[-1];ReturnValue;value"
 			HttpUrl.Builder out = null;
 			HttpUrl.Builder in = (HttpUrl.Builder) source();
 			out = in.query(null);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "okhttp3;HttpUrl$Builder;false;query;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.query(in);
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "okhttp3;HttpUrl$Builder;false;removeAllEncodedQueryParameters;;;Argument[-1];ReturnValue;value"
@@ -183,11 +281,25 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "okhttp3;HttpUrl$Builder;false;setEncodedPathSegment;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			int in = (int) source();
+			out.setEncodedPathSegment(in, null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "okhttp3;HttpUrl$Builder;false;setEncodedQueryParameter;;;Argument[-1];ReturnValue;value"
 			HttpUrl.Builder out = null;
 			HttpUrl.Builder in = (HttpUrl.Builder) source();
 			out = in.setEncodedQueryParameter(null, null);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "okhttp3;HttpUrl$Builder;false;setEncodedQueryParameter;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.setEncodedQueryParameter(in, null);
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "okhttp3;HttpUrl$Builder;false;setPathSegment;;;Argument[-1];ReturnValue;value"
@@ -197,11 +309,25 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
+			// "okhttp3;HttpUrl$Builder;false;setPathSegment;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			int in = (int) source();
+			out.setPathSegment(in, null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
 			// "okhttp3;HttpUrl$Builder;false;setQueryParameter;;;Argument[-1];ReturnValue;value"
 			HttpUrl.Builder out = null;
 			HttpUrl.Builder in = (HttpUrl.Builder) source();
 			out = in.setQueryParameter(null, null);
 			sink(out); // $ hasValueFlow
+		}
+		{
+			// "okhttp3;HttpUrl$Builder;false;setQueryParameter;;;Argument[0];Argument[-1];taint"
+			HttpUrl.Builder out = null;
+			String in = (String) source();
+			out.setQueryParameter(in, null);
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "okhttp3;HttpUrl$Builder;false;username;;;Argument[-1];ReturnValue;value"
