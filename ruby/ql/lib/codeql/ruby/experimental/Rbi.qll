@@ -70,13 +70,11 @@ module Rbi {
     class RbiTypeAlias extends RbiType, DataFlow::CallNode {
       RbiTypeAlias() { this = API::getTopLevelMember("T").getAMethodCall("type_alias") }
 
-      // TODO: avoid mapping to AST layer
       /**
        * Gets the type aliased by this call.
        */
       RbiType getAliasedType() {
-        result.asExpr() =
-          this.getBlock().asExpr().(ExprNodes::StmtSequenceCfgNode).getLastStmt()
+        result.asExpr() = this.getBlock().asExpr().(ExprNodes::StmtSequenceCfgNode).getLastStmt()
       }
     }
 
