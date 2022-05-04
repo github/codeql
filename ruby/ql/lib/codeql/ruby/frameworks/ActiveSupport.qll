@@ -116,7 +116,7 @@ module ActiveSupport {
             or
             exists(int i | i in [0 .. (mc.getNumberOfArguments() - 1)] |
               input = "Argument[" + i + "]" and
-              output = ["ReturnValue.Element[?]"]
+              output = "ReturnValue.Element[?]"
             )
           ) and
           preservesValue = true
