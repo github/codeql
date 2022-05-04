@@ -36,6 +36,13 @@ attacks. It also shows how to remedy the problem by validating the user input.
 
 <sample src="UnsafeServletRequestDispatch.java" />
 
+<p>The following examples show an HTTP request parameter or request path being used directly to
+retrieve a resource of a Java EE application without validating the input, which allows sensitive
+file exposure attacks. It also shows how to remedy the problem by validating the user input.
+</p>
+
+<sample src="UnsafeResourceGet.java" />
+
 </example>
 <references>
 <li>File Disclosure:
@@ -46,6 +53,9 @@ attacks. It also shows how to remedy the problem by validating the user input.
 </li>
 <li>Micro Focus:
   <a href="https://vulncat.fortify.com/en/detail?id=desc.dataflow.java.file_disclosure_j2ee">File Disclosure: J2EE</a>
+</li>
+<li>CVE-2015-5174:
+  <a href="https://vuldb.com/?id.81084">Apache Tomcat 6.0/7.0/8.0/9.0 Servletcontext getResource/getResourceAsStream/getResourcePaths Path Traversal</a>
 </li>
 </references>
 </qhelp>

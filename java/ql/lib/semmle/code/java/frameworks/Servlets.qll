@@ -377,3 +377,26 @@ class RequestDispatchMethod extends Method {
     this.hasName(["forward", "include"])
   }
 }
+
+/**
+ * The interface `javax.servlet.ServletContext`.
+ */
+class ServletContext extends RefType {
+  ServletContext() { this.hasQualifiedName("javax.servlet", "ServletContext") }
+}
+
+/** The `getResource` method of `ServletContext`. */
+class GetServletResourceMethod extends Method {
+  GetServletResourceMethod() {
+    this.getDeclaringType() instanceof ServletContext and
+    this.hasName("getResource")
+  }
+}
+
+/** The `getResourceAsStream` method of `ServletContext`. */
+class GetServletResourceAsStreamMethod extends Method {
+  GetServletResourceAsStreamMethod() {
+    this.getDeclaringType() instanceof ServletContext and
+    this.hasName("getResourceAsStream")
+  }
+}
