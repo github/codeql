@@ -5,16 +5,14 @@ edges
 | tests3.cpp:60:21:60:53 | call to createXMLReader | tests3.cpp:63:2:63:2 | p |
 | tests3.cpp:67:21:67:53 | call to createXMLReader | tests3.cpp:70:2:70:2 | p |
 | tests5.cpp:27:25:27:38 | call to createLSParser | tests5.cpp:29:2:29:2 | p |
-| tests5.cpp:33:25:33:38 | call to createLSParser | tests5.cpp:36:2:36:2 | p |
 | tests5.cpp:40:25:40:38 | call to createLSParser | tests5.cpp:43:2:43:2 | p |
-| tests5.cpp:47:25:47:38 | call to createLSParser | tests5.cpp:51:2:51:2 | p |
 | tests5.cpp:55:25:55:38 | call to createLSParser | tests5.cpp:59:2:59:2 | p |
 | tests5.cpp:81:25:81:38 | call to createLSParser | tests5.cpp:83:2:83:2 | p |
-| tests5.cpp:81:25:81:38 | call to createLSParser | tests5.cpp:86:2:86:2 | p |
-| tests5.cpp:81:25:81:38 | call to createLSParser | tests5.cpp:89:2:89:2 | p |
-| tests5.cpp:93:25:93:38 | call to createLSParser | tests5.cpp:96:2:96:2 | p |
-| tests5.cpp:93:25:93:38 | call to createLSParser | tests5.cpp:99:2:99:2 | p |
-| tests5.cpp:93:25:93:38 | call to createLSParser | tests5.cpp:102:2:102:2 | p |
+| tests5.cpp:81:25:81:38 | call to createLSParser | tests5.cpp:83:2:83:2 | p |
+| tests5.cpp:83:2:83:2 | p | tests5.cpp:85:2:85:2 | p |
+| tests5.cpp:85:2:85:2 | p | tests5.cpp:86:2:86:2 | p |
+| tests5.cpp:86:2:86:2 | p | tests5.cpp:88:2:88:2 | p |
+| tests5.cpp:88:2:88:2 | p | tests5.cpp:89:2:89:2 | p |
 | tests.cpp:15:23:15:43 | XercesDOMParser output argument | tests.cpp:17:2:17:2 | p |
 | tests.cpp:28:23:28:43 | XercesDOMParser output argument | tests.cpp:31:2:31:2 | p |
 | tests.cpp:35:19:35:19 | VariableAddress [post update] | tests.cpp:37:2:37:2 | p |
@@ -59,22 +57,17 @@ nodes
 | tests4.cpp:130:39:130:55 | (int)... | semmle.label | (int)... |
 | tests5.cpp:27:25:27:38 | call to createLSParser | semmle.label | call to createLSParser |
 | tests5.cpp:29:2:29:2 | p | semmle.label | p |
-| tests5.cpp:33:25:33:38 | call to createLSParser | semmle.label | call to createLSParser |
-| tests5.cpp:36:2:36:2 | p | semmle.label | p |
 | tests5.cpp:40:25:40:38 | call to createLSParser | semmle.label | call to createLSParser |
 | tests5.cpp:43:2:43:2 | p | semmle.label | p |
-| tests5.cpp:47:25:47:38 | call to createLSParser | semmle.label | call to createLSParser |
-| tests5.cpp:51:2:51:2 | p | semmle.label | p |
 | tests5.cpp:55:25:55:38 | call to createLSParser | semmle.label | call to createLSParser |
 | tests5.cpp:59:2:59:2 | p | semmle.label | p |
 | tests5.cpp:81:25:81:38 | call to createLSParser | semmle.label | call to createLSParser |
 | tests5.cpp:83:2:83:2 | p | semmle.label | p |
+| tests5.cpp:83:2:83:2 | p | semmle.label | p |
+| tests5.cpp:85:2:85:2 | p | semmle.label | p |
 | tests5.cpp:86:2:86:2 | p | semmle.label | p |
+| tests5.cpp:88:2:88:2 | p | semmle.label | p |
 | tests5.cpp:89:2:89:2 | p | semmle.label | p |
-| tests5.cpp:93:25:93:38 | call to createLSParser | semmle.label | call to createLSParser |
-| tests5.cpp:96:2:96:2 | p | semmle.label | p |
-| tests5.cpp:99:2:99:2 | p | semmle.label | p |
-| tests5.cpp:102:2:102:2 | p | semmle.label | p |
 | tests.cpp:15:23:15:43 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
 | tests.cpp:17:2:17:2 | p | semmle.label | p |
 | tests.cpp:28:23:28:43 | XercesDOMParser output argument | semmle.label | XercesDOMParser output argument |
@@ -123,16 +116,10 @@ subpaths
 | tests4.cpp:77:34:77:38 | flags | tests4.cpp:77:34:77:38 | flags | tests4.cpp:77:34:77:38 | flags | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests4.cpp:77:34:77:38 | flags | XML parser |
 | tests4.cpp:130:39:130:55 | (int)... | tests4.cpp:130:39:130:55 | (int)... | tests4.cpp:130:39:130:55 | (int)... | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests4.cpp:130:39:130:55 | (int)... | XML parser |
 | tests5.cpp:29:2:29:2 | p | tests5.cpp:27:25:27:38 | call to createLSParser | tests5.cpp:29:2:29:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests5.cpp:27:25:27:38 | call to createLSParser | XML parser |
-| tests5.cpp:36:2:36:2 | p | tests5.cpp:33:25:33:38 | call to createLSParser | tests5.cpp:36:2:36:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests5.cpp:33:25:33:38 | call to createLSParser | XML parser |
 | tests5.cpp:43:2:43:2 | p | tests5.cpp:40:25:40:38 | call to createLSParser | tests5.cpp:43:2:43:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests5.cpp:40:25:40:38 | call to createLSParser | XML parser |
-| tests5.cpp:51:2:51:2 | p | tests5.cpp:47:25:47:38 | call to createLSParser | tests5.cpp:51:2:51:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests5.cpp:47:25:47:38 | call to createLSParser | XML parser |
 | tests5.cpp:59:2:59:2 | p | tests5.cpp:55:25:55:38 | call to createLSParser | tests5.cpp:59:2:59:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests5.cpp:55:25:55:38 | call to createLSParser | XML parser |
 | tests5.cpp:83:2:83:2 | p | tests5.cpp:81:25:81:38 | call to createLSParser | tests5.cpp:83:2:83:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests5.cpp:81:25:81:38 | call to createLSParser | XML parser |
-| tests5.cpp:86:2:86:2 | p | tests5.cpp:81:25:81:38 | call to createLSParser | tests5.cpp:86:2:86:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests5.cpp:81:25:81:38 | call to createLSParser | XML parser |
 | tests5.cpp:89:2:89:2 | p | tests5.cpp:81:25:81:38 | call to createLSParser | tests5.cpp:89:2:89:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests5.cpp:81:25:81:38 | call to createLSParser | XML parser |
-| tests5.cpp:96:2:96:2 | p | tests5.cpp:93:25:93:38 | call to createLSParser | tests5.cpp:96:2:96:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests5.cpp:93:25:93:38 | call to createLSParser | XML parser |
-| tests5.cpp:99:2:99:2 | p | tests5.cpp:93:25:93:38 | call to createLSParser | tests5.cpp:99:2:99:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests5.cpp:93:25:93:38 | call to createLSParser | XML parser |
-| tests5.cpp:102:2:102:2 | p | tests5.cpp:93:25:93:38 | call to createLSParser | tests5.cpp:102:2:102:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests5.cpp:93:25:93:38 | call to createLSParser | XML parser |
 | tests.cpp:17:2:17:2 | p | tests.cpp:15:23:15:43 | XercesDOMParser output argument | tests.cpp:17:2:17:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:15:23:15:43 | XercesDOMParser output argument | XML parser |
 | tests.cpp:31:2:31:2 | p | tests.cpp:28:23:28:43 | XercesDOMParser output argument | tests.cpp:31:2:31:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:28:23:28:43 | XercesDOMParser output argument | XML parser |
 | tests.cpp:39:2:39:2 | p | tests.cpp:35:23:35:43 | XercesDOMParser output argument | tests.cpp:39:2:39:2 | p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:35:23:35:43 | XercesDOMParser output argument | XML parser |

@@ -224,6 +224,68 @@ class SetFeatureTranformer extends XXEFlowStateTranformer {
 }
 
 /**
+ * The `DOMLSParser.getDomConfig` function.
+ */
+class GetDomConfig extends Function {
+  GetDomConfig() {
+    this.hasName("getDomConfig") and
+    this.getDeclaringType() instanceof DOMLSParserClass
+  }
+}
+
+/**
+ * The `DOMConfiguration.setParameter` function.
+ */
+class DomConfigurationSetParameter extends Function {
+  DomConfigurationSetParameter() {
+    this.hasName("setParameter") and
+    this.getDeclaringType().getName() = "DOMConfiguration"
+  }
+}
+
+/**
+ * A flow state transformer for a call to `DOMConfiguration.setParameter`
+ * specifying the feature `XMLUni::fgXercesDisableDefaultEntityResolution`.
+ * This is a slightly more complex transformer because the qualifier is a
+ * `DOMConfiguration` pointer returned by `DOMLSParser.getDomConfig` - and it
+ * is *that* qualifier we want to transform the flow state of.
+ */
+class DOMConfigurationSetParameterTranformer extends XXEFlowStateTranformer {
+  Expr newValue;
+
+  DOMConfigurationSetParameterTranformer() {
+    exists(FunctionCall getDomConfigCall, FunctionCall setParameterCall |
+      // this is the qualifier of a call to `DOMLSParser.getDomConfig`.
+      getDomConfigCall.getTarget() instanceof GetDomConfig and
+      this = getDomConfigCall.getQualifier() and
+      // `setParameterCall` is a call to `setParameter` on the return value of
+      // the same call to `DOMLSParser.getDomConfig`.
+      setParameterCall.getTarget() instanceof DomConfigurationSetParameter and
+      globalValueNumber(setParameterCall.getQualifier()).getAnExpr() = getDomConfigCall and
+      // the parameter being set is
+      // `XMLUni::fgXercesDisableDefaultEntityResolution`.
+      globalValueNumber(setParameterCall.getArgument(0)).getAnExpr().(VariableAccess).getTarget()
+        instanceof FeatureDisableDefaultEntityResolution and
+      // the value being set is `newValue`.
+      newValue = setParameterCall.getArgument(1)
+    )
+  }
+
+  final override XXEFlowState transform(XXEFlowState flowstate) {
+    exists(int createEntityReferenceNodes |
+      encodeXercesFlowState(flowstate, _, createEntityReferenceNodes) and
+      (
+        globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // true
+        encodeXercesFlowState(result, 1, createEntityReferenceNodes)
+        or
+        not globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // false or unknown
+        encodeXercesFlowState(result, 0, createEntityReferenceNodes)
+      )
+    )
+  }
+}
+
+/**
  * The `AbstractDOMParser.parse`, `DOMLSParserClass.parse`, `SAXParser.parse` or `SAX2XMLReader.parse` method.
  */
 class ParseFunction extends Function {

@@ -33,7 +33,7 @@ void test5_2(DOMImplementationLS *impl, InputSource &data) {
 	DOMLSParser *p = impl->createLSParser();
 
 	p->getDomConfig()->setParameter(XMLUni::fgXercesDisableDefaultEntityResolution, true);
-	p->parse(data); // GOOD [FALSE POSITIVE]
+	p->parse(data); // GOOD
 }
 
 void test5_3(DOMImplementationLS *impl, InputSource &data) {
@@ -48,7 +48,7 @@ void test5_4(DOMImplementationLS *impl, InputSource &data) {
 	DOMConfiguration *cfg = p->getDomConfig();
 
 	cfg->setParameter(XMLUni::fgXercesDisableDefaultEntityResolution, true);
-	p->parse(data); // GOOD [FALSE POSITIVE]
+	p->parse(data); // GOOD
 }
 
 void test5_5(DOMImplementationLS *impl, InputSource &data) {
@@ -83,7 +83,7 @@ void test5_7(DOMImplementationLS *impl, InputSource &data) {
 	p->parse(data); // BAD (parser not correctly configured)
 
 	p->getDomConfig()->setParameter(XMLUni::fgXercesDisableDefaultEntityResolution, true);
-	p->parse(data); // GOOD [FALSE POSITIVE]
+	p->parse(data); // GOOD
 
 	p->getDomConfig()->setParameter(XMLUni::fgXercesDisableDefaultEntityResolution, false);
 	p->parse(data); // BAD (parser not correctly configured)
@@ -93,11 +93,11 @@ void test5_8(DOMImplementationLS *impl, InputSource &data) {
 	DOMLSParser *p = impl->createLSParser();
 	DOMConfiguration *cfg = p->getDomConfig();
 
-	p->parse(data); // BAD (parser not correctly configured)
+	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
 
 	cfg->setParameter(XMLUni::fgXercesDisableDefaultEntityResolution, true);
-	p->parse(data); // GOOD [FALSE POSITIVE]
+	p->parse(data); // GOOD
 
 	cfg->setParameter(XMLUni::fgXercesDisableDefaultEntityResolution, false);
-	p->parse(data); // BAD (parser not correctly configured)
+	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
 }
