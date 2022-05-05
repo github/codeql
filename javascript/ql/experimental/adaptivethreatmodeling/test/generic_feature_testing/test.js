@@ -3,7 +3,7 @@ import * as o from 'lib2';
 const f = require('lib3');
 
 (async function () {
-    f(endpoint);
+    f(endpoint, 12);
     f({p: endpoint});
     f({p: {q: endpoint}});
     o.m(endpoint);
