@@ -329,6 +329,9 @@ private module Cached {
   predicate clearsContentCached(Node n, ContentSet c) { clearsContent(n, c) }
 
   cached
+  predicate expectsContentCached(Node n, ContentSet c) { expectsContent(n, c) }
+
+  cached
   predicate isUnreachableInCallCached(Node n, DataFlowCall call) { isUnreachableInCall(n, call) }
 
   cached

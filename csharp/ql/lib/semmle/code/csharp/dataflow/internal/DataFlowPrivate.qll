@@ -1715,6 +1715,12 @@ predicate clearsContent(Node n, Content c) {
 }
 
 /**
+ * Holds if the value that is being tracked is expected to be stored inside content `c`
+ * at node `n`.
+ */
+predicate expectsContent(Node n, ContentSet c) { none() }
+
+/**
  * Holds if the node `n` is unreachable when the call context is `call`.
  */
 predicate isUnreachableInCall(Node n, DataFlowCall call) {
