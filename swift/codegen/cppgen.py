@@ -36,7 +36,7 @@ class Processor:
     def __init__(self, data: Dict[str, schema.Class]):
         self._classmap = data
 
-    @functools.cache
+    @functools.lru_cache(maxsize=None)
     def _get_class(self, name: str) -> cpp.Class:
         cls = self._classmap[name]
         trap_name = None
