@@ -145,6 +145,15 @@ module Actions {
   }
 
   /**
+   * Gets a regular expression that parses an `owner/repo@version` reference within a `uses` field in an Actions job step.
+   * The capture groups are:
+   * 1: The owner of the repository where the Action comes from, e.g. `actions` in `actions/checkout@v2`
+   * 2: The name of the repository where the Action comes from, e.g. `checkout` in `actions/checkout@v2`.
+   * 3: The version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`.
+   */
+  private string usesParser() { result = "([^/]+)/([^/@]+)@(.+)" }
+
+  /**
    * A `uses` field within an Actions job step, which references an action as a reusable unit of code.
    * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsuses.
    *
@@ -157,31 +166,21 @@ module Actions {
    */
   class Uses extends YAMLNode, YAMLScalar {
     Step step;
-    /** The owner of the repository where the Action comes from, e.g. `actions` in `actions/checkout@v2`. */
-    string repositoryOwner;
-    /** The name of the repository where the Action comes from, e.g. `checkout` in `actions/checkout@v2`. */
-    string repositoryName;
-    /** The version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */
-    string version;
 
-    Uses() {
-      step.lookup("uses") = this and
-      // Simple regular expression to split up an Action reference `owner/repo@version` into its components.
-      exists(string regexp | regexp = "([^/]+)/([^/@]+)@(.+)" |
-        repositoryOwner = this.getValue().regexpCapture(regexp, 1) and
-        repositoryName = this.getValue().regexpCapture(regexp, 2) and
-        version = this.getValue().regexpCapture(regexp, 3)
-      )
-    }
+    Uses() { step.lookup("uses") = this }
 
     /** Gets the step this field belongs to. */
     Step getStep() { result = step }
 
     /** Gets the owner and name of the repository where the Action comes from, e.g. `actions/checkout` in `actions/checkout@v2`. */
-    string getGitHubRepository() { result = repositoryOwner + "/" + repositoryName }
+    string getGitHubRepository() {
+      result =
+        this.getValue().regexpCapture(usesParser(), 1) + "/" +
+          this.getValue().regexpCapture(usesParser(), 2)
+    }
 
     /** Gets the version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */
-    string getVersion() { result = version }
+    string getVersion() { result = this.getValue().regexpCapture(usesParser(), 3) }
   }
 
   /**
