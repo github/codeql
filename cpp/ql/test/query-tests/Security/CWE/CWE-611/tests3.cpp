@@ -55,3 +55,28 @@ void test3_5(InputSource &data) {
 	test3_5_init();
 	p_3_5->parse(data); // GOOD
 }
+
+void test3_6(InputSource &data) {
+	SAX2XMLReader *p = XMLReaderFactory::createXMLReader();
+
+	p->setFeature(XMLUni::fgXercesDisableDefaultEntityResolution, false);
+	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
+}
+
+void test3_7(InputSource &data) {
+	SAX2XMLReader *p = XMLReaderFactory::createXMLReader();
+
+	p->setFeature(XMLUni::fgXercesHarmlessOption, true);
+	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
+}
+
+void test3_8(InputSource &data) {
+	SAX2XMLReader *p = XMLReaderFactory::createXMLReader();
+	const XMLCh *feature = XMLUni::fgXercesDisableDefaultEntityResolution;
+
+	p->setFeature(feature, true);
+	p->parse(data); // GOOD
+}
+
+
+
