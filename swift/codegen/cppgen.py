@@ -1,7 +1,7 @@
 import functools
-import inflection
 from typing import Dict
 
+import inflection
 from toposort import toposort_flatten
 
 from swift.codegen.lib import cpp, generator, schema
@@ -20,7 +20,7 @@ def _get_type(t: str) -> str:
 def _get_field(cls: schema.Class, p: schema.Property) -> cpp.Field:
     trap_name = None
     if not p.is_single:
-        trap_name = inflection.pluralize(inflection.camelize(f"{cls.name}_{p.name}")) + "Trap"
+        trap_name = inflection.pluralize(inflection.camelize(f"{cls.name}_{p.name}"))
     args = dict(
         name=p.name + ("_" if p.name in cpp.cpp_keywords else ""),
         type=_get_type(p.type),
@@ -41,7 +41,7 @@ class Processor:
         cls = self._classmap[name]
         trap_name = None
         if not cls.derived or any(p.is_single for p in cls.properties):
-            trap_name = inflection.pluralize(cls.name) + "Trap"
+            trap_name = inflection.pluralize(cls.name)
         return cpp.Class(
             name=name,
             bases=[self._get_class(b) for b in cls.bases],
@@ -58,7 +58,8 @@ class Processor:
 def generate(opts, renderer):
     processor = Processor({cls.name: cls for cls in schema.load(opts.schema).classes})
     out = opts.cpp_output
-    renderer.render(cpp.ClassList(processor.get_classes()), out / "TrapClasses.h")
+    renderer.render(cpp.ClassList(processor.get_classes(), opts.cpp_namespace, opts.trap_suffix,
+                                  opts.cpp_include_dir), out / "TrapClasses.h")
 
 
 tags = ("cpp", "schema")

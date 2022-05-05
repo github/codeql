@@ -10,6 +10,9 @@ output_dir = pathlib.Path("path", "to", "output")
 @pytest.fixture
 def generate(opts, renderer, input):
     opts.cpp_output = output_dir
+    opts.cpp_namespace = "test_namespace"
+    opts.trap_suffix = "TestTrapSuffix"
+    opts.cpp_include_dir = "my/include/dir"
 
     def ret(classes):
         input.classes = classes
@@ -17,6 +20,9 @@ def generate(opts, renderer, input):
         assert set(generated) == {output_dir / "TrapClasses.h"}
         generated = generated[output_dir / "TrapClasses.h"]
         assert isinstance(generated, cpp.ClassList)
+        assert generated.namespace == opts.cpp_namespace
+        assert generated.trap_suffix == opts.trap_suffix
+        assert generated.include_dir == opts.cpp_include_dir
         return generated.classes
 
     return ret
@@ -30,7 +36,7 @@ def test_empty_class(generate):
     assert generate([
         schema.Class(name="MyClass"),
     ]) == [
-        cpp.Class(name="MyClass", final=True, trap_name="MyClassesTrap")
+        cpp.Class(name="MyClass", final=True, trap_name="MyClasses")
     ]
 
 
@@ -41,7 +47,7 @@ def test_two_class_hierarchy(generate):
         schema.Class(name="B", bases={"A"}),
     ]) == [
         base,
-        cpp.Class(name="B", bases=[base], final=True, trap_name="BsTrap"),
+        cpp.Class(name="B", bases=[base], final=True, trap_name="Bs"),
     ]
 
 
@@ -50,8 +56,8 @@ def test_complex_hierarchy_topologically_ordered(generate):
     b = cpp.Class(name="B")
     c = cpp.Class(name="C", bases=[a])
     d = cpp.Class(name="D", bases=[a])
-    e = cpp.Class(name="E", bases=[b, c, d], final=True, trap_name="EsTrap")
-    f = cpp.Class(name="F", bases=[c], final=True, trap_name="FsTrap")
+    e = cpp.Class(name="E", bases=[b, c, d], final=True, trap_name="Es")
+    f = cpp.Class(name="F", bases=[c], final=True, trap_name="Fs")
     assert generate([
         schema.Class(name="F", bases={"C"}),
         schema.Class(name="B", derived={"E"}),
@@ -70,9 +76,9 @@ def test_complex_hierarchy_topologically_ordered(generate):
 ])
 @pytest.mark.parametrize("property_cls,optional,repeated,trap_name", [
     (schema.SingleProperty, False, False, None),
-    (schema.OptionalProperty, True, False, "MyClassPropsTrap"),
-    (schema.RepeatedProperty, False, True, "MyClassPropsTrap"),
-    (schema.RepeatedOptionalProperty, True, True, "MyClassPropsTrap"),
+    (schema.OptionalProperty, True, False, "MyClassProps"),
+    (schema.RepeatedProperty, False, True, "MyClassProps"),
+    (schema.RepeatedOptionalProperty, True, True, "MyClassProps"),
 ])
 def test_class_with_field(generate, type, expected, property_cls, optional, repeated, trap_name):
     assert generate([
@@ -81,7 +87,7 @@ def test_class_with_field(generate, type, expected, property_cls, optional, repe
         cpp.Class(name="MyClass",
                   fields=[cpp.Field("prop", expected, is_optional=optional,
                                     is_repeated=repeated, trap_name=trap_name)],
-                  trap_name="MyClassesTrap",
+                  trap_name="MyClasses",
                   final=True)
     ]
 
@@ -94,7 +100,7 @@ def test_class_with_overridden_unsigned_field(generate, name):
     ]) == [
         cpp.Class(name="MyClass",
                   fields=[cpp.Field(name, "unsigned")],
-                  trap_name="MyClassesTrap",
+                  trap_name="MyClasses",
                   final=True)
     ]
 
@@ -106,7 +112,7 @@ def test_class_with_overridden_underscore_field(generate):
     ]) == [
         cpp.Class(name="MyClass",
                   fields=[cpp.Field("something", "bar")],
-                  trap_name="MyClassesTrap",
+                  trap_name="MyClasses",
                   final=True)
     ]
 
@@ -119,7 +125,7 @@ def test_class_with_keyword_field(generate, name):
     ]) == [
         cpp.Class(name="MyClass",
                   fields=[cpp.Field(name + "_", "bar")],
-                  trap_name="MyClassesTrap",
+                  trap_name="MyClasses",
                   final=True)
     ]
 

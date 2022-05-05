@@ -5,14 +5,14 @@
 #include <iostream>
 #include <string>
 
-#include "swift/extractor/trap/TrapLabel.h"
-#include "swift/extractor/trap/TrapTags.h"
+#include "{{include_dir}}/TrapLabel.h"
+#include "{{include_dir}}/TrapTags.h"
 
-namespace codeql {
+namespace {{namespace}} {
 {{#traps}}
 
 // {{table_name}}
-struct {{name}}Trap {
+struct {{name}}{{trap_suffix}} {
   static constexpr bool is_binding = {{#id}}true{{/id}}{{^id}}false{{/id}};
 {{#id}}
   {{type}} getBoundLabel() const { return {{cpp_name}}; }

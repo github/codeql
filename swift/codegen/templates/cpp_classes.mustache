@@ -6,10 +6,10 @@
 #include <optional>
 #include <vector>
 
-#include "swift/extractor/trap/TrapLabel.h"
-#include "swift/extractor/trap/TrapEntries.h"
+#include "{{include_dir}}/TrapLabel.h"
+#include "{{include_dir}}/TrapEntries.h"
 
-namespace codeql {
+namespace {{namespace}} {
 {{#classes}}
 
 struct {{name}}{{#final}} : Binding<{{name}}Tag>{{#bases}}, {{ref.name}}{{/bases}}{{/final}}{{^final}}{{#has_bases}}: {{#bases}}{{^first}}, {{/first}}{{ref.name}}{{/bases}}{{/has_bases}}{{/final}} {
@@ -30,21 +30,21 @@ struct {{name}}{{#final}} : Binding<{{name}}Tag>{{#bases}}, {{ref.name}}{{/bases
     {{ref.name}}::emit(id, out);
     {{/bases}}
     {{#trap_name}}
-    out << {{.}}{id{{#single_fields}}, {{name}}{{/single_fields}}} << '\n';
+    out << {{.}}{{trap_suffix}}{id{{#single_fields}}, {{name}}{{/single_fields}}} << '\n';
     {{/trap_name}}
     {{#fields}}
     {{#is_optional}}
     {{^is_repeated}}
-    if ({{name}}) out << {{trap_name}}{id, *{{name}}} << '\n';
+    if ({{name}}) out << {{trap_name}}{{trap_suffix}}{id, *{{name}}} << '\n';
     {{/is_repeated}}
     {{/is_optional}}
     {{#is_repeated}}
     for (auto i = 0u; i < {{name}}.size(); ++i) {
       {{^is_optional}}
-      out << {{trap_name}}{id, i, {{name}}[i]};
+      out << {{trap_name}}{{trap_suffix}}{id, i, {{name}}[i]};
       {{/is_optional}}
       {{#is_optional}}
-      if ({{name}}[i]) out << {{trap_name}}{id, i, *{{name}}[i]};
+      if ({{name}}[i]) out << {{trap_name}}{{trap_suffix}}{id, i, *{{name}}[i]};
       {{/is_optional}}
     }
     {{/is_repeated}}

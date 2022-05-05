@@ -105,14 +105,18 @@ class Tag:
 class TrapList:
     template: ClassVar = 'trap_traps'
 
-    traps: List[Trap] = field(default_factory=list)
+    traps: List[Trap]
+    namespace: str
+    trap_suffix: str
+    include_dir: str
 
 
 @dataclass
 class TagList:
     template: ClassVar = 'trap_tags'
 
-    tags: List[Tag] = field(default_factory=list)
+    tags: List[Tag]
+    namespace: str
 
 
 @dataclass
@@ -148,3 +152,6 @@ class ClassList:
     template: ClassVar = "cpp_classes"
 
     classes: List[Class]
+    namespace: str
+    trap_suffix: str
+    include_dir: str

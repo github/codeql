@@ -5,7 +5,12 @@ genrule(
         "TrapEntries.h",
         "TrapTags.h",
     ],
-    cmd = "$(location //swift/codegen:trapgen) --dbscheme $< --cpp-output $(RULEDIR)",
+    cmd = " ".join([
+        "$(location //swift/codegen:trapgen)",
+        "--dbscheme $<",
+        "--cpp-include-dir " + package_name(),
+        "--cpp-output $(RULEDIR)",
+    ]),
     exec_tools = ["//swift/codegen:trapgen"],
 )
 
@@ -18,7 +23,12 @@ genrule(
     outs = [
         "TrapClasses.h",
     ],
-    cmd = "$(location //swift/codegen:cppgen) --schema $(location //swift/codegen:schema) --cpp-output $(RULEDIR)",
+    cmd = " ".join([
+        "$(location //swift/codegen:cppgen)",
+        "--schema $(location //swift/codegen:schema)",
+        "--cpp-include-dir " + package_name(),
+        "--cpp-output $(RULEDIR)",
+    ]),
     exec_tools = ["//swift/codegen:cppgen"],
 )
 

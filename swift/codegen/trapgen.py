@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 
 import logging
-import re
 
 import inflection
 from toposort import toposort_flatten
 
 from swift.codegen.lib import dbscheme, generator, cpp
-
 
 log = logging.getLogger(__name__)
 
@@ -70,7 +68,8 @@ def generate(opts, renderer):
             for d in e.rhs:
                 tag_graph.setdefault(d.type, set()).add(e.lhs)
 
-    renderer.render(cpp.TrapList(traps), out / "TrapEntries.h")
+    renderer.render(cpp.TrapList(traps, opts.cpp_namespace, opts.trap_suffix, opts.cpp_include_dir),
+                    out / "TrapEntries.h")
 
     tags = []
     for index, tag in enumerate(toposort_flatten(tag_graph)):
@@ -80,7 +79,7 @@ def generate(opts, renderer):
             index=index,
             id=tag,
         ))
-    renderer.render(cpp.TagList(tags), out / "TrapTags.h")
+    renderer.render(cpp.TagList(tags, opts.cpp_namespace), out / "TrapTags.h")
 
 
 tags = ("cpp", "dbscheme")

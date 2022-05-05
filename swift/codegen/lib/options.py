@@ -16,6 +16,9 @@ def _init_options():
     Option("--ql-stub-output", tags=["ql"], type=_abspath, default=paths.swift_dir / "ql/lib/codeql/swift/elements")
     Option("--codeql-binary", tags=["ql"], default="codeql")
     Option("--cpp-output", tags=["cpp"], type=_abspath, required=True)
+    Option("--cpp-namespace", tags=["cpp"], default="codeql")
+    Option("--trap-suffix", tags=["cpp"], default="Trap")
+    Option("--cpp-include-dir", tags=["cpp"], required=True)
 
 
 def _abspath(x):

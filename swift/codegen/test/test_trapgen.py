@@ -10,6 +10,9 @@ output_dir = pathlib.Path("path", "to", "output")
 @pytest.fixture
 def generate(opts, renderer, dbscheme_input):
     opts.cpp_output = output_dir
+    opts.cpp_namespace = "test_namespace"
+    opts.trap_suffix = "TrapSuffix"
+    opts.cpp_include_dir = "my/include/dir"
 
     def ret(entities):
         dbscheme_input.entities = entities
@@ -22,27 +25,35 @@ def generate(opts, renderer, dbscheme_input):
 
 
 @pytest.fixture
-def generate_traps(generate):
+def generate_traps(opts, generate):
     def ret(entities):
         traps, _ = generate(entities)
         assert isinstance(traps, cpp.TrapList)
+        assert traps.namespace == opts.cpp_namespace
+        assert traps.trap_suffix == opts.trap_suffix
+        assert traps.include_dir == opts.cpp_include_dir
         return traps.traps
 
     return ret
 
 
 @pytest.fixture
-def generate_tags(generate):
+def generate_tags(opts, generate):
     def ret(entities):
         _, tags = generate(entities)
         assert isinstance(tags, cpp.TagList)
+        assert tags.namespace == opts.cpp_namespace
         return tags.tags
 
     return ret
 
 
-def test_empty(generate):
-    assert generate([]) == (cpp.TrapList([]), cpp.TagList([]))
+def test_empty_traps(generate_traps):
+    assert generate_traps([]) == []
+
+
+def test_empty_tags(generate_tags):
+    assert generate_tags([]) == []
 
 
 def test_one_empty_table_rejected(generate_traps):
