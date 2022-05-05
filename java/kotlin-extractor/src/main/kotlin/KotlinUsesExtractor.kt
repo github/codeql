@@ -1018,6 +1018,9 @@ open class KotlinUsesExtractor(
             is IrFunction -> {
                 "{${useFunction<DbMethod>(parent)}}.$cls"
             }
+            is IrField -> {
+                "{${useField(parent)}}.$cls"
+            }
             else -> {
                 if (pkg.isEmpty()) cls else "$pkg.$cls"
             }
