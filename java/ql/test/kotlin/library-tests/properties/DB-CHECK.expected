@@ -1,0 +1,40 @@
+[INVALID_KEY] predicate paramName(@param id, string nodeName): The key set {id} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 1:
+Tuple 1 in row 14: (747,"<set-?>")
+Tuple 2 in row 15: (747,"p")
+	Relevant element: Tuple 1: id=747
+		Full ID for 747: @"params;(746);0". The ID may expand to @"params;{@"callable;{@"class;A"}.setData({@"type;int"}){@"type;void"}"};0"
+	Relevant element: Tuple 2: id=747
+		Full ID for 747: @"params;(746);0". The ID may expand to @"params;{@"callable;{@"class;A"}.setData({@"type;int"}){@"type;void"}"};0"
+[INVALID_KEY_SET] predicate stmts(@stmt id, int kind, @stmtparent parent, int idx, @callable bodydecl): The key set {parent, idx} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 0:
+Tuple 1 in row 106: (750,0,746,0,746)
+Tuple 2 in row 108: (762,0,746,0,746)
+	Relevant element: Tuple 1: parent=746
+		Full ID for 746: @"callable;(725).setData((17))(22)". The ID may expand to @"callable;{@"class;A"}.setData({@"type;int"}){@"type;void"}"
+	Relevant element: Tuple 2: parent=746
+		Full ID for 746: @"callable;(725).setData((17))(22)". The ID may expand to @"callable;{@"class;A"}.setData({@"type;int"}){@"type;void"}"
+	Relevant element: Tuple 1: bodydecl=746
+		Full ID for 746: @"callable;(725).setData((17))(22)". The ID may expand to @"callable;{@"class;A"}.setData({@"type;int"}){@"type;void"}"
+	Relevant element: Tuple 2: bodydecl=746
+		Full ID for 746: @"callable;(725).setData((17))(22)". The ID may expand to @"callable;{@"class;A"}.setData({@"type;int"}){@"type;void"}"
+[INVALID_KEY_SET] predicate exprs(@expr id, int kind, @type typeid, @exprparent parent, int idx): The key set {parent, idx} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 0:
+Tuple 1 in row 303: (749,62,23,746,-1)
+Tuple 2 in row 310: (761,62,23,746,-1)
+	Relevant element: typeid=23
+		Full ID for 23: @"class;kotlin.Unit"
+	Relevant element: Tuple 1: parent=746
+		Full ID for 746: @"callable;(725).setData((17))(22)". The ID may expand to @"callable;{@"class;A"}.setData({@"type;int"}){@"type;void"}"
+	Relevant element: Tuple 2: parent=746
+		Full ID for 746: @"callable;(725).setData((17))(22)". The ID may expand to @"callable;{@"class;A"}.setData({@"type;int"}){@"type;void"}"
+[INVALID_KEY_SET] predicate exprs(@expr id, int kind, @type typeid, @exprparent parent, int idx): The key set {parent, idx} does not functionally determine all fields.
+Here is a pair of tuples that agree on the key set but differ at index 0:
+Tuple 1 in row 302: (748,62,17,747,-1)
+Tuple 2 in row 309: (759,62,17,747,-1)
+	Relevant element: typeid=17
+		Full ID for 17: @"type;int"
+	Relevant element: Tuple 1: parent=747
+		Full ID for 747: @"params;(746);0". The ID may expand to @"params;{@"callable;{@"class;A"}.setData({@"type;int"}){@"type;void"}"};0"
+	Relevant element: Tuple 2: parent=747
+		Full ID for 747: @"params;(746);0". The ID may expand to @"params;{@"callable;{@"class;A"}.setData({@"type;int"}){@"type;void"}"};0"

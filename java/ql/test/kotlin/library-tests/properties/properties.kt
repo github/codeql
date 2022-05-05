@@ -79,3 +79,11 @@ val Int.x : Int
     get() = 5
 val Double.x : Int
     get() = 5
+
+class A {
+    private var data: Int = 0
+
+    fun setData(p: Int) {
+        data = p
+    }
+}
