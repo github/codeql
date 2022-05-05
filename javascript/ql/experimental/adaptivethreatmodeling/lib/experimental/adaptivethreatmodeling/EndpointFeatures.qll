@@ -599,7 +599,7 @@ private module SyntacticUtilities {
   }
 
   /**
-   * Gets a property initializer value in a an object literal or one of its nested object literals.
+   * Gets a property initializer value in an object literal or one of its nested object literals.
    */
   Expr getANestedInitializerValue(ObjectExpr o) {
     exists(Expr init | init = o.getAProperty().getInit().getUnderlyingValue() |
@@ -823,7 +823,7 @@ class InputArgumentIndex extends EndpointFeature, TInputArgumentIndex {
     exists(DataFlow::InvokeNode invk, DataFlow::Node arg, int i | arg = invk.getArgument(i) |
       result = i + "" and
       (
-        invk.getAnArgument() = endpoint
+        invk.getArgument(i) = endpoint
         or
         SyntacticUtilities::getANestedInitializerValue(arg.asExpr().getUnderlyingValue()).flow() =
           endpoint
