@@ -38,8 +38,8 @@ private module Asyncpg {
           "asyncpg;~Connection;Member[copy_from_query,execute,fetch,fetchrow,fetchval].Argument[0,query:];sql-injection",
           "asyncpg;~Connection;Member[executemany].Argument[0,command:];sql-injection",
           // A model of `Connection` and `ConnectionPool`, which provide some methods that access the file system.
-          "asyncpg;~Connection;Member[copy_from_query,copy_from_table].Argument[output:];file-access",
-          "asyncpg;~Connection;Member[copy_to_table].Argument[source:];file-access",
+          "asyncpg;~Connection;Member[copy_from_query,copy_from_table].Argument[output:];path-injection",
+          "asyncpg;~Connection;Member[copy_to_table].Argument[source:];path-injection",
           // the `PreparedStatement` class in `asyncpg`.
           "asyncpg;Connection;Member[prepare].Argument[0,query:];sql-injection",
         ]

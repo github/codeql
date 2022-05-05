@@ -7,11 +7,11 @@ async def test_connection():
     try:
         # The file-like object is passed in as a keyword-only argument.
         # See https://magicstack.github.io/asyncpg/current/api/index.html#asyncpg.connection.Connection.copy_from_query
-        await conn.copy_from_query("sql", output="filepath")  # $ mad-sink__sql-injection="sql" mad-sink__file-access="filepath" getAPathArgument="filepath"
-        await conn.copy_from_query("sql", "arg1", "arg2", output="filepath")  # $ mad-sink__sql-injection="sql" mad-sink__file-access="filepath" getAPathArgument="filepath"
+        await conn.copy_from_query("sql", output="filepath")  # $ mad-sink__sql-injection="sql" mad-sink__path-injection="filepath"
+        await conn.copy_from_query("sql", "arg1", "arg2", output="filepath")  # $ mad-sink__sql-injection="sql" mad-sink__path-injection="filepath"
 
-        await conn.copy_from_table("table", output="filepath")  # $ mad-sink__file-access="filepath" getAPathArgument="filepath"
-        await conn.copy_to_table("table", source="filepath")  # $ mad-sink__file-access="filepath" getAPathArgument="filepath"
+        await conn.copy_from_table("table", output="filepath")  # $ mad-sink__path-injection="filepath"
+        await conn.copy_to_table("table", source="filepath")  # $ mad-sink__path-injection="filepath"
 
         await conn.execute("sql")  # $ mad-sink__sql-injection="sql"
         await conn.executemany("sql")  # $ mad-sink__sql-injection="sql"
@@ -69,10 +69,10 @@ async def test_connection_pool():
     pool = await asyncpg.create_pool()
 
     try:
-        await pool.copy_from_query("sql", output="filepath")  # $ mad-sink__sql-injection="sql" mad-sink__file-access="filepath" getAPathArgument="filepath"
-        await pool.copy_from_query("sql", "arg1", "arg2", output="filepath")  # $ mad-sink__sql-injection="sql" mad-sink__file-access="filepath" getAPathArgument="filepath"
-        await pool.copy_from_table("table", output="filepath")  # $ mad-sink__file-access="filepath" getAPathArgument="filepath"
-        await pool.copy_to_table("table", source="filepath")  # $ mad-sink__file-access="filepath" getAPathArgument="filepath"
+        await pool.copy_from_query("sql", output="filepath")  # $ mad-sink__sql-injection="sql" mad-sink__path-injection="filepath"
+        await pool.copy_from_query("sql", "arg1", "arg2", output="filepath")  # $ mad-sink__sql-injection="sql" mad-sink__path-injection="filepath"
+        await pool.copy_from_table("table", output="filepath")  # $ mad-sink__path-injection="filepath"
+        await pool.copy_to_table("table", source="filepath")  # $ mad-sink__path-injection="filepath"
 
         await pool.execute("sql")  # $ mad-sink__sql-injection="sql"
         await pool.executemany("sql")  # $ mad-sink__sql-injection="sql"

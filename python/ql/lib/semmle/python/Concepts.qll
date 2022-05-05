@@ -62,14 +62,6 @@ module FileSystemAccess {
     /** Gets an argument to this file system access that is interpreted as a path. */
     abstract DataFlow::Node getAPathArgument();
   }
-
-  private import semmle.python.frameworks.data.ModelsAsData
-
-  private class DataAsFileAccess extends Range {
-    DataAsFileAccess() { this = ModelOutput::getASinkNode("file-access").getARhs() }
-
-    override DataFlow::Node getAPathArgument() { result = this }
-  }
 }
 
 /**
