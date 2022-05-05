@@ -42,7 +42,7 @@ query predicate procParameterTypes(
   pc = prtc.getProcCall()
 }
 
-query predicate sigMethods(MethodSignatureCall sig, Method m) { m = sig.getAssociatedMethod() }
+query predicate sigMethods(MethodSignatureCall sig, ExprCfgNode m) { m = sig.getAssociatedMethod() }
 
 query predicate sigAttrReaders(MethodSignatureCall sig, ExprNodes::MethodCallCfgNode attr_reader) {
   attr_reader = sig.getAssociatedAttrReaderCall()

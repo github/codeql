@@ -238,13 +238,14 @@ module Rbi {
     /**
      * Gets the method whose type signature is defined by this call.
      */
-    Method getAssociatedMethod() {
+    ExprCfgNode getAssociatedMethod() {
       result =
-        min(ExprCfgNode methodCfgNode, int i |
-          methodSignatureSuccessorNodeRanked(this, methodCfgNode, i)
+        min(ExprCfgNode m, int i |
+          methodSignatureSuccessorNodeRanked(this, m, i) and
+          m.getExpr() instanceof MethodBase
         |
-          methodCfgNode order by i
-        ).getExpr()
+          m order by i
+        )
     }
 
     /**
@@ -404,13 +405,13 @@ module Rbi {
 
     private SignatureCall getOuterMethodSignatureCall() { this = result.getAParameterType() }
 
-    private Method getAssociatedMethod() {
+    private ExprCfgNode getAssociatedMethod() {
       result = this.getOuterMethodSignatureCall().(MethodSignatureCall).getAssociatedMethod()
     }
 
     /** Gets the parameter to which this type applies. */
     NamedParameter getParameter() {
-      result = this.getAssociatedMethod().getAParameter() and
+      result = this.getAssociatedMethod().getExpr().(MethodBase).getAParameter() and
       result.getName() = this.getKey().getConstantValue().getStringlikeValue()
     }
   }
