@@ -7,7 +7,7 @@
 
 <p>
 The <code>"message"</code> event is used to send messages between windows. 
-An untrusted window can send a message to a trusted window, and it is up to the receiver to verify the legitimacy of the message. One way of doing that verification is to check the <code>origin</code> of the message ensure that it origins from a trusted window.
+An untrusted window can send a message to a trusted window, and it is up to the receiver to verify the legitimacy of the message. One way of performing that verification is to check the <code>origin</code> of the message ensure that it originates from a trusted window.
 </p>
 </overview>
 
@@ -27,7 +27,7 @@ to execute arbitrary code.
 
 <p>
 The example is fixed below, where the origin is checked to be trusted. 
-It is therefore not possible for an attacker to attack using an untrusted origin.
+It is therefore not possible for a malicious user to attack using an untrusted origin.
 </p>
 <sample src="examples/MissingOriginCheckGood.js" />
 
@@ -35,10 +35,9 @@ It is therefore not possible for an attacker to attack using an untrusted origin
 
 <references>
 
-<li><a href="https://cwe.mitre.org/data/definitions/20.html">CWE-020: Improper Input Validation</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">Window.postMessage()</a></li>
-<li><a href="https://portswigger.net/web-security/dom-based/web-message-manipulation">Web-message manipulation</a></li>
-<li><a href="https://labs.detectify.com/2016/12/08/the-pitfalls-of-postmessage/">The pitfalls of postMessage</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">Window.postMessage()</a>.</li>
+<li><a href="https://portswigger.net/web-security/dom-based/web-message-manipulation">Web message manipulation</a>.</li>
+<li><a href="https://labs.detectify.com/2016/12/08/the-pitfalls-of-postmessage/">The pitfalls of postMessage</a>.</li>
 
 </references>
 </qhelp>
