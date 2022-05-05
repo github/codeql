@@ -38,6 +38,10 @@ rbiTypes
 | test_types.rb:49:32:49:37 | String |
 | test_types.rb:49:40:49:45 | Symbol |
 | test_types.rb:49:57:49:62 | String |
+| test_types.rb:52:23:52:23 | T |
+| test_types.rb:52:23:52:32 | Boolean |
+| test_types.rb:52:43:52:43 | T |
+| test_types.rb:52:43:52:52 | Boolean |
 unionTypes
 | test_types.rb:49:26:49:46 | call to any | test_types.rb:49:32:49:37 | String |
 | test_types.rb:49:26:49:46 | call to any | test_types.rb:49:40:49:45 | Symbol |
@@ -61,6 +65,7 @@ signatureCalls
 | test_types.rb:38:14:38:19 | call to proc | String |
 | test_types.rb:43:3:43:58 | call to sig | (void) |
 | test_types.rb:49:3:49:65 | call to sig | String |
+| test_types.rb:52:3:52:55 | call to sig | Boolean |
 paramsCalls
 | test_types.rb:10:9:10:38 | call to params |
 | test_types.rb:13:9:13:26 | call to params |
@@ -71,6 +76,7 @@ paramsCalls
 | test_types.rb:43:9:43:51 | call to params |
 | test_types.rb:46:9:46:37 | call to params |
 | test_types.rb:49:9:49:47 | call to params |
+| test_types.rb:52:9:52:33 | call to params |
 returnsCall
 | test_types.rb:7:9:7:24 | call to returns | Integer |
 | test_types.rb:10:9:10:55 | call to returns | Integer |
@@ -80,6 +86,7 @@ returnsCall
 | test_types.rb:24:9:24:24 | call to returns | Integer |
 | test_types.rb:38:14:38:54 | call to returns | String |
 | test_types.rb:49:9:49:63 | call to returns | String |
+| test_types.rb:52:9:52:53 | call to returns | Boolean |
 voidCall
 | test_types.rb:4:9:4:12 | call to void |
 | test_types.rb:28:5:31:10 | call to void |
@@ -94,6 +101,7 @@ parameterTypes
 | test_types.rb:37:7:37:15 | Pair | test_types.rb:41:18:41:18 | a | test_types.rb:37:10:37:15 | String |
 | test_types.rb:38:7:38:54 | Pair | test_types.rb:41:21:41:26 | &block | test_types.rb:38:14:38:54 | call to returns |
 | test_types.rb:49:16:49:46 | Pair | test_types.rb:50:14:50:21 | new_name | test_types.rb:49:26:49:46 | call to any |
+| test_types.rb:52:16:52:32 | Pair | test_types.rb:53:24:53:28 | value | test_types.rb:52:23:52:32 | Boolean |
 procParameterTypes
 | test_types.rb:30:7:30:54 | Pair | test_types.rb:30:24:30:53 | call to void | test_types.rb:30:24:30:29 | call to proc | nilable |
 | test_types.rb:38:7:38:54 | Pair | test_types.rb:38:14:38:54 | call to returns | test_types.rb:38:14:38:19 | call to proc | non_nilable |
@@ -108,6 +116,7 @@ sigMethods
 | test_types.rb:43:3:43:58 | call to sig | test_types.rb:44:3:44:28 | read_hash |
 | test_types.rb:46:3:46:39 | call to sig | test_types.rb:47:3:47:34 | read_symbol_array |
 | test_types.rb:49:3:49:65 | call to sig | test_types.rb:50:3:50:27 | rename |
+| test_types.rb:52:3:52:55 | call to sig | test_types.rb:53:3:53:34 | debug_mode= |
 sigAttrReaders
 | test_types.rb:21:3:21:25 | call to sig | test_types.rb:22:3:22:26 | call to attr_reader |
 | test_types.rb:24:3:24:26 | call to sig | test_types.rb:25:3:25:24 | call to attr_accessor |

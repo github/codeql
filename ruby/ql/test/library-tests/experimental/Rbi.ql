@@ -1,5 +1,4 @@
 private import codeql.ruby.AST
-private import codeql.ruby.DataFlow
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.experimental.Rbi::Rbi
 

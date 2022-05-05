@@ -48,4 +48,7 @@ module TestTypes
 
   sig { params(new_name: T.any(String, Symbol)).returns(String) }
   def rename(new_name); end
+
+  sig { params(value: T::Boolean).returns(T::Boolean) }
+  def self.debug_mode=(value); end
 end
