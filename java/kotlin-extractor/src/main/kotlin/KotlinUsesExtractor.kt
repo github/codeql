@@ -726,8 +726,26 @@ open class KotlinUsesExtractor(
             }
 
             when (f) {
-                getter -> return FunctionNames(getJvmName(getter) ?: JvmAbi.getterName(propName), JvmAbi.getterName(propName))
-                setter -> return FunctionNames(getJvmName(setter) ?: JvmAbi.setterName(propName), JvmAbi.setterName(propName))
+                getter -> {
+                    val defaultFunctionName = JvmAbi.getterName(propName)
+                    val defaultDbName = if (getter.visibility == DescriptorVisibilities.PRIVATE && getter.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR) {
+                        // In JVM these functions don't exist, instead the backing field is accessed directly
+                        defaultFunctionName + "\$private"
+                    } else {
+                        defaultFunctionName
+                    }
+                    return FunctionNames(getJvmName(getter) ?: defaultDbName, defaultFunctionName)
+                }
+                setter -> {
+                    val defaultFunctionName = JvmAbi.setterName(propName)
+                    val defaultDbName = if (setter.visibility == DescriptorVisibilities.PRIVATE && setter.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR) {
+                        // In JVM these functions don't exist, instead the backing field is accessed directly
+                        defaultFunctionName + "\$private"
+                    } else {
+                        defaultFunctionName
+                    }
+                    return FunctionNames(getJvmName(setter) ?: defaultDbName, defaultFunctionName)
+                }
                 else -> {
                     logger.error(
                         "Function has a corresponding property, but is neither the getter nor the setter"

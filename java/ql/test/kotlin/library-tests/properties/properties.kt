@@ -87,3 +87,12 @@ class A {
         data = p
     }
 }
+
+class B {
+    private var data: Int = 5
+        get() = 42
+
+    fun setData(p: Int) {
+        data = p
+    }
+}
