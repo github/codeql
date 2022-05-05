@@ -205,18 +205,25 @@ module Rbi {
     abstract ParameterType getAParameterType();
   }
 
+  private predicate isMethodSignatureCallNode(CfgNode n) {
+    exists(MethodSignatureCall sig | sig.asExpr() = n)
+  }
+
   /**
-   * Holds if `n` is the `r`th transitive successor node of `sig` where there are
-   * no intervening `MethodSignatureCall`s.
+   * Holds if `n` is the `i`th transitive successor node of `sigNode` where there
+   * are no intervening nodes corresponding to `MethodSignatureCall`s.
    */
-  private predicate methodSignatureSuccessorNodeRanked(MethodSignatureCall sig, CfgNode n, int r) {
-    exists(CfgNode p2 | not exists(MethodSignatureCall s | s.asExpr() = p2) |
-      r = 1 and p2 = sig.asExpr().getASuccessor() and p2 = n
-      or
-      // set an arbitrary limit on how long the successor chain can be
-      r = [2 .. 6] and
-      methodSignatureSuccessorNodeRanked(sig, p2, r - 1) and
-      n = p2.getASuccessor()
+  private predicate methodSignatureSuccessorNodeRanked(MethodSignatureCall sig, CfgNode n, int i) {
+    // direct successor
+    i = 1 and
+    n = sig.asExpr().getASuccessor() and
+    not isMethodSignatureCallNode(n)
+    or
+    // transitive successor
+    i > 1 and
+    exists(CfgNode np | n = np.getASuccessor() |
+      methodSignatureSuccessorNodeRanked(sig, np, i - 1) and
+      not isMethodSignatureCallNode(np)
     )
   }
 
