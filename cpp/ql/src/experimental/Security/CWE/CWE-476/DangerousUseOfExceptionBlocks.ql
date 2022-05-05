@@ -115,30 +115,29 @@ predicate pointerDereference(CatchAnyBlock cb, Variable vr, Variable vro) {
 /** Holds if `vro` may be released in the `catch`. */
 pragma[inline]
 predicate newThrowDelete(CatchAnyBlock cb, Variable vro) {
-  exists(Expr e0, AssignExpr ase, NewOrNewArrayExpr nae | 
+  exists(Expr e0, AssignExpr ase, NewOrNewArrayExpr nae |
     ase = vro.getAnAccess().getEnclosingStmt().(ExprStmt).getExpr().(AssignExpr) and
     nae = ase.getRValue().(NewOrNewArrayExpr) and
     not nae.getAChild*().toString() = "nothrow" and
-     (
-       e0 = nae or
-       e0 = nae.getEnclosingFunction().getACallToThisFunction() 
-     ) and
-     vro = ase.getLValue().(VariableAccess).getTarget() and
-     e0.getEnclosingStmt().getParentStmt*() = cb.getTryStmt().getStmt() and
+    (
+      e0 = nae or
+      e0 = nae.getEnclosingFunction().getACallToThisFunction()
+    ) and
+    vro = ase.getLValue().(VariableAccess).getTarget() and
+    e0.getEnclosingStmt().getParentStmt*() = cb.getTryStmt().getStmt() and
     not exists(AssignExpr ase1 |
       vro = ase1.getLValue().(VariableAccess).getTarget() and
       ase1.getRValue().getValue() = "0" and
       ase1.getASuccessor*() = e0
     )
   ) and
-  not  exists(Initializer it |
+  not exists(Initializer it |
     vro.getInitializer() = it and
-    it.getExpr().getValue() = "0" 
+    it.getExpr().getValue() = "0"
   ) and
-  not exists(ConstructorFieldInit ci |
-    vro = ci.getTarget()
-  )
+  not exists(ConstructorFieldInit ci | vro = ci.getTarget())
 }
+
 from CatchAnyBlock cb, string msg
 where
   exists(Variable vr, Variable vro, Expr exp |
@@ -185,14 +184,16 @@ where
   exists(Variable vro, Expr exp |
     exp.getEnclosingStmt().getParentStmt*() = cb and
     exists(VariableAccess va |
-     (
-       va = exp.(DeleteArrayExpr).getExpr().(VariableAccess) or
-       va = exp.(DeleteExpr).getExpr().(VariableAccess)
-     ) and
-     va.getEnclosingStmt() = exp.getEnclosingStmt() and
-     vro = va.getTarget()
+      (
+        va = exp.(DeleteArrayExpr).getExpr().(VariableAccess) or
+        va = exp.(DeleteExpr).getExpr().(VariableAccess)
+      ) and
+      va.getEnclosingStmt() = exp.getEnclosingStmt() and
+      vro = va.getTarget()
     ) and
-    newThrowDelete(cb,vro) and
-    msg = "If the allocation in the try block fails, then an unallocated pointer "+vro.getName()+" will be freed in the catch block."
+    newThrowDelete(cb, vro) and
+    msg =
+      "If the allocation in the try block fails, then an unallocated pointer " + vro.getName() +
+        " will be freed in the catch block."
   )
 select cb, msg
