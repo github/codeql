@@ -23,6 +23,7 @@ gen_import_prefix = "other.path."
 def generate(opts, renderer, written=None):
     opts.ql_stub_output = stub_path()
     opts.ql_output = ql_output_path()
+    opts.ql_format = True
     renderer.written = written or []
     return run_generation(qlgen.generate, opts, renderer)
 

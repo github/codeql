@@ -107,7 +107,8 @@ def generate(opts, renderer):
     renderer.render(all_imports, include_file)
 
     renderer.cleanup(existing)
-    format(opts.codeql_binary, renderer.written)
+    if opts.ql_format:
+        format(opts.codeql_binary, renderer.written)
 
 
 tags = ("schema", "ql")

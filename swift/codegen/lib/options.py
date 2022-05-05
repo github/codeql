@@ -15,6 +15,8 @@ def _init_options():
     Option("--dbscheme", tags=["dbscheme"], type=_abspath, default=paths.swift_dir / "ql/lib/swift.dbscheme")
     Option("--ql-output", tags=["ql"], type=_abspath, default=paths.swift_dir / "ql/lib/codeql/swift/generated")
     Option("--ql-stub-output", tags=["ql"], type=_abspath, default=paths.swift_dir / "ql/lib/codeql/swift/elements")
+    Option("--ql-format", tags=["ql"], action="store_true", default=True)
+    Option("--no-ql-format", tags=["ql"], action="store_false", dest="ql_format")
     Option("--codeql-binary", tags=["ql"], default="codeql")
     Option("--cpp-output", tags=["cpp"], type=_abspath, required=True)
     Option("--cpp-namespace", tags=["cpp"], default="codeql")
