@@ -22,6 +22,7 @@ class Property:
     params: List[Param] = field(default_factory=list)
     first: bool = False
     local_var: str = "x"
+    is_optional: bool = False
 
     def __post_init__(self):
         if self.params:
@@ -42,6 +43,10 @@ class Property:
     @property
     def type_is_class(self):
         return self.type[0].isupper()
+
+    @property
+    def is_repeated(self):
+        return bool(self.plural)
 
 
 @dataclass

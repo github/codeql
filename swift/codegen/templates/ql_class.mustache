@@ -20,28 +20,28 @@ class {{name}}Base extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
   {{/final}}
   {{#properties}}
 
-  {{#type_is_class}}
-  {{type}} get{{singular}}({{#params}}{{^first}}, {{/first}}{{type}} {{param}}{{/params}}) {
+  {{type}} get{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
+    {{#type_is_class}}
     exists({{type}} {{local_var}} |
       {{tablename}}({{#tableparams}}{{^first}}, {{/first}}{{param}}{{/tableparams}})
       and
       result = {{local_var}}.resolve())
-  }
-  {{/type_is_class}}
-  {{^type_is_class}}
-  {{type}} get{{singular}}({{#params}}{{^first}}, {{/first}}{{type}} {{param}}{{/params}}) {
+    {{/type_is_class}}
+    {{^type_is_class}}
     {{tablename}}({{#tableparams}}{{^first}}, {{/first}}{{param}}{{/tableparams}})
+    {{/type_is_class}}
   }
-  {{/type_is_class}}
-  {{#indefinite_article}}
+  {{#is_repeated}}
 
-  {{type}} get{{.}}{{singular}}() {
-    result = get{{singular}}({{#params}}{{^first}}, {{/first}}_{{/params}})
+  {{type}} get{{indefinite_article}}{{singular}}() {
+    result = get{{singular}}(_)
   }
+  {{^is_optional}}
 
   int getNumberOf{{plural}}() {
-    result = count(get{{.}}{{singular}}())
+    result = count(get{{indefinite_article}}{{singular}}())
   }
-  {{/indefinite_article}}
+  {{/is_optional}}
+  {{/is_repeated}}
   {{/properties}}
 }

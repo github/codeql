@@ -107,7 +107,8 @@ def test_optional_property(opts, input, renderer):
         import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
         stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
         ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
-            ql.Property(singular="Foo", type="bar", tablename="my_object_foos", tableparams=["this", "result"]),
+            ql.Property(singular="Foo", type="bar", tablename="my_object_foos", tableparams=["this", "result"],
+                        is_optional=True),
         ])
     }
 
@@ -122,6 +123,20 @@ def test_repeated_property(opts, input, renderer):
         ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
             ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos", params=[index_param],
                         tableparams=["this", "index", "result"]),
+        ])
+    }
+
+
+def test_repeated_optional_property(opts, input, renderer):
+    input.classes = [
+        schema.Class("MyObject", properties=[schema.RepeatedOptionalProperty("foo", "bar")]),
+    ]
+    assert generate(opts, renderer) == {
+        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
+        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
+            ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos", params=[index_param],
+                        tableparams=["this", "index", "result"], is_optional=True),
         ])
     }
 

@@ -38,16 +38,7 @@ def cls_to_dbscheme(cls: schema.Class):
         )
     # use property-specific tables for 1-to-many and 1-to-at-most-1 properties
     for f in cls.properties:
-        if f.is_optional:
-            yield Table(
-                keyset=KeySet(["id"]),
-                name=inflection.tableize(f"{cls.name}_{f.name}"),
-                columns=[
-                    Column("id", type=dbtype(cls.name)),
-                    Column(f.name, dbtype(f.type)),
-                ],
-            )
-        elif f.is_repeated:
+        if f.is_repeated:
             yield Table(
                 keyset=KeySet(["id", "index"]),
                 name=inflection.tableize(f"{cls.name}_{f.name}"),
@@ -56,6 +47,15 @@ def cls_to_dbscheme(cls: schema.Class):
                     Column("index", type="int"),
                     Column(inflection.singularize(f.name), dbtype(f.type)),
                 ]
+            )
+        elif f.is_optional:
+            yield Table(
+                keyset=KeySet(["id"]),
+                name=inflection.tableize(f"{cls.name}_{f.name}"),
+                columns=[
+                    Column("id", type=dbtype(cls.name)),
+                    Column(f.name, dbtype(f.type)),
+                ],
             )
 
 

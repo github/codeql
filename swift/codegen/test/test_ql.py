@@ -59,6 +59,16 @@ def test_property_indefinite_article(name, expected_article):
     assert prop.indefinite_article == expected_article
 
 
+@pytest.mark.parametrize("plural,expected", [
+    (None, False),
+    ("", False),
+    ("X", True),
+])
+def test_property_is_plural(plural, expected):
+    prop = ql.Property("foo", "Foo", "props", ["x"], plural=plural)
+    assert prop.is_repeated is expected
+
+
 def test_property_no_plural_no_indefinite_article():
     prop = ql.Property("Prop", "Foo", "props", ["x"])
     assert prop.indefinite_article is None

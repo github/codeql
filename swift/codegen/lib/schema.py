@@ -36,6 +36,12 @@ class RepeatedProperty(Property):
 
 
 @dataclass
+class RepeatedOptionalProperty(Property):
+    is_optional: ClassVar = True
+    is_repeated: ClassVar = True
+
+
+@dataclass
 class Class:
     name: str
     bases: Set[str] = field(default_factory=set)
@@ -51,7 +57,10 @@ class Schema:
 
 
 def _parse_property(name, type):
-    if type.endswith("*"):
+    if type.endswith("?*"):
+        cls = RepeatedOptionalProperty
+        type = type[:-2]
+    elif type.endswith("*"):
         cls = RepeatedProperty
         type = type[:-1]
     elif type.endswith("?"):

@@ -34,10 +34,19 @@ struct {{name}}{{#final}} : Binding<{{name}}Tag>{{#bases}}, {{ref.name}}{{/bases
     {{/trap_name}}
     {{#fields}}
     {{#is_optional}}
+    {{^is_repeated}}
     if ({{name}}) out << {{trap_name}}{id, *{{name}}} << '\n';
+    {{/is_repeated}}
     {{/is_optional}}
     {{#is_repeated}}
-    for (auto i = 0u; i < {{name}}.size(); ++i) out << {{trap_name}}{id, i, {{name}}[i]};
+    for (auto i = 0u; i < {{name}}.size(); ++i) {
+      {{^is_optional}}
+      out << {{trap_name}}{id, i, {{name}}[i]};
+      {{/is_optional}}
+      {{#is_optional}}
+      if ({{name}}[i]) out << {{trap_name}}{id, i, *{{name}}[i]};
+      {{/is_optional}}
+    }
     {{/is_repeated}}
     {{/fields}}
   }

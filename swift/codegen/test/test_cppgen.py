@@ -72,6 +72,7 @@ def test_complex_hierarchy_topologically_ordered(generate):
     (schema.SingleProperty, False, False, None),
     (schema.OptionalProperty, True, False, "MyClassPropsTrap"),
     (schema.RepeatedProperty, False, True, "MyClassPropsTrap"),
+    (schema.RepeatedOptionalProperty, True, True, "MyClassPropsTrap"),
 ])
 def test_class_with_field(generate, type, expected, property_cls, optional, repeated, trap_name):
     assert generate([

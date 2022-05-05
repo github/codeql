@@ -42,6 +42,7 @@ def test_field_is_single(is_optional, is_repeated, expected):
     (False, False, "bar"),
     (True, False, "std::optional<bar>"),
     (False, True, "std::vector<bar>"),
+    (True, True, "std::vector<std::optional<bar>>"),
 ])
 def test_field_modal_types(is_optional, is_repeated, expected):
     f = cpp.Field("name", "bar", is_optional=is_optional, is_repeated=is_repeated)

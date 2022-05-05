@@ -41,7 +41,7 @@ class Field:
     def __post_init__(self):
         if self.is_optional:
             self.type = f"std::optional<{self.type}>"
-        elif self.is_repeated:
+        if self.is_repeated:
             self.type = f"std::vector<{self.type}>"
 
     @property

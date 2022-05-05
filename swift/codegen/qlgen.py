@@ -18,13 +18,6 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
             tablename=inflection.tableize(cls.name),
             tableparams=["this"] + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
         )
-    elif prop.is_optional:
-        return ql.Property(
-            singular=inflection.camelize(prop.name),
-            type=prop.type,
-            tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
-            tableparams=["this", "result"],
-        )
     elif prop.is_repeated:
         return ql.Property(
             singular=inflection.singularize(inflection.camelize(prop.name)),
@@ -33,6 +26,15 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "index", "result"],
             params=[ql.Param("index", type="int")],
+            is_optional=prop.is_optional,
+        )
+    elif prop.is_optional:
+        return ql.Property(
+            singular=inflection.camelize(prop.name),
+            type=prop.type,
+            tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
+            tableparams=["this", "result"],
+            is_optional=True,
         )
 
 

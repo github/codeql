@@ -126,10 +126,11 @@ def test_final_class_with_optional_field(opts, input, renderer):
     )
 
 
-def test_final_class_with_repeated_field(opts, input, renderer):
+@pytest.mark.parametrize("property_cls", [schema.RepeatedProperty, schema.RepeatedOptionalProperty])
+def test_final_class_with_repeated_field(opts, input, renderer, property_cls):
     input.classes = [
         schema.Class("Object", properties=[
-            schema.RepeatedProperty("foo", "bar"),
+            property_cls("foo", "bar"),
         ]),
     ]
     assert generate(opts, renderer) == dbscheme.Scheme(
@@ -161,7 +162,8 @@ def test_final_class_with_more_fields(opts, input, renderer):
             schema.SingleProperty("one", "x"),
             schema.SingleProperty("two", "y"),
             schema.OptionalProperty("three", "z"),
-            schema.RepeatedProperty("four", "w"),
+            schema.RepeatedProperty("four", "u"),
+            schema.RepeatedOptionalProperty("five", "v"),
         ]),
     ]
     assert generate(opts, renderer) == dbscheme.Scheme(
@@ -190,7 +192,16 @@ def test_final_class_with_more_fields(opts, input, renderer):
                 columns=[
                     dbscheme.Column('id', '@object'),
                     dbscheme.Column('index', 'int'),
-                    dbscheme.Column('four', 'w'),
+                    dbscheme.Column('four', 'u'),
+                ]
+            ),
+            dbscheme.Table(
+                name="object_fives",
+                keyset=dbscheme.KeySet(["id", "index"]),
+                columns=[
+                    dbscheme.Column('id', '@object'),
+                    dbscheme.Column('index', 'int'),
+                    dbscheme.Column('five', 'v'),
                 ]
             ),
         ],
