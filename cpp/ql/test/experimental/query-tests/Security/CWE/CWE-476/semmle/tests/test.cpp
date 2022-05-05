@@ -92,7 +92,7 @@ void funcWork1() {
     for (size_t i = 0; i < 10; i++)
     {
 	if (bufMyData[i]) 
-       	    delete[] bufMyData[i]->buffer; // GOOD
+       	    delete[] bufMyData[i]->buffer; // BAD
         delete bufMyData[i];
     }
     delete [] bufMyData;
@@ -120,7 +120,7 @@ void funcWork2() {
   {
     for (size_t i = 0; i < 10; i++)
     {
-    	delete[] bufMyData[i]->buffer; // GOOD
+    	delete[] bufMyData[i]->buffer; // BAD
         delete bufMyData[i];
     }
     delete [] bufMyData;
@@ -143,7 +143,7 @@ void funcWork3() {
   {
     for (size_t i = 0; i < 10; i++)
     {
-    	delete[] bufMyData[i]->buffer; // GOOD
+    	delete[] bufMyData[i]->buffer; // BAD
         delete bufMyData[i];
     }
     delete [] bufMyData;
