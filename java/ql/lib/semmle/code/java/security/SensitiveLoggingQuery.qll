@@ -4,6 +4,7 @@ import java
 private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SensitiveActions
+import semmle.code.java.frameworks.android.Compose
 import DataFlow
 
 /** A variable that may hold sensitive information, judging by its name. */
@@ -23,4 +24,8 @@ class SensitiveLoggerConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
 
   override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "logging") }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer.asExpr() instanceof LiveLiteral
+  }
 }
