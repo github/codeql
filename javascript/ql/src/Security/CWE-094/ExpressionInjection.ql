@@ -80,7 +80,7 @@ private predicate isExternalUserControlledDiscussion(string context) {
 
 from Actions::Run run, string context, Actions::On on
 where
-  run.getAReferencedExpression() = context and
+  run.getASimpleReferenceExpression() = context and
   run.getStep().getJob().getWorkflow().getOn() = on and
   (
     exists(on.getNode("issues")) and

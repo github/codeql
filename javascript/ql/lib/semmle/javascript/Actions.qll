@@ -237,12 +237,12 @@ module Actions {
     /**
      * Holds if `${{ e }}` is a GitHub Actions expression evaluated within this `run` command.
      * See https://docs.github.com/en/free-pro-team@latest/actions/reference/context-and-expression-syntax-for-github-actions.
+     * Only finds simple expressions like `${{ github.event.comment.body }}`, where the expression contains only alphanumeric characters, underscores, dots, or dashes.
+     * Does not identify more complicated expressions like `${{ fromJSON(env.time) }}`, or ${{ format('{{Hello {0}!}}', github.event.head_commit.author.name) }}
      */
-    string getAReferencedExpression() {
+    string getASimpleReferenceExpression() {
       // We use `regexpFind` to obtain *all* matches of `${{...}}`,
       // not just the last (greedy match) or first (reluctant match).
-      // TODO: This only handles expression strings that refer to contexts.
-      // It does not handle operators within the expression.
       result =
         this.getValue()
             .regexpFind("\\$\\{\\{\\s*[A-Za-z0-9_\\.\\-]+\\s*\\}\\}", _, _)
