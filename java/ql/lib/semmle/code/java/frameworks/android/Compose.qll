@@ -25,12 +25,11 @@ class LiveLiteral extends MethodAccess {
    * This predicate gets the constant value held by the private field.
    */
   CompileTimeConstantExpr getValue() {
-    result =
-      any(ReturnStmt r | this.getMethod().calls(r.getEnclosingCallable()))
-          .getResult()
-          .(VarAccess)
-          .getVariable()
-          .getInitializer()
+    exists(MethodAccess getterCall, VarAccess va |
+      methodReturns(this.getMethod(), getterCall) and
+      methodReturns(getterCall.getMethod(), va) and
+      result = va.getVariable().getInitializer()
+    )
   }
 
   override string toString() { result = this.getValue().toString() }
@@ -39,4 +38,11 @@ class LiveLiteral extends MethodAccess {
 /** A live literal method. */
 class LiveLiteralMethod extends Method {
   LiveLiteralMethod() { this.getDeclaringType().getName().matches("LiveLiterals$%") }
+}
+
+private predicate methodReturns(Method m, Expr res) {
+  exists(ReturnStmt r |
+    r.getResult() = res and
+    r.getEnclosingCallable() = m
+  )
 }
