@@ -4,7 +4,7 @@ private import semmle.python.dataflow.new.internal.PrintNode
 private import semmle.python.frameworks.data.ModelsAsData
 // need to import Frameworks to get the actual modeling imported
 private import semmle.python.Frameworks
-// this improt needs to be public to get the query predicates propagated to the actual test files
+// this import needs to be public to get the query predicates propagated to the actual test files
 import TestUtilities.InlineExpectationsTest
 
 class MadSinkTest extends InlineExpectationsTest {
