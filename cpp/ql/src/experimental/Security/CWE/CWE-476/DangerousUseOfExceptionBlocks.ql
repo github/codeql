@@ -116,8 +116,8 @@ predicate pointerDereference(CatchAnyBlock cb, Variable vr, Variable vro) {
 pragma[inline]
 predicate newThrowDelete(CatchAnyBlock cb, Variable vro) {
   exists(Expr e0, AssignExpr ase, NewOrNewArrayExpr nae |
-    ase = vro.getAnAccess().getEnclosingStmt().(ExprStmt).getExpr().(AssignExpr) and
-    nae = ase.getRValue().(NewOrNewArrayExpr) and
+    ase = vro.getAnAccess().getEnclosingStmt().(ExprStmt).getExpr() and
+    nae = ase.getRValue() and
     not nae.getAChild*().toString() = "nothrow" and
     (
       e0 = nae or
@@ -185,8 +185,8 @@ where
     exp.getEnclosingStmt().getParentStmt*() = cb and
     exists(VariableAccess va |
       (
-        va = exp.(DeleteArrayExpr).getExpr().(VariableAccess) or
-        va = exp.(DeleteExpr).getExpr().(VariableAccess)
+        va = exp.(DeleteArrayExpr).getExpr() or
+        va = exp.(DeleteExpr).getExpr()
       ) and
       va.getEnclosingStmt() = exp.getEnclosingStmt() and
       vro = va.getTarget()
