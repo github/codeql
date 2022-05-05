@@ -21,76 +21,6 @@ module Actions {
   }
 
   /**
-   * A YAML node that may contain sub-nodes.
-   *
-   * Actions are quite flexible in parsing YAML.
-   *
-   * For example:
-   * ```
-   * on: pull_request
-   * ```
-   * and
-   * ```
-   * on: [pull_request]
-   * ```
-   * and
-   * ```
-   * on:
-   *   pull_request:
-   * ```
-   *
-   * are equivalent.
-   */
-  class MappingOrSequenceOrScalar extends YAMLNode {
-    MappingOrSequenceOrScalar() {
-      this instanceof YAMLMapping
-      or
-      this instanceof YAMLSequence
-      or
-      this instanceof YAMLScalar
-    }
-
-    /** Gets sub-name identified by `name`. */
-    YAMLNode getNode(string name) {
-      exists(YAMLMapping mapping |
-        mapping = this and
-        result = mapping.lookup(name)
-      )
-      or
-      exists(YAMLSequence sequence, YAMLNode node |
-        sequence = this and
-        sequence.getAChildNode() = node and
-        node.eval().toString() = name and
-        result = node
-      )
-      or
-      exists(YAMLScalar scalar |
-        scalar = this and
-        scalar.getValue() = name and
-        result = scalar
-      )
-    }
-
-    /** Gets the number of elements in this mapping or sequence. */
-    int getElementCount() {
-      exists(YAMLMapping mapping |
-        mapping = this and
-        result = mapping.getNumChild() / 2
-      )
-      or
-      exists(YAMLSequence sequence |
-        sequence = this and
-        result = sequence.getNumChild()
-      )
-      or
-      exists(YAMLScalar scalar |
-        scalar = this and
-        result = 1
-      )
-    }
-  }
-
-  /**
    * An Actions workflow. This is a mapping at the top level of an Actions YAML workflow file.
    * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
    */
@@ -112,7 +42,7 @@ module Actions {
    * An Actions On trigger within a workflow.
    * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on.
    */
-  class On extends YAMLNode, MappingOrSequenceOrScalar {
+  class On extends YAMLNode, YAMLMappingLikeNode {
     Workflow workflow;
 
     On() { workflow.lookup("on") = this }
