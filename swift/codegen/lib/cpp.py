@@ -107,7 +107,7 @@ class TrapList:
 
     traps: List[Trap]
     namespace: str
-    trap_suffix: str
+    trap_affix: str
     include_dir: str
 
 
@@ -153,5 +153,5 @@ class ClassList:
 
     classes: List[Class]
     namespace: str
-    trap_suffix: str
+    trap_affix: str
     include_dir: str

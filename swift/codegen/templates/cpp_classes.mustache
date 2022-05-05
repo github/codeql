@@ -6,8 +6,8 @@
 #include <optional>
 #include <vector>
 
-#include "{{include_dir}}/TrapLabel.h"
-#include "./TrapEntries.h"
+#include "{{include_dir}}/{{trap_affix}}Label.h"
+#include "./{{trap_affix}}Entries.h"
 
 namespace {{namespace}} {
 {{#classes}}
@@ -30,21 +30,21 @@ struct {{name}}{{#final}} : Binding<{{name}}Tag>{{#bases}}, {{ref.name}}{{/bases
     {{ref.name}}::emit(id, out);
     {{/bases}}
     {{#trap_name}}
-    out << {{.}}{{trap_suffix}}{id{{#single_fields}}, {{name}}{{/single_fields}}} << '\n';
+    out << {{.}}{{trap_affix}}{id{{#single_fields}}, {{name}}{{/single_fields}}} << '\n';
     {{/trap_name}}
     {{#fields}}
     {{#is_optional}}
     {{^is_repeated}}
-    if ({{name}}) out << {{trap_name}}{{trap_suffix}}{id, *{{name}}} << '\n';
+    if ({{name}}) out << {{trap_name}}{{trap_affix}}{id, *{{name}}} << '\n';
     {{/is_repeated}}
     {{/is_optional}}
     {{#is_repeated}}
     for (auto i = 0u; i < {{name}}.size(); ++i) {
       {{^is_optional}}
-      out << {{trap_name}}{{trap_suffix}}{id, i, {{name}}[i]};
+      out << {{trap_name}}{{trap_affix}}{id, i, {{name}}[i]};
       {{/is_optional}}
       {{#is_optional}}
-      if ({{name}}[i]) out << {{trap_name}}{{trap_suffix}}{id, i, *{{name}}[i]};
+      if ({{name}}[i]) out << {{trap_name}}{{trap_affix}}{id, i, *{{name}}[i]};
       {{/is_optional}}
     }
     {{/is_repeated}}

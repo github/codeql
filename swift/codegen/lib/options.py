@@ -10,6 +10,7 @@ from . import paths
 
 def _init_options():
     Option("--verbose", "-v", action="store_true")
+    Option("--swift-dir", type=_abspath, default=paths.swift_dir)
     Option("--schema", tags=["schema"], type=_abspath, default=paths.swift_dir / "codegen/schema.yml")
     Option("--dbscheme", tags=["dbscheme"], type=_abspath, default=paths.swift_dir / "ql/lib/swift.dbscheme")
     Option("--ql-output", tags=["ql"], type=_abspath, default=paths.swift_dir / "ql/lib/codeql/swift/generated")
@@ -17,7 +18,7 @@ def _init_options():
     Option("--codeql-binary", tags=["ql"], default="codeql")
     Option("--cpp-output", tags=["cpp"], type=_abspath, required=True)
     Option("--cpp-namespace", tags=["cpp"], default="codeql")
-    Option("--trap-suffix", tags=["cpp"], default="Trap")
+    Option("--trap-affix", tags=["cpp"], default="Trap")
     Option("--cpp-include-dir", tags=["cpp"], required=True)
 
 

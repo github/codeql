@@ -11,15 +11,15 @@ output_dir = pathlib.Path("path", "to", "output")
 def generate(opts, renderer, dbscheme_input):
     opts.cpp_output = output_dir
     opts.cpp_namespace = "test_namespace"
-    opts.trap_suffix = "TrapSuffix"
+    opts.trap_affix = "TrapAffix"
     opts.cpp_include_dir = "my/include/dir"
 
     def ret(entities):
         dbscheme_input.entities = entities
         generated = run_generation(trapgen.generate, opts, renderer)
         assert set(generated) == {output_dir /
-                                  "TrapEntries.h", output_dir / "TrapTags.h"}
-        return generated[output_dir / "TrapEntries.h"], generated[output_dir / "TrapTags.h"]
+                                  "TrapAffixEntries.h", output_dir / "TrapAffixTags.h"}
+        return generated[output_dir / "TrapAffixEntries.h"], generated[output_dir / "TrapAffixTags.h"]
 
     return ret
 
@@ -30,7 +30,7 @@ def generate_traps(opts, generate):
         traps, _ = generate(entities)
         assert isinstance(traps, cpp.TrapList)
         assert traps.namespace == opts.cpp_namespace
-        assert traps.trap_suffix == opts.trap_suffix
+        assert traps.trap_affix == opts.trap_affix
         assert traps.include_dir == opts.cpp_include_dir
         return traps.traps
 
@@ -106,7 +106,7 @@ def test_one_table_with_two_binding_first_is_id(generate_traps):
 @pytest.mark.parametrize("column,field", [
     (dbscheme.Column("x", "string"), cpp.Field("x", "std::string")),
     (dbscheme.Column("y", "boolean"), cpp.Field("y", "bool")),
-    (dbscheme.Column("z", "@db_type"), cpp.Field("z", "TrapLabel<DbTypeTag>")),
+    (dbscheme.Column("z", "@db_type"), cpp.Field("z", "TrapAffixLabel<DbTypeTag>")),
 ])
 def test_one_table_special_types(generate_traps, column, field):
     assert generate_traps([

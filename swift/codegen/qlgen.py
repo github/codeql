@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
+import pathlib
 import subprocess
 
 import inflection
@@ -47,8 +48,8 @@ def get_ql_class(cls: schema.Class):
     )
 
 
-def get_import(file):
-    stem = file.relative_to(paths.swift_dir / "ql/lib").with_suffix("")
+def get_import(file: pathlib.Path, swift_dir: pathlib.Path):
+    stem = file.relative_to(swift_dir / "ql/lib").with_suffix("")
     return str(stem).replace("/", ".")
 
 
@@ -89,7 +90,7 @@ def generate(opts, renderer):
     imports = {}
 
     for c in classes:
-        imports[c.name] = get_import(stub_out / c.path)
+        imports[c.name] = get_import(stub_out / c.path, opts.swift_dir)
 
     for c in classes:
         qll = (out / c.path).with_suffix(".qll")
@@ -97,7 +98,7 @@ def generate(opts, renderer):
         renderer.render(c, qll)
         stub_file = (stub_out / c.path).with_suffix(".qll")
         if not stub_file.is_file() or is_generated(stub_file):
-            stub = ql.Stub(name=c.name, base_import=get_import(qll))
+            stub = ql.Stub(name=c.name, base_import=get_import(qll, opts.swift_dir))
             renderer.render(stub, stub_file)
 
     # for example path/to/syntax/generated -> path/to/syntax.qll
