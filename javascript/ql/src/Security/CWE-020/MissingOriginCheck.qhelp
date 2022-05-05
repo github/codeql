@@ -27,7 +27,7 @@ to execute arbitrary code.
 
 <p>
 The example is fixed below, where the origin is checked to be trusted. 
-It is therefore not possible for a malicious user to attack using an untrusted origin.
+It is therefore not possible for a malicious user to perform an attack using an untrusted origin.
 </p>
 <sample src="examples/MissingOriginCheckGood.js" />
 
