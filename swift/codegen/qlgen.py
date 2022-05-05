@@ -25,7 +25,6 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
             type=prop.type,
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "index", "result"],
-            params=[ql.Param("index", type="int")],
             is_optional=prop.is_optional,
         )
     elif prop.is_optional:
@@ -58,8 +57,6 @@ def get_types_used_by(cls: ql.Class):
         yield b
     for p in cls.properties:
         yield p.type
-        for param in p.params:
-            yield param.type
 
 
 def get_classes_used_by(cls: ql.Class):

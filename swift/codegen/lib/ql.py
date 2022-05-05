@@ -8,7 +8,6 @@ import inflection
 @dataclass
 class Param:
     param: str
-    type: str = None
     first: bool = False
 
 
@@ -19,16 +18,11 @@ class Property:
     tablename: str
     tableparams: List[Param]
     plural: str = None
-    params: List[Param] = field(default_factory=list)
     first: bool = False
     local_var: str = "x"
     is_optional: bool = False
 
     def __post_init__(self):
-        if self.params:
-            self.params[0].first = True
-        while self.local_var in (p.param for p in self.params):
-            self.local_var += "_"
         assert self.tableparams
         if self.type_is_class:
             self.tableparams = [x if x != "result" else self.local_var for x in self.tableparams]

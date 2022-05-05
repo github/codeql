@@ -18,7 +18,6 @@ ql_output_path = lambda: paths.swift_dir / "ql/lib/other/path"
 import_file = lambda: stub_path().with_suffix(".qll")
 stub_import_prefix = "stub.path."
 gen_import_prefix = "other.path."
-index_param = ql.Param("index", "int")
 
 
 def generate(opts, renderer, written=None):
@@ -121,7 +120,7 @@ def test_repeated_property(opts, input, renderer):
         import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
         stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
         ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
-            ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos", params=[index_param],
+            ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
                         tableparams=["this", "index", "result"]),
         ])
     }
@@ -135,7 +134,7 @@ def test_repeated_optional_property(opts, input, renderer):
         import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
         stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
         ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
-            ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos", params=[index_param],
+            ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
                         tableparams=["this", "index", "result"], is_optional=True),
         ])
     }

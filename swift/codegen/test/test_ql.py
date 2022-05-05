@@ -5,31 +5,11 @@ from swift.codegen.lib import ql
 from swift.codegen.test.utils import *
 
 
-def test_property_has_first_param_marked():
-    params = [ql.Param("a", "x"), ql.Param("b", "y"), ql.Param("c", "z")]
-    expected = deepcopy(params)
-    expected[0].first = True
-    prop = ql.Property("Prop", "foo", "props", ["this"], params=params)
-    assert prop.params == expected
-
-
 def test_property_has_first_table_param_marked():
     tableparams = ["a", "b", "c"]
     prop = ql.Property("Prop", "foo", "props", tableparams)
     assert prop.tableparams[0].first
     assert [p.param for p in prop.tableparams] == tableparams
-    assert all(p.type is None for p in prop.tableparams)
-
-
-@pytest.mark.parametrize("params,expected_local_var", [
-    (["a", "b", "c"], "x"),
-    (["a", "x", "c"], "x_"),
-    (["a", "x", "x_", "c"], "x__"),
-    (["a", "x", "x_", "x__"], "x___"),
-])
-def test_property_local_var_avoids_params_collision(params, expected_local_var):
-    prop = ql.Property("Prop", "foo", "props", ["this"], params=[ql.Param(p) for p in params])
-    assert prop.local_var == expected_local_var
 
 
 def test_property_not_a_class():
