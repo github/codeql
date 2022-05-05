@@ -152,7 +152,8 @@ module Actions {
    * ```
    * uses: actions/checkout@v2
    * ```
-   * TODO: Does not currently handle local repository references, e.g. `.github/actions/action-name`.
+   *
+   * Does not handle local repository references, e.g. `.github/actions/action-name`.
    */
   class Uses extends YAMLNode, YAMLScalar {
     Step step;
