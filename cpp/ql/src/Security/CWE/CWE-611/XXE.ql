@@ -185,8 +185,9 @@ class FeatureDisableDefaultEntityResolution extends Variable {
 }
 
 /**
- * A flow state transformer for a call to `SAX2XMLReader.setFeature(XMLUni::fgXercesDisableDefaultEntityResolution, *)`. Transforms the flow
- * state through the qualifier according to this setting.
+ * A flow state transformer for a call to `SAX2XMLReader.setFeature`
+ * specifying the feature `XMLUni::fgXercesDisableDefaultEntityResolution`.
+ * Transforms the flow state through the qualifier according to this setting.
  */
 class SetFeatureTranformer extends XXEFlowStateTranformer {
   Expr newValue;
