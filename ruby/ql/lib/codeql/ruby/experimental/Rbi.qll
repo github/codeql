@@ -8,7 +8,6 @@ private import codeql.ruby.ApiGraphs
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import codeql.ruby.controlflow.CfgNodes
-private import codeql.ruby.DataFlow
 
 /**
  * Provides classes and predicates for working with Ruby Interface (RBI) files
@@ -23,21 +22,26 @@ module Rbi {
     /**
      * A node representing a Ruby Interface (RBI) type.
      */
-    abstract class RbiType extends DataFlow::Node { }
+    abstract class RbiType extends Expr { }
 
     class ConstantReadAccessAsRbiType extends RbiType {
       ConstantReadAccessAsRbiType() {
-        this.asExpr() instanceof ExprNodes::ConstantReadAccessCfgNode
+        this instanceof ConstantReadAccess
         // TODO: should this class be more restrictive?
       }
+    }
+
+    /** A method call where the receiver is `T`. */
+    private class MethodCallAgainstT extends MethodCall {
+      MethodCallAgainstT() { this.getReceiver().(ConstantReadAccess).getName() = "T" }
     }
 
     /**
      * A call to `T.any` - a method that takes `RbiType` parameters, and returns
      * a type representing the union of those types.
      */
-    class RbiUnionType extends RbiType, DataFlow::CallNode {
-      RbiUnionType() { this = API::getTopLevelMember("T").getAMethodCall("any") }
+    class RbiUnionType extends RbiType, MethodCallAgainstT {
+      RbiUnionType() { this.getMethodName() = "any" }
 
       /**
        * Gets a constituent type of this type union.
@@ -48,16 +52,16 @@ module Rbi {
     /**
      * A call to `T.untyped`.
      */
-    class RbiUntypedType extends RbiType, DataFlow::CallNode {
-      RbiUntypedType() { this = API::getTopLevelMember("T").getAMethodCall("untyped") }
+    class RbiUntypedType extends RbiType, MethodCallAgainstT {
+      RbiUntypedType() { this.getMethodName() = "untyped" }
     }
 
     /**
      * A call to `T.nilable`, creating a nilable version of the type provided as
      * an argument.
      */
-    class RbiNilableType extends RbiType, DataFlow::CallNode {
-      RbiNilableType() { this = API::getTopLevelMember("T").getAMethodCall("nilable") }
+    class RbiNilableType extends RbiType, MethodCallAgainstT {
+      RbiNilableType() { this.getMethodName() = "nilable" }
 
       /** Gets the type that this may represent if not nil. */
       RbiType getUnderlyingType() { result = this.getArgument(0) }
@@ -67,75 +71,78 @@ module Rbi {
      * A call to `T.type_alias`. The return value of this call can be assigned to
      * create a type alias.
      */
-    class RbiTypeAlias extends RbiType, DataFlow::CallNode {
-      RbiTypeAlias() { this = API::getTopLevelMember("T").getAMethodCall("type_alias") }
+    class RbiTypeAlias extends RbiType, MethodCallAgainstT {
+      RbiTypeAlias() { this.getMethodName() = "type_alias" }
 
       /**
        * Gets the type aliased by this call.
        */
       RbiType getAliasedType() {
-        result.asExpr() = this.getBlock().asExpr().(ExprNodes::StmtSequenceCfgNode).getLastStmt()
+        exists(ExprNodes::MethodCallCfgNode n | n.getExpr() = this |
+          result = n.getBlock().(ExprNodes::StmtSequenceCfgNode).getLastStmt().getExpr()
+        )
       }
     }
 
     /**
      * A call to `T.self_type`.
      */
-    class RbiSelfType extends RbiType, DataFlow::CallNode {
-      RbiSelfType() { this = API::getTopLevelMember("T").getAMethodCall("self_type") }
+    class RbiSelfType extends RbiType, MethodCallAgainstT {
+      RbiSelfType() { this.getMethodName() = "self_type" }
     }
 
     /**
      * A call to `T.noreturn`.
      */
-    class RbiNoreturnType extends RbiType, DataFlow::CallNode {
-      RbiNoreturnType() { this = API::getTopLevelMember("T").getAMethodCall("noreturn") }
+    class RbiNoreturnType extends RbiType, MethodCallAgainstT {
+      RbiNoreturnType() { this.getMethodName() = "noreturn" }
+    }
+
+    /**
+     * A `ConstantReadAccess` where the constant is from the `T` module.
+     */
+    private class ConstantReadAccessFromT extends ConstantReadAccess {
+      ConstantReadAccessFromT() { this.getScopeExpr().(ConstantReadAccess).getName() = "T" }
     }
 
     /**
      * A use of `T::Boolean`.
      */
-    class RbiBooleanType extends RbiType {
-      RbiBooleanType() { this = API::getTopLevelMember("T").getMember("Boolean").getAUse() }
+    class RbiBooleanType extends RbiType, ConstantReadAccessFromT {
+      RbiBooleanType() { this.getName() = "Boolean" }
     }
 
     /**
      * A use of `T::Array`.
      */
-    class RbiArrayType extends RbiType {
-      RbiArrayType() { this = API::getTopLevelMember("T").getMember("Array").getAUse() }
+    class RbiArrayType extends RbiType, ConstantReadAccessFromT {
+      RbiArrayType() { this.getName() = "Array" }
 
       /** Gets the type of elements of this array. */
       RbiType getElementType() {
-        exists(DataFlow::CallNode refNode |
-          refNode.getReceiver() = this and
-          refNode.asExpr() instanceof ExprNodes::ElementReferenceCfgNode
-        |
+        exists(ElementReference refNode | refNode.getReceiver() = this |
           result = refNode.getArgument(0)
         )
       }
     }
 
-    class RbiHashType extends RbiType {
-      RbiHashType() { this = API::getTopLevelMember("T").getMember("Hash").getAUse() }
+    class RbiHashType extends RbiType, ConstantReadAccessFromT {
+      RbiHashType() { this.getName() = "Hash" }
 
-      private DataFlow::CallNode getRefNode() {
-        result.getReceiver() = this and
-        result.asExpr() instanceof ExprNodes::ElementReferenceCfgNode
-      }
+      private ElementReference getRefNode() { result.getReceiver() = this }
 
       /** Gets the type of keys of this hash type. */
-      DataFlow::Node getKeyType() { result = this.getRefNode().getArgument(0) }
+      Expr getKeyType() { result = this.getRefNode().getArgument(0) }
 
       /** Gets the type of values of this hash type. */
-      DataFlow::Node getValueType() { result = this.getRefNode().getArgument(1) }
+      Expr getValueType() { result = this.getRefNode().getArgument(1) }
     }
 
     /**
      * A call to `T.proc`. This defines a type signature for a proc or block
      */
-    class ProcCall extends RbiType, SignatureCall {
-      ProcCall() { this = API::getTopLevelMember("T").getAMethodCall("proc") }
+    class ProcCall extends RbiType, SignatureCall, MethodCallAgainstT {
+      ProcCall() { this.getMethodName() = "proc" }
 
       private ProcReturnsTypeCall getReturnsTypeCall() { result.getProcCall() = this }
 
@@ -193,7 +200,7 @@ module Rbi {
   /**
    * A call that defines a type signature for a method or proc.
    */
-  abstract class SignatureCall extends DataFlow::CallNode {
+  abstract class SignatureCall extends MethodCall {
     /**
      * Gets the return type of this type signature.
      */
@@ -206,23 +213,23 @@ module Rbi {
   }
 
   private predicate isMethodSignatureCallNode(CfgNode n) {
-    exists(MethodSignatureCall sig | sig.asExpr() = n)
+    n.(ExprCfgNode).getExpr() instanceof MethodSignatureCall
   }
 
   /**
    * Holds if `n` is the `i`th transitive successor node of `sigNode` where there
    * are no intervening nodes corresponding to `MethodSignatureCall`s.
    */
-  private predicate methodSignatureSuccessorNodeRanked(MethodSignatureCall sig, CfgNode n, int i) {
+  private predicate methodSignatureSuccessorNodeRanked(CfgNode sigNode, CfgNode n, int i) {
     // direct successor
     i = 1 and
-    n = sig.asExpr().getASuccessor() and
+    n = sigNode.getASuccessor() and
     not isMethodSignatureCallNode(n)
     or
     // transitive successor
     i > 1 and
     exists(CfgNode np | n = np.getASuccessor() |
-      methodSignatureSuccessorNodeRanked(sig, np, i - 1) and
+      methodSignatureSuccessorNodeRanked(sigNode, np, i - 1) and
       not isMethodSignatureCallNode(np)
     )
   }
@@ -235,31 +242,33 @@ module Rbi {
 
     private MethodParamsCall getParamsCall() { result.getMethodSignatureCall() = this }
 
+    private ExprCfgNode getCfgNode() { result.getExpr() = this }
+
     /**
      * Gets the method whose type signature is defined by this call.
      */
-    ExprCfgNode getAssociatedMethod() {
+    MethodBase getAssociatedMethod() {
       result =
-        min(ExprCfgNode m, int i |
-          methodSignatureSuccessorNodeRanked(this, m, i) and
-          m.getExpr() instanceof MethodBase
+        min(ExprCfgNode methodCfgNode, int i |
+          methodSignatureSuccessorNodeRanked(this.getCfgNode(), methodCfgNode, i) and
+          methodCfgNode.getExpr() instanceof MethodBase
         |
-          m order by i
-        )
+          methodCfgNode order by i
+        ).getExpr()
     }
 
     /**
      * Gets a call to `attr_reader` or `attr_accessor` where the return type of
      * the generated method is described by this call.
      */
-    ExprNodes::MethodCallCfgNode getAssociatedAttrReaderCall() {
+    MethodCall getAssociatedAttrReaderCall() {
       result =
         min(ExprNodes::MethodCallCfgNode c, int i |
           c.getExpr().getMethodName() = ["attr_reader", "attr_accessor"] and
-          methodSignatureSuccessorNodeRanked(this, c, i)
+          methodSignatureSuccessorNodeRanked(this.getCfgNode(), c, i)
         |
           c order by i
-        )
+        ).getExpr()
     }
 
     /**
@@ -279,16 +288,15 @@ module Rbi {
    *  - the return type of
    * a method.
    */
-  class MethodSignatureDefiningCall extends DataFlow::CallNode {
+  class MethodSignatureDefiningCall extends MethodCall {
     private MethodSignatureCall sigCall;
 
     MethodSignatureDefiningCall() {
-      // TODO: avoid mapping to AST layer
-      exists(MethodCall c | c = sigCall.getBlock().asExpr().getExpr().getAChild() |
+      exists(MethodCall c | c = sigCall.getBlock().getAChild() |
         // The typical pattern for the contents of a `sig` block is something
         // like `params(<param defs>).returns(<return type>)` - we want to
         // pick up both of these calls.
-        this.asExpr().getExpr() = c.getReceiver*()
+        this = c.getReceiver*()
       )
     }
 
@@ -302,23 +310,23 @@ module Rbi {
   /**
    * A call to `params`. This defines the types of parameters to a method or proc.
    */
-  class ParamsCall extends DataFlow::CallNode {
+  class ParamsCall extends MethodCall {
     ParamsCall() { this.getMethodName() = "params" }
 
     /**
      * Gets the type of a parameter defined by this call.
      */
-    ParameterType getAParameterType() { result = this.getArgument(_).asExpr() }
+    ParameterType getAParameterType() { result = this.getArgument(_) }
   }
 
-  abstract class ReturnsTypeCall extends DataFlow::CallNode {
+  abstract class ReturnsTypeCall extends MethodCall {
     abstract ReturnType getReturnType();
   }
 
   /**
    * A call to `returns`. Defines the return type of a method or proc.
    */
-  class ReturnsCall extends DataFlow::CallNode {
+  class ReturnsCall extends MethodCall {
     ReturnsCall() { this.getMethodName() = "returns" }
 
     /**
@@ -335,7 +343,7 @@ module Rbi {
   /**
    * A call to `void`. Essentially a "don't-care" for the return type of a method or proc.
    */
-  class VoidCall extends DataFlow::CallNode {
+  class VoidCall extends MethodCall {
     VoidCall() { this.getMethodName() = "void" }
 
     /**
@@ -361,7 +369,7 @@ module Rbi {
   }
 
   /** A call that defines part of the type signature of a proc or block argument. */
-  class ProcSignatureDefiningCall extends DataFlow::CallNode, RbiType {
+  class ProcSignatureDefiningCall extends MethodCall, RbiType {
     private ProcCall procCall;
 
     ProcSignatureDefiningCall() { this.getReceiver+() = procCall }
@@ -395,23 +403,23 @@ module Rbi {
   /**
    * A pair defining the type of a parameter to a method.
    */
-  class ParameterType extends ExprNodes::PairCfgNode {
+  class ParameterType extends Pair {
     private RbiType t;
 
-    ParameterType() { t.asExpr() = this.getValue() }
+    ParameterType() { t = this.getValue() }
 
     /** Gets the `RbiType` of this parameter. */
     RbiType getType() { result = t }
 
     private SignatureCall getOuterMethodSignatureCall() { this = result.getAParameterType() }
 
-    private ExprCfgNode getAssociatedMethod() {
+    private MethodBase getAssociatedMethod() {
       result = this.getOuterMethodSignatureCall().(MethodSignatureCall).getAssociatedMethod()
     }
 
     /** Gets the parameter to which this type applies. */
     NamedParameter getParameter() {
-      result = this.getAssociatedMethod().getExpr().(MethodBase).getAParameter() and
+      result = this.getAssociatedMethod().getAParameter() and
       result.getName() = this.getKey().getConstantValue().getStringlikeValue()
     }
   }

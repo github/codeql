@@ -1,5 +1,4 @@
 private import codeql.ruby.AST
-private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.experimental.Rbi::Rbi
 
 query predicate rbiTypes(RbiType t) { any() }
@@ -42,8 +41,8 @@ query predicate procParameterTypes(
   pc = prtc.getProcCall()
 }
 
-query predicate sigMethods(MethodSignatureCall sig, ExprCfgNode m) { m = sig.getAssociatedMethod() }
+query predicate sigMethods(MethodSignatureCall sig, MethodBase m) { m = sig.getAssociatedMethod() }
 
-query predicate sigAttrReaders(MethodSignatureCall sig, ExprNodes::MethodCallCfgNode attr_reader) {
+query predicate sigAttrReaders(MethodSignatureCall sig, MethodCall attr_reader) {
   attr_reader = sig.getAssociatedAttrReaderCall()
 }
