@@ -1,4 +1,4 @@
-// test cases for rule CWE-611
+// test cases for rule CWE-611 (SAXParser)
 
 #include "tests.h"
 
