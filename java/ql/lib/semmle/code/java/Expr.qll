@@ -227,12 +227,12 @@ class CompileTimeConstantExpr extends Expr {
       )
       or
       (
-        b instanceof AnyEqualsExpr and
+        b instanceof ValueOrReferenceEqualsExpr and
         if left = right then result = true else result = false
       )
       or
       (
-        b instanceof AnyNotEqualsExpr and
+        b instanceof ValueOrReferenceNotEqualsExpr and
         if left != right then result = true else result = false
       )
     )
@@ -244,12 +244,12 @@ class CompileTimeConstantExpr extends Expr {
       right = b.getRightOperand().(CompileTimeConstantExpr).getBooleanValue()
     |
       (
-        b instanceof AnyEqualsExpr and
+        b instanceof ValueOrReferenceEqualsExpr and
         if left = right then result = true else result = false
       )
       or
       (
-        b instanceof AnyNotEqualsExpr and
+        b instanceof ValueOrReferenceNotEqualsExpr and
         if left != right then result = true else result = false
       )
       or
@@ -277,12 +277,12 @@ class CompileTimeConstantExpr extends Expr {
        */
 
       (
-        b instanceof AnyEqualsExpr and
+        b instanceof ValueOrReferenceEqualsExpr and
         if left = right then result = true else result = false
       )
       or
       (
-        b instanceof AnyNotEqualsExpr and
+        b instanceof ValueOrReferenceNotEqualsExpr and
         if left != right then result = true else result = false
       )
     )
@@ -366,7 +366,7 @@ class CompileTimeConstantExpr extends Expr {
         or
         b instanceof XorBitwiseExpr and result = v1.bitXor(v2)
         // No `int` value for `AndLogicalExpr` or `OrLogicalExpr`.
-        // No `int` value for `LTExpr`, `GTExpr`, `LEExpr`, `GEExpr`, `AnyEqualsExpr` or `AnyNotEqualsExpr`.
+        // No `int` value for `LTExpr`, `GTExpr`, `LEExpr`, `GEExpr`, `ValueOrReferenceEqualsExpr` or `ValueOrReferenceNotEqualsExpr`.
       )
       or
       // Ternary conditional, with compile-time constant condition.
@@ -1006,8 +1006,8 @@ class ValueNEExpr extends BinaryExpr, @valueneexpr {
  * This might test for reference equality or might function like `Objects.equals`. If you
  * need to distinguish them, use `EQExpr` or `ValueEQExpr` instead.
  */
-class AnyEqualsExpr extends BinaryExpr {
-  AnyEqualsExpr() { this instanceof EQExpr or this instanceof ValueEQExpr }
+class ValueOrReferenceEqualsExpr extends BinaryExpr {
+  ValueOrReferenceEqualsExpr() { this instanceof EQExpr or this instanceof ValueEQExpr }
 }
 
 /**
@@ -1016,8 +1016,8 @@ class AnyEqualsExpr extends BinaryExpr {
  * This might test for reference equality or might function like `Objects.equals`. If you
  * need to distinguish them, use `EQExpr` or `ValueEQExpr` instead.
  */
-class AnyNotEqualsExpr extends BinaryExpr {
-  AnyNotEqualsExpr() { this instanceof NEExpr or this instanceof ValueNEExpr }
+class ValueOrReferenceNotEqualsExpr extends BinaryExpr {
+  ValueOrReferenceNotEqualsExpr() { this instanceof NEExpr or this instanceof ValueNEExpr }
 }
 
 /**

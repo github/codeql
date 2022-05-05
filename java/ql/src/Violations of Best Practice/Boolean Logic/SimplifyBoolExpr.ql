@@ -15,13 +15,25 @@ class BoolCompare extends EqualityTest {
 
   predicate simplify(string pattern, string rewrite) {
     exists(boolean b | b = this.getAnOperand().(BooleanLiteral).getBooleanValue() |
-      this instanceof AnyEqualsExpr and b = true and pattern = "A == true" and rewrite = "A"
+      this instanceof ValueOrReferenceEqualsExpr and
+      b = true and
+      pattern = "A == true" and
+      rewrite = "A"
       or
-      this instanceof AnyNotEqualsExpr and b = false and pattern = "A != false" and rewrite = "A"
+      this instanceof ValueOrReferenceNotEqualsExpr and
+      b = false and
+      pattern = "A != false" and
+      rewrite = "A"
       or
-      this instanceof AnyEqualsExpr and b = false and pattern = "A == false" and rewrite = "!A"
+      this instanceof ValueOrReferenceEqualsExpr and
+      b = false and
+      pattern = "A == false" and
+      rewrite = "!A"
       or
-      this instanceof AnyNotEqualsExpr and b = true and pattern = "A != true" and rewrite = "!A"
+      this instanceof ValueOrReferenceNotEqualsExpr and
+      b = true and
+      pattern = "A != true" and
+      rewrite = "!A"
     )
   }
 }

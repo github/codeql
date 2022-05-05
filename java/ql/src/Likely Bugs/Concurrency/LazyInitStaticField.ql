@@ -16,7 +16,7 @@
 import java
 
 /** A comparison (using `==`) with `null`. */
-class NullEQExpr extends AnyEqualsExpr {
+class NullEQExpr extends ValueOrReferenceEqualsExpr {
   NullEQExpr() { exists(NullLiteral l | l.getParent() = this) }
 }
 
