@@ -8,16 +8,20 @@
  */
 
 import cpp
-import semmle.code.cpp.controlflow.SSA
 
 from
-  Variable E, ArrayExpr useExpr, ArrayType defExpr, VariableDeclarationEntry def, VariableAccess use
+  Variable var, ArrayExpr useExpr, VariableDeclarationEntry def, ArrayType defLine, VariableAccess use
 where
-  def = defExpr.getATypeNameUse() and
-  E = def.getDeclaration() and
+  def = defLine.getATypeNameUse() and
+  var = def.getDeclaration() and
   use = useExpr.getArrayBase() and
-  E = use.getTarget() and
-  useExpr.getArrayOffset().getType() instanceof UInt16_t and
-  defExpr.getArraySize() <= 256
-select useExpr, "Using a UInt16_t to acess the array $@ of size " + defExpr.getArraySize() + ".", E,
-  E.getName()
+  var = use.getTarget() and (
+  (useExpr.getArrayOffset().getType() instanceof UInt16_t and
+  defLine.getArraySize() <= 256) or
+  (useExpr.getArrayOffset().getType() instanceof UInt32_t and
+  defLine.getArraySize() <= 900) or
+  (useExpr.getArrayOffset().getType() instanceof UInt64_t and
+  defLine.getArraySize() <= 1000)
+  )
+select useExpr, "Using a " + useExpr.getArrayOffset().getType() +" to acess the array $@ of size " + defLine.getArraySize() + ".", var,
+  var.getName()

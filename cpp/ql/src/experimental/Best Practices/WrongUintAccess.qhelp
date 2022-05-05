@@ -8,7 +8,7 @@
 </overview>
 
 <recommendation>
-<p>Use a Uint8 instead</p>
+<p>Use a int with a lower bit size instead. For instance in this example use a 8 bit int.</p>
 </recommendation>
 
 <example>
