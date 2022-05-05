@@ -551,7 +551,6 @@
 | System.Collections.Immutable;ImmutableDictionary<,>;false;Add;(TKey,TValue);;Argument[0];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value |
 | System.Collections.Immutable;ImmutableDictionary<,>;false;Add;(TKey,TValue);;Argument[1];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value |
 | System.Collections.Immutable;ImmutableDictionary<,>;false;AddRange;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>);;Argument[0].Element;Argument[Qualifier].Element;value |
-| System.Collections.Immutable;ImmutableDictionary<,>;false;Clear;();;Argument[Qualifier];ReturnValue;taint |
 | System.Collections.Immutable;ImmutableDictionary<,>;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableDictionary<,>+Enumerator.Current];value |
 | System.Collections.Immutable;ImmutableDictionary<,>;false;Remove;(TKey);;Argument[Qualifier];ReturnValue;taint |
 | System.Collections.Immutable;ImmutableDictionary<,>;false;RemoveRange;(System.Collections.Generic.IEnumerable<TKey>);;Argument[Qualifier];ReturnValue;taint |
@@ -581,7 +580,6 @@
 | System.Collections.Immutable;ImmutableHashSet<>+Builder;false;get_KeyComparer;();;Argument[Qualifier];ReturnValue;taint |
 | System.Collections.Immutable;ImmutableHashSet<>+Builder;false;set_KeyComparer;(System.Collections.Generic.IEqualityComparer<T>);;Argument[0];Argument[Qualifier];taint |
 | System.Collections.Immutable;ImmutableHashSet<>;false;Add;(T);;Argument[0];Argument[Qualifier].Element;value |
-| System.Collections.Immutable;ImmutableHashSet<>;false;Clear;();;Argument[Qualifier];ReturnValue;taint |
 | System.Collections.Immutable;ImmutableHashSet<>;false;Except;(System.Collections.Generic.IEnumerable<T>);;Argument[Qualifier];ReturnValue;taint |
 | System.Collections.Immutable;ImmutableHashSet<>;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableHashSet<>+Enumerator.Current];value |
 | System.Collections.Immutable;ImmutableHashSet<>;false;Intersect;(System.Collections.Generic.IEnumerable<T>);;Argument[Qualifier];ReturnValue;taint |
@@ -717,7 +715,6 @@
 | System.Collections.Immutable;ImmutableSortedDictionary<,>;false;Add;(TKey,TValue);;Argument[0];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value |
 | System.Collections.Immutable;ImmutableSortedDictionary<,>;false;Add;(TKey,TValue);;Argument[1];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value |
 | System.Collections.Immutable;ImmutableSortedDictionary<,>;false;AddRange;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>);;Argument[0].Element;Argument[Qualifier].Element;value |
-| System.Collections.Immutable;ImmutableSortedDictionary<,>;false;Clear;();;Argument[Qualifier];ReturnValue;taint |
 | System.Collections.Immutable;ImmutableSortedDictionary<,>;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableSortedDictionary<,>+Enumerator.Current];value |
 | System.Collections.Immutable;ImmutableSortedDictionary<,>;false;Remove;(TKey);;Argument[Qualifier];ReturnValue;taint |
 | System.Collections.Immutable;ImmutableSortedDictionary<,>;false;RemoveRange;(System.Collections.Generic.IEnumerable<TKey>);;Argument[Qualifier];ReturnValue;taint |
@@ -766,7 +763,6 @@
 | System.Collections.Immutable;ImmutableSortedSet<>+Builder;false;set_KeyComparer;(System.Collections.Generic.IComparer<T>);;Argument[0];Argument[Qualifier];taint |
 | System.Collections.Immutable;ImmutableSortedSet<>+Enumerator;false;get_Current;();;Argument[Qualifier];ReturnValue;taint |
 | System.Collections.Immutable;ImmutableSortedSet<>;false;Add;(T);;Argument[0];Argument[Qualifier].Element;value |
-| System.Collections.Immutable;ImmutableSortedSet<>;false;Clear;();;Argument[Qualifier];ReturnValue;taint |
 | System.Collections.Immutable;ImmutableSortedSet<>;false;Except;(System.Collections.Generic.IEnumerable<T>);;Argument[Qualifier];ReturnValue;taint |
 | System.Collections.Immutable;ImmutableSortedSet<>;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableSortedSet<>+Enumerator.Current];value |
 | System.Collections.Immutable;ImmutableSortedSet<>;false;Intersect;(System.Collections.Generic.IEnumerable<T>);;Argument[Qualifier];ReturnValue;taint |
@@ -6157,7 +6153,6 @@
 | System.Text;StringBuilder;false;AppendLine;();;Argument[Qualifier];ReturnValue;value |
 | System.Text;StringBuilder;false;AppendLine;(System.String);;Argument[0];Argument[Qualifier].Element;value |
 | System.Text;StringBuilder;false;AppendLine;(System.String);;Argument[Qualifier];ReturnValue;value |
-| System.Text;StringBuilder;false;Clear;();;Argument[Qualifier];ReturnValue;value |
 | System.Text;StringBuilder;false;GetChunks;();;Argument[Qualifier];ReturnValue;taint |
 | System.Text;StringBuilder;false;GetObjectData;(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext);;Argument[Qualifier];Argument[0];taint |
 | System.Text;StringBuilder;false;Insert;(System.Int32,System.Boolean);;Argument[Qualifier];ReturnValue;taint |
