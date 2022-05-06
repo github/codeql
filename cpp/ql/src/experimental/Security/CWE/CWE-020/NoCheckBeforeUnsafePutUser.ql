@@ -47,6 +47,7 @@ class UserModePtrCheckMacro extends Macro {
   UserModePtrCheckMacro() {
     this.getName() = ["user_write_access_begin", "user_access_begin", "access_ok"] and
     va.getEnclosingElement() = this.getAnInvocation().getAnExpandedElement()
+    //va.getTarget().getType() instanceof PointerType
   }
 
   VariableAccess getArgument() { result = va }
@@ -69,7 +70,7 @@ class UserModePtrCheckMacro extends Macro {
  *   parameter dummy will be regared as user-mode pointer used
  *   in unsafe_put_user without security check using access_ok
  *   but in fact dummy is only used to read memory otherwise
- *   instead of wring user-mode memory.
+ *   instead of writing user-mode memory.
  *
  *   Reading implementation of unsafe_put_user in Linux codebase,
  *   I found that there is a sizeof operation for user-mode pointer.
@@ -98,7 +99,7 @@ class UnSafePutUserMacro extends Macro {
 }
 
 /*
- *  Since there is no convenient way to indentify user mode pointer,
+ *  Since there is no convenient way to identify user mode pointer,
  *  In this query syscall parameter or function return value will
  *  be regared source node that's used as user mode pointer
  */
@@ -106,40 +107,29 @@ class UnSafePutUserMacro extends Macro {
 class UserModePtrNode extends DataFlow::Node {
   UserModePtrNode() {
     exists(SysCallParameter p | this.asParameter() = p) or
-    exists(FunctionCall va | this.asExpr() = va)
+    exists(FunctionCall fc | this.asExpr() = fc) or
+    exists(VariableAccess va | this.asExpr() = va)
+  }
+}
+
+class UserModePtrCheckBarrierGuard extends DataFlow::BarrierGuard {
+  UserModePtrCheckBarrierGuard() {
+    exists(UserModePtrCheckMacro m | this = m.getAnInvocation().getAnExpandedElement())
+  }
+
+  override predicate checks(Expr checked, boolean isTrue) {
+    exists(UserModePtrCheckMacro m |
+      checked = m.getArgument() and
+      isTrue = true
+    )
   }
 }
 
 /*
- *  Track all UsermodePtrNode that flow to UserModePtrCheckMacro
+ *  Track all UserModePttrNode that flow to UnSafePutUserMacro
  */
 
-class UserModePtrCheckConfig extends TaintTracking::Configuration {
-  UserModePtrCheckConfig() { this = "UserModePtrCheckConfig" }
-
-  override predicate isSource(DataFlow::Node node) { node instanceof UserModePtrNode }
-
-  override predicate isSink(DataFlow::Node node) {
-    exists(UserModePtrCheckMacro m | node.asExpr() = m.getArgument())
-  }
-}
-
-/*
- *  Any UserModePtrNode doesn't flow to UserModePtrCheckMacro will
- *  be regared potential exploitable
- */
-
-class ExploitableUserModePtr extends UserModePtrNode {
-  ExploitableUserModePtr() {
-    not exists(UserModePtrCheckConfig config, DataFlow::Node sink | config.hasFlow(this, sink))
-  }
-}
-
-/*
- *  Track all UserModePtrNode that flow to UnSafePutUserMacro
- */
-
-class UnsafePutUserConfig extends TaintTracking::Configuration {
+class UnsafePutUserConfig extends DataFlow::Configuration {
   UnsafePutUserConfig() { this = "UnsafePutUserConfig" }
 
   override predicate isSource(DataFlow::Node node) { node instanceof UserModePtrNode }
@@ -147,11 +137,18 @@ class UnsafePutUserConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node node) {
     exists(UnSafePutUserMacro m | node.asExpr() = m.getExprOperand())
   }
+
+  override predicate isBarrier(DataFlow::Node node) {
+    exists(UserModePtrCheckMacro m | node.asExpr() = m.getArgument())
+  }
+
+  override predicate isBarrierGuard(DataFlow::BarrierGuard bg) {
+    bg instanceof UserModePtrCheckBarrierGuard
+  }
 }
 
 from
-  UnsafePutUserConfig config, DataFlow::PathNode sink, DataFlow::PathNode src,
-  ExploitableUserModePtr ptr
+  UnsafePutUserConfig config, UserModePtrNode ptr, DataFlow::PathNode sink, DataFlow::PathNode src
 where
   config.hasFlowPath(src, sink) and
   src.getNode() = ptr
