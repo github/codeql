@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule looks for loop that allocate memory, but may break/continue without freeing it. This causes the function to leak memory and may eventually lead to software failure.
+</p> 
+</overview>
+<recommendation>
+<p>Ensure that the function frees all dynamically allocated memory it has acquired in all circumstances, unless that memory is returned to the caller.</p>
+
+</recommendation>
+<example>
+<sample src="MemoryMayNotBeFreedOnLoop.cpp" />
+
+<p>In this example, if an exception occurs the memory allocated into <code>notfree</code> might not be freed if the if condition is true.  To fix this memory leak, a free call should be added for <code>notfree</code> in the if block.</p>
+
+</example>
+</qhelp>
