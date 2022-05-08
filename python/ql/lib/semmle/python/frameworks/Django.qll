@@ -554,7 +554,7 @@ module PrivateDjango {
 
       /** A `django.db.connection` is a PEP249 compliant DB connection. */
       class DjangoDbConnection extends PEP249::Connection::InstanceSource {
-        DjangoDbConnection() { this = connection().getAUse() }
+        DjangoDbConnection() { this = connection().getAnImmediateUse() }
       }
 
       // -------------------------------------------------------------------------
@@ -734,6 +734,38 @@ module PrivateDjango {
            */
           DataFlow::Node instance(API::Node modelClass) {
             instance(DataFlow::TypeTracker::end(), modelClass).flowsTo(result)
+          }
+        }
+
+        /**
+         * Provides models for the `django.db.models.FileField` class and `ImageField` subclasses.
+         *
+         * See
+         * - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.FileField
+         * - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.ImageField
+         */
+        module FileField {
+          /** Gets a reference to the `django.db.models.FileField` or  the `django.db.models.ImageField` class or any subclass. */
+          API::Node subclassRef() {
+            exists(string className | className in ["FileField", "ImageField"] |
+              // commonly used alias
+              result =
+                API::moduleImport("django")
+                    .getMember("db")
+                    .getMember("models")
+                    .getMember(className)
+                    .getASubclass*()
+              or
+              // actual class definition
+              result =
+                API::moduleImport("django")
+                    .getMember("db")
+                    .getMember("models")
+                    .getMember("fields")
+                    .getMember("files")
+                    .getMember(className)
+                    .getASubclass*()
+            )
           }
         }
 
@@ -2596,6 +2628,36 @@ module PrivateDjango {
 
     override string getSourceType() {
       result = "django routed param from self.args/kwargs in View class"
+    }
+  }
+
+  /**
+   * A parameter that accepts the filename used to upload a file. This is the second
+   * parameter in functions used for the `upload_to` argument to a `FileField`.
+   *
+   * Note that the value this parameter accepts cannot contain a slash. Even when
+   * forcing the filename to contain a slash when sending the request, django does
+   * something like `input_filename.split("/")[-1]` (so other special characters still
+   * allowed). This also means that although the return value from `upload_to` is used
+   * to construct a path, path injection is not possible.
+   *
+   * See
+   *  - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.FileField.upload_to
+   *  - https://docs.djangoproject.com/en/3.1/topics/http/file-uploads/#handling-uploaded-files-with-a-model
+   */
+  private class DjangoFileFieldUploadToFunctionFilenameParam extends RemoteFlowSource::Range,
+    DataFlow::ParameterNode {
+    DjangoFileFieldUploadToFunctionFilenameParam() {
+      exists(DataFlow::CallCfgNode call, DataFlow::Node uploadToArg, Function func |
+        this.getParameter() = func.getArg(1) and
+        call = DjangoImpl::DB::Models::FileField::subclassRef().getACall() and
+        uploadToArg in [call.getArg(2), call.getArgByName("upload_to")] and
+        uploadToArg = poorMansFunctionTracker(func)
+      )
+    }
+
+    override string getSourceType() {
+      result = "django filename parameter to function used in FileField.upload_to"
     }
   }
 

@@ -8,7 +8,7 @@ import javascript
 private import SyntacticHeuristics
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 private import semmle.javascript.security.dataflow.CommandInjectionCustomizations
-private import semmle.javascript.security.dataflow.Xss as Xss
+private import semmle.javascript.security.dataflow.ReflectedXssCustomizations
 private import semmle.javascript.security.dataflow.SqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.TaintedPathCustomizations
@@ -16,6 +16,7 @@ private import semmle.javascript.security.dataflow.RegExpInjectionCustomizations
 private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomizations
 private import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomizations
 private import semmle.javascript.security.dataflow.InsecureRandomnessCustomizations
+private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 private import HeuristicSinks as Sinks
 
 class HeuristicSink = Sinks::HeuristicSink;
@@ -30,7 +31,7 @@ private class HeuristicCommandInjectionSink extends HeuristicSink, CommandInject
   }
 }
 
-private class HeuristicDomBasedXssSink extends HeuristicSink, Xss::DomBasedXss::Sink {
+private class HeuristicDomBasedXssSink extends HeuristicSink, DomBasedXss::Sink {
   HeuristicDomBasedXssSink() {
     isAssignedToOrConcatenatedWith(this, "(?i)(html|innerhtml)") or
     isArgTo(this, "(?i)(html|render)") or
@@ -39,7 +40,7 @@ private class HeuristicDomBasedXssSink extends HeuristicSink, Xss::DomBasedXss::
   }
 }
 
-private class HeuristicReflectedXssSink extends HeuristicSink, Xss::ReflectedXss::Sink {
+private class HeuristicReflectedXssSink extends HeuristicSink, ReflectedXss::Sink {
   HeuristicReflectedXssSink() {
     isAssignedToOrConcatenatedWith(this, "(?i)(html|innerhtml)") or
     isArgTo(this, "(?i)(html|render)") or

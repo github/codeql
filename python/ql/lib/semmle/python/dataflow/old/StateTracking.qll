@@ -9,7 +9,6 @@
  */
 
 import python
-private import semmle.python.pointsto.Base
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.objects.ObjectInternal

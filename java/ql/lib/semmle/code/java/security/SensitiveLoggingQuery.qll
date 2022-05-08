@@ -1,7 +1,7 @@
 /** Provides configurations for sensitive logging queries. */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SensitiveActions
 import DataFlow

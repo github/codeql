@@ -4,7 +4,8 @@
  */
 
 import javascript
-import Xss::StoredXss
+import StoredXssCustomizations::StoredXss
+private import Xss::Shared as Shared
 
 /**
  * A taint-tracking configuration for reasoning about XSS.
@@ -22,16 +23,15 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof SanitizerGuard
+    guard instanceof QuoteGuard or
+    guard instanceof ContainsHtmlGuard
   }
 }
 
-/** A file name, considered as a flow source for stored XSS. */
-class FileNameSourceAsSource extends Source {
-  FileNameSourceAsSource() { this instanceof FileNameSource }
+private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
+  QuoteGuard() { this = this }
 }
 
-/** An instance of user-controlled torrent information, considered as a flow source for stored XSS. */
-class UserControlledTorrentInfoAsSource extends Source {
-  UserControlledTorrentInfoAsSource() { this instanceof ParseTorrent::UserControlledTorrentInfo }
+private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard {
+  ContainsHtmlGuard() { this = this }
 }

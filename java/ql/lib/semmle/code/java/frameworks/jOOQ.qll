@@ -3,7 +3,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Methods annotated with this allow for generation of "plain SQL"

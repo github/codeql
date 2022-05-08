@@ -161,6 +161,12 @@ predicate clearsContent(Node n, Content c) {
 }
 
 /**
+ * Holds if the value that is being tracked is expected to be stored inside content `c`
+ * at node `n`.
+ */
+predicate expectsContent(Node n, ContentSet c) { none() }
+
+/**
  * Gets a representative (boxed) type for `t` for the purpose of pruning
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.

@@ -9,9 +9,12 @@ import javascript
  * Sources for cross-site scripting vulnerabilities through the DOM.
  */
 module XssThroughDom {
-  import Xss::XssThroughDom
+  private import Xss::Shared as Shared
   private import semmle.javascript.dataflow.InferredTypes
-  private import semmle.javascript.security.dataflow.Xss::DomBasedXss as DomBasedXss
+  private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
+
+  /** A data flow source for XSS through DOM vulnerabilities. */
+  abstract class Source extends Shared::Source { }
 
   /**
    * Gets an attribute name that could store user-controlled data.
@@ -134,32 +137,9 @@ module XssThroughDom {
   /** DEPRECATED: Alias for DomTextSource */
   deprecated class DOMTextSource = DomTextSource;
 
-  /**
-   * A test of form `typeof x === "something"`, preventing `x` from being a string in some cases.
-   *
-   * This sanitizer helps prune infeasible paths in type-overloaded functions.
-   */
-  class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
-    override EqualityTest astNode;
-    Expr operand;
-    boolean polarity;
-
-    TypeTestGuard() {
-      exists(TypeofTag tag | TaintTracking::isTypeofGuard(astNode, operand, tag) |
-        // typeof x === "string" sanitizes `x` when it evaluates to false
-        tag = "string" and
-        polarity = astNode.getPolarity().booleanNot()
-        or
-        // typeof x === "object" sanitizes `x` when it evaluates to true
-        tag != "string" and
-        polarity = astNode.getPolarity()
-      )
-    }
-
-    override predicate sanitizes(boolean outcome, Expr e) {
-      polarity = outcome and
-      e = operand
-    }
+  /** The `files` property of an `<input />` element */
+  class FilesSource extends Source {
+    FilesSource() { this = DOM::domValueRef().getAPropertyRead("files") }
   }
 
   /**

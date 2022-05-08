@@ -1,7 +1,6 @@
 /** Provides classes for modeling program variables. */
 
 private import codeql.ruby.AST
-private import codeql.Locations
 private import internal.AST
 private import internal.TreeSitter
 private import internal.Variable

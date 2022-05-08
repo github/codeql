@@ -109,32 +109,12 @@ abstract class Configuration extends DataFlow::Configuration {
   /** Holds if taint propagation into `node` is prohibited. */
   predicate isSanitizerIn(DataFlow::Node node) { none() }
 
-  /**
-   * Holds if taint propagation into `node` is prohibited when the flow state is
-   * `state`.
-   */
-  predicate isSanitizerIn(DataFlow::Node node, DataFlow::FlowState state) { none() }
-
-  final override predicate isBarrierIn(DataFlow::Node node, DataFlow::FlowState state) {
-    this.isSanitizerIn(node, state)
-  }
-
   final override predicate isBarrierIn(DataFlow::Node node) { this.isSanitizerIn(node) }
 
   /** Holds if taint propagation out of `node` is prohibited. */
   predicate isSanitizerOut(DataFlow::Node node) { none() }
 
   final override predicate isBarrierOut(DataFlow::Node node) { this.isSanitizerOut(node) }
-
-  /**
-   * Holds if taint propagation out of `node` is prohibited when the flow state is
-   * `state`.
-   */
-  predicate isSanitizerOut(DataFlow::Node node, DataFlow::FlowState state) { none() }
-
-  final override predicate isBarrierOut(DataFlow::Node node, DataFlow::FlowState state) {
-    this.isSanitizerOut(node, state)
-  }
 
   /** Holds if taint propagation through nodes guarded by `guard` is prohibited. */
   predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
@@ -181,7 +161,7 @@ abstract class Configuration extends DataFlow::Configuration {
     this.isAdditionalTaintStep(node1, state1, node2, state2)
   }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     (this.isSink(node) or this.isAdditionalTaintStep(node, _)) and
     defaultImplicitTaintRead(node, c)
   }

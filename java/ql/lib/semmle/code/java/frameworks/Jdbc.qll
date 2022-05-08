@@ -2,8 +2,7 @@
  * Provides classes and predicates for working with the Java JDBC API.
  */
 
-import semmle.code.java.Type
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /*--- Types ---*/
 /** The interface `java.sql.Connection`. */

@@ -1,6 +1,6 @@
 /** Definitions related to `java.util.stream`. */
 
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 private class StreamModel extends SummaryModelCsv {
   override predicate row(string s) {

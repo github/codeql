@@ -1,7 +1,7 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.FlowSteps
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSteps
 
 /**
  * The class `android.content.Intent`.

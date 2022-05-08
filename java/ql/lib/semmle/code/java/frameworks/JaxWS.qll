@@ -390,7 +390,7 @@ private class HttpHeadersModel extends SummaryModelCsv {
 }
 
 /**
- * Model MultivaluedMap, which extends Map<K, List<V>> and provides a few extra helper methods.
+ * Model MultivaluedMap, which extends `Map<K, List<V>>` and provides a few extra helper methods.
  */
 private class MultivaluedMapModel extends SummaryModelCsv {
   override predicate row(string row) {

@@ -5,14 +5,14 @@
 import java
 
 /** An interface for web requests in the Spring framework. */
-class SpringWebRequest extends Class {
+class SpringWebRequest extends Interface {
   SpringWebRequest() {
     this.hasQualifiedName("org.springframework.web.context.request", "WebRequest")
   }
 }
 
 /** An interface for web requests in the Spring framework. */
-class SpringNativeWebRequest extends Class {
+class SpringNativeWebRequest extends Interface {
   SpringNativeWebRequest() {
     this.hasQualifiedName("org.springframework.web.context.request", "NativeWebRequest")
   }

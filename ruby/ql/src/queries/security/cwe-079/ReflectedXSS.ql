@@ -15,7 +15,6 @@
 
 import ruby
 import codeql.ruby.security.ReflectedXSSQuery
-import codeql.ruby.DataFlow
 import DataFlow::PathGraph
 
 from ReflectedXss::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink

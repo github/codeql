@@ -144,7 +144,7 @@ private class SummarizedCallableDefaultClearsContent extends Impl::Public::Summa
   }
 
   // By default, we assume that all stores into arguments are definite
-  override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+  override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
     exists(SummaryComponentStack output, SummaryComponent target |
       this.propagatesFlow(_, output, _) and
       output.drop(_) =

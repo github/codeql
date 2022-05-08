@@ -24,7 +24,7 @@ module Public {
   class SummaryComponent extends TSummaryComponent {
     /** Gets a textual representation of this summary component. */
     string toString() {
-      exists(Content c | this = TContentSummaryComponent(c) and result = c.toString())
+      exists(ContentSet c | this = TContentSummaryComponent(c) and result = c.toString())
       or
       exists(ArgumentPosition pos |
         this = TParameterSummaryComponent(pos) and result = "parameter " + pos
@@ -41,7 +41,7 @@ module Public {
   /** Provides predicates for constructing summary components. */
   module SummaryComponent {
     /** Gets a summary component for content `c`. */
-    SummaryComponent content(Content c) { result = TContentSummaryComponent(c) }
+    SummaryComponent content(ContentSet c) { result = TContentSummaryComponent(c) }
 
     /** Gets a summary component for a parameter at position `pos`. */
     SummaryComponent parameter(ArgumentPosition pos) { result = TParameterSummaryComponent(pos) }
@@ -218,7 +218,7 @@ module Public {
      * arguments at position `pos` to this callable.
      */
     pragma[nomagic]
-    predicate clearsContent(ParameterPosition pos, Content content) { none() }
+    predicate clearsContent(ParameterPosition pos, ContentSet content) { none() }
   }
 }
 
@@ -231,7 +231,7 @@ module Private {
   import AccessPathSyntax
 
   newtype TSummaryComponent =
-    TContentSummaryComponent(Content c) or
+    TContentSummaryComponent(ContentSet c) or
     TParameterSummaryComponent(ArgumentPosition pos) or
     TArgumentSummaryComponent(ParameterPosition pos) or
     TReturnSummaryComponent(ReturnKind rk)
@@ -540,7 +540,7 @@ module Private {
     exists(SummarizedCallable c, SummaryComponentStack s, SummaryComponent head | head = s.head() |
       n = summaryNodeInputState(c, s) and
       (
-        exists(Content cont |
+        exists(ContentSet cont |
           head = TContentSummaryComponent(cont) and result = getContentType(cont)
         )
         or
@@ -554,7 +554,7 @@ module Private {
       or
       n = summaryNodeOutputState(c, s) and
       (
-        exists(Content cont |
+        exists(ContentSet cont |
           head = TContentSummaryComponent(cont) and result = getContentType(cont)
         )
         or
@@ -669,7 +669,7 @@ module Private {
      * Holds if there is a read step of content `c` from `pred` to `succ`, which
      * is synthesized from a flow summary.
      */
-    predicate summaryReadStep(Node pred, Content c, Node succ) {
+    predicate summaryReadStep(Node pred, ContentSet c, Node succ) {
       exists(SummarizedCallable sc, SummaryComponentStack s |
         pred = summaryNodeInputState(sc, s.drop(1)) and
         succ = summaryNodeInputState(sc, s) and
@@ -681,7 +681,7 @@ module Private {
      * Holds if there is a store step of content `c` from `pred` to `succ`, which
      * is synthesized from a flow summary.
      */
-    predicate summaryStoreStep(Node pred, Content c, Node succ) {
+    predicate summaryStoreStep(Node pred, ContentSet c, Node succ) {
       exists(SummarizedCallable sc, SummaryComponentStack s |
         pred = summaryNodeOutputState(sc, s) and
         succ = summaryNodeOutputState(sc, s.drop(1)) and
@@ -708,7 +708,7 @@ module Private {
      * `a` on line 2 to the post-update node for `a` on that line (via an intermediate
      * node where field `b` is cleared).
      */
-    predicate summaryClearsContent(Node n, Content c) {
+    predicate summaryClearsContent(Node n, ContentSet c) {
       exists(SummarizedCallable sc, ParameterPosition pos |
         n = summaryNode(sc, TSummaryNodeClearsContentState(pos, true)) and
         sc.clearsContent(pos, c)
@@ -730,7 +730,8 @@ module Private {
      * In such cases, it is important to prevent use-use flow out of
      * `arg` (see comment for `summaryClearsContent`).
      */
-    predicate summaryClearsContentArg(ArgNode arg, Content c) {
+    pragma[nomagic]
+    predicate summaryClearsContentArg(ArgNode arg, ContentSet c) {
       exists(DataFlowCall call, SummarizedCallable sc, ParameterPosition ppos |
         argumentPositionMatch(call, arg, ppos) and
         viableParam(call, sc, ppos, _) and
@@ -775,7 +776,7 @@ module Private {
      * NOTE: This step should not be used in global data-flow/taint-tracking, but may
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
-    predicate summaryGetterStep(ArgNode arg, Content c, Node out) {
+    predicate summaryGetterStep(ArgNode arg, ContentSet c, Node out) {
       exists(ReturnKindExt rk, Node mid, ReturnNodeExt ret |
         summaryReadStep(summaryArgParam(arg, rk, out), c, mid) and
         summaryLocalStep(mid, ret, _) and
@@ -790,7 +791,7 @@ module Private {
      * NOTE: This step should not be used in global data-flow/taint-tracking, but may
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
-    predicate summarySetterStep(ArgNode arg, Content c, Node out) {
+    predicate summarySetterStep(ArgNode arg, ContentSet c, Node out) {
       exists(ReturnKindExt rk, Node mid, ReturnNodeExt ret |
         summaryLocalStep(summaryArgParam(arg, rk, out), mid, _) and
         summaryStoreStep(mid, c, ret) and
@@ -1130,7 +1131,7 @@ module Private {
         if preservesValue = true then value = "value" else value = "taint"
       )
       or
-      exists(Content c |
+      exists(ContentSet c |
         Private::Steps::summaryReadStep(a.asNode(), c, b.asNode()) and
         value = "read (" + c + ")"
         or

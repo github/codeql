@@ -13,6 +13,7 @@
 import ruby
 import codeql.ruby.DataFlow
 import codeql.ruby.security.ServerSideRequestForgeryQuery
+import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)

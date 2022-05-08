@@ -12,6 +12,9 @@
 
 import java
 import UnsafeUrlForward
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking
+import experimental.semmle.code.java.frameworks.Jsf
 import experimental.semmle.code.java.PathSanitizer
 import DataFlow::PathGraph
 
@@ -40,6 +43,20 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
 
   override DataFlow::FlowFeature getAFeature() {
     result instanceof DataFlow::FeatureHasSourceCallContext
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node prev, DataFlow::Node succ) {
+    exists(MethodAccess ma |
+      (
+        ma.getMethod() instanceof GetServletResourceMethod or
+        ma.getMethod() instanceof GetFacesResourceMethod or
+        ma.getMethod() instanceof GetClassResourceMethod or
+        ma.getMethod() instanceof GetClassLoaderResourceMethod or
+        ma.getMethod() instanceof GetWildflyResourceMethod
+      ) and
+      ma.getArgument(0) = prev.asExpr() and
+      ma = succ.asExpr()
+    )
   }
 }
 

@@ -11,7 +11,6 @@
 
 import csharp
 import DataFlow::PathGraph
-import semmle.code.csharp.dataflow.TaintTracking
 
 class UnsafeYearCreationFromArithmeticConfiguration extends TaintTracking::Configuration {
   UnsafeYearCreationFromArithmeticConfiguration() {
