@@ -16,7 +16,7 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch
 module Logger {
   /** A reference to a `Logger` instance */
   private DataFlow::Node loggerInstance() {
-    result = API::getTopLevelMember("Logger").getAnInstantiation()
+    result instanceof LoggerInstantiation
     or
     exists(DataFlow::Node inst |
       inst = loggerInstance() and
@@ -34,17 +34,21 @@ module Logger {
   }
 
   /**
-   * An instance of a logger that responds to the std lib logging methods.
+   * An instantiation of a logger that responds to the std lib logging methods.
    * This can be extended to recognise additional instances that conform to the
    * same interface.
    */
-  abstract class LoggerInstance extends DataFlow::Node { }
+  abstract class LoggerInstantiation extends DataFlow::Node { }
 
   /**
-   * An instance of the std lib `Logger` class.
+   * An instantiation of the std lib `Logger` class.
    */
-  private class StdlibLoggerInstance extends LoggerInstance {
-    StdlibLoggerInstance() { this = loggerInstance() }
+  private class StdlibLoggerInstantiation extends LoggerInstantiation {
+    StdlibLoggerInstantiation() { this = API::getTopLevelMember("Logger").getAnInstantiation() }
+  }
+
+  private class LoggerInstance extends DataFlow::Node {
+    LoggerInstance() { this = loggerInstance() }
   }
 
   /**

@@ -130,8 +130,8 @@ module ActiveSupport {
    * `ActiveSupport::Logger`
    */
   module Logger {
-    private class ActiveSupportLoggerInstance extends StdlibLogger::LoggerInstance {
-      ActiveSupportLoggerInstance() {
+    private class ActiveSupportLoggerInstantiation extends StdlibLogger::LoggerInstantiation {
+      ActiveSupportLoggerInstantiation() {
         this =
           API::getTopLevelMember("ActiveSupport")
               .getMember(["Logger", "TaggedLogging"])
