@@ -3591,8 +3591,8 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/xml.dom.minidom.html#xml.dom.minidom.parse
    * - https://docs.python.org/3/library/xml.dom.pulldom.html#xml.dom.pulldom.parse
    */
-  private class XMLDomParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
-    XMLDomParsing() {
+  private class XmlDomParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
+    XmlDomParsing() {
       this =
         API::moduleImport("xml")
             .getMember("dom")
@@ -3636,8 +3636,8 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/xml.dom.minidom.html#xml.dom.minidom.parse
    * - https://docs.python.org/3/library/xml.dom.pulldom.html#xml.dom.pulldom.parse
    */
-  private class FileAccessFromXMLDomParsing extends XMLDomParsing, FileSystemAccess::Range {
-    FileAccessFromXMLDomParsing() {
+  private class FileAccessFromXmlDomParsing extends XmlDomParsing, FileSystemAccess::Range {
+    FileAccessFromXmlDomParsing() {
       this =
         API::moduleImport("xml")
             .getMember("dom")
