@@ -25,7 +25,7 @@ struct {{name}}{{#final}} : Binding<{{name}}Tag>{{#bases}}, {{ref.name}}{{/bases
   {{/final}}
 
  protected:
-  void emit({{^final}}TrapLabel<{{name}}Tag> id, {{/final}}std::ostream& out) const {
+  void emit({{^final}}{{trap_affix}}Label<{{name}}Tag> id, {{/final}}std::ostream& out) const {
     {{#trap_name}}
     out << {{.}}{{trap_affix}}{id{{#single_fields}}, {{name}}{{/single_fields}}} << '\n';
     {{/trap_name}}
