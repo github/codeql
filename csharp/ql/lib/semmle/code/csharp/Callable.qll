@@ -460,6 +460,11 @@ class Operator extends Callable, Member, Attributable, @operator {
   override string toString() { result = Callable.super.toString() }
 
   override Parameter getRawParameter(int i) { result = this.getParameter(i) }
+
+  override predicate hasQualifiedName(string qualifier, string name) {
+    super.hasQualifiedName(qualifier, _) and
+    name = this.getFunctionName()
+  }
 }
 
 /** A clone method on a record. */

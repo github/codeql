@@ -1,5 +1,6 @@
 consistencyIssue
 taintFlow
+| paramDecorator.ts:6:54:6:54 | x | paramDecorator.ts:7:10:7:10 | x |
 | test.js:5:30:5:37 | source() | test.js:5:8:5:38 | testlib ... urce()) |
 | test.js:6:22:6:29 | source() | test.js:6:8:6:30 | preserv ... urce()) |
 | test.js:7:41:7:48 | source() | test.js:7:8:7:49 | require ... urce()) |
@@ -35,6 +36,25 @@ taintFlow
 | test.js:97:17:97:24 | source() | test.js:97:17:97:24 | source() |
 | test.js:102:16:102:34 | testlib.getSource() | test.js:103:8:103:13 | source |
 | test.js:102:16:102:34 | testlib.getSource() | test.js:104:8:104:24 | source.continue() |
+| test.js:111:12:111:19 | source() | test.js:111:12:111:19 | source() |
+| test.js:113:17:113:17 | x | test.js:114:10:114:10 | x |
+| test.js:132:10:132:25 | this.fieldSource | test.js:132:10:132:25 | this.fieldSource |
+| test.js:133:10:133:37 | OtherCl ... dSource | test.js:133:10:133:37 | OtherCl ... dSource |
+| test.js:134:22:134:29 | source() | test.js:134:22:134:29 | source() |
+| test.js:135:34:135:41 | source() | test.js:135:34:135:41 | source() |
+| test.js:144:16:144:23 | source() | test.js:144:16:144:23 | source() |
+| test.js:147:29:147:36 | source() | test.js:147:29:147:36 | source() |
+| test.js:150:19:150:19 | x | test.js:151:10:151:10 | x |
+| test.js:152:12:152:19 | source() | test.js:152:12:152:19 | source() |
+| test.js:156:32:156:32 | x | test.js:157:10:157:10 | x |
+| test.js:158:12:158:19 | source() | test.js:158:12:158:19 | source() |
+| test.js:162:20:162:20 | x | test.js:163:10:163:10 | x |
+| test.js:164:12:164:19 | source() | test.js:164:12:164:19 | source() |
+| test.js:172:12:172:19 | source() | test.js:172:12:172:19 | source() |
+| test.js:176:23:176:23 | x | test.js:177:10:177:10 | x |
+| test.js:182:12:182:19 | source() | test.js:182:12:182:19 | source() |
+| test.js:187:31:187:31 | x | test.js:189:10:189:10 | x |
+| test.js:203:32:203:39 | source() | test.js:203:32:203:39 | source() |
 isSink
 | test.js:54:18:54:25 | source() | test-sink |
 | test.js:55:22:55:29 | source() | test-sink |
@@ -81,6 +101,18 @@ isSink
 | test.js:95:17:95:24 | source() | test-sink |
 | test.js:96:17:96:24 | source() | test-sink |
 | test.js:97:17:97:24 | source() | test-sink |
+| test.js:111:12:111:19 | source() | test-sink |
+| test.js:134:22:134:29 | source() | test-sink |
+| test.js:135:34:135:41 | source() | test-sink |
+| test.js:144:16:144:23 | source() | test-sink |
+| test.js:147:29:147:36 | source() | test-sink |
+| test.js:152:12:152:19 | source() | test-sink |
+| test.js:158:12:158:19 | source() | test-sink |
+| test.js:164:12:164:19 | source() | test-sink |
+| test.js:172:12:172:19 | source() | test-sink |
+| test.js:182:12:182:19 | source() | test-sink |
+| test.js:196:12:196:29 | this._wrappedField | test-sink |
+| test.js:203:32:203:39 | source() | test-sink |
 syntaxErrors
 | Member[foo |
 | Member[foo] .Member[bar] |

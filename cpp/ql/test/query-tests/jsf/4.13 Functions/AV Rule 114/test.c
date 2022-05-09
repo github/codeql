@@ -105,3 +105,8 @@ _Noreturn void f15();
 int f16() {
     f15(); // GOOD
 }
+
+int f17() {
+    if (__builtin_expect(1, 0))
+        __builtin_unreachable(); // GOOD
+}

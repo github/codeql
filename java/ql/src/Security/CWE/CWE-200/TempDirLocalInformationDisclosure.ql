@@ -3,6 +3,7 @@
  * @description Writing information without explicit permissions to a shared temporary directory may disclose it to other users.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.5
  * @precision medium
  * @id java/local-temp-file-or-directory-information-disclosure
  * @tags security
@@ -104,23 +105,21 @@ private class FileCreateTempFileSink extends FileCreationSink {
 }
 
 /**
- * A guard that holds when the program is definitely running under some version of Windows.
+ * A sanitizer that holds when the program is definitely running under some version of Windows.
  */
-abstract private class WindowsOsBarrierGuard extends DataFlow::BarrierGuard { }
+abstract private class WindowsOsSanitizer extends DataFlow::Node { }
 
-private class IsNotUnixBarrierGuard extends WindowsOsBarrierGuard instanceof IsUnixGuard {
-  override predicate checks(Expr e, boolean branch) {
-    this.controls(e.getBasicBlock(), branch.booleanNot())
-  }
+private class IsNotUnixSanitizer extends WindowsOsSanitizer {
+  IsNotUnixSanitizer() { any(IsUnixGuard guard).controls(this.asExpr().getBasicBlock(), false) }
 }
 
-private class IsWindowsBarrierGuard extends WindowsOsBarrierGuard instanceof IsWindowsGuard {
-  override predicate checks(Expr e, boolean branch) { this.controls(e.getBasicBlock(), branch) }
+private class IsWindowsSanitizer extends WindowsOsSanitizer {
+  IsWindowsSanitizer() { any(IsWindowsGuard guard).controls(this.asExpr().getBasicBlock(), true) }
 }
 
-private class IsSpecificWindowsBarrierGuard extends WindowsOsBarrierGuard instanceof IsSpecificWindowsVariant {
-  override predicate checks(Expr e, boolean branch) {
-    branch = true and this.controls(e.getBasicBlock(), branch)
+private class IsSpecificWindowsSanitizer extends WindowsOsSanitizer {
+  IsSpecificWindowsSanitizer() {
+    any(IsSpecificWindowsVariant guard).controls(this.asExpr().getBasicBlock(), true)
   }
 }
 
@@ -135,16 +134,6 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
     source.asExpr() instanceof ExprSystemGetPropertyTempDirTainted
   }
 
-  /**
-   * Find dataflow from the temp directory system property to the `File` constructor.
-   * Examples:
-   *  - `new File(System.getProperty("java.io.tmpdir"))`
-   *  - `new File(new File(System.getProperty("java.io.tmpdir")), "/child")`
-   */
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    isAdditionalFileTaintStep(node1, node2)
-  }
-
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof FileCreationSink and
     not any(TempDirSystemGetPropertyDirectlyToMkdirConfig config).hasFlowTo(sink)
@@ -154,10 +143,8 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
     exists(FilesSanitizingCreationMethodAccess sanitisingMethodAccess |
       sanitizer.asExpr() = sanitisingMethodAccess.getArgument(0)
     )
-  }
-
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof WindowsOsBarrierGuard
+    or
+    sanitizer instanceof WindowsOsSanitizer
   }
 }
 

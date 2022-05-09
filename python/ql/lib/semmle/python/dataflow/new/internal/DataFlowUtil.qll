@@ -2,6 +2,7 @@
  * Contains utility functions for writing data flow queries
  */
 
+private import python
 private import DataFlowPrivate
 import DataFlowPublic
 

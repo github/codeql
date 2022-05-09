@@ -5,6 +5,9 @@
  * there is a def/use feature reachable from the root along the given path, and its
  * associated data-flow node must start on the same line as the comment.
  *
+ * We also support negative assertions of the form `MISSING: def <path>` or `MISSING: use <path>`, which assert
+ * that there _isn't_ a node with the given path on the same line.
+ *
  * The query only produces output for failed assertions, meaning that it should have no output
  * under normal circumstances.
  *

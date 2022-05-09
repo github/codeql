@@ -53,7 +53,7 @@ import javascript
  *
  * /**
  *  * @param {!Object} obj
- *  * @return {!Array<string>}
+ *  * @return {!Array&lt;string&gt;}
  *  *&#47;
  * Object.keys = function(obj) {};
  *
@@ -109,7 +109,7 @@ class ExternalTypedef extends ExternalDecl, VariableDeclarator {
  *
  * /**
  *  * @param {!Object} obj
- *  * @return {!Array<string>}
+ *  * @return {!Array&lt;string&gt;}
  *  *&#47;
  * Object.keys = function(obj) {};
  *
@@ -214,7 +214,7 @@ class ExternalGlobalVarDecl extends ExternalGlobalDecl, VariableDeclarator {
  * <pre>
  * /**
  *  * @param {!Object} obj
- *  * @return {!Array<string>}
+ *  * @return {!Array&lt;string&gt;}
  *  *&#47;
  * Object.keys = function(obj) {};
  *
@@ -273,7 +273,7 @@ class ExternalMemberDecl extends ExternalVarDecl, ExprStmt {
  * <pre>
  * /**
  *  * @param {!Object} obj
- *  * @return {!Array<string>}
+ *  * @return {!Array&lt;string&gt;}
  *  *&#47;
  * Object.keys = function(obj) {};
  *

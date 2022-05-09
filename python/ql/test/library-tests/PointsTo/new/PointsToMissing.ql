@@ -1,7 +1,6 @@
 import python
 import Util
 import semmle.python.pointsto.PointsTo
-import semmle.python.objects.ObjectInternal
 
 /* This test should return _no_ results. */
 predicate relevant_node(ControlFlowNode n) {

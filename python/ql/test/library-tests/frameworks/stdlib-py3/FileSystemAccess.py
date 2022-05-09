@@ -21,3 +21,15 @@ o(name)  # $ getAPathArgument=name
 
 wb = p.write_bytes
 wb(b"hello")  # $ getAPathArgument=p fileWriteData=b"hello"
+
+p.link_to("target") # $ getAPathArgument=p getAPathArgument="target"
+p.link_to(target="target") # $ getAPathArgument=p getAPathArgument="target"
+
+p.samefile("other_path") # $ getAPathArgument=p getAPathArgument="other_path"
+p.samefile(other_path="other_path") # $ getAPathArgument=p getAPathArgument="other_path"
+
+p.rename("target") # $ getAPathArgument=p getAPathArgument="target"
+p.rename(target="target") # $ getAPathArgument=p getAPathArgument="target"
+
+p.replace("target") # $ getAPathArgument=p getAPathArgument="target"
+p.replace(target="target") # $ getAPathArgument=p getAPathArgument="target"

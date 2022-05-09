@@ -51,6 +51,7 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/tainttracking5/TaintTrackingImpl.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
+    "java/ql/lib/semmle/code/java/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking1/TaintTrackingImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking2/TaintTrackingImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking3/TaintTrackingImpl.qll",
@@ -383,7 +384,8 @@
     "csharp/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "java/ql/test/TestUtilities/InlineExpectationsTest.qll",
     "python/ql/test/TestUtilities/InlineExpectationsTest.qll",
-    "ruby/ql/test/TestUtilities/InlineExpectationsTest.qll"
+    "ruby/ql/test/TestUtilities/InlineExpectationsTest.qll",
+    "ql/ql/test/TestUtilities/InlineExpectationsTest.qll"
   ],
   "C++ ExternalAPIs": [
     "cpp/ql/src/Security/CWE/CWE-020/ExternalAPIs.qll",
@@ -514,6 +516,10 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/AccessPathSyntax.qll",
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/AccessPathSyntax.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/AccessPathSyntax.qll"
+  ],
+  "IncompleteUrlSubstringSanitization": [
+    "javascript/ql/src/Security/CWE-020/IncompleteUrlSubstringSanitization.qll",
+    "ruby/ql/src/queries/security/cwe-020/IncompleteUrlSubstringSanitization.qll"
   ],
   "Concepts Python/Ruby/JS": [
     "python/ql/lib/semmle/python/internal/ConceptsShared.qll",

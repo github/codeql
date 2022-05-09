@@ -10,7 +10,6 @@ private import TranslatedCondition
 private import TranslatedFunction
 private import TranslatedStmt
 private import IRConstruction
-private import experimental.ir.Util
 private import experimental.ir.internal.IRCSharpLanguage as Language
 private import desugar.Foreach
 private import desugar.Delegate

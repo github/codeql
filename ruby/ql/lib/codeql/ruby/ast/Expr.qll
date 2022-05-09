@@ -1,6 +1,5 @@
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
-private import codeql.ruby.ast.Constant
 private import internal.AST
 private import internal.Constant
 private import internal.Expr
@@ -454,11 +453,11 @@ class StringConcatenation extends Expr, TStringConcatenation {
    */
   final string getConcatenatedValueText() {
     forall(StringLiteral c | c = this.getString(_) |
-      exists(c.getConstantValue().getStringOrSymbol())
+      exists(c.getConstantValue().getStringlikeValue())
     ) and
     result =
       concat(string valueText, int i |
-        valueText = this.getString(i).getConstantValue().getStringOrSymbol()
+        valueText = this.getString(i).getConstantValue().getStringlikeValue()
       |
         valueText order by i
       )

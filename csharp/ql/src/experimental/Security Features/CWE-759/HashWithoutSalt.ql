@@ -10,7 +10,6 @@
 
 import csharp
 import semmle.code.csharp.dataflow.DataFlow2
-import semmle.code.csharp.dataflow.TaintTracking
 import semmle.code.csharp.dataflow.TaintTracking2
 import DataFlow::PathGraph
 

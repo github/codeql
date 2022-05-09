@@ -326,7 +326,7 @@ private module Cached {
   predicate jumpStepCached(Node node1, Node node2) { jumpStep(node1, node2) }
 
   cached
-  predicate clearsContentCached(Node n, Content c) { clearsContent(n, c) }
+  predicate clearsContentCached(Node n, ContentSet c) { clearsContent(n, c) }
 
   cached
   predicate isUnreachableInCallCached(Node n, DataFlowCall call) { isUnreachableInCall(n, call) }
@@ -373,7 +373,7 @@ private module Cached {
     // For reads, `x.f`, we want to check that the tracked type after the read (which
     // is obtained by popping the head of the access path stack) is compatible with
     // the type of `x.f`.
-    read(_, _, n)
+    readSet(_, _, n)
   }
 
   cached
@@ -469,7 +469,7 @@ private module Cached {
         // read
         exists(Node mid |
           parameterValueFlowCand(p, mid, false) and
-          read(mid, _, node) and
+          readSet(mid, _, node) and
           read = true
         )
         or
@@ -657,8 +657,10 @@ private module Cached {
        * Holds if `arg` flows to `out` through a call using only
        * value-preserving steps and a single read step, not taking call
        * contexts into account, thus representing a getter-step.
+       *
+       * This predicate is exposed for testing only.
        */
-      predicate getterStep(ArgNode arg, Content c, Node out) {
+      predicate getterStep(ArgNode arg, ContentSet c, Node out) {
         argumentValueFlowsThrough(arg, TReadStepTypesSome(_, c, _), out)
       }
 
@@ -781,27 +783,29 @@ private module Cached {
     parameterValueFlow(p, n.getPreUpdateNode(), TReadStepTypesNone())
   }
 
+  cached
+  predicate readSet(Node node1, ContentSet c, Node node2) { readStep(node1, c, node2) }
+
   private predicate store(
     Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
   ) {
-    storeStep(node1, c, node2) and
-    contentType = getNodeDataFlowType(node1) and
-    containerType = getNodeDataFlowType(node2)
-    or
-    exists(Node n1, Node n2 |
-      n1 = node1.(PostUpdateNode).getPreUpdateNode() and
-      n2 = node2.(PostUpdateNode).getPreUpdateNode()
-    |
-      argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, c, contentType), n1)
+    exists(ContentSet cs | c = cs.getAStoreContent() |
+      storeStep(node1, cs, node2) and
+      contentType = getNodeDataFlowType(node1) and
+      containerType = getNodeDataFlowType(node2)
       or
-      read(n2, c, n1) and
-      contentType = getNodeDataFlowType(n1) and
-      containerType = getNodeDataFlowType(n2)
+      exists(Node n1, Node n2 |
+        n1 = node1.(PostUpdateNode).getPreUpdateNode() and
+        n2 = node2.(PostUpdateNode).getPreUpdateNode()
+      |
+        argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, cs, contentType), n1)
+        or
+        readSet(n2, cs, n1) and
+        contentType = getNodeDataFlowType(n1) and
+        containerType = getNodeDataFlowType(n2)
+      )
     )
   }
-
-  cached
-  predicate read(Node node1, Content c, Node node2) { readStep(node1, c, node2) }
 
   /**
    * Holds if data can flow from `node1` to `node2` via a direct assignment to
@@ -932,16 +936,16 @@ class CastingNode extends Node {
 }
 
 private predicate readStepWithTypes(
-  Node n1, DataFlowType container, Content c, Node n2, DataFlowType content
+  Node n1, DataFlowType container, ContentSet c, Node n2, DataFlowType content
 ) {
-  read(n1, c, n2) and
+  readSet(n1, c, n2) and
   container = getNodeDataFlowType(n1) and
   content = getNodeDataFlowType(n2)
 }
 
 private newtype TReadStepTypesOption =
   TReadStepTypesNone() or
-  TReadStepTypesSome(DataFlowType container, Content c, DataFlowType content) {
+  TReadStepTypesSome(DataFlowType container, ContentSet c, DataFlowType content) {
     readStepWithTypes(_, container, c, _, content)
   }
 
@@ -950,7 +954,7 @@ private class ReadStepTypesOption extends TReadStepTypesOption {
 
   DataFlowType getContainerType() { this = TReadStepTypesSome(result, _, _) }
 
-  Content getContent() { this = TReadStepTypesSome(_, result, _) }
+  ContentSet getContent() { this = TReadStepTypesSome(_, result, _) }
 
   DataFlowType getContentType() { this = TReadStepTypesSome(_, _, result) }
 
@@ -1325,8 +1329,6 @@ abstract class AccessPathFront extends TAccessPathFront {
   abstract boolean toBoolNonEmpty();
 
   TypedContent getHead() { this = TFrontHead(result) }
-
-  predicate isClearedAt(Node n) { clearsContentCached(n, this.getHead().getContent()) }
 }
 
 class AccessPathFrontNil extends AccessPathFront, TFrontNil {

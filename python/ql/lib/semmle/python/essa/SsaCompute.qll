@@ -90,6 +90,7 @@
  */
 
 import python
+private import semmle.python.internal.CachedStages
 
 cached
 private module SsaComputeImpl {
@@ -308,6 +309,7 @@ private module SsaComputeImpl {
      */
     cached
     predicate reachesEndOfBlock(SsaSourceVariable v, BasicBlock defbb, int defindex, BasicBlock b) {
+      Stages::AST::ref() and
       Liveness::liveAtExit(v, b) and
       (
         defbb = b and
@@ -494,8 +496,8 @@ private module SsaComputeImpl {
     predicate firstUse(EssaDefinition def, ControlFlowNode use) {
       exists(SsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
         adjacentVarRefs(v, b1, i1, b2, i2) and
-        definesAt(def, v, b1, i1) and
-        variableSourceUse(v, use, b2, i2)
+        definesAt(def, pragma[only_bind_into](v), b1, i1) and
+        variableSourceUse(pragma[only_bind_into](v), use, b2, i2)
       )
       or
       exists(

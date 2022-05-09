@@ -1,5 +1,4 @@
 import csharp
-import semmle.code.csharp.Comments
 
 /**
  * A class representing line comments in C# used by the InlineExpectations core code

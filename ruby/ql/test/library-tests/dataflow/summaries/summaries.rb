@@ -51,6 +51,12 @@ end
 sink(Foo.namedArg(foo: tainted)) # $ hasTaintFlow=tainted
 sink(Foo.namedArg(tainted))
 
+sink(Foo.anyArg(foo: tainted)) # $ hasTaintFlow=tainted
+sink(Foo.anyArg(tainted)) # $ hasTaintFlow=tainted
+
+sink(Foo.anyPositionFromOne(tainted))
+sink(Foo.anyPositionFromOne(0, tainted)) # $ hasTaintFlow=tainted
+
 Foo.intoNamedCallback(tainted, foo: ->(x) {
   sink(x) # $ hasTaintFlow=tainted
 })

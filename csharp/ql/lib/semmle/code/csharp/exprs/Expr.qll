@@ -15,7 +15,6 @@ import Dynamic
 import Literal
 import LogicalOperation
 import semmle.code.csharp.controlflow.ControlFlowElement
-import semmle.code.csharp.Callable
 import semmle.code.csharp.Location
 import semmle.code.csharp.Stmt
 import semmle.code.csharp.Type

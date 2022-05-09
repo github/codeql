@@ -44,7 +44,7 @@ private string asSummaryModel(TargetApi api, string input, string output, string
   result =
     asPartialModel(api) + input + ";" //
       + output + ";" //
-      + kind
+      + "generated:" + kind
 }
 
 /**
@@ -68,7 +68,7 @@ private string asTaintModel(TargetApi api, string input, string output) {
  */
 bindingset[input, kind]
 private string asSinkModel(TargetApi api, string input, string kind) {
-  result = asPartialModel(api) + input + ";" + kind
+  result = asPartialModel(api) + input + ";" + "generated:" + kind
 }
 
 /**
@@ -76,7 +76,7 @@ private string asSinkModel(TargetApi api, string input, string kind) {
  */
 bindingset[output, kind]
 private string asSourceModel(TargetApi api, string output, string kind) {
-  result = asPartialModel(api) + output + ";" + kind
+  result = asPartialModel(api) + output + ";" + "generated:" + kind
 }
 
 /**

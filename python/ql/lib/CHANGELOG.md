@@ -1,3 +1,48 @@
+## 0.1.0
+
+### Breaking Changes
+
+* The recently added flow-state versions of `isBarrierIn`, `isBarrierOut`, `isSanitizerIn`, and `isSanitizerOut` in the data flow and taint tracking libraries have been removed.
+
+### Deprecated APIs
+
+* Queries importing a data-flow configuration from `semmle.python.security.dataflow`
+  should ensure that the imported file ends with `Query`, and only import its top-level
+  module. For example, a query that used `CommandInjection::Configuration` from
+  `semmle.python.security.dataflow.CommandInjection` should from now use `Configuration`
+  from `semmle.python.security.dataflow.CommandInjectionQuery` instead.
+
+### Major Analysis Improvements
+
+* Added data-flow for Django ORM models that are saved in a database (no `models.ForeignKey` support).
+
+### Minor Analysis Improvements
+
+* Improved modeling of Flask `Response` objects, so passing a response body with the keyword argument `response` is now recognized.
+
+## 0.0.13
+
+## 0.0.12
+
+### Breaking Changes
+
+* The flow state variants of `isBarrier` and `isAdditionalFlowStep` are no longer exposed in the taint tracking library. The `isSanitizer` and `isAdditionalTaintStep` predicates should be used instead.
+
+### Deprecated APIs
+
+* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+* Some modules that started with a lowercase letter have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### New Features
+
+* The data flow and taint tracking libraries have been extended with versions of `isBarrierIn`, `isBarrierOut`, and `isBarrierGuard`, respectively `isSanitizerIn`, `isSanitizerOut`, and `isSanitizerGuard`, that support flow states.
+
+### Minor Analysis Improvements
+
+* All deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+
 ## 0.0.11
 
 ### Minor Analysis Improvements

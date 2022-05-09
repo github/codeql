@@ -21,6 +21,10 @@ Python:
 Ruby:
   - ruby/**/*
   - change-notes/**/*ruby*
+  
+Swift:
+  - swift/**/*
+  - change-notes/**/*swift*
 
 documentation:
   - "**/*.qhelp"

@@ -4,12 +4,18 @@
  * It must export the following members:
  * ```ql
  * class Unit // a unit type
+ * module AccessPathSyntax // a re-export of the AccessPathSyntax module
+ * class InvokeNode // a type representing an invocation connected to the API graph
  * module API // the API graph module
  * predicate isPackageUsed(string package)
  * API::Node getExtraNodeFromPath(string package, string type, string path, int n)
  * API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token)
- * API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathToken token)
- * predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPathToken token)
+ * API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token)
+ * predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathToken token)
+ * InvokeNode getAnInvocationOf(API::Node node)
+ * predicate isExtraValidTokenNameInIdentifyingAccessPath(string name)
+ * predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name)
+ * predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument)
  * ```
  */
 
@@ -124,6 +130,15 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   token.getName() = "Parameter" and
   token.getAnArgument() = "this" and
   result = node.getReceiver()
+  or
+  token.getName() = "DecoratedClass" and
+  result = node.getADecoratedClass()
+  or
+  token.getName() = "DecoratedMember" and
+  result = node.getADecoratedMember()
+  or
+  token.getName() = "DecoratedParameter" and
+  result = node.getADecoratedParameter()
 }
 
 /**
@@ -210,7 +225,11 @@ InvokeNode getAnInvocationOf(API::Node node) { result = node.getAnInvocation() }
  */
 bindingset[name]
 predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
-  name = ["Member", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call"]
+  name =
+    [
+      "Member", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
+      "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+    ]
 }
 
 /**
@@ -218,7 +237,11 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
  * in an identifying access path.
  */
 predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
-  name = ["Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call"]
+  name =
+    [
+      "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
+      "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+    ]
 }
 
 /**

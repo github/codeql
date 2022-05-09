@@ -1,10 +1,4 @@
-/**
- * Provides a taint-tracking configuration for "Clear-text logging of sensitive information".
- *
- * Note, for performance reasons: only import this file if
- * `CleartextLogging::Configuration` is needed, otherwise
- * `CleartextLoggingCustomizations` should be imported instead.
- */
+/** DEPRECATED. Import `CleartextLoggingQuery` instead. */
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
@@ -14,26 +8,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.dataflow.new.SensitiveDataSources
 
-/**
- * Provides a taint-tracking configuration for detecting "Clear-text logging of sensitive information".
- */
-module CleartextLogging {
-  import CleartextLoggingCustomizations::CleartextLogging
-
-  /**
-   * A taint-tracking configuration for detecting "Clear-text logging of sensitive information".
-   */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "CleartextLogging" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node)
-      or
-      node instanceof Sanitizer
-    }
-  }
+/** DEPRECATED. Import `CleartextLoggingQuery` instead. */
+deprecated module CleartextLogging {
+  import CleartextLoggingQuery // ignore-query-import
 }
