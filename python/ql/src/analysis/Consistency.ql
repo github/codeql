@@ -194,7 +194,7 @@ predicate function_object_consistency(string clsname, string problem, string wha
   exists(FunctionObject func | clsname = func.getAQlClass() |
     what = func.getName() and
     (
-      count(func.descriptiveString()) = 0 and problem = "no descriptiveString()"
+      not exists(func.descriptiveString()) and problem = "no descriptiveString()"
       or
       exists(int c | c = strictcount(func.descriptiveString()) and c > 1 |
         problem = c + "descriptiveString()s"
