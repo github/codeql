@@ -7,6 +7,9 @@ from swift.codegen.lib import paths
 from swift.codegen.lib import render
 
 
+generator = "test/foogen"
+
+
 @pytest.fixture
 def pystache_renderer_cls():
     with mock.patch("pystache.Renderer") as ret:
@@ -22,7 +25,7 @@ def pystache_renderer(pystache_renderer_cls):
 
 @pytest.fixture
 def sut(pystache_renderer):
-    return render.Renderer()
+    return render.Renderer(generator)
 
 
 def test_constructor(pystache_renderer_cls, sut):
@@ -40,7 +43,7 @@ def test_render(pystache_renderer, sut):
     with mock.patch("builtins.open", mock.mock_open()) as output_stream:
         sut.render(data, output)
     assert pystache_renderer.mock_calls == [
-        mock.call.render_name(data.template, data, generator=paths.exe_file),
+        mock.call.render_name(data.template, data, generator=generator),
     ]
     assert output_stream.mock_calls == [
         mock.call(output, 'w'),

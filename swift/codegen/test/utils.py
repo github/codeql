@@ -18,7 +18,7 @@ def write(out, contents=""):
 
 @pytest.fixture
 def renderer():
-    return mock.Mock(spec=render.Renderer())
+    return mock.Mock(spec=render.Renderer(""))
 
 
 @pytest.fixture
