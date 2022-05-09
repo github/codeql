@@ -26,12 +26,12 @@ struct {{name}}{{#final}} : Binding<{{name}}Tag>{{#bases}}, {{ref.name}}{{/bases
 
  protected:
   void emit({{^final}}TrapLabel<{{name}}Tag> id, {{/final}}std::ostream& out) const {
-    {{#bases}}
-    {{ref.name}}::emit(id, out);
-    {{/bases}}
     {{#trap_name}}
     out << {{.}}{{trap_affix}}{id{{#single_fields}}, {{name}}{{/single_fields}}} << '\n';
     {{/trap_name}}
+    {{#bases}}
+    {{ref.name}}::emit(id, out);
+    {{/bases}}
     {{#fields}}
     {{#is_optional}}
     {{^is_repeated}}
