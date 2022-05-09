@@ -18,9 +18,10 @@ log = logging.getLogger(__name__)
 class Renderer:
     """ Template renderer using mustache templates in the `templates` directory """
 
-    def __init__(self):
+    def __init__(self, generator):
         self._r = pystache.Renderer(search_dirs=str(paths.templates_dir), escape=lambda u: u)
         self.written = set()
+        self._generator = generator
 
     def render(self, data, output: pathlib.Path):
         """ Render `data` to `output`.
@@ -34,7 +35,7 @@ class Renderer:
         """
         mnemonic = type(data).__name__
         output.parent.mkdir(parents=True, exist_ok=True)
-        data = self._r.render_name(data.template, data, generator=paths.exe_file)
+        data = self._r.render_name(data.template, data, generator=self._generator)
         with open(output, "w") as out:
             out.write(data)
         log.debug(f"generated {mnemonic} {output.name}")

@@ -15,8 +15,6 @@ class PatternBindingDeclBase extends @pattern_binding_decl, Decl {
 
   Expr getAnInit() { result = getInit(_) }
 
-  int getNumberOfInits() { result = count(getAnInit()) }
-
   Pattern getPattern(int index) {
     exists(Pattern x |
       pattern_binding_decl_patterns(this, index, x) and

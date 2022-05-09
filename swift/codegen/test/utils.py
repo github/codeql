@@ -3,7 +3,7 @@ from unittest import mock
 
 import pytest
 
-from swift.codegen.lib import render, schema
+from swift.codegen.lib import render, schema, paths
 
 schema_dir = pathlib.Path("a", "dir")
 schema_file = schema_dir / "schema.yml"
@@ -18,12 +18,14 @@ def write(out, contents=""):
 
 @pytest.fixture
 def renderer():
-    return mock.Mock(spec=render.Renderer())
+    return mock.Mock(spec=render.Renderer(""))
 
 
 @pytest.fixture
 def opts():
-    return mock.MagicMock()
+    ret = mock.MagicMock()
+    ret.swift_dir = paths.swift_dir
+    return ret
 
 
 @pytest.fixture(autouse=True)

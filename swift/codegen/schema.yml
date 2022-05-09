@@ -256,7 +256,7 @@ OperatorDecl:
 
 PatternBindingDecl:
   _extends: Decl
-  inits: Expr*
+  inits: Expr?*
   patterns: Pattern*
 
 PoundDiagnosticDecl:
