@@ -498,6 +498,65 @@ module XML {
       abstract string getName();
     }
   }
+
+  /**
+   * A kind of XML vulnerability.
+   *
+   * See overview of kinds at https://pypi.org/project/defusedxml/#python-xml-libraries
+   *
+   * See PoC at `python/PoCs/XmlParsing/PoC.py` for some tests of vulnerable XML parsing.
+   */
+  class XmlParsingVulnerabilityKind extends string {
+    XmlParsingVulnerabilityKind() { this in ["XML bomb", "XXE", "DTD retrieval"] }
+
+    /**
+     * Holds for XML bomb vulnerability kind, such as 'Billion Laughs' and 'Quadratic
+     * Blowup'.
+     *
+     * While a parser could technically be vulnerable to one and not the other, from our
+     * point of view the interesting part is that it IS vulnerable to these types of
+     * attacks, and not so much which one specifically works. In practice I haven't seen
+     * a parser that is vulnerable to one and not the other.
+     */
+    predicate isXmlBomb() { this = "XML bomb" }
+
+    /** Holds for XXE vulnerability kind. */
+    predicate isXxe() { this = "XXE" }
+
+    /** Holds for DTD retrieval vulnerability kind. */
+    predicate isDtdRetrieval() { this = "DTD retrieval" }
+  }
+
+  /**
+   * A data-flow node that parses XML.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `XmlParsing` instead.
+   */
+  class XmlParsing extends Decoding instanceof XmlParsing::Range {
+    /**
+     * Holds if this XML parsing is vulnerable to `kind`.
+     */
+    predicate vulnerableTo(XmlParsingVulnerabilityKind kind) { super.vulnerableTo(kind) }
+  }
+
+  /** Provides classes for modeling XML parsing APIs. */
+  module XmlParsing {
+    /**
+     * A data-flow node that parses XML.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `XmlParsing` instead.
+     */
+    abstract class Range extends Decoding::Range {
+      /**
+       * Holds if this XML parsing is vulnerable to `kind`.
+       */
+      abstract predicate vulnerableTo(XmlParsingVulnerabilityKind kind);
+
+      override string getFormat() { result = "XML" }
+    }
+  }
 }
 
 /** Provides classes for modeling LDAP-related APIs. */
