@@ -153,8 +153,7 @@ class CreateEntityReferenceNodesTranformer extends XXEFlowStateTranformer {
   CreateEntityReferenceNodesTranformer() {
     exists(Call call, Function f |
       call.getTarget() = f and
-      f.getDeclaringType() instanceof AbstractDOMParserClass and
-      f.hasName("setCreateEntityReferenceNodes") and
+      f.getClassAndName("setCreateEntityReferenceNodes") instanceof AbstractDOMParserClass and
       this = call.getQualifier() and
       newValue = call.getArgument(0)
     )
@@ -195,8 +194,7 @@ class SetFeatureTranformer extends XXEFlowStateTranformer {
   SetFeatureTranformer() {
     exists(Call call, Function f |
       call.getTarget() = f and
-      f.getDeclaringType() instanceof Sax2XmlReader and
-      f.hasName("setFeature") and
+      f.getClassAndName("setFeature") instanceof Sax2XmlReader and
       this = call.getQualifier() and
       globalValueNumber(call.getArgument(0)).getAnExpr().(VariableAccess).getTarget() instanceof
         FeatureDisableDefaultEntityResolution and
