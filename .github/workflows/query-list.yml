@@ -30,6 +30,7 @@ jobs:
       with:
         python-version: 3.8
     - name: Download CodeQL CLI
+      # Look under the `codeql` directory , as this is where we checked out the `github/codeql` repo
       uses: ./codeql/.github/actions/fetch-codeql
     - name: Unzip CodeQL CLI
       run: unzip -d codeql-cli codeql-linux64.zip
