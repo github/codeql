@@ -33,5 +33,5 @@ where
   // We have seen examples of dummy projects with vulnerable settings alongside a main
   // project with a protecting settings file. We want to rule out this scenario, so we
   // require all non-test settings to be vulnerable.
-  forall( HTTP::Server::CsrfProtectionSetting s| relevantSetting(s) | vulnerableSetting(s) )
+  forall(HTTP::Server::CsrfProtectionSetting s | relevantSetting(s) | vulnerableSetting(s))
 select setting, "Potential CSRF vulnerability due to forgery protection being disabled or weakened."
