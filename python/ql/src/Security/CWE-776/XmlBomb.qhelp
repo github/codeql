@@ -39,7 +39,7 @@ PyPI package, which has been created to prevent XML attacks (both XXE and XML bo
 <example>
 <p>
 The following example uses the <code>xml.etree</code> XML parser provided by the Python standard library to
-parse a string <code>xml_src</code>. That string is from an untrusted source, so this code is be
+parse a string <code>xml_src</code>. That string is from an untrusted source, so this code is
 vulnerable to a DoS attack, since the <code>xml.etree</code> XML parser expands internal entities by default:
 </p>
 <sample src="examples/XmlBombBad.py"/>
