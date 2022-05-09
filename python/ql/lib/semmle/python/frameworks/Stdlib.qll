@@ -3265,14 +3265,7 @@ private module StdlibPrivate {
           API::moduleImport("xml")
               .getMember("etree")
               .getMember("ElementTree")
-              .getMember("XMLParser")
-              .getACall()
-        or
-        this =
-          API::moduleImport("xml")
-              .getMember("etree")
-              .getMember("ElementTree")
-              .getMember("XMLPullParser")
+              .getMember(["XMLParser", "XMLPullParser"])
               .getACall()
       }
     }
