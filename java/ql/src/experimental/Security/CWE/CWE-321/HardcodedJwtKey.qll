@@ -3,25 +3,26 @@
  */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 
-/** The Java class `com.auth0.jwt.JWT`. */
+/** The class `com.auth0.jwt.JWT`. */
 class Jwt extends RefType {
   Jwt() { this.hasQualifiedName("com.auth0.jwt", "JWT") }
 }
 
-/** The Java class `com.auth0.jwt.JWTCreator.Builder`. */
+/** The class `com.auth0.jwt.JWTCreator.Builder`. */
 class JwtBuilder extends RefType {
   JwtBuilder() { this.hasQualifiedName("com.auth0.jwt", "JWTCreator$Builder") }
 }
 
-/** The Java class `com.auth0.jwt.algorithms.Algorithm`. */
-class Algorithm extends RefType {
-  Algorithm() { this.hasQualifiedName("com.auth0.jwt.algorithms", "Algorithm") }
+/** The class `com.auth0.jwt.algorithms.Algorithm`. */
+class JwtAlgorithm extends RefType {
+  JwtAlgorithm() { this.hasQualifiedName("com.auth0.jwt.algorithms", "Algorithm") }
 }
 
 /**
- * The Java interface `com.auth0.jwt.interfaces.JWTVerifier` or it implementation class
+ * The interface `com.auth0.jwt.interfaces.JWTVerifier` or its implementation
  * `com.auth0.jwt.JWTVerifier`.
  */
 class JwtVerifier extends RefType {
@@ -30,15 +31,11 @@ class JwtVerifier extends RefType {
   }
 }
 
-/** The secret generation method declared in `com.auth0.jwt.algorithms.Algorithm`. */
-class GetSecretMethod extends Method {
-  GetSecretMethod() {
-    this.getDeclaringType() instanceof Algorithm and
-    (
-      this.getName().substring(0, 4) = "HMAC" or
-      this.getName().substring(0, 5) = "ECDSA" or
-      this.getName().substring(0, 3) = "RSA"
-    )
+/** A method that creates an instance of `com.auth0.jwt.algorithms.Algorithm`. */
+class GetAlgorithmMethod extends Method {
+  GetAlgorithmMethod() {
+    this.getDeclaringType() instanceof JwtAlgorithm and
+    this.getName().matches(["HMAC%", "ECDSA%", "RSA%"])
   }
 }
 
@@ -76,19 +73,11 @@ abstract class JwtKeySource extends DataFlow::Node { }
  */
 abstract class JwtTokenSink extends DataFlow::Node { }
 
-private predicate isTestCode(Expr e) {
-  e.getFile().getAbsolutePath().toLowerCase().matches("%test%") and
-  not e.getFile().getAbsolutePath().toLowerCase().matches("%ql/test%")
-}
-
 /**
  * A hardcoded string literal as a source for JWT token signing vulnerabilities.
  */
 class HardcodedKeyStringSource extends JwtKeySource {
-  HardcodedKeyStringSource() {
-    this.asExpr() instanceof CompileTimeConstantExpr and
-    not isTestCode(this.asExpr())
-  }
+  HardcodedKeyStringSource() { this.asExpr() instanceof CompileTimeConstantExpr }
 }
 
 /**
@@ -128,7 +117,7 @@ class HardcodedJwtKeyConfiguration extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node prev, DataFlow::Node succ) {
     exists(MethodAccess ma |
       (
-        ma.getMethod() instanceof GetSecretMethod or
+        ma.getMethod() instanceof GetAlgorithmMethod or
         ma.getMethod() instanceof RequireMethod
       ) and
       prev.asExpr() = ma.getArgument(0) and
@@ -145,12 +134,12 @@ private class VerificationFlowStep extends SummaryModelCsv {
         "com.auth0.jwt.interfaces;Verification;true;build;;;Argument[-1];ReturnValue;taint",
         "com.auth0.jwt.interfaces;Verification;true;" +
           ["acceptLeeway", "acceptExpiresAt", "acceptNotBefore", "acceptIssuedAt", "ignoreIssuedAt"]
-          + ";;;Argument[-1];ReturnValue;taint",
+          + ";;;Argument[-1];ReturnValue;value",
         "com.auth0.jwt.interfaces;Verification;true;with" +
           [
             "Issuer", "Subject", "Audience", "AnyOfAudience", "ClaimPresence", "Claim",
             "ArrayClaim", "JWTId"
-          ] + ";;;Argument[-1];ReturnValue;taint"
+          ] + ";;;Argument[-1];ReturnValue;value"
       ]
   }
 }
