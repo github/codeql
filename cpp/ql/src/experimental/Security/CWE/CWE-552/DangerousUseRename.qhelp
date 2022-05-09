@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>If the rename function did not work correctly, simply overwriting the destination file can lead to errors. Use access to the destination file with permission setting.</p>
+
+</overview>
+
+<example>
+<p>The following example shows the erroneous and corrected ways to work with the rename function.</p>
+<sample src="DangerousUseRename.cpp" />
+
+</example>
+<references>
+
+<li>
+  CERT Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/FIO15-C.+Ensure+that+file+operations+are+performed+in+a+secure+directory">FIO15-C. Ensure that file operations are performed in a secure directory - SEI CERT C Coding Standard - Confluence</a>.
+</li>
+
+</references>
+</qhelp>
