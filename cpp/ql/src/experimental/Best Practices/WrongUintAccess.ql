@@ -10,7 +10,7 @@
 import cpp
 
 from
-  Variable var, ArrayExpr useExpr, VariableDeclarationEntry def, ArrayType defLine,
+  Variable var, ArrayExpr useExpr, ArrayType defLine,
   VariableAccess use
 where
   var.getUnspecifiedType() = defLine and
