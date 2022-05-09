@@ -60,15 +60,15 @@ class XercesDOMParserClass extends Class {
 /**
  * The `SAXParser` class.
  */
-class SAXParserClass extends Class {
-  SAXParserClass() { this.hasName("SAXParser") }
+class SaxParserClass extends Class {
+  SaxParserClass() { this.hasName("SAXParser") }
 }
 
 /**
  * The `SAX2XMLReader` class.
  */
-class SAX2XMLReader extends Class {
-  SAX2XMLReader() { this.hasName("SAX2XMLReader") }
+class Sax2XmlReader extends Class {
+  Sax2XmlReader() { this.hasName("SAX2XMLReader") }
 }
 
 /**
@@ -120,7 +120,7 @@ class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
       call.getTarget() = f and
       (
         f.getDeclaringType() instanceof AbstractDOMParserClass or
-        f.getDeclaringType() instanceof SAXParserClass
+        f.getDeclaringType() instanceof SaxParserClass
       ) and
       f.hasName("setDisableDefaultEntityResolution") and
       this = call.getQualifier() and
@@ -195,7 +195,7 @@ class SetFeatureTranformer extends XXEFlowStateTranformer {
   SetFeatureTranformer() {
     exists(Call call, Function f |
       call.getTarget() = f and
-      f.getDeclaringType() instanceof SAX2XMLReader and
+      f.getDeclaringType() instanceof Sax2XmlReader and
       f.hasName("setFeature") and
       this = call.getQualifier() and
       globalValueNumber(call.getArgument(0)).getAnExpr().(VariableAccess).getTarget() instanceof
@@ -225,8 +225,8 @@ class SetFeatureTranformer extends XXEFlowStateTranformer {
 class ParseFunction extends Function {
   ParseFunction() {
     this.getClassAndName("parse") instanceof AbstractDOMParserClass or
-    this.getClassAndName("parse") instanceof SAXParserClass or
-    this.getClassAndName("parse") instanceof SAX2XMLReader
+    this.getClassAndName("parse") instanceof SaxParserClass or
+    this.getClassAndName("parse") instanceof Sax2XmlReader
   }
 }
 
@@ -245,10 +245,10 @@ class CreateLSParser extends Function {
  * The `createXMLReader` function that returns a newly created `SAX2XMLReader`
  * object.
  */
-class CreateXMLReader extends Function {
-  CreateXMLReader() {
+class CreateXmlReader extends Function {
+  CreateXmlReader() {
     this.hasName("createXMLReader") and
-    this.getUnspecifiedType().(PointerType).getBaseType() instanceof SAX2XMLReader // returns a `SAX2XMLReader *`.
+    this.getUnspecifiedType().(PointerType).getBaseType() instanceof Sax2XmlReader // returns a `SAX2XMLReader *`.
   }
 }
 
@@ -314,7 +314,7 @@ class XXEConfiguration extends DataFlow::Configuration {
     // source is the write on `this` of a call to the `SAXParser`
     // constructor.
     exists(CallInstruction call |
-      call.getStaticCallTarget() = any(SAXParserClass c).getAConstructor() and
+      call.getStaticCallTarget() = any(SaxParserClass c).getAConstructor() and
       node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
         call.getThisArgument() and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
@@ -322,7 +322,7 @@ class XXEConfiguration extends DataFlow::Configuration {
     or
     // source is the result of a call to `createXMLReader`.
     exists(Call call |
-      call.getTarget() instanceof CreateXMLReader and
+      call.getTarget() instanceof CreateXmlReader and
       call = node.asExpr() and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
