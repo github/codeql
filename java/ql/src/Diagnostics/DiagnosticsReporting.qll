@@ -48,7 +48,8 @@ private predicate unknownErrors(Diagnostic d, string msg, int sev) {
   not knownErrors(d, _, _) and
   exists(File f, int diagSev |
     d.getSeverity() = diagSev and
-    d.getLocation().getFile() = f and diagSev > 3
+    d.getLocation().getFile() = f and
+    diagSev > 3
   |
     exists(f.getRelativePath()) and
     msg = "Unknown errors in file: " + f.getAbsolutePath() + " (" + diagSev + ")" and
@@ -83,9 +84,7 @@ predicate reportableWarnings(Diagnostic d, string msg, int sev) { knownWarnings(
  * no relevant extraction diagnostics associated with it.
  */
 predicate successfullyExtracted(CompilationUnit f) {
-  not exists(Diagnostic d |
-    reportableDiagnostics(d, _, _) and d.getLocation().getFile() = f
-  ) and
+  not exists(Diagnostic d | reportableDiagnostics(d, _, _) and d.getLocation().getFile() = f) and
   exists(f.getRelativePath()) and
   f.fromSource()
 }
