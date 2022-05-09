@@ -1673,8 +1673,22 @@ private module Stage2 {
     storeStepFwd(_, ap, tc, _, _, config)
   }
 
-  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+  private predicate revConsCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  private predicate validAp(Ap ap, Configuration config) {
+    revFlow(_, _, _, _, ap, config) and ap instanceof ApNil
+    or
+    exists(TypedContent head, Ap tail |
+      consCand(head, tail, config) and
+      ap = apCons(head, tail)
+    )
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    revConsCand(tc, ap, config) and
+    validAp(ap, config)
   }
 
   pragma[noinline]
@@ -2495,8 +2509,22 @@ private module Stage3 {
     storeStepFwd(_, ap, tc, _, _, config)
   }
 
-  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+  private predicate revConsCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  private predicate validAp(Ap ap, Configuration config) {
+    revFlow(_, _, _, _, ap, config) and ap instanceof ApNil
+    or
+    exists(TypedContent head, Ap tail |
+      consCand(head, tail, config) and
+      ap = apCons(head, tail)
+    )
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    revConsCand(tc, ap, config) and
+    validAp(ap, config)
   }
 
   pragma[noinline]
@@ -3322,8 +3350,22 @@ private module Stage4 {
     storeStepFwd(_, ap, tc, _, _, config)
   }
 
-  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+  private predicate revConsCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  private predicate validAp(Ap ap, Configuration config) {
+    revFlow(_, _, _, _, ap, config) and ap instanceof ApNil
+    or
+    exists(TypedContent head, Ap tail |
+      consCand(head, tail, config) and
+      ap = apCons(head, tail)
+    )
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    revConsCand(tc, ap, config) and
+    validAp(ap, config)
   }
 
   pragma[noinline]
