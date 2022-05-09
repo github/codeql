@@ -22,7 +22,7 @@ def codeql_workspace(repository_name = "codeql"):
                 _swift_prebuilt_version,
                 repo_arch,
             ),
-            build_file = "@%s//swift/extractor:BUILD.swift-prebuilt.bazel" % repository_name,
+            build_file = "@%s//swift/tools/prebuilt:BUILD.swift-prebuilt.bazel" % repository_name,
             sha256 = sha256,
         )
 
@@ -55,4 +55,3 @@ def codeql_workspace(repository_name = "codeql"):
             "https://github.com/bazelbuild/rules_python/archive/refs/tags/0.8.1.tar.gz",
         ],
     )
-
