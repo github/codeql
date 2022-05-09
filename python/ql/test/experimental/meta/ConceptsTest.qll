@@ -543,7 +543,7 @@ class HttpClientRequestTest extends InlineExpectationsTest {
 class XmlParsingTest extends InlineExpectationsTest {
   XmlParsingTest() { this = "XmlParsingTest" }
 
-  override string getARelevantTag() { result in ["xmlVuln"] }
+  override string getARelevantTag() { result = "xmlVuln" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
