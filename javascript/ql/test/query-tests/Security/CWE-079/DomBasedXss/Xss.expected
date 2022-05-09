@@ -136,6 +136,30 @@ nodes
 | clipboard.ts:33:19:33:68 | e.origi ... /html') |
 | clipboard.ts:33:19:33:68 | e.origi ... /html') |
 | clipboard.ts:33:19:33:68 | e.origi ... /html') |
+| clipboard.ts:43:15:43:55 | html |
+| clipboard.ts:43:15:43:55 | html |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') |
+| clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:71:13:71:62 | droppedHtml |
+| clipboard.ts:71:13:71:62 | droppedHtml |
+| clipboard.ts:71:27:71:62 | e.clipb ... /html') |
+| clipboard.ts:71:27:71:62 | e.clipb ... /html') |
+| clipboard.ts:71:27:71:62 | e.clipb ... /html') |
+| clipboard.ts:73:29:73:39 | droppedHtml |
+| clipboard.ts:73:29:73:39 | droppedHtml |
+| clipboard.ts:73:29:73:39 | droppedHtml |
+| clipboard.ts:98:15:98:54 | html |
+| clipboard.ts:98:15:98:54 | html |
+| clipboard.ts:98:22:98:54 | dataTra ... /html') |
+| clipboard.ts:98:22:98:54 | dataTra ... /html') |
+| clipboard.ts:98:22:98:54 | dataTra ... /html') |
+| clipboard.ts:99:23:99:26 | html |
+| clipboard.ts:99:23:99:26 | html |
+| clipboard.ts:99:23:99:26 | html |
 | custom-element.js:5:26:5:36 | window.name |
 | custom-element.js:5:26:5:36 | window.name |
 | custom-element.js:5:26:5:36 | window.name |
@@ -299,6 +323,42 @@ nodes
 | dates.js:61:42:61:86 | dayjs.s ... (taint) |
 | dates.js:61:81:61:85 | taint |
 | dates.js:61:81:61:85 | taint |
+| dragAndDrop.ts:8:11:8:50 | html |
+| dragAndDrop.ts:8:11:8:50 | html |
+| dragAndDrop.ts:8:18:8:50 | dataTra ... /html') |
+| dragAndDrop.ts:8:18:8:50 | dataTra ... /html') |
+| dragAndDrop.ts:8:18:8:50 | dataTra ... /html') |
+| dragAndDrop.ts:15:25:15:28 | html |
+| dragAndDrop.ts:15:25:15:28 | html |
+| dragAndDrop.ts:15:25:15:28 | html |
+| dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') |
+| dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') |
+| dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') |
+| dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') |
+| dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') |
+| dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') |
+| dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') |
+| dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') |
+| dragAndDrop.ts:33:19:33:67 | e.origi ... /html') |
+| dragAndDrop.ts:33:19:33:67 | e.origi ... /html') |
+| dragAndDrop.ts:33:19:33:67 | e.origi ... /html') |
+| dragAndDrop.ts:33:19:33:67 | e.origi ... /html') |
+| dragAndDrop.ts:43:15:43:54 | html |
+| dragAndDrop.ts:43:15:43:54 | html |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') |
+| dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:71:13:71:61 | droppedHtml |
+| dragAndDrop.ts:71:13:71:61 | droppedHtml |
+| dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') |
+| dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') |
+| dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') |
+| dragAndDrop.ts:73:29:73:39 | droppedHtml |
+| dragAndDrop.ts:73:29:73:39 | droppedHtml |
+| dragAndDrop.ts:73:29:73:39 | droppedHtml |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
@@ -1134,6 +1194,30 @@ edges
 | clipboard.ts:24:23:24:58 | e.clipb ... /html') | clipboard.ts:24:23:24:58 | e.clipb ... /html') |
 | clipboard.ts:29:19:29:54 | e.clipb ... /html') | clipboard.ts:29:19:29:54 | e.clipb ... /html') |
 | clipboard.ts:33:19:33:68 | e.origi ... /html') | clipboard.ts:33:19:33:68 | e.origi ... /html') |
+| clipboard.ts:43:15:43:55 | html | clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:43:15:43:55 | html | clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:43:15:43:55 | html | clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:43:15:43:55 | html | clipboard.ts:50:29:50:32 | html |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') | clipboard.ts:43:15:43:55 | html |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') | clipboard.ts:43:15:43:55 | html |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') | clipboard.ts:43:15:43:55 | html |
+| clipboard.ts:43:22:43:55 | clipboa ... /html') | clipboard.ts:43:15:43:55 | html |
+| clipboard.ts:71:13:71:62 | droppedHtml | clipboard.ts:73:29:73:39 | droppedHtml |
+| clipboard.ts:71:13:71:62 | droppedHtml | clipboard.ts:73:29:73:39 | droppedHtml |
+| clipboard.ts:71:13:71:62 | droppedHtml | clipboard.ts:73:29:73:39 | droppedHtml |
+| clipboard.ts:71:13:71:62 | droppedHtml | clipboard.ts:73:29:73:39 | droppedHtml |
+| clipboard.ts:71:27:71:62 | e.clipb ... /html') | clipboard.ts:71:13:71:62 | droppedHtml |
+| clipboard.ts:71:27:71:62 | e.clipb ... /html') | clipboard.ts:71:13:71:62 | droppedHtml |
+| clipboard.ts:71:27:71:62 | e.clipb ... /html') | clipboard.ts:71:13:71:62 | droppedHtml |
+| clipboard.ts:71:27:71:62 | e.clipb ... /html') | clipboard.ts:71:13:71:62 | droppedHtml |
+| clipboard.ts:98:15:98:54 | html | clipboard.ts:99:23:99:26 | html |
+| clipboard.ts:98:15:98:54 | html | clipboard.ts:99:23:99:26 | html |
+| clipboard.ts:98:15:98:54 | html | clipboard.ts:99:23:99:26 | html |
+| clipboard.ts:98:15:98:54 | html | clipboard.ts:99:23:99:26 | html |
+| clipboard.ts:98:22:98:54 | dataTra ... /html') | clipboard.ts:98:15:98:54 | html |
+| clipboard.ts:98:22:98:54 | dataTra ... /html') | clipboard.ts:98:15:98:54 | html |
+| clipboard.ts:98:22:98:54 | dataTra ... /html') | clipboard.ts:98:15:98:54 | html |
+| clipboard.ts:98:22:98:54 | dataTra ... /html') | clipboard.ts:98:15:98:54 | html |
 | custom-element.js:5:26:5:36 | window.name | custom-element.js:5:26:5:36 | window.name |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
 | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() |
@@ -1323,6 +1407,33 @@ edges
 | dates.js:61:42:61:86 | dayjs.s ... (taint) | dates.js:61:31:61:88 | `Time i ... aint)}` |
 | dates.js:61:81:61:85 | taint | dates.js:61:42:61:86 | dayjs.s ... (taint) |
 | dates.js:61:81:61:85 | taint | dates.js:61:42:61:86 | dayjs.s ... (taint) |
+| dragAndDrop.ts:8:11:8:50 | html | dragAndDrop.ts:15:25:15:28 | html |
+| dragAndDrop.ts:8:11:8:50 | html | dragAndDrop.ts:15:25:15:28 | html |
+| dragAndDrop.ts:8:11:8:50 | html | dragAndDrop.ts:15:25:15:28 | html |
+| dragAndDrop.ts:8:11:8:50 | html | dragAndDrop.ts:15:25:15:28 | html |
+| dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | dragAndDrop.ts:8:11:8:50 | html |
+| dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | dragAndDrop.ts:8:11:8:50 | html |
+| dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | dragAndDrop.ts:8:11:8:50 | html |
+| dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | dragAndDrop.ts:8:11:8:50 | html |
+| dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') |
+| dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') |
+| dragAndDrop.ts:33:19:33:67 | e.origi ... /html') | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') |
+| dragAndDrop.ts:43:15:43:54 | html | dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:43:15:43:54 | html | dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:43:15:43:54 | html | dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:43:15:43:54 | html | dragAndDrop.ts:50:29:50:32 | html |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | dragAndDrop.ts:43:15:43:54 | html |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | dragAndDrop.ts:43:15:43:54 | html |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | dragAndDrop.ts:43:15:43:54 | html |
+| dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | dragAndDrop.ts:43:15:43:54 | html |
+| dragAndDrop.ts:71:13:71:61 | droppedHtml | dragAndDrop.ts:73:29:73:39 | droppedHtml |
+| dragAndDrop.ts:71:13:71:61 | droppedHtml | dragAndDrop.ts:73:29:73:39 | droppedHtml |
+| dragAndDrop.ts:71:13:71:61 | droppedHtml | dragAndDrop.ts:73:29:73:39 | droppedHtml |
+| dragAndDrop.ts:71:13:71:61 | droppedHtml | dragAndDrop.ts:73:29:73:39 | droppedHtml |
+| dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | dragAndDrop.ts:71:13:71:61 | droppedHtml |
+| dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | dragAndDrop.ts:71:13:71:61 | droppedHtml |
+| dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | dragAndDrop.ts:71:13:71:61 | droppedHtml |
+| dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | dragAndDrop.ts:71:13:71:61 | droppedHtml |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' |
@@ -2067,6 +2178,9 @@ edges
 | clipboard.ts:24:23:24:58 | e.clipb ... /html') | clipboard.ts:24:23:24:58 | e.clipb ... /html') | clipboard.ts:24:23:24:58 | e.clipb ... /html') | Cross-site scripting vulnerability due to $@. | clipboard.ts:24:23:24:58 | e.clipb ... /html') | user-provided value |
 | clipboard.ts:29:19:29:54 | e.clipb ... /html') | clipboard.ts:29:19:29:54 | e.clipb ... /html') | clipboard.ts:29:19:29:54 | e.clipb ... /html') | Cross-site scripting vulnerability due to $@. | clipboard.ts:29:19:29:54 | e.clipb ... /html') | user-provided value |
 | clipboard.ts:33:19:33:68 | e.origi ... /html') | clipboard.ts:33:19:33:68 | e.origi ... /html') | clipboard.ts:33:19:33:68 | e.origi ... /html') | Cross-site scripting vulnerability due to $@. | clipboard.ts:33:19:33:68 | e.origi ... /html') | user-provided value |
+| clipboard.ts:50:29:50:32 | html | clipboard.ts:43:22:43:55 | clipboa ... /html') | clipboard.ts:50:29:50:32 | html | Cross-site scripting vulnerability due to $@. | clipboard.ts:43:22:43:55 | clipboa ... /html') | user-provided value |
+| clipboard.ts:73:29:73:39 | droppedHtml | clipboard.ts:71:27:71:62 | e.clipb ... /html') | clipboard.ts:73:29:73:39 | droppedHtml | Cross-site scripting vulnerability due to $@. | clipboard.ts:71:27:71:62 | e.clipb ... /html') | user-provided value |
+| clipboard.ts:99:23:99:26 | html | clipboard.ts:98:22:98:54 | dataTra ... /html') | clipboard.ts:99:23:99:26 | html | Cross-site scripting vulnerability due to $@. | clipboard.ts:98:22:98:54 | dataTra ... /html') | user-provided value |
 | custom-element.js:5:26:5:36 | window.name | custom-element.js:5:26:5:36 | window.name | custom-element.js:5:26:5:36 | window.name | Cross-site scripting vulnerability due to $@. | custom-element.js:5:26:5:36 | window.name | user-provided value |
 | d3.js:11:15:11:24 | getTaint() | d3.js:4:12:4:22 | window.name | d3.js:11:15:11:24 | getTaint() | Cross-site scripting vulnerability due to $@. | d3.js:4:12:4:22 | window.name | user-provided value |
 | d3.js:12:20:12:29 | getTaint() | d3.js:4:12:4:22 | window.name | d3.js:12:20:12:29 | getTaint() | Cross-site scripting vulnerability due to $@. | d3.js:4:12:4:22 | window.name | user-provided value |
@@ -2088,6 +2202,12 @@ edges
 | dates.js:57:31:57:101 | `Time i ... aint)}` | dates.js:54:36:54:55 | window.location.hash | dates.js:57:31:57:101 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:54:36:54:55 | window.location.hash | user-provided value |
 | dates.js:59:31:59:87 | `Time i ... aint)}` | dates.js:54:36:54:55 | window.location.hash | dates.js:59:31:59:87 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:54:36:54:55 | window.location.hash | user-provided value |
 | dates.js:61:31:61:88 | `Time i ... aint)}` | dates.js:54:36:54:55 | window.location.hash | dates.js:61:31:61:88 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:54:36:54:55 | window.location.hash | user-provided value |
+| dragAndDrop.ts:15:25:15:28 | html | dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | dragAndDrop.ts:15:25:15:28 | html | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | user-provided value |
+| dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | user-provided value |
+| dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | user-provided value |
+| dragAndDrop.ts:33:19:33:67 | e.origi ... /html') | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:33:19:33:67 | e.origi ... /html') | user-provided value |
+| dragAndDrop.ts:50:29:50:32 | html | dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | dragAndDrop.ts:50:29:50:32 | html | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:43:22:43:54 | dataTra ... /html') | user-provided value |
+| dragAndDrop.ts:73:29:73:39 | droppedHtml | dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | dragAndDrop.ts:73:29:73:39 | droppedHtml | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | user-provided value |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | Cross-site scripting vulnerability due to $@. | event-handler-receiver.js:2:49:2:61 | location.href | user-provided value |
 | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") | Cross-site scripting vulnerability due to $@. | express.js:7:15:7:33 | req.param("wobble") | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:40 | documen ... .search | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |
