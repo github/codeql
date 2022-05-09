@@ -125,16 +125,6 @@ private class TaintStore extends DataFlow::FlowState {
  * The sources are the parameters of an API and the sinks are the return values (excluding `this`) and parameters.
  *
  * This can be used to generate Flow summaries for APIs from parameter to return.
- *
- *  * We track at most two reads and at most two stores, meaning flow paths of the form
- *
- * ```
- * parameter --value -->* node --read -->?
- * node --taint -->* node --read -->?
- * node --taint -->* node --store -->?
- * node --taint -->* node --store -->?
- * node --taint-->* return
- * ```
  */
 private class ThroughFlowConfig extends TaintTracking::Configuration {
   ThroughFlowConfig() { this = "ThroughFlowConfig" }
