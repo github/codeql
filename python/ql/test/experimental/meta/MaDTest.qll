@@ -11,9 +11,7 @@ class MadSinkTest extends InlineExpectationsTest {
   MadSinkTest() { this = "MadSinkTest" }
 
   override string getARelevantTag() {
-    exists(string kind | exists(ModelOutput::getASinkNode(kind)) |
-      result = "mad-sink__" + kind
-    )
+    exists(string kind | exists(ModelOutput::getASinkNode(kind)) | result = "mad-sink__" + kind)
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
@@ -32,9 +30,7 @@ class MadSourceTest extends InlineExpectationsTest {
   MadSourceTest() { this = "MadSourceTest" }
 
   override string getARelevantTag() {
-    exists(string kind | exists(ModelOutput::getASourceNode(kind)) |
-      result = "mad-source__" + kind
-    )
+    exists(string kind | exists(ModelOutput::getASourceNode(kind)) | result = "mad-source__" + kind)
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
