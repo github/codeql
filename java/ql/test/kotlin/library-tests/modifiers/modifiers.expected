@@ -2,7 +2,7 @@
 | modifiers.kt:1:6:25:1 | X | Constructor | public |
 | modifiers.kt:2:5:2:21 | a | Field | private |
 | modifiers.kt:2:5:2:21 | a | Property | private |
-| modifiers.kt:2:13:2:21 | getA | Method | private |
+| modifiers.kt:2:13:2:21 | getA$private | Method | private |
 | modifiers.kt:3:5:3:23 | b | Field | private |
 | modifiers.kt:3:5:3:23 | b | Property | protected |
 | modifiers.kt:3:15:3:23 | getB | Method | protected |

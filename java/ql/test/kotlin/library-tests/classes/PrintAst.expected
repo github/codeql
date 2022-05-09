@@ -578,7 +578,7 @@ generic_anonymous.kt:
 #    3|           1: [ExprStmt] <Expr>;
 #    3|             0: [ClassInstanceExpr] new (...)
 #    3|               -3: [TypeAccess] Object
-#    3|     5: [Method] getX
+#    3|     5: [Method] getX$private
 #    3|       3: [TypeAccess] new Object(...) { ... }
 #    3|         0: [TypeAccess] T
 #    3|       5: [BlockStmt] { ... }
@@ -590,7 +590,7 @@ generic_anonymous.kt:
 #    7|       5: [BlockStmt] { ... }
 #    7|         0: [ReturnStmt] return ...
 #    7|           0: [MethodAccess] getMember(...)
-#    7|             -1: [MethodAccess] getX(...)
+#    7|             -1: [MethodAccess] getX$private(...)
 #    7|               -1: [ThisAccess] this
 localClassField.kt:
 #    0| [CompilationUnit] localClassField
