@@ -76,6 +76,15 @@ hello.rb:
 #   18| HelloWorld
 #-----|  -> Greeting
 
+mixins.rb:
+#    4| BarMixin
+
+#   10| MixinTestA
+#-----|  -> Object
+
+#   27| MixinTestB
+#-----|  -> Object
+
 modules.rb:
 #    1| Empty
 
