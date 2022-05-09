@@ -3,6 +3,7 @@
  * @description Using only the `pam_authenticate` call to check the validity of a login can lead to a authorization bypass.
  * @kind problem
  * @problem.severity warning
+ * @precision high
  * @id py/pam-auth-bypass
  * @tags security
  *       external/cwe/cwe-285
