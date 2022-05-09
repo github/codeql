@@ -36,5 +36,5 @@ TypeVariable getATypeVariableInScope(RefType type) {
 
 from ClassOrInterface typeUser, TypeVariable outOfScope
 where
-  outOfScope = getAMentionedType(typeUser) and not outOfScope = getATypeVariableInScope(typeUser)
+  outOfScope = getATypeUsedInClass(typeUser) and not outOfScope = getATypeVariableInScope(typeUser)
 select "Type " + typeUser + " uses out-of-scope type variable " + outOfScope
