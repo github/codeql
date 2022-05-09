@@ -235,12 +235,11 @@ private module Lxml {
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parseid
    */
   private class LxmlParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
+    string functionName;
+
     LxmlParsing() {
-      this =
-        API::moduleImport("lxml")
-            .getMember("etree")
-            .getMember(["fromstring", "fromstringlist", "XML", "XMLID", "parse", "parseid"])
-            .getACall()
+      functionName in ["fromstring", "fromstringlist", "XML", "XMLID", "parse", "parseid"] and
+      this = API::moduleImport("lxml").getMember("etree").getMember(functionName).getACall()
     }
 
     override DataFlow::Node getAnInput() {
@@ -287,7 +286,7 @@ private module Lxml {
    */
   private class FileAccessFromLxmlParsing extends LxmlParsing, FileSystemAccess::Range {
     FileAccessFromLxmlParsing() {
-      this = API::moduleImport("lxml").getMember("etree").getMember(["parse", "parseid"]).getACall()
+      functionName in ["parse", "parseid"]
       // I considered whether we should try to reduce FPs from people passing file-like
       // objects, which will not be a file system access (and couldn't cause a
       // path-injection).
