@@ -14,29 +14,35 @@ class Param:
 @dataclass
 class Property:
     singular: str
-    type: str
-    tablename: str
-    tableparams: List[Param]
+    type: str = None
+    tablename: str = None
+    tableparams: List[Param] = field(default_factory=list)
     plural: str = None
     first: bool = False
     local_var: str = "x"
     is_optional: bool = False
+    is_predicate: bool = False
 
     def __post_init__(self):
-        assert self.tableparams
-        if self.type_is_class:
-            self.tableparams = [x if x != "result" else self.local_var for x in self.tableparams]
-        self.tableparams = [Param(x) for x in self.tableparams]
-        self.tableparams[0].first = True
+        if self.tableparams:
+            if self.type_is_class:
+                self.tableparams = [x if x != "result" else self.local_var for x in self.tableparams]
+            self.tableparams = [Param(x) for x in self.tableparams]
+            self.tableparams[0].first = True
 
     @property
-    def indefinite_article(self):
+    def getter(self):
+        return f"get{self.singular}" if not self.is_predicate else self.singular
+
+    @property
+    def indefinite_getter(self):
         if self.plural:
-            return "An" if self.singular[0] in "AEIO" else "A"
+            article = "An" if self.singular[0] in "AEIO" else "A"
+            return f"get{article}{self.singular}"
 
     @property
     def type_is_class(self):
-        return self.type[0].isupper()
+        return bool(self.type) and self.type[0].isupper()
 
     @property
     def is_repeated(self):

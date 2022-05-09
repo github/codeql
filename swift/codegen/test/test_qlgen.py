@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 from swift.codegen import qlgen
-from swift.codegen.lib import ql, paths
+from swift.codegen.lib import ql
 from swift.codegen.test.utils import *
 
 
@@ -137,6 +137,20 @@ def test_repeated_optional_property(opts, input, renderer):
         ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
             ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
                         tableparams=["this", "index", "result"], is_optional=True),
+        ])
+    }
+
+
+def test_predicate_property(opts, input, renderer):
+    input.classes = [
+        schema.Class("MyObject", properties=[schema.PredicateProperty("is_foo")]),
+    ]
+    assert generate(opts, renderer) == {
+        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
+        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
+            ql.Property(singular="isFoo", type="predicate", tablename="my_object_is_foo", tableparams=["this"],
+                        is_predicate=True),
         ])
     }
 

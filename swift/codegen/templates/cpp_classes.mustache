@@ -33,6 +33,9 @@ struct {{name}}{{#final}} : Binding<{{name}}Tag>{{#bases}}, {{ref.name}}{{/bases
     {{ref.name}}::emit(id, out);
     {{/bases}}
     {{#fields}}
+    {{#is_predicate}}
+    if ({{name}}) out << {{trap_name}}{{trap_affix}}{id} << '\n';
+    {{/is_predicate}}
     {{#is_optional}}
     {{^is_repeated}}
     if ({{name}}) out << {{trap_name}}{{trap_affix}}{id, *{{name}}} << '\n';

@@ -35,6 +35,7 @@ class Field:
     type: str
     is_optional: bool = False
     is_repeated: bool = False
+    is_predicate: bool = False
     trap_name: str = None
     first: bool = False
 
@@ -61,7 +62,7 @@ class Field:
 
     @property
     def is_single(self):
-        return not (self.is_optional or self.is_repeated)
+        return not (self.is_optional or self.is_repeated or self.is_predicate)
 
 
 

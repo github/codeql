@@ -92,6 +92,17 @@ def test_class_with_field(generate, type, expected, property_cls, optional, repe
            ]
 
 
+def test_class_with_predicate(generate):
+    assert generate([
+        schema.Class(name="MyClass", properties=[schema.PredicateProperty("prop")]),
+    ]) == [
+               cpp.Class(name="MyClass",
+                         fields=[cpp.Field("prop", "bool", trap_name="MyClassProp", is_predicate=True)],
+                         trap_name="MyClasses",
+                         final=True)
+           ]
+
+
 @pytest.mark.parametrize("name",
                          ["start_line", "start_column", "end_line", "end_column", "index", "num_whatever", "width"])
 def test_class_with_overridden_unsigned_field(generate, name):

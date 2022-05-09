@@ -21,7 +21,7 @@ class {{name}}Base extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
   {{/final}}
   {{#properties}}
 
-  {{type}} get{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
+  {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
     {{#type_is_class}}
     exists({{type}} {{local_var}} |
       {{tablename}}({{#tableparams}}{{^first}}, {{/first}}{{param}}{{/tableparams}})
@@ -34,13 +34,13 @@ class {{name}}Base extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
   }
   {{#is_repeated}}
 
-  {{type}} get{{indefinite_article}}{{singular}}() {
-    result = get{{singular}}(_)
+  {{type}} {{indefinite_getter}}() {
+    result = {{getter}}(_)
   }
   {{^is_optional}}
 
   int getNumberOf{{plural}}() {
-    result = count(get{{indefinite_article}}{{singular}}())
+    result = count({{indefinite_getter}}())
   }
   {{/is_optional}}
   {{/is_repeated}}

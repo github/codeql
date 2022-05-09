@@ -156,6 +156,33 @@ def test_final_class_with_repeated_field(opts, input, renderer, property_cls):
     )
 
 
+def test_final_class_with_predicate_field(opts, input, renderer):
+    input.classes = [
+        schema.Class("Object", properties=[
+            schema.PredicateProperty("foo"),
+        ]),
+    ]
+    assert generate(opts, renderer) == dbscheme.Scheme(
+        src=schema_file,
+        includes=[],
+        declarations=[
+            dbscheme.Table(
+                name="objects",
+                columns=[
+                    dbscheme.Column('id', '@object', binding=True),
+                ]
+            ),
+            dbscheme.Table(
+                name="object_foo",
+                keyset=dbscheme.KeySet(["id"]),
+                columns=[
+                    dbscheme.Column('id', '@object'),
+                ]
+            ),
+        ],
+    )
+
+
 def test_final_class_with_more_fields(opts, input, renderer):
     input.classes = [
         schema.Class("Object", properties=[
@@ -164,6 +191,7 @@ def test_final_class_with_more_fields(opts, input, renderer):
             schema.OptionalProperty("three", "z"),
             schema.RepeatedProperty("four", "u"),
             schema.RepeatedOptionalProperty("five", "v"),
+            schema.PredicateProperty("six"),
         ]),
     ]
     assert generate(opts, renderer) == dbscheme.Scheme(
@@ -202,6 +230,13 @@ def test_final_class_with_more_fields(opts, input, renderer):
                     dbscheme.Column('id', '@object'),
                     dbscheme.Column('index', 'int'),
                     dbscheme.Column('five', 'v'),
+                ]
+            ),
+            dbscheme.Table(
+                name="object_six",
+                keyset=dbscheme.KeySet(["id"]),
+                columns=[
+                    dbscheme.Column('id', '@object'),
                 ]
             ),
         ],
