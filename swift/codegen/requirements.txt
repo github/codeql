@@ -1,4 +1,5 @@
-pystache
-pyyaml
 inflection
+pystache
 pytest
+pyyaml
+toposort

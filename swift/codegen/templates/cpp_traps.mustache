@@ -25,7 +25,7 @@ struct {{name}}Trap {
 
 inline std::ostream &operator<<(std::ostream &out, const {{name}}Trap &e) {
   out << "{{table_name}}("{{#fields}}{{^first}} << ", "{{/first}}
-      << {{#stream}}e.{{cpp_name}}{{/stream}}{{/fields}} << ")";
+      << {{#get_streamer}}e.{{cpp_name}}{{/get_streamer}}{{/fields}} << ")";
   return out;
 }
 {{/traps}}

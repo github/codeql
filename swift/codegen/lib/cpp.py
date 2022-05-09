@@ -21,12 +21,14 @@ class Field:
     type: str
     first: bool = False
 
+    @property
     def cpp_name(self):
         if self.name in cpp_keywords:
             return self.name + "_"
         return self.name
 
-    def stream(self):
+    # using @property breaks pystache internals here
+    def get_streamer(self):
         if self.type == "std::string":
             return lambda x: f"trapQuoted({x})"
         elif self.type == "bool":
@@ -65,6 +67,7 @@ class Tag:
             self.bases = [TagBase(b) for b in self.bases]
             self.bases[0].first = True
 
+    @property
     def has_bases(self):
         return bool(self.bases)
 

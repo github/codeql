@@ -7,6 +7,7 @@ from swift.codegen.lib import render, schema
 
 schema_dir = pathlib.Path("a", "dir")
 schema_file = schema_dir / "schema.yml"
+dbscheme_file = pathlib.Path("another", "dir", "test.dbscheme")
 
 
 def write(out, contents=""):
@@ -38,7 +39,19 @@ def input(opts, tmp_path):
         load_mock.return_value = schema.Schema([])
         yield load_mock.return_value
     assert load_mock.mock_calls == [
-        mock.call(opts.schema)
+        mock.call(opts.schema),
+    ], load_mock.mock_calls
+
+
+@pytest.fixture
+def dbscheme_input(opts, tmp_path):
+    opts.dbscheme = tmp_path / dbscheme_file
+    with mock.patch("swift.codegen.lib.dbscheme.iterload") as load_mock:
+        load_mock.entities = []
+        load_mock.side_effect = lambda _: load_mock.entities
+        yield load_mock
+    assert load_mock.mock_calls == [
+        mock.call(opts.dbscheme),
     ], load_mock.mock_calls
 
 

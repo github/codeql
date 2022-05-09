@@ -18,6 +18,7 @@ py_library(
         deps = [
             ":utils",
             "//swift/codegen",
+            "//swift/codegen:trapgen",
         ],
     )
     for src in glob(["test_*.py"])
