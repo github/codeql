@@ -3394,14 +3394,24 @@ private Configuration unbindConf(Configuration conf) {
   exists(Configuration c | result = pragma[only_bind_into](c) and conf = pragma[only_bind_into](c))
 }
 
-private predicate nodeMayUseSummary(
-  NodeEx n, FlowState state, AccessPathApprox apa, Configuration config
+pragma[nomagic]
+private predicate nodeMayUseSummary0(
+  NodeEx n, DataFlowCallable c, FlowState state, AccessPathApprox apa, Configuration config
 ) {
-  exists(DataFlowCallable c, AccessPathApprox apa0 |
-    Stage4::parameterMayFlowThrough(_, c, apa, _) and
+  exists(AccessPathApprox apa0 |
+    Stage4::parameterMayFlowThrough(_, c, _, _) and
     Stage4::revFlow(n, state, true, _, apa0, config) and
     Stage4::fwdFlow(n, state, any(CallContextCall ccc), TAccessPathApproxSome(apa), apa0, config) and
     n.getEnclosingCallable() = c
+  )
+}
+
+private predicate nodeMayUseSummary(
+  NodeEx n, FlowState state, AccessPathApprox apa, Configuration config
+) {
+  exists(DataFlowCallable c |
+    Stage4::parameterMayFlowThrough(_, c, apa, _) and
+    nodeMayUseSummary0(n, c, state, apa, config)
   )
 }
 
