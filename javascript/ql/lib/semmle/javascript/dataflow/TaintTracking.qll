@@ -1225,19 +1225,25 @@ module TaintTracking {
    * An equality test on `e.origin` or `e.source` where `e` is a `postMessage` event object,
    * considered as a sanitizer for `e`.
    */
-  private class PostMessageEventSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  private class PostMessageEventSanitizer extends AdditionalSanitizerGuardNode {
     VarAccess event;
-    override EqualityTest astNode;
+    boolean polarity;
 
     PostMessageEventSanitizer() {
-      exists(string prop | prop = "origin" or prop = "source" |
-        astNode.getAnOperand().(PropAccess).accesses(event, prop) and
-        event.mayReferToParameter(any(PostMessageEventHandler h).getEventParameter())
+      event.mayReferToParameter(any(PostMessageEventHandler h).getEventParameter()) and
+      exists(DataFlow::PropRead read | read.accesses(event.flow(), ["origin", "source"]) |
+        exists(EqualityTest test | polarity = test.getPolarity() and this.getAstNode() = test |
+          test.getAnOperand().flow() = read
+        )
+        or
+        exists(InclusionTest test | polarity = test.getPolarity() and this = test |
+          test.getContainedNode() = read
+        )
       )
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = astNode.getPolarity() and
+      outcome = polarity and
       e = event
     }
 
