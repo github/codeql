@@ -12,31 +12,32 @@ def test_property_has_first_table_param_marked():
     assert [p.param for p in prop.tableparams] == tableparams
 
 
-def test_property_not_a_class():
-    tableparams = ["x", "result", "y"]
-    prop = ql.Property("Prop", "foo", "props", tableparams)
-    assert not prop.type_is_class
-    assert [p.param for p in prop.tableparams] == tableparams
-
-
-def test_property_is_a_class():
-    tableparams = ["x", "result", "y"]
-    prop = ql.Property("Prop", "Foo", "props", tableparams)
-    assert prop.type_is_class
-    assert [p.param for p in prop.tableparams] == ["x", prop.local_var, "y"]
-
-
-@pytest.mark.parametrize("name,expected_article", [
-    ("Argument", "An"),
-    ("Element", "An"),
-    ("Integer", "An"),
-    ("Operator", "An"),
-    ("Unit", "A"),
-    ("Whatever", "A"),
+@pytest.mark.parametrize("type,expected", [
+    ("Foo", True),
+    ("Bar", True),
+    ("foo", False),
+    ("bar", False),
+    (None, False),
 ])
-def test_property_indefinite_article(name, expected_article):
-    prop = ql.Property(name, "Foo", "props", ["x"], plural="X")
-    assert prop.indefinite_article == expected_article
+def test_property_is_a_class(type, expected):
+    tableparams = ["a", "result", "b"]
+    expected_tableparams = ["a", "x" if expected else "result", "b"]
+    prop = ql.Property("Prop", type, tableparams=tableparams)
+    assert prop.type_is_class is expected
+    assert [p.param for p in prop.tableparams] == expected_tableparams
+
+
+@pytest.mark.parametrize("name,expected_getter", [
+    ("Argument", "getAnArgument"),
+    ("Element", "getAnElement"),
+    ("Integer", "getAnInteger"),
+    ("Operator", "getAnOperator"),
+    ("Unit", "getAUnit"),
+    ("Whatever", "getAWhatever"),
+])
+def test_property_indefinite_article(name, expected_getter):
+    prop = ql.Property(name, plural="X")
+    assert prop.indefinite_getter == expected_getter
 
 
 @pytest.mark.parametrize("plural,expected", [
@@ -49,9 +50,19 @@ def test_property_is_plural(plural, expected):
     assert prop.is_repeated is expected
 
 
-def test_property_no_plural_no_indefinite_article():
+def test_property_no_plural_no_indefinite_getter():
     prop = ql.Property("Prop", "Foo", "props", ["x"])
-    assert prop.indefinite_article is None
+    assert prop.indefinite_getter is None
+
+
+def test_property_getter():
+    prop = ql.Property("Prop", "Foo")
+    assert prop.getter == "getProp"
+
+
+def test_property_predicate_getter():
+    prop = ql.Property("prop", is_predicate=True)
+    assert prop.getter == "prop"
 
 
 def test_class_sorts_bases():

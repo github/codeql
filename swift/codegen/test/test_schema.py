@@ -141,6 +141,7 @@ A:
      two: int?
      three: bool*
      four: x?*
+     five: predicate
 """)
     assert ret.classes == [
         schema.Class(root_name, derived={'A'}),
@@ -149,6 +150,7 @@ A:
             schema.OptionalProperty('two', 'int'),
             schema.RepeatedProperty('three', 'bool'),
             schema.RepeatedOptionalProperty('four', 'x'),
+            schema.PredicateProperty('five'),
         ]),
     ]
 

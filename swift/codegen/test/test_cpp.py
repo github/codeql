@@ -27,14 +27,15 @@ def test_field_get_streamer(type, expected):
     assert f.get_streamer()("value") == expected
 
 
-@pytest.mark.parametrize("is_optional,is_repeated,expected", [
-    (False, False, True),
-    (True, False, False),
-    (False, True, False),
-    (True, True, False),
+@pytest.mark.parametrize("is_optional,is_repeated,is_predicate,expected", [
+    (False, False, False, True),
+    (True, False, False, False),
+    (False, True, False, False),
+    (True, True, False, False),
+    (False, False, True, False),
 ])
-def test_field_is_single(is_optional, is_repeated, expected):
-    f = cpp.Field("name", "type", is_optional=is_optional, is_repeated=is_repeated)
+def test_field_is_single(is_optional, is_repeated, is_predicate, expected):
+    f = cpp.Field("name", "type", is_optional=is_optional, is_repeated=is_repeated, is_predicate=is_predicate)
     assert f.is_single is expected
 
 

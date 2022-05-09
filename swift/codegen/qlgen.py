@@ -36,6 +36,14 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
             tableparams=["this", "result"],
             is_optional=True,
         )
+    elif prop.is_predicate:
+        return ql.Property(
+            singular=inflection.camelize(prop.name, uppercase_first_letter=False),
+            type="predicate",
+            tablename=inflection.underscore(f"{cls.name}_{prop.name}"),
+            tableparams=["this"],
+            is_predicate=True,
+        )
 
 
 def get_ql_class(cls: schema.Class):

@@ -57,6 +57,15 @@ def cls_to_dbscheme(cls: schema.Class):
                     Column(f.name, dbtype(f.type)),
                 ],
             )
+        elif f.is_predicate:
+            yield Table(
+                keyset=KeySet(["id"]),
+                name=inflection.underscore(f"{cls.name}_{f.name}"),
+                columns=[
+                    Column("id", type=dbtype(cls.name)),
+                 ],
+            )
+
 
 
 def get_declarations(data: schema.Schema):
