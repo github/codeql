@@ -6,7 +6,7 @@
 
 <overview>
 <p>
-This rule looks for loop that allocate memory, but may break/continue without freeing it. This causes the function to leak memory and may eventually lead to software failure.
+This rule looks for loops that allocate memory, but may break/continue without freeing it. This causes the function to leak memory and may eventually lead to software failure.
 </p> 
 </overview>
 <recommendation>
@@ -16,7 +16,6 @@ This rule looks for loop that allocate memory, but may break/continue without fr
 <example>
 <sample src="MemoryMayNotBeFreedOnLoop.cpp" />
 
-<p>In this example, if an exception occurs the memory allocated into <code>notfree</code> might not be freed if the if condition is true.  To fix this memory leak, a free call should be added for <code>notfree</code> in the if block.</p>
-
+<p>In this example, on the iteration with <code>i == 5</code>, the memory allocated into <code>notfree</code> will not be freed.  To fix this memory leak, a free call should be added for <code>notfree</code> in the if block.</p>
 </example>
 </qhelp>
