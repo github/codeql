@@ -1,4 +1,7 @@
 methods
+| clinit.kt:0:0:0:0 | ClinitKt | clinit.kt:0:0:0:0 | <clinit> | <clinit>() |  |
+| clinit.kt:0:0:0:0 | ClinitKt | clinit.kt:3:1:3:24 | getTopLevelInt | getTopLevelInt() | public, static |
+| clinit.kt:0:0:0:0 | ClinitKt | clinit.kt:3:1:3:24 | setTopLevelInt | setTopLevelInt(int) | public, static |
 | methods2.kt:0:0:0:0 | Methods2Kt | methods2.kt:4:1:5:1 | fooBarTopLevelMethod | fooBarTopLevelMethod(int,int) | public, static |
 | methods2.kt:7:1:10:1 | Class2 | methods2.kt:8:5:9:5 | fooBarClassMethod | fooBarClassMethod(int,int) | public |
 | methods3.kt:0:0:0:0 | Methods3Kt | methods3.kt:3:1:3:42 | fooBarTopLevelMethodExt | fooBarTopLevelMethodExt(int,int) | public, static |
