@@ -18,12 +18,6 @@ class NormalRubyCall extends RubyCall, @ruby_call {
   override RubyMethod getMethod() { result = method }
 }
 
-class ImplicitRubyCall extends RubyCall, @ruby_call {
-  ImplicitRubyCall() { ruby_call_def(this, any(@ruby_argument_list a)) }
-
-  override RubyMethod getMethod() { none() }
-}
-
 class ScopeResolutionCall extends RubyCall, @ruby_scope_resolution {
   private @ruby_token_identifier method;
 

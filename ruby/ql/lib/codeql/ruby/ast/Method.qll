@@ -253,7 +253,7 @@ class Lambda extends Callable, BodyStmt, TLambda {
 /** A block. */
 class Block extends Callable, StmtSequence, Scope, TBlock {
   /**
-   * Get a local variable declared by this block.
+   * Gets a local variable declared by this block.
    * For example `local` in `{ | param; local| puts param }`.
    */
   LocalVariableWriteAccess getALocalVariable() { result = this.getLocalVariable(_) }
