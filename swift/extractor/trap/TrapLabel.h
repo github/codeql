@@ -34,6 +34,9 @@ class TrapLabel : public UntypedTrapLabel {
 
   using UntypedTrapLabel::UntypedTrapLabel;
 
+  // we want only TrapArena to create non-default labels
+  friend class TrapArena;
+
  public:
   using Tag = TagParam;
 

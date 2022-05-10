@@ -13,6 +13,7 @@
 #include <llvm/Support/Path.h>
 
 #include "swift/extractor/trap/TrapClasses.h"
+#include "swift/extractor/trap/TrapArena.h"
 
 using namespace codeql;
 
@@ -75,10 +76,12 @@ static void extractFile(const SwiftExtractorConfiguration& config, swift::Source
   }
   trap << "\n\n";
 
+  TrapArena arena{trap};
+  // arena will be passed to another class in a later PR, the next block of code is only an example
   File f;
-  f.id = TrapLabel<FileTag>{};
+  f.id = arena.getLabel<FileTag>();
   f.name = srcFilePath.str().str();
-  trap << f.id << "=*\n" << f;
+  arena.emit(f);
 
   // TODO: Pick a better name to avoid collisions
   std::string trapName = file.getFilename().str() + ".trap";
