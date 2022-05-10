@@ -1083,8 +1083,21 @@ open class KotlinUsesExtractor(
         return classTypeResult.id
     }
 
+    fun getTypeParameterParentLabel(param: IrTypeParameter) =
+        param.parent.let {
+            when (it) {
+                is IrClass -> useClassSource(it)
+                is IrFunction -> useFunction(it, noReplace = true)
+                else -> { logger.error("Unexpected type parameter parent $it"); null }
+            }
+        }
+
     fun getTypeParameterLabel(param: IrTypeParameter): String {
-        val parentLabel = useDeclarationParent(param.parent, false)
+        // Use this instead of `useDeclarationParent` so we can use useFunction with noReplace = true,
+        // ensuring that e.g. a method-scoped type variable declared on kotlin.String.transform <R> gets
+        // a different name to the corresponding java.lang.String.transform <R>, even though useFunction
+        // will usually replace references to one function with the other.
+        val parentLabel = getTypeParameterParentLabel(param)
         return "@\"typevar;{$parentLabel};${param.name}\""
     }
 
