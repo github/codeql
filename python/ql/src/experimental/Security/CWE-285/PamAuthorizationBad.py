@@ -1,13 +1,19 @@
-def authenticate(self, username, password, service='login', encoding='utf-8', resetcreds=True):
-  libpam                    = CDLL(find_library("pam"))
-  pam_authenticate          = libpam.pam_authenticate
-  pam_authenticate.restype  = c_int
-  pam_authenticate.argtypes = [PamHandle, c_int]
+libpam                    = CDLL(find_library("pam"))
 
-  
-  handle = PamHandle()
-  conv   = PamConv(my_conv, 0)
-  retval = pam_start(service, username, byref(conv), byref(handle))
+pam_authenticate          = libpam.pam_authenticate
+pam_authenticate.restype  = c_int
+pam_authenticate.argtypes = [PamHandle, c_int]
 
-  retval = pam_authenticate(handle, 0)  
-  return retval == 0
+def authenticate(username, password, service='login'):
+    def my_conv(n_messages, messages, p_response, app_data):
+        """
+        Simple conversation function that responds to any prompt where the echo is off with the supplied password
+        """
+        ...
+
+    handle = PamHandle()
+    conv   = PamConv(my_conv, 0)
+    retval = pam_start(service, username, byref(conv), byref(handle))
+
+    retval = pam_authenticate(handle, 0)
+    return retval == 0
