@@ -3,5 +3,5 @@ import codeql.swift.elements.type.BuiltinType
 
 class BuiltinRawUnsafeContinuationTypeBase extends @builtin_raw_unsafe_continuation_type,
   BuiltinType {
-  override string getPrimaryQlClass() { result = "BuiltinRawUnsafeContinuationType" }
+  override string getAPrimaryQlClass() { result = "BuiltinRawUnsafeContinuationType" }
 }

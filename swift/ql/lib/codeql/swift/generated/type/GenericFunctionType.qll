@@ -3,7 +3,7 @@ import codeql.swift.elements.type.AnyFunctionType
 import codeql.swift.elements.type.GenericTypeParamType
 
 class GenericFunctionTypeBase extends @generic_function_type, AnyFunctionType {
-  override string getPrimaryQlClass() { result = "GenericFunctionType" }
+  override string getAPrimaryQlClass() { result = "GenericFunctionType" }
 
   GenericTypeParamType getGenericParam(int index) {
     exists(GenericTypeParamType x |

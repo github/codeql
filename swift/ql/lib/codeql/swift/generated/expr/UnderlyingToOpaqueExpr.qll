@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class UnderlyingToOpaqueExprBase extends @underlying_to_opaque_expr, ImplicitConversionExpr {
-  override string getPrimaryQlClass() { result = "UnderlyingToOpaqueExpr" }
+  override string getAPrimaryQlClass() { result = "UnderlyingToOpaqueExpr" }
 }

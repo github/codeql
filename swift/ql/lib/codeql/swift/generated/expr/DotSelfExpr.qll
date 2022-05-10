@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.IdentityExpr
 
 class DotSelfExprBase extends @dot_self_expr, IdentityExpr {
-  override string getPrimaryQlClass() { result = "DotSelfExpr" }
+  override string getAPrimaryQlClass() { result = "DotSelfExpr" }
 }

@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.IdentityExpr
 
 class UnresolvedMemberChainResultExprBase extends @unresolved_member_chain_result_expr, IdentityExpr {
-  override string getPrimaryQlClass() { result = "UnresolvedMemberChainResultExpr" }
+  override string getAPrimaryQlClass() { result = "UnresolvedMemberChainResultExpr" }
 }

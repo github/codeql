@@ -2,7 +2,7 @@
 import codeql.swift.elements.expr.Expr
 
 class DotSyntaxBaseIgnoredExprBase extends @dot_syntax_base_ignored_expr, Expr {
-  override string getPrimaryQlClass() { result = "DotSyntaxBaseIgnoredExpr" }
+  override string getAPrimaryQlClass() { result = "DotSyntaxBaseIgnoredExpr" }
 
   Expr getQualifier() {
     exists(Expr x |

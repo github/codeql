@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.SyntaxSugarType
 
 class DictionaryTypeBase extends @dictionary_type, SyntaxSugarType {
-  override string getPrimaryQlClass() { result = "DictionaryType" }
+  override string getAPrimaryQlClass() { result = "DictionaryType" }
 }

@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.DynamicLookupExpr
 
 class DynamicSubscriptExprBase extends @dynamic_subscript_expr, DynamicLookupExpr {
-  override string getPrimaryQlClass() { result = "DynamicSubscriptExpr" }
+  override string getAPrimaryQlClass() { result = "DynamicSubscriptExpr" }
 }

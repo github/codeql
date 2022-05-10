@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.NominalTypeDecl
 
 class ProtocolDeclBase extends @protocol_decl, NominalTypeDecl {
-  override string getPrimaryQlClass() { result = "ProtocolDecl" }
+  override string getAPrimaryQlClass() { result = "ProtocolDecl" }
 }

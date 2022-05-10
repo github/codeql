@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.VarDecl
 
 class ParamDeclBase extends @param_decl, VarDecl {
-  override string getPrimaryQlClass() { result = "ParamDecl" }
+  override string getAPrimaryQlClass() { result = "ParamDecl" }
 }

@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.OperatorDecl
 
 class PrefixOperatorDeclBase extends @prefix_operator_decl, OperatorDecl {
-  override string getPrimaryQlClass() { result = "PrefixOperatorDecl" }
+  override string getAPrimaryQlClass() { result = "PrefixOperatorDecl" }
 }

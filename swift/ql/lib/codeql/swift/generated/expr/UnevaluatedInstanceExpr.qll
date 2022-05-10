@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class UnevaluatedInstanceExprBase extends @unevaluated_instance_expr, ImplicitConversionExpr {
-  override string getPrimaryQlClass() { result = "UnevaluatedInstanceExpr" }
+  override string getAPrimaryQlClass() { result = "UnevaluatedInstanceExpr" }
 }

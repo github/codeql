@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.DynamicLookupExpr
 
 class DynamicMemberRefExprBase extends @dynamic_member_ref_expr, DynamicLookupExpr {
-  override string getPrimaryQlClass() { result = "DynamicMemberRefExpr" }
+  override string getAPrimaryQlClass() { result = "DynamicMemberRefExpr" }
 }

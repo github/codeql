@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.TypeDecl
 
 class ModuleDeclBase extends @module_decl, TypeDecl {
-  override string getPrimaryQlClass() { result = "ModuleDecl" }
+  override string getAPrimaryQlClass() { result = "ModuleDecl" }
 }

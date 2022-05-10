@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.LiteralExpr
 
 class RegexLiteralExprBase extends @regex_literal_expr, LiteralExpr {
-  override string getPrimaryQlClass() { result = "RegexLiteralExpr" }
+  override string getAPrimaryQlClass() { result = "RegexLiteralExpr" }
 }

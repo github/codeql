@@ -3,7 +3,7 @@ import codeql.swift.elements.decl.EnumElementDecl
 import codeql.swift.elements.pattern.Pattern
 
 class EnumElementPatternBase extends @enum_element_pattern, Pattern {
-  override string getPrimaryQlClass() { result = "EnumElementPattern" }
+  override string getAPrimaryQlClass() { result = "EnumElementPattern" }
 
   EnumElementDecl getElement() {
     exists(EnumElementDecl x |

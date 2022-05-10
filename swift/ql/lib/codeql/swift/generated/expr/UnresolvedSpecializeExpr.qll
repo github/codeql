@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.Expr
 
 class UnresolvedSpecializeExprBase extends @unresolved_specialize_expr, Expr {
-  override string getPrimaryQlClass() { result = "UnresolvedSpecializeExpr" }
+  override string getAPrimaryQlClass() { result = "UnresolvedSpecializeExpr" }
 }

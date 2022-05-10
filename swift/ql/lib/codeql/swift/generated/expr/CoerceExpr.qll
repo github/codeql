@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ExplicitCastExpr
 
 class CoerceExprBase extends @coerce_expr, ExplicitCastExpr {
-  override string getPrimaryQlClass() { result = "CoerceExpr" }
+  override string getAPrimaryQlClass() { result = "CoerceExpr" }
 }

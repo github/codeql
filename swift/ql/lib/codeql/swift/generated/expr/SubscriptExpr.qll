@@ -5,7 +5,7 @@ import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.expr.LookupExpr
 
 class SubscriptExprBase extends @subscript_expr, GenericContext, LookupExpr {
-  override string getPrimaryQlClass() { result = "SubscriptExpr" }
+  override string getAPrimaryQlClass() { result = "SubscriptExpr" }
 
   Expr getBaseExpr() {
     exists(Expr x |

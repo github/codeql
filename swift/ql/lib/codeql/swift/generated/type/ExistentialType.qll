@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class ExistentialTypeBase extends @existential_type, Type {
-  override string getPrimaryQlClass() { result = "ExistentialType" }
+  override string getAPrimaryQlClass() { result = "ExistentialType" }
 }

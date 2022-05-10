@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 
 class ExprPatternBase extends @expr_pattern, Pattern {
-  override string getPrimaryQlClass() { result = "ExprPattern" }
+  override string getAPrimaryQlClass() { result = "ExprPattern" }
 
   Expr getSubExpr() {
     exists(Expr x |

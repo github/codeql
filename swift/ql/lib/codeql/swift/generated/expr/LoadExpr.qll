@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class LoadExprBase extends @load_expr, ImplicitConversionExpr {
-  override string getPrimaryQlClass() { result = "LoadExpr" }
+  override string getAPrimaryQlClass() { result = "LoadExpr" }
 }

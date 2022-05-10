@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.LiteralExpr
 
 class NilLiteralExprBase extends @nil_literal_expr, LiteralExpr {
-  override string getPrimaryQlClass() { result = "NilLiteralExpr" }
+  override string getAPrimaryQlClass() { result = "NilLiteralExpr" }
 }

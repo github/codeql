@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class DynamicSelfTypeBase extends @dynamic_self_type, Type {
-  override string getPrimaryQlClass() { result = "DynamicSelfType" }
+  override string getAPrimaryQlClass() { result = "DynamicSelfType" }
 }

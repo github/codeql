@@ -2,7 +2,7 @@
 import codeql.swift.elements.stmt.Stmt
 
 class BreakStmtBase extends @break_stmt, Stmt {
-  override string getPrimaryQlClass() { result = "BreakStmt" }
+  override string getAPrimaryQlClass() { result = "BreakStmt" }
 
   string getTargetName() { break_stmt_target_names(this, result) }
 

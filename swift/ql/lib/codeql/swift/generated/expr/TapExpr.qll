@@ -4,7 +4,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.VarDecl
 
 class TapExprBase extends @tap_expr, Expr {
-  override string getPrimaryQlClass() { result = "TapExpr" }
+  override string getAPrimaryQlClass() { result = "TapExpr" }
 
   Expr getSubExpr() {
     exists(Expr x |

@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.OverloadSetRefExpr
 
 class OverloadedDeclRefExprBase extends @overloaded_decl_ref_expr, OverloadSetRefExpr {
-  override string getPrimaryQlClass() { result = "OverloadedDeclRefExpr" }
+  override string getAPrimaryQlClass() { result = "OverloadedDeclRefExpr" }
 }

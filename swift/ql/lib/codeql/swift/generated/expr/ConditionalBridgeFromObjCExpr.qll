@@ -3,5 +3,5 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class ConditionalBridgeFromObjCExprBase extends @conditional_bridge_from_obj_c_expr,
   ImplicitConversionExpr {
-  override string getPrimaryQlClass() { result = "ConditionalBridgeFromObjCExpr" }
+  override string getAPrimaryQlClass() { result = "ConditionalBridgeFromObjCExpr" }
 }

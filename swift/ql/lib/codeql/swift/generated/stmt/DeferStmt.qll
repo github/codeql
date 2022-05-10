@@ -3,7 +3,7 @@ import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.stmt.Stmt
 
 class DeferStmtBase extends @defer_stmt, Stmt {
-  override string getPrimaryQlClass() { result = "DeferStmt" }
+  override string getAPrimaryQlClass() { result = "DeferStmt" }
 
   BraceStmt getBody() {
     exists(BraceStmt x |

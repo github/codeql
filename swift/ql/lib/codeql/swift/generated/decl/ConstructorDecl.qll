@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.AbstractFunctionDecl
 
 class ConstructorDeclBase extends @constructor_decl, AbstractFunctionDecl {
-  override string getPrimaryQlClass() { result = "ConstructorDecl" }
+  override string getAPrimaryQlClass() { result = "ConstructorDecl" }
 }

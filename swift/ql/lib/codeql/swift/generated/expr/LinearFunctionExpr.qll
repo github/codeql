@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class LinearFunctionExprBase extends @linear_function_expr, ImplicitConversionExpr {
-  override string getPrimaryQlClass() { result = "LinearFunctionExpr" }
+  override string getAPrimaryQlClass() { result = "LinearFunctionExpr" }
 }

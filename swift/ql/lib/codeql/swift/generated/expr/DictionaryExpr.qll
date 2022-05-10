@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.CollectionExpr
 import codeql.swift.elements.expr.Expr
 
 class DictionaryExprBase extends @dictionary_expr, CollectionExpr {
-  override string getPrimaryQlClass() { result = "DictionaryExpr" }
+  override string getAPrimaryQlClass() { result = "DictionaryExpr" }
 
   Expr getElement(int index) {
     exists(Expr x |

@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.AnyTryExpr
 
 class OptionalTryExprBase extends @optional_try_expr, AnyTryExpr {
-  override string getPrimaryQlClass() { result = "OptionalTryExpr" }
+  override string getAPrimaryQlClass() { result = "OptionalTryExpr" }
 }

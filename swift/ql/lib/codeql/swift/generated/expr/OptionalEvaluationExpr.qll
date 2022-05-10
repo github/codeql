@@ -2,7 +2,7 @@
 import codeql.swift.elements.expr.Expr
 
 class OptionalEvaluationExprBase extends @optional_evaluation_expr, Expr {
-  override string getPrimaryQlClass() { result = "OptionalEvaluationExpr" }
+  override string getAPrimaryQlClass() { result = "OptionalEvaluationExpr" }
 
   Expr getSubExpr() {
     exists(Expr x |

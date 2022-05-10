@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.Expr
 
 class EditorPlaceholderExprBase extends @editor_placeholder_expr, Expr {
-  override string getPrimaryQlClass() { result = "EditorPlaceholderExpr" }
+  override string getAPrimaryQlClass() { result = "EditorPlaceholderExpr" }
 }

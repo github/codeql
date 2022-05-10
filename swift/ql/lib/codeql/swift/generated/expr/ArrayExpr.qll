@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.CollectionExpr
 import codeql.swift.elements.expr.Expr
 
 class ArrayExprBase extends @array_expr, CollectionExpr {
-  override string getPrimaryQlClass() { result = "ArrayExpr" }
+  override string getAPrimaryQlClass() { result = "ArrayExpr" }
 
   Expr getElement(int index) {
     exists(Expr x |

@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class DependentMemberTypeBase extends @dependent_member_type, Type {
-  override string getPrimaryQlClass() { result = "DependentMemberType" }
+  override string getAPrimaryQlClass() { result = "DependentMemberType" }
 }

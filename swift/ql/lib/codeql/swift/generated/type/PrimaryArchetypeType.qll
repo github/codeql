@@ -3,7 +3,7 @@ import codeql.swift.elements.type.ArchetypeType
 import codeql.swift.elements.type.GenericTypeParamType
 
 class PrimaryArchetypeTypeBase extends @primary_archetype_type, ArchetypeType {
-  override string getPrimaryQlClass() { result = "PrimaryArchetypeType" }
+  override string getAPrimaryQlClass() { result = "PrimaryArchetypeType" }
 
   GenericTypeParamType getInterfaceType() {
     exists(GenericTypeParamType x |

@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.AbstractTypeParamDecl
 
 class AssociatedTypeDeclBase extends @associated_type_decl, AbstractTypeParamDecl {
-  override string getPrimaryQlClass() { result = "AssociatedTypeDecl" }
+  override string getAPrimaryQlClass() { result = "AssociatedTypeDecl" }
 }

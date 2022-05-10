@@ -5,7 +5,7 @@ import codeql.swift.elements.expr.OpaqueValueExpr
 import codeql.swift.elements.expr.TapExpr
 
 class InterpolatedStringLiteralExprBase extends @interpolated_string_literal_expr, LiteralExpr {
-  override string getPrimaryQlClass() { result = "InterpolatedStringLiteralExpr" }
+  override string getAPrimaryQlClass() { result = "InterpolatedStringLiteralExpr" }
 
   OpaqueValueExpr getInterpolationExpr() {
     exists(OpaqueValueExpr x |

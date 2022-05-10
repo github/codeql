@@ -2,7 +2,7 @@
 import codeql.swift.elements.pattern.Pattern
 
 class TuplePatternBase extends @tuple_pattern, Pattern {
-  override string getPrimaryQlClass() { result = "TuplePattern" }
+  override string getAPrimaryQlClass() { result = "TuplePattern" }
 
   Pattern getElement(int index) {
     exists(Pattern x |

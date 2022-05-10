@@ -3,7 +3,7 @@ import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.stmt.LabeledConditionalStmt
 
 class GuardStmtBase extends @guard_stmt, LabeledConditionalStmt {
-  override string getPrimaryQlClass() { result = "GuardStmt" }
+  override string getAPrimaryQlClass() { result = "GuardStmt" }
 
   BraceStmt getBody() {
     exists(BraceStmt x |

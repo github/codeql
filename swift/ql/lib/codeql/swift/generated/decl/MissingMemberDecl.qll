@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.Decl
 
 class MissingMemberDeclBase extends @missing_member_decl, Decl {
-  override string getPrimaryQlClass() { result = "MissingMemberDecl" }
+  override string getAPrimaryQlClass() { result = "MissingMemberDecl" }
 }

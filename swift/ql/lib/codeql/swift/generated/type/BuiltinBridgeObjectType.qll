@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.BuiltinType
 
 class BuiltinBridgeObjectTypeBase extends @builtin_bridge_object_type, BuiltinType {
-  override string getPrimaryQlClass() { result = "BuiltinBridgeObjectType" }
+  override string getAPrimaryQlClass() { result = "BuiltinBridgeObjectType" }
 }

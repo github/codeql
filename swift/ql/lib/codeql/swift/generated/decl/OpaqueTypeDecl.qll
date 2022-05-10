@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.GenericTypeDecl
 
 class OpaqueTypeDeclBase extends @opaque_type_decl, GenericTypeDecl {
-  override string getPrimaryQlClass() { result = "OpaqueTypeDecl" }
+  override string getAPrimaryQlClass() { result = "OpaqueTypeDecl" }
 }

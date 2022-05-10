@@ -3,7 +3,7 @@ import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.decl.Decl
 
 class TopLevelCodeDeclBase extends @top_level_code_decl, Decl {
-  override string getPrimaryQlClass() { result = "TopLevelCodeDecl" }
+  override string getAPrimaryQlClass() { result = "TopLevelCodeDecl" }
 
   BraceStmt getBody() {
     exists(BraceStmt x |

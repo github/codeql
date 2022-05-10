@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.Decl
 
 class PrecedenceGroupDeclBase extends @precedence_group_decl, Decl {
-  override string getPrimaryQlClass() { result = "PrecedenceGroupDecl" }
+  override string getAPrimaryQlClass() { result = "PrecedenceGroupDecl" }
 }

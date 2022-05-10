@@ -8,7 +8,9 @@ class {{name}}Base extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
   {{#root}}
   string toString() { none() } // overridden by subclasses
 
-  string getPrimaryQlClass() { none() } // overridden by subclasses
+  string getAPrimaryQlClass() { none() } // overridden by subclasses
+
+  final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
   {{name}}Base getResolveStep() { none() } // overridden by subclasses
 
@@ -19,7 +21,7 @@ class {{name}}Base extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
   }
   {{/root}}
   {{#final}}
-  override string getPrimaryQlClass() { result = "{{name}}" }
+  override string getAPrimaryQlClass() { result = "{{name}}" }
   {{/final}}
   {{#properties}}
 

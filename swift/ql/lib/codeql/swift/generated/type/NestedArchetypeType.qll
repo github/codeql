@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.ArchetypeType
 
 class NestedArchetypeTypeBase extends @nested_archetype_type, ArchetypeType {
-  override string getPrimaryQlClass() { result = "NestedArchetypeType" }
+  override string getAPrimaryQlClass() { result = "NestedArchetypeType" }
 }

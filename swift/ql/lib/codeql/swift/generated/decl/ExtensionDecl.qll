@@ -4,5 +4,5 @@ import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.IterableDeclContext
 
 class ExtensionDeclBase extends @extension_decl, Decl, GenericContext, IterableDeclContext {
-  override string getPrimaryQlClass() { result = "ExtensionDecl" }
+  override string getAPrimaryQlClass() { result = "ExtensionDecl" }
 }

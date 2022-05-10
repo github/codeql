@@ -2,5 +2,5 @@
 import codeql.swift.elements.stmt.Stmt
 
 class PoundAssertStmtBase extends @pound_assert_stmt, Stmt {
-  override string getPrimaryQlClass() { result = "PoundAssertStmt" }
+  override string getAPrimaryQlClass() { result = "PoundAssertStmt" }
 }

@@ -2,7 +2,7 @@
 import codeql.swift.elements.stmt.Stmt
 
 class ContinueStmtBase extends @continue_stmt, Stmt {
-  override string getPrimaryQlClass() { result = "ContinueStmt" }
+  override string getAPrimaryQlClass() { result = "ContinueStmt" }
 
   string getTargetName() { continue_stmt_target_names(this, result) }
 

@@ -4,7 +4,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 
 class CaseLabelItemBase extends @case_label_item, AstNode {
-  override string getPrimaryQlClass() { result = "CaseLabelItem" }
+  override string getAPrimaryQlClass() { result = "CaseLabelItem" }
 
   Pattern getPattern() {
     exists(Pattern x |

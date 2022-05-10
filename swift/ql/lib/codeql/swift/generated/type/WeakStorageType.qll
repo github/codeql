@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.ReferenceStorageType
 
 class WeakStorageTypeBase extends @weak_storage_type, ReferenceStorageType {
-  override string getPrimaryQlClass() { result = "WeakStorageType" }
+  override string getAPrimaryQlClass() { result = "WeakStorageType" }
 }

@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.AnyMetatypeType
 
 class ExistentialMetatypeTypeBase extends @existential_metatype_type, AnyMetatypeType {
-  override string getPrimaryQlClass() { result = "ExistentialMetatypeType" }
+  override string getAPrimaryQlClass() { result = "ExistentialMetatypeType" }
 }

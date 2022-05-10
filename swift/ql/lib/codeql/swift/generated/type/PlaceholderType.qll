@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class PlaceholderTypeBase extends @placeholder_type, Type {
-  override string getPrimaryQlClass() { result = "PlaceholderType" }
+  override string getAPrimaryQlClass() { result = "PlaceholderType" }
 }

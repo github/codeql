@@ -3,7 +3,7 @@ import codeql.swift.elements.decl.ParamDecl
 import codeql.swift.elements.decl.ValueDecl
 
 class EnumElementDeclBase extends @enum_element_decl, ValueDecl {
-  override string getPrimaryQlClass() { result = "EnumElementDecl" }
+  override string getAPrimaryQlClass() { result = "EnumElementDecl" }
 
   string getName() { enum_element_decls(this, result) }
 

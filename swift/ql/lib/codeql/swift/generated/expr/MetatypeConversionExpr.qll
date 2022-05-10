@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class MetatypeConversionExprBase extends @metatype_conversion_expr, ImplicitConversionExpr {
-  override string getPrimaryQlClass() { result = "MetatypeConversionExpr" }
+  override string getAPrimaryQlClass() { result = "MetatypeConversionExpr" }
 }

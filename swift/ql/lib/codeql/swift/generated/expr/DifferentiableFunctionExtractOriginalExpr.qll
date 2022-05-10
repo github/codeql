@@ -3,5 +3,5 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class DifferentiableFunctionExtractOriginalExprBase extends @differentiable_function_extract_original_expr,
   ImplicitConversionExpr {
-  override string getPrimaryQlClass() { result = "DifferentiableFunctionExtractOriginalExpr" }
+  override string getAPrimaryQlClass() { result = "DifferentiableFunctionExtractOriginalExpr" }
 }

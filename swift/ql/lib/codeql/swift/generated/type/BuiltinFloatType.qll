@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.BuiltinType
 
 class BuiltinFloatTypeBase extends @builtin_float_type, BuiltinType {
-  override string getPrimaryQlClass() { result = "BuiltinFloatType" }
+  override string getAPrimaryQlClass() { result = "BuiltinFloatType" }
 }

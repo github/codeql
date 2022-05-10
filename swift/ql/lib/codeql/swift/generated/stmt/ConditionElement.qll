@@ -4,7 +4,7 @@ import codeql.swift.elements.Locatable
 import codeql.swift.elements.pattern.Pattern
 
 class ConditionElementBase extends @condition_element, Locatable {
-  override string getPrimaryQlClass() { result = "ConditionElement" }
+  override string getAPrimaryQlClass() { result = "ConditionElement" }
 
   Expr getBoolean() {
     exists(Expr x |

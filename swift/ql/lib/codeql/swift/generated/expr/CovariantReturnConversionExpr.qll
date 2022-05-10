@@ -3,5 +3,5 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class CovariantReturnConversionExprBase extends @covariant_return_conversion_expr,
   ImplicitConversionExpr {
-  override string getPrimaryQlClass() { result = "CovariantReturnConversionExpr" }
+  override string getAPrimaryQlClass() { result = "CovariantReturnConversionExpr" }
 }

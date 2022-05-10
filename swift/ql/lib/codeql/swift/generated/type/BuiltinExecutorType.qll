@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.BuiltinType
 
 class BuiltinExecutorTypeBase extends @builtin_executor_type, BuiltinType {
-  override string getPrimaryQlClass() { result = "BuiltinExecutorType" }
+  override string getAPrimaryQlClass() { result = "BuiltinExecutorType" }
 }

@@ -3,5 +3,5 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class ForeignObjectConversionExprBase extends @foreign_object_conversion_expr,
   ImplicitConversionExpr {
-  override string getPrimaryQlClass() { result = "ForeignObjectConversionExpr" }
+  override string getAPrimaryQlClass() { result = "ForeignObjectConversionExpr" }
 }

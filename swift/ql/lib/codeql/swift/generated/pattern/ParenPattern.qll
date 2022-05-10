@@ -2,7 +2,7 @@
 import codeql.swift.elements.pattern.Pattern
 
 class ParenPatternBase extends @paren_pattern, Pattern {
-  override string getPrimaryQlClass() { result = "ParenPattern" }
+  override string getAPrimaryQlClass() { result = "ParenPattern" }
 
   Pattern getSubPattern() {
     exists(Pattern x |

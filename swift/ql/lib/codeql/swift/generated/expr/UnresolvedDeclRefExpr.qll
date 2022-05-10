@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.Expr
 
 class UnresolvedDeclRefExprBase extends @unresolved_decl_ref_expr, Expr {
-  override string getPrimaryQlClass() { result = "UnresolvedDeclRefExpr" }
+  override string getAPrimaryQlClass() { result = "UnresolvedDeclRefExpr" }
 }

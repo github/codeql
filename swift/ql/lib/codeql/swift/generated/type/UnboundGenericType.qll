@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.AnyGenericType
 
 class UnboundGenericTypeBase extends @unbound_generic_type, AnyGenericType {
-  override string getPrimaryQlClass() { result = "UnboundGenericType" }
+  override string getAPrimaryQlClass() { result = "UnboundGenericType" }
 }

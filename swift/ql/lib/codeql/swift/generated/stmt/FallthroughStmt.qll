@@ -3,7 +3,7 @@ import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.stmt.Stmt
 
 class FallthroughStmtBase extends @fallthrough_stmt, Stmt {
-  override string getPrimaryQlClass() { result = "FallthroughStmt" }
+  override string getAPrimaryQlClass() { result = "FallthroughStmt" }
 
   CaseStmt getFallthroughSource() {
     exists(CaseStmt x |

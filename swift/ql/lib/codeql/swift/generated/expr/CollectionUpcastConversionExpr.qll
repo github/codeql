@@ -3,5 +3,5 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class CollectionUpcastConversionExprBase extends @collection_upcast_conversion_expr,
   ImplicitConversionExpr {
-  override string getPrimaryQlClass() { result = "CollectionUpcastConversionExpr" }
+  override string getAPrimaryQlClass() { result = "CollectionUpcastConversionExpr" }
 }

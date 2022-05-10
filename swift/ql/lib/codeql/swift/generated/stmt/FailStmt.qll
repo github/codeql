@@ -2,5 +2,5 @@
 import codeql.swift.elements.stmt.Stmt
 
 class FailStmtBase extends @fail_stmt, Stmt {
-  override string getPrimaryQlClass() { result = "FailStmt" }
+  override string getAPrimaryQlClass() { result = "FailStmt" }
 }
