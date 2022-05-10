@@ -27,7 +27,7 @@ def _get_field(cls: schema.Class, p: schema.Property, trap_affix: str) -> cpp.Fi
         if not p.is_predicate:
             trap_name = inflection.pluralize(trap_name)
     args = dict(
-        name=p.name + ("_" if p.name in cpp.cpp_keywords else ""),
+        field_name=p.name + ("_" if p.name in cpp.cpp_keywords else ""),
         type=_get_type(p.type, trap_affix),
         is_optional=p.is_optional,
         is_repeated=p.is_repeated,

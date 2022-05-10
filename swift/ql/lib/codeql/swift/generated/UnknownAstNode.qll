@@ -6,7 +6,7 @@ import codeql.swift.elements.stmt.Stmt
 import codeql.swift.elements.typerepr.TypeRepr
 
 class UnknownAstNodeBase extends @unknown_ast_node, Decl, Expr, Pattern, Stmt, TypeRepr {
-  override string toString() { result = "UnknownAstNode" }
+  override string getAPrimaryQlClass() { result = "UnknownAstNode" }
 
   string getName() { unknown_ast_nodes(this, result) }
 }

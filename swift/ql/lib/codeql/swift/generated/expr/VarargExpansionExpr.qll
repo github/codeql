@@ -2,7 +2,7 @@
 import codeql.swift.elements.expr.Expr
 
 class VarargExpansionExprBase extends @vararg_expansion_expr, Expr {
-  override string toString() { result = "VarargExpansionExpr" }
+  override string getAPrimaryQlClass() { result = "VarargExpansionExpr" }
 
   Expr getSubExpr() {
     exists(Expr x |

@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.AnyBuiltinIntegerType
 
 class BuiltinIntegerLiteralTypeBase extends @builtin_integer_literal_type, AnyBuiltinIntegerType {
-  override string toString() { result = "BuiltinIntegerLiteralType" }
+  override string getAPrimaryQlClass() { result = "BuiltinIntegerLiteralType" }
 }

@@ -92,7 +92,6 @@ def load(path):
         data = yaml.load(input, Loader=yaml.SafeLoader)
     grouper = _DirSelector(data.get("_directories", {}).items())
     classes = {root_class_name: Class(root_class_name)}
-    assert root_class_name not in data
     classes.update((cls, Class(cls, dir=grouper.get(cls))) for cls in data if not cls.startswith("_"))
     for name, info in data.items():
         if name.startswith("_"):
@@ -110,7 +109,7 @@ def load(path):
                     classes[base].derived.add(name)
             elif k == "_dir":
                 cls.dir = pathlib.Path(v)
-        if not cls.bases:
+        if not cls.bases and cls.name != root_class_name:
             cls.bases.add(root_class_name)
             classes[root_class_name].derived.add(name)
 

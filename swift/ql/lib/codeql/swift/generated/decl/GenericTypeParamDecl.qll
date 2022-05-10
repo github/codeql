@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.AbstractTypeParamDecl
 
 class GenericTypeParamDeclBase extends @generic_type_param_decl, AbstractTypeParamDecl {
-  override string toString() { result = "GenericTypeParamDecl" }
+  override string getAPrimaryQlClass() { result = "GenericTypeParamDecl" }
 }

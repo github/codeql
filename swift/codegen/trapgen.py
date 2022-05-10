@@ -28,7 +28,7 @@ def get_cpp_type(schema_type: str, trap_affix: str):
 
 def get_field(c: dbscheme.Column, trap_affix: str):
     args = {
-        "name": c.schema_name,
+        "field_name": c.schema_name,
         "type": c.type,
     }
     args.update(cpp.get_field_override(c.schema_name))

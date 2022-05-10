@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class SilBoxTypeBase extends @sil_box_type, Type {
-  override string toString() { result = "SilBoxType" }
+  override string getAPrimaryQlClass() { result = "SilBoxType" }
 }

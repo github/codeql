@@ -9,4 +9,6 @@ class ExprBase extends @expr, AstNode {
       result = x.resolve()
     )
   }
+
+  predicate hasType() { exists(getType()) }
 }

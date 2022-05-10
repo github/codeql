@@ -3,7 +3,7 @@ import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.stmt.LabeledStmt
 
 class DoStmtBase extends @do_stmt, LabeledStmt {
-  override string toString() { result = "DoStmt" }
+  override string getAPrimaryQlClass() { result = "DoStmt" }
 
   BraceStmt getBody() {
     exists(BraceStmt x |
