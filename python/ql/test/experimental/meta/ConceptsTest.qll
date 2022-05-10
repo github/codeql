@@ -570,6 +570,9 @@ class CsrfLocalProtectionSettingTest extends InlineExpectationsTest {
       if p.csrfEnabled()
       then tag = "CsrfLocalProtectionEnabled"
       else tag = "CsrfLocalProtectionDisabled"
+    )
+  }
+}
 
 class XmlParsingTest extends InlineExpectationsTest {
   XmlParsingTest() { this = "XmlParsingTest" }
