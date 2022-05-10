@@ -1,11 +1,17 @@
 import java
 
+class InstantiatedType extends ParameterizedType {
+  InstantiatedType() {
+    typeArgs(_, _, this)
+  }
+}
+
 Type getAMentionedType(RefType type) {
   result = type
   or
   result = getAMentionedType(type).(Array).getElementType()
   or
-  result = getAMentionedType(type).(ParameterizedType).getATypeArgument()
+  result = getAMentionedType(type).(InstantiatedType).getATypeArgument()
   or
   result = getAMentionedType(type).(NestedType).getEnclosingType()
 }
@@ -29,7 +35,7 @@ TypeVariable getATypeVariableInScope(RefType type) {
   or
   result = type.(GenericType).getATypeParameter()
   or
-  result = getAMentionedType(type.(ParameterizedType).getATypeArgument())
+  result = getAMentionedType(type.(InstantiatedType).getATypeArgument())
   or
   result = getATypeVariableInScope(type.getEnclosingType())
 }
