@@ -3,7 +3,7 @@ import codeql.swift.elements.decl.AbstractFunctionDecl
 import codeql.swift.elements.expr.Expr
 
 class ObjCSelectorExprBase extends @obj_c_selector_expr, Expr {
-  override string toString() { result = "ObjCSelectorExpr" }
+  override string getPrimaryQlClass() { result = "ObjCSelectorExpr" }
 
   Expr getSubExpr() {
     exists(Expr x |

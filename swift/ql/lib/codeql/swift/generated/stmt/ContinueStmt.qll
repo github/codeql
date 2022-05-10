@@ -2,9 +2,11 @@
 import codeql.swift.elements.stmt.Stmt
 
 class ContinueStmtBase extends @continue_stmt, Stmt {
-  override string toString() { result = "ContinueStmt" }
+  override string getPrimaryQlClass() { result = "ContinueStmt" }
 
   string getTargetName() { continue_stmt_target_names(this, result) }
+
+  predicate hasTargetName() { exists(getTargetName()) }
 
   Stmt getTarget() {
     exists(Stmt x |
@@ -12,4 +14,6 @@ class ContinueStmtBase extends @continue_stmt, Stmt {
       result = x.resolve()
     )
   }
+
+  predicate hasTarget() { exists(getTarget()) }
 }

@@ -2,7 +2,7 @@
 import codeql.swift.elements.type.Type
 
 class UnknownTypeBase extends @unknown_type, Type {
-  override string toString() { result = "UnknownType" }
+  override string getPrimaryQlClass() { result = "UnknownType" }
 
   string getName() { unknown_types(this, result) }
 }

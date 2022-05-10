@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.BuiltinType
 
 class BuiltinJobTypeBase extends @builtin_job_type, BuiltinType {
-  override string toString() { result = "BuiltinJobType" }
+  override string getPrimaryQlClass() { result = "BuiltinJobType" }
 }

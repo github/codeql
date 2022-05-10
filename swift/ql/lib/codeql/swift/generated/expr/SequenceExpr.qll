@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.Expr
 
 class SequenceExprBase extends @sequence_expr, Expr {
-  override string toString() { result = "SequenceExpr" }
+  override string getPrimaryQlClass() { result = "SequenceExpr" }
 }

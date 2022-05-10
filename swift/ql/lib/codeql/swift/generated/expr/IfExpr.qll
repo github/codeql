@@ -2,7 +2,7 @@
 import codeql.swift.elements.expr.Expr
 
 class IfExprBase extends @if_expr, Expr {
-  override string toString() { result = "IfExpr" }
+  override string getPrimaryQlClass() { result = "IfExpr" }
 
   Expr getCondition() {
     exists(Expr x |

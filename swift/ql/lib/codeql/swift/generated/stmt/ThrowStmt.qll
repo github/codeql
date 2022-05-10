@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 
 class ThrowStmtBase extends @throw_stmt, Stmt {
-  override string toString() { result = "ThrowStmt" }
+  override string getPrimaryQlClass() { result = "ThrowStmt" }
 
   Expr getSubExpr() {
     exists(Expr x |

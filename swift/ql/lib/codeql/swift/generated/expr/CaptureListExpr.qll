@@ -4,7 +4,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.PatternBindingDecl
 
 class CaptureListExprBase extends @capture_list_expr, Expr {
-  override string toString() { result = "CaptureListExpr" }
+  override string getPrimaryQlClass() { result = "CaptureListExpr" }
 
   PatternBindingDecl getBindingDecl(int index) {
     exists(PatternBindingDecl x |

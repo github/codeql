@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class PointerToPointerExprBase extends @pointer_to_pointer_expr, ImplicitConversionExpr {
-  override string toString() { result = "PointerToPointerExpr" }
+  override string getPrimaryQlClass() { result = "PointerToPointerExpr" }
 }

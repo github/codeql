@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class TupleTypeBase extends @tuple_type, Type {
-  override string toString() { result = "TupleType" }
+  override string getPrimaryQlClass() { result = "TupleType" }
 }

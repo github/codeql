@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.FuncDecl
 
 class ConcreteFuncDeclBase extends @concrete_func_decl, FuncDecl {
-  override string toString() { result = "ConcreteFuncDecl" }
+  override string getPrimaryQlClass() { result = "ConcreteFuncDecl" }
 }

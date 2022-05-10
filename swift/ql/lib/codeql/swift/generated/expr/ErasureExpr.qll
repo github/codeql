@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class ErasureExprBase extends @erasure_expr, ImplicitConversionExpr {
-  override string toString() { result = "ErasureExpr" }
+  override string getPrimaryQlClass() { result = "ErasureExpr" }
 }

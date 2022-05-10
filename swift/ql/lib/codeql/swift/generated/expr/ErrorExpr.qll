@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.Expr
 
 class ErrorExprBase extends @error_expr, Expr {
-  override string toString() { result = "ErrorExpr" }
+  override string getPrimaryQlClass() { result = "ErrorExpr" }
 }

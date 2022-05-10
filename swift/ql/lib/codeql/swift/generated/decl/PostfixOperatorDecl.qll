@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.OperatorDecl
 
 class PostfixOperatorDeclBase extends @postfix_operator_decl, OperatorDecl {
-  override string toString() { result = "PostfixOperatorDecl" }
+  override string getPrimaryQlClass() { result = "PostfixOperatorDecl" }
 }

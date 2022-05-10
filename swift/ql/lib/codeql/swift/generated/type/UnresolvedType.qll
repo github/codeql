@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class UnresolvedTypeBase extends @unresolved_type, Type {
-  override string toString() { result = "UnresolvedType" }
+  override string getPrimaryQlClass() { result = "UnresolvedType" }
 }

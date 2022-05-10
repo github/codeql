@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.CheckedCastExpr
 
 class IsExprBase extends @is_expr, CheckedCastExpr {
-  override string toString() { result = "IsExpr" }
+  override string getPrimaryQlClass() { result = "IsExpr" }
 }

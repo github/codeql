@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.BoundGenericType
 
 class BoundGenericClassTypeBase extends @bound_generic_class_type, BoundGenericType {
-  override string toString() { result = "BoundGenericClassType" }
+  override string getPrimaryQlClass() { result = "BoundGenericClassType" }
 }

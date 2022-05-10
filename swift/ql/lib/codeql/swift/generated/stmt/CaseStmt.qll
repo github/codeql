@@ -4,7 +4,7 @@ import codeql.swift.elements.stmt.Stmt
 import codeql.swift.elements.decl.VarDecl
 
 class CaseStmtBase extends @case_stmt, Stmt {
-  override string toString() { result = "CaseStmt" }
+  override string getPrimaryQlClass() { result = "CaseStmt" }
 
   Stmt getBody() {
     exists(Stmt x |

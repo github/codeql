@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class FunctionConversionExprBase extends @function_conversion_expr, ImplicitConversionExpr {
-  override string toString() { result = "FunctionConversionExpr" }
+  override string getPrimaryQlClass() { result = "FunctionConversionExpr" }
 }

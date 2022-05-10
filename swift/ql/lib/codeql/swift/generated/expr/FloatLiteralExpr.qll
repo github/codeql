@@ -2,7 +2,7 @@
 import codeql.swift.elements.expr.NumberLiteralExpr
 
 class FloatLiteralExprBase extends @float_literal_expr, NumberLiteralExpr {
-  override string toString() { result = "FloatLiteralExpr" }
+  override string getPrimaryQlClass() { result = "FloatLiteralExpr" }
 
   string getStringValue() { float_literal_exprs(this, result) }
 }

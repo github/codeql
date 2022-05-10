@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.BoundGenericType
 
 class BoundGenericEnumTypeBase extends @bound_generic_enum_type, BoundGenericType {
-  override string toString() { result = "BoundGenericEnumType" }
+  override string getPrimaryQlClass() { result = "BoundGenericEnumType" }
 }

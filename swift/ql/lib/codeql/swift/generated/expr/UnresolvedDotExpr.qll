@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.Expr
 
 class UnresolvedDotExprBase extends @unresolved_dot_expr, Expr {
-  override string toString() { result = "UnresolvedDotExpr" }
+  override string getPrimaryQlClass() { result = "UnresolvedDotExpr" }
 }

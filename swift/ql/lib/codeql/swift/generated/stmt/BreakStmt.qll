@@ -2,9 +2,11 @@
 import codeql.swift.elements.stmt.Stmt
 
 class BreakStmtBase extends @break_stmt, Stmt {
-  override string toString() { result = "BreakStmt" }
+  override string getPrimaryQlClass() { result = "BreakStmt" }
 
   string getTargetName() { break_stmt_target_names(this, result) }
+
+  predicate hasTargetName() { exists(getTargetName()) }
 
   Stmt getTarget() {
     exists(Stmt x |
@@ -12,4 +14,6 @@ class BreakStmtBase extends @break_stmt, Stmt {
       result = x.resolve()
     )
   }
+
+  predicate hasTarget() { exists(getTarget()) }
 }

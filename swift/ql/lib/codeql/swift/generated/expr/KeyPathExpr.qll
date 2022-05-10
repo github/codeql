@@ -2,7 +2,7 @@
 import codeql.swift.elements.expr.Expr
 
 class KeyPathExprBase extends @key_path_expr, Expr {
-  override string toString() { result = "KeyPathExpr" }
+  override string getPrimaryQlClass() { result = "KeyPathExpr" }
 
   Expr getParsedRoot() {
     exists(Expr x |
@@ -11,10 +11,14 @@ class KeyPathExprBase extends @key_path_expr, Expr {
     )
   }
 
+  predicate hasParsedRoot() { exists(getParsedRoot()) }
+
   Expr getParsedPath() {
     exists(Expr x |
       key_path_expr_parsed_paths(this, x) and
       result = x.resolve()
     )
   }
+
+  predicate hasParsedPath() { exists(getParsedPath()) }
 }

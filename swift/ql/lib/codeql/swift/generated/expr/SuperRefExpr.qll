@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.VarDecl
 
 class SuperRefExprBase extends @super_ref_expr, Expr {
-  override string toString() { result = "SuperRefExpr" }
+  override string getPrimaryQlClass() { result = "SuperRefExpr" }
 
   VarDecl getSelf() {
     exists(VarDecl x |

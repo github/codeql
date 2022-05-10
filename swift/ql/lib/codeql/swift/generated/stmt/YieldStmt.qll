@@ -2,5 +2,5 @@
 import codeql.swift.elements.stmt.Stmt
 
 class YieldStmtBase extends @yield_stmt, Stmt {
-  override string toString() { result = "YieldStmt" }
+  override string getPrimaryQlClass() { result = "YieldStmt" }
 }

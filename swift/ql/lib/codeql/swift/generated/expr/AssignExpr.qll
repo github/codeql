@@ -2,7 +2,7 @@
 import codeql.swift.elements.expr.Expr
 
 class AssignExprBase extends @assign_expr, Expr {
-  override string toString() { result = "AssignExpr" }
+  override string getPrimaryQlClass() { result = "AssignExpr" }
 
   Expr getDest() {
     exists(Expr x |

@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class InOutTypeBase extends @in_out_type, Type {
-  override string toString() { result = "InOutType" }
+  override string getPrimaryQlClass() { result = "InOutType" }
 }

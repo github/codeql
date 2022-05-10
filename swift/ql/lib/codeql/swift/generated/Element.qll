@@ -2,6 +2,8 @@
 class ElementBase extends @element {
   string toString() { none() } // overridden by subclasses
 
+  string getPrimaryQlClass() { none() } // overridden by subclasses
+
   ElementBase getResolveStep() { none() } // overridden by subclasses
 
   ElementBase resolve() {

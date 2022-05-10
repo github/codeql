@@ -3,7 +3,7 @@ import codeql.swift.elements.stmt.LabeledConditionalStmt
 import codeql.swift.elements.stmt.Stmt
 
 class IfStmtBase extends @if_stmt, LabeledConditionalStmt {
-  override string toString() { result = "IfStmt" }
+  override string getPrimaryQlClass() { result = "IfStmt" }
 
   Stmt getThen() {
     exists(Stmt x |
@@ -18,4 +18,6 @@ class IfStmtBase extends @if_stmt, LabeledConditionalStmt {
       result = x.resolve()
     )
   }
+
+  predicate hasElse() { exists(getElse()) }
 }

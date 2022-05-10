@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.AbstractClosureExpr
 import codeql.swift.elements.stmt.BraceStmt
 
 class ClosureExprBase extends @closure_expr, AbstractClosureExpr {
-  override string toString() { result = "ClosureExpr" }
+  override string getPrimaryQlClass() { result = "ClosureExpr" }
 
   BraceStmt getBody() {
     exists(BraceStmt x |

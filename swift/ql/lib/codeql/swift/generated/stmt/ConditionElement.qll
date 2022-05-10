@@ -4,7 +4,7 @@ import codeql.swift.elements.Locatable
 import codeql.swift.elements.pattern.Pattern
 
 class ConditionElementBase extends @condition_element, Locatable {
-  override string toString() { result = "ConditionElement" }
+  override string getPrimaryQlClass() { result = "ConditionElement" }
 
   Expr getBoolean() {
     exists(Expr x |
@@ -13,6 +13,8 @@ class ConditionElementBase extends @condition_element, Locatable {
     )
   }
 
+  predicate hasBoolean() { exists(getBoolean()) }
+
   Pattern getPattern() {
     exists(Pattern x |
       condition_element_patterns(this, x) and
@@ -20,10 +22,14 @@ class ConditionElementBase extends @condition_element, Locatable {
     )
   }
 
+  predicate hasPattern() { exists(getPattern()) }
+
   Expr getInitializer() {
     exists(Expr x |
       condition_element_initializers(this, x) and
       result = x.resolve()
     )
   }
+
+  predicate hasInitializer() { exists(getInitializer()) }
 }

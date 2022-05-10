@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.BuiltinType
 
 class BuiltinNativeObjectTypeBase extends @builtin_native_object_type, BuiltinType {
-  override string toString() { result = "BuiltinNativeObjectType" }
+  override string getPrimaryQlClass() { result = "BuiltinNativeObjectType" }
 }

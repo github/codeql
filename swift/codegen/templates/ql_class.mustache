@@ -8,6 +8,8 @@ class {{name}}Base extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
   {{#root}}
   string toString() { none() } // overridden by subclasses
 
+  string getPrimaryQlClass() { none() } // overridden by subclasses
+
   {{name}}Base getResolveStep() { none() } // overridden by subclasses
 
   {{name}}Base resolve() {
@@ -17,7 +19,7 @@ class {{name}}Base extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
   }
   {{/root}}
   {{#final}}
-  override string toString() { result = "{{name}}" }
+  override string getPrimaryQlClass() { result = "{{name}}" }
   {{/final}}
   {{#properties}}
 
@@ -32,6 +34,12 @@ class {{name}}Base extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
     {{tablename}}({{#tableparams}}{{^first}}, {{/first}}{{param}}{{/tableparams}})
     {{/type_is_class}}
   }
+  {{#is_optional}}
+
+  predicate has{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
+    exists({{getter}}({{#is_repeated}}index{{/is_repeated}}))
+  }
+  {{/is_optional}}
   {{#is_repeated}}
 
   {{type}} {{indefinite_getter}}() {

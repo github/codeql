@@ -3,7 +3,7 @@ import codeql.swift.elements.decl.ClassDecl
 import codeql.swift.elements.type.NominalType
 
 class ClassTypeBase extends @class_type, NominalType {
-  override string toString() { result = "ClassType" }
+  override string getPrimaryQlClass() { result = "ClassType" }
 
   ClassDecl getDecl() {
     exists(ClassDecl x |

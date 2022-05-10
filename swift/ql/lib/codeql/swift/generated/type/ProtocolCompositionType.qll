@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class ProtocolCompositionTypeBase extends @protocol_composition_type, Type {
-  override string toString() { result = "ProtocolCompositionType" }
+  override string getPrimaryQlClass() { result = "ProtocolCompositionType" }
 }

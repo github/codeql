@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class ArrayToPointerExprBase extends @array_to_pointer_expr, ImplicitConversionExpr {
-  override string toString() { result = "ArrayToPointerExpr" }
+  override string getPrimaryQlClass() { result = "ArrayToPointerExpr" }
 }

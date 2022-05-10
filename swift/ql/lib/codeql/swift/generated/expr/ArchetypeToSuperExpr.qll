@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class ArchetypeToSuperExprBase extends @archetype_to_super_expr, ImplicitConversionExpr {
-  override string toString() { result = "ArchetypeToSuperExpr" }
+  override string getPrimaryQlClass() { result = "ArchetypeToSuperExpr" }
 }

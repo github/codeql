@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class SilBlockStorageTypeBase extends @sil_block_storage_type, Type {
-  override string toString() { result = "SilBlockStorageType" }
+  override string getPrimaryQlClass() { result = "SilBlockStorageType" }
 }

@@ -3,7 +3,7 @@ import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.typerepr.TypeRepr
 
 class TypedPatternBase extends @typed_pattern, Pattern {
-  override string toString() { result = "TypedPattern" }
+  override string getPrimaryQlClass() { result = "TypedPattern" }
 
   Pattern getSubPattern() {
     exists(Pattern x |
@@ -18,4 +18,6 @@ class TypedPatternBase extends @typed_pattern, Pattern {
       result = x.resolve()
     )
   }
+
+  predicate hasTypeRepr() { exists(getTypeRepr()) }
 }

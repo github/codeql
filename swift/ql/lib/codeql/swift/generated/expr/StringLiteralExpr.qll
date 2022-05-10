@@ -2,7 +2,7 @@
 import codeql.swift.elements.expr.BuiltinLiteralExpr
 
 class StringLiteralExprBase extends @string_literal_expr, BuiltinLiteralExpr {
-  override string toString() { result = "StringLiteralExpr" }
+  override string getPrimaryQlClass() { result = "StringLiteralExpr" }
 
   string getValue() { string_literal_exprs(this, result) }
 }

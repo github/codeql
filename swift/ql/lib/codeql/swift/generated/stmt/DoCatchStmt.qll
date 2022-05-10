@@ -4,7 +4,7 @@ import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.stmt.Stmt
 
 class DoCatchStmtBase extends @do_catch_stmt, LabeledStmt {
-  override string toString() { result = "DoCatchStmt" }
+  override string getPrimaryQlClass() { result = "DoCatchStmt" }
 
   Stmt getBody() {
     exists(Stmt x |

@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.Expr
 
 class CodeCompletionExprBase extends @code_completion_expr, Expr {
-  override string toString() { result = "CodeCompletionExpr" }
+  override string getPrimaryQlClass() { result = "CodeCompletionExpr" }
 }

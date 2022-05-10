@@ -4,7 +4,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 
 class PatternBindingDeclBase extends @pattern_binding_decl, Decl {
-  override string toString() { result = "PatternBindingDecl" }
+  override string getPrimaryQlClass() { result = "PatternBindingDecl" }
 
   Expr getInit(int index) {
     exists(Expr x |
@@ -12,6 +12,8 @@ class PatternBindingDeclBase extends @pattern_binding_decl, Decl {
       result = x.resolve()
     )
   }
+
+  predicate hasInit(int index) { exists(getInit(index)) }
 
   Expr getAnInit() { result = getInit(_) }
 

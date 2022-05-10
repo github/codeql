@@ -2,7 +2,7 @@
 import codeql.swift.elements.expr.BuiltinLiteralExpr
 
 class BooleanLiteralExprBase extends @boolean_literal_expr, BuiltinLiteralExpr {
-  override string toString() { result = "BooleanLiteralExpr" }
+  override string getPrimaryQlClass() { result = "BooleanLiteralExpr" }
 
   boolean getValue() { boolean_literal_exprs(this, result) }
 }

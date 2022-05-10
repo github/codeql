@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.ReferenceStorageType
 
 class UnownedStorageTypeBase extends @unowned_storage_type, ReferenceStorageType {
-  override string toString() { result = "UnownedStorageType" }
+  override string getPrimaryQlClass() { result = "UnownedStorageType" }
 }

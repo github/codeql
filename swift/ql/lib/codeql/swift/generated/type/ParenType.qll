@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.SugarType
 
 class ParenTypeBase extends @paren_type, SugarType {
-  override string toString() { result = "ParenType" }
+  override string getPrimaryQlClass() { result = "ParenType" }
 }

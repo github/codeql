@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class ErrorTypeBase extends @error_type, Type {
-  override string toString() { result = "ErrorType" }
+  override string getPrimaryQlClass() { result = "ErrorType" }
 }

@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.BuiltinType
 
 class BuiltinUnsafeValueBufferTypeBase extends @builtin_unsafe_value_buffer_type, BuiltinType {
-  override string toString() { result = "BuiltinUnsafeValueBufferType" }
+  override string getPrimaryQlClass() { result = "BuiltinUnsafeValueBufferType" }
 }

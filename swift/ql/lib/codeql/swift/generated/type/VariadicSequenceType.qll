@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.UnarySyntaxSugarType
 
 class VariadicSequenceTypeBase extends @variadic_sequence_type, UnarySyntaxSugarType {
-  override string toString() { result = "VariadicSequenceType" }
+  override string getPrimaryQlClass() { result = "VariadicSequenceType" }
 }

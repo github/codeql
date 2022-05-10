@@ -2,7 +2,7 @@
 import codeql.swift.elements.pattern.Pattern
 
 class BindingPatternBase extends @binding_pattern, Pattern {
-  override string toString() { result = "BindingPattern" }
+  override string getPrimaryQlClass() { result = "BindingPattern" }
 
   Pattern getSubPattern() {
     exists(Pattern x |

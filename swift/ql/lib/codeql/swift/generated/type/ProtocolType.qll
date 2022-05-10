@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.NominalType
 
 class ProtocolTypeBase extends @protocol_type, NominalType {
-  override string toString() { result = "ProtocolType" }
+  override string getPrimaryQlClass() { result = "ProtocolType" }
 }

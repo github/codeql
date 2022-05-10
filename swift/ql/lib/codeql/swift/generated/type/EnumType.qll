@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.NominalType
 
 class EnumTypeBase extends @enum_type, NominalType {
-  override string toString() { result = "EnumType" }
+  override string getPrimaryQlClass() { result = "EnumType" }
 }

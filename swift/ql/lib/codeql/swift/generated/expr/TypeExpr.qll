@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.typerepr.TypeRepr
 
 class TypeExprBase extends @type_expr, Expr {
-  override string toString() { result = "TypeExpr" }
+  override string getPrimaryQlClass() { result = "TypeExpr" }
 
   TypeRepr getTypeRepr() {
     exists(TypeRepr x |
@@ -11,4 +11,6 @@ class TypeExprBase extends @type_expr, Expr {
       result = x.resolve()
     )
   }
+
+  predicate hasTypeRepr() { exists(getTypeRepr()) }
 }

@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.ParamDecl
 
 class DefaultArgumentExprBase extends @default_argument_expr, Expr {
-  override string toString() { result = "DefaultArgumentExpr" }
+  override string getPrimaryQlClass() { result = "DefaultArgumentExpr" }
 
   ParamDecl getParamDecl() {
     exists(ParamDecl x |
@@ -20,4 +20,6 @@ class DefaultArgumentExprBase extends @default_argument_expr, Expr {
       result = x.resolve()
     )
   }
+
+  predicate hasCallerSideDefault() { exists(getCallerSideDefault()) }
 }

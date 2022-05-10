@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.IdentityExpr
 
 class ParenExprBase extends @paren_expr, IdentityExpr {
-  override string toString() { result = "ParenExpr" }
+  override string getPrimaryQlClass() { result = "ParenExpr" }
 }

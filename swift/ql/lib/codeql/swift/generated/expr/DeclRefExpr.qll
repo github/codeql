@@ -4,7 +4,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.type.Type
 
 class DeclRefExprBase extends @decl_ref_expr, Expr {
-  override string toString() { result = "DeclRefExpr" }
+  override string getPrimaryQlClass() { result = "DeclRefExpr" }
 
   Decl getDecl() {
     exists(Decl x |

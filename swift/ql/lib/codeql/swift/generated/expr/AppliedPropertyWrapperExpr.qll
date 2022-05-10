@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.Expr
 
 class AppliedPropertyWrapperExprBase extends @applied_property_wrapper_expr, Expr {
-  override string toString() { result = "AppliedPropertyWrapperExpr" }
+  override string getPrimaryQlClass() { result = "AppliedPropertyWrapperExpr" }
 }

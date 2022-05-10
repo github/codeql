@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class ClassMetatypeToObjectExprBase extends @class_metatype_to_object_expr, ImplicitConversionExpr {
-  override string toString() { result = "ClassMetatypeToObjectExpr" }
+  override string getPrimaryQlClass() { result = "ClassMetatypeToObjectExpr" }
 }

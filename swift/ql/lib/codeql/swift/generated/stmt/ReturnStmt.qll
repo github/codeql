@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 
 class ReturnStmtBase extends @return_stmt, Stmt {
-  override string toString() { result = "ReturnStmt" }
+  override string getPrimaryQlClass() { result = "ReturnStmt" }
 
   Expr getResult() {
     exists(Expr x |
@@ -11,4 +11,6 @@ class ReturnStmtBase extends @return_stmt, Stmt {
       result = x.resolve()
     )
   }
+
+  predicate hasResult() { exists(getResult()) }
 }

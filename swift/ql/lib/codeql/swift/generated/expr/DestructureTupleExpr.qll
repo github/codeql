@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class DestructureTupleExprBase extends @destructure_tuple_expr, ImplicitConversionExpr {
-  override string toString() { result = "DestructureTupleExpr" }
+  override string getPrimaryQlClass() { result = "DestructureTupleExpr" }
 }

@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.Decl
 
 class ImportDeclBase extends @import_decl, Decl {
-  override string toString() { result = "ImportDecl" }
+  override string getPrimaryQlClass() { result = "ImportDecl" }
 }

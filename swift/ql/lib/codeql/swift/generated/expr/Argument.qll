@@ -3,7 +3,7 @@ import codeql.swift.elements.Element
 import codeql.swift.elements.expr.Expr
 
 class ArgumentBase extends @argument, Element {
-  override string toString() { result = "Argument" }
+  override string getPrimaryQlClass() { result = "Argument" }
 
   string getLabel() { arguments(this, result, _) }
 

@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.NominalTypeDecl
 
 class EnumDeclBase extends @enum_decl, NominalTypeDecl {
-  override string toString() { result = "EnumDecl" }
+  override string getPrimaryQlClass() { result = "EnumDecl" }
 }

@@ -17,7 +17,7 @@ cpp_keywords = {"alignas", "alignof", "and", "and_eq", "asm", "atomic_cancel", "
 
 _field_overrides = [
     (re.compile(r"(start|end)_(line|column)|index|width|num_.*"), {"type": "unsigned"}),
-    (re.compile(r"(.*)_"), lambda m: {"name": m[1]}),
+    (re.compile(r"(.*)_"), lambda m: {"field_name": m[1]}),
 ]
 
 
@@ -31,7 +31,7 @@ def get_field_override(field: str):
 
 @dataclass
 class Field:
-    name: str
+    field_name: str
     type: str
     is_optional: bool = False
     is_repeated: bool = False
@@ -44,12 +44,8 @@ class Field:
             self.type = f"std::optional<{self.type}>"
         if self.is_repeated:
             self.type = f"std::vector<{self.type}>"
-
-    @property
-    def cpp_name(self):
-        if self.name in cpp_keywords:
-            return self.name + "_"
-        return self.name
+        if self.field_name in cpp_keywords:
+            self.field_name += "_"
 
     # using @property breaks pystache internals here
     def get_streamer(self):
@@ -63,8 +59,6 @@ class Field:
     @property
     def is_single(self):
         return not (self.is_optional or self.is_repeated or self.is_predicate)
-
-
 
 
 @dataclass
