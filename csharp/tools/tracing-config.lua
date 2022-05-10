@@ -1,10 +1,7 @@
 function RegisterExtractorPack()
     local extractor = GetPlatformToolsDirectory() ..
                           'Semmle.Extraction.CSharp.Driver'
-    if OperatingSystem == 'windows' then
-        extractor = GetPlatformToolsDirectory() ..
-                        'Semmle.Extraction.CSharp.Driver.exe'
-    end
+    if OperatingSystem == 'windows' then extractor = extractor .. '.exe' end
     local windowsMatchers = {
         CreatePatternMatcher({'^dotnet%.exe$'}, MatchCompilerName, extractor,
                              {prepend = {'--dotnetexec', '--cil'}}),
