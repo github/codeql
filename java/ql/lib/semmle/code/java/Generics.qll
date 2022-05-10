@@ -486,7 +486,7 @@ class GenericCall extends Call {
 
   /** Gets a type argument of the call for the given `TypeVariable`. */
   RefType getATypeArgument(TypeVariable v) {
-    result = getAnExplicitTypeArgument(v)
+    result = this.getAnExplicitTypeArgument(v)
     or
     not exists(this.getAnExplicitTypeArgument(v)) and
     result = this.getAnInferredTypeArgument(v)
