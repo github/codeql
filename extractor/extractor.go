@@ -466,8 +466,7 @@ func extractObjectTypes(tw *trap.Writer) {
 	}
 	changed = tw.ForEachObject(emitObjectType)
 	if changed {
-		// TODO: Make this non-fatal before commiting
-		log.Fatalf("Warning: more objects were labeled while emitted object types")
+		log.Printf("Warning: more objects were labeled while emitted object types")
 	}
 }
 
