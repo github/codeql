@@ -188,3 +188,15 @@
 | test.js:22:21:22:28 | endpoint | enclosingFunctionBody | f endpoint 12 f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:22:21:22:28 | endpoint | enclosingFunctionName |  |
 | test.js:22:21:22:28 | endpoint | fileImports | foo lib1 lib2 lib3 |
+| test.js:33:50:33:57 | endpoint | calleeAccessPath |  |
+| test.js:33:50:33:57 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:33:50:33:57 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
+| test.js:33:50:33:57 | endpoint | contextSurroundingFunctionParameters |  |
+| test.js:33:50:33:57 | endpoint | fileImports | foo lib1 lib2 lib3 |
+| test.js:33:50:33:57 | endpoint | stringConcatenatedWith | f() + '<a target="_blank" href="' -endpoint- '"></a>' |
+| test.js:35:18:35:25 | endpoint | calleeAccessPath |  |
+| test.js:35:18:35:25 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:35:18:35:25 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
+| test.js:35:18:35:25 | endpoint | contextSurroundingFunctionParameters |  |
+| test.js:35:18:35:25 | endpoint | fileImports | foo lib1 lib2 lib3 |
+| test.js:35:18:35:25 | endpoint | stringConcatenatedWith | 'foo' -endpoint- 'bar' |
