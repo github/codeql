@@ -1101,7 +1101,6 @@ func extractExprs(tw *trap.Writer, exprs []ast.Expr, parent trap.Label, idx int,
 func extractTypeOf(tw *trap.Writer, expr ast.Expr, lbl trap.Label) {
 	tp := typeOf(tw, expr)
 	if tp != nil {
-		// log.Printf("Extracting type of expr %v", expr)
 		tplbl := extractType(tw, tp)
 		dbscheme.TypeOfTable.Emit(tw, lbl, tplbl)
 	}
