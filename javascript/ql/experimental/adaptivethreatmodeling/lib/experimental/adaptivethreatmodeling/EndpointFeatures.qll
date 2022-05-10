@@ -236,7 +236,8 @@ private newtype TEndpointFeature =
   TInputAccessPathFromCallee() or
   TInputArgumentIndex() or
   TContextFunctionInterfaces() or
-  TContextSurroundingFunctionParameters()
+  TContextSurroundingFunctionParameters() or
+  TAssignedToPropName()
 
 /**
  * An implementation of an endpoint feature: produces feature names and values for used in ML.
@@ -469,6 +470,25 @@ class ContextSurroundingFunctionParameters extends EndpointFeature,
         order by
           f.getLocation().getStartLine(), f.getLocation().getStartColumn()
       )
+  }
+}
+
+/**
+ * The feature that gives the name an endpoint is assigned to (if any).
+ *
+ * ### Example
+ * ```javascript
+ * const div = document.createElement('div');
+ * div.innerHTML = endpoint; // feature value is 'innerHTML'
+ * ```
+ */
+class AssignedToPropName extends EndpointFeature, TAssignedToPropName {
+  override string getName() { result = "assignedToPropName" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    exists(DataFlow::PropWrite w | w.getRhs().asExpr().getUnderlyingValue().flow() = endpoint |
+      result = w.getPropertyName()
+    )
   }
 }
 
