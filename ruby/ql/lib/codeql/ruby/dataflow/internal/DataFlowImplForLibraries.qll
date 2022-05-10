@@ -171,6 +171,14 @@ abstract class Configuration extends string {
   int explorationLimit() { none() }
 
   /**
+   * Holds if hidden nodes should be included in the data flow graph.
+   *
+   * This feature should only be used for debugging or when the data flow graph
+   * is not visualized (for example in a `path-problem` query).
+   */
+  predicate includeHiddenNodes() { none() }
+
+  /**
    * Holds if there is a partial data flow path from `source` to `node`. The
    * approximate distance between `node` and the closest source is `dist` and
    * is restricted to be less than or equal to `explorationLimit()`. This
@@ -3815,11 +3823,14 @@ abstract private class PathNodeImpl extends PathNode {
   abstract NodeEx getNodeEx();
 
   predicate isHidden() {
-    hiddenNode(this.getNodeEx().asNode()) and
-    not this.isSource() and
-    not this instanceof PathNodeSink
-    or
-    this.getNodeEx() instanceof TNodeImplicitRead
+    not this.getConfiguration().includeHiddenNodes() and
+    (
+      hiddenNode(this.getNodeEx().asNode()) and
+      not this.isSource() and
+      not this instanceof PathNodeSink
+      or
+      this.getNodeEx() instanceof TNodeImplicitRead
+    )
   }
 
   private string ppAp() {
