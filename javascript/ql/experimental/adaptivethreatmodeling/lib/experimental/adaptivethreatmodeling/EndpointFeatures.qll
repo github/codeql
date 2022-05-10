@@ -237,7 +237,8 @@ private newtype TEndpointFeature =
   TInputArgumentIndex() or
   TContextFunctionInterfaces() or
   TContextSurroundingFunctionParameters() or
-  TAssignedToPropName()
+  TAssignedToPropName() or
+  TStringConcatenatedWith()
 
 /**
  * An implementation of an endpoint feature: produces feature names and values for used in ML.
@@ -493,6 +494,51 @@ class AssignedToPropName extends EndpointFeature, TAssignedToPropName {
 }
 
 /**
+ * The feature that shows the text an endpoint is being concatenated with.class
+ *
+ * ### Example
+ *
+ * ```javascript
+ * const x = 'foo' + endpoint + 'bar'; // feature value is `'foo' -endpoint- 'bar'`
+ */
+class StringConcatenatedWith extends EndpointFeature, TStringConcatenatedWith {
+  override string getName() { result = "stringConcatenatedWith" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    exists(StringOps::ConcatenationRoot root |
+      root.getALeaf() = endpoint and
+      result =
+        concat(StringOps::ConcatenationLeaf p |
+            p.getRoot() = root and
+            (
+              p.getStartLine() < endpoint.getStartLine()
+              or
+              p.getStartLine() = endpoint.getStartLine() and
+              p.getStartColumn() < endpoint.getStartColumn()
+            )
+          |
+            SyntacticUtilities::renderStringConcatOperand(p), " + "
+            order by
+              p.getStartLine(), p.getStartColumn()
+          ) + " -endpoint- " +
+          concat(StringOps::ConcatenationLeaf p |
+            p.getRoot() = root and
+            (
+              p.getStartLine() > endpoint.getStartLine()
+              or
+              p.getStartLine() = endpoint.getStartLine() and
+              p.getStartColumn() > endpoint.getStartColumn()
+            )
+          |
+            SyntacticUtilities::renderStringConcatOperand(p), " + "
+            order by
+              p.getStartLine(), p.getStartColumn()
+          )
+    )
+  }
+}
+
+/**
  * The feature for the imports used in the callee of an invocation.
  *
  * ### Example
@@ -555,6 +601,23 @@ class ContextFunctionInterfaces extends EndpointFeature, TContextFunctionInterfa
  * Syntactic utilities for feature value computation.
  */
 private module SyntacticUtilities {
+  bindingset[start, end]
+  string renderStringConcatOperands(DataFlow::Node root, int start, int end) {
+    result =
+      concat(int i, string operand |
+        i = [start .. end] and
+        operand = renderStringConcatOperand(StringConcatenation::getOperand(root, i))
+      |
+        operand, " + " order by i
+      )
+  }
+
+  string renderStringConcatOperand(DataFlow::Node operand) {
+    if exists(unique(string v | operand.mayHaveStringValue(v)))
+    then result = "'" + any(string v | operand.mayHaveStringValue(v)) + "'"
+    else result = getSimpleAccessPath(operand)
+  }
+
   /** Gets all the imports defined in the file containing the endpoint. */
   string getImportPathsForFile(File file) {
     result =
