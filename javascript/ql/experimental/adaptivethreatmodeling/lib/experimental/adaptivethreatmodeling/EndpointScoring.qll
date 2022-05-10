@@ -62,14 +62,11 @@ private float getScoreForSource(DataFlow::Node source) {
 private float getScoreForSink(DataFlow::Node sink) {
   if getCfg().isKnownSink(sink)
   then result = 1.0
-  else
-    if getCfg().isEffectiveSinkWithOverridingScore(sink, result, _)
-    then any()
-    else (
-      // This restriction on `sink` has no semantic effect but improves performance.
-      getCfg().isEffectiveSink(sink) and
-      ModelScoring::endpointScores(sink, getCfg().getASinkEndpointType().getEncoding(), result)
-    )
+  else (
+    // This restriction on `sink` has no semantic effect but improves performance.
+    getCfg().isEffectiveSink(sink) and
+    ModelScoring::endpointScores(sink, getCfg().getASinkEndpointType().getEncoding(), result)
+  )
 }
 
 class EndpointScoringResults extends ScoringResults {
@@ -109,10 +106,6 @@ class EndpointScoringResults extends ScoringResults {
     result = "known" and getCfg().isKnownSink(sink)
     or
     not getCfg().isKnownSink(sink) and
-    getCfg().isEffectiveSinkWithOverridingScore(sink, _, result)
-    or
-    not getCfg().isKnownSink(sink) and
-    not getCfg().isEffectiveSinkWithOverridingScore(sink, _, _) and
     result =
       "predicted (scores: " +
         concat(EndpointType type, float score |
@@ -125,31 +118,24 @@ class EndpointScoringResults extends ScoringResults {
 
   pragma[inline]
   override predicate shouldResultBeIncluded(DataFlow::Node source, DataFlow::Node sink) {
+    exists(source) and
     if getCfg().isKnownSink(sink)
     then any()
-    else
-      if getCfg().isEffectiveSinkWithOverridingScore(sink, _, _)
-      then
-        exists(float score |
-          getCfg().isEffectiveSinkWithOverridingScore(sink, score, _) and
-          score >= getCfg().getScoreCutoff()
-        )
-      else (
-        // This restriction on `sink` has no semantic effect but improves performance.
-        getCfg().isEffectiveSink(sink) and
-        exists(float sinkScore |
-          ModelScoring::endpointScores(sink, getCfg().getASinkEndpointType().getEncoding(),
-            sinkScore) and
-          // Include the endpoint if (a) the query endpoint type scores higher than all other
-          // endpoint types, or (b) the query endpoint type scores at least
-          // 0.5 - (getCfg().getScoreCutoff() / 2).
-          sinkScore >=
-            [
-              max(float s | ModelScoring::endpointScores(sink, _, s)),
-              0.5 - getCfg().getScoreCutoff() / 2
-            ]
-        )
+    else (
+      // This restriction on `sink` has no semantic effect but improves performance.
+      getCfg().isEffectiveSink(sink) and
+      exists(float sinkScore |
+        ModelScoring::endpointScores(sink, getCfg().getASinkEndpointType().getEncoding(), sinkScore) and
+        // Include the endpoint if (a) the query endpoint type scores higher than all other
+        // endpoint types, or (b) the query endpoint type scores at least
+        // 0.5 - (getCfg().getScoreCutoff() / 2).
+        sinkScore >=
+          [
+            max(float s | ModelScoring::endpointScores(sink, _, s)),
+            0.5 - getCfg().getScoreCutoff() / 2
+          ]
       )
+    )
   }
 }
 

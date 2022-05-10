@@ -12,7 +12,6 @@
  */
 
 import java
-import semmle.code.java.JDKAnnotations
 
 predicate isSerializable(RefType t) { t.getAnAncestor() instanceof TypeSerializable }
 

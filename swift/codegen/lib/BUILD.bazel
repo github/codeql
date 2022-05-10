@@ -1,0 +1,11 @@
+load("@swift_codegen_deps//:requirements.bzl", "requirement")
+py_library(
+    name = "lib",
+    srcs = glob(["*.py"]),
+    deps = [
+        requirement("pystache"),
+        requirement("pyyaml"),
+        requirement("inflection"),
+    ],
+    visibility = ["//swift/codegen:__subpackages__"],
+)

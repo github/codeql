@@ -1,3 +1,17 @@
+## 0.1.1
+
+## 0.1.0
+
+## 0.0.13
+
+## 0.0.12
+
+## 0.0.11
+
+### New Queries
+
+* The query "XPath query built from user-controlled sources" (`py/xpath-injection`) has been promoted from experimental to the main query pack. Its results will now appear by default. This query was originally [submitted as an experimental query by @porcupineyhairs](https://github.com/github/codeql/pull/6331).
+
 ## 0.0.10
 
 ### New Queries

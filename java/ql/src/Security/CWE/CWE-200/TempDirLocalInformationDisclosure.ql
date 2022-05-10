@@ -3,6 +3,7 @@
  * @description Writing information without explicit permissions to a shared temporary directory may disclose it to other users.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.5
  * @precision medium
  * @id java/local-temp-file-or-directory-information-disclosure
  * @tags security
@@ -11,6 +12,7 @@
  */
 
 import java
+import semmle.code.java.os.OSCheck
 import TempDirUtils
 import DataFlow::PathGraph
 import semmle.code.java.dataflow.TaintTracking2
@@ -102,21 +104,34 @@ private class FileCreateTempFileSink extends FileCreationSink {
   }
 }
 
+/**
+ * A sanitizer that holds when the program is definitely running under some version of Windows.
+ */
+abstract private class WindowsOsSanitizer extends DataFlow::Node { }
+
+private class IsNotUnixSanitizer extends WindowsOsSanitizer {
+  IsNotUnixSanitizer() { any(IsUnixGuard guard).controls(this.asExpr().getBasicBlock(), false) }
+}
+
+private class IsWindowsSanitizer extends WindowsOsSanitizer {
+  IsWindowsSanitizer() { any(IsWindowsGuard guard).controls(this.asExpr().getBasicBlock(), true) }
+}
+
+private class IsSpecificWindowsSanitizer extends WindowsOsSanitizer {
+  IsSpecificWindowsSanitizer() {
+    any(IsSpecificWindowsVariant guard).controls(this.asExpr().getBasicBlock(), true)
+  }
+}
+
+/**
+ * A taint tracking configuration tracking the access of the system temporary directory
+ * flowing to the creation of files or directories.
+ */
 private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Configuration {
   TempDirSystemGetPropertyToCreateConfig() { this = "TempDirSystemGetPropertyToCreateConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof MethodAccessSystemGetPropertyTempDirTainted
-  }
-
-  /**
-   * Find dataflow from the temp directory system property to the `File` constructor.
-   * Examples:
-   *  - `new File(System.getProperty("java.io.tmpdir"))`
-   *  - `new File(new File(System.getProperty("java.io.tmpdir")), "/child")`
-   */
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    isAdditionalFileTaintStep(node1, node2)
+    source.asExpr() instanceof ExprSystemGetPropertyTempDirTainted
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -128,6 +143,8 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
     exists(FilesSanitizingCreationMethodAccess sanitisingMethodAccess |
       sanitizer.asExpr() = sanitisingMethodAccess.getArgument(0)
     )
+    or
+    sanitizer instanceof WindowsOsSanitizer
   }
 }
 
@@ -147,10 +164,8 @@ private class TempDirSystemGetPropertyDirectlyToMkdirConfig extends TaintTrackin
   }
 
   override predicate isSource(DataFlow::Node node) {
-    exists(
-      MethodAccessSystemGetPropertyTempDirTainted propertyGetMethodAccess, DataFlow::Node callSite
-    |
-      DataFlow::localFlow(DataFlow::exprNode(propertyGetMethodAccess), callSite)
+    exists(ExprSystemGetPropertyTempDirTainted propertyGetExpr, DataFlow::Node callSite |
+      DataFlow::localFlow(DataFlow::exprNode(propertyGetExpr), callSite)
     |
       isFileConstructorArgument(callSite.asExpr(), node.asExpr(), 1)
     )

@@ -24,7 +24,7 @@ newtype TFilteringReason =
   TMembershipCandidateTestReason() or
   TFileSystemAccessReason() or
   TDatabaseAccessReason() or
-  TDOMReason() or
+  TDomReason() or
   TNextFunctionCallReason() or
   TArgumentToArrayReason() or
   TArgumentToBuiltinGlobalVarRefReason() or
@@ -161,11 +161,14 @@ class DatabaseAccessReason extends NotASinkReason, TDatabaseAccessReason {
   override int getEncoding() { result = 21 }
 }
 
-class DOMReason extends NotASinkReason, TDOMReason {
+class DomReason extends NotASinkReason, TDomReason {
   override string getDescription() { result = "DOM" }
 
   override int getEncoding() { result = 22 }
 }
+
+/** DEPRECATED: Alias for DomReason */
+deprecated class DOMReason = DomReason;
 
 class NextFunctionCallReason extends NotASinkReason, TNextFunctionCallReason {
   override string getDescription() { result = "NextFunctionCall" }

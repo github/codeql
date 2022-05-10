@@ -173,7 +173,12 @@ Python built-in support
    starlette, Asynchronous Server Gateway Interface (ASGI)
    python-ldap, Lightweight Directory Access Protocol (LDAP)
    ldap3, Lightweight Directory Access Protocol (LDAP)
+   httpx, HTTP client
+   pycurl, HTTP client
    requests, HTTP client
+   urllib, HTTP client
+   urllib2, HTTP client
+   urllib3, HTTP client
    dill, Serialization
    PyYAML, Serialization
    ruamel.yaml, Serialization
@@ -206,3 +211,7 @@ Python built-in support
    pycryptodomex, Cryptography library
    rsa, Cryptography library
    MarkupSafe, Escaping Library
+   libtaxii, TAXII utility library
+   libxml2, XML processing library
+   lxml, XML processing library
+   xmltodict, XML processing library

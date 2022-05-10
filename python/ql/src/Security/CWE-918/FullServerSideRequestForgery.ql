@@ -11,14 +11,14 @@
  */
 
 import python
-import semmle.python.security.dataflow.ServerSideRequestForgery
+import semmle.python.security.dataflow.ServerSideRequestForgeryQuery
 import DataFlow::PathGraph
 
 from
-  FullServerSideRequestForgery::Configuration fullConfig, DataFlow::PathNode source,
+  FullServerSideRequestForgeryConfiguration fullConfig, DataFlow::PathNode source,
   DataFlow::PathNode sink, HTTP::Client::Request request
 where
-  request = sink.getNode().(FullServerSideRequestForgery::Sink).getRequest() and
+  request = sink.getNode().(Sink).getRequest() and
   fullConfig.hasFlowPath(source, sink) and
   fullyControlledRequest(request)
 select request, source, sink, "The full URL of this request depends on $@.", source.getNode(),

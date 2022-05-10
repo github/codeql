@@ -3,7 +3,8 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.javaee.Persistence
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.frameworks.MyBatis
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** A sink for database query language injection vulnerabilities. */
 abstract class QueryInjectionSink extends DataFlow::Node { }
@@ -66,3 +67,5 @@ private class MongoJsonStep extends AdditionalQueryInjectionTaintStep {
     )
   }
 }
+
+private class MyBatisSqlInjectionSink extends QueryInjectionSink instanceof MyBatisInjectionSink { }

@@ -164,6 +164,42 @@ class SqlExecutionTest extends InlineExpectationsTest {
   }
 }
 
+class XPathConstructionTest extends InlineExpectationsTest {
+  XPathConstructionTest() { this = "XPathConstructionTest" }
+
+  override string getARelevantTag() { result = "constructedXPath" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(XML::XPathConstruction e, DataFlow::Node xpath |
+      exists(location.getFile().getRelativePath()) and
+      xpath = e.getXPath() and
+      location = e.getLocation() and
+      element = xpath.toString() and
+      value = prettyNodeForInlineTest(xpath) and
+      tag = "constructedXPath"
+    )
+  }
+}
+
+class XPathExecutionTest extends InlineExpectationsTest {
+  XPathExecutionTest() { this = "XPathExecutionTest" }
+
+  override string getARelevantTag() { result = "getXPath" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(XML::XPathExecution e, DataFlow::Node xpath |
+      exists(location.getFile().getRelativePath()) and
+      xpath = e.getXPath() and
+      location = e.getLocation() and
+      element = xpath.toString() and
+      value = prettyNodeForInlineTest(xpath) and
+      tag = "getXPath"
+    )
+  }
+}
+
 class EscapingTest extends InlineExpectationsTest {
   EscapingTest() { this = "EscapingTest" }
 
@@ -534,6 +570,20 @@ class CsrfLocalProtectionSettingTest extends InlineExpectationsTest {
       if p.csrfEnabled()
       then tag = "CsrfLocalProtectionEnabled"
       else tag = "CsrfLocalProtectionDisabled"
+
+class XmlParsingTest extends InlineExpectationsTest {
+  XmlParsingTest() { this = "XmlParsingTest" }
+
+  override string getARelevantTag() { result = "xmlVuln" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(XML::XmlParsing parsing, XML::XmlParsingVulnerabilityKind kind |
+      parsing.vulnerableTo(kind) and
+      location = parsing.getLocation() and
+      element = parsing.toString() and
+      value = "'" + kind + "'" and
+      tag = "xmlVuln"
     )
   }
 }

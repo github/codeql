@@ -29,12 +29,14 @@ definition
 | nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self |
 | nested_scopes.rb:31:11:31:16 | ... = ... | nested_scopes.rb:31:11:31:11 | a |
 | nested_scopes.rb:40:1:40:18 | ... = ... | nested_scopes.rb:40:1:40:1 | d |
+| parameters.rb:1:1:1:1 | self (parameters.rb) | parameters.rb:1:1:62:1 | self |
 | parameters.rb:1:9:5:3 | <captured> | parameters.rb:1:1:62:1 | self |
 | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x |
 | parameters.rb:2:4:2:8 | ... = ... | parameters.rb:1:18:1:18 | y |
 | parameters.rb:7:1:13:3 | self (order_pizza) | parameters.rb:7:1:13:3 | self |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client |
 | parameters.rb:7:26:7:31 | pizzas | parameters.rb:7:26:7:31 | pizzas |
+| parameters.rb:15:1:19:3 | self (print_map) | parameters.rb:15:1:19:3 | self |
 | parameters.rb:15:17:15:19 | map | parameters.rb:15:17:15:19 | map |
 | parameters.rb:16:12:18:5 | <captured> | parameters.rb:15:1:19:3 | self |
 | parameters.rb:16:16:16:18 | key | parameters.rb:16:16:16:18 | key |
@@ -110,6 +112,7 @@ definition
 | ssa.rb:26:3:28:5 | <captured> | ssa.rb:25:1:30:3 | self |
 | ssa.rb:26:3:28:5 | __synth__0__1 | ssa.rb:26:3:28:5 | __synth__0__1 |
 | ssa.rb:26:3:28:5 | call to each | ssa.rb:26:7:26:10 | elem |
+| ssa.rb:32:1:36:3 | self (m3) | ssa.rb:32:1:36:3 | self |
 | ssa.rb:33:16:35:5 | <captured> | ssa.rb:32:1:36:3 | self |
 | ssa.rb:33:20:33:20 | x | ssa.rb:33:20:33:20 | x |
 | ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self |

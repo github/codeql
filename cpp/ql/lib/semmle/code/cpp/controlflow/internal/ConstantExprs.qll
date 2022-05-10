@@ -188,8 +188,8 @@ private predicate nonAnalyzableFunction(Function f) {
  */
 private predicate impossibleFalseEdge(Expr condition, Node succ) {
   conditionAlwaysTrue(condition) and
-  qlCFGFalseSuccessor(condition, succ) and
-  not qlCFGTrueSuccessor(condition, succ)
+  qlCfgFalseSuccessor(condition, succ) and
+  not qlCfgTrueSuccessor(condition, succ)
 }
 
 /**
@@ -197,8 +197,8 @@ private predicate impossibleFalseEdge(Expr condition, Node succ) {
  */
 private predicate impossibleTrueEdge(Expr condition, Node succ) {
   conditionAlwaysFalse(condition) and
-  qlCFGTrueSuccessor(condition, succ) and
-  not qlCFGFalseSuccessor(condition, succ)
+  qlCfgTrueSuccessor(condition, succ) and
+  not qlCfgFalseSuccessor(condition, succ)
 }
 
 /**
@@ -960,9 +960,9 @@ library class ConditionEvaluator extends ExprEvaluator {
   ConditionEvaluator() { this = 0 }
 
   override predicate interesting(Expr e) {
-    qlCFGFalseSuccessor(e, _)
+    qlCfgFalseSuccessor(e, _)
     or
-    qlCFGTrueSuccessor(e, _)
+    qlCfgTrueSuccessor(e, _)
   }
 }
 

@@ -86,5 +86,9 @@
 | copy.cpp:131:9:131:9 | OnlyAssign | deleted |  |
 | copy.cpp:131:9:131:9 | operator= |  |  |
 | copy.cpp:131:9:131:9 | operator= |  |  |
+| copy.cpp:137:9:137:9 | operator= |  |  |
+| copy.cpp:139:5:139:11 | Wrapper |  |  |
+| copy.cpp:143:5:143:5 | Wrapper |  |  |
+| copy.cpp:143:5:143:11 | Wrapper |  |  |
 | file://:0:0:0:0 | operator= |  |  |
 | file://:0:0:0:0 | operator= |  |  |

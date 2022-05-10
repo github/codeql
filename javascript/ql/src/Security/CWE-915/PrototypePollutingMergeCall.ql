@@ -20,7 +20,6 @@
 import javascript
 import semmle.javascript.security.dataflow.PrototypePollutionQuery
 import DataFlow::PathGraph
-import semmle.javascript.dependencies.Dependencies
 
 from
   Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string moduleName,

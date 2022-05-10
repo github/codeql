@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+
+<p>
+The <code>"message"</code> event is used to send messages between windows. 
+An untrusted window can send a message to a trusted window, and it is up to the receiver to verify the legitimacy of the message. One way of performing that verification is to check the <code>origin</code> of the message ensure that it originates from a trusted window.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Always verify the origin of incoming messages.
+</p>
+</recommendation>
+
+<example>
+<p>
+The example below uses a received message to execute some code. However, the 
+origin of the message is not checked, so it might be possible for an attacker
+to execute arbitrary code.
+</p>
+<sample src="examples/MissingOriginCheckBad.js" />
+
+<p>
+The example is fixed below, where the origin is checked to be trusted. 
+It is therefore not possible for a malicious user to perform an attack using an untrusted origin.
+</p>
+<sample src="examples/MissingOriginCheckGood.js" />
+
+</example>
+
+<references>
+
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">Window.postMessage()</a>.</li>
+<li><a href="https://portswigger.net/web-security/dom-based/web-message-manipulation">Web message manipulation</a>.</li>
+<li><a href="https://labs.detectify.com/2016/12/08/the-pitfalls-of-postmessage/">The pitfalls of postMessage</a>.</li>
+
+</references>
+</qhelp>

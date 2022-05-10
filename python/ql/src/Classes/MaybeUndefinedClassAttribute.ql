@@ -11,7 +11,6 @@
  */
 
 import python
-import semmle.python.SelfAttribute
 import ClassAttributes
 
 predicate guarded_by_other_attribute(SelfAttributeRead a, CheckClass c) {

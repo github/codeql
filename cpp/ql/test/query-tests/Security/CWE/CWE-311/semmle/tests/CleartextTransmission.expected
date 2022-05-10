@@ -92,6 +92,12 @@ edges
 | test3.cpp:398:18:398:25 | password | test3.cpp:400:33:400:40 | password |
 | test3.cpp:421:21:421:28 | password | test3.cpp:421:3:421:17 | call to decrypt_inplace |
 | test3.cpp:429:7:429:14 | password | test3.cpp:431:8:431:15 | password |
+| test3.cpp:526:44:526:54 | my_latitude | test3.cpp:527:15:527:20 | buffer |
+| test3.cpp:532:45:532:58 | home_longitude | test3.cpp:533:15:533:20 | buffer |
+| test3.cpp:551:47:551:58 | salaryString | test3.cpp:552:15:552:20 | buffer |
+| test3.cpp:556:19:556:30 | salaryString | test3.cpp:559:15:559:20 | buffer |
+| test3.cpp:571:8:571:21 | call to get_home_phone | test3.cpp:572:14:572:16 | str |
+| test3.cpp:577:8:577:23 | call to get_home_address | test3.cpp:578:14:578:16 | str |
 | test.cpp:41:23:41:43 | cleartext password! | test.cpp:48:21:48:27 | call to encrypt |
 | test.cpp:41:23:41:43 | cleartext password! | test.cpp:48:29:48:39 | thePassword |
 | test.cpp:66:23:66:43 | cleartext password! | test.cpp:76:21:76:27 | call to encrypt |
@@ -221,6 +227,30 @@ nodes
 | test3.cpp:421:21:421:28 | password | semmle.label | password |
 | test3.cpp:429:7:429:14 | password | semmle.label | password |
 | test3.cpp:431:8:431:15 | password | semmle.label | password |
+| test3.cpp:507:18:507:39 | social_security_number | semmle.label | social_security_number |
+| test3.cpp:508:18:508:33 | socialSecurityNo | semmle.label | socialSecurityNo |
+| test3.cpp:509:18:509:29 | homePostCode | semmle.label | homePostCode |
+| test3.cpp:510:18:510:28 | my_zip_code | semmle.label | my_zip_code |
+| test3.cpp:511:18:511:26 | telephone | semmle.label | telephone |
+| test3.cpp:512:18:512:36 | mobile_phone_number | semmle.label | mobile_phone_number |
+| test3.cpp:513:18:513:22 | email | semmle.label | email |
+| test3.cpp:514:18:514:38 | my_credit_card_number | semmle.label | my_credit_card_number |
+| test3.cpp:515:18:515:35 | my_bank_account_no | semmle.label | my_bank_account_no |
+| test3.cpp:516:18:516:29 | employerName | semmle.label | employerName |
+| test3.cpp:517:18:517:29 | medical_info | semmle.label | medical_info |
+| test3.cpp:518:18:518:28 | license_key | semmle.label | license_key |
+| test3.cpp:526:44:526:54 | my_latitude | semmle.label | my_latitude |
+| test3.cpp:527:15:527:20 | buffer | semmle.label | buffer |
+| test3.cpp:532:45:532:58 | home_longitude | semmle.label | home_longitude |
+| test3.cpp:533:15:533:20 | buffer | semmle.label | buffer |
+| test3.cpp:551:47:551:58 | salaryString | semmle.label | salaryString |
+| test3.cpp:552:15:552:20 | buffer | semmle.label | buffer |
+| test3.cpp:556:19:556:30 | salaryString | semmle.label | salaryString |
+| test3.cpp:559:15:559:20 | buffer | semmle.label | buffer |
+| test3.cpp:571:8:571:21 | call to get_home_phone | semmle.label | call to get_home_phone |
+| test3.cpp:572:14:572:16 | str | semmle.label | str |
+| test3.cpp:577:8:577:23 | call to get_home_address | semmle.label | call to get_home_address |
+| test3.cpp:578:14:578:16 | str | semmle.label | str |
 | test.cpp:41:23:41:43 | cleartext password! | semmle.label | cleartext password! |
 | test.cpp:48:21:48:27 | call to encrypt | semmle.label | call to encrypt |
 | test.cpp:48:29:48:39 | thePassword | semmle.label | thePassword |
@@ -254,3 +284,21 @@ subpaths
 | test3.cpp:414:3:414:6 | call to recv | test3.cpp:414:17:414:24 | password | test3.cpp:414:17:414:24 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:414:17:414:24 | password | password |
 | test3.cpp:420:3:420:6 | call to recv | test3.cpp:420:17:420:24 | password | test3.cpp:420:17:420:24 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:420:17:420:24 | password | password |
 | test3.cpp:431:2:431:6 | call to fgets | test3.cpp:429:7:429:14 | password | test3.cpp:431:8:431:15 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@ | test3.cpp:429:7:429:14 | password | password |
+| test3.cpp:507:2:507:5 | call to send | test3.cpp:507:18:507:39 | social_security_number | test3.cpp:507:18:507:39 | social_security_number | This operation transmits 'social_security_number', which may contain unencrypted sensitive data from $@ | test3.cpp:507:18:507:39 | social_security_number | social_security_number |
+| test3.cpp:508:2:508:5 | call to send | test3.cpp:508:18:508:33 | socialSecurityNo | test3.cpp:508:18:508:33 | socialSecurityNo | This operation transmits 'socialSecurityNo', which may contain unencrypted sensitive data from $@ | test3.cpp:508:18:508:33 | socialSecurityNo | socialSecurityNo |
+| test3.cpp:509:2:509:5 | call to send | test3.cpp:509:18:509:29 | homePostCode | test3.cpp:509:18:509:29 | homePostCode | This operation transmits 'homePostCode', which may contain unencrypted sensitive data from $@ | test3.cpp:509:18:509:29 | homePostCode | homePostCode |
+| test3.cpp:510:2:510:5 | call to send | test3.cpp:510:18:510:28 | my_zip_code | test3.cpp:510:18:510:28 | my_zip_code | This operation transmits 'my_zip_code', which may contain unencrypted sensitive data from $@ | test3.cpp:510:18:510:28 | my_zip_code | my_zip_code |
+| test3.cpp:511:2:511:5 | call to send | test3.cpp:511:18:511:26 | telephone | test3.cpp:511:18:511:26 | telephone | This operation transmits 'telephone', which may contain unencrypted sensitive data from $@ | test3.cpp:511:18:511:26 | telephone | telephone |
+| test3.cpp:512:2:512:5 | call to send | test3.cpp:512:18:512:36 | mobile_phone_number | test3.cpp:512:18:512:36 | mobile_phone_number | This operation transmits 'mobile_phone_number', which may contain unencrypted sensitive data from $@ | test3.cpp:512:18:512:36 | mobile_phone_number | mobile_phone_number |
+| test3.cpp:513:2:513:5 | call to send | test3.cpp:513:18:513:22 | email | test3.cpp:513:18:513:22 | email | This operation transmits 'email', which may contain unencrypted sensitive data from $@ | test3.cpp:513:18:513:22 | email | email |
+| test3.cpp:514:2:514:5 | call to send | test3.cpp:514:18:514:38 | my_credit_card_number | test3.cpp:514:18:514:38 | my_credit_card_number | This operation transmits 'my_credit_card_number', which may contain unencrypted sensitive data from $@ | test3.cpp:514:18:514:38 | my_credit_card_number | my_credit_card_number |
+| test3.cpp:515:2:515:5 | call to send | test3.cpp:515:18:515:35 | my_bank_account_no | test3.cpp:515:18:515:35 | my_bank_account_no | This operation transmits 'my_bank_account_no', which may contain unencrypted sensitive data from $@ | test3.cpp:515:18:515:35 | my_bank_account_no | my_bank_account_no |
+| test3.cpp:516:2:516:5 | call to send | test3.cpp:516:18:516:29 | employerName | test3.cpp:516:18:516:29 | employerName | This operation transmits 'employerName', which may contain unencrypted sensitive data from $@ | test3.cpp:516:18:516:29 | employerName | employerName |
+| test3.cpp:517:2:517:5 | call to send | test3.cpp:517:18:517:29 | medical_info | test3.cpp:517:18:517:29 | medical_info | This operation transmits 'medical_info', which may contain unencrypted sensitive data from $@ | test3.cpp:517:18:517:29 | medical_info | medical_info |
+| test3.cpp:518:2:518:5 | call to send | test3.cpp:518:18:518:28 | license_key | test3.cpp:518:18:518:28 | license_key | This operation transmits 'license_key', which may contain unencrypted sensitive data from $@ | test3.cpp:518:18:518:28 | license_key | license_key |
+| test3.cpp:527:3:527:6 | call to send | test3.cpp:526:44:526:54 | my_latitude | test3.cpp:527:15:527:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:526:44:526:54 | my_latitude | my_latitude |
+| test3.cpp:533:3:533:6 | call to send | test3.cpp:532:45:532:58 | home_longitude | test3.cpp:533:15:533:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:532:45:532:58 | home_longitude | home_longitude |
+| test3.cpp:552:3:552:6 | call to send | test3.cpp:551:47:551:58 | salaryString | test3.cpp:552:15:552:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:551:47:551:58 | salaryString | salaryString |
+| test3.cpp:559:3:559:6 | call to send | test3.cpp:556:19:556:30 | salaryString | test3.cpp:559:15:559:20 | buffer | This operation transmits 'buffer', which may contain unencrypted sensitive data from $@ | test3.cpp:556:19:556:30 | salaryString | salaryString |
+| test3.cpp:572:2:572:5 | call to send | test3.cpp:571:8:571:21 | call to get_home_phone | test3.cpp:572:14:572:16 | str | This operation transmits 'str', which may contain unencrypted sensitive data from $@ | test3.cpp:571:8:571:21 | call to get_home_phone | call to get_home_phone |
+| test3.cpp:578:2:578:5 | call to send | test3.cpp:577:8:577:23 | call to get_home_address | test3.cpp:578:14:578:16 | str | This operation transmits 'str', which may contain unencrypted sensitive data from $@ | test3.cpp:577:8:577:23 | call to get_home_address | call to get_home_address |

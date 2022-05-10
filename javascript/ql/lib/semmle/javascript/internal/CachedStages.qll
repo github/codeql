@@ -56,9 +56,9 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      exists(any(ASTNode a).getTopLevel())
+      exists(any(AstNode a).getTopLevel())
       or
-      exists(any(ASTNode a).getParent())
+      exists(any(AstNode a).getParent())
       or
       exists(any(StmtContainer c).getEnclosingContainer())
       or
@@ -68,7 +68,7 @@ module Stages {
       or
       exists(any(Expr e).getStringValue())
       or
-      any(ASTNode node).isAmbient()
+      any(AstNode node).isAmbient()
       or
       exists(any(Identifier e).getName())
       or
@@ -212,6 +212,8 @@ module Stages {
       any(DataFlow::Node node).hasUnderlyingType(_)
       or
       any(DataFlow::Node node).hasUnderlyingType(_, _)
+      or
+      AccessPath::DominatingPaths::hasDominatingWrite(_)
     }
   }
 
@@ -235,9 +237,9 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      AccessPath::DominatingPaths::hasDominatingWrite(_)
-      or
       DataFlow::SharedFlowStep::step(_, _)
+      or
+      exists(any(DataFlow::RegExpCreationNode e).getAReference())
     }
   }
 
@@ -245,7 +247,7 @@ module Stages {
    * The `APIStage` stage.
    */
   cached
-  module APIStage {
+  module ApiStage {
     /**
      * Always holds.
      * Ensures that a predicate is evaluated as part of the APIStage stage.
@@ -277,6 +279,9 @@ module Stages {
       )
     }
   }
+
+  /** DEPRECATED: Alias for ApiStage */
+  deprecated module APIStage = ApiStage;
 
   /**
    * The `taint` stage.

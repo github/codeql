@@ -59,13 +59,6 @@ abstract class AssertMethod extends Method {
 
   /** Gets the failure type if the assertion fails for argument `i`, if any. */
   abstract AssertionFailure getAssertionFailure(int i);
-
-  /**
-   * DEPRECATED: Use `getAssertionFailure(_)` instead.
-   *
-   * Gets the exception being thrown if the assertion fails, if any.
-   */
-  deprecated final Class getExceptionClass() { this.getAssertionFailure(_).isException(result) }
 }
 
 /** A Boolean assertion method. */
@@ -74,34 +67,6 @@ abstract class BooleanAssertMethod extends AssertMethod {
   abstract int getAnAssertionIndex(boolean b);
 
   override int getAnAssertionIndex() { result = this.getAnAssertionIndex(_) }
-}
-
-/** A positive assertion method. */
-deprecated class AssertTrueMethod extends AssertMethod {
-  private BooleanAssertMethod m;
-
-  AssertTrueMethod() {
-    this = m and
-    exists(m.getAnAssertionIndex(true))
-  }
-
-  final override int getAnAssertionIndex() { result = m.getAnAssertionIndex() }
-
-  final override AssertionFailure getAssertionFailure(int i) { result = m.getAssertionFailure(i) }
-}
-
-/** A negated assertion method. */
-deprecated class AssertFalseMethod extends AssertMethod {
-  private BooleanAssertMethod m;
-
-  AssertFalseMethod() {
-    this = m and
-    exists(m.getAnAssertionIndex(false))
-  }
-
-  final override int getAnAssertionIndex() { result = m.getAnAssertionIndex() }
-
-  final override AssertionFailure getAssertionFailure(int i) { result = m.getAssertionFailure(i) }
 }
 
 /** A nullness assertion method. */
@@ -113,34 +78,6 @@ abstract class NullnessAssertMethod extends AssertMethod {
   abstract int getAnAssertionIndex(boolean b);
 
   override int getAnAssertionIndex() { result = this.getAnAssertionIndex(_) }
-}
-
-/** A `null` assertion method. */
-deprecated class AssertNullMethod extends AssertMethod {
-  private NullnessAssertMethod m;
-
-  AssertNullMethod() {
-    this = m and
-    exists(m.getAnAssertionIndex(true))
-  }
-
-  final override int getAnAssertionIndex() { result = m.getAnAssertionIndex() }
-
-  final override AssertionFailure getAssertionFailure(int i) { result = m.getAssertionFailure(i) }
-}
-
-/** A non-`null` assertion method. */
-deprecated class AssertNonNullMethod extends AssertMethod {
-  private NullnessAssertMethod m;
-
-  AssertNonNullMethod() {
-    this = m and
-    exists(m.getAnAssertionIndex(false))
-  }
-
-  final override int getAnAssertionIndex() { result = m.getAnAssertionIndex() }
-
-  final override AssertionFailure getAssertionFailure(int i) { result = m.getAssertionFailure(i) }
 }
 
 /** An assertion, that is, a call to an assertion method. */
@@ -159,108 +96,6 @@ class Assertion extends MethodCall {
       p = target.getParameter(i) and
       result = this.getArgumentForParameter(p)
     )
-  }
-
-  /**
-   * DEPRECATED: Use `getExpr(_)` instead.
-   *
-   * Gets an expression that this assertion pertains to.
-   */
-  deprecated Expr getExpr() { result = this.getExpr(_) }
-
-  /**
-   * Holds if basic block `succ` is immediately dominated by this assertion.
-   * That is, `succ` can only be reached from the callable entry point by
-   * going via *some* basic block `pred` containing this assertion, and `pred`
-   * is an immediate predecessor of `succ`.
-   *
-   * Moreover, this assertion corresponds to multiple control flow nodes,
-   * which is why
-   *
-   * ```ql
-   * exists(BasicBlock bb |
-   *   bb.getANode() = this.getAControlFlowNode() |
-   *   bb.immediatelyDominates(succ)
-   * )
-   * ```
-   *
-   * does not work.
-   */
-  pragma[nomagic]
-  deprecated private predicate immediatelyDominatesBlockSplit(BasicBlock succ) {
-    // Only calculate dominance by explicit recursion for split nodes;
-    // all other nodes can use regular CFG dominance
-    this instanceof SplitControlFlowElement and
-    exists(BasicBlock bb | bb.getANode() = this.getAControlFlowNode() |
-      succ = bb.getASuccessor() and
-      forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != bb |
-        succ.dominates(pred)
-        or
-        // `pred` might be another split of this element
-        pred.getANode().getElement() = this
-      )
-    )
-  }
-
-  pragma[noinline]
-  deprecated private predicate strictlyDominatesJoinBlockPredecessor(JoinBlock jb, int i) {
-    this.strictlyDominatesSplit(jb.getJoinBlockPredecessor(i))
-  }
-
-  deprecated private predicate strictlyDominatesJoinBlockSplit(JoinBlock jb, int i) {
-    i = -1 and
-    this.strictlyDominatesJoinBlockPredecessor(jb, _)
-    or
-    this.strictlyDominatesJoinBlockSplit(jb, i - 1) and
-    (
-      this.strictlyDominatesJoinBlockPredecessor(jb, i)
-      or
-      this.getAControlFlowNode().getBasicBlock() = jb.getJoinBlockPredecessor(i)
-    )
-  }
-
-  pragma[nomagic]
-  deprecated private predicate strictlyDominatesSplit(BasicBlock bb) {
-    this.immediatelyDominatesBlockSplit(bb)
-    or
-    // Equivalent with
-    //
-    // ```ql
-    // exists(JoinBlockPredecessor pred | pred = bb.getAPredecessor() |
-    //   this.strictlyDominatesSplit(pred)
-    // ) and
-    // forall(JoinBlockPredecessor pred | pred = bb.getAPredecessor() |
-    //   this.strictlyDominatesSplit(pred)
-    //   or
-    //   this.getAControlFlowNode().getBasicBlock() = pred
-    // )
-    // ```
-    //
-    // but uses no universal recursion for better performance.
-    exists(int last | last = max(int i | exists(bb.(JoinBlock).getJoinBlockPredecessor(i))) |
-      this.strictlyDominatesJoinBlockSplit(bb, last)
-    )
-    or
-    not bb instanceof JoinBlock and
-    this.strictlyDominatesSplit(bb.getAPredecessor())
-  }
-
-  /**
-   * DEPRECATED: Use `getExpr().controlsBlock()` instead.
-   *
-   * Holds if this assertion strictly dominates basic block `bb`. That is, `bb`
-   * can only be reached from the callable entry point by going via *some* basic
-   * block containing this element.
-   *
-   * This predicate is different from
-   * `this.getAControlFlowNode().getBasicBlock().strictlyDominates(bb)`
-   * in that it takes control flow splitting into account.
-   */
-  pragma[nomagic]
-  deprecated predicate strictlyDominates(BasicBlock bb) {
-    this.strictlyDominatesSplit(bb)
-    or
-    this.getAControlFlowNode().getBasicBlock().strictlyDominates(bb)
   }
 }
 
@@ -551,16 +386,6 @@ class ForwarderBooleanAssertMethod extends BooleanAssertMethod {
   }
 }
 
-/** A method that forwards to a positive assertion method. */
-deprecated class ForwarderAssertTrueMethod extends ForwarderBooleanAssertMethod {
-  ForwarderAssertTrueMethod() { exists(this.getAnAssertionIndex(true)) }
-}
-
-/** A method that forwards to a negated assertion method. */
-deprecated class ForwarderAssertFalseMethod extends ForwarderBooleanAssertMethod {
-  ForwarderAssertFalseMethod() { exists(this.getAnAssertionIndex(false)) }
-}
-
 /** A method that forwards to a nullness assertion method. */
 class ForwarderNullnessAssertMethod extends NullnessAssertMethod {
   private ForwarderAssertMethod forwarder;
@@ -578,16 +403,6 @@ class ForwarderNullnessAssertMethod extends NullnessAssertMethod {
   override AssertionFailure getAssertionFailure(int i) {
     result = underlying.getAssertionFailure(forwarder.getAForwarderAssertionIndex(i))
   }
-}
-
-/** A method that forwards to a `null` assertion method. */
-deprecated class ForwarderAssertNullMethod extends ForwarderNullnessAssertMethod {
-  ForwarderAssertNullMethod() { exists(this.getAnAssertionIndex(true)) }
-}
-
-/** A method that forwards to a non-`null` assertion method. */
-deprecated class ForwarderAssertNonNullMethod extends ForwarderNullnessAssertMethod {
-  ForwarderAssertNonNullMethod() { exists(this.getAnAssertionIndex(false)) }
 }
 
 /** Holds if expression `e` appears in an assertion. */

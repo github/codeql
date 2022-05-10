@@ -2,7 +2,6 @@ import python
 import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 import semmle.python.web.falcon.General
-import semmle.python.security.strings.External
 
 /** https://falcon.readthedocs.io/en/stable/api/request_and_response.html */
 deprecated class FalconRequest extends TaintKind {

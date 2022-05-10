@@ -1,7 +1,7 @@
 /** Provides classes and predicates modeling aspects of the `d3` library. */
 
 private import javascript
-private import semmle.javascript.security.dataflow.Xss
+private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 
 /** Provides classes and predicates modeling aspects of the `d3` library. */
 module D3 {
@@ -23,7 +23,7 @@ module D3 {
     or
     result = API::moduleImport("d3-node").getInstance().getMember("d3")
     or
-    result = any(D3GlobalEntry i).getNode()
+    result = any(D3GlobalEntry i).getANode()
   }
 
   /**

@@ -1,4 +1,4 @@
-private import ruby as rb
+private import ruby as RB
 private import ControlFlowGraphImpl as Impl
 private import Completion as Comp
 private import codeql.ruby.ast.internal.Synthesis
@@ -6,11 +6,11 @@ private import Splitting as Splitting
 private import codeql.ruby.CFG as CFG
 
 /** The base class for `ControlFlowTree`. */
-class ControlFlowTreeBase extends rb::AstNode {
+class ControlFlowTreeBase extends RB::AstNode {
   ControlFlowTreeBase() { not any(Synthesis s).excludeFromControlFlowTree(this) }
 }
 
-class ControlFlowElement = rb::AstNode;
+class ControlFlowElement = RB::AstNode;
 
 class Completion = Comp::Completion;
 
@@ -69,6 +69,6 @@ predicate isAbnormalExitType(SuccessorType t) {
   t instanceof CFG::SuccessorTypes::ExitSuccessor
 }
 
-class Location = rb::Location;
+class Location = RB::Location;
 
 class Node = CFG::CfgNode;

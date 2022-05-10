@@ -1,0 +1,2 @@
+| test.py:8:12:8:23 | Str | test.py:8:21:8:23 | \\s+ | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s+$ |
+| test.py:9:14:9:29 | Str | test.py:9:27:9:29 | \\d+ | Strings with many repetitions of '99' can start matching anywhere after the start of the preceeding \\d+ |

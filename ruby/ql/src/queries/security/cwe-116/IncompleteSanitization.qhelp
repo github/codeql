@@ -1,0 +1,87 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Sanitizing untrusted input is a common technique for preventing injection attacks such as SQL
+injection or cross-site scripting. Usually, this is done by escaping meta-characters such as quotes
+in a domain-specific way so that they are treated as normal characters.
+</p>
+<p>
+However, directly using the <code>String#sub</code> method to perform escaping is notoriously
+error-prone. Common mistakes include only replacing the first occurrence of a meta-character, or
+backslash-escaping various meta-characters but not the backslash itself.
+</p>
+<p>
+In the former case, later meta-characters are left undisturbed and can be used to subvert the
+sanitization. In the latter case, preceding a meta-character with a backslash leads to the backslash
+being escaped, but the meta-character appearing un-escaped, which again makes the sanitization
+ineffective.
+</p>
+<p>
+Even if the escaped string is not used in a security-critical context, incomplete escaping may still
+have undesirable effects, such as badly rendered or confusing output.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use a (well-tested) sanitization library if at all possible. These libraries are much more likely to
+handle corner cases correctly than a custom implementation.
+</p>
+
+<p>
+An even safer alternative is to design the application so that sanitization is not needed.
+Otherwise, make sure to use <code>String#gsub</code> rather than <code>String#sub</code>, to ensure
+that all occurrences are replaced, and remember to escape backslashes if applicable.
+</p>
+<p>
+Note, however, that this is generally <i>not</i> sufficient for replacing multi-character strings:
+the <code>String#gsub</code> method performs only one pass over the input string, and will not
+replace further instances of the string that result from earlier replacements.
+</p>
+<p>
+For example, consider the code snippet <code>s.gsub /\/\.\.\//, ""</code>, which attempts to strip
+out all occurences of <code>/../</code> from <code>s</code>. This will not work as expected: for the
+string <code>/./.././</code>, for example, it will remove the single occurrence of <code>/../</code>
+in the middle, but the remainder of the string then becomes <code>/../</code>, which is another
+instance of the substring we were trying to remove.
+</p>
+</recommendation>
+
+<example>
+<p>
+As an example, assume that we want to embed a user-controlled string <code>account_number</code> into
+a SQL query as part of a string literal. To avoid SQL injection, we need to ensure that the string
+does not contain un-escaped single-quote characters. The following method attempts to ensure this by
+doubling single quotes, and thereby escaping them:
+</p>
+
+<sample src="examples/IncompleteSanitization.rb" />
+
+<p>
+As written, this sanitizer is ineffective: <code>String#sub</code> will replace only the
+<i>first</i> occurrence of that string.
+</p>
+
+<p>
+As mentioned above, the method <code>escape_quotes</code> should be replaced with a purpose-built
+sanitizer, such as <code>ActiveRecord::Base::sanitize_sql</code> in Rails, or by using ORM methods
+that automatically sanitize parameters.
+</p>
+
+<p>
+If this is not an option, <code>escape_quotes</code> should be rewritten to use the
+<code>String#gsub</code> method instead:
+</p>
+
+<sample src="examples/IncompleteSanitizationGood.rb" />
+</example>
+
+<references>
+<li>OWASP Top 10: <a href="https://www.owasp.org/index.php/Top_10-2017_A1-Injection">A1 Injection</a>.</li>
+<li>Rails: <a href="https://api.rubyonrails.org/classes/ActiveRecord/Sanitization/ClassMethods.html">ActiveRecord::Base::sanitize_sql</a>.</li>
+</references>
+</qhelp>

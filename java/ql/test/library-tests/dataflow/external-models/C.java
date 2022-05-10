@@ -24,6 +24,16 @@ public class C {
     stepQualArg(argOut);
   }
 
+  void fooGenerated() {
+    Object arg1 = new Object();
+    stepArgResGenerated(arg1);
+
+    Object arg2 = new Object();
+    // The summary for the first parameter is ignored, because it is generated and
+    // because there is hand written summary for the second parameter.
+    stepArgResGeneratedIgnored(arg1, arg2);
+  }
+
   Object stepArgRes(Object x) { return null; }
 
   void stepArgArg(Object in, Object out) { }
@@ -33,4 +43,8 @@ public class C {
   Object stepQualRes() { return null; }
 
   void stepQualArg(Object out) { }
+
+  Object stepArgResGenerated(Object x) { return null; }
+
+  Object stepArgResGeneratedIgnored(Object x, Object y) { return null; }
 }

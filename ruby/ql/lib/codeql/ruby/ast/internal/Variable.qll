@@ -366,7 +366,23 @@ private module Cached {
 
   cached
   predicate isCapturedAccess(LocalVariableAccess access) {
-    access.getVariable().getDeclaringScope() != access.getCfgScope()
+    exists(Scope scope1, Scope scope2 |
+      scope1 = access.getVariable().getDeclaringScope() and
+      scope2 = access.getCfgScope() and
+      scope1 != scope2
+    |
+      if access instanceof SelfVariableAccess
+      then
+        // ```
+        // class C
+        //   def self.m // not a captured access
+        //   end
+        // end
+        // ```
+        not scope2 instanceof Toplevel or
+        not access = any(SingletonMethod m).getObject()
+      else any()
+    )
   }
 
   cached
@@ -390,7 +406,11 @@ import Cached
 
 /** Holds if this scope inherits `name` from an outer scope `outer`. */
 private predicate inherits(Scope::Range scope, string name, Scope::Range outer) {
-  (scope instanceof Ruby::Block or scope instanceof Ruby::DoBlock) and
+  (
+    scope instanceof Ruby::Block or
+    scope instanceof Ruby::DoBlock or
+    scope instanceof Ruby::Lambda
+  ) and
   not scopeDefinesParameterVariable(scope, name, _) and
   (
     outer = scope.getOuterScope() and
@@ -659,10 +679,11 @@ private class ClassVariableAccessSynth extends ClassVariableAccessRealImpl,
 abstract class SelfVariableAccessImpl extends LocalVariableAccessImpl, TSelfVariableAccess { }
 
 private class SelfVariableAccessReal extends SelfVariableAccessImpl, TSelfReal {
-  private Ruby::Self self;
   private SelfVariable var;
 
-  SelfVariableAccessReal() { this = TSelfReal(self) and var = TSelfVariable(scopeOf(self)) }
+  SelfVariableAccessReal() {
+    exists(Ruby::Self self | this = TSelfReal(self) and var = TSelfVariable(scopeOf(self)))
+  }
 
   final override SelfVariable getVariableImpl() { result = var }
 

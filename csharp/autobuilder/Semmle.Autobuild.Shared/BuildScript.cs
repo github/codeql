@@ -70,7 +70,7 @@ namespace Semmle.Autobuild.Shared
                 this.environment = environment;
             }
 
-            public override string ToString() => exe + " " + arguments;
+            public override string ToString() => arguments.Length > 0 ? exe + " " + arguments : exe;
 
             public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack)
             {

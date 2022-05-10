@@ -105,13 +105,6 @@ module HTTP {
   }
 
   /**
-   * DEPRECATED: Use `http` or `https` directly as appropriate.
-   *
-   * Gets the string `http` or `https`.
-   */
-  deprecated string httpOrHttps() { result = "http" or result = "https" }
-
-  /**
    * An expression whose value is sent as (part of) the body of an HTTP response.
    */
   abstract class ResponseBody extends Expr {
@@ -411,10 +404,10 @@ module HTTP {
      * E.g. `chunk` in: `http.createServer().on('request', (req, res) => req.on("data", (chunk) => ...))`.
      */
     private class ServerRequestDataEvent extends RemoteFlowSource, DataFlow::ParameterNode {
-      RequestSource req;
-
       ServerRequestDataEvent() {
-        exists(DataFlow::MethodCallNode mcn | mcn = req.ref().getAMethodCall(EventEmitter::on()) |
+        exists(DataFlow::MethodCallNode mcn, RequestSource req |
+          mcn = req.ref().getAMethodCall(EventEmitter::on())
+        |
           mcn.getArgument(0).mayHaveStringValue("data") and
           this = mcn.getABoundCallbackParameter(1, 0)
         )

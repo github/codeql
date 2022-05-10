@@ -15,11 +15,6 @@ import semmle.code.java.Expr
 import semmle.code.java.Statement
 import semmle.code.java.JDK
 
-/** A use of `+` that has type `String`. */
-class StringCat extends AddExpr {
-  StringCat() { this.getType() instanceof TypeString }
-}
-
 /**
  * An assignment of the form
  *

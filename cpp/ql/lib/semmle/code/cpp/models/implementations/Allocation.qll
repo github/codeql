@@ -42,10 +42,13 @@ private class MallocAllocationFunction extends AllocationFunction {
     this.hasGlobalName([
         // --- Windows Memory Management for Windows Drivers
         "ExAllocatePool", // ExAllocatePool(type, size)
+        "ExAllocatePool2", // ExAllocatePool2(flags, size, tag)
+        "ExAllocatePool3", // ExAllocatePool3(flags, size, tag, extparams, extparamscount)
         "ExAllocatePoolWithTag", // ExAllocatePool(type, size, tag)
         "ExAllocatePoolWithTagPriority", // ExAllocatePoolWithTagPriority(type, size, tag, priority)
         "ExAllocatePoolWithQuota", // ExAllocatePoolWithQuota(type, size)
         "ExAllocatePoolWithQuotaTag", // ExAllocatePoolWithQuotaTag(type, size, tag)
+        "ExAllocatePoolZero", // ExAllocatePoolZero(type, size, tag)
         "IoAllocateMdl", // IoAllocateMdl(address, size, flag, flag, irp)
         "IoAllocateErrorLogEntry", // IoAllocateErrorLogEntry(object, size)
         // --- Windows Global / Local legacy allocation
