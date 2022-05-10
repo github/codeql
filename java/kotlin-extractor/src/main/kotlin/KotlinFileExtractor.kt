@@ -457,7 +457,7 @@ open class KotlinFileExtractor(
                         val instance = useCompanionObjectClassInstance(innerDeclaration)
                         if (instance != null) {
                             val type = useSimpleTypeClass(innerDeclaration, emptyList(), false)
-                            tw.writeFields(instance.id, instance.name, type.javaResult.id, innerId, instance.id)
+                            tw.writeFields(instance.id, instance.name, type.javaResult.id, parentId, instance.id)
                             tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
                             tw.writeHasLocation(instance.id, innerLocId)
                             addModifiers(instance.id, "public", "static", "final")
