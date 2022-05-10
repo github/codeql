@@ -1209,15 +1209,20 @@ open class KotlinUsesExtractor(
      * `parent` is null.
      */
     fun getValueParameterLabel(vp: IrValueParameter, parent: Label<out DbCallable>?): String {
-        val parentId = parent ?: useDeclarationParent(vp.parent, false)
-        val idx = vp.index
+        val declarationParent = vp.parent
+        val parentId = parent ?: useDeclarationParent(declarationParent, false)
+
+        val idx = if (declarationParent is IrFunction && declarationParent.extensionReceiverParameter != null)
+            // For extension functions increase the index to match what the java extractor sees:
+            vp.index + 1
+        else
+            vp.index
+
         if (idx < 0) {
-            val p = vp.parent
-            if (p !is IrFunction || p.extensionReceiverParameter != vp) {
-                // We're not extracting this and this@TYPE parameters of functions:
-                logger.error("Unexpected negative index for parameter")
-            }
+            // We're not extracting this and this@TYPE parameters of functions:
+            logger.error("Unexpected negative index for parameter")
         }
+
         return "@\"params;{$parentId};$idx\""
     }
 
