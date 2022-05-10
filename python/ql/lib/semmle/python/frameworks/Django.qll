@@ -2647,7 +2647,7 @@ module PrivateDjango {
    *  - https://docs.djangoproject.com/en/3.1/topics/http/file-uploads/#handling-uploaded-files-with-a-model
    */
   private class DjangoFileFieldUploadToFunctionFilenameParam extends RemoteFlowSource::Range,
-    DataFlow::ParameterNode {
+    DataFlow::SourceParameterNode {
     DjangoFileFieldUploadToFunctionFilenameParam() {
       exists(DataFlow::CallCfgNode call, DataFlow::Node uploadToArg, Function func |
         this.getParameter() = func.getArg(1) and
