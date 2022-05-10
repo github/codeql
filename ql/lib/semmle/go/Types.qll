@@ -668,6 +668,9 @@ private TypeSetTerm getIntersection(TypeSetTerm term1, TypeSetTerm term2) {
   if term1.hasTilde() then result = term2 else result = term1
 }
 
+/**
+ * Gets a term in the intersection of type-set literals `a` and `b`.
+ */
 TypeSetTerm getTermInIntersection(TypeSetLiteralType a, TypeSetLiteralType b) {
   result = getIntersection(a.getATerm(), b.getATerm())
 }
