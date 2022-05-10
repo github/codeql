@@ -2738,4 +2738,67 @@ module PrivateDjango {
             .getAnImmediateUse()
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // Settings
+  // ---------------------------------------------------------------------------
+  /**
+   * A custom middleware stack
+   */
+  private class DjangoSettingsMiddlewareStack extends HTTP::Server::CsrfProtectionSetting::Range {
+    List list;
+
+    DjangoSettingsMiddlewareStack() {
+      this.asExpr() = list and
+      // we look for an assignment to the `MIDDLEWARE` setting
+      exists(DataFlow::Node mw |
+        mw.asVar().getName() = "MIDDLEWARE" and
+        DataFlow::localFlow(this, mw)
+      |
+        // To only include results where CSRF protection matters, we only care about CSRF
+        // protection when the django authentication middleware is enabled.
+        // Since an active session cookie is exactly what would allow an attacker to perform
+        // a CSRF attack.
+        // Notice that this does not ensure that this is not a FP, since the authentication
+        // middleware might be unused.
+        //
+        // This also strongly implies that `mw` is in fact a Django middleware setting and
+        // not just a variable named `MIDDLEWARE`.
+        list.getAnElt().(StrConst).getText() =
+          "django.contrib.auth.middleware.AuthenticationMiddleware"
+      )
+    }
+
+    override boolean getVerificationSetting() {
+      if
+        list.getAnElt().(StrConst).getText() in [
+            "django.middleware.csrf.CsrfViewMiddleware",
+            // see https://github.com/mozilla/django-session-csrf
+            "session_csrf.CsrfMiddleware"
+          ]
+      then result = true
+      else result = false
+    }
+  }
+
+  private class DjangoCsrfDecorator extends HTTP::Server::CsrfLocalProtectionSetting::Range {
+    string decoratorName;
+    Function function;
+
+    DjangoCsrfDecorator() {
+      decoratorName in ["csrf_protect", "csrf_exempt", "requires_csrf_token", "ensure_csrf_cookie"] and
+      this =
+        API::moduleImport("django")
+            .getMember("views")
+            .getMember("decorators")
+            .getMember("csrf")
+            .getMember(decoratorName)
+            .getAUse() and
+      this.asExpr() = function.getADecorator()
+    }
+
+    override Function getRequestHandler() { result = function }
+
+    override predicate csrfEnabled() { decoratorName in ["csrf_protect", "requires_csrf_token"] }
+  }
 }
