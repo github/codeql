@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as Impl
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
 
@@ -47,11 +48,11 @@ private class SystemCollectionIEnumerableFlowModelCsv extends SummaryModelCsv {
 }
 
 /** Clear content for Clear methods in all subtypes of `System.Collections.IEnumerable`. */
-private class SystemCollectionsIEnumerableClearFlow extends SummarizedCallable {
+private class SystemCollectionsIEnumerableClearFlow extends Impl::Public::SummarizedCallable {
   SystemCollectionsIEnumerableClearFlow() {
-    this.getDeclaringType().(RefType).getABaseType*() instanceof
+    this.asCallable().getDeclaringType().(RefType).getABaseType*() instanceof
       SystemCollectionsIEnumerableInterface and
-    this.hasName("Clear")
+    this.asCallable().hasName("Clear")
   }
 
   override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {

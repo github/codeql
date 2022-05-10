@@ -153,14 +153,6 @@ abstract class SummarizedCallable extends DotNet::Callable {
   predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) { none() }
 }
 
-private predicate recordConstructorFlow(Constructor c, int i, Property p) {
-  c = any(RecordType r).getAMember() and
-  exists(string name |
-    c.getParameter(i).getName() = name and
-    c.getDeclaringType().getAMember(name) = p
-  )
-}
-
 private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable {
   private SummarizedCallable sc;
 
@@ -177,14 +169,22 @@ private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable
   }
 }
 
-private class RecordConstructorFlow extends SummarizedCallable {
-  RecordConstructorFlow() { recordConstructorFlow(this, _, _) }
+private predicate recordConstructorFlow(Constructor c, int i, Property p) {
+  c = any(RecordType r).getAMember() and
+  exists(string name |
+    c.getParameter(i).getName() = name and
+    c.getDeclaringType().getAMember(name) = p
+  )
+}
+
+private class RecordConstructorFlow extends Impl::Public::SummarizedCallable {
+  RecordConstructorFlow() { recordConstructorFlow(this.asCallable(), _, _) }
 
   override predicate propagatesFlow(
     SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
   ) {
     exists(int i, Property p |
-      recordConstructorFlow(this, i, p) and
+      recordConstructorFlow(this.asCallable(), i, p) and
       input = SummaryComponentStack::argument(i) and
       output = SummaryComponentStack::propertyOf(p, SummaryComponentStack::return()) and
       preservesValue = true

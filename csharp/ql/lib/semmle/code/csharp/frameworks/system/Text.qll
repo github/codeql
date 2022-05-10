@@ -2,6 +2,7 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as Impl
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
 
@@ -27,9 +28,9 @@ class SystemTextStringBuilderClass extends SystemTextClass {
 }
 
 /** Clear content for `System.Text.StringBuilder.Clear`. */
-private class SystemTextStringBuilderClearFlow extends SummarizedCallable {
+private class SystemTextStringBuilderClearFlow extends Impl::Public::SummarizedCallable {
   SystemTextStringBuilderClearFlow() {
-    this = any(SystemTextStringBuilderClass s).getAMethod("Clear")
+    this.asCallable() = any(SystemTextStringBuilderClass s).getAMethod("Clear")
   }
 
   override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
