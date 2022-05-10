@@ -27,3 +27,9 @@ function f({ endpoint }) {}
 const g = async () => undefined;
 
 const o = { m: () => undefined }
+
+const url = f();
+
+const x = f() + "<a target=\"_blank\" href=\"" + endpoint + "\"></a>";
+
+const y = "foo"+ endpoint + "bar";
