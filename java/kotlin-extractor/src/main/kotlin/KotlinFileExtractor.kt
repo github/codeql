@@ -554,7 +554,7 @@ open class KotlinFileExtractor(
                     classTypeArgsIncludingOuterClasses = listOf()
                 )
                 val clinitId = tw.getLabelFor<DbMethod>(clinitLabel)
-                val returnType = useType(pluginContext.irBuiltIns.unitType)
+                val returnType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
                 tw.writeMethods(clinitId, "<clinit>", "<clinit>()", returnType.javaResult.id, parentId, clinitId)
                 tw.writeMethodsKotlinType(clinitId, returnType.kotlinResult.id)
 
