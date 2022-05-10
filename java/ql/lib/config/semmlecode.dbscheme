@@ -629,8 +629,7 @@ case @stmt.kind of
 | 22 = @catchclause
 | 23 = @yieldstmt
 | 24 = @errorstmt
-| 25 = @anonymousclassdeclstmt
-| 26 = @whenbranch
+| 25 = @whenbranch
 ;
 
 #keyset[parent,idx]
