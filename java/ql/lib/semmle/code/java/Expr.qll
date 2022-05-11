@@ -2133,3 +2133,47 @@ class Argument extends Expr {
     )
   }
 }
+
+/**
+ * An expression for which the value of the expression as a whole is discarded. Only cases
+ * of discarded values at the language level (as described by the JLS) are considered;
+ * data flow, for example to determine if an assigned variable value is ever read, is not
+ * considered. Such expressions can for example appear as part of an `ExprStmt` or as
+ * initializer of a `for` loop.
+ *
+ * For example, for the statement `i++;` the value of the increment expression, that is the
+ * old value of variable `i`, is discarded. Whereas for the statement `println(i++);` the
+ * value of the increment expression is not discarded but used as argument for the method call.
+ */
+class ValueDiscardingExpr extends Expr {
+  ValueDiscardingExpr() {
+    (
+      this = any(ExprStmt s).getExpr()
+      or
+      this = any(ForStmt s).getAnInit() and not this instanceof LocalVariableDeclExpr
+      or
+      this = any(ForStmt s).getAnUpdate()
+      or
+      // Only applies to SwitchStmt, but not to SwitchExpr, see JLS 17 section 14.11.2
+      this = any(SwitchStmt s).getACase().getRuleExpression()
+      or
+      // TODO: Workarounds for https://github.com/github/codeql/issues/3605
+      exists(LambdaExpr lambda |
+        this = lambda.getExprBody() and
+        lambda.asMethod().getReturnType() instanceof VoidType
+      )
+      or
+      exists(MemberRefExpr memberRef, Method implicitMethod, Method overridden |
+        implicitMethod = memberRef.asMethod()
+      |
+        this.getParent().(ReturnStmt).getEnclosingCallable() = implicitMethod and
+        // asMethod() has bogus method with wrong return type as result, e.g. `run(): String` (overriding `Runnable.run(): void`)
+        // Therefore need to check the overridden method
+        implicitMethod.getSourceDeclaration().overridesOrInstantiates*(overridden) and
+        overridden.getReturnType() instanceof VoidType
+      )
+    ) and
+    // Ignore if this expression is a method call with `void` as return type
+    not this.getType() instanceof VoidType
+  }
+}
