@@ -1,7 +1,7 @@
 /**
  * @name Construction of a cookie using user-supplied input.
  * @description Constructing cookies from user input may allow an attacker to perform a Cookie Poisoning attack.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @id py/cookie-injection
  * @tags security
@@ -14,6 +14,7 @@ import semmle.python.dataflow.new.DataFlow
 import experimental.semmle.python.Concepts
 import experimental.semmle.python.CookieHeader
 import experimental.semmle.python.security.injection.CookieInjection
+import DataFlow::PathGraph
 
 from
   CookieInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
@@ -21,7 +22,7 @@ from
 where
   config.hasFlowPath(source, sink) and
   if exists(sink.getNode().(CookieSink))
-  then insecure = "and its " + sink.getNode().(CookieSink).getFlag() + " flag is not properly set"
-  else insecure = ""
-select sink.getNode(), "Cookie is constructed from a", source.getNode(), "user-supplied input",
-  insecure
+  then insecure = ",and its " + sink.getNode().(CookieSink).getFlag() + " flag is not properly set."
+  else insecure = "."
+select sink.getNode(), source, sink, "Cookie is constructed from a $@" + insecure, source.getNode(),
+  "user-supplied input"
