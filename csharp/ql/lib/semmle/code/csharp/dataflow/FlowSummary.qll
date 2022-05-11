@@ -118,6 +118,8 @@ module SummaryComponentStack {
  * A class for synthesized callables given by a summary.
  */
 abstract class SummarizedCallable extends DotNet::Callable {
+  SummarizedCallable() { this.isUnboundDeclaration() }
+
   /**
    * Holds if data may flow from `input` to `output` through this callable.
    *

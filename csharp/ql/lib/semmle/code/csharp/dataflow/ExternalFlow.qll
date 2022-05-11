@@ -516,7 +516,9 @@ Element interpretElement(
  * Holds if `c` has a `generated` summary.
  */
 predicate hasSummary(Callable c, boolean generated) {
-  exists(DataFlowCallable dc | dc.asCallable() = c and summaryElement(dc, _, _, _, generated))
+  exists(DataFlowCallable dc |
+    dc.asSummarizedCallable() = c and summaryElement(dc, _, _, _, generated)
+  )
 }
 
 cached

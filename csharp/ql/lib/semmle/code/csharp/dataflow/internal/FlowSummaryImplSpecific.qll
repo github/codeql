@@ -13,6 +13,7 @@ private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Public
 private import semmle.code.csharp.Unification
 private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition instanceParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
@@ -84,6 +85,21 @@ DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
   )
 }
 
+private predicate summaryElement0(
+  DotNet::Callable c, string input, string output, string kind, boolean generated
+) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, generated) and
+    c = interpretElement(namespace, type, subtypes, name, signature, ext)
+  )
+}
+
+private class SummarizedCallableExternal extends FlowSummary::SummarizedCallable {
+  SummarizedCallableExternal() { summaryElement0(this, _, _, _, _) }
+}
+
 /**
  * Holds if an external flow summary exists for `c` with input specification
  * `input`, output specification `output`, kind `kind`, and a flag `generated`
@@ -92,12 +108,7 @@ DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
 predicate summaryElement(
   DataFlowCallable c, string input, string output, string kind, boolean generated
 ) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
-  |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, generated) and
-    c.asCallable() = interpretElement(namespace, type, subtypes, name, signature, ext)
-  )
+  summaryElement0(c.asSummarizedCallable(), input, output, kind, generated)
 }
 
 /**
