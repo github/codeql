@@ -506,10 +506,10 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
       f instanceof InstanceFieldOrProperty
       or
       exists(
-        FlowSummary::SummarizedCallable callable,
+        FlowSummaryImpl::Public::SummarizedCallable sc,
         FlowSummaryImpl::Public::SummaryComponentStack input
       |
-        callable.propagatesFlow(input, _, _) and
+        sc.propagatesFlow(input, _, _) and
         input.contains(FlowSummary::SummaryComponent::content(f.getContent()))
       )
     )

@@ -8,7 +8,6 @@ private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
-private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as Impl
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
@@ -81,7 +80,8 @@ class ExternalApi extends DotNet::Callable {
 
   /** Holds if this API has a supported summary. */
   predicate hasSummary() {
-    exists(Impl::Public::SummarizedCallable sc | sc.asCallable() = this) or
+    this instanceof SummarizedCallable
+    or
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
 
