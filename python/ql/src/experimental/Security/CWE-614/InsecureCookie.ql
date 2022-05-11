@@ -27,4 +27,4 @@ where
   or
   not cookie.isSameSite() and
   alert = "samesite"
-select cookie, "Cookie is added without the ", alert, " flag properly set."
+select cookie, "Cookie is added without the '" + alert + "' flag properly set."
