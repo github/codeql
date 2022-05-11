@@ -2174,6 +2174,6 @@ class ValueDiscardingExpr extends Expr {
       )
     ) and
     // Ignore if this expression is a method call with `void` as return type
-    not getType() instanceof VoidType
+    not this.getType() instanceof VoidType
   }
 }
