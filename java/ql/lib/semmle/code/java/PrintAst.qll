@@ -68,7 +68,8 @@ private predicate isNotNeeded(Element el) {
     el.(ExprOrStmt).getEnclosingCallable() = c
   |
     el.getLocation().hasLocationInfo(_, sline, eline, scol, ecol) and
-    c.getLocation().hasLocationInfo(_, sline, eline, scol, ecol)
+    c.getLocation().hasLocationInfo(_, sline, eline, scol, ecol) and
+    not c.getFile().isKotlinSourceFile() // Kotlin constructor bodies have the same location as the constructor
     // simply comparing their getLocation() doesn't work as they have distinct but equivalent locations
   )
   or
@@ -241,6 +242,21 @@ class ExprStmtNode extends ElementNode {
 }
 
 /**
+ * A node representing a `KtInitializerAssignExpr`.
+ */
+class KtInitializerNode extends ExprStmtNode {
+  KtInitializerNode() { element instanceof KtInitializerAssignExpr }
+
+  override PrintAstNode getChild(int childIndex) {
+    // Remove the RHS of the initializer, because otherwise
+    // it appears as both the initializer's child and the
+    // initialize of the related field, producing a DAG not
+    // a tree and consequently unreadable output.
+    result = super.getChild(childIndex) and childIndex = 0
+  }
+}
+
+/**
  * Holds if the given expression is part of an annotation.
  */
 private predicate partOfAnnotation(Expr e) {
@@ -298,7 +314,8 @@ final class ClassInstanceExprNode extends ExprStmtNode {
     result = super.getChild(childIndex)
     or
     childIndex = -4 and
-    result.getElement() = element.(ClassInstanceExpr).getAnonymousClass()
+    result.getElement() = element.(ClassInstanceExpr).getAnonymousClass() and
+    not result.getElement() instanceof LocalClassOrInterface // Kotlin anonymous classes are extracted as local classes too.
   }
 }
 

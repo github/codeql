@@ -5,6 +5,8 @@
 /python/ @github/codeql-python
 /ruby/ @github/codeql-ruby
 /swift/ @github/codeql-c
+/java/kotlin-extractor/ @github/codeql-kotlin
+/java/kotlin-explorer/ @github/codeql-kotlin
 
 # ML-powered queries
 /javascript/ql/experimental/adaptivethreatmodeling/ @github/codeql-ml-powered-queries-reviewers

@@ -157,6 +157,8 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   or
   sink.(AssignAddExpr).getSource() = src and sink.getType() instanceof TypeString
   or
+  sink.(StringTemplateExpr).getComponent(_) = src
+  or
   sink.(LogicExpr).getAnOperand() = src
   or
   constructorStep(src, sink)
