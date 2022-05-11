@@ -59,10 +59,8 @@ inline auto trapQuoted(const std::string& s) {
   return std::quoted(s, '"', '"');
 }
 
-template <typename TagParam>
+template <typename Tag>
 struct Binding {
-  using Tag = TagParam;
-
   TrapLabel<Tag> id;
 };
 

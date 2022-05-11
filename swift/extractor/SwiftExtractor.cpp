@@ -79,7 +79,7 @@ static void extractFile(const SwiftExtractorConfiguration& config, swift::Source
 
   TrapOutput trap{trapStream};
   TrapArena arena{};
-  auto label = arena.allocateLabel<File::Tag>();
+  auto label = arena.allocateLabel<FileTag>();
   trap.assignStar(label);
   File f{};
   f.id = label;
