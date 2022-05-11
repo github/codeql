@@ -91,7 +91,7 @@ class Parameter extends Element, @param, LocalScopeVariable {
 
   /** Holds if this formal parameter is a parameter representing the dispatch receiver in an extension method. */
   predicate isExtensionParameter() {
-    getPosition() = 0 and this.getCallable() instanceof ExtensionMethod
+    this.getPosition() = 0 and this.getCallable() instanceof ExtensionMethod
   }
 
   /**

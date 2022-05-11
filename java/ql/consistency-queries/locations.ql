@@ -1,5 +1,6 @@
 import java
 import semmle.code.configfiles.ConfigFiles
+import semmle.code.java.Diagnostics
 
 // Locations should either be :0:0:0:0 locations (UnknownLocation, or
 // a whole file), or all 4 fields should be positive.
@@ -27,7 +28,7 @@ Location unusedLocation() {
   not exists(Top t | t.getLocation() = result) and
   not exists(XMLLocatable x | x.getLocation() = result) and
   not exists(ConfigLocatable c | c.getLocation() = result) and
-  not exists(@diagnostic d | diagnostics(d, _, _, _, _, _, result)) and
+  not exists(Diagnostic d | d.getLocation() = result) and
   not (
     result.getFile().getExtension() = "xml" and
     result.getStartLine() = 0 and
