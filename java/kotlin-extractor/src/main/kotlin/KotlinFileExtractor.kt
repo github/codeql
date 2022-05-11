@@ -322,17 +322,7 @@ open class KotlinFileExtractor(
             val typeParamSubstitution =
                 when (argsIncludingOuterClasses) {
                     null -> { x: IrType, _: TypeContext, _: IrPluginContext -> x.toRawType() }
-                    else -> {
-                        makeTypeGenericSubstitutionMap(c, argsIncludingOuterClasses).let {
-                            { x: IrType, useContext: TypeContext, pluginContext: IrPluginContext ->
-                                x.substituteTypeAndArguments(
-                                    it,
-                                    useContext,
-                                    pluginContext
-                                )
-                            }
-                        }
-                    }
+                    else -> makeGenericSubstitutionFunction(c, argsIncludingOuterClasses)
                 }
 
             c.declarations.map {
@@ -499,12 +489,12 @@ open class KotlinFileExtractor(
         return FieldResult(instanceId, instanceName)
     }
 
-    private fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>, idx: Int, typeSubstitution: TypeSubstitution?, parentSourceDeclaration: Label<out DbCallable>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, extractTypeAccess: Boolean): TypeResults {
+    private fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>, idx: Int, typeSubstitution: TypeSubstitution?, parentSourceDeclaration: Label<out DbCallable>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, extractTypeAccess: Boolean, locOverride: Label<DbLocation>? = null): TypeResults {
         with("value parameter", vp) {
-            val location = getLocation(vp, classTypeArgsIncludingOuterClasses)
+            val location = locOverride ?: getLocation(vp, classTypeArgsIncludingOuterClasses)
             val id = useValueParameter(vp, parent)
             if (extractTypeAccess) {
-                extractTypeAccessRecursive(vp.type, location, id, -1)
+                extractTypeAccessRecursive(typeSubstitution?.let { it(vp.type, TypeContext.OTHER, pluginContext) } ?: vp.type, location, id, -1)
             }
             return extractValueParameter(id, vp.type, vp.name.asString(), location, parent, idx, typeSubstitution, useValueParameter(vp, parentSourceDeclaration), vp.isVararg)
         }
@@ -664,7 +654,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null): Label<out DbCallable>? {
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null, locOverride: Label<DbLocation>? = null): Label<out DbCallable>? {
         if (isFake(f)) return null
 
         with("function", f) {
@@ -682,7 +672,7 @@ open class KotlinFileExtractor(
                             useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses, noReplace = true)
 
                 val sourceDeclaration =
-                    if (typeSubstitution != null)
+                    if (typeSubstitution != null && idOverride == null)
                         useFunction(f)
                     else
                         id
@@ -690,13 +680,13 @@ open class KotlinFileExtractor(
                 val extReceiver = f.extensionReceiverParameter
                 val idxOffset = if (extReceiver != null) 1 else 0
                 val paramTypes = f.valueParameters.mapIndexed { i, vp ->
-                    extractValueParameter(vp, id, i + idxOffset, typeSubstitution, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses)
+                    extractValueParameter(vp, id, i + idxOffset, typeSubstitution, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, locOverride)
                 }
                 val allParamTypes = if (extReceiver != null) {
                     val extendedType = useType(extReceiver.type)
                     tw.writeKtExtensionFunctions(id.cast<DbMethod>(), extendedType.javaResult.id, extendedType.kotlinResult.id)
 
-                    val t = extractValueParameter(extReceiver, id, 0, null, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses)
+                    val t = extractValueParameter(extReceiver, id, 0, null, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, locOverride)
                     listOf(t) + paramTypes
                 } else {
                     paramTypes
@@ -706,7 +696,7 @@ open class KotlinFileExtractor(
 
                 val substReturnType = typeSubstitution?.let { it(f.returnType, TypeContext.RETURN, pluginContext) } ?: f.returnType
 
-                val locId = getLocation(f, classTypeArgsIncludingOuterClasses)
+                val locId = locOverride ?: getLocation(f, classTypeArgsIncludingOuterClasses)
 
                 if (f.symbol is IrConstructorSymbol) {
                     val unitType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
@@ -726,7 +716,7 @@ open class KotlinFileExtractor(
                     tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
 
                     if (extractMethodAndParameterTypeAccesses) {
-                        extractTypeAccessRecursive(f.returnType, locId, id, -1)
+                        extractTypeAccessRecursive(substReturnType, locId, id, -1)
                     }
 
                     if (shortName.nameInDB != shortName.kotlinName) {
@@ -4002,7 +3992,12 @@ open class KotlinFileExtractor(
                     helper.extractParameterToFieldAssignmentInConstructor("<fn>", functionType, fieldId, 0, 1)
 
                     // add implementation function
-                    extractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, null, null, ids.function)
+                    val classTypeArgs = (e.type as? IrSimpleType)?.arguments
+                    val typeSub = classTypeArgs?.let { makeGenericSubstitutionFunction(typeOwner, it) }
+
+                    fun trySub(t: IrType, context: TypeContext) = if (typeSub == null) t else typeSub(t, context, pluginContext)
+
+                    extractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, idOverride = ids.function, locOverride = tw.getLocation(e))
 
                     //body
                     val blockId = tw.getFreshIdLabel<DbBlock>()
@@ -4025,7 +4020,7 @@ open class KotlinFileExtractor(
 
                     // Call to original `invoke`:
                     val callId = tw.getFreshIdLabel<DbMethodaccess>()
-                    val callType = useType(samMember.returnType)
+                    val callType = useType(trySub(samMember.returnType, TypeContext.RETURN))
                     tw.writeExprs_methodaccess(callId, callType.javaResult.id, returnId, 0)
                     tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
                     extractCommonExpr(callId)
@@ -4049,7 +4044,7 @@ open class KotlinFileExtractor(
 
                     fun extractArgument(p: IrValueParameter, idx: Int, parent: Label<out DbExprparent>) {
                         val argsAccessId = tw.getFreshIdLabel<DbVaraccess>()
-                        val paramType = useType(p.type)
+                        val paramType = useType(trySub(p.type, TypeContext.OTHER))
                         tw.writeExprs_varaccess(argsAccessId, paramType.javaResult.id, parent, idx)
                         tw.writeExprsKotlinType(argsAccessId, paramType.kotlinResult.id)
                         extractCommonExpr(argsAccessId)

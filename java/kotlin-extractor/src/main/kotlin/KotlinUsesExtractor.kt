@@ -215,6 +215,17 @@ open class KotlinUsesExtractor(
     fun makeTypeGenericSubstitutionMap(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>) =
         getTypeParametersInScope(c).map({ it.symbol }).zip(argsIncludingOuterClasses.map { it.withQuestionMark(true) }).toMap()
 
+    fun makeGenericSubstitutionFunction(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>) =
+        makeTypeGenericSubstitutionMap(c, argsIncludingOuterClasses).let {
+            { x: IrType, useContext: TypeContext, pluginContext: IrPluginContext ->
+                x.substituteTypeAndArguments(
+                    it,
+                    useContext,
+                    pluginContext
+                )
+            }
+        }
+
     // The Kotlin compiler internal representation of Outer<A, B>.Inner<C, D>.InnerInner<E, F>.someFunction<G, H>.LocalClass<I, J> is LocalClass<I, J, G, H, E, F, C, D, A, B>. This function returns [A, B, C, D, E, F, G, H, I, J].
     fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
         if(argsIncludingOuterClasses.isNullOrEmpty())
