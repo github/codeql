@@ -110,6 +110,10 @@ open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelMa
         }
     }
 
+    fun getExistingVariableLabelFor(v: IrVariable): Label<out DbLocalvar>? {
+        return variableLabelMapping.get(v)
+    }
+
     /**
      * This returns a label for the location described by its arguments.
      * Typically users will not want to call this directly, but instead
