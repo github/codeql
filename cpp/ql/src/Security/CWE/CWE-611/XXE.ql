@@ -60,8 +60,8 @@ class XercesDOMParserClass extends Class {
 /**
  * The `DOMLSParser` class.
  */
-class DOMLSParserClass extends Class {
-  DOMLSParserClass() { this.hasName("DOMLSParser") }
+class DomLSParserClass extends Class {
+  DomLSParserClass() { this.hasName("DOMLSParser") }
 }
 
 /**
@@ -229,7 +229,7 @@ class SetFeatureTranformer extends XXEFlowStateTranformer {
 class GetDomConfig extends Function {
   GetDomConfig() {
     this.hasName("getDomConfig") and
-    this.getDeclaringType() instanceof DOMLSParserClass
+    this.getDeclaringType() instanceof DomLSParserClass
   }
 }
 
@@ -286,12 +286,13 @@ class DOMConfigurationSetParameterTranformer extends XXEFlowStateTranformer {
 }
 
 /**
- * The `AbstractDOMParser.parse`, `DOMLSParserClass.parse`, `SAXParser.parse` or `SAX2XMLReader.parse` method.
+ * The `AbstractDOMParser.parse`, `DOMLSParserClass.parse`, `SAXParser.parse`
+ * or `SAX2XMLReader.parse` method.
  */
 class ParseFunction extends Function {
   ParseFunction() {
     this.getClassAndName("parse") instanceof AbstractDOMParserClass or
-    this.getClassAndName("parse") instanceof DOMLSParserClass or
+    this.getClassAndName("parse") instanceof DomLSParserClass or
     this.getClassAndName("parse") instanceof SaxParserClass or
     this.getClassAndName("parse") instanceof Sax2XmlReader
   }
@@ -304,7 +305,7 @@ class ParseFunction extends Function {
 class CreateLSParser extends Function {
   CreateLSParser() {
     this.hasName("createLSParser") and
-    this.getUnspecifiedType().(PointerType).getBaseType() instanceof DOMLSParserClass // returns a `DOMLSParser *`.
+    this.getUnspecifiedType().(PointerType).getBaseType() instanceof DomLSParserClass // returns a `DOMLSParser *`.
   }
 }
 
