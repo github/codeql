@@ -2889,14 +2889,16 @@
 | samConversion.kt:2:18:2:45 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:2:18:2:45 | ...=... | samConversion.kt:2:18:2:45 |  | AssignExpr |
 | samConversion.kt:2:18:2:45 | <fn> | samConversion.kt:2:18:2:45 |  | VarAccess |
-| samConversion.kt:2:18:2:45 | <fn> | samConversion.kt:17:5:17:31 | accept | VarAccess |
+| samConversion.kt:2:18:2:45 | <fn> | samConversion.kt:2:18:2:45 | accept | VarAccess |
 | samConversion.kt:2:18:2:45 | Boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:2:18:2:45 | Function1<Integer,Boolean> | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:2:18:2:45 | IntPredicate | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:2:18:2:45 | IntPredicate | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:2:18:2:45 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:2:18:2:45 | i | samConversion.kt:17:5:17:31 | accept | VarAccess |
-| samConversion.kt:2:18:2:45 | invoke(...) | samConversion.kt:17:5:17:31 | accept | MethodAccess |
+| samConversion.kt:2:18:2:45 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:2:18:2:45 | i | samConversion.kt:2:18:2:45 | accept | VarAccess |
+| samConversion.kt:2:18:2:45 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:2:18:2:45 | invoke(...) | samConversion.kt:2:18:2:45 | accept | MethodAccess |
 | samConversion.kt:2:18:2:45 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
 | samConversion.kt:2:18:2:45 | this | samConversion.kt:2:18:2:45 |  | ThisAccess |
 | samConversion.kt:2:18:2:45 | this.<fn> | samConversion.kt:2:18:2:45 |  | VarAccess |
@@ -2915,16 +2917,19 @@
 | samConversion.kt:4:14:4:42 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:4:14:4:42 | ...=... | samConversion.kt:4:14:4:42 |  | AssignExpr |
 | samConversion.kt:4:14:4:42 | <fn> | samConversion.kt:4:14:4:42 |  | VarAccess |
-| samConversion.kt:4:14:4:42 | <fn> | samConversion.kt:23:5:23:27 | fn1 | VarAccess |
+| samConversion.kt:4:14:4:42 | <fn> | samConversion.kt:4:14:4:42 | fn1 | VarAccess |
 | samConversion.kt:4:14:4:42 | Function2<Integer,Integer,Unit> | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:4:14:4:42 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:4:14:4:42 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:4:14:4:42 | InterfaceFn1 | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:4:14:4:42 | InterfaceFn1 | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:4:14:4:42 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:4:14:4:42 | i | samConversion.kt:23:5:23:27 | fn1 | VarAccess |
-| samConversion.kt:4:14:4:42 | invoke(...) | samConversion.kt:23:5:23:27 | fn1 | MethodAccess |
-| samConversion.kt:4:14:4:42 | j | samConversion.kt:23:5:23:27 | fn1 | VarAccess |
+| samConversion.kt:4:14:4:42 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:4:14:4:42 | i | samConversion.kt:4:14:4:42 | fn1 | VarAccess |
+| samConversion.kt:4:14:4:42 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:4:14:4:42 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:4:14:4:42 | invoke(...) | samConversion.kt:4:14:4:42 | fn1 | MethodAccess |
+| samConversion.kt:4:14:4:42 | j | samConversion.kt:4:14:4:42 | fn1 | VarAccess |
 | samConversion.kt:4:14:4:42 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
 | samConversion.kt:4:14:4:42 | this | samConversion.kt:4:14:4:42 |  | ThisAccess |
 | samConversion.kt:4:14:4:42 | this.<fn> | samConversion.kt:4:14:4:42 |  | VarAccess |
@@ -2941,16 +2946,19 @@
 | samConversion.kt:5:14:5:32 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:5:14:5:32 | ...=... | samConversion.kt:5:14:5:32 |  | AssignExpr |
 | samConversion.kt:5:14:5:32 | <fn> | samConversion.kt:5:14:5:32 |  | VarAccess |
-| samConversion.kt:5:14:5:32 | <fn> | samConversion.kt:23:5:23:27 | fn1 | VarAccess |
+| samConversion.kt:5:14:5:32 | <fn> | samConversion.kt:5:14:5:32 | fn1 | VarAccess |
 | samConversion.kt:5:14:5:32 | Function2<Integer,Integer,Unit> | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:5:14:5:32 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:5:14:5:32 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:5:14:5:32 | InterfaceFn1 | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:5:14:5:32 | InterfaceFn1 | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:5:14:5:32 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:5:14:5:32 | i | samConversion.kt:23:5:23:27 | fn1 | VarAccess |
-| samConversion.kt:5:14:5:32 | invoke(...) | samConversion.kt:23:5:23:27 | fn1 | MethodAccess |
-| samConversion.kt:5:14:5:32 | j | samConversion.kt:23:5:23:27 | fn1 | VarAccess |
+| samConversion.kt:5:14:5:32 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:5:14:5:32 | i | samConversion.kt:5:14:5:32 | fn1 | VarAccess |
+| samConversion.kt:5:14:5:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:5:14:5:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:5:14:5:32 | invoke(...) | samConversion.kt:5:14:5:32 | fn1 | MethodAccess |
+| samConversion.kt:5:14:5:32 | j | samConversion.kt:5:14:5:32 | fn1 | VarAccess |
 | samConversion.kt:5:14:5:32 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
 | samConversion.kt:5:14:5:32 | this | samConversion.kt:5:14:5:32 |  | ThisAccess |
 | samConversion.kt:5:14:5:32 | this.<fn> | samConversion.kt:5:14:5:32 |  | VarAccess |
@@ -2967,18 +2975,21 @@
 | samConversion.kt:7:13:7:46 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:7:13:7:46 | ...=... | samConversion.kt:7:13:7:46 |  | AssignExpr |
 | samConversion.kt:7:13:7:46 | <fn> | samConversion.kt:7:13:7:46 |  | VarAccess |
-| samConversion.kt:7:13:7:46 | <fn> | samConversion.kt:27:5:27:35 | ext | VarAccess |
+| samConversion.kt:7:13:7:46 | <fn> | samConversion.kt:7:13:7:46 | ext | VarAccess |
 | samConversion.kt:7:13:7:46 | Boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:7:13:7:46 | Function2<String,Integer,Boolean> | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:7:13:7:46 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:7:13:7:46 | InterfaceFnExt1 | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:7:13:7:46 | InterfaceFnExt1 | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:7:13:7:46 | String | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:7:13:7:46 | i | samConversion.kt:27:5:27:35 | ext | VarAccess |
-| samConversion.kt:7:13:7:46 | invoke(...) | samConversion.kt:27:5:27:35 | ext | MethodAccess |
+| samConversion.kt:7:13:7:46 | String | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:7:13:7:46 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:7:13:7:46 | i | samConversion.kt:7:13:7:46 | ext | VarAccess |
+| samConversion.kt:7:13:7:46 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:7:13:7:46 | invoke(...) | samConversion.kt:7:13:7:46 | ext | MethodAccess |
 | samConversion.kt:7:13:7:46 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
 | samConversion.kt:7:13:7:46 | this | samConversion.kt:7:13:7:46 |  | ThisAccess |
-| samConversion.kt:7:13:7:46 | this | samConversion.kt:27:5:27:35 | ext | ExtensionReceiverAccess |
+| samConversion.kt:7:13:7:46 | this | samConversion.kt:7:13:7:46 | ext | ExtensionReceiverAccess |
 | samConversion.kt:7:13:7:46 | this.<fn> | samConversion.kt:7:13:7:46 |  | VarAccess |
 | samConversion.kt:7:29:7:46 | ...->... | samConversion.kt:1:1:14:1 | main | LambdaExpr |
 | samConversion.kt:7:29:7:46 | Boolean | samConversion.kt:1:1:14:1 | main | TypeAccess |
@@ -2995,14 +3006,16 @@
 | samConversion.kt:9:13:13:6 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:9:13:13:6 | ...=... | samConversion.kt:9:13:13:6 |  | AssignExpr |
 | samConversion.kt:9:13:13:6 | <fn> | samConversion.kt:9:13:13:6 |  | VarAccess |
-| samConversion.kt:9:13:13:6 | <fn> | samConversion.kt:17:5:17:31 | accept | VarAccess |
+| samConversion.kt:9:13:13:6 | <fn> | samConversion.kt:9:13:13:6 | accept | VarAccess |
 | samConversion.kt:9:13:13:6 | Boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:9:13:13:6 | Function1<Integer,Boolean> | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:9:13:13:6 | IntPredicate | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:9:13:13:6 | IntPredicate | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:9:13:13:6 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:9:13:13:6 | i | samConversion.kt:17:5:17:31 | accept | VarAccess |
-| samConversion.kt:9:13:13:6 | invoke(...) | samConversion.kt:17:5:17:31 | accept | MethodAccess |
+| samConversion.kt:9:13:13:6 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:9:13:13:6 | i | samConversion.kt:9:13:13:6 | accept | VarAccess |
+| samConversion.kt:9:13:13:6 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:9:13:13:6 | invoke(...) | samConversion.kt:9:13:13:6 | accept | MethodAccess |
 | samConversion.kt:9:13:13:6 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
 | samConversion.kt:9:13:13:6 | this | samConversion.kt:9:13:13:6 |  | ThisAccess |
 | samConversion.kt:9:13:13:6 | this.<fn> | samConversion.kt:9:13:13:6 |  | VarAccess |
@@ -3032,100 +3045,39 @@
 | samConversion.kt:12:22:12:22 | 2 | samConversion.kt:11:12:13:5 | invoke | IntegerLiteral |
 | samConversion.kt:12:27:12:27 | 1 | samConversion.kt:11:12:13:5 | invoke | IntegerLiteral |
 | samConversion.kt:17:5:17:31 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:17:5:17:31 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:17:5:17:31 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:17:16:17:21 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:17:16:17:21 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:17:16:17:21 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:20:1:20:27 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:20:9:20:14 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:20:17:20:22 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:23:5:23:27 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:23:5:23:27 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:23:5:23:27 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:23:13:23:18 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:23:13:23:18 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:23:13:23:18 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:23:21:23:26 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:23:21:23:26 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:23:21:23:26 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:27:5:27:35 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:27:5:27:35 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:27:9:27:14 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:27:9:27:14 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:27:20:27:25 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:27:20:27:25 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:5:33:53 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:5:33:53 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:31:5:33:53 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:31:16:31:22 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:16:31:22 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:16:31:22 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:25:31:31 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:25:31:31 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:31:25:31:31 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:31:34:31:40 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:34:31:40 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:34:31:40 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:43:31:49 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:43:31:49 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:31:43:31:49 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:31:52:31:58 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:52:31:58 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:52:31:58 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:61:31:67 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:61:31:67 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:31:61:31:67 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:31:70:31:76 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:70:31:76 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:70:31:76 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:79:31:85 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:79:31:85 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:31:79:31:85 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:31:88:31:94 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:88:31:94 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:88:31:94 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:97:31:103 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:31:97:31:103 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:31:97:31:103 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:32:16:32:23 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:16:32:23 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:16:32:23 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:26:32:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:26:32:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:32:26:32:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:32:36:32:43 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:36:32:43 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:36:32:43 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:46:32:53 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:46:32:53 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:32:46:32:53 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:32:56:32:63 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:56:32:63 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:56:32:63 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:66:32:73 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:66:32:73 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:32:66:32:73 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:32:76:32:83 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:76:32:83 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:76:32:83 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:86:32:93 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:86:32:93 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:32:86:32:93 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:32:96:32:103 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:96:32:103 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:96:32:103 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:106:32:113 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:32:106:32:113 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:32:106:32:113 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:33:16:33:23 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:33:16:33:23 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:33:16:33:23 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:33:26:33:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:33:26:33:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:33:26:33:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:33:36:33:43 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:33:36:33:43 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:33:36:33:43 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:36:1:38:52 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:36:8:36:14 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -3276,86 +3228,134 @@
 | samConversion.kt:41:13:41:16 | int | samConversion.kt:41:13:41:16 | invoke | TypeAccess |
 | samConversion.kt:41:13:41:16 | int | samConversion.kt:41:13:41:16 | invoke | TypeAccess |
 | samConversion.kt:42:5:42:32 | b | samConversion.kt:40:1:47:1 | fn | LocalVariableDeclExpr |
-| samConversion.kt:42:13:42:32 | 23 | samConversion.kt:31:5:33:53 | accept | IntegerLiteral |
+| samConversion.kt:42:13:42:32 | 23 | samConversion.kt:42:13:42:32 | accept | IntegerLiteral |
 | samConversion.kt:42:13:42:32 | (...)... | samConversion.kt:40:1:47:1 | fn | CastExpr |
 | samConversion.kt:42:13:42:32 | ...=... | samConversion.kt:42:13:42:32 |  | AssignExpr |
-| samConversion.kt:42:13:42:32 | <fn> | samConversion.kt:31:5:33:53 | accept | VarAccess |
 | samConversion.kt:42:13:42:32 | <fn> | samConversion.kt:42:13:42:32 |  | VarAccess |
+| samConversion.kt:42:13:42:32 | <fn> | samConversion.kt:42:13:42:32 | accept | VarAccess |
 | samConversion.kt:42:13:42:32 | BigArityPredicate | samConversion.kt:40:1:47:1 | fn | TypeAccess |
 | samConversion.kt:42:13:42:32 | BigArityPredicate | samConversion.kt:40:1:47:1 | fn | TypeAccess |
 | samConversion.kt:42:13:42:32 | Boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:42:13:42:32 | FunctionN<Boolean> | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:42:13:42:32 | Object | samConversion.kt:31:5:33:53 | accept | TypeAccess |
-| samConversion.kt:42:13:42:32 | i0 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i1 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i2 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i3 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i4 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i5 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i6 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i7 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i8 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i9 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i10 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i11 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i12 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i13 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i14 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i15 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i16 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i17 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i18 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i19 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i20 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i21 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | i22 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:42:13:42:32 | invoke(...) | samConversion.kt:31:5:33:53 | accept | MethodAccess |
+| samConversion.kt:42:13:42:32 | Object | samConversion.kt:42:13:42:32 | accept | TypeAccess |
+| samConversion.kt:42:13:42:32 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | i0 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i1 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i2 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i3 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i4 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i5 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i6 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i7 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i8 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i9 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i10 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i11 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i12 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i13 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i14 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i15 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i16 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i17 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i18 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i19 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i20 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i21 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | i22 | samConversion.kt:42:13:42:32 | accept | VarAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:42:13:42:32 | invoke(...) | samConversion.kt:42:13:42:32 | accept | MethodAccess |
 | samConversion.kt:42:13:42:32 | new (...) | samConversion.kt:40:1:47:1 | fn | ClassInstanceExpr |
-| samConversion.kt:42:13:42:32 | new Object[] | samConversion.kt:31:5:33:53 | accept | ArrayCreationExpr |
+| samConversion.kt:42:13:42:32 | new Object[] | samConversion.kt:42:13:42:32 | accept | ArrayCreationExpr |
 | samConversion.kt:42:13:42:32 | this | samConversion.kt:42:13:42:32 |  | ThisAccess |
 | samConversion.kt:42:13:42:32 | this.<fn> | samConversion.kt:42:13:42:32 |  | VarAccess |
-| samConversion.kt:42:13:42:32 | {...} | samConversion.kt:31:5:33:53 | accept | ArrayInit |
+| samConversion.kt:42:13:42:32 | {...} | samConversion.kt:42:13:42:32 | accept | ArrayInit |
 | samConversion.kt:42:31:42:31 | a | samConversion.kt:40:1:47:1 | fn | VarAccess |
 | samConversion.kt:43:5:45:68 | c | samConversion.kt:40:1:47:1 | fn | LocalVariableDeclExpr |
-| samConversion.kt:43:13:45:68 | 23 | samConversion.kt:31:5:33:53 | accept | IntegerLiteral |
+| samConversion.kt:43:13:45:68 | 23 | samConversion.kt:43:13:45:68 | accept | IntegerLiteral |
 | samConversion.kt:43:13:45:68 | (...)... | samConversion.kt:40:1:47:1 | fn | CastExpr |
 | samConversion.kt:43:13:45:68 | ...=... | samConversion.kt:43:13:45:68 |  | AssignExpr |
-| samConversion.kt:43:13:45:68 | <fn> | samConversion.kt:31:5:33:53 | accept | VarAccess |
 | samConversion.kt:43:13:45:68 | <fn> | samConversion.kt:43:13:45:68 |  | VarAccess |
+| samConversion.kt:43:13:45:68 | <fn> | samConversion.kt:43:13:45:68 | accept | VarAccess |
 | samConversion.kt:43:13:45:68 | BigArityPredicate | samConversion.kt:40:1:47:1 | fn | TypeAccess |
 | samConversion.kt:43:13:45:68 | BigArityPredicate | samConversion.kt:40:1:47:1 | fn | TypeAccess |
 | samConversion.kt:43:13:45:68 | Boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:43:13:45:68 | FunctionN<Boolean> | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:43:13:45:68 | Object | samConversion.kt:31:5:33:53 | accept | TypeAccess |
-| samConversion.kt:43:13:45:68 | i0 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i1 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i2 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i3 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i4 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i5 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i6 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i7 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i8 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i9 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i10 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i11 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i12 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i13 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i14 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i15 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i16 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i17 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i18 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i19 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i20 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i21 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | i22 | samConversion.kt:31:5:33:53 | accept | VarAccess |
-| samConversion.kt:43:13:45:68 | invoke(...) | samConversion.kt:31:5:33:53 | accept | MethodAccess |
+| samConversion.kt:43:13:45:68 | Object | samConversion.kt:43:13:45:68 | accept | TypeAccess |
+| samConversion.kt:43:13:45:68 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | i0 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i1 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i2 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i3 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i4 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i5 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i6 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i7 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i8 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i9 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i10 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i11 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i12 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i13 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i14 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i15 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i16 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i17 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i18 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i19 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i20 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i21 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | i22 | samConversion.kt:43:13:45:68 | accept | VarAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:43:13:45:68 | invoke(...) | samConversion.kt:43:13:45:68 | accept | MethodAccess |
 | samConversion.kt:43:13:45:68 | new (...) | samConversion.kt:40:1:47:1 | fn | ClassInstanceExpr |
-| samConversion.kt:43:13:45:68 | new Object[] | samConversion.kt:31:5:33:53 | accept | ArrayCreationExpr |
+| samConversion.kt:43:13:45:68 | new Object[] | samConversion.kt:43:13:45:68 | accept | ArrayCreationExpr |
 | samConversion.kt:43:13:45:68 | this | samConversion.kt:43:13:45:68 |  | ThisAccess |
 | samConversion.kt:43:13:45:68 | this.<fn> | samConversion.kt:43:13:45:68 |  | VarAccess |
-| samConversion.kt:43:13:45:68 | {...} | samConversion.kt:31:5:33:53 | accept | ArrayInit |
+| samConversion.kt:43:13:45:68 | {...} | samConversion.kt:43:13:45:68 | accept | ArrayInit |
 | samConversion.kt:43:31:45:68 | 0 | samConversion.kt:43:31:45:68 | invoke | IntegerLiteral |
 | samConversion.kt:43:31:45:68 | 1 | samConversion.kt:43:31:45:68 | invoke | IntegerLiteral |
 | samConversion.kt:43:31:45:68 | 2 | samConversion.kt:43:31:45:68 | invoke | IntegerLiteral |
@@ -3505,16 +3505,18 @@
 | samConversion.kt:46:13:46:44 | (...)... | samConversion.kt:40:1:47:1 | fn | CastExpr |
 | samConversion.kt:46:13:46:44 | ...=... | samConversion.kt:46:13:46:44 |  | AssignExpr |
 | samConversion.kt:46:13:46:44 | <fn> | samConversion.kt:46:13:46:44 |  | VarAccess |
-| samConversion.kt:46:13:46:44 | <fn> | samConversion.kt:50:5:50:25 | fn | VarAccess |
+| samConversion.kt:46:13:46:44 | <fn> | samConversion.kt:46:13:46:44 | fn | VarAccess |
 | samConversion.kt:46:13:46:44 | Boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:46:13:46:44 | Function1<Integer,Boolean> | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:46:13:46:44 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:46:13:46:44 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:46:13:46:44 | Integer | samConversion.kt:40:1:47:1 | fn | TypeAccess |
 | samConversion.kt:46:13:46:44 | Integer | samConversion.kt:40:1:47:1 | fn | TypeAccess |
 | samConversion.kt:46:13:46:44 | SomePredicate<Integer> | samConversion.kt:40:1:47:1 | fn | TypeAccess |
 | samConversion.kt:46:13:46:44 | SomePredicate<Integer> | samConversion.kt:40:1:47:1 | fn | TypeAccess |
-| samConversion.kt:46:13:46:44 | i | samConversion.kt:50:5:50:25 | fn | VarAccess |
-| samConversion.kt:46:13:46:44 | invoke(...) | samConversion.kt:50:5:50:25 | fn | MethodAccess |
+| samConversion.kt:46:13:46:44 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:46:13:46:44 | i | samConversion.kt:46:13:46:44 | fn | VarAccess |
+| samConversion.kt:46:13:46:44 | invoke(...) | samConversion.kt:46:13:46:44 | fn | MethodAccess |
 | samConversion.kt:46:13:46:44 | new (...) | samConversion.kt:40:1:47:1 | fn | ClassInstanceExpr |
 | samConversion.kt:46:13:46:44 | this | samConversion.kt:46:13:46:44 |  | ThisAccess |
 | samConversion.kt:46:13:46:44 | this.<fn> | samConversion.kt:46:13:46:44 |  | VarAccess |
@@ -3526,8 +3528,6 @@
 | samConversion.kt:46:34:46:34 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:46:39:46:42 | true | samConversion.kt:46:32:46:44 | invoke | BooleanLiteral |
 | samConversion.kt:50:5:50:25 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:50:5:50:25 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:50:12:50:15 | T | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:50:12:50:15 | T | file://:0:0:0:0 | <none> | TypeAccess |
 | whenExpr.kt:1:1:9:1 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | whenExpr.kt:1:14:1:19 | int | file://:0:0:0:0 | <none> | TypeAccess |
