@@ -256,7 +256,9 @@ newtype TDataFlowCallable =
 
 class DataFlowCallable extends TDataFlowCallable {
   /** Get the underlying source code callable, if any. */
-  DotNet::Callable asCallable() { this = TDotNetCallable(result) }
+  DotNet::Callable asCallable() {
+    this = TDotNetCallable(result) or this = TSummarizedCallable(result)
+  }
 
   /** Get the underlying summarized callable, if any. */
   FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
