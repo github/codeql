@@ -35,7 +35,7 @@
     <references>
         <li>
             Semgrep Blog:
-            <a href="https://r2c.dev/blog/2020/hardcoded-secrets-unverified-tokens-and-other-common-jwt-mistakes/#:~:text=The%20most%20basic%20mistake%20is,considered%20a%20software%20anti%2Dpattern.">Hardcoded secrets, unverified tokens, and other common JWT mistakes</a>
+            <a href="https://r2c.dev/blog/2020/hardcoded-secrets-unverified-tokens-and-other-common-jwt-mistakes/">Hardcoded secrets, unverified tokens, and other common JWT mistakes</a>
         </li>
         <li>
             CVE-2022-24860:
