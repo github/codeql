@@ -1312,7 +1312,7 @@ class FormatLiteral extends Literal {
         len =
           min(int v |
             v = this.getPrecision(n) or
-            v = this.getUse().getFormatArgument(n).(AnalysedString).getMaxLength() - 1 // (don't count null terminator)
+            v = this.getUse().getFormatArgument(n).(AnalyzedString).getMaxLength() - 1 // (don't count null terminator)
           ) and
         reason = TValueFlowAnalysis()
       )

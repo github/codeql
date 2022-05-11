@@ -70,7 +70,7 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
   override ObjectInternal getClass() { result = ObjectInternal::builtin("tuple") }
 
   /**
-   * True if this "object" can be meaningfully analysed for
+   * True if this "object" can be meaningfully analyzed for
    * truth or false in comparisons. For example, `None` or `int` can be, but `int()`
    * or an unknown string cannot.
    */
