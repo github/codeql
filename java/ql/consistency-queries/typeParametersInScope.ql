@@ -30,14 +30,22 @@ Type getATypeUsedInClass(RefType type) {
   result = getAMentionedType(getATypeUsedInClass(type))
 }
 
+Element getEnclosingElementStar(RefType e) {
+  result = e
+  or
+  result.contains(e)
+}
+
 TypeVariable getATypeVariableInScope(RefType type) {
-  result = type.getACallable().(GenericCallable).getATypeParameter()
-  or
-  result = type.(GenericType).getATypeParameter()
-  or
-  result = getAMentionedType(type.(InstantiatedType).getATypeArgument())
-  or
-  result = getATypeVariableInScope(type.getEnclosingType())
+  exists(Element e | e = getEnclosingElementStar(type) |
+    result = e.(RefType).getACallable().(GenericCallable).getATypeParameter()
+    or
+    result = e.(GenericType).getATypeParameter()
+    or
+    result = e.(GenericCallable).getATypeParameter()
+    or
+    result = getAMentionedType(e.(InstantiatedType).getATypeArgument())
+  )
 }
 
 from ClassOrInterface typeUser, TypeVariable outOfScope
