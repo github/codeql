@@ -302,12 +302,12 @@ private module Cached {
     or
     n instanceof PostUpdateNodes::ExprPostUpdateNode
     or
-    // Expressions that can't be reached from another entry definition or expression.
+    // Nodes that can't be reached from another entry definition or expression.
     not localFlowStepTypeTracker+(any(Node n0 |
         n0 instanceof ExprNode
         or
         entrySsaDefinition(n0)
-      ), n.(ExprNode))
+      ), n)
     or
     // Ensure all entry SSA definitions are local sources -- for parameters, this
     // is needed by type tracking. Note that when the parameter has a default value,
