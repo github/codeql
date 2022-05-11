@@ -5,12 +5,13 @@
  * @kind problem
  * @problem.severity error
  * @security-severity 5.0
+ * @precision ???
  * @id py/insecure-cookie
  * @tags security
  *       external/cwe/cwe-614
  */
 
-// determine precision above
+// TODO: determine precision above
 import python
 import semmle.python.dataflow.new.DataFlow
 import experimental.semmle.python.Concepts
