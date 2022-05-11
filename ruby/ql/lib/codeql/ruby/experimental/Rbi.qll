@@ -24,12 +24,18 @@ module Rbi {
      */
     abstract class RbiType extends Expr { }
 
-    class ConstantReadAccessAsRbiType extends RbiType {
-      ConstantReadAccessAsRbiType() {
-        this instanceof ConstantReadAccess
-        // TODO: should this class be more restrictive?
-      }
-    }
+    /**
+     * A `ConstantReadAccess` as an RBI type. This is typically a reference to a
+     * class or a constant representing a type alias - for example, the read
+     * accesses to `MyList1`, `Integer` and `MyList2` in:
+     * ```rb
+     * class MyList1; end
+     * MyList2 = T.type_alias(MyList1)
+     * sig { params(l: MyList2).returns(Integer) }
+     *  def len(l); end
+     * ```
+     */
+    class ConstantReadAccessAsRbiType extends RbiType, ConstantReadAccess { }
 
     /** A method call where the receiver is `T`. */
     private class MethodCallAgainstT extends MethodCall {
