@@ -136,7 +136,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   not exists(FieldRead fr |
     hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
   ) and
-  not FlowSummaryImpl::Private::Steps::summaryClearsContentArg(node1, _)
+  not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1)
   or
   ThisFlow::adjacentThisRefs(node1, node2)
   or
