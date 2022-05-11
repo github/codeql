@@ -34,15 +34,13 @@ class TrapLabel : public UntypedTrapLabel {
 
   using UntypedTrapLabel::UntypedTrapLabel;
 
-  // we want one authority tasked with creating labels to avoid conflicts, having access to the
-  // private constructor
-  // this is the TrapArena class for the moment
-  friend class TrapArena;
-
  public:
   using Tag = TagParam;
 
   TrapLabel() = default;
+
+  // The caller is responsible for ensuring ID uniqueness.
+  static TrapLabel unsafeCreateFromExplicitId(uint64_t id) { return {id}; }
 
   template <typename OtherTag>
   TrapLabel(const TrapLabel<OtherTag>& other) : UntypedTrapLabel(other) {

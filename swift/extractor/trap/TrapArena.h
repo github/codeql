@@ -16,7 +16,7 @@ class TrapArena {
  public:
   template <typename Tag>
   TrapLabel<Tag> allocateLabel() {
-    return {id_++};
+    return TrapLabel<Tag>::unsafeCreateFromExplicitId(id_++);
   }
 };
 
