@@ -151,7 +151,8 @@ private module ExperimentalPrivateDjango {
            */
           class DjangoResponseSetCookieCall extends DataFlow::MethodCallNode, Cookie::Range {
             DjangoResponseSetCookieCall() {
-              this.calls(django::http::response::HttpResponse::instance(), "set_cookie")
+              this.calls(PrivateDjango::DjangoImpl::Http::Response::HttpResponse::instance(),
+                "set_cookie")
             }
 
             override DataFlow::Node getNameArg() {
