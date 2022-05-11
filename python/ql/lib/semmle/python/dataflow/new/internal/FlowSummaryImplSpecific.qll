@@ -1,5 +1,5 @@
 /**
- * Provides Ruby specific classes and predicates for defining flow summaries.
+ * Provides Python specific classes and predicates for defining flow summaries.
  */
 
 private import python

@@ -507,7 +507,7 @@ class NonSpecialCall extends DataFlowSourceCall, TNonSpecialCall {
 abstract class NonLibraryDataFlowSourceCall extends NonSpecialCall {
   abstract Node getArg2(int n);
 
-  final override Node getArg(int n) { result = getArg2(n) }
+  final override Node getArg(int n) { result = this.getArg2(n) }
 
   abstract DataFlowCallable getCallable2();
 
@@ -522,10 +522,9 @@ abstract class NonLibraryDataFlowSourceCall extends NonSpecialCall {
  */
 class FunctionCall extends NonLibraryDataFlowSourceCall {
   NonLibraryDataFlowCallable callable;
-  FunctionValue f;
 
   FunctionCall() {
-    call = f.getAFunctionCall() and
+    call = any(FunctionValue f).getAFunctionCall() and
     call = callable.getACall()
   }
 
@@ -537,11 +536,10 @@ class FunctionCall extends NonLibraryDataFlowSourceCall {
 /** A call to a lambda. */
 class LambdaCall extends NonLibraryDataFlowSourceCall {
   NonLibraryDataFlowCallable callable;
-  Function f;
 
   LambdaCall() {
     call = callable.getACall() and
-    callable = TLambda(f)
+    callable = TLambda(any(Function f))
   }
 
   override Node getArg2(int n) { result = getArg(call, TNoShift(), callable.getCallableValue(), n) }
@@ -730,10 +728,8 @@ abstract class ReturnNode extends Node {
 
 /** A data flow node that represents a value returned by a callable. */
 class ReturnSourceNode extends ReturnNode, CfgNode {
-  Return ret;
-
   // See `TaintTrackingImplementation::returnFlowStep`
-  ReturnSourceNode() { node = ret.getValue().getAFlowNode() }
+  ReturnSourceNode() { node = any(Return ret).getValue().getAFlowNode() }
 
   override ReturnKind getKind() { any() }
 }

@@ -160,7 +160,7 @@ module SyntheticPostUpdateNode {
     or
     call = any(ClassValue c | not c.isAbsent()).getACall()
     or
-    call = any(SpecialMethodCallNode special)
+    call instanceof SpecialMethodCallNode
   }
 
   /** Gets the pre-update node associated with a store. This is used for when an object might have its value changed after a store. */
@@ -936,12 +936,14 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
   creation.asExpr() = c.(DataFlowLambda).getDefinition()
   or
   // normal function
+  // TODO: reconsider this code
   kind = kind and
   exists(Call call, Name f, FunctionDef def |
     f = call.getAnArg() and
     def.getDefinedFunction().getName() = f.getId() and
     // c.getCallableValue() = def.getDefinedFunction().getDefinition() and
-    c.getName() = f.getId()
+    c.getName() = f.getId() and
+    creation.asExpr() = call
   )
 }
 
