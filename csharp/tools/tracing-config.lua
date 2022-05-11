@@ -1,4 +1,4 @@
-function RegisterExtractorPack()
+function RegisterExtractorPack(id)
     local extractor = GetPlatformToolsDirectory() ..
                           'Semmle.Extraction.CSharp.Driver'
     if OperatingSystem == 'windows' then extractor = extractor .. '.exe' end
@@ -26,14 +26,10 @@ function RegisterExtractorPack()
                 return {
                     replace = true,
                     invocations = {
-                        {
-                            path = compilerPath,
-                            transformedArguments = {
-                                nativeArgumentPointer = compilerArguments['nativeArgumentPointer'],
-                                append = {'/p:UseSharedCompilation=false'},
-                                prepend = {}
-                            }
-                        }
+                        BuildExtractorInvocation(id, compilerPath, compilerPath,
+                                                 compilerArguments, nil, {
+                            '/p:UseSharedCompilation=false'
+                        })
                     }
                 }
             end
