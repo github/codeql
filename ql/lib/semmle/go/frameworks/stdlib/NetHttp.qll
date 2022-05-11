@@ -29,7 +29,7 @@ module NetHttp {
     UserControlledRequestField() {
       exists(string fieldName | this.getField().hasQualifiedName("net/http", "Request", fieldName) |
         fieldName =
-          ["Body", "GetBody", "Form", "PostForm", "MultipartForm", "Header", "Trailer", "URL"]
+          ["Body", "GetBody", "Form", "PostForm", "MultipartForm", "Header", "Trailer", "URL", "Host"]
       )
     }
   }
