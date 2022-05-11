@@ -85,7 +85,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     // Some built in operators lack locations, so loc is null.
                     yield return Context.CreateLocation(ReportingLocation);
-                    if (!Context.Extractor.Standalone && loc.Kind == LocationKind.SourceFile)
+                    if (!Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone) && loc.Kind == LocationKind.SourceFile)
                         yield return Assembly.CreateOutputAssembly(Context);
                 }
             }

@@ -3,15 +3,15 @@
  */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Methods annotated with this allow for generation of "plain SQL"
  * and is prone to SQL injection.
  * https://www.jooq.org/doc/current/manual/sql-building/plain-sql/
  */
-private class PlainSQLType extends Annotation {
-  PlainSQLType() { this.getType().hasQualifiedName("org.jooq", "PlainSQL") }
+private class PlainSqlType extends Annotation {
+  PlainSqlType() { this.getType().hasQualifiedName("org.jooq", "PlainSQL") }
 }
 
 /**
@@ -19,7 +19,7 @@ private class PlainSQLType extends Annotation {
  * first argument.
  */
 predicate jOOQSqlMethod(Method m) {
-  m.getAnAnnotation() instanceof PlainSQLType and
+  m.getAnAnnotation() instanceof PlainSqlType and
   m.getParameterType(0) instanceof TypeString
 }
 

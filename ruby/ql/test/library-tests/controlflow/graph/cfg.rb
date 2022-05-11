@@ -193,6 +193,10 @@ end
 
 run_block { |x|puts x }
 
+def forward_param(a, b, ...)
+  bar(b, ...)
+end
+
 __END__
 
 Some ignored nonsense

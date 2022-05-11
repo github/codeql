@@ -32,6 +32,7 @@ public class HardwareBuffer implements AutoCloseable, Parcelable
     public static int RGB_565 = 0;
     public static int RGB_888 = 0;
     public static int S_UI8 = 0;
+    public static int YCBCR_420_888 = 0;
     public static long USAGE_CPU_READ_OFTEN = 0;
     public static long USAGE_CPU_READ_RARELY = 0;
     public static long USAGE_CPU_WRITE_OFTEN = 0;

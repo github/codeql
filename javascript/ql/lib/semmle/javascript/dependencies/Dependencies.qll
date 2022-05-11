@@ -21,7 +21,7 @@ abstract class Dependency extends Locatable {
   abstract predicate info(string id, string v);
 
   /**
-   * A use of this dependency, which is of the given `kind`.
+   * Gets a use of this dependency, which is of the given `kind`.
    *
    * Currently, the only supported kinds are `"import"` and `"use"`.
    */
@@ -35,9 +35,12 @@ abstract class Dependency extends Locatable {
  * the source tree, or a package that is referenced as a dependency
  * in a `package.json` file.
  */
-abstract class NPMDependency extends Dependency {
+abstract class NpmDependency extends Dependency {
   /** Gets the name of the NPM package this module belongs to. */
-  abstract string getNPMPackageName();
+  abstract string getNpmPackageName();
+
+  /** DEPRECATED: Alias for getNpmPackageName */
+  deprecated string getNPMPackageName() { result = this.getNpmPackageName() }
 
   /** Gets the version of the NPM package this module belongs to. */
   abstract string getVersion();
@@ -46,18 +49,21 @@ abstract class NPMDependency extends Dependency {
   abstract Import getAnImport();
 
   override predicate info(string id, string v) {
-    id = getNPMPackageName() and
-    v = getVersion()
+    id = this.getNpmPackageName() and
+    v = this.getVersion()
   }
 
   override Locatable getAUse(string kind) {
-    exists(Import i | i = getAnImport() |
+    exists(Import i | i = this.getAnImport() |
       kind = "import" and result = i
       or
       kind = "use" and result = getATargetVariable(i).getAnAccess()
     )
   }
 }
+
+/** DEPRECATED: Alias for NpmDependency */
+deprecated class NPMDependency = NpmDependency;
 
 /**
  * Gets a variable into which something is imported by `i`.
@@ -83,52 +89,61 @@ private Expr propAccessOn(Expr e) { result.(PropAccess).getBase() = e }
  * included in the database (as opposed to an `ExternalNPMDependency`
  * which is only referenced in a `package.json` file).
  */
-class BundledNPMDependency extends NPMDependency {
-  BundledNPMDependency() {
-    exists(NPMPackage pkg | this = pkg.getAModule() |
+class BundledNpmDependency extends NpmDependency {
+  BundledNpmDependency() {
+    exists(NpmPackage pkg | this = pkg.getAModule() |
       // exclude packages marked "private": they have no globally unique ID
-      not pkg.getPackageJSON().isPrivate()
+      not pkg.getPackageJson().isPrivate()
     )
   }
 
   /** Gets the package to which this module belongs. */
-  private NPMPackage getPackage() { this = result.getAModule() }
+  private NpmPackage getPackage() { this = result.getAModule() }
 
   /** Gets the `package.json` of the package to which this module belongs. */
-  private PackageJSON getPackageJSON() { result = getPackage().getPackageJSON() }
+  private PackageJson getPackageJson() { result = this.getPackage().getPackageJson() }
 
-  override string getNPMPackageName() { result = getPackageJSON().getPackageName() }
+  override string getNpmPackageName() { result = this.getPackageJson().getPackageName() }
 
-  override string getVersion() { result = getPackageJSON().getVersion() }
+  /** DEPRECATED: Alias for getNpmPackageName */
+  deprecated override string getNPMPackageName() { result = this.getNpmPackageName() }
+
+  override string getVersion() { result = this.getPackageJson().getVersion() }
 
   override Import getAnImport() {
     this = result.getImportedModule() and
     // ignore intra-package imports; they do not induce dependencies
-    not result.getEnclosingModule() = getPackage().getAModule()
+    not result.getEnclosingModule() = this.getPackage().getAModule()
   }
 }
+
+/** DEPRECATED: Alias for BundledNpmDependency */
+deprecated class BundledNPMDependency = BundledNpmDependency;
 
 /**
  * An NPM package referenced in a `package.json` file.
  */
-class ExternalNPMDependency extends NPMDependency {
-  ExternalNPMDependency() {
-    exists(PackageJSON pkgjson |
-      this.(JSONString) = pkgjson.getADependenciesObject(_).getPropValue(_)
+class ExternalNpmDependency extends NpmDependency {
+  ExternalNpmDependency() {
+    exists(PackageJson pkgjson |
+      this.(JsonString) = pkgjson.getADependenciesObject(_).getPropValue(_)
     )
   }
 
   /** Gets the NPM package declaring this dependency. */
-  private NPMPackage getDeclaringPackage() {
-    this = result.getPackageJSON().getADependenciesObject(_).getPropValue(_)
+  private NpmPackage getDeclaringPackage() {
+    this = result.getPackageJson().getADependenciesObject(_).getPropValue(_)
   }
 
-  override string getNPMPackageName() {
+  override string getNpmPackageName() {
     exists(PackageDependencies pkgdeps | this = pkgdeps.getPropValue(result))
   }
 
+  /** DEPRECATED: Alias for getNpmPackageName */
+  deprecated override string getNPMPackageName() { result = this.getNpmPackageName() }
+
   private string getVersionNumber() {
-    exists(string versionRange | versionRange = this.(JSONString).getValue() |
+    exists(string versionRange | versionRange = this.(JsonString).getValue() |
       // extract a concrete version from the version range; currently,
       // we handle exact versions as well as `<=`, `>=`, `~` and `^` ranges
       result = versionRange.regexpCapture("(?:[><]=|[=~^])?v?(\\d+(\\.\\d+){1,2})", 1)
@@ -136,28 +151,31 @@ class ExternalNPMDependency extends NPMDependency {
   }
 
   override string getVersion() {
-    result = getVersionNumber()
+    result = this.getVersionNumber()
     or
     // if no version is specified or could not be parsed, report version `unknown`
-    not exists(getVersionNumber()) and
+    not exists(this.getVersionNumber()) and
     result = "unknown"
   }
 
   override Import getAnImport() {
-    exists(int depth | depth = importsDependency(result, getDeclaringPackage(), this) |
+    exists(int depth | depth = importsDependency(result, this.getDeclaringPackage(), this) |
       // restrict to those results for which this is the closest matching dependency
       depth = min(importsDependency(result, _, _))
     )
   }
 }
 
+/** DEPRECATED: Alias for ExternalNpmDependency */
+deprecated class ExternalNPMDependency = ExternalNpmDependency;
+
 /**
  * Holds if import `i` may refer to the declared dependency `dep` of package `pkg`,
  * where the result value is the nesting depth of the file containing `i` within `pkg`.
  */
-private int importsDependency(Import i, NPMPackage pkg, NPMDependency dep) {
+private int importsDependency(Import i, NpmPackage pkg, NpmDependency dep) {
   exists(string name |
-    dep = pkg.getPackageJSON().getADependenciesObject(_).getPropValue(name) and
+    dep = pkg.getPackageJson().getADependenciesObject(_).getPropValue(name) and
     not exists(i.getImportedModule()) and
     i.getImportedPath().getComponent(0) = name and
     i.getEnclosingModule() = pkg.getAModule() and
@@ -201,7 +219,7 @@ abstract class ScriptDependency extends Dependency {
     kind = "import" and
     result = this.getFile().(HTML::HtmlFile).getATopLevel()
     or
-    kind = "use" and result = getAnApiUse()
+    kind = "use" and result = this.getAnApiUse()
   }
 }
 

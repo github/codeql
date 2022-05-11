@@ -4,6 +4,7 @@ private import DataFlowPrivate
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.ast.internal.Module
 private import FlowSummaryImpl as FlowSummaryImpl
+private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.FlowSummary
 
 newtype TReturnKind =
@@ -89,7 +90,7 @@ class DataFlowCall extends TDataFlowCall {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -202,7 +203,7 @@ private module Cached {
           result = lookupMethod(tp, method) and
           if result.(Method).isPrivate()
           then
-            exists(Self self |
+            exists(SelfVariableAccess self |
               self = call.getReceiver().getExpr() and
               pragma[only_bind_out](self.getEnclosingModule().getModule().getSuperClass*()) =
                 pragma[only_bind_out](result.getEnclosingModule().getModule())
@@ -230,6 +231,54 @@ private module Cached {
       result = yieldCall(call)
     )
   }
+
+  /** Gets a viable run-time target for the call `call`. */
+  cached
+  DataFlowCallable viableCallable(DataFlowCall call) {
+    result = TCfgScope(getTarget(call.asCall())) and
+    not call.asCall().getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
+    or
+    exists(LibraryCallable callable |
+      result = TLibraryCallable(callable) and
+      call.asCall().getExpr() = callable.getACall()
+    )
+  }
+
+  cached
+  newtype TArgumentPosition =
+    TSelfArgumentPosition() or
+    TBlockArgumentPosition() or
+    TPositionalArgumentPosition(int pos) {
+      exists(Call c | exists(c.getArgument(pos)))
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedParameterPosition(_, pos)
+    } or
+    TKeywordArgumentPosition(string name) {
+      name = any(KeywordParameter kp).getName()
+      or
+      exists(any(Call c).getKeywordArgument(name))
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
+    }
+
+  cached
+  newtype TParameterPosition =
+    TSelfParameterPosition() or
+    TBlockParameterPosition() or
+    TPositionalParameterPosition(int pos) {
+      pos = any(Parameter p).getPosition()
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedArgumentPosition(_, pos)
+    } or
+    TPositionalParameterLowerBoundPosition(int pos) {
+      FlowSummaryImplSpecific::ParsePositions::isParsedArgumentLowerBoundPosition(_, pos)
+    } or
+    TKeywordParameterPosition(string name) {
+      name = any(KeywordParameter kp).getName()
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
+    } or
+    TAnyParameterPosition()
 }
 
 import Cached
@@ -253,16 +302,9 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
     or
     result.asExpr().getExpr() instanceof StringlikeLiteral and tp = TResolved("String")
     or
-    exists(ConstantReadAccess array, MethodCall mc |
-      result.asExpr().getExpr() = mc and
-      mc.getMethodName() = "[]" and
-      mc.getReceiver() = array and
-      array.getName() = "Array" and
-      array.hasGlobalScope() and
-      tp = TResolved("Array")
-    )
+    result.asExpr() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode and tp = TResolved("Array")
     or
-    result.asExpr().getExpr() instanceof HashLiteral and tp = TResolved("Hash")
+    result.asExpr() instanceof CfgNodes::ExprNodes::HashLiteralCfgNode and tp = TResolved("Hash")
     or
     result.asExpr().getExpr() instanceof MethodBase and tp = TResolved("Symbol")
     or
@@ -278,28 +320,14 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, TypeTracker t) {
     )
     or
     // `self` in method
-    exists(Self self, Method enclosing |
-      self = result.asExpr().getExpr() and
-      enclosing = self.getEnclosingMethod() and
-      tp = enclosing.getEnclosingModule().getModule() and
-      not self.getEnclosingModule().getEnclosingMethod() = enclosing
-    )
+    tp = result.(SsaSelfDefinitionNode).getSelfScope().(Method).getEnclosingModule().getModule()
     or
     // `self` in singleton method
-    exists(Self self, MethodBase enclosing |
-      self = result.asExpr().getExpr() and
-      flowsToSingletonMethodObject(trackInstance(tp), enclosing) and
-      enclosing = self.getEnclosingMethod() and
-      not self.getEnclosingModule().getEnclosingMethod() = enclosing
-    )
+    flowsToSingletonMethodObject(trackInstance(tp), result.(SsaSelfDefinitionNode).getSelfScope())
     or
     // `self` in top-level
-    exists(Self self, Toplevel enclosing |
-      self = result.asExpr().getExpr() and
-      enclosing = self.getEnclosingModule() and
-      tp = TResolved("Object") and
-      not self.getEnclosingMethod().getEnclosingModule() = enclosing
-    )
+    result.(SsaSelfDefinitionNode).getSelfScope() instanceof Toplevel and
+    tp = TResolved("Object")
     or
     // a module or class
     exists(Module m |
@@ -349,7 +377,7 @@ private predicate singletonMethod(MethodBase method, Expr object) {
 
 pragma[nomagic]
 private predicate flowsToSingletonMethodObject(DataFlow::LocalSourceNode nodeFrom, MethodBase method) {
-  exists(DataFlow::LocalSourceNode nodeTo |
+  exists(DataFlow::Node nodeTo |
     nodeFrom.flowsTo(nodeTo) and
     singletonMethod(method, nodeTo.asExpr().getExpr())
   )
@@ -387,20 +415,15 @@ private DataFlow::LocalSourceNode trackSingletonMethod(MethodBase m, string name
   name = m.getName()
 }
 
-private DataFlow::Node selfInModule(Module tp) {
-  exists(Self self, ModuleBase enclosing |
-    self = result.asExpr().getExpr() and
-    enclosing = self.getEnclosingModule() and
-    tp = enclosing.getModule() and
-    not self.getEnclosingMethod().getEnclosingModule() = enclosing
-  )
+private SsaSelfDefinitionNode selfInModule(Module tp) {
+  tp = result.getSelfScope().(ModuleBase).getModule()
 }
 
 private DataFlow::LocalSourceNode trackModule(Module tp, TypeTracker t) {
   t.start() and
   (
     // ConstantReadAccess to Module
-    resolveScopeExpr(result.asExpr().getExpr()) = tp
+    resolveConstantReadAccess(result.asExpr().getExpr()) = tp
     or
     // `self` reference to Module
     result = selfInModule(tp)
@@ -420,17 +443,6 @@ private DataFlow::LocalSourceNode trackModule(Module tp) {
   result = trackModule(tp, TypeTracker::end())
 }
 
-/** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowCall call) {
-  result = TCfgScope(getTarget(call.asCall())) and
-  not call.asCall().getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
-  or
-  exists(LibraryCallable callable |
-    result = TLibraryCallable(callable) and
-    call.asCall().getExpr() = callable.getACall()
-  )
-}
-
 /**
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context. This is the case if the
@@ -445,15 +457,87 @@ predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { non
  */
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
-/**
- * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
- */
-predicate exprNodeReturnedFrom(DataFlow::ExprNode e, Callable c) {
-  exists(ReturningNode r |
-    r.getEnclosingCallable().asCallable() = c and
-    (
-      r.(ExplicitReturnNode).getReturningNode().getReturnedValueNode() = e.asExpr() or
-      r.(ExprReturnNode) = e
-    )
+predicate exprNodeReturnedFrom = exprNodeReturnedFromCached/2;
+
+/** A parameter position. */
+class ParameterPosition extends TParameterPosition {
+  /** Holds if this position represents a `self` parameter. */
+  predicate isSelf() { this = TSelfParameterPosition() }
+
+  /** Holds if this position represents a block parameter. */
+  predicate isBlock() { this = TBlockParameterPosition() }
+
+  /** Holds if this position represents a positional parameter at position `pos`. */
+  predicate isPositional(int pos) { this = TPositionalParameterPosition(pos) }
+
+  /** Holds if this position represents any positional parameter starting from position `pos`. */
+  predicate isPositionalLowerBound(int pos) { this = TPositionalParameterLowerBoundPosition(pos) }
+
+  /** Holds if this position represents a keyword parameter named `name`. */
+  predicate isKeyword(string name) { this = TKeywordParameterPosition(name) }
+
+  /**
+   * Holds if this position represents any parameter. This includes both positional
+   * and named parameters.
+   */
+  predicate isAny() { this = TAnyParameterPosition() }
+
+  /** Gets a textual representation of this position. */
+  string toString() {
+    this.isSelf() and result = "self"
+    or
+    this.isBlock() and result = "block"
+    or
+    exists(int pos | this.isPositional(pos) and result = "position " + pos)
+    or
+    exists(int pos | this.isPositionalLowerBound(pos) and result = "position " + pos + "..")
+    or
+    exists(string name | this.isKeyword(name) and result = "keyword " + name)
+    or
+    this.isAny() and result = "any"
+  }
+}
+
+/** An argument position. */
+class ArgumentPosition extends TArgumentPosition {
+  /** Holds if this position represents a `self` argument. */
+  predicate isSelf() { this = TSelfArgumentPosition() }
+
+  /** Holds if this position represents a block argument. */
+  predicate isBlock() { this = TBlockArgumentPosition() }
+
+  /** Holds if this position represents a positional argument at position `pos`. */
+  predicate isPositional(int pos) { this = TPositionalArgumentPosition(pos) }
+
+  /** Holds if this position represents a keyword argument named `name`. */
+  predicate isKeyword(string name) { this = TKeywordArgumentPosition(name) }
+
+  /** Gets a textual representation of this position. */
+  string toString() {
+    this.isSelf() and result = "self"
+    or
+    this.isBlock() and result = "block"
+    or
+    exists(int pos | this.isPositional(pos) and result = "position " + pos)
+    or
+    exists(string name | this.isKeyword(name) and result = "keyword " + name)
+  }
+}
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+pragma[inline]
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
+  ppos.isSelf() and apos.isSelf()
+  or
+  ppos.isBlock() and apos.isBlock()
+  or
+  exists(int pos | ppos.isPositional(pos) and apos.isPositional(pos))
+  or
+  exists(int pos1, int pos2 |
+    ppos.isPositionalLowerBound(pos1) and apos.isPositional(pos2) and pos2 >= pos1
   )
+  or
+  exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
+  or
+  ppos.isAny() and exists(apos)
 }

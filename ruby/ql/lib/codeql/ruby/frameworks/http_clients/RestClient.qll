@@ -1,28 +1,49 @@
+/**
+ * Provides modeling for the `RestClient` library.
+ */
+
 private import ruby
+private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
 
 /**
  * A call that makes an HTTP request using `RestClient`.
  * ```ruby
  * RestClient.get("http://example.com").body
+ * RestClient::Resource.new("http://example.com").get.body
+ * RestClient::Request.execute(url: "http://example.com").body
  * ```
  */
 class RestClientHttpRequest extends HTTP::Client::Request::Range {
-  DataFlow::Node requestUse;
+  DataFlow::CallNode requestUse;
   API::Node requestNode;
   API::Node connectionNode;
 
   RestClientHttpRequest() {
-    connectionNode =
-      [
-        API::getTopLevelMember("RestClient"),
-        API::getTopLevelMember("RestClient").getMember("Resource").getInstance()
-      ] and
-    requestNode =
-      connectionNode.getReturn(["get", "head", "delete", "options", "post", "put", "patch"]) and
     requestUse = requestNode.getAnImmediateUse() and
-    this = requestUse.asExpr().getExpr()
+    this = requestUse.asExpr().getExpr() and
+    (
+      connectionNode =
+        [
+          API::getTopLevelMember("RestClient"),
+          API::getTopLevelMember("RestClient").getMember("Resource").getInstance()
+        ] and
+      requestNode =
+        connectionNode.getReturn(["get", "head", "delete", "options", "post", "put", "patch"])
+      or
+      connectionNode = API::getTopLevelMember("RestClient").getMember("Request") and
+      requestNode = connectionNode.getReturn("execute")
+    )
+  }
+
+  override DataFlow::Node getAUrlPart() {
+    result = requestUse.getKeywordArgument("url")
+    or
+    result = requestUse.getArgument(0) and
+    // this rules out the alternative above
+    not result.asExpr().getExpr() instanceof Pair
   }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
@@ -35,16 +56,16 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
     |
       // Either passed as an individual key:value argument, e.g.:
       // RestClient::Resource.new(..., verify_ssl: OpenSSL::SSL::VERIFY_NONE)
-      isVerifySslNonePair(arg.asExpr().getExpr()) and
+      isVerifySslNonePair(arg.asExpr()) and
       disablingNode = arg
       or
       // Or as a single hash argument, e.g.:
       // RestClient::Resource.new(..., { verify_ssl: OpenSSL::SSL::VERIFY_NONE })
-      exists(DataFlow::LocalSourceNode optionsNode, Pair p |
-        p = optionsNode.asExpr().getExpr().(HashLiteral).getAKeyValuePair() and
+      exists(DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p |
+        p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
         isVerifySslNonePair(p) and
         optionsNode.flowsTo(arg) and
-        disablingNode.asExpr().getExpr() = p
+        disablingNode.asExpr() = p
       )
     )
   }
@@ -53,10 +74,10 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
 }
 
 /** Holds if `p` is the pair `verify_ssl: OpenSSL::SSL::VERIFY_NONE`. */
-private predicate isVerifySslNonePair(Pair p) {
+private predicate isVerifySslNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
   exists(DataFlow::Node key, DataFlow::Node value |
-    key.asExpr().getExpr() = p.getKey() and value.asExpr().getExpr() = p.getValue()
-  |
+    key.asExpr() = p.getKey() and
+    value.asExpr() = p.getValue() and
     isSslVerifyModeLiteral(key) and
     value = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse()
   )
@@ -65,7 +86,7 @@ private predicate isVerifySslNonePair(Pair p) {
 /** Holds if `node` can represent the symbol literal `:verify_ssl`. */
 private predicate isSslVerifyModeLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = "verify_ssl" and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("verify_ssl") and
     literal.flowsTo(node)
   )
 }

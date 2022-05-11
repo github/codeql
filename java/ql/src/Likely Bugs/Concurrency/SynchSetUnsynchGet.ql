@@ -35,6 +35,7 @@ predicate isSynchronizedByBlock(Method m) {
  * In this case, even if `set` is synchronized and `get` is not, `get` will never see stale
  * values for the field, so synchronization is optional.
  */
+pragma[nomagic]
 predicate bothAccessVolatileField(Method set, Method get) {
   exists(Field f | f.isVolatile() |
     f = get.(GetterMethod).getField() and

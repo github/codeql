@@ -58,7 +58,6 @@
 | tst.js:80:5:80:7 | f20 | file://:0:0:0:0 | undefined |
 | tst.js:80:5:80:7 | f20 | tst.js:79:24:79:25 | object literal |
 | tst.js:84:17:84:20 | getF | tst.js:83:20:83:31 | function getF |
-| tst.js:86:13:86:13 | f | file://:0:0:0:0 | indefinite value (call) |
 | tst.js:86:13:86:13 | f | file://:0:0:0:0 | undefined |
 | tst.js:89:17:89:20 | getG | tst.js:88:9:88:25 | function getG |
 | tst.js:91:13:91:13 | g | file://:0:0:0:0 | undefined |

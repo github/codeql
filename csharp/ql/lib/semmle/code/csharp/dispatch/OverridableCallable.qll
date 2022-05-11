@@ -8,24 +8,11 @@ import csharp
 /**
  * A callable that can be overridden or implemented.
  *
- * Unlike the class `Virtualizable`, this class only includes methods that
- * can actually be overriden/implemented. Additionally, this class includes
- * accessors whose declarations can actually be overridden/implemented.
+ * Unlike the class `Overridable`, this class only includes callables that
+ * can actually be overriden/implemented.
  */
-class OverridableCallable extends Callable {
-  OverridableCallable() {
-    this.(Method).isOverridableOrImplementable() or
-    this.(Accessor).getDeclaration().isOverridableOrImplementable()
-  }
-
-  /** Gets a callable that immediately overrides this callable, if any. */
-  Callable getAnOverrider() { none() }
-
-  /**
-   * Gets a callable that immediately implements this interface callable,
-   * if any.
-   */
-  Callable getAnImplementor(ValueOrRefType t) { none() }
+class OverridableCallable extends Callable, Overridable {
+  OverridableCallable() { this.isOverridableOrImplementable() }
 
   /**
    * Gets a callable that immediately implements this interface member,
@@ -67,40 +54,6 @@ class OverridableCallable extends Callable {
       forall(Callable other | other = this.getAnImplementor(t) | other = result)
     )
   }
-
-  /**
-   * Gets a callable that (transitively) implements this interface callable,
-   * if any. That is, either this interface callable is immediately implemented
-   * by the result, or the result overrides (transitively) another callable that
-   * immediately implements this interface callable.
-   *
-   * Note that this is generally *not* equivalent with
-   *
-   * ```ql
-   * result = getAnImplementor()
-   * or
-   * result = getAnImplementor().(OverridableCallable).getAnOverrider+()`
-   * ```
-   *
-   * as the example below illustrates:
-   *
-   * ```csharp
-   * interface I { void M(); }
-   *
-   * class A { public virtual void M() { } }
-   *
-   * class B : A, I { }
-   *
-   * class C : A { public override void M() }
-   *
-   * class D : B { public override void M() }
-   * ```
-   *
-   * If this callable is `I.M` then `A.M = getAnUltimateImplementor() ` and
-   * `D.M = getAnUltimateImplementor()`. However, it is *not* the case that
-   * `C.M = getAnUltimateImplementor()`, because `C` is not a sub type of `I`.
-   */
-  Callable getAnUltimateImplementor() { none() }
 
   /**
    * Gets a callable that overrides (transitively) another callable that
@@ -210,73 +163,10 @@ class OverridableCallable extends Callable {
 }
 
 /** An overridable method. */
-class OverridableMethod extends Method, OverridableCallable {
-  override Method getAnOverrider() { result = Method.super.getAnOverrider() }
-
-  override Method getAnImplementor(ValueOrRefType t) { result = Method.super.getAnImplementor(t) }
-
-  override Method getAnUltimateImplementor() { result = Method.super.getAnUltimateImplementor() }
-
-  override Method getInherited(ValueOrRefType t) {
-    result = OverridableCallable.super.getInherited(t)
-  }
-
-  override Method getAnOverrider(ValueOrRefType t) {
-    result = OverridableCallable.super.getAnOverrider(t)
-  }
-}
+deprecated class OverridableMethod extends Method, OverridableCallable { }
 
 /** An overridable accessor. */
-class OverridableAccessor extends Accessor, OverridableCallable {
-  override Accessor getAnOverrider() { overrides(result, this) }
-
-  override Accessor getAnImplementor(ValueOrRefType t) {
-    exists(Virtualizable implementor, int kind |
-      this.getAnImplementorAux(t, implementor, kind) and
-      result.getDeclaration() = implementor and
-      getAccessorKind(result) = kind
-    )
-  }
-
-  // predicate folding to get proper join order
-  private predicate getAnImplementorAux(ValueOrRefType t, Virtualizable implementor, int kind) {
-    exists(Virtualizable implementee |
-      implementee = this.getDeclaration() and
-      kind = getAccessorKind(this) and
-      implementor = implementee.getAnImplementor(t)
-    )
-  }
-
-  override Accessor getAnUltimateImplementor() {
-    exists(Virtualizable implementor, int kind |
-      this.getAnUltimateImplementorAux(implementor, kind) and
-      result.getDeclaration() = implementor and
-      getAccessorKind(result) = kind
-    )
-  }
-
-  // predicate folding to get proper join order
-  private predicate getAnUltimateImplementorAux(Virtualizable implementor, int kind) {
-    exists(Virtualizable implementee |
-      implementee = this.getDeclaration() and
-      kind = getAccessorKind(this) and
-      implementor = implementee.getAnUltimateImplementor()
-    )
-  }
-
-  override Accessor getInherited(ValueOrRefType t) {
-    result = OverridableCallable.super.getInherited(t)
-  }
-
-  override Accessor getAnOverrider(ValueOrRefType t) {
-    result = OverridableCallable.super.getAnOverrider(t)
-  }
-}
-
-private int getAccessorKind(Accessor a) {
-  accessors(a, result, _, _, _) or
-  event_accessors(a, -result, _, _, _)
-}
+deprecated class OverridableAccessor extends Accessor, OverridableCallable { }
 
 /** An unbound type. */
 class UnboundDeclarationType extends Type {

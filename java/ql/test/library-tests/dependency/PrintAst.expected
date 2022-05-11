@@ -5,10 +5,10 @@ dependency/A.java:
 #    3|       0: [TypeVariable] T
 #    6|   2: [Class] B
 #    9|   3: [Class] C
-#   10|     2: [FieldDeclaration] A<B> b, ...;
+#   10|     2: [FieldDeclaration] A<B> b;
 #   10|       -1: [TypeAccess] A<B>
 #   10|         0: [TypeAccess] B
-#   11|     3: [FieldDeclaration] ...[] c, ...;
+#   11|     3: [FieldDeclaration] ...[] c;
 #   11|       -1: [ArrayTypeAccess] ...[]
 #   11|         0: [TypeAccess] C
 #   14|   4: [Class] D

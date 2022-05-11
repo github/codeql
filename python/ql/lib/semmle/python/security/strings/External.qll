@@ -5,7 +5,7 @@ private import Common
 /**
  * An extensible kind of taint representing an externally controlled string.
  */
-abstract class ExternalStringKind extends StringKind {
+abstract deprecated class ExternalStringKind extends StringKind {
   bindingset[this]
   ExternalStringKind() { this = this }
 
@@ -30,7 +30,7 @@ abstract class ExternalStringKind extends StringKind {
 }
 
 /** A kind of "taint", representing a sequence, with a "taint" member */
-class ExternalStringSequenceKind extends SequenceKind {
+deprecated class ExternalStringSequenceKind extends SequenceKind {
   ExternalStringSequenceKind() { this.getItem() instanceof ExternalStringKind }
 }
 
@@ -38,7 +38,7 @@ class ExternalStringSequenceKind extends SequenceKind {
  * An hierachical dictionary or list where the entire structure is externally controlled
  * This is typically a parsed JSON object.
  */
-class ExternalJsonKind extends TaintKind {
+deprecated class ExternalJsonKind extends TaintKind {
   ExternalJsonKind() { this = "json[" + any(ExternalStringKind key) + "]" }
 
   /** Gets the taint kind for item in this sequence */
@@ -61,7 +61,7 @@ class ExternalJsonKind extends TaintKind {
 }
 
 /** A kind of "taint", representing a dictionary mapping keys to tainted strings. */
-class ExternalStringDictKind extends DictKind {
+deprecated class ExternalStringDictKind extends DictKind {
   ExternalStringDictKind() { this.getValue() instanceof ExternalStringKind }
 }
 
@@ -69,28 +69,22 @@ class ExternalStringDictKind extends DictKind {
  * A kind of "taint", representing a dictionary mapping keys to sequences of
  *  tainted strings.
  */
-class ExternalStringSequenceDictKind extends DictKind {
+deprecated class ExternalStringSequenceDictKind extends DictKind {
   ExternalStringSequenceDictKind() { this.getValue() instanceof ExternalStringSequenceKind }
 }
 
 /** TaintKind for the result of `urlsplit(tainted_string)` */
-class ExternalUrlSplitResult extends ExternalStringSequenceKind {
+deprecated class ExternalUrlSplitResult extends ExternalStringSequenceKind {
   // https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlsplit
   override TaintKind getTaintOfAttribute(string name) {
     result = super.getTaintOfAttribute(name)
     or
-    (
-      // namedtuple field names
-      name = "scheme" or
-      name = "netloc" or
-      name = "path" or
-      name = "query" or
-      name = "fragment" or
-      // class methods
-      name = "username" or
-      name = "password" or
-      name = "hostname"
-    ) and
+    name in [
+        // namedtuple field names
+        "scheme", "netloc", "path", "query", "fragment",
+        // class methods
+        "password", "username", "hostname",
+      ] and
     result instanceof ExternalStringKind
   }
 
@@ -103,24 +97,17 @@ class ExternalUrlSplitResult extends ExternalStringSequenceKind {
 }
 
 /** TaintKind for the result of `urlparse(tainted_string)` */
-class ExternalUrlParseResult extends ExternalStringSequenceKind {
+deprecated class ExternalUrlParseResult extends ExternalStringSequenceKind {
   // https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlparse
   override TaintKind getTaintOfAttribute(string name) {
     result = super.getTaintOfAttribute(name)
     or
-    (
-      // namedtuple field names
-      name = "scheme" or
-      name = "netloc" or
-      name = "path" or
-      name = "params" or
-      name = "query" or
-      name = "fragment" or
-      // class methods
-      name = "username" or
-      name = "password" or
-      name = "hostname"
-    ) and
+    name in [
+        // namedtuple field names
+        "scheme", "netloc", "path", "params", "query", "fragment",
+        // class methods
+        "username", "password", "hostname",
+      ] and
     result instanceof ExternalStringKind
   }
 
@@ -134,7 +121,7 @@ class ExternalUrlParseResult extends ExternalStringSequenceKind {
 
 /* Helper for getTaintForStep() */
 pragma[noinline]
-private predicate json_subscript_taint(
+deprecated private predicate json_subscript_taint(
   SubscriptNode sub, ControlFlowNode obj, ExternalJsonKind seq, TaintKind key
 ) {
   sub.isLoad() and
@@ -142,12 +129,12 @@ private predicate json_subscript_taint(
   key = seq.getValue()
 }
 
-private predicate json_load(ControlFlowNode fromnode, CallNode tonode) {
+deprecated private predicate json_load(ControlFlowNode fromnode, CallNode tonode) {
   tonode = Value::named("json.loads").getACall() and
   tonode.getArg(0) = fromnode
 }
 
-private predicate urlsplit(ControlFlowNode fromnode, CallNode tonode) {
+deprecated private predicate urlsplit(ControlFlowNode fromnode, CallNode tonode) {
   // This could be implemented as `exists(FunctionValue` without the explicit six part,
   // but then our tests will need to import +100 modules, so for now this slightly
   // altered version gets to live on.
@@ -166,7 +153,7 @@ private predicate urlsplit(ControlFlowNode fromnode, CallNode tonode) {
   )
 }
 
-private predicate urlparse(ControlFlowNode fromnode, CallNode tonode) {
+deprecated private predicate urlparse(ControlFlowNode fromnode, CallNode tonode) {
   // This could be implemented as `exists(FunctionValue` without the explicit six part,
   // but then our tests will need to import +100 modules, so for now this slightly
   // altered version gets to live on.
@@ -185,7 +172,7 @@ private predicate urlparse(ControlFlowNode fromnode, CallNode tonode) {
   )
 }
 
-private predicate parse_qs(ControlFlowNode fromnode, CallNode tonode) {
+deprecated private predicate parse_qs(ControlFlowNode fromnode, CallNode tonode) {
   // This could be implemented as `exists(FunctionValue` without the explicit six part,
   // but then our tests will need to import +100 modules, so for now this slightly
   // altered version gets to live on.
@@ -211,7 +198,7 @@ private predicate parse_qs(ControlFlowNode fromnode, CallNode tonode) {
   )
 }
 
-private predicate parse_qsl(ControlFlowNode fromnode, CallNode tonode) {
+deprecated private predicate parse_qsl(ControlFlowNode fromnode, CallNode tonode) {
   // This could be implemented as `exists(FunctionValue` without the explicit six part,
   // but then our tests will need to import +100 modules, so for now this slightly
   // altered version gets to live on.
@@ -238,7 +225,7 @@ private predicate parse_qsl(ControlFlowNode fromnode, CallNode tonode) {
 }
 
 /** A kind of "taint", representing an open file-like object from an external source. */
-class ExternalFileObject extends TaintKind {
+deprecated class ExternalFileObject extends TaintKind {
   ExternalStringKind valueKind;
 
   ExternalFileObject() { this = "file[" + valueKind + "]" }
@@ -266,7 +253,7 @@ class ExternalFileObject extends TaintKind {
  * - `if splitres.netloc == "KNOWN_VALUE"`
  * - `if splitres[0] == "KNOWN_VALUE"`
  */
-class UrlsplitUrlparseTempSanitizer extends Sanitizer {
+deprecated class UrlsplitUrlparseTempSanitizer extends Sanitizer {
   // TODO: remove this once we have better support for named tuples
   UrlsplitUrlparseTempSanitizer() { this = "UrlsplitUrlparseTempSanitizer" }
 
@@ -281,19 +268,19 @@ class UrlsplitUrlparseTempSanitizer extends Sanitizer {
       or
       full_use.(AttrNode).getObject() = test.getInput().getAUse()
     |
-      clears_taint(full_use, test.getTest(), test.getSense())
+      this.clears_taint(full_use, test.getTest(), test.getSense())
     )
   }
 
   private predicate clears_taint(ControlFlowNode tainted, ControlFlowNode test, boolean sense) {
-    test_equality_with_const(test, tainted, sense)
+    this.test_equality_with_const(test, tainted, sense)
     or
-    test_in_const_seq(test, tainted, sense)
+    this.test_in_const_seq(test, tainted, sense)
     or
     test.(UnaryExprNode).getNode().getOp() instanceof Not and
     exists(ControlFlowNode nested_test |
       nested_test = test.(UnaryExprNode).getOperand() and
-      clears_taint(tainted, nested_test, sense.booleanNot())
+      this.clears_taint(tainted, nested_test, sense.booleanNot())
     )
   }
 

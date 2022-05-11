@@ -40,7 +40,7 @@ class Comment extends @py_comment {
 
 private predicate comment_block_part(Comment start, Comment part, int i) {
   not exists(Comment prev | prev.getFollowing() = part) and
-  exists(Comment following | part.getFollowing() = following) and
+  exists(part.getFollowing()) and
   start = part and
   i = 1
   or
@@ -59,7 +59,7 @@ class CommentBlock extends @py_comment {
   /** Gets a textual representation of this element. */
   string toString() { result = "Comment block" }
 
-  /** The length of this comment block (in comments) */
+  /** Gets the length of this comment block (in comments) */
   int length() { result = max(int i | comment_block_part(this, _, i)) }
 
   /**

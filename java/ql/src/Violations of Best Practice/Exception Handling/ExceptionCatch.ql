@@ -52,7 +52,7 @@ where
   // Check that all exceptions thrown in the try block are
   // either more specific than the caught type or unrelated to it.
   not exists(Type et | et = getAThrownExceptionType(t) |
-    et.(RefType).getASubtype*().hasQualifiedName("java.lang", typeName)
+    et.(RefType).getADescendant().hasQualifiedName("java.lang", typeName)
   )
 select cc,
   "Do not catch '" + cc.getVariable().getType() + "'" + "; " + message +

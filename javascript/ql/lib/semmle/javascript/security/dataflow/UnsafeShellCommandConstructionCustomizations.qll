@@ -5,7 +5,6 @@
  */
 
 import javascript
-private import semmle.javascript.security.dataflow.RemoteFlowSources
 private import semmle.javascript.PackageExports as Exports
 private import semmle.javascript.dataflow.InferredTypes
 
@@ -50,14 +49,14 @@ module UnsafeShellCommandConstruction {
   /**
    * A parameter of an exported function, seen as a source for shell command constructed from library input.
    */
-  class ExternalInputSource extends Source, DataFlow::ParameterNode {
+  class ExternalInputSource extends Source, DataFlow::SourceNode {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
       not (
         // looks to be on purpose.
-        this.getName() = ["cmd", "command"]
+        this.(DataFlow::ParameterNode).getName() = ["cmd", "command"]
         or
-        this.getName().regexpMatch(".*(Cmd|Command)$") // ends with "Cmd" or "Command"
+        this.(DataFlow::ParameterNode).getName().regexpMatch(".*(Cmd|Command)$") // ends with "Cmd" or "Command"
       )
     }
   }
@@ -109,19 +108,20 @@ module UnsafeShellCommandConstruction {
    * An element pushed to an array, where the array is later used to execute a shell command.
    */
   class ArrayAppendEndingInCommandExecutinSink extends Sink {
-    DataFlow::SourceNode array;
     SystemCommandExecution sys;
 
     ArrayAppendEndingInCommandExecutinSink() {
-      this =
-        [
-          array.(DataFlow::ArrayCreationNode).getAnElement(),
-          array.getAMethodCall(["push", "unshift"]).getAnArgument()
-        ] and
-      exists(DataFlow::MethodCallNode joinCall | array.getAMethodCall("join") = joinCall |
-        joinCall = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys) and
-        joinCall.getNumArgument() = 1 and
-        joinCall.getArgument(0).getStringValue() = " "
+      exists(DataFlow::SourceNode array |
+        this =
+          [
+            array.(DataFlow::ArrayCreationNode).getAnElement(),
+            array.getAMethodCall(["push", "unshift"]).getAnArgument()
+          ] and
+        exists(DataFlow::MethodCallNode joinCall | array.getAMethodCall("join") = joinCall |
+          joinCall = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys) and
+          joinCall.getNumArgument() = 1 and
+          joinCall.getArgument(0).getStringValue() = " "
+        )
       )
     }
 
@@ -136,14 +136,15 @@ module UnsafeShellCommandConstruction {
    * A formatted string that is later executed as a shell command.
    */
   class FormatedStringInCommandExecutionSink extends Sink {
-    PrintfStyleCall call;
     SystemCommandExecution sys;
 
     FormatedStringInCommandExecutionSink() {
-      this = call.getFormatArgument(_) and
-      call = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys) and
-      exists(string formatString | call.getFormatString().mayHaveStringValue(formatString) |
-        formatString.regexpMatch(".* ('|\")?[0-9a-zA-Z/:_-]*%.*")
+      exists(PrintfStyleCall call |
+        this = call.getFormatArgument(_) and
+        call = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys) and
+        exists(string formatString | call.getFormatString().mayHaveStringValue(formatString) |
+          formatString.regexpMatch(".* ('|\")?[0-9a-zA-Z/:_-]*%.*")
+        )
       )
     }
 
@@ -206,13 +207,14 @@ module UnsafeShellCommandConstruction {
    * Joining a path is similar to string concatenation that automatically inserts slashes.
    */
   class JoinedPathEndingInCommandExecutionSink extends Sink {
-    DataFlow::MethodCallNode joinCall;
     SystemCommandExecution sys;
 
     JoinedPathEndingInCommandExecutionSink() {
-      this = joinCall.getAnArgument() and
-      joinCall = DataFlow::moduleMember("path", ["resolve", "join"]).getACall() and
-      joinCall = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys)
+      exists(DataFlow::MethodCallNode joinCall |
+        this = joinCall.getAnArgument() and
+        joinCall = DataFlow::moduleMember("path", ["resolve", "join"]).getACall() and
+        joinCall = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys)
+      )
     }
 
     override string getSinkType() { result = "Path concatenation" }
@@ -264,14 +266,14 @@ module UnsafeShellCommandConstruction {
     override predicate sanitizes(boolean outcome, Expr e) {
       outcome = true and
       (
-        e = getArgument(0).asExpr() or
-        e = getArgument(0).(StringOps::ConcatenationRoot).getALeaf().asExpr()
+        e = this.getArgument(0).asExpr() or
+        e = this.getArgument(0).(StringOps::ConcatenationRoot).getALeaf().asExpr()
       )
     }
   }
 
   /**
-   * A guard of the form `typeof x === "<T>"`, where <T> is  "number", or "boolean",
+   * A guard of the form `typeof x === "<T>"`, where `<T>` is  "number", or "boolean",
    * which sanitizes `x` in its "then" branch.
    */
   class TypeOfSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
@@ -284,6 +286,16 @@ module UnsafeShellCommandConstruction {
       outcome = astNode.getPolarity() and
       e = x
     }
+  }
+
+  /** A guard that checks whether `x` is a number. */
+  class NumberGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
+    Expr x;
+    boolean polarity;
+
+    NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
   }
 
   private import semmle.javascript.dataflow.internal.AccessPaths

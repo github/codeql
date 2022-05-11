@@ -17,10 +17,11 @@ module ConnectExpressShared {
    */
   private class RouteHandlerSignature extends string {
     RouteHandlerSignature() {
-      this = "request,response" or
-      this = "request,response,next" or
-      this = "request,response,next,parameter" or
-      this = "error,request,response,next"
+      this =
+        [
+          "request,response", "request,response,next", "request,response,next,parameter",
+          "error,request,response,next"
+        ]
     }
 
     /** Gets the index of the parameter corresonding to the given `kind`, if any. */
@@ -29,10 +30,10 @@ module ConnectExpressShared {
 
     /** Gets the number of parameters taken by this signature. */
     pragma[noinline]
-    int getArity() { result = count(getParameterIndex(_)) }
+    int getArity() { result = count(this.getParameterIndex(_)) }
 
     /** Holds if this signature takes a parameter of the given kind. */
-    predicate has(string kind) { exists(getParameterIndex(kind)) }
+    predicate has(string kind) { exists(this.getParameterIndex(kind)) }
   }
 
   private module RouteHandlerSignature {

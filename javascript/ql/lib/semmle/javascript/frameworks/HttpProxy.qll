@@ -5,7 +5,7 @@
 import javascript
 
 /**
- * Provides classes and predicates modelling the [http-proxy](https://www.npmjs.com/package/http-proxy) library.
+ * Provides classes and predicates modeling the [http-proxy](https://www.npmjs.com/package/http-proxy) library.
  */
 private module HttpProxy {
   /**
@@ -74,12 +74,13 @@ private module HttpProxy {
    */
   class ProxyListenerCallback extends NodeJSLib::RouteHandler, DataFlow::FunctionNode {
     string event;
-    API::CallNode call;
 
     ProxyListenerCallback() {
-      call = any(CreateServerCall server).getReturn().getMember(["on", "once"]).getACall() and
-      call.getParameter(0).getARhs().mayHaveStringValue(event) and
-      this = call.getParameter(1).getARhs().getAFunctionValue()
+      exists(API::CallNode call |
+        call = any(CreateServerCall server).getReturn().getMember(["on", "once"]).getACall() and
+        call.getParameter(0).getARhs().mayHaveStringValue(event) and
+        this = call.getParameter(1).getARhs().getAFunctionValue()
+      )
     }
 
     override Parameter getRequestParameter() {

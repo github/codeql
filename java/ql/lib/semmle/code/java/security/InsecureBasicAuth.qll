@@ -41,5 +41,5 @@ private class DefaultInsecureBasicAuthSink extends InsecureBasicAuthSink {
  * String pattern of basic authentication.
  */
 private class BasicAuthString extends StringLiteral {
-  BasicAuthString() { exists(string s | this.getRepresentedString() = s | s.matches("Basic %")) }
+  BasicAuthString() { exists(string s | this.getValue() = s | s.matches("Basic %")) }
 }

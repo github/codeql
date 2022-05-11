@@ -57,7 +57,7 @@ class LoopWithAlloca extends Stmt {
     or
     // `e == 0`
     exists(EQExpr eq |
-      conditionRequires(eq, truth.booleanNot()) and
+      this.conditionRequires(eq, truth.booleanNot()) and
       eq.getAnOperand().getValue().toInt() = 0 and
       e = eq.getAnOperand() and
       not exists(e.getValue())
@@ -65,7 +65,7 @@ class LoopWithAlloca extends Stmt {
     or
     // `e != 0`
     exists(NEExpr eq |
-      conditionRequires(eq, truth) and
+      this.conditionRequires(eq, truth) and
       eq.getAnOperand().getValue().toInt() = 0 and
       e = eq.getAnOperand() and
       not exists(e.getValue())
@@ -73,7 +73,7 @@ class LoopWithAlloca extends Stmt {
     or
     // `(bool)e == true`
     exists(EQExpr eq |
-      conditionRequires(eq, truth) and
+      this.conditionRequires(eq, truth) and
       eq.getAnOperand().getValue().toInt() = 1 and
       e = eq.getAnOperand() and
       e.getUnspecifiedType() instanceof BoolType and
@@ -82,7 +82,7 @@ class LoopWithAlloca extends Stmt {
     or
     // `(bool)e != true`
     exists(NEExpr eq |
-      conditionRequires(eq, truth.booleanNot()) and
+      this.conditionRequires(eq, truth.booleanNot()) and
       eq.getAnOperand().getValue().toInt() = 1 and
       e = eq.getAnOperand() and
       e.getUnspecifiedType() instanceof BoolType and
@@ -90,7 +90,7 @@ class LoopWithAlloca extends Stmt {
     )
     or
     exists(NotExpr notExpr |
-      conditionRequires(notExpr, truth.booleanNot()) and
+      this.conditionRequires(notExpr, truth.booleanNot()) and
       e = notExpr.getOperand()
     )
     or
@@ -98,7 +98,7 @@ class LoopWithAlloca extends Stmt {
     // requires both of its operand to be true as well.
     exists(LogicalAndExpr andExpr |
       truth = true and
-      conditionRequires(andExpr, truth) and
+      this.conditionRequires(andExpr, truth) and
       e = andExpr.getAnOperand()
     )
     or
@@ -106,7 +106,7 @@ class LoopWithAlloca extends Stmt {
     // it requires both of its operand to be false as well.
     exists(LogicalOrExpr orExpr |
       truth = false and
-      conditionRequires(orExpr, truth) and
+      this.conditionRequires(orExpr, truth) and
       e = orExpr.getAnOperand()
     )
   }
@@ -141,9 +141,9 @@ class LoopWithAlloca extends Stmt {
    * `conditionRequiresInequality`.
    */
   private Variable getAControllingVariable() {
-    conditionRequires(result.getAnAccess(), _)
+    this.conditionRequires(result.getAnAccess(), _)
     or
-    conditionRequiresInequality(result.getAnAccess(), _, _)
+    this.conditionRequiresInequality(result.getAnAccess(), _, _)
   }
 
   /**

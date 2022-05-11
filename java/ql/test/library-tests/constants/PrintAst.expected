@@ -70,13 +70,13 @@ constants/Constants.java:
 constants/Initializers.java:
 #    0| [CompilationUnit] Initializers
 #    3|   1: [Class] Initializers
-#    4|     3: [FieldDeclaration] int SFIELD, ...;
+#    4|     3: [FieldDeclaration] int SFIELD;
 #    4|       -1: [TypeAccess] int
 #    4|       0: [IntegerLiteral] 12
-#    6|     4: [FieldDeclaration] int IFIELD, ...;
+#    6|     4: [FieldDeclaration] int IFIELD;
 #    6|       -1: [TypeAccess] int
 #    6|       0: [IntegerLiteral] 20
-#    8|     5: [FieldDeclaration] int IFIELD2, ...;
+#    8|     5: [FieldDeclaration] int IFIELD2;
 #    8|       -1: [TypeAccess] int
 #   10|     6: [Constructor] Initializers
 #   10|       5: [BlockStmt] { ... }
@@ -98,17 +98,17 @@ constants/Initializers.java:
 #   18|           0: [AssignExpr] ...=...
 #   18|             0: [VarAccess] y
 #   18|             1: [IntegerLiteral] 400
-#   21|     8: [FieldDeclaration] Object SFIELD_OBJECT, ...;
+#   21|     8: [FieldDeclaration] Object SFIELD_OBJECT;
 #   21|       -1: [TypeAccess] Object
 #   21|       0: [StringLiteral] "a string"
-#   23|     9: [FieldDeclaration] int fsf, ...;
+#   23|     9: [FieldDeclaration] int fsf;
 #   23|       -1: [TypeAccess] int
-#   24|     10: [FieldDeclaration] int sf, ...;
+#   24|     10: [FieldDeclaration] int sf;
 #   24|       -1: [TypeAccess] int
 #   24|       0: [IntegerLiteral] 3
-#   25|     11: [FieldDeclaration] int ff, ...;
+#   25|     11: [FieldDeclaration] int ff;
 #   25|       -1: [TypeAccess] int
-#   26|     12: [FieldDeclaration] int f, ...;
+#   26|     12: [FieldDeclaration] int f;
 #   26|       -1: [TypeAccess] int
 #   26|       0: [IntegerLiteral] 4
 #   28|     13: [BlockStmt] { ... }
@@ -135,7 +135,7 @@ constants/Values.java:
 #-----|     -4: (Javadoc)
 #    3|       1: [Javadoc] /** Tests of the getIntValue() predicate */
 #    3|         0: [JavadocText] Tests of the getIntValue() predicate
-#    6|     3: [FieldDeclaration] int final_field, ...;
+#    6|     3: [FieldDeclaration] int final_field;
 #    6|       -1: [TypeAccess] int
 #    6|       0: [IntegerLiteral] 42
 #    8|     4: [Method] values

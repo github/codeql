@@ -72,4 +72,13 @@ public class A {
     arrayWrite(taint(), b);
     sink(b);
   }
+
+  void testFilterOutputStream() throws IOException {
+    ByteArrayOutputStream bOutput = new ByteArrayOutputStream();
+    bOutput.write(taint());
+    FilterOutputStream filterOutput = new FilterOutputStream(bOutput) {
+    };
+    sink(filterOutput);
+  }
+
 }

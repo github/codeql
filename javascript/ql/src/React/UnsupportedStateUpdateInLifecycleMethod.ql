@@ -16,7 +16,7 @@ import javascript
  */
 class CallOnSelf extends DataFlow::CallNode {
   CallOnSelf() {
-    exists(Function binder | binder = getEnclosingFunction().getThisBinder() |
+    exists(Function binder | binder = this.getEnclosingFunction().getThisBinder() |
       exists(DataFlow::ThisNode thiz |
         this = thiz.getAMethodCall(_) and
         thiz.getBinder().getAstNode() = binder

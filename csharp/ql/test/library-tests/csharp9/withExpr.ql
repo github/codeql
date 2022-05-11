@@ -19,7 +19,7 @@ query predicate withTarget(WithExpr with, RecordCloneMethod clone, Constructor c
 query predicate cloneOverrides(string b, string o) {
   exists(RecordCloneMethod base, RecordCloneMethod overrider |
     base.getDeclaringType().fromSource() and
-    base.(Virtualizable).getAnOverrider() = overrider and
+    base.getAnOverrider() = overrider and
     b = getSignature(base) and
     o = getSignature(overrider)
   )

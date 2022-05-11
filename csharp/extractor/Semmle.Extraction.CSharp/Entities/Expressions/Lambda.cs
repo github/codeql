@@ -18,15 +18,17 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private void VisitParameter(ParameterSyntax p)
         {
             var symbol = Context.GetModel(p).GetDeclaredSymbol(p)!;
+            Context.CacheLambdaParameterSymbol(symbol, p);
             Parameter.Create(Context, symbol, this);
         }
 
-        private Lambda(ExpressionNodeInfo info, CSharpSyntaxNode body, IEnumerable<ParameterSyntax> @params)
+        private Lambda(ExpressionNodeInfo info, CSharpSyntaxNode body, IEnumerable<ParameterSyntax> @params, TypeSyntax? @return)
             : base(info)
         {
             if (Context.GetModel(info.Node).GetSymbolInfo(info.Node).Symbol is IMethodSymbol symbol)
             {
                 Modifier.ExtractModifiers(Context, info.Context.TrapWriter.Writer, this, symbol);
+                Attribute.ExtractAttributes(Context, symbol, this);
             }
             else
             {
@@ -39,27 +41,34 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 foreach (var param in @params)
                     VisitParameter(param);
 
+                if (@return is not null)
+                {
+                    var symbol = Context.GetType(@return);
+                    var type = Entities.Type.Create(Context, symbol);
+                    var trapFile = Context.TrapWriter.Writer;
+                    trapFile.lambda_expr_return_type(this, type.TypeRef);
+                }
                 if (body is ExpressionSyntax exprBody)
                     Create(Context, exprBody, this, 0);
                 else if (body is BlockSyntax blockBody)
                     Statements.Block.Create(Context, blockBody, this, 0);
                 else
-                    Context.ModelError(body, "Unhandled lambda body");
+                    Context.ModelError(body, $"Unhandled lambda body of type {body.GetType()}");
             });
         }
 
         private Lambda(ExpressionNodeInfo info, ParenthesizedLambdaExpressionSyntax node)
-            : this(info.SetKind(ExprKind.LAMBDA), node.Body, node.ParameterList.Parameters) { }
+            : this(info.SetKind(ExprKind.LAMBDA), node.Body, node.ParameterList.Parameters, node.ReturnType) { }
 
         public static Lambda Create(ExpressionNodeInfo info, ParenthesizedLambdaExpressionSyntax node) => new Lambda(info, node);
 
         private Lambda(ExpressionNodeInfo info, SimpleLambdaExpressionSyntax node)
-            : this(info.SetKind(ExprKind.LAMBDA), node.Body, Enumerators.Singleton(node.Parameter)) { }
+            : this(info.SetKind(ExprKind.LAMBDA), node.Body, Enumerators.Singleton(node.Parameter), null) { }
 
         public static Lambda Create(ExpressionNodeInfo info, SimpleLambdaExpressionSyntax node) => new Lambda(info, node);
 
         private Lambda(ExpressionNodeInfo info, AnonymousMethodExpressionSyntax node) :
-            this(info.SetKind(ExprKind.ANONYMOUS_METHOD), node.Body, node.ParameterList is null ? Enumerable.Empty<ParameterSyntax>() : node.ParameterList.Parameters)
+            this(info.SetKind(ExprKind.ANONYMOUS_METHOD), node.Body, node.ParameterList is null ? Enumerable.Empty<ParameterSyntax>() : node.ParameterList.Parameters, null)
         { }
 
         public static Lambda Create(ExpressionNodeInfo info, AnonymousMethodExpressionSyntax node) => new Lambda(info, node);

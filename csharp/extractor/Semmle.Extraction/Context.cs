@@ -400,7 +400,7 @@ namespace Semmle.Extraction
 
         private void ReportError(InternalError error)
         {
-            if (!Extractor.Standalone)
+            if (!Extractor.Mode.HasFlag(ExtractorMode.Standalone))
                 throw error;
 
             ExtractionError(error);

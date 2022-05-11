@@ -1,0 +1,203 @@
+edges
+| InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : Object |
+| InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : Object | InsecureWebResourceResponse.java:30:25:30:32 | inputUrl : Object |
+| InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : Object | InsecureWebResourceResponse.java:32:25:32:32 | inputUrl : Object |
+| InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : Object | InsecureWebResourceResponse.java:34:25:34:32 | inputUrl : Object |
+| InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : Object | InsecureWebResourceResponse.java:36:26:36:33 | inputUrl : Object |
+| InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : Object | InsecureWebResourceResponse.java:38:26:38:33 | inputUrl : Object |
+| InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : Object | InsecureWebResourceResponse.java:40:25:40:32 | inputUrl : Object |
+| InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : Object | InsecureWebResourceResponse.java:42:25:42:32 | inputUrl : Object |
+| InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : Object | InsecureWebResourceResponse.java:44:26:44:33 | inputUrl : Object |
+| InsecureWebResourceResponse.java:30:25:30:32 | inputUrl : Object | InsecureWebResourceResponse.java:59:34:59:43 | url : Object |
+| InsecureWebResourceResponse.java:32:25:32:32 | inputUrl : Object | InsecureWebResourceResponse.java:80:34:80:43 | url : Object |
+| InsecureWebResourceResponse.java:34:25:34:32 | inputUrl : Object | InsecureWebResourceResponse.java:106:34:106:43 | url : Object |
+| InsecureWebResourceResponse.java:36:26:36:33 | inputUrl : Object | InsecureWebResourceResponse.java:131:36:131:45 | url : Object |
+| InsecureWebResourceResponse.java:38:26:38:33 | inputUrl : Object | InsecureWebResourceResponse.java:156:35:156:44 | url : Object |
+| InsecureWebResourceResponse.java:40:25:40:32 | inputUrl : Object | InsecureWebResourceResponse.java:181:34:181:43 | url : Object |
+| InsecureWebResourceResponse.java:42:25:42:32 | inputUrl : Object | InsecureWebResourceResponse.java:188:34:188:43 | url : Object |
+| InsecureWebResourceResponse.java:44:26:44:33 | inputUrl : Object | InsecureWebResourceResponse.java:217:35:217:44 | url : Object |
+| InsecureWebResourceResponse.java:59:34:59:43 | url : Object | InsecureWebResourceResponse.java:75:20:75:22 | url : Object |
+| InsecureWebResourceResponse.java:63:77:63:86 | url : Object | InsecureWebResourceResponse.java:65:41:65:43 | url : Object |
+| InsecureWebResourceResponse.java:65:31:65:44 | parse(...) : Uri | InsecureWebResourceResponse.java:66:71:66:73 | uri : Uri |
+| InsecureWebResourceResponse.java:65:41:65:43 | url : Object | InsecureWebResourceResponse.java:65:31:65:44 | parse(...) : Uri |
+| InsecureWebResourceResponse.java:66:51:66:84 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:68:71:68:81 | inputStream |
+| InsecureWebResourceResponse.java:66:71:66:73 | uri : Uri | InsecureWebResourceResponse.java:66:71:66:83 | getPath(...) : String |
+| InsecureWebResourceResponse.java:66:71:66:83 | getPath(...) : String | InsecureWebResourceResponse.java:66:51:66:84 | new FileInputStream(...) : FileInputStream |
+| InsecureWebResourceResponse.java:75:20:75:22 | url : Object | InsecureWebResourceResponse.java:63:77:63:86 | url : Object |
+| InsecureWebResourceResponse.java:75:20:75:22 | url : Object | InsecureWebResourceResponse.java:84:77:84:86 | url : Object |
+| InsecureWebResourceResponse.java:75:20:75:22 | url : Object | InsecureWebResourceResponse.java:110:77:110:86 | url : Object |
+| InsecureWebResourceResponse.java:75:20:75:22 | url : Object | InsecureWebResourceResponse.java:192:77:192:102 | request : Object |
+| InsecureWebResourceResponse.java:75:20:75:22 | url : Object | InsecureWebResourceResponse.java:232:69:232:78 | url : Object |
+| InsecureWebResourceResponse.java:80:34:80:43 | url : Object | InsecureWebResourceResponse.java:101:20:101:22 | url : Object |
+| InsecureWebResourceResponse.java:84:77:84:86 | url : Object | InsecureWebResourceResponse.java:86:41:86:43 | url : Object |
+| InsecureWebResourceResponse.java:86:31:86:44 | parse(...) : Uri | InsecureWebResourceResponse.java:88:66:88:68 | uri : Uri |
+| InsecureWebResourceResponse.java:86:41:86:43 | url : Object | InsecureWebResourceResponse.java:86:31:86:44 | parse(...) : Uri |
+| InsecureWebResourceResponse.java:88:42:88:90 | new File(...) : File | InsecureWebResourceResponse.java:89:75:89:83 | cacheFile : File |
+| InsecureWebResourceResponse.java:88:66:88:68 | uri : Uri | InsecureWebResourceResponse.java:88:66:88:89 | getLastPathSegment(...) : String |
+| InsecureWebResourceResponse.java:88:66:88:89 | getLastPathSegment(...) : String | InsecureWebResourceResponse.java:88:42:88:90 | new File(...) : File |
+| InsecureWebResourceResponse.java:89:55:89:84 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:91:75:91:85 | inputStream |
+| InsecureWebResourceResponse.java:89:75:89:83 | cacheFile : File | InsecureWebResourceResponse.java:89:55:89:84 | new FileInputStream(...) : FileInputStream |
+| InsecureWebResourceResponse.java:101:20:101:22 | url : Object | InsecureWebResourceResponse.java:63:77:63:86 | url : Object |
+| InsecureWebResourceResponse.java:101:20:101:22 | url : Object | InsecureWebResourceResponse.java:84:77:84:86 | url : Object |
+| InsecureWebResourceResponse.java:101:20:101:22 | url : Object | InsecureWebResourceResponse.java:110:77:110:86 | url : Object |
+| InsecureWebResourceResponse.java:101:20:101:22 | url : Object | InsecureWebResourceResponse.java:192:77:192:102 | request : Object |
+| InsecureWebResourceResponse.java:101:20:101:22 | url : Object | InsecureWebResourceResponse.java:232:69:232:78 | url : Object |
+| InsecureWebResourceResponse.java:106:34:106:43 | url : Object | InsecureWebResourceResponse.java:127:20:127:22 | url : Object |
+| InsecureWebResourceResponse.java:110:77:110:86 | url : Object | InsecureWebResourceResponse.java:112:41:112:43 | url : Object |
+| InsecureWebResourceResponse.java:112:31:112:44 | parse(...) : Uri | InsecureWebResourceResponse.java:113:35:113:37 | uri : Uri |
+| InsecureWebResourceResponse.java:112:41:112:43 | url : Object | InsecureWebResourceResponse.java:112:31:112:44 | parse(...) : Uri |
+| InsecureWebResourceResponse.java:113:35:113:37 | uri : Uri | InsecureWebResourceResponse.java:113:35:113:47 | getPath(...) : String |
+| InsecureWebResourceResponse.java:113:35:113:47 | getPath(...) : String | InsecureWebResourceResponse.java:113:35:113:60 | substring(...) : String |
+| InsecureWebResourceResponse.java:113:35:113:60 | substring(...) : String | InsecureWebResourceResponse.java:115:75:115:78 | path : String |
+| InsecureWebResourceResponse.java:115:55:115:108 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:117:75:117:85 | inputStream |
+| InsecureWebResourceResponse.java:115:75:115:78 | path : String | InsecureWebResourceResponse.java:115:75:115:107 | substring(...) : String |
+| InsecureWebResourceResponse.java:115:75:115:107 | substring(...) : String | InsecureWebResourceResponse.java:115:55:115:108 | new FileInputStream(...) : FileInputStream |
+| InsecureWebResourceResponse.java:127:20:127:22 | url : Object | InsecureWebResourceResponse.java:63:77:63:86 | url : Object |
+| InsecureWebResourceResponse.java:127:20:127:22 | url : Object | InsecureWebResourceResponse.java:84:77:84:86 | url : Object |
+| InsecureWebResourceResponse.java:127:20:127:22 | url : Object | InsecureWebResourceResponse.java:110:77:110:86 | url : Object |
+| InsecureWebResourceResponse.java:127:20:127:22 | url : Object | InsecureWebResourceResponse.java:192:77:192:102 | request : Object |
+| InsecureWebResourceResponse.java:127:20:127:22 | url : Object | InsecureWebResourceResponse.java:232:69:232:78 | url : Object |
+| InsecureWebResourceResponse.java:131:36:131:45 | url : Object | InsecureWebResourceResponse.java:152:20:152:22 | url : Object |
+| InsecureWebResourceResponse.java:152:20:152:22 | url : Object | InsecureWebResourceResponse.java:63:77:63:86 | url : Object |
+| InsecureWebResourceResponse.java:152:20:152:22 | url : Object | InsecureWebResourceResponse.java:84:77:84:86 | url : Object |
+| InsecureWebResourceResponse.java:152:20:152:22 | url : Object | InsecureWebResourceResponse.java:110:77:110:86 | url : Object |
+| InsecureWebResourceResponse.java:152:20:152:22 | url : Object | InsecureWebResourceResponse.java:192:77:192:102 | request : Object |
+| InsecureWebResourceResponse.java:152:20:152:22 | url : Object | InsecureWebResourceResponse.java:232:69:232:78 | url : Object |
+| InsecureWebResourceResponse.java:156:35:156:44 | url : Object | InsecureWebResourceResponse.java:177:20:177:22 | url : Object |
+| InsecureWebResourceResponse.java:177:20:177:22 | url : Object | InsecureWebResourceResponse.java:63:77:63:86 | url : Object |
+| InsecureWebResourceResponse.java:177:20:177:22 | url : Object | InsecureWebResourceResponse.java:84:77:84:86 | url : Object |
+| InsecureWebResourceResponse.java:177:20:177:22 | url : Object | InsecureWebResourceResponse.java:110:77:110:86 | url : Object |
+| InsecureWebResourceResponse.java:177:20:177:22 | url : Object | InsecureWebResourceResponse.java:192:77:192:102 | request : Object |
+| InsecureWebResourceResponse.java:177:20:177:22 | url : Object | InsecureWebResourceResponse.java:232:69:232:78 | url : Object |
+| InsecureWebResourceResponse.java:181:34:181:43 | url : Object | InsecureWebResourceResponse.java:184:20:184:22 | url : Object |
+| InsecureWebResourceResponse.java:184:20:184:22 | url : Object | InsecureWebResourceResponse.java:63:77:63:86 | url : Object |
+| InsecureWebResourceResponse.java:184:20:184:22 | url : Object | InsecureWebResourceResponse.java:84:77:84:86 | url : Object |
+| InsecureWebResourceResponse.java:184:20:184:22 | url : Object | InsecureWebResourceResponse.java:110:77:110:86 | url : Object |
+| InsecureWebResourceResponse.java:184:20:184:22 | url : Object | InsecureWebResourceResponse.java:192:77:192:102 | request : Object |
+| InsecureWebResourceResponse.java:184:20:184:22 | url : Object | InsecureWebResourceResponse.java:232:69:232:78 | url : Object |
+| InsecureWebResourceResponse.java:188:34:188:43 | url : Object | InsecureWebResourceResponse.java:209:20:209:22 | url : Object |
+| InsecureWebResourceResponse.java:192:77:192:102 | request : Object | InsecureWebResourceResponse.java:194:31:194:37 | request : Object |
+| InsecureWebResourceResponse.java:194:31:194:37 | request : Object | InsecureWebResourceResponse.java:194:31:194:46 | getUrl(...) : Uri |
+| InsecureWebResourceResponse.java:194:31:194:46 | getUrl(...) : Uri | InsecureWebResourceResponse.java:196:66:196:68 | uri : Uri |
+| InsecureWebResourceResponse.java:196:42:196:90 | new File(...) : File | InsecureWebResourceResponse.java:197:75:197:83 | cacheFile : File |
+| InsecureWebResourceResponse.java:196:66:196:68 | uri : Uri | InsecureWebResourceResponse.java:196:66:196:89 | getLastPathSegment(...) : String |
+| InsecureWebResourceResponse.java:196:66:196:89 | getLastPathSegment(...) : String | InsecureWebResourceResponse.java:196:42:196:90 | new File(...) : File |
+| InsecureWebResourceResponse.java:197:55:197:84 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:199:75:199:85 | inputStream |
+| InsecureWebResourceResponse.java:197:75:197:83 | cacheFile : File | InsecureWebResourceResponse.java:197:55:197:84 | new FileInputStream(...) : FileInputStream |
+| InsecureWebResourceResponse.java:209:20:209:22 | url : Object | InsecureWebResourceResponse.java:63:77:63:86 | url : Object |
+| InsecureWebResourceResponse.java:209:20:209:22 | url : Object | InsecureWebResourceResponse.java:84:77:84:86 | url : Object |
+| InsecureWebResourceResponse.java:209:20:209:22 | url : Object | InsecureWebResourceResponse.java:110:77:110:86 | url : Object |
+| InsecureWebResourceResponse.java:209:20:209:22 | url : Object | InsecureWebResourceResponse.java:192:77:192:102 | request : Object |
+| InsecureWebResourceResponse.java:209:20:209:22 | url : Object | InsecureWebResourceResponse.java:232:69:232:78 | url : Object |
+| InsecureWebResourceResponse.java:217:35:217:44 | url : Object | InsecureWebResourceResponse.java:226:20:226:22 | url : Object |
+| InsecureWebResourceResponse.java:226:20:226:22 | url : Object | InsecureWebResourceResponse.java:63:77:63:86 | url : Object |
+| InsecureWebResourceResponse.java:226:20:226:22 | url : Object | InsecureWebResourceResponse.java:84:77:84:86 | url : Object |
+| InsecureWebResourceResponse.java:226:20:226:22 | url : Object | InsecureWebResourceResponse.java:110:77:110:86 | url : Object |
+| InsecureWebResourceResponse.java:226:20:226:22 | url : Object | InsecureWebResourceResponse.java:192:77:192:102 | request : Object |
+| InsecureWebResourceResponse.java:226:20:226:22 | url : Object | InsecureWebResourceResponse.java:232:69:232:78 | url : Object |
+| InsecureWebResourceResponse.java:232:69:232:78 | url : Object | InsecureWebResourceResponse.java:234:33:234:35 | url : Object |
+| InsecureWebResourceResponse.java:234:23:234:36 | parse(...) : Uri | InsecureWebResourceResponse.java:235:63:235:65 | uri : Uri |
+| InsecureWebResourceResponse.java:234:33:234:35 | url : Object | InsecureWebResourceResponse.java:234:23:234:36 | parse(...) : Uri |
+| InsecureWebResourceResponse.java:235:43:235:76 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:237:63:237:73 | inputStream |
+| InsecureWebResourceResponse.java:235:63:235:65 | uri : Uri | InsecureWebResourceResponse.java:235:63:235:75 | getPath(...) : String |
+| InsecureWebResourceResponse.java:235:63:235:75 | getPath(...) : String | InsecureWebResourceResponse.java:235:43:235:76 | new FileInputStream(...) : FileInputStream |
+| InsecureWebViewActivity.java:27:27:27:37 | getIntent(...) : Intent | InsecureWebViewActivity.java:27:27:27:64 | getStringExtra(...) : Object |
+| InsecureWebViewActivity.java:27:27:27:64 | getStringExtra(...) : Object | InsecureWebViewActivity.java:28:20:28:27 | inputUrl : Object |
+| InsecureWebViewActivity.java:28:20:28:27 | inputUrl : Object | InsecureWebViewActivity.java:42:28:42:37 | url : Object |
+| InsecureWebViewActivity.java:42:28:42:37 | url : Object | InsecureWebViewActivity.java:43:25:43:27 | url : Object |
+| InsecureWebViewActivity.java:43:25:43:27 | url : Object | InsecureWebViewActivity.java:53:77:53:86 | url : Object |
+| InsecureWebViewActivity.java:53:77:53:86 | url : Object | InsecureWebViewActivity.java:55:41:55:43 | url : Object |
+| InsecureWebViewActivity.java:55:31:55:44 | parse(...) : Uri | InsecureWebViewActivity.java:56:71:56:73 | uri : Uri |
+| InsecureWebViewActivity.java:55:41:55:43 | url : Object | InsecureWebViewActivity.java:55:31:55:44 | parse(...) : Uri |
+| InsecureWebViewActivity.java:56:51:56:84 | new FileInputStream(...) : FileInputStream | InsecureWebViewActivity.java:58:71:58:81 | inputStream |
+| InsecureWebViewActivity.java:56:71:56:73 | uri : Uri | InsecureWebViewActivity.java:56:71:56:83 | getPath(...) : String |
+| InsecureWebViewActivity.java:56:71:56:83 | getPath(...) : String | InsecureWebViewActivity.java:56:51:56:84 | new FileInputStream(...) : FileInputStream |
+nodes
+| InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : Object | semmle.label | getStringExtra(...) : Object |
+| InsecureWebResourceResponse.java:30:25:30:32 | inputUrl : Object | semmle.label | inputUrl : Object |
+| InsecureWebResourceResponse.java:32:25:32:32 | inputUrl : Object | semmle.label | inputUrl : Object |
+| InsecureWebResourceResponse.java:34:25:34:32 | inputUrl : Object | semmle.label | inputUrl : Object |
+| InsecureWebResourceResponse.java:36:26:36:33 | inputUrl : Object | semmle.label | inputUrl : Object |
+| InsecureWebResourceResponse.java:38:26:38:33 | inputUrl : Object | semmle.label | inputUrl : Object |
+| InsecureWebResourceResponse.java:40:25:40:32 | inputUrl : Object | semmle.label | inputUrl : Object |
+| InsecureWebResourceResponse.java:42:25:42:32 | inputUrl : Object | semmle.label | inputUrl : Object |
+| InsecureWebResourceResponse.java:44:26:44:33 | inputUrl : Object | semmle.label | inputUrl : Object |
+| InsecureWebResourceResponse.java:59:34:59:43 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:63:77:63:86 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:65:31:65:44 | parse(...) : Uri | semmle.label | parse(...) : Uri |
+| InsecureWebResourceResponse.java:65:41:65:43 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:66:51:66:84 | new FileInputStream(...) : FileInputStream | semmle.label | new FileInputStream(...) : FileInputStream |
+| InsecureWebResourceResponse.java:66:71:66:73 | uri : Uri | semmle.label | uri : Uri |
+| InsecureWebResourceResponse.java:66:71:66:83 | getPath(...) : String | semmle.label | getPath(...) : String |
+| InsecureWebResourceResponse.java:68:71:68:81 | inputStream | semmle.label | inputStream |
+| InsecureWebResourceResponse.java:75:20:75:22 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:80:34:80:43 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:84:77:84:86 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:86:31:86:44 | parse(...) : Uri | semmle.label | parse(...) : Uri |
+| InsecureWebResourceResponse.java:86:41:86:43 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:88:42:88:90 | new File(...) : File | semmle.label | new File(...) : File |
+| InsecureWebResourceResponse.java:88:66:88:68 | uri : Uri | semmle.label | uri : Uri |
+| InsecureWebResourceResponse.java:88:66:88:89 | getLastPathSegment(...) : String | semmle.label | getLastPathSegment(...) : String |
+| InsecureWebResourceResponse.java:89:55:89:84 | new FileInputStream(...) : FileInputStream | semmle.label | new FileInputStream(...) : FileInputStream |
+| InsecureWebResourceResponse.java:89:75:89:83 | cacheFile : File | semmle.label | cacheFile : File |
+| InsecureWebResourceResponse.java:91:75:91:85 | inputStream | semmle.label | inputStream |
+| InsecureWebResourceResponse.java:101:20:101:22 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:106:34:106:43 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:110:77:110:86 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:112:31:112:44 | parse(...) : Uri | semmle.label | parse(...) : Uri |
+| InsecureWebResourceResponse.java:112:41:112:43 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:113:35:113:37 | uri : Uri | semmle.label | uri : Uri |
+| InsecureWebResourceResponse.java:113:35:113:47 | getPath(...) : String | semmle.label | getPath(...) : String |
+| InsecureWebResourceResponse.java:113:35:113:60 | substring(...) : String | semmle.label | substring(...) : String |
+| InsecureWebResourceResponse.java:115:55:115:108 | new FileInputStream(...) : FileInputStream | semmle.label | new FileInputStream(...) : FileInputStream |
+| InsecureWebResourceResponse.java:115:75:115:78 | path : String | semmle.label | path : String |
+| InsecureWebResourceResponse.java:115:75:115:107 | substring(...) : String | semmle.label | substring(...) : String |
+| InsecureWebResourceResponse.java:117:75:117:85 | inputStream | semmle.label | inputStream |
+| InsecureWebResourceResponse.java:127:20:127:22 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:131:36:131:45 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:152:20:152:22 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:156:35:156:44 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:177:20:177:22 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:181:34:181:43 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:184:20:184:22 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:188:34:188:43 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:192:77:192:102 | request : Object | semmle.label | request : Object |
+| InsecureWebResourceResponse.java:194:31:194:37 | request : Object | semmle.label | request : Object |
+| InsecureWebResourceResponse.java:194:31:194:46 | getUrl(...) : Uri | semmle.label | getUrl(...) : Uri |
+| InsecureWebResourceResponse.java:196:42:196:90 | new File(...) : File | semmle.label | new File(...) : File |
+| InsecureWebResourceResponse.java:196:66:196:68 | uri : Uri | semmle.label | uri : Uri |
+| InsecureWebResourceResponse.java:196:66:196:89 | getLastPathSegment(...) : String | semmle.label | getLastPathSegment(...) : String |
+| InsecureWebResourceResponse.java:197:55:197:84 | new FileInputStream(...) : FileInputStream | semmle.label | new FileInputStream(...) : FileInputStream |
+| InsecureWebResourceResponse.java:197:75:197:83 | cacheFile : File | semmle.label | cacheFile : File |
+| InsecureWebResourceResponse.java:199:75:199:85 | inputStream | semmle.label | inputStream |
+| InsecureWebResourceResponse.java:209:20:209:22 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:217:35:217:44 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:226:20:226:22 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:232:69:232:78 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:234:23:234:36 | parse(...) : Uri | semmle.label | parse(...) : Uri |
+| InsecureWebResourceResponse.java:234:33:234:35 | url : Object | semmle.label | url : Object |
+| InsecureWebResourceResponse.java:235:43:235:76 | new FileInputStream(...) : FileInputStream | semmle.label | new FileInputStream(...) : FileInputStream |
+| InsecureWebResourceResponse.java:235:63:235:65 | uri : Uri | semmle.label | uri : Uri |
+| InsecureWebResourceResponse.java:235:63:235:75 | getPath(...) : String | semmle.label | getPath(...) : String |
+| InsecureWebResourceResponse.java:237:63:237:73 | inputStream | semmle.label | inputStream |
+| InsecureWebViewActivity.java:27:27:27:37 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| InsecureWebViewActivity.java:27:27:27:64 | getStringExtra(...) : Object | semmle.label | getStringExtra(...) : Object |
+| InsecureWebViewActivity.java:28:20:28:27 | inputUrl : Object | semmle.label | inputUrl : Object |
+| InsecureWebViewActivity.java:42:28:42:37 | url : Object | semmle.label | url : Object |
+| InsecureWebViewActivity.java:43:25:43:27 | url : Object | semmle.label | url : Object |
+| InsecureWebViewActivity.java:53:77:53:86 | url : Object | semmle.label | url : Object |
+| InsecureWebViewActivity.java:55:31:55:44 | parse(...) : Uri | semmle.label | parse(...) : Uri |
+| InsecureWebViewActivity.java:55:41:55:43 | url : Object | semmle.label | url : Object |
+| InsecureWebViewActivity.java:56:51:56:84 | new FileInputStream(...) : FileInputStream | semmle.label | new FileInputStream(...) : FileInputStream |
+| InsecureWebViewActivity.java:56:71:56:73 | uri : Uri | semmle.label | uri : Uri |
+| InsecureWebViewActivity.java:56:71:56:83 | getPath(...) : String | semmle.label | getPath(...) : String |
+| InsecureWebViewActivity.java:58:71:58:81 | inputStream | semmle.label | inputStream |
+subpaths
+#select
+| InsecureWebResourceResponse.java:68:71:68:81 | inputStream | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:68:71:68:81 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) | this user input |
+| InsecureWebResourceResponse.java:91:75:91:85 | inputStream | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:91:75:91:85 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) | this user input |
+| InsecureWebResourceResponse.java:117:75:117:85 | inputStream | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:117:75:117:85 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) | this user input |
+| InsecureWebResourceResponse.java:199:75:199:85 | inputStream | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:199:75:199:85 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) | this user input |
+| InsecureWebResourceResponse.java:237:63:237:73 | inputStream | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:237:63:237:73 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) | this user input |
+| InsecureWebViewActivity.java:58:71:58:81 | inputStream | InsecureWebViewActivity.java:27:27:27:37 | getIntent(...) : Intent | InsecureWebViewActivity.java:58:71:58:81 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebViewActivity.java:27:27:27:37 | getIntent(...) | this user input |

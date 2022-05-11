@@ -118,7 +118,7 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
 }
 
 class Resource extends MemberVariable {
-  Resource() { not isStatic() }
+  Resource() { not this.isStatic() }
 
   // Check that an expr is somewhere in this class - does not have to be a constructor
   predicate inSameClass(Expr e) {
@@ -129,7 +129,7 @@ class Resource extends MemberVariable {
     f instanceof Destructor and f.getDeclaringType() = this.getDeclaringType()
     or
     exists(Function mid, FunctionCall fc |
-      calledFromDestructor(mid) and
+      this.calledFromDestructor(mid) and
       fc.getEnclosingFunction() = mid and
       fc.getTarget() = f and
       f.getDeclaringType() = this.getDeclaringType()
@@ -137,12 +137,12 @@ class Resource extends MemberVariable {
   }
 
   predicate inDestructor(Expr e) {
-    exists(Function f | f = e.getEnclosingFunction() | calledFromDestructor(f))
+    exists(Function f | f = e.getEnclosingFunction() | this.calledFromDestructor(f))
   }
 
   predicate acquisitionWithRequiredKind(Assignment acquireAssign, string kind) {
     // acquireAssign is an assignment to this resource
-    acquireAssign.(Assignment).getLValue() = this.getAnAccess() and
+    acquireAssign.getLValue() = this.getAnAccess() and
     // Should be in this class, but *any* member method will do
     this.inSameClass(acquireAssign) and
     // Check that it is an acquisition function and return the corresponding kind

@@ -1,12 +1,13 @@
 edges
 | app/controllers/foo/bars_controller.rb:9:12:9:17 | call to params :  | app/controllers/foo/bars_controller.rb:9:12:9:29 | ...[...] :  |
 | app/controllers/foo/bars_controller.rb:9:12:9:29 | ...[...] :  | app/views/foo/bars/show.html.erb:47:5:47:13 | call to user_name |
-| app/controllers/foo/bars_controller.rb:13:5:13:37 | ... = ... :  | app/views/foo/bars/show.html.erb:51:5:51:18 | call to user_name_memo |
-| app/controllers/foo/bars_controller.rb:13:20:13:25 | call to params :  | app/controllers/foo/bars_controller.rb:13:5:13:37 | ... = ... :  |
+| app/controllers/foo/bars_controller.rb:13:20:13:25 | call to params :  | app/controllers/foo/bars_controller.rb:13:20:13:37 | ...[...] :  |
+| app/controllers/foo/bars_controller.rb:13:20:13:37 | ...[...] :  | app/views/foo/bars/show.html.erb:51:5:51:18 | call to user_name_memo |
 | app/controllers/foo/bars_controller.rb:17:21:17:26 | call to params :  | app/controllers/foo/bars_controller.rb:17:21:17:36 | ...[...] :  |
 | app/controllers/foo/bars_controller.rb:17:21:17:36 | ...[...] :  | app/views/foo/bars/show.html.erb:2:18:2:30 | @user_website |
-| app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params :  | app/controllers/foo/bars_controller.rb:19:22:19:23 | dt :  |
-| app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params :  | app/controllers/foo/bars_controller.rb:23:53:23:54 | dt :  |
+| app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params :  | app/controllers/foo/bars_controller.rb:18:10:18:22 | ...[...] :  |
+| app/controllers/foo/bars_controller.rb:18:10:18:22 | ...[...] :  | app/controllers/foo/bars_controller.rb:19:22:19:23 | dt :  |
+| app/controllers/foo/bars_controller.rb:18:10:18:22 | ...[...] :  | app/controllers/foo/bars_controller.rb:23:53:23:54 | dt :  |
 | app/controllers/foo/bars_controller.rb:19:22:19:23 | dt :  | app/views/foo/bars/show.html.erb:41:3:41:16 | @instance_text |
 | app/controllers/foo/bars_controller.rb:23:53:23:54 | dt :  | app/views/foo/bars/show.html.erb:5:9:5:20 | call to display_text |
 | app/controllers/foo/bars_controller.rb:23:53:23:54 | dt :  | app/views/foo/bars/show.html.erb:8:9:8:36 | ...[...] |
@@ -21,11 +22,12 @@ edges
 nodes
 | app/controllers/foo/bars_controller.rb:9:12:9:17 | call to params :  | semmle.label | call to params :  |
 | app/controllers/foo/bars_controller.rb:9:12:9:29 | ...[...] :  | semmle.label | ...[...] :  |
-| app/controllers/foo/bars_controller.rb:13:5:13:37 | ... = ... :  | semmle.label | ... = ... :  |
 | app/controllers/foo/bars_controller.rb:13:20:13:25 | call to params :  | semmle.label | call to params :  |
+| app/controllers/foo/bars_controller.rb:13:20:13:37 | ...[...] :  | semmle.label | ...[...] :  |
 | app/controllers/foo/bars_controller.rb:17:21:17:26 | call to params :  | semmle.label | call to params :  |
 | app/controllers/foo/bars_controller.rb:17:21:17:36 | ...[...] :  | semmle.label | ...[...] :  |
 | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params :  | semmle.label | call to params :  |
+| app/controllers/foo/bars_controller.rb:18:10:18:22 | ...[...] :  | semmle.label | ...[...] :  |
 | app/controllers/foo/bars_controller.rb:19:22:19:23 | dt :  | semmle.label | dt :  |
 | app/controllers/foo/bars_controller.rb:23:53:23:54 | dt :  | semmle.label | dt :  |
 | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | semmle.label | call to display_text |

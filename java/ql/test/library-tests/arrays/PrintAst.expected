@@ -1,10 +1,10 @@
 arrays/A.java:
 #    0| [CompilationUnit] A
 #    3|   1: [Class] A
-#    4|     2: [FieldDeclaration] ...[] a, ...;
+#    4|     2: [FieldDeclaration] ...[] a;
 #    4|       -1: [ArrayTypeAccess] ...[]
 #    4|         0: [TypeAccess] String
-#    5|     3: [FieldDeclaration] ...[] b, ...;
+#    5|     3: [FieldDeclaration] ...[] b;
 #    5|       -1: [ArrayTypeAccess] ...[]
 #    5|         0: [ArrayTypeAccess] ...[]
 #    5|           0: [TypeAccess] String

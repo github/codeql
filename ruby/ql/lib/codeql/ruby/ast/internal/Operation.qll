@@ -154,7 +154,7 @@ class BitwiseXorSynthExpr extends BinaryOperationSynth, TBitwiseXorExprSynth {
 }
 
 abstract class AssignmentImpl extends OperationImpl, TAssignment {
-  abstract Pattern getLeftOperandImpl();
+  abstract Expr getLeftOperandImpl();
 
   abstract Expr getRightOperandImpl();
 
@@ -172,7 +172,7 @@ class AssignExprReal extends AssignmentImpl, TAssignExprReal {
 
   final override string getOperatorImpl() { result = "=" }
 
-  final override Pattern getLeftOperandImpl() { toGenerated(result) = g.getLeft() }
+  final override Expr getLeftOperandImpl() { toGenerated(result) = g.getLeft() }
 
   final override Expr getRightOperandImpl() { toGenerated(result) = g.getRight() }
 }
@@ -180,7 +180,7 @@ class AssignExprReal extends AssignmentImpl, TAssignExprReal {
 class AssignExprSynth extends AssignmentImpl, TAssignExprSynth {
   final override string getOperatorImpl() { result = "=" }
 
-  final override Pattern getLeftOperandImpl() { synthChild(this, 0, result) }
+  final override Expr getLeftOperandImpl() { synthChild(this, 0, result) }
 
   final override Expr getRightOperandImpl() { synthChild(this, 1, result) }
 }
@@ -192,7 +192,7 @@ class AssignOperationImpl extends AssignmentImpl, TAssignOperation {
 
   final override string getOperatorImpl() { result = g.getOperator() }
 
-  final override Pattern getLeftOperandImpl() { toGenerated(result) = g.getLeft() }
+  final override Expr getLeftOperandImpl() { toGenerated(result) = g.getLeft() }
 
   final override Expr getRightOperandImpl() { toGenerated(result) = g.getRight() }
 }

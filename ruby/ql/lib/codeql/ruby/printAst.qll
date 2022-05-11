@@ -7,14 +7,8 @@
  */
 
 private import AST
-private import codeql.ruby.regexp.RegExpTreeView as RETV
-
-/** Holds if `n` appears in the desugaring of some other node. */
-predicate isDesugared(AstNode n) {
-  n = any(AstNode sugar).getDesugared()
-  or
-  isDesugared(n.getParent())
-}
+private import codeql.ruby.Regexp as RE
+private import codeql.ruby.ast.internal.Synthesis
 
 /**
  * The query can extend this class to control which nodes are printed.
@@ -25,19 +19,7 @@ class PrintAstConfiguration extends string {
   /**
    * Holds if the given node should be printed.
    */
-  predicate shouldPrintNode(AstNode n) {
-    not isDesugared(n)
-    or
-    not n.isSynthesized()
-    or
-    n.isSynthesized() and
-    not n = any(AstNode sugar).getDesugared() and
-    exists(AstNode parent |
-      parent = n.getParent() and
-      not parent.isSynthesized() and
-      not n = parent.getDesugared()
-    )
-  }
+  predicate shouldPrintNode(AstNode n) { not isDesugarNode(n) }
 
   predicate shouldPrintAstEdge(AstNode parent, string edgeName, AstNode child) {
     child = parent.getAChild(edgeName) and
@@ -55,7 +37,7 @@ private predicate shouldPrintAstEdge(AstNode parent, string edgeName, AstNode ch
 
 newtype TPrintNode =
   TPrintRegularAstNode(AstNode n) { shouldPrintNode(n) } or
-  TPrintRegExpNode(RETV::RegExpTerm term) {
+  TPrintRegExpNode(RE::RegExpTerm term) {
     exists(RegExpLiteral literal |
       shouldPrintNode(literal) and
       term.getRootTerm() = literal.getParsed()
@@ -125,7 +107,7 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
     or
     // If this AST node is a regexp literal, add the parsed regexp tree as a
     // child.
-    exists(RETV::RegExpTerm t | t = astNode.(RegExpLiteral).getParsed() |
+    exists(RE::RegExpTerm t | t = astNode.(RegExpLiteral).getParsed() |
       result = TPrintRegExpNode(t) and edgeName = "getParsed"
     )
   }
@@ -152,7 +134,7 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
 
 /** A parsed regexp node in the output tree. */
 class PrintRegExpNode extends PrintAstNode, TPrintRegExpNode {
-  RETV::RegExpTerm regexNode;
+  RE::RegExpTerm regexNode;
 
   PrintRegExpNode() { this = TPrintRegExpNode(regexNode) }
 
@@ -165,7 +147,7 @@ class PrintRegExpNode extends PrintAstNode, TPrintRegExpNode {
     exists(int i | result = TPrintRegExpNode(regexNode.getChild(i)) and edgeName = i.toString())
   }
 
-  override int getOrder() { exists(RETV::RegExpTerm p | p.getChild(result) = regexNode) }
+  override int getOrder() { exists(RE::RegExpTerm p | p.getChild(result) = regexNode) }
 
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

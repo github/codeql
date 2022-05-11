@@ -9,5 +9,8 @@ public class CharSeq {
   
       CharSequence seqFromSeq = seq.subSequence(0, 1);
       sink(seqFromSeq);
+
+      String stringFromSeq = seq.toString();
+      sink(stringFromSeq);
     }
   }

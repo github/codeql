@@ -6,7 +6,7 @@ query predicate idParams(NamedParameter np, string name) { name = np.getName() }
 
 query predicate blockParams(BlockParameter bp, string name) { name = bp.getName() }
 
-query predicate patternParams(TuplePatternParameter tpp, Pattern child, int childIndex) {
+query predicate patternParams(DestructuredParameter tpp, AstNode child, int childIndex) {
   tpp.getElement(childIndex) = child
 }
 

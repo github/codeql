@@ -94,7 +94,7 @@ public class Test extends ContentProvider {
 	// "android.content;ContentProvider;true;openTypedAssetFile;(Uri,String,Bundle,CancellationSignal);;Parameter[0..2];contentprovider",
 	@Override
 	public AssetFileDescriptor openTypedAssetFile(Uri uri, String mimeTypeFilter, Bundle opts,
-			CancellationSignal signal) throws RemoteException, FileNotFoundException {
+			CancellationSignal signal) {
 		sink(uri); // $ hasTaintFlow
 		sink(mimeTypeFilter); // $ hasTaintFlow
 		sink(opts.get("some_key")); // $ hasTaintFlow
@@ -104,8 +104,7 @@ public class Test extends ContentProvider {
 
 	// "android.content;ContentProvider;true;openTypedAssetFile;(Uri,String,Bundle);;Parameter[0..2];contentprovider",
 	@Override
-	public AssetFileDescriptor openTypedAssetFile(Uri uri, String mimeTypeFilter, Bundle opts)
-			throws FileNotFoundException {
+	public AssetFileDescriptor openTypedAssetFile(Uri uri, String mimeTypeFilter, Bundle opts) {
 		sink(uri); // $ hasTaintFlow
 		sink(mimeTypeFilter); // $ hasTaintFlow
 		sink(opts.get("some_key")); // $ hasTaintFlow

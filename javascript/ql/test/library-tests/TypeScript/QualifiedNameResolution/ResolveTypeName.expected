@@ -16,8 +16,12 @@
 | reexport-all-client.ts:4:9:4:14 | ns.G.C | G.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
 | reexport-all-client.ts:5:9:5:11 | G.C | G.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
 | reexport-all-client.ts:6:9:6:13 | G.J.C | G.J.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| reexport-all-client.ts:8:8:8:10 | D.F | D.F in unknown scope |
+| reexport-all-client.ts:9:8:9:13 | ns.D.F | ns.D.F in unknown scope |
 | reexport-all-client.ts:11:8:11:16 | ns.Banana | Banana in library-tests/TypeScript/QualifiedNameResolution/export-class.ts |
 | reexport-named-client.ts:4:9:4:14 | ns.G.C | G.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
 | reexport-named-client.ts:5:9:5:11 | G.C | G.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
 | reexport-named-client.ts:6:9:6:13 | G.J.C | G.J.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| reexport-named-client.ts:8:8:8:10 | X.F | X.F in unknown scope |
+| reexport-named-client.ts:9:8:9:13 | ns.X.F | ns.X.F in unknown scope |
 | reexport-named-client.ts:11:9:11:9 | Y | Banana in library-tests/TypeScript/QualifiedNameResolution/export-class.ts |

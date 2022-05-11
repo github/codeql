@@ -25,8 +25,8 @@ namespace System
             public static System.ComponentModel.CategoryAttribute Asynchronous { get => throw null; }
             public static System.ComponentModel.CategoryAttribute Behavior { get => throw null; }
             public string Category { get => throw null; }
-            public CategoryAttribute(string category) => throw null;
             public CategoryAttribute() => throw null;
+            public CategoryAttribute(string category) => throw null;
             public static System.ComponentModel.CategoryAttribute Data { get => throw null; }
             public static System.ComponentModel.CategoryAttribute Default { get => throw null; }
             public static System.ComponentModel.CategoryAttribute Design { get => throw null; }
@@ -44,7 +44,7 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.Component` in `System.ComponentModel.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class Component : System.MarshalByRefObject, System.IDisposable, System.ComponentModel.IComponent
+        public class Component : System.MarshalByRefObject, System.ComponentModel.IComponent, System.IDisposable
         {
             protected virtual bool CanRaiseEvents { get => throw null; }
             public Component() => throw null;
@@ -65,8 +65,8 @@ namespace System
         {
             public ComponentCollection(System.ComponentModel.IComponent[] components) => throw null;
             public void CopyTo(System.ComponentModel.IComponent[] array, int index) => throw null;
-            public virtual System.ComponentModel.IComponent this[string name] { get => throw null; }
             public virtual System.ComponentModel.IComponent this[int index] { get => throw null; }
+            public virtual System.ComponentModel.IComponent this[string name] { get => throw null; }
         }
 
         // Generated from `System.ComponentModel.DescriptionAttribute` in `System.ComponentModel.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -74,8 +74,8 @@ namespace System
         {
             public static System.ComponentModel.DescriptionAttribute Default;
             public virtual string Description { get => throw null; }
-            public DescriptionAttribute(string description) => throw null;
             public DescriptionAttribute() => throw null;
+            public DescriptionAttribute(string description) => throw null;
             protected string DescriptionValue { get => throw null; set => throw null; }
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
@@ -98,11 +98,11 @@ namespace System
         // Generated from `System.ComponentModel.DesignerAttribute` in `System.ComponentModel.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DesignerAttribute : System.Attribute
         {
-            public DesignerAttribute(string designerTypeName, string designerBaseTypeName) => throw null;
-            public DesignerAttribute(string designerTypeName, System.Type designerBaseType) => throw null;
-            public DesignerAttribute(string designerTypeName) => throw null;
-            public DesignerAttribute(System.Type designerType, System.Type designerBaseType) => throw null;
             public DesignerAttribute(System.Type designerType) => throw null;
+            public DesignerAttribute(System.Type designerType, System.Type designerBaseType) => throw null;
+            public DesignerAttribute(string designerTypeName) => throw null;
+            public DesignerAttribute(string designerTypeName, System.Type designerBaseType) => throw null;
+            public DesignerAttribute(string designerTypeName, string designerBaseTypeName) => throw null;
             public string DesignerBaseTypeName { get => throw null; }
             public string DesignerTypeName { get => throw null; }
             public override bool Equals(object obj) => throw null;
@@ -116,8 +116,8 @@ namespace System
             public string Category { get => throw null; }
             public static System.ComponentModel.DesignerCategoryAttribute Component;
             public static System.ComponentModel.DesignerCategoryAttribute Default;
-            public DesignerCategoryAttribute(string category) => throw null;
             public DesignerCategoryAttribute() => throw null;
+            public DesignerCategoryAttribute(string category) => throw null;
             public override bool Equals(object obj) => throw null;
             public static System.ComponentModel.DesignerCategoryAttribute Form;
             public static System.ComponentModel.DesignerCategoryAttribute Generic;
@@ -153,8 +153,8 @@ namespace System
         {
             public static System.ComponentModel.DisplayNameAttribute Default;
             public virtual string DisplayName { get => throw null; }
-            public DisplayNameAttribute(string displayName) => throw null;
             public DisplayNameAttribute() => throw null;
+            public DisplayNameAttribute(string displayName) => throw null;
             protected string DisplayNameValue { get => throw null; set => throw null; }
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
@@ -164,10 +164,10 @@ namespace System
         // Generated from `System.ComponentModel.EditorAttribute` in `System.ComponentModel.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EditorAttribute : System.Attribute
         {
-            public EditorAttribute(string typeName, string baseTypeName) => throw null;
-            public EditorAttribute(string typeName, System.Type baseType) => throw null;
-            public EditorAttribute(System.Type type, System.Type baseType) => throw null;
             public EditorAttribute() => throw null;
+            public EditorAttribute(System.Type type, System.Type baseType) => throw null;
+            public EditorAttribute(string typeName, System.Type baseType) => throw null;
+            public EditorAttribute(string typeName, string baseTypeName) => throw null;
             public string EditorBaseTypeName { get => throw null; }
             public string EditorTypeName { get => throw null; }
             public override bool Equals(object obj) => throw null;
@@ -196,8 +196,8 @@ namespace System
         // Generated from `System.ComponentModel.IContainer` in `System.ComponentModel.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IContainer : System.IDisposable
         {
-            void Add(System.ComponentModel.IComponent component, string name);
             void Add(System.ComponentModel.IComponent component);
+            void Add(System.ComponentModel.IComponent component, string name);
             System.ComponentModel.ComponentCollection Components { get; }
             void Remove(System.ComponentModel.IComponent component);
         }
@@ -250,20 +250,20 @@ namespace System
         // Generated from `System.ComponentModel.InvalidAsynchronousStateException` in `System.ComponentModel.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InvalidAsynchronousStateException : System.ArgumentException
         {
-            public InvalidAsynchronousStateException(string message, System.Exception innerException) => throw null;
-            public InvalidAsynchronousStateException(string message) => throw null;
             public InvalidAsynchronousStateException() => throw null;
             protected InvalidAsynchronousStateException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public InvalidAsynchronousStateException(string message) => throw null;
+            public InvalidAsynchronousStateException(string message, System.Exception innerException) => throw null;
         }
 
         // Generated from `System.ComponentModel.InvalidEnumArgumentException` in `System.ComponentModel.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InvalidEnumArgumentException : System.ArgumentException
         {
-            public InvalidEnumArgumentException(string message, System.Exception innerException) => throw null;
-            public InvalidEnumArgumentException(string message) => throw null;
-            public InvalidEnumArgumentException(string argumentName, int invalidValue, System.Type enumClass) => throw null;
             public InvalidEnumArgumentException() => throw null;
             protected InvalidEnumArgumentException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public InvalidEnumArgumentException(string message) => throw null;
+            public InvalidEnumArgumentException(string message, System.Exception innerException) => throw null;
+            public InvalidEnumArgumentException(string argumentName, int invalidValue, System.Type enumClass) => throw null;
         }
 
         // Generated from `System.ComponentModel.LocalizableAttribute` in `System.ComponentModel.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -313,8 +313,8 @@ namespace System
             public override int GetHashCode() => throw null;
             public override bool IsDefaultAttribute() => throw null;
             public bool NeedParenthesis { get => throw null; }
-            public ParenthesizePropertyNameAttribute(bool needParenthesis) => throw null;
             public ParenthesizePropertyNameAttribute() => throw null;
+            public ParenthesizePropertyNameAttribute(bool needParenthesis) => throw null;
         }
 
         // Generated from `System.ComponentModel.ReadOnlyAttribute` in `System.ComponentModel.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -358,9 +358,9 @@ namespace System
                 // Generated from `System.ComponentModel.Design.Serialization.DesignerSerializerAttribute` in `System.ComponentModel.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class DesignerSerializerAttribute : System.Attribute
                 {
-                    public DesignerSerializerAttribute(string serializerTypeName, string baseSerializerTypeName) => throw null;
-                    public DesignerSerializerAttribute(string serializerTypeName, System.Type baseSerializerType) => throw null;
                     public DesignerSerializerAttribute(System.Type serializerType, System.Type baseSerializerType) => throw null;
+                    public DesignerSerializerAttribute(string serializerTypeName, System.Type baseSerializerType) => throw null;
+                    public DesignerSerializerAttribute(string serializerTypeName, string baseSerializerTypeName) => throw null;
                     public string SerializerBaseTypeName { get => throw null; }
                     public string SerializerTypeName { get => throw null; }
                     public override object TypeId { get => throw null; }

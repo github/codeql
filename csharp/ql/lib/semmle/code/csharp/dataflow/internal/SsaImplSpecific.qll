@@ -12,7 +12,7 @@ BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() 
 
 class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
 
-class SourceVariable = SsaImpl::TSourceVariable;
+class SourceVariable = Ssa::SourceVariable;
 
 predicate variableWrite = SsaImpl::variableWrite/4;
 

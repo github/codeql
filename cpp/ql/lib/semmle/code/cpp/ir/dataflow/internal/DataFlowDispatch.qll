@@ -2,6 +2,7 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 
 /**
@@ -62,9 +63,11 @@ private module VirtualDispatch {
         this.flowsFrom(other, allowOtherFromArg)
       |
         // Call argument
-        exists(DataFlowCall call, int i |
-          other.(DataFlow::ParameterNode).isParameterOf(call.getStaticCallTarget(), i) and
-          src.(ArgumentNode).argumentOf(call, i)
+        exists(DataFlowCall call, Position i |
+          other
+              .(DataFlow::ParameterNode)
+              .isParameterOf(pragma[only_bind_into](call).getStaticCallTarget(), i) and
+          src.(ArgumentNode).argumentOf(call, pragma[only_bind_into](pragma[only_bind_out](i)))
         ) and
         allowOtherFromArg = true and
         allowFromArg = true
@@ -113,12 +116,12 @@ private module VirtualDispatch {
   /** Holds if `addressInstr` is an instruction that produces the address of `var`. */
   private predicate addressOfGlobal(Instruction addressInstr, GlobalOrNamespaceVariable var) {
     // Access directly to the global variable
-    addressInstr.(VariableAddressInstruction).getASTVariable() = var
+    addressInstr.(VariableAddressInstruction).getAstVariable() = var
     or
     // Access to a field on a global union
     exists(FieldAddressInstruction fa |
       fa = addressInstr and
-      fa.getObjectAddress().(VariableAddressInstruction).getASTVariable() = var and
+      fa.getObjectAddress().(VariableAddressInstruction).getAstVariable() = var and
       fa.getField().getDeclaringType() instanceof Union
     )
   }
@@ -128,6 +131,7 @@ private module VirtualDispatch {
    *
    * Used to fix a join ordering issue in flowsFrom.
    */
+  pragma[noinline]
   private predicate returnNodeWithKindAndEnclosingCallable(
     ReturnNode node, ReturnKind kind, DataFlowCallable callable
   ) {
@@ -263,3 +267,7 @@ Function viableImplInCallContext(CallInstruction call, CallInstruction ctx) {
     result = ctx.getArgument(i).getUnconvertedResultExpression().(FunctionAccess).getTarget()
   )
 }
+
+/** Holds if arguments at position `apos` match parameters at position `ppos`. */
+pragma[inline]
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }

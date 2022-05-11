@@ -205,16 +205,19 @@ private class SafeDigesterFlowConfig extends DataFlow4::Configuration {
 }
 
 /** The class `java.beans.XMLDecoder`. */
-class XMLDecoder extends RefType {
-  XMLDecoder() { this.hasQualifiedName("java.beans", "XMLDecoder") }
+class XmlDecoder extends RefType {
+  XmlDecoder() { this.hasQualifiedName("java.beans", "XMLDecoder") }
 }
 
+/** DEPRECATED: Alias for XmlDecoder */
+deprecated class XMLDecoder = XmlDecoder;
+
 /** A call to `XMLDecoder.readObject`. */
-class XMLDecoderReadObject extends XmlParserCall {
-  XMLDecoderReadObject() {
+class XmlDecoderReadObject extends XmlParserCall {
+  XmlDecoderReadObject() {
     exists(Method m |
       this.getMethod() = m and
-      m.getDeclaringType() instanceof XMLDecoder and
+      m.getDeclaringType() instanceof XmlDecoder and
       m.hasName("readObject")
     )
   }
@@ -223,6 +226,9 @@ class XMLDecoderReadObject extends XmlParserCall {
 
   override predicate isSafe() { none() }
 }
+
+/** DEPRECATED: Alias for XmlDecoderReadObject */
+deprecated class XMLDecoderReadObject = XmlDecoderReadObject;
 
 private predicate constantStringExpr(Expr e, string val) {
   e.(CompileTimeConstantExpr).getStringValue() = val
@@ -235,8 +241,8 @@ private predicate constantStringExpr(Expr e, string val) {
 }
 
 /** A call to `SAXTransformerFactory.newTransformerHandler`. */
-class SAXTransformerFactoryNewTransformerHandler extends XmlParserCall {
-  SAXTransformerFactoryNewTransformerHandler() {
+class SaxTransformerFactoryNewTransformerHandler extends XmlParserCall {
+  SaxTransformerFactoryNewTransformerHandler() {
     exists(Method m |
       this.getMethod() = m and
       m.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXTransformerFactory") and
@@ -250,6 +256,10 @@ class SAXTransformerFactoryNewTransformerHandler extends XmlParserCall {
     exists(SafeTransformerFactoryFlowConfig stf | stf.hasFlowToExpr(this.getQualifier()))
   }
 }
+
+/** DEPRECATED: Alias for SaxTransformerFactoryNewTransformerHandler */
+deprecated class SAXTransformerFactoryNewTransformerHandler =
+  SaxTransformerFactoryNewTransformerHandler;
 
 /** An expression that always has the same string value. */
 private class ConstantStringExpr extends Expr {

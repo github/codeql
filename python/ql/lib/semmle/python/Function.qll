@@ -5,11 +5,11 @@ import python
  * It is the syntactic entity that is compiled to a code object.
  */
 class Function extends Function_, Scope, AstNode {
-  /** The expression defining this function */
+  /** Gets the expression defining this function */
   CallableExpr getDefinition() { result = this.getParent() }
 
   /**
-   * The scope in which this function occurs, will be a class for a method,
+   * Gets the scope in which this function occurs. This will be a class for a method,
    * another function for nested functions, generator expressions or comprehensions,
    * or a module for a plain function.
    */
@@ -18,7 +18,7 @@ class Function extends Function_, Scope, AstNode {
   override Scope getScope() { result = this.getEnclosingScope() }
 
   /** Whether this function is declared in a class */
-  predicate isMethod() { exists(Class cls | this.getEnclosingScope() = cls) }
+  predicate isMethod() { this.getEnclosingScope() instanceof Class }
 
   /** Whether this is a special method, that is does its name have the form `__xxx__` (except `__init__`) */
   predicate isSpecialMethod() {
@@ -167,24 +167,24 @@ class Function extends Function_, Scope, AstNode {
 
 /** A def statement. Note that FunctionDef extends Assign as a function definition binds the newly created function */
 class FunctionDef extends Assign {
+  FunctionExpr f;
+
   /* syntax: def name(...): ... */
   FunctionDef() {
     /* This is an artificial assignment the rhs of which is a (possibly decorated) FunctionExpr */
-    exists(FunctionExpr f | this.getValue() = f or this.getValue() = f.getADecoratorCall())
+    this.getValue() = f or this.getValue() = f.getADecoratorCall()
   }
 
   override string toString() { result = "FunctionDef" }
 
   /** Gets the function for this statement */
-  Function getDefinedFunction() {
-    exists(FunctionExpr func | this.containsInScope(func) and result = func.getInnerScope())
-  }
+  Function getDefinedFunction() { result = f.getInnerScope() }
 
   override Stmt getLastStatement() { result = this.getDefinedFunction().getLastStatement() }
 }
 
+/** A function that uses 'fast' locals, stored in the frame not in a dictionary. */
 class FastLocalsFunction extends Function {
-  /** A function that uses 'fast' locals, stored in the frame not in a dictionary. */
   FastLocalsFunction() {
     not exists(ImportStar i | i.getScope() = this) and
     not exists(Exec e | e.getScope() = this)

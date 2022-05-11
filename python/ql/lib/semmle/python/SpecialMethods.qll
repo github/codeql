@@ -8,7 +8,7 @@
  * Extend `SpecialMethod::Potential` to capture more cases.
  */
 
-import python
+private import python
 
 /** A control flow node which might correspond to a special method call. */
 class PotentialSpecialMethodCallNode extends ControlFlowNode {
@@ -107,11 +107,11 @@ class SpecialMethodCallNode extends PotentialSpecialMethodCallNode {
 
   SpecialMethodCallNode() {
     exists(SpecialMethod::Potential pot |
-      this.(SpecialMethod::Potential) = pot and
+      this = pot and
       pot.getSelf().pointsTo().getClass().lookup(pot.getSpecialMethodName()) = resolvedSpecialMethod
     )
   }
 
-  /** The method that is called. */
+  /** Gets the method that is called. */
   Value getResolvedSpecialMethod() { result = resolvedSpecialMethod }
 }

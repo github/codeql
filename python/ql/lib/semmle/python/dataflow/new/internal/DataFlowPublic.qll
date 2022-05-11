@@ -8,6 +8,7 @@ import semmle.python.dataflow.new.TypeTracker
 import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
+private import semmle.python.dataflow.new.internal.ImportStar
 
 /**
  * IPA type for data flow nodes.
@@ -24,13 +25,25 @@ newtype TNode =
   /** A node corresponding to an SSA variable. */
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
-  TCfgNode(ControlFlowNode node) { isExpressionNode(node) } or
+  TCfgNode(ControlFlowNode node) {
+    isExpressionNode(node)
+    or
+    node.getNode() instanceof Pattern
+  } or
   /** A synthetic node representing the value of an object before a state change */
   TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
   /** A synthetic node representing the value of an object after a state change. */
   TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre) or
   /** A node representing a global (module-level) variable in a specific module. */
-  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() } or
+  TModuleVariableNode(Module m, GlobalVariable v) {
+    v.getScope() = m and
+    (
+      v.escapes()
+      or
+      isAccessedThroughImportStar(m) and
+      ImportStar::globalNameDefinedInModule(v.getId(), m)
+    )
+  } or
   /**
    * A node representing the overflow positional arguments to a call.
    * That is, `call` contains more positional arguments than there are
@@ -70,7 +83,24 @@ newtype TNode =
    * A synthetic node representing that there may be an iterable element
    * for `consumer` to consume.
    */
-  TIterableElementNode(UnpackingAssignmentTarget consumer)
+  TIterableElementNode(UnpackingAssignmentTarget consumer) or
+  /**
+   * A synthetic node representing element content in a star pattern.
+   */
+  TStarPatternElementNode(MatchStarPattern target) or
+  /**
+   * INTERNAL: Do not use.
+   *
+   * A synthetic node representing the data for an ORM model saved in a DB.
+   */
+  // TODO: Limiting the classes here to the ones that are actually ORM models was
+  // non-trivial, since that logic is based on API::Node results, and trying to do this
+  // causes non-monotonic recursion, and makes the API graph evaluation recursive with
+  // data-flow, which might do bad things for performance.
+  //
+  // So for now we live with having these synthetic ORM nodes for _all_ classes, which
+  // is a bit wasteful, but we don't think it will hurt too much.
+  TSyntheticOrmModelNode(Class cls)
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -80,13 +110,19 @@ private DataFlowCallable getCallableScope(Scope s) {
   result = getCallableScope(s.getEnclosingScope())
 }
 
+private import semmle.python.internal.CachedStages
+
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
  * (`EssaNode`) or a control flow node (`CfgNode`).
  */
 class Node extends TNode {
   /** Gets a textual representation of this element. */
-  string toString() { result = "Data flow node" }
+  cached
+  string toString() {
+    Stages::DataFlow::ref() and
+    result = "Data flow node"
+  }
 
   /** Gets the scope of this node. */
   Scope getScope() { none() }
@@ -104,9 +140,11 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
+  cached
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
+    Stages::DataFlow::ref() and
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
@@ -173,7 +211,7 @@ class CallCfgNode extends CfgNode, LocalSourceNode {
    */
   Node getFunction() { result.asCfgNode() = node.getFunction() }
 
-  /** Gets the data-flow node corresponding to the i'th argument of the call corresponding to this data-flow node */
+  /** Gets the data-flow node corresponding to the i'th positional argument of the call corresponding to this data-flow node */
   Node getArg(int i) { result.asCfgNode() = node.getArg(i) }
 
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
@@ -346,6 +384,8 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
     result.asCfgNode() = var.getALoad().getAFlowNode() and
     // Ignore reads that happen when the module is imported. These are only executed once.
     not result.getScope() = mod
+    or
+    this = import_star_read(result)
   }
 
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
@@ -356,6 +396,20 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override DataFlowCallable getEnclosingCallable() { result.(DataFlowModuleScope).getScope() = mod }
 
   override Location getLocation() { result = mod.getLocation() }
+}
+
+private predicate isAccessedThroughImportStar(Module m) { m = ImportStar::getStarImported(_) }
+
+private ModuleVariableNode import_star_read(Node n) {
+  resolved_import_star_module(result.getModule(), result.getVariable().getId(), n)
+}
+
+pragma[nomagic]
+private predicate resolved_import_star_module(Module m, string name, Node n) {
+  exists(NameNode nn | nn = n.asCfgNode() |
+    ImportStar::importStarResolvesTo(pragma[only_bind_into](nn), m) and
+    nn.getId() = name
+  )
 }
 
 /**
@@ -452,6 +506,21 @@ class IterableElementNode extends Node, TIterableElementNode {
   IterableElementNode() { this = TIterableElementNode(consumer.getNode()) }
 
   override string toString() { result = "IterableElement" }
+
+  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+
+  override Location getLocation() { result = consumer.getLocation() }
+}
+
+/**
+ * A synthetic node representing element content of a star pattern.
+ */
+class StarPatternElementNode extends Node, TStarPatternElementNode {
+  CfgNode consumer;
+
+  StarPatternElementNode() { this = TStarPatternElementNode(consumer.getNode().getNode()) }
+
+  override string toString() { result = "StarPatternElement" }
 
   override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
 
@@ -580,4 +649,21 @@ class AttributeContent extends TAttributeContent, Content {
   string getAttribute() { result = attr }
 
   override string toString() { result = "Attribute " + attr }
+}
+
+/**
+ * An entity that represents a set of `Content`s.
+ *
+ * The set may be interpreted differently depending on whether it is
+ * stored into (`getAStoreContent`) or read from (`getAReadContent`).
+ */
+class ContentSet instanceof Content {
+  /** Gets a content that may be stored into when storing into this set. */
+  Content getAStoreContent() { result = this }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() { result = this }
+
+  /** Gets a textual representation of this content set. */
+  string toString() { result = super.toString() }
 }

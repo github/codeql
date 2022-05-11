@@ -3,6 +3,7 @@
 package android.view;
 
 import android.graphics.Insets;
+import android.graphics.Path;
 import android.graphics.Rect;
 import java.util.List;
 
@@ -10,8 +11,11 @@ public class DisplayCutout
 {
     protected DisplayCutout() {}
     public DisplayCutout(Insets p0, Rect p1, Rect p2, Rect p3, Rect p4){}
+    public DisplayCutout(Insets p0, Rect p1, Rect p2, Rect p3, Rect p4, Insets p5){}
     public DisplayCutout(Rect p0, List<Rect> p1){}
+    public Insets getWaterfallInsets(){ return null; }
     public List<Rect> getBoundingRects(){ return null; }
+    public Path getCutoutPath(){ return null; }
     public Rect getBoundingRectBottom(){ return null; }
     public Rect getBoundingRectLeft(){ return null; }
     public Rect getBoundingRectRight(){ return null; }

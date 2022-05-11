@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Applications encoding a JSON Web Token (JWT) may be vulnerable when the applied key or algorithm
+is empty or <code>None</code>.</p>
+</overview>
+
+<recommendation>
+<p>Use non-empty nor <code>None</code> values while encoding JWT payloads.</p>
+</recommendation>
+
+<example>
+<p>This example shows two PyJWT encoding calls.
+
+In the first place, the encoding process use a None algorithm whereas the second example uses an 
+empty key. Both examples leave the payload insecurely encoded.
+</p>
+
+<sample src="JWTEmptyKeyOrAlgorithm.py" />
+</example>
+
+<references>
+<li>PyJWT: <a href="https://pyjwt.readthedocs.io/en/stable/">Documentation</a>.</li>
+<li>Authlib JWT: <a href="https://docs.authlib.org/en/latest/specs/rfc7519.html">Documentation</a>.</li>
+<li>Python-Jose: <a href="https://github.com/mpdavis/python-jose">Documentation</a>.</li>
+<li>Auth0 Blog: <a href="https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/#Meet-the--None--Algorithm">Meet the "None" Algorithm</a>.</li>
+</references>
+</qhelp>

@@ -53,7 +53,7 @@ abstract class CallableObjectInternal extends ObjectInternal {
   override ObjectInternal getIterNext() { none() }
 }
 
-/** Class representing Python functions */
+/** A Python function. */
 class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFunctionObject {
   override Function getScope() {
     exists(CallableExpr expr |
@@ -89,7 +89,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
       origin = CfgOrigin::fromCfgNode(forigin)
     )
     or
-    procedureReturnsNone(callee, obj, origin)
+    this.procedureReturnsNone(callee, obj, origin)
   }
 
   private predicate procedureReturnsNone(
@@ -167,7 +167,7 @@ private BasicBlock blockReturningNone(Function func) {
   )
 }
 
-/** Class representing built-in functions such as `len` or `print`. */
+/** A built-in function such as `len` or `print`. */
 class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunctionObject {
   override Builtin getBuiltin() { this = TBuiltinFunctionObject(result) }
 
@@ -290,7 +290,7 @@ private Builtin getBuiltinFunctionReturnType(Builtin func) {
   )
 }
 
-/** Class representing methods of built-in classes (otherwise known as method-descriptors) such as `list.append`. */
+/** A method of a built-in class (otherwise known as method-descriptors) such as `list.append`. */
 class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethodObject {
   override Builtin getBuiltin() { this = TBuiltinMethodObject(result) }
 
@@ -380,9 +380,9 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
 }
 
 /**
- * Class representing bound-methods.
+ * A bound-method.
  * Note that built-in methods, such as `[].append` are also represented as bound-methods.
- * Although built-in methods and bound-methods are distinct classes in CPython, their behaviour
+ * Although built-in methods and bound-methods are distinct classes in CPython, their behavior
  * is the same and we treat them identically.
  */
 class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {

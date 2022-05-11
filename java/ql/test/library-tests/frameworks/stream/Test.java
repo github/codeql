@@ -436,7 +436,7 @@ public class Test {
                     sink(y); // $ hasValueFlow=reduce_3 hasValueFlow=reduce_4 hasValueFlow=reduce_5
                     return source("reduce_5");
                 });
-            sink(out); // $ hasValueFlow=reduce_4 hasValueFlow=reduce_5 SPURIOUS: hasValueFlow=reduce_3
+            sink(out); // $ hasValueFlow=reduce_4 hasValueFlow=reduce_5
         }
         {
             // "java.util.stream;Stream;true;reduce;(Object,BiFunction,BinaryOperator);;Argument[0];ReturnValue;value"

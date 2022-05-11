@@ -106,16 +106,11 @@ module Restify {
         methodName = "getPath"
       )
       or
-      exists(string methodName |
-        // `request.getContentType()`, `request.userAgent()`, `request.trailer(...)`, `request.header(...)`
-        kind = "header" and
-        this.asExpr().(MethodCallExpr).calls(request, methodName)
-      |
-        methodName = "getContentType" or
-        methodName = "userAgent" or
-        methodName = "trailer" or
-        methodName = "header"
-      )
+      // `request.getContentType()`, `request.userAgent()`, `request.trailer(...)`, `request.header(...)`
+      kind = "header" and
+      this.asExpr()
+          .(MethodCallExpr)
+          .calls(request, ["getContentType", "userAgent", "trailer", "header"])
       or
       // `req.cookies
       kind = "cookie" and

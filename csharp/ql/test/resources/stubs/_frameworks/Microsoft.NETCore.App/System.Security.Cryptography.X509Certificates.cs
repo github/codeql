@@ -29,18 +29,18 @@ namespace System
                 public class CertificateRequest
                 {
                     public System.Collections.ObjectModel.Collection<System.Security.Cryptography.X509Certificates.X509Extension> CertificateExtensions { get => throw null; }
-                    public CertificateRequest(string subjectName, System.Security.Cryptography.RSA key, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.Security.Cryptography.RSASignaturePadding padding) => throw null;
-                    public CertificateRequest(string subjectName, System.Security.Cryptography.ECDsa key, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
+                    public CertificateRequest(System.Security.Cryptography.X509Certificates.X500DistinguishedName subjectName, System.Security.Cryptography.ECDsa key, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
                     public CertificateRequest(System.Security.Cryptography.X509Certificates.X500DistinguishedName subjectName, System.Security.Cryptography.X509Certificates.PublicKey publicKey, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
                     public CertificateRequest(System.Security.Cryptography.X509Certificates.X500DistinguishedName subjectName, System.Security.Cryptography.RSA key, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.Security.Cryptography.RSASignaturePadding padding) => throw null;
-                    public CertificateRequest(System.Security.Cryptography.X509Certificates.X500DistinguishedName subjectName, System.Security.Cryptography.ECDsa key, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
-                    public System.Security.Cryptography.X509Certificates.X509Certificate2 Create(System.Security.Cryptography.X509Certificates.X509Certificate2 issuerCertificate, System.DateTimeOffset notBefore, System.DateTimeOffset notAfter, System.ReadOnlySpan<System.Byte> serialNumber) => throw null;
-                    public System.Security.Cryptography.X509Certificates.X509Certificate2 Create(System.Security.Cryptography.X509Certificates.X509Certificate2 issuerCertificate, System.DateTimeOffset notBefore, System.DateTimeOffset notAfter, System.Byte[] serialNumber) => throw null;
-                    public System.Security.Cryptography.X509Certificates.X509Certificate2 Create(System.Security.Cryptography.X509Certificates.X500DistinguishedName issuerName, System.Security.Cryptography.X509Certificates.X509SignatureGenerator generator, System.DateTimeOffset notBefore, System.DateTimeOffset notAfter, System.ReadOnlySpan<System.Byte> serialNumber) => throw null;
+                    public CertificateRequest(string subjectName, System.Security.Cryptography.ECDsa key, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
+                    public CertificateRequest(string subjectName, System.Security.Cryptography.RSA key, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.Security.Cryptography.RSASignaturePadding padding) => throw null;
                     public System.Security.Cryptography.X509Certificates.X509Certificate2 Create(System.Security.Cryptography.X509Certificates.X500DistinguishedName issuerName, System.Security.Cryptography.X509Certificates.X509SignatureGenerator generator, System.DateTimeOffset notBefore, System.DateTimeOffset notAfter, System.Byte[] serialNumber) => throw null;
+                    public System.Security.Cryptography.X509Certificates.X509Certificate2 Create(System.Security.Cryptography.X509Certificates.X500DistinguishedName issuerName, System.Security.Cryptography.X509Certificates.X509SignatureGenerator generator, System.DateTimeOffset notBefore, System.DateTimeOffset notAfter, System.ReadOnlySpan<System.Byte> serialNumber) => throw null;
+                    public System.Security.Cryptography.X509Certificates.X509Certificate2 Create(System.Security.Cryptography.X509Certificates.X509Certificate2 issuerCertificate, System.DateTimeOffset notBefore, System.DateTimeOffset notAfter, System.Byte[] serialNumber) => throw null;
+                    public System.Security.Cryptography.X509Certificates.X509Certificate2 Create(System.Security.Cryptography.X509Certificates.X509Certificate2 issuerCertificate, System.DateTimeOffset notBefore, System.DateTimeOffset notAfter, System.ReadOnlySpan<System.Byte> serialNumber) => throw null;
                     public System.Security.Cryptography.X509Certificates.X509Certificate2 CreateSelfSigned(System.DateTimeOffset notBefore, System.DateTimeOffset notAfter) => throw null;
-                    public System.Byte[] CreateSigningRequest(System.Security.Cryptography.X509Certificates.X509SignatureGenerator signatureGenerator) => throw null;
                     public System.Byte[] CreateSigningRequest() => throw null;
+                    public System.Byte[] CreateSigningRequest(System.Security.Cryptography.X509Certificates.X509SignatureGenerator signatureGenerator) => throw null;
                     public System.Security.Cryptography.HashAlgorithmName HashAlgorithm { get => throw null; }
                     public System.Security.Cryptography.X509Certificates.PublicKey PublicKey { get => throw null; }
                     public System.Security.Cryptography.X509Certificates.X500DistinguishedName SubjectName { get => throw null; }
@@ -129,12 +129,12 @@ namespace System
                     public string Decode(System.Security.Cryptography.X509Certificates.X500DistinguishedNameFlags flag) => throw null;
                     public override string Format(bool multiLine) => throw null;
                     public string Name { get => throw null; }
-                    public X500DistinguishedName(string distinguishedName, System.Security.Cryptography.X509Certificates.X500DistinguishedNameFlags flag) => throw null;
-                    public X500DistinguishedName(string distinguishedName) => throw null;
-                    public X500DistinguishedName(System.Security.Cryptography.X509Certificates.X500DistinguishedName distinguishedName) => throw null;
                     public X500DistinguishedName(System.Security.Cryptography.AsnEncodedData encodedDistinguishedName) => throw null;
-                    public X500DistinguishedName(System.ReadOnlySpan<System.Byte> encodedDistinguishedName) => throw null;
                     public X500DistinguishedName(System.Byte[] encodedDistinguishedName) => throw null;
+                    public X500DistinguishedName(System.ReadOnlySpan<System.Byte> encodedDistinguishedName) => throw null;
+                    public X500DistinguishedName(System.Security.Cryptography.X509Certificates.X500DistinguishedName distinguishedName) => throw null;
+                    public X500DistinguishedName(string distinguishedName) => throw null;
+                    public X500DistinguishedName(string distinguishedName, System.Security.Cryptography.X509Certificates.X500DistinguishedNameFlags flag) => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X500DistinguishedNameFlags` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -160,13 +160,13 @@ namespace System
                     public override void CopyFrom(System.Security.Cryptography.AsnEncodedData asnEncodedData) => throw null;
                     public bool HasPathLengthConstraint { get => throw null; }
                     public int PathLengthConstraint { get => throw null; }
-                    public X509BasicConstraintsExtension(bool certificateAuthority, bool hasPathLengthConstraint, int pathLengthConstraint, bool critical) => throw null;
-                    public X509BasicConstraintsExtension(System.Security.Cryptography.AsnEncodedData encodedBasicConstraints, bool critical) => throw null;
                     public X509BasicConstraintsExtension() => throw null;
+                    public X509BasicConstraintsExtension(System.Security.Cryptography.AsnEncodedData encodedBasicConstraints, bool critical) => throw null;
+                    public X509BasicConstraintsExtension(bool certificateAuthority, bool hasPathLengthConstraint, int pathLengthConstraint, bool critical) => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509Certificate` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public class X509Certificate : System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback, System.IDisposable
+                public class X509Certificate : System.IDisposable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
                 {
                     public static System.Security.Cryptography.X509Certificates.X509Certificate CreateFromCertFile(string filename) => throw null;
                     public static System.Security.Cryptography.X509Certificates.X509Certificate CreateFromSignedFile(string filename) => throw null;
@@ -174,14 +174,14 @@ namespace System
                     protected virtual void Dispose(bool disposing) => throw null;
                     public virtual bool Equals(System.Security.Cryptography.X509Certificates.X509Certificate other) => throw null;
                     public override bool Equals(object obj) => throw null;
-                    public virtual System.Byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType, string password) => throw null;
-                    public virtual System.Byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType, System.Security.SecureString password) => throw null;
                     public virtual System.Byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType) => throw null;
+                    public virtual System.Byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType, System.Security.SecureString password) => throw null;
+                    public virtual System.Byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType, string password) => throw null;
                     protected static string FormatDate(System.DateTime date) => throw null;
-                    public virtual System.Byte[] GetCertHash(System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
                     public virtual System.Byte[] GetCertHash() => throw null;
-                    public virtual string GetCertHashString(System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
+                    public virtual System.Byte[] GetCertHash(System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
                     public virtual string GetCertHashString() => throw null;
+                    public virtual string GetCertHashString(System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
                     public virtual string GetEffectiveDateString() => throw null;
                     public virtual string GetExpirationDateString() => throw null;
                     public virtual string GetFormat() => throw null;
@@ -199,33 +199,33 @@ namespace System
                     public virtual System.Byte[] GetSerialNumber() => throw null;
                     public virtual string GetSerialNumberString() => throw null;
                     public System.IntPtr Handle { get => throw null; }
-                    public virtual void Import(string fileName, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public virtual void Import(string fileName, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public virtual void Import(string fileName) => throw null;
-                    public virtual void Import(System.Byte[] rawData, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public virtual void Import(System.Byte[] rawData, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
                     public virtual void Import(System.Byte[] rawData) => throw null;
+                    public virtual void Import(System.Byte[] rawData, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
+                    public virtual void Import(System.Byte[] rawData, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
+                    public virtual void Import(string fileName) => throw null;
+                    public virtual void Import(string fileName, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
+                    public virtual void Import(string fileName, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
                     public string Issuer { get => throw null; }
                     void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) => throw null;
                     public virtual void Reset() => throw null;
                     public string Subject { get => throw null; }
-                    public virtual string ToString(bool fVerbose) => throw null;
                     public override string ToString() => throw null;
+                    public virtual string ToString(bool fVerbose) => throw null;
                     public virtual bool TryGetCertHash(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
-                    public X509Certificate(string fileName, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public X509Certificate(string fileName, string password) => throw null;
-                    public X509Certificate(string fileName, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public X509Certificate(string fileName, System.Security.SecureString password) => throw null;
-                    public X509Certificate(string fileName) => throw null;
-                    public X509Certificate(System.Security.Cryptography.X509Certificates.X509Certificate cert) => throw null;
-                    public X509Certificate(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
-                    public X509Certificate(System.IntPtr handle) => throw null;
-                    public X509Certificate(System.Byte[] rawData, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public X509Certificate(System.Byte[] rawData, string password) => throw null;
-                    public X509Certificate(System.Byte[] rawData, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public X509Certificate(System.Byte[] rawData, System.Security.SecureString password) => throw null;
-                    public X509Certificate(System.Byte[] data) => throw null;
                     public X509Certificate() => throw null;
+                    public X509Certificate(System.Byte[] data) => throw null;
+                    public X509Certificate(System.Byte[] rawData, System.Security.SecureString password) => throw null;
+                    public X509Certificate(System.Byte[] rawData, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
+                    public X509Certificate(System.Byte[] rawData, string password) => throw null;
+                    public X509Certificate(System.Byte[] rawData, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
+                    public X509Certificate(System.IntPtr handle) => throw null;
+                    public X509Certificate(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                    public X509Certificate(System.Security.Cryptography.X509Certificates.X509Certificate cert) => throw null;
+                    public X509Certificate(string fileName) => throw null;
+                    public X509Certificate(string fileName, System.Security.SecureString password) => throw null;
+                    public X509Certificate(string fileName, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
+                    public X509Certificate(string fileName, string password) => throw null;
+                    public X509Certificate(string fileName, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509Certificate2` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -238,17 +238,17 @@ namespace System
                     public static System.Security.Cryptography.X509Certificates.X509Certificate2 CreateFromPemFile(string certPemFilePath, string keyPemFilePath = default(string)) => throw null;
                     public System.Security.Cryptography.X509Certificates.X509ExtensionCollection Extensions { get => throw null; }
                     public string FriendlyName { get => throw null; set => throw null; }
-                    public static System.Security.Cryptography.X509Certificates.X509ContentType GetCertContentType(string fileName) => throw null;
-                    public static System.Security.Cryptography.X509Certificates.X509ContentType GetCertContentType(System.ReadOnlySpan<System.Byte> rawData) => throw null;
                     public static System.Security.Cryptography.X509Certificates.X509ContentType GetCertContentType(System.Byte[] rawData) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509ContentType GetCertContentType(System.ReadOnlySpan<System.Byte> rawData) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509ContentType GetCertContentType(string fileName) => throw null;
                     public string GetNameInfo(System.Security.Cryptography.X509Certificates.X509NameType nameType, bool forIssuer) => throw null;
                     public bool HasPrivateKey { get => throw null; }
-                    public override void Import(string fileName, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public override void Import(string fileName, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public override void Import(string fileName) => throw null;
-                    public override void Import(System.Byte[] rawData, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public override void Import(System.Byte[] rawData, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
                     public override void Import(System.Byte[] rawData) => throw null;
+                    public override void Import(System.Byte[] rawData, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
+                    public override void Import(System.Byte[] rawData, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
+                    public override void Import(string fileName) => throw null;
+                    public override void Import(string fileName, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
+                    public override void Import(string fileName, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
                     public System.Security.Cryptography.X509Certificates.X500DistinguishedName IssuerName { get => throw null; }
                     public System.DateTime NotAfter { get => throw null; }
                     public System.DateTime NotBefore { get => throw null; }
@@ -260,59 +260,59 @@ namespace System
                     public System.Security.Cryptography.Oid SignatureAlgorithm { get => throw null; }
                     public System.Security.Cryptography.X509Certificates.X500DistinguishedName SubjectName { get => throw null; }
                     public string Thumbprint { get => throw null; }
-                    public override string ToString(bool verbose) => throw null;
                     public override string ToString() => throw null;
+                    public override string ToString(bool verbose) => throw null;
                     public bool Verify() => throw null;
                     public int Version { get => throw null; }
-                    public X509Certificate2(string fileName, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public X509Certificate2(string fileName, string password) => throw null;
-                    public X509Certificate2(string fileName, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public X509Certificate2(string fileName, System.Security.SecureString password) => throw null;
-                    public X509Certificate2(string fileName, System.ReadOnlySpan<System.Char> password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
-                    public X509Certificate2(string fileName) => throw null;
-                    public X509Certificate2(System.Security.Cryptography.X509Certificates.X509Certificate certificate) => throw null;
-                    public X509Certificate2(System.ReadOnlySpan<System.Byte> rawData, System.ReadOnlySpan<System.Char> password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
-                    public X509Certificate2(System.ReadOnlySpan<System.Byte> rawData) => throw null;
-                    public X509Certificate2(System.IntPtr handle) => throw null;
-                    public X509Certificate2(System.Byte[] rawData, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public X509Certificate2(System.Byte[] rawData, string password) => throw null;
-                    public X509Certificate2(System.Byte[] rawData, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
-                    public X509Certificate2(System.Byte[] rawData, System.Security.SecureString password) => throw null;
-                    public X509Certificate2(System.Byte[] rawData) => throw null;
                     public X509Certificate2() => throw null;
+                    public X509Certificate2(System.Byte[] rawData) => throw null;
+                    public X509Certificate2(System.Byte[] rawData, System.Security.SecureString password) => throw null;
+                    public X509Certificate2(System.Byte[] rawData, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
+                    public X509Certificate2(System.Byte[] rawData, string password) => throw null;
+                    public X509Certificate2(System.Byte[] rawData, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
+                    public X509Certificate2(System.IntPtr handle) => throw null;
+                    public X509Certificate2(System.ReadOnlySpan<System.Byte> rawData) => throw null;
+                    public X509Certificate2(System.ReadOnlySpan<System.Byte> rawData, System.ReadOnlySpan<System.Char> password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
                     protected X509Certificate2(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                    public X509Certificate2(System.Security.Cryptography.X509Certificates.X509Certificate certificate) => throw null;
+                    public X509Certificate2(string fileName) => throw null;
+                    public X509Certificate2(string fileName, System.ReadOnlySpan<System.Char> password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
+                    public X509Certificate2(string fileName, System.Security.SecureString password) => throw null;
+                    public X509Certificate2(string fileName, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
+                    public X509Certificate2(string fileName, string password) => throw null;
+                    public X509Certificate2(string fileName, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509Certificate2Collection` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class X509Certificate2Collection : System.Security.Cryptography.X509Certificates.X509CertificateCollection
                 {
                     public int Add(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) => throw null;
-                    public void AddRange(System.Security.Cryptography.X509Certificates.X509Certificate2[] certificates) => throw null;
                     public void AddRange(System.Security.Cryptography.X509Certificates.X509Certificate2Collection certificates) => throw null;
+                    public void AddRange(System.Security.Cryptography.X509Certificates.X509Certificate2[] certificates) => throw null;
                     public bool Contains(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) => throw null;
-                    public System.Byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType, string password) => throw null;
                     public System.Byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType) => throw null;
+                    public System.Byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType, string password) => throw null;
                     public System.Security.Cryptography.X509Certificates.X509Certificate2Collection Find(System.Security.Cryptography.X509Certificates.X509FindType findType, object findValue, bool validOnly) => throw null;
                     public System.Security.Cryptography.X509Certificates.X509Certificate2Enumerator GetEnumerator() => throw null;
-                    public void Import(string fileName, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
-                    public void Import(string fileName, System.ReadOnlySpan<System.Char> password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
-                    public void Import(string fileName) => throw null;
-                    public void Import(System.ReadOnlySpan<System.Byte> rawData, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
-                    public void Import(System.ReadOnlySpan<System.Byte> rawData, System.ReadOnlySpan<System.Char> password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
-                    public void Import(System.ReadOnlySpan<System.Byte> rawData) => throw null;
-                    public void Import(System.Byte[] rawData, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
                     public void Import(System.Byte[] rawData) => throw null;
+                    public void Import(System.Byte[] rawData, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
+                    public void Import(System.ReadOnlySpan<System.Byte> rawData) => throw null;
+                    public void Import(System.ReadOnlySpan<System.Byte> rawData, System.ReadOnlySpan<System.Char> password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
+                    public void Import(System.ReadOnlySpan<System.Byte> rawData, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
+                    public void Import(string fileName) => throw null;
+                    public void Import(string fileName, System.ReadOnlySpan<System.Char> password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
+                    public void Import(string fileName, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)) => throw null;
                     public void ImportFromPem(System.ReadOnlySpan<System.Char> certPem) => throw null;
                     public void ImportFromPemFile(string certPemFilePath) => throw null;
                     public void Insert(int index, System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) => throw null;
                     public System.Security.Cryptography.X509Certificates.X509Certificate2 this[int index] { get => throw null; set => throw null; }
                     public void Remove(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) => throw null;
-                    public void RemoveRange(System.Security.Cryptography.X509Certificates.X509Certificate2[] certificates) => throw null;
                     public void RemoveRange(System.Security.Cryptography.X509Certificates.X509Certificate2Collection certificates) => throw null;
-                    public X509Certificate2Collection(System.Security.Cryptography.X509Certificates.X509Certificate2[] certificates) => throw null;
-                    public X509Certificate2Collection(System.Security.Cryptography.X509Certificates.X509Certificate2Collection certificates) => throw null;
-                    public X509Certificate2Collection(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) => throw null;
+                    public void RemoveRange(System.Security.Cryptography.X509Certificates.X509Certificate2[] certificates) => throw null;
                     public X509Certificate2Collection() => throw null;
+                    public X509Certificate2Collection(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) => throw null;
+                    public X509Certificate2Collection(System.Security.Cryptography.X509Certificates.X509Certificate2Collection certificates) => throw null;
+                    public X509Certificate2Collection(System.Security.Cryptography.X509Certificates.X509Certificate2[] certificates) => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509Certificate2Enumerator` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -322,16 +322,29 @@ namespace System
                     object System.Collections.IEnumerator.Current { get => throw null; }
                     public bool MoveNext() => throw null;
                     bool System.Collections.IEnumerator.MoveNext() => throw null;
-                    void System.Collections.IEnumerator.Reset() => throw null;
                     public void Reset() => throw null;
+                    void System.Collections.IEnumerator.Reset() => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509CertificateCollection` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class X509CertificateCollection : System.Collections.CollectionBase
                 {
+                    // Generated from `System.Security.Cryptography.X509Certificates.X509CertificateCollection+X509CertificateEnumerator` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                    public class X509CertificateEnumerator : System.Collections.IEnumerator
+                    {
+                        public System.Security.Cryptography.X509Certificates.X509Certificate Current { get => throw null; }
+                        object System.Collections.IEnumerator.Current { get => throw null; }
+                        public bool MoveNext() => throw null;
+                        bool System.Collections.IEnumerator.MoveNext() => throw null;
+                        public void Reset() => throw null;
+                        void System.Collections.IEnumerator.Reset() => throw null;
+                        public X509CertificateEnumerator(System.Security.Cryptography.X509Certificates.X509CertificateCollection mappings) => throw null;
+                    }
+
+
                     public int Add(System.Security.Cryptography.X509Certificates.X509Certificate value) => throw null;
-                    public void AddRange(System.Security.Cryptography.X509Certificates.X509Certificate[] value) => throw null;
                     public void AddRange(System.Security.Cryptography.X509Certificates.X509CertificateCollection value) => throw null;
+                    public void AddRange(System.Security.Cryptography.X509Certificates.X509Certificate[] value) => throw null;
                     public bool Contains(System.Security.Cryptography.X509Certificates.X509Certificate value) => throw null;
                     public void CopyTo(System.Security.Cryptography.X509Certificates.X509Certificate[] array, int index) => throw null;
                     public System.Security.Cryptography.X509Certificates.X509CertificateCollection.X509CertificateEnumerator GetEnumerator() => throw null;
@@ -341,22 +354,9 @@ namespace System
                     public System.Security.Cryptography.X509Certificates.X509Certificate this[int index] { get => throw null; set => throw null; }
                     protected override void OnValidate(object value) => throw null;
                     public void Remove(System.Security.Cryptography.X509Certificates.X509Certificate value) => throw null;
-                    public X509CertificateCollection(System.Security.Cryptography.X509Certificates.X509Certificate[] value) => throw null;
-                    public X509CertificateCollection(System.Security.Cryptography.X509Certificates.X509CertificateCollection value) => throw null;
                     public X509CertificateCollection() => throw null;
-                    // Generated from `System.Security.Cryptography.X509Certificates.X509CertificateCollection+X509CertificateEnumerator` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                    public class X509CertificateEnumerator : System.Collections.IEnumerator
-                    {
-                        public System.Security.Cryptography.X509Certificates.X509Certificate Current { get => throw null; }
-                        object System.Collections.IEnumerator.Current { get => throw null; }
-                        public bool MoveNext() => throw null;
-                        bool System.Collections.IEnumerator.MoveNext() => throw null;
-                        void System.Collections.IEnumerator.Reset() => throw null;
-                        public void Reset() => throw null;
-                        public X509CertificateEnumerator(System.Security.Cryptography.X509Certificates.X509CertificateCollection mappings) => throw null;
-                    }
-
-
+                    public X509CertificateCollection(System.Security.Cryptography.X509Certificates.X509CertificateCollection value) => throw null;
+                    public X509CertificateCollection(System.Security.Cryptography.X509Certificates.X509Certificate[] value) => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509Chain` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -372,9 +372,9 @@ namespace System
                     protected virtual void Dispose(bool disposing) => throw null;
                     public void Reset() => throw null;
                     public Microsoft.Win32.SafeHandles.SafeX509ChainHandle SafeHandle { get => throw null; }
-                    public X509Chain(bool useMachineContext) => throw null;
-                    public X509Chain(System.IntPtr chainContext) => throw null;
                     public X509Chain() => throw null;
+                    public X509Chain(System.IntPtr chainContext) => throw null;
+                    public X509Chain(bool useMachineContext) => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509ChainElement` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -386,7 +386,7 @@ namespace System
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509ChainElementCollection` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public class X509ChainElementCollection : System.Collections.IEnumerable, System.Collections.ICollection
+                public class X509ChainElementCollection : System.Collections.ICollection, System.Collections.IEnumerable
                 {
                     void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                     public void CopyTo(System.Security.Cryptography.X509Certificates.X509ChainElement[] array, int index) => throw null;
@@ -490,9 +490,9 @@ namespace System
                 {
                     public override void CopyFrom(System.Security.Cryptography.AsnEncodedData asnEncodedData) => throw null;
                     public System.Security.Cryptography.OidCollection EnhancedKeyUsages { get => throw null; }
-                    public X509EnhancedKeyUsageExtension(System.Security.Cryptography.OidCollection enhancedKeyUsages, bool critical) => throw null;
-                    public X509EnhancedKeyUsageExtension(System.Security.Cryptography.AsnEncodedData encodedEnhancedKeyUsages, bool critical) => throw null;
                     public X509EnhancedKeyUsageExtension() => throw null;
+                    public X509EnhancedKeyUsageExtension(System.Security.Cryptography.AsnEncodedData encodedEnhancedKeyUsages, bool critical) => throw null;
+                    public X509EnhancedKeyUsageExtension(System.Security.Cryptography.OidCollection enhancedKeyUsages, bool critical) => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509Extension` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -500,16 +500,16 @@ namespace System
                 {
                     public override void CopyFrom(System.Security.Cryptography.AsnEncodedData asnEncodedData) => throw null;
                     public bool Critical { get => throw null; set => throw null; }
-                    public X509Extension(string oid, System.ReadOnlySpan<System.Byte> rawData, bool critical) => throw null;
-                    public X509Extension(string oid, System.Byte[] rawData, bool critical) => throw null;
-                    public X509Extension(System.Security.Cryptography.Oid oid, System.ReadOnlySpan<System.Byte> rawData, bool critical) => throw null;
-                    public X509Extension(System.Security.Cryptography.Oid oid, System.Byte[] rawData, bool critical) => throw null;
-                    public X509Extension(System.Security.Cryptography.AsnEncodedData encodedExtension, bool critical) => throw null;
                     protected X509Extension() => throw null;
+                    public X509Extension(System.Security.Cryptography.AsnEncodedData encodedExtension, bool critical) => throw null;
+                    public X509Extension(System.Security.Cryptography.Oid oid, System.Byte[] rawData, bool critical) => throw null;
+                    public X509Extension(System.Security.Cryptography.Oid oid, System.ReadOnlySpan<System.Byte> rawData, bool critical) => throw null;
+                    public X509Extension(string oid, System.Byte[] rawData, bool critical) => throw null;
+                    public X509Extension(string oid, System.ReadOnlySpan<System.Byte> rawData, bool critical) => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509ExtensionCollection` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public class X509ExtensionCollection : System.Collections.IEnumerable, System.Collections.ICollection
+                public class X509ExtensionCollection : System.Collections.ICollection, System.Collections.IEnumerable
                 {
                     public int Add(System.Security.Cryptography.X509Certificates.X509Extension extension) => throw null;
                     void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
@@ -518,8 +518,8 @@ namespace System
                     public System.Security.Cryptography.X509Certificates.X509ExtensionEnumerator GetEnumerator() => throw null;
                     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                     public bool IsSynchronized { get => throw null; }
-                    public System.Security.Cryptography.X509Certificates.X509Extension this[string oid] { get => throw null; }
                     public System.Security.Cryptography.X509Certificates.X509Extension this[int index] { get => throw null; }
+                    public System.Security.Cryptography.X509Certificates.X509Extension this[string oid] { get => throw null; }
                     public object SyncRoot { get => throw null; }
                     public X509ExtensionCollection() => throw null;
                 }
@@ -580,9 +580,9 @@ namespace System
                 {
                     public override void CopyFrom(System.Security.Cryptography.AsnEncodedData asnEncodedData) => throw null;
                     public System.Security.Cryptography.X509Certificates.X509KeyUsageFlags KeyUsages { get => throw null; }
-                    public X509KeyUsageExtension(System.Security.Cryptography.X509Certificates.X509KeyUsageFlags keyUsages, bool critical) => throw null;
-                    public X509KeyUsageExtension(System.Security.Cryptography.AsnEncodedData encodedKeyUsage, bool critical) => throw null;
                     public X509KeyUsageExtension() => throw null;
+                    public X509KeyUsageExtension(System.Security.Cryptography.AsnEncodedData encodedKeyUsage, bool critical) => throw null;
+                    public X509KeyUsageExtension(System.Security.Cryptography.X509Certificates.X509KeyUsageFlags keyUsages, bool critical) => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509KeyUsageFlags` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -655,15 +655,15 @@ namespace System
                     public void Remove(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) => throw null;
                     public void RemoveRange(System.Security.Cryptography.X509Certificates.X509Certificate2Collection certificates) => throw null;
                     public System.IntPtr StoreHandle { get => throw null; }
-                    public X509Store(string storeName, System.Security.Cryptography.X509Certificates.StoreLocation storeLocation, System.Security.Cryptography.X509Certificates.OpenFlags flags) => throw null;
-                    public X509Store(string storeName, System.Security.Cryptography.X509Certificates.StoreLocation storeLocation) => throw null;
-                    public X509Store(string storeName) => throw null;
-                    public X509Store(System.Security.Cryptography.X509Certificates.StoreName storeName, System.Security.Cryptography.X509Certificates.StoreLocation storeLocation, System.Security.Cryptography.X509Certificates.OpenFlags flags) => throw null;
-                    public X509Store(System.Security.Cryptography.X509Certificates.StoreName storeName, System.Security.Cryptography.X509Certificates.StoreLocation storeLocation) => throw null;
-                    public X509Store(System.Security.Cryptography.X509Certificates.StoreName storeName) => throw null;
-                    public X509Store(System.Security.Cryptography.X509Certificates.StoreLocation storeLocation) => throw null;
-                    public X509Store(System.IntPtr storeHandle) => throw null;
                     public X509Store() => throw null;
+                    public X509Store(System.IntPtr storeHandle) => throw null;
+                    public X509Store(System.Security.Cryptography.X509Certificates.StoreLocation storeLocation) => throw null;
+                    public X509Store(System.Security.Cryptography.X509Certificates.StoreName storeName) => throw null;
+                    public X509Store(System.Security.Cryptography.X509Certificates.StoreName storeName, System.Security.Cryptography.X509Certificates.StoreLocation storeLocation) => throw null;
+                    public X509Store(System.Security.Cryptography.X509Certificates.StoreName storeName, System.Security.Cryptography.X509Certificates.StoreLocation storeLocation, System.Security.Cryptography.X509Certificates.OpenFlags flags) => throw null;
+                    public X509Store(string storeName) => throw null;
+                    public X509Store(string storeName, System.Security.Cryptography.X509Certificates.StoreLocation storeLocation) => throw null;
+                    public X509Store(string storeName, System.Security.Cryptography.X509Certificates.StoreLocation storeLocation, System.Security.Cryptography.X509Certificates.OpenFlags flags) => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -671,13 +671,13 @@ namespace System
                 {
                     public override void CopyFrom(System.Security.Cryptography.AsnEncodedData asnEncodedData) => throw null;
                     public string SubjectKeyIdentifier { get => throw null; }
-                    public X509SubjectKeyIdentifierExtension(string subjectKeyIdentifier, bool critical) => throw null;
-                    public X509SubjectKeyIdentifierExtension(System.Security.Cryptography.X509Certificates.PublicKey key, bool critical) => throw null;
-                    public X509SubjectKeyIdentifierExtension(System.Security.Cryptography.X509Certificates.PublicKey key, System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierHashAlgorithm algorithm, bool critical) => throw null;
-                    public X509SubjectKeyIdentifierExtension(System.Security.Cryptography.AsnEncodedData encodedSubjectKeyIdentifier, bool critical) => throw null;
-                    public X509SubjectKeyIdentifierExtension(System.ReadOnlySpan<System.Byte> subjectKeyIdentifier, bool critical) => throw null;
-                    public X509SubjectKeyIdentifierExtension(System.Byte[] subjectKeyIdentifier, bool critical) => throw null;
                     public X509SubjectKeyIdentifierExtension() => throw null;
+                    public X509SubjectKeyIdentifierExtension(System.Security.Cryptography.AsnEncodedData encodedSubjectKeyIdentifier, bool critical) => throw null;
+                    public X509SubjectKeyIdentifierExtension(System.Byte[] subjectKeyIdentifier, bool critical) => throw null;
+                    public X509SubjectKeyIdentifierExtension(System.Security.Cryptography.X509Certificates.PublicKey key, System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierHashAlgorithm algorithm, bool critical) => throw null;
+                    public X509SubjectKeyIdentifierExtension(System.Security.Cryptography.X509Certificates.PublicKey key, bool critical) => throw null;
+                    public X509SubjectKeyIdentifierExtension(System.ReadOnlySpan<System.Byte> subjectKeyIdentifier, bool critical) => throw null;
+                    public X509SubjectKeyIdentifierExtension(string subjectKeyIdentifier, bool critical) => throw null;
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierHashAlgorithm` in `System.Security.Cryptography.X509Certificates, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

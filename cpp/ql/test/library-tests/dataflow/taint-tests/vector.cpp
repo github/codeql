@@ -49,22 +49,22 @@ void test_element_taint(int x) {
 	sink(v1.back());
 
 	v2[0] = source();
-	sink(v2); // $ ast MISSING: ir
-	sink(v2[0]); // $ ast MISSING: ir
-	sink(v2[1]); // $ SPURIOUS: ast
-	sink(v2[x]); // $ ast MISSING: ir
+	sink(v2); // $ ast,ir
+	sink(v2[0]); // $ ast,ir
+	sink(v2[1]); // $ SPURIOUS: ast,ir
+	sink(v2[x]); // $ ast,ir
 
 	v3 = v2;
-	sink(v3); // $ ast MISSING: ir
-	sink(v3[0]); // $ ast MISSING: ir
-	sink(v3[1]); // $ SPURIOUS: ast
-	sink(v3[x]); // $ ast MISSING: ir
+	sink(v3); // $ ast,ir
+	sink(v3[0]); // $ ast,ir
+	sink(v3[1]); // $ SPURIOUS: ast,ir
+	sink(v3[x]); // $ ast,ir
 
 	v4[x] = source();
-	sink(v4); // $ ast MISSING: ir
-	sink(v4[0]); // $ ast MISSING: ir
-	sink(v4[1]); // $ ast MISSING: ir
-	sink(v4[x]); // $ ast MISSING: ir
+	sink(v4); // $ ast,ir
+	sink(v4[0]); // $ ast,ir
+	sink(v4[1]); // $ ast,ir
+	sink(v4[x]); // $ ast,ir
 
 	v5.push_back(source());
 	sink(v5); // $ ast,ir
@@ -72,8 +72,8 @@ void test_element_taint(int x) {
 	sink(v5.back()); // $ ast,ir
 
 	v6.data()[2] = source();
-	sink(v6); // $ ast MISSING: ir
-	sink(v6.data()[2]); // $ ast MISSING: ir
+	sink(v6); // $ ast,ir
+	sink(v6.data()[2]); // $ ast,ir
 
 
 	{
@@ -94,10 +94,10 @@ void test_element_taint(int x) {
 	sink(v8.back()); // $ MISSING: ast,ir
 
 	v9.at(x) = source();
-	sink(v9); // $ ast MISSING: ir
-	sink(v9.at(0)); // $ ast MISSING: ir
-	sink(v9.at(1)); // $ ast MISSING: ir
-	sink(v9.at(x)); // $ ast MISSING: ir
+	sink(v9); // $ ast,ir
+	sink(v9.at(0)); // $ ast,ir
+	sink(v9.at(1)); // $ ast,ir
+	sink(v9.at(x)); // $ ast,ir
 }
 
 void test_vector_swap() {
@@ -168,7 +168,7 @@ void test_nested_vectors()
 		bb[0].push_back(0);
 		sink(bb[0][0]);
 		bb[0][0] = source();
-		sink(bb[0][0]); // $ ast MISSING: ir
+		sink(bb[0][0]); // $ ast,ir
 	}
 
 	{
@@ -177,7 +177,7 @@ void test_nested_vectors()
 		cc[0].push_back(0);
 		sink(cc[0][0]);
 		cc[0][0] = source();
-		sink(cc[0][0]); // $ ast MISSING: ir
+		sink(cc[0][0]); // $ ast,ir
 	}
 
 	{
@@ -188,7 +188,7 @@ void test_nested_vectors()
 		sink(dd[0].a);
 		sink(dd[0].b);
 		dd[0].a = source();
-		sink(dd[0].a); // $ MISSING: ast,ir
+		sink(dd[0].a); // $ ir MISSING: ast
 		sink(dd[0].b);
 	}
 
@@ -198,7 +198,7 @@ void test_nested_vectors()
 		ee.vs.push_back(0);
 		sink(ee.vs[0]);
 		ee.vs[0] = source();
-		sink(ee.vs[0]); // $ ast MISSING: ir
+		sink(ee.vs[0]); // $ ast,ir
 	}
 
 	{
@@ -209,7 +209,7 @@ void test_nested_vectors()
 		ff.push_back(mvc);
 		sink(ff[0].vs[0]);
 		ff[0].vs[0] = source();
-		sink(ff[0].vs[0]); // $ MISSING: ast,ir
+		sink(ff[0].vs[0]); // $ ir MISSING: ast
 	}
 }
 
@@ -287,9 +287,9 @@ void test_data_more() {
 	sink(v1.data()[2]); // $ ast,ir
 
 	*(v2.data()) = ns_int::source();
-	sink(v2); // $ ast MISSING: ir
-	sink(v2.data()); // $ ast MISSING: ir
-	sink(v2.data()[2]); // $ ast MISSING: ir
+	sink(v2); // $ ast,ir
+	sink(v2.data()); // $ ast,ir
+	sink(v2.data()[2]); // $ ast,ir
 }
 
 void sink(std::vector<int>::iterator);
@@ -470,7 +470,7 @@ void test_vector_memcpy()
 
 		sink(v);
 		memcpy(&v[i], &s, sizeof(int));
-		sink(v); // $ ast MISSING: ir
+		sink(v); // $ ast,ir
 	}
 
 	{
@@ -483,7 +483,7 @@ void test_vector_memcpy()
 		sink(cs);
 		memcpy(&cs[offs + 1], src.c_str(), len);
 		sink(src); // $ ast,ir
-		sink(cs); // $ ast MISSING: ir
+		sink(cs); // $ ast,ir
 	}
 }
 

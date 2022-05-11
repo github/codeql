@@ -35,12 +35,12 @@ void assignAfterAlias() {
   S s1 = { 0, 0 };
   S &ref1 = s1;
   ref1.m1 = user_input();
-  sink(s1.m1); // $ ir MISSING: ast
+  sink(s1.m1); // $ MISSING: ast,ir
 
   S s2 = { 0, 0 };
   S &ref2 = s2;
   s2.m1 = user_input();
-  sink(ref2.m1); // $ ir MISSING: ast
+  sink(ref2.m1); // $ MISSING: ast,ir
 }
 
 void assignAfterCopy() {
@@ -77,14 +77,14 @@ void pointerIntermediate() {
   Wrapper w = { { 0, 0 } };
   S *s = &w.s;
   s->m1 = user_input();
-  sink(w.s.m1); // $ ir MISSING: ast
+  sink(w.s.m1); // $ MISSING: ast,ir
 }
 
 void referenceIntermediate() {
   Wrapper w = { { 0, 0 } };
   S &s = w.s;
   s.m1 = user_input();
-  sink(w.s.m1); // $ ir MISSING: ast
+  sink(w.s.m1); // $ MISSING: ast,ir
 }
 
 void nestedAssign() {
@@ -99,7 +99,7 @@ void addressOfField() {
 
   S s_copy = s;
   int* px = &s_copy.m1;
-  sink(*px); // $ ir MISSING: ast
+  sink(*px); // $ MISSING: ast,ir
 }
 
 void taint_a_ptr(int* pa) {
@@ -119,7 +119,7 @@ struct S_with_pointer {
 
 void pointer_deref(int* xs) {
   taint_a_ptr(xs);
-  sink(xs[0]); // $ ir MISSING: ast
+  sink(xs[0]); // $ MISSING: ast,ir
 }
 
 void pointer_deref_sub(int* xs) {
@@ -129,18 +129,18 @@ void pointer_deref_sub(int* xs) {
 
 void pointer_many_addrof_and_deref(int* xs) {
   taint_a_ptr(xs);
-  sink(*&*&*xs); // $ ir MISSING: ast
+  sink(*&*&*xs); // $ MISSING: ast,ir
 }
 
 void pointer_unary_plus(int* xs) {
   taint_a_ptr(+xs);
-  sink(*+xs); // $ ir MISSING: ast
+  sink(*+xs); // $ MISSING: ast,ir
 }
 
 void pointer_member_index(S_with_pointer s) {
   taint_a_ptr(s.data);
   // `s.data` is points to all-aliased-memory
-  sink(s.data[0]); // $ MISSING: ir,ast
+  sink(s.data[0]); // $ ir MISSING: ast
 }
 
 void member_array_different_field(S_with_pointer* s) {
@@ -156,13 +156,13 @@ struct S_with_array {
 void pointer_member_deref() {
   S_with_array s;
   taint_a_ptr(s.data);
-  sink(*s.data); // $ ast MISSING: ir
+  sink(*s.data); // $ ast,ir
 }
 
 void array_member_deref() {
   S_with_array s;
   taint_a_ptr(s.data);
-  sink(s.data[0]); // $ ast MISSING: ir
+  sink(s.data[0]); // $ ast,ir
 }
 
 struct S2 {

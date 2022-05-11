@@ -13,16 +13,16 @@ namespace System
             public static System.Net.Authorization PreAuthenticate(System.Net.WebRequest request, System.Net.ICredentials credentials) => throw null;
             public static void Register(System.Net.IAuthenticationModule authenticationModule) => throw null;
             public static System.Collections.IEnumerator RegisteredModules { get => throw null; }
-            public static void Unregister(string authenticationScheme) => throw null;
             public static void Unregister(System.Net.IAuthenticationModule authenticationModule) => throw null;
+            public static void Unregister(string authenticationScheme) => throw null;
         }
 
         // Generated from `System.Net.Authorization` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Authorization
         {
-            public Authorization(string token, bool finished, string connectionGroupId) => throw null;
-            public Authorization(string token, bool finished) => throw null;
             public Authorization(string token) => throw null;
+            public Authorization(string token, bool finished) => throw null;
+            public Authorization(string token, bool finished, string connectionGroupId) => throw null;
             public bool Complete { get => throw null; }
             public string ConnectionGroupId { get => throw null; }
             public string Message { get => throw null; }
@@ -43,8 +43,8 @@ namespace System
             public override System.IO.Stream EndGetRequestStream(System.IAsyncResult asyncResult) => throw null;
             public override System.Net.WebResponse EndGetResponse(System.IAsyncResult asyncResult) => throw null;
             protected FileWebRequest(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
-            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             protected override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             public override System.IO.Stream GetRequestStream() => throw null;
             public override System.Threading.Tasks.Task<System.IO.Stream> GetRequestStreamAsync() => throw null;
             public override System.Net.WebResponse GetResponse() => throw null;
@@ -65,8 +65,8 @@ namespace System
             public override System.Int64 ContentLength { get => throw null; }
             public override string ContentType { get => throw null; }
             protected FileWebResponse(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
-            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             protected override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             public override System.IO.Stream GetResponseStream() => throw null;
             public override System.Net.WebHeaderCollection Headers { get => throw null; }
             public override System.Uri ResponseUri { get => throw null; }
@@ -181,14 +181,14 @@ namespace System
         {
             public override void Abort() => throw null;
             public string Accept { get => throw null; set => throw null; }
-            public void AddRange(string rangeSpecifier, int range) => throw null;
-            public void AddRange(string rangeSpecifier, int from, int to) => throw null;
-            public void AddRange(string rangeSpecifier, System.Int64 range) => throw null;
-            public void AddRange(string rangeSpecifier, System.Int64 from, System.Int64 to) => throw null;
             public void AddRange(int range) => throw null;
             public void AddRange(int from, int to) => throw null;
             public void AddRange(System.Int64 range) => throw null;
             public void AddRange(System.Int64 from, System.Int64 to) => throw null;
+            public void AddRange(string rangeSpecifier, int range) => throw null;
+            public void AddRange(string rangeSpecifier, int from, int to) => throw null;
+            public void AddRange(string rangeSpecifier, System.Int64 range) => throw null;
+            public void AddRange(string rangeSpecifier, System.Int64 from, System.Int64 to) => throw null;
             public System.Uri Address { get => throw null; }
             public virtual bool AllowAutoRedirect { get => throw null; set => throw null; }
             public virtual bool AllowReadStreamBuffering { get => throw null; set => throw null; }
@@ -213,8 +213,8 @@ namespace System
             public System.IO.Stream EndGetRequestStream(System.IAsyncResult asyncResult, out System.Net.TransportContext context) => throw null;
             public override System.Net.WebResponse EndGetResponse(System.IAsyncResult asyncResult) => throw null;
             public string Expect { get => throw null; set => throw null; }
-            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             protected override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             public override System.IO.Stream GetRequestStream() => throw null;
             public System.IO.Stream GetRequestStream(out System.Net.TransportContext context) => throw null;
             public override System.Net.WebResponse GetResponse() => throw null;
@@ -256,8 +256,8 @@ namespace System
             public override string ContentType { get => throw null; }
             public virtual System.Net.CookieCollection Cookies { get => throw null; set => throw null; }
             protected override void Dispose(bool disposing) => throw null;
-            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             protected override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             public string GetResponseHeader(string headerName) => throw null;
             public override System.IO.Stream GetResponseStream() => throw null;
             public override System.Net.WebHeaderCollection Headers { get => throw null; }
@@ -298,26 +298,26 @@ namespace System
         // Generated from `System.Net.ProtocolViolationException` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ProtocolViolationException : System.InvalidOperationException, System.Runtime.Serialization.ISerializable
         {
-            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
-            public ProtocolViolationException(string message) => throw null;
+            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             public ProtocolViolationException() => throw null;
             protected ProtocolViolationException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+            public ProtocolViolationException(string message) => throw null;
         }
 
         // Generated from `System.Net.WebException` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class WebException : System.InvalidOperationException, System.Runtime.Serialization.ISerializable
         {
-            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             public System.Net.WebResponse Response { get => throw null; }
             public System.Net.WebExceptionStatus Status { get => throw null; }
-            public WebException(string message, System.Net.WebExceptionStatus status) => throw null;
-            public WebException(string message, System.Exception innerException, System.Net.WebExceptionStatus status, System.Net.WebResponse response) => throw null;
-            public WebException(string message, System.Exception innerException) => throw null;
-            public WebException(string message) => throw null;
             public WebException() => throw null;
             protected WebException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+            public WebException(string message) => throw null;
+            public WebException(string message, System.Exception innerException) => throw null;
+            public WebException(string message, System.Exception innerException, System.Net.WebExceptionStatus status, System.Net.WebResponse response) => throw null;
+            public WebException(string message, System.Net.WebExceptionStatus status) => throw null;
         }
 
         // Generated from `System.Net.WebExceptionStatus` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -357,18 +357,18 @@ namespace System
             public virtual string ConnectionGroupName { get => throw null; set => throw null; }
             public virtual System.Int64 ContentLength { get => throw null; set => throw null; }
             public virtual string ContentType { get => throw null; set => throw null; }
-            public static System.Net.WebRequest Create(string requestUriString) => throw null;
             public static System.Net.WebRequest Create(System.Uri requestUri) => throw null;
+            public static System.Net.WebRequest Create(string requestUriString) => throw null;
             public static System.Net.WebRequest CreateDefault(System.Uri requestUri) => throw null;
-            public static System.Net.HttpWebRequest CreateHttp(string requestUriString) => throw null;
             public static System.Net.HttpWebRequest CreateHttp(System.Uri requestUri) => throw null;
+            public static System.Net.HttpWebRequest CreateHttp(string requestUriString) => throw null;
             public virtual System.Net.ICredentials Credentials { get => throw null; set => throw null; }
             public static System.Net.Cache.RequestCachePolicy DefaultCachePolicy { get => throw null; set => throw null; }
             public static System.Net.IWebProxy DefaultWebProxy { get => throw null; set => throw null; }
             public virtual System.IO.Stream EndGetRequestStream(System.IAsyncResult asyncResult) => throw null;
             public virtual System.Net.WebResponse EndGetResponse(System.IAsyncResult asyncResult) => throw null;
-            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             protected virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             public virtual System.IO.Stream GetRequestStream() => throw null;
             public virtual System.Threading.Tasks.Task<System.IO.Stream> GetRequestStreamAsync() => throw null;
             public virtual System.Net.WebResponse GetResponse() => throw null;
@@ -383,8 +383,8 @@ namespace System
             public virtual System.Uri RequestUri { get => throw null; }
             public virtual int Timeout { get => throw null; set => throw null; }
             public virtual bool UseDefaultCredentials { get => throw null; set => throw null; }
-            protected WebRequest(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             protected WebRequest() => throw null;
+            protected WebRequest(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
         }
 
         // Generated from `System.Net.WebRequestMethods` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -432,23 +432,23 @@ namespace System
         }
 
         // Generated from `System.Net.WebResponse` in `System.Net.Requests, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public abstract class WebResponse : System.MarshalByRefObject, System.Runtime.Serialization.ISerializable, System.IDisposable
+        public abstract class WebResponse : System.MarshalByRefObject, System.IDisposable, System.Runtime.Serialization.ISerializable
         {
             public virtual void Close() => throw null;
             public virtual System.Int64 ContentLength { get => throw null; set => throw null; }
             public virtual string ContentType { get => throw null; set => throw null; }
             public void Dispose() => throw null;
             protected virtual void Dispose(bool disposing) => throw null;
-            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             protected virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             public virtual System.IO.Stream GetResponseStream() => throw null;
             public virtual System.Net.WebHeaderCollection Headers { get => throw null; }
             public virtual bool IsFromCache { get => throw null; }
             public virtual bool IsMutuallyAuthenticated { get => throw null; }
             public virtual System.Uri ResponseUri { get => throw null; }
             public virtual bool SupportsHeaders { get => throw null; }
-            protected WebResponse(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             protected WebResponse() => throw null;
+            protected WebResponse(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
         }
 
         namespace Cache
@@ -482,12 +482,12 @@ namespace System
             public class HttpRequestCachePolicy : System.Net.Cache.RequestCachePolicy
             {
                 public System.DateTime CacheSyncDate { get => throw null; }
-                public HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel level) => throw null;
-                public HttpRequestCachePolicy(System.Net.Cache.HttpCacheAgeControl cacheAgeControl, System.TimeSpan maxAge, System.TimeSpan freshOrStale, System.DateTime cacheSyncDate) => throw null;
-                public HttpRequestCachePolicy(System.Net.Cache.HttpCacheAgeControl cacheAgeControl, System.TimeSpan maxAge, System.TimeSpan freshOrStale) => throw null;
-                public HttpRequestCachePolicy(System.Net.Cache.HttpCacheAgeControl cacheAgeControl, System.TimeSpan ageOrFreshOrStale) => throw null;
-                public HttpRequestCachePolicy(System.DateTime cacheSyncDate) => throw null;
                 public HttpRequestCachePolicy() => throw null;
+                public HttpRequestCachePolicy(System.DateTime cacheSyncDate) => throw null;
+                public HttpRequestCachePolicy(System.Net.Cache.HttpCacheAgeControl cacheAgeControl, System.TimeSpan ageOrFreshOrStale) => throw null;
+                public HttpRequestCachePolicy(System.Net.Cache.HttpCacheAgeControl cacheAgeControl, System.TimeSpan maxAge, System.TimeSpan freshOrStale) => throw null;
+                public HttpRequestCachePolicy(System.Net.Cache.HttpCacheAgeControl cacheAgeControl, System.TimeSpan maxAge, System.TimeSpan freshOrStale, System.DateTime cacheSyncDate) => throw null;
+                public HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel level) => throw null;
                 public System.Net.Cache.HttpRequestCacheLevel Level { get => throw null; }
                 public System.TimeSpan MaxAge { get => throw null; }
                 public System.TimeSpan MaxStale { get => throw null; }

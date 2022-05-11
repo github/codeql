@@ -13,10 +13,10 @@ void test_pointer_deref_assignment()
 
 	*p_x = source();
 
-	sink(x); // $ ir MISSING: ast
+	sink(x); // $ MISSING: ast,ir
 	sink(*p_x); // $ ast,ir
-	sink(*p2_x); // $ ir MISSING: ast
-	sink(r_x); // $ ir MISSING: ast
+	sink(*p2_x); // $ MISSING: ast,ir
+	sink(r_x); // $ MISSING: ast,ir
 }
 
 void test_reference_deref_assignment()
@@ -28,10 +28,10 @@ void test_reference_deref_assignment()
 
 	r_x = source();
 
-	sink(x); // $ ir MISSING: ast
-	sink(*p_x); // $ ir MISSING: ast
+	sink(x); // $ MISSING: ast,ir
+	sink(*p_x); // $ MISSING: ast,ir
 	sink(r_x); // $ ast,ir
-	sink(r2_x); // $ ir MISSING: ast
+	sink(r2_x); // $ MISSING: ast,ir
 }
 
 class MyInt
@@ -53,8 +53,8 @@ void test_myint_member_assignment()
 
 	mi.i = source();
 
-	sink(mi); // $ ir MISSING: ast
-	sink(mi.get()); // $ ast,ir
+	sink(mi); // $ MISSING: ast,ir
+	sink(mi.get()); // $ ast MISSING: ir
 }
 
 void test_myint_method_assignment()
@@ -64,7 +64,7 @@ void test_myint_method_assignment()
 	mi.get() = source();
 
 	sink(mi); // $ ir MISSING: ast
-	sink(mi.get()); // $ ast,ir
+	sink(mi.get()); // $ ast MISSING: ir
 }
 
 void test_myint_overloaded_assignment()
@@ -133,15 +133,15 @@ void test_array_reference_assignment()
 
 	ref1 = source();
 	sink(ref1); // $ ast,ir
-	sink(arr1[5]); // $ ir MISSING: ast
+	sink(arr1[5]); // $ MISSING: ast,ir
 
 	ptr2 = &(arr2[5]);
 	*ptr2 = source();
 	sink(*ptr2); // $ ast,ir
-	sink(arr2[5]); // $ ir MISSING: ast
+	sink(arr2[5]); // $ MISSING: ast,ir
 
 	ptr3 = arr3;
 	ptr3[5] = source();
 	sink(ptr3[5]); // $ ast,ir
-	sink(arr3[5]); // $ ir MISSING: ast
+	sink(arr3[5]); // $ MISSING: ast,ir
 }

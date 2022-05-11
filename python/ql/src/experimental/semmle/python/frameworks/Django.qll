@@ -11,16 +11,16 @@ private import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 
-private module PrivateDjango {
-  private module django {
+private module ExperimentalPrivateDjango {
+  private module DjangoMod {
     API::Node http() { result = API::moduleImport("django").getMember("http") }
 
-    module http {
+    module Http {
       API::Node response() { result = http().getMember("response") }
 
       API::Node request() { result = http().getMember("request") }
 
-      module request {
+      module Request {
         module HttpRequest {
           class DjangoGETParameter extends DataFlow::Node, RemoteFlowSource::Range {
             DjangoGETParameter() { this = request().getMember("GET").getMember("get").getACall() }
@@ -30,7 +30,7 @@ private module PrivateDjango {
         }
       }
 
-      module response {
+      module Response {
         module HttpResponse {
           API::Node baseClassRef() {
             result = response().getMember("HttpResponse")

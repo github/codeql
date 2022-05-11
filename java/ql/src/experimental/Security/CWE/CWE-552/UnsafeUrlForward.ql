@@ -1,11 +1,11 @@
 /**
- * @name Unsafe url forward from remote source
- * @description URL forward based on unvalidated user-input
+ * @name Unsafe URL forward or dispatch from remote source
+ * @description URL forward or dispatch based on unvalidated user-input
  *              may cause file information disclosure.
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id java/unsafe-url-forward
+ * @id java/unsafe-url-forward-dispatch
  * @tags security
  *       external/cwe-552
  */
@@ -13,20 +13,10 @@
 import java
 import UnsafeUrlForward
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.frameworks.Servlets
+import semmle.code.java.dataflow.TaintTracking
+import experimental.semmle.code.java.frameworks.Jsf
+import experimental.semmle.code.java.PathSanitizer
 import DataFlow::PathGraph
-
-private class StartsWithSanitizer extends DataFlow::BarrierGuard {
-  StartsWithSanitizer() {
-    this.(MethodAccess).getMethod().hasName("startsWith") and
-    this.(MethodAccess).getMethod().getDeclaringType() instanceof TypeString and
-    this.(MethodAccess).getMethod().getNumberOfParameters() = 1
-  }
-
-  override predicate checks(Expr e, boolean branch) {
-    e = this.(MethodAccess).getQualifier() and branch = true
-  }
-}
 
 class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
   UnsafeUrlForwardFlowConfig() { this = "UnsafeUrlForwardFlowConfig" }
@@ -36,7 +26,7 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
     not exists(MethodAccess ma, Method m | ma.getMethod() = m |
       (
         m instanceof HttpServletRequestGetRequestURIMethod or
-        m instanceof HttpServletRequestGetRequestURLMethod or
+        m instanceof HttpServletRequestGetRequestUrlMethod or
         m instanceof HttpServletRequestGetPathMethod
       ) and
       ma = source.asExpr()
@@ -45,11 +35,29 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeUrlForwardSink }
 
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof UnsafeUrlForwardSanitizer }
+
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StartsWithSanitizer
+    guard instanceof PathTraversalBarrierGuard
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof UnsafeUrlForwardSanitizer }
+  override DataFlow::FlowFeature getAFeature() {
+    result instanceof DataFlow::FeatureHasSourceCallContext
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node prev, DataFlow::Node succ) {
+    exists(MethodAccess ma |
+      (
+        ma.getMethod() instanceof GetServletResourceMethod or
+        ma.getMethod() instanceof GetFacesResourceMethod or
+        ma.getMethod() instanceof GetClassResourceMethod or
+        ma.getMethod() instanceof GetClassLoaderResourceMethod or
+        ma.getMethod() instanceof GetWildflyResourceMethod
+      ) and
+      ma.getArgument(0) = prev.asExpr() and
+      ma = succ.asExpr()
+    )
+  }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeUrlForwardFlowConfig conf

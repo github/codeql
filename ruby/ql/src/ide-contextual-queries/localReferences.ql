@@ -3,13 +3,12 @@
  * @description Generates use-definition pairs that provide the data
  *              for find-references in the code viewer.
  * @kind definitions
- * @id ruby/ide-find-references
+ * @id rb/ide-find-references
  * @tags ide-contextual-queries/local-references
  */
 
 import codeql.IDEContextual
 import codeql.ruby.AST
-import codeql.ruby.ast.Variable
 
 external string selectedSourceFile();
 

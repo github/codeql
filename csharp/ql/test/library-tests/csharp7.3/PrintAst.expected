@@ -102,7 +102,7 @@ csharp73.cs:
 #   46|           1: [IntLiteral] 5
 #   49|   5: [InstanceConstructor] ExpressionVariables
 #   49|     3: [ConstructorInitializer] call to constructor ExpressionVariables
-#   49|       0: [LocalVariableDeclExpr] Int32 x
+#   49|       0: [LocalVariableAccess,LocalVariableDeclExpr] Int32 x
 #   50|     4: [BlockStmt] {...}
 #   51|       0: [ExprStmt] ...;
 #   51|         0: [MethodCall] call to method WriteLine

@@ -227,7 +227,7 @@ private module SensitiveDataModeling {
   }
 
   /**
-   * Any kind of variable assignment (also including with/for) where the name indicates
+   * A variable assignment (also including with/for) where the name indicates
    * it contains sensitive data.
    *
    * Note: We _could_ make any access to a variable with a sensitive name a source of

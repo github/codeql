@@ -37,20 +37,20 @@ predicate isPropertyFilter(UnusedLocal v) {
 }
 
 predicate hasJsxInScope(UnusedLocal v) {
-  any(JSXNode n).getParent+() = v.getScope().getScopeElement()
+  any(JsxNode n).getParent+() = v.getScope().getScopeElement()
 }
 
 /**
  * Holds if `v` is a "React" variable that is implicitly used by a JSX element.
  */
-predicate isReactForJSX(UnusedLocal v) {
+predicate isReactForJsx(UnusedLocal v) {
   hasJsxInScope(v) and
   (
     v.getName() = "React"
     or
     exists(TopLevel tl | tl = v.getADeclaration().getTopLevel() |
       // legacy `@jsx` pragmas
-      exists(JSXPragma p | p.getTopLevel() = tl | p.getDOMName() = v.getName())
+      exists(JsxPragma p | p.getTopLevel() = tl | p.getDomName() = v.getName())
       or
       // JSX pragma from a .babelrc file
       exists(Babel::TransformReactJsxConfig plugin |
@@ -59,7 +59,7 @@ predicate isReactForJSX(UnusedLocal v) {
       )
     )
     or
-    exists(JSONObject tsconfig |
+    exists(JsonObject tsconfig |
       tsconfig.isTopLevel() and tsconfig.getFile().getBaseName() = "tsconfig.json"
     |
       v.getName() =
@@ -148,7 +148,7 @@ predicate whitelisted(UnusedLocal v) {
   isPropertyFilter(v)
   or
   // exclude imports of React that are implicitly referenced by JSX
-  isReactForJSX(v)
+  isReactForJsx(v)
   or
   // exclude names that are used as types
   exists(VarDecl vd | v = vd.getVariable() |
@@ -198,7 +198,7 @@ predicate unusedImports(ImportVarDeclProvider provider, string msg) {
   )
 }
 
-from ASTNode sel, string msg
+from AstNode sel, string msg
 where
   (
     unusedNonImports(sel, msg) or

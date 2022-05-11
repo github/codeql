@@ -1,5 +1,5 @@
 /**
- * Classes modelling EntityFramework and EntityFrameworkCore.
+ * Classes modeling EntityFramework and EntityFrameworkCore.
  */
 
 import csharp
@@ -91,14 +91,10 @@ module EntityFramework {
   abstract class EFSummarizedCallable extends SummarizedCallable { }
 
   private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-    private SummaryComponent head;
-
-    DbSetAddOrUpdateRequiredSummaryComponentStack() {
-      this = SummaryComponentStack::argument([-1, 0]) and
-      head = SummaryComponent::element()
+    override predicate required(SummaryComponent head, SummaryComponentStack tail) {
+      head = SummaryComponent::element() and
+      tail = SummaryComponentStack::argument([-1, 0])
     }
-
-    override predicate required(SummaryComponent c) { c = head }
   }
 
   private class DbSetAddOrUpdate extends EFSummarizedCallable {
@@ -114,7 +110,7 @@ module EntityFramework {
         then input = SummaryComponentStack::elementOf(SummaryComponentStack::argument(0))
         else input = SummaryComponentStack::argument(0)
       ) and
-      output = SummaryComponentStack::elementOf(SummaryComponentStack::argument(-1)) and
+      output = SummaryComponentStack::elementOf(SummaryComponentStack::qualifier()) and
       preservesValue = true
     }
   }
@@ -174,32 +170,34 @@ module EntityFramework {
     }
   }
 
-  private class RawSqlStringSummarizedCallable extends EFSummarizedCallable {
-    private SummaryComponentStack input_;
-    private SummaryComponentStack output_;
-    private boolean preservesValue_;
-
-    RawSqlStringSummarizedCallable() {
+  private class RawSqlStringConstructorSummarizedCallable extends EFSummarizedCallable {
+    RawSqlStringConstructorSummarizedCallable() {
       exists(RawSqlStringStruct s |
         this = s.getAConstructor() and
-        input_ = SummaryComponentStack::argument(0) and
-        this.getNumberOfParameters() > 0 and
-        output_ = SummaryComponentStack::return() and
-        preservesValue_ = false
-        or
-        this = s.getAConversionTo() and
-        input_ = SummaryComponentStack::argument(0) and
-        output_ = SummaryComponentStack::return() and
-        preservesValue_ = false
+        this.getNumberOfParameters() > 0
       )
     }
 
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
-      input = input_ and
-      output = output_ and
-      preservesValue = preservesValue_
+      input = SummaryComponentStack::argument(0) and
+      output = SummaryComponentStack::return() and
+      preservesValue = false
+    }
+  }
+
+  private class RawSqlStringConversionSummarizedCallable extends EFSummarizedCallable {
+    RawSqlStringConversionSummarizedCallable() {
+      exists(RawSqlStringStruct s | this = s.getAConversionTo())
+    }
+
+    override predicate propagatesFlow(
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+    ) {
+      input = SummaryComponentStack::argument(0) and
+      output = SummaryComponentStack::return() and
+      preservesValue = false
     }
   }
 
@@ -460,14 +458,12 @@ module EntityFramework {
   }
 
   private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-    private Content head;
-
-    DbContextSaveChangesRequiredSummaryComponentStack() {
-      any(DbContextClass c).requiresComponentStackIn(head, _, this, _)
-      or
-      any(DbContextClass c).requiresComponentStackOut(head, _, this, _)
+    override predicate required(SummaryComponent head, SummaryComponentStack tail) {
+      exists(Content c | head = SummaryComponent::content(c) |
+        any(DbContextClass cls).requiresComponentStackIn(c, _, tail, _)
+        or
+        any(DbContextClass cls).requiresComponentStackOut(c, _, tail, _)
+      )
     }
-
-    override predicate required(SummaryComponent c) { c = SummaryComponent::content(head) }
   }
 }

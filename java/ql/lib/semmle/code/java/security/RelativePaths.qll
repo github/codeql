@@ -5,7 +5,7 @@ import java
  * An element that starts with a relative path.
  */
 predicate relativePath(Element tree, string command) {
-  exists(StringLiteral lit, string text | tree = lit and text = lit.getRepresentedString() |
+  exists(StringLiteral lit, string text | tree = lit and text = lit.getValue() |
     text != "" and
     text.regexpMatch(["[^/\\\\ \t]*", "[^/\\\\ \t]*[ \t].*"]) and
     command = text.replaceAll("\t", " ").splitAt(" ", 0).replaceAll("\"", "")

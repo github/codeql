@@ -118,7 +118,7 @@ class LambdaCapture extends Locatable, @lambdacapture {
    * An identifier is captured by reference if:
    *   - It is explicitly captured by reference.
    *   - It is implicitly captured, and the lambda's default capture mode is by-reference.
-   *   - The identifier is "this". [Said behaviour is dictated by the C++11 standard, but it
+   *   - The identifier is "this". [Said behavior is dictated by the C++11 standard, but it
    *                                is actually "*this" being captured rather than "this".]
    */
   predicate isCapturedByReference() { lambda_capture(this, _, _, _, true, _, _) }

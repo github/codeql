@@ -3,7 +3,7 @@ collections/Test.java:
 #-----|   -1: (Imports)
 #    3|     1: [ImportOnDemandFromPackage] import java.util.*
 #    5|   1: [Class] Test
-#    6|     3: [FieldDeclaration] Map<String,Integer> m, ...;
+#    6|     3: [FieldDeclaration] Map<String,Integer> m;
 #    6|       -1: [TypeAccess] Map<String,Integer>
 #    6|         0: [TypeAccess] String
 #    6|         1: [TypeAccess] Integer

@@ -31,7 +31,7 @@ IRUserVariable getIRUserVariable(Function func, Variable var) {
 }
 
 IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
-  result.getAST() = ast and
+  result.getAst() = ast and
   result.getTag() = tag
 }
 
@@ -136,17 +136,24 @@ private predicate ignoreExpr(Expr expr) {
 }
 
 /**
+ * Holds if the side effects of `expr` should be ignoredf for the purposes of IR generation.
+ *
+ * In cases involving `constexpr`, a call can wind up as a constant expression. `ignoreExpr()` will
+ * not hold for such a call, since we do need to translate the call (as a constant), but we need to
+ * ignore all of the side effects of that call, since we will not actually be generating a `Call`
+ * instruction.
+ */
+private predicate ignoreSideEffects(Expr expr) {
+  ignoreExpr(expr)
+  or
+  isIRConstant(expr)
+}
+
+/**
  * Holds if `func` contains an AST that cannot be translated into IR. This is mostly used to work
  * around extractor bugs. Once the relevant extractor bugs are fixed, this predicate can be removed.
  */
 private predicate isInvalidFunction(Function func) {
-  exists(Literal literal |
-    // Constructor field inits within a compiler-generated copy constructor have a source expression
-    // that is a `Literal` with no value.
-    literal = func.(Constructor).getAnInitializer().(ConstructorFieldInit).getExpr() and
-    not exists(literal.getValue())
-  )
-  or
   exists(ThisExpr thisExpr |
     // An instantiation of a member function template is not treated as a `MemberFunction` if it has
     // only non-type template arguments.
@@ -553,6 +560,13 @@ newtype TTranslatedElement =
   } or
   // The initialization of a base class from within a constructor.
   TTranslatedConstructorBaseInit(ConstructorBaseInit init) { not ignoreExpr(init) } or
+  // Workaround for a case where no base constructor is generated but a targetless base
+  // constructor call is present.
+  TTranslatedConstructorBareInit(ConstructorInit init) {
+    not ignoreExpr(init) and
+    not init instanceof ConstructorBaseInit and
+    not init instanceof ConstructorFieldInit
+  } or
   // The destruction of a base class from within a destructor.
   TTranslatedDestructorBaseDestruction(DestructorBaseDestruction destruction) {
     not ignoreExpr(destruction)
@@ -621,32 +635,34 @@ newtype TTranslatedElement =
   // The declaration/initialization part of a `ConditionDeclExpr`
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
   // The side effects of a `Call`
-  TTranslatedCallSideEffects(Call expr) {
-    // Exclude allocations such as `malloc` (which happen to also be function calls).
-    // Both `TranslatedCallSideEffects` and `TranslatedAllocationSideEffects` generate
-    // the same side effects for its children as they both extend the `TranslatedSideEffects`
-    // class.
-    // Note: We can separate allocation side effects and call side effects into two
-    // translated elements as no call can be both a `ConstructorCall` and an `AllocationExpr`.
-    not expr instanceof AllocationExpr and
-    (
-      exists(TTranslatedArgumentSideEffect(expr, _, _, _)) or
-      expr instanceof ConstructorCall
-    )
+  TTranslatedCallSideEffects(CallOrAllocationExpr expr) { not ignoreSideEffects(expr) } or
+  // The non-argument-specific side effect of a `Call`
+  TTranslatedCallSideEffect(Expr expr, SideEffectOpcode opcode) {
+    not ignoreSideEffects(expr) and
+    opcode = getCallSideEffectOpcode(expr)
   } or
-  // The side effects of an allocation, i.e. `new`, `new[]` or `malloc`
-  TTranslatedAllocationSideEffects(AllocationExpr expr) { not ignoreExpr(expr) } or
   // A precise side effect of an argument to a `Call`
-  TTranslatedArgumentSideEffect(Call call, Expr expr, int n, SideEffectOpcode opcode) {
+  TTranslatedArgumentExprSideEffect(Call call, Expr expr, int n, SideEffectOpcode opcode) {
     not ignoreExpr(expr) and
-    not ignoreExpr(call) and
+    not ignoreSideEffects(call) and
     (
       n >= 0 and expr = call.getArgument(n).getFullyConverted()
       or
       n = -1 and expr = call.getQualifier().getFullyConverted()
     ) and
     opcode = getASideEffectOpcode(call, n)
-  }
+  } or
+  // Constructor calls lack a qualifier (`this`) expression, so we need to handle the side effects
+  // on `*this` without an `Expr`.
+  TTranslatedStructorQualifierSideEffect(Call call, SideEffectOpcode opcode) {
+    not ignoreSideEffects(call) and
+    // Don't bother with destructor calls for now, since we won't see very many of them in the IR
+    // until we start injecting implicit destructor calls.
+    call instanceof ConstructorCall and
+    opcode = getASideEffectOpcode(call, -1)
+  } or
+  // The side effect that initializes newly-allocated memory.
+  TTranslatedAllocationSideEffect(AllocationExpr expr) { not ignoreSideEffects(expr) }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`
@@ -707,7 +723,10 @@ abstract class TranslatedElement extends TTranslatedElement {
   /**
    * Gets the AST node being translated.
    */
-  abstract Locatable getAST();
+  abstract Locatable getAst();
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated Locatable getAST() { result = getAst() }
 
   /**
    * Get the first instruction to be executed in the evaluation of this element.
@@ -906,16 +925,16 @@ abstract class TranslatedElement extends TTranslatedElement {
    */
   final IRTempVariable getTempVariable(TempVariableTag tag) {
     exists(Locatable ast |
-      result.getAST() = ast and
+      result.getAst() = ast and
       result.getTag() = tag and
-      hasTempVariableAndAST(tag, ast)
+      hasTempVariableAndAst(tag, ast)
     )
   }
 
   pragma[noinline]
-  private predicate hasTempVariableAndAST(TempVariableTag tag, Locatable ast) {
+  private predicate hasTempVariableAndAst(TempVariableTag tag, Locatable ast) {
     hasTempVariable(tag, _) and
-    ast = getAST()
+    ast = getAst()
   }
 
   /**

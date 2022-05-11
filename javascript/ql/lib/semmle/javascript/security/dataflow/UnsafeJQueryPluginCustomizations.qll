@@ -6,7 +6,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
-import semmle.javascript.security.dataflow.Xss
+import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 
 module UnsafeJQueryPlugin {
   private import DataFlow::FlowLabel
@@ -100,7 +100,7 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * Expression of form `isElement(x)`, which sanitizes `x`.
+   * An expression of form `isElement(x)`, which sanitizes `x`.
    */
   class IsElementSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
     IsElementSanitizer() {
@@ -116,7 +116,7 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * Expression like `typeof x.<?> !== "undefined"` or `x.<?>`, which sanitizes `x`, as it is unlikely to be a string afterwards.
+   * An expression like `typeof x.<?> !== "undefined"` or `x.<?>`, which sanitizes `x`, as it is unlikely to be a string afterwards.
    */
   class PropertyPresenceSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
     DataFlow::Node input;
@@ -151,6 +151,16 @@ module UnsafeJQueryPlugin {
       outcome = polarity and
       e = input.asExpr()
     }
+  }
+
+  /** A guard that checks whether `x` is a number. */
+  class NumberGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
+    Expr x;
+    boolean polarity;
+
+    NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
   }
 
   /**
@@ -189,7 +199,7 @@ module UnsafeJQueryPlugin {
       DataFlow::PropRead finalRead
     |
       hasDefaultOption(plugin, defaultDef) and
-      defaultDef = getALikelyHTMLWrite(finalRead.getPropertyName()) and
+      defaultDef = getALikelyHtmlWrite(finalRead.getPropertyName()) and
       finalRead.flowsTo(sink) and
       sink.getTopLevel() = plugin.getTopLevel()
     )
@@ -199,7 +209,7 @@ module UnsafeJQueryPlugin {
    * Gets a property-write that writes a HTML-like constant string to `prop`.
    */
   pragma[noinline]
-  private DataFlow::PropWrite getALikelyHTMLWrite(string prop) {
+  private DataFlow::PropWrite getALikelyHtmlWrite(string prop) {
     exists(string default |
       result.getRhs().mayHaveStringValue(default) and
       default.regexpMatch("\\s*<.*") and

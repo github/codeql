@@ -18,12 +18,12 @@ predicate isLive(Callable c) {
  * would imply the liveness of `c`.
  */
 Callable possibleLivenessCause(Callable c, string reason) {
-  c.(Method).overridesOrInstantiates(result.(Method)) and
+  c.(Method).overridesOrInstantiates(result) and
   reason = "is overridden or instantiated by"
   or
   result.calls(c) and reason = "calls"
   or
-  result.callsConstructor(c.(Constructor)) and reason = "calls constructor"
+  result.callsConstructor(c) and reason = "calls constructor"
   or
   exists(ClassInstanceExpr e | e.getEnclosingCallable() = result |
     e.getConstructor() = c and reason = "constructs"
@@ -33,7 +33,7 @@ Callable possibleLivenessCause(Callable c, string reason) {
   or
   c.hasName("<clinit>") and
   reason = "class initialization" and
-  exists(RefType clintedType | c = clintedType.getASupertype*().getACallable() |
+  exists(RefType clintedType | c = clintedType.getAnAncestor().getACallable() |
     result.getDeclaringType() = clintedType or
     result.getAnAccessedField().getDeclaringType() = clintedType
   )
@@ -93,8 +93,8 @@ class SuppressedConstructor extends Constructor {
     not this.isDefaultConstructor() and
     // Verify that there is only one statement, which is the `super()` call. This exists
     // even for empty constructors.
-    this.getBody().(BlockStmt).getNumStmt() = 1 and
-    this.getBody().(BlockStmt).getAStmt().(SuperConstructorInvocationStmt).getNumArgument() = 0 and
+    this.getBody().getNumStmt() = 1 and
+    this.getBody().getAStmt().(SuperConstructorInvocationStmt).getNumArgument() = 0 and
     // A constructor that is called is not acting to suppress the default constructor. We permit
     // calls from suppressed and default constructors - in both cases, they can only come from
     // sub-class constructors.
@@ -155,7 +155,7 @@ library class SourceClassOrInterface extends ClassOrInterface {
  */
 class LiveClass extends SourceClassOrInterface {
   LiveClass() {
-    exists(Callable c | c.getDeclaringType().getASupertype*().getSourceDeclaration() = this |
+    exists(Callable c | c.getDeclaringType().getAnAncestor().getSourceDeclaration() = this |
       isLive(c)
     )
     or
@@ -243,7 +243,7 @@ class DeadMethod extends Callable {
     ) and
     not (
       this.(Method).isAbstract() and
-      exists(Method m | m.overridesOrInstantiates+(this.(Method)) | isLive(m))
+      exists(Method m | m.overridesOrInstantiates+(this) | isLive(m))
     ) and
     // A getter or setter associated with a live JPA field.
     //

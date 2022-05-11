@@ -54,7 +54,7 @@ private module DateFns {
 }
 
 /**
- * Provides classes and predicates modelling the `@date-io` libraries.
+ * Provides classes and predicates modeling the `@date-io` libraries.
  */
 private module DateIO {
   private class FormatStep extends TaintTracking::SharedTaintStep {
@@ -105,7 +105,7 @@ private module DateIO {
 }
 
 /**
- * Provides classes and predicates modelling the `luxon` library.
+ * Provides classes and predicates modeling the `luxon` library.
  */
 private module Luxon {
   /**

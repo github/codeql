@@ -11,9 +11,31 @@ class Node = DataFlowPublic::Node;
 
 class TypeTrackingNode = DataFlowPublic::LocalSourceNode;
 
+/** Holds if there is a simple local flow step from `nodeFrom` to `nodeTo` */
 predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
 
+/**
+ * Holds if data can flow from `node1` to `node2` in a way that discards call contexts.
+ */
 predicate jumpStep = DataFlowPrivate::jumpStep/2;
+
+/**
+ * Holds if there is a summarized local flow step from `nodeFrom` to `nodeTo`,
+ * because there is direct flow from a parameter to a return. That is, summarized
+ * steps are not applied recursively.
+ */
+pragma[nomagic]
+private predicate summarizedLocalStep(Node nodeFrom, Node nodeTo) {
+  exists(DataFlowPublic::ParameterNode param, DataFlowPrivate::ReturningNode returnNode |
+    DataFlowPrivate::LocalFlow::getParameterDefNode(param.getParameter())
+        .(TypeTrackingNode)
+        .flowsTo(returnNode) and
+    callStep(nodeTo.asExpr(), nodeFrom, param)
+  )
+}
+
+/** Holds if there is a level step from `nodeFrom` to `nodeTo`. */
+predicate levelStep(Node nodeFrom, Node nodeTo) { summarizedLocalStep(nodeFrom, nodeTo) }
 
 /**
  * Gets the name of a possible piece of content. This will usually include things like
@@ -23,6 +45,35 @@ predicate jumpStep = DataFlowPrivate::jumpStep/2;
  */
 string getPossibleContentName() { result = getSetterCallAttributeName(_) }
 
+pragma[noinline]
+private predicate argumentPositionMatch(
+  ExprNodes::CallCfgNode call, DataFlowPrivate::ArgumentNode arg,
+  DataFlowDispatch::ParameterPosition ppos
+) {
+  exists(DataFlowDispatch::ArgumentPosition apos |
+    arg.sourceArgumentOf(call, apos) and
+    DataFlowDispatch::parameterMatch(ppos, apos)
+  )
+}
+
+pragma[noinline]
+private predicate viableParam(
+  ExprNodes::CallCfgNode call, DataFlowPrivate::ParameterNodeImpl p,
+  DataFlowDispatch::ParameterPosition ppos
+) {
+  exists(CFG::CfgScope callable |
+    DataFlowDispatch::getTarget(call) = callable and
+    p.isSourceParameterOf(callable, ppos)
+  )
+}
+
+private predicate callStep(ExprNodes::CallCfgNode call, Node nodeFrom, Node nodeTo) {
+  exists(DataFlowDispatch::ParameterPosition pos |
+    argumentPositionMatch(call, nodeFrom, pos) and
+    viableParam(call, nodeTo, pos)
+  )
+}
+
 /**
  * Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call.
  *
@@ -31,20 +82,13 @@ string getPossibleContentName() { result = getSetterCallAttributeName(_) }
  * methods is done using API graphs (which uses type tracking).
  */
 predicate callStep(Node nodeFrom, Node nodeTo) {
-  exists(ExprNodes::CallCfgNode call, CFG::CfgScope callable, int i |
-    DataFlowDispatch::getTarget(call) = callable and
-    nodeFrom.(DataFlowPrivate::ArgumentNode).sourceArgumentOf(call, i) and
-    nodeTo.(DataFlowPrivate::ParameterNodeImpl).isSourceParameterOf(callable, i)
-  )
+  callStep(_, nodeFrom, nodeTo)
   or
   // In normal data-flow, this will be a local flow step. But for type tracking
   // we model it as a call step, in order to avoid computing a potential
   // self-cross product of all calls to a function that returns one of its parameters
   // (only to later filter that flow out using `TypeTracker::append`).
-  nodeTo =
-    DataFlowPrivate::LocalFlow::getParameterDefNode(nodeFrom
-          .(DataFlowPublic::ParameterNode)
-          .getParameter())
+  DataFlowPrivate::LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
 }
 
 /**
@@ -99,11 +143,11 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
  * to `z` inside `bar`, even though this content write happens _after_ `bar` is
  * called.
  */
-predicate basicStoreStep(Node nodeFrom, DataFlowPublic::LocalSourceNode nodeTo, string content) {
+predicate basicStoreStep(Node nodeFrom, Node nodeTo, string content) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     content = getSetterCallAttributeName(call.getExpr()) and
-    nodeTo.(DataFlowPublic::ExprNode).getExprNode() = call.getReceiver() and
+    nodeTo.(DataFlowPublic::PostUpdateNode).getPreUpdateNode().asExpr() = call.getReceiver() and
     call.getExpr() instanceof AST::SetterMethodCall and
     call.getArgument(call.getNumberOfArguments() - 1) =
       nodeFrom.(DataFlowPublic::ExprNode).getExprNode()
@@ -132,7 +176,7 @@ private string getSetterCallAttributeName(AST::SetterMethodCall call) {
 predicate basicLoadStep(Node nodeFrom, Node nodeTo, string content) {
   exists(ExprNodes::MethodCallCfgNode call |
     call.getExpr().getNumberOfArguments() = 0 and
-    content = call.getExpr().(AST::MethodCall).getMethodName() and
+    content = call.getExpr().getMethodName() and
     nodeFrom.asExpr() = call.getReceiver() and
     nodeTo.asExpr() = call
   )

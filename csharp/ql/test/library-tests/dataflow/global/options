@@ -1,1 +1,3 @@
-semmle-extractor-options: /r:System.Diagnostics.Process.dll /r:System.Linq.dll /r:System.Linq.Expressions.dll /r:System.Linq.Queryable.dll /r:System.ComponentModel.Primitives.dll
+semmle-extractor-options: /nostdlib /noconfig
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/Newtonsoft.Json/13.0.1/Newtonsoft.Json.csproj
+semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs

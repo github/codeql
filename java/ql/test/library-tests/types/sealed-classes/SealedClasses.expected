@@ -1,0 +1,12 @@
+| SealedClasses.java:5:25:5:44 | ExplicitPermitsClass | SealedClasses.java:7:25:7:38 | SealedSubClass |
+| SealedClasses.java:5:25:5:44 | ExplicitPermitsClass | SealedClasses.java:10:29:10:45 | NonSealedSubClass |
+| SealedClasses.java:5:25:5:44 | ExplicitPermitsClass | SealedClasses.java:12:24:12:36 | FinalSubClass |
+| SealedClasses.java:7:25:7:38 | SealedSubClass | SealedClasses.java:8:24:8:39 | FinalSubSubClass |
+| SealedClasses.java:17:22:17:45 | ExplicitPermitsInterface | SealedClasses.java:7:25:7:38 | SealedSubClass |
+| SealedClasses.java:17:22:17:45 | ExplicitPermitsInterface | SealedClasses.java:19:22:19:39 | SealedSubInterface |
+| SealedClasses.java:17:22:17:45 | ExplicitPermitsInterface | SealedClasses.java:22:26:22:46 | NonSealedSubInterface |
+| SealedClasses.java:17:22:17:45 | ExplicitPermitsInterface | SealedClasses.java:24:12:24:22 | RecordClass |
+| SealedClasses.java:17:22:17:45 | ExplicitPermitsInterface | SealedClasses.java:26:10:26:18 | EnumClass |
+| SealedClasses.java:19:22:19:39 | SealedSubInterface | SealedClasses.java:20:24:20:42 | FinalInterfaceClass |
+| SealedClasses.java:32:22:32:45 | ImplicitPermitsInterface | SealedClasses.java:33:26:33:52 | ImplicitPermitsSubInterface |
+| SealedClasses.java:37:10:37:29 | ImplicitlySealedEnum | SealedClasses.java:38:9:38:9 | new ImplicitlySealedEnum(...) { ... } |

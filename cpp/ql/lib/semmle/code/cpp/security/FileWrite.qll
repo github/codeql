@@ -173,6 +173,6 @@ private predicate fileWriteWithConvChar(FormattingFunctionCall ffc, Expr source,
     source = ffc.getFormatArgument(n)
   |
     exists(f.getOutputParameterIndex(true)) and
-    conv = ffc.(FormattingFunctionCall).getFormat().(FormatLiteral).getConversionChar(n)
+    conv = ffc.getFormat().(FormatLiteral).getConversionChar(n)
   )
 }

@@ -341,6 +341,11 @@ class RelationalOperation extends ComparisonOperation, TRelationalOperation {
   /** Gets the lesser operand. */
   Expr getLesserOperand() { none() }
 
+  /**
+   * Holds if this is a comparison with `<=` or `>=`.
+   */
+  predicate isInclusive() { this instanceof LEExpr or this instanceof GEExpr }
+
   final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
@@ -443,14 +448,14 @@ class NoRegExpMatchExpr extends BinaryOperation, TNoRegExpMatchExpr {
  */
 class Assignment extends Operation instanceof AssignmentImpl {
   /** Gets the left hand side of this assignment. */
-  final Pattern getLeftOperand() { result = super.getLeftOperandImpl() }
+  final LhsExpr getLeftOperand() { result = super.getLeftOperandImpl() }
 
   /** Gets the right hand side of this assignment. */
   final Expr getRightOperand() { result = super.getRightOperandImpl() }
 
   final override string toString() { result = "... " + this.getOperator() + " ..." }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = Operation.super.getAChild(pred)
     or
     pred = "getLeftOperand" and result = this.getLeftOperand()

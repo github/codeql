@@ -46,7 +46,7 @@ with engine.begin() as connection:
     connection.execute("some sql")  # $ getSql="some sql"
 
 # Injection requiring the text() taint-step
-t = text("some sql")
+t = text("some sql")  # $ constructedSql="some sql"
 session.query(User).filter(t)
 session.query(User).group_by(User.id).having(t)
 session.query(User).group_by(t).first()

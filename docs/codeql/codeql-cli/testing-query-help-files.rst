@@ -15,6 +15,10 @@ in the CodeQL repository.
 The CodeQL CLI includes a command to test query help and render the content as 
 markdown, so that you can easily preview the content in your IDE. Use the command to validate 
 query help files before uploading them to the CodeQL repository or sharing them with other users. 
+From CodeQL CLI 2.7.1 onwards, you can also include the markdown-rendered query help in SARIF files 
+generated during CodeQL analyses so that the query help can be displayed in the code scanning UI. 
+For more information, see 
+":ref:`Analyzing databases with the CodeQL CLI <including-query-help-for-custom-codeql-queries-in-sarif-files>`."
 
 Prerequisites
 -------------

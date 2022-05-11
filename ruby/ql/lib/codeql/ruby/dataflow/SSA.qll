@@ -18,7 +18,7 @@ module Ssa {
     /**
      * Gets the control flow node of this SSA definition, if any. Phi nodes are
      * examples of SSA definitions without a control flow node, as they are
-     * modelled at index `-1` in the relevant basic block.
+     * modeled at index `-1` in the relevant basic block.
      */
     final CfgNode getControlFlowNode() {
       exists(BasicBlock bb, int i | this.definesAt(_, bb, i) | result = bb.getNode(i))
@@ -233,6 +233,8 @@ module Ssa {
       )
     }
 
+    override SelfVariable getSourceVariable() { result = v }
+
     final override string toString() { result = "self (" + v.getDeclaringScope() + ")" }
 
     final override Location getLocation() { result = this.getControlFlowNode().getLocation() }
@@ -314,7 +316,7 @@ module Ssa {
     CapturedCallDefinition() {
       exists(Variable v, BasicBlock bb, int i |
         this.definesAt(v, bb, i) and
-        SsaImpl::capturedCallWrite(bb, i, v)
+        SsaImpl::capturedCallWrite(_, bb, i, v)
       )
     }
 

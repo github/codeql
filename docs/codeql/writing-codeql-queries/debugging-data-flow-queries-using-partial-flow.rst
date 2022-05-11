@@ -10,7 +10,6 @@ A typical data-flow query looks like this:
 
 .. code-block:: ql
 
-::
 
     class MyConfig extends TaintTracking::Configuration {
       MyConfig() { this = "MyConfig" }
@@ -56,7 +55,7 @@ If there are still no results and performance is still useable, then it is best 
 Partial flow
 ------------
 
-A naive next step could be to change the sink definition to ``any()``. This would mean that we would get a lot of flow to all the places that are reachable from the sources. While this approach may work in some cases, you might find that it produces so many results that it's very hard to explore the findings. It can can also dramatically affect query performance. More importantly, you might not even see all the partial flow paths. This is because the data-flow library tries very hard to prune impossible paths and, since field stores and reads must be evenly matched along a path, we will never see paths going through a store that fail to reach a corresponding read. This can make it hard to see where flow actually stops.
+A naive next step could be to change the sink definition to ``any()``. This would mean that we would get a lot of flow to all the places that are reachable from the sources. While this approach may work in some cases, you might find that it produces so many results that it's very hard to explore the findings. It can also dramatically affect query performance. More importantly, you might not even see all the partial flow paths. This is because the data-flow library tries very hard to prune impossible paths and, since field stores and reads must be evenly matched along a path, we will never see paths going through a store that fail to reach a corresponding read. This can make it hard to see where flow actually stops.
 
 To avoid these problems, a data-flow ``Configuration`` comes with a mechanism for exploring partial flow that tries to deal with these caveats. This is the ``Configuration.hasPartialFlow`` predicate:
 
@@ -79,13 +78,18 @@ To avoid these problems, a data-flow ``Configuration`` comes with a mechanism fo
        */
       final predicate hasPartialFlow(PartialPathNode source, PartialPathNode node, int dist) {
 
-As noted in the documentation for ``hasPartialFlow`` (for example, in the `CodeQL for Java documentation <https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/dataflow/internal/DataFlowImpl2.qll/predicate.DataFlowImpl2$Configuration$hasPartialFlow.3.html>__`) you must first enable this by adding an override of ``explorationLimit``. For example:
+There is also a ``Configuration.hasPartialFlowRev`` for exploring flow backwards from a sink.
+
+As noted in the documentation for ``hasPartialFlow`` (for example, in the 
+`CodeQL for Java documentation <https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/dataflow/internal/DataFlowImpl2.qll/predicate.DataFlowImpl2$Configuration$hasPartialFlow.3.html>`__) you must first enable this by adding an override of ``explorationLimit``. For example:
 
 .. code-block:: ql
 
     override int explorationLimit() { result = 5 }
 
 This defines the exploration radius within which ``hasPartialFlow`` returns results.
+
+To get good performance when using ``hasPartialFlow`` it is important to ensure the ``isSink`` predicate of the configuration has no results. Likewise, when using ``hasPartialFlowRev`` the ``isSource`` predicate of the configuration should have no results.
 
 It is also useful to focus on a single source at a time as the starting point for the flow exploration. This is most easily done by adding a temporary restriction in the ``isSource`` predicate.
 

@@ -16,6 +16,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.BinaryOperator;
+import java.util.function.UnaryOperator;
 
 public class SQLiteDatabase extends SQLiteClosable
 {
@@ -91,10 +93,13 @@ public class SQLiteDatabase extends SQLiteClosable
     public void beginTransactionWithListenerNonExclusive(SQLiteTransactionListener p0){}
     public void disableWriteAheadLogging(){}
     public void endTransaction(){}
+    public void execPerConnectionSQL(String p0, Object[] p1){}
     public void execSQL(String p0){}
     public void execSQL(String p0, Object[] p1){}
     public void markTableSyncable(String p0, String p1){}
     public void markTableSyncable(String p0, String p1, String p2){}
+    public void setCustomAggregateFunction(String p0, BinaryOperator<String> p1){}
+    public void setCustomScalarFunction(String p0, UnaryOperator<String> p1){}
     public void setForeignKeyConstraintsEnabled(boolean p0){}
     public void setLocale(Locale p0){}
     public void setLockingEnabled(boolean p0){}

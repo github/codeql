@@ -337,9 +337,9 @@ void test_string_at()
 	b.at(0) = ns_char::source();
 	c[0] = a[0];
 
-	sink(a); // $ ast MISSING: ir
-	sink(b); // $ ast MISSING: ir
-	sink(c); // $ ast MISSING: ir
+	sink(a); // $ ast,ir
+	sink(b); // $ ast,ir
+	sink(c); // $ ast,ir
 }
 
 void test_string_data_more()
@@ -347,8 +347,8 @@ void test_string_data_more()
 	std::string str("123");
 
 	str.data()[1] = ns_char::source();
-	sink(str); // $ ast MISSING: ir
-	sink(str.data()); // $ ast MISSING: ir
+	sink(str); // $ ast,ir
+	sink(str.data()); // $ ast,ir
 }
 
 void test_string_iterators() {
@@ -540,7 +540,7 @@ void test_string_return_assign() {
 		sink(b);
 		sink(c); // $ ast,ir
 		sink(d); // $ ast,ir
-		sink(e); // $ ast MISSING: ir
+		sink(e); // $ ast,ir
 		sink(f); // $ ast,ir
 	}
 
@@ -560,7 +560,7 @@ void test_string_return_assign() {
 		sink(b);
 		sink(c); // $ ast,ir
 		sink(d); // $ ast,ir
-		sink(e); // $ ast MISSING: ir
+		sink(e); // $ ast,ir
 		sink(f); // $ SPURIOUS: ast,ir
 	}
 }

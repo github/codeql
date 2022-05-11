@@ -15,7 +15,7 @@ private import experimental.ir.internal.IRUtilities
 private import desugar.Foreach
 private import desugar.Lock
 
-TranslatedStmt getTranslatedStmt(Stmt stmt) { result.getAST() = stmt }
+TranslatedStmt getTranslatedStmt(Stmt stmt) { result.getAst() = stmt }
 
 abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
   Stmt stmt;
@@ -24,7 +24,10 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
 
   final override string toString() { result = stmt.toString() }
 
-  final override Language::AST getAST() { result = stmt }
+  final override Language::AST getAst() { result = stmt }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Language::AST getAST() { result = this.getAst() }
 
   final override Callable getFunction() { result = stmt.getEnclosingCallable() }
 }
@@ -89,7 +92,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
 class TranslatedExprStmt extends TranslatedStmt {
   override ExprStmt stmt;
 
-  TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.(ExprStmt).getExpr()) }
+  TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.getExpr()) }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getExpr() }
 
@@ -123,7 +126,7 @@ class TranslatedExprStmtAccessorSet extends TranslatedExprStmt {
   }
 
   override TranslatedExpr getExpr() {
-    result = getTranslatedExpr(stmt.(ExprStmt).getExpr().(AssignExpr).getLValue())
+    result = getTranslatedExpr(stmt.getExpr().(AssignExpr).getLValue())
   }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getExpr() }

@@ -8,37 +8,37 @@ namespace System
         public static class Directory
         {
             public static System.IO.DirectoryInfo CreateDirectory(string path) => throw null;
-            public static void Delete(string path, bool recursive) => throw null;
             public static void Delete(string path) => throw null;
-            public static System.Collections.Generic.IEnumerable<string> EnumerateDirectories(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
-            public static System.Collections.Generic.IEnumerable<string> EnumerateDirectories(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
-            public static System.Collections.Generic.IEnumerable<string> EnumerateDirectories(string path, string searchPattern) => throw null;
+            public static void Delete(string path, bool recursive) => throw null;
             public static System.Collections.Generic.IEnumerable<string> EnumerateDirectories(string path) => throw null;
-            public static System.Collections.Generic.IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
-            public static System.Collections.Generic.IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
-            public static System.Collections.Generic.IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateDirectories(string path, string searchPattern) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateDirectories(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateDirectories(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
             public static System.Collections.Generic.IEnumerable<string> EnumerateFileSystemEntries(string path) => throw null;
-            public static System.Collections.Generic.IEnumerable<string> EnumerateFiles(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
-            public static System.Collections.Generic.IEnumerable<string> EnumerateFiles(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
-            public static System.Collections.Generic.IEnumerable<string> EnumerateFiles(string path, string searchPattern) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFileSystemEntries(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
             public static System.Collections.Generic.IEnumerable<string> EnumerateFiles(string path) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFiles(string path, string searchPattern) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFiles(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> EnumerateFiles(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
             public static bool Exists(string path) => throw null;
             public static System.DateTime GetCreationTime(string path) => throw null;
             public static System.DateTime GetCreationTimeUtc(string path) => throw null;
             public static string GetCurrentDirectory() => throw null;
-            public static string[] GetDirectories(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
-            public static string[] GetDirectories(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
-            public static string[] GetDirectories(string path, string searchPattern) => throw null;
             public static string[] GetDirectories(string path) => throw null;
+            public static string[] GetDirectories(string path, string searchPattern) => throw null;
+            public static string[] GetDirectories(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public static string[] GetDirectories(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
             public static string GetDirectoryRoot(string path) => throw null;
-            public static string[] GetFileSystemEntries(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
-            public static string[] GetFileSystemEntries(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
-            public static string[] GetFileSystemEntries(string path, string searchPattern) => throw null;
             public static string[] GetFileSystemEntries(string path) => throw null;
-            public static string[] GetFiles(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
-            public static string[] GetFiles(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
-            public static string[] GetFiles(string path, string searchPattern) => throw null;
+            public static string[] GetFileSystemEntries(string path, string searchPattern) => throw null;
+            public static string[] GetFileSystemEntries(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public static string[] GetFileSystemEntries(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
             public static string[] GetFiles(string path) => throw null;
+            public static string[] GetFiles(string path, string searchPattern) => throw null;
+            public static string[] GetFiles(string path, string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public static string[] GetFiles(string path, string searchPattern, System.IO.SearchOption searchOption) => throw null;
             public static System.DateTime GetLastAccessTime(string path) => throw null;
             public static System.DateTime GetLastAccessTimeUtc(string path) => throw null;
             public static System.DateTime GetLastWriteTime(string path) => throw null;
@@ -60,34 +60,34 @@ namespace System
         {
             public void Create() => throw null;
             public System.IO.DirectoryInfo CreateSubdirectory(string path) => throw null;
-            public void Delete(bool recursive) => throw null;
             public override void Delete() => throw null;
+            public void Delete(bool recursive) => throw null;
             public DirectoryInfo(string path) => throw null;
-            public System.Collections.Generic.IEnumerable<System.IO.DirectoryInfo> EnumerateDirectories(string searchPattern, System.IO.SearchOption searchOption) => throw null;
-            public System.Collections.Generic.IEnumerable<System.IO.DirectoryInfo> EnumerateDirectories(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
-            public System.Collections.Generic.IEnumerable<System.IO.DirectoryInfo> EnumerateDirectories(string searchPattern) => throw null;
             public System.Collections.Generic.IEnumerable<System.IO.DirectoryInfo> EnumerateDirectories() => throw null;
-            public System.Collections.Generic.IEnumerable<System.IO.FileSystemInfo> EnumerateFileSystemInfos(string searchPattern, System.IO.SearchOption searchOption) => throw null;
-            public System.Collections.Generic.IEnumerable<System.IO.FileSystemInfo> EnumerateFileSystemInfos(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
-            public System.Collections.Generic.IEnumerable<System.IO.FileSystemInfo> EnumerateFileSystemInfos(string searchPattern) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.DirectoryInfo> EnumerateDirectories(string searchPattern) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.DirectoryInfo> EnumerateDirectories(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.DirectoryInfo> EnumerateDirectories(string searchPattern, System.IO.SearchOption searchOption) => throw null;
             public System.Collections.Generic.IEnumerable<System.IO.FileSystemInfo> EnumerateFileSystemInfos() => throw null;
-            public System.Collections.Generic.IEnumerable<System.IO.FileInfo> EnumerateFiles(string searchPattern, System.IO.SearchOption searchOption) => throw null;
-            public System.Collections.Generic.IEnumerable<System.IO.FileInfo> EnumerateFiles(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
-            public System.Collections.Generic.IEnumerable<System.IO.FileInfo> EnumerateFiles(string searchPattern) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileSystemInfo> EnumerateFileSystemInfos(string searchPattern) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileSystemInfo> EnumerateFileSystemInfos(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileSystemInfo> EnumerateFileSystemInfos(string searchPattern, System.IO.SearchOption searchOption) => throw null;
             public System.Collections.Generic.IEnumerable<System.IO.FileInfo> EnumerateFiles() => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileInfo> EnumerateFiles(string searchPattern) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileInfo> EnumerateFiles(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public System.Collections.Generic.IEnumerable<System.IO.FileInfo> EnumerateFiles(string searchPattern, System.IO.SearchOption searchOption) => throw null;
             public override bool Exists { get => throw null; }
-            public System.IO.DirectoryInfo[] GetDirectories(string searchPattern, System.IO.SearchOption searchOption) => throw null;
-            public System.IO.DirectoryInfo[] GetDirectories(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
-            public System.IO.DirectoryInfo[] GetDirectories(string searchPattern) => throw null;
             public System.IO.DirectoryInfo[] GetDirectories() => throw null;
-            public System.IO.FileSystemInfo[] GetFileSystemInfos(string searchPattern, System.IO.SearchOption searchOption) => throw null;
-            public System.IO.FileSystemInfo[] GetFileSystemInfos(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
-            public System.IO.FileSystemInfo[] GetFileSystemInfos(string searchPattern) => throw null;
+            public System.IO.DirectoryInfo[] GetDirectories(string searchPattern) => throw null;
+            public System.IO.DirectoryInfo[] GetDirectories(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public System.IO.DirectoryInfo[] GetDirectories(string searchPattern, System.IO.SearchOption searchOption) => throw null;
             public System.IO.FileSystemInfo[] GetFileSystemInfos() => throw null;
-            public System.IO.FileInfo[] GetFiles(string searchPattern, System.IO.SearchOption searchOption) => throw null;
-            public System.IO.FileInfo[] GetFiles(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
-            public System.IO.FileInfo[] GetFiles(string searchPattern) => throw null;
+            public System.IO.FileSystemInfo[] GetFileSystemInfos(string searchPattern) => throw null;
+            public System.IO.FileSystemInfo[] GetFileSystemInfos(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public System.IO.FileSystemInfo[] GetFileSystemInfos(string searchPattern, System.IO.SearchOption searchOption) => throw null;
             public System.IO.FileInfo[] GetFiles() => throw null;
+            public System.IO.FileInfo[] GetFiles(string searchPattern) => throw null;
+            public System.IO.FileInfo[] GetFiles(string searchPattern, System.IO.EnumerationOptions enumerationOptions) => throw null;
+            public System.IO.FileInfo[] GetFiles(string searchPattern, System.IO.SearchOption searchOption) => throw null;
             public void MoveTo(string destDirName) => throw null;
             public override string Name { get => throw null; }
             public System.IO.DirectoryInfo Parent { get => throw null; }
@@ -111,20 +111,20 @@ namespace System
         // Generated from `System.IO.File` in `System.IO.FileSystem, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class File
         {
-            public static void AppendAllLines(string path, System.Collections.Generic.IEnumerable<string> contents, System.Text.Encoding encoding) => throw null;
             public static void AppendAllLines(string path, System.Collections.Generic.IEnumerable<string> contents) => throw null;
+            public static void AppendAllLines(string path, System.Collections.Generic.IEnumerable<string> contents, System.Text.Encoding encoding) => throw null;
             public static System.Threading.Tasks.Task AppendAllLinesAsync(string path, System.Collections.Generic.IEnumerable<string> contents, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public static System.Threading.Tasks.Task AppendAllLinesAsync(string path, System.Collections.Generic.IEnumerable<string> contents, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public static void AppendAllText(string path, string contents, System.Text.Encoding encoding) => throw null;
             public static void AppendAllText(string path, string contents) => throw null;
+            public static void AppendAllText(string path, string contents, System.Text.Encoding encoding) => throw null;
             public static System.Threading.Tasks.Task AppendAllTextAsync(string path, string contents, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public static System.Threading.Tasks.Task AppendAllTextAsync(string path, string contents, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public static System.IO.StreamWriter AppendText(string path) => throw null;
-            public static void Copy(string sourceFileName, string destFileName, bool overwrite) => throw null;
             public static void Copy(string sourceFileName, string destFileName) => throw null;
-            public static System.IO.FileStream Create(string path, int bufferSize, System.IO.FileOptions options) => throw null;
-            public static System.IO.FileStream Create(string path, int bufferSize) => throw null;
+            public static void Copy(string sourceFileName, string destFileName, bool overwrite) => throw null;
             public static System.IO.FileStream Create(string path) => throw null;
+            public static System.IO.FileStream Create(string path, int bufferSize) => throw null;
+            public static System.IO.FileStream Create(string path, int bufferSize, System.IO.FileOptions options) => throw null;
             public static System.IO.StreamWriter CreateText(string path) => throw null;
             public static void Decrypt(string path) => throw null;
             public static void Delete(string path) => throw null;
@@ -137,28 +137,28 @@ namespace System
             public static System.DateTime GetLastAccessTimeUtc(string path) => throw null;
             public static System.DateTime GetLastWriteTime(string path) => throw null;
             public static System.DateTime GetLastWriteTimeUtc(string path) => throw null;
-            public static void Move(string sourceFileName, string destFileName, bool overwrite) => throw null;
             public static void Move(string sourceFileName, string destFileName) => throw null;
-            public static System.IO.FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) => throw null;
-            public static System.IO.FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access) => throw null;
+            public static void Move(string sourceFileName, string destFileName, bool overwrite) => throw null;
             public static System.IO.FileStream Open(string path, System.IO.FileMode mode) => throw null;
+            public static System.IO.FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access) => throw null;
+            public static System.IO.FileStream Open(string path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) => throw null;
             public static System.IO.FileStream OpenRead(string path) => throw null;
             public static System.IO.StreamReader OpenText(string path) => throw null;
             public static System.IO.FileStream OpenWrite(string path) => throw null;
             public static System.Byte[] ReadAllBytes(string path) => throw null;
             public static System.Threading.Tasks.Task<System.Byte[]> ReadAllBytesAsync(string path, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public static string[] ReadAllLines(string path, System.Text.Encoding encoding) => throw null;
             public static string[] ReadAllLines(string path) => throw null;
+            public static string[] ReadAllLines(string path, System.Text.Encoding encoding) => throw null;
             public static System.Threading.Tasks.Task<string[]> ReadAllLinesAsync(string path, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public static System.Threading.Tasks.Task<string[]> ReadAllLinesAsync(string path, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public static string ReadAllText(string path, System.Text.Encoding encoding) => throw null;
             public static string ReadAllText(string path) => throw null;
+            public static string ReadAllText(string path, System.Text.Encoding encoding) => throw null;
             public static System.Threading.Tasks.Task<string> ReadAllTextAsync(string path, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public static System.Threading.Tasks.Task<string> ReadAllTextAsync(string path, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public static System.Collections.Generic.IEnumerable<string> ReadLines(string path, System.Text.Encoding encoding) => throw null;
             public static System.Collections.Generic.IEnumerable<string> ReadLines(string path) => throw null;
-            public static void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors) => throw null;
+            public static System.Collections.Generic.IEnumerable<string> ReadLines(string path, System.Text.Encoding encoding) => throw null;
             public static void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName) => throw null;
+            public static void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors) => throw null;
             public static void SetAttributes(string path, System.IO.FileAttributes fileAttributes) => throw null;
             public static void SetCreationTime(string path, System.DateTime creationTime) => throw null;
             public static void SetCreationTimeUtc(string path, System.DateTime creationTimeUtc) => throw null;
@@ -168,14 +168,14 @@ namespace System
             public static void SetLastWriteTimeUtc(string path, System.DateTime lastWriteTimeUtc) => throw null;
             public static void WriteAllBytes(string path, System.Byte[] bytes) => throw null;
             public static System.Threading.Tasks.Task WriteAllBytesAsync(string path, System.Byte[] bytes, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public static void WriteAllLines(string path, string[] contents, System.Text.Encoding encoding) => throw null;
-            public static void WriteAllLines(string path, string[] contents) => throw null;
-            public static void WriteAllLines(string path, System.Collections.Generic.IEnumerable<string> contents, System.Text.Encoding encoding) => throw null;
             public static void WriteAllLines(string path, System.Collections.Generic.IEnumerable<string> contents) => throw null;
+            public static void WriteAllLines(string path, System.Collections.Generic.IEnumerable<string> contents, System.Text.Encoding encoding) => throw null;
+            public static void WriteAllLines(string path, string[] contents) => throw null;
+            public static void WriteAllLines(string path, string[] contents, System.Text.Encoding encoding) => throw null;
             public static System.Threading.Tasks.Task WriteAllLinesAsync(string path, System.Collections.Generic.IEnumerable<string> contents, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public static System.Threading.Tasks.Task WriteAllLinesAsync(string path, System.Collections.Generic.IEnumerable<string> contents, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-            public static void WriteAllText(string path, string contents, System.Text.Encoding encoding) => throw null;
             public static void WriteAllText(string path, string contents) => throw null;
+            public static void WriteAllText(string path, string contents, System.Text.Encoding encoding) => throw null;
             public static System.Threading.Tasks.Task WriteAllTextAsync(string path, string contents, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             public static System.Threading.Tasks.Task WriteAllTextAsync(string path, string contents, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
         }
@@ -184,8 +184,8 @@ namespace System
         public class FileInfo : System.IO.FileSystemInfo
         {
             public System.IO.StreamWriter AppendText() => throw null;
-            public System.IO.FileInfo CopyTo(string destFileName, bool overwrite) => throw null;
             public System.IO.FileInfo CopyTo(string destFileName) => throw null;
+            public System.IO.FileInfo CopyTo(string destFileName, bool overwrite) => throw null;
             public System.IO.FileStream Create() => throw null;
             public System.IO.StreamWriter CreateText() => throw null;
             public void Decrypt() => throw null;
@@ -197,17 +197,17 @@ namespace System
             public FileInfo(string fileName) => throw null;
             public bool IsReadOnly { get => throw null; set => throw null; }
             public System.Int64 Length { get => throw null; }
-            public void MoveTo(string destFileName, bool overwrite) => throw null;
             public void MoveTo(string destFileName) => throw null;
+            public void MoveTo(string destFileName, bool overwrite) => throw null;
             public override string Name { get => throw null; }
-            public System.IO.FileStream Open(System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) => throw null;
-            public System.IO.FileStream Open(System.IO.FileMode mode, System.IO.FileAccess access) => throw null;
             public System.IO.FileStream Open(System.IO.FileMode mode) => throw null;
+            public System.IO.FileStream Open(System.IO.FileMode mode, System.IO.FileAccess access) => throw null;
+            public System.IO.FileStream Open(System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) => throw null;
             public System.IO.FileStream OpenRead() => throw null;
             public System.IO.StreamReader OpenText() => throw null;
             public System.IO.FileStream OpenWrite() => throw null;
-            public System.IO.FileInfo Replace(string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors) => throw null;
             public System.IO.FileInfo Replace(string destinationFileName, string destinationBackupFileName) => throw null;
+            public System.IO.FileInfo Replace(string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors) => throw null;
             public override string ToString() => throw null;
         }
 
@@ -220,8 +220,8 @@ namespace System
             public abstract void Delete();
             public abstract bool Exists { get; }
             public string Extension { get => throw null; }
-            protected FileSystemInfo(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             protected FileSystemInfo() => throw null;
+            protected FileSystemInfo(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public virtual string FullName { get => throw null; }
             protected string FullPath;
             public virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -280,9 +280,8 @@ namespace System
             }
 
             // Generated from `System.IO.Enumeration.FileSystemEnumerable<>` in `System.IO.FileSystem, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class FileSystemEnumerable<TResult> : System.Collections.IEnumerable, System.Collections.Generic.IEnumerable<TResult>
+            public class FileSystemEnumerable<TResult> : System.Collections.Generic.IEnumerable<TResult>, System.Collections.IEnumerable
             {
-                public FileSystemEnumerable(string directory, System.IO.Enumeration.FileSystemEnumerable<TResult>.FindTransform transform, System.IO.EnumerationOptions options = default(System.IO.EnumerationOptions)) => throw null;
                 // Generated from `System.IO.Enumeration.FileSystemEnumerable<>+FindPredicate` in `System.IO.FileSystem, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public delegate bool FindPredicate(ref System.IO.Enumeration.FileSystemEntry entry);
 
@@ -291,6 +290,7 @@ namespace System
                 public delegate TResult FindTransform(ref System.IO.Enumeration.FileSystemEntry entry);
 
 
+                public FileSystemEnumerable(string directory, System.IO.Enumeration.FileSystemEnumerable<TResult>.FindTransform transform, System.IO.EnumerationOptions options = default(System.IO.EnumerationOptions)) => throw null;
                 public System.Collections.Generic.IEnumerator<TResult> GetEnumerator() => throw null;
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                 public System.IO.Enumeration.FileSystemEnumerable<TResult>.FindPredicate ShouldIncludePredicate { get => throw null; set => throw null; }
@@ -298,7 +298,7 @@ namespace System
             }
 
             // Generated from `System.IO.Enumeration.FileSystemEnumerator<>` in `System.IO.FileSystem, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public abstract class FileSystemEnumerator<TResult> : System.Runtime.ConstrainedExecution.CriticalFinalizerObject, System.IDisposable, System.Collections.IEnumerator, System.Collections.Generic.IEnumerator<TResult>
+            public abstract class FileSystemEnumerator<TResult> : System.Runtime.ConstrainedExecution.CriticalFinalizerObject, System.Collections.Generic.IEnumerator<TResult>, System.Collections.IEnumerator, System.IDisposable
             {
                 protected virtual bool ContinueOnError(int error) => throw null;
                 public TResult Current { get => throw null; }

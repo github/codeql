@@ -1,0 +1,8 @@
+edges
+| RequestForgery.cs:14:52:14:54 | url : String | RequestForgery.cs:16:66:16:68 | access to parameter url |
+nodes
+| RequestForgery.cs:14:52:14:54 | url : String | semmle.label | url : String |
+| RequestForgery.cs:16:66:16:68 | access to parameter url | semmle.label | access to parameter url |
+subpaths
+#select
+| RequestForgery.cs:16:66:16:68 | access to parameter url | RequestForgery.cs:14:52:14:54 | url : String | RequestForgery.cs:16:66:16:68 | access to parameter url | $@ flows to here and is used in a server side web request. | RequestForgery.cs:14:52:14:54 | url | User-provided value |

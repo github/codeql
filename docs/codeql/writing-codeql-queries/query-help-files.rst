@@ -40,6 +40,13 @@ Query help files are written using a custom XML format, and stored in a file wit
 The header and single top-level ``qhelp`` element are both mandatory. 
 The following sections explain additional elements that you may include in your query help files.
 
+.. pull-quote::
+
+   Code scanning does not process ``.qhelp`` files for custom CodeQL queries, so to show 
+   query help for custom queries in the code scanning UI you must convert the ``.qhelp`` files to markdown 
+   and then include the markdown-rendered query help in SARIF files generated during an analysis.
+   For more information, see 
+   ":ref:`Analyzing databases with the CodeQL CLI <including-query-help-for-custom-codeql-queries-in-sarif-files>`." 
 
 Section-level elements
 ======================

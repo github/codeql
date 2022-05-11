@@ -25,7 +25,7 @@ module ControlFlow {
    * Only nodes that can be reached from the callable entry point are included in
    * the CFG.
    */
-  class Node extends TNode {
+  class Node extends TCfgNode {
     /** Gets a textual representation of this control flow node. */
     string toString() { none() }
 
@@ -241,7 +241,7 @@ module ControlFlow {
     predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
 
     /** Gets the enclosing callable of this control flow node. */
-    Callable getEnclosingCallable() { none() }
+    final Callable getEnclosingCallable() { result = getNodeCfgScope(this) }
   }
 
   /** Provides different types of control flow nodes. */
@@ -252,8 +252,6 @@ module ControlFlow {
       Callable getCallable() { this = TEntryNode(result) }
 
       override BasicBlocks::EntryBlock getBasicBlock() { result = Node.super.getBasicBlock() }
-
-      override Callable getEnclosingCallable() { result = this.getCallable() }
 
       private Assignable getAssignable() { this = TEntryNode(result) }
 
@@ -268,13 +266,13 @@ module ControlFlow {
 
     /** A node for a callable exit point, annotated with the type of exit. */
     class AnnotatedExitNode extends Node, TAnnotatedExitNode {
-      private Callable c;
+      private CfgScope scope;
       private boolean normal;
 
-      AnnotatedExitNode() { this = TAnnotatedExitNode(c, normal) }
+      AnnotatedExitNode() { this = TAnnotatedExitNode(scope, normal) }
 
       /** Gets the callable that this exit applies to. */
-      Callable getCallable() { result = c }
+      CfgScope getCallable() { result = scope }
 
       /** Holds if this node represents a normal exit. */
       predicate isNormal() { normal = true }
@@ -283,9 +281,7 @@ module ControlFlow {
         result = Node.super.getBasicBlock()
       }
 
-      override Callable getEnclosingCallable() { result = this.getCallable() }
-
-      override Location getLocation() { result = this.getCallable().getLocation() }
+      override Location getLocation() { result = scope.getLocation() }
 
       override string toString() {
         exists(string s |
@@ -293,23 +289,25 @@ module ControlFlow {
           or
           normal = false and s = "abnormal"
         |
-          result = "exit " + this.getCallable() + " (" + s + ")"
+          result = "exit " + scope + " (" + s + ")"
         )
       }
     }
 
     /** A node for a callable exit point. */
     class ExitNode extends Node, TExitNode {
+      private CfgScope scope;
+
+      ExitNode() { this = TExitNode(scope) }
+
       /** Gets the callable that this exit applies to. */
-      Callable getCallable() { this = TExitNode(result) }
+      Callable getCallable() { result = scope }
 
       override BasicBlocks::ExitBlock getBasicBlock() { result = Node.super.getBasicBlock() }
 
-      override Callable getEnclosingCallable() { result = this.getCallable() }
+      override Location getLocation() { result = scope.getLocation() }
 
-      override Location getLocation() { result = this.getCallable().getLocation() }
-
-      override string toString() { result = "exit " + this.getCallable().toString() }
+      override string toString() { result = "exit " + scope }
     }
 
     /**
@@ -323,14 +321,7 @@ module ControlFlow {
       private Splits splits;
       private ControlFlowElement cfe;
 
-      ElementNode() { this = TElementNode(cfe, splits) }
-
-      override Callable getEnclosingCallable() {
-        result = cfe.getEnclosingCallable()
-        or
-        result =
-          this.getASplit().(Splitting::InitializerSplitting::InitializerSplit).getConstructor()
-      }
+      ElementNode() { this = TElementNode(_, cfe, splits) }
 
       override ControlFlowElement getElement() { result = cfe }
 

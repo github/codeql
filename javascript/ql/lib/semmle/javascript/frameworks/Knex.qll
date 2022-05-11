@@ -46,16 +46,34 @@ module Knex {
     RawKnexSqlString() { this = any(RawKnexCall call).getArgument(0).asExpr() }
   }
 
-  /** A call that triggers a SQL query submission. */
-  private class KnexDatabaseAccess extends DatabaseAccess {
-    KnexDatabaseAccess() {
-      this = knexObject().getMember(["then", "stream", "asCallback"]).getACall()
+  /** A call that triggers a SQL query submission by calling then/stream/asCallback. */
+  private class KnexDatabaseCallback extends DatabaseAccess, DataFlow::CallNode {
+    string member;
+
+    KnexDatabaseCallback() {
+      member = ["then", "stream", "asCallback"] and
+      this = knexObject().getMember(member).getACall()
+    }
+
+    override DataFlow::Node getAResult() {
+      member = "then" and
+      result = this.getCallback(0).getParameter(0)
       or
-      exists(AwaitExpr await |
-        this = await.flow() and
-        await.getOperand() = knexObject().getAUse().asExpr()
+      member = "asCallback" and
+      result = this.getCallback(0).getParameter(1)
+    }
+
+    override DataFlow::Node getAQueryArgument() { none() }
+  }
+
+  private class KnexDatabaseAwait extends DatabaseAccess, DataFlow::ValueNode {
+    KnexDatabaseAwait() {
+      exists(AwaitExpr enclosingAwait | this = enclosingAwait.flow() |
+        enclosingAwait.getOperand() = knexObject().getAUse().asExpr()
       )
     }
+
+    override DataFlow::Node getAResult() { result = this }
 
     override DataFlow::Node getAQueryArgument() { none() }
   }

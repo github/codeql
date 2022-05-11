@@ -4,8 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @id py/insecure-ldap-auth
- * @tags experimental
- *       security
+ * @tags security
  *       external/cwe/cwe-522
  *       external/cwe/cwe-523
  */
@@ -15,7 +14,7 @@ import python
 import DataFlow::PathGraph
 import experimental.semmle.python.security.LDAPInsecureAuth
 
-from LDAPInsecureAuthConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
+from LdapInsecureAuthConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ is authenticated insecurely.", sink.getNode(),
   "This LDAP host"

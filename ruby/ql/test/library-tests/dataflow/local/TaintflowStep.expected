@@ -1,0 +1,33 @@
+failures
+edges
+| local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:79:25:79:25 | b |
+| local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:80:29:80:29 | a |
+| local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:82:12:82:12 | c |
+| local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:83:12:83:12 | d |
+| local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:84:12:84:12 | e |
+| local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:85:27:85:27 | f |
+| local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:86:33:86:33 | g |
+| local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:87:25:87:25 | x |
+| local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:89:8:89:8 | z |
+nodes
+| local_dataflow.rb:78:12:78:20 | call to source :  | semmle.label | call to source :  |
+| local_dataflow.rb:79:25:79:25 | b | semmle.label | b |
+| local_dataflow.rb:80:29:80:29 | a | semmle.label | a |
+| local_dataflow.rb:82:12:82:12 | c | semmle.label | c |
+| local_dataflow.rb:83:12:83:12 | d | semmle.label | d |
+| local_dataflow.rb:84:12:84:12 | e | semmle.label | e |
+| local_dataflow.rb:85:27:85:27 | f | semmle.label | f |
+| local_dataflow.rb:86:33:86:33 | g | semmle.label | g |
+| local_dataflow.rb:87:25:87:25 | x | semmle.label | x |
+| local_dataflow.rb:89:8:89:8 | z | semmle.label | z |
+subpaths
+#select
+| local_dataflow.rb:79:25:79:25 | b | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:79:25:79:25 | b | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
+| local_dataflow.rb:80:29:80:29 | a | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:80:29:80:29 | a | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
+| local_dataflow.rb:82:12:82:12 | c | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:82:12:82:12 | c | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
+| local_dataflow.rb:83:12:83:12 | d | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:83:12:83:12 | d | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
+| local_dataflow.rb:84:12:84:12 | e | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:84:12:84:12 | e | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
+| local_dataflow.rb:85:27:85:27 | f | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:85:27:85:27 | f | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
+| local_dataflow.rb:86:33:86:33 | g | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:86:33:86:33 | g | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
+| local_dataflow.rb:87:25:87:25 | x | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:87:25:87:25 | x | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |
+| local_dataflow.rb:89:8:89:8 | z | local_dataflow.rb:78:12:78:20 | call to source :  | local_dataflow.rb:89:8:89:8 | z | $@ | local_dataflow.rb:78:12:78:20 | call to source :  | call to source :  |

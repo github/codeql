@@ -9,8 +9,9 @@
  * @id js/incomplete-sanitization
  * @tags correctness
  *       security
- *       external/cwe/cwe-116
  *       external/cwe/cwe-020
+ *       external/cwe/cwe-080
+ *       external/cwe/cwe-116
  */
 
 import javascript

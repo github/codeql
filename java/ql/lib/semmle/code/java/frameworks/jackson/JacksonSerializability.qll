@@ -14,13 +14,16 @@ private import semmle.code.java.dataflow.ExternalFlow
 /**
  * A `@com.fasterxml.jackson.annotation.JsonIgnore` annoation.
  */
-class JacksonJSONIgnoreAnnotation extends NonReflectiveAnnotation {
-  JacksonJSONIgnoreAnnotation() {
+class JacksonJsonIgnoreAnnotation extends NonReflectiveAnnotation {
+  JacksonJsonIgnoreAnnotation() {
     exists(AnnotationType anntp | anntp = this.getType() |
       anntp.hasQualifiedName("com.fasterxml.jackson.annotation", "JsonIgnore")
     )
   }
 }
+
+/** DEPRECATED: Alias for JacksonJsonIgnoreAnnotation */
+deprecated class JacksonJSONIgnoreAnnotation = JacksonJsonIgnoreAnnotation;
 
 /** A type whose values may be serialized using the Jackson JSON framework. */
 abstract class JacksonSerializableType extends Type { }
@@ -139,11 +142,11 @@ private class FieldReferencedJacksonDeserializableType extends JacksonDeserializ
 class JacksonSerializableField extends SerializableField {
   JacksonSerializableField() {
     exists(JacksonSerializableType superType |
-      superType = this.getDeclaringType().getASupertype*() and
+      superType = this.getDeclaringType().getAnAncestor() and
       not superType instanceof TypeObject and
       superType.fromSource()
     ) and
-    not this.getAnAnnotation() instanceof JacksonJSONIgnoreAnnotation
+    not this.getAnAnnotation() instanceof JacksonJsonIgnoreAnnotation
   }
 }
 
@@ -151,11 +154,11 @@ class JacksonSerializableField extends SerializableField {
 class JacksonDeserializableField extends DeserializableField {
   JacksonDeserializableField() {
     exists(JacksonDeserializableType superType |
-      superType = this.getDeclaringType().getASupertype*() and
+      superType = this.getDeclaringType().getAnAncestor() and
       not superType instanceof TypeObject and
       superType.fromSource()
     ) and
-    not this.getAnAnnotation() instanceof JacksonJSONIgnoreAnnotation
+    not this.getAnAnnotation() instanceof JacksonJsonIgnoreAnnotation
   }
 }
 
@@ -284,8 +287,8 @@ private class JacksonModel extends SummaryModelCsv {
     row =
       [
         "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;MapValue of Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Element of MapValue of Argument[0];ReturnValue;taint",
+        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0].MapValue;ReturnValue;taint",
+        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0].MapValue.Element;ReturnValue;taint",
         "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint",
         "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint",
         "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint",

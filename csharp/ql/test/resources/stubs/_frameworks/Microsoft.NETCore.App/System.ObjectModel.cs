@@ -17,9 +17,9 @@ namespace System
                 protected abstract TKey GetKeyForItem(TItem item);
                 protected override void InsertItem(int index, TItem item) => throw null;
                 public TItem this[TKey key] { get => throw null; }
-                protected KeyedCollection(System.Collections.Generic.IEqualityComparer<TKey> comparer, int dictionaryCreationThreshold) => throw null;
-                protected KeyedCollection(System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
                 protected KeyedCollection() => throw null;
+                protected KeyedCollection(System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
+                protected KeyedCollection(System.Collections.Generic.IEqualityComparer<TKey> comparer, int dictionaryCreationThreshold) => throw null;
                 public bool Remove(TKey key) => throw null;
                 protected override void RemoveItem(int index) => throw null;
                 protected override void SetItem(int index, TItem item) => throw null;
@@ -27,7 +27,7 @@ namespace System
             }
 
             // Generated from `System.Collections.ObjectModel.ObservableCollection<>` in `System.ObjectModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class ObservableCollection<T> : System.Collections.ObjectModel.Collection<T>, System.ComponentModel.INotifyPropertyChanged, System.Collections.Specialized.INotifyCollectionChanged
+            public class ObservableCollection<T> : System.Collections.ObjectModel.Collection<T>, System.Collections.Specialized.INotifyCollectionChanged, System.ComponentModel.INotifyPropertyChanged
             {
                 protected System.IDisposable BlockReentrancy() => throw null;
                 protected void CheckReentrancy() => throw null;
@@ -36,9 +36,9 @@ namespace System
                 protected override void InsertItem(int index, T item) => throw null;
                 public void Move(int oldIndex, int newIndex) => throw null;
                 protected virtual void MoveItem(int oldIndex, int newIndex) => throw null;
-                public ObservableCollection(System.Collections.Generic.List<T> list) => throw null;
-                public ObservableCollection(System.Collections.Generic.IEnumerable<T> collection) => throw null;
                 public ObservableCollection() => throw null;
+                public ObservableCollection(System.Collections.Generic.IEnumerable<T> collection) => throw null;
+                public ObservableCollection(System.Collections.Generic.List<T> list) => throw null;
                 protected virtual void OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e) => throw null;
                 protected virtual void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) => throw null;
                 protected virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -48,32 +48,10 @@ namespace System
             }
 
             // Generated from `System.Collections.ObjectModel.ReadOnlyDictionary<,>` in `System.ObjectModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class ReadOnlyDictionary<TKey, TValue> : System.Collections.IEnumerable, System.Collections.IDictionary, System.Collections.ICollection, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>
+            public class ReadOnlyDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable
             {
-                void System.Collections.IDictionary.Add(object key, object value) => throw null;
-                void System.Collections.Generic.IDictionary<TKey, TValue>.Add(TKey key, TValue value) => throw null;
-                void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Add(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
-                void System.Collections.IDictionary.Clear() => throw null;
-                void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Clear() => throw null;
-                bool System.Collections.IDictionary.Contains(object key) => throw null;
-                bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Contains(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
-                public bool ContainsKey(TKey key) => throw null;
-                void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
-                void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.CopyTo(System.Collections.Generic.KeyValuePair<TKey, TValue>[] array, int arrayIndex) => throw null;
-                public int Count { get => throw null; }
-                protected System.Collections.Generic.IDictionary<TKey, TValue> Dictionary { get => throw null; }
-                public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> GetEnumerator() => throw null;
-                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
-                System.Collections.IDictionaryEnumerator System.Collections.IDictionary.GetEnumerator() => throw null;
-                bool System.Collections.IDictionary.IsFixedSize { get => throw null; }
-                bool System.Collections.IDictionary.IsReadOnly { get => throw null; }
-                bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.IsReadOnly { get => throw null; }
-                bool System.Collections.ICollection.IsSynchronized { get => throw null; }
-                public TValue this[TKey key] { get => throw null; }
-                object System.Collections.IDictionary.this[object key] { get => throw null; set => throw null; }
-                TValue System.Collections.Generic.IDictionary<TKey, TValue>.this[TKey key] { get => throw null; set => throw null; }
                 // Generated from `System.Collections.ObjectModel.ReadOnlyDictionary<,>+KeyCollection` in `System.ObjectModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public class KeyCollection : System.Collections.IEnumerable, System.Collections.ICollection, System.Collections.Generic.IReadOnlyCollection<TKey>, System.Collections.Generic.IEnumerable<TKey>, System.Collections.Generic.ICollection<TKey>
+                public class KeyCollection : System.Collections.Generic.ICollection<TKey>, System.Collections.Generic.IEnumerable<TKey>, System.Collections.Generic.IReadOnlyCollection<TKey>, System.Collections.ICollection, System.Collections.IEnumerable
                 {
                     void System.Collections.Generic.ICollection<TKey>.Add(TKey item) => throw null;
                     void System.Collections.Generic.ICollection<TKey>.Clear() => throw null;
@@ -90,18 +68,8 @@ namespace System
                 }
 
 
-                public System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>.KeyCollection Keys { get => throw null; }
-                System.Collections.ICollection System.Collections.IDictionary.Keys { get => throw null; }
-                System.Collections.Generic.IEnumerable<TKey> System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>.Keys { get => throw null; }
-                System.Collections.Generic.ICollection<TKey> System.Collections.Generic.IDictionary<TKey, TValue>.Keys { get => throw null; }
-                public ReadOnlyDictionary(System.Collections.Generic.IDictionary<TKey, TValue> dictionary) => throw null;
-                void System.Collections.IDictionary.Remove(object key) => throw null;
-                bool System.Collections.Generic.IDictionary<TKey, TValue>.Remove(TKey key) => throw null;
-                bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Remove(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
-                object System.Collections.ICollection.SyncRoot { get => throw null; }
-                public bool TryGetValue(TKey key, out TValue value) => throw null;
                 // Generated from `System.Collections.ObjectModel.ReadOnlyDictionary<,>+ValueCollection` in `System.ObjectModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public class ValueCollection : System.Collections.IEnumerable, System.Collections.ICollection, System.Collections.Generic.IReadOnlyCollection<TValue>, System.Collections.Generic.IEnumerable<TValue>, System.Collections.Generic.ICollection<TValue>
+                public class ValueCollection : System.Collections.Generic.ICollection<TValue>, System.Collections.Generic.IEnumerable<TValue>, System.Collections.Generic.IReadOnlyCollection<TValue>, System.Collections.ICollection, System.Collections.IEnumerable
                 {
                     void System.Collections.Generic.ICollection<TValue>.Add(TValue item) => throw null;
                     void System.Collections.Generic.ICollection<TValue>.Clear() => throw null;
@@ -118,14 +86,46 @@ namespace System
                 }
 
 
+                void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Add(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
+                void System.Collections.Generic.IDictionary<TKey, TValue>.Add(TKey key, TValue value) => throw null;
+                void System.Collections.IDictionary.Add(object key, object value) => throw null;
+                void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Clear() => throw null;
+                void System.Collections.IDictionary.Clear() => throw null;
+                bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Contains(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
+                bool System.Collections.IDictionary.Contains(object key) => throw null;
+                public bool ContainsKey(TKey key) => throw null;
+                void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
+                void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.CopyTo(System.Collections.Generic.KeyValuePair<TKey, TValue>[] array, int arrayIndex) => throw null;
+                public int Count { get => throw null; }
+                protected System.Collections.Generic.IDictionary<TKey, TValue> Dictionary { get => throw null; }
+                public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> GetEnumerator() => throw null;
+                System.Collections.IDictionaryEnumerator System.Collections.IDictionary.GetEnumerator() => throw null;
+                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
+                bool System.Collections.IDictionary.IsFixedSize { get => throw null; }
+                bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.IsReadOnly { get => throw null; }
+                bool System.Collections.IDictionary.IsReadOnly { get => throw null; }
+                bool System.Collections.ICollection.IsSynchronized { get => throw null; }
+                public TValue this[TKey key] { get => throw null; }
+                TValue System.Collections.Generic.IDictionary<TKey, TValue>.this[TKey key] { get => throw null; set => throw null; }
+                object System.Collections.IDictionary.this[object key] { get => throw null; set => throw null; }
+                public System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>.KeyCollection Keys { get => throw null; }
+                System.Collections.Generic.ICollection<TKey> System.Collections.Generic.IDictionary<TKey, TValue>.Keys { get => throw null; }
+                System.Collections.Generic.IEnumerable<TKey> System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>.Keys { get => throw null; }
+                System.Collections.ICollection System.Collections.IDictionary.Keys { get => throw null; }
+                public ReadOnlyDictionary(System.Collections.Generic.IDictionary<TKey, TValue> dictionary) => throw null;
+                bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Remove(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
+                bool System.Collections.Generic.IDictionary<TKey, TValue>.Remove(TKey key) => throw null;
+                void System.Collections.IDictionary.Remove(object key) => throw null;
+                object System.Collections.ICollection.SyncRoot { get => throw null; }
+                public bool TryGetValue(TKey key, out TValue value) => throw null;
                 public System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>.ValueCollection Values { get => throw null; }
-                System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
-                System.Collections.Generic.IEnumerable<TValue> System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>.Values { get => throw null; }
                 System.Collections.Generic.ICollection<TValue> System.Collections.Generic.IDictionary<TKey, TValue>.Values { get => throw null; }
+                System.Collections.Generic.IEnumerable<TValue> System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>.Values { get => throw null; }
+                System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
             }
 
             // Generated from `System.Collections.ObjectModel.ReadOnlyObservableCollection<>` in `System.ObjectModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class ReadOnlyObservableCollection<T> : System.Collections.ObjectModel.ReadOnlyCollection<T>, System.ComponentModel.INotifyPropertyChanged, System.Collections.Specialized.INotifyCollectionChanged
+            public class ReadOnlyObservableCollection<T> : System.Collections.ObjectModel.ReadOnlyCollection<T>, System.Collections.Specialized.INotifyCollectionChanged, System.ComponentModel.INotifyPropertyChanged
             {
                 protected virtual event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
                 event System.Collections.Specialized.NotifyCollectionChangedEventHandler System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged { add => throw null; remove => throw null; }
@@ -161,17 +161,17 @@ namespace System
                 public System.Collections.Specialized.NotifyCollectionChangedAction Action { get => throw null; }
                 public System.Collections.IList NewItems { get => throw null; }
                 public int NewStartingIndex { get => throw null; }
-                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, object newItem, object oldItem, int index) => throw null;
-                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, object newItem, object oldItem) => throw null;
-                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, object changedItem, int index, int oldIndex) => throw null;
-                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, object changedItem, int index) => throw null;
-                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, object changedItem) => throw null;
-                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, System.Collections.IList newItems, System.Collections.IList oldItems, int startingIndex) => throw null;
+                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action) => throw null;
+                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, System.Collections.IList changedItems) => throw null;
                 public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, System.Collections.IList newItems, System.Collections.IList oldItems) => throw null;
+                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, System.Collections.IList newItems, System.Collections.IList oldItems, int startingIndex) => throw null;
                 public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, System.Collections.IList changedItems, int startingIndex) => throw null;
                 public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, System.Collections.IList changedItems, int index, int oldIndex) => throw null;
-                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, System.Collections.IList changedItems) => throw null;
-                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action) => throw null;
+                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, object changedItem) => throw null;
+                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, object changedItem, int index) => throw null;
+                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, object changedItem, int index, int oldIndex) => throw null;
+                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, object newItem, object oldItem) => throw null;
+                public NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction action, object newItem, object oldItem, int index) => throw null;
                 public System.Collections.IList OldItems { get => throw null; }
                 public int OldStartingIndex { get => throw null; }
             }
@@ -237,16 +237,16 @@ namespace System
             public static System.ComponentModel.TypeConverterAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
-            public TypeConverterAttribute(string typeName) => throw null;
-            public TypeConverterAttribute(System.Type type) => throw null;
             public TypeConverterAttribute() => throw null;
+            public TypeConverterAttribute(System.Type type) => throw null;
+            public TypeConverterAttribute(string typeName) => throw null;
         }
 
         // Generated from `System.ComponentModel.TypeDescriptionProviderAttribute` in `System.ObjectModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TypeDescriptionProviderAttribute : System.Attribute
         {
-            public TypeDescriptionProviderAttribute(string typeName) => throw null;
             public TypeDescriptionProviderAttribute(System.Type type) => throw null;
+            public TypeDescriptionProviderAttribute(string typeName) => throw null;
             public string TypeName { get => throw null; }
         }
 
@@ -278,8 +278,8 @@ namespace System
             // Generated from `System.Windows.Markup.ValueSerializerAttribute` in `System.ObjectModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ValueSerializerAttribute : System.Attribute
             {
-                public ValueSerializerAttribute(string valueSerializerTypeName) => throw null;
                 public ValueSerializerAttribute(System.Type valueSerializerType) => throw null;
+                public ValueSerializerAttribute(string valueSerializerTypeName) => throw null;
                 public System.Type ValueSerializerType { get => throw null; }
                 public string ValueSerializerTypeName { get => throw null; }
             }

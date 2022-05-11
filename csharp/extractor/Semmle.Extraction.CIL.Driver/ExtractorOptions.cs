@@ -6,6 +6,7 @@ using System.Reflection.Metadata;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Globalization;
+using Semmle.Util;
 using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CIL.Driver
@@ -169,18 +170,13 @@ namespace Semmle.Extraction.CIL.Driver
     /// <summary>
     /// Parses the command line and collates a list of DLLs/EXEs to extract.
     /// </summary>
-    internal class ExtractorOptions
+    internal class ExtractorOptions : CommonOptions
     {
         private readonly AssemblyList assemblyList = new AssemblyList();
 
         public ExtractorOptions(string[] args)
         {
-            Verbosity = Verbosity.Info;
-            Threads = System.Environment.ProcessorCount;
-            PDB = true;
-            TrapCompression = TrapWriter.CompressionMode.Gzip;
-
-            ParseArgs(args);
+            this.ParseArguments(args.Append("--pdb").ToArray());
 
             AddFrameworkDirectories(false);
 
@@ -202,12 +198,6 @@ namespace Semmle.Extraction.CIL.Driver
         {
             AddDirectory(RuntimeEnvironment.GetRuntimeDirectory(), extractAll);
         }
-
-        public Verbosity Verbosity { get; private set; }
-        public bool NoCache { get; private set; }
-        public int Threads { get; private set; }
-        public bool PDB { get; private set; }
-        public TrapWriter.CompressionMode TrapCompression { get; private set; }
 
         private void AddFileOrDirectory(string path)
         {
@@ -237,43 +227,25 @@ namespace Semmle.Extraction.CIL.Driver
         /// </summary>
         public IEnumerable<AssemblyName> MissingReferences => assemblyList.MissingReferences;
 
-        private void ParseArgs(string[] args)
+        public override bool HandleFlag(string flag, bool value)
         {
-            foreach (var arg in args)
+            switch (flag)
             {
-                if (arg == "--verbose")
-                {
-                    Verbosity = Verbosity.All;
-                }
-                else if (arg == "--silent")
-                {
-                    Verbosity = Verbosity.Off;
-                }
-                else if (arg.StartsWith("--verbosity:"))
-                {
-                    Verbosity = (Verbosity)int.Parse(arg.Substring(12));
-                }
-                else if (arg == "--dotnet")
-                {
-                    AddFrameworkDirectories(true);
-                }
-                else if (arg == "--nocache")
-                {
-                    NoCache = true;
-                }
-                else if (arg.StartsWith("--threads:"))
-                {
-                    Threads = int.Parse(arg.Substring(10));
-                }
-                else if (arg == "--no-pdb")
-                {
-                    PDB = false;
-                }
-                else
-                {
-                    AddFileOrDirectory(arg);
-                }
+                case "dotnet":
+                    if (value)
+                        AddFrameworkDirectories(true);
+                    return true;
+                default:
+                    return base.HandleFlag(flag, value);
             }
         }
+
+        public override bool HandleArgument(string argument)
+        {
+            AddFileOrDirectory(argument);
+            return true;
+        }
+
+        public override void InvalidArgument(string argument) { }
     }
 }

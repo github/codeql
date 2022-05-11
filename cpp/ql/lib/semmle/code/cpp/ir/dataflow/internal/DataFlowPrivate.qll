@@ -2,6 +2,20 @@ private import cpp
 private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
+private import DataFlowImplConsistency
+
+/** Gets the callable in which this node occurs. */
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
+
+/** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  p.isParameterOf(c, pos)
+}
+
+/** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
+  arg.argumentOf(c, pos)
+}
 
 /**
  * A data flow node that occurs as the argument of a call and is passed as-is
@@ -13,7 +27,7 @@ abstract class ArgumentNode extends OperandNode {
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
-  abstract predicate argumentOf(DataFlowCall call, int pos);
+  abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 
   /** Gets the call in which this node is an argument. */
   DataFlowCall getCall() { this.argumentOf(result, _) }
@@ -28,7 +42,9 @@ private class PrimaryArgumentNode extends ArgumentNode {
 
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
 
-  override predicate argumentOf(DataFlowCall call, int pos) { op = call.getArgumentOperand(pos) }
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    op = call.getArgumentOperand(pos.(DirectPosition).getIndex())
+  }
 
   override string toString() {
     exists(Expr unconverted |
@@ -57,9 +73,9 @@ private class SideEffectArgumentNode extends ArgumentNode {
 
   SideEffectArgumentNode() { op = read.getSideEffectOperand() }
 
-  override predicate argumentOf(DataFlowCall call, int pos) {
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     read.getPrimaryInstruction() = call and
-    pos = getArgumentPosOfSideEffect(read.getIndex())
+    pos.(IndirectionPosition).getIndex() = read.getIndex()
   }
 
   override string toString() {
@@ -75,6 +91,54 @@ private class SideEffectArgumentNode extends ArgumentNode {
     )
   }
 }
+
+/** A parameter position represented by an integer. */
+class ParameterPosition = Position;
+
+/** An argument position represented by an integer. */
+class ArgumentPosition = Position;
+
+class Position extends TPosition {
+  abstract string toString();
+}
+
+class DirectPosition extends TDirectPosition {
+  int index;
+
+  DirectPosition() { this = TDirectPosition(index) }
+
+  string toString() {
+    index = -1 and
+    result = "this"
+    or
+    index != -1 and
+    result = index.toString()
+  }
+
+  int getIndex() { result = index }
+}
+
+class IndirectionPosition extends TIndirectionPosition {
+  int index;
+
+  IndirectionPosition() { this = TIndirectionPosition(index) }
+
+  string toString() {
+    index = -1 and
+    result = "this"
+    or
+    index != -1 and
+    result = index.toString()
+  }
+
+  int getIndex() { result = index }
+}
+
+newtype TPosition =
+  TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index)) } or
+  TIndirectionPosition(int index) {
+    exists(ReadSideEffectInstruction instr | instr.getIndex() = index)
+  }
 
 private newtype TReturnKind =
   TNormalReturnKind() or
@@ -106,11 +170,9 @@ class ReturnNode extends InstructionNode {
   Instruction primary;
 
   ReturnNode() {
-    exists(ReturnValueInstruction ret | instr = ret.getReturnValue() and primary = ret)
+    exists(ReturnValueInstruction ret | instr = ret and primary = ret)
     or
-    exists(ReturnIndirectionInstruction rii |
-      instr = rii.getSideEffectOperand().getAnyDef() and primary = rii
-    )
+    exists(ReturnIndirectionInstruction rii | instr = rii and primary = rii)
   }
 
   /** Gets the kind of this returned value. */
@@ -184,108 +246,16 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  */
 predicate jumpStep(Node n1, Node n2) { none() }
 
-private predicate fieldStoreStepNoChi(Node node1, FieldContent f, PostUpdateNode node2) {
-  exists(StoreInstruction store, Class c |
-    store = node2.asInstruction() and
-    store.getSourceValueOperand() = node1.asOperand() and
-    getWrittenField(store, f.(FieldContent).getAField(), c) and
-    f.hasOffset(c, _, _)
-  )
-}
-
-private FieldAddressInstruction getFieldInstruction(Instruction instr) {
-  result = instr or
-  result = instr.(CopyValueInstruction).getUnary()
-}
-
-pragma[noinline]
-private predicate getWrittenField(Instruction instr, Field f, Class c) {
-  exists(FieldAddressInstruction fa |
-    fa =
-      getFieldInstruction([
-          instr.(StoreInstruction).getDestinationAddress(),
-          instr.(WriteSideEffectInstruction).getDestinationAddress()
-        ]) and
-    f = fa.getField() and
-    c = f.getDeclaringType()
-  )
-}
-
-private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode node2) {
-  exists(ChiPartialOperand operand, ChiInstruction chi |
-    chi.getPartialOperand() = operand and
-    node1.asOperand() = operand and
-    node2.asInstruction() = chi and
-    exists(Class c |
-      c = chi.getResultType() and
-      exists(int startBit, int endBit |
-        chi.getUpdatedInterval(startBit, endBit) and
-        f.hasOffset(c, startBit, endBit)
-      )
-      or
-      getWrittenField(operand.getDef(), f.getAField(), c) and
-      f.hasOffset(c, _, _)
-    )
-  )
-}
-
-private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode node2) {
-  exists(a) and
-  exists(ChiPartialOperand operand, ChiInstruction chi, StoreInstruction store |
-    chi.getPartialOperand() = operand and
-    store = operand.getDef() and
-    node1.asOperand() = operand and
-    // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
-    // and `PointerStoreNode` require it in their characteristic predicates.
-    node2.asInstruction() = chi and
-    (
-      // `x[i] = taint()`
-      // This matches the characteristic predicate in `ArrayStoreNode`.
-      store.getDestinationAddress() instanceof PointerAddInstruction
-      or
-      // `*p = taint()`
-      // This matches the characteristic predicate in `PointerStoreNode`.
-      store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
-    )
-  )
-}
-
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  fieldStoreStepNoChi(node1, f, node2) or
-  fieldStoreStepChi(node1, f, node2) or
-  arrayStoreStepChi(node1, f, node2) or
-  fieldStoreStepAfterArraySuppression(node1, f, node2)
-}
-
-// This predicate pushes the correct `FieldContent` onto the access path when the
-// `suppressArrayRead` predicate has popped off an `ArrayContent`.
-private predicate fieldStoreStepAfterArraySuppression(
-  Node node1, FieldContent f, PostUpdateNode node2
-) {
-  exists(WriteSideEffectInstruction write, ChiInstruction chi, Class c |
-    not chi.isResultConflated() and
-    node1.asInstruction() = chi and
-    node2.asInstruction() = chi and
-    chi.getPartial() = write and
-    getWrittenField(write, f.getAField(), c) and
-    f.hasOffset(c, _, _)
-  )
-}
-
-bindingset[result, i]
-private int unbindInt(int i) { i <= result and i >= result }
-
-pragma[noinline]
-private predicate getLoadedField(LoadInstruction load, Field f, Class c) {
-  exists(FieldAddressInstruction fa |
-    fa = load.getSourceAddress() and
-    f = fa.getField() and
-    c = f.getDeclaringType()
+predicate storeStep(StoreNodeInstr node1, FieldContent f, StoreNodeInstr node2) {
+  exists(FieldAddressInstruction fai |
+    node1.getInstruction() = fai and
+    node2.getInstruction() = fai.getObjectAddress() and
+    f.getField() = fai.getField()
   )
 }
 
@@ -294,120 +264,12 @@ private predicate getLoadedField(LoadInstruction load, Field f, Class c) {
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
-  exists(LoadOperand operand |
-    node2.asOperand() = operand and
-    node1.asInstruction() = operand.getAnyDef() and
-    exists(Class c |
-      c = operand.getAnyDef().getResultType() and
-      exists(int startBit, int endBit |
-        operand.getUsedInterval(unbindInt(startBit), unbindInt(endBit)) and
-        f.hasOffset(c, startBit, endBit)
-      )
-      or
-      getLoadedField(operand.getUse(), f.getAField(), c) and
-      f.hasOffset(c, _, _)
-    )
+predicate readStep(ReadNode node1, FieldContent f, ReadNode node2) {
+  exists(FieldAddressInstruction fai |
+    node1.getInstruction() = fai.getObjectAddress() and
+    node2.getInstruction() = fai and
+    f.getField() = fai.getField()
   )
-}
-
-/**
- * When a store step happens in a function that looks like an array write such as:
- * ```cpp
- * void f(int* pa) {
- *   pa = source();
- * }
- * ```
- * it can be a write to an array, but it can also happen that `f` is called as `f(&a.x)`. If that is
- * the case, the `ArrayContent` that was written by the call to `f` should be popped off the access
- * path, and a `FieldContent` containing `x` should be pushed instead.
- * So this case pops `ArrayContent` off the access path, and the `fieldStoreStepAfterArraySuppression`
- * predicate in `storeStep` ensures that we push the right `FieldContent` onto the access path.
- */
-predicate suppressArrayRead(Node node1, ArrayContent a, Node node2) {
-  exists(a) and
-  exists(WriteSideEffectInstruction write, ChiInstruction chi |
-    node1.asInstruction() = write and
-    node2.asInstruction() = chi and
-    chi.getPartial() = write and
-    getWrittenField(write, _, _)
-  )
-}
-
-private class ArrayToPointerConvertInstruction extends ConvertInstruction {
-  ArrayToPointerConvertInstruction() {
-    this.getUnary().getResultType() instanceof ArrayType and
-    this.getResultType() instanceof PointerType
-  }
-}
-
-private Instruction skipOneCopyValueInstructionRec(CopyValueInstruction copy) {
-  copy.getUnary() = result and not result instanceof CopyValueInstruction
-  or
-  result = skipOneCopyValueInstructionRec(copy.getUnary())
-}
-
-private Instruction skipCopyValueInstructions(Operand op) {
-  not result instanceof CopyValueInstruction and result = op.getDef()
-  or
-  result = skipOneCopyValueInstructionRec(op.getDef())
-}
-
-private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
-  exists(a) and
-  // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
-  exists(LoadOperand operand, Instruction address |
-    operand.isDefinitionInexact() and
-    node1.asInstruction() = operand.getAnyDef() and
-    operand = node2.asOperand() and
-    address = skipCopyValueInstructions(operand.getAddressOperand()) and
-    (
-      address instanceof LoadInstruction or
-      address instanceof ArrayToPointerConvertInstruction or
-      address instanceof PointerOffsetInstruction
-    )
-  )
-}
-
-/**
- * In cases such as:
- * ```cpp
- * void f(int* pa) {
- *   *pa = source();
- * }
- * ...
- * int x;
- * f(&x);
- * use(x);
- * ```
- * the load on `x` in `use(x)` will exactly overlap with its definition (in this case the definition
- * is a `WriteSideEffect`). This predicate pops the `ArrayContent` (pushed by the store in `f`)
- * from the access path.
- */
-private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
-  exists(a) and
-  exists(WriteSideEffectInstruction write, ChiInstruction chi |
-    not chi.isResultConflated() and
-    chi.getPartial() = write and
-    node1.asInstruction() = write and
-    node2.asInstruction() = chi and
-    // To distinquish this case from the `arrayReadStep` case we require that the entire variable was
-    // overwritten by the `WriteSideEffectInstruction` (i.e., there is a load that reads the
-    // entire variable).
-    exists(LoadInstruction load | load.getSourceValue() = chi)
-  )
-}
-
-/**
- * Holds if data can flow from `node1` to `node2` via a read of `f`.
- * Thus, `node1` references an object with a field `f` whose value ends up in
- * `node2`.
- */
-predicate readStep(Node node1, Content f, Node node2) {
-  fieldReadStep(node1, f, node2) or
-  arrayReadStep(node1, f, node2) or
-  exactReadStep(node1, f, node2) or
-  suppressArrayRead(node1, f, node2)
 }
 
 /**
@@ -416,6 +278,12 @@ predicate readStep(Node node1, Content f, Node node2) {
 predicate clearsContent(Node n, Content c) {
   none() // stub implementation
 }
+
+/**
+ * Holds if the value that is being tracked is expected to be stored inside content `c`
+ * at node `n`.
+ */
+predicate expectsContent(Node n, ContentSet c) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 IRType getNodeType(Node n) {
@@ -441,7 +309,7 @@ private predicate suppressUnusedNode(Node n) { any() }
 // Java QL library compatibility wrappers
 //////////////////////////////////////////////////////////////////////////////
 /** A node that performs a type cast. */
-class CastNode extends InstructionNode {
+class CastNode extends Node {
   CastNode() { none() } // stub implementation
 }
 
@@ -481,21 +349,18 @@ class Unit extends TUnit {
   string toString() { result = "unit" }
 }
 
-/**
- * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
- * modified or its modification cannot be observed, for example if it is a
- * freshly created object that is not saved in a variable.
- *
- * This predicate is only used for consistency checks.
- */
-predicate isImmutableOrUnobservable(Node n) {
-  // The rules for whether an IR argument gets a post-update node are too
-  // complex to model here.
-  any()
-}
-
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof OperandNode and not n instanceof ArgumentNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof OperandNode and not n instanceof ArgumentNode
+  or
+  StoreNodeFlow::flowThrough(n, _) and
+  not StoreNodeFlow::flowOutOf(n, _) and
+  not StoreNodeFlow::flowInto(_, n)
+  or
+  ReadNodeFlow::flowThrough(n, _) and
+  not ReadNodeFlow::flowOutOf(n, _) and
+  not ReadNodeFlow::flowInto(_, n)
+}
 
 class LambdaCallKind = Unit;
 
@@ -516,3 +381,11 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) { none() }
+
+private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
+  override predicate argHasPostUpdateExclude(ArgumentNode n) {
+    // The rules for whether an IR argument gets a post-update node are too
+    // complex to model here.
+    any()
+  }
+}

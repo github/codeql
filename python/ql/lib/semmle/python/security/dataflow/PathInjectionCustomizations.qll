@@ -33,6 +33,16 @@ module PathInjection {
   abstract class Sink extends DataFlow::Node { }
 
   /**
+   * A sanitizer for "path injection" vulnerabilities.
+   *
+   * This should only be used for things like calls to library functions that perform their own
+   * (correct) normalization/escaping of untrusted paths.
+   *
+   * Please also see `Path::SafeAccessCheck` and `Path::PathNormalization` Concepts.
+   */
+  abstract class Sanitizer extends DataFlow::Node { }
+
+  /**
    * A sanitizer guard for "path injection" vulnerabilities.
    */
   abstract class SanitizerGuard extends DataFlow::BarrierGuard { }

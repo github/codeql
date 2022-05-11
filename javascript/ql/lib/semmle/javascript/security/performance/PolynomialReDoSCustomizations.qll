@@ -47,10 +47,8 @@ module PolynomialReDoS {
    * A remote input to a server, seen as a source for polynomial
    * regular expression denial-of-service vulnerabilities.
    */
-  class RequestInputAccessAsSource extends Source {
-    RequestInputAccessAsSource() { this instanceof HTTP::RequestInputAccess }
-
-    override string getKind() { result = this.(HTTP::RequestInputAccess).getKind() }
+  class RequestInputAccessAsSource extends Source instanceof HTTP::RequestInputAccess {
+    override string getKind() { result = HTTP::RequestInputAccess.super.getKind() }
   }
 
   /**
@@ -88,13 +86,26 @@ module PolynomialReDoS {
       this.(StringReplaceCall).isGlobal() and
       // not lone char classes - they don't remove any repeated pattern.
       not exists(RegExpTerm root | root = this.(StringReplaceCall).getRegExp().getRoot() |
-        root instanceof RegExpCharacterClass
-        or
-        root instanceof RegExpCharacterClassEscape
+        isCharClassLike(root)
       )
       or
       this.(DataFlow::MethodCallNode).getMethodName() = StringOps::substringMethodName()
     }
+  }
+
+  /**
+   * Holds if `term` matches a set of strings of length 1.
+   */
+  predicate isCharClassLike(RegExpTerm term) {
+    term instanceof RegExpCharacterClass
+    or
+    term instanceof RegExpCharacterClassEscape
+    or
+    term.(RegExpConstant).getValue().length() = 1
+    or
+    exists(RegExpAlt alt | term = alt |
+      forall(RegExpTerm choice | choice = alt.getAlternative() | isCharClassLike(choice))
+    )
   }
 
   /**
@@ -126,7 +137,7 @@ module PolynomialReDoS {
   /**
    * A parameter of an exported function, seen as a source for polynomial-redos.
    */
-  class ExternalInputSource extends Source, DataFlow::ParameterNode {
+  class ExternalInputSource extends Source, DataFlow::SourceNode {
     ExternalInputSource() { this = Exports::getALibraryInputParameter() }
 
     override string getKind() { result = "library" }

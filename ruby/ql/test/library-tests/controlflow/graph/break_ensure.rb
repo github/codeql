@@ -1,6 +1,6 @@
-def m1 elements
-  for element in elements do
-    if element > 0 then
+def m1 x
+  while x < 0
+    if x > 0 then
       break
     end
   end
@@ -10,27 +10,27 @@ ensure
   end
 end
 
-def m2 elements
-  for element in elements do
+def m2(x, y)
+  while x < 0
     begin
-      if element > 0 then
+      if x > 0 then
         break
       end
     ensure
-      if elements.nil? then
-        puts "elements nil"
+      if y.nil? then
+        puts "y nil"
       end
     end
   end
 end
 
-def m3 elements
+def m3(x,y)
   begin
-    if elements.nil? then
+    if x.nil? then
       return
     end
   ensure
-    for element in elements do
+    while y < 0
       begin
         if x > 0 then
           break
@@ -41,14 +41,14 @@ def m3 elements
   puts "Done"
 end
 
-def m4 elements
-  for element in elements do
+def m4 x
+  while x < 0
     begin
-      if element > 1 then
+      if x > 1 then
         raise ""
       end
     ensure
-      if element > 0 then
+      if x > 0 then
         break 10;
       end
     end

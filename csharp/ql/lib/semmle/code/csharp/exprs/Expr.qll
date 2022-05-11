@@ -15,7 +15,6 @@ import Dynamic
 import Literal
 import LogicalOperation
 import semmle.code.csharp.controlflow.ControlFlowElement
-import semmle.code.csharp.Callable
 import semmle.code.csharp.Location
 import semmle.code.csharp.Stmt
 import semmle.code.csharp.Type
@@ -316,6 +315,12 @@ private predicate hasChildPattern(ControlFlowElement pm, Expr child) {
     child = mid.getChildExpr(0) or
     child = mid.getChildExpr(1)
   )
+  or
+  exists(Expr mid |
+    hasChildPattern(pm, mid) and
+    mid instanceof @tuple_expr and
+    child = mid.getAChildExpr()
+  )
 }
 
 /**
@@ -420,13 +425,10 @@ class TypeAccessPatternExpr extends TypePatternExpr, TypeAccess {
   override string getAPrimaryQlClass() { result = "TypeAccessPatternExpr" }
 }
 
-/** A pattern that may bind a variable, for example `string s` in `x is string s`. */
-class BindingPatternExpr extends PatternExpr {
-  BindingPatternExpr() {
-    this instanceof LocalVariableDeclExpr or
-    this instanceof @recursive_pattern_expr
-  }
+private class TBindingPatternExpr = @local_var_decl_expr or @recursive_pattern_expr;
 
+/** A pattern that may bind a variable, for example `string s` in `x is string s`. */
+class BindingPatternExpr extends PatternExpr, TBindingPatternExpr {
   /**
    * Gets the local variable declaration of this pattern, if any. For example,
    * `string s` in `string { Length: 5 } s`.
@@ -996,7 +998,7 @@ class QualifiableExpr extends Expr, @qualifiable_expr {
    */
   predicate targetIsOverridableOrImplementable() {
     not this.getQualifier() instanceof BaseAccess and
-    this.getQualifiedDeclaration().(Virtualizable).isOverridableOrImplementable()
+    this.getQualifiedDeclaration().(Overridable).isOverridableOrImplementable()
   }
 
   /** Holds if this expression has a conditional qualifier `?.` */
@@ -1081,6 +1083,8 @@ class DiscardExpr extends Expr, @discard_expr {
 
 private class UnknownExpr extends Expr, @unknown_expr {
   override string toString() { result = "Expression" }
+
+  override string getAPrimaryQlClass() { result = "UnknownExpr" }
 }
 
 /**
@@ -1170,7 +1174,9 @@ class WithExpr extends Expr, @with_expr {
   Expr getExpr() { result = this.getChild(0) }
 
   /** Gets the clone method of the `record` that is targetted by this `with` expression. */
-  RecordCloneMethod getCloneMethod() { result = this.getExpr().getType().(Record).getCloneMethod() }
+  RecordCloneMethod getCloneMethod() {
+    result = this.getExpr().getType().(RecordClass).getCloneMethod()
+  }
 
   override string toString() { result = "... with { ... }" }
 

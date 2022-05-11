@@ -5,7 +5,7 @@ public class F
 
     static F Create(object o1, object o2) => new F() { Field1 = o1, Field2 = o2 };
 
-    private void M()
+    private void M1()
     {
         var o = Source<object>(1);
         var f = Create(o, null);
@@ -23,6 +23,15 @@ public class F
         f = new F() { Field2 = Source<object>(4) };
         Sink(f.Field1); // no flow
         Sink(f.Field2); // $ hasValueFlow=4
+    }
+
+    private void M2()
+    {
+        var o = Source<object>(2);
+        object @null = null;
+        var a = new { X = o, Y = @null };
+        Sink(a.X); // $ hasValueFlow=2
+        Sink(a.Y); // no flow
     }
 
     public static void Sink(object o) { }

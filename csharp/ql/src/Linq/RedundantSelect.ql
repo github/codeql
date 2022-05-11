@@ -11,7 +11,7 @@
  */
 
 import csharp
-import Helpers
+import Linq.Helpers
 
 predicate isIdentityFunction(AnonymousFunctionExpr afe) {
   afe.getNumberOfParameters() = 1 and

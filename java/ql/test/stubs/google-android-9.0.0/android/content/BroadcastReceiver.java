@@ -30,7 +30,6 @@ abstract public class BroadcastReceiver
     public final void setResultExtras(Bundle p0){}
     static public class PendingResult
     {
-        protected PendingResult() {}
         public final Bundle getResultExtras(boolean p0){ return null; }
         public final String getResultData(){ return null; }
         public final boolean getAbortBroadcast(){ return false; }

@@ -10,7 +10,7 @@
  */
 
 import csharp
-import Helpers
+import Linq.Helpers
 
 from ForeachStmt fes, IfStmt is
 where

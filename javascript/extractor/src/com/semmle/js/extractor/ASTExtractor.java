@@ -3,6 +3,8 @@ package com.semmle.js.extractor;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -332,16 +334,27 @@ public class ASTExtractor {
     private final Label parent;
     private final int childIndex;
     private final IdContext idcontext;
+    private final boolean binopOperand;
 
     public Context(Label parent, int childIndex, IdContext idcontext) {
+      this(parent, childIndex, idcontext, false);
+    }
+
+    public Context(Label parent, int childIndex, IdContext idcontext, boolean binopOperand) {
       this.parent = parent;
       this.childIndex = childIndex;
       this.idcontext = idcontext;
+      this.binopOperand = binopOperand;
     }
 
     /** True if the visited AST node occurs as part of a type annotation. */
     public boolean isInsideType() {
       return idcontext.isInsideType();
+    }
+
+    /** True if the visited AST node occurs as one of the operands of a binary operation. */
+    public boolean isBinopOperand() {
+      return binopOperand;
     }
   }
 
@@ -358,7 +371,7 @@ public class ASTExtractor {
     }
 
     private Label visit(INode child, Label parent, int childIndex) {
-      return visit(child, parent, childIndex, IdContext.VAR_BIND);
+      return visit(child, parent, childIndex, IdContext.VAR_BIND, false);
     }
 
     private Label visitAll(List<? extends INode> children, Label parent) {
@@ -366,8 +379,16 @@ public class ASTExtractor {
     }
 
     private Label visit(INode child, Label parent, int childIndex, IdContext idContext) {
+      return visit(child, parent, childIndex, idContext, false);
+    }
+
+    private Label visit(INode child, Label parent, int childIndex, boolean binopOperand) {
+      return visit(child, parent, childIndex, IdContext.VAR_BIND, binopOperand);
+    }
+
+    private Label visit(INode child, Label parent, int childIndex, IdContext idContext, boolean binopOperand) {
       if (child == null) return null;
-      return child.accept(this, new Context(parent, childIndex, idContext));
+      return child.accept(this, new Context(parent, childIndex, idContext, binopOperand));
     }
 
     private Label visitAll(
@@ -379,7 +400,7 @@ public class ASTExtractor {
         List<? extends INode> children, Label parent, IdContext idContext, int index, int step) {
       Label res = null;
       for (INode child : children) {
-        res = visit(child, parent, index, idContext);
+        res = visit(child, parent, index, idContext, false);
         index += step;
       }
       return res;
@@ -567,12 +588,17 @@ public class ASTExtractor {
       String valueString = nd.getStringValue();
 
       trapwriter.addTuple("literals", valueString, source, key);
+      Position start = nd.getLoc().getStart();
+      com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn() + 1 /* Convert from 0-based to 1-based. */, start.getOffset());
+      
       if (nd.isRegExp()) {
         OffsetTranslation offsets = new OffsetTranslation();
         offsets.set(0, 1); // skip the initial '/'
-        regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), offsets, nd, false);
-      } else if (nd.isStringLiteral() && !c.isInsideType() && nd.getRaw().length() < 1000) {
-        regexpExtractor.extract(valueString, makeStringLiteralOffsets(nd.getRaw()), nd, true);
+        SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getRaw()).offsetBy(0, offsets), startPos);
+        regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), sourceMap, nd, false);
+      } else if (nd.isStringLiteral() && !c.isInsideType() && nd.getRaw().length() < 1000 && !c.isBinopOperand()) {
+        SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getRaw()).offsetBy(0, makeStringLiteralOffsets(nd.getRaw())), startPos);
+        regexpExtractor.extract(valueString, sourceMap, nd, true);
 
         // Scan the string for template tags, if we're in a context where such tags are relevant.
         if (scopeManager.isInTemplateFile()) {
@@ -591,6 +617,38 @@ public class ASTExtractor {
 
     private boolean isOctalDigit(char ch) {
       return '0' <= ch && ch <= '7';
+    }
+
+    /**
+     * Constant-folds simple string concatenations in `exp` while keeping an offset translation
+     * that tracks back to the original source.
+     */ 
+    private Pair<String, OffsetTranslation> getStringConcatResult(Expression exp) {
+      if (exp instanceof BinaryExpression) {
+        BinaryExpression be = (BinaryExpression) exp;
+        if (be.getOperator().equals("+")) {
+          Pair<String, OffsetTranslation> left = getStringConcatResult(be.getLeft());
+          Pair<String, OffsetTranslation> right = getStringConcatResult(be.getRight());
+          if (left == null || right == null) {
+            return null;
+          }
+          String str = left.fst() + right.fst();
+          if (str.length() > 1000) {
+            return null;
+          }
+            
+          int delta = be.getRight().getLoc().getStart().getOffset() - be.getLeft().getLoc().getStart().getOffset();
+          int offset = left.fst().length();
+          return Pair.make(str, left.snd().append(right.snd(), offset, delta));
+        }
+      } else if (exp instanceof Literal) {
+        Literal lit = (Literal) exp;
+        if (!lit.isStringLiteral()) {
+          return null;
+        }
+        return Pair.make(lit.getStringValue(), makeStringLiteralOffsets(lit.getRaw()));
+      }
+      return null;
     }
 
     /**
@@ -789,9 +847,37 @@ public class ASTExtractor {
     @Override
     public Label visit(BinaryExpression nd, Context c) {
       Label key = super.visit(nd, c);
-      visit(nd.getLeft(), key, 0);
-      visit(nd.getRight(), key, 1);
+      if (nd.getOperator().equals("in") && nd.getLeft() instanceof Identifier && ((Identifier)nd.getLeft()).getName().startsWith("#")) {
+        // this happens with Ergonomic brand checks for Private Fields (see https://github.com/tc39/proposal-private-fields-in-in). 
+        // it's the only case where private field identifiers are used not as a field.
+        visit(nd.getLeft(), key, 0, IdContext.LABEL, true);
+      } else {
+        visit(nd.getLeft(), key, 0, true);
+      }
+      visit(nd.getRight(), key, 1, true);
+      
+      extractRegxpFromBinop(nd, c);
       return key;
+    }
+
+    private void extractRegxpFromBinop(BinaryExpression nd, Context c) {
+      if (c.isBinopOperand()) {
+        return;
+      }
+      Pair<String, OffsetTranslation> concatResult = getStringConcatResult(nd);
+      if (concatResult == null) {
+        return;
+      }
+      String foldedString = concatResult.fst();
+      if (foldedString.length() > 1000 && !foldedString.trim().isEmpty()) {
+        return;
+      }
+      OffsetTranslation offsets = concatResult.snd();
+      Position start = nd.getLoc().getStart();
+      com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn() + 1 /* Convert from 0-based to 1-based. */, start.getOffset());
+      SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getLoc().getSource()).offsetBy(0, offsets), startPos);
+      regexpExtractor.extract(foldedString, sourceMap, nd, true);
+      return;
     }
 
     @Override
@@ -1726,7 +1812,10 @@ public class ASTExtractor {
     public Label visit(ImportSpecifier nd, Context c) {
       Label lbl = super.visit(nd, c);
       visit(nd.getImported(), lbl, 0, IdContext.LABEL);
-      visit(nd.getLocal(), lbl, 1, c.idcontext);
+      visit(nd.getLocal(), lbl, 1, nd.hasTypeKeyword() ? IdContext.TYPE_ONLY_IMPORT : c.idcontext);
+      if (nd.hasTypeKeyword()) {
+        trapwriter.addTuple("has_type_keyword", lbl);
+      } 
       return lbl;
     }
 

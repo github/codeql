@@ -24,6 +24,7 @@
 /[]]/  # MRI gives a warning, but accepts this as matching ']'
 /[^]]/ # MRI gives a warning, but accepts this as matching anything except ']'
 /[^-]/
+/[|]/
 
 # Nested character classes
 /[[a-f]A-F]/ # BAD - not parsed correctly
@@ -36,6 +37,10 @@
 /\d\D/
 /\h\H/
 /\n\r\t/
+
+# Anchors
+/\Gabc/
+/\b!a\B/
 
 # Groups
 /(foo)*bar/
@@ -68,3 +73,10 @@
 
 # *Not* a POSIX bracket expression; just a regular character class.
 /[:digit:]/
+
+# Simple constant interpolation
+A = "a"
+/#{A}bc/
+
+# unicode
+/\u{9879}/

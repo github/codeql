@@ -379,3 +379,8 @@ good44 = re.compile(r'("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)')
 # BAD
 bad88 = re.compile(r'/("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)X')
 bad89 = re.compile(r'/("[^"]*?"|[^"\s]+)+(?=X)')
+
+# BAD
+bad90 = re.compile(r'\A(\d|0)*x')
+bad91 = re.compile(r'(\d|0)*\Z')
+bad92 = re.compile(r'\b(\d|0)*x')

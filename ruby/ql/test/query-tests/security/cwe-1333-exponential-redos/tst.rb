@@ -85,7 +85,7 @@ bad16 = /(.|\n)*!/m
 # GOOD
 good8 = /([\w.]+)*/
 
-# BAD - we don't yet parse regexps constructed from strings
+# NOT GOOD
 bad17 = Regexp.new '(a|aa?)*b'
 
 # GOOD - not used as regexp
@@ -362,11 +362,30 @@ bad84 = /^((?:a{0|-)|\w\{\d)+X$/
 bad85 = /^((?:a{0,|-)|\w\{\d,)+X$/
 bad86 = /^((?:a{0,2|-)|\w\{\d,\d)+X$/
 
-# GOOD: 
-good42 = /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/
+# NOT GOOD 
+bad87 = /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/
 
 # NOT GOOD
-bad87 = /^X(\u0061|a)*Y$/
+bad88 = /^X(\u0061|a)*Y$/
 
 # GOOD
 good43 = /^X(\u0061|b)+Y$/
+
+# NOT GOOD
+bad88 = /X([[:digit:]]|\d)+Y/
+
+# NOT GOOD
+bad89 = /\G(a|\w)*$/
+bad90 = /\b(a|\w)*$/
+
+# NOT GOOD; attack: "0".repeat(30) + "!"
+# Adapated from addressable (https://github.com/sporkmonger/addressable)
+# which is licensed under the Apache License 2.0; see file addressable-LICENSE.
+module Bad91
+  ALPHA = "a-zA-Z"
+  DIGIT = "0-9"
+  var_char_class = ALPHA + DIGIT + '_'
+  var_char = "(?:(?:[#{var_char_class}]|%[a-fA-F0-9][a-fA-F0-9])+)"
+  var = "(?:#{var_char}(?:\\.?#{var_char})*)"
+  bad91 = /^#{var}$/
+end

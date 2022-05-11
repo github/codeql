@@ -58,7 +58,7 @@ module HeuristicNames {
    */
   string maybeAccountInfo() {
     result = "(?is).*acc(ou)?nt.*" or
-    result = "(?is).*(puid|username|userid).*" or
+    result = "(?is).*(puid|username|userid|session(id|key)).*" or
     result = "(?s).*([uU]|^|_|[a-z](?=U))([uU][iI][dD]).*"
   }
 
@@ -98,7 +98,8 @@ module HeuristicNames {
    * suggesting nouns within the string do not represent the meaning of the whole string (e.g. a URL or a SQL query).
    */
   string notSensitiveRegexp() {
-    result = "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
+    result =
+      "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|random|((?<!un)(en))?(crypt|code)).*"
   }
 
   /**

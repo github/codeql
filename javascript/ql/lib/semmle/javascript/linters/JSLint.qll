@@ -24,7 +24,9 @@ abstract class JSLintDirective extends SlashStarComment {
    */
   string getContent() {
     result =
-      getText().regexpReplaceAll("[\\n\\r\\u2028\\u2029]", " ").regexpCapture("\\s*\\w+ (.*)", 1)
+      this.getText()
+          .regexpReplaceAll("[\\n\\r\\u2028\\u2029]", " ")
+          .regexpCapture("\\s*\\w+ (.*)", 1)
   }
 
   /**
@@ -63,10 +65,10 @@ abstract class JSLintDirective extends SlashStarComment {
    * function, or the toplevel.
    */
   StmtContainer getScope() {
-    result = getASurroundingFunction() and
-    not getASurroundingFunction().getEnclosingContainer+() = result
+    result = this.getASurroundingFunction() and
+    not this.getASurroundingFunction().getEnclosingContainer+() = result
     or
-    not exists(getASurroundingFunction()) and result = getTopLevel()
+    not exists(this.getASurroundingFunction()) and result = this.getTopLevel()
   }
 
   /**
@@ -76,7 +78,7 @@ abstract class JSLintDirective extends SlashStarComment {
    * is the empty string.
    */
   predicate definesFlag(string name, string value) {
-    exists(string defn | defn = getContent().splitAt(",").trim() |
+    exists(string defn | defn = this.getContent().splitAt(",").trim() |
       if defn.matches("%:%")
       then (
         name = defn.splitAt(":", 0).trim() and
@@ -94,7 +96,7 @@ abstract class JSLintDirective extends SlashStarComment {
    */
   predicate appliesTo(ExprOrStmt s) {
     exists(StmtContainer sc | sc = s.(Stmt).getContainer() or sc = s.(Expr).getContainer() |
-      getScope() = sc.getEnclosingContainer*()
+      this.getScope() = sc.getEnclosingContainer*()
     )
   }
 }
@@ -109,8 +111,8 @@ abstract class JSLintGlobal extends Linting::GlobalDeclaration, JSLintDirective 
   override predicate appliesTo(ExprOrStmt s) { JSLintDirective.super.appliesTo(s) }
 
   override predicate declaresGlobalForAccess(GlobalVarAccess gva) {
-    declaresGlobal(gva.getName(), _) and
-    getScope() = gva.getContainer().getEnclosingContainer*()
+    this.declaresGlobal(gva.getName(), _) and
+    this.getScope() = gva.getContainer().getEnclosingContainer*()
   }
 }
 
@@ -119,7 +121,7 @@ class JSLintExplicitGlobal extends JSLintGlobal {
   JSLintExplicitGlobal() { getDirectiveName(this) = "global" }
 
   override predicate declaresGlobal(string name, boolean writable) {
-    exists(string value | definesFlag(name, value) |
+    exists(string value | this.definesFlag(name, value) |
       writable = true and value = "true"
       or
       writable = false and
@@ -139,7 +141,7 @@ class JSLintProperties extends JSLintDirective {
   /**
    * Gets a property declared by this directive.
    */
-  string getAProperty() { result = getContent().splitAt(",").trim() }
+  string getAProperty() { result = this.getContent().splitAt(",").trim() }
 }
 
 /** A JSLint options directive. */
@@ -191,7 +193,7 @@ private string jsLintImplicitGlobal(string category) {
 private class JSLintImplicitGlobal extends JSLintOptions, JSLintGlobal {
   JSLintImplicitGlobal() {
     exists(string category |
-      definesFlag(category, "true") and
+      this.definesFlag(category, "true") and
       exists(jsLintImplicitGlobal(category))
     )
   }
@@ -199,7 +201,7 @@ private class JSLintImplicitGlobal extends JSLintOptions, JSLintGlobal {
   override predicate declaresGlobal(string name, boolean writable) {
     writable = false and
     exists(string category |
-      definesFlag(category, "true") and
+      this.definesFlag(category, "true") and
       name = jsLintImplicitGlobal(category)
     )
   }

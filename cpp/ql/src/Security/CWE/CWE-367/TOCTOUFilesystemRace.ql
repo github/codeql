@@ -89,45 +89,83 @@ predicate referenceTo(Expr source, Expr use) {
   )
 }
 
-from Expr check, Expr checkPath, FunctionCall use, Expr usePath
-where
-  // `check` looks like a check on a filename
-  (
-    (
-      // either:
-      // an access check
-      check = accessCheck(checkPath)
-      or
-      // a stat
-      check = stat(checkPath, _)
-      or
-      // access to a member variable on the stat buf
-      // (morally, this should be a use-use pair, but it seems unlikely
-      // that this variable will get reused in practice)
-      exists(Expr call, Expr e, Variable v |
-        call = stat(checkPath, e) and
-        e.getAChild*().(VariableAccess).getTarget() = v and
-        check.(VariableAccess).getTarget() = v and
-        not e.getAChild*() = check // the call that writes to the pointer is not where the pointer is checked.
-      )
-    ) and
-    // `op` looks like an operation on a filename
-    use = filenameOperation(usePath)
-    or
-    // another filename operation (null pointers can indicate errors)
-    check = filenameOperation(checkPath) and
-    // `op` looks like a sensitive operation on a filename
-    use = sensitiveFilenameOperation(usePath)
-  ) and
-  // `checkPath` and `usePath` refer to the same SSA variable
-  exists(SsaDefinition def, StackVariable v |
-    def.getAUse(v) = checkPath and def.getAUse(v) = usePath
-  ) and
-  // the return value of `check` is used (possibly with one step of
-  // variable indirection) in a guard which controls `use`
-  exists(GuardCondition guard | referenceTo(check, guard.getAChild*()) |
-    guard.controls(use.(ControlFlowNode).getBasicBlock(), _)
+pragma[noinline]
+predicate statCallWithPointer(Expr checkPath, Expr call, Expr e, Variable v) {
+  call = stat(checkPath, e) and
+  e.getAChild*().(VariableAccess).getTarget() = v
+}
+
+predicate checksPath(Expr check, Expr checkPath) {
+  // either:
+  // an access check
+  check = accessCheck(checkPath)
+  or
+  // a stat
+  check = stat(checkPath, _)
+  or
+  // access to a member variable on the stat buf
+  // (morally, this should be a use-use pair, but it seems unlikely
+  // that this variable will get reused in practice)
+  exists(Expr call, Expr e, Variable v |
+    statCallWithPointer(checkPath, call, e, v) and
+    check.(VariableAccess).getTarget() = v and
+    not e.getAChild*() = check // the call that writes to the pointer is not where the pointer is checked.
   )
+}
+
+pragma[nomagic]
+predicate checkPathControlsUse(Expr check, Expr checkPath, Expr use) {
+  exists(GuardCondition guard | referenceTo(check, guard.getAChild*()) |
+    guard.controls(use.getBasicBlock(), _)
+  ) and
+  checksPath(pragma[only_bind_into](check), checkPath)
+}
+
+pragma[nomagic]
+predicate fileNameOperationControlsUse(Expr check, Expr checkPath, Expr use) {
+  exists(GuardCondition guard | referenceTo(check, guard.getAChild*()) |
+    guard.controls(use.getBasicBlock(), _)
+  ) and
+  pragma[only_bind_into](check) = filenameOperation(checkPath)
+}
+
+predicate checkUse(Expr check, Expr checkPath, FunctionCall use, Expr usePath) {
+  // `check` is part of a guard that controls `use`
+  checkPathControlsUse(check, checkPath, use) and
+  // `check` looks like a check on a filename
+  checksPath(check, checkPath) and
+  // `op` looks like an operation on a filename
+  use = filenameOperation(usePath)
+  or
+  // `check` is part of a guard that controls `use`
+  fileNameOperationControlsUse(check, checkPath, use) and
+  // another filename operation (null pointers can indicate errors)
+  check = filenameOperation(checkPath) and
+  // `op` looks like a sensitive operation on a filename
+  use = sensitiveFilenameOperation(usePath)
+}
+
+pragma[noinline]
+predicate isCheckedPath(
+  Expr check, SsaDefinition def, StackVariable v, FunctionCall use, Expr usePath, Expr checkPath
+) {
+  checkUse(check, checkPath, use, usePath) and
+  def.getAUse(v) = checkPath
+}
+
+pragma[noinline]
+predicate isUsedPath(
+  Expr check, SsaDefinition def, StackVariable v, FunctionCall use, Expr usePath, Expr checkPath
+) {
+  checkUse(check, checkPath, use, usePath) and
+  def.getAUse(v) = usePath
+}
+
+from Expr check, Expr checkPath, FunctionCall use, Expr usePath, SsaDefinition def, StackVariable v
+where
+  // `checkPath` and `usePath` refer to the same SSA variable
+  isCheckedPath(check, def, v, use, usePath, checkPath) and
+  isUsedPath(check, def, v, use, usePath, checkPath)
 select use,
   "The $@ being operated upon was previously $@, but the underlying file may have been changed since then.",
   usePath, "filename", check, "checked"

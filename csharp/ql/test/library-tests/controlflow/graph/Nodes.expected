@@ -1289,3 +1289,5 @@ entryPoint
 | cflow.cs:291:12:291:12 | M | cflow.cs:291:38:291:38 | access to parameter f |
 | cflow.cs:296:5:296:25 | NegationInConstructor | cflow.cs:296:5:296:25 | call to constructor Object |
 | cflow.cs:298:10:298:10 | M | cflow.cs:299:5:301:5 | {...} |
+| cflow.cs:306:60:310:5 | (...) => ... | cflow.cs:307:5:310:5 | {...} |
+| cflow.cs:306:60:310:5 | get__getter | cflow.cs:306:60:310:5 | (...) => ... |

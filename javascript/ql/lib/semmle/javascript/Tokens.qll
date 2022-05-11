@@ -37,7 +37,7 @@ class Token extends Locatable, @token {
   /** Gets the token preceding this token inside the same toplevel structure, if any. */
   Token getPreviousToken() { result.getNextToken() = this }
 
-  override string toString() { result = getValue() }
+  override string toString() { result = this.getValue() }
 }
 
 /** An end-of-file token. */

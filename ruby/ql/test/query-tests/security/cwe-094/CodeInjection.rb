@@ -22,6 +22,18 @@ class UsersController < ActionController::Base
 
     # GOOD
     Bar.class_eval(code)
+    
+    # BAD
+    const_get(code)
+    
+    # BAD
+    Foo.const_get(code)
+    
+    # GOOD
+    Bar.const_get(code)
+
+    # BAD
+    eval(Regexp.escape(code))
   end
 
   def update
@@ -48,6 +60,10 @@ end
 
 class Bar
   def self.class_eval(x)
+    true
+  end
+  
+  def self.const_get(x)
     true
   end
 end

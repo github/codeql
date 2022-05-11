@@ -25,14 +25,14 @@ class DocumentBuilderTests {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    builder.parse(sock.getInputStream()); //safe
+    builder.parse(sock.getInputStream()); //unsafe -- secure-processing by itself is insufficient
   }
 
   public void enableSecurityFeature2(Socket sock) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setFeature("http://javax.xml.XMLConstants/feature/secure-processing", true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    builder.parse(sock.getInputStream()); //safe
+    builder.parse(sock.getInputStream()); //unsafe -- secure-processing by itself is insufficient
   }
 
   public void enableDTD(Socket sock) throws Exception {

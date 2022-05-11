@@ -83,7 +83,9 @@ private class MethodUse extends Use, QualifiableExpr {
     )
   }
 
-  override Method getDefinition() { result = getQualifiedDeclaration().getUnboundDeclaration() }
+  override Method getDefinition() {
+    result = this.getQualifiedDeclaration().getUnboundDeclaration()
+  }
 
   override string getUseType() { result = "M" }
 

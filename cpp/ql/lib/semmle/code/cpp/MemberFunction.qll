@@ -233,40 +233,6 @@ class ImplicitConversionFunction extends MemberFunction {
   Type getDestType() { none() } // overridden in subclasses
 }
 
-/**
- * DEPRECATED: as of C++11 this class does not correspond perfectly with the
- * language definition of a converting constructor.
- *
- * A C++ constructor that also defines an implicit conversion. For example the
- * function `MyClass` in the following code is a `ConversionConstructor`:
- * ```
- * class MyClass {
- * public:
- *   MyClass(const MyOtherClass &from) {
- *     ...
- *   }
- * };
- * ```
- */
-deprecated class ConversionConstructor extends Constructor, ImplicitConversionFunction {
-  ConversionConstructor() {
-    strictcount(Parameter p | p = this.getAParameter() and not p.hasInitializer()) = 1 and
-    not this.hasSpecifier("explicit")
-  }
-
-  override string getAPrimaryQlClass() {
-    not this instanceof CopyConstructor and
-    not this instanceof MoveConstructor and
-    result = "ConversionConstructor"
-  }
-
-  /** Gets the type this `ConversionConstructor` takes as input. */
-  override Type getSourceType() { result = this.getParameter(0).getType() }
-
-  /** Gets the type this `ConversionConstructor` is a constructor of. */
-  override Type getDestType() { result = this.getDeclaringType() }
-}
-
 private predicate hasCopySignature(MemberFunction f) {
   f.getParameter(0).getUnspecifiedType().(LValueReferenceType).getBaseType() = f.getDeclaringType()
 }

@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+        If an XPath expression is built using string concatenation, and the components of the concatenation
+        include user input, it makes it very easy for a user to create a malicious XPath expression.
+        </p>
+    </overview>
+    <recommendation>
+        <p>
+        If user input must be included in an XPath expression, either sanitize the data or use variable
+        references to safely embed it without altering the structure of the expression.
+        </p>
+    </recommendation>
+    <example>
+        <p>In the example below, the xpath query is controlled by the user and hence leads to a vulnerability.</p>
+        <sample src="xpathBad.py" />
+        <p> This can be fixed by using a parameterized query as shown below.</p>
+        <sample src="xpathGood.py" />
+    </example>
+    <references>
+        <li>OWASP XPath injection : <a href="https://owasp.org/www-community/attacks/XPATH_Injection"></a>/>> </li>
+    </references>
+</qhelp>

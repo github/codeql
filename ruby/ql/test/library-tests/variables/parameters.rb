@@ -56,3 +56,7 @@ x = 10
    puts y
 end
 
+def tuples_nested((a,(b,c)))
+  puts "#{a} #{b} #{c}"
+end
+

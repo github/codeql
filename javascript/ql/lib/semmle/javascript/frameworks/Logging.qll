@@ -45,7 +45,7 @@ private module Console {
    */
   private API::Node console() {
     result = API::moduleImport("console") or
-    result = API::root().getASuccessor(any(ConsoleGlobalEntry e))
+    result = any(ConsoleGlobalEntry e).getANode()
   }
 
   /**
@@ -123,7 +123,7 @@ private module Winston {
 /**
  * Provides classes for working with [log4js](https://github.com/log4js-node/log4js-node).
  */
-private module log4js {
+private module Log4js {
   /**
    * A call to the log4js logging mechanism.
    */
@@ -186,7 +186,7 @@ private module Fancylog {
 }
 
 /**
- * A class modelling [debug](https://npmjs.org/package/debug) as a logging mechanism.
+ * A class modeling [debug](https://npmjs.org/package/debug) as a logging mechanism.
  */
 private class DebugLoggerCall extends LoggerCall, API::CallNode {
   DebugLoggerCall() { this = API::moduleImport("debug").getReturn().getACall() }

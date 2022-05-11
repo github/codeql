@@ -14,11 +14,14 @@ import semmle.javascript.security.internal.SensitiveDataHeuristics
 private import HeuristicNames
 
 /** An expression that might contain sensitive data. */
+cached
 abstract class SensitiveExpr extends Expr {
   /** Gets a human-readable description of this expression for use in alert messages. */
+  cached
   abstract string describe();
 
   /** Gets a classification of the kind of sensitive data this expression might contain. */
+  cached
   abstract SensitiveDataClassification getClassification();
 }
 
@@ -54,7 +57,7 @@ class SensitiveCall extends SensitiveExpr, InvokeExpr {
     )
   }
 
-  override string describe() { result = "a call to " + getCalleeName() }
+  override string describe() { result = "a call to " + this.getCalleeName() }
 
   override SensitiveDataClassification getClassification() { result = classification }
 }
@@ -78,22 +81,48 @@ abstract class SensitiveVariableAccess extends SensitiveExpr {
 /** A write to a location that might contain sensitive data. */
 abstract class SensitiveWrite extends DataFlow::Node { }
 
+/**
+ * Holds if `node` is a write to a variable or property named `name`.
+ *
+ * Helper predicate factored out for performance,
+ * to filter `name` as much as possible before using it in
+ * regex matching.
+ */
+pragma[nomagic]
+private predicate writesProperty(DataFlow::Node node, string name) {
+  exists(DataFlow::PropWrite pwn |
+    pwn.getPropertyName() = name and
+    pwn.getRhs() = node
+  )
+  or
+  exists(VarDef v | v.getAVariable().getName() = name |
+    if exists(v.getSource())
+    then v.getSource() = node.asExpr()
+    else node = DataFlow::ssaDefinitionNode(SSA::definition(v))
+  )
+}
+
 /** A write to a variable or property that might contain sensitive data. */
 private class BasicSensitiveWrite extends SensitiveWrite {
   SensitiveDataClassification classification;
 
   BasicSensitiveWrite() {
-    exists(string name | nameIndicatesSensitiveData(name, classification) |
-      exists(DataFlow::PropWrite pwn |
-        pwn.getPropertyName() = name and
-        pwn.getRhs() = this
-      )
-      or
-      exists(VarDef v | v.getAVariable().getName() = name |
-        if exists(v.getSource())
-        then v.getSource() = this.asExpr()
-        else this = DataFlow::ssaDefinitionNode(SSA::definition(v))
-      )
+    exists(string name |
+      /*
+       * PERFORMANCE OPTIMISATION:
+       * `nameIndicatesSensitiveData` performs a `regexpMatch` on `name`.
+       * To carry out a regex match, we must first compute the Cartesian product
+       * of all possible `name`s and regexes, then match.
+       * To keep this product as small as possible,
+       * we want to filter `name` as much as possible before the product.
+       *
+       * Do this by factoring out a helper predicate containing the filtering
+       * logic that restricts `name`. This helper predicate will get picked first
+       * in the join order, since it is the only call here that binds `name`.
+       */
+
+      writesProperty(this, name) and
+      nameIndicatesSensitiveData(name, classification)
     )
   }
 
@@ -142,10 +171,10 @@ abstract class SensitiveAction extends DataFlow::Node { }
 /** A call that may perform authorization. */
 class AuthorizationCall extends SensitiveAction, DataFlow::CallNode {
   AuthorizationCall() {
-    exists(string s | s = getCalleeName() |
+    exists(string s | s = this.getCalleeName() |
       // name contains `login` or `auth`, but not as part of `loginfo` or `unauth`;
-      // also exclude `author`
-      s.regexpMatch("(?i).*(login(?!fo)|(?<!un)auth(?!or\\b)|verify).*") and
+      // also exclude `author` and words followed by `err` (as in `error`)
+      s.regexpMatch("(?i).*(login(?!fo)|(?<!un)auth(?!or\\b)|verify)(?!err).*") and
       // but it does not start with `get` or `set`
       not s.regexpMatch("(?i)(get|set).*")
     )
@@ -155,7 +184,7 @@ class AuthorizationCall extends SensitiveAction, DataFlow::CallNode {
 /** A call to a function whose name suggests that it encodes or encrypts its arguments. */
 class ProtectCall extends DataFlow::CallNode {
   ProtectCall() {
-    exists(string s | getCalleeName().regexpMatch("(?i).*" + s + ".*") |
+    exists(string s | this.getCalleeName().regexpMatch("(?i).*" + s + ".*") |
       s = "protect" or s = "encode" or s = "encrypt"
     )
   }
@@ -185,7 +214,8 @@ module PasswordHeuristics {
     or
     exists(string normalized | normalized = password.toLowerCase() |
       count(normalized.charAt(_)) = 1 or
-      normalized.regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth).*")
+      normalized
+          .regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth|fake|(my(token|password))|string|foo|bar|baz|qux|1234|3141|abcd).*")
     )
   }
 
@@ -196,19 +226,19 @@ module PasswordHeuristics {
   predicate isDummyAuthHeader(string header) {
     isDummyPassword(header)
     or
-    exists(string prefix, string suffix | prefix = getAnHTTPAuthenticationScheme() |
+    exists(string prefix, string suffix | prefix = getAnHttpAuthenticationScheme() |
       header.toLowerCase() = prefix + " " + suffix and
       isDummyPassword(suffix)
     )
     or
-    header.trim().toLowerCase() = getAnHTTPAuthenticationScheme()
+    header.trim().toLowerCase() = getAnHttpAuthenticationScheme()
   }
 
   /**
    * Gets a HTTP authentication scheme normalized to lowercase.
    * From this list: https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
    */
-  private string getAnHTTPAuthenticationScheme() {
+  private string getAnHttpAuthenticationScheme() {
     result =
       [
         "Basic", "Bearer", "Digest", "HOBA", "Mutual", "Negotiate", "OAuth", "SCRAM-SHA-1",

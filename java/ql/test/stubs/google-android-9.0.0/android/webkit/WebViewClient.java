@@ -15,9 +15,6 @@
  */
 package android.webkit;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 public class WebViewClient {
     /**
      * Give the host application a chance to take over the control when a new url is

@@ -4,6 +4,7 @@ package android.content.pm;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.Checksum;
 import android.content.pm.VersionedPackage;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -28,6 +29,7 @@ public class PackageInstaller
         public abstract void onFinished(int p0, boolean p1);
         public abstract void onProgressChanged(int p0, float p1);
     }
+    public List<PackageInstaller.SessionInfo> getActiveStagedSessions(){ return null; }
     public List<PackageInstaller.SessionInfo> getAllSessions(){ return null; }
     public List<PackageInstaller.SessionInfo> getMySessions(){ return null; }
     public List<PackageInstaller.SessionInfo> getStagedSessions(){ return null; }
@@ -60,6 +62,7 @@ public class PackageInstaller
     public void registerSessionCallback(PackageInstaller.SessionCallback p0, Handler p1){}
     public void uninstall(String p0, IntentSender p1){}
     public void uninstall(VersionedPackage p0, IntentSender p1){}
+    public void uninstallExistingPackage(String p0, IntentSender p1){}
     public void unregisterSessionCallback(PackageInstaller.SessionCallback p0){}
     public void updateSessionAppIcon(int p0, Bitmap p1){}
     public void updateSessionAppLabel(int p0, CharSequence p1){}
@@ -79,6 +82,7 @@ public class PackageInstaller
         public void fsync(OutputStream p0){}
         public void removeChildSessionId(int p0){}
         public void removeSplit(String p0){}
+        public void setChecksums(String p0, List<Checksum> p1, byte[] p2){}
         public void setStagingProgress(float p0){}
         public void transfer(String p0){}
     }
@@ -88,16 +92,19 @@ public class PackageInstaller
         public CharSequence getAppLabel(){ return null; }
         public Intent createDetailsIntent(){ return null; }
         public String getAppPackageName(){ return null; }
+        public String getInstallerAttributionTag(){ return null; }
         public String getInstallerPackageName(){ return null; }
         public String getStagedSessionErrorMessage(){ return null; }
         public Uri getOriginatingUri(){ return null; }
         public Uri getReferrerUri(){ return null; }
         public UserHandle getUser(){ return null; }
+        public boolean hasParentSessionId(){ return false; }
         public boolean isActive(){ return false; }
         public boolean isCommitted(){ return false; }
         public boolean isMultiPackage(){ return false; }
         public boolean isSealed(){ return false; }
         public boolean isStaged(){ return false; }
+        public boolean isStagedSessionActive(){ return false; }
         public boolean isStagedSessionApplied(){ return false; }
         public boolean isStagedSessionFailed(){ return false; }
         public boolean isStagedSessionReady(){ return false; }
@@ -108,14 +115,17 @@ public class PackageInstaller
         public int getMode(){ return 0; }
         public int getOriginatingUid(){ return 0; }
         public int getParentSessionId(){ return 0; }
+        public int getRequireUserAction(){ return 0; }
         public int getSessionId(){ return 0; }
         public int getStagedSessionErrorCode(){ return 0; }
         public int[] getChildSessionIds(){ return null; }
+        public long getCreatedMillis(){ return 0; }
         public long getSize(){ return 0; }
         public long getUpdatedMillis(){ return 0; }
         public static Parcelable.Creator<PackageInstaller.SessionInfo> CREATOR = null;
         public static int INVALID_ID = 0;
         public static int STAGED_SESSION_ACTIVATION_FAILED = 0;
+        public static int STAGED_SESSION_CONFLICT = 0;
         public static int STAGED_SESSION_NO_ERROR = 0;
         public static int STAGED_SESSION_UNKNOWN = 0;
         public static int STAGED_SESSION_VERIFICATION_FAILED = 0;
@@ -130,15 +140,21 @@ public class PackageInstaller
         public static Set<String> RESTRICTED_PERMISSIONS_ALL = null;
         public static int MODE_FULL_INSTALL = 0;
         public static int MODE_INHERIT_EXISTING = 0;
+        public static int USER_ACTION_NOT_REQUIRED = 0;
+        public static int USER_ACTION_REQUIRED = 0;
+        public static int USER_ACTION_UNSPECIFIED = 0;
         public void setAppIcon(Bitmap p0){}
         public void setAppLabel(CharSequence p0){}
         public void setAppPackageName(String p0){}
+        public void setAutoRevokePermissionsMode(boolean p0){}
         public void setInstallLocation(int p0){}
         public void setInstallReason(int p0){}
+        public void setInstallScenario(int p0){}
         public void setMultiPackage(){}
         public void setOriginatingUid(int p0){}
         public void setOriginatingUri(Uri p0){}
         public void setReferrerUri(Uri p0){}
+        public void setRequireUserAction(int p0){}
         public void setSize(long p0){}
         public void setWhitelistedRestrictedPermissions(Set<String> p0){}
         public void writeToParcel(Parcel p0, int p1){}

@@ -6,7 +6,7 @@ import semmle.python.security.strings.Untrusted
  * Prevents taint flowing through ntpath.normpath()
  * NormalizedPath below handles that case.
  */
-class PathSanitizer extends Sanitizer {
+deprecated class PathSanitizer extends Sanitizer {
   PathSanitizer() { this = "path.sanitizer" }
 
   override predicate sanitizingNode(TaintKind taint, ControlFlowNode node) {
@@ -15,7 +15,7 @@ class PathSanitizer extends Sanitizer {
   }
 }
 
-private FunctionObject abspath() {
+deprecated private FunctionObject abspath() {
   exists(ModuleObject os_path | ModuleObject::named("os").attr("path") = os_path |
     os_path.attr("abspath") = result
     or
@@ -24,18 +24,18 @@ private FunctionObject abspath() {
 }
 
 /** A path that has been normalized, but not verified to be safe */
-class NormalizedPath extends TaintKind {
+deprecated class NormalizedPath extends TaintKind {
   NormalizedPath() { this = "normalized.path.injection" }
 
   override string repr() { result = "normalized path" }
 }
 
-private predicate abspath_call(CallNode call, ControlFlowNode arg) {
+deprecated private predicate abspath_call(CallNode call, ControlFlowNode arg) {
   call.getFunction().refersTo(abspath()) and
   arg = call.getArg(0)
 }
 
-class AbsPath extends DataFlowExtension::DataFlowNode {
+deprecated class AbsPath extends DataFlowExtension::DataFlowNode {
   AbsPath() { abspath_call(_, this) }
 
   override ControlFlowNode getASuccessorNode(TaintKind fromkind, TaintKind tokind) {
@@ -45,7 +45,7 @@ class AbsPath extends DataFlowExtension::DataFlowNode {
   }
 }
 
-class NormalizedPathSanitizer extends Sanitizer {
+deprecated class NormalizedPathSanitizer extends Sanitizer {
   NormalizedPathSanitizer() { this = "normalized.path.sanitizer" }
 
   override predicate sanitizingEdge(TaintKind taint, PyEdgeRefinement test) {
@@ -59,7 +59,7 @@ class NormalizedPathSanitizer extends Sanitizer {
  * A taint sink that is vulnerable to malicious paths.
  * The `vuln` in `open(vuln)` and similar.
  */
-class OpenNode extends TaintSink {
+deprecated class OpenNode extends TaintSink {
   override string toString() { result = "argument to open()" }
 
   OpenNode() {

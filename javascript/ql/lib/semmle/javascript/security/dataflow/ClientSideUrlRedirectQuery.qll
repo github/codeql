@@ -8,7 +8,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 import UrlConcatenation
 import ClientSideUrlRedirectCustomizations::ClientSideUrlRedirect
 
@@ -53,15 +52,5 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
     guard instanceof HostnameSanitizerGuard
-  }
-}
-
-/**
- * Improper use of openExternal can be leveraged to compromise the user's host.
- * When openExternal is used with untrusted content, it can be leveraged to execute arbitrary commands.
- */
-class ElectronShellOpenExternalSink extends Sink {
-  ElectronShellOpenExternalSink() {
-    this = DataFlow::moduleMember("electron", "shell").getAMemberCall("openExternal").getArgument(0)
   }
 }

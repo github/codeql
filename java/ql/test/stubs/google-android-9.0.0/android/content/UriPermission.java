@@ -8,7 +8,6 @@ import android.os.Parcelable;
 
 public class UriPermission implements Parcelable
 {
-    protected UriPermission() {}
     public String toString(){ return null; }
     public Uri getUri(){ return null; }
     public boolean isReadPermission(){ return false; }

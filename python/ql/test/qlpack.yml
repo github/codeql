@@ -1,5 +1,5 @@
 name: codeql/python-tests
-version: 0.0.2
+groups: [python, test]
 dependencies:
     codeql/python-all: "*"
     codeql/python-queries: "*"

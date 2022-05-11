@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.textclassifier.TextLinks;
 
 public class ClipData implements Parcelable
 {
@@ -46,6 +47,7 @@ public class ClipData implements Parcelable
         public String coerceToHtmlText(Context p0){ return null; }
         public String getHtmlText(){ return null; }
         public String toString(){ return null; }
+        public TextLinks getTextLinks(){ return null; }
         public Uri getUri(){ return null; }
     }
 }

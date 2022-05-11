@@ -73,3 +73,7 @@ escaped = re.escape("https://www.humblebundle.com/home/library")
 
 # Consistency check
 baz = re.compile(r'\+0')
+
+# Anchors
+re.compile(r'\Afoo\Z')
+re.compile(r'\bfoo\B')

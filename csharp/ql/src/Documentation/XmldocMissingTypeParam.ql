@@ -1,6 +1,6 @@
 /**
  * @name Missing documentation for type parameter
- * @description All type parameters should be documented using '<typeparam name="..."> </typeparam>' tags.
+ * @description All type parameters should be documented using `<typeparam name="..."> </typeparam>` tags.
  *              Ensure that the 'name' attribute matches the name of the type parameter.
  * @kind problem
  * @problem.severity recommendation

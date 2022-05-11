@@ -4,7 +4,6 @@
 
 import semmle.code.cpp.Variable
 import semmle.code.cpp.Enum
-import semmle.code.cpp.exprs.Access
 
 /**
  * A C structure member or C++ non-static member variable. For example the

@@ -35,7 +35,7 @@ class CompareToMethod extends Method {
     // To implement `Comparable<T>.compareTo`, the parameter must either have type `T` or `Object`.
     exists(RefType typeArg, Type firstParamType |
       implementsComparableOn(this.getDeclaringType(), typeArg) and
-      firstParamType = getParameter(0).getType() and
+      firstParamType = this.getParameter(0).getType() and
       (firstParamType = typeArg or firstParamType instanceof TypeObject)
     )
   }

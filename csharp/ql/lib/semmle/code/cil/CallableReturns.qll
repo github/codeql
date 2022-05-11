@@ -25,7 +25,7 @@ private module Cached {
   cached
   predicate alwaysThrowsException(Method m, Type t) {
     alwaysThrowsMethod(m) and
-    forex(Throw ex | ex = m.getImplementation().getAnInstruction() | t = ex.getExpr().getType())
+    forex(Throw ex | ex = m.getImplementation().getAnInstruction() | t = ex.getExceptionType())
   }
 }
 

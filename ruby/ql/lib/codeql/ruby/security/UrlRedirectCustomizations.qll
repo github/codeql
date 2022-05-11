@@ -9,6 +9,8 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
+private import codeql.ruby.dataflow.Sanitizers
+private import codeql.ruby.frameworks.ActionController
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -53,15 +55,21 @@ module UrlRedirect {
    */
   class RedirectLocationAsSink extends Sink {
     RedirectLocationAsSink() {
-      exists(HTTP::Server::HttpRedirectResponse e |
+      exists(HTTP::Server::HttpRedirectResponse e, MethodBase method |
         this = e.getRedirectLocation() and
-        // As a rough heuristic, assume that methods with these names are handlers for POST/PUT/PATCH/DELETE requests,
-        // which are not as vulnerable to URL redirection because browsers will not initiate them from clicking a link.
-        not this.getEnclosingCallable()
-            .asCallable()
-            .(Method)
-            .getName()
-            .regexpMatch(".*(create|update|destroy).*")
+        // We only want handlers for GET requests.
+        // Handlers for other HTTP methods are not as vulnerable to URL
+        // redirection as browsers will not initiate them from clicking a link.
+        method = this.asExpr().getExpr().getEnclosingMethod() and
+        (
+          // If there's a Rails GET route to this handler, we can be certain that it is a candidate.
+          method.(ActionControllerActionMethod).getARoute().getHttpMethod() = "get"
+          or
+          // Otherwise, we have to rely on a heuristic to filter out invulnerable handlers.
+          // We exclude any handlers with names containing create/update/destroy, as these are not likely to handle GET requests.
+          not exists(method.(ActionControllerActionMethod).getARoute()) and
+          not method.getName().regexpMatch(".*(create|update|destroy).*")
+        )
       )
     }
   }
@@ -85,6 +93,8 @@ module UrlRedirect {
   }
 
   /**
+   * A string interpolation, seen as a sanitizer for "URL redirection" vulnerabilities.
+   *
    * String interpolation is considered safe, provided the string is prefixed by a non-tainted value.
    * In most cases this will prevent the tainted value from controlling e.g. the host of the URL.
    *
@@ -103,11 +113,7 @@ module UrlRedirect {
    *
    * We currently don't catch these cases.
    */
-  class StringInterpolationAsSanitizer extends Sanitizer {
-    StringInterpolationAsSanitizer() {
-      exists(StringlikeLiteral str, int n | str.getComponent(n) = this.asExpr().getExpr() and n > 0)
-    }
-  }
+  class StringInterpolationAsSanitizer extends PrefixedStringInterpolation, Sanitizer { }
 
   /**
    * These methods return a new `ActionController::Parameters` or a `Hash` containing a subset of

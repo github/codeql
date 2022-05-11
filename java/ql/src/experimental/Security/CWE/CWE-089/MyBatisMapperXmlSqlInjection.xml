@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SqlInjectionMapper">
+
+  <resultMap id="BaseResultMap" type="Test">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="pass" jdbcType="VARCHAR" property="pass"/>
+  </resultMap>
+
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <if test="name != null">
+        -- bad
+        and name = ${name}
+      </if>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+    </where>
+  </sql>
+
+  <select id="bad1" parameterType="java.lang.String" resultMap="BaseResultMap">
+    -- bad
+    select id,name from test where name like '%${name}%'
+  </select>
+
+  <select id="bad2" parameterType="java.lang.String" resultMap="BaseResultMap">
+    -- bad
+    select id,name from test order by ${name} desc
+  </select>
+
+  <select id="bad3" parameterType="java.lang.String" resultMap="BaseResultMap">
+    -- bad
+    select id,name from test where name in ${name}
+  </select>
+
+  <update id="bad4" parameterType="Test">
+    update test
+    <set>
+      <if test="pass != null">
+        pass = #{pass},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      -- bad
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <insert id="bad5" parameterType="Test">
+    insert into test (name, pass)
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        -- bad
+        name = ${name},
+      </if>
+      <if test="pass != null">
+        -- bad
+        pass = ${pass},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="good1" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    -- good
+    select id,name from test where id = ${id}
+  </select>
+
+  <select id="good2" parameterType="java.lang.String" resultMap="BaseResultMap">
+    -- good
+    select id,name from test where name = #{name}
+  </select>
+</mapper>

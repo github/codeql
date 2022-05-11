@@ -30,7 +30,7 @@ string access(int p) {
   p.bitAnd(4) != 0 and result = "readable"
 }
 
-/** An expression specifing a file permission that allows group/others read or write access */
+/** An expression specifying a file permission that allows group/others read or write access */
 class PermissivePermissionsExpr extends Expr {
   // TODO: non-literal expressions?
   PermissivePermissionsExpr() {
@@ -40,7 +40,10 @@ class PermissivePermissionsExpr extends Expr {
     )
     or
     // adding/setting read or write permissions for all/group/other
-    this.(StringLiteral).getValueText().regexpMatch(".*[ago][^-=+]*[+=][xXst]*[rw].*")
+    this.(StringLiteral)
+        .getConstantValue()
+        .getString()
+        .regexpMatch(".*[ago][^-=+]*[+=][xXst]*[rw].*")
   }
 }
 
@@ -48,7 +51,7 @@ class PermissivePermissionsConfig extends DataFlow::Configuration {
   PermissivePermissionsConfig() { this = "PermissivePermissionsConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(PermissivePermissionsExpr ppe | source.asExpr().getExpr() = ppe)
+    source.asExpr().getExpr() instanceof PermissivePermissionsExpr
   }
 
   override predicate isSink(DataFlow::Node sink) {

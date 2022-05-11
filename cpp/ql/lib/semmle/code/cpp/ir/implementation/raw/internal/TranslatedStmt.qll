@@ -11,7 +11,7 @@ private import TranslatedExpr
 private import TranslatedFunction
 private import TranslatedInitialization
 
-TranslatedStmt getTranslatedStmt(Stmt stmt) { result.getAST() = stmt }
+TranslatedStmt getTranslatedStmt(Stmt stmt) { result.getAst() = stmt }
 
 abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
   Stmt stmt;
@@ -20,7 +20,10 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
 
   final override string toString() { result = stmt.toString() }
 
-  final override Locatable getAST() { result = stmt }
+  final override Locatable getAst() { result = stmt }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   final override Function getFunction() { result = stmt.getEnclosingFunction() }
 }
@@ -103,9 +106,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
 class TranslatedExprStmt extends TranslatedStmt {
   override ExprStmt stmt;
 
-  TranslatedExpr getExpr() {
-    result = getTranslatedExpr(stmt.(ExprStmt).getExpr().getFullyConverted())
-  }
+  TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.getExpr().getFullyConverted()) }
 
   override TranslatedElement getChild(int id) { id = 0 and result = getExpr() }
 

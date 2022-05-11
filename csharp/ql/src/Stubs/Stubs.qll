@@ -697,7 +697,7 @@ private string stubMethod(Method m, Assembly assembly) {
   if not m.getDeclaringType() instanceof Enum
   then
     result =
-      "    " + stubModifiers(m) + stubClassName(m.(Method).getReturnType()) + " " +
+      "    " + stubModifiers(m) + stubClassName(m.getReturnType()) + " " +
         stubExplicitImplementation(m) + escapeIfKeyword(m.getUndecoratedName()) +
         stubGenericMethodParams(m) + "(" + stubParameters(m) + ")" +
         stubTypeParametersConstraints(m) + stubImplementation(m) + ";\n"

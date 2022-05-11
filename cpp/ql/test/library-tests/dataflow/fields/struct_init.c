@@ -12,7 +12,7 @@ struct Outer {
 };
 
 void absink(struct AB *ab) {
-  sink(ab->a); //$ ast,ir=20:20 ast,ir=27:7 ast=40:20 MISSING: ir
+  sink(ab->a); //$ ast,ir=20:20 ast,ir=27:7 ast,ir=40:20
   sink(ab->b); // no flow
 }
 
@@ -30,7 +30,7 @@ int struct_init(void) {
 
   sink(outer.nestedAB.a); //$ ast,ir
   sink(outer.nestedAB.b); // no flow
-  sink(outer.pointerAB->a); //$ ast MISSING: ir
+  sink(outer.pointerAB->a); //$ ast,ir
   sink(outer.pointerAB->b); // no flow
 
   absink(&outer.nestedAB);

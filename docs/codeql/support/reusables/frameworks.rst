@@ -91,12 +91,15 @@ Java built-in support
 
    Name, Category
    Apache Commons Lang, Utility library
+   Apache Commons Collections, Data structure utility library
    Apache HTTP components, Network communicator
    Guava, Utility and collections library
    Hibernate, Database
    iBatis / MyBatis, Database
    Jackson, Serialization
+   JSON-java, Serialization
    Java Persistence API (JPA), Database
+   JaxRS, Jakarta EE API specification
    JDBC, Database
    Protobuf, Serialization
    Kryo deserialization, Serialization
@@ -120,17 +123,22 @@ JavaScript and TypeScript built-in support
    angular.js (legacy version), HTML framework
    axios, Network communicator
    browser, Runtime environment
+   EJS, templating language
    electron, Runtime environment
    express, Server
+   handlebars, templating language
    hapi, Server
+   hogan, templating language
    jquery, Utility library
    koa, Server
    lodash, Utility library
    mongodb, Database
    mssql, Database
+   mustache, templating language
    mysql, Database
    node, Runtime environment
    nest.js, Server
+   nunjucks, templating language
    postgres, Database
    ramda, Utility library
    react, HTML framework
@@ -140,6 +148,7 @@ JavaScript and TypeScript built-in support
    socket.io, Network communicator
    sqlite3, Database
    superagent, Network communicator
+   swig, templating language
    underscore, Utility library
    vue, HTML framework
 
@@ -155,22 +164,38 @@ Python built-in support
    Name, Category
    aiohttp.web, Web framework
    Django, Web framework
+   djangorestframework, Web framework
+   FastAPI, Web framework
    Flask, Web framework
    Tornado, Web framework
    Twisted, Web framework
+   Flask-Admin, Web framework
    starlette, Asynchronous Server Gateway Interface (ASGI)
+   python-ldap, Lightweight Directory Access Protocol (LDAP)
+   ldap3, Lightweight Directory Access Protocol (LDAP)
+   httpx, HTTP client
+   pycurl, HTTP client
+   requests, HTTP client
+   urllib, HTTP client
+   urllib2, HTTP client
+   urllib3, HTTP client
    dill, Serialization
    PyYAML, Serialization
    ruamel.yaml, Serialization
    simplejson, Serialization
+   toml, Serialization
    ujson, Serialization
    fabric, Utility library
    idna, Utility library
    invoke, Utility library
    jmespath, Utility library
    multidict, Utility library
+   pydantic, Utility library
    yarl, Utility library
    aioch, Database
+   aiomysql, Database
+   aiopg, Database
+   asyncpg, Database
    clickhouse-driver, Database
    mysql-connector-python, Database
    mysql-connector, Database
@@ -186,3 +211,7 @@ Python built-in support
    pycryptodomex, Cryptography library
    rsa, Cryptography library
    MarkupSafe, Escaping Library
+   libtaxii, TAXII utility library
+   libxml2, XML processing library
+   lxml, XML processing library
+   xmltodict, XML processing library

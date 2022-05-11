@@ -1,0 +1,14 @@
+name: "ql"
+display_name: "QL"
+version: 0.0.1
+column_kind: "utf8"
+legacy_qltest_extraction: true
+file_types:
+  - name: ql
+    display_name: QL query files
+    extensions:
+       - .ql
+  - name: qll
+    display_name: QL library files
+    extensions:
+       - .qll

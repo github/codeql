@@ -38,7 +38,7 @@ module CleartextLogging {
     MaskingReplacer() {
       this.isGlobal() and
       exists(this.getRawReplacement().getStringValue()) and
-      any(RegExpDot term).getLiteral() = getRegExp().asExpr()
+      any(RegExpDot term).getLiteral() = this.getRegExp().asExpr()
     }
   }
 
@@ -77,7 +77,7 @@ module CleartextLogging {
    */
   private class NonObject extends NonCleartextPassword {
     NonObject() {
-      forall(AbstractValue v | v = analyze().getAValue() | not v.getType() = TTObject())
+      forall(AbstractValue v | v = this.analyze().getAValue() | not v.getType() = TTObject())
     }
   }
 
@@ -94,7 +94,7 @@ module CleartextLogging {
    * A call that might obfuscate a password, for example through hashing.
    */
   private class ObfuscatorCall extends Barrier, DataFlow::InvokeNode {
-    ObfuscatorCall() { getCalleeName().regexpMatch(notSensitiveRegexp()) }
+    ObfuscatorCall() { this.getCalleeName().regexpMatch(notSensitiveRegexp()) }
   }
 
   /**
@@ -156,7 +156,7 @@ module CleartextLogging {
     string name;
 
     CallPasswordSource() {
-      name = getCalleeName() and
+      name = this.getCalleeName() and
       name.regexpMatch("(?is)getPassword")
     }
 

@@ -15,10 +15,10 @@ private class FlowSummaries extends SummaryModelCsv {
         "org.springframework.web.multipart;MultipartHttpServletRequest;true;getMultipartHeaders;;;Argument[-1];ReturnValue;taint",
         "org.springframework.web.multipart;MultipartHttpServletRequest;true;getRequestHeaders;;;Argument[-1];ReturnValue;taint",
         "org.springframework.web.multipart;MultipartRequest;true;getFile;;;Argument[-1];ReturnValue;taint",
-        "org.springframework.web.multipart;MultipartRequest;true;getFileMap;;;Argument[-1];MapValue of ReturnValue;taint",
-        "org.springframework.web.multipart;MultipartRequest;true;getFileNames;;;Argument[-1];Element of ReturnValue;taint",
-        "org.springframework.web.multipart;MultipartRequest;true;getFiles;;;Argument[-1];Element of ReturnValue;taint",
-        "org.springframework.web.multipart;MultipartRequest;true;getMultiFileMap;;;Argument[-1];MapValue of ReturnValue;taint",
+        "org.springframework.web.multipart;MultipartRequest;true;getFileMap;;;Argument[-1];ReturnValue.MapValue;taint",
+        "org.springframework.web.multipart;MultipartRequest;true;getFileNames;;;Argument[-1];ReturnValue.Element;taint",
+        "org.springframework.web.multipart;MultipartRequest;true;getFiles;;;Argument[-1];ReturnValue.Element;taint",
+        "org.springframework.web.multipart;MultipartRequest;true;getMultiFileMap;;;Argument[-1];ReturnValue.MapValue;taint",
         "org.springframework.web.multipart;MultipartResolver;true;resolveMultipart;;;Argument[0];ReturnValue;taint"
       ]
   }

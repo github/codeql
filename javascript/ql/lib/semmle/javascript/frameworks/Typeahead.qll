@@ -56,17 +56,17 @@ module Typeahead {
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and result = this
       or
-      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = this.ref(t2).track(t2, t))
     }
 
     /** Gets a Bloodhound instance that fetches remote server data. */
-    private DataFlow::SourceNode ref() { result = ref(DataFlow::TypeTracker::end()) }
+    private DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       responseType = "json" and
       promise = false and
       exists(TypeaheadSource source |
-        ref() = source.getALocalSource() or ref().getAMethodCall("ttAdapter") = source
+        this.ref() = source.getALocalSource() or this.ref().getAMethodCall("ttAdapter") = source
       |
         result = source.getASuggestion()
       )

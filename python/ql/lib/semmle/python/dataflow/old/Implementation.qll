@@ -79,7 +79,7 @@ abstract class AttributePath extends TAttributePath {
   predicate noAttribute() { this = TNoAttribute() }
 }
 
-/** AttributePath for no attribute. */
+/** The `AttributePath` for no attribute. */
 class NoAttribute extends TNoAttribute, AttributePath {
   override string toString() { result = "no attribute" }
 
@@ -88,7 +88,7 @@ class NoAttribute extends TNoAttribute, AttributePath {
   override AttributePath fromAttribute(string name) { none() }
 }
 
-/** AttributePath for an attribute. */
+/** The `AttributePath` for an attribute. */
 class NamedAttributePath extends TAttribute, AttributePath {
   override string toString() {
     exists(string attr |
@@ -124,8 +124,8 @@ newtype TTaintTrackingNode =
   }
 
 /**
- * Class representing the (node, context, path, kind) tuple.
- *  Used for context-sensitive path-aware taint-tracking.
+ * A class representing the (node, context, path, kind) tuple.
+ * Used for context-sensitive path-aware taint-tracking.
  */
 class TaintTrackingNode extends TTaintTrackingNode {
   /** Gets a textual representation of this element. */
@@ -503,7 +503,7 @@ class TaintTrackingImplementation extends string {
     TaintKind kind, string edgeLabel
   ) {
     exists(PythonFunctionValue init, EssaVariable self, TaintTrackingContext callee |
-      instantiationCall(node.asCfgNode(), src, init, context, callee) and
+      this.instantiationCall(node.asCfgNode(), src, init, context, callee) and
       this.(EssaTaintTracking).taintedDefinition(_, self.getDefinition(), callee, path, kind) and
       self.getSourceVariable().(Variable).isSelf() and
       BaseFlow::reaches_exit(self) and
@@ -789,9 +789,9 @@ private class EssaTaintTracking extends string {
     TaintTrackingNode src, PyEdgeRefinement defn, TaintTrackingContext context, AttributePath path,
     TaintKind kind
   ) {
-    taintedPiNodeOneway(src, defn, context, path, kind)
+    this.taintedPiNodeOneway(src, defn, context, path, kind)
     or
-    taintedPiNodeBothways(src, defn, context, path, kind)
+    this.taintedPiNodeBothways(src, defn, context, path, kind)
   }
 
   pragma[noinline]
@@ -802,7 +802,7 @@ private class EssaTaintTracking extends string {
     exists(DataFlow::Node srcnode, ControlFlowNode use |
       src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
       not this.(TaintTracking::Configuration).isBarrierTest(defn.getTest(), defn.getSense()) and
-      defn.getSense() = testEvaluates(defn, defn.getTest(), use, src)
+      defn.getSense() = this.testEvaluates(defn, defn.getTest(), use, src)
     )
   }
 
@@ -898,23 +898,7 @@ private class EssaTaintTracking extends string {
       )
     )
     or
-    result = testEvaluates(defn, not_operand(test), use, src).booleanNot()
-  }
-
-  /**
-   * Holds if `test` is the test in a branch and `use` is that test
-   * with all the `not` prefixes removed.
-   */
-  private predicate boolean_filter(ControlFlowNode test, ControlFlowNode use) {
-    any(PyEdgeRefinement ref).getTest() = test and
-    (
-      use = test
-      or
-      exists(ControlFlowNode notuse |
-        boolean_filter(test, notuse) and
-        use = not_operand(notuse)
-      )
-    )
+    result = this.testEvaluates(defn, not_operand(test), use, src).booleanNot()
   }
 }
 
@@ -991,7 +975,7 @@ int iterable_unpacking_descent(SequenceNode left_parent, ControlFlowNode left_de
 }
 
 module Implementation {
-  /* A call that returns a copy (or similar) of the argument */
+  /** Holds if `tonode` is a call that returns a copy (or similar) of the argument `fromnode` */
   predicate copyCall(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getFunction().(AttrNode).getObject("copy") = fromnode
     or

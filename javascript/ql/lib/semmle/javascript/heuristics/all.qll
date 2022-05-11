@@ -1,5 +1,5 @@
 /**
- * Provides classes that heuristically increase the extent of abstract clasess of the standard library.
+ * Provides classes that heuristically increase the extent of abstract classes of the standard library.
  *
  * This module imports all of the `semmle.javascript.heuristics` modules.
  *

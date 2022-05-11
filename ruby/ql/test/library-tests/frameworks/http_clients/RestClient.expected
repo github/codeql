@@ -1,8 +1,0 @@
-| RestClient.rb:3:9:3:45 | call to get | RestClient.rb:4:1:4:10 | call to body |
-| RestClient.rb:6:9:6:59 | call to post | RestClient.rb:7:1:7:10 | call to body |
-| RestClient.rb:9:9:9:58 | call to put | RestClient.rb:10:1:10:10 | call to body |
-| RestClient.rb:12:9:12:60 | call to patch | RestClient.rb:13:1:13:10 | call to body |
-| RestClient.rb:15:9:15:47 | call to delete | RestClient.rb:16:1:16:10 | call to body |
-| RestClient.rb:18:9:18:45 | call to head | RestClient.rb:19:1:19:10 | call to body |
-| RestClient.rb:21:9:21:48 | call to options | RestClient.rb:22:1:22:10 | call to body |
-| RestClient.rb:25:9:25:21 | call to get | RestClient.rb:26:1:26:10 | call to body |

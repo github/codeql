@@ -18,8 +18,8 @@ namespace System
         // Generated from `System.ComponentModel.AddingNewEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AddingNewEventArgs : System.EventArgs
         {
-            public AddingNewEventArgs(object newObject) => throw null;
             public AddingNewEventArgs() => throw null;
+            public AddingNewEventArgs(object newObject) => throw null;
             public object NewObject { get => throw null; set => throw null; }
         }
 
@@ -29,17 +29,17 @@ namespace System
         // Generated from `System.ComponentModel.AmbientValueAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AmbientValueAttribute : System.Attribute
         {
-            public AmbientValueAttribute(string value) => throw null;
-            public AmbientValueAttribute(object value) => throw null;
-            public AmbientValueAttribute(int value) => throw null;
-            public AmbientValueAttribute(float value) => throw null;
-            public AmbientValueAttribute(double value) => throw null;
-            public AmbientValueAttribute(bool value) => throw null;
             public AmbientValueAttribute(System.Type type, string value) => throw null;
-            public AmbientValueAttribute(System.Int64 value) => throw null;
-            public AmbientValueAttribute(System.Int16 value) => throw null;
-            public AmbientValueAttribute(System.Char value) => throw null;
+            public AmbientValueAttribute(bool value) => throw null;
             public AmbientValueAttribute(System.Byte value) => throw null;
+            public AmbientValueAttribute(System.Char value) => throw null;
+            public AmbientValueAttribute(double value) => throw null;
+            public AmbientValueAttribute(float value) => throw null;
+            public AmbientValueAttribute(int value) => throw null;
+            public AmbientValueAttribute(System.Int64 value) => throw null;
+            public AmbientValueAttribute(object value) => throw null;
+            public AmbientValueAttribute(System.Int16 value) => throw null;
+            public AmbientValueAttribute(string value) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public object Value { get => throw null; }
@@ -55,13 +55,13 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.AttributeCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class AttributeCollection : System.Collections.IEnumerable, System.Collections.ICollection
+        public class AttributeCollection : System.Collections.ICollection, System.Collections.IEnumerable
         {
-            public AttributeCollection(params System.Attribute[] attributes) => throw null;
             protected AttributeCollection() => throw null;
+            public AttributeCollection(params System.Attribute[] attributes) => throw null;
             protected virtual System.Attribute[] Attributes { get => throw null; }
-            public bool Contains(System.Attribute[] attributes) => throw null;
             public bool Contains(System.Attribute attribute) => throw null;
+            public bool Contains(System.Attribute[] attributes) => throw null;
             public void CopyTo(System.Array array, int index) => throw null;
             public int Count { get => throw null; }
             int System.Collections.ICollection.Count { get => throw null; }
@@ -71,19 +71,19 @@ namespace System
             public System.Collections.IEnumerator GetEnumerator() => throw null;
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             bool System.Collections.ICollection.IsSynchronized { get => throw null; }
-            public virtual System.Attribute this[int index] { get => throw null; }
             public virtual System.Attribute this[System.Type attributeType] { get => throw null; }
-            public bool Matches(System.Attribute[] attributes) => throw null;
+            public virtual System.Attribute this[int index] { get => throw null; }
             public bool Matches(System.Attribute attribute) => throw null;
+            public bool Matches(System.Attribute[] attributes) => throw null;
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
         // Generated from `System.ComponentModel.AttributeProviderAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AttributeProviderAttribute : System.Attribute
         {
-            public AttributeProviderAttribute(string typeName, string propertyName) => throw null;
-            public AttributeProviderAttribute(string typeName) => throw null;
             public AttributeProviderAttribute(System.Type type) => throw null;
+            public AttributeProviderAttribute(string typeName) => throw null;
+            public AttributeProviderAttribute(string typeName, string propertyName) => throw null;
             public string PropertyName { get => throw null; }
             public string TypeName { get => throw null; }
         }
@@ -102,10 +102,10 @@ namespace System
         public class BindableAttribute : System.Attribute
         {
             public bool Bindable { get => throw null; }
-            public BindableAttribute(bool bindable, System.ComponentModel.BindingDirection direction) => throw null;
-            public BindableAttribute(bool bindable) => throw null;
-            public BindableAttribute(System.ComponentModel.BindableSupport flags, System.ComponentModel.BindingDirection direction) => throw null;
             public BindableAttribute(System.ComponentModel.BindableSupport flags) => throw null;
+            public BindableAttribute(System.ComponentModel.BindableSupport flags, System.ComponentModel.BindingDirection direction) => throw null;
+            public BindableAttribute(bool bindable) => throw null;
+            public BindableAttribute(bool bindable, System.ComponentModel.BindingDirection direction) => throw null;
             public static System.ComponentModel.BindableAttribute Default;
             public System.ComponentModel.BindingDirection Direction { get => throw null; }
             public override bool Equals(object obj) => throw null;
@@ -131,7 +131,7 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.BindingList<>` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class BindingList<T> : System.Collections.ObjectModel.Collection<T>, System.ComponentModel.IRaiseItemChangedEvents, System.ComponentModel.ICancelAddNew, System.ComponentModel.IBindingList, System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection
+        public class BindingList<T> : System.Collections.ObjectModel.Collection<T>, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.IBindingList, System.ComponentModel.ICancelAddNew, System.ComponentModel.IRaiseItemChangedEvents
         {
             void System.ComponentModel.IBindingList.AddIndex(System.ComponentModel.PropertyDescriptor prop) => throw null;
             public T AddNew() => throw null;
@@ -146,8 +146,8 @@ namespace System
             bool System.ComponentModel.IBindingList.AllowRemove { get => throw null; }
             void System.ComponentModel.IBindingList.ApplySort(System.ComponentModel.PropertyDescriptor prop, System.ComponentModel.ListSortDirection direction) => throw null;
             protected virtual void ApplySortCore(System.ComponentModel.PropertyDescriptor prop, System.ComponentModel.ListSortDirection direction) => throw null;
-            public BindingList(System.Collections.Generic.IList<T> list) => throw null;
             public BindingList() => throw null;
+            public BindingList(System.Collections.Generic.IList<T> list) => throw null;
             public virtual void CancelNew(int itemIndex) => throw null;
             protected override void ClearItems() => throw null;
             public virtual void EndNew(int itemIndex) => throw null;
@@ -240,9 +240,9 @@ namespace System
         // Generated from `System.ComponentModel.ComplexBindingPropertiesAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ComplexBindingPropertiesAttribute : System.Attribute
         {
-            public ComplexBindingPropertiesAttribute(string dataSource, string dataMember) => throw null;
-            public ComplexBindingPropertiesAttribute(string dataSource) => throw null;
             public ComplexBindingPropertiesAttribute() => throw null;
+            public ComplexBindingPropertiesAttribute(string dataSource) => throw null;
+            public ComplexBindingPropertiesAttribute(string dataSource, string dataMember) => throw null;
             public string DataMember { get => throw null; }
             public string DataSource { get => throw null; }
             public static System.ComponentModel.ComplexBindingPropertiesAttribute Default;
@@ -262,8 +262,8 @@ namespace System
         public abstract class ComponentEditor
         {
             protected ComponentEditor() => throw null;
-            public bool EditComponent(object component) => throw null;
             public abstract bool EditComponent(System.ComponentModel.ITypeDescriptorContext context, object component);
+            public bool EditComponent(object component) => throw null;
         }
 
         // Generated from `System.ComponentModel.ComponentResourceManager` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -271,15 +271,15 @@ namespace System
         {
             public void ApplyResources(object value, string objectName) => throw null;
             public virtual void ApplyResources(object value, string objectName, System.Globalization.CultureInfo culture) => throw null;
-            public ComponentResourceManager(System.Type t) => throw null;
             public ComponentResourceManager() => throw null;
+            public ComponentResourceManager(System.Type t) => throw null;
         }
 
         // Generated from `System.ComponentModel.Container` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class Container : System.IDisposable, System.ComponentModel.IContainer
+        public class Container : System.ComponentModel.IContainer, System.IDisposable
         {
-            public virtual void Add(System.ComponentModel.IComponent component, string name) => throw null;
             public virtual void Add(System.ComponentModel.IComponent component) => throw null;
+            public virtual void Add(System.ComponentModel.IComponent component, string name) => throw null;
             public virtual System.ComponentModel.ComponentCollection Components { get => throw null; }
             public Container() => throw null;
             protected virtual System.ComponentModel.ISite CreateSite(System.ComponentModel.IComponent component, string name) => throw null;
@@ -316,8 +316,8 @@ namespace System
         // Generated from `System.ComponentModel.CustomTypeDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class CustomTypeDescriptor : System.ComponentModel.ICustomTypeDescriptor
         {
-            protected CustomTypeDescriptor(System.ComponentModel.ICustomTypeDescriptor parent) => throw null;
             protected CustomTypeDescriptor() => throw null;
+            protected CustomTypeDescriptor(System.ComponentModel.ICustomTypeDescriptor parent) => throw null;
             public virtual System.ComponentModel.AttributeCollection GetAttributes() => throw null;
             public virtual string GetClassName() => throw null;
             public virtual string GetComponentName() => throw null;
@@ -325,10 +325,10 @@ namespace System
             public virtual System.ComponentModel.EventDescriptor GetDefaultEvent() => throw null;
             public virtual System.ComponentModel.PropertyDescriptor GetDefaultProperty() => throw null;
             public virtual object GetEditor(System.Type editorBaseType) => throw null;
-            public virtual System.ComponentModel.EventDescriptorCollection GetEvents(System.Attribute[] attributes) => throw null;
             public virtual System.ComponentModel.EventDescriptorCollection GetEvents() => throw null;
-            public virtual System.ComponentModel.PropertyDescriptorCollection GetProperties(System.Attribute[] attributes) => throw null;
+            public virtual System.ComponentModel.EventDescriptorCollection GetEvents(System.Attribute[] attributes) => throw null;
             public virtual System.ComponentModel.PropertyDescriptorCollection GetProperties() => throw null;
+            public virtual System.ComponentModel.PropertyDescriptorCollection GetProperties(System.Attribute[] attributes) => throw null;
             public virtual object GetPropertyOwner(System.ComponentModel.PropertyDescriptor pd) => throw null;
         }
 
@@ -336,8 +336,8 @@ namespace System
         public class DataObjectAttribute : System.Attribute
         {
             public static System.ComponentModel.DataObjectAttribute DataObject;
-            public DataObjectAttribute(bool isDataObject) => throw null;
             public DataObjectAttribute() => throw null;
+            public DataObjectAttribute(bool isDataObject) => throw null;
             public static System.ComponentModel.DataObjectAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
@@ -349,10 +349,10 @@ namespace System
         // Generated from `System.ComponentModel.DataObjectFieldAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataObjectFieldAttribute : System.Attribute
         {
-            public DataObjectFieldAttribute(bool primaryKey, bool isIdentity, bool isNullable, int length) => throw null;
-            public DataObjectFieldAttribute(bool primaryKey, bool isIdentity, bool isNullable) => throw null;
-            public DataObjectFieldAttribute(bool primaryKey, bool isIdentity) => throw null;
             public DataObjectFieldAttribute(bool primaryKey) => throw null;
+            public DataObjectFieldAttribute(bool primaryKey, bool isIdentity) => throw null;
+            public DataObjectFieldAttribute(bool primaryKey, bool isIdentity, bool isNullable) => throw null;
+            public DataObjectFieldAttribute(bool primaryKey, bool isIdentity, bool isNullable, int length) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public bool IsIdentity { get => throw null; }
@@ -364,8 +364,8 @@ namespace System
         // Generated from `System.ComponentModel.DataObjectMethodAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataObjectMethodAttribute : System.Attribute
         {
-            public DataObjectMethodAttribute(System.ComponentModel.DataObjectMethodType methodType, bool isDefault) => throw null;
             public DataObjectMethodAttribute(System.ComponentModel.DataObjectMethodType methodType) => throw null;
+            public DataObjectMethodAttribute(System.ComponentModel.DataObjectMethodType methodType, bool isDefault) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public bool IsDefault { get => throw null; }
@@ -415,8 +415,8 @@ namespace System
         public class DefaultBindingPropertyAttribute : System.Attribute
         {
             public static System.ComponentModel.DefaultBindingPropertyAttribute Default;
-            public DefaultBindingPropertyAttribute(string name) => throw null;
             public DefaultBindingPropertyAttribute() => throw null;
+            public DefaultBindingPropertyAttribute(string name) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public string Name { get => throw null; }
@@ -446,8 +446,8 @@ namespace System
         public class DesignTimeVisibleAttribute : System.Attribute
         {
             public static System.ComponentModel.DesignTimeVisibleAttribute Default;
-            public DesignTimeVisibleAttribute(bool visible) => throw null;
             public DesignTimeVisibleAttribute() => throw null;
+            public DesignTimeVisibleAttribute(bool visible) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public override bool IsDefaultAttribute() => throw null;
@@ -484,52 +484,52 @@ namespace System
         {
             public abstract void AddEventHandler(object component, System.Delegate value);
             public abstract System.Type ComponentType { get; }
-            protected EventDescriptor(string name, System.Attribute[] attrs) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
-            protected EventDescriptor(System.ComponentModel.MemberDescriptor descr, System.Attribute[] attrs) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
             protected EventDescriptor(System.ComponentModel.MemberDescriptor descr) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
+            protected EventDescriptor(System.ComponentModel.MemberDescriptor descr, System.Attribute[] attrs) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
+            protected EventDescriptor(string name, System.Attribute[] attrs) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
             public abstract System.Type EventType { get; }
             public abstract bool IsMulticast { get; }
             public abstract void RemoveEventHandler(object component, System.Delegate value);
         }
 
         // Generated from `System.ComponentModel.EventDescriptorCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class EventDescriptorCollection : System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection
+        public class EventDescriptorCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             public int Add(System.ComponentModel.EventDescriptor value) => throw null;
             int System.Collections.IList.Add(object value) => throw null;
-            void System.Collections.IList.Clear() => throw null;
             public void Clear() => throw null;
+            void System.Collections.IList.Clear() => throw null;
             public bool Contains(System.ComponentModel.EventDescriptor value) => throw null;
             bool System.Collections.IList.Contains(object value) => throw null;
             void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
             public int Count { get => throw null; }
             int System.Collections.ICollection.Count { get => throw null; }
             public static System.ComponentModel.EventDescriptorCollection Empty;
-            public EventDescriptorCollection(System.ComponentModel.EventDescriptor[] events, bool readOnly) => throw null;
             public EventDescriptorCollection(System.ComponentModel.EventDescriptor[] events) => throw null;
+            public EventDescriptorCollection(System.ComponentModel.EventDescriptor[] events, bool readOnly) => throw null;
             public virtual System.ComponentModel.EventDescriptor Find(string name, bool ignoreCase) => throw null;
             public System.Collections.IEnumerator GetEnumerator() => throw null;
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             public int IndexOf(System.ComponentModel.EventDescriptor value) => throw null;
             int System.Collections.IList.IndexOf(object value) => throw null;
-            void System.Collections.IList.Insert(int index, object value) => throw null;
             public void Insert(int index, System.ComponentModel.EventDescriptor value) => throw null;
-            protected void InternalSort(string[] names) => throw null;
+            void System.Collections.IList.Insert(int index, object value) => throw null;
             protected void InternalSort(System.Collections.IComparer sorter) => throw null;
+            protected void InternalSort(string[] names) => throw null;
             bool System.Collections.IList.IsFixedSize { get => throw null; }
             bool System.Collections.IList.IsReadOnly { get => throw null; }
             bool System.Collections.ICollection.IsSynchronized { get => throw null; }
-            public virtual System.ComponentModel.EventDescriptor this[string name] { get => throw null; }
             public virtual System.ComponentModel.EventDescriptor this[int index] { get => throw null; }
             object System.Collections.IList.this[int index] { get => throw null; set => throw null; }
-            void System.Collections.IList.Remove(object value) => throw null;
+            public virtual System.ComponentModel.EventDescriptor this[string name] { get => throw null; }
             public void Remove(System.ComponentModel.EventDescriptor value) => throw null;
-            void System.Collections.IList.RemoveAt(int index) => throw null;
+            void System.Collections.IList.Remove(object value) => throw null;
             public void RemoveAt(int index) => throw null;
-            public virtual System.ComponentModel.EventDescriptorCollection Sort(string[] names, System.Collections.IComparer comparer) => throw null;
-            public virtual System.ComponentModel.EventDescriptorCollection Sort(string[] names) => throw null;
-            public virtual System.ComponentModel.EventDescriptorCollection Sort(System.Collections.IComparer comparer) => throw null;
+            void System.Collections.IList.RemoveAt(int index) => throw null;
             public virtual System.ComponentModel.EventDescriptorCollection Sort() => throw null;
+            public virtual System.ComponentModel.EventDescriptorCollection Sort(System.Collections.IComparer comparer) => throw null;
+            public virtual System.ComponentModel.EventDescriptorCollection Sort(string[] names) => throw null;
+            public virtual System.ComponentModel.EventDescriptorCollection Sort(string[] names, System.Collections.IComparer comparer) => throw null;
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
@@ -567,15 +567,15 @@ namespace System
         public class HandledEventArgs : System.EventArgs
         {
             public bool Handled { get => throw null; set => throw null; }
-            public HandledEventArgs(bool defaultHandledValue) => throw null;
             public HandledEventArgs() => throw null;
+            public HandledEventArgs(bool defaultHandledValue) => throw null;
         }
 
         // Generated from `System.ComponentModel.HandledEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void HandledEventHandler(object sender, System.ComponentModel.HandledEventArgs e);
 
         // Generated from `System.ComponentModel.IBindingList` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public interface IBindingList : System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection
+        public interface IBindingList : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             void AddIndex(System.ComponentModel.PropertyDescriptor property);
             object AddNew();
@@ -596,7 +596,7 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.IBindingListView` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public interface IBindingListView : System.ComponentModel.IBindingList, System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection
+        public interface IBindingListView : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.IBindingList
         {
             void ApplySort(System.ComponentModel.ListSortDescriptionCollection sorts);
             string Filter { get; set; }
@@ -622,12 +622,12 @@ namespace System
             System.ComponentModel.EventDescriptor GetDefaultEvent(object component);
             System.ComponentModel.PropertyDescriptor GetDefaultProperty(object component);
             object GetEditor(object component, System.Type baseEditorType);
-            System.ComponentModel.EventDescriptorCollection GetEvents(object component, System.Attribute[] attributes);
             System.ComponentModel.EventDescriptorCollection GetEvents(object component);
+            System.ComponentModel.EventDescriptorCollection GetEvents(object component, System.Attribute[] attributes);
             string GetName(object component);
             System.ComponentModel.PropertyDescriptorCollection GetProperties(object component, System.Attribute[] attributes);
-            object GetPropertyValue(object component, string propertyName, ref bool success);
             object GetPropertyValue(object component, int dispid, ref bool success);
+            object GetPropertyValue(object component, string propertyName, ref bool success);
         }
 
         // Generated from `System.ComponentModel.ICustomTypeDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -640,10 +640,10 @@ namespace System
             System.ComponentModel.EventDescriptor GetDefaultEvent();
             System.ComponentModel.PropertyDescriptor GetDefaultProperty();
             object GetEditor(System.Type editorBaseType);
-            System.ComponentModel.EventDescriptorCollection GetEvents(System.Attribute[] attributes);
             System.ComponentModel.EventDescriptorCollection GetEvents();
-            System.ComponentModel.PropertyDescriptorCollection GetProperties(System.Attribute[] attributes);
+            System.ComponentModel.EventDescriptorCollection GetEvents(System.Attribute[] attributes);
             System.ComponentModel.PropertyDescriptorCollection GetProperties();
+            System.ComponentModel.PropertyDescriptorCollection GetProperties(System.Attribute[] attributes);
             object GetPropertyOwner(System.ComponentModel.PropertyDescriptor pd);
         }
 
@@ -675,13 +675,13 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.INestedContainer` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public interface INestedContainer : System.IDisposable, System.ComponentModel.IContainer
+        public interface INestedContainer : System.ComponentModel.IContainer, System.IDisposable
         {
             System.ComponentModel.IComponent Owner { get; }
         }
 
         // Generated from `System.ComponentModel.INestedSite` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public interface INestedSite : System.IServiceProvider, System.ComponentModel.ISite
+        public interface INestedSite : System.ComponentModel.ISite, System.IServiceProvider
         {
             string FullName { get; }
         }
@@ -722,8 +722,8 @@ namespace System
             public static System.ComponentModel.InheritanceAttribute Default;
             public override bool Equals(object value) => throw null;
             public override int GetHashCode() => throw null;
-            public InheritanceAttribute(System.ComponentModel.InheritanceLevel inheritanceLevel) => throw null;
             public InheritanceAttribute() => throw null;
+            public InheritanceAttribute(System.ComponentModel.InheritanceLevel inheritanceLevel) => throw null;
             public System.ComponentModel.InheritanceLevel InheritanceLevel { get => throw null; }
             public static System.ComponentModel.InheritanceAttribute Inherited;
             public static System.ComponentModel.InheritanceAttribute InheritedReadOnly;
@@ -746,8 +746,8 @@ namespace System
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public virtual System.Type InstallerType { get => throw null; }
-            public InstallerTypeAttribute(string typeName) => throw null;
             public InstallerTypeAttribute(System.Type installerType) => throw null;
+            public InstallerTypeAttribute(string typeName) => throw null;
         }
 
         // Generated from `System.ComponentModel.InstanceCreationEditor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -807,23 +807,23 @@ namespace System
         public class LicenseException : System.SystemException
         {
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
-            public LicenseException(System.Type type, object instance, string message, System.Exception innerException) => throw null;
-            public LicenseException(System.Type type, object instance, string message) => throw null;
-            public LicenseException(System.Type type, object instance) => throw null;
-            public LicenseException(System.Type type) => throw null;
             protected LicenseException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public LicenseException(System.Type type) => throw null;
+            public LicenseException(System.Type type, object instance) => throw null;
+            public LicenseException(System.Type type, object instance, string message) => throw null;
+            public LicenseException(System.Type type, object instance, string message, System.Exception innerException) => throw null;
             public System.Type LicensedType { get => throw null; }
         }
 
         // Generated from `System.ComponentModel.LicenseManager` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class LicenseManager
         {
-            public static object CreateWithContext(System.Type type, System.ComponentModel.LicenseContext creationContext, object[] args) => throw null;
             public static object CreateWithContext(System.Type type, System.ComponentModel.LicenseContext creationContext) => throw null;
+            public static object CreateWithContext(System.Type type, System.ComponentModel.LicenseContext creationContext, object[] args) => throw null;
             public static System.ComponentModel.LicenseContext CurrentContext { get => throw null; set => throw null; }
             public static bool IsLicensed(System.Type type) => throw null;
-            public static bool IsValid(System.Type type, object instance, out System.ComponentModel.License license) => throw null;
             public static bool IsValid(System.Type type) => throw null;
+            public static bool IsValid(System.Type type, object instance, out System.ComponentModel.License license) => throw null;
             public static void LockContext(object contextUser) => throw null;
             public static void UnlockContext(object contextUser) => throw null;
             public static System.ComponentModel.LicenseUsageMode UsageMode { get => throw null; }
@@ -845,9 +845,9 @@ namespace System
             public override bool Equals(object value) => throw null;
             public override int GetHashCode() => throw null;
             public System.Type LicenseProvider { get => throw null; }
-            public LicenseProviderAttribute(string typeName) => throw null;
-            public LicenseProviderAttribute(System.Type type) => throw null;
             public LicenseProviderAttribute() => throw null;
+            public LicenseProviderAttribute(System.Type type) => throw null;
+            public LicenseProviderAttribute(string typeName) => throw null;
             public override object TypeId { get => throw null; }
         }
 
@@ -866,8 +866,8 @@ namespace System
             public override int GetHashCode() => throw null;
             public override bool IsDefaultAttribute() => throw null;
             public bool ListBindable { get => throw null; }
-            public ListBindableAttribute(bool listBindable) => throw null;
             public ListBindableAttribute(System.ComponentModel.BindableSupport flags) => throw null;
+            public ListBindableAttribute(bool listBindable) => throw null;
             public static System.ComponentModel.ListBindableAttribute No;
             public static System.ComponentModel.ListBindableAttribute Yes;
         }
@@ -875,10 +875,10 @@ namespace System
         // Generated from `System.ComponentModel.ListChangedEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ListChangedEventArgs : System.EventArgs
         {
-            public ListChangedEventArgs(System.ComponentModel.ListChangedType listChangedType, int newIndex, int oldIndex) => throw null;
-            public ListChangedEventArgs(System.ComponentModel.ListChangedType listChangedType, int newIndex, System.ComponentModel.PropertyDescriptor propDesc) => throw null;
-            public ListChangedEventArgs(System.ComponentModel.ListChangedType listChangedType, int newIndex) => throw null;
             public ListChangedEventArgs(System.ComponentModel.ListChangedType listChangedType, System.ComponentModel.PropertyDescriptor propDesc) => throw null;
+            public ListChangedEventArgs(System.ComponentModel.ListChangedType listChangedType, int newIndex) => throw null;
+            public ListChangedEventArgs(System.ComponentModel.ListChangedType listChangedType, int newIndex, System.ComponentModel.PropertyDescriptor propDesc) => throw null;
+            public ListChangedEventArgs(System.ComponentModel.ListChangedType listChangedType, int newIndex, int oldIndex) => throw null;
             public System.ComponentModel.ListChangedType ListChangedType { get => throw null; }
             public int NewIndex { get => throw null; }
             public int OldIndex { get => throw null; }
@@ -910,7 +910,7 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.ListSortDescriptionCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class ListSortDescriptionCollection : System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection
+        public class ListSortDescriptionCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             int System.Collections.IList.Add(object value) => throw null;
             void System.Collections.IList.Clear() => throw null;
@@ -925,8 +925,8 @@ namespace System
             bool System.Collections.ICollection.IsSynchronized { get => throw null; }
             public System.ComponentModel.ListSortDescription this[int index] { get => throw null; set => throw null; }
             object System.Collections.IList.this[int index] { get => throw null; set => throw null; }
-            public ListSortDescriptionCollection(System.ComponentModel.ListSortDescription[] sorts) => throw null;
             public ListSortDescriptionCollection() => throw null;
+            public ListSortDescriptionCollection(System.ComponentModel.ListSortDescription[] sorts) => throw null;
             void System.Collections.IList.Remove(object value) => throw null;
             void System.Collections.IList.RemoveAt(int index) => throw null;
             object System.Collections.ICollection.SyncRoot { get => throw null; }
@@ -947,14 +947,14 @@ namespace System
             public string DisplayMember { get => throw null; }
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
-            public LookupBindingPropertiesAttribute(string dataSource, string displayMember, string valueMember, string lookupMember) => throw null;
             public LookupBindingPropertiesAttribute() => throw null;
+            public LookupBindingPropertiesAttribute(string dataSource, string displayMember, string valueMember, string lookupMember) => throw null;
             public string LookupMember { get => throw null; }
             public string ValueMember { get => throw null; }
         }
 
         // Generated from `System.ComponentModel.MarshalByValueComponent` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class MarshalByValueComponent : System.IServiceProvider, System.IDisposable, System.ComponentModel.IComponent
+        public class MarshalByValueComponent : System.ComponentModel.IComponent, System.IDisposable, System.IServiceProvider
         {
             public virtual System.ComponentModel.IContainer Container { get => throw null; }
             public virtual bool DesignMode { get => throw null; }
@@ -972,16 +972,16 @@ namespace System
         // Generated from `System.ComponentModel.MaskedTextProvider` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MaskedTextProvider : System.ICloneable
         {
-            public bool Add(string input, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
-            public bool Add(string input) => throw null;
-            public bool Add(System.Char input, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public bool Add(System.Char input) => throw null;
+            public bool Add(System.Char input, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
+            public bool Add(string input) => throw null;
+            public bool Add(string input, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public bool AllowPromptAsInput { get => throw null; }
             public bool AsciiOnly { get => throw null; }
             public int AssignedEditPositionCount { get => throw null; }
             public int AvailableEditPositionCount { get => throw null; }
-            public void Clear(out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public void Clear() => throw null;
+            public void Clear(out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public object Clone() => throw null;
             public System.Globalization.CultureInfo Culture { get => throw null; }
             public static System.Char DefaultPasswordChar { get => throw null; }
@@ -998,10 +998,10 @@ namespace System
             public static bool GetOperationResultFromHint(System.ComponentModel.MaskedTextResultHint hint) => throw null;
             public bool IncludeLiterals { get => throw null; set => throw null; }
             public bool IncludePrompt { get => throw null; set => throw null; }
-            public bool InsertAt(string input, int position, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
-            public bool InsertAt(string input, int position) => throw null;
-            public bool InsertAt(System.Char input, int position, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public bool InsertAt(System.Char input, int position) => throw null;
+            public bool InsertAt(System.Char input, int position, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
+            public bool InsertAt(string input, int position) => throw null;
+            public bool InsertAt(string input, int position, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public static int InvalidIndex { get => throw null; }
             public bool IsAvailablePosition(int position) => throw null;
             public bool IsEditPosition(int position) => throw null;
@@ -1015,43 +1015,43 @@ namespace System
             public string Mask { get => throw null; }
             public bool MaskCompleted { get => throw null; }
             public bool MaskFull { get => throw null; }
-            public MaskedTextProvider(string mask, bool restrictToAscii) => throw null;
+            public MaskedTextProvider(string mask) => throw null;
+            public MaskedTextProvider(string mask, System.Globalization.CultureInfo culture) => throw null;
             public MaskedTextProvider(string mask, System.Globalization.CultureInfo culture, bool restrictToAscii) => throw null;
             public MaskedTextProvider(string mask, System.Globalization.CultureInfo culture, bool allowPromptAsInput, System.Char promptChar, System.Char passwordChar, bool restrictToAscii) => throw null;
             public MaskedTextProvider(string mask, System.Globalization.CultureInfo culture, System.Char passwordChar, bool allowPromptAsInput) => throw null;
-            public MaskedTextProvider(string mask, System.Globalization.CultureInfo culture) => throw null;
+            public MaskedTextProvider(string mask, bool restrictToAscii) => throw null;
             public MaskedTextProvider(string mask, System.Char passwordChar, bool allowPromptAsInput) => throw null;
-            public MaskedTextProvider(string mask) => throw null;
             public System.Char PasswordChar { get => throw null; set => throw null; }
             public System.Char PromptChar { get => throw null; set => throw null; }
-            public bool Remove(out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public bool Remove() => throw null;
-            public bool RemoveAt(int startPosition, int endPosition, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
-            public bool RemoveAt(int startPosition, int endPosition) => throw null;
+            public bool Remove(out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public bool RemoveAt(int position) => throw null;
-            public bool Replace(string input, int startPosition, int endPosition, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
-            public bool Replace(string input, int position, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
-            public bool Replace(string input, int position) => throw null;
+            public bool RemoveAt(int startPosition, int endPosition) => throw null;
+            public bool RemoveAt(int startPosition, int endPosition, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
+            public bool Replace(System.Char input, int position) => throw null;
             public bool Replace(System.Char input, int startPosition, int endPosition, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public bool Replace(System.Char input, int position, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
-            public bool Replace(System.Char input, int position) => throw null;
+            public bool Replace(string input, int position) => throw null;
+            public bool Replace(string input, int startPosition, int endPosition, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
+            public bool Replace(string input, int position, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public bool ResetOnPrompt { get => throw null; set => throw null; }
             public bool ResetOnSpace { get => throw null; set => throw null; }
-            public bool Set(string input, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public bool Set(string input) => throw null;
+            public bool Set(string input, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public bool SkipLiterals { get => throw null; set => throw null; }
             public string ToDisplayString() => throw null;
-            public string ToString(int startPosition, int length) => throw null;
-            public string ToString(bool includePrompt, bool includeLiterals, int startPosition, int length) => throw null;
-            public string ToString(bool includePrompt, bool includeLiterals) => throw null;
-            public string ToString(bool ignorePasswordChar, int startPosition, int length) => throw null;
-            public string ToString(bool ignorePasswordChar, bool includePrompt, bool includeLiterals, int startPosition, int length) => throw null;
-            public string ToString(bool ignorePasswordChar) => throw null;
             public override string ToString() => throw null;
+            public string ToString(bool ignorePasswordChar) => throw null;
+            public string ToString(bool includePrompt, bool includeLiterals) => throw null;
+            public string ToString(bool ignorePasswordChar, bool includePrompt, bool includeLiterals, int startPosition, int length) => throw null;
+            public string ToString(bool includePrompt, bool includeLiterals, int startPosition, int length) => throw null;
+            public string ToString(bool ignorePasswordChar, int startPosition, int length) => throw null;
+            public string ToString(int startPosition, int length) => throw null;
             public bool VerifyChar(System.Char input, int position, out System.ComponentModel.MaskedTextResultHint hint) => throw null;
             public bool VerifyEscapeChar(System.Char input, int position) => throw null;
-            public bool VerifyString(string input, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
             public bool VerifyString(string input) => throw null;
+            public bool VerifyString(string input, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
         }
 
         // Generated from `System.ComponentModel.MaskedTextResultHint` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1086,17 +1086,17 @@ namespace System
             public virtual string DisplayName { get => throw null; }
             public override bool Equals(object obj) => throw null;
             protected virtual void FillAttributes(System.Collections.IList attributeList) => throw null;
-            protected static System.Reflection.MethodInfo FindMethod(System.Type componentClass, string name, System.Type[] args, System.Type returnType, bool publicOnly) => throw null;
             protected static System.Reflection.MethodInfo FindMethod(System.Type componentClass, string name, System.Type[] args, System.Type returnType) => throw null;
+            protected static System.Reflection.MethodInfo FindMethod(System.Type componentClass, string name, System.Type[] args, System.Type returnType, bool publicOnly) => throw null;
             public override int GetHashCode() => throw null;
             protected virtual object GetInvocationTarget(System.Type type, object instance) => throw null;
             protected static object GetInvokee(System.Type componentClass, object component) => throw null;
             protected static System.ComponentModel.ISite GetSite(object component) => throw null;
             public virtual bool IsBrowsable { get => throw null; }
-            protected MemberDescriptor(string name, System.Attribute[] attributes) => throw null;
-            protected MemberDescriptor(string name) => throw null;
-            protected MemberDescriptor(System.ComponentModel.MemberDescriptor oldMemberDescriptor, System.Attribute[] newAttributes) => throw null;
             protected MemberDescriptor(System.ComponentModel.MemberDescriptor descr) => throw null;
+            protected MemberDescriptor(System.ComponentModel.MemberDescriptor oldMemberDescriptor, System.Attribute[] newAttributes) => throw null;
+            protected MemberDescriptor(string name) => throw null;
+            protected MemberDescriptor(string name, System.Attribute[] attributes) => throw null;
             public virtual string Name { get => throw null; }
             protected virtual int NameHashCode { get => throw null; }
         }
@@ -1111,7 +1111,7 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.NestedContainer` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class NestedContainer : System.ComponentModel.Container, System.IDisposable, System.ComponentModel.INestedContainer, System.ComponentModel.IContainer
+        public class NestedContainer : System.ComponentModel.Container, System.ComponentModel.IContainer, System.ComponentModel.INestedContainer, System.IDisposable
         {
             protected override System.ComponentModel.ISite CreateSite(System.ComponentModel.IComponent component, string name) => throw null;
             protected override void Dispose(bool disposing) => throw null;
@@ -1151,8 +1151,8 @@ namespace System
             public override bool IsDefaultAttribute() => throw null;
             public static System.ComponentModel.PasswordPropertyTextAttribute No;
             public bool Password { get => throw null; }
-            public PasswordPropertyTextAttribute(bool password) => throw null;
             public PasswordPropertyTextAttribute() => throw null;
+            public PasswordPropertyTextAttribute(bool password) => throw null;
             public static System.ComponentModel.PasswordPropertyTextAttribute Yes;
         }
 
@@ -1166,10 +1166,10 @@ namespace System
             protected object CreateInstance(System.Type type) => throw null;
             public override bool Equals(object obj) => throw null;
             protected override void FillAttributes(System.Collections.IList attributeList) => throw null;
-            public virtual System.ComponentModel.PropertyDescriptorCollection GetChildProperties(object instance, System.Attribute[] filter) => throw null;
-            public System.ComponentModel.PropertyDescriptorCollection GetChildProperties(object instance) => throw null;
-            public System.ComponentModel.PropertyDescriptorCollection GetChildProperties(System.Attribute[] filter) => throw null;
             public System.ComponentModel.PropertyDescriptorCollection GetChildProperties() => throw null;
+            public System.ComponentModel.PropertyDescriptorCollection GetChildProperties(System.Attribute[] filter) => throw null;
+            public System.ComponentModel.PropertyDescriptorCollection GetChildProperties(object instance) => throw null;
+            public virtual System.ComponentModel.PropertyDescriptorCollection GetChildProperties(object instance, System.Attribute[] filter) => throw null;
             public virtual object GetEditor(System.Type editorBaseType) => throw null;
             public override int GetHashCode() => throw null;
             protected override object GetInvocationTarget(System.Type type, object instance) => throw null;
@@ -1179,9 +1179,9 @@ namespace System
             public virtual bool IsLocalizable { get => throw null; }
             public abstract bool IsReadOnly { get; }
             protected virtual void OnValueChanged(object component, System.EventArgs e) => throw null;
-            protected PropertyDescriptor(string name, System.Attribute[] attrs) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
-            protected PropertyDescriptor(System.ComponentModel.MemberDescriptor descr, System.Attribute[] attrs) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
             protected PropertyDescriptor(System.ComponentModel.MemberDescriptor descr) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
+            protected PropertyDescriptor(System.ComponentModel.MemberDescriptor descr, System.Attribute[] attrs) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
+            protected PropertyDescriptor(string name, System.Attribute[] attrs) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
             public abstract System.Type PropertyType { get; }
             public virtual void RemoveValueChanged(object component, System.EventHandler handler) => throw null;
             public abstract void ResetValue(object component);
@@ -1192,52 +1192,52 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.PropertyDescriptorCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class PropertyDescriptorCollection : System.Collections.IList, System.Collections.IEnumerable, System.Collections.IDictionary, System.Collections.ICollection
+        public class PropertyDescriptorCollection : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable, System.Collections.IList
         {
-            void System.Collections.IDictionary.Add(object key, object value) => throw null;
             public int Add(System.ComponentModel.PropertyDescriptor value) => throw null;
             int System.Collections.IList.Add(object value) => throw null;
-            void System.Collections.IList.Clear() => throw null;
-            void System.Collections.IDictionary.Clear() => throw null;
+            void System.Collections.IDictionary.Add(object key, object value) => throw null;
             public void Clear() => throw null;
+            void System.Collections.IDictionary.Clear() => throw null;
+            void System.Collections.IList.Clear() => throw null;
             public bool Contains(System.ComponentModel.PropertyDescriptor value) => throw null;
-            bool System.Collections.IList.Contains(object value) => throw null;
             bool System.Collections.IDictionary.Contains(object key) => throw null;
+            bool System.Collections.IList.Contains(object value) => throw null;
             public void CopyTo(System.Array array, int index) => throw null;
             public int Count { get => throw null; }
             int System.Collections.ICollection.Count { get => throw null; }
             public static System.ComponentModel.PropertyDescriptorCollection Empty;
             public virtual System.ComponentModel.PropertyDescriptor Find(string name, bool ignoreCase) => throw null;
             public virtual System.Collections.IEnumerator GetEnumerator() => throw null;
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             System.Collections.IDictionaryEnumerator System.Collections.IDictionary.GetEnumerator() => throw null;
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             public int IndexOf(System.ComponentModel.PropertyDescriptor value) => throw null;
             int System.Collections.IList.IndexOf(object value) => throw null;
-            void System.Collections.IList.Insert(int index, object value) => throw null;
             public void Insert(int index, System.ComponentModel.PropertyDescriptor value) => throw null;
-            protected void InternalSort(string[] names) => throw null;
+            void System.Collections.IList.Insert(int index, object value) => throw null;
             protected void InternalSort(System.Collections.IComparer sorter) => throw null;
-            bool System.Collections.IList.IsFixedSize { get => throw null; }
+            protected void InternalSort(string[] names) => throw null;
             bool System.Collections.IDictionary.IsFixedSize { get => throw null; }
-            bool System.Collections.IList.IsReadOnly { get => throw null; }
+            bool System.Collections.IList.IsFixedSize { get => throw null; }
             bool System.Collections.IDictionary.IsReadOnly { get => throw null; }
+            bool System.Collections.IList.IsReadOnly { get => throw null; }
             bool System.Collections.ICollection.IsSynchronized { get => throw null; }
-            public virtual System.ComponentModel.PropertyDescriptor this[string name] { get => throw null; }
             public virtual System.ComponentModel.PropertyDescriptor this[int index] { get => throw null; }
             object System.Collections.IList.this[int index] { get => throw null; set => throw null; }
             object System.Collections.IDictionary.this[object key] { get => throw null; set => throw null; }
+            public virtual System.ComponentModel.PropertyDescriptor this[string name] { get => throw null; }
             System.Collections.ICollection System.Collections.IDictionary.Keys { get => throw null; }
-            public PropertyDescriptorCollection(System.ComponentModel.PropertyDescriptor[] properties, bool readOnly) => throw null;
             public PropertyDescriptorCollection(System.ComponentModel.PropertyDescriptor[] properties) => throw null;
-            void System.Collections.IList.Remove(object value) => throw null;
-            void System.Collections.IDictionary.Remove(object key) => throw null;
+            public PropertyDescriptorCollection(System.ComponentModel.PropertyDescriptor[] properties, bool readOnly) => throw null;
             public void Remove(System.ComponentModel.PropertyDescriptor value) => throw null;
-            void System.Collections.IList.RemoveAt(int index) => throw null;
+            void System.Collections.IDictionary.Remove(object key) => throw null;
+            void System.Collections.IList.Remove(object value) => throw null;
             public void RemoveAt(int index) => throw null;
-            public virtual System.ComponentModel.PropertyDescriptorCollection Sort(string[] names, System.Collections.IComparer comparer) => throw null;
-            public virtual System.ComponentModel.PropertyDescriptorCollection Sort(string[] names) => throw null;
-            public virtual System.ComponentModel.PropertyDescriptorCollection Sort(System.Collections.IComparer comparer) => throw null;
+            void System.Collections.IList.RemoveAt(int index) => throw null;
             public virtual System.ComponentModel.PropertyDescriptorCollection Sort() => throw null;
+            public virtual System.ComponentModel.PropertyDescriptorCollection Sort(System.Collections.IComparer comparer) => throw null;
+            public virtual System.ComponentModel.PropertyDescriptorCollection Sort(string[] names) => throw null;
+            public virtual System.ComponentModel.PropertyDescriptorCollection Sort(string[] names, System.Collections.IComparer comparer) => throw null;
             object System.Collections.ICollection.SyncRoot { get => throw null; }
             System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
         }
@@ -1245,16 +1245,16 @@ namespace System
         // Generated from `System.ComponentModel.PropertyTabAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class PropertyTabAttribute : System.Attribute
         {
-            public override bool Equals(object other) => throw null;
             public bool Equals(System.ComponentModel.PropertyTabAttribute other) => throw null;
+            public override bool Equals(object other) => throw null;
             public override int GetHashCode() => throw null;
             protected void InitializeArrays(string[] tabClassNames, System.ComponentModel.PropertyTabScope[] tabScopes) => throw null;
             protected void InitializeArrays(System.Type[] tabClasses, System.ComponentModel.PropertyTabScope[] tabScopes) => throw null;
-            public PropertyTabAttribute(string tabClassName, System.ComponentModel.PropertyTabScope tabScope) => throw null;
-            public PropertyTabAttribute(string tabClassName) => throw null;
-            public PropertyTabAttribute(System.Type tabClass, System.ComponentModel.PropertyTabScope tabScope) => throw null;
-            public PropertyTabAttribute(System.Type tabClass) => throw null;
             public PropertyTabAttribute() => throw null;
+            public PropertyTabAttribute(System.Type tabClass) => throw null;
+            public PropertyTabAttribute(System.Type tabClass, System.ComponentModel.PropertyTabScope tabScope) => throw null;
+            public PropertyTabAttribute(string tabClassName) => throw null;
+            public PropertyTabAttribute(string tabClassName, System.ComponentModel.PropertyTabScope tabScope) => throw null;
             protected string[] TabClassNames { get => throw null; }
             public System.Type[] TabClasses { get => throw null; }
             public System.ComponentModel.PropertyTabScope[] TabScopes { get => throw null; }
@@ -1275,8 +1275,8 @@ namespace System
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public string PropertyName { get => throw null; }
-            public ProvidePropertyAttribute(string propertyName, string receiverTypeName) => throw null;
             public ProvidePropertyAttribute(string propertyName, System.Type receiverType) => throw null;
+            public ProvidePropertyAttribute(string propertyName, string receiverTypeName) => throw null;
             public string ReceiverTypeName { get => throw null; }
             public override object TypeId { get => throw null; }
         }
@@ -1311,8 +1311,8 @@ namespace System
         public class RefreshEventArgs : System.EventArgs
         {
             public object ComponentChanged { get => throw null; }
-            public RefreshEventArgs(object componentChanged) => throw null;
             public RefreshEventArgs(System.Type typeChanged) => throw null;
+            public RefreshEventArgs(object componentChanged) => throw null;
             public System.Type TypeChanged { get => throw null; }
         }
 
@@ -1389,9 +1389,9 @@ namespace System
             public override int GetHashCode() => throw null;
             public override bool IsDefaultAttribute() => throw null;
             public static System.ComponentModel.ToolboxItemAttribute None;
-            public ToolboxItemAttribute(string toolboxItemTypeName) => throw null;
-            public ToolboxItemAttribute(bool defaultType) => throw null;
             public ToolboxItemAttribute(System.Type toolboxItemType) => throw null;
+            public ToolboxItemAttribute(bool defaultType) => throw null;
+            public ToolboxItemAttribute(string toolboxItemTypeName) => throw null;
             public System.Type ToolboxItemType { get => throw null; }
             public string ToolboxItemTypeName { get => throw null; }
         }
@@ -1405,8 +1405,8 @@ namespace System
             public override int GetHashCode() => throw null;
             public override bool Match(object obj) => throw null;
             public override string ToString() => throw null;
-            public ToolboxItemFilterAttribute(string filterString, System.ComponentModel.ToolboxItemFilterType filterType) => throw null;
             public ToolboxItemFilterAttribute(string filterString) => throw null;
+            public ToolboxItemFilterAttribute(string filterString, System.ComponentModel.ToolboxItemFilterType filterType) => throw null;
             public override object TypeId { get => throw null; }
         }
 
@@ -1422,43 +1422,6 @@ namespace System
         // Generated from `System.ComponentModel.TypeConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TypeConverter
         {
-            public virtual bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
-            public bool CanConvertFrom(System.Type sourceType) => throw null;
-            public virtual bool CanConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Type destinationType) => throw null;
-            public bool CanConvertTo(System.Type destinationType) => throw null;
-            public virtual object ConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value) => throw null;
-            public object ConvertFrom(object value) => throw null;
-            public object ConvertFromInvariantString(string text) => throw null;
-            public object ConvertFromInvariantString(System.ComponentModel.ITypeDescriptorContext context, string text) => throw null;
-            public object ConvertFromString(string text) => throw null;
-            public object ConvertFromString(System.ComponentModel.ITypeDescriptorContext context, string text) => throw null;
-            public object ConvertFromString(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, string text) => throw null;
-            public virtual object ConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType) => throw null;
-            public object ConvertTo(object value, System.Type destinationType) => throw null;
-            public string ConvertToInvariantString(object value) => throw null;
-            public string ConvertToInvariantString(System.ComponentModel.ITypeDescriptorContext context, object value) => throw null;
-            public string ConvertToString(object value) => throw null;
-            public string ConvertToString(System.ComponentModel.ITypeDescriptorContext context, object value) => throw null;
-            public string ConvertToString(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value) => throw null;
-            public virtual object CreateInstance(System.ComponentModel.ITypeDescriptorContext context, System.Collections.IDictionary propertyValues) => throw null;
-            public object CreateInstance(System.Collections.IDictionary propertyValues) => throw null;
-            protected System.Exception GetConvertFromException(object value) => throw null;
-            protected System.Exception GetConvertToException(object value, System.Type destinationType) => throw null;
-            public virtual bool GetCreateInstanceSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
-            public bool GetCreateInstanceSupported() => throw null;
-            public virtual System.ComponentModel.PropertyDescriptorCollection GetProperties(System.ComponentModel.ITypeDescriptorContext context, object value, System.Attribute[] attributes) => throw null;
-            public System.ComponentModel.PropertyDescriptorCollection GetProperties(object value) => throw null;
-            public System.ComponentModel.PropertyDescriptorCollection GetProperties(System.ComponentModel.ITypeDescriptorContext context, object value) => throw null;
-            public virtual bool GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
-            public bool GetPropertiesSupported() => throw null;
-            public virtual System.ComponentModel.TypeConverter.StandardValuesCollection GetStandardValues(System.ComponentModel.ITypeDescriptorContext context) => throw null;
-            public System.Collections.ICollection GetStandardValues() => throw null;
-            public virtual bool GetStandardValuesExclusive(System.ComponentModel.ITypeDescriptorContext context) => throw null;
-            public bool GetStandardValuesExclusive() => throw null;
-            public virtual bool GetStandardValuesSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
-            public bool GetStandardValuesSupported() => throw null;
-            public virtual bool IsValid(System.ComponentModel.ITypeDescriptorContext context, object value) => throw null;
-            public bool IsValid(object value) => throw null;
             // Generated from `System.ComponentModel.TypeConverter+SimplePropertyDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             protected abstract class SimplePropertyDescriptor : System.ComponentModel.PropertyDescriptor
             {
@@ -1468,14 +1431,13 @@ namespace System
                 public override System.Type PropertyType { get => throw null; }
                 public override void ResetValue(object component) => throw null;
                 public override bool ShouldSerializeValue(object component) => throw null;
-                protected SimplePropertyDescriptor(System.Type componentType, string name, System.Type propertyType, System.Attribute[] attributes) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
                 protected SimplePropertyDescriptor(System.Type componentType, string name, System.Type propertyType) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
+                protected SimplePropertyDescriptor(System.Type componentType, string name, System.Type propertyType, System.Attribute[] attributes) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
             }
 
 
-            protected System.ComponentModel.PropertyDescriptorCollection SortProperties(System.ComponentModel.PropertyDescriptorCollection props, string[] names) => throw null;
             // Generated from `System.ComponentModel.TypeConverter+StandardValuesCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class StandardValuesCollection : System.Collections.IEnumerable, System.Collections.ICollection
+            public class StandardValuesCollection : System.Collections.ICollection, System.Collections.IEnumerable
             {
                 public void CopyTo(System.Array array, int index) => throw null;
                 public int Count { get => throw null; }
@@ -1487,6 +1449,44 @@ namespace System
             }
 
 
+            public virtual bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
+            public bool CanConvertFrom(System.Type sourceType) => throw null;
+            public virtual bool CanConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Type destinationType) => throw null;
+            public bool CanConvertTo(System.Type destinationType) => throw null;
+            public virtual object ConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value) => throw null;
+            public object ConvertFrom(object value) => throw null;
+            public object ConvertFromInvariantString(System.ComponentModel.ITypeDescriptorContext context, string text) => throw null;
+            public object ConvertFromInvariantString(string text) => throw null;
+            public object ConvertFromString(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, string text) => throw null;
+            public object ConvertFromString(System.ComponentModel.ITypeDescriptorContext context, string text) => throw null;
+            public object ConvertFromString(string text) => throw null;
+            public virtual object ConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType) => throw null;
+            public object ConvertTo(object value, System.Type destinationType) => throw null;
+            public string ConvertToInvariantString(System.ComponentModel.ITypeDescriptorContext context, object value) => throw null;
+            public string ConvertToInvariantString(object value) => throw null;
+            public string ConvertToString(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value) => throw null;
+            public string ConvertToString(System.ComponentModel.ITypeDescriptorContext context, object value) => throw null;
+            public string ConvertToString(object value) => throw null;
+            public object CreateInstance(System.Collections.IDictionary propertyValues) => throw null;
+            public virtual object CreateInstance(System.ComponentModel.ITypeDescriptorContext context, System.Collections.IDictionary propertyValues) => throw null;
+            protected System.Exception GetConvertFromException(object value) => throw null;
+            protected System.Exception GetConvertToException(object value, System.Type destinationType) => throw null;
+            public bool GetCreateInstanceSupported() => throw null;
+            public virtual bool GetCreateInstanceSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
+            public System.ComponentModel.PropertyDescriptorCollection GetProperties(System.ComponentModel.ITypeDescriptorContext context, object value) => throw null;
+            public virtual System.ComponentModel.PropertyDescriptorCollection GetProperties(System.ComponentModel.ITypeDescriptorContext context, object value, System.Attribute[] attributes) => throw null;
+            public System.ComponentModel.PropertyDescriptorCollection GetProperties(object value) => throw null;
+            public bool GetPropertiesSupported() => throw null;
+            public virtual bool GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
+            public System.Collections.ICollection GetStandardValues() => throw null;
+            public virtual System.ComponentModel.TypeConverter.StandardValuesCollection GetStandardValues(System.ComponentModel.ITypeDescriptorContext context) => throw null;
+            public bool GetStandardValuesExclusive() => throw null;
+            public virtual bool GetStandardValuesExclusive(System.ComponentModel.ITypeDescriptorContext context) => throw null;
+            public bool GetStandardValuesSupported() => throw null;
+            public virtual bool GetStandardValuesSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
+            public virtual bool IsValid(System.ComponentModel.ITypeDescriptorContext context, object value) => throw null;
+            public bool IsValid(object value) => throw null;
+            protected System.ComponentModel.PropertyDescriptorCollection SortProperties(System.ComponentModel.PropertyDescriptorCollection props, string[] names) => throw null;
             public TypeConverter() => throw null;
         }
 
@@ -1498,87 +1498,87 @@ namespace System
             public virtual System.ComponentModel.ICustomTypeDescriptor GetExtendedTypeDescriptor(object instance) => throw null;
             protected internal virtual System.ComponentModel.IExtenderProvider[] GetExtenderProviders(object instance) => throw null;
             public virtual string GetFullComponentName(object component) => throw null;
+            public System.Type GetReflectionType(System.Type objectType) => throw null;
             public virtual System.Type GetReflectionType(System.Type objectType, object instance) => throw null;
             public System.Type GetReflectionType(object instance) => throw null;
-            public System.Type GetReflectionType(System.Type objectType) => throw null;
             public virtual System.Type GetRuntimeType(System.Type reflectionType) => throw null;
+            public System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptor(System.Type objectType) => throw null;
             public virtual System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptor(System.Type objectType, object instance) => throw null;
             public System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptor(object instance) => throw null;
-            public System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptor(System.Type objectType) => throw null;
             public virtual bool IsSupportedType(System.Type type) => throw null;
-            protected TypeDescriptionProvider(System.ComponentModel.TypeDescriptionProvider parent) => throw null;
             protected TypeDescriptionProvider() => throw null;
+            protected TypeDescriptionProvider(System.ComponentModel.TypeDescriptionProvider parent) => throw null;
         }
 
         // Generated from `System.ComponentModel.TypeDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TypeDescriptor
         {
-            public static System.ComponentModel.TypeDescriptionProvider AddAttributes(object instance, params System.Attribute[] attributes) => throw null;
             public static System.ComponentModel.TypeDescriptionProvider AddAttributes(System.Type type, params System.Attribute[] attributes) => throw null;
+            public static System.ComponentModel.TypeDescriptionProvider AddAttributes(object instance, params System.Attribute[] attributes) => throw null;
             public static void AddEditorTable(System.Type editorBaseType, System.Collections.Hashtable table) => throw null;
-            public static void AddProvider(System.ComponentModel.TypeDescriptionProvider provider, object instance) => throw null;
             public static void AddProvider(System.ComponentModel.TypeDescriptionProvider provider, System.Type type) => throw null;
-            public static void AddProviderTransparent(System.ComponentModel.TypeDescriptionProvider provider, object instance) => throw null;
+            public static void AddProvider(System.ComponentModel.TypeDescriptionProvider provider, object instance) => throw null;
             public static void AddProviderTransparent(System.ComponentModel.TypeDescriptionProvider provider, System.Type type) => throw null;
+            public static void AddProviderTransparent(System.ComponentModel.TypeDescriptionProvider provider, object instance) => throw null;
             public static System.ComponentModel.IComNativeDescriptorHandler ComNativeDescriptorHandler { get => throw null; set => throw null; }
             public static System.Type ComObjectType { get => throw null; }
             public static void CreateAssociation(object primary, object secondary) => throw null;
             public static System.ComponentModel.Design.IDesigner CreateDesigner(System.ComponentModel.IComponent component, System.Type designerBaseType) => throw null;
-            public static System.ComponentModel.EventDescriptor CreateEvent(System.Type componentType, string name, System.Type type, params System.Attribute[] attributes) => throw null;
             public static System.ComponentModel.EventDescriptor CreateEvent(System.Type componentType, System.ComponentModel.EventDescriptor oldEventDescriptor, params System.Attribute[] attributes) => throw null;
+            public static System.ComponentModel.EventDescriptor CreateEvent(System.Type componentType, string name, System.Type type, params System.Attribute[] attributes) => throw null;
             public static object CreateInstance(System.IServiceProvider provider, System.Type objectType, System.Type[] argTypes, object[] args) => throw null;
-            public static System.ComponentModel.PropertyDescriptor CreateProperty(System.Type componentType, string name, System.Type type, params System.Attribute[] attributes) => throw null;
             public static System.ComponentModel.PropertyDescriptor CreateProperty(System.Type componentType, System.ComponentModel.PropertyDescriptor oldPropertyDescriptor, params System.Attribute[] attributes) => throw null;
+            public static System.ComponentModel.PropertyDescriptor CreateProperty(System.Type componentType, string name, System.Type type, params System.Attribute[] attributes) => throw null;
             public static object GetAssociation(System.Type type, object primary) => throw null;
-            public static System.ComponentModel.AttributeCollection GetAttributes(object component, bool noCustomTypeDesc) => throw null;
-            public static System.ComponentModel.AttributeCollection GetAttributes(object component) => throw null;
             public static System.ComponentModel.AttributeCollection GetAttributes(System.Type componentType) => throw null;
-            public static string GetClassName(object component, bool noCustomTypeDesc) => throw null;
-            public static string GetClassName(object component) => throw null;
+            public static System.ComponentModel.AttributeCollection GetAttributes(object component) => throw null;
+            public static System.ComponentModel.AttributeCollection GetAttributes(object component, bool noCustomTypeDesc) => throw null;
             public static string GetClassName(System.Type componentType) => throw null;
-            public static string GetComponentName(object component, bool noCustomTypeDesc) => throw null;
+            public static string GetClassName(object component) => throw null;
+            public static string GetClassName(object component, bool noCustomTypeDesc) => throw null;
             public static string GetComponentName(object component) => throw null;
-            public static System.ComponentModel.TypeConverter GetConverter(object component, bool noCustomTypeDesc) => throw null;
-            public static System.ComponentModel.TypeConverter GetConverter(object component) => throw null;
+            public static string GetComponentName(object component, bool noCustomTypeDesc) => throw null;
             public static System.ComponentModel.TypeConverter GetConverter(System.Type type) => throw null;
-            public static System.ComponentModel.EventDescriptor GetDefaultEvent(object component, bool noCustomTypeDesc) => throw null;
-            public static System.ComponentModel.EventDescriptor GetDefaultEvent(object component) => throw null;
+            public static System.ComponentModel.TypeConverter GetConverter(object component) => throw null;
+            public static System.ComponentModel.TypeConverter GetConverter(object component, bool noCustomTypeDesc) => throw null;
             public static System.ComponentModel.EventDescriptor GetDefaultEvent(System.Type componentType) => throw null;
-            public static System.ComponentModel.PropertyDescriptor GetDefaultProperty(object component, bool noCustomTypeDesc) => throw null;
-            public static System.ComponentModel.PropertyDescriptor GetDefaultProperty(object component) => throw null;
+            public static System.ComponentModel.EventDescriptor GetDefaultEvent(object component) => throw null;
+            public static System.ComponentModel.EventDescriptor GetDefaultEvent(object component, bool noCustomTypeDesc) => throw null;
             public static System.ComponentModel.PropertyDescriptor GetDefaultProperty(System.Type componentType) => throw null;
-            public static object GetEditor(object component, System.Type editorBaseType, bool noCustomTypeDesc) => throw null;
-            public static object GetEditor(object component, System.Type editorBaseType) => throw null;
+            public static System.ComponentModel.PropertyDescriptor GetDefaultProperty(object component) => throw null;
+            public static System.ComponentModel.PropertyDescriptor GetDefaultProperty(object component, bool noCustomTypeDesc) => throw null;
             public static object GetEditor(System.Type type, System.Type editorBaseType) => throw null;
-            public static System.ComponentModel.EventDescriptorCollection GetEvents(object component, bool noCustomTypeDesc) => throw null;
-            public static System.ComponentModel.EventDescriptorCollection GetEvents(object component, System.Attribute[] attributes, bool noCustomTypeDesc) => throw null;
-            public static System.ComponentModel.EventDescriptorCollection GetEvents(object component, System.Attribute[] attributes) => throw null;
-            public static System.ComponentModel.EventDescriptorCollection GetEvents(object component) => throw null;
-            public static System.ComponentModel.EventDescriptorCollection GetEvents(System.Type componentType, System.Attribute[] attributes) => throw null;
+            public static object GetEditor(object component, System.Type editorBaseType) => throw null;
+            public static object GetEditor(object component, System.Type editorBaseType, bool noCustomTypeDesc) => throw null;
             public static System.ComponentModel.EventDescriptorCollection GetEvents(System.Type componentType) => throw null;
+            public static System.ComponentModel.EventDescriptorCollection GetEvents(System.Type componentType, System.Attribute[] attributes) => throw null;
+            public static System.ComponentModel.EventDescriptorCollection GetEvents(object component) => throw null;
+            public static System.ComponentModel.EventDescriptorCollection GetEvents(object component, System.Attribute[] attributes) => throw null;
+            public static System.ComponentModel.EventDescriptorCollection GetEvents(object component, System.Attribute[] attributes, bool noCustomTypeDesc) => throw null;
+            public static System.ComponentModel.EventDescriptorCollection GetEvents(object component, bool noCustomTypeDesc) => throw null;
             public static string GetFullComponentName(object component) => throw null;
-            public static System.ComponentModel.PropertyDescriptorCollection GetProperties(object component, bool noCustomTypeDesc) => throw null;
-            public static System.ComponentModel.PropertyDescriptorCollection GetProperties(object component, System.Attribute[] attributes, bool noCustomTypeDesc) => throw null;
-            public static System.ComponentModel.PropertyDescriptorCollection GetProperties(object component, System.Attribute[] attributes) => throw null;
-            public static System.ComponentModel.PropertyDescriptorCollection GetProperties(object component) => throw null;
-            public static System.ComponentModel.PropertyDescriptorCollection GetProperties(System.Type componentType, System.Attribute[] attributes) => throw null;
             public static System.ComponentModel.PropertyDescriptorCollection GetProperties(System.Type componentType) => throw null;
-            public static System.ComponentModel.TypeDescriptionProvider GetProvider(object instance) => throw null;
+            public static System.ComponentModel.PropertyDescriptorCollection GetProperties(System.Type componentType, System.Attribute[] attributes) => throw null;
+            public static System.ComponentModel.PropertyDescriptorCollection GetProperties(object component) => throw null;
+            public static System.ComponentModel.PropertyDescriptorCollection GetProperties(object component, System.Attribute[] attributes) => throw null;
+            public static System.ComponentModel.PropertyDescriptorCollection GetProperties(object component, System.Attribute[] attributes, bool noCustomTypeDesc) => throw null;
+            public static System.ComponentModel.PropertyDescriptorCollection GetProperties(object component, bool noCustomTypeDesc) => throw null;
             public static System.ComponentModel.TypeDescriptionProvider GetProvider(System.Type type) => throw null;
-            public static System.Type GetReflectionType(object instance) => throw null;
+            public static System.ComponentModel.TypeDescriptionProvider GetProvider(object instance) => throw null;
             public static System.Type GetReflectionType(System.Type type) => throw null;
+            public static System.Type GetReflectionType(object instance) => throw null;
             public static System.Type InterfaceType { get => throw null; }
-            public static void Refresh(object component) => throw null;
-            public static void Refresh(System.Type type) => throw null;
-            public static void Refresh(System.Reflection.Module module) => throw null;
             public static void Refresh(System.Reflection.Assembly assembly) => throw null;
+            public static void Refresh(System.Reflection.Module module) => throw null;
+            public static void Refresh(System.Type type) => throw null;
+            public static void Refresh(object component) => throw null;
             public static event System.ComponentModel.RefreshEventHandler Refreshed;
             public static void RemoveAssociation(object primary, object secondary) => throw null;
             public static void RemoveAssociations(object primary) => throw null;
-            public static void RemoveProvider(System.ComponentModel.TypeDescriptionProvider provider, object instance) => throw null;
             public static void RemoveProvider(System.ComponentModel.TypeDescriptionProvider provider, System.Type type) => throw null;
-            public static void RemoveProviderTransparent(System.ComponentModel.TypeDescriptionProvider provider, object instance) => throw null;
+            public static void RemoveProvider(System.ComponentModel.TypeDescriptionProvider provider, object instance) => throw null;
             public static void RemoveProviderTransparent(System.ComponentModel.TypeDescriptionProvider provider, System.Type type) => throw null;
+            public static void RemoveProviderTransparent(System.ComponentModel.TypeDescriptionProvider provider, object instance) => throw null;
             public static void SortDescriptorArray(System.Collections.IList infos) => throw null;
         }
 
@@ -1630,12 +1630,12 @@ namespace System
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public string HelpTopic { get => throw null; }
             public string HelpUrl { get => throw null; }
-            public WarningException(string message, string helpUrl, string helpTopic) => throw null;
-            public WarningException(string message, string helpUrl) => throw null;
-            public WarningException(string message, System.Exception innerException) => throw null;
-            public WarningException(string message) => throw null;
             public WarningException() => throw null;
             protected WarningException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+            public WarningException(string message) => throw null;
+            public WarningException(string message, System.Exception innerException) => throw null;
+            public WarningException(string message, string helpUrl) => throw null;
+            public WarningException(string message, string helpUrl, string helpTopic) => throw null;
         }
 
         namespace Design
@@ -1655,11 +1655,11 @@ namespace System
             public class CheckoutException : System.Runtime.InteropServices.ExternalException
             {
                 public static System.ComponentModel.Design.CheckoutException Canceled;
-                public CheckoutException(string message, int errorCode) => throw null;
-                public CheckoutException(string message, System.Exception innerException) => throw null;
-                public CheckoutException(string message) => throw null;
                 public CheckoutException() => throw null;
                 protected CheckoutException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public CheckoutException(string message) => throw null;
+                public CheckoutException(string message, System.Exception innerException) => throw null;
+                public CheckoutException(string message, int errorCode) => throw null;
             }
 
             // Generated from `System.ComponentModel.Design.CommandID` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1720,7 +1720,7 @@ namespace System
             public delegate void ComponentRenameEventHandler(object sender, System.ComponentModel.Design.ComponentRenameEventArgs e);
 
             // Generated from `System.ComponentModel.Design.DesignerCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class DesignerCollection : System.Collections.IEnumerable, System.Collections.ICollection
+            public class DesignerCollection : System.Collections.ICollection, System.Collections.IEnumerable
             {
                 void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                 public int Count { get => throw null; }
@@ -1747,9 +1747,8 @@ namespace System
             // Generated from `System.ComponentModel.Design.DesignerOptionService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DesignerOptionService : System.ComponentModel.Design.IDesignerOptionService
             {
-                protected System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection CreateOptionCollection(System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection parent, string name, object value) => throw null;
                 // Generated from `System.ComponentModel.Design.DesignerOptionService+DesignerOptionCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public class DesignerOptionCollection : System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection
+                public class DesignerOptionCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
                 {
                     int System.Collections.IList.Add(object value) => throw null;
                     void System.Collections.IList.Clear() => throw null;
@@ -1763,9 +1762,9 @@ namespace System
                     bool System.Collections.IList.IsFixedSize { get => throw null; }
                     bool System.Collections.IList.IsReadOnly { get => throw null; }
                     bool System.Collections.ICollection.IsSynchronized { get => throw null; }
-                    public System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection this[string name] { get => throw null; }
                     public System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection this[int index] { get => throw null; }
                     object System.Collections.IList.this[int index] { get => throw null; set => throw null; }
+                    public System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection this[string name] { get => throw null; }
                     public string Name { get => throw null; }
                     public System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection Parent { get => throw null; }
                     public System.ComponentModel.PropertyDescriptorCollection Properties { get => throw null; }
@@ -1776,6 +1775,7 @@ namespace System
                 }
 
 
+                protected System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection CreateOptionCollection(System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection parent, string name, object value) => throw null;
                 protected DesignerOptionService() => throw null;
                 object System.ComponentModel.Design.IDesignerOptionService.GetOptionValue(string pageName, string valueName) => throw null;
                 public System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection Options { get => throw null; }
@@ -1792,8 +1792,8 @@ namespace System
                 public void Commit() => throw null;
                 public bool Committed { get => throw null; }
                 public string Description { get => throw null; }
-                protected DesignerTransaction(string description) => throw null;
                 protected DesignerTransaction() => throw null;
+                protected DesignerTransaction(string description) => throw null;
                 void System.IDisposable.Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;
                 protected abstract void OnCancel();
@@ -1804,8 +1804,8 @@ namespace System
             // Generated from `System.ComponentModel.Design.DesignerTransactionCloseEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DesignerTransactionCloseEventArgs : System.EventArgs
             {
-                public DesignerTransactionCloseEventArgs(bool commit, bool lastTransaction) => throw null;
                 public DesignerTransactionCloseEventArgs(bool commit) => throw null;
+                public DesignerTransactionCloseEventArgs(bool commit, bool lastTransaction) => throw null;
                 public bool LastTransaction { get => throw null; }
                 public bool TransactionCommitted { get => throw null; }
             }
@@ -1817,8 +1817,8 @@ namespace System
             public class DesignerVerb : System.ComponentModel.Design.MenuCommand
             {
                 public string Description { get => throw null; set => throw null; }
-                public DesignerVerb(string text, System.EventHandler handler, System.ComponentModel.Design.CommandID startCommandID) : base(default(System.EventHandler), default(System.ComponentModel.Design.CommandID)) => throw null;
                 public DesignerVerb(string text, System.EventHandler handler) : base(default(System.EventHandler), default(System.ComponentModel.Design.CommandID)) => throw null;
+                public DesignerVerb(string text, System.EventHandler handler, System.ComponentModel.Design.CommandID startCommandID) : base(default(System.EventHandler), default(System.ComponentModel.Design.CommandID)) => throw null;
                 public string Text { get => throw null; }
                 public override string ToString() => throw null;
             }
@@ -1827,12 +1827,12 @@ namespace System
             public class DesignerVerbCollection : System.Collections.CollectionBase
             {
                 public int Add(System.ComponentModel.Design.DesignerVerb value) => throw null;
-                public void AddRange(System.ComponentModel.Design.DesignerVerb[] value) => throw null;
                 public void AddRange(System.ComponentModel.Design.DesignerVerbCollection value) => throw null;
+                public void AddRange(System.ComponentModel.Design.DesignerVerb[] value) => throw null;
                 public bool Contains(System.ComponentModel.Design.DesignerVerb value) => throw null;
                 public void CopyTo(System.ComponentModel.Design.DesignerVerb[] array, int index) => throw null;
-                public DesignerVerbCollection(System.ComponentModel.Design.DesignerVerb[] value) => throw null;
                 public DesignerVerbCollection() => throw null;
+                public DesignerVerbCollection(System.ComponentModel.Design.DesignerVerb[] value) => throw null;
                 public int IndexOf(System.ComponentModel.Design.DesignerVerb value) => throw null;
                 public void Insert(int index, System.ComponentModel.Design.DesignerVerb value) => throw null;
                 public System.ComponentModel.Design.DesignerVerb this[int index] { get => throw null; set => throw null; }
@@ -1875,9 +1875,9 @@ namespace System
                 public override bool Equals(object obj) => throw null;
                 public override int GetHashCode() => throw null;
                 public string HelpKeyword { get => throw null; }
-                public HelpKeywordAttribute(string keyword) => throw null;
-                public HelpKeywordAttribute(System.Type t) => throw null;
                 public HelpKeywordAttribute() => throw null;
+                public HelpKeywordAttribute(System.Type t) => throw null;
+                public HelpKeywordAttribute(string keyword) => throw null;
                 public override bool IsDefaultAttribute() => throw null;
             }
 
@@ -1948,15 +1948,15 @@ namespace System
             }
 
             // Generated from `System.ComponentModel.Design.IDesignerHost` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public interface IDesignerHost : System.IServiceProvider, System.ComponentModel.Design.IServiceContainer
+            public interface IDesignerHost : System.ComponentModel.Design.IServiceContainer, System.IServiceProvider
             {
                 void Activate();
                 event System.EventHandler Activated;
                 System.ComponentModel.IContainer Container { get; }
-                System.ComponentModel.IComponent CreateComponent(System.Type componentClass, string name);
                 System.ComponentModel.IComponent CreateComponent(System.Type componentClass);
-                System.ComponentModel.Design.DesignerTransaction CreateTransaction(string description);
+                System.ComponentModel.IComponent CreateComponent(System.Type componentClass, string name);
                 System.ComponentModel.Design.DesignerTransaction CreateTransaction();
+                System.ComponentModel.Design.DesignerTransaction CreateTransaction(string description);
                 event System.EventHandler Deactivated;
                 void DestroyComponent(System.ComponentModel.IComponent component);
                 System.ComponentModel.Design.IDesigner GetDesigner(System.ComponentModel.IComponent component);
@@ -2002,9 +2002,9 @@ namespace System
                 System.ComponentModel.EventDescriptor GetEvent(System.ComponentModel.PropertyDescriptor property);
                 System.ComponentModel.PropertyDescriptorCollection GetEventProperties(System.ComponentModel.EventDescriptorCollection events);
                 System.ComponentModel.PropertyDescriptor GetEventProperty(System.ComponentModel.EventDescriptor e);
-                bool ShowCode(int lineNumber);
-                bool ShowCode(System.ComponentModel.IComponent component, System.ComponentModel.EventDescriptor e);
                 bool ShowCode();
+                bool ShowCode(System.ComponentModel.IComponent component, System.ComponentModel.EventDescriptor e);
+                bool ShowCode(int lineNumber);
             }
 
             // Generated from `System.ComponentModel.Design.IExtenderListService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2058,8 +2058,8 @@ namespace System
                 System.ComponentModel.IComponent GetComponent(object reference);
                 string GetName(object reference);
                 object GetReference(string name);
-                object[] GetReferences(System.Type baseType);
                 object[] GetReferences();
+                object[] GetReferences(System.Type baseType);
             }
 
             // Generated from `System.ComponentModel.Design.IResourceService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2070,7 +2070,7 @@ namespace System
             }
 
             // Generated from `System.ComponentModel.Design.IRootDesigner` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public interface IRootDesigner : System.IDisposable, System.ComponentModel.Design.IDesigner
+            public interface IRootDesigner : System.ComponentModel.Design.IDesigner, System.IDisposable
             {
                 object GetView(System.ComponentModel.Design.ViewTechnology technology);
                 System.ComponentModel.Design.ViewTechnology[] SupportedTechnologies { get; }
@@ -2085,23 +2085,23 @@ namespace System
                 event System.EventHandler SelectionChanged;
                 event System.EventHandler SelectionChanging;
                 int SelectionCount { get; }
-                void SetSelectedComponents(System.Collections.ICollection components, System.ComponentModel.Design.SelectionTypes selectionType);
                 void SetSelectedComponents(System.Collections.ICollection components);
+                void SetSelectedComponents(System.Collections.ICollection components, System.ComponentModel.Design.SelectionTypes selectionType);
             }
 
             // Generated from `System.ComponentModel.Design.IServiceContainer` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IServiceContainer : System.IServiceProvider
             {
-                void AddService(System.Type serviceType, object serviceInstance, bool promote);
-                void AddService(System.Type serviceType, object serviceInstance);
-                void AddService(System.Type serviceType, System.ComponentModel.Design.ServiceCreatorCallback callback, bool promote);
                 void AddService(System.Type serviceType, System.ComponentModel.Design.ServiceCreatorCallback callback);
-                void RemoveService(System.Type serviceType, bool promote);
+                void AddService(System.Type serviceType, System.ComponentModel.Design.ServiceCreatorCallback callback, bool promote);
+                void AddService(System.Type serviceType, object serviceInstance);
+                void AddService(System.Type serviceType, object serviceInstance, bool promote);
                 void RemoveService(System.Type serviceType);
+                void RemoveService(System.Type serviceType, bool promote);
             }
 
             // Generated from `System.ComponentModel.Design.ITreeDesigner` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public interface ITreeDesigner : System.IDisposable, System.ComponentModel.Design.IDesigner
+            public interface ITreeDesigner : System.ComponentModel.Design.IDesigner, System.IDisposable
             {
                 System.Collections.ICollection Children { get; }
                 System.ComponentModel.Design.IDesigner Parent { get; }
@@ -2124,12 +2124,12 @@ namespace System
             // Generated from `System.ComponentModel.Design.ITypeResolutionService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ITypeResolutionService
             {
-                System.Reflection.Assembly GetAssembly(System.Reflection.AssemblyName name, bool throwOnError);
                 System.Reflection.Assembly GetAssembly(System.Reflection.AssemblyName name);
+                System.Reflection.Assembly GetAssembly(System.Reflection.AssemblyName name, bool throwOnError);
                 string GetPathOfAssembly(System.Reflection.AssemblyName name);
-                System.Type GetType(string name, bool throwOnError, bool ignoreCase);
-                System.Type GetType(string name, bool throwOnError);
                 System.Type GetType(string name);
+                System.Type GetType(string name, bool throwOnError);
+                System.Type GetType(string name, bool throwOnError, bool ignoreCase);
                 void ReferenceAssembly(System.Reflection.AssemblyName name);
             }
 
@@ -2140,8 +2140,8 @@ namespace System
                 public event System.EventHandler CommandChanged;
                 public virtual System.ComponentModel.Design.CommandID CommandID { get => throw null; }
                 public virtual bool Enabled { get => throw null; set => throw null; }
-                public virtual void Invoke(object arg) => throw null;
                 public virtual void Invoke() => throw null;
+                public virtual void Invoke(object arg) => throw null;
                 public MenuCommand(System.EventHandler handler, System.ComponentModel.Design.CommandID command) => throw null;
                 public virtual int OleStatus { get => throw null; }
                 protected virtual void OnCommandChanged(System.EventArgs e) => throw null;
@@ -2169,20 +2169,20 @@ namespace System
             }
 
             // Generated from `System.ComponentModel.Design.ServiceContainer` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class ServiceContainer : System.IServiceProvider, System.IDisposable, System.ComponentModel.Design.IServiceContainer
+            public class ServiceContainer : System.ComponentModel.Design.IServiceContainer, System.IDisposable, System.IServiceProvider
             {
-                public void AddService(System.Type serviceType, object serviceInstance) => throw null;
                 public void AddService(System.Type serviceType, System.ComponentModel.Design.ServiceCreatorCallback callback) => throw null;
-                public virtual void AddService(System.Type serviceType, object serviceInstance, bool promote) => throw null;
                 public virtual void AddService(System.Type serviceType, System.ComponentModel.Design.ServiceCreatorCallback callback, bool promote) => throw null;
+                public void AddService(System.Type serviceType, object serviceInstance) => throw null;
+                public virtual void AddService(System.Type serviceType, object serviceInstance, bool promote) => throw null;
                 protected virtual System.Type[] DefaultServices { get => throw null; }
                 public void Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;
                 public virtual object GetService(System.Type serviceType) => throw null;
                 public void RemoveService(System.Type serviceType) => throw null;
                 public virtual void RemoveService(System.Type serviceType, bool promote) => throw null;
-                public ServiceContainer(System.IServiceProvider parentProvider) => throw null;
                 public ServiceContainer() => throw null;
+                public ServiceContainer(System.IServiceProvider parentProvider) => throw null;
             }
 
             // Generated from `System.ComponentModel.Design.ServiceCreatorCallback` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2266,8 +2266,8 @@ namespace System
             // Generated from `System.ComponentModel.Design.TypeDescriptionProviderService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class TypeDescriptionProviderService
             {
-                public abstract System.ComponentModel.TypeDescriptionProvider GetProvider(object instance);
                 public abstract System.ComponentModel.TypeDescriptionProvider GetProvider(System.Type type);
+                public abstract System.ComponentModel.TypeDescriptionProvider GetProvider(object instance);
                 protected TypeDescriptionProviderService() => throw null;
             }
 
@@ -2286,10 +2286,10 @@ namespace System
                 {
                     protected ComponentSerializationService() => throw null;
                     public abstract System.ComponentModel.Design.Serialization.SerializationStore CreateStore();
-                    public abstract System.Collections.ICollection Deserialize(System.ComponentModel.Design.Serialization.SerializationStore store, System.ComponentModel.IContainer container);
                     public abstract System.Collections.ICollection Deserialize(System.ComponentModel.Design.Serialization.SerializationStore store);
-                    public void DeserializeTo(System.ComponentModel.Design.Serialization.SerializationStore store, System.ComponentModel.IContainer container, bool validateRecycledTypes) => throw null;
+                    public abstract System.Collections.ICollection Deserialize(System.ComponentModel.Design.Serialization.SerializationStore store, System.ComponentModel.IContainer container);
                     public void DeserializeTo(System.ComponentModel.Design.Serialization.SerializationStore store, System.ComponentModel.IContainer container) => throw null;
+                    public void DeserializeTo(System.ComponentModel.Design.Serialization.SerializationStore store, System.ComponentModel.IContainer container, bool validateRecycledTypes) => throw null;
                     public abstract void DeserializeTo(System.ComponentModel.Design.Serialization.SerializationStore store, System.ComponentModel.IContainer container, bool validateRecycledTypes, bool applyDefaults);
                     public abstract System.ComponentModel.Design.Serialization.SerializationStore LoadStore(System.IO.Stream stream);
                     public abstract void Serialize(System.ComponentModel.Design.Serialization.SerializationStore store, object value);
@@ -2304,8 +2304,8 @@ namespace System
                     public void Append(object context) => throw null;
                     public ContextStack() => throw null;
                     public object Current { get => throw null; }
-                    public object this[int level] { get => throw null; }
                     public object this[System.Type type] { get => throw null; }
+                    public object this[int level] { get => throw null; }
                     public object Pop() => throw null;
                     public void Push(object context) => throw null;
                 }
@@ -2313,8 +2313,8 @@ namespace System
                 // Generated from `System.ComponentModel.Design.Serialization.DefaultSerializationProviderAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class DefaultSerializationProviderAttribute : System.Attribute
                 {
-                    public DefaultSerializationProviderAttribute(string providerTypeName) => throw null;
                     public DefaultSerializationProviderAttribute(System.Type providerType) => throw null;
+                    public DefaultSerializationProviderAttribute(string providerTypeName) => throw null;
                     public string ProviderTypeName { get => throw null; }
                 }
 
@@ -2329,14 +2329,14 @@ namespace System
                 }
 
                 // Generated from `System.ComponentModel.Design.Serialization.IDesignerLoaderHost` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public interface IDesignerLoaderHost : System.IServiceProvider, System.ComponentModel.Design.IServiceContainer, System.ComponentModel.Design.IDesignerHost
+                public interface IDesignerLoaderHost : System.ComponentModel.Design.IDesignerHost, System.ComponentModel.Design.IServiceContainer, System.IServiceProvider
                 {
                     void EndLoad(string baseClassName, bool successful, System.Collections.ICollection errorCollection);
                     void Reload();
                 }
 
                 // Generated from `System.ComponentModel.Design.Serialization.IDesignerLoaderHost2` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public interface IDesignerLoaderHost2 : System.IServiceProvider, System.ComponentModel.Design.Serialization.IDesignerLoaderHost, System.ComponentModel.Design.IServiceContainer, System.ComponentModel.Design.IDesignerHost
+                public interface IDesignerLoaderHost2 : System.ComponentModel.Design.IDesignerHost, System.ComponentModel.Design.IServiceContainer, System.ComponentModel.Design.Serialization.IDesignerLoaderHost, System.IServiceProvider
                 {
                     bool CanReloadWithErrors { get; set; }
                     bool IgnoreErrorsDuringReload { get; set; }
@@ -2393,8 +2393,8 @@ namespace System
                 public class InstanceDescriptor
                 {
                     public System.Collections.ICollection Arguments { get => throw null; }
-                    public InstanceDescriptor(System.Reflection.MemberInfo member, System.Collections.ICollection arguments, bool isComplete) => throw null;
                     public InstanceDescriptor(System.Reflection.MemberInfo member, System.Collections.ICollection arguments) => throw null;
+                    public InstanceDescriptor(System.Reflection.MemberInfo member, System.Collections.ICollection arguments, bool isComplete) => throw null;
                     public object Invoke() => throw null;
                     public bool IsComplete { get => throw null; }
                     public System.Reflection.MemberInfo MemberInfo { get => throw null; }
@@ -2410,8 +2410,8 @@ namespace System
                     public override int GetHashCode() => throw null;
                     public bool IsEmpty { get => throw null; }
                     public System.ComponentModel.MemberDescriptor Member { get => throw null; }
-                    public MemberRelationship(object owner, System.ComponentModel.MemberDescriptor member) => throw null;
                     // Stub generator skipped constructor 
+                    public MemberRelationship(object owner, System.ComponentModel.MemberDescriptor member) => throw null;
                     public object Owner { get => throw null; }
                 }
 
@@ -2419,8 +2419,8 @@ namespace System
                 public abstract class MemberRelationshipService
                 {
                     protected virtual System.ComponentModel.Design.Serialization.MemberRelationship GetRelationship(System.ComponentModel.Design.Serialization.MemberRelationship source) => throw null;
-                    public System.ComponentModel.Design.Serialization.MemberRelationship this[object sourceOwner, System.ComponentModel.MemberDescriptor sourceMember] { get => throw null; set => throw null; }
                     public System.ComponentModel.Design.Serialization.MemberRelationship this[System.ComponentModel.Design.Serialization.MemberRelationship source] { get => throw null; set => throw null; }
+                    public System.ComponentModel.Design.Serialization.MemberRelationship this[object sourceOwner, System.ComponentModel.MemberDescriptor sourceMember] { get => throw null; set => throw null; }
                     protected MemberRelationshipService() => throw null;
                     protected virtual void SetRelationship(System.ComponentModel.Design.Serialization.MemberRelationship source, System.ComponentModel.Design.Serialization.MemberRelationship relationship) => throw null;
                     public abstract bool SupportsRelationship(System.ComponentModel.Design.Serialization.MemberRelationship source, System.ComponentModel.Design.Serialization.MemberRelationship relationship);
@@ -2441,9 +2441,9 @@ namespace System
                 public class RootDesignerSerializerAttribute : System.Attribute
                 {
                     public bool Reloadable { get => throw null; }
-                    public RootDesignerSerializerAttribute(string serializerTypeName, string baseSerializerTypeName, bool reloadable) => throw null;
-                    public RootDesignerSerializerAttribute(string serializerTypeName, System.Type baseSerializerType, bool reloadable) => throw null;
                     public RootDesignerSerializerAttribute(System.Type serializerType, System.Type baseSerializerType, bool reloadable) => throw null;
+                    public RootDesignerSerializerAttribute(string serializerTypeName, System.Type baseSerializerType, bool reloadable) => throw null;
+                    public RootDesignerSerializerAttribute(string serializerTypeName, string baseSerializerTypeName, bool reloadable) => throw null;
                     public string SerializerBaseTypeName { get => throw null; }
                     public string SerializerTypeName { get => throw null; }
                     public override object TypeId { get => throw null; }
@@ -2577,8 +2577,8 @@ namespace System
             public void Start() => throw null;
             public void Stop() => throw null;
             public System.ComponentModel.ISynchronizeInvoke SynchronizingObject { get => throw null; set => throw null; }
-            public Timer(double interval) => throw null;
             public Timer() => throw null;
+            public Timer(double interval) => throw null;
         }
 
         // Generated from `System.Timers.TimersDescriptionAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

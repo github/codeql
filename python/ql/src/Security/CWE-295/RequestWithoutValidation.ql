@@ -11,17 +11,16 @@
  */
 
 import python
-import semmle.python.web.Http
+private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
 
-FunctionValue requestFunction() { result = Module::named("requests").attr(httpVerbLower()) }
-
-/** requests treats None as the default and all other "falsey" values as False */
-predicate falseNotNone(Value v) { v.getDefiniteBooleanValue() = false and not v = Value::none_() }
-
-from CallNode call, FunctionValue func, Value falsey, ControlFlowNode origin
+from API::CallNode call, DataFlow::Node falseyOrigin, string verb
 where
-  func = requestFunction() and
-  func.getACall() = call and
-  falseNotNone(falsey) and
-  call.getArgByName("verify").pointsTo(falsey, origin)
-select call, "Call to $@ with verify=$@", func, "requests." + func.getName(), origin, "False"
+  verb = HTTP::httpVerbLower() and
+  call = API::moduleImport("requests").getMember(verb).getACall() and
+  falseyOrigin = call.getKeywordParameter("verify").getAValueReachingRhs() and
+  // requests treats `None` as the default and all other "falsey" values as `False`.
+  falseyOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
+  not falseyOrigin.asExpr() instanceof None
+select call, "Call to requests." + verb + " with verify=$@", falseyOrigin, "False"

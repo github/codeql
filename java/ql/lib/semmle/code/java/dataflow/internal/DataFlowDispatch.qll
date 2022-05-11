@@ -8,9 +8,9 @@ private import semmle.code.java.dispatch.VirtualDispatch as VirtualDispatch
 private module DispatchImpl {
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall c) {
-    result = VirtualDispatch::viableCallable(c.asCall())
+    result.asCallable() = VirtualDispatch::viableCallable(c.asCall())
     or
-    result.(SummarizedCallable) = c.asCall().getCallee().getSourceDeclaration()
+    result.(SummarizedCallable).asCallable() = c.asCall().getCallee().getSourceDeclaration()
   }
 
   /**
@@ -93,31 +93,32 @@ private module DispatchImpl {
    * qualifier is a parameter of the enclosing callable `c`.
    */
   predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
-    mayBenefitFromCallContext(call.asCall(), c, _)
+    mayBenefitFromCallContext(call.asCall(), c.asCallable(), _)
   }
 
   /**
    * Gets a viable dispatch target of `call` in the context `ctx`. This is
    * restricted to those `call`s for which a context might make a difference.
    */
-  Method viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+  DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
     result = viableCallable(call) and
     exists(int i, Callable c, Method def, RefType t, boolean exact, MethodAccess ma |
       ma = call.asCall() and
       mayBenefitFromCallContext(ma, c, i) and
-      c = viableCallable(ctx) and
+      c = viableCallable(ctx).asCallable() and
       contextArgHasType(ctx.asCall(), i, t, exact) and
       ma.getMethod().getSourceDeclaration() = def
     |
-      exact = true and result = VirtualDispatch::exactMethodImpl(def, t.getSourceDeclaration())
+      exact = true and
+      result.asCallable() = VirtualDispatch::exactMethodImpl(def, t.getSourceDeclaration())
       or
       exact = false and
       exists(RefType t2 |
-        result = VirtualDispatch::viableMethodImpl(def, t.getSourceDeclaration(), t2) and
+        result.asCallable() = VirtualDispatch::viableMethodImpl(def, t.getSourceDeclaration(), t2) and
         not failsUnification(t, t2)
       )
       or
-      result = def and def instanceof SummarizedCallable
+      result.asCallable() = def and result instanceof SummarizedCallable
     )
   }
 
@@ -182,6 +183,22 @@ private module DispatchImpl {
       )
     )
   }
+
+  private int parameterPosition() { result in [-1, any(Parameter p).getPosition()] }
+
+  /** A parameter position represented by an integer. */
+  class ParameterPosition extends int {
+    ParameterPosition() { this = parameterPosition() }
+  }
+
+  /** An argument position represented by an integer. */
+  class ArgumentPosition extends int {
+    ArgumentPosition() { this = parameterPosition() }
+  }
+
+  /** Holds if arguments at position `apos` match parameters at position `ppos`. */
+  pragma[inline]
+  predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
 }
 
 import DispatchImpl

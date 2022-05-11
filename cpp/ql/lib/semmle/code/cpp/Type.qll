@@ -94,6 +94,7 @@ class Type extends Locatable, @type {
    * The result of this predicate will be the type itself, except in the case of a TypedefType or a Decltype,
    * in which case the result will be type which results from (possibly recursively) resolving typedefs.
    */
+  pragma[nomagic]
   Type getUnderlyingType() { result = this }
 
   /**
@@ -1085,50 +1086,6 @@ class DerivedType extends Type, @derivedtype {
   override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
 
   override Type stripType() { result = this.getBaseType().stripType() }
-
-  /**
-   * Holds if this type has the `__autoreleasing` specifier or if it points to
-   * a type with the `__autoreleasing` specifier.
-   *
-   * DEPRECATED: use `hasSpecifier` directly instead.
-   */
-  deprecated predicate isAutoReleasing() {
-    this.hasSpecifier("__autoreleasing") or
-    this.(PointerType).getBaseType().hasSpecifier("__autoreleasing")
-  }
-
-  /**
-   * Holds if this type has the `__strong` specifier or if it points to
-   * a type with the `__strong` specifier.
-   *
-   * DEPRECATED: use `hasSpecifier` directly instead.
-   */
-  deprecated predicate isStrong() {
-    this.hasSpecifier("__strong") or
-    this.(PointerType).getBaseType().hasSpecifier("__strong")
-  }
-
-  /**
-   * Holds if this type has the `__unsafe_unretained` specifier or if it points
-   * to a type with the `__unsafe_unretained` specifier.
-   *
-   * DEPRECATED: use `hasSpecifier` directly instead.
-   */
-  deprecated predicate isUnsafeRetained() {
-    this.hasSpecifier("__unsafe_unretained") or
-    this.(PointerType).getBaseType().hasSpecifier("__unsafe_unretained")
-  }
-
-  /**
-   * Holds if this type has the `__weak` specifier or if it points to
-   * a type with the `__weak` specifier.
-   *
-   * DEPRECATED: use `hasSpecifier` directly instead.
-   */
-  deprecated predicate isWeak() {
-    this.hasSpecifier("__weak") or
-    this.(PointerType).getBaseType().hasSpecifier("__weak")
-  }
 }
 
 /**

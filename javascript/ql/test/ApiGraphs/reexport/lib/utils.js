@@ -1,3 +1,3 @@
-module.exports.id = function id(x) { /* use (parameter 0 (member id (member util (member exports (module reexport)))) */
+module.exports.id = function id(x) { /* use=moduleImport("reexport").getMember("exports").getMember("util").getMember("id").getParameter(0) */
     return x;
 };

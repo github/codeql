@@ -4,23 +4,13 @@ import semmle.python.security.strings.Basic
 private import semmle.python.web.django.Shared
 private import semmle.python.web.Http
 
-/**
- * DEPRECATED: This class is internal to the django library modeling, and should
- * never be used by anyone.
- *
- * A django.http.response.Response object
- * This isn't really a "taint", but we use the value tracking machinery to
- * track the flow of response objects.
- */
-deprecated class DjangoResponse = DjangoResponseKind;
-
 /** INTERNAL class used for tracking a django response object. */
-private class DjangoResponseKind extends TaintKind {
+deprecated private class DjangoResponseKind extends TaintKind {
   DjangoResponseKind() { this = "django.response.HttpResponse" }
 }
 
 /** INTERNAL taint-source used for tracking a django response object. */
-private class DjangoResponseSource extends TaintSource {
+deprecated private class DjangoResponseSource extends TaintSource {
   DjangoResponseSource() { exists(DjangoContentResponseClass cls | cls.getACall() = this) }
 
   override predicate isSourceOf(TaintKind kind) { kind instanceof DjangoResponseKind }
@@ -29,7 +19,7 @@ private class DjangoResponseSource extends TaintSource {
 }
 
 /** A write to a django response, which is vulnerable to external data (xss) */
-class DjangoResponseWrite extends HttpResponseTaintSink {
+deprecated class DjangoResponseWrite extends HttpResponseTaintSink {
   DjangoResponseWrite() {
     exists(AttrNode meth, CallNode call |
       call.getFunction() = meth and
@@ -46,7 +36,7 @@ class DjangoResponseWrite extends HttpResponseTaintSink {
 /**
  * An argument to initialization of a django response.
  */
-class DjangoResponseContent extends HttpResponseTaintSink {
+deprecated class DjangoResponseContent extends HttpResponseTaintSink {
   DjangoContentResponseClass cls;
   CallNode call;
 
@@ -63,7 +53,7 @@ class DjangoResponseContent extends HttpResponseTaintSink {
 /**
  * An argument to initialization of a django response, which is vulnerable to external data (XSS).
  */
-class DjangoResponseContentXSSVulnerable extends DjangoResponseContent {
+deprecated class DjangoResponseContentXSSVulnerable extends DjangoResponseContent {
   override DjangoXSSVulnerableResponseClass cls;
 
   DjangoResponseContentXSSVulnerable() {
@@ -76,7 +66,7 @@ class DjangoResponseContentXSSVulnerable extends DjangoResponseContent {
   }
 }
 
-class DjangoCookieSet extends CookieSet, CallNode {
+deprecated class DjangoCookieSet extends CookieSet, CallNode {
   DjangoCookieSet() {
     any(DjangoResponseKind r).taints(this.getFunction().(AttrNode).getObject("set_cookie"))
   }

@@ -61,7 +61,7 @@ class Class extends ValueOrRefType {
 }
 
 /** A `record`. */
-class Record extends Class {
+deprecated class Record extends Class {
   Record() { this.isRecord() }
 }
 

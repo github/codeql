@@ -146,7 +146,7 @@ namespace Semmle.BuildAnalyser
                  *  loading the same assembly from different locations.
                  */
                 using var pereader = new System.Reflection.PortableExecutable.PEReader(new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read));
-                using var sha1 = new SHA1CryptoServiceProvider();
+                using var sha1 = SHA1.Create();
                 var metadata = pereader.GetMetadata();
                 unsafe
                 {

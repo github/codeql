@@ -1,10 +1,10 @@
 
+void sink(...);
 class C
 {
   class Elem
   {
   };
-
 private:
   Elem *s1 = new Elem();
   const Elem *s2 = new Elem();
@@ -26,12 +26,10 @@ public:
 
   void func()
   {
-    sink(s1); // $ast ir
+    sink(s1); // $ast,ir
     sink(s2); // $ MISSING: ast,ir
-    sink(s3); // $ast ir
+    sink(s3); // $ast MISSING: ir
     sink(s4); // $ MISSING: ast,ir
   }
-
-  static void sink(const void *o) {}
 };
 const C::Elem *C::s4 = new Elem();

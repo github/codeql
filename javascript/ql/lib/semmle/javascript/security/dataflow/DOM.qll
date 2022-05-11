@@ -10,13 +10,16 @@ predicate isDomRootType(ExternalType tp) {
 }
 
 /** A global variable whose declared type extends a DOM root type. */
-class DOMGlobalVariable extends GlobalVariable {
-  DOMGlobalVariable() {
+class DomGlobalVariable extends GlobalVariable {
+  DomGlobalVariable() {
     exists(ExternalVarDecl d | d.getQualifiedName() = this.getName() |
       isDomRootType(d.getTypeTag().getTypeDeclaration().getASupertype*())
     )
   }
 }
+
+/** DEPRECATED: Alias for DomGlobalVariable */
+deprecated class DOMGlobalVariable = DomGlobalVariable;
 
 /** Holds if `e` could hold a value that comes from the DOM. */
 predicate isDomValue(Expr e) { DOM::domValueRef().flowsToExpr(e) }
@@ -29,15 +32,25 @@ predicate isLocation(Expr e) {
 }
 
 /**
+ * DEPRECATED: Use DOM::documentRef() instead.
  * Gets a reference to the 'document' object.
  */
-DataFlow::SourceNode document() { result = DOM::documentRef() }
+deprecated DataFlow::SourceNode document() { result = DOM::documentRef() }
 
-/** Holds if `e` could refer to the `document` object. */
-predicate isDocument(Expr e) { DOM::documentRef().flowsToExpr(e) }
+/**
+ * DEPRECATED: Use DOM::documentRef() instead.
+ * Holds if `e` could refer to the `document` object.
+ */
+deprecated predicate isDocument(Expr e) { DOM::documentRef().flowsToExpr(e) }
 
-/** Holds if `e` could refer to the document URL. */
-predicate isDocumentURL(Expr e) { e.flow() = DOM::locationSource() }
+/**
+ * DEPRECATED: Use DOM::locationSource() instead.
+ * Holds if `e` could refer to the document URL.
+ */
+deprecated predicate isDocumentUrl(Expr e) { e.flow() = DOM::locationSource() }
+
+/** DEPRECATED: Alias for isDocumentUrl */
+deprecated predicate isDocumentURL = isDocumentUrl/1;
 
 /**
  * DEPRECATED. In most cases, a sanitizer based on this predicate can be removed, as
@@ -57,15 +70,15 @@ deprecated predicate isSafeLocationProperty(PropAccess pacc) {
  * A call to a DOM method.
  */
 class DomMethodCallExpr extends MethodCallExpr {
-  DomMethodCallExpr() { isDomValue(getReceiver()) }
+  DomMethodCallExpr() { isDomValue(this.getReceiver()) }
 
   /**
    * Holds if `arg` is an argument that is interpreted as HTML.
    */
-  predicate interpretsArgumentsAsHTML(Expr arg) {
+  predicate interpretsArgumentsAsHtml(Expr arg) {
     exists(int argPos, string name |
-      arg = getArgument(argPos) and
-      name = getMethodName()
+      arg = this.getArgument(argPos) and
+      name = this.getMethodName()
     |
       // individual signatures:
       name = "write"
@@ -81,7 +94,17 @@ class DomMethodCallExpr extends MethodCallExpr {
       name = "createElement" and argPos = 0
       or
       name = "appendChild" and argPos = 0
-      or
+    )
+  }
+
+  /**
+   * Holds if `arg` is an argument that is used as an URL.
+   */
+  predicate interpretsArgumentsAsURL(Expr arg) {
+    exists(int argPos, string name |
+      arg = this.getArgument(argPos) and
+      name = this.getMethodName()
+    |
       (
         name = "setAttribute" and argPos = 1
         or
@@ -89,10 +112,13 @@ class DomMethodCallExpr extends MethodCallExpr {
       ) and
       // restrict to potentially dangerous attributes
       exists(string attr | attr = ["action", "formaction", "href", "src", "xlink:href", "data"] |
-        getArgument(argPos - 1).getStringValue().toLowerCase() = attr
+        this.getArgument(argPos - 1).getStringValue().toLowerCase() = attr
       )
     )
   }
+
+  /** DEPRECATED: Alias for interpretsArgumentsAsHtml */
+  deprecated predicate interpretsArgumentsAsHTML(Expr arg) { this.interpretsArgumentsAsHtml(arg) }
 }
 
 /**
@@ -102,17 +128,20 @@ class DomPropWriteNode extends Assignment {
   PropAccess lhs;
 
   DomPropWriteNode() {
-    lhs = getLhs() and
+    lhs = this.getLhs() and
     isDomValue(lhs.getBase())
   }
 
   /**
    * Holds if the assigned value is interpreted as HTML.
    */
-  predicate interpretsValueAsHTML() {
+  predicate interpretsValueAsHtml() {
     lhs.getPropertyName() = "innerHTML" or
     lhs.getPropertyName() = "outerHTML"
   }
+
+  /** DEPRECATED: Alias for interpretsValueAsHtml */
+  deprecated predicate interpretsValueAsHTML() { this.interpretsValueAsHtml() }
 
   /**
    * Holds if the assigned value is interpreted as JavaScript via javascript: protocol.
@@ -165,7 +194,7 @@ private module PersistentWebStorage {
 
     override PersistentWriteAccess getAWrite() {
       exists(string name |
-        getArgument(0).mayHaveStringValue(name) and
+        this.getArgument(0).mayHaveStringValue(name) and
         result = getAWriteByName(name, kind)
       )
     }
@@ -179,11 +208,11 @@ private module PersistentWebStorage {
 
     WriteAccess() { this = webStorage(kind).getAMethodCall("setItem") }
 
-    string getKey() { getArgument(0).mayHaveStringValue(result) }
+    string getKey() { this.getArgument(0).mayHaveStringValue(result) }
 
     string getKind() { result = kind }
 
-    override DataFlow::Node getValue() { result = getArgument(1) }
+    override DataFlow::Node getValue() { result = this.getArgument(1) }
   }
 }
 
@@ -209,7 +238,7 @@ class PostMessageEventHandler extends Function {
   /**
    * Gets the parameter that contains the event.
    */
-  Parameter getEventParameter() { result = getParameter(paramIndex) }
+  Parameter getEventParameter() { result = this.getParameter(paramIndex) }
 }
 
 /**

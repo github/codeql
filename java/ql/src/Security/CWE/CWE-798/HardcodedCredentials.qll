@@ -31,7 +31,7 @@ private class HardcodedCharArray extends ArrayCreationExpr {
  */
 class HardcodedExpr extends Expr {
   HardcodedExpr() {
-    this.(StringLiteral).getRepresentedString() != "" or
+    this.(StringLiteral).getValue() != "" or
     this instanceof HardcodedByteArray or
     this instanceof HardcodedCharArray
   }

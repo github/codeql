@@ -33,29 +33,29 @@ namespace System
             // Generated from `System.IO.MemoryMappedFiles.MemoryMappedFile` in `System.IO.MemoryMappedFiles, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MemoryMappedFile : System.IDisposable
             {
-                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path, System.IO.FileMode mode, string mapName, System.Int64 capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access) => throw null;
-                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path, System.IO.FileMode mode, string mapName, System.Int64 capacity) => throw null;
-                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path, System.IO.FileMode mode, string mapName) => throw null;
-                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path, System.IO.FileMode mode) => throw null;
-                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path) => throw null;
                 public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(System.IO.FileStream fileStream, string mapName, System.Int64 capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access, System.IO.HandleInheritability inheritability, bool leaveOpen) => throw null;
-                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateNew(string mapName, System.Int64 capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access, System.IO.MemoryMappedFiles.MemoryMappedFileOptions options, System.IO.HandleInheritability inheritability) => throw null;
-                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateNew(string mapName, System.Int64 capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access) => throw null;
+                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path) => throw null;
+                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path, System.IO.FileMode mode) => throw null;
+                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path, System.IO.FileMode mode, string mapName) => throw null;
+                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path, System.IO.FileMode mode, string mapName, System.Int64 capacity) => throw null;
+                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(string path, System.IO.FileMode mode, string mapName, System.Int64 capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access) => throw null;
                 public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateNew(string mapName, System.Int64 capacity) => throw null;
-                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateOrOpen(string mapName, System.Int64 capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access, System.IO.MemoryMappedFiles.MemoryMappedFileOptions options, System.IO.HandleInheritability inheritability) => throw null;
-                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateOrOpen(string mapName, System.Int64 capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access) => throw null;
+                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateNew(string mapName, System.Int64 capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access) => throw null;
+                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateNew(string mapName, System.Int64 capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access, System.IO.MemoryMappedFiles.MemoryMappedFileOptions options, System.IO.HandleInheritability inheritability) => throw null;
                 public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateOrOpen(string mapName, System.Int64 capacity) => throw null;
-                public System.IO.MemoryMappedFiles.MemoryMappedViewAccessor CreateViewAccessor(System.Int64 offset, System.Int64 size, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access) => throw null;
-                public System.IO.MemoryMappedFiles.MemoryMappedViewAccessor CreateViewAccessor(System.Int64 offset, System.Int64 size) => throw null;
+                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateOrOpen(string mapName, System.Int64 capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access) => throw null;
+                public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateOrOpen(string mapName, System.Int64 capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access, System.IO.MemoryMappedFiles.MemoryMappedFileOptions options, System.IO.HandleInheritability inheritability) => throw null;
                 public System.IO.MemoryMappedFiles.MemoryMappedViewAccessor CreateViewAccessor() => throw null;
-                public System.IO.MemoryMappedFiles.MemoryMappedViewStream CreateViewStream(System.Int64 offset, System.Int64 size, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access) => throw null;
-                public System.IO.MemoryMappedFiles.MemoryMappedViewStream CreateViewStream(System.Int64 offset, System.Int64 size) => throw null;
+                public System.IO.MemoryMappedFiles.MemoryMappedViewAccessor CreateViewAccessor(System.Int64 offset, System.Int64 size) => throw null;
+                public System.IO.MemoryMappedFiles.MemoryMappedViewAccessor CreateViewAccessor(System.Int64 offset, System.Int64 size, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access) => throw null;
                 public System.IO.MemoryMappedFiles.MemoryMappedViewStream CreateViewStream() => throw null;
+                public System.IO.MemoryMappedFiles.MemoryMappedViewStream CreateViewStream(System.Int64 offset, System.Int64 size) => throw null;
+                public System.IO.MemoryMappedFiles.MemoryMappedViewStream CreateViewStream(System.Int64 offset, System.Int64 size, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access) => throw null;
                 public void Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;
-                public static System.IO.MemoryMappedFiles.MemoryMappedFile OpenExisting(string mapName, System.IO.MemoryMappedFiles.MemoryMappedFileRights desiredAccessRights, System.IO.HandleInheritability inheritability) => throw null;
-                public static System.IO.MemoryMappedFiles.MemoryMappedFile OpenExisting(string mapName, System.IO.MemoryMappedFiles.MemoryMappedFileRights desiredAccessRights) => throw null;
                 public static System.IO.MemoryMappedFiles.MemoryMappedFile OpenExisting(string mapName) => throw null;
+                public static System.IO.MemoryMappedFiles.MemoryMappedFile OpenExisting(string mapName, System.IO.MemoryMappedFiles.MemoryMappedFileRights desiredAccessRights) => throw null;
+                public static System.IO.MemoryMappedFiles.MemoryMappedFile OpenExisting(string mapName, System.IO.MemoryMappedFiles.MemoryMappedFileRights desiredAccessRights, System.IO.HandleInheritability inheritability) => throw null;
                 public Microsoft.Win32.SafeHandles.SafeMemoryMappedFileHandle SafeMemoryMappedFileHandle { get => throw null; }
             }
 

@@ -50,6 +50,16 @@ predicate reachableThing(Thing t) {
   exists(Thing mid | reachableThing(mid) and mid.callsOrAccesses() = t)
 }
 
+pragma[nomagic]
+predicate callsOrAccessesPlus(Thing thing1, FunctionToRemove thing2) {
+  thing1.callsOrAccesses() = thing2
+  or
+  exists(Thing mid |
+    thing1.callsOrAccesses() = mid and
+    callsOrAccessesPlus(mid, thing2)
+  )
+}
+
 class Thing extends Locatable {
   Thing() {
     this instanceof Function or
@@ -62,7 +72,7 @@ class Thing extends Locatable {
   }
 
   Thing callsOrAccesses() {
-    this.(Function).calls(result.(Function))
+    this.(Function).calls(result)
     or
     this.(Function).accesses(result.(Function))
     or
@@ -81,7 +91,7 @@ class FunctionToRemove extends Function {
   }
 
   Thing getOther() {
-    result.callsOrAccesses+() = this and
+    callsOrAccessesPlus(result, this) and
     this != result and
     // We will already be reporting the enclosing function of a
     // local variable, so don't also report the variable

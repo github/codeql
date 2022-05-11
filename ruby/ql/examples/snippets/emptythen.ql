@@ -2,7 +2,7 @@
  * @name If statements with empty then branch
  * @description Finds 'if' statements where the 'then' branch is
  *              an empty block statement
- * @id ruby/examples/emptythen
+ * @id rb/examples/emptythen
  * @tags if
  *       then
  *       empty

@@ -20,11 +20,11 @@ import experimental.semmle.python.security.injection.XSLT
 class XSLTInjectionConfiguration extends TaintTracking::Configuration {
   XSLTInjectionConfiguration() { this = "XSLT injection configuration" }
 
-  override predicate isSource(TaintTracking::Source source) {
+  deprecated override predicate isSource(TaintTracking::Source source) {
     source instanceof HttpRequestTaintSource
   }
 
-  override predicate isSink(TaintTracking::Sink sink) {
+  deprecated override predicate isSink(TaintTracking::Sink sink) {
     sink instanceof XSLTInjection::XSLTInjectionSink
   }
 }

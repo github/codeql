@@ -32,7 +32,7 @@ predicate duplicate_char_in_class(Regex r, string char) {
   //Ignore whitespace in verbose mode
   not (
     r.getAMode() = "VERBOSE" and
-    (char = " " or char = "\t" or char = "\r" or char = "\n")
+    char in [" ", "\t", "\r", "\n"]
   )
 }
 

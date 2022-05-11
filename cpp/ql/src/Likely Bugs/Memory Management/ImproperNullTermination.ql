@@ -23,6 +23,10 @@ DeclStmt declWithNoInit(LocalVariable v) {
   not exists(v.getInitializer())
 }
 
+/**
+ * Control flow reachability from a buffer that is not not null terminated to a
+ * sink that requires null termination.
+ */
 class ImproperNullTerminationReachability extends StackVariableReachabilityWithReassignment {
   ImproperNullTerminationReachability() { this = "ImproperNullTerminationReachability" }
 
@@ -52,12 +56,44 @@ class ImproperNullTerminationReachability extends StackVariableReachabilityWithR
 
   override predicate isBarrier(ControlFlowNode node, StackVariable v) {
     exprDefinition(v, node, _) or
-    mayAddNullTerminator(node, v.getAnAccess()) or
-    node.(AddressOfExpr).getOperand() = v.getAnAccess() or // address taken
     isSinkActual(node, v) // only report first use
   }
 }
 
-from ImproperNullTerminationReachability r, LocalVariable v, VariableAccess va
-where r.reaches(_, v, va)
-select va, "Variable $@ may not be null terminated.", v, v.getName()
+/**
+ * Flow from a place where null termination is added, to a sink of
+ * `ImproperNullTerminationReachability`. This was previously implemented as a
+ * simple barrier in `ImproperNullTerminationReachability`, but there were
+ * false positive results involving multiple paths from source to sink.  We'd
+ * prefer to report only the results we are sure of.
+ */
+class NullTerminationReachability extends StackVariableReachabilityWithReassignment {
+  NullTerminationReachability() { this = "NullTerminationReachability" }
+
+  override predicate isSourceActual(ControlFlowNode node, StackVariable v) {
+    mayAddNullTerminator(node, v.getAnAccess()) or // null termination
+    node.(AddressOfExpr).getOperand() = v.getAnAccess() // address taken (possible null termination)
+  }
+
+  override predicate isSinkActual(ControlFlowNode node, StackVariable v) {
+    // have the same sinks as `ImproperNullTerminationReachability`.
+    exists(ImproperNullTerminationReachability r | r.isSinkActual(node, v))
+  }
+
+  override predicate isBarrier(ControlFlowNode node, StackVariable v) {
+    // don't look further back than the source, or further forward than the sink
+    exists(ImproperNullTerminationReachability r | r.isSourceActual(node, v)) or
+    exists(ImproperNullTerminationReachability r | r.isSinkActual(node, v))
+  }
+}
+
+from
+  ImproperNullTerminationReachability reaches, NullTerminationReachability nullTermReaches,
+  ControlFlowNode source, LocalVariable v, VariableAccess sink
+where
+  reaches.reaches(source, v, sink) and
+  not exists(ControlFlowNode termination |
+    nullTermReaches.reaches(termination, _, sink) and
+    termination != source
+  )
+select sink, "Variable $@ may not be null terminated.", v, v.getName()

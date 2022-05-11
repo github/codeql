@@ -1,0 +1,4 @@
+| p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[-1];generated:create-file |
+| p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[1];generated:create-file |
+| p;Sinks;true;readUrl;(URL,Charset);;Argument[0];generated:open-url |
+| p;Sources;true;readUrl;(URL);;Argument[0];generated:open-url |

@@ -20,31 +20,31 @@ namespace qualifiers {
 
   void assignToGetter(Outer outer) {
     outer.getInner()->a = user_input();
-    sink(outer.inner->a); // $ ast MISSING: ir
+    sink(outer.inner->a); // $ ast,ir
   }
 
   void getterArgument1(Outer outer) {
     outer.getInner()->setA(user_input());
-    sink(outer.inner->a); // $ ast MISSING: ir
+    sink(outer.inner->a); // $ ast,ir
   }
 
   void getterArgument2(Outer outer) {
     pointerSetA(outer.getInner(), user_input());
-    sink(outer.inner->a); // $ ast MISSING: ir
+    sink(outer.inner->a); // $ ast,ir
   }
 
   void getterArgument2Ref(Outer outer) {
     referenceSetA(*outer.getInner(), user_input());
-    sink(outer.inner->a); // $ ast MISSING: ir
+    sink(outer.inner->a); // $ ast,ir
   }
 
   void assignToGetterStar(Outer outer) {
     (*outer.getInner()).a = user_input();
-    sink(outer.inner->a); // $ ast MISSING: ir
+    sink(outer.inner->a); // $ ast,ir
   }
 
   void assignToGetterAmp(Outer outer) {
     (&outer)->getInner()->a = user_input();
-    sink(outer.inner->a); // $ ast MISSING: ir
+    sink(outer.inner->a); // $ ast,ir
   }
 }

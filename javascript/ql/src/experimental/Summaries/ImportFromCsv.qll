@@ -17,24 +17,26 @@ class AdditionalSourceSpec extends ExternalData {
   /**
    * Gets the portal of this additional source.
    */
-  Portal getPortal() { result.toString() = getField(0) }
+  Portal getPortal() { result.toString() = this.getField(0) }
 
   /**
    * Gets the flow label of this source.
    */
-  DataFlow::FlowLabel getFlowLabel() { sourceFlowLabelSpec(result, getField(1)) }
+  DataFlow::FlowLabel getFlowLabel() { sourceFlowLabelSpec(result, this.getField(1)) }
 
   /**
    * Gets the configuration for which this is a source, or any
    * configuration if this source does not specify a configuration.
    */
-  DataFlow::Configuration getConfiguration() { configSpec(result, getField(2)) }
+  DataFlow::Configuration getConfiguration() { configSpec(result, this.getField(2)) }
 
   override string toString() {
     exists(string config |
-      if getField(2) = "" then config = "any configuration" else config = getConfiguration()
+      if this.getField(2) = ""
+      then config = "any configuration"
+      else config = this.getConfiguration()
     |
-      result = getPortal() + " as " + getFlowLabel() + " source for " + config
+      result = this.getPortal() + " as " + this.getFlowLabel() + " source for " + config
     )
   }
 }
@@ -58,26 +60,28 @@ class AdditionalSinkSpec extends ExternalData {
   /**
    * Gets the portal specification of this additional sink.
    */
-  Portal getPortal() { result.toString() = getField(0) }
+  Portal getPortal() { result.toString() = this.getField(0) }
 
   /**
    * Gets the flow label of this sink, or any standard flow label if this sink
    * does not specify a flow label.
    */
-  DataFlow::FlowLabel getFlowLabel() { sinkFlowLabelSpec(result, getField(1)) }
+  DataFlow::FlowLabel getFlowLabel() { sinkFlowLabelSpec(result, this.getField(1)) }
 
   /**
    * Gets the configuration for which this is a sink, or any configuration if
    * this sink does not specify a configuration.
    */
-  DataFlow::Configuration getConfiguration() { configSpec(result, getField(2)) }
+  DataFlow::Configuration getConfiguration() { configSpec(result, this.getField(2)) }
 
   override string toString() {
     exists(string labels, string config |
-      labels = strictconcat(getFlowLabel(), " or ") and
-      if getField(2) = "" then config = "any configuration" else config = getConfiguration()
+      labels = strictconcat(this.getFlowLabel(), " or ") and
+      if this.getField(2) = ""
+      then config = "any configuration"
+      else config = this.getConfiguration()
     |
-      result = getPortal() + " as " + labels + " sink for " + config
+      result = this.getPortal() + " as " + labels + " sink for " + config
     )
   }
 }
@@ -101,35 +105,37 @@ class AdditionalStepSpec extends ExternalData {
   /**
    * Gets the start portal of this additional step.
    */
-  Portal getStartPortal() { result.toString() = getField(0) }
+  Portal getStartPortal() { result.toString() = this.getField(0) }
 
   /**
    * Gets the start flow label of this additional step.
    */
-  DataFlow::FlowLabel getStartFlowLabel() { result.toString() = getField(1) }
+  DataFlow::FlowLabel getStartFlowLabel() { result.toString() = this.getField(1) }
 
   /**
    * Gets the end portal of this additional step.
    */
-  Portal getEndPortal() { result.toString() = getField(2) }
+  Portal getEndPortal() { result.toString() = this.getField(2) }
 
   /**
    * Gets the end flow label of this additional step.
    */
-  DataFlow::FlowLabel getEndFlowLabel() { result.toString() = getField(3) }
+  DataFlow::FlowLabel getEndFlowLabel() { result.toString() = this.getField(3) }
 
   /**
    * Gets the configuration to which this step should be added.
    */
-  DataFlow::Configuration getConfiguration() { configSpec(result, getField(4)) }
+  DataFlow::Configuration getConfiguration() { configSpec(result, this.getField(4)) }
 
   override string toString() {
     exists(string config |
-      if getField(4) = "" then config = "any configuration" else config = getConfiguration()
+      if this.getField(4) = ""
+      then config = "any configuration"
+      else config = this.getConfiguration()
     |
       result =
-        "edge from " + getStartPortal() + " to " + getEndPortal() + ", transforming " +
-          getStartFlowLabel() + " into " + getEndFlowLabel() + " for " + config
+        "edge from " + this.getStartPortal() + " to " + this.getEndPortal() + ", transforming " +
+          this.getStartFlowLabel() + " into " + this.getEndFlowLabel() + " for " + config
     )
   }
 }

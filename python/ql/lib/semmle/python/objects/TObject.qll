@@ -5,6 +5,7 @@ private import semmle.python.types.Builtins
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
+private import semmle.python.internal.CachedStages
 
 /**
  * Internal type backing `ObjectInternal` and `Value`
@@ -150,8 +151,10 @@ newtype TObject =
   TBuiltinTuple(Builtin bltn) { bltn.getClass() = Builtin::special("tuple") } or
   /** Represents a tuple in the Python source */
   TPythonTuple(TupleNode origin, PointsToContext context) {
-    origin.isLoad() and
-    context.appliesTo(origin)
+    exists(Scope s |
+      context.appliesToScope(s) and
+      scope_loads_tuplenode(s, origin)
+    )
   } or
   /** Varargs tuple */
   TVarargsTuple(CallNode call, PointsToContext context, int offset, int length) {
@@ -175,7 +178,7 @@ newtype TObject =
     not count(instantiation.getAnArg()) = 1 and
     Types::getMro(metacls).contains(TType())
   } or
-  /** Represents `sys.version_info`. Acts like a tuple with a range of values depending on the version being analysed. */
+  /** Represents `sys.version_info`. Acts like a tuple with a range of values depending on the version being analyzed. */
   TSysVersionInfo() or
   /** Represents a module that is inferred to perhaps exist, but is not present in the database. */
   TAbsentModule(string name) { missing_imported_module(_, _, name) } or
@@ -200,6 +203,13 @@ newtype TObject =
     index.isNotSubscriptedType() and
     Expressions::subscriptPartsPointsTo(_, _, generic, index)
   }
+
+/** Join-order helper for TPythonTuple */
+pragma[nomagic]
+private predicate scope_loads_tuplenode(Scope s, TupleNode origin) {
+  origin.isLoad() and
+  origin.getScope() = s
+}
 
 /** Holds if the object `t` is a type. */
 predicate isType(ObjectInternal t) {
@@ -444,7 +454,7 @@ predicate common_module_name(string name) { name = ["zope.interface", "six.moves
  * This acts as a helper for ClassObjectInternal allowing some lookup without
  * recursion.
  */
-library class ClassDecl extends @py_object {
+class ClassDecl extends @py_object {
   ClassDecl() {
     this.(Builtin).isClass() and not this = Builtin::unknownType()
     or

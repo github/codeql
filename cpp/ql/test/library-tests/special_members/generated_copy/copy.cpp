@@ -131,3 +131,21 @@ namespace difference {
   class OnlyAssign : Base {
   };
 }
+
+namespace instantiated_explicit_ctor {
+  template<class T>
+  class Wrapper {
+  public:
+    Wrapper(Wrapper<T> &other) {
+      m_t = other.m_t;
+    }
+    
+    Wrapper() {
+      m_t = 0;
+    }
+  private:
+    T m_t;
+  };
+
+  Wrapper<int> wrapped_int;
+}

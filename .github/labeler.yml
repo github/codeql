@@ -11,7 +11,7 @@ Java:
   - change-notes/**/*java.*
 
 JS:
-  - javascript/**/*
+  - any: [ 'javascript/**/*', '!javascript/ql/experimental/adaptivethreatmodeling/**/*' ]
   - change-notes/**/*javascript*
 
 Python:
@@ -21,8 +21,15 @@ Python:
 Ruby:
   - ruby/**/*
   - change-notes/**/*ruby*
+  
+Swift:
+  - swift/**/*
+  - change-notes/**/*swift*
 
 documentation:
   - "**/*.qhelp"
   - "**/*.md"
   - docs/**/*
+
+"QL-for-QL": 
+  - ql/**/*

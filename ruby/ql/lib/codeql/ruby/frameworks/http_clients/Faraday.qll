@@ -1,6 +1,12 @@
+/**
+ * Provides modeling for the `Faraday` library.
+ */
+
 private import ruby
+private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
 
 /**
  * A call that makes an HTTP request using `Faraday`.
@@ -11,12 +17,16 @@ private import codeql.ruby.ApiGraphs
  * # connection re-use
  * connection = Faraday.new("http://example.com")
  * connection.get("/").body
+ *
+ * connection = Faraday.new(url: "http://example.com")
+ * connection.get("/").body
  * ```
  */
 class FaradayHttpRequest extends HTTP::Client::Request::Range {
-  DataFlow::Node requestUse;
   API::Node requestNode;
   API::Node connectionNode;
+  DataFlow::Node connectionUse;
+  DataFlow::CallNode requestUse;
 
   FaradayHttpRequest() {
     connectionNode =
@@ -29,10 +39,17 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range {
     requestNode =
       connectionNode.getReturn(["get", "head", "delete", "post", "put", "patch", "trace"]) and
     requestUse = requestNode.getAnImmediateUse() and
+    connectionUse = connectionNode.getAnImmediateUse() and
     this = requestUse.asExpr().getExpr()
   }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
+
+  override DataFlow::Node getAUrlPart() {
+    result = requestUse.getArgument(0) or
+    result = connectionUse.(DataFlow::CallNode).getArgument(0) or
+    result = connectionUse.(DataFlow::CallNode).getKeywordArgument("url")
+  }
 
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
     // `Faraday::new` takes an options hash as its second argument, and we're
@@ -45,16 +62,16 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range {
     |
       // Either passed as an individual key:value argument, e.g.:
       // Faraday.new(..., ssl: {...})
-      isSslOptionsPairDisablingValidation(arg.asExpr().getExpr()) and
+      isSslOptionsPairDisablingValidation(arg.asExpr()) and
       disablingNode = arg
       or
       // Or as a single hash argument, e.g.:
       // Faraday.new(..., { ssl: {...} })
-      exists(DataFlow::LocalSourceNode optionsNode, Pair p |
-        p = optionsNode.asExpr().getExpr().(HashLiteral).getAKeyValuePair() and
+      exists(DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p |
+        p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
         isSslOptionsPairDisablingValidation(p) and
         optionsNode.flowsTo(arg) and
-        disablingNode.asExpr().getExpr() = p
+        disablingNode.asExpr() = p
       )
     )
   }
@@ -67,10 +84,10 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range {
  * containing either `verify: false` or
  * `verify_mode: OpenSSL::SSL::VERIFY_NONE`.
  */
-private predicate isSslOptionsPairDisablingValidation(Pair p) {
+private predicate isSslOptionsPairDisablingValidation(CfgNodes::ExprNodes::PairCfgNode p) {
   exists(DataFlow::Node key, DataFlow::Node value |
-    key.asExpr().getExpr() = p.getKey() and value.asExpr().getExpr() = p.getValue()
-  |
+    key.asExpr() = p.getKey() and
+    value.asExpr() = p.getValue() and
     isSymbolLiteral(key, "ssl") and
     (isHashWithVerifyFalse(value) or isHashWithVerifyModeNone(value))
   )
@@ -79,7 +96,7 @@ private predicate isSslOptionsPairDisablingValidation(Pair p) {
 /** Holds if `node` represents the symbol literal with the given `valueText`. */
 private predicate isSymbolLiteral(DataFlow::Node node, string valueText) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = valueText and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue(valueText) and
     literal.flowsTo(node)
   )
 }
@@ -90,7 +107,7 @@ private predicate isSymbolLiteral(DataFlow::Node node, string valueText) {
  */
 private predicate isHashWithVerifyFalse(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode hash |
-    isVerifyFalsePair(hash.asExpr().getExpr().(HashLiteral).getAKeyValuePair()) and
+    isVerifyFalsePair(hash.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair()) and
     hash.flowsTo(node)
   )
 }
@@ -101,7 +118,7 @@ private predicate isHashWithVerifyFalse(DataFlow::Node node) {
  */
 private predicate isHashWithVerifyModeNone(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode hash |
-    isVerifyModeNonePair(hash.asExpr().getExpr().(HashLiteral).getAKeyValuePair()) and
+    isVerifyModeNonePair(hash.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair()) and
     hash.flowsTo(node)
   )
 }
@@ -110,10 +127,10 @@ private predicate isHashWithVerifyModeNone(DataFlow::Node node) {
  * Holds if the pair `p` has the key `:verify_mode` and the value
  * `OpenSSL::SSL::VERIFY_NONE`.
  */
-private predicate isVerifyModeNonePair(Pair p) {
+private predicate isVerifyModeNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
   exists(DataFlow::Node key, DataFlow::Node value |
-    key.asExpr().getExpr() = p.getKey() and value.asExpr().getExpr() = p.getValue()
-  |
+    key.asExpr() = p.getKey() and
+    value.asExpr() = p.getValue() and
     isSymbolLiteral(key, "verify_mode") and
     value = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse()
   )
@@ -122,10 +139,10 @@ private predicate isVerifyModeNonePair(Pair p) {
 /**
  * Holds if the pair `p` has the key `:verify` and the value `false`.
  */
-private predicate isVerifyFalsePair(Pair p) {
+private predicate isVerifyFalsePair(CfgNodes::ExprNodes::PairCfgNode p) {
   exists(DataFlow::Node key, DataFlow::Node value |
-    key.asExpr().getExpr() = p.getKey() and value.asExpr().getExpr() = p.getValue()
-  |
+    key.asExpr() = p.getKey() and
+    value.asExpr() = p.getValue() and
     isSymbolLiteral(key, "verify") and
     isFalse(value)
   )

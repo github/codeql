@@ -1,0 +1,7 @@
+{
+  "name": "example-project",
+  "dependencies": {
+    "unencrypted": "http://example.org/foo/tarball/release/0.0.1",
+    "lodash": "^4.0.0"
+  }
+}

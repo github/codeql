@@ -1,6 +1,12 @@
+/**
+ * Provides modeling for the `HTTParty` library.
+ */
+
 private import ruby
+private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
 
 /**
  * A call that makes an HTTP request using `HTTParty`.
@@ -11,6 +17,7 @@ private import codeql.ruby.ApiGraphs
  * # TODO: module inclusion
  * class MyClass
  *  include HTTParty
+ *  base_uri "http://example.com"
  * end
  *
  * MyClass.new("http://example.com")
@@ -18,7 +25,7 @@ private import codeql.ruby.ApiGraphs
  */
 class HttpartyRequest extends HTTP::Client::Request::Range {
   API::Node requestNode;
-  DataFlow::Node requestUse;
+  DataFlow::CallNode requestUse;
 
   HttpartyRequest() {
     requestUse = requestNode.getAnImmediateUse() and
@@ -28,6 +35,8 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
     this = requestUse.asExpr().getExpr()
   }
 
+  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
+
   override DataFlow::Node getResponseBody() {
     // If HTTParty can recognise the response type, it will parse and return it
     // directly from the request call. Otherwise, it will return a `HTTParty::Response`
@@ -36,7 +45,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
     exists(DataFlow::Node r | r = requestNode.getAMethodCall("body") | result = r)
     or
     // Otherwise, treat the response as the response body.
-    not exists(DataFlow::Node r | r = requestNode.getAMethodCall("body")) and
+    not exists(requestNode.getAMethodCall("body")) and
     result = requestUse
   }
 
@@ -45,20 +54,21 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
     // argument, and we're looking for `{ verify: false }` or
     // `{ verify_peer: false }`.
     exists(DataFlow::Node arg, int i |
-      i > 0 and arg.asExpr().getExpr() = requestUse.asExpr().getExpr().(MethodCall).getArgument(i)
+      i > 0 and
+      arg.asExpr() = requestUse.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getArgument(i)
     |
       // Either passed as an individual key:value argument, e.g.:
       // HTTParty.get(..., verify: false)
-      isVerifyFalsePair(arg.asExpr().getExpr()) and
+      isVerifyFalsePair(arg.asExpr()) and
       disablingNode = arg
       or
       // Or as a single hash argument, e.g.:
       // HTTParty.get(..., { verify: false, ... })
-      exists(DataFlow::LocalSourceNode optionsNode, Pair p |
-        p = optionsNode.asExpr().getExpr().(HashLiteral).getAKeyValuePair() and
+      exists(DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p |
+        p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
         isVerifyFalsePair(p) and
         optionsNode.flowsTo(arg) and
-        disablingNode.asExpr().getExpr() = p
+        disablingNode.asExpr() = p
       )
     )
   }
@@ -69,7 +79,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
 /** Holds if `node` represents the symbol literal `verify` or `verify_peer`. */
 private predicate isVerifyLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(SymbolLiteral).getValueText() = ["verify", "verify_peer"] and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue(["verify", "verify_peer"]) and
     literal.flowsTo(node)
   )
 }
@@ -85,10 +95,10 @@ private predicate isFalse(DataFlow::Node node) {
 /**
  * Holds if `p` is the pair `verify: false` or `verify_peer: false`.
  */
-private predicate isVerifyFalsePair(Pair p) {
+private predicate isVerifyFalsePair(CfgNodes::ExprNodes::PairCfgNode p) {
   exists(DataFlow::Node key, DataFlow::Node value |
-    key.asExpr().getExpr() = p.getKey() and value.asExpr().getExpr() = p.getValue()
-  |
+    key.asExpr() = p.getKey() and
+    value.asExpr() = p.getValue() and
     isVerifyLiteral(key) and
     isFalse(value)
   )

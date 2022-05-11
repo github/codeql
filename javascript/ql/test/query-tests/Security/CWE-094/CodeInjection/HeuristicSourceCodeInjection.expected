@@ -55,21 +55,6 @@ nodes
 | angularjs.js:53:32:53:46 | location.search |
 | angularjs.js:53:32:53:46 | location.search |
 | angularjs.js:53:32:53:46 | location.search |
-| bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
-| bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
-| bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
-| bad-code-sanitization.js:54:44:54:62 | req.param("wobble") |
-| bad-code-sanitization.js:54:44:54:62 | req.param("wobble") |
-| bad-code-sanitization.js:56:7:56:47 | taint |
-| bad-code-sanitization.js:56:15:56:36 | [req.bo ...  "foo"] |
-| bad-code-sanitization.js:56:15:56:47 | [req.bo ... n("\\n") |
-| bad-code-sanitization.js:56:16:56:23 | req.body |
-| bad-code-sanitization.js:56:16:56:23 | req.body |
-| bad-code-sanitization.js:56:16:56:28 | req.body.name |
-| bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
-| bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
-| bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) |
-| bad-code-sanitization.js:58:44:58:48 | taint |
 | eslint-escope-build.js:20:22:20:22 | c |
 | eslint-escope-build.js:20:22:20:22 | c |
 | eslint-escope-build.js:21:16:21:16 | c |
@@ -98,6 +83,11 @@ nodes
 | express.js:21:19:21:48 | req.par ... ntext") |
 | express.js:21:19:21:48 | req.par ... ntext") |
 | express.js:21:19:21:48 | req.par ... ntext") |
+| express.js:26:9:26:35 | taint |
+| express.js:26:17:26:35 | req.param("wobble") |
+| express.js:26:17:26:35 | req.param("wobble") |
+| express.js:27:34:27:38 | taint |
+| express.js:27:34:27:38 | taint |
 | module.js:9:16:9:29 | req.query.code |
 | module.js:9:16:9:29 | req.query.code |
 | module.js:9:16:9:29 | req.query.code |
@@ -198,19 +188,6 @@ edges
 | angularjs.js:47:16:47:30 | location.search | angularjs.js:47:16:47:30 | location.search |
 | angularjs.js:50:22:50:36 | location.search | angularjs.js:50:22:50:36 | location.search |
 | angularjs.js:53:32:53:46 | location.search | angularjs.js:53:32:53:46 | location.search |
-| bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) | bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
-| bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) | bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
-| bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
-| bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
-| bad-code-sanitization.js:56:7:56:47 | taint | bad-code-sanitization.js:58:44:58:48 | taint |
-| bad-code-sanitization.js:56:15:56:36 | [req.bo ...  "foo"] | bad-code-sanitization.js:56:15:56:47 | [req.bo ... n("\\n") |
-| bad-code-sanitization.js:56:15:56:47 | [req.bo ... n("\\n") | bad-code-sanitization.js:56:7:56:47 | taint |
-| bad-code-sanitization.js:56:16:56:23 | req.body | bad-code-sanitization.js:56:16:56:28 | req.body.name |
-| bad-code-sanitization.js:56:16:56:23 | req.body | bad-code-sanitization.js:56:16:56:28 | req.body.name |
-| bad-code-sanitization.js:56:16:56:28 | req.body.name | bad-code-sanitization.js:56:15:56:36 | [req.bo ...  "foo"] |
-| bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) | bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
-| bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) | bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
-| bad-code-sanitization.js:58:44:58:48 | taint | bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) |
 | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
 | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
 | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
@@ -231,6 +208,10 @@ edges
 | express.js:17:30:17:53 | req.par ... cript") | express.js:17:30:17:53 | req.par ... cript") |
 | express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") |
 | express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") |
+| express.js:26:9:26:35 | taint | express.js:27:34:27:38 | taint |
+| express.js:26:9:26:35 | taint | express.js:27:34:27:38 | taint |
+| express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint |
+| express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint |
 | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code |
 | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |

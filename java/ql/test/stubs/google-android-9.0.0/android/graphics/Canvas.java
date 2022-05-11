@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BlendMode;
 import android.graphics.DrawFilter;
 import android.graphics.Matrix;
+import android.graphics.NinePatch;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Picture;
@@ -14,6 +15,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.RenderNode;
+import android.graphics.fonts.Font;
 import android.graphics.text.MeasuredText;
 
 public class Canvas
@@ -38,8 +40,11 @@ public class Canvas
     public boolean getClipBounds(Rect p0){ return false; }
     public boolean isHardwareAccelerated(){ return false; }
     public boolean isOpaque(){ return false; }
+    public boolean quickReject(Path p0){ return false; }
     public boolean quickReject(Path p0, Canvas.EdgeType p1){ return false; }
+    public boolean quickReject(RectF p0){ return false; }
     public boolean quickReject(RectF p0, Canvas.EdgeType p1){ return false; }
+    public boolean quickReject(float p0, float p1, float p2, float p3){ return false; }
     public boolean quickReject(float p0, float p1, float p2, float p3, Canvas.EdgeType p4){ return false; }
     public final Matrix getMatrix(){ return null; }
     public final Rect getClipBounds(){ return null; }
@@ -81,12 +86,15 @@ public class Canvas
     public void drawColor(long p0, BlendMode p1){}
     public void drawDoubleRoundRect(RectF p0, float p1, float p2, RectF p3, float p4, float p5, Paint p6){}
     public void drawDoubleRoundRect(RectF p0, float[] p1, RectF p2, float[] p3, Paint p4){}
+    public void drawGlyphs(int[] p0, int p1, float[] p2, int p3, int p4, Font p5, Paint p6){}
     public void drawLine(float p0, float p1, float p2, float p3, Paint p4){}
     public void drawLines(float[] p0, Paint p1){}
     public void drawLines(float[] p0, int p1, int p2, Paint p3){}
     public void drawOval(RectF p0, Paint p1){}
     public void drawOval(float p0, float p1, float p2, float p3, Paint p4){}
     public void drawPaint(Paint p0){}
+    public void drawPatch(NinePatch p0, Rect p1, Paint p2){}
+    public void drawPatch(NinePatch p0, RectF p1, Paint p2){}
     public void drawPath(Path p0, Paint p1){}
     public void drawPicture(Picture p0){}
     public void drawPicture(Picture p0, Rect p1){}

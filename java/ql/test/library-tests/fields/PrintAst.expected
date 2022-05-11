@@ -12,10 +12,10 @@ fields/FieldTest.java:
 #    6|         1: [Annotation] SuppressWarnings
 #    6|           1: [StringLiteral] "rawtypes"
 #    6|       -1: [TypeAccess] List<>
-#    7|     7: [FieldDeclaration] int x, ...;
+#    7|     7: [FieldDeclaration] int x;
 #    7|       -1: [TypeAccess] int
 #    7|       0: [IntegerLiteral] 0
-#    8|     8: [FieldDeclaration] int y, ...;
+#    8|     8: [FieldDeclaration] int y;
 #    8|       -1: [TypeAccess] int
 #    8|       0: [AssignExpr] ...=...
 #    8|         0: [VarAccess] x
@@ -25,10 +25,10 @@ fields/FieldTest.java:
 #   10|         0: [AssignExpr] ...=...
 #   10|           0: [VarAccess] x
 #   10|           1: [IntegerLiteral] 2
-#   12|     10: [FieldDeclaration] int z, ...;
+#   12|     10: [FieldDeclaration] int z;
 #   12|       -1: [TypeAccess] int
 #   12|       0: [IntegerLiteral] 0
-#   13|     11: [FieldDeclaration] int w, ...;
+#   13|     11: [FieldDeclaration] int w;
 #   13|       -1: [TypeAccess] int
 #   13|       0: [AssignExpr] ...=...
 #   13|         0: [VarAccess] z

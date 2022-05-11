@@ -26,10 +26,10 @@ namespace System
             // Generated from `System.Threading.Channels.Channel` in `System.Threading.Channels, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class Channel
             {
-                public static System.Threading.Channels.Channel<T> CreateBounded<T>(int capacity) => throw null;
                 public static System.Threading.Channels.Channel<T> CreateBounded<T>(System.Threading.Channels.BoundedChannelOptions options) => throw null;
-                public static System.Threading.Channels.Channel<T> CreateUnbounded<T>(System.Threading.Channels.UnboundedChannelOptions options) => throw null;
+                public static System.Threading.Channels.Channel<T> CreateBounded<T>(int capacity) => throw null;
                 public static System.Threading.Channels.Channel<T> CreateUnbounded<T>() => throw null;
+                public static System.Threading.Channels.Channel<T> CreateUnbounded<T>(System.Threading.Channels.UnboundedChannelOptions options) => throw null;
             }
 
             // Generated from `System.Threading.Channels.Channel<,>` in `System.Threading.Channels, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -38,8 +38,8 @@ namespace System
                 protected Channel() => throw null;
                 public System.Threading.Channels.ChannelReader<TRead> Reader { get => throw null; set => throw null; }
                 public System.Threading.Channels.ChannelWriter<TWrite> Writer { get => throw null; set => throw null; }
-                public static implicit operator System.Threading.Channels.ChannelWriter<TWrite>(System.Threading.Channels.Channel<TWrite, TRead> channel) => throw null;
                 public static implicit operator System.Threading.Channels.ChannelReader<TRead>(System.Threading.Channels.Channel<TWrite, TRead> channel) => throw null;
+                public static implicit operator System.Threading.Channels.ChannelWriter<TWrite>(System.Threading.Channels.Channel<TWrite, TRead> channel) => throw null;
             }
 
             // Generated from `System.Threading.Channels.Channel<>` in `System.Threading.Channels, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -51,11 +51,11 @@ namespace System
             // Generated from `System.Threading.Channels.ChannelClosedException` in `System.Threading.Channels, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class ChannelClosedException : System.InvalidOperationException
             {
-                public ChannelClosedException(string message, System.Exception innerException) => throw null;
-                public ChannelClosedException(string message) => throw null;
-                public ChannelClosedException(System.Exception innerException) => throw null;
                 public ChannelClosedException() => throw null;
+                public ChannelClosedException(System.Exception innerException) => throw null;
                 protected ChannelClosedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
+                public ChannelClosedException(string message) => throw null;
+                public ChannelClosedException(string message, System.Exception innerException) => throw null;
             }
 
             // Generated from `System.Threading.Channels.ChannelOptions` in `System.Threading.Channels, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`

@@ -1,0 +1,7 @@
+name: codeql/ql
+version: 0.0.0
+groups: [ql, queries]
+dbscheme: ql.dbscheme
+suites: codeql-suites
+defaultSuiteFile: codeql-suites/ql-code-scanning.qls
+extractor: ql

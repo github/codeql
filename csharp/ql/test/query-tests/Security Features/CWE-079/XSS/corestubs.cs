@@ -188,49 +188,4 @@ namespace Microsoft
             }
         }
     }
-    namespace Extensions
-    {
-        namespace Primitives
-        {
-            // Generated from `Microsoft.Extensions.Primitives.StringValues` in `Microsoft.Extensions.Primitives, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public struct StringValues : System.IEquatable<string[]>, System.IEquatable<string>, System.IEquatable<Microsoft.Extensions.Primitives.StringValues>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyList<string>, System.Collections.Generic.IReadOnlyCollection<string>,
-                System.Collections.Generic.IList<string>, System.Collections.Generic.IEnumerable<string>, System.Collections.Generic.ICollection<string>
-            {
-                System.Collections.Generic.IEnumerator<string> System.Collections.Generic.IEnumerable<string>.GetEnumerator() => throw null;
-                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
-                bool System.Collections.Generic.ICollection<string>.Contains(string item) => throw null;
-                bool System.Collections.Generic.ICollection<string>.IsReadOnly { get => throw null; }
-                bool System.Collections.Generic.ICollection<string>.Remove(string item) => throw null;
-                int System.Collections.Generic.IList<string>.IndexOf(string item) => throw null;
-                public bool Equals(Microsoft.Extensions.Primitives.StringValues other) => throw null;
-                public bool Equals(string other) => throw null;
-                public bool Equals(string[] other) => throw null;
-                public int Count { get => throw null; }
-                public override bool Equals(object obj) => throw null;
-                public override int GetHashCode() => throw null;
-                public override string ToString() => throw null;
-                public static implicit operator string(Microsoft.Extensions.Primitives.StringValues values) => throw null;
-                public string this[int index] { get => throw null; set => throw null; }
-                public string[] ToArray() => throw null;
-                void System.Collections.Generic.ICollection<string>.Add(string item) => throw null;
-                void System.Collections.Generic.ICollection<string>.Clear() => throw null;
-                void System.Collections.Generic.ICollection<string>.CopyTo(string[] array, int arrayIndex) => throw null;
-                void System.Collections.Generic.IList<string>.Insert(int index, string item) => throw null;
-                void System.Collections.Generic.IList<string>.RemoveAt(int index) => throw null;
-            }
-
-        }
-    }
-}
-namespace System
-{
-    namespace Linq
-    {
-        // Generated from `System.Linq.Enumerable` in `System.Linq, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        static public class Enumerable
-        {
-            public static TSource First<TSource>(this System.Collections.Generic.IEnumerable<TSource> source) => throw null;
-        }
-
-    }
 }

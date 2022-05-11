@@ -30,8 +30,8 @@ where
   // the next statement isn't breaking out of a switch
   not s.(BreakStmt).getBreakable() instanceof SwitchStmt and
   // the next statement isn't a loop that can be jumped into
-  not exists(LabelStmt ls | s.(Loop).getStmt().getAChild*() = ls) and
-  not exists(SwitchCase sc | s.(Loop).getStmt().getAChild*() = sc) and
+  not s.(Loop).getStmt().getAChild*() instanceof LabelStmt and
+  not s.(Loop).getStmt().getAChild*() instanceof SwitchCase and
   // no preprocessor logic applies
   not functionContainsPreprocCode(js.getEnclosingFunction())
 select js, "This statement makes $@ unreachable.", s, s.toString()

@@ -17,6 +17,7 @@ public class ComponentInfo extends PackageItemInfo
     public ComponentInfo(ComponentInfo p0){}
     public String processName = null;
     public String splitName = null;
+    public String[] attributionTags = null;
     public boolean directBootAware = false;
     public boolean enabled = false;
     public boolean exported = false;

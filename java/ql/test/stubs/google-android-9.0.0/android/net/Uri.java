@@ -10,6 +10,7 @@ import java.util.Set;
 
 abstract public class Uri implements Comparable<Uri>, Parcelable
 {
+    protected Uri() {}
     public List<String> getQueryParameters(String p0){ return null; }
     public Set<String> getQueryParameterNames(){ return null; }
     public String getQueryParameter(String p0){ return null; }

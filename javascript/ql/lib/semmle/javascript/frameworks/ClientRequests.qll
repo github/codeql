@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling the client-side of a URL request.
+ * Provides classes for modeling the client-side of a URL request.
  *
  * Subclass `ClientRequest` to refine the behavior of the analysis on existing client requests.
  * Subclass `ClientRequest::Range` to introduce new kinds of client requests.
@@ -63,15 +63,13 @@ class ClientRequest extends DataFlow::InvokeNode instanceof ClientRequest::Range
    * Gets a node that refers to data from the response, possibly
    * wrapped in a promise object.
    */
-  DataFlow::Node getAResponseDataNode() { result = getAResponseDataNode(_, _) }
+  DataFlow::Node getAResponseDataNode() { result = this.getAResponseDataNode(_, _) }
 
   /**
    * Gets a data-flow node that determines where in the file-system the result of the request should be saved.
    */
   DataFlow::Node getASavePath() { result = super.getASavePath() }
 }
-
-deprecated class CustomClientRequest = ClientRequest::Range;
 
 module ClientRequest {
   /**
@@ -151,41 +149,41 @@ module ClientRequest {
     }
 
     override DataFlow::Node getUrl() {
-      result = getArgument(0) or
-      result = getOptionArgument(0, urlPropertyName())
+      result = this.getArgument(0) or
+      result = this.getOptionArgument(0, urlPropertyName())
     }
 
     override DataFlow::Node getHost() { none() }
 
     /** Gets the response type from the options passed in. */
     string getResponseType() {
-      if getOptionArgument(1, "json").mayHaveBooleanValue(true)
+      if this.getOptionArgument(1, "json").mayHaveBooleanValue(true)
       then result = "json"
       else result = "text"
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean pr) {
-      responseType = getResponseType() and
+      responseType = this.getResponseType() and
       promise = true and
       pr = true and
       result = this
       or
-      responseType = getResponseType() and
+      responseType = this.getResponseType() and
       promise = false and
       pr = false and
       (
-        result = getCallback([1 .. 2]).getParameter(2)
+        result = this.getCallback([1 .. 2]).getParameter(2)
         or
-        result = getCallback([1 .. 2]).getParameter(1).getAPropertyRead("body")
+        result = this.getCallback([1 .. 2]).getParameter(1).getAPropertyRead("body")
       )
       or
       responseType = "error" and
       promise = false and
       pr = false and
-      result = getCallback([1 .. 2]).getParameter(0)
+      result = this.getCallback([1 .. 2]).getParameter(0)
     }
 
-    override DataFlow::Node getADataNode() { result = getArgument(1) }
+    override DataFlow::Node getADataNode() { result = this.getArgument(1) }
 
     override DataFlow::Node getASavePath() {
       exists(DataFlow::CallNode write |
@@ -224,50 +222,50 @@ module ClientRequest {
     }
 
     private DataFlow::Node getOptionArgument(string name) {
-      result = getOptionArgument(getOptionsArgIndex(), name)
+      result = this.getOptionArgument(this.getOptionsArgIndex(), name)
     }
 
     override DataFlow::Node getUrl() {
-      result = getArgument(0) or
-      result = getOptionArgument(urlPropertyName())
+      result = this.getArgument(0) or
+      result = this.getOptionArgument(urlPropertyName())
     }
 
-    override DataFlow::Node getHost() { result = getOptionArgument("host") }
+    override DataFlow::Node getHost() { result = this.getOptionArgument("host") }
 
     override DataFlow::Node getADataNode() {
       method = "request" and
-      result = getOptionArgument(0, "data")
+      result = this.getOptionArgument(0, "data")
       or
       method = ["post", "put"] and
-      result = [getArgument(1), getOptionArgument(2, "data")]
+      result = [this.getArgument(1), this.getOptionArgument(2, "data")]
       or
-      result = getOptionArgument([0 .. 2], ["headers", "params"])
+      result = this.getOptionArgument([0 .. 2], ["headers", "params"])
     }
 
     /** Gets the response type from the options passed in. */
     string getResponseType() {
-      exists(DataFlow::Node option | option = getOptionArgument("responseType") |
+      exists(DataFlow::Node option | option = this.getOptionArgument("responseType") |
         option.mayHaveStringValue(result)
         or
         option.analyze().getAValue().isIndefinite(_) and
         result = ""
       )
       or
-      not exists(getOptionArgument("responseType")) and
+      not exists(this.getOptionArgument("responseType")) and
       result = "json"
       or
-      getArgument(getOptionsArgIndex()).analyze().getAValue().isIndefinite(_) and
+      this.getArgument(this.getOptionsArgIndex()).analyze().getAValue().isIndefinite(_) and
       result = ""
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
-      responseType = getResponseType() and
+      responseType = this.getResponseType() and
       promise = true and
       result = this
       or
-      responseType = getResponseType() and
+      responseType = this.getResponseType() and
       promise = false and
-      result = getReturn().getPromisedError().getMember("response").getAnImmediateUse()
+      result = this.getReturn().getPromisedError().getMember("response").getAnImmediateUse()
     }
   }
 
@@ -303,7 +301,7 @@ module ClientRequest {
         fetch = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
       |
         this = fetch.getACall() and
-        url = getArgument(0)
+        url = this.getArgument(0)
       )
     }
 
@@ -312,7 +310,9 @@ module ClientRequest {
     override DataFlow::Node getHost() { none() }
 
     override DataFlow::Node getADataNode() {
-      exists(string name | name = "headers" or name = "body" | result = getOptionArgument(1, name))
+      exists(string name | name = "headers" or name = "body" |
+        result = this.getOptionArgument(1, name)
+      )
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
@@ -323,7 +323,7 @@ module ClientRequest {
   }
 
   /**
-   * Classes for modelling the url request library `needle`.
+   * Classes for modeling the url request library `needle`.
    */
   private module Needle {
     /**
@@ -334,14 +334,14 @@ module ClientRequest {
 
       PromisedNeedleRequest() { this = DataFlow::moduleImport("needle").getACall() }
 
-      override DataFlow::Node getUrl() { result = getArgument(1) }
+      override DataFlow::Node getUrl() { result = this.getArgument(1) }
 
       override DataFlow::Node getHost() { none() }
 
       override DataFlow::Node getADataNode() {
-        result = getOptionArgument([2, 3], "headers")
+        result = this.getOptionArgument([2, 3], "headers")
         or
-        result = getArgument(2)
+        result = this.getArgument(2)
       }
 
       override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
@@ -373,20 +373,20 @@ module ClientRequest {
         )
       }
 
-      override DataFlow::Node getUrl() { result = getArgument(0) }
+      override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
       override DataFlow::Node getHost() { none() }
 
       override DataFlow::Node getADataNode() {
         hasData = true and
         (
-          result = getArgument(1)
+          result = this.getArgument(1)
           or
-          result = getOptionArgument(2, "headers")
+          result = this.getOptionArgument(2, "headers")
         )
         or
         hasData = false and
-        result = getOptionArgument(1, "headers")
+        result = this.getOptionArgument(1, "headers")
       }
 
       override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
@@ -406,18 +406,15 @@ module ClientRequest {
    */
   class GotUrlRequest extends ClientRequest::Range {
     GotUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        moduleName = "got" and
-        (
-          callee = DataFlow::moduleImport(moduleName) or
-          callee = DataFlow::moduleMember(moduleName, "stream")
-        )
+      exists(API::Node callee, API::Node got | this = callee.getACall() |
+        got = [API::moduleImport("got"), API::moduleImport("got").getMember("extend").getReturn()] and
+        callee = [got, got.getMember(["stream", "get", "post", "put", "patch", "head", "delete"])]
       )
     }
 
     override DataFlow::Node getUrl() {
-      result = getArgument(0) and
-      not exists(getOptionArgument(1, "baseUrl"))
+      result = this.getArgument(0) and
+      not exists(this.getOptionArgument(1, "baseUrl"))
     }
 
     override DataFlow::Node getHost() {
@@ -425,34 +422,34 @@ module ClientRequest {
         name = "host" or
         name = "hostname"
       |
-        result = getOptionArgument(1, name)
+        result = this.getOptionArgument(1, name)
       )
     }
 
     override DataFlow::Node getADataNode() {
       exists(string name | name = "headers" or name = "body" or name = "query" |
-        result = getOptionArgument(1, name)
+        result = this.getOptionArgument(1, name)
       )
     }
 
     /** Holds if the result is a stream. */
     predicate isStream() {
-      getOptionArgument(1, "stream").mayHaveBooleanValue(true)
+      this.getOptionArgument(1, "stream").mayHaveBooleanValue(true)
       or
       this = DataFlow::moduleMember("got", "stream").getACall()
     }
 
     /** Holds if the result is a JSON object. */
-    predicate isJson() { getOptionArgument(1, "json").mayHaveBooleanValue(true) }
+    predicate isJson() { this.getOptionArgument(1, "json").mayHaveBooleanValue(true) }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       result = this and
-      if isStream()
+      if this.isStream()
       then
         responseType = "stream" and
         promise = false
       else
-        if isJson()
+        if this.isJson()
         then (
           responseType = "json" and
           promise = true
@@ -464,16 +461,11 @@ module ClientRequest {
   }
 
   /**
-   * Gets an instantiation `socket` of `require("net").Socket` type tracked using `t`.
+   * Gets an instantiation `socket` of `require("net").Socket`.
    */
-  private DataFlow::SourceNode netSocketInstantiation(
-    DataFlow::TypeTracker t, DataFlow::NewNode socket
-  ) {
-    t.start() and
-    socket = DataFlow::moduleMember("net", "Socket").getAnInstantiation() and
-    result = socket
-    or
-    exists(DataFlow::TypeTracker t2 | result = netSocketInstantiation(t2, socket).track(t2, t))
+  private API::Node netSocketInstantiation(DataFlow::NewNode socket) {
+    result = API::moduleImport("net").getMember("Socket").getInstance() and
+    socket = result.getAnImmediateUse()
   }
 
   /**
@@ -482,21 +474,19 @@ module ClientRequest {
   class NetSocketRequest extends ClientRequest::Range {
     DataFlow::NewNode socket;
 
-    NetSocketRequest() {
-      this = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMethodCall("connect")
-    }
+    NetSocketRequest() { this = netSocketInstantiation(socket).getMember("connect").getACall() }
 
     override DataFlow::Node getUrl() {
-      result = getArgument([0, 1]) // there are multiple overrides of `connect`, and the URL can be in the first or second argument.
+      result = this.getArgument([0, 1]) // there are multiple overrides of `connect`, and the URL can be in the first or second argument.
     }
 
-    override DataFlow::Node getHost() { result = getOptionArgument(0, "host") }
+    override DataFlow::Node getHost() { result = this.getOptionArgument(0, "host") }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       responseType = "text" and
       promise = false and
       exists(DataFlow::CallNode call |
-        call = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMemberCall("on") and
+        call = netSocketInstantiation(socket).getMember("on").getACall() and
         call.getArgument(0).mayHaveStringValue("data") and
         result = call.getABoundCallbackParameter(1, 0)
       )
@@ -504,7 +494,7 @@ module ClientRequest {
 
     override DataFlow::Node getADataNode() {
       exists(DataFlow::CallNode call |
-        call = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMemberCall("write") and
+        call = netSocketInstantiation(socket).getMember("write").getACall() and
         result = call.getArgument(0)
       )
     }
@@ -520,7 +510,7 @@ module ClientRequest {
       exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
         moduleName = "superagent" and
         callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
-        url = getArgument(0)
+        url = this.getArgument(0)
       )
     }
 
@@ -540,7 +530,7 @@ module ClientRequest {
       result = this
       or
       exists(DataFlow::FunctionNode callback |
-        callback = getAChainedMethodCall("end").getCallback(0) and
+        callback = this.getAChainedMethodCall("end").getCallback(0) and
         promise = false and
         (
           responseType = "error" and result = callback.getParameter(0)
@@ -556,22 +546,22 @@ module ClientRequest {
    *
    * Note: Prefer to use the `ClientRequest` class as it is more general.
    */
-  class XMLHttpRequest extends ClientRequest::Range {
-    XMLHttpRequest() {
+  class XmlHttpRequest extends ClientRequest::Range {
+    XmlHttpRequest() {
       this = DataFlow::globalVarRef("XMLHttpRequest").getAnInstantiation()
       or
       // closure shim for XMLHttpRequest
       this = Closure::moduleImport("goog.net.XmlHttp").getAnInvocation()
     }
 
-    override DataFlow::Node getUrl() { result = getAMethodCall("open").getArgument(1) }
+    override DataFlow::Node getUrl() { result = this.getAMethodCall("open").getArgument(1) }
 
     override DataFlow::Node getHost() { none() }
 
-    override DataFlow::Node getADataNode() { result = getAMethodCall("send").getArgument(0) }
+    override DataFlow::Node getADataNode() { result = this.getAMethodCall("send").getArgument(0) }
 
     private string getExplicitResponseType() {
-      getAPropertyWrite("responseType").getRhs().mayHaveStringValue(result)
+      this.getAPropertyWrite("responseType").getRhs().mayHaveStringValue(result)
     }
 
     /**
@@ -579,17 +569,17 @@ module ClientRequest {
      * but not the explicitly typed properties, `reponseText` and `responseXML`.
      */
     string getAssignedResponseType() {
-      result = getExplicitResponseType()
+      result = this.getExplicitResponseType()
       or
-      not exists(getExplicitResponseType()) and
+      not exists(this.getExplicitResponseType()) and
       result = "text"
     }
 
     /** Gets an event listener registered on this XHR object. */
     DataFlow::FunctionNode getAnEventListener() {
-      result = getAPropertyWrite("on" + any(string s)).getRhs().getAFunctionValue()
+      result = this.getAPropertyWrite("on" + any(string s)).getRhs().getAFunctionValue()
       or
-      result = getAMethodCall("addEventListener").getArgument(1).getAFunctionValue()
+      result = this.getAMethodCall("addEventListener").getArgument(1).getAFunctionValue()
     }
 
     /**
@@ -601,14 +591,14 @@ module ClientRequest {
       result = this
       or
       // The value of `this` in an event listener refers to the XHR object
-      result = getAnEventListener().getReceiver()
+      result = this.getAnEventListener().getReceiver()
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       promise = false and
       (
-        exists(string prop | result = getAnAlias().getAPropertyRead(prop) |
-          prop = "response" and responseType = getAssignedResponseType()
+        exists(string prop | result = this.getAnAlias().getAPropertyRead(prop) |
+          prop = "response" and responseType = this.getAssignedResponseType()
           or
           prop = "responseText" and responseType = "text"
           or
@@ -619,7 +609,7 @@ module ClientRequest {
           prop = "responseXML" and responseType = "document"
         )
         or
-        exists(string method | result = getAnAlias().getAMethodCall(method) |
+        exists(string method | result = this.getAnAlias().getAMethodCall(method) |
           method = "getAllResponseHeaders" and responseType = "headers"
           or
           method = "getResponseHeader" and responseType = "header"
@@ -627,6 +617,9 @@ module ClientRequest {
       )
     }
   }
+
+  /** DEPRECATED: Alias for XmlHttpRequest */
+  deprecated class XMLHttpRequest = XmlHttpRequest;
 
   /**
    * A model of a URL request made using the `XhrIo` class from the closure library.
@@ -647,16 +640,16 @@ module ClientRequest {
       )
     }
 
-    override DataFlow::Node getUrl() { result = getArgument(0) }
+    override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
     override DataFlow::Node getHost() { none() }
 
-    override DataFlow::Node getADataNode() { result = getArgument([2 .. 3]) }
+    override DataFlow::Node getADataNode() { result = this.getArgument([2 .. 3]) }
 
     /** Gets an event listener with `this` bound to this object. */
     DataFlow::FunctionNode getAnEventListener() {
       static = true and
-      result = getAnArgument().getAFunctionValue()
+      result = this.getAnArgument().getAFunctionValue()
       or
       static = false and
       exists(DataFlow::MethodCallNode listen, string name |
@@ -676,7 +669,7 @@ module ClientRequest {
       static = false and
       result = base
       or
-      result = getAnEventListener().getReceiver()
+      result = this.getAnEventListener().getReceiver()
     }
 
     /**
@@ -684,16 +677,16 @@ module ClientRequest {
      * for explicitly typed calls like `getResponseJson()`.
      */
     string getAssignedResponseType() {
-      getAMethodCall("setResponseType").getArgument(0).mayHaveStringValue(result)
+      this.getAMethodCall("setResponseType").getArgument(0).mayHaveStringValue(result)
       or
-      not exists(getAMethodCall("setResponseType")) and
+      not exists(this.getAMethodCall("setResponseType")) and
       result = "text"
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       promise = false and
-      exists(string method | result = getAnAlias().getAMethodCall(method) |
-        method = "getResponse" and responseType = getAssignedResponseType()
+      exists(string method | result = this.getAnAlias().getAMethodCall(method) |
+        method = "getResponse" and responseType = this.getAssignedResponseType()
         or
         method = "getResponseHeader" and responseType = "header"
         or
@@ -714,22 +707,15 @@ module ClientRequest {
    * Gets a reference to an instance of `chrome-remote-interface`.
    *
    * An instantiation of `chrome-remote-interface` either accepts a callback or returns a promise.
-   *
-   * The `isPromise` parameter reflects whether the reference is a promise containing
-   * an instance of `chrome-remote-interface`, or an instance of `chrome-remote-interface`.
    */
-  private DataFlow::SourceNode chromeRemoteInterface(DataFlow::TypeTracker t) {
-    exists(DataFlow::CallNode call |
-      call = DataFlow::moduleImport("chrome-remote-interface").getAnInvocation()
-    |
+  private API::Node chromeRemoteInterface() {
+    exists(API::CallNode call | call = API::moduleImport("chrome-remote-interface").getACall() |
       // the client is inside in a promise.
-      t.startInPromise() and result = call
+      result = call.getReturn().getPromised()
       or
       // the client is accessed directly using a callback.
-      t.start() and result = call.getCallback([0 .. 1]).getParameter(0)
+      result = call.getParameter([0 .. 1]).getParameter(0)
     )
-    or
-    exists(DataFlow::TypeTracker t2 | result = chromeRemoteInterface(t2).track(t2, t))
   }
 
   /**
@@ -739,20 +725,18 @@ module ClientRequest {
     int optionsArg;
 
     ChromeRemoteInterfaceRequest() {
-      exists(DataFlow::SourceNode instance |
-        instance = chromeRemoteInterface(DataFlow::TypeTracker::end())
-      |
+      exists(API::Node instance | instance = chromeRemoteInterface() |
         optionsArg = 0 and
-        this = instance.getAPropertyRead("Page").getAMemberCall("navigate")
+        this = instance.getMember("Page").getMember("navigate").getACall()
         or
         optionsArg = 1 and
-        this = instance.getAMemberCall("send") and
+        this = instance.getMember("send").getACall() and
         this.getArgument(0).mayHaveStringValue("Page.navigate")
       )
     }
 
     override DataFlow::Node getUrl() {
-      result = getArgument(optionsArg).getALocalSource().getAPropertyWrite("url").getRhs()
+      result = this.getArgument(optionsArg).getALocalSource().getAPropertyWrite("url").getRhs()
     }
 
     override DataFlow::Node getHost() { none() }
@@ -766,7 +750,7 @@ module ClientRequest {
   class Nugget extends ClientRequest::Range, DataFlow::CallNode {
     Nugget() { this = DataFlow::moduleImport("nugget").getACall() }
 
-    override DataFlow::Node getUrl() { result = getArgument(0) }
+    override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
     override DataFlow::Node getHost() { none() }
 
@@ -790,7 +774,7 @@ module ClientRequest {
         cmd.getACommandArgument()
             .(StringOps::ConcatenationRoot)
             .getConstantStringParts()
-            .regexpMatch("curl .*")
+            .matches("curl %")
       )
     }
 
@@ -807,24 +791,27 @@ module ClientRequest {
   /**
    * A model of a URL request made using `jsdom.fromUrl()`.
    */
-  class JSDOMFromUrl extends ClientRequest::Range {
-    JSDOMFromUrl() {
+  class JSDomFromUrl extends ClientRequest::Range {
+    JSDomFromUrl() {
       this = API::moduleImport("jsdom").getMember("JSDOM").getMember("fromURL").getACall()
     }
 
-    override DataFlow::Node getUrl() { result = getArgument(0) }
+    override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
     override DataFlow::Node getHost() { none() }
 
     override DataFlow::Node getADataNode() { none() }
   }
 
+  /** DEPRECATED: Alias for JSDomFromUrl */
+  deprecated class JSDOMFromUrl = JSDomFromUrl;
+
   /**
-   * Classes and predicates modelling the `apollo-client` library.
+   * Classes and predicates modeling the `apollo-client` library.
    */
   private module ApolloClient {
     /**
-     * A function from `apollo-client` that accepts an options object that may contain a `uri` property.
+     * Gets a function from `apollo-client` that accepts an options object that may contain a `uri` property.
      */
     API::Node apolloUriCallee() {
       result = API::moduleImport("apollo-link-http").getMember(["HttpLink", "createHttpLink"])
@@ -842,7 +829,7 @@ module ClientRequest {
     class ApolloClientRequest extends ClientRequest::Range, API::InvokeNode {
       ApolloClientRequest() { this = apolloUriCallee().getAnInvocation() }
 
-      override DataFlow::Node getUrl() { result = getParameter(0).getMember("uri").getARhs() }
+      override DataFlow::Node getUrl() { result = this.getParameter(0).getMember("uri").getARhs() }
 
       override DataFlow::Node getHost() { none() }
 
@@ -861,9 +848,9 @@ module ClientRequest {
       this = form.getMember("submit").getACall()
     }
 
-    override DataFlow::Node getUrl() { result = getArgument(0) }
+    override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
-    override DataFlow::Node getHost() { result = getParameter(0).getMember("host").getARhs() }
+    override DataFlow::Node getHost() { result = this.getParameter(0).getMember("host").getARhs() }
 
     override DataFlow::Node getADataNode() {
       result = form.getMember("append").getACall().getParameter(1).getARhs()

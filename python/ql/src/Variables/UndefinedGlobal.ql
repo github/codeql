@@ -68,7 +68,7 @@ predicate undefined_use_in_function(Name u) {
 
 predicate undefined_use_in_class_or_module(Name u) {
   exists(GlobalVariable v | u.uses(v)) and
-  not exists(Function f | u.getScope().getScope*() = f) and
+  not u.getScope().getScope*() instanceof Function and
   exists(SsaVariable var | var.getAUse().getNode() = u | var.maybeUndefined()) and
   not guarded_against_name_error(u) and
   not exists(ModuleValue m | m.getScope() = u.getEnclosingModule() | m.hasAttribute(u.getId())) and

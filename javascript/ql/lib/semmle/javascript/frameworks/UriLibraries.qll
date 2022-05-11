@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling URI libraries.
+ * Provides classes for modeling URI libraries.
  */
 
 import javascript
@@ -14,10 +14,13 @@ abstract deprecated class UriLibraryStep extends DataFlow::ValueNode {
   predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
 }
 
+/** DEPRECATED: Alias for `Urijs` */
+deprecated module urijs = Urijs;
+
 /**
  * Provides classes for working with [urijs](http://medialize.github.io/URI.js/) code.
  */
-module urijs {
+module Urijs {
   /**
    * Gets a data flow source node for the urijs library.
    */
@@ -80,10 +83,13 @@ module urijs {
   }
 }
 
+/** DEPRECATED: Alias for `Uridashjs` */
+deprecated module uridashjs = Uridashjs;
+
 /**
  * Provides classes for working with [uri-js](https://github.com/garycourt/uri-js) code.
  */
-module uridashjs {
+module Uridashjs {
   /**
    * Gets a data flow source node for member `name` of the uridashjs library.
    */
@@ -105,10 +111,13 @@ module uridashjs {
   }
 }
 
+/** DEPRECATED: Alias for `Punycode` */
+deprecated module punycode = Punycode;
+
 /**
  * Provides classes for working with [punycode](https://github.com/bestiejs/punycode.js) code.
  */
-module punycode {
+module Punycode {
   /**
    * Gets a data flow source node for member `name` of the punycode library.
    */
@@ -130,10 +139,13 @@ module punycode {
   }
 }
 
+/** DEPRECATED: Alias for `UrlParse` */
+deprecated module urlParse = UrlParse;
+
 /**
  * Provides classes for working with [url-parse](https://github.com/unshiftio/url-parse) code.
  */
-module urlParse {
+module UrlParse {
   /**
    * Gets a data flow source node for the url-parse library.
    */
@@ -167,15 +179,23 @@ module urlParse {
   }
 }
 
+/** DEPRECATED: Alias for `Querystringify` */
+deprecated module querystringify = Querystringify;
+
 /**
  * Provides classes for working with [querystringify](https://github.com/unshiftio/querystringify) code.
  */
-module querystringify {
+module Querystringify {
   /**
    * Gets a data flow source node for member `name` of the querystringify library.
    */
   DataFlow::SourceNode querystringifyMember(string name) {
-    result = DataFlow::moduleMember("querystringify", name)
+    result = querystringify().getMember(name).getAnImmediateUse()
+  }
+
+  /** Gets an API node referring to the `querystringify` module. */
+  private API::Node querystringify() {
+    result = [API::moduleImport("querystringify"), API::moduleImport("url-parse").getMember("qs")]
   }
 
   /**
@@ -184,7 +204,7 @@ module querystringify {
   private class Step extends TaintTracking::SharedTaintStep {
     override predicate uriStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call |
-        call = querystringifyMember(["parse", "stringify"]).getACall() and
+        call = querystringify().getMember(["parse", "stringify"]).getACall() and
         pred = call.getAnArgument() and
         succ = call
       )
@@ -192,10 +212,13 @@ module querystringify {
   }
 }
 
+/** DEPRECATED: Alias for `Querydashstring` */
+deprecated module querydashstring = Querydashstring;
+
 /**
  * Provides classes for working with [query-string](https://github.com/sindresorhus/query-string) code.
  */
-module querydashstring {
+module Querydashstring {
   /**
    * Gets a data flow source node for member `name` of the query-string library.
    */
@@ -217,10 +240,13 @@ module querydashstring {
   }
 }
 
+/** DEPRECATED: Alias for `Url` */
+deprecated module url = Url;
+
 /**
  * Provides classes for working with [url](https://nodejs.org/api/url.html) code.
  */
-module url {
+module Url {
   /**
    * Gets a data flow source node for member `name` of the url library.
    */
@@ -240,10 +266,13 @@ module url {
   }
 }
 
+/** DEPRECATED: Alias for `Querystring` */
+deprecated module querystring = Querystring;
+
 /**
  * Provides classes for working with [querystring](https://nodejs.org/api/querystring.html) code.
  */
-module querystring {
+module Querystring {
   /**
    * Gets a data flow source node for member `name` of the querystring library.
    */
@@ -403,7 +432,7 @@ private module ClosureLibraryUri {
   /**
    * Provides classes for working with [path](https://nodejs.org/api/path.html) code.
    */
-  module path {
+  module Path {
     /**
      * A taint step in the path module.
      */

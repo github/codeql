@@ -1,22 +1,3 @@
-calls.rb:
-#  102| Hash
-#-----| super -> Object
-
-#   77| Integer
-#-----| super -> Numeric
-
-#   86| Kernel
-
-#   90| Module
-#-----| super -> Object
-
-#   97| Object
-#-----| include -> Kernel
-#-----| super -> BasicObject
-
-#  106| Array
-#-----| super -> Object
-
 #-----| BasicObject
 
 #-----| Class
@@ -47,18 +28,36 @@ calls.rb:
 #-----| TrueClass
 #-----| super -> Object
 
+calls.rb:
 #   15| M
 
-private.rb:
-#    1| C
-#-----| super -> Object
+#   29| C
 #-----| include -> M
+#-----| super -> Object
 
-calls.rb:
 #   51| D
 #-----| super -> C
 
+#   77| Integer
+#-----| super -> Numeric
+
 #   82| String
+#-----| super -> Object
+
+#   86| Kernel
+
+#   90| Module
+#-----| super -> Object
+
+#   97| Object
+#-----| super -> BasicObject
+#-----| include -> Kernel
+#-----| prepend -> A
+
+#  102| Hash
+#-----| super -> Object
+
+#  106| Array
 #-----| super -> Object
 
 #  144| S
@@ -66,6 +65,8 @@ calls.rb:
 
 #  150| A
 #-----| super -> S
+#-----| super -> B
+#-----| prepend -> A::B
 
 #  155| B
 #-----| super -> S
@@ -85,32 +86,10 @@ modules.rb:
 
 #    4| Foo
 
-#   37| Bar
-#-----| super -> Object
-
-#   60| MyModuleInGlobalScope
-
-#   63| Test
-
-#   83| Other
-
-#   88| IncludeTest
-#-----| include -> Test
-
-#   95| IncludeTest2
-#-----| include -> Test
-
-#  101| PrependTest
-#-----| prepend -> Test
-
-#  107| MM
-
-#  112| YY
-#-----| super -> Object
-
-#  115| XX
-
 #    5| Foo::Bar
+
+#    6| Foo::Bar::ClassInFooBar
+#-----| super -> Object
 
 #   19| Foo::ClassInFoo
 #-----| super -> Object
@@ -118,37 +97,72 @@ modules.rb:
 #   30| Foo::ClassInAnotherDefinitionOfFoo
 #-----| super -> Object
 
-#  116| XX::YY
-#-----| super -> YY
-
-#   65| Test::Foo1
-
-#   70| Test::Foo2
-
-#   76| Test::Foo3
-
-#   84| Other::Foo1
-
-#    6| Foo::Bar::ClassInFooBar
+#   37| Bar
 #-----| super -> Object
-
-#   71| Test::Foo2::Foo2
-
-#  108| MM::MM
 
 #   49| Foo::Bar::ClassInAnotherDefinitionOfFooBar
 #-----| super -> Object
 
+#   60| MyModuleInGlobalScope
+
+#   63| Test
+
+#   65| Test::Foo1
+
 #   66| Test::Foo1::Bar
 #-----| super -> Object
 
-#   91| Test::Foo1::Y
+#   70| Test::Foo2
 
-#   97| Test::Foo1::Z
-
-#  103| Test::Foo2::Y
+#   71| Test::Foo2::Foo2
 
 #   72| Test::Foo2::Foo2::Bar
 #-----| super -> Object
 
+#   76| Test::Foo3
+
+#   83| Other
+
+#   84| Other::Foo1
+
+#   88| IncludeTest
+#-----| include -> Test
+
+#   91| Test::Foo1::Y
+
+#   95| IncludeTest2
+#-----| include -> Test
+
+#   97| Test::Foo1::Z
+
+#  101| PrependTest
+#-----| prepend -> Test
+
+#  103| Test::Foo2::Y
+
+#  107| MM
+
+#  108| MM::MM
+
+#  112| YY
+#-----| super -> Object
+
+#  115| XX
+
+#  116| XX::YY
+#-----| super -> YY
+
 #  120| Test::Foo1::Bar::Baz
+
+modules_rec.rb:
+#    1| B::A
+#-----| super -> Object
+
+#    4| A::B
+#-----| super -> Object
+
+private.rb:
+#    1| E
+#-----| super -> Object
+
+#   42| F

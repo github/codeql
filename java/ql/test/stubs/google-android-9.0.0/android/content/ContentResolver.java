@@ -28,6 +28,7 @@ import android.util.Size;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 abstract public class ContentResolver
@@ -64,10 +65,13 @@ abstract public class ContentResolver
     public final String getType(Uri p0){ return null; }
     public final Uri canonicalize(Uri p0){ return null; }
     public final Uri insert(Uri p0, ContentValues p1){ return null; }
+    public final Uri insert(Uri p0, ContentValues p1, Bundle p2){ return null; }
     public final Uri uncanonicalize(Uri p0){ return null; }
     public final boolean refresh(Uri p0, Bundle p1, CancellationSignal p2){ return false; }
     public final int bulkInsert(Uri p0, ContentValues[] p1){ return 0; }
+    public final int delete(Uri p0, Bundle p1){ return 0; }
     public final int delete(Uri p0, String p1, String[] p2){ return 0; }
+    public final int update(Uri p0, ContentValues p1, Bundle p2){ return 0; }
     public final int update(Uri p0, ContentValues p1, String p2, String[] p3){ return 0; }
     public final void registerContentObserver(Uri p0, boolean p1, ContentObserver p2){}
     public final void unregisterContentObserver(ContentObserver p0){}
@@ -83,11 +87,16 @@ abstract public class ContentResolver
     public static String EXTRA_REFRESH_SUPPORTED = null;
     public static String EXTRA_SIZE = null;
     public static String EXTRA_TOTAL_COUNT = null;
+    public static String QUERY_ARG_GROUP_COLUMNS = null;
     public static String QUERY_ARG_LIMIT = null;
     public static String QUERY_ARG_OFFSET = null;
     public static String QUERY_ARG_SORT_COLLATION = null;
     public static String QUERY_ARG_SORT_COLUMNS = null;
     public static String QUERY_ARG_SORT_DIRECTION = null;
+    public static String QUERY_ARG_SORT_LOCALE = null;
+    public static String QUERY_ARG_SQL_GROUP_BY = null;
+    public static String QUERY_ARG_SQL_HAVING = null;
+    public static String QUERY_ARG_SQL_LIMIT = null;
     public static String QUERY_ARG_SQL_SELECTION = null;
     public static String QUERY_ARG_SQL_SELECTION_ARGS = null;
     public static String QUERY_ARG_SQL_SORT_ORDER = null;
@@ -105,6 +114,7 @@ abstract public class ContentResolver
     public static String SYNC_EXTRAS_MANUAL = null;
     public static String SYNC_EXTRAS_OVERRIDE_TOO_MANY_DELETIONS = null;
     public static String SYNC_EXTRAS_REQUIRE_CHARGING = null;
+    public static String SYNC_EXTRAS_SCHEDULE_AS_EXPEDITED_JOB = null;
     public static String SYNC_EXTRAS_UPLOAD = null;
     public static SyncAdapterType[] getSyncAdapterTypes(){ return null; }
     public static SyncInfo getCurrentSync(){ return null; }
@@ -112,8 +122,11 @@ abstract public class ContentResolver
     public static boolean getSyncAutomatically(Account p0, String p1){ return false; }
     public static boolean isSyncActive(Account p0, String p1){ return false; }
     public static boolean isSyncPending(Account p0, String p1){ return false; }
+    public static int NOTIFY_DELETE = 0;
+    public static int NOTIFY_INSERT = 0;
     public static int NOTIFY_SKIP_NOTIFY_FOR_DESCENDANTS = 0;
     public static int NOTIFY_SYNC_TO_NETWORK = 0;
+    public static int NOTIFY_UPDATE = 0;
     public static int QUERY_SORT_DIRECTION_ASCENDING = 0;
     public static int QUERY_SORT_DIRECTION_DESCENDING = 0;
     public static int SYNC_OBSERVER_TYPE_ACTIVE = 0;
@@ -132,6 +145,7 @@ abstract public class ContentResolver
     public static void setSyncAutomatically(Account p0, String p1, boolean p2){}
     public static void validateSyncExtrasBundle(Bundle p0){}
     public void cancelSync(Uri p0){}
+    public void notifyChange(Collection<Uri> p0, ContentObserver p1, int p2){}
     public void notifyChange(Uri p0, ContentObserver p1){}
     public void notifyChange(Uri p0, ContentObserver p1, boolean p2){}
     public void notifyChange(Uri p0, ContentObserver p1, int p2){}
@@ -140,7 +154,6 @@ abstract public class ContentResolver
     public void takePersistableUriPermission(Uri p0, int p1){}
     static public class MimeTypeInfo
     {
-        protected MimeTypeInfo() {}
         public CharSequence getContentDescription(){ return null; }
         public CharSequence getLabel(){ return null; }
         public Icon getIcon(){ return null; }

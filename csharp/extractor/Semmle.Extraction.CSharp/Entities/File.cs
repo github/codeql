@@ -61,7 +61,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            trapFile.file_extraction_mode(this, Context.Extractor.Standalone ? 1 : 0);
+            trapFile.file_extraction_mode(this, Context.Extractor.Mode);
         }
 
         private bool IsPossiblyTextFile()

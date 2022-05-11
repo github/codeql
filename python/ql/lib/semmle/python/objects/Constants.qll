@@ -7,7 +7,7 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
 /**
- * Class representing constants.
+ * A constant.
  * Includes `None`, `True` and `False` as
  * well as strings and integers.
  */
@@ -248,7 +248,7 @@ class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
   override ObjectInternal getClass() { result = TBuiltinClassObject(Builtin::special("unicode")) }
 
   override Builtin getBuiltin() {
-    result.(Builtin).strValue() = this.strValue() and
+    result.strValue() = this.strValue() and
     result.getClass() = Builtin::special("unicode")
   }
 
@@ -281,7 +281,7 @@ class BytesObjectInternal extends ConstantObjectInternal, TBytes {
   override ObjectInternal getClass() { result = TBuiltinClassObject(Builtin::special("bytes")) }
 
   override Builtin getBuiltin() {
-    result.(Builtin).strValue() = this.strValue() and
+    result.strValue() = this.strValue() and
     result.getClass() = Builtin::special("bytes")
   }
 

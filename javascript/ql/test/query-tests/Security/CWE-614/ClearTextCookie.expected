@@ -1,0 +1,16 @@
+| tst-cleartextCookie.js:5:5:10:10 | res.coo ...      }) | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:20:5:20:43 | res.coo ... ptions) | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:35:1:35:52 | js_cook ... alse }) | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:44:37:44:51 | "authKey=ninja" | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:64:13:64:27 | "authKey=ninja" | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:97:13:97:25 | "authKey=foo" | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:108:9:111:2 | session ... T OK\\n}) | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:113:9:116:2 | session ... T OK\\n}) | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:118:9:121:2 | session ... T OK\\n}) | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:128:9:128:21 | session(sess) | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:152:9:160:2 | session ... Date\\n}) | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:164:33:164:58 | `authKe ... key()}` | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:177:5:177:19 | document.cookie | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:181:5:181:41 | cookies ... hkey()) | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:186:5:186:46 | cookie. ... hkey()) | Sensitive cookie sent without enforcing SSL encryption |
+| tst-cleartextCookie.js:195:33:195:74 | cookie. ... hkey()) | Sensitive cookie sent without enforcing SSL encryption |

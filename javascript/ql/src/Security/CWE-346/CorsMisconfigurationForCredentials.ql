@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-346
  *       external/cwe/cwe-639
+ *       external/cwe/cwe-942
  */
 
 import javascript

@@ -179,7 +179,7 @@ module InitializerSplitting {
    *
    * respectively.
    */
-  class InitializerSplit extends Split, TInitializerSplit {
+  private class InitializerSplit extends Split, TInitializerSplit {
     private Constructor c;
 
     InitializerSplit() { this = TInitializerSplit(c) }
@@ -509,13 +509,6 @@ module FinallySplitting {
 
     /** Holds if this node is the entry node in the `finally` block it belongs to. */
     predicate isEntryNode() { first(try.getFinally(), this) }
-  }
-
-  /** A control flow element that does not belong to a `finally` block. */
-  private class NonFinallyControlFlowElement extends ControlFlowElement {
-    NonFinallyControlFlowElement() {
-      not this = any(Statements::TryStmtTree t).getAFinallyDescendant()
-    }
   }
 
   /**

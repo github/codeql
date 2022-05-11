@@ -22,4 +22,7 @@
 - exclude:
     deprecated: //
 - exclude:
-    query path: /^experimental\/.*/
+    query path:
+      - /^experimental\/.*/
+      - Metrics/Summaries/FrameworkCoverage.ql
+      - /Diagnostics/Internal/.*/

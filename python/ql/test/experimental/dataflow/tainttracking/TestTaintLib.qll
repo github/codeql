@@ -7,9 +7,16 @@ class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
   TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
+    // Standard sources
     source.(DataFlow::CfgNode).getNode().(NameNode).getId() in [
         "TAINTED_STRING", "TAINTED_BYTES", "TAINTED_LIST", "TAINTED_DICT"
       ]
+    or
+    // User defined sources
+    exists(CallNode call |
+      call.getFunction().(NameNode).getId() = "taint" and
+      source.(DataFlow::CfgNode).getNode() = call.getAnArg()
+    )
   }
 
   override predicate isSink(DataFlow::Node sink) {

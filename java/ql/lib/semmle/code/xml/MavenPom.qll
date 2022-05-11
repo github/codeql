@@ -380,7 +380,7 @@ class DeclaredRepository extends PomElement {
    * Gets the url for this repository. If the `url` tag is present, this will
    * be the string contents of that tag.
    */
-  string getUrl() { result = this.getAChild("url").(PomElement).getValue() }
+  string getRepositoryUrl() { result = this.getAChild("url").(PomElement).getValue() }
 }
 
 /**
@@ -395,9 +395,7 @@ class MavenRepo extends Folder {
   /**
    * Gets a Jar file contained within this repository.
    */
-  File getAJarFile() {
-    result = this.getAChildContainer*().(File) and result.getExtension() = "jar"
-  }
+  File getAJarFile() { result = this.getAChildContainer*() and result.getExtension() = "jar" }
 
   /**
    * Gets any jar artifacts in this repository that match the POM project definition. This is an

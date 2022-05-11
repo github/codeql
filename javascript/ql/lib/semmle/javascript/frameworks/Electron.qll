@@ -51,23 +51,18 @@ module Electron {
   private class BrowserObjectByType extends BrowserObject {
     BrowserObjectByType() {
       exists(string tp | tp = "BrowserWindow" or tp = "BrowserView" |
-        asExpr().getType().hasUnderlyingType("electron", tp)
+        this.asExpr().getType().hasUnderlyingType("electron", tp)
       )
     }
   }
 
-  private DataFlow::SourceNode browserObject(DataFlow::TypeTracker t) {
-    t.start() and
-    result instanceof NewBrowserObject
-    or
-    exists(DataFlow::TypeTracker t2 | result = browserObject(t2).track(t2, t))
-  }
+  private API::Node browserObject() { result.getAnImmediateUse() instanceof NewBrowserObject }
 
   /**
    * A data flow node whose value may originate from a browser object instantiation.
    */
   private class BrowserObjectByFlow extends BrowserObject {
-    BrowserObjectByFlow() { browserObject(DataFlow::TypeTracker::end()).flowsTo(this) }
+    BrowserObjectByFlow() { browserObject().getAUse() = this }
   }
 
   /**
@@ -78,7 +73,7 @@ module Electron {
   }
 
   /**
-   * Provides classes and predicates for modelling Electron inter-process communication (IPC).
+   * Provides classes and predicates for modeling Electron inter-process communication (IPC).
    * The Electron IPC are EventEmitters, but they also expose a number of methods on top of the standard EventEmitter.
    */
   private module IPC {
@@ -162,7 +157,7 @@ module Electron {
        */
       override DataFlow::Node getSentItem(int i) {
         i >= 1 and
-        result = getArgument(i)
+        result = this.getArgument(i)
       }
 
       /**
@@ -194,8 +189,6 @@ module Electron {
     abstract class Range extends NodeJSLib::NodeJSClientRequest::Range { }
   }
 
-  deprecated class CustomElectronClientRequest = ElectronClientRequest::Range;
-
   /**
    * A Node.js-style HTTP or HTTPS request made using `electron.ClientRequest`.
    */
@@ -206,8 +199,8 @@ module Electron {
     }
 
     override DataFlow::Node getUrl() {
-      result = getArgument(0) or
-      result = getOptionArgument(0, "url")
+      result = this.getArgument(0) or
+      result = this.getOptionArgument(0, "url")
     }
 
     override DataFlow::Node getHost() {
@@ -215,7 +208,7 @@ module Electron {
         name = "host" or
         name = "hostname"
       |
-        result = getOptionArgument(0, name)
+        result = this.getOptionArgument(0, name)
       )
     }
 

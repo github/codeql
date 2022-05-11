@@ -9,8 +9,10 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.frameworks.Werkzeug
+private import semmle.python.frameworks.Stdlib
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.security.dataflow.PathInjectionCustomizations
 
 /**
  * Provides models for the `flask` PyPI package.
@@ -73,7 +75,11 @@ module Flask {
    */
   module Blueprint {
     /** Gets a reference to the `flask.Blueprint` class. */
-    API::Node classRef() { result = API::moduleImport("flask").getMember("Blueprint") }
+    API::Node classRef() {
+      result = API::moduleImport("flask").getMember("Blueprint")
+      or
+      result = API::moduleImport("flask").getMember("blueprints").getMember("Blueprint")
+    }
 
     /** Gets a reference to an instance of `flask.Blueprint`. */
     API::Node instance() { result = classRef().getReturn() }
@@ -116,7 +122,9 @@ module Flask {
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
       ClassInstantiation() { this = classRef().getACall() }
 
-      override DataFlow::Node getBody() { result = this.getArg(0) }
+      override DataFlow::Node getBody() {
+        result in [this.getArg(0), this.getArgByName("response")]
+      }
 
       override string getMimetypeDefault() { result = "text/html" }
 
@@ -186,8 +194,8 @@ module Flask {
     API::Node api_node;
 
     FlaskViewClass() {
-      this.getABase() = Views::View::subclassRef().getAUse().asExpr() and
-      api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
+      api_node = Views::View::subclassRef() and
+      this.getParent() = api_node.getAnImmediateUse().asExpr()
     }
 
     /** Gets a function that could handle incoming requests, if any. */
@@ -211,8 +219,8 @@ module Flask {
    */
   class FlaskMethodViewClass extends FlaskViewClass {
     FlaskMethodViewClass() {
-      this.getABase() = Views::MethodView::subclassRef().getAUse().asExpr() and
-      api_node.getAnImmediateUse().asExpr().(ClassExpr) = this.getParent()
+      api_node = Views::MethodView::subclassRef() and
+      this.getParent() = api_node.getAnImmediateUse().asExpr()
     }
 
     override Function getARequestHandler() {
@@ -233,7 +241,7 @@ module Flask {
   }
 
   /** A route setup made by flask (sharing handling of URL patterns). */
-  abstract private class FlaskRouteSetup extends HTTP::Server::RouteSetup::Range {
+  abstract class FlaskRouteSetup extends HTTP::Server::RouteSetup::Range {
     override Parameter getARoutedParameter() {
       // If we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
@@ -293,7 +301,7 @@ module Flask {
     override Function getARequestHandler() {
       exists(DataFlow::LocalSourceNode func_src |
         func_src.flowsTo(this.getViewArg()) and
-        func_src.asExpr().(CallableExpr) = result.getDefinition()
+        func_src.asExpr() = result.getDefinition()
       )
       or
       exists(FlaskViewClass vc |
@@ -395,47 +403,37 @@ module Flask {
   }
 
   private class RequestAttrMultiDict extends Werkzeug::MultiDict::InstanceSource {
-    string attr_name;
-
     RequestAttrMultiDict() {
-      attr_name in ["args", "values", "form", "files"] and
-      this.(DataFlow::AttrRead).accesses(request().getAUse(), attr_name)
+      this = request().getMember(["args", "values", "form", "files"]).getAnImmediateUse()
     }
   }
 
   /** An `FileStorage` instance that originates from a flask request. */
   private class FlaskRequestFileStorageInstances extends Werkzeug::FileStorage::InstanceSource {
     FlaskRequestFileStorageInstances() {
-      // TODO: this currently only works in local-scope, since writing type-trackers for
-      // this is a little too much effort. Once API-graphs are available for more
-      // things, we can rewrite this.
-      //
       // TODO: This approach for identifying member-access is very adhoc, and we should
       // be able to do something more structured for providing modeling of the members
       // of a container-object.
-      exists(DataFlow::AttrRead files | files.accesses(request().getAUse(), "files") |
-        this.asCfgNode().(SubscriptNode).getObject() = files.asCfgNode()
+      exists(API::Node files | files = request().getMember("files") |
+        this.asCfgNode().(SubscriptNode).getObject() = files.getAUse().asCfgNode()
         or
-        this.(DataFlow::MethodCallNode).calls(files, "get")
+        this = files.getMember("get").getACall()
         or
-        exists(DataFlow::MethodCallNode getlistCall | getlistCall.calls(files, "getlist") |
-          this.asCfgNode().(SubscriptNode).getObject() = getlistCall.asCfgNode()
-        )
+        this.asCfgNode().(SubscriptNode).getObject() =
+          files.getMember("getlist").getReturn().getAUse().asCfgNode()
       )
     }
   }
 
   /** An `Headers` instance that originates from a flask request. */
   private class FlaskRequestHeadersInstances extends Werkzeug::Headers::InstanceSource {
-    FlaskRequestHeadersInstances() {
-      this.(DataFlow::AttrRead).accesses(request().getAUse(), "headers")
-    }
+    FlaskRequestHeadersInstances() { this = request().getMember("headers").getAnImmediateUse() }
   }
 
   /** An `Authorization` instance that originates from a flask request. */
   private class FlaskRequestAuthorizationInstances extends Werkzeug::Authorization::InstanceSource {
     FlaskRequestAuthorizationInstances() {
-      this.(DataFlow::AttrRead).accesses(request().getAUse(), "authorization")
+      this = request().getMember("authorization").getAnImmediateUse()
     }
   }
 
@@ -525,13 +523,30 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_from_directory
    */
-  class FlaskSendFromDirectory extends FileSystemAccess::Range, DataFlow::CallCfgNode {
-    FlaskSendFromDirectory() {
+  private class FlaskSendFromDirectoryCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    FlaskSendFromDirectoryCall() {
       this = API::moduleImport("flask").getMember("send_from_directory").getACall()
     }
 
     override DataFlow::Node getAPathArgument() {
-      result in [this.getArg(_), this.getArgByName(["directory", "filename"])]
+      result in [
+          this.getArg(0), this.getArgByName("directory"),
+          // as described in the docs, the `filename` argument is restrained to be within
+          // the provided directory, so is not exposed to path-injection. (but is still a
+          // path-argument).
+          this.getArg(1), this.getArgByName("filename")
+        ]
+    }
+  }
+
+  /**
+   * To exclude `filename` argument to `flask.send_from_directory` as a path-injection sink.
+   */
+  private class FlaskSendFromDirectoryCallFilenameSanitizer extends PathInjection::Sanitizer {
+    FlaskSendFromDirectoryCallFilenameSanitizer() {
+      this = any(FlaskSendFromDirectoryCall c).getArg(1)
+      or
+      this = any(FlaskSendFromDirectoryCall c).getArgByName("filename")
     }
   }
 
@@ -540,11 +555,25 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_file
    */
-  class FlaskSendFile extends FileSystemAccess::Range, DataFlow::CallCfgNode {
-    FlaskSendFile() { this = API::moduleImport("flask").getMember("send_file").getACall() }
+  private class FlaskSendFileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    FlaskSendFileCall() { this = API::moduleImport("flask").getMember("send_file").getACall() }
 
     override DataFlow::Node getAPathArgument() {
       result in [this.getArg(0), this.getArgByName("filename_or_fp")]
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Logging
+  // ---------------------------------------------------------------------------
+  /**
+   * A Flask application provides a standard Python logger via the `logger` attribute.
+   *
+   * See
+   * - https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask.logger
+   * - https://flask.palletsprojects.com/en/2.0.x/logging/
+   */
+  private class FlaskLogger extends Stdlib::Logger::InstanceSource {
+    FlaskLogger() { this = FlaskApp::instance().getMember("logger").getAnImmediateUse() }
   }
 }

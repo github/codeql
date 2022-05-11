@@ -1,9 +1,0 @@
-| HttpClient.rb:3:9:3:45 | call to get | HttpClient.rb:4:1:4:10 | call to body |
-| HttpClient.rb:6:9:6:65 | call to post | HttpClient.rb:7:1:7:13 | call to content |
-| HttpClient.rb:9:9:9:64 | call to put | HttpClient.rb:10:1:10:15 | call to http_body |
-| HttpClient.rb:12:9:12:48 | call to delete | HttpClient.rb:13:1:13:10 | call to dump |
-| HttpClient.rb:15:9:15:46 | call to head | HttpClient.rb:16:1:16:10 | call to body |
-| HttpClient.rb:18:9:18:49 | call to options | HttpClient.rb:19:1:19:13 | call to content |
-| HttpClient.rb:21:9:21:47 | call to trace | HttpClient.rb:22:1:22:15 | call to http_body |
-| HttpClient.rb:24:9:24:53 | call to get_content | HttpClient.rb:24:9:24:53 | call to get_content |
-| HttpClient.rb:26:10:26:74 | call to post_content | HttpClient.rb:26:10:26:74 | call to post_content |

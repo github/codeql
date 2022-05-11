@@ -20,7 +20,7 @@ private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.internal.CachedStages
 
 /**
- * Provides classes for modelling taint propagation.
+ * Provides classes for modeling taint propagation.
  */
 module TaintTracking {
   /**
@@ -61,24 +61,6 @@ module TaintTracking {
      * For operations that _check_ if a value is tainted or safe, use `isSanitizerGuard` instead.
      */
     predicate isSanitizer(DataFlow::Node node) { none() }
-
-    /**
-     * DEPRECATED: Use `isSanitizerEdge` instead.
-     *
-     * Holds if the edge from `source` to `sink` is a taint sanitizer.
-     */
-    deprecated predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) { none() }
-
-    /**
-     * DEPRECATED: Use `isSanitizerEdge` instead.
-     *
-     * Holds if the edge from `source` to `sink` is a taint sanitizer for data labelled with `lbl`.
-     */
-    deprecated predicate isSanitizer(
-      DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl
-    ) {
-      none()
-    }
 
     /** Holds if the edge from `pred` to `succ` is a taint sanitizer. */
     predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) { none() }
@@ -160,10 +142,12 @@ module TaintTracking {
    * of the standard library. Override `Configuration::isSanitizerGuard`
    * for analysis-specific taint sanitizer guards.
    */
+  cached
   abstract class AdditionalSanitizerGuardNode extends SanitizerGuardNode {
     /**
      * Holds if this guard applies to the flow in `cfg`.
      */
+    cached
     abstract predicate appliesTo(Configuration cfg);
   }
 
@@ -445,9 +429,10 @@ module TaintTracking {
 
   /**
    * Holds if `pred -> succ` is a taint propagating data flow edge through a string operation.
+   * DEPRECATED: Use `stringConcatenationStep` and `stringManipulationStep` instead.
    */
   pragma[inline]
-  predicate stringStep(DataFlow::Node pred, DataFlow::Node succ) {
+  deprecated predicate stringStep(DataFlow::Node pred, DataFlow::Node succ) {
     stringConcatenationStep(pred, succ) or
     stringManipulationStep(pred, succ)
   }
@@ -549,7 +534,10 @@ module TaintTracking {
       or
       // reading from a tainted object yields a tainted result
       succ.(DataFlow::PropRead).getBase() = pred and
-      not AccessPath::DominatingPaths::hasDominatingWrite(succ) and
+      not (
+        AccessPath::DominatingPaths::hasDominatingWrite(succ) and
+        exists(succ.(DataFlow::PropRead).getPropertyName())
+      ) and
       not isSafeClientSideUrlProperty(succ) and
       not ClassValidator::isAccessToSanitizedField(succ)
       or
@@ -568,11 +556,10 @@ module TaintTracking {
   }
 
   /**
-   * DEPRECATED. Use the predicate `TaintTracking::persistentStorageStep` instead.
-   *
    * A taint propagating data flow edge through persistent storage.
+   * Use `TaintTracking::persistentStorageStep` instead of accessing this class.
    */
-  deprecated class PersistentStorageTaintStep extends SharedTaintStep {
+  private class PersistentStorageTaintStep extends SharedTaintStep {
     override predicate persistentStorageStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(PersistentReadAccess read |
         pred = read.getAWrite().getValue() and
@@ -580,8 +567,6 @@ module TaintTracking {
       )
     }
   }
-
-  deprecated predicate arrayFunctionTaintStep = ArrayTaintTracking::arrayFunctionTaintStep/3;
 
   /**
    * A taint propagating data flow edge for assignments of the form `o[k] = v`, where
@@ -633,39 +618,18 @@ module TaintTracking {
           pred.asExpr() = succ.getAstNode().(MethodCallExpr).getReceiver() and
           (
             // sorted, interesting, properties of String.prototype
-            name = "anchor" or
-            name = "big" or
-            name = "blink" or
-            name = "bold" or
-            name = "concat" or
-            name = "fixed" or
-            name = "fontcolor" or
-            name = "fontsize" or
-            name = "italics" or
-            name = "link" or
-            name = "padEnd" or
-            name = "padStart" or
-            name = "repeat" or
-            name = "replace" or
-            name = "replaceAll" or
-            name = "slice" or
-            name = "small" or
-            name = "split" or
-            name = "strike" or
-            name = "sub" or
-            name = "substr" or
-            name = "substring" or
-            name = "sup" or
-            name = "toLocaleLowerCase" or
-            name = "toLocaleUpperCase" or
-            name = "toLowerCase" or
-            name = "toUpperCase" or
-            name = "trim" or
-            name = "trimLeft" or
-            name = "trimRight" or
+            name =
+              [
+                "anchor", "big", "blink", "bold", "concat", "fixed", "fontcolor", "fontsize",
+                "italics", "link", "padEnd", "padStart", "repeat", "replace", "replaceAll", "slice",
+                "small", "split", "strike", "sub", "substr", "substring", "sup",
+                "toLocaleLowerCase", "toLocaleUpperCase", "toLowerCase", "toUpperCase", "trim",
+                "trimLeft", "trimRight"
+              ]
+            or
             // sorted, interesting, properties of Object.prototype
-            name = "toString" or
-            name = "valueOf" or
+            name = ["toString", "valueOf"]
+            or
             // sorted, interesting, properties of Array.prototype
             name = "join"
           )
@@ -692,15 +656,13 @@ module TaintTracking {
         )
         or
         // `(encode|decode)URI(Component)?` propagate taint
-        exists(DataFlow::CallNode c, string name |
+        exists(DataFlow::CallNode c |
           succ = c and
-          c = DataFlow::globalVarRef(name).getACall() and
+          c =
+            DataFlow::globalVarRef([
+                "encodeURI", "decodeURI", "encodeURIComponent", "decodeURIComponent"
+              ]).getACall() and
           pred = c.getArgument(0)
-        |
-          name = "encodeURI" or
-          name = "decodeURI" or
-          name = "encodeURIComponent" or
-          name = "decodeURIComponent"
         )
         or
         // In and out of .replace callbacks
@@ -825,13 +787,13 @@ module TaintTracking {
   }
 
   /**
-   * A pseudo-property a `URL` that stores a value that can be obtained
+   * Gets a pseudo-property a `URL` that stores a value that can be obtained
    * with a `get` or `getAll` call to the `searchParams` property.
    */
   private string hiddenUrlPseudoProperty() { result = "$hiddenSearchPararms" }
 
   /**
-   * A pseudo-property on a `URLSearchParams` that can be obtained
+   * Gets a pseudo-property on a `URLSearchParams` that can be obtained
    * with a `get` or `getAll` call.
    */
   private string getableUrlPseudoProperty() { result = "$gettableSearchPararms" }
@@ -1127,7 +1089,7 @@ module TaintTracking {
         idx = astNode.getAnOperand() and
         idx.getPropertyNameExpr() = x and
         // and the other one is guaranteed to be `undefined`
-        forex(InferredType tp | tp = undef.getAType() | tp = TTUndefined())
+        unique(InferredType tp | tp = pragma[only_bind_into](undef.getAType())) = TTUndefined()
       )
     }
 
@@ -1166,8 +1128,35 @@ module TaintTracking {
     )
   }
 
-  /** DEPRECATED. This class has been renamed to `MembershipTestSanitizer`. */
-  deprecated class StringInclusionSanitizer = MembershipTestSanitizer;
+  /** Holds if `guard` is a test that checks if `operand` is a number. */
+  predicate isNumberGuard(DataFlow::Node guard, Expr operand, boolean polarity) {
+    exists(DataFlow::CallNode isNaN |
+      isNaN = DataFlow::globalVarRef("isNaN").getACall() and guard = isNaN and polarity = false
+    |
+      operand = isNaN.getArgument(0).asExpr()
+      or
+      exists(DataFlow::CallNode parse |
+        parse = DataFlow::globalVarRef(["parseInt", "parseFloat"]).getACall()
+      |
+        parse = isNaN.getArgument(0) and
+        operand = parse.getArgument(0).asExpr()
+      )
+      or
+      exists(UnaryExpr unary | unary.getOperator() = ["+", "-"] |
+        unary = isNaN.getArgument(0).asExpr() and
+        operand = unary.getOperand()
+      )
+      or
+      exists(BinaryExpr bin | bin.getOperator() = ["+", "-"] |
+        bin = isNaN.getArgument(0).asExpr() and
+        operand = bin.getAnOperand() and
+        bin.getAnOperand() instanceof NumberLiteral
+      )
+    )
+    or
+    isTypeofGuard(guard.asExpr(), operand, "number") and
+    polarity = guard.asExpr().(EqualityTest).getPolarity()
+  }
 
   /**
    * A test of form `x.length === "0"`, preventing `x` from being tainted.
@@ -1190,9 +1179,6 @@ module TaintTracking {
 
     override predicate appliesTo(Configuration cfg) { any() }
   }
-
-  /** DEPRECATED. This class has been renamed to `MembershipTestSanitizer`. */
-  deprecated class InclusionSanitizer = MembershipTestSanitizer;
 
   /**
    * A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch.
@@ -1235,55 +1221,29 @@ module TaintTracking {
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
-  /** Gets a variable that is defined exactly once. */
-  private Variable singleDef() { strictcount(result.getADefinition()) = 1 }
-
-  /**
-   * A check of the form `if(x == 'some-constant')`, which sanitizes `x` in its "then" branch.
-   *
-   * DEPRECATED: use `MembershipTestSanitizer` instead.
-   */
-  deprecated class ConstantComparison extends SanitizerGuardNode, DataFlow::ValueNode {
-    Expr x;
-    override EqualityTest astNode;
-
-    ConstantComparison() {
-      exists(Expr const | astNode.hasOperands(x, const) |
-        // either the other operand is a constant
-        const instanceof ConstantExpr
-        or
-        // or it's an access to a variable that probably acts as a symbolic constant
-        const = singleDef().getAnAccess()
-      )
-    }
-
-    override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = astNode.getPolarity() and x = e
-    }
-
-    /**
-     * Holds if this guard applies to the flow in `cfg`.
-     */
-    predicate appliesTo(Configuration cfg) { any() }
-  }
-
   /**
    * An equality test on `e.origin` or `e.source` where `e` is a `postMessage` event object,
    * considered as a sanitizer for `e`.
    */
-  private class PostMessageEventSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  private class PostMessageEventSanitizer extends AdditionalSanitizerGuardNode {
     VarAccess event;
-    override EqualityTest astNode;
+    boolean polarity;
 
     PostMessageEventSanitizer() {
-      exists(string prop | prop = "origin" or prop = "source" |
-        astNode.getAnOperand().(PropAccess).accesses(event, prop) and
-        event.mayReferToParameter(any(PostMessageEventHandler h).getEventParameter())
+      event.mayReferToParameter(any(PostMessageEventHandler h).getEventParameter()) and
+      exists(DataFlow::PropRead read | read.accesses(event.flow(), ["origin", "source"]) |
+        exists(EqualityTest test | polarity = test.getPolarity() and this.getAstNode() = test |
+          test.getAnOperand().flow() = read
+        )
+        or
+        exists(InclusionTest test | polarity = test.getPolarity() and this = test |
+          test.getContainedNode() = read
+        )
       )
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = astNode.getPolarity() and
+      outcome = polarity and
       e = event
     }
 
@@ -1292,8 +1252,9 @@ module TaintTracking {
 
   /**
    * Holds if taint propagates from `pred` to `succ` in one local (intra-procedural) step.
+   * DEPRECATED: Use `TaintTracking::sharedTaintStep` and `DataFlow::Node::getALocalSource()` instead.
    */
-  predicate localTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  deprecated predicate localTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     DataFlow::localFlowStep(pred, succ) or
     sharedTaintStep(pred, succ)
   }

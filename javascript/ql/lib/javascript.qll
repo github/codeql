@@ -50,6 +50,7 @@ import semmle.javascript.Promises
 import semmle.javascript.CanonicalNames
 import semmle.javascript.RangeAnalysis
 import semmle.javascript.Regexp
+import semmle.javascript.Routing
 import semmle.javascript.SSA
 import semmle.javascript.StandardLibrary
 import semmle.javascript.Stmt
@@ -78,14 +79,15 @@ import semmle.javascript.frameworks.ComposedFunctions
 import semmle.javascript.frameworks.Classnames
 import semmle.javascript.frameworks.ClassValidator
 import semmle.javascript.frameworks.ClientRequests
-import semmle.javascript.frameworks.Clipboard
 import semmle.javascript.frameworks.ClosureLibrary
 import semmle.javascript.frameworks.CookieLibraries
 import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
 import semmle.javascript.frameworks.D3
+import semmle.javascript.frameworks.data.ModelsAsData
 import semmle.javascript.frameworks.DateFunctions
 import semmle.javascript.frameworks.DigitalOcean
+import semmle.javascript.frameworks.DomEvents
 import semmle.javascript.frameworks.Electron
 import semmle.javascript.frameworks.EventEmitter
 import semmle.javascript.frameworks.Files
@@ -99,6 +101,7 @@ import semmle.javascript.frameworks.History
 import semmle.javascript.frameworks.Immutable
 import semmle.javascript.frameworks.Knex
 import semmle.javascript.frameworks.LazyCache
+import semmle.javascript.frameworks.LdapJS
 import semmle.javascript.frameworks.LodashUnderscore
 import semmle.javascript.frameworks.Logging
 import semmle.javascript.frameworks.HttpFrameworks
@@ -119,12 +122,14 @@ import semmle.javascript.frameworks.Request
 import semmle.javascript.frameworks.RxJS
 import semmle.javascript.frameworks.ServerLess
 import semmle.javascript.frameworks.ShellJS
+import semmle.javascript.frameworks.Snapdragon
 import semmle.javascript.frameworks.SystemCommandExecutors
 import semmle.javascript.frameworks.SQL
 import semmle.javascript.frameworks.SocketIO
 import semmle.javascript.frameworks.StringFormatters
 import semmle.javascript.frameworks.TorrentLibraries
 import semmle.javascript.frameworks.Typeahead
+import semmle.javascript.frameworks.TrustedTypes
 import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.Vue
 import semmle.javascript.frameworks.Vuex

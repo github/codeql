@@ -6,7 +6,7 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 
-/** Class representing property objects in Python */
+/** A property object. */
 class PropertyInternal extends ObjectInternal, TProperty {
   /** Gets the name of this property */
   override string getName() { result = this.getGetter().getName() }
@@ -27,7 +27,8 @@ class PropertyInternal extends ObjectInternal, TProperty {
     or
     // x = property(getter, setter, deleter)
     exists(ControlFlowNode setter_arg |
-      setter_arg = getCallNode().getArg(1) or setter_arg = getCallNode().getArgByName("fset")
+      setter_arg = this.getCallNode().getArg(1) or
+      setter_arg = this.getCallNode().getArgByName("fset")
     |
       PointsToInternal::pointsTo(setter_arg, this.getContext(), result, _)
     )
@@ -43,7 +44,8 @@ class PropertyInternal extends ObjectInternal, TProperty {
     or
     // x = property(getter, setter, deleter)
     exists(ControlFlowNode deleter_arg |
-      deleter_arg = getCallNode().getArg(2) or deleter_arg = getCallNode().getArgByName("fdel")
+      deleter_arg = this.getCallNode().getArg(2) or
+      deleter_arg = this.getCallNode().getArgByName("fdel")
     |
       PointsToInternal::pointsTo(deleter_arg, this.getContext(), result, _)
     )

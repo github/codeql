@@ -30,3 +30,7 @@ resp9.body
 
 resp10 = connection.post("/foo", some: "data")
 resp10.body
+
+connection = Faraday.new(url: "http://example.com")
+resp11 = connection.get("/")
+resp11.body

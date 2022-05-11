@@ -112,3 +112,16 @@ print(foo) # $ SensitiveUse=password
 harmless = lambda: "bar"
 bar = call_wrapper(harmless)
 print(bar) # $ SPURIOUS: SensitiveUse=password
+
+# ------------------------------------------------------------------------------
+# cross-talk in dictionary.
+# ------------------------------------------------------------------------------
+
+from unknown_settings import password # $ SensitiveDataSource=password
+
+print(password) # $ SensitiveUse=password
+_config = {"sleep_timer": 5, "mysql_password": password}
+
+# since we have taint-step from store of `password`, we will consider any item in the
+# dictionary to be a password :(
+print(_config["sleep_timer"]) # $ SPURIOUS: SensitiveUse=password

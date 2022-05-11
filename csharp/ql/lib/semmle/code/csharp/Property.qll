@@ -315,7 +315,7 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
  * An accessor. Either a getter (`Getter`), a setter (`Setter`), or event
  * accessor (`EventAccessor`).
  */
-class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
+class Accessor extends Callable, Modifiable, Attributable, Overridable, @callable_accessor {
   override ValueOrRefType getDeclaringType() { result = this.getDeclaration().getDeclaringType() }
 
   /** Gets the assembly name of this accessor. */
@@ -374,6 +374,10 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
     or
     result = this.getDeclaration().getAModifier() and
     not (result instanceof AccessModifier and exists(this.getAnAccessModifier()))
+  }
+
+  override predicate isOverridableOrImplementable() {
+    this.getDeclaration().isOverridableOrImplementable()
   }
 
   override Accessor getUnboundDeclaration() { accessors(this, _, _, _, result) }

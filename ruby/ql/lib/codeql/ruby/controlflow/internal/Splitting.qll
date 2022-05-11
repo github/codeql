@@ -139,6 +139,18 @@ module EnsureSplitting {
 
     /** Holds if this node is the entry node in the `ensure` block it belongs to. */
     predicate isEntryNode() { first(block.getEnsure(), this) }
+
+    BodyStmt getBlock() { result = block }
+
+    pragma[noinline]
+    predicate isEntered(AstNode pred, int nestLevel, Completion c) {
+      this.isEntryNode() and
+      nestLevel = this.getNestLevel() and
+      succ(pred, this, c) and
+      // the entry node may be reachable via a backwards loop edge; in this case
+      // the split has already been entered
+      not pred = block.getAnEnsureDescendant()
+    }
   }
 
   /**
@@ -205,18 +217,11 @@ module EnsureSplitting {
     override string toString() { result = "ensure (" + nestLevel + ")" }
   }
 
-  pragma[noinline]
-  private predicate hasEntry0(AstNode pred, EnsureNode succ, int nestLevel, Completion c) {
-    succ.isEntryNode() and
-    nestLevel = succ.getNestLevel() and
-    succ(pred, succ, c)
-  }
-
   private class EnsureSplitImpl extends SplitImpl, EnsureSplit {
     override EnsureSplitKind getKind() { result.getNestLevel() = this.getNestLevel() }
 
     override predicate hasEntry(AstNode pred, AstNode succ, Completion c) {
-      hasEntry0(pred, succ, this.getNestLevel(), c) and
+      succ.(EnsureNode).isEntered(pred, this.getNestLevel(), c) and
       this.getType().isSplitForEntryCompletion(c)
     }
 
@@ -242,8 +247,8 @@ module EnsureSplitting {
      * `inherited` indicates whether `c` is an inherited completion from the
      * body.
      */
-    private predicate exit(Trees::BodyStmtTree block, AstNode pred, Completion c, boolean inherited) {
-      exists(EnsureSplitType type |
+    private predicate exit(AstNode pred, Completion c, boolean inherited) {
+      exists(Trees::BodyStmtTree block, EnsureSplitType type |
         this.exit0(pred, block, this.getNestLevel(), c) and
         type = this.getType()
       |
@@ -294,7 +299,7 @@ module EnsureSplitting {
       this.appliesToPredecessor(pred) and
       exists(EnsureSplitImpl outer |
         outer.getNestLevel() = this.getNestLevel() - 1 and
-        outer.exit(_, pred, c, inherited) and
+        outer.exit(pred, c, inherited) and
         this.getType() instanceof NormalSuccessor and
         inherited = true
       )
@@ -303,18 +308,18 @@ module EnsureSplitting {
     override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
       succ(pred, succ, c) and
       (
-        this.exit(_, pred, c, _)
+        this.exit(pred, c, _)
         or
-        this.exit(_, pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
+        this.exit(pred, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
       )
     }
 
     override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
       succExit(scope, last, c) and
       (
-        this.exit(_, last, c, _)
+        this.exit(last, c, _)
         or
-        this.exit(_, last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
+        this.exit(last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion(), _)
       )
     }
 
@@ -323,7 +328,7 @@ module EnsureSplitting {
       succ(pred, succ, c) and
       succ =
         any(EnsureNode en |
-          if en.isEntryNode()
+          if en.isEntryNode() and en.getBlock() != pred.(EnsureNode).getBlock()
           then
             // entering a nested `ensure` block
             en.getNestLevel() > this.getNestLevel()

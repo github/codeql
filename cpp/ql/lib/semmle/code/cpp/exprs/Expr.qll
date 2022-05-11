@@ -31,7 +31,7 @@ class Expr extends StmtParent, @expr {
   override Stmt getEnclosingStmt() {
     result = this.getParent().(Expr).getEnclosingStmt()
     or
-    result = this.getParent().(Stmt)
+    result = this.getParent()
     or
     exists(Expr other | result = other.getEnclosingStmt() and other.getConversion() = this)
     or
@@ -113,13 +113,6 @@ class Expr extends StmtParent, @expr {
    * stripped and typedefs have been resolved.
    */
   Type getUnspecifiedType() { result = this.getType().getUnspecifiedType() }
-
-  /**
-   * Gets an integer indicating the type of expression that this represents.
-   *
-   * DEPRECATED: use the subclasses of `Expr` rather than relying on this predicate.
-   */
-  deprecated int getKind() { exprs(underlyingElement(this), result, _) }
 
   /** Gets a textual representation of this expression. */
   override string toString() { none() }

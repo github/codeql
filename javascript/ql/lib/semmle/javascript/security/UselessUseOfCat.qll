@@ -31,13 +31,13 @@ private class CommandCall extends DataFlow::InvokeNode {
    * Gets the callback (if it exists) for an async `exec`-like call.
    */
   DataFlow::FunctionNode getCallback() {
-    not this.isSync() and result = getLastArgument().getALocalSource()
+    not this.isSync() and result = this.getLastArgument().getALocalSource()
   }
 
   /**
    * Holds if the executed command execution has an argument list as a separate argument.
    */
-  predicate hasArgumentList() { exists(getArgumentList()) }
+  predicate hasArgumentList() { exists(this.getArgumentList()) }
 
   /**
    * Gets the data-flow node (if it exists) for an options argument for an `exec`-like call.
@@ -52,12 +52,12 @@ private class CommandCall extends DataFlow::InvokeNode {
     if this.hasArgumentList()
     then
       result =
-        getConstantStringParts(getArgumentList()
+        getConstantStringParts(this.getArgumentList()
               .getALocalSource()
               .(DataFlow::ArrayCreationNode)
               .getElement(_))
     else
-      exists(string commandString | commandString = getConstantStringParts(getArgument(0)) |
+      exists(string commandString | commandString = getConstantStringParts(this.getArgument(0)) |
         result = commandString.suffix(1 + commandString.indexOf(" ", 0, 0))
       )
   }
@@ -68,9 +68,9 @@ private class CommandCall extends DataFlow::InvokeNode {
   bindingset[name]
   predicate isACallTo(string name) {
     if this.hasArgumentList()
-    then getArgument(0).mayHaveStringValue(name)
+    then this.getArgument(0).mayHaveStringValue(name)
     else
-      exists(string arg | arg = getConstantStringParts(getArgument(0)) |
+      exists(string arg | arg = getConstantStringParts(this.getArgument(0)) |
         arg.prefix(name.length()) = name
       )
   }
@@ -100,27 +100,27 @@ private string getConstantStringParts(DataFlow::Node node) {
 class UselessCat extends CommandCall {
   UselessCat() {
     this = command and
-    isACallTo(getACatExecuteable()) and
+    this.isACallTo(getACatExecuteable()) and
     // There is a file to read, it's not just spawning `cat`.
     not (
-      not exists(getArgumentList()) and
-      getArgument(0).mayHaveStringValue(getACatExecuteable())
+      not exists(this.getArgumentList()) and
+      this.getArgument(0).mayHaveStringValue(getACatExecuteable())
     ) and
     // wildcards, pipes, redirections, other bash features, and multiple files (spaces) are OK.
-    not containsNonTrivialShellChar(getNonCommandConstantString()) and
+    not containsNonTrivialShellChar(this.getNonCommandConstantString()) and
     // Only acceptable option is "encoding", everything else is non-trivial to emulate with fs.readFile.
     (
-      not exists(getOptionsArg())
+      not exists(this.getOptionsArg())
       or
-      forex(string prop | exists(getOptionsArg().getALocalSource().getAPropertyWrite(prop)) |
+      forex(string prop | exists(this.getOptionsArg().getALocalSource().getAPropertyWrite(prop)) |
         prop = "encoding"
       )
     ) and
     // If there is a callback, then it must either have one or two parameters, or if there is a third parameter it must be unused.
     (
-      not exists(getCallback())
+      not exists(this.getCallback())
       or
-      exists(DataFlow::FunctionNode func | func = getCallback() |
+      exists(DataFlow::FunctionNode func | func = this.getCallback() |
         func.getNumParameter() = 1
         or
         func.getNumParameter() = 2
@@ -132,7 +132,7 @@ class UselessCat extends CommandCall {
     ) and
     // The process returned by an async call is unused.
     (
-      isSync()
+      this.isSync()
       or
       inVoidContext(this.getEnclosingExpr())
       or
@@ -317,7 +317,7 @@ module PrettyPrintCatCall {
    */
   string createFileThatIsReadFromCommandList(CommandCall call) {
     exists(DataFlow::ArrayCreationNode array, DataFlow::Node element |
-      array = call.getArgumentList().(DataFlow::ArrayCreationNode) and
+      array = call.getArgumentList() and
       array.getSize() = 1 and
       element = array.getElement(0)
     |

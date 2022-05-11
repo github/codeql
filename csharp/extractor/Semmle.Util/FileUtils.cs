@@ -84,7 +84,7 @@ namespace Semmle.Util
         public static string ComputeFileHash(string filePath)
         {
             using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            using var shaAlg = new SHA256Managed();
+            using var shaAlg = SHA256.Create();
             var sha = shaAlg.ComputeHash(fileStream);
             var hex = new StringBuilder(sha.Length * 2);
             foreach (var b in sha)

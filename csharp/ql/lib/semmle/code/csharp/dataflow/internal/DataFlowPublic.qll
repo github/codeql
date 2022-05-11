@@ -101,14 +101,21 @@ class ExprNode extends Node, TExprNode_ {
 class ParameterNode extends Node instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   DotNet::Parameter getParameter() {
-    exists(DataFlowCallable c, int i | this.isParameterOf(c, i) and result = c.getParameter(i))
+    exists(DataFlowCallable c, ParameterPosition ppos |
+      super.isParameterOf(c, ppos) and
+      result = c.getParameter(ppos.getPosition())
+    )
   }
 
   /**
+   * DEPRECATED
+   *
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(DataFlowCallable c, int i) { super.isParameterOf(c, i) }
+  deprecated predicate isParameterOf(DataFlowCallable c, int i) {
+    super.isParameterOf(c, any(ParameterPosition pos | i = pos.getPosition()))
+  }
 }
 
 /** A definition, viewed as a node in a data flow graph. */
@@ -153,6 +160,7 @@ predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 /**
@@ -196,12 +204,6 @@ class Content extends TContent {
 
   /** Gets the location of this content. */
   Location getLocation() { none() }
-
-  /** Gets the type of the object containing this content. */
-  deprecated Gvn::GvnType getContainerType() { none() }
-
-  /** Gets the type of this content. */
-  deprecated Gvn::GvnType getType() { none() }
 }
 
 /** A reference to a field. */
@@ -216,12 +218,18 @@ class FieldContent extends Content, TFieldContent {
   override string toString() { result = "field " + f.getName() }
 
   override Location getLocation() { result = f.getLocation() }
+}
 
-  deprecated override Gvn::GvnType getContainerType() {
-    result = Gvn::getGlobalValueNumber(f.getDeclaringType())
-  }
+/** A reference to a synthetic field. */
+class SyntheticFieldContent extends Content, TSyntheticFieldContent {
+  private SyntheticField f;
 
-  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
+  SyntheticFieldContent() { this = TSyntheticFieldContent(f) }
+
+  /** Gets the underlying synthetic field. */
+  SyntheticField getField() { result = f }
+
+  override string toString() { result = "synthetic " + f.toString() }
 }
 
 /** A reference to a property. */
@@ -236,12 +244,6 @@ class PropertyContent extends Content, TPropertyContent {
   override string toString() { result = "property " + p.getName() }
 
   override Location getLocation() { result = p.getLocation() }
-
-  deprecated override Gvn::GvnType getContainerType() {
-    result = Gvn::getGlobalValueNumber(p.getDeclaringType())
-  }
-
-  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
 }
 
 /** A reference to an element in a collection. */
@@ -249,4 +251,24 @@ class ElementContent extends Content, TElementContent {
   override string toString() { result = "element" }
 
   override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
+ * An entity that represents a set of `Content`s.
+ *
+ * The set may be interpreted differently depending on whether it is
+ * stored into (`getAStoreContent`) or read from (`getAReadContent`).
+ */
+class ContentSet instanceof Content {
+  /** Gets a content that may be stored into when storing into this set. */
+  Content getAStoreContent() { result = this }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() { result = this }
+
+  /** Gets a textual representation of this content set. */
+  string toString() { result = super.toString() }
+
+  /** Gets the location of this content set. */
+  Location getLocation() { result = super.getLocation() }
 }

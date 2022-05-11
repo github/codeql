@@ -51,41 +51,37 @@ module DOM {
      * Gets the root element (i.e. an element without a parent) in which this element is contained.
      */
     ElementDefinition getRoot() {
-      if not exists(getParent()) then result = this else result = getParent().getRoot()
+      if not exists(this.getParent()) then result = this else result = this.getParent().getRoot()
     }
 
     /**
      * Gets the document element to which this element belongs, if it can be determined.
      */
-    DocumentElementDefinition getDocument() { result = getRoot() }
+    DocumentElementDefinition getDocument() { result = this.getRoot() }
   }
 
   /**
    * An HTML element, viewed as an `ElementDefinition`.
    */
-  private class HtmlElementDefinition extends ElementDefinition, @xmlelement {
-    HtmlElementDefinition() { this instanceof HTML::Element }
-
-    override string getName() { result = this.(HTML::Element).getName() }
+  private class HtmlElementDefinition extends ElementDefinition, @xmlelement instanceof HTML::Element {
+    override string getName() { result = HTML::Element.super.getName() }
 
     override AttributeDefinition getAttribute(int i) {
-      result = this.(HTML::Element).getAttribute(i)
+      result = HTML::Element.super.getAttribute(i)
     }
 
-    override ElementDefinition getParent() { result = this.(HTML::Element).getParent() }
+    override ElementDefinition getParent() { result = HTML::Element.super.getParent() }
   }
 
   /**
    * A JSX element, viewed as an `ElementDefinition`.
    */
-  private class JsxElementDefinition extends ElementDefinition, @jsx_element {
-    JsxElementDefinition() { this instanceof JSXElement }
+  private class JsxElementDefinition extends ElementDefinition, @jsx_element instanceof JsxElement {
+    override string getName() { result = JsxElement.super.getName() }
 
-    override string getName() { result = this.(JSXElement).getName() }
+    override AttributeDefinition getAttribute(int i) { result = JsxElement.super.getAttribute(i) }
 
-    override AttributeDefinition getAttribute(int i) { result = this.(JSXElement).getAttribute(i) }
-
-    override ElementDefinition getParent() { result = this.(JSXElement).getJsxParent() }
+    override ElementDefinition getParent() { result = super.getJsxParent() }
   }
 
   /**
@@ -112,7 +108,7 @@ module DOM {
     /**
      * Gets the value of this attribute, if it can be determined.
      */
-    string getStringValue() { result = getValueNode().getStringValue() }
+    string getStringValue() { result = this.getValueNode().getStringValue() }
 
     /**
      * Gets the DOM element this attribute belongs to.
@@ -124,28 +120,26 @@ module DOM {
      * such as `{{window.location.url}}`.
      */
     predicate mayHaveTemplateValue() {
-      getStringValue().regexpMatch(Templating::getDelimiterMatchingRegexp())
+      this.getStringValue().regexpMatch(Templating::getDelimiterMatchingRegexp())
     }
   }
 
   /**
    * An HTML attribute, viewed as an `AttributeDefinition`.
    */
-  private class HtmlAttributeDefinition extends AttributeDefinition, @xmlattribute {
-    HtmlAttributeDefinition() { this instanceof HTML::Attribute }
+  private class HtmlAttributeDefinition extends AttributeDefinition, @xmlattribute instanceof HTML::Attribute {
+    override string getName() { result = HTML::Attribute.super.getName() }
 
-    override string getName() { result = this.(HTML::Attribute).getName() }
+    override string getStringValue() { result = super.getValue() }
 
-    override string getStringValue() { result = this.(HTML::Attribute).getValue() }
-
-    override ElementDefinition getElement() { result = this.(HTML::Attribute).getElement() }
+    override ElementDefinition getElement() { result = HTML::Attribute.super.getElement() }
   }
 
   /**
    * A JSX attribute, viewed as an `AttributeDefinition`.
    */
   private class JsxAttributeDefinition extends AttributeDefinition, @jsx_attribute {
-    JSXAttribute attr;
+    JsxAttribute attr;
 
     JsxAttributeDefinition() { this = attr }
 
@@ -182,18 +176,13 @@ module DOM {
       eltName = ["script", "iframe", "embed", "video", "audio", "source", "track"] and
       attrName = "src"
       or
-      (
-        eltName = "link" or
-        eltName = "a" or
-        eltName = "base" or
-        eltName = "area"
-      ) and
+      eltName = ["link", "a", "base", "area"] and
       attrName = "href"
       or
       eltName = "form" and
       attrName = "action"
       or
-      (eltName = "input" or eltName = "button") and
+      eltName = ["input", "button"] and
       attrName = "formaction"
     )
   }
@@ -311,7 +300,7 @@ module DOM {
     }
 
     /**
-     * A data flow node that might refer to some form.
+     * Gets a data flow node that might refer to some form.
      * Either by a read like `document.forms[0]`, or a property read from `document` with some constant property-name.
      * E.g. if `<form name="foobar">..</form>` exists, then `document.foobar` refers to that form.
      */
@@ -334,7 +323,7 @@ module DOM {
 
     private class DefaultRange extends Range {
       DefaultRange() {
-        this.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable
+        this.asExpr().(VarAccess).getVariable() instanceof DomGlobalVariable
         or
         exists(DataFlow::PropRead read |
           this = read and
@@ -403,7 +392,7 @@ module DOM {
    */
   private DataFlow::SourceNode domEventSource() {
     // e.g. <form onSubmit={e => e.target}/>
-    exists(JSXAttribute attr | attr.getName().matches("on%") |
+    exists(JsxAttribute attr | attr.getName().matches("on%") |
       result = attr.getValue().flow().getABoundFunctionValue(0).getParameter(0)
     )
     or
@@ -441,6 +430,12 @@ module DOM {
     result.hasUnderlyingType("Element")
     or
     result.hasUnderlyingType(any(string s | s.matches("HTML%Element")))
+    or
+    exists(DataFlow::ClassNode cls |
+      cls.getASuperClassNode().getALocalSource() =
+        DataFlow::globalVarRef(any(string s | s.matches("HTML%Element"))) and
+      result = cls.getAnInstanceReference()
+    )
   }
 
   module LocationSource {
