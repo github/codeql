@@ -253,10 +253,12 @@ open class KotlinUsesExtractor(
         val extractClass = substituteClass ?: c
 
         // `KFunction1<T1,T2>` is substituted by `KFunction<T>`. The last type argument is the return type.
+        // Similarly Function23 and above get replaced by kotlin.jvm.functions.FunctionN with only one type arg, the result type.
         // References to SomeGeneric<T1, T2, ...> where SomeGeneric is declared SomeGeneric<T1, T2, ...> are extracted
         // as if they were references to the unbound type SomeGeneric.
         val extractedTypeArgs = when {
-            c.symbol.isKFunction() && typeArgs != null && typeArgs.isNotEmpty() -> listOf(typeArgs.last())
+            extractClass.symbol.isKFunction() && typeArgs != null && typeArgs.isNotEmpty() -> listOf(typeArgs.last())
+            extractClass.fqNameWhenAvailable == FqName("kotlin.jvm.functions.FunctionN") && typeArgs != null && typeArgs.isNotEmpty() -> listOf(typeArgs.last())
             typeArgs != null && isUnspecialised(c, typeArgs) -> listOf()
             else -> typeArgs
         }
