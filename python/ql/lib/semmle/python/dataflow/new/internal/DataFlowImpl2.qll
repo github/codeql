@@ -3448,11 +3448,12 @@ private predicate nodeMayUseSummary0(
   )
 }
 
+pragma[nomagic]
 private predicate nodeMayUseSummary(
   NodeEx n, FlowState state, AccessPathApprox apa, Configuration config
 ) {
   exists(DataFlowCallable c |
-    Stage4::parameterMayFlowThrough(_, c, apa, _) and
+    Stage4::parameterMayFlowThrough(_, c, apa, config) and
     nodeMayUseSummary0(n, c, state, apa, config)
   )
 }
