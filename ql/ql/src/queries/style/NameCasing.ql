@@ -10,14 +10,15 @@
 
 import ql
 import codeql_ql.style.AcronymsShouldBeCamelCaseQuery as AcronymsQuery
+import codeql_ql.style.NodeName as NodeName
 
 predicate shouldBeUpperCase(AstNode node, string name, string kind) {
-  name = AcronymsQuery::getName(node, kind) and
+  name = NodeName::getName(node, kind) and
   kind = ["class", "newtypeBranch", "newtype", "module", "import"]
 }
 
 predicate shouldBeLowerCase(AstNode node, string name, string kind) {
-  name = AcronymsQuery::getName(node, kind) and
+  name = NodeName::getName(node, kind) and
   not shouldBeUpperCase(node, name, kind)
 }
 
