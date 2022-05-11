@@ -8,7 +8,7 @@ edges
 | test.go:30:20:30:26 | selection of c : subBindMe | test.go:30:13:30:29 | type conversion |
 | test.go:35:20:35:42 | call to Cookie : string | test.go:35:13:35:43 | type conversion |
 | test.go:40:20:40:31 | call to Data : map type | test.go:40:13:40:52 | type conversion |
-| test.go:45:20:45:43 | call to GetData : interface type | test.go:45:13:45:53 | type conversion |
+| test.go:45:20:45:43 | call to GetData : basic interface type | test.go:45:13:45:53 | type conversion |
 | test.go:50:20:50:42 | call to Header : string | test.go:50:13:50:43 | type conversion |
 | test.go:55:20:55:41 | call to Param : string | test.go:55:13:55:42 | type conversion |
 | test.go:60:20:60:33 | call to Params : map type | test.go:60:13:60:45 | type conversion |
@@ -153,7 +153,7 @@ nodes
 | test.go:40:13:40:52 | type conversion | semmle.label | type conversion |
 | test.go:40:20:40:31 | call to Data : map type | semmle.label | call to Data : map type |
 | test.go:45:13:45:53 | type conversion | semmle.label | type conversion |
-| test.go:45:20:45:43 | call to GetData : interface type | semmle.label | call to GetData : interface type |
+| test.go:45:20:45:43 | call to GetData : basic interface type | semmle.label | call to GetData : basic interface type |
 | test.go:50:13:50:43 | type conversion | semmle.label | type conversion |
 | test.go:50:20:50:42 | call to Header : string | semmle.label | call to Header : string |
 | test.go:55:13:55:42 | type conversion | semmle.label | type conversion |
@@ -267,7 +267,7 @@ subpaths
 | test.go:30:13:30:29 | type conversion | test.go:26:6:26:10 | definition of bound : bindMe | test.go:30:13:30:29 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:26:6:26:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:35:13:35:43 | type conversion | test.go:35:20:35:42 | call to Cookie : string | test.go:35:13:35:43 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:35:20:35:42 | call to Cookie | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:40:13:40:52 | type conversion | test.go:40:20:40:31 | call to Data : map type | test.go:40:13:40:52 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:40:20:40:31 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:45:13:45:53 | type conversion | test.go:45:20:45:43 | call to GetData : interface type | test.go:45:13:45:53 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:45:20:45:43 | call to GetData | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:45:13:45:53 | type conversion | test.go:45:20:45:43 | call to GetData : basic interface type | test.go:45:13:45:53 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:45:20:45:43 | call to GetData | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:50:13:50:43 | type conversion | test.go:50:20:50:42 | call to Header : string | test.go:50:13:50:43 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:50:20:50:42 | call to Header | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:55:13:55:42 | type conversion | test.go:55:20:55:41 | call to Param : string | test.go:55:13:55:42 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:55:20:55:41 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:60:13:60:45 | type conversion | test.go:60:20:60:33 | call to Params : map type | test.go:60:13:60:45 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:60:20:60:33 | call to Params | user-provided value | test.go:0:0:0:0 | test.go |  |

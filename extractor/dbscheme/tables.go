@@ -4,6 +4,7 @@ import (
 	"go/ast"
 	"go/token"
 	gotypes "go/types"
+
 	"golang.org/x/tools/go/packages"
 )
 
@@ -274,6 +275,9 @@ var StmtParentType = NewUnionType("@stmtparent", NodeType)
 // DeclParentType is the type of AST nodes that can have declarations as children
 var DeclParentType = NewUnionType("@declparent", NodeType)
 
+// TypeParamDeclParentType is the type of AST nodes that can have type parameter declarations as children
+var TypeParamDeclParentType = NewUnionType("@typeparamdeclparent", NodeType)
+
 // FuncDefType is the type of AST nodes that define functions, that is, function
 // declarations and function literals
 var FuncDefType = NewUnionType("@funcdef", StmtParentType, ExprParentType)
@@ -307,6 +311,9 @@ var StmtType = NewPrimaryKeyType("@stmt", ExprParentType, StmtParentType)
 
 // DeclType is the type of declaration AST nodes
 var DeclType = NewPrimaryKeyType("@decl", ExprParentType, StmtParentType, FieldParentType)
+
+// TypeParamDeclType is the type of type parameter declaration AST nodes
+var TypeParamDeclType = NewPrimaryKeyType("@typeparamdecl", DocumentableType, ExprParentType)
 
 // SpecType is the type of spec AST nodes
 var SpecType = NewPrimaryKeyType("@spec", ExprParentType, DocumentableType)
@@ -371,8 +378,22 @@ var ParenExpr = ExprKind.NewBranch("@parenexpr")
 // SelectorExpr is the type of selector expression AST nodes
 var SelectorExpr = ExprKind.NewBranch("@selectorexpr")
 
-// IndexExpr is the type of index expression AST nodes
+// IndexExpr is the type of AST nodes for index expressions and generic type
+// instantiation expressions with one type argument. Note that syntactically
+// unambiguous generic instantiations will be extracted as
+// `GenericTypeInstantiationExpr`.
 var IndexExpr = ExprKind.NewBranch("@indexexpr")
+
+// GenericFunctionInstantiationExpr is the type of AST nodes that represent an instantiation
+// of a generic type. These correspond to some index expression AST nodes and all index
+// list expression AST nodes.
+var GenericFunctionInstantiationExpr = ExprKind.NewBranch("@genericfunctioninstantiationexpr")
+
+// GenericTypeInstantiationExpr is the type of AST nodes that represent an instantiation
+// of a generic type. These correspond to some index expression AST nodes and all index
+// list expression AST nodes. Note some syntactically ambiguous instantations are
+// extracted as an `IndexExpr` to be disambiguated in QL later.
+var GenericTypeInstantiationExpr = ExprKind.NewBranch("@generictypeinstantiationexpr")
 
 // SliceExpr is the type of slice expression AST nodes
 var SliceExpr = ExprKind.NewBranch("@sliceexpr")
@@ -452,6 +473,9 @@ var InterfaceTypeExpr = ExprKind.NewBranch("@interfacetypeexpr", FieldParentType
 
 // MapTypeExpr is the type of map type AST nodes
 var MapTypeExpr = ExprKind.NewBranch("@maptypeexpr")
+
+// TypeSetLiteralExpr is the type of type set literal type AST nodes
+var TypeSetLiteralExpr = ExprKind.NewBranch("@typesetliteralexpr")
 
 // ChanTypeExpr is the type of channel type AST nodes
 var ChanTypeExpr = NewUnionType("@chantypeexpr")
@@ -635,7 +659,7 @@ var TypeDeclType = DeclKind.NewBranch("@typedecl", GenDeclType)
 var VarDeclType = DeclKind.NewBranch("@vardecl", GenDeclType)
 
 // FuncDeclType is the type of function declaration AST nodes
-var FuncDeclType = DeclKind.NewBranch("@funcdecl", DocumentableType, FuncDefType)
+var FuncDeclType = DeclKind.NewBranch("@funcdecl", DocumentableType, FuncDefType, TypeParamDeclParentType)
 
 // SpecKind is a case type for distinguishing different kinds of declaration specification nodes
 var SpecKind = NewCaseType(SpecType, "kind")
@@ -647,7 +671,7 @@ var ImportSpecType = SpecKind.NewBranch("@importspec")
 var ValueSpecType = SpecKind.NewBranch("@valuespec")
 
 // TypeSpecType is the type of type declaration specification nodes
-var TypeSpecType = NewUnionType("@typespec")
+var TypeSpecType = NewUnionType("@typespec", TypeParamDeclParentType)
 
 // TypeDefSpecType is the type of type declaration specification nodes corresponding to type definitions
 var TypeDefSpecType = SpecKind.NewBranch("@typedefspec", TypeSpecType)
@@ -660,6 +684,9 @@ var ObjectType = NewPrimaryKeyType("@object")
 
 // ObjectKind is a case type for distinguishing different kinds of built-in and declared objects
 var ObjectKind = NewCaseType(ObjectType, "kind")
+
+// TypeParamParentObjectType is the type of objects that can have type parameters as children
+var TypeParamParentObjectType = NewUnionType("@typeparamparentobject")
 
 // DeclObjectType is the type of declared objects
 var DeclObjectType = NewUnionType("@declobject")
@@ -674,7 +701,7 @@ var PkgObjectType = ObjectKind.NewBranch("@pkgobject")
 var TypeObjectType = NewUnionType("@typeobject")
 
 // DeclTypeObjectType is the type of declared named types
-var DeclTypeObjectType = ObjectKind.NewBranch("@decltypeobject", TypeObjectType, DeclObjectType)
+var DeclTypeObjectType = ObjectKind.NewBranch("@decltypeobject", TypeObjectType, DeclObjectType, TypeParamParentObjectType)
 
 // BuiltinTypeObjectType is the type of built-in named types
 var BuiltinTypeObjectType = ObjectKind.NewBranch("@builtintypeobject", TypeObjectType, BuiltinObjectType)
@@ -701,7 +728,7 @@ var DeclVarObjectType = ObjectKind.NewBranch("@declvarobject", VarObjectType, De
 var FunctionObjectType = NewUnionType("@functionobject", ValueObjectType)
 
 // DeclFuncObjectType is the type of declared functions, including (abstract and concrete) methods
-var DeclFuncObjectType = ObjectKind.NewBranch("@declfunctionobject", FunctionObjectType, DeclObjectType)
+var DeclFuncObjectType = ObjectKind.NewBranch("@declfunctionobject", FunctionObjectType, DeclObjectType, TypeParamParentObjectType)
 
 // BuiltinFuncObjectType is the type of built-in functions
 var BuiltinFuncObjectType = ObjectKind.NewBranch("@builtinfunctionobject", FunctionObjectType, BuiltinObjectType)
@@ -790,6 +817,9 @@ var BasicTypes = map[gotypes.BasicKind]*BranchType{
 // CompositeType is the type of all composite (that is, non-basic) types
 var CompositeType = NewUnionType("@compositetype")
 
+// TypeParamType is the type of type parameter types
+var TypeParamType = TypeKind.NewBranch("@typeparamtype", CompositeType)
+
 // ElementContainerType is the type of types that have elements, such as arrays
 // and channels
 var ElementContainerType = NewUnionType("@containertype", CompositeType)
@@ -830,6 +860,9 @@ var ChanTypes = map[gotypes.ChanDir]*BranchType{
 
 // NamedType is the type of named types
 var NamedType = TypeKind.NewBranch("@namedtype", CompositeType)
+
+// TypeSetLiteral is the type of type set literals
+var TypeSetLiteral = TypeKind.NewBranch("@typesetliteraltype", CompositeType)
 
 // PackageType is the type of packages
 var PackageType = NewPrimaryKeyType("@package")
@@ -967,6 +1000,13 @@ var ConstValuesTable = NewTable("constvalues",
 var FieldsTable = NewTable("fields",
 	EntityColumn(FieldType, "id").Key(),
 	EntityColumn(FieldParentType, "parent"),
+	IntColumn("idx"),
+)
+
+// TypeParamDeclsTable is the table defining type param declaration AST nodes
+var TypeParamDeclsTable = NewTable("typeparamdecls",
+	EntityColumn(TypeParamDeclType, "id").Key(),
+	EntityColumn(TypeParamDeclParentType, "parent"),
 	IntColumn("idx"),
 )
 
@@ -1171,3 +1211,12 @@ var HasEllipsisTable = NewTable("has_ellipsis",
 var VariadicTable = NewTable("variadic",
 	EntityColumn(SignatureType, "id"),
 )
+
+// TypeParamTable is the table describing type parameter types
+var TypeParamTable = NewTable("typeparam",
+	EntityColumn(TypeParamType, "tp").Unique(),
+	StringColumn("name"),
+	EntityColumn(CompositeType, "bound"),
+	EntityColumn(TypeParamParentObjectType, "parent"),
+	IntColumn("idx"),
+).KeySet("parent", "idx")

@@ -1,4 +1,6 @@
 | depth.go:22:1:25:1 | function declaration | 0 |
+| generic.go:70:1:72:1 | function declaration | 1 |
+| generic.go:74:1:80:1 | function declaration | 1 |
 | main.go:5:1:5:30 | function declaration | 1 |
 | main.go:7:1:9:1 | function declaration | 2 |
 | main.go:11:1:11:14 | function declaration | 0 |

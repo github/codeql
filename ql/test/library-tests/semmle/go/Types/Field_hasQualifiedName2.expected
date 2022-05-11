@@ -19,6 +19,17 @@
 | embedded.go:8:3:8:5 | Baz | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.Qux | Baz |
 | embedded.go:13:2:13:4 | Qux | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.EmbedsBaz | Qux |
 | embedded.go:14:2:14:4 | Baz | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.EmbedsBaz | Baz |
+| generic.go:4:2:4:11 | valueField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct1 | valueField |
+| generic.go:5:2:5:13 | pointerField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct1 | pointerField |
+| generic.go:6:2:6:11 | arrayField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct1 | arrayField |
+| generic.go:7:2:7:11 | sliceField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct1 | sliceField |
+| generic.go:8:2:8:9 | mapField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct1 | mapField |
+| generic.go:12:2:12:13 | pointerField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.CircularGenericStruct1 | pointerField |
+| generic.go:16:2:16:5 | root | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.UsesCircularGenericStruct1 | root |
+| generic.go:20:2:20:12 | structField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct2 | structField |
+| generic.go:21:2:21:9 | mapField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct2 | mapField |
+| generic.go:25:2:25:12 | structField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct2b | structField |
+| generic.go:29:2:29:13 | pointerField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.CircularGenericStruct2 | pointerField |
 | pkg1/embedding.go:19:23:19:26 | base | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder | base |
 | pkg1/embedding.go:19:23:19:26 | base | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder2 | base |
 | pkg1/embedding.go:19:23:19:26 | base | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.embedder3 | base |

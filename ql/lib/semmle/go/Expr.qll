@@ -626,14 +626,21 @@ class PromotedSelector extends SelectorExpr {
 
 /**
  * An index expression, that is, a base expression followed by an index.
+ * Expressions which represent generic type instantiations have been
+ * excluded.
  *
  * Examples:
  *
  * ```go
- * a[i]
+ * array[i]
+ * arrayptr[i]
+ * slice[i]
+ * map[key]
  * ```
  */
 class IndexExpr extends @indexexpr, Expr {
+  IndexExpr() { not isTypeExprBottomUp(this.getChildExpr(0)) }
+
   /** Gets the base of this index expression. */
   Expr getBase() { result = this.getChildExpr(0) }
 
@@ -645,6 +652,68 @@ class IndexExpr extends @indexexpr, Expr {
   override string toString() { result = "index expression" }
 
   override string getAPrimaryQlClass() { result = "IndexExpr" }
+}
+
+/**
+ * A generic function instantiation, that is, a base expression that represents
+ * a generic function, followed by a list of type arguments.
+ *
+ * Examples:
+ *
+ * ```go
+ * genericfunction[type]
+ * genericfunction[type1, type2]
+ * ```
+ */
+class GenericFunctionInstantiationExpr extends @genericfunctioninstantiationexpr, Expr {
+  /** Gets the generic function expression. */
+  Expr getBase() { result = this.getChildExpr(0) }
+
+  /** Gets the `i`th type argument. */
+  Expr getTypeArgument(int i) {
+    i >= 0 and
+    result = this.getChildExpr(i + 1)
+  }
+
+  override predicate mayHaveOwnSideEffects() { any() }
+
+  override string toString() { result = "generic function instantiation expression" }
+
+  override string getAPrimaryQlClass() { result = "GenericFunctionInstantiationExpr" }
+}
+
+/**
+ * A generic type instantiation, that is, a base expression that is a generic
+ * type followed by a list of type arguments.
+ *
+ * Examples:
+ *
+ * ```go
+ * generictype[type]
+ * generictype[type1, type2]
+ * ```
+ */
+class GenericTypeInstantiationExpr extends Expr {
+  GenericTypeInstantiationExpr() {
+    this instanceof @generictypeinstantiationexpr
+    or
+    this instanceof @indexexpr and isTypeExprBottomUp(this.getChildExpr(0))
+  }
+
+  /** Gets the generic type expression. */
+  Expr getBase() { result = this.getChildExpr(0) }
+
+  /** Gets the `i`th type argument. */
+  Expr getTypeArgument(int i) {
+    i >= 0 and
+    result = this.getChildExpr(i + 1)
+  }
+
+  override predicate mayHaveOwnSideEffects() { any() }
+
+  override string toString() { result = "generic type instantiation expression" }
+
+  override string getAPrimaryQlClass() { result = "GenericTypeInstantiationExpr" }
 }
 
 /**
@@ -770,7 +839,11 @@ class CallExpr extends CallOrConversionExpr {
   }
 
   /** Gets the expression representing the function being called. */
-  Expr getCalleeExpr() { result = this.getChildExpr(0) }
+  Expr getCalleeExpr() {
+    if this.getChildExpr(0) instanceof GenericFunctionInstantiationExpr
+    then result = this.getChildExpr(0).(GenericFunctionInstantiationExpr).getBase()
+    else result = this.getChildExpr(0)
+  }
 
   /** Gets the `i`th argument expression of this call (0-based). */
   Expr getArgument(int i) {
@@ -993,6 +1066,22 @@ class MapTypeExpr extends @maptypeexpr, TypeExpr {
   override string toString() { result = "map type" }
 
   override string getAPrimaryQlClass() { result = "MapTypeExpr" }
+}
+
+/**
+ * An expression representing a type set literal.
+ *
+ * Examples:
+ *
+ * ```go
+ * ~string
+ * int64 | float64
+ * ```
+ */
+class TypeSetLiteralExpr extends @typesetliteralexpr, TypeExpr {
+  override string toString() { result = "type set literal" }
+
+  override string getAPrimaryQlClass() { result = "TypeSetLiteralExpr" }
 }
 
 /**
@@ -1956,15 +2045,30 @@ class LabelName extends Name {
  * a bottom-up analysis. In such cases, `isTypeExprTopDown` below is useful.
  */
 private predicate isTypeExprBottomUp(Expr e) {
-  e instanceof TypeName or
-  e instanceof @arraytypeexpr or
-  e instanceof @structtypeexpr or
-  e instanceof @functypeexpr or
-  e instanceof @interfacetypeexpr or
-  e instanceof @maptypeexpr or
-  e instanceof @chantypeexpr or
-  isTypeExprBottomUp(e.(ParenExpr).getExpr()) or
-  isTypeExprBottomUp(e.(StarExpr).getBase()) or
+  e instanceof TypeName
+  or
+  e instanceof @arraytypeexpr
+  or
+  e instanceof @structtypeexpr
+  or
+  e instanceof @functypeexpr
+  or
+  e instanceof @interfacetypeexpr
+  or
+  e instanceof @maptypeexpr
+  or
+  e instanceof @chantypeexpr
+  or
+  e instanceof @typesetliteralexpr
+  or
+  e instanceof @generictypeinstantiationexpr
+  or
+  e instanceof @indexexpr and isTypeExprBottomUp(e.getChildExpr(0))
+  or
+  isTypeExprBottomUp(e.(ParenExpr).getExpr())
+  or
+  isTypeExprBottomUp(e.(StarExpr).getBase())
+  or
   isTypeExprBottomUp(e.(Ellipsis).getOperand())
 }
 
@@ -1989,6 +2093,10 @@ private predicate isTypeExprTopDown(Expr e) {
   or
   e = any(ParameterDecl pd).getTypeExpr()
   or
+  e = any(TypeParamDecl tpd).getTypeConstraintExpr()
+  or
+  e = any(TypeParamDecl tpd).getNameExpr(_)
+  or
   e = any(ReceiverDecl rd).getTypeExpr()
   or
   e = any(ResultVariableDecl rvd).getTypeExpr()
@@ -2004,6 +2112,10 @@ private predicate isTypeExprTopDown(Expr e) {
   e = any(ValueSpec s).getTypeExpr()
   or
   e = any(TypeSpec s).getTypeExpr()
+  or
+  e = any(GenericTypeInstantiationExpr gtie).getBase()
+  or
+  e = any(GenericTypeInstantiationExpr gtie).getTypeArgument(_)
   or
   e = any(TypeSwitchStmt s).getACase().getExpr(_) and
   // special case: `nil` is allowed in a type case but isn't a type

@@ -5,6 +5,7 @@ import (
 	"compress/gzip"
 	"errors"
 	"fmt"
+	"go/ast"
 	"go/types"
 	"io/ioutil"
 	"os"
@@ -17,13 +18,15 @@ import (
 
 // A Writer provides methods for writing data to a TRAP file
 type Writer struct {
-	zip          *gzip.Writer
-	w            *bufio.Writer
-	file         *os.File
-	Labeler      *Labeler
-	path         string
-	trapFilePath string
-	Package      *packages.Package
+	zip             *gzip.Writer
+	w               *bufio.Writer
+	file            *os.File
+	Labeler         *Labeler
+	path            string
+	trapFilePath    string
+	Package         *packages.Package
+	TypesOverride   map[ast.Expr]types.Type
+	ObjectsOverride map[types.Object]types.Object
 }
 
 func FileFor(path string) (string, error) {
@@ -61,6 +64,8 @@ func NewWriter(path string, pkg *packages.Package) (*Writer, error) {
 		path,
 		trapFilePath,
 		pkg,
+		make(map[ast.Expr]types.Type),
+		make(map[types.Object]types.Object),
 	}
 	tw.Labeler = newLabeler(tw)
 	return tw, nil
@@ -104,11 +109,22 @@ func (tw *Writer) Close() error {
 
 // ForEachObject iterates over all objects labeled by this labeler, and invokes
 // the provided callback with a writer for the trap file, the object, and its
-// label.
-func (tw *Writer) ForEachObject(cb func(*Writer, types.Object, Label)) {
-	for object, lbl := range tw.Labeler.objectLabels {
-		cb(tw, object, lbl)
+// label. It returns true if any extra objects were labeled and false otherwise.
+func (tw *Writer) ForEachObject(cb func(*Writer, types.Object, Label)) bool {
+	// copy the objects into an array so that our behaviour is deterministic even
+	// if `cb` adds any new objects
+	i := 0
+	objects := make([]types.Object, len(tw.Labeler.objectLabels))
+	for k := range tw.Labeler.objectLabels {
+		objects[i] = k
+		i++
 	}
+
+	for _, object := range objects {
+		cb(tw, object, tw.Labeler.objectLabels[object])
+	}
+
+	return len(tw.Labeler.objectLabels) != len(objects)
 }
 
 const max_strlen = 1024 * 1024
