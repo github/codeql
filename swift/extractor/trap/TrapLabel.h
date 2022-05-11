@@ -14,6 +14,9 @@ class UntypedTrapLabel {
 
   friend class std::hash<UntypedTrapLabel>;
 
+  // we want to have access to the untyped, underlying id
+  friend class TrapLabelStore;
+
  protected:
   UntypedTrapLabel() : id_{0xffffffffffffffff} {}
   UntypedTrapLabel(uint64_t id) : id_{id} {}
@@ -33,7 +36,6 @@ class TrapLabel : public UntypedTrapLabel {
   friend class TrapLabel;
 
   using UntypedTrapLabel::UntypedTrapLabel;
-
  public:
   using Tag = TagParam;
 
