@@ -7,7 +7,6 @@
 import javascript
 private import semmle.javascript.heuristics.SyntacticHeuristics
 private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
-private import semmle.javascript.security.TaintedObject
 import AdaptiveThreatModeling
 private import CoreKnowledge as CoreKnowledge
 private import StandardEndpointFilters as StandardEndpointFilters

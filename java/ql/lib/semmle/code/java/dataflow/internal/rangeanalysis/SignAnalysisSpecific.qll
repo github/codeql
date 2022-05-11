@@ -27,7 +27,7 @@ module Private {
 
   class LongLiteral = J::LongLiteral;
 
-  class CastExpr extends J::CastExpr {
+  class CastingExpr extends J::CastingExpr {
     /** Gets the source type of this cast. */
     J::Type getSourceType() { result = this.getExpr().getType() }
   }
@@ -307,7 +307,7 @@ private module Impl {
     result = e.(PostIncExpr).getExpr() or
     result = e.(PostDecExpr).getExpr() or
     result = e.(ChooseExpr).getAResultExpr() or
-    result = e.(CastExpr).getExpr()
+    result = e.(CastingExpr).getExpr()
   }
 
   Expr getARead(SsaVariable v) { result = v.getAUse() }

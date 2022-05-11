@@ -1684,5 +1684,9 @@ class RegExpCreationNode extends DataFlow::SourceNode {
   }
 
   /** Gets a data flow node referring to this regular expression. */
-  DataFlow::SourceNode getAReference() { result = this.getAReference(DataFlow::TypeTracker::end()) }
+  cached
+  DataFlow::SourceNode getAReference() {
+    Stages::FlowSteps::ref() and
+    result = this.getAReference(DataFlow::TypeTracker::end())
+  }
 }

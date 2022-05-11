@@ -21,7 +21,7 @@ Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSumma
 SummaryCall summaryDataFlowCall(Node receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
-DataFlowType getContentType(Content c) { any() }
+DataFlowType getContentType(ContentSet c) { any() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c, rk]
@@ -73,19 +73,19 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
     ppos.isPositionalLowerBound(AccessPath::parseLowerBound(arg))
   )
   or
-  c.getName() = "ArrayElement" and
-  (
-    c.getNumArgument() = 0 and
-    result = FlowSummary::SummaryComponent::arrayElementAny()
+  c.getName() = "Element" and
+  exists(string arg | arg = c.getAnArgument() |
+    arg = "?" and
+    result = FlowSummary::SummaryComponent::elementUnknown()
     or
-    exists(string arg | arg = c.getAnArgument() |
-      arg = "?" and
-      result = FlowSummary::SummaryComponent::arrayElementUnknown()
+    arg = "any" and
+    result = FlowSummary::SummaryComponent::elementAny()
+    or
+    exists(ConstantValue cv | result = FlowSummary::SummaryComponent::elementKnown(cv) |
+      cv.isInt(AccessPath::parseInt(arg))
       or
-      exists(int i |
-        i = AccessPath::parseInt(c.getAnArgument()) and
-        result = FlowSummary::SummaryComponent::arrayElementKnown(i)
-      )
+      not exists(AccessPath::parseInt(arg)) and
+      cv.serialize() = c.getAnArgument()
     )
   )
 }

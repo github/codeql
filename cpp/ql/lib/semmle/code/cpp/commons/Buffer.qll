@@ -10,11 +10,18 @@ import semmle.code.cpp.dataflow.DataFlow
  *   char data[1]; // v
  * };
  * ```
- * This requires that `v` is an array of size 0 or 1.
+ * or
+ * ```
+ * struct myStruct { // c
+ *   int amount;
+ *   char data[]; // v
+ * };
+ * ```
+ * This requires that `v` is an array of size 0 or 1, or that the array has no size.
  */
 predicate memberMayBeVarSize(Class c, MemberVariable v) {
   c = v.getDeclaringType() and
-  v.getUnspecifiedType().(ArrayType).getArraySize() <= 1
+  exists(ArrayType t | t = v.getUnspecifiedType() | not t.getArraySize() > 1)
 }
 
 /**
@@ -40,13 +47,18 @@ int getBufferSize(Expr bufferExpr, Element why) {
     result = why.(Expr).getType().(ArrayType).getSize() and
     not exists(bufferVar.getUnspecifiedType().(ArrayType).getSize())
     or
-    exists(Class parentClass, VariableAccess parentPtr |
+    exists(Class parentClass, VariableAccess parentPtr, int bufferSize |
       // buffer is the parentPtr->bufferVar of a 'variable size struct'
       memberMayBeVarSize(parentClass, bufferVar) and
       why = bufferVar and
       parentPtr = bufferExpr.(VariableAccess).getQualifier() and
       parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
-      result = getBufferSize(parentPtr, _) + bufferVar.getType().getSize() - parentClass.getSize()
+      (
+        if exists(bufferVar.getType().getSize())
+        then bufferSize = bufferVar.getType().getSize()
+        else bufferSize = 0
+      ) and
+      result = getBufferSize(parentPtr, _) + bufferSize - parentClass.getSize()
     )
   )
   or

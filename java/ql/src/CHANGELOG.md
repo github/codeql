@@ -1,3 +1,21 @@
+## 0.1.1
+
+### Minor Analysis Improvements
+
+* Query `java/insecure-cookie` no longer produces a false positive if `cookie.setSecure(...)` is called passing a constant that always equals `true`.
+
+## 0.1.0
+
+### Query Metadata Changes
+
+* Added the `security-severity` tag to several queries.
+
+### Minor Analysis Improvements
+
+* Fixed "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) to resolve false-negatives when OS isn't properly used as logical guard.
+* The `SwitchCase.getRuleExpression()` predicate now gets expressions for case rules with an expression on the right-hand side of the arrow belonging to both `SwitchStmt` and `SwitchExpr`, and the corresponding `getRuleStatement()` no longer returns an `ExprStmt` in either case. Previously `SwitchStmt` and `SwitchExpr` behaved differently in 
+this respect.
+
 ## 0.0.13
 
 ## 0.0.12
@@ -8,7 +26,7 @@
 
 ### Minor Analysis Improvements
 
- * Updated "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) to remove false-positives when OS is properly used as logical guard.
+* Updated "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) to remove false-positives when OS is properly used as logical guard.
 
 ## 0.0.11
 

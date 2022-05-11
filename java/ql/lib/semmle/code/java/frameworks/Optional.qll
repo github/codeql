@@ -1,6 +1,6 @@
 /** Definitions related to `java.util.Optional`. */
 
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 private class OptionalModel extends SummaryModelCsv {
   override predicate row(string s) {

@@ -36,14 +36,14 @@ jobs:
       - run: echo "${PR_NUMBER}" > pr_number.txt
         env:
           PR_NUMBER: ${{ github.event.number }}
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: comment
           path: pr_number.txt
           if-no-files-found: error
           retention-days: 1
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 2
           persist-credentials: false
@@ -78,7 +78,7 @@ jobs:
           exit "${EXIT_CODE}"
 
       - if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: comment
           path: comment_body.txt
@@ -94,7 +94,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.number }}
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: comment
           path: comment_id.txt

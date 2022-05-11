@@ -8,9 +8,11 @@ edges
 | Test.java:50:29:50:94 | new File(...) : File | Test.java:53:63:53:74 | tempDirChild |
 | Test.java:50:38:50:83 | new File(...) : File | Test.java:50:29:50:94 | new File(...) : File |
 | Test.java:50:47:50:82 | getProperty(...) : String | Test.java:50:38:50:83 | new File(...) : File |
-| Test.java:61:24:61:69 | new File(...) : File | Test.java:64:63:64:69 | tempDir |
+| Test.java:61:24:61:69 | new File(...) : File | Test.java:61:24:61:88 | getCanonicalFile(...) : File |
+| Test.java:61:24:61:88 | getCanonicalFile(...) : File | Test.java:64:63:64:69 | tempDir |
 | Test.java:61:33:61:68 | getProperty(...) : String | Test.java:61:24:61:69 | new File(...) : File |
-| Test.java:75:24:75:69 | new File(...) : File | Test.java:78:63:78:69 | tempDir |
+| Test.java:75:24:75:69 | new File(...) : File | Test.java:75:24:75:87 | getAbsoluteFile(...) : File |
+| Test.java:75:24:75:87 | getAbsoluteFile(...) : File | Test.java:78:63:78:69 | tempDir |
 | Test.java:75:33:75:68 | getProperty(...) : String | Test.java:75:24:75:69 | new File(...) : File |
 | Test.java:110:29:110:84 | new File(...) : File | Test.java:113:9:113:20 | tempDirChild |
 | Test.java:110:38:110:73 | getProperty(...) : String | Test.java:110:29:110:84 | new File(...) : File |
@@ -68,9 +70,11 @@ nodes
 | Test.java:50:47:50:82 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:53:63:53:74 | tempDirChild | semmle.label | tempDirChild |
 | Test.java:61:24:61:69 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:61:24:61:88 | getCanonicalFile(...) : File | semmle.label | getCanonicalFile(...) : File |
 | Test.java:61:33:61:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:64:63:64:69 | tempDir | semmle.label | tempDir |
 | Test.java:75:24:75:69 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:75:24:75:87 | getAbsoluteFile(...) : File | semmle.label | getAbsoluteFile(...) : File |
 | Test.java:75:33:75:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:78:63:78:69 | tempDir | semmle.label | tempDir |
 | Test.java:97:24:97:65 | createTempDir(...) | semmle.label | createTempDir(...) |

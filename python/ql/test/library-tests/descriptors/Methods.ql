@@ -1,5 +1,4 @@
 import python
-import semmle.python.types.Descriptors
 
 int lineof(Object o) { result = o.getOrigin().getLocation().getStartLine() }
 

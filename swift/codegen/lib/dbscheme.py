@@ -1,6 +1,7 @@
 """ dbscheme format representation """
 
 import logging
+import re
 from dataclasses import dataclass
 from typing import ClassVar, List
 
@@ -10,7 +11,7 @@ dbscheme_keywords = {"case", "boolean", "int", "string", "type"}
 
 
 @dataclass
-class DbColumn:
+class Column:
     schema_name: str
     type: str
     binding: bool = False
@@ -36,33 +37,33 @@ class DbColumn:
 
 
 @dataclass
-class DbKeySetId:
+class KeySetId:
     id: str
     first: bool = False
 
 
 @dataclass
-class DbKeySet:
-    ids: List[DbKeySetId]
+class KeySet:
+    ids: List[KeySetId]
 
     def __post_init__(self):
         assert self.ids
-        self.ids = [DbKeySetId(x) for x in self.ids]
+        self.ids = [KeySetId(x) for x in self.ids]
         self.ids[0].first = True
 
 
-class DbDecl:
+class Decl:
     is_table = False
     is_union = False
 
 
 @dataclass
-class DbTable(DbDecl):
+class Table(Decl):
     is_table: ClassVar = True
 
     name: str
-    columns: List[DbColumn]
-    keyset: DbKeySet = None
+    columns: List[Column]
+    keyset: KeySet = None
 
     def __post_init__(self):
         if self.columns:
@@ -70,35 +71,83 @@ class DbTable(DbDecl):
 
 
 @dataclass
-class DbUnionCase:
+class UnionCase:
     type: str
     first: bool = False
 
 
 @dataclass
-class DbUnion(DbDecl):
+class Union(Decl):
     is_union: ClassVar = True
 
     lhs: str
-    rhs: List[DbUnionCase]
+    rhs: List[UnionCase]
 
     def __post_init__(self):
         assert self.rhs
-        self.rhs = [DbUnionCase(x) for x in self.rhs]
+        self.rhs = [UnionCase(x) for x in self.rhs]
         self.rhs.sort(key=lambda c: c.type)
         self.rhs[0].first = True
 
 
 @dataclass
-class DbSchemeInclude:
+class SchemeInclude:
     src: str
     data: str
 
 
 @dataclass
-class DbScheme:
+class Scheme:
     template: ClassVar = 'dbscheme'
 
     src: str
-    includes: List[DbSchemeInclude]
-    declarations: List[DbDecl]
+    includes: List[SchemeInclude]
+    declarations: List[Decl]
+
+
+class Re:
+    entity = re.compile(
+        "(?m)"
+        r"(?:^#keyset\[(?P<tablekeys>[\w\s,]+)\][\s\n]*)?^(?P<table>\w+)\((?P<tablebody>[^\)]*)\);?"
+        "|"
+        r"^(?P<union>@\w+)\s*=\s*(?P<unionbody>@\w+(?:\s*\|\s*@\w+)*)\s*;?"
+    )
+    field = re.compile(r"(?m)[\w\s]*\s(?P<field>\w+)\s*:\s*(?P<type>@?\w+)(?P<ref>\s+ref)?")
+    key = re.compile(r"@\w+")
+    comment = re.compile(r"(?m)(?s)/\*.*?\*/|//[^\n]*$")
+
+
+def get_column(match):
+    return Column(
+        schema_name=match["field"].rstrip("_"),
+        type=match["type"],
+        binding=not match["ref"],
+    )
+
+
+def get_table(match):
+    keyset = None
+    if match["tablekeys"]:
+        keyset = KeySet(k.strip() for k in match["tablekeys"].split(","))
+    return Table(
+        name=match["table"],
+        columns=[get_column(f) for f in Re.field.finditer(match["tablebody"])],
+        keyset=keyset,
+    )
+
+
+def get_union(match):
+    return Union(
+        lhs=match["union"],
+        rhs=(d[0] for d in Re.key.finditer(match["unionbody"])),
+    )
+
+
+def iterload(file):
+    with open(file) as file:
+        data = Re.comment.sub("", file.read())
+    for e in Re.entity.finditer(data):
+        if e["table"]:
+            yield get_table(e)
+        elif e["union"]:
+            yield get_union(e)

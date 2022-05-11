@@ -41,6 +41,8 @@
 | B.java:15:21:15:27 | taint(...) | B.java:151:10:151:44 | toURL(...) |
 | B.java:15:21:15:27 | taint(...) | B.java:154:10:154:37 | toPath(...) |
 | B.java:15:21:15:27 | taint(...) | B.java:157:10:157:46 | toFile(...) |
+| B.java:15:21:15:27 | taint(...) | B.java:160:10:160:46 | getAbsoluteFile(...) |
+| B.java:15:21:15:27 | taint(...) | B.java:163:10:163:47 | getCanonicalFile(...) |
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:8:12:8:14 | seq |
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:11:12:11:21 | seqFromSeq |
 | CharSeq.java:7:26:7:32 | taint(...) | CharSeq.java:14:12:14:24 | stringFromSeq |

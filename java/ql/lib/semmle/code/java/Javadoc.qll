@@ -3,7 +3,6 @@
  */
 
 import semmle.code.Location
-import Element
 
 /** A Javadoc parent is an element whose child can be some Javadoc documentation. */
 class JavadocParent extends @javadocParent, Top {
@@ -147,4 +146,38 @@ class JavadocText extends JavadocElement, @javadocText {
   override string toString() { result = this.getText() }
 
   override string getAPrimaryQlClass() { result = "JavadocText" }
+}
+
+/** A Kotlin comment. */
+class KtComment extends Top, @ktcomment {
+  /** Gets the full text of this comment. */
+  string getText() { ktComments(this, _, result) }
+
+  /** Gets the sections of this comment. */
+  KtCommentSection getSections() { ktCommentSections(result, this, _) }
+
+  /** Gets the owner of this comment, if any. */
+  Top getOwner() { ktCommentOwners(this, result) }
+
+  override string toString() { result = this.getText() }
+
+  override string getAPrimaryQlClass() { result = "KtComment" }
+}
+
+/** A Kotlin comment. */
+class KtCommentSection extends @ktcommentsection {
+  /** Gets the content text of this section. */
+  string getContent() { ktCommentSections(this, _, result) }
+
+  /** Gets the parent comment. */
+  KtComment getParent() { ktCommentSections(this, result, _) }
+
+  /** Gets the section name if any. */
+  string getName() { ktCommentSectionNames(this, result) }
+
+  /** Gets the section subject name if any. */
+  string getSubjectName() { ktCommentSectionSubjectNames(this, result) }
+
+  /** Gets the string representation of this section. */
+  string toString() { result = this.getContent() }
 }

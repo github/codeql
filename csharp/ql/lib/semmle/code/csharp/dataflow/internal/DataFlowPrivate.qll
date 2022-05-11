@@ -421,7 +421,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   exists(Ssa::Definition def |
     LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
-    not FlowSummaryImpl::Private::Steps::summaryClearsContentArg(nodeFrom, _) and
+    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom) and
     not LocalFlow::usesInstanceField(def)
   )
   or
@@ -1712,6 +1712,14 @@ predicate clearsContent(Node n, Content c) {
     f = oi.getAMemberInitializer().getInitializedMember() and
     c = f.getContent()
   )
+}
+
+/**
+ * Holds if the value that is being tracked is expected to be stored inside content `c`
+ * at node `n`.
+ */
+predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
 }
 
 /**

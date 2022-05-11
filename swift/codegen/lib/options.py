@@ -3,16 +3,29 @@
 import argparse
 import collections
 import pathlib
-from typing import Tuple
+from typing import Set
 
 from . import paths
 
 
 def _init_options():
-    Option("--check", "-c", action="store_true")
     Option("--verbose", "-v", action="store_true")
-    Option("--schema", tags=["schema"], type=pathlib.Path, default=paths.swift_dir / "codegen/schema.yml")
-    Option("--dbscheme", tags=["dbscheme"], type=pathlib.Path, default=paths.swift_dir / "ql/lib/swift.dbscheme")
+    Option("--swift-dir", type=_abspath, default=paths.swift_dir)
+    Option("--schema", tags=["schema"], type=_abspath, default=paths.swift_dir / "codegen/schema.yml")
+    Option("--dbscheme", tags=["dbscheme"], type=_abspath, default=paths.swift_dir / "ql/lib/swift.dbscheme")
+    Option("--ql-output", tags=["ql"], type=_abspath, default=paths.swift_dir / "ql/lib/codeql/swift/generated")
+    Option("--ql-stub-output", tags=["ql"], type=_abspath, default=paths.swift_dir / "ql/lib/codeql/swift/elements")
+    Option("--ql-format", tags=["ql"], action="store_true", default=True)
+    Option("--no-ql-format", tags=["ql"], action="store_false", dest="ql_format")
+    Option("--codeql-binary", tags=["ql"], default="codeql")
+    Option("--cpp-output", tags=["cpp"], type=_abspath, required=True)
+    Option("--cpp-namespace", tags=["cpp"], default="codeql")
+    Option("--trap-affix", tags=["cpp"], default="Trap")
+    Option("--cpp-include-dir", tags=["cpp"], required=True)
+
+
+def _abspath(x):
+    return pathlib.Path(x).resolve()
 
 
 _options = collections.defaultdict(list)
@@ -36,13 +49,10 @@ class Option:
 _init_options()
 
 
-def get(tags: Tuple[str]):
+def get(tags: Set[str]):
     """ get options marked by `tags`
 
-    Return all options if tags is falsy. Options tagged by wildcard '*' are always returned
+    Options tagged by wildcard '*' are always returned
     """
-    if not tags:
-        return (o for tagged_opts in _options.values() for o in tagged_opts)
-    else:
-        # use specifically tagged options + those tagged with wildcard *
-        return (o for tag in ('*',) + tags for o in _options[tag])
+    # use specifically tagged options + those tagged with wildcard *
+    return (o for tag in ('*',) + tuple(tags) for o in _options[tag])

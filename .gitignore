@@ -20,6 +20,9 @@
 # python virtual environment folder
 .venv/
 
+# binary files created by pytest-cov
+.coverage
+
 # It's useful (though not required) to be able to unpack codeql in the ql checkout itself
 /codeql/
 
@@ -33,6 +36,9 @@ csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
 
 # links created by bazel
 /bazel-*
+
+# local bazel options
+/local.bazelrc
 
 # CLion project files
 /.clwb

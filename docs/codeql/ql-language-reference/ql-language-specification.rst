@@ -364,7 +364,7 @@ A *variable declaration list* provides a sequence of variables and a type for ea
 ::
 
    var_decls ::= (var_decl ("," var_decl)*)?
-   var_decl ::= type simpleId
+   var_decl ::= type lowerId
 
 A valid variable declaration list must not include two declarations with the same variable name. Moreover, if the declaration has a typing environment that applies, it must not use a variable name that is already present in that typing environment.
 
@@ -585,7 +585,7 @@ Identifiers are used in following syntactic constructs:
    dbasetype     ::= atLowerId
    predicateRef  ::= (moduleId "::")? literalId
    predicateName ::= lowerId
-   varname       ::= simpleId
+   varname       ::= lowerId
    literalId     ::= lowerId | atLowerId
 
 Integer literals (int)
@@ -948,7 +948,7 @@ The ``select`` keyword is followed by a number of *select expressions*. Select e
 ::
 
    as_exprs ::= as_expr ("," as_expr)*
-   as_expr ::= expr ("as" simpleId)?
+   as_expr ::= expr ("as" lowerId)?
 
 The keyword ``as`` gives a *label* to the select expression it is part of. No two select expressions may have the same label. No expression label may be the same as one of the variables of the select clause.
 
@@ -957,7 +957,7 @@ The ``order`` keyword, if present, is followed by a number of *ordering directiv
 ::
 
    orderbys ::= orderby ("," orderby)*
-   orderby ::= simpleId ("asc" | "desc")?
+   orderby ::= lowerId ("asc" | "desc")?
 
 Each identifier in an ordering directive must identify exactly one of the select expressions. It must either be the label of the expression, or it must be a variable expression that is equivalent to exactly one of the select expressions. The type of the designated select expression must be a subtype of a primitive type.
 
@@ -2042,11 +2042,11 @@ The complete grammar for QL is as follows:
 
    as_exprs ::= as_expr ("," as_expr)*
 
-   as_expr ::= expr ("as" simpleId)?
+   as_expr ::= expr ("as" lowerId)?
 
    orderbys ::= orderby ("," orderby)*
 
-   orderby ::= simpleId ("asc" | "desc")?
+   orderby ::= lowerId ("asc" | "desc")?
 
    predicate ::= qldoc? annotations head optbody
 
@@ -2095,7 +2095,7 @@ The complete grammar for QL is as follows:
          
    var_decls ::= (var_decl ("," var_decl)*)?
 
-   var_decl ::= type simpleId
+   var_decl ::= type lowerId
 
    formula ::= fparen
            |   disjunction
@@ -2216,6 +2216,6 @@ The complete grammar for QL is as follows:
 
    predicateName ::= lowerId
 
-   varname ::= simpleId
+   varname ::= lowerId
 
    literalId ::= lowerId | atLowerId | "any" | "none"

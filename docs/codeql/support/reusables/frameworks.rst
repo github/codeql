@@ -214,3 +214,4 @@ Python built-in support
    libtaxii, TAXII utility library
    libxml2, XML processing library
    lxml, XML processing library
+   xmltodict, XML processing library

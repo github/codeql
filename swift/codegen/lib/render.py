@@ -5,7 +5,6 @@
 https://mustache.github.io/
 """
 
-import hashlib
 import logging
 import pathlib
 
@@ -16,29 +15,13 @@ from . import paths
 log = logging.getLogger(__name__)
 
 
-def _md5(data):
-    return hashlib.md5(data).digest()
-
-
 class Renderer:
     """ Template renderer using mustache templates in the `templates` directory """
 
-    def __init__(self, dryrun=False):
-        """ Construct the renderer, which will not write anything if `dryrun` is `True` """
-        self.r = pystache.Renderer(search_dirs=str(paths.lib_dir / "templates"), escape=lambda u: u)
-        self.generator = paths.exe_file.relative_to(paths.swift_dir)
-        self.dryrun = dryrun
+    def __init__(self, generator):
+        self._r = pystache.Renderer(search_dirs=str(paths.templates_dir), escape=lambda u: u)
         self.written = set()
-        self.skipped = set()
-        self.erased = set()
-
-    @property
-    def done_something(self):
-        return bool(self.written or self.erased)
-
-    @property
-    def rendered(self):
-        return self.written | self.skipped
+        self._generator = generator
 
     def render(self, data, output: pathlib.Path):
         """ Render `data` to `output`.
@@ -46,31 +29,20 @@ class Renderer:
         `data` must have a `template` attribute denoting which template to use from the template directory.
 
         If the file is unchanged, then no write is performed (and `done_something` remains unchanged)
+
+        If `guard_base` is provided, it must be a path at the root of `output` and a header guard will be injected in
+        the template based off of the relative path of `output` in `guard_base`
         """
         mnemonic = type(data).__name__
         output.parent.mkdir(parents=True, exist_ok=True)
-        data = self.r.render_name(data.template, data, generator=self.generator)
-        if output.is_file():
-            with open(output, "rb") as file:
-                if _md5(data.encode()) == _md5(file.read()):
-                    log.debug(f"skipped {output.name}")
-                    self.skipped.add(output)
-                    return
-        if self.dryrun:
-            log.error(f"would have generated {mnemonic} {output.name}")
-        else:
-            with open(output, "w") as out:
-                out.write(data)
-            log.info(f"generated {mnemonic} {output.name}")
+        data = self._r.render_name(data.template, data, generator=self._generator)
+        with open(output, "w") as out:
+            out.write(data)
+        log.debug(f"generated {mnemonic} {output.name}")
         self.written.add(output)
 
     def cleanup(self, existing):
         """ Remove files in `existing` for which no `render` has been called """
-        for f in existing - self.written - self.skipped:
-            if f.is_file():
-                if self.dryrun:
-                    log.error(f"would have removed {f.name}")
-                else:
-                    f.unlink()
-                    log.info(f"removed {f.name}")
-                self.erased.add(f)
+        for f in existing - self.written:
+            f.unlink(missing_ok=True)
+            log.info(f"removed {f.name}")

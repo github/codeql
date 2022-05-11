@@ -23,8 +23,8 @@ Locatable:
 
 Location:
   file: File
-  begin_line: int
-  begin_column: int
+  start_line: int
+  start_column: int
   end_line: int
   end_column: int
 
@@ -59,6 +59,7 @@ AnyFunctionType:
   result: Type
   param_types: Type*
   param_labels: string*
+  is_throwing: predicate
 
 AnyGenericType:
   _extends: Type
@@ -256,7 +257,7 @@ OperatorDecl:
 
 PatternBindingDecl:
   _extends: Decl
-  inits: Expr*
+  inits: Expr?*
   patterns: Pattern*
 
 PoundDiagnosticDecl:
@@ -312,9 +313,12 @@ AssignExpr:
 
 BindOptionalExpr:
   _extends: Expr
+  sub_expr: Expr
 
 CaptureListExpr:
   _extends: Expr
+  binding_decls: PatternBindingDecl*
+  closure_body: ClosureExpr
 
 CodeCompletionExpr:
   _extends: Expr
@@ -338,15 +342,21 @@ DiscardAssignmentExpr:
 
 DotSyntaxBaseIgnoredExpr:
   _extends: Expr
+  qualifier: Expr
+  sub_expr: Expr
 
 DynamicTypeExpr:
   _extends: Expr
+  base_expr: Expr
 
 EditorPlaceholderExpr:
   _extends: Expr
 
 EnumIsCaseExpr:
   _extends: Expr
+  sub_expr: Expr
+  type_repr: TypeRepr
+  element: EnumElementDecl
 
 ErrorExpr:
   _extends: Expr
@@ -365,6 +375,9 @@ IdentityExpr:
 
 IfExpr:
   _extends: Expr
+  condition: Expr
+  then_expr: Expr
+  else_expr: Expr
 
 ImplicitConversionExpr:
   _extends: Expr
@@ -387,6 +400,7 @@ KeyPathExpr:
 
 LazyInitializerExpr:
   _extends: Expr
+  sub_expr: Expr
 
 LiteralExpr:
   _extends: Expr
@@ -396,21 +410,31 @@ LookupExpr:
 
 MakeTemporarilyEscapableExpr:
   _extends: Expr
+  escaping_closure: OpaqueValueExpr
+  nonescaping_closure: Expr
+  sub_expr: Expr
 
 ObjCSelectorExpr:
   _extends: Expr
+  sub_expr: Expr
+  method: AbstractFunctionDecl
 
 OneWayExpr:
   _extends: Expr
+  sub_expr: Expr
 
 OpaqueValueExpr:
   _extends: Expr
 
 OpenExistentialExpr:
   _extends: Expr
+  sub_expr: Expr
+  existential: Expr
+  opaque_expr: OpaqueValueExpr
 
 OptionalEvaluationExpr:
   _extends: Expr
+  sub_expr: Expr
 
 OtherConstructorDeclRefExpr:
   _extends: Expr
@@ -423,12 +447,15 @@ PropertyWrapperValuePlaceholderExpr:
 
 RebindSelfInConstructorExpr:
   _extends: Expr
+  sub_expr: Expr
+  self: VarDecl
 
 SequenceExpr:
   _extends: Expr
 
 SuperRefExpr:
   _extends: Expr
+  self: VarDecl
 
 TapExpr:
   _extends: Expr
@@ -438,6 +465,8 @@ TapExpr:
 
 TupleElementExpr:
   _extends: Expr
+  sub_expr: Expr
+  index: int
 
 TupleExpr:
   _extends: Expr
@@ -445,7 +474,7 @@ TupleExpr:
 
 TypeExpr:
   _extends: Expr
-  type_repr: UnknownAstNode?
+  type_repr: TypeRepr?
 
 UnresolvedDeclRefExpr:
   _extends: Expr
@@ -488,7 +517,7 @@ ExprPattern:
 
 IsPattern:
   _extends: Pattern
-  cast_type_repr: TypeRepr
+  cast_type_repr: TypeRepr?
   sub_pattern: Pattern?
 
 NamedPattern:
@@ -633,6 +662,7 @@ TypeDecl:
 
 AutoClosureExpr:
   _extends: AbstractClosureExpr
+  body: BraceStmt
 
 ClosureExpr:
   _extends: AbstractClosureExpr
@@ -830,6 +860,7 @@ DoStmt:
 ForEachStmt:
   _extends: LabeledStmt
   body: BraceStmt
+  sequence: Expr
   where: Expr?
 
 LabeledConditionalStmt:

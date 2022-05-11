@@ -22,7 +22,7 @@ def codeql_workspace(repository_name = "codeql"):
                 _swift_prebuilt_version,
                 repo_arch,
             ),
-            build_file = "@%s//swift/extractor:BUILD.swift-prebuilt.bazel" % repository_name,
+            build_file = "@%s//swift/tools/prebuilt:BUILD.swift-prebuilt.bazel" % repository_name,
             sha256 = sha256,
         )
 
@@ -43,5 +43,15 @@ def codeql_workspace(repository_name = "codeql"):
         urls = [
             "https://mirror.bazel.build/github.com/bazelbuild/platforms/releases/download/0.0.3/platforms-0.0.3.tar.gz",
             "https://github.com/bazelbuild/platforms/releases/download/0.0.3/platforms-0.0.3.tar.gz",
+        ],
+    )
+
+    maybe(
+        repo_rule = http_archive,
+        name = "rules_python",
+        sha256 = "cdf6b84084aad8f10bf20b46b77cb48d83c319ebe6458a18e9d2cebf57807cdd",
+        strip_prefix = "rules_python-0.8.1",
+        urls = [
+            "https://github.com/bazelbuild/rules_python/archive/refs/tags/0.8.1.tar.gz",
         ],
     )

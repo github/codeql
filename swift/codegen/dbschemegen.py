@@ -3,8 +3,8 @@ import pathlib
 
 import inflection
 
-from lib import paths, schema, generator
-from lib.dbscheme import *
+from swift.codegen.lib import paths, schema, generator
+from swift.codegen.lib.dbscheme import *
 
 log = logging.getLogger(__name__)
 
@@ -19,72 +19,82 @@ def dbtype(typename):
 def cls_to_dbscheme(cls: schema.Class):
     """ Yield all dbscheme entities needed to model class `cls` """
     if cls.derived:
-        yield DbUnion(dbtype(cls.name), (dbtype(c) for c in cls.derived))
+        yield Union(dbtype(cls.name), (dbtype(c) for c in cls.derived))
     # output a table specific to a class only if it is a leaf class or it has 1-to-1 properties
     # Leaf classes need a table to bind the `@` ids
     # 1-to-1 properties are added to a class specific table
     # in other cases, separate tables are used for the properties, and a class specific table is unneeded
     if not cls.derived or any(f.is_single for f in cls.properties):
         binding = not cls.derived
-        keyset = DbKeySet(["id"]) if cls.derived else None
-        yield DbTable(
+        keyset = KeySet(["id"]) if cls.derived else None
+        yield Table(
             keyset=keyset,
             name=inflection.tableize(cls.name),
             columns=[
-                        DbColumn("id", type=dbtype(cls.name), binding=binding),
+                        Column("id", type=dbtype(cls.name), binding=binding),
                     ] + [
-                        DbColumn(f.name, dbtype(f.type)) for f in cls.properties if f.is_single
+                        Column(f.name, dbtype(f.type)) for f in cls.properties if f.is_single
                     ]
         )
     # use property-specific tables for 1-to-many and 1-to-at-most-1 properties
     for f in cls.properties:
-        if f.is_optional:
-            yield DbTable(
-                keyset=DbKeySet(["id"]),
+        if f.is_repeated:
+            yield Table(
+                keyset=KeySet(["id", "index"]),
                 name=inflection.tableize(f"{cls.name}_{f.name}"),
                 columns=[
-                    DbColumn("id", type=dbtype(cls.name)),
-                    DbColumn(f.name, dbtype(f.type)),
-                ],
-            )
-        elif f.is_repeated:
-            yield DbTable(
-                keyset=DbKeySet(["id", "index"]),
-                name=inflection.tableize(f"{cls.name}_{f.name}"),
-                columns=[
-                    DbColumn("id", type=dbtype(cls.name)),
-                    DbColumn("index", type="int"),
-                    DbColumn(inflection.singularize(f.name), dbtype(f.type)),
+                    Column("id", type=dbtype(cls.name)),
+                    Column("index", type="int"),
+                    Column(inflection.singularize(f.name), dbtype(f.type)),
                 ]
             )
+        elif f.is_optional:
+            yield Table(
+                keyset=KeySet(["id"]),
+                name=inflection.tableize(f"{cls.name}_{f.name}"),
+                columns=[
+                    Column("id", type=dbtype(cls.name)),
+                    Column(f.name, dbtype(f.type)),
+                ],
+            )
+        elif f.is_predicate:
+            yield Table(
+                keyset=KeySet(["id"]),
+                name=inflection.underscore(f"{cls.name}_{f.name}"),
+                columns=[
+                    Column("id", type=dbtype(cls.name)),
+                 ],
+            )
+
 
 
 def get_declarations(data: schema.Schema):
-    return [d for cls in data.classes.values() for d in cls_to_dbscheme(cls)]
+    return [d for cls in data.classes for d in cls_to_dbscheme(cls)]
 
 
-def get_includes(data: schema.Schema, include_dir: pathlib.Path):
+def get_includes(data: schema.Schema, include_dir: pathlib.Path, swift_dir: pathlib.Path):
     includes = []
     for inc in data.includes:
         inc = include_dir / inc
         with open(inc) as inclusion:
-            includes.append(DbSchemeInclude(src=inc.relative_to(paths.swift_dir), data=inclusion.read()))
+            includes.append(SchemeInclude(src=inc.relative_to(swift_dir), data=inclusion.read()))
     return includes
 
 
 def generate(opts, renderer):
-    input = opts.schema.resolve()
-    out = opts.dbscheme.resolve()
+    input = opts.schema
+    out = opts.dbscheme
 
-    with open(input) as src:
-        data = schema.load(src)
+    data = schema.load(input)
 
-    dbscheme = DbScheme(src=input.relative_to(paths.swift_dir),
-                        includes=get_includes(data, include_dir=input.parent),
-                        declarations=get_declarations(data))
+    dbscheme = Scheme(src=input.relative_to(opts.swift_dir),
+                      includes=get_includes(data, include_dir=input.parent, swift_dir=opts.swift_dir),
+                      declarations=get_declarations(data))
 
     renderer.render(dbscheme, out)
 
 
+tags = ("schema", "dbscheme")
+
 if __name__ == "__main__":
-    generator.run(generate, tags=["schema", "dbscheme"])
+    generator.run()

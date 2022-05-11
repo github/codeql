@@ -11,7 +11,6 @@ private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
-private import experimental.ir.Util
 private import IRInternal
 private import desugar.Delegate
 
