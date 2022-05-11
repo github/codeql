@@ -77,7 +77,7 @@ abstract class JwtTokenSink extends DataFlow::Node { }
  * A hardcoded string literal as a source for JWT token signing vulnerabilities.
  */
 class HardcodedKeyStringSource extends JwtKeySource {
-  HardcodedKeyStringSource() { this.asExpr() instanceof CompileTimeConstantExpr }
+  HardcodedKeyStringSource() { exists(this.asExpr().(CompileTimeConstantExpr).getStringValue()) }
 }
 
 /**
