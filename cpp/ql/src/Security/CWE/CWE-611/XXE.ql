@@ -250,10 +250,10 @@ class DomConfigurationSetParameter extends Function {
  * `DOMConfiguration` pointer returned by `DOMLSParser.getDomConfig` - and it
  * is *that* qualifier we want to transform the flow state of.
  */
-class DOMConfigurationSetParameterTranformer extends XXEFlowStateTranformer {
+class DomConfigurationSetParameterTranformer extends XXEFlowStateTranformer {
   Expr newValue;
 
-  DOMConfigurationSetParameterTranformer() {
+  DomConfigurationSetParameterTranformer() {
     exists(FunctionCall getDomConfigCall, FunctionCall setParameterCall |
       // this is the qualifier of a call to `DOMLSParser.getDomConfig`.
       getDomConfigCall.getTarget() instanceof GetDomConfig and
