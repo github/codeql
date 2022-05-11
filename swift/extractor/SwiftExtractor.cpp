@@ -14,6 +14,7 @@
 
 #include "swift/extractor/trap/TrapClasses.h"
 #include "swift/extractor/trap/TrapArena.h"
+#include "swift/extractor/trap/TrapOutput.h"
 
 using namespace codeql;
 
@@ -47,51 +48,16 @@ static void extractFile(const SwiftExtractorConfiguration& config, swift::Source
     return;
   }
 
-  // The extractor can be called several times from different processes with
-  // the same input file(s)
-  // We are using PID to avoid concurrent access
-  // TODO: find a more robust approach to avoid collisions?
-  std::string tempTrapName = file.getFilename().str() + '.' + std::to_string(getpid()) + ".trap";
-  llvm::SmallString<PATH_MAX> tempTrapPath(config.trapDir);
-  llvm::sys::path::append(tempTrapPath, tempTrapName);
+  if (TrapOutput trap{config, file.getFilename().str()}) {
+    TrapArena arena{};
 
-  llvm::StringRef trapParent = llvm::sys::path::parent_path(tempTrapPath);
-  if (std::error_code ec = llvm::sys::fs::create_directories(trapParent)) {
-    std::cerr << "Cannot create trap directory '" << trapParent.str() << "': " << ec.message()
-              << "\n";
-    return;
-  }
+    auto label = arena.allocateLabel<File::Tag>();
+    trap.assignStar(label);
 
-  std::ofstream trap(tempTrapPath.str().str());
-  if (!trap) {
-    std::error_code ec;
-    ec.assign(errno, std::generic_category());
-    std::cerr << "Cannot create temp trap file '" << tempTrapPath.str().str()
-              << "': " << ec.message() << "\n";
-    return;
-  }
-  trap << "// extractor-args: ";
-  for (auto opt : config.frontendOptions) {
-    trap << std::quoted(opt) << " ";
-  }
-  trap << "\n\n";
-
-  TrapArena arena{trap};
-  // arena will be passed to another class in a later PR, the next block of code is only an example
-  File f;
-  f.id = arena.getLabel<FileTag>();
-  f.name = srcFilePath.str().str();
-  arena.emit(f);
-
-  // TODO: Pick a better name to avoid collisions
-  std::string trapName = file.getFilename().str() + ".trap";
-  llvm::SmallString<PATH_MAX> trapPath(config.trapDir);
-  llvm::sys::path::append(trapPath, trapName);
-
-  // TODO: The last process wins. Should we do better than that?
-  if (std::error_code ec = llvm::sys::fs::rename(tempTrapPath, trapPath)) {
-    std::cerr << "Cannot rename temp trap file '" << tempTrapPath.str().str() << "' -> '"
-              << trapPath.str().str() << "': " << ec.message() << "\n";
+    File f{};
+    f.id = label;
+    f.name = srcFilePath.str().str();
+    trap.emit(f);
   }
 }
 

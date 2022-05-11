@@ -34,7 +34,9 @@ class TrapLabel : public UntypedTrapLabel {
 
   using UntypedTrapLabel::UntypedTrapLabel;
 
-  // we want only TrapArena to create non-default labels
+  // we want one authority tasked with creating labels to avoid conflicts, having access to the
+  // private constructor
+  // this is the TrapArena class for the moment
   friend class TrapArena;
 
  public:
@@ -59,8 +61,10 @@ inline auto trapQuoted(const std::string& s) {
   return std::quoted(s, '"', '"');
 }
 
-template <typename Tag>
+template <typename TagParam>
 struct Binding {
+  using Tag = TagParam;
+
   TrapLabel<Tag> id;
 };
 
