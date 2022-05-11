@@ -4,6 +4,7 @@
  *              interception.
  * @kind problem
  * @problem.severity error
+ * @security-severity 5.0
  * @id py/insecure-cookie
  * @tags security
  *       external/cwe/cwe-614
