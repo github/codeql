@@ -27,7 +27,7 @@ class UntypedTrapLabel {
   friend bool operator==(UntypedTrapLabel lhs, UntypedTrapLabel rhs) { return lhs.id_ == rhs.id_; }
 };
 
-template <typename Tag>
+template <typename TagParam>
 class TrapLabel : public UntypedTrapLabel {
   template <typename OtherTag>
   friend class TrapLabel;
@@ -35,6 +35,8 @@ class TrapLabel : public UntypedTrapLabel {
   using UntypedTrapLabel::UntypedTrapLabel;
 
  public:
+  using Tag = TagParam;
+
   TrapLabel() = default;
 
   template <typename OtherTag>
@@ -53,6 +55,11 @@ class TrapLabel : public UntypedTrapLabel {
 inline auto trapQuoted(const std::string& s) {
   return std::quoted(s, '"', '"');
 }
+
+template <typename Tag>
+struct Binding {
+  TrapLabel<Tag> id;
+};
 
 }  // namespace codeql
 

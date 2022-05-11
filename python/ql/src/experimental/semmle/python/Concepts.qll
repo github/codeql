@@ -13,6 +13,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
+private import semmle.python.Concepts
 
 /** Provides classes for modeling copying file related APIs. */
 module CopyFile {
@@ -79,74 +80,6 @@ class LogOutput extends DataFlow::Node {
   LogOutput() { this = range }
 
   DataFlow::Node getAnInput() { result = range.getAnInput() }
-}
-
-/**
- * Since there is both XML module in normal and experimental Concepts,
- * we have to rename the experimental module as this.
- */
-module ExperimentalXML {
-  /**
-   * A kind of XML vulnerability.
-   *
-   * See https://pypi.org/project/defusedxml/#python-xml-libraries
-   */
-  class XMLVulnerabilityKind extends string {
-    XMLVulnerabilityKind() {
-      this in ["Billion Laughs", "Quadratic Blowup", "XXE", "DTD retrieval"]
-    }
-
-    /** Holds for Billion Laughs vulnerability kind. */
-    predicate isBillionLaughs() { this = "Billion Laughs" }
-
-    /** Holds for Quadratic Blowup vulnerability kind. */
-    predicate isQuadraticBlowup() { this = "Quadratic Blowup" }
-
-    /** Holds for XXE vulnerability kind. */
-    predicate isXxe() { this = "XXE" }
-
-    /** Holds for DTD retrieval vulnerability kind. */
-    predicate isDtdRetrieval() { this = "DTD retrieval" }
-  }
-
-  /**
-   * A data-flow node that parses XML.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `XMLParsing` instead.
-   */
-  class XMLParsing extends DataFlow::Node instanceof XMLParsing::Range {
-    /**
-     * Gets the argument containing the content to parse.
-     */
-    DataFlow::Node getAnInput() { result = super.getAnInput() }
-
-    /**
-     * Holds if this XML parsing is vulnerable to `kind`.
-     */
-    predicate vulnerableTo(XMLVulnerabilityKind kind) { super.vulnerableTo(kind) }
-  }
-
-  /** Provides classes for modeling XML parsing APIs. */
-  module XMLParsing {
-    /**
-     * A data-flow node that parses XML.
-     *
-     * Extend this class to model new APIs. If you want to refine existing API models,
-     * extend `XMLParsing` instead.
-     */
-    abstract class Range extends DataFlow::Node {
-      /**
-       * Gets the argument containing the content to parse.
-       */
-      abstract DataFlow::Node getAnInput();
-
-      /**
-       * Holds if this XML parsing is vulnerable to `kind`.
-       */
-      abstract predicate vulnerableTo(XMLVulnerabilityKind kind);
-    }
-  }
 }
 
 /** Provides classes for modeling LDAP query execution-related APIs. */
@@ -436,6 +369,55 @@ class HeaderDeclaration extends DataFlow::Node {
    * Gets the argument containing the header value.
    */
   DataFlow::Node getValueArg() { result = range.getValueArg() }
+}
+
+/**
+ * A data-flow node that sets a cookie in an HTTP response.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `Cookie::Range` instead.
+ */
+class Cookie extends HTTP::Server::CookieWrite instanceof Cookie::Range {
+  /**
+   * Holds if this cookie is secure.
+   */
+  predicate isSecure() { super.isSecure() }
+
+  /**
+   * Holds if this cookie is HttpOnly.
+   */
+  predicate isHttpOnly() { super.isHttpOnly() }
+
+  /**
+   * Holds if the cookie is SameSite
+   */
+  predicate isSameSite() { super.isSameSite() }
+}
+
+/** Provides a class for modeling new cookie writes on HTTP responses. */
+module Cookie {
+  /**
+   * A data-flow node that sets a cookie in an HTTP response.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `Cookie` instead.
+   */
+  abstract class Range extends HTTP::Server::CookieWrite::Range {
+    /**
+     * Holds if this cookie is secure.
+     */
+    abstract predicate isSecure();
+
+    /**
+     * Holds if this cookie is HttpOnly.
+     */
+    abstract predicate isHttpOnly();
+
+    /**
+     * Holds if the cookie is SameSite.
+     */
+    abstract predicate isSameSite();
+  }
 }
 
 /** Provides classes for modeling JWT encoding-related APIs. */

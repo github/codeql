@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.FuncDecl
 
 class AccessorDeclBase extends @accessor_decl, FuncDecl {
-  override string toString() { result = "AccessorDecl" }
+  override string getAPrimaryQlClass() { result = "AccessorDecl" }
 }

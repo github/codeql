@@ -4300,6 +4300,12 @@ private module Subpaths {
     )
   }
 
+  pragma[nomagic]
+  private predicate hasSuccessor(PathNode pred, PathNodeMid succ, NodeEx succNode) {
+    succ = pred.getASuccessor() and
+    succNode = succ.getNodeEx()
+  }
+
   /**
    * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
    * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
@@ -4307,15 +4313,13 @@ private module Subpaths {
    */
   predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeImpl ret, PathNode out) {
     exists(ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout, PathNodeMid out0 |
-      pragma[only_bind_into](arg).getASuccessor() = pragma[only_bind_into](par) and
-      pragma[only_bind_into](arg).getASuccessor() = out0 and
+      pragma[only_bind_into](arg).getASuccessor() = pragma[only_bind_into](out0) and
       subpaths03(pragma[only_bind_into](arg), p, localStepToHidden*(ret), o, sout, apout) and
+      hasSuccessor(pragma[only_bind_into](arg), par, p) and
       not ret.isHidden() and
-      par.getNodeEx() = p and
-      out0.getNodeEx() = o and
-      out0.getState() = sout and
-      out0.getAp() = apout and
-      (out = out0 or out = out0.projectToSink())
+      pathNode(out0, o, sout, _, _, apout, _, _)
+    |
+      out = out0 or out = out0.projectToSink()
     )
   }
 

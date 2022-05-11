@@ -2,7 +2,7 @@
 import codeql.swift.elements.type.Type
 
 class LValueTypeBase extends @l_value_type, Type {
-  override string toString() { result = "LValueType" }
+  override string getAPrimaryQlClass() { result = "LValueType" }
 
   Type getObjectType() {
     exists(Type x |

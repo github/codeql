@@ -53,7 +53,7 @@ class MapMutation extends MethodAccess {
   MapMutation() { this.getMethod() instanceof MapMutator }
 
   /** Holds if the result of this call is not immediately discarded. */
-  predicate resultIsChecked() { not this.getParent() instanceof ExprStmt }
+  predicate resultIsChecked() { not this instanceof ValueDiscardingExpr }
 }
 
 /** A method that queries the contents of the map it belongs to without mutating it. */

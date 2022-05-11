@@ -14,6 +14,8 @@ class AbstractFunctionDeclBase extends @abstract_function_decl, GenericContext, 
     )
   }
 
+  predicate hasBody() { exists(getBody()) }
+
   ParamDecl getParam(int index) {
     exists(ParamDecl x |
       abstract_function_decl_params(this, index, x) and

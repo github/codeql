@@ -2,7 +2,7 @@
 import codeql.swift.elements.expr.Expr
 
 class BindOptionalExprBase extends @bind_optional_expr, Expr {
-  override string toString() { result = "BindOptionalExpr" }
+  override string getAPrimaryQlClass() { result = "BindOptionalExpr" }
 
   Expr getSubExpr() {
     exists(Expr x |

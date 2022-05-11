@@ -9,40 +9,51 @@ output_dir = pathlib.Path("path", "to", "output")
 
 @pytest.fixture
 def generate(opts, renderer, dbscheme_input):
-    opts.trap_output = output_dir
+    opts.cpp_output = output_dir
+    opts.cpp_namespace = "test_namespace"
+    opts.trap_affix = "TrapAffix"
+    opts.cpp_include_dir = "my/include/dir"
 
     def ret(entities):
         dbscheme_input.entities = entities
         generated = run_generation(trapgen.generate, opts, renderer)
         assert set(generated) == {output_dir /
-                                  "TrapEntries.h", output_dir / "TrapTags.h"}
-        return generated[output_dir / "TrapEntries.h"], generated[output_dir / "TrapTags.h"]
+                                  "TrapAffixEntries.h", output_dir / "TrapAffixTags.h"}
+        return generated[output_dir / "TrapAffixEntries.h"], generated[output_dir / "TrapAffixTags.h"]
 
     return ret
 
 
 @pytest.fixture
-def generate_traps(generate):
+def generate_traps(opts, generate):
     def ret(entities):
         traps, _ = generate(entities)
         assert isinstance(traps, cpp.TrapList)
+        assert traps.namespace == opts.cpp_namespace
+        assert traps.trap_affix == opts.trap_affix
+        assert traps.include_dir == opts.cpp_include_dir
         return traps.traps
 
     return ret
 
 
 @pytest.fixture
-def generate_tags(generate):
+def generate_tags(opts, generate):
     def ret(entities):
         _, tags = generate(entities)
         assert isinstance(tags, cpp.TagList)
+        assert tags.namespace == opts.cpp_namespace
         return tags.tags
 
     return ret
 
 
-def test_empty(generate):
-    assert generate([]) == (cpp.TrapList([]), cpp.TagList([]))
+def test_empty_traps(generate_traps):
+    assert generate_traps([]) == []
+
+
+def test_empty_tags(generate_tags):
+    assert generate_tags([]) == []
 
 
 def test_one_empty_table_rejected(generate_traps):
@@ -95,7 +106,7 @@ def test_one_table_with_two_binding_first_is_id(generate_traps):
 @pytest.mark.parametrize("column,field", [
     (dbscheme.Column("x", "string"), cpp.Field("x", "std::string")),
     (dbscheme.Column("y", "boolean"), cpp.Field("y", "bool")),
-    (dbscheme.Column("z", "@db_type"), cpp.Field("z", "TrapLabel<DbTypeTag>")),
+    (dbscheme.Column("z", "@db_type"), cpp.Field("z", "TrapAffixLabel<DbTypeTag>")),
 ])
 def test_one_table_special_types(generate_traps, column, field):
     assert generate_traps([
@@ -105,27 +116,21 @@ def test_one_table_special_types(generate_traps, column, field):
     ]
 
 
-@pytest.mark.parametrize("table,name,column,field", [
-    ("locations", "Locations", dbscheme.Column(
-        "startWhatever", "bar"), cpp.Field("startWhatever", "unsigned")),
-    ("locations", "Locations", dbscheme.Column(
-        "endWhatever", "bar"), cpp.Field("endWhatever", "unsigned")),
-    ("foos", "Foos", dbscheme.Column("startWhatever", "bar"),
-     cpp.Field("startWhatever", "bar")),
-    ("foos", "Foos", dbscheme.Column("endWhatever", "bar"),
-     cpp.Field("endWhatever", "bar")),
-    ("foos", "Foos", dbscheme.Column("index", "bar"), cpp.Field("index", "unsigned")),
-    ("foos", "Foos", dbscheme.Column("num_whatever", "bar"),
-     cpp.Field("num_whatever", "unsigned")),
-    ("foos", "Foos", dbscheme.Column("whatever_", "bar"), cpp.Field("whatever", "bar")),
-])
-def test_one_table_overridden_fields(generate_traps, table, name, column, field):
+@pytest.mark.parametrize("name", ["start_line", "start_column", "end_line", "end_column", "index", "num_whatever"])
+def test_one_table_overridden_unsigned_field(generate_traps, name):
     assert generate_traps([
-        dbscheme.Table(name=table, columns=[column]),
+        dbscheme.Table(name="foos", columns=[dbscheme.Column(name, "bar")]),
     ]) == [
-        cpp.Trap(table, name=name, fields=[field]),
+        cpp.Trap("foos", name="Foos", fields=[cpp.Field(name, "unsigned")]),
     ]
 
+
+def test_one_table_overridden_underscore_named_field(generate_traps):
+    assert generate_traps([
+        dbscheme.Table(name="foos", columns=[dbscheme.Column("whatever_", "bar")]),
+    ]) == [
+               cpp.Trap("foos", name="Foos", fields=[cpp.Field("whatever", "bar")]),
+           ]
 
 def test_one_table_no_tags(generate_tags):
     assert generate_tags([
@@ -160,4 +165,4 @@ def test_multiple_union_tags(generate_tags):
 
 
 if __name__ == '__main__':
-    sys.exit(pytest.main())
+    sys.exit(pytest.main([__file__] + sys.argv[1:]))

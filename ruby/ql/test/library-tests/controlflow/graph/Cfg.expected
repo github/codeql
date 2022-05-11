@@ -2010,13 +2010,19 @@ cfg.rb:
 #-----|  -> complex
 
 #   59| complex
-#-----|  -> 10-2i
+#-----|  -> 10
 
 #   59| ... = ...
 #-----|  -> conditional
 
-#   59| 10-2i
+#   59| 10
+#-----|  -> 2i
+
+#   59| ... - ...
 #-----|  -> ... = ...
+
+#   59| 2i
+#-----|  -> ... - ...
 
 #   60| conditional
 #-----|  -> self
@@ -3528,7 +3534,7 @@ cfg.rb:
 #-----|  -> exit forward_param
 
 #  196| forward_param
-#-----|  -> exit cfg.rb (normal)
+#-----|  -> 1
 
 #  196| a
 #-----|  -> b
@@ -3550,6 +3556,70 @@ cfg.rb:
 
 #  197| ...
 #-----|  -> call to bar
+
+#  200| 1
+#-----|  -> { ... }
+
+#  200| call to times
+#-----|  -> 2
+
+#  200| enter { ... }
+#-----|  -> a
+
+#  200| exit { ... }
+
+#  200| exit { ... } (normal)
+#-----|  -> exit { ... }
+
+#  200| { ... }
+#-----|  -> call to times
+
+#  200| a
+#-----|  -> b
+
+#  200| b
+#-----|  -> Kernel
+
+#  200| Kernel
+#-----|  -> a
+
+#  200| call to puts
+#-----|  -> exit { ... } (normal)
+
+#  200| a
+#-----|  -> call to puts
+
+#  202| 2
+#-----|  -> do ... end
+
+#  202| call to times
+#-----|  -> exit cfg.rb (normal)
+
+#  202| do ... end
+#-----|  -> call to times
+
+#  202| enter do ... end
+#-----|  -> c
+
+#  202| exit do ... end
+
+#  202| exit do ... end (normal)
+#-----|  -> exit do ... end
+
+#  202| c
+#-----|  -> d
+
+#  202| d
+#-----|  -> Kernel
+
+#  202| Kernel
+#-----|  -> c
+
+#  202| call to puts
+#-----|  -> exit do ... end (normal)
+
+#  202| c
+#-----|  -> call to puts
 
 desugar.rb:
 #    1| enter m1

@@ -140,6 +140,8 @@ A:
      one: string
      two: int?
      three: bool*
+     four: x?*
+     five: predicate
 """)
     assert ret.classes == [
         schema.Class(root_name, derived={'A'}),
@@ -147,9 +149,23 @@ A:
             schema.SingleProperty('one', 'string'),
             schema.OptionalProperty('two', 'int'),
             schema.RepeatedProperty('three', 'bool'),
+            schema.RepeatedOptionalProperty('four', 'x'),
+            schema.PredicateProperty('five'),
         ]),
     ]
 
 
+def test_element_properties(load):
+    ret = load("""
+Element:
+    x: string
+""")
+    assert ret.classes == [
+        schema.Class(root_name, properties=[
+            schema.SingleProperty('x', 'string'),
+         ]),
+    ]
+
+
 if __name__ == '__main__':
-    sys.exit(pytest.main())
+    sys.exit(pytest.main([__file__] + sys.argv[1:]))

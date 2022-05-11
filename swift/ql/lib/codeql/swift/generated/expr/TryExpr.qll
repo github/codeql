@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.AnyTryExpr
 
 class TryExprBase extends @try_expr, AnyTryExpr {
-  override string toString() { result = "TryExpr" }
+  override string getAPrimaryQlClass() { result = "TryExpr" }
 }

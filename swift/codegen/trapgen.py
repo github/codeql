@@ -1,34 +1,13 @@
 #!/usr/bin/env python3
 
 import logging
-import os
-import re
-import sys
 
 import inflection
 from toposort import toposort_flatten
 
-sys.path.append(os.path.dirname(__file__))
-
-from swift.codegen.lib import paths, dbscheme, generator, cpp
-
-field_overrides = [
-    (re.compile(r"locations.*::(start|end).*|.*::(index|num_.*)"), {"type": "unsigned"}),
-    (re.compile(r".*::(.*)_"), lambda m: {"name": m[1]}),
-]
+from swift.codegen.lib import dbscheme, generator, cpp
 
 log = logging.getLogger(__name__)
-
-
-def get_field_override(table, field):
-    spec = f"{table}::{field}"
-    for r, o in field_overrides:
-        m = r.fullmatch(spec)
-        if m and callable(o):
-            return o(m)
-        elif m:
-            return o
-    return {}
 
 
 def get_tag_name(s):
@@ -36,10 +15,10 @@ def get_tag_name(s):
     return inflection.camelize(s[1:])
 
 
-def get_cpp_type(schema_type):
+def get_cpp_type(schema_type: str, trap_affix: str):
     if schema_type.startswith("@"):
         tag = get_tag_name(schema_type)
-        return f"TrapLabel<{tag}Tag>"
+        return f"{trap_affix}Label<{tag}Tag>"
     if schema_type == "string":
         return "std::string"
     if schema_type == "boolean":
@@ -47,13 +26,13 @@ def get_cpp_type(schema_type):
     return schema_type
 
 
-def get_field(c: dbscheme.Column, table: str):
+def get_field(c: dbscheme.Column, trap_affix: str):
     args = {
-        "name": c.schema_name,
+        "field_name": c.schema_name,
         "type": c.type,
     }
-    args.update(get_field_override(table, c.schema_name))
-    args["type"] = get_cpp_type(args["type"])
+    args.update(cpp.get_field_override(c.schema_name))
+    args["type"] = get_cpp_type(args["type"], trap_affix)
     return cpp.Field(**args)
 
 
@@ -64,32 +43,33 @@ def get_binding_column(t: dbscheme.Table):
         return None
 
 
-def get_trap(t: dbscheme.Table):
+def get_trap(t: dbscheme.Table, trap_affix: str):
     id = get_binding_column(t)
     if id:
-        id = get_field(id, t.name)
+        id = get_field(id, trap_affix)
     return cpp.Trap(
         table_name=t.name,
         name=inflection.camelize(t.name),
-        fields=[get_field(c, t.name) for c in t.columns],
+        fields=[get_field(c, trap_affix) for c in t.columns],
         id=id,
     )
 
 
 def generate(opts, renderer):
     tag_graph = {}
-    out = opts.trap_output
+    out = opts.cpp_output
 
     traps = []
     for e in dbscheme.iterload(opts.dbscheme):
         if e.is_table:
-            traps.append(get_trap(e))
+            traps.append(get_trap(e, opts.trap_affix))
         elif e.is_union:
             tag_graph.setdefault(e.lhs, set())
             for d in e.rhs:
                 tag_graph.setdefault(d.type, set()).add(e.lhs)
 
-    renderer.render(cpp.TrapList(traps), out / "TrapEntries.h")
+    renderer.render(cpp.TrapList(traps, opts.cpp_namespace, opts.trap_affix, opts.cpp_include_dir),
+                    out / f"{opts.trap_affix}Entries.h")
 
     tags = []
     for index, tag in enumerate(toposort_flatten(tag_graph)):
@@ -99,10 +79,10 @@ def generate(opts, renderer):
             index=index,
             id=tag,
         ))
-    renderer.render(cpp.TagList(tags), out / "TrapTags.h")
+    renderer.render(cpp.TagList(tags, opts.cpp_namespace), out / f"{opts.trap_affix}Tags.h")
 
 
-tags = ("trap", "dbscheme")
+tags = ("cpp", "dbscheme")
 
 if __name__ == "__main__":
     generator.run()

@@ -3,7 +3,7 @@ import codeql.swift.elements.AstNode
 import codeql.swift.elements.stmt.Stmt
 
 class BraceStmtBase extends @brace_stmt, Stmt {
-  override string toString() { result = "BraceStmt" }
+  override string getAPrimaryQlClass() { result = "BraceStmt" }
 
   AstNode getElement(int index) {
     exists(AstNode x |

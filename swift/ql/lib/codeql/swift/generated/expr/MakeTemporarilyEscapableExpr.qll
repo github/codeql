@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 
 class MakeTemporarilyEscapableExprBase extends @make_temporarily_escapable_expr, Expr {
-  override string toString() { result = "MakeTemporarilyEscapableExpr" }
+  override string getAPrimaryQlClass() { result = "MakeTemporarilyEscapableExpr" }
 
   OpaqueValueExpr getEscapingClosure() {
     exists(OpaqueValueExpr x |

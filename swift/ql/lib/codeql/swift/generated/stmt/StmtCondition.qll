@@ -3,7 +3,7 @@ import codeql.swift.elements.AstNode
 import codeql.swift.elements.stmt.ConditionElement
 
 class StmtConditionBase extends @stmt_condition, AstNode {
-  override string toString() { result = "StmtCondition" }
+  override string getAPrimaryQlClass() { result = "StmtCondition" }
 
   ConditionElement getElement(int index) {
     exists(ConditionElement x |

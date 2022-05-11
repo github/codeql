@@ -3,7 +3,7 @@ import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.EnumElementDecl
 
 class EnumCaseDeclBase extends @enum_case_decl, Decl {
-  override string toString() { result = "EnumCaseDecl" }
+  override string getAPrimaryQlClass() { result = "EnumCaseDecl" }
 
   EnumElementDecl getElement(int index) {
     exists(EnumElementDecl x |

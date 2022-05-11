@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.SugarType
 
 class TypeAliasTypeBase extends @type_alias_type, SugarType {
-  override string toString() { result = "TypeAliasType" }
+  override string getAPrimaryQlClass() { result = "TypeAliasType" }
 }

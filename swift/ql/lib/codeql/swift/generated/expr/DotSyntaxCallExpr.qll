@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.SelfApplyExpr
 
 class DotSyntaxCallExprBase extends @dot_syntax_call_expr, SelfApplyExpr {
-  override string toString() { result = "DotSyntaxCallExpr" }
+  override string getAPrimaryQlClass() { result = "DotSyntaxCallExpr" }
 }

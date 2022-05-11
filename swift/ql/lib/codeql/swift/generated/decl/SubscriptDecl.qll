@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.AbstractStorageDecl
 
 class SubscriptDeclBase extends @subscript_decl, AbstractStorageDecl {
-  override string toString() { result = "SubscriptDecl" }
+  override string getAPrimaryQlClass() { result = "SubscriptDecl" }
 }
