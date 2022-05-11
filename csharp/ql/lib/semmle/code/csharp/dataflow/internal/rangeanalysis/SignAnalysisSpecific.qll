@@ -23,10 +23,6 @@ module Private {
 
   class CharacterLiteral = RU::ExprNode::CharLiteral;
 
-  class IntegerLiteral = RU::ExprNode::IntegerLiteral;
-
-  class LongLiteral = RU::ExprNode::LongLiteral;
-
   class CastExpr = RU::ExprNode::CastExpr;
 
   class Type = CS::Type;
@@ -186,6 +182,10 @@ private module Impl {
    * Holds if `e` has type `NumericOrCharType`, but the sign of `e` is unknown.
    */
   predicate numericExprWithUnknownSign(ExprNode e) {
+    exists(ExprNode::IntegerLiteral lit | lit = e and not exists(lit.getValue().toInt()))
+    or
+    exists(ExprNode::LongLiteral lit | lit = e and not exists(lit.getValue().toFloat()))
+    or
     e.getType() instanceof NumericOrCharType and
     not e = getARead(_) and
     not e.getExpr() instanceof FieldAccess and

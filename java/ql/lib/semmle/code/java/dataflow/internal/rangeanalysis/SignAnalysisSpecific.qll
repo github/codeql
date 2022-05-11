@@ -23,10 +23,6 @@ module Private {
 
   class CharacterLiteral = J::CharacterLiteral;
 
-  class IntegerLiteral = J::IntegerLiteral;
-
-  class LongLiteral = J::LongLiteral;
-
   class CastExpr extends J::CastExpr {
     /** Gets the source type of this cast. */
     J::Type getSourceType() { result = this.getExpr().getType() }
@@ -216,6 +212,10 @@ private module Impl {
   predicate numericExprWithUnknownSign(Expr e) {
     // The expression types handled in the predicate complements the expression
     // types handled in `specificSubExprSign`.
+    exists(IntegerLiteral lit | lit = e and not exists(lit.getValue().toInt()))
+    or
+    exists(LongLiteral lit | lit = e and not exists(lit.getValue().toFloat()))
+    or
     e instanceof ArrayAccess and e.getType() instanceof NumericOrCharType
     or
     e instanceof MethodAccess and e.getType() instanceof NumericOrCharType

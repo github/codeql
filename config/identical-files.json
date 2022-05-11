@@ -74,7 +74,8 @@
   ],
   "SsaReadPosition Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll"
+    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/rangeanalysis/internal/SsaReadPositionCommon.qll"
   ],
   "Model as Data Generation Java/C# - CaptureModels": [
     "java/ql/src/utils/model-generator/internal/CaptureModels.qll",
@@ -82,11 +83,13 @@
   ],
   "Sign Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/Sign.qll"
+    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/Sign.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/rangeanalysis/internal/Sign.qll"
   ],
   "SignAnalysis Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll"
+    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/rangeanalysis/internal/SignAnalysisCommon.qll"
   ],
   "Bound Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/Bound.qll",
