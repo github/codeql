@@ -347,7 +347,12 @@ module Trees {
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getParameter(i) and rescuable = false
       or
-      result = StmtSequenceTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
+      result = this.getLocalVariable(i - this.getNumberOfParameters()) and rescuable = false
+      or
+      result =
+        StmtSequenceTree.super
+            .getBodyChild(i - this.getNumberOfParameters() - count(this.getALocalVariable()),
+              rescuable)
     }
 
     override predicate first(AstNode first) { first = this }
@@ -959,7 +964,12 @@ module Trees {
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getParameter(i) and rescuable = false
       or
-      result = BodyStmtTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
+      result = this.getLocalVariable(i - this.getNumberOfParameters()) and rescuable = false
+      or
+      result =
+        BodyStmtTree.super
+            .getBodyChild(i - this.getNumberOfParameters() - count(this.getALocalVariable()),
+              rescuable)
     }
 
     override predicate propagatesAbnormal(AstNode child) { none() }
