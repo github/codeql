@@ -10,7 +10,6 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.ExternalFlow
-private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as Impl
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
@@ -89,7 +88,7 @@ module EntityFramework {
   }
 
   /** A flow summary for EntityFramework. */
-  abstract class EFSummarizedCallable extends Impl::Public::SummarizedCallable { }
+  abstract class EFSummarizedCallable extends SummarizedCallable { }
 
   private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
     override predicate required(SummaryComponent head, SummaryComponentStack tail) {
@@ -101,7 +100,7 @@ module EntityFramework {
   private class DbSetAddOrUpdate extends EFSummarizedCallable {
     private boolean range;
 
-    DbSetAddOrUpdate() { this.asCallable() = any(DbSet c).getAnAddOrUpdateMethod(range) }
+    DbSetAddOrUpdate() { this = any(DbSet c).getAnAddOrUpdateMethod(range) }
 
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
@@ -174,8 +173,8 @@ module EntityFramework {
   private class RawSqlStringConstructorSummarizedCallable extends EFSummarizedCallable {
     RawSqlStringConstructorSummarizedCallable() {
       exists(RawSqlStringStruct s |
-        this.asCallable() = s.getAConstructor() and
-        this.asCallable().getNumberOfParameters() > 0
+        this = s.getAConstructor() and
+        this.getNumberOfParameters() > 0
       )
     }
 
@@ -190,7 +189,7 @@ module EntityFramework {
 
   private class RawSqlStringConversionSummarizedCallable extends EFSummarizedCallable {
     RawSqlStringConversionSummarizedCallable() {
-      exists(RawSqlStringStruct s | this.asCallable() = s.getAConversionTo())
+      exists(RawSqlStringStruct s | this = s.getAConversionTo())
     }
 
     override predicate propagatesFlow(
@@ -449,7 +448,7 @@ module EntityFramework {
   private class DbContextSaveChanges extends EFSummarizedCallable {
     private DbContextClass c;
 
-    DbContextSaveChanges() { this.asCallable() = c.getASaveChanges() }
+    DbContextSaveChanges() { this = c.getASaveChanges() }
 
     pragma[noinline]
     private predicate input(SummaryComponentStack input, Property mapped) {

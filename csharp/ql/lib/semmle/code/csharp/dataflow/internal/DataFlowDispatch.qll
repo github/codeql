@@ -29,7 +29,7 @@ private predicate summarizedCallable(DataFlowCallable c) {
  */
 DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
   exists(DotNet::Callable unboundDecl | unboundDecl = c.getUnboundDeclaration() |
-    summarizedCallable(TSummarizedCallable(unboundDecl)) and
+    summarizedCallable(TDotNetCallable(unboundDecl)) and
     result = unboundDecl
     or
     result.hasBody() and

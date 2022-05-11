@@ -10,6 +10,7 @@ private import FlowSummaryImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 private import DataFlowImplCommon
+private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 
 /** Provides classes and predicates for defining flow summaries. */
 module Public {
@@ -1069,7 +1070,7 @@ module Private {
   /** Provides a query predicate for outputting a set of relevant flow summaries. */
   module TestOutput {
     /** A flow summary to include in the `summary/3` query predicate. */
-    abstract class RelevantSummarizedCallable extends SummarizedCallable {
+    abstract class RelevantSummarizedCallable extends FlowSummary::SummarizedCallable {
       /** Gets the string representation of this callable used by `summary/1`. */
       abstract string getCallableCsv();
 
