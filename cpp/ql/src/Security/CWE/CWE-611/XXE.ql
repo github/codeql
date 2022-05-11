@@ -227,10 +227,7 @@ class SetFeatureTranformer extends XXEFlowStateTranformer {
  * The `DOMLSParser.getDomConfig` function.
  */
 class GetDomConfig extends Function {
-  GetDomConfig() {
-    this.hasName("getDomConfig") and
-    this.getDeclaringType() instanceof DomLSParserClass
-  }
+  GetDomConfig() { this.getClassAndName("getDomConfig") instanceof DomLSParserClass }
 }
 
 /**
@@ -238,8 +235,7 @@ class GetDomConfig extends Function {
  */
 class DomConfigurationSetParameter extends Function {
   DomConfigurationSetParameter() {
-    this.hasName("setParameter") and
-    this.getDeclaringType().getName() = "DOMConfiguration"
+    this.getClassAndName("setParameter").getName() = "DOMConfiguration"
   }
 }
 
