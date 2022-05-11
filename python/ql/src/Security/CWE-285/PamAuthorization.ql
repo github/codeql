@@ -3,6 +3,7 @@
  * @description Not using `pam_acct_mgmt` after `pam_authenticate` to check the validity of a login can lead to authorization bypass.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 8.1
  * @precision high
  * @id py/pam-auth-bypass
  * @tags security
