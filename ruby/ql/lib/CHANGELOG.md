@@ -1,3 +1,9 @@
+## 0.2.1
+
+### Bug Fixes
+
+The Tree-sitter Ruby grammar has been updated; this fixes several issues where Ruby code was parsed incorrectly.
+
 ## 0.2.0
 
 ### Breaking Changes
