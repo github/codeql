@@ -1,6 +1,6 @@
 /**
  * @name Incorrect parameter name in documentation
- * @description The parameter name given in a '<param>' tag does not exist. Rename the parameter or
+ * @description The parameter name given in a `<param>` tag does not exist. Rename the parameter or
  *              change the name in the documentation to ensure that they are the same.
  * @kind problem
  * @problem.severity recommendation

@@ -4,7 +4,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.LabeledStmt
 
 class ForEachStmtBase extends @for_each_stmt, LabeledStmt {
-  override string toString() { result = "ForEachStmt" }
+  override string getAPrimaryQlClass() { result = "ForEachStmt" }
 
   BraceStmt getBody() {
     exists(BraceStmt x |
@@ -26,4 +26,6 @@ class ForEachStmtBase extends @for_each_stmt, LabeledStmt {
       result = x.resolve()
     )
   }
+
+  predicate hasWhere() { exists(getWhere()) }
 }

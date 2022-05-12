@@ -12,7 +12,7 @@
 
 import java
 
-predicate usefulUpcast(CastExpr e) {
+predicate usefulUpcast(CastingExpr e) {
   // Upcasts that may be performed to affect resolution of methods or constructors.
   exists(Call c, int i, Callable target |
     c.getArgument(i) = e and
@@ -59,7 +59,8 @@ predicate usefulUpcast(CastExpr e) {
 
 from Expr e, RefType src, RefType dest
 where
-  exists(CastExpr cse | cse = e |
+  exists(CastingExpr cse | cse = e |
+    (cse instanceof CastExpr or cse instanceof SafeCastExpr) and
     exists(cse.getLocation()) and
     src = cse.getExpr().getType() and
     dest = cse.getType()

@@ -102,8 +102,10 @@ private module Frameworks {
   private import semmle.code.java.frameworks.JsonJava
   private import semmle.code.java.frameworks.Logging
   private import semmle.code.java.frameworks.Objects
+  private import semmle.code.java.frameworks.OkHttp
   private import semmle.code.java.frameworks.Optional
   private import semmle.code.java.frameworks.Regex
+  private import semmle.code.java.frameworks.Retrofit
   private import semmle.code.java.frameworks.Stream
   private import semmle.code.java.frameworks.Strings
   private import semmle.code.java.frameworks.ratpack.Ratpack
@@ -300,8 +302,12 @@ private predicate summaryModelCsv(string row) {
       "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint",
       "java.net;URI;false;toString;;;Argument[-1];ReturnValue;taint",
       "java.net;URI;false;toAsciiString;;;Argument[-1];ReturnValue;taint",
-      "java.io;File;false;toURI;;;Argument[-1];ReturnValue;taint",
-      "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;true;toURI;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;true;toPath;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;true;getAbsoluteFile;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;true;getCanonicalFile;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;true;getAbsolutePath;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;true;getCanonicalPath;;;Argument[-1];ReturnValue;taint",
       "java.nio;ByteBuffer;false;array;();;Argument[-1];ReturnValue;taint",
       "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint",
       "java.io;BufferedReader;true;readLine;;;Argument[-1];ReturnValue;taint",

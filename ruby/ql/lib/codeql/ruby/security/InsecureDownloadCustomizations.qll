@@ -9,6 +9,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.Concepts
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.frameworks.Files
+private import codeql.ruby.frameworks.core.IO
 
 /**
  * Classes and predicates for reasoning about download of sensitive file through insecure connection vulnerabilities.

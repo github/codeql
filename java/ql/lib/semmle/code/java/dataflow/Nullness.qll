@@ -47,7 +47,9 @@ Expr nullExpr() {
   result instanceof NullLiteral or
   result.(ChooseExpr).getAResultExpr() = nullExpr() or
   result.(AssignExpr).getSource() = nullExpr() or
-  result.(CastExpr).getExpr() = nullExpr()
+  result.(CastExpr).getExpr() = nullExpr() or
+  result.(ImplicitCastExpr).getExpr() = nullExpr() or
+  result instanceof SafeCastExpr
 }
 
 /** An expression of a boxed type that is implicitly unboxed. */
@@ -112,7 +114,8 @@ predicate dereference(Expr e) {
   or
   exists(ArrayAccess aa | aa.getArray() = e)
   or
-  exists(CastExpr cast |
+  exists(CastingExpr cast |
+    (cast instanceof CastExpr or cast instanceof ImplicitCastExpr) and
     cast.getExpr() = e and
     e.getType() instanceof BoxedType and
     cast.getType() instanceof PrimitiveType

@@ -18,7 +18,7 @@ predicate contains_non_us_spelling(string s, string wrong, string right) {
     wrong != "analyse"
     or
     // analyses (as a noun) is fine
-    s.regexpMatch(".*analyse[^s].*") and
+    s.regexpReplaceAll("[\\r\\n]", " ").regexpMatch(".*analyse[^s].*") and
     wrong = "analyse"
   )
 }

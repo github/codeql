@@ -134,16 +134,6 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
     source.asExpr() instanceof ExprSystemGetPropertyTempDirTainted
   }
 
-  /**
-   * Find dataflow from the temp directory system property to the `File` constructor.
-   * Examples:
-   *  - `new File(System.getProperty("java.io.tmpdir"))`
-   *  - `new File(new File(System.getProperty("java.io.tmpdir")), "/child")`
-   */
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    isAdditionalFileTaintStep(node1, node2)
-  }
-
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof FileCreationSink and
     not any(TempDirSystemGetPropertyDirectlyToMkdirConfig config).hasFlowTo(sink)

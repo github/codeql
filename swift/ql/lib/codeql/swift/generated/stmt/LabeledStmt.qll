@@ -3,4 +3,6 @@ import codeql.swift.elements.stmt.Stmt
 
 class LabeledStmtBase extends @labeled_stmt, Stmt {
   string getLabel() { labeled_stmt_labels(this, result) }
+
+  predicate hasLabel() { exists(getLabel()) }
 }

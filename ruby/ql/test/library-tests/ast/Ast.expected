@@ -1716,11 +1716,11 @@ escape_sequences/escapes.rb:
 literals/literals.rb:
 #    1| [Toplevel] literals.rb
 #    2|   getStmt: [NilLiteral] nil
-#    3|   getStmt: [NilLiteral] NIL
+#    3|   getStmt: [ConstantReadAccess] NIL
 #    4|   getStmt: [BooleanLiteral] false
-#    5|   getStmt: [BooleanLiteral] FALSE
+#    5|   getStmt: [ConstantReadAccess] FALSE
 #    6|   getStmt: [BooleanLiteral] true
-#    7|   getStmt: [BooleanLiteral] TRUE
+#    7|   getStmt: [ConstantReadAccess] TRUE
 #   10|   getStmt: [IntegerLiteral] 1234
 #   11|   getStmt: [IntegerLiteral] 5_678
 #   12|   getStmt: [IntegerLiteral] 0
@@ -1752,6 +1752,8 @@ literals/literals.rb:
 #   48|   getStmt: [RationalLiteral] 23r
 #   49|   getStmt: [RationalLiteral] 9.85r
 #   52|   getStmt: [ComplexLiteral] 2i
+#   53|   getStmt: [ComplexLiteral] 3.14i
+#   56|   getStmt: [ComplexLiteral] 1.2ri
 #   59|   getStmt: [StringLiteral] ""
 #   60|   getStmt: [StringLiteral] ""
 #   61|   getStmt: [StringLiteral] "hello"
@@ -2054,10 +2056,10 @@ literals/literals.rb:
 #  139|     getStmt: [RangeLiteral] _ .. _
 #  139|       getEnd: [IntegerLiteral] 1
 #  140|   getStmt: [ParenthesizedExpr] ( ... )
-#  140|     getStmt: [SubExpr] ... - ...
-#  140|       getAnOperand/getLeftOperand/getReceiver: [RangeLiteral] _ .. _
-#  140|         getBegin: [IntegerLiteral] 0
-#  140|       getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
+#  140|     getStmt: [RangeLiteral] _ .. _
+#  140|       getBegin: [IntegerLiteral] 0
+#  140|       getEnd: [UnaryMinusExpr] - ...
+#  140|         getAnOperand/getOperand/getReceiver: [IntegerLiteral] 1
 #  143|   getStmt: [SubshellLiteral] `ls -l`
 #  143|     getComponent: [StringTextComponent] ls -l
 #  144|   getStmt: [SubshellLiteral] `ls -l`
@@ -2990,6 +2992,16 @@ params/params.rb:
 #   83|       getReceiver: [LocalVariableAccess] array
 #   83|       getArgument: [BlockArgument] &...
 #   83|         getValue: [LocalVariableAccess] __synth__0
+#   86|   getStmt: [MethodCall] call to run_block
+#   86|     getReceiver: [SelfVariableAccess] self
+#   86|     getBlock: [BraceBlock] { ... }
+#   86|       getParameter: [SimpleParameter] x
+#   86|         getDefiningAccess: [LocalVariableAccess] x
+#   86|       getLocalVariable: [LocalVariableAccess] y
+#   86|       getLocalVariable: [LocalVariableAccess] z
+#   86|       getStmt: [MethodCall] call to puts
+#   86|         getReceiver: [SelfVariableAccess] self
+#   86|         getArgument: [LocalVariableAccess] x
 erb/template.html.erb:
 #   19| [Toplevel] template.html.erb
 #   19|   getStmt: [StringLiteral] "hello world"

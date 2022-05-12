@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.Expr
 
 class OtherConstructorDeclRefExprBase extends @other_constructor_decl_ref_expr, Expr {
-  override string toString() { result = "OtherConstructorDeclRefExpr" }
+  override string getAPrimaryQlClass() { result = "OtherConstructorDeclRefExpr" }
 }

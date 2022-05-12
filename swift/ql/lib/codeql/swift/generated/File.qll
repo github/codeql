@@ -2,7 +2,7 @@
 import codeql.swift.elements.Element
 
 class FileBase extends @file, Element {
-  override string toString() { result = "File" }
+  override string getAPrimaryQlClass() { result = "File" }
 
   string getName() { files(this, result) }
 }

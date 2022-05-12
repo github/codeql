@@ -238,6 +238,8 @@ module Stages {
       1 = 1
       or
       DataFlow::SharedFlowStep::step(_, _)
+      or
+      exists(any(DataFlow::RegExpCreationNode e).getAReference())
     }
   }
 

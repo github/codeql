@@ -5,6 +5,7 @@ import semmle.code.FileSystem
 import semmle.code.Location
 import semmle.code.Unit
 import semmle.code.java.Annotation
+import semmle.code.java.Compilation
 import semmle.code.java.CompilationUnit
 import semmle.code.java.ControlFlowGraph
 import semmle.code.java.Dependency
@@ -19,6 +20,7 @@ import semmle.code.java.Javadoc
 import semmle.code.java.JDK
 import semmle.code.java.JDKAnnotations
 import semmle.code.java.JMX
+import semmle.code.java.KotlinType
 import semmle.code.java.Member
 import semmle.code.java.Modifier
 import semmle.code.java.Modules

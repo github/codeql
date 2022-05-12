@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.Expr
 
 class OpaqueValueExprBase extends @opaque_value_expr, Expr {
-  override string toString() { result = "OpaqueValueExpr" }
+  override string getAPrimaryQlClass() { result = "OpaqueValueExpr" }
 }

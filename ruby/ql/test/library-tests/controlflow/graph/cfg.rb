@@ -197,6 +197,10 @@ def forward_param(a, b, ...)
   bar(b, ...)
 end
 
+1.times { |a; b| Kernel.puts a }
+
+2.times do |c; d| Kernel.puts c end
+
 __END__
 
 Some ignored nonsense

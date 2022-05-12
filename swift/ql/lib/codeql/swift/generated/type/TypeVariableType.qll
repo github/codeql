@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class TypeVariableTypeBase extends @type_variable_type, Type {
-  override string toString() { result = "TypeVariableType" }
+  override string getAPrimaryQlClass() { result = "TypeVariableType" }
 }

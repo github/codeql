@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.UnarySyntaxSugarType
 
 class ArraySliceTypeBase extends @array_slice_type, UnarySyntaxSugarType {
-  override string toString() { result = "ArraySliceType" }
+  override string getAPrimaryQlClass() { result = "ArraySliceType" }
 }

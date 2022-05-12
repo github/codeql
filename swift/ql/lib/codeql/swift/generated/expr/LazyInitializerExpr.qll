@@ -2,7 +2,7 @@
 import codeql.swift.elements.expr.Expr
 
 class LazyInitializerExprBase extends @lazy_initializer_expr, Expr {
-  override string toString() { result = "LazyInitializerExpr" }
+  override string getAPrimaryQlClass() { result = "LazyInitializerExpr" }
 
   Expr getSubExpr() {
     exists(Expr x |

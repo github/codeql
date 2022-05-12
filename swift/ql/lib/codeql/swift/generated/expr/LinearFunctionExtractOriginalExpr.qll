@@ -3,5 +3,5 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class LinearFunctionExtractOriginalExprBase extends @linear_function_extract_original_expr,
   ImplicitConversionExpr {
-  override string toString() { result = "LinearFunctionExtractOriginalExpr" }
+  override string getAPrimaryQlClass() { result = "LinearFunctionExtractOriginalExpr" }
 }

@@ -1,3 +1,9 @@
+## 0.2.0
+
+### Breaking Changes
+
+* The signature of `allowImplicitRead` on `DataFlow::Configuration` and `TaintTracking::Configuration` has changed from `allowImplicitRead(DataFlow::Node node, DataFlow::Content c)` to `allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c)`.
+
 ## 0.1.0
 
 ### Breaking Changes
