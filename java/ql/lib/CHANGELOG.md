@@ -76,8 +76,8 @@
    * `File::getCanonicalFile`
    * `File::getAbsolutePath`
    * `File::getCanonicalPath`
-Added a flow step for `toString` calls on tainted `android.text.Editable` objects. 
-Added a data flow step for tainted Android intents that are sent to other activities and accessed there via `getIntent()`.
+* Added a flow step for `toString` calls on tainted `android.text.Editable` objects. 
+* Added a data flow step for tainted Android intents that are sent to other activities and accessed there via `getIntent()`.
 * Added modeling of MyBatis (`org.apache.ibatis`) Providers, resulting in additional sinks for the queries `java/ognl-injection`, `java/sql-injection`, `java/sql-injection-local` and `java/concatenated-sql-query`.
 
 ## 0.2.0
