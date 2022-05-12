@@ -214,7 +214,7 @@ class IfStmt extends ConditionalStmt, @stmt_if {
   override string getAPrimaryQlClass() { result = "IfStmt" }
 
   /**
-   * Gets the initialization statement of this 'if' statement.
+   * Gets the initialization statement of this 'if' statement, if any.
    *
    * For example, for
    * ```
@@ -320,7 +320,7 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
   override string getAPrimaryQlClass() { result = "ConstexprIfStmt" }
 
   /**
-   * Gets the initialization statement of this 'constexpr if' statement.
+   * Gets the initialization statement of this 'constexpr if' statement, if any.
    *
    * For example, for
    * ```
@@ -1513,7 +1513,7 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
   override string getAPrimaryQlClass() { result = "SwitchStmt" }
 
   /**
-   * Gets the initialization statement of this 'switch' statement.
+   * Gets the initialization statement of this 'switch' statement, if any.
    *
    * For example, for
    * ```
