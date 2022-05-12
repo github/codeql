@@ -201,7 +201,7 @@ class StrCatBW extends BufferWriteCall {
     // when result exists, it is an exact flow analysis
     reason instanceof ValueFlowAnalysis and
     result =
-      this.getArgument(this.getParamSrc()).(AnalysedString).getMaxLength() * this.getCharSize()
+      this.getArgument(this.getParamSrc()).(AnalyzedString).getMaxLength() * this.getCharSize()
   }
 
   override int getMaxData(BufferWriteEstimationReason reason) {

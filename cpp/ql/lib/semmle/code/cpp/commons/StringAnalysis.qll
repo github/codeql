@@ -44,7 +44,7 @@ class AnalyzedString extends Expr {
    * can be calculated.
    */
   int getMaxLength() {
-    // take the longest AnalysedString it's value could 'flow' from; however if even one doesn't
+    // take the longest AnalyzedString its value could 'flow' from; however if even one doesn't
     // return a value (this essentially means 'infinity') we can't return a value either.
     result =
       max(AnalyzedString expr, int toMax |
