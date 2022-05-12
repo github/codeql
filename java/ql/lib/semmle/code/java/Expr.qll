@@ -1374,10 +1374,10 @@ class LambdaExpr extends FunctionalExpr, @lambdaexpr {
    * The parameters of the lambda expression are the parameters of this method.
    */
   override Method asMethod() {
-    not isKotlinFunctionN() and
+    not this.isKotlinFunctionN() and
     result = this.getAnonymousClass().getAMethod()
     or
-    isKotlinFunctionN() and
+    this.isKotlinFunctionN() and
     result = this.getAnonymousClass().getAMethod() and
     result.getNumberOfParameters() > 1
   }
@@ -1644,7 +1644,7 @@ class NotInstanceOfExpr extends Expr, @notinstanceofexpr {
   Expr getTypeName() { result.isNthChildOf(this, 1) }
 
   /** Gets the type this `!is` expression checks for. */
-  RefType getCheckedType() { result = getTypeName().getType() }
+  RefType getCheckedType() { result = this.getTypeName().getType() }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "... !is ..." }
