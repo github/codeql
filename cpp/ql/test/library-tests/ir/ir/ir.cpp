@@ -1754,4 +1754,66 @@ int implicit_copy_constructor_test(
     CopyConstructorTestVirtualClass cy = y;
 }
 
+void if_initialization(int x) {
+    if (int y = x; x + 1) {
+        x = x + y;
+    }
+
+    int w;
+    if (w = x; x + 1) {
+        x = x + w;
+    }
+
+    if (w = x; int w2 = w) {
+        x = x + w;
+    }
+
+    if (int v = x; int v2 = v) {
+        x = x + v;
+    }
+
+    int z = x;
+    if (z) {
+        x = x + z;
+    }
+
+    if (int z2 = z) {
+        x += z2;
+    }
+}
+
+void switch_initialization(int x) {
+    switch (int y = x; x + 1) {
+    default:
+        x = x + y;
+    }
+
+    int w;
+    switch (w = x; x + 1) {
+    default:
+        x = x + w;
+    }
+
+    switch (w = x; int w2 = w) {
+    default:
+        x = x + w;
+    }
+
+    switch (int v = x; int v2 = v) {
+    default:
+        x = x + v;
+    }
+
+    int z = x;
+    switch (z) {
+    default:
+        x = x + z;
+    }
+
+    switch (int z2 = z) {
+    default:
+        x += z2;
+    }
+}
+
 // semmle-extractor-options: -std=c++17 --clang
