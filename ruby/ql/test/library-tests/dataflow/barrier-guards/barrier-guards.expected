@@ -5,4 +5,4 @@
 | barrier-guards.rb:27:8:27:19 | ... != ... | barrier-guards.rb:28:5:28:7 | foo | barrier-guards.rb:27:8:27:10 | foo | false |
 | barrier-guards.rb:37:4:37:20 | call to include? | barrier-guards.rb:38:5:38:7 | foo | barrier-guards.rb:37:17:37:19 | foo | true |
 | barrier-guards.rb:43:4:43:15 | ... == ... | barrier-guards.rb:45:9:45:11 | foo | barrier-guards.rb:43:4:43:6 | foo | true |
-| barrier-guards.rb:69:4:69:21 | call to include? | barrier-guards.rb:70:5:70:7 | foo | barrier-guards.rb:69:18:69:20 | foo | true |
+| barrier-guards.rb:70:4:70:21 | call to include? | barrier-guards.rb:71:5:71:7 | foo | barrier-guards.rb:70:18:70:20 | foo | true |

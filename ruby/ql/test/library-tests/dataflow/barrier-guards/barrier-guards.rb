@@ -63,10 +63,29 @@ if foo == "foo"
     my_lambda()
 end
 
+foos = nil
 foos = ["foo"]
-bars = ["bar"]
+bars = NotAnArray.new
 
 if foos.include?(foo)
+    foo
+else
+    foo
+end
+
+if bars.include?(foo)
+    foo
+else
+    foo
+end
+
+bars = ["bar"]
+
+if condition
+    bars = nil
+end
+
+if bars.include?(foo)
     foo
 else
     foo
