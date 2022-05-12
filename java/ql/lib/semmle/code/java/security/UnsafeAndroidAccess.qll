@@ -75,6 +75,8 @@ private predicate webViewLoadUrl(Argument urlArg, WebViewRef webview) {
     loadUrl.getArgument(0) = urlArg and
     loadUrl.getMethod() instanceof WebViewLoadUrlMethod
   |
+    webview.getAnAccess() = DataFlow::exprNode(loadUrl.getQualifier().getUnderlyingExpr())
+    or
     webview.getAnAccess() = DataFlow::getInstanceArgument(loadUrl)
     or
     // `webview` is received as a parameter of an event method in a custom `WebViewClient`,
@@ -82,8 +84,9 @@ private predicate webViewLoadUrl(Argument urlArg, WebViewRef webview) {
     exists(WebViewClientEventMethod eventMethod, MethodAccess setWebClient |
       setWebClient.getMethod() instanceof WebViewSetWebViewClientMethod and
       setWebClient.getArgument(0).getType() = eventMethod.getDeclaringType() and
-      loadUrl.getQualifier() = eventMethod.getWebViewParameter().getAnAccess()
+      loadUrl.getQualifier().getUnderlyingExpr() = eventMethod.getWebViewParameter().getAnAccess()
     |
+      webview.getAnAccess() = DataFlow::exprNode(setWebClient.getQualifier().getUnderlyingExpr()) or
       webview.getAnAccess() = DataFlow::getInstanceArgument(setWebClient)
     )
   )

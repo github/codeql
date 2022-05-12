@@ -100,6 +100,18 @@ class Expr extends ExprParent, @expr {
 
   /** Holds if this expression is parenthesized. */
   predicate isParenthesized() { isParenthesized(this, _) }
+
+  /**
+   * Gets the underlying expression looking through casts and not-nulls, if any.
+   * Otherwise just gets this expression.
+   */
+  Expr getUnderlyingExpr() {
+    if this instanceof CastingExpr or this instanceof NotNullExpr
+    then
+      result = this.(CastingExpr).getExpr().getUnderlyingExpr() or
+      result = this.(NotNullExpr).getExpr().getUnderlyingExpr()
+    else result = this
+  }
 }
 
 /**
