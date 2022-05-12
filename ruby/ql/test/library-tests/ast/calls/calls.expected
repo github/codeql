@@ -117,7 +117,7 @@ callsWithArguments
 callsWithReceiver
 | calls.rb:2:1:2:5 | call to foo | calls.rb:2:1:2:5 | self |
 | calls.rb:5:1:5:10 | call to bar | calls.rb:5:1:5:3 | Foo |
-| calls.rb:8:1:8:7 | call to bar | calls.rb:8:1:8:7 | self |
+| calls.rb:8:3:8:7 | call to bar | calls.rb:8:3:8:7 | self |
 | calls.rb:11:1:11:7 | call to bar | calls.rb:11:1:11:3 | 123 |
 | calls.rb:14:1:14:11 | call to foo | calls.rb:14:1:14:11 | self |
 | calls.rb:17:1:17:17 | call to foo | calls.rb:17:1:17:17 | self |

@@ -1,48 +1,35 @@
-/*
- * Copyright (C) 2009 The Guava Authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
+// Generated automatically from com.google.common.base.Splitter for testing purposes
 
 package com.google.common.base;
 
-import java.util.Iterator;
+import com.google.common.base.CharMatcher;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
-public final class Splitter {
-
-  public static Splitter on(final String separator) {
-    return null;
-  }
-
-  public Splitter omitEmptyStrings() {
-    return null;
-  }
-
-  public Iterable<String> split(final CharSequence sequence) {
-    return null;
-  }
-
-  public List<String> splitToList(CharSequence sequence) {
-    return null;
-  }
-
-  public MapSplitter withKeyValueSeparator(String separator) {
-    return null;
-  }
-
-  public static final class MapSplitter {
-    public Map<String, String> split(CharSequence sequence) {
-      return null;
+public class Splitter
+{
+    protected Splitter() {}
+    public Iterable<String> split(CharSequence p0){ return null; }
+    public List<String> splitToList(CharSequence p0){ return null; }
+    public Splitter limit(int p0){ return null; }
+    public Splitter omitEmptyStrings(){ return null; }
+    public Splitter trimResults(){ return null; }
+    public Splitter trimResults(CharMatcher p0){ return null; }
+    public Splitter.MapSplitter withKeyValueSeparator(Splitter p0){ return null; }
+    public Splitter.MapSplitter withKeyValueSeparator(String p0){ return null; }
+    public Splitter.MapSplitter withKeyValueSeparator(char p0){ return null; }
+    public Stream<String> splitToStream(CharSequence p0){ return null; }
+    public static Splitter fixedLength(int p0){ return null; }
+    public static Splitter on(CharMatcher p0){ return null; }
+    public static Splitter on(Pattern p0){ return null; }
+    public static Splitter on(String p0){ return null; }
+    public static Splitter on(char p0){ return null; }
+    public static Splitter onPattern(String p0){ return null; }
+    static public class MapSplitter
+    {
+        protected MapSplitter() {}
+        public Map<String, String> split(CharSequence p0){ return null; }
     }
-  }
 }

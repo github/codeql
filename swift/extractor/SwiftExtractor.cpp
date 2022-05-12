@@ -13,6 +13,8 @@
 #include <llvm/Support/Path.h>
 
 #include "swift/extractor/trap/TrapClasses.h"
+#include "swift/extractor/trap/TrapArena.h"
+#include "swift/extractor/trap/TrapOutput.h"
 
 using namespace codeql;
 
@@ -61,24 +63,28 @@ static void extractFile(const SwiftExtractorConfiguration& config, swift::Source
     return;
   }
 
-  std::ofstream trap(tempTrapPath.str().str());
-  if (!trap) {
+  std::ofstream trapStream(tempTrapPath.str().str());
+  if (!trapStream) {
     std::error_code ec;
     ec.assign(errno, std::generic_category());
     std::cerr << "Cannot create temp trap file '" << tempTrapPath.str().str()
               << "': " << ec.message() << "\n";
     return;
   }
-  trap << "// extractor-args: ";
+  trapStream << "// extractor-args: ";
   for (auto opt : config.frontendOptions) {
-    trap << std::quoted(opt) << " ";
+    trapStream << std::quoted(opt) << " ";
   }
-  trap << "\n\n";
+  trapStream << "\n\n";
 
-  File f;
-  f.id = TrapLabel<FileTag>{};
+  TrapOutput trap{trapStream};
+  TrapArena arena{};
+  auto label = arena.allocateLabel<FileTag>();
+  trap.assignStar(label);
+  File f{};
+  f.id = label;
   f.name = srcFilePath.str().str();
-  trap << f.id << "=*\n" << f;
+  trap.emit(f);
 
   // TODO: Pick a better name to avoid collisions
   std::string trapName = file.getFilename().str() + ".trap";

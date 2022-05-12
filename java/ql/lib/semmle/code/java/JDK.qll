@@ -104,6 +104,11 @@ class TypeClassCastException extends Class {
   TypeClassCastException() { this.hasQualifiedName("java.lang", "ClassCastException") }
 }
 
+/** The class `java.lang.NullPointerException`. */
+class TypeNullPointerException extends Class {
+  TypeNullPointerException() { this.hasQualifiedName("java.lang", "NullPointerException") }
+}
+
 /**
  * The class `java.lang.Class`.
  *

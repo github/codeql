@@ -50,8 +50,9 @@ predicate implicitAssignmentNode(Ruby::AstNode n) {
 
 /** Holds if `n` is inside a parameter. */
 predicate implicitParameterAssignmentNode(Ruby::AstNode n, Callable::Range c) {
-  n = c.getParameter(_)
-  or
+  n = c.getParameter(_) or
+  n = c.(Ruby::Block).getParameters().getLocals(_) or
+  n = c.(Ruby::DoBlock).getParameters().getLocals(_) or
   implicitParameterAssignmentNode(n.getParent().(Ruby::DestructuredParameter), c)
 }
 

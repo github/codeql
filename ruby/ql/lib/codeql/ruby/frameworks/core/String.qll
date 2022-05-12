@@ -415,7 +415,7 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
-      output = "ReturnValue.Element[" + [0, 1, 2] + "]" and
+      output = "ReturnValue.Element[0,1,2]" and
       preservesValue = false
     }
   }

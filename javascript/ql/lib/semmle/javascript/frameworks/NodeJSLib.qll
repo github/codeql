@@ -168,9 +168,9 @@ module NodeJSLib {
     string kind;
 
     RequestInputAccess() {
-      // `req.url`
-      kind = "url" and
-      this.asExpr().(PropAccess).accesses(request, "url")
+      // `req.url` / `req.body`
+      kind = ["url", "body"] and
+      this.asExpr().(PropAccess).accesses(request, kind)
       or
       exists(PropAccess headers |
         // `req.headers.cookie`

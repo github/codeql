@@ -39,6 +39,9 @@ class TrapLabel : public UntypedTrapLabel {
 
   TrapLabel() = default;
 
+  // The caller is responsible for ensuring ID uniqueness.
+  static TrapLabel unsafeCreateFromExplicitId(uint64_t id) { return {id}; }
+
   template <typename OtherTag>
   TrapLabel(const TrapLabel<OtherTag>& other) : UntypedTrapLabel(other) {
     // we temporarily need to bypass the label type system for unknown AST nodes and types
