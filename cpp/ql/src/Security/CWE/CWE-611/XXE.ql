@@ -30,7 +30,7 @@ abstract class XXEFlowState extends DataFlow::FlowState {
  * An `Expr` that changes the configuration of an XML object, transforming the
  * `XXEFlowState` that flows through it.
  */
-abstract class XXEFlowStateTranformer extends Expr {
+abstract class XXEFlowStateTransformer extends Expr {
   /**
    * Gets the flow state that `flowstate` is transformed into.
    *
@@ -119,10 +119,10 @@ class XercesFlowState extends XXEFlowState {
  * `SAXParser.setDisableDefaultEntityResolution`. Transforms the flow
  * state through the qualifier according to the setting in the parameter.
  */
-class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
+class DisableDefaultEntityResolutionTransformer extends XXEFlowStateTransformer {
   Expr newValue;
 
-  DisableDefaultEntityResolutionTranformer() {
+  DisableDefaultEntityResolutionTransformer() {
     exists(Call call, Function f |
       call.getTarget() = f and
       (
@@ -154,10 +154,10 @@ class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
  * `AbstractDOMParser.setCreateEntityReferenceNodes`. Transforms the flow
  * state through the qualifier according to the setting in the parameter.
  */
-class CreateEntityReferenceNodesTranformer extends XXEFlowStateTranformer {
+class CreateEntityReferenceNodesTransformer extends XXEFlowStateTransformer {
   Expr newValue;
 
-  CreateEntityReferenceNodesTranformer() {
+  CreateEntityReferenceNodesTransformer() {
     exists(Call call, Function f |
       call.getTarget() = f and
       f.getClassAndName("setCreateEntityReferenceNodes") instanceof AbstractDOMParserClass and
@@ -195,10 +195,10 @@ class FeatureDisableDefaultEntityResolution extends Variable {
  * specifying the feature `XMLUni::fgXercesDisableDefaultEntityResolution`.
  * Transforms the flow state through the qualifier according to this setting.
  */
-class SetFeatureTranformer extends XXEFlowStateTranformer {
+class SetFeatureTransformer extends XXEFlowStateTransformer {
   Expr newValue;
 
-  SetFeatureTranformer() {
+  SetFeatureTransformer() {
     exists(Call call, Function f |
       call.getTarget() = f and
       f.getClassAndName("setFeature") instanceof Sax2XmlReader and
@@ -246,10 +246,10 @@ class DomConfigurationSetParameter extends Function {
  * `DOMConfiguration` pointer returned by `DOMLSParser.getDomConfig` - and it
  * is *that* qualifier we want to transform the flow state of.
  */
-class DomConfigurationSetParameterTranformer extends XXEFlowStateTranformer {
+class DomConfigurationSetParameterTransformer extends XXEFlowStateTransformer {
   Expr newValue;
 
-  DomConfigurationSetParameterTranformer() {
+  DomConfigurationSetParameterTransformer() {
     exists(FunctionCall getDomConfigCall, FunctionCall setParameterCall |
       // this is the qualifier of a call to `DOMLSParser.getDomConfig`.
       getDomConfigCall.getTarget() instanceof GetDomConfig and
@@ -429,15 +429,15 @@ class XXEConfiguration extends DataFlow::Configuration {
   override predicate isAdditionalFlowStep(
     DataFlow::Node node1, string state1, DataFlow::Node node2, string state2
   ) {
-    // create additional flow steps for `XXEFlowStateTranformer`s
-    state2 = node2.asConvertedExpr().(XXEFlowStateTranformer).transform(state1) and
+    // create additional flow steps for `XXEFlowStateTransformer`s
+    state2 = node2.asConvertedExpr().(XXEFlowStateTransformer).transform(state1) and
     DataFlow::simpleLocalFlowStep(node1, node2)
   }
 
   override predicate isBarrier(DataFlow::Node node, string flowstate) {
     // when the flowstate is transformed at a call node, block the original
     // flowstate value.
-    node.asConvertedExpr().(XXEFlowStateTranformer).transform(flowstate) != flowstate
+    node.asConvertedExpr().(XXEFlowStateTransformer).transform(flowstate) != flowstate
   }
 }
 
