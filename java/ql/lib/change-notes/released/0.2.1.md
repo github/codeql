@@ -2,9 +2,9 @@
 
 ### New Features
 
- * A number of new classes and methods related to the upcoming Kotlin
-   support have been added. These are not yet stable, as Kotlin support
-   is still under development.
+* A number of new classes and methods related to the upcoming Kotlin
+  support have been added. These are not yet stable, as Kotlin support
+  is still under development.
    * `File::isSourceFile`
    * `File::isJavaSourceFile`
    * `File::isKotlinSourceFile`
