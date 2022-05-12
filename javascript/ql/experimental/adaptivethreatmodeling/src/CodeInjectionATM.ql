@@ -1,14 +1,14 @@
 /**
  * For internal use only.
  *
- * @name Code injection (boosted)
+ * @name Code injection (experimental)
  * @description Interpreting unsanitized user input as code allows a malicious user arbitrary code execution.
  * @kind path-problem
  * @scored
  * @problem.severity error
  * @security-severity 9.3
- * @id adaptive-threat-modeling/js/code-injection
- * @tags experimental experimental/atm security external/cwe/cwe-094 external/cwe/cwe-095 external/cwe/cwe-079 external/cwe/cwe-116
+ * @id js/ml-powered/code-injection
+ * @tags experimental security external/cwe/cwe-094 external/cwe/cwe-095 external/cwe/cwe-079 external/cwe/cwe-116
  */
 
 import experimental.adaptivethreatmodeling.CodeInjectionATM
