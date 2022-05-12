@@ -7,9 +7,9 @@
 import javascript
 import AdaptiveThreatModeling
 private import semmle.javascript.dataflow.InferredTypes
-import semmle.javascript.security.dataflow.Xss::XssThroughDom
+import semmle.javascript.security.dataflow.XssThroughDomCustomizations::XssThroughDom
 private import semmle.javascript.security.dataflow.XssThroughDomCustomizations::XssThroughDom
-private import semmle.javascript.security.dataflow.Xss::DomBasedXss as DomBasedXss
+private import semmle.javascript.security.dataflow.DomBasedXssCustomizations::DomBasedXss as DomBasedXss
 private import semmle.javascript.security.dataflow.UnsafeJQueryPluginCustomizations::UnsafeJQueryPlugin as UnsafeJQuery
 
 /**
