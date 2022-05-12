@@ -71,7 +71,7 @@
 ### Minor Analysis Improvements
 
 * Added models for the libraries OkHttp and Retrofit.
- * Add taint models for the following `File` methods:
+* Add taint models for the following `File` methods:
    * `File::getAbsoluteFile`
    * `File::getCanonicalFile`
    * `File::getAbsolutePath`
