@@ -43,7 +43,7 @@ class UriGetHostMethod extends Method {
 }
 
 /**
- * The method access with incorrect string comparision
+ * The method access with incorrect string comparison
  */
 class HostVerificationMethodAccess extends MethodAccess {
   HostVerificationMethodAccess() {
