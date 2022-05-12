@@ -1,5 +1,5 @@
 /**
- * XssATM.ql
+ * XssThroughDomATM.ql
  *
  * Version of the boosted XSS through DOM query with an output relation ready to plug into the evaluation
  * pipeline.

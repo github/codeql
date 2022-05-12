@@ -1,5 +1,5 @@
 /**
- * XssATMLite.ql
+ * XssThroughDomATMLite.ql
  *
  * Arbitrarily ranked version of the boosted XSS query with an output relation ready to plug into
  * the evaluation pipeline. This is useful (a) for evaluating the performance of endpoint filters,
