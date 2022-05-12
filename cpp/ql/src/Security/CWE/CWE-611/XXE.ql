@@ -7,7 +7,7 @@
  * @id cpp/external-entity-expansion
  * @problem.severity warning
  * @security-severity 9.1
- * @precision medium
+ * @precision high
  * @tags security
  *       external/cwe/cwe-611
  */
