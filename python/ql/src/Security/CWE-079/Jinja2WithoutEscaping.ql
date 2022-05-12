@@ -12,6 +12,8 @@
  */
 
 import python
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.ApiGraphs
 
 /*
  * Jinja 2 Docs:
@@ -25,25 +27,25 @@ import python
  * safe1_tmpl = Template('Hello {{ name }}!', autoescape=True)
  */
 
-ClassValue jinja2EnvironmentOrTemplate() {
-  result = Value::named("jinja2.Environment")
+private API::Node jinja2EnvironmentOrTemplate() {
+  result = API::moduleImport("jinja2").getMember("Environment")
   or
-  result = Value::named("jinja2.Template")
+  result = API::moduleImport("jinja2").getMember("Template")
 }
 
-ControlFlowNode getAutoEscapeParameter(CallNode call) { result = call.getArgByName("autoescape") }
+DataFlow::Node getAutoEscapeParameter(DataFlow::CallCfgNode call) {
+  result = call.getArgByName("autoescape")
+}
 
-from CallNode call
+from DataFlow::CallCfgNode call
 where
-  call.getFunction().pointsTo(jinja2EnvironmentOrTemplate()) and
-  not exists(call.getNode().getStarargs()) and
-  not exists(call.getNode().getKwargs()) and
+  call = jinja2EnvironmentOrTemplate().getACall() and
+  not exists(call.asCfgNode().(CallNode).getNode().getStarargs()) and
+  not exists(call.asCfgNode().(CallNode).getNode().getKwargs()) and
   (
     not exists(getAutoEscapeParameter(call))
     or
-    exists(Value isFalse |
-      getAutoEscapeParameter(call).pointsTo(isFalse) and
-      isFalse.getDefiniteBooleanValue() = false
-    )
+    any(DataFlow::LocalSourceNode n | n.asExpr().(ImmutableLiteral).booleanValue() = false)
+        .flowsTo(getAutoEscapeParameter(call))
   )
 select call, "Using jinja2 templates with autoescape=False can potentially allow XSS attacks."
