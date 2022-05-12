@@ -5,7 +5,7 @@
  * @description Reinterpreting text from the DOM as HTML can lead to a cross-site scripting vulnerability.
  * @kind path-problem
  * @scored
- * @problem.severity warning
+ * @problem.severity error
  * @security-severity 6.1
  * @id js/ml-powered/xss-through-dom
  * @tags experimental security external/cwe/cwe-079 external/cwe/cwe-116
