@@ -1,2 +1,7 @@
 - description: ATM boosted Code Scanning queries for JavaScript
 - queries: .
+- include:
+    query filename: NosqlInjectionATM.ql
+    query filename: SqlInjectionATM.ql
+    query filename: TaintedPathATM.ql
+    query filename: XssATM.ql
