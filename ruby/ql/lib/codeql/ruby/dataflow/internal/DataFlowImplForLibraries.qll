@@ -3653,7 +3653,7 @@ private newtype TPathNode =
  * of dereference operations needed to get from the value in the node to the
  * tracked object. The final type indicates the type of the tracked object.
  */
-abstract private class AccessPath extends TAccessPath {
+private class AccessPath extends TAccessPath {
   /** Gets the head of this access path, if any. */
   abstract TypedContent getHead();
 
