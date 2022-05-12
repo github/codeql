@@ -19,7 +19,7 @@ private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(Node n) { result.asCallable() = n.getEnclosingCallable() }
+DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallableImpl() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
 predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
@@ -980,7 +980,13 @@ private module ParameterNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() { result = sc }
 
-    override Type getTypeImpl() { result instanceof ObjectType }
+    override Type getTypeImpl() {
+      exists(int i |
+        pos_.getPosition() = i and result = sc.asSummarizedCallable().getParameter(i).getType()
+      )
+      or
+      pos_.isThisParameter() and result = sc.asSummarizedCallable().getDeclaringType()
+    }
 
     override ControlFlow::Node getControlFlowNodeImpl() { none() }
 

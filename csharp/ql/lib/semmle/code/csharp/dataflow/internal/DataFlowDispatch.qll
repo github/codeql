@@ -12,14 +12,6 @@ private import semmle.code.csharp.dispatch.RuntimeCallable
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 
-private predicate summarizedCallable(DataFlowCallable c) {
-  exists(c.asSummarizedCallable())
-  or
-  FlowSummaryImpl::Private::summaryReturnNode(_, TJumpReturnKind(c, _))
-  or
-  c.asCallable() = interpretElement(_, _, _, _, _, _)
-}
-
 /**
  * Gets a source declaration of callable `c` that has a body or has
  * a flow summary.
@@ -29,9 +21,6 @@ private predicate summarizedCallable(DataFlowCallable c) {
  */
 DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
   exists(DotNet::Callable unboundDecl | unboundDecl = c.getUnboundDeclaration() |
-    summarizedCallable(TDotNetCallable(unboundDecl)) and
-    result = unboundDecl
-    or
     result.hasBody() and
     if unboundDecl.getFile().fromSource()
     then
@@ -329,9 +318,7 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   override DataFlowCallable getARuntimeTarget() {
     result.asCallable() = getCallableForDataFlow(dc.getADynamicTarget())
     or
-    result.asCallable() = dc.getAStaticTarget().getUnboundDeclaration() and
-    summarizedCallable(result) and
-    not result.asCallable() instanceof RuntimeCallable
+    result.asSummarizedCallable() = dc.getAStaticTarget().getUnboundDeclaration()
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
