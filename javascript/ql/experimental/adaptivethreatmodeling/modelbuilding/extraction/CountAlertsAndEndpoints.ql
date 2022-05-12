@@ -10,11 +10,11 @@
  */
 
 import javascript
+import semmle.javascript.security.dataflow.CodeInjectionQuery as CodeInjection
 import semmle.javascript.security.dataflow.NosqlInjectionQuery as NosqlInjection
 import semmle.javascript.security.dataflow.SqlInjectionQuery as SqlInjection
 import semmle.javascript.security.dataflow.TaintedPathQuery as TaintedPath
 import semmle.javascript.security.dataflow.DomBasedXssQuery as DomBasedXss
-import semmle.javascript.security.dataflow.StoredXssQuery as StoredXss
 import semmle.javascript.security.dataflow.XssThroughDomQuery as XssThroughDom
 import evaluation.EndToEndEvaluation
 
@@ -29,7 +29,7 @@ select numAlerts(any(NosqlInjection::Configuration cfg)) as numNosqlAlerts,
   numAlerts(any(SqlInjection::Configuration cfg)) as numSqlAlerts,
   numAlerts(any(TaintedPath::Configuration cfg)) as numTaintedPathAlerts,
   numAlerts(any(DomBasedXss::Configuration cfg)) as numXssAlerts,
-  numAlerts(any(StoredXss::Configuration cfg)) as numStoredXssAlerts,
+  numAlerts(any(CodeInjection::Configuration cfg)) as numCodeInjectionAlerts,
   numAlerts(any(XssThroughDom::Configuration cfg)) as numXssThroughDomAlerts,
   count(DataFlow::Node sink |
     exists(NosqlInjection::Configuration cfg | cfg.isSink(sink) or cfg.isSink(sink, _))
@@ -44,8 +44,8 @@ select numAlerts(any(NosqlInjection::Configuration cfg)) as numNosqlAlerts,
     exists(DomBasedXss::Configuration cfg | cfg.isSink(sink) or cfg.isSink(sink, _))
   ) as numXssSinks,
   count(DataFlow::Node sink |
-    exists(StoredXss::Configuration cfg | cfg.isSink(sink) or cfg.isSink(sink, _))
-  ) as numStoredXssSinks,
+    exists(CodeInjection::Configuration cfg | cfg.isSink(sink) or cfg.isSink(sink, _))
+  ) as numCodeInjectionSinks,
   count(DataFlow::Node sink |
     exists(XssThroughDom::Configuration cfg | cfg.isSink(sink) or cfg.isSink(sink, _))
   ) as numXssThroughDomSinks
