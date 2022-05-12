@@ -26,7 +26,7 @@ import Queries
 
 /** Gets the ATM configuration object for the specified query. */
 AtmConfig getAtmCfg(Query query) {
-  query instanceof CodeInjectionQuery and result instanceof CodeInjectionATM::CodeInjectionATMConfig
+  query instanceof CodeInjectionQuery and result instanceof CodeInjectionATM::CodeInjectionAtmConfig
   or
   query instanceof NosqlInjectionQuery and
   result instanceof NosqlInjectionATM::NosqlInjectionAtmConfig
