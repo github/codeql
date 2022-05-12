@@ -280,7 +280,13 @@ module API {
    * you should use `.getMember` on the parent module. For example, for nodes corresponding to the module `foo.bar`,
    * use `moduleImport("foo").getMember("bar")`.
    */
-  Node moduleImport(string m) { result = Impl::MkModuleImport(m) }
+  Node moduleImport(string m) {
+    result = Impl::MkModuleImport(m) and
+    // restrict `moduleImport` so it will never give results for a dotted name. Note
+    // that we cannot move this logic to the `MkModuleImport` construction, since we
+    // need the intermediate API graph nodes for the prefixes in `import foo.bar.baz`.
+    not m.matches("%.%")
+  }
 
   /** Gets a node corresponding to the built-in with the given name, if any. */
   Node builtin(string n) { result = moduleImport("builtins").getMember(n) }
