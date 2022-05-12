@@ -1,48 +1,49 @@
 /**
- * Provides Python-specific definitions for use in the ReDoSUtil module.
+ * This module should provide a class hierarchy corresponding to a parse tree of regular expressions.
+ * This is the interface to the shared ReDoS library.
  */
 
-import python
-import semmle.python.RegexTreeView
+private import java
+import semmle.code.FileSystem
+import semmle.code.java.regex.RegexTreeView
 
 /**
- * Holds if `term` is an ecape class representing e.g. `\d`.
+ * Holds if `term` is an escape class representing e.g. `\d`.
  * `clazz` is which character class it represents, e.g. "d" for `\d`.
  */
 predicate isEscapeClass(RegExpTerm term, string clazz) {
-  exists(RegExpCharacterClassEscape escape | term = escape | escape.getValue() = clazz)
+  term.(RegExpCharacterClassEscape).getValue() = clazz
+  or
+  term.(RegExpNamedProperty).getBackslashEquivalent() = clazz
 }
 
 /**
- * Holds if `term` is a possessive quantifier.
- * As python's regexes do not support possessive quantifiers, this never holds, but is used by the shared library.
+ * Holds if `term` is a possessive quantifier, e.g. `a*+`.
  */
-predicate isPossessive(RegExpQuantifier term) { none() }
+predicate isPossessive(RegExpQuantifier term) { term.isPossessive() }
 
 /**
  * Holds if the regex that `term` is part of is used in a way that ignores any leading prefix of the input it's matched against.
- * Not yet implemented for Python.
  */
-predicate matchesAnyPrefix(RegExpTerm term) { any() }
+predicate matchesAnyPrefix(RegExpTerm term) { not term.getRegex().matchesFullString() }
 
 /**
  * Holds if the regex that `term` is part of is used in a way that ignores any trailing suffix of the input it's matched against.
- * Not yet implemented for Python.
  */
-predicate matchesAnySuffix(RegExpTerm term) { any() }
+predicate matchesAnySuffix(RegExpTerm term) { not term.getRegex().matchesFullString() }
 
 /**
  * Holds if the regular expression should not be considered.
  *
  * We make the pragmatic performance optimization to ignore regular expressions in files
- * that does not belong to the project code (such as installed dependencies).
+ * that do not belong to the project code (such as installed dependencies).
  */
 predicate isExcluded(RegExpParent parent) {
   not exists(parent.getRegex().getLocation().getFile().getRelativePath())
   or
   // Regexes with many occurrences of ".*" may cause the polynomial ReDoS computation to explode, so
   // we explicitly exclude these.
-  count(int i | exists(parent.getRegex().getText().regexpFind("\\.\\*", i, _)) | i) > 10
+  strictcount(int i | exists(parent.getRegex().getText().regexpFind("\\.\\*", i, _)) | i) > 10
 }
 
 /**
