@@ -1863,11 +1863,6 @@ variable_vla(
     int decl: @stmt_vla_decl ref
 );
 
-if_initialization(
-    unique int if_stmt: @stmt_if ref,
-    int init_id: @stmt ref
-);
-
 if_then(
     unique int if_stmt: @stmt_if ref,
     int then_id: @stmt ref
@@ -1876,11 +1871,6 @@ if_then(
 if_else(
     unique int if_stmt: @stmt_if ref,
     int else_id: @stmt ref
-);
-
-constexpr_if_initialization(
-    unique int constexpr_if_stmt: @stmt_constexpr_if ref,
-    int init_id: @stmt ref
 );
 
 constexpr_if_then(
@@ -1901,11 +1891,6 @@ while_body(
 do_body(
     unique int do_stmt: @stmt_end_test_while ref,
     int body_id: @stmt ref
-);
-
-switch_initialization(
-    unique int switch_stmt: @stmt_switch ref,
-    int init_id: @stmt ref
 );
 
 #keyset[switch_stmt, index]
