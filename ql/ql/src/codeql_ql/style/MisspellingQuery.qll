@@ -4,10 +4,14 @@ private import TypoDatabase
 
 predicate misspelling(string wrong, string right, string mistake) {
   mistake = "common misspelling" and
-  typos(wrong, right)
+  (typos(wrong, right) or additional_typos(wrong, right))
   or
   mistake = "non-US spelling" and
   non_us_spelling(wrong, right)
+}
+
+predicate additional_typos(string wrong, string right) {
+  wrong = "tranformer" and right = "transformer"
 }
 
 /**
