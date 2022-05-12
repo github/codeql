@@ -818,11 +818,7 @@ predicate nodeIsHidden(Node n) {
     def instanceof Ssa::ImplicitCallDefinition
   )
   or
-  exists(Parameter p | p = n.(ParameterNode).getParameter() |
-    not p.fromSource()
-    or
-    p.getCallable() instanceof FlowSummary::SummarizedCallable
-  )
+  exists(Parameter p | p = n.(ParameterNode).getParameter() | not p.fromSource())
   or
   n =
     TInstanceParameterNode(any(Callable c |
@@ -838,6 +834,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof MallocNode
   or
   n instanceof SummaryNode
+  or
+  n instanceof SummaryParameterNode
   or
   n instanceof ParamsArgumentNode
   or
