@@ -38,7 +38,7 @@ SINK(tainted_lambda)  # $ flow="SOURCE, l:-1 -> tainted_lambda"
 
 # A lambda that breaks the flow
 untainted_lambda = apply_lambda(lambda x: 1, SOURCE)
-SINK_F(untainted_lambda) # $ SPURIOUS: flow="SOURCE, l:-1 -> untainted_lambda"
+SINK_F(untainted_lambda)
 
 # Collection summaries
 tainted_list = reversed([SOURCE])

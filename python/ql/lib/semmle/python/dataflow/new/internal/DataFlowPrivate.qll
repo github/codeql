@@ -936,14 +936,16 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
   creation.asExpr() = c.(DataFlowLambda).getDefinition()
   or
   // normal function
-  // TODO: reconsider this code
-  kind = kind and
-  exists(Call call, Name f, FunctionDef def |
-    f = call.getAnArg() and
-    def.getDefinedFunction().getName() = f.getId() and
-    // c.getCallableValue() = def.getDefinedFunction().getDefinition() and
-    c.getName() = f.getId() and
-    creation.asExpr() = call
+  exists(FunctionDef def |
+    def.defines(creation.asVar().getSourceVariable()) and
+    def.getDefinedFunction() = c.(DataFlowCallableValue).getCallableValue().getScope()
+  )
+  or
+  // summarized function
+  exists(Call call, Name arg |
+    arg = call.getAnArg() and
+    c.(LibraryCallableValue).getName() = arg.getId() and
+    creation.asExpr() = arg
   )
 }
 

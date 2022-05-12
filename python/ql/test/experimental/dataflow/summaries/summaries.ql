@@ -8,6 +8,7 @@ import DataFlow::PathGraph
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.internal.FlowSummaryImpl
 import semmle.python.ApiGraphs
+import experimental.dataflow.testTaintConfig
 private import TestSummaries
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {
@@ -15,19 +16,6 @@ query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) 
   Private::External::invalidSpecComponent(s, c)
 }
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "FlowSummaries" }
-
-  override predicate isSource(DataFlow::Node src) { src.asExpr().(StrConst).getS() = "source" }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(Call mc |
-      mc.getFunc().(Name).getId() = "SINK" and
-      mc.getAnArg() = sink.asExpr()
-    )
-  }
-}
-
-from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf
+from DataFlow::PathNode source, DataFlow::PathNode sink, TestConfiguration conf
 where conf.hasFlowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()
