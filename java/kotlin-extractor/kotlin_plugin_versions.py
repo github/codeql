@@ -24,7 +24,7 @@ many_versions_tuples = [version_string_to_tuple(v) for v in many_versions]
 
 def get_single_version(fakeVersionOutput = None):
     # TODO: `shell=True` is a workaround to get CI working on Windows. It breaks the build on Linux.
-    versionOutput = subprocess.run(['kotlinc', '-version'], capture_output=True, text=True, shell=is_windows()).stderr if fakeVersionOutput is None else fakeVersionOutput
+    versionOutput = subprocess.run(['kotlinc', '-version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=is_windows()).stderr if fakeVersionOutput is None else fakeVersionOutput
     m = re.match(r'.* kotlinc-jvm ([0-9]+\.[0-9]+\.[0-9]+) .*', versionOutput)
     if m is None:
         raise Exception('Cannot detect version of kotlinc (got ' + str(versionOutput) + ')')
