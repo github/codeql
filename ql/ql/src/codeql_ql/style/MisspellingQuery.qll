@@ -64,5 +64,6 @@ string getAWord(AstNode node, string kind) {
 predicate misspelled_element(AstNode node, string kind, string wrong, string right, string mistake) {
   wrong = getAWord(node, kind) and
   misspelling(wrong, right, mistake) and
-  not isAllowed(wrong)
+  not isAllowed(wrong) and
+  not node.hasAnnotation("deprecated")
 }
