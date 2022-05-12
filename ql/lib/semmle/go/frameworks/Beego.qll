@@ -14,27 +14,27 @@ private import semmle.go.security.SafeUrlFlowCustomizations
 module Beego {
   /** 
    * Gets the module path `github.com/astaxie/beego` or `github.com/beego/beego` 
-   * or `github.com/beego/beego/v2/server/web`. 
+   * or `github.com/beego/beego/v2`. 
    */
   string modulePath() { 
     result = 
     [
       "github.com/astaxie/beego", "github.com/beego/beego",
-      "github.com/beego/beego/v2/server/web"
+      "github.com/beego/beego/v2"
     ] 
   }
 
   /** Gets the path for the root package of beego. */
-  string packagePath() { result = package(modulePath(), "") }
+  string packagePath() { result = package(modulePath(), ["", "server/web"]) }
 
   /** Gets the path for the context package of beego. */
-  string contextPackagePath() { result = package(modulePath(), "context") }
+  string contextPackagePath() { result = package(modulePath(), ["context", "server/web/context"]) }
 
   /** Gets the path for the logs package of beego. */
-  string logsPackagePath() { result = package(modulePath(), "logs") }
+  string logsPackagePath() { result = package(modulePath(), ["logs", "core/logs"]) }
 
   /** Gets the path for the utils package of beego. */
-  string utilsPackagePath() { result = package(modulePath(), "utils") }
+  string utilsPackagePath() { result = package(modulePath(), ["utils", "core/utils"]) }
 
   /**
    * `BeegoInput` sources of untrusted data.
