@@ -14,16 +14,20 @@ import experimental.adaptivethreatmodeling.EndpointFeatures as EndpointFeatures
 import experimental.adaptivethreatmodeling.EndpointScoring as EndpointScoring
 import experimental.adaptivethreatmodeling.EndpointTypes
 import experimental.adaptivethreatmodeling.FilteringReasons
+import experimental.adaptivethreatmodeling.CodeInjectionATM as CodeInjectionATM
 import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionATM
 import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionATM
 import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathATM
 import experimental.adaptivethreatmodeling.XssATM as XssATM
+import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomATM
 import Labels
 import NoFeaturizationRestrictionsConfig
 import Queries
 
 /** Gets the ATM configuration object for the specified query. */
 AtmConfig getAtmCfg(Query query) {
+  query instanceof CodeInjectionQuery and result instanceof CodeInjectionATM::CodeInjectionATMConfig
+  or
   query instanceof NosqlInjectionQuery and
   result instanceof NosqlInjectionATM::NosqlInjectionAtmConfig
   or
@@ -32,6 +36,8 @@ AtmConfig getAtmCfg(Query query) {
   query instanceof TaintedPathQuery and result instanceof TaintedPathATM::TaintedPathAtmConfig
   or
   query instanceof XssQuery and result instanceof XssATM::DomBasedXssAtmConfig
+  or
+  query instanceof XssThroughDomQuery and result instanceof XssThroughDomATM::XssThroughDomAtmConfig
 }
 
 /** DEPRECATED: Alias for getAtmCfg */
@@ -39,6 +45,8 @@ deprecated ATMConfig getATMCfg(Query query) { result = getAtmCfg(query) }
 
 /** Gets the ATM data flow configuration for the specified query. */
 DataFlow::Configuration getDataFlowCfg(Query query) {
+  query instanceof CodeInjectionQuery and result instanceof CodeInjectionATM::Configuration
+  or
   query instanceof NosqlInjectionQuery and result instanceof NosqlInjectionATM::Configuration
   or
   query instanceof SqlInjectionQuery and result instanceof SqlInjectionATM::Configuration
@@ -46,6 +54,8 @@ DataFlow::Configuration getDataFlowCfg(Query query) {
   query instanceof TaintedPathQuery and result instanceof TaintedPathATM::Configuration
   or
   query instanceof XssQuery and result instanceof XssATM::Configuration
+  or
+  query instanceof XssThroughDomQuery and result instanceof XssThroughDomATM::Configuration
 }
 
 /** Gets a known sink for the specified query. */
