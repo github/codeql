@@ -1226,6 +1226,13 @@ module Cryptography {
 
     /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
     DataFlow::Node getAnInput() { result = super.getAnInput() }
+
+    /**
+     * Gets the block mode used to perform this cryptographic operation.
+     * This may have no result - for example if the `CryptographicAlgorithm` used
+     * is a stream cipher rather than a block cipher.
+     */
+    BlockMode getBlockMode() { result = super.getBlockMode() }
   }
 
   /** Provides classes for modeling new applications of a cryptographic algorithms. */
@@ -1243,6 +1250,24 @@ module Cryptography {
 
       /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
       abstract DataFlow::Node getAnInput();
+
+      /**
+       * Gets the block mode used to perform this cryptographic operation.
+       * This may have no result - for example if the `CryptographicAlgorithm` used
+       * is a stream cipher rather than a block cipher.
+       */
+      abstract BlockMode getBlockMode();
     }
+  }
+
+  /**
+   * A cryptographic block cipher mode of operation. This can be used to encrypt
+   * data of arbitrary length using a block encryption algorithm.
+   */
+  class BlockMode extends string {
+    BlockMode() { this = ["ECB", "CBC", "GCM", "CCM", "CFB", "OFB", "CTR", "OPENPGP"] }
+
+    /** Holds if this block mode is considered to be insecure. */
+    predicate isWeak() { this = "ECB" }
   }
 }

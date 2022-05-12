@@ -2671,6 +2671,8 @@ private module StdlibPrivate {
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
     override DataFlow::Node getAnInput() { result = this.getParameter(1, "data").getARhs() }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 
   /**
@@ -2686,6 +2688,8 @@ private module StdlibPrivate {
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 
   /** Helper predicate for the `HashLibGenericHashOperation` charpred, to prevent a bad join order. */
@@ -2709,6 +2713,8 @@ private module StdlibPrivate {
     HashlibGenericHashOperation() { hashClass = hashlibMember(hashName) }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 
   /**
