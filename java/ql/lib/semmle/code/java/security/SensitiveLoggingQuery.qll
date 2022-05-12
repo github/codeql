@@ -6,12 +6,12 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SensitiveActions
 import DataFlow
 
-/** A variable that may hold sensitive information, judging by its name. * */
+/** A variable that may hold sensitive information, judging by its name. */
 class CredentialExpr extends Expr {
   CredentialExpr() {
     exists(Variable v | this = v.getAnAccess() |
-      v.getName().regexpMatch([getCommonSensitiveInfoRegex(), "(?i).*(username).*"]) and
-      not v.isFinal()
+      v.getName().regexpMatch(getCommonSensitiveInfoRegex()) and
+      not (v.isFinal() and v.isStatic())
     )
   }
 }
