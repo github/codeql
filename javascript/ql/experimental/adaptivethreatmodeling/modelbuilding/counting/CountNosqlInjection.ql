@@ -16,7 +16,7 @@ int numAlerts(DataFlow::Configuration cfg) {
     )
 }
 
-select numAlerts(any(NosqlInjection::Configuration cfg)) as numNosqlAlerts,
+select numAlerts(any(NosqlInjection::Configuration cfg)) as numAlerts,
   count(DataFlow::Node sink |
     exists(NosqlInjection::Configuration cfg | cfg.isSink(sink) or cfg.isSink(sink, _))
-  ) as numNosqlSinks
+  ) as numSinks

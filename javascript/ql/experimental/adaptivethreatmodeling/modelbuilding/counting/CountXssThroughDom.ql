@@ -16,7 +16,7 @@ int numAlerts(DataFlow::Configuration cfg) {
     )
 }
 
-select numAlerts(any(XssThroughDom::Configuration cfg)) as numXssThroughDomAlerts,
+select numAlerts(any(XssThroughDom::Configuration cfg)) as numAlerts,
   count(DataFlow::Node sink |
     exists(XssThroughDom::Configuration cfg | cfg.isSink(sink) or cfg.isSink(sink, _))
-  ) as numXssThroughDomSinks
+  ) as numSinks

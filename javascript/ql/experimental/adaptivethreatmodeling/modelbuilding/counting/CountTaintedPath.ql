@@ -16,7 +16,7 @@ int numAlerts(DataFlow::Configuration cfg) {
     )
 }
 
-select numAlerts(any(TaintedPath::Configuration cfg)) as numTaintedPathAlerts,
+select numAlerts(any(TaintedPath::Configuration cfg)) as numAlerts,
   count(DataFlow::Node sink |
     exists(TaintedPath::Configuration cfg | cfg.isSink(sink) or cfg.isSink(sink, _))
-  ) as numTaintedPathSinks
+  ) as numSinks

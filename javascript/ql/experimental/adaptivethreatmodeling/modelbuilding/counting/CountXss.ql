@@ -16,7 +16,7 @@ int numAlerts(DataFlow::Configuration cfg) {
     )
 }
 
-select numAlerts(any(DomBasedXss::Configuration cfg)) as numXssAlerts,
+select numAlerts(any(DomBasedXss::Configuration cfg)) as numAlerts,
   count(DataFlow::Node sink |
     exists(DomBasedXss::Configuration cfg | cfg.isSink(sink) or cfg.isSink(sink, _))
-  ) as numXssSinks
+  ) as numSinks
