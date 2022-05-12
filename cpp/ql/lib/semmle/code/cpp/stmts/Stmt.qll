@@ -218,9 +218,9 @@ class IfStmt extends ConditionalStmt, @stmt_if {
    *
    * For example, for
    * ```
-   * if (x = y; b) { f(); }
+   * if (int x = y; b) { f(); }
    * ```
-   * the result is `x = y;`.
+   * the result is `int x = y;`.
    *
    * Does not hold if the initialization statement is missing or an empty statement, as in
    * ```
@@ -324,9 +324,9 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
    *
    * For example, for
    * ```
-   * if constexpr (x = y; b) { f(); }
+   * if constexpr (int x = y; b) { f(); }
    * ```
-   * the result is `x = y;`.
+   * the result is `int x = y;`.
    *
    * Does not hold if the initialization statement is missing or an empty statement, as in
    * ```
@@ -1517,9 +1517,9 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
    *
    * For example, for
    * ```
-   * switch (x = y; b) { }
+   * switch (int x = y; b) { }
    * ```
-   * the result is `x = y;`.
+   * the result is `int x = y;`.
    *
    * Does not hold if the initialization statement is missing or an empty statement, as in
    * ```
