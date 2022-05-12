@@ -15,9 +15,7 @@ query predicate endpoints(
   ExtractEndpointData::endpoints(endpoint, queryName, "sinkLabel", ["Sink", "NotASink"], "string") and
   // do not select endpoints filtered out by end-to-end evaluation
   ExtractEndpointData::endpoints(endpoint, queryName, "isExcludedFromEndToEndEvaluation", "false",
-    "boolean") and
-  // only select endpoints that can be part of a tainted flow
-  ExtractEndpointData::endpoints(endpoint, queryName, "isConstantExpression", "false", "boolean")
+    "boolean")
 }
 
 query predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
