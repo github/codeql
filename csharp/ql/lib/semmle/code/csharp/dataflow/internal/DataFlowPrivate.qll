@@ -744,6 +744,9 @@ private module Cached {
     ) {
       FlowSummaryImpl::Private::summaryNodeRange(c, state)
     } or
+    TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
+      FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
+    } or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
       callCfn = any(Call c | isParamsArg(c, _, _)).getAControlFlowNode()
     }
@@ -962,6 +965,28 @@ private module ParameterNodes {
       pos.isImplicitCapturedParameterPosition(def.getSourceVariable().getAssignable()) and
       c.asCallable() = this.getEnclosingCallable()
     }
+  }
+
+  /** A parameter for a library callable with a flow summary. */
+  class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
+    private FlowSummaryImpl::Public::SummarizedCallable sc;
+    private ParameterPosition pos_;
+
+    SummaryParameterNode() { this = TSummaryParameterNode(sc, pos_) }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      sc = c and pos = pos_
+    }
+
+    override DataFlowCallable getEnclosingCallableImpl() { result = sc }
+
+    override Type getTypeImpl() { result instanceof ObjectType }
+
+    override ControlFlow::Node getControlFlowNodeImpl() { none() }
+
+    override EmptyLocation getLocationImpl() { any() }
+
+    override string toStringImpl() { result = "parameter " + pos_ + " of " + sc }
   }
 }
 
