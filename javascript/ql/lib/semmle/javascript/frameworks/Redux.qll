@@ -951,7 +951,7 @@ module Redux {
     )
   }
 
-  /** Gets the block to execute when `case` matches sucessfully. */
+  /** Gets the block to execute when `case` matches successfully. */
   private BasicBlock getCaseBlock(SwitchCase case) {
     result = case.getBodyStmt(0).getBasicBlock()
     or

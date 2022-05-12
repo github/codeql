@@ -68,7 +68,7 @@ private predicate hasDefaultExport(ES2015Module mod) {
  * Holds if `mod` contains both named and `default` exports.
  *
  * This is used to determine whether a default-import of the module should be reinterpreted
- * as a namespace-import, to accomodate the non-standard behavior implemented by some compilers.
+ * as a namespace-import, to accommodate the non-standard behavior implemented by some compilers.
  */
 private predicate hasBothNamedAndDefaultExports(ES2015Module mod) {
   hasNamedExports(mod) and
@@ -615,7 +615,7 @@ class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
 }
 
 /**
- * A namespace export specifier, that is `*` or `* as x` occuring in an export declaration.
+ * A namespace export specifier, that is `*` or `* as x` occurring in an export declaration.
  *
  * Examples:
  *
