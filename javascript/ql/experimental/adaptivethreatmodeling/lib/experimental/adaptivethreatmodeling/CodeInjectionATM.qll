@@ -29,8 +29,8 @@ module SinkEndpointFilter {
   }
 }
 
-class CodeInjectionATMConfig extends ATMConfig {
-  CodeInjectionATMConfig() { this = "CodeInjectionATMConfig" }
+class CodeInjectionAtmConfig extends ATMConfig {
+  CodeInjectionAtmConfig() { this = "CodeInjectionATMConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof Source }
 
@@ -52,7 +52,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   override predicate isSink(DataFlow::Node sink) {
-    (sink instanceof Sink or any(CodeInjectionATMConfig cfg).isEffectiveSink(sink))
+    (sink instanceof Sink or any(CodeInjectionAtmConfig cfg).isEffectiveSink(sink))
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
