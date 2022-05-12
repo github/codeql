@@ -92,7 +92,7 @@ CallFilter.arityOne(one, two=two) # NO match
 CallFilter.arityOne(one=one, two=two) # NO match
 
 from foo1.bar import baz1
-baz1(baz1) # match
+baz1(baz1) # no match, and that's the point.
 
 from foo2.bar import baz2
 baz2(baz2) # match
