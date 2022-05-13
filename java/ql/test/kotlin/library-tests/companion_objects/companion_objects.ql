@@ -5,4 +5,4 @@ where
   c.fromSource() and
   cco = c.getCompanionObject() and
   f = cco.getInstance()
-select c, f, cco, concat(f.getAModifier().toString(), ",")
+select c, f, cco, f.getDeclaringType(), concat(f.getAModifier().toString(), ",")

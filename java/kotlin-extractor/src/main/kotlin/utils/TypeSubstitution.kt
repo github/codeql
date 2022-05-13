@@ -1,6 +1,7 @@
 package com.github.codeql.utils
 
 import com.github.codeql.KotlinUsesExtractor
+import com.github.codeql.getJavaEquivalentClassId
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.createImplicitParameterDeclarationWithWrappedDescriptor
 import org.jetbrains.kotlin.descriptors.ClassKind
@@ -19,6 +20,7 @@ import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
 import org.jetbrains.kotlin.ir.types.impl.IrStarProjectionImpl
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
+import org.jetbrains.kotlin.ir.util.classId
 import org.jetbrains.kotlin.ir.util.constructedClassType
 import org.jetbrains.kotlin.ir.util.constructors
 import org.jetbrains.kotlin.ir.util.parentAsClass
@@ -195,13 +197,25 @@ fun IrTypeArgument.withQuestionMark(b: Boolean): IrTypeArgument =
 
 typealias TypeSubstitution = (IrType, KotlinUsesExtractor.TypeContext, IrPluginContext) -> IrType
 
+fun matchingTypeParameters(l: IrTypeParameter?, r: IrTypeParameter): Boolean {
+    if (l === r)
+        return true
+    if (l == null)
+        return false
+    // Special case: match List's E and MutableList's E, for example, because in the JVM lowering they will map to the same thing.
+    val lParent = l.parent as? IrClass ?: return false
+    val rParent = r.parent as? IrClass ?: return false
+    val lJavaId = getJavaEquivalentClassId(lParent) ?: lParent.classId
+    return (getJavaEquivalentClassId(rParent) ?: rParent.classId) == lJavaId && l.name == r.name
+}
+
 // Returns true if type is C<T1, T2, ...> where C is declared `class C<T1, T2, ...> { ... }`
 fun isUnspecialised(paramsContainer: IrTypeParametersContainer, args: List<IrTypeArgument>): Boolean {
     val unspecialisedHere = paramsContainer.typeParameters.zip(args).all { paramAndArg ->
         (paramAndArg.second as? IrTypeProjection)?.let {
             // Type arg refers to the class' own type parameter?
             it.variance == Variance.INVARIANT &&
-                    it.type.classifierOrNull?.owner === paramAndArg.first
+            matchingTypeParameters(it.type.classifierOrNull?.owner as? IrTypeParameter, paramAndArg.first)
         } ?: false
     }
     val remainingArgs = args.drop(paramsContainer.typeParameters.size)
