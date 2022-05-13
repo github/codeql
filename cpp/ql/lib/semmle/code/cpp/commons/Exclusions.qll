@@ -23,20 +23,19 @@ private predicate functionLocation(Function f, string file, int fBlockStartLine,
  */
 predicate functionDefinedInIfDef(Function f) {
   exists(
-    PreprocessorBranchDirective pbd, string file, int pbdStartLine, int pbdEndLine,
-    int fBlockStartLine, int fBlockEndLine
+    PreprocessorBranchDirective pbd, PreprocessorBranchDirective pbdNext, string file,
+    int pbdStartLine, int pbdEndLine, int fBlockStartLine, int fBlockEndLine
   |
     functionLocation(f, file, fBlockStartLine, fBlockEndLine) and
+    pragma[only_bind_into](pbdNext) = pragma[only_bind_into](pbd).getNext() and
     pbdLocation(pbd, file, pbdStartLine) and
-    pbdLocation(pbd.getNext(), file, pbdEndLine) and
+    pbdLocation(pbdNext, file, pbdEndLine) and
     pbdStartLine <= fBlockStartLine and
     pbdEndLine >= fBlockEndLine and
     // pbd is a preprocessor branch where multiple branches exist
     (
-      pbd.getNext() instanceof PreprocessorElse or
-      pbd instanceof PreprocessorElse or
-      pbd.getNext() instanceof PreprocessorElif or
-      pbd instanceof PreprocessorElif
+      [pbd, pbdNext] instanceof PreprocessorElse or
+      [pbd, pbdNext] instanceof PreprocessorElif
     )
   )
 }
