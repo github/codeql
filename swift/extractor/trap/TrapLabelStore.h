@@ -12,8 +12,9 @@
 
 namespace codeql {
 
-// the following is needed to avoid the problem of subclass pointers not necessarily coinciding
+// The following is needed to avoid the problem of subclass pointers not necessarily coinciding
 // with superclass ones in case of multiple inheritance
+// The interesting part here is implicit conversion from a derived class pointer to the parameter
 inline const swift::Decl* getCanonicalPointer(const swift::Decl* e) {
   return e;
 }
@@ -53,6 +54,7 @@ class TrapLabelStore {
   }
 
  private:
+  // TODO: consider std::variant or llvm::PointerUnion instead of `void *`
   std::unordered_map<const void*, UntypedTrapLabel> store_;
 };
 
