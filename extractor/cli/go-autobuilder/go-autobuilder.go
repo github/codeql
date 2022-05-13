@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"golang.org/x/mod/semver"
 	"io/ioutil"
 	"log"
 	"net/url"
@@ -12,6 +11,8 @@ import (
 	"regexp"
 	"runtime"
 	"strings"
+
+	"golang.org/x/mod/semver"
 
 	"github.com/github/codeql-go/extractor/autobuilder"
 	"github.com/github/codeql-go/extractor/util"
@@ -284,6 +285,44 @@ func main() {
 						log.Println("Failed to add a version to the go.mod file to fix explicitly required package bug; not using vendored dependencies")
 						modMode = ModMod
 					}
+				}
+			}
+		}
+	}
+
+	// Go 1.16 and later won't automatically attempt to update go.mod / go.sum during package loading, so try to update them here:
+	if depMode == GoGetWithModules && semver.Compare(getEnvGoSemVer(), "1.16") >= 0 {
+		// stat go.mod and go.sum
+		beforeGoModFileInfo, beforeGoModErr := os.Stat("go.mod")
+		if beforeGoModErr != nil {
+			log.Println("Failed to stat go.mod before running `go mod tidy -e`")
+		}
+
+		beforeGoSumFileInfo, beforeGoSumErr := os.Stat("go.sum")
+
+		// run `go mod tidy -e`
+		res := util.RunCmd(exec.Command("go", "mod", "tidy", "-e"))
+
+		if !res {
+			log.Println("Failed to run `go mod tidy -e`")
+		} else {
+			if beforeGoModFileInfo != nil {
+				afterGoModFileInfo, afterGoModErr := os.Stat("go.mod")
+				if afterGoModErr != nil {
+					log.Println("Failed to stat go.mod after running `go mod tidy -e`")
+				} else if afterGoModFileInfo.ModTime().After(beforeGoModFileInfo.ModTime()) {
+					// if go.mod has been changed then notify the user
+					log.Println("We have run `go mod tidy -e` and it altered go.mod. You may wish to check these changes into version control. ")
+				}
+			}
+
+			afterGoSumFileInfo, afterGoSumErr := os.Stat("go.sum")
+			if afterGoSumErr != nil {
+				log.Println("Failed to stat go.sum after running `go mod tidy -e`")
+			} else {
+				if beforeGoSumErr != nil || afterGoSumFileInfo.ModTime().After(beforeGoSumFileInfo.ModTime()) {
+					// if go.sum has been changed then notify the user
+					log.Println("We have run `go mod tidy -e` and it altered go.sum. You may wish to check these changes into version control. ")
 				}
 			}
 		}
