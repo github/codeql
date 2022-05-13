@@ -13,9 +13,8 @@ class UntypedTrapLabel {
   uint64_t id_;
 
   friend class std::hash<UntypedTrapLabel>;
-
-  // we want to have access to the untyped, underlying id
-  friend class TrapLabelStore;
+  template <typename Tag>
+  friend class TrapLabel;
 
  protected:
   UntypedTrapLabel() : id_{0xffffffffffffffff} {}
@@ -44,6 +43,7 @@ class TrapLabel : public UntypedTrapLabel {
 
   // The caller is responsible for ensuring ID uniqueness.
   static TrapLabel unsafeCreateFromExplicitId(uint64_t id) { return {id}; }
+  static TrapLabel unsafeCreateFromUntyped(UntypedTrapLabel label) { return {label.id_}; }
 
   template <typename OtherTag>
   TrapLabel(const TrapLabel<OtherTag>& other) : UntypedTrapLabel(other) {

@@ -41,19 +41,19 @@ class TrapLabelStore {
   template <typename T>
   std::optional<TrapLabel<ToTag<T>>> get(const T* e) {
     if (auto found = store_.find(getCanonicalPtr(e)); found != store_.end()) {
-      return TrapLabel<ToTag<T>>::unsafeCreateFromExplicitId(found->second);
+      return TrapLabel<ToTag<T>>::unsafeCreateFromUntyped(found->second);
     }
     return std::nullopt;
   }
 
   template <typename T>
   void insert(const T* e, TrapLabel<ToTag<T>> l) {
-    auto [_, inserted] = store_.emplace(getCanonicalPtr(e), l.id_);
+    auto [_, inserted] = store_.emplace(getCanonicalPtr(e), l);
     assert(inserted && "already inserted");
   }
 
  private:
-  std::unordered_map<const void*, uint64_t> store_;
+  std::unordered_map<const void*, UntypedTrapLabel> store_;
 };
 
 }  // namespace codeql
