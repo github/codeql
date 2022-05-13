@@ -11,7 +11,7 @@ reflection.kt:
 #   47|           0: [MethodAccess] get(...)
 #   47|             -1: [ExtensionReceiverAccess] this
 #   47|             0: [SubExpr] ... - ...
-#   47|               0: [MethodAccess] getLength(...)
+#   47|               0: [MethodAccess] length(...)
 #   47|                 -1: [ExtensionReceiverAccess] this
 #   47|               1: [IntegerLiteral] 1
 #   49|     2: [Method] fn2

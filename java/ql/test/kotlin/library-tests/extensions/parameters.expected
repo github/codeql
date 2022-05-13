@@ -1,7 +1,9 @@
 parametersWithArgs
 | extensions.kt:3:25:3:34 | p1 | 0 | extensions.kt:21:34:21:36 | foo |
 | extensions.kt:6:28:6:37 | p1 | 0 | extensions.kt:25:40:25:42 | foo |
+| extensions.kt:9:5:9:13 | <this> | 0 | A.java:3:30:3:44 | new SomeClass(...) |
 | extensions.kt:9:5:9:13 | <this> | 0 | extensions.kt:22:5:22:15 | new SomeClass(...) |
+| extensions.kt:9:23:9:32 | p1 | 1 | A.java:3:47:3:48 | "" |
 | extensions.kt:9:23:9:32 | p1 | 1 | extensions.kt:22:26:22:28 | foo |
 | extensions.kt:10:5:10:16 | <this> | 0 | extensions.kt:26:5:26:18 | new AnotherClass(...) |
 | extensions.kt:10:29:10:38 | p1 | 1 | extensions.kt:26:32:26:34 | foo |

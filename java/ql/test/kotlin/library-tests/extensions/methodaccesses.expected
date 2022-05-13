@@ -1,3 +1,5 @@
+| A.java:3:9:3:49 | someFun(...) | A.java:3:9:3:20 | ExtensionsKt | A.java:3:30:3:44 | new SomeClass(...) |
+| A.java:3:9:3:49 | someFun(...) | A.java:3:9:3:20 | ExtensionsKt | A.java:3:47:3:48 | "" |
 | extensions.kt:21:17:21:38 | someClassMethod(...) | extensions.kt:21:5:21:15 | new SomeClass(...) | extensions.kt:21:34:21:36 | foo |
 | extensions.kt:22:17:22:30 | someFun(...) | extensions.kt:22:17:22:30 | ExtensionsKt | extensions.kt:22:5:22:15 | new SomeClass(...) |
 | extensions.kt:22:17:22:30 | someFun(...) | extensions.kt:22:17:22:30 | ExtensionsKt | extensions.kt:22:26:22:28 | foo |

@@ -1406,7 +1406,6 @@
 | ListIterator | GenericType, Interface, ParameterizedType |
 | ListIterator<> | Interface, RawType |
 | ListIterator<E> | Interface, ParameterizedType |
-| ListIterator<T> | Interface, ParameterizedType |
 | LoadOperation | GenericType, Interface, ParameterizedType |
 | LoadOperation<> | Interface, RawType |
 | LoadOperation<ByteBuffer,V,E,S> | Interface, ParameterizedType |

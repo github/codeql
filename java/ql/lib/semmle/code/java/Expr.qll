@@ -1014,7 +1014,7 @@ class ValueOrReferenceEqualsExpr extends BinaryExpr {
  * A binary expression using either Java or Kotlin's `!=` operator.
  *
  * This might test for reference equality or might function like `Objects.equals`. If you
- * need to distinguish them, use `EQExpr` or `ValueEQExpr` instead.
+ * need to distinguish them, use `NEExpr` or `ValueNEExpr` instead.
  */
 class ValueOrReferenceNotEqualsExpr extends BinaryExpr {
   ValueOrReferenceNotEqualsExpr() { this instanceof NEExpr or this instanceof ValueNEExpr }
@@ -2461,7 +2461,7 @@ class ClassExpr extends Expr, @getclassexpr {
 }
 
 /**
- * An statement expression.
+ * A statement expression.
  *
  * In some contexts, a Kotlin expression can contain a statement.
  */

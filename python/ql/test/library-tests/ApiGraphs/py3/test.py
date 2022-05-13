@@ -24,6 +24,9 @@ abcd = abc.d #$ use=moduleImport("a").getMember("b").getMember("c").getMember("d
 
 x5 = abcd.method() #$ use=moduleImport("a").getMember("b").getMember("c").getMember("d").getMember("method").getReturn()
 
+from a.b.c.d import method
+x5_alt = method() #$ use=moduleImport("a").getMember("b").getMember("c").getMember("d").getMember("method").getReturn()
+
 from a6 import m6 #$ use=moduleImport("a6").getMember("m6")
 
 x6 = m6().foo().bar() #$ use=moduleImport("a6").getMember("m6").getReturn().getMember("foo").getReturn().getMember("bar").getReturn()

@@ -7,7 +7,9 @@ import org.jetbrains.kotlin.load.kotlin.VirtualFileKotlinClass
 import org.jetbrains.kotlin.load.kotlin.KotlinJvmBinarySourceElement
 
 import com.intellij.openapi.vfs.VirtualFile
+import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
 import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
 import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
 
@@ -85,3 +87,6 @@ fun getContainingClassOrSelf(decl: IrDeclaration): IrClass? {
         else -> decl.parentClassOrNull
     }
 }
+
+fun getJavaEquivalentClassId(c: IrClass) =
+    c.fqNameWhenAvailable?.toUnsafe()?.let { JavaToKotlinClassMap.mapKotlinToJava(it) }
