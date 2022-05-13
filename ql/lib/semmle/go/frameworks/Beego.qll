@@ -12,20 +12,39 @@ private import semmle.go.security.SafeUrlFlowCustomizations
  * from the [Beego](https://github.com/beego/beego) package.
  */
 module Beego {
-  /** Gets the module path `github.com/astaxie/beego` or `github.com/beego/beego`. */
-  string modulePath() { result = ["github.com/astaxie/beego", "github.com/beego/beego"] }
+  /** Gets the v1 module path `github.com/astaxie/beego` or `github.com/beego/beego`. */
+  string v1modulePath() { result = ["github.com/astaxie/beego", "github.com/beego/beego"] }
+
+  /** Gets the v2 module path `github.com/beego/beego/v2` */
+  string v2modulePath() { result = "github.com/beego/beego/v2" }
 
   /** Gets the path for the root package of beego. */
-  string packagePath() { result = package(modulePath(), "") }
+  string packagePath() {
+    result = package(v1modulePath(), "")
+    or
+    result = package(v2modulePath(), "server/web")
+  }
 
   /** Gets the path for the context package of beego. */
-  string contextPackagePath() { result = package(modulePath(), "context") }
+  string contextPackagePath() {
+    result = package(v1modulePath(), "context")
+    or
+    result = package(v2modulePath(), "server/web/context")
+  }
 
   /** Gets the path for the logs package of beego. */
-  string logsPackagePath() { result = package(modulePath(), "logs") }
+  string logsPackagePath() {
+    result = package(v1modulePath(), "logs")
+    or
+    result = package(v2modulePath(), "core/logs")
+  }
 
   /** Gets the path for the utils package of beego. */
-  string utilsPackagePath() { result = package(modulePath(), "utils") }
+  string utilsPackagePath() {
+    result = package(v1modulePath(), "utils")
+    or
+    result = package(v2modulePath(), "core/utils")
+  }
 
   /**
    * `BeegoInput` sources of untrusted data.
