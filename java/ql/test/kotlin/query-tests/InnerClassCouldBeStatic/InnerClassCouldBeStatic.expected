@@ -1,0 +1,1 @@
+| Test.kt:3:5:5:5 | Companion | Companion should be made static, since the enclosing instance is not used. |
