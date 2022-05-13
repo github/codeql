@@ -12,7 +12,7 @@ class CredentialExpr extends Expr {
   CredentialExpr() {
     exists(Variable v | this = v.getAnAccess() |
       v.getName().regexpMatch(getCommonSensitiveInfoRegex()) and
-      not (v.isFinal() and v.isStatic())
+      not this instanceof CompileTimeConstantExpr
     )
   }
 }
