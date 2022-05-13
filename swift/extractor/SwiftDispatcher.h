@@ -53,6 +53,7 @@ std::string inline getKindName<swift::TypeRepr, swift::TypeReprKind>(swift::Type
 // node (AST nodes that are not types: declarations, statements, expressions, etc.).
 class SwiftDispatcher {
  public:
+  // sourceManager, arena, and trap are supposed to outlive the SwiftDispatcher
   SwiftDispatcher(const swift::SourceManager& sourceManager, TrapArena& arena, TrapOutput& trap)
       : sourceManager{sourceManager}, arena{arena}, trap{trap} {}
 
