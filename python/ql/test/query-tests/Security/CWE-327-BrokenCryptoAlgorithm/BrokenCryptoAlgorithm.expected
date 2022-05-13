@@ -1,2 +1,4 @@
 | test_cryptodome.py:11:13:11:42 | ControlFlowNode for Attribute() | The cryptographic algorithm ARC4 is broken or weak, and should not be used. |
+| test_cryptodome.py:16:13:16:42 | ControlFlowNode for Attribute() | The block mode ECB is broken or weak, and should not be used. |
 | test_cryptography.py:13:13:13:44 | ControlFlowNode for Attribute() | The cryptographic algorithm ARC4 is broken or weak, and should not be used. |
+| test_cryptography.py:22:13:22:58 | ControlFlowNode for Attribute() | The block mode ECB is broken or weak, and should not be used. |
