@@ -40,7 +40,7 @@ class AllocaCall extends FunctionCall {
 /**
  * A loop that contains an `alloca` call.
  */
-class LoopWithAlloca extends Stmt {
+class LoopWithAlloca extends Loop {
   LoopWithAlloca() { this = getAnEnclosingLoopOfExpr(any(AllocaCall ac)) }
 
   /** Get an `alloca` call inside this loop. It may be in a nested loop. */
@@ -52,7 +52,7 @@ class LoopWithAlloca extends Stmt {
    * `conditionRequires(a, false)` and `conditionRequires(b, true)`.
    */
   private predicate conditionRequires(Expr e, boolean truth) {
-    e = this.(Loop).getCondition() and
+    e = this.getCondition() and
     truth = true
     or
     // `e == 0`
@@ -323,10 +323,11 @@ class LoopWithAlloca extends Stmt {
   }
 }
 
-from LoopWithAlloca l, AllocaCall alloc
+from LoopWithAlloca l, AllocaCall alloc, Stmt body
 where
   not l.(DoStmt).getCondition().getValue() = "0" and
   not l.isTightlyBounded() and
-  alloc = l.getAnAllocaCall() and
-  alloc.getASuccessor*() = l.(Loop).getStmt()
+  pragma[only_bind_into](alloc) = pragma[only_bind_into](l).getAnAllocaCall() and
+  pragma[only_bind_into](body) = pragma[only_bind_into](l).getStmt() and
+  alloc.getASuccessor*() = body
 select alloc, "Stack allocation is inside a $@ loop.", l, l.toString()
