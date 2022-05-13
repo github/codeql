@@ -14,7 +14,7 @@
 
 #include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/trap/TrapOutput.h"
-#include "swift/extractor/SwiftDispatcher.h"
+#include "swift/extractor/SwiftVisitor.h"
 
 using namespace codeql;
 
@@ -88,9 +88,9 @@ static void extractFile(const SwiftExtractorConfiguration& config,
   trap.assignKey(fileLabel, srcFilePath.str().str());
   trap.emit(FilesTrap{fileLabel, srcFilePath.str().str()});
 
-  SwiftDispatcher dispatcher(compiler.getSourceMgr(), arena, trap);
+  SwiftVisitor visitor(compiler.getSourceMgr(), arena, trap);
   for (swift::Decl* decl : file.getTopLevelDecls()) {
-    dispatcher.extract(decl);
+    visitor.extract(decl);
   }
 
   // TODO: Pick a better name to avoid collisions

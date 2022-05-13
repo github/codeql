@@ -9,6 +9,12 @@ swift_cc_binary(
         "SwiftDispatcher.h",
         "SwiftTagTraits.h",
         "main.cpp",
+        "SwiftVisitor.h",
+        "visitors/DeclVisitor.h",
+        "visitors/ExprVisitor.h",
+        "visitors/StmtVisitor.h",
+        "visitors/TypeVisitor.h",
+        "visitors/PatternVisitor.h",
     ],
     visibility = ["//swift:__pkg__"],
     deps = [
