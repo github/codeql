@@ -778,19 +778,22 @@ open class KotlinFileExtractor(
         with("field", f) {
            DeclarationStackAdjuster(f).use {
                declarationStack.push(f)
-               return extractField(useField(f), f.name.asString(), f.type, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f))
+               return extractField(useField(f), f.name.asString(), f.type, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f), f.isFinal)
            }
         }
     }
 
 
-    private fun extractField(id: Label<out DbField>, name: String, type: IrType, parentId: Label<out DbReftype>, locId: Label<DbLocation>, visibility: DescriptorVisibility, errorElement: IrElement, isExternalDeclaration: Boolean): Label<out DbField> {
+    private fun extractField(id: Label<out DbField>, name: String, type: IrType, parentId: Label<out DbReftype>, locId: Label<DbLocation>, visibility: DescriptorVisibility, errorElement: IrElement, isExternalDeclaration: Boolean, isFinal: Boolean): Label<out DbField> {
         val t = useType(type)
         tw.writeFields(id, name, t.javaResult.id, parentId, id)
         tw.writeFieldsKotlinType(id, t.kotlinResult.id)
         tw.writeHasLocation(id, locId)
 
         extractVisibility(errorElement, id, visibility)
+        if (isFinal) {
+            addModifiers(id, "final")
+        }
 
         if (!isExternalDeclaration) {
             val fieldDeclarationId = tw.getFreshIdLabel<DbFielddecl>()
@@ -2949,12 +2952,12 @@ open class KotlinFileExtractor(
 
             // only one of the following can be non-null:
             if (dispatchReceiver != null) {
-                extractField(dispatchFieldId!!, "<dispatchReceiver>", receiverType!!, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, false)
+                extractField(dispatchFieldId!!, "<dispatchReceiver>", receiverType!!, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, isExternalDeclaration = false, isFinal = true)
                 extractParameterToFieldAssignmentInConstructor("<dispatchReceiver>", dispatchReceiver.type, dispatchFieldId, 0, firstAssignmentStmtIdx)
             }
 
             if (extensionReceiver != null) {
-                extractField(extensionFieldId!!, "<extensionReceiver>", receiverType!!, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, false)
+                extractField(extensionFieldId!!, "<extensionReceiver>", receiverType!!, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, isExternalDeclaration = false, isFinal = true)
                 extractParameterToFieldAssignmentInConstructor( "<extensionReceiver>", extensionReceiver.type, extensionFieldId, 0 + extensionParameterIndex, firstAssignmentStmtIdx + extensionParameterIndex)
             }
         }
@@ -4005,7 +4008,7 @@ open class KotlinFileExtractor(
 
                     // add field
                     val fieldId = tw.getFreshIdLabel<DbField>()
-                    extractField(fieldId, "<fn>", functionType, classId, locId, DescriptorVisibilities.PRIVATE, e, false)
+                    extractField(fieldId, "<fn>", functionType, classId, locId, DescriptorVisibilities.PRIVATE, e, isExternalDeclaration = false, isFinal = true)
 
                     // adjust constructor
                     helper.extractParameterToFieldAssignmentInConstructor("<fn>", functionType, fieldId, 0, 1)
