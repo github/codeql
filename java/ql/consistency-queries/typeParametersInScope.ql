@@ -1,9 +1,7 @@
 import java
 
 class InstantiatedType extends ParameterizedType {
-  InstantiatedType() {
-    typeArgs(_, _, this)
-  }
+  InstantiatedType() { typeArgs(_, _, this) }
 }
 
 Type getAMentionedType(RefType type) {
