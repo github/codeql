@@ -1,0 +1,4 @@
+isFinalField
+| test.kt:3:3:3:18 | x |
+#select
+| test.kt:3:3:3:18 | this.x | test.kt:6:10:6:10 | getX(...) |
