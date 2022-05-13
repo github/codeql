@@ -5,21 +5,24 @@
 
 namespace codeql {
 
+namespace detail {
 // swift code lacks default implementations of visitor for some entities. We can add those here
-// while we do not have yet all implemented. This is copy and pasted from the corresponding Expr
+// while we do not have yet all implemented. This is a simplified version of the corresponding Expr
 // code in swift/AST/ASTVisitor.h
-template <typename ImplClass, typename StmtRetTy = void, typename... Args>
-class PatchedStmtVisitor : public swift::StmtVisitor<ImplClass, StmtRetTy, Args...> {
+template <typename CrtpSubclass>
+class PatchedStmtVisitor : public swift::StmtVisitor<CrtpSubclass> {
  public:
-#define ABSTRACT_STMT(CLASS, PARENT)                                                     \
-  StmtRetTy visit##CLASS##Stmt(swift::CLASS##Stmt* E, Args... AA) {                      \
-    return static_cast<ImplClass*>(this)->visit##PARENT(E, ::std::forward<Args>(AA)...); \
+#define ABSTRACT_STMT(CLASS, PARENT)                           \
+  void visit##CLASS##Stmt(swift::CLASS##Stmt* E) {             \
+    return static_cast<CrtpSubclass*>(this)->visit##PARENT(E); \
   }
 #define STMT(CLASS, PARENT) ABSTRACT_STMT(CLASS, PARENT)
 #include "swift/AST/StmtNodes.def"
 };
 
-class StmtVisitor : public PatchedStmtVisitor<StmtVisitor> {
+}  // namespace detail
+
+class StmtVisitor : public detail::PatchedStmtVisitor<StmtVisitor> {
  public:
   // SwiftDispatcher should outlive the StmtVisitor
   StmtVisitor(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}

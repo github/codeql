@@ -5,20 +5,23 @@
 
 namespace codeql {
 
+namespace detail {
 // swift code lacks default implementations of visitor for some entities. We can add those here
-// while we do not have yet all implemented. This is copy and pasted from the corresponding Expr
+// while we do not have yet all implemented. This is a simplified version of the corresponding Expr
 // code in swift/AST/ASTVisitor.h
-template <typename ImplClass, typename PatternRetTy = void, typename... Args>
-class PatchedPatternVisitor : public swift::PatternVisitor<ImplClass, PatternRetTy, Args...> {
+template <typename CrtpSubclass>
+class PatchedPatternVisitor : public swift::PatternVisitor<CrtpSubclass> {
  public:
-#define PATTERN(CLASS, PARENT)                                                           \
-  PatternRetTy visit##CLASS##Pattern(swift::CLASS##Pattern* E, Args... AA) {             \
-    return static_cast<ImplClass*>(this)->visit##PARENT(E, ::std::forward<Args>(AA)...); \
+#define PATTERN(CLASS, PARENT)                                 \
+  void visit##CLASS##Pattern(swift::CLASS##Pattern* E) {       \
+    return static_cast<CrtpSubclass*>(this)->visit##PARENT(E); \
   }
 #include "swift/AST/PatternNodes.def"
 };
 
-class PatternVisitor : public PatchedPatternVisitor<PatternVisitor> {
+}  // namespace detail
+
+class PatternVisitor : public detail::PatchedPatternVisitor<PatternVisitor> {
  public:
   // SwiftDispatcher should outlive the PatternVisitor
   PatternVisitor(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
