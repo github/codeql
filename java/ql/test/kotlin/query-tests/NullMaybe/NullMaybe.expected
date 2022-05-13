@@ -1,1 +1,0 @@
-| Test.kt:6:13:6:13 | d | Variable $@ may be null here because of $@ assignment. | Test.kt:2:5:2:25 | Double d | d | Test.kt:2:5:2:25 | d | this |
