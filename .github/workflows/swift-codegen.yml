@@ -25,17 +25,9 @@ jobs:
           git diff --exit-code --stat HEAD
       - name: Generate C++ files
         run: |
-          bazel run //swift/codegen:trapgen -- --cpp-output=$PWD
-          bazel run //swift/codegen:cppgen -- --cpp-output=$PWD
+          bazel run //swift/codegen:trapgen -- --cpp-output=$PWD/swift-generated-headers
+          bazel run //swift/codegen:cppgen -- --cpp-output=$PWD/swift-generated-headers
       - uses: actions/upload-artifact@v3
         with:
-          name: TrapEntries.h
-          path: TrapEntries.h
-      - uses: actions/upload-artifact@v3
-        with:
-          name: TrapTags.h
-          path: TrapTags.h
-      - uses: actions/upload-artifact@v3
-        with:
-          name: TrapClasses.h
-          path: TrapClasses.h
+          name: swift-generated-headers
+          path: swift-generated-headers/*.h
