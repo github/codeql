@@ -57,9 +57,18 @@ class SwiftDispatcher {
   SwiftDispatcher(const swift::SourceManager& sourceManager, TrapArena& arena, TrapOutput& trap)
       : sourceManager{sourceManager}, arena{arena}, trap{trap} {}
 
-  template <typename T>
-  void extract(T* entity) {
-    fetchLabel(entity);
+  // This is a helper method to emit TRAP entries for AST nodes that we don't fully support yet.
+  template <typename Parent, typename Child>
+  void TBD(Child* entity, const std::string& suffix) {
+    using namespace std::string_literals;
+    auto label = assignNewLabel(entity);
+    auto kind = detail::getKindName<Parent>(static_cast<const Parent*>(entity)->getKind());
+    auto name = "TBD ("s + kind + suffix + ")";
+    if constexpr (std::is_same_v<Parent, swift::TypeBase>) {
+      trap.emit(UnknownTypesTrap{label, name});
+    } else {
+      trap.emit(UnknownAstNodesTrap{label, name});
+    }
   }
 
  private:
@@ -105,20 +114,6 @@ class SwiftDispatcher {
     return arena.allocateLabel<Tag>();
   }
 
-  // This is a helper method to emit TRAP entries for AST nodes that we don't fully support yet.
-  template <typename Parent, typename Child>
-  void TBD(Child* entity, const std::string& suffix) {
-    using namespace std::string_literals;
-    auto label = assignNewLabel(entity);
-    auto kind = detail::getKindName<Parent>(static_cast<const Parent*>(entity)->getKind());
-    auto name = "TBD ("s + kind + suffix + ")";
-    if constexpr (std::is_same_v<Parent, swift::TypeBase>) {
-      trap.emit(UnknownTypesTrap{label, name});
-    } else {
-      trap.emit(UnknownAstNodesTrap{label, name});
-    }
-  }
-
   template <typename Locatable>
   void attachLocation(Locatable locatable, TrapLabel<LocatableTag> locatableLabel) {
     attachLocation(&locatable, locatableLabel);
@@ -162,12 +157,12 @@ class SwiftDispatcher {
 
   // TODO: The following methods are supposed to redirect TRAP emission to correpsonding visitors,
   // which are to be introduced in follow-up PRs
-  void visit(swift::Decl* decl) { TBD<swift::Decl>(decl, "Decl"); }
-  void visit(swift::Stmt* stmt) { TBD<swift::Stmt>(stmt, "Stmt"); }
-  void visit(swift::Expr* expr) { TBD<swift::Expr>(expr, "Expr"); }
-  void visit(swift::Pattern* pattern) { TBD<swift::Pattern>(pattern, "Pattern"); }
-  void visit(swift::TypeRepr* type) { TBD<swift::TypeRepr>(type, "TypeRepr"); }
-  void visit(swift::TypeBase* type) { TBD<swift::TypeBase>(type, "Type"); }
+  virtual void visit(swift::Decl* decl) = 0;
+  virtual void visit(swift::Stmt* stmt) = 0;
+  virtual void visit(swift::Expr* expr) = 0;
+  virtual void visit(swift::Pattern* pattern) = 0;
+  virtual void visit(swift::TypeRepr* type) = 0;
+  virtual void visit(swift::TypeBase* type) = 0;
 
   const swift::SourceManager& sourceManager;
   TrapArena& arena;
