@@ -1,6 +1,8 @@
 #pragma once
 
+// This file implements the mapping needed by the API defined in the TrapTagTraits.h
 #include <swift/AST/ASTVisitor.h>
+#include "swift/extractor/trap/TrapTagTraits.h"
 #include "swift/extractor/trap/generated/TrapTags.h"
 
 namespace codeql {
@@ -12,10 +14,10 @@ using SILBoxTypeTag = SilBoxTypeTag;
 using SILFunctionTypeTag = SilFunctionTypeTag;
 using SILTokenTypeTag = SilTokenTypeTag;
 
-#define MAP_TYPE_TO_TAG(TYPE, TAG)   \
-  template <>                        \
-  struct ToTagFunctor<swift::TYPE> { \
-    using type = TAG;                \
+#define MAP_TYPE_TO_TAG(TYPE, TAG)           \
+  template <>                                \
+  struct detail::ToTagFunctor<swift::TYPE> { \
+    using type = TAG;                        \
   }
 #define MAP_TAG(TYPE) MAP_TYPE_TO_TAG(TYPE, TYPE##Tag)
 #define MAP_SUBTAG(TYPE, PARENT)                           \
@@ -23,11 +25,11 @@ using SILTokenTypeTag = SilTokenTypeTag;
   static_assert(std::is_base_of_v<PARENT##Tag, TYPE##Tag>, \
                 #PARENT "Tag must be a base of " #TYPE "Tag");
 
-#define OVERRIDE_TAG(TYPE, TAG)       \
-  template <>                         \
-  struct ToTagOverride<swift::TYPE> { \
-    using type = TAG;                 \
-  };                                  \
+#define OVERRIDE_TAG(TYPE, TAG)               \
+  template <>                                 \
+  struct detail::ToTagOverride<swift::TYPE> { \
+    using type = TAG;                         \
+  };                                          \
   static_assert(std::is_base_of_v<TYPE##Tag, TAG>, "override is not a subtag");
 
 MAP_TAG(Stmt);

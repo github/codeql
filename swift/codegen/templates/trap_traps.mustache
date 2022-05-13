@@ -29,12 +29,5 @@ inline std::ostream &operator<<(std::ostream &out, const {{name}}{{trap_affix}} 
       << {{#get_streamer}}e.{{field_name}}{{/get_streamer}}{{/fields}} << ")";
   return out;
 }
-{{#id}}
-
-template <>
-struct TagToBindingTrapFunctor<typename {{type}}::Tag> {
-  using type = {{name}}{{trap_affix}};
-};
-{{/id}}
 {{/traps}}
 }
