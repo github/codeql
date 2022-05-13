@@ -65,8 +65,3 @@ predicate isStrongPasswordHashingAlgorithm(string name) {
  * Holds if `name` corresponds to a weak password hashing algorithm.
  */
 predicate isWeakPasswordHashingAlgorithm(string name) { name = "EVPKDF" }
-
-/**
- * Holds if `name` corresponds to a weak block cipher mode of operation.
- */
-predicate isWeakBlockMode(string name) { name = "ECB" }
