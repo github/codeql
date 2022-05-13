@@ -29,7 +29,9 @@ private string rankedInsecureAlgorithm(int i) {
   // weak hash algorithms and block modes as well.
   result =
     rank[i](string s |
-      isWeakEncryptionAlgorithm(s) or isWeakHashingAlgorithm(s) or isWeakBlockMode(s)
+      isWeakEncryptionAlgorithm(s) or
+      isWeakHashingAlgorithm(s) or
+      s.(Cryptography::BlockMode).isWeak()
     )
 }
 
@@ -329,13 +331,9 @@ private API::Node cipherApi() {
   result = API::getTopLevelMember("OpenSSL").getMember("Cipher").getMember("Cipher")
 }
 
-private class BlockMode extends string {
-  BlockMode() { this = ["ECB", "CBC", "GCM", "CCM", "CFB", "OFB", "CTR"] }
-}
-
 private newtype TCipherMode =
   TStreamCipher() or
-  TBlockMode(BlockMode blockMode)
+  TBlockMode(Cryptography::BlockMode blockMode)
 
 /**
  * Represents the mode used by this stream cipher.
@@ -343,7 +341,8 @@ private newtype TCipherMode =
  * block mode.
  */
 private class CipherMode extends TCipherMode {
-  private BlockMode getBlockMode() { this = TBlockMode(result) }
+  /** Gets the underlying block mode, if any. */
+  Cryptography::BlockMode getBlockMode() { this = TBlockMode(result) }
 
   /** Gets a textual representation of this node. */
   string toString() {
@@ -360,7 +359,7 @@ private class CipherMode extends TCipherMode {
   predicate isBlockMode(string s) { this.getBlockMode() = s.toUpperCase() }
 
   /** Holds if this cipher mode is a weak block mode. */
-  predicate isWeak() { isWeakBlockMode(this.getBlockMode()) }
+  predicate isWeak() { this.getBlockMode().isWeak() }
 }
 
 private string getStringArgument(DataFlow::CallNode call, int i) {
@@ -548,5 +547,9 @@ private class CipherOperation extends Cryptography::CryptographicOperation::Rang
   override predicate isWeak() {
     cipherNode.getCipher().isWeak() or
     cipherNode.getCipherMode().isWeak()
+  }
+
+  override Cryptography::BlockMode getBlockMode() {
+    result = cipherNode.getCipherMode().getBlockMode()
   }
 }

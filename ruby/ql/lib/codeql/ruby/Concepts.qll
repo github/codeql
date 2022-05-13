@@ -844,6 +844,13 @@ module Cryptography {
 
     /** Holds if this encryption operation is known to be weak. */
     predicate isWeak() { super.isWeak() }
+
+    /**
+     * Gets the block mode used to perform this cryptographic operation.
+     * This may have no result - for example if the `CryptographicAlgorithm` used
+     * is a stream cipher rather than a block cipher.
+     */
+    BlockMode getBlockMode() { result = super.getBlockMode() }
   }
 
   /** Provides classes for modeling new applications of a cryptographic algorithms. */
@@ -864,6 +871,24 @@ module Cryptography {
 
       /** Holds if this encryption operation is known to be weak. */
       abstract predicate isWeak();
+
+      /**
+       * Gets the block mode used to perform this cryptographic operation.
+       * This may have no result - for example if the `CryptographicAlgorithm` used
+       * is a stream cipher rather than a block cipher.
+       */
+      abstract BlockMode getBlockMode();
     }
   }
+
+  /**
+   * A cryptographic block cipher mode of operation. This can be used to encrypt
+   * data of arbitrary length using a block encryption algorithm.
+   */
+  class BlockMode extends string {
+    BlockMode() { this = ["ECB", "CBC", "GCM", "CCM", "CFB", "OFB", "CTR"] }
+
+  /** Holds if this block mode is considered to be insecure. */
+  predicate isWeak() { this = "ECB" }
+}
 }
