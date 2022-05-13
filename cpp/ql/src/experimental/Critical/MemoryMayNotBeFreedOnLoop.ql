@@ -13,9 +13,7 @@ import semmle.code.cpp.dataflow.DataFlow
 import AllocAndFree
 
 predicate sameLoop(BlockStmt b, Stmt is) {
-  if is instanceof Loop
-  then is.getAChild*() = b
-  else sameLoop(b, is.getParent())
+  if is instanceof Loop then is.getAChild*() = b else sameLoop(b, is.getParent())
 }
 
 from StackVariable v, Expr def, JumpStmt b, BlockStmt bs, IfStmt is, ReturnStmt rt
@@ -35,7 +33,12 @@ where
     exists(int y | y in [i .. bs.getNumStmt() - 1] |
       (bs.getChild(y) = is or bs.getChild(y).(IfStmt).getAChild*() = is) and
       sameLoop(bs, is) and
-      (is.getAChild() = b or is.getThen().getAChild() = b or is.getAChild() = rt or is.getThen().getAChild() = rt) and
+      (
+        is.getAChild() = b or
+        is.getThen().getAChild() = b or
+        is.getAChild() = rt or
+        is.getThen().getAChild() = rt
+      ) and
       not is.getCondition().getAChild*() = v.getAnAccess() and
       not is.getParent*().(IfStmt).getCondition().getAChild*() = v.getAnAccess() and
       not exists(int p | p in [i .. y] | freeCallOrIndirect(bs.getChild(p).(ExprStmt).getExpr(), v)) and
