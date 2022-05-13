@@ -217,6 +217,24 @@ class FieldParent extends @fieldparent, AstNode {
 }
 
 /**
+ * An AST node whose children include type parameter declarations.
+ */
+class TypeParamDeclParent extends @typeparamdeclparent, AstNode {
+  /**
+   * Gets the `i`th type parameter declaration of this node.
+   *
+   * Note that the precise indices of type parameters are considered an implementation detail
+   * and are subject to change without notice.
+   */
+  TypeParamDecl getTypeParameterDecl(int i) { typeparamdecls(result, this, i) }
+
+  /**
+   * Gets a child field of this node in the AST.
+   */
+  TypeParamDecl getATypeParameterDecl() { result = this.getTypeParameterDecl(_) }
+}
+
+/**
  * An AST node which may induce a scope.
  *
  * The following nodes may induce scopes:

@@ -698,6 +698,10 @@ module CFG {
       not this.(SelectorExpr).getBase() instanceof ValueExpr and
       nd = mkExprOrSkipNode(this) and
       cmpl = Done()
+      or
+      this instanceof GenericFunctionInstantiationExpr and
+      nd = MkExprNode(this) and
+      cmpl = Done()
     }
 
     override predicate firstNode(ControlFlow::Node first) { first = nd }

@@ -443,7 +443,8 @@ module Public {
    */
   private DataFlow::Node getACalleeSource(DataFlow::CallNode cn) {
     result = cn.getCalleeNode() or
-    basicLocalFlowStep(result, getACalleeSource(cn))
+    basicLocalFlowStep(result, getACalleeSource(cn)) or
+    result.asExpr() = getACalleeSource(cn).asExpr().(GenericFunctionInstantiationExpr).getBase()
   }
 
   /** A data flow node that represents a call. */

@@ -146,7 +146,7 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
 /**
  * A function declaration.
  */
-class FuncDecl extends @funcdecl, Decl, Documentable, FuncDef {
+class FuncDecl extends @funcdecl, Decl, Documentable, FuncDef, TypeParamDeclParent {
   /** Gets the identifier denoting the name of this function. */
   Ident getNameExpr() { result = this.getChildExpr(0) }
 
@@ -376,7 +376,7 @@ class ValueSpec extends @valuespec, Spec {
  * )
  * ```
  */
-class TypeSpec extends @typespec, Spec {
+class TypeSpec extends @typespec, Spec, TypeParamDeclParent {
   /** Gets the identifier denoting the name of the declared type. */
   Ident getNameExpr() { result = this.getChildExpr(0) }
 
@@ -560,6 +560,57 @@ class ResultVariableDecl extends ParameterOrResultDecl {
   override string toString() { result = "result variable declaration" }
 
   override string getAPrimaryQlClass() { result = "ResultVariableDecl" }
+}
+
+/**
+ * A type parameter declaration in a type specification.
+ */
+class TypeParamDecl extends @typeparamdecl, Documentable, ExprParent {
+  TypeParamDecl() { typeparamdecls(this, _, _) }
+
+  /**
+   * Gets the expression representing the type constraint of the type
+   * parameters in this declaration.
+   *
+   * If you want the type constraint type itself then use `getTypeConstraint`,
+   * as that wraps type set literals with implicit interface types.
+   */
+  Expr getTypeConstraintExpr() { result = this.getChildExpr(0) }
+
+  /**
+   * Gets the type constraint of the type parameters in this declaration.
+   *
+   * If the type constraint is a type set literal then it will be wrapped
+   * with an implicit interface type.
+   */
+  Type getTypeConstraint() {
+    exists(Type t | t = this.getTypeConstraintExpr().getType() |
+      if t instanceof TypeSetLiteralType
+      then result = t.(TypeSetLiteralType).getInterfaceType()
+      else result = t
+    )
+  }
+
+  /**
+   * Gets the expression representing the name of the `i`th type parameter
+   * in this declaration (0-based).
+   */
+  Expr getNameExpr(int i) {
+    i >= 0 and
+    result = this.getChildExpr(i + 1)
+  }
+
+  /**
+   * Gets the `i`th type parameter type in this declaration (0-based).
+   */
+  TypeParamType getTypeParamType(int i) {
+    i >= 0 and
+    result = this.getNameExpr(i).getType()
+  }
+
+  override string toString() { result = "type parameter declaration" }
+
+  override string getAPrimaryQlClass() { result = "TypeParamDecl" }
 }
 
 /**

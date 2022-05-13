@@ -29,6 +29,7 @@ import (
 )
 
 var MaxGoRoutines int
+var typeParamParent map[*types.TypeParam]types.Object = make(map[*types.TypeParam]types.Object)
 
 func init() {
 	// this sets the number of threads that the Go runtime will spawn; this is separate
@@ -109,9 +110,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	// root directories of packages that we want to extract
 	wantedRoots := make(map[string]bool)
 
-	// recursively visit all packages in depth-first order;
-	// on the way down, associate each package scope with its corresponding package,
-	// and on the way up extract the package's scope
+	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
 		return true
 	}, func(pkg *packages.Package) {
@@ -138,7 +137,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		defer tw.Close()
 
 		scope := extractPackageScope(tw, pkg)
-		tw.ForEachObject(extractObjectType)
+		extractObjectTypes(tw)
 		lbl := tw.Labeler.GlobalID(util.EscapeTrapSpecialChars(pkg.PkgPath) + ";pkg")
 		dbscheme.PackagesTable.Emit(tw, lbl, pkg.Name, pkg.PkgPath, scope)
 
@@ -361,8 +360,23 @@ func extractUniverseScope() {
 func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) {
 	for _, name := range scope.Names() {
 		obj := scope.Lookup(name)
-		lbl, exists := tw.Labeler.ScopedObjectID(obj, extractType(tw, obj.Type()))
+		lbl, exists := tw.Labeler.ScopedObjectID(obj, func() trap.Label { return extractType(tw, obj.Type()) })
 		if !exists {
+			// Populate type parameter parents for functions. Note that methods
+			// do not appear as objects in any scope, so they have to be dealt
+			// with separately in extractMethods.
+			if funcObj, ok := obj.(*types.Func); ok {
+				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).TypeParams(), obj)
+				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).RecvTypeParams(), obj)
+			}
+			// Populate type parameter parents for named types. Note that we
+			// skip type aliases as the original type should be the parent
+			// of any type parameters.
+			if typeNameObj, ok := obj.(*types.TypeName); ok && !typeNameObj.IsAlias() {
+				if tp, ok := typeNameObj.Type().(*types.Named); ok {
+					populateTypeParamParents(tw, tp.TypeParams(), obj)
+				}
+			}
 			extractObject(tw, obj, lbl)
 		}
 
@@ -378,10 +392,16 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 	// get the receiver type of the method
 	recvtyp := meth.Type().(*types.Signature).Recv().Type()
-	recvlbl := extractType(tw, recvtyp) // ensure receiver type has been extracted
+	// ensure receiver type has been extracted
+	recvtyplbl := extractType(tw, recvtyp)
+
 	// if the method label does not exist, extract it
-	methlbl, exists := tw.Labeler.MethodID(meth, recvlbl)
+	methlbl, exists := tw.Labeler.MethodID(meth, recvtyplbl)
 	if !exists {
+		// Populate type parameter parents for methods. They do not appear as
+		// objects in any scope, so they have to be dealt with separately here.
+		populateTypeParamParents(tw, meth.Type().(*types.Signature).TypeParams(), meth)
+		populateTypeParamParents(tw, meth.Type().(*types.Signature).RecvTypeParams(), meth)
 		extractObject(tw, meth, methlbl)
 	}
 
@@ -435,8 +455,30 @@ func extractObject(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 	}
 }
 
+// extractObjectTypes extracts type and receiver information for all objects
+func extractObjectTypes(tw *trap.Writer) {
+	// calling `extractType` on a named type will extract all methods defined
+	// on it, which will add new objects. Therefore we need to do this first
+	// before we loops over all objects and emit them.
+	changed := true
+	for changed {
+		changed = tw.ForEachObject(extractObjectType)
+	}
+	changed = tw.ForEachObject(emitObjectType)
+	if changed {
+		log.Printf("Warning: more objects were labeled while emitted object types")
+	}
+}
+
 // extractObjectType extracts type and receiver information for a given object
 func extractObjectType(tw *trap.Writer, obj types.Object, lbl trap.Label) {
+	if tp := obj.Type(); tp != nil {
+		extractType(tw, tp)
+	}
+}
+
+// emitObjectType emits the type information for a given object
+func emitObjectType(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 	if tp := obj.Type(); tp != nil {
 		dbscheme.ObjectTypesTable.Emit(tw, lbl, extractType(tw, tp))
 	}
@@ -583,7 +625,7 @@ func (extraction *Extraction) extractFile(ast *ast.File, pkg *packages.Package) 
 
 	extractFileNode(tw, ast)
 
-	tw.ForEachObject(extractObjectType)
+	extractObjectTypes(tw)
 
 	extractNumLines(tw, path, ast)
 
@@ -685,7 +727,8 @@ func extractScopeLocation(tw *trap.Writer, scope *types.Scope, lbl trap.Label) {
 }
 
 // extractScopes extracts symbol table information for the package scope and all local scopes
-// of the given package
+// of the given package. Note that this will not encounter methods or struct fields as
+// they do not have a parent scope.
 func extractScopes(tw *trap.Writer, nd *ast.File, pkg *packages.Package) {
 	pkgScopeLabel := extractPackageScope(tw, pkg)
 	fileScope := pkg.TypesInfo.Scopes[nd]
@@ -801,7 +844,7 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 				dbscheme.DefsTable.Emit(tw, lbl, objlbl)
 			}
 		}
-		use := tw.Package.TypesInfo.Uses[expr]
+		use := getObjectBeingUsed(tw, expr)
 		if use != nil {
 			useTyp := extractType(tw, use.Type())
 			objlbl, exists := tw.Labeler.LookupObjectID(use, useTyp)
@@ -877,9 +920,43 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		if expr == nil {
 			return
 		}
-		kind = dbscheme.IndexExpr.Index()
+		typeofx := typeOf(tw, expr.X)
+		if typeofx == nil {
+			// We are missing type information for `expr.X`, so we cannot
+			// determine whether this is a generic function instantiation
+			// or not.
+			kind = dbscheme.IndexExpr.Index()
+		} else {
+			if _, ok := typeofx.Underlying().(*types.Signature); ok {
+				kind = dbscheme.GenericFunctionInstantiationExpr.Index()
+			} else {
+				// Can't distinguish between actual index expressions (into a
+				// map, array, slice, string or pointer to array) and generic
+				// type specialization expression, so we do it later in QL.
+				kind = dbscheme.IndexExpr.Index()
+			}
+		}
 		extractExpr(tw, expr.X, lbl, 0)
 		extractExpr(tw, expr.Index, lbl, 1)
+	case *ast.IndexListExpr:
+		if expr == nil {
+			return
+		}
+		typeofx := typeOf(tw, expr.X)
+		if typeofx == nil {
+			// We are missing type information for `expr.X`, so we cannot
+			// determine whether this is a generic function instantiation
+			// or not.
+			kind = dbscheme.GenericTypeInstantiationExpr.Index()
+		} else {
+			if _, ok := typeofx.Underlying().(*types.Signature); ok {
+				kind = dbscheme.GenericFunctionInstantiationExpr.Index()
+			} else {
+				kind = dbscheme.GenericTypeInstantiationExpr.Index()
+			}
+		}
+		extractExpr(tw, expr.X, lbl, 0)
+		extractExprs(tw, expr.Indices, lbl, 1, 1)
 	case *ast.SliceExpr:
 		if expr == nil {
 			return
@@ -923,23 +1000,33 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		if expr == nil {
 			return
 		}
-		tp := dbscheme.UnaryExprs[expr.Op]
-		if tp == nil {
-			log.Fatalf("unsupported unary operator %s", expr.Op)
+		if expr.Op == token.TILDE {
+			kind = dbscheme.TypeSetLiteralExpr.Index()
+		} else {
+			tp := dbscheme.UnaryExprs[expr.Op]
+			if tp == nil {
+				log.Fatalf("unsupported unary operator %s", expr.Op)
+			}
+			kind = tp.Index()
 		}
-		kind = tp.Index()
 		extractExpr(tw, expr.X, lbl, 0)
 	case *ast.BinaryExpr:
 		if expr == nil {
 			return
 		}
-		tp := dbscheme.BinaryExprs[expr.Op]
-		if tp == nil {
-			log.Fatalf("unsupported binary operator %s", expr.Op)
+		_, isUnionType := typeOf(tw, expr).(*types.Union)
+		if expr.Op == token.OR && isUnionType {
+			kind = dbscheme.TypeSetLiteralExpr.Index()
+			flattenBinaryExprTree(tw, expr, lbl, 0)
+		} else {
+			tp := dbscheme.BinaryExprs[expr.Op]
+			if tp == nil {
+				log.Fatalf("unsupported binary operator %s", expr.Op)
+			}
+			kind = tp.Index()
+			extractExpr(tw, expr.X, lbl, 0)
+			extractExpr(tw, expr.Y, lbl, 1)
 		}
-		kind = tp.Index()
-		extractExpr(tw, expr.X, lbl, 0)
-		extractExpr(tw, expr.Y, lbl, 1)
 	case *ast.ArrayType:
 		if expr == nil {
 			return
@@ -966,6 +1053,9 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 			return
 		}
 		kind = dbscheme.InterfaceTypeExpr.Index()
+		// expr.Methods contains methods, embedded interfaces and type set
+		// literals.
+		makeTypeSetLiteralsUnionTyped(tw, expr.Methods)
 		extractFields(tw, expr.Methods, lbl, 0, 1)
 	case *ast.MapType:
 		if expr == nil {
@@ -1009,7 +1099,7 @@ func extractExprs(tw *trap.Writer, exprs []ast.Expr, parent trap.Label, idx int,
 // extractTypeOf looks up the type of `expr`, extracts it if it hasn't previously been
 // extracted, and associates it with `expr` in the `type_of` table
 func extractTypeOf(tw *trap.Writer, expr ast.Expr, lbl trap.Label) {
-	tp := tw.Package.TypesInfo.TypeOf(expr)
+	tp := typeOf(tw, expr)
 	if tp != nil {
 		tplbl := extractType(tw, tp)
 		dbscheme.TypeOfTable.Emit(tw, lbl, tplbl)
@@ -1304,6 +1394,12 @@ func extractDecl(tw *trap.Writer, decl ast.Decl, parent trap.Label, idx int) {
 		extractExpr(tw, decl.Type, lbl, 1)
 		extractStmt(tw, decl.Body, lbl, 2)
 		extractDoc(tw, decl.Doc, lbl)
+		extractTypeParamDecls(tw, decl.Type.TypeParams, lbl)
+
+		// Note that we currently don't extract any kind of declaration for
+		// receiver type parameters. There isn't an explicit declaration, but
+		// we could consider the index/indices of an IndexExpr/IndexListExpr
+		// receiver as declarations.
 	default:
 		log.Fatalf("unknown declaration of type %T", decl)
 	}
@@ -1345,6 +1441,7 @@ func extractSpec(tw *trap.Writer, spec ast.Spec, parent trap.Label, idx int) {
 			kind = dbscheme.TypeDefSpecType.Index()
 		}
 		extractExpr(tw, spec.Name, lbl, 0)
+		extractTypeParamDecls(tw, spec.TypeParams, lbl)
 		extractExpr(tw, spec.Type, lbl, 1)
 		extractDoc(tw, spec.Doc, lbl)
 	}
@@ -1377,7 +1474,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			for i := 0; i < tp.NumFields(); i++ {
 				field := tp.Field(i)
 
-				// ensure the field is associated with a label
+				// ensure the field is associated with a label - note that
+				// struct fields do not have a parent scope, so they are not
+				// dealt with by `extractScopes`
 				fieldlbl, exists := tw.Labeler.FieldID(field, i, lbl)
 				if !exists {
 					extractObject(tw, field, fieldlbl)
@@ -1399,9 +1498,18 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			for i := 0; i < tp.NumMethods(); i++ {
 				meth := tp.Method(i)
 
+				// Note that methods do not have a parent scope, so they are
+				// not dealt with by `extractScopes`
 				extractMethod(tw, meth)
 
 				extractComponentType(tw, lbl, i, meth.Name(), meth.Type())
+			}
+			for i := 0; i < tp.NumEmbeddeds(); i++ {
+				component := tp.EmbeddedType(i)
+				if isNonUnionTypeSetLiteral(component) {
+					component = createUnionFromType(component)
+				}
+				extractComponentType(tw, lbl, -(i + 1), "", component)
 			}
 		case *types.Tuple:
 			kind = dbscheme.TupleType.Index()
@@ -1410,11 +1518,11 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			}
 		case *types.Signature:
 			kind = dbscheme.SignatureType.Index()
-			parms, results := tp.Params(), tp.Results()
-			if parms != nil {
-				for i := 0; i < parms.Len(); i++ {
-					parm := parms.At(i)
-					extractComponentType(tw, lbl, i+1, "", parm.Type())
+			params, results := tp.Params(), tp.Results()
+			if params != nil {
+				for i := 0; i < params.Len(); i++ {
+					param := params.At(i)
+					extractComponentType(tw, lbl, i+1, "", param.Type())
 				}
 			}
 			if results != nil {
@@ -1434,24 +1542,27 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			kind = dbscheme.ChanTypes[tp.Dir()].Index()
 			extractElementType(tw, lbl, tp.Elem())
 		case *types.Named:
+			origintp := tp.Origin()
 			kind = dbscheme.NamedType.Index()
-			dbscheme.TypeNameTable.Emit(tw, lbl, tp.Obj().Name())
-			underlying := tp.Underlying()
+			dbscheme.TypeNameTable.Emit(tw, lbl, origintp.Obj().Name())
+			underlying := origintp.Underlying()
 			extractUnderlyingType(tw, lbl, underlying)
+			trackInstantiatedStructFields(tw, tp, origintp)
 
-			entitylbl, exists := tw.Labeler.LookupObjectID(tp.Obj(), lbl)
+			entitylbl, exists := tw.Labeler.LookupObjectID(origintp.Obj(), lbl)
 			if entitylbl == trap.InvalidLabel {
-				log.Printf("Omitting type-object binding for unknown object %v.\n", tp.Obj())
+				log.Printf("Omitting type-object binding for unknown object %v.\n", origintp.Obj())
 			} else {
 				if !exists {
-					extractObject(tw, tp.Obj(), entitylbl)
+					extractObject(tw, origintp.Obj(), entitylbl)
 				}
 				dbscheme.TypeObjectTable.Emit(tw, lbl, entitylbl)
 			}
 
-			// ensure all methods have labels
-			for i := 0; i < tp.NumMethods(); i++ {
-				meth := tp.Method(i)
+			// ensure all methods have labels - note that methods do not have a
+			// parent scope, so they are not dealt with by `extractScopes`
+			for i := 0; i < origintp.NumMethods(); i++ {
+				meth := origintp.Method(i)
 
 				extractMethod(tw, meth)
 			}
@@ -1462,6 +1573,21 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 					methlbl := extractMethod(tw, underlyingInterface.Method(i))
 					dbscheme.MethodHostsTable.Emit(tw, methlbl, lbl)
 				}
+			}
+		case *types.TypeParam:
+			kind = dbscheme.TypeParamType.Index()
+			parentlbl := getTypeParamParentLabel(tw, tp)
+			constraintLabel := extractType(tw, tp.Constraint())
+			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), constraintLabel, parentlbl, tp.Index())
+		case *types.Union:
+			kind = dbscheme.TypeSetLiteral.Index()
+			for i := 0; i < tp.Len(); i++ {
+				term := tp.Term(i)
+				tildeStr := ""
+				if term.Tilde() {
+					tildeStr = "~"
+				}
+				extractComponentType(tw, lbl, i, tildeStr, term.Type())
 			}
 		default:
 			log.Fatalf("unexpected type %T", tp)
@@ -1522,6 +1648,19 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 				}
 				fmt.Fprintf(&b, "%s,{%s}", meth.Id(), methLbl)
 			}
+			b.WriteString(";")
+			for i := 0; i < tp.NumEmbeddeds(); i++ {
+				if i > 0 {
+					b.WriteString(",")
+				}
+				fmt.Fprintf(&b, "{%s}", extractType(tw, tp.EmbeddedType(i)))
+			}
+			// We note whether the interface is comparable so that we can
+			// distinguish the underlying type of `comparable` from an
+			// empty interface.
+			if tp.IsComparable() {
+				b.WriteString(";comparable")
+			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;interfacetype", b.String()))
 		case *types.Tuple:
 			var b strings.Builder
@@ -1535,14 +1674,14 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;tupletype", b.String()))
 		case *types.Signature:
 			var b strings.Builder
-			parms, results := tp.Params(), tp.Results()
-			if parms != nil {
-				for i := 0; i < parms.Len(); i++ {
-					parmLbl := extractType(tw, parms.At(i).Type())
+			params, results := tp.Params(), tp.Results()
+			if params != nil {
+				for i := 0; i < params.Len(); i++ {
+					paramLbl := extractType(tw, params.At(i).Type())
 					if i > 0 {
 						b.WriteString(",")
 					}
-					fmt.Fprintf(&b, "{%s}", parmLbl)
+					fmt.Fprintf(&b, "{%s}", paramLbl)
 				}
 			}
 			b.WriteString(";")
@@ -1568,14 +1707,33 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			elem := extractType(tw, tp.Elem())
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%v,{%s};chantype", dir, elem))
 		case *types.Named:
-			entitylbl, exists := tw.Labeler.LookupObjectID(tp.Obj(), lbl)
+			origintp := tp.Origin()
+			entitylbl, exists := tw.Labeler.LookupObjectID(origintp.Obj(), lbl)
 			if entitylbl == trap.InvalidLabel {
-				panic(fmt.Sprintf("Cannot construct label for named type %v (underlying object is %v).\n", tp, tp.Obj()))
+				panic(fmt.Sprintf("Cannot construct label for named type %v (underlying object is %v).\n", origintp, origintp.Obj()))
 			}
 			if !exists {
-				extractObject(tw, tp.Obj(), entitylbl)
+				extractObject(tw, origintp.Obj(), entitylbl)
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};namedtype", entitylbl))
+		case *types.TypeParam:
+			parentlbl := getTypeParamParentLabel(tw, tp)
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%s;typeparamtype", parentlbl, tp.Obj().Name()))
+		case *types.Union:
+			var b strings.Builder
+			for i := 0; i < tp.Len(); i++ {
+				compLbl := extractType(tw, tp.Term(i).Type())
+				if i > 0 {
+					b.WriteString("|")
+				}
+				if tp.Term(i).Tilde() {
+					b.WriteString("~")
+				}
+				fmt.Fprintf(&b, "{%s}", compLbl)
+			}
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("%s;typesetliteraltype", b.String()))
+		default:
+			log.Fatalf("(getTypeLabel) unexpected type %T", tp)
 		}
 		tw.Labeler.TypeLabels[tp] = lbl
 	}
@@ -1657,4 +1815,207 @@ func extractNumLines(tw *trap.Writer, fileName string, ast *ast.File) {
 	}
 
 	dbscheme.NumlinesTable.Emit(tw, tw.Labeler.FileLabel(), lineCount, linesOfCode, linesOfComments)
+}
+
+// For a type `t` which is the type of a field of an interface type, return
+// whether `t` a type set literal which is not a union type. Note that a field
+// of an interface must be a method signature, an embedded interface type or a
+// type set literal.
+func isNonUnionTypeSetLiteral(t types.Type) bool {
+	if t == nil {
+		return false
+	}
+	switch t.Underlying().(type) {
+	case *types.Interface, *types.Union, *types.Signature:
+		return false
+	default:
+		return true
+	}
+}
+
+// Given a type `t`, return a union with a single term that is `t` without a
+// tilde.
+func createUnionFromType(t types.Type) *types.Union {
+	return types.NewUnion([]*types.Term{types.NewTerm(false, t)})
+}
+
+// Go through a `FieldList` and update the types of all type set literals which
+// are not already union types to be union types. We do this by changing the
+// types stored in `tw.Package.TypesInfo.Types`. Type set literals can only
+// occur in two places: a type parameter declaration or a type in an interface.
+func makeTypeSetLiteralsUnionTyped(tw *trap.Writer, fields *ast.FieldList) {
+	if fields == nil || fields.List == nil {
+		return
+	}
+	for i := 0; i < len(fields.List); i++ {
+		x := fields.List[i].Type
+		if _, alreadyOverridden := tw.TypesOverride[x]; !alreadyOverridden {
+			xtp := typeOf(tw, x)
+			if isNonUnionTypeSetLiteral(xtp) {
+				tw.TypesOverride[x] = createUnionFromType(xtp)
+			}
+		}
+	}
+}
+
+func typeOf(tw *trap.Writer, e ast.Expr) types.Type {
+	if val, ok := tw.TypesOverride[e]; ok {
+		return val
+	}
+	return tw.Package.TypesInfo.TypeOf(e)
+}
+
+func flattenBinaryExprTree(tw *trap.Writer, e ast.Expr, parent trap.Label, idx int) int {
+	binaryexpr, ok := e.(*ast.BinaryExpr)
+	if ok {
+		idx = flattenBinaryExprTree(tw, binaryexpr.X, parent, idx)
+		idx = flattenBinaryExprTree(tw, binaryexpr.Y, parent, idx)
+	} else {
+		extractExpr(tw, e, parent, idx)
+		idx = idx + 1
+	}
+	return idx
+}
+
+func extractTypeParamDecls(tw *trap.Writer, fields *ast.FieldList, parent trap.Label) {
+	if fields == nil || fields.List == nil {
+		return
+	}
+
+	// Type set literals can occur as the type in a type parameter declaration,
+	// so we ensure that they are union typed.
+	makeTypeSetLiteralsUnionTyped(tw, fields)
+
+	idx := 0
+	for _, field := range fields.List {
+		lbl := tw.Labeler.LocalID(field)
+		dbscheme.TypeParamDeclsTable.Emit(tw, lbl, parent, idx)
+		extractNodeLocation(tw, field, lbl)
+		if field.Names != nil {
+			for i, name := range field.Names {
+				extractExpr(tw, name, lbl, i+1)
+			}
+		}
+		extractExpr(tw, field.Type, lbl, 0)
+		extractDoc(tw, field.Doc, lbl)
+		idx += 1
+	}
+}
+
+// populateTypeParamParents sets `parent` as the parent of the elements of `typeparams`
+func populateTypeParamParents(tw *trap.Writer, typeparams *types.TypeParamList, parent types.Object) {
+	if typeparams != nil {
+		for idx := 0; idx < typeparams.Len(); idx++ {
+			setTypeParamParent(typeparams.At(idx), parent)
+		}
+	}
+}
+
+// getobjectBeingUsed looks up `ident` in `tw.Package.TypesInfo.Uses` and makes
+// some changes to the object to avoid returning objects relating to instantiated
+// types.
+func getObjectBeingUsed(tw *trap.Writer, ident *ast.Ident) types.Object {
+	obj := tw.Package.TypesInfo.Uses[ident]
+	if obj == nil {
+		return nil
+	}
+	if override, ok := tw.ObjectsOverride[obj]; ok {
+		return override
+	}
+	if funcObj, ok := obj.(*types.Func); ok {
+		sig := funcObj.Type().(*types.Signature)
+		if recv := sig.Recv(); recv != nil {
+			recvType := recv.Type()
+			originType, isSame := tryGetGenericType(recvType)
+
+			if originType == nil {
+				if pointerType, ok := recvType.(*types.Pointer); ok {
+					originType, isSame = tryGetGenericType(pointerType.Elem())
+				}
+			}
+
+			if originType == nil || isSame {
+				return obj
+			}
+
+			for i := 0; i < originType.NumMethods(); i++ {
+				meth := originType.Method(i)
+				if meth.Name() == funcObj.Name() {
+					return meth
+				}
+			}
+			if interfaceType, ok := originType.Underlying().(*types.Interface); ok {
+				for i := 0; i < interfaceType.NumMethods(); i++ {
+					meth := interfaceType.Method(i)
+					if meth.Name() == funcObj.Name() {
+						return meth
+					}
+				}
+			}
+			log.Fatalf("Could not find method %s on type %s", funcObj.Name(), originType)
+		}
+	}
+
+	return obj
+}
+
+// tryGetGenericType returns the generic type of `tp`, and a boolean indicating
+// whether it is the same as `tp`.
+func tryGetGenericType(tp types.Type) (*types.Named, bool) {
+	if namedType, ok := tp.(*types.Named); ok {
+		originType := namedType.Origin()
+		return originType, namedType == originType
+	}
+	return nil, false
+}
+
+// trackInstantiatedStructFields tries to give the fields of an instantiated
+// struct type underlying `tp` the same labels as the corresponding fields of
+// the generic struct type. This is so that when we come across the
+// instantiated field in `tw.Package.TypesInfo.Uses` we will get the label for
+// the generic field instead.
+func trackInstantiatedStructFields(tw *trap.Writer, tp, origintp *types.Named) {
+	if tp == origintp {
+		return
+	}
+
+	if instantiatedStruct, ok := tp.Underlying().(*types.Struct); ok {
+		genericStruct, ok2 := origintp.Underlying().(*types.Struct)
+		if !ok2 {
+			log.Fatalf(
+				"Error: underlying type of instantiated type is a struct but underlying type of generic type is %s",
+				origintp.Underlying())
+		}
+
+		if instantiatedStruct.NumFields() != genericStruct.NumFields() {
+			log.Fatalf(
+				"Error: instantiated struct %s has different number of fields than the generic version %s (%d != %d)",
+				instantiatedStruct, genericStruct, instantiatedStruct.NumFields(), genericStruct.NumFields())
+		}
+
+		for i := 0; i < instantiatedStruct.NumFields(); i++ {
+			tw.ObjectsOverride[instantiatedStruct.Field(i)] = genericStruct.Field(i)
+		}
+	}
+}
+
+func getTypeParamParentLabel(tw *trap.Writer, tp *types.TypeParam) trap.Label {
+	parent, exists := typeParamParent[tp]
+	if !exists {
+		log.Fatalf("Parent of type parameter does not exist: %s %s", tp.String(), tp.Constraint().String())
+	}
+	parentlbl, _ := tw.Labeler.ScopedObjectID(parent, func() trap.Label {
+		log.Fatalf("getTypeLabel() called for parent of type parameter %s", tp.String())
+		return trap.InvalidLabel
+	})
+	return parentlbl
+}
+
+func setTypeParamParent(tp *types.TypeParam, newobj types.Object) {
+	obj, exists := typeParamParent[tp]
+	if !exists {
+		typeParamParent[tp] = newobj
+	} else if newobj != obj {
+		log.Fatalf("Parent of type parameter '%s %s' being set to a different value: '%s' vs '%s'", tp.String(), tp.Constraint().String(), obj, newobj)
+	}
 }

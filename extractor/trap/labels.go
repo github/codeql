@@ -129,7 +129,7 @@ func (l *Labeler) LookupObjectID(object types.Object, typelbl Label) (Label, boo
 			}
 			label = InvalidLabel
 		} else {
-			label, exists = l.ScopedObjectID(object, typelbl)
+			label, exists = l.ScopedObjectID(object, func() Label { return typelbl })
 		}
 	}
 	return label, exists
@@ -144,7 +144,7 @@ func (l *Labeler) LookupObjectID(object types.Object, typelbl Label) (Label, boo
 // detected, we must construct a special label, as the variable can be reached
 // from several files via the method. As the type label is required to construct
 // the receiver object id, it is also required here.
-func (l *Labeler) ScopedObjectID(object types.Object, typelbl Label) (Label, bool) {
+func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label) (Label, bool) {
 	label, exists := l.objectLabels[object]
 	if !exists {
 		scope := object.Parent()
@@ -154,19 +154,17 @@ func (l *Labeler) ScopedObjectID(object types.Object, typelbl Label) (Label, boo
 		} else {
 			// associate method receiver objects to special keys, because those can be
 			// referenced from other files via their method
-			isRecv := false
-			if namedType, ok := object.Type().(*types.Named); ok {
-				for i := 0; i < namedType.NumMethods(); i++ {
-					meth := namedType.Method(i)
-					if object == meth.Type().(*types.Signature).Recv() {
-						isRecv = true
-						methlbl, _ := l.MethodID(meth, typelbl)
-						label, _ = l.ReceiverObjectID(object, methlbl)
-					}
+			meth := findMethodWithGivenReceiver(object.Type(), object)
+			if meth == nil {
+				if pointerType, ok := object.Type().(*types.Pointer); ok {
+					meth = findMethodWithGivenReceiver(pointerType.Elem(), object)
 				}
 			}
 
-			if !isRecv {
+			if meth != nil {
+				methlbl, _ := l.MethodID(meth, getTypeLabel())
+				label, _ = l.ReceiverObjectID(object, methlbl)
+			} else {
 				scopeLbl := l.ScopeID(scope, object.Pkg())
 				label = l.GlobalID(fmt.Sprintf("{%v},%s;object", scopeLbl, object.Name()))
 			}
@@ -174,6 +172,18 @@ func (l *Labeler) ScopedObjectID(object types.Object, typelbl Label) (Label, boo
 		l.objectLabels[object] = label
 	}
 	return label, exists
+}
+
+func findMethodWithGivenReceiver(tp types.Type, object types.Object) *types.Func {
+	if namedType, ok := tp.(*types.Named); ok {
+		for i := 0; i < namedType.NumMethods(); i++ {
+			meth := namedType.Method(i)
+			if object == meth.Type().(*types.Signature).Recv() {
+				return meth
+			}
+		}
+	}
+	return nil
 }
 
 // ReceiverObjectID associates a label with the given object and returns it, together with a flag indicating whether
@@ -210,12 +220,12 @@ func (l *Labeler) FieldID(field *types.Var, idx int, structlbl Label) (Label, bo
 }
 
 // MethodID associates a label with the given method and returns it, together with a flag indicating whether
-// the method already had a label associated with it; the method must belong to `recvlbl`, since that label
+// the method already had a label associated with it; the method must belong to `recvtyplbl`, since that label
 // is used to construct the label of the method
-func (l *Labeler) MethodID(method types.Object, recvlbl Label) (Label, bool) {
+func (l *Labeler) MethodID(method types.Object, recvtyplbl Label) (Label, bool) {
 	label, exists := l.objectLabels[method]
 	if !exists {
-		label = l.GlobalID(fmt.Sprintf("{%v},%s;method", recvlbl, method.Name()))
+		label = l.GlobalID(fmt.Sprintf("{%v},%s;method", recvtyplbl, method.Name()))
 		l.objectLabels[method] = label
 	}
 	return label, exists
