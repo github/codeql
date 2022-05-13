@@ -56,7 +56,10 @@ def run_process(cmd, capture_output=False):
         cmd = ' '.join(map(quote_for_batch, cmd))
         print("Converted to Windows command: " + cmd)
     try:
-        return subprocess.run(cmd, check=True, capture_output=capture_output)
+        if capture_output:
+            return subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        else:
+            return subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError as e:
         print("In: " + os.getcwd(), file=sys.stderr)
         shell_cmd = cmd if is_windows() else shlex.join(cmd)
