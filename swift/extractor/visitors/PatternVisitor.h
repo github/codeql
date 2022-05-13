@@ -20,6 +20,7 @@ class PatchedPatternVisitor : public swift::PatternVisitor<ImplClass, PatternRet
 
 class PatternVisitor : public PatchedPatternVisitor<PatternVisitor> {
  public:
+  // SwiftDispatcher should outlive the PatternVisitor
   PatternVisitor(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
 
   template <typename E>

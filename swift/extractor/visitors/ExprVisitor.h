@@ -7,6 +7,7 @@ namespace codeql {
 
 class ExprVisitor : public swift::ExprVisitor<ExprVisitor> {
  public:
+  // SwiftDispatcher should outlive the ExprVisitor
   ExprVisitor(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
 
   template <typename E>

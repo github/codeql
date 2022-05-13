@@ -21,6 +21,7 @@ class PatchedStmtVisitor : public swift::StmtVisitor<ImplClass, StmtRetTy, Args.
 
 class StmtVisitor : public PatchedStmtVisitor<StmtVisitor> {
  public:
+  // SwiftDispatcher should outlive the StmtVisitor
   StmtVisitor(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
 
   template <typename E>

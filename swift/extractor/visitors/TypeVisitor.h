@@ -7,6 +7,7 @@ namespace codeql {
 
 class TypeVisitor : public swift::TypeVisitor<TypeVisitor> {
  public:
+  // SwiftDispatcher should outlive the TypeVisitor
   TypeVisitor(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
 
   template <typename E>
