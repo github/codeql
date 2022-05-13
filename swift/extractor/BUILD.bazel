@@ -6,6 +6,8 @@ swift_cc_binary(
         "SwiftExtractor.cpp",
         "SwiftExtractor.h",
         "SwiftExtractorConfiguration.h",
+        "SwiftDispatcher.h",
+        "SwiftTagTraits.h",
         "main.cpp",
     ],
     visibility = ["//swift:__pkg__"],

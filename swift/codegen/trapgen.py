@@ -68,7 +68,7 @@ def generate(opts, renderer):
             for d in e.rhs:
                 tag_graph.setdefault(d.type, set()).add(e.lhs)
 
-    renderer.render(cpp.TrapList(traps, opts.cpp_namespace, opts.trap_affix, opts.cpp_include_dir),
+    renderer.render(cpp.TrapList(traps, opts.cpp_namespace, opts.trap_affix, opts.cpp_include_dir, opts.dbscheme),
                     out / f"{opts.trap_affix}Entries.h")
 
     tags = []
@@ -79,7 +79,7 @@ def generate(opts, renderer):
             index=index,
             id=tag,
         ))
-    renderer.render(cpp.TagList(tags, opts.cpp_namespace), out / f"{opts.trap_affix}Tags.h")
+    renderer.render(cpp.TagList(tags, opts.cpp_namespace, opts.dbscheme), out / f"{opts.trap_affix}Tags.h")
 
 
 tags = ("cpp", "dbscheme")

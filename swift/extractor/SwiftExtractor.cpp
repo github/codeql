@@ -12,13 +12,15 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 
-#include "swift/extractor/trap/TrapClasses.h"
-#include "swift/extractor/trap/TrapArena.h"
+#include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/trap/TrapOutput.h"
+#include "swift/extractor/SwiftDispatcher.h"
 
 using namespace codeql;
 
-static void extractFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
+static void extractFile(const SwiftExtractorConfiguration& config,
+                        swift::CompilerInstance& compiler,
+                        swift::SourceFile& file) {
   if (std::error_code ec = llvm::sys::fs::create_directories(config.trapDir)) {
     std::cerr << "Cannot create TRAP directory: " << ec.message() << "\n";
     return;
@@ -79,12 +81,17 @@ static void extractFile(const SwiftExtractorConfiguration& config, swift::Source
 
   TrapOutput trap{trapStream};
   TrapArena arena{};
-  auto label = arena.allocateLabel<FileTag>();
-  trap.assignStar(label);
-  File f{};
-  f.id = label;
-  f.name = srcFilePath.str().str();
-  trap.emit(f);
+
+  // In the case of emtpy files, the dispatcher is not called, but we still want to 'record' the
+  // fact that the file was extracted
+  auto fileLabel = arena.allocateLabel<FileTag>();
+  trap.assignKey(fileLabel, srcFilePath.str().str());
+  trap.emit(FilesTrap{fileLabel, srcFilePath.str().str()});
+
+  SwiftDispatcher dispatcher(compiler.getSourceMgr(), arena, trap);
+  for (swift::Decl* decl : file.getTopLevelDecls()) {
+    dispatcher.extract(decl);
+  }
 
   // TODO: Pick a better name to avoid collisions
   std::string trapName = file.getFilename().str() + ".trap";
@@ -108,11 +115,11 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
         module->getFiles().front()->getKind() == swift::FileUnitKind::Source) {
       // We can only call getMainSourceFile if the first file is of a Source kind
       swift::SourceFile& file = module->getMainSourceFile();
-      extractFile(config, file);
+      extractFile(config, compiler, file);
     }
   } else {
     for (auto s : compiler.getPrimarySourceFiles()) {
-      extractFile(config, *s);
+      extractFile(config, compiler, *s);
     }
   }
 }
