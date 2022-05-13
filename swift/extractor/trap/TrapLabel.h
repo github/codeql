@@ -36,6 +36,7 @@ class TrapLabel : public UntypedTrapLabel {
   friend class TrapLabel;
 
   using UntypedTrapLabel::UntypedTrapLabel;
+
  public:
   using Tag = TagParam;
 
