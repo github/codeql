@@ -136,7 +136,7 @@ class SwiftDispatcher {
     std::string filepath = getFilepath(start);
     auto fileLabel = arena.allocateLabel<FileTag>();
     trap.assignKey(fileLabel, filepath);
-    /// TODO: do not emit duplicate trap entries for Files
+    // TODO: do not emit duplicate trap entries for Files
     trap.emit(FilesTrap{fileLabel, filepath});
     auto [startLine, startColumn] = sourceManager.getLineAndColumnInBuffer(start);
     auto [endLine, endColumn] = sourceManager.getLineAndColumnInBuffer(end);
@@ -148,15 +148,22 @@ class SwiftDispatcher {
   }
 
   std::string getFilepath(swift::SourceLoc loc) {
-    /// TODO: this needs more testing
+    // TODO: this needs more testing
+    // TODO: check canonicaliztion of names on a case insensitive filesystems
+    // TODO: make symlink resolution conditional on CODEQL_PRESERVE_SYMLINKS=true
     std::string displayName = sourceManager.getDisplayNameForLoc(loc).str();
     llvm::SmallString<PATH_MAX> filePath(displayName);
     if (std::error_code ec = llvm::sys::fs::make_absolute(filePath)) {
       std::cerr << "Cannot make absolute path: '" << displayName << "': " << ec.message() << "\n";
       return {};
     }
-    llvm::sys::path::remove_dots(filePath);
-    return filePath.str().str();
+    llvm::SmallString<PATH_MAX> realPath;
+    if (std::error_code ec = llvm::sys::fs::real_path(filePath, realPath)) {
+      std::cerr << "Cannot get real path: '" << filePath.str().str() << "': " << ec.message()
+                << "\n";
+      return {};
+    }
+    return realPath.str().str();
   }
 
   // TODO: The following methods are supposed to redirect TRAP emission to correpsonding visitors,
