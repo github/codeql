@@ -12,7 +12,7 @@ private import semmle.go.security.SafeUrlFlowCustomizations
  * from the [Beego](https://github.com/beego/beego) package.
  */
 module Beego {
-  /** Gets the module path `github.com/astaxie/beego` or `github.com/beego/beego` */
+  /** Gets the module path `github.com/astaxie/beego` or `github.com/beego/beego`. */
   string modulePath() { result = ["github.com/astaxie/beego", "github.com/beego/beego"] }
 
   /** Gets the v2 module path `github.com/beego/beego/v2` */
