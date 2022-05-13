@@ -5,7 +5,7 @@
 #include <string>
 
 #include "swift/extractor/trap/TrapTagTraits.h"
-#include "swift/extractor/trap/TrapTags.h"
+#include "swift/extractor/trap/generated/TrapTags.h"
 
 namespace codeql {
 

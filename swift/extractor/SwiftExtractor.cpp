@@ -12,7 +12,7 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 
-#include "swift/extractor/trap/TrapClasses.h"
+#include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/trap/TrapOutput.h"
 #include "swift/extractor/SwiftDispatcher.h"
 
