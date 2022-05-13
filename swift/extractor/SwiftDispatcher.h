@@ -151,16 +151,10 @@ class SwiftDispatcher {
     // TODO: this needs more testing
     // TODO: check canonicaliztion of names on a case insensitive filesystems
     // TODO: make symlink resolution conditional on CODEQL_PRESERVE_SYMLINKS=true
-    std::string displayName = sourceManager.getDisplayNameForLoc(loc).str();
-    llvm::SmallString<PATH_MAX> filePath(displayName);
-    if (std::error_code ec = llvm::sys::fs::make_absolute(filePath)) {
-      std::cerr << "Cannot make absolute path: '" << displayName << "': " << ec.message() << "\n";
-      return {};
-    }
+    auto displayName = sourceManager.getDisplayNameForLoc(loc);
     llvm::SmallString<PATH_MAX> realPath;
-    if (std::error_code ec = llvm::sys::fs::real_path(filePath, realPath)) {
-      std::cerr << "Cannot get real path: '" << filePath.str().str() << "': " << ec.message()
-                << "\n";
+    if (std::error_code ec = llvm::sys::fs::real_path(displayName, realPath)) {
+      std::cerr << "Cannot get real path: '" << displayName.str() << "': " << ec.message() << "\n";
       return {};
     }
     return realPath.str().str();
