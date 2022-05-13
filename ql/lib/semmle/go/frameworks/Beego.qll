@@ -19,31 +19,31 @@ module Beego {
   string v2modulePath() { result = "github.com/beego/beego/v2" }
 
   /** Gets the path for the root package of beego. */
-  string packagePath() { 
-    result = package(v1modulePath(), "") 
-    or 
-    result = package(v2modulePath(), "server/web") 
+  string packagePath() {
+    result = package(v1modulePath(), "")
+    or
+    result = package(v2modulePath(), "server/web")
   }
 
   /** Gets the path for the context package of beego. */
-  string contextPackagePath() { 
-    result = package(v1modulePath(), "context") 
-    or 
-    result = package(v2modulePath(), "server/web/context") 
+  string contextPackagePath() {
+    result = package(v1modulePath(), "context")
+    or
+    result = package(v2modulePath(), "server/web/context")
   }
 
   /** Gets the path for the logs package of beego. */
-  string logsPackagePath() { 
-    result = package(v1modulePath(), "logs") 
+  string logsPackagePath() {
+    result = package(v1modulePath(), "logs")
     or
-    result = package(v2modulePath(), "core/logs") 
+    result = package(v2modulePath(), "core/logs")
   }
 
   /** Gets the path for the utils package of beego. */
-  string utilsPackagePath() { 
-    result = package(v1modulePath(), "utils") 
-    or 
-    result = package(v2modulePath(), "core/utils") 
+  string utilsPackagePath() {
+    result = package(v1modulePath(), "utils")
+    or
+    result = package(v2modulePath(), "core/utils")
   }
 
   /**
