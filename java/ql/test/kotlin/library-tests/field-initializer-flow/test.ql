@@ -3,7 +3,7 @@ import semmle.code.java.dataflow.DataFlow
 
 class Config extends DataFlow::Configuration {
 
-  Config() { this = "dlkjhfgsdjgfhd2" }
+  Config() { this = "Config" }
 
   override predicate isSource(DataFlow::Node n) {
     n.asExpr().(CompileTimeConstantExpr).getStringValue() = "Source"
