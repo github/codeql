@@ -14,22 +14,22 @@ namespace codeql {
 
 // the following is needed to avoid the problem of subclass pointers not necessarily coinciding
 // with superclass ones in case of multiple inheritance
-inline const void* getCanonicalPtr(const swift::Decl* e) {
+inline const swift::Decl* getCanonicalPtr(const swift::Decl* e) {
   return e;
 }
-inline const void* getCanonicalPtr(const swift::Stmt* e) {
+inline const swift::Stmt* getCanonicalPtr(const swift::Stmt* e) {
   return e;
 }
-inline const void* getCanonicalPtr(const swift::Expr* e) {
+inline const swift::Expr* getCanonicalPtr(const swift::Expr* e) {
   return e;
 }
-inline const void* getCanonicalPtr(const swift::Pattern* e) {
+inline const swift::Pattern* getCanonicalPtr(const swift::Pattern* e) {
   return e;
 }
-inline const void* getCanonicalPtr(const swift::TypeRepr* e) {
+inline const swift::TypeRepr* getCanonicalPtr(const swift::TypeRepr* e) {
   return e;
 }
-inline const void* getCanonicalPtr(const swift::TypeBase* e) {
+inline const swift::TypeBase* getCanonicalPtr(const swift::TypeBase* e) {
   return e;
 }
 
