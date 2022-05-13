@@ -74,7 +74,7 @@ class SwiftDispatcher {
     if (auto l = store.get(e)) {
       return *l;
     }
-    waitingForNewLabel = getCanonicalPtr(e);
+    waitingForNewLabel = getCanonicalPointer(e);
     visit(e);
     if (auto l = store.get(e)) {
       if constexpr (!std::is_base_of_v<swift::TypeBase, E>) {
@@ -91,7 +91,7 @@ class SwiftDispatcher {
   // declarations
   template <typename E>
   TrapLabel<ToTag<E>> assignNewLabel(E* e) {
-    assert(waitingForNewLabel == getCanonicalPtr(e) && "assignNewLabel called on wrong entity");
+    assert(waitingForNewLabel == getCanonicalPointer(e) && "assignNewLabel called on wrong entity");
     auto label = getLabel<ToTag<E>>();
     trap.assignStar(label);
     store.insert(e, label);

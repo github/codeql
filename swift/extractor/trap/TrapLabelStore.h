@@ -14,22 +14,22 @@ namespace codeql {
 
 // the following is needed to avoid the problem of subclass pointers not necessarily coinciding
 // with superclass ones in case of multiple inheritance
-inline const swift::Decl* getCanonicalPtr(const swift::Decl* e) {
+inline const swift::Decl* getCanonicalPointer(const swift::Decl* e) {
   return e;
 }
-inline const swift::Stmt* getCanonicalPtr(const swift::Stmt* e) {
+inline const swift::Stmt* getCanonicalPointer(const swift::Stmt* e) {
   return e;
 }
-inline const swift::Expr* getCanonicalPtr(const swift::Expr* e) {
+inline const swift::Expr* getCanonicalPointer(const swift::Expr* e) {
   return e;
 }
-inline const swift::Pattern* getCanonicalPtr(const swift::Pattern* e) {
+inline const swift::Pattern* getCanonicalPointer(const swift::Pattern* e) {
   return e;
 }
-inline const swift::TypeRepr* getCanonicalPtr(const swift::TypeRepr* e) {
+inline const swift::TypeRepr* getCanonicalPointer(const swift::TypeRepr* e) {
   return e;
 }
-inline const swift::TypeBase* getCanonicalPtr(const swift::TypeBase* e) {
+inline const swift::TypeBase* getCanonicalPointer(const swift::TypeBase* e) {
   return e;
 }
 
@@ -40,7 +40,7 @@ class TrapLabelStore {
  public:
   template <typename T>
   std::optional<TrapLabel<ToTag<T>>> get(const T* e) {
-    if (auto found = store_.find(getCanonicalPtr(e)); found != store_.end()) {
+    if (auto found = store_.find(getCanonicalPointer(e)); found != store_.end()) {
       return TrapLabel<ToTag<T>>::unsafeCreateFromUntyped(found->second);
     }
     return std::nullopt;
@@ -48,7 +48,7 @@ class TrapLabelStore {
 
   template <typename T>
   void insert(const T* e, TrapLabel<ToTag<T>> l) {
-    auto [_, inserted] = store_.emplace(getCanonicalPtr(e), l);
+    auto [_, inserted] = store_.emplace(getCanonicalPointer(e), l);
     assert(inserted && "already inserted");
   }
 
