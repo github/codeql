@@ -20,20 +20,17 @@ import semmle.code.cpp.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /*
- * using functions' name to model linux syscall which usually
- * starts with prefix like:
- *   C_SYSC_
- *   SYSC_
- *   compat_Sys_
- *   Sys_
+ *  Linux SysCall is defiend by marco SYSCALL_DEFINE
+ *  so I think this may be a generic way to model linux
+ *  syscall
  */
 
 class SysCallFunction extends Function {
   SysCallFunction() {
-    this.getName().regexpMatch("C_SYSC_[a-zA-Z]+") or
-    this.getName().regexpMatch("SYSC_[a-zA-Z]+") or
-    this.getName().regexpMatch("compat_SyS_[a-zA-Z]+") or
-    this.getName().regexpMatch("SyS_[a-zA-Z]+")
+    exists(MacroInvocation m |
+      m.getMacroName().regexpMatch("SYSCALL_DEFINE[0-9]+") and
+      this = m.getStmt().getEnclosingFunction()
+    )
   }
 }
 
@@ -47,7 +44,6 @@ class UserModePtrCheckMacro extends Macro {
   UserModePtrCheckMacro() {
     this.getName() = ["user_write_access_begin", "user_access_begin", "access_ok"] and
     va.getEnclosingElement() = this.getAnInvocation().getAnExpandedElement()
-    //va.getTarget().getType() instanceof PointerType
   }
 
   VariableAccess getArgument() { result = va }
@@ -70,7 +66,7 @@ class UserModePtrCheckMacro extends Macro {
  *   parameter dummy will be regared as user-mode pointer used
  *   in unsafe_put_user without security check using access_ok
  *   but in fact dummy is only used to read memory otherwise
- *   instead of writing user-mode memory.
+ *   instead of writng user-mode memory.
  *
  *   Reading implementation of unsafe_put_user in Linux codebase,
  *   I found that there is a sizeof operation for user-mode pointer.
@@ -107,29 +103,40 @@ class UnSafePutUserMacro extends Macro {
 class UserModePtrNode extends DataFlow::Node {
   UserModePtrNode() {
     exists(SysCallParameter p | this.asParameter() = p) or
-    exists(FunctionCall fc | this.asExpr() = fc) or
-    exists(VariableAccess va | this.asExpr() = va)
-  }
-}
-
-class UserModePtrCheckBarrierGuard extends DataFlow::BarrierGuard {
-  UserModePtrCheckBarrierGuard() {
-    exists(UserModePtrCheckMacro m | this = m.getAnInvocation().getAnExpandedElement())
-  }
-
-  override predicate checks(Expr checked, boolean isTrue) {
-    exists(UserModePtrCheckMacro m |
-      checked = m.getArgument() and
-      isTrue = true
-    )
+    exists(FunctionCall va | this.asExpr() = va)
   }
 }
 
 /*
- *  Track all UserModePttrNode that flow to UnSafePutUserMacro
+ *  Track all UsermodePtrNode that flow to UserModePtrCheckMacro
  */
 
-class UnsafePutUserConfig extends DataFlow::Configuration {
+class UserModePtrCheckConfig extends TaintTracking::Configuration {
+  UserModePtrCheckConfig() { this = "UserModePtrCheckConfig" }
+
+  override predicate isSource(DataFlow::Node node) { node instanceof UserModePtrNode }
+
+  override predicate isSink(DataFlow::Node node) {
+    exists(UserModePtrCheckMacro m | node.asExpr() = m.getArgument())
+  }
+}
+
+/*
+ *  Any UserModePtrNode doesn't flow to UserModePtrCheckMacro will
+ *  be regared potential exploitable
+ */
+
+class ExploitableUserModePtr extends UserModePtrNode {
+  ExploitableUserModePtr() {
+    not exists(UserModePtrCheckConfig config, DataFlow::Node sink | config.hasFlow(this, sink))
+  }
+}
+
+/*
+ *  Track all UserModePtrNode that flow to UnSafePutUserMacro
+ */
+
+class UnsafePutUserConfig extends TaintTracking::Configuration {
   UnsafePutUserConfig() { this = "UnsafePutUserConfig" }
 
   override predicate isSource(DataFlow::Node node) { node instanceof UserModePtrNode }
@@ -137,18 +144,11 @@ class UnsafePutUserConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node node) {
     exists(UnSafePutUserMacro m | node.asExpr() = m.getExprOperand())
   }
-
-  override predicate isBarrier(DataFlow::Node node) {
-    exists(UserModePtrCheckMacro m | node.asExpr() = m.getArgument())
-  }
-
-  override predicate isBarrierGuard(DataFlow::BarrierGuard bg) {
-    bg instanceof UserModePtrCheckBarrierGuard
-  }
 }
 
 from
-  UnsafePutUserConfig config, UserModePtrNode ptr, DataFlow::PathNode sink, DataFlow::PathNode src
+  UnsafePutUserConfig config, DataFlow::PathNode sink, DataFlow::PathNode src,
+  ExploitableUserModePtr ptr
 where
   config.hasFlowPath(src, sink) and
   src.getNode() = ptr
