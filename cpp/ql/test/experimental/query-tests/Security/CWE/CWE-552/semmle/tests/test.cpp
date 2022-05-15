@@ -37,7 +37,7 @@ void test2(const char *from,const char *to)
   char data[1000];
   int count;
   
-  if (!rename(from,to)) { // BAD
+  if (!rename(from,to)) { // GOOD
     f1 = fopen(from, "r");
     count = fread(data, 1, 1000, f1);
     fclose(f1);
