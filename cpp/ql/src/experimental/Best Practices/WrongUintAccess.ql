@@ -9,9 +9,7 @@
 
 import cpp
 
-from
-  Variable var, ArrayExpr useExpr, ArrayType defLine,
-  VariableAccess use
+from Variable var, ArrayExpr useExpr, ArrayType defLine, VariableAccess use
 where
   var.getUnspecifiedType() = defLine and
   use = useExpr.getArrayBase() and
