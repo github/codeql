@@ -18,6 +18,10 @@
   CERT Coding Standard:
   <a href="https://wiki.sei.cmu.edu/confluence/display/c/EXP12-C.+Do+not+ignore+values+returned+by+functions">EXP12-C. Do not ignore values returned by functions - SEI CERT C Coding Standard - Confluence</a>.
 </li>
+<li>
+  Openssl.org:
+  <a href="https://www.openssl.org/docs/man3.0/man3/SSL_shutdown.html">SSL_shutdown - shut down a TLS/SSL connection</a>.
+</li>
 
 </references>
 </qhelp>
