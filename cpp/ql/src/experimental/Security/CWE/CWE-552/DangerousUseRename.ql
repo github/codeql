@@ -14,9 +14,9 @@ import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /** Holds if the function argument is used in opening the file for reading or writing. */
-predicate findFileForReadOrWrite(FunctionCall fc, FunctionCall fc1,string mode) {
+predicate findFileForReadOrWrite(FunctionCall fc, FunctionCall fc1, string mode, int na) {
   fc1.getTarget().hasName(["open", "fopen"]) and
-  globalValueNumber(fc1.getArgument(0)) = globalValueNumber(fc.getArgument(0)) and
+  globalValueNumber(fc1.getArgument(0)) = globalValueNumber(fc.getArgument(na)) and
   fc1.getArgument(1).getValue() = mode and
   fc.getASuccessor+() = fc1
 }
@@ -25,8 +25,8 @@ from FunctionCall fc
 where
   fc.getTarget().hasName("rename") and
   exists(IfStmt ifst, Expr ec, Expr ecd, FunctionCall fc1, FunctionCall fc2 |
-    findFileForReadOrWrite(fc, fc1, "r") and
-    findFileForReadOrWrite(fc, fc2, "w") and
+    findFileForReadOrWrite(fc, fc1, "r", 0) and
+    findFileForReadOrWrite(fc, fc2, "w", 1) and
     ec.getValue() = "0" and
     ecd = ifst.getCondition().getAChild*() and
     (
