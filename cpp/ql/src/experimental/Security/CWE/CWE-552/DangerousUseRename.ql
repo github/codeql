@@ -13,29 +13,20 @@
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
-/** Holds if the function argument is used in opening the file for reading. */
-predicate findFileForRead(FunctionCall fc, FunctionCall fc1) {
-  fc1.getTarget().hasGlobalOrStdOrBslName(["open", "fopen"]) and
+/** Holds if the function argument is used in opening the file for reading or writing. */
+predicate findFileForReadOrWrite(FunctionCall fc, FunctionCall fc1,string mode) {
+  fc1.getTarget().hasName(["open", "fopen"]) and
   globalValueNumber(fc1.getArgument(0)) = globalValueNumber(fc.getArgument(0)) and
-  fc1.getArgument(1).getValue() = "r" and
-  fc.getASuccessor+() = fc1
-}
-
-/** Holds if the function argument is used in opening the file for writing. */
-predicate findFileForWrite(FunctionCall fc, FunctionCall fc1) {
-  fc1.getTarget().hasGlobalOrStdOrBslName(["open", "fopen"]) and
-  globalValueNumber(fc1.getArgument(0)) = globalValueNumber(fc.getArgument(1)) and
-  fc1.getNumberOfArguments() = 2 and
-  fc1.getArgument(1).getValue() = "w" and
+  fc1.getArgument(1).getValue() = mode and
   fc.getASuccessor+() = fc1
 }
 
 from FunctionCall fc
 where
-  fc.getTarget().hasGlobalOrStdOrBslName("rename") and
+  fc.getTarget().hasName("rename") and
   exists(IfStmt ifst, Expr ec, Expr ecd, FunctionCall fc1, FunctionCall fc2 |
-    findFileForRead(fc, fc1) and
-    findFileForWrite(fc, fc2) and
+    findFileForReadOrWrite(fc, fc1, "r") and
+    findFileForReadOrWrite(fc, fc2, "w") and
     ec.getValue() = "0" and
     ecd = ifst.getCondition().getAChild*() and
     (
