@@ -31,7 +31,8 @@ where
     ecd = ifst.getCondition().getAChild*() and
     (
       globalValueNumber(ecd) = globalValueNumber(fc) and
-      not ecd.getParent() instanceof ComparisonOperation
+      not ecd.getParent() instanceof ComparisonOperation and
+      not ecd.getParent() instanceof NotExpr
       or
       exists(Expr evp |
         globalValueNumber(evp) = globalValueNumber(fc) and
