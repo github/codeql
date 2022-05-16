@@ -100,19 +100,6 @@ class CreateXmlReader extends Function {
 }
 
 /**
- * The `AbstractDOMParser.parse`, `DOMLSParserClass.parse`, `SAXParser.parse`
- * or `SAX2XMLReader.parse` method.
- */
-class ParseFunction extends Function {
-  ParseFunction() {
-    this.getClassAndName("parse") instanceof AbstractDOMParserClass or
-    this.getClassAndName("parse") instanceof DomLSParserClass or
-    this.getClassAndName("parse") instanceof SaxParserClass or
-    this.getClassAndName("parse") instanceof Sax2XmlReader
-  }
-}
-
-/**
  * The `XercesDOMParser` interface for the Xerces XML library.
  */
 class XercesDomParserLibrary extends XmlLibrary {
@@ -130,9 +117,9 @@ class XercesDomParserLibrary extends XmlLibrary {
   }
 
   override predicate configurationSink(DataFlow::Node node, string flowstate) {
-    // sink is the read of the qualifier of a call to `parse`.
+    // sink is the read of the qualifier of a call to `AbstractDOMParser.parse`.
     exists(Call call |
-      call.getTarget() instanceof ParseFunction and
+      call.getTarget().getClassAndName("parse") instanceof AbstractDOMParserClass and
       call.getQualifier() = node.asConvertedExpr()
     ) and
     flowstate instanceof XercesFlowState and
@@ -156,7 +143,13 @@ class CreateLSParserLibrary extends XmlLibrary {
   }
 
   override predicate configurationSink(DataFlow::Node node, string flowstate) {
-    none() // uses the existing sinks from `XercesDomParserLibrary`
+    // sink is the read of the qualifier of a call to `DOMLSParserClass.parse`.
+    exists(Call call |
+      call.getTarget().getClassAndName("parse") instanceof DomLSParserClass and
+      call.getQualifier() = node.asConvertedExpr()
+    ) and
+    flowstate instanceof XercesFlowState and
+    not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
   }
 }
 
@@ -178,7 +171,13 @@ class SaxParserLibrary extends XmlLibrary {
   }
 
   override predicate configurationSink(DataFlow::Node node, string flowstate) {
-    none() // uses the existing sinks from `XercesDomParserLibrary`
+    // sink is the read of the qualifier of a call to `SAXParser.parse`.
+    exists(Call call |
+      call.getTarget().getClassAndName("parse") instanceof SaxParserClass and
+      call.getQualifier() = node.asConvertedExpr()
+    ) and
+    flowstate instanceof XercesFlowState and
+    not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
   }
 }
 
@@ -198,7 +197,13 @@ class Sax2XmlReaderLibrary extends XmlLibrary {
   }
 
   override predicate configurationSink(DataFlow::Node node, string flowstate) {
-    none() // uses the existing sinks from `XercesDomParserLibrary`
+    // sink is the read of the qualifier of a call to `SAX2XMLReader.parse`.
+    exists(Call call |
+      call.getTarget().getClassAndName("parse") instanceof Sax2XmlReader and
+      call.getQualifier() = node.asConvertedExpr()
+    ) and
+    flowstate instanceof XercesFlowState and
+    not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
   }
 }
 
