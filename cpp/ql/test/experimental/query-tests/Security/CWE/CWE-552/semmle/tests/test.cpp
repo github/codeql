@@ -71,7 +71,7 @@ void test4(const char *from,const char *to)
   int count;
   int fd;
 
-  if (rename(from,to)<0) { // GOOD
+  if (rename(from,to)<0) { // GOOD : opening a file for writing occurs using access flags.
     f1 = fopen(from, "r");
     count = fread(data, 1, 1000, f1);
     fclose(f1);
