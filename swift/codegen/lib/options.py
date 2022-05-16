@@ -21,7 +21,7 @@ def _init_options():
     Option("--cpp-output", tags=["cpp"], type=_abspath, required=True)
     Option("--cpp-namespace", tags=["cpp"], default="codeql")
     Option("--trap-affix", tags=["cpp"], default="Trap")
-    Option("--cpp-include-dir", tags=["cpp"], required=True)
+    Option("--cpp-include-dir", tags=["cpp"], default="swift/extractor/trap")
 
 
 def _abspath(x):

@@ -13,6 +13,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
+private import semmle.python.Concepts
 
 /** Provides classes for modeling copying file related APIs. */
 module CopyFile {
@@ -368,6 +369,55 @@ class HeaderDeclaration extends DataFlow::Node {
    * Gets the argument containing the header value.
    */
   DataFlow::Node getValueArg() { result = range.getValueArg() }
+}
+
+/**
+ * A data-flow node that sets a cookie in an HTTP response.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `Cookie::Range` instead.
+ */
+class Cookie extends HTTP::Server::CookieWrite instanceof Cookie::Range {
+  /**
+   * Holds if this cookie is secure.
+   */
+  predicate isSecure() { super.isSecure() }
+
+  /**
+   * Holds if this cookie is HttpOnly.
+   */
+  predicate isHttpOnly() { super.isHttpOnly() }
+
+  /**
+   * Holds if the cookie is SameSite
+   */
+  predicate isSameSite() { super.isSameSite() }
+}
+
+/** Provides a class for modeling new cookie writes on HTTP responses. */
+module Cookie {
+  /**
+   * A data-flow node that sets a cookie in an HTTP response.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `Cookie` instead.
+   */
+  abstract class Range extends HTTP::Server::CookieWrite::Range {
+    /**
+     * Holds if this cookie is secure.
+     */
+    abstract predicate isSecure();
+
+    /**
+     * Holds if this cookie is HttpOnly.
+     */
+    abstract predicate isHttpOnly();
+
+    /**
+     * Holds if the cookie is SameSite.
+     */
+    abstract predicate isSameSite();
+  }
 }
 
 /** Provides classes for modeling JWT encoding-related APIs. */

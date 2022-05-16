@@ -171,6 +171,14 @@ abstract class Configuration extends string {
   int explorationLimit() { none() }
 
   /**
+   * Holds if hidden nodes should be included in the data flow graph.
+   *
+   * This feature should only be used for debugging or when the data flow graph
+   * is not visualized (for example in a `path-problem` query).
+   */
+  predicate includeHiddenNodes() { none() }
+
+  /**
    * Holds if there is a partial data flow path from `source` to `node`. The
    * approximate distance between `node` and the closest source is `dist` and
    * is restricted to be less than or equal to `explorationLimit()`. This
@@ -1673,8 +1681,22 @@ private module Stage2 {
     storeStepFwd(_, ap, tc, _, _, config)
   }
 
-  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+  private predicate revConsCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  private predicate validAp(Ap ap, Configuration config) {
+    revFlow(_, _, _, _, ap, config) and ap instanceof ApNil
+    or
+    exists(TypedContent head, Ap tail |
+      consCand(head, tail, config) and
+      ap = apCons(head, tail)
+    )
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    revConsCand(tc, ap, config) and
+    validAp(ap, config)
   }
 
   pragma[noinline]
@@ -2495,8 +2517,22 @@ private module Stage3 {
     storeStepFwd(_, ap, tc, _, _, config)
   }
 
-  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+  private predicate revConsCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  private predicate validAp(Ap ap, Configuration config) {
+    revFlow(_, _, _, _, ap, config) and ap instanceof ApNil
+    or
+    exists(TypedContent head, Ap tail |
+      consCand(head, tail, config) and
+      ap = apCons(head, tail)
+    )
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    revConsCand(tc, ap, config) and
+    validAp(ap, config)
   }
 
   pragma[noinline]
@@ -3322,8 +3358,22 @@ private module Stage4 {
     storeStepFwd(_, ap, tc, _, _, config)
   }
 
-  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+  private predicate revConsCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  private predicate validAp(Ap ap, Configuration config) {
+    revFlow(_, _, _, _, ap, config) and ap instanceof ApNil
+    or
+    exists(TypedContent head, Ap tail |
+      consCand(head, tail, config) and
+      ap = apCons(head, tail)
+    )
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    revConsCand(tc, ap, config) and
+    validAp(ap, config)
   }
 
   pragma[noinline]
@@ -3394,14 +3444,25 @@ private Configuration unbindConf(Configuration conf) {
   exists(Configuration c | result = pragma[only_bind_into](c) and conf = pragma[only_bind_into](c))
 }
 
-private predicate nodeMayUseSummary(
-  NodeEx n, FlowState state, AccessPathApprox apa, Configuration config
+pragma[nomagic]
+private predicate nodeMayUseSummary0(
+  NodeEx n, DataFlowCallable c, FlowState state, AccessPathApprox apa, Configuration config
 ) {
-  exists(DataFlowCallable c, AccessPathApprox apa0 |
-    Stage4::parameterMayFlowThrough(_, c, apa, _) and
+  exists(AccessPathApprox apa0 |
+    Stage4::parameterMayFlowThrough(_, c, _, _) and
     Stage4::revFlow(n, state, true, _, apa0, config) and
     Stage4::fwdFlow(n, state, any(CallContextCall ccc), TAccessPathApproxSome(apa), apa0, config) and
     n.getEnclosingCallable() = c
+  )
+}
+
+pragma[nomagic]
+private predicate nodeMayUseSummary(
+  NodeEx n, FlowState state, AccessPathApprox apa, Configuration config
+) {
+  exists(DataFlowCallable c |
+    Stage4::parameterMayFlowThrough(_, c, apa, config) and
+    nodeMayUseSummary0(n, c, state, apa, config)
   )
 }
 
@@ -3600,7 +3661,7 @@ private newtype TPathNode =
  * of dereference operations needed to get from the value in the node to the
  * tracked object. The final type indicates the type of the tracked object.
  */
-abstract private class AccessPath extends TAccessPath {
+private class AccessPath extends TAccessPath {
   /** Gets the head of this access path, if any. */
   abstract TypedContent getHead();
 
@@ -3815,11 +3876,14 @@ abstract private class PathNodeImpl extends PathNode {
   abstract NodeEx getNodeEx();
 
   predicate isHidden() {
-    hiddenNode(this.getNodeEx().asNode()) and
-    not this.isSource() and
-    not this instanceof PathNodeSink
-    or
-    this.getNodeEx() instanceof TNodeImplicitRead
+    not this.getConfiguration().includeHiddenNodes() and
+    (
+      hiddenNode(this.getNodeEx().asNode()) and
+      not this.isSource() and
+      not this instanceof PathNodeSink
+      or
+      this.getNodeEx() instanceof TNodeImplicitRead
+    )
   }
 
   private string ppAp() {

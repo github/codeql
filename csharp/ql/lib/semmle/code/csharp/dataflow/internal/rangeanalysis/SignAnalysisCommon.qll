@@ -49,7 +49,7 @@ private predicate unknownSign(Expr e) {
     or
     exists(LongLiteral lit | lit = e and not exists(lit.getValue().toFloat()))
     or
-    exists(CastExpr cast, Type fromtyp |
+    exists(CastingExpr cast, Type fromtyp |
       cast = e and
       fromtyp = cast.getSourceType() and
       not fromtyp instanceof NumericOrCharType

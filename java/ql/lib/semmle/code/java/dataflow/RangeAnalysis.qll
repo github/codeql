@@ -360,8 +360,13 @@ private predicate safeCast(Type fromtyp, Type totyp) {
 /**
  * A cast that can be ignored for the purpose of range analysis.
  */
-private class SafeCastExpr extends CastExpr {
-  SafeCastExpr() { safeCast(getExpr().getType(), getType()) }
+private class RangeAnalysisSafeCastingExpr extends CastingExpr {
+  RangeAnalysisSafeCastingExpr() {
+    safeCast(getExpr().getType(), getType()) or
+    this instanceof ImplicitCastExpr or
+    this instanceof ImplicitNotNullExpr or
+    this instanceof ImplicitCoercionToUnitExpr
+  }
 }
 
 /**
@@ -380,9 +385,9 @@ private predicate typeBound(Type typ, int lowerbound, int upperbound) {
 /**
  * A cast to a small integral type that may overflow or underflow.
  */
-private class NarrowingCastExpr extends CastExpr {
-  NarrowingCastExpr() {
-    not this instanceof SafeCastExpr and
+private class NarrowingCastingExpr extends CastingExpr {
+  NarrowingCastingExpr() {
+    not this instanceof RangeAnalysisSafeCastingExpr and
     typeBound(getType(), _, _)
   }
 
@@ -412,7 +417,7 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
   valueFlowStep(e2, e1, delta) and
   (upper = true or upper = false)
   or
-  e2.(SafeCastExpr).getExpr() = e1 and
+  e2.(RangeAnalysisSafeCastingExpr).getExpr() = e1 and
   delta = 0 and
   (upper = true or upper = false)
   or
@@ -796,7 +801,7 @@ private predicate baseBound(Expr e, int b, boolean upper) {
  * For `upper = true` this means that the cast will not overflow and for
  * `upper = false` this means that the cast will not underflow.
  */
-private predicate safeNarrowingCast(NarrowingCastExpr cast, boolean upper) {
+private predicate safeNarrowingCast(NarrowingCastingExpr cast, boolean upper) {
   exists(int bound | bounded(cast.getExpr(), any(ZeroBound zb), bound, upper, _, _, _) |
     upper = true and bound <= cast.getUpperBound()
     or
@@ -806,7 +811,7 @@ private predicate safeNarrowingCast(NarrowingCastExpr cast, boolean upper) {
 
 pragma[noinline]
 private predicate boundedCastExpr(
-  NarrowingCastExpr cast, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
+  NarrowingCastingExpr cast, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
   Reason reason
 ) {
   bounded(cast.getExpr(), b, delta, upper, fromBackEdge, origdelta, reason)
@@ -870,7 +875,7 @@ private predicate bounded(
     delta = d / factor
   )
   or
-  exists(NarrowingCastExpr cast |
+  exists(NarrowingCastingExpr cast |
     cast = e and
     safeNarrowingCast(cast, upper.booleanNot()) and
     boundedCastExpr(cast, b, delta, upper, fromBackEdge, origdelta, reason)

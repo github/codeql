@@ -210,10 +210,13 @@ private module NoSql {
    */
   private class BsonObjectIdCall extends DataFlow::CallCfgNode, NoSqlSanitizer::Range {
     BsonObjectIdCall() {
-      this =
-        API::moduleImport(["bson", "bson.objectid", "bson.json_util"])
-            .getMember("ObjectId")
-            .getACall()
+      exists(API::Node mod |
+        mod = API::moduleImport("bson")
+        or
+        mod = API::moduleImport("bson").getMember(["objectid", "json_util"])
+      |
+        this = mod.getMember("ObjectId").getACall()
+      )
     }
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }

@@ -1,0 +1,12 @@
+.classpath
+.gradle
+.idea
+.project
+.settings
+bin/
+build/
+gradle/
+gradlew
+gradlew.bat
+
+src/main/kotlin/KotlinExtractorDbScheme.kt

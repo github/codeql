@@ -2532,8 +2532,15 @@ module YAML {
      * Gets a QLPack that this QLPack depends on.
      */
     QLPack getADependency() {
-      exists(string name | this.hasDependency(name, _) |
-        result.getName().replaceAll("-", "/") = name.replaceAll("-", "/")
+      exists(string rawDep, string dep, string name | this.hasDependency(rawDep, _) |
+        dep = rawDep.replaceAll("-", "/") and
+        name = result.getName().replaceAll("-", "/") and
+        (
+          name = dep
+          or
+          name.matches("codeql/%") and
+          name = dep + "/all"
+        )
       )
     }
 

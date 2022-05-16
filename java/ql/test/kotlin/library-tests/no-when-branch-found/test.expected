@@ -1,0 +1,1 @@
+| test.kt:0:0:0:0 | throw ... | test.kt:0:0:0:0 | new NoWhenBranchMatchedException(...) |

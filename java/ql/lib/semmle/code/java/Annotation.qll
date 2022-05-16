@@ -159,4 +159,7 @@ class AnnotationElement extends Member {
 
   /** Gets the type of this annotation element. */
   Type getType() { methods(this, _, _, result, _, _) }
+
+  /** Gets the Kotlin type of this annotation element. */
+  KotlinType getKotlinType() { methodsKotlinType(this, result) }
 }

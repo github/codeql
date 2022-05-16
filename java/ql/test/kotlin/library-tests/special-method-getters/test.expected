@@ -1,0 +1,9 @@
+| test.kt:1:84:1:89 | length(...) | length |
+| test.kt:1:97:1:100 | size(...) | size |
+| test.kt:1:108:1:111 | size(...) | size |
+| test.kt:1:119:1:122 | keySet(...) | keySet |
+| test.kt:1:124:1:127 | size(...) | size |
+| test.kt:1:135:1:140 | values(...) | values |
+| test.kt:1:142:1:145 | size(...) | size |
+| test.kt:1:153:1:159 | entrySet(...) | entrySet |
+| test.kt:1:161:1:164 | size(...) | size |
