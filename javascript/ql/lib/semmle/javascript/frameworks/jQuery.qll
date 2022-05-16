@@ -307,7 +307,7 @@ private module JQueryClientRequest {
   }
 
   /**
-   * Gets a node refering to the response contained in an `jqXHR` object.
+   * Gets a node referring to the response contained in an `jqXHR` object.
    */
   private DataFlow::SourceNode getAResponseNodeFromAnXHRObject(DataFlow::SourceNode obj) {
     result =

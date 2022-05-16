@@ -37,7 +37,7 @@ private module Cached {
    *      along the chain of addresses computed by `StoreNodeInstr.getInner` to identify field writes
    *      and call `storeStep` accordingly (i.e., for an expression like `a.b.c = x`, we visit `c`, then
    *      `b`, then `a`).
-   *   2. Flow is transfered from a `WriteSideEffectInstruction` to a `StoreNodeOperand` after flow
+   *   2. Flow is transferred from a `WriteSideEffectInstruction` to a `StoreNodeOperand` after flow
    *      returns to a caller. Flow will then proceed to the defining instruction of the operand (because
    *      the `StoreNodeInstr` computed by `StoreNodeOperand.getInner()` is the `StoreNode` containing
    *      the defining instruction), and then along the chain computed by `StoreNodeInstr.getInner` like

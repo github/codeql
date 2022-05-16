@@ -1,4 +1,4 @@
-/** Provides classes to reason about Expression Langauge (JEXL) injection vulnerabilities. */
+/** Provides classes to reason about Expression Language (JEXL) injection vulnerabilities. */
 
 import java
 import semmle.code.java.dataflow.TaintTracking
