@@ -353,12 +353,32 @@ class Libxml2BadOption extends EnumConstant {
 }
 
 /**
- * A configuration for tracking XML objects and their states.
+ * An XML library or interface.
  */
-class XXEConfiguration extends DataFlow::Configuration {
-  XXEConfiguration() { this = "XXEConfiguration" }
+abstract class XmlLibrary extends string {
+  bindingset[this]
+  XmlLibrary() { any() } // required characteristic predicate
 
-  override predicate isSource(DataFlow::Node node, string flowstate) {
+  /**
+   * The source node for a potentially unsafe configuration object for this XML
+   * library, along with `flowstate` representing its initial state.
+   */
+  abstract predicate configurationSource(DataFlow::Node node, string flowstate);
+
+  /**
+   * The sink node where an unsafe configuration object is used to interpret
+   * XML.
+   */
+  abstract predicate configurationSink(DataFlow::Node node, string flowstate);
+}
+
+/**
+ * The `XercesDOMParser` interface for the Xerces XML library.
+ */
+class XercesDomParserLibrary extends XmlLibrary {
+  XercesDomParserLibrary() { this = "XercesDomParserLibrary" }
+
+  override predicate configurationSource(DataFlow::Node node, string flowstate) {
     // source is the write on `this` of a call to the `XercesDOMParser`
     // constructor.
     exists(CallInstruction call |
@@ -367,14 +387,46 @@ class XXEConfiguration extends DataFlow::Configuration {
         call.getThisArgument() and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
-    or
+  }
+
+  override predicate configurationSink(DataFlow::Node node, string flowstate) {
+    // sink is the read of the qualifier of a call to `parse`.
+    exists(Call call |
+      call.getTarget() instanceof ParseFunction and
+      call.getQualifier() = node.asConvertedExpr()
+    ) and
+    flowstate instanceof XercesFlowState and
+    not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
+  }
+}
+
+/**
+ * The createLSParser interface for the Xerces XML library.
+ */
+class CreateLSParserLibrary extends XmlLibrary {
+  CreateLSParserLibrary() { this = "CreateLSParserLibrary" }
+
+  override predicate configurationSource(DataFlow::Node node, string flowstate) {
     // source is the result of a call to `createLSParser`.
     exists(Call call |
       call.getTarget() instanceof CreateLSParser and
       call = node.asExpr() and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
-    or
+  }
+
+  override predicate configurationSink(DataFlow::Node node, string flowstate) {
+    none() // uses the existing sinks from `XercesDomParserLibrary`
+  }
+}
+
+/**
+ * The SAXParser interface for the Xerces XML library.
+ */
+class SaxParserLibrary extends XmlLibrary {
+  SaxParserLibrary() { this = "SaxParserLibrary" }
+
+  override predicate configurationSource(DataFlow::Node node, string flowstate) {
     // source is the write on `this` of a call to the `SAXParser`
     // constructor.
     exists(CallInstruction call |
@@ -383,18 +435,44 @@ class XXEConfiguration extends DataFlow::Configuration {
         call.getThisArgument() and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
-    or
+  }
+
+  override predicate configurationSink(DataFlow::Node node, string flowstate) {
+    none() // uses the existing sinks from `XercesDomParserLibrary`
+  }
+}
+
+/**
+ * The SAX2XMLReader interface for the Xerces XML library.
+ */
+class Sax2XmlReaderLibrary extends XmlLibrary {
+  Sax2XmlReaderLibrary() { this = "Sax2XmlReaderLibrary" }
+
+  override predicate configurationSource(DataFlow::Node node, string flowstate) {
     // source is the result of a call to `createXMLReader`.
     exists(Call call |
       call.getTarget() instanceof CreateXmlReader and
       call = node.asExpr() and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
-    or
-    // source is an `options` argument on a `libxml2` parse call that specifies
+  }
+
+  override predicate configurationSink(DataFlow::Node node, string flowstate) {
+    none() // uses the existing sinks from `XercesDomParserLibrary`
+  }
+}
+
+/**
+ * The libxml2 XML library.
+ */
+class LibXml2Library extends XmlLibrary {
+  LibXml2Library() { this = "LibXml2Library" }
+
+  override predicate configurationSource(DataFlow::Node node, string flowstate) {
+    // source is an `options` argument on a libxml2 parse call that specifies
     // at least one unsafe option.
     //
-    // note: we don't need to track an XML object for `libxml2`, so we don't
+    // note: we don't need to track an XML object for libxml2, so we don't
     // really need data flow. Nevertheless we jam it into this configuration,
     // with matching sources and sinks. This allows results to be presented by
     // the same query, in a consistent way as other results with flow paths.
@@ -409,21 +487,28 @@ class XXEConfiguration extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node node, string flowstate) {
-    // sink is the read of the qualifier of a call to `parse`.
-    exists(Call call |
-      call.getTarget() instanceof ParseFunction and
-      call.getQualifier() = node.asConvertedExpr()
-    ) and
-    flowstate instanceof XercesFlowState and
-    not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
-    or
+  override predicate configurationSink(DataFlow::Node node, string flowstate) {
     // sink is the `options` argument on a `libxml2` parse call.
     exists(Libxml2ParseCall call, Expr options |
       options = call.getOptions() and
       node.asExpr() = options and
       flowstate = "libxml2"
     )
+  }
+}
+
+/**
+ * A configuration for tracking XML objects and their states.
+ */
+class XXEConfiguration extends DataFlow::Configuration {
+  XXEConfiguration() { this = "XXEConfiguration" }
+
+  override predicate isSource(DataFlow::Node node, string flowstate) {
+    any(XmlLibrary l).configurationSource(node, flowstate)
+  }
+
+  override predicate isSink(DataFlow::Node node, string flowstate) {
+    any(XmlLibrary l).configurationSink(node, flowstate)
   }
 
   override predicate isAdditionalFlowStep(
