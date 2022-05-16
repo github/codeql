@@ -136,7 +136,7 @@ DataFlow::CallNode getAMethodCall(StringSubstitutionCall call) {
       // post-update receiver to the receiver of another method call?
       call.isDestructive() and
       exists(DataFlow::PostUpdateNode post | post.getPreUpdateNode() = call.getReceiver() |
-        post.(DataFlow::LocalSourceNode).flowsTo(receiver)
+        DataFlow::localFlow(post, receiver)
       )
     )
   )
