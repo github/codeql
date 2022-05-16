@@ -57,49 +57,6 @@ class XercesDOMParserClass extends Class {
 }
 
 /**
- * The `DOMLSParser` class.
- */
-class DomLSParserClass extends Class {
-  DomLSParserClass() { this.hasName("DOMLSParser") }
-}
-
-/**
- * The `SAXParser` class.
- */
-class SaxParserClass extends Class {
-  SaxParserClass() { this.hasName("SAXParser") }
-}
-
-/**
- * The `SAX2XMLReader` class.
- */
-class Sax2XmlReader extends Class {
-  Sax2XmlReader() { this.hasName("SAX2XMLReader") }
-}
-
-/**
- * The `createLSParser` function that returns a newly created `DOMLSParser`
- * object.
- */
-class CreateLSParser extends Function {
-  CreateLSParser() {
-    this.hasName("createLSParser") and
-    this.getUnspecifiedType().(PointerType).getBaseType() instanceof DomLSParserClass // returns a `DOMLSParser *`.
-  }
-}
-
-/**
- * The `createXMLReader` function that returns a newly created `SAX2XMLReader`
- * object.
- */
-class CreateXmlReader extends Function {
-  CreateXmlReader() {
-    this.hasName("createXMLReader") and
-    this.getUnspecifiedType().(PointerType).getBaseType() instanceof Sax2XmlReader // returns a `SAX2XMLReader *`.
-  }
-}
-
-/**
  * The `XercesDOMParser` interface for the Xerces XML library.
  */
 class XercesDomParserLibrary extends XmlLibrary {
@@ -124,6 +81,24 @@ class XercesDomParserLibrary extends XmlLibrary {
     ) and
     flowstate instanceof XercesFlowState and
     not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
+  }
+}
+
+/**
+ * The `DOMLSParser` class.
+ */
+class DomLSParserClass extends Class {
+  DomLSParserClass() { this.hasName("DOMLSParser") }
+}
+
+/**
+ * The `createLSParser` function that returns a newly created `DOMLSParser`
+ * object.
+ */
+class CreateLSParser extends Function {
+  CreateLSParser() {
+    this.hasName("createLSParser") and
+    this.getUnspecifiedType().(PointerType).getBaseType() instanceof DomLSParserClass // returns a `DOMLSParser *`.
   }
 }
 
@@ -154,6 +129,20 @@ class CreateLSParserLibrary extends XmlLibrary {
 }
 
 /**
+ * The `SAXParser` class.
+ */
+class SaxParserClass extends Class {
+  SaxParserClass() { this.hasName("SAXParser") }
+}
+
+/**
+ * The `SAX2XMLReader` class.
+ */
+class Sax2XmlReader extends Class {
+  Sax2XmlReader() { this.hasName("SAX2XMLReader") }
+}
+
+/**
  * The SAXParser interface for the Xerces XML library.
  */
 class SaxParserLibrary extends XmlLibrary {
@@ -178,6 +167,17 @@ class SaxParserLibrary extends XmlLibrary {
     ) and
     flowstate instanceof XercesFlowState and
     not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
+  }
+}
+
+/**
+ * The `createXMLReader` function that returns a newly created `SAX2XMLReader`
+ * object.
+ */
+class CreateXmlReader extends Function {
+  CreateXmlReader() {
+    this.hasName("createXMLReader") and
+    this.getUnspecifiedType().(PointerType).getBaseType() instanceof Sax2XmlReader // returns a `SAX2XMLReader *`.
   }
 }
 
