@@ -300,14 +300,13 @@ private module Cached {
   predicate isLocalSourceNode(Node n) {
     n instanceof ParameterNode
     or
-    n instanceof PostUpdateNodes::ExprPostUpdateNode
-    or
     // Nodes that can't be reached from another entry definition or expression.
     not localFlowStepTypeTracker+(any(Node n0 |
         n0 instanceof ExprNode
         or
         entrySsaDefinition(n0)
-      ), n)
+      ), n) and
+    not n instanceof PostUpdateNode
     or
     // Ensure all entry SSA definitions are local sources -- for parameters, this
     // is needed by type tracking. Note that when the parameter has a default value,
