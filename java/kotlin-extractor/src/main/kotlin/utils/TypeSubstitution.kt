@@ -4,11 +4,11 @@ import com.github.codeql.KotlinUsesExtractor
 import com.github.codeql.getJavaEquivalentClassId
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.createImplicitParameterDeclarationWithWrappedDescriptor
+import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.ir.builders.declarations.addConstructor
 import org.jetbrains.kotlin.ir.builders.declarations.buildClass
 import org.jetbrains.kotlin.ir.declarations.IrClass
-import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrTypeParameter
 import org.jetbrains.kotlin.ir.declarations.IrTypeParametersContainer
 import org.jetbrains.kotlin.ir.declarations.impl.IrExternalPackageFragmentImpl
@@ -28,6 +28,7 @@ import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.Variance
+import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
 fun IrType.substituteTypeArguments(params: List<IrTypeParameter>, arguments: List<IrTypeArgument>) =
     when(this) {
@@ -221,17 +222,12 @@ fun isUnspecialised(paramsContainer: IrTypeParametersContainer, args: List<IrTyp
     }
     val remainingArgs = args.drop(paramsContainer.typeParameters.size)
 
-    val fieldParent = paramsContainer.parent as? IrField
-    val parent = if (fieldParent != null)
-        fieldParent.parent as? IrTypeParametersContainer
-    else
-        paramsContainer.parent as? IrTypeParametersContainer
+    val parentClass = paramsContainer.parents.firstIsInstanceOrNull<IrClass>()
 
     val parentUnspecialised = when {
         remainingArgs.isEmpty() -> true
-        parent == null -> false
-        parent !is IrClass -> false
-        else -> isUnspecialised(parent as IrClass, remainingArgs)
+        parentClass == null -> false
+        else -> isUnspecialised(parentClass, remainingArgs)
     }
     return unspecialisedHere && parentUnspecialised
 }
