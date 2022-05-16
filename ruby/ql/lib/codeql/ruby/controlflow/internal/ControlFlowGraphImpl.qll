@@ -371,7 +371,9 @@ module Trees {
     CallTree() {
       // Logical operations are handled separately
       not this instanceof UnaryLogicalOperation and
-      not this instanceof BinaryLogicalOperation
+      not this instanceof BinaryLogicalOperation and
+      // Calls with the `&.` operator are desugared
+      not this.(MethodCall).isSafeNavigation()
     }
 
     override ControlFlowTree getChildElement(int i) { result = this.getArgument(i) }

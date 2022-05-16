@@ -739,6 +739,24 @@ calls/calls.rb:
 #  356|       getStmt: [LocalVariableAccess] y
 #  357|       getStmt: [MethodCall] call to unknown_call
 #  357|         getReceiver: [SelfVariableAccess] self
+#  361|   getStmt: [MethodCall] call to empty?
+#  361|     getReceiver: [MethodCall] call to list
+#  361|       getReceiver: [SelfVariableAccess] self
+#  362|   getStmt: [MethodCall] call to empty?
+#  362|     getReceiver: [MethodCall] call to list
+#  362|       getReceiver: [SelfVariableAccess] self
+#  363|   getStmt: [MethodCall] call to empty?
+#  363|     getReceiver: [MethodCall] call to list
+#  363|       getReceiver: [SelfVariableAccess] self
+#  364|   getStmt: [MethodCall] call to bar
+#  364|     getReceiver: [MethodCall] call to foo
+#  364|       getReceiver: [SelfVariableAccess] self
+#  364|     getArgument: [IntegerLiteral] 1
+#  364|     getArgument: [IntegerLiteral] 2
+#  364|     getBlock: [BraceBlock] { ... }
+#  364|       getParameter: [SimpleParameter] x
+#  364|         getDefiningAccess: [LocalVariableAccess] x
+#  364|       getStmt: [LocalVariableAccess] x
 control/cases.rb:
 #    1| [Toplevel] cases.rb
 #    2|   getStmt: [AssignExpr] ... = ...
