@@ -111,6 +111,8 @@ newtype TNode =
     FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
   }
 
+class TParameterNode = TCfgNode or TSummaryParameterNode;
+
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
   result.getScope() = s
@@ -286,15 +288,16 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-abstract class ParameterNode extends Node {
+class ParameterNode extends Node, TParameterNode instanceof ParameterNodeImpl {
   /**
    * Holds if this node is the parameter of callable `c` at the
    * (zero-based) index `i`.
    */
-  abstract predicate isParameterOf(DataFlowCallable c, int i);
+  final predicate isParameterOf(DataFlowCallable c, int i) { super.isParameterOf(c, i) }
 }
 
-class SourceParameterNode extends ParameterNode, CfgNode {
+/** A parameter node foudn in the source code (not in a summary). */
+class SourceParameterNode extends ParameterNodeImpl, CfgNode {
   //, LocalSourceNode {
   ParameterDefinition def;
 

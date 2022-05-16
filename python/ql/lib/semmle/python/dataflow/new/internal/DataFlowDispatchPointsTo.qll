@@ -651,8 +651,20 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   override Location getLocation() { result = c.getLocation() }
 }
 
+/**
+ * The value of a parameter at function entry, viewed as a node in a data
+ * flow graph.
+ */
+abstract class ParameterNodeImpl extends Node {
+  /**
+   * Holds if this node is the parameter of callable `c` at the
+   * (zero-based) index `i`.
+   */
+  abstract predicate isParameterOf(DataFlowCallable c, int i);
+}
+
 /** A parameter for a library callable with a flow summary. */
-class SummaryParameterNode extends ParameterNode, TSummaryParameterNode {
+class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
   private FlowSummaryImpl::Public::SummarizedCallable sc;
   private int pos;
 
