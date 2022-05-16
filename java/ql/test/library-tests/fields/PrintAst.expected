@@ -3,7 +3,7 @@ fields/FieldTest.java:
 #    3|   1: [Class] FieldTest
 #    4|     4: [FieldDeclaration] float ff, ...;
 #    4|       -1: [TypeAccess] float
-#    4|       1: [FloatingPointLiteral] 2.3f
+#    4|       1: [FloatLiteral] 2.3f
 #    5|     5: [FieldDeclaration] Object obj, ...;
 #    5|       -1: [TypeAccess] Object
 #    5|       0: [NullLiteral] null
