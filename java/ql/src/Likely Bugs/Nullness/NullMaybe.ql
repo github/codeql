@@ -22,7 +22,7 @@ where
   nullDeref(var, access, msg, reason) and
   // Exclude definite nulls here, as these are covered by `NullAlways.ql`.
   not alwaysNullDeref(var, access) and
-  // Exclude operands of `!!` in Kotlin, as `!!` means explicit opt out by the user.
-  not access.getParent() instanceof NotNullExpr
+  // Kotlin enforces this already:
+  not access.getLocation().getFile().isKotlinSourceFile()
 select access, "Variable $@ may be null here " + msg + ".", var.getVariable(),
   var.getVariable().getName(), reason, "this"
