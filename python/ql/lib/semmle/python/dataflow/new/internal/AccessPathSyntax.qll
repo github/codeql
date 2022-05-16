@@ -167,8 +167,15 @@ class AccessPathToken extends string {
   /** Gets the `n`th argument to this token, such as `x` or `y` from `Member[x,y]`. */
   string getArgument(int n) { result = this.getArgumentList().splitAt(",", n).trim() }
 
+  /** Gets the `n`th argument to this `name` token, such as `x` or `y` from `Member[x,y]`. */
+  pragma[nomagic]
+  string getArgument(string name, int n) { name = this.getName() and result = this.getArgument(n) }
+
   /** Gets an argument to this token, such as `x` or `y` from `Member[x,y]`. */
   string getAnArgument() { result = this.getArgument(_) }
+
+  /** Gets an argument to this `name` token, such as `x` or `y` from `Member[x,y]`. */
+  string getAnArgument(string name) { result = this.getArgument(name, _) }
 
   /** Gets the number of arguments to this token, such as 2 for `Member[x,y]` or zero for `ReturnValue`. */
   int getNumArgument() { result = count(int n | exists(this.getArgument(n))) }
