@@ -37,3 +37,10 @@ enum class Severity(val sev: Int) {
     /** This is high */
     High(3)
 }
+
+fun fn1() {
+    /**
+     * A variable.
+    */
+    val a = 1
+}
