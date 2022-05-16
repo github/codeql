@@ -16,6 +16,9 @@ struct ToTagOverride : ToTagFunctor<T> {};
 }  // namespace detail
 
 template <typename T>
-using ToTag = typename detail::ToTagOverride<std::remove_const_t<T>>::type;
+using TrapTagOf = typename detail::ToTagOverride<std::remove_const_t<T>>::type;
+
+template <typename T>
+using TrapLabelOf = TrapLabel<TrapTagOf<T>>;
 
 }  // namespace codeql
