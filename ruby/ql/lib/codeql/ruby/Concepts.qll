@@ -888,7 +888,7 @@ module Cryptography {
   class BlockMode extends string {
     BlockMode() { this = ["ECB", "CBC", "GCM", "CCM", "CFB", "OFB", "CTR"] }
 
-  /** Holds if this block mode is considered to be insecure. */
-  predicate isWeak() { this = "ECB" }
-}
+    /** Holds if this block mode is considered to be insecure. */
+    predicate isWeak() { this = "ECB" }
+  }
 }
