@@ -318,7 +318,11 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   override DataFlowCallable getARuntimeTarget() {
     result.asCallable() = getCallableForDataFlow(dc.getADynamicTarget())
     or
-    result.asSummarizedCallable() = dc.getAStaticTarget().getUnboundDeclaration()
+    exists(Callable c | result.asSummarizedCallable() = c.getUnboundDeclaration() |
+      c = dc.getADynamicTarget()
+      or
+      c = dc.getAStaticTarget() and not c instanceof RuntimeCallable
+    )
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
