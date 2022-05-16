@@ -256,10 +256,16 @@ class InterpretNode extends TInterpretNode {
   DataFlowCall asCall() { this = TDataFlowCall_(result) }
 
   /** Gets the callable that this node corresponds to, if any. */
-  DataFlowCallable asCallable() { result.asCallable() = this.asElement() }
+  DataFlowCallable asCallable() {
+    result.asCallable() = this.asElement() or
+    result.asSummarizedCallable() = this.asElement()
+  }
 
   /** Gets the target of this call, if any. */
-  Callable getCallTarget() { result = viableCallable(this.asCall()).asCallable() }
+  Callable getCallTarget() {
+    result = viableCallable(this.asCall()).asSummarizedCallable() or
+    result = viableCallable(this.asCall()).asCallable()
+  }
 
   /** Gets a textual representation of this node. */
   string toString() {
