@@ -1,6 +1,7 @@
 #pragma once
 
-// This file implements the mapping needed by the API defined in the TrapTagTraits.h
+// This file implements the mapping needed by the API defined in the TrapTagTraits.h, so that
+// TrapTagOf/TrapLabelOf provide the tags/labels for specific swift entity types.
 #include <swift/AST/ASTVisitor.h>
 #include "swift/extractor/trap/TrapTagTraits.h"
 #include "swift/extractor/trap/generated/TrapTags.h"

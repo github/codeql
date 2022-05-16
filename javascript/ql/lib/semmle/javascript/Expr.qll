@@ -2904,7 +2904,7 @@ class ImportMetaExpr extends @import_meta_expr, Expr {
  * let data2 = {{{ user_data2 }}};
  * ```
  *
- * Note that templating placeholders occuring inside strings literals are not parsed,
+ * Note that templating placeholders occurring inside strings literals are not parsed,
  * and are simply seen as being part of the string literal.
  * For example, following snippet does not contain any `GeneratedCodeExpr` nodes:
  * ```js

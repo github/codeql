@@ -132,7 +132,7 @@ module IndirectCommandInjection {
   }
 
   /**
-   * An array of command line arguments (`argv`) parsed by the `yargs` libary.
+   * An array of command line arguments (`argv`) parsed by the `yargs` library.
    */
   class YargsArgv extends Source {
     YargsArgv() {

@@ -233,7 +233,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
 }
 
 /**
- * Holds if `name` is a valid name for an access path token with no arguments, occuring
+ * Holds if `name` is a valid name for an access path token with no arguments, occurring
  * in an identifying access path.
  */
 predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {

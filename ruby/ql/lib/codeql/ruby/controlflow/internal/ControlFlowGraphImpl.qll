@@ -1258,7 +1258,7 @@ module Trees {
 
   private class SimpleParameterTree extends NonDefaultValueParameterTree, SimpleParameter { }
 
-  // Corner case: For duplicated '_' parameters, only the first occurence has a defining
+  // Corner case: For duplicated '_' parameters, only the first occurrence has a defining
   // access. For subsequent parameters we simply include the parameter itself in the CFG
   private class SimpleParameterTreeDupUnderscore extends LeafTree, SimpleParameter {
     SimpleParameterTreeDupUnderscore() { not exists(this.getDefiningAccess()) }
