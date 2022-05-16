@@ -8,6 +8,7 @@ import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.ir.builders.declarations.addConstructor
 import org.jetbrains.kotlin.ir.builders.declarations.buildClass
 import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrTypeParameter
 import org.jetbrains.kotlin.ir.declarations.IrTypeParametersContainer
 import org.jetbrains.kotlin.ir.declarations.impl.IrExternalPackageFragmentImpl
@@ -219,12 +220,18 @@ fun isUnspecialised(paramsContainer: IrTypeParametersContainer, args: List<IrTyp
         } ?: false
     }
     val remainingArgs = args.drop(paramsContainer.typeParameters.size)
-    val parent = paramsContainer.parent as? IrTypeParametersContainer
+
+    val fieldParent = paramsContainer.parent as? IrField
+    val parent = if (fieldParent != null)
+        fieldParent.parent as? IrTypeParametersContainer
+    else
+        paramsContainer.parent as? IrTypeParametersContainer
+
     val parentUnspecialised = when {
         remainingArgs.isEmpty() -> true
         parent == null -> false
         parent !is IrClass -> false
-        else -> isUnspecialised(paramsContainer.parentAsClass, remainingArgs)
+        else -> isUnspecialised(parent as IrClass, remainingArgs)
     }
     return unspecialisedHere && parentUnspecialised
 }
