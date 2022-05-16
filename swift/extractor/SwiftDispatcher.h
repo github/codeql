@@ -87,9 +87,9 @@ class SwiftDispatcher {
   TrapLabelOf<E> fetchLabel(E* e) {
     // this is required so we avoid any recursive loop: a `fetchLabel` during the visit of `e` might
     // end up calling `fetchLabel` on `e` itself, so we want the visit of `e` to call `fetchLabel`
-    // only after having called `assignNewLabel` on `e`. `index() == 0` indicates the monostate of
-    // `Store::Handle`, i.e. its default construction
-    assert(waitingForNewLabel.index() == 0 && "fetchLabel called before assignNewLabel");
+    // only after having called `assignNewLabel` on `e`.
+    assert(holds_alternative<std::monostate>(waitingForNewLabel) &&
+           "fetchLabel called before assignNewLabel");
     if (auto l = store.get(e)) {
       return *l;
     }
@@ -114,7 +114,7 @@ class SwiftDispatcher {
     auto label = getLabel<TrapTagOf<E>>();
     trap.assignStar(label);
     store.insert(e, label);
-    waitingForNewLabel = {};
+    waitingForNewLabel = std::monostate{};
     return label;
   }
 
@@ -177,7 +177,7 @@ class SwiftDispatcher {
   TrapArena& arena;
   TrapOutput& trap;
   Store store;
-  Store::Handle waitingForNewLabel{};
+  Store::Handle waitingForNewLabel{std::monostate{}};
 };
 
 }  // namespace codeql

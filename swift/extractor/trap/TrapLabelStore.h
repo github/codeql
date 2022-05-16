@@ -21,6 +21,7 @@ template <typename... Ts>
 class TrapLabelStore {
  public:
   using Handle = std::variant<std::monostate, const Ts*...>;
+
   template <typename T>
   std::optional<TrapLabelOf<T>> get(const T* e) {
     if (auto found = store_.find(e); found != store_.end()) {
