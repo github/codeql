@@ -22,14 +22,15 @@ abstract class XmlLibrary extends string {
   XmlLibrary() { any() } // required characteristic predicate
 
   /**
-   * The source node for a potentially unsafe configuration object for this XML
-   * library, along with `flowstate` representing its initial state.
+   * Holds if `node` is the source node for a potentially unsafe configuration
+   * object for this XML library, along with `flowstate` representing its
+   * initial state.
    */
   abstract predicate configurationSource(DataFlow::Node node, string flowstate);
 
   /**
-   * The sink node where an unsafe configuration object is used to interpret
-   * XML.
+   * Holds if `node` is  the sink node where an unsafe configuration object is
+   * used to interpret XML.
    */
   abstract predicate configurationSink(DataFlow::Node node, string flowstate);
 }
