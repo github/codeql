@@ -26,7 +26,7 @@ void test1(const char *from,const char *to)
   f1 = fopen(from, "r");
   count = fread(data, 1, 1000, f1);
   fclose(f1);
-  rename(from,to); // GOOD
+  rename(from,to); // BAD [NOT DETECTED]
   f2 = fopen(to, "w");
   fclose(f2);
 }
