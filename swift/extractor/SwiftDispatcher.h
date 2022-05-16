@@ -46,7 +46,7 @@ std::string inline getKindName<swift::TypeRepr, swift::TypeReprKind>(swift::Type
 
 }  // namespace detail
 
-// The main reponsibilities of the SwiftDispatcher are as follows:
+// The main responsibilities of the SwiftDispatcher are as follows:
 // * redirect specific AST node emission to a corresponding visitor (statements, expressions, etc.)
 // * storing TRAP labels for emitted AST nodes (in the TrapLabelStore) to avoid re-emission
 // Since SwiftDispatcher sees all the AST nodes, it also attaches a location to every 'locatable'
@@ -72,19 +72,28 @@ class SwiftDispatcher {
   }
 
  private:
+  // types to be supported by assignNewLabel/fetchLabel need to be listed here
+  using Store = TrapLabelStore<swift::Decl,
+                               swift::Stmt,
+                               swift::Expr,
+                               swift::Pattern,
+                               swift::TypeRepr,
+                               swift::TypeBase>;
+
   // This method gives a TRAP label for already emitted AST node.
   // If the AST node was not emitted yet, then the emission is dispatched to a corresponding
   // visitor (see `visit(T *)` methods below).
   template <typename E>
-  TrapLabel<ToTag<E>> fetchLabel(E* e) {
+  TrapLabelOf<E> fetchLabel(E* e) {
     // this is required so we avoid any recursive loop: a `fetchLabel` during the visit of `e` might
     // end up calling `fetchLabel` on `e` itself, so we want the visit of `e` to call `fetchLabel`
-    // only after having called `assignNewLabel` on `e`
-    assert(!waitingForNewLabel && "fetchLabel called before assignNewLabel");
+    // only after having called `assignNewLabel` on `e`. `index() == 0` indicates the monostate of
+    // `Store::Handle`, i.e. its default construction
+    assert(waitingForNewLabel.index() == 0 && "fetchLabel called before assignNewLabel");
     if (auto l = store.get(e)) {
       return *l;
     }
-    waitingForNewLabel = getCanonicalPointer(e);
+    waitingForNewLabel = e;
     visit(e);
     if (auto l = store.get(e)) {
       if constexpr (!std::is_base_of_v<swift::TypeBase, E>) {
@@ -100,12 +109,12 @@ class SwiftDispatcher {
   // it actually gets emitted to handle recursive cases such as recursive calls, or recursive type
   // declarations
   template <typename E>
-  TrapLabel<ToTag<E>> assignNewLabel(E* e) {
-    assert(waitingForNewLabel == getCanonicalPointer(e) && "assignNewLabel called on wrong entity");
-    auto label = getLabel<ToTag<E>>();
+  TrapLabelOf<E> assignNewLabel(E* e) {
+    assert(waitingForNewLabel == Store::Handle{e} && "assignNewLabel called on wrong entity");
+    auto label = getLabel<TrapTagOf<E>>();
     trap.assignStar(label);
     store.insert(e, label);
-    waitingForNewLabel = nullptr;
+    waitingForNewLabel = {};
     return label;
   }
 
@@ -167,8 +176,8 @@ class SwiftDispatcher {
   const swift::SourceManager& sourceManager;
   TrapArena& arena;
   TrapOutput& trap;
-  TrapLabelStore store;
-  const void* waitingForNewLabel{nullptr};
+  Store store;
+  Store::Handle waitingForNewLabel{};
 };
 
 }  // namespace codeql
