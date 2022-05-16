@@ -9,9 +9,9 @@ import semmle.code.cpp.ir.dataflow.DataFlow
 /**
  * A flow state representing a possible configuration of an XML object.
  */
-abstract class XXEFlowState extends DataFlow::FlowState {
+abstract class XxeFlowState extends DataFlow::FlowState {
   bindingset[this]
-  XXEFlowState() { any() } // required characteristic predicate
+  XxeFlowState() { any() } // required characteristic predicate
 }
 
 /**
@@ -36,9 +36,9 @@ abstract class XmlLibrary extends string {
 
 /**
  * An `Expr` that changes the configuration of an XML object, transforming the
- * `XXEFlowState` that flows through it.
+ * `XxeFlowState` that flows through it.
  */
-abstract class XXEFlowStateTransformer extends Expr {
+abstract class XxeFlowStateTransformer extends Expr {
   /**
    * Gets the flow state that `flowstate` is transformed into.
    *
@@ -48,5 +48,5 @@ abstract class XXEFlowStateTransformer extends Expr {
    * transform(tranform(x)) = tranform(x)
    * ```
    */
-  abstract XXEFlowState transform(XXEFlowState flowstate);
+  abstract XxeFlowState transform(XxeFlowState flowstate);
 }

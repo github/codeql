@@ -38,22 +38,22 @@ predicate encodeXercesFlowState(
  * A flow state representing the configuration of an `AbstractDOMParser` or
  * `SAXParser` object.
  */
-class XercesFlowState extends XXEFlowState {
+class XercesFlowState extends XxeFlowState {
   XercesFlowState() { encodeXercesFlowState(this, _, _) }
 }
 
 /**
  * The `AbstractDOMParser` class.
  */
-class AbstractDOMParserClass extends Class {
-  AbstractDOMParserClass() { this.hasName("AbstractDOMParser") }
+class AbstractDomParserClass extends Class {
+  AbstractDomParserClass() { this.hasName("AbstractDOMParser") }
 }
 
 /**
  * The `XercesDOMParser` class.
  */
-class XercesDOMParserClass extends Class {
-  XercesDOMParserClass() { this.hasName("XercesDOMParser") }
+class XercesDomParserClass extends Class {
+  XercesDomParserClass() { this.hasName("XercesDOMParser") }
 }
 
 /**
@@ -66,7 +66,7 @@ class XercesDomParserLibrary extends XmlLibrary {
     // source is the write on `this` of a call to the `XercesDOMParser`
     // constructor.
     exists(CallInstruction call |
-      call.getStaticCallTarget() = any(XercesDOMParserClass c).getAConstructor() and
+      call.getStaticCallTarget() = any(XercesDomParserClass c).getAConstructor() and
       node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
         call.getThisArgument() and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
@@ -76,7 +76,7 @@ class XercesDomParserLibrary extends XmlLibrary {
   override predicate configurationSink(DataFlow::Node node, string flowstate) {
     // sink is the read of the qualifier of a call to `AbstractDOMParser.parse`.
     exists(Call call |
-      call.getTarget().getClassAndName("parse") instanceof AbstractDOMParserClass and
+      call.getTarget().getClassAndName("parse") instanceof AbstractDomParserClass and
       call.getQualifier() = node.asConvertedExpr()
     ) and
     flowstate instanceof XercesFlowState and
@@ -213,14 +213,14 @@ class Sax2XmlReaderLibrary extends XmlLibrary {
  * `SAXParser.setDisableDefaultEntityResolution`. Transforms the flow
  * state through the qualifier according to the setting in the parameter.
  */
-class DisableDefaultEntityResolutionTransformer extends XXEFlowStateTransformer {
+class DisableDefaultEntityResolutionTransformer extends XxeFlowStateTransformer {
   Expr newValue;
 
   DisableDefaultEntityResolutionTransformer() {
     exists(Call call, Function f |
       call.getTarget() = f and
       (
-        f.getDeclaringType() instanceof AbstractDOMParserClass or
+        f.getDeclaringType() instanceof AbstractDomParserClass or
         f.getDeclaringType() instanceof SaxParserClass
       ) and
       f.hasName("setDisableDefaultEntityResolution") and
@@ -229,7 +229,7 @@ class DisableDefaultEntityResolutionTransformer extends XXEFlowStateTransformer 
     )
   }
 
-  final override XXEFlowState transform(XXEFlowState flowstate) {
+  final override XxeFlowState transform(XxeFlowState flowstate) {
     exists(int createEntityReferenceNodes |
       encodeXercesFlowState(flowstate, _, createEntityReferenceNodes) and
       (
@@ -248,19 +248,19 @@ class DisableDefaultEntityResolutionTransformer extends XXEFlowStateTransformer 
  * `AbstractDOMParser.setCreateEntityReferenceNodes`. Transforms the flow
  * state through the qualifier according to the setting in the parameter.
  */
-class CreateEntityReferenceNodesTransformer extends XXEFlowStateTransformer {
+class CreateEntityReferenceNodesTransformer extends XxeFlowStateTransformer {
   Expr newValue;
 
   CreateEntityReferenceNodesTransformer() {
     exists(Call call, Function f |
       call.getTarget() = f and
-      f.getClassAndName("setCreateEntityReferenceNodes") instanceof AbstractDOMParserClass and
+      f.getClassAndName("setCreateEntityReferenceNodes") instanceof AbstractDomParserClass and
       this = call.getQualifier() and
       newValue = call.getArgument(0)
     )
   }
 
-  final override XXEFlowState transform(XXEFlowState flowstate) {
+  final override XxeFlowState transform(XxeFlowState flowstate) {
     exists(int disabledDefaultEntityResolution |
       encodeXercesFlowState(flowstate, disabledDefaultEntityResolution, _) and
       (
@@ -289,7 +289,7 @@ class FeatureDisableDefaultEntityResolution extends Variable {
  * specifying the feature `XMLUni::fgXercesDisableDefaultEntityResolution`.
  * Transforms the flow state through the qualifier according to this setting.
  */
-class SetFeatureTransformer extends XXEFlowStateTransformer {
+class SetFeatureTransformer extends XxeFlowStateTransformer {
   Expr newValue;
 
   SetFeatureTransformer() {
@@ -303,7 +303,7 @@ class SetFeatureTransformer extends XXEFlowStateTransformer {
     )
   }
 
-  final override XXEFlowState transform(XXEFlowState flowstate) {
+  final override XxeFlowState transform(XxeFlowState flowstate) {
     exists(int createEntityReferenceNodes |
       encodeXercesFlowState(flowstate, _, createEntityReferenceNodes) and
       (
@@ -340,7 +340,7 @@ class DomConfigurationSetParameter extends Function {
  * `DOMConfiguration` pointer returned by `DOMLSParser.getDomConfig` - and it
  * is *that* qualifier we want to transform the flow state of.
  */
-class DomConfigurationSetParameterTransformer extends XXEFlowStateTransformer {
+class DomConfigurationSetParameterTransformer extends XxeFlowStateTransformer {
   Expr newValue;
 
   DomConfigurationSetParameterTransformer() {
@@ -361,7 +361,7 @@ class DomConfigurationSetParameterTransformer extends XXEFlowStateTransformer {
     )
   }
 
-  final override XXEFlowState transform(XXEFlowState flowstate) {
+  final override XxeFlowState transform(XxeFlowState flowstate) {
     exists(int createEntityReferenceNodes |
       encodeXercesFlowState(flowstate, _, createEntityReferenceNodes) and
       (
