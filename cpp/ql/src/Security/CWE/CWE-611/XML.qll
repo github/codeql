@@ -46,7 +46,7 @@ abstract class XxeFlowStateTransformer extends Expr {
    * Due to limitations of the implementation the transformation defined by this
    * predicate must be idempotent, that is, for any input `x` it must be that:
    * ```
-   * transform(tranform(x)) = tranform(x)
+   * transform(transform(x)) = transform(x)
    * ```
    */
   abstract XxeFlowState transform(XxeFlowState flowstate);
