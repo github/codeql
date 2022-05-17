@@ -37,7 +37,7 @@ DataFlow::Node getAutoEscapeParameter(DataFlow::CallCfgNode call) {
   result = call.getArgByName("autoescape")
 }
 
-from DataFlow::CallCfgNode call
+from API::CallNode call
 where
   call = jinja2EnvironmentOrTemplate().getACall() and
   not exists(call.asCfgNode().(CallNode).getNode().getStarargs()) and
