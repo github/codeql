@@ -20,9 +20,9 @@
  */
 
 private import python as PY
-import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.DataFlow
 private import ApiGraphModels
-import semmle.python.ApiGraphs
+import semmle.python.ApiGraphs::API as API
 
 class Unit = PY::Unit;
 
