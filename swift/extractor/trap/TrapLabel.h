@@ -4,8 +4,6 @@
 #include <iostream>
 #include <string>
 
-#include "swift/extractor/trap/generated/TrapTags.h"
-
 namespace codeql {
 
 class UntypedTrapLabel {
@@ -46,14 +44,7 @@ class TrapLabel : public UntypedTrapLabel {
 
   template <typename OtherTag>
   TrapLabel(const TrapLabel<OtherTag>& other) : UntypedTrapLabel(other) {
-    // we temporarily need to bypass the label type system for unknown AST nodes and types
-    if constexpr (std::is_same_v<Tag, UnknownAstNodeTag>) {
-      static_assert(std::is_base_of_v<AstNodeTag, OtherTag>, "wrong label assignment!");
-    } else if constexpr (std::is_same_v<Tag, UnknownTypeTag>) {
-      static_assert(std::is_base_of_v<TypeTag, OtherTag>, "wrong label assignment!");
-    } else {
-      static_assert(std::is_base_of_v<Tag, OtherTag>, "wrong label assignment!");
-    }
+    static_assert(std::is_base_of_v<Tag, OtherTag>, "wrong label assignment!");
   }
 };
 

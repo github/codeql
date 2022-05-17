@@ -1,22 +1,10 @@
 #pragma once
 
-#include "swift/extractor/SwiftDispatcher.h"
-#include <swift/AST/TypeVisitor.h>
-
+#include "swift/extractor/visitors/VisitorBase.h"
 namespace codeql {
-
-class TypeVisitor : public swift::TypeVisitor<TypeVisitor> {
+class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
  public:
-  // SwiftDispatcher should outlive the TypeVisitor
-  TypeVisitor(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
-
-  template <typename E>
-  void visitType(E* type) {
-    dispatcher.TBD<swift::TypeBase>(type, "Type");
-  }
-
- private:
-  SwiftDispatcher& dispatcher;
+  using TypeVisitorBase<TypeVisitor>::TypeVisitorBase;
 };
 
 }  // namespace codeql

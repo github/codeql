@@ -3,11 +3,4 @@ import codeql.swift.elements.expr.Expr
 
 class BindOptionalExprBase extends @bind_optional_expr, Expr {
   override string getAPrimaryQlClass() { result = "BindOptionalExpr" }
-
-  Expr getSubExpr() {
-    exists(Expr x |
-      bind_optional_exprs(this, x) and
-      result = x.resolve()
-    )
-  }
 }

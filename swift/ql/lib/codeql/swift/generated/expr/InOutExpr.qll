@@ -3,11 +3,4 @@ import codeql.swift.elements.expr.Expr
 
 class InOutExprBase extends @in_out_expr, Expr {
   override string getAPrimaryQlClass() { result = "InOutExpr" }
-
-  Expr getSubExpr() {
-    exists(Expr x |
-      in_out_exprs(this, x) and
-      result = x.resolve()
-    )
-  }
 }

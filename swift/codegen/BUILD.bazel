@@ -27,7 +27,10 @@ py_binary(
 py_binary(
     name = "trapgen",
     srcs = ["trapgen.py"],
-    data = ["//swift/codegen/templates:trap"],
+    data = [
+        "//swift:dbscheme",
+        "//swift/codegen/templates:trap",
+    ],
     visibility = ["//swift:__subpackages__"],
     deps = [
         "//swift/codegen/lib",
@@ -38,7 +41,11 @@ py_binary(
 py_binary(
     name = "cppgen",
     srcs = ["cppgen.py"],
-    data = ["//swift/codegen/templates:cpp"],
+    data = [
+        ":schema",
+        ":schema_includes",
+        "//swift/codegen/templates:cpp",
+    ],
     visibility = ["//swift:__subpackages__"],
     deps = [
         "//swift/codegen/lib",
