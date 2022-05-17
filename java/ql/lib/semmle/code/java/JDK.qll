@@ -148,10 +148,9 @@ class NumberType extends RefType {
 class NumericType extends Type {
   NumericType() {
     exists(string name |
-      name = this.(PrimitiveType).getName() or
-      name = this.(BoxedType).getPrimitiveType().getName()
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
     |
-      name.regexpMatch("byte|short|int|long|double|float")
+      name = ["byte", "short", "int", "long", "double", "float"]
     )
   }
 }
