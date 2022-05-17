@@ -299,7 +299,7 @@ private class AccessPathRange extends AccessPath::Range {
 bindingset[token]
 API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
   // API graphs use the same label for arguments and parameters. An edge originating from a
-  // use-node represents be an argument, and an edge originating from a def-node represents a parameter.
+  // use-node represents an argument, and an edge originating from a def-node represents a parameter.
   // We just map both to the same thing.
   token.getName() = ["Argument", "Parameter"] and
   result = node.getParameter(AccessPath::parseIntUnbounded(token.getAnArgument()))
