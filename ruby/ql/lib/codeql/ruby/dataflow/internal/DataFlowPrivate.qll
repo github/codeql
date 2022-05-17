@@ -306,7 +306,7 @@ private module Cached {
         or
         entrySsaDefinition(n0)
       ), n) and
-    not n instanceof PostUpdateNode
+    n instanceof ExprNode
     or
     // Ensure all entry SSA definitions are local sources -- for parameters, this
     // is needed by type tracking. Note that when the parameter has a default value,
