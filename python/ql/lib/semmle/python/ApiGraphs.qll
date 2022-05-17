@@ -610,9 +610,11 @@ module API {
           ref.asExpr() = fn.getInnerScope().getArg(i)
         )
         or
-        exists(string name |
+        exists(string name, PY::Parameter param |
           lbl = Label::keywordParameter(name) and
-          ref.asExpr() = fn.getInnerScope().getArgByName(name)
+          param = fn.getInnerScope().getArgByName(name) and
+          not param.isSelf() and
+          ref.asExpr() = param
         )
         or
         lbl = Label::selfParameter() and
