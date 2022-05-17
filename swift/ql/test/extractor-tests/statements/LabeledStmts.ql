@@ -1,5 +1,5 @@
 import swift
 
 from LabeledStmt stmt
-where exists(stmt.getLocation())
+where stmt.getLocation().getFile().getName().matches("%swift/ql/test%")
 select stmt

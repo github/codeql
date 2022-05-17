@@ -1,5 +1,7 @@
 import swift
 
 from FuncDecl decl, string name
-where name = decl.getName()
+where
+  decl.getLocation().getFile().getName().matches("%swift/ql/test%") and
+  name = decl.getName()
 select decl, name

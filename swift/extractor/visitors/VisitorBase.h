@@ -50,7 +50,8 @@ class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, protected detail:
 // base class for our type visitor, getting a SwiftDispatcher member and default emission for
 // unknown/TBD types
 template <typename CrtpSubclass>
-class TypeVisitorBase : public swift::TypeVisitor<CrtpSubclass>, detail::DispatcherWrapper {
+class TypeVisitorBase : public swift::TypeVisitor<CrtpSubclass>,
+                        protected detail::DispatcherWrapper {
  public:
   using DispatcherWrapper::DispatcherWrapper;
 

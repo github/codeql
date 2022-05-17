@@ -3,4 +3,6 @@ import codeql.swift.elements.type.SubstitutableType
 
 class GenericTypeParamTypeBase extends @generic_type_param_type, SubstitutableType {
   override string getAPrimaryQlClass() { result = "GenericTypeParamType" }
+
+  string getName() { generic_type_param_types(this, result) }
 }
