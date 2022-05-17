@@ -18,4 +18,6 @@ This rule looks for loops that allocate memory, but may break/continue without f
 
 <p>In this example, on the iteration with <code>i == 5</code>, the memory allocated into <code>notfree</code> will not be freed.  To fix this memory leak, a free call should be added for <code>notfree</code> in the if block.</p>
 </example>
+<references>
+</references>
 </qhelp>

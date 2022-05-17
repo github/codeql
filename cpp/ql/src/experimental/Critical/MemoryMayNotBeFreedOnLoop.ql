@@ -16,7 +16,7 @@ predicate sameLoop(BlockStmt b, Stmt is) {
   if is instanceof Loop then is.getAChild*() = b else sameLoop(b, is.getParent())
 }
 
-from StackVariable v, Expr def, JumpStmt b, BlockStmt bs, IfStmt is, ReturnStmt rt
+from StackVariable v, Expr def, JumpStmt b, BlockStmt bs, IfStmt is
 where
   allocationDefinition(v, def) and
   (b instanceof BreakStmt or b instanceof ContinueStmt) and
@@ -36,8 +36,6 @@ where
       (
         is.getAChild() = b or
         is.getThen().getAChild() = b or
-        is.getAChild() = rt or
-        is.getThen().getAChild() = rt
       ) and
       not is.getCondition().getAChild*() = v.getAnAccess() and
       not is.getParent*().(IfStmt).getCondition().getAChild*() = v.getAnAccess() and
