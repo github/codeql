@@ -33,19 +33,18 @@ private API::Node jinja2EnvironmentOrTemplate() {
   result = API::moduleImport("jinja2").getMember("Template")
 }
 
-DataFlow::Node getAutoEscapeParameter(DataFlow::CallCfgNode call) {
-  result = call.getArgByName("autoescape")
-}
-
 from API::CallNode call
 where
   call = jinja2EnvironmentOrTemplate().getACall() and
   not exists(call.asCfgNode().(CallNode).getNode().getStarargs()) and
   not exists(call.asCfgNode().(CallNode).getNode().getKwargs()) and
   (
-    not exists(getAutoEscapeParameter(call))
+    not exists(call.getArgByName("autoescape"))
     or
-    any(DataFlow::LocalSourceNode n | n.asExpr().(ImmutableLiteral).booleanValue() = false)
-        .flowsTo(getAutoEscapeParameter(call))
+    call.getKeywordParameter("autoescape")
+        .getAValueReachingRhs()
+        .asExpr()
+        .(ImmutableLiteral)
+        .booleanValue() = false
   )
 select call, "Using jinja2 templates with autoescape=False can potentially allow XSS attacks."
