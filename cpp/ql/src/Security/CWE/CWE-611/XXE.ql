@@ -14,8 +14,6 @@
 
 import cpp
 import XML
-import Xerces
-import Libxml2
 import DataFlow::PathGraph
 
 /**

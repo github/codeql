@@ -5,6 +5,8 @@
 
 import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
+import Xerces
+import Libxml2
 
 /**
  * A flow state representing a possible configuration of an XML object.
