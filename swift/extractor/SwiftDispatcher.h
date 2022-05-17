@@ -10,42 +10,6 @@
 
 namespace codeql {
 
-namespace detail {
-
-// The following `getKindName`s are used within "TBD" TRAP entries to visually mark an AST node as
-// not properly emitted yet.
-// TODO: To be replaced with QL counterpart
-template <typename Parent, typename Kind>
-inline std::string getKindName(Kind kind) {
-  return Parent::getKindName(kind).str();
-}
-
-template <>
-inline std::string getKindName<swift::TypeBase, swift::TypeKind>(swift::TypeKind kind) {
-  switch (kind) {
-#define TYPE(CLASS, PARENT)    \
-  case swift::TypeKind::CLASS: \
-    return #CLASS;
-#include "swift/AST/TypeNodes.def"
-    default:
-      return "Unknown";
-  }
-}
-
-template <>
-std::string inline getKindName<swift::TypeRepr, swift::TypeReprKind>(swift::TypeReprKind kind) {
-  switch (kind) {
-#define TYPEREPR(CLASS, PARENT)    \
-  case swift::TypeReprKind::CLASS: \
-    return #CLASS;
-#include "swift/AST/TypeReprNodes.def"
-    default:
-      return "Unknown";
-  }
-}
-
-}  // namespace detail
-
 // The main responsibilities of the SwiftDispatcher are as follows:
 // * redirect specific AST node emission to a corresponding visitor (statements, expressions, etc.)
 // * storing TRAP labels for emitted AST nodes (in the TrapLabelStore) to avoid re-emission
@@ -57,18 +21,21 @@ class SwiftDispatcher {
   SwiftDispatcher(const swift::SourceManager& sourceManager, TrapArena& arena, TrapOutput& trap)
       : sourceManager{sourceManager}, arena{arena}, trap{trap} {}
 
+  template <typename Entry>
+  void emit(const Entry& entry) {
+    trap.emit(entry);
+  }
+
   // This is a helper method to emit TRAP entries for AST nodes that we don't fully support yet.
-  template <typename Parent, typename Child>
-  void TBD(Child* entity, const std::string& suffix) {
-    using namespace std::string_literals;
+  template <typename E>
+  void emitUnknown(E* entity) {
     auto label = assignNewLabel(entity);
-    auto kind = detail::getKindName<Parent>(static_cast<const Parent*>(entity)->getKind());
-    auto name = "TBD ("s + kind + suffix + ")";
-    if constexpr (std::is_same_v<Parent, swift::TypeBase>) {
-      trap.emit(UnknownTypesTrap{label, name});
-    } else {
-      trap.emit(UnknownAstNodesTrap{label, name});
-    }
+    using Trap = BindingTrapOf<E>;
+    static_assert(sizeof(Trap) == sizeof(label),
+                  "Binding traps of unknown entities must only have the `id` field (the class "
+                  "should be empty in schema.yml)");
+    emit(Trap{label});
+    emit(ElementIsUnknownTrap{label});
   }
 
  private:
@@ -88,7 +55,7 @@ class SwiftDispatcher {
     // this is required so we avoid any recursive loop: a `fetchLabel` during the visit of `e` might
     // end up calling `fetchLabel` on `e` itself, so we want the visit of `e` to call `fetchLabel`
     // only after having called `assignNewLabel` on `e`.
-    assert(holds_alternative<std::monostate>(waitingForNewLabel) &&
+    assert(std::holds_alternative<std::monostate>(waitingForNewLabel) &&
            "fetchLabel called before assignNewLabel");
     if (auto l = store.get(e)) {
       return *l;

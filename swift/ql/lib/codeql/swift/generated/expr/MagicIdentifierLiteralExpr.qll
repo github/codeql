@@ -3,6 +3,4 @@ import codeql.swift.elements.expr.BuiltinLiteralExpr
 
 class MagicIdentifierLiteralExprBase extends @magic_identifier_literal_expr, BuiltinLiteralExpr {
   override string getAPrimaryQlClass() { result = "MagicIdentifierLiteralExpr" }
-
-  string getKind() { magic_identifier_literal_exprs(this, result) }
 }

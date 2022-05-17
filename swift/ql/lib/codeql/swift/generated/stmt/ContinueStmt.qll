@@ -3,17 +3,4 @@ import codeql.swift.elements.stmt.Stmt
 
 class ContinueStmtBase extends @continue_stmt, Stmt {
   override string getAPrimaryQlClass() { result = "ContinueStmt" }
-
-  string getTargetName() { continue_stmt_target_names(this, result) }
-
-  predicate hasTargetName() { exists(getTargetName()) }
-
-  Stmt getTarget() {
-    exists(Stmt x |
-      continue_stmt_targets(this, x) and
-      result = x.resolve()
-    )
-  }
-
-  predicate hasTarget() { exists(getTarget()) }
 }
