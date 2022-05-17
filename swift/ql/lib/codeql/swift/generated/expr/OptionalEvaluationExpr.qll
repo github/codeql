@@ -3,4 +3,11 @@ import codeql.swift.elements.expr.Expr
 
 class OptionalEvaluationExprBase extends @optional_evaluation_expr, Expr {
   override string getAPrimaryQlClass() { result = "OptionalEvaluationExpr" }
+
+  Expr getSubExpr() {
+    exists(Expr x |
+      optional_evaluation_exprs(this, x) and
+      result = x.resolve()
+    )
+  }
 }
