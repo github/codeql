@@ -75,7 +75,9 @@ private module ThisFlow {
  * local (intra-procedural) steps.
  */
 pragma[inline]
-predicate localFlow(Node node1, Node node2) { localFlowStep*(node1, node2) }
+predicate localFlow(Node node1, Node node2) { node1 = node2 or localFlowStepPlus(node1, node2) }
+
+private predicate localFlowStepPlus(Node node1, Node node2) = fastTC(localFlowStep/2)(node1, node2)
 
 /**
  * Holds if data can flow from `e1` to `e2` in zero or more
