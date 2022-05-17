@@ -104,11 +104,10 @@ predicate allBackslashesEscaped(DataFlow::Node node) {
   allBackslashesEscaped(node.getAPredecessor())
   or
   // general data flow from a (destructive) [g]sub!
-  exists(DataFlow::PostUpdateNode post, StringSubstitutionCall sub |
+  exists(StringSubstitutionCall sub |
     sub.isDestructive() and
     allBackslashesEscaped(sub) and
-    post.getPreUpdateNode() = sub.getReceiver() and
-    post.getASuccessor() = node
+    sub.getReceiver().getASuccessor() = node
   )
 }
 
@@ -125,21 +124,16 @@ predicate removesFirstOccurence(StringSubstitutionCall sub, string str) {
  * call.
  */
 DataFlow::CallNode getAMethodCall(StringSubstitutionCall call) {
-  exists(DataFlow::Node receiver |
-    receiver = result.getReceiver() and
-    (
-      // for a non-destructive string substitution, is there flow from it to the
-      // receiver of another method call?
-      not call.isDestructive() and call.(DataFlow::LocalSourceNode).flowsTo(receiver)
-      or
-      // for a destructive string substitution, is there flow from its
-      // post-update receiver to the receiver of another method call?
-      call.isDestructive() and
-      exists(DataFlow::PostUpdateNode post | post.getPreUpdateNode() = call.getReceiver() |
-        DataFlow::localFlow(post, receiver)
-      )
-    )
-  )
+  // for a non-destructive string substitution, is there flow from it to the
+  // receiver of another method call?
+  not call.isDestructive() and
+  DataFlow::localFlow(call, result.getReceiver())
+  or
+  // for a destructive string substitution, is there flow from its
+  // post-update receiver to the receiver of another method call?
+  call.isDestructive() and
+  DataFlow::localFlow(call.getReceiver(), result.getReceiver()) and
+  not call = result
 }
 
 /**
