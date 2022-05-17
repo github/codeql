@@ -84,6 +84,7 @@ isSource
 | test.py:85:42:85:52 | ControlFlowNode for getSource() | test-source |
 | test.py:86:49:86:59 | ControlFlowNode for getSource() | test-source |
 | test.py:87:56:87:66 | ControlFlowNode for getSource() | test-source |
+| test.py:101:29:101:31 | ControlFlowNode for arg | test-source |
 syntaxErrors
 | Member[foo |
 | Member[foo] .Member[bar] |

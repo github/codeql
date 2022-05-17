@@ -96,3 +96,7 @@ baz1(baz1) # no match, and that's the point.
 
 from foo2.bar import baz2
 baz2(baz2) # match
+
+class OtherSubClass (ArgPos.MyClass):
+    def otherSelfTest(self, arg, named=2, otherName=3): # test that Parameter[0] hits `arg`.
+        pass
