@@ -82,6 +82,7 @@ class EncryptionAlgorithm extends MkEncryptionAlgorithm, CryptographicAlgorithm 
 
   override predicate isWeak() { isWeak = true }
 
+  /** Holds if this algorithm is a stream cipher. */
   predicate isStreamCipher() { isStreamCipher(name) }
 }
 
