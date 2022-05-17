@@ -3,11 +3,4 @@ import codeql.swift.elements.expr.Expr
 
 class DynamicTypeExprBase extends @dynamic_type_expr, Expr {
   override string getAPrimaryQlClass() { result = "DynamicTypeExpr" }
-
-  Expr getBaseExpr() {
-    exists(Expr x |
-      dynamic_type_exprs(this, x) and
-      result = x.resolve()
-    )
-  }
 }
