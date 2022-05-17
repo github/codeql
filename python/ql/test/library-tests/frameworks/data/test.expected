@@ -30,7 +30,7 @@ isSink
 | test.py:33:22:33:24 | ControlFlowNode for one | test-source |
 | test.py:33:27:33:29 | ControlFlowNode for two | test-source |
 | test.py:33:32:33:36 | ControlFlowNode for three | test-source |
-| test.py:57:7:57:12 | ControlFlowNode for ArgPos | test-source |
+| test.py:57:27:57:33 | ControlFlowNode for arg_pos | test-source |
 | test.py:66:17:66:20 | ControlFlowNode for arg1 | test-source |
 | test.py:66:23:66:26 | ControlFlowNode for arg2 | test-source |
 | test.py:66:34:66:43 | ControlFlowNode for namedThing | test-source |

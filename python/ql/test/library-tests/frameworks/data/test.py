@@ -54,7 +54,7 @@ val = inst.foo()
 
 from testlib import ArgPos
 
-val = ArgPos.selfThing(arg, named=2)
+arg_pos = ArgPos(); val = arg_pos.self_thing(arg, named=2);
 
 class SubClass (ArgPos.MyClass):
     def foo(self, arg, named=2, otherName=3):
