@@ -127,7 +127,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   pragma[only_bind_out](node1.getEnclosingCallable()) =
     pragma[only_bind_out](node2.getEnclosingCallable()) and
   // prevent recursive call
-  (any() or strictcount(Node n1, Node n2, AdditionalValueStep a | a.step(n1, n2)) < 0)
+  (any(AdditionalValueStep a).step(_, _) implies any())
 }
 
 private predicate simpleLocalFlowStep0(Node node1, Node node2) {
