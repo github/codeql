@@ -16,7 +16,7 @@ private class JavadocExpectationComment extends Javadoc, ExpectationComment {
 }
 
 private class KtExpectationComment extends KtComment, ExpectationComment {
-  override string getContents() {
-    result = this.getText().regexpCapture("(?://|/\\*)(.*)(?:\\*/)?", 1)
-  }
+  KtExpectationComment() { this.isEolComment() }
+
+  override string getContents() { result = this.getText().suffix(2).trim() }
 }
