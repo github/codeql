@@ -1,5 +1,5 @@
 import codeql.swift.elements
 
 from Pattern p
-where exists(p.getLocation())
+where p.getLocation().getFile().getName().matches("%swift/ql/test%")
 select p

@@ -1,5 +1,5 @@
 import swift
 
 from LabeledConditionalStmt s
-where exists(s.getLocation())
+where s.getLocation().getFile().getName().matches("%swift/ql/test%")
 select s.getAPrimaryQlClass(), s.getCondition()

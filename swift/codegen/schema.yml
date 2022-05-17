@@ -28,9 +28,9 @@ Location:
   end_line: int
   end_column: int
 
-Type: {}
-#  diagnostics_name: string
-#  canonical_type: Type
+Type:
+  diagnostics_name: string
+  canonical_type: Type
 
 IterableDeclContext:
   members: Decl*
@@ -59,15 +59,15 @@ ConditionElement:
 
 AnyFunctionType:
   _extends: Type
-#  result: Type
-#  param_types: Type*
-#  param_labels: string*
-#  is_throwing: predicate
+  result: Type
+  param_types: Type*
+  param_labels: string*
+  is_throwing: predicate
 
 AnyGenericType:
   _extends: Type
-#  parent: Type?
-#  declaration: Decl
+  parent: Type?
+  declaration: Decl
 
 AnyMetatypeType:
   _extends: Type
@@ -77,6 +77,8 @@ BuiltinType:
 
 DependentMemberType:
   _extends: Type
+  baseType: Type
+  associated_type_decl: AssociatedTypeDecl
 
 DynamicSelfType:
   _extends: Type
@@ -89,7 +91,7 @@ InOutType:
 
 LValueType:
   _extends: Type
-#  object_type: Type
+  object_type: Type
 
 ModuleType:
   _extends: Type
@@ -126,6 +128,8 @@ SugarType:
 
 TupleType:
   _extends: Type
+  types: Type*
+  names: string*
 
 TypeVariableType:
   _extends: Type
@@ -166,7 +170,7 @@ FunctionType:
 
 GenericFunctionType:
   _extends: AnyFunctionType
-#  generic_params: GenericTypeParamType*
+  generic_params: GenericTypeParamType*
 
 NominalOrBoundGenericNominalType:
   _extends: AnyGenericType
@@ -227,16 +231,18 @@ ArchetypeType:
 
 GenericTypeParamType:
   _extends: SubstitutableType
-#  name: string
+  name: string
 
 ParenType:
   _extends: SugarType
+  type: Type
 
 SyntaxSugarType:
   _extends: SugarType
 
 TypeAliasType:
   _extends: SugarType
+  decl: TypeAliasDecl
 
 EnumCaseDecl:
   _extends: Decl
@@ -590,6 +596,7 @@ YieldStmt:
 
 BoundGenericType:
   _extends: NominalOrBoundGenericNominalType
+  arg_types: Type*
 
 NominalType:
   _extends: NominalOrBoundGenericNominalType
@@ -599,6 +606,7 @@ BuiltinIntegerLiteralType:
 
 BuiltinIntegerType:
   _extends: AnyBuiltinIntegerType
+  width: int?
 
 NestedArchetypeType:
   _extends: ArchetypeType
@@ -614,13 +622,16 @@ OpenedArchetypeType:
 
 PrimaryArchetypeType:
   _extends: ArchetypeType
-#  interface_type: GenericTypeParamType
+  interface_type: GenericTypeParamType
 
 DictionaryType:
   _extends: SyntaxSugarType
+  key_type: Type
+  value_type: Type
 
 UnarySyntaxSugarType:
   _extends: SyntaxSugarType
+  base_type: Type
 
 InfixOperatorDecl:
   _extends: OperatorDecl
@@ -887,7 +898,7 @@ BoundGenericStructType:
 
 ClassType:
   _extends: NominalType
-#  decl: ClassDecl
+  decl: ClassDecl
 
 EnumType:
   _extends: NominalType
@@ -897,7 +908,7 @@ ProtocolType:
 
 StructType:
   _extends: NominalType
-#  decl: StructDecl
+  decl: StructDecl
 
 ArraySliceType:
   _extends: UnarySyntaxSugarType
