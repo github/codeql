@@ -36,21 +36,21 @@ class Sinks extends ModelInput::SinkModelCsv {
       [
         "testlib;;Member[mySink].Argument[0,sinkName:];test-sink",
         // testing argument syntax
-        "testlib;;Member[Args].Member[arg0].Argument[0];test-source", //
-        "testlib;;Member[Args].Member[arg1to3].Argument[1..3];test-source", //
-        "testlib;;Member[Args].Member[lastarg].Argument[N-1];test-source", //
-        "testlib;;Member[Args].Member[nonFist].Argument[1..];test-source", //
+        "testlib;;Member[Args].Member[arg0].Argument[0];test-sink", //
+        "testlib;;Member[Args].Member[arg1to3].Argument[1..3];test-sink", //
+        "testlib;;Member[Args].Member[lastarg].Argument[N-1];test-sink", //
+        "testlib;;Member[Args].Member[nonFist].Argument[1..];test-sink", //
         // callsite filter.
-        "testlib;;Member[CallFilter].Member[arityOne].WithArity[1].Argument[any];test-source", //
-        "testlib;;Member[CallFilter].Member[twoOrMore].WithArity[2..].Argument[0..];test-source", //
+        "testlib;;Member[CallFilter].Member[arityOne].WithArity[1].Argument[any];test-sink", //
+        "testlib;;Member[CallFilter].Member[twoOrMore].WithArity[2..].Argument[0..];test-sink", //
         // testing non-positional arguments
-        "testlib;;Member[ArgPos].Instance.Member[self_thing].Argument[self];test-source", //
+        "testlib;;Member[ArgPos].Instance.Member[self_thing].Argument[self];test-sink", //
         // any argument
-        "testlib;;Member[ArgPos].Member[anyParam].Argument[any];test-source", //
-        "testlib;;Member[ArgPos].Member[anyNamed].Argument[any-named];test-source", //
+        "testlib;;Member[ArgPos].Member[anyParam].Argument[any];test-sink", //
+        "testlib;;Member[ArgPos].Member[anyNamed].Argument[any-named];test-sink", //
         // testing package syntax
-        "foo1.bar;;Member[baz1].Argument[any];test-source", //
-        "foo2;;Member[bar].Member[baz2].Argument[any];test-source", //
+        "foo1.bar;;Member[baz1].Argument[any];test-sink", //
+        "foo2;;Member[bar].Member[baz2].Argument[any];test-sink", //
       ]
   }
 }
