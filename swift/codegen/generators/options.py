@@ -5,7 +5,7 @@ import collections
 import pathlib
 from typing import Set
 
-from . import paths
+from swift.codegen.lib import paths
 
 
 def _init_options():

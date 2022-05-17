@@ -4,7 +4,8 @@ from typing import Dict
 import inflection
 from toposort import toposort_flatten
 
-from swift.codegen.lib import cpp, generator, schema
+from swift.codegen.lib import cpp, schema
+from swift.codegen.generators import generator
 
 
 def _get_type(t: str, trap_affix: str) -> str:

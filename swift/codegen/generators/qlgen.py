@@ -6,7 +6,8 @@ import subprocess
 
 import inflection
 
-from swift.codegen.lib import schema, paths, generator, ql
+from swift.codegen.lib import schema, ql
+from swift.codegen.generators import generator
 
 log = logging.getLogger(__name__)
 
