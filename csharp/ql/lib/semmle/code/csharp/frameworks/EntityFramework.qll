@@ -258,6 +258,30 @@ module EntityFramework {
     }
   }
 
+  /** A sink method in `Microsoft.EntityFrameworkCore.RelationalQueryableExtensions` that executes SQL. */
+  private class MicrosoftEntityFrameworkCoreRelationalQueryableExtensionsSinkModelCsv extends SinkModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "Microsoft.EntityFrameworkCore;RelationalQueryableExtensions;false;FromSqlRaw<>;(Microsoft.EntityFrameworkCore.DbSet<TEntity>,System.String,System.Object[]);;Argument[1];sql",
+        ]
+    }
+  }
+
+  /** A sink method in `Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions` that executes SQL. */
+  private class MicrosoftEntityFrameworkCoreRelationalDatabaseFacadeExtensionsSinkModelCsv extends SinkModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRaw;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>);;Argument[1];sql",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRaw;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[]);;Argument[1];sql",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Threading.CancellationToken);;Argument[1];sql",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[]);;Argument[1];sql",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken);;Argument[1];sql",
+        ]
+    }
+  }
+
   /** Holds if `t` is compatible with a DB column type. */
   private predicate isColumnType(Type t) {
     t instanceof SimpleType
