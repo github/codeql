@@ -32,8 +32,8 @@ Type: {}
 #  diagnostics_name: string
 #  canonical_type: Type
 
-IterableDeclContext: {}
-#  members: Decl*
+IterableDeclContext:
+  members: Decl*
 
 ExtensionDecl:
   _extends:
@@ -45,7 +45,7 @@ NominalTypeDecl:
   _extends:
     - IterableDeclContext
     - GenericTypeDecl
-#  type: Type
+  type: Type
 
 AstNode:
   _extends: Locatable
@@ -240,7 +240,7 @@ TypeAliasType:
 
 EnumCaseDecl:
   _extends: Decl
-#  elements: EnumElementDecl*
+  elements: EnumElementDecl*
 
 IfConfigDecl:
   _extends: Decl
@@ -253,11 +253,12 @@ MissingMemberDecl:
 
 OperatorDecl:
   _extends: Decl
+  name: string
 
 PatternBindingDecl:
   _extends: Decl
-#  inits: Expr?*
-#  patterns: Pattern*
+  inits: Expr?*
+  patterns: Pattern*
 
 PoundDiagnosticDecl:
   _extends: Decl
@@ -267,11 +268,11 @@ PrecedenceGroupDecl:
 
 TopLevelCodeDecl:
   _extends: Decl
-#  body: BraceStmt
+  body: BraceStmt
 
 ValueDecl:
   _extends: Decl
-#  interface_type: Type
+  interface_type: Type
 
 AbstractClosureExpr:
   _extends: Expr
@@ -623,6 +624,7 @@ UnarySyntaxSugarType:
 
 InfixOperatorDecl:
   _extends: OperatorDecl
+  precedence_group: PrecedenceGroupDecl?
 
 PostfixOperatorDecl:
   _extends: OperatorDecl
@@ -634,21 +636,22 @@ AbstractFunctionDecl:
   _extends:
     - GenericContext
     - ValueDecl
-#  name: string
-#  body: BraceStmt?
-#  params: ParamDecl*
+  name: string
+  body: BraceStmt?
+  params: ParamDecl*
 
 AbstractStorageDecl:
   _extends: ValueDecl
 
 EnumElementDecl:
   _extends: ValueDecl
-#  name: string
-#  params: ParamDecl*
+  name: string
+  params: ParamDecl*
 
 TypeDecl:
   _extends: ValueDecl
-#  name: string
+  name: string
+  base_types: Type*
 
 AutoClosureExpr:
   _extends: AbstractClosureExpr
@@ -918,14 +921,17 @@ SubscriptDecl:
 
 VarDecl:
   _extends: AbstractStorageDecl
-#  name: string
-#  type: Type
+  name: string
+  type: Type
+  attached_property_wrapper_type: Type?
+  parent_pattern: Pattern?
+  parent_initializer: Expr?
 
 AbstractTypeParamDecl:
   _extends: TypeDecl
 
-GenericContext: {}
-#  generic_type_params: GenericTypeParamDecl*
+GenericContext:
+  generic_type_params: GenericTypeParamDecl*
 
 GenericTypeDecl:
   _extends:
@@ -992,7 +998,7 @@ ConcreteFuncDecl:
 
 ConcreteVarDecl:
   _extends: VarDecl
-#  introducer_int: int
+  introducer_int: int
 
 ParamDecl:
   _extends: VarDecl

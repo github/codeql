@@ -28,7 +28,7 @@ class VisitorBase {
 // unknown/TBD entities. Like `swift::ASTVisitor`, this uses CRTP (the Curiously Recurring Template
 // Pattern)
 template <typename CrtpSubclass>
-class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, detail::VisitorBase {
+class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, protected detail::VisitorBase {
  public:
   using VisitorBase::VisitorBase;
 
