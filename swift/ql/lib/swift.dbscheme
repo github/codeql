@@ -836,43 +836,82 @@ any_patterns(
 );
 
 binding_patterns(
-  unique int id: @binding_pattern
+  unique int id: @binding_pattern,
+  int sub_pattern: @pattern ref
 );
 
 bool_patterns(
-  unique int id: @bool_pattern
+  unique int id: @bool_pattern,
+  boolean value: boolean ref
 );
 
 enum_element_patterns(
-  unique int id: @enum_element_pattern
+  unique int id: @enum_element_pattern,
+  int element: @enum_element_decl ref
+);
+
+#keyset[id]
+enum_element_pattern_sub_patterns(
+  int id: @enum_element_pattern ref,
+  int sub_pattern: @pattern ref
 );
 
 expr_patterns(
-  unique int id: @expr_pattern
+  unique int id: @expr_pattern,
+  int sub_expr: @expr ref
 );
 
 is_patterns(
   unique int id: @is_pattern
 );
 
+#keyset[id]
+is_pattern_cast_type_reprs(
+  int id: @is_pattern ref,
+  int cast_type_repr: @type_repr ref
+);
+
+#keyset[id]
+is_pattern_sub_patterns(
+  int id: @is_pattern ref,
+  int sub_pattern: @pattern ref
+);
+
 named_patterns(
-  unique int id: @named_pattern
+  unique int id: @named_pattern,
+  string name: string ref
 );
 
 optional_some_patterns(
-  unique int id: @optional_some_pattern
+  unique int id: @optional_some_pattern,
+  int sub_pattern: @pattern ref
 );
 
 paren_patterns(
-  unique int id: @paren_pattern
+  unique int id: @paren_pattern,
+  int sub_pattern: @pattern ref
 );
 
 tuple_patterns(
   unique int id: @tuple_pattern
 );
 
+#keyset[id, index]
+tuple_pattern_elements(
+  int id: @tuple_pattern ref,
+  int index: int ref,
+  int element: @pattern ref
+);
+
 typed_patterns(
-  unique int id: @typed_pattern
+  unique int id: @typed_pattern,
+  int sub_pattern: @pattern ref
+);
+
+#keyset[id]
+typed_pattern_type_reprs(
+  int id: @typed_pattern ref,
+  int type_repr: @type_repr ref
 );
 
 brace_stmts(

@@ -491,46 +491,46 @@ AnyPattern:
 
 BindingPattern:
   _extends: Pattern
-#  sub_pattern: Pattern
+  sub_pattern: Pattern
 
 BoolPattern:
   _extends: Pattern
-#  value: boolean
+  value: boolean
 
 EnumElementPattern:
   _extends: Pattern
-#  element: EnumElementDecl
-#  sub_pattern: Pattern?
+  element: EnumElementDecl
+  sub_pattern: Pattern?
 
 ExprPattern:
   _extends: Pattern
-#  sub_expr: Expr
+  sub_expr: Expr
 
 IsPattern:
   _extends: Pattern
-#  cast_type_repr: TypeRepr?
-#  sub_pattern: Pattern?
+  cast_type_repr: TypeRepr?
+  sub_pattern: Pattern?
 
 NamedPattern:
   _extends: Pattern
-#  name: string
+  name: string
 
 OptionalSomePattern:
   _extends: Pattern
-#  sub_pattern: Pattern
+  sub_pattern: Pattern
 
 ParenPattern:
   _extends: Pattern
-#  sub_pattern: Pattern
+  sub_pattern: Pattern
 
 TuplePattern:
   _extends: Pattern
-#  elements: Pattern*
+  elements: Pattern*
 
 TypedPattern:
   _extends: Pattern
-#  sub_pattern: Pattern
-#  type_repr: TypeRepr?
+  sub_pattern: Pattern
+  type_repr: TypeRepr?
 
 BraceStmt:
   _extends: Stmt
