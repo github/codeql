@@ -302,6 +302,8 @@ class RootdefCallable extends Callable {
     exists(MemberRefExpr mre | mre.getReferencedCallable() = this)
     or
     this.getAnAnnotation() instanceof OverrideAnnotation
+    or
+    this.hasModifier("override")
   }
 }
 
