@@ -65,9 +65,9 @@ abstract class NodeImpl extends Node {
 
 private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallableImpl() {
-    result.asCallable() = this.getExpr().(CIL::Expr).getEnclosingCallable()
+    result.getUnderlyingCallable() = this.getExpr().(CIL::Expr).getEnclosingCallable()
     or
-    result.asCallable() = this.getControlFlowNodeImpl().getEnclosingCallable()
+    result.getUnderlyingCallable() = this.getControlFlowNodeImpl().getEnclosingCallable()
   }
 
   override DotNet::Type getTypeImpl() {
@@ -852,7 +852,7 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
   Ssa::Definition getDefinition() { result = def }
 
   override DataFlowCallable getEnclosingCallableImpl() {
-    result.asCallable() = def.getEnclosingCallable()
+    result.getUnderlyingCallable() = def.getEnclosingCallable()
   }
 
   override Type getTypeImpl() { result = def.getSourceVariable().getType() }
@@ -911,10 +911,12 @@ private module ParameterNodes {
     Callable getCallable() { result = callable }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      callable = c.asCallable() and pos.isThisParameter()
+      callable = c.getUnderlyingCallable() and pos.isThisParameter()
     }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result.asCallable() = callable }
+    override DataFlowCallable getEnclosingCallableImpl() {
+      result.getUnderlyingCallable() = callable
+    }
 
     override Type getTypeImpl() { result = callable.getDeclaringType() }
 
@@ -961,7 +963,7 @@ private module ParameterNodes {
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       pos.isImplicitCapturedParameterPosition(def.getSourceVariable().getAssignable()) and
-      c.asCallable() = this.getEnclosingCallable()
+      c.getUnderlyingCallable() = this.getEnclosingCallable()
     }
   }
 
@@ -1078,7 +1080,7 @@ private module ArgumentNodes {
     }
 
     override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = cfn.getEnclosingCallable()
+      result.getUnderlyingCallable() = cfn.getEnclosingCallable()
     }
 
     override Type getTypeImpl() { result = v.getType() }
@@ -1107,7 +1109,7 @@ private module ArgumentNodes {
     override ControlFlow::Node getControlFlowNodeImpl() { result = cfn }
 
     override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = cfn.getEnclosingCallable()
+      result.getUnderlyingCallable() = cfn.getEnclosingCallable()
     }
 
     override Type getTypeImpl() { result = cfn.getElement().(Expr).getType() }
@@ -1146,7 +1148,7 @@ private module ArgumentNodes {
     }
 
     override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = callCfn.getEnclosingCallable()
+      result.getUnderlyingCallable() = callCfn.getEnclosingCallable()
     }
 
     override Type getTypeImpl() { result = this.getParameter().getType() }
@@ -1227,7 +1229,7 @@ private module ReturnNodes {
     override NormalReturnKind getKind() { any() }
 
     override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = yrs.getEnclosingCallable()
+      result.getUnderlyingCallable() = yrs.getEnclosingCallable()
     }
 
     override Type getTypeImpl() { result = yrs.getEnclosingCallable().getReturnType() }
@@ -1253,7 +1255,7 @@ private module ReturnNodes {
     override NormalReturnKind getKind() { any() }
 
     override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = expr.getEnclosingCallable()
+      result.getUnderlyingCallable() = expr.getEnclosingCallable()
     }
 
     override Type getTypeImpl() { result = expr.getEnclosingCallable().getReturnType() }
@@ -1903,7 +1905,7 @@ private module PostUpdateNodes {
     }
 
     override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = cfn.getEnclosingCallable()
+      result.getUnderlyingCallable() = cfn.getEnclosingCallable()
     }
 
     override DotNet::Type getTypeImpl() { result = oc.getType() }
@@ -1923,7 +1925,7 @@ private module PostUpdateNodes {
     override ExprNode getPreUpdateNode() { cfn = result.getControlFlowNode() }
 
     override DataFlowCallable getEnclosingCallableImpl() {
-      result.asCallable() = cfn.getEnclosingCallable()
+      result.getUnderlyingCallable() = cfn.getEnclosingCallable()
     }
 
     override Type getTypeImpl() { result = cfn.getElement().(Expr).getType() }
@@ -2012,11 +2014,11 @@ class LambdaCallKind = Unit;
 /** Holds if `creation` is an expression that creates a delegate for `c`. */
 predicate lambdaCreation(ExprNode creation, LambdaCallKind kind, DataFlowCallable c) {
   exists(Expr e | e = creation.getExpr() |
-    c.asCallable() = e.(AnonymousFunctionExpr)
+    c.getUnderlyingCallable() = e.(AnonymousFunctionExpr)
     or
-    c.asCallable() = e.(CallableAccess).getTarget().getUnboundDeclaration()
+    c.getUnderlyingCallable() = e.(CallableAccess).getTarget().getUnboundDeclaration()
     or
-    c.asCallable() =
+    c.getUnderlyingCallable() =
       e.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration()
   ) and
   kind = TMkUnit()

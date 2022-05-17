@@ -73,11 +73,11 @@ newtype TReturnKind =
   TJumpReturnKind(DataFlowCallable target, ReturnKind rk) {
     rk instanceof NormalReturnKind and
     (
-      target.asCallable() instanceof Constructor or
-      not target.asCallable().getReturnType() instanceof VoidType
+      target.getUnderlyingCallable() instanceof Constructor or
+      not target.getUnderlyingCallable().getReturnType() instanceof VoidType
     )
     or
-    exists(target.asCallable().getParameter(rk.(OutRefReturnKind).getPosition()))
+    exists(target.getUnderlyingCallable().getParameter(rk.(OutRefReturnKind).getPosition()))
   }
 
 private module Cached {
@@ -143,7 +143,7 @@ private module DispatchImpl {
    * restricted to those `call`s for which a context might make a difference.
    */
   DataFlowCallable viableImplInCallContext(NonDelegateDataFlowCall call, DataFlowCall ctx) {
-    result.asCallable() =
+    result.getUnderlyingCallable() =
       call.getDispatchCall()
           .getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall).getDispatchCall())
           .getUnboundDeclaration()
@@ -240,7 +240,9 @@ class JumpReturnKind extends ReturnKind, TJumpReturnKind {
  * A type for modeling dataflow callables.
  */
 newtype TDataFlowCallable =
-  TDotNetCallable(DotNet::Callable c) { c.isUnboundDeclaration() } or
+  TDotNetCallable(DotNet::Callable c) {
+    c.isUnboundDeclaration() and not c instanceof FlowSummary::SummarizedCallable
+  } or
   TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
 class DataFlowCallable extends TDataFlowCallable {
@@ -250,15 +252,15 @@ class DataFlowCallable extends TDataFlowCallable {
   /** Get the underlying summarized callable, if any. */
   FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
-  /** Gets a textual representation of this dataflow callable. */
-  string toString() {
-    result = [this.asCallable().toString(), this.asSummarizedCallable().toString()]
+  DotNet::Callable getUnderlyingCallable() {
+    result = this.asCallable() or result = this.asSummarizedCallable()
   }
 
+  /** Gets a textual representation of this dataflow callable. */
+  string toString() { result = this.getUnderlyingCallable().toString() }
+
   /** Get the location of this dataflow callable, if any. */
-  Location getLocation() {
-    result = this.asCallable().getLocation() or result = this.asSummarizedCallable().getLocation()
-  }
+  Location getLocation() { result = this.getUnderlyingCallable().getLocation() }
 }
 
 /** A call relevant for data flow. */
@@ -330,7 +332,7 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asCallable() = cfn.getEnclosingCallable()
+    result.getUnderlyingCallable() = cfn.getEnclosingCallable()
   }
 
   override string toString() { result = cfn.toString() }
@@ -360,7 +362,7 @@ class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDe
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asCallable() = cfn.getEnclosingCallable()
+    result.getUnderlyingCallable() = cfn.getEnclosingCallable()
   }
 
   override string toString() { result = cfn.toString() }
@@ -379,14 +381,14 @@ class TransitiveCapturedDataFlowCall extends DataFlowCall, TTransitiveCapturedCa
 
   TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn, target) }
 
-  override DataFlowCallable getARuntimeTarget() { result.asCallable() = target }
+  override DataFlowCallable getARuntimeTarget() { result.getUnderlyingCallable() = target }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 
   override DataFlow::ExprNode getNode() { none() }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asCallable() = cfn.getEnclosingCallable()
+    result.getUnderlyingCallable() = cfn.getEnclosingCallable()
   }
 
   override string toString() { result = "[transitive] " + cfn.toString() }
@@ -402,7 +404,7 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
 
   override DataFlowCallable getARuntimeTarget() {
     // There is no dispatch library for CIL, so do not consider overrides for now
-    result.asCallable() = getCallableForDataFlow(call.getTarget())
+    result.getUnderlyingCallable() = getCallableForDataFlow(call.getTarget())
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { none() }
@@ -410,7 +412,7 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
   override DataFlow::ExprNode getNode() { result.getExpr() = call }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asCallable() = call.getEnclosingCallable()
+    result.getUnderlyingCallable() = call.getEnclosingCallable()
   }
 
   override string toString() { result = call.toString() }

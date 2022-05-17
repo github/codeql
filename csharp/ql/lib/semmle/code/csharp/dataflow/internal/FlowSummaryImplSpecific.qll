@@ -59,7 +59,7 @@ DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
   or
   rk =
     any(JumpReturnKind jrk |
-      result = getReturnTypeBase(jrk.getTarget().asCallable(), jrk.getTargetReturnKind())
+      result = getReturnTypeBase(jrk.getTarget().getUnderlyingCallable(), jrk.getTargetReturnKind())
     )
 }
 
@@ -256,16 +256,10 @@ class InterpretNode extends TInterpretNode {
   DataFlowCall asCall() { this = TDataFlowCall_(result) }
 
   /** Gets the callable that this node corresponds to, if any. */
-  DataFlowCallable asCallable() {
-    result.asCallable() = this.asElement() or
-    result.asSummarizedCallable() = this.asElement()
-  }
+  DataFlowCallable asCallable() { result.getUnderlyingCallable() = this.asElement() }
 
   /** Gets the target of this call, if any. */
-  Callable getCallTarget() {
-    result = viableCallable(this.asCall()).asSummarizedCallable() or
-    result = viableCallable(this.asCall()).asCallable()
-  }
+  Callable getCallTarget() { result = viableCallable(this.asCall()).getUnderlyingCallable() }
 
   /** Gets a textual representation of this node. */
   string toString() {
