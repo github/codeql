@@ -13,7 +13,6 @@ class CryptographicOperationTest extends InlineExpectationsTest {
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(location.getFile().getRelativePath()) and
     exists(Cryptography::CryptographicOperation cryptoOperation |
       location = cryptoOperation.getLocation() and
       (
