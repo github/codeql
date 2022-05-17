@@ -3,4 +3,18 @@ import codeql.swift.elements.expr.Expr
 
 class AssignExprBase extends @assign_expr, Expr {
   override string getAPrimaryQlClass() { result = "AssignExpr" }
+
+  Expr getDest() {
+    exists(Expr x |
+      assign_exprs(this, x, _) and
+      result = x.resolve()
+    )
+  }
+
+  Expr getSource() {
+    exists(Expr x |
+      assign_exprs(this, _, x) and
+      result = x.resolve()
+    )
+  }
 }

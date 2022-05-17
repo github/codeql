@@ -1,5 +1,7 @@
+| file://:0:0:0:0 | ConcreteFuncDecl | == |
 | file://:0:0:0:0 | ConcreteFuncDecl | __derived_enum_equals |
 | file://:0:0:0:0 | ConcreteFuncDecl | hash |
+| file://:0:0:0:0 | ConcreteFuncDecl | print |
 | test.swift:25:5:25:22 | ConcreteFuncDecl | random |
 | test.swift:28:1:28:37 | ConcreteFuncDecl | a_function |
 | test.swift:50:3:52:3 | ConcreteFuncDecl | +- |
