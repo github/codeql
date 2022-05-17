@@ -121,6 +121,24 @@ condition_elements(
   unique int id: @condition_element
 );
 
+#keyset[id]
+condition_element_booleans(
+  int id: @condition_element ref,
+  int boolean_: @expr ref
+);
+
+#keyset[id]
+condition_element_patterns(
+  int id: @condition_element ref,
+  int pattern: @pattern ref
+);
+
+#keyset[id]
+condition_element_initializers(
+  int id: @condition_element ref,
+  int initializer: @expr ref
+);
+
 @any_function_type =
   @function_type
 | @generic_function_type
@@ -861,24 +879,78 @@ brace_stmts(
   unique int id: @brace_stmt
 );
 
+#keyset[id, index]
+brace_stmt_elements(
+  int id: @brace_stmt ref,
+  int index: int ref,
+  int element: @ast_node ref
+);
+
 break_stmts(
   unique int id: @break_stmt
 );
 
+#keyset[id]
+break_stmt_target_names(
+  int id: @break_stmt ref,
+  string target_name: string ref
+);
+
+#keyset[id]
+break_stmt_targets(
+  int id: @break_stmt ref,
+  int target: @stmt ref
+);
+
 case_stmts(
-  unique int id: @case_stmt
+  unique int id: @case_stmt,
+  int body: @stmt ref
+);
+
+#keyset[id, index]
+case_stmt_labels(
+  int id: @case_stmt ref,
+  int index: int ref,
+  int label: @case_label_item ref
+);
+
+#keyset[id, index]
+case_stmt_variables(
+  int id: @case_stmt ref,
+  int index: int ref,
+  int variable: @var_decl ref
 );
 
 case_label_items(
-  unique int id: @case_label_item
+  unique int id: @case_label_item,
+  int pattern: @pattern ref
+);
+
+#keyset[id]
+case_label_item_guards(
+  int id: @case_label_item ref,
+  int guard: @expr ref
 );
 
 continue_stmts(
   unique int id: @continue_stmt
 );
 
+#keyset[id]
+continue_stmt_target_names(
+  int id: @continue_stmt ref,
+  string target_name: string ref
+);
+
+#keyset[id]
+continue_stmt_targets(
+  int id: @continue_stmt ref,
+  int target: @stmt ref
+);
+
 defer_stmts(
-  unique int id: @defer_stmt
+  unique int id: @defer_stmt,
+  int body: @brace_stmt ref
 );
 
 fail_stmts(
@@ -886,7 +958,9 @@ fail_stmts(
 );
 
 fallthrough_stmts(
-  unique int id: @fallthrough_stmt
+  unique int id: @fallthrough_stmt,
+  int fallthrough_source: @case_stmt ref,
+  int fallthrough_dest: @case_stmt ref
 );
 
 @labeled_stmt =
@@ -898,6 +972,12 @@ fallthrough_stmts(
 | @switch_stmt
 ;
 
+#keyset[id]
+labeled_stmt_labels(
+  int id: @labeled_stmt ref,
+  string label: string ref
+);
+
 pound_assert_stmts(
   unique int id: @pound_assert_stmt
 );
@@ -906,8 +986,15 @@ return_stmts(
   unique int id: @return_stmt
 );
 
+#keyset[id]
+return_stmt_results(
+  int id: @return_stmt ref,
+  int result: @expr ref
+);
+
 throw_stmts(
-  unique int id: @throw_stmt
+  unique int id: @throw_stmt,
+  int sub_expr: @expr ref
 );
 
 yield_stmts(
@@ -1284,15 +1371,33 @@ overloaded_decl_ref_exprs(
 );
 
 do_catch_stmts(
-  unique int id: @do_catch_stmt
+  unique int id: @do_catch_stmt,
+  int body: @stmt ref
+);
+
+#keyset[id, index]
+do_catch_stmt_catches(
+  int id: @do_catch_stmt ref,
+  int index: int ref,
+  int catch: @case_stmt ref
 );
 
 do_stmts(
-  unique int id: @do_stmt
+  unique int id: @do_stmt,
+  int body: @brace_stmt ref
 );
 
 for_each_stmts(
-  unique int id: @for_each_stmt
+  unique int id: @for_each_stmt,
+  int pattern: @pattern ref,
+  int sequence: @expr ref,
+  int body: @brace_stmt ref
+);
+
+#keyset[id]
+for_each_stmt_wheres(
+  int id: @for_each_stmt ref,
+  int where: @expr ref
 );
 
 @labeled_conditional_stmt =
@@ -1301,16 +1406,39 @@ for_each_stmts(
 | @while_stmt
 ;
 
+#keyset[id]
+labeled_conditional_stmts(
+  int id: @labeled_conditional_stmt ref,
+  int condition: @stmt_condition ref
+);
+
 stmt_conditions(
   unique int id: @stmt_condition
 );
 
+#keyset[id, index]
+stmt_condition_elements(
+  int id: @stmt_condition ref,
+  int index: int ref,
+  int element: @condition_element ref
+);
+
 repeat_while_stmts(
-  unique int id: @repeat_while_stmt
+  unique int id: @repeat_while_stmt,
+  int condition: @expr ref,
+  int body: @stmt ref
 );
 
 switch_stmts(
-  unique int id: @switch_stmt
+  unique int id: @switch_stmt,
+  int expr: @expr ref
+);
+
+#keyset[id, index]
+switch_stmt_cases(
+  int id: @switch_stmt ref,
+  int index: int ref,
+  int case_: @case_stmt ref
 );
 
 bound_generic_class_types(
@@ -1475,15 +1603,24 @@ dynamic_subscript_exprs(
 );
 
 guard_stmts(
-  unique int id: @guard_stmt
+  unique int id: @guard_stmt,
+  int body: @brace_stmt ref
 );
 
 if_stmts(
-  unique int id: @if_stmt
+  unique int id: @if_stmt,
+  int then: @stmt ref
+);
+
+#keyset[id]
+if_stmt_elses(
+  int id: @if_stmt ref,
+  int else: @stmt ref
 );
 
 while_stmts(
-  unique int id: @while_stmt
+  unique int id: @while_stmt,
+  int body: @stmt ref
 );
 
 accessor_decls(

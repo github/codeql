@@ -52,9 +52,9 @@ AstNode:
 
 ConditionElement:
   _extends: Locatable
-#  boolean: Expr?
-#  pattern: Pattern?
-#  initializer: Expr?
+  boolean: Expr?
+  pattern: Pattern?
+  initializer: Expr?
   _dir: stmt
 
 AnyFunctionType:
@@ -534,56 +534,56 @@ TypedPattern:
 
 BraceStmt:
   _extends: Stmt
-#  elements: AstNode*
+  elements: AstNode*
 
 BreakStmt:
   _extends: Stmt
-#  target_name: string?
-#  target: Stmt?
+  target_name: string?
+  target: Stmt?
 
 CaseStmt:
   _extends: Stmt
-#  body: Stmt
-#  labels: CaseLabelItem*
-#  variables: VarDecl*
+  body: Stmt
+  labels: CaseLabelItem*
+  variables: VarDecl*
 
 CaseLabelItem:
   _extends: AstNode
-#  pattern: Pattern
-#  guard: Expr?
+  pattern: Pattern
+  guard: Expr?
   _dir: stmt
 
 ContinueStmt:
   _extends: Stmt
-#  target_name: string?
-#  target: Stmt?
+  target_name: string?
+  target: Stmt?
 
 DeferStmt:
   _extends: Stmt
-#  body: BraceStmt
+  body: BraceStmt
 
 FailStmt:
   _extends: Stmt
 
 FallthroughStmt:
   _extends: Stmt
-#  fallthrough_source: CaseStmt
-#  fallthrough_dest: CaseStmt
+  fallthrough_source: CaseStmt
+  fallthrough_dest: CaseStmt
 
 LabeledStmt:
   _extends: Stmt
-#  label: string?
+  label: string?
 
 PoundAssertStmt:
   _extends: Stmt
 
 ReturnStmt:
   _extends: Stmt
-#  result: Expr?
+  result: Expr?
 
 ThrowStmt:
   _extends: Stmt
-#  sub_expr: Expr
+  sub_expr: Expr
 
 YieldStmt:
   _extends: Stmt
@@ -843,37 +843,38 @@ OverloadedDeclRefExpr:
 
 DoCatchStmt:
   _extends: LabeledStmt
-#  body: Stmt
-#  catches: CaseStmt*
+  body: Stmt
+  catches: CaseStmt*
 
 DoStmt:
   _extends: LabeledStmt
-#  body: BraceStmt
+  body: BraceStmt
 
 ForEachStmt:
   _extends: LabeledStmt
-#  body: BraceStmt
-#  sequence: Expr
-#  where: Expr?
+  pattern: Pattern
+  sequence: Expr
+  where: Expr?
+  body: BraceStmt
 
 LabeledConditionalStmt:
   _extends: LabeledStmt
-#  condition: StmtCondition
+  condition: StmtCondition
 
 StmtCondition:
   _extends: AstNode
-#  elements: ConditionElement*
+  elements: ConditionElement*
   _dir: stmt
 
 RepeatWhileStmt:
   _extends: LabeledStmt
-#  condition: Expr
-#  body: Stmt
+  condition: Expr
+  body: Stmt
 
 SwitchStmt:
   _extends: LabeledStmt
-#  expr: Expr
-#  cases: CaseStmt*
+  expr: Expr
+  cases: CaseStmt*
 
 BoundGenericClassType:
   _extends: BoundGenericType
@@ -979,16 +980,16 @@ DynamicSubscriptExpr:
 
 GuardStmt:
   _extends: LabeledConditionalStmt
-#  body: BraceStmt
+  body: BraceStmt
 
 IfStmt:
   _extends: LabeledConditionalStmt
-#  then: Stmt
-#  else: Stmt?
+  then: Stmt
+  else: Stmt?
 
 WhileStmt:
   _extends: LabeledConditionalStmt
-#  body: Stmt
+  body: Stmt
 
 AccessorDecl:
   _extends: FuncDecl

@@ -1,0 +1,5 @@
+| main.swift:3:8:3:13 | ConditionElement |
+| main.swift:10:17:10:24 | ConditionElement |
+| main.swift:39:9:39:14 | ConditionElement |
+| main.swift:65:4:65:19 | ConditionElement |
+| main.swift:67:4:67:20 | ConditionElement |
