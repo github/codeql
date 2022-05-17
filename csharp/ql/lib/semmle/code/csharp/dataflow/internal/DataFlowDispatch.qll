@@ -70,17 +70,27 @@ newtype TReturnKind =
       v = def.getSourceVariable().getAssignable()
     )
   } or
-  TJumpReturnKind(DataFlowCallable target, ReturnKind rk) {
-    rk instanceof NormalReturnKind and
+  TJumpReturnKind(Callable target, ReturnKind rk) {
+    target.isUnboundDeclaration() and
     (
-      target.getUnderlyingCallable() instanceof Constructor or
-      not target.getUnderlyingCallable().getReturnType() instanceof VoidType
+      rk instanceof NormalReturnKind and
+      (
+        target instanceof Constructor or
+        not target.getReturnType() instanceof VoidType
+      )
+      or
+      exists(target.getParameter(rk.(OutRefReturnKind).getPosition()))
     )
-    or
-    exists(target.getUnderlyingCallable().getParameter(rk.(OutRefReturnKind).getPosition()))
   }
 
 private module Cached {
+  cached
+  newtype TDataFlowCallable =
+    TDotNetCallable(DotNet::Callable c) {
+      c.isUnboundDeclaration() and not c instanceof FlowSummary::SummarizedCallable
+    } or
+    TSummarizedCallable(FlowSummary::SummarizedCallable c)
+
   cached
   newtype TDataFlowCall =
     TNonDelegateCall(ControlFlow::Nodes::ElementNode cfn, DispatchCall dc) {
@@ -222,13 +232,13 @@ class ImplicitCapturedReturnKind extends ReturnKind, TImplicitCapturedReturnKind
  * one API entry point and out of another.
  */
 class JumpReturnKind extends ReturnKind, TJumpReturnKind {
-  private DataFlowCallable target;
+  private Callable target;
   private ReturnKind rk;
 
   JumpReturnKind() { this = TJumpReturnKind(target, rk) }
 
   /** Gets the target of the jump. */
-  DataFlowCallable getTarget() { result = target }
+  Callable getTarget() { result = target }
 
   /** Gets the return kind of the target. */
   ReturnKind getTargetReturnKind() { result = rk }
@@ -236,15 +246,7 @@ class JumpReturnKind extends ReturnKind, TJumpReturnKind {
   override string toString() { result = "jump to " + target }
 }
 
-/**
- * A type for modeling dataflow callables.
- */
-newtype TDataFlowCallable =
-  TDotNetCallable(DotNet::Callable c) {
-    c.isUnboundDeclaration() and not c instanceof FlowSummary::SummarizedCallable
-  } or
-  TSummarizedCallable(FlowSummary::SummarizedCallable c)
-
+/** A callable used for data flow. */
 class DataFlowCallable extends TDataFlowCallable {
   /** Get the underlying source code callable, if any. */
   DotNet::Callable asCallable() { this = TDotNetCallable(result) }
@@ -252,6 +254,7 @@ class DataFlowCallable extends TDataFlowCallable {
   /** Get the underlying summarized callable, if any. */
   FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
+  /** Get the underlying callable. */
   DotNet::Callable getUnderlyingCallable() {
     result = this.asCallable() or result = this.asSummarizedCallable()
   }
@@ -259,7 +262,7 @@ class DataFlowCallable extends TDataFlowCallable {
   /** Gets a textual representation of this dataflow callable. */
   string toString() { result = this.getUnderlyingCallable().toString() }
 
-  /** Get the location of this dataflow callable, if any. */
+  /** Get the location of this dataflow callable. */
   Location getLocation() { result = this.getUnderlyingCallable().getLocation() }
 }
 
@@ -320,11 +323,21 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   override DataFlowCallable getARuntimeTarget() {
     result.asCallable() = getCallableForDataFlow(dc.getADynamicTarget())
     or
-    exists(Callable c | result.asSummarizedCallable() = c.getUnboundDeclaration() |
-      c = dc.getADynamicTarget()
+    exists(Callable c, boolean static |
+      result.asSummarizedCallable() = c and
+      c = this.getATarget(static)
+    |
+      static = false
       or
-      c = dc.getAStaticTarget() and not c instanceof RuntimeCallable
+      static = true and not c instanceof RuntimeCallable
     )
+  }
+
+  /** Gets a static or dynamic target of this call. */
+  Callable getATarget(boolean static) {
+    result = dc.getADynamicTarget().getUnboundDeclaration() and static = false
+    or
+    result = dc.getAStaticTarget().getUnboundDeclaration() and static = true
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }

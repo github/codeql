@@ -694,10 +694,11 @@ private module Cached {
         AssignableDefinitions::ImplicitParameterDefinition
     } or
     TExplicitParameterNode(DotNet::Parameter p) {
-      p = any(DataFlowCallable c).asCallable().getAParameter()
+      p = any(DataFlowCallable dfc).asCallable().getAParameter()
     } or
     TInstanceParameterNode(Callable c) {
-      c.isUnboundDeclaration() and not c.(Modifiable).isStatic()
+      c = any(DataFlowCallable dfc).asCallable() and
+      not c.(Modifiable).isStatic()
     } or
     TYieldReturnNode(ControlFlow::Nodes::ElementNode cfn) {
       any(Callable c).canYieldReturn(cfn.getElement())
@@ -911,7 +912,7 @@ private module ParameterNodes {
     Callable getCallable() { result = callable }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      callable = c.getUnderlyingCallable() and pos.isThisParameter()
+      callable = c.asCallable() and pos.isThisParameter()
     }
 
     override DataFlowCallable getEnclosingCallableImpl() {
@@ -1554,9 +1555,9 @@ predicate jumpStep(Node pred, Node succ) {
     flr.hasNonlocalValue()
   )
   or
-  exists(JumpReturnKind jrk, DataFlowCall call |
+  exists(JumpReturnKind jrk, NonDelegateDataFlowCall call |
     FlowSummaryImpl::Private::summaryReturnNode(pred, jrk) and
-    viableCallable(call) = jrk.getTarget() and
+    jrk.getTarget() = call.getATarget(_) and
     succ = getAnOutNode(call, jrk.getTargetReturnKind())
   )
 }
