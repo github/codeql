@@ -65,3 +65,8 @@ predicate isStrongPasswordHashingAlgorithm(string name) {
  * Holds if `name` corresponds to a weak password hashing algorithm.
  */
 predicate isWeakPasswordHashingAlgorithm(string name) { name = "EVPKDF" }
+
+/**
+ * Holds if `name` corresponds to a stream cipher.
+ */
+predicate isStreamCipher(string name) { name = ["CHACHA", "RC4", "ARC4", "ARCFOUR", "RABBIT"] }

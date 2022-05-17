@@ -370,6 +370,25 @@ private int getIntArgument(DataFlow::CallNode call, int i) {
   result = call.getArgument(i).asExpr().getConstantValue().getInt()
 }
 
+bindingset[blockCipherName]
+private Cryptography::BlockMode getCandidateBlockModeFromCipherName(string blockCipherName) {
+  result = blockCipherName.splitAt("-", [1, 2]).toUpperCase()
+}
+
+/**
+ * Gets the block mode specified as part of a block cipher name used to
+ * instantiate an `OpenSSL::Cipher` instance. If the block mode is not
+ * explicitly specified, this defaults to "CBC".
+ */
+bindingset[blockCipherName]
+private Cryptography::BlockMode getBlockModeFromCipherName(string blockCipherName) {
+  // Extract the block mode from the cipher name
+  result = getCandidateBlockModeFromCipherName(blockCipherName)
+  or
+  // Fall back on the OpenSSL default of CBC if the block mode is unspecified
+  not exists(getCandidateBlockModeFromCipherName(blockCipherName)) and result = "CBC"
+}
+
 /**
  * Holds if `call` is a call to `OpenSSL::Cipher.new` that instantiates a
  * `cipher` instance with mode `cipherMode`.
@@ -381,8 +400,9 @@ private predicate cipherInstantiationGeneric(
     // `OpenSSL::Cipher.new('<cipherName>')`
     call = cipherApi().getAnInstantiation() and
     cipherName = getStringArgument(call, 0) and
-    // CBC is used by default
-    cipherMode.isBlockMode("CBC")
+    if cipher.getAlgorithm().isStreamCipher()
+    then cipherMode = TStreamCipher()
+    else cipherMode.isBlockMode(getBlockModeFromCipherName(cipherName))
   )
 }
 
@@ -397,12 +417,12 @@ private predicate cipherInstantiationAES(
   exists(string cipherName | cipher.matchesName(cipherName) |
     // `OpenSSL::Cipher::AES` instantiations
     call = cipherApi().getMember("AES").getAnInstantiation() and
-    exists(string keyLength, string blockMode |
+    exists(string keyLength, Cryptography::BlockMode blockMode |
       // `OpenSSL::Cipher::AES.new('<keyLength-blockMode>')
       exists(string arg0 |
         arg0 = getStringArgument(call, 0) and
         keyLength = arg0.splitAt("-", 0) and
-        blockMode = arg0.splitAt("-", 1).toUpperCase()
+        blockMode = getBlockModeFromCipherName(arg0)
       )
       or
       // `OpenSSL::Cipher::AES.new(<keyLength>, '<blockMode>')`
@@ -418,7 +438,7 @@ private predicate cipherInstantiationAES(
       call = cipherApi().getMember(mod).getAnInstantiation() and
       // Canonical representation is `AES-<keyLength>`
       blockAlgo = "AES-" + mod.suffix(3) and
-      exists(string blockMode |
+      exists(Cryptography::BlockMode blockMode |
         if exists(getStringArgument(call, 0))
         then
           // `OpenSSL::Cipher::<blockAlgo>.new('<blockMode>')`
@@ -445,7 +465,7 @@ private predicate cipherInstantiationSpecific(
     // Block ciphers with dedicated modules
     exists(string blockAlgo | blockAlgo = ["BF", "CAST5", "DES", "IDEA", "RC2"] |
       call = cipherApi().getMember(blockAlgo).getAnInstantiation() and
-      exists(string blockMode |
+      exists(Cryptography::BlockMode blockMode |
         if exists(getStringArgument(call, 0))
         then
           // `OpenSSL::Cipher::<blockAlgo>.new('<blockMode>')`

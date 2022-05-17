@@ -81,6 +81,8 @@ class EncryptionAlgorithm extends MkEncryptionAlgorithm, CryptographicAlgorithm 
   override string getName() { result = name }
 
   override predicate isWeak() { isWeak = true }
+
+  predicate isStreamCipher() { isStreamCipher(name) }
 }
 
 /**
