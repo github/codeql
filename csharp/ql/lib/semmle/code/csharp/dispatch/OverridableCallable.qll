@@ -9,7 +9,7 @@ import csharp
  * A callable that can be overridden or implemented.
  *
  * Unlike the class `Overridable`, this class only includes callables that
- * can actually be overriden/implemented.
+ * can actually be overridden/implemented.
  */
 class OverridableCallable extends Callable, Overridable {
   OverridableCallable() { this.isOverridableOrImplementable() }

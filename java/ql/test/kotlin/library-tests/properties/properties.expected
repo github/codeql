@@ -20,6 +20,8 @@ fieldDeclarations
 | properties.kt:38:5:38:34 | int internalProp; | properties.kt:38:5:38:34 | internalProp | 0 |
 | properties.kt:67:1:67:23 | int constVal; | properties.kt:67:1:67:23 | constVal | 0 |
 | properties.kt:70:5:70:16 | int prop; | properties.kt:70:5:70:16 | prop | 0 |
+| properties.kt:84:5:84:29 | int data; | properties.kt:84:5:84:29 | data | 0 |
+| properties.kt:92:5:93:18 | int data; | properties.kt:92:5:93:18 | data | 0 |
 #select
 | properties.kt:2:27:2:50 | constructorProp | properties.kt:2:27:2:50 | getConstructorProp | file://:0:0:0:0 | <none> | properties.kt:2:27:2:50 | constructorProp | public |
 | properties.kt:2:53:2:83 | mutableConstructorProp | properties.kt:2:53:2:83 | getMutableConstructorProp | properties.kt:2:53:2:83 | setMutableConstructorProp | properties.kt:2:53:2:83 | mutableConstructorProp | public |
@@ -40,9 +42,13 @@ fieldDeclarations
 | properties.kt:30:5:31:29 | overrideGetterUseField | properties.kt:31:13:31:29 | getOverrideGetterUseField | properties.kt:30:5:31:29 | setOverrideGetterUseField | properties.kt:30:5:31:29 | overrideGetterUseField | public |
 | properties.kt:32:5:33:29 | useField | properties.kt:33:13:33:29 | getUseField | file://:0:0:0:0 | <none> | properties.kt:32:5:33:29 | useField | public |
 | properties.kt:34:5:34:36 | lateInitVar | properties.kt:34:14:34:36 | getLateInitVar | properties.kt:34:14:34:36 | setLateInitVar | properties.kt:34:5:34:36 | lateInitVar | public |
-| properties.kt:35:5:35:32 | privateProp | properties.kt:35:13:35:32 | getPrivateProp | file://:0:0:0:0 | <none> | properties.kt:35:5:35:32 | privateProp | private |
+| properties.kt:35:5:35:32 | privateProp | properties.kt:35:13:35:32 | getPrivateProp$private | file://:0:0:0:0 | <none> | properties.kt:35:5:35:32 | privateProp | private |
 | properties.kt:36:5:36:36 | protectedProp | properties.kt:36:15:36:36 | getProtectedProp | file://:0:0:0:0 | <none> | properties.kt:36:5:36:36 | protectedProp | protected |
 | properties.kt:37:5:37:30 | publicProp | properties.kt:37:12:37:30 | getPublicProp | file://:0:0:0:0 | <none> | properties.kt:37:5:37:30 | publicProp | public |
 | properties.kt:38:5:38:34 | internalProp | properties.kt:38:14:38:34 | getInternalProp | file://:0:0:0:0 | <none> | properties.kt:38:5:38:34 | internalProp | internal |
 | properties.kt:67:1:67:23 | constVal | properties.kt:67:7:67:23 | getConstVal | file://:0:0:0:0 | <none> | properties.kt:67:1:67:23 | constVal | public |
 | properties.kt:70:5:70:16 | prop | properties.kt:70:5:70:16 | getProp | file://:0:0:0:0 | <none> | properties.kt:70:5:70:16 | prop | public |
+| properties.kt:78:1:79:13 | x | properties.kt:79:5:79:13 | getX | file://:0:0:0:0 | <none> | file://:0:0:0:0 | <none> | public |
+| properties.kt:80:1:81:13 | x | properties.kt:81:5:81:13 | getX | file://:0:0:0:0 | <none> | file://:0:0:0:0 | <none> | public |
+| properties.kt:84:5:84:29 | data | properties.kt:84:13:84:29 | getData$private | properties.kt:84:13:84:29 | setData$private | properties.kt:84:5:84:29 | data | private |
+| properties.kt:92:5:93:18 | data | properties.kt:93:9:93:18 | getData | properties.kt:92:13:93:18 | setData$private | properties.kt:92:5:93:18 | data | private |

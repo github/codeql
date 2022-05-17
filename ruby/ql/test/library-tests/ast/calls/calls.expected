@@ -114,6 +114,12 @@ callsWithArguments
 | calls.rb:346:1:346:10 | call to foo | foo | 0 | calls.rb:346:5:346:9 | Pair |
 | calls.rb:347:1:347:7 | call to foo | foo | 0 | calls.rb:347:5:347:6 | Pair |
 | calls.rb:352:13:352:17 | call to foo | foo | 0 | calls.rb:352:17:352:17 | x |
+| calls.rb:362:5:362:6 | call to == | == | 0 | calls.rb:362:1:362:4 | __synth__0__1 |
+| calls.rb:364:1:364:23 | call to bar | bar | 0 | calls.rb:364:10:364:10 | 1 |
+| calls.rb:364:1:364:23 | call to bar | bar | 0 | calls.rb:364:10:364:10 | 1 |
+| calls.rb:364:1:364:23 | call to bar | bar | 1 | calls.rb:364:12:364:12 | 2 |
+| calls.rb:364:1:364:23 | call to bar | bar | 1 | calls.rb:364:12:364:12 | 2 |
+| calls.rb:364:4:364:5 | call to == | == | 0 | calls.rb:364:1:364:3 | __synth__0__1 |
 callsWithReceiver
 | calls.rb:2:1:2:5 | call to foo | calls.rb:2:1:2:5 | self |
 | calls.rb:5:1:5:10 | call to bar | calls.rb:5:1:5:3 | Foo |
@@ -372,6 +378,18 @@ callsWithReceiver
 | calls.rb:352:13:352:17 | call to foo | calls.rb:352:13:352:17 | self |
 | calls.rb:353:13:353:24 | call to unknown_call | calls.rb:353:13:353:24 | self |
 | calls.rb:357:3:357:14 | call to unknown_call | calls.rb:357:3:357:14 | self |
+| calls.rb:361:1:361:4 | call to list | calls.rb:361:1:361:4 | self |
+| calls.rb:361:1:361:11 | call to empty? | calls.rb:361:1:361:4 | call to list |
+| calls.rb:362:1:362:4 | call to list | calls.rb:362:1:362:4 | self |
+| calls.rb:362:1:362:12 | call to empty? | calls.rb:362:1:362:4 | __synth__0__1 |
+| calls.rb:362:1:362:12 | call to empty? | calls.rb:362:1:362:4 | call to list |
+| calls.rb:362:5:362:6 | call to == | calls.rb:362:5:362:6 | nil |
+| calls.rb:363:1:363:4 | call to list | calls.rb:363:1:363:4 | self |
+| calls.rb:363:1:363:12 | call to empty? | calls.rb:363:1:363:4 | call to list |
+| calls.rb:364:1:364:3 | call to foo | calls.rb:364:1:364:3 | self |
+| calls.rb:364:1:364:23 | call to bar | calls.rb:364:1:364:3 | __synth__0__1 |
+| calls.rb:364:1:364:23 | call to bar | calls.rb:364:1:364:3 | call to foo |
+| calls.rb:364:4:364:5 | call to == | calls.rb:364:4:364:5 | nil |
 callsWithBlock
 | calls.rb:17:1:17:17 | call to foo | calls.rb:17:5:17:17 | { ... } |
 | calls.rb:20:1:22:3 | call to foo | calls.rb:20:5:22:3 | do ... end |
@@ -385,6 +403,8 @@ callsWithBlock
 | calls.rb:292:5:292:30 | call to super | calls.rb:292:16:292:30 | { ... } |
 | calls.rb:293:5:293:33 | call to super | calls.rb:293:16:293:33 | do ... end |
 | calls.rb:340:1:342:3 | call to each | calls.rb:340:1:342:3 | { ... } |
+| calls.rb:364:1:364:23 | call to bar | calls.rb:364:15:364:23 | { ... } |
+| calls.rb:364:1:364:23 | call to bar | calls.rb:364:15:364:23 | { ... } |
 yieldCalls
 | calls.rb:31:3:31:7 | yield ... |
 | calls.rb:36:3:36:16 | yield ... |
@@ -424,3 +444,6 @@ setterCalls
 | calls.rb:318:1:318:10 | call to count= |
 | calls.rb:319:1:319:6 | call to []= |
 | calls.rb:320:1:320:32 | call to []= |
+callsWithSafeNavigationOperator
+| calls.rb:362:1:362:12 | call to empty? |
+| calls.rb:364:1:364:23 | call to bar |

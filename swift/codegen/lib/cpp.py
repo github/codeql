@@ -104,6 +104,7 @@ class TrapList:
     namespace: str
     trap_affix: str
     include_dir: str
+    source: str
 
 
 @dataclass
@@ -112,6 +113,7 @@ class TagList:
 
     tags: List[Tag]
     namespace: str
+    source: str
 
 
 @dataclass
@@ -150,3 +152,4 @@ class ClassList:
     namespace: str
     trap_affix: str
     include_dir: str
+    source: str

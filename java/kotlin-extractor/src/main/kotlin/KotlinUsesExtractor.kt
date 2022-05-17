@@ -4,21 +4,19 @@ import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
-import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
-import org.jetbrains.kotlin.descriptors.ClassKind
-import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
+import org.jetbrains.kotlin.builtins.StandardNames
+import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.expressions.IrConst
-import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
-import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
-import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
+import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
-import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
-import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
+import org.jetbrains.kotlin.ir.types.impl.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -49,6 +47,41 @@ open class KotlinUsesExtractor(
         TypeResult(fakeKotlinType(), "", "")
     )
 
+    private data class MethodKey(val className: FqName, val functionName: Name)
+
+    private fun makeDescription(className: FqName, functionName: String) = MethodKey(className, Name.guessByFirstCharacter(functionName))
+
+    // This essentially mirrors SpecialBridgeMethods.kt, a backend pass which isn't easily available to our extractor.
+    private val specialFunctions = mapOf(
+        makeDescription(StandardNames.FqNames.collection, "<get-size>") to "size",
+        makeDescription(FqName("java.util.Collection"), "<get-size>") to "size",
+        makeDescription(StandardNames.FqNames.map, "<get-size>") to "size",
+        makeDescription(FqName("java.util.Map"), "<get-size>") to "size",
+        makeDescription(StandardNames.FqNames.charSequence.toSafe(), "<get-length>") to "length",
+        makeDescription(FqName("java.lang.CharSequence"), "<get-length>") to "length",
+        makeDescription(StandardNames.FqNames.map, "<get-keys>") to "keySet",
+        makeDescription(FqName("java.util.Map"), "<get-keys>") to "keySet",
+        makeDescription(StandardNames.FqNames.map, "<get-values>") to "values",
+        makeDescription(FqName("java.util.Map"), "<get-values>") to "values",
+        makeDescription(StandardNames.FqNames.map, "<get-entries>") to "entrySet",
+        makeDescription(FqName("java.util.Map"), "<get-entries>") to "entrySet"
+    )
+
+    private val specialFunctionShortNames = specialFunctions.keys.map { it.functionName }.toSet()
+
+    fun getSpecialJvmName(f: IrFunction): String? {
+        if (specialFunctionShortNames.contains(f.name) && f is IrSimpleFunction) {
+            f.allOverridden(true).forEach { overriddenFunc ->
+                overriddenFunc.parentAsClass.fqNameWhenAvailable?.let { parentFqName ->
+                    specialFunctions[MethodKey(parentFqName, f.name)]?.let {
+                        return it
+                    }
+                }
+            }
+        }
+        return null
+    }
+
     fun getJvmName(container: IrAnnotationContainer): String? {
         for(a: IrConstructorCall in container.annotations) {
             val t = a.type
@@ -67,7 +100,7 @@ open class KotlinUsesExtractor(
                 }
             }
         }
-        return null
+        return (container as? IrFunction)?.let { getSpecialJvmName(container) }
     }
 
     @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
@@ -122,10 +155,7 @@ open class KotlinUsesExtractor(
         }
 
     fun getJavaEquivalentClass(c: IrClass) =
-        c.fqNameWhenAvailable?.toUnsafe()
-            ?.let { JavaToKotlinClassMap.mapKotlinToJava(it) }
-            ?.let { pluginContext.referenceClass(it.asSingleFqName()) }
-            ?.owner
+        getJavaEquivalentClassId(c)?.let { pluginContext.referenceClass(it.asSingleFqName()) }?.owner
 
     /**
      * Gets a KotlinFileExtractor based on this one, except it attributes locations to the file that declares the given class.
@@ -380,7 +410,7 @@ open class KotlinUsesExtractor(
             if (inReceiverContext && globalExtensionState.genericSpecialisationsExtracted.add(classLabelResult.classLabel)) {
                 val supertypeMode = if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses)
                 extractorWithCSource.extractClassSupertypes(c, classLabel, supertypeMode, true)
-                extractorWithCSource.extractMemberPrototypes(c, argsIncludingOuterClasses, classLabel)
+                extractorWithCSource.extractNonPrivateMemberPrototypes(c, argsIncludingOuterClasses, classLabel)
             }
         }
 
@@ -696,8 +726,26 @@ open class KotlinUsesExtractor(
             }
 
             when (f) {
-                getter -> return FunctionNames(getJvmName(getter) ?: JvmAbi.getterName(propName), JvmAbi.getterName(propName))
-                setter -> return FunctionNames(getJvmName(setter) ?: JvmAbi.setterName(propName), JvmAbi.setterName(propName))
+                getter -> {
+                    val defaultFunctionName = JvmAbi.getterName(propName)
+                    val defaultDbName = if (getter.visibility == DescriptorVisibilities.PRIVATE && getter.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR) {
+                        // In JVM these functions don't exist, instead the backing field is accessed directly
+                        defaultFunctionName + "\$private"
+                    } else {
+                        defaultFunctionName
+                    }
+                    return FunctionNames(getJvmName(getter) ?: defaultDbName, defaultFunctionName)
+                }
+                setter -> {
+                    val defaultFunctionName = JvmAbi.setterName(propName)
+                    val defaultDbName = if (setter.visibility == DescriptorVisibilities.PRIVATE && setter.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR) {
+                        // In JVM these functions don't exist, instead the backing field is accessed directly
+                        defaultFunctionName + "\$private"
+                    } else {
+                        defaultFunctionName
+                    }
+                    return FunctionNames(getJvmName(setter) ?: defaultDbName, defaultFunctionName)
+                }
                 else -> {
                     logger.error(
                         "Function has a corresponding property, but is neither the getter nor the setter"
@@ -774,7 +822,9 @@ open class KotlinUsesExtractor(
         // The type parameters of the function. This does not include type parameters of enclosing classes.
         functionTypeParameters: List<IrTypeParameter>,
         // The type arguments of enclosing classes of the function.
-        classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
+        classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
+        // The prefix used in the label. "callable", unless a property label is created, then it's "property".
+        prefix: String = "callable"
     ): String {
         val parentId = maybeParentId ?: useDeclarationParent(parent, false, classTypeArgsIncludingOuterClasses, true)
         val allParams = if (extensionReceiverParameter == null) {
@@ -810,7 +860,7 @@ open class KotlinUsesExtractor(
         // method (and presumably that disambiguation is never needed when the method belongs to a parameterized
         // instance of a generic class), but as of now I don't know when the raw method would be referred to.
         val typeArgSuffix = if (functionTypeParameters.isNotEmpty() && classTypeArgsIncludingOuterClasses.isNullOrEmpty()) "<${functionTypeParameters.size}>" else "";
-        return "@\"callable;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
+        return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
     }
 
     protected fun IrFunction.isLocalFunction(): Boolean {
@@ -867,17 +917,62 @@ open class KotlinUsesExtractor(
         return id
     }
 
-    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null): Label<out T> {
+    // These are classes with Java equivalents, but whose methods don't all exist on those Java equivalents--
+    // for example, the numeric classes define arithmetic functions (Int.plus, Long.or and so on) that lower to
+    // primitive arithmetic on the JVM, but which we extract as calls to reflect the source syntax more closely.
+    private val expectedMissingEquivalents = setOf(
+        "kotlin.Boolean", "kotlin.Byte", "kotlin.Char", "kotlin.Double", "kotlin.Float", "kotlin.Int", "kotlin.Long", "kotlin.Number", "kotlin.Short"
+    )
+
+    fun kotlinFunctionToJavaEquivalent(f: IrFunction, noReplace: Boolean) =
+        if (noReplace)
+            f
+        else
+            f.parentClassOrNull?.let { parentClass ->
+                getJavaEquivalentClass(parentClass)?.let { javaClass ->
+                    if (javaClass != parentClass)
+                        // Look for an exact type match...
+                        javaClass.declarations.find { decl ->
+                            decl is IrFunction &&
+                            decl.name == f.name &&
+                            decl.valueParameters.size == f.valueParameters.size &&
+                            // Note matching by classifier not the whole type so that generic arguments are allowed to differ,
+                            // as they always will for method type parameters occurring in parameter types (e.g. <T> toArray(T[] array)
+                            // Differing only by nullability would also be insignificant if it came up.
+                            decl.valueParameters.zip(f.valueParameters).all { p -> p.first.type.classifierOrNull == p.second.type.classifierOrNull }
+                        } ?:
+                        // Or if there is none, look for the only viable overload
+                        javaClass.declarations.singleOrNull { decl ->
+                            decl is IrFunction &&
+                            decl.name == f.name &&
+                            decl.valueParameters.size == f.valueParameters.size
+                        } ?:
+                        run {
+                            val parentFqName = parentClass.fqNameWhenAvailable?.asString()
+                            if (!expectedMissingEquivalents.contains(parentFqName)) {
+                                logger.warn("Couldn't find a Java equivalent function to $parentFqName.${f.name} in ${javaClass.fqNameWhenAvailable}")
+                            }
+                            null
+                        }
+                    else
+                        null
+                }
+            } as IrFunction? ?: f
+
+    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
         if (f.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(f)
             return ids.function.cast<T>()
         } else {
-            return useFunctionCommon<T>(f, getFunctionLabel(f, classTypeArgsIncludingOuterClasses))
+            val realFunction = kotlinFunctionToJavaEquivalent(f, noReplace)
+            return useFunctionCommon<T>(realFunction, getFunctionLabel(realFunction, classTypeArgsIncludingOuterClasses))
         }
     }
 
-    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        useFunctionCommon<T>(f, getFunctionLabel(f, parentId, classTypeArgsIncludingOuterClasses))
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false) =
+        kotlinFunctionToJavaEquivalent(f, noReplace).let {
+            useFunctionCommon<T>(it, getFunctionLabel(it, parentId, classTypeArgsIncludingOuterClasses))
+        }
 
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
@@ -940,6 +1035,9 @@ open class KotlinUsesExtractor(
             }
             is IrFunction -> {
                 "{${useFunction<DbMethod>(parent)}}.$cls"
+            }
+            is IrField -> {
+                "{${useField(parent)}}.$cls"
             }
             else -> {
                 if (pkg.isEmpty()) cls else "$pkg.$cls"
@@ -1111,15 +1209,20 @@ open class KotlinUsesExtractor(
      * `parent` is null.
      */
     fun getValueParameterLabel(vp: IrValueParameter, parent: Label<out DbCallable>?): String {
-        val parentId = parent ?: useDeclarationParent(vp.parent, false)
-        val idx = vp.index
+        val declarationParent = vp.parent
+        val parentId = parent ?: useDeclarationParent(declarationParent, false)
+
+        val idx = if (declarationParent is IrFunction && declarationParent.extensionReceiverParameter != null)
+            // For extension functions increase the index to match what the java extractor sees:
+            vp.index + 1
+        else
+            vp.index
+
         if (idx < 0) {
-            val p = vp.parent
-            if (p !is IrFunction || p.extensionReceiverParameter != vp) {
-                // We're not extracting this and this@TYPE parameters of functions:
-                logger.error("Unexpected negative index for parameter")
-            }
+            // We're not extracting this and this@TYPE parameters of functions:
+            logger.error("Unexpected negative index for parameter")
         }
+
         return "@\"params;{$parentId};$idx\""
     }
 
@@ -1140,24 +1243,29 @@ open class KotlinUsesExtractor(
         if (parentId == null) {
             return null
         } else {
-            return getPropertyLabel(p, parentId)
+            return getPropertyLabel(p, parentId, null)
         }
     }
 
-    fun getPropertyLabel(p: IrProperty, parentId: Label<out DbElement>) =
-        "@\"property;{$parentId};${p.name.asString()}\""
+    private fun getPropertyLabel(p: IrProperty, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): String {
+        val getter = p.getter
+        val setter = p.setter
 
-    fun useProperty(p: IrProperty): Label<out DbKt_property>? {
-        val label = getPropertyLabel(p)
-        if (label == null) {
-            return null
+        val func = getter ?: setter
+        val ext = func?.extensionReceiverParameter
+
+        return if (ext == null) {
+            "@\"property;{$parentId};${p.name.asString()}\""
         } else {
-            return tw.getLabelFor<DbKt_property>(label).also { extractPropertyLaterIfExternalFileMember(p) }
+            val returnType = getter?.returnType ?: setter?.valueParameters?.singleOrNull()?.type ?: pluginContext.irBuiltIns.unitType
+            val typeParams = getFunctionTypeParameters(func)
+
+            getFunctionLabel(p.parent, parentId, p.name.asString(), listOf(), returnType, ext, typeParams, classTypeArgsIncludingOuterClasses, "property")
         }
     }
 
-    fun useProperty(p: IrProperty, parentId: Label<out DbElement>): Label<out DbKt_property> =
-        tw.getLabelFor<DbKt_property>(getPropertyLabel(p, parentId)).also { extractPropertyLaterIfExternalFileMember(p) }
+    fun useProperty(p: IrProperty, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbKt_property> =
+        tw.getLabelFor<DbKt_property>(getPropertyLabel(p, parentId, classTypeArgsIncludingOuterClasses)).also { extractPropertyLaterIfExternalFileMember(p) }
 
     fun getEnumEntryLabel(ee: IrEnumEntry): String {
         val parentId = useDeclarationParent(ee.parent, false)

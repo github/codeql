@@ -7,7 +7,7 @@
  * @id cpp/external-entity-expansion
  * @problem.severity warning
  * @security-severity 9.1
- * @precision medium
+ * @precision high
  * @tags security
  *       external/cwe/cwe-611
  */
@@ -30,14 +30,14 @@ abstract class XXEFlowState extends DataFlow::FlowState {
  * An `Expr` that changes the configuration of an XML object, transforming the
  * `XXEFlowState` that flows through it.
  */
-abstract class XXEFlowStateTranformer extends Expr {
+abstract class XXEFlowStateTransformer extends Expr {
   /**
    * Gets the flow state that `flowstate` is transformed into.
    *
    * Due to limitations of the implementation the transformation defined by this
    * predicate must be idempotent, that is, for any input `x` it must be that:
    * ```
-   * transform(tranform(x)) = tranform(x)
+   * transform(transform(x)) = transform(x)
    * ```
    */
   abstract XXEFlowState transform(XXEFlowState flowstate);
@@ -55,6 +55,13 @@ class AbstractDOMParserClass extends Class {
  */
 class XercesDOMParserClass extends Class {
   XercesDOMParserClass() { this.hasName("XercesDOMParser") }
+}
+
+/**
+ * The `DOMLSParser` class.
+ */
+class DomLSParserClass extends Class {
+  DomLSParserClass() { this.hasName("DOMLSParser") }
 }
 
 /**
@@ -112,10 +119,10 @@ class XercesFlowState extends XXEFlowState {
  * `SAXParser.setDisableDefaultEntityResolution`. Transforms the flow
  * state through the qualifier according to the setting in the parameter.
  */
-class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
+class DisableDefaultEntityResolutionTransformer extends XXEFlowStateTransformer {
   Expr newValue;
 
-  DisableDefaultEntityResolutionTranformer() {
+  DisableDefaultEntityResolutionTransformer() {
     exists(Call call, Function f |
       call.getTarget() = f and
       (
@@ -147,10 +154,10 @@ class DisableDefaultEntityResolutionTranformer extends XXEFlowStateTranformer {
  * `AbstractDOMParser.setCreateEntityReferenceNodes`. Transforms the flow
  * state through the qualifier according to the setting in the parameter.
  */
-class CreateEntityReferenceNodesTranformer extends XXEFlowStateTranformer {
+class CreateEntityReferenceNodesTransformer extends XXEFlowStateTransformer {
   Expr newValue;
 
-  CreateEntityReferenceNodesTranformer() {
+  CreateEntityReferenceNodesTransformer() {
     exists(Call call, Function f |
       call.getTarget() = f and
       f.getClassAndName("setCreateEntityReferenceNodes") instanceof AbstractDOMParserClass and
@@ -188,10 +195,10 @@ class FeatureDisableDefaultEntityResolution extends Variable {
  * specifying the feature `XMLUni::fgXercesDisableDefaultEntityResolution`.
  * Transforms the flow state through the qualifier according to this setting.
  */
-class SetFeatureTranformer extends XXEFlowStateTranformer {
+class SetFeatureTransformer extends XXEFlowStateTransformer {
   Expr newValue;
 
-  SetFeatureTranformer() {
+  SetFeatureTransformer() {
     exists(Call call, Function f |
       call.getTarget() = f and
       f.getClassAndName("setFeature") instanceof Sax2XmlReader and
@@ -217,12 +224,71 @@ class SetFeatureTranformer extends XXEFlowStateTranformer {
 }
 
 /**
- * The `AbstractDOMParser.parse`, `SAXParser.parse` or `SAX2XMLReader.parse`
- * method.
+ * The `DOMLSParser.getDomConfig` function.
+ */
+class GetDomConfig extends Function {
+  GetDomConfig() { this.getClassAndName("getDomConfig") instanceof DomLSParserClass }
+}
+
+/**
+ * The `DOMConfiguration.setParameter` function.
+ */
+class DomConfigurationSetParameter extends Function {
+  DomConfigurationSetParameter() {
+    this.getClassAndName("setParameter").getName() = "DOMConfiguration"
+  }
+}
+
+/**
+ * A flow state transformer for a call to `DOMConfiguration.setParameter`
+ * specifying the feature `XMLUni::fgXercesDisableDefaultEntityResolution`.
+ * This is a slightly more complex transformer because the qualifier is a
+ * `DOMConfiguration` pointer returned by `DOMLSParser.getDomConfig` - and it
+ * is *that* qualifier we want to transform the flow state of.
+ */
+class DomConfigurationSetParameterTransformer extends XXEFlowStateTransformer {
+  Expr newValue;
+
+  DomConfigurationSetParameterTransformer() {
+    exists(FunctionCall getDomConfigCall, FunctionCall setParameterCall |
+      // this is the qualifier of a call to `DOMLSParser.getDomConfig`.
+      getDomConfigCall.getTarget() instanceof GetDomConfig and
+      this = getDomConfigCall.getQualifier() and
+      // `setParameterCall` is a call to `setParameter` on the return value of
+      // the same call to `DOMLSParser.getDomConfig`.
+      setParameterCall.getTarget() instanceof DomConfigurationSetParameter and
+      globalValueNumber(setParameterCall.getQualifier()).getAnExpr() = getDomConfigCall and
+      // the parameter being set is
+      // `XMLUni::fgXercesDisableDefaultEntityResolution`.
+      globalValueNumber(setParameterCall.getArgument(0)).getAnExpr().(VariableAccess).getTarget()
+        instanceof FeatureDisableDefaultEntityResolution and
+      // the value being set is `newValue`.
+      newValue = setParameterCall.getArgument(1)
+    )
+  }
+
+  final override XXEFlowState transform(XXEFlowState flowstate) {
+    exists(int createEntityReferenceNodes |
+      encodeXercesFlowState(flowstate, _, createEntityReferenceNodes) and
+      (
+        globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // true
+        encodeXercesFlowState(result, 1, createEntityReferenceNodes)
+        or
+        not globalValueNumber(newValue).getAnExpr().getValue().toInt() = 1 and // false or unknown
+        encodeXercesFlowState(result, 0, createEntityReferenceNodes)
+      )
+    )
+  }
+}
+
+/**
+ * The `AbstractDOMParser.parse`, `DOMLSParserClass.parse`, `SAXParser.parse`
+ * or `SAX2XMLReader.parse` method.
  */
 class ParseFunction extends Function {
   ParseFunction() {
     this.getClassAndName("parse") instanceof AbstractDOMParserClass or
+    this.getClassAndName("parse") instanceof DomLSParserClass or
     this.getClassAndName("parse") instanceof SaxParserClass or
     this.getClassAndName("parse") instanceof Sax2XmlReader
   }
@@ -235,7 +301,7 @@ class ParseFunction extends Function {
 class CreateLSParser extends Function {
   CreateLSParser() {
     this.hasName("createLSParser") and
-    this.getUnspecifiedType().(PointerType).getBaseType().getName() = "DOMLSParser" // returns a `DOMLSParser *`.
+    this.getUnspecifiedType().(PointerType).getBaseType() instanceof DomLSParserClass // returns a `DOMLSParser *`.
   }
 }
 
@@ -363,15 +429,15 @@ class XXEConfiguration extends DataFlow::Configuration {
   override predicate isAdditionalFlowStep(
     DataFlow::Node node1, string state1, DataFlow::Node node2, string state2
   ) {
-    // create additional flow steps for `XXEFlowStateTranformer`s
-    state2 = node2.asConvertedExpr().(XXEFlowStateTranformer).transform(state1) and
+    // create additional flow steps for `XXEFlowStateTransformer`s
+    state2 = node2.asConvertedExpr().(XXEFlowStateTransformer).transform(state1) and
     DataFlow::simpleLocalFlowStep(node1, node2)
   }
 
   override predicate isBarrier(DataFlow::Node node, string flowstate) {
     // when the flowstate is transformed at a call node, block the original
     // flowstate value.
-    node.asConvertedExpr().(XXEFlowStateTranformer).transform(flowstate) != flowstate
+    node.asConvertedExpr().(XXEFlowStateTransformer).transform(flowstate) != flowstate
   }
 }
 

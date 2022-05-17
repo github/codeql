@@ -1,3 +1,4 @@
+| A.java:2:10:2:15 | method | file://:0:0:0:0 | void |
 | extensions.kt:3:5:3:38 | someClassMethod | file://:0:0:0:0 | void |
 | extensions.kt:6:5:6:41 | anotherClassMethod | file://:0:0:0:0 | void |
 | extensions.kt:9:1:9:36 | someFun | file://:0:0:0:0 | void |

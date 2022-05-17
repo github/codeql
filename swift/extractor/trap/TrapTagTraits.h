@@ -1,21 +1,24 @@
 #pragma once
 
+// This file defines functors that can be specialized to define a mapping from arbitrary types to
+// label tags
+
 #include <type_traits>
 
 namespace codeql {
 
+namespace detail {
 template <typename T>
 struct ToTagFunctor;
 template <typename T>
 struct ToTagOverride : ToTagFunctor<T> {};
 
-template <typename T>
-using ToTag = typename ToTagOverride<std::remove_const_t<T>>::type;
+}  // namespace detail
 
 template <typename T>
-struct TagToBindingTrapFunctor;
+using TrapTagOf = typename detail::ToTagOverride<std::remove_const_t<T>>::type;
 
-template <typename Tag>
-using TagToBindingTrap = typename TagToBindingTrapFunctor<Tag>::type;
+template <typename T>
+using TrapLabelOf = TrapLabel<TrapTagOf<T>>;
 
 }  // namespace codeql

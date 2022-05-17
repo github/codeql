@@ -27,7 +27,7 @@
 | generic_anonymous.kt:4:20:4:20 | Generic.this | Generic |
 | generic_anonymous.kt:4:20:4:20 | getT(...) | T |
 | generic_anonymous.kt:7:3:7:22 | T | T |
-| generic_anonymous.kt:7:15:7:15 | getX(...) | new Object(...) { ... } |
+| generic_anonymous.kt:7:15:7:15 | getX$private(...) | new Object(...) { ... } |
 | generic_anonymous.kt:7:15:7:15 | this | Generic |
 | generic_anonymous.kt:7:17:7:22 | getMember(...) | T |
 | generic_anonymous.kt:11:1:11:56 | String | String |

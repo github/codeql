@@ -20,7 +20,7 @@ private module Asyncpg {
           "asyncpg;ConnectionPool;asyncpg;;Member[create_pool].ReturnValue.Awaited",
           // a `Connection` that is created when
           // * - the result of `asyncpg.connect()` is awaited.
-          // * - the result of calling `aquire` on a `ConnectionPool` is awaited.
+          // * - the result of calling `acquire` on a `ConnectionPool` is awaited.
           "asyncpg;Connection;asyncpg;;Member[connect].ReturnValue.Awaited",
           "asyncpg;Connection;asyncpg;ConnectionPool;Member[acquire].ReturnValue.Awaited",
           // Creating an internal `~Connection` type that contains both `Connection` and `ConnectionPool`.

@@ -491,7 +491,7 @@ module Opcodes {
 
     override Callable getTarget() { none() }
 
-    /** Gets the function pointer type targetted by this instruction. */
+    /** Gets the function pointer type targeted by this instruction. */
     FunctionPointerType getTargetType() { cil_access(this, result) }
 
     // The number of items popped/pushed from the stack depends on the target of

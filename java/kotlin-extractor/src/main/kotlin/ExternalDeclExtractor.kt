@@ -93,9 +93,9 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
                                         ftw.writeHasLocation(ftw.fileId, ftw.getWholeFileLocation())
                                         ftw.writeCupackage(ftw.fileId, pkgId)
 
-                                        fileExtractor.extractClassSource(irDecl, !irDecl.isFileClass, false)
+                                        fileExtractor.extractClassSource(irDecl, extractDeclarations = !irDecl.isFileClass, extractStaticInitializer = false, extractPrivateMembers = false, extractFunctionBodies = false)
                                     } else {
-                                        fileExtractor.extractDeclaration(irDecl)
+                                        fileExtractor.extractDeclaration(irDecl, extractPrivateMembers = false, extractFunctionBodies = false)
                                     }
                                 }
 

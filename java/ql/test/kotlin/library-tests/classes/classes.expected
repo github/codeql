@@ -37,6 +37,9 @@
 | generic_anonymous.kt:0:0:0:0 | Generic_anonymousKt | Generic_anonymousKt | final, public |
 | generic_anonymous.kt:1:1:9:1 | Generic | Generic | final, private |
 | generic_anonymous.kt:3:19:5:3 | new Object(...) { ... } | <anonymous class> | final, private |
+| localClassField.kt:1:1:11:1 | A | A | final, public |
+| localClassField.kt:3:9:3:19 | L | A$L | final, private |
+| localClassField.kt:8:9:8:19 | L | A$L | final, private |
 | local_anonymous.kt:3:1:36:1 | Class1 | LocalAnonymous.Class1 | final, public |
 | local_anonymous.kt:5:16:7:9 | new Object(...) { ... } | <anonymous class> | final, private |
 | local_anonymous.kt:11:9:11:24 |  | Class1$ | final, private |

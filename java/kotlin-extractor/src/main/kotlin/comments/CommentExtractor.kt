@@ -6,9 +6,7 @@ import com.github.codeql.utils.versions.Psi2Ir
 import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.declarations.path
-import org.jetbrains.kotlin.ir.declarations.IrFile
-import org.jetbrains.kotlin.ir.declarations.IrValueParameter
+import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtVisitor
@@ -98,8 +96,14 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                                 // Don't attribute comments to the implicit `this` parameter of a function.
                                 continue
                             }
-                            val label = fileExtractor.getLabel(ownerIr) ?: continue
-                            val existingLabel = tw.getExistingLabelFor<DbTop>(label)
+                            val label: String
+                            val existingLabel = if (ownerIr is IrVariable) {
+                                label = "variable ${ownerIr.name.asString()}"
+                                tw.getExistingVariableLabelFor(ownerIr)
+                            } else {
+                                label = fileExtractor.getLabel(ownerIr) ?: continue
+                                tw.getExistingLabelFor<DbTop>(label)
+                            }
                             if (existingLabel == null) {
                                 logger.warn("Couldn't get existing label for $label")
                                 continue
