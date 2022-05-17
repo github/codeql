@@ -27,7 +27,7 @@ class DispatcherWrapper {
 // base class for our AST visitors, getting a SwiftDispatcher member and default emission for
 // unknown/TBD entities
 template <typename CrtpSubclass>
-class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, detail::DispatcherWrapper {
+class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, protected detail::DispatcherWrapper {
  public:
   using DispatcherWrapper::DispatcherWrapper;
 
