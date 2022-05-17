@@ -100,3 +100,9 @@ baz2(baz2) # match
 class OtherSubClass (ArgPos.MyClass):
     def otherSelfTest(self, arg, named=2, otherName=3): # test that Parameter[0] hits `arg`.
         pass
+
+    def anyParam(self, param1, param2): # Parameter[any] matches all 3. 
+        pass
+
+    def anyNamed(self, name1, name2=2): # Parameter[any-named] matches all 3.
+        pass

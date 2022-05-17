@@ -77,6 +77,8 @@ class Sources extends ModelInput::SourceModelCsv {
         "testlib;;Member[ArgPos].Member[MyClass].Subclass.Member[foo].Parameter[named:];test-source", //
         "testlib;;Member[ArgPos].Member[MyClass].Subclass.Member[secondAndAfter].Parameter[1..];test-source", //
         "testlib;;Member[ArgPos].Member[MyClass].Subclass.Member[otherSelfTest].Parameter[0];test-source", //
+        "testlib;;Member[ArgPos].Member[MyClass].Subclass.Member[anyParam].Parameter[any];test-source", //
+        "testlib;;Member[ArgPos].Member[MyClass].Subclass.Member[anyNamed].Parameter[any-named];test-source", //
       ]
   }
 }
