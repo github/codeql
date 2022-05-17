@@ -791,15 +791,30 @@ module Private {
     }
 
     /**
-     * Holds if `arg` flows to `out` using a simple flow summary, that is, a flow
-     * summary without reads and stores.
+     * Holds if `arg` flows to `out` using a simple value-preserving flow
+     * summary, that is, a flow summary without reads and stores.
      *
      * NOTE: This step should not be used in global data-flow/taint-tracking, but may
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
-    predicate summaryThroughStep(ArgNode arg, Node out, boolean preservesValue) {
+    predicate summaryThroughStepValue(ArgNode arg, Node out) {
+      exists(ReturnKind rk, ReturnNode ret, DataFlowCall call |
+        summaryLocalStep(summaryArgParam0(call, arg), ret, true) and
+        ret.getKind() = rk and
+        out = getAnOutNode(call, rk)
+      )
+    }
+
+    /**
+     * Holds if `arg` flows to `out` using a simple flow summary involving taint
+     * step, that is, a flow summary without reads and stores.
+     *
+     * NOTE: This step should not be used in global data-flow/taint-tracking, but may
+     * be useful to include in the exposed local data-flow/taint-tracking relations.
+     */
+    predicate summaryThroughStepTaint(ArgNode arg, Node out) {
       exists(ReturnNodeExt ret |
-        summaryLocalStep(summaryArgParam(arg, ret, out), ret, preservesValue)
+        summaryLocalStep(summaryArgParam(arg, ret, out), ret, false)
       )
     }
 
