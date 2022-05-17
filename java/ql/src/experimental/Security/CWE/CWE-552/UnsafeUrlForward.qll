@@ -4,6 +4,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
+private import experimental.semmle.code.java.frameworks.SpringResource
 
 /** A sink for unsafe URL forward vulnerabilities. */
 abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
@@ -99,6 +100,22 @@ private class GetResourceSink extends UnsafeUrlForwardSink {
   }
 }
 
+/** Sink of Spring resource loading. */
+private class SpringResourceSink extends UnsafeUrlForwardSink {
+  SpringResourceSink() {
+    exists(MethodAccess ma |
+      (
+        ma.getMethod() instanceof GetClassPathResourceInputStreamMethod or
+        ma.getMethod() instanceof GetResourceMethod
+      ) and
+      ma.getQualifier() = this.asExpr()
+      or
+      ma.getMethod() instanceof GetResourceUtilsMethod and
+      ma.getArgument(0) = this.asExpr()
+    )
+  }
+}
+
 /** An argument to `new ModelAndView` or `ModelAndView.setViewName`. */
 private class SpringModelAndViewSink extends UnsafeUrlForwardSink {
   SpringModelAndViewSink() {
@@ -172,6 +189,20 @@ private class FilePathFlowStep extends SummaryModelCsv {
         "io.undertow.server.handlers.resource;Resource;true;getFile;;;Argument[-1];ReturnValue;taint;manual",
         "io.undertow.server.handlers.resource;Resource;true;getFilePath;;;Argument[-1];ReturnValue;taint;manual",
         "io.undertow.server.handlers.resource;Resource;true;getPath;;;Argument[-1];ReturnValue;taint;manual"
+      ]
+  }
+}
+
+/** Taint model related to resource loading in Spring. */
+private class LoadSpringResourceFlowStep extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.springframework.core.io;ClassPathResource;false;ClassPathResource;;;Argument[0];Argument[-1];taint",
+        "org.springframework.core.io;ClassPathResource;true;" +
+          ["getFilename", "getPath", "getURL", "resolveURL"] + ";;;Argument[-1];ReturnValue;value",
+        "org.springframework.core.io;ResourceLoader;true;getResource;;;Argument[0];ReturnValue;taint",
+        "org.springframework.core.io;Resource;true;createRelative;;;Argument[0];ReturnValue;taint"
       ]
   }
 }
