@@ -119,7 +119,7 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo)
   }
 }
 
