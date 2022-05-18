@@ -2,6 +2,8 @@
 ...
   if (rename(from,to)==0) // BAD
     return;
+  f1 = fopen(from, "r");
+  f2 = fopen(to, "w");
 ...
   if (rename(from,to)==0) // GOOD
     return;
