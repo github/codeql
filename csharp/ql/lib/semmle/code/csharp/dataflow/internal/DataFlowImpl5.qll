@@ -896,7 +896,7 @@ private module Stage1 {
   }
 
   pragma[nomagic]
-  predicate storeStepCand(
+  private predicate storeStepCand0(
     NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType,
     Configuration config
   ) {
@@ -909,11 +909,26 @@ private module Stage1 {
     )
   }
 
+  bindingset[state]
+  predicate storeStepCand(
+    NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType, FlowState state,
+    Configuration config
+  ) {
+    storeStepCand0(node1, ap1, tc, node2, contentType, config) and
+    exists(state)
+  }
+
   pragma[nomagic]
-  predicate readStepCand(NodeEx n1, Content c, NodeEx n2, Configuration config) {
+  private predicate readStepCand0(NodeEx n1, Content c, NodeEx n2, Configuration config) {
     revFlowIsReadAndStored(c, pragma[only_bind_into](config)) and
     read(n1, c, n2, pragma[only_bind_into](config)) and
     revFlow(n2, pragma[only_bind_into](config))
+  }
+
+  bindingset[state]
+  predicate readStepCand(NodeEx n1, Content c, NodeEx n2, FlowState state, Configuration config) {
+    readStepCand0(n1, c, n2, config) and
+    exists(state)
   }
 
   pragma[nomagic]
@@ -1344,7 +1359,8 @@ private module Stage2 {
   ) {
     exists(DataFlowType contentType |
       fwdFlow(node1, state, cc, argAp, ap1, config) and
-      PrevStage::storeStepCand(node1, unbindApa(getApprox(ap1)), tc, node2, contentType, config) and
+      PrevStage::storeStepCand(node1, unbindApa(getApprox(ap1)), tc, node2, contentType, state,
+        config) and
       typecheckStore(ap1, contentType)
     )
   }
@@ -1368,7 +1384,7 @@ private module Stage2 {
     Configuration config
   ) {
     fwdFlow(node1, state, cc, argAp, ap, config) and
-    PrevStage::readStepCand(node1, c, node2, config) and
+    PrevStage::readStepCand(node1, c, node2, state, config) and
     getHeadContent(ap) = c
   }
 
@@ -1436,9 +1452,9 @@ private module Stage2 {
   }
 
   private predicate readStepFwd(
-    NodeEx n1, Ap ap1, Content c, NodeEx n2, Ap ap2, Configuration config
+    NodeEx n1, Ap ap1, Content c, NodeEx n2, FlowState state, Ap ap2, Configuration config
   ) {
-    fwdFlowRead(ap1, c, n1, n2, _, _, _, config) and
+    fwdFlowRead(ap1, c, n1, n2, state, _, _, config) and
     fwdFlowConsCand(ap1, c, ap2, config)
   }
 
@@ -1544,7 +1560,7 @@ private module Stage2 {
     // read
     exists(NodeEx mid, Ap ap0 |
       revFlow(mid, state, toReturn, returnAp, ap0, config) and
-      readStepFwd(node, ap, _, mid, ap0, config)
+      readStepFwd(node, ap, _, mid, state, ap0, config)
     )
     or
     // flow into a callable
@@ -1580,10 +1596,10 @@ private module Stage2 {
    */
   pragma[nomagic]
   private predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
-    exists(NodeEx mid, Ap tail0 |
-      revFlow(mid, _, _, _, tail, config) and
+    exists(NodeEx mid, Ap tail0, FlowState state |
+      revFlow(mid, state, _, _, tail, config) and
       tail = pragma[only_bind_into](tail0) and
-      readStepFwd(_, cons, c, mid, tail0, config)
+      readStepFwd(_, cons, c, mid, state, tail0, config)
     )
   }
 
@@ -1639,20 +1655,25 @@ private module Stage2 {
 
   pragma[nomagic]
   predicate storeStepCand(
-    NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType,
+    NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType, FlowState state,
     Configuration config
   ) {
     exists(Ap ap2, Content c |
-      PrevStage::storeStepCand(node1, _, tc, node2, contentType, config) and
-      revFlowStore(ap2, c, ap1, node1, _, tc, node2, _, _, config) and
-      revFlowConsCand(ap2, c, ap1, config)
+      PrevStage::storeStepCand(node1, _, tc, node2, contentType, state,
+        pragma[only_bind_into](config)) and
+      revFlowStore(ap2, c, ap1, node1, state, tc, node2, _, _, config) and
+      revFlow(node1, state, _, _, pragma[only_bind_into](ap1), pragma[only_bind_into](config)) and
+      revFlowConsCand(ap2, c, pragma[only_bind_into](ap1), pragma[only_bind_into](config))
     )
   }
 
-  predicate readStepCand(NodeEx node1, Content c, NodeEx node2, Configuration config) {
+  pragma[nomagic]
+  predicate readStepCand(
+    NodeEx node1, Content c, NodeEx node2, FlowState state, Configuration config
+  ) {
     exists(Ap ap1, Ap ap2 |
-      revFlow(node2, _, _, _, pragma[only_bind_into](ap2), pragma[only_bind_into](config)) and
-      readStepFwd(node1, ap1, c, node2, ap2, config) and
+      revFlow(node2, state, _, _, pragma[only_bind_into](ap2), pragma[only_bind_into](config)) and
+      readStepFwd(node1, ap1, c, node2, state, ap2, config) and
       revFlowStore(ap1, c, pragma[only_bind_into](ap2), _, _, _, _, _, _,
         pragma[only_bind_into](config))
     )
@@ -1682,7 +1703,7 @@ private module Stage2 {
   }
 
   private predicate revConsCand(TypedContent tc, Ap ap, Configuration config) {
-    storeStepCand(_, ap, tc, _, _, config)
+    storeStepCand(_, ap, tc, _, _, _, config)
   }
 
   private predicate validAp(Ap ap, Configuration config) {
@@ -1813,9 +1834,9 @@ private module LocalFlowBigStep {
       or
       node.asNode() instanceof OutNodeExt
       or
-      Stage2::storeStepCand(_, _, _, node, _, config)
+      Stage2::storeStepCand(_, _, _, node, _, state, config)
       or
-      Stage2::readStepCand(_, _, node, config)
+      Stage2::readStepCand(_, _, node, state, config)
       or
       node instanceof FlowCheckNode
       or
@@ -1836,8 +1857,8 @@ private module LocalFlowBigStep {
       additionalJumpStep(node, next, config) or
       flowIntoCallNodeCand1(_, node, next, config) or
       flowOutOfCallNodeCand1(_, node, next, config) or
-      Stage2::storeStepCand(node, _, _, next, _, config) or
-      Stage2::readStepCand(node, _, next, config)
+      Stage2::storeStepCand(node, _, _, next, _, state, config) or
+      Stage2::readStepCand(node, _, next, state, config)
     )
     or
     exists(NodeEx next, FlowState s | Stage2::revFlow(next, s, config) |
@@ -2018,7 +2039,7 @@ private module Stage3 {
   pragma[nomagic]
   private predicate clearContent(NodeEx node, Content c, Configuration config) {
     exists(ContentSet cs |
-      PrevStage::readStepCand(_, pragma[only_bind_into](c), _, pragma[only_bind_into](config)) and
+      PrevStage::readStepCand(_, pragma[only_bind_into](c), _, _, pragma[only_bind_into](config)) and
       c = cs.getAReadContent() and
       clearSet(node, cs, pragma[only_bind_into](config))
     )
@@ -2033,7 +2054,7 @@ private module Stage3 {
   private predicate expectsContentCand(NodeEx node, Ap ap, Configuration config) {
     exists(Content c |
       PrevStage::revFlow(node, pragma[only_bind_into](config)) and
-      PrevStage::readStepCand(_, c, _, pragma[only_bind_into](config)) and
+      PrevStage::readStepCand(_, c, _, _, pragma[only_bind_into](config)) and
       expectsContentEx(node, c) and
       c = ap.getHead().getContent()
     )
@@ -2180,7 +2201,8 @@ private module Stage3 {
   ) {
     exists(DataFlowType contentType |
       fwdFlow(node1, state, cc, argAp, ap1, config) and
-      PrevStage::storeStepCand(node1, unbindApa(getApprox(ap1)), tc, node2, contentType, config) and
+      PrevStage::storeStepCand(node1, unbindApa(getApprox(ap1)), tc, node2, contentType, state,
+        config) and
       typecheckStore(ap1, contentType)
     )
   }
@@ -2204,7 +2226,7 @@ private module Stage3 {
     Configuration config
   ) {
     fwdFlow(node1, state, cc, argAp, ap, config) and
-    PrevStage::readStepCand(node1, c, node2, config) and
+    PrevStage::readStepCand(node1, c, node2, state, config) and
     getHeadContent(ap) = c
   }
 
@@ -2272,9 +2294,9 @@ private module Stage3 {
   }
 
   private predicate readStepFwd(
-    NodeEx n1, Ap ap1, Content c, NodeEx n2, Ap ap2, Configuration config
+    NodeEx n1, Ap ap1, Content c, NodeEx n2, FlowState state, Ap ap2, Configuration config
   ) {
-    fwdFlowRead(ap1, c, n1, n2, _, _, _, config) and
+    fwdFlowRead(ap1, c, n1, n2, state, _, _, config) and
     fwdFlowConsCand(ap1, c, ap2, config)
   }
 
@@ -2380,7 +2402,7 @@ private module Stage3 {
     // read
     exists(NodeEx mid, Ap ap0 |
       revFlow(mid, state, toReturn, returnAp, ap0, config) and
-      readStepFwd(node, ap, _, mid, ap0, config)
+      readStepFwd(node, ap, _, mid, state, ap0, config)
     )
     or
     // flow into a callable
@@ -2416,10 +2438,10 @@ private module Stage3 {
    */
   pragma[nomagic]
   private predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
-    exists(NodeEx mid, Ap tail0 |
-      revFlow(mid, _, _, _, tail, config) and
+    exists(NodeEx mid, Ap tail0, FlowState state |
+      revFlow(mid, state, _, _, tail, config) and
       tail = pragma[only_bind_into](tail0) and
-      readStepFwd(_, cons, c, mid, tail0, config)
+      readStepFwd(_, cons, c, mid, state, tail0, config)
     )
   }
 
@@ -2475,20 +2497,25 @@ private module Stage3 {
 
   pragma[nomagic]
   predicate storeStepCand(
-    NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType,
+    NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType, FlowState state,
     Configuration config
   ) {
     exists(Ap ap2, Content c |
-      PrevStage::storeStepCand(node1, _, tc, node2, contentType, config) and
-      revFlowStore(ap2, c, ap1, node1, _, tc, node2, _, _, config) and
-      revFlowConsCand(ap2, c, ap1, config)
+      PrevStage::storeStepCand(node1, _, tc, node2, contentType, state,
+        pragma[only_bind_into](config)) and
+      revFlowStore(ap2, c, ap1, node1, state, tc, node2, _, _, config) and
+      revFlow(node1, state, _, _, pragma[only_bind_into](ap1), pragma[only_bind_into](config)) and
+      revFlowConsCand(ap2, c, pragma[only_bind_into](ap1), pragma[only_bind_into](config))
     )
   }
 
-  predicate readStepCand(NodeEx node1, Content c, NodeEx node2, Configuration config) {
+  pragma[nomagic]
+  predicate readStepCand(
+    NodeEx node1, Content c, NodeEx node2, FlowState state, Configuration config
+  ) {
     exists(Ap ap1, Ap ap2 |
-      revFlow(node2, _, _, _, pragma[only_bind_into](ap2), pragma[only_bind_into](config)) and
-      readStepFwd(node1, ap1, c, node2, ap2, config) and
+      revFlow(node2, state, _, _, pragma[only_bind_into](ap2), pragma[only_bind_into](config)) and
+      readStepFwd(node1, ap1, c, node2, state, ap2, config) and
       revFlowStore(ap1, c, pragma[only_bind_into](ap2), _, _, _, _, _, _,
         pragma[only_bind_into](config))
     )
@@ -2518,7 +2545,7 @@ private module Stage3 {
   }
 
   private predicate revConsCand(TypedContent tc, Ap ap, Configuration config) {
-    storeStepCand(_, ap, tc, _, _, config)
+    storeStepCand(_, ap, tc, _, _, _, config)
   }
 
   private predicate validAp(Ap ap, Configuration config) {
@@ -3021,7 +3048,8 @@ private module Stage4 {
   ) {
     exists(DataFlowType contentType |
       fwdFlow(node1, state, cc, argAp, ap1, config) and
-      PrevStage::storeStepCand(node1, unbindApa(getApprox(ap1)), tc, node2, contentType, config) and
+      PrevStage::storeStepCand(node1, unbindApa(getApprox(ap1)), tc, node2, contentType, state,
+        config) and
       typecheckStore(ap1, contentType)
     )
   }
@@ -3045,7 +3073,7 @@ private module Stage4 {
     Configuration config
   ) {
     fwdFlow(node1, state, cc, argAp, ap, config) and
-    PrevStage::readStepCand(node1, c, node2, config) and
+    PrevStage::readStepCand(node1, c, node2, state, config) and
     getHeadContent(ap) = c
   }
 
@@ -3113,9 +3141,9 @@ private module Stage4 {
   }
 
   private predicate readStepFwd(
-    NodeEx n1, Ap ap1, Content c, NodeEx n2, Ap ap2, Configuration config
+    NodeEx n1, Ap ap1, Content c, NodeEx n2, FlowState state, Ap ap2, Configuration config
   ) {
-    fwdFlowRead(ap1, c, n1, n2, _, _, _, config) and
+    fwdFlowRead(ap1, c, n1, n2, state, _, _, config) and
     fwdFlowConsCand(ap1, c, ap2, config)
   }
 
@@ -3221,7 +3249,7 @@ private module Stage4 {
     // read
     exists(NodeEx mid, Ap ap0 |
       revFlow(mid, state, toReturn, returnAp, ap0, config) and
-      readStepFwd(node, ap, _, mid, ap0, config)
+      readStepFwd(node, ap, _, mid, state, ap0, config)
     )
     or
     // flow into a callable
@@ -3257,10 +3285,10 @@ private module Stage4 {
    */
   pragma[nomagic]
   private predicate revFlowConsCand(Ap cons, Content c, Ap tail, Configuration config) {
-    exists(NodeEx mid, Ap tail0 |
-      revFlow(mid, _, _, _, tail, config) and
+    exists(NodeEx mid, Ap tail0, FlowState state |
+      revFlow(mid, state, _, _, tail, config) and
       tail = pragma[only_bind_into](tail0) and
-      readStepFwd(_, cons, c, mid, tail0, config)
+      readStepFwd(_, cons, c, mid, state, tail0, config)
     )
   }
 
@@ -3316,20 +3344,25 @@ private module Stage4 {
 
   pragma[nomagic]
   predicate storeStepCand(
-    NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType,
+    NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType, FlowState state,
     Configuration config
   ) {
     exists(Ap ap2, Content c |
-      PrevStage::storeStepCand(node1, _, tc, node2, contentType, config) and
-      revFlowStore(ap2, c, ap1, node1, _, tc, node2, _, _, config) and
-      revFlowConsCand(ap2, c, ap1, config)
+      PrevStage::storeStepCand(node1, _, tc, node2, contentType, state,
+        pragma[only_bind_into](config)) and
+      revFlowStore(ap2, c, ap1, node1, state, tc, node2, _, _, config) and
+      revFlow(node1, state, _, _, pragma[only_bind_into](ap1), pragma[only_bind_into](config)) and
+      revFlowConsCand(ap2, c, pragma[only_bind_into](ap1), pragma[only_bind_into](config))
     )
   }
 
-  predicate readStepCand(NodeEx node1, Content c, NodeEx node2, Configuration config) {
+  pragma[nomagic]
+  predicate readStepCand(
+    NodeEx node1, Content c, NodeEx node2, FlowState state, Configuration config
+  ) {
     exists(Ap ap1, Ap ap2 |
-      revFlow(node2, _, _, _, pragma[only_bind_into](ap2), pragma[only_bind_into](config)) and
-      readStepFwd(node1, ap1, c, node2, ap2, config) and
+      revFlow(node2, state, _, _, pragma[only_bind_into](ap2), pragma[only_bind_into](config)) and
+      readStepFwd(node1, ap1, c, node2, state, ap2, config) and
       revFlowStore(ap1, c, pragma[only_bind_into](ap2), _, _, _, _, _, _,
         pragma[only_bind_into](config))
     )
@@ -3359,7 +3392,7 @@ private module Stage4 {
   }
 
   private predicate revConsCand(TypedContent tc, Ap ap, Configuration config) {
-    storeStepCand(_, ap, tc, _, _, config)
+    storeStepCand(_, ap, tc, _, _, _, config)
   }
 
   private predicate validAp(Ap ap, Configuration config) {
@@ -4128,7 +4161,7 @@ private predicate pathReadStep(
 ) {
   ap0 = mid.getAp() and
   tc = ap0.getHead() and
-  Stage4::readStepCand(mid.getNodeEx(), tc.getContent(), node, mid.getConfiguration()) and
+  Stage4::readStepCand(mid.getNodeEx(), tc.getContent(), node, state, mid.getConfiguration()) and
   state = mid.getState() and
   cc = mid.getCallContext()
 }
@@ -4138,7 +4171,7 @@ private predicate pathStoreStep(
   PathNodeMid mid, NodeEx node, FlowState state, AccessPath ap0, TypedContent tc, CallContext cc
 ) {
   ap0 = mid.getAp() and
-  Stage4::storeStepCand(mid.getNodeEx(), _, tc, node, _, mid.getConfiguration()) and
+  Stage4::storeStepCand(mid.getNodeEx(), _, tc, node, _, state, mid.getConfiguration()) and
   state = mid.getState() and
   cc = mid.getCallContext()
 }
