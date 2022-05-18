@@ -199,9 +199,11 @@ private class Argument extends CfgNodes::ExprCfgNode {
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
+  private import TaintTrackingPrivate as TaintTrackingPrivate
+
   cached
   newtype TNode =
-    TExprNode(CfgNodes::ExprCfgNode n) or
+    TExprNode(CfgNodes::ExprCfgNode n) { TaintTrackingPrivate::forceCachingInSameStage() } or
     TReturningNode(CfgNodes::ReturningCfgNode n) or
     TSynthReturnNode(CfgScope scope, ReturnKind kind) {
       exists(ReturningNode ret |
