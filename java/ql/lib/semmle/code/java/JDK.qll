@@ -144,17 +144,6 @@ class NumberType extends RefType {
   NumberType() { exists(TypeNumber number | hasDescendant(number, this)) }
 }
 
-/** A numeric type, including both primitive and boxed types. */
-class NumericType extends Type {
-  NumericType() {
-    exists(string name |
-      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
-    |
-      name = ["byte", "short", "int", "long", "double", "float"]
-    )
-  }
-}
-
 /** An immutable type. */
 class ImmutableType extends Type {
   ImmutableType() {

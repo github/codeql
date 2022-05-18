@@ -781,11 +781,12 @@ module Private {
       )
     }
 
-    pragma[nomagic]
-    private ParamNode summaryArgParam(ArgNode arg, ReturnKindExt rk, OutNodeExt out) {
-      exists(DataFlowCall call |
+    bindingset[ret]
+    private ParamNode summaryArgParam(ArgNode arg, ReturnNodeExt ret, OutNodeExt out) {
+      exists(DataFlowCall call, ReturnKindExt rk |
         result = summaryArgParam0(call, arg) and
-        out = rk.getAnOutNode(call)
+        pragma[only_bind_out](ret).getKind() = pragma[only_bind_into](rk) and
+        out = pragma[only_bind_into](rk).getAnOutNode(call)
       )
     }
 
@@ -797,9 +798,8 @@ module Private {
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
     predicate summaryThroughStep(ArgNode arg, Node out, boolean preservesValue) {
-      exists(ReturnKindExt rk, ReturnNodeExt ret |
-        summaryLocalStep(summaryArgParam(arg, rk, out), ret, preservesValue) and
-        ret.getKind() = rk
+      exists(ReturnNodeExt ret |
+        summaryLocalStep(summaryArgParam(arg, ret, out), ret, preservesValue)
       )
     }
 
@@ -811,10 +811,9 @@ module Private {
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
     predicate summaryGetterStep(ArgNode arg, ContentSet c, Node out) {
-      exists(ReturnKindExt rk, Node mid, ReturnNodeExt ret |
-        summaryReadStep(summaryArgParam(arg, rk, out), c, mid) and
-        summaryLocalStep(mid, ret, _) and
-        ret.getKind() = rk
+      exists(Node mid, ReturnNodeExt ret |
+        summaryReadStep(summaryArgParam(arg, ret, out), c, mid) and
+        summaryLocalStep(mid, ret, _)
       )
     }
 
@@ -826,10 +825,9 @@ module Private {
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
     predicate summarySetterStep(ArgNode arg, ContentSet c, Node out) {
-      exists(ReturnKindExt rk, Node mid, ReturnNodeExt ret |
-        summaryLocalStep(summaryArgParam(arg, rk, out), mid, _) and
-        summaryStoreStep(mid, c, ret) and
-        ret.getKind() = rk
+      exists(Node mid, ReturnNodeExt ret |
+        summaryLocalStep(summaryArgParam(arg, ret, out), mid, _) and
+        summaryStoreStep(mid, c, ret)
       )
     }
   }

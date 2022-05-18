@@ -1248,6 +1248,17 @@ class CharacterType extends Type {
   }
 }
 
+/** A numeric type, including both primitive and boxed types. */
+class NumericType extends Type {
+  NumericType() {
+    exists(string name |
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
+    |
+      name = ["byte", "short", "int", "long", "double", "float"]
+    )
+  }
+}
+
 /** A numeric or character type, which may be either a primitive or a boxed type. */
 class NumericOrCharType extends Type {
   NumericOrCharType() {

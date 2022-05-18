@@ -68,6 +68,9 @@ private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
 
 cached
 private module Cached {
+  cached
+  predicate forceCachingInSameStage() { any() }
+
   /**
    * Holds if the additional step from `nodeFrom` to `nodeTo` should be included
    * in all global taint flow configurations.
