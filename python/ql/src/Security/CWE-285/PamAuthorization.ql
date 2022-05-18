@@ -35,4 +35,4 @@ where
     DataFlow::localFlow(handle, acctMgmtCall.getArg(0))
   )
 select authenticateCall,
-  "This PAM authentication call may be lead to an authorization bypass, since 'pam_acct_mgmt' is not called afterwards."
+  "This PAM authentication call may lead to an authorization bypass, since 'pam_acct_mgmt' is not called afterwards."
