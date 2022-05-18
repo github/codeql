@@ -813,9 +813,7 @@ module Private {
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
     predicate summaryThroughStepTaint(ArgNode arg, Node out) {
-      exists(ReturnNodeExt ret |
-        summaryLocalStep(summaryArgParam(arg, ret, out), ret, false)
-      )
+      exists(ReturnNodeExt ret | summaryLocalStep(summaryArgParam(arg, ret, out), ret, false))
     }
 
     /**
