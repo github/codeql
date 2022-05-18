@@ -615,6 +615,22 @@ module ExprNodes {
     final override VariableReadAccess getExpr() { result = ExprCfgNode.super.getExpr() }
   }
 
+  private class InstanceVariableAccessMapping extends ExprChildMapping, InstanceVariableAccess {
+    override predicate relevantChild(AstNode n) { n = this.getSelfVariableAccess() }
+  }
+
+  /** A control-flow node that wraps a `InstanceVariableAccess` AST expression. */
+  class InstanceVariableAccessCfgNode extends ExprCfgNode {
+    override InstanceVariableAccessMapping e;
+
+    final override InstanceVariableAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /**
+     * Gets a synthetic `self` variable access.
+     */
+    final CfgNode getSelfVariableAccess() { e.hasCfgChild(e.getSelfVariableAccess(), this, result) }
+  }
+
   /** A control-flow node that wraps a `VariableWriteAccess` AST expression. */
   class VariableWriteAccessCfgNode extends ExprCfgNode {
     override VariableWriteAccess e;

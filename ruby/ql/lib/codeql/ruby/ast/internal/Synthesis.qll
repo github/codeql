@@ -210,6 +210,30 @@ private module ImplicitSelfSynthesis {
       regularMethodCallSelfSynthesis(parent, i, child)
     }
   }
+
+  /**
+   * Gets the "owner" of a node. For real nodes this is the node itself, for synthetic nodes
+   * this is the closest parent that is a real node.
+   */
+  private TAstNodeReal owner(AstNode node) { result = synthParent*(node) }
+
+  /**
+   * Gets the parent of a synthetic node
+   */
+  private AstNode synthParent(AstNode node) { node = getSynthChild(result, _) }
+
+  pragma[nomagic]
+  private predicate instanceVariableSelfSynthesis(InstanceVariableAccess var, int i, Child child) {
+    child =
+      SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(owner(var))).getEnclosingSelfScope()))) and
+    i = 0
+  }
+
+  private class InstanceVariableSelfSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      instanceVariableSelfSynthesis(parent, i, child)
+    }
+  }
 }
 
 private module SetterDesugar {

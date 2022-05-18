@@ -1006,7 +1006,11 @@ module Trees {
     final override ControlFlowTree getChildElement(int i) { result = this.getComponent(i) }
   }
 
-  private class InstanceVariableTree extends LeafTree, InstanceVariableAccess { }
+  private class InstanceVariableTree extends StandardPostOrderTree, InstanceVariableAccess {
+    final override ControlFlowTree getChildElement(int i) {
+      result = this.getSelfVariableAccess() and i = 0
+    }
+  }
 
   private class KeywordParameterTree extends DefaultValueParameterTree, KeywordParameter {
     final override Expr getDefaultValueExpr() { result = this.getDefaultValue() }
