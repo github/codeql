@@ -1,5 +1,5 @@
 /**
- * @name Dangerous use rename.
+ * @name Dangerous use of rename
  * @description If the rename function did not work correctly, simply overwriting the destination file can lead to errors.
  * @kind problem
  * @id cpp/dangerous-use-rename
