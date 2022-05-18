@@ -14,6 +14,7 @@ class Steps extends ModelInput::SummaryModelCsv {
         "testlib;;Member[preserveAllButFirstArgument];Argument[1..];ReturnValue;taint",
         "testlib;;Member[preserveAllIfCall].Call;Argument[0..];ReturnValue;taint",
         "testlib;;Member[getSource].ReturnValue.Member[continue];Argument[this];ReturnValue;taint",
+        "testlib;;Member[Obj].Instance;;Member[self];value",
       ]
   }
 }

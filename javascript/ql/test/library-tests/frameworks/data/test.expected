@@ -55,6 +55,7 @@ taintFlow
 | test.js:182:12:182:19 | source() | test.js:182:12:182:19 | source() |
 | test.js:187:31:187:31 | x | test.js:189:10:189:10 | x |
 | test.js:203:32:203:39 | source() | test.js:203:32:203:39 | source() |
+| test.js:209:13:209:20 | source() | test.js:210:8:210:19 | obj.self.foo |
 isSink
 | test.js:54:18:54:25 | source() | test-sink |
 | test.js:55:22:55:29 | source() | test-sink |

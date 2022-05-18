@@ -132,6 +132,9 @@ module ModelInput {
      * indicates that for each call to `(package, type, path)`, the value referred to by `input`
      * can flow to the value referred to by `output`.
      *
+     * Alternatively, if `input` is the empty string and `output` consists of a single token,
+     * the value referred to by `(package, type, path)` may flow to the value referred to by `output`.
+     *
      * `kind` should be either `value` or `taint`, for value-preserving or taint-preserving steps,
      * respectively.
      */
