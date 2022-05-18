@@ -3,5 +3,5 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class UnresolvedTypeConversionExprBase extends @unresolved_type_conversion_expr,
   ImplicitConversionExpr {
-  override string toString() { result = "UnresolvedTypeConversionExpr" }
+  override string getAPrimaryQlClass() { result = "UnresolvedTypeConversionExpr" }
 }

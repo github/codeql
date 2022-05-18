@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.BuiltinType
 
 class BuiltinVectorTypeBase extends @builtin_vector_type, BuiltinType {
-  override string toString() { result = "BuiltinVectorType" }
+  override string getAPrimaryQlClass() { result = "BuiltinVectorType" }
 }

@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class SilFunctionTypeBase extends @sil_function_type, Type {
-  override string toString() { result = "SilFunctionType" }
+  override string getAPrimaryQlClass() { result = "SilFunctionType" }
 }

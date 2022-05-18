@@ -57,10 +57,10 @@ class ExtractionError extends TExtractionError {
   /** Gets the error message for this error. */
   string getErrorMessage() { none() }
 
-  /** Gets the file this error occured in. */
+  /** Gets the file this error occurred in. */
   File getFile() { none() }
 
-  /** Gets the location this error occured in. */
+  /** Gets the location this error occurred in. */
   Location getLocation() { none() }
 
   /** Gets the SARIF severity of this error. */

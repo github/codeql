@@ -475,20 +475,23 @@
     "python/ql/lib/semmle/python/security/internal/SensitiveDataHeuristics.qll",
     "ruby/ql/lib/codeql/ruby/security/internal/SensitiveDataHeuristics.qll"
   ],
-  "ReDoS Util Python/JS/Ruby": [
+  "ReDoS Util Python/JS/Ruby/Java": [
     "javascript/ql/lib/semmle/javascript/security/performance/ReDoSUtil.qll",
     "python/ql/lib/semmle/python/security/performance/ReDoSUtil.qll",
-    "ruby/ql/lib/codeql/ruby/security/performance/ReDoSUtil.qll"
+    "ruby/ql/lib/codeql/ruby/security/performance/ReDoSUtil.qll",
+    "java/ql/lib/semmle/code/java/security/performance/ReDoSUtil.qll"
   ],
-  "ReDoS Exponential Python/JS/Ruby": [
+  "ReDoS Exponential Python/JS/Ruby/Java": [
     "javascript/ql/lib/semmle/javascript/security/performance/ExponentialBackTracking.qll",
     "python/ql/lib/semmle/python/security/performance/ExponentialBackTracking.qll",
-    "ruby/ql/lib/codeql/ruby/security/performance/ExponentialBackTracking.qll"
+    "ruby/ql/lib/codeql/ruby/security/performance/ExponentialBackTracking.qll",
+    "java/ql/lib/semmle/code/java/security/performance/ExponentialBackTracking.qll"
   ],
-  "ReDoS Polynomial Python/JS/Ruby": [
+  "ReDoS Polynomial Python/JS/Ruby/Java": [
     "javascript/ql/lib/semmle/javascript/security/performance/SuperlinearBackTracking.qll",
     "python/ql/lib/semmle/python/security/performance/SuperlinearBackTracking.qll",
-    "ruby/ql/lib/codeql/ruby/security/performance/SuperlinearBackTracking.qll"
+    "ruby/ql/lib/codeql/ruby/security/performance/SuperlinearBackTracking.qll",
+    "java/ql/lib/semmle/code/java/security/performance/SuperlinearBackTracking.qll"
   ],
   "BadTagFilterQuery Python/JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/BadTagFilterQuery.qll",
@@ -550,5 +553,9 @@
   "HttpToFileAccessCustomizations JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/dataflow/HttpToFileAccessCustomizations.qll",
     "ruby/ql/lib/codeql/ruby/security/HttpToFileAccessCustomizations.qll"
+  ],
+  "Typo database": [
+    "javascript/ql/src/Expressions/TypoDatabase.qll",
+    "ql/ql/src/codeql_ql/style/TypoDatabase.qll"
   ]
 }

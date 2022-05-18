@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.AnyTryExpr
 
 class ForceTryExprBase extends @force_try_expr, AnyTryExpr {
-  override string toString() { result = "ForceTryExpr" }
+  override string getAPrimaryQlClass() { result = "ForceTryExpr" }
 }

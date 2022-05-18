@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.Type
 
 class ModuleTypeBase extends @module_type, Type {
-  override string toString() { result = "ModuleType" }
+  override string getAPrimaryQlClass() { result = "ModuleType" }
 }

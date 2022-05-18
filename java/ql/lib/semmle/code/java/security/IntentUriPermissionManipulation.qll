@@ -96,8 +96,6 @@ private class IntentFlagsOrDataChangedSanitizer extends IntentUriPermissionManip
  * ```
  */
 private class IntentFlagsOrDataCheckedGuard extends IntentUriPermissionManipulationGuard {
-  Expr condition;
-
   IntentFlagsOrDataCheckedGuard() { intentFlagsOrDataChecked(this, _, _) }
 
   override predicate checks(Expr e, boolean branch) { intentFlagsOrDataChecked(this, e, branch) }

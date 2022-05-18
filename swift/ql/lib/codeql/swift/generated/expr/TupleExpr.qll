@@ -2,7 +2,7 @@
 import codeql.swift.elements.expr.Expr
 
 class TupleExprBase extends @tuple_expr, Expr {
-  override string toString() { result = "TupleExpr" }
+  override string getAPrimaryQlClass() { result = "TupleExpr" }
 
   Expr getElement(int index) {
     exists(Expr x |

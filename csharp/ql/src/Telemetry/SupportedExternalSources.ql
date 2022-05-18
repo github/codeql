@@ -2,7 +2,7 @@
  * @name Supported sources in external libraries
  * @description A list of 3rd party APIs detected as sources. Excludes APIs exposed by test libraries.
  * @kind metric
- * @tags summary
+ * @tags summary telemetry
  * @id csharp/telemetry/supported-external-api-sources
  */
 

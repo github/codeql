@@ -199,9 +199,11 @@ private class Argument extends CfgNodes::ExprCfgNode {
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
+  private import TaintTrackingPrivate as TaintTrackingPrivate
+
   cached
   newtype TNode =
-    TExprNode(CfgNodes::ExprCfgNode n) or
+    TExprNode(CfgNodes::ExprCfgNode n) { TaintTrackingPrivate::forceCachingInSameStage() } or
     TReturningNode(CfgNodes::ReturningCfgNode n) or
     TSynthReturnNode(CfgScope scope, ReturnKind kind) {
       exists(ReturningNode ret |
@@ -252,7 +254,7 @@ private module Cached {
     nodeTo.(SynthReturnNode).getAnInput() = nodeFrom
     or
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo) and
-    not FlowSummaryImpl::Private::Steps::summaryClearsContentArg(nodeFrom, _)
+    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom)
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
@@ -302,12 +304,12 @@ private module Cached {
     or
     n instanceof PostUpdateNodes::ExprPostUpdateNode
     or
-    // Expressions that can't be reached from another entry definition or expression.
+    // Nodes that can't be reached from another entry definition or expression.
     not localFlowStepTypeTracker+(any(Node n0 |
         n0 instanceof ExprNode
         or
         entrySsaDefinition(n0)
-      ), n.(ExprNode))
+      ), n)
     or
     // Ensure all entry SSA definitions are local sources -- for parameters, this
     // is needed by type tracking. Note that when the parameter has a default value,
@@ -804,7 +806,9 @@ predicate clearsContent(Node n, ContentSet c) {
  * Holds if the value that is being tracked is expected to be stored inside content `c`
  * at node `n`.
  */
-predicate expectsContent(Node n, ContentSet c) { none() }
+predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
+}
 
 private newtype TDataFlowType =
   TTodoDataFlowType() or

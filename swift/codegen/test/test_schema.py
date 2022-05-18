@@ -155,5 +155,17 @@ A:
     ]
 
 
+def test_element_properties(load):
+    ret = load("""
+Element:
+    x: string
+""")
+    assert ret.classes == [
+        schema.Class(root_name, properties=[
+            schema.SingleProperty('x', 'string'),
+         ]),
+    ]
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

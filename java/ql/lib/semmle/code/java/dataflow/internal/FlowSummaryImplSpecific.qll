@@ -1,5 +1,5 @@
 /**
- * Provides Java specific classes and predicates for definining flow summaries.
+ * Provides Java specific classes and predicates for defining flow summaries.
  */
 
 private import java

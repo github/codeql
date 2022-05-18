@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.BuiltinType
 
 class BuiltinRawPointerTypeBase extends @builtin_raw_pointer_type, BuiltinType {
-  override string toString() { result = "BuiltinRawPointerType" }
+  override string getAPrimaryQlClass() { result = "BuiltinRawPointerType" }
 }

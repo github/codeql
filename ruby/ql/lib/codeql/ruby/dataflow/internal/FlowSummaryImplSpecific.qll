@@ -56,15 +56,30 @@ predicate summaryElement(
   )
 }
 
+bindingset[arg]
+private SummaryComponent interpretElementArg(string arg) {
+  arg = "?" and
+  result = FlowSummary::SummaryComponent::elementUnknown()
+  or
+  arg = "any" and
+  result = FlowSummary::SummaryComponent::elementAny()
+  or
+  exists(ConstantValue cv | result = FlowSummary::SummaryComponent::elementKnown(cv) |
+    cv.isInt(AccessPath::parseInt(arg))
+    or
+    not exists(AccessPath::parseInt(arg)) and
+    cv.serialize() = arg
+  )
+}
+
 /**
  * Gets the summary component for specification component `c`, if any.
  *
  * This covers all the Ruby-specific components of a flow summary.
  */
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
-  c.getName() = "Argument" and
   exists(string arg, ParameterPosition ppos |
-    arg = c.getAnArgument() and
+    arg = c.getAnArgument("Argument") and
     result = FlowSummary::SummaryComponent::argument(ppos)
   |
     arg = "any" and
@@ -73,20 +88,17 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
     ppos.isPositionalLowerBound(AccessPath::parseLowerBound(arg))
   )
   or
-  c.getName() = "Element" and
-  exists(string arg | arg = c.getAnArgument() |
-    arg = "?" and
-    result = FlowSummary::SummaryComponent::elementUnknown()
-    or
-    arg = "any" and
-    result = FlowSummary::SummaryComponent::elementAny()
-    or
-    exists(ConstantValue cv | result = FlowSummary::SummaryComponent::elementKnown(cv) |
-      cv.isInt(AccessPath::parseInt(arg))
-      or
-      not exists(AccessPath::parseInt(arg)) and
-      cv.serialize() = c.getAnArgument()
-    )
+  result = interpretElementArg(c.getAnArgument("Element"))
+  or
+  exists(ContentSet cs |
+    FlowSummary::SummaryComponent::content(cs) = interpretElementArg(c.getAnArgument("WithElement")) and
+    result = FlowSummary::SummaryComponent::withContent(cs)
+  )
+  or
+  exists(ContentSet cs |
+    FlowSummary::SummaryComponent::content(cs) =
+      interpretElementArg(c.getAnArgument("WithoutElement")) and
+    result = FlowSummary::SummaryComponent::withoutContent(cs)
   )
 }
 

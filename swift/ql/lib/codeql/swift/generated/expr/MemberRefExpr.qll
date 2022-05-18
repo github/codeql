@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.LookupExpr
 
 class MemberRefExprBase extends @member_ref_expr, LookupExpr {
-  override string toString() { result = "MemberRefExpr" }
+  override string getAPrimaryQlClass() { result = "MemberRefExpr" }
 
   Expr getBaseExpr() {
     exists(Expr x |

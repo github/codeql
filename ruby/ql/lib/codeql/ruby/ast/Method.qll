@@ -252,10 +252,24 @@ class Lambda extends Callable, BodyStmt, TLambda {
 
 /** A block. */
 class Block extends Callable, StmtSequence, Scope, TBlock {
+  /**
+   * Gets a local variable declared by this block.
+   * For example `local` in `{ | param; local| puts param }`.
+   */
+  LocalVariableWriteAccess getALocalVariable() { result = this.getLocalVariable(_) }
+
+  /**
+   * Gets the `n`th local variable declared by this block.
+   * For example `local` in `{ | param; local| puts param }`.
+   */
+  LocalVariableWriteAccess getLocalVariable(int n) { none() }
+
   override AstNode getAChild(string pred) {
     result = Callable.super.getAChild(pred)
     or
     result = StmtSequence.super.getAChild(pred)
+    or
+    pred = "getLocalVariable" and result = this.getLocalVariable(_)
   }
 }
 
@@ -264,6 +278,10 @@ class DoBlock extends Block, BodyStmt, TDoBlock {
   private Ruby::DoBlock g;
 
   DoBlock() { this = TDoBlock(g) }
+
+  final override LocalVariableWriteAccess getLocalVariable(int n) {
+    toGenerated(result) = g.getParameters().getLocals(n)
+  }
 
   final override Parameter getParameter(int n) {
     toGenerated(result) = g.getParameters().getChild(n)

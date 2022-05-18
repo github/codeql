@@ -2,7 +2,7 @@
 import codeql.swift.elements.pattern.Pattern
 
 class OptionalSomePatternBase extends @optional_some_pattern, Pattern {
-  override string toString() { result = "OptionalSomePattern" }
+  override string getAPrimaryQlClass() { result = "OptionalSomePattern" }
 
   Pattern getSubPattern() {
     exists(Pattern x |

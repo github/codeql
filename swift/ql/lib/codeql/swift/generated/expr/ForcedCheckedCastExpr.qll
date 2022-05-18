@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.CheckedCastExpr
 
 class ForcedCheckedCastExprBase extends @forced_checked_cast_expr, CheckedCastExpr {
-  override string toString() { result = "ForcedCheckedCastExpr" }
+  override string getAPrimaryQlClass() { result = "ForcedCheckedCastExpr" }
 }

@@ -30,7 +30,7 @@ predicate isConstantExp(Expr e) {
   )
   or
   // A cast expression is constant if its expression is.
-  exists(CastExpr c | c = e | isConstantExp(c.getExpr()))
+  exists(CastingExpr c | c = e | isConstantExp(c.getExpr()))
   or
   // Multiplication by 0 is constant.
   exists(MulExpr m | m = e | eval(m.getAnOperand()) = 0)

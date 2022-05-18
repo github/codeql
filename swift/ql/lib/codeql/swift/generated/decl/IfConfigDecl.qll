@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.Decl
 
 class IfConfigDeclBase extends @if_config_decl, Decl {
-  override string toString() { result = "IfConfigDecl" }
+  override string getAPrimaryQlClass() { result = "IfConfigDecl" }
 }

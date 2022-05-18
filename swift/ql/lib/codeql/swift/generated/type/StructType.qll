@@ -3,7 +3,7 @@ import codeql.swift.elements.type.NominalType
 import codeql.swift.elements.decl.StructDecl
 
 class StructTypeBase extends @struct_type, NominalType {
-  override string toString() { result = "StructType" }
+  override string getAPrimaryQlClass() { result = "StructType" }
 
   StructDecl getDecl() {
     exists(StructDecl x |

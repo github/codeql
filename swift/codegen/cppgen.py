@@ -27,7 +27,7 @@ def _get_field(cls: schema.Class, p: schema.Property, trap_affix: str) -> cpp.Fi
         if not p.is_predicate:
             trap_name = inflection.pluralize(trap_name)
     args = dict(
-        name=p.name + ("_" if p.name in cpp.cpp_keywords else ""),
+        field_name=p.name + ("_" if p.name in cpp.cpp_keywords else ""),
         type=_get_type(p.type, trap_affix),
         is_optional=p.is_optional,
         is_repeated=p.is_repeated,
@@ -66,7 +66,7 @@ def generate(opts, renderer):
     processor = Processor({cls.name: cls for cls in schema.load(opts.schema).classes}, opts.trap_affix)
     out = opts.cpp_output
     renderer.render(cpp.ClassList(processor.get_classes(), opts.cpp_namespace, opts.trap_affix,
-                                  opts.cpp_include_dir), out / f"{opts.trap_affix}Classes.h")
+                                  opts.cpp_include_dir, opts.schema), out / f"{opts.trap_affix}Classes.h")
 
 
 tags = ("cpp", "schema")

@@ -1,4 +1,4 @@
 import semmle.code.java.Expr
 
-from FloatingPointLiteral lit
+from FloatLiteral lit
 select lit, lit.getValue(), lit.getFloatValue()

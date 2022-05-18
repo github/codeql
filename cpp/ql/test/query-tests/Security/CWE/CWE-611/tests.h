@@ -21,5 +21,6 @@ class XMLUni
 {
 public:
 	static const XMLCh fgXercesDisableDefaultEntityResolution[];
+	static const XMLCh fgXercesHarmlessOption[];
 };
 

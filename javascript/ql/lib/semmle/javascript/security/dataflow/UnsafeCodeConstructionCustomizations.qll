@@ -1,6 +1,6 @@
 /**
  * Provides default sources, sinks and sanitizers for reasoning about code
- * constructed from libary input vulnerabilities, as well as extension points for
+ * constructed from library input vulnerabilities, as well as extension points for
  * adding your own.
  */
 

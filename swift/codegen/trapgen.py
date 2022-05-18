@@ -28,7 +28,7 @@ def get_cpp_type(schema_type: str, trap_affix: str):
 
 def get_field(c: dbscheme.Column, trap_affix: str):
     args = {
-        "name": c.schema_name,
+        "field_name": c.schema_name,
         "type": c.type,
     }
     args.update(cpp.get_field_override(c.schema_name))
@@ -68,7 +68,7 @@ def generate(opts, renderer):
             for d in e.rhs:
                 tag_graph.setdefault(d.type, set()).add(e.lhs)
 
-    renderer.render(cpp.TrapList(traps, opts.cpp_namespace, opts.trap_affix, opts.cpp_include_dir),
+    renderer.render(cpp.TrapList(traps, opts.cpp_namespace, opts.trap_affix, opts.cpp_include_dir, opts.dbscheme),
                     out / f"{opts.trap_affix}Entries.h")
 
     tags = []
@@ -79,7 +79,7 @@ def generate(opts, renderer):
             index=index,
             id=tag,
         ))
-    renderer.render(cpp.TagList(tags, opts.cpp_namespace), out / f"{opts.trap_affix}Tags.h")
+    renderer.render(cpp.TagList(tags, opts.cpp_namespace, opts.dbscheme), out / f"{opts.trap_affix}Tags.h")
 
 
 tags = ("cpp", "dbscheme")

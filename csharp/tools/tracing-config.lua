@@ -1,12 +1,16 @@
-function RegisterExtractorPack()
+function RegisterExtractorPack(id)
     local extractor = GetPlatformToolsDirectory() ..
                           'Semmle.Extraction.CSharp.Driver'
     if OperatingSystem == 'windows' then extractor = extractor .. '.exe' end
     local windowsMatchers = {
-        CreatePatternMatcher({'^dotnet%.exe$'}, MatchCompilerName, extractor,
-                             {prepend = {'--dotnetexec', '--cil'}}),
+        CreatePatternMatcher({'^dotnet%.exe$'}, MatchCompilerName, extractor, {
+            prepend = {'--dotnetexec', '--cil'},
+            order = ORDER_BEFORE
+        }),
         CreatePatternMatcher({'^csc.*%.exe$'}, MatchCompilerName, extractor, {
-            prepend = {'--compiler', '"${compiler}"', '--cil'}
+            prepend = {'--compiler', '"${compiler}"', '--cil'},
+            order = ORDER_BEFORE
+
         }),
         CreatePatternMatcher({'^fakes.*%.exe$', 'moles.*%.exe'},
                              MatchCompilerName, nil, {trace = false})
@@ -14,27 +18,28 @@ function RegisterExtractorPack()
     local posixMatchers = {
         CreatePatternMatcher({'^mcs%.exe$', '^csc%.exe$'}, MatchCompilerName,
                              extractor, {
-            prepend = {'--compiler', '"${compiler}"', '--cil'}
+            prepend = {'--compiler', '"${compiler}"', '--cil'},
+            order = ORDER_BEFORE
+
         }),
         CreatePatternMatcher({'^mono', '^dotnet$'}, MatchCompilerName,
-                             extractor, {prepend = {'--dotnetexec', '--cil'}}),
-        function(compilerName, compilerPath, compilerArguments, _languageId)
+                             extractor, {
+            prepend = {'--dotnetexec', '--cil'},
+            order = ORDER_BEFORE
+        }), function(compilerName, compilerPath, compilerArguments, _languageId)
             if MatchCompilerName('^msbuild$', compilerName, compilerPath,
                                  compilerArguments) or
                 MatchCompilerName('^xbuild$', compilerName, compilerPath,
                                   compilerArguments) then
                 return {
-                    replace = true,
-                    invocations = {
-                        {
-                            path = compilerPath,
-                            transformedArguments = {
-                                nativeArgumentPointer = compilerArguments['nativeArgumentPointer'],
-                                append = {'/p:UseSharedCompilation=false'},
-                                prepend = {}
-                            }
-                        }
-                    }
+                    order = ORDER_REPLACE,
+                    invocation = BuildExtractorInvocation(id, compilerPath,
+                                                          compilerPath,
+                                                          compilerArguments,
+                                                          nil, {
+                        '/p:UseSharedCompilation=false'
+                    })
+
                 }
             end
         end

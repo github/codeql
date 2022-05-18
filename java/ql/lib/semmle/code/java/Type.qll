@@ -698,6 +698,22 @@ class Class extends ClassOrInterface, @class {
   override string getAPrimaryQlClass() { result = "Class" }
 }
 
+/** A Kotlin `object`. */
+class ClassObject extends Class {
+  ClassObject() { class_object(this, _) }
+
+  /** Gets the instance variable that implements this `object`. */
+  Field getInstance() { class_object(this, result) }
+}
+
+/** A Kotlin `companion object`. */
+class CompanionObject extends Class {
+  CompanionObject() { type_companion_object(_, _, this) }
+
+  /** Gets the instance variable that implements this `companion object`. */
+  Field getInstance() { type_companion_object(_, result, this) }
+}
+
 /**
  * A record declaration.
  */
@@ -935,6 +951,9 @@ class ClassOrInterface extends RefType, @classorinterface {
 
   /** Holds if this class or interface is explicitly or implicitly a sealed class (Java 17 feature). */
   predicate isSealed() { exists(this.getAPermittedSubtype()) }
+
+  /** Get the companion object of this class or interface, if any. */
+  CompanionObject getCompanionObject() { type_companion_object(this, _, result) }
 }
 
 private string getAPublicObjectMethodSignature() {
@@ -1223,6 +1242,18 @@ class CharacterType extends Type {
       name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
     |
       name = "char"
+    )
+  }
+}
+
+/** A numeric type, including both primitive and boxed types. */
+class NumericType extends Type {
+  NumericType() {
+    exists(string name |
+      name = this.(PrimitiveType).getName() or
+      name = this.(BoxedType).getPrimitiveType().getName()
+    |
+      name.regexpMatch("byte|short|int|long|double|float")
     )
   }
 }

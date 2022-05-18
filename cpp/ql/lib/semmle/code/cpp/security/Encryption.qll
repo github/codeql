@@ -59,7 +59,7 @@ predicate isInsecureEncryption(string name) { name.regexpMatch(getInsecureAlgori
 /**
  * Holds if there is additional evidence that `name` looks like it might be
  * related to operations with an encyption algorithm, besides the name of a
- * specific algorithm. This can be used in conjuction with
+ * specific algorithm. This can be used in conjunction with
  * `isInsecureEncryption` to produce a stronger heuristic.
  */
 bindingset[name]

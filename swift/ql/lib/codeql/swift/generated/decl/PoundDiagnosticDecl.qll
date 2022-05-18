@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.Decl
 
 class PoundDiagnosticDeclBase extends @pound_diagnostic_decl, Decl {
-  override string toString() { result = "PoundDiagnosticDecl" }
+  override string getAPrimaryQlClass() { result = "PoundDiagnosticDecl" }
 }

@@ -85,7 +85,7 @@ private predicate confusinglyOverloaded(Method m, Method n) {
 
 private predicate wrappedAccess(Expr e, MethodAccess ma) {
   e = ma or
-  wrappedAccess(e.(CastExpr).getExpr(), ma)
+  wrappedAccess(e.(CastingExpr).getExpr(), ma)
 }
 
 private predicate delegate(Method caller, Method callee) {
@@ -99,7 +99,7 @@ private predicate delegate(Method caller, Method callee) {
       arg = p.getAnAccess()
       or
       // The parameter is cast to a supertype.
-      arg.(CastExpr).getExpr() = p.getAnAccess() and
+      arg.(CastingExpr).getExpr() = p.getAnAccess() and
       arg.getType().(RefType).getASubtype() = p.getType()
     )
   )

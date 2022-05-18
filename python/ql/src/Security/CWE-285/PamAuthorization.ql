@@ -17,7 +17,7 @@ import semmle.python.dataflow.new.TaintTracking
 
 API::Node libPam() {
   exists(API::CallNode findLibCall, API::CallNode cdllCall |
-    findLibCall = API::moduleImport("ctypes.util").getMember("find_library").getACall() and
+    findLibCall = API::moduleImport("ctypes").getMember("util").getMember("find_library").getACall() and
     findLibCall.getParameter(0).getAValueReachingRhs().asExpr().(StrConst).getText() = "pam" and
     cdllCall = API::moduleImport("ctypes").getMember("CDLL").getACall() and
     cdllCall.getParameter(0).getAValueReachingRhs() = findLibCall

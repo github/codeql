@@ -7,14 +7,14 @@ from swift.codegen.lib import cpp
 
 
 @pytest.mark.parametrize("keyword", cpp.cpp_keywords)
-def test_field_keyword_cpp_name(keyword):
+def test_field_keyword_name(keyword):
     f = cpp.Field(keyword, "int")
-    assert f.cpp_name == keyword + "_"
+    assert f.field_name == keyword + "_"
 
 
-def test_field_cpp_name():
+def test_field_name():
     f = cpp.Field("foo", "int")
-    assert f.cpp_name == "foo"
+    assert f.field_name == "foo"
 
 
 @pytest.mark.parametrize("type,expected", [
