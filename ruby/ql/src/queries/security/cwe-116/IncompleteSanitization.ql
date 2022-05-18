@@ -132,8 +132,7 @@ DataFlow::CallNode getAMethodCall(StringSubstitutionCall call) {
   // for a destructive string substitution, is there flow from its
   // post-update receiver to the receiver of another method call?
   call.isDestructive() and
-  DataFlow::localFlow(call.getReceiver(), result.getReceiver()) and
-  not call = result
+  DataFlow::localFlowStep+(call.getReceiver(), result.getReceiver())
 }
 
 /**
