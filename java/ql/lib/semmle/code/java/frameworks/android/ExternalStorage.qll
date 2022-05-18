@@ -1,7 +1,7 @@
 /** Provides definitions for working with uses of Android external storage */
 
 import java
-import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 
 private class ExternalStorageDirSourceModel extends SourceModelCsv {
@@ -10,11 +10,11 @@ private class ExternalStorageDirSourceModel extends SourceModelCsv {
       [
         //"package;type;overrides;name;signature;ext;spec;kind"
         "android.content;Context;true;getExternalFilesDir;(String);;ReturnValue;android-external-storage-dir",
-        "android.content;Context;true;getExternalFilesDirs;(String);;ReturnValue.ArrayElement;android-external-storage-dir",
-        "android.content;Context;true;getExternalCachesDir;(String);;ReturnValue;android-external-storage-dir",
-        "android.content;Context;true;getExternalCachesDirs;(String);;ReturnValue.ArrayElement;android-external-storage-dir",
-        "android.os;Environment;false;getExternalStorageDirectory;(String);;ReturnValue.ArrayElement;android-external-storage-dir",
-        "android.os;Environment;false;getExternalStoragePublicDirectory;(String);;ReturnValue.ArrayElement;android-external-storage-dir",
+        "android.content;Context;true;getExternalFilesDirs;(String);;ReturnValue;android-external-storage-dir",
+        "android.content;Context;true;getExternalCacheDir;();;ReturnValue;android-external-storage-dir",
+        "android.content;Context;true;getExternalCacheDirs;();;ReturnValue;android-external-storage-dir",
+        "android.os;Environment;false;getExternalStorageDirectory;();;ReturnValue;android-external-storage-dir",
+        "android.os;Environment;false;getExternalStoragePublicDirectory;(String);;ReturnValue;android-external-storage-dir",
       ]
   }
 }
@@ -23,9 +23,13 @@ private predicate externalStorageFlowStep(DataFlow::Node node1, DataFlow::Node n
   DataFlow::localFlowStep(node1, node2)
   or
   exists(ConstructorCall c | c.getConstructedType() instanceof TypeFile |
-    node1.asExpr() = c.getArgument(1) and
+    node1.asExpr() = c.getArgument(0) and
     node2.asExpr() = c
   )
+  or
+  node2.asExpr().(ArrayAccess).getArray() = node1.asExpr()
+  or
+  node2.asExpr().(FieldRead).getField().getInitializer() = node1.asExpr()
 }
 
 private predicate externalStorageFlow(DataFlow::Node node1, DataFlow::Node node2) {

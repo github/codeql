@@ -13,39 +13,39 @@ class Test {
         InputStream is = new FileInputStream(f);
         byte[] data = new byte[is.available()];
         is.read(data);
-        sink(data); // $hasTaintFlow
+        sink(data); // $ hasTaintFlow
         is.close();
     }
 
     void test2(Context ctx) throws IOException {
         File f = new File(new File(new File(ctx.getExternalFilesDirs(null)[0], "things"), "stuff"), "file.txt");
-        sink(new FileInputStream(f)); // $hasTaintFlow
+        sink(new FileInputStream(f)); // $ hasTaintFlow
     }
 
     void test3(Context ctx) throws IOException {
         File f = new File(ctx.getExternalCacheDir(), "file.txt");
-        sink(new FileInputStream(f)); // $hasTaintFlow
+        sink(new FileInputStream(f)); // $ hasTaintFlow
     }
 
     void test4(Context ctx) throws IOException {
         File f = new File(ctx.getExternalCacheDirs()[0], "file.txt");
-        sink(new FileInputStream(f)); // $hasTaintFlow
+        sink(new FileInputStream(f)); // $ hasTaintFlow
     }
 
     void test5(Context ctx) throws IOException {
         File f = new File(Environment.getExternalStorageDirectory(), "file.txt");
-        sink(new FileInputStream(f)); // $hasTaintFlow
+        sink(new FileInputStream(f)); // $ hasTaintFlow
     }
 
     void test6(Context ctx) throws IOException {
         File f = new File(Environment.getExternalStoragePublicDirectory(null), "file.txt");
-        sink(new FileInputStream(f)); // $hasTaintFlow
+        sink(new FileInputStream(f)); // $ hasTaintFlow
     }
 
     static final File dir = Environment.getExternalStorageDirectory();
  
     void test7(Context ctx) throws IOException {
         File f = new File(dir, "file.txt");
-        sink(new FileInputStream(f)); // $hasTaintFlow
+        sink(new FileInputStream(f)); // $ hasTaintFlow 
     }
  }
