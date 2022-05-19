@@ -36,3 +36,8 @@ apply_lambda(my_lambda, "taint") # no flow
 my_lambda = lambda { |x| sink x }
 apply_lambda(my_lambda, "taint") # flow
 
+MY_LAMBDA1 = lambda { |x| sink x }
+apply_lambda(MY_LAMBDA1, "taint") # flow
+
+MY_LAMBDA2 = lambda { |x| puts x }
+apply_lambda(MY_LAMBDA2, "taint") # no flow
