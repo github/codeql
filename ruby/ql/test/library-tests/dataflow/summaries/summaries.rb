@@ -95,3 +95,9 @@ sink(z) # $ hasTaintFlow=tainted
 x = Foo.new
 x.flowToSelf(tainted)
 sink(x) # $ hasTaintFlow=tainted
+
+Foo.sinkAnyArg(tainted) # $ MISSING: hasTaintFlow=tainted
+Foo.sinkAnyArg(key: tainted) # $ MISSING: hasTaintFlow=tainted
+
+Foo.sinkAnyNamedArg(tainted)
+Foo.sinkAnyNamedArg(key: tainted) # $ MISSING: hasTaintFlow=tainted

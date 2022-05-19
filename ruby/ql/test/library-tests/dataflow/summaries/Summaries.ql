@@ -115,7 +115,14 @@ private class InvalidTypeModel extends ModelInput::TypeModelCsv {
 }
 
 private class SinkFromModel extends ModelInput::SinkModelCsv {
-  override predicate row(string row) { row = "test;FooOrBar;Method[method].Argument[0];test-sink" }
+  override predicate row(string row) {
+    row =
+    [
+      "test;FooOrBar;Method[method].Argument[0];test-sink", //
+      ";;Member[Foo].Method[sinkAnyArg].Argument[any];test-sink", //
+      ";;Member[Foo].Method[sinkAnyNamedArg].Argument[any-named];test-sink", //
+    ]
+  }
 }
 
 class CustomValueSink extends DefaultValueFlowConf {
