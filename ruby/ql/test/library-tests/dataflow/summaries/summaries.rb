@@ -88,7 +88,7 @@ x = Foo.new
 y = []
 z = []
 x.flowToAnyArg(tainted, y, key: z)
-sink(x) # $ hasTaintFlow=tainted
+sink(x)
 sink(y) # $ hasTaintFlow=tainted
 sink(z) # $ hasTaintFlow=tainted
 

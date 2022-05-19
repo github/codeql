@@ -477,8 +477,8 @@ class ParameterPosition extends TParameterPosition {
   predicate isKeyword(string name) { this = TKeywordParameterPosition(name) }
 
   /**
-   * Holds if this position represents any parameter. This includes both positional
-   * and named parameters.
+   * Holds if this position represents any parameter, except `self` parameters. This
+   * includes both positional, named, and block parameters.
    */
   predicate isAny() { this = TAnyParameterPosition() }
 
@@ -539,5 +539,5 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
   or
-  ppos.isAny() and exists(apos)
+  ppos.isAny() and not apos.isSelf()
 }
