@@ -140,7 +140,7 @@ class KotlinExtractorExtension(
     }
 
     private fun logPeakMemoryUsage(logger: Logger, time: String) {
-        logger.info("Peak memory usage $time")
+        logger.info("Peak memory: Usage $time")
 
         val beans = ManagementFactory.getMemoryPoolMXBeans()
         var heap: Long = 0
@@ -152,10 +152,10 @@ class KotlinExtractorExtension(
                            MemoryType.NON_HEAP -> { nonheap += peak; "non-heap" }
                            else -> "unknown"
                        }
-            logger.info("  * Peak for $kind bean ${bean.getName()} is $peak")
+            logger.info("Peak memory: * Peak for $kind bean ${bean.getName()} is $peak")
         }
-        logger.info("  * Total heap peak: $heap")
-        logger.info("  * Total non-heap peak: $nonheap")
+        logger.info("Peak memory: * Total heap peak: $heap")
+        logger.info("Peak memory: * Total non-heap peak: $nonheap")
     }
 }
 
