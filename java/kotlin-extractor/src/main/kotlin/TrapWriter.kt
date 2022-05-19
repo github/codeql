@@ -40,6 +40,15 @@ class TrapLabelManager {
     val anonymousTypeMapping: MutableMap<IrClass, TypeResults> = mutableMapOf()
 
     val locallyVisibleFunctionLabelMapping: MutableMap<IrFunction, LocallyVisibleFunctionLabels> = mutableMapOf()
+
+    /**
+     * The set of labels of generic specialisations that we have extracted
+     * in this TRAP file.
+     * We can't easily avoid duplication between TRAP files, as the labels
+     * contain references to other labels, so we just accept this
+     * duplication.
+     */
+    val genericSpecialisationsExtracted = HashSet<String>()
 }
 
 /**

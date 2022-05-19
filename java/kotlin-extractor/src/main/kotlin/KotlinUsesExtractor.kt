@@ -407,7 +407,7 @@ open class KotlinUsesExtractor(
                 extractorWithCSource.extractClassInstance(c, argsIncludingOuterClasses)
             }
 
-            if (inReceiverContext && globalExtensionState.genericSpecialisationsExtracted.add(classLabelResult.classLabel)) {
+            if (inReceiverContext && tw.lm.genericSpecialisationsExtracted.add(classLabelResult.classLabel)) {
                 val supertypeMode = if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses)
                 extractorWithCSource.extractClassSupertypes(c, classLabel, supertypeMode, true)
                 extractorWithCSource.extractNonPrivateMemberPrototypes(c, argsIncludingOuterClasses, classLabel)
