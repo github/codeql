@@ -40,7 +40,8 @@ public class HTMLExtractor implements IExtractor {
       this.textualExtractor = textualExtractor;
 
       this.scopeManager =
-          new ScopeManager(textualExtractor.getTrapwriter(), config.getEcmaVersion(), true);
+          new ScopeManager(textualExtractor.getTrapwriter(), config.getEcmaVersion(),
+            ScopeManager.FileKind.TEMPLATE);
     }
 
     /*
@@ -425,7 +426,7 @@ public class HTMLExtractor implements IExtractor {
           extractSnippet(
               TopLevelKind.ANGULAR_STYLE_TEMPLATE,
               config.withSourceType(SourceType.ANGULAR_STYLE_TEMPLATE),
-              new ScopeManager(textualExtractor.getTrapwriter(), ECMAVersion.ECMA2020, true),
+              new ScopeManager(textualExtractor.getTrapwriter(), ECMAVersion.ECMA2020, ScopeManager.FileKind.TEMPLATE),
               textualExtractor,
               m.group(bodyGroup),
               m.start(bodyGroup),
