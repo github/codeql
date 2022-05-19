@@ -215,6 +215,17 @@ open class KotlinUsesExtractor(
     fun makeTypeGenericSubstitutionMap(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>) =
         getTypeParametersInScope(c).map({ it.symbol }).zip(argsIncludingOuterClasses.map { it.withQuestionMark(true) }).toMap()
 
+    fun makeGenericSubstitutionFunction(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>) =
+        makeTypeGenericSubstitutionMap(c, argsIncludingOuterClasses).let {
+            { x: IrType, useContext: TypeContext, pluginContext: IrPluginContext ->
+                x.substituteTypeAndArguments(
+                    it,
+                    useContext,
+                    pluginContext
+                )
+            }
+        }
+
     // The Kotlin compiler internal representation of Outer<A, B>.Inner<C, D>.InnerInner<E, F>.someFunction<G, H>.LocalClass<I, J> is LocalClass<I, J, G, H, E, F, C, D, A, B>. This function returns [A, B, C, D, E, F, G, H, I, J].
     fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
         if(argsIncludingOuterClasses.isNullOrEmpty())
@@ -242,10 +253,12 @@ open class KotlinUsesExtractor(
         val extractClass = substituteClass ?: c
 
         // `KFunction1<T1,T2>` is substituted by `KFunction<T>`. The last type argument is the return type.
+        // Similarly Function23 and above get replaced by kotlin.jvm.functions.FunctionN with only one type arg, the result type.
         // References to SomeGeneric<T1, T2, ...> where SomeGeneric is declared SomeGeneric<T1, T2, ...> are extracted
         // as if they were references to the unbound type SomeGeneric.
         val extractedTypeArgs = when {
-            c.symbol.isKFunction() && typeArgs != null && typeArgs.isNotEmpty() -> listOf(typeArgs.last())
+            extractClass.symbol.isKFunction() && typeArgs != null && typeArgs.isNotEmpty() -> listOf(typeArgs.last())
+            extractClass.fqNameWhenAvailable == FqName("kotlin.jvm.functions.FunctionN") && typeArgs != null && typeArgs.isNotEmpty() -> listOf(typeArgs.last())
             typeArgs != null && isUnspecialised(c, typeArgs) -> listOf()
             else -> typeArgs
         }
@@ -1083,8 +1096,21 @@ open class KotlinUsesExtractor(
         return classTypeResult.id
     }
 
+    fun getTypeParameterParentLabel(param: IrTypeParameter) =
+        param.parent.let {
+            when (it) {
+                is IrClass -> useClassSource(it)
+                is IrFunction -> useFunction(it, noReplace = true)
+                else -> { logger.error("Unexpected type parameter parent $it"); null }
+            }
+        }
+
     fun getTypeParameterLabel(param: IrTypeParameter): String {
-        val parentLabel = useDeclarationParent(param.parent, false)
+        // Use this instead of `useDeclarationParent` so we can use useFunction with noReplace = true,
+        // ensuring that e.g. a method-scoped type variable declared on kotlin.String.transform <R> gets
+        // a different name to the corresponding java.lang.String.transform <R>, even though useFunction
+        // will usually replace references to one function with the other.
+        val parentLabel = getTypeParameterParentLabel(param)
         return "@\"typevar;{$parentLabel};${param.name}\""
     }
 
