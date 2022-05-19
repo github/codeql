@@ -281,4 +281,10 @@ ParameterPosition parseArgBody(string s) {
   or
   s = "block" and
   result.isBlock()
+  or
+  s = "any" and
+  result.isAny()
+  or
+  s = "any-named" and
+  result.isKeyword(_)
 }

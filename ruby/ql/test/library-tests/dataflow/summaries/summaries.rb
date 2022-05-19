@@ -54,7 +54,7 @@ sink(Foo.namedArg(tainted))
 sink(Foo.anyArg(foo: tainted)) # $ hasTaintFlow=tainted
 sink(Foo.anyArg(tainted)) # $ hasTaintFlow=tainted
 
-sink(Foo.anyNamedArg(foo: tainted)) # $ MISSING: hasTaintFlow=tainted
+sink(Foo.anyNamedArg(foo: tainted)) # $ hasTaintFlow=tainted
 sink(Foo.anyNamedArg(tainted))
 
 sink(Foo.anyPositionFromOne(tainted))
@@ -99,8 +99,8 @@ x = Foo.new
 x.flowToSelf(tainted)
 sink(x) # $ hasTaintFlow=tainted
 
-Foo.sinkAnyArg(tainted) # $ MISSING: hasTaintFlow=tainted
-Foo.sinkAnyArg(key: tainted) # $ MISSING: hasTaintFlow=tainted
+Foo.sinkAnyArg(tainted) # $ hasValueFlow=tainted
+Foo.sinkAnyArg(key: tainted) # $ hasValueFlow=tainted
 
 Foo.sinkAnyNamedArg(tainted)
-Foo.sinkAnyNamedArg(key: tainted) # $ MISSING: hasTaintFlow=tainted
+Foo.sinkAnyNamedArg(key: tainted) # $ MISSING: hasValueFlow=tainted
