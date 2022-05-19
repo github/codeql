@@ -204,6 +204,7 @@ nodes
 | summaries.rb:100:6:100:6 | x | semmle.label | x |
 subpaths
 invalidSpecComponent
+| ;;Member[Foo].Method[anyNamedArg] | Argument[any-named] | Argument[any-named] |
 #select
 | summaries.rb:2:6:2:12 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:2:6:2:12 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
 | summaries.rb:2:6:2:12 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:2:6:2:12 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
