@@ -259,7 +259,8 @@ private module Cached {
       exists(any(Call c).getKeywordArgument(name))
       or
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
-    }
+    } or
+    TAnyArgumentPosition()
 
   cached
   newtype TParameterPosition =
@@ -512,6 +513,12 @@ class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a keyword argument named `name`. */
   predicate isKeyword(string name) { this = TKeywordArgumentPosition(name) }
 
+  /**
+   * Holds if this position represents any argument, except `self` arguments. This
+   * includes both positional, named, and block arguments.
+   */
+  predicate isAny() { this = TAnyArgumentPosition() }
+
   /** Gets a textual representation of this position. */
   string toString() {
     this.isSelf() and result = "self"
@@ -521,6 +528,8 @@ class ArgumentPosition extends TArgumentPosition {
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
+    or
+    this.isAny() and result = "any"
   }
 }
 
@@ -540,4 +549,6 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
   or
   ppos.isAny() and not apos.isSelf()
+  or
+  apos.isAny() and not ppos.isSelf()
 }

@@ -30,6 +30,8 @@ edges
 | summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:102:16:102:22 | tainted |
 | summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:103:21:103:27 | tainted |
 | summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:103:21:103:27 | tainted |
+| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:106:26:106:32 | tainted |
+| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:106:26:106:32 | tainted |
 | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:1:11:1:36 | call to identity :  |
 | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:1:11:1:36 | call to identity :  |
 | summaries.rb:4:12:7:3 | call to apply_block :  | summaries.rb:9:6:9:13 | tainted2 |
@@ -97,6 +99,7 @@ edges
 | summaries.rb:93:16:93:22 | [post] tainted :  | summaries.rb:99:14:99:20 | tainted :  |
 | summaries.rb:93:16:93:22 | [post] tainted :  | summaries.rb:102:16:102:22 | tainted |
 | summaries.rb:93:16:93:22 | [post] tainted :  | summaries.rb:103:21:103:27 | tainted |
+| summaries.rb:93:16:93:22 | [post] tainted :  | summaries.rb:106:26:106:32 | tainted |
 | summaries.rb:93:16:93:22 | tainted :  | summaries.rb:93:16:93:22 | [post] tainted :  |
 | summaries.rb:93:16:93:22 | tainted :  | summaries.rb:93:25:93:25 | [post] y :  |
 | summaries.rb:93:16:93:22 | tainted :  | summaries.rb:93:33:93:33 | [post] z :  |
@@ -216,6 +219,8 @@ nodes
 | summaries.rb:102:16:102:22 | tainted | semmle.label | tainted |
 | summaries.rb:103:21:103:27 | tainted | semmle.label | tainted |
 | summaries.rb:103:21:103:27 | tainted | semmle.label | tainted |
+| summaries.rb:106:26:106:32 | tainted | semmle.label | tainted |
+| summaries.rb:106:26:106:32 | tainted | semmle.label | tainted |
 subpaths
 invalidSpecComponent
 #select
@@ -268,6 +273,8 @@ invalidSpecComponent
 | summaries.rb:102:16:102:22 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:102:16:102:22 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
 | summaries.rb:103:21:103:27 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:103:21:103:27 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
 | summaries.rb:103:21:103:27 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:103:21:103:27 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
+| summaries.rb:106:26:106:32 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:106:26:106:32 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
+| summaries.rb:106:26:106:32 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:106:26:106:32 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
 warning
 | CSV type row should have 5 columns but has 2: test;TooFewColumns |
 | CSV type row should have 5 columns but has 8: test;TooManyColumns;;;Member[Foo].Instance;too;many;columns |

@@ -257,6 +257,12 @@ ArgumentPosition parseParamBody(string s) {
   or
   s = "block" and
   result.isBlock()
+  or
+  s = "any" and
+  result.isAny()
+  or
+  s = "any-named" and
+  result.isKeyword(_)
 }
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */

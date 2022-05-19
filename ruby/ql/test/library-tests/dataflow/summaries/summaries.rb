@@ -103,4 +103,4 @@ Foo.sinkAnyArg(tainted) # $ hasValueFlow=tainted
 Foo.sinkAnyArg(key: tainted) # $ hasValueFlow=tainted
 
 Foo.sinkAnyNamedArg(tainted)
-Foo.sinkAnyNamedArg(key: tainted) # $ MISSING: hasValueFlow=tainted
+Foo.sinkAnyNamedArg(key: tainted) # $ hasValueFlow=tainted

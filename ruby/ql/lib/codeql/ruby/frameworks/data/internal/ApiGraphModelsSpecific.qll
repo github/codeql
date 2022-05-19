@@ -115,7 +115,7 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   or
   token.getName() = "Parameter" and
   result =
-    node.getASuccessor(API::Label::getLabelFromArgumentPosition(FlowSummaryImplSpecific::parseParamBody(token
+    node.getASuccessor(API::Label::getLabelFromParameterPosition(FlowSummaryImplSpecific::parseArgBody(token
               .getAnArgument())))
   // Note: The "Element" token is not implemented yet, as it ultimately requires type-tracking and
   // API graphs to be aware of the steps involving Element contributed by the standard library model.
@@ -129,7 +129,7 @@ bindingset[token]
 API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token) {
   token.getName() = "Argument" and
   result =
-    node.getASuccessor(API::Label::getLabelFromParameterPosition(FlowSummaryImplSpecific::parseArgBody(token
+    node.getASuccessor(API::Label::getLabelFromArgumentPosition(FlowSummaryImplSpecific::parseParamBody(token
               .getAnArgument())))
 }
 
