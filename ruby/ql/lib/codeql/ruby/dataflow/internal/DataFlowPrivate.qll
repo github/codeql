@@ -530,12 +530,12 @@ private module ParameterNodes {
     override predicate isSourceParameterOf(Callable c, ParameterPosition pos) { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      sc = c and pos = pos_
+      sc = c.asLibraryCallable() and pos = pos_
     }
 
     override CfgScope getCfgScope() { none() }
 
-    override DataFlowCallable getEnclosingCallable() { result = sc }
+    override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = sc }
 
     override EmptyLocation getLocationImpl() { any() }
 
@@ -554,7 +554,7 @@ class SummaryNode extends NodeImpl, TSummaryNode {
 
   override CfgScope getCfgScope() { none() }
 
-  override DataFlowCallable getEnclosingCallable() { result = c }
+  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
   override EmptyLocation getLocationImpl() { any() }
 
