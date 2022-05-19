@@ -90,6 +90,11 @@ sink(a[2]) # $ hasValueFlow=elem2
 x = Foo.new
 y = []
 z = []
+# This just highlights that none of x,y,z was tainted before
+sink(x)
+sink(y)
+sink(z)
+
 x.flowToAnyArg(tainted, y, key: z)
 sink(x)
 sink(y) # $ hasTaintFlow=tainted
