@@ -135,7 +135,7 @@ open class KotlinFileExtractor(
                     Unit
                 }
                 is IrField -> {
-                    val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
+                    val parentId = useDeclarationParent(getFieldParent(declaration), false)?.cast<DbReftype>()
                     if (parentId != null) {
                         extractField(declaration, parentId)
                     }
@@ -829,10 +829,13 @@ open class KotlinFileExtractor(
                 }
 
                 if (bf != null && extractBackingField) {
-                    val fieldId = extractField(bf, parentId)
-                    tw.writeKtPropertyBackingFields(id, fieldId)
-                    if (p.isDelegated) {
-                        tw.writeKtPropertyDelegates(id, fieldId)
+                    val fieldParentId = useDeclarationParent(getFieldParent(bf), false)
+                    if (fieldParentId != null) {
+                        val fieldId = extractField(bf, fieldParentId.cast())
+                        tw.writeKtPropertyBackingFields(id, fieldId)
+                        if (p.isDelegated) {
+                            tw.writeKtPropertyDelegates(id, fieldId)
+                        }
                     }
                 }
 
