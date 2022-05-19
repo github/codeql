@@ -294,3 +294,83 @@ module TS46 {
     }
   };
 }
+
+function foo_47() {
+  const key = Symbol();
+
+  const numberOrString = Math.random() < 0.5 ? 42 : "hello";
+
+  let obj = {
+    [key]: numberOrString,
+  };
+
+  if (typeof obj[key] === "string") {
+    let str = obj[key]; // <- string
+    str.toUpperCase();
+  }
+
+  //////////
+
+  function f<T>(arg: {
+    produce: (n: string) => T,
+    consume: (x: T) => void }
+  ): void {};
+
+  f({
+    produce: n => n, // <- (n: string) => string
+    consume: x => x.toLowerCase()
+  });
+
+  ///////////
+
+  const ErrorMap = Map<string, Error>;
+
+  const errorMap = new ErrorMap(); // <- Map<string, Error>
+
+  ////////////
+
+  type FirstString<T> =
+    T extends [infer S extends string, ...unknown[]]
+        ? S
+        : never;
+  
+  type F = FirstString<['a' | 'b', number, boolean]>;
+
+  const a: F = 'a'; // <- 'a' | 'b'
+
+  ////////////
+
+  interface State<in out T> {
+    get: () => T;
+    set: (value: T) => void;
+  }
+
+  const state: State<number> = {
+    get: () => 42,
+    set: (value) => { }
+  }
+
+  const fortyTwo = state.get(); // <- number
+
+  ////////////
+
+  // This does not compile as of 2022-05-19 with typescript@4.7.1-rc, but it might
+  // work with the actually released version:
+
+  // class Container {
+  //   #data = "hello!";
+
+  //   get data(): typeof this.#data {
+  //       return this.#data;
+  //   }
+
+  //   set data(value: typeof this.#data) {
+  //       this.#data = value;
+  //   }
+  // }
+
+  // const c = new Container();
+
+  // const hello = c.data(); // <- string
+
+}
