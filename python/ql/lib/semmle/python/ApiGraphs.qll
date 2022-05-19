@@ -356,7 +356,7 @@ module API {
     }
 
     /** Gets the number of arguments of this call. Both positional and named arguments are counted. */
-    int getNumArgument() { result = count([this.getArg(_), this.getArgByName(_)]) }
+    int getNumArgument() { result = count(this.getArg(_)) }
   }
 
   /**

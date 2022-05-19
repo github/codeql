@@ -87,8 +87,8 @@ mySink(Steps.preserveAllButFirstArgument("foo", getSource())) # FLOW
 mySink(Steps.preserveAllButFirstArgument("foo", "bar", getSource())) # FLOW
 
 CallFilter.arityOne(one) # match
-CallFilter.arityOne(one=one) # match
-CallFilter.arityOne(one, two=two) # NO match
+CallFilter.arityOne(one=one) # NO match
+CallFilter.arityOne(one, two=two) # match - on both the named and positional arguments
 CallFilter.arityOne(one=one, two=two) # NO match
 
 from foo1.bar import baz1

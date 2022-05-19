@@ -47,7 +47,8 @@ isSink
 | test.py:86:8:86:60 | ControlFlowNode for Attribute() | test-sink |
 | test.py:87:8:87:67 | ControlFlowNode for Attribute() | test-sink |
 | test.py:89:21:89:23 | ControlFlowNode for one | test-sink |
-| test.py:90:25:90:27 | ControlFlowNode for one | test-sink |
+| test.py:91:21:91:23 | ControlFlowNode for one | test-sink |
+| test.py:91:30:91:32 | ControlFlowNode for two | test-sink |
 | test.py:98:6:98:9 | ControlFlowNode for baz2 | test-sink |
 isSource
 | test.py:3:5:3:15 | ControlFlowNode for getSource() | test-source |
