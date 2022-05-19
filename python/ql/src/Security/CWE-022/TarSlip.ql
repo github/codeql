@@ -16,7 +16,7 @@ import python
 import semmle.python.security.Paths
 import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Basic
-private import semmle.python.ApiGraphs
+private import semmle.python.ApiGraphs::API as API
 
 /** A TaintKind to represent open tarfile objects. That is, the result of calling `tarfile.open(...)` */
 class OpenTarFile extends TaintKind {

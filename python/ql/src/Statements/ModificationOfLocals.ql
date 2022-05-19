@@ -11,7 +11,7 @@
  */
 
 import python
-private import semmle.python.ApiGraphs
+private import semmle.python.ApiGraphs::API as API
 
 predicate originIsLocals(ControlFlowNode n) {
   n.pointsTo(_, _, API::moduleImport("locals").getACall().getNode())

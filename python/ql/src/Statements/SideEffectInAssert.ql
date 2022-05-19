@@ -12,7 +12,7 @@
  */
 
 import python
-private import semmle.python.ApiGraphs
+private import semmle.python.ApiGraphs::API as API
 
 predicate func_with_side_effects(Expr e) {
   exists(string name | name = e.(Attribute).getName() or name = e.(Name).getId() |
