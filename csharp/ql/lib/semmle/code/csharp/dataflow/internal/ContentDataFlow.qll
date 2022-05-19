@@ -29,9 +29,12 @@ module ContentDataFlow {
    * ```ql
    * class MyAnalysisConfiguration extends ContentDataFlowConfiguration {
    *   MyAnalysisConfiguration() { this = "MyAnalysisConfiguration" }
-   *   // Override `isSource`, `isSink`, and `accessPathLimit`.
+   *   // Override `isSource` and `isSink`.
    *   // Optionally override `isBarrier`.
    *   // Optionally override `isAdditionalFlowStep`.
+   *   // Optionally override `getAFeature`.
+   *   // Optionally override `accessPathLimit`.
+   *   // Optionally override `isRelevantContent`.
    * }
    * ```
    *
