@@ -21,14 +21,34 @@ class VisitorBase {
 
 // we want to override the default swift visitor behaviour of chaining calls to immediate
 // superclasses by default and instead provide our own TBD default (using the exact type)
-#define DEFAULT(KIND, CLASS, PARENT) \
-  void visit##CLASS##KIND(swift::CLASS##KIND* e) { dispatcher_.emitUnknown(e); }
+// if we the implementation class has translate##CLASS##KIND (that uses generated C++ classes), we
+// want to use that. We detect that by comparing the member function pointer to the one for a
+// private undefined member function of the same name and signature in {Ast,Type}VisitorBase, which
+// will be shadowed (and thus different) in case the implementation class has it.
+#define DEFAULT(KIND, CLASS, PARENT)                                              \
+ public:                                                                          \
+  void visit##CLASS##KIND(swift::CLASS##KIND* e) {                                \
+    constexpr bool hasTranslateImplementation =                                   \
+        (&Self::translate##CLASS##KIND != &CrtpSubclass::translate##CLASS##KIND); \
+    if constexpr (hasTranslateImplementation) {                                   \
+      TrapClassOf<swift::CLASS##KIND> entry{};                                    \
+      static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(e, &entry);        \
+      dispatcher_.emit(entry);                                                    \
+    } else {                                                                      \
+      dispatcher_.emitUnknown(e);                                                 \
+    }                                                                             \
+  }                                                                               \
+                                                                                  \
+ private:                                                                         \
+  void translate##CLASS##KIND(swift::CLASS##KIND*, TrapClassOf<swift::CLASS##KIND>*);
 
 // base class for our AST visitors, getting a SwiftDispatcher member and default emission for
 // unknown/TBD entities. Like `swift::ASTVisitor`, this uses CRTP (the Curiously Recurring Template
 // Pattern)
 template <typename CrtpSubclass>
 class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, protected detail::VisitorBase {
+  using Self = AstVisitorBase;
+
  public:
   using VisitorBase::VisitorBase;
 
@@ -53,6 +73,8 @@ class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, protected detail:
 // Pattern)
 template <typename CrtpSubclass>
 class TypeVisitorBase : public swift::TypeVisitor<CrtpSubclass>, protected detail::VisitorBase {
+  using Self = TypeVisitorBase;
+
  public:
   using VisitorBase::VisitorBase;
 

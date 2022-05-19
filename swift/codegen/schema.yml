@@ -19,7 +19,7 @@ File:
   name: string
 
 Locatable:
-  location: Location
+  location: Location?
 
 Location:
   file: File

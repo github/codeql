@@ -120,6 +120,27 @@ class SwiftDispatcher {
                    locatableLabel);
   }
 
+  // return `std::optional(fetchLabel(arg))` if arg converts to true, otherwise std::nullopt
+  template <typename Arg>
+  auto fetchOptionalLabel(Arg&& arg)
+      -> std::optional<decltype(fetchLabel(std::forward<Arg>(arg)))> {
+    if (arg) {
+      return fetchLabel(std::forward<Arg>(arg));
+    }
+    return std::nullopt;
+  }
+
+  // map `fetchLabel` on the iterable `arg`, returning a vector of all labels
+  template <typename Iterable>
+  auto fetchRepeatedLabels(Iterable&& arg) -> std::vector<decltype(fetchLabel(*arg.begin()))> {
+    std::vector<decltype(fetchLabel(*arg.begin()))> ret;
+    ret.reserve(arg.size());
+    for (const auto& e : arg) {
+      ret.push_back(fetchLabel(e));
+    }
+    return ret;
+  }
+
  private:
   // types to be supported by assignNewLabel/fetchLabel need to be listed here
   using Store = TrapLabelStore<swift::Decl,
@@ -147,7 +168,7 @@ class SwiftDispatcher {
     auto locLabel = createLabel<LocationTag>('{', fileLabel, "}:", startLine, ':', startColumn, ':',
                                              endLine, ':', endColumn);
     trap.emit(LocationsTrap{locLabel, fileLabel, startLine, startColumn, endLine, endColumn});
-    trap.emit(LocatablesTrap{locatableLabel, locLabel});
+    trap.emit(LocatableLocationsTrap{locatableLabel, locLabel});
   }
 
   template <typename Tag, typename... Ts>
