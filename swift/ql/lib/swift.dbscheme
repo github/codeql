@@ -1774,8 +1774,7 @@ bound_generic_struct_types(
 );
 
 class_types(
-  unique int id: @class_type,
-  int decl: @class_decl ref
+  unique int id: @class_type
 );
 
 enum_types(
@@ -1787,8 +1786,7 @@ protocol_types(
 );
 
 struct_types(
-  unique int id: @struct_type,
-  int decl: @struct_decl ref
+  unique int id: @struct_type
 );
 
 array_slice_types(

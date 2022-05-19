@@ -28,13 +28,13 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
 
   void visitStructType(swift::StructType* type) {
     auto label = dispatcher_.assignNewLabel(type);
-    dispatcher_.emit(StructTypesTrap{label, dispatcher_.fetchLabel(type->getDecl())});
+    dispatcher_.emit(StructTypesTrap{label});
     emitAnyGenericType(type, label);
   }
 
   void visitClassType(swift::ClassType* type) {
     auto label = dispatcher_.assignNewLabel(type);
-    dispatcher_.emit(ClassTypesTrap{label, dispatcher_.fetchLabel(type->getDecl())});
+    dispatcher_.emit(ClassTypesTrap{label});
     emitAnyGenericType(type, label);
   }
 

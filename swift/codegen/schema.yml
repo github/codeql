@@ -898,7 +898,6 @@ BoundGenericStructType:
 
 ClassType:
   _extends: NominalType
-  decl: ClassDecl
 
 EnumType:
   _extends: NominalType
@@ -908,7 +907,6 @@ ProtocolType:
 
 StructType:
   _extends: NominalType
-  decl: StructDecl
 
 ArraySliceType:
   _extends: UnarySyntaxSugarType
