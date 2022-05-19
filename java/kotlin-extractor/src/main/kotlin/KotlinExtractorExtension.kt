@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.ir.IrElement
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.management.*
 import java.nio.file.Files
 import java.nio.file.Paths
 import com.semmle.util.files.FileUtil
@@ -108,6 +109,7 @@ class KotlinExtractorExtension(
             logger.flush()
             logger.info("Extraction for invocation TRAP file $invocationTrapFile")
             logger.flush()
+            logPeakMemoryUsage(logger, "before extractor")
             if (System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true") {
                 logger.info("moduleFragment:\n" + moduleFragment.dump())
             }
@@ -127,6 +129,7 @@ class KotlinExtractorExtension(
                 fileTrapWriter.writeCompilation_compiling_files_completed(compilation, index, fileExtractionProblems.extractionResult())
             }
             loggerBase.printLimitedDiagnosticCounts(tw)
+            logPeakMemoryUsage(logger, "after extractor")
             logger.info("Extraction completed")
             logger.flush()
             val compilationTimeMs = System.currentTimeMillis() - startTimeMs
@@ -134,6 +137,25 @@ class KotlinExtractorExtension(
             tw.flush()
             loggerBase.close()
         }
+    }
+
+    private fun logPeakMemoryUsage(logger: Logger, time: String) {
+        logger.info("Peak memory usage $time")
+
+        val beans = ManagementFactory.getMemoryPoolMXBeans()
+        var heap: Long = 0
+        var nonheap: Long = 0
+        for (bean in beans) {
+            val peak = bean.getPeakUsage().getUsed()
+            val kind = when (bean.getType()) {
+                           MemoryType.HEAP -> { heap += peak; "heap" }
+                           MemoryType.NON_HEAP -> { nonheap += peak; "non-heap" }
+                           else -> "unknown"
+                       }
+            logger.info("  * Peak for $kind bean ${bean.getName()} is $peak")
+        }
+        logger.info("  * Total heap peak: $heap")
+        logger.info("  * Total non-heap peak: $nonheap")
     }
 }
 
