@@ -54,6 +54,9 @@ sink(Foo.namedArg(tainted))
 sink(Foo.anyArg(foo: tainted)) # $ hasTaintFlow=tainted
 sink(Foo.anyArg(tainted)) # $ hasTaintFlow=tainted
 
+# sink(Foo.anyNamedArg(foo: tainted)) # $ MISSING: hasTaintFlow=tainted
+# sink(Foo.anyNamedArg(tainted))
+
 sink(Foo.anyPositionFromOne(tainted))
 sink(Foo.anyPositionFromOne(0, tainted)) # $ hasTaintFlow=tainted
 
