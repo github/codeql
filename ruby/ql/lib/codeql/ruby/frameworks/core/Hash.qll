@@ -65,6 +65,20 @@ module Hash {
     }
   }
 
+  /**
+   * `Hash[]` called on an existing hash, e.g.
+   *
+   * ```rb
+   * h = {foo: 0, bar: 1, baz: 2}
+   * Hash[h] # => {:foo=>0, :bar=>1, :baz=>2}
+   * ```
+   *
+   * or on a 2-element array, e.g.
+   *
+   * ```rb
+   * Hash[ [ [:foo, 0], [:bar, 1] ] ] # => {:foo=>0, :bar=>1}
+   * ```
+   */
   private class HashNewSummary extends SummarizedCallable {
     HashNewSummary() { this = "Hash[]" }
 
@@ -87,11 +101,18 @@ module Hash {
     }
   }
 
-  private class HashNewSummary2 extends SummarizedCallable {
+  /**
+   * `Hash[]` called on an even number of arguments, e.g.
+   *
+   * ```rb
+   * Hash[:foo, 0, :bar, 1] # => {:foo=>0, :bar=>1}
+   * ```
+   */
+  private class HashNewSuccessivePairsSummary extends SummarizedCallable {
     private int i;
     private ConstantValue cv;
 
-    HashNewSummary2() {
+    HashNewSuccessivePairsSummary() {
       this = "Hash[" + i + ", " + cv.serialize() + "]" and
       i % 2 = 1 and
       exists(ElementReference er |
