@@ -564,11 +564,6 @@ private class CipherOperation extends Cryptography::CryptographicOperation::Rang
 
   override DataFlow::Node getAnInput() { result = input }
 
-  override predicate isWeak() {
-    cipherNode.getCipher().isWeak() or
-    cipherNode.getCipherMode().isWeak()
-  }
-
   override Cryptography::BlockMode getBlockMode() {
     result = cipherNode.getCipherMode().getBlockMode()
   }
