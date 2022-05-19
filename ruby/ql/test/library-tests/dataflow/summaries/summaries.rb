@@ -83,3 +83,15 @@ a.withoutElementOne()
 sink(a[0])
 sink(a[1])
 sink(a[2]) # $ hasValueFlow=elem2
+
+x = Foo.new
+y = []
+z = []
+x.flowToAnyArg(tainted, y, key: z)
+sink(x) # $ hasTaintFlow=tainted
+sink(y) # $ hasTaintFlow=tainted
+sink(z) # $ hasTaintFlow=tainted
+
+x = Foo.new
+x.flowToSelf(tainted)
+sink(x) # $ hasTaintFlow=tainted
