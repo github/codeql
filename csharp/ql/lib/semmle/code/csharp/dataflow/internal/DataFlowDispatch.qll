@@ -457,7 +457,7 @@ class SummaryCall extends DelegateDataFlowCall, TSummaryCall {
 
   override DataFlow::Node getNode() { none() }
 
-  override DataFlowCallable getEnclosingCallable() { result = c }
+  override DataFlowCallable getEnclosingCallable() { result.asSummarizedCallable() = c }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
