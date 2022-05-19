@@ -15,6 +15,38 @@ class VisitorBase {
  public:
   // SwiftDispatcher should outlive this instance
   VisitorBase(SwiftDispatcher& dispatcher) : dispatcher_{dispatcher} {}
+
+ protected:
+  template <typename Trap, typename... Args>
+  void emit(Args&&... args) {
+    dispatcher_.emit(Trap{resolve(args, 0)...});
+  }
+
+  template <typename Trap, typename Tag, typename Range>
+  void emitRepeated(TrapLabel<Tag> label, Range&& range) {
+    auto i = 0u;
+    for (const auto& e : range) {
+      emit<Trap>(label, i++, e);
+    }
+  }
+
+  template <typename Trap, typename Tag, typename Arg>
+  void emitOptional(TrapLabel<Tag> label, Arg&& arg) {
+    if (arg) {
+      emit<Trap>(label, std::forward<Arg>(arg));
+    }
+  }
+
+ private:
+  template <typename Arg>
+  auto resolve(Arg&& arg, int) -> decltype(dispatcher_.fetchLabel(std::forward<Arg>(arg))) {
+    return dispatcher_.fetchLabel(std::forward<Arg>(arg));
+  }
+
+  template <typename Arg>
+  Arg&& resolve(Arg&& arg, double) {
+    return std::forward<Arg>(arg);
+  }
 };
 
 }  // namespace detail
