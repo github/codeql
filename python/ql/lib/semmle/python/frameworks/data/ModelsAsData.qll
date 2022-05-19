@@ -5,7 +5,8 @@
  * - Use the `ModelInput` module to contribute new models.
  * - Use the `ModelOutput` module to access the model results in terms of API nodes.
  *
- * The package name refers to a Pip package name.
+ * The package name refers to the top-level module the import comes from, and not a PyPI package.
+ * So for `from foo.bar import baz`, the package will be `foo`.
  */
 
 private import python
