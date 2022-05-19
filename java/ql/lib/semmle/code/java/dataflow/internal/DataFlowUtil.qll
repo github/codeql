@@ -99,36 +99,41 @@ predicate hasNonlocalValue(FieldRead fr) {
   )
 }
 
-/**
- * Holds if data can flow from `node1` to `node2` in one local step.
- */
 cached
-predicate localFlowStep(Node node1, Node node2) {
-  simpleLocalFlowStep0(node1, node2)
-  or
-  adjacentUseUse(node1.asExpr(), node2.asExpr())
-  or
-  // Simple flow through library code is included in the exposed local
-  // step relation, even though flow is technically inter-procedural
-  FlowSummaryImpl::Private::Steps::summaryThroughStepValue(node1, node2)
+private module Cached {
+  /**
+   * Holds if data can flow from `node1` to `node2` in one local step.
+   */
+  cached
+  predicate localFlowStep(Node node1, Node node2) {
+    simpleLocalFlowStep0(node1, node2)
+    or
+    adjacentUseUse(node1.asExpr(), node2.asExpr())
+    or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(node1, node2)
+  }
+
+  /**
+   * INTERNAL: do not use.
+   *
+   * This is the local flow predicate that's used as a building block in global
+   * data flow. It may have less flow than the `localFlowStep` predicate.
+   */
+  cached
+  predicate simpleLocalFlowStep(Node node1, Node node2) {
+    simpleLocalFlowStep0(node1, node2)
+    or
+    any(AdditionalValueStep a).step(node1, node2) and
+    pragma[only_bind_out](node1.getEnclosingCallable()) =
+      pragma[only_bind_out](node2.getEnclosingCallable()) and
+    // prevent recursive call
+    (any(AdditionalValueStep a).step(_, _) implies any())
+  }
 }
 
-/**
- * INTERNAL: do not use.
- *
- * This is the local flow predicate that's used as a building block in global
- * data flow. It may have less flow than the `localFlowStep` predicate.
- */
-cached
-predicate simpleLocalFlowStep(Node node1, Node node2) {
-  simpleLocalFlowStep0(node1, node2)
-  or
-  any(AdditionalValueStep a).step(node1, node2) and
-  pragma[only_bind_out](node1.getEnclosingCallable()) =
-    pragma[only_bind_out](node2.getEnclosingCallable()) and
-  // prevent recursive call
-  (any(AdditionalValueStep a).step(_, _) implies any())
-}
+import Cached
 
 private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   TaintTrackingUtil::forceCachingInSameStage() and
