@@ -785,7 +785,7 @@ module Private {
     private ParamNode summaryArgParam(ArgNode arg, ReturnNodeExt ret, OutNodeExt out) {
       exists(DataFlowCall call, ReturnKindExt rk |
         result = summaryArgParam0(call, arg) and
-        pragma[only_bind_out](ret).getKind() = pragma[only_bind_into](rk) and
+        ret.getKind() = pragma[only_bind_into](rk) and
         out = pragma[only_bind_into](rk).getAnOutNode(call)
       )
     }
@@ -800,8 +800,8 @@ module Private {
     predicate summaryThroughStepValue(ArgNode arg, Node out) {
       exists(ReturnKind rk, ReturnNode ret, DataFlowCall call |
         summaryLocalStep(summaryArgParam0(call, arg), ret, true) and
-        ret.getKind() = rk and
-        out = getAnOutNode(call, rk)
+        ret.getKind() = pragma[only_bind_into](rk) and
+        out = getAnOutNode(call, pragma[only_bind_into](rk))
       )
     }
 
