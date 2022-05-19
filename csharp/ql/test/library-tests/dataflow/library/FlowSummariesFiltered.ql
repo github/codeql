@@ -3,7 +3,7 @@ private import semmle.code.csharp.dataflow.internal.DataFlowPrivate::Csv
 private import semmle.code.csharp.dataflow.ExternalFlow
 
 class IncludeFilteredSummarizedCallable extends IncludeSummarizedCallable {
-  IncludeFilteredSummarizedCallable() { this instanceof SummarizedCallable }
+  IncludeFilteredSummarizedCallable() { exists(this) }
 
   /**
    * Holds if flow is propagated between `input` and `output` and
@@ -14,10 +14,11 @@ class IncludeFilteredSummarizedCallable extends IncludeSummarizedCallable {
     SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
   ) {
     this.propagatesFlow(input, output, preservesValue) and
-    not exists(IncludeSummarizedCallable rsc |
-      isBaseCallableOrPrototype(rsc) and
+    not exists(IncludeSummarizedCallable rsc, SummarizedCallable sc |
+      sc = rsc.asSummarizedCallable() and
+      isBaseCallableOrPrototype(sc) and
       rsc.propagatesFlow(input, output, preservesValue) and
-      this.(UnboundCallable).overridesOrImplementsUnbound(rsc)
+      this.asSummarizedCallable().(UnboundCallable).overridesOrImplementsUnbound(sc)
     )
   }
 }

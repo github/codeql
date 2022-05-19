@@ -3,6 +3,7 @@
  */
 
 private import csharp
+private import dotnet
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import DataFlowDispatch
 private import DataFlowPrivate
@@ -12,6 +13,7 @@ private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Public
 private import semmle.code.csharp.Unification
 private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition instanceParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
@@ -36,7 +38,7 @@ DataFlowType getContentType(Content c) {
   )
 }
 
-private DataFlowType getReturnTypeBase(DataFlowCallable c, ReturnKind rk) {
+private DataFlowType getReturnTypeBase(DotNet::Callable c, ReturnKind rk) {
   exists(Type t | result = Gvn::getGlobalValueNumber(t) |
     rk instanceof NormalReturnKind and
     (
@@ -53,7 +55,7 @@ private DataFlowType getReturnTypeBase(DataFlowCallable c, ReturnKind rk) {
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c]
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  result = getReturnTypeBase(c, rk)
+  result = getReturnTypeBase(c.asSummarizedCallable(), rk)
   or
   rk =
     any(JumpReturnKind jrk | result = getReturnTypeBase(jrk.getTarget(), jrk.getTargetReturnKind()))
@@ -83,6 +85,21 @@ DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
   )
 }
 
+private predicate summaryElement0(
+  DotNet::Callable c, string input, string output, string kind, boolean generated
+) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, generated) and
+    c = interpretElement(namespace, type, subtypes, name, signature, ext)
+  )
+}
+
+private class SummarizedCallableExternal extends FlowSummary::SummarizedCallable {
+  SummarizedCallableExternal() { summaryElement0(this, _, _, _, _) }
+}
+
 /**
  * Holds if an external flow summary exists for `c` with input specification
  * `input`, output specification `output`, kind `kind`, and a flag `generated`
@@ -91,12 +108,7 @@ DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
 predicate summaryElement(
   DataFlowCallable c, string input, string output, string kind, boolean generated
 ) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
-  |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, generated) and
-    c = interpretElement(namespace, type, subtypes, name, signature, ext)
-  )
+  summaryElement0(c.asSummarizedCallable(), input, output, kind, generated)
 }
 
 /**
@@ -219,10 +231,10 @@ class InterpretNode extends TInterpretNode {
   DataFlowCall asCall() { this = TDataFlowCall_(result) }
 
   /** Gets the callable that this node corresponds to, if any. */
-  DataFlowCallable asCallable() { result = this.asElement() }
+  DataFlowCallable asCallable() { result.getUnderlyingCallable() = this.asElement() }
 
   /** Gets the target of this call, if any. */
-  Callable getCallTarget() { result = viableCallable(this.asCall()) }
+  Callable getCallTarget() { result = this.asCall().(NonDelegateDataFlowCall).getATarget(_) }
 
   /** Gets a textual representation of this node. */
   string toString() {
