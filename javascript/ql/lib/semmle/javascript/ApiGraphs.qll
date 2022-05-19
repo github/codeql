@@ -31,7 +31,7 @@ module API {
    * 3. Map the resulting API graph nodes to data-flow nodes, using `getASource` or `getASink`.
    *
    * For example, a simplified way to get arguments to `underscore.extend` would be
-   * ```codeql
+   * ```ql
    * API::moduleImport("underscore").getMember("extend").getParameter(0).getASink()
    * ```
    *
