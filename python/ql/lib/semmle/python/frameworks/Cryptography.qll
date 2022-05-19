@@ -195,9 +195,9 @@ private module CryptographyModel {
             call.getArg(0), call.getArgByName("algorithm")
           ] and
         exists(DataFlow::Node modeArg | modeArg in [call.getArg(1), call.getArgByName("mode")] |
-          modeArg = modeClassRef(modeName).getReturn().getAUse()
-          or
-          modeArg.asExpr() instanceof None and modeName = "<none>"
+          if modeArg = modeClassRef(modeName).getReturn().getAUse()
+          then any()
+          else modeName = "<None or unknown>"
         )
       )
     }
