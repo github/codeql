@@ -654,9 +654,13 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null, locOverride: Label<DbLocation>? = null): Label<out DbCallable>? {
-        if (isFake(f)) return null
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null, locOverride: Label<DbLocation>? = null) =
+        if (isFake(f))
+            null
+        else
+            extractNonFakeFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, idOverride, locOverride)
 
+    fun extractNonFakeFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null, locOverride: Label<DbLocation>? = null): Label<out DbCallable>  {
         with("function", f) {
             DeclarationStackAdjuster(f).use {
 
@@ -3997,7 +4001,15 @@ open class KotlinFileExtractor(
 
                     fun trySub(t: IrType, context: TypeContext) = if (typeSub == null) t else typeSub(t, context, pluginContext)
 
-                    extractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, idOverride = ids.function, locOverride = tw.getLocation(e))
+                    // Force extraction of this function even if this is a fake override --
+                    // This happens in the case where a functional interface inherits its only abstract member,
+                    // which usually we wouldn't extract, but in this case we're effectively using it as a template
+                    // for the real function we're extracting that will implement this interface, and it serves fine
+                    // for that purpose. By contrast if we looked through the fake to the underlying abstract method
+                    // we would need to compose generic type substitutions -- for example, if we're implementing
+                    // T UnaryOperator<T>.apply(T t) here, we would need to compose substitutions so we can implement
+                    // the real underlying R Function<T, R>.apply(T t).
+                    extractNonFakeFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, idOverride = ids.function, locOverride = tw.getLocation(e))
 
                     //body
                     val blockId = tw.getFreshIdLabel<DbBlock>()
