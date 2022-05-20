@@ -1,7 +1,3 @@
-//
-// Created by redsun82 on 26.01.22.
-//
-
 #pragma once
 
 #include "swift/extractor/visitors/VisitorBase.h"
