@@ -3,4 +3,18 @@ import codeql.swift.elements.expr.Expr
 
 class DotSyntaxBaseIgnoredExprBase extends @dot_syntax_base_ignored_expr, Expr {
   override string getAPrimaryQlClass() { result = "DotSyntaxBaseIgnoredExpr" }
+
+  Expr getQualifier() {
+    exists(Expr x |
+      dot_syntax_base_ignored_exprs(this, x, _) and
+      result = x.resolve()
+    )
+  }
+
+  Expr getSubExpr() {
+    exists(Expr x |
+      dot_syntax_base_ignored_exprs(this, _, x) and
+      result = x.resolve()
+    )
+  }
 }

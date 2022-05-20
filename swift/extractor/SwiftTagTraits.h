@@ -35,6 +35,8 @@ using SILBoxTypeReprTag = SilBoxTypeReprTag;
   static_assert(std::is_base_of_v<TYPE##Tag, TAG>, "override is not a subtag");
 
 MAP_TAG(Stmt);
+MAP_TAG(StmtCondition);
+MAP_TAG(CaseLabelItem);
 #define ABSTRACT_STMT(CLASS, PARENT) MAP_SUBTAG(CLASS##Stmt, PARENT)
 #define STMT(CLASS, PARENT) ABSTRACT_STMT(CLASS, PARENT)
 #include "swift/AST/StmtNodes.def"

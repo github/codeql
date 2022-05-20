@@ -13,12 +13,18 @@ class UntypedTrapLabel {
   template <typename Tag>
   friend class TrapLabel;
 
+  static constexpr uint64_t undefined = 0xffffffffffffffff;
+
  protected:
-  UntypedTrapLabel() : id_{0xffffffffffffffff} {}
+  UntypedTrapLabel() : id_{undefined} {}
   UntypedTrapLabel(uint64_t id) : id_{id} {}
 
  public:
   friend std::ostream& operator<<(std::ostream& out, UntypedTrapLabel l) {
+    // TODO: this is a temporary fix to catch us from outputting undefined labels to trap
+    // this should be moved to a validity check, probably aided by code generation and carried out
+    // by `SwiftDispatcher`
+    assert(l.id_ != undefined && "outputting an undefined label!");
     out << '#' << std::hex << l.id_ << std::dec;
     return out;
   }

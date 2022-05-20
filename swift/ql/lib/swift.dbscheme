@@ -78,10 +78,24 @@ locations(
 | @unresolved_type
 ;
 
+#keyset[id]
+types(
+  int id: @type ref,
+  string diagnostics_name: string ref,
+  int canonical_type: @type ref
+);
+
 @iterable_decl_context =
   @extension_decl
 | @nominal_type_decl
 ;
+
+#keyset[id, index]
+iterable_decl_context_members(
+  int id: @iterable_decl_context ref,
+  int index: int ref,
+  int member: @decl ref
+);
 
 extension_decls(
   unique int id: @extension_decl
@@ -93,6 +107,12 @@ extension_decls(
 | @protocol_decl
 | @struct_decl
 ;
+
+#keyset[id]
+nominal_type_decls(
+  int id: @nominal_type_decl ref,
+  int type_: @type ref
+);
 
 @ast_node =
   @case_label_item
@@ -108,15 +128,70 @@ condition_elements(
   unique int id: @condition_element
 );
 
+#keyset[id]
+condition_element_booleans(
+  int id: @condition_element ref,
+  int boolean_: @expr ref
+);
+
+#keyset[id]
+condition_element_patterns(
+  int id: @condition_element ref,
+  int pattern: @pattern ref
+);
+
+#keyset[id]
+condition_element_initializers(
+  int id: @condition_element ref,
+  int initializer: @expr ref
+);
+
 @any_function_type =
   @function_type
 | @generic_function_type
 ;
 
+#keyset[id]
+any_function_types(
+  int id: @any_function_type ref,
+  int result: @type ref
+);
+
+#keyset[id, index]
+any_function_type_param_types(
+  int id: @any_function_type ref,
+  int index: int ref,
+  int param_type: @type ref
+);
+
+#keyset[id, index]
+any_function_type_param_labels(
+  int id: @any_function_type ref,
+  int index: int ref,
+  string param_label: string ref
+);
+
+#keyset[id]
+any_function_type_is_throwing(
+  int id: @any_function_type ref
+);
+
 @any_generic_type =
   @nominal_or_bound_generic_nominal_type
 | @unbound_generic_type
 ;
+
+#keyset[id]
+any_generic_types(
+  int id: @any_generic_type ref,
+  int declaration: @decl ref
+);
+
+#keyset[id]
+any_generic_type_parents(
+  int id: @any_generic_type ref,
+  int parent: @type ref
+);
 
 @any_metatype_type =
   @existential_metatype_type
@@ -138,7 +213,9 @@ condition_elements(
 ;
 
 dependent_member_types(
-  unique int id: @dependent_member_type
+  unique int id: @dependent_member_type,
+  int baseType: @type ref,
+  int associated_type_decl: @associated_type_decl ref
 );
 
 dynamic_self_types(
@@ -154,7 +231,8 @@ in_out_types(
 );
 
 l_value_types(
-  unique int id: @l_value_type
+  unique int id: @l_value_type,
+  int object_type: @type ref
 );
 
 module_types(
@@ -208,6 +286,20 @@ sil_token_types(
 
 tuple_types(
   unique int id: @tuple_type
+);
+
+#keyset[id, index]
+tuple_type_types(
+  int id: @tuple_type ref,
+  int index: int ref,
+  int type_: @type ref
+);
+
+#keyset[id, index]
+tuple_type_names(
+  int id: @tuple_type ref,
+  int index: int ref,
+  string name: string ref
 );
 
 type_variable_types(
@@ -303,6 +395,12 @@ struct_decls(
 | @vararg_expansion_expr
 ;
 
+#keyset[id]
+expr_types(
+  int id: @expr ref,
+  int type_: @type ref
+);
+
 @pattern =
   @any_pattern
 | @binding_pattern
@@ -360,6 +458,13 @@ function_types(
 
 generic_function_types(
   unique int id: @generic_function_type
+);
+
+#keyset[id, index]
+generic_function_type_generic_params(
+  int id: @generic_function_type ref,
+  int index: int ref,
+  int generic_param: @generic_type_param_type ref
 );
 
 @nominal_or_bound_generic_nominal_type =
@@ -445,11 +550,13 @@ weak_storage_types(
 ;
 
 generic_type_param_types(
-  unique int id: @generic_type_param_type
+  unique int id: @generic_type_param_type,
+  string name: string ref
 );
 
 paren_types(
-  unique int id: @paren_type
+  unique int id: @paren_type,
+  int type_: @type ref
 );
 
 @syntax_sugar_type =
@@ -458,11 +565,19 @@ paren_types(
 ;
 
 type_alias_types(
-  unique int id: @type_alias_type
+  unique int id: @type_alias_type,
+  int decl: @type_alias_decl ref
 );
 
 enum_case_decls(
   unique int id: @enum_case_decl
+);
+
+#keyset[id, index]
+enum_case_decl_elements(
+  int id: @enum_case_decl ref,
+  int index: int ref,
+  int element: @enum_element_decl ref
 );
 
 if_config_decls(
@@ -483,8 +598,28 @@ missing_member_decls(
 | @prefix_operator_decl
 ;
 
+#keyset[id]
+operator_decls(
+  int id: @operator_decl ref,
+  string name: string ref
+);
+
 pattern_binding_decls(
   unique int id: @pattern_binding_decl
+);
+
+#keyset[id, index]
+pattern_binding_decl_inits(
+  int id: @pattern_binding_decl ref,
+  int index: int ref,
+  int init: @expr ref
+);
+
+#keyset[id, index]
+pattern_binding_decl_patterns(
+  int id: @pattern_binding_decl ref,
+  int index: int ref,
+  int pattern: @pattern ref
 );
 
 pound_diagnostic_decls(
@@ -496,7 +631,8 @@ precedence_group_decls(
 );
 
 top_level_code_decls(
-  unique int id: @top_level_code_decl
+  unique int id: @top_level_code_decl,
+  int body: @brace_stmt ref
 );
 
 @value_decl =
@@ -505,6 +641,12 @@ top_level_code_decls(
 | @enum_element_decl
 | @type_decl
 ;
+
+#keyset[id]
+value_decls(
+  int id: @value_decl ref,
+  int interface_type: @type ref
+);
 
 @abstract_closure_expr =
   @auto_closure_expr
@@ -517,12 +659,20 @@ top_level_code_decls(
 | @try_expr
 ;
 
+#keyset[id]
+any_try_exprs(
+  int id: @any_try_expr ref,
+  int sub_expr: @expr ref
+);
+
 applied_property_wrapper_exprs(
   unique int id: @applied_property_wrapper_expr
 );
 
 arguments(
-  unique int id: @argument
+  unique int id: @argument,
+  string label: string ref,
+  int expr: @expr ref
 );
 
 @apply_expr =
@@ -533,20 +683,44 @@ arguments(
 | @self_apply_expr
 ;
 
+#keyset[id]
+apply_exprs(
+  int id: @apply_expr ref,
+  int function: @expr ref
+);
+
+#keyset[id, index]
+apply_expr_arguments(
+  int id: @apply_expr ref,
+  int index: int ref,
+  int argument: @argument ref
+);
+
 arrow_exprs(
   unique int id: @arrow_expr
 );
 
 assign_exprs(
-  unique int id: @assign_expr
+  unique int id: @assign_expr,
+  int dest: @expr ref,
+  int source: @expr ref
 );
 
 bind_optional_exprs(
-  unique int id: @bind_optional_expr
+  unique int id: @bind_optional_expr,
+  int sub_expr: @expr ref
 );
 
 capture_list_exprs(
-  unique int id: @capture_list_expr
+  unique int id: @capture_list_expr,
+  int closure_body: @closure_expr ref
+);
+
+#keyset[id, index]
+capture_list_expr_binding_decls(
+  int id: @capture_list_expr ref,
+  int index: int ref,
+  int binding_decl: @pattern_binding_decl ref
 );
 
 code_completion_exprs(
@@ -559,11 +733,27 @@ code_completion_exprs(
 ;
 
 decl_ref_exprs(
-  unique int id: @decl_ref_expr
+  unique int id: @decl_ref_expr,
+  int decl: @decl ref
+);
+
+#keyset[id, index]
+decl_ref_expr_replacement_types(
+  int id: @decl_ref_expr ref,
+  int index: int ref,
+  int replacement_type: @type ref
 );
 
 default_argument_exprs(
-  unique int id: @default_argument_expr
+  unique int id: @default_argument_expr,
+  int param_decl: @param_decl ref,
+  int param_index: int ref
+);
+
+#keyset[id]
+default_argument_expr_caller_side_defaults(
+  int id: @default_argument_expr ref,
+  int caller_side_default: @expr ref
 );
 
 discard_assignment_exprs(
@@ -571,11 +761,14 @@ discard_assignment_exprs(
 );
 
 dot_syntax_base_ignored_exprs(
-  unique int id: @dot_syntax_base_ignored_expr
+  unique int id: @dot_syntax_base_ignored_expr,
+  int qualifier: @expr ref,
+  int sub_expr: @expr ref
 );
 
 dynamic_type_exprs(
-  unique int id: @dynamic_type_expr
+  unique int id: @dynamic_type_expr,
+  int base_expr: @expr ref
 );
 
 editor_placeholder_exprs(
@@ -583,7 +776,10 @@ editor_placeholder_exprs(
 );
 
 enum_is_case_exprs(
-  unique int id: @enum_is_case_expr
+  unique int id: @enum_is_case_expr,
+  int sub_expr: @expr ref,
+  int type_repr: @type_repr ref,
+  int element: @enum_element_decl ref
 );
 
 error_exprs(
@@ -595,8 +791,15 @@ error_exprs(
 | @coerce_expr
 ;
 
+#keyset[id]
+explicit_cast_exprs(
+  int id: @explicit_cast_expr ref,
+  int sub_expr: @expr ref
+);
+
 force_value_exprs(
-  unique int id: @force_value_expr
+  unique int id: @force_value_expr,
+  int sub_expr: @expr ref
 );
 
 @identity_expr =
@@ -606,8 +809,17 @@ force_value_exprs(
 | @unresolved_member_chain_result_expr
 ;
 
+#keyset[id]
+identity_exprs(
+  int id: @identity_expr ref,
+  int sub_expr: @expr ref
+);
+
 if_exprs(
-  unique int id: @if_expr
+  unique int id: @if_expr,
+  int condition: @expr ref,
+  int then_expr: @expr ref,
+  int else_expr: @expr ref
 );
 
 @implicit_conversion_expr =
@@ -644,8 +856,15 @@ if_exprs(
 | @unresolved_type_conversion_expr
 ;
 
+#keyset[id]
+implicit_conversion_exprs(
+  int id: @implicit_conversion_expr ref,
+  int sub_expr: @expr ref
+);
+
 in_out_exprs(
-  unique int id: @in_out_expr
+  unique int id: @in_out_expr,
+  int sub_expr: @expr ref
 );
 
 key_path_application_exprs(
@@ -660,8 +879,21 @@ key_path_exprs(
   unique int id: @key_path_expr
 );
 
+#keyset[id]
+key_path_expr_parsed_roots(
+  int id: @key_path_expr ref,
+  int parsed_root: @expr ref
+);
+
+#keyset[id]
+key_path_expr_parsed_paths(
+  int id: @key_path_expr ref,
+  int parsed_path: @expr ref
+);
+
 lazy_initializer_exprs(
-  unique int id: @lazy_initializer_expr
+  unique int id: @lazy_initializer_expr,
+  int sub_expr: @expr ref
 );
 
 @literal_expr =
@@ -679,15 +911,21 @@ lazy_initializer_exprs(
 ;
 
 make_temporarily_escapable_exprs(
-  unique int id: @make_temporarily_escapable_expr
+  unique int id: @make_temporarily_escapable_expr,
+  int escaping_closure: @opaque_value_expr ref,
+  int nonescaping_closure: @expr ref,
+  int sub_expr: @expr ref
 );
 
 obj_c_selector_exprs(
-  unique int id: @obj_c_selector_expr
+  unique int id: @obj_c_selector_expr,
+  int sub_expr: @expr ref,
+  int method: @abstract_function_decl ref
 );
 
 one_way_exprs(
-  unique int id: @one_way_expr
+  unique int id: @one_way_expr,
+  int sub_expr: @expr ref
 );
 
 opaque_value_exprs(
@@ -695,11 +933,15 @@ opaque_value_exprs(
 );
 
 open_existential_exprs(
-  unique int id: @open_existential_expr
+  unique int id: @open_existential_expr,
+  int sub_expr: @expr ref,
+  int existential: @expr ref,
+  int opaque_expr: @opaque_value_expr ref
 );
 
 optional_evaluation_exprs(
-  unique int id: @optional_evaluation_expr
+  unique int id: @optional_evaluation_expr,
+  int sub_expr: @expr ref
 );
 
 other_constructor_decl_ref_exprs(
@@ -715,7 +957,9 @@ property_wrapper_value_placeholder_exprs(
 );
 
 rebind_self_in_constructor_exprs(
-  unique int id: @rebind_self_in_constructor_expr
+  unique int id: @rebind_self_in_constructor_expr,
+  int sub_expr: @expr ref,
+  int self: @var_decl ref
 );
 
 sequence_exprs(
@@ -723,23 +967,47 @@ sequence_exprs(
 );
 
 super_ref_exprs(
-  unique int id: @super_ref_expr
+  unique int id: @super_ref_expr,
+  int self: @var_decl ref
 );
 
 tap_exprs(
-  unique int id: @tap_expr
+  unique int id: @tap_expr,
+  int var: @var_decl ref,
+  int body: @brace_stmt ref
+);
+
+#keyset[id]
+tap_expr_sub_exprs(
+  int id: @tap_expr ref,
+  int sub_expr: @expr ref
 );
 
 tuple_element_exprs(
-  unique int id: @tuple_element_expr
+  unique int id: @tuple_element_expr,
+  int sub_expr: @expr ref,
+  int index: int ref
 );
 
 tuple_exprs(
   unique int id: @tuple_expr
 );
 
+#keyset[id, index]
+tuple_expr_elements(
+  int id: @tuple_expr ref,
+  int index: int ref,
+  int element: @expr ref
+);
+
 type_exprs(
   unique int id: @type_expr
+);
+
+#keyset[id]
+type_expr_type_reprs(
+  int id: @type_expr ref,
+  int type_repr: @type_repr ref
 );
 
 unresolved_decl_ref_exprs(
@@ -763,7 +1031,8 @@ unresolved_specialize_exprs(
 );
 
 vararg_expansion_exprs(
-  unique int id: @vararg_expansion_expr
+  unique int id: @vararg_expansion_expr,
+  int sub_expr: @expr ref
 );
 
 any_patterns(
@@ -771,67 +1040,160 @@ any_patterns(
 );
 
 binding_patterns(
-  unique int id: @binding_pattern
+  unique int id: @binding_pattern,
+  int sub_pattern: @pattern ref
 );
 
 bool_patterns(
-  unique int id: @bool_pattern
+  unique int id: @bool_pattern,
+  boolean value: boolean ref
 );
 
 enum_element_patterns(
-  unique int id: @enum_element_pattern
+  unique int id: @enum_element_pattern,
+  int element: @enum_element_decl ref
+);
+
+#keyset[id]
+enum_element_pattern_sub_patterns(
+  int id: @enum_element_pattern ref,
+  int sub_pattern: @pattern ref
 );
 
 expr_patterns(
-  unique int id: @expr_pattern
+  unique int id: @expr_pattern,
+  int sub_expr: @expr ref
 );
 
 is_patterns(
   unique int id: @is_pattern
 );
 
+#keyset[id]
+is_pattern_cast_type_reprs(
+  int id: @is_pattern ref,
+  int cast_type_repr: @type_repr ref
+);
+
+#keyset[id]
+is_pattern_sub_patterns(
+  int id: @is_pattern ref,
+  int sub_pattern: @pattern ref
+);
+
 named_patterns(
-  unique int id: @named_pattern
+  unique int id: @named_pattern,
+  string name: string ref
 );
 
 optional_some_patterns(
-  unique int id: @optional_some_pattern
+  unique int id: @optional_some_pattern,
+  int sub_pattern: @pattern ref
 );
 
 paren_patterns(
-  unique int id: @paren_pattern
+  unique int id: @paren_pattern,
+  int sub_pattern: @pattern ref
 );
 
 tuple_patterns(
   unique int id: @tuple_pattern
 );
 
+#keyset[id, index]
+tuple_pattern_elements(
+  int id: @tuple_pattern ref,
+  int index: int ref,
+  int element: @pattern ref
+);
+
 typed_patterns(
-  unique int id: @typed_pattern
+  unique int id: @typed_pattern,
+  int sub_pattern: @pattern ref
+);
+
+#keyset[id]
+typed_pattern_type_reprs(
+  int id: @typed_pattern ref,
+  int type_repr: @type_repr ref
 );
 
 brace_stmts(
   unique int id: @brace_stmt
 );
 
+#keyset[id, index]
+brace_stmt_elements(
+  int id: @brace_stmt ref,
+  int index: int ref,
+  int element: @ast_node ref
+);
+
 break_stmts(
   unique int id: @break_stmt
 );
 
+#keyset[id]
+break_stmt_target_names(
+  int id: @break_stmt ref,
+  string target_name: string ref
+);
+
+#keyset[id]
+break_stmt_targets(
+  int id: @break_stmt ref,
+  int target: @stmt ref
+);
+
 case_stmts(
-  unique int id: @case_stmt
+  unique int id: @case_stmt,
+  int body: @stmt ref
+);
+
+#keyset[id, index]
+case_stmt_labels(
+  int id: @case_stmt ref,
+  int index: int ref,
+  int label: @case_label_item ref
+);
+
+#keyset[id, index]
+case_stmt_variables(
+  int id: @case_stmt ref,
+  int index: int ref,
+  int variable: @var_decl ref
 );
 
 case_label_items(
-  unique int id: @case_label_item
+  unique int id: @case_label_item,
+  int pattern: @pattern ref
+);
+
+#keyset[id]
+case_label_item_guards(
+  int id: @case_label_item ref,
+  int guard: @expr ref
 );
 
 continue_stmts(
   unique int id: @continue_stmt
 );
 
+#keyset[id]
+continue_stmt_target_names(
+  int id: @continue_stmt ref,
+  string target_name: string ref
+);
+
+#keyset[id]
+continue_stmt_targets(
+  int id: @continue_stmt ref,
+  int target: @stmt ref
+);
+
 defer_stmts(
-  unique int id: @defer_stmt
+  unique int id: @defer_stmt,
+  int body: @brace_stmt ref
 );
 
 fail_stmts(
@@ -839,7 +1201,9 @@ fail_stmts(
 );
 
 fallthrough_stmts(
-  unique int id: @fallthrough_stmt
+  unique int id: @fallthrough_stmt,
+  int fallthrough_source: @case_stmt ref,
+  int fallthrough_dest: @case_stmt ref
 );
 
 @labeled_stmt =
@@ -851,6 +1215,12 @@ fallthrough_stmts(
 | @switch_stmt
 ;
 
+#keyset[id]
+labeled_stmt_labels(
+  int id: @labeled_stmt ref,
+  string label: string ref
+);
+
 pound_assert_stmts(
   unique int id: @pound_assert_stmt
 );
@@ -859,8 +1229,15 @@ return_stmts(
   unique int id: @return_stmt
 );
 
+#keyset[id]
+return_stmt_results(
+  int id: @return_stmt ref,
+  int result: @expr ref
+);
+
 throw_stmts(
-  unique int id: @throw_stmt
+  unique int id: @throw_stmt,
+  int sub_expr: @expr ref
 );
 
 yield_stmts(
@@ -872,6 +1249,13 @@ yield_stmts(
 | @bound_generic_enum_type
 | @bound_generic_struct_type
 ;
+
+#keyset[id, index]
+bound_generic_type_arg_types(
+  int id: @bound_generic_type ref,
+  int index: int ref,
+  int arg_type: @type ref
+);
 
 @nominal_type =
   @class_type
@@ -886,6 +1270,12 @@ builtin_integer_literal_types(
 
 builtin_integer_types(
   unique int id: @builtin_integer_type
+);
+
+#keyset[id]
+builtin_integer_type_widths(
+  int id: @builtin_integer_type ref,
+  int width: int ref
 );
 
 nested_archetype_types(
@@ -905,11 +1295,14 @@ opened_archetype_types(
 );
 
 primary_archetype_types(
-  unique int id: @primary_archetype_type
+  unique int id: @primary_archetype_type,
+  int interface_type: @generic_type_param_type ref
 );
 
 dictionary_types(
-  unique int id: @dictionary_type
+  unique int id: @dictionary_type,
+  int key_type: @type ref,
+  int value_type: @type ref
 );
 
 @unary_syntax_sugar_type =
@@ -918,8 +1311,20 @@ dictionary_types(
 | @variadic_sequence_type
 ;
 
+#keyset[id]
+unary_syntax_sugar_types(
+  int id: @unary_syntax_sugar_type ref,
+  int base_type: @type ref
+);
+
 infix_operator_decls(
   unique int id: @infix_operator_decl
+);
+
+#keyset[id]
+infix_operator_decl_precedence_groups(
+  int id: @infix_operator_decl ref,
+  int precedence_group: @precedence_group_decl ref
 );
 
 postfix_operator_decls(
@@ -936,13 +1341,40 @@ prefix_operator_decls(
 | @func_decl
 ;
 
+#keyset[id]
+abstract_function_decls(
+  int id: @abstract_function_decl ref,
+  string name: string ref
+);
+
+#keyset[id]
+abstract_function_decl_bodies(
+  int id: @abstract_function_decl ref,
+  int body: @brace_stmt ref
+);
+
+#keyset[id, index]
+abstract_function_decl_params(
+  int id: @abstract_function_decl ref,
+  int index: int ref,
+  int param: @param_decl ref
+);
+
 @abstract_storage_decl =
   @subscript_decl
 | @var_decl
 ;
 
 enum_element_decls(
-  unique int id: @enum_element_decl
+  unique int id: @enum_element_decl,
+  string name: string ref
+);
+
+#keyset[id, index]
+enum_element_decl_params(
+  int id: @enum_element_decl ref,
+  int index: int ref,
+  int param: @param_decl ref
 );
 
 @type_decl =
@@ -951,12 +1383,27 @@ enum_element_decls(
 | @module_decl
 ;
 
+#keyset[id]
+type_decls(
+  int id: @type_decl ref,
+  string name: string ref
+);
+
+#keyset[id, index]
+type_decl_base_types(
+  int id: @type_decl ref,
+  int index: int ref,
+  int base_type: @type ref
+);
+
 auto_closure_exprs(
-  unique int id: @auto_closure_expr
+  unique int id: @auto_closure_expr,
+  int body: @brace_stmt ref
 );
 
 closure_exprs(
-  unique int id: @closure_expr
+  unique int id: @closure_expr,
+  int body: @brace_stmt ref
 );
 
 force_try_exprs(
@@ -992,12 +1439,32 @@ prefix_unary_exprs(
 | @dot_syntax_call_expr
 ;
 
+#keyset[id]
+self_apply_exprs(
+  int id: @self_apply_expr ref,
+  int base_expr: @expr ref
+);
+
 array_exprs(
   unique int id: @array_expr
 );
 
+#keyset[id, index]
+array_expr_elements(
+  int id: @array_expr ref,
+  int index: int ref,
+  int element: @expr ref
+);
+
 dictionary_exprs(
   unique int id: @dictionary_expr
+);
+
+#keyset[id, index]
+dictionary_expr_elements(
+  int id: @dictionary_expr ref,
+  int index: int ref,
+  int element: @expr ref
 );
 
 @checked_cast_expr =
@@ -1161,6 +1628,30 @@ interpolated_string_literal_exprs(
   unique int id: @interpolated_string_literal_expr
 );
 
+#keyset[id]
+interpolated_string_literal_expr_interpolation_exprs(
+  int id: @interpolated_string_literal_expr ref,
+  int interpolation_expr: @opaque_value_expr ref
+);
+
+#keyset[id]
+interpolated_string_literal_expr_interpolation_count_exprs(
+  int id: @interpolated_string_literal_expr ref,
+  int interpolation_count_expr: @expr ref
+);
+
+#keyset[id]
+interpolated_string_literal_expr_literal_capacity_exprs(
+  int id: @interpolated_string_literal_expr ref,
+  int literal_capacity_expr: @expr ref
+);
+
+#keyset[id]
+interpolated_string_literal_expr_appending_exprs(
+  int id: @interpolated_string_literal_expr ref,
+  int appending_expr: @tap_expr ref
+);
+
 regex_literal_exprs(
   unique int id: @regex_literal_expr
 );
@@ -1179,11 +1670,20 @@ object_literal_exprs(
 ;
 
 member_ref_exprs(
-  unique int id: @member_ref_expr
+  unique int id: @member_ref_expr,
+  int base_expr: @expr ref
 );
 
 subscript_exprs(
-  unique int id: @subscript_expr
+  unique int id: @subscript_expr,
+  int base_expr: @expr ref
+);
+
+#keyset[id, index]
+subscript_expr_arguments(
+  int id: @subscript_expr ref,
+  int index: int ref,
+  int argument: @argument ref
 );
 
 overloaded_decl_ref_exprs(
@@ -1191,15 +1691,33 @@ overloaded_decl_ref_exprs(
 );
 
 do_catch_stmts(
-  unique int id: @do_catch_stmt
+  unique int id: @do_catch_stmt,
+  int body: @stmt ref
+);
+
+#keyset[id, index]
+do_catch_stmt_catches(
+  int id: @do_catch_stmt ref,
+  int index: int ref,
+  int catch: @case_stmt ref
 );
 
 do_stmts(
-  unique int id: @do_stmt
+  unique int id: @do_stmt,
+  int body: @brace_stmt ref
 );
 
 for_each_stmts(
-  unique int id: @for_each_stmt
+  unique int id: @for_each_stmt,
+  int pattern: @pattern ref,
+  int sequence: @expr ref,
+  int body: @brace_stmt ref
+);
+
+#keyset[id]
+for_each_stmt_wheres(
+  int id: @for_each_stmt ref,
+  int where: @expr ref
 );
 
 @labeled_conditional_stmt =
@@ -1208,16 +1726,39 @@ for_each_stmts(
 | @while_stmt
 ;
 
+#keyset[id]
+labeled_conditional_stmts(
+  int id: @labeled_conditional_stmt ref,
+  int condition: @stmt_condition ref
+);
+
 stmt_conditions(
   unique int id: @stmt_condition
 );
 
+#keyset[id, index]
+stmt_condition_elements(
+  int id: @stmt_condition ref,
+  int index: int ref,
+  int element: @condition_element ref
+);
+
 repeat_while_stmts(
-  unique int id: @repeat_while_stmt
+  unique int id: @repeat_while_stmt,
+  int condition: @expr ref,
+  int body: @stmt ref
 );
 
 switch_stmts(
-  unique int id: @switch_stmt
+  unique int id: @switch_stmt,
+  int expr: @expr ref
+);
+
+#keyset[id, index]
+switch_stmt_cases(
+  int id: @switch_stmt ref,
+  int index: int ref,
+  int case_: @case_stmt ref
 );
 
 bound_generic_class_types(
@@ -1282,6 +1823,31 @@ subscript_decls(
 | @param_decl
 ;
 
+#keyset[id]
+var_decls(
+  int id: @var_decl ref,
+  string name: string ref,
+  int type_: @type ref
+);
+
+#keyset[id]
+var_decl_attached_property_wrapper_types(
+  int id: @var_decl ref,
+  int attached_property_wrapper_type: @type ref
+);
+
+#keyset[id]
+var_decl_parent_patterns(
+  int id: @var_decl ref,
+  int parent_pattern: @pattern ref
+);
+
+#keyset[id]
+var_decl_parent_initializers(
+  int id: @var_decl ref,
+  int parent_initializer: @expr ref
+);
+
 @abstract_type_param_decl =
   @associated_type_decl
 | @generic_type_param_decl
@@ -1293,6 +1859,13 @@ subscript_decls(
 | @generic_type_decl
 | @subscript_expr
 ;
+
+#keyset[id, index]
+generic_context_generic_type_params(
+  int id: @generic_context ref,
+  int index: int ref,
+  int generic_type_param: @generic_type_param_decl ref
+);
 
 @generic_type_decl =
   @nominal_type_decl
@@ -1325,11 +1898,13 @@ is_exprs(
 );
 
 boolean_literal_exprs(
-  unique int id: @boolean_literal_expr
+  unique int id: @boolean_literal_expr,
+  boolean value: boolean ref
 );
 
 magic_identifier_literal_exprs(
-  unique int id: @magic_identifier_literal_expr
+  unique int id: @magic_identifier_literal_expr,
+  string kind: string ref
 );
 
 @number_literal_expr =
@@ -1338,7 +1913,8 @@ magic_identifier_literal_exprs(
 ;
 
 string_literal_exprs(
-  unique int id: @string_literal_expr
+  unique int id: @string_literal_expr,
+  string value: string ref
 );
 
 dynamic_member_ref_exprs(
@@ -1350,15 +1926,24 @@ dynamic_subscript_exprs(
 );
 
 guard_stmts(
-  unique int id: @guard_stmt
+  unique int id: @guard_stmt,
+  int body: @brace_stmt ref
 );
 
 if_stmts(
-  unique int id: @if_stmt
+  unique int id: @if_stmt,
+  int then: @stmt ref
+);
+
+#keyset[id]
+if_stmt_elses(
+  int id: @if_stmt ref,
+  int else: @stmt ref
 );
 
 while_stmts(
-  unique int id: @while_stmt
+  unique int id: @while_stmt,
+  int body: @stmt ref
 );
 
 accessor_decls(
@@ -1370,7 +1955,8 @@ concrete_func_decls(
 );
 
 concrete_var_decls(
-  unique int id: @concrete_var_decl
+  unique int id: @concrete_var_decl,
+  int introducer_int: int ref
 );
 
 param_decls(
@@ -1394,11 +1980,13 @@ type_alias_decls(
 );
 
 float_literal_exprs(
-  unique int id: @float_literal_expr
+  unique int id: @float_literal_expr,
+  string string_value: string ref
 );
 
 integer_literal_exprs(
-  unique int id: @integer_literal_expr
+  unique int id: @integer_literal_expr,
+  string string_value: string ref
 );
 
 error_type_reprs(
