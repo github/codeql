@@ -81,11 +81,11 @@ class ExcludeTarFilePy extends Sanitizer {
 
 /* Any call to an extractall method */
 class ExtractAllSink extends TaintSink {
-  CallNode call;
-
   ExtractAllSink() {
-    this = call.getFunction().(AttrNode).getObject("extractall") and
-    count(call.getAnArg()) = 0
+    exists(CallNode call |
+      this = call.getFunction().(AttrNode).getObject("extractall") and
+      not exists(call.getAnArg())
+    )
   }
 
   override predicate sinks(TaintKind kind) { kind instanceof OpenTarFile }

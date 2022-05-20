@@ -8,13 +8,13 @@
 namespace codeql {
 
 namespace detail {
-class DispatcherWrapper {
+class VisitorBase {
  protected:
   SwiftDispatcher& dispatcher_;
 
  public:
   // SwiftDispatcher should outlive this instance
-  DispatcherWrapper(SwiftDispatcher& dispatcher) : dispatcher_{dispatcher} {}
+  VisitorBase(SwiftDispatcher& dispatcher) : dispatcher_{dispatcher} {}
 };
 
 }  // namespace detail
@@ -25,11 +25,12 @@ class DispatcherWrapper {
   void visit##CLASS##KIND(swift::CLASS##KIND* e) { dispatcher_.emitUnknown(e); }
 
 // base class for our AST visitors, getting a SwiftDispatcher member and default emission for
-// unknown/TBD entities
+// unknown/TBD entities. Like `swift::ASTVisitor`, this uses CRTP (the Curiously Recurring Template
+// Pattern)
 template <typename CrtpSubclass>
-class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, detail::DispatcherWrapper {
+class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, detail::VisitorBase {
  public:
-  using DispatcherWrapper::DispatcherWrapper;
+  using VisitorBase::VisitorBase;
 
 #define DECL(CLASS, PARENT) DEFAULT(Decl, CLASS, PARENT)
 #include "swift/AST/DeclNodes.def"
@@ -48,11 +49,12 @@ class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, detail::Dispatche
 };
 
 // base class for our type visitor, getting a SwiftDispatcher member and default emission for
-// unknown/TBD types
+// unknown/TBD types. Like `swift::TypeVisitor`, this uses CRTP (the Curiously Recurring Template
+// Pattern)
 template <typename CrtpSubclass>
-class TypeVisitorBase : public swift::TypeVisitor<CrtpSubclass>, detail::DispatcherWrapper {
+class TypeVisitorBase : public swift::TypeVisitor<CrtpSubclass>, detail::VisitorBase {
  public:
-  using DispatcherWrapper::DispatcherWrapper;
+  using VisitorBase::VisitorBase;
 
 #define TYPE(CLASS, PARENT) DEFAULT(Type, CLASS, PARENT)
 #include "swift/AST/TypeNodes.def"

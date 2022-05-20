@@ -24,7 +24,7 @@ where
   // 'v' is not externally declared...
   not exists(ExternalVarDecl d | d.getName() = v.getName() |
     // ...as a member of {Window,Worker,WebWorker}.prototype
-    d.(ExternalInstanceMemberDecl).getBaseName().regexpMatch("Window|Worker|WebWorker")
+    d.(ExternalInstanceMemberDecl).getBaseName() = ["Window", "Worker", "WebWorker"]
     or
     // ...or as a member of window
     d.(ExternalStaticMemberDecl).getBaseName() = "window"

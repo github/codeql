@@ -33,6 +33,36 @@ enum class Severity(val sev: Int) {
     ErrorGlobal(8)
 }
 
+class LogMessage(private val kind: String, private val message: String) {
+    val timestamp: String
+    init {
+        timestamp = "${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())}"
+    }
+
+    fun toText(): String {
+        return "[$timestamp K] [$kind] $message"
+    }
+
+    private fun escape(str: String): String {
+        return str.replace("\\", "\\\\")
+                  .replace("\"", "\\\"")
+                  .replace("/", "\\/")
+                  .replace("\b", "\\b")
+                  .replace("\u000C", "\\f")
+                  .replace("\n", "\\n")
+                  .replace("\r", "\\r")
+                  .replace("\t", "\\t")
+    }
+
+    fun toJsonLine(): String {
+        val kvs = listOf(Pair("origin", "CodeQL Kotlin extractor"),
+                         Pair("timestamp", timestamp),
+                         Pair("kind", kind),
+                         Pair("message", message))
+        return "{ " + kvs.map { p -> "\"${p.first}\": \"${escape(p.second)}\""}.joinToString(", ") + " }\n"
+    }
+}
+
 data class ExtractorContext(val kind: String, val element: IrElement, val name: String, val loc: String)
 
 open class LoggerBase(val logCounter: LogCounter) {
@@ -52,10 +82,6 @@ open class LoggerBase(val logCounter: LogCounter) {
             val logFile = File.createTempFile("kotlin-extractor.", ".log", File(extractorLogDir))
             logStream = FileWriter(logFile)
         }
-    }
-
-    private fun timestamp(): String {
-        return "[${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())} K]"
     }
 
     private fun getDiagnosticLocation(): String? {
@@ -84,7 +110,6 @@ open class LoggerBase(val logCounter: LogCounter) {
     fun diagnostic(tw: TrapWriter, severity: Severity, msg: String, extraInfo: String?, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
         val diagnosticLoc = getDiagnosticLocation()
         val diagnosticLocStr = if(diagnosticLoc == null) "<unknown location>" else diagnosticLoc
-        val extraInfoStr = if (extraInfo == null) "" else (extraInfo + "\n")
         val suffix =
             if(diagnosticLoc == null) {
                 "    Missing caller information.\n"
@@ -100,8 +125,10 @@ open class LoggerBase(val logCounter: LogCounter) {
             }
         val fullMsgBuilder = StringBuilder()
         fullMsgBuilder.append(msg)
-        fullMsgBuilder.append('\n')
-        fullMsgBuilder.append(extraInfoStr)
+        if (extraInfo != null) {
+            fullMsgBuilder.append('\n')
+            fullMsgBuilder.append(extraInfo)
+        }
 
         val iter = extractorContextStack.listIterator(extractorContextStack.size)
         while (iter.hasPrevious()) {
@@ -111,38 +138,38 @@ open class LoggerBase(val logCounter: LogCounter) {
         fullMsgBuilder.append(suffix)
 
         val fullMsg = fullMsgBuilder.toString()
-        val ts = timestamp()
+        val locStr = if (locationString == null) "" else "At " + locationString + ": "
+        val kind = if (severity <= Severity.WarnHigh) "WARN" else "ERROR"
+        val logMessage = LogMessage(kind, "Diagnostic($diagnosticLocStr): $locStr$fullMsg")
         // We don't actually make the location until after the `return` above
         val locationId = mkLocationId()
         val diagLabel = tw.getFreshIdLabel<DbDiagnostic>()
-        tw.writeDiagnostics(diagLabel, "CodeQL Kotlin extractor", severity.sev, "", msg, "$ts $fullMsg", locationId)
+        tw.writeDiagnostics(diagLabel, "CodeQL Kotlin extractor", severity.sev, "", msg, "${logMessage.timestamp} $fullMsg", locationId)
         tw.writeDiagnostic_for(diagLabel, StringLabel("compilation"), file_number, file_number_diagnostic_number++)
-        val locStr = if (locationString == null) "" else "At " + locationString + ": "
-        val kind = if (severity <= Severity.WarnHigh) "WARN" else "ERROR"
-        logStream.write("$ts [$kind] Diagnostic($diagnosticLocStr): $locStr$fullMsg")
+        logStream.write(logMessage.toJsonLine())
     }
 
     fun trace(tw: TrapWriter, msg: String) {
         if (verbosity >= 4) {
-            val fullMsg = "${timestamp()} [TRACE] $msg"
-            tw.writeComment(fullMsg)
-            logStream.write(fullMsg + "\n")
+            val logMessage = LogMessage("TRACE", msg)
+            tw.writeComment(logMessage.toText())
+            logStream.write(logMessage.toJsonLine())
         }
     }
 
     fun debug(tw: TrapWriter, msg: String) {
         if (verbosity >= 4) {
-            val fullMsg = "${timestamp()} [DEBUG] $msg"
-            tw.writeComment(fullMsg)
-            logStream.write(fullMsg + "\n")
+            val logMessage = LogMessage("DEBUG", msg)
+            tw.writeComment(logMessage.toText())
+            logStream.write(logMessage.toJsonLine())
         }
     }
 
     fun info(tw: TrapWriter, msg: String) {
         if (verbosity >= 3) {
-            val fullMsg = "${timestamp()} [INFO] $msg"
-            tw.writeComment(fullMsg)
-            logStream.write(fullMsg + "\n")
+            val logMessage = LogMessage("INFO", msg)
+            tw.writeComment(logMessage.toText())
+            logStream.write(logMessage.toJsonLine())
         }
     }
 
@@ -160,9 +187,12 @@ open class LoggerBase(val logCounter: LogCounter) {
     fun printLimitedDiagnosticCounts(tw: TrapWriter) {
         for((caller, count) in logCounter.diagnosticCounts) {
             if(count >= logCounter.diagnosticLimit) {
-                val msg = "Total of $count diagnostics from $caller.\n"
-                tw.writeComment(msg)
-                logStream.write(msg)
+                // We don't know if this location relates to an error
+                // or a warning, so we just declare hitting the limit
+                // to be an error regardless.
+                val logMessage = LogMessage("ERROR", "Total of $count diagnostics from $caller.")
+                tw.writeComment(logMessage.toText())
+                logStream.write(logMessage.toJsonLine())
             }
         }
     }

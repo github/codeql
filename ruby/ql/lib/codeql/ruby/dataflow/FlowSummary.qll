@@ -84,36 +84,9 @@ module SummaryComponentStack {
 }
 
 /** A callable with a flow summary, identified by a unique string. */
-abstract class SummarizedCallable extends LibraryCallable {
+abstract class SummarizedCallable extends LibraryCallable, Impl::Public::SummarizedCallable {
   bindingset[this]
   SummarizedCallable() { any() }
-
-  /**
-   * Holds if data may flow from `input` to `output` through this callable.
-   *
-   * `preservesValue` indicates whether this is a value-preserving step
-   * or a taint-step.
-   *
-   * Input specifications are restricted to stacks that end with
-   * `SummaryComponent::argument(_)`, preceded by zero or more
-   * `SummaryComponent::return()` or `SummaryComponent::content(_)` components.
-   *
-   * Output specifications are restricted to stacks that end with
-   * `SummaryComponent::return()` or `SummaryComponent::argument(_)`.
-   *
-   * Output stacks ending with `SummaryComponent::return()` can be preceded by zero
-   * or more `SummaryComponent::content(_)` components.
-   *
-   * Output stacks ending with `SummaryComponent::argument(_)` can be preceded by an
-   * optional `SummaryComponent::parameter(_)` component, which in turn can be preceded
-   * by zero or more `SummaryComponent::content(_)` components.
-   */
-  pragma[nomagic]
-  predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    none()
-  }
 
   /**
    * Same as
@@ -141,18 +114,6 @@ abstract class SimpleSummarizedCallable extends SummarizedCallable {
   SimpleSummarizedCallable() { mc.getMethodName() = this }
 
   final override MethodCall getACall() { result = mc }
-}
-
-private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable {
-  private SummarizedCallable sc;
-
-  SummarizedCallableAdapter() { this = TLibraryCallable(sc) }
-
-  final override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    sc.propagatesFlow(input, output, preservesValue)
-  }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
