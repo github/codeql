@@ -1,0 +1,12 @@
+| main.swift:2:3:8:3 | ForEachStmt |
+| main.swift:3:5:7:5 | IfStmt |
+| main.swift:10:3:12:3 | WhileStmt |
+| main.swift:15:3:17:18 | RepeatWhileStmt |
+| main.swift:19:3:23:3 | DoCatchStmt |
+| main.swift:25:3:31:3 | DoCatchStmt |
+| main.swift:39:3:41:3 | GuardStmt |
+| main.swift:48:1:50:1 | DoStmt |
+| main.swift:53:1:62:1 | SwitchStmt |
+| main.swift:65:1:66:1 | IfStmt |
+| main.swift:67:1:68:1 | IfStmt |
+| main.swift:71:1:72:1 | ForEachStmt |

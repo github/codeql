@@ -67,22 +67,34 @@ class SwiftDispatcher {
   // `swift::TypeBase*`)
   TrapLabel<TypeTag> fetchLabel(swift::Type t) { return fetchLabel(t.getPointer()); }
 
+  TrapLabel<AstNodeTag> fetchLabel(swift::ASTNode node) {
+    return fetchLabelFromUnion<AstNodeTag>(node);
+  }
+
   // Due to the lazy emission approach, we must assign a label to a corresponding AST node before
   // it actually gets emitted to handle recursive cases such as recursive calls, or recursive type
   // declarations
   template <typename E>
   TrapLabelOf<E> assignNewLabel(E* e) {
     assert(waitingForNewLabel == Store::Handle{e} && "assignNewLabel called on wrong entity");
-    auto label = getLabel<TrapTagOf<E>>();
-    trap.assignStar(label);
+    auto label = createLabel<TrapTagOf<E>>();
     store.insert(e, label);
     waitingForNewLabel = std::monostate{};
     return label;
   }
 
   template <typename Tag>
-  TrapLabel<Tag> getLabel() {
-    return arena.allocateLabel<Tag>();
+  TrapLabel<Tag> createLabel() {
+    auto ret = arena.allocateLabel<Tag>();
+    trap.assignStar(ret);
+    return ret;
+  }
+
+  template <typename Tag, typename... Args>
+  TrapLabel<Tag> createLabel(Args&&... args) {
+    auto ret = arena.allocateLabel<Tag>();
+    trap.assignKey(ret, std::forward<Args>(args)...);
+    return ret;
   }
 
   template <typename Locatable>
@@ -90,37 +102,69 @@ class SwiftDispatcher {
     attachLocation(&locatable, locatableLabel);
   }
 
-  // Emits a Location TRAP entry and attaches it to an AST node
+  // Emits a Location TRAP entry and attaches it to a `Locatable` trap label
   template <typename Locatable>
   void attachLocation(Locatable* locatable, TrapLabel<LocatableTag> locatableLabel) {
-    auto start = locatable->getStartLoc();
-    auto end = locatable->getEndLoc();
-    if (!start.isValid() || !end.isValid()) {
-      // invalid locations seem to come from entities synthesized by the compiler
+    attachLocation(locatable->getStartLoc(), locatable->getEndLoc(), locatableLabel);
+  }
+
+  // Emits a Location TRAP entry for a list of swift entities and attaches it to a `Locatable` trap
+  // label
+  template <typename Locatable>
+  void attachLocation(llvm::MutableArrayRef<Locatable>* locatables,
+                      TrapLabel<LocatableTag> locatableLabel) {
+    if (locatables->empty()) {
       return;
     }
-    std::string filepath = getFilepath(start);
-    auto fileLabel = arena.allocateLabel<FileTag>();
-    trap.assignKey(fileLabel, filepath);
-    // TODO: do not emit duplicate trap entries for Files
-    trap.emit(FilesTrap{fileLabel, filepath});
-    auto [startLine, startColumn] = sourceManager.getLineAndColumnInBuffer(start);
-    auto [endLine, endColumn] = sourceManager.getLineAndColumnInBuffer(end);
-    auto locLabel = arena.allocateLabel<LocationTag>();
-    trap.assignKey(locLabel, '{', fileLabel, "}:", startLine, ':', startColumn, ':', endLine, ':',
-                   endColumn);
-    trap.emit(LocationsTrap{locLabel, fileLabel, startLine, startColumn, endLine, endColumn});
-    trap.emit(LocatablesTrap{locatableLabel, locLabel});
+    attachLocation(locatables->front().getStartLoc(), locatables->back().getEndLoc(),
+                   locatableLabel);
   }
 
  private:
   // types to be supported by assignNewLabel/fetchLabel need to be listed here
   using Store = TrapLabelStore<swift::Decl,
                                swift::Stmt,
+                               swift::StmtCondition,
+                               swift::CaseLabelItem,
                                swift::Expr,
                                swift::Pattern,
                                swift::TypeRepr,
                                swift::TypeBase>;
+
+  void attachLocation(swift::SourceLoc start,
+                      swift::SourceLoc end,
+                      TrapLabel<LocatableTag> locatableLabel) {
+    if (!start.isValid() || !end.isValid()) {
+      // invalid locations seem to come from entities synthesized by the compiler
+      return;
+    }
+    std::string filepath = getFilepath(start);
+    auto fileLabel = createLabel<FileTag>(filepath);
+    // TODO: do not emit duplicate trap entries for Files
+    trap.emit(FilesTrap{fileLabel, filepath});
+    auto [startLine, startColumn] = sourceManager.getLineAndColumnInBuffer(start);
+    auto [endLine, endColumn] = sourceManager.getLineAndColumnInBuffer(end);
+    auto locLabel = createLabel<LocationTag>('{', fileLabel, "}:", startLine, ':', startColumn, ':',
+                                             endLine, ':', endColumn);
+    trap.emit(LocationsTrap{locLabel, fileLabel, startLine, startColumn, endLine, endColumn});
+    trap.emit(LocatablesTrap{locatableLabel, locLabel});
+  }
+
+  template <typename Tag, typename... Ts>
+  TrapLabel<Tag> fetchLabelFromUnion(const llvm::PointerUnion<Ts...> u) {
+    TrapLabel<Tag> ret{};
+    assert((... || fetchLabelFromUnionCase<Tag, Ts>(u, ret)) && "llvm::PointerUnion not set");
+    return ret;
+  }
+
+  template <typename Tag, typename T, typename... Ts>
+  bool fetchLabelFromUnionCase(const llvm::PointerUnion<Ts...> u, TrapLabel<Tag>& output) {
+    if (auto e = u.template dyn_cast<T>()) {
+      output = fetchLabel(e);
+      return true;
+    }
+    return false;
+  }
 
   std::string getFilepath(swift::SourceLoc loc) {
     // TODO: this needs more testing
@@ -139,6 +183,8 @@ class SwiftDispatcher {
   // which are to be introduced in follow-up PRs
   virtual void visit(swift::Decl* decl) = 0;
   virtual void visit(swift::Stmt* stmt) = 0;
+  virtual void visit(swift::StmtCondition* cond) = 0;
+  virtual void visit(swift::CaseLabelItem* item) = 0;
   virtual void visit(swift::Expr* expr) = 0;
   virtual void visit(swift::Pattern* pattern) = 0;
   virtual void visit(swift::TypeRepr* type) = 0;
