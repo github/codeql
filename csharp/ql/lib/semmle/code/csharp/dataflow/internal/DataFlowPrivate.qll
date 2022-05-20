@@ -976,17 +976,15 @@ private module ParameterNodes {
     SummaryParameterNode() { this = TSummaryParameterNode(sc, pos_) }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      sc = c and pos = pos_
+      sc = c.asSummarizedCallable() and pos = pos_
     }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result = sc }
+    override DataFlowCallable getEnclosingCallableImpl() { result.asSummarizedCallable() = sc }
 
     override Type getTypeImpl() {
-      exists(int i |
-        pos_.getPosition() = i and result = sc.asSummarizedCallable().getParameter(i).getType()
-      )
+      exists(int i | pos_.getPosition() = i and result = sc.getParameter(i).getType())
       or
-      pos_.isThisParameter() and result = sc.asSummarizedCallable().getDeclaringType()
+      pos_.isThisParameter() and result = sc.getDeclaringType()
     }
 
     override ControlFlow::Node getControlFlowNodeImpl() { none() }
@@ -1464,7 +1462,7 @@ class SummaryNode extends NodeImpl, TSummaryNode {
 
   SummaryNode() { this = TSummaryNode(c, state) }
 
-  override DataFlowCallable getEnclosingCallableImpl() { result = c }
+  override DataFlowCallable getEnclosingCallableImpl() { result.asSummarizedCallable() = c }
 
   override DataFlowType getDataFlowType() {
     result = FlowSummaryImpl::Private::summaryNodeType(this)
