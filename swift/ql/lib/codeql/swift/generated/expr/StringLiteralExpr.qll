@@ -3,4 +3,6 @@ import codeql.swift.elements.expr.BuiltinLiteralExpr
 
 class StringLiteralExprBase extends @string_literal_expr, BuiltinLiteralExpr {
   override string getAPrimaryQlClass() { result = "StringLiteralExpr" }
+
+  string getValue() { string_literal_exprs(this, result) }
 }

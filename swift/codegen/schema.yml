@@ -150,7 +150,7 @@ Decl:
 
 Expr:
   _extends: AstNode
-#  type: Type?
+  type: Type?
 
 Pattern:
   _extends: AstNode
@@ -279,37 +279,37 @@ AbstractClosureExpr:
 
 AnyTryExpr:
   _extends: Expr
-#  sub_expr: Expr
+  sub_expr: Expr
 
 AppliedPropertyWrapperExpr:
   _extends: Expr
 
 Argument:
-#  label: string
-#  expr: Expr
+  label: string
+  expr: Expr
   _dir: expr
 
 ApplyExpr:
   _extends: Expr
-#  function: Expr
-#  arguments: Argument*
+  function: Expr
+  arguments: Argument*
 
 ArrowExpr:
   _extends: Expr
 
 AssignExpr:
   _extends: Expr
-#  dest: Expr
-#  source: Expr
+  dest: Expr
+  source: Expr
 
 BindOptionalExpr:
   _extends: Expr
-#  sub_expr: Expr
+  sub_expr: Expr
 
 CaptureListExpr:
   _extends: Expr
-#  binding_decls: PatternBindingDecl*
-#  closure_body: ClosureExpr
+  binding_decls: PatternBindingDecl*
+  closure_body: ClosureExpr
 
 CodeCompletionExpr:
   _extends: Expr
@@ -319,64 +319,64 @@ CollectionExpr:
 
 DeclRefExpr:
   _extends: Expr
-#  decl: Decl
-#  replacement_types: Type*
+  decl: Decl
+  replacement_types: Type*
 
 DefaultArgumentExpr:
   _extends: Expr
-#  param_decl: ParamDecl
-#  param_index: int
-#  caller_side_default: Expr?
+  param_decl: ParamDecl
+  param_index: int
+  caller_side_default: Expr?
 
 DiscardAssignmentExpr:
   _extends: Expr
 
 DotSyntaxBaseIgnoredExpr:
   _extends: Expr
-#  qualifier: Expr
-#  sub_expr: Expr
+  qualifier: Expr
+  sub_expr: Expr
 
 DynamicTypeExpr:
   _extends: Expr
-#  base_expr: Expr
+  base_expr: Expr
 
 EditorPlaceholderExpr:
   _extends: Expr
 
 EnumIsCaseExpr:
   _extends: Expr
-#  sub_expr: Expr
-#  type_repr: TypeRepr
-#  element: EnumElementDecl
+  sub_expr: Expr
+  type_repr: TypeRepr
+  element: EnumElementDecl
 
 ErrorExpr:
   _extends: Expr
 
 ExplicitCastExpr:
   _extends: Expr
-#  sub_expr: Expr
+  sub_expr: Expr
 
 ForceValueExpr:
   _extends: Expr
-#  sub_expr: Expr
+  sub_expr: Expr
 
 IdentityExpr:
   _extends: Expr
-#  sub_expr: Expr
+  sub_expr: Expr
 
 IfExpr:
   _extends: Expr
-#  condition: Expr
-#  then_expr: Expr
-#  else_expr: Expr
+  condition: Expr
+  then_expr: Expr
+  else_expr: Expr
 
 ImplicitConversionExpr:
   _extends: Expr
-#  sub_expr: Expr
+  sub_expr: Expr
 
 InOutExpr:
   _extends: Expr
-#  sub_expr: Expr
+  sub_expr: Expr
 
 KeyPathApplicationExpr:
   _extends: Expr
@@ -386,12 +386,12 @@ KeyPathDotExpr:
 
 KeyPathExpr:
   _extends: Expr
-#  parsed_root: Expr?
-#  parsed_path: Expr?
+  parsed_root: Expr?
+  parsed_path: Expr?
 
 LazyInitializerExpr:
   _extends: Expr
-#  sub_expr: Expr
+  sub_expr: Expr
 
 LiteralExpr:
   _extends: Expr
@@ -401,31 +401,31 @@ LookupExpr:
 
 MakeTemporarilyEscapableExpr:
   _extends: Expr
-#  escaping_closure: OpaqueValueExpr
-#  nonescaping_closure: Expr
-#  sub_expr: Expr
+  escaping_closure: OpaqueValueExpr
+  nonescaping_closure: Expr
+  sub_expr: Expr
 
 ObjCSelectorExpr:
   _extends: Expr
-#  sub_expr: Expr
-#  method: AbstractFunctionDecl
+  sub_expr: Expr
+  method: AbstractFunctionDecl
 
 OneWayExpr:
   _extends: Expr
-#  sub_expr: Expr
+  sub_expr: Expr
 
 OpaqueValueExpr:
   _extends: Expr
 
 OpenExistentialExpr:
   _extends: Expr
-#  sub_expr: Expr
-#  existential: Expr
-#  opaque_expr: OpaqueValueExpr
+  sub_expr: Expr
+  existential: Expr
+  opaque_expr: OpaqueValueExpr
 
 OptionalEvaluationExpr:
   _extends: Expr
-#  sub_expr: Expr
+  sub_expr: Expr
 
 OtherConstructorDeclRefExpr:
   _extends: Expr
@@ -438,34 +438,34 @@ PropertyWrapperValuePlaceholderExpr:
 
 RebindSelfInConstructorExpr:
   _extends: Expr
-#  sub_expr: Expr
-#  self: VarDecl
+  sub_expr: Expr
+  self: VarDecl
 
 SequenceExpr:
   _extends: Expr
 
 SuperRefExpr:
   _extends: Expr
-#  self: VarDecl
+  self: VarDecl
 
 TapExpr:
   _extends: Expr
-#  sub_expr: Expr?
-#  var: VarDecl
-#  body: BraceStmt
+  sub_expr: Expr?
+  var: VarDecl
+  body: BraceStmt
 
 TupleElementExpr:
   _extends: Expr
-#  sub_expr: Expr
-#  index: int
+  sub_expr: Expr
+  index: int
 
 TupleExpr:
   _extends: Expr
-#  elements: Expr*
+  elements: Expr*
 
 TypeExpr:
   _extends: Expr
-#  type_repr: TypeRepr?
+  type_repr: TypeRepr?
 
 UnresolvedDeclRefExpr:
   _extends: Expr
@@ -484,7 +484,7 @@ UnresolvedSpecializeExpr:
 
 VarargExpansionExpr:
   _extends: Expr
-#  sub_expr: Expr
+  sub_expr: Expr
 
 AnyPattern:
   _extends: Pattern
@@ -655,11 +655,11 @@ TypeDecl:
 
 AutoClosureExpr:
   _extends: AbstractClosureExpr
-#  body: BraceStmt
+  body: BraceStmt
 
 ClosureExpr:
   _extends: AbstractClosureExpr
-#  body: BraceStmt
+  body: BraceStmt
 
 ForceTryExpr:
   _extends: AnyTryExpr
@@ -684,15 +684,15 @@ PrefixUnaryExpr:
 
 SelfApplyExpr:
   _extends: ApplyExpr
-#  base_expr: Expr
+  base_expr: Expr
 
 ArrayExpr:
   _extends: CollectionExpr
-#  elements: Expr*
+  elements: Expr*
 
 DictionaryExpr:
   _extends: CollectionExpr
-#  elements: Expr*
+  elements: Expr*
 
 CheckedCastExpr:
   _extends: ExplicitCastExpr
@@ -810,10 +810,10 @@ BuiltinLiteralExpr:
 
 InterpolatedStringLiteralExpr:
   _extends: LiteralExpr
-#  interpolation_expr: OpaqueValueExpr?
-#  interpolation_count_expr: Expr?
-#  literal_capacity_expr: Expr?
-#  appending_expr: TapExpr?
+  interpolation_expr: OpaqueValueExpr?
+  interpolation_count_expr: Expr?
+  literal_capacity_expr: Expr?
+  appending_expr: TapExpr?
 
 RegexLiteralExpr:
   _extends: LiteralExpr
@@ -829,14 +829,14 @@ DynamicLookupExpr:
 
 MemberRefExpr:
   _extends: LookupExpr
-#  base_expr: Expr
+  base_expr: Expr
 
 SubscriptExpr:
   _extends:
     - GenericContext
     - LookupExpr
-#  base_expr: Expr
-#  arguments: Argument*
+  base_expr: Expr
+  arguments: Argument*
 
 OverloadedDeclRefExpr:
   _extends: OverloadSetRefExpr
@@ -959,18 +959,18 @@ IsExpr:
 
 BooleanLiteralExpr:
   _extends: BuiltinLiteralExpr
-#  value: boolean
+  value: boolean
 
 MagicIdentifierLiteralExpr:
   _extends: BuiltinLiteralExpr
-#  kind: string
+  kind: string
 
 NumberLiteralExpr:
   _extends: BuiltinLiteralExpr
 
 StringLiteralExpr:
   _extends: BuiltinLiteralExpr
-#  value: string
+  value: string
 
 DynamicMemberRefExpr:
   _extends: DynamicLookupExpr
@@ -1018,11 +1018,11 @@ TypeAliasDecl:
 
 FloatLiteralExpr:
   _extends: NumberLiteralExpr
-#  string_value: string
+  string_value: string
 
 IntegerLiteralExpr:
   _extends: NumberLiteralExpr
-#  string_value: string
+  string_value: string
 
 ErrorTypeRepr:
   _extends: TypeRepr
