@@ -203,7 +203,7 @@ public class FileExtractor {
       }
     },
 
-    TYPESCRIPT(".ts", ".tsx") {
+    TYPESCRIPT(".ts", ".tsx", ".mts", ".cts") {
       @Override
       protected boolean contains(File f, String lcExt, ExtractorConfig config) {
         if (config.getTypeScriptMode() == TypeScriptMode.NONE) return false;

@@ -386,86 +386,122 @@ getExprType
 | tst.ts:293:7:293:21 | payload.toFixed | (fractionDigits?: number) => string |
 | tst.ts:293:7:293:23 | payload.toFixed() | string |
 | tst.ts:293:15:293:21 | toFixed | (fractionDigits?: number) => string |
-| tst.ts:298:10:298:15 | foo_47 | () => void |
-| tst.ts:299:9:299:11 | key | typeof key |
-| tst.ts:299:15:299:20 | Symbol | SymbolConstructor |
-| tst.ts:299:15:299:22 | Symbol() | typeof key |
-| tst.ts:301:9:301:22 | numberOrString | "hello" \| 42 |
-| tst.ts:301:26:301:29 | Math | Math |
-| tst.ts:301:26:301:36 | Math.random | () => number |
-| tst.ts:301:26:301:38 | Math.random() | number |
-| tst.ts:301:26:301:44 | Math.random() < 0.5 | boolean |
-| tst.ts:301:26:301:59 | Math.ra ... "hello" | "hello" \| 42 |
-| tst.ts:301:31:301:36 | random | () => number |
-| tst.ts:301:42:301:44 | 0.5 | 0.5 |
-| tst.ts:301:48:301:49 | 42 | 42 |
-| tst.ts:301:53:301:59 | "hello" | "hello" |
-| tst.ts:303:7:303:9 | obj | { [key]: string \| number; } |
-| tst.ts:303:13:305:3 | {\\n    [ ... ng,\\n  } | { [key]: string \| number; } |
-| tst.ts:304:6:304:8 | key | typeof key |
-| tst.ts:304:12:304:25 | numberOrString | "hello" \| 42 |
-| tst.ts:307:7:307:21 | typeof obj[key] | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
-| tst.ts:307:7:307:34 | typeof  ... string" | boolean |
-| tst.ts:307:14:307:16 | obj | { [key]: string \| number; } |
-| tst.ts:307:14:307:21 | obj[key] | string \| number |
-| tst.ts:307:18:307:20 | key | typeof key |
-| tst.ts:307:27:307:34 | "string" | "string" |
-| tst.ts:308:9:308:11 | str | string |
-| tst.ts:308:15:308:17 | obj | { [key]: string \| number; } |
-| tst.ts:308:15:308:22 | obj[key] | string |
-| tst.ts:308:19:308:21 | key | typeof key |
-| tst.ts:309:5:309:7 | str | string |
-| tst.ts:309:5:309:19 | str.toUpperCase | () => string |
-| tst.ts:309:5:309:21 | str.toUpperCase() | string |
-| tst.ts:309:9:309:19 | toUpperCase | () => string |
-| tst.ts:314:12:314:12 | f | <T>(arg: { produce: (n: string) => T; consume: ... |
-| tst.ts:314:17:314:19 | arg | { produce: (n: string) => T; consume: (x: T) =>... |
-| tst.ts:315:5:315:11 | produce | (n: string) => T |
-| tst.ts:315:14:315:29 | (n: string) => T | (n: string) => T |
-| tst.ts:315:15:315:15 | n | string |
-| tst.ts:316:5:316:11 | consume | (x: T) => void |
-| tst.ts:316:14:316:27 | (x: T) => void | (x: T) => void |
-| tst.ts:316:15:316:15 | x | T |
-| tst.ts:319:3:319:3 | f | <T>(arg: { produce: (n: string) => T; consume: ... |
-| tst.ts:319:3:322:4 | f({\\n    ... ()\\n  }) | void |
-| tst.ts:319:5:322:3 | {\\n    p ... e()\\n  } | { produce: (n: string) => string; consume: (x: ... |
-| tst.ts:320:5:320:11 | produce | (n: string) => string |
-| tst.ts:320:14:320:14 | n | string |
-| tst.ts:320:14:320:19 | n => n | (n: string) => string |
-| tst.ts:320:19:320:19 | n | string |
-| tst.ts:321:5:321:11 | consume | (x: string) => string |
-| tst.ts:321:14:321:14 | x | string |
-| tst.ts:321:14:321:33 | x => x.toLowerCase() | (x: string) => string |
-| tst.ts:321:19:321:19 | x | string |
-| tst.ts:321:19:321:31 | x.toLowerCase | () => string |
-| tst.ts:321:19:321:33 | x.toLowerCase() | string |
-| tst.ts:321:21:321:31 | toLowerCase | () => string |
-| tst.ts:326:9:326:16 | ErrorMap | { new (entries?: readonly (readonly [string, Er... |
-| tst.ts:326:20:326:22 | Map | MapConstructor |
-| tst.ts:326:20:326:37 | Map<string, Error> | any |
-| tst.ts:328:9:328:16 | errorMap | Map<string, Error> |
-| tst.ts:328:20:328:33 | new ErrorMap() | Map<string, Error> |
-| tst.ts:328:24:328:31 | ErrorMap | { new (entries?: readonly (readonly [string, Er... |
-| tst.ts:339:9:339:9 | a | "a" \| "b" |
-| tst.ts:339:16:339:18 | 'a' | "a" |
-| tst.ts:344:5:344:7 | get | () => T |
-| tst.ts:344:10:344:16 | () => T | () => T |
-| tst.ts:345:5:345:7 | set | (value: T) => void |
-| tst.ts:345:10:345:27 | (value: T) => void | (value: T) => void |
-| tst.ts:345:11:345:15 | value | T |
-| tst.ts:348:9:348:13 | state | State<number> |
-| tst.ts:348:32:351:3 | {\\n    g ... { }\\n  } | State<number> |
-| tst.ts:349:5:349:7 | get | () => number |
-| tst.ts:349:10:349:17 | () => 42 | () => number |
-| tst.ts:349:16:349:17 | 42 | 42 |
-| tst.ts:350:5:350:7 | set | (value: number) => void |
-| tst.ts:350:10:350:23 | (value) => { } | (value: number) => void |
-| tst.ts:350:11:350:15 | value | number |
-| tst.ts:353:9:353:16 | fortyTwo | number |
-| tst.ts:353:20:353:24 | state | State<number> |
-| tst.ts:353:20:353:28 | state.get | () => number |
-| tst.ts:353:20:353:30 | state.get() | number |
-| tst.ts:353:26:353:28 | get | () => number |
+| tst.ts:298:7:298:9 | key | typeof key |
+| tst.ts:298:13:298:18 | Symbol | SymbolConstructor |
+| tst.ts:298:13:298:20 | Symbol() | typeof key |
+| tst.ts:300:7:300:20 | numberOrString | "hello" \| 42 |
+| tst.ts:300:24:300:27 | Math | Math |
+| tst.ts:300:24:300:34 | Math.random | () => number |
+| tst.ts:300:24:300:36 | Math.random() | number |
+| tst.ts:300:24:300:42 | Math.random() < 0.5 | boolean |
+| tst.ts:300:24:300:57 | Math.ra ... "hello" | "hello" \| 42 |
+| tst.ts:300:29:300:34 | random | () => number |
+| tst.ts:300:40:300:42 | 0.5 | 0.5 |
+| tst.ts:300:46:300:47 | 42 | 42 |
+| tst.ts:300:51:300:57 | "hello" | "hello" |
+| tst.ts:302:5:302:7 | obj | { [key]: string \| number; } |
+| tst.ts:302:11:304:1 | {\\n  [ke ... ring,\\n} | { [key]: string \| number; } |
+| tst.ts:303:4:303:6 | key | typeof key |
+| tst.ts:303:10:303:23 | numberOrString | "hello" \| 42 |
+| tst.ts:306:5:306:19 | typeof obj[key] | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| tst.ts:306:5:306:32 | typeof  ... string" | boolean |
+| tst.ts:306:12:306:14 | obj | { [key]: string \| number; } |
+| tst.ts:306:12:306:19 | obj[key] | string \| number |
+| tst.ts:306:16:306:18 | key | typeof key |
+| tst.ts:306:25:306:32 | "string" | "string" |
+| tst.ts:307:7:307:9 | str | string |
+| tst.ts:307:13:307:15 | obj | { [key]: string \| number; } |
+| tst.ts:307:13:307:20 | obj[key] | string |
+| tst.ts:307:17:307:19 | key | typeof key |
+| tst.ts:308:3:308:5 | str | string |
+| tst.ts:308:3:308:17 | str.toUpperCase | () => string |
+| tst.ts:308:3:308:19 | str.toUpperCase() | string |
+| tst.ts:308:7:308:17 | toUpperCase | () => string |
+| tst.ts:313:10:313:10 | f | <T>(arg: { produce: (n: string) => T; consume: ... |
+| tst.ts:313:15:313:17 | arg | { produce: (n: string) => T; consume: (x: T) =>... |
+| tst.ts:314:3:314:9 | produce | (n: string) => T |
+| tst.ts:314:12:314:27 | (n: string) => T | (n: string) => T |
+| tst.ts:314:13:314:13 | n | string |
+| tst.ts:315:3:315:9 | consume | (x: T) => void |
+| tst.ts:315:12:315:25 | (x: T) => void | (x: T) => void |
+| tst.ts:315:13:315:13 | x | T |
+| tst.ts:318:1:318:1 | f | <T>(arg: { produce: (n: string) => T; consume: ... |
+| tst.ts:318:1:321:2 | f({\\n  p ... se()\\n}) | void |
+| tst.ts:318:3:321:1 | {\\n  pro ... ase()\\n} | { produce: (n: string) => string; consume: (x: ... |
+| tst.ts:319:3:319:9 | produce | (n: string) => string |
+| tst.ts:319:12:319:12 | n | string |
+| tst.ts:319:12:319:17 | n => n | (n: string) => string |
+| tst.ts:319:17:319:17 | n | string |
+| tst.ts:320:3:320:9 | consume | (x: string) => string |
+| tst.ts:320:12:320:12 | x | string |
+| tst.ts:320:12:320:31 | x => x.toLowerCase() | (x: string) => string |
+| tst.ts:320:17:320:17 | x | string |
+| tst.ts:320:17:320:29 | x.toLowerCase | () => string |
+| tst.ts:320:17:320:31 | x.toLowerCase() | string |
+| tst.ts:320:19:320:29 | toLowerCase | () => string |
+| tst.ts:325:7:325:14 | ErrorMap | { new (entries?: readonly (readonly [string, Er... |
+| tst.ts:325:18:325:20 | Map | MapConstructor |
+| tst.ts:325:18:325:35 | Map<string, Error> | any |
+| tst.ts:327:7:327:14 | errorMap | Map<string, Error> |
+| tst.ts:327:18:327:31 | new ErrorMap() | Map<string, Error> |
+| tst.ts:327:22:327:29 | ErrorMap | { new (entries?: readonly (readonly [string, Er... |
+| tst.ts:338:7:338:7 | a | "a" \| "b" |
+| tst.ts:338:14:338:16 | 'a' | "a" |
+| tst.ts:343:3:343:5 | get | () => T |
+| tst.ts:343:8:343:14 | () => T | () => T |
+| tst.ts:344:3:344:5 | set | (value: T) => void |
+| tst.ts:344:8:344:25 | (value: T) => void | (value: T) => void |
+| tst.ts:344:9:344:13 | value | T |
+| tst.ts:347:7:347:11 | state | State<number> |
+| tst.ts:347:30:350:1 | {\\n  get ... > { }\\n} | State<number> |
+| tst.ts:348:3:348:5 | get | () => number |
+| tst.ts:348:8:348:15 | () => 42 | () => number |
+| tst.ts:348:14:348:15 | 42 | 42 |
+| tst.ts:349:3:349:5 | set | (value: number) => void |
+| tst.ts:349:8:349:21 | (value) => { } | (value: number) => void |
+| tst.ts:349:9:349:13 | value | number |
+| tst.ts:352:7:352:14 | fortyTwo | number |
+| tst.ts:352:18:352:22 | state | State<number> |
+| tst.ts:352:18:352:26 | state.get | () => number |
+| tst.ts:352:18:352:28 | state.get() | number |
+| tst.ts:352:24:352:26 | get | () => number |
+| tst.ts:377:8:377:18 | tstModuleES | () => "a" \| "b" |
+| tst.ts:377:25:377:43 | './tstModuleES.mjs' | any |
+| tst.ts:379:1:379:7 | console | Console |
+| tst.ts:379:1:379:11 | console.log | (...data: any[]) => void |
+| tst.ts:379:1:379:26 | console ... leES()) | void |
+| tst.ts:379:9:379:11 | log | (...data: any[]) => void |
+| tst.ts:379:13:379:23 | tstModuleES | () => "a" \| "b" |
+| tst.ts:379:13:379:25 | tstModuleES() | "a" \| "b" |
+| tst.ts:381:10:381:21 | tstModuleCJS | () => "a" \| "b" |
+| tst.ts:381:10:381:21 | tstModuleCJS | () => "a" \| "b" |
+| tst.ts:381:30:381:49 | './tstModuleCJS.cjs' | any |
+| tst.ts:383:1:383:7 | console | Console |
+| tst.ts:383:1:383:11 | console.log | (...data: any[]) => void |
+| tst.ts:383:1:383:27 | console ... eCJS()) | void |
+| tst.ts:383:9:383:11 | log | (...data: any[]) => void |
+| tst.ts:383:13:383:24 | tstModuleCJS | () => "a" \| "b" |
+| tst.ts:383:13:383:26 | tstModuleCJS() | "a" \| "b" |
+| tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
+| tstModuleCJS.cts:2:12:2:15 | Math | Math |
+| tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
+| tstModuleCJS.cts:2:12:2:24 | Math.random() | number |
+| tstModuleCJS.cts:2:12:2:30 | Math.random() > 0.5 | boolean |
+| tstModuleCJS.cts:2:12:2:42 | Math.ra ... ' : 'b' | "a" \| "b" |
+| tstModuleCJS.cts:2:17:2:22 | random | () => number |
+| tstModuleCJS.cts:2:28:2:30 | 0.5 | 0.5 |
+| tstModuleCJS.cts:2:34:2:36 | 'a' | "a" |
+| tstModuleCJS.cts:2:40:2:42 | 'b' | "b" |
+| tstModuleES.mts:1:25:1:35 | tstModuleES | () => "a" \| "b" |
+| tstModuleES.mts:2:12:2:15 | Math | Math |
+| tstModuleES.mts:2:12:2:22 | Math.random | () => number |
+| tstModuleES.mts:2:12:2:24 | Math.random() | number |
+| tstModuleES.mts:2:12:2:30 | Math.random() > 0.5 | boolean |
+| tstModuleES.mts:2:12:2:42 | Math.ra ... ' : 'b' | "a" \| "b" |
+| tstModuleES.mts:2:17:2:22 | random | () => number |
+| tstModuleES.mts:2:28:2:30 | 0.5 | 0.5 |
+| tstModuleES.mts:2:34:2:36 | 'a' | "a" |
+| tstModuleES.mts:2:40:2:42 | 'b' | "b" |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
 | type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
@@ -541,9 +577,9 @@ getTypeDefinitionType
 | tst.ts:265:3:269:3 | interfa ... an;\\n  } | TypeMap |
 | tst.ts:271:3:276:7 | type Un ...   }[P]; | UnionRecord<P> |
 | tst.ts:289:3:289:63 | type Fu ... > void; | Func |
-| tst.ts:332:3:335:16 | type Fi ...  never; | FirstString<T> |
-| tst.ts:337:3:337:53 | type F  ... lean]>; | "a" \| "b" |
-| tst.ts:343:3:346:3 | interfa ... id;\\n  } | State<T> |
+| tst.ts:331:1:334:14 | type Fi ...  never; | FirstString<T> |
+| tst.ts:336:1:336:51 | type F  ... lean]>; | "a" \| "b" |
+| tst.ts:342:1:345:1 | interfa ... void;\\n} | State<T> |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -786,39 +822,45 @@ getTypeExprType
 | tst.ts:289:47:289:52 | string | string |
 | tst.ts:289:59:289:62 | void | void |
 | tst.ts:291:13:291:16 | Func | Func |
-| tst.ts:314:14:314:14 | T | T |
-| tst.ts:314:22:316:29 | {\\n    p ...  void } | { produce: (n: string) => T; consume: (x: T) =>... |
-| tst.ts:315:14:315:29 | (n: string) => T | (n: string) => T |
-| tst.ts:315:18:315:23 | string | string |
-| tst.ts:315:29:315:29 | T | T |
-| tst.ts:316:14:316:27 | (x: T) => void | (x: T) => void |
-| tst.ts:316:18:316:18 | T | T |
-| tst.ts:316:24:316:27 | void | void |
-| tst.ts:317:6:317:9 | void | void |
-| tst.ts:326:24:326:29 | string | string |
-| tst.ts:326:32:326:36 | Error | Error |
-| tst.ts:332:8:332:18 | FirstString | FirstString<T> |
-| tst.ts:332:20:332:20 | T | T |
-| tst.ts:337:8:337:8 | F | "a" \| "b" |
-| tst.ts:337:12:337:22 | FirstString | FirstString<T> |
-| tst.ts:337:12:337:52 | FirstSt ... olean]> | "a" \| "b" |
-| tst.ts:337:24:337:51 | ['a' \|  ... oolean] | ["a" \| "b", number, boolean] |
-| tst.ts:337:25:337:27 | 'a' | "a" |
-| tst.ts:337:25:337:33 | 'a' \| 'b' | "a" \| "b" |
-| tst.ts:337:31:337:33 | 'b' | "b" |
-| tst.ts:337:36:337:41 | number | number |
-| tst.ts:337:44:337:50 | boolean | boolean |
-| tst.ts:339:12:339:12 | F | "a" \| "b" |
-| tst.ts:343:13:343:17 | State | State<T> |
-| tst.ts:343:26:343:26 | T | T |
-| tst.ts:344:10:344:16 | () => T | () => T |
+| tst.ts:313:12:313:12 | T | T |
+| tst.ts:313:20:315:27 | {\\n  pro ...  void } | { produce: (n: string) => T; consume: (x: T) =>... |
+| tst.ts:314:12:314:27 | (n: string) => T | (n: string) => T |
+| tst.ts:314:16:314:21 | string | string |
+| tst.ts:314:27:314:27 | T | T |
+| tst.ts:315:12:315:25 | (x: T) => void | (x: T) => void |
+| tst.ts:315:16:315:16 | T | T |
+| tst.ts:315:22:315:25 | void | void |
+| tst.ts:316:4:316:7 | void | void |
+| tst.ts:325:22:325:27 | string | string |
+| tst.ts:325:30:325:34 | Error | Error |
+| tst.ts:331:6:331:16 | FirstString | FirstString<T> |
+| tst.ts:331:18:331:18 | T | T |
+| tst.ts:336:6:336:6 | F | "a" \| "b" |
+| tst.ts:336:10:336:20 | FirstString | FirstString<T> |
+| tst.ts:336:10:336:50 | FirstSt ... olean]> | "a" \| "b" |
+| tst.ts:336:22:336:49 | ['a' \|  ... oolean] | ["a" \| "b", number, boolean] |
+| tst.ts:336:23:336:25 | 'a' | "a" |
+| tst.ts:336:23:336:31 | 'a' \| 'b' | "a" \| "b" |
+| tst.ts:336:29:336:31 | 'b' | "b" |
+| tst.ts:336:34:336:39 | number | number |
+| tst.ts:336:42:336:48 | boolean | boolean |
+| tst.ts:338:10:338:10 | F | "a" \| "b" |
+| tst.ts:342:11:342:15 | State | State<T> |
+| tst.ts:342:24:342:24 | T | T |
+| tst.ts:343:8:343:14 | () => T | () => T |
+| tst.ts:343:14:343:14 | T | T |
+| tst.ts:344:8:344:25 | (value: T) => void | (value: T) => void |
 | tst.ts:344:16:344:16 | T | T |
-| tst.ts:345:10:345:27 | (value: T) => void | (value: T) => void |
-| tst.ts:345:18:345:18 | T | T |
-| tst.ts:345:24:345:27 | void | void |
-| tst.ts:348:16:348:20 | State | State<T> |
-| tst.ts:348:16:348:28 | State<number> | State<number> |
-| tst.ts:348:22:348:27 | number | number |
+| tst.ts:344:22:344:25 | void | void |
+| tst.ts:347:14:347:18 | State | State<T> |
+| tst.ts:347:14:347:26 | State<number> | State<number> |
+| tst.ts:347:20:347:25 | number | number |
+| tstModuleCJS.cts:1:33:1:35 | 'a' | "a" |
+| tstModuleCJS.cts:1:33:1:41 | 'a' \| 'b' | "a" \| "b" |
+| tstModuleCJS.cts:1:39:1:41 | 'b' | "b" |
+| tstModuleES.mts:1:40:1:42 | 'a' | "a" |
+| tstModuleES.mts:1:40:1:48 | 'a' \| 'b' | "a" \| "b" |
+| tstModuleES.mts:1:46:1:48 | 'b' | "b" |
 | type_alias.ts:1:6:1:6 | B | boolean |
 | type_alias.ts:1:10:1:16 | boolean | boolean |
 | type_alias.ts:3:8:3:8 | B | boolean |
@@ -899,7 +941,7 @@ referenceDefinition
 | E | type_definition_objects.ts:6:8:6:16 | enum E {} |
 | EnumWithOneMember | type_definitions.ts:18:26:18:31 | member |
 | Error | tst.ts:210:10:213:3 | interfa ... ng;\\n  } |
-| FirstString<T> | tst.ts:332:3:335:16 | type Fi ...  never; |
+| FirstString<T> | tst.ts:331:1:334:14 | type Fi ...  never; |
 | Foo | tst.ts:116:3:129:3 | class F ...   }\\n  } |
 | Foo | tst.ts:165:5:167:5 | interfa ... ;\\n    } |
 | Foo | tst.ts:179:3:192:3 | class F ...    \\n  } |
@@ -913,8 +955,8 @@ referenceDefinition
 | NonAbstractDummy | tst.ts:54:1:56:1 | interfa ... mber;\\n} |
 | Person | tst.ts:222:3:234:3 | class P ...   }\\n  } |
 | Shape | tst.ts:140:3:142:47 | type Sh ... mber }; |
-| State<T> | tst.ts:343:3:346:3 | interfa ... id;\\n  } |
-| State<number> | tst.ts:343:3:346:3 | interfa ... id;\\n  } |
+| State<T> | tst.ts:342:1:345:1 | interfa ... void;\\n} |
+| State<number> | tst.ts:342:1:345:1 | interfa ... void;\\n} |
 | Sub | tst.ts:97:3:101:3 | class S ...   }\\n  } |
 | Success | tst.ts:205:10:208:3 | interfa ... ng;\\n  } |
 | Super | tst.ts:91:3:95:3 | class S ...   }\\n  } |
