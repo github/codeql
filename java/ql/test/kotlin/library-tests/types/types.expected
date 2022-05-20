@@ -10,6 +10,7 @@
 | ? extends BaseLocale | Wildcard |
 | ? extends BasicType | Wildcard |
 | ? extends BigInteger | Wildcard |
+| ? extends BoundMethodHandle | Wildcard |
 | ? extends ByteBuffer | Wildcard |
 | ? extends Callable<T> | Wildcard |
 | ? extends Certificate | Wildcard |
@@ -41,6 +42,7 @@
 | ? extends FileAttributeView | Wildcard |
 | ? extends ForkJoinTask<?> | Wildcard |
 | ? extends FormalTypeParameter | Wildcard |
+| ? extends Identity | Wildcard |
 | ? extends InetAddress | Wildcard |
 | ? extends IntStream | Wildcard |
 | ? extends K | Wildcard |
@@ -97,13 +99,18 @@
 | ? extends WorkQueue | Wildcard |
 | ? extends X | Wildcard |
 | ? super A | Wildcard |
+| ? super Byte | Wildcard |
+| ? super Class<?> | Wildcard |
+| ? super Cleaner | Wildcard |
 | ? super Consumer<R> | Wildcard |
 | ? super Double | Wildcard |
 | ? super DoubleConsumer | Wildcard |
 | ? super E | Wildcard |
+| ? super Entry<?> | Wildcard |
 | ? super Entry<K,V> | Wildcard |
 | ? super ForkJoinPool | Wildcard |
 | ? super ForkJoinTask<?> | Wildcard |
+| ? super Identity | Wildcard |
 | ? super IntConsumer | Wildcard |
 | ? super Integer | Wildcard |
 | ? super K | Wildcard |
@@ -119,6 +126,7 @@
 | ? super T | Wildcard |
 | ? super U | Wildcard |
 | ? super V | Wildcard |
+| ? super Version<T> | Wildcard |
 | A | TypeVariable |
 | A[] | Array |
 | AbstractChronology | Class |
@@ -388,10 +396,12 @@
 | BaseStream<Double,DoubleStream> | Interface, ParameterizedType |
 | BaseStream<Double,Stream<Double>> | Interface, ParameterizedType |
 | BaseStream<E,Stream<E>> | Interface, ParameterizedType |
+| BaseStream<Entry<K,V>,Stream<Entry<K,V>>> | Interface, ParameterizedType |
 | BaseStream<InetAddress,Stream<InetAddress>> | Interface, ParameterizedType |
 | BaseStream<Integer,IntStream> | Interface, ParameterizedType |
 | BaseStream<Integer,Stream<Integer>> | Interface, ParameterizedType |
 | BaseStream<JumpableGenerator,Stream<JumpableGenerator>> | Interface, ParameterizedType |
+| BaseStream<K,Stream<K>> | Interface, ParameterizedType |
 | BaseStream<LocalDate,Stream<LocalDate>> | Interface, ParameterizedType |
 | BaseStream<Long,LongStream> | Interface, ParameterizedType |
 | BaseStream<Long,Stream<Long>> | Interface, ParameterizedType |
@@ -408,6 +418,7 @@
 | BaseStream<T,Stream> | Interface, ParameterizedType |
 | BaseStream<U,Stream<U>> | Interface, ParameterizedType |
 | BaseStream<URL,Stream<URL>> | Interface, ParameterizedType |
+| BaseStream<V,Stream<V>> | Interface, ParameterizedType |
 | BaseType | Interface |
 | BasicFileAttributes | Interface |
 | BasicPermission | Class |
@@ -415,6 +426,7 @@
 | BasicType[] | Array |
 | BiConsumer | GenericType, Interface, ParameterizedType |
 | BiConsumer<> | Interface, RawType |
+| BiConsumer<? super Identity,? super Entry<?>> | Interface, ParameterizedType |
 | BiConsumer<? super K,? super V> | Interface, ParameterizedType |
 | BiConsumer<? super Object,? super Object> | Interface, ParameterizedType |
 | BiConsumer<? super T,? super Consumer<R>> | Interface, ParameterizedType |
@@ -428,6 +440,8 @@
 | BiConsumer<R,T> | Interface, ParameterizedType |
 | BiFunction | GenericType, Interface, ParameterizedType |
 | BiFunction<> | Interface, RawType |
+| BiFunction<? super Entry<?>,? super Entry<?>,? extends Entry<?>> | Interface, ParameterizedType |
+| BiFunction<? super Identity,? super Entry<?>,? extends Entry<?>> | Interface, ParameterizedType |
 | BiFunction<? super K,? super K,? extends K> | Interface, ParameterizedType |
 | BiFunction<? super K,? super V,? extends U> | Interface, ParameterizedType |
 | BiFunction<? super K,? super V,? extends V> | Interface, ParameterizedType |
@@ -441,6 +455,7 @@
 | BiFunction<R,R,R> | Interface, ParameterizedType |
 | BiFunction<String,List<Number>,ArrayIndexOutOfBoundsException> | Interface, ParameterizedType |
 | BiFunction<T,T,T> | Interface, ParameterizedType |
+| BiFunction<T,T,V> | Interface, ParameterizedType |
 | BiFunction<T,U,V> | Interface, ParameterizedType |
 | BiFunction<U,? super T,U> | Interface, ParameterizedType |
 | BiFunction<U,U,U> | Interface, ParameterizedType |
@@ -554,6 +569,7 @@
 | Class<> | Class, RawType |
 | Class<>[] | Array |
 | Class<? extends Annotation> | Class, ParameterizedType |
+| Class<? extends BoundMethodHandle> | Class, ParameterizedType |
 | Class<? extends FileAttributeView> | Class, ParameterizedType |
 | Class<? extends M> | Class, ParameterizedType |
 | Class<? extends T> | Class, ParameterizedType |
@@ -566,8 +582,10 @@
 | Class<?>[] | Array |
 | Class<A> | Class, ParameterizedType |
 | Class<Boolean> | Class, ParameterizedType |
+| Class<BoundMethodHandle> | Class, ParameterizedType |
 | Class<Byte> | Class, ParameterizedType |
 | Class<Character> | Class, ParameterizedType |
+| Class<ClassOption> | Class, ParameterizedType |
 | Class<Double> | Class, ParameterizedType |
 | Class<E> | Class, ParameterizedType |
 | Class<Float> | Class, ParameterizedType |
@@ -579,8 +597,11 @@
 | Class<S> | Class, ParameterizedType |
 | Class<Sh> | Class, ParameterizedType |
 | Class<Short> | Class, ParameterizedType |
+| Class<SpeciesData> | Class, ParameterizedType |
+| Class<String> | Class, ParameterizedType |
 | Class<T> | Class, ParameterizedType |
 | Class<U> | Class, ParameterizedType |
+| Class<UnicodeScript> | Class, ParameterizedType |
 | Class<V> | Class, ParameterizedType |
 | Class<Void> | Class, ParameterizedType |
 | ClassDataSlot | Class |
@@ -628,8 +649,11 @@
 | Collection<? extends Callable<T>> | Interface, ParameterizedType |
 | Collection<? extends Certificate> | Interface, ParameterizedType |
 | Collection<? extends E> | Interface, ParameterizedType |
+| Collection<? extends Entry<K,V>> | Interface, ParameterizedType |
+| Collection<? extends K> | Interface, ParameterizedType |
 | Collection<? extends OpenOption> | Interface, ParameterizedType |
 | Collection<? extends Principal> | Interface, ParameterizedType |
+| Collection<? extends V> | Interface, ParameterizedType |
 | Collection<? super ForkJoinTask<?>> | Interface, ParameterizedType |
 | Collection<?> | Interface, ParameterizedType |
 | Collection<Attribute> | Interface, ParameterizedType |
@@ -645,6 +669,8 @@
 | Collection<ConstantDesc> | Interface, ParameterizedType |
 | Collection<DateTimePrinterParser> | Interface, ParameterizedType |
 | Collection<E> | Interface, ParameterizedType |
+| Collection<Entry<?>> | Interface, ParameterizedType |
+| Collection<Entry<Identity,Entry<?>>> | Interface, ParameterizedType |
 | Collection<Entry<K,V>> | Interface, ParameterizedType |
 | Collection<Entry<Object,Object>> | Interface, ParameterizedType |
 | Collection<Era> | Interface, ParameterizedType |
@@ -652,6 +678,7 @@
 | Collection<F> | Interface, ParameterizedType |
 | Collection<FileSystemProvider> | Interface, ParameterizedType |
 | Collection<Future<T>> | Interface, ParameterizedType |
+| Collection<Identity> | Interface, ParameterizedType |
 | Collection<InterfaceAddress> | Interface, ParameterizedType |
 | Collection<K> | Interface, ParameterizedType |
 | Collection<LanguageRange> | Interface, ParameterizedType |
@@ -789,6 +816,8 @@
 | Comparator | GenericType, Interface, ParameterizedType |
 | Comparator<> | Interface, RawType |
 | Comparator<? super E> | Interface, ParameterizedType |
+| Comparator<? super Entry<K,V>> | Interface, ParameterizedType |
+| Comparator<? super Integer> | Interface, ParameterizedType |
 | Comparator<? super K> | Interface, ParameterizedType |
 | Comparator<? super T> | Interface, ParameterizedType |
 | Comparator<? super U> | Interface, ParameterizedType |
@@ -840,6 +869,7 @@
 | ConstructorRepository | Class |
 | Consumer | GenericType, Interface, ParameterizedType |
 | Consumer<> | Interface, RawType |
+| Consumer<? super Byte> | Interface, ParameterizedType |
 | Consumer<? super Double> | Interface, ParameterizedType |
 | Consumer<? super E> | Interface, ParameterizedType |
 | Consumer<? super Entry<K,V>> | Interface, ParameterizedType |
@@ -932,9 +962,11 @@
 | DynamicConstantDesc<Boolean> | Class, ParameterizedType |
 | DynamicConstantDesc<Byte> | Class, ParameterizedType |
 | DynamicConstantDesc<Character> | Class, ParameterizedType |
+| DynamicConstantDesc<ClassOption> | Class, ParameterizedType |
 | DynamicConstantDesc<E> | Class, ParameterizedType |
 | DynamicConstantDesc<Short> | Class, ParameterizedType |
 | DynamicConstantDesc<T> | Class, ParameterizedType |
+| DynamicConstantDesc<UnicodeScript> | Class, ParameterizedType |
 | DynamicConstantDesc<VarHandle> | Class, ParameterizedType |
 | E | TypeVariable |
 | E[] | Array |
@@ -949,6 +981,8 @@
 | Entry<? extends K,? extends V>[] | Array |
 | Entry<?> | Class, ParameterizedType |
 | Entry<?>[] | Array |
+| Entry<Identity,Entry<?>> | Class, ParameterizedType |
+| Entry<Identity,Entry<?>> | Interface, ParameterizedType |
 | Entry<K,V> | Class, ParameterizedType |
 | Entry<K,V> | Interface, ParameterizedType |
 | Entry<K,V>[] | Array |
@@ -1003,7 +1037,9 @@
 | EnumCompanionObject | Class |
 | EnumDesc | Class, GenericType, ParameterizedType |
 | EnumDesc<> | Class, RawType |
+| EnumDesc<ClassOption> | Class, ParameterizedType |
 | EnumDesc<E> | Class, ParameterizedType |
+| EnumDesc<UnicodeScript> | Class, ParameterizedType |
 | EnumSet | Class, GenericType, ParameterizedType |
 | EnumSet<> | Class, RawType |
 | EnumSet<E> | Class, ParameterizedType |
@@ -1121,6 +1157,7 @@
 | Function1<Integer,Short> | Interface, ParameterizedType |
 | Function1<Integer,T> | Interface, ParameterizedType |
 | Function<> | Interface, RawType |
+| Function<? super Identity,? extends Entry<?>> | Interface, ParameterizedType |
 | Function<? super K,? extends U> | Interface, ParameterizedType |
 | Function<? super K,? extends V> | Interface, ParameterizedType |
 | Function<? super Object,? extends Object> | Interface, ParameterizedType |
@@ -1135,6 +1172,7 @@
 | Function<? super T,? extends R> | Interface, ParameterizedType |
 | Function<? super T,? extends Stream<? extends R>> | Interface, ParameterizedType |
 | Function<? super T,? extends U> | Interface, ParameterizedType |
+| Function<? super T,? extends V> | Interface, ParameterizedType |
 | Function<? super V,? extends T> | Interface, ParameterizedType |
 | Function<? super V,? extends U> | Interface, ParameterizedType |
 | Function<A,R> | Interface, ParameterizedType |
@@ -1157,6 +1195,7 @@
 | Function<T> | Interface, ParameterizedType |
 | Function<V,Long> | Interface, ParameterizedType |
 | Function<V,R> | Interface, ParameterizedType |
+| Function<V,T> | Interface, ParameterizedType |
 | Function<V,V> | Interface, ParameterizedType |
 | Function<VM,VM> | Interface, ParameterizedType |
 | Future | GenericType, Interface, ParameterizedType |
@@ -1257,8 +1296,11 @@
 | Iterable<? extends Callable<T>> | Interface, ParameterizedType |
 | Iterable<? extends Certificate> | Interface, ParameterizedType |
 | Iterable<? extends E> | Interface, ParameterizedType |
+| Iterable<? extends Entry<K,V>> | Interface, ParameterizedType |
+| Iterable<? extends K> | Interface, ParameterizedType |
 | Iterable<? extends OpenOption> | Interface, ParameterizedType |
 | Iterable<? extends Principal> | Interface, ParameterizedType |
+| Iterable<? extends V> | Interface, ParameterizedType |
 | Iterable<? super ForkJoinTask<?>> | Interface, ParameterizedType |
 | Iterable<?> | Interface, ParameterizedType |
 | Iterable<Attribute> | Interface, ParameterizedType |
@@ -1275,6 +1317,8 @@
 | Iterable<ConstantDesc> | Interface, ParameterizedType |
 | Iterable<DateTimePrinterParser> | Interface, ParameterizedType |
 | Iterable<E> | Interface, ParameterizedType |
+| Iterable<Entry<?>> | Interface, ParameterizedType |
+| Iterable<Entry<Identity,Entry<?>>> | Interface, ParameterizedType |
 | Iterable<Entry<K,V>> | Interface, ParameterizedType |
 | Iterable<Entry<Object,Object>> | Interface, ParameterizedType |
 | Iterable<Era> | Interface, ParameterizedType |
@@ -1283,6 +1327,7 @@
 | Iterable<FileStore> | Interface, ParameterizedType |
 | Iterable<FileSystemProvider> | Interface, ParameterizedType |
 | Iterable<Future<T>> | Interface, ParameterizedType |
+| Iterable<Identity> | Interface, ParameterizedType |
 | Iterable<Integer> | Interface, ParameterizedType |
 | Iterable<InterfaceAddress> | Interface, ParameterizedType |
 | Iterable<K> | Interface, ParameterizedType |
@@ -1451,8 +1496,12 @@
 | ManagedBlocker | Interface |
 | Map | GenericType, Interface, ParameterizedType |
 | Map<> | Interface, RawType |
+| Map<? extends Identity,? extends Entry<?>> | Interface, ParameterizedType |
+| Map<? extends Identity,Entry<?>> | Interface, ParameterizedType |
 | Map<? extends K,? extends V> | Interface, ParameterizedType |
 | Map<? extends K,V> | Interface, ParameterizedType |
+| Map<? extends Object,? extends Object> | Interface, ParameterizedType |
+| Map<? extends Object,Object> | Interface, ParameterizedType |
 | Map<? extends WeakReference<Class<?>>,?> | Interface, ParameterizedType |
 | Map<?,?> | Interface, ParameterizedType |
 | Map<Attribute,Object> | Interface, ParameterizedType |
@@ -1621,7 +1670,9 @@
 | Optional<DynamicConstantDesc<Byte>> | Class, ParameterizedType |
 | Optional<DynamicConstantDesc<Character>> | Class, ParameterizedType |
 | Optional<DynamicConstantDesc<Short>> | Class, ParameterizedType |
+| Optional<EnumDesc<ClassOption>> | Class, ParameterizedType |
 | Optional<EnumDesc<E>> | Class, ParameterizedType |
+| Optional<EnumDesc<UnicodeScript>> | Class, ParameterizedType |
 | Optional<Float> | Class, ParameterizedType |
 | Optional<InputStream> | Class, ParameterizedType |
 | Optional<Integer> | Class, ParameterizedType |
@@ -1677,6 +1728,7 @@
 | Predicate<? super E> | Interface, ParameterizedType |
 | Predicate<? super Entry<K,V>> | Interface, ParameterizedType |
 | Predicate<? super ForkJoinPool> | Interface, ParameterizedType |
+| Predicate<? super K> | Interface, ParameterizedType |
 | Predicate<? super T> | Interface, ParameterizedType |
 | Predicate<? super V> | Interface, ParameterizedType |
 | Predicate<Class<?>> | Interface, ParameterizedType |
@@ -1735,7 +1787,11 @@
 | Reference<Version<T>> | Class, ParameterizedType |
 | Reference<Version> | Class, ParameterizedType |
 | ReferenceQueue | Class, GenericType, ParameterizedType |
+| ReferenceQueue<? super Class<?>> | Class, ParameterizedType |
+| ReferenceQueue<? super Cleaner> | Class, ParameterizedType |
+| ReferenceQueue<? super Object> | Class, ParameterizedType |
 | ReferenceQueue<? super T> | Class, ParameterizedType |
+| ReferenceQueue<? super Version<T>> | Class, ParameterizedType |
 | ReferenceQueue<Class<?>> | Class, ParameterizedType |
 | ReferenceQueue<Object> | Class, ParameterizedType |
 | ReflectionFactory | Class |
@@ -1787,9 +1843,11 @@
 | Set<Chronology> | Interface, ParameterizedType |
 | Set<ClassOption> | Interface, ParameterizedType |
 | Set<E> | Interface, ParameterizedType |
+| Set<Entry<Identity,Entry<?>>> | Interface, ParameterizedType |
 | Set<Entry<K,V>> | Interface, ParameterizedType |
 | Set<Entry<Object,Object>> | Interface, ParameterizedType |
 | Set<Exports> | Interface, ParameterizedType |
+| Set<Identity> | Interface, ParameterizedType |
 | Set<K> | Interface, ParameterizedType |
 | Set<Locale> | Interface, ParameterizedType |
 | Set<Modifier> | Interface, ParameterizedType |
@@ -1881,9 +1939,11 @@
 | Stream<Configuration> | Interface, ParameterizedType |
 | Stream<Double> | Interface, ParameterizedType |
 | Stream<E> | Interface, ParameterizedType |
+| Stream<Entry<K,V>> | Interface, ParameterizedType |
 | Stream<InetAddress> | Interface, ParameterizedType |
 | Stream<Integer> | Interface, ParameterizedType |
 | Stream<JumpableGenerator> | Interface, ParameterizedType |
+| Stream<K> | Interface, ParameterizedType |
 | Stream<LocalDate> | Interface, ParameterizedType |
 | Stream<Long> | Interface, ParameterizedType |
 | Stream<ModuleLayer> | Interface, ParameterizedType |
@@ -1898,6 +1958,7 @@
 | Stream<T> | Interface, ParameterizedType |
 | Stream<U> | Interface, ParameterizedType |
 | Stream<URL> | Interface, ParameterizedType |
+| Stream<V> | Interface, ParameterizedType |
 | StreamableGenerator | Interface |
 | String | Class |
 | StringBuffer | Class |

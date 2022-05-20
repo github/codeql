@@ -404,8 +404,7 @@ open class KotlinFileExtractor(
                 }
 
                 extractClassModifiers(c, id)
-                val forceExtractSupertypeMembers = !isExternalDeclaration(c)
-                extractClassSupertypes(c, id, inReceiverContext = forceExtractSupertypeMembers)
+                extractClassSupertypes(c, id, inReceiverContext = true) // inReceiverContext = true is specified to force extraction of member prototypes of base types
 
                 return id
             }
