@@ -747,7 +747,7 @@ public class ASTExtractor {
         visit(nd.getProperty(), key, 1, IdContext.TYPE_LABEL);
       } else {
         IdContext baseIdContext =
-            c.idcontext == IdContext.EXPORT ? IdContext.EXPORT_BASE : IdContext.VAR_BIND;
+            (c.idcontext == IdContext.EXPORT || c.idcontext == IdContext.EXPORT_BASE) ? IdContext.EXPORT_BASE : IdContext.VAR_BIND;
         visit(nd.getObject(), key, 0, baseIdContext);
         visit(nd.getProperty(), key, 1, nd.isComputed() ? IdContext.VAR_BIND : IdContext.LABEL);
       }
