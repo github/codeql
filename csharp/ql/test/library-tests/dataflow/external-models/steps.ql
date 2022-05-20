@@ -31,7 +31,9 @@ class SummaryModelTest extends SummaryModelCsv {
 query predicate summaryThroughStep(
   DataFlow::Node node1, DataFlow::Node node2, boolean preservesValue
 ) {
-  FlowSummaryImpl::Private::Steps::summaryThroughStep(node1, node2, preservesValue)
+  FlowSummaryImpl::Private::Steps::summaryThroughStepValue(node1, node2) and preservesValue = true
+  or
+  FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(node1, node2) and preservesValue = false
 }
 
 query predicate summaryGetterStep(DataFlow::Node arg, DataFlow::Node out, Content c) {

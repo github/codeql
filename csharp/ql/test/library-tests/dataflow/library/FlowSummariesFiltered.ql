@@ -13,10 +13,10 @@ class IncludeFilteredSummarizedCallable extends IncludeSummarizedCallable {
   override predicate relevantSummary(
     SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
   ) {
-    this.propagatesFlow(input, output, preservesValue) and
+    this.(SummarizedCallable).propagatesFlow(input, output, preservesValue) and
     not exists(IncludeSummarizedCallable rsc |
       isBaseCallableOrPrototype(rsc) and
-      rsc.propagatesFlow(input, output, preservesValue) and
+      rsc.(SummarizedCallable).propagatesFlow(input, output, preservesValue) and
       this.(UnboundCallable).overridesOrImplementsUnbound(rsc)
     )
   }

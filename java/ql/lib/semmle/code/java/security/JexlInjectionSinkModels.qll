@@ -1,4 +1,4 @@
-/** Provides sink models relating to Expression Langauge (JEXL) injection vulnerabilities. */
+/** Provides sink models relating to Expression Language (JEXL) injection vulnerabilities. */
 
 private import semmle.code.java.dataflow.ExternalFlow
 

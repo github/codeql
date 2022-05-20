@@ -5,7 +5,7 @@ import codeql.swift.elements.expr.OpaqueValueExpr
 import codeql.swift.elements.expr.TapExpr
 
 class InterpolatedStringLiteralExprBase extends @interpolated_string_literal_expr, LiteralExpr {
-  override string toString() { result = "InterpolatedStringLiteralExpr" }
+  override string getAPrimaryQlClass() { result = "InterpolatedStringLiteralExpr" }
 
   OpaqueValueExpr getInterpolationExpr() {
     exists(OpaqueValueExpr x |
@@ -14,12 +14,16 @@ class InterpolatedStringLiteralExprBase extends @interpolated_string_literal_exp
     )
   }
 
+  predicate hasInterpolationExpr() { exists(getInterpolationExpr()) }
+
   Expr getInterpolationCountExpr() {
     exists(Expr x |
       interpolated_string_literal_expr_interpolation_count_exprs(this, x) and
       result = x.resolve()
     )
   }
+
+  predicate hasInterpolationCountExpr() { exists(getInterpolationCountExpr()) }
 
   Expr getLiteralCapacityExpr() {
     exists(Expr x |
@@ -28,10 +32,14 @@ class InterpolatedStringLiteralExprBase extends @interpolated_string_literal_exp
     )
   }
 
+  predicate hasLiteralCapacityExpr() { exists(getLiteralCapacityExpr()) }
+
   TapExpr getAppendingExpr() {
     exists(TapExpr x |
       interpolated_string_literal_expr_appending_exprs(this, x) and
       result = x.resolve()
     )
   }
+
+  predicate hasAppendingExpr() { exists(getAppendingExpr()) }
 }

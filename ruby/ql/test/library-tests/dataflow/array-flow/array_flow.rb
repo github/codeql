@@ -1,7 +1,7 @@
 def m0(i)
     a = *source(0.1)
     sink(a[0]) # $ hasValueFlow=0.1
-    sink(a[1]) # $ hasTaintFlow=0.1 
+    sink(a[1])
     sink(a[i]) # $ hasValueFlow=0.1
 end
 

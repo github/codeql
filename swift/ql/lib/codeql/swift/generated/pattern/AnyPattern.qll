@@ -2,5 +2,5 @@
 import codeql.swift.elements.pattern.Pattern
 
 class AnyPatternBase extends @any_pattern, Pattern {
-  override string toString() { result = "AnyPattern" }
+  override string getAPrimaryQlClass() { result = "AnyPattern" }
 }

@@ -102,8 +102,10 @@ private module Frameworks {
   private import semmle.code.java.frameworks.JsonJava
   private import semmle.code.java.frameworks.Logging
   private import semmle.code.java.frameworks.Objects
+  private import semmle.code.java.frameworks.OkHttp
   private import semmle.code.java.frameworks.Optional
   private import semmle.code.java.frameworks.Regex
+  private import semmle.code.java.frameworks.Retrofit
   private import semmle.code.java.frameworks.Stream
   private import semmle.code.java.frameworks.Strings
   private import semmle.code.java.frameworks.ratpack.Ratpack
@@ -140,6 +142,8 @@ private module Frameworks {
   private import semmle.code.java.frameworks.jOOQ
   private import semmle.code.java.frameworks.JMS
   private import semmle.code.java.frameworks.RabbitMQ
+  private import semmle.code.java.regex.RegexFlowModels
+  private import semmle.code.java.frameworks.KotlinStdLib
 }
 
 private predicate sourceModelCsv(string row) {

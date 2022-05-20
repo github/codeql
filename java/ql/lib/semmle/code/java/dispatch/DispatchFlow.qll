@@ -200,7 +200,7 @@ private predicate flowStep(RelevantNode n1, RelevantNode n2) {
     n2.asExpr().(MethodAccess).getMethod() = getValue
   )
   or
-  n2.asExpr().(CastExpr).getExpr() = n1.asExpr()
+  n2.asExpr().(CastingExpr).getExpr() = n1.asExpr()
   or
   n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
   or

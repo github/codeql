@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 
 class OpenExistentialExprBase extends @open_existential_expr, Expr {
-  override string toString() { result = "OpenExistentialExpr" }
+  override string getAPrimaryQlClass() { result = "OpenExistentialExpr" }
 
   Expr getSubExpr() {
     exists(Expr x |

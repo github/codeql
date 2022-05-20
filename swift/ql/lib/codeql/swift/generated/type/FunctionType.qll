@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.AnyFunctionType
 
 class FunctionTypeBase extends @function_type, AnyFunctionType {
-  override string toString() { result = "FunctionType" }
+  override string getAPrimaryQlClass() { result = "FunctionType" }
 }

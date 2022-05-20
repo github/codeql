@@ -197,6 +197,13 @@ def forward_param(a, b, ...)
   bar(b, ...)
 end
 
+1.times { |a; b| Kernel.puts a }
+
+2.times do |c; d| Kernel.puts c end
+
+# A call with a safe navigation operator
+foo&.bar(1,2) { |x| x }
+
 __END__
 
 Some ignored nonsense

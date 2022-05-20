@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class DerivedToBaseExprBase extends @derived_to_base_expr, ImplicitConversionExpr {
-  override string toString() { result = "DerivedToBaseExpr" }
+  override string getAPrimaryQlClass() { result = "DerivedToBaseExpr" }
 }

@@ -8,7 +8,7 @@
  *      s = SOURCE
  *      SINK(s)
  * ```
- * `SOURCE` will be a source and the second occurance of `s` will be a sink.
+ * `SOURCE` will be a source and the second occurrence of `s` will be a sink.
  *
  * In order to test literals, alternative sources are defined for each type:
  *

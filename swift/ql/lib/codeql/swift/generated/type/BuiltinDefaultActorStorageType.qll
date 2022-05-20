@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.BuiltinType
 
 class BuiltinDefaultActorStorageTypeBase extends @builtin_default_actor_storage_type, BuiltinType {
-  override string toString() { result = "BuiltinDefaultActorStorageType" }
+  override string getAPrimaryQlClass() { result = "BuiltinDefaultActorStorageType" }
 }

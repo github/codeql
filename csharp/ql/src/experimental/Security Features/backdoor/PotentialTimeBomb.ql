@@ -70,7 +70,7 @@ class DateTimeStruct extends Struct {
   }
 
   /**
-   * Holds if the Callable is used for DateTime comparision
+   * Holds if the Callable is used for DateTime comparison
    */
   Callable getAComparisonCallable() {
     (result = this.getAnOperator() or result = this.getAMethod()) and

@@ -4,7 +4,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.LabeledStmt
 
 class SwitchStmtBase extends @switch_stmt, LabeledStmt {
-  override string toString() { result = "SwitchStmt" }
+  override string getAPrimaryQlClass() { result = "SwitchStmt" }
 
   Expr getExpr() {
     exists(Expr x |

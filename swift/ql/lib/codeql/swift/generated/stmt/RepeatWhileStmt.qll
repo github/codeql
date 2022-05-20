@@ -4,7 +4,7 @@ import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.stmt.Stmt
 
 class RepeatWhileStmtBase extends @repeat_while_stmt, LabeledStmt {
-  override string toString() { result = "RepeatWhileStmt" }
+  override string getAPrimaryQlClass() { result = "RepeatWhileStmt" }
 
   Expr getCondition() {
     exists(Expr x |

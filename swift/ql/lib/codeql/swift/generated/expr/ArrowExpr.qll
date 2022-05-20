@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.Expr
 
 class ArrowExprBase extends @arrow_expr, Expr {
-  override string toString() { result = "ArrowExpr" }
+  override string getAPrimaryQlClass() { result = "ArrowExpr" }
 }

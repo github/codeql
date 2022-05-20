@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.SelfApplyExpr
 
 class ConstructorRefCallExprBase extends @constructor_ref_call_expr, SelfApplyExpr {
-  override string toString() { result = "ConstructorRefCallExpr" }
+  override string getAPrimaryQlClass() { result = "ConstructorRefCallExpr" }
 }

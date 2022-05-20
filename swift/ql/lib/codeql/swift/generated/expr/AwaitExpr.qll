@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.IdentityExpr
 
 class AwaitExprBase extends @await_expr, IdentityExpr {
-  override string toString() { result = "AwaitExpr" }
+  override string getAPrimaryQlClass() { result = "AwaitExpr" }
 }

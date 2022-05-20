@@ -2,5 +2,5 @@
 import codeql.swift.elements.decl.OperatorDecl
 
 class InfixOperatorDeclBase extends @infix_operator_decl, OperatorDecl {
-  override string toString() { result = "InfixOperatorDecl" }
+  override string getAPrimaryQlClass() { result = "InfixOperatorDecl" }
 }

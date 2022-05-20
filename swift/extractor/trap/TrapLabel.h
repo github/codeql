@@ -4,8 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include "swift/extractor/trap/TrapTagTraits.h"
-#include "swift/extractor/trap/TrapTags.h"
+#include "swift/extractor/trap/generated/TrapTags.h"
 
 namespace codeql {
 
@@ -13,6 +12,8 @@ class UntypedTrapLabel {
   uint64_t id_;
 
   friend class std::hash<UntypedTrapLabel>;
+  template <typename Tag>
+  friend class TrapLabel;
 
  protected:
   UntypedTrapLabel() : id_{0xffffffffffffffff} {}
@@ -27,7 +28,7 @@ class UntypedTrapLabel {
   friend bool operator==(UntypedTrapLabel lhs, UntypedTrapLabel rhs) { return lhs.id_ == rhs.id_; }
 };
 
-template <typename Tag>
+template <typename TagParam>
 class TrapLabel : public UntypedTrapLabel {
   template <typename OtherTag>
   friend class TrapLabel;
@@ -35,7 +36,13 @@ class TrapLabel : public UntypedTrapLabel {
   using UntypedTrapLabel::UntypedTrapLabel;
 
  public:
+  using Tag = TagParam;
+
   TrapLabel() = default;
+
+  // The caller is responsible for ensuring ID uniqueness.
+  static TrapLabel unsafeCreateFromExplicitId(uint64_t id) { return {id}; }
+  static TrapLabel unsafeCreateFromUntyped(UntypedTrapLabel label) { return {label.id_}; }
 
   template <typename OtherTag>
   TrapLabel(const TrapLabel<OtherTag>& other) : UntypedTrapLabel(other) {
@@ -53,6 +60,11 @@ class TrapLabel : public UntypedTrapLabel {
 inline auto trapQuoted(const std::string& s) {
   return std::quoted(s, '"', '"');
 }
+
+template <typename Tag>
+struct Binding {
+  TrapLabel<Tag> id;
+};
 
 }  // namespace codeql
 

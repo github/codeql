@@ -59,6 +59,7 @@ AnyFunctionType:
   result: Type
   param_types: Type*
   param_labels: string*
+  is_throwing: predicate
 
 AnyGenericType:
   _extends: Type
@@ -256,7 +257,7 @@ OperatorDecl:
 
 PatternBindingDecl:
   _extends: Decl
-  inits: Expr*
+  inits: Expr?*
   patterns: Pattern*
 
 PoundDiagnosticDecl:

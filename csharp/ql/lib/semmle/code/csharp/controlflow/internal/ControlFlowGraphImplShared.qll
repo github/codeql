@@ -744,7 +744,7 @@ cached
 private module Cached {
   /**
    * If needed, call this predicate from `ControlFlowGraphImplSpecific.qll` in order to
-   * force a stage-dependency on the `ControlFlowGraphImplShared.qll` stage and therby
+   * force a stage-dependency on the `ControlFlowGraphImplShared.qll` stage and thereby
    * collapsing the two stages.
    */
   cached
