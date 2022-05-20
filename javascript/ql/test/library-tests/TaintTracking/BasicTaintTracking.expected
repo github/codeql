@@ -1,0 +1,207 @@
+typeInferenceMismatch
+| destruct.js:20:7:20:14 | source() | destruct.js:13:14:13:19 | [a, b] |
+#select
+| access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
+| addexpr.js:4:10:4:17 | source() | addexpr.js:7:8:7:8 | x |
+| addexpr.js:11:15:11:22 | source() | addexpr.js:21:8:21:12 | value |
+| advanced-callgraph.js:2:13:2:20 | source() | advanced-callgraph.js:6:22:6:22 | v |
+| array-callback.js:2:23:2:30 | source() | array-callback.js:4:10:4:10 | x |
+| array-mutation.js:19:18:19:25 | source() | array-mutation.js:20:8:20:8 | e |
+| array-mutation.js:23:13:23:20 | source() | array-mutation.js:24:8:24:8 | f |
+| array-mutation.js:27:16:27:23 | source() | array-mutation.js:28:8:28:8 | g |
+| array-mutation.js:31:33:31:40 | source() | array-mutation.js:32:8:32:8 | h |
+| array-mutation.js:35:36:35:43 | source() | array-mutation.js:36:8:36:8 | i |
+| array-mutation.js:39:17:39:24 | source() | array-mutation.js:40:8:40:8 | j |
+| arrays.js:2:15:2:22 | source() | arrays.js:5:10:5:20 | arrify(foo) |
+| arrays.js:2:15:2:22 | source() | arrays.js:8:10:8:22 | arrayIfy(foo) |
+| arrays.js:2:15:2:22 | source() | arrays.js:11:10:11:28 | union(["bla"], foo) |
+| arrays.js:2:15:2:22 | source() | arrays.js:14:10:14:18 | flat(foo) |
+| arrays.js:2:15:2:22 | source() | arrays.js:19:10:19:12 | res |
+| booleanOps.js:2:11:2:18 | source() | booleanOps.js:4:8:4:8 | x |
+| booleanOps.js:2:11:2:18 | source() | booleanOps.js:13:10:13:10 | x |
+| booleanOps.js:2:11:2:18 | source() | booleanOps.js:19:10:19:10 | x |
+| booleanOps.js:2:11:2:18 | source() | booleanOps.js:22:10:22:10 | x |
+| bound-function.js:12:12:12:19 | source() | bound-function.js:4:10:4:10 | y |
+| bound-function.js:14:6:14:13 | source() | bound-function.js:4:10:4:10 | y |
+| bound-function.js:22:8:22:15 | source() | bound-function.js:25:10:25:10 | y |
+| bound-function.js:45:10:45:17 | source() | bound-function.js:45:6:45:18 | id3(source()) |
+| bound-function.js:49:12:49:19 | source() | bound-function.js:54:6:54:14 | source0() |
+| bound-function.js:49:12:49:19 | source() | bound-function.js:55:6:55:14 | source1() |
+| callbacks.js:4:6:4:13 | source() | callbacks.js:34:27:34:27 | x |
+| callbacks.js:4:6:4:13 | source() | callbacks.js:35:27:35:27 | x |
+| callbacks.js:5:6:5:13 | source() | callbacks.js:34:27:34:27 | x |
+| callbacks.js:5:6:5:13 | source() | callbacks.js:35:27:35:27 | x |
+| callbacks.js:25:16:25:23 | source() | callbacks.js:47:26:47:26 | x |
+| callbacks.js:25:16:25:23 | source() | callbacks.js:48:26:48:26 | x |
+| callbacks.js:37:17:37:24 | source() | callbacks.js:37:37:37:37 | x |
+| callbacks.js:44:17:44:24 | source() | callbacks.js:41:10:41:10 | x |
+| callbacks.js:50:18:50:25 | source() | callbacks.js:30:29:30:29 | y |
+| callbacks.js:51:18:51:25 | source() | callbacks.js:30:29:30:29 | y |
+| callbacks.js:53:23:53:30 | source() | callbacks.js:58:10:58:10 | x |
+| capture-flow.js:9:11:9:18 | source() | capture-flow.js:14:10:14:16 | outer() |
+| capture-flow.js:9:11:9:18 | source() | capture-flow.js:19:6:19:16 | outerMost() |
+| capture-flow.js:31:14:31:21 | source() | capture-flow.js:31:6:31:22 | confuse(source()) |
+| captured-sanitizer.js:25:3:25:10 | source() | captured-sanitizer.js:15:10:15:10 | x |
+| case.js:2:16:2:23 | source() | case.js:5:8:5:35 | changeC ... source) |
+| case.js:2:16:2:23 | source() | case.js:8:8:8:24 | camelCase(source) |
+| case.js:2:16:2:23 | source() | case.js:11:8:11:24 | kebabCase(source) |
+| case.js:2:16:2:23 | source() | case.js:12:8:12:32 | kebabCa ... source) |
+| case.js:2:16:2:23 | source() | case.js:15:8:15:24 | titleCase(source) |
+| case.js:2:16:2:23 | source() | case.js:18:8:18:23 | titleize(source) |
+| case.js:2:16:2:23 | source() | case.js:21:8:21:26 | secondCamel(source) |
+| case.js:2:16:2:23 | source() | case.js:24:8:24:25 | decamelize(source) |
+| closure.js:6:15:6:22 | source() | closure.js:8:8:8:31 | string. ... (taint) |
+| closure.js:6:15:6:22 | source() | closure.js:9:8:9:25 | string.trim(taint) |
+| closure.js:6:15:6:22 | source() | closure.js:10:8:10:33 | string. ... nt, 50) |
+| constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:18:8:18:14 | c.taint |
+| constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:22:8:22:19 | c_safe.taint |
+| constructor-calls.js:10:16:10:23 | source() | constructor-calls.js:26:8:26:14 | d.taint |
+| constructor-calls.js:10:16:10:23 | source() | constructor-calls.js:30:8:30:19 | d_safe.taint |
+| constructor-calls.js:14:15:14:22 | source() | constructor-calls.js:17:8:17:14 | c.param |
+| constructor-calls.js:14:15:14:22 | source() | constructor-calls.js:25:8:25:14 | d.param |
+| destruct.js:20:7:20:14 | source() | destruct.js:5:10:5:10 | z |
+| destruct.js:20:7:20:14 | source() | destruct.js:8:10:8:10 | w |
+| destruct.js:20:7:20:14 | source() | destruct.js:11:10:11:10 | q |
+| destruct.js:20:7:20:14 | source() | destruct.js:14:12:14:12 | a |
+| destruct.js:20:7:20:14 | source() | destruct.js:15:12:15:12 | b |
+| exceptions.js:3:15:3:22 | source() | exceptions.js:5:10:5:10 | e |
+| exceptions.js:21:17:21:24 | source() | exceptions.js:23:10:23:10 | e |
+| exceptions.js:21:17:21:24 | source() | exceptions.js:24:10:24:21 | e.toString() |
+| exceptions.js:21:17:21:24 | source() | exceptions.js:25:10:25:18 | e.message |
+| exceptions.js:21:17:21:24 | source() | exceptions.js:26:10:26:19 | e.fileName |
+| exceptions.js:59:24:59:31 | source() | exceptions.js:61:12:61:12 | e |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:11:10:11:10 | e |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:32:10:32:10 | e |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:33:10:33:21 | e.toString() |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:34:10:34:18 | e.message |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:35:10:35:19 | e.fileName |
+| exceptions.js:93:11:93:18 | source() | exceptions.js:95:10:95:10 | e |
+| exceptions.js:100:13:100:20 | source() | exceptions.js:102:12:102:12 | e |
+| exceptions.js:115:21:115:28 | source() | exceptions.js:121:10:121:10 | e |
+| exceptions.js:144:9:144:16 | source() | exceptions.js:129:10:129:10 | e |
+| exceptions.js:144:9:144:16 | source() | exceptions.js:132:8:132:27 | returnThrownSource() |
+| exceptions.js:150:13:150:20 | source() | exceptions.js:153:10:153:10 | e |
+| exceptions.js:158:13:158:20 | source() | exceptions.js:161:10:161:10 | e |
+| factory-function.js:21:13:21:20 | source() | factory-function.js:7:10:7:12 | obj |
+| factory-function.js:22:13:22:20 | source() | factory-function.js:7:10:7:12 | obj |
+| factory-function.js:26:7:26:14 | source() | factory-function.js:16:14:16:16 | obj |
+| factory-function.js:27:7:27:14 | source() | factory-function.js:16:14:16:16 | obj |
+| getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:9:10:9:18 | new C().x |
+| getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:13:18:13:20 | c.x |
+| getters-and-setters.js:27:15:27:22 | source() | getters-and-setters.js:23:18:23:18 | v |
+| getters-and-setters.js:47:23:47:30 | source() | getters-and-setters.js:45:14:45:16 | c.x |
+| getters-and-setters.js:60:20:60:27 | source() | getters-and-setters.js:66:10:66:14 | obj.x |
+| getters-and-setters.js:67:13:67:20 | source() | getters-and-setters.js:63:18:63:22 | value |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:88:10:88:18 | new C().x |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:92:14:92:16 | c.x |
+| getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:100:10:100:22 | getX(new C()) |
+| getters-and-setters.js:89:17:89:24 | source() | getters-and-setters.js:82:18:82:22 | value |
+| importedReactComponent.jsx:4:40:4:47 | source() | exportedReactComponent.jsx:2:10:2:19 | props.text |
+| indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:5:8:5:29 | JSON.st ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:9:8:9:47 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:10:8:10:42 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:11:8:11:41 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:12:8:12:52 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:13:8:13:45 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:14:8:14:46 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:15:8:15:38 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:16:8:16:38 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:17:8:17:39 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:18:8:18:40 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:21:8:21:46 | new jso ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:24:8:24:43 | json5.s ... ource)) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:27:8:27:47 | flatted ... ource)) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:30:8:30:49 | telepor ... ource)) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:34:8:34:51 | replica ... ource)) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:36:8:36:47 | require ... source) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:39:8:39:37 | jc.stri ... ource)) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:42:8:42:51 | JSON.st ... urce))) |
+| json-stringify.js:2:16:2:23 | source() | json-stringify.js:45:8:45:23 | fastJson(source) |
+| json-stringify.js:3:15:3:22 | source() | json-stringify.js:8:8:8:31 | jsonStr ... (taint) |
+| nested-props.js:4:13:4:20 | source() | nested-props.js:5:10:5:14 | obj.x |
+| nested-props.js:9:18:9:25 | source() | nested-props.js:10:10:10:16 | obj.x.y |
+| nested-props.js:35:13:35:20 | source() | nested-props.js:36:10:36:20 | doLoad(obj) |
+| nested-props.js:43:13:43:20 | source() | nested-props.js:44:10:44:18 | id(obj).x |
+| nested-props.js:67:31:67:38 | source() | nested-props.js:68:10:68:10 | x |
+| nested-props.js:77:36:77:43 | source() | nested-props.js:78:10:78:10 | x |
+| object-bypass-sanitizer.js:35:29:35:36 | source() | object-bypass-sanitizer.js:23:14:23:20 | obj.foo |
+| object-bypass-sanitizer.js:35:29:35:36 | source() | object-bypass-sanitizer.js:28:10:28:30 | sanitiz ... bj).foo |
+| partialCalls.js:4:17:4:24 | source() | partialCalls.js:17:14:17:14 | x |
+| partialCalls.js:4:17:4:24 | source() | partialCalls.js:20:14:20:14 | y |
+| partialCalls.js:4:17:4:24 | source() | partialCalls.js:30:14:30:20 | x.value |
+| partialCalls.js:4:17:4:24 | source() | partialCalls.js:41:10:41:18 | id(taint) |
+| partialCalls.js:4:17:4:24 | source() | partialCalls.js:51:14:51:14 | x |
+| promise.js:4:24:4:31 | source() | promise.js:4:8:4:32 | Promise ... urce()) |
+| promise.js:5:25:5:32 | source() | promise.js:5:8:5:33 | bluebir ... urce()) |
+| promise.js:10:24:10:31 | source() | promise.js:10:8:10:32 | Promise ... urce()) |
+| promise.js:12:20:12:27 | source() | promise.js:13:8:13:23 | resolver.promise |
+| rxjs.js:3:1:3:8 | source() | rxjs.js:10:14:10:17 | data |
+| rxjs.js:13:1:13:8 | source() | rxjs.js:17:23:17:23 | x |
+| rxjs.js:13:1:13:8 | source() | rxjs.js:18:23:18:23 | x |
+| rxjs.js:13:1:13:8 | source() | rxjs.js:22:14:22:17 | data |
+| rxjs.js:27:24:27:32 | source(x) | rxjs.js:29:23:29:23 | x |
+| rxjs.js:27:24:27:32 | source(x) | rxjs.js:34:14:34:17 | data |
+| sanitizer-function.js:12:17:12:24 | source() | sanitizer-function.js:14:10:14:14 | taint |
+| sanitizer-function.js:12:17:12:24 | source() | sanitizer-function.js:33:14:33:18 | taint |
+| sanitizer-guards.js:2:11:2:18 | source() | sanitizer-guards.js:4:8:4:8 | x |
+| sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:15:10:15:15 | this.x |
+| sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:21:14:21:19 | this.x |
+| sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:26:9:26:14 | this.x |
+| sanitizer-guards.js:43:11:43:18 | source() | sanitizer-guards.js:45:8:45:8 | x |
+| sanitizer-guards.js:43:11:43:18 | source() | sanitizer-guards.js:48:10:48:10 | x |
+| sanitizer-guards.js:68:11:68:18 | source() | sanitizer-guards.js:75:8:75:8 | x |
+| sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:81:8:81:8 | x |
+| sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:84:10:84:10 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:93:8:93:8 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:98:7:98:7 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:104:7:104:7 | x |
+| spread.js:2:15:2:22 | source() | spread.js:4:8:4:19 | { ...taint } |
+| spread.js:2:15:2:22 | source() | spread.js:5:8:5:43 | { f: 'h ... orld' } |
+| spread.js:2:15:2:22 | source() | spread.js:7:8:7:19 | [ ...taint ] |
+| spread.js:2:15:2:22 | source() | spread.js:8:8:8:28 | [ 1, 2, ... nt, 3 ] |
+| static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:5:14:5:22 | RegExp.$1 |
+| static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:15:14:15:22 | RegExp.$1 |
+| static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:17:14:17:22 | RegExp.$1 |
+| static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:21:14:21:22 | RegExp.$1 |
+| static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:24:14:24:22 | RegExp.$1 |
+| static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:27:14:27:22 | RegExp.$1 |
+| static-capture-groups.js:32:17:32:24 | source() | static-capture-groups.js:38:10:38:18 | RegExp.$1 |
+| static-capture-groups.js:42:12:42:19 | source() | static-capture-groups.js:43:14:43:22 | RegExp.$1 |
+| string-replace.js:3:13:3:20 | source() | string-replace.js:14:10:14:13 | data |
+| string-replace.js:3:13:3:20 | source() | string-replace.js:18:10:18:13 | data |
+| string-replace.js:3:13:3:20 | source() | string-replace.js:21:6:21:41 | safe(). ...  taint) |
+| string-replace.js:3:13:3:20 | source() | string-replace.js:22:6:22:48 | safe(). ...  taint) |
+| string-replace.js:3:13:3:20 | source() | string-replace.js:24:6:24:45 | taint.r ...  + '!') |
+| summarize-store-load-in-call.js:9:15:9:22 | source() | summarize-store-load-in-call.js:9:10:9:23 | blah(source()) |
+| thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
+| thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
+| tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
+| tst.js:2:13:2:20 | source() | tst.js:5:10:5:22 | "/" + x + "!" |
+| tst.js:2:13:2:20 | source() | tst.js:14:10:14:17 | x.sort() |
+| tst.js:2:13:2:20 | source() | tst.js:17:10:17:10 | a |
+| tst.js:2:13:2:20 | source() | tst.js:19:10:19:10 | a |
+| tst.js:2:13:2:20 | source() | tst.js:23:10:23:10 | b |
+| tst.js:2:13:2:20 | source() | tst.js:25:10:25:16 | x.pop() |
+| tst.js:2:13:2:20 | source() | tst.js:26:10:26:18 | x.shift() |
+| tst.js:2:13:2:20 | source() | tst.js:27:10:27:18 | x.slice() |
+| tst.js:2:13:2:20 | source() | tst.js:28:10:28:19 | x.splice() |
+| tst.js:2:13:2:20 | source() | tst.js:30:10:30:22 | Array.from(x) |
+| tst.js:2:13:2:20 | source() | tst.js:33:14:33:16 | elt |
+| tst.js:2:13:2:20 | source() | tst.js:35:14:35:16 | ary |
+| tst.js:2:13:2:20 | source() | tst.js:39:14:39:16 | elt |
+| tst.js:2:13:2:20 | source() | tst.js:41:14:41:16 | ary |
+| tst.js:2:13:2:20 | source() | tst.js:44:10:44:30 | innocen ... ) => x) |
+| tst.js:2:13:2:20 | source() | tst.js:45:10:45:24 | x.map(x2 => x2) |
+| tst.js:2:13:2:20 | source() | tst.js:47:10:47:30 | Buffer. ...  'hex') |
+| tst.js:2:13:2:20 | source() | tst.js:48:10:48:22 | new Buffer(x) |
+| tst.js:2:13:2:20 | source() | tst.js:51:10:51:31 | seriali ... ript(x) |
+| xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |
+| xml.js:12:17:12:24 | source() | xml.js:13:14:13:19 | result |
+| xml.js:23:18:23:25 | source() | xml.js:20:14:20:17 | attr |
+| xml.js:26:27:26:34 | source() | xml.js:26:10:26:39 | convert ... (), {}) |
+| xml.js:34:18:34:25 | source() | xml.js:31:18:31:21 | name |
+| xml.js:41:15:41:22 | source() | xml.js:44:10:44:22 | gchild.text() |
+| xml.js:41:15:41:22 | source() | xml.js:49:10:49:34 | child.a ... value() |
+| xml.js:41:15:41:22 | source() | xml.js:52:10:52:34 | child2. ... .name() |
+| xml.js:41:15:41:22 | source() | xml.js:58:12:58:14 | str |

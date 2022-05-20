@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If two conditions in an 'if'-'else if' chain are identical, the second condition will never
+hold. This most likely indicates a copy-paste error where the first condition was copied
+and then not properly adjusted.  Even if the duplication is intentional (relying, for instance,
+on non-determinism or side effects), such code is confusing and should be avoided.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the two conditions to find out what they were meant to check. If both the conditions
+and the branches that depend on them are identical, then the second branch is duplicate code
+that can be deleted. Otherwise, the second condition needs to be adjusted.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the example below, the function <code>controller</code> checks its parameter <code>msg</code>
+to determine what operation it is meant to perform. However, the comparison in the 'else if' is
+identical to the comparison in the 'if', so this branch will never be taken.
+</p>
+
+<sample src="examples/DuplicateCondition.js" />
+
+<p>
+Clearly, the 'else if' branch should compare <code>msg</code> to <code>'stop'</code>:
+</p>
+
+<sample src="examples/DuplicateConditionGood.js" />
+
+</example>
+</qhelp>

@@ -1,0 +1,10 @@
+| common.h:3:1:3:22 | #include "nameclash.h" | Include | nameclash.h | 1 |
+| defines_issue.h:3:1:3:23 | #include DEFINED_HEADER | Include | define1.h | 1 |
+| defines_issue.h:3:1:3:23 | #include DEFINED_HEADER | Include | define2.h | 1 |
+| main1.cpp:3:1:3:19 | #include "common.h" | Include | common.h | 1 |
+| main1.cpp:7:1:7:26 | #include "defines_issue.h" | Include | defines_issue.h | 1 |
+| main2.cpp:3:1:3:19 | #include "common.h" | Include | common.h | 1 |
+| main2.cpp:7:1:7:26 | #include "defines_issue.h" | Include | defines_issue.h | 1 |
+| nameclash.h:3:1:3:27 | #include_next "nameclash.h" | IncludeNext | nameclash.h | 1 |
+| nameclash.h:3:1:3:27 | #include_next "nameclash.h" | IncludeNext | subdir1/nameclash.h | 1 |
+| nameclash.h:3:1:3:27 | #include_next "nameclash.h" | IncludeNext | subdir2/nameclash.h | 1 |

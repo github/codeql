@@ -1,0 +1,12 @@
+| NullCoalescingAssignment.cs:5:10:5:23 | enter NullCoalescing | NullCoalescingAssignment.cs:6:5:9:5 | {...} | semmle.label | successor |
+| NullCoalescingAssignment.cs:5:10:5:23 | exit NullCoalescing (normal) | NullCoalescingAssignment.cs:5:10:5:23 | exit NullCoalescing | semmle.label | successor |
+| NullCoalescingAssignment.cs:6:5:9:5 | {...} | NullCoalescingAssignment.cs:7:9:7:24 | ... ...; | semmle.label | successor |
+| NullCoalescingAssignment.cs:7:9:7:24 | ... ...; | NullCoalescingAssignment.cs:7:20:7:23 | null | semmle.label | successor |
+| NullCoalescingAssignment.cs:7:16:7:23 | Object o = ... | NullCoalescingAssignment.cs:8:9:8:19 | ...; | semmle.label | successor |
+| NullCoalescingAssignment.cs:7:20:7:23 | null | NullCoalescingAssignment.cs:7:16:7:23 | Object o = ... | semmle.label | successor |
+| NullCoalescingAssignment.cs:8:9:8:9 | access to local variable o | NullCoalescingAssignment.cs:8:9:8:18 | ... ?? ... | semmle.label | non-null |
+| NullCoalescingAssignment.cs:8:9:8:9 | access to local variable o | NullCoalescingAssignment.cs:8:15:8:18 | this access | semmle.label | null |
+| NullCoalescingAssignment.cs:8:9:8:18 | ... = ... | NullCoalescingAssignment.cs:5:10:5:23 | exit NullCoalescing (normal) | semmle.label | successor |
+| NullCoalescingAssignment.cs:8:9:8:18 | ... ?? ... | NullCoalescingAssignment.cs:8:9:8:18 | ... = ... | semmle.label | successor |
+| NullCoalescingAssignment.cs:8:9:8:19 | ...; | NullCoalescingAssignment.cs:8:9:8:9 | access to local variable o | semmle.label | successor |
+| NullCoalescingAssignment.cs:8:15:8:18 | this access | NullCoalescingAssignment.cs:8:9:8:18 | ... ?? ... | semmle.label | successor |

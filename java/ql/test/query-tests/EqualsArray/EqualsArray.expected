@@ -1,0 +1,2 @@
+| Test.java:6:10:6:37 | equals(...) | The equals method on arrays only considers object identity and ignores array contents. |
+| Test.java:20:3:20:20 | hashCode(...) | The hashCode method on arrays only considers object identity and ignores array contents. |

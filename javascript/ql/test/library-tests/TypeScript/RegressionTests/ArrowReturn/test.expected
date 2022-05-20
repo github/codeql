@@ -1,0 +1,2 @@
+| tst.ts:1:1:1:1 | Error: '}' expected. |
+| tst.ts:1:25:1:25 | Error: '{' expected. |

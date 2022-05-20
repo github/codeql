@@ -1,0 +1,1 @@
+| Program.cs:7:22:7:59 | object creation of type HttpCookie | Cookie attribute 'HttpOnly' is not set to true. |

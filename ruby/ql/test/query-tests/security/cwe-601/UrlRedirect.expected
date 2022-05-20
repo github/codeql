@@ -1,0 +1,37 @@
+edges
+| UrlRedirect.rb:9:17:9:22 | call to params :  | UrlRedirect.rb:9:17:9:28 | ...[...] |
+| UrlRedirect.rb:14:17:14:22 | call to params :  | UrlRedirect.rb:14:17:14:43 | call to fetch |
+| UrlRedirect.rb:19:17:19:22 | call to params :  | UrlRedirect.rb:19:17:19:37 | call to to_unsafe_hash |
+| UrlRedirect.rb:24:31:24:36 | call to params :  | UrlRedirect.rb:24:17:24:37 | call to filter_params |
+| UrlRedirect.rb:24:31:24:36 | call to params :  | UrlRedirect.rb:63:21:63:32 | input_params :  |
+| UrlRedirect.rb:34:20:34:25 | call to params :  | UrlRedirect.rb:34:20:34:31 | ...[...] :  |
+| UrlRedirect.rb:34:20:34:31 | ...[...] :  | UrlRedirect.rb:34:17:34:37 | "#{...}/foo" |
+| UrlRedirect.rb:58:17:58:22 | call to params :  | UrlRedirect.rb:58:17:58:28 | ...[...] |
+| UrlRedirect.rb:63:21:63:32 | input_params :  | UrlRedirect.rb:64:5:64:29 | call to permit :  |
+nodes
+| UrlRedirect.rb:4:17:4:22 | call to params | semmle.label | call to params |
+| UrlRedirect.rb:9:17:9:22 | call to params :  | semmle.label | call to params :  |
+| UrlRedirect.rb:9:17:9:28 | ...[...] | semmle.label | ...[...] |
+| UrlRedirect.rb:14:17:14:22 | call to params :  | semmle.label | call to params :  |
+| UrlRedirect.rb:14:17:14:43 | call to fetch | semmle.label | call to fetch |
+| UrlRedirect.rb:19:17:19:22 | call to params :  | semmle.label | call to params :  |
+| UrlRedirect.rb:19:17:19:37 | call to to_unsafe_hash | semmle.label | call to to_unsafe_hash |
+| UrlRedirect.rb:24:17:24:37 | call to filter_params | semmle.label | call to filter_params |
+| UrlRedirect.rb:24:31:24:36 | call to params :  | semmle.label | call to params :  |
+| UrlRedirect.rb:34:17:34:37 | "#{...}/foo" | semmle.label | "#{...}/foo" |
+| UrlRedirect.rb:34:20:34:25 | call to params :  | semmle.label | call to params :  |
+| UrlRedirect.rb:34:20:34:31 | ...[...] :  | semmle.label | ...[...] :  |
+| UrlRedirect.rb:58:17:58:22 | call to params :  | semmle.label | call to params :  |
+| UrlRedirect.rb:58:17:58:28 | ...[...] | semmle.label | ...[...] |
+| UrlRedirect.rb:63:21:63:32 | input_params :  | semmle.label | input_params :  |
+| UrlRedirect.rb:64:5:64:29 | call to permit :  | semmle.label | call to permit :  |
+subpaths
+| UrlRedirect.rb:24:31:24:36 | call to params :  | UrlRedirect.rb:63:21:63:32 | input_params :  | UrlRedirect.rb:64:5:64:29 | call to permit :  | UrlRedirect.rb:24:17:24:37 | call to filter_params |
+#select
+| UrlRedirect.rb:4:17:4:22 | call to params | UrlRedirect.rb:4:17:4:22 | call to params | UrlRedirect.rb:4:17:4:22 | call to params | Untrusted URL redirection due to $@. | UrlRedirect.rb:4:17:4:22 | call to params | a user-provided value |
+| UrlRedirect.rb:9:17:9:28 | ...[...] | UrlRedirect.rb:9:17:9:22 | call to params :  | UrlRedirect.rb:9:17:9:28 | ...[...] | Untrusted URL redirection due to $@. | UrlRedirect.rb:9:17:9:22 | call to params | a user-provided value |
+| UrlRedirect.rb:14:17:14:43 | call to fetch | UrlRedirect.rb:14:17:14:22 | call to params :  | UrlRedirect.rb:14:17:14:43 | call to fetch | Untrusted URL redirection due to $@. | UrlRedirect.rb:14:17:14:22 | call to params | a user-provided value |
+| UrlRedirect.rb:19:17:19:37 | call to to_unsafe_hash | UrlRedirect.rb:19:17:19:22 | call to params :  | UrlRedirect.rb:19:17:19:37 | call to to_unsafe_hash | Untrusted URL redirection due to $@. | UrlRedirect.rb:19:17:19:22 | call to params | a user-provided value |
+| UrlRedirect.rb:24:17:24:37 | call to filter_params | UrlRedirect.rb:24:31:24:36 | call to params :  | UrlRedirect.rb:24:17:24:37 | call to filter_params | Untrusted URL redirection due to $@. | UrlRedirect.rb:24:31:24:36 | call to params | a user-provided value |
+| UrlRedirect.rb:34:17:34:37 | "#{...}/foo" | UrlRedirect.rb:34:20:34:25 | call to params :  | UrlRedirect.rb:34:17:34:37 | "#{...}/foo" | Untrusted URL redirection due to $@. | UrlRedirect.rb:34:20:34:25 | call to params | a user-provided value |
+| UrlRedirect.rb:58:17:58:28 | ...[...] | UrlRedirect.rb:58:17:58:22 | call to params :  | UrlRedirect.rb:58:17:58:28 | ...[...] | Untrusted URL redirection due to $@. | UrlRedirect.rb:58:17:58:22 | call to params | a user-provided value |

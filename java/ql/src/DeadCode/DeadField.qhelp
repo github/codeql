@@ -1,0 +1,68 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Fields that are never read at runtime are unnecessary and should be removed.
+</p>
+<include src="DeadCodeSummary.inc.qhelp"/>
+<p>
+Fields are considered dead if at runtime they are never read directly or indirectly, for example
+through a framework or a use of reflection. Any field which is not dead is considered to be "live".
+</p>
+<p>
+Fields are considered to be dead if they are only written to, and never read.
+</p>
+<include src="DeadCodeDetails.inc.qhelp"/>
+</overview>
+<recommendation>
+<p>
+Before making any changes, confirm that the field is not required by verifying that the field is
+only read from dead methods. This confirmation is necessary because there may be project-specific
+frameworks or techniques which can introduce hidden dependencies. If this project is for a library,
+then consider whether the field is part of the external API, and may be used in external projects
+that are not included in the snapshot.
+</p>
+<p>
+After confirming that the field is not required, remove the field. You will also need to remove any
+references to this field, which may, in turn, require removing other unused classes, methods
+and fields.
+</p>
+<include src="DeadCodeExtraEntryPoints.inc.qhelp"/>
+</recommendation>
+<section title="Example 1">
+<p>
+In the following example, we have a class containing a single field called <code>deadField</code>:
+</p>
+<sample src="DeadField.java" />
+<p>
+The field is only read from the method <code>getDeadField</code>. However, <code>getDeadField</code>
+is never called, so the field is never read at runtime. The field is therefore marked as dead.
+</p>
+</section>
+<section title="Example 2">
+<p>
+In this example, we have another class containing a single field called <code>writtenToField</code>:
+</p>
+<sample src="DeadFieldWrittenTo.java" />
+<p>
+The field is written to in the method <code>runThing</code>, which is live because it is called by
+the <code>main</code> method. However, the field is never read at runtime, only written to. The
+field is therefore marked as dead.
+</p>
+</section>
+<section title="Example 3">
+<p>
+In this example, we have a class representing something that can be serialized to and from XML:
+</p>
+<sample src="DeadFieldSerialized.java" />
+<p>
+The field <code>field</code> is written and read by the serialization framework in order to store
+the contents of the object in an XML file, or to construct an instance of the object from an XML
+file. The field is therefore considered to be read at runtime, which makes the field live.
+</p>
+</section>
+<include src="DeadCodeReferences.inc.qhelp" />
+</qhelp>

@@ -1,0 +1,121 @@
+edges
+| carrier.py:17:9:17:31 | .attr = simple.test | carrier.py:18:10:18:10 | .attr = simple.test |
+| carrier.py:17:25:17:30 | simple.test | carrier.py:17:9:17:31 | .attr = simple.test |
+| carrier.py:18:10:18:10 | .attr = simple.test | carrier.py:18:10:18:15 | simple.test |
+| carrier.py:21:9:21:28 | explicit.carrier | carrier.py:22:10:22:10 | explicit.carrier |
+| carrier.py:22:10:22:10 | explicit.carrier | carrier.py:22:10:22:22 | simple.test |
+| carrier.py:25:9:25:36 | .attr = simple.test | carrier.py:26:10:26:10 | .attr = simple.test |
+| carrier.py:25:13:25:35 | .attr = simple.test | carrier.py:25:9:25:36 | .attr = simple.test |
+| carrier.py:25:29:25:34 | simple.test | carrier.py:25:13:25:35 | .attr = simple.test |
+| carrier.py:26:10:26:10 | .attr = simple.test | carrier.py:26:10:26:21 | simple.test |
+| carrier.py:29:9:29:33 | explicit.carrier | carrier.py:30:10:30:10 | explicit.carrier |
+| carrier.py:29:13:29:32 | explicit.carrier | carrier.py:29:9:29:33 | explicit.carrier |
+| carrier.py:30:10:30:10 | explicit.carrier | carrier.py:30:10:30:22 | simple.test |
+| carrier.py:33:9:33:45 | .attr = explicit.carrier | carrier.py:34:9:34:9 | .attr = explicit.carrier |
+| carrier.py:33:25:33:44 | explicit.carrier | carrier.py:33:9:33:45 | .attr = explicit.carrier |
+| carrier.py:34:9:34:9 | .attr = explicit.carrier | carrier.py:34:9:34:14 | explicit.carrier |
+| carrier.py:34:9:34:14 | explicit.carrier | carrier.py:35:10:35:10 | explicit.carrier |
+| carrier.py:35:10:35:10 | explicit.carrier | carrier.py:35:10:35:22 | simple.test |
+| deep.py:20:5:20:14 | simple.test | deep.py:22:6:22:6 | simple.test |
+| deep.py:20:8:20:13 | simple.test | deep.py:20:5:20:14 | simple.test |
+| module.py:3:13:3:18 | simple.test | test.py:85:8:85:13 | .dangerous = simple.test |
+| module.py:3:13:3:18 | simple.test | test.py:88:9:88:14 | .dangerous = simple.test |
+| module.py:3:13:3:18 | simple.test | test.py:110:11:110:16 | .dangerous = simple.test |
+| module.py:3:13:3:18 | simple.test | test.py:115:11:115:16 | .dangerous = simple.test |
+| module.py:3:13:3:18 | simple.test | test.py:155:20:155:38 | simple.test |
+| module.py:7:12:7:17 | simple.test | test.py:100:9:100:31 | simple.test |
+| rockpaperscissors.py:24:9:24:12 | rock | rockpaperscissors.py:25:9:25:9 | rock |
+| rockpaperscissors.py:25:9:25:9 | rock | rockpaperscissors.py:25:9:25:16 | scissors |
+| rockpaperscissors.py:25:9:25:16 | scissors | rockpaperscissors.py:25:9:25:23 | paper |
+| rockpaperscissors.py:25:9:25:23 | paper | rockpaperscissors.py:26:14:26:14 | paper |
+| sanitizer.py:9:9:9:20 | SQL injection | sanitizer.py:13:19:13:19 | SQL injection |
+| sanitizer.py:16:9:16:20 | Command injection | sanitizer.py:20:20:20:20 | Command injection |
+| sanitizer.py:24:9:24:20 | SQL injection | sanitizer.py:26:19:26:19 | SQL injection |
+| sanitizer.py:24:9:24:20 | SQL injection | sanitizer.py:28:19:28:19 | SQL injection |
+| sanitizer.py:31:9:31:20 | Command injection | sanitizer.py:33:20:33:20 | Command injection |
+| sanitizer.py:31:9:31:20 | Command injection | sanitizer.py:35:20:35:20 | Command injection |
+| test.py:6:9:6:14 | simple.test | test.py:7:10:7:10 | simple.test |
+| test.py:10:12:10:17 | simple.test | test.py:16:9:16:16 | simple.test |
+| test.py:10:12:10:17 | simple.test | test.py:24:9:24:16 | simple.test |
+| test.py:10:12:10:17 | simple.test | test.py:44:12:44:22 | simple.test |
+| test.py:12:10:12:12 | simple.test | test.py:13:10:13:12 | simple.test |
+| test.py:16:9:16:16 | simple.test | test.py:17:10:17:10 | simple.test |
+| test.py:20:9:20:14 | simple.test | test.py:21:10:21:10 | simple.test |
+| test.py:21:10:21:10 | simple.test | test.py:12:10:12:12 | simple.test |
+| test.py:24:9:24:16 | simple.test | test.py:25:10:25:10 | simple.test |
+| test.py:25:10:25:10 | simple.test | test.py:12:10:12:12 | simple.test |
+| test.py:37:13:37:18 | simple.test | test.py:41:14:41:14 | simple.test |
+| test.py:44:12:44:22 | simple.test | test.py:54:9:54:17 | simple.test |
+| test.py:46:11:46:13 | simple.test | test.py:47:10:47:12 | simple.test |
+| test.py:47:10:47:12 | simple.test | test.py:12:10:12:12 | simple.test |
+| test.py:49:17:49:19 | simple.test | test.py:51:14:51:16 | simple.test |
+| test.py:51:14:51:16 | simple.test | test.py:12:10:12:12 | simple.test |
+| test.py:54:9:54:17 | simple.test | test.py:55:11:55:11 | simple.test |
+| test.py:55:11:55:11 | simple.test | test.py:46:11:46:13 | simple.test |
+| test.py:62:13:62:18 | simple.test | test.py:63:17:63:17 | simple.test |
+| test.py:63:17:63:17 | simple.test | test.py:49:17:49:19 | simple.test |
+| test.py:67:13:67:18 | simple.test | test.py:70:17:70:17 | simple.test |
+| test.py:70:17:70:17 | simple.test | test.py:49:17:49:19 | simple.test |
+| test.py:76:9:76:14 | simple.test | test.py:77:13:77:13 | simple.test |
+| test.py:77:9:77:14 | simple.test | test.py:78:10:78:10 | simple.test |
+| test.py:77:13:77:13 | simple.test | test.py:77:9:77:14 | simple.test |
+| test.py:85:8:85:13 | .dangerous = simple.test | test.py:88:9:88:14 | .dangerous = simple.test |
+| test.py:85:8:85:13 | .dangerous = simple.test | test.py:110:11:110:16 | .dangerous = simple.test |
+| test.py:85:8:85:13 | .dangerous = simple.test | test.py:115:11:115:16 | .dangerous = simple.test |
+| test.py:88:9:88:14 | .dangerous = simple.test | test.py:88:9:88:24 | simple.test |
+| test.py:88:9:88:24 | simple.test | test.py:89:10:89:10 | simple.test |
+| test.py:100:9:100:31 | simple.test | test.py:101:10:101:10 | simple.test |
+| test.py:105:12:105:14 | .x = simple.test | test.py:106:10:106:12 | .x = simple.test |
+| test.py:106:10:106:12 | .x = simple.test | test.py:106:10:106:14 | simple.test |
+| test.py:110:11:110:16 | .dangerous = simple.test | test.py:110:11:110:26 | simple.test |
+| test.py:110:11:110:26 | simple.test | test.py:111:10:111:10 | .x = simple.test |
+| test.py:111:10:111:10 | .x = simple.test | test.py:111:10:111:12 | simple.test |
+| test.py:115:11:115:16 | .dangerous = simple.test | test.py:115:11:115:26 | simple.test |
+| test.py:115:11:115:26 | simple.test | test.py:116:13:116:13 | .x = simple.test |
+| test.py:116:9:116:14 | .x = simple.test | test.py:117:12:117:12 | .x = simple.test |
+| test.py:116:13:116:13 | .x = simple.test | test.py:116:9:116:14 | .x = simple.test |
+| test.py:117:12:117:12 | .x = simple.test | test.py:105:12:105:14 | .x = simple.test |
+| test.py:126:13:126:25 | simple.test | test.py:130:21:130:21 | simple.test |
+| test.py:128:13:128:18 | simple.test | test.py:132:14:132:14 | simple.test |
+| test.py:155:20:155:38 | simple.test | test.py:156:6:156:11 | simple.test |
+| test.py:159:10:159:15 | simple.test | test.py:160:14:160:14 | simple.test |
+| test.py:163:9:163:14 | simple.test | test.py:165:10:165:10 | simple.test |
+| test.py:178:9:178:14 | simple.test | test.py:180:14:180:14 | simple.test |
+| test.py:178:9:178:14 | simple.test | test.py:186:14:186:14 | simple.test |
+| test.py:195:9:195:14 | simple.test | test.py:197:14:197:14 | simple.test |
+| test.py:195:9:195:14 | simple.test | test.py:199:14:199:14 | simple.test |
+| test.py:208:11:208:18 | sequence of simple.test | test.py:209:14:209:16 | sequence of simple.test |
+| test.py:208:12:208:17 | simple.test | test.py:208:11:208:18 | sequence of simple.test |
+| test.py:209:5:209:17 | simple.test | test.py:210:15:210:15 | simple.test |
+| test.py:209:14:209:16 | sequence of simple.test | test.py:209:5:209:17 | simple.test |
+| test.py:210:15:210:15 | simple.test | test.py:213:14:213:32 | iterable.simple |
+| test.py:210:15:210:15 | simple.test | test.py:213:14:213:32 | sequence of simple.test |
+| test.py:213:5:213:33 | simple.test | test.py:214:14:214:14 | simple.test |
+| test.py:213:14:213:32 | iterable.simple | test.py:213:5:213:33 | simple.test |
+| test.py:213:14:213:32 | sequence of simple.test | test.py:213:5:213:33 | simple.test |
+#select
+| carrier.py:18:10:18:15 | Attribute | carrier.py:17:25:17:30 | simple.test | carrier.py:18:10:18:15 | simple.test | $@ flows to $@. | carrier.py:17:25:17:30 | SOURCE | simple.test | carrier.py:18:10:18:15 | Attribute | simple.test |
+| carrier.py:26:10:26:21 | Attribute() | carrier.py:25:29:25:34 | simple.test | carrier.py:26:10:26:21 | simple.test | $@ flows to $@. | carrier.py:25:29:25:34 | SOURCE | simple.test | carrier.py:26:10:26:21 | Attribute() | simple.test |
+| deep.py:22:6:22:6 | x | deep.py:20:8:20:13 | simple.test | deep.py:22:6:22:6 | simple.test | $@ flows to $@. | deep.py:20:8:20:13 | SOURCE | simple.test | deep.py:22:6:22:6 | x | simple.test |
+| test.py:3:10:3:15 | SOURCE | test.py:3:10:3:15 | simple.test | test.py:3:10:3:15 | simple.test | $@ flows to $@. | test.py:3:10:3:15 | SOURCE | simple.test | test.py:3:10:3:15 | SOURCE | simple.test |
+| test.py:7:10:7:10 | s | test.py:6:9:6:14 | simple.test | test.py:7:10:7:10 | simple.test | $@ flows to $@. | test.py:6:9:6:14 | SOURCE | simple.test | test.py:7:10:7:10 | s | simple.test |
+| test.py:13:10:13:12 | arg | test.py:10:12:10:17 | simple.test | test.py:13:10:13:12 | simple.test | $@ flows to $@. | test.py:10:12:10:17 | SOURCE | simple.test | test.py:13:10:13:12 | arg | simple.test |
+| test.py:13:10:13:12 | arg | test.py:20:9:20:14 | simple.test | test.py:13:10:13:12 | simple.test | $@ flows to $@. | test.py:20:9:20:14 | SOURCE | simple.test | test.py:13:10:13:12 | arg | simple.test |
+| test.py:13:10:13:12 | arg | test.py:62:13:62:18 | simple.test | test.py:13:10:13:12 | simple.test | $@ flows to $@. | test.py:62:13:62:18 | SOURCE | simple.test | test.py:13:10:13:12 | arg | simple.test |
+| test.py:13:10:13:12 | arg | test.py:67:13:67:18 | simple.test | test.py:13:10:13:12 | simple.test | $@ flows to $@. | test.py:67:13:67:18 | SOURCE | simple.test | test.py:13:10:13:12 | arg | simple.test |
+| test.py:17:10:17:10 | t | test.py:10:12:10:17 | simple.test | test.py:17:10:17:10 | simple.test | $@ flows to $@. | test.py:10:12:10:17 | SOURCE | simple.test | test.py:17:10:17:10 | t | simple.test |
+| test.py:41:14:41:14 | t | test.py:37:13:37:18 | simple.test | test.py:41:14:41:14 | simple.test | $@ flows to $@. | test.py:37:13:37:18 | SOURCE | simple.test | test.py:41:14:41:14 | t | simple.test |
+| test.py:78:10:78:10 | t | test.py:76:9:76:14 | simple.test | test.py:78:10:78:10 | simple.test | $@ flows to $@. | test.py:76:9:76:14 | SOURCE | simple.test | test.py:78:10:78:10 | t | simple.test |
+| test.py:89:10:89:10 | t | module.py:3:13:3:18 | simple.test | test.py:89:10:89:10 | simple.test | $@ flows to $@. | module.py:3:13:3:18 | SOURCE | simple.test | test.py:89:10:89:10 | t | simple.test |
+| test.py:101:10:101:10 | t | module.py:7:12:7:17 | simple.test | test.py:101:10:101:10 | simple.test | $@ flows to $@. | module.py:7:12:7:17 | SOURCE | simple.test | test.py:101:10:101:10 | t | simple.test |
+| test.py:106:10:106:14 | Attribute | module.py:3:13:3:18 | simple.test | test.py:106:10:106:14 | simple.test | $@ flows to $@. | module.py:3:13:3:18 | SOURCE | simple.test | test.py:106:10:106:14 | Attribute | simple.test |
+| test.py:111:10:111:12 | Attribute | module.py:3:13:3:18 | simple.test | test.py:111:10:111:12 | simple.test | $@ flows to $@. | module.py:3:13:3:18 | SOURCE | simple.test | test.py:111:10:111:12 | Attribute | simple.test |
+| test.py:132:14:132:14 | t | test.py:128:13:128:18 | simple.test | test.py:132:14:132:14 | simple.test | $@ flows to $@. | test.py:128:13:128:18 | SOURCE | simple.test | test.py:132:14:132:14 | t | simple.test |
+| test.py:156:6:156:11 | unsafe | module.py:3:13:3:18 | simple.test | test.py:156:6:156:11 | simple.test | $@ flows to $@. | module.py:3:13:3:18 | SOURCE | simple.test | test.py:156:6:156:11 | unsafe | simple.test |
+| test.py:160:14:160:14 | t | test.py:159:10:159:15 | simple.test | test.py:160:14:160:14 | simple.test | $@ flows to $@. | test.py:159:10:159:15 | SOURCE | simple.test | test.py:160:14:160:14 | t | simple.test |
+| test.py:165:10:165:10 | s | test.py:163:9:163:14 | simple.test | test.py:165:10:165:10 | simple.test | $@ flows to $@. | test.py:163:9:163:14 | SOURCE | simple.test | test.py:165:10:165:10 | s | simple.test |
+| test.py:180:14:180:14 | t | test.py:178:9:178:14 | simple.test | test.py:180:14:180:14 | simple.test | $@ flows to $@. | test.py:178:9:178:14 | SOURCE | simple.test | test.py:180:14:180:14 | t | simple.test |
+| test.py:186:14:186:14 | t | test.py:178:9:178:14 | simple.test | test.py:186:14:186:14 | simple.test | $@ flows to $@. | test.py:178:9:178:14 | SOURCE | simple.test | test.py:186:14:186:14 | t | simple.test |
+| test.py:197:14:197:14 | t | test.py:195:9:195:14 | simple.test | test.py:197:14:197:14 | simple.test | $@ flows to $@. | test.py:195:9:195:14 | SOURCE | simple.test | test.py:197:14:197:14 | t | simple.test |
+| test.py:199:14:199:14 | t | test.py:195:9:195:14 | simple.test | test.py:199:14:199:14 | simple.test | $@ flows to $@. | test.py:195:9:195:14 | SOURCE | simple.test | test.py:199:14:199:14 | t | simple.test |
+| test.py:214:14:214:14 | x | test.py:208:12:208:17 | simple.test | test.py:214:14:214:14 | simple.test | $@ flows to $@. | test.py:208:12:208:17 | SOURCE | simple.test | test.py:214:14:214:14 | x | simple.test |

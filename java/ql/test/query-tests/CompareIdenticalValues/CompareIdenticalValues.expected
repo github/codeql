@@ -1,0 +1,18 @@
+| A.java:9:8:9:27 | ... == ... | Comparison of identical values this.foo and this.foo. |
+| A.java:11:8:11:29 | ... == ... | Comparison of identical values B.this.foo and this.foo. |
+| A.java:13:8:13:23 | ... == ... | Comparison of identical values super.foo and foo. |
+| A.java:15:8:15:25 | ... == ... | Comparison of identical values B.super.foo and foo. |
+| A.java:26:7:26:12 | ... == ... | Comparison is equivalent to !Double.isNaN(d). |
+| A.java:27:7:27:12 | ... <= ... | Comparison of identical values d and d. |
+| A.java:28:7:28:12 | ... >= ... | Comparison of identical values d and d. |
+| A.java:29:7:29:12 | ... != ... | Comparison is equivalent to Double.isNaN(d). |
+| A.java:30:7:30:11 | ... > ... | Comparison of identical values d and d. |
+| A.java:31:7:31:11 | ... < ... | Comparison of identical values d and d. |
+| A.java:34:7:34:12 | ... == ... | Comparison is equivalent to !Float.isNaN(f). |
+| A.java:35:7:35:12 | ... <= ... | Comparison of identical values f and f. |
+| A.java:36:7:36:12 | ... >= ... | Comparison of identical values f and f. |
+| A.java:37:7:37:12 | ... != ... | Comparison is equivalent to Float.isNaN(f). |
+| A.java:38:7:38:11 | ... > ... | Comparison of identical values f and f. |
+| A.java:39:7:39:11 | ... < ... | Comparison of identical values f and f. |
+| A.java:42:7:42:12 | ... == ... | Comparison of identical values i and i. |
+| A.java:43:7:43:12 | ... != ... | Comparison of identical values i and i. |

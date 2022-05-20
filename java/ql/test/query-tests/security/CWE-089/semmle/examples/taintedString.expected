@@ -1,0 +1,68 @@
+| Test.java:29:22:29:28 | tainted | 3 | Test.java:32:22:32:25 | args |
+| Test.java:29:22:29:28 | tainted | 3 | Test.java:32:22:32:28 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 5 | Test.java:34:20:35:15 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 5 | Test.java:34:20:35:36 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 6 | Test.java:35:8:35:15 | category |
+| Test.java:29:22:29:28 | tainted | 7 | Test.java:36:47:36:52 | query1 |
+| Test.java:29:22:29:28 | tainted | 11 | Test.java:40:16:40:19 | args |
+| Test.java:29:22:29:28 | tainted | 11 | Test.java:40:16:40:22 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 12 | Test.java:41:20:41:52 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 12 | Test.java:41:20:41:67 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 12 | Test.java:41:51:41:52 | id |
+| Test.java:29:22:29:28 | tainted | 13 | Test.java:42:57:42:62 | query2 |
+| Test.java:29:22:29:28 | tainted | 18 | Test.java:47:22:47:25 | args |
+| Test.java:29:22:29:28 | tainted | 18 | Test.java:47:22:47:28 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 19 | Test.java:48:20:49:15 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 19 | Test.java:48:20:49:36 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 20 | Test.java:49:8:49:15 | category |
+| Test.java:29:22:29:28 | tainted | 21 | Test.java:50:62:50:67 | query3 |
+| Test.java:29:22:29:28 | tainted | 26 | Test.java:55:22:55:25 | args |
+| Test.java:29:22:29:28 | tainted | 26 | Test.java:55:22:55:28 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 29 | Test.java:58:4:58:27 | append(...) |
+| Test.java:29:22:29:28 | tainted | 29 | Test.java:58:19:58:26 | category |
+| Test.java:29:22:29:28 | tainted | 30 | Test.java:59:4:59:10 | querySb |
+| Test.java:29:22:29:28 | tainted | 30 | Test.java:59:4:59:37 | append(...) |
+| Test.java:29:22:29:28 | tainted | 31 | Test.java:60:29:60:35 | querySb |
+| Test.java:29:22:29:28 | tainted | 31 | Test.java:60:29:60:46 | toString(...) |
+| Test.java:29:22:29:28 | tainted | 33 | Test.java:62:47:62:61 | querySbToString |
+| Test.java:29:22:29:28 | tainted | 37 | Test.java:66:18:66:21 | args |
+| Test.java:29:22:29:28 | tainted | 37 | Test.java:66:18:66:24 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 38 | Test.java:67:19:67:22 | args |
+| Test.java:29:22:29:28 | tainted | 38 | Test.java:67:19:67:25 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 40 | Test.java:69:19:69:54 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 40 | Test.java:69:19:69:73 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 40 | Test.java:69:19:69:80 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 40 | Test.java:69:19:69:86 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 40 | Test.java:69:50:69:54 | price |
+| Test.java:29:22:29:28 | tainted | 40 | Test.java:69:77:69:80 | item |
+| Test.java:29:22:29:28 | tainted | 41 | Test.java:70:40:70:44 | query |
+| Test.java:29:22:29:28 | tainted | 45 | Test.java:74:18:74:21 | args |
+| Test.java:29:22:29:28 | tainted | 45 | Test.java:74:18:74:24 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 46 | Test.java:75:19:75:22 | args |
+| Test.java:29:22:29:28 | tainted | 46 | Test.java:75:19:75:25 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 48 | Test.java:77:19:77:54 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 48 | Test.java:77:19:77:73 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 48 | Test.java:77:19:77:80 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 48 | Test.java:77:19:77:86 | ... + ... |
+| Test.java:29:22:29:28 | tainted | 48 | Test.java:77:50:77:54 | price |
+| Test.java:29:22:29:28 | tainted | 48 | Test.java:77:77:77:80 | item |
+| Test.java:29:22:29:28 | tainted | 49 | Test.java:78:46:78:50 | query |
+| Test.java:29:22:29:28 | tainted | 54 | Test.java:83:22:83:25 | args |
+| Test.java:29:22:29:28 | tainted | 54 | Test.java:83:22:83:28 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 55 | Test.java:84:31:84:38 | category |
+| Test.java:122:22:122:25 | good | 3 | Test.java:125:22:125:25 | args |
+| Test.java:122:22:122:25 | good | 3 | Test.java:125:22:125:28 | ...[...] |
+| Test.java:122:22:122:25 | good | 6 | Test.java:128:27:128:34 | category |
+| Test.java:183:22:183:31 | tableNames | 21 | Test.java:204:25:204:28 | args |
+| Test.java:183:22:183:31 | tableNames | 21 | Test.java:204:25:204:31 | ...[...] |
+| Test.java:183:22:183:31 | tableNames | 23 | Test.java:206:36:207:18 | ... + ... |
+| Test.java:183:22:183:31 | tableNames | 23 | Test.java:206:36:208:55 | ... + ... |
+| Test.java:183:22:183:31 | tableNames | 24 | Test.java:207:8:207:18 | userTabName |
+| Test.java:183:22:183:31 | tableNames | 26 | Test.java:209:47:209:68 | queryWithUserTableName |
+| Test.java:213:21:213:24 | main | 1 | Test.java:214:11:214:14 | args |
+| Test.java:213:21:213:24 | main | 3 | Test.java:216:8:216:11 | args |
+| Test.java:213:21:213:24 | main | 5 | Test.java:218:14:218:17 | args |
+| Validation.java:6:21:6:35 | checkIdentifier | 1 | Validation.java:7:23:7:24 | id |
+| Validation.java:6:21:6:35 | checkIdentifier | 2 | Validation.java:8:13:8:14 | id |
+| Validation.java:6:21:6:35 | checkIdentifier | 4 | Validation.java:10:32:10:58 | ... + ... |
+| Validation.java:6:21:6:35 | checkIdentifier | 4 | Validation.java:10:57:10:58 | id |

@@ -1,0 +1,27 @@
+var SLIDE_CONFIG = {
+  // Slide settings
+  settings: {
+    title: '{{ docstitle|e }}',
+    subtitle: '{{ theme_subtitle|e }}',
+    //eventInfo: {
+    //  title: 'Google I/O',
+    //  date: '6/x/2013'
+    //},
+    useBuilds: {{ theme_use_builds }}, // Default: true. False will turn off slide animation builds.
+    usePrettify: {{ theme_use_prettify }}, // Default: true
+    enableSlideAreas: {{ theme_enable_slide_areas }}, // Default: true. False turns off the click areas on either slide of the slides.
+    enableTouch: {{ theme_enable_touch }}, // Default: true. If touch support should enabled. Note: the device must support touch.
+    //analytics: 'UA-XXXXXXXX-1', // TODO: Using this breaks GA for some reason (probably requirejs). Update your tracking code in template.html instead.
+    favIcon: {{ theme_favicon }},
+    fonts: [
+      'Open Sans:regular,semibold,italic,italicsemibold',
+      'Source Code Pro'
+    ],
+    //theme: ['mytheme'], // Add your own custom themes or styles in /theme/css. Leave off the .css extension.
+  },
+
+  // Author information
+  presenters: {% if theme_presenters %}{{ theme_presenters|json }}
+  {% else %}[]
+  {% endif %}
+};

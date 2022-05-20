@@ -1,0 +1,4 @@
+| CloseReader.java:18:42:18:71 | new FileReader(...) | This FileReader is not always closed on method exit. |
+| CloseReader.java:23:20:23:50 | new FileInputStream(...) | This FileInputStream is not always closed on method exit. |
+| CloseReader.java:33:6:33:40 | new FileInputStream(...) | This FileInputStream is not always closed on method exit. |
+| CloseReader.java:43:21:43:43 | new ZipFile(...) | This ZipFile is not always closed on method exit. |

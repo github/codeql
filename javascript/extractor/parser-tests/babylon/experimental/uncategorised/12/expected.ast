@@ -1,0 +1,119 @@
+{
+  "type": "Program",
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0,
+      "offset": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 14,
+      "offset": 14
+    }
+  },
+  "sourceType": "script",
+  "body": [
+    {
+      "type": "VariableDeclaration",
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 14,
+          "offset": 14
+        }
+      },
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 4,
+              "offset": 4
+            },
+            "end": {
+              "line": 1,
+              "column": 14,
+              "offset": 14
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 4,
+                "offset": 4
+              },
+              "end": {
+                "line": 1,
+                "column": 5,
+                "offset": 5
+              }
+            },
+            "name": "z"
+          },
+          "init": {
+            "type": "ObjectExpression",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 8,
+                "offset": 8
+              },
+              "end": {
+                "line": 1,
+                "column": 14,
+                "offset": 14
+              }
+            },
+            "properties": [
+              {
+                "type": "Property",
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 9,
+                    "offset": 9
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 13,
+                    "offset": 13
+                  }
+                },
+                "key": null,
+                "value": {
+                  "type": "SpreadElement",
+                  "argument": {
+                    "type": "Identifier",
+                    "loc": {
+                      "start": {
+                        "line": 1,
+                        "column": 12,
+                        "offset": 12
+                      },
+                      "end": {
+                        "line": 1,
+                        "column": 13,
+                        "offset": 13
+                      }
+                    },
+                    "name": "x"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "kind": "let"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+| statements.cs:40:21:40:38 | MainLocalConstDecl | statements.cs:43:13:43:33 | const ... ...; | statements.cs:43:23:43:32 | Int32 r = ... |

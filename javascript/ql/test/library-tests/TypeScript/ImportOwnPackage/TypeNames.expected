@@ -1,0 +1,22 @@
+getTypeString
+| bar/client.ts:9:23:9:27 | Inter | Inter |
+| bar/client.ts:10:12:10:14 | Bar | Bar |
+| foo/index.ts:2:10:2:12 | Bar | Bar |
+| foo/index.ts:7:18:7:22 | Inter | Inter |
+| foo/index.ts:8:10:8:12 | Bar | Bar |
+importSpec
+| false | bar/client.ts:1:10:1:12 | Foo |
+| false | bar/client.ts:7:10:7:20 | Foo as Foo2 |
+| true | bar/client.ts:7:23:7:32 | type Inter |
+| true | bar/client.ts:7:35:7:42 | type Bar |
+#select
+| bar/client.ts:3:5:3:5 | f | my-awesome-package | Foo |
+| bar/client.ts:3:9:3:17 | new Foo() | my-awesome-package | Foo |
+| bar/client.ts:4:5:4:5 | b | my-awesome-package | Bar |
+| bar/client.ts:4:9:4:9 | f | my-awesome-package | Foo |
+| bar/client.ts:4:9:4:15 | f.bar() | my-awesome-package | Bar |
+| bar/client.ts:11:16:11:24 | new Foo() | my-awesome-package | Foo |
+| bar/client.ts:11:16:11:30 | new Foo().bar() | my-awesome-package | Bar |
+| foo/index.ts:1:14:1:16 | Foo | my-awesome-package | Foo |
+| foo/index.ts:2:23:2:31 | new Bar() | my-awesome-package | Bar |
+| foo/index.ts:5:14:5:16 | Bar | my-awesome-package | Bar |

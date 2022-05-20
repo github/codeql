@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Failing to set the 'secure' flag on a cookie can cause it to be sent in cleartext.
+This makes it easier for an attacker to intercept.</p>
+
+</overview>
+<recommendation>
+
+<p>Always use <code>setSecure</code> to set the 'secure' flag on a cookie before adding it
+to an <code>HttpServletResponse</code>.</p>
+
+</recommendation>
+<example>
+
+<p>This example shows two ways of adding a cookie to an <code>HttpServletResponse</code>. The first
+way leaves out the setting of the 'secure' flag; the second way includes the setting of the flag.</p>
+
+<sample src="InsecureCookie.java" />
+
+</example>
+<references>
+
+<li>SEI CERT Oracle Coding Standard for Java:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/java/SER03-J.+Do+not+serialize+unencrypted+sensitive+data">SER03-J. Do not serialize unencrypted, sensitive data</a>.</li>
+<li>Java Platform, Enterprise Edition (Java EE) 7, API Specification: 
+<a href="https://docs.oracle.com/javaee/7/api/javax/servlet/http/Cookie.html">Class Cookie</a>.</li>
+
+
+
+<!--  LocalWords:  CWE
+ -->
+
+</references>
+</qhelp>

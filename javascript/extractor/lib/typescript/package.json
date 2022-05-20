@@ -1,0 +1,17 @@
+{
+    "name": "typescript-parser-wrapper",
+    "private": true,
+    "dependencies": {
+        "typescript": "4.6.2"
+    },
+    "scripts": {
+        "build": "tsc --project tsconfig.json",
+        "check": "tsc --noEmit --project . && tslint --project .",
+        "lint": "tslint --project .",
+        "lint-fix": "tslint --project . --fix",
+        "watch": "tsc -p . -w --sourceMap"
+    },
+    "devDependencies": {
+        "@types/node": "12.7.11"
+    }
+}

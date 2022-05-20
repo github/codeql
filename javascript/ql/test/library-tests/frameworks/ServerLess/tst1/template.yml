@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'Serverless thing'
+
+Globals:
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
+
+Resources:
+  OrderManagerJsFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: MY-SERVERLESS-THING
+      Handler: mylibrary.handler
+      Runtime: nodejs12.x
+      CodeUri: backend/src/

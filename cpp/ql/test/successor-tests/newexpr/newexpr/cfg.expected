@@ -1,0 +1,18 @@
+| newexpr | newexpr.cpp:1:7:1:7 | C | 1 | 1 | newexpr.cpp:1:7:1:7 | newexpr.cpp:1:7:1:7 | newexpr.cpp:1:7:1:7 | C | <none> |
+| newexpr | newexpr.cpp:1:7:1:7 | C | 1 | 1 | newexpr.cpp:1:7:1:7 | newexpr.cpp:1:7:1:7 | newexpr.cpp:1:7:1:7 | C | <none> |
+| newexpr | newexpr.cpp:1:7:1:7 | operator= | 1 | 1 | newexpr.cpp:1:7:1:7 | newexpr.cpp:1:7:1:7 | newexpr.cpp:1:7:1:7 | operator= | <none> |
+| newexpr | newexpr.cpp:1:7:1:7 | operator= | 1 | 1 | newexpr.cpp:1:7:1:7 | newexpr.cpp:1:7:1:7 | newexpr.cpp:1:7:1:7 | operator= | <none> |
+| newexpr | newexpr.cpp:3:3:3:3 | C | 3 | 1 | newexpr.cpp:3:3:3:3 | newexpr.cpp:3:3:3:3 | newexpr.cpp:3:3:3:3 | C | <none> |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 6 | 1 | newexpr.cpp:6:10:9:1 | newexpr.cpp:6:10:9:1 | newexpr.cpp:6:10:9:1 | { ... } | 7: declaration |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 7 | 2 | newexpr.cpp:7:2:7:16 | newexpr.cpp:7:2:7:16 | newexpr.cpp:7:2:7:16 | declaration | 8: ExprStmt |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 8 | 3 | newexpr.cpp:8:2:8:21 | newexpr.cpp:8:2:8:21 | newexpr.cpp:8:2:8:21 | ExprStmt | 8: a |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 8 | 4 | newexpr.cpp:8:8:8:8 | newexpr.cpp:8:8:8:8 | newexpr.cpp:8:8:8:8 | a | 8: b |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 8 | 5 | newexpr.cpp:8:12:8:12 | newexpr.cpp:8:12:8:12 | newexpr.cpp:8:12:8:12 | b | 8: ... + ... |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 8 | 6 | newexpr.cpp:8:8:8:12 | newexpr.cpp:8:8:8:12 | newexpr.cpp:8:8:8:12 | ... + ... | 8: c |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 8 | 7 | newexpr.cpp:8:15:8:15 | newexpr.cpp:8:15:8:15 | newexpr.cpp:8:15:8:15 | c | 8: d |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 8 | 8 | newexpr.cpp:8:19:8:19 | newexpr.cpp:8:19:8:19 | newexpr.cpp:8:19:8:19 | d | 8: ... - ... |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 8 | 9 | newexpr.cpp:8:15:8:19 | newexpr.cpp:8:15:8:19 | newexpr.cpp:8:15:8:19 | ... - ... | 8: call to C |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 8 | 10 | newexpr.cpp:8:2:8:20 | newexpr.cpp:8:2:8:20 | newexpr.cpp:8:2:8:20 | call to C | 8: new |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 8 | 11 | newexpr.cpp:8:2:8:20 | newexpr.cpp:8:2:8:20 | newexpr.cpp:8:2:8:20 | new | 9: return ... |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 9 | 12 | newexpr.cpp:9:1:9:1 | newexpr.cpp:9:1:9:1 | newexpr.cpp:9:1:9:1 | return ... | 9: f |
+| newexpr | newexpr.cpp:6:6:6:6 | f | 9 | 13 | newexpr.cpp:6:6:6:6 | newexpr.cpp:6:6:6:6 | newexpr.cpp:6:6:6:6 | f | <none> |

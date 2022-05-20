@@ -1,0 +1,31 @@
+edges
+| test.cpp:37:73:37:76 | *data | test.cpp:43:32:43:35 | (LPCSTR)... |
+| test.cpp:37:73:37:76 | *data | test.cpp:43:32:43:35 | data |
+| test.cpp:37:73:37:76 | *data | test.cpp:43:32:43:35 | data indirection |
+| test.cpp:37:73:37:76 | data | test.cpp:43:32:43:35 | (LPCSTR)... |
+| test.cpp:37:73:37:76 | data | test.cpp:43:32:43:35 | data |
+| test.cpp:37:73:37:76 | data | test.cpp:43:32:43:35 | data |
+| test.cpp:37:73:37:76 | data | test.cpp:43:32:43:35 | data indirection |
+| test.cpp:64:30:64:35 | call to getenv | test.cpp:73:24:73:27 | data |
+| test.cpp:64:30:64:35 | call to getenv | test.cpp:73:24:73:27 | data |
+| test.cpp:64:30:64:35 | call to getenv | test.cpp:73:24:73:27 | data indirection |
+| test.cpp:64:30:64:35 | call to getenv | test.cpp:73:24:73:27 | data indirection |
+| test.cpp:73:24:73:27 | data | test.cpp:37:73:37:76 | data |
+| test.cpp:73:24:73:27 | data indirection | test.cpp:37:73:37:76 | *data |
+subpaths
+nodes
+| test.cpp:37:73:37:76 | *data | semmle.label | *data |
+| test.cpp:37:73:37:76 | data | semmle.label | data |
+| test.cpp:43:32:43:35 | (LPCSTR)... | semmle.label | (LPCSTR)... |
+| test.cpp:43:32:43:35 | (LPCSTR)... | semmle.label | (LPCSTR)... |
+| test.cpp:43:32:43:35 | data | semmle.label | data |
+| test.cpp:43:32:43:35 | data | semmle.label | data |
+| test.cpp:43:32:43:35 | data | semmle.label | data |
+| test.cpp:43:32:43:35 | data indirection | semmle.label | data indirection |
+| test.cpp:43:32:43:35 | data indirection | semmle.label | data indirection |
+| test.cpp:64:30:64:35 | call to getenv | semmle.label | call to getenv |
+| test.cpp:64:30:64:35 | call to getenv | semmle.label | call to getenv |
+| test.cpp:73:24:73:27 | data | semmle.label | data |
+| test.cpp:73:24:73:27 | data indirection | semmle.label | data indirection |
+#select
+| test.cpp:43:32:43:35 | data | test.cpp:64:30:64:35 | call to getenv | test.cpp:43:32:43:35 | data | The value of this argument may come from $@ and is being passed to LoadLibraryA | test.cpp:64:30:64:35 | call to getenv | call to getenv |

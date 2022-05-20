@@ -1,0 +1,8 @@
+| file://:0:0:0:0 | (unnamed parameter 0) | 1 | <no init> | 1 | <no assigned> |
+| file://:0:0:0:0 | (unnamed parameter 0) | 1 | <no init> | 1 | <no assigned> |
+| file://:0:0:0:0 | fp_offset | 1 | <no init> | 1 | <no assigned> |
+| file://:0:0:0:0 | gp_offset | 1 | <no init> | 1 | <no assigned> |
+| file://:0:0:0:0 | overflow_arg_area | 1 | <no init> | 1 | <no assigned> |
+| file://:0:0:0:0 | reg_save_area | 1 | <no init> | 1 | <no assigned> |
+| test.cpp:2:21:2:21 | x | 1 | file://:0:0:0:0 initializer for x | 2 | test.cpp:2:25:2:26 10 |
+| test.cpp:2:21:2:21 | x | 1 | file://:0:0:0:0 initializer for x | 2 | test.cpp:3:9:3:9 3 |

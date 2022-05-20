@@ -1,0 +1,2 @@
+| tst.js:3:2:3:15 | return x = 23; | The assignment to x is useless, since it is a local variable and will go out of scope. |
+| tst.js:9:2:9:15 | return x = 23; | The assignment to x is useless, since it is a local variable and will go out of scope. |

@@ -1,0 +1,14 @@
+| tst.js:1:2:1:13 | function(){} | complete |
+| tst.js:2:2:2:15 | function(x){x} | complete |
+| tst.js:3:2:3:15 | function(x){x} | complete |
+| tst.js:4:2:4:15 | function(x){x} | complete |
+| tst.js:5:2:5:21 | function(x, y){x; y} | complete |
+| tst.js:8:5:8:19 | function f1(){} | complete |
+| tst.js:10:5:10:21 | function f2(x){x} | complete |
+| tst.js:12:5:12:21 | function f3(x){x} | complete |
+| tst.js:14:5:14:21 | function f4(x){x} | complete |
+| tst.js:16:5:16:27 | functio ... ){x; y} | complete |
+| tst.js:20:2:20:25 | functio ... ){x; y} | complete |
+| tst.js:21:2:21:16 | function(x){x;} | complete |
+| tst.js:22:2:22:33 | functio ... callee} | call |
+| tst.js:23:2:23:47 | functio ... callee} | complete |

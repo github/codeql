@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Catching an exception by value will create a new local variable which is a copy of the originally thrown object.
+Creating the copy is slightly wasteful, but not catastrophic. More worrisome is the fact that if the type being
+caught is a strict supertype of the originally thrown type, then the copy might not contain as much information
+as the original exception.</p>
+
+</overview>
+<recommendation>
+<p>The parameter to the <code>catch</code> block should have its type changed from <code>T</code> to <code>T&amp;</code>
+or <code>const T&amp;</code>.</p>
+
+</recommendation>
+<example>
+<sample language="cpp">
+void bad() {
+  try {
+    /* ... */
+  }
+  catch(std::exception a_copy_of_the_thrown_exception) {
+    // Do something with a_copy_of_the_thrown_exception
+  }
+}
+
+void good() {
+  try {
+    /* ... */
+  }
+  catch(const std::exception&amp; the_thrown_exception) {
+    // Do something with the_thrown_exception
+  }
+}
+</sample>
+
+</example>
+<references>
+
+  <li>C++ FAQ: <a href="https://isocpp.org/wiki/faq/exceptions#what-to-throw">
+    What should I throw?</a>, <a href="https://isocpp.org/wiki/faq/exceptions#what-to-catch">
+    What should I catch?</a>.</li>
+  <li>Wikibooks: <a href="http://en.wikibooks.org/wiki/C%2B%2B_Programming/Exception_Handling#Throwing_objects">
+    Throwing objects</a>.</li>
+
+
+</references>
+</qhelp>

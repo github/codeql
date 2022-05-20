@@ -1,0 +1,6 @@
+| Delete | Attribute | Attribute | 4 |
+| Delete | Attribute | a | 4 |
+| Delete | Subscript | Subscript | 2 |
+| Delete | Subscript | a | 2 |
+| Delete | Subscript | b | 2 |
+| Delete | x | x | 3 |

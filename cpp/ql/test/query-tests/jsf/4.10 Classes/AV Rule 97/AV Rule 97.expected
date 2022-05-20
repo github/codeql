@@ -1,0 +1,5 @@
+| jsf97.cpp:6:12:6:15 | bad1 | Raw arrays should not be used in interfaces. A container class should be used instead. |
+| jsf97.cpp:11:12:11:15 | bad2 | Raw arrays should not be used in interfaces. A container class should be used instead. |
+| jsf97.cpp:16:12:16:15 | bad3 | Raw arrays should not be used in interfaces. A container class should be used instead. |
+| jsf97.cpp:21:12:21:15 | bad4 | Raw arrays should not be used in interfaces. A container class should be used instead. |
+| jsf97.cpp:40:13:40:23 | bad_longjmp | Raw arrays should not be used in interfaces. A container class should be used instead. |

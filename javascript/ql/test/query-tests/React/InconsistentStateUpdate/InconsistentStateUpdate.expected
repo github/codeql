@@ -1,0 +1,12 @@
+| tst.js:28:5:30:6 | this.se ... \\n    }) | Component state update uses $@. | tst.js:29:16:29:29 | this.state.foo | potentially inconsistent value |
+| tst.js:36:5:38:6 | this.se ... \\n    }) | Component state update uses $@. | tst.js:37:21:37:38 | this.state.foo.bar | potentially inconsistent value |
+| tst.js:44:9:46:10 | this.se ...      }) | Component state update uses $@. | tst.js:45:18:45:31 | this.state.foo | potentially inconsistent value |
+| tst.js:50:9:52:10 | this.se ...      }) | Component state update uses $@. | tst.js:51:18:51:31 | this.state.foo | potentially inconsistent value |
+| tst.js:58:9:60:10 | this.se ...      }) | Component state update uses $@. | tst.js:59:18:59:31 | this.state.foo | potentially inconsistent value |
+| tst.js:64:9:66:10 | this.se ...      }) | Component state update uses $@. | tst.js:65:18:65:31 | this.state.foo | potentially inconsistent value |
+| tst.js:72:9:74:10 | this.se ...      }) | Component state update uses $@. | tst.js:73:25:73:42 | this.state.foo.bar | potentially inconsistent value |
+| tst.js:78:9:80:10 | this.se ...      }) | Component state update uses $@. | tst.js:79:25:79:42 | this.state.foo.bar | potentially inconsistent value |
+| tst.js:86:9:89:10 | this.se ...      }) | Component state update uses $@. | tst.js:87:18:87:31 | this.state.foo | potentially inconsistent value |
+| tst.js:93:9:95:10 | this.se ...      }) | Component state update uses $@. | tst.js:94:18:94:31 | this.state.foo | potentially inconsistent value |
+| tst.js:102:9:104:10 | self.se ...      }) | Component state update uses $@. | tst.js:103:18:103:31 | self.state.foo | potentially inconsistent value |
+| tst.js:108:9:110:10 | this.se ...      }) | Component state update uses $@. | tst.js:109:18:109:31 | this.state.foo | potentially inconsistent value |

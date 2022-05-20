@@ -1,0 +1,1 @@
+semmle-extractor-options: --gnu_version 40801 --clang -Xclang-only=-Wno-reserved-user-defined-literal

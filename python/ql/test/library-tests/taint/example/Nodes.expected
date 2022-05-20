@@ -1,0 +1,99 @@
+| example.py:5 | SSA variable worker | no attribute | p1 = Dilbert | Dilbert |
+| example.py:5 | SSA variable worker | no attribute | p1 = Wally | Wally |
+| example.py:5 | worker | no attribute | p1 = Dilbert | Dilbert |
+| example.py:5 | worker | no attribute | p1 = Wally | Wally |
+| example.py:6 | SSA variable self | attribute worker | p1 = Dilbert | Dilbert |
+| example.py:6 | SSA variable self | attribute worker | p1 = Wally | Wally |
+| example.py:6 | worker | no attribute | p1 = Dilbert | Dilbert |
+| example.py:6 | worker | no attribute | p1 = Wally | Wally |
+| example.py:8 | SSA variable worker | no attribute | p0 = Dilbert | Dilbert |
+| example.py:8 | SSA variable worker | no attribute | p0 = Wally | Wally |
+| example.py:8 | worker | no attribute | p0 = Dilbert | Dilbert |
+| example.py:8 | worker | no attribute | p0 = Wally | Wally |
+| example.py:10 | SSA variable worker | no attribute | p0 = Dilbert | Dilbert |
+| example.py:10 | SSA variable worker | no attribute | p0 = Wally | Wally |
+| example.py:10 | Task() | attribute worker | p0 = Dilbert | Dilbert |
+| example.py:10 | Task() | attribute worker | p0 = Wally | Wally |
+| example.py:10 | worker | no attribute | p0 = Dilbert | Dilbert |
+| example.py:10 | worker | no attribute | p0 = Wally | Wally |
+| example.py:12 | SSA variable worker | no attribute | p0 = Dilbert | Dilbert |
+| example.py:12 | worker | no attribute | p0 = Dilbert | Dilbert |
+| example.py:13 | worker | no attribute | p0 = Dilbert | Dilbert |
+| example.py:17 | ENGINEER | no attribute |  | Dilbert |
+| example.py:17 | ENGINEER | no attribute |  | Wally |
+| example.py:17 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:17 | SSA variable worker | no attribute |  | Wally |
+| example.py:18 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:18 | SSA variable worker | no attribute |  | Wally |
+| example.py:18 | worker | no attribute |  | Dilbert |
+| example.py:18 | worker | no attribute |  | Wally |
+| example.py:22 | ENGINEER | no attribute |  | Dilbert |
+| example.py:22 | ENGINEER | no attribute |  | Wally |
+| example.py:22 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:22 | SSA variable worker | no attribute |  | Wally |
+| example.py:23 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:23 | lunch() | no attribute |  | Dilbert |
+| example.py:23 | worker | no attribute |  | Dilbert |
+| example.py:24 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:24 | worker | no attribute |  | Dilbert |
+| example.py:28 | ENGINEER | no attribute |  | Dilbert |
+| example.py:28 | ENGINEER | no attribute |  | Wally |
+| example.py:28 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:28 | SSA variable worker | no attribute |  | Wally |
+| example.py:29 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:29 | SSA variable worker | no attribute |  | Wally |
+| example.py:29 | worker | no attribute |  | Dilbert |
+| example.py:29 | worker | no attribute |  | Wally |
+| example.py:33 | ENGINEER | no attribute |  | Dilbert |
+| example.py:33 | ENGINEER | no attribute |  | Wally |
+| example.py:33 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:33 | SSA variable worker | no attribute |  | Wally |
+| example.py:34 | SSA variable task | attribute worker |  | Dilbert |
+| example.py:34 | SSA variable task | attribute worker |  | Wally |
+| example.py:34 | assign_task() | attribute worker |  | Dilbert |
+| example.py:34 | assign_task() | attribute worker |  | Wally |
+| example.py:34 | worker | no attribute |  | Dilbert |
+| example.py:34 | worker | no attribute |  | Wally |
+| example.py:37 | Attribute | no attribute |  | Dilbert |
+| example.py:37 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:37 | lunch() | no attribute |  | Dilbert |
+| example.py:37 | task | attribute worker |  | Dilbert |
+| example.py:37 | task | attribute worker |  | Wally |
+| example.py:39 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:39 | worker | no attribute |  | Dilbert |
+| example.py:43 | ENGINEER | no attribute |  | Dilbert |
+| example.py:43 | ENGINEER | no attribute |  | Wally |
+| example.py:43 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:43 | SSA variable worker | no attribute |  | Wally |
+| example.py:48 | SSA variable worker | no attribute | p0 = Dilbert | Dilbert |
+| example.py:48 | SSA variable worker | no attribute | p0 = Wally | Wally |
+| example.py:48 | worker | no attribute | p0 = Dilbert | Dilbert |
+| example.py:48 | worker | no attribute | p0 = Wally | Wally |
+| example.py:53 | worker | no attribute | p0 = Dilbert | Dilbert |
+| example.py:53 | worker | no attribute | p0 = Wally | Wally |
+| example.py:57 | ENGINEER | no attribute |  | Dilbert |
+| example.py:57 | ENGINEER | no attribute |  | Wally |
+| example.py:57 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:57 | SSA variable worker | no attribute |  | Wally |
+| example.py:58 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:58 | SSA variable worker | no attribute |  | Wally |
+| example.py:58 | cubical() | no attribute |  | Dilbert |
+| example.py:58 | cubical() | no attribute |  | Wally |
+| example.py:58 | worker | no attribute |  | Dilbert |
+| example.py:58 | worker | no attribute |  | Wally |
+| example.py:60 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:60 | SSA variable worker | no attribute |  | Wally |
+| example.py:60 | worker | no attribute |  | Dilbert |
+| example.py:60 | worker | no attribute |  | Wally |
+| example.py:64 | ENGINEER | no attribute |  | Dilbert |
+| example.py:64 | ENGINEER | no attribute |  | Wally |
+| example.py:64 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:64 | SSA variable worker | no attribute |  | Wally |
+| example.py:65 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:65 | lunch() | no attribute |  | Dilbert |
+| example.py:65 | worker | no attribute |  | Dilbert |
+| example.py:66 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:66 | cubical() | no attribute |  | Dilbert |
+| example.py:66 | worker | no attribute |  | Dilbert |
+| example.py:68 | SSA variable worker | no attribute |  | Dilbert |
+| example.py:68 | worker | no attribute |  | Dilbert |

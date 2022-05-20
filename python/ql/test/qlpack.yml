@@ -1,0 +1,7 @@
+name: codeql/python-tests
+groups: [python, test]
+dependencies:
+    codeql/python-all: "*"
+    codeql/python-queries: "*"
+extractor: python
+tests: .

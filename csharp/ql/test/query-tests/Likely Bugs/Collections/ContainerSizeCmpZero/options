@@ -1,0 +1,1 @@
+semmle-extractor-options: /r:System.Runtime.Extensions.dll /r:System.Collections.dll /r:System.Diagnostics.Debug.dll

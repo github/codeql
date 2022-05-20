@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds exceptions thrown in destructors. This is dangerous: If the destructor is called during stack unwinding as part of the 
+handling of another exception, throwing an additional exception will immediately terminate the program as per the C++ specification.</p>
+
+</overview>
+<recommendation>
+<p>Handle the error condition in a different way.</p>
+
+</recommendation>
+<example><sample src="ThrowInDestructor.cpp" />
+
+
+
+</example>
+<references>
+
+<li>
+  M. Cline, <a href="https://isocpp.org/wiki/faq/exceptions#dtors-shouldnt-throw">C++ FAQ: How can I handle a destructor that fails?</a>
+</li>
+<li>
+  B. Stroustrup. <em>The C++ Programming Language Special Edition</em> p 380. Addison Wesley. 2000.
+</li>
+
+
+</references>
+</qhelp>

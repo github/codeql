@@ -1,0 +1,3 @@
+| Test.java:17:3:17:21 | setWorldWritable(...) | A file is set to be world writable here, but is read from $@. | Test.java:18:3:18:13 | readFile(...) | statement |
+| Test.java:23:3:23:51 | setPosixFilePermissions(...) | A file is set to be world writable here, but is read from $@. | Test.java:24:3:24:23 | readAllLines(...) | statement |
+| Test.java:30:3:30:83 | setPosixFilePermissions(...) | A file is set to be world writable here, but is read from $@. | Test.java:31:3:31:25 | new FileInputStream(...) | statement |

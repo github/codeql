@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Conditional comments are only supported in Internet Explorer and should be avoided for portability.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Use feature detection (as offered by major frameworks such as <a href="http://jquery.com">jQuery</a>) instead.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following code snippet uses conditional comments to detect whether it is running on Internet Explorer 9 or newer.
+A better alternative would be to directly check for the desired features using, for instance, jQuery's
+<code>$.support</code> object.
+</p>
+
+<sample src="examples/ConditionalComments.js" />
+
+<p>
+Note that conditional comments are no longer supported in Internet Explorer 11 Standards mode.
+</p>
+
+</example>
+<references>
+
+
+<li>Internet Explorer Dev Center: <a href="http://msdn.microsoft.com/en-us/library/ie/8ka90k2e(v=vs.94).aspx">@cc_on Statement (JavaScript)</a>.</li>
+
+
+</references>
+</qhelp>

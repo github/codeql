@@ -1,0 +1,15 @@
+| (?!not-this)^[A-Z_]+$ | 13 | 20 | false | true |
+| (?:(?:\n\r?)\|^)( *)\\S | 7 | 9 | true | false |
+| (?:(?:\n\r?)\|^)( *)\\S | 14 | 16 | true | true |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | 0 | 11 | true | false |
+| (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | 15 | 18 | true | true |
+| (?P<name>[\\w]+)\| | 9 | 14 | false | true |
+| \\A[+-]?\\d+ | 2 | 7 | true | false |
+| \\A[+-]?\\d+ | 7 | 10 | false | true |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | 10 | 15 | true | true |
+| \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | 28 | 33 | true | true |
+| ^[A-Z_]+$(?<!not-this) | 1 | 8 | false | true |
+| ax{01,3} | 1 | 8 | false | false |
+| ax{3,} | 1 | 6 | false | true |
+| ax{3} | 1 | 5 | false | false |
+| ax{,3} | 1 | 6 | true | false |

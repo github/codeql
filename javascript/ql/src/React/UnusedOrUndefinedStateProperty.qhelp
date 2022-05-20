@@ -1,0 +1,61 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+
+			Unused or undefined React component state properties can cause
+			errors or make code hard to read and understand. Any computation used
+			to initialize an unused state property is wasted, which may lead to
+			performance problems.  Any access to an undefined component state
+			property trivially evaluates to the value <code>undefined</code>,
+			which may come as a surprise.
+
+		</p>
+
+	</overview>
+	<recommendation>
+
+		<p>
+
+			Remove unused component state properties. Assign values to
+			undefined component state properties.
+
+		</p>
+
+	</recommendation>
+	<example>
+
+		<p>
+
+			In the code below, the React component <code>Clock</code>
+			attempts to display the current time in the <code>render</code>
+			method.
+
+		</p>
+
+		<sample src="examples/UnusedOrUndefinedStateProperty.js" />
+
+		<p>
+
+			But since there are no assignments to
+			<code>this.state.date</code>, the <code>render</code> method will
+			throw an exception when attempting to access the property
+			<code>toLocaleString</code> of the value <code>undefined</code>.
+
+			To avoid this exception, assign the <code>date</code> property
+			before using it:
+
+		</p>
+
+		<sample src="examples/UnusedOrUndefinedStateProperty_fixed.js" />
+
+	</example>
+	<references>
+
+		<li>React: <a href="https://reactjs.org/docs/faq-state.html">Component State</a>.</li>
+		<li>React: <a href="https://reactjs.org/docs/state-and-lifecycle.html">State and Lifecycle</a>.</li>
+
+	</references>
+</qhelp>

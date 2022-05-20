@@ -1,0 +1,126 @@
+uniqueEnclosingCallable
+| enum.c:2:6:2:6 | 1 | Node should have one enclosing callable but has 0. |
+| enum.c:2:6:2:10 | ... + ... | Node should have one enclosing callable but has 0. |
+| enum.c:2:10:2:10 | 1 | Node should have one enclosing callable but has 0. |
+| misc.c:11:17:11:17 | 1 | Node should have one enclosing callable but has 0. |
+| misc.c:11:17:11:21 | ... + ... | Node should have one enclosing callable but has 0. |
+| misc.c:11:21:11:21 | 2 | Node should have one enclosing callable but has 0. |
+| misc.c:210:24:210:24 | 0 | Node should have one enclosing callable but has 0. |
+| misc.c:210:24:210:28 | ... + ... | Node should have one enclosing callable but has 0. |
+| misc.c:210:28:210:28 | 1 | Node should have one enclosing callable but has 0. |
+uniqueType
+uniqueNodeLocation
+| break_labels.c:2:11:2:11 | i | Node should have one location but has 4. |
+| break_labels.c:2:11:2:11 | x | Node should have one location but has 4. |
+| duff.c:2:12:2:12 | i | Node should have one location but has 4. |
+| duff.c:2:12:2:12 | x | Node should have one location but has 4. |
+| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
+| file://:0:0:0:0 | (unnamed parameter 2) | Node should have one location but has 0. |
+| ifelsestmt.c:37:17:37:17 | x | Node should have one location but has 2. |
+| ifelsestmt.c:37:24:37:24 | y | Node should have one location but has 2. |
+| ifstmt.c:27:17:27:17 | x | Node should have one location but has 2. |
+| ifstmt.c:27:24:27:24 | y | Node should have one location but has 2. |
+| nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
+| nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
+| switchstmt.c:1:12:1:12 | i | Node should have one location but has 4. |
+| switchstmt.c:1:12:1:12 | x | Node should have one location but has 4. |
+missingLocation
+| Nodes without location: 2 |
+uniqueNodeToString
+| break_labels.c:2:11:2:11 | i | Node should have one toString but has 2. |
+| break_labels.c:2:11:2:11 | x | Node should have one toString but has 2. |
+| break_labels.c:4:9:4:9 | i | Node should have one toString but has 2. |
+| break_labels.c:4:9:4:9 | x | Node should have one toString but has 2. |
+| break_labels.c:6:16:6:16 | i | Node should have one toString but has 2. |
+| break_labels.c:6:16:6:16 | x | Node should have one toString but has 2. |
+| break_labels.c:7:17:7:17 | i | Node should have one toString but has 2. |
+| break_labels.c:7:17:7:17 | x | Node should have one toString but has 2. |
+| duff.c:2:12:2:12 | i | Node should have one toString but has 2. |
+| duff.c:2:12:2:12 | x | Node should have one toString but has 2. |
+| duff.c:3:14:3:14 | i | Node should have one toString but has 2. |
+| duff.c:3:14:3:14 | x | Node should have one toString but has 2. |
+| duff.c:4:13:4:13 | i | Node should have one toString but has 2. |
+| duff.c:4:13:4:13 | x | Node should have one toString but has 2. |
+| nodefaultswitchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
+| nodefaultswitchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
+| nodefaultswitchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
+| nodefaultswitchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
+| switchstmt.c:1:12:1:12 | i | Node should have one toString but has 2. |
+| switchstmt.c:1:12:1:12 | x | Node should have one toString but has 2. |
+| switchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
+| switchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
+missingToString
+parameterCallable
+localFlowIsLocal
+compatibleTypesReflexive
+unreachableNodeCCtx
+localCallNodes
+postIsNotPre
+postHasUniquePre
+uniquePostUpdate
+postIsInSameCallable
+reverseRead
+argHasPostUpdate
+| builtin.cpp:15:31:15:35 | * ... | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:30:9:30:13 | call to C1 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:33:9:33:13 | call to C1 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:39:9:39:13 | call to C2 | ArgumentNode is missing PostUpdateNode. |
+| conditional_destructors.cpp:42:9:42:13 | call to C2 | ArgumentNode is missing PostUpdateNode. |
+| cpp11.cpp:77:5:77:17 | unaryFunction | ArgumentNode is missing PostUpdateNode. |
+| destructors.cpp:52:14:52:16 | ref | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:623:5:623:5 | r | ArgumentNode is missing PostUpdateNode. |
+| ir.cpp:625:5:625:5 | s | ArgumentNode is missing PostUpdateNode. |
+postWithInFlow
+| VacuousDestructorCall.cpp:10:22:10:22 | i [inner post update] | PostUpdateNode should not be the target of local flow. |
+| allocators.cpp:4:11:4:13 | m_x [post update] | PostUpdateNode should not be the target of local flow. |
+| allocators.cpp:4:17:4:19 | m_y [post update] | PostUpdateNode should not be the target of local flow. |
+| assignexpr.cpp:9:4:9:4 | i [post update] | PostUpdateNode should not be the target of local flow. |
+| builtin.c:34:23:34:31 | staticint [inner post update] | PostUpdateNode should not be the target of local flow. |
+| builtin.c:39:37:39:45 | carry_out [inner post update] | PostUpdateNode should not be the target of local flow. |
+| builtin.c:43:41:43:49 | staticint [inner post update] | PostUpdateNode should not be the target of local flow. |
+| builtin.c:51:30:51:38 | staticint [inner post update] | PostUpdateNode should not be the target of local flow. |
+| builtin.c:54:29:54:38 | atomic_int [inner post update] | PostUpdateNode should not be the target of local flow. |
+| condition_decls.cpp:3:5:3:9 | m_ptr [post update] | PostUpdateNode should not be the target of local flow. |
+| condition_decls.cpp:17:11:17:15 | m_ptr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| condition_decls.cpp:20:11:20:15 | m_ptr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| condition_decls.cpp:28:11:28:15 | m_ptr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| condition_decls.cpp:31:11:31:15 | m_ptr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| condition_decls.cpp:34:9:34:13 | m_ptr [inner post update] | PostUpdateNode should not be the target of local flow. |
+| conditional_destructors.cpp:6:13:6:15 | val [post update] | PostUpdateNode should not be the target of local flow. |
+| conditional_destructors.cpp:18:13:18:15 | val [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:7:7:7:8 | el [post update] | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:77:19:77:21 | call to Val | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:11:82:14 | call to Val | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:45:82:48 | call to Val | PostUpdateNode should not be the target of local flow. |
+| cpp11.cpp:82:51:82:51 | call to Val | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:177:5:177:5 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:177:5:177:8 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:178:5:178:8 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:178:7:178:7 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:183:5:183:5 | a [inner post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:183:5:183:8 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:184:5:184:8 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:184:7:184:7 | a [inner post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:342:5:342:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:342:6:342:6 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:428:8:428:8 | x [post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:429:8:429:8 | y [post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:643:15:643:17 | m_a [post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:644:11:644:14 | this [inner post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:644:17:644:19 | m_a [post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:645:9:645:11 | m_a [post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:654:11:654:14 | this [inner post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:745:8:745:8 | base_s [inner post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:754:8:754:8 | middle_s [inner post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:763:8:763:8 | derived_s [inner post update] | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:809:7:809:13 | call to Base | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:810:7:810:26 | call to Base | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:823:7:823:13 | call to Base | PostUpdateNode should not be the target of local flow. |
+| ir.cpp:824:7:824:26 | call to Base | PostUpdateNode should not be the target of local flow. |
+| misc.c:130:7:130:7 | i [post update] | PostUpdateNode should not be the target of local flow. |
+| misc.c:131:9:131:9 | i [post update] | PostUpdateNode should not be the target of local flow. |
+| misc.c:220:3:220:5 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| misc.c:220:4:220:5 | sp [inner post update] | PostUpdateNode should not be the target of local flow. |
+| static_init_templates.cpp:3:2:3:4 | ref [post update] | PostUpdateNode should not be the target of local flow. |
+| static_init_templates.cpp:21:2:21:4 | val [post update] | PostUpdateNode should not be the target of local flow. |
+| try_catch.cpp:7:8:7:8 | call to exception | PostUpdateNode should not be the target of local flow. |

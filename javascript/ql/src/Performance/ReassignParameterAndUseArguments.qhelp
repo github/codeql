@@ -1,0 +1,61 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+A function that reassigns one of its parameters and also uses the special arguments object
+may not be optimized properly, which could make the program run slower.
+In particular, the V8 engine (which is used by the Google Chrome browser and the Node.js platform)
+does not currently perform any advanced optimizations on such functions.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Either eliminate all uses of the <code>arguments</code> variable, or copy the parameter into a local
+variable and reassign that local variable instead.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, function <code>sum</code> takes two arguments <code>xs</code> and
+<code>start</code>, and returns the sum of all elements in the array <code>xs</code>, plus
+the value of <code>start</code>. The argument <code>start</code> is optional and defaults
+to <code>0</code>. 
+</p>
+
+<sample src="examples/ReassignParameterAndUseArguments.js" />
+
+<p>
+Observe that to find out whether the argument was provided, <code>sum</code> checks
+<code>arguments.length</code> (which evaluates to the number of actual arguments passed to
+<code>sum</code>), and reassigns <code>sum</code> to <code>0</code> if fewer than two
+arguments were passed.
+</p>
+
+<p>
+In this example, it is easy to eliminate the use of the <code>arguments</code> variable: instead of
+checking <code>arguments.length</code>, we can instead check whether <code>sum</code> is
+undefined:
+</p>
+
+<sample src="examples/ReassignParameterAndUseArgumentsGood1.js" />
+
+<p>
+A more general solution is to introduce a new local variable, assign the initial value
+of <code>sum</code> to this local variable, and then update and use the local
+variable instead of the parameter:
+</p>
+
+<sample src="examples/ReassignParameterAndUseArgumentsGood2.js" />
+
+</example>
+<references>
+<li>Petka Antonov: <a href="https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#31-reassigning-a-defined-parameter-while-also-mentioning-arguments-in-the-body-typical-example">Optimization killers</a>.</li>
+</references>
+</qhelp>

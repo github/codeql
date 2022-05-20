@@ -1,0 +1,103 @@
+edges
+| test.cpp:7:3:7:3 | this | test.cpp:8:12:8:15 | Load |
+| test.cpp:8:12:8:15 | Load | test.cpp:8:12:8:15 | this |
+| test.cpp:8:12:8:15 | this | test.cpp:34:16:34:16 | x |
+| test.cpp:11:8:11:8 | b | test.cpp:12:5:12:5 | Load |
+| test.cpp:12:5:12:5 | (reference dereference) | test.cpp:12:5:12:5 | Unary |
+| test.cpp:12:5:12:5 | Load | test.cpp:12:5:12:5 | b |
+| test.cpp:12:5:12:5 | Unary | test.cpp:12:5:12:5 | (A)... |
+| test.cpp:12:5:12:5 | Unary | test.cpp:12:5:12:5 | (reference dereference) |
+| test.cpp:12:5:12:5 | b | test.cpp:12:5:12:5 | Unary |
+| test.cpp:15:3:15:4 | this | test.cpp:16:5:16:5 | Load |
+| test.cpp:16:5:16:5 | Load | test.cpp:16:5:16:5 | this |
+| test.cpp:16:5:16:5 | Unary | file://:0:0:0:0 | (A *)... |
+| test.cpp:16:5:16:5 | this | test.cpp:16:5:16:5 | Unary |
+| test.cpp:21:3:21:3 | Unary | test.cpp:21:13:21:13 | ConvertToNonVirtualBase |
+| test.cpp:21:3:21:3 | this | test.cpp:21:3:21:3 | Unary |
+| test.cpp:21:3:21:3 | this | test.cpp:22:12:22:15 | Load |
+| test.cpp:21:3:21:3 | this | test.cpp:25:7:25:10 | Load |
+| test.cpp:21:13:21:13 | ConvertToNonVirtualBase | test.cpp:7:3:7:3 | this |
+| test.cpp:22:12:22:15 | (B *)... | test.cpp:34:16:34:16 | x |
+| test.cpp:22:12:22:15 | Load | test.cpp:22:12:22:15 | this |
+| test.cpp:22:12:22:15 | Unary | test.cpp:22:12:22:15 | (B *)... |
+| test.cpp:22:12:22:15 | this | test.cpp:22:12:22:15 | Unary |
+| test.cpp:25:7:25:10 | (B *)... | test.cpp:25:7:25:10 | Unary |
+| test.cpp:25:7:25:10 | Load | test.cpp:25:7:25:10 | this |
+| test.cpp:25:7:25:10 | Unary | test.cpp:25:7:25:10 | (A *)... |
+| test.cpp:25:7:25:10 | Unary | test.cpp:25:7:25:10 | (B *)... |
+| test.cpp:25:7:25:10 | this | test.cpp:25:7:25:10 | Unary |
+| test.cpp:31:3:31:3 | this | test.cpp:31:12:31:15 | Load |
+| test.cpp:31:11:31:15 | (B)... | test.cpp:31:11:31:15 | Unary |
+| test.cpp:31:11:31:15 | (reference to) | test.cpp:11:8:11:8 | b |
+| test.cpp:31:11:31:15 | * ... | test.cpp:31:11:31:15 | Unary |
+| test.cpp:31:11:31:15 | Unary | test.cpp:31:11:31:15 | (B)... |
+| test.cpp:31:11:31:15 | Unary | test.cpp:31:11:31:15 | (reference to) |
+| test.cpp:31:12:31:15 | Load | test.cpp:31:12:31:15 | this |
+| test.cpp:31:12:31:15 | Unary | test.cpp:31:11:31:15 | * ... |
+| test.cpp:31:12:31:15 | this | test.cpp:31:12:31:15 | Unary |
+| test.cpp:34:16:34:16 | x | test.cpp:35:3:35:3 | Load |
+| test.cpp:35:3:35:3 | Load | test.cpp:35:3:35:3 | x |
+| test.cpp:35:3:35:3 | Unary | test.cpp:35:3:35:3 | (A *)... |
+| test.cpp:35:3:35:3 | x | test.cpp:35:3:35:3 | Unary |
+| test.cpp:47:3:47:3 | this | test.cpp:48:10:48:13 | Load |
+| test.cpp:48:10:48:13 | (E *)... | test.cpp:48:10:48:13 | Unary |
+| test.cpp:48:10:48:13 | Load | test.cpp:48:10:48:13 | this |
+| test.cpp:48:10:48:13 | Unary | test.cpp:48:6:48:13 | (A *)... |
+| test.cpp:48:10:48:13 | Unary | test.cpp:48:10:48:13 | (E *)... |
+| test.cpp:48:10:48:13 | this | test.cpp:48:10:48:13 | Unary |
+nodes
+| file://:0:0:0:0 | (A *)... | semmle.label | (A *)... |
+| test.cpp:7:3:7:3 | this | semmle.label | this |
+| test.cpp:8:12:8:15 | Load | semmle.label | Load |
+| test.cpp:8:12:8:15 | this | semmle.label | this |
+| test.cpp:11:8:11:8 | b | semmle.label | b |
+| test.cpp:12:5:12:5 | (A)... | semmle.label | (A)... |
+| test.cpp:12:5:12:5 | (reference dereference) | semmle.label | (reference dereference) |
+| test.cpp:12:5:12:5 | Load | semmle.label | Load |
+| test.cpp:12:5:12:5 | Unary | semmle.label | Unary |
+| test.cpp:12:5:12:5 | Unary | semmle.label | Unary |
+| test.cpp:12:5:12:5 | b | semmle.label | b |
+| test.cpp:15:3:15:4 | this | semmle.label | this |
+| test.cpp:16:5:16:5 | Load | semmle.label | Load |
+| test.cpp:16:5:16:5 | Unary | semmle.label | Unary |
+| test.cpp:16:5:16:5 | this | semmle.label | this |
+| test.cpp:21:3:21:3 | Unary | semmle.label | Unary |
+| test.cpp:21:3:21:3 | this | semmle.label | this |
+| test.cpp:21:13:21:13 | ConvertToNonVirtualBase | semmle.label | ConvertToNonVirtualBase |
+| test.cpp:22:12:22:15 | (B *)... | semmle.label | (B *)... |
+| test.cpp:22:12:22:15 | Load | semmle.label | Load |
+| test.cpp:22:12:22:15 | Unary | semmle.label | Unary |
+| test.cpp:22:12:22:15 | this | semmle.label | this |
+| test.cpp:25:7:25:10 | (A *)... | semmle.label | (A *)... |
+| test.cpp:25:7:25:10 | (B *)... | semmle.label | (B *)... |
+| test.cpp:25:7:25:10 | Load | semmle.label | Load |
+| test.cpp:25:7:25:10 | Unary | semmle.label | Unary |
+| test.cpp:25:7:25:10 | Unary | semmle.label | Unary |
+| test.cpp:25:7:25:10 | this | semmle.label | this |
+| test.cpp:31:3:31:3 | this | semmle.label | this |
+| test.cpp:31:11:31:15 | (B)... | semmle.label | (B)... |
+| test.cpp:31:11:31:15 | (reference to) | semmle.label | (reference to) |
+| test.cpp:31:11:31:15 | * ... | semmle.label | * ... |
+| test.cpp:31:11:31:15 | Unary | semmle.label | Unary |
+| test.cpp:31:11:31:15 | Unary | semmle.label | Unary |
+| test.cpp:31:12:31:15 | Load | semmle.label | Load |
+| test.cpp:31:12:31:15 | Unary | semmle.label | Unary |
+| test.cpp:31:12:31:15 | this | semmle.label | this |
+| test.cpp:34:16:34:16 | x | semmle.label | x |
+| test.cpp:35:3:35:3 | (A *)... | semmle.label | (A *)... |
+| test.cpp:35:3:35:3 | Load | semmle.label | Load |
+| test.cpp:35:3:35:3 | Unary | semmle.label | Unary |
+| test.cpp:35:3:35:3 | x | semmle.label | x |
+| test.cpp:47:3:47:3 | this | semmle.label | this |
+| test.cpp:48:6:48:13 | (A *)... | semmle.label | (A *)... |
+| test.cpp:48:10:48:13 | (E *)... | semmle.label | (E *)... |
+| test.cpp:48:10:48:13 | Load | semmle.label | Load |
+| test.cpp:48:10:48:13 | Unary | semmle.label | Unary |
+| test.cpp:48:10:48:13 | Unary | semmle.label | Unary |
+| test.cpp:48:10:48:13 | this | semmle.label | this |
+#select
+| test.cpp:12:7:12:7 | call to f | test.cpp:31:3:31:3 | this | test.cpp:12:5:12:5 | (A)... | Call to pure virtual function during construction |
+| test.cpp:16:5:16:5 | call to f | test.cpp:15:3:15:4 | this | file://:0:0:0:0 | (A *)... | Call to pure virtual function during destruction |
+| test.cpp:25:13:25:13 | call to f | test.cpp:21:3:21:3 | this | test.cpp:25:7:25:10 | (A *)... | Call to pure virtual function during construction |
+| test.cpp:35:6:35:6 | call to f | test.cpp:7:3:7:3 | this | test.cpp:35:3:35:3 | (A *)... | Call to pure virtual function during construction |
+| test.cpp:35:6:35:6 | call to f | test.cpp:21:3:21:3 | this | test.cpp:35:3:35:3 | (A *)... | Call to pure virtual function during construction |

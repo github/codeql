@@ -1,0 +1,56 @@
+| stmts.c:2:15:16:1 | { ... } | false | true |
+| stmts.c:3:5:3:10 | declaration | true | true |
+| stmts.c:4:5:4:18 | declaration | true | true |
+| stmts.c:5:5:5:16 | declaration | false | true |
+| stmts.c:7:5:7:5 | { ... } | true | true |
+| stmts.c:7:5:14:5 | switch (...) ...  | true | true |
+| stmts.c:7:15:14:5 | { ... } | true | true |
+| stmts.c:8:9:8:15 | case ...: | true | true |
+| stmts.c:9:13:9:19 | return ... | true | true |
+| stmts.c:10:9:10:15 | case ...: | true | true |
+| stmts.c:11:13:11:18 | break; | true | true |
+| stmts.c:12:9:12:16 | default:  | true | true |
+| stmts.c:13:13:13:19 | return ... | true | true |
+| stmts.c:14:5:14:5 | label ...: | true | true |
+| stmts.c:15:5:15:11 | return ... | true | true |
+| stmts.c:24:36:28:1 | { ... } | false | false |
+| stmts.c:25:5:25:10 | ExprStmt | false | false |
+| stmts.c:27:5:27:13 | return ... | true | true |
+| stmts.c:30:15:33:1 | { ... } | false | false |
+| stmts.c:31:5:31:10 | declaration | true | true |
+| stmts.c:32:5:32:25 | ExprStmt | false | false |
+| stmts.c:33:1:33:1 | return ... | true | true |
+| stmts.cpp:6:53:7:5 | { ... } | true | true |
+| stmts.cpp:7:5:7:5 | return ... | true | true |
+| stmts.cpp:8:53:9:5 | { ... } | true | true |
+| stmts.cpp:9:5:9:5 | return ... | true | true |
+| stmts.cpp:10:31:11:5 | { ... } | true | true |
+| stmts.cpp:11:5:11:5 | return ... | true | true |
+| stmts.cpp:12:35:13:5 | { ... } | true | true |
+| stmts.cpp:13:5:13:5 | return ... | true | true |
+| stmts.cpp:18:57:20:5 | { ... } | false | false |
+| stmts.cpp:19:9:19:22 | ExprStmt | false | false |
+| stmts.cpp:20:5:20:5 | return ... | true | true |
+| stmts.cpp:21:57:23:5 | { ... } | false | false |
+| stmts.cpp:22:9:22:22 | ExprStmt | false | false |
+| stmts.cpp:23:5:23:5 | return ... | true | true |
+| stmts.cpp:24:33:26:5 | { ... } | false | false |
+| stmts.cpp:25:9:25:22 | ExprStmt | false | false |
+| stmts.cpp:26:5:26:5 | return ... | true | true |
+| stmts.cpp:27:37:29:5 | { ... } | false | false |
+| stmts.cpp:28:9:28:22 | ExprStmt | false | false |
+| stmts.cpp:29:5:29:5 | return ... | true | true |
+| stmts.cpp:32:33:46:1 | { ... } | false | false |
+| stmts.cpp:33:5:33:14 | declaration | true | true |
+| stmts.cpp:34:5:34:34 | declaration | true | true |
+| stmts.cpp:35:5:35:38 | declaration | true | true |
+| stmts.cpp:37:5:37:14 | ExprStmt | false | true |
+| stmts.cpp:38:5:38:14 | ExprStmt | true | true |
+| stmts.cpp:39:5:39:14 | ExprStmt | false | false |
+| stmts.cpp:40:5:40:8 | ExprStmt | false | true |
+| stmts.cpp:41:5:41:8 | ExprStmt | true | true |
+| stmts.cpp:42:5:42:8 | ExprStmt | false | false |
+| stmts.cpp:43:5:43:8 | ExprStmt | false | true |
+| stmts.cpp:44:5:44:8 | ExprStmt | true | true |
+| stmts.cpp:45:5:45:8 | ExprStmt | false | false |
+| stmts.cpp:46:1:46:1 | return ... | true | true |

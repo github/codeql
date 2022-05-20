@@ -1,0 +1,24 @@
+// Generate DataFlowUnoptimized.dll: `csc /target:library DataFlowUnoptimized.cs_ /out:DataFlowUnoptimized.dll`
+
+using System;
+
+namespace DataflowUnoptimized
+{
+    public class MaybeNullMethods
+    {
+        public bool cond = false;
+
+        public string MaybeNull()
+        {
+            if (cond)
+                return null;
+            else
+                return "not null";
+        }
+
+        public string MaybeNull2()
+        {
+            return cond ? null : "not null";
+        }
+    }
+}

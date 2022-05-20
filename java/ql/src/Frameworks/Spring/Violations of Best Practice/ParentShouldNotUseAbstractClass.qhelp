@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A non-abstract Spring bean that is a parent of other beans must not specify an abstract class. Doing so causes an error during
+bean instantiation.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Make sure that a non-abstract bean does not specify an abstract class, by 
+doing one of the following:</p>
+
+<ul>
+    <li>Specify that the bean is also abstract by adding <code>abstract="true"</code> to the bean specification.</li>
+    <li>If possible, update the class that is specified by the bean so that it is not abstract.</li>
+</ul>
+
+<p>You can also make the XML parent bean definition abstract and remove any references
+from it to any class (in which case it becomes a pure bean template). Note that, like an 
+abstract class, an abstract bean cannot be used on its own and only 
+provides property and constructor definitions to its children.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the bean <code>wrongConnectionPool</code> is using an abstract class, 
+<code>ConnectionPool</code>, which causes an error. Instead, the bean should be declared 
+<code>abstract</code>, as shown in the definition of <code>connectionPool</code>.</p>
+
+<sample src="ParentShouldNotUseAbstractClass.xml" />
+
+</example>
+<references>
+
+
+<li>
+Spring Framework Reference Documentation 3.0: <a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-child-bean-definitions">3.7 Bean definition inheritance</a>.
+</li>
+
+
+</references>
+</qhelp>

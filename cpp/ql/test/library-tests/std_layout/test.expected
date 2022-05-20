@@ -1,0 +1,21 @@
+| file://:0:0:0:0 | __va_list_tag | standard layout |
+| test.c:3:8:3:22 | PlainOldCStruct | standard layout |
+| test.cpp:3:8:3:11 | AStd | standard layout |
+| test.cpp:9:7:9:13 | BNonStd | NOT standard layout |
+| test.cpp:16:7:16:13 | CNonStd | NOT standard layout |
+| test.cpp:21:7:21:13 | DNonStd | NOT standard layout |
+| test.cpp:25:7:25:13 | ENonStd | NOT standard layout |
+| test.cpp:30:7:30:10 | FStd | standard layout |
+| test.cpp:35:7:35:13 | GNonStd | NOT standard layout |
+| test.cpp:40:8:40:11 | HStd | standard layout |
+| test.cpp:44:8:44:14 | INonStd | NOT standard layout |
+| test.cpp:47:8:47:11 | JStd | standard layout |
+| test.cpp:52:8:52:11 | KStd | standard layout |
+| test.cpp:56:8:56:11 | LStd | standard layout |
+| test.cpp:60:8:60:14 | MNonStd | NOT standard layout |
+| test.cpp:65:8:65:16 | NMaybeStd<AStd> | standard layout |
+| test.cpp:65:8:65:16 | NMaybeStd<BNonStd> | NOT standard layout |
+| test.cpp:65:8:65:16 | NMaybeStd<T> | NOT standard layout |
+| test.cpp:65:8:65:16 | NMaybeStd<int> | standard layout |
+| test.cpp:82:8:82:14 | ONonStd<T> | NOT standard layout |
+| test.cpp:82:8:82:14 | ONonStd<int> | NOT standard layout |

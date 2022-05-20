@@ -1,0 +1,18 @@
+declarations
+| Tuples.cs:8:14:8:15 | Int32 x1 |
+| Tuples.cs:8:22:8:23 | Int32 y1 |
+| Tuples.cs:17:14:17:15 | Int32 x3 |
+| Tuples.cs:20:18:20:19 | Int32 y4 |
+| Tuples.cs:25:19:25:21 | Int32 y50 |
+assignments
+| Tuples.cs:8:9:8:35 | ... = ... | Tuples.cs:8:14:8:15 | x1 | 0 |
+| Tuples.cs:8:9:8:35 | ... = ... | Tuples.cs:8:22:8:23 | y1 | 1 |
+| Tuples.cs:13:9:13:27 | ... = ... | Tuples.cs:11:13:11:14 | x2 | 0 |
+| Tuples.cs:13:9:13:27 | ... = ... | Tuples.cs:12:13:12:14 | y2 | 1 |
+| Tuples.cs:17:9:17:31 | ... = ... | Tuples.cs:16:13:16:14 | y3 | 1 |
+| Tuples.cs:17:9:17:31 | ... = ... | Tuples.cs:17:14:17:15 | x3 | 0 |
+| Tuples.cs:20:9:20:31 | ... = ... | Tuples.cs:19:13:19:14 | x4 | 0 |
+| Tuples.cs:20:9:20:31 | ... = ... | Tuples.cs:20:18:20:19 | y4 | 1 |
+| Tuples.cs:25:9:25:45 | ... = ... | Tuples.cs:23:13:23:14 | x5 | 0 |
+| Tuples.cs:25:9:25:45 | ... = ... | Tuples.cs:24:13:24:15 | y51 | 2 |
+| Tuples.cs:25:9:25:45 | ... = ... | Tuples.cs:25:19:25:21 | y50 | 1 |

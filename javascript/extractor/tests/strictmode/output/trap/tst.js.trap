@@ -1,0 +1,79 @@
+#10000=@"/tst.js;sourcefile"
+files(#10000,"/tst.js")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=@"global_scope"
+scopes(#20000,0)
+#20001=@"script;{#10000},1,1"
+#20002=*
+lines(#20002,#20001,"'use strict';","
+")
+#20003=@"loc,{#10000},1,1,1,13"
+locations_default(#20003,#10000,1,1,1,13)
+hasLocation(#20002,#20003)
+#20004=*
+lines(#20004,#20001,";","")
+#20005=@"loc,{#10000},2,1,2,1"
+locations_default(#20005,#10000,2,1,2,1)
+hasLocation(#20004,#20005)
+numlines(#20001,2,2,0)
+#20006=*
+tokeninfo(#20006,4,#20001,0,"'use strict'")
+#20007=@"loc,{#10000},1,1,1,12"
+locations_default(#20007,#10000,1,1,1,12)
+hasLocation(#20006,#20007)
+#20008=*
+tokeninfo(#20008,8,#20001,1,";")
+#20009=@"loc,{#10000},1,13,1,13"
+locations_default(#20009,#10000,1,13,1,13)
+hasLocation(#20008,#20009)
+#20010=*
+tokeninfo(#20010,8,#20001,2,";")
+hasLocation(#20010,#20005)
+#20011=*
+tokeninfo(#20011,0,#20001,3,"")
+#20012=@"loc,{#10000},2,2,2,1"
+locations_default(#20012,#10000,2,2,2,1)
+hasLocation(#20011,#20012)
+toplevels(#20001,0)
+#20013=@"loc,{#10000},1,1,2,1"
+locations_default(#20013,#10000,1,1,2,1)
+hasLocation(#20001,#20013)
+#20014=*
+stmts(#20014,2,#20001,0,"'use strict';")
+hasLocation(#20014,#20003)
+stmt_containers(#20014,#20001)
+#20015=*
+exprs(#20015,4,#20014,0,"'use strict'")
+hasLocation(#20015,#20007)
+enclosing_stmt(#20015,#20014)
+expr_containers(#20015,#20001)
+literals("use strict","'use strict'",#20015)
+#20016=*
+regexpterm(#20016,14,#20015,0,"use strict")
+#20017=@"loc,{#10000},1,2,1,11"
+locations_default(#20017,#10000,1,2,1,11)
+hasLocation(#20016,#20017)
+regexp_const_value(#20016,"use strict")
+#20018=*
+stmts(#20018,0,#20001,1,";")
+hasLocation(#20018,#20005)
+stmt_containers(#20018,#20001)
+#20019=*
+entry_cfg_node(#20019,#20001)
+#20020=@"loc,{#10000},1,1,1,0"
+locations_default(#20020,#10000,1,1,1,0)
+hasLocation(#20019,#20020)
+#20021=*
+exit_cfg_node(#20021,#20001)
+hasLocation(#20021,#20012)
+successor(#20018,#20021)
+successor(#20014,#20015)
+successor(#20015,#20018)
+successor(#20019,#20014)
+numlines(#10000,2,2,0)
+filetype(#10000,"javascript")

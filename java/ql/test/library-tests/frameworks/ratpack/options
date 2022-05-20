@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/ratpack-1.9.x:${testdir}/../../../stubs/jackson-core-2.12:${testdir}/../../../stubs/jackson-databind-2.12:${testdir}/../../../stubs/guava-30.0:${testdir}/../../../stubs/guava-30.0:${testdir}/../../../stubs/netty-4.1.x

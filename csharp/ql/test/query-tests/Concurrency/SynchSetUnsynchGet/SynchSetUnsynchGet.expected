@@ -1,0 +1,2 @@
+| SynchSetUnsynchGet.cs:9:9:9:20 | BadProperty1 | Field '$@' is guarded by a lock in the setter but not in the getter. | SynchSetUnsynchGet.cs:5:9:5:17 | property1 | property1 |
+| SynchSetUnsynchGet.cs:23:9:23:20 | BadProperty2 | Field '$@' is guarded by a lock in the setter but not in the getter. | SynchSetUnsynchGet.cs:5:9:5:17 | property1 | property1 |

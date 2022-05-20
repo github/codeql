@@ -1,0 +1,2 @@
+| tst.js:2:1:2:13 | delete String | Only properties should be deleted. |
+| tst.js:6:2:6:9 | delete x | Only properties should be deleted. |

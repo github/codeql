@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Microsoft defines two broad categories for source code. Managed code compiles into bytecode and is then executed by a virtual 
+machine. Unmanaged code is compiled directly into machine code. All C# code is managed but it is possible to call external unmanaged 
+code. This metric counts the number of <code>extern</code> methods in each class that are implemented by unmanaged code. Managed code has many advantages 
+over unmanaged code such as built in memory management performed by the virtual machine and the ability to run compiled programs 
+on a wider variety of architectures.</p>
+
+</overview>
+<recommendation>
+<p>Consider whether the unmanaged methods could be replaced by managed code instead.</p>
+
+</recommendation>
+<example>
+<p>This example shows a function that displays a message box when clicked. It is implemented with 
+unmanaged code from the <code>User32.dll</code> library.</p>
+<sample src="TUnmanagedCode.cs" />
+
+</example>
+<section title="Fixing by Using Managed Code">
+<p>This example uses managed code to perform the same function.</p>
+<sample src="TUnmanagedCodeFix.cs" />
+
+</section>
+<references>
+
+  <li>MSDN, C# Reference. <a href="http://msdn.microsoft.com/en-us/library/e59b22c5(v=vs.80).aspx">extern</a>.</li>
+  <li>Wikipedia. <a href="http://en.wikipedia.org/wiki/Managed_code">Managed code</a>.</li>
+
+</references>
+</qhelp>

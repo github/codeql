@@ -1,0 +1,5 @@
+| Hiding.c:22:25:22:26 | definition of gi | Local variable gi hides $@ with the same name. | Hiding.c:2:5:2:6 | gi | a global variable |
+| Hiding.c:23:25:23:26 | definition of gj | Local variable gj hides $@ with the same name. | Hiding.c:3:12:3:13 | gj | a global variable |
+| Hiding.c:24:25:24:26 | definition of gk | Local variable gk hides $@ with the same name. | Hiding.c:4:12:4:13 | gk | a global variable |
+| Hiding.c:37:20:37:21 | definition of g3 | Parameter g3 hides $@ with the same name. | Hiding.c:33:13:33:14 | g3 | a global variable |
+| Hiding.c:40:20:40:21 | definition of g5 | Parameter g5 hides $@ with the same name. | Hiding.c:33:21:33:22 | g5 | a global variable |

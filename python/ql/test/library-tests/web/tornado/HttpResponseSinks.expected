@@ -1,0 +1,4 @@
+WARNING: Type HttpResponseTaintSink has been deprecated and may be removed in future (HttpResponseSinks.ql:5,6-27)
+| test.py:6:20:6:43 | tornado.HttpRequestHandler.write | externally controlled string |
+| test.py:12:20:12:23 | tornado.HttpRequestHandler.write | externally controlled string |
+| test.py:26:20:26:48 | tornado.HttpRequestHandler.write | externally controlled string |

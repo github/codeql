@@ -1,0 +1,251 @@
+{
+    // Place your python workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+    // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+    // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+    // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+    // Placeholders with the same ids are connected.
+    // Example:
+    // "Print to console": {
+    // 	"scope": "javascript,typescript",
+    // 	"prefix": "log",
+    // 	"body": [
+    // 		"console.log('$1');",
+    // 		"$2"
+    // 	],
+    // 	"description": "Log output to console"
+    // }
+
+    "Has relative path": {
+        "scope": "ql",
+        "prefix": "has relative path",
+        "body": [
+            "exists($1.getLocation().getFile().getRelativePath())"
+        ],
+        "description": "has relative path",
+    },
+
+    "Exists": {
+        "scope": "ql",
+        "prefix": "exists",
+        "body": [
+            "exists(${1:DataFlow::Node node} |",
+            "  $2",
+            ")"
+        ],
+        "description": "Exists clause",
+    },
+
+    "Predicate": {
+        "scope": "ql",
+        "prefix": "predicate",
+        "body": [
+            "predicate ${1:isFoo}(${2:DataFlow::Node node}) {",
+            "  ${3:any()}",
+            "}"
+        ],
+        "description": "Predicate",
+    },
+
+    "Class": {
+        "scope": "ql",
+        "prefix": "class",
+        "body": [
+            "class ${1:MyClass} extends ${2:DataFlow::MethodCallNode} {",
+            "  $1() { ${3:getMethodName() = \"foo\"} }",
+            "",
+            "  DataFlow::Node ${4:getThing}() { result = ${5:getArgument(0)} }",
+            "}"
+        ],
+        "description": "Class",
+    },
+
+    "Abstract class": {
+        "scope": "ql",
+        "prefix": "abstract class",
+        "body": [
+            "abstract class ${1:AdditionalThing} extends ${2:DataFlow::Node} {",
+            "  abstract ${3:DataFlow::Node} ${4:getThing}($5);",
+            "}"
+        ],
+        "description": "Class",
+    },
+
+    "Class::Range": {
+        "scope": "ql",
+        "prefix": "range class",
+        "body": [
+            "class ${1:MyClass} extends ${2:DataFlow::Node} {",
+            "  $1::Range range;",
+            "",
+            "  $1() { this = range }",
+            "",
+            "  ${3:DataFlow::Node} ${4:getThing}() { result = range.$4() }",
+            "}",
+            "",
+            "module $1 {",
+            "  abstract class Range extends $2 {",
+            "    abstract $3 $4();",
+            "  }",
+            "}",
+        ],
+        "description": "Class with ::Range pattern",
+    },
+
+    "Class::Range delegate": {
+        "scope": "ql",
+        "prefix": "range delegate",
+        "body": [
+            "${1:DataFlow::Node} ${2:getThing}() { result = range.$2() }"
+        ],
+        "description": "Predicate that delegates to range class",
+    },
+
+    "Type tracking predicate": {
+        "scope": "ql",
+        "prefix": "type tracking",
+        "body": [
+            "/** Gets a reference to ${3:a thing}. */",
+            "private DataFlow::TypeTrackingNode ${1:myType}(DataFlow::TypeTracker t) {",
+            "  t.start() and",
+            "  result = ${2:value}",
+            "  or",
+            "  exists(DataFlow::TypeTracker t2 |",
+            "    result = $1(t2).track(t2, t)",
+            "  )",
+            "}",
+            "",
+            "/** Gets a reference to $3. */",
+            "DataFlow::Node $1() {",
+            "  $1(DataFlow::TypeTracker::end()).flowsTo(result)",
+            "}"
+        ],
+        "description": "Type tracking predicate",
+    },
+
+    "Taint tracking configuration": {
+        "scope": "ql",
+        "prefix": "taint tracking",
+        "body": [
+            "/** @kind path-problem */",
+            "import python",
+            "import experimental.dataflow.DataFlow",
+            "import experimental.dataflow.TaintTracking",
+            "import experimental.semmle.python.Concepts",
+            "import experimental.dataflow.RemoteFlowSources",
+            "import DataFlow::PathGraph",
+            "class ${1:Config} extends TaintTracking::Configuration {",
+            "  $1() { this = \"$1\" } ",
+            "",
+            "  override predicate isSource(DataFlow::Node node) {",
+            "    ${2:none()}",
+            "  }",
+            "",
+            "  override predicate isSink(DataFlow::Node node) {",
+            "    ${3:none()}",
+            "  }",
+            "}",
+            "",
+            "from $1 cfg, DataFlow::PathNode source, DataFlow::PathNode sink",
+            "where cfg.hasFlowPath(source, sink)",
+            "select sink, source, sink, \"taint from $@\", source.getNode(), \"here\""
+        ]
+    },
+
+    "Type tracking class": {
+        "scope": "ql",
+        "prefix": "type tracking class",
+        "body": [
+            "/**",
+            " * Provides models for the `${TM_SELECTED_TEXT}` class",
+            " *",
+            " * See ${1:https://apiref (TODO)}.",
+            " */",
+            "module ${TM_SELECTED_TEXT/^(.*)\\.([^.]+)$/$2/} {",
+            "  /** Gets a reference to the `${TM_SELECTED_TEXT}` class. */",
+            "  private API::Node classRef() {",
+            "    result = API::moduleImport(\"${TM_SELECTED_TEXT/\\.([^.]+)/\").getMember(\"$1/g}\")",
+            "  }",
+            "",
+            "  /**",
+            "   * A source of instances of `${TM_SELECTED_TEXT}`, extend this class to model new instances.",
+            "   *",
+            "   * This can include instantiations of the class, return values from function",
+            "   * calls, or a special parameter that will be set when functions are called by an external",
+            "   * library.",
+            "   *",
+            "   * Use the predicate `${TM_SELECTED_TEXT/^(.*)\\.([^.]+)$/$2/}::instance()` to get references to instances of `${TM_SELECTED_TEXT}`.",
+            "   */",
+            "  abstract class InstanceSource extends DataFlow::LocalSourceNode { }",
+            "",
+            "  /** A direct instantiation of `${TM_SELECTED_TEXT}`. */",
+            "  private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {",
+            "      ClassInstantiation() { this = classRef().getACall() }",
+            "  }",
+            "",
+            "  /** Gets a reference to an instance of `${TM_SELECTED_TEXT}`. */",
+            "  private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {",
+            "    t.start() and",
+            "    result instanceof InstanceSource",
+            "    or",
+            "    exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))",
+            "  }",
+            "",
+            "  /** Gets a reference to an instance of `${TM_SELECTED_TEXT}`. */",
+            "  DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }",
+            "",
+            "  /**",
+            "   * Taint propagation for `${TM_SELECTED_TEXT}`.",
+            "   */",
+            "  private class InstanceTaintSteps extends InstanceTaintStepsHelper {",
+            "    InstanceTaintSteps() { this = \"${TM_SELECTED_TEXT}\" }",
+            "    ",
+            "    override DataFlow::Node getInstance() { result = instance() }",
+            "    ",
+            "    override string getAttributeName() { none() }",
+            "    ",
+            "    override string getMethodName() { none() }",
+            "    ",
+            "    override string getAsyncMethodName() { none() }",
+            "  }",
+            "",
+            "  /**",
+            "   * Extra taint propagation for `${TM_SELECTED_TEXT}`, not covered by `InstanceTaintSteps`.",
+            "   */",
+            "  private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {",
+            "    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {",
+            "      // TODO",
+            "      none()",
+            "    }",
+            "  }",
+            "}",
+        ],
+        "description": "Type tracking class (select full class path before inserting)",
+    },
+    "API graph .getMember chain": {
+        "scope": "ql",
+        "prefix": "api graph .getMember chain",
+        "body": [
+            "API::moduleImport(\"${TM_SELECTED_TEXT/\\.([^.]+)/\").getMember(\"$1/g}\")"
+        ],
+        "description": "API graph .getMember chain (select full path before inserting)",
+    },
+    "debug partial flow": {
+        "scope": "ql",
+        "prefix": "debug partial flow",
+        "body": [
+            "// put the line below inside the configuration",
+            "// override int explorationLimit() { result = 5 }",
+            "// and then run quick evaluation on the predicate below",
+            "// (and potentially limit the set of sources)",
+            "predicate debugPartialFlow(Location loc, DataFlow::PartialPathNode node, int dist) {",
+            "  loc = node.getNode().getLocation() and",
+            "  exists(loc.getFile().getRelativePath()) and",
+            "  exists(Configuration config, DataFlow::PartialPathNode source |",
+            "    config.hasPartialFlow(source, node, dist)",
+            "  )",
+            "}",
+        ],
+        "description": "debug partial flow",
+    },
+}

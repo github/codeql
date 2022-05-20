@@ -1,0 +1,25 @@
+nodes
+| tst.js:3:5:3:24 | secretText |
+| tst.js:3:18:3:24 | trusted |
+| tst.js:3:18:3:24 | trusted |
+| tst.js:11:17:11:26 | secretText |
+| tst.js:11:17:11:26 | secretText |
+| tst.js:11:17:11:26 | secretText |
+| tst.js:17:17:17:25 | o.trusted |
+| tst.js:17:17:17:25 | o.trusted |
+| tst.js:17:17:17:25 | o.trusted |
+| tst.js:19:17:19:24 | password |
+| tst.js:19:17:19:24 | password |
+| tst.js:19:17:19:24 | password |
+edges
+| tst.js:3:5:3:24 | secretText | tst.js:11:17:11:26 | secretText |
+| tst.js:3:5:3:24 | secretText | tst.js:11:17:11:26 | secretText |
+| tst.js:3:18:3:24 | trusted | tst.js:3:5:3:24 | secretText |
+| tst.js:3:18:3:24 | trusted | tst.js:3:5:3:24 | secretText |
+| tst.js:11:17:11:26 | secretText | tst.js:11:17:11:26 | secretText |
+| tst.js:17:17:17:25 | o.trusted | tst.js:17:17:17:25 | o.trusted |
+| tst.js:19:17:19:24 | password | tst.js:19:17:19:24 | password |
+#select
+| tst.js:11:17:11:26 | secretText | tst.js:3:18:3:24 | trusted | tst.js:11:17:11:26 | secretText | Sensitive data from $@ is used in a broken or weak cryptographic algorithm. | tst.js:3:18:3:24 | trusted | an access to trusted |
+| tst.js:11:17:11:26 | secretText | tst.js:11:17:11:26 | secretText | tst.js:11:17:11:26 | secretText | Sensitive data from $@ is used in a broken or weak cryptographic algorithm. | tst.js:11:17:11:26 | secretText | an access to secretText |
+| tst.js:17:17:17:25 | o.trusted | tst.js:17:17:17:25 | o.trusted | tst.js:17:17:17:25 | o.trusted | Sensitive data from $@ is used in a broken or weak cryptographic algorithm. | tst.js:17:17:17:25 | o.trusted | an access to trusted |

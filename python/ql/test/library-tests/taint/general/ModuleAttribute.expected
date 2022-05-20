@@ -1,0 +1,4 @@
+| Module deep | x | simple.test |  | deep.py:20 |
+| Module module | dangerous | simple.test |  | module.py:3 |
+| Module test | module | .dangerous = simple.test |  | test.py:85 |
+| Module test | unsafe | simple.test |  | test.py:156 |

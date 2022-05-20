@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+This is an internal query that finds all errors reported by the C# extractor. It excludes results from files containing
+compilation errors, because these errors are likely to be caused by the compilation error rather than due to an internal
+error in the extractor.
+</p>
+
+<p>Extractor errors can lead to inaccurate results.</p>
+</overview>
+
+<recommendation>
+<p>
+Report extractor errors to Semmle.
+</p>
+</recommendation>
+
+</qhelp>

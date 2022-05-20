@@ -1,0 +1,752 @@
+/*
+ * External artifacts
+ */
+
+externalDefects(
+  unique int id : @externalDefect,
+  varchar(900) queryPath : string ref,
+  int location : @location ref,
+  varchar(900) message : string ref,
+  float severity : float ref
+);
+
+externalMetrics(
+  unique int id : @externalMetric,
+  varchar(900) queryPath : string ref,
+  int location : @location ref,
+  float value : float ref
+);
+
+externalData(
+  int id : @externalDataElement,
+  varchar(900) path : string ref,
+  int column: int ref,
+  varchar(900) value : string ref
+);
+
+snapshotDate(unique date snapshotDate : date ref);
+
+sourceLocationPrefix(varchar(900) prefix : string ref);
+
+/*
+ * Duplicate code
+ */
+
+duplicateCode(
+  unique int id : @duplication,
+  varchar(900) relativePath : string ref,
+  int equivClass : int ref);
+
+similarCode(
+  unique int id : @similarity,
+  varchar(900) relativePath : string ref,
+  int equivClass : int ref);
+
+@duplication_or_similarity = @duplication | @similarity
+
+tokens(
+  int id : @duplication_or_similarity ref,
+  int offset : int ref,
+  int beginLine : int ref,
+  int beginColumn : int ref,
+  int endLine : int ref,
+  int endColumn : int ref);
+
+/*
+ * Version history
+ */
+
+svnentries(
+  int id : @svnentry,
+  varchar(500) revision : string ref,
+  varchar(500) author : string ref,
+  date revisionDate : date ref,
+  int changeSize : int ref
+)
+
+svnaffectedfiles(
+  int id : @svnentry ref,
+  int file : @file ref,
+  varchar(500) action : string ref
+)
+
+svnentrymsg(
+  int id : @svnentry ref,
+  varchar(500) message : string ref
+)
+
+svnchurn(
+  int commit : @svnentry ref,
+  int file : @file ref,
+  int churnedLines : int ref
+)
+
+/*
+ * C# dbscheme
+ */
+
+/** ELEMENTS **/
+
+@element = @container | @type | @expr | @stmt | @member | @variable | @namespace 
+         | @modifier | @accessor | @event_accessor | @type_parameter_constraints
+         | @namespace_declaration | @using_directive | @attribute
+         | @xmllocatable | @externalMetric | @externalDefect;
+
+/** LOCATIONS, ASEMMBLIES, MODULES, FILES and FOLDERS **/
+
+@location = @location_default | @assembly;
+
+locations_default(unique int id: @location_default,
+          int file: @file ref,
+          int beginLine: int ref,
+          int beginColumn: int ref,
+          int endLine: int ref,
+          int endColumn: int ref);
+          
+@sourceline = @file | @callable | @xmllocatable;
+
+numlines(int element_id: @sourceline ref,
+         int num_lines: int ref,
+         int num_code: int ref,
+         int num_comment: int ref);
+     
+assemblies(unique int id: @assembly,
+		int file: @file ref,
+		varchar(900) fullname: string ref,
+		varchar(900) name: string ref,
+		varchar(900) version: string ref);
+/*
+  fromSource(0) = unknown,
+  fromSource(1) = from source,
+  fromSource(2) = from library
+*/
+files(unique int id: @file,
+      varchar(900) name: string ref,
+      varchar(900) simple: string ref,
+      varchar(900) ext: string ref,
+      int fromSource: int ref);
+      
+folders(unique int id: @folder,
+        varchar(900) name: string ref,
+        varchar(900) simple: string ref);
+
+@container = @folder | @file ;
+
+containerparent(int parent: @container ref,
+                unique int child: @container ref);
+                
+/** NAMESPACES **/
+
+@type_container = @namespace | @type;
+
+namespaces(unique int id: @namespace,
+			varchar(900) name: string ref);
+			
+namespace_declarations(unique int id: @namespace_declaration,
+			int namespace_id: @namespace ref);
+namespace_declaration_location(unique int id: @namespace_declaration ref,
+              int loc: @location ref);
+			
+parent_namespace(unique int child_id: @type_container ref,
+				int namespace_id: @namespace ref); 
+
+@declaration_or_directive = @namespace_declaration | @type | @using_directive;
+				
+parent_namespace_declaration(int child_id: @declaration_or_directive ref,
+				int namespace_id: @namespace_declaration ref); 
+				
+@using_directive = @using_namespace_directive;
+
+using_namespace_directives(unique int id: @using_namespace_directive,
+			int namespace_id: @namespace ref);
+using_directive_location(unique int id: @using_directive ref,
+              int loc: @location ref);
+
+/** TYPES **/
+
+types(unique int id: @type,
+      int kind: int ref,
+      varchar(900) name: string ref); 
+case @type.kind of
+   1 = @bool_type
+|  2 = @char_type
+|  3 = @decimal_type
+|  4 = @sbyte_type
+|  5 = @short_type
+|  6 = @int_type
+|  7 = @long_type
+|  8 = @byte_type
+|  9 = @ushort_type
+| 10 = @uint_type
+| 11 = @ulong_type
+| 12 = @float_type
+| 13 = @double_type
+| 14 = @enum_type
+| 15 = @struct_type
+| 17 = @class_type
+| 19 = @interface_type
+| 20 = @delegate_type
+| 21 = @null_type
+| 22 = @type_parameter
+| 23 = @pointer_type
+| 24 = @nullable_type
+| 25 = @array_type
+| 26 = @void_type
+| 27 = @int_ptr_type
+| 28 = @uint_ptr_type
+| 29 = @dynamic_type
+| 30 = @arglist_type
+  ;
+                 
+array_element_type(unique int array: @array_type ref,
+                 int dimension: int ref,
+                 int rank: int ref,
+                 int element: @type ref);
+nullable_underlying_type(unique int nullable: @nullable_type ref,
+                    int underlying: @type ref);
+pointer_referent_type(unique int pointer: @pointer_type ref,
+                  int referent: @type ref);
+enum_underlying_type(unique int enum_id: @enum_type ref,
+       	  		int underlying_type_id: @type ref);    
+delegate_return_type(unique int delegate_id: @delegate_type ref,
+       	  		int return_type_id: @type ref);                   
+extend(unique int sub: @type ref,
+       int super: @type ref);
+implement(int sub: @type ref,
+          int super: @type ref);   
+           
+type_location(int id: @type ref,
+              int loc: @location ref);
+
+attributes(unique int id:      @attribute,
+                  int type_id: @type ref,
+                  int target:  @element ref);
+
+attribute_location(int id: @attribute ref,
+                   int loc: @location ref);
+
+/** GENERICS **/
+              
+@generic = @type | @method;  
+    
+is_generic(unique int id: @generic ref);
+is_constructed(unique int id: @generic ref);
+type_parameters(unique int id: @type_parameter ref,
+               int index: int ref,
+               int generic_id: @generic ref);
+type_arguments(int id: @type ref,
+              int index: int ref,
+              int constructed_id: @generic ref);
+constructed_generic(unique int constructed: @generic ref,
+                 int generic: @generic ref);	
+                 
+type_parameter_constraints(unique int id: @type_parameter_constraints,
+				int param_id: @type_parameter ref);
+type_parameter_constraints_location(int id: @type_parameter_constraints ref,
+              int loc: @location ref);	
+general_type_parameter_constraints(int id: @type_parameter_constraints ref,
+						int kind: int ref /* class = 1, struct = 2, new = 3 */);              				
+specific_type_parameter_constraints(int id: @type_parameter_constraints ref,
+						int base_id: @type ref);								
+								   
+
+/** MODIFIERS */
+
+@modifiable = @member | @accessor;
+
+modifiers(unique int id: @modifier,
+			varchar(900) name: string ref);
+			
+has_modifiers(int id: @modifiable ref,
+              int mod_id: @modifier ref);
+
+compiler_generated(unique int id: @modifiable ref);
+
+/** MEMBERS **/
+
+@member = @method | @constructor | @destructor | @field | @property | @event | @operator | @indexer | @type;
+
+@exprorstmt_parent = @expr | @stmt | @memberoraccessor | @variable | @attribute; 
+
+@memberoraccessor = @member | @accessor | @event_accessor;
+
+@named_exprorstmt = @goto_stmt | @labeled_stmt | @literal_expr;
+
+exprorstmt_name(unique int parent_id: @named_exprorstmt ref,
+			varchar(900) name: string ref);
+
+nested_types(unique int id: @type ref,
+		int declaring_type_id: @type ref,
+        int unbound_id: @type ref);
+			
+properties(unique int id: @property,
+        varchar(900) name: string ref,
+        int declaring_type_id: @type ref,
+        int type_id: @type ref,
+        int unbound_id: @property ref);
+
+property_location(int id: @property ref,
+              int loc: @location ref);
+              
+indexers(unique int id: @indexer,
+        varchar(900) name: string ref,
+        int declaring_type_id: @type ref,
+        int type_id: @type ref,
+        int unbound_id: @indexer ref);
+
+indexer_location(int id: @indexer ref,
+              int loc: @location ref);   
+              
+accessors(unique int id: @accessor,
+		int kind: int ref,
+		varchar(900) name: string ref,
+		int declaring_member_id: @member ref,
+        int unbound_id: @accessor ref);      
+case @accessor.kind of
+  1 = @getter
+| 2 = @setter
+  ;		
+  
+accessor_location(int id: @accessor ref,
+              int loc: @location ref);    
+              
+events(unique int id: @event,
+        varchar(900) name: string ref,
+        int declaring_type_id: @type ref,
+        int type_id: @type ref,
+        int unbound_id: @event ref);
+
+event_location(int id: @event ref,
+              int loc: @location ref);
+              
+event_accessors(unique int id: @event_accessor,
+		int kind: int ref,
+		varchar(900) name: string ref,
+		int declaring_event_id: @event ref,
+        int unbound_id: @event_accessor ref);      
+case @event_accessor.kind of
+  1 = @add_event_accessor
+| 2 = @remove_event_accessor
+  ;		
+  
+event_accessor_location(int id: @event_accessor ref,
+              int loc: @location ref);  
+              
+operators(unique int id: @operator,
+        varchar(900) name: string ref,
+        varchar(900) symbol: string ref,
+        int declaring_type_id: @type ref,
+        int type_id: @type ref,
+        int unbound_id: @operator ref);
+
+operator_location(int id: @operator ref,
+              int loc: @location ref);     
+              
+constant_value(unique int id: @variable ref,
+           varchar(900) value: string ref);                     
+
+/** CALLABLES **/
+
+@callable = @method | @constructor | @destructor | @operator | @accessor | @event_accessor | @variable | @indexer | @anonymous_function_expr;      
+      
+methods(unique int id: @method,
+        varchar(900) name: string ref,
+        int declaring_type_id: @type ref,
+        int type_id: @type ref,
+        int unbound_id: @method ref);
+
+method_location(int id: @method ref,
+              int loc: @location ref);
+              
+constructors(unique int id: @constructor,
+        varchar(900) name: string ref,
+        int declaring_type_id: @type ref,
+        int unbound_id: @constructor ref);
+
+constructor_location(int id: @constructor ref,
+              int loc: @location ref);
+              
+destructors(unique int id: @destructor,
+        varchar(900) name: string ref,
+        int declaring_type_id: @type ref,
+        int unbound_id: @destructor ref);
+
+destructor_location(int id: @destructor ref,
+              int loc: @location ref);
+              
+overrides(int id: @callable ref,
+		int base_id: @callable ref);
+
+explicitly_implements(
+	unique int id: @member ref,
+	int interface_id: @interface_type ref
+);
+             
+/** VARIABLES **/
+
+@variable = @local_variable | @parameter | @field;
+
+fields(unique int id: @field,
+        int kind: int ref,
+        varchar(900) name: string ref,
+        int declaring_type_id: @type ref,
+        int type_id: @type ref,
+        int unbound_id: @field ref);
+case @field.kind of
+  1 = @addressable_field
+| 2 = @constant
+  ;	
+  
+field_location(int id: @field ref,
+              int loc: @location ref);
+
+localvars(unique int id: @local_variable,
+          int kind: int ref, 
+          varchar(900) name: string ref, 
+	      int implicitly_typed: int ref /* 0 = no, 1 = yes */,
+	      int type_id: @type ref, 
+	      int parent_id: @local_var_decl_expr ref);
+case @local_variable.kind of
+  1 = @addressable_local_variable
+| 2 = @local_constant
+  ;	
+  	      
+localvar_location(unique int id: @local_variable ref,
+              int loc: @location ref);
+
+@parameterizable = @callable | @delegate_type;
+              
+params(unique int id: @parameter, 
+	      varchar(900) name: string ref, 
+	      int type_id: @type ref, 
+	      int index: int ref,
+	      int mode: int ref, /* value = 0, ref = 1, out = 2, array = 3, this = 4 */
+	      int parent_id: @parameterizable ref,
+          int unbound_id: @parameter ref);
+	      
+param_location(int id: @parameter ref,
+              int loc: @location ref);
+
+/** STATEMENTS **/
+              
+statements(unique int id: @stmt,
+           int kind: int ref,
+           int index: int ref,
+           int parent: @exprorstmt_parent ref);
+case @stmt.kind of
+   1 = @block_stmt
+|  2 = @expr_stmt
+|  3 = @if_stmt
+|  4 = @switch_stmt
+|  5 = @while_stmt
+|  6 = @do_stmt
+|  7 = @for_stmt
+|  8 = @foreach_stmt
+|  9 = @break_stmt
+| 10 = @continue_stmt
+| 11 = @goto_stmt
+| 12 = @goto_case_stmt
+| 13 = @goto_default_stmt
+| 14 = @throw_stmt
+| 15 = @return_stmt
+| 16 = @yield_stmt
+| 17 = @try_stmt
+| 18 = @checked_stmt
+| 19 = @unchecked_stmt
+| 20 = @lock_stmt
+| 21 = @using_stmt
+| 22 = @var_decl_stmt
+| 23 = @const_decl_stmt
+| 24 = @empty_stmt
+| 25 = @unsafe_stmt
+| 26 = @fixed_stmt
+| 27 = @label_stmt
+| 28 = @catch
+| 29 = @case
+  ; 
+
+@labeled_stmt = @label_stmt | @case;
+
+@decl_stmt = @var_decl_stmt | @const_decl_stmt;
+           
+stmt_location(unique int id: @stmt ref,
+              int loc: @location ref);
+              
+catch_type(unique int catch_id: @catch ref,
+			int type_id: @type ref,
+			int kind: int ref /* explicit = 1, implicit = 2 */);
+
+/** EXPRESSIONS **/
+
+expressions(unique int id: @expr,
+           int kind: int ref,
+           int type_id: @type ref,
+           int index: int ref,
+           int parent: @exprorstmt_parent ref);
+case @expr.kind of
+/* literal */
+   1 = @bool_literal_expr
+|  2 = @char_literal_expr
+|  3 = @decimal_literal_expr
+|  4 = @int_literal_expr
+|  5 = @long_literal_expr
+|  6 = @uint_literal_expr
+|  7 = @ulong_literal_expr
+|  8 = @float_literal_expr
+|  9 = @double_literal_expr
+| 10 = @string_literal_expr
+| 11 = @null_literal_expr
+/* primary & unary */
+| 12 = @this_access_expr
+| 13 = @base_access_expr
+| 14 = @local_variable_access_expr
+| 15 = @parameter_access_expr
+| 16 = @field_access_expr
+| 17 = @property_access_expr
+| 18 = @method_access_expr
+| 19 = @event_access_expr
+| 20 = @indexer_access_expr
+| 21 = @array_access_expr
+| 22 = @type_access_expr
+| 23 = @typeof_expr
+| 24 = @method_invocation_expr 
+| 25 = @delegate_invocation_expr
+| 26 = @operator_invocation_expr 
+| 27 = @cast_expr
+| 28 = @object_creation_expr 
+| 29 = @explicit_delegate_creation_expr
+| 30 = @implicit_delegate_creation_expr
+| 31 = @array_creation_expr
+| 32 = @default_expr
+| 33 = @plus_expr
+| 34 = @minus_expr
+| 35 = @bit_not_expr
+| 36 = @log_not_expr
+| 37 = @post_incr_expr
+| 38 = @post_decr_expr
+| 39 = @pre_incr_expr
+| 40 = @pre_decr_expr
+/* multiplicative */
+| 41 = @mul_expr
+| 42 = @div_expr
+| 43 = @rem_expr
+/* additive */
+| 44 = @add_expr
+| 45 = @sub_expr
+/* shift */
+| 46 = @lshift_expr
+| 47 = @rshift_expr
+/* relational */
+| 48 = @lt_expr
+| 49 = @gt_expr
+| 50 = @le_expr
+| 51 = @ge_expr
+/* equality */
+| 52 = @eq_expr
+| 53 = @ne_expr
+/* logical */
+| 54 = @bit_and_expr
+| 55 = @bit_xor_expr
+| 56 = @bit_or_expr
+| 57 = @log_and_expr
+| 58 = @log_or_expr
+/* type testing */
+| 59 = @is_expr
+| 60 = @as_expr
+/* null coalescing */
+| 61 = @null_coalescing_expr
+/* conditional */
+| 62 = @conditional_expr
+/* assignment */
+| 63 = @simple_assign_expr
+| 64 = @assign_add_expr
+| 65 = @assign_sub_expr
+| 66 = @assign_mul_expr
+| 67 = @assign_div_expr
+| 68 = @assign_rem_expr
+| 69 = @assign_and_expr
+| 70 = @assign_xor_expr
+| 71 = @assign_or_expr
+| 72 = @assign_lshift_expr
+| 73 = @assign_rshift_expr
+/* more */
+| 74 = @object_init_expr
+| 75 = @collection_init_expr
+| 76 = @array_init_expr
+| 77 = @checked_expr
+| 78 = @unchecked_expr
+| 79 = @constructor_init_expr
+| 80 = @add_event_expr
+| 81 = @remove_event_expr
+| 82 = @par_expr
+| 83 = @local_var_decl_expr
+| 84 = @lambda_expr
+| 85 = @anonymous_method_expr
+| 86 = @namespace_expr
+/* dynamic */
+| 87 = @dynamic_conversion_expr
+| 88 = @dynamic_unary_conversion_expr
+| 89 = @dynamic_invocation_expr
+| 90 = @dynamic_event_compound_assign_expr
+| 91 = @dynamic_constructor_binder_expr
+| 92 = @dynamic_index_binder_expr
+| 93 = @dynamic_member_binder_expr
+/* unsafe */
+| 100 = @pointer_indirection_expr
+| 101 = @address_of_expr
+| 102 = @sizeof_expr
+/* async */
+| 103 = @await_expr
+  ;
+
+@integer_literal_expr = @int_literal_expr | @long_literal_expr | @uint_literal_expr | @ulong_literal_expr;  
+@real_literal_expr = @float_literal_expr | @double_literal_expr | @decimal_literal_expr;    
+@literal_expr = @bool_literal_expr | @char_literal_expr | @integer_literal_expr | @real_literal_expr 
+              | @string_literal_expr | @null_literal_expr; 
+
+@assign_expr = @simple_assign_expr | @assign_op_expr | @local_var_decl_expr;          
+@assign_op_expr = @assign_add_expr | @assign_sub_expr | @assign_mul_expr | @assign_div_expr
+                | @assign_rem_expr | @assign_and_expr | @assign_or_expr | @assign_xor_expr
+             	| @assign_lshift_expr | @assign_rshift_expr;
+             	
+@member_access_expr = @field_access_expr | @property_access_expr | @method_access_expr
+                    | @event_access_expr | @indexer_access_expr  | @type_access_expr; 
+@access_expr = @member_access_expr | @local_variable_access_expr | @parameter_access_expr;                 
+
+@objectorcollection_init_expr = @object_init_expr | @collection_init_expr;
+
+@delegate_creation_expr = @explicit_delegate_creation_expr | @implicit_delegate_creation_expr;
+
+@anonymous_function_expr = @lambda_expr | @anonymous_method_expr;
+
+@call = @method_invocation_expr | @constructor_init_expr | @operator_invocation_expr 
+      | @delegate_invocation_expr | @object_creation_expr;
+
+@dynamic_expr = @dynamic_conversion_expr |  @dynamic_unary_conversion_expr | @dynamic_invocation_expr
+	| @dynamic_event_compound_assign_expr | @dynamic_constructor_binder_expr | @dynamic_index_binder_expr
+	| @dynamic_member_binder_expr;
+
+object_creation_mode(unique int id: @object_creation_expr ref,
+ 			int mode: int ref /* normal = 1, default value type = 2, type parameter = 3*/);
+
+implicitly_typed_array_creation(unique int id: @array_creation_expr ref);
+
+explicitly_sized_array_creation(unique int id: @array_creation_expr ref);
+                 
+mutator_invocation_mode(unique int id: @operator_invocation_expr ref,
+           	int mode: int ref /* prefix = 1, postfix = 2*/);
+
+expr_compiler_generated(unique int id: @expr ref);
+              
+expr_value(int id: @expr ref,
+           varchar(900) value: string ref);
+
+expr_call(unique int caller_id: @expr ref,
+          int target_id: @callable ref);
+          
+expr_access(unique int accesser_id: @access_expr ref,
+          int target_id: @accessible ref);
+@accessible = @method | @field | @property | @indexer | @event | @variable;          
+           
+expr_location(unique int id: @expr ref,
+              int loc: @location ref);              
+
+dynamic_member_name(unique int id: @dynamic_expr ref,
+	varchar(900) name: string ref);
+
+/** CONTROL-FLOW **/
+
+@cfg_node = @stmt | @expr | @callable;
+@loop = @while_stmt | @do_stmt | @for_stmt | @foreach_stmt;
+@breakable = @loop | @switch_stmt;
+
+successors(int from: @cfg_node ref,
+           int to: @cfg_node ref);
+ 
+truecond(int from: @cfg_node ref,
+         int to: @cfg_node ref);
+
+falsecond(int from: @cfg_node ref,
+          int to: @cfg_node ref);
+
+breaks(int scope: @breakable ref,
+       int stmt:  @break_stmt ref);
+
+break_target(int scope: @breakable ref,
+             int next: @cfg_node ref);
+
+continues(int scope: @loop ref,
+          int stmt:  @continue_stmt ref);
+
+continue_target(int scope: @loop ref,
+                int next: @cfg_node ref);
+
+goto(int from: @cfg_node ref,
+     int to: @labeled_stmt ref);
+
+/* a jump from inside to outside of a try-finally statement
+   executes the finally block "on the way", thus a jump
+   can take place in several steps: */
+
+jump_step(int origin: @cfg_node ref,
+          int from:   @cfg_node ref,
+          int to:     @cfg_node ref);
+
+last_finally_node(int try:  @try_stmt ref,
+                  int node: @cfg_node ref);
+
+jump_if_true(int node: @cfg_node ref);
+
+jump_if_false(int node: @cfg_node ref);
+
+/* XML Files */ 
+
+xmlEncoding  (unique int id: @file ref, varchar(900) encoding: string ref);
+
+xmlDTDs       (unique int id: @xmldtd, 
+              varchar(900) root: string ref, 
+              varchar(900) publicId: string ref, 
+              varchar(900) systemId: string ref,
+              int fileid: @file ref); 
+             
+xmlElements   (unique int id: @xmlelement, 
+              varchar(900) name: string ref, 
+              int parentid: @xmlparent ref,
+              int idx: int ref,
+              int fileid: @file ref);            
+
+xmlAttrs      (unique int id: @xmlattribute, 
+              int elementid: @xmlelement ref,
+              varchar(900) name: string ref, 
+              varchar(3600) value: string ref,
+              int idx: int ref,
+              int fileid: @file ref);  
+               
+xmlNs         (int id: @xmlnamespace, 
+              varchar(900) prefixName: string ref, 
+              varchar(900) URI: string ref,
+              int fileid: @file ref);  
+               
+xmlHasNs      (int elementId: @xmlnamespaceable ref, 
+              int nsId: @xmlnamespace ref,
+              int fileid: @file ref);  
+
+xmlComments   (unique int id: @xmlcomment, 
+              varchar(3600) text: string ref, 
+              int parentid: @xmlparent ref,
+              int fileid: @file ref); 
+               
+xmlChars      (unique int id: @xmlcharacters, 
+              varchar(3600) text: string ref, 
+              int parentid: @xmlparent ref,
+              int idx: int ref,
+              int isCDATA: int ref,
+              int fileid: @file ref);  
+	           	
+@xmlparent = @file | @xmlelement;
+@xmlnamespaceable = @xmlelement | @xmlattribute;
+
+xmllocations(int xmlElement: @xmllocatable ref,
+			int location: @location_default ref);
+
+@xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;

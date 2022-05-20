@@ -1,0 +1,14 @@
+| literals.c:2:13:2:16 | 1.0 |
+| literals.c:3:13:3:16 | 1.0 |
+| literals.c:4:13:4:16 | 1.0 |
+| literals.c:5:13:5:16 | 1.0 |
+| literals.c:6:13:6:16 | (0.0,1.0i) |
+| literals.c:7:13:7:16 | (0.0,1.0i) |
+| literals.c:8:13:8:16 | (0.0,1.0i) |
+| literals.c:9:13:9:16 | (0.0,1.0i) |
+| literals.c:10:13:10:16 | 1.0 |
+| literals.c:11:13:11:16 | 1.0 |
+| literals.c:12:13:12:16 | 1.0 |
+| literals.c:13:13:13:16 | 1.0 |
+| literals.c:14:13:14:16 | 1.0 |
+| literals.c:15:13:15:16 | 1.0 |

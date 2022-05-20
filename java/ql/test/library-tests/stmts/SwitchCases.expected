@@ -1,0 +1,14 @@
+| stmts/A.java:6:3:6:10 | case ... |
+| stmts/A.java:8:3:8:10 | case ... |
+| stmts/A.java:10:3:10:10 | default |
+| stmts/A.java:17:4:17:12 | case ... |
+| stmts/A.java:20:4:20:12 | case ... |
+| stmts/A.java:21:5:21:13 | case ... |
+| stmts/A.java:24:5:24:14 | default |
+| stmts/A.java:28:4:28:12 | case ... |
+| stmts/A.java:29:4:29:13 | default |
+| stmts/A.java:32:6:32:14 | case ... |
+| stmts/A.java:33:6:33:14 | case ... |
+| stmts/B.java:21:5:21:12 | case ... |
+| stmts/B.java:23:5:23:12 | case ... |
+| stmts/B.java:25:5:25:12 | case ... |

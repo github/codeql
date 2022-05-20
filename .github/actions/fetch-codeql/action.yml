@@ -1,0 +1,24 @@
+name: Fetch CodeQL
+description: Fetches the latest version of CodeQL
+runs:
+  using: composite
+  steps:
+    - name: Select platform - Linux
+      if: runner.os == 'Linux'
+      shell: bash
+      run: echo "GA_CODEQL_CLI_PLATFORM=linux64" >> $GITHUB_ENV
+
+    - name: Select platform - MacOS
+      if: runner.os == 'MacOS'
+      shell: bash
+      run: echo "GA_CODEQL_CLI_PLATFORM=osx64" >> $GITHUB_ENV
+
+    - name: Fetch CodeQL
+      shell: bash
+      run: |
+        LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | grep -v beta | sort --version-sort | tail -1)
+        gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-$GA_CODEQL_CLI_PLATFORM.zip "$LATEST"
+        unzip -q -d "${RUNNER_TEMP}" codeql-$GA_CODEQL_CLI_PLATFORM.zip
+        echo "${RUNNER_TEMP}/codeql" >> "${GITHUB_PATH}"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}

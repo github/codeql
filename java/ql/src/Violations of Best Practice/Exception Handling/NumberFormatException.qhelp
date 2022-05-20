@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Methods such as <code>Integer.parseInt</code> that parse strings into numbers
+throw 
+<code>NumberFormatException</code> if their arguments cannot be parsed.
+This exception should be caught so that any parse errors can be handled.
+</p>
+
+</overview>
+<recommendation>
+
+<p>It is usually best to handle <code>NumberFormatException</code> in a <code>catch</code> clause
+surrounding the call to the parsing method.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the first call to <code>Integer.parseInt</code> does not catch the exception.
+The second call does.
+</p>
+
+<sample src="NumberFormatException.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Integer.html#valueOf(java.lang.String)">Integer.valueOf</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Integer.html#parseInt(java.lang.String)">Integer.parseInt</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Long.html#parseLong(java.lang.String)">Long.parseLong</a>,
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/NumberFormatException.html">NumberFormatException</a>.
+</li>
+
+
+</references>
+</qhelp>

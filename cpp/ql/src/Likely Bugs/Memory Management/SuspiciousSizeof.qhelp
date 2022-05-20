@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds expressions that take the size of a function parameter of array type. 
+In C, function parameters of array type are treated as if they had the corresponding pointer type, 
+so their size is always the size of the pointer type (typically either four or eight).
+In particular, one cannot determine the size of a memory buffer passed as a parameter in this way.
+
+Using the <code>sizeof</code> operator on pointer types will produce unexpected results if the developer intended 
+to get the size of an array instead of the pointer.
+</p>
+
+
+</overview>
+<recommendation>
+<p>Modify the function to take an extra argument indicating the buffer size.</p>
+
+</recommendation>
+<example><sample src="SuspiciousSizeof.cpp" />
+
+
+</example>
+<references>
+
+<li>
+  Comp.lang.c, Frequently Asked Questions: <a href="http://c-faq.com/aryptr/aryptrequiv.html">Question 6.3: So what is meant by the "equivalence of pointers and arrays" in C?</a>.
+</li>
+
+
+</references>
+</qhelp>

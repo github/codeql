@@ -1,0 +1,58 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Python, unlike statically typed languages such as Java, allows complete freedom when calling methods during object destruction.
+However, standard object-oriented principles apply to Python classes using deep inheritance hierarchies.
+Therefore the developer has responsibility for ensuring that objects are properly cleaned up when
+there are multiple <code>__del__</code> methods that need to be called.
+</p>
+
+<p>
+Calling a <code>__del__</code> method more than once during object destruction risks resources being released multiple
+times. The relevant <code>__del__</code> method may not be designed to be called more than once.
+</p>
+
+<p>There are a number of ways that a <code>__del__</code> method may be be called more than once.</p>
+<ul>
+    <li>There may be more than one explicit call to the method in the hierarchy of <code>__del__</code> methods.</li>
+    <li>A class using multiple inheritance directly calls the <code>__del__</code> methods of its base types.
+    One or more of those base types uses <code>super()</code> to pass down the inheritance chain.</li>
+</ul>
+
+
+</overview>
+<recommendation>
+<p>Either be careful not to explicitly call a <code>__del__</code> method more than once, or
+use <code>super()</code> throughout the inheritance hierarchy.</p>
+
+<p>Alternatively refactor one or more of the classes to use composition rather than inheritance.</p>
+
+</recommendation>
+<example>
+<p>In the first example, explicit calls to <code>__del__</code> are used, but <code>SportsCar</code> erroneously calls
+both <code>Vehicle.__del__</code> and <code>Car.__del__</code>.
+This can be fixed by removing the call to <code>Vehicle.__del__</code>, as shown in <code>FixedSportsCar</code>.
+</p>
+
+<sample src="SuperclassDelCalledMultipleTimes.py" />
+
+<p>In the second example, there is a mixture of explicit calls to <code>__del__</code> and calls using <code>super()</code>.
+To fix this example, <code>super()</code> should be used throughout.
+</p>
+
+<sample src="SuperclassInitCalledMultipleTimes2.py" />
+
+</example>
+<references>
+
+        <li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/classes.html">Classes</a>.</li>
+        <li>Python Standard Library: <a href="https://docs.python.org/2/library/functions.html#super">super</a>.</li>
+        <li>Artima Developer: <a href="http://www.artima.com/weblogs/viewpost.jsp?thread=236275">Things to Know About Python Super</a>.</li>
+        <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>
+
+
+</references>
+</qhelp>

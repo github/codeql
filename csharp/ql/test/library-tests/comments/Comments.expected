@@ -1,0 +1,100 @@
+singlelineComment
+| comments1.cs:1:1:2:46 | // ... | comments1.cs:1:1:1:23 | // ... | 2 | Start of comment1.cs | // Start of comment1.cs |
+| comments1.cs:1:1:2:46 | // ... | comments1.cs:2:1:2:46 | // ... | 2 | This tests the basic types of comment block | // This tests the basic types of comment block |
+| comments1.cs:4:1:4:25 | // ... | comments1.cs:4:1:4:25 | // ... | 1 | 1) Basic comment types | // 1) Basic comment types |
+| comments1.cs:6:1:6:24 | // ... | comments1.cs:6:1:6:24 | // ... | 1 | A single-line comment | // A single-line comment |
+| comments1.cs:13:1:13:20 | // ... | comments1.cs:13:1:13:20 | // ... | 1 | 2) Comment blocks | // 2) Comment blocks |
+| comments1.cs:15:1:15:38 | // ... | comments1.cs:15:1:15:38 | // ... | 1 | A line on its own is a commentblock | // A line on its own is a commentblock |
+| comments1.cs:17:1:18:31 | // ... | comments1.cs:17:1:17:21 | // ... | 2 | Two lines together | // Two lines together |
+| comments1.cs:17:1:18:31 | // ... | comments1.cs:18:1:18:31 | // ... | 2 | are in the same commentblock | // are in the same commentblock |
+| comments1.cs:20:1:22:15 | // ... | comments1.cs:20:1:20:14 | // ... | 3 | Three lines | // Three lines |
+| comments1.cs:20:1:22:15 | // ... | comments1.cs:21:1:21:14 | // ... | 3 | in the same | // in the same |
+| comments1.cs:20:1:22:15 | // ... | comments1.cs:22:1:22:15 | // ... | 3 | commentblock | // commentblock |
+| comments1.cs:30:1:32:30 | // ... | comments1.cs:30:1:30:21 | // ... | 3 | These three lines, | // These three lines, |
+| comments1.cs:36:5:38:41 | /* ... */ | comments1.cs:38:5:38:41 | // ... | 3 | This is not the same comment block | // This is not the same comment block |
+| comments1.cs:39:13:40:51 | // ... | comments1.cs:39:13:39:27 | // ... | 2 | as this line | // as this line |
+| comments1.cs:39:13:40:51 | // ... | comments1.cs:40:13:40:51 | // ... | 2 | because they are offset differently. | // because they are offset differently. |
+| comments1.cs:42:15:42:36 | // ... | comments1.cs:42:15:42:36 | // ... | 1 | These are different | // These are different |
+| comments1.cs:43:15:43:32 | // ... | comments1.cs:43:15:43:32 | // ... | 1 | comment blocks. | // comment blocks. |
+| comments1.cs:46:1:46:21 | // ... | comments1.cs:46:1:46:21 | // ... | 1 | End of comment1.cs | // End of comment1.cs |
+| comments2.cs:1:1:2:15 | // ... | comments2.cs:1:1:1:23 | // ... | 2 | Start of comment2.cs | // Start of comment2.cs |
+| comments2.cs:1:1:2:15 | // ... | comments2.cs:2:1:2:15 | // ... | 2 | Unassociated | // Unassociated |
+| comments2.cs:5:27:5:41 | // ... | comments2.cs:5:27:5:41 | // ... | 1 | Unassociated | // Unassociated |
+| comments2.cs:8:1:8:15 | // ... | comments2.cs:8:1:8:15 | // ... | 1 | Unassociated | // Unassociated |
+| comments2.cs:13:17:13:25 | // ... | comments2.cs:13:17:13:25 | // ... | 1 | field1 | // field1 |
+| comments2.cs:14:17:14:25 | // ... | comments2.cs:14:17:14:25 | // ... | 1 | field2 | // field2 |
+| comments2.cs:16:5:16:9 | // ... | comments2.cs:16:5:16:9 | // ... | 1 | C2 | // C2 |
+| comments2.cs:18:5:18:8 | // ... | comments2.cs:18:5:18:8 | // ... | 1 | f | // f |
+| comments2.cs:21:9:21:16 | // ... | comments2.cs:21:9:21:16 | // ... | 1 | {...} | // {...} |
+| comments2.cs:23:15:23:21 | // ... | comments2.cs:23:15:23:21 | // ... | 1 | ...; | // ...; |
+| comments2.cs:25:9:25:15 | // ... | comments2.cs:25:9:25:15 | // ... | 1 | ...; | // ...; |
+| comments2.cs:31:9:31:15 | // ... | comments2.cs:31:9:31:15 | // ... | 1 | ...; | // ...; |
+| comments2.cs:33:9:33:16 | // ... | comments2.cs:33:9:33:16 | // ... | 1 | {...} | // {...} |
+| comments2.cs:36:9:36:16 | // ... | comments2.cs:36:9:36:16 | // ... | 1 | {...} | // {...} |
+| comments2.cs:39:5:39:9 | // ... | comments2.cs:39:5:39:9 | // ... | 1 | C3 | // C3 |
+| comments2.cs:42:9:42:13 | // ... | comments2.cs:42:9:42:13 | // ... | 1 | C3 | // C3 |
+| comments2.cs:45:5:45:9 | // ... | comments2.cs:45:5:45:9 | // ... | 1 | C2 | // C2 |
+| comments2.cs:47:5:47:9 | // ... | comments2.cs:47:5:47:9 | // ... | 1 | S1 | // S1 |
+| comments2.cs:50:9:50:13 | // ... | comments2.cs:50:9:50:13 | // ... | 1 | S1 | // S1 |
+| comments2.cs:52:28:52:35 | // ... | comments2.cs:52:28:52:35 | // ... | 1 | {...} | // {...} |
+| comments2.cs:53:13:53:17 | // ... | comments2.cs:53:13:53:17 | // ... | 1 | S1 | // S1 |
+| comments2.cs:55:13:55:20 | // ... | comments2.cs:55:13:55:20 | // ... | 1 | {...} | // {...} |
+| comments2.cs:56:11:56:18 | // ... | comments2.cs:56:11:56:18 | // ... | 1 | {...} | // {...} |
+| comments2.cs:58:5:58:9 | // ... | comments2.cs:58:5:58:9 | // ... | 1 | S1 | // S1 |
+| comments2.cs:60:5:60:13 | // ... | comments2.cs:60:5:60:13 | // ... | 1 | Values | // Values |
+| comments2.cs:63:9:63:17 | // ... | comments2.cs:63:9:63:17 | // ... | 1 | Values | // Values |
+| comments2.cs:65:9:65:16 | // ... | comments2.cs:65:9:65:16 | // ... | 1 | First | // First |
+| comments2.cs:66:17:66:24 | // ... | comments2.cs:66:17:66:24 | // ... | 1 | First | // First |
+| comments2.cs:67:17:67:25 | // ... | comments2.cs:67:17:67:25 | // ... | 1 | Second | // Second |
+| comments2.cs:69:9:70:10 | // ... | comments2.cs:69:9:69:17 | // ... | 2 | Values | // Values |
+| comments2.cs:69:9:70:10 | // ... | comments2.cs:70:9:70:10 | // ... | 2 |  | // |
+| comments2.cs:72:9:72:16 | // ... | comments2.cs:72:9:72:16 | // ... | 1 | Third | // Third |
+| comments2.cs:75:9:75:17 | // ... | comments2.cs:75:9:75:17 | // ... | 1 | Values | // Values |
+| comments2.cs:78:5:78:21 | // ... | comments2.cs:78:5:78:21 | // ... | 1 | C2 Constructor | // C2 Constructor |
+| comments2.cs:79:10:79:26 | // ... | comments2.cs:79:10:79:26 | // ... | 1 | C2 Constructor | // C2 Constructor |
+| comments2.cs:81:9:81:16 | // ... | comments2.cs:81:9:81:16 | // ... | 1 | {...} | // {...} |
+| comments2.cs:84:5:84:10 | // ... | comments2.cs:84:5:84:10 | // ... | 1 | ~C2 | // ~C2 |
+| comments2.cs:85:11:85:16 | // ... | comments2.cs:85:11:85:16 | // ... | 1 | ~C2 | // ~C2 |
+| comments2.cs:89:5:89:8 | // ... | comments2.cs:89:5:89:8 | // ... | 1 | + | // + |
+| comments2.cs:90:46:90:49 | // ... | comments2.cs:90:46:90:49 | // ... | 1 | + | // + |
+| comments2.cs:96:15:96:18 | // ... | comments2.cs:96:15:96:18 | // ... | 1 | x | // x |
+| comments2.cs:97:13:97:16 | // ... | comments2.cs:97:13:97:16 | // ... | 1 | y | // y |
+| comments2.cs:102:5:102:8 | // ... | comments2.cs:102:5:102:8 | // ... | 1 | D | // D |
+| comments2.cs:103:31:104:34 | // ... | comments2.cs:103:31:103:34 | // ... | 2 | D | // D |
+| comments2.cs:103:31:104:34 | // ... | comments2.cs:104:31:104:34 | // ... | 2 | D | // D |
+| comments2.cs:106:5:106:8 | // ... | comments2.cs:106:5:106:8 | // ... | 1 | E | // E |
+| comments2.cs:107:23:108:26 | // ... | comments2.cs:107:23:107:26 | // ... | 2 | E | // E |
+| comments2.cs:107:23:108:26 | // ... | comments2.cs:108:23:108:26 | // ... | 2 | E | // E |
+| comments2.cs:118:5:118:21 | // ... | comments2.cs:118:5:118:21 | // ... | 1 | GenericClass<> | // GenericClass<> |
+| comments2.cs:121:17:121:20 | // ... | comments2.cs:121:17:121:20 | // ... | 1 | f | // f |
+| comments2.cs:124:5:124:16 | // ... | comments2.cs:124:5:124:16 | // ... | 1 | GenericFn | // GenericFn |
+| comments2.cs:127:20:127:23 | // ... | comments2.cs:127:20:127:23 | // ... | 1 | x | // x |
+| comments2.cs:132:1:132:21 | // ... | comments2.cs:132:1:132:21 | // ... | 1 | End of comment2.cs | // End of comment2.cs |
+| trivia.cs:1:1:3:15 | // ... | trivia.cs:1:1:1:2 | // ... | 3 |  | // |
+| trivia.cs:1:1:3:15 | // ... | trivia.cs:2:1:2:21 | // ... | 3 | Start of trivia.cs | // Start of trivia.cs |
+| trivia.cs:1:1:3:15 | // ... | trivia.cs:3:1:3:15 | // ... | 3 | Unassociated | // Unassociated |
+| trivia.cs:13:89:13:103 | // ... | trivia.cs:13:89:13:103 | // ... | 1 | New checksum | // New checksum |
+| trivia.cs:25:14:25:38 | // ... | trivia.cs:25:14:25:38 | // ... | 1 | numbering not affected | // numbering not affected |
+| trivia.cs:49:18:49:82 | // ... | trivia.cs:49:18:49:82 | // ... | 1 | Sets the nullable annotation and warning contexts to disabled. | // Sets the nullable annotation and warning contexts to disabled. |
+| trivia.cs:50:17:50:80 | // ... | trivia.cs:50:17:50:80 | // ... | 1 | Sets the nullable annotation and warning contexts to enabled. | // Sets the nullable annotation and warning contexts to enabled. |
+| trivia.cs:51:18:51:94 | // ... | trivia.cs:51:18:51:94 | // ... | 1 | Restores the nullable annotation and warning contexts to project settings. | // Restores the nullable annotation and warning contexts to project settings. |
+| trivia.cs:52:30:52:81 | // ... | trivia.cs:52:30:52:81 | // ... | 1 | Sets the nullable annotation context to disabled. | // Sets the nullable annotation context to disabled. |
+| trivia.cs:53:29:53:79 | // ... | trivia.cs:53:29:53:79 | // ... | 1 | Sets the nullable annotation context to enabled. | // Sets the nullable annotation context to enabled. |
+| trivia.cs:54:30:54:93 | // ... | trivia.cs:54:30:54:93 | // ... | 1 | Restores the nullable annotation context to project settings. | // Restores the nullable annotation context to project settings. |
+| trivia.cs:55:27:55:75 | // ... | trivia.cs:55:27:55:75 | // ... | 1 | Sets the nullable warning context to disabled. | // Sets the nullable warning context to disabled. |
+| trivia.cs:56:26:56:73 | // ... | trivia.cs:56:26:56:73 | // ... | 1 | Sets the nullable warning context to enabled. | // Sets the nullable warning context to enabled. |
+| trivia.cs:57:27:57:87 | // ... | trivia.cs:57:27:57:87 | // ... | 1 | Restores the nullable warning context to project settings. | // Restores the nullable warning context to project settings. |
+multilineComment
+| comments1.cs:11:1:11:25 | /* ... */ | comments1.cs:11:1:11:25 | /* ... */ | 1 | A multiline comment | /* A multiline comment */ |
+| comments1.cs:24:1:24:43 | /* ... */ | comments1.cs:24:1:24:15 | /* ... */ | 2 | This is a | /* This is a */ |
+| comments1.cs:24:1:24:43 | /* ... */ | comments1.cs:24:18:24:43 | /* ... */ | 2 | single comment block | /* single comment block */ |
+| comments1.cs:26:1:28:13 | /* ... */ | comments1.cs:26:1:26:12 | /* ... */ | 3 | This is a | /* This is a |
+| comments1.cs:26:1:28:13 | /* ... */ | comments1.cs:27:1:27:17 | /* ... */ | 3 | true multiline |    true multiline |
+| comments1.cs:26:1:28:13 | /* ... */ | comments1.cs:28:1:28:13 | /* ... */ | 3 | comment |    comment */ |
+| comments1.cs:30:1:32:30 | // ... | comments1.cs:31:1:31:61 | /* ... */ | 3 | even though they are using different commenting styles, | /* even though they are using different commenting styles, */ |
+| comments1.cs:36:5:38:41 | /* ... */ | comments1.cs:36:5:36:6 | /* ... */ | 3 |  | /* |
+| comments1.cs:36:5:38:41 | /* ... */ | comments1.cs:37:1:37:6 | /* ... */ | 3 |  |     */ |
+xmlComment
+| comments1.cs:8:1:8:18 | /// ... | comments1.cs:8:1:8:18 | /// ... | 1 | An XML comment | /// An XML comment |
+| comments1.cs:30:1:32:30 | // ... | comments1.cs:32:1:32:30 | /// ... | 3 | form a single commentblock | /// form a single commentblock |
+| comments2.cs:10:1:10:6 | /// ... | comments2.cs:10:1:10:6 | /// ... | 1 | C2 | /// C2 |

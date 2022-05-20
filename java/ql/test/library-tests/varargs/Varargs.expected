@@ -1,0 +1,4 @@
+| java.util.Arrays | asList(T[]) | p0 |
+| varargs.Test | f(int[]) | is |
+| varargs.Test | g(Object[]) | os |
+| varargs.Test | h(String, String[]) | ss |

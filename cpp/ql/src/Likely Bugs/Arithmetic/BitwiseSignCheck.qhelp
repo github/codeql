@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds code that checks the sign of the result of a bitwise operation. Such a check may yield unexpected results. As an example, consider the following code that checks if the <code>n</code>th bit of a variable <code>x</code> is set: </p>
+
+<pre>  x &amp; (1 &lt;&lt; n) > 0 </pre>
+
+<p>If <code>x</code> is a 32-bit signed integer, the value of <code>x &amp; (1 &lt;&lt; 31)</code> is interpreted as a signed number. If <code>x</code> is negative (that is, its sign bit is set), and <code>n</code> is 31, then <code>x &amp; (1 &lt;&lt; 31)</code> evaluates to <code>0x80000000</code> (all bits zero except the sign bit). The sign check on this value fails, implying that the 31st bit of <code>x</code> is unset. This is clearly incorrect.</p>
+
+</overview>
+<recommendation>
+<p>The above sign check should be rewritten as</p>
+
+<pre>  x &amp; (1 &lt;&lt; n) != 0</pre>
+
+</recommendation>
+<references>
+
+<li>
+  Code Project: <a href="http://www.codeproject.com/Articles/2247/An-introduction-to-bitwise-operators">An introduction to bitwise operators</a>
+</li>
+<li>
+  MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/c-language/signed-bitwise-operations">Signed Bitwise Operations</a>
+</li>
+
+
+
+
+
+
+</references>
+</qhelp>

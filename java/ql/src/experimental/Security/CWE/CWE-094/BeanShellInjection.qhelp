@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+BeanShell is a small, free, embeddable Java source interpreter with object scripting language 
+features, written in Java. BeanShell dynamically executes standard Java syntax and extends it 
+with common scripting conveniences such as loose types, commands, and method closures like 
+those in Perl and JavaScript. If a BeanShell expression is built using attacker-controlled data, 
+and then evaluated, then it may allow the attacker to run arbitrary code.
+</p>
+</overview>
+
+<recommendation>
+<p>
+It is generally recommended to avoid using untrusted input in a BeanShell expression.
+If it is not possible, BeanShell expressions should be run in a sandbox that allows accessing only
+explicitly allowed classes.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses untrusted data to build and run a BeanShell expression.
+</p>
+<sample src="BeanShellInjection.java" />
+</example>
+
+<references>
+<li>
+CVE-2016-2510:<a href="https://nvd.nist.gov/vuln/detail/CVE-2016-2510">BeanShell Injection</a>.
+</li>
+</references>
+</qhelp>

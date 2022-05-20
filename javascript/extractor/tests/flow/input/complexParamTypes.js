@@ -1,0 +1,1 @@
+type Asyncify = <A, B, C>((A, B) => C) => (A, B, Callback<C>) => void

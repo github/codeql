@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If a variable is dereferenced, for example as the qualifier in a method call, and the
+variable may have a <code>null</code> value on some execution paths leading to the
+dereferencing, the dereferencing may result in a <code>NullReferenceException</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that the variable does not have a <code>null</code> value when it is dereferenced.
+</p>
+
+</recommendation>
+<example>
+<p>
+In the following example, the method <code>DoPrint()</code> dereferences its parameter
+<code>o</code> unconditionally, resulting in a <code>NullReferenceException</code> via
+the call <code>DoPrint(null)</code>.
+</p>
+
+<sample src="NullMaybeBad.cs" />
+
+<p>
+In the revised example, the method <code>DoPrint()</code> guards the dereferencing with
+a <code>null</code> check.
+</p>
+
+<sample src="NullMaybeGood.cs" />
+
+</example>
+<references>
+
+  <li>Microsoft, <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullreferenceexception">NullReferenceException Class</a>.</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,8 @@
+| A.cs:6:16:6:17 | P1 | A.cs:6:22:6:31 | throw ... | body |
+| A.cs:6:16:6:17 | P1 | B.cs:3:22:3:22 | 0 | body |
+| A.cs:24:16:24:16 | P | A.cs:24:34:24:34 | 0 | initializer |
+| A.cs:24:16:24:16 | P | B.cs:22:34:22:34 | 1 | initializer |
+| B.cs:3:16:3:17 | P1 | A.cs:6:22:6:31 | throw ... | body |
+| B.cs:3:16:3:17 | P1 | B.cs:3:22:3:22 | 0 | body |
+| B.cs:22:16:22:16 | P | A.cs:24:34:24:34 | 0 | initializer |
+| B.cs:22:16:22:16 | P | B.cs:22:34:22:34 | 1 | initializer |

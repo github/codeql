@@ -1,0 +1,10 @@
++ semmlecode-queries/definitions.ql
+    @_namespace com.lgtm/java-queries
++ semmlecode-queries/AlertSuppression.ql
+    @_namespace com.lgtm/java-queries
++ semmlecode-queries/AlertSuppressionAnnotations.ql
+    @_namespace com.lgtm/java-queries
++ semmlecode-queries/filters/ClassifyFiles.ql
+    @_namespace com.lgtm/java-queries
+
+@import "java-alerts-lgtm"

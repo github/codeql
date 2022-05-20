@@ -1,0 +1,13 @@
+- description: Standard LGTM queries for Java, including ones not displayed by default
+- queries: .
+- apply: lgtm-selectors.yml
+  from: codeql/suite-helpers
+# These are only for IDE use.
+- exclude:
+    tags contain:
+      - ide-contextual-queries/local-definitions
+      - ide-contextual-queries/local-references
+- query: Metrics/Files/FLinesOfCode.ql
+- query: Metrics/Files/FLinesOfCommentedCode.ql
+- query: Metrics/Files/FLinesOfComment.ql
+- query: Metrics/Files/FNumberOfTests.ql

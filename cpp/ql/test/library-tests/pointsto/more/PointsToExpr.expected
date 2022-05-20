@@ -1,0 +1,8 @@
+| aggregate_init.c:14:11:14:13 | ptr | aggregate_init.c:10:6:10:6 | x |
+| aggregate_init.c:14:11:14:13 | ptr | aggregate_init.c:10:9:10:9 | y |
+| classes.cpp:20:10:20:13 | ptr1 | classes.cpp:34:6:34:6 | x |
+| classes.cpp:20:10:20:13 | ptr1 | classes.cpp:34:12:34:12 | z |
+| classes.cpp:25:10:25:13 | ptr2 | classes.cpp:34:9:34:9 | y |
+| classes.cpp:66:15:66:17 | ptr | classes.cpp:61:6:61:6 | x |
+| structs.c:18:11:18:13 | ptr | structs.c:10:6:10:6 | x |
+| structs.c:18:11:18:13 | ptr | structs.c:10:9:10:9 | y |

@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+  In Python, assertions are not executed when optimizations are enabled.
+  This may lead to unexpected behavior when assertions are used to the check
+  validity of a piece of input.
+</p>
+
+</overview>
+<recommendation>
+
+  <p>
+    If the value being tested is false, replace the <code>assert</code>
+    statement with a <code>raise</code> statement that raises an appropriate
+    exception. If the value being tested is true, delete the <code>assert</code>
+    statement or replace it with a <code>pass</code> statement.
+  </p>
+
+</recommendation>
+<example>
+  <p>
+  This example shows a function <code>buy_bananas</code> that takes a
+  number <code>n</code> as input. The function checks that this number is not too big
+  before sending off an order for that number of bananas. Because this is done
+  using an <code>assert</code> statement, the check disappears when
+  optimizations are enabled. The second function corrects this error by
+  explicitly raising an <code>AssertionError</code>, and checks the value even
+  when optimizations are enabled.
+</p>
+
+  <sample src="AssertLiteralConstant.py" />
+
+</example>
+<references>
+
+  <li>Python Language Reference: <a href="https://docs.python.org/2/reference/simple_stmts.html#the-assert-statement">The assert statement</a>.</li>
+  <li>The Python Tutorial: <a href="https://docs.python.org/2.7/tutorial/modules.html#compiled-python-files">“Compiled” Python files</a>.</li>
+
+</references>
+</qhelp>

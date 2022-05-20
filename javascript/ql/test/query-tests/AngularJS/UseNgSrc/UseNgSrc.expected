@@ -1,0 +1,5 @@
+| tst2.html:3:6:3:24 | href={{help_url}} | Use 'ng-href' instead of 'href'. |
+| tst.html:8:6:8:24 | href={{help_url}} | Use 'ng-href' instead of 'href'. |
+| tst.html:10:40:10:83 | srcset=#/resources/pics-large/{{item._id}} | Use 'ng-srcset' instead of 'srcset'. |
+| tst.html:11:10:11:52 | src=#/resources/pics-default/{{item._id}} | Use 'ng-src' instead of 'src'. |
+| tst_fragment.html:3:6:3:24 | href={{help_url}} | Use 'ng-href' instead of 'href'. |

@@ -1,0 +1,67 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Parsing untrusted XML files with a weakly configured XML parser may lead to an XML External Entity (XXE) attack. This type of attack
+uses external entity references to access arbitrary files on a system, carry out denial of service, or server side
+request forgery. Even when the result of parsing is not returned to the user, out-of-band
+data retrieval techniques may allow attackers to steal sensitive data. Denial of services can also be
+carried out in this situation.
+</p>
+<p>
+There are many XML parsers for Java, and most of them are vulnerable to XXE because their default settings enable parsing of
+external entities. This query currently identifies vulnerable XML parsing from the following parsers: <code>javax.xml.validation.Validator</code>,
+<code>org.dom4j.DocumentHelper</code>, <code>org.rundeck.api.parser.ParserHelper</code>, <code>org.apache.commons.digester3.Digester</code>, 
+<code>org.apache.commons.digester.Digester</code>, <code>org.apache.tomcat.util.digester.Digester</code>, <code>java.beans.XMLDecoder</code>.
+</p>
+</overview>
+
+<recommendation>
+<p>
+The best way to prevent XXE attacks is to disable the parsing of any Document Type Declarations (DTDs) in untrusted data.
+If this is not possible you should disable the parsing of external general entities and external parameter entities.
+This improves security but the code will still be at risk of denial of service and server side request forgery attacks.
+Protection against denial of service attacks may also be implemented by setting entity expansion limits, which is done
+by default in recent JDK and JRE implementations.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following bad examples parses the xml data entered by the user under an unsafe configuration, which is inherently insecure and may cause xml entity injection.
+In good examples, the security configuration is carried out, for example: Disable DTD to protect the program from XXE attacks.
+</p>
+<sample src="XXE.java" />
+</example>
+
+<references>
+
+<li>
+OWASP vulnerability description:
+<a href="https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing">XML External Entity (XXE) Processing</a>.
+</li>
+<li>
+OWASP guidance on parsing xml files:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#java">XXE Prevention Cheat Sheet</a>.
+</li>
+<li>
+Paper by Timothy Morgen:
+<a href="https://research.nccgroup.com/2014/05/19/xml-schema-dtd-and-entity-attacks-a-compendium-of-known-techniques/">XML Schema, DTD, and Entity Attacks</a>
+</li>
+<li>
+Out-of-band data retrieval: Timur Yunusov &amp; Alexey Osipov, Black hat EU 2013:
+<a href="https://www.slideshare.net/qqlan/bh-ready-v4">XML Out-Of-Band Data Retrieval</a>.
+</li>
+<li>
+Denial of service attack (Billion laughs):
+<a href="https://en.wikipedia.org/wiki/Billion_laughs">Billion Laughs.</a>
+</li>
+<li>
+The Java Tutorials:
+<a href="https://docs.oracle.com/javase/tutorial/jaxp/limits/limits.html">Processing Limit Definitions.</a>
+</li>
+
+</references>
+
+</qhelp>

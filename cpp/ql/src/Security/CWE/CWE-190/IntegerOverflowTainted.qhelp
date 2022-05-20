@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Performing calculations on user-controlled data can result in
+integer overflows unless the input is validated.</p>
+
+<p>Integer overflow occurs when the result of an arithmetic expression
+is too large to be represented by the (integer) output type of the
+expression. For example, if the result of the expression is 200, but
+the output type is a signed 8-bit integer, then overflow occurs
+because the largest value that can be represented is 127. The behavior
+of overflow is implementation defined, but the most common
+implementation is two's complement arithmetic, in which case the
+result is -56. Overflow can cause unexpected results, particularly
+when a large value overflows and the result is negative. It can also
+pose a security risk if the value of the expression is controllable by
+user, because it could enable an attacker to deliberately cause an
+overflow.</p>
+
+<p>Negative integer overflow is another form of integer overflow,
+in which a negative result cannot be represented in the output type.</p>
+</overview>
+
+<recommendation>
+
+<p>Always guard against overflow in arithmetic operations on
+user-controlled data by doing one of the following:</p>
+
+<ul>
+<li>Validate the user input.</li>
+<li>Define a guard on the arithmetic expression, so that the operation
+is performed only if the result can be known to be less than, or equal
+to, the maximum value for the type, for
+example <code>INT_MAX</code>.</li>
+<li>Use a wider type, so that larger input values do not cause
+overflow.</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>In this example, a value is read from standard input into an <code>int</code>. Because the value
+is a user-controlled value, it could be extremely large. Performing arithmetic operations on this
+value could therefore cause an overflow. To avoid this happening, the example shows how to perform
+a check before performing a multiplication.</p>
+
+<sample src="ArithmeticTainted.c" />
+
+</example>
+<references>
+
+</references>
+</qhelp>

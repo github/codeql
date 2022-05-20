@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Many arithmetic or logical operators yield a trivial result when applied to
+identical operands: for instance, <code>x-x</code> yields zero if <code>x</code>
+is a number, and yields <code>NaN</code> otherwise; <code>x&amp;&amp;x</code> is always
+equal to <code>x</code>. Code like this is often the result of a typo, such as
+misspelling a variable name. Even if it is intentional (relying, for instance, on
+side effects), such code is hard to read and understand and should be avoided.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Examine the operands for typos. Replace intentional uses of identical operands
+that have side effects with clearer alternatives.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the example below, the function <code>avg</code> is intended to compute the
+average of two numbers <code>x</code> and <code>y</code>. However, the programmer
+accidentally used <code>x</code> twice, so the function just returns
+<code>x</code>:
+</p>
+
+<sample src="examples/RedundantExpression.js" />
+
+<p>
+This problem can be fixed by correcting the typo:
+</p>
+
+<sample src="examples/RedundantExpressionGood.js" />
+
+<p>
+In some cases, an expression that looks redundant cannot, in fact, be simplified
+due to side effects. For instance, <code>f() &amp;&amp; f()</code> is not necessarily
+equivalent to <code>f()</code>, since <code>f</code> may have side effects. This may
+not be immediately apparent to the reader, however, and it is usually clearer to expand
+this expression into an 'if' statement:
+</p>
+
+<sample src="examples/RedundantExpressionGood2.js" />
+</example>
+</qhelp>

@@ -1,0 +1,2 @@
+| vla.c:12:18:12:23 | myType | vla.c:12:18:12:18 | VLA declaration | 0 | vla.c:12:32:12:32 | VLA dimension size | vla.c:12:33:12:44 | ... + ... |
+| vla.c:12:18:12:23 | myType | vla.c:12:18:12:18 | VLA declaration | 1 | vla.c:12:49:12:49 | VLA dimension size | vla.c:12:50:12:62 | ... * ... |

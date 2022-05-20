@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds classes with more than 15 instance (i.e., non-<code>static</code>) fields. Library classes
+are not shown. Having too many fields in one class is a sign that the class may lack cohesion (i.e. lack a single purpose).
+These classes can be split into smaller, more cohesive classes. Alternatively, the related fields can be grouped 
+into <code>struct</code>s.</p>
+
+</overview>
+<recommendation>
+<p>Classes with many fields may be hard to maintain. They could probably be refactored by breaking them down into smaller classes
+and using composition.</p>
+
+</recommendation>
+<example>
+<sample src="ClassesWithManyFields.cpp" />
+
+
+</example>
+<references>
+
+<li>W. Stevens, G. Myers, L. Constantine, <em>Structured Design</em>. IBM Systems Journal, 13 (2), 115-139, 1974.</li>
+<li>
+Microsoft Patterns &amp; Practices Team, <em>Microsoft Application Architecture Guide (2nd Edition), Chapter 3: Architectural Patterns and Styles.</em> Microsoft Press, 2009 (<a href="http://msdn.microsoft.com/en-us/library/ee658117.aspx">available online</a>).
+</li>
+<li>
+  Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_refactoring">Code refactoring</a>
+</li>
+
+
+</references>
+</qhelp>

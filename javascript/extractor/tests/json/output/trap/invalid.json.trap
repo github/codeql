@@ -1,0 +1,15 @@
+#10000=@"/invalid.json;sourcefile"
+files(#10000,"/invalid.json")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=*
+json_errors(#20000,"Error: JSON object property keys must be string literals.")
+#20001=@"loc,{#10000},2,5,2,5"
+locations_default(#20001,#10000,2,5,2,5)
+hasLocation(#20000,#20001)
+numlines(#10000,3,0,0)
+filetype(#10000,"json")

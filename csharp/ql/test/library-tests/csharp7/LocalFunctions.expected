@@ -1,0 +1,20 @@
+| CSharp7.cs:129:9:129:39 | f1 | f1 | Int32 | CSharp7.cs:128:5:155:5 | {...} | CSharp7.cs:129:9:129:39 | f1(...) | f1(int) |
+| CSharp7.cs:131:9:131:42 | f2 | f2 | T | CSharp7.cs:128:5:155:5 | {...} | CSharp7.cs:131:9:131:42 | f2(...) | f2(T, U) |
+| CSharp7.cs:135:9:135:22 | f3 | f3 | Int32 | CSharp7.cs:128:5:155:5 | {...} | CSharp7.cs:135:9:135:22 | f3(...) | f3() |
+| CSharp7.cs:139:9:139:51 | f6 | f6 | Int32 | CSharp7.cs:128:5:155:5 | {...} | CSharp7.cs:139:9:139:51 | f6(...) | f6(int) |
+| CSharp7.cs:141:9:141:31 | f7 | f7 | Int32 | CSharp7.cs:128:5:155:5 | {...} | CSharp7.cs:141:9:141:31 | f7(...) | f7(int) |
+| CSharp7.cs:143:9:147:9 | f8 | f8 | Int32 | CSharp7.cs:128:5:155:5 | {...} | CSharp7.cs:143:9:147:9 | f8(...) | f8() |
+| CSharp7.cs:145:13:145:35 | f9 | f9 | Int32 | CSharp7.cs:144:9:147:9 | {...} | CSharp7.cs:145:13:145:35 | f9(...) | f9(int) |
+| CSharp7.cs:151:13:151:26 | f9 | f9 | Int32 | CSharp7.cs:150:9:152:9 | {...} | CSharp7.cs:151:13:151:26 | f9(...) | f9() |
+| CSharp7.cs:159:9:159:24 | f | f | Int32 | CSharp7.cs:158:5:171:5 | {...} | CSharp7.cs:159:9:159:24 | f(...) | f() |
+| CSharp7.cs:159:9:159:24 | f | f | Int32 | CSharp7.cs:158:5:171:5 | {...} | CSharp7.cs:159:9:159:24 | f(...) | f() |
+| CSharp7.cs:160:9:160:25 | g | g | T | CSharp7.cs:158:5:171:5 | {...} | CSharp7.cs:160:9:160:25 | g(...) | g(T) |
+| CSharp7.cs:160:9:160:25 | g | g | U | CSharp7.cs:158:5:171:5 | {...} | CSharp7.cs:160:9:160:25 | g(...) | g(U) |
+| CSharp7.cs:162:9:167:9 | h | h | Boolean | CSharp7.cs:158:5:171:5 | {...} | CSharp7.cs:162:9:167:9 | h(...) | h(string, bool) |
+| CSharp7.cs:162:9:167:9 | h | h | Int32 | CSharp7.cs:158:5:171:5 | {...} | CSharp7.cs:162:9:167:9 | h(...) | h(int, int) |
+| CSharp7.cs:162:9:167:9 | h | h | U | CSharp7.cs:158:5:171:5 | {...} | CSharp7.cs:162:9:167:9 | h(...) | h(T, U) |
+| CSharp7.cs:164:13:164:43 | f2 | f2 | Int32 | CSharp7.cs:163:9:167:9 | {...} | CSharp7.cs:164:13:164:43 | f2(...) | f2(S, T) |
+| CSharp7.cs:176:9:176:40 | f | f | String | CSharp7.cs:174:5:183:5 | {...} | CSharp7.cs:176:9:176:40 | f(...) | f(string) |
+| CSharp7.cs:177:9:177:32 | g | g | String | CSharp7.cs:174:5:183:5 | {...} | CSharp7.cs:177:9:177:32 | g(...) | g(string) |
+| CSharp7.cs:178:9:178:40 | h | h | String | CSharp7.cs:174:5:183:5 | {...} | CSharp7.cs:178:9:178:40 | h(...) | h(string) |
+| CSharp7.cs:204:9:204:47 | F3 | F3 | Int32 | CSharp7.cs:203:5:206:5 | {...} | CSharp7.cs:204:9:204:47 | F3(...) | F3(ref int) |

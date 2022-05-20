@@ -1,0 +1,3 @@
+| properties.cs:112:20:112:24 | Prop1 | properties.cs:114:13:114:15 | get_Prop1 |
+| properties.cs:117:20:117:24 | Prop2 | properties.cs:119:13:119:15 | set_Prop2 |
+| properties.cs:122:37:122:41 | Prop2 | properties.cs:124:13:124:15 | set_Prop2 |

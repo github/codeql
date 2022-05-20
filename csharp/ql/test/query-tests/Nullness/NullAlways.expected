@@ -1,0 +1,42 @@
+| A.cs:8:15:8:32 | access to local variable synchronizedAlways | Variable $@ is always null here. | A.cs:7:16:7:33 | synchronizedAlways | synchronizedAlways |
+| A.cs:17:9:17:17 | access to local variable arrayNull | Variable $@ is always null here. | A.cs:16:15:16:23 | arrayNull | arrayNull |
+| A.cs:31:27:31:37 | access to local variable arrayAccess | Variable $@ is always null here. | A.cs:26:15:26:25 | arrayAccess | arrayAccess |
+| A.cs:32:27:32:37 | access to local variable fieldAccess | Variable $@ is always null here. | A.cs:27:18:27:28 | fieldAccess | fieldAccess |
+| A.cs:33:28:33:39 | access to local variable methodAccess | Variable $@ is always null here. | A.cs:28:16:28:27 | methodAccess | methodAccess |
+| A.cs:34:27:34:36 | access to local variable methodCall | Variable $@ is always null here. | A.cs:29:16:29:25 | methodCall | methodCall |
+| A.cs:50:9:50:14 | access to local variable varRef | Variable $@ is always null here. | A.cs:48:16:48:21 | varRef | varRef |
+| Assert.cs:15:27:15:27 | access to local variable s | Variable $@ is always null here. | Assert.cs:9:16:9:16 | s | s |
+| Assert.cs:23:27:23:27 | access to local variable s | Variable $@ is always null here. | Assert.cs:9:16:9:16 | s | s |
+| Assert.cs:31:27:31:27 | access to local variable s | Variable $@ is always null here. | Assert.cs:9:16:9:16 | s | s |
+| Assert.cs:47:27:47:27 | access to local variable s | Variable $@ is always null here. | Assert.cs:9:16:9:16 | s | s |
+| Assert.cs:51:27:51:27 | access to local variable s | Variable $@ is always null here. | Assert.cs:9:16:9:16 | s | s |
+| B.cs:13:13:13:24 | access to local variable eqCallAlways | Variable $@ is always null here. | B.cs:7:11:7:22 | eqCallAlways | eqCallAlways |
+| B.cs:24:13:24:25 | access to local variable neqCallAlways | Variable $@ is always null here. | B.cs:10:11:10:23 | neqCallAlways | neqCallAlways |
+| C.cs:18:13:18:13 | access to local variable o | Variable $@ is always null here. | C.cs:10:16:10:16 | o | o |
+| C.cs:42:9:42:9 | access to local variable s | Variable $@ is always null here. | C.cs:40:13:40:13 | s | s |
+| C.cs:57:9:57:10 | access to local variable o2 | Variable $@ is always null here. | C.cs:55:13:55:14 | o2 | o2 |
+| C.cs:162:13:162:13 | access to local variable s | Variable $@ is always null here. | C.cs:151:13:151:13 | s | s |
+| C.cs:170:13:170:13 | access to local variable s | Variable $@ is always null here. | C.cs:151:13:151:13 | s | s |
+| C.cs:196:13:196:13 | access to local variable s | Variable $@ is always null here. | C.cs:185:13:185:13 | s | s |
+| C.cs:218:13:218:13 | access to local variable s | Variable $@ is always null here. | C.cs:210:13:210:13 | s | s |
+| C.cs:233:9:233:9 | access to local variable s | Variable $@ is always null here. | C.cs:228:16:228:16 | s | s |
+| C.cs:237:13:237:13 | access to local variable s | Variable $@ is always null here. | C.cs:228:16:228:16 | s | s |
+| C.cs:249:9:249:9 | access to local variable a | Variable $@ is always null here. | C.cs:248:15:248:15 | a | a |
+| C.cs:260:9:260:10 | access to local variable ia | Variable $@ is always null here. | C.cs:257:15:257:16 | ia | ia |
+| C.cs:261:20:261:21 | access to local variable sa | Variable $@ is always null here. | C.cs:258:18:258:19 | sa | sa |
+| D.cs:120:13:120:13 | access to local variable x | Variable $@ is always null here. | D.cs:117:13:117:13 | x | x |
+| D.cs:197:13:197:13 | access to local variable o | Variable $@ is always null here. | D.cs:195:13:195:13 | o | o |
+| D.cs:207:17:207:17 | access to local variable e | Variable $@ is always null here. | D.cs:204:26:204:26 | e | e |
+| D.cs:217:13:217:14 | access to local variable o3 | Variable $@ is always null here. | D.cs:215:13:215:14 | o3 | o3 |
+| D.cs:222:13:222:14 | access to local variable o4 | Variable $@ is always null here. | D.cs:220:13:220:14 | o4 | o4 |
+| D.cs:385:13:385:15 | access to local variable ioe | Variable $@ is always null here. | D.cs:378:19:378:21 | ioe | ioe |
+| E.cs:210:16:210:16 | access to parameter s | Variable $@ is always null here. | E.cs:206:28:206:28 | s | s |
+| E.cs:220:13:220:13 | access to local variable x | Variable $@ is always null here. | E.cs:215:13:215:13 | x | x |
+| E.cs:229:13:229:13 | access to local variable x | Variable $@ is always null here. | E.cs:225:13:225:13 | x | x |
+| E.cs:323:13:323:14 | access to parameter s1 | Variable $@ is always null here. | E.cs:319:29:319:30 | s1 | s1 |
+| E.cs:324:13:324:14 | access to parameter s2 | Variable $@ is always null here. | E.cs:319:40:319:41 | s2 | s2 |
+| E.cs:331:9:331:9 | access to local variable x | Variable $@ is always null here. | E.cs:330:13:330:13 | x | x |
+| E.cs:405:16:405:16 | access to local variable i | Variable $@ is always null here. | E.cs:403:14:403:14 | i | i |
+| Forwarding.cs:36:31:36:31 | access to local variable s | Variable $@ is always null here. | Forwarding.cs:7:16:7:16 | s | s |
+| Forwarding.cs:40:27:40:27 | access to local variable s | Variable $@ is always null here. | Forwarding.cs:7:16:7:16 | s | s |
+| NullAlwaysBad.cs:9:30:9:30 | access to parameter s | Variable $@ is always null here. | NullAlwaysBad.cs:7:29:7:29 | s | s |

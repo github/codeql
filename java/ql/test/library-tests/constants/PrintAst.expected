@@ -1,0 +1,514 @@
+constants/Constants.java:
+#    0| [CompilationUnit] Constants
+#    3|   1: [Class] Constants
+#    4|     2: [Method] constants
+#    4|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    4|         0: [Parameter] notConstant
+#    4|           0: [TypeAccess] int
+#    4|       5: [BlockStmt] { ... }
+#    5|         0: [LocalVariableDeclStmt] var ...;
+#    5|           0: [TypeAccess] int
+#    5|           1: [LocalVariableDeclExpr] sfield
+#    5|             0: [VarAccess] Initializers.SFIELD
+#    5|               -1: [TypeAccess] Initializers
+#    6|         1: [LocalVariableDeclStmt] var ...;
+#    6|           0: [TypeAccess] int
+#    6|           1: [LocalVariableDeclExpr] ifield
+#    6|             0: [VarAccess] new Initializers(...).IFIELD
+#    6|               -1: [ClassInstanceExpr] new Initializers(...)
+#    6|                 -3: [TypeAccess] Initializers
+#    9|         2: [LocalVariableDeclStmt] var ...;
+#    9|           0: [TypeAccess] Object
+#    9|           1: [LocalVariableDeclExpr] staticObjectField
+#    9|             0: [VarAccess] Initializers.SFIELD_OBJECT
+#    9|               -1: [TypeAccess] Initializers
+#   11|         3: [LocalVariableDeclStmt] var ...;
+#   11|           0: [TypeAccess] int
+#   11|           1: [LocalVariableDeclExpr] x
+#   11|             0: [IntegerLiteral] 3
+#   12|         4: [LocalVariableDeclStmt] var ...;
+#   12|           0: [TypeAccess] int
+#   12|           1: [LocalVariableDeclExpr] y
+#   12|             0: [VarAccess] x
+#   13|         5: [LocalVariableDeclStmt] var ...;
+#   13|           0: [TypeAccess] int
+#   13|           1: [LocalVariableDeclExpr] z
+#   13|             0: [VarAccess] y
+#   15|         6: [LocalVariableDeclStmt] var ...;
+#   15|           0: [TypeAccess] int
+#   15|           1: [LocalVariableDeclExpr] binop
+#   15|             0: [AddExpr] ... + ...
+#   15|               0: [VarAccess] Initializers.SFIELD
+#   15|                 -1: [TypeAccess] Initializers
+#   15|               1: [IntegerLiteral] 1
+#   16|         7: [LocalVariableDeclStmt] var ...;
+#   16|           0: [TypeAccess] int
+#   16|           1: [LocalVariableDeclExpr] binopNonConst
+#   16|             0: [AddExpr] ... + ...
+#   16|               0: [VarAccess] Initializers.SFIELD
+#   16|                 -1: [TypeAccess] Initializers
+#   16|               1: [VarAccess] notConstant
+#   18|         8: [LocalVariableDeclStmt] var ...;
+#   18|           0: [TypeAccess] int
+#   18|           1: [LocalVariableDeclExpr] paren
+#   18|             0: [IntegerLiteral] 12
+#   19|         9: [LocalVariableDeclStmt] var ...;
+#   19|           0: [TypeAccess] String
+#   19|           1: [LocalVariableDeclExpr] string
+#   19|             0: [StringLiteral] "a string"
+#   20|         10: [LocalVariableDeclStmt] var ...;
+#   20|           0: [TypeAccess] int
+#   20|           1: [LocalVariableDeclExpr] ternary
+#   20|             0: [ConditionalExpr] ...?...:...
+#   20|               0: [LTExpr] ... < ...
+#   20|                 0: [IntegerLiteral] 3
+#   20|                 1: [IntegerLiteral] 5
+#   20|               1: [IntegerLiteral] 1
+#   20|               2: [IntegerLiteral] 2
+#   22|         11: [ReturnStmt] return ...
+constants/Initializers.java:
+#    0| [CompilationUnit] Initializers
+#    3|   1: [Class] Initializers
+#    4|     3: [FieldDeclaration] int SFIELD;
+#    4|       -1: [TypeAccess] int
+#    4|       0: [IntegerLiteral] 12
+#    6|     4: [FieldDeclaration] int IFIELD;
+#    6|       -1: [TypeAccess] int
+#    6|       0: [IntegerLiteral] 20
+#    8|     5: [FieldDeclaration] int IFIELD2;
+#    8|       -1: [TypeAccess] int
+#   10|     6: [Constructor] Initializers
+#   10|       5: [BlockStmt] { ... }
+#   12|         2: [ExprStmt] <Expr>;
+#   12|           0: [AssignExpr] ...=...
+#   12|             0: [VarAccess] IFIELD2
+#   12|             1: [IntegerLiteral] 22
+#   15|     7: [Method] stuff
+#   15|       3: [TypeAccess] void
+#   15|       5: [BlockStmt] { ... }
+#   16|         0: [LocalVariableDeclStmt] var ...;
+#   16|           0: [TypeAccess] int
+#   16|           1: [LocalVariableDeclExpr] x
+#   16|             0: [IntegerLiteral] 300
+#   17|         1: [LocalVariableDeclStmt] var ...;
+#   17|           0: [TypeAccess] int
+#   17|           1: [LocalVariableDeclExpr] y
+#   18|         2: [ExprStmt] <Expr>;
+#   18|           0: [AssignExpr] ...=...
+#   18|             0: [VarAccess] y
+#   18|             1: [IntegerLiteral] 400
+#   21|     8: [FieldDeclaration] Object SFIELD_OBJECT;
+#   21|       -1: [TypeAccess] Object
+#   21|       0: [StringLiteral] "a string"
+#   23|     9: [FieldDeclaration] int fsf;
+#   23|       -1: [TypeAccess] int
+#   24|     10: [FieldDeclaration] int sf;
+#   24|       -1: [TypeAccess] int
+#   24|       0: [IntegerLiteral] 3
+#   25|     11: [FieldDeclaration] int ff;
+#   25|       -1: [TypeAccess] int
+#   26|     12: [FieldDeclaration] int f;
+#   26|       -1: [TypeAccess] int
+#   26|       0: [IntegerLiteral] 4
+#   28|     13: [BlockStmt] { ... }
+#   30|       0: [ExprStmt] <Expr>;
+#   30|         0: [AssignExpr] ...=...
+#   30|           0: [VarAccess] fsf
+#   30|           1: [IntegerLiteral] 42
+#   31|       1: [ExprStmt] <Expr>;
+#   31|         0: [AssignExpr] ...=...
+#   31|           0: [VarAccess] sf
+#   31|           1: [IntegerLiteral] 42
+#   34|     14: [BlockStmt] { ... }
+#   36|       0: [ExprStmt] <Expr>;
+#   36|         0: [AssignExpr] ...=...
+#   36|           0: [VarAccess] ff
+#   36|           1: [IntegerLiteral] 42
+#   37|       1: [ExprStmt] <Expr>;
+#   37|         0: [AssignExpr] ...=...
+#   37|           0: [VarAccess] f
+#   37|           1: [IntegerLiteral] 42
+constants/Values.java:
+#    0| [CompilationUnit] Values
+#    4|   1: [Class] Values
+#-----|     -4: (Javadoc)
+#    3|       1: [Javadoc] /** Tests of the getIntValue() predicate */
+#    3|         0: [JavadocText] Tests of the getIntValue() predicate
+#    6|     3: [FieldDeclaration] int final_field;
+#    6|       -1: [TypeAccess] int
+#    6|       0: [IntegerLiteral] 42
+#    8|     4: [Method] values
+#    8|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    8|         0: [Parameter] notConstant
+#    8|           0: [TypeAccess] int
+#    8|       5: [BlockStmt] { ... }
+#    9|         0: [LocalVariableDeclStmt] var ...;
+#    9|           0: [TypeAccess] int
+#    9|           1: [LocalVariableDeclExpr] int_literal
+#    9|             0: [IntegerLiteral] 42
+#   10|         1: [LocalVariableDeclStmt] var ...;
+#   10|           0: [TypeAccess] int
+#   10|           1: [LocalVariableDeclExpr] negative_int_literal
+#   10|             0: [IntegerLiteral] -2147483648
+#   11|         2: [LocalVariableDeclStmt] var ...;
+#   11|           0: [TypeAccess] int
+#   11|           1: [LocalVariableDeclExpr] octal_literal
+#   11|             0: [IntegerLiteral] 052
+#   12|         3: [LocalVariableDeclStmt] var ...;
+#   12|           0: [TypeAccess] int
+#   12|           1: [LocalVariableDeclExpr] negative_octal_literal
+#   12|             0: [MinusExpr] -...
+#   12|               0: [IntegerLiteral] 052
+#   13|         4: [LocalVariableDeclStmt] var ...;
+#   13|           0: [TypeAccess] int
+#   13|           1: [LocalVariableDeclExpr] hex_literal
+#   13|             0: [IntegerLiteral] 0x2A
+#   14|         5: [LocalVariableDeclStmt] var ...;
+#   14|           0: [TypeAccess] int
+#   14|           1: [LocalVariableDeclExpr] negative_hex_literal
+#   14|             0: [MinusExpr] -...
+#   14|               0: [IntegerLiteral] 0x2A
+#   15|         6: [LocalVariableDeclStmt] var ...;
+#   15|           0: [TypeAccess] int
+#   15|           1: [LocalVariableDeclExpr] hex_literal_underscores
+#   15|             0: [IntegerLiteral] 0x2_A
+#   16|         7: [LocalVariableDeclStmt] var ...;
+#   16|           0: [TypeAccess] int
+#   16|           1: [LocalVariableDeclExpr] binary_literal
+#   16|             0: [IntegerLiteral] 0b101010
+#   17|         8: [LocalVariableDeclStmt] var ...;
+#   17|           0: [TypeAccess] int
+#   17|           1: [LocalVariableDeclExpr] negative_binary_literal
+#   17|             0: [MinusExpr] -...
+#   17|               0: [IntegerLiteral] 0b101010
+#   18|         9: [LocalVariableDeclStmt] var ...;
+#   18|           0: [TypeAccess] int
+#   18|           1: [LocalVariableDeclExpr] binary_literal_underscores
+#   18|             0: [IntegerLiteral] 0b1_0101_0
+#   19|         10: [LocalVariableDeclStmt] var ...;
+#   19|           0: [TypeAccess] char
+#   19|           1: [LocalVariableDeclExpr] char_literal
+#   19|             0: [CharacterLiteral] '*'
+#   20|         11: [LocalVariableDeclStmt] var ...;
+#   20|           0: [TypeAccess] long
+#   20|           1: [LocalVariableDeclExpr] long_literal
+#   20|             0: [LongLiteral] 42L
+#   21|         12: [LocalVariableDeclStmt] var ...;
+#   21|           0: [TypeAccess] boolean
+#   21|           1: [LocalVariableDeclExpr] boolean_literal
+#   21|             0: [BooleanLiteral] true
+#   22|         13: [LocalVariableDeclStmt] var ...;
+#   22|           0: [TypeAccess] Integer
+#   22|           1: [LocalVariableDeclExpr] boxed_int
+#   22|             0: [ClassInstanceExpr] new Integer(...)
+#   22|               -3: [TypeAccess] Integer
+#   22|               0: [IntegerLiteral] 42
+#   23|         14: [LocalVariableDeclStmt] var ...;
+#   23|           0: [TypeAccess] int
+#   23|           1: [LocalVariableDeclExpr] parameter
+#   23|             0: [VarAccess] notConstant
+#   25|         15: [LocalVariableDeclStmt] var ...;
+#   25|           0: [TypeAccess] int
+#   25|           1: [LocalVariableDeclExpr] cast
+#   25|             0: [CastExpr] (...)...
+#   25|               0: [TypeAccess] int
+#   25|               1: [IntegerLiteral] 42
+#   26|         16: [LocalVariableDeclStmt] var ...;
+#   26|           0: [TypeAccess] char
+#   26|           1: [LocalVariableDeclExpr] downcast
+#   26|             0: [CastExpr] (...)...
+#   26|               0: [TypeAccess] char
+#   26|               1: [IntegerLiteral] 42
+#   27|         17: [LocalVariableDeclStmt] var ...;
+#   27|           0: [TypeAccess] byte
+#   27|           1: [LocalVariableDeclExpr] downcast_byte_1
+#   27|             0: [CastExpr] (...)...
+#   27|               0: [TypeAccess] byte
+#   27|               1: [MinusExpr] -...
+#   27|                 0: [IntegerLiteral] 42
+#   28|         18: [LocalVariableDeclStmt] var ...;
+#   28|           0: [TypeAccess] byte
+#   28|           1: [LocalVariableDeclExpr] downcast_byte_2
+#   28|             0: [CastExpr] (...)...
+#   28|               0: [TypeAccess] byte
+#   28|               1: [IntegerLiteral] 42
+#   29|         19: [LocalVariableDeclStmt] var ...;
+#   29|           0: [TypeAccess] byte
+#   29|           1: [LocalVariableDeclExpr] downcast_byte_3
+#   29|             0: [CastExpr] (...)...
+#   29|               0: [TypeAccess] byte
+#   29|               1: [IntegerLiteral] 298
+#   30|         20: [LocalVariableDeclStmt] var ...;
+#   30|           0: [TypeAccess] byte
+#   30|           1: [LocalVariableDeclExpr] downcast_byte_4
+#   30|             0: [CastExpr] (...)...
+#   30|               0: [TypeAccess] byte
+#   30|               1: [IntegerLiteral] 214
+#   31|         21: [LocalVariableDeclStmt] var ...;
+#   31|           0: [TypeAccess] byte
+#   31|           1: [LocalVariableDeclExpr] downcast_byte_5
+#   31|             0: [CastExpr] (...)...
+#   31|               0: [TypeAccess] byte
+#   31|               1: [MinusExpr] -...
+#   31|                 0: [IntegerLiteral] 214
+#   32|         22: [LocalVariableDeclStmt] var ...;
+#   32|           0: [TypeAccess] short
+#   32|           1: [LocalVariableDeclExpr] downcast_short
+#   32|             0: [CastExpr] (...)...
+#   32|               0: [TypeAccess] short
+#   32|               1: [IntegerLiteral] 32768
+#   33|         23: [LocalVariableDeclStmt] var ...;
+#   33|           0: [TypeAccess] int
+#   33|           1: [LocalVariableDeclExpr] cast_of_non_constant
+#   33|             0: [CastExpr] (...)...
+#   33|               0: [TypeAccess] int
+#   33|               1: [CharacterLiteral] '*'
+#   34|         24: [LocalVariableDeclStmt] var ...;
+#   34|           0: [TypeAccess] long
+#   34|           1: [LocalVariableDeclExpr] cast_to_long
+#   34|             0: [CastExpr] (...)...
+#   34|               0: [TypeAccess] long
+#   34|               1: [IntegerLiteral] 42
+#   36|         25: [LocalVariableDeclStmt] var ...;
+#   36|           0: [TypeAccess] int
+#   36|           1: [LocalVariableDeclExpr] unary_plus
+#   36|             0: [PlusExpr] +...
+#   36|               0: [IntegerLiteral] 42
+#   37|         26: [LocalVariableDeclStmt] var ...;
+#   37|           0: [TypeAccess] int
+#   37|           1: [LocalVariableDeclExpr] parameter_plus
+#   37|             0: [PlusExpr] +...
+#   37|               0: [VarAccess] notConstant
+#   39|         27: [LocalVariableDeclStmt] var ...;
+#   39|           0: [TypeAccess] int
+#   39|           1: [LocalVariableDeclExpr] unary_minus
+#   39|             0: [MinusExpr] -...
+#   39|               0: [IntegerLiteral] 42
+#   40|         28: [LocalVariableDeclStmt] var ...;
+#   40|           0: [TypeAccess] int
+#   40|           1: [LocalVariableDeclExpr] parameter_minus
+#   40|             0: [MinusExpr] -...
+#   40|               0: [VarAccess] notConstant
+#   42|         29: [LocalVariableDeclStmt] var ...;
+#   42|           0: [TypeAccess] boolean
+#   42|           1: [LocalVariableDeclExpr] not
+#   42|             0: [LogNotExpr] !...
+#   42|               0: [BooleanLiteral] true
+#   43|         30: [LocalVariableDeclStmt] var ...;
+#   43|           0: [TypeAccess] int
+#   43|           1: [LocalVariableDeclExpr] bitwise_not
+#   43|             0: [BitNotExpr] ~...
+#   43|               0: [IntegerLiteral] 0
+#   45|         31: [LocalVariableDeclStmt] var ...;
+#   45|           0: [TypeAccess] int
+#   45|           1: [LocalVariableDeclExpr] mul
+#   45|             0: [MulExpr] ... * ...
+#   45|               0: [IntegerLiteral] 7
+#   45|               1: [IntegerLiteral] 9
+#   46|         32: [LocalVariableDeclStmt] var ...;
+#   46|           0: [TypeAccess] int
+#   46|           1: [LocalVariableDeclExpr] mul_parameter
+#   46|             0: [MulExpr] ... * ...
+#   46|               0: [VarAccess] notConstant
+#   46|               1: [VarAccess] notConstant
+#   48|         33: [LocalVariableDeclStmt] var ...;
+#   48|           0: [TypeAccess] int
+#   48|           1: [LocalVariableDeclExpr] div
+#   48|             0: [DivExpr] ... / ...
+#   48|               0: [IntegerLiteral] 168
+#   48|               1: [IntegerLiteral] 4
+#   49|         34: [LocalVariableDeclStmt] var ...;
+#   49|           0: [TypeAccess] int
+#   49|           1: [LocalVariableDeclExpr] div_by_zero
+#   49|             0: [DivExpr] ... / ...
+#   49|               0: [IntegerLiteral] 42
+#   49|               1: [IntegerLiteral] 0
+#   50|         35: [LocalVariableDeclStmt] var ...;
+#   50|           0: [TypeAccess] int
+#   50|           1: [LocalVariableDeclExpr] div_parameter
+#   50|             0: [DivExpr] ... / ...
+#   50|               0: [VarAccess] notConstant
+#   50|               1: [VarAccess] notConstant
+#   52|         36: [LocalVariableDeclStmt] var ...;
+#   52|           0: [TypeAccess] int
+#   52|           1: [LocalVariableDeclExpr] rem
+#   52|             0: [RemExpr] ... % ...
+#   52|               0: [IntegerLiteral] 168
+#   52|               1: [IntegerLiteral] 63
+#   53|         37: [LocalVariableDeclStmt] var ...;
+#   53|           0: [TypeAccess] int
+#   53|           1: [LocalVariableDeclExpr] rem_by_zero
+#   53|             0: [RemExpr] ... % ...
+#   53|               0: [IntegerLiteral] 42
+#   53|               1: [IntegerLiteral] 0
+#   54|         38: [LocalVariableDeclStmt] var ...;
+#   54|           0: [TypeAccess] int
+#   54|           1: [LocalVariableDeclExpr] rem_parameter
+#   54|             0: [RemExpr] ... % ...
+#   54|               0: [VarAccess] notConstant
+#   54|               1: [VarAccess] notConstant
+#   56|         39: [LocalVariableDeclStmt] var ...;
+#   56|           0: [TypeAccess] int
+#   56|           1: [LocalVariableDeclExpr] plus
+#   56|             0: [AddExpr] ... + ...
+#   56|               0: [IntegerLiteral] 10
+#   56|               1: [IntegerLiteral] 32
+#   57|         40: [LocalVariableDeclStmt] var ...;
+#   57|           0: [TypeAccess] int
+#   57|           1: [LocalVariableDeclExpr] plus_parameter
+#   57|             0: [AddExpr] ... + ...
+#   57|               0: [VarAccess] notConstant
+#   57|               1: [VarAccess] notConstant
+#   59|         41: [LocalVariableDeclStmt] var ...;
+#   59|           0: [TypeAccess] int
+#   59|           1: [LocalVariableDeclExpr] minus
+#   59|             0: [SubExpr] ... - ...
+#   59|               0: [IntegerLiteral] 168
+#   59|               1: [IntegerLiteral] 126
+#   60|         42: [LocalVariableDeclStmt] var ...;
+#   60|           0: [TypeAccess] int
+#   60|           1: [LocalVariableDeclExpr] minus_parameter
+#   60|             0: [SubExpr] ... - ...
+#   60|               0: [VarAccess] notConstant
+#   60|               1: [VarAccess] notConstant
+#   62|         43: [LocalVariableDeclStmt] var ...;
+#   62|           0: [TypeAccess] int
+#   62|           1: [LocalVariableDeclExpr] lshift
+#   62|             0: [LShiftExpr] ... << ...
+#   62|               0: [IntegerLiteral] 21
+#   62|               1: [IntegerLiteral] 2
+#   63|         44: [LocalVariableDeclStmt] var ...;
+#   63|           0: [TypeAccess] int
+#   63|           1: [LocalVariableDeclExpr] lshift_parameter
+#   63|             0: [LShiftExpr] ... << ...
+#   63|               0: [VarAccess] notConstant
+#   63|               1: [VarAccess] notConstant
+#   65|         45: [LocalVariableDeclStmt] var ...;
+#   65|           0: [TypeAccess] int
+#   65|           1: [LocalVariableDeclExpr] rshift
+#   65|             0: [RShiftExpr] ... >> ...
+#   65|               0: [MinusExpr] -...
+#   65|                 0: [IntegerLiteral] 1
+#   65|               1: [IntegerLiteral] 2
+#   66|         46: [LocalVariableDeclStmt] var ...;
+#   66|           0: [TypeAccess] int
+#   66|           1: [LocalVariableDeclExpr] urshift
+#   66|             0: [URShiftExpr] ... >>> ...
+#   66|               0: [MinusExpr] -...
+#   66|                 0: [IntegerLiteral] 1
+#   66|               1: [IntegerLiteral] 1
+#   67|         47: [LocalVariableDeclStmt] var ...;
+#   67|           0: [TypeAccess] int
+#   67|           1: [LocalVariableDeclExpr] bitwise_and
+#   67|             0: [AndBitwiseExpr] ... & ...
+#   67|               0: [IntegerLiteral] 63
+#   67|               1: [IntegerLiteral] 42
+#   68|         48: [LocalVariableDeclStmt] var ...;
+#   68|           0: [TypeAccess] int
+#   68|           1: [LocalVariableDeclExpr] bitwise_or
+#   68|             0: [OrBitwiseExpr] ... | ...
+#   68|               0: [IntegerLiteral] 32
+#   68|               1: [IntegerLiteral] 42
+#   69|         49: [LocalVariableDeclStmt] var ...;
+#   69|           0: [TypeAccess] int
+#   69|           1: [LocalVariableDeclExpr] bitwise_xor
+#   69|             0: [XorBitwiseExpr] ... ^ ...
+#   69|               0: [IntegerLiteral] 48
+#   69|               1: [IntegerLiteral] 26
+#   70|         50: [LocalVariableDeclStmt] var ...;
+#   70|           0: [TypeAccess] boolean
+#   70|           1: [LocalVariableDeclExpr] and
+#   70|             0: [AndLogicalExpr] ... && ...
+#   70|               0: [BooleanLiteral] true
+#   70|               1: [BooleanLiteral] false
+#   71|         51: [LocalVariableDeclStmt] var ...;
+#   71|           0: [TypeAccess] boolean
+#   71|           1: [LocalVariableDeclExpr] or
+#   71|             0: [OrLogicalExpr] ... || ...
+#   71|               0: [BooleanLiteral] true
+#   71|               1: [BooleanLiteral] false
+#   72|         52: [LocalVariableDeclStmt] var ...;
+#   72|           0: [TypeAccess] boolean
+#   72|           1: [LocalVariableDeclExpr] lt
+#   72|             0: [LTExpr] ... < ...
+#   72|               0: [IntegerLiteral] 42
+#   72|               1: [IntegerLiteral] 42
+#   73|         53: [LocalVariableDeclStmt] var ...;
+#   73|           0: [TypeAccess] boolean
+#   73|           1: [LocalVariableDeclExpr] le
+#   73|             0: [LEExpr] ... <= ...
+#   73|               0: [IntegerLiteral] 42
+#   73|               1: [IntegerLiteral] 42
+#   74|         54: [LocalVariableDeclStmt] var ...;
+#   74|           0: [TypeAccess] boolean
+#   74|           1: [LocalVariableDeclExpr] gt
+#   74|             0: [GTExpr] ... > ...
+#   74|               0: [IntegerLiteral] 42
+#   74|               1: [IntegerLiteral] 42
+#   75|         55: [LocalVariableDeclStmt] var ...;
+#   75|           0: [TypeAccess] boolean
+#   75|           1: [LocalVariableDeclExpr] gle
+#   75|             0: [GEExpr] ... >= ...
+#   75|               0: [IntegerLiteral] 42
+#   75|               1: [IntegerLiteral] 42
+#   76|         56: [LocalVariableDeclStmt] var ...;
+#   76|           0: [TypeAccess] boolean
+#   76|           1: [LocalVariableDeclExpr] eq
+#   76|             0: [EQExpr] ... == ...
+#   76|               0: [IntegerLiteral] 42
+#   76|               1: [IntegerLiteral] 42
+#   77|         57: [LocalVariableDeclStmt] var ...;
+#   77|           0: [TypeAccess] boolean
+#   77|           1: [LocalVariableDeclExpr] ne
+#   77|             0: [NEExpr] ... != ...
+#   77|               0: [IntegerLiteral] 42
+#   77|               1: [IntegerLiteral] 42
+#   78|         58: [LocalVariableDeclStmt] var ...;
+#   78|           0: [TypeAccess] boolean
+#   78|           1: [LocalVariableDeclExpr] ter
+#   78|             0: [ConditionalExpr] ...?...:...
+#   78|               0: [BooleanLiteral] true
+#   78|               1: [BooleanLiteral] false
+#   78|               2: [BooleanLiteral] true
+#   80|         59: [LocalVariableDeclStmt] var ...;
+#   80|           0: [TypeAccess] boolean
+#   80|           1: [LocalVariableDeclExpr] seq
+#   80|             0: [EQExpr] ... == ...
+#   80|               0: [StringLiteral] "foo"
+#   80|               1: [StringLiteral] "foo"
+#   81|         60: [LocalVariableDeclStmt] var ...;
+#   81|           0: [TypeAccess] boolean
+#   81|           1: [LocalVariableDeclExpr] sneq
+#   81|             0: [NEExpr] ... != ...
+#   81|               0: [StringLiteral] "foo"
+#   81|               1: [StringLiteral] "foo"
+#   83|         61: [LocalVariableDeclStmt] var ...;
+#   83|           0: [TypeAccess] int
+#   83|           1: [LocalVariableDeclExpr] par
+#   83|             0: [IntegerLiteral] 42
+#   84|         62: [LocalVariableDeclStmt] var ...;
+#   84|           0: [TypeAccess] int
+#   84|           1: [LocalVariableDeclExpr] par_not_constant
+#   84|             0: [VarAccess] notConstant
+#   86|         63: [LocalVariableDeclStmt] var ...;
+#   86|           0: [TypeAccess] int
+#   86|           1: [LocalVariableDeclExpr] var_field
+#   86|             0: [VarAccess] final_field
+#   87|         64: [LocalVariableDeclStmt] var ...;
+#   87|           0: [TypeAccess] int
+#   87|           1: [LocalVariableDeclExpr] final_local
+#   87|             0: [IntegerLiteral] 42
+#   88|         65: [LocalVariableDeclStmt] var ...;
+#   88|           0: [TypeAccess] int
+#   88|           1: [LocalVariableDeclExpr] var_local
+#   88|             0: [VarAccess] final_local
+#   89|         66: [LocalVariableDeclStmt] var ...;
+#   89|           0: [TypeAccess] int
+#   89|           1: [LocalVariableDeclExpr] var_param
+#   89|             0: [VarAccess] notConstant
+#   90|         67: [LocalVariableDeclStmt] var ...;
+#   90|           0: [TypeAccess] int
+#   90|           1: [LocalVariableDeclExpr] var_nonfinald_local
+#   90|             0: [VarAccess] var_field

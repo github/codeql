@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+  Dependency injection in AngularJS is done by providing the names of
+  the desired dependencies. Providing the same name multiple times is
+  redundant since the AngularJS injector uses a cache for instantiated
+  dependencies.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Only include the name of each dependency once.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows an AngularJS controller with <code>$cookies</code> as a duplicate dependency.
+</p>
+
+<sample src="examples/DuplicateDependency.js"/>
+
+<p>
+This is problematic, since the programmer could be led to believe that the two parameters <code>$cookies1</code> and <code>$cookies2</code> are different instances, which they are not.
+</p>
+
+<p>
+Instead, the dependency should only be listed once:
+</p>
+
+<sample src="examples/DuplicateDependency-fixed.js"/>
+</example>
+
+<references>
+<li>AngularJS Developer Guide: <a href="https://docs.angularjs.org/guide/di">Dependency Injection</a>.</li>
+</references>
+</qhelp>

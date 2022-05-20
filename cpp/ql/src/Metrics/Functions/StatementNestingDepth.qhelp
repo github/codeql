@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This metric measures the maximum nesting depth in a file. This includes nested branch and loop statements, but not blocks.
+</p>
+
+<p>
+Deep nesting makes code very difficult to read and modify, and is also a sign that a function/class has lost cohesion
+(i.e. is doing too many unrelated things). Try to keep nesting depth below 7 levels.
+</p>
+
+</overview>
+<recommendation>
+<p>Reduce the nesting in the file by putting the code in the inner loops/branches in separate functions.</p>
+
+</recommendation>
+<references>
+
+<li>
+  M. Fowler. <em>Refactoring</em>. Addison-Wesley, 1999.
+</li>
+<li>
+  <a href="https://en.wikipedia.org/wiki/Code_refactoring">Wikipedia: Code refactoring</a>
+</li>
+<li>
+  <a href="http://www.jot.fm/issues/issue_2005_01/column1/">Refactoring as Meta Programming?</a>
+</li>
+
+</references>
+</qhelp>

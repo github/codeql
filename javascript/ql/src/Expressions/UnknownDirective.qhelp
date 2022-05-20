@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      If a directive is accidentally misspelled, it will have no effect.
+    </p>
+  </overview>
+  <recommendation>
+
+    <p>
+      Correct the misspelling.
+    </p>
+
+  </recommendation>
+  <example>
+
+    <p>
+      The following code snippet shows a function that contains a
+      <code>"usestrict"</code> directive.  Most likely, the programmer
+      intended this to be a <code>"use strict"</code> directive, but
+      due to the typo, the function will not execute in strict mode.
+    </p>
+
+    <sample src="examples/UnknownDirective.js" />
+
+    <p>
+      Correct the misspelling by replacing <code>"usestrict"</code>
+      with <code>"use strict"</code>.
+    </p>
+  </example>
+
+  <references>
+    <li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode">"use strict"</a></li>
+    <li>asm.js: <a href="http://asmjs.org/spec/latest/#validation">"use asm"</a></li>
+  </references>
+</qhelp>

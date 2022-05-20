@@ -1,0 +1,54 @@
+edges
+| sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:21:24:21:77 | ControlFlowNode for BinaryExpr |
+| sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:24:38:24:95 | ControlFlowNode for BinaryExpr |
+| sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:25:26:25:83 | ControlFlowNode for BinaryExpr |
+| sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:26:28:26:85 | ControlFlowNode for BinaryExpr |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:27:28:27:87 | ControlFlowNode for Attribute() |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:31:50:31:72 | ControlFlowNode for Attribute() |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:41:26:41:33 | ControlFlowNode for username |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:42:31:42:38 | ControlFlowNode for username |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:43:30:43:37 | ControlFlowNode for username |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:44:35:44:42 | ControlFlowNode for username |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:45:41:45:48 | ControlFlowNode for username |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:46:46:46:53 | ControlFlowNode for username |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:47:47:47:54 | ControlFlowNode for username |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:48:52:48:59 | ControlFlowNode for username |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:50:18:50:25 | ControlFlowNode for username |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:51:24:51:31 | ControlFlowNode for username |
+nodes
+| sql_injection.py:14:15:14:22 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| sql_injection.py:21:24:21:77 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| sql_injection.py:24:38:24:95 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| sql_injection.py:25:26:25:83 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| sql_injection.py:26:28:26:85 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| sqlalchemy_textclause.py:27:28:27:87 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| sqlalchemy_textclause.py:31:50:31:72 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| sqlalchemy_textclause.py:41:26:41:33 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| sqlalchemy_textclause.py:42:31:42:38 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| sqlalchemy_textclause.py:43:30:43:37 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| sqlalchemy_textclause.py:44:35:44:42 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| sqlalchemy_textclause.py:45:41:45:48 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| sqlalchemy_textclause.py:46:46:46:53 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| sqlalchemy_textclause.py:47:47:47:54 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| sqlalchemy_textclause.py:48:52:48:59 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| sqlalchemy_textclause.py:50:18:50:25 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+| sqlalchemy_textclause.py:51:24:51:31 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+subpaths
+#select
+| sql_injection.py:21:24:21:77 | ControlFlowNode for BinaryExpr | sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:21:24:21:77 | ControlFlowNode for BinaryExpr | This SQL query depends on $@. | sql_injection.py:14:15:14:22 | ControlFlowNode for username | a user-provided value |
+| sql_injection.py:24:38:24:95 | ControlFlowNode for BinaryExpr | sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:24:38:24:95 | ControlFlowNode for BinaryExpr | This SQL query depends on $@. | sql_injection.py:14:15:14:22 | ControlFlowNode for username | a user-provided value |
+| sql_injection.py:25:26:25:83 | ControlFlowNode for BinaryExpr | sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:25:26:25:83 | ControlFlowNode for BinaryExpr | This SQL query depends on $@. | sql_injection.py:14:15:14:22 | ControlFlowNode for username | a user-provided value |
+| sql_injection.py:26:28:26:85 | ControlFlowNode for BinaryExpr | sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:26:28:26:85 | ControlFlowNode for BinaryExpr | This SQL query depends on $@. | sql_injection.py:14:15:14:22 | ControlFlowNode for username | a user-provided value |
+| sqlalchemy_textclause.py:27:28:27:87 | ControlFlowNode for Attribute() | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:27:28:27:87 | ControlFlowNode for Attribute() | This SQL query depends on $@. | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
+| sqlalchemy_textclause.py:31:50:31:72 | ControlFlowNode for Attribute() | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:31:50:31:72 | ControlFlowNode for Attribute() | This SQL query depends on $@. | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
+| sqlalchemy_textclause.py:41:26:41:33 | ControlFlowNode for username | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:41:26:41:33 | ControlFlowNode for username | This SQL query depends on $@. | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
+| sqlalchemy_textclause.py:42:31:42:38 | ControlFlowNode for username | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:42:31:42:38 | ControlFlowNode for username | This SQL query depends on $@. | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
+| sqlalchemy_textclause.py:43:30:43:37 | ControlFlowNode for username | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:43:30:43:37 | ControlFlowNode for username | This SQL query depends on $@. | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
+| sqlalchemy_textclause.py:44:35:44:42 | ControlFlowNode for username | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:44:35:44:42 | ControlFlowNode for username | This SQL query depends on $@. | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
+| sqlalchemy_textclause.py:45:41:45:48 | ControlFlowNode for username | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:45:41:45:48 | ControlFlowNode for username | This SQL query depends on $@. | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
+| sqlalchemy_textclause.py:46:46:46:53 | ControlFlowNode for username | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:46:46:46:53 | ControlFlowNode for username | This SQL query depends on $@. | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
+| sqlalchemy_textclause.py:47:47:47:54 | ControlFlowNode for username | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:47:47:47:54 | ControlFlowNode for username | This SQL query depends on $@. | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
+| sqlalchemy_textclause.py:48:52:48:59 | ControlFlowNode for username | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:48:52:48:59 | ControlFlowNode for username | This SQL query depends on $@. | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
+| sqlalchemy_textclause.py:50:18:50:25 | ControlFlowNode for username | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:50:18:50:25 | ControlFlowNode for username | This SQL query depends on $@. | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |
+| sqlalchemy_textclause.py:51:24:51:31 | ControlFlowNode for username | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | sqlalchemy_textclause.py:51:24:51:31 | ControlFlowNode for username | This SQL query depends on $@. | sqlalchemy_textclause.py:23:15:23:22 | ControlFlowNode for username | a user-provided value |

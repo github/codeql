@@ -1,0 +1,36 @@
+| tst.ts:2:3:2:6 | name | string |
+| tst.ts:3:3:3:10 | children | T[] |
+| tst.ts:6:5:6:11 | context | T |
+| tst.ts:6:18:17:1 | {\\n  nam ... }\\n  ]\\n} | T |
+| tst.ts:7:3:7:6 | name | string |
+| tst.ts:7:9:7:11 | 'x' | "x" |
+| tst.ts:8:3:8:10 | children | ({ name: string; } \| { name: string; children: ... |
+| tst.ts:8:13:16:3 | [\\n    { ...   }\\n  ] | T[] |
+| tst.ts:9:5:9:18 | { name: 'x1' } | T |
+| tst.ts:9:7:9:10 | name | string |
+| tst.ts:9:13:9:16 | 'x1' | "x1" |
+| tst.ts:10:5:15:5 | {\\n      ... ]\\n    } | T |
+| tst.ts:11:7:11:10 | name | string |
+| tst.ts:11:13:11:16 | 'x2' | "x2" |
+| tst.ts:12:7:12:14 | children | { name: string; }[] |
+| tst.ts:12:17:14:7 | [\\n      ...       ] | T[] |
+| tst.ts:13:9:13:22 | { name: 'x3' } | T |
+| tst.ts:13:11:13:14 | name | string |
+| tst.ts:13:17:13:20 | 'x3' | "x3" |
+| tst.ts:19:5:19:13 | nocontext | { name: string; children: ({ name: string; chil... |
+| tst.ts:19:17:30:1 | {\\n  nam ... }\\n  ]\\n} | { name: string; children: ({ name: string; } \| ... |
+| tst.ts:20:3:20:6 | name | string |
+| tst.ts:20:9:20:11 | 'x' | "x" |
+| tst.ts:21:3:21:10 | children | ({ name: string; } \| { name: string; children: ... |
+| tst.ts:21:13:29:3 | [\\n    { ...   }\\n  ] | ({ name: string; } \| { name: string; children: ... |
+| tst.ts:22:5:22:18 | { name: 'x1' } | { name: string; } |
+| tst.ts:22:7:22:10 | name | string |
+| tst.ts:22:13:22:16 | 'x1' | "x1" |
+| tst.ts:23:5:28:5 | {\\n      ... ]\\n    } | { name: string; children: { name: string; }[]; } |
+| tst.ts:24:7:24:10 | name | string |
+| tst.ts:24:13:24:16 | 'x2' | "x2" |
+| tst.ts:25:7:25:14 | children | { name: string; }[] |
+| tst.ts:25:17:27:7 | [\\n      ...       ] | { name: string; }[] |
+| tst.ts:26:9:26:22 | { name: 'x3' } | { name: string; } |
+| tst.ts:26:11:26:14 | name | string |
+| tst.ts:26:17:26:20 | 'x3' | "x3" |

@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+A public method or constructor that throws an exception but
+does not have a Javadoc tag for the exception makes an API more difficult to understand and maintain.
+This includes checked exceptions in <code>throws</code> clauses and unchecked exceptions that are
+explicitly thrown in <code>throw</code> statements.
+</p>
+
+</overview>
+<recommendation>
+
+<p>The Javadoc comment for a method or constructor should include a Javadoc tag element that 
+describes each thrown exception.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a good Javadoc comment, which clearly explains the method's 
+thrown exception.</p>
+
+<sample src="MissingJavadocMethods.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Items 44 and 62.
+  Addison-Wesley, 2008.
+</li>
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-javadoc.htm">Java Compiler Javadoc Preferences</a>.
+</li>
+<li>
+  Java SE Documentation:
+  <a href="https://www.oracle.com/technical-resources/articles/java/javadoc-tool.html">How to Write Doc Comments for the Javadoc Tool</a>, 
+  <a href="https://www.oracle.com/java/technologies/javase/api-specifications.html">Requirements for Writing Java API Specifications</a>.
+</li>
+
+
+</references>
+</qhelp>

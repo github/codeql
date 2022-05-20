@@ -1,0 +1,18 @@
+| questionexpr | questionexpr.c:1:6:1:6 | f | 1 | 1 | questionexpr.c:1:10:4:1 | questionexpr.c:1:10:4:1 | questionexpr.c:1:10:4:1 | { ... } | 2: declaration |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 2 | 2 | questionexpr.c:2:2:2:19 | questionexpr.c:2:2:2:19 | questionexpr.c:2:2:2:19 | declaration | 3: ExprStmt |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 3 | questionexpr.c:3:2:3:28 | questionexpr.c:3:2:3:28 | questionexpr.c:3:2:3:28 | ExprStmt | 3: ... ? ... : ... |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 4 | questionexpr.c:3:6:3:27 | questionexpr.c:3:6:3:27 | questionexpr.c:3:6:3:27 | ... ? ... : ... | 3: a |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 5 | questionexpr.c:3:6:3:6 | questionexpr.c:3:6:3:6 | questionexpr.c:3:6:3:6 | a | 3: b |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 6 | questionexpr.c:3:11:3:11 | questionexpr.c:3:11:3:11 | questionexpr.c:3:11:3:11 | b | 3: ... == ... |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 7 | questionexpr.c:3:6:3:11 | questionexpr.c:3:6:3:11 | questionexpr.c:3:6:3:11 | ... == ... | <false> 3: d |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 7 | questionexpr.c:3:6:3:11 | questionexpr.c:3:6:3:11 | questionexpr.c:3:6:3:11 | ... == ... | <true> 3: c |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 8 | questionexpr.c:3:15:3:15 | questionexpr.c:3:15:3:15 | questionexpr.c:3:15:3:15 | c | 3: b |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 8 | questionexpr.c:3:23:3:23 | questionexpr.c:3:23:3:23 | questionexpr.c:3:23:3:23 | d | 3: b |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 9 | questionexpr.c:3:19:3:19 | questionexpr.c:3:19:3:19 | questionexpr.c:3:19:3:19 | b | 3: ... + ... |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 9 | questionexpr.c:3:27:3:27 | questionexpr.c:3:27:3:27 | questionexpr.c:3:27:3:27 | b | 3: ... - ... |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 10 | questionexpr.c:3:15:3:19 | questionexpr.c:3:15:3:19 | questionexpr.c:3:15:3:19 | ... + ... | 3: x |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 10 | questionexpr.c:3:23:3:27 | questionexpr.c:3:23:3:27 | questionexpr.c:3:23:3:27 | ... - ... | 3: x |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 14 | questionexpr.c:3:2:3:2 | questionexpr.c:3:2:3:2 | questionexpr.c:3:2:3:2 | x | 3: ... = ... |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 3 | 15 | questionexpr.c:3:2:3:27 | questionexpr.c:3:2:3:27 | questionexpr.c:3:2:3:27 | ... = ... | 4: return ... |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 4 | 16 | questionexpr.c:4:1:4:1 | questionexpr.c:4:1:4:1 | questionexpr.c:4:1:4:1 | return ... | 4: f |
+| questionexpr | questionexpr.c:1:6:1:6 | f | 4 | 17 | questionexpr.c:1:6:1:6 | questionexpr.c:1:6:1:6 | questionexpr.c:1:6:1:6 | f | <none> |

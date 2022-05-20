@@ -1,0 +1,1 @@
+| file1.c:3:5:3:14 | globalInt1 | The global variable globalInt1 is not accessed outside of file1.c and could be made static. |

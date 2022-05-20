@@ -1,0 +1,6 @@
+WARNING: Predicate aTwistedRequestHandlerClass has been deprecated and may be removed in future (Classes.ql:6,13-40)
+| class MyRequestHandler1 | test.py:3 |
+| class MyRequestHandler2 | test.py:23 |
+| class MyRequestHandler3 | test.py:27 |
+| class MyRequestHandler4 | test.py:38 |
+| class MyRequestHandler5 | test.py:42 |

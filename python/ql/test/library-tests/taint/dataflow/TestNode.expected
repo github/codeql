@@ -1,0 +1,58 @@
+| Taint Data flow | test.py:3 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:6 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:7 | ControlFlowNode for s |  |
+| Taint Data flow | test.py:10 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:12 | ControlFlowNode for arg | p0 = Data flow |
+| Taint Data flow | test.py:13 | ControlFlowNode for arg | p0 = Data flow |
+| Taint Data flow | test.py:16 | ControlFlowNode for source() |  |
+| Taint Data flow | test.py:17 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:20 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:21 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:24 | ControlFlowNode for source() |  |
+| Taint Data flow | test.py:25 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:31 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:37 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:41 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:44 | ControlFlowNode for source() |  |
+| Taint Data flow | test.py:46 | ControlFlowNode for arg | p0 = Data flow |
+| Taint Data flow | test.py:47 | ControlFlowNode for arg | p0 = Data flow |
+| Taint Data flow | test.py:49 | ControlFlowNode for arg | p1 = Data flow |
+| Taint Data flow | test.py:51 | ControlFlowNode for arg | p1 = Data flow |
+| Taint Data flow | test.py:54 | ControlFlowNode for source2() |  |
+| Taint Data flow | test.py:55 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:62 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:63 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:67 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:70 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:72 | ControlFlowNode for arg | p0 = Data flow |
+| Taint Data flow | test.py:73 | ControlFlowNode for arg | p0 = Data flow |
+| Taint Data flow | test.py:76 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:77 | ControlFlowNode for hub() |  |
+| Taint Data flow | test.py:77 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:78 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:108 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:112 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:118 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:120 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:128 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:129 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:139 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:140 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:143 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:144 | ControlFlowNode for s |  |
+| Taint Data flow | test.py:145 | ControlFlowNode for s |  |
+| Taint Data flow | test.py:148 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:149 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:158 | ControlFlowNode for SOURCE |  |
+| Taint Data flow | test.py:159 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:160 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:163 | ControlFlowNode for t |  |
+| Taint Data flow | test.py:166 | ControlFlowNode for t |  |
+| Taint [Data flow] | test.py:148 | ControlFlowNode for List |  |
+| Taint [Data flow] | test.py:150 | ControlFlowNode for l |  |
+| Taint [Data flow] | test.py:154 | ControlFlowNode for l |  |
+| Taint [Data flow] | test.py:154 | ControlFlowNode for list() |  |
+| Taint {Data flow} | test.py:149 | ControlFlowNode for Dict |  |
+| Taint {Data flow} | test.py:151 | ControlFlowNode for d |  |
+| Taint {Data flow} | test.py:155 | ControlFlowNode for d |  |
+| Taint {Data flow} | test.py:155 | ControlFlowNode for dict() |  |

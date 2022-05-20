@@ -1,0 +1,11 @@
+| localvars/LocalVarTest.java:7:9:7:28 | var ...; | 0 | localvars/LocalVarTest.java:7:9:7:11 | int |
+| localvars/LocalVarTest.java:7:9:7:28 | var ...; | 1 | localvars/LocalVarTest.java:7:13:7:18 | x |
+| localvars/LocalVarTest.java:7:9:7:28 | var ...; | 2 | localvars/LocalVarTest.java:7:22:7:27 | y |
+| localvars/LocalVarTest.java:8:9:8:20 | var ...; | 0 | localvars/LocalVarTest.java:8:9:8:11 | int |
+| localvars/LocalVarTest.java:8:9:8:20 | var ...; | 1 | localvars/LocalVarTest.java:8:13:8:18 | z |
+| localvars/LocalVarTest.java:9:9:9:35 | var ...; | 0 | localvars/LocalVarTest.java:9:9:9:20 | List<String> |
+| localvars/LocalVarTest.java:9:9:9:35 | var ...; | 1 | localvars/LocalVarTest.java:9:22:9:23 | l1 |
+| localvars/LocalVarTest.java:9:9:9:35 | var ...; | 2 | localvars/LocalVarTest.java:9:26:9:34 | l2 |
+| localvars/LocalVarTest.java:12:13:12:33 | var ...; | 0 | localvars/LocalVarTest.java:12:13:12:18 | Object |
+| localvars/LocalVarTest.java:12:13:12:33 | var ...; | 1 | localvars/LocalVarTest.java:12:20:12:27 | o |
+| localvars/LocalVarTest.java:12:13:12:33 | var ...; | 2 | localvars/LocalVarTest.java:12:30:12:30 | p |

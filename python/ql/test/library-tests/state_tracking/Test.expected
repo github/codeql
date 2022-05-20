@@ -1,0 +1,313 @@
+| global.py:22 | global.py:22:1:22:11 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| global.py:22 | global.py:22:1:22:11 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| global.py:22 | global.py:22:1:22:11 | Entry node for Function bad1 | global.py:32 from import | frobnicated | false |
+| global.py:22 | global.py:22:1:22:11 | Entry node for Function bad1 | global.py:32 from import | initialized | false |
+| global.py:22 | global.py:22:1:22:11 | Entry node for Function bad1 | runtime | frobnicated | true |
+| global.py:22 | global.py:22:1:22:11 | Entry node for Function bad1 | runtime | initialized | true |
+| global.py:22 | global.py:22:1:22:11 | Exit node for Function bad1 | global.py:32 from import | frobnicated | true |
+| global.py:22 | global.py:22:1:22:11 | Exit node for Function bad1 | global.py:32 from import | initialized | false |
+| global.py:22 | global.py:22:1:22:11 | Exit node for Function bad1 | runtime | frobnicated | true |
+| global.py:22 | global.py:22:1:22:11 | Exit node for Function bad1 | runtime | initialized | true |
+| global.py:22 | global.py:22:5:22:8 | ControlFlowNode for bad1 | import | frobnicated | false |
+| global.py:22 | global.py:22:5:22:8 | ControlFlowNode for bad1 | import | initialized | false |
+| global.py:23 | global.py:23:5:23:14 | ControlFlowNode for frobnicate | global.py:32 from import | frobnicated | false |
+| global.py:23 | global.py:23:5:23:14 | ControlFlowNode for frobnicate | global.py:32 from import | initialized | false |
+| global.py:23 | global.py:23:5:23:14 | ControlFlowNode for frobnicate | runtime | frobnicated | true |
+| global.py:23 | global.py:23:5:23:14 | ControlFlowNode for frobnicate | runtime | initialized | true |
+| global.py:23 | global.py:23:5:23:16 | ControlFlowNode for frobnicate() | global.py:32 from import | frobnicated | true |
+| global.py:23 | global.py:23:5:23:16 | ControlFlowNode for frobnicate() | global.py:32 from import | initialized | false |
+| global.py:23 | global.py:23:5:23:16 | ControlFlowNode for frobnicate() | runtime | frobnicated | true |
+| global.py:23 | global.py:23:5:23:16 | ControlFlowNode for frobnicate() | runtime | initialized | true |
+| global.py:25 | global.py:25:1:25:11 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| global.py:25 | global.py:25:1:25:11 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| global.py:25 | global.py:25:1:25:11 | Entry node for Function bad2 | global.py:31 from import | frobnicated | false |
+| global.py:25 | global.py:25:1:25:11 | Entry node for Function bad2 | global.py:31 from import | initialized | false |
+| global.py:25 | global.py:25:1:25:11 | Entry node for Function bad2 | runtime | frobnicated | true |
+| global.py:25 | global.py:25:1:25:11 | Entry node for Function bad2 | runtime | initialized | true |
+| global.py:25 | global.py:25:1:25:11 | Exit node for Function bad2 | global.py:31 from import | frobnicated | false |
+| global.py:25 | global.py:25:1:25:11 | Exit node for Function bad2 | global.py:31 from import | initialized | false |
+| global.py:25 | global.py:25:1:25:11 | Exit node for Function bad2 | runtime | frobnicated | true |
+| global.py:25 | global.py:25:1:25:11 | Exit node for Function bad2 | runtime | initialized | true |
+| global.py:25 | global.py:25:5:25:8 | ControlFlowNode for bad2 | import | frobnicated | false |
+| global.py:25 | global.py:25:5:25:8 | ControlFlowNode for bad2 | import | initialized | false |
+| global.py:26 | global.py:26:5:26:14 | ControlFlowNode for exacerbate | global.py:31 from import | frobnicated | false |
+| global.py:26 | global.py:26:5:26:14 | ControlFlowNode for exacerbate | global.py:31 from import | initialized | false |
+| global.py:26 | global.py:26:5:26:14 | ControlFlowNode for exacerbate | runtime | frobnicated | true |
+| global.py:26 | global.py:26:5:26:14 | ControlFlowNode for exacerbate | runtime | initialized | true |
+| global.py:26 | global.py:26:5:26:16 | ControlFlowNode for exacerbate() | global.py:31 from import | frobnicated | false |
+| global.py:26 | global.py:26:5:26:16 | ControlFlowNode for exacerbate() | global.py:31 from import | initialized | false |
+| global.py:26 | global.py:26:5:26:16 | ControlFlowNode for exacerbate() | runtime | frobnicated | true |
+| global.py:26 | global.py:26:5:26:16 | ControlFlowNode for exacerbate() | runtime | initialized | true |
+| global.py:28 | global.py:28:1:28:11 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| global.py:28 | global.py:28:1:28:11 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| global.py:28 | global.py:28:1:28:11 | Entry node for Function good | global.py:34 from import | frobnicated | true |
+| global.py:28 | global.py:28:1:28:11 | Entry node for Function good | global.py:34 from import | initialized | true |
+| global.py:28 | global.py:28:1:28:11 | Entry node for Function good | runtime | frobnicated | true |
+| global.py:28 | global.py:28:1:28:11 | Entry node for Function good | runtime | initialized | true |
+| global.py:28 | global.py:28:1:28:11 | Exit node for Function good | global.py:34 from import | frobnicated | true |
+| global.py:28 | global.py:28:1:28:11 | Exit node for Function good | global.py:34 from import | initialized | true |
+| global.py:28 | global.py:28:1:28:11 | Exit node for Function good | runtime | frobnicated | true |
+| global.py:28 | global.py:28:1:28:11 | Exit node for Function good | runtime | initialized | true |
+| global.py:28 | global.py:28:5:28:8 | ControlFlowNode for good | import | frobnicated | false |
+| global.py:28 | global.py:28:5:28:8 | ControlFlowNode for good | import | initialized | false |
+| global.py:29 | global.py:29:5:29:14 | ControlFlowNode for exacerbate | global.py:34 from import | frobnicated | true |
+| global.py:29 | global.py:29:5:29:14 | ControlFlowNode for exacerbate | global.py:34 from import | initialized | true |
+| global.py:29 | global.py:29:5:29:14 | ControlFlowNode for exacerbate | runtime | frobnicated | true |
+| global.py:29 | global.py:29:5:29:14 | ControlFlowNode for exacerbate | runtime | initialized | true |
+| global.py:29 | global.py:29:5:29:16 | ControlFlowNode for exacerbate() | global.py:34 from import | frobnicated | true |
+| global.py:29 | global.py:29:5:29:16 | ControlFlowNode for exacerbate() | global.py:34 from import | initialized | true |
+| global.py:29 | global.py:29:5:29:16 | ControlFlowNode for exacerbate() | runtime | frobnicated | true |
+| global.py:29 | global.py:29:5:29:16 | ControlFlowNode for exacerbate() | runtime | initialized | true |
+| global.py:31 | global.py:31:1:31:4 | ControlFlowNode for bad2 | import | frobnicated | false |
+| global.py:31 | global.py:31:1:31:4 | ControlFlowNode for bad2 | import | initialized | false |
+| global.py:31 | global.py:31:1:31:6 | ControlFlowNode for bad2() | import | frobnicated | false |
+| global.py:31 | global.py:31:1:31:6 | ControlFlowNode for bad2() | import | initialized | false |
+| global.py:32 | global.py:32:1:32:4 | ControlFlowNode for bad1 | import | frobnicated | false |
+| global.py:32 | global.py:32:1:32:4 | ControlFlowNode for bad1 | import | initialized | false |
+| global.py:32 | global.py:32:1:32:6 | ControlFlowNode for bad1() | import | frobnicated | true |
+| global.py:32 | global.py:32:1:32:6 | ControlFlowNode for bad1() | import | initialized | false |
+| global.py:33 | global.py:33:1:33:10 | ControlFlowNode for initialize | import | frobnicated | true |
+| global.py:33 | global.py:33:1:33:10 | ControlFlowNode for initialize | import | initialized | false |
+| global.py:33 | global.py:33:1:33:12 | ControlFlowNode for initialize() | import | frobnicated | true |
+| global.py:33 | global.py:33:1:33:12 | ControlFlowNode for initialize() | import | initialized | true |
+| global.py:34 | global.py:34:1:34:4 | ControlFlowNode for good | import | frobnicated | true |
+| global.py:34 | global.py:34:1:34:4 | ControlFlowNode for good | import | initialized | true |
+| global.py:34 | global.py:34:1:34:6 | ControlFlowNode for good() | import | frobnicated | true |
+| global.py:34 | global.py:34:1:34:6 | ControlFlowNode for good() | import | initialized | true |
+| test.py:21 | test.py:21:1:21:12 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| test.py:21 | test.py:21:1:21:12 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| test.py:21 | test.py:21:1:21:12 | Entry node for Function good1 | runtime | frobnicated | false |
+| test.py:21 | test.py:21:1:21:12 | Entry node for Function good1 | runtime | initialized | false |
+| test.py:21 | test.py:21:1:21:12 | Exit node for Function good1 | runtime | frobnicated | true |
+| test.py:21 | test.py:21:1:21:12 | Exit node for Function good1 | runtime | initialized | true |
+| test.py:21 | test.py:21:5:21:9 | ControlFlowNode for good1 | import | frobnicated | false |
+| test.py:21 | test.py:21:5:21:9 | ControlFlowNode for good1 | import | initialized | false |
+| test.py:22 | test.py:22:5:22:14 | ControlFlowNode for initialize | runtime | frobnicated | false |
+| test.py:22 | test.py:22:5:22:14 | ControlFlowNode for initialize | runtime | initialized | false |
+| test.py:22 | test.py:22:5:22:16 | ControlFlowNode for initialize() | runtime | frobnicated | false |
+| test.py:22 | test.py:22:5:22:16 | ControlFlowNode for initialize() | runtime | initialized | true |
+| test.py:23 | test.py:23:5:23:14 | ControlFlowNode for frobnicate | runtime | frobnicated | false |
+| test.py:23 | test.py:23:5:23:14 | ControlFlowNode for frobnicate | runtime | initialized | true |
+| test.py:23 | test.py:23:5:23:16 | ControlFlowNode for frobnicate() | runtime | frobnicated | true |
+| test.py:23 | test.py:23:5:23:16 | ControlFlowNode for frobnicate() | runtime | initialized | true |
+| test.py:24 | test.py:24:5:24:14 | ControlFlowNode for exacerbate | runtime | frobnicated | true |
+| test.py:24 | test.py:24:5:24:14 | ControlFlowNode for exacerbate | runtime | initialized | true |
+| test.py:24 | test.py:24:5:24:16 | ControlFlowNode for exacerbate() | runtime | frobnicated | true |
+| test.py:24 | test.py:24:5:24:16 | ControlFlowNode for exacerbate() | runtime | initialized | true |
+| test.py:26 | test.py:26:1:26:16 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| test.py:26 | test.py:26:1:26:16 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| test.py:26 | test.py:26:1:26:16 | Entry node for Function good2 | runtime | frobnicated | false |
+| test.py:26 | test.py:26:1:26:16 | Entry node for Function good2 | runtime | initialized | false |
+| test.py:26 | test.py:26:1:26:16 | Exit node for Function good2 | runtime | frobnicated | false |
+| test.py:26 | test.py:26:1:26:16 | Exit node for Function good2 | runtime | frobnicated | true |
+| test.py:26 | test.py:26:1:26:16 | Exit node for Function good2 | runtime | initialized | false |
+| test.py:26 | test.py:26:1:26:16 | Exit node for Function good2 | runtime | initialized | true |
+| test.py:26 | test.py:26:5:26:9 | ControlFlowNode for good2 | import | frobnicated | false |
+| test.py:26 | test.py:26:5:26:9 | ControlFlowNode for good2 | import | initialized | false |
+| test.py:26 | test.py:26:11:26:14 | ControlFlowNode for test | runtime | frobnicated | false |
+| test.py:26 | test.py:26:11:26:14 | ControlFlowNode for test | runtime | initialized | false |
+| test.py:27 | test.py:27:8:27:11 | ControlFlowNode for test | runtime | frobnicated | false |
+| test.py:27 | test.py:27:8:27:11 | ControlFlowNode for test | runtime | initialized | false |
+| test.py:28 | test.py:28:9:28:18 | ControlFlowNode for initialize | runtime | frobnicated | false |
+| test.py:28 | test.py:28:9:28:18 | ControlFlowNode for initialize | runtime | initialized | false |
+| test.py:28 | test.py:28:9:28:20 | ControlFlowNode for initialize() | runtime | frobnicated | false |
+| test.py:28 | test.py:28:9:28:20 | ControlFlowNode for initialize() | runtime | initialized | true |
+| test.py:29 | test.py:29:8:29:11 | ControlFlowNode for test | runtime | frobnicated | false |
+| test.py:29 | test.py:29:8:29:11 | ControlFlowNode for test | runtime | frobnicated | false |
+| test.py:29 | test.py:29:8:29:11 | ControlFlowNode for test | runtime | initialized | false |
+| test.py:29 | test.py:29:8:29:11 | ControlFlowNode for test | runtime | initialized | true |
+| test.py:30 | test.py:30:9:30:18 | ControlFlowNode for frobnicate | runtime | frobnicated | false |
+| test.py:30 | test.py:30:9:30:18 | ControlFlowNode for frobnicate | runtime | initialized | true |
+| test.py:30 | test.py:30:9:30:20 | ControlFlowNode for frobnicate() | runtime | frobnicated | true |
+| test.py:30 | test.py:30:9:30:20 | ControlFlowNode for frobnicate() | runtime | initialized | true |
+| test.py:32 | test.py:32:1:32:20 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| test.py:32 | test.py:32:1:32:20 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| test.py:32 | test.py:32:1:32:20 | Entry node for Function init_and_frob | runtime | frobnicated | false |
+| test.py:32 | test.py:32:1:32:20 | Entry node for Function init_and_frob | runtime | initialized | false |
+| test.py:32 | test.py:32:1:32:20 | Entry node for Function init_and_frob | test.py:37 from runtime | frobnicated | false |
+| test.py:32 | test.py:32:1:32:20 | Entry node for Function init_and_frob | test.py:37 from runtime | initialized | false |
+| test.py:32 | test.py:32:1:32:20 | Exit node for Function init_and_frob | runtime | frobnicated | true |
+| test.py:32 | test.py:32:1:32:20 | Exit node for Function init_and_frob | runtime | initialized | true |
+| test.py:32 | test.py:32:1:32:20 | Exit node for Function init_and_frob | test.py:37 from runtime | frobnicated | true |
+| test.py:32 | test.py:32:1:32:20 | Exit node for Function init_and_frob | test.py:37 from runtime | initialized | true |
+| test.py:32 | test.py:32:5:32:17 | ControlFlowNode for init_and_frob | import | frobnicated | false |
+| test.py:32 | test.py:32:5:32:17 | ControlFlowNode for init_and_frob | import | initialized | false |
+| test.py:33 | test.py:33:5:33:14 | ControlFlowNode for initialize | runtime | frobnicated | false |
+| test.py:33 | test.py:33:5:33:14 | ControlFlowNode for initialize | runtime | initialized | false |
+| test.py:33 | test.py:33:5:33:14 | ControlFlowNode for initialize | test.py:37 from runtime | frobnicated | false |
+| test.py:33 | test.py:33:5:33:14 | ControlFlowNode for initialize | test.py:37 from runtime | initialized | false |
+| test.py:33 | test.py:33:5:33:16 | ControlFlowNode for initialize() | runtime | frobnicated | false |
+| test.py:33 | test.py:33:5:33:16 | ControlFlowNode for initialize() | runtime | initialized | true |
+| test.py:33 | test.py:33:5:33:16 | ControlFlowNode for initialize() | test.py:37 from runtime | frobnicated | false |
+| test.py:33 | test.py:33:5:33:16 | ControlFlowNode for initialize() | test.py:37 from runtime | initialized | true |
+| test.py:34 | test.py:34:5:34:14 | ControlFlowNode for frobnicate | runtime | frobnicated | false |
+| test.py:34 | test.py:34:5:34:14 | ControlFlowNode for frobnicate | runtime | initialized | true |
+| test.py:34 | test.py:34:5:34:14 | ControlFlowNode for frobnicate | test.py:37 from runtime | frobnicated | false |
+| test.py:34 | test.py:34:5:34:14 | ControlFlowNode for frobnicate | test.py:37 from runtime | initialized | true |
+| test.py:34 | test.py:34:5:34:16 | ControlFlowNode for frobnicate() | runtime | frobnicated | true |
+| test.py:34 | test.py:34:5:34:16 | ControlFlowNode for frobnicate() | runtime | initialized | true |
+| test.py:34 | test.py:34:5:34:16 | ControlFlowNode for frobnicate() | test.py:37 from runtime | frobnicated | true |
+| test.py:34 | test.py:34:5:34:16 | ControlFlowNode for frobnicate() | test.py:37 from runtime | initialized | true |
+| test.py:36 | test.py:36:1:36:12 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| test.py:36 | test.py:36:1:36:12 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| test.py:36 | test.py:36:1:36:12 | Entry node for Function good3 | runtime | frobnicated | false |
+| test.py:36 | test.py:36:1:36:12 | Entry node for Function good3 | runtime | initialized | false |
+| test.py:36 | test.py:36:1:36:12 | Exit node for Function good3 | runtime | frobnicated | true |
+| test.py:36 | test.py:36:1:36:12 | Exit node for Function good3 | runtime | initialized | true |
+| test.py:36 | test.py:36:5:36:9 | ControlFlowNode for good3 | import | frobnicated | false |
+| test.py:36 | test.py:36:5:36:9 | ControlFlowNode for good3 | import | initialized | false |
+| test.py:37 | test.py:37:5:37:17 | ControlFlowNode for init_and_frob | runtime | frobnicated | false |
+| test.py:37 | test.py:37:5:37:17 | ControlFlowNode for init_and_frob | runtime | initialized | false |
+| test.py:37 | test.py:37:5:37:19 | ControlFlowNode for init_and_frob() | runtime | frobnicated | true |
+| test.py:37 | test.py:37:5:37:19 | ControlFlowNode for init_and_frob() | runtime | initialized | true |
+| test.py:38 | test.py:38:5:38:14 | ControlFlowNode for exacerbate | runtime | frobnicated | true |
+| test.py:38 | test.py:38:5:38:14 | ControlFlowNode for exacerbate | runtime | initialized | true |
+| test.py:38 | test.py:38:5:38:16 | ControlFlowNode for exacerbate() | runtime | frobnicated | true |
+| test.py:38 | test.py:38:5:38:16 | ControlFlowNode for exacerbate() | runtime | initialized | true |
+| test.py:40 | test.py:40:1:40:11 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| test.py:40 | test.py:40:1:40:11 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| test.py:40 | test.py:40:1:40:11 | Entry node for Function bad1 | runtime | frobnicated | false |
+| test.py:40 | test.py:40:1:40:11 | Entry node for Function bad1 | runtime | initialized | false |
+| test.py:40 | test.py:40:1:40:11 | Exit node for Function bad1 | runtime | frobnicated | true |
+| test.py:40 | test.py:40:1:40:11 | Exit node for Function bad1 | runtime | initialized | false |
+| test.py:40 | test.py:40:5:40:8 | ControlFlowNode for bad1 | import | frobnicated | false |
+| test.py:40 | test.py:40:5:40:8 | ControlFlowNode for bad1 | import | initialized | false |
+| test.py:42 | test.py:42:5:42:14 | ControlFlowNode for frobnicate | runtime | frobnicated | false |
+| test.py:42 | test.py:42:5:42:14 | ControlFlowNode for frobnicate | runtime | initialized | false |
+| test.py:42 | test.py:42:5:42:16 | ControlFlowNode for frobnicate() | runtime | frobnicated | true |
+| test.py:42 | test.py:42:5:42:16 | ControlFlowNode for frobnicate() | runtime | initialized | false |
+| test.py:43 | test.py:43:5:43:14 | ControlFlowNode for exacerbate | runtime | frobnicated | true |
+| test.py:43 | test.py:43:5:43:14 | ControlFlowNode for exacerbate | runtime | initialized | false |
+| test.py:43 | test.py:43:5:43:16 | ControlFlowNode for exacerbate() | runtime | frobnicated | true |
+| test.py:43 | test.py:43:5:43:16 | ControlFlowNode for exacerbate() | runtime | initialized | false |
+| test.py:45 | test.py:45:1:45:11 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| test.py:45 | test.py:45:1:45:11 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| test.py:45 | test.py:45:1:45:11 | Entry node for Function bad2 | runtime | frobnicated | false |
+| test.py:45 | test.py:45:1:45:11 | Entry node for Function bad2 | runtime | initialized | false |
+| test.py:45 | test.py:45:1:45:11 | Exit node for Function bad2 | runtime | frobnicated | false |
+| test.py:45 | test.py:45:1:45:11 | Exit node for Function bad2 | runtime | initialized | true |
+| test.py:45 | test.py:45:5:45:8 | ControlFlowNode for bad2 | import | frobnicated | false |
+| test.py:45 | test.py:45:5:45:8 | ControlFlowNode for bad2 | import | initialized | false |
+| test.py:46 | test.py:46:5:46:14 | ControlFlowNode for initialize | runtime | frobnicated | false |
+| test.py:46 | test.py:46:5:46:14 | ControlFlowNode for initialize | runtime | initialized | false |
+| test.py:46 | test.py:46:5:46:16 | ControlFlowNode for initialize() | runtime | frobnicated | false |
+| test.py:46 | test.py:46:5:46:16 | ControlFlowNode for initialize() | runtime | initialized | true |
+| test.py:48 | test.py:48:5:48:14 | ControlFlowNode for exacerbate | runtime | frobnicated | false |
+| test.py:48 | test.py:48:5:48:14 | ControlFlowNode for exacerbate | runtime | initialized | true |
+| test.py:48 | test.py:48:5:48:16 | ControlFlowNode for exacerbate() | runtime | frobnicated | false |
+| test.py:48 | test.py:48:5:48:16 | ControlFlowNode for exacerbate() | runtime | initialized | true |
+| test.py:50 | test.py:50:1:50:11 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| test.py:50 | test.py:50:1:50:11 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| test.py:50 | test.py:50:1:50:11 | Entry node for Function bad3 | runtime | frobnicated | false |
+| test.py:50 | test.py:50:1:50:11 | Entry node for Function bad3 | runtime | initialized | false |
+| test.py:50 | test.py:50:1:50:11 | Exit node for Function bad3 | runtime | frobnicated | false |
+| test.py:50 | test.py:50:1:50:11 | Exit node for Function bad3 | runtime | initialized | false |
+| test.py:50 | test.py:50:5:50:8 | ControlFlowNode for bad3 | import | frobnicated | false |
+| test.py:50 | test.py:50:5:50:8 | ControlFlowNode for bad3 | import | initialized | false |
+| test.py:51 | test.py:51:5:51:14 | ControlFlowNode for exacerbate | runtime | frobnicated | false |
+| test.py:51 | test.py:51:5:51:14 | ControlFlowNode for exacerbate | runtime | initialized | false |
+| test.py:51 | test.py:51:5:51:16 | ControlFlowNode for exacerbate() | runtime | frobnicated | false |
+| test.py:51 | test.py:51:5:51:16 | ControlFlowNode for exacerbate() | runtime | initialized | false |
+| test.py:53 | test.py:53:1:53:16 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| test.py:53 | test.py:53:1:53:16 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| test.py:53 | test.py:53:1:53:16 | Entry node for Function good4 | runtime | frobnicated | false |
+| test.py:53 | test.py:53:1:53:16 | Entry node for Function good4 | runtime | initialized | false |
+| test.py:53 | test.py:53:1:53:16 | Exit node for Function good4 | runtime | frobnicated | false |
+| test.py:53 | test.py:53:1:53:16 | Exit node for Function good4 | runtime | frobnicated | true |
+| test.py:53 | test.py:53:1:53:16 | Exit node for Function good4 | runtime | initialized | false |
+| test.py:53 | test.py:53:1:53:16 | Exit node for Function good4 | runtime | initialized | true |
+| test.py:53 | test.py:53:5:53:9 | ControlFlowNode for good4 | import | frobnicated | false |
+| test.py:53 | test.py:53:5:53:9 | ControlFlowNode for good4 | import | initialized | false |
+| test.py:53 | test.py:53:11:53:14 | ControlFlowNode for frob | runtime | frobnicated | false |
+| test.py:53 | test.py:53:11:53:14 | ControlFlowNode for frob | runtime | initialized | false |
+| test.py:54 | test.py:54:5:54:15 | ControlFlowNode for initialized | runtime | frobnicated | false |
+| test.py:54 | test.py:54:5:54:15 | ControlFlowNode for initialized | runtime | initialized | false |
+| test.py:54 | test.py:54:19:54:23 | ControlFlowNode for False | runtime | frobnicated | false |
+| test.py:54 | test.py:54:19:54:23 | ControlFlowNode for False | runtime | initialized | false |
+| test.py:55 | test.py:55:8:55:11 | ControlFlowNode for frob | runtime | frobnicated | false |
+| test.py:55 | test.py:55:8:55:11 | ControlFlowNode for frob | runtime | initialized | false |
+| test.py:56 | test.py:56:9:56:18 | ControlFlowNode for initialize | runtime | frobnicated | false |
+| test.py:56 | test.py:56:9:56:18 | ControlFlowNode for initialize | runtime | initialized | false |
+| test.py:56 | test.py:56:9:56:20 | ControlFlowNode for initialize() | runtime | frobnicated | false |
+| test.py:56 | test.py:56:9:56:20 | ControlFlowNode for initialize() | runtime | initialized | true |
+| test.py:57 | test.py:57:9:57:19 | ControlFlowNode for initialized | runtime | frobnicated | false |
+| test.py:57 | test.py:57:9:57:19 | ControlFlowNode for initialized | runtime | initialized | true |
+| test.py:57 | test.py:57:23:57:26 | ControlFlowNode for True | runtime | frobnicated | false |
+| test.py:57 | test.py:57:23:57:26 | ControlFlowNode for True | runtime | initialized | true |
+| test.py:58 | test.py:58:8:58:18 | ControlFlowNode for initialized | runtime | frobnicated | false |
+| test.py:58 | test.py:58:8:58:18 | ControlFlowNode for initialized | runtime | frobnicated | false |
+| test.py:58 | test.py:58:8:58:18 | ControlFlowNode for initialized | runtime | initialized | false |
+| test.py:58 | test.py:58:8:58:18 | ControlFlowNode for initialized | runtime | initialized | true |
+| test.py:59 | test.py:59:9:59:18 | ControlFlowNode for frobnicate | runtime | frobnicated | false |
+| test.py:59 | test.py:59:9:59:18 | ControlFlowNode for frobnicate | runtime | initialized | true |
+| test.py:59 | test.py:59:9:59:20 | ControlFlowNode for frobnicate() | runtime | frobnicated | true |
+| test.py:59 | test.py:59:9:59:20 | ControlFlowNode for frobnicate() | runtime | initialized | true |
+| test.py:60 | test.py:60:9:60:18 | ControlFlowNode for exacerbate | runtime | frobnicated | true |
+| test.py:60 | test.py:60:9:60:18 | ControlFlowNode for exacerbate | runtime | initialized | true |
+| test.py:60 | test.py:60:9:60:20 | ControlFlowNode for exacerbate() | runtime | frobnicated | true |
+| test.py:60 | test.py:60:9:60:20 | ControlFlowNode for exacerbate() | runtime | initialized | true |
+| test.py:62 | test.py:62:1:62:15 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| test.py:62 | test.py:62:1:62:15 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| test.py:62 | test.py:62:1:62:15 | Entry node for Function bad4 | runtime | frobnicated | false |
+| test.py:62 | test.py:62:1:62:15 | Entry node for Function bad4 | runtime | initialized | false |
+| test.py:62 | test.py:62:1:62:15 | Exit node for Function bad4 | runtime | frobnicated | true |
+| test.py:62 | test.py:62:1:62:15 | Exit node for Function bad4 | runtime | initialized | false |
+| test.py:62 | test.py:62:1:62:15 | Exit node for Function bad4 | runtime | initialized | true |
+| test.py:62 | test.py:62:5:62:8 | ControlFlowNode for bad4 | import | frobnicated | false |
+| test.py:62 | test.py:62:5:62:8 | ControlFlowNode for bad4 | import | initialized | false |
+| test.py:62 | test.py:62:10:62:13 | ControlFlowNode for frob | runtime | frobnicated | false |
+| test.py:62 | test.py:62:10:62:13 | ControlFlowNode for frob | runtime | initialized | false |
+| test.py:63 | test.py:63:8:63:11 | ControlFlowNode for frob | runtime | frobnicated | false |
+| test.py:63 | test.py:63:8:63:11 | ControlFlowNode for frob | runtime | initialized | false |
+| test.py:64 | test.py:64:9:64:18 | ControlFlowNode for initialize | runtime | frobnicated | false |
+| test.py:64 | test.py:64:9:64:18 | ControlFlowNode for initialize | runtime | initialized | false |
+| test.py:64 | test.py:64:9:64:20 | ControlFlowNode for initialize() | runtime | frobnicated | false |
+| test.py:64 | test.py:64:9:64:20 | ControlFlowNode for initialize() | runtime | initialized | true |
+| test.py:65 | test.py:65:5:65:14 | ControlFlowNode for frobnicate | runtime | frobnicated | false |
+| test.py:65 | test.py:65:5:65:14 | ControlFlowNode for frobnicate | runtime | initialized | false |
+| test.py:65 | test.py:65:5:65:14 | ControlFlowNode for frobnicate | runtime | initialized | true |
+| test.py:65 | test.py:65:5:65:16 | ControlFlowNode for frobnicate() | runtime | frobnicated | true |
+| test.py:65 | test.py:65:5:65:16 | ControlFlowNode for frobnicate() | runtime | initialized | false |
+| test.py:65 | test.py:65:5:65:16 | ControlFlowNode for frobnicate() | runtime | initialized | true |
+| test.py:66 | test.py:66:5:66:14 | ControlFlowNode for exacerbate | runtime | frobnicated | true |
+| test.py:66 | test.py:66:5:66:14 | ControlFlowNode for exacerbate | runtime | initialized | false |
+| test.py:66 | test.py:66:5:66:14 | ControlFlowNode for exacerbate | runtime | initialized | true |
+| test.py:66 | test.py:66:5:66:16 | ControlFlowNode for exacerbate() | runtime | frobnicated | true |
+| test.py:66 | test.py:66:5:66:16 | ControlFlowNode for exacerbate() | runtime | initialized | false |
+| test.py:66 | test.py:66:5:66:16 | ControlFlowNode for exacerbate() | runtime | initialized | true |
+| test.py:68 | test.py:68:1:68:13 | ControlFlowNode for FunctionExpr | import | frobnicated | false |
+| test.py:68 | test.py:68:1:68:13 | ControlFlowNode for FunctionExpr | import | initialized | false |
+| test.py:68 | test.py:68:1:68:13 | Entry node for Function on_off | runtime | frobnicated | false |
+| test.py:68 | test.py:68:1:68:13 | Entry node for Function on_off | runtime | initialized | false |
+| test.py:68 | test.py:68:1:68:13 | Exit node for Function on_off | runtime | frobnicated | false |
+| test.py:68 | test.py:68:1:68:13 | Exit node for Function on_off | runtime | initialized | true |
+| test.py:68 | test.py:68:5:68:10 | ControlFlowNode for on_off | import | frobnicated | false |
+| test.py:68 | test.py:68:5:68:10 | ControlFlowNode for on_off | import | initialized | false |
+| test.py:69 | test.py:69:5:69:14 | ControlFlowNode for initialize | runtime | frobnicated | false |
+| test.py:69 | test.py:69:5:69:14 | ControlFlowNode for initialize | runtime | initialized | false |
+| test.py:69 | test.py:69:5:69:16 | ControlFlowNode for initialize() | runtime | frobnicated | false |
+| test.py:69 | test.py:69:5:69:16 | ControlFlowNode for initialize() | runtime | initialized | true |
+| test.py:70 | test.py:70:5:70:14 | ControlFlowNode for frobnicate | runtime | frobnicated | false |
+| test.py:70 | test.py:70:5:70:14 | ControlFlowNode for frobnicate | runtime | initialized | true |
+| test.py:70 | test.py:70:5:70:16 | ControlFlowNode for frobnicate() | runtime | frobnicated | true |
+| test.py:70 | test.py:70:5:70:16 | ControlFlowNode for frobnicate() | runtime | initialized | true |
+| test.py:71 | test.py:71:5:71:14 | ControlFlowNode for exacerbate | runtime | frobnicated | true |
+| test.py:71 | test.py:71:5:71:14 | ControlFlowNode for exacerbate | runtime | initialized | true |
+| test.py:71 | test.py:71:5:71:16 | ControlFlowNode for exacerbate() | runtime | frobnicated | true |
+| test.py:71 | test.py:71:5:71:16 | ControlFlowNode for exacerbate() | runtime | initialized | true |
+| test.py:72 | test.py:72:5:72:16 | ControlFlowNode for defrobnicate | runtime | frobnicated | true |
+| test.py:72 | test.py:72:5:72:16 | ControlFlowNode for defrobnicate | runtime | initialized | true |
+| test.py:72 | test.py:72:5:72:18 | ControlFlowNode for defrobnicate() | runtime | frobnicated | false |
+| test.py:72 | test.py:72:5:72:18 | ControlFlowNode for defrobnicate() | runtime | initialized | true |
+| test.py:73 | test.py:73:5:73:14 | ControlFlowNode for frobnicate | runtime | frobnicated | false |
+| test.py:73 | test.py:73:5:73:14 | ControlFlowNode for frobnicate | runtime | initialized | true |
+| test.py:73 | test.py:73:5:73:16 | ControlFlowNode for frobnicate() | runtime | frobnicated | true |
+| test.py:73 | test.py:73:5:73:16 | ControlFlowNode for frobnicate() | runtime | initialized | true |
+| test.py:74 | test.py:74:5:74:16 | ControlFlowNode for defrobnicate | runtime | frobnicated | true |
+| test.py:74 | test.py:74:5:74:16 | ControlFlowNode for defrobnicate | runtime | initialized | true |
+| test.py:74 | test.py:74:5:74:18 | ControlFlowNode for defrobnicate() | runtime | frobnicated | false |
+| test.py:74 | test.py:74:5:74:18 | ControlFlowNode for defrobnicate() | runtime | initialized | true |
+| test.py:75 | test.py:75:5:75:14 | ControlFlowNode for exacerbate | runtime | frobnicated | false |
+| test.py:75 | test.py:75:5:75:14 | ControlFlowNode for exacerbate | runtime | initialized | true |
+| test.py:75 | test.py:75:5:75:16 | ControlFlowNode for exacerbate() | runtime | frobnicated | false |
+| test.py:75 | test.py:75:5:75:16 | ControlFlowNode for exacerbate() | runtime | initialized | true |

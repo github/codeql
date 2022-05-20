@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Authentication cookies where the SameSite attribute is set to "None" can 
+potentially be used to perform Cross-Site Request Forgery (CSRF) attacks 
+if no other CSRF protections are in place.
+</p>
+<p>
+With SameSite set to "None", a third party website may create an authorized cross-site request
+that includes the cookie.
+Such a cross-site request can allow that website to perform actions on behalf of a user.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Set the <code>SameSite</code> attribute to <code>Strict</code> on all sensitive cookies.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example stores an authentication token in a cookie where the <code>SameSite</code>
+attribute is set to <code>None</code>.
+</p>
+<sample src="examples/SameSiteCookieBad.js"/>
+<p>
+To prevent the cookie from being included in cross-site requests, set the <code>SameSite</code>
+attribute to <code>Strict</code>.
+</p>
+<sample src="examples/SameSiteCookieGood.js"/>
+</example>
+
+<references>
+<li>MDN Web Docs: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite">SameSite cookies</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-community/SameSite">SameSite</a>.</li>
+</references>
+
+</qhelp>

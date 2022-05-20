@@ -1,0 +1,3 @@
+| tests.cpp:220:12:220:16 | call to fopen | The file is never closed |
+| tests.cpp:252:12:252:15 | call to open | The file is never closed |
+| tests.cpp:278:12:278:21 | call to CreateFile | The file is never closed |

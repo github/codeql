@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>A <code>lock</code> statement that locks a field which is modified is unlikely
+to provide thread safety. This is because different threads only lock the value of the field,
+not the field itself. Since the value of the field changes, different threads are locking
+different objects, and so are not mutually exclusive.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Instead of locking the field itself, use a dedicated object for locking. The object should
+be <code>private</code> and <code>readonly</code> to ensure that it cannot be modified or
+locked elsewhere.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the method <code>AddItem</code> can be called concurrently on
+different threads. <code>AddItem</code> attempts to protect the field <code>total</code> using a 
+<code>lock</code> statement. However concurrent use of <code>AddItem</code> results in the 
+value of <code>total</code> being incorrect.
+</p>
+
+<sample src="FutileSyncOnField.cs" />
+
+<p>The following code resolves this problem by using a dedicated object <code>mutex</code> for the lock.</p>
+
+<sample src="FutileSyncOnFieldFix.cs" />
+
+</example>
+<references>
+
+
+<li>
+  MSDN, C# Reference: 
+  <a href="http://msdn.microsoft.com/en-us/library/c5kehkcz%28v=vs.110%29.aspx">lock Statement</a>.
+</li>
+
+
+</references>
+</qhelp>

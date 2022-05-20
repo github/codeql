@@ -1,0 +1,57 @@
+dependencies
+| src/package.json:1:1:20:1 | {\\n  "na ... "\\n  }\\n} | esprima | * |
+| src/package.json:1:1:20:1 | {\\n  "na ... "\\n  }\\n} | foo | ! garbage string we \nreally can't parse % |
+| src/package.json:1:1:20:1 | {\\n  "na ... "\\n  }\\n} | mocha | 1.0 |
+| src/package.json:1:1:20:1 | {\\n  "na ... "\\n  }\\n} | something | 1.2.3-alpha.beta |
+importedFile
+| src/lib/tst2.js:1:1:1:13 | require("..") | src/index.js:0:0:0:0 | src/index.js |
+| src/node_modules/nested/tst3.js:1:1:1:29 | require ... odule') | src/node_modules/third-party-module/fancy.js:0:0:0:0 | src/node_modules/third-party-module/fancy.js |
+| src/node_modules/nested/tst3.js:2:1:2:12 | require('a') | src/node_modules/nested/node_modules/a/index.js:0:0:0:0 | src/node_modules/nested/node_modules/a/index.js |
+| src/node_modules/tst2.js:1:1:1:38 | require ... cy.js') | src/node_modules/third-party-module/fancy.js:0:0:0:0 | src/node_modules/third-party-module/fancy.js |
+| src/tst2.js:1:1:1:12 | require(".") | src/index.js:0:0:0:0 | src/index.js |
+| src/tst.js:1:1:1:38 | require ... cy.js') | src/node_modules/third-party-module/fancy.js:0:0:0:0 | src/node_modules/third-party-module/fancy.js |
+| src/tst.js:2:1:2:37 | require ... ckage') | src/node_modules/third-party-module/package.json:0:0:0:0 | src/node_modules/third-party-module/package.json |
+importedModule
+| src/lib/tst2.js:1:1:1:13 | require("..") | src/index.js:1:1:4:0 | <toplevel> |
+| src/node_modules/nested/tst3.js:1:1:1:29 | require ... odule') | src/node_modules/third-party-module/fancy.js:1:1:4:0 | <toplevel> |
+| src/node_modules/nested/tst3.js:2:1:2:12 | require('a') | src/node_modules/nested/node_modules/a/index.js:1:1:1:25 | <toplevel> |
+| src/node_modules/tst2.js:1:1:1:38 | require ... cy.js') | src/node_modules/third-party-module/fancy.js:1:1:4:0 | <toplevel> |
+| src/tst2.js:1:1:1:12 | require(".") | src/index.js:1:1:4:0 | <toplevel> |
+| src/tst.js:1:1:1:38 | require ... cy.js') | src/node_modules/third-party-module/fancy.js:1:1:4:0 | <toplevel> |
+modules
+| src | test-package | src/index.js:1:1:4:0 | <toplevel> |
+| src | test-package | src/lib/tst2.js:1:1:1:14 | <toplevel> |
+| src | test-package | src/lib/tst.js:1:1:4:0 | <toplevel> |
+| src | test-package | src/tst2.js:1:1:1:13 | <toplevel> |
+| src | test-package | src/tst.js:1:1:2:38 | <toplevel> |
+| src/node_modules/b | b | src/node_modules/b/lib/index.js:1:1:2:0 | <toplevel> |
+| src/node_modules/b | b | src/node_modules/b/lib/util.ts:1:1:2:0 | <toplevel> |
+| src/node_modules/c | c | src/node_modules/c/src/index.js:1:1:2:0 | <toplevel> |
+| src/node_modules/d | d | src/node_modules/d/main.js:1:1:2:0 | <toplevel> |
+| src/node_modules/third-party-module | third-party-module | src/node_modules/third-party-module/fancy.js:1:1:4:0 | <toplevel> |
+npm
+| src/node_modules/third-party-module/package.json:1:1:5:1 | {\\n  "na ... y.js"\\n} | third-party-module | 23.4.0 |
+| src/package.json:1:1:20:1 | {\\n  "na ... "\\n  }\\n} | test-package | 0.1.0 |
+getMainModule
+| src/node_modules/b/package.json:1:1:4:1 | {\\n  "na ... "lib"\\n} | b | src/node_modules/b/lib/index.js:1:1:2:0 | <toplevel> |
+| src/node_modules/c/package.json:1:1:4:1 | {\\n  "na ... src/"\\n} | c | src/node_modules/c/src/index.js:1:1:2:0 | <toplevel> |
+| src/node_modules/d/package.json:1:1:4:1 | {\\n  "na ... main"\\n} | d | src/node_modules/d/main.js:1:1:2:0 | <toplevel> |
+| src/node_modules/third-party-module/package.json:1:1:5:1 | {\\n  "na ... y.js"\\n} | third-party-module | src/node_modules/third-party-module/fancy.js:1:1:4:0 | <toplevel> |
+| src/package.json:1:1:20:1 | {\\n  "na ... "\\n  }\\n} | test-package | src/index.js:1:1:4:0 | <toplevel> |
+packageJson
+| src/node_modules/b/package.json:1:1:4:1 | {\\n  "na ... "lib"\\n} |
+| src/node_modules/c/package.json:1:1:4:1 | {\\n  "na ... src/"\\n} |
+| src/node_modules/d/package.json:1:1:4:1 | {\\n  "na ... main"\\n} |
+| src/node_modules/third-party-module/package.json:1:1:5:1 | {\\n  "na ... y.js"\\n} |
+| src/package.json:1:1:20:1 | {\\n  "na ... "\\n  }\\n} |
+dependencyInfo
+| src/index.js:1:1:4:0 | <toplevel> | test-package | 0.1.0 |
+| src/lib/tst2.js:1:1:1:14 | <toplevel> | test-package | 0.1.0 |
+| src/lib/tst.js:1:1:4:0 | <toplevel> | test-package | 0.1.0 |
+| src/node_modules/third-party-module/fancy.js:1:1:4:0 | <toplevel> | third-party-module | 23.4.0 |
+| src/package.json:10:18:10:20 | "*" | esprima | unknown |
+| src/package.json:11:20:11:37 | "1.2.3-alpha.beta" | something | unknown |
+| src/package.json:12:14:12:57 | "! garb ... arse %" | foo | unknown |
+| src/package.json:15:16:15:20 | "1.0" | mocha | 1.0 |
+| src/tst2.js:1:1:1:13 | <toplevel> | test-package | 0.1.0 |
+| src/tst.js:1:1:2:38 | <toplevel> | test-package | 0.1.0 |

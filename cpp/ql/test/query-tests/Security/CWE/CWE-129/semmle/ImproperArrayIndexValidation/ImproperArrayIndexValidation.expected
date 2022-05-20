@@ -1,0 +1,26 @@
+edges
+| test1.c:8:16:8:19 | argv | test1.c:9:9:9:9 | i |
+| test1.c:8:16:8:19 | argv | test1.c:11:9:11:9 | i |
+| test1.c:8:16:8:19 | argv | test1.c:13:9:13:9 | i |
+| test1.c:9:9:9:9 | i | test1.c:16:16:16:16 | i |
+| test1.c:11:9:11:9 | i | test1.c:32:16:32:16 | i |
+| test1.c:13:9:13:9 | i | test1.c:48:16:48:16 | i |
+| test1.c:16:16:16:16 | i | test1.c:18:16:18:16 | i |
+| test1.c:32:16:32:16 | i | test1.c:33:11:33:11 | i |
+| test1.c:48:16:48:16 | i | test1.c:53:15:53:15 | j |
+nodes
+| test1.c:8:16:8:19 | argv | semmle.label | argv |
+| test1.c:9:9:9:9 | i | semmle.label | i |
+| test1.c:11:9:11:9 | i | semmle.label | i |
+| test1.c:13:9:13:9 | i | semmle.label | i |
+| test1.c:16:16:16:16 | i | semmle.label | i |
+| test1.c:18:16:18:16 | i | semmle.label | i |
+| test1.c:32:16:32:16 | i | semmle.label | i |
+| test1.c:33:11:33:11 | i | semmle.label | i |
+| test1.c:48:16:48:16 | i | semmle.label | i |
+| test1.c:53:15:53:15 | j | semmle.label | j |
+subpaths
+#select
+| test1.c:18:16:18:16 | i | test1.c:8:16:8:19 | argv | test1.c:18:16:18:16 | i | $@ flows to here and is used in an array indexing expression, potentially causing an invalid access. | test1.c:8:16:8:19 | argv | a command-line argument |
+| test1.c:33:11:33:11 | i | test1.c:8:16:8:19 | argv | test1.c:33:11:33:11 | i | $@ flows to here and is used in an array indexing expression, potentially causing an invalid access. | test1.c:8:16:8:19 | argv | a command-line argument |
+| test1.c:53:15:53:15 | j | test1.c:8:16:8:19 | argv | test1.c:53:15:53:15 | j | $@ flows to here and is used in an array indexing expression, potentially causing an invalid access. | test1.c:8:16:8:19 | argv | a command-line argument |

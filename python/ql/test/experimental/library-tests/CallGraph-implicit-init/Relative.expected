@@ -1,0 +1,6 @@
+debug_missingAnnotationForCallable
+debug_nonUniqueAnnotationForCallable
+debug_missingAnnotationForCall
+pointsTo_found_typeTracker_notFound
+| example.py:22:1:22:16 | explicit_afunc() | foo_explicit/bar/a.py:2:1:2:21 | Function explicit_afunc |
+pointsTo_notFound_typeTracker_found

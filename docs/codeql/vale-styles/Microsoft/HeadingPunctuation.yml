@@ -1,0 +1,8 @@
+extends: existence
+message: "Don’t use end punctuation in headings."
+link: https://docs.microsoft.com/en-us/style-guide/punctuation/periods
+nonword: true
+level: warning
+scope: heading
+tokens:
+  - '[a-z0-9][.?!](?:\s|$)'

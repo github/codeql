@@ -1,0 +1,179 @@
+edges
+| test.cpp:16:20:16:23 | argv | test.cpp:22:45:22:52 | userName indirection |
+| test.cpp:22:13:22:20 | sprintf output argument | test.cpp:23:12:23:19 | command1 indirection |
+| test.cpp:22:45:22:52 | userName indirection | test.cpp:22:13:22:20 | sprintf output argument |
+| test.cpp:47:21:47:26 | call to getenv | test.cpp:50:35:50:43 | envCflags indirection |
+| test.cpp:50:11:50:17 | sprintf output argument | test.cpp:51:10:51:16 | command indirection |
+| test.cpp:50:35:50:43 | envCflags indirection | test.cpp:50:11:50:17 | sprintf output argument |
+| test.cpp:62:9:62:16 | fread output argument | test.cpp:64:20:64:27 | filename indirection |
+| test.cpp:64:11:64:17 | strncat output argument | test.cpp:65:10:65:16 | command indirection |
+| test.cpp:64:20:64:27 | filename indirection | test.cpp:64:11:64:17 | strncat output argument |
+| test.cpp:82:9:82:16 | fread output argument | test.cpp:84:20:84:27 | filename indirection |
+| test.cpp:84:11:84:17 | strncat output argument | test.cpp:85:32:85:38 | command indirection |
+| test.cpp:84:20:84:27 | filename indirection | test.cpp:84:11:84:17 | strncat output argument |
+| test.cpp:91:9:91:16 | fread output argument | test.cpp:93:17:93:24 | filename indirection |
+| test.cpp:93:11:93:14 | strncat output argument | test.cpp:94:45:94:48 | path indirection |
+| test.cpp:93:17:93:24 | filename indirection | test.cpp:93:11:93:14 | strncat output argument |
+| test.cpp:106:20:106:25 | call to getenv | test.cpp:107:33:107:36 | path indirection |
+| test.cpp:107:31:107:31 | call to operator+ | test.cpp:108:18:108:22 | call to c_str indirection |
+| test.cpp:107:33:107:36 | path indirection | test.cpp:107:31:107:31 | call to operator+ |
+| test.cpp:113:20:113:25 | call to getenv | test.cpp:114:19:114:22 | path indirection |
+| test.cpp:114:17:114:17 | Call | test.cpp:114:25:114:29 | call to c_str indirection |
+| test.cpp:114:19:114:22 | path indirection | test.cpp:114:17:114:17 | Call |
+| test.cpp:119:20:119:25 | call to getenv | test.cpp:120:19:120:22 | path indirection |
+| test.cpp:120:17:120:17 | Call | test.cpp:120:10:120:30 | call to data indirection |
+| test.cpp:120:19:120:22 | path indirection | test.cpp:120:17:120:17 | Call |
+| test.cpp:140:9:140:11 | fread output argument | test.cpp:142:31:142:33 | str indirection |
+| test.cpp:142:11:142:17 | sprintf output argument | test.cpp:143:10:143:16 | command indirection |
+| test.cpp:142:31:142:33 | str indirection | test.cpp:142:11:142:17 | sprintf output argument |
+| test.cpp:174:9:174:16 | fread output argument | test.cpp:177:20:177:27 | filename indirection |
+| test.cpp:174:9:174:16 | fread output argument | test.cpp:178:22:178:26 | flags indirection |
+| test.cpp:174:9:174:16 | fread output argument | test.cpp:180:22:180:29 | filename indirection |
+| test.cpp:177:13:177:17 | strncat output argument | test.cpp:183:32:183:38 | command indirection |
+| test.cpp:177:20:177:27 | filename indirection | test.cpp:177:13:177:17 | strncat output argument |
+| test.cpp:178:13:178:19 | strncat output argument | test.cpp:183:32:183:38 | command indirection |
+| test.cpp:178:22:178:26 | flags indirection | test.cpp:178:13:178:19 | strncat output argument |
+| test.cpp:180:13:180:19 | strncat output argument | test.cpp:183:32:183:38 | command indirection |
+| test.cpp:180:22:180:29 | filename indirection | test.cpp:180:13:180:19 | strncat output argument |
+| test.cpp:186:47:186:54 | *filename | test.cpp:187:18:187:25 | filename indirection |
+| test.cpp:186:47:186:54 | *filename | test.cpp:188:20:188:24 | flags indirection |
+| test.cpp:186:47:186:54 | filename | test.cpp:187:18:187:25 | filename indirection |
+| test.cpp:186:47:186:54 | filename | test.cpp:188:20:188:24 | flags indirection |
+| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:11:188:17 | command [post update] |
+| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:11:188:17 | command [post update] |
+| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:11:188:17 | command [post update] |
+| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:11:188:17 | command [post update] |
+| test.cpp:187:18:187:25 | filename indirection | test.cpp:187:11:187:15 | strncat output argument |
+| test.cpp:187:18:187:25 | filename indirection | test.cpp:187:11:187:15 | strncat output argument |
+| test.cpp:188:11:188:17 | command [post update] | test.cpp:188:11:188:17 | command [post update] |
+| test.cpp:188:11:188:17 | command [post update] | test.cpp:188:11:188:17 | command [post update] |
+| test.cpp:188:11:188:17 | command [post update] | test.cpp:188:11:188:17 | command [post update] |
+| test.cpp:188:11:188:17 | command [post update] | test.cpp:188:11:188:17 | command [post update] |
+| test.cpp:188:11:188:17 | strncat output argument | test.cpp:188:11:188:17 | command [post update] |
+| test.cpp:188:11:188:17 | strncat output argument | test.cpp:188:11:188:17 | command [post update] |
+| test.cpp:188:11:188:17 | strncat output argument | test.cpp:188:11:188:17 | command [post update] |
+| test.cpp:188:11:188:17 | strncat output argument | test.cpp:188:11:188:17 | command [post update] |
+| test.cpp:188:20:188:24 | flags indirection | test.cpp:188:11:188:17 | strncat output argument |
+| test.cpp:188:20:188:24 | flags indirection | test.cpp:188:11:188:17 | strncat output argument |
+| test.cpp:194:9:194:16 | fread output argument | test.cpp:196:26:196:33 | filename |
+| test.cpp:194:9:194:16 | fread output argument | test.cpp:196:26:196:33 | filename indirection |
+| test.cpp:196:10:196:16 | command [post update] | test.cpp:198:32:198:38 | command indirection |
+| test.cpp:196:10:196:16 | command [post update] | test.cpp:198:32:198:38 | command indirection |
+| test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename |
+| test.cpp:196:26:196:33 | filename | test.cpp:196:10:196:16 | command [post update] |
+| test.cpp:196:26:196:33 | filename | test.cpp:196:10:196:16 | command [post update] |
+| test.cpp:196:26:196:33 | filename indirection | test.cpp:186:47:186:54 | *filename |
+| test.cpp:196:26:196:33 | filename indirection | test.cpp:196:10:196:16 | command [post update] |
+| test.cpp:196:26:196:33 | filename indirection | test.cpp:196:10:196:16 | command [post update] |
+| test.cpp:218:9:218:16 | fread output argument | test.cpp:220:19:220:26 | filename indirection |
+| test.cpp:218:9:218:16 | fread output argument | test.cpp:220:19:220:26 | filename indirection |
+| test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | command indirection |
+| test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | command indirection |
+| test.cpp:220:19:220:26 | filename indirection | test.cpp:220:10:220:16 | strncat output argument |
+| test.cpp:220:19:220:26 | filename indirection | test.cpp:220:10:220:16 | strncat output argument |
+| test.cpp:220:19:220:26 | filename indirection | test.cpp:220:10:220:16 | strncat output argument |
+| test.cpp:220:19:220:26 | filename indirection | test.cpp:220:10:220:16 | strncat output argument |
+nodes
+| test.cpp:16:20:16:23 | argv | semmle.label | argv |
+| test.cpp:22:13:22:20 | sprintf output argument | semmle.label | sprintf output argument |
+| test.cpp:22:45:22:52 | userName indirection | semmle.label | userName indirection |
+| test.cpp:23:12:23:19 | command1 indirection | semmle.label | command1 indirection |
+| test.cpp:47:21:47:26 | call to getenv | semmle.label | call to getenv |
+| test.cpp:50:11:50:17 | sprintf output argument | semmle.label | sprintf output argument |
+| test.cpp:50:35:50:43 | envCflags indirection | semmle.label | envCflags indirection |
+| test.cpp:51:10:51:16 | command indirection | semmle.label | command indirection |
+| test.cpp:62:9:62:16 | fread output argument | semmle.label | fread output argument |
+| test.cpp:64:11:64:17 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:64:20:64:27 | filename indirection | semmle.label | filename indirection |
+| test.cpp:65:10:65:16 | command indirection | semmle.label | command indirection |
+| test.cpp:82:9:82:16 | fread output argument | semmle.label | fread output argument |
+| test.cpp:84:11:84:17 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:84:20:84:27 | filename indirection | semmle.label | filename indirection |
+| test.cpp:85:32:85:38 | command indirection | semmle.label | command indirection |
+| test.cpp:91:9:91:16 | fread output argument | semmle.label | fread output argument |
+| test.cpp:93:11:93:14 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:93:17:93:24 | filename indirection | semmle.label | filename indirection |
+| test.cpp:94:45:94:48 | path indirection | semmle.label | path indirection |
+| test.cpp:106:20:106:25 | call to getenv | semmle.label | call to getenv |
+| test.cpp:107:31:107:31 | call to operator+ | semmle.label | call to operator+ |
+| test.cpp:107:33:107:36 | path indirection | semmle.label | path indirection |
+| test.cpp:108:18:108:22 | call to c_str indirection | semmle.label | call to c_str indirection |
+| test.cpp:113:20:113:25 | call to getenv | semmle.label | call to getenv |
+| test.cpp:114:17:114:17 | Call | semmle.label | Call |
+| test.cpp:114:19:114:22 | path indirection | semmle.label | path indirection |
+| test.cpp:114:25:114:29 | call to c_str indirection | semmle.label | call to c_str indirection |
+| test.cpp:119:20:119:25 | call to getenv | semmle.label | call to getenv |
+| test.cpp:120:10:120:30 | call to data indirection | semmle.label | call to data indirection |
+| test.cpp:120:17:120:17 | Call | semmle.label | Call |
+| test.cpp:120:19:120:22 | path indirection | semmle.label | path indirection |
+| test.cpp:140:9:140:11 | fread output argument | semmle.label | fread output argument |
+| test.cpp:142:11:142:17 | sprintf output argument | semmle.label | sprintf output argument |
+| test.cpp:142:31:142:33 | str indirection | semmle.label | str indirection |
+| test.cpp:143:10:143:16 | command indirection | semmle.label | command indirection |
+| test.cpp:174:9:174:16 | fread output argument | semmle.label | fread output argument |
+| test.cpp:177:13:177:17 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:177:20:177:27 | filename indirection | semmle.label | filename indirection |
+| test.cpp:178:13:178:19 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:178:22:178:26 | flags indirection | semmle.label | flags indirection |
+| test.cpp:180:13:180:19 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:180:22:180:29 | filename indirection | semmle.label | filename indirection |
+| test.cpp:183:32:183:38 | command indirection | semmle.label | command indirection |
+| test.cpp:183:32:183:38 | command indirection | semmle.label | command indirection |
+| test.cpp:183:32:183:38 | command indirection | semmle.label | command indirection |
+| test.cpp:186:47:186:54 | *filename | semmle.label | *filename |
+| test.cpp:186:47:186:54 | filename | semmle.label | filename |
+| test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:187:18:187:25 | filename indirection | semmle.label | filename indirection |
+| test.cpp:187:18:187:25 | filename indirection | semmle.label | filename indirection |
+| test.cpp:188:11:188:17 | command [post update] | semmle.label | command [post update] |
+| test.cpp:188:11:188:17 | command [post update] | semmle.label | command [post update] |
+| test.cpp:188:11:188:17 | command [post update] | semmle.label | command [post update] |
+| test.cpp:188:11:188:17 | command [post update] | semmle.label | command [post update] |
+| test.cpp:188:11:188:17 | command [post update] | semmle.label | command [post update] |
+| test.cpp:188:11:188:17 | command [post update] | semmle.label | command [post update] |
+| test.cpp:188:11:188:17 | command [post update] | semmle.label | command [post update] |
+| test.cpp:188:11:188:17 | command [post update] | semmle.label | command [post update] |
+| test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:188:20:188:24 | flags indirection | semmle.label | flags indirection |
+| test.cpp:188:20:188:24 | flags indirection | semmle.label | flags indirection |
+| test.cpp:194:9:194:16 | fread output argument | semmle.label | fread output argument |
+| test.cpp:196:10:196:16 | command [post update] | semmle.label | command [post update] |
+| test.cpp:196:10:196:16 | command [post update] | semmle.label | command [post update] |
+| test.cpp:196:26:196:33 | filename | semmle.label | filename |
+| test.cpp:196:26:196:33 | filename indirection | semmle.label | filename indirection |
+| test.cpp:198:32:198:38 | command indirection | semmle.label | command indirection |
+| test.cpp:198:32:198:38 | command indirection | semmle.label | command indirection |
+| test.cpp:218:9:218:16 | fread output argument | semmle.label | fread output argument |
+| test.cpp:220:10:220:16 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:220:10:220:16 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:220:19:220:26 | filename indirection | semmle.label | filename indirection |
+| test.cpp:220:19:220:26 | filename indirection | semmle.label | filename indirection |
+| test.cpp:222:32:222:38 | command indirection | semmle.label | command indirection |
+subpaths
+| test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename | test.cpp:188:11:188:17 | command [post update] | test.cpp:196:10:196:16 | command [post update] |
+| test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename | test.cpp:188:11:188:17 | command [post update] | test.cpp:196:10:196:16 | command [post update] |
+| test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename | test.cpp:188:11:188:17 | command [post update] | test.cpp:196:10:196:16 | command [post update] |
+| test.cpp:196:26:196:33 | filename | test.cpp:186:47:186:54 | filename | test.cpp:188:11:188:17 | command [post update] | test.cpp:196:10:196:16 | command [post update] |
+| test.cpp:196:26:196:33 | filename indirection | test.cpp:186:47:186:54 | *filename | test.cpp:188:11:188:17 | command [post update] | test.cpp:196:10:196:16 | command [post update] |
+| test.cpp:196:26:196:33 | filename indirection | test.cpp:186:47:186:54 | *filename | test.cpp:188:11:188:17 | command [post update] | test.cpp:196:10:196:16 | command [post update] |
+| test.cpp:196:26:196:33 | filename indirection | test.cpp:186:47:186:54 | *filename | test.cpp:188:11:188:17 | command [post update] | test.cpp:196:10:196:16 | command [post update] |
+| test.cpp:196:26:196:33 | filename indirection | test.cpp:186:47:186:54 | *filename | test.cpp:188:11:188:17 | command [post update] | test.cpp:196:10:196:16 | command [post update] |
+#select
+| test.cpp:23:12:23:19 | command1 | test.cpp:16:20:16:23 | argv | test.cpp:23:12:23:19 | command1 indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:16:20:16:23 | argv | user input (a command-line argument) | test.cpp:22:13:22:20 | sprintf output argument | sprintf output argument |
+| test.cpp:51:10:51:16 | command | test.cpp:47:21:47:26 | call to getenv | test.cpp:51:10:51:16 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:47:21:47:26 | call to getenv | user input (an environment variable) | test.cpp:50:11:50:17 | sprintf output argument | sprintf output argument |
+| test.cpp:65:10:65:16 | command | test.cpp:62:9:62:16 | fread output argument | test.cpp:65:10:65:16 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:62:9:62:16 | fread output argument | user input (String read by fread) | test.cpp:64:11:64:17 | strncat output argument | strncat output argument |
+| test.cpp:85:32:85:38 | command | test.cpp:82:9:82:16 | fread output argument | test.cpp:85:32:85:38 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl | test.cpp:82:9:82:16 | fread output argument | user input (String read by fread) | test.cpp:84:11:84:17 | strncat output argument | strncat output argument |
+| test.cpp:94:45:94:48 | path | test.cpp:91:9:91:16 | fread output argument | test.cpp:94:45:94:48 | path indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl | test.cpp:91:9:91:16 | fread output argument | user input (String read by fread) | test.cpp:93:11:93:14 | strncat output argument | strncat output argument |
+| test.cpp:108:18:108:22 | call to c_str | test.cpp:106:20:106:25 | call to getenv | test.cpp:108:18:108:22 | call to c_str indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:106:20:106:25 | call to getenv | user input (an environment variable) | test.cpp:107:31:107:31 | call to operator+ | call to operator+ |
+| test.cpp:114:25:114:29 | call to c_str | test.cpp:113:20:113:25 | call to getenv | test.cpp:114:25:114:29 | call to c_str indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:113:20:113:25 | call to getenv | user input (an environment variable) | test.cpp:114:17:114:17 | Call | Call |
+| test.cpp:120:25:120:28 | call to data | test.cpp:119:20:119:25 | call to getenv | test.cpp:120:10:120:30 | call to data indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:119:20:119:25 | call to getenv | user input (an environment variable) | test.cpp:120:17:120:17 | Call | Call |
+| test.cpp:143:10:143:16 | command | test.cpp:140:9:140:11 | fread output argument | test.cpp:143:10:143:16 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | test.cpp:140:9:140:11 | fread output argument | user input (String read by fread) | test.cpp:142:11:142:17 | sprintf output argument | sprintf output argument |
+| test.cpp:183:32:183:38 | command | test.cpp:174:9:174:16 | fread output argument | test.cpp:183:32:183:38 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl | test.cpp:174:9:174:16 | fread output argument | user input (String read by fread) | test.cpp:177:13:177:17 | strncat output argument | strncat output argument |
+| test.cpp:183:32:183:38 | command | test.cpp:174:9:174:16 | fread output argument | test.cpp:183:32:183:38 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl | test.cpp:174:9:174:16 | fread output argument | user input (String read by fread) | test.cpp:178:13:178:19 | strncat output argument | strncat output argument |
+| test.cpp:183:32:183:38 | command | test.cpp:174:9:174:16 | fread output argument | test.cpp:183:32:183:38 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl | test.cpp:174:9:174:16 | fread output argument | user input (String read by fread) | test.cpp:180:13:180:19 | strncat output argument | strncat output argument |
+| test.cpp:198:32:198:38 | command | test.cpp:194:9:194:16 | fread output argument | test.cpp:198:32:198:38 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl | test.cpp:194:9:194:16 | fread output argument | user input (String read by fread) | test.cpp:187:11:187:15 | strncat output argument | strncat output argument |
+| test.cpp:198:32:198:38 | command | test.cpp:194:9:194:16 | fread output argument | test.cpp:198:32:198:38 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl | test.cpp:194:9:194:16 | fread output argument | user input (String read by fread) | test.cpp:188:11:188:17 | strncat output argument | strncat output argument |
+| test.cpp:222:32:222:38 | command | test.cpp:218:9:218:16 | fread output argument | test.cpp:222:32:222:38 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl | test.cpp:218:9:218:16 | fread output argument | user input (String read by fread) | test.cpp:220:10:220:16 | strncat output argument | strncat output argument |
+| test.cpp:222:32:222:38 | command | test.cpp:218:9:218:16 | fread output argument | test.cpp:222:32:222:38 | command indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to execl | test.cpp:218:9:218:16 | fread output argument | user input (String read by fread) | test.cpp:220:10:220:16 | strncat output argument | strncat output argument |

@@ -1,0 +1,75 @@
+| tokens.html:2:8:2:59 | strings={{'string1' 'string2' 'string3''string4'}} | (0-9: (STRING: 'string1')) |
+| tokens.html:2:8:2:59 | strings={{'string1' 'string2' 'string3''string4'}} | (10-19: (STRING: 'string2')) |
+| tokens.html:2:8:2:59 | strings={{'string1' 'string2' 'string3''string4'}} | (20-29: (STRING: 'string3')) |
+| tokens.html:2:8:2:59 | strings={{'string1' 'string2' 'string3''string4'}} | (29-38: (STRING: 'string4')) |
+| tokens.html:4:8:4:25 | numbers={{0 12}} | (0-1: (NUMBER: 0)) |
+| tokens.html:4:8:4:25 | numbers={{0 12}} | (2-4: (NUMBER: 12)) |
+| tokens.html:6:8:6:33 | identifiers={{a b3 cd }} | (0-1: (IDENT: a)) |
+| tokens.html:6:8:6:33 | identifiers={{a b3 cd }} | (2-4: (IDENT: b3)) |
+| tokens.html:6:8:6:33 | identifiers={{a b3 cd }} | (5-7: (IDENT: cd)) |
+| tokens.html:8:8:8:20 | NONE={{4e}} | (0-1: (NUMBER: 4)) |
+| tokens.html:8:8:8:20 | NONE={{4e}} | (1-2: (IDENT: e)) |
+| tokens.html:10:8:10:41 | other={{ ( ) { } [ ] . , ; : ?}} | (1-2: (OTHER: ()) |
+| tokens.html:10:8:10:41 | other={{ ( ) { } [ ] . , ; : ?}} | (3-4: (OTHER: ))) |
+| tokens.html:10:8:10:41 | other={{ ( ) { } [ ] . , ; : ?}} | (5-6: (OTHER: {)) |
+| tokens.html:10:8:10:41 | other={{ ( ) { } [ ] . , ; : ?}} | (7-8: (OTHER: })) |
+| tokens.html:10:8:10:41 | other={{ ( ) { } [ ] . , ; : ?}} | (9-10: (OTHER: [)) |
+| tokens.html:10:8:10:41 | other={{ ( ) { } [ ] . , ; : ?}} | (11-12: (OTHER: ])) |
+| tokens.html:10:8:10:41 | other={{ ( ) { } [ ] . , ; : ?}} | (13-14: (OTHER: .)) |
+| tokens.html:10:8:10:41 | other={{ ( ) { } [ ] . , ; : ?}} | (15-16: (OTHER: ,)) |
+| tokens.html:10:8:10:41 | other={{ ( ) { } [ ] . , ; : ?}} | (17-18: (OTHER: ;)) |
+| tokens.html:10:8:10:41 | other={{ ( ) { } [ ] . , ; : ?}} | (19-20: (OTHER: :)) |
+| tokens.html:10:8:10:41 | other={{ ( ) { } [ ] . , ; : ?}} | (21-22: (OTHER: ?)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (1-2: (OP: +)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (3-4: (OP: -)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (5-6: (OP: *)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (7-8: (OP: /)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (9-10: (OP: %)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (11-14: (OP: ===)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (15-18: (OP: !==)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (19-21: (OP: ==)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (22-24: (OP: !=)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (25-26: (OP: <)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (28-29: (OP: >)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (31-33: (OP: <=)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (35-37: (OP: >=)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (39-41: (OP: &&)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (43-45: (OP: \|\|)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (47-48: (OP: !)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (50-51: (OP: =)) |
+| tokens.html:12:8:12:77 | operators={{ + - * / % === !== == != <  >  <=  >=  &&  \|\|  !  =  \|}} | (53-54: (OP: \|)) |
+| tokens.html:14:8:14:42 | complex1={{foo.bar\|baz%qux\|quux}} | (0-3: (IDENT: foo)) |
+| tokens.html:14:8:14:42 | complex1={{foo.bar\|baz%qux\|quux}} | (3-4: (OTHER: .)) |
+| tokens.html:14:8:14:42 | complex1={{foo.bar\|baz%qux\|quux}} | (4-7: (IDENT: bar)) |
+| tokens.html:14:8:14:42 | complex1={{foo.bar\|baz%qux\|quux}} | (7-8: (OP: \|)) |
+| tokens.html:14:8:14:42 | complex1={{foo.bar\|baz%qux\|quux}} | (8-11: (IDENT: baz)) |
+| tokens.html:14:8:14:42 | complex1={{foo.bar\|baz%qux\|quux}} | (11-12: (OP: %)) |
+| tokens.html:14:8:14:42 | complex1={{foo.bar\|baz%qux\|quux}} | (12-15: (IDENT: qux)) |
+| tokens.html:14:8:14:42 | complex1={{foo.bar\|baz%qux\|quux}} | (15-16: (OP: \|)) |
+| tokens.html:14:8:14:42 | complex1={{foo.bar\|baz%qux\|quux}} | (16-20: (IDENT: quux)) |
+| tokens.html:16:8:16:52 | complex2={{ foo . bar \| baz % qux \| quux }} | (1-4: (IDENT: foo)) |
+| tokens.html:16:8:16:52 | complex2={{ foo . bar \| baz % qux \| quux }} | (5-6: (OTHER: .)) |
+| tokens.html:16:8:16:52 | complex2={{ foo . bar \| baz % qux \| quux }} | (7-10: (IDENT: bar)) |
+| tokens.html:16:8:16:52 | complex2={{ foo . bar \| baz % qux \| quux }} | (11-12: (OP: \|)) |
+| tokens.html:16:8:16:52 | complex2={{ foo . bar \| baz % qux \| quux }} | (13-16: (IDENT: baz)) |
+| tokens.html:16:8:16:52 | complex2={{ foo . bar \| baz % qux \| quux }} | (17-18: (OP: %)) |
+| tokens.html:16:8:16:52 | complex2={{ foo . bar \| baz % qux \| quux }} | (19-22: (IDENT: qux)) |
+| tokens.html:16:8:16:52 | complex2={{ foo . bar \| baz % qux \| quux }} | (23-24: (OP: \|)) |
+| tokens.html:16:8:16:52 | complex2={{ foo . bar \| baz % qux \| quux }} | (25-29: (IDENT: quux)) |
+| tokens.html:18:8:18:32 | complex3={{foo('bar')}} | (0-3: (IDENT: foo)) |
+| tokens.html:18:8:18:32 | complex3={{foo('bar')}} | (3-4: (OTHER: ()) |
+| tokens.html:18:8:18:32 | complex3={{foo('bar')}} | (4-9: (STRING: 'bar')) |
+| tokens.html:18:8:18:32 | complex3={{foo('bar')}} | (9-10: (OTHER: ))) |
+| tokens.html:20:8:20:37 | complex4={{ foo ( 'bar' ) }} | (1-4: (IDENT: foo)) |
+| tokens.html:20:8:20:37 | complex4={{ foo ( 'bar' ) }} | (5-6: (OTHER: ()) |
+| tokens.html:20:8:20:37 | complex4={{ foo ( 'bar' ) }} | (7-12: (STRING: 'bar')) |
+| tokens.html:20:8:20:37 | complex4={{ foo ( 'bar' ) }} | (13-14: (OTHER: ))) |
+| tokens.html:22:8:22:37 | complex5={{'str1'var'str2'}} | (0-6: (STRING: 'str1')) |
+| tokens.html:22:8:22:37 | complex5={{'str1'var'str2'}} | (6-9: (IDENT: var)) |
+| tokens.html:22:8:22:37 | complex5={{'str1'var'str2'}} | (9-15: (STRING: 'str2')) |
+| tokens.html:24:8:24:28 | complex6={{'str'(}} | (0-5: (STRING: 'str')) |
+| tokens.html:24:8:24:28 | complex6={{'str'(}} | (5-6: (OTHER: ()) |
+| tokens.html:26:8:26:28 | complex7={{('str'}} | (0-1: (OTHER: ()) |
+| tokens.html:26:8:26:28 | complex7={{('str'}} | (1-6: (STRING: 'str')) |
+| tokens.html:28:8:28:29 | complex8={{a}} {{b}} | (0-1: (IDENT: a)) |
+| tokens.html:28:8:28:29 | complex8={{a}} {{b}} | (0-1: (IDENT: b)) |

@@ -1,0 +1,13 @@
+| localvars/LocalVarTest.java:6:9:6:11 | int | localvars/LocalVarTest.java:6:13:6:17 | test1 | -1 |
+| localvars/LocalVarTest.java:7:9:7:11 | int | localvars/LocalVarTest.java:7:9:7:28 | var ...; | 0 |
+| localvars/LocalVarTest.java:8:9:8:11 | int | localvars/LocalVarTest.java:8:9:8:20 | var ...; | 0 |
+| localvars/LocalVarTest.java:9:9:9:20 | List<String> | localvars/LocalVarTest.java:9:9:9:35 | var ...; | 0 |
+| localvars/LocalVarTest.java:9:14:9:19 | String | localvars/LocalVarTest.java:9:9:9:20 | List<String> | 0 |
+| localvars/LocalVarTest.java:12:13:12:18 | Object | localvars/LocalVarTest.java:12:13:12:33 | var ...; | 0 |
+| localvars/LocalVarTest.java:17:9:17:12 | void | localvars/LocalVarTest.java:17:14:17:18 | test2 | -1 |
+| localvars/LocalVarTest.java:17:20:17:31 | List<String> | localvars/LocalVarTest.java:17:20:17:33 | l | -1 |
+| localvars/LocalVarTest.java:17:25:17:30 | String | localvars/LocalVarTest.java:17:20:17:31 | List<String> | 0 |
+| localvars/LocalVarTest.java:18:13:18:15 | int | localvars/LocalVarTest.java:18:9:18:29 | for (...;...;...) | 0 |
+| localvars/LocalVarTest.java:19:13:19:15 | int | localvars/LocalVarTest.java:19:9:19:37 | for (...;...;...) | 0 |
+| localvars/LocalVarTest.java:20:13:20:18 | String | localvars/LocalVarTest.java:20:9:20:25 | for (... : ...) | -1 |
+| localvars/LocalVarTest.java:22:17:22:32 | RuntimeException | localvars/LocalVarTest.java:22:11:22:35 | catch (...) | -1 |

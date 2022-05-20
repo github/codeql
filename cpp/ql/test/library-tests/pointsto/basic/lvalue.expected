@@ -1,0 +1,13 @@
+| test.cpp:16:3:16:4 | p1 |
+| test.cpp:16:9:16:9 | a |
+| test.cpp:18:3:18:4 | p1 |
+| test.cpp:18:9:18:9 | b |
+| test.cpp:20:2:20:3 | p2 |
+| test.cpp:22:2:22:3 | p3 |
+| test.cpp:22:8:22:8 | c |
+| test.cpp:23:2:23:4 | pp1 |
+| test.cpp:23:9:23:10 | p3 |
+| test.cpp:24:2:24:3 | p3 |
+| test.cpp:24:8:24:8 | d |
+| test.cpp:25:2:25:4 | pp2 |
+| test.cpp:25:9:25:10 | p3 |

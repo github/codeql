@@ -1,0 +1,8 @@
+conjunctive_lookup
+| test.py:6:1:6:6 | ControlFlowNode for meth() | meth() | obj1 | bar |
+| test.py:6:1:6:6 | ControlFlowNode for meth() | meth() | obj1 | foo |
+| test.py:6:1:6:6 | ControlFlowNode for meth() | meth() | obj2 | bar |
+| test.py:6:1:6:6 | ControlFlowNode for meth() | meth() | obj2 | foo |
+calls_lookup
+| test.py:6:1:6:6 | ControlFlowNode for meth() | meth() | obj1 | foo |
+| test.py:6:1:6:6 | ControlFlowNode for meth() | meth() | obj2 | bar |

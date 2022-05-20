@@ -1,0 +1,8 @@
+edges
+| RegexInjection.cs:10:24:10:46 | access to property QueryString : NameValueCollection | RegexInjection.cs:14:19:14:23 | access to local variable regex |
+nodes
+| RegexInjection.cs:10:24:10:46 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| RegexInjection.cs:14:19:14:23 | access to local variable regex | semmle.label | access to local variable regex |
+subpaths
+#select
+| RegexInjection.cs:14:19:14:23 | access to local variable regex | RegexInjection.cs:10:24:10:46 | access to property QueryString : NameValueCollection | RegexInjection.cs:14:19:14:23 | access to local variable regex | $@ flows to the construction of a regular expression. | RegexInjection.cs:10:24:10:46 | access to property QueryString | User-provided value |

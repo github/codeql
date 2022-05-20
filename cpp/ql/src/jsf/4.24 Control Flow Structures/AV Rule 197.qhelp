@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds <code>float</code> variables being used as loop counter. <code>float</code> values
+are prone to rounding and truncation. In particular, very large and very small
+float values are prone to rounding errors and could lead to unexpected loop behavior.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Use an integral variable instead of a float variable for the loop counter.
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 197.cpp" />
+
+
+
+</example>
+<references>
+
+<li>
+  AV Rule 197, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  MISRA C++ Rule 6-5-1, <em>Guidelines for the use of the C++ language in critical systems</em>. The Motor Industry Software Reliability Associate, 2008.
+</li>
+<li>
+  <a href="https://www.securecoding.cert.org/confluence/display/c/FLP30-C.+Do+not+use+floating-point+variables+as+loop+counters">FLP30-C. Do not use floating-point variables as loop counters</a>
+</li>
+
+
+</references>
+</qhelp>

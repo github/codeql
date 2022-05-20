@@ -1,0 +1,13 @@
+edges
+| KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:3:12:3:24 | ...[...] :  |
+| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:4:10:4:13 | file |
+| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:5:13:5:16 | file |
+nodes
+| KernelOpen.rb:3:12:3:17 | call to params :  | semmle.label | call to params :  |
+| KernelOpen.rb:3:12:3:24 | ...[...] :  | semmle.label | ...[...] :  |
+| KernelOpen.rb:4:10:4:13 | file | semmle.label | file |
+| KernelOpen.rb:5:13:5:16 | file | semmle.label | file |
+subpaths
+#select
+| KernelOpen.rb:4:10:4:13 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:4:10:4:13 | file | This call to Kernel.open depends on a user-provided value. Replace it with File.open. |
+| KernelOpen.rb:5:13:5:16 | file | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:5:13:5:16 | file | This call to IO.read depends on a user-provided value. Replace it with File.read. |

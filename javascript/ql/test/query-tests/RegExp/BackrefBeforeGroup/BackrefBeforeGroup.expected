@@ -1,0 +1,5 @@
+| tst.js:1:2:1:3 | \\1 | This back reference precedes its capture group. |
+| tst.js:2:4:2:5 | \\1 | This back reference precedes its capture group. |
+| tst.js:3:6:3:7 | \\2 | This back reference precedes its capture group. |
+| tst.js:4:8:4:9 | \\1 | This back reference precedes its capture group. |
+| tst.js:7:2:7:7 | \\k<ws> | This back reference precedes its capture group. |

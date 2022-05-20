@@ -1,0 +1,6 @@
+| duplicate_literal_locations.c:2:9:2:9 | a | duplicate_literal_locations.c:3:5:3:11 | ... = ... | duplicate_literal_locations.c:3:9:3:11 | 123 |
+| duplicate_literal_locations.c:2:12:2:12 | b | duplicate_literal_locations.c:4:5:4:9 | ... = ... | duplicate_literal_locations.c:4:9:4:9 | 4 |
+| duplicate_literal_locations.c:2:15:2:15 | c | duplicate_literal_locations.c:5:5:5:11 | ... = ... | duplicate_literal_locations.c:5:9:5:11 | 123 |
+| literal_locations.c:11:9:11:9 | i | literal_locations.c:11:12:11:17 | 55555 | literal_locations.c:11:12:11:17 | 55555 |
+| literal_locations.c:13:13:13:17 | pairs | literal_locations.c:13:22:16:5 | {...} | literal_locations.c:13:22:16:5 | {...} |
+| literal_locations.c:18:9:18:9 | j | literal_locations.c:18:12:18:17 | 55555 | literal_locations.c:18:12:18:17 | 55555 |

@@ -1,0 +1,74 @@
+edges
+| tainted_path.rb:4:12:4:17 | call to params :  | tainted_path.rb:4:12:4:24 | ...[...] :  |
+| tainted_path.rb:4:12:4:24 | ...[...] :  | tainted_path.rb:5:26:5:29 | path |
+| tainted_path.rb:10:12:10:43 | call to absolute_path :  | tainted_path.rb:11:26:11:29 | path |
+| tainted_path.rb:10:31:10:36 | call to params :  | tainted_path.rb:10:31:10:43 | ...[...] :  |
+| tainted_path.rb:10:31:10:43 | ...[...] :  | tainted_path.rb:10:12:10:43 | call to absolute_path :  |
+| tainted_path.rb:16:15:16:41 | call to dirname :  | tainted_path.rb:17:26:17:29 | path |
+| tainted_path.rb:16:28:16:33 | call to params :  | tainted_path.rb:16:28:16:40 | ...[...] :  |
+| tainted_path.rb:16:28:16:40 | ...[...] :  | tainted_path.rb:16:15:16:41 | call to dirname :  |
+| tainted_path.rb:22:12:22:41 | call to expand_path :  | tainted_path.rb:23:26:23:29 | path |
+| tainted_path.rb:22:29:22:34 | call to params :  | tainted_path.rb:22:29:22:41 | ...[...] :  |
+| tainted_path.rb:22:29:22:41 | ...[...] :  | tainted_path.rb:22:12:22:41 | call to expand_path :  |
+| tainted_path.rb:28:12:28:34 | call to path :  | tainted_path.rb:29:26:29:29 | path |
+| tainted_path.rb:28:22:28:27 | call to params :  | tainted_path.rb:28:22:28:34 | ...[...] :  |
+| tainted_path.rb:28:22:28:34 | ...[...] :  | tainted_path.rb:28:12:28:34 | call to path :  |
+| tainted_path.rb:34:12:34:41 | call to realdirpath :  | tainted_path.rb:35:26:35:29 | path |
+| tainted_path.rb:34:29:34:34 | call to params :  | tainted_path.rb:34:29:34:41 | ...[...] :  |
+| tainted_path.rb:34:29:34:41 | ...[...] :  | tainted_path.rb:34:12:34:41 | call to realdirpath :  |
+| tainted_path.rb:40:12:40:38 | call to realpath :  | tainted_path.rb:41:26:41:29 | path |
+| tainted_path.rb:40:26:40:31 | call to params :  | tainted_path.rb:40:26:40:38 | ...[...] :  |
+| tainted_path.rb:40:26:40:38 | ...[...] :  | tainted_path.rb:40:12:40:38 | call to realpath :  |
+| tainted_path.rb:47:12:47:63 | call to join :  | tainted_path.rb:48:26:48:29 | path |
+| tainted_path.rb:47:43:47:48 | call to params :  | tainted_path.rb:47:43:47:55 | ...[...] :  |
+| tainted_path.rb:47:43:47:55 | ...[...] :  | tainted_path.rb:47:12:47:63 | call to join :  |
+| tainted_path.rb:59:12:59:53 | call to new :  | tainted_path.rb:60:26:60:29 | path |
+| tainted_path.rb:59:40:59:45 | call to params :  | tainted_path.rb:59:40:59:52 | ...[...] :  |
+| tainted_path.rb:59:40:59:52 | ...[...] :  | tainted_path.rb:59:12:59:53 | call to new :  |
+nodes
+| tainted_path.rb:4:12:4:17 | call to params :  | semmle.label | call to params :  |
+| tainted_path.rb:4:12:4:24 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_path.rb:5:26:5:29 | path | semmle.label | path |
+| tainted_path.rb:10:12:10:43 | call to absolute_path :  | semmle.label | call to absolute_path :  |
+| tainted_path.rb:10:31:10:36 | call to params :  | semmle.label | call to params :  |
+| tainted_path.rb:10:31:10:43 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_path.rb:11:26:11:29 | path | semmle.label | path |
+| tainted_path.rb:16:15:16:41 | call to dirname :  | semmle.label | call to dirname :  |
+| tainted_path.rb:16:28:16:33 | call to params :  | semmle.label | call to params :  |
+| tainted_path.rb:16:28:16:40 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_path.rb:17:26:17:29 | path | semmle.label | path |
+| tainted_path.rb:22:12:22:41 | call to expand_path :  | semmle.label | call to expand_path :  |
+| tainted_path.rb:22:29:22:34 | call to params :  | semmle.label | call to params :  |
+| tainted_path.rb:22:29:22:41 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_path.rb:23:26:23:29 | path | semmle.label | path |
+| tainted_path.rb:28:12:28:34 | call to path :  | semmle.label | call to path :  |
+| tainted_path.rb:28:22:28:27 | call to params :  | semmle.label | call to params :  |
+| tainted_path.rb:28:22:28:34 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_path.rb:29:26:29:29 | path | semmle.label | path |
+| tainted_path.rb:34:12:34:41 | call to realdirpath :  | semmle.label | call to realdirpath :  |
+| tainted_path.rb:34:29:34:34 | call to params :  | semmle.label | call to params :  |
+| tainted_path.rb:34:29:34:41 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_path.rb:35:26:35:29 | path | semmle.label | path |
+| tainted_path.rb:40:12:40:38 | call to realpath :  | semmle.label | call to realpath :  |
+| tainted_path.rb:40:26:40:31 | call to params :  | semmle.label | call to params :  |
+| tainted_path.rb:40:26:40:38 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_path.rb:41:26:41:29 | path | semmle.label | path |
+| tainted_path.rb:47:12:47:63 | call to join :  | semmle.label | call to join :  |
+| tainted_path.rb:47:43:47:48 | call to params :  | semmle.label | call to params :  |
+| tainted_path.rb:47:43:47:55 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_path.rb:48:26:48:29 | path | semmle.label | path |
+| tainted_path.rb:59:12:59:53 | call to new :  | semmle.label | call to new :  |
+| tainted_path.rb:59:40:59:45 | call to params :  | semmle.label | call to params :  |
+| tainted_path.rb:59:40:59:52 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_path.rb:60:26:60:29 | path | semmle.label | path |
+subpaths
+#select
+| tainted_path.rb:5:26:5:29 | path | tainted_path.rb:4:12:4:17 | call to params :  | tainted_path.rb:5:26:5:29 | path | This path depends on $@. | tainted_path.rb:4:12:4:17 | call to params | a user-provided value |
+| tainted_path.rb:11:26:11:29 | path | tainted_path.rb:10:31:10:36 | call to params :  | tainted_path.rb:11:26:11:29 | path | This path depends on $@. | tainted_path.rb:10:31:10:36 | call to params | a user-provided value |
+| tainted_path.rb:17:26:17:29 | path | tainted_path.rb:16:28:16:33 | call to params :  | tainted_path.rb:17:26:17:29 | path | This path depends on $@. | tainted_path.rb:16:28:16:33 | call to params | a user-provided value |
+| tainted_path.rb:23:26:23:29 | path | tainted_path.rb:22:29:22:34 | call to params :  | tainted_path.rb:23:26:23:29 | path | This path depends on $@. | tainted_path.rb:22:29:22:34 | call to params | a user-provided value |
+| tainted_path.rb:29:26:29:29 | path | tainted_path.rb:28:22:28:27 | call to params :  | tainted_path.rb:29:26:29:29 | path | This path depends on $@. | tainted_path.rb:28:22:28:27 | call to params | a user-provided value |
+| tainted_path.rb:35:26:35:29 | path | tainted_path.rb:34:29:34:34 | call to params :  | tainted_path.rb:35:26:35:29 | path | This path depends on $@. | tainted_path.rb:34:29:34:34 | call to params | a user-provided value |
+| tainted_path.rb:41:26:41:29 | path | tainted_path.rb:40:26:40:31 | call to params :  | tainted_path.rb:41:26:41:29 | path | This path depends on $@. | tainted_path.rb:40:26:40:31 | call to params | a user-provided value |
+| tainted_path.rb:48:26:48:29 | path | tainted_path.rb:47:43:47:48 | call to params :  | tainted_path.rb:48:26:48:29 | path | This path depends on $@. | tainted_path.rb:47:43:47:48 | call to params | a user-provided value |
+| tainted_path.rb:60:26:60:29 | path | tainted_path.rb:59:40:59:45 | call to params :  | tainted_path.rb:60:26:60:29 | path | This path depends on $@. | tainted_path.rb:59:40:59:45 | call to params | a user-provided value |

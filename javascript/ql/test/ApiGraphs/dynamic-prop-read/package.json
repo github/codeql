@@ -1,0 +1,6 @@
+{
+    "name": "dynamic-prop-read",
+    "dependencies": {
+        "classes": "*"
+    }
+}

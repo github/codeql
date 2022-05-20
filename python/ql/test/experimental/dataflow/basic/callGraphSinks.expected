@@ -1,0 +1,2 @@
+| test.py:1:19:1:19 | ControlFlowNode for x |
+| test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() |

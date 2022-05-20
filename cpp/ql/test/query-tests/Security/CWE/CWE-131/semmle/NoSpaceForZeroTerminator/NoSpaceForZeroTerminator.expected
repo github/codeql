@@ -1,0 +1,15 @@
+| test2.cpp:64:34:64:39 | call to calloc | This allocation does not include space to null-terminate the string. |
+| test2.cpp:71:28:71:34 | call to realloc | This allocation does not include space to null-terminate the string. |
+| test.c:16:20:16:25 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.c:32:20:32:25 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.c:49:20:49:25 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.c:64:20:64:25 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.cpp:24:35:24:40 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.cpp:31:35:31:40 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.cpp:45:28:45:33 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.cpp:55:28:55:33 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.cpp:63:28:63:33 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.cpp:71:28:71:33 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.cpp:79:28:79:33 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.cpp:89:35:89:40 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.cpp:106:24:106:48 | new[] | This allocation does not include space to null-terminate the string. |

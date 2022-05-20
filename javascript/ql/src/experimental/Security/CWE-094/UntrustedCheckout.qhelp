@@ -1,0 +1,64 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+
+		<p>
+
+			Combining <i>pull_request_target</i> workflow trigger with an explicit checkout
+			of an untrusted pull request is a dangerous practice
+			that may lead to repository compromise.
+
+		</p>
+
+	</overview>
+
+	<recommendation>
+
+		<p>
+
+			The best practice is to handle the potentially untrusted pull request
+			via the <i>pull_request</i> trigger so that it is isolated in
+			an unprivileged environment. The workflow processing the pull request
+			should then store any results like code coverage or failed/passed tests
+			in artifacts and exit. The following workflow then starts on <i>workflow_run</i>
+			where it is granted write permission to the target repository and access to
+			repository secrets, so that it can download the artifacts and make
+			any necessary modifications to the repository or interact with third party services
+			that require repository secrets (e.g. API tokens).
+
+		</p>
+
+	</recommendation>
+
+	<example>
+
+		<p>
+
+			The following example allows unauthorized repository modification
+			and secrets exfiltration:
+
+		</p>
+
+		<sample src="examples/pull_request_target_bad.yml" />
+
+		<p>
+
+			The following example uses two workflows  to handle potentially untrusted
+			pull request in a secure manner. The receive_pr.yml is triggered first:
+
+		</p>
+
+		<sample src="examples/receive_pr.yml" />
+		<p>The comment_pr.yml is triggered after receive_pr.yml completes:</p>
+		<sample src="examples/comment_pr.yml" />
+
+	</example>
+
+	<references>
+		<li>GitHub Security Lab Research: <a href="https://securitylab.github.com/research/github-actions-preventing-pwn-requests">Keeping your GitHub Actions and workflows secure: Preventing pwn requests</a>.</li>
+	</references>
+
+</qhelp>

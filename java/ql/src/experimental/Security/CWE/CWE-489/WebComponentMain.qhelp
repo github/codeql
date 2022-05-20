@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>Debug code can create unintended entry points in a deployed Java EE web application therefore should never make into production. There is no reason to have a main method in a Java EE web application. Having a main method in the Java EE application increases the attack surface that an attacker can exploit to attack the application logic.</p>
+  </overview>
+
+  <recommendation>
+    <p>Remove the main method from web components including servlets, filters, and listeners.</p>
+  </recommendation>
+
+  <example>
+    <p>The following example shows two ways of implementing web components. In the 'BAD' case, a main method is implemented. In the 'GOOD' case, no main method is implemented.</p>
+    <sample src="WebComponentMain.java" />
+  </example>
+
+  <references>
+    <li>
+      Fortify:
+      <a href="https://vulncat.fortify.com/en/detail?id=desc.structural.java.j2ee_badpractices_leftover_debug_code">J2EE Bad Practices: Leftover Debug Code</a>
+    </li>
+    <li>
+      SonarSource:
+      <a href="https://rules.sonarsource.com/java/tag/owasp/RSPEC-2653">Web applications should not have a "main" method</a>
+    </li>
+    <li>
+      Carnegie Mellon University:
+      <a href="https://wiki.sei.cmu.edu/confluence/display/java/ENV06-J.+Production+code+must+not+contain+debugging+entry+points">ENV06-J. Production code must not contain debugging entry points</a>
+    </li>
+  </references>
+</qhelp>

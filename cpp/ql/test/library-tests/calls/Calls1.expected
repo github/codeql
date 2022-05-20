@@ -1,0 +1,5 @@
+| f | accesses | negate |
+| f | calls | compute |
+| fun3 | calls | f |
+| fun3 | calls | g |
+| g | calls | swap |

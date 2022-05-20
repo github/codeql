@@ -1,0 +1,5 @@
+| p;Sources;true;readUrl;(URL);;ReturnValue;generated:remote |
+| p;Sources;true;socketStream;();;ReturnValue;generated:remote |
+| p;Sources;true;sourceToParameter;(InputStream[],List);;Argument[0].ArrayElement;generated:remote |
+| p;Sources;true;sourceToParameter;(InputStream[],List);;Argument[1].Element;generated:remote |
+| p;Sources;true;wrappedSocketStream;();;ReturnValue;generated:remote |

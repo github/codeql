@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>
+    Storing user-controlled data on the local file system without
+    further validation allows arbitrary file upload, and may be
+    an indication of malicious backdoor code that has been
+    implanted into an otherwise trusted code base.
+  </p>
+</overview>
+
+<recommendation>
+  <p>
+    Examine the highlighted code closely to ensure that it is
+    behaving as intended.
+  </p>
+</recommendation>
+
+<example>
+  <p>
+    The following example shows backdoor code that downloads data
+    from the URL <code>https://evil.com/script</code>, and stores
+    it in the local file <code>/tmp/script</code>.
+  </p>
+
+  <sample src="examples/HttpToFileAccess.js"/>
+
+  <p>
+    Other parts of the program might then assume that since
+    <code>/tmp/script</code> is a local file its contents can be
+    trusted, while in fact they are obtained from an untrusted
+    remote source.
+  </p>
+</example>
+
+<references>
+  <li>OWASP: <a href="https://www.owasp.org/index.php/Trojan_Horse">Trojan Horse</a>.</li>
+  <li>OWASP: <a href="https://www.owasp.org/index.php/Unrestricted_File_Upload">Unrestricted File Upload</a>.</li>
+</references>
+</qhelp>

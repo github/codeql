@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Calling <code>wait</code> on an object of type <code>java.util.concurrent.locks.Condition</code> 
+may result in unexpected behavior because <code>wait</code> is a method of the <code>Object</code>
+class, not the <code>Condition</code> interface itself. Such a call is probably a typographical error:
+typing "wait" instead of "await".
+</p>
+
+</overview>
+<recommendation>
+
+<p>Instead of <code>Object.wait</code>, use one of the <code>Condition.await</code> methods.</p>
+
+</recommendation>
+<references>
+
+
+    <li>Java API Specification: <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/locks/Condition.html">java.util.concurrent.Condition</a>.</li>
+
+
+</references>
+</qhelp>

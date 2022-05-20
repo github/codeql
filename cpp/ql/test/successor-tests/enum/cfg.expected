@@ -1,0 +1,5 @@
+| enum | enum.c:5:5:5:5 | f | 5 | 1 | enum.c:5:9:7:1 | enum.c:5:9:7:1 | enum.c:5:9:7:1 | { ... } | 6: return ... |
+| enum | enum.c:5:5:5:5 | f | 6 | 1 | enum.c:6:9:6:9 | enum.c:6:9:6:9 | enum.c:6:9:6:9 | (int)... | <none> |
+| enum | enum.c:5:5:5:5 | f | 6 | 2 | enum.c:6:2:6:10 | enum.c:6:2:6:10 | enum.c:6:2:6:10 | return ... | 6: a |
+| enum | enum.c:5:5:5:5 | f | 6 | 3 | enum.c:6:9:6:9 | enum.c:6:9:6:9 | enum.c:6:9:6:9 | a | 6: f |
+| enum | enum.c:5:5:5:5 | f | 6 | 4 | enum.c:5:5:5:5 | enum.c:5:5:5:5 | enum.c:5:5:5:5 | f | <none> |

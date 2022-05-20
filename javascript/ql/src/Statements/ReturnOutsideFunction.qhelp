@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+In JavaScript, <code>return</code> statements are not allowed outside functions in most cases, the main
+exception being event handler code in HTML attributes. On the other hand, <code>return</code> is not
+allowed in <code>javascript:</code> URLs, and will cause a runtime exception on many browsers.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Investigate the code to see whether the <code>return</code> statement should be nested in a function.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following HTML snippet, a developer has implemented a function <code>validateForm</code> that
+should be invoked when the form is submitted to check its contents for wellformedness, and prevent
+submission if validation fails. The developer attempts to achieve this by invoking <code>validateForm</code>
+through a <code>javascript:</code> URL in the form's <code>action</code> attribute:
+</p>
+
+<sample src="examples/ReturnOutsideFunction.htm" />
+
+<p>
+This will not work in practice, since the <code>return</code> causes a syntax error. Instead, the
+validation should be moved to the <code>onsubmit</code> event handler, where a <code>return</code>
+statement is legal:
+</p>
+
+<sample src="examples/ReturnOutsideFunctionGood.htm" />
+
+</example>
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/return">Return</a>.</li>
+</references>
+</qhelp>

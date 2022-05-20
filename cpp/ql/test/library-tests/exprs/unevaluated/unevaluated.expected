@@ -1,0 +1,16 @@
+| test.cpp:5:16:5:16 | x |
+| test.cpp:5:16:5:17 | (...) |
+| test.cpp:10:16:10:16 | x |
+| test.cpp:10:16:10:20 | ... + ... |
+| test.cpp:10:16:10:21 | (...) |
+| test.cpp:10:20:10:20 | 1 |
+| test.cpp:21:11:21:18 | my_class |
+| test.cpp:21:20:21:24 | field |
+| test.cpp:26:11:26:11 | x |
+| test.cpp:31:9:31:9 | x |
+| test.cpp:42:9:42:11 | * ... |
+| test.cpp:42:10:42:11 | & ... |
+| test.cpp:42:11:42:11 | x |
+| test.cpp:57:9:57:9 | 4 |
+| test.cpp:63:9:63:19 | call to getAVirtual |
+| test.cpp:63:9:63:21 | temporary object |

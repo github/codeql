@@ -1,0 +1,138 @@
+nodes
+| AdmZipBad.js:6:24:6:41 | zipEntry.entryName |
+| AdmZipBad.js:6:24:6:41 | zipEntry.entryName |
+| AdmZipBad.js:6:24:6:41 | zipEntry.entryName |
+| AdmZipBad.js:6:24:6:41 | zipEntry.entryName |
+| TarSlipBad.js:6:36:6:46 | header.name |
+| TarSlipBad.js:6:36:6:46 | header.name |
+| TarSlipBad.js:6:36:6:46 | header.name |
+| TarSlipBad.js:6:36:6:46 | header.name |
+| TarSlipBad.js:9:17:9:31 | header.linkname |
+| TarSlipBad.js:9:17:9:31 | header.linkname |
+| TarSlipBad.js:9:17:9:31 | header.linkname |
+| TarSlipBad.js:9:17:9:31 | header.linkname |
+| ZipSlipBad2.js:5:9:5:46 | fileName |
+| ZipSlipBad2.js:5:9:5:46 | fileName |
+| ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path |
+| ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path |
+| ZipSlipBad2.js:5:37:5:46 | entry.path |
+| ZipSlipBad2.js:5:37:5:46 | entry.path |
+| ZipSlipBad2.js:5:37:5:46 | entry.path |
+| ZipSlipBad2.js:6:22:6:29 | fileName |
+| ZipSlipBad2.js:6:22:6:29 | fileName |
+| ZipSlipBad2.js:6:22:6:29 | fileName |
+| ZipSlipBad.js:7:11:7:31 | fileName |
+| ZipSlipBad.js:7:11:7:31 | fileName |
+| ZipSlipBad.js:7:22:7:31 | entry.path |
+| ZipSlipBad.js:7:22:7:31 | entry.path |
+| ZipSlipBad.js:7:22:7:31 | entry.path |
+| ZipSlipBad.js:8:37:8:44 | fileName |
+| ZipSlipBad.js:8:37:8:44 | fileName |
+| ZipSlipBad.js:8:37:8:44 | fileName |
+| ZipSlipBad.js:15:11:15:31 | fileName |
+| ZipSlipBad.js:15:11:15:31 | fileName |
+| ZipSlipBad.js:15:22:15:31 | entry.path |
+| ZipSlipBad.js:15:22:15:31 | entry.path |
+| ZipSlipBad.js:15:22:15:31 | entry.path |
+| ZipSlipBad.js:16:30:16:37 | fileName |
+| ZipSlipBad.js:16:30:16:37 | fileName |
+| ZipSlipBad.js:16:30:16:37 | fileName |
+| ZipSlipBad.js:22:11:22:31 | fileName |
+| ZipSlipBad.js:22:11:22:31 | fileName |
+| ZipSlipBad.js:22:22:22:31 | entry.path |
+| ZipSlipBad.js:22:22:22:31 | entry.path |
+| ZipSlipBad.js:22:22:22:31 | entry.path |
+| ZipSlipBad.js:23:28:23:35 | fileName |
+| ZipSlipBad.js:23:28:23:35 | fileName |
+| ZipSlipBad.js:23:28:23:35 | fileName |
+| ZipSlipBad.js:30:14:30:17 | name |
+| ZipSlipBad.js:30:14:30:17 | name |
+| ZipSlipBad.js:30:14:30:17 | name |
+| ZipSlipBad.js:31:26:31:29 | name |
+| ZipSlipBad.js:31:26:31:29 | name |
+| ZipSlipBad.js:31:26:31:29 | name |
+| ZipSlipBad.js:34:16:34:19 | name |
+| ZipSlipBad.js:34:16:34:19 | name |
+| ZipSlipBad.js:34:16:34:19 | name |
+| ZipSlipBad.js:35:26:35:29 | name |
+| ZipSlipBad.js:35:26:35:29 | name |
+| ZipSlipBad.js:35:26:35:29 | name |
+| ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
+| ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
+| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path |
+| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path |
+| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path |
+| ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
+| ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
+| ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
+edges
+| AdmZipBad.js:6:24:6:41 | zipEntry.entryName | AdmZipBad.js:6:24:6:41 | zipEntry.entryName |
+| TarSlipBad.js:6:36:6:46 | header.name | TarSlipBad.js:6:36:6:46 | header.name |
+| TarSlipBad.js:9:17:9:31 | header.linkname | TarSlipBad.js:9:17:9:31 | header.linkname |
+| ZipSlipBad2.js:5:9:5:46 | fileName | ZipSlipBad2.js:6:22:6:29 | fileName |
+| ZipSlipBad2.js:5:9:5:46 | fileName | ZipSlipBad2.js:6:22:6:29 | fileName |
+| ZipSlipBad2.js:5:9:5:46 | fileName | ZipSlipBad2.js:6:22:6:29 | fileName |
+| ZipSlipBad2.js:5:9:5:46 | fileName | ZipSlipBad2.js:6:22:6:29 | fileName |
+| ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path | ZipSlipBad2.js:5:9:5:46 | fileName |
+| ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path | ZipSlipBad2.js:5:9:5:46 | fileName |
+| ZipSlipBad2.js:5:37:5:46 | entry.path | ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path |
+| ZipSlipBad2.js:5:37:5:46 | entry.path | ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path |
+| ZipSlipBad2.js:5:37:5:46 | entry.path | ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path |
+| ZipSlipBad2.js:5:37:5:46 | entry.path | ZipSlipBad2.js:5:20:5:46 | 'output ... ry.path |
+| ZipSlipBad.js:7:11:7:31 | fileName | ZipSlipBad.js:8:37:8:44 | fileName |
+| ZipSlipBad.js:7:11:7:31 | fileName | ZipSlipBad.js:8:37:8:44 | fileName |
+| ZipSlipBad.js:7:11:7:31 | fileName | ZipSlipBad.js:8:37:8:44 | fileName |
+| ZipSlipBad.js:7:11:7:31 | fileName | ZipSlipBad.js:8:37:8:44 | fileName |
+| ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:7:11:7:31 | fileName |
+| ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:7:11:7:31 | fileName |
+| ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:7:11:7:31 | fileName |
+| ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:7:11:7:31 | fileName |
+| ZipSlipBad.js:15:11:15:31 | fileName | ZipSlipBad.js:16:30:16:37 | fileName |
+| ZipSlipBad.js:15:11:15:31 | fileName | ZipSlipBad.js:16:30:16:37 | fileName |
+| ZipSlipBad.js:15:11:15:31 | fileName | ZipSlipBad.js:16:30:16:37 | fileName |
+| ZipSlipBad.js:15:11:15:31 | fileName | ZipSlipBad.js:16:30:16:37 | fileName |
+| ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:15:11:15:31 | fileName |
+| ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:15:11:15:31 | fileName |
+| ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:15:11:15:31 | fileName |
+| ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:15:11:15:31 | fileName |
+| ZipSlipBad.js:22:11:22:31 | fileName | ZipSlipBad.js:23:28:23:35 | fileName |
+| ZipSlipBad.js:22:11:22:31 | fileName | ZipSlipBad.js:23:28:23:35 | fileName |
+| ZipSlipBad.js:22:11:22:31 | fileName | ZipSlipBad.js:23:28:23:35 | fileName |
+| ZipSlipBad.js:22:11:22:31 | fileName | ZipSlipBad.js:23:28:23:35 | fileName |
+| ZipSlipBad.js:22:22:22:31 | entry.path | ZipSlipBad.js:22:11:22:31 | fileName |
+| ZipSlipBad.js:22:22:22:31 | entry.path | ZipSlipBad.js:22:11:22:31 | fileName |
+| ZipSlipBad.js:22:22:22:31 | entry.path | ZipSlipBad.js:22:11:22:31 | fileName |
+| ZipSlipBad.js:22:22:22:31 | entry.path | ZipSlipBad.js:22:11:22:31 | fileName |
+| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
+| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
+| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
+| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
+| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
+| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
+| ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name |
+| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
+| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
+| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
+| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
+| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
+| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
+| ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name |
+| ZipSlipBadUnzipper.js:7:9:7:29 | fileName | ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
+| ZipSlipBadUnzipper.js:7:9:7:29 | fileName | ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
+| ZipSlipBadUnzipper.js:7:9:7:29 | fileName | ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
+| ZipSlipBadUnzipper.js:7:9:7:29 | fileName | ZipSlipBadUnzipper.js:8:37:8:44 | fileName |
+| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
+| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
+| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
+| ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | ZipSlipBadUnzipper.js:7:9:7:29 | fileName |
+#select
+| AdmZipBad.js:6:24:6:41 | zipEntry.entryName | AdmZipBad.js:6:24:6:41 | zipEntry.entryName | AdmZipBad.js:6:24:6:41 | zipEntry.entryName | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | AdmZipBad.js:6:24:6:41 | zipEntry.entryName | item path |
+| TarSlipBad.js:6:36:6:46 | header.name | TarSlipBad.js:6:36:6:46 | header.name | TarSlipBad.js:6:36:6:46 | header.name | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | TarSlipBad.js:6:36:6:46 | header.name | item path |
+| TarSlipBad.js:9:17:9:31 | header.linkname | TarSlipBad.js:9:17:9:31 | header.linkname | TarSlipBad.js:9:17:9:31 | header.linkname | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | TarSlipBad.js:9:17:9:31 | header.linkname | item path |
+| ZipSlipBad2.js:6:22:6:29 | fileName | ZipSlipBad2.js:5:37:5:46 | entry.path | ZipSlipBad2.js:6:22:6:29 | fileName | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlipBad2.js:5:37:5:46 | entry.path | item path |
+| ZipSlipBad.js:8:37:8:44 | fileName | ZipSlipBad.js:7:22:7:31 | entry.path | ZipSlipBad.js:8:37:8:44 | fileName | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlipBad.js:7:22:7:31 | entry.path | item path |
+| ZipSlipBad.js:16:30:16:37 | fileName | ZipSlipBad.js:15:22:15:31 | entry.path | ZipSlipBad.js:16:30:16:37 | fileName | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlipBad.js:15:22:15:31 | entry.path | item path |
+| ZipSlipBad.js:23:28:23:35 | fileName | ZipSlipBad.js:22:22:22:31 | entry.path | ZipSlipBad.js:23:28:23:35 | fileName | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlipBad.js:22:22:22:31 | entry.path | item path |
+| ZipSlipBad.js:31:26:31:29 | name | ZipSlipBad.js:30:14:30:17 | name | ZipSlipBad.js:31:26:31:29 | name | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlipBad.js:30:14:30:17 | name | item path |
+| ZipSlipBad.js:35:26:35:29 | name | ZipSlipBad.js:34:16:34:19 | name | ZipSlipBad.js:35:26:35:29 | name | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlipBad.js:34:16:34:19 | name | item path |
+| ZipSlipBadUnzipper.js:8:37:8:44 | fileName | ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | ZipSlipBadUnzipper.js:8:37:8:44 | fileName | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlipBadUnzipper.js:7:20:7:29 | entry.path | item path |

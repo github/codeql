@@ -1,0 +1,101 @@
+edges
+| ActiveRecordInjection.rb:8:25:8:28 | name :  | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" |
+| ActiveRecordInjection.rb:8:31:8:34 | pass :  | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" |
+| ActiveRecordInjection.rb:20:22:20:30 | condition :  | ActiveRecordInjection.rb:23:16:23:24 | condition |
+| ActiveRecordInjection.rb:35:30:35:35 | call to params :  | ActiveRecordInjection.rb:35:30:35:44 | ...[...] |
+| ActiveRecordInjection.rb:39:18:39:23 | call to params :  | ActiveRecordInjection.rb:39:18:39:32 | ...[...] |
+| ActiveRecordInjection.rb:43:29:43:34 | call to params :  | ActiveRecordInjection.rb:43:29:43:39 | ...[...] :  |
+| ActiveRecordInjection.rb:43:29:43:39 | ...[...] :  | ActiveRecordInjection.rb:43:20:43:42 | "id = '#{...}'" |
+| ActiveRecordInjection.rb:48:30:48:35 | call to params :  | ActiveRecordInjection.rb:48:30:48:40 | ...[...] :  |
+| ActiveRecordInjection.rb:48:30:48:40 | ...[...] :  | ActiveRecordInjection.rb:48:21:48:43 | "id = '#{...}'" |
+| ActiveRecordInjection.rb:52:31:52:36 | call to params :  | ActiveRecordInjection.rb:52:31:52:41 | ...[...] :  |
+| ActiveRecordInjection.rb:52:31:52:41 | ...[...] :  | ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" |
+| ActiveRecordInjection.rb:57:32:57:37 | call to params :  | ActiveRecordInjection.rb:57:32:57:42 | ...[...] :  |
+| ActiveRecordInjection.rb:57:32:57:42 | ...[...] :  | ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" |
+| ActiveRecordInjection.rb:62:21:62:26 | call to params :  | ActiveRecordInjection.rb:62:21:62:35 | ...[...] :  |
+| ActiveRecordInjection.rb:62:21:62:35 | ...[...] :  | ActiveRecordInjection.rb:61:16:61:21 | <<-SQL |
+| ActiveRecordInjection.rb:68:34:68:39 | call to params :  | ActiveRecordInjection.rb:68:34:68:44 | ...[...] :  |
+| ActiveRecordInjection.rb:68:34:68:44 | ...[...] :  | ActiveRecordInjection.rb:68:20:68:47 | "user.id = '#{...}'" |
+| ActiveRecordInjection.rb:70:23:70:28 | call to params :  | ActiveRecordInjection.rb:70:23:70:35 | ...[...] :  |
+| ActiveRecordInjection.rb:70:23:70:35 | ...[...] :  | ActiveRecordInjection.rb:8:25:8:28 | name :  |
+| ActiveRecordInjection.rb:70:38:70:43 | call to params :  | ActiveRecordInjection.rb:70:38:70:50 | ...[...] :  |
+| ActiveRecordInjection.rb:70:38:70:50 | ...[...] :  | ActiveRecordInjection.rb:8:31:8:34 | pass :  |
+| ActiveRecordInjection.rb:74:41:74:46 | call to params :  | ActiveRecordInjection.rb:74:41:74:51 | ...[...] :  |
+| ActiveRecordInjection.rb:74:41:74:51 | ...[...] :  | ActiveRecordInjection.rb:74:32:74:54 | "id = '#{...}'" |
+| ActiveRecordInjection.rb:83:17:83:22 | call to params :  | ActiveRecordInjection.rb:83:17:83:31 | ...[...] |
+| ActiveRecordInjection.rb:84:19:84:24 | call to params :  | ActiveRecordInjection.rb:84:19:84:33 | ...[...] |
+| ActiveRecordInjection.rb:88:18:88:23 | call to params :  | ActiveRecordInjection.rb:88:18:88:35 | ...[...] |
+| ActiveRecordInjection.rb:92:21:92:26 | call to params :  | ActiveRecordInjection.rb:92:21:92:35 | ...[...] |
+| ActiveRecordInjection.rb:98:10:98:15 | call to params :  | ActiveRecordInjection.rb:99:11:99:12 | ps :  |
+| ActiveRecordInjection.rb:99:11:99:12 | ps :  | ActiveRecordInjection.rb:99:11:99:17 | ...[...] :  |
+| ActiveRecordInjection.rb:99:11:99:17 | ...[...] :  | ActiveRecordInjection.rb:104:20:104:32 | ... + ... |
+| ActiveRecordInjection.rb:137:21:137:26 | call to params :  | ActiveRecordInjection.rb:137:21:137:44 | ...[...] :  |
+| ActiveRecordInjection.rb:137:21:137:44 | ...[...] :  | ActiveRecordInjection.rb:20:22:20:30 | condition :  |
+nodes
+| ActiveRecordInjection.rb:8:25:8:28 | name :  | semmle.label | name :  |
+| ActiveRecordInjection.rb:8:31:8:34 | pass :  | semmle.label | pass :  |
+| ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | semmle.label | "name='#{...}' and pass='#{...}'" |
+| ActiveRecordInjection.rb:20:22:20:30 | condition :  | semmle.label | condition :  |
+| ActiveRecordInjection.rb:23:16:23:24 | condition | semmle.label | condition |
+| ActiveRecordInjection.rb:35:30:35:35 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:35:30:35:44 | ...[...] | semmle.label | ...[...] |
+| ActiveRecordInjection.rb:39:18:39:23 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:39:18:39:32 | ...[...] | semmle.label | ...[...] |
+| ActiveRecordInjection.rb:43:20:43:42 | "id = '#{...}'" | semmle.label | "id = '#{...}'" |
+| ActiveRecordInjection.rb:43:29:43:34 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:43:29:43:39 | ...[...] :  | semmle.label | ...[...] :  |
+| ActiveRecordInjection.rb:48:21:48:43 | "id = '#{...}'" | semmle.label | "id = '#{...}'" |
+| ActiveRecordInjection.rb:48:30:48:35 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:48:30:48:40 | ...[...] :  | semmle.label | ...[...] :  |
+| ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" | semmle.label | "id = '#{...}'" |
+| ActiveRecordInjection.rb:52:31:52:36 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:52:31:52:41 | ...[...] :  | semmle.label | ...[...] :  |
+| ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" | semmle.label | "id = '#{...}'" |
+| ActiveRecordInjection.rb:57:32:57:37 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:57:32:57:42 | ...[...] :  | semmle.label | ...[...] :  |
+| ActiveRecordInjection.rb:61:16:61:21 | <<-SQL | semmle.label | <<-SQL |
+| ActiveRecordInjection.rb:62:21:62:26 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:62:21:62:35 | ...[...] :  | semmle.label | ...[...] :  |
+| ActiveRecordInjection.rb:68:20:68:47 | "user.id = '#{...}'" | semmle.label | "user.id = '#{...}'" |
+| ActiveRecordInjection.rb:68:34:68:39 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:68:34:68:44 | ...[...] :  | semmle.label | ...[...] :  |
+| ActiveRecordInjection.rb:70:23:70:28 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:70:23:70:35 | ...[...] :  | semmle.label | ...[...] :  |
+| ActiveRecordInjection.rb:70:38:70:43 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:70:38:70:50 | ...[...] :  | semmle.label | ...[...] :  |
+| ActiveRecordInjection.rb:74:32:74:54 | "id = '#{...}'" | semmle.label | "id = '#{...}'" |
+| ActiveRecordInjection.rb:74:41:74:46 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:74:41:74:51 | ...[...] :  | semmle.label | ...[...] :  |
+| ActiveRecordInjection.rb:83:17:83:22 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:83:17:83:31 | ...[...] | semmle.label | ...[...] |
+| ActiveRecordInjection.rb:84:19:84:24 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:84:19:84:33 | ...[...] | semmle.label | ...[...] |
+| ActiveRecordInjection.rb:88:18:88:23 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:88:18:88:35 | ...[...] | semmle.label | ...[...] |
+| ActiveRecordInjection.rb:92:21:92:26 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:92:21:92:35 | ...[...] | semmle.label | ...[...] |
+| ActiveRecordInjection.rb:98:10:98:15 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:99:11:99:12 | ps :  | semmle.label | ps :  |
+| ActiveRecordInjection.rb:99:11:99:17 | ...[...] :  | semmle.label | ...[...] :  |
+| ActiveRecordInjection.rb:104:20:104:32 | ... + ... | semmle.label | ... + ... |
+| ActiveRecordInjection.rb:137:21:137:26 | call to params :  | semmle.label | call to params :  |
+| ActiveRecordInjection.rb:137:21:137:44 | ...[...] :  | semmle.label | ...[...] :  |
+subpaths
+#select
+| ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | ActiveRecordInjection.rb:70:23:70:28 | call to params :  | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | This SQL query depends on $@. | ActiveRecordInjection.rb:70:23:70:28 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | ActiveRecordInjection.rb:70:38:70:43 | call to params :  | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | This SQL query depends on $@. | ActiveRecordInjection.rb:70:38:70:43 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:23:16:23:24 | condition | ActiveRecordInjection.rb:137:21:137:26 | call to params :  | ActiveRecordInjection.rb:23:16:23:24 | condition | This SQL query depends on $@. | ActiveRecordInjection.rb:137:21:137:26 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:35:30:35:44 | ...[...] | ActiveRecordInjection.rb:35:30:35:35 | call to params :  | ActiveRecordInjection.rb:35:30:35:44 | ...[...] | This SQL query depends on $@. | ActiveRecordInjection.rb:35:30:35:35 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:39:18:39:32 | ...[...] | ActiveRecordInjection.rb:39:18:39:23 | call to params :  | ActiveRecordInjection.rb:39:18:39:32 | ...[...] | This SQL query depends on $@. | ActiveRecordInjection.rb:39:18:39:23 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:43:20:43:42 | "id = '#{...}'" | ActiveRecordInjection.rb:43:29:43:34 | call to params :  | ActiveRecordInjection.rb:43:20:43:42 | "id = '#{...}'" | This SQL query depends on $@. | ActiveRecordInjection.rb:43:29:43:34 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:48:21:48:43 | "id = '#{...}'" | ActiveRecordInjection.rb:48:30:48:35 | call to params :  | ActiveRecordInjection.rb:48:21:48:43 | "id = '#{...}'" | This SQL query depends on $@. | ActiveRecordInjection.rb:48:30:48:35 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" | ActiveRecordInjection.rb:52:31:52:36 | call to params :  | ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" | This SQL query depends on $@. | ActiveRecordInjection.rb:52:31:52:36 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" | ActiveRecordInjection.rb:57:32:57:37 | call to params :  | ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" | This SQL query depends on $@. | ActiveRecordInjection.rb:57:32:57:37 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:61:16:61:21 | <<-SQL | ActiveRecordInjection.rb:62:21:62:26 | call to params :  | ActiveRecordInjection.rb:61:16:61:21 | <<-SQL | This SQL query depends on $@. | ActiveRecordInjection.rb:62:21:62:26 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:68:20:68:47 | "user.id = '#{...}'" | ActiveRecordInjection.rb:68:34:68:39 | call to params :  | ActiveRecordInjection.rb:68:20:68:47 | "user.id = '#{...}'" | This SQL query depends on $@. | ActiveRecordInjection.rb:68:34:68:39 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:74:32:74:54 | "id = '#{...}'" | ActiveRecordInjection.rb:74:41:74:46 | call to params :  | ActiveRecordInjection.rb:74:32:74:54 | "id = '#{...}'" | This SQL query depends on $@. | ActiveRecordInjection.rb:74:41:74:46 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:83:17:83:31 | ...[...] | ActiveRecordInjection.rb:83:17:83:22 | call to params :  | ActiveRecordInjection.rb:83:17:83:31 | ...[...] | This SQL query depends on $@. | ActiveRecordInjection.rb:83:17:83:22 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:84:19:84:33 | ...[...] | ActiveRecordInjection.rb:84:19:84:24 | call to params :  | ActiveRecordInjection.rb:84:19:84:33 | ...[...] | This SQL query depends on $@. | ActiveRecordInjection.rb:84:19:84:24 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:88:18:88:35 | ...[...] | ActiveRecordInjection.rb:88:18:88:23 | call to params :  | ActiveRecordInjection.rb:88:18:88:35 | ...[...] | This SQL query depends on $@. | ActiveRecordInjection.rb:88:18:88:23 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:92:21:92:35 | ...[...] | ActiveRecordInjection.rb:92:21:92:26 | call to params :  | ActiveRecordInjection.rb:92:21:92:35 | ...[...] | This SQL query depends on $@. | ActiveRecordInjection.rb:92:21:92:26 | call to params | a user-provided value |
+| ActiveRecordInjection.rb:104:20:104:32 | ... + ... | ActiveRecordInjection.rb:98:10:98:15 | call to params :  | ActiveRecordInjection.rb:104:20:104:32 | ... + ... | This SQL query depends on $@. | ActiveRecordInjection.rb:98:10:98:15 | call to params | a user-provided value |

@@ -1,0 +1,18 @@
+digraph
+{
+	rankdir = "LR";
+	Z;
+	Y;
+	X;
+	I1 -> Y;
+	I2 -> X;
+	I3 -> Z;
+	I4 -> Y;
+	I5 -> X;
+	Z -> O1;
+	Y -> O2;
+	X -> O3;
+	Y -> O4;
+	Z -> O5;
+}
+

@@ -1,0 +1,14 @@
+| tst.js:2:7:2:13 | a = g() | tst.js:2:7:2:7 | a | tst.js:2:11:2:13 | g() |
+| tst.js:4:7:4:24 | { propB: b } = g() | tst.js:4:16:4:16 | b | tst.js:4:9:4:16 | propB: b |
+| tst.js:6:7:6:34 | { propC ... } = g() | tst.js:6:16:6:16 | c | tst.js:6:9:6:16 | propC: c |
+| tst.js:6:7:6:34 | { propC ... } = g() | tst.js:6:26:6:26 | d | tst.js:6:19:6:26 | propD: d |
+| tst.js:8:7:8:41 | { array ... } = g() | tst.js:8:22:8:25 | elm1 | tst.js:8:22:8:25 | elm1 |
+| tst.js:8:7:8:41 | { array ... } = g() | tst.js:8:28:8:31 | elm2 | tst.js:8:28:8:31 | elm2 |
+| tst.js:17:3:17:22 | ({ propB: b }) = g() | tst.js:4:16:4:16 | b | tst.js:17:6:17:13 | propB: b |
+| tst.js:19:3:19:32 | ({ prop ... ) = g() | tst.js:6:16:6:16 | c | tst.js:19:6:19:13 | propC: c |
+| tst.js:19:3:19:32 | ({ prop ... ) = g() | tst.js:6:26:6:26 | d | tst.js:19:16:19:23 | propD: d |
+| tst.js:21:3:21:22 | [ elm1, elm2 ] = g() | tst.js:8:22:8:25 | elm1 | tst.js:21:5:21:8 | elm1 |
+| tst.js:21:3:21:22 | [ elm1, elm2 ] = g() | tst.js:8:28:8:31 | elm2 | tst.js:21:11:21:14 | elm2 |
+| tst.js:31:12:31:23 | [elm1, elm2] | tst.js:31:13:31:16 | elm1 | tst.js:31:13:31:16 | elm1 |
+| tst.js:31:12:31:23 | [elm1, elm2] | tst.js:31:19:31:22 | elm2 | tst.js:31:19:31:22 | elm2 |
+| tst.js:31:26:31:40 | { prop: value } | tst.js:31:34:31:38 | value | tst.js:31:28:31:38 | prop: value |

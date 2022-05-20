@@ -1,0 +1,35 @@
+"C++":
+  - cpp/**/*
+  - change-notes/**/*cpp*
+
+"C#":
+  - csharp/**/*
+  - change-notes/**/*csharp*
+
+Java:
+  - java/**/*
+  - change-notes/**/*java.*
+
+JS:
+  - any: [ 'javascript/**/*', '!javascript/ql/experimental/adaptivethreatmodeling/**/*' ]
+  - change-notes/**/*javascript*
+
+Python:
+  - python/**/*
+  - change-notes/**/*python*
+
+Ruby:
+  - ruby/**/*
+  - change-notes/**/*ruby*
+  
+Swift:
+  - swift/**/*
+  - change-notes/**/*swift*
+
+documentation:
+  - "**/*.qhelp"
+  - "**/*.md"
+  - docs/**/*
+
+"QL-for-QL": 
+  - ql/**/*

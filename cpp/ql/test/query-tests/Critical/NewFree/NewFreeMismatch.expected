@@ -1,0 +1,23 @@
+| test2.cpp:19:3:19:6 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test2.cpp:18:12:18:18 | new | new |
+| test2.cpp:26:3:26:6 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test2.cpp:25:7:25:13 | new | new |
+| test2.cpp:51:2:51:5 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test2.cpp:45:18:45:24 | new | new |
+| test2.cpp:55:2:55:5 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test2.cpp:46:20:46:33 | call to operator new | new |
+| test2.cpp:57:2:57:18 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test2.cpp:47:21:47:26 | call to malloc | malloc |
+| test2.cpp:58:2:58:18 | call to operator delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test2.cpp:47:21:47:26 | call to malloc | malloc |
+| test.cpp:36:2:36:17 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:27:18:27:23 | call to malloc | malloc |
+| test.cpp:41:2:41:5 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:26:7:26:17 | new | new |
+| test.cpp:68:3:68:11 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:64:28:64:33 | call to malloc | malloc |
+| test.cpp:75:3:75:6 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:71:17:71:27 | new | new |
+| test.cpp:76:3:76:6 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:72:17:72:31 | new[] | new[] |
+| test.cpp:91:3:91:11 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:88:28:88:36 | call to my_malloc | malloc |
+| test.cpp:99:3:99:11 | call to my_delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:96:28:96:33 | call to malloc | malloc |
+| test.cpp:138:2:138:9 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:135:12:135:22 | call to my_malloc_2 | malloc |
+| test.cpp:155:2:155:9 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:152:12:152:22 | call to my_malloc_3 | malloc |
+| test.cpp:232:2:232:9 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:226:7:226:12 | call to malloc | malloc |
+| test.cpp:233:2:233:12 | delete[] | There is a malloc/delete mismatch between this delete[] and the corresponding $@. | test.cpp:226:7:226:12 | call to malloc | malloc |
+| test.cpp:235:2:235:5 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:227:7:227:13 | new | new |
+| test.cpp:239:2:239:5 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:228:7:228:17 | new[] | new[] |
+| test.cpp:272:3:272:6 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:265:7:265:13 | new | new |
+| test.cpp:441:2:441:10 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:434:13:434:18 | call to strdup | malloc |
+| test.cpp:443:2:443:10 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:436:13:436:19 | call to strndup | malloc |
+| test.cpp:445:2:445:10 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:438:16:438:21 | call to wcsdup | malloc |

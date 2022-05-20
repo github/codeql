@@ -1,0 +1,38 @@
+| test.cpp:2:7:2:12 | Mutex1 | getLockAccess() | test.cpp:14:6:14:9 | call to lock |
+| test.cpp:2:7:2:12 | Mutex1 | getLockAccess() | test.cpp:17:9:17:12 | call to lock |
+| test.cpp:2:7:2:12 | Mutex1 | getMustlockAccess() | test.cpp:14:6:14:9 | call to lock |
+| test.cpp:2:7:2:12 | Mutex1 | getMustlockAccess() | test.cpp:17:9:17:12 | call to lock |
+| test.cpp:2:7:2:12 | Mutex1 | getUnlockAccess() | test.cpp:15:6:15:11 | call to unlock |
+| test.cpp:2:7:2:12 | Mutex1 | getUnlockAccess() | test.cpp:18:9:18:14 | call to unlock |
+| test.cpp:2:7:2:12 | Mutex1 | is MutexType | test.cpp:2:7:2:12 | Mutex1 |
+| test.cpp:21:7:21:12 | Mutex2 | getLockAccess() | test.cpp:31:10:31:17 | call to try_lock |
+| test.cpp:21:7:21:12 | Mutex2 | getLockAccess() | test.cpp:43:11:43:18 | call to try_lock |
+| test.cpp:21:7:21:12 | Mutex2 | getTrylockAccess() | test.cpp:31:10:31:17 | call to try_lock |
+| test.cpp:21:7:21:12 | Mutex2 | getTrylockAccess() | test.cpp:43:11:43:18 | call to try_lock |
+| test.cpp:21:7:21:12 | Mutex2 | getUnlockAccess() | test.cpp:33:7:33:12 | call to unlock |
+| test.cpp:21:7:21:12 | Mutex2 | getUnlockAccess() | test.cpp:45:8:45:13 | call to unlock |
+| test.cpp:21:7:21:12 | Mutex2 | is MutexType | test.cpp:21:7:21:12 | Mutex2 |
+| test.cpp:49:7:49:12 | Mutex4 | getLockAccess() | test.cpp:64:2:64:18 | call to mutex4_mutex_lock |
+| test.cpp:49:7:49:12 | Mutex4 | getLockAccess() | test.cpp:67:2:67:18 | call to mutex4_mutex_lock |
+| test.cpp:49:7:49:12 | Mutex4 | getMustlockAccess() | test.cpp:64:2:64:18 | call to mutex4_mutex_lock |
+| test.cpp:49:7:49:12 | Mutex4 | getMustlockAccess() | test.cpp:67:2:67:18 | call to mutex4_mutex_lock |
+| test.cpp:49:7:49:12 | Mutex4 | getUnlockAccess() | test.cpp:65:2:65:20 | call to mutex4_mutex_unlock |
+| test.cpp:49:7:49:12 | Mutex4 | getUnlockAccess() | test.cpp:68:2:68:20 | call to mutex4_mutex_unlock |
+| test.cpp:49:7:49:12 | Mutex4 | is MutexType | test.cpp:49:7:49:12 | Mutex4 |
+| test.cpp:97:7:97:12 | Mutex7 | getLockAccess() | test.cpp:108:6:108:13 | call to custom_l |
+| test.cpp:97:7:97:12 | Mutex7 | getMustlockAccess() | test.cpp:108:6:108:13 | call to custom_l |
+| test.cpp:97:7:97:12 | Mutex7 | getUnlockAccess() | test.cpp:109:6:109:14 | call to custom_ul |
+| test.cpp:97:7:97:12 | Mutex7 | is MutexType | test.cpp:97:7:97:12 | Mutex7 |
+| test.cpp:112:7:112:12 | Mutex8 | getLockAccess() | test.cpp:119:9:119:12 | call to lock |
+| test.cpp:112:7:112:12 | Mutex8 | getLockAccess() | test.cpp:122:3:122:6 | call to lock |
+| test.cpp:112:7:112:12 | Mutex8 | getLockAccess() | test.cpp:133:9:133:12 | call to lock |
+| test.cpp:112:7:112:12 | Mutex8 | getLockAccess() | test.cpp:136:10:136:13 | call to lock |
+| test.cpp:112:7:112:12 | Mutex8 | getMustlockAccess() | test.cpp:119:9:119:12 | call to lock |
+| test.cpp:112:7:112:12 | Mutex8 | getMustlockAccess() | test.cpp:122:3:122:6 | call to lock |
+| test.cpp:112:7:112:12 | Mutex8 | getMustlockAccess() | test.cpp:133:9:133:12 | call to lock |
+| test.cpp:112:7:112:12 | Mutex8 | getMustlockAccess() | test.cpp:136:10:136:13 | call to lock |
+| test.cpp:112:7:112:12 | Mutex8 | getUnlockAccess() | test.cpp:120:9:120:14 | call to unlock |
+| test.cpp:112:7:112:12 | Mutex8 | getUnlockAccess() | test.cpp:123:3:123:8 | call to unlock |
+| test.cpp:112:7:112:12 | Mutex8 | getUnlockAccess() | test.cpp:134:9:134:14 | call to unlock |
+| test.cpp:112:7:112:12 | Mutex8 | getUnlockAccess() | test.cpp:137:10:137:15 | call to unlock |
+| test.cpp:112:7:112:12 | Mutex8 | is MutexType | test.cpp:112:7:112:12 | Mutex8 |

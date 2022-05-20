@@ -1,0 +1,3 @@
+# CWE-079: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
++ semmlecode-cpp-queries/Security/CWE/CWE-079/CgiXss.ql: /CWE/CWE-079
+    @name CGI script vulnerable to cross-site scripting (CWE-079)

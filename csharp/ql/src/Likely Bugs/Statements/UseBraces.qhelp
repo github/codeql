@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A control structure (<code>if</code> statements and loops) has a body that is either a block
+of statements or a single statement. The second option may be indicated by omitting the
+braces: <code>{</code> and <code>}</code>.</p>
+
+<p>However, omitting the braces can lead to confusion, especially if the indentation of the code
+suggests that multiple statements are within the body of a control structure when in fact they are 
+not.</p>
+
+</overview>
+<recommendation>
+
+<p>It is usually considered good practice to include braces for all control
+structures in C#. This is because it makes it easier to maintain the code
+later. For example, it's easy to see at a glance which part of the code is in the
+scope of an <code>if</code> statement, and adding more statements to the body of the <code>if</code>
+statement is less error-prone.</p>
+
+<p>You should also ensure that the indentation of the code is consistent with the actual flow of 
+control, so that it does not confuse programmers.</p>
+
+</recommendation>
+<example>
+
+<p>In the example below, the <code>if</code> statement checks whether the item <code>i</code> is
+<code>null</code> before adding it to the list. However the <code>if</code> statement does not 
+guard the call to <code>Console.Out.WriteLine</code>, resulting in a <code>NullReferenceException</code> 
+whenever <code>null</code> is passed to the function <code>AddItem</code>.</p>
+
+<sample src="UseBraces.cs" />
+
+<p>This code is fixed by adding curly braces <code>{</code> and <code>}</code> 
+around both statements, as shown below.</p>
+
+<sample src="UseBracesFix.cs" />
+
+</example>
+<references>
+
+
+<li>
+  MSDN Documentation:
+  <a href="http://msdn.microsoft.com/en-us/library/5011f09h.aspx">if-else (C# Reference)</a>
+</li>
+
+
+</references>
+</qhelp>

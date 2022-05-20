@@ -1,0 +1,14 @@
+| stmts/A.java:18:5:18:12 | yield ... | stmts/A.java:16:10:16:18 | switch (...) |
+| stmts/A.java:22:6:22:13 | yield ... | stmts/A.java:20:14:20:22 | switch (...) |
+| stmts/A.java:25:6:25:13 | yield ... | stmts/A.java:20:14:20:22 | switch (...) |
+| stmts/A.java:34:7:34:14 | yield ... | stmts/A.java:16:10:16:18 | switch (...) |
+| stmts/A.java:37:5:37:13 | yield ... | stmts/A.java:16:10:16:18 | switch (...) |
+| stmts/B.java:8:5:8:10 | break | stmts/B.java:6:3:6:26 | for (...;...;...) |
+| stmts/B.java:10:5:10:13 | continue | stmts/B.java:6:3:6:26 | for (...;...;...) |
+| stmts/B.java:13:6:13:11 | break | stmts/B.java:11:4:11:17 | while (...) |
+| stmts/B.java:15:6:15:17 | break | stmts/B.java:6:3:6:26 | for (...;...;...) |
+| stmts/B.java:17:6:17:14 | continue | stmts/B.java:11:4:11:17 | while (...) |
+| stmts/B.java:19:6:19:20 | continue | stmts/B.java:6:3:6:26 | for (...;...;...) |
+| stmts/B.java:22:6:22:11 | break | stmts/B.java:20:5:20:14 | switch (...) |
+| stmts/B.java:24:6:24:17 | break | stmts/B.java:6:3:6:26 | for (...;...;...) |
+| stmts/B.java:26:6:26:14 | continue | stmts/B.java:11:4:11:17 | while (...) |

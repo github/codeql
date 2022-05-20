@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+In a Spring XML bean definition file, adding a <code>&lt;description&gt;</code> element to a <code>&lt;bean&gt;</code> element or the enclosing <code>&lt;beans&gt;</code>
+element to document the purpose of the bean specification is good practice. A <code>description</code> element also has the advantage of making it easier for
+tools to detect and display the documentation for your bean specifications.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Add a <code>&lt;description&gt;</code> element either in the <code>&lt;bean&gt;</code> element or its enclosing <code>&lt;beans&gt;</code> element.
+</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows a Spring XML bean definition file that includes 
+<code>&lt;description&gt;</code> elements.</p>
+
+<sample src="NoBeanDescription.xml" />
+
+</example>
+<references>
+
+
+<li>
+ONJava:
+<a href="http://onjava.com/pub/a/onjava/2006/01/25/spring-xml-configuration-best-practices.html?page=3">Twelve Best Practices For Spring XML Configurations</a>.
+</li>
+
+
+</references>
+</qhelp>

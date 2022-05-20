@@ -1,0 +1,1 @@
+| Bad.java:13:17:13:22 | equals | equals() method does not seem to check argument type. |

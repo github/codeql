@@ -1,0 +1,7 @@
+| barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:4:5:4:7 | foo | barrier-guards.rb:3:4:3:6 | foo | true |
+| barrier-guards.rb:9:4:9:24 | call to include? | barrier-guards.rb:10:5:10:7 | foo | barrier-guards.rb:9:21:9:23 | foo | true |
+| barrier-guards.rb:15:4:15:15 | ... != ... | barrier-guards.rb:18:5:18:7 | foo | barrier-guards.rb:15:4:15:6 | foo | false |
+| barrier-guards.rb:21:8:21:19 | ... == ... | barrier-guards.rb:24:5:24:7 | foo | barrier-guards.rb:21:8:21:10 | foo | true |
+| barrier-guards.rb:27:8:27:19 | ... != ... | barrier-guards.rb:28:5:28:7 | foo | barrier-guards.rb:27:8:27:10 | foo | false |
+| barrier-guards.rb:37:4:37:20 | call to include? | barrier-guards.rb:38:5:38:7 | foo | barrier-guards.rb:37:17:37:19 | foo | true |
+| barrier-guards.rb:43:4:43:15 | ... == ... | barrier-guards.rb:45:9:45:11 | foo | barrier-guards.rb:43:4:43:6 | foo | true |

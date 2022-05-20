@@ -1,0 +1,9 @@
+| structure/A.java:3:11:3:11 | I |
+| structure/A.java:5:14:5:14 | A |
+| structure/A.java:8:8:8:18 | MemberClass |
+| structure/A.java:10:9:10:18 | LocalClass |
+| structure/A.java:15:7:15:7 | B |
+| structure/A.java:17:12:17:26 | MemberInterface |
+| structure/A.java:20:7:20:7 | C |
+| structure/A.java:24:7:24:7 | D |
+| structure/A.java:25:8:25:8 | new C(...) { ... } |

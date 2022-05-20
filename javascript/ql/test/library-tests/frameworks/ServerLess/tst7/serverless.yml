@@ -1,0 +1,25 @@
+
+service: serverless-myChecker
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  profile: personal
+  region: eu-west-1
+
+functions:
+  myChecker:
+    handler: handler.myFunction
+    events:
+      - http:
+          path: webhook
+          method: post

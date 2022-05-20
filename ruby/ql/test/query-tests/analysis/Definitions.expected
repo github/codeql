@@ -1,0 +1,14 @@
+| Definitions.rb:6:7:6:21 | call to g | Definitions.rb:9:5:11:7 | g | method |
+| Definitions.rb:6:9:6:21 | SOME_CONSTANT | Definitions.rb:2:3:2:15 | SOME_CONSTANT | constant |
+| Definitions.rb:10:7:10:7 | x | Definitions.rb:9:11:9:11 | x | variable |
+| Definitions.rb:14:7:14:7 | call to f | Definitions.rb:5:5:7:7 | f | method |
+| Definitions.rb:23:5:23:7 | @@a | Definitions.rb:20:3:20:5 | @@a | class variable |
+| Definitions.rb:32:7:32:7 | y | Definitions.rb:31:10:31:10 | y | variable |
+| Definitions.rb:36:7:36:7 | A | Definitions.rb:1:1:17:3 | A | constant |
+| Definitions.rb:36:7:36:10 | B | Definitions.rb:4:3:16:5 | B | constant |
+| Definitions.rb:36:7:36:18 | call to g | Definitions.rb:9:5:11:7 | g | method |
+| Definitions.rb:36:18:36:18 | y | Definitions.rb:35:11:35:11 | y | variable |
+| Definitions.rb:39:7:39:8 | @e | Definitions.rb:30:7:30:8 | @e | instance variable |
+| Definitions.rb:41:7:41:9 | @@b | Definitions.rb:27:5:27:7 | @@b | class variable |
+| Definitions.rb:46:1:46:1 | C | Definitions.rb:19:1:44:3 | C | constant |
+| Definitions.rb:46:1:46:4 | D | Definitions.rb:26:3:43:5 | D | constant |

@@ -1,0 +1,34 @@
+| test.aspx:1:1:1:25 | <%@Page ...%> |
+| test.aspx:1:19:1:22 | "C#" |
+| test.aspx:1:26:2:1 | \n\n |
+| test.aspx:3:1:3:23 | <script ...> |
+| test.aspx:3:15:3:22 | "server" |
+| test.aspx:3:24:4:33 | \nLabel1.Text = "This is a label";\n |
+| test.aspx:5:1:5:9 | </script> |
+| test.aspx:5:10:7:6 | \n\n<html\n |
+| test.aspx:8:1:8:6 | <body> |
+| test.aspx:8:7:8:7 | \n |
+| test.aspx:9:1:9:24 | <asp:Label .../> |
+| test.aspx:9:15:9:22 | "Label1" |
+| test.aspx:9:25:10:1 | \n\n |
+| test.aspx:11:1:11:3 | <p> |
+| test.aspx:11:4:11:11 | 2 + 3 =  |
+| test.aspx:11:12:11:21 | <%= ... %> |
+| test.aspx:11:22:11:25 | </p> |
+| test.aspx:11:26:11:26 | \n |
+| test.aspx:12:1:12:3 | <p> |
+| test.aspx:12:4:12:11 | 2 + 3 =  |
+| test.aspx:12:12:12:36 | <% ... %> |
+| test.aspx:12:37:12:40 | </p> |
+| test.aspx:12:41:12:41 | \n |
+| test.aspx:13:1:13:30 | <img .../> |
+| test.aspx:13:11:13:28 | <%= ... %> |
+| test.aspx:13:31:13:31 | \n |
+| test.aspx:14:1:14:7 | </body> |
+| test.aspx:14:8:14:8 | \n |
+| test.aspx:15:1:15:7 | </html> |
+| test.aspx:15:8:15:8 | \n |
+| test.aspx:16:1:16:21 | <!-- ... --> |
+| test.aspx:16:22:16:22 | \n |
+| test.aspx:17:1:17:22 | <%-- ... --%> |
+| test.aspx:17:23:17:23 | \n |

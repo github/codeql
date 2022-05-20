@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Printing an array is likely to produce unintended results. That is, the result does not contain the contents of the array.
+This is because the array is implicitly converted to a <code>String</code> using <code>Object.toString</code>, which just returns the following value:
+</p>
+<p>
+<code>
+getClass().getName() + '@' + Integer.toHexString(hashCode())
+</code>
+</p>
+
+</overview>
+<recommendation>
+<p>
+When converting an array to a readable string, use <code>Arrays.toString</code> for one-dimensional arrays, or
+<code>Arrays.deepToString</code> for multi-dimensional arrays. These functions iterate over the contents of the array
+and produce human-readable output.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the contents of the array <code>words</code> are printed out only if
+<code>Arrays.toString</code> is called on the array first. Similarly, the contents of the multi-dimensional
+array <code>wordMatrix</code> are printed out only if <code>Arrays.deepToString</code> is called
+on the array first.</p>
+
+<sample src="PrintLnArray.java" />
+
+</example>
+<references>
+
+
+<li>
+Java API Specification:
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Arrays.html#toString(java.lang.Object[])">Arrays.toString()</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Arrays.html#deepToString(java.lang.Object[])">Arrays.deepToString()</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html#toString()">Object.toString()</a>.
+</li>
+
+
+</references>
+</qhelp>

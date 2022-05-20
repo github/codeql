@@ -1,0 +1,4 @@
+| latin.py | latin1 |
+| shift_jis.py | shift-jis |
+| utf8.py | utf-8 |
+| utf8_bom.py | none |

@@ -1,0 +1,7 @@
+| issue7506.js:12:1:12:34 | class C ... e\\n  }\\n} | Component state property 'p1' is $@, but it is never read. | issue7506.js:15:5:15:10 | p1: '' | written |
+| undefined.js:1:1:1:34 | class C ...     }\\n} | Component state property 'notWritten' is $@, but it is never written. | undefined.js:8:9:8:29 | this.st ... Written | read |
+| undefined.js:1:1:1:34 | class C ...     }\\n} | Component state property 'notWrittenButReadInChain' is $@, but it is never written. | undefined.js:9:9:9:43 | this.st ... InChain | read |
+| undefined.js:32:1:32:34 | class C ...     }\\n} | Component state property 'notWrittenThrougExternalPropertyAccess' is $@, but it is never written. | undefined.js:35:9:35:57 | this.st ... yAccess | read |
+| undefined.js:61:19:61:19 | {\\n    r ... ;\\n  }\\n} | Component state property 'notWrittenInKnownInitializerObject' is $@, but it is never written. | undefined.js:64:9:64:53 | this.st ... rObject | read |
+| unused.js:1:1:1:34 | class C ...     }\\n} | Component state property 'notRead' is $@, but it is never read. | unused.js:6:9:6:26 | this.state.notRead | written |
+| unused.js:27:1:27:34 | class C ...     }\\n} | Component state property 'notReadThrougExternaPropertyAccess' is $@, but it is never read. | unused.js:30:9:30:53 | this.st ... yAccess | written |

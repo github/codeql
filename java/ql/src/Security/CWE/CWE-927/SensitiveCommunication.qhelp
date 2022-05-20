@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>When an implicit Intent is used with a method such as <code>startActivity</code>, <code>startService</code>, or <code>sendBroadcast</code>, it may be read by other applications on the device.</p>
+    <p>This means that sensitive data in these Intents may be leaked.</p>
+  </overview>
+
+  <recommendation>
+    <p> 
+      For <code>sendBroadcast</code> methods, a receiver permission may be specified so that only applications with a certain permission may receive the Intent; 
+      or a <code>LocalBroadcastManager</code> may be used.
+      Otherwise, ensure that Intents containing sensitive data have an explicit receiver class set.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>The following example shows two ways of broadcasting Intents. In the 'BAD' case, no "receiver permission" is specified. In the 'GOOD' case, "receiver permission" or "receiver application" is specified.</p>
+    <sample src="SensitiveCommunication.java" />
+  </example>
+
+  <references>
+    <li>
+      Android Developers:
+      <a href="https://developer.android.com/guide/components/broadcasts">Security considerations and best practices for sending and receiving broadcasts</a>
+    </li>
+    <li>
+      SonarSource:
+      <a href="https://rules.sonarsource.com/java/type/Security%20Hotspot/RSPEC-5320">Broadcasting intents is security-sensitive</a>
+    </li>
+    <li>
+      Android Developer Fundamentals:
+      <a href="https://google-developer-training.github.io/android-developer-fundamentals-course-concepts-v2/unit-3-working-in-the-background/lesson-7-background-tasks/7-3-c-broadcasts/7-3-c-broadcasts.html">Restricting broadcasts</a>
+    </li>
+    <li>
+      Carnegie Mellon University:
+      <a href="https://wiki.sei.cmu.edu/confluence/display/android/DRD03-J.+Do+not+broadcast+sensitive+information+using+an+implicit+intent">DRD03-J. Do not broadcast sensitive information using an implicit intent</a>
+    </li>
+    <li>
+      Android Developers:
+      <a href="https://developer.android.com/topic/libraries/architecture/livedata">Android LiveData Overview</a>
+    </li>
+    <li>
+      Oversecured: 
+      <a href="https://blog.oversecured.com/Interception-of-Android-implicit-intents/">Interception of Android implicit intents</a>
+    </li>
+  </references>
+</qhelp>

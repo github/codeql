@@ -1,0 +1,9 @@
+name: codeql/javascript-experimental-atm-lib
+version: 0.2.1
+extractor: javascript
+library: true
+groups:
+    - javascript
+    - experimental
+dependencies:
+    codeql/javascript-all: "*"

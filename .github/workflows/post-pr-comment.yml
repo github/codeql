@@ -1,0 +1,74 @@
+# This workflow is the second part of the process described in
+# .github/workflows/qhelp-pr-preview.yml
+# See that file for more info.
+
+name: Post PR comment
+on:
+  workflow_run:
+    workflows: [Render QHelp changes]
+    types:
+      - completed
+
+permissions:
+  pull-requests: write
+  actions: read
+
+jobs:
+  post_comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        run: gh run download "${WORKFLOW_RUN_ID}" --repo "${GITHUB_REPOSITORY}" --name "comment"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}
+
+      - name: Check that PR SHA matches workflow SHA
+        run: |
+          PR="$(grep -o '^[0-9]\+$' pr_number.txt)"
+          PR_HEAD_SHA="$(gh api "/repos/${GITHUB_REPOSITORY}/pulls/${PR}" --jq .head.sha)"
+          # Check that the pull-request head SHA matches the head SHA of the workflow run
+          if [ "${WORKFLOW_RUN_HEAD_SHA}" != "${PR_HEAD_SHA}" ]; then
+            echo "PR head SHA ${PR_HEAD_SHA} does not match workflow_run event SHA ${WORKFLOW_RUN_HEAD_SHA}. Stopping." 1>&2
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          WORKFLOW_RUN_HEAD_SHA: ${{ github.event.workflow_run.head_commit.id }}
+
+      - name: Create or update comment
+        run: |
+          COMMENT_PREFIX="QHelp previews"
+          COMMENT_AUTHOR="github-actions[bot]"
+          PR_NUMBER="$(grep -o '^[0-9]\+$' pr_number.txt)"
+
+          # If there is no existing comment, comment_id.txt will contain just a
+          # newline (due to jq & gh behaviour). This will cause grep to fail, so
+          # we catch that.
+          RAW_COMMENT_ID=$(grep -o '^[0-9]\+$' comment_id.txt || true)
+
+          if [ $RAW_COMMENT_ID ]
+          then
+            # Fetch existing comment, and validate:
+            # - comment belongs to the PR with number $PR_NUMBER
+            # - comment starts with the expected prefix ("QHelp previews")
+            # - comment author is github-actions[bot]
+            FILTER='select(.issue_url | endswith($repo+"/issues/"+$pr))
+                  | select(.body | startswith($prefix))
+                  | select(.user.login == $author)
+                  | .id'
+            COMMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${RAW_COMMENT_ID}" | jq --arg repo "${GITHUB_REPOSITORY}" --arg pr "${PR_NUMBER}" --arg prefix "${COMMENT_PREFIX}" --arg author "${COMMENT_AUTHOR}" "${FILTER}")
+            if [ $COMMENT_ID ]
+            then
+              # Update existing comment
+              jq --rawfile body comment_body.txt '{"body":$body}' -n | gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" -X PATCH --input -
+            else
+              echo "Comment ${RAW_COMMENT_ID} did not pass validations: not editing." >&2
+              exit 1
+            fi
+          else
+            # Create new comment
+            jq --rawfile body comment_body.txt '{"body":$body}' -n | gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -X POST --input -
+          fi
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

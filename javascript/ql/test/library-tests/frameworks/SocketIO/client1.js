@@ -1,0 +1,2 @@
+io(); 
+io.connect("/messages");

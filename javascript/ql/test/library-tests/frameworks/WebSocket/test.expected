@@ -1,0 +1,35 @@
+clientSocket
+| browser.js:2:17:2:52 | new Web ... :8080') |
+| browser.js:19:13:19:50 | new Soc ... /echo') |
+| client.js:4:13:4:45 | new Web ... e.org') |
+clientSend
+| browser.js:5:3:5:33 | socket. ... wser!') |
+| browser.js:21:3:21:19 | sock.send('test') |
+| client.js:7:3:7:28 | ws.send ... ient!') |
+clientReceive
+| browser.js:8:37:10:2 | functio ... ta);\\n\\t} |
+| browser.js:12:21:14:2 | functio ... ata)\\n\\t} |
+| browser.js:24:19:27:2 | functio ... e();\\n\\t} |
+| browser.js:29:35:31:2 | functio ... ta);\\n\\t} |
+| client.js:10:19:12:2 | functio ... ta);\\n\\t} |
+serverSocket
+| server.js:6:43:6:44 | ws |
+| sockjs.js:8:40:8:43 | conn |
+serverSend
+| server.js:11:3:11:28 | ws.send ... rver!') |
+| sockjs.js:11:9:11:51 | conn.wr ... test))) |
+serverReceive
+| server.js:7:3:9:4 | ws.on(' ... );\\n\\t\\t}) |
+| sockjs.js:9:5:12:6 | conn.on ... \\n    }) |
+flowSteps
+| browser.js:5:15:5:32 | 'Hi from browser!' | server.js:7:38:7:44 | message |
+| browser.js:21:13:21:18 | 'test' | sockjs.js:9:31:9:37 | message |
+| client.js:7:11:7:27 | 'Hi from client!' | server.js:7:38:7:44 | message |
+| server.js:11:11:11:27 | 'Hi from server!' | browser.js:9:39:9:48 | event.data |
+| server.js:11:11:11:27 | 'Hi from server!' | browser.js:13:40:13:49 | event.data |
+| server.js:11:11:11:27 | 'Hi from server!' | client.js:10:37:10:40 | data |
+| sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser.js:25:26:25:31 | e.data |
+| sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser.js:30:42:30:51 | event.data |
+remoteFlow
+| server.js:7:38:7:44 | message |
+| sockjs.js:9:31:9:37 | message |

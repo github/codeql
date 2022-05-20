@@ -1,0 +1,8 @@
+| localvars/LocalVarTest.java:7:13:7:18 | x | 0 | localvars/LocalVarTest.java:7:17:7:18 | 23 |
+| localvars/LocalVarTest.java:7:22:7:27 | y | 0 | localvars/LocalVarTest.java:7:26:7:27 | 19 |
+| localvars/LocalVarTest.java:8:13:8:18 | z | 0 | localvars/LocalVarTest.java:8:17:8:18 | 56 |
+| localvars/LocalVarTest.java:9:26:9:34 | l2 | 0 | localvars/LocalVarTest.java:9:31:9:34 | null |
+| localvars/LocalVarTest.java:12:20:12:27 | o | 0 | localvars/LocalVarTest.java:12:24:12:27 | null |
+| localvars/LocalVarTest.java:18:17:18:19 | i | 0 | localvars/LocalVarTest.java:18:19:18:19 | 0 |
+| localvars/LocalVarTest.java:19:17:19:20 | j | 0 | localvars/LocalVarTest.java:19:19:19:20 | 10 |
+| localvars/LocalVarTest.java:19:22:19:24 | k | 0 | localvars/LocalVarTest.java:19:24:19:24 | 0 |

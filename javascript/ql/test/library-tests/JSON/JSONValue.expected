@@ -1,0 +1,14 @@
+| invalid.json:1:1:1:4 | "hi" |
+| tst.json:1:1:15:2 | [{\\n  "n ... \\n  }\\n}] |
+| tst.json:1:2:8:1 | {\\n  "na ... "\\n  }\\n} |
+| tst.json:2:11:2:21 | "Jim Knopf" |
+| tst.json:3:14:7:3 | {\\n    " ... nd"\\n  } |
+| tst.json:4:15:4:18 | null |
+| tst.json:5:15:5:16 | -1 |
+| tst.json:6:16:6:27 | "Lummerland" |
+| tst.json:8:4:15:1 | {\\n  "na ... "\\n  }\\n} |
+| tst.json:9:11:9:25 | "Frau Mahlzahn" |
+| tst.json:10:14:14:3 | {\\n    " ... nd"\\n  } |
+| tst.json:11:15:11:28 | "Alte Strasse" |
+| tst.json:12:15:12:17 | 133 |
+| tst.json:13:16:13:27 | "Kummerland" |

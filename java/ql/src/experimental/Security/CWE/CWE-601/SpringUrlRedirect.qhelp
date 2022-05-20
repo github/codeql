@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>Directly incorporating user input into a URL redirect request without validating the input
+can facilitate phishing attacks. In these attacks, unsuspecting users can be redirected to a
+malicious site that looks very similar to the real site they intend to visit, but which is
+controlled by the attacker.</p>
+
+</overview>
+<recommendation>
+
+<p>To guard against untrusted URL redirection, it is advisable to avoid putting user input
+directly into a redirect URL. Instead, maintain a list of authorized
+redirects on the server; then choose from that list based on the user input provided.</p>
+
+</recommendation>
+<example>
+
+<p>The following examples show the bad case and the good case respectively.
+The <code>bad</code> methods show an HTTP request parameter being used directly 
+in a URL redirect without validating the input, which facilitates phishing attacks. 
+In the <code>good1</code> method, it is shown how to solve this problem by verifying whether 
+the user input is a known fixed string beginning.
+</p>
+
+<sample src="SpringUrlRedirect.java" />
+
+</example>
+<references>
+<li>A Guide To Spring Redirects: <a href="https://www.baeldung.com/spring-redirect-and-forward">Spring Redirects</a>.</li>
+<li>Url redirection - attack and defense: <a href="https://www.virtuesecurity.com/kb/url-redirection-attack-and-defense/">Url Redirection</a>.</li>
+<li>How to redirect to an external URL from Spring Boot REST Controller (Post/Redirect/Get pattern)?: <a href="https://fullstackdeveloper.guru/2021/03/12/how-to-redirect-to-an-external-url-from-spring-boot-rest-controller/">ResponseEntity Redirection</a>.</li>
+</references>
+</qhelp>

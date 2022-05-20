@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Using user-controlled data in a permissions check may allow a user to gain
+      unauthorized access to protected functionality or data.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      When checking whether a user is authorized for a particular activity, do
+      not use data that is entirely controlled by that user in the permissions
+      check. If necessary, always validate the input, ideally against a fixed
+      list of expected values.
+    </p>
+    <p>
+      Similarly, do not decide which permission to check based on user data. In
+      particular, avoid using computation to decide which permissions to check
+      for. Use fixed permissions for particular actions, rather than generating
+      the permission to check for.
+    </p>
+  </recommendation>
+  <example>
+    <p>
+      In this example, the controller decided whether or not to authenticate the
+      user based on the value of a request parameter.
+    </p>
+    <sample src="examples/bypass.rb" />
+  </example>
+  
+  <references>
+  
+  </references>
+</qhelp>

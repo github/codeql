@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Sensitive information that is stored unencrypted is accessible to an attacker who gains access to the
+storage.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that sensitive information is always encrypted before being stored to a file or transmitted over the network.
+It may be wise to encrypt information before it is put into a buffer that may be readable in memory.</p>
+
+<p>In general, decrypt sensitive information only at the point where it is necessary for it to be used in
+cleartext.</p>
+
+</recommendation>
+<example>
+
+<p>The following example shows two ways of storing user credentials in a file. In the 'BAD' case,
+the credentials are simply stored in cleartext. In the 'GOOD' case, the credentials are encrypted before 
+storing them.</p>
+
+<sample src="CleartextStorage.c" />
+
+</example>
+<references>
+
+<li>M. Dowd, J. McDonald and J. Schuhm, <i>The Art of Software Security Assessment</i>, 1st Edition, Chapter 2 - 'Common Vulnerabilities of Encryption', p. 43. Addison Wesley, 2006.</li> 
+<li>M. Howard and D. LeBlanc, <i>Writing Secure Code</i>, 2nd Edition, Chapter 9 - 'Protecting Secret Data', p. 299. Microsoft, 2002.</li>
+
+
+
+<!--  LocalWords:  CWE
+ -->
+
+</references>
+</qhelp>

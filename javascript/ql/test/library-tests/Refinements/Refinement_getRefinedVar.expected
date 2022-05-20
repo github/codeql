@@ -1,0 +1,2 @@
+| tst.js:4:3:4:27 | (typeof ... nction' | tst.js:3:12:3:12 | x |
+| tst.js:8:3:8:23 | (typeof ... === 'u' | tst.js:3:12:3:12 | x |

@@ -1,0 +1,14 @@
+| 2 | Hello World | 0 | "Hello " |
+| 2 | Hello World | 1 | "World" |
+| 5 | Goodbye World | 0 | "Goodbye " |
+| 5 | Goodbye World | 1 | "World" |
+| 9 | ab | 0 | "a" |
+| 9 | ab | 1 | "b" |
+| 12 | cd | 0 | "c" |
+| 12 | cd | 1 | "d" |
+| 16 | ef | 0 | 'e' |
+| 16 | ef | 1 | 'f' |
+| 32 | word | 0 | 'word' |
+| 32 | word | 1 | '' |
+| 35 | \n\n\n\n0 | 0 | '\\n\\n\\n\\n' |
+| 35 | \n\n\n\n0 | 1 | '0' |

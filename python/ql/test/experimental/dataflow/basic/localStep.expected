@@ -1,0 +1,11 @@
+| test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:1:5:1:17 | GSSA Variable obfuscated_id |
+| test.py:1:5:1:17 | GSSA Variable obfuscated_id | test.py:7:5:7:17 | ControlFlowNode for obfuscated_id |
+| test.py:1:19:1:19 | ControlFlowNode for x | test.py:1:19:1:19 | SSA variable x |
+| test.py:1:19:1:19 | SSA variable x | test.py:2:7:2:7 | ControlFlowNode for x |
+| test.py:2:3:2:3 | SSA variable y | test.py:3:7:3:7 | ControlFlowNode for y |
+| test.py:2:7:2:7 | ControlFlowNode for x | test.py:2:3:2:3 | SSA variable y |
+| test.py:3:3:3:3 | SSA variable z | test.py:4:10:4:10 | ControlFlowNode for z |
+| test.py:3:7:3:7 | ControlFlowNode for y | test.py:3:3:3:3 | SSA variable z |
+| test.py:6:1:6:1 | GSSA Variable a | test.py:7:19:7:19 | ControlFlowNode for a |
+| test.py:6:5:6:6 | ControlFlowNode for IntegerLiteral | test.py:6:1:6:1 | GSSA Variable a |
+| test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() | test.py:7:1:7:1 | GSSA Variable b |

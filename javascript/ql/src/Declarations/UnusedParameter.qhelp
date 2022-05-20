@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Unused function parameters make code harder to maintain and use. Clients that are unaware that the
+parameter is unused may perform nontrivial computations to compute a value that is ultimately
+unused. Even if the parameter is known to be unused, passing in default values such as
+<code>null</code> or <code>undefined</code> makes the code hard to read.
+</p>
+
+</overview>
+<recommendation>
+<p>Remove the unused parameter and adjust calls accordingly.</p>
+
+</recommendation>
+<example>
+
+<p>
+In this code, the function <code>f</code> does not use its second argument <code>y</code>,
+instead computing it from the first argument using function <code>expensiveComputation</code>.
+The code invoking <code>f</code> is not aware of this and performs the same computation
+again, which is wasteful and introduces unnecessary dependencies between otherwise unrelated
+pieces of code. Instead, the second argument should simply be dropped.
+</p>
+
+<sample src="examples/UnusedParameter.js" />
+
+</example>
+<references>
+
+<li>Coding Horror: <a href="http://blog.codinghorror.com/code-smells/">Code Smells</a>.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,12 @@
+invalidModelRow
+#select
+| C.java:6:16:6:19 | arg1 | C.java:6:5:6:20 | stepArgRes(...) |
+| C.java:10:16:10:21 | argIn1 | C.java:10:24:10:30 | argOut1 [post update] |
+| C.java:13:16:13:21 | argIn2 | C.java:13:24:13:30 | argOut2 [post update] |
+| C.java:16:17:16:20 | arg2 | C.java:16:5:16:21 | this <.method> [post update] |
+| C.java:18:22:18:25 | arg3 | C.java:18:5:18:8 | this [post update] |
+| C.java:20:5:20:8 | this | C.java:20:5:20:22 | stepQualRes(...) |
+| C.java:21:5:21:17 | this <.method> | C.java:21:5:21:17 | stepQualRes(...) |
+| C.java:24:5:24:23 | this <.method> | C.java:24:17:24:22 | argOut [post update] |
+| C.java:29:25:29:28 | arg1 | C.java:29:5:29:29 | stepArgResGenerated(...) |
+| C.java:34:38:34:41 | arg2 | C.java:34:5:34:42 | stepArgResGeneratedIgnored(...) |

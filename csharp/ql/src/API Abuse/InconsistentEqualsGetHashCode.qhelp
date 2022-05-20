@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A class that overrides only one of <code>Equals(object)</code> and <code>GetHashCode()</code>
+is likely to violate the contract of the <code>GetHashCode()</code> method. The contract
+requires that <code>GetHashCode()</code> gives the same integer result for any two equal objects.
+Not enforcing this property may cause unexpected results when storing and
+retrieving objects of such a class in a hashing data structure.
+</p>
+
+</overview>
+<recommendation>
+<p>Provide an implementation of the missing method that is consistent with the present method.</p>
+
+</recommendation>
+
+<example>
+
+<p>In the following example, the class <code>Bad</code> overrides 
+<code>Equals(object)</code> but not <code>GetHashCode()</code>.</p>
+
+<sample src="InconsistentEqualsGetHashCodeBad.cs" />
+
+<p>In the revised example, the class <code>Good</code> overrides both
+<code>Equals(object)</code> and <code>GetHashCode()</code>.</p>
+
+<sample src="InconsistentEqualsGetHashCodeGood.cs" />
+
+</example>
+
+<references>
+
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/bsc2ak47.aspx">Object.Equals Method (Object)</a>,
+  <a href="https://msdn.microsoft.com/en-us/library/system.object.gethashcode.aspx">Object.GetHashCode Method</a>.</li>
+
+</references>
+</qhelp>

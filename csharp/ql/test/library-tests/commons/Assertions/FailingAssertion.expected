@@ -1,0 +1,5 @@
+| Assertions.cs:30:9:30:27 | call to method Assert |
+| Assertions.cs:32:9:32:28 | call to method IsTrue |
+| Assertions.cs:34:9:34:28 | call to method IsFalse |
+| Assertions.cs:36:9:36:34 | call to method MyAssert |
+| Assertions.cs:38:9:38:35 | call to method MyAssert2 |

@@ -1,0 +1,12 @@
+| MemberOrFriend.cpp:8:7:8:7 | C | MemberOrFriend.cpp:5:14:5:27 | friendFunction | HasFriendFunction::friendFunction() |
+| MemberOrFriend.cpp:8:7:8:7 | C | MemberOrFriend.cpp:15:3:15:3 | C | C::C(const C & c) |
+| MemberOrFriend.cpp:8:7:8:7 | C | MemberOrFriend.cpp:16:14:16:20 | return2 | C::return2() |
+| MemberOrFriend.cpp:8:7:8:7 | C | MemberOrFriend.cpp:19:5:19:10 | Nested | C::Nested::Nested() |
+| MemberOrFriend.cpp:8:7:8:7 | C | MemberOrFriend.cpp:20:9:20:15 | nested1 | C::Nested::nested1() |
+| MemberOrFriend.cpp:8:7:8:7 | C | MemberOrFriend.cpp:22:13:22:25 | localOfNested | localOfNested() |
+| MemberOrFriend.cpp:8:7:8:7 | C | MemberOrFriend.cpp:27:12:27:18 | nested2 | C::Nested::Nested2::nested2() |
+| MemberOrFriend.cpp:8:7:8:7 | C | MemberOrFriend.cpp:33:7:33:7 | f | Friend::f() |
+| MemberOrFriend.cpp:8:7:8:7 | C | MemberOrFriend.cpp:34:27:34:27 | operator() | operator()(int a, int b) |
+| MemberOrFriend.cpp:8:7:8:7 | C | MemberOrFriend.cpp:46:5:46:18 | topLevelFriend | topLevelFriend() |
+| MemberOrFriend.cpp:8:7:8:7 | C | MemberOrFriend.cpp:48:9:48:21 | localOfFriend | localOfFriend() |
+| MemberOrFriend.cpp:8:7:8:7 | C | MemberOrFriend.cpp:57:1:57:4 | C | C::C() |

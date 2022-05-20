@@ -1,0 +1,7 @@
+| 0 | Module test | 2 | FunctionDef |
+| 2 | Function f | 3 | Raise |
+| 2 | Function f | 4 | Raise |
+| 2 | FunctionDef | 2 | FunctionExpr |
+| 2 | FunctionDef | 2 | f |
+| 2 | FunctionExpr | 2 | Function f |
+| 4 | Raise | 4 | Exception |

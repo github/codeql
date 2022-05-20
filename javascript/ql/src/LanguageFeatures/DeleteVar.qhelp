@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The <code>delete</code> operator should only be used to delete properties from objects. Using it
+to delete variables makes code hard to maintain and will break in strict mode.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+If the variable you are deleting is a global variable, this is a sign that your code relies too
+much on global state. Try encapsulating this global state by means of one of the module patterns
+introduced in <i>JavaScript: The Good Parts</i>.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following code snippet, <code>delete</code> is used to clean up the global <code>cache</code>
+variable used by function <code>get</code>.
+</p>
+
+<sample src="examples/DeleteVar.js" />
+
+<p>
+It would be clearer to wrap the whole module into a closure like this (which also avoids exposing
+function <code>compute</code> to the outside world):
+</p> 
+
+<sample src="examples/DeleteVarGood.js" />
+
+</example>
+<references>
+
+
+<li>JSLint Error Explanations: <a href="http://jslinterrors.com/only-properties-should-be-deleted">Only properties should be deleted</a>.</li>
+
+
+</references>
+</qhelp>

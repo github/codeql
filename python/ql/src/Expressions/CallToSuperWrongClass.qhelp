@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The <code>super</code> class should be called with the enclosing class as its first argument and <code>self</code> as its second argument.
+</p>
+<p>
+Passing a different class may work correctly, provided the class passed is a super class of the enclosing class and the enclosing class
+does not define an <code>__init__</code> method.
+However, this may result in incorrect object initialization if the enclosing class is later subclassed using multiple inheritance.
+</p>
+
+
+</overview>
+<recommendation>
+
+<p>
+    Ensure that the first argument to <code>super()</code> is the enclosing class.
+</p>
+
+
+</recommendation>
+<example>
+<p>
+In this example the call to <code>super(Vehicle, self)</code> in <code>Car.__init__</code> is incorrect as it
+passes <code>Vehicle</code> rather than <code>Car</code> as the first argument to <code>super</code>.
+As a result, <code>super(SportsCar, self).__init__()</code> in the <code>SportsCar.__init__</code> method will not call
+all <code>__init__()</code> methods because the call to <code>super(Vehicle, self).__init__()</code>
+skips <code>StatusSymbol.__init__()</code>.
+</p>
+
+<sample src="CallToSuperWrongClass.py" />
+
+
+</example>
+<references>
+
+    <li>Python Standard Library: <a href="https://docs.python.org/2/library/functions.html#super">super</a>.</li>
+    <li>Artima Developer: <a href="http://www.artima.com/weblogs/viewpost.jsp?thread=236275">Things to Know About Python Super</a>.</li>
+
+
+</references>
+</qhelp>

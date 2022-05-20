@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Each call to the <code>printf</code> function or a related function should include
+the type and sequence of arguments defined by the format. If the function is passed arguments 
+of a different type or in a different sequence then the arguments are reinterpreted to fit the type and sequence expected, resulting in unpredictable behavior.</p>
+
+</overview>
+<recommendation>
+<p>Review the format and arguments expected by the highlighted function calls. Update either 
+the format or the arguments so that the expected type and sequence of arguments are passed to 
+the function.
+</p>
+
+</recommendation>
+<example><sample src="WrongTypeFormatArguments.cpp" />
+
+</example>
+<references>
+
+<li>CERT C Coding
+Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/FIO30-C.+Exclude+user+input+from+format+strings">FIO30-C. Exclude user input from format strings</a>.</li>
+<li>cplusplus.com: <a href="http://www.tutorialspoint.com/cplusplus/cpp_functions.htm">C++ Functions</a>.</li>
+<li>CRT Alphabetical Function Reference: <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/printf-printf-l-wprintf-wprintf-l">printf, _printf_l, wprintf, _wprintf_l</a>.</li>
+
+
+
+
+</references>
+</qhelp>

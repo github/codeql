@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This rule finds declarations of local variables that hide a local variable from a surrounding scope. Such declarations 
+create variables with the same name but different scopes. This makes it difficult to know which variable is actually
+used in an expression.</p>
+
+</overview>
+<recommendation>
+<p>Consider changing the name of either variable to keep them distinct.</p>
+
+</recommendation>
+<example>
+<sample src="DeclarationHidesVariable.cpp" />
+
+
+</example>
+<references>
+
+<li>
+  B. Stroustrup. <em>The C++ Programming Language Special Edition</em> p 82. Addison Wesley. 2000.
+</li>
+
+
+</references>
+</qhelp>

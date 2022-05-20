@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Finding places of confusing use of boolean type. For example, a unary minus does not work before a boolean type and an increment always gives true.</p>
+
+
+</overview>
+<recommendation>
+
+<p>we recommend making the code simpler.</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates erroneous and fixed methods for using a boolean data type.</p>
+<sample src="OperatorPrecedenceLogicErrorWhenUseBoolType.c" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/EXP00-C.+Use+parentheses+for+precedence+of+operation">EXP00-C. Use parentheses for precedence of operation</a>.
+</li>
+
+</references>
+</qhelp>

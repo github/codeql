@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+This rule finds assignments that might store the address of a local
+variable in non-local memory. The address of the local variable is
+only valid until the function returns, after which it becomes a
+dangling pointer. Such code is safe if the dangling pointer is never
+used after the function returns, but it is not a recommended coding
+practice. There is also a risk that the code is not thread-safe,
+unless the non-local memory is protected by a mutex.
+</p>
+
+</overview>
+<recommendation>
+
+<ol>
+
+<li>
+If it is necessary to take the address of a local variable, then make
+sure that the address is only stored in memory that does not outlive
+the local variable. For example, it is safe to store the address in
+another local variable. Similarly, it is also safe to pass the address
+of a local variable to another function provided that the other
+function only uses it locally and does not store it in non-local
+memory.
+</li>
+<li>
+If it is necessary to store an address which will outlive the
+current function scope, then it should be allocated on the heap.  Care
+should be taken to make sure that the memory is deallocated when it is
+no longer needed, particularly when using low-level memory management
+routines such as <tt>malloc</tt>/<tt>free</tt> or
+<tt>new</tt>/<tt>delete</tt>. Modern C++ applications often use smart
+pointers, such as <tt>std::shared_ptr</tt>, to reduce the chance of
+a memory leak.
+</li>
+</ol>
+
+</recommendation>
+<example>
+
+<sample src="StackAddressEscapes.cpp" />
+
+</example>
+<references>
+
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Dangling_pointer">Dangling pointer</a>.</li>
+
+</references>
+</qhelp>

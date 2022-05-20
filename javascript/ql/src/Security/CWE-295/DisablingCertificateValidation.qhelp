@@ -1,0 +1,71 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+	<overview>
+
+		<p>
+
+			Certificate validation is the standard authentication method of a
+			secure TLS connection. Without it, there is no guarantee about who the other party of a TLS connection is, making man-in-the-middle attacks more likely to occur
+
+		</p>
+
+		<p>
+
+			When testing software that uses TLS connections, it may be useful to
+			disable the certificate validation temporarily. But disabling it in
+			production environments is strongly discouraged, unless an alternative
+			method of authentication is used.
+
+		</p>
+
+	</overview>
+
+	<recommendation>
+
+		<p>
+
+			Do not disable certificate validation for TLS connections.
+
+		</p>
+
+	</recommendation>
+
+	<example>
+
+		<p>
+
+			The following example shows a HTTPS connection that
+			transfers confidential information to a remote server. But the
+			connection is not secure since the <code>rejectUnauthorized</code>
+			option of the connection is set to <code>false</code>. As a
+			consequence, anyone can impersonate the remote server, and receive the
+			confidential information.
+
+		</p>
+
+		<sample src="examples/DisablingCertificateValidation.js"/>
+
+		<p>
+
+			To make the connection secure, the
+			<code>rejectUnauthorized</code> option should have its default value,
+			or be explicitly set to <code>true</code>.
+
+		</p>
+
+	</example>
+
+	<references>
+
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">Transport Layer Security (TLS)</a></li>
+
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">Man-in-the-middle attack</a></li>
+
+		<li>Node.js: <a href="https://nodejs.org/api/tls.html">TLS (SSL)</a></li>
+
+	</references>
+
+</qhelp>

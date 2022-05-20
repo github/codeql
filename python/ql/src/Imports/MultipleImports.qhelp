@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Importing the same module more than once has no effect as each module is only loaded once. It also
+confuses readers of the code.</p>
+
+</overview>
+<recommendation>
+<p>Remove the second import.</p>
+
+</recommendation>
+<example>
+<sample src="MultipleImports.py" />
+
+</example>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/reference/simple_stmts.html#import">import statement</a>.</li>
+
+
+</references>
+</qhelp>

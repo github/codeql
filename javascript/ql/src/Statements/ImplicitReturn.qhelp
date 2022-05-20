@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Unlike Java and other statically typed languages, JavaScript does not require that all execution paths in
+a function return a value: if an invocation of the function "falls off" the end of the function without
+explicitly returning a value, the special value <code>undefined</code> is implicitly returned.
+</p>
+
+<p>
+Relying on this behavior is dangerous, however, since it can lead to situations where <code>undefined</code>
+is returned by accident, simply because the programmer overlooked a possible execution path. Functions
+with implicit return behavior may also be hard to use in client code, which has to be prepared for
+either an explicit return value or <code>undefined</code> being returned.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Insert an explicit return statement. If the "fall through" behavior should never be triggered, it is often
+a good idea to instead throw an exception.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the function <code>call</code> takes two arguments <code>o</code> and <code>m</code>.
+It checks whether <code>o</code> has a function-valued property with name <code>m</code>, and if so invokes
+it as a method, returning the result. Otherwise, nothing is returned.
+</p>
+
+<sample src="examples/ImplicitReturn.js" />
+
+<p>
+Assuming that the second case should never occur, an exception should be thrown as follows:
+</p>
+
+<sample src="examples/ImplicitReturnGood.js" />
+
+</example>
+<references>
+
+
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/return">Return</a>.</li>
+
+</references>
+</qhelp>

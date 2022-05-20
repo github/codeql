@@ -1,0 +1,47 @@
+nodes
+| event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") |
+| event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") |
+| event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" |
+| event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" |
+| event-stream.js:9:11:9:37 | e("2e2f ... 17461") |
+| event-stream.js:9:11:9:37 | e("2e2f ... 17461") |
+| event-stream.js:9:13:9:36 | "2e2f74 ... 617461" |
+| event-stream.js:9:13:9:36 | "2e2f74 ... 617461" |
+| tst.js:1:5:1:88 | totallyHarmlessString |
+| tst.js:1:29:1:88 | '636f6e ... 6e2729' |
+| tst.js:1:29:1:88 | '636f6e ... 6e2729' |
+| tst.js:2:6:2:46 | Buffer. ...  'hex') |
+| tst.js:2:6:2:57 | Buffer. ... tring() |
+| tst.js:2:6:2:57 | Buffer. ... tring() |
+| tst.js:2:18:2:38 | totally ... sString |
+| tst.js:5:5:5:23 | test |
+| tst.js:5:12:5:23 | "0123456789" |
+| tst.js:5:12:5:23 | "0123456789" |
+| tst.js:7:8:7:11 | test |
+| tst.js:7:8:7:15 | test+"n" |
+| tst.js:7:8:7:15 | test+"n" |
+edges
+| event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" | event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") |
+| event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" | event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") |
+| event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" | event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") |
+| event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" | event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") |
+| event-stream.js:9:13:9:36 | "2e2f74 ... 617461" | event-stream.js:9:11:9:37 | e("2e2f ... 17461") |
+| event-stream.js:9:13:9:36 | "2e2f74 ... 617461" | event-stream.js:9:11:9:37 | e("2e2f ... 17461") |
+| event-stream.js:9:13:9:36 | "2e2f74 ... 617461" | event-stream.js:9:11:9:37 | e("2e2f ... 17461") |
+| event-stream.js:9:13:9:36 | "2e2f74 ... 617461" | event-stream.js:9:11:9:37 | e("2e2f ... 17461") |
+| tst.js:1:5:1:88 | totallyHarmlessString | tst.js:2:18:2:38 | totally ... sString |
+| tst.js:1:29:1:88 | '636f6e ... 6e2729' | tst.js:1:5:1:88 | totallyHarmlessString |
+| tst.js:1:29:1:88 | '636f6e ... 6e2729' | tst.js:1:5:1:88 | totallyHarmlessString |
+| tst.js:2:6:2:46 | Buffer. ...  'hex') | tst.js:2:6:2:57 | Buffer. ... tring() |
+| tst.js:2:6:2:46 | Buffer. ...  'hex') | tst.js:2:6:2:57 | Buffer. ... tring() |
+| tst.js:2:18:2:38 | totally ... sString | tst.js:2:6:2:46 | Buffer. ...  'hex') |
+| tst.js:5:5:5:23 | test | tst.js:7:8:7:11 | test |
+| tst.js:5:12:5:23 | "0123456789" | tst.js:5:5:5:23 | test |
+| tst.js:5:12:5:23 | "0123456789" | tst.js:5:5:5:23 | test |
+| tst.js:7:8:7:11 | test | tst.js:7:8:7:15 | test+"n" |
+| tst.js:7:8:7:11 | test | tst.js:7:8:7:15 | test+"n" |
+#select
+| event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") | event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" | event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") | Hard-coded data from $@ is interpreted as an import path. | event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" | here |
+| event-stream.js:9:11:9:37 | e("2e2f ... 17461") | event-stream.js:9:13:9:36 | "2e2f74 ... 617461" | event-stream.js:9:11:9:37 | e("2e2f ... 17461") | Hard-coded data from $@ is interpreted as an import path. | event-stream.js:9:13:9:36 | "2e2f74 ... 617461" | here |
+| tst.js:2:6:2:57 | Buffer. ... tring() | tst.js:1:29:1:88 | '636f6e ... 6e2729' | tst.js:2:6:2:57 | Buffer. ... tring() | Hard-coded data from $@ is interpreted as code. | tst.js:1:29:1:88 | '636f6e ... 6e2729' | here |
+| tst.js:7:8:7:15 | test+"n" | tst.js:5:12:5:23 | "0123456789" | tst.js:7:8:7:15 | test+"n" | Hard-coded data from $@ is interpreted as code. | tst.js:5:12:5:23 | "0123456789" | here |

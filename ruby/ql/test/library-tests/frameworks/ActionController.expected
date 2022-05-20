@@ -1,0 +1,75 @@
+actionControllerControllerClasses
+| ActiveRecordInjection.rb:27:1:58:3 | FooController |
+| ActiveRecordInjection.rb:60:1:90:3 | BarController |
+| ActiveRecordInjection.rb:92:1:96:3 | BazController |
+| app/controllers/comments_controller.rb:1:1:7:3 | CommentsController |
+| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController |
+| app/controllers/photos_controller.rb:1:1:4:3 | PhotosController |
+| app/controllers/posts_controller.rb:1:1:10:3 | PostsController |
+| app/controllers/users/notifications_controller.rb:2:3:5:5 | NotificationsController |
+actionControllerActionMethods
+| ActiveRecordInjection.rb:32:3:57:5 | some_request_handler |
+| ActiveRecordInjection.rb:61:3:69:5 | some_other_request_handler |
+| ActiveRecordInjection.rb:71:3:89:5 | safe_paths |
+| ActiveRecordInjection.rb:93:3:95:5 | yet_another_handler |
+| app/controllers/comments_controller.rb:2:3:3:5 | index |
+| app/controllers/comments_controller.rb:5:3:6:5 | show |
+| app/controllers/foo/bars_controller.rb:5:3:7:5 | index |
+| app/controllers/foo/bars_controller.rb:9:3:18:5 | show_debug |
+| app/controllers/foo/bars_controller.rb:20:3:24:5 | show |
+| app/controllers/photos_controller.rb:2:3:3:5 | show |
+| app/controllers/posts_controller.rb:2:3:3:5 | index |
+| app/controllers/posts_controller.rb:5:3:6:5 | show |
+| app/controllers/posts_controller.rb:8:3:9:5 | upvote |
+| app/controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
+paramsCalls
+| ActiveRecordInjection.rb:35:30:35:35 | call to params |
+| ActiveRecordInjection.rb:39:29:39:34 | call to params |
+| ActiveRecordInjection.rb:43:31:43:36 | call to params |
+| ActiveRecordInjection.rb:48:21:48:26 | call to params |
+| ActiveRecordInjection.rb:54:34:54:39 | call to params |
+| ActiveRecordInjection.rb:56:23:56:28 | call to params |
+| ActiveRecordInjection.rb:56:38:56:43 | call to params |
+| ActiveRecordInjection.rb:62:10:62:15 | call to params |
+| ActiveRecordInjection.rb:72:11:72:16 | call to params |
+| ActiveRecordInjection.rb:77:12:77:17 | call to params |
+| ActiveRecordInjection.rb:83:12:83:17 | call to params |
+| ActiveRecordInjection.rb:88:15:88:20 | call to params |
+| ActiveRecordInjection.rb:94:21:94:26 | call to params |
+| app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
+| app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
+| app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
+| app/controllers/foo/bars_controller.rb:22:10:22:15 | call to params |
+| app/views/foo/bars/show.html.erb:5:9:5:14 | call to params |
+paramsSources
+| ActiveRecordInjection.rb:35:30:35:35 | call to params |
+| ActiveRecordInjection.rb:39:29:39:34 | call to params |
+| ActiveRecordInjection.rb:43:31:43:36 | call to params |
+| ActiveRecordInjection.rb:48:21:48:26 | call to params |
+| ActiveRecordInjection.rb:54:34:54:39 | call to params |
+| ActiveRecordInjection.rb:56:23:56:28 | call to params |
+| ActiveRecordInjection.rb:56:38:56:43 | call to params |
+| ActiveRecordInjection.rb:62:10:62:15 | call to params |
+| ActiveRecordInjection.rb:72:11:72:16 | call to params |
+| ActiveRecordInjection.rb:77:12:77:17 | call to params |
+| ActiveRecordInjection.rb:83:12:83:17 | call to params |
+| ActiveRecordInjection.rb:88:15:88:20 | call to params |
+| ActiveRecordInjection.rb:94:21:94:26 | call to params |
+| app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
+| app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
+| app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
+| app/controllers/foo/bars_controller.rb:22:10:22:15 | call to params |
+| app/views/foo/bars/show.html.erb:5:9:5:14 | call to params |
+cookiesCalls
+| app/controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies |
+cookiesSources
+| app/controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies |
+redirectToCalls
+| app/controllers/foo/bars_controller.rb:17:5:17:30 | call to redirect_to |
+actionControllerHelperMethods
+getAssociatedControllerClasses
+| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
+| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
+controllerTemplateFiles
+| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
+| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |

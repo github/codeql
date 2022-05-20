@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The <code>__del__</code> special method is designed to be called by the Python virtual machine when an object is no longer reachable,
+but before it is destroyed. Calling a <code>__del__</code> method explicitly may cause an object to enter an unsafe state.</p>
+
+
+</overview>
+<recommendation>
+
+<p>If explicit clean up of an object is required, a <code>close()</code> method should be called or, better still,
+wrap the use of the object in a <code>with</code> statement.
+</p>
+
+</recommendation>
+<example>
+<p>In the first example, rather than close the zip file in a conventional manner the programmer has called <code>__del__</code>.
+A safer alternative is shown in the second example.
+</p>
+
+<sample src="ExplicitCallToDel.py" />
+
+
+</example>
+<references>
+
+<li>Python Standard Library: <a href="http://docs.python.org/reference/datamodel.html#object.__del__">object.__del__</a></li>
+
+</references>
+</qhelp>

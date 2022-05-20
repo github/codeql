@@ -1,0 +1,1 @@
+| tst.js:2:18:2:22 | start | This parameter is reassigned $@, which may prevent optimization because the surrounding function uses the arguments object. | tst.js:4:9:4:13 | start | here |

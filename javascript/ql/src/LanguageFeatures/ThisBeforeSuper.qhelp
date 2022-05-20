@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If a class extends another class, its constructor needs to call the super constructor
+before referencing <code>this</code> or accessing properties through <code>super</code>.
+Failure to do so will cause a runtime error.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Insert a super constructor call.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, class <code>A</code> extends class <code>B</code>, but
+its constructor assigns to <code>this.x</code> without first invoking the super
+constructor, which will cause a runtime error.
+</p>
+
+<sample language="javascript">
+class A extends B {
+  constructor() { this.x = 42; }
+}
+</sample>
+
+<p>
+To prevent the error, a super constructor call should be inserted:
+</p>
+<sample language="javascript">
+class A extends B {
+  constructor() { super(); this.x = 42; }
+}
+</sample>
+</example>
+
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Sub_classing_with_extends">Sub classing with extends</a>.</li>
+</references>
+</qhelp>

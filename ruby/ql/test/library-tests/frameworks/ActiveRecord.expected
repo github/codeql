@@ -1,0 +1,53 @@
+activeRecordModelClasses
+| ActiveRecordInjection.rb:1:1:3:3 | UserGroup |
+| ActiveRecordInjection.rb:5:1:17:3 | User |
+| ActiveRecordInjection.rb:19:1:25:3 | Admin |
+activeRecordSqlExecutionRanges
+| ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" |
+| ActiveRecordInjection.rb:23:16:23:24 | condition |
+| ActiveRecordInjection.rb:35:30:35:44 | ...[...] |
+| ActiveRecordInjection.rb:39:20:39:42 | "id = '#{...}'" |
+| ActiveRecordInjection.rb:43:22:43:44 | "id = '#{...}'" |
+| ActiveRecordInjection.rb:47:16:47:21 | <<-SQL |
+| ActiveRecordInjection.rb:54:20:54:47 | "user.id = '#{...}'" |
+| ActiveRecordInjection.rb:68:20:68:32 | ... + ... |
+| ActiveRecordInjection.rb:75:16:75:28 | "name #{...}" |
+| ActiveRecordInjection.rb:80:20:80:39 | "username = #{...}" |
+activeRecordModelClassMethodCalls
+| ActiveRecordInjection.rb:2:3:2:17 | call to has_many |
+| ActiveRecordInjection.rb:6:3:6:24 | call to belongs_to |
+| ActiveRecordInjection.rb:10:5:10:68 | call to find |
+| ActiveRecordInjection.rb:15:5:15:40 | call to find_by |
+| ActiveRecordInjection.rb:15:5:15:46 | call to users |
+| ActiveRecordInjection.rb:23:5:23:25 | call to destroy_by |
+| ActiveRecordInjection.rb:35:5:35:45 | call to calculate |
+| ActiveRecordInjection.rb:39:5:39:43 | call to delete_by |
+| ActiveRecordInjection.rb:43:5:43:46 | call to destroy_by |
+| ActiveRecordInjection.rb:47:5:47:35 | call to where |
+| ActiveRecordInjection.rb:54:5:54:14 | call to where |
+| ActiveRecordInjection.rb:54:5:54:48 | call to not |
+| ActiveRecordInjection.rb:56:5:56:51 | call to authenticate |
+| ActiveRecordInjection.rb:68:5:68:33 | call to delete_by |
+| ActiveRecordInjection.rb:75:5:75:29 | call to order |
+| ActiveRecordInjection.rb:80:7:80:40 | call to find_by |
+| ActiveRecordInjection.rb:85:5:85:33 | call to find_by |
+| ActiveRecordInjection.rb:88:5:88:34 | call to find |
+| ActiveRecordInjection.rb:94:5:94:45 | call to delete_by |
+potentiallyUnsafeSqlExecutingMethodCall
+| ActiveRecordInjection.rb:10:5:10:68 | call to find |
+| ActiveRecordInjection.rb:23:5:23:25 | call to destroy_by |
+| ActiveRecordInjection.rb:35:5:35:45 | call to calculate |
+| ActiveRecordInjection.rb:39:5:39:43 | call to delete_by |
+| ActiveRecordInjection.rb:43:5:43:46 | call to destroy_by |
+| ActiveRecordInjection.rb:47:5:47:35 | call to where |
+| ActiveRecordInjection.rb:54:5:54:48 | call to not |
+| ActiveRecordInjection.rb:68:5:68:33 | call to delete_by |
+| ActiveRecordInjection.rb:75:5:75:29 | call to order |
+| ActiveRecordInjection.rb:80:7:80:40 | call to find_by |
+activeRecordModelInstantiations
+| ActiveRecordInjection.rb:8:3:11:5 | self (authenticate) | ActiveRecordInjection.rb:5:1:17:3 | User |
+| ActiveRecordInjection.rb:15:5:15:40 | call to find_by | ActiveRecordInjection.rb:1:1:3:3 | UserGroup |
+| ActiveRecordInjection.rb:20:3:24:5 | self (delete_by) | ActiveRecordInjection.rb:19:1:25:3 | Admin |
+| ActiveRecordInjection.rb:80:7:80:40 | call to find_by | ActiveRecordInjection.rb:5:1:17:3 | User |
+| ActiveRecordInjection.rb:85:5:85:33 | call to find_by | ActiveRecordInjection.rb:5:1:17:3 | User |
+| ActiveRecordInjection.rb:88:5:88:34 | call to find | ActiveRecordInjection.rb:5:1:17:3 | User |

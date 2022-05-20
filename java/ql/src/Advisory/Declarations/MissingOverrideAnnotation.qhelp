@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Java enables you to annotate methods that are intended to override a method in a superclass. 
+Compilers are required to generate an error if such an annotated method does not override a method
+in a superclass, which provides increased protection from potential defects. An annotated method also
+improves code readability.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Add an <code>@Override</code> annotation to a method that is intended to override a method in a
+superclass.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>Triangle.getArea</code> overrides <code>Rectangle.getArea</code>,
+so it is annotated with <code>@Override</code>.</p>
+
+<sample src="MissingOverrideAnnotation.java" />
+
+</example>
+<references>
+
+
+<li>
+  J. Bloch, <em>Effective Java (second edition)</em>, Item 36.
+  Addison-Wesley, 2008.
+</li>
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+<li>
+  Java API Specification:
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Override.html">Annotation Type Override</a>.
+</li>
+<li>
+  The Java Tutorials:
+  <a href="https://docs.oracle.com/javase/tutorial/java/annotations/predefined.html">Predefined Annotation Types</a>.
+</li>
+
+
+</references>
+</qhelp>

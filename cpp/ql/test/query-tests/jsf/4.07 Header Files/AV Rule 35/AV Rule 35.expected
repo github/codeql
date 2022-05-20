@@ -1,0 +1,12 @@
+| complexcondition2.h:0:0:0:0 | complexcondition2.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
+| complexcondition.h:0:0:0:0 | complexcondition.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
+| fundecl.h:0:0:0:0 | fundecl.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
+| multipleguards.h:0:0:0:0 | multipleguards.h | This header file should contain a header guard to prevent multiple inclusion ($@ matching $@ occurs before the end of the file). | multipleguards.h:7:1:7:6 | #endif | #endif | multipleguards.h:2:1:2:24 | #ifndef MULTIPLEGUARDS_H | #ifndef MULTIPLEGUARDS_H |
+| namespace1.h:0:0:0:0 | namespace1.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
+| namespace2.h:0:0:0:0 | namespace2.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
+| preproc.h:0:0:0:0 | preproc.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
+| unmatched.h:0:0:0:0 | unmatched.h | This header file should contain a header guard to prevent multiple inclusion ($@ matching $@ occurs before the end of the file). | unmatched.h:3:1:3:6 | #endif | #endif | unmatched.h:1:1:1:19 | #ifndef UNMATCHED_A | #ifndef UNMATCHED_A |
+| vardecl.h:0:0:0:0 | vardecl.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
+| x.h:0:0:0:0 | x.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
+| y.h:0:0:0:0 | y.h | This header file should contain a header guard to prevent multiple inclusion (Y_HDR should appear in the #ifndef rather than Y_HEADER). | y.h:6:1:6:6 | #endif | #endif | y.h:1:1:1:16 | #ifndef Y_HEADER | #ifndef Y_HEADER |
+| z.h:0:0:0:0 | z.h | This header file should contain a header guard to prevent multiple inclusion (the macro Z_H is checked for, but is not defined). | z.h:5:1:5:6 | #endif | #endif | z.h:1:1:1:11 | #ifndef Z_H | #ifndef Z_H |

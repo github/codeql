@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>If the same operation 
+(e.g. <code>free</code>, <code>delete</code>, <code>close</code>, etc.)
+is usually performed on the result of a method call,
+then any instances where it is not performed 
+may indicate misuse of the API and could cause resource leaks or other issues.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Examine the code to determine if the return value is treated correctly in this particular case. 
+</p>
+
+</recommendation>
+<references>
+
+
+<li>
+  Tutorialspoint - The C++ Programming Language: <a href="http://www.tutorialspoint.com/cplusplus/cpp_dynamic_memory.htm">C++ Dynamic Memory</a>
+</li>
+
+
+
+</references>
+</qhelp>

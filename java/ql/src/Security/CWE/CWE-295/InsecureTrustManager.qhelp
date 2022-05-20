@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If the <code>checkServerTrusted</code> method of a <code>TrustManager</code> never throws a <code>CertificateException</code>, it trusts every certificate.
+This allows an attacker to perform a machine-in-the-middle attack against the application, therefore breaking any security Transport Layer Security (TLS) gives.
+</p>
+
+<p>
+An attack might look like this:
+</p>
+
+<ol>
+  <li>The vulnerable program connects to <code>https://example.com</code>.</li>
+  <li>The attacker intercepts this connection and presents a valid, self-signed certificate for <code>https://example.com</code>.</li>
+  <li>The vulnerable program calls the <code>checkServerTrusted</code> method to check whether it should trust the certificate.</li>
+  <li>The <code>checkServerTrusted</code> method of your <code>TrustManager</code> does not throw a <code>CertificateException</code>.</li>
+  <li>The vulnerable program accepts the certificate and proceeds with the connection since your <code>TrustManager</code> implicitly trusted it by not throwing an exception.</li>
+  <li>The attacker can now read the data your program sends to <code>https://example.com</code> and/or alter its replies while the program thinks the connection is secure.</li>
+</ol>
+</overview>
+
+<recommendation>
+<p>
+Do not use a custom <code>TrustManager</code> that trusts any certificate.
+If you have to use a self-signed certificate, don't trust every certificate, but instead only trust this specific certificate.
+See below for an example of how to do this.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the first (bad) example, the <code>TrustManager</code> never throws a <code>CertificateException</code> and therefore implicitly trusts any certificate.
+This allows an attacker to perform a machine-in-the-middle attack.
+In the second (good) example, the self-signed certificate that should be trusted
+is loaded into a <code>KeyStore</code>. This explicitly defines the certificate as trusted and there is no need to create a custom <code>TrustManager</code>.
+</p>
+<sample src="InsecureTrustManager.java" />
+</example>
+
+<references>
+<li>Android Developers: <a href="https://developer.android.com/training/articles/security-ssl">Security with HTTPS and SSL</a>.</li>
+</references>
+</qhelp>

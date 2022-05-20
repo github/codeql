@@ -1,0 +1,183 @@
+events.cs:
+#    5| [NamespaceDeclaration] namespace ... { ... }
+#    7|   1: [DelegateType] EventHandler
+#-----|     2: (Parameters)
+#    7|       0: [Parameter] sender
+#    7|         -1: [TypeMention] object
+#    7|       1: [Parameter] e
+#    7|         -1: [TypeMention] object
+#    9|   2: [Class] Button
+#   12|     5: [Event] Click
+#   12|       -1: [TypeMention] EventHandler
+#   12|       3: [AddEventAccessor] add_Click
+#-----|         2: (Parameters)
+#   12|           0: [Parameter] value
+#   12|       4: [RemoveEventAccessor] remove_Click
+#-----|         2: (Parameters)
+#   12|           0: [Parameter] value
+#   14|     6: [Method] OnClick
+#   14|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   14|         0: [Parameter] e
+#   14|           -1: [TypeMention] object
+#   15|       4: [BlockStmt] {...}
+#   16|         0: [IfStmt] if (...) ...
+#   16|           0: [OperatorCall] call to operator !=
+#   16|             0: [EventAccess,EventCall] access to event Click
+#   16|             1: [NullLiteral] null
+#   17|           1: [ExprStmt] ...;
+#   17|             0: [DelegateCall] delegate call
+#   17|               -1: [EventAccess,EventCall] access to event Click
+#   17|               0: [ThisAccess] this access
+#   17|               1: [ParameterAccess] access to parameter e
+#   20|     7: [Method] Reset
+#   20|       -1: [TypeMention] Void
+#   21|       4: [BlockStmt] {...}
+#   22|         0: [ExprStmt] ...;
+#   22|           0: [AssignExpr] ... = ...
+#   22|             0: [EventAccess,EventCall] access to event Click
+#   22|             1: [NullLiteral] null
+#   26|   3: [Class] LoginDialog
+#   29|     4: [Field] OkButton
+#   29|       -1: [TypeMention] Button
+#   30|     5: [Field] CancelButton
+#   30|       -1: [TypeMention] Button
+#   32|     6: [InstanceConstructor] LoginDialog
+#   33|       4: [BlockStmt] {...}
+#   34|         0: [ExprStmt] ...;
+#   34|           0: [AssignExpr] ... = ...
+#   34|             0: [FieldAccess] access to field OkButton
+#   34|             1: [ObjectCreation] object creation of type Button
+#   34|               0: [TypeMention] Button
+#   35|         1: [ExprStmt] ...;
+#   35|           0: [AddEventExpr] ... += ...
+#   35|             0: [EventAccess,EventCall] access to event Click
+#   35|               -1: [FieldAccess] access to field OkButton
+#   35|             1: [ExplicitDelegateCreation] delegate creation of type EventHandler
+#   35|               -1: [TypeMention] EventHandler
+#   35|               0: [MethodAccess] access to method OkButtonClick
+#   36|         2: [ExprStmt] ...;
+#   36|           0: [AssignExpr] ... = ...
+#   36|             0: [FieldAccess] access to field CancelButton
+#   36|             1: [ObjectCreation] object creation of type Button
+#   36|               0: [TypeMention] Button
+#   37|         3: [ExprStmt] ...;
+#   37|           0: [RemoveEventExpr] ... -= ...
+#   37|             0: [EventAccess,EventCall] access to event Click
+#   37|               -1: [FieldAccess] access to field CancelButton
+#   37|             1: [ExplicitDelegateCreation] delegate creation of type EventHandler
+#   37|               -1: [TypeMention] EventHandler
+#   37|               0: [MethodAccess] access to method CancelButtonClick
+#   40|     7: [Method] OkButtonClick
+#   40|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   40|         0: [Parameter] sender
+#   40|           -1: [TypeMention] object
+#   40|         1: [Parameter] e
+#   40|           -1: [TypeMention] object
+#   41|       4: [BlockStmt] {...}
+#   44|     8: [Method] CancelButtonClick
+#   44|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   44|         0: [Parameter] sender
+#   44|           -1: [TypeMention] object
+#   44|         1: [Parameter] e
+#   44|           -1: [TypeMention] object
+#   45|       4: [BlockStmt] {...}
+#   50|   4: [Class] Control
+#   53|     6: [Field] mouseDownEventKey
+#   53|       -1: [TypeMention] object
+#   53|       1: [AssignExpr] ... = ...
+#   53|         0: [FieldAccess] access to field mouseDownEventKey
+#   53|         1: [ObjectCreation] object creation of type Object
+#   53|           0: [TypeMention] object
+#   54|     7: [Field] mouseUpEventKey
+#   54|       -1: [TypeMention] object
+#   54|       1: [AssignExpr] ... = ...
+#   54|         0: [FieldAccess] access to field mouseUpEventKey
+#   54|         1: [ObjectCreation] object creation of type Object
+#   54|           0: [TypeMention] object
+#   57|     8: [Method] GetEventHandler
+#   57|       -1: [TypeMention] Delegate
+#-----|       2: (Parameters)
+#   57|         0: [Parameter] key
+#   57|           -1: [TypeMention] object
+#   57|       4: [BlockStmt] {...}
+#   57|         0: [ReturnStmt] return ...;
+#   57|           0: [NullLiteral] null
+#   60|     9: [Method] AddEventHandler
+#   60|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   60|         0: [Parameter] key
+#   60|           -1: [TypeMention] object
+#   60|         1: [Parameter] handler
+#   60|           -1: [TypeMention] Delegate
+#   60|       4: [BlockStmt] {...}
+#   63|     10: [Method] RemoveEventHandler
+#   63|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   63|         0: [Parameter] key
+#   63|           -1: [TypeMention] object
+#   63|         1: [Parameter] handler
+#   63|           -1: [TypeMention] Delegate
+#   63|       4: [BlockStmt] {...}
+#   66|     11: [Event] MouseDown
+#   68|       3: [AddEventAccessor] add_MouseDown
+#-----|         2: (Parameters)
+#   68|           0: [Parameter] value
+#   68|         4: [BlockStmt] {...}
+#   68|           0: [ExprStmt] ...;
+#   68|             0: [MethodCall] call to method AddEventHandler
+#   68|               0: [FieldAccess] access to field mouseDownEventKey
+#   68|               1: [ParameterAccess] access to parameter value
+#   69|       4: [RemoveEventAccessor] remove_MouseDown
+#-----|         2: (Parameters)
+#   69|           0: [Parameter] value
+#   69|         4: [BlockStmt] {...}
+#   69|           0: [ExprStmt] ...;
+#   69|             0: [MethodCall] call to method RemoveEventHandler
+#   69|               0: [FieldAccess] access to field mouseDownEventKey
+#   69|               1: [ParameterAccess] access to parameter value
+#   73|     12: [Event] MouseUp
+#   75|       3: [AddEventAccessor] add_MouseUp
+#-----|         2: (Parameters)
+#   75|           0: [Parameter] value
+#   75|         4: [BlockStmt] {...}
+#   75|           0: [ExprStmt] ...;
+#   75|             0: [MethodCall] call to method AddEventHandler
+#   75|               0: [FieldAccess] access to field mouseUpEventKey
+#   75|               1: [ParameterAccess] access to parameter value
+#   76|       4: [RemoveEventAccessor] remove_MouseUp
+#-----|         2: (Parameters)
+#   76|           0: [Parameter] value
+#   76|         4: [BlockStmt] {...}
+#   76|           0: [ExprStmt] ...;
+#   76|             0: [MethodCall] call to method RemoveEventHandler
+#   76|               0: [FieldAccess] access to field mouseUpEventKey
+#   76|               1: [ParameterAccess] access to parameter value
+#   80|     13: [Method] OnMouseUp
+#   80|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   80|         0: [Parameter] args
+#   80|           -1: [TypeMention] object
+#   81|       4: [BlockStmt] {...}
+#   82|         0: [LocalVariableDeclStmt] ... ...;
+#   82|           0: [LocalVariableDeclExpr] EventHandler handler
+#   82|             0: [TypeMention] EventHandler
+#   83|         1: [ExprStmt] ...;
+#   83|           0: [AssignExpr] ... = ...
+#   83|             0: [LocalVariableAccess] access to local variable handler
+#   83|             1: [CastExpr] (...) ...
+#   83|               0: [TypeAccess] access to type EventHandler
+#   83|                 0: [TypeMention] EventHandler
+#   83|               1: [MethodCall] call to method GetEventHandler
+#   83|                 0: [FieldAccess] access to field mouseUpEventKey
+#   84|         2: [IfStmt] if (...) ...
+#   84|           0: [OperatorCall] call to operator !=
+#   84|             0: [LocalVariableAccess] access to local variable handler
+#   84|             1: [NullLiteral] null
+#   85|           1: [ExprStmt] ...;
+#   85|             0: [DelegateCall] delegate call
+#   85|               -1: [LocalVariableAccess] access to local variable handler
+#   85|               0: [ThisAccess] this access
+#   85|               1: [ParameterAccess] access to parameter args

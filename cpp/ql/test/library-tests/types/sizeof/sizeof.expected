@@ -1,0 +1,10 @@
+| sizeof.cpp:19:15:19:25 | sizeof(int) | SizeofTypeOperator.getTypeOperand() | file://:0:0:0:0 | int |
+| sizeof.cpp:20:15:20:26 | sizeof(char) | SizeofTypeOperator.getTypeOperand() | file://:0:0:0:0 | char |
+| sizeof.cpp:21:15:21:27 | sizeof(int *) | SizeofTypeOperator.getTypeOperand() | file://:0:0:0:0 | int * |
+| sizeof.cpp:22:15:22:29 | sizeof(MyClass) | SizeofTypeOperator.getTypeOperand() | sizeof.cpp:4:7:4:13 | MyClass |
+| sizeof.cpp:23:15:23:23 | sizeof(<expr>) | SizeofExprOperator.getExprOperand() | sizeof.cpp:23:22:23:22 | i |
+| sizeof.cpp:24:15:24:23 | sizeof(<expr>) | SizeofExprOperator.getExprOperand() | sizeof.cpp:24:22:24:22 | c |
+| sizeof.cpp:25:15:25:25 | sizeof(<expr>) | SizeofExprOperator.getExprOperand() | sizeof.cpp:25:22:25:24 | ptr |
+| sizeof.cpp:26:15:26:24 | sizeof(<expr>) | SizeofExprOperator.getExprOperand() | sizeof.cpp:26:22:26:23 | mc |
+| sizeof.cpp:27:15:27:25 | sizeof(<expr>) | SizeofExprOperator.getExprOperand() | sizeof.cpp:27:22:27:24 | arr |
+| sizeof.cpp:28:16:28:29 | sizeof(<expr>) | SizeofExprOperator.getExprOperand() | sizeof.cpp:28:23:28:28 | access to array |

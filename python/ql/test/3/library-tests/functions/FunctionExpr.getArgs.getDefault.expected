@@ -1,0 +1,4 @@
+| test.py:4:1:11:2 | FunctionExpr | 0 | test.py:5:21:5:22 | UnaryExpr |
+| test.py:4:1:11:2 | FunctionExpr | 1 | test.py:7:19:7:20 | UnaryExpr |
+| test.py:23:1:31:2 | FunctionExpr | 1 | test.py:25:28:25:31 | None |
+| test.py:23:1:31:2 | FunctionExpr | 2 | test.py:26:20:26:23 | None |

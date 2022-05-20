@@ -1,0 +1,5 @@
+| bad-bintray-pom.xml:17:9:22:22 | repository | Downloading or uploading artifacts to deprecated repository https://jcenter.bintray.com |
+| bad-bintray-pom.xml:23:9:28:30 | snapshotRepository | Downloading or uploading artifacts to deprecated repository https://jcenter.bintray.com |
+| bad-bintray-pom.xml:31:9:36:22 | repository | Downloading or uploading artifacts to deprecated repository https://jcenter.bintray.com |
+| bad-bintray-pom.xml:39:9:44:22 | repository | Downloading or uploading artifacts to deprecated repository https://dl.bintray.com/groovy/maven |
+| bad-bintray-pom.xml:47:9:52:28 | pluginRepository | Downloading or uploading artifacts to deprecated repository https://jcenter.bintray.com |

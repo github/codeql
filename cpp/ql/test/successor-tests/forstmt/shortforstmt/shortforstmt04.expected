@@ -1,0 +1,1 @@
+| shortforstmt.cpp:34:3:36:3 | for(...;...;...) ... | shortforstmt.cpp:35:5:35:9 | ... = ... | shortforstmt.cpp:34:8:34:8 | x |

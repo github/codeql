@@ -1,0 +1,4 @@
+name: codeql-python-recorded-call-graph-metrics
+version: 0.0.1
+libraryPathDependencies: codeql-python
+extractor: python

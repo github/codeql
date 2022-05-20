@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>This rule finds comparisons of a pointer to null that occur after a reference of that pointer.  It's
+likely either the check is not required and can be removed, or it should be moved to before the dereference
+so that a null pointer dereference does not occur.</p>
+</overview>
+
+<recommendation>
+<p>The check should be moved to before the dereference, in a way that prevents a null pointer value from
+being dereferenced.  If it's clear that the pointer cannot be null, consider removing the check instead.</p>
+</recommendation>
+
+<example>
+<sample src="RedundantNullCheckSimple.cpp" />
+</example>
+
+<references>
+<li>
+  <a href="https://www.owasp.org/index.php/Null_Dereference">
+    Null Dereference
+  </a> 
+</li>
+</references>
+
+</qhelp>

@@ -1,0 +1,2 @@
+| A.java:29:13:29:21 | ...=... | This assignment to x is useless: the value is never read. |
+| UnreadLocal/ImplicitReads.java:38:5:38:9 | ...=... | This assignment to c is useless: the value is never read. |

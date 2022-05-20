@@ -1,0 +1,118 @@
+/**
+ * Provides default sources for reasoning about reflected
+ * cross-site scripting vulnerabilities.
+ */
+
+import javascript
+
+module ReflectedXss {
+  private import Xss::Shared as Shared
+
+  /** A data flow source for reflected XSS vulnerabilities. */
+  abstract class Source extends Shared::Source { }
+
+  /** A data flow sink for reflected XSS vulnerabilities. */
+  abstract class Sink extends Shared::Sink { }
+
+  /** A sanitizer for reflected XSS vulnerabilities. */
+  abstract class Sanitizer extends Shared::Sanitizer { }
+
+  /**
+   * An expression that is sent as part of an HTTP response, considered as an XSS sink.
+   *
+   * We exclude cases where the route handler sets either an unknown content type or
+   * a content type that does not (case-insensitively) contain the string "html". This
+   * is to prevent us from flagging plain-text or JSON responses as vulnerable.
+   */
+  class HttpResponseSink extends Sink, DataFlow::ValueNode {
+    override HTTP::ResponseSendArgument astNode;
+
+    HttpResponseSink() { not exists(getANonHtmlHeaderDefinition(astNode)) }
+  }
+
+  /**
+   * Gets a HeaderDefinition that defines a non-html content-type for `send`.
+   */
+  HTTP::HeaderDefinition getANonHtmlHeaderDefinition(HTTP::ResponseSendArgument send) {
+    exists(HTTP::RouteHandler h |
+      send.getRouteHandler() = h and
+      result = nonHtmlContentTypeHeader(h)
+    |
+      // The HeaderDefinition affects a response sent at `send`.
+      headerAffects(result, send)
+    )
+  }
+
+  /**
+   * Holds if `h` may send a response with a content type other than HTML.
+   */
+  HTTP::HeaderDefinition nonHtmlContentTypeHeader(HTTP::RouteHandler h) {
+    result = h.getAResponseHeader("content-type") and
+    not exists(string tp | result.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
+  }
+
+  /**
+   * Holds if a header set in `header` is likely to affect a response sent at `sender`.
+   */
+  predicate headerAffects(HTTP::HeaderDefinition header, HTTP::ResponseSendArgument sender) {
+    sender.getRouteHandler() = header.getRouteHandler() and
+    (
+      // `sender` is affected by a dominating `header`.
+      header.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
+      or
+      // There is no dominating header, and `header` is non-local.
+      not isLocalHeaderDefinition(header) and
+      not exists(HTTP::HeaderDefinition dominatingHeader |
+        dominatingHeader.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
+      )
+    )
+  }
+
+  /**
+   * Holds if the HeaderDefinition `header` seems to be local.
+   * A HeaderDefinition is local if it dominates exactly one `ResponseSendArgument`.
+   *
+   * Recognizes variants of:
+   * ```
+   * response.writeHead(500, ...);
+   * response.end('Some error');
+   * return;
+   * ```
+   */
+  predicate isLocalHeaderDefinition(HTTP::HeaderDefinition header) {
+    exists(ReachableBasicBlock headerBlock | headerBlock = header.getBasicBlock() |
+      1 =
+        strictcount(HTTP::ResponseSendArgument sender |
+          sender.getRouteHandler() = header.getRouteHandler() and
+          header.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
+        ) and
+      // doesn't dominate something that looks like a callback.
+      not exists(Expr e | e instanceof Function | headerBlock.dominates(e.getBasicBlock()))
+    )
+  }
+
+  /**
+   * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
+   * XSS vulnerabilities.
+   *
+   * The XSS queries do not attempt to reason about correctness or completeness of sanitizers,
+   * so any such replacement stops taint propagation.
+   */
+  private class MetacharEscapeSanitizer extends Sanitizer, Shared::MetacharEscapeSanitizer { }
+
+  private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
+
+  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer {
+  }
+
+  private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
+
+  /** A third-party controllable request input, considered as a flow source for reflected XSS. */
+  class ThirdPartyRequestInputAccessAsSource extends Source {
+    ThirdPartyRequestInputAccessAsSource() {
+      this.(HTTP::RequestInputAccess).isThirdPartyControllable()
+      or
+      this.(HTTP::RequestHeaderAccess).getAHeaderName() = "referer"
+    }
+  }
+}

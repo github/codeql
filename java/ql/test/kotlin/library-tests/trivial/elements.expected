@@ -1,0 +1,7 @@
+| Trivial.kt:0:0:0:0 | Trivial | CompilationUnit |
+| Trivial.kt:1:1:1:16 | Trivial | Class |
+| Trivial.kt:1:1:1:16 | Trivial | Constructor |
+| Trivial.kt:1:1:1:16 | super(...) | SuperConstructorInvocationStmt |
+| Trivial.kt:1:1:1:16 | { ... } | BlockStmt |
+| Trivial.kt:1:1:1:16 | { ... } | BlockStmt |
+| file://:0:0:0:0 |  | Package |

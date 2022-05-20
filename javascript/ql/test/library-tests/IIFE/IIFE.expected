@@ -1,0 +1,6 @@
+| es2015.js:1:2:2:1 | function(...xs) {\\n} | es2015.js:1:1:2:6 | (functi ... \\n})(23) |
+| tst.js:1:2:2:1 | function(x) {\\n} | tst.js:1:1:2:6 | (functi ... \\n})(23) |
+| tst.js:4:2:5:1 | function(y) {\\n} | tst.js:4:2:5:5 | function(y) {\\n}(42) |
+| tst.js:7:2:8:1 | function(z) {\\n} | tst.js:7:2:8:18 | functio ... ow, 56) |
+| tst.js:10:5:11:1 | function(a) {\\n} | tst.js:10:1:11:5 | new fun ... {\\n}(72) |
+| tst.js:13:2:14:1 | function(b) {\\n} | tst.js:13:2:14:19 | functio ... , args) |

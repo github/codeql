@@ -1,0 +1,53 @@
+| ReflectedXss.js:8:14:8:45 | "Unknow ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:8:33:8:45 | req.params.id | user-provided value |
+| ReflectedXss.js:17:12:17:39 | "Unknow ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:17:31:17:39 | params.id | user-provided value |
+| ReflectedXss.js:22:12:22:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:22:12:22:19 | req.body | user-provided value |
+| ReflectedXss.js:23:12:23:27 | marked(req.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:23:19:23:26 | req.body | user-provided value |
+| ReflectedXss.js:29:12:29:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:29:12:29:19 | req.body | user-provided value |
+| ReflectedXss.js:34:12:34:18 | mytable | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:32:14:32:21 | req.body | user-provided value |
+| ReflectedXss.js:41:12:41:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:41:12:41:19 | req.body | user-provided value |
+| ReflectedXss.js:42:12:42:39 | convert ... q.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:42:31:42:38 | req.body | user-provided value |
+| ReflectedXss.js:56:12:56:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:56:12:56:19 | req.body | user-provided value |
+| ReflectedXss.js:65:16:65:19 | file | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:64:14:64:21 | req.body | user-provided value |
+| ReflectedXss.js:68:12:68:52 | remark( ... tring() | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:68:33:68:40 | req.body | user-provided value |
+| ReflectedXss.js:72:12:72:65 | unified ... oString | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:72:48:72:55 | req.body | user-provided value |
+| ReflectedXss.js:75:14:75:14 | f | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:74:20:74:27 | req.body | user-provided value |
+| ReflectedXss.js:83:12:83:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:83:12:83:19 | req.body | user-provided value |
+| ReflectedXss.js:84:12:84:30 | snarkdown(req.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:84:22:84:29 | req.body | user-provided value |
+| ReflectedXss.js:85:12:85:31 | snarkdown2(req.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:85:23:85:30 | req.body | user-provided value |
+| ReflectedXss.js:97:12:97:19 | req.body | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:97:12:97:19 | req.body | user-provided value |
+| ReflectedXss.js:98:12:98:38 | markdow ... q.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:98:30:98:37 | req.body | user-provided value |
+| ReflectedXss.js:100:12:100:39 | markdow ... q.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:100:31:100:38 | req.body | user-provided value |
+| ReflectedXss.js:103:12:103:84 | markdow ... q.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:103:76:103:83 | req.body | user-provided value |
+| ReflectedXss.js:110:16:110:30 | request.query.p | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:110:16:110:30 | request.query.p | user-provided value |
+| ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | user-provided value |
+| ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | user-provided value |
+| ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | user-provided value |
+| ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | user-provided value |
+| ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | Cross-site scripting vulnerability due to $@. | ReflectedXssGood3.js:135:15:135:27 | req.params.id | user-provided value |
+| formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
+| formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
+| live-server.js:6:13:6:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to $@. | live-server.js:4:21:4:27 | req.url | user-provided value |
+| live-server.js:12:13:12:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to $@. | live-server.js:10:21:10:27 | req.url | user-provided value |
+| pages/Next.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to $@. | pages/Next.jsx:8:13:8:19 | req.url | user-provided value |
+| pages/Next.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to $@. | pages/Next.jsx:15:13:15:19 | req.url | user-provided value |
+| pages/api/myapi.js:2:14:2:20 | req.url | Cross-site scripting vulnerability due to $@. | pages/api/myapi.js:2:14:2:20 | req.url | user-provided value |
+| partial.js:10:14:10:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:13:42:13:48 | req.url | user-provided value |
+| partial.js:19:14:19:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:22:51:22:57 | req.url | user-provided value |
+| partial.js:28:14:28:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:31:47:31:53 | req.url | user-provided value |
+| partial.js:37:14:37:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:40:43:40:49 | req.url | user-provided value |
+| promises.js:6:25:6:25 | x | Cross-site scripting vulnerability due to $@. | promises.js:5:44:5:57 | req.query.data | user-provided value |
+| tst2.js:7:12:7:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:6:9:6:9 | p | user-provided value |
+| tst2.js:8:12:8:12 | r | Cross-site scripting vulnerability due to $@. | tst2.js:6:12:6:15 | q: r | user-provided value |
+| tst2.js:18:12:18:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:14:9:14:9 | p | user-provided value |
+| tst2.js:21:14:21:14 | p | Cross-site scripting vulnerability due to $@. | tst2.js:14:9:14:9 | p | user-provided value |
+| tst2.js:36:12:36:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:30:9:30:9 | p | user-provided value |
+| tst2.js:37:12:37:18 | other.p | Cross-site scripting vulnerability due to $@. | tst2.js:30:9:30:9 | p | user-provided value |
+| tst2.js:51:12:51:17 | unsafe | Cross-site scripting vulnerability due to $@. | tst2.js:43:9:43:9 | p | user-provided value |
+| tst2.js:63:12:63:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:57:9:57:9 | p | user-provided value |
+| tst2.js:64:12:64:18 | other.p | Cross-site scripting vulnerability due to $@. | tst2.js:57:9:57:9 | p | user-provided value |
+| tst2.js:75:12:75:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:69:9:69:9 | p | user-provided value |
+| tst2.js:76:12:76:18 | other.p | Cross-site scripting vulnerability due to $@. | tst2.js:69:9:69:9 | p | user-provided value |
+| tst2.js:88:12:88:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:82:9:82:9 | p | user-provided value |
+| tst2.js:89:12:89:18 | other.p | Cross-site scripting vulnerability due to $@. | tst2.js:82:9:82:9 | p | user-provided value |
+| tst3.js:6:12:6:12 | p | Cross-site scripting vulnerability due to $@. | tst3.js:5:9:5:9 | p | user-provided value |
+| tst3.js:12:12:12:15 | code | Cross-site scripting vulnerability due to $@. | tst3.js:11:32:11:39 | reg.body | user-provided value |

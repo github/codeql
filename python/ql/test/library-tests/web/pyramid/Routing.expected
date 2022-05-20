@@ -1,0 +1,4 @@
+WARNING: Predicate is_pyramid_view_function has been deprecated and may be removed in future (Routing.ql:5,7-31)
+| test.py:7 | Function home |
+| test.py:15 | Function greet |
+| test.py:24 | Function stuff |

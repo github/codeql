@@ -1,0 +1,97 @@
+| file://:0:0:0:0 | initializer for MYENUM_CONST |  |
+| initializers.cpp:8:15:8:22 | initializer for a_ptr | f |
+| initializers.cpp:9:7:9:10 | initializer for a | f |
+| initializers.cpp:17:8:17:11 | initializer for x |  |
+| initializers.cpp:18:8:18:15 | initializer for y |  |
+| initializers.cpp:19:8:19:21 | initializer for z |  |
+| initializers.cpp:22:9:22:9 | initializer for i |  |
+| initializers.cpp:23:8:23:9 | initializer for j |  |
+| initializers.cpp:25:3:25:3 | initializer for a |  |
+| initializers.cpp:26:7:26:10 | initializer for ax |  |
+| initializers.cpp:27:9:27:10 | initializer for aax |  |
+| initializers.cpp:30:20:30:35 | initializer for myIntArray |  |
+| initializers.cpp:31:3:31:15 | initializer for myObjectArray |  |
+| template_static.cpp:2:15:2:15 | initializer for c |  |
+| template_static.cpp:3:9:3:9 | initializer for v |  |
+| template_static.cpp:8:24:8:24 | initializer for static_1 |  |
+| template_static.cpp:9:24:9:24 | initializer for static_c |  |
+| template_static.cpp:10:22:10:24 | initializer for static_v | myNormalFunction |
+| template_static.cpp:11:24:11:30 | initializer for static_one | myNormalFunction |
+| template_static.cpp:12:15:12:16 | initializer for local_1 | myNormalFunction |
+| template_static.cpp:13:15:13:16 | initializer for local_c | myNormalFunction |
+| template_static.cpp:14:15:14:16 | initializer for local_v | myNormalFunction |
+| template_static.cpp:15:17:15:22 | initializer for local_one | myNormalFunction |
+| template_static_instantiated.cpp:2:15:2:15 | initializer for c |  |
+| template_static_instantiated.cpp:3:9:3:9 | initializer for v |  |
+| template_static_instantiated.cpp:8:24:8:24 | initializer for static_1 |  |
+| template_static_instantiated.cpp:9:24:9:24 | initializer for static_c |  |
+| template_static_instantiated.cpp:10:22:10:24 | initializer for static_v | myNormalFunction |
+| template_static_instantiated.cpp:11:24:11:30 | initializer for static_one | myNormalFunction |
+| template_static_instantiated.cpp:12:15:12:16 | initializer for local_1 | myNormalFunction |
+| template_static_instantiated.cpp:13:15:13:16 | initializer for local_c | myNormalFunction |
+| template_static_instantiated.cpp:14:15:14:16 | initializer for local_v | myNormalFunction |
+| template_static_instantiated.cpp:15:17:15:22 | initializer for local_one | myNormalFunction |
+| template_static_instantiated.cpp:20:28:20:28 | initializer for static_int_1 |  |
+| template_static_instantiated.cpp:20:28:20:28 | initializer for static_int_1 |  |
+| template_static_instantiated.cpp:21:28:21:28 | initializer for static_int_c |  |
+| template_static_instantiated.cpp:21:28:21:28 | initializer for static_int_c |  |
+| template_static_instantiated.cpp:22:26:22:28 | initializer for static_int_v | myTemplateFunction |
+| template_static_instantiated.cpp:22:26:22:28 | initializer for static_int_v | myTemplateFunction |
+| template_static_instantiated.cpp:23:28:23:34 | initializer for static_int_one | myTemplateFunction |
+| template_static_instantiated.cpp:23:28:23:34 | initializer for static_int_one | myTemplateFunction |
+| template_static_instantiated.cpp:24:24:24:24 | initializer for static_t_1 |  |
+| template_static_instantiated.cpp:24:24:24:24 | initializer for static_t_1 | myTemplateFunction |
+| template_static_instantiated.cpp:25:22:25:24 | initializer for static_t_c | myTemplateFunction |
+| template_static_instantiated.cpp:25:24:25:24 | initializer for static_t_c |  |
+| template_static_instantiated.cpp:26:22:26:24 | initializer for static_t_v | myTemplateFunction |
+| template_static_instantiated.cpp:26:22:26:24 | initializer for static_t_v | myTemplateFunction |
+| template_static_instantiated.cpp:27:24:27:30 | initializer for static_t_one | myTemplateFunction |
+| template_static_instantiated.cpp:27:24:27:30 | initializer for static_t_one | myTemplateFunction |
+| template_static_instantiated.cpp:29:19:29:20 | initializer for local_int_1 | myTemplateFunction |
+| template_static_instantiated.cpp:29:19:29:20 | initializer for local_int_1 | myTemplateFunction |
+| template_static_instantiated.cpp:30:19:30:20 | initializer for local_int_c | myTemplateFunction |
+| template_static_instantiated.cpp:30:19:30:20 | initializer for local_int_c | myTemplateFunction |
+| template_static_instantiated.cpp:31:19:31:20 | initializer for local_int_v | myTemplateFunction |
+| template_static_instantiated.cpp:31:19:31:20 | initializer for local_int_v | myTemplateFunction |
+| template_static_instantiated.cpp:32:21:32:26 | initializer for local_int_one | myTemplateFunction |
+| template_static_instantiated.cpp:32:21:32:26 | initializer for local_int_one | myTemplateFunction |
+| template_static_instantiated.cpp:33:15:33:16 | initializer for local_t_1 | myTemplateFunction |
+| template_static_instantiated.cpp:33:15:33:16 | initializer for local_t_1 | myTemplateFunction |
+| template_static_instantiated.cpp:34:15:34:16 | initializer for local_t_c | myTemplateFunction |
+| template_static_instantiated.cpp:34:15:34:16 | initializer for local_t_c | myTemplateFunction |
+| template_static_instantiated.cpp:35:15:35:16 | initializer for local_t_v | myTemplateFunction |
+| template_static_instantiated.cpp:35:15:35:16 | initializer for local_t_v | myTemplateFunction |
+| template_static_instantiated.cpp:36:17:36:22 | initializer for local_t_one | myTemplateFunction |
+| template_static_instantiated.cpp:36:17:36:22 | initializer for local_t_one | myTemplateFunction |
+| template_static_instantiated.cpp:44:29:44:29 | initializer for static_int_1 |  |
+| template_static_instantiated.cpp:44:29:44:29 | initializer for static_int_1 |  |
+| template_static_instantiated.cpp:45:29:45:29 | initializer for static_int_c |  |
+| template_static_instantiated.cpp:45:29:45:29 | initializer for static_int_c |  |
+| template_static_instantiated.cpp:46:27:46:29 | initializer for static_int_v | myMethod |
+| template_static_instantiated.cpp:46:27:46:29 | initializer for static_int_v | myMethod |
+| template_static_instantiated.cpp:47:29:47:35 | initializer for static_int_one | myMethod |
+| template_static_instantiated.cpp:47:29:47:35 | initializer for static_int_one | myMethod |
+| template_static_instantiated.cpp:48:25:48:25 | initializer for static_t_1 |  |
+| template_static_instantiated.cpp:48:25:48:25 | initializer for static_t_1 | myMethod |
+| template_static_instantiated.cpp:49:23:49:25 | initializer for static_t_c | myMethod |
+| template_static_instantiated.cpp:49:25:49:25 | initializer for static_t_c |  |
+| template_static_instantiated.cpp:50:23:50:25 | initializer for static_t_v | myMethod |
+| template_static_instantiated.cpp:50:23:50:25 | initializer for static_t_v | myMethod |
+| template_static_instantiated.cpp:51:25:51:31 | initializer for static_t_one | myMethod |
+| template_static_instantiated.cpp:51:25:51:31 | initializer for static_t_one | myMethod |
+| template_static_instantiated.cpp:53:20:53:21 | initializer for local_int_1 | myMethod |
+| template_static_instantiated.cpp:53:20:53:21 | initializer for local_int_1 | myMethod |
+| template_static_instantiated.cpp:54:20:54:21 | initializer for local_int_c | myMethod |
+| template_static_instantiated.cpp:54:20:54:21 | initializer for local_int_c | myMethod |
+| template_static_instantiated.cpp:55:20:55:21 | initializer for local_int_v | myMethod |
+| template_static_instantiated.cpp:55:20:55:21 | initializer for local_int_v | myMethod |
+| template_static_instantiated.cpp:56:22:56:27 | initializer for local_int_one | myMethod |
+| template_static_instantiated.cpp:56:22:56:27 | initializer for local_int_one | myMethod |
+| template_static_instantiated.cpp:57:16:57:17 | initializer for local_t_1 | myMethod |
+| template_static_instantiated.cpp:57:16:57:17 | initializer for local_t_1 | myMethod |
+| template_static_instantiated.cpp:58:16:58:17 | initializer for local_t_c | myMethod |
+| template_static_instantiated.cpp:58:16:58:17 | initializer for local_t_c | myMethod |
+| template_static_instantiated.cpp:59:16:59:17 | initializer for local_t_v | myMethod |
+| template_static_instantiated.cpp:59:16:59:17 | initializer for local_t_v | myMethod |
+| template_static_instantiated.cpp:60:18:60:23 | initializer for local_t_one | myMethod |
+| template_static_instantiated.cpp:60:18:60:23 | initializer for local_t_one | myMethod |

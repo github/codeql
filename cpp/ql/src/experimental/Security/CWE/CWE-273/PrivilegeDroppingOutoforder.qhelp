@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The code attempts to drop privilege in an incorrect order by
+erroneous dropping user privilege before groups. This has security
+impact if the return codes are not checked.</p>
+
+<p>False positives include code performing negative checks, making
+sure that setgid or setgroups does not work, meaning permissions are
+dropped. Additionally, other forms of sandboxing may be present removing
+any residual risk, for example a dedicated user namespace.</p>
+
+</overview>
+<recommendation>
+
+<p>Set the new group ID, then set the target user's intended groups by
+dropping previous supplemental source groups and initializing target
+groups, and finally set the target user.</p>
+
+</recommendation>
+<example>
+<p>The following example demonstrates out of order calls.</p>
+<sample src="PrivilegeDroppingOutoforder.c" />
+
+</example>
+<references>
+
+<li>CERT C Coding Standard:
+<a href="https://wiki.sei.cmu.edu/confluence/display/c/POS37-C.+Ensure+that+privilege+relinquishment+is+successful">POS37-C. Ensure that privilege relinquishment is successful</a>.
+</li>
+
+</references>
+</qhelp>

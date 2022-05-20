@@ -1,0 +1,25 @@
+| file://:0:0:0:0 | (unnamed parameter 0) | reference to {const {struct __va_list_tag}} | reference to {struct __va_list_tag} |
+| file://:0:0:0:0 | (unnamed parameter 0) | rvalue reference to {struct __va_list_tag} | rvalue reference to {struct __va_list_tag} |
+| file://:0:0:0:0 | fp_offset | unsigned int | unsigned int |
+| file://:0:0:0:0 | gp_offset | unsigned int | unsigned int |
+| file://:0:0:0:0 | overflow_arg_area | pointer to {void} | pointer to {void} |
+| file://:0:0:0:0 | reg_save_area | pointer to {void} | pointer to {void} |
+| unspecified_type.cpp:2:5:2:7 | vv1 | int | int |
+| unspecified_type.cpp:3:11:3:13 | vv2 | const {int} | int |
+| unspecified_type.cpp:4:6:4:8 | vv3 | pointer to {int} | pointer to {int} |
+| unspecified_type.cpp:5:19:5:21 | vv4 | const {pointer to {const {int}}} | pointer to {int} |
+| unspecified_type.cpp:6:6:6:8 | vv5 | reference to {int} | reference to {int} |
+| unspecified_type.cpp:7:19:7:21 | vv6 | reference to {const {int}} | reference to {int} |
+| unspecified_type.cpp:8:5:8:7 | vv7 | array of 3 {int} | array of 3 {int} |
+| unspecified_type.cpp:9:11:9:13 | vv8 | array of 3 {const {int}} | array of 3 {int} |
+| unspecified_type.cpp:10:7:10:9 | vv9 | pointer to {function returning {int} with arguments (int,int)} | pointer to {function returning {int} with arguments (int,int)} |
+| unspecified_type.cpp:11:19:11:22 | vv10 | const {pointer to {function returning {const {int}} with arguments (int,int)}} | pointer to {function returning {const {int}} with arguments (int,int)} |
+| unspecified_type.cpp:13:12:13:14 | ww2 | const {char} | char |
+| unspecified_type.cpp:14:20:14:22 | ww4 | const {pointer to {const {char}}} | pointer to {char} |
+| unspecified_type.cpp:15:13:15:15 | ww6 | reference to {const {char}} | reference to {char} |
+| unspecified_type.cpp:16:12:16:14 | ww8 | array of 3 {const {char}} | array of 3 {char} |
+| unspecified_type.cpp:17:20:17:23 | ww10 | const {pointer to {function returning {const {char}} with arguments (char,char)}} | pointer to {function returning {const {char}} with arguments (char,char)} |
+| unspecified_type.cpp:20:12:20:12 | i | int | int |
+| unspecified_type.cpp:21:11:21:12 | fi | array of {typedef {int} as "myInt"} | array of {int} |
+| unspecified_type.cpp:25:13:25:19 | vol_int | typedef {volatile {int}} as "volatileInt" | int |
+| unspecified_type.cpp:27:7:27:12 | cv_int | typedef {const volatile {typedef {volatile {int}} as "volatileInt"}} as "cvInt" | int |

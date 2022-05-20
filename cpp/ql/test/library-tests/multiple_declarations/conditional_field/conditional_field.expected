@@ -1,0 +1,7 @@
+| file://:0:0:0:0 | __va_list_tag | 0 | file://:0:0:0:0 | gp_offset | 1 |
+| file://:0:0:0:0 | __va_list_tag | 1 | file://:0:0:0:0 | fp_offset | 1 |
+| file://:0:0:0:0 | __va_list_tag | 2 | file://:0:0:0:0 | overflow_arg_area | 1 |
+| file://:0:0:0:0 | __va_list_tag | 3 | file://:0:0:0:0 | reg_save_area | 1 |
+| header.h:5:8:5:8 | S | 0 | header.h:7:9:7:9 | a | 1 |
+| header.h:5:8:5:8 | S | 0 | header.h:9:9:9:9 | b | 1 |
+| header.h:5:8:5:8 | S | 1 | header.h:9:9:9:9 | b | 1 |

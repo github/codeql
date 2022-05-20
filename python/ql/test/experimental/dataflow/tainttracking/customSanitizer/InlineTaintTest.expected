@@ -1,0 +1,23 @@
+argumentToEnsureNotTaintedNotMarkedAsSpurious
+untaintedArgumentToEnsureTaintedNotMarkedAsMissing
+failures
+isSanitizer
+| TestTaintTrackingConfiguration | test.py:21:39:21:39 | ControlFlowNode for s |
+| TestTaintTrackingConfiguration | test.py:34:39:34:39 | ControlFlowNode for s |
+| TestTaintTrackingConfiguration | test.py:66:10:66:29 | ControlFlowNode for emulated_escaping() |
+isSanitizerGuard
+| TestTaintTrackingConfiguration | test.py:51:8:51:26 | ControlFlowNode for emulated_is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:29:8:29:17 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:44:8:44:17 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:49:8:49:17 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:59:8:59:17 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:67:12:67:21 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:87:8:87:17 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:95:12:95:21 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:119:8:119:17 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:142:12:142:21 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:147:16:147:25 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_logical.py:152:20:152:29 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_reference.py:30:8:30:17 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_reference.py:40:8:40:25 | ControlFlowNode for is_safe() |
+| TestTaintTrackingConfiguration | test_reference.py:55:8:55:21 | ControlFlowNode for is_safe() |

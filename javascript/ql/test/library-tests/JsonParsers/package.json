@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "dependencies": {
+    "fast-json-parse": "^1.0.3",
+    "json-parse-better-errors": "^1.0.2",
+    "json-parse-safe": "^1.0.5",
+    "json-safe-parse": "^0.0.2",
+    "parse-json": "^4.0.0",
+    "safe-json-parse": "^4.0.0"
+  }
+}

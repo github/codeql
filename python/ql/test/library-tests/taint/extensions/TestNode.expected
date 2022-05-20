@@ -1,0 +1,8 @@
+| Taint simple.test | visitor.py:10 | arg | p2 = simple.test |
+| Taint simple.test | visitor.py:13 | arg | p2 = simple.test |
+| Taint simple.test | visitor.py:18 | arg |  |
+| Taint simple.test | visitor.py:19 | arg |  |
+| Taint simple.test | visitor.py:21 | arg |  |
+| Taint simple.test | visitor.py:26 | Attribute() |  |
+| Taint simple.test | visitor.py:26 | SOURCE |  |
+| Taint simple.test | visitor.py:27 | x |  |

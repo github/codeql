@@ -1,0 +1,5 @@
+| common.h:12:12:12:17 | printf | char | wchar_t | wchar_t |
+| common.h:15:12:15:18 | wprintf | char | wchar_t | wchar_t |
+| format.h:4:13:4:17 | error | char | wchar_t | wchar_t |
+| real_world.h:8:12:8:18 | fprintf | char | wchar_t | wchar_t |
+| real_world.h:33:6:33:12 | msg_out | char | wchar_t | wchar_t |

@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The program contains an and-expression where the array access is defined before the range check. Consequently the array is accessed without any bounds checking. The range check does not protect the program from segmentation faults caused by attempts to read beyond the end of a buffer.</p>
+
+</overview>
+<recommendation>
+<p>Update the and-expression so that the range check precedes the array offset. This will ensure that the bounds are checked before the array is accessed.</p>
+
+</recommendation>
+<example>
+<p>The <code>find</code> function can read past the end of the buffer pointed to by <code>str</code> if <code>start</code> is longer than or equal to the length of the buffer (or longer than <code>len</code>, depending on the contents of the buffer).</p>
+
+<sample src="OffsetUseBeforeRangeCheck.c" />
+<p>Update the and-expression so that the range check precedes the array offset (for example, the <code>findRangeCheck</code> function).</p>
+
+</example>
+<references>
+
+<li>cplusplus.com: <a href="http://www.cplusplus.com/reference/array/array/">
+  C++: array</a>.</li>
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Bounds_checking">
+  Bounds checking</a>.</li>
+
+
+
+
+
+
+</references>
+</qhelp>

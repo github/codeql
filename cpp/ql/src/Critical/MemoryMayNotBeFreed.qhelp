@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule looks for functions that allocate memory, but may return without freeing it.  This can occur when an operation performed on the memory block fails, and the function returns with an error before freeing the allocated block.  This causes the function to leak memory and may eventually lead to software failure.
+</p> 
+
+<include src="dataFlowWarning.inc.qhelp" />
+
+</overview>
+<recommendation>
+<p>Ensure that the function frees all dynamically allocated memory it has acquired in all circumstances, unless that memory is returned to the caller.</p>
+
+</recommendation>
+<example>
+<sample src="MemoryMayNotBeFreed.cpp" />
+
+<p>In this example, if an exception occurs the memory allocated into <code>buff</code> is neither freed or returned.  To fix this memory leak, we could add code to free <code>buff</code> to the <code>catch</code> block as follows:</p>
+
+<sample src="MemoryMayNotBeFreedGood.cpp" />
+</example>
+</qhelp>

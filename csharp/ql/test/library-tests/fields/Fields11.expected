@@ -1,0 +1,18 @@
+| fields.cs:10:27:10:27 | X | fields.cs:10:31:10:31 | 1 |
+| fields.cs:10:37:10:37 | Z | fields.cs:10:41:10:43 | 100 |
+| fields.cs:15:27:15:27 | X | fields.cs:15:31:15:31 | 1 |
+| fields.cs:17:27:17:27 | Z | fields.cs:17:31:17:33 | 100 |
+| fields.cs:23:20:23:24 | count | fields.cs:23:28:23:28 | 0 |
+| fields.cs:35:23:35:23 | x | fields.cs:35:27:35:40 | call to method Sqrt |
+| fields.cs:36:13:36:13 | i | fields.cs:36:17:36:19 | 100 |
+| fields.cs:37:16:37:16 | s | fields.cs:37:20:37:26 | "Hello" |
+| fields.cs:53:38:53:42 | Black | fields.cs:53:46:53:63 | object creation of type Color |
+| fields.cs:54:38:54:42 | White | fields.cs:54:46:54:69 | object creation of type Color |
+| fields.cs:63:20:63:20 | a | fields.cs:63:24:63:28 | ... + ... |
+| fields.cs:64:20:64:20 | b | fields.cs:64:24:64:28 | ... + ... |
+| fields.cs:74:26:74:26 | X | fields.cs:74:30:74:36 | ... + ... |
+| fields.cs:75:26:75:26 | Y | fields.cs:75:30:75:31 | 10 |
+| fields.cs:80:26:80:26 | Z | fields.cs:80:30:80:36 | ... + ... |
+| fields.cs:85:26:85:28 | Foo | fields.cs:85:32:85:32 | 1 |
+| fields.cs:86:22:86:22 | x | fields.cs:89:17:89:19 | (...) ... |
+| fields.cs:86:22:86:22 | x | fields.cs:92:31:92:33 | (...) ... |

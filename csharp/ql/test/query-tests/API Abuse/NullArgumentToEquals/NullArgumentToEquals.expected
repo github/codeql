@@ -1,0 +1,4 @@
+| NullArgumentToEquals.cs:6:9:6:22 | call to method Equals | Equality test with 'null' will never be true, but may throw a 'NullReferenceException'. |
+| NullArgumentToEquals.cs:12:9:12:22 | call to method Equals | Equality test with 'null' will never be true, but may throw a 'NullReferenceException'. |
+| NullArgumentToEquals.cs:15:9:15:22 | call to method Equals | Equality test with 'null' will never be true, but may throw a 'NullReferenceException'. |
+| NullArgumentToEqualsBad.cs:3:30:3:43 | call to method Equals | Equality test with 'null' will never be true, but may throw a 'NullReferenceException'. |

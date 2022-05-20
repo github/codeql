@@ -1,0 +1,34 @@
+| 0 | Module test | 2 | FunctionDef |
+| 2 | Function f | 3 | Try |
+| 2 | Function f | 12 | Try |
+| 2 | Function f | 17 | Try |
+| 2 | FunctionDef | 2 | FunctionExpr |
+| 2 | FunctionDef | 2 | f |
+| 2 | FunctionExpr | 2 | Function f |
+| 3 | Try | 4 | ExprStmt |
+| 3 | Try | 5 | Try |
+| 3 | Try | 9 | ExceptStmt |
+| 4 | ExprStmt | 4 | call() |
+| 4 | call() | 4 | call |
+| 5 | Try | 6 | ExprStmt |
+| 5 | Try | 7 | ExceptStmt |
+| 6 | ExprStmt | 6 | nested() |
+| 6 | nested() | 6 | nested |
+| 7 | ExceptStmt | 7 | Exception |
+| 7 | ExceptStmt | 8 | Return |
+| 8 | Return | 8 | IntegerLiteral |
+| 9 | ExceptStmt | 10 | Return |
+| 10 | Return | 10 | IntegerLiteral |
+| 12 | Try | 13 | ExprStmt |
+| 12 | Try | 14 | ExceptStmt |
+| 13 | ExprStmt | 13 | call2() |
+| 13 | call2() | 13 | call2 |
+| 14 | ExceptStmt | 14 | Exception |
+| 14 | ExceptStmt | 15 | Return |
+| 15 | Return | 15 | IntegerLiteral |
+| 17 | Try | 18 | ExprStmt |
+| 17 | Try | 20 | ExprStmt |
+| 18 | ExprStmt | 18 | call3a() |
+| 18 | call3a() | 18 | call3a |
+| 20 | ExprStmt | 20 | call3b() |
+| 20 | call3b() | 20 | call3b |

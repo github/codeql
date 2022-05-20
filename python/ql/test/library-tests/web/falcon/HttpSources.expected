@@ -1,0 +1,4 @@
+WARNING: Type HttpRequestTaintSource has been deprecated and may be removed in future (HttpSources.ql:5,6-28)
+| test.py:9:22:9:24 | req | falcon.request |
+| test.py:19:23:19:25 | req | falcon.request |
+| test.py:22:25:22:27 | req | falcon.request |

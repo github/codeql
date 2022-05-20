@@ -1,0 +1,7 @@
+| exprs_basic1.cpp:3:8:3:8 | operator= | 0 | 0 |
+| exprs_basic1.cpp:3:8:3:8 | operator= | 0 | 0 |
+| exprs_basic1.cpp:12:6:12:15 | create_foo | 9 | 4 |
+| exprs_basic1.cpp:21:6:21:14 | print_foo | 0 | 0 |
+| exprs_basic1.cpp:28:5:28:19 | set_current_foo | 0 | 0 |
+| file://:0:0:0:0 | operator= | 0 | 0 |
+| file://:0:0:0:0 | operator= | 0 | 0 |

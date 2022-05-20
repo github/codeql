@@ -1,0 +1,223 @@
+| staticFalse | 4 | { ... } | 5 | ExprStmt |
+| staticFalse | 5 | ExprStmt | 5 | Hello |
+| staticFalse | 5 | Hello | 5 | call to puts |
+| staticFalse | 5 | call to puts | 6 | if (...) ...  |
+| staticFalse | 6 | 0 | 8 | { ... } |
+| staticFalse | 6 | if (...) ...  | 6 | 0 |
+| staticFalse | 8 | { ... } | 9 | ExprStmt |
+| staticFalse | 9 | ExprStmt | 9 | Reachable code |
+| staticFalse | 9 | Reachable code | 9 | call to puts |
+| staticFalse | 9 | call to puts | 11 | if (...) ...  |
+| staticFalse | 11 | call to runTimeDecision | 11 | { ... } |
+| staticFalse | 11 | call to runTimeDecision | 13 | { ... } |
+| staticFalse | 11 | call to runTimeDecision | 16 | ExprStmt |
+| staticFalse | 11 | if (...) ...  | 11 | call to runTimeDecision |
+| staticFalse | 11 | { ... } | 12 | ExprStmt |
+| staticFalse | 12 | Branch A | 12 | call to puts |
+| staticFalse | 12 | ExprStmt | 12 | Branch A |
+| staticFalse | 13 | { ... } | 14 | ExprStmt |
+| staticFalse | 14 | Branch B | 14 | call to puts |
+| staticFalse | 14 | ExprStmt | 14 | Branch B |
+| staticFalse | 16 | All done | 16 | call to puts |
+| staticFalse | 16 | ExprStmt | 16 | All done |
+| staticFalse | 16 | call to puts | 17 | return ... |
+| staticFalse | 17 | return ... | 4 | staticFalse |
+| test | 2 | { ... } | 3 | declaration |
+| test | 3 | declaration | 4 | declaration |
+| test | 4 | 50 | 7 | if (...) ...  |
+| test | 4 | declaration | 4 | initializer for y |
+| test | 4 | initializer for y | 4 | 50 |
+| test | 7 | 0 | 7 | ... > ... |
+| test | 7 | ... > ... | 7 | { ... } |
+| test | 7 | ... > ... | 10 | { ... } |
+| test | 7 | ... > ... | 14 | ExprStmt |
+| test | 7 | if (...) ...  | 7 | x |
+| test | 7 | x | 7 | 0 |
+| test | 7 | { ... } | 8 | ExprStmt |
+| test | 8 | 20 | 8 | y |
+| test | 8 | ... = ... | 9 | ExprStmt |
+| test | 8 | ExprStmt | 8 | 20 |
+| test | 8 | y | 8 | ... = ... |
+| test | 9 | 10 | 9 | z |
+| test | 9 | ExprStmt | 9 | 10 |
+| test | 9 | z | 9 | ... = ... |
+| test | 10 | { ... } | 11 | ExprStmt |
+| test | 11 | 30 | 11 | y |
+| test | 11 | ExprStmt | 11 | 30 |
+| test | 11 | y | 11 | ... = ... |
+| test | 14 | ... + ... | 14 | z |
+| test | 14 | ... = ... | 17 | if (...) ...  |
+| test | 14 | ExprStmt | 14 | x |
+| test | 14 | x | 14 | y |
+| test | 14 | y | 14 | ... + ... |
+| test | 14 | z | 14 | ... = ... |
+| test | 17 | 0 | 17 | ... < ... |
+| test | 17 | ... < ... | 2 | test |
+| test | 17 | ... < ... | 18 | ExprStmt |
+| test | 17 | ... < ... | 20 | return ... |
+| test | 17 | if (...) ...  | 17 | x |
+| test | 17 | x | 17 | 0 |
+| test | 18 | 40 | 18 | y |
+| test | 18 | ... = ... | 23 | ExprStmt |
+| test | 18 | ExprStmt | 18 | 40 |
+| test | 18 | y | 18 | ... = ... |
+| test | 20 | return ... | 20 | z |
+| test | 23 | 10 | 23 | z |
+| test | 23 | ... = ... | 26 | if (...) ...  |
+| test | 23 | ExprStmt | 23 | 10 |
+| test | 23 | z | 23 | ... = ... |
+| test | 26 | 0 | 26 | ... == ... |
+| test | 26 | ... == ... | 26 | { ... } |
+| test | 26 | ... == ... | 31 | ExprStmt |
+| test | 26 | if (...) ...  | 26 | x |
+| test | 26 | x | 26 | 0 |
+| test | 26 | { ... } | 27 | ExprStmt |
+| test | 27 | 60 | 27 | y |
+| test | 27 | ... = ... | 28 | ExprStmt |
+| test | 27 | ExprStmt | 27 | 60 |
+| test | 27 | y | 27 | ... = ... |
+| test | 28 | 10 | 28 | z |
+| test | 28 | ExprStmt | 28 | 10 |
+| test | 28 | z | 28 | ... = ... |
+| test | 31 | ... += ... | 34 | while (...) ... |
+| test | 31 | ExprStmt | 31 | z |
+| test | 31 | x | 31 | ... += ... |
+| test | 31 | z | 31 | x |
+| test | 34 | 0 | 34 | ... > ... |
+| test | 34 | ... > ... | 34 | { ... } |
+| test | 34 | ... > ... | 39 | ExprStmt |
+| test | 34 | while (...) ... | 34 | x |
+| test | 34 | x | 34 | 0 |
+| test | 34 | { ... } | 35 | ExprStmt |
+| test | 35 | 10 | 35 | y |
+| test | 35 | ... = ... | 36 | ExprStmt |
+| test | 35 | ExprStmt | 35 | 10 |
+| test | 35 | y | 35 | ... = ... |
+| test | 36 | ExprStmt | 36 | x |
+| test | 36 | x | 36 | ... -- |
+| test | 39 | ... += ... | 42 | for(...;...;...) ... |
+| test | 39 | ExprStmt | 39 | z |
+| test | 39 | y | 39 | ... += ... |
+| test | 39 | z | 39 | y |
+| test | 42 | 0 | 42 | j |
+| test | 42 | 10 | 42 | ... < ... |
+| test | 42 | ... < ... | 42 | { ... } |
+| test | 42 | ... < ... | 47 | ExprStmt |
+| test | 42 | ... = ... | 42 | j |
+| test | 42 | ExprStmt | 42 | 0 |
+| test | 42 | for(...;...;...) ... | 42 | ExprStmt |
+| test | 42 | j | 42 | 10 |
+| test | 42 | j | 42 | ... ++ |
+| test | 42 | j | 42 | ... = ... |
+| test | 42 | { ... } | 43 | ExprStmt |
+| test | 43 | 0 | 43 | y |
+| test | 43 | ... = ... | 44 | ExprStmt |
+| test | 43 | ExprStmt | 43 | 0 |
+| test | 43 | y | 43 | ... = ... |
+| test | 44 | 10 | 44 | w |
+| test | 44 | ... = ... | 42 | j |
+| test | 44 | ExprStmt | 44 | 10 |
+| test | 44 | w | 44 | ... = ... |
+| test | 47 | ... += ... | 50 | { ... } |
+| test | 47 | ExprStmt | 47 | z |
+| test | 47 | w | 47 | ... += ... |
+| test | 47 | z | 47 | w |
+| test | 50 | 0 | 50 | j |
+| test | 50 | 10 | 50 | ... < ... |
+| test | 50 | ... < ... | 50 | { ... } |
+| test | 50 | ... < ... | 64 | label ...: |
+| test | 50 | ... = ... | 50 | j |
+| test | 50 | ExprStmt | 50 | 0 |
+| test | 50 | for(...;...;...) ... | 50 | ExprStmt |
+| test | 50 | j | 50 | 10 |
+| test | 50 | j | 50 | ... ++ |
+| test | 50 | j | 50 | ... = ... |
+| test | 50 | label ...: | 50 | j |
+| test | 50 | { ... } | 50 | for(...;...;...) ... |
+| test | 50 | { ... } | 51 | ExprStmt |
+| test | 51 | 30 | 51 | y |
+| test | 51 | ... = ... | 52 | if (...) ...  |
+| test | 51 | ExprStmt | 51 | 30 |
+| test | 51 | y | 51 | ... = ... |
+| test | 52 | 0 | 52 | ... > ... |
+| test | 52 | ... > ... | 50 | label ...: |
+| test | 52 | ... > ... | 53 | if (...) ...  |
+| test | 52 | ... > ... | 59 | { ... } |
+| test | 52 | if (...) ...  | 52 | z |
+| test | 52 | z | 52 | 0 |
+| test | 53 | 0 | 53 | ... > ... |
+| test | 53 | ... > ... | 53 | { ... } |
+| test | 53 | ... > ... | 56 | { ... } |
+| test | 53 | if (...) ...  | 53 | y |
+| test | 53 | y | 53 | 0 |
+| test | 53 | { ... } | 54 | ExprStmt |
+| test | 54 | 0 | 54 | w |
+| test | 54 | ... = ... | 55 | break; |
+| test | 54 | ExprStmt | 54 | 0 |
+| test | 54 | w | 54 | ... = ... |
+| test | 56 | { ... } | 57 | ExprStmt |
+| test | 57 | 20 | 57 | w |
+| test | 57 | ... = ... | 63 | ExprStmt |
+| test | 57 | ExprStmt | 57 | 20 |
+| test | 57 | w | 57 | ... = ... |
+| test | 59 | { ... } | 60 | ExprStmt |
+| test | 60 | 10 | 60 | w |
+| test | 60 | ... = ... | 61 | continue; |
+| test | 60 | ExprStmt | 60 | 10 |
+| test | 60 | w | 60 | ... = ... |
+| test | 63 | 0 | 63 | x |
+| test | 63 | ExprStmt | 63 | 0 |
+| test | 63 | x | 63 | ... = ... |
+| test | 64 | label ...: | 66 | ExprStmt |
+| test | 66 | ... + ... | 66 | ... += ... |
+| test | 66 | ... + ... | 66 | w |
+| test | 66 | ... += ... | 70 | ExprStmt |
+| test | 66 | ExprStmt | 66 | z |
+| test | 66 | w | 66 | ... + ... |
+| test | 66 | x | 66 | y |
+| test | 66 | y | 66 | ... + ... |
+| test | 66 | z | 66 | x |
+| test | 70 | 40 | 70 | w |
+| test | 70 | ... = ... | 71 | return ... |
+| test | 70 | ExprStmt | 70 | 40 |
+| test | 70 | w | 70 | ... = ... |
+| test | 71 | return ... | 71 | w |
+| test2 | 74 | { ... } | 76 | declaration |
+| test2 | 76 | declaration | 77 | { ... } |
+| test2 | 77 | for(...;...;...) ... | 77 | { ... } |
+| test2 | 77 | { ... } | 77 | for(...;...;...) ... |
+| test2 | 77 | { ... } | 78 | ExprStmt |
+| test2 | 78 | 10 | 78 | b |
+| test2 | 78 | ... = ... | 79 | if (...) ...  |
+| test2 | 78 | ExprStmt | 78 | 10 |
+| test2 | 78 | b | 78 | ... = ... |
+| test2 | 79 | 100 | 79 | ... > ... |
+| test2 | 79 | ... > ... | 79 | { ... } |
+| test2 | 79 | ... > ... | 83 | if (...) ...  |
+| test2 | 79 | a | 79 | 100 |
+| test2 | 79 | if (...) ...  | 79 | a |
+| test2 | 79 | { ... } | 80 | ExprStmt |
+| test2 | 80 | 10 | 80 | c |
+| test2 | 80 | ... = ... | 81 | ExprStmt |
+| test2 | 80 | ExprStmt | 80 | 10 |
+| test2 | 80 | c | 80 | ... = ... |
+| test2 | 81 | ExprStmt | 81 | c |
+| test2 | 81 | b | 81 | ... = ... |
+| test2 | 81 | c | 81 | b |
+| test2 | 83 | 10 | 83 | ... == ... |
+| test2 | 83 | ... == ... | 74 | test2 |
+| test2 | 83 | ... == ... | 84 | break; |
+| test2 | 83 | ... == ... | 85 | if (...) ...  |
+| test2 | 83 | a | 83 | 10 |
+| test2 | 83 | if (...) ...  | 83 | a |
+| test2 | 84 | break; | 87 | label ...: |
+| test2 | 85 | 20 | 85 | ... == ... |
+| test2 | 85 | ... == ... | 86 | { ... } |
+| test2 | 85 | a | 85 | 20 |
+| test2 | 85 | if (...) ...  | 85 | a |
+| test2 | 86 | ExprStmt | 86 | c |
+| test2 | 86 | c | 86 | return ... |
+| test2 | 86 | { ... } | 86 | ExprStmt |
+| test2 | 87 | label ...: | 88 | ExprStmt |
+| test2 | 88 | ExprStmt | 88 | b |
+| test2 | 88 | b | 88 | return ... |

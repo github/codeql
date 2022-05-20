@@ -1,0 +1,7 @@
+| header1.h:3:1:3:24 | #ifndef INCLUDED_HEADER1 | The macro name 'INCLUDED_HEADER1' of this include guard is used in 2 different header files. |
+| header2.h:3:1:3:24 | #ifndef INCLUDED_HEADER1 | The macro name 'INCLUDED_HEADER1' of this include guard is used in 2 different header files. |
+| header4.h:3:1:3:24 | #ifndef INCLUDED_HEADER4 | The macro name 'INCLUDED_HEADER4' of this include guard is used in 3 different header files. |
+| header6.h:3:1:3:24 | #ifndef INCLUDED_HEADER6 | The macro name 'INCLUDED_HEADER6' of this include guard is used in 2 different header files. |
+| header7.h:3:1:3:24 | #ifndef INCLUDED_HEADER6 | The macro name 'INCLUDED_HEADER6' of this include guard is used in 2 different header files. |
+| subfolder/header4.h:3:1:3:24 | #ifndef INCLUDED_HEADER4 | The macro name 'INCLUDED_HEADER4' of this include guard is used in 3 different header files. |
+| subfolder/header5.h:3:1:3:24 | #ifndef INCLUDED_HEADER4 | The macro name 'INCLUDED_HEADER4' of this include guard is used in 3 different header files. |

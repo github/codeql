@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Character classes in regular expressions represent sets of characters, so there is no need to specify
+the same character twice in one character class. Duplicate characters in character classes are at best
+useless, and may even indicate a latent bug.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Determine whether a character is simply duplicated or whether the character class was in fact meant as a group.
+If it is just a duplicate, then remove the duplicate character.
+If was supposed to be a group, then replace the square brackets with parentheses.
+</p>
+
+
+</recommendation>
+<example>
+<p>
+In the following example, the character class <code>[password|pwd]</code> contains two instances each
+of the characters <code>d</code>, <code>p</code>, <code>s</code>, and <code>w</code>. The programmer most likely meant
+to write <code>(password|pwd)</code> (a pattern that matches either the string <code>"password"</code>
+or the string <code>"pwd"</code>), and accidentally mistyped the enclosing brackets.
+</p>
+
+<sample src="DuplicateCharacterInSet.py" />
+
+<p>
+To fix this problem, the regular expression should be rewritten to <code>r"(password|pwd)"</code>.
+</p>
+
+</example>
+<references>
+
+<li>Python Standard Library: <a href="https://docs.python.org/library/re.html">Regular expression operations</a>.</li>
+<li>Regular-Expressions.info: <a href="http://www.regular-expressions.info/charclass.html">Character Classes or Character Sets</a>.</li>
+
+</references>
+</qhelp>

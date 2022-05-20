@@ -1,0 +1,7 @@
+# CWE-131: Incorrect Calculation of Buffer Size
++ semmlecode-cpp-queries/Security/CWE/CWE-131/NoSpaceForZeroTerminator.ql: /CWE/CWE-131
+    @name No space for zero terminator (CWE-131)
++ semmlecode-cpp-queries/Critical/SizeCheck.ql: /CWE/CWE-131
+    @name Not enough memory allocated for pointer type (CWE-131)
++ semmlecode-cpp-queries/Critical/SizeCheck2.ql: /CWE/CWE-131
+    @name Not enough memory allocated for array of pointer type (CWE-131)

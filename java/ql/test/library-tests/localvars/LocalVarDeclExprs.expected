@@ -1,0 +1,12 @@
+| localvars/LocalVarTest.java:7:13:7:18 | x | int | x | 23 | localvars/LocalVarTest.java:7:9:7:20 | int x |
+| localvars/LocalVarTest.java:7:22:7:27 | y | int | y | 19 | localvars/LocalVarTest.java:7:9:7:28 | int y |
+| localvars/LocalVarTest.java:8:13:8:18 | z | int | z | 56 | localvars/LocalVarTest.java:8:9:8:20 | int z |
+| localvars/LocalVarTest.java:9:22:9:23 | l1 | List<String> | l1 | (none) | localvars/LocalVarTest.java:9:9:9:24 | List<String> l1 |
+| localvars/LocalVarTest.java:9:26:9:34 | l2 | List<String> | l2 | null | localvars/LocalVarTest.java:9:9:9:35 | List<String> l2 |
+| localvars/LocalVarTest.java:12:20:12:27 | o | Object | o | null | localvars/LocalVarTest.java:12:13:12:28 | Object o |
+| localvars/LocalVarTest.java:12:30:12:30 | p | Object[] | p | (none) | localvars/LocalVarTest.java:12:13:12:33 | Object[] p |
+| localvars/LocalVarTest.java:18:17:18:19 | i | int | i | 0 | localvars/LocalVarTest.java:18:13:18:19 | int i |
+| localvars/LocalVarTest.java:19:17:19:20 | j | int | j | 10 | localvars/LocalVarTest.java:19:13:19:21 | int j |
+| localvars/LocalVarTest.java:19:22:19:24 | k | int | k | 0 | localvars/LocalVarTest.java:19:13:19:24 | int k |
+| localvars/LocalVarTest.java:20:20:20:20 | s | String | s | (none) | localvars/LocalVarTest.java:20:13:20:20 | String s |
+| localvars/LocalVarTest.java:22:34:22:34 | e | RuntimeException | e | (none) | localvars/LocalVarTest.java:22:17:22:34 | RuntimeException e |

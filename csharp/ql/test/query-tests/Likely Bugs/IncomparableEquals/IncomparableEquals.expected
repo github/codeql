@@ -1,0 +1,1 @@
+| IncomparableEquals.cs:6:16:6:29 | call to method Equals | Call to 'Equals()' comparing incomparable types $@ and $@. | IncomparableEquals.cs:1:14:1:17 | Test | Test | IncomparableEquals.cs:10:14:10:18 | Test2 | Test2 |

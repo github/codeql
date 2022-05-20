@@ -1,0 +1,48 @@
+htmlElements
+| tst.js:3:1:3:106 | <a href ... */}</a> |
+| tst.js:6:1:6:10 | <Foo-Bar/> |
+| tstest.tsx:3:1:3:106 | <a href ... */}</a> |
+| tstest.tsx:6:1:6:10 | <Foo-Bar/> |
+jsxElementAttribute
+| tst.js:3:1:3:106 | <a href ... */}</a> | 0 | tst.js:3:4:3:14 | href={href} |
+| tst.js:3:1:3:106 | <a href ... */}</a> | 1 | tst.js:3:16:3:30 | target="_blank" |
+| tst.js:3:1:3:106 | <a href ... */}</a> | 2 | tst.js:3:32:3:45 | {...linkTypes} |
+| tst.js:4:1:4:35 | <MyComp ... "bar"/> | 0 | tst.js:4:25:4:33 | foo="bar" |
+| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 0 | tstest.tsx:3:4:3:14 | href={href} |
+| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 1 | tstest.tsx:3:16:3:30 | target="_blank" |
+| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 2 | tstest.tsx:3:32:3:45 | {...linkTypes} |
+| tstest.tsx:4:1:4:35 | <MyComp ... "bar"/> | 0 | tstest.tsx:4:25:4:33 | foo="bar" |
+jsxElementAttributeName
+| tst.js:3:1:3:106 | <a href ... */}</a> | 0 | href |
+| tst.js:3:1:3:106 | <a href ... */}</a> | 1 | target |
+| tst.js:4:1:4:35 | <MyComp ... "bar"/> | 0 | foo |
+| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 0 | href |
+| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 1 | target |
+| tstest.tsx:4:1:4:35 | <MyComp ... "bar"/> | 0 | foo |
+jsxElementBody
+| tst.js:3:1:3:106 | <a href ... */}</a> | 0 | tst.js:3:47:3:54 | Link to  |
+| tst.js:3:1:3:106 | <a href ... */}</a> | 1 | tst.js:3:56:3:59 | href |
+| tst.js:3:1:3:106 | <a href ... */}</a> | 2 | tst.js:3:61:3:62 | .  |
+| tst.js:3:1:3:106 | <a href ... */}</a> | 3 | tst.js:3:64:3:101 |  |
+| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 0 | tstest.tsx:3:47:3:54 | Link to  |
+| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 1 | tstest.tsx:3:56:3:59 | href |
+| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 2 | tstest.tsx:3:61:3:62 | .  |
+| tstest.tsx:3:1:3:106 | <a href ... */}</a> | 3 | tstest.tsx:3:63:3:102 | {/*TODO ... text*/} |
+jsxElementName
+| tst.js:3:1:3:106 | <a href ... */}</a> | tst.js:3:2:3:2 | a | a |
+| tst.js:4:1:4:35 | <MyComp ... "bar"/> | tst.js:4:2:4:23 | MyCompo ... ncyLink | MyComponents.FancyLink |
+| tst.js:5:1:5:6 | <Foo/> | tst.js:5:2:5:4 | Foo | Foo |
+| tst.js:6:1:6:10 | <Foo-Bar/> | tst.js:6:2:6:8 | Foo-Bar | Foo-Bar |
+| tst.js:7:33:7:38 | <Foo/> | tst.js:7:34:7:36 | Foo | Foo |
+| tstest.tsx:3:1:3:106 | <a href ... */}</a> | tstest.tsx:3:2:3:2 | a | a |
+| tstest.tsx:4:1:4:35 | <MyComp ... "bar"/> | tstest.tsx:4:2:4:23 | MyCompo ... ncyLink | MyComponents.FancyLink |
+| tstest.tsx:5:1:5:6 | <Foo/> | tstest.tsx:5:2:5:4 | Foo | Foo |
+| tstest.tsx:6:1:6:10 | <Foo-Bar/> | tstest.tsx:6:2:6:8 | Foo-Bar | Foo-Bar |
+| tstest.tsx:7:33:7:38 | <Foo/> | tstest.tsx:7:34:7:36 | Foo | Foo |
+jsxFragments
+| tst.js:7:16:7:52 | <> frag ... ext </> | 0 | tst.js:7:18:7:32 |  fragment text  |
+| tst.js:7:16:7:52 | <> frag ... ext </> | 1 | tst.js:7:33:7:38 | <Foo/> |
+| tst.js:7:16:7:52 | <> frag ... ext </> | 2 | tst.js:7:39:7:49 |  more text  |
+| tstest.tsx:7:16:7:52 | <> frag ... ext </> | 0 | tstest.tsx:7:19:7:32 | fragment text  |
+| tstest.tsx:7:16:7:52 | <> frag ... ext </> | 1 | tstest.tsx:7:33:7:38 | <Foo/> |
+| tstest.tsx:7:16:7:52 | <> frag ... ext </> | 2 | tstest.tsx:7:40:7:49 | more text  |

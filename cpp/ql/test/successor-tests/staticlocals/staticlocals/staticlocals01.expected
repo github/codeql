@@ -1,0 +1,22 @@
+| staticlocals | staticlocals.cpp:1:5:1:5 | g | 1 | 1 | staticlocals.cpp:1:9:3:1 | staticlocals.cpp:1:9:3:1 | staticlocals.cpp:1:9:3:1 | { ... } | return ... |
+| staticlocals | staticlocals.cpp:1:5:1:5 | g | 1 | 4 | staticlocals.cpp:1:5:1:5 | staticlocals.cpp:1:5:1:5 | staticlocals.cpp:1:5:1:5 | g | <none> |
+| staticlocals | staticlocals.cpp:1:5:1:5 | g | 2 | 2 | staticlocals.cpp:2:5:2:13 | staticlocals.cpp:2:5:2:13 | staticlocals.cpp:2:5:2:13 | return ... | 1 |
+| staticlocals | staticlocals.cpp:1:5:1:5 | g | 2 | 3 | staticlocals.cpp:2:12:2:12 | staticlocals.cpp:2:12:2:12 | staticlocals.cpp:2:12:2:12 | 1 | g |
+| staticlocals | staticlocals.cpp:5:5:5:5 | h | 5 | 1 | staticlocals.cpp:5:9:7:1 | staticlocals.cpp:5:9:7:1 | staticlocals.cpp:5:9:7:1 | { ... } | return ... |
+| staticlocals | staticlocals.cpp:5:5:5:5 | h | 5 | 4 | staticlocals.cpp:5:5:5:5 | staticlocals.cpp:5:5:5:5 | staticlocals.cpp:5:5:5:5 | h | <none> |
+| staticlocals | staticlocals.cpp:5:5:5:5 | h | 6 | 2 | staticlocals.cpp:6:5:6:13 | staticlocals.cpp:6:5:6:13 | staticlocals.cpp:6:5:6:13 | return ... | 1 |
+| staticlocals | staticlocals.cpp:5:5:5:5 | h | 6 | 3 | staticlocals.cpp:6:12:6:12 | staticlocals.cpp:6:12:6:12 | staticlocals.cpp:6:12:6:12 | 1 | h |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 9 | 1 | staticlocals.cpp:9:10:13:1 | staticlocals.cpp:9:10:13:1 | staticlocals.cpp:9:10:13:1 | { ... } | declaration |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 9 | 12 | staticlocals.cpp:9:6:9:6 | staticlocals.cpp:9:6:9:6 | staticlocals.cpp:9:6:9:6 | f | <none> |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 10 | 2 | staticlocals.cpp:10:5:10:32 | staticlocals.cpp:10:5:10:32 | staticlocals.cpp:10:5:10:32 | declaration | declaration |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 10 | 2 | staticlocals.cpp:10:5:10:32 | staticlocals.cpp:10:5:10:32 | staticlocals.cpp:10:5:10:32 | declaration | initializer for i |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 10 | 3 | staticlocals.cpp:10:18:10:22 | staticlocals.cpp:10:18:10:22 | staticlocals.cpp:10:18:10:22 | initializer for i | call to g |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 10 | 4 | staticlocals.cpp:10:20:10:20 | staticlocals.cpp:10:20:10:20 | staticlocals.cpp:10:20:10:20 | call to g | initializer for j |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 10 | 5 | staticlocals.cpp:10:27:10:31 | staticlocals.cpp:10:27:10:31 | staticlocals.cpp:10:27:10:31 | initializer for j | call to h |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 10 | 6 | staticlocals.cpp:10:29:10:29 | staticlocals.cpp:10:29:10:29 | staticlocals.cpp:10:29:10:29 | call to h | declaration |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 11 | 7 | staticlocals.cpp:11:5:11:23 | staticlocals.cpp:11:5:11:23 | staticlocals.cpp:11:5:11:23 | declaration | ; |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 11 | 7 | staticlocals.cpp:11:5:11:23 | staticlocals.cpp:11:5:11:23 | staticlocals.cpp:11:5:11:23 | declaration | initializer for k |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 11 | 8 | staticlocals.cpp:11:18:11:22 | staticlocals.cpp:11:18:11:22 | staticlocals.cpp:11:18:11:22 | initializer for k | call to g |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 11 | 9 | staticlocals.cpp:11:20:11:20 | staticlocals.cpp:11:20:11:20 | staticlocals.cpp:11:20:11:20 | call to g | ; |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 12 | 10 | staticlocals.cpp:12:5:12:5 | staticlocals.cpp:12:5:12:5 | staticlocals.cpp:12:5:12:5 | ; | return ... |
+| staticlocals | staticlocals.cpp:9:6:9:6 | f | 13 | 11 | staticlocals.cpp:13:1:13:1 | staticlocals.cpp:13:1:13:1 | staticlocals.cpp:13:1:13:1 | return ... | f |

@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Objects whose type implements <code>IDisposable</code> should be disposed of by calling
+<code>Dispose</code>.
+</p>
+
+</overview>
+<recommendation>
+<p>
+If possible, wrap the allocation of the object in a <code>using</code> block to automatically
+dispose of the object once the <code>using</code> block has completed.
+</p>
+<p>
+If this is not possible, ensure that <code>Dispose</code> is called on the object. It is usually
+recommended to call <code>Dispose</code> within a <code>finally</code> block, to ensure that the
+object is disposed of even if an exception is thrown.
+</p>
+
+</recommendation>
+<example>
+<p>
+In this example, a <code>FileStream</code> is created, but it is not disposed of.
+</p>
+<sample src="NoDisposeCallOnLocalIDisposableBad.cs" />
+<p>
+In the revised example, a <code>using</code> statement is used to ensure that the file
+stream is properly closed.
+</p>
+<sample src="NoDisposeCallOnLocalIDisposableGood.cs" />
+
+</example>
+<references>
+
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.idisposable.aspx">IDisposable Interface</a>.</li>
+
+</references>
+</qhelp>

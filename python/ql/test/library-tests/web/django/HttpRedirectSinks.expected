@@ -1,0 +1,5 @@
+WARNING: Type HttpRedirectTaintSink has been deprecated and may be removed in future (HttpRedirectSinks.ql:5,6-27)
+| test_1x.py:13:21:13:24 | DjangoShortcutsRedirectSink | externally controlled string |
+| test_2x_3x.py:13:21:13:24 | DjangoShortcutsRedirectSink | externally controlled string |
+| views_1x.py:99:33:99:55 | DjangoRedirectResponseSink | externally controlled string |
+| views_2x_3x.py:120:33:120:55 | DjangoRedirectResponseSink | externally controlled string |

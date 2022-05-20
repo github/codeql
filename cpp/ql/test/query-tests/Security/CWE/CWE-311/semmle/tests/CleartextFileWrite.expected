@@ -1,0 +1,44 @@
+edges
+| test2.cpp:52:44:52:57 | password_tries | test2.cpp:52:40:52:58 | * ... |
+| test2.cpp:62:18:62:25 | password | test2.cpp:65:31:65:34 | cpy1 |
+| test2.cpp:72:17:72:24 | password | test2.cpp:73:30:73:32 | buf |
+| test2.cpp:72:17:72:24 | password | test2.cpp:76:30:76:32 | buf |
+| test2.cpp:98:45:98:52 | password | test2.cpp:99:27:99:32 | buffer |
+nodes
+| test2.cpp:43:36:43:43 | password | semmle.label | password |
+| test2.cpp:44:37:44:45 | thepasswd | semmle.label | thepasswd |
+| test2.cpp:45:38:45:47 | accountkey | semmle.label | accountkey |
+| test2.cpp:50:41:50:53 | passwd_config | semmle.label | passwd_config |
+| test2.cpp:52:40:52:58 | * ... | semmle.label | * ... |
+| test2.cpp:52:44:52:57 | password_tries | semmle.label | password_tries |
+| test2.cpp:54:41:54:52 | widepassword | semmle.label | widepassword |
+| test2.cpp:55:40:55:51 | widepassword | semmle.label | widepassword |
+| test2.cpp:57:39:57:49 | call to getPassword | semmle.label | call to getPassword |
+| test2.cpp:62:18:62:25 | password | semmle.label | password |
+| test2.cpp:65:31:65:34 | cpy1 | semmle.label | cpy1 |
+| test2.cpp:72:17:72:24 | password | semmle.label | password |
+| test2.cpp:73:30:73:32 | buf | semmle.label | buf |
+| test2.cpp:76:30:76:32 | buf | semmle.label | buf |
+| test2.cpp:86:36:86:43 | password | semmle.label | password |
+| test2.cpp:91:50:91:63 | passwd_config2 | semmle.label | passwd_config2 |
+| test2.cpp:98:45:98:52 | password | semmle.label | password |
+| test2.cpp:99:27:99:32 | buffer | semmle.label | buffer |
+| test.cpp:45:9:45:19 | thePassword | semmle.label | thePassword |
+| test.cpp:70:38:70:48 | thePassword | semmle.label | thePassword |
+| test.cpp:73:43:73:53 | thePassword | semmle.label | thePassword |
+subpaths
+#select
+| test2.cpp:43:2:43:8 | call to fprintf | test2.cpp:43:36:43:43 | password | test2.cpp:43:36:43:43 | password | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:43:36:43:43 | password | this source. |
+| test2.cpp:44:2:44:8 | call to fprintf | test2.cpp:44:37:44:45 | thepasswd | test2.cpp:44:37:44:45 | thepasswd | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:44:37:44:45 | thepasswd | this source. |
+| test2.cpp:45:2:45:8 | call to fprintf | test2.cpp:45:38:45:47 | accountkey | test2.cpp:45:38:45:47 | accountkey | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:45:38:45:47 | accountkey | this source. |
+| test2.cpp:50:2:50:8 | call to fprintf | test2.cpp:50:41:50:53 | passwd_config | test2.cpp:50:41:50:53 | passwd_config | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:50:41:50:53 | passwd_config | this source. |
+| test2.cpp:54:2:54:8 | call to fprintf | test2.cpp:54:41:54:52 | widepassword | test2.cpp:54:41:54:52 | widepassword | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:54:41:54:52 | widepassword | this source. |
+| test2.cpp:55:2:55:8 | call to fprintf | test2.cpp:55:40:55:51 | widepassword | test2.cpp:55:40:55:51 | widepassword | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:55:40:55:51 | widepassword | this source. |
+| test2.cpp:57:2:57:8 | call to fprintf | test2.cpp:57:39:57:49 | call to getPassword | test2.cpp:57:39:57:49 | call to getPassword | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:57:39:57:49 | call to getPassword | this source. |
+| test2.cpp:65:3:65:9 | call to fprintf | test2.cpp:62:18:62:25 | password | test2.cpp:65:31:65:34 | cpy1 | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:62:18:62:25 | password | this source. |
+| test2.cpp:73:3:73:9 | call to fprintf | test2.cpp:72:17:72:24 | password | test2.cpp:73:30:73:32 | buf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:72:17:72:24 | password | this source. |
+| test2.cpp:76:3:76:9 | call to fprintf | test2.cpp:72:17:72:24 | password | test2.cpp:76:30:76:32 | buf | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:72:17:72:24 | password | this source. |
+| test2.cpp:99:3:99:9 | call to fprintf | test2.cpp:98:45:98:52 | password | test2.cpp:99:27:99:32 | buffer | This write into file 'log' may contain unencrypted data from $@ | test2.cpp:98:45:98:52 | password | this source. |
+| test.cpp:45:3:45:7 | call to fputs | test.cpp:45:9:45:19 | thePassword | test.cpp:45:9:45:19 | thePassword | This write into file 'file' may contain unencrypted data from $@ | test.cpp:45:9:45:19 | thePassword | this source. |
+| test.cpp:70:35:70:35 | call to operator<< | test.cpp:70:38:70:48 | thePassword | test.cpp:70:38:70:48 | thePassword | This write into file 'mystream' may contain unencrypted data from $@ | test.cpp:70:38:70:48 | thePassword | this source. |
+| test.cpp:73:37:73:41 | call to write | test.cpp:73:43:73:53 | thePassword | test.cpp:73:43:73:53 | thePassword | This write into file 'mystream' may contain unencrypted data from $@ | test.cpp:73:43:73:53 | thePassword | this source. |

@@ -1,0 +1,9 @@
+WARNING: Type HttpRequestTaintSource has been deprecated and may be removed in future (HttpSources.ql:5,6-28)
+| test.py:4:22:4:28 | request | twisted.request.http.Request |
+| test.py:9:26:9:32 | request | twisted.request.http.Request |
+| test.py:16:27:16:33 | request | twisted.request.http.Request |
+| test.py:24:24:24:30 | request | twisted.request.http.Request |
+| test.py:28:22:28:30 | myrequest | twisted.request.http.Request |
+| test.py:31:27:31:37 | postrequest | twisted.request.http.Request |
+| test.py:39:22:39:28 | request | twisted.request.http.Request |
+| test.py:43:22:43:28 | request | twisted.request.http.Request |

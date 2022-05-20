@@ -1,0 +1,5 @@
+- description: Security-and-quality queries for C and C++
+- queries: .
+- apply: security-and-quality-selectors.yml
+  from: codeql/suite-helpers
+- apply: codeql-suites/exclude-slow-queries.yml

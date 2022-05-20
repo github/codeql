@@ -1,0 +1,35 @@
+#10000=@"/restparms2.js;sourcefile"
+files(#10000,"/restparms2.js")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=@"global_scope"
+scopes(#20000,0)
+#20001=@"script;{#10000},1,1"
+toplevels(#20001,0)
+#20002=@"loc,{#10000},1,1,1,1"
+locations_default(#20002,#10000,1,1,1,1)
+hasLocation(#20001,#20002)
+#20003=*
+js_parse_errors(#20003,#20001,"Error: Unexpected token","function f(x, ...[y, z]) {
+")
+#20004=@"loc,{#10000},1,18,1,18"
+locations_default(#20004,#10000,1,18,1,18)
+hasLocation(#20003,#20004)
+#20005=*
+lines(#20005,#20001,"function f(x, ...[y, z]) {","
+")
+#20006=@"loc,{#10000},1,1,1,26"
+locations_default(#20006,#10000,1,1,1,26)
+hasLocation(#20005,#20006)
+#20007=*
+lines(#20007,#20001,"}","")
+#20008=@"loc,{#10000},2,1,2,1"
+locations_default(#20008,#10000,2,1,2,1)
+hasLocation(#20007,#20008)
+numlines(#20001,2,0,0)
+numlines(#10000,2,0,0)
+filetype(#10000,"javascript")

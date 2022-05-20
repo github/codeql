@@ -1,0 +1,58 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The built-in <code>eval</code> function and the <code>Function</code> constructor allow executing 
+arbitrary strings as JavaScript code. This is a dangerous feature, since this code has the same access
+privileges as any other code, so great care has to be taken to ensure that malicious code is not
+accidentally executed this way. Using this feature also hampers static checking and program comprehension.
+In many cases, better alternatives are available and should be used instead.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+There are few genuine uses of <code>eval</code> and <code>Function</code>. If you are trying to
+assign to a property whose name is not known until runtime, use a computed property access. If you
+are trying to evaluate a string to a JSON object, use <code>JSON.parse</code>. In other cases,
+you may be able to use the <a href="http://en.wikipedia.org/wiki/Interpreter_pattern">Interpreter
+pattern</a>.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, <code>eval</code> is used to define getter and setter methods for properties
+<code>x</code> and <code>y</code> on <code>Point.prototype</code>:
+</p>
+
+<sample src="examples/Eval.js" />
+
+<p>
+In a variant, the programmer has realized that they can use computed property accesses to avoid having
+to wrap the assignment into an <code>eval</code>, although they still use the <code>Function</code>
+constructor to create the accessor functions:
+</p>
+
+<sample src="examples/Eval2.js" />
+
+<p>
+This is not necessary either as the following example shows, where the use of <code>Function</code>
+has also been replaced by computed property accesses:
+</p>
+
+<sample src="examples/EvalGood.js" />
+
+</example>
+<references>
+
+
+<li>D. Crockford, <i>JavaScript: The Good Parts</i>, Appendix B.3. O'Reilly, 2008.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,27 @@
+name: Check change note
+
+on:
+  pull_request_target:
+    types: [labeled, unlabeled, opened, synchronize, reopened, ready_for_review]
+    paths:
+      - "*/ql/src/**/*.ql"
+      - "*/ql/src/**/*.qll"
+      - "*/ql/lib/**/*.ql"
+      - "*/ql/lib/**/*.qll"
+      - "!**/experimental/**"
+      - "!ql/**"
+      - ".github/workflows/check-change-note.yml"
+
+jobs:
+  check-change-note:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if no change note found. To fix, either add one, or add the `no-change-note-required` label.
+        if: |
+          github.event.pull_request.draft == false &&
+          !contains(github.event.pull_request.labels.*.name, 'no-change-note-required')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api 'repos/${{github.repository}}/pulls/${{github.event.number}}/files' --paginate --jq 'any(.[].filename ; test("/change-notes/.*[.]md$"))' |
+          grep true -c

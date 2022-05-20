@@ -1,0 +1,36 @@
+pipeRef
+| source.component.html:3:22:3:32 | unknownPipe |
+| source.component.html:4:22:4:32 | unknownPipe |
+| source.component.html:5:22:5:29 | testPipe |
+| source.component.html:6:19:6:26 | testPipe |
+pipeCall
+| source.component.html:3:14:3:32 | taint \| unknownPipe |
+| source.component.html:4:14:4:39 | taint \| ... :'safe' |
+| source.component.html:5:14:5:36 | taint \| ... :'safe' |
+| source.component.html:6:14:6:32 | 42 \| testPipe:taint |
+pipeCallArg
+| 0 | source.component.html:3:14:3:18 | taint | source.component.html:3:14:3:32 | taint \| unknownPipe |
+| 0 | source.component.html:4:14:4:18 | taint | source.component.html:4:14:4:39 | taint \| ... :'safe' |
+| 0 | source.component.html:5:14:5:18 | taint | source.component.html:5:14:5:36 | taint \| ... :'safe' |
+| 0 | source.component.html:6:14:6:15 | 42 | source.component.html:6:14:6:32 | 42 \| testPipe:taint |
+| 1 | source.component.html:4:34:4:39 | 'safe' | source.component.html:4:14:4:39 | taint \| ... :'safe' |
+| 1 | source.component.html:5:31:5:36 | 'safe' | source.component.html:5:14:5:36 | taint \| ... :'safe' |
+| 1 | source.component.html:6:28:6:32 | taint | source.component.html:6:14:6:32 | 42 \| testPipe:taint |
+pipeClass
+| TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} |
+pipeClassRef
+| TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} | source.component.html:5:22:5:29 | testPipe |
+| TestPipe.ts:4:8:9:1 | class T ... ;\\n  }\\n} | source.component.html:6:19:6:26 | testPipe |
+taintFlow
+| inline.component.ts:15:22:15:29 | source() | sink.component.ts:28:48:28:57 | this.sink7 |
+| inline.component.ts:15:22:15:29 | source() | sink.component.ts:30:48:30:57 | this.sink9 |
+| source.component.ts:14:22:14:29 | source() | TestPipe.ts:6:31:6:35 | value |
+| source.component.ts:14:22:14:29 | source() | sink.component.ts:22:48:22:57 | this.sink1 |
+| source.component.ts:14:22:14:29 | source() | sink.component.ts:25:48:25:57 | this.sink4 |
+| source.component.ts:14:22:14:29 | source() | sink.component.ts:26:48:26:57 | this.sink5 |
+| source.component.ts:14:22:14:29 | source() | sink.component.ts:27:48:27:57 | this.sink6 |
+| source.component.ts:14:22:14:29 | source() | sink.component.ts:29:48:29:57 | this.sink8 |
+| source.component.ts:14:22:14:29 | source() | source.component.ts:20:48:20:48 | x |
+| source.component.ts:15:33:15:40 | source() | sink.component.ts:22:48:22:57 | this.sink1 |
+testAttrSourceLocation
+| inline.component.ts:8:43:8:60 | [testAttr]=taint | inline.component.ts:8:55:8:59 | <toplevel> |

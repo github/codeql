@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule finds code that performs string concatenation in a loop using the <code>+</code> 
+operator. If the enclosing loop in question is executed many times, the use of the <code>+</code> 
+operator may be inefficient.</p>
+
+</overview>
+<recommendation>
+<p>It is better to use <code>System.Text.StringBuilder</code> for efficiency.</p>
+
+</recommendation>
+<example>
+<sample src="StringConcatenationInLoop.cs" />
+
+</example>
+<section title="Fix With StringBuilder">
+<p>This code performs the same function as the example except it uses <code>StringBuilder</code> so 
+it is more efficient.</p>
+<sample src="StringConcatenationInLoopFix.cs" />
+
+</section>
+<references>
+
+  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.text.stringbuilder.aspx">StringBuilder</a>.</li>
+
+
+</references>
+</qhelp>

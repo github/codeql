@@ -1,0 +1,3 @@
+| AbandonSession.cs:11:13:11:23 | access to property Session | This session has not been invalidated following the call to '$@'. | AbandonSession.cs:9:13:9:68 | call to method Authenticate | Authenticate |
+| AbandonSession.cs:51:13:51:23 | access to property Session | This session has not been invalidated following the call to '$@'. | AbandonSession.cs:49:13:49:59 | call to method ValidateUser | ValidateUser |
+| AbandonSession.cs:53:9:53:19 | access to property Session | This session has not been invalidated following the call to '$@'. | AbandonSession.cs:49:13:49:59 | call to method ValidateUser | ValidateUser |

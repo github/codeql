@@ -1,0 +1,541 @@
+edges
+| CollectionFlow.cs:13:17:13:23 | object creation of type A : A | CollectionFlow.cs:14:27:14:27 | access to local variable a : A |
+| CollectionFlow.cs:14:25:14:29 | { ..., ... } [element] : A | CollectionFlow.cs:15:14:15:16 | access to local variable as [element] : A |
+| CollectionFlow.cs:14:25:14:29 | { ..., ... } [element] : A | CollectionFlow.cs:16:18:16:20 | access to local variable as [element] : A |
+| CollectionFlow.cs:14:25:14:29 | { ..., ... } [element] : A | CollectionFlow.cs:17:20:17:22 | access to local variable as [element] : A |
+| CollectionFlow.cs:14:27:14:27 | access to local variable a : A | CollectionFlow.cs:14:25:14:29 | { ..., ... } [element] : A |
+| CollectionFlow.cs:15:14:15:16 | access to local variable as [element] : A | CollectionFlow.cs:15:14:15:19 | access to array element |
+| CollectionFlow.cs:16:18:16:20 | access to local variable as [element] : A | CollectionFlow.cs:373:40:373:41 | ts [element] : A |
+| CollectionFlow.cs:17:20:17:22 | access to local variable as [element] : A | CollectionFlow.cs:17:14:17:23 | call to method First<A> |
+| CollectionFlow.cs:17:20:17:22 | access to local variable as [element] : A | CollectionFlow.cs:381:34:381:35 | ts [element] : A |
+| CollectionFlow.cs:31:17:31:23 | object creation of type A : A | CollectionFlow.cs:32:53:32:53 | access to local variable a : A |
+| CollectionFlow.cs:32:38:32:57 | { ..., ... } [field As, element] : A | CollectionFlow.cs:33:14:33:14 | access to local variable c [field As, element] : A |
+| CollectionFlow.cs:32:38:32:57 | { ..., ... } [field As, element] : A | CollectionFlow.cs:34:18:34:18 | access to local variable c [field As, element] : A |
+| CollectionFlow.cs:32:38:32:57 | { ..., ... } [field As, element] : A | CollectionFlow.cs:35:20:35:20 | access to local variable c [field As, element] : A |
+| CollectionFlow.cs:32:45:32:55 | { ..., ... } [element] : A | CollectionFlow.cs:32:38:32:57 | { ..., ... } [field As, element] : A |
+| CollectionFlow.cs:32:53:32:53 | access to local variable a : A | CollectionFlow.cs:32:45:32:55 | { ..., ... } [element] : A |
+| CollectionFlow.cs:33:14:33:14 | access to local variable c [field As, element] : A | CollectionFlow.cs:33:14:33:17 | access to field As [element] : A |
+| CollectionFlow.cs:33:14:33:17 | access to field As [element] : A | CollectionFlow.cs:33:14:33:20 | access to array element |
+| CollectionFlow.cs:34:18:34:18 | access to local variable c [field As, element] : A | CollectionFlow.cs:34:18:34:21 | access to field As [element] : A |
+| CollectionFlow.cs:34:18:34:21 | access to field As [element] : A | CollectionFlow.cs:373:40:373:41 | ts [element] : A |
+| CollectionFlow.cs:35:20:35:20 | access to local variable c [field As, element] : A | CollectionFlow.cs:35:20:35:23 | access to field As [element] : A |
+| CollectionFlow.cs:35:20:35:23 | access to field As [element] : A | CollectionFlow.cs:35:14:35:24 | call to method First<A> |
+| CollectionFlow.cs:35:20:35:23 | access to field As [element] : A | CollectionFlow.cs:381:34:381:35 | ts [element] : A |
+| CollectionFlow.cs:49:17:49:23 | object creation of type A : A | CollectionFlow.cs:51:18:51:18 | access to local variable a : A |
+| CollectionFlow.cs:51:9:51:11 | [post] access to local variable as [element] : A | CollectionFlow.cs:52:14:52:16 | access to local variable as [element] : A |
+| CollectionFlow.cs:51:9:51:11 | [post] access to local variable as [element] : A | CollectionFlow.cs:53:18:53:20 | access to local variable as [element] : A |
+| CollectionFlow.cs:51:9:51:11 | [post] access to local variable as [element] : A | CollectionFlow.cs:54:20:54:22 | access to local variable as [element] : A |
+| CollectionFlow.cs:51:18:51:18 | access to local variable a : A | CollectionFlow.cs:51:9:51:11 | [post] access to local variable as [element] : A |
+| CollectionFlow.cs:52:14:52:16 | access to local variable as [element] : A | CollectionFlow.cs:52:14:52:19 | access to array element |
+| CollectionFlow.cs:53:18:53:20 | access to local variable as [element] : A | CollectionFlow.cs:373:40:373:41 | ts [element] : A |
+| CollectionFlow.cs:54:20:54:22 | access to local variable as [element] : A | CollectionFlow.cs:54:14:54:23 | call to method First<A> |
+| CollectionFlow.cs:54:20:54:22 | access to local variable as [element] : A | CollectionFlow.cs:381:34:381:35 | ts [element] : A |
+| CollectionFlow.cs:69:17:69:23 | object creation of type A : A | CollectionFlow.cs:71:19:71:19 | access to local variable a : A |
+| CollectionFlow.cs:71:9:71:12 | [post] access to local variable list [element] : A | CollectionFlow.cs:72:14:72:17 | access to local variable list [element] : A |
+| CollectionFlow.cs:71:9:71:12 | [post] access to local variable list [element] : A | CollectionFlow.cs:73:22:73:25 | access to local variable list [element] : A |
+| CollectionFlow.cs:71:9:71:12 | [post] access to local variable list [element] : A | CollectionFlow.cs:74:24:74:27 | access to local variable list [element] : A |
+| CollectionFlow.cs:71:19:71:19 | access to local variable a : A | CollectionFlow.cs:71:9:71:12 | [post] access to local variable list [element] : A |
+| CollectionFlow.cs:72:14:72:17 | access to local variable list [element] : A | CollectionFlow.cs:72:14:72:20 | access to indexer |
+| CollectionFlow.cs:73:22:73:25 | access to local variable list [element] : A | CollectionFlow.cs:375:49:375:52 | list [element] : A |
+| CollectionFlow.cs:74:24:74:27 | access to local variable list [element] : A | CollectionFlow.cs:74:14:74:28 | call to method ListFirst<A> |
+| CollectionFlow.cs:74:24:74:27 | access to local variable list [element] : A | CollectionFlow.cs:383:43:383:46 | list [element] : A |
+| CollectionFlow.cs:88:17:88:23 | object creation of type A : A | CollectionFlow.cs:89:36:89:36 | access to local variable a : A |
+| CollectionFlow.cs:89:20:89:38 | object creation of type List<A> [element] : A | CollectionFlow.cs:90:14:90:17 | access to local variable list [element] : A |
+| CollectionFlow.cs:89:20:89:38 | object creation of type List<A> [element] : A | CollectionFlow.cs:91:22:91:25 | access to local variable list [element] : A |
+| CollectionFlow.cs:89:20:89:38 | object creation of type List<A> [element] : A | CollectionFlow.cs:92:24:92:27 | access to local variable list [element] : A |
+| CollectionFlow.cs:89:36:89:36 | access to local variable a : A | CollectionFlow.cs:89:20:89:38 | object creation of type List<A> [element] : A |
+| CollectionFlow.cs:90:14:90:17 | access to local variable list [element] : A | CollectionFlow.cs:90:14:90:20 | access to indexer |
+| CollectionFlow.cs:91:22:91:25 | access to local variable list [element] : A | CollectionFlow.cs:375:49:375:52 | list [element] : A |
+| CollectionFlow.cs:92:24:92:27 | access to local variable list [element] : A | CollectionFlow.cs:92:14:92:28 | call to method ListFirst<A> |
+| CollectionFlow.cs:92:24:92:27 | access to local variable list [element] : A | CollectionFlow.cs:383:43:383:46 | list [element] : A |
+| CollectionFlow.cs:105:17:105:23 | object creation of type A : A | CollectionFlow.cs:107:18:107:18 | access to local variable a : A |
+| CollectionFlow.cs:107:9:107:12 | [post] access to local variable list [element] : A | CollectionFlow.cs:108:14:108:17 | access to local variable list [element] : A |
+| CollectionFlow.cs:107:9:107:12 | [post] access to local variable list [element] : A | CollectionFlow.cs:109:22:109:25 | access to local variable list [element] : A |
+| CollectionFlow.cs:107:9:107:12 | [post] access to local variable list [element] : A | CollectionFlow.cs:110:24:110:27 | access to local variable list [element] : A |
+| CollectionFlow.cs:107:18:107:18 | access to local variable a : A | CollectionFlow.cs:107:9:107:12 | [post] access to local variable list [element] : A |
+| CollectionFlow.cs:108:14:108:17 | access to local variable list [element] : A | CollectionFlow.cs:108:14:108:20 | access to indexer |
+| CollectionFlow.cs:109:22:109:25 | access to local variable list [element] : A | CollectionFlow.cs:375:49:375:52 | list [element] : A |
+| CollectionFlow.cs:110:24:110:27 | access to local variable list [element] : A | CollectionFlow.cs:110:14:110:28 | call to method ListFirst<A> |
+| CollectionFlow.cs:110:24:110:27 | access to local variable list [element] : A | CollectionFlow.cs:383:43:383:46 | list [element] : A |
+| CollectionFlow.cs:124:17:124:23 | object creation of type A : A | CollectionFlow.cs:126:19:126:19 | access to local variable a : A |
+| CollectionFlow.cs:126:9:126:12 | [post] access to local variable dict [element, property Value] : A | CollectionFlow.cs:127:14:127:17 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:126:9:126:12 | [post] access to local variable dict [element, property Value] : A | CollectionFlow.cs:128:23:128:26 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:126:9:126:12 | [post] access to local variable dict [element, property Value] : A | CollectionFlow.cs:129:28:129:31 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:126:9:126:12 | [post] access to local variable dict [element, property Value] : A | CollectionFlow.cs:130:29:130:32 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:126:9:126:12 | [post] access to local variable dict [element, property Value] : A | CollectionFlow.cs:131:30:131:33 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:126:19:126:19 | access to local variable a : A | CollectionFlow.cs:126:9:126:12 | [post] access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:127:14:127:17 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:127:14:127:20 | access to indexer |
+| CollectionFlow.cs:128:23:128:26 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:377:61:377:64 | dict [element, property Value] : A |
+| CollectionFlow.cs:129:28:129:31 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:129:14:129:32 | call to method DictIndexZero<A> |
+| CollectionFlow.cs:129:28:129:31 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:385:58:385:61 | dict [element, property Value] : A |
+| CollectionFlow.cs:130:29:130:32 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:130:14:130:33 | call to method DictFirstValue<A> |
+| CollectionFlow.cs:130:29:130:32 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:387:59:387:62 | dict [element, property Value] : A |
+| CollectionFlow.cs:131:30:131:33 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:131:14:131:34 | call to method DictValuesFirst<A> |
+| CollectionFlow.cs:131:30:131:33 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:389:60:389:63 | dict [element, property Value] : A |
+| CollectionFlow.cs:147:17:147:23 | object creation of type A : A | CollectionFlow.cs:148:52:148:52 | access to local variable a : A |
+| CollectionFlow.cs:148:20:148:56 | object creation of type Dictionary<Int32,A> [element, property Value] : A | CollectionFlow.cs:149:14:149:17 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:148:20:148:56 | object creation of type Dictionary<Int32,A> [element, property Value] : A | CollectionFlow.cs:150:23:150:26 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:148:20:148:56 | object creation of type Dictionary<Int32,A> [element, property Value] : A | CollectionFlow.cs:151:28:151:31 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:148:20:148:56 | object creation of type Dictionary<Int32,A> [element, property Value] : A | CollectionFlow.cs:152:29:152:32 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:148:20:148:56 | object creation of type Dictionary<Int32,A> [element, property Value] : A | CollectionFlow.cs:153:30:153:33 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:148:52:148:52 | access to local variable a : A | CollectionFlow.cs:148:20:148:56 | object creation of type Dictionary<Int32,A> [element, property Value] : A |
+| CollectionFlow.cs:149:14:149:17 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:149:14:149:20 | access to indexer |
+| CollectionFlow.cs:150:23:150:26 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:377:61:377:64 | dict [element, property Value] : A |
+| CollectionFlow.cs:151:28:151:31 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:151:14:151:32 | call to method DictIndexZero<A> |
+| CollectionFlow.cs:151:28:151:31 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:385:58:385:61 | dict [element, property Value] : A |
+| CollectionFlow.cs:152:29:152:32 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:152:14:152:33 | call to method DictFirstValue<A> |
+| CollectionFlow.cs:152:29:152:32 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:387:59:387:62 | dict [element, property Value] : A |
+| CollectionFlow.cs:153:30:153:33 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:153:14:153:34 | call to method DictValuesFirst<A> |
+| CollectionFlow.cs:153:30:153:33 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:389:60:389:63 | dict [element, property Value] : A |
+| CollectionFlow.cs:168:17:168:23 | object creation of type A : A | CollectionFlow.cs:169:53:169:53 | access to local variable a : A |
+| CollectionFlow.cs:169:20:169:55 | object creation of type Dictionary<Int32,A> [element, property Value] : A | CollectionFlow.cs:170:14:170:17 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:169:20:169:55 | object creation of type Dictionary<Int32,A> [element, property Value] : A | CollectionFlow.cs:171:23:171:26 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:169:20:169:55 | object creation of type Dictionary<Int32,A> [element, property Value] : A | CollectionFlow.cs:172:28:172:31 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:169:20:169:55 | object creation of type Dictionary<Int32,A> [element, property Value] : A | CollectionFlow.cs:173:29:173:32 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:169:20:169:55 | object creation of type Dictionary<Int32,A> [element, property Value] : A | CollectionFlow.cs:174:30:174:33 | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:169:53:169:53 | access to local variable a : A | CollectionFlow.cs:169:20:169:55 | object creation of type Dictionary<Int32,A> [element, property Value] : A |
+| CollectionFlow.cs:170:14:170:17 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:170:14:170:20 | access to indexer |
+| CollectionFlow.cs:171:23:171:26 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:377:61:377:64 | dict [element, property Value] : A |
+| CollectionFlow.cs:172:28:172:31 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:172:14:172:32 | call to method DictIndexZero<A> |
+| CollectionFlow.cs:172:28:172:31 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:385:58:385:61 | dict [element, property Value] : A |
+| CollectionFlow.cs:173:29:173:32 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:173:14:173:33 | call to method DictFirstValue<A> |
+| CollectionFlow.cs:173:29:173:32 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:387:59:387:62 | dict [element, property Value] : A |
+| CollectionFlow.cs:174:30:174:33 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:174:14:174:34 | call to method DictValuesFirst<A> |
+| CollectionFlow.cs:174:30:174:33 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:389:60:389:63 | dict [element, property Value] : A |
+| CollectionFlow.cs:190:17:190:23 | object creation of type A : A | CollectionFlow.cs:191:49:191:49 | access to local variable a : A |
+| CollectionFlow.cs:191:20:191:56 | object creation of type Dictionary<A,Int32> [element, property Key] : A | CollectionFlow.cs:192:14:192:17 | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:191:20:191:56 | object creation of type Dictionary<A,Int32> [element, property Key] : A | CollectionFlow.cs:193:21:193:24 | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:191:20:191:56 | object creation of type Dictionary<A,Int32> [element, property Key] : A | CollectionFlow.cs:194:28:194:31 | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:191:20:191:56 | object creation of type Dictionary<A,Int32> [element, property Key] : A | CollectionFlow.cs:195:27:195:30 | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:191:49:191:49 | access to local variable a : A | CollectionFlow.cs:191:20:191:56 | object creation of type Dictionary<A,Int32> [element, property Key] : A |
+| CollectionFlow.cs:192:14:192:17 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:192:14:192:22 | access to property Keys [element] : A |
+| CollectionFlow.cs:192:14:192:22 | access to property Keys [element] : A | CollectionFlow.cs:192:14:192:30 | call to method First<A> |
+| CollectionFlow.cs:193:21:193:24 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:379:59:379:62 | dict [element, property Key] : A |
+| CollectionFlow.cs:194:28:194:31 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:194:14:194:32 | call to method DictKeysFirst<A> |
+| CollectionFlow.cs:194:28:194:31 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:391:58:391:61 | dict [element, property Key] : A |
+| CollectionFlow.cs:195:27:195:30 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:195:14:195:31 | call to method DictFirstKey<A> |
+| CollectionFlow.cs:195:27:195:30 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:393:57:393:60 | dict [element, property Key] : A |
+| CollectionFlow.cs:209:17:209:23 | object creation of type A : A | CollectionFlow.cs:210:48:210:48 | access to local variable a : A |
+| CollectionFlow.cs:210:20:210:55 | object creation of type Dictionary<A,Int32> [element, property Key] : A | CollectionFlow.cs:211:14:211:17 | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:210:20:210:55 | object creation of type Dictionary<A,Int32> [element, property Key] : A | CollectionFlow.cs:212:21:212:24 | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:210:20:210:55 | object creation of type Dictionary<A,Int32> [element, property Key] : A | CollectionFlow.cs:213:28:213:31 | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:210:20:210:55 | object creation of type Dictionary<A,Int32> [element, property Key] : A | CollectionFlow.cs:214:27:214:30 | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:210:48:210:48 | access to local variable a : A | CollectionFlow.cs:210:20:210:55 | object creation of type Dictionary<A,Int32> [element, property Key] : A |
+| CollectionFlow.cs:211:14:211:17 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:211:14:211:22 | access to property Keys [element] : A |
+| CollectionFlow.cs:211:14:211:22 | access to property Keys [element] : A | CollectionFlow.cs:211:14:211:30 | call to method First<A> |
+| CollectionFlow.cs:212:21:212:24 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:379:59:379:62 | dict [element, property Key] : A |
+| CollectionFlow.cs:213:28:213:31 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:213:14:213:32 | call to method DictKeysFirst<A> |
+| CollectionFlow.cs:213:28:213:31 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:391:58:391:61 | dict [element, property Key] : A |
+| CollectionFlow.cs:214:27:214:30 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:214:14:214:31 | call to method DictFirstKey<A> |
+| CollectionFlow.cs:214:27:214:30 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:393:57:393:60 | dict [element, property Key] : A |
+| CollectionFlow.cs:228:17:228:23 | object creation of type A : A | CollectionFlow.cs:229:27:229:27 | access to local variable a : A |
+| CollectionFlow.cs:229:25:229:29 | { ..., ... } [element] : A | CollectionFlow.cs:230:27:230:29 | access to local variable as [element] : A |
+| CollectionFlow.cs:229:27:229:27 | access to local variable a : A | CollectionFlow.cs:229:25:229:29 | { ..., ... } [element] : A |
+| CollectionFlow.cs:230:22:230:22 | SSA def(x) : A | CollectionFlow.cs:231:18:231:18 | access to local variable x |
+| CollectionFlow.cs:230:27:230:29 | access to local variable as [element] : A | CollectionFlow.cs:230:22:230:22 | SSA def(x) : A |
+| CollectionFlow.cs:243:17:243:23 | object creation of type A : A | CollectionFlow.cs:244:27:244:27 | access to local variable a : A |
+| CollectionFlow.cs:244:25:244:29 | { ..., ... } [element] : A | CollectionFlow.cs:245:26:245:28 | access to local variable as [element] : A |
+| CollectionFlow.cs:244:27:244:27 | access to local variable a : A | CollectionFlow.cs:244:25:244:29 | { ..., ... } [element] : A |
+| CollectionFlow.cs:245:26:245:28 | access to local variable as [element] : A | CollectionFlow.cs:245:26:245:44 | call to method GetEnumerator [property Current] : A |
+| CollectionFlow.cs:245:26:245:44 | call to method GetEnumerator [property Current] : A | CollectionFlow.cs:247:18:247:27 | access to local variable enumerator [property Current] : A |
+| CollectionFlow.cs:247:18:247:27 | access to local variable enumerator [property Current] : A | CollectionFlow.cs:247:18:247:35 | access to property Current |
+| CollectionFlow.cs:260:17:260:23 | object creation of type A : A | CollectionFlow.cs:262:18:262:18 | access to local variable a : A |
+| CollectionFlow.cs:262:9:262:12 | [post] access to local variable list [element] : A | CollectionFlow.cs:263:26:263:29 | access to local variable list [element] : A |
+| CollectionFlow.cs:262:18:262:18 | access to local variable a : A | CollectionFlow.cs:262:9:262:12 | [post] access to local variable list [element] : A |
+| CollectionFlow.cs:263:26:263:29 | access to local variable list [element] : A | CollectionFlow.cs:263:26:263:45 | call to method GetEnumerator [property Current] : A |
+| CollectionFlow.cs:263:26:263:45 | call to method GetEnumerator [property Current] : A | CollectionFlow.cs:265:18:265:27 | access to local variable enumerator [property Current] : A |
+| CollectionFlow.cs:265:18:265:27 | access to local variable enumerator [property Current] : A | CollectionFlow.cs:265:18:265:35 | access to property Current |
+| CollectionFlow.cs:279:17:279:23 | object creation of type A : A | CollectionFlow.cs:281:43:281:43 | access to local variable a : A |
+| CollectionFlow.cs:281:9:281:12 | [post] access to local variable list [element, property Key] : A | CollectionFlow.cs:282:9:282:12 | access to local variable list [element, property Key] : A |
+| CollectionFlow.cs:281:18:281:47 | object creation of type KeyValuePair<A,Int32> [property Key] : A | CollectionFlow.cs:281:9:281:12 | [post] access to local variable list [element, property Key] : A |
+| CollectionFlow.cs:281:43:281:43 | access to local variable a : A | CollectionFlow.cs:281:18:281:47 | object creation of type KeyValuePair<A,Int32> [property Key] : A |
+| CollectionFlow.cs:282:9:282:12 | access to local variable list [element, property Key] : A | CollectionFlow.cs:282:21:282:23 | kvp [property Key] : A |
+| CollectionFlow.cs:282:21:282:23 | kvp [property Key] : A | CollectionFlow.cs:284:18:284:20 | access to parameter kvp [property Key] : A |
+| CollectionFlow.cs:284:18:284:20 | access to parameter kvp [property Key] : A | CollectionFlow.cs:284:18:284:24 | access to property Key |
+| CollectionFlow.cs:301:32:301:38 | element : A | CollectionFlow.cs:301:55:301:61 | access to parameter element : A |
+| CollectionFlow.cs:301:55:301:61 | access to parameter element : A | CollectionFlow.cs:301:44:301:48 | [post] access to parameter array [element] : A |
+| CollectionFlow.cs:305:17:305:23 | object creation of type A : A | CollectionFlow.cs:307:23:307:23 | access to local variable a : A |
+| CollectionFlow.cs:307:18:307:20 | [post] access to local variable as [element] : A | CollectionFlow.cs:308:14:308:16 | access to local variable as [element] : A |
+| CollectionFlow.cs:307:18:307:20 | [post] access to local variable as [element] : A | CollectionFlow.cs:309:18:309:20 | access to local variable as [element] : A |
+| CollectionFlow.cs:307:18:307:20 | [post] access to local variable as [element] : A | CollectionFlow.cs:310:20:310:22 | access to local variable as [element] : A |
+| CollectionFlow.cs:307:23:307:23 | access to local variable a : A | CollectionFlow.cs:301:32:301:38 | element : A |
+| CollectionFlow.cs:307:23:307:23 | access to local variable a : A | CollectionFlow.cs:307:18:307:20 | [post] access to local variable as [element] : A |
+| CollectionFlow.cs:308:14:308:16 | access to local variable as [element] : A | CollectionFlow.cs:308:14:308:19 | access to array element |
+| CollectionFlow.cs:309:18:309:20 | access to local variable as [element] : A | CollectionFlow.cs:373:40:373:41 | ts [element] : A |
+| CollectionFlow.cs:310:20:310:22 | access to local variable as [element] : A | CollectionFlow.cs:310:14:310:23 | call to method First<A> |
+| CollectionFlow.cs:310:20:310:22 | access to local variable as [element] : A | CollectionFlow.cs:381:34:381:35 | ts [element] : A |
+| CollectionFlow.cs:323:34:323:40 | element : A | CollectionFlow.cs:323:55:323:61 | access to parameter element : A |
+| CollectionFlow.cs:323:55:323:61 | access to parameter element : A | CollectionFlow.cs:323:46:323:49 | [post] access to parameter list [element] : A |
+| CollectionFlow.cs:327:17:327:23 | object creation of type A : A | CollectionFlow.cs:329:23:329:23 | access to local variable a : A |
+| CollectionFlow.cs:329:17:329:20 | [post] access to local variable list [element] : A | CollectionFlow.cs:330:14:330:17 | access to local variable list [element] : A |
+| CollectionFlow.cs:329:17:329:20 | [post] access to local variable list [element] : A | CollectionFlow.cs:331:22:331:25 | access to local variable list [element] : A |
+| CollectionFlow.cs:329:17:329:20 | [post] access to local variable list [element] : A | CollectionFlow.cs:332:24:332:27 | access to local variable list [element] : A |
+| CollectionFlow.cs:329:23:329:23 | access to local variable a : A | CollectionFlow.cs:323:34:323:40 | element : A |
+| CollectionFlow.cs:329:23:329:23 | access to local variable a : A | CollectionFlow.cs:329:17:329:20 | [post] access to local variable list [element] : A |
+| CollectionFlow.cs:330:14:330:17 | access to local variable list [element] : A | CollectionFlow.cs:330:14:330:20 | access to indexer |
+| CollectionFlow.cs:331:22:331:25 | access to local variable list [element] : A | CollectionFlow.cs:375:49:375:52 | list [element] : A |
+| CollectionFlow.cs:332:24:332:27 | access to local variable list [element] : A | CollectionFlow.cs:332:14:332:28 | call to method ListFirst<A> |
+| CollectionFlow.cs:332:24:332:27 | access to local variable list [element] : A | CollectionFlow.cs:383:43:383:46 | list [element] : A |
+| CollectionFlow.cs:346:20:346:26 | object creation of type A : A | CollectionFlow.cs:395:49:395:52 | args [element] : A |
+| CollectionFlow.cs:347:26:347:32 | object creation of type A : A | CollectionFlow.cs:395:49:395:52 | args [element] : A |
+| CollectionFlow.cs:348:26:348:32 | object creation of type A : A | CollectionFlow.cs:395:49:395:52 | args [element] : A |
+| CollectionFlow.cs:349:20:349:38 | array creation of type A[] [element] : A | CollectionFlow.cs:395:49:395:52 | args [element] : A |
+| CollectionFlow.cs:349:28:349:38 | { ..., ... } [element] : A | CollectionFlow.cs:349:20:349:38 | array creation of type A[] [element] : A |
+| CollectionFlow.cs:349:30:349:36 | object creation of type A : A | CollectionFlow.cs:349:28:349:38 | { ..., ... } [element] : A |
+| CollectionFlow.cs:373:40:373:41 | ts [element] : A | CollectionFlow.cs:373:52:373:53 | access to parameter ts [element] : A |
+| CollectionFlow.cs:373:40:373:41 | ts [element] : A | CollectionFlow.cs:373:52:373:53 | access to parameter ts [element] : A |
+| CollectionFlow.cs:373:52:373:53 | access to parameter ts [element] : A | CollectionFlow.cs:373:52:373:56 | access to array element |
+| CollectionFlow.cs:373:52:373:53 | access to parameter ts [element] : A | CollectionFlow.cs:373:52:373:56 | access to array element |
+| CollectionFlow.cs:375:49:375:52 | list [element] : A | CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A |
+| CollectionFlow.cs:375:49:375:52 | list [element] : A | CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A |
+| CollectionFlow.cs:375:49:375:52 | list [element] : A | CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A |
+| CollectionFlow.cs:375:49:375:52 | list [element] : A | CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A |
+| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | CollectionFlow.cs:375:63:375:69 | access to indexer |
+| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | CollectionFlow.cs:375:63:375:69 | access to indexer |
+| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | CollectionFlow.cs:375:63:375:69 | access to indexer |
+| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | CollectionFlow.cs:375:63:375:69 | access to indexer |
+| CollectionFlow.cs:377:61:377:64 | dict [element, property Value] : A | CollectionFlow.cs:377:75:377:78 | access to parameter dict [element, property Value] : A |
+| CollectionFlow.cs:377:75:377:78 | access to parameter dict [element, property Value] : A | CollectionFlow.cs:377:75:377:81 | access to indexer |
+| CollectionFlow.cs:379:59:379:62 | dict [element, property Key] : A | CollectionFlow.cs:379:73:379:76 | access to parameter dict [element, property Key] : A |
+| CollectionFlow.cs:379:73:379:76 | access to parameter dict [element, property Key] : A | CollectionFlow.cs:379:73:379:81 | access to property Keys [element] : A |
+| CollectionFlow.cs:379:73:379:81 | access to property Keys [element] : A | CollectionFlow.cs:379:73:379:89 | call to method First<T> |
+| CollectionFlow.cs:381:34:381:35 | ts [element] : A | CollectionFlow.cs:381:41:381:42 | access to parameter ts [element] : A |
+| CollectionFlow.cs:381:34:381:35 | ts [element] : A | CollectionFlow.cs:381:41:381:42 | access to parameter ts [element] : A |
+| CollectionFlow.cs:381:41:381:42 | access to parameter ts [element] : A | CollectionFlow.cs:381:41:381:45 | access to array element : A |
+| CollectionFlow.cs:381:41:381:42 | access to parameter ts [element] : A | CollectionFlow.cs:381:41:381:45 | access to array element : A |
+| CollectionFlow.cs:383:43:383:46 | list [element] : A | CollectionFlow.cs:383:52:383:55 | access to parameter list [element] : A |
+| CollectionFlow.cs:383:43:383:46 | list [element] : A | CollectionFlow.cs:383:52:383:55 | access to parameter list [element] : A |
+| CollectionFlow.cs:383:43:383:46 | list [element] : A | CollectionFlow.cs:383:52:383:55 | access to parameter list [element] : A |
+| CollectionFlow.cs:383:43:383:46 | list [element] : A | CollectionFlow.cs:383:52:383:55 | access to parameter list [element] : A |
+| CollectionFlow.cs:383:52:383:55 | access to parameter list [element] : A | CollectionFlow.cs:383:52:383:58 | access to indexer : A |
+| CollectionFlow.cs:383:52:383:55 | access to parameter list [element] : A | CollectionFlow.cs:383:52:383:58 | access to indexer : A |
+| CollectionFlow.cs:383:52:383:55 | access to parameter list [element] : A | CollectionFlow.cs:383:52:383:58 | access to indexer : A |
+| CollectionFlow.cs:383:52:383:55 | access to parameter list [element] : A | CollectionFlow.cs:383:52:383:58 | access to indexer : A |
+| CollectionFlow.cs:385:58:385:61 | dict [element, property Value] : A | CollectionFlow.cs:385:67:385:70 | access to parameter dict [element, property Value] : A |
+| CollectionFlow.cs:385:67:385:70 | access to parameter dict [element, property Value] : A | CollectionFlow.cs:385:67:385:73 | access to indexer : A |
+| CollectionFlow.cs:387:59:387:62 | dict [element, property Value] : A | CollectionFlow.cs:387:68:387:71 | access to parameter dict [element, property Value] : A |
+| CollectionFlow.cs:387:68:387:71 | access to parameter dict [element, property Value] : A | CollectionFlow.cs:387:68:387:79 | call to method First<KeyValuePair<Int32,T>> [property Value] : A |
+| CollectionFlow.cs:387:68:387:79 | call to method First<KeyValuePair<Int32,T>> [property Value] : A | CollectionFlow.cs:387:68:387:85 | access to property Value : A |
+| CollectionFlow.cs:389:60:389:63 | dict [element, property Value] : A | CollectionFlow.cs:389:69:389:72 | access to parameter dict [element, property Value] : A |
+| CollectionFlow.cs:389:69:389:72 | access to parameter dict [element, property Value] : A | CollectionFlow.cs:389:69:389:79 | access to property Values [element] : A |
+| CollectionFlow.cs:389:69:389:79 | access to property Values [element] : A | CollectionFlow.cs:389:69:389:87 | call to method First<T> : A |
+| CollectionFlow.cs:391:58:391:61 | dict [element, property Key] : A | CollectionFlow.cs:391:67:391:70 | access to parameter dict [element, property Key] : A |
+| CollectionFlow.cs:391:67:391:70 | access to parameter dict [element, property Key] : A | CollectionFlow.cs:391:67:391:75 | access to property Keys [element] : A |
+| CollectionFlow.cs:391:67:391:75 | access to property Keys [element] : A | CollectionFlow.cs:391:67:391:83 | call to method First<T> : A |
+| CollectionFlow.cs:393:57:393:60 | dict [element, property Key] : A | CollectionFlow.cs:393:66:393:69 | access to parameter dict [element, property Key] : A |
+| CollectionFlow.cs:393:66:393:69 | access to parameter dict [element, property Key] : A | CollectionFlow.cs:393:66:393:77 | call to method First<KeyValuePair<T,Int32>> [property Key] : A |
+| CollectionFlow.cs:393:66:393:77 | call to method First<KeyValuePair<T,Int32>> [property Key] : A | CollectionFlow.cs:393:66:393:81 | access to property Key : A |
+| CollectionFlow.cs:395:49:395:52 | args [element] : A | CollectionFlow.cs:395:63:395:66 | access to parameter args [element] : A |
+| CollectionFlow.cs:395:49:395:52 | args [element] : A | CollectionFlow.cs:395:63:395:66 | access to parameter args [element] : A |
+| CollectionFlow.cs:395:63:395:66 | access to parameter args [element] : A | CollectionFlow.cs:395:63:395:69 | access to array element |
+| CollectionFlow.cs:395:63:395:66 | access to parameter args [element] : A | CollectionFlow.cs:395:63:395:69 | access to array element |
+nodes
+| CollectionFlow.cs:13:17:13:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:14:25:14:29 | { ..., ... } [element] : A | semmle.label | { ..., ... } [element] : A |
+| CollectionFlow.cs:14:27:14:27 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:15:14:15:16 | access to local variable as [element] : A | semmle.label | access to local variable as [element] : A |
+| CollectionFlow.cs:15:14:15:19 | access to array element | semmle.label | access to array element |
+| CollectionFlow.cs:16:18:16:20 | access to local variable as [element] : A | semmle.label | access to local variable as [element] : A |
+| CollectionFlow.cs:17:14:17:23 | call to method First<A> | semmle.label | call to method First<A> |
+| CollectionFlow.cs:17:20:17:22 | access to local variable as [element] : A | semmle.label | access to local variable as [element] : A |
+| CollectionFlow.cs:31:17:31:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:32:38:32:57 | { ..., ... } [field As, element] : A | semmle.label | { ..., ... } [field As, element] : A |
+| CollectionFlow.cs:32:45:32:55 | { ..., ... } [element] : A | semmle.label | { ..., ... } [element] : A |
+| CollectionFlow.cs:32:53:32:53 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:33:14:33:14 | access to local variable c [field As, element] : A | semmle.label | access to local variable c [field As, element] : A |
+| CollectionFlow.cs:33:14:33:17 | access to field As [element] : A | semmle.label | access to field As [element] : A |
+| CollectionFlow.cs:33:14:33:20 | access to array element | semmle.label | access to array element |
+| CollectionFlow.cs:34:18:34:18 | access to local variable c [field As, element] : A | semmle.label | access to local variable c [field As, element] : A |
+| CollectionFlow.cs:34:18:34:21 | access to field As [element] : A | semmle.label | access to field As [element] : A |
+| CollectionFlow.cs:35:14:35:24 | call to method First<A> | semmle.label | call to method First<A> |
+| CollectionFlow.cs:35:20:35:20 | access to local variable c [field As, element] : A | semmle.label | access to local variable c [field As, element] : A |
+| CollectionFlow.cs:35:20:35:23 | access to field As [element] : A | semmle.label | access to field As [element] : A |
+| CollectionFlow.cs:49:17:49:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:51:9:51:11 | [post] access to local variable as [element] : A | semmle.label | [post] access to local variable as [element] : A |
+| CollectionFlow.cs:51:18:51:18 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:52:14:52:16 | access to local variable as [element] : A | semmle.label | access to local variable as [element] : A |
+| CollectionFlow.cs:52:14:52:19 | access to array element | semmle.label | access to array element |
+| CollectionFlow.cs:53:18:53:20 | access to local variable as [element] : A | semmle.label | access to local variable as [element] : A |
+| CollectionFlow.cs:54:14:54:23 | call to method First<A> | semmle.label | call to method First<A> |
+| CollectionFlow.cs:54:20:54:22 | access to local variable as [element] : A | semmle.label | access to local variable as [element] : A |
+| CollectionFlow.cs:69:17:69:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:71:9:71:12 | [post] access to local variable list [element] : A | semmle.label | [post] access to local variable list [element] : A |
+| CollectionFlow.cs:71:19:71:19 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:72:14:72:17 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:72:14:72:20 | access to indexer | semmle.label | access to indexer |
+| CollectionFlow.cs:73:22:73:25 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:74:14:74:28 | call to method ListFirst<A> | semmle.label | call to method ListFirst<A> |
+| CollectionFlow.cs:74:24:74:27 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:88:17:88:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:89:20:89:38 | object creation of type List<A> [element] : A | semmle.label | object creation of type List<A> [element] : A |
+| CollectionFlow.cs:89:36:89:36 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:90:14:90:17 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:90:14:90:20 | access to indexer | semmle.label | access to indexer |
+| CollectionFlow.cs:91:22:91:25 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:92:14:92:28 | call to method ListFirst<A> | semmle.label | call to method ListFirst<A> |
+| CollectionFlow.cs:92:24:92:27 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:105:17:105:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:107:9:107:12 | [post] access to local variable list [element] : A | semmle.label | [post] access to local variable list [element] : A |
+| CollectionFlow.cs:107:18:107:18 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:108:14:108:17 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:108:14:108:20 | access to indexer | semmle.label | access to indexer |
+| CollectionFlow.cs:109:22:109:25 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:110:14:110:28 | call to method ListFirst<A> | semmle.label | call to method ListFirst<A> |
+| CollectionFlow.cs:110:24:110:27 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:124:17:124:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:126:9:126:12 | [post] access to local variable dict [element, property Value] : A | semmle.label | [post] access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:126:19:126:19 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:127:14:127:17 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:127:14:127:20 | access to indexer | semmle.label | access to indexer |
+| CollectionFlow.cs:128:23:128:26 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:129:14:129:32 | call to method DictIndexZero<A> | semmle.label | call to method DictIndexZero<A> |
+| CollectionFlow.cs:129:28:129:31 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:130:14:130:33 | call to method DictFirstValue<A> | semmle.label | call to method DictFirstValue<A> |
+| CollectionFlow.cs:130:29:130:32 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:131:14:131:34 | call to method DictValuesFirst<A> | semmle.label | call to method DictValuesFirst<A> |
+| CollectionFlow.cs:131:30:131:33 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:147:17:147:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:148:20:148:56 | object creation of type Dictionary<Int32,A> [element, property Value] : A | semmle.label | object creation of type Dictionary<Int32,A> [element, property Value] : A |
+| CollectionFlow.cs:148:52:148:52 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:149:14:149:17 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:149:14:149:20 | access to indexer | semmle.label | access to indexer |
+| CollectionFlow.cs:150:23:150:26 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:151:14:151:32 | call to method DictIndexZero<A> | semmle.label | call to method DictIndexZero<A> |
+| CollectionFlow.cs:151:28:151:31 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:152:14:152:33 | call to method DictFirstValue<A> | semmle.label | call to method DictFirstValue<A> |
+| CollectionFlow.cs:152:29:152:32 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:153:14:153:34 | call to method DictValuesFirst<A> | semmle.label | call to method DictValuesFirst<A> |
+| CollectionFlow.cs:153:30:153:33 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:168:17:168:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:169:20:169:55 | object creation of type Dictionary<Int32,A> [element, property Value] : A | semmle.label | object creation of type Dictionary<Int32,A> [element, property Value] : A |
+| CollectionFlow.cs:169:53:169:53 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:170:14:170:17 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:170:14:170:20 | access to indexer | semmle.label | access to indexer |
+| CollectionFlow.cs:171:23:171:26 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:172:14:172:32 | call to method DictIndexZero<A> | semmle.label | call to method DictIndexZero<A> |
+| CollectionFlow.cs:172:28:172:31 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:173:14:173:33 | call to method DictFirstValue<A> | semmle.label | call to method DictFirstValue<A> |
+| CollectionFlow.cs:173:29:173:32 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:174:14:174:34 | call to method DictValuesFirst<A> | semmle.label | call to method DictValuesFirst<A> |
+| CollectionFlow.cs:174:30:174:33 | access to local variable dict [element, property Value] : A | semmle.label | access to local variable dict [element, property Value] : A |
+| CollectionFlow.cs:190:17:190:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:191:20:191:56 | object creation of type Dictionary<A,Int32> [element, property Key] : A | semmle.label | object creation of type Dictionary<A,Int32> [element, property Key] : A |
+| CollectionFlow.cs:191:49:191:49 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:192:14:192:17 | access to local variable dict [element, property Key] : A | semmle.label | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:192:14:192:22 | access to property Keys [element] : A | semmle.label | access to property Keys [element] : A |
+| CollectionFlow.cs:192:14:192:30 | call to method First<A> | semmle.label | call to method First<A> |
+| CollectionFlow.cs:193:21:193:24 | access to local variable dict [element, property Key] : A | semmle.label | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:194:14:194:32 | call to method DictKeysFirst<A> | semmle.label | call to method DictKeysFirst<A> |
+| CollectionFlow.cs:194:28:194:31 | access to local variable dict [element, property Key] : A | semmle.label | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:195:14:195:31 | call to method DictFirstKey<A> | semmle.label | call to method DictFirstKey<A> |
+| CollectionFlow.cs:195:27:195:30 | access to local variable dict [element, property Key] : A | semmle.label | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:209:17:209:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:210:20:210:55 | object creation of type Dictionary<A,Int32> [element, property Key] : A | semmle.label | object creation of type Dictionary<A,Int32> [element, property Key] : A |
+| CollectionFlow.cs:210:48:210:48 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:211:14:211:17 | access to local variable dict [element, property Key] : A | semmle.label | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:211:14:211:22 | access to property Keys [element] : A | semmle.label | access to property Keys [element] : A |
+| CollectionFlow.cs:211:14:211:30 | call to method First<A> | semmle.label | call to method First<A> |
+| CollectionFlow.cs:212:21:212:24 | access to local variable dict [element, property Key] : A | semmle.label | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:213:14:213:32 | call to method DictKeysFirst<A> | semmle.label | call to method DictKeysFirst<A> |
+| CollectionFlow.cs:213:28:213:31 | access to local variable dict [element, property Key] : A | semmle.label | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:214:14:214:31 | call to method DictFirstKey<A> | semmle.label | call to method DictFirstKey<A> |
+| CollectionFlow.cs:214:27:214:30 | access to local variable dict [element, property Key] : A | semmle.label | access to local variable dict [element, property Key] : A |
+| CollectionFlow.cs:228:17:228:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:229:25:229:29 | { ..., ... } [element] : A | semmle.label | { ..., ... } [element] : A |
+| CollectionFlow.cs:229:27:229:27 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:230:22:230:22 | SSA def(x) : A | semmle.label | SSA def(x) : A |
+| CollectionFlow.cs:230:27:230:29 | access to local variable as [element] : A | semmle.label | access to local variable as [element] : A |
+| CollectionFlow.cs:231:18:231:18 | access to local variable x | semmle.label | access to local variable x |
+| CollectionFlow.cs:243:17:243:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:244:25:244:29 | { ..., ... } [element] : A | semmle.label | { ..., ... } [element] : A |
+| CollectionFlow.cs:244:27:244:27 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:245:26:245:28 | access to local variable as [element] : A | semmle.label | access to local variable as [element] : A |
+| CollectionFlow.cs:245:26:245:44 | call to method GetEnumerator [property Current] : A | semmle.label | call to method GetEnumerator [property Current] : A |
+| CollectionFlow.cs:247:18:247:27 | access to local variable enumerator [property Current] : A | semmle.label | access to local variable enumerator [property Current] : A |
+| CollectionFlow.cs:247:18:247:35 | access to property Current | semmle.label | access to property Current |
+| CollectionFlow.cs:260:17:260:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:262:9:262:12 | [post] access to local variable list [element] : A | semmle.label | [post] access to local variable list [element] : A |
+| CollectionFlow.cs:262:18:262:18 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:263:26:263:29 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:263:26:263:45 | call to method GetEnumerator [property Current] : A | semmle.label | call to method GetEnumerator [property Current] : A |
+| CollectionFlow.cs:265:18:265:27 | access to local variable enumerator [property Current] : A | semmle.label | access to local variable enumerator [property Current] : A |
+| CollectionFlow.cs:265:18:265:35 | access to property Current | semmle.label | access to property Current |
+| CollectionFlow.cs:279:17:279:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:281:9:281:12 | [post] access to local variable list [element, property Key] : A | semmle.label | [post] access to local variable list [element, property Key] : A |
+| CollectionFlow.cs:281:18:281:47 | object creation of type KeyValuePair<A,Int32> [property Key] : A | semmle.label | object creation of type KeyValuePair<A,Int32> [property Key] : A |
+| CollectionFlow.cs:281:43:281:43 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:282:9:282:12 | access to local variable list [element, property Key] : A | semmle.label | access to local variable list [element, property Key] : A |
+| CollectionFlow.cs:282:21:282:23 | kvp [property Key] : A | semmle.label | kvp [property Key] : A |
+| CollectionFlow.cs:284:18:284:20 | access to parameter kvp [property Key] : A | semmle.label | access to parameter kvp [property Key] : A |
+| CollectionFlow.cs:284:18:284:24 | access to property Key | semmle.label | access to property Key |
+| CollectionFlow.cs:301:32:301:38 | element : A | semmle.label | element : A |
+| CollectionFlow.cs:301:44:301:48 | [post] access to parameter array [element] : A | semmle.label | [post] access to parameter array [element] : A |
+| CollectionFlow.cs:301:55:301:61 | access to parameter element : A | semmle.label | access to parameter element : A |
+| CollectionFlow.cs:305:17:305:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:307:18:307:20 | [post] access to local variable as [element] : A | semmle.label | [post] access to local variable as [element] : A |
+| CollectionFlow.cs:307:23:307:23 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:308:14:308:16 | access to local variable as [element] : A | semmle.label | access to local variable as [element] : A |
+| CollectionFlow.cs:308:14:308:19 | access to array element | semmle.label | access to array element |
+| CollectionFlow.cs:309:18:309:20 | access to local variable as [element] : A | semmle.label | access to local variable as [element] : A |
+| CollectionFlow.cs:310:14:310:23 | call to method First<A> | semmle.label | call to method First<A> |
+| CollectionFlow.cs:310:20:310:22 | access to local variable as [element] : A | semmle.label | access to local variable as [element] : A |
+| CollectionFlow.cs:323:34:323:40 | element : A | semmle.label | element : A |
+| CollectionFlow.cs:323:46:323:49 | [post] access to parameter list [element] : A | semmle.label | [post] access to parameter list [element] : A |
+| CollectionFlow.cs:323:55:323:61 | access to parameter element : A | semmle.label | access to parameter element : A |
+| CollectionFlow.cs:327:17:327:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:329:17:329:20 | [post] access to local variable list [element] : A | semmle.label | [post] access to local variable list [element] : A |
+| CollectionFlow.cs:329:23:329:23 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:330:14:330:17 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:330:14:330:20 | access to indexer | semmle.label | access to indexer |
+| CollectionFlow.cs:331:22:331:25 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:332:14:332:28 | call to method ListFirst<A> | semmle.label | call to method ListFirst<A> |
+| CollectionFlow.cs:332:24:332:27 | access to local variable list [element] : A | semmle.label | access to local variable list [element] : A |
+| CollectionFlow.cs:346:20:346:26 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:347:26:347:32 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:348:26:348:32 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:349:20:349:38 | array creation of type A[] [element] : A | semmle.label | array creation of type A[] [element] : A |
+| CollectionFlow.cs:349:28:349:38 | { ..., ... } [element] : A | semmle.label | { ..., ... } [element] : A |
+| CollectionFlow.cs:349:30:349:36 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:373:40:373:41 | ts [element] : A | semmle.label | ts [element] : A |
+| CollectionFlow.cs:373:40:373:41 | ts [element] : A | semmle.label | ts [element] : A |
+| CollectionFlow.cs:373:52:373:53 | access to parameter ts [element] : A | semmle.label | access to parameter ts [element] : A |
+| CollectionFlow.cs:373:52:373:53 | access to parameter ts [element] : A | semmle.label | access to parameter ts [element] : A |
+| CollectionFlow.cs:373:52:373:56 | access to array element | semmle.label | access to array element |
+| CollectionFlow.cs:375:49:375:52 | list [element] : A | semmle.label | list [element] : A |
+| CollectionFlow.cs:375:49:375:52 | list [element] : A | semmle.label | list [element] : A |
+| CollectionFlow.cs:375:49:375:52 | list [element] : A | semmle.label | list [element] : A |
+| CollectionFlow.cs:375:49:375:52 | list [element] : A | semmle.label | list [element] : A |
+| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | semmle.label | access to parameter list [element] : A |
+| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | semmle.label | access to parameter list [element] : A |
+| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | semmle.label | access to parameter list [element] : A |
+| CollectionFlow.cs:375:63:375:66 | access to parameter list [element] : A | semmle.label | access to parameter list [element] : A |
+| CollectionFlow.cs:375:63:375:69 | access to indexer | semmle.label | access to indexer |
+| CollectionFlow.cs:377:61:377:64 | dict [element, property Value] : A | semmle.label | dict [element, property Value] : A |
+| CollectionFlow.cs:377:75:377:78 | access to parameter dict [element, property Value] : A | semmle.label | access to parameter dict [element, property Value] : A |
+| CollectionFlow.cs:377:75:377:81 | access to indexer | semmle.label | access to indexer |
+| CollectionFlow.cs:379:59:379:62 | dict [element, property Key] : A | semmle.label | dict [element, property Key] : A |
+| CollectionFlow.cs:379:73:379:76 | access to parameter dict [element, property Key] : A | semmle.label | access to parameter dict [element, property Key] : A |
+| CollectionFlow.cs:379:73:379:81 | access to property Keys [element] : A | semmle.label | access to property Keys [element] : A |
+| CollectionFlow.cs:379:73:379:89 | call to method First<T> | semmle.label | call to method First<T> |
+| CollectionFlow.cs:381:34:381:35 | ts [element] : A | semmle.label | ts [element] : A |
+| CollectionFlow.cs:381:34:381:35 | ts [element] : A | semmle.label | ts [element] : A |
+| CollectionFlow.cs:381:41:381:42 | access to parameter ts [element] : A | semmle.label | access to parameter ts [element] : A |
+| CollectionFlow.cs:381:41:381:42 | access to parameter ts [element] : A | semmle.label | access to parameter ts [element] : A |
+| CollectionFlow.cs:381:41:381:45 | access to array element : A | semmle.label | access to array element : A |
+| CollectionFlow.cs:381:41:381:45 | access to array element : A | semmle.label | access to array element : A |
+| CollectionFlow.cs:383:43:383:46 | list [element] : A | semmle.label | list [element] : A |
+| CollectionFlow.cs:383:43:383:46 | list [element] : A | semmle.label | list [element] : A |
+| CollectionFlow.cs:383:43:383:46 | list [element] : A | semmle.label | list [element] : A |
+| CollectionFlow.cs:383:43:383:46 | list [element] : A | semmle.label | list [element] : A |
+| CollectionFlow.cs:383:52:383:55 | access to parameter list [element] : A | semmle.label | access to parameter list [element] : A |
+| CollectionFlow.cs:383:52:383:55 | access to parameter list [element] : A | semmle.label | access to parameter list [element] : A |
+| CollectionFlow.cs:383:52:383:55 | access to parameter list [element] : A | semmle.label | access to parameter list [element] : A |
+| CollectionFlow.cs:383:52:383:55 | access to parameter list [element] : A | semmle.label | access to parameter list [element] : A |
+| CollectionFlow.cs:383:52:383:58 | access to indexer : A | semmle.label | access to indexer : A |
+| CollectionFlow.cs:383:52:383:58 | access to indexer : A | semmle.label | access to indexer : A |
+| CollectionFlow.cs:383:52:383:58 | access to indexer : A | semmle.label | access to indexer : A |
+| CollectionFlow.cs:383:52:383:58 | access to indexer : A | semmle.label | access to indexer : A |
+| CollectionFlow.cs:385:58:385:61 | dict [element, property Value] : A | semmle.label | dict [element, property Value] : A |
+| CollectionFlow.cs:385:67:385:70 | access to parameter dict [element, property Value] : A | semmle.label | access to parameter dict [element, property Value] : A |
+| CollectionFlow.cs:385:67:385:73 | access to indexer : A | semmle.label | access to indexer : A |
+| CollectionFlow.cs:387:59:387:62 | dict [element, property Value] : A | semmle.label | dict [element, property Value] : A |
+| CollectionFlow.cs:387:68:387:71 | access to parameter dict [element, property Value] : A | semmle.label | access to parameter dict [element, property Value] : A |
+| CollectionFlow.cs:387:68:387:79 | call to method First<KeyValuePair<Int32,T>> [property Value] : A | semmle.label | call to method First<KeyValuePair<Int32,T>> [property Value] : A |
+| CollectionFlow.cs:387:68:387:85 | access to property Value : A | semmle.label | access to property Value : A |
+| CollectionFlow.cs:389:60:389:63 | dict [element, property Value] : A | semmle.label | dict [element, property Value] : A |
+| CollectionFlow.cs:389:69:389:72 | access to parameter dict [element, property Value] : A | semmle.label | access to parameter dict [element, property Value] : A |
+| CollectionFlow.cs:389:69:389:79 | access to property Values [element] : A | semmle.label | access to property Values [element] : A |
+| CollectionFlow.cs:389:69:389:87 | call to method First<T> : A | semmle.label | call to method First<T> : A |
+| CollectionFlow.cs:391:58:391:61 | dict [element, property Key] : A | semmle.label | dict [element, property Key] : A |
+| CollectionFlow.cs:391:67:391:70 | access to parameter dict [element, property Key] : A | semmle.label | access to parameter dict [element, property Key] : A |
+| CollectionFlow.cs:391:67:391:75 | access to property Keys [element] : A | semmle.label | access to property Keys [element] : A |
+| CollectionFlow.cs:391:67:391:83 | call to method First<T> : A | semmle.label | call to method First<T> : A |
+| CollectionFlow.cs:393:57:393:60 | dict [element, property Key] : A | semmle.label | dict [element, property Key] : A |
+| CollectionFlow.cs:393:66:393:69 | access to parameter dict [element, property Key] : A | semmle.label | access to parameter dict [element, property Key] : A |
+| CollectionFlow.cs:393:66:393:77 | call to method First<KeyValuePair<T,Int32>> [property Key] : A | semmle.label | call to method First<KeyValuePair<T,Int32>> [property Key] : A |
+| CollectionFlow.cs:393:66:393:81 | access to property Key : A | semmle.label | access to property Key : A |
+| CollectionFlow.cs:395:49:395:52 | args [element] : A | semmle.label | args [element] : A |
+| CollectionFlow.cs:395:49:395:52 | args [element] : A | semmle.label | args [element] : A |
+| CollectionFlow.cs:395:63:395:66 | access to parameter args [element] : A | semmle.label | access to parameter args [element] : A |
+| CollectionFlow.cs:395:63:395:66 | access to parameter args [element] : A | semmle.label | access to parameter args [element] : A |
+| CollectionFlow.cs:395:63:395:69 | access to array element | semmle.label | access to array element |
+subpaths
+| CollectionFlow.cs:17:20:17:22 | access to local variable as [element] : A | CollectionFlow.cs:381:34:381:35 | ts [element] : A | CollectionFlow.cs:381:41:381:45 | access to array element : A | CollectionFlow.cs:17:14:17:23 | call to method First<A> |
+| CollectionFlow.cs:35:20:35:23 | access to field As [element] : A | CollectionFlow.cs:381:34:381:35 | ts [element] : A | CollectionFlow.cs:381:41:381:45 | access to array element : A | CollectionFlow.cs:35:14:35:24 | call to method First<A> |
+| CollectionFlow.cs:54:20:54:22 | access to local variable as [element] : A | CollectionFlow.cs:381:34:381:35 | ts [element] : A | CollectionFlow.cs:381:41:381:45 | access to array element : A | CollectionFlow.cs:54:14:54:23 | call to method First<A> |
+| CollectionFlow.cs:74:24:74:27 | access to local variable list [element] : A | CollectionFlow.cs:383:43:383:46 | list [element] : A | CollectionFlow.cs:383:52:383:58 | access to indexer : A | CollectionFlow.cs:74:14:74:28 | call to method ListFirst<A> |
+| CollectionFlow.cs:92:24:92:27 | access to local variable list [element] : A | CollectionFlow.cs:383:43:383:46 | list [element] : A | CollectionFlow.cs:383:52:383:58 | access to indexer : A | CollectionFlow.cs:92:14:92:28 | call to method ListFirst<A> |
+| CollectionFlow.cs:110:24:110:27 | access to local variable list [element] : A | CollectionFlow.cs:383:43:383:46 | list [element] : A | CollectionFlow.cs:383:52:383:58 | access to indexer : A | CollectionFlow.cs:110:14:110:28 | call to method ListFirst<A> |
+| CollectionFlow.cs:129:28:129:31 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:385:58:385:61 | dict [element, property Value] : A | CollectionFlow.cs:385:67:385:73 | access to indexer : A | CollectionFlow.cs:129:14:129:32 | call to method DictIndexZero<A> |
+| CollectionFlow.cs:130:29:130:32 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:387:59:387:62 | dict [element, property Value] : A | CollectionFlow.cs:387:68:387:85 | access to property Value : A | CollectionFlow.cs:130:14:130:33 | call to method DictFirstValue<A> |
+| CollectionFlow.cs:131:30:131:33 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:389:60:389:63 | dict [element, property Value] : A | CollectionFlow.cs:389:69:389:87 | call to method First<T> : A | CollectionFlow.cs:131:14:131:34 | call to method DictValuesFirst<A> |
+| CollectionFlow.cs:151:28:151:31 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:385:58:385:61 | dict [element, property Value] : A | CollectionFlow.cs:385:67:385:73 | access to indexer : A | CollectionFlow.cs:151:14:151:32 | call to method DictIndexZero<A> |
+| CollectionFlow.cs:152:29:152:32 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:387:59:387:62 | dict [element, property Value] : A | CollectionFlow.cs:387:68:387:85 | access to property Value : A | CollectionFlow.cs:152:14:152:33 | call to method DictFirstValue<A> |
+| CollectionFlow.cs:153:30:153:33 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:389:60:389:63 | dict [element, property Value] : A | CollectionFlow.cs:389:69:389:87 | call to method First<T> : A | CollectionFlow.cs:153:14:153:34 | call to method DictValuesFirst<A> |
+| CollectionFlow.cs:172:28:172:31 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:385:58:385:61 | dict [element, property Value] : A | CollectionFlow.cs:385:67:385:73 | access to indexer : A | CollectionFlow.cs:172:14:172:32 | call to method DictIndexZero<A> |
+| CollectionFlow.cs:173:29:173:32 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:387:59:387:62 | dict [element, property Value] : A | CollectionFlow.cs:387:68:387:85 | access to property Value : A | CollectionFlow.cs:173:14:173:33 | call to method DictFirstValue<A> |
+| CollectionFlow.cs:174:30:174:33 | access to local variable dict [element, property Value] : A | CollectionFlow.cs:389:60:389:63 | dict [element, property Value] : A | CollectionFlow.cs:389:69:389:87 | call to method First<T> : A | CollectionFlow.cs:174:14:174:34 | call to method DictValuesFirst<A> |
+| CollectionFlow.cs:194:28:194:31 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:391:58:391:61 | dict [element, property Key] : A | CollectionFlow.cs:391:67:391:83 | call to method First<T> : A | CollectionFlow.cs:194:14:194:32 | call to method DictKeysFirst<A> |
+| CollectionFlow.cs:195:27:195:30 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:393:57:393:60 | dict [element, property Key] : A | CollectionFlow.cs:393:66:393:81 | access to property Key : A | CollectionFlow.cs:195:14:195:31 | call to method DictFirstKey<A> |
+| CollectionFlow.cs:213:28:213:31 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:391:58:391:61 | dict [element, property Key] : A | CollectionFlow.cs:391:67:391:83 | call to method First<T> : A | CollectionFlow.cs:213:14:213:32 | call to method DictKeysFirst<A> |
+| CollectionFlow.cs:214:27:214:30 | access to local variable dict [element, property Key] : A | CollectionFlow.cs:393:57:393:60 | dict [element, property Key] : A | CollectionFlow.cs:393:66:393:81 | access to property Key : A | CollectionFlow.cs:214:14:214:31 | call to method DictFirstKey<A> |
+| CollectionFlow.cs:307:23:307:23 | access to local variable a : A | CollectionFlow.cs:301:32:301:38 | element : A | CollectionFlow.cs:301:44:301:48 | [post] access to parameter array [element] : A | CollectionFlow.cs:307:18:307:20 | [post] access to local variable as [element] : A |
+| CollectionFlow.cs:310:20:310:22 | access to local variable as [element] : A | CollectionFlow.cs:381:34:381:35 | ts [element] : A | CollectionFlow.cs:381:41:381:45 | access to array element : A | CollectionFlow.cs:310:14:310:23 | call to method First<A> |
+| CollectionFlow.cs:329:23:329:23 | access to local variable a : A | CollectionFlow.cs:323:34:323:40 | element : A | CollectionFlow.cs:323:46:323:49 | [post] access to parameter list [element] : A | CollectionFlow.cs:329:17:329:20 | [post] access to local variable list [element] : A |
+| CollectionFlow.cs:332:24:332:27 | access to local variable list [element] : A | CollectionFlow.cs:383:43:383:46 | list [element] : A | CollectionFlow.cs:383:52:383:58 | access to indexer : A | CollectionFlow.cs:332:14:332:28 | call to method ListFirst<A> |
+#select
+| CollectionFlow.cs:13:17:13:23 | object creation of type A : A | CollectionFlow.cs:13:17:13:23 | object creation of type A : A | CollectionFlow.cs:15:14:15:19 | access to array element | $@ | CollectionFlow.cs:15:14:15:19 | access to array element | access to array element |
+| CollectionFlow.cs:13:17:13:23 | object creation of type A : A | CollectionFlow.cs:13:17:13:23 | object creation of type A : A | CollectionFlow.cs:17:14:17:23 | call to method First<A> | $@ | CollectionFlow.cs:17:14:17:23 | call to method First<A> | call to method First<A> |
+| CollectionFlow.cs:13:17:13:23 | object creation of type A : A | CollectionFlow.cs:13:17:13:23 | object creation of type A : A | CollectionFlow.cs:373:52:373:56 | access to array element | $@ | CollectionFlow.cs:373:52:373:56 | access to array element | access to array element |
+| CollectionFlow.cs:31:17:31:23 | object creation of type A : A | CollectionFlow.cs:31:17:31:23 | object creation of type A : A | CollectionFlow.cs:33:14:33:20 | access to array element | $@ | CollectionFlow.cs:33:14:33:20 | access to array element | access to array element |
+| CollectionFlow.cs:31:17:31:23 | object creation of type A : A | CollectionFlow.cs:31:17:31:23 | object creation of type A : A | CollectionFlow.cs:35:14:35:24 | call to method First<A> | $@ | CollectionFlow.cs:35:14:35:24 | call to method First<A> | call to method First<A> |
+| CollectionFlow.cs:31:17:31:23 | object creation of type A : A | CollectionFlow.cs:31:17:31:23 | object creation of type A : A | CollectionFlow.cs:373:52:373:56 | access to array element | $@ | CollectionFlow.cs:373:52:373:56 | access to array element | access to array element |
+| CollectionFlow.cs:49:17:49:23 | object creation of type A : A | CollectionFlow.cs:49:17:49:23 | object creation of type A : A | CollectionFlow.cs:52:14:52:19 | access to array element | $@ | CollectionFlow.cs:52:14:52:19 | access to array element | access to array element |
+| CollectionFlow.cs:49:17:49:23 | object creation of type A : A | CollectionFlow.cs:49:17:49:23 | object creation of type A : A | CollectionFlow.cs:54:14:54:23 | call to method First<A> | $@ | CollectionFlow.cs:54:14:54:23 | call to method First<A> | call to method First<A> |
+| CollectionFlow.cs:49:17:49:23 | object creation of type A : A | CollectionFlow.cs:49:17:49:23 | object creation of type A : A | CollectionFlow.cs:373:52:373:56 | access to array element | $@ | CollectionFlow.cs:373:52:373:56 | access to array element | access to array element |
+| CollectionFlow.cs:69:17:69:23 | object creation of type A : A | CollectionFlow.cs:69:17:69:23 | object creation of type A : A | CollectionFlow.cs:72:14:72:20 | access to indexer | $@ | CollectionFlow.cs:72:14:72:20 | access to indexer | access to indexer |
+| CollectionFlow.cs:69:17:69:23 | object creation of type A : A | CollectionFlow.cs:69:17:69:23 | object creation of type A : A | CollectionFlow.cs:74:14:74:28 | call to method ListFirst<A> | $@ | CollectionFlow.cs:74:14:74:28 | call to method ListFirst<A> | call to method ListFirst<A> |
+| CollectionFlow.cs:69:17:69:23 | object creation of type A : A | CollectionFlow.cs:69:17:69:23 | object creation of type A : A | CollectionFlow.cs:375:63:375:69 | access to indexer | $@ | CollectionFlow.cs:375:63:375:69 | access to indexer | access to indexer |
+| CollectionFlow.cs:88:17:88:23 | object creation of type A : A | CollectionFlow.cs:88:17:88:23 | object creation of type A : A | CollectionFlow.cs:90:14:90:20 | access to indexer | $@ | CollectionFlow.cs:90:14:90:20 | access to indexer | access to indexer |
+| CollectionFlow.cs:88:17:88:23 | object creation of type A : A | CollectionFlow.cs:88:17:88:23 | object creation of type A : A | CollectionFlow.cs:92:14:92:28 | call to method ListFirst<A> | $@ | CollectionFlow.cs:92:14:92:28 | call to method ListFirst<A> | call to method ListFirst<A> |
+| CollectionFlow.cs:88:17:88:23 | object creation of type A : A | CollectionFlow.cs:88:17:88:23 | object creation of type A : A | CollectionFlow.cs:375:63:375:69 | access to indexer | $@ | CollectionFlow.cs:375:63:375:69 | access to indexer | access to indexer |
+| CollectionFlow.cs:105:17:105:23 | object creation of type A : A | CollectionFlow.cs:105:17:105:23 | object creation of type A : A | CollectionFlow.cs:108:14:108:20 | access to indexer | $@ | CollectionFlow.cs:108:14:108:20 | access to indexer | access to indexer |
+| CollectionFlow.cs:105:17:105:23 | object creation of type A : A | CollectionFlow.cs:105:17:105:23 | object creation of type A : A | CollectionFlow.cs:110:14:110:28 | call to method ListFirst<A> | $@ | CollectionFlow.cs:110:14:110:28 | call to method ListFirst<A> | call to method ListFirst<A> |
+| CollectionFlow.cs:105:17:105:23 | object creation of type A : A | CollectionFlow.cs:105:17:105:23 | object creation of type A : A | CollectionFlow.cs:375:63:375:69 | access to indexer | $@ | CollectionFlow.cs:375:63:375:69 | access to indexer | access to indexer |
+| CollectionFlow.cs:124:17:124:23 | object creation of type A : A | CollectionFlow.cs:124:17:124:23 | object creation of type A : A | CollectionFlow.cs:127:14:127:20 | access to indexer | $@ | CollectionFlow.cs:127:14:127:20 | access to indexer | access to indexer |
+| CollectionFlow.cs:124:17:124:23 | object creation of type A : A | CollectionFlow.cs:124:17:124:23 | object creation of type A : A | CollectionFlow.cs:129:14:129:32 | call to method DictIndexZero<A> | $@ | CollectionFlow.cs:129:14:129:32 | call to method DictIndexZero<A> | call to method DictIndexZero<A> |
+| CollectionFlow.cs:124:17:124:23 | object creation of type A : A | CollectionFlow.cs:124:17:124:23 | object creation of type A : A | CollectionFlow.cs:130:14:130:33 | call to method DictFirstValue<A> | $@ | CollectionFlow.cs:130:14:130:33 | call to method DictFirstValue<A> | call to method DictFirstValue<A> |
+| CollectionFlow.cs:124:17:124:23 | object creation of type A : A | CollectionFlow.cs:124:17:124:23 | object creation of type A : A | CollectionFlow.cs:131:14:131:34 | call to method DictValuesFirst<A> | $@ | CollectionFlow.cs:131:14:131:34 | call to method DictValuesFirst<A> | call to method DictValuesFirst<A> |
+| CollectionFlow.cs:124:17:124:23 | object creation of type A : A | CollectionFlow.cs:124:17:124:23 | object creation of type A : A | CollectionFlow.cs:377:75:377:81 | access to indexer | $@ | CollectionFlow.cs:377:75:377:81 | access to indexer | access to indexer |
+| CollectionFlow.cs:147:17:147:23 | object creation of type A : A | CollectionFlow.cs:147:17:147:23 | object creation of type A : A | CollectionFlow.cs:149:14:149:20 | access to indexer | $@ | CollectionFlow.cs:149:14:149:20 | access to indexer | access to indexer |
+| CollectionFlow.cs:147:17:147:23 | object creation of type A : A | CollectionFlow.cs:147:17:147:23 | object creation of type A : A | CollectionFlow.cs:151:14:151:32 | call to method DictIndexZero<A> | $@ | CollectionFlow.cs:151:14:151:32 | call to method DictIndexZero<A> | call to method DictIndexZero<A> |
+| CollectionFlow.cs:147:17:147:23 | object creation of type A : A | CollectionFlow.cs:147:17:147:23 | object creation of type A : A | CollectionFlow.cs:152:14:152:33 | call to method DictFirstValue<A> | $@ | CollectionFlow.cs:152:14:152:33 | call to method DictFirstValue<A> | call to method DictFirstValue<A> |
+| CollectionFlow.cs:147:17:147:23 | object creation of type A : A | CollectionFlow.cs:147:17:147:23 | object creation of type A : A | CollectionFlow.cs:153:14:153:34 | call to method DictValuesFirst<A> | $@ | CollectionFlow.cs:153:14:153:34 | call to method DictValuesFirst<A> | call to method DictValuesFirst<A> |
+| CollectionFlow.cs:147:17:147:23 | object creation of type A : A | CollectionFlow.cs:147:17:147:23 | object creation of type A : A | CollectionFlow.cs:377:75:377:81 | access to indexer | $@ | CollectionFlow.cs:377:75:377:81 | access to indexer | access to indexer |
+| CollectionFlow.cs:168:17:168:23 | object creation of type A : A | CollectionFlow.cs:168:17:168:23 | object creation of type A : A | CollectionFlow.cs:170:14:170:20 | access to indexer | $@ | CollectionFlow.cs:170:14:170:20 | access to indexer | access to indexer |
+| CollectionFlow.cs:168:17:168:23 | object creation of type A : A | CollectionFlow.cs:168:17:168:23 | object creation of type A : A | CollectionFlow.cs:172:14:172:32 | call to method DictIndexZero<A> | $@ | CollectionFlow.cs:172:14:172:32 | call to method DictIndexZero<A> | call to method DictIndexZero<A> |
+| CollectionFlow.cs:168:17:168:23 | object creation of type A : A | CollectionFlow.cs:168:17:168:23 | object creation of type A : A | CollectionFlow.cs:173:14:173:33 | call to method DictFirstValue<A> | $@ | CollectionFlow.cs:173:14:173:33 | call to method DictFirstValue<A> | call to method DictFirstValue<A> |
+| CollectionFlow.cs:168:17:168:23 | object creation of type A : A | CollectionFlow.cs:168:17:168:23 | object creation of type A : A | CollectionFlow.cs:174:14:174:34 | call to method DictValuesFirst<A> | $@ | CollectionFlow.cs:174:14:174:34 | call to method DictValuesFirst<A> | call to method DictValuesFirst<A> |
+| CollectionFlow.cs:168:17:168:23 | object creation of type A : A | CollectionFlow.cs:168:17:168:23 | object creation of type A : A | CollectionFlow.cs:377:75:377:81 | access to indexer | $@ | CollectionFlow.cs:377:75:377:81 | access to indexer | access to indexer |
+| CollectionFlow.cs:190:17:190:23 | object creation of type A : A | CollectionFlow.cs:190:17:190:23 | object creation of type A : A | CollectionFlow.cs:192:14:192:30 | call to method First<A> | $@ | CollectionFlow.cs:192:14:192:30 | call to method First<A> | call to method First<A> |
+| CollectionFlow.cs:190:17:190:23 | object creation of type A : A | CollectionFlow.cs:190:17:190:23 | object creation of type A : A | CollectionFlow.cs:194:14:194:32 | call to method DictKeysFirst<A> | $@ | CollectionFlow.cs:194:14:194:32 | call to method DictKeysFirst<A> | call to method DictKeysFirst<A> |
+| CollectionFlow.cs:190:17:190:23 | object creation of type A : A | CollectionFlow.cs:190:17:190:23 | object creation of type A : A | CollectionFlow.cs:195:14:195:31 | call to method DictFirstKey<A> | $@ | CollectionFlow.cs:195:14:195:31 | call to method DictFirstKey<A> | call to method DictFirstKey<A> |
+| CollectionFlow.cs:190:17:190:23 | object creation of type A : A | CollectionFlow.cs:190:17:190:23 | object creation of type A : A | CollectionFlow.cs:379:73:379:89 | call to method First<T> | $@ | CollectionFlow.cs:379:73:379:89 | call to method First<T> | call to method First<T> |
+| CollectionFlow.cs:209:17:209:23 | object creation of type A : A | CollectionFlow.cs:209:17:209:23 | object creation of type A : A | CollectionFlow.cs:211:14:211:30 | call to method First<A> | $@ | CollectionFlow.cs:211:14:211:30 | call to method First<A> | call to method First<A> |
+| CollectionFlow.cs:209:17:209:23 | object creation of type A : A | CollectionFlow.cs:209:17:209:23 | object creation of type A : A | CollectionFlow.cs:213:14:213:32 | call to method DictKeysFirst<A> | $@ | CollectionFlow.cs:213:14:213:32 | call to method DictKeysFirst<A> | call to method DictKeysFirst<A> |
+| CollectionFlow.cs:209:17:209:23 | object creation of type A : A | CollectionFlow.cs:209:17:209:23 | object creation of type A : A | CollectionFlow.cs:214:14:214:31 | call to method DictFirstKey<A> | $@ | CollectionFlow.cs:214:14:214:31 | call to method DictFirstKey<A> | call to method DictFirstKey<A> |
+| CollectionFlow.cs:209:17:209:23 | object creation of type A : A | CollectionFlow.cs:209:17:209:23 | object creation of type A : A | CollectionFlow.cs:379:73:379:89 | call to method First<T> | $@ | CollectionFlow.cs:379:73:379:89 | call to method First<T> | call to method First<T> |
+| CollectionFlow.cs:228:17:228:23 | object creation of type A : A | CollectionFlow.cs:228:17:228:23 | object creation of type A : A | CollectionFlow.cs:231:18:231:18 | access to local variable x | $@ | CollectionFlow.cs:231:18:231:18 | access to local variable x | access to local variable x |
+| CollectionFlow.cs:243:17:243:23 | object creation of type A : A | CollectionFlow.cs:243:17:243:23 | object creation of type A : A | CollectionFlow.cs:247:18:247:35 | access to property Current | $@ | CollectionFlow.cs:247:18:247:35 | access to property Current | access to property Current |
+| CollectionFlow.cs:260:17:260:23 | object creation of type A : A | CollectionFlow.cs:260:17:260:23 | object creation of type A : A | CollectionFlow.cs:265:18:265:35 | access to property Current | $@ | CollectionFlow.cs:265:18:265:35 | access to property Current | access to property Current |
+| CollectionFlow.cs:279:17:279:23 | object creation of type A : A | CollectionFlow.cs:279:17:279:23 | object creation of type A : A | CollectionFlow.cs:284:18:284:24 | access to property Key | $@ | CollectionFlow.cs:284:18:284:24 | access to property Key | access to property Key |
+| CollectionFlow.cs:305:17:305:23 | object creation of type A : A | CollectionFlow.cs:305:17:305:23 | object creation of type A : A | CollectionFlow.cs:308:14:308:19 | access to array element | $@ | CollectionFlow.cs:308:14:308:19 | access to array element | access to array element |
+| CollectionFlow.cs:305:17:305:23 | object creation of type A : A | CollectionFlow.cs:305:17:305:23 | object creation of type A : A | CollectionFlow.cs:310:14:310:23 | call to method First<A> | $@ | CollectionFlow.cs:310:14:310:23 | call to method First<A> | call to method First<A> |
+| CollectionFlow.cs:305:17:305:23 | object creation of type A : A | CollectionFlow.cs:305:17:305:23 | object creation of type A : A | CollectionFlow.cs:373:52:373:56 | access to array element | $@ | CollectionFlow.cs:373:52:373:56 | access to array element | access to array element |
+| CollectionFlow.cs:327:17:327:23 | object creation of type A : A | CollectionFlow.cs:327:17:327:23 | object creation of type A : A | CollectionFlow.cs:330:14:330:20 | access to indexer | $@ | CollectionFlow.cs:330:14:330:20 | access to indexer | access to indexer |
+| CollectionFlow.cs:327:17:327:23 | object creation of type A : A | CollectionFlow.cs:327:17:327:23 | object creation of type A : A | CollectionFlow.cs:332:14:332:28 | call to method ListFirst<A> | $@ | CollectionFlow.cs:332:14:332:28 | call to method ListFirst<A> | call to method ListFirst<A> |
+| CollectionFlow.cs:327:17:327:23 | object creation of type A : A | CollectionFlow.cs:327:17:327:23 | object creation of type A : A | CollectionFlow.cs:375:63:375:69 | access to indexer | $@ | CollectionFlow.cs:375:63:375:69 | access to indexer | access to indexer |
+| CollectionFlow.cs:346:20:346:26 | object creation of type A : A | CollectionFlow.cs:346:20:346:26 | object creation of type A : A | CollectionFlow.cs:395:63:395:69 | access to array element | $@ | CollectionFlow.cs:395:63:395:69 | access to array element | access to array element |
+| CollectionFlow.cs:347:26:347:32 | object creation of type A : A | CollectionFlow.cs:347:26:347:32 | object creation of type A : A | CollectionFlow.cs:395:63:395:69 | access to array element | $@ | CollectionFlow.cs:395:63:395:69 | access to array element | access to array element |
+| CollectionFlow.cs:348:26:348:32 | object creation of type A : A | CollectionFlow.cs:348:26:348:32 | object creation of type A : A | CollectionFlow.cs:395:63:395:69 | access to array element | $@ | CollectionFlow.cs:395:63:395:69 | access to array element | access to array element |
+| CollectionFlow.cs:349:30:349:36 | object creation of type A : A | CollectionFlow.cs:349:30:349:36 | object creation of type A : A | CollectionFlow.cs:395:63:395:69 | access to array element | $@ | CollectionFlow.cs:395:63:395:69 | access to array element | access to array element |

@@ -1,0 +1,18 @@
++ semmlecode-javascript-queries/Comments/FCommentedOutCode.ql: /Metrics/Files
+    @_namespace com.lgtm/javascript-queries
++ semmlecode-javascript-queries/Metrics/FLinesOfCode.ql: /Metrics/Files
+    @_namespace com.lgtm/javascript-queries
++ semmlecode-javascript-queries/Metrics/FLinesOfComment.ql: /Metrics/Documentation
+    @_namespace com.lgtm/javascript-queries
++ semmlecode-javascript-queries/Metrics/FLinesOfDuplicatedCode.ql: /Metrics/Duplication
+    @_namespace com.lgtm/javascript-queries
++ semmlecode-javascript-queries/Metrics/FLinesOfSimilarCode.ql: /Metrics/Duplication
+    @_namespace com.lgtm/javascript-queries
++ semmlecode-javascript-queries/Metrics/FNumberOfTests.ql: /Metrics/Files
+    @_namespace com.lgtm/javascript-queries
+
++ semmlecode-javascript-queries/Metrics/Dependencies/ExternalDependencies.ql
+    @_namespace com.lgtm/javascript-queries
++ semmlecode-javascript-queries/Metrics/Dependencies/ExternalDependenciesSourceLinks.ql
+    @_namespace com.lgtm/javascript-queries
+

@@ -1,0 +1,16 @@
+| 0 | dostmt.c:32:15:38:1 | { ... } | 1 | dostmt.c:33:3:33:12 | declaration |
+| 1 | dostmt.c:33:3:33:12 | declaration | 1 | dostmt.c:33:10:33:11 | initializer for i |
+| 1 | dostmt.c:33:10:33:11 | 0 | 2 | dostmt.c:34:3:36:18 | do (...) ... |
+| 1 | dostmt.c:33:10:33:11 | initializer for i | 1 | dostmt.c:33:10:33:11 | 0 |
+| 2 | dostmt.c:34:3:36:18 | do (...) ... | 2 | dostmt.c:34:6:36:3 | { ... } |
+| 2 | dostmt.c:34:6:36:3 | { ... } | 3 | dostmt.c:35:5:35:8 | ExprStmt |
+| 3 | dostmt.c:35:5:35:7 | ++ ... | 4 | dostmt.c:36:11:36:11 | i |
+| 3 | dostmt.c:35:5:35:8 | ExprStmt | 3 | dostmt.c:35:7:35:7 | i |
+| 3 | dostmt.c:35:7:35:7 | i | 3 | dostmt.c:35:5:35:7 | ++ ... |
+| 4 | dostmt.c:36:11:36:11 | i | 4 | dostmt.c:36:15:36:16 | 10 |
+| 4 | dostmt.c:36:11:36:16 | ... < ... | 2 | dostmt.c:34:6:36:3 | { ... } |
+| 4 | dostmt.c:36:11:36:16 | ... < ... | 5 | dostmt.c:37:3:37:4 | label ...: |
+| 4 | dostmt.c:36:15:36:16 | 10 | 4 | dostmt.c:36:11:36:16 | ... < ... |
+| 5 | dostmt.c:37:3:37:4 | label ...: | 5 | dostmt.c:37:5:37:5 | ; |
+| 5 | dostmt.c:37:5:37:5 | ; | 6 | dostmt.c:38:1:38:1 | return ... |
+| 6 | dostmt.c:38:1:38:1 | return ... | 0 | dostmt.c:32:6:32:11 | normal |

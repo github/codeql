@@ -1,0 +1,160 @@
+#-----| BasicObject
+
+#-----| Class
+#-----|  -> Module
+
+#-----| Complex
+#-----|  -> Numeric
+
+#-----| FalseClass
+#-----|  -> Object
+
+#-----| Float
+#-----|  -> Numeric
+
+#-----| NilClass
+#-----|  -> Object
+
+#-----| Numeric
+#-----|  -> Object
+
+#-----| Proc
+
+#-----| Rational
+#-----|  -> Numeric
+
+#-----| Symbol
+
+#-----| TrueClass
+#-----|  -> Object
+
+calls.rb:
+#   15| M
+
+#   29| C
+#-----|  -> Object
+
+#   51| D
+#-----|  -> C
+
+#   77| Integer
+#-----|  -> Numeric
+
+#   82| String
+#-----|  -> Object
+
+#   86| Kernel
+
+#   90| Module
+#-----|  -> Object
+
+#   97| Object
+#-----|  -> BasicObject
+
+#  102| Hash
+#-----|  -> Object
+
+#  106| Array
+#-----|  -> Object
+
+#  144| S
+#-----|  -> Object
+
+#  150| A
+#-----|  -> B
+#-----|  -> S
+
+#  155| B
+#-----|  -> S
+
+hello.rb:
+#    1| EnglishWords
+
+#   11| Greeting
+#-----|  -> Object
+
+#   18| HelloWorld
+#-----|  -> Greeting
+
+modules.rb:
+#    1| Empty
+
+#    4| Foo
+
+#    5| Foo::Bar
+
+#    6| Foo::Bar::ClassInFooBar
+#-----|  -> Object
+
+#   19| Foo::ClassInFoo
+#-----|  -> Object
+
+#   30| Foo::ClassInAnotherDefinitionOfFoo
+#-----|  -> Object
+
+#   37| Bar
+#-----|  -> Object
+
+#   49| Foo::Bar::ClassInAnotherDefinitionOfFooBar
+#-----|  -> Object
+
+#   60| MyModuleInGlobalScope
+
+#   63| Test
+
+#   65| Test::Foo1
+
+#   66| Test::Foo1::Bar
+#-----|  -> Object
+
+#   70| Test::Foo2
+
+#   71| Test::Foo2::Foo2
+
+#   72| Test::Foo2::Foo2::Bar
+#-----|  -> Object
+
+#   76| Test::Foo3
+
+#   83| Other
+
+#   84| Other::Foo1
+
+#   88| IncludeTest
+
+#   91| Test::Foo1::Y
+
+#   95| IncludeTest2
+
+#   97| Test::Foo1::Z
+
+#  101| PrependTest
+
+#  103| Test::Foo2::Y
+
+#  107| MM
+
+#  108| MM::MM
+
+#  112| YY
+#-----|  -> Object
+
+#  115| XX
+
+#  116| XX::YY
+#-----|  -> YY
+
+#  120| Test::Foo1::Bar::Baz
+
+modules_rec.rb:
+#    1| B::A
+#-----|  -> Object
+
+#    4| A::B
+#-----|  -> Object
+
+private.rb:
+#    1| E
+#-----|  -> Object
+
+#   42| F

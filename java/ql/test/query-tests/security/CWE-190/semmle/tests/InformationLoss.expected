@@ -1,0 +1,2 @@
+| Test.java:68:5:68:25 | ...+=... | Implicit cast of source type long to narrower destination type int. |
+| Test.java:87:4:87:9 | ...+=... | Implicit cast of source type long to narrower destination type int. |

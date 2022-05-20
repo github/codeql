@@ -1,0 +1,4 @@
+| file://:0:0:0:0 | There was an error during this compilation |
+| float128.cpp:1:39:1:39 | 128-bit floating-point types are not supported in this configuration |
+| float128.cpp:2:30:2:30 | an attribute specifies a mode incompatible with '<error-type>' |
+| float128.cpp:2:41:2:41 | invalid combination of type specifiers |

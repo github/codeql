@@ -1,0 +1,176 @@
+| Test.java:2:32:72:2 | { ... } | Test.java:3:3:3:8 | var ...; |
+| Test.java:3:3:3:8 | var ...; | Test.java:3:7:3:7 | j |
+| Test.java:3:7:3:7 | j | Test.java:4:3:4:14 | var ...; |
+| Test.java:4:3:4:14 | var ...; | Test.java:4:12:4:13 | 50 |
+| Test.java:4:8:4:13 | y | Test.java:7:3:7:12 | if (...) |
+| Test.java:4:12:4:13 | 50 | Test.java:4:8:4:13 | y |
+| Test.java:7:3:7:12 | if (...) | Test.java:7:7:7:7 | x |
+| Test.java:7:7:7:7 | x | Test.java:7:11:7:11 | 0 |
+| Test.java:7:7:7:11 | ... > ... | Test.java:7:14:10:3 | { ... } |
+| Test.java:7:7:7:11 | ... > ... | Test.java:10:10:12:3 | { ... } |
+| Test.java:7:7:7:11 | ... > ... | Test.java:14:3:14:20 | <Expr>; |
+| Test.java:7:11:7:11 | 0 | Test.java:7:7:7:11 | ... > ... |
+| Test.java:7:14:10:3 | { ... } | Test.java:8:4:8:10 | <Expr>; |
+| Test.java:8:4:8:9 | ...=... | Test.java:9:4:9:10 | <Expr>; |
+| Test.java:8:4:8:10 | <Expr>; | Test.java:8:8:8:9 | 20 |
+| Test.java:8:8:8:9 | 20 | Test.java:8:4:8:9 | ...=... |
+| Test.java:9:4:9:10 | <Expr>; | Test.java:9:8:9:9 | 10 |
+| Test.java:9:8:9:9 | 10 | Test.java:9:4:9:9 | ...=... |
+| Test.java:10:10:12:3 | { ... } | Test.java:11:4:11:10 | <Expr>; |
+| Test.java:11:4:11:10 | <Expr>; | Test.java:11:8:11:9 | 30 |
+| Test.java:11:8:11:9 | 30 | Test.java:11:4:11:9 | ...=... |
+| Test.java:14:3:14:19 | ...=... | Test.java:17:3:17:12 | if (...) |
+| Test.java:14:3:14:20 | <Expr>; | Test.java:14:14:14:14 | x |
+| Test.java:14:7:14:19 | (...)... | Test.java:14:3:14:19 | ...=... |
+| Test.java:14:14:14:14 | x | Test.java:14:18:14:18 | y |
+| Test.java:14:14:14:18 | ... + ... | Test.java:14:7:14:19 | (...)... |
+| Test.java:14:18:14:18 | y | Test.java:14:14:14:18 | ... + ... |
+| Test.java:17:3:17:12 | if (...) | Test.java:17:7:17:7 | x |
+| Test.java:17:7:17:7 | x | Test.java:17:11:17:11 | 0 |
+| Test.java:17:7:17:11 | ... < ... | Test.java:2:6:2:9 | test |
+| Test.java:17:7:17:11 | ... < ... | Test.java:18:4:18:10 | <Expr>; |
+| Test.java:17:7:17:11 | ... < ... | Test.java:20:11:20:11 | z |
+| Test.java:17:11:17:11 | 0 | Test.java:17:7:17:11 | ... < ... |
+| Test.java:18:4:18:9 | ...=... | Test.java:23:3:23:9 | <Expr>; |
+| Test.java:18:4:18:10 | <Expr>; | Test.java:18:8:18:9 | 40 |
+| Test.java:18:8:18:9 | 40 | Test.java:18:4:18:9 | ...=... |
+| Test.java:20:11:20:11 | z | Test.java:20:4:20:12 | return ... |
+| Test.java:23:3:23:8 | ...=... | Test.java:26:3:26:13 | if (...) |
+| Test.java:23:3:23:9 | <Expr>; | Test.java:23:7:23:8 | 10 |
+| Test.java:23:7:23:8 | 10 | Test.java:23:3:23:8 | ...=... |
+| Test.java:26:3:26:13 | if (...) | Test.java:26:7:26:7 | x |
+| Test.java:26:7:26:7 | x | Test.java:26:12:26:12 | 0 |
+| Test.java:26:7:26:12 | ... == ... | Test.java:26:15:29:3 | { ... } |
+| Test.java:26:7:26:12 | ... == ... | Test.java:31:3:31:9 | <Expr>; |
+| Test.java:26:12:26:12 | 0 | Test.java:26:7:26:12 | ... == ... |
+| Test.java:26:15:29:3 | { ... } | Test.java:27:4:27:10 | <Expr>; |
+| Test.java:27:4:27:9 | ...=... | Test.java:28:4:28:10 | <Expr>; |
+| Test.java:27:4:27:10 | <Expr>; | Test.java:27:8:27:9 | 60 |
+| Test.java:27:8:27:9 | 60 | Test.java:27:4:27:9 | ...=... |
+| Test.java:28:4:28:10 | <Expr>; | Test.java:28:8:28:9 | 10 |
+| Test.java:28:8:28:9 | 10 | Test.java:28:4:28:9 | ...=... |
+| Test.java:31:3:31:3 | z | Test.java:31:8:31:8 | x |
+| Test.java:31:3:31:8 | ...+=... | Test.java:34:3:34:15 | while (...) |
+| Test.java:31:3:31:9 | <Expr>; | Test.java:31:3:31:3 | z |
+| Test.java:31:8:31:8 | x | Test.java:31:3:31:8 | ...+=... |
+| Test.java:34:3:34:15 | while (...) | Test.java:34:10:34:10 | x |
+| Test.java:34:10:34:10 | x | Test.java:34:14:34:14 | 0 |
+| Test.java:34:10:34:14 | ... > ... | Test.java:34:17:37:3 | { ... } |
+| Test.java:34:10:34:14 | ... > ... | Test.java:39:3:39:9 | <Expr>; |
+| Test.java:34:14:34:14 | 0 | Test.java:34:10:34:14 | ... > ... |
+| Test.java:34:17:37:3 | { ... } | Test.java:35:4:35:10 | <Expr>; |
+| Test.java:35:4:35:9 | ...=... | Test.java:36:4:36:7 | <Expr>; |
+| Test.java:35:4:35:10 | <Expr>; | Test.java:35:8:35:9 | 10 |
+| Test.java:35:8:35:9 | 10 | Test.java:35:4:35:9 | ...=... |
+| Test.java:36:4:36:4 | x | Test.java:36:4:36:6 | ...-- |
+| Test.java:36:4:36:7 | <Expr>; | Test.java:36:4:36:4 | x |
+| Test.java:39:3:39:3 | z | Test.java:39:8:39:8 | y |
+| Test.java:39:3:39:8 | ...+=... | Test.java:42:3:42:26 | for (...;...;...) |
+| Test.java:39:3:39:9 | <Expr>; | Test.java:39:3:39:3 | z |
+| Test.java:39:8:39:8 | y | Test.java:39:3:39:8 | ...+=... |
+| Test.java:42:3:42:26 | for (...;...;...) | Test.java:42:12:42:12 | 0 |
+| Test.java:42:8:42:12 | ...=... | Test.java:42:15:42:15 | j |
+| Test.java:42:12:42:12 | 0 | Test.java:42:8:42:12 | ...=... |
+| Test.java:42:15:42:15 | j | Test.java:42:19:42:20 | 10 |
+| Test.java:42:15:42:20 | ... < ... | Test.java:42:28:45:3 | { ... } |
+| Test.java:42:15:42:20 | ... < ... | Test.java:47:3:47:9 | <Expr>; |
+| Test.java:42:19:42:20 | 10 | Test.java:42:15:42:20 | ... < ... |
+| Test.java:42:23:42:23 | j | Test.java:42:23:42:25 | ...++ |
+| Test.java:42:28:45:3 | { ... } | Test.java:43:4:43:9 | <Expr>; |
+| Test.java:43:4:43:8 | ...=... | Test.java:44:4:44:10 | <Expr>; |
+| Test.java:43:4:43:9 | <Expr>; | Test.java:43:8:43:8 | 0 |
+| Test.java:43:8:43:8 | 0 | Test.java:43:4:43:8 | ...=... |
+| Test.java:44:4:44:9 | ...=... | Test.java:42:23:42:23 | j |
+| Test.java:44:4:44:10 | <Expr>; | Test.java:44:8:44:9 | 10 |
+| Test.java:44:8:44:9 | 10 | Test.java:44:4:44:9 | ...=... |
+| Test.java:47:3:47:3 | z | Test.java:47:8:47:8 | w |
+| Test.java:47:3:47:8 | ...+=... | Test.java:50:3:50:26 | for (...;...;...) |
+| Test.java:47:3:47:9 | <Expr>; | Test.java:47:3:47:3 | z |
+| Test.java:47:8:47:8 | w | Test.java:47:3:47:8 | ...+=... |
+| Test.java:50:3:50:26 | for (...;...;...) | Test.java:50:12:50:12 | 0 |
+| Test.java:50:8:50:12 | ...=... | Test.java:50:15:50:15 | j |
+| Test.java:50:12:50:12 | 0 | Test.java:50:8:50:12 | ...=... |
+| Test.java:50:15:50:15 | j | Test.java:50:19:50:20 | 10 |
+| Test.java:50:15:50:20 | ... < ... | Test.java:50:28:64:3 | { ... } |
+| Test.java:50:15:50:20 | ... < ... | Test.java:66:3:66:17 | <Expr>; |
+| Test.java:50:19:50:20 | 10 | Test.java:50:15:50:20 | ... < ... |
+| Test.java:50:23:50:23 | j | Test.java:50:23:50:25 | ...++ |
+| Test.java:50:28:64:3 | { ... } | Test.java:51:4:51:10 | <Expr>; |
+| Test.java:51:4:51:9 | ...=... | Test.java:52:4:52:13 | if (...) |
+| Test.java:51:4:51:10 | <Expr>; | Test.java:51:8:51:9 | 30 |
+| Test.java:51:8:51:9 | 30 | Test.java:51:4:51:9 | ...=... |
+| Test.java:52:4:52:13 | if (...) | Test.java:52:8:52:8 | z |
+| Test.java:52:8:52:8 | z | Test.java:52:12:52:12 | 0 |
+| Test.java:52:8:52:12 | ... > ... | Test.java:50:23:50:23 | j |
+| Test.java:52:8:52:12 | ... > ... | Test.java:53:5:53:14 | if (...) |
+| Test.java:52:8:52:12 | ... > ... | Test.java:59:9:62:4 | { ... } |
+| Test.java:52:12:52:12 | 0 | Test.java:52:8:52:12 | ... > ... |
+| Test.java:53:5:53:14 | if (...) | Test.java:53:9:53:9 | y |
+| Test.java:53:9:53:9 | y | Test.java:53:13:53:13 | 0 |
+| Test.java:53:9:53:13 | ... > ... | Test.java:53:16:56:5 | { ... } |
+| Test.java:53:9:53:13 | ... > ... | Test.java:56:12:58:5 | { ... } |
+| Test.java:53:13:53:13 | 0 | Test.java:53:9:53:13 | ... > ... |
+| Test.java:53:16:56:5 | { ... } | Test.java:54:6:54:11 | <Expr>; |
+| Test.java:54:6:54:10 | ...=... | Test.java:55:6:55:11 | break |
+| Test.java:54:6:54:11 | <Expr>; | Test.java:54:10:54:10 | 0 |
+| Test.java:54:10:54:10 | 0 | Test.java:54:6:54:10 | ...=... |
+| Test.java:56:12:58:5 | { ... } | Test.java:57:6:57:12 | <Expr>; |
+| Test.java:57:6:57:11 | ...=... | Test.java:63:4:63:9 | <Expr>; |
+| Test.java:57:6:57:12 | <Expr>; | Test.java:57:10:57:11 | 20 |
+| Test.java:57:10:57:11 | 20 | Test.java:57:6:57:11 | ...=... |
+| Test.java:59:9:62:4 | { ... } | Test.java:60:5:60:11 | <Expr>; |
+| Test.java:60:5:60:10 | ...=... | Test.java:61:5:61:13 | continue |
+| Test.java:60:5:60:11 | <Expr>; | Test.java:60:9:60:10 | 10 |
+| Test.java:60:9:60:10 | 10 | Test.java:60:5:60:10 | ...=... |
+| Test.java:63:4:63:9 | <Expr>; | Test.java:63:8:63:8 | 0 |
+| Test.java:63:8:63:8 | 0 | Test.java:63:4:63:8 | ...=... |
+| Test.java:66:3:66:3 | z | Test.java:66:8:66:8 | x |
+| Test.java:66:3:66:16 | ...+=... | Test.java:70:3:70:9 | <Expr>; |
+| Test.java:66:3:66:17 | <Expr>; | Test.java:66:3:66:3 | z |
+| Test.java:66:8:66:8 | x | Test.java:66:12:66:12 | y |
+| Test.java:66:8:66:12 | ... + ... | Test.java:66:16:66:16 | w |
+| Test.java:66:8:66:16 | ... + ... | Test.java:66:3:66:16 | ...+=... |
+| Test.java:66:12:66:12 | y | Test.java:66:8:66:12 | ... + ... |
+| Test.java:66:16:66:16 | w | Test.java:66:8:66:16 | ... + ... |
+| Test.java:70:3:70:8 | ...=... | Test.java:71:10:71:10 | w |
+| Test.java:70:3:70:9 | <Expr>; | Test.java:70:7:70:8 | 40 |
+| Test.java:70:7:70:8 | 40 | Test.java:70:3:70:8 | ...=... |
+| Test.java:71:10:71:10 | w | Test.java:71:3:71:11 | return ... |
+| Test.java:74:19:91:2 | { ... } | Test.java:76:3:76:8 | var ...; |
+| Test.java:76:3:76:8 | var ...; | Test.java:76:7:76:7 | b |
+| Test.java:76:7:76:7 | b | Test.java:77:3:77:8 | var ...; |
+| Test.java:77:3:77:8 | var ...; | Test.java:77:7:77:7 | c |
+| Test.java:77:7:77:7 | c | Test.java:78:3:78:8 | <Expr>; |
+| Test.java:78:3:78:7 | ...=... | Test.java:79:3:79:13 | while (...) |
+| Test.java:78:3:78:8 | <Expr>; | Test.java:78:7:78:7 | 0 |
+| Test.java:78:7:78:7 | 0 | Test.java:78:3:78:7 | ...=... |
+| Test.java:79:3:79:13 | while (...) | Test.java:79:9:79:12 | true |
+| Test.java:79:9:79:12 | true | Test.java:79:15:89:3 | { ... } |
+| Test.java:79:15:89:3 | { ... } | Test.java:80:4:80:10 | <Expr>; |
+| Test.java:80:4:80:9 | ...=... | Test.java:81:4:81:15 | if (...) |
+| Test.java:80:4:80:10 | <Expr>; | Test.java:80:8:80:9 | 10 |
+| Test.java:80:8:80:9 | 10 | Test.java:80:4:80:9 | ...=... |
+| Test.java:81:4:81:15 | if (...) | Test.java:81:8:81:8 | a |
+| Test.java:81:8:81:8 | a | Test.java:81:12:81:14 | 100 |
+| Test.java:81:8:81:14 | ... > ... | Test.java:81:17:84:4 | { ... } |
+| Test.java:81:8:81:14 | ... > ... | Test.java:85:4:85:15 | if (...) |
+| Test.java:81:12:81:14 | 100 | Test.java:81:8:81:14 | ... > ... |
+| Test.java:81:17:84:4 | { ... } | Test.java:82:5:82:11 | <Expr>; |
+| Test.java:82:5:82:10 | ...=... | Test.java:83:5:83:10 | <Expr>; |
+| Test.java:82:5:82:11 | <Expr>; | Test.java:82:9:82:10 | 10 |
+| Test.java:82:9:82:10 | 10 | Test.java:82:5:82:10 | ...=... |
+| Test.java:83:5:83:10 | <Expr>; | Test.java:83:9:83:9 | c |
+| Test.java:83:9:83:9 | c | Test.java:83:5:83:9 | ...=... |
+| Test.java:85:4:85:15 | if (...) | Test.java:85:8:85:8 | a |
+| Test.java:85:8:85:8 | a | Test.java:85:13:85:14 | 10 |
+| Test.java:85:8:85:14 | ... == ... | Test.java:74:6:74:10 | test2 |
+| Test.java:85:8:85:14 | ... == ... | Test.java:86:5:86:10 | break |
+| Test.java:85:8:85:14 | ... == ... | Test.java:87:4:87:15 | if (...) |
+| Test.java:85:13:85:14 | 10 | Test.java:85:8:85:14 | ... == ... |
+| Test.java:86:5:86:10 | break | Test.java:90:10:90:10 | b |
+| Test.java:87:4:87:15 | if (...) | Test.java:87:8:87:8 | a |
+| Test.java:87:8:87:8 | a | Test.java:87:13:87:14 | 20 |
+| Test.java:87:8:87:14 | ... == ... | Test.java:88:12:88:12 | c |
+| Test.java:87:13:87:14 | 20 | Test.java:87:8:87:14 | ... == ... |
+| Test.java:88:12:88:12 | c | Test.java:88:5:88:13 | return ... |
+| Test.java:90:10:90:10 | b | Test.java:90:3:90:11 | return ... |

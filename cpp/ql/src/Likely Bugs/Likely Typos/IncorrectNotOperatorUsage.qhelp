@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>This rule finds logical-not operator usage as an operator for in a bit-wise operation.</p>
+
+<p>Due to the nature of logical operation result value, only the lowest bit could possibly be set, and it is unlikely to be intent in bitwise opeartions. Violations are often indicative of a typo, using a logical-not (<code>!</code>) opeartor instead of the bit-wise not (<code>~</code>) operator. </p>
+<p>This rule is restricted to analyze bit-wise and (<code>&amp;</code>) and bit-wise or (<code>|</code>) operation in order to provide better precision.</p>
+<p>This rule ignores instances where a double negation (<code>!!</code>) is explicitly used as the opeartor of the bitwise operation, as this is a commonly used as a mechanism to normalize an integer value to either 1 or 0.</p>
+<p>NOTE: It is not recommended to use this rule in kernel code or older C code as it will likely find several false positive instances.</p>
+
+</overview>
+<recommendation>
+<p>Carefully inspect the flagged expressions. Consider the intent in the code logic, and decide whether it is necessary to change the not operator.</p>
+</recommendation>
+
+<example><sample src="IncorrectNotOperatorUsage.cpp" /></example>
+
+<references>
+  <li>
+    <a href="https://docs.microsoft.com/en-us/visualstudio/code-quality/c6317?view=vs-2017">warning C6317: incorrect operator: logical-not (!) is not interchangeable with ones-complement (~)</a>
+  </li>
+</references>
+</qhelp>

@@ -1,0 +1,14 @@
+| test.py:3:10:3:15 | ControlFlowNode for SOURCE | test.py:3:10:3:15 | ControlFlowNode for SOURCE |
+| test.py:6:9:6:14 | ControlFlowNode for SOURCE | test.py:7:10:7:10 | ControlFlowNode for s |
+| test.py:10:12:10:17 | ControlFlowNode for SOURCE | test.py:13:10:13:12 | ControlFlowNode for arg |
+| test.py:10:12:10:17 | ControlFlowNode for SOURCE | test.py:17:10:17:10 | ControlFlowNode for t |
+| test.py:20:9:20:14 | ControlFlowNode for SOURCE | test.py:13:10:13:12 | ControlFlowNode for arg |
+| test.py:37:13:37:18 | ControlFlowNode for SOURCE | test.py:41:14:41:14 | ControlFlowNode for t |
+| test.py:62:13:62:18 | ControlFlowNode for SOURCE | test.py:13:10:13:12 | ControlFlowNode for arg |
+| test.py:67:13:67:18 | ControlFlowNode for SOURCE | test.py:13:10:13:12 | ControlFlowNode for arg |
+| test.py:76:9:76:14 | ControlFlowNode for SOURCE | test.py:78:10:78:10 | ControlFlowNode for t |
+| test.py:108:13:108:18 | ControlFlowNode for SOURCE | test.py:112:14:112:14 | ControlFlowNode for t |
+| test.py:139:10:139:15 | ControlFlowNode for SOURCE | test.py:140:14:140:14 | ControlFlowNode for t |
+| test.py:143:9:143:14 | ControlFlowNode for SOURCE | test.py:145:10:145:10 | ControlFlowNode for s |
+| test.py:158:9:158:14 | ControlFlowNode for SOURCE | test.py:160:14:160:14 | ControlFlowNode for t |
+| test.py:158:9:158:14 | ControlFlowNode for SOURCE | test.py:166:14:166:14 | ControlFlowNode for t |

@@ -1,0 +1,1 @@
+| tst.js:3:3:3:9 | return; | This return statement implicitly returns 'undefined', whereas $@ returns an explicit value. | tst.js:4:2:4:11 | return 42; | another return statement in the same function |

@@ -1,0 +1,9 @@
+| builtin-class object | __class__ | Property __class__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
+| builtin-class type | __abstractmethods__ | Property __abstractmethods__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
+| builtin-class type | __bases__ | Property __bases__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
+| builtin-class type | __dict__ | Property __dict__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
+| builtin-class type | __doc__ | Property __doc__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
+| builtin-class type | __module__ | Property __module__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
+| builtin-class type | __name__ | Property __name__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
+| builtin-class type | __qualname__ | Property __qualname__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |
+| builtin-class type | __text_signature__ | Property __text_signature__ | method-wrapper __get__ | method-wrapper __set__ | method-wrapper __delete__ |

@@ -1,0 +1,38 @@
+| test.c:2:31:72:1 | { ... } | SSA def(x) | test.c:7:9:7:9 | x |
+| test.c:14:5:14:13 | ... = ... | SSA def(z) | test.c:20:16:20:16 | z |
+| test.c:14:5:14:14 | ExprStmt | SSA phi(x) | test.c:14:9:14:9 | x |
+| test.c:14:5:14:14 | ExprStmt | SSA phi(x) | test.c:17:8:17:8 | x |
+| test.c:14:5:14:14 | ExprStmt | SSA phi(y) | test.c:14:13:14:13 | y |
+| test.c:18:9:18:15 | ExprStmt | SSA phi(x) | test.c:26:9:26:9 | x |
+| test.c:31:5:31:10 | ... += ... | SSA def(z) | test.c:39:5:39:5 | z |
+| test.c:31:5:31:11 | ExprStmt | SSA phi(x) | test.c:31:10:31:10 | x |
+| test.c:31:5:31:11 | ExprStmt | SSA phi(z) | test.c:31:5:31:5 | z |
+| test.c:34:11:34:11 | x | SSA phi(x) | test.c:34:11:34:11 | x |
+| test.c:34:11:34:11 | x | SSA phi(y) | test.c:39:10:39:10 | y |
+| test.c:34:18:37:5 | { ... } | SSA phi(x) | test.c:36:9:36:9 | x |
+| test.c:39:5:39:10 | ... += ... | SSA def(z) | test.c:47:5:47:5 | z |
+| test.c:42:16:42:16 | j | SSA phi(j) | test.c:42:16:42:16 | j |
+| test.c:42:16:42:16 | j | SSA phi(w) | test.c:47:10:47:10 | w |
+| test.c:42:29:45:5 | { ... } | SSA phi(j) | test.c:42:24:42:24 | j |
+| test.c:50:16:50:16 | j | SSA phi(j) | test.c:50:16:50:16 | j |
+| test.c:50:16:50:16 | j | SSA phi(x) | test.c:66:10:66:10 | x |
+| test.c:50:16:50:16 | j | SSA phi(z) | test.c:52:12:52:12 | z |
+| test.c:50:29:64:5 | { ... } | SSA phi(j) | test.c:50:24:50:24 | j |
+| test.c:51:9:51:14 | ... = ... | SSA def(y) | test.c:53:16:53:16 | y |
+| test.c:64:5:64:5 | label ...: | SSA phi(w) | test.c:66:18:66:18 | w |
+| test.c:64:5:64:5 | label ...: | SSA phi(y) | test.c:66:14:66:14 | y |
+| test.c:64:5:64:5 | label ...: | SSA phi(z) | test.c:66:5:66:5 | z |
+| test.c:70:5:70:10 | ... = ... | SSA def(w) | test.c:71:12:71:12 | w |
+| test.c:77:14:87:5 | { ... } | SSA phi(a) | test.c:79:13:79:13 | a |
+| test.c:80:13:80:18 | ... = ... | SSA def(c) | test.c:81:17:81:17 | c |
+| test.c:83:9:84:18 | if (...) ...  | SSA phi(a) | test.c:83:13:83:13 | a |
+| test.c:83:9:84:18 | if (...) ...  | SSA phi(b) | test.c:88:12:88:12 | b |
+| test.c:83:9:84:18 | if (...) ...  | SSA phi(c) | test.c:86:20:86:20 | c |
+| test.c:85:9:86:21 | if (...) ...  | SSA phi(a) | test.c:85:13:85:13 | a |
+| test.c:91:33:97:1 | { ... } | SSA def(cond) | test.c:93:9:93:12 | cond |
+| test.c:96:5:96:11 | ExprStmt | SSA phi(x) | test.c:96:9:96:9 | x |
+| test.cpp:2:29:13:1 | { ... } | SSA def(a) | test.cpp:4:14:4:14 | a |
+| test.cpp:4:14:4:14 | a | SSA def(x) | test.cpp:5:17:5:17 | x |
+| test.cpp:4:14:4:14 | a | SSA def(x) | test.cpp:6:9:6:9 | x |
+| test.cpp:4:14:4:14 | a | SSA def(x) | test.cpp:7:9:7:9 | x |
+| test.cpp:4:14:4:14 | a | SSA def(x) | test.cpp:8:13:8:13 | x |

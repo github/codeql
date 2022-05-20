@@ -1,0 +1,2 @@
+| CallToObsoleteMethod.cs:19:9:19:24 | call to method ObsoleteMethod | Call to obsolete method $@. | CallToObsoleteMethod.cs:6:17:6:30 | ObsoleteMethod | ObsoleteMethod |
+| CallToObsoleteMethodBad.cs:7:9:7:35 | call to method Log | Call to obsolete method $@. | CallToObsoleteMethodBad.cs:13:28:13:30 | Log | Log |

@@ -1,0 +1,11 @@
+| test.cpp:3:17:13:1 | { ... } |
+| test.cpp:4:5:4:10 | declaration |
+| test.cpp:5:5:9:5 | if constexpr (...) ...  |
+| test.cpp:5:25:7:5 | { ... } |
+| test.cpp:6:9:6:14 | ExprStmt |
+| test.cpp:7:12:9:5 | { ... } |
+| test.cpp:8:9:8:14 | ExprStmt |
+| test.cpp:10:5:12:5 | if constexpr (...) ...  |
+| test.cpp:10:26:12:5 | { ... } |
+| test.cpp:11:9:11:14 | ExprStmt |
+| test.cpp:13:1:13:1 | return ... |

@@ -1,0 +1,8 @@
+| cstd_types.cpp:47:13:47:15 | if8 | CTypedefType, FastestMinimumWidthIntegralType, Int_fast8_t |
+| cstd_types.cpp:48:14:48:17 | if16 | CTypedefType, FastestMinimumWidthIntegralType, Int_fast16_t |
+| cstd_types.cpp:49:14:49:17 | if32 | CTypedefType, FastestMinimumWidthIntegralType, Int_fast32_t |
+| cstd_types.cpp:50:14:50:17 | if64 | CTypedefType, FastestMinimumWidthIntegralType, Int_fast64_t |
+| cstd_types.cpp:51:14:51:16 | uf8 | CTypedefType, FastestMinimumWidthIntegralType, UInt_fast8_t |
+| cstd_types.cpp:52:15:52:18 | uf16 | CTypedefType, FastestMinimumWidthIntegralType, UInt_fast16_t |
+| cstd_types.cpp:53:15:53:18 | uf32 | CTypedefType, FastestMinimumWidthIntegralType, UInt_fast32_t |
+| cstd_types.cpp:54:15:54:18 | uf64 | CTypedefType, FastestMinimumWidthIntegralType, UInt_fast64_t |

@@ -1,0 +1,4 @@
+| test.py:6:9:6:31 | Attribute() | assertTrue(a == b) cannot provide an informative message. Using assertEqual(a, b) instead will give more informative messages. |
+| test.py:7:9:7:31 | Attribute() | assertFalse(a > b) cannot provide an informative message. Using assertLessEqual(a, b) instead will give more informative messages. |
+| test.py:8:9:8:33 | Attribute() | assertTrue(a in b) cannot provide an informative message. Using assertIn(a, b) instead will give more informative messages. |
+| test.py:9:9:9:33 | Attribute() | assertFalse(a is b) cannot provide an informative message. Using assertIsNot(a, b) instead will give more informative messages. |

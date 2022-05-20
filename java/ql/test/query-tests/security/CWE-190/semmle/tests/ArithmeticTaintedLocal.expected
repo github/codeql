@@ -1,0 +1,99 @@
+edges
+| ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader |
+| ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader |
+| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader |
+| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader |
+| ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader |
+| ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader |
+| ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader |
+| ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader |
+| ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String |
+| ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | ArithmeticTainted.java:19:26:19:50 | readLine(...) : String |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:21:29:21:40 | stringNumber : String |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | ArithmeticTainted.java:21:29:21:40 | stringNumber : String |
+| ArithmeticTainted.java:21:29:21:40 | stringNumber : String | ArithmeticTainted.java:21:29:21:47 | trim(...) : String |
+| ArithmeticTainted.java:21:29:21:40 | stringNumber : String | ArithmeticTainted.java:21:29:21:47 | trim(...) : String |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:32:17:32:20 | data |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:40:17:40:20 | data |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:50:17:50:20 | data |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:64:20:64:23 | data : Number |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:95:37:95:40 | data |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:118:9:118:12 | data : Number |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:119:10:119:13 | data : Number |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:120:10:120:13 | data : Number |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | ArithmeticTainted.java:121:10:121:13 | data : Number |
+| ArithmeticTainted.java:64:4:64:10 | tainted [post update] [dat] : Number | ArithmeticTainted.java:66:18:66:24 | tainted [dat] : Number |
+| ArithmeticTainted.java:64:20:64:23 | data : Number | ArithmeticTainted.java:64:4:64:10 | tainted [post update] [dat] : Number |
+| ArithmeticTainted.java:64:20:64:23 | data : Number | Holder.java:12:22:12:26 | d : Number |
+| ArithmeticTainted.java:66:18:66:24 | tainted [dat] : Number | ArithmeticTainted.java:66:18:66:34 | getData(...) : Number |
+| ArithmeticTainted.java:66:18:66:24 | tainted [dat] : Number | Holder.java:16:13:16:19 | parameter this [dat] : Number |
+| ArithmeticTainted.java:66:18:66:34 | getData(...) : Number | ArithmeticTainted.java:71:17:71:23 | herring |
+| ArithmeticTainted.java:118:9:118:12 | data : Number | ArithmeticTainted.java:125:26:125:33 | data : Number |
+| ArithmeticTainted.java:119:10:119:13 | data : Number | ArithmeticTainted.java:129:27:129:34 | data : Number |
+| ArithmeticTainted.java:120:10:120:13 | data : Number | ArithmeticTainted.java:133:27:133:34 | data : Number |
+| ArithmeticTainted.java:121:10:121:13 | data : Number | ArithmeticTainted.java:137:27:137:34 | data : Number |
+| ArithmeticTainted.java:125:26:125:33 | data : Number | ArithmeticTainted.java:127:3:127:6 | data |
+| ArithmeticTainted.java:129:27:129:34 | data : Number | ArithmeticTainted.java:131:5:131:8 | data |
+| ArithmeticTainted.java:133:27:133:34 | data : Number | ArithmeticTainted.java:135:3:135:6 | data |
+| ArithmeticTainted.java:137:27:137:34 | data : Number | ArithmeticTainted.java:139:5:139:8 | data |
+| Holder.java:12:22:12:26 | d : Number | Holder.java:13:9:13:9 | d : Number |
+| Holder.java:13:9:13:9 | d : Number | Holder.java:13:3:13:5 | this <.field> [post update] [dat] : Number |
+| Holder.java:16:13:16:19 | parameter this [dat] : Number | Holder.java:17:10:17:12 | this <.field> [dat] : Number |
+| Holder.java:17:10:17:12 | this <.field> [dat] : Number | Holder.java:17:10:17:12 | dat : Number |
+nodes
+| ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| ArithmeticTainted.java:17:24:17:64 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | semmle.label | System.in : InputStream |
+| ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | semmle.label | System.in : InputStream |
+| ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
+| ArithmeticTainted.java:18:21:18:57 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
+| ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | semmle.label | readerInputStream : InputStreamReader |
+| ArithmeticTainted.java:18:40:18:56 | readerInputStream : InputStreamReader | semmle.label | readerInputStream : InputStreamReader |
+| ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | semmle.label | readerBuffered : BufferedReader |
+| ArithmeticTainted.java:19:26:19:39 | readerBuffered : BufferedReader | semmle.label | readerBuffered : BufferedReader |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | semmle.label | readLine(...) : String |
+| ArithmeticTainted.java:19:26:19:50 | readLine(...) : String | semmle.label | readLine(...) : String |
+| ArithmeticTainted.java:21:29:21:40 | stringNumber : String | semmle.label | stringNumber : String |
+| ArithmeticTainted.java:21:29:21:40 | stringNumber : String | semmle.label | stringNumber : String |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | semmle.label | trim(...) : String |
+| ArithmeticTainted.java:21:29:21:47 | trim(...) : String | semmle.label | trim(...) : String |
+| ArithmeticTainted.java:32:17:32:20 | data | semmle.label | data |
+| ArithmeticTainted.java:40:17:40:20 | data | semmle.label | data |
+| ArithmeticTainted.java:50:17:50:20 | data | semmle.label | data |
+| ArithmeticTainted.java:64:4:64:10 | tainted [post update] [dat] : Number | semmle.label | tainted [post update] [dat] : Number |
+| ArithmeticTainted.java:64:20:64:23 | data : Number | semmle.label | data : Number |
+| ArithmeticTainted.java:66:18:66:24 | tainted [dat] : Number | semmle.label | tainted [dat] : Number |
+| ArithmeticTainted.java:66:18:66:34 | getData(...) : Number | semmle.label | getData(...) : Number |
+| ArithmeticTainted.java:71:17:71:23 | herring | semmle.label | herring |
+| ArithmeticTainted.java:95:37:95:40 | data | semmle.label | data |
+| ArithmeticTainted.java:118:9:118:12 | data : Number | semmle.label | data : Number |
+| ArithmeticTainted.java:119:10:119:13 | data : Number | semmle.label | data : Number |
+| ArithmeticTainted.java:120:10:120:13 | data : Number | semmle.label | data : Number |
+| ArithmeticTainted.java:121:10:121:13 | data : Number | semmle.label | data : Number |
+| ArithmeticTainted.java:125:26:125:33 | data : Number | semmle.label | data : Number |
+| ArithmeticTainted.java:127:3:127:6 | data | semmle.label | data |
+| ArithmeticTainted.java:129:27:129:34 | data : Number | semmle.label | data : Number |
+| ArithmeticTainted.java:131:5:131:8 | data | semmle.label | data |
+| ArithmeticTainted.java:133:27:133:34 | data : Number | semmle.label | data : Number |
+| ArithmeticTainted.java:135:3:135:6 | data | semmle.label | data |
+| ArithmeticTainted.java:137:27:137:34 | data : Number | semmle.label | data : Number |
+| ArithmeticTainted.java:139:5:139:8 | data | semmle.label | data |
+| Holder.java:12:22:12:26 | d : Number | semmle.label | d : Number |
+| Holder.java:13:3:13:5 | this <.field> [post update] [dat] : Number | semmle.label | this <.field> [post update] [dat] : Number |
+| Holder.java:13:9:13:9 | d : Number | semmle.label | d : Number |
+| Holder.java:16:13:16:19 | parameter this [dat] : Number | semmle.label | parameter this [dat] : Number |
+| Holder.java:17:10:17:12 | dat : Number | semmle.label | dat : Number |
+| Holder.java:17:10:17:12 | this <.field> [dat] : Number | semmle.label | this <.field> [dat] : Number |
+subpaths
+| ArithmeticTainted.java:64:20:64:23 | data : Number | Holder.java:12:22:12:26 | d : Number | Holder.java:13:3:13:5 | this <.field> [post update] [dat] : Number | ArithmeticTainted.java:64:4:64:10 | tainted [post update] [dat] : Number |
+| ArithmeticTainted.java:66:18:66:24 | tainted [dat] : Number | Holder.java:16:13:16:19 | parameter this [dat] : Number | Holder.java:17:10:17:12 | dat : Number | ArithmeticTainted.java:66:18:66:34 | getData(...) : Number |
+#select
+| ArithmeticTainted.java:32:17:32:25 | ... + ... | ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:32:17:32:20 | data | $@ flows to here and is used in arithmetic, potentially causing an overflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:40:17:40:25 | ... - ... | ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:40:17:40:20 | data | $@ flows to here and is used in arithmetic, potentially causing an underflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:50:17:50:24 | ... + ... | ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:50:17:50:20 | data | $@ flows to here and is used in arithmetic, potentially causing an overflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:71:17:71:27 | ... + ... | ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:71:17:71:23 | herring | $@ flows to here and is used in arithmetic, potentially causing an overflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:95:37:95:46 | ... + ... | ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:95:37:95:40 | data | $@ flows to here and is used in arithmetic, potentially causing an overflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:127:3:127:8 | ...++ | ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:127:3:127:6 | data | $@ flows to here and is used in arithmetic, potentially causing an overflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:131:3:131:8 | ++... | ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:131:5:131:8 | data | $@ flows to here and is used in arithmetic, potentially causing an overflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:135:3:135:8 | ...-- | ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:135:3:135:6 | data | $@ flows to here and is used in arithmetic, potentially causing an underflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |
+| ArithmeticTainted.java:139:3:139:8 | --... | ArithmeticTainted.java:17:46:17:54 | System.in : InputStream | ArithmeticTainted.java:139:5:139:8 | data | $@ flows to here and is used in arithmetic, potentially causing an underflow. | ArithmeticTainted.java:17:46:17:54 | System.in | User-provided value |

@@ -1,0 +1,74 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+An unreachable <code>catch</code> clause may indicate a logical mistake in the exception handling code
+or may simply be unnecessary.
+</p>
+
+<p>
+Although certain unreachable <code>catch</code> clauses cause a compiler error,
+there are also unreachable <code>catch</code> clauses that do not cause a compiler error.
+A <code>catch</code> clause <code>C</code> is considered reachable by the compiler if both of the
+following conditions are true:</p>
+<ul>
+  <li>A checked exception that is thrown in the <code>try</code> block is assignable
+  to the parameter of <code>C</code>.</li>
+  <li>There is no previous <code>catch</code> clause whose parameter type is
+  equal to, or a supertype of, the parameter type of <code>C</code>.</li>
+</ul>
+<p>However, a <code>catch</code> clause that is considered reachable by the compiler can be
+unreachable if both of the following conditions are true:</p>
+<ul>
+  <li>The <code>catch</code> clause's parameter type <code>E</code> does not include any unchecked exceptions.</li>
+  <li>All exceptions that are thrown in the <code>try</code> block whose type is a (strict) subtype of <code>E</code>
+  are already handled by previous <code>catch</code> clauses.</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>
+Ensure that unreachable <code>catch</code> clauses are removed or that further corrections are made
+to make them reachable.
+</p>
+<p>
+Note that if a <code>try-catch</code> statement contains multiple <code>catch</code>
+clauses, and an exception that is thrown in the <code>try</code> block matches more
+than one of the <code>catch</code> clauses, only the first matching clause is executed.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the second <code>catch</code> clause is unreachable.
+The code is incomplete because a <code>FileOutputStream</code> is opened but
+no methods are called to write to the stream. Such methods typically throw
+<code>IOException</code>s, which would make the second <code>catch</code> clause
+reachable.
+</p>
+
+<sample src="PartiallyMaskedCatch.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java Language Specification:
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.20.1">Execution of try-catch</a>,
+  <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-14.html#jls-14.21">Unreachable Statements</a>.
+</li>
+<li>
+Help - Eclipse Platform:
+<a href="https://help.eclipse.org/2020-12/advanced/content.jsp?topic=/org.eclipse.jdt.doc.user/reference/preferences/java/compiler/ref-preferences-errors-warnings.htm">Java Compiler Errors/Warnings Preferences</a>.
+</li>
+
+
+</references>
+</qhelp>

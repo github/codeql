@@ -1,0 +1,150 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "JSXElement",
+        "openingElement": {
+          "type": "JSXOpeningElement",
+          "attributes": [],
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "div",
+            "loc": {
+              "start": {
+                "offset": 1
+              },
+              "end": {
+                "offset": 4
+              }
+            }
+          },
+          "selfClosing": false,
+          "loc": {
+            "start": {
+              "offset": 0
+            },
+            "end": {
+              "offset": 5
+            }
+          }
+        },
+        "closingElement": {
+          "type": "JSXClosingElement",
+          "name": {
+            "type": "JSXIdentifier",
+            "name": "div",
+            "loc": {
+              "start": {
+                "offset": 26
+              },
+              "end": {
+                "offset": 29
+              }
+            }
+          },
+          "loc": {
+            "start": {
+              "offset": 24
+            },
+            "end": {
+              "offset": 30
+            }
+          }
+        },
+        "children": [
+          {
+            "type": "JSXExpressionContainer",
+            "expression": {
+              "type": "JSXElement",
+              "openingElement": {
+                "type": "JSXOpeningElement",
+                "attributes": [
+                  {
+                    "type": "JSXSpreadAttribute",
+                    "argument": {
+                      "type": "Identifier",
+                      "name": "test",
+                      "loc": {
+                        "start": {
+                          "offset": 15
+                        },
+                        "end": {
+                          "offset": 19
+                        }
+                      }
+                    },
+                    "loc": {
+                      "start": {
+                        "offset": 11
+                      },
+                      "end": {
+                        "offset": 20
+                      }
+                    }
+                  }
+                ],
+                "name": {
+                  "type": "JSXIdentifier",
+                  "name": "div",
+                  "loc": {
+                    "start": {
+                      "offset": 7
+                    },
+                    "end": {
+                      "offset": 10
+                    }
+                  }
+                },
+                "selfClosing": true,
+                "loc": {
+                  "start": {
+                    "offset": 6
+                  },
+                  "end": {
+                    "offset": 23
+                  }
+                }
+              },
+              "closingElement": null,
+              "children": [],
+              "loc": {
+                "start": {
+                  "offset": 6
+                },
+                "end": {
+                  "offset": 23
+                }
+              }
+            },
+            "loc": {
+              "start": {
+                "offset": 5
+              },
+              "end": {
+                "offset": 24
+              }
+            }
+          }
+        ],
+        "loc": {
+          "start": {
+            "offset": 0
+          },
+          "end": {
+            "offset": 30
+          }
+        }
+      },
+      "loc": {
+        "start": {
+          "offset": 0
+        },
+        "end": {
+          "offset": 30
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>The query finds code that initializes a global variable (that is, uses it as an L-value) but is never called from <code>main</code>.
+Unless there is another entry point that triggers the initialization, the code should be modified so that the variable is initialized.
+Uninitialized variables may contain any value, as not all compilers generate code that zero-out memory, especially when 
+optimizations are enabled or the compiler is not compliant with the latest language standards.
+</p>
+
+<include src="callGraphWarning.inc.qhelp" />
+</overview>
+
+<recommendation>
+<p>Examine the code and ensure that the variable is always initialized before it is used.</p>
+
+</recommendation>
+<example>
+<p>In the example below, the code that triggers the initialization of <code>g_storage</code> is not run from <code>main</code>. 
+Unless the variable is initialized by another method, the call on line 10 may dereference a null pointer.
+</p>
+
+<sample src="InitialisationNotRun.cpp" />
+</example>
+
+<references>
+<li>C++ reference: <a href="https://en.cppreference.com/book/uninitialized">uninitialized variables</a>.</li>
+</references>
+</qhelp>

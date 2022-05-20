@@ -1,0 +1,61 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If the same pattern variable is bound multiple times in the same object or array pattern, the last
+binding overwrites all of the earlier ones. This is most likely unintended and should be avoided.
+</p>
+
+<p>
+In TypeScript, a common mistake is to try to write type annotations inside a pattern. This is not
+possible, and the type annotation should come after the pattern.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Rename the pattern variables to have different names. In an array pattern, elements that do not need
+to be bound can be omitted.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the function <code>distanceFromOrigin</code> uses an array pattern to decompose
+its argument <code>point</code>. The pattern binds <code>x</code> twice: first, <code>x</code> is
+bound to <code>point[0]</code>, the first element of <code>point</code>; this binding is then immediately
+overwritten by a binding to <code>point[1]</code>, which is probably unintended.
+</p>
+
+<sample src="examples/NonLinearPattern.js" />
+
+<p>
+From context, it appears that the second binding should have been for variable <code>y</code> like this:
+</p>
+
+<sample src="examples/NonLinearPatternGood.js" />
+
+<p>
+This can sometimes happen in TypeScript, due to the apparant similarity between property patterns
+and type annotations. In the following example, the function uses a pattern parameter with properties <code>x</code>
+and <code>y</code>. These appear to have type <code>number</code>, but are in fact untyped properties both stored in a variable named <code>number</code>.
+</p>
+
+<sample src="examples/NonLinearPatternTS.ts" />
+
+<p>
+It is not possible to specify type annotations inside a pattern. The correct way is to specify the type
+after the parameter:
+</p>
+
+<sample src="examples/NonLinearPatternTSGood.ts" />
+
+</example>
+<references>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment">Destructuring assignment</a>.</li>
+</references>
+</qhelp>

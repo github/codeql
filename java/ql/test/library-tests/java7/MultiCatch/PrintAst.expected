@@ -1,0 +1,77 @@
+MultiCatch.java:
+#    0| [CompilationUnit] MultiCatch
+#-----|   -1: (Imports)
+#    3|     1: [ImportType] import IOException
+#    4|     2: [ImportType] import SQLException
+#    6|   1: [Class] MultiCatch
+#    7|     2: [Method] multiCatch
+#    7|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#    7|         0: [Parameter] b
+#    7|           0: [TypeAccess] boolean
+#    8|       5: [BlockStmt] { ... }
+#    9|         0: [TryStmt] try ...
+#   10|           -1: [BlockStmt] { ... }
+#   11|             0: [IfStmt] if (...)
+#   11|               0: [VarAccess] b
+#   12|               1: [ThrowStmt] throw ...
+#   12|                 0: [ClassInstanceExpr] new IOException(...)
+#   12|                   -3: [TypeAccess] IOException
+#   14|               2: [ThrowStmt] throw ...
+#   14|                 0: [ClassInstanceExpr] new SQLException(...)
+#   14|                   -3: [TypeAccess] SQLException
+#   15|           0: [CatchClause] catch (...)
+#-----|             0: (Single Local Variable Declaration)
+#   15|               0: [UnionTypeAccess] ...|...
+#   15|                 0: [TypeAccess] IOException
+#   15|                 1: [TypeAccess] SQLException
+#   15|               1: [LocalVariableDeclExpr] e
+#   16|             1: [BlockStmt] { ... }
+#   17|               0: [ExprStmt] <Expr>;
+#   17|                 0: [MethodAccess] printStackTrace(...)
+#   17|                   -1: [VarAccess] e
+#   18|               1: [ThrowStmt] throw ...
+#   18|                 0: [VarAccess] e
+#   22|     3: [Method] multiCatch2
+#   22|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#   22|         0: [Parameter] b
+#   22|           0: [TypeAccess] boolean
+#   22|         1: [Parameter] c
+#   22|           0: [TypeAccess] boolean
+#   23|       5: [BlockStmt] { ... }
+#   24|         0: [TryStmt] try ...
+#   25|           -1: [BlockStmt] { ... }
+#   26|             0: [IfStmt] if (...)
+#   26|               0: [VarAccess] b
+#   27|               1: [ThrowStmt] throw ...
+#   27|                 0: [ClassInstanceExpr] new IOException(...)
+#   27|                   -3: [TypeAccess] IOException
+#   28|               2: [IfStmt] if (...)
+#   28|                 0: [VarAccess] c
+#   29|                 1: [ThrowStmt] throw ...
+#   29|                   0: [ClassInstanceExpr] new SQLException(...)
+#   29|                     -3: [TypeAccess] SQLException
+#   30|             1: [ThrowStmt] throw ...
+#   30|               0: [ClassInstanceExpr] new Exception(...)
+#   30|                 -3: [TypeAccess] Exception
+#   31|           0: [CatchClause] catch (...)
+#-----|             0: (Single Local Variable Declaration)
+#   31|               0: [UnionTypeAccess] ...|...
+#   31|                 0: [TypeAccess] IOException
+#   31|                 1: [TypeAccess] SQLException
+#   31|               1: [LocalVariableDeclExpr] e
+#   32|             1: [BlockStmt] { ... }
+#   35|     4: [Method] ordinaryCatch
+#   35|       3: [TypeAccess] void
+#   36|       5: [BlockStmt] { ... }
+#   37|         0: [TryStmt] try ...
+#   38|           -1: [BlockStmt] { ... }
+#   39|             0: [ThrowStmt] throw ...
+#   39|               0: [ClassInstanceExpr] new IOException(...)
+#   39|                 -3: [TypeAccess] IOException
+#   40|           0: [CatchClause] catch (...)
+#-----|             0: (Single Local Variable Declaration)
+#   40|               0: [TypeAccess] Exception
+#   40|               1: [LocalVariableDeclExpr] e
+#   41|             1: [BlockStmt] { ... }

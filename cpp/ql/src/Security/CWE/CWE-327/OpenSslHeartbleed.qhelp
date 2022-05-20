@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Earlier versions of the popular OpenSSL library suffer from a
+buffer overflow in its "heartbeat" code. Because of the location of
+the problematic code, this vulnerability is often called
+"Heartbleed".</p>
+
+<p>Software that includes a copy of OpenSSL should be sure to use a
+current version of the library. If it uses an older version, it will
+be vulnerable to any network site it connects with.</p>
+
+</overview>
+<recommendation>
+
+<p>Upgrade to the latest version of OpenSSL. This problem was fixed in
+version 1.0.1g.</p>
+
+</recommendation>
+<example>
+
+<p>The following code is present in earlier versions of
+OpenSSL. The <code>payload</code> variable is the number of bytes that
+should be copied from the request back into the response. The call
+to <code>memcpy</code> does this copy. The problem is
+that <code>payload</code> is supplied as part of the remote request,
+and there is no code that checks the size of it. If the caller
+supplies a very large value, then the <code>memcpy</code> call will
+copy memory that is outside the request packet.</p>
+
+<sample src="OpenSslHeartbleed.c" />
+
+</example>
+<references>
+
+<li>Common Vulnerabilities and Exposures:
+    <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-0160">CVE-2014-0160</a>.</li>
+<li>OpenSSL News:
+    <a href="https://www.openssl.org/news/secadv_20140407.txt">OpenSSL
+    Security Advisory [07 Apr 2014]</a>.</li>
+
+
+</references>
+</qhelp>

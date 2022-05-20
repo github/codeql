@@ -1,0 +1,2 @@
+| test.cpp:12:7:12:12 | call to chroot | Creation of 'chroot' jail without changing the working directory |
+| test.cpp:29:3:29:7 | call to chdir | Unchecked return value for call to 'chdir'. |

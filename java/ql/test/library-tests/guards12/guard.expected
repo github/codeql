@@ -1,0 +1,1 @@
+| Test.java:5:7:5:17 | case ... | Test.java:3:20:3:20 | s | Test.java:5:12:5:14 | "c" | true | true | Test.java:5:7:5:17 | case ... |

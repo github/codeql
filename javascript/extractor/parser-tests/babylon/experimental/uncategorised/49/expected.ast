@@ -1,0 +1,167 @@
+{
+  "type": "Program",
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0,
+      "offset": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 30,
+      "offset": 30
+    }
+  },
+  "sourceType": "script",
+  "body": [
+    {
+      "type": "VariableDeclaration",
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 30,
+          "offset": 30
+        }
+      },
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 4,
+              "offset": 4
+            },
+            "end": {
+              "line": 1,
+              "column": 29,
+              "offset": 29
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 4,
+                "offset": 4
+              },
+              "end": {
+                "line": 1,
+                "column": 7,
+                "offset": 7
+              }
+            },
+            "name": "obj"
+          },
+          "init": {
+            "type": "ObjectExpression",
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 10,
+                "offset": 10
+              },
+              "end": {
+                "line": 1,
+                "column": 29,
+                "offset": 29
+              }
+            },
+            "properties": [
+              {
+                "type": "Property",
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 17,
+                    "offset": 17
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 27,
+                    "offset": 27
+                  }
+                },
+                "decorators": [
+                  {
+                    "type": "Decorator",
+                    "loc": {
+                      "start": {
+                        "line": 1,
+                        "column": 12,
+                        "offset": 12
+                      },
+                      "end": {
+                        "line": 1,
+                        "column": 16,
+                        "offset": 16
+                      }
+                    },
+                    "expression": {
+                      "type": "Identifier",
+                      "loc": {
+                        "start": {
+                          "line": 1,
+                          "column": 13,
+                          "offset": 13
+                        },
+                        "end": {
+                          "line": 1,
+                          "column": 16,
+                          "offset": 16
+                        }
+                      },
+                      "name": "foo"
+                    }
+                  }
+                ],
+                "method": false,
+                "shorthand": false,
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 17,
+                      "offset": 17
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 20,
+                      "offset": 20
+                    }
+                  },
+                  "name": "bar"
+                },
+                "value": {
+                  "type": "Literal",
+                  "loc": {
+                    "start": {
+                      "line": 1,
+                      "column": 22,
+                      "offset": 22
+                    },
+                    "end": {
+                      "line": 1,
+                      "column": 27,
+                      "offset": 27
+                    }
+                  },
+                  "value": "wow"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "kind": "var"
+    }
+  ]
+}

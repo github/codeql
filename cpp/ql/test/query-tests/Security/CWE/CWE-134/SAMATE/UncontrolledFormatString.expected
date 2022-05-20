@@ -1,0 +1,54 @@
+edges
+| char_connect_socket_w32_vsnprintf_01_bad.c:94:46:94:69 | recv output argument | char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data |
+| char_connect_socket_w32_vsnprintf_01_bad.c:94:46:94:69 | recv output argument | char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data |
+| char_connect_socket_w32_vsnprintf_01_bad.c:94:46:94:69 | recv output argument | char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data indirection |
+| char_connect_socket_w32_vsnprintf_01_bad.c:94:55:94:68 | ... + ... | char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data |
+| char_connect_socket_w32_vsnprintf_01_bad.c:94:55:94:68 | ... + ... | char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data |
+| char_connect_socket_w32_vsnprintf_01_bad.c:94:55:94:68 | ... + ... | char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data indirection |
+| char_console_fprintf_01_bad.c:30:23:30:35 | ... + ... | char_console_fprintf_01_bad.c:49:21:49:24 | (const char *)... |
+| char_console_fprintf_01_bad.c:30:23:30:35 | ... + ... | char_console_fprintf_01_bad.c:49:21:49:24 | data |
+| char_console_fprintf_01_bad.c:30:23:30:35 | ... + ... | char_console_fprintf_01_bad.c:49:21:49:24 | data |
+| char_console_fprintf_01_bad.c:30:23:30:35 | ... + ... | char_console_fprintf_01_bad.c:49:21:49:24 | data indirection |
+| char_console_fprintf_01_bad.c:30:23:30:35 | fgets output argument | char_console_fprintf_01_bad.c:49:21:49:24 | (const char *)... |
+| char_console_fprintf_01_bad.c:30:23:30:35 | fgets output argument | char_console_fprintf_01_bad.c:49:21:49:24 | data |
+| char_console_fprintf_01_bad.c:30:23:30:35 | fgets output argument | char_console_fprintf_01_bad.c:49:21:49:24 | data |
+| char_console_fprintf_01_bad.c:30:23:30:35 | fgets output argument | char_console_fprintf_01_bad.c:49:21:49:24 | data indirection |
+| char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | (const char *)... |
+| char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | (const char *)... |
+| char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | data |
+| char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | data |
+| char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | data |
+| char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | data |
+| char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | data indirection |
+| char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | data indirection |
+subpaths
+nodes
+| char_connect_socket_w32_vsnprintf_01_bad.c:94:46:94:69 | recv output argument | semmle.label | recv output argument |
+| char_connect_socket_w32_vsnprintf_01_bad.c:94:55:94:68 | ... + ... | semmle.label | ... + ... |
+| char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data | semmle.label | data |
+| char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data | semmle.label | data |
+| char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data | semmle.label | data |
+| char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data indirection | semmle.label | data indirection |
+| char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data indirection | semmle.label | data indirection |
+| char_console_fprintf_01_bad.c:30:23:30:35 | ... + ... | semmle.label | ... + ... |
+| char_console_fprintf_01_bad.c:30:23:30:35 | fgets output argument | semmle.label | fgets output argument |
+| char_console_fprintf_01_bad.c:49:21:49:24 | (const char *)... | semmle.label | (const char *)... |
+| char_console_fprintf_01_bad.c:49:21:49:24 | (const char *)... | semmle.label | (const char *)... |
+| char_console_fprintf_01_bad.c:49:21:49:24 | data | semmle.label | data |
+| char_console_fprintf_01_bad.c:49:21:49:24 | data | semmle.label | data |
+| char_console_fprintf_01_bad.c:49:21:49:24 | data | semmle.label | data |
+| char_console_fprintf_01_bad.c:49:21:49:24 | data indirection | semmle.label | data indirection |
+| char_console_fprintf_01_bad.c:49:21:49:24 | data indirection | semmle.label | data indirection |
+| char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | semmle.label | call to getenv |
+| char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | semmle.label | call to getenv |
+| char_environment_fprintf_01_bad.c:36:21:36:24 | (const char *)... | semmle.label | (const char *)... |
+| char_environment_fprintf_01_bad.c:36:21:36:24 | (const char *)... | semmle.label | (const char *)... |
+| char_environment_fprintf_01_bad.c:36:21:36:24 | data | semmle.label | data |
+| char_environment_fprintf_01_bad.c:36:21:36:24 | data | semmle.label | data |
+| char_environment_fprintf_01_bad.c:36:21:36:24 | data | semmle.label | data |
+| char_environment_fprintf_01_bad.c:36:21:36:24 | data indirection | semmle.label | data indirection |
+| char_environment_fprintf_01_bad.c:36:21:36:24 | data indirection | semmle.label | data indirection |
+#select
+| char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data | char_connect_socket_w32_vsnprintf_01_bad.c:94:55:94:68 | ... + ... | char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | data | The value of this argument may come from $@ and is being used as a formatting argument to badVaSink(data), which calls vsnprintf(format) | char_connect_socket_w32_vsnprintf_01_bad.c:94:55:94:68 | ... + ... | recv |
+| char_console_fprintf_01_bad.c:49:21:49:24 | data | char_console_fprintf_01_bad.c:30:23:30:35 | ... + ... | char_console_fprintf_01_bad.c:49:21:49:24 | data | The value of this argument may come from $@ and is being used as a formatting argument to fprintf(format) | char_console_fprintf_01_bad.c:30:23:30:35 | ... + ... | fgets |
+| char_environment_fprintf_01_bad.c:36:21:36:24 | data | char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | data | The value of this argument may come from $@ and is being used as a formatting argument to fprintf(format) | char_environment_fprintf_01_bad.c:27:30:27:35 | call to getenv | getenv |

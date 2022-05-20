@@ -1,0 +1,6 @@
+WARNING: Type TurboGearsControllerMethod has been deprecated and may be removed in future (Controller.ql:4,6-32)
+| test.py:7:5:7:32 | Function onerror |
+| test.py:13:5:13:50 | Function ok_validated |
+| test.py:18:5:18:57 | Function partially_validated |
+| test.py:22:5:22:51 | Function not_validated |
+| test.py:26:5:26:28 | Function with_template |

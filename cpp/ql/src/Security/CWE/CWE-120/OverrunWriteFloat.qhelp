@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The program performs a buffer copy or write operation that includes one or more float to string conversions (i.e. the %f format specifier), which may overflow the destination buffer if extreme inputs are given.  In addition to causing program instability, techniques exist which may allow an attacker to use this vulnerability to execute arbitrary code.</p>
+
+</overview>
+<include src="OverrunWriteRecommendation.inc.qhelp" />
+<example>
+<sample src="OverrunWriteFloat.c" />
+
+<p>In this example, the call to <code>sprintf</code> contains a <code>%f</code> format specifier.  Though a 256 character buffer has been allowed, it is not sufficient for the most extreme floating point inputs.  For example the representation of double value 1e304 (that is 1 with 304 zeroes after it) will overflow a buffer of this length.</p>
+
+<p>To fix this issue three changes should be made:</p>
+<ul>
+  <li>Control the size of the buffer using a preprocessor define.</li>
+  <li>Replace the call to <code>sprintf</code> with <code>snprintf</code>, specifying the define as the maximum length to copy.  This will prevent the buffer overflow.</li>
+  <li>Consider using the <code>%g</code> format specifier instead of <code>%f</code>.</li>
+</ul>
+
+</example>
+<include src="OverrunWriteReferences.inc.qhelp" />
+</qhelp>

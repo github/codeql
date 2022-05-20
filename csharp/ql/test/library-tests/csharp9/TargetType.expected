@@ -1,0 +1,14 @@
+conditional
+| TargetType.cs:16:19:18:18 | ... ? ... : ... | int? | int? | null |
+| TargetType.cs:20:19:22:18 | ... ? ... : ... | int? | int? | null |
+| TargetType.cs:24:19:26:24 | ... ? ... : ... | int? | int? | int? |
+| TargetType.cs:31:32:33:32 | ... ? ... : ... | IEnumerable<int> | List<int> | Int32[] |
+| TargetType.cs:35:18:37:16 | ... ? ... : ... | int | int | int |
+implicitCasts
+| TargetType.cs:12:19:12:20 | (...) ... | int? | int |
+| TargetType.cs:13:14:13:15 | (...) ... | int? | int |
+| TargetType.cs:17:15:17:16 | (...) ... | int? | int |
+| TargetType.cs:25:15:25:16 | (...) ... | int? | int |
+| TargetType.cs:35:18:37:16 | (...) ... | int? | int |
+implicitConversions
+| TargetType.cs:36:15:36:30 | call to operator implicit conversion | int | TargetType |

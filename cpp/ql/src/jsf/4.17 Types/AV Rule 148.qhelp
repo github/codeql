@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This rule finds <code>switch</code> statements that use an integer instead of an enumeration.
+Enumerations are preferred when dealing with a limited number of choices as they makes it easier 
+to see if a case has been left out.
+</p>
+
+
+</overview>
+<recommendation>
+<p>
+Use an enumeration instead of an integer to represent a limited set of choices.
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 148.cpp" />
+
+
+
+</example>
+<references>
+
+<li>
+  AV Rule 148, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  <a href="http://www.tutorialspoint.com/cplusplus/cpp_switch_statement.htm">C++ Switch statement</a>
+</li>
+
+
+</references>
+</qhelp>

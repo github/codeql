@@ -1,0 +1,49 @@
+browserObject
+| electron.js:3:5:3:48 | bw |
+| electron.js:3:10:3:48 | new Bro ... s: {}}) |
+| electron.js:4:5:4:46 | bv |
+| electron.js:4:10:4:46 | new Bro ... s: {}}) |
+| electron.js:35:1:37:1 | return of function foo |
+| electron.js:35:14:35:14 | x |
+| electron.js:35:14:35:14 | x |
+| electron.js:36:12:36:12 | x |
+| electron.js:39:1:39:7 | foo(bw) |
+| electron.js:39:5:39:6 | bw |
+| electron.js:40:1:40:7 | foo(bv) |
+| electron.js:40:5:40:6 | bv |
+| electron.js:62:7:62:59 | win |
+| electron.js:62:13:62:59 | new Bro ... 1500 }) |
+| electron.js:63:3:63:5 | win |
+| electron.js:65:18:65:20 | win |
+| electronTs.ts:3:12:3:13 | bw |
+| electronTs.ts:3:40:3:41 | bv |
+| electronTs.ts:4:3:4:4 | bw |
+| electronTs.ts:5:3:5:4 | bv |
+clientRequest_getADataNode
+| electron.js:8:16:8:78 | new Cli ... POST'}) | electron.js:31:16:31:22 | 'stuff' |
+| electron.js:8:16:8:78 | new Cli ... POST'}) | electron.js:32:14:32:25 | 'more stuff' |
+clientRequest
+| electron.js:7:5:7:38 | net.req ... e.com') |
+| electron.js:8:16:8:78 | new Cli ... POST'}) |
+ipcFlow
+| electron.js:43:30:43:35 | 'pong' | electron.js:52:33:52:35 | arg |
+| electron.js:48:23:48:28 | 'pong' | electron.js:58:1:58:36 | ipcRend ... 'ping') |
+| electron.js:56:27:56:32 | 'ping' | electron.js:42:29:42:31 | arg |
+| electron.js:58:30:58:35 | 'ping' | electron.js:47:28:47:30 | arg |
+| electron.js:68:24:68:28 | "foo" | electron.js:67:23:67:25 | foo |
+| electron.js:69:24:69:28 | "bar" | electron.js:67:46:67:48 | bar |
+remoteFlowSources
+| electron.js:10:26:10:33 | response |
+| electron.js:11:28:11:32 | chunk |
+| electron.js:16:26:16:33 | redirect |
+| electron.js:21:23:21:30 | authInfo |
+| electron.js:26:23:26:27 | error |
+webContents
+| electron.js:39:1:39:19 | foo(bw).webContents |
+| electron.js:40:1:40:19 | foo(bv).webContents |
+| electron.js:65:18:65:32 | win.webContents |
+| electronTs.ts:4:3:4:16 | bw.webContents |
+| electronTs.ts:5:3:5:16 | bv.webContents |
+webPreferences
+| electron.js:3:45:3:46 | {} |
+| electron.js:4:43:4:44 | {} |

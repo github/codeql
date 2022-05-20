@@ -1,0 +1,2 @@
+| test.cpp:135:17:135:17 | x | This pointer might have type $@ (size 4), but the pointer arithmetic here is done with type void | test.cpp:133:19:133:19 | test.cpp:133:19:133:19 | int |
+| test.cpp:140:17:140:17 | x | This pointer might have type $@ (size 4), but the pointer arithmetic here is done with type void | test.cpp:138:19:138:19 | test.cpp:138:19:138:19 | int |

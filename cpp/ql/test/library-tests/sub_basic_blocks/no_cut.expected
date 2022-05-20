@@ -1,0 +1,8 @@
+| f | false | 166 | 166 | i [line 5-5, 7 nodes, pos 0 (first in BB) (last in BB), 2 predecessors, 2 successors] |
+| f | false | 198 | 198 | { ... } [line 5-9, 18 nodes, pos 0 (first in BB) (last in BB), 1 predecessors, 1 successors] |
+| f | false | 211 | 211 | return ... [line 11-3, 6 nodes, pos 0 (first in BB) (last in BB), 1 predecessors, 0 successors] |
+| f | false | 213 | 213 | { ... } [line 3-10, 5 nodes, pos 0 (first in BB) (last in BB), 0 predecessors, 1 successors] |
+| f | true | 166 | 198 | T |
+| f | true | 166 | 211 | F |
+| f | true | 198 | 166 |  |
+| f | true | 213 | 166 |  |

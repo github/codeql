@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+  <include src="LeapYear.inc.qhelp" />
+  
+<p>When using a function that transforms a date structure, and the year on the input argument for the API has been manipulated, it is important to check for the return value of the function to make sure it succeeded.</p>
+<p>Otherwise, the function may have failed, and the output parameter may contain invalid data that can cause any number of problems on the affected system.</p>
+<p>The following is a list of the functions that this query covers:</p>
+<ul>
+  <li><code>FileTimeToSystemTime</code></li>
+  <li><code>SystemTimeToFileTime</code></li>
+  <li><code>SystemTimeToTzSpecificLocalTime</code></li>
+  <li><code>SystemTimeToTzSpecificLocalTimeEx</code></li>
+  <li><code>TzSpecificLocalTimeToSystemTime</code></li>
+  <li><code>TzSpecificLocalTimeToSystemTimeEx</code></li>
+  <li><code>RtlLocalTimeToSystemTime</code></li>
+  <li><code>RtlTimeToSecondsSince1970</code></li>
+  <li><code>_mkgmtime</code></li>
+</ul>
+
+</overview>
+<recommendation>
+<p>When calling an API that transforms a date variable that was manipulated, always check for the return value to verify that the API call succeeded.</p>
+
+</recommendation>
+<example>
+<p>In this example, we are adding 1 year to the current date. This may work most of the time, but on any given February 29th, the resulting value will be invalid.</p>
+<sample src="UncheckedLeapYearAfterYearModificationBad.c" />
+
+<p>To fix this bug, you must verify the return value for <code>SystemTimeToFileTime</code> and handle any potential error accordingly.</p>
+<sample src="UncheckedLeapYearAfterYearModificationGood.c" />
+</example>
+
+<references>
+  <li>NASA / Goddard Space Flight Center - <a href="https://eclipse.gsfc.nasa.gov/SEhelp/calendars.html">Calendars</a></li>
+  <li>Wikipedia - <a href="https://en.wikipedia.org/wiki/Leap_year_bug"> Leap year bug</a> </li>
+  <li>Microsoft Azure blog - <a href="https://azure.microsoft.com/en-us/blog/is-your-code-ready-for-the-leap-year/"> Is your code ready for the leap year?</a> </li>
+</references>
+</qhelp>

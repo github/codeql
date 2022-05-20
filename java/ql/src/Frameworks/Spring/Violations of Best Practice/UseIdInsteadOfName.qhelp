@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+To name a Spring bean, it is best to use the <code>id</code> attribute instead of the <code>name</code> attribute. Using the
+<code>id</code> attribute enables the XML parser to perform additional checks (for example, checking if the <code>id</code> in a <code>ref</code> 
+attribute is an actual <code>id</code> of an XML element).
+</p>
+
+</overview>
+<recommendation>
+<p>
+Use the <code>id</code> attribute instead of the <code>name</code> attribute when naming a bean.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the <code>dao</code> bean is shown using the <code>name</code> attribute,
+which allows a typo to go undetected because the XML parser does not check <code>name</code>. In contrast,
+using the <code>id</code> attribute allows the XML parser to catch the typo.</p>
+
+<sample src="UseIdInsteadOfName.xml" />
+
+</example>
+<references>
+
+
+<li>
+Spring Framework Reference Documentation 3.0:
+<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-beanname">3.3.1 Naming beans</a>.
+</li>
+<li>
+W3C:
+<a href="http://www.w3.org/TR/REC-xml/#sec-attribute-types">3.3.1 Attribute Types</a>.
+</li>
+
+
+</references>
+</qhelp>

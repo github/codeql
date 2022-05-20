@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>It is rare, but not impossible, to write a null-coalescing expression whose left and right operands 
+both do the same thing. The consequences are typically unfortunate - since a null-coalescing 
+expression is generally used to do something special when a variable is null, failing to handle that 
+(evidently expected) case often leads to a <code>NullReferenceException </code>, either immediately or 
+later in the program's execution.</p>
+
+</overview>
+<recommendation>
+<p>Rewrite the <code>else</code> part of the null-coalescing expression to provide a suitable 
+substitute if the variable is null.</p>
+
+</recommendation>
+<example>
+<p>This example demonstrates a simple class designed to generate random numbers. At its core is an 
+instance of <code>Random</code> called <code>generator</code>. In order to be more efficient, the 
+programmer has chosen not to initialize the generator until it is first needed. Due to both sides of 
+the null-coalescing expression being the same, <code>generator</code> is never initialized and a <code>
+NullReferenceException</code> occurs when attempting to call <code>Next</code>.</p>
+<sample src="UselessNullCoalescingExpression.cs" />
+</example>
+</qhelp>

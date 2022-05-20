@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Fields that are deserialized should be validated, otherwise the deserialized object
+could contain invalid data.
+</p>
+
+<p>
+This query finds cases where a field is validated in a constructor, but not in a deserialization method.
+This is an indication that the deserialization method is missing a validation step.
+</p>
+
+</overview>
+
+<recommendation>
+<p>
+If a field needs to be validated, then ensure that validation is also performed during deserialization.
+</p>
+</recommendation>
+
+<example>
+
+<p>
+The following example has the validation of the <code>Age</code> field in the constructor
+but not in the deserialization method:
+</p>
+
+<sample src="RuntimeChecksBypassBad.cs" />
+
+<p>
+The problem is fixed by adding validation to the deserialization method as follows:
+</p>
+
+<sample src="RuntimeChecksBypassGood.cs" />
+
+</example>
+
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Data_Validation">Data Validation</a>.
+</li>
+
+</references>
+</qhelp>

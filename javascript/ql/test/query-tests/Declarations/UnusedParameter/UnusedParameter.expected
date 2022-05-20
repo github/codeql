@@ -1,0 +1,6 @@
+| istype.ts:18:15:18:18 | node | Unused parameter node. |
+| parameter_field.ts:6:15:6:15 | x | Unused parameter x. |
+| tst2.js:1:12:1:12 | x | Unused parameter x. |
+| tst2.js:29:12:29:12 | x | Unused parameter x. |
+| tst.js:7:32:7:34 | idx | Unused parameter idx. |
+| tst.js:12:13:12:13 | x | Unused parameter x. |

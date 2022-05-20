@@ -1,0 +1,23 @@
+nodes
+| tst.js:7:22:7:36 | req.params.data |
+| tst.js:7:22:7:36 | req.params.data |
+| tst.js:7:22:7:36 | req.params.data |
+| tst.js:8:25:8:39 | req.params.data |
+| tst.js:8:25:8:39 | req.params.data |
+| tst.js:8:25:8:39 | req.params.data |
+| tst.js:12:26:12:40 | req.params.data |
+| tst.js:12:26:12:40 | req.params.data |
+| tst.js:12:26:12:40 | req.params.data |
+| tst.js:13:29:13:43 | req.params.data |
+| tst.js:13:29:13:43 | req.params.data |
+| tst.js:13:29:13:43 | req.params.data |
+edges
+| tst.js:7:22:7:36 | req.params.data | tst.js:7:22:7:36 | req.params.data |
+| tst.js:8:25:8:39 | req.params.data | tst.js:8:25:8:39 | req.params.data |
+| tst.js:12:26:12:40 | req.params.data | tst.js:12:26:12:40 | req.params.data |
+| tst.js:13:29:13:43 | req.params.data | tst.js:13:29:13:43 | req.params.data |
+#select
+| tst.js:7:22:7:36 | req.params.data | tst.js:7:22:7:36 | req.params.data | tst.js:7:22:7:36 | req.params.data | Unsafe deserialization of $@. | tst.js:7:22:7:36 | req.params.data | user input |
+| tst.js:8:25:8:39 | req.params.data | tst.js:8:25:8:39 | req.params.data | tst.js:8:25:8:39 | req.params.data | Unsafe deserialization of $@. | tst.js:8:25:8:39 | req.params.data | user input |
+| tst.js:12:26:12:40 | req.params.data | tst.js:12:26:12:40 | req.params.data | tst.js:12:26:12:40 | req.params.data | Unsafe deserialization of $@. | tst.js:12:26:12:40 | req.params.data | user input |
+| tst.js:13:29:13:43 | req.params.data | tst.js:13:29:13:43 | req.params.data | tst.js:13:29:13:43 | req.params.data | Unsafe deserialization of $@. | tst.js:13:29:13:43 | req.params.data | user input |

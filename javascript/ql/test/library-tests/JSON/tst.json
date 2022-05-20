@@ -1,0 +1,15 @@
+[{
+  "name": "Jim Knopf",
+  "address": {
+    "street": null,
+    "number": -1,
+    "country": "Lummerland"
+  }
+}, {
+  "name": "Frau Mahlzahn",
+  "address": {
+    "street": "Alte Strasse",
+    "number": 133,
+    "country": "Kummerland"
+  }
+}]

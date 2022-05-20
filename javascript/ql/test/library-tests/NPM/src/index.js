@@ -1,0 +1,3 @@
+alert("Hello");
+
+require("process");

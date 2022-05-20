@@ -1,0 +1,4 @@
+| StaticArray.cs:13:34:13:47 | NonEmptyArray1 | The array constant 'NonEmptyArray1' is vulnerable to mutation. |
+| StaticArray.cs:17:34:17:47 | NonEmptyArray3 | The array constant 'NonEmptyArray3' is vulnerable to mutation. |
+| StaticArray.cs:19:34:19:38 | Array | The array constant 'Array' is vulnerable to mutation. |
+| StaticArrayBad.cs:3:37:3:39 | Foo | The array constant 'Foo' is vulnerable to mutation. |

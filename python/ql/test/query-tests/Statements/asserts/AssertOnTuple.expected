@@ -1,0 +1,2 @@
+| assert.py:16:5:16:13 | Assert | Assertion of empty tuple is always False. |
+| assert.py:17:5:17:17 | Assert | Assertion of non-empty tuple is always True. |

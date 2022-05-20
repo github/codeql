@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Even though the request-handling methods of <code>Servlet</code> are declared <code>throws IOException, ServletException</code>, it's a bad idea to let such exceptions be thrown. Failure to catch exceptions in a servlet could lead to exposure of sensitive information because when a servlet throws an exception, the servlet container typically sends debugging information back to the user. That information could be valuable to an attacker.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      Catch IOExceptions and/or RuntimeExceptions and display custom error messages without stack traces and sensitive information, or configure an <code>error-page</code> in web.xml to display a generic user-friendly message for any uncaught exception.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      In the first and second examples, subclasses of IOException and RuntimeException are not caught, which disclose stack traces. Because user-controlled data is passed to methods that throw, there is an opportunity for an attacker to provoke a stack dump.
+    </p>
+
+    <p>
+      In the third example, the code catches the exception. In the fourth example, the code is not of concern since the variable cannot be controlled by attackers thus no unexpected exceptions can be thrown.
+    </p>
+    <sample src="UncaughtServletException.java" />
+  </example>
+
+  <references>
+    <li>
+      CWE:
+      <a href="https://cwe.mitre.org/data/definitions/600.html">CWE-600: Uncaught Exception in Servlet</a>
+    </li>
+    <li>
+      SonarSource:
+      <a href="https://rules.sonarsource.com/java/tag/owasp/RSPEC-1989">Exceptions should not be thrown from servlet methods</a>
+    </li>
+    <li>
+      OWASP:
+      <a href="https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html">Error Handling Cheat Sheet</a>
+    </li>
+  </references>
+</qhelp>

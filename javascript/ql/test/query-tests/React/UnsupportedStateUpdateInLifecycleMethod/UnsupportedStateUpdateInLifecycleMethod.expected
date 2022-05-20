@@ -1,0 +1,22 @@
+| tst.js:4:9:4:25 | this.setState({}) | Call to state update method $@ is not allowed from within this method. | tst.js:4:9:4:25 | this.setState({}) |  .setState |
+| tst.js:5:9:5:29 | this.re ... ate({}) | Call to state update method $@ is not allowed from within this method. | tst.js:5:9:5:29 | this.re ... ate({}) |  .replaceState |
+| tst.js:6:9:6:28 | this.forceUpdate({}) | Call to state update method $@ is not allowed from within this method. | tst.js:6:9:6:28 | this.forceUpdate({}) |  .forceUpdate |
+| tst.js:17:9:17:29 | this.in ... pdate() | Call to state update method $@ is not allowed from within this method. | tst.js:23:9:23:25 | this.setState({}) |  .setState |
+| tst.js:18:9:18:33 | this.ve ... pdate() | Call to state update method $@ is not allowed from within this method. | tst.js:29:9:29:25 | this.setState({}) |  .setState |
+| tst.js:37:9:37:25 | this.setState({}) | Call to state update method $@ is not allowed from within this method. | tst.js:37:9:37:25 | this.setState({}) |  .setState |
+| tst.js:40:9:40:25 | this.setState({}) | Unconditional call to state update method $@ is not allowed from within this method. | tst.js:40:9:40:25 | this.setState({}) |  .setState |
+| tst.js:46:9:46:25 | this.setState({}) | Unconditional call to state update method $@ is not allowed from within this method. | tst.js:46:9:46:25 | this.setState({}) |  .setState |
+| tst.js:52:9:52:25 | this.setState({}) | Unconditional call to state update method $@ is not allowed from within this method. | tst.js:52:9:52:25 | this.setState({}) |  .setState |
+| tst.js:66:9:66:37 | this.de ... pdate() | Unconditional call to state update method $@ is not allowed from within this method. | tst.js:75:9:75:25 | this.setState({}) |  .setState |
+| tst.js:89:9:89:24 | app.setState({}) | Call to state update method $@ is not allowed from within this method. | tst.js:89:9:89:24 | app.setState({}) |  .setState |
+| tst.js:100:9:100:29 | this.in ... pdate() | Call to state update method $@ is not allowed from within this method. | tst.js:97:9:97:25 | this.setState({}) |  .setState |
+| tst.js:108:6:110:8 | this.se ...      }) | Unconditional call to state update method $@ is not allowed from within this method. | tst.js:108:6:110:8 | this.se ...      }) |  .setState |
+| tst.js:118:6:120:8 | this.se ...      }) | Unconditional call to state update method $@ is not allowed from within this method. | tst.js:118:6:120:8 | this.se ...      }) |  .setState |
+| tst.js:141:34:141:58 | this.ha ... hange() | Call to state update method $@ is not allowed from within this method. | tst.js:136:9:136:25 | this.setState({}) |  .setState |
+| tst.js:150:9:150:25 | this.setState({}) | Call to state update method $@ is not allowed from within this method. | tst.js:150:9:150:25 | this.setState({}) |  .setState |
+| tst.js:153:9:153:25 | this.setState({}) | Call to state update method $@ is not allowed from within this method. | tst.js:153:9:153:25 | this.setState({}) |  .setState |
+| tst.js:156:9:156:25 | this.setState({}) | Call to state update method $@ is not allowed from within this method. | tst.js:156:9:156:25 | this.setState({}) |  .setState |
+| tst.js:159:9:159:25 | this.setState({}) | Call to state update method $@ is not allowed from within this method. | tst.js:159:9:159:25 | this.setState({}) |  .setState |
+| tst.js:187:9:187:19 | doUpdate1() | Call to state update method $@ is not allowed from within this method. | tst.js:181:31:181:47 | this.setState({}) |  .setState |
+| tst.js:188:9:188:19 | doUpdate2() | Call to state update method $@ is not allowed from within this method. | tst.js:178:9:178:23 | this.setState() |  .setState |
+| tst.js:189:9:189:19 | doUpdate3() | Call to state update method $@ is not allowed from within this method. | tst.js:178:9:178:23 | this.setState() |  .setState |

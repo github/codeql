@@ -1,0 +1,1 @@
+  //semmle-extractor-options: --javac-args -cp ${testdir}/../../../../stubs/apache-http-4.4.13/:${testdir}/../../../../stubs/servlet-api-2.4:${testdir}/../../../../stubs/fastjson-1.2.74/:${testdir}/../../../../stubs/gson-2.8.6/:${testdir}/../../../../stubs/jackson-databind-2.12/:${testdir}/../../../../stubs/jackson-core-2.12:${testdir}/../../../../stubs/springframework-5.3.8/

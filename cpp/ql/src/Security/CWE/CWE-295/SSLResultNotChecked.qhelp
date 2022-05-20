@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>After fetching an SSL certificate, always check the result of certificate verification.</p>
+
+</overview>
+<recommendation>
+
+<p>Always check the result of SSL certificate verification. A certificate that has been revoked may indicate that data is coming from an attacker, whereas a certificate that has expired or was self-signed may indicate an increased likelihood that the data is malicious.</p>
+
+</recommendation>
+<example>
+
+<p>In this example, the <code>SSL_get_peer_certificate</code> function is used to get the certificate of a peer. However it is unsafe to use that information without checking if the certificate is valid.</p>
+
+<sample src="SSLResultNotCheckedBad.cpp" />
+
+<p>In the corrected example, we use <code>SSL_get_verify_result</code> to check that certificate verification was successful.</p>
+
+<sample src="SSLResultNotCheckedGood.cpp" />
+
+</example>
+<references>
+
+</references>
+</qhelp>

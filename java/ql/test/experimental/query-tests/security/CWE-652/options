@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../../stubs/apache-http-4.4.13/:${testdir}/../../../../stubs/servlet-api-2.4:${testdir}/../../../../stubs/saxon-xqj-9.x/:${testdir}/../../../../stubs/springframework-5.3.8/

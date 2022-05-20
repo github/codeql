@@ -1,0 +1,36 @@
+| call to cut [line 5-5, 4 nodes, pos 1 (last in BB), 1 predecessors, 2 successors] | 0 | test.c:5:18:5:20 | call to cut |
+| call to cut [line 5-5, 4 nodes, pos 1 (last in BB), 1 predecessors, 2 successors] | 1 | test.c:5:27:5:27 | 1 |
+| call to cut [line 5-5, 4 nodes, pos 1 (last in BB), 1 predecessors, 2 successors] | 2 | test.c:5:18:5:27 | ... + ... |
+| call to cut [line 5-5, 4 nodes, pos 1 (last in BB), 1 predecessors, 2 successors] | 3 | test.c:5:12:5:27 | ... < ... |
+| call to cut [line 7-8, 5 nodes, pos 1, 1 predecessors, 1 successors] | 0 | test.c:7:6:7:8 | call to cut |
+| call to cut [line 7-8, 5 nodes, pos 1, 1 predecessors, 1 successors] | 1 | test.c:8:6:8:24 | declaration |
+| call to cut [line 7-8, 5 nodes, pos 1, 1 predecessors, 1 successors] | 2 | test.c:8:13:8:23 | initializer for k |
+| call to cut [line 7-8, 5 nodes, pos 1, 1 predecessors, 1 successors] | 3 | test.c:8:14:8:14 | j |
+| call to cut [line 7-8, 5 nodes, pos 1, 1 predecessors, 1 successors] | 4 | test.c:8:22:8:22 | j |
+| call to cut [line 8-9, 4 nodes, pos 2, 1 predecessors, 1 successors] | 0 | test.c:8:18:8:20 | call to cut |
+| call to cut [line 8-9, 4 nodes, pos 2, 1 predecessors, 1 successors] | 1 | test.c:8:14:8:23 | ... + ... |
+| call to cut [line 8-9, 4 nodes, pos 2, 1 predecessors, 1 successors] | 2 | test.c:9:6:9:12 | ExprStmt |
+| call to cut [line 8-9, 4 nodes, pos 2, 1 predecessors, 1 successors] | 3 | test.c:9:10:9:10 | k |
+| call to cut [line 9-9, 1 nodes, pos 3 (last in BB), 1 predecessors, 1 successors] | 0 | test.c:9:6:9:8 | call to cut |
+| call to cut [line 11-3, 3 nodes, pos 1 (last in BB), 1 predecessors, 0 successors] | 0 | test.c:11:16:11:18 | call to cut |
+| call to cut [line 11-3, 3 nodes, pos 1 (last in BB), 1 predecessors, 0 successors] | 1 | test.c:11:12:11:21 | ... + ... |
+| call to cut [line 11-3, 3 nodes, pos 1 (last in BB), 1 predecessors, 0 successors] | 2 | test.c:3:5:3:5 | f |
+| i [line 5-5, 3 nodes, pos 0 (first in BB), 2 predecessors, 1 successors] | 0 | test.c:5:14:5:14 | i |
+| i [line 5-5, 3 nodes, pos 0 (first in BB), 2 predecessors, 1 successors] | 1 | test.c:5:12:5:14 | ++ ... |
+| i [line 5-5, 3 nodes, pos 0 (first in BB), 2 predecessors, 1 successors] | 2 | test.c:5:22:5:22 | n |
+| return ... [line 11-11, 3 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] | 0 | test.c:11:5:11:22 | return ... |
+| return ... [line 11-11, 3 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] | 1 | test.c:11:12:11:12 | 1 |
+| return ... [line 11-11, 3 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] | 2 | test.c:11:20:11:20 | i |
+| { ... } [line 3-10, 5 nodes, pos 0 (first in BB) (last in BB), 0 predecessors, 1 successors] | 0 | test.c:3:14:12:1 | { ... } |
+| { ... } [line 3-10, 5 nodes, pos 0 (first in BB) (last in BB), 0 predecessors, 1 successors] | 1 | test.c:4:5:4:14 | declaration |
+| { ... } [line 3-10, 5 nodes, pos 0 (first in BB) (last in BB), 0 predecessors, 1 successors] | 2 | test.c:4:12:4:13 | initializer for i |
+| { ... } [line 3-10, 5 nodes, pos 0 (first in BB) (last in BB), 0 predecessors, 1 successors] | 3 | test.c:4:12:4:13 | 0 |
+| { ... } [line 3-10, 5 nodes, pos 0 (first in BB) (last in BB), 0 predecessors, 1 successors] | 4 | test.c:5:5:10:5 | while (...) ... |
+| { ... } [line 5-7, 8 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] | 0 | test.c:5:30:10:5 | { ... } |
+| { ... } [line 5-7, 8 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] | 1 | test.c:6:6:6:19 | declaration |
+| { ... } [line 5-7, 8 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] | 2 | test.c:6:13:6:18 | initializer for j |
+| { ... } [line 5-7, 8 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] | 3 | test.c:6:14:6:14 | i |
+| { ... } [line 5-7, 8 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] | 4 | test.c:6:18:6:18 | 1 |
+| { ... } [line 5-7, 8 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] | 5 | test.c:6:14:6:18 | ... + ... |
+| { ... } [line 5-7, 8 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] | 6 | test.c:7:6:7:12 | ExprStmt |
+| { ... } [line 5-7, 8 nodes, pos 0 (first in BB), 1 predecessors, 1 successors] | 7 | test.c:7:10:7:10 | 0 |

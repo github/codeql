@@ -1,0 +1,48 @@
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyCompany(...)] | System.Reflection.AssemblyCompanyAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyFileVersion(...)] | System.Reflection.AssemblyFileVersionAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyInformationalVersion(...)] | System.Reflection.AssemblyInformationalVersionAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyProduct(...)] | System.Reflection.AssemblyProductAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [CompilationRelaxations(...)] | System.Runtime.CompilerServices.CompilationRelaxationsAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [Custom(...)] | Assembly1.CustomAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [Debuggable(...)] | System.Diagnostics.DebuggableAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [RuntimeCompatibility(...)] | System.Runtime.CompilerServices.RuntimeCompatibilityAttribute |
+| Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [TargetFramework(...)] | System.Runtime.Versioning.TargetFrameworkAttribute |
+| attributes.cs:44:7:44:9 | Foo | attributes.cs:43:2:43:22 | [AttributeUsage(...)] | System.AttributeUsageAttribute |
+| attributes.cs:47:17:47:19 | foo | attributes.cs:46:6:46:16 | [Conditional(...)] | System.Diagnostics.ConditionalAttribute |
+| attributes.cs:52:23:52:23 | x | attributes.cs:52:14:52:16 | [Foo(...)] | Foo |
+| attributes.cs:55:10:55:11 | M1 | attributes.cs:54:6:54:16 | [My(...)] | MyAttribute |
+| attributes.cs:59:10:59:11 | M2 | attributes.cs:57:6:57:16 | [My(...)] | MyAttribute |
+| attributes.cs:59:10:59:11 | M2 | attributes.cs:58:6:58:8 | [My2(...)] | My2Attribute |
+| attributes.cs:78:14:78:14 | X | attributes.cs:77:2:77:5 | [Args(...)] | ArgsAttribute |
+| attributes.cs:82:9:82:18 | SomeMethod | attributes.cs:80:6:80:9 | [Args(...)] | ArgsAttribute |
+| attributes.cs:82:9:82:18 | SomeMethod | attributes.cs:81:14:81:17 | [return: Args(...)] | ArgsAttribute |
+| attributes.cs:98:14:98:24 | Invoke | attributes.cs:97:10:97:21 | [return: My3(...)] | My3Attribute |
+| attributes.cs:98:14:98:24 | My1Delegate | attributes.cs:96:2:96:13 | [My3(...)] | My3Attribute |
+| attributes.cs:102:17:102:27 | Invoke | attributes.cs:100:10:100:21 | [return: My3(...)] | My3Attribute |
+| attributes.cs:102:17:102:27 | My2Delegate | attributes.cs:101:8:101:19 | [My3(...)] | My3Attribute |
+| attributes.cs:108:32:108:32 | + | attributes.cs:106:6:106:17 | [My3(...)] | My3Attribute |
+| attributes.cs:108:32:108:32 | + | attributes.cs:107:14:107:25 | [return: My3(...)] | My3Attribute |
+| attributes.cs:114:9:114:11 | get_Item | attributes.cs:112:10:112:21 | [My3(...)] | My3Attribute |
+| attributes.cs:114:9:114:11 | get_Item | attributes.cs:113:18:113:29 | [return: My3(...)] | My3Attribute |
+| attributes.cs:118:9:118:11 | set_Item | attributes.cs:116:18:116:29 | [My3(...)] | My3Attribute |
+| attributes.cs:118:9:118:11 | value | attributes.cs:117:17:117:28 | [My3(...)] | My3Attribute |
+| attributes.cs:126:9:126:11 | get_Prop1 | attributes.cs:124:18:124:29 | [My3(...)] | My3Attribute |
+| attributes.cs:126:9:126:11 | get_Prop1 | attributes.cs:125:18:125:29 | [return: My3(...)] | My3Attribute |
+| attributes.cs:130:9:130:11 | set_Prop1 | attributes.cs:128:10:128:21 | [My3(...)] | My3Attribute |
+| attributes.cs:130:9:130:11 | value | attributes.cs:129:17:129:28 | [My3(...)] | My3Attribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:10:12:10:24 | [assembly: AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:11:12:11:30 | [assembly: AssemblyDescription(...)] | System.Reflection.AssemblyDescriptionAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:12:12:12:32 | [assembly: AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:13:12:13:26 | [assembly: AssemblyCompany(...)] | System.Reflection.AssemblyCompanyAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:14:12:14:26 | [assembly: AssemblyProduct(...)] | System.Reflection.AssemblyProductAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:15:12:15:28 | [assembly: AssemblyCopyright(...)] | System.Reflection.AssemblyCopyrightAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:16:12:16:28 | [assembly: AssemblyTrademark(...)] | System.Reflection.AssemblyTrademarkAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:17:12:17:26 | [assembly: AssemblyCulture(...)] | System.Reflection.AssemblyCultureAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:22:12:22:21 | [assembly: ComVisible(...)] | System.Runtime.InteropServices.ComVisibleAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:25:12:25:15 | [assembly: Guid(...)] | System.Runtime.InteropServices.GuidAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:37:12:37:26 | [assembly: AssemblyVersion(...)] | System.Reflection.AssemblyVersionAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:38:12:38:30 | [assembly: AssemblyFileVersion(...)] | System.Reflection.AssemblyFileVersionAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:40:12:40:15 | [assembly: Args(...)] | ArgsAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:41:10:41:13 | [module: Args(...)] | ArgsAttribute |

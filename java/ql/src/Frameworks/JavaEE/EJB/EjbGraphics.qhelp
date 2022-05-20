@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+The Enterprise JavaBeans 3.0 core specification, Section 21.1.2, states:
+</p>
+
+<blockquote>
+<p>
+An enterprise bean must not use the AWT functionality to attempt to output information to a
+display, or to input information from a keyboard.
+</p>
+<p>
+Most servers do not allow direct interaction between an application program and a keyboard/display
+attached to the server system.
+</p>
+</blockquote>
+
+</overview>
+<references>
+
+
+<li>
+  <a href="http://jcp.org/aboutJava/communityprocess/final/jsr220/index.html">
+  JSR-220 Enterprise JavaBeans 3.0 Final Release</a> (ejbcore),
+  Section 21.1.2 Programming Restrictions
+</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,6 @@
+| InternalDeadCodeCycle.java:3:14:3:16 | foo | The method foo is only used from, or in, a dead-code cycle. | InternalDeadCodeCycle.java:3:14:3:16 | foo | foo |
+| InternalDeadCodeCycle.java:7:14:7:16 | bar | The method bar is only used from, or in, a dead-code cycle. | InternalDeadCodeCycle.java:7:14:7:16 | bar | bar |
+| JMXTest.java:14:17:14:35 | sometimesLiveMethod | The method sometimesLiveMethod is only used from dead code originating at $@. | JMXTest.java:8:17:8:35 | sometimesLiveMethod | sometimesLiveMethod |
+| SuppressedConstructorTest.java:9:15:9:24 | deadMethod | The method deadMethod is entirely unused. | SuppressedConstructorTest.java:9:15:9:24 | deadMethod | deadMethod |
+| SuppressedConstructorTest.java:15:13:15:36 | NestedPrivateConstructor | The method NestedPrivateConstructor is only used from dead code originating at $@. | SuppressedConstructorTest.java:9:15:9:24 | deadMethod | deadMethod |
+| SuppressedConstructorTest.java:26:13:26:28 | OtherConstructor | The method OtherConstructor is entirely unused. | SuppressedConstructorTest.java:26:13:26:28 | OtherConstructor | OtherConstructor |

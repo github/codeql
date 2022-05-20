@@ -1,0 +1,22 @@
+Name, Category
+angularjs, HTML framework
+axios, Network communicator
+browser, Runtime environment
+electron, Runtime environment
+express, Server
+hapi, Server
+jquery, Utility library
+koa, Server
+lodash, Utility library
+mongodb, Database
+mssql, Database
+mysql, Database
+node, Runtime environment
+postgres, Database
+ramda, Utility library
+react, HTML framework
+request, Network communicator
+sequelize, Database
+sqlite3, Database
+superagent, Network communicator
+underscore, Utility library

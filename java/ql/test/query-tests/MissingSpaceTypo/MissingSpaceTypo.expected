@@ -1,0 +1,7 @@
+| A.java:4:9:5:26 | "this text" +\n      "is missing a space" | This string appears to be missing a space after 'text'. |
+| A.java:6:9:7:23 | "the class java.util.ArrayList" +\n      "without a space" | This string appears to be missing a space after 'java.util.ArrayList'. |
+| A.java:8:9:9:14 | "This isn't" +\n      "right." | This string appears to be missing a space after 'isn't'. |
+| A.java:10:9:11:19 | "There's 1" +\n      "thing wrong" | This string appears to be missing a space after '1'. |
+| A.java:12:9:13:20 | "There's A/B" +\n      "and no space" | This string appears to be missing a space after 'A/B'. |
+| A.java:14:9:15:17 | "Wait for it...." +\n      "No space!" | This string appears to be missing a space after 'it....'. |
+| A.java:16:9:17:11 | "Is there a space?" +\n      "No!" | This string appears to be missing a space after 'space?'. |

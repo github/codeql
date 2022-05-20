@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<!-- Make this more verbose -->
+<overview>
+<p>
+This rule finds class members (functions or data) that are or use arrays. This is particularly important for
+functions with array type parameters, as these parameters are treated as pointers to the array's first element
+inside the function (array decay). Assuming that it is still has the type of the array passed to the function can cause unexpected
+behavior (e.g. when using the <code>sizeof</code> operator).
+</p>
+
+
+</overview>
+<recommendation>
+<p>
+Use the <code>Array</code> class, or explicitly declare the variable/parameter as a pointer so there is no possibility for confusion.
+</p>
+
+</recommendation>
+<example><sample src="AV Rule 97.cpp" />
+
+
+
+</example>
+<references>
+
+
+<li>
+  AV Rule 97, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
+</li>
+<li>
+  <a href="http://c-faq.com/aryptr/aryptrequiv.html">comp.lang.c FAQ list · Question 6.3 </a>
+</li>
+
+
+</references>
+</qhelp>

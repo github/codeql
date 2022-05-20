@@ -1,0 +1,3 @@
+| odasa2646.cpp:7:7:7:12 | constructor init of field ints | odasa2646.cpp:7:7:7:12 | {...} | ArrayAggregateLiteral |
+| odasa2646.cpp:8:7:8:13 | constructor init of field chars | odasa2646.cpp:8:7:8:13 | {...} | ArrayAggregateLiteral |
+| odasa2646.cpp:9:7:9:15 | constructor init of field doubles | odasa2646.cpp:9:7:9:15 | {...} | ArrayAggregateLiteral |

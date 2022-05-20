@@ -1,0 +1,70 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Extracting text from a DOM node and interpreting it as HTML can lead to a cross-site scripting vulnerability.
+</p>
+<p>
+A webpage with this vulnerability reads text from the DOM, and afterwards adds the text as HTML to the DOM.
+Using text from the DOM as HTML effectively unescapes the text, and thereby invalidates any escaping done on the text. 
+If an attacker is able to control the safe sanitized text, then this vulnerability can be exploited to perform a cross-site scripting attack. 
+</p>
+</overview>
+
+<recommendation>
+<p>
+To guard against cross-site scripting, consider using contextual output encoding/escaping before
+writing text to the page, or one of the other solutions that are mentioned in the References section below.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a webpage using a <code>data-target</code> attribute 
+to select and manipulate a DOM element using the JQuery library. In the example, the 
+<code>data-target</code> attribute is read into the <code>target</code> variable, and the 
+<code>$</code> function is then supposed to use the <code>target</code> variable as a CSS 
+selector to determine which element should be manipulated.
+</p>
+<sample src="examples/XssThroughDom.js" />
+<p>
+However, if an attacker can control the <code>data-target</code> attribute, 
+then the value of <code>target</code> can be used to cause the <code>$</code> function
+to execute arbitary JavaScript. 
+</p>
+<p>
+The above vulnerability can be fixed by using <code>$.find</code> instead of <code>$</code>. 
+The <code>$.find</code> function will only interpret <code>target</code> as a CSS selector 
+and never as HTML, thereby preventing an XSS attack. 
+</p>
+<sample src="examples/XssThroughDomFixed.js" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html">DOM based
+XSS Prevention Cheat Sheet</a>.
+</li>
+<li>
+OWASP:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS
+(Cross Site Scripting) Prevention Cheat Sheet</a>.
+</li>
+<li>
+OWASP
+<a href="https://owasp.org/www-community/attacks/DOM_Based_XSS">DOM Based XSS</a>.
+</li>
+<li>
+OWASP
+<a href="https://owasp.org/www-community/Types_of_Cross-Site_Scripting">Types of Cross-Site
+Scripting</a>.
+</li>
+<li>
+Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+</li>
+</references>
+</qhelp>

@@ -1,0 +1,2 @@
+| imports_test.py:4:1:4:19 | Import | Module 'test_module2' is imported with both 'import' and 'import from' |
+| pkg_notok/__init__.py:4:1:4:16 | Import | Module 'pkg_notok' is imported with both 'import' and 'import from' |

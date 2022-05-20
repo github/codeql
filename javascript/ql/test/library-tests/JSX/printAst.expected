@@ -1,0 +1,308 @@
+nodes
+| file://:0:0:0:0 | (Attributes) | semmle.label | (Attributes) |
+| file://:0:0:0:0 | (Attributes) | semmle.label | (Attributes) |
+| file://:0:0:0:0 | (Attributes) | semmle.label | (Attributes) |
+| file://:0:0:0:0 | (Attributes) | semmle.label | (Attributes) |
+| file://:0:0:0:0 | (Body) | semmle.label | (Body) |
+| file://:0:0:0:0 | (Body) | semmle.label | (Body) |
+| file://:0:0:0:0 | (Body) | semmle.label | (Body) |
+| file://:0:0:0:0 | (Body) | semmle.label | (Body) |
+| tst.js:1:1:1:32 | [DeclStmt] var href = ... | semmle.label | [DeclStmt] var href = ... |
+| tst.js:1:1:1:32 | [DeclStmt] var href = ... | semmle.order | 1 |
+| tst.js:1:5:1:8 | [VarDecl] href | semmle.label | [VarDecl] href |
+| tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | semmle.label | [VariableDeclarator] href = ... le.com" |
+| tst.js:1:12:1:31 | [Literal] "http://example.com" | semmle.label | [Literal] "http://example.com" |
+| tst.js:2:1:2:47 | [DeclStmt] var linkTypes = ... | semmle.label | [DeclStmt] var linkTypes = ... |
+| tst.js:2:1:2:47 | [DeclStmt] var linkTypes = ... | semmle.order | 2 |
+| tst.js:2:5:2:13 | [VarDecl] linkTypes | semmle.label | [VarDecl] linkTypes |
+| tst.js:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | semmle.label | [VariableDeclarator] linkTyp ... rrer" } |
+| tst.js:2:17:2:46 | [ObjectExpr] {rel: ...} | semmle.label | [ObjectExpr] {rel: ...} |
+| tst.js:2:19:2:21 | [Label] rel | semmle.label | [Label] rel |
+| tst.js:2:19:2:44 | [Property] rel: "noopener noreferrer" | semmle.label | [Property] rel: "noopener noreferrer" |
+| tst.js:2:24:2:44 | [Literal] "noopener noreferrer" | semmle.label | [Literal] "noopener noreferrer" |
+| tst.js:3:1:3:106 | [JsxElement] <a href ... */}</a> | semmle.label | [JsxElement] <a href ... */}</a> |
+| tst.js:3:1:3:107 | [ExprStmt] <a href ... /}</a>; | semmle.label | [ExprStmt] <a href ... /}</a>; |
+| tst.js:3:1:3:107 | [ExprStmt] <a href ... /}</a>; | semmle.order | 3 |
+| tst.js:3:2:3:2 | [Label] a | semmle.label | [Label] a |
+| tst.js:3:4:3:7 | [Label] href | semmle.label | [Label] href |
+| tst.js:3:4:3:14 | [JsxAttribute] href={href} | semmle.label | [JsxAttribute] href={href} |
+| tst.js:3:10:3:13 | [VarRef] href | semmle.label | [VarRef] href |
+| tst.js:3:16:3:21 | [Label] target | semmle.label | [Label] target |
+| tst.js:3:16:3:30 | [JsxAttribute] target="_blank" | semmle.label | [JsxAttribute] target="_blank" |
+| tst.js:3:23:3:30 | [Literal] "_blank" | semmle.label | [Literal] "_blank" |
+| tst.js:3:32:3:45 | [JsxAttribute] {...linkTypes} | semmle.label | [JsxAttribute] {...linkTypes} |
+| tst.js:3:32:3:45 | [SpreadElement] ...linkTypes | semmle.label | [SpreadElement] ...linkTypes |
+| tst.js:3:36:3:44 | [VarRef] linkTypes | semmle.label | [VarRef] linkTypes |
+| tst.js:3:47:3:54 | [Literal] Link to  | semmle.label | [Literal] Link to  |
+| tst.js:3:56:3:59 | [VarRef] href | semmle.label | [VarRef] href |
+| tst.js:3:61:3:62 | [Literal] .  | semmle.label | [Literal] .  |
+| tst.js:3:64:3:101 | [JsxEmptyExpr]  | semmle.label | [JsxEmptyExpr]  |
+| tst.js:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | semmle.label | [JsxElement] <MyComp ... "bar"/> |
+| tst.js:4:1:4:36 | [ExprStmt] <MyComp ... bar"/>; | semmle.label | [ExprStmt] <MyComp ... bar"/>; |
+| tst.js:4:1:4:36 | [ExprStmt] <MyComp ... bar"/>; | semmle.order | 4 |
+| tst.js:4:2:4:13 | [VarRef] MyComponents | semmle.label | [VarRef] MyComponents |
+| tst.js:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | semmle.label | [DotExpr] MyCompo ... ncyLink |
+| tst.js:4:15:4:23 | [Label] FancyLink | semmle.label | [Label] FancyLink |
+| tst.js:4:25:4:27 | [Label] foo | semmle.label | [Label] foo |
+| tst.js:4:25:4:33 | [JsxAttribute] foo="bar" | semmle.label | [JsxAttribute] foo="bar" |
+| tst.js:4:29:4:33 | [Literal] "bar" | semmle.label | [Literal] "bar" |
+| tst.js:5:1:5:6 | [JsxElement] <Foo/> | semmle.label | [JsxElement] <Foo/> |
+| tst.js:5:1:5:7 | [ExprStmt] <Foo/>; | semmle.label | [ExprStmt] <Foo/>; |
+| tst.js:5:1:5:7 | [ExprStmt] <Foo/>; | semmle.order | 5 |
+| tst.js:5:2:5:4 | [VarRef] Foo | semmle.label | [VarRef] Foo |
+| tst.js:6:1:6:10 | [JsxElement] <Foo-Bar/> | semmle.label | [JsxElement] <Foo-Bar/> |
+| tst.js:6:1:6:11 | [ExprStmt] <Foo-Bar/>; | semmle.label | [ExprStmt] <Foo-Bar/>; |
+| tst.js:6:1:6:11 | [ExprStmt] <Foo-Bar/>; | semmle.order | 6 |
+| tst.js:6:2:6:8 | [Label] Foo-Bar | semmle.label | [Label] Foo-Bar |
+| tst.js:7:1:7:52 | [DeclStmt] var fragment = ... | semmle.label | [DeclStmt] var fragment = ... |
+| tst.js:7:1:7:52 | [DeclStmt] var fragment = ... | semmle.order | 7 |
+| tst.js:7:5:7:12 | [VarDecl] fragment | semmle.label | [VarDecl] fragment |
+| tst.js:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | semmle.label | [VariableDeclarator] fragmen ... ext </> |
+| tst.js:7:16:7:52 | [JsxFragment] <> frag ... ext </> | semmle.label | [JsxFragment] <> frag ... ext </> |
+| tst.js:7:18:7:32 | [Literal]  fragment text  | semmle.label | [Literal]  fragment text  |
+| tst.js:7:33:7:38 | [JsxElement] <Foo/> | semmle.label | [JsxElement] <Foo/> |
+| tst.js:7:34:7:36 | [VarRef] Foo | semmle.label | [VarRef] Foo |
+| tst.js:7:39:7:49 | [Literal]  more text  | semmle.label | [Literal]  more text  |
+| tstest.tsx:1:1:1:32 | [DeclStmt] var href = ... | semmle.label | [DeclStmt] var href = ... |
+| tstest.tsx:1:1:1:32 | [DeclStmt] var href = ... | semmle.order | 8 |
+| tstest.tsx:1:5:1:8 | [VarDecl] href | semmle.label | [VarDecl] href |
+| tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | semmle.label | [VariableDeclarator] href = ... le.com" |
+| tstest.tsx:1:12:1:31 | [Literal] "http://example.com" | semmle.label | [Literal] "http://example.com" |
+| tstest.tsx:2:1:2:47 | [DeclStmt] var linkTypes = ... | semmle.label | [DeclStmt] var linkTypes = ... |
+| tstest.tsx:2:1:2:47 | [DeclStmt] var linkTypes = ... | semmle.order | 9 |
+| tstest.tsx:2:5:2:13 | [VarDecl] linkTypes | semmle.label | [VarDecl] linkTypes |
+| tstest.tsx:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | semmle.label | [VariableDeclarator] linkTyp ... rrer" } |
+| tstest.tsx:2:17:2:46 | [ObjectExpr] {rel: ...} | semmle.label | [ObjectExpr] {rel: ...} |
+| tstest.tsx:2:19:2:21 | [Label] rel | semmle.label | [Label] rel |
+| tstest.tsx:2:19:2:44 | [Property] rel: "noopener noreferrer" | semmle.label | [Property] rel: "noopener noreferrer" |
+| tstest.tsx:2:24:2:44 | [Literal] "noopener noreferrer" | semmle.label | [Literal] "noopener noreferrer" |
+| tstest.tsx:3:1:3:106 | [JsxElement] <a href ... */}</a> | semmle.label | [JsxElement] <a href ... */}</a> |
+| tstest.tsx:3:1:3:107 | [ExprStmt] <a href ... /}</a>; | semmle.label | [ExprStmt] <a href ... /}</a>; |
+| tstest.tsx:3:1:3:107 | [ExprStmt] <a href ... /}</a>; | semmle.order | 10 |
+| tstest.tsx:3:2:3:2 | [Label] a | semmle.label | [Label] a |
+| tstest.tsx:3:4:3:7 | [Label] href | semmle.label | [Label] href |
+| tstest.tsx:3:4:3:14 | [JsxAttribute] href={href} | semmle.label | [JsxAttribute] href={href} |
+| tstest.tsx:3:10:3:13 | [VarRef] href | semmle.label | [VarRef] href |
+| tstest.tsx:3:16:3:21 | [Label] target | semmle.label | [Label] target |
+| tstest.tsx:3:16:3:30 | [JsxAttribute] target="_blank" | semmle.label | [JsxAttribute] target="_blank" |
+| tstest.tsx:3:23:3:30 | [Literal] "_blank" | semmle.label | [Literal] "_blank" |
+| tstest.tsx:3:32:3:45 | [JsxAttribute] {...linkTypes} | semmle.label | [JsxAttribute] {...linkTypes} |
+| tstest.tsx:3:32:3:45 | [SpreadElement] ...linkTypes | semmle.label | [SpreadElement] ...linkTypes |
+| tstest.tsx:3:36:3:44 | [VarRef] linkTypes | semmle.label | [VarRef] linkTypes |
+| tstest.tsx:3:47:3:54 | [Literal] Link to  | semmle.label | [Literal] Link to  |
+| tstest.tsx:3:56:3:59 | [VarRef] href | semmle.label | [VarRef] href |
+| tstest.tsx:3:61:3:62 | [Literal] .  | semmle.label | [Literal] .  |
+| tstest.tsx:3:63:3:102 | [JsxEmptyExpr] {/*TODO ... text*/} | semmle.label | [JsxEmptyExpr] {/*TODO ... text*/} |
+| tstest.tsx:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | semmle.label | [JsxElement] <MyComp ... "bar"/> |
+| tstest.tsx:4:1:4:36 | [ExprStmt] <MyComp ... bar"/>; | semmle.label | [ExprStmt] <MyComp ... bar"/>; |
+| tstest.tsx:4:1:4:36 | [ExprStmt] <MyComp ... bar"/>; | semmle.order | 11 |
+| tstest.tsx:4:2:4:13 | [VarRef] MyComponents | semmle.label | [VarRef] MyComponents |
+| tstest.tsx:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | semmle.label | [DotExpr] MyCompo ... ncyLink |
+| tstest.tsx:4:15:4:23 | [Label] FancyLink | semmle.label | [Label] FancyLink |
+| tstest.tsx:4:25:4:27 | [Label] foo | semmle.label | [Label] foo |
+| tstest.tsx:4:25:4:33 | [JsxAttribute] foo="bar" | semmle.label | [JsxAttribute] foo="bar" |
+| tstest.tsx:4:29:4:33 | [Literal] "bar" | semmle.label | [Literal] "bar" |
+| tstest.tsx:5:1:5:6 | [JsxElement] <Foo/> | semmle.label | [JsxElement] <Foo/> |
+| tstest.tsx:5:1:5:7 | [ExprStmt] <Foo/>; | semmle.label | [ExprStmt] <Foo/>; |
+| tstest.tsx:5:1:5:7 | [ExprStmt] <Foo/>; | semmle.order | 12 |
+| tstest.tsx:5:2:5:4 | [VarRef] Foo | semmle.label | [VarRef] Foo |
+| tstest.tsx:6:1:6:10 | [JsxElement] <Foo-Bar/> | semmle.label | [JsxElement] <Foo-Bar/> |
+| tstest.tsx:6:1:6:11 | [ExprStmt] <Foo-Bar/>; | semmle.label | [ExprStmt] <Foo-Bar/>; |
+| tstest.tsx:6:1:6:11 | [ExprStmt] <Foo-Bar/>; | semmle.order | 13 |
+| tstest.tsx:6:2:6:8 | [Label] Foo-Bar | semmle.label | [Label] Foo-Bar |
+| tstest.tsx:7:1:7:52 | [DeclStmt] var fragment = ... | semmle.label | [DeclStmt] var fragment = ... |
+| tstest.tsx:7:1:7:52 | [DeclStmt] var fragment = ... | semmle.order | 14 |
+| tstest.tsx:7:5:7:12 | [VarDecl] fragment | semmle.label | [VarDecl] fragment |
+| tstest.tsx:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | semmle.label | [VariableDeclarator] fragmen ... ext </> |
+| tstest.tsx:7:16:7:52 | [JsxFragment] <> frag ... ext </> | semmle.label | [JsxFragment] <> frag ... ext </> |
+| tstest.tsx:7:19:7:32 | [Literal] fragment text  | semmle.label | [Literal] fragment text  |
+| tstest.tsx:7:33:7:38 | [JsxElement] <Foo/> | semmle.label | [JsxElement] <Foo/> |
+| tstest.tsx:7:34:7:36 | [VarRef] Foo | semmle.label | [VarRef] Foo |
+| tstest.tsx:7:40:7:49 | [Literal] more text  | semmle.label | [Literal] more text  |
+edges
+| file://:0:0:0:0 | (Attributes) | tst.js:3:4:3:14 | [JsxAttribute] href={href} | semmle.label | 0 |
+| file://:0:0:0:0 | (Attributes) | tst.js:3:4:3:14 | [JsxAttribute] href={href} | semmle.order | 0 |
+| file://:0:0:0:0 | (Attributes) | tst.js:3:16:3:30 | [JsxAttribute] target="_blank" | semmle.label | 1 |
+| file://:0:0:0:0 | (Attributes) | tst.js:3:16:3:30 | [JsxAttribute] target="_blank" | semmle.order | 1 |
+| file://:0:0:0:0 | (Attributes) | tst.js:3:32:3:45 | [JsxAttribute] {...linkTypes} | semmle.label | 2 |
+| file://:0:0:0:0 | (Attributes) | tst.js:3:32:3:45 | [JsxAttribute] {...linkTypes} | semmle.order | 2 |
+| file://:0:0:0:0 | (Attributes) | tst.js:4:25:4:33 | [JsxAttribute] foo="bar" | semmle.label | 0 |
+| file://:0:0:0:0 | (Attributes) | tst.js:4:25:4:33 | [JsxAttribute] foo="bar" | semmle.order | 0 |
+| file://:0:0:0:0 | (Attributes) | tstest.tsx:3:4:3:14 | [JsxAttribute] href={href} | semmle.label | 0 |
+| file://:0:0:0:0 | (Attributes) | tstest.tsx:3:4:3:14 | [JsxAttribute] href={href} | semmle.order | 0 |
+| file://:0:0:0:0 | (Attributes) | tstest.tsx:3:16:3:30 | [JsxAttribute] target="_blank" | semmle.label | 1 |
+| file://:0:0:0:0 | (Attributes) | tstest.tsx:3:16:3:30 | [JsxAttribute] target="_blank" | semmle.order | 1 |
+| file://:0:0:0:0 | (Attributes) | tstest.tsx:3:32:3:45 | [JsxAttribute] {...linkTypes} | semmle.label | 2 |
+| file://:0:0:0:0 | (Attributes) | tstest.tsx:3:32:3:45 | [JsxAttribute] {...linkTypes} | semmle.order | 2 |
+| file://:0:0:0:0 | (Attributes) | tstest.tsx:4:25:4:33 | [JsxAttribute] foo="bar" | semmle.label | 0 |
+| file://:0:0:0:0 | (Attributes) | tstest.tsx:4:25:4:33 | [JsxAttribute] foo="bar" | semmle.order | 0 |
+| file://:0:0:0:0 | (Body) | tst.js:3:47:3:54 | [Literal] Link to  | semmle.label | 0 |
+| file://:0:0:0:0 | (Body) | tst.js:3:47:3:54 | [Literal] Link to  | semmle.order | 0 |
+| file://:0:0:0:0 | (Body) | tst.js:3:56:3:59 | [VarRef] href | semmle.label | 1 |
+| file://:0:0:0:0 | (Body) | tst.js:3:56:3:59 | [VarRef] href | semmle.order | 1 |
+| file://:0:0:0:0 | (Body) | tst.js:3:61:3:62 | [Literal] .  | semmle.label | 2 |
+| file://:0:0:0:0 | (Body) | tst.js:3:61:3:62 | [Literal] .  | semmle.order | 2 |
+| file://:0:0:0:0 | (Body) | tst.js:3:64:3:101 | [JsxEmptyExpr]  | semmle.label | 3 |
+| file://:0:0:0:0 | (Body) | tst.js:3:64:3:101 | [JsxEmptyExpr]  | semmle.order | 3 |
+| file://:0:0:0:0 | (Body) | tst.js:7:18:7:32 | [Literal]  fragment text  | semmle.label | 0 |
+| file://:0:0:0:0 | (Body) | tst.js:7:18:7:32 | [Literal]  fragment text  | semmle.order | 0 |
+| file://:0:0:0:0 | (Body) | tst.js:7:33:7:38 | [JsxElement] <Foo/> | semmle.label | 1 |
+| file://:0:0:0:0 | (Body) | tst.js:7:33:7:38 | [JsxElement] <Foo/> | semmle.order | 1 |
+| file://:0:0:0:0 | (Body) | tst.js:7:39:7:49 | [Literal]  more text  | semmle.label | 2 |
+| file://:0:0:0:0 | (Body) | tst.js:7:39:7:49 | [Literal]  more text  | semmle.order | 2 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:3:47:3:54 | [Literal] Link to  | semmle.label | 0 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:3:47:3:54 | [Literal] Link to  | semmle.order | 0 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:3:56:3:59 | [VarRef] href | semmle.label | 1 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:3:56:3:59 | [VarRef] href | semmle.order | 1 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:3:61:3:62 | [Literal] .  | semmle.label | 2 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:3:61:3:62 | [Literal] .  | semmle.order | 2 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:3:63:3:102 | [JsxEmptyExpr] {/*TODO ... text*/} | semmle.label | 3 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:3:63:3:102 | [JsxEmptyExpr] {/*TODO ... text*/} | semmle.order | 3 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:7:19:7:32 | [Literal] fragment text  | semmle.label | 0 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:7:19:7:32 | [Literal] fragment text  | semmle.order | 0 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:7:33:7:38 | [JsxElement] <Foo/> | semmle.label | 1 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:7:33:7:38 | [JsxElement] <Foo/> | semmle.order | 1 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:7:40:7:49 | [Literal] more text  | semmle.label | 2 |
+| file://:0:0:0:0 | (Body) | tstest.tsx:7:40:7:49 | [Literal] more text  | semmle.order | 2 |
+| tst.js:1:1:1:32 | [DeclStmt] var href = ... | tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | semmle.label | 1 |
+| tst.js:1:1:1:32 | [DeclStmt] var href = ... | tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | semmle.order | 1 |
+| tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tst.js:1:5:1:8 | [VarDecl] href | semmle.label | 1 |
+| tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tst.js:1:5:1:8 | [VarDecl] href | semmle.order | 1 |
+| tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tst.js:1:12:1:31 | [Literal] "http://example.com" | semmle.label | 2 |
+| tst.js:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tst.js:1:12:1:31 | [Literal] "http://example.com" | semmle.order | 2 |
+| tst.js:2:1:2:47 | [DeclStmt] var linkTypes = ... | tst.js:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | semmle.label | 1 |
+| tst.js:2:1:2:47 | [DeclStmt] var linkTypes = ... | tst.js:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | semmle.order | 1 |
+| tst.js:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | tst.js:2:5:2:13 | [VarDecl] linkTypes | semmle.label | 1 |
+| tst.js:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | tst.js:2:5:2:13 | [VarDecl] linkTypes | semmle.order | 1 |
+| tst.js:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | tst.js:2:17:2:46 | [ObjectExpr] {rel: ...} | semmle.label | 2 |
+| tst.js:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | tst.js:2:17:2:46 | [ObjectExpr] {rel: ...} | semmle.order | 2 |
+| tst.js:2:17:2:46 | [ObjectExpr] {rel: ...} | tst.js:2:19:2:44 | [Property] rel: "noopener noreferrer" | semmle.label | 1 |
+| tst.js:2:17:2:46 | [ObjectExpr] {rel: ...} | tst.js:2:19:2:44 | [Property] rel: "noopener noreferrer" | semmle.order | 1 |
+| tst.js:2:19:2:44 | [Property] rel: "noopener noreferrer" | tst.js:2:19:2:21 | [Label] rel | semmle.label | 1 |
+| tst.js:2:19:2:44 | [Property] rel: "noopener noreferrer" | tst.js:2:19:2:21 | [Label] rel | semmle.order | 1 |
+| tst.js:2:19:2:44 | [Property] rel: "noopener noreferrer" | tst.js:2:24:2:44 | [Literal] "noopener noreferrer" | semmle.label | 2 |
+| tst.js:2:19:2:44 | [Property] rel: "noopener noreferrer" | tst.js:2:24:2:44 | [Literal] "noopener noreferrer" | semmle.order | 2 |
+| tst.js:3:1:3:106 | [JsxElement] <a href ... */}</a> | file://:0:0:0:0 | (Attributes) | semmle.label | 2 |
+| tst.js:3:1:3:106 | [JsxElement] <a href ... */}</a> | file://:0:0:0:0 | (Attributes) | semmle.order | 2 |
+| tst.js:3:1:3:106 | [JsxElement] <a href ... */}</a> | file://:0:0:0:0 | (Body) | semmle.label | 1 |
+| tst.js:3:1:3:106 | [JsxElement] <a href ... */}</a> | file://:0:0:0:0 | (Body) | semmle.order | 1 |
+| tst.js:3:1:3:106 | [JsxElement] <a href ... */}</a> | tst.js:3:2:3:2 | [Label] a | semmle.label | 0 |
+| tst.js:3:1:3:106 | [JsxElement] <a href ... */}</a> | tst.js:3:2:3:2 | [Label] a | semmle.order | 0 |
+| tst.js:3:1:3:107 | [ExprStmt] <a href ... /}</a>; | tst.js:3:1:3:106 | [JsxElement] <a href ... */}</a> | semmle.label | 1 |
+| tst.js:3:1:3:107 | [ExprStmt] <a href ... /}</a>; | tst.js:3:1:3:106 | [JsxElement] <a href ... */}</a> | semmle.order | 1 |
+| tst.js:3:4:3:14 | [JsxAttribute] href={href} | tst.js:3:4:3:7 | [Label] href | semmle.label | 1 |
+| tst.js:3:4:3:14 | [JsxAttribute] href={href} | tst.js:3:4:3:7 | [Label] href | semmle.order | 1 |
+| tst.js:3:4:3:14 | [JsxAttribute] href={href} | tst.js:3:10:3:13 | [VarRef] href | semmle.label | 2 |
+| tst.js:3:4:3:14 | [JsxAttribute] href={href} | tst.js:3:10:3:13 | [VarRef] href | semmle.order | 2 |
+| tst.js:3:16:3:30 | [JsxAttribute] target="_blank" | tst.js:3:16:3:21 | [Label] target | semmle.label | 1 |
+| tst.js:3:16:3:30 | [JsxAttribute] target="_blank" | tst.js:3:16:3:21 | [Label] target | semmle.order | 1 |
+| tst.js:3:16:3:30 | [JsxAttribute] target="_blank" | tst.js:3:23:3:30 | [Literal] "_blank" | semmle.label | 2 |
+| tst.js:3:16:3:30 | [JsxAttribute] target="_blank" | tst.js:3:23:3:30 | [Literal] "_blank" | semmle.order | 2 |
+| tst.js:3:32:3:45 | [JsxAttribute] {...linkTypes} | tst.js:3:32:3:45 | [SpreadElement] ...linkTypes | semmle.label | 1 |
+| tst.js:3:32:3:45 | [JsxAttribute] {...linkTypes} | tst.js:3:32:3:45 | [SpreadElement] ...linkTypes | semmle.order | 1 |
+| tst.js:3:32:3:45 | [SpreadElement] ...linkTypes | tst.js:3:36:3:44 | [VarRef] linkTypes | semmle.label | 1 |
+| tst.js:3:32:3:45 | [SpreadElement] ...linkTypes | tst.js:3:36:3:44 | [VarRef] linkTypes | semmle.order | 1 |
+| tst.js:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | file://:0:0:0:0 | (Attributes) | semmle.label | 2 |
+| tst.js:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | file://:0:0:0:0 | (Attributes) | semmle.order | 2 |
+| tst.js:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | tst.js:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | semmle.label | 0 |
+| tst.js:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | tst.js:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | semmle.order | 0 |
+| tst.js:4:1:4:36 | [ExprStmt] <MyComp ... bar"/>; | tst.js:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | semmle.label | 1 |
+| tst.js:4:1:4:36 | [ExprStmt] <MyComp ... bar"/>; | tst.js:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | semmle.order | 1 |
+| tst.js:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | tst.js:4:2:4:13 | [VarRef] MyComponents | semmle.label | 1 |
+| tst.js:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | tst.js:4:2:4:13 | [VarRef] MyComponents | semmle.order | 1 |
+| tst.js:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | tst.js:4:15:4:23 | [Label] FancyLink | semmle.label | 2 |
+| tst.js:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | tst.js:4:15:4:23 | [Label] FancyLink | semmle.order | 2 |
+| tst.js:4:25:4:33 | [JsxAttribute] foo="bar" | tst.js:4:25:4:27 | [Label] foo | semmle.label | 1 |
+| tst.js:4:25:4:33 | [JsxAttribute] foo="bar" | tst.js:4:25:4:27 | [Label] foo | semmle.order | 1 |
+| tst.js:4:25:4:33 | [JsxAttribute] foo="bar" | tst.js:4:29:4:33 | [Literal] "bar" | semmle.label | 2 |
+| tst.js:4:25:4:33 | [JsxAttribute] foo="bar" | tst.js:4:29:4:33 | [Literal] "bar" | semmle.order | 2 |
+| tst.js:5:1:5:6 | [JsxElement] <Foo/> | tst.js:5:2:5:4 | [VarRef] Foo | semmle.label | 0 |
+| tst.js:5:1:5:6 | [JsxElement] <Foo/> | tst.js:5:2:5:4 | [VarRef] Foo | semmle.order | 0 |
+| tst.js:5:1:5:7 | [ExprStmt] <Foo/>; | tst.js:5:1:5:6 | [JsxElement] <Foo/> | semmle.label | 1 |
+| tst.js:5:1:5:7 | [ExprStmt] <Foo/>; | tst.js:5:1:5:6 | [JsxElement] <Foo/> | semmle.order | 1 |
+| tst.js:6:1:6:10 | [JsxElement] <Foo-Bar/> | tst.js:6:2:6:8 | [Label] Foo-Bar | semmle.label | 0 |
+| tst.js:6:1:6:10 | [JsxElement] <Foo-Bar/> | tst.js:6:2:6:8 | [Label] Foo-Bar | semmle.order | 0 |
+| tst.js:6:1:6:11 | [ExprStmt] <Foo-Bar/>; | tst.js:6:1:6:10 | [JsxElement] <Foo-Bar/> | semmle.label | 1 |
+| tst.js:6:1:6:11 | [ExprStmt] <Foo-Bar/>; | tst.js:6:1:6:10 | [JsxElement] <Foo-Bar/> | semmle.order | 1 |
+| tst.js:7:1:7:52 | [DeclStmt] var fragment = ... | tst.js:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | semmle.label | 1 |
+| tst.js:7:1:7:52 | [DeclStmt] var fragment = ... | tst.js:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | semmle.order | 1 |
+| tst.js:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | tst.js:7:5:7:12 | [VarDecl] fragment | semmle.label | 1 |
+| tst.js:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | tst.js:7:5:7:12 | [VarDecl] fragment | semmle.order | 1 |
+| tst.js:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | tst.js:7:16:7:52 | [JsxFragment] <> frag ... ext </> | semmle.label | 2 |
+| tst.js:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | tst.js:7:16:7:52 | [JsxFragment] <> frag ... ext </> | semmle.order | 2 |
+| tst.js:7:16:7:52 | [JsxFragment] <> frag ... ext </> | file://:0:0:0:0 | (Body) | semmle.label | 1 |
+| tst.js:7:16:7:52 | [JsxFragment] <> frag ... ext </> | file://:0:0:0:0 | (Body) | semmle.order | 1 |
+| tst.js:7:33:7:38 | [JsxElement] <Foo/> | tst.js:7:34:7:36 | [VarRef] Foo | semmle.label | 0 |
+| tst.js:7:33:7:38 | [JsxElement] <Foo/> | tst.js:7:34:7:36 | [VarRef] Foo | semmle.order | 0 |
+| tstest.tsx:1:1:1:32 | [DeclStmt] var href = ... | tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | semmle.label | 1 |
+| tstest.tsx:1:1:1:32 | [DeclStmt] var href = ... | tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | semmle.order | 1 |
+| tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tstest.tsx:1:5:1:8 | [VarDecl] href | semmle.label | 1 |
+| tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tstest.tsx:1:5:1:8 | [VarDecl] href | semmle.order | 1 |
+| tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tstest.tsx:1:12:1:31 | [Literal] "http://example.com" | semmle.label | 2 |
+| tstest.tsx:1:5:1:31 | [VariableDeclarator] href = ... le.com" | tstest.tsx:1:12:1:31 | [Literal] "http://example.com" | semmle.order | 2 |
+| tstest.tsx:2:1:2:47 | [DeclStmt] var linkTypes = ... | tstest.tsx:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | semmle.label | 1 |
+| tstest.tsx:2:1:2:47 | [DeclStmt] var linkTypes = ... | tstest.tsx:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | semmle.order | 1 |
+| tstest.tsx:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | tstest.tsx:2:5:2:13 | [VarDecl] linkTypes | semmle.label | 1 |
+| tstest.tsx:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | tstest.tsx:2:5:2:13 | [VarDecl] linkTypes | semmle.order | 1 |
+| tstest.tsx:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | tstest.tsx:2:17:2:46 | [ObjectExpr] {rel: ...} | semmle.label | 2 |
+| tstest.tsx:2:5:2:46 | [VariableDeclarator] linkTyp ... rrer" } | tstest.tsx:2:17:2:46 | [ObjectExpr] {rel: ...} | semmle.order | 2 |
+| tstest.tsx:2:17:2:46 | [ObjectExpr] {rel: ...} | tstest.tsx:2:19:2:44 | [Property] rel: "noopener noreferrer" | semmle.label | 1 |
+| tstest.tsx:2:17:2:46 | [ObjectExpr] {rel: ...} | tstest.tsx:2:19:2:44 | [Property] rel: "noopener noreferrer" | semmle.order | 1 |
+| tstest.tsx:2:19:2:44 | [Property] rel: "noopener noreferrer" | tstest.tsx:2:19:2:21 | [Label] rel | semmle.label | 1 |
+| tstest.tsx:2:19:2:44 | [Property] rel: "noopener noreferrer" | tstest.tsx:2:19:2:21 | [Label] rel | semmle.order | 1 |
+| tstest.tsx:2:19:2:44 | [Property] rel: "noopener noreferrer" | tstest.tsx:2:24:2:44 | [Literal] "noopener noreferrer" | semmle.label | 2 |
+| tstest.tsx:2:19:2:44 | [Property] rel: "noopener noreferrer" | tstest.tsx:2:24:2:44 | [Literal] "noopener noreferrer" | semmle.order | 2 |
+| tstest.tsx:3:1:3:106 | [JsxElement] <a href ... */}</a> | file://:0:0:0:0 | (Attributes) | semmle.label | 2 |
+| tstest.tsx:3:1:3:106 | [JsxElement] <a href ... */}</a> | file://:0:0:0:0 | (Attributes) | semmle.order | 2 |
+| tstest.tsx:3:1:3:106 | [JsxElement] <a href ... */}</a> | file://:0:0:0:0 | (Body) | semmle.label | 1 |
+| tstest.tsx:3:1:3:106 | [JsxElement] <a href ... */}</a> | file://:0:0:0:0 | (Body) | semmle.order | 1 |
+| tstest.tsx:3:1:3:106 | [JsxElement] <a href ... */}</a> | tstest.tsx:3:2:3:2 | [Label] a | semmle.label | 0 |
+| tstest.tsx:3:1:3:106 | [JsxElement] <a href ... */}</a> | tstest.tsx:3:2:3:2 | [Label] a | semmle.order | 0 |
+| tstest.tsx:3:1:3:107 | [ExprStmt] <a href ... /}</a>; | tstest.tsx:3:1:3:106 | [JsxElement] <a href ... */}</a> | semmle.label | 1 |
+| tstest.tsx:3:1:3:107 | [ExprStmt] <a href ... /}</a>; | tstest.tsx:3:1:3:106 | [JsxElement] <a href ... */}</a> | semmle.order | 1 |
+| tstest.tsx:3:4:3:14 | [JsxAttribute] href={href} | tstest.tsx:3:4:3:7 | [Label] href | semmle.label | 1 |
+| tstest.tsx:3:4:3:14 | [JsxAttribute] href={href} | tstest.tsx:3:4:3:7 | [Label] href | semmle.order | 1 |
+| tstest.tsx:3:4:3:14 | [JsxAttribute] href={href} | tstest.tsx:3:10:3:13 | [VarRef] href | semmle.label | 2 |
+| tstest.tsx:3:4:3:14 | [JsxAttribute] href={href} | tstest.tsx:3:10:3:13 | [VarRef] href | semmle.order | 2 |
+| tstest.tsx:3:16:3:30 | [JsxAttribute] target="_blank" | tstest.tsx:3:16:3:21 | [Label] target | semmle.label | 1 |
+| tstest.tsx:3:16:3:30 | [JsxAttribute] target="_blank" | tstest.tsx:3:16:3:21 | [Label] target | semmle.order | 1 |
+| tstest.tsx:3:16:3:30 | [JsxAttribute] target="_blank" | tstest.tsx:3:23:3:30 | [Literal] "_blank" | semmle.label | 2 |
+| tstest.tsx:3:16:3:30 | [JsxAttribute] target="_blank" | tstest.tsx:3:23:3:30 | [Literal] "_blank" | semmle.order | 2 |
+| tstest.tsx:3:32:3:45 | [JsxAttribute] {...linkTypes} | tstest.tsx:3:32:3:45 | [SpreadElement] ...linkTypes | semmle.label | 1 |
+| tstest.tsx:3:32:3:45 | [JsxAttribute] {...linkTypes} | tstest.tsx:3:32:3:45 | [SpreadElement] ...linkTypes | semmle.order | 1 |
+| tstest.tsx:3:32:3:45 | [SpreadElement] ...linkTypes | tstest.tsx:3:36:3:44 | [VarRef] linkTypes | semmle.label | 1 |
+| tstest.tsx:3:32:3:45 | [SpreadElement] ...linkTypes | tstest.tsx:3:36:3:44 | [VarRef] linkTypes | semmle.order | 1 |
+| tstest.tsx:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | file://:0:0:0:0 | (Attributes) | semmle.label | 2 |
+| tstest.tsx:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | file://:0:0:0:0 | (Attributes) | semmle.order | 2 |
+| tstest.tsx:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | tstest.tsx:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | semmle.label | 0 |
+| tstest.tsx:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | tstest.tsx:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | semmle.order | 0 |
+| tstest.tsx:4:1:4:36 | [ExprStmt] <MyComp ... bar"/>; | tstest.tsx:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | semmle.label | 1 |
+| tstest.tsx:4:1:4:36 | [ExprStmt] <MyComp ... bar"/>; | tstest.tsx:4:1:4:35 | [JsxElement] <MyComp ... "bar"/> | semmle.order | 1 |
+| tstest.tsx:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | tstest.tsx:4:2:4:13 | [VarRef] MyComponents | semmle.label | 1 |
+| tstest.tsx:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | tstest.tsx:4:2:4:13 | [VarRef] MyComponents | semmle.order | 1 |
+| tstest.tsx:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | tstest.tsx:4:15:4:23 | [Label] FancyLink | semmle.label | 2 |
+| tstest.tsx:4:2:4:23 | [DotExpr] MyCompo ... ncyLink | tstest.tsx:4:15:4:23 | [Label] FancyLink | semmle.order | 2 |
+| tstest.tsx:4:25:4:33 | [JsxAttribute] foo="bar" | tstest.tsx:4:25:4:27 | [Label] foo | semmle.label | 1 |
+| tstest.tsx:4:25:4:33 | [JsxAttribute] foo="bar" | tstest.tsx:4:25:4:27 | [Label] foo | semmle.order | 1 |
+| tstest.tsx:4:25:4:33 | [JsxAttribute] foo="bar" | tstest.tsx:4:29:4:33 | [Literal] "bar" | semmle.label | 2 |
+| tstest.tsx:4:25:4:33 | [JsxAttribute] foo="bar" | tstest.tsx:4:29:4:33 | [Literal] "bar" | semmle.order | 2 |
+| tstest.tsx:5:1:5:6 | [JsxElement] <Foo/> | tstest.tsx:5:2:5:4 | [VarRef] Foo | semmle.label | 0 |
+| tstest.tsx:5:1:5:6 | [JsxElement] <Foo/> | tstest.tsx:5:2:5:4 | [VarRef] Foo | semmle.order | 0 |
+| tstest.tsx:5:1:5:7 | [ExprStmt] <Foo/>; | tstest.tsx:5:1:5:6 | [JsxElement] <Foo/> | semmle.label | 1 |
+| tstest.tsx:5:1:5:7 | [ExprStmt] <Foo/>; | tstest.tsx:5:1:5:6 | [JsxElement] <Foo/> | semmle.order | 1 |
+| tstest.tsx:6:1:6:10 | [JsxElement] <Foo-Bar/> | tstest.tsx:6:2:6:8 | [Label] Foo-Bar | semmle.label | 0 |
+| tstest.tsx:6:1:6:10 | [JsxElement] <Foo-Bar/> | tstest.tsx:6:2:6:8 | [Label] Foo-Bar | semmle.order | 0 |
+| tstest.tsx:6:1:6:11 | [ExprStmt] <Foo-Bar/>; | tstest.tsx:6:1:6:10 | [JsxElement] <Foo-Bar/> | semmle.label | 1 |
+| tstest.tsx:6:1:6:11 | [ExprStmt] <Foo-Bar/>; | tstest.tsx:6:1:6:10 | [JsxElement] <Foo-Bar/> | semmle.order | 1 |
+| tstest.tsx:7:1:7:52 | [DeclStmt] var fragment = ... | tstest.tsx:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | semmle.label | 1 |
+| tstest.tsx:7:1:7:52 | [DeclStmt] var fragment = ... | tstest.tsx:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | semmle.order | 1 |
+| tstest.tsx:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | tstest.tsx:7:5:7:12 | [VarDecl] fragment | semmle.label | 1 |
+| tstest.tsx:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | tstest.tsx:7:5:7:12 | [VarDecl] fragment | semmle.order | 1 |
+| tstest.tsx:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | tstest.tsx:7:16:7:52 | [JsxFragment] <> frag ... ext </> | semmle.label | 2 |
+| tstest.tsx:7:5:7:52 | [VariableDeclarator] fragmen ... ext </> | tstest.tsx:7:16:7:52 | [JsxFragment] <> frag ... ext </> | semmle.order | 2 |
+| tstest.tsx:7:16:7:52 | [JsxFragment] <> frag ... ext </> | file://:0:0:0:0 | (Body) | semmle.label | 1 |
+| tstest.tsx:7:16:7:52 | [JsxFragment] <> frag ... ext </> | file://:0:0:0:0 | (Body) | semmle.order | 1 |
+| tstest.tsx:7:33:7:38 | [JsxElement] <Foo/> | tstest.tsx:7:34:7:36 | [VarRef] Foo | semmle.label | 0 |
+| tstest.tsx:7:33:7:38 | [JsxElement] <Foo/> | tstest.tsx:7:34:7:36 | [VarRef] Foo | semmle.order | 0 |
+graphProperties
+| semmle.graphKind | tree |

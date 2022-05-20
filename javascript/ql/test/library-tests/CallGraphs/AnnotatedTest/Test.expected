@@ -1,0 +1,15 @@
+spuriousCallee
+missingCallee
+| constructor-field.ts:40:5:40:14 | f3.build() | constructor-field.ts:13:3:13:12 | build() {} | -1 | calls |
+| constructor-field.ts:71:1:71:11 | bf3.build() | constructor-field.ts:13:3:13:12 | build() {} | -1 | calls |
+badAnnotation
+accessorCall
+| accessors.js:12:1:12:5 | obj.f | accessors.js:5:8:5:12 | () {} |
+| accessors.js:15:1:15:5 | obj.f | accessors.js:8:8:8:13 | (x) {} |
+| accessors.js:26:1:26:3 | C.f | accessors.js:19:15:19:19 | () {} |
+| accessors.js:29:1:29:3 | C.f | accessors.js:22:15:22:20 | (x) {} |
+| accessors.js:41:1:41:9 | new D().f | accessors.js:34:8:34:12 | () {} |
+| accessors.js:44:1:44:9 | new D().f | accessors.js:37:8:37:13 | (x) {} |
+| accessors.js:48:1:48:5 | obj.f | accessors.js:5:8:5:12 | () {} |
+| accessors.js:51:1:51:3 | C.f | accessors.js:19:15:19:19 | () {} |
+| accessors.js:54:1:54:9 | new D().f | accessors.js:34:8:34:12 | () {} |

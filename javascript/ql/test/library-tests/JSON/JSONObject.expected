@@ -1,0 +1,10 @@
+| tst.json:1:2:8:1 | {\\n  "na ... "\\n  }\\n} | address | tst.json:3:14:7:3 | {\\n    " ... nd"\\n  } | (none) |
+| tst.json:1:2:8:1 | {\\n  "na ... "\\n  }\\n} | name | tst.json:2:11:2:21 | "Jim Knopf" | Jim Knopf |
+| tst.json:3:14:7:3 | {\\n    " ... nd"\\n  } | country | tst.json:6:16:6:27 | "Lummerland" | Lummerland |
+| tst.json:3:14:7:3 | {\\n    " ... nd"\\n  } | number | tst.json:5:15:5:16 | -1 | (none) |
+| tst.json:3:14:7:3 | {\\n    " ... nd"\\n  } | street | tst.json:4:15:4:18 | null | (none) |
+| tst.json:8:4:15:1 | {\\n  "na ... "\\n  }\\n} | address | tst.json:10:14:14:3 | {\\n    " ... nd"\\n  } | (none) |
+| tst.json:8:4:15:1 | {\\n  "na ... "\\n  }\\n} | name | tst.json:9:11:9:25 | "Frau Mahlzahn" | Frau Mahlzahn |
+| tst.json:10:14:14:3 | {\\n    " ... nd"\\n  } | country | tst.json:13:16:13:27 | "Kummerland" | Kummerland |
+| tst.json:10:14:14:3 | {\\n    " ... nd"\\n  } | number | tst.json:12:15:12:17 | 133 | (none) |
+| tst.json:10:14:14:3 | {\\n    " ... nd"\\n  } | street | tst.json:11:15:11:28 | "Alte Strasse" | Alte Strasse |

@@ -1,0 +1,4 @@
+| nestedif.cs:8:9:8:36 | if (...) ... | These 'if' statements can be combined. |
+| nestedif.cs:11:9:11:46 | if (...) ... | These 'if' statements can be combined. |
+| nestedif.cs:11:19:11:46 | if (...) ... | These 'if' statements can be combined. |
+| nestedif.cs:14:9:21:9 | if (...) ... | These 'if' statements can be combined. |

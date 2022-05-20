@@ -1,0 +1,21 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>This query shows namespaces that cyclically depend 
+on one another.</p>
+</overview>
+
+<recommendation>
+<p>If there are cyclic dependencies between packages, they cannot be developed and tested independently. 
+It is better to eliminate such cycles from the program.</p>
+</recommendation>
+
+<references>
+<li>Robert Martin's <a href="https://drive.google.com/file/d/0BwhCYaYDn8EgOGM2ZGFhNmYtNmE4ZS00OGY5LWFkZTYtMjE0ZGNjODQ0MjEx/view">Acyclic Dependencies Principle</a>.
+</li>
+</references>
+</qhelp>

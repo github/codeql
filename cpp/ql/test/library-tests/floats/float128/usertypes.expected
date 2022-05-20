@@ -1,0 +1,6 @@
+| float128.cpp:1:50:1:60 | _Complex128 | file://:0:0:0:0 | <error-type> |
+| float128.cpp:13:29:13:54 | __is_floating_point_helper<T> | float128.cpp:10:8:10:17 | false_type |
+| float128.cpp:14:19:14:51 | __is_floating_point_helper<float> | float128.cpp:11:8:11:16 | true_type |
+| float128.cpp:15:19:15:52 | __is_floating_point_helper<double> | float128.cpp:11:8:11:16 | true_type |
+| float128.cpp:16:19:16:57 | __is_floating_point_helper<long double> | float128.cpp:11:8:11:16 | true_type |
+| float128.cpp:17:19:17:56 | __is_floating_point_helper<__float128> | float128.cpp:11:8:11:16 | true_type |

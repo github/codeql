@@ -1,0 +1,2 @@
+| test.c:5:5:5:5 | call to f | 2 |
+| test.c:6:4:6:4 | call to f | 2 |

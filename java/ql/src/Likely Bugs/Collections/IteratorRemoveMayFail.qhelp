@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+The <code>remove</code> method of the <code>Iterator</code> interface is an optional operation.
+It is not supported by iterators on unmodifiable collections, or iterators on lists constructed
+by the <code>Arrays.asList</code> method. Invoking <code>remove</code> on such an iterator
+will lead to an <code>UnsupportedOperationException</code>.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+If a collection is meant to be modified after construction, use a modifiable collection type such as
+<code>ArrayList</code> or <code>HashSet</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the constructor <code>A(Integer...)</code> initializes the field
+<code>A.l</code> to <code>Arrays.asList(is)</code>. While the type of lists returned by
+<code>Arrays.asList</code> supports element updates through the <code>set</code> method, it
+does not support element removal. Hence the call to <code>iter.remove</code> on line 20 must
+fail at runtime.
+</p> 
+
+<sample src="IteratorRemoveMayFail.java" />
+
+<p>
+To avoid this failure, copy the list returned by <code>Arrays.asList</code> into a newly
+created <code>ArrayList</code> like this:
+</p>
+
+<sample src="IteratorRemoveMayFailGood.java" />
+
+</example>
+<references>
+
+
+<li>Mark Needham: <a href="https://dzone.com/articles/java-fooled">Java: Fooled by java.util.Arrays.asList</a>.</li>
+
+
+</references>
+</qhelp>

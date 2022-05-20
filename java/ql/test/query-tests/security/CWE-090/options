@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/springframework-5.3.8:${testdir}/../../../stubs/spring-ldap-2.3.2:${testdir}/../../../stubs/unboundid-ldap-4.0.14:${testdir}/../../../stubs/esapi-2.0.1:${testdir}/../../../stubs/apache-ldap-1.0.2

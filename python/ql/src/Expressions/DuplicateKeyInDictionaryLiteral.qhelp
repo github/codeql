@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Dictionary literals are constructed in the order given in the source.
+This means that if a key is duplicated the second key-value pair will overwrite
+the first as a dictionary can only have one value per key.
+</p>
+
+</overview>
+<recommendation>
+<p>Check for typos to ensure that the keys are supposed to be the same.
+If they are then decide which value is wanted and delete the other one.</p>
+
+</recommendation>
+<example>
+<p>This example will output "c" because the mapping between 2 and "b" is overwritten by the
+mapping from 2 to "c". The programmer may have meant to map 3 to "c" instead.</p>
+<sample src="DuplicateKeyInDictionaryLiteral.py" />
+
+</example>
+<references>
+
+  <li>Python: <a href="http://docs.python.org/2/reference/expressions.html#dictionary-displays">Dictionary literals</a>.</li>
+
+</references>
+</qhelp>

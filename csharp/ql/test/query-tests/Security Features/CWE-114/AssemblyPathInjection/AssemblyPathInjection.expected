@@ -1,0 +1,1 @@
+| Test.cs:10:36:10:46 | access to local variable libraryName | $@ flows to here and is used as the path to dynamically load an assembly. | Test.cs:7:26:7:48 | access to property QueryString | User-provided value |

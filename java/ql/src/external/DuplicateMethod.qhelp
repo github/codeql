@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>A method should never be duplicated exactly in several places in the code.
+The severity of this problem is higher for longer methods than for extremely short
+methods of one or two statements, but there are usually better ways of achieving the same
+effect.</p>
+
+<p>Code duplication in general is highly undesirable for a range of reasons. The artificially
+inflated amount of code is more difficult to understand, and sequences of similar but subtly different lines
+can mask the real purpose or intention behind them. Also, there is always a risk that only one
+of several copies of the code is updated to address a defect or add a feature.</p>
+
+</overview>
+<recommendation>
+
+<p>At its simplest, the duplication can be addressed by simply removing all but one of the duplicate
+method definitions, and changing calls to the removed methods so that they call the remaining function
+instead.</p>
+
+<p>This may not be possible because of visibility or accessibility. A common example is
+where two classes implement the same functionality but neither is a subtype of the other,
+so it is not possible to inherit a single method definition. In such cases, introducing a
+common superclass to share the duplicated code is a possible option. Alternatively, if the methods
+do not need access to private object state, they can be moved to a shared utility class that
+just provides the functionality itself.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, <code>RowWidget</code> and <code>ColumnWidget</code> contain duplicate
+methods. The <code>collectChildren</code> method should probably be moved into the
+superclass, <code>Widget</code>, and shared between <code>RowWidget</code> and
+<code>ColumnWidget</code>.</p>
+
+<sample src="DuplicateMethod.java" />
+
+<p>Alternatively, if not all kinds of <code>Widget</code> actually need <code>collectChildren</code>
+(for example, not all of them have children), it might be necessary to introduce
+a new, possibly abstract, class under <code>Widget</code>. For example, the new class might be called
+<code>ContainerWidget</code> and include a single definition of <code>collectChildren</code>. Both
+<code>RowWidget</code> and <code>ColumnWidget</code> could extend the class and inherit
+<code>collectChildren</code>.</p>
+
+<p>Modern IDEs may provide refactoring support for this sort of issue, usually
+with the names "Pull up" or "Extract supertype".</p>
+
+</example>
+<references>
+
+<li>E. Juergens, F. Deissenboeck, B. Hummel, S. Wagner.
+<em>Do code clones matter?</em> Proceedings of the 31st International Conference on
+Software Engineering,
+485-495, 2009.</li>
+
+
+</references>
+</qhelp>

@@ -1,0 +1,15 @@
+<sample>
+  <db pwd=""/>
+  <db pwd="foo"/>
+  <db dwp=""/>
+  <db dwp="foo"/>
+  <db Password=""/>
+  <db Password="foo"/>
+  <db drowssaP=""/>
+  <db drowssaP="foo"/>
+  <db connectionString="Driver=ODBCDriver;server=ODBCServer;"/>
+  <db connectionString="Driver=ODBCDriver;server=ODBCServer;pwd=;"/>
+  <db connectionString="Driver=ODBCDriver;server=ODBCServer;password=;"/>
+  <db connectionString="Driver=ODBCDriver;server=ODBCServer;pwd=foo;"/>
+  <db connectionString="Driver=ODBCDriver;server=ODBCServer;password=foo;"/>
+</sample>

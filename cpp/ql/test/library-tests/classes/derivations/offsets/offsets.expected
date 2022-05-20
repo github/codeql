@@ -1,0 +1,12 @@
+| 6 | SingleInheritance | Base | 0 |
+| 16 | MultipleInheritance | Base | 0 |
+| 16 | MultipleInheritance | Base2 | 8 |
+| 21 | DeepInheritance | MultipleInheritance | 0 |
+| 21 | DeepInheritance | SingleInheritance | 24 |
+| 31 | VirtualInheritance2 | VirtualInheritance1 | 0 |
+| 36 | EffectivelyVirtual | MultipleInheritance | 8 |
+| 47 | InheritsVTable | PolymorphicBase | 0 |
+| 52 | IntroducesVTable | Base | 8 |
+| 68 | Bottom | Left | 0 |
+| 68 | Bottom | Right | 16 |
+| 73 | DeepSingleInheritance | SingleInheritance | 0 |

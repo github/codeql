@@ -1,0 +1,34 @@
+missingOperand
+unexpectedOperand
+duplicateOperand
+missingPhiOperand
+missingOperandType
+duplicateChiOperand
+sideEffectWithoutPrimary
+instructionWithoutSuccessor
+| ../../../include/memory.h:68:25:68:33 | CopyValue: (reference to) | Instruction 'CopyValue: (reference to)' has no successors in function '$@'. | ../../../include/memory.h:67:5:67:5 | void std::unique_ptr<int, std::default_delete<int>>::~unique_ptr() | void std::unique_ptr<int, std::default_delete<int>>::~unique_ptr() |
+ambiguousSuccessors
+unexplainedLoop
+unnecessaryPhiInstruction
+memoryOperandDefinitionIsUnmodeled
+operandAcrossFunctions
+instructionWithoutUniqueBlock
+containsLoopOfForwardEdges
+lostReachability
+backEdgeCountMismatch
+useNotDominatedByDefinition
+| ir.cpp:1486:8:1486:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1486:8:1486:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
+| ir.cpp:1751:51:1751:51 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1750:5:1750:34 | int implicit_copy_constructor_test(CopyConstructorTestNonVirtualClass const&, CopyConstructorTestVirtualClass const&) | int implicit_copy_constructor_test(CopyConstructorTestNonVirtualClass const&, CopyConstructorTestVirtualClass const&) |
+| ir.cpp:1752:48:1752:48 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1750:5:1750:34 | int implicit_copy_constructor_test(CopyConstructorTestNonVirtualClass const&, CopyConstructorTestVirtualClass const&) | int implicit_copy_constructor_test(CopyConstructorTestNonVirtualClass const&, CopyConstructorTestVirtualClass const&) |
+switchInstructionWithoutDefaultEdge
+notMarkedAsConflated
+wronglyMarkedAsConflated
+invalidOverlap
+nonUniqueEnclosingIRFunction
+fieldAddressOnNonPointer
+thisArgumentIsNonPointer
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
+missingIRType
+multipleIRTypes
+missingCppType

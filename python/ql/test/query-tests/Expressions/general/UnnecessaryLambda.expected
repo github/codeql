@@ -1,0 +1,6 @@
+| expressions_test.py:11:1:11:42 | Lambda | This 'lambda' is just a simple wrapper around a callable object. Use that object directly. |
+| expressions_test.py:12:1:12:44 | Lambda | This 'lambda' is just a simple wrapper around a callable object. Use that object directly. |
+| expressions_test.py:13:1:13:46 | Lambda | This 'lambda' is just a simple wrapper around a callable object. Use that object directly. |
+| expressions_test.py:141:1:141:22 | Lambda | This 'lambda' is just a simple wrapper around a callable object. Use that object directly. |
+| expressions_test.py:142:1:142:29 | Lambda | This 'lambda' is just a simple wrapper around a callable object. Use that object directly. |
+| expressions_test.py:149:16:149:34 | Lambda | This 'lambda' is just a simple wrapper around a callable object. Use that object directly. |

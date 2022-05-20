@@ -1,0 +1,43 @@
++ semmlecode-javascript-queries/Declarations/AssignmentToConst.ql: /Correctness/Declarations
++ semmlecode-javascript-queries/Declarations/ClobberingVarInit.ql: /Correctness/Declarations
++ semmlecode-javascript-queries/Declarations/ConflictingFunctions.ql: /Correctness/Declarations
++ semmlecode-javascript-queries/Declarations/DefaultArgumentReferencesNestedFunction.ql: /Correctness/Declarations
++ semmlecode-javascript-queries/Declarations/MixedStaticInstanceThisAccess.ql: /Correctness/Declarations
++ semmlecode-javascript-queries/Declarations/TemporalDeadZone.ql: /Correctness/Declarations
++ semmlecode-javascript-queries/Declarations/UniqueParameterNames.ql: /Correctness/Declarations
++ semmlecode-javascript-queries/Declarations/UniquePropertyNames.ql: /Correctness/Declarations
++ semmlecode-javascript-queries/Declarations/IneffectiveParameterType.ql: /Correctness/Declarations
++ semmlecode-javascript-queries/DOM/ConflictingAttributes.ql: /Correctness/DOM
++ semmlecode-javascript-queries/DOM/MalformedIdAttribute.ql: /Correctness/DOM
++ semmlecode-javascript-queries/Expressions/ComparisonWithNaN.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/CompareIdenticalValues.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/DuplicateCondition.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/DuplicateSwitchCase.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/HeterogeneousComparison.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/MisspelledVariableName.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/MissingAwait.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/MissingDotLengthInComparison.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/ShiftOutOfRange.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/Expressions/RedundantExpression.ql: /Correctness/Expressions
++ semmlecode-javascript-queries/LanguageFeatures/BadTypeof.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/InvalidPrototype.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/LengthComparisonOffByOne.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/NonLinearPattern.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/PropertyWriteOnPrimitive.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/StrictModeCallStackIntrospection.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/SyntaxError.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/TemplateSyntaxInStringLiteral.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/ThisBeforeSuper.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/LanguageFeatures/UnusedIndexVariable.ql: /Correctness/Language Features
++ semmlecode-javascript-queries/RegExp/BackrefBeforeGroup.ql: /Correctness/Regular Expressions
++ semmlecode-javascript-queries/RegExp/BackrefIntoNegativeLookahead.ql: /Correctness/Regular Expressions
++ semmlecode-javascript-queries/RegExp/DuplicateCharacterInCharacterClass.ql: /Correctness/Regular Expressions
++ semmlecode-javascript-queries/RegExp/EmptyCharacterClass.ql: /Correctness/Regular Expressions
++ semmlecode-javascript-queries/RegExp/IdentityReplacement.ql: /Correctness/Regular Expressions
++ semmlecode-javascript-queries/RegExp/RegExpAlwaysMatches.ql: /Correctness/Regular Expressions
++ semmlecode-javascript-queries/RegExp/UnboundBackref.ql: /Correctness/Regular Expressions
++ semmlecode-javascript-queries/RegExp/UnmatchableCaret.ql: /Correctness/Regular Expressions
++ semmlecode-javascript-queries/RegExp/UnmatchableDollar.ql: /Correctness/Regular Expressions
++ semmlecode-javascript-queries/Statements/IgnoreArrayResult.ql: /Correctness/Statements
++ semmlecode-javascript-queries/Statements/InconsistentLoopOrientation.ql: /Correctness/Statements
++ semmlecode-javascript-queries/Statements/UnreachableStatement.ql: /Correctness/Statements

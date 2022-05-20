@@ -1,0 +1,6 @@
+| test.py:16:5:16:12 | non() | Call to a $@ of $@. | test.py:15:11:15:23 | NonCallable() | non-callable | test.py:3:1:3:26 | class NonCallable | class NonCallable |
+| test.py:17:5:17:8 | Tuple() | Call to a $@ of $@. | test.py:17:5:17:6 | Tuple | non-callable | file://:0:0:0:0 | builtin-class tuple | builtin-class tuple |
+| test.py:18:5:18:8 | List() | Call to a $@ of $@. | test.py:18:5:18:6 | List | non-callable | file://:0:0:0:0 | builtin-class list | builtin-class list |
+| test.py:26:9:26:16 | non() | Call to a $@ of $@. | test.py:15:11:15:23 | NonCallable() | non-callable | test.py:3:1:3:26 | class NonCallable | class NonCallable |
+| test.py:47:12:47:27 | NotImplemented() | Call to a $@ of $@. | test.py:47:12:47:25 | NotImplemented | non-callable | file://:0:0:0:0 | builtin-class NotImplementedType | builtin-class NotImplementedType |
+| test.py:63:16:63:27 | cls() | Call to a $@ of $@. | test.py:62:22:62:24 | cls | non-callable | test.py:56:1:56:18 | class Foo | class Foo |

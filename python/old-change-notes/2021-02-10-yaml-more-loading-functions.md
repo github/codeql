@@ -1,0 +1,2 @@
+lgtm,codescanning
+* Improved modeling of the `PyYAML` PyPI package (imported as `yaml`) now includes `safe_load`, `unsafe_load`, and `full_load` (as well as the `..._load_all` functions). In the current version of PyYAML (5.4.1), only `safe_load` and `safe_load_all` are known to be safe from code execution exploits. Consequently, calls to the other functions are modeled as sinks of the _Deserializing untrusted input_ (`py/unsafe-deserialization`) query.

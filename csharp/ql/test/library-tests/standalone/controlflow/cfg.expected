@@ -1,0 +1,34 @@
+| ControlFlow.cs:5:10:5:10 | enter F | ControlFlow.cs:6:5:11:5 | {...} |
+| ControlFlow.cs:5:10:5:10 | exit F (normal) | ControlFlow.cs:5:10:5:10 | exit F |
+| ControlFlow.cs:6:5:11:5 | {...} | ControlFlow.cs:7:9:7:34 | ... ...; |
+| ControlFlow.cs:7:9:7:34 | ... ...; | ControlFlow.cs:7:17:7:33 | Call (unknown target) |
+| ControlFlow.cs:7:9:7:34 | ... ...; | ControlFlow.cs:7:17:7:33 | object creation of type <unknown type> |
+| ControlFlow.cs:7:13:7:33 | <unknown type> v = ... | ControlFlow.cs:8:9:8:44 | ...; |
+| ControlFlow.cs:7:17:7:33 | Call (unknown target) | ControlFlow.cs:7:13:7:33 | <unknown type> v = ... |
+| ControlFlow.cs:7:17:7:33 | object creation of type <unknown type> | ControlFlow.cs:7:13:7:33 | <unknown type> v = ... |
+| ControlFlow.cs:8:9:8:13 | Expression | ControlFlow.cs:8:22:8:22 | access to local variable v |
+| ControlFlow.cs:8:9:8:43 | Call (unknown target) | ControlFlow.cs:10:9:10:87 | ...; |
+| ControlFlow.cs:8:9:8:43 | call to method  | ControlFlow.cs:10:9:10:87 | ...; |
+| ControlFlow.cs:8:9:8:44 | ...; | ControlFlow.cs:8:9:8:13 | Expression |
+| ControlFlow.cs:8:22:8:22 | access to local variable v | ControlFlow.cs:8:22:8:24 | Call (unknown target) |
+| ControlFlow.cs:8:22:8:22 | access to local variable v | ControlFlow.cs:8:22:8:24 | access to property (unknown) |
+| ControlFlow.cs:8:22:8:24 | Call (unknown target) | ControlFlow.cs:8:22:8:26 | Call (unknown target) |
+| ControlFlow.cs:8:22:8:24 | Call (unknown target) | ControlFlow.cs:8:22:8:26 | access to property (unknown) |
+| ControlFlow.cs:8:22:8:24 | access to property (unknown) | ControlFlow.cs:8:22:8:26 | Call (unknown target) |
+| ControlFlow.cs:8:22:8:24 | access to property (unknown) | ControlFlow.cs:8:22:8:26 | access to property (unknown) |
+| ControlFlow.cs:8:22:8:26 | Call (unknown target) | ControlFlow.cs:8:29:8:42 | "This is true" |
+| ControlFlow.cs:8:22:8:26 | access to property (unknown) | ControlFlow.cs:8:29:8:42 | "This is true" |
+| ControlFlow.cs:8:29:8:42 | "This is true" | ControlFlow.cs:8:9:8:43 | Call (unknown target) |
+| ControlFlow.cs:8:29:8:42 | "This is true" | ControlFlow.cs:8:9:8:43 | call to method  |
+| ControlFlow.cs:10:9:10:86 | Call (unknown target) | ControlFlow.cs:10:51:10:62 | access to field Empty |
+| ControlFlow.cs:10:9:10:86 | object creation of type <unknown type> | ControlFlow.cs:10:51:10:62 | access to field Empty |
+| ControlFlow.cs:10:9:10:87 | ...; | ControlFlow.cs:10:9:10:86 | Call (unknown target) |
+| ControlFlow.cs:10:9:10:87 | ...; | ControlFlow.cs:10:9:10:86 | object creation of type <unknown type> |
+| ControlFlow.cs:10:35:10:86 | { ..., ... } | ControlFlow.cs:5:10:5:10 | exit F (normal) |
+| ControlFlow.cs:10:37:10:62 | ... = ... | ControlFlow.cs:10:79:10:79 | access to local variable v |
+| ControlFlow.cs:10:51:10:62 | access to field Empty | ControlFlow.cs:10:37:10:62 | ... = ... |
+| ControlFlow.cs:10:65:10:84 | ... = ... | ControlFlow.cs:10:35:10:86 | { ..., ... } |
+| ControlFlow.cs:10:79:10:79 | access to local variable v | ControlFlow.cs:10:79:10:84 | Call (unknown target) |
+| ControlFlow.cs:10:79:10:79 | access to local variable v | ControlFlow.cs:10:79:10:84 | access to property (unknown) |
+| ControlFlow.cs:10:79:10:84 | Call (unknown target) | ControlFlow.cs:10:65:10:84 | ... = ... |
+| ControlFlow.cs:10:79:10:84 | access to property (unknown) | ControlFlow.cs:10:65:10:84 | ... = ... |

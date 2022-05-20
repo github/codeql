@@ -1,0 +1,4 @@
+| mongodb | Collection | index.ts:14:3:14:17 | getCollection() |
+| mongoose | Model | index.ts:22:3:22:20 | getMongooseModel() |
+| mongoose | Query | index.ts:23:3:23:20 | getMongooseQuery() |
+| puppeteer | Browser | index.ts:30:22:30:33 | this.browser |

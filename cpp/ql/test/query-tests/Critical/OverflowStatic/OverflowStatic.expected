@@ -1,0 +1,16 @@
+| test2.c:28:19:28:20 | 41 | Potential buffer-overflow: 'buffer' has size 40 not 41. |
+| test2.c:29:26:29:27 | 43 | Potential buffer-overflow: 'buffer' has size 40 not 43. |
+| test2.c:31:26:31:27 | 44 | Potential buffer-overflow: 'buffer' has size 40 not 44. |
+| test2.c:32:25:32:26 | 45 | Potential buffer-overflow: 'buffer' has size 40 not 45. |
+| test2.c:33:26:33:27 | 46 | Potential buffer-overflow: 'buffer' has size 40 not 46. |
+| test2.c:34:22:34:23 | 47 | Potential buffer-overflow: 'buffer' has size 40 not 47. |
+| test2.c:35:23:35:24 | 48 | Potential buffer-overflow: 'buffer' has size 40 not 48. |
+| test.c:14:9:14:13 | access to array | Potential buffer-overflow: 'xs' has size 5 but 'xs[5]' may be accessed here. |
+| test.c:15:9:15:13 | access to array | Potential buffer-overflow: 'xs' has size 5 but 'xs[6]' may be accessed here. |
+| test.c:20:9:20:18 | access to array | Potential buffer-overflow: 'ys' has size 5 but 'ys[5]' may be accessed here. |
+| test.c:21:9:21:18 | access to array | Potential buffer-overflow: 'ys' has size 5 but 'ys[6]' may be accessed here. |
+| test.cpp:19:3:19:12 | access to array | Potential buffer-overflow: counter 'i' <= 3 but 'buffer1' has 3 elements. |
+| test.cpp:20:3:20:12 | access to array | Potential buffer-overflow: counter 'i' <= 3 but 'buffer2' has 3 elements. |
+| test.cpp:24:27:24:27 | 4 | Potential buffer-overflow: 'buffer1' has size 3 not 4. |
+| test.cpp:26:27:26:27 | 4 | Potential buffer-overflow: 'buffer2' has size 3 not 4. |
+| test.cpp:40:22:40:27 | amount | Potential buffer-overflow: 'buffer' has size 100 not 101. |

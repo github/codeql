@@ -1,0 +1,3 @@
+| AV Rule 73.cpp:4:2:4:9 | MyClass1 | This default constructor possibly doesn't put the object in a usable state, indicated by the member variable $@. | AV Rule 73.cpp:14:6:14:6 | x | x |
+| original.cpp:14:1:14:8 | Bad | This default constructor possibly doesn't put the object in a usable state, indicated by the member variable $@. | original.cpp:5:6:5:8 | key | key |
+| original.cpp:76:1:76:18 | AlsoGood | This default constructor possibly doesn't put the object in a usable state, indicated by the member variable $@. | original.cpp:69:8:69:9 | cp | cp |

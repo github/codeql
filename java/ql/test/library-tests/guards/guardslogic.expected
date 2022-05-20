@@ -1,0 +1,64 @@
+| Logic.java:8:10:10:12 | ...?...:... | false | Logic.java:12:12:13:5 | { ... } |
+| Logic.java:8:10:10:12 | ...?...:... | true | Logic.java:11:21:12:5 | { ... } |
+| Logic.java:8:11:8:14 | g(...) | false | Logic.java:10:9:10:12 | true |
+| Logic.java:8:11:8:14 | g(...) | true | Logic.java:9:11:9:11 | 2 |
+| Logic.java:8:11:8:14 | g(...) | true | Logic.java:12:12:13:5 | { ... } |
+| Logic.java:9:9:9:12 | g(...) | false | Logic.java:12:12:13:5 | { ... } |
+| Logic.java:11:9:11:9 | b | false | Logic.java:12:12:13:5 | { ... } |
+| Logic.java:11:9:11:9 | b | true | Logic.java:11:21:12:5 | { ... } |
+| Logic.java:11:9:11:18 | ... != ... | false | Logic.java:12:12:13:5 | { ... } |
+| Logic.java:11:9:11:18 | ... != ... | true | Logic.java:11:21:12:5 | { ... } |
+| Logic.java:14:14:14:22 | ... != ... | false | Logic.java:14:37:14:37 | 0 |
+| Logic.java:14:14:14:22 | ... != ... | true | Logic.java:14:26:14:26 | a |
+| Logic.java:14:14:14:22 | ... != ... | true | Logic.java:15:29:15:29 | i |
+| Logic.java:14:14:14:22 | ... != ... | true | Logic.java:15:34:18:5 | { ... } |
+| Logic.java:14:14:14:22 | ... != ... | true | Logic.java:17:18:17:23 | break |
+| Logic.java:15:21:15:26 | ... < ... | true | Logic.java:15:29:15:29 | i |
+| Logic.java:15:21:15:26 | ... < ... | true | Logic.java:15:34:18:5 | { ... } |
+| Logic.java:15:21:15:26 | ... < ... | true | Logic.java:17:18:17:23 | break |
+| Logic.java:17:11:17:15 | ... > ... | false | Logic.java:15:29:15:29 | i |
+| Logic.java:17:11:17:15 | ... > ... | true | Logic.java:17:18:17:23 | break |
+| Logic.java:19:9:19:12 | g(...) | false | Logic.java:24:7:24:17 | case ... |
+| Logic.java:19:9:19:12 | g(...) | false | Logic.java:26:7:26:14 | default |
+| Logic.java:19:9:19:12 | g(...) | true | Logic.java:20:7:20:16 | <Expr>; |
+| Logic.java:22:7:22:17 | case ... | false | Logic.java:26:7:26:14 | default |
+| Logic.java:22:7:22:17 | case ... | true | Logic.java:22:7:22:17 | case ... |
+| Logic.java:24:7:24:17 | case ... | false | Logic.java:26:7:26:14 | default |
+| Logic.java:24:7:24:17 | case ... | true | Logic.java:24:7:24:17 | case ... |
+| Logic.java:26:7:26:14 | default | true | Logic.java:26:7:26:14 | default |
+| Logic.java:29:16:29:19 | g(...) | false | Logic.java:29:30:29:30 | s |
+| Logic.java:29:16:29:19 | g(...) | false | Logic.java:30:30:31:5 | { ... } |
+| Logic.java:29:16:29:19 | g(...) | true | Logic.java:29:23:29:26 | null |
+| Logic.java:30:9:30:27 | ...instanceof... | true | Logic.java:30:30:31:5 | { ... } |
+| Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:36:5:36:28 | <Expr>; |
+| Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:37:5:37:15 | if (...) |
+| Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:37:17:39:5 | { ... } |
+| Logic.java:35:5:35:29 | checkTrue(...) | true | Logic.java:40:5:40:18 | var ...; |
+| Logic.java:35:15:35:19 | ... > ... | true | Logic.java:36:5:36:28 | <Expr>; |
+| Logic.java:35:15:35:19 | ... > ... | true | Logic.java:37:5:37:15 | if (...) |
+| Logic.java:35:15:35:19 | ... > ... | true | Logic.java:37:17:39:5 | { ... } |
+| Logic.java:35:15:35:19 | ... > ... | true | Logic.java:40:5:40:18 | var ...; |
+| Logic.java:36:5:36:27 | checkFalse(...) | false | Logic.java:37:5:37:15 | if (...) |
+| Logic.java:36:5:36:27 | checkFalse(...) | false | Logic.java:37:17:39:5 | { ... } |
+| Logic.java:36:5:36:27 | checkFalse(...) | false | Logic.java:40:5:40:18 | var ...; |
+| Logic.java:36:16:36:21 | g(...) | false | Logic.java:37:5:37:15 | if (...) |
+| Logic.java:36:16:36:21 | g(...) | false | Logic.java:37:17:39:5 | { ... } |
+| Logic.java:36:16:36:21 | g(...) | false | Logic.java:40:5:40:18 | var ...; |
+| Logic.java:37:9:37:14 | ... > ... | true | Logic.java:37:17:39:5 | { ... } |
+| Logic.java:44:10:44:10 | b | false | Logic.java:44:33:44:35 | msg |
+| Logic.java:52:5:52:29 | checkTrue(...) | true | Logic.java:53:5:53:28 | <Expr>; |
+| Logic.java:52:5:52:29 | checkTrue(...) | true | Logic.java:54:5:54:15 | if (...) |
+| Logic.java:52:5:52:29 | checkTrue(...) | true | Logic.java:54:17:56:5 | { ... } |
+| Logic.java:52:5:52:29 | checkTrue(...) | true | Logic.java:57:5:57:18 | var ...; |
+| Logic.java:52:24:52:28 | ... > ... | true | Logic.java:53:5:53:28 | <Expr>; |
+| Logic.java:52:24:52:28 | ... > ... | true | Logic.java:54:5:54:15 | if (...) |
+| Logic.java:52:24:52:28 | ... > ... | true | Logic.java:54:17:56:5 | { ... } |
+| Logic.java:52:24:52:28 | ... > ... | true | Logic.java:57:5:57:18 | var ...; |
+| Logic.java:53:5:53:27 | checkFalse(...) | false | Logic.java:54:5:54:15 | if (...) |
+| Logic.java:53:5:53:27 | checkFalse(...) | false | Logic.java:54:17:56:5 | { ... } |
+| Logic.java:53:5:53:27 | checkFalse(...) | false | Logic.java:57:5:57:18 | var ...; |
+| Logic.java:53:21:53:26 | g(...) | false | Logic.java:54:5:54:15 | if (...) |
+| Logic.java:53:21:53:26 | g(...) | false | Logic.java:54:17:56:5 | { ... } |
+| Logic.java:53:21:53:26 | g(...) | false | Logic.java:57:5:57:18 | var ...; |
+| Logic.java:54:9:54:14 | ... > ... | true | Logic.java:54:17:56:5 | { ... } |
+| Logic.java:61:10:61:10 | b | false | Logic.java:61:33:61:35 | msg |

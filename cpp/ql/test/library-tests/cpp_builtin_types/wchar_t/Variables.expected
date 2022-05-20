@@ -1,0 +1,7 @@
+| a-source.cpp:2:9:2:9 | s |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | (unnamed parameter 0) |
+| file://:0:0:0:0 | fp_offset |
+| file://:0:0:0:0 | gp_offset |
+| file://:0:0:0:0 | overflow_arg_area |
+| file://:0:0:0:0 | reg_save_area |

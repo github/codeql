@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Each call to the <code>printf</code> function, or a related function, should include
+the number of arguments defined by the format. Passing the function more arguments than
+required is harmless (although it may be indicative of other defects). However, passing
+the function fewer arguments than are defined by the format can be a security vulnerability
+since the function will process the next item on the stack as the missing arguments.
+</p>
+
+<p>This might lead to an information leak if a sensitive value from the stack is printed. It
+might cause a crash if a value on the stack is interpreted as a pointer and leads to
+accessing unmapped memory. Finally, it may lead to a follow-on vulnerability if an
+attacker can use this problem to cause the output string to be too long or have unexpected
+contents.
+</p>
+
+</overview>
+<recommendation>
+<p>Review the format and arguments expected by the highlighted function calls. Update either 
+the format or the arguments so that the expected number of arguments are passed to the 
+function.
+</p>
+
+</recommendation>
+<example><sample src="WrongNumberOfFormatArguments.cpp" />
+
+</example>
+<references>
+
+<li>CERT C Coding
+Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/FIO30-C.+Exclude+user+input+from+format+strings">FIO30-C. Exclude user input from format strings</a>.</li>
+<li>cplusplus.com: <a href="http://www.tutorialspoint.com/cplusplus/cpp_functions.htm">C++ Functions</a>.</li>
+<li>Microsoft C Runtime Library Reference: <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/printf-printf-l-wprintf-wprintf-l">printf, wprintf</a>.</li>
+
+
+</references>
+</qhelp>

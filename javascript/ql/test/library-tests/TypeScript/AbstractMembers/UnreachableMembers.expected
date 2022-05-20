@@ -1,0 +1,2 @@
+| tst.ts:13:5:13:22 | interfaceMethod(); | unreachable |
+| tst.ts:14:5:14:14 | x: number; | unreachable |

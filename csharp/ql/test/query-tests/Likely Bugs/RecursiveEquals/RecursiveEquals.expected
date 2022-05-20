@@ -1,0 +1,1 @@
+| RecursiveEquals.cs:9:20:9:30 | call to method Equals | This call to 'Equals' is recursive: did you mean to cast the argument? |

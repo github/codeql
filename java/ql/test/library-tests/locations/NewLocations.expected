@@ -1,0 +1,5 @@
+| locations/D.java:5:4:5:10 | new D(...) |
+| locations/D.java:5:4:5:22 | new Inner(...) |
+| locations/E.java:2:2:2:6 | new E(...) |
+| locations/E.java:3:2:3:7 | new E(...) |
+| locations/E.java:4:2:4:6 | new E(...) |
