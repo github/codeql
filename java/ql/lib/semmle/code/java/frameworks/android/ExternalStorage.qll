@@ -1,6 +1,7 @@
 /** Provides definitions for working with uses of Android external storage */
 
 import java
+private import semmle.code.java.security.FileReadWrite
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 
@@ -41,10 +42,9 @@ private predicate externalStorageFlow(DataFlow::Node node1, DataFlow::Node node2
  * This is controlable by third-party applications, so is treated as a remote flow source.
  */
 predicate androidExternalStorageSource(DataFlow::Node n) {
-  exists(ConstructorCall fInp, DataFlow::Node externalDir |
-    fInp.getConstructedType().hasQualifiedName("java.io", "FileInputStream") and
-    n.asExpr() = fInp and
+  exists(DataFlow::Node externalDir, DirectFileReadExpr read |
     sourceNode(externalDir, "android-external-storage-dir") and
-    externalStorageFlow(externalDir, DataFlow::exprNode(fInp.getArgument(0)))
+    n.asExpr() = read and
+    externalStorageFlow(externalDir, DataFlow::exprNode(read.getFileExpr()))
   )
 }

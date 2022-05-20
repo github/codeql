@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.FileReader;
+import java.io.RandomAccessFile;
 import android.content.Context;
 import android.os.Environment;
 
@@ -47,5 +49,11 @@ class Test {
     void test7(Context ctx) throws IOException {
         File f = new File(dir, "file.txt");
         sink(new FileInputStream(f)); // $ hasTaintFlow 
+    }
+
+    void test8() throws IOException {
+        File f = new File(dir, "file.txt");
+        sink(new FileReader(f)); // $ hasTaintFlow 
+        sink(new RandomAccessFile(f, "r")); // $ hasTaintFlow 
     }
  }
