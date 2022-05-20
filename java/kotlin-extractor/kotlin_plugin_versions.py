@@ -1,5 +1,6 @@
 import platform
 import re
+import shutil
 import subprocess
 import sys
 
@@ -26,11 +27,11 @@ class KotlincNotFoundException(Exception):
     pass
 
 def get_single_version(fakeVersionOutput = None):
-    # TODO: `shell=True` is a workaround to get CI working on Windows. It breaks the build on Linux.
-    try:
-        versionOutput = subprocess.run(['kotlinc', '-version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=is_windows()).stderr if fakeVersionOutput is None else fakeVersionOutput
-    except FileNotFoundError as e:
-        raise KotlincNotFoundException(e)
+    # kotlinc might be kotlinc.bat or kotlinc.cmd on Windows, so we use `which` to find out what it is
+    kotlinc = shutil.which('kotlinc')
+    if kotlinc is None:
+        raise KotlincNotFoundException()
+    versionOutput = subprocess.run(['kotlinc', '-version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True).stderr if fakeVersionOutput is None else fakeVersionOutput
     m = re.match(r'.* kotlinc-jvm ([0-9]+\.[0-9]+\.[0-9]+) .*', versionOutput)
     if m is None:
         raise Exception('Cannot detect version of kotlinc (got ' + str(versionOutput) + ')')
