@@ -3,11 +3,4 @@ import codeql.swift.elements.expr.Expr
 
 class ForceValueExprBase extends @force_value_expr, Expr {
   override string getAPrimaryQlClass() { result = "ForceValueExpr" }
-
-  Expr getSubExpr() {
-    exists(Expr x |
-      force_value_exprs(this, x) and
-      result = x.resolve()
-    )
-  }
 }

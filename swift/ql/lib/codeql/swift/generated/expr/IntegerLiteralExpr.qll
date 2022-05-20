@@ -3,6 +3,4 @@ import codeql.swift.elements.expr.NumberLiteralExpr
 
 class IntegerLiteralExprBase extends @integer_literal_expr, NumberLiteralExpr {
   override string getAPrimaryQlClass() { result = "IntegerLiteralExpr" }
-
-  string getStringValue() { integer_literal_exprs(this, result) }
 }

@@ -3,11 +3,4 @@ import codeql.swift.elements.expr.Expr
 
 class OneWayExprBase extends @one_way_expr, Expr {
   override string getAPrimaryQlClass() { result = "OneWayExpr" }
-
-  Expr getSubExpr() {
-    exists(Expr x |
-      one_way_exprs(this, x) and
-      result = x.resolve()
-    )
-  }
 }
