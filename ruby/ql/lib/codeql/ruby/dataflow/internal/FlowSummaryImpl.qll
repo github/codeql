@@ -791,22 +791,35 @@ module Private {
     private ParamNode summaryArgParam(ArgNode arg, ReturnNodeExt ret, OutNodeExt out) {
       exists(DataFlowCall call, ReturnKindExt rk |
         result = summaryArgParam0(call, arg) and
-        pragma[only_bind_out](ret).getKind() = pragma[only_bind_into](rk) and
+        ret.getKind() = pragma[only_bind_into](rk) and
         out = pragma[only_bind_into](rk).getAnOutNode(call)
       )
     }
 
     /**
-     * Holds if `arg` flows to `out` using a simple flow summary, that is, a flow
-     * summary without reads and stores.
+     * Holds if `arg` flows to `out` using a simple value-preserving flow
+     * summary, that is, a flow summary without reads and stores.
      *
      * NOTE: This step should not be used in global data-flow/taint-tracking, but may
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
-    predicate summaryThroughStep(ArgNode arg, Node out, boolean preservesValue) {
-      exists(ReturnNodeExt ret |
-        summaryLocalStep(summaryArgParam(arg, ret, out), ret, preservesValue)
+    predicate summaryThroughStepValue(ArgNode arg, Node out) {
+      exists(ReturnKind rk, ReturnNode ret, DataFlowCall call |
+        summaryLocalStep(summaryArgParam0(call, arg), ret, true) and
+        ret.getKind() = pragma[only_bind_into](rk) and
+        out = getAnOutNode(call, pragma[only_bind_into](rk))
       )
+    }
+
+    /**
+     * Holds if `arg` flows to `out` using a simple flow summary involving taint
+     * step, that is, a flow summary without reads and stores.
+     *
+     * NOTE: This step should not be used in global data-flow/taint-tracking, but may
+     * be useful to include in the exposed local data-flow/taint-tracking relations.
+     */
+    predicate summaryThroughStepTaint(ArgNode arg, Node out) {
+      exists(ReturnNodeExt ret | summaryLocalStep(summaryArgParam(arg, ret, out), ret, false))
     }
 
     /**
