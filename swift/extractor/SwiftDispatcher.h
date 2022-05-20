@@ -38,15 +38,6 @@ class SwiftDispatcher {
     emit(ElementIsUnknownTrap{label});
   }
 
- private:
-  // types to be supported by assignNewLabel/fetchLabel need to be listed here
-  using Store = TrapLabelStore<swift::Decl,
-                               swift::Stmt,
-                               swift::Expr,
-                               swift::Pattern,
-                               swift::TypeRepr,
-                               swift::TypeBase>;
-
   // This method gives a TRAP label for already emitted AST node.
   // If the AST node was not emitted yet, then the emission is dispatched to a corresponding
   // visitor (see `visit(T *)` methods below).
@@ -71,6 +62,10 @@ class SwiftDispatcher {
     assert(!"assignNewLabel not called during visit");
     return {};
   }
+
+  // convenience `fetchLabel` overload for `swift::Type` (which is just a wrapper for
+  // `swift::TypeBase*`)
+  TrapLabel<TypeTag> fetchLabel(swift::Type t) { return fetchLabel(t.getPointer()); }
 
   // Due to the lazy emission approach, we must assign a label to a corresponding AST node before
   // it actually gets emitted to handle recursive cases such as recursive calls, or recursive type
@@ -117,6 +112,15 @@ class SwiftDispatcher {
     trap.emit(LocationsTrap{locLabel, fileLabel, startLine, startColumn, endLine, endColumn});
     trap.emit(LocatablesTrap{locatableLabel, locLabel});
   }
+
+ private:
+  // types to be supported by assignNewLabel/fetchLabel need to be listed here
+  using Store = TrapLabelStore<swift::Decl,
+                               swift::Stmt,
+                               swift::Expr,
+                               swift::Pattern,
+                               swift::TypeRepr,
+                               swift::TypeBase>;
 
   std::string getFilepath(swift::SourceLoc loc) {
     // TODO: this needs more testing

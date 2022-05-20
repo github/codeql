@@ -83,6 +83,13 @@ locations(
 | @nominal_type_decl
 ;
 
+#keyset[id, index]
+iterable_decl_context_members(
+  int id: @iterable_decl_context ref,
+  int index: int ref,
+  int member: @decl ref
+);
+
 extension_decls(
   unique int id: @extension_decl
 );
@@ -93,6 +100,12 @@ extension_decls(
 | @protocol_decl
 | @struct_decl
 ;
+
+#keyset[id]
+nominal_type_decls(
+  int id: @nominal_type_decl ref,
+  int type_: @type ref
+);
 
 @ast_node =
   @case_label_item
@@ -465,6 +478,13 @@ enum_case_decls(
   unique int id: @enum_case_decl
 );
 
+#keyset[id, index]
+enum_case_decl_elements(
+  int id: @enum_case_decl ref,
+  int index: int ref,
+  int element: @enum_element_decl ref
+);
+
 if_config_decls(
   unique int id: @if_config_decl
 );
@@ -483,8 +503,28 @@ missing_member_decls(
 | @prefix_operator_decl
 ;
 
+#keyset[id]
+operator_decls(
+  int id: @operator_decl ref,
+  string name: string ref
+);
+
 pattern_binding_decls(
   unique int id: @pattern_binding_decl
+);
+
+#keyset[id, index]
+pattern_binding_decl_inits(
+  int id: @pattern_binding_decl ref,
+  int index: int ref,
+  int init: @expr ref
+);
+
+#keyset[id, index]
+pattern_binding_decl_patterns(
+  int id: @pattern_binding_decl ref,
+  int index: int ref,
+  int pattern: @pattern ref
 );
 
 pound_diagnostic_decls(
@@ -496,7 +536,8 @@ precedence_group_decls(
 );
 
 top_level_code_decls(
-  unique int id: @top_level_code_decl
+  unique int id: @top_level_code_decl,
+  int body: @brace_stmt ref
 );
 
 @value_decl =
@@ -505,6 +546,12 @@ top_level_code_decls(
 | @enum_element_decl
 | @type_decl
 ;
+
+#keyset[id]
+value_decls(
+  int id: @value_decl ref,
+  int interface_type: @type ref
+);
 
 @abstract_closure_expr =
   @auto_closure_expr
@@ -922,6 +969,12 @@ infix_operator_decls(
   unique int id: @infix_operator_decl
 );
 
+#keyset[id]
+infix_operator_decl_precedence_groups(
+  int id: @infix_operator_decl ref,
+  int precedence_group: @precedence_group_decl ref
+);
+
 postfix_operator_decls(
   unique int id: @postfix_operator_decl
 );
@@ -936,13 +989,40 @@ prefix_operator_decls(
 | @func_decl
 ;
 
+#keyset[id]
+abstract_function_decls(
+  int id: @abstract_function_decl ref,
+  string name: string ref
+);
+
+#keyset[id]
+abstract_function_decl_bodies(
+  int id: @abstract_function_decl ref,
+  int body: @brace_stmt ref
+);
+
+#keyset[id, index]
+abstract_function_decl_params(
+  int id: @abstract_function_decl ref,
+  int index: int ref,
+  int param: @param_decl ref
+);
+
 @abstract_storage_decl =
   @subscript_decl
 | @var_decl
 ;
 
 enum_element_decls(
-  unique int id: @enum_element_decl
+  unique int id: @enum_element_decl,
+  string name: string ref
+);
+
+#keyset[id, index]
+enum_element_decl_params(
+  int id: @enum_element_decl ref,
+  int index: int ref,
+  int param: @param_decl ref
 );
 
 @type_decl =
@@ -950,6 +1030,19 @@ enum_element_decls(
 | @generic_type_decl
 | @module_decl
 ;
+
+#keyset[id]
+type_decls(
+  int id: @type_decl ref,
+  string name: string ref
+);
+
+#keyset[id, index]
+type_decl_base_types(
+  int id: @type_decl ref,
+  int index: int ref,
+  int base_type: @type ref
+);
 
 auto_closure_exprs(
   unique int id: @auto_closure_expr
@@ -1282,6 +1375,31 @@ subscript_decls(
 | @param_decl
 ;
 
+#keyset[id]
+var_decls(
+  int id: @var_decl ref,
+  string name: string ref,
+  int type_: @type ref
+);
+
+#keyset[id]
+var_decl_attached_property_wrapper_types(
+  int id: @var_decl ref,
+  int attached_property_wrapper_type: @type ref
+);
+
+#keyset[id]
+var_decl_parent_patterns(
+  int id: @var_decl ref,
+  int parent_pattern: @pattern ref
+);
+
+#keyset[id]
+var_decl_parent_initializers(
+  int id: @var_decl ref,
+  int parent_initializer: @expr ref
+);
+
 @abstract_type_param_decl =
   @associated_type_decl
 | @generic_type_param_decl
@@ -1293,6 +1411,13 @@ subscript_decls(
 | @generic_type_decl
 | @subscript_expr
 ;
+
+#keyset[id, index]
+generic_context_generic_type_params(
+  int id: @generic_context ref,
+  int index: int ref,
+  int generic_type_param: @generic_type_param_decl ref
+);
 
 @generic_type_decl =
   @nominal_type_decl
@@ -1370,7 +1495,8 @@ concrete_func_decls(
 );
 
 concrete_var_decls(
-  unique int id: @concrete_var_decl
+  unique int id: @concrete_var_decl,
+  int introducer_int: int ref
 );
 
 param_decls(
