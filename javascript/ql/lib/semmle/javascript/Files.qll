@@ -175,6 +175,15 @@ class Folder extends Container, @folder {
     result.getExtension() = extension
   }
 
+  /** Like `getFile` except `d.ts` is treated as a single extension. */
+  private File getFileLongExtension(string stem, string extension) {
+    not (stem.matches("%.d") and extension = "ts") and
+    result = this.getFile(stem, extension)
+    or
+    extension = "d.ts" and
+    result = this.getFile(stem + ".d", "ts")
+  }
+
   /**
    * Gets the file in this folder that has the given `stem` and any of the supported JavaScript extensions.
    *
@@ -188,7 +197,11 @@ class Folder extends Container, @folder {
    */
   File getJavaScriptFile(string stem) {
     result =
-      min(int p, string ext | p = getFileExtensionPriority(ext) | this.getFile(stem, ext) order by p)
+      min(int p, string ext |
+        p = getFileExtensionPriority(ext)
+      |
+        this.getFileLongExtension(stem, ext) order by p
+      )
   }
 
   /** Gets a subfolder contained in this folder. */
