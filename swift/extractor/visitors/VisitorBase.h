@@ -25,7 +25,8 @@ class VisitorBase {
   void visit##CLASS##KIND(swift::CLASS##KIND* e) { dispatcher_.emitUnknown(e); }
 
 // base class for our AST visitors, getting a SwiftDispatcher member and default emission for
-// unknown/TBD entities
+// unknown/TBD entities. Like `swift::ASTVisitor`, this uses CRTP (the Curiously Recurring Template
+// Pattern)
 template <typename CrtpSubclass>
 class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, detail::VisitorBase {
  public:
@@ -48,7 +49,8 @@ class AstVisitorBase : public swift::ASTVisitor<CrtpSubclass>, detail::VisitorBa
 };
 
 // base class for our type visitor, getting a SwiftDispatcher member and default emission for
-// unknown/TBD types
+// unknown/TBD types. Like `swift::TypeVisitor`, this uses CRTP (the Curiously Recurring Template
+// Pattern)
 template <typename CrtpSubclass>
 class TypeVisitorBase : public swift::TypeVisitor<CrtpSubclass>, detail::VisitorBase {
  public:
