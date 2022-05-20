@@ -1352,6 +1352,23 @@ open class KotlinFileExtractor(
         return fn
     }
 
+    private fun findTopLevelPropertyOrWarn(propertyFilter: String, type: String, warnAgainstElement: IrElement): IrProperty? {
+
+        val prop = pluginContext.referenceProperties(FqName(propertyFilter))
+            .firstOrNull { it.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type }
+            ?.owner
+
+        if (prop != null) {
+            if (prop.parentClassOrNull != null) {
+                extractExternalClassLater(prop.parentAsClass)
+            }
+        } else {
+            logger.errorElement("Couldn't find JVM intrinsic property $propertyFilter in $type", warnAgainstElement)
+        }
+
+        return prop
+    }
+
     val javaLangString by lazy {
         val result = pluginContext.referenceClass(FqName("java.lang.String"))?.owner
         result?.let { extractExternalClassLater(it) }
@@ -1863,6 +1880,27 @@ open class KotlinFileExtractor(
                             tw.writeStatementEnclosingExpr(dimId, enclosingStmt)
                             tw.writeNamestrings(dim.toString(), dim.toString(), dimId)
                         }
+                    }
+                }
+                isBuiltinCall(c, "<get-java>", "kotlin.jvm") -> {
+                    // Special case for KClass<*>.java, which is used in the Parcelize plugin. In normal cases, this is already rewritten to the property referenced below:
+                    findTopLevelPropertyOrWarn("kotlin.jvm.java", "kotlin.jvm.JvmClassMappingKt", c)?.let { javaProp ->
+                        val getter = javaProp.getter
+                        if (getter == null) {
+                            logger.error("Couldn't find getter of `kotlin.jvm.JvmClassMappingKt::java`")
+                            return
+                        }
+
+                        val ext = c.extensionReceiver
+                        if (ext == null) {
+                            logger.errorElement("No extension receiver found for `KClass::java` call", c)
+                            return
+                        }
+
+                        val argType = (ext.type as? IrSimpleType)?.arguments?.firstOrNull()?.typeOrNull
+                        val typeArguments = if (argType == null) listOf() else listOf(argType)
+
+                        extractRawMethodAccess(getter, c, callable, parent, idx, enclosingStmt, listOf(), null, ext, typeArguments)
                     }
                 }
                 isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "iterator") && c.origin == IrStatementOrigin.FOR_LOOP_ITERATOR -> {
