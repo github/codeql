@@ -201,6 +201,10 @@ def compile_standalone(version):
             'build/temp_src',
             version)
 
+if shutil.which(kotlinc) == None:
+    print("Cannot build the Kotlin extractor: no '%s' found on your PATH" % kotlinc, file = sys.stderr)
+    sys.exit(1)
+
 if args.many:
     for version in kotlin_plugin_versions.many_versions:
         compile_standalone(version)
