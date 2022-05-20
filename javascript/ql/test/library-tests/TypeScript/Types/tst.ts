@@ -363,3 +363,13 @@ console.log(tstModuleCJS());
 
 /////////////////
 
+// test file resolution order (see tsconfig: moduleSuffixes setting)
+
+import * as A from './tstSuffixA';
+
+console.log(A.resolvedFile()); // <- 'tstSuffixA.ts'
+
+import * as B from './tstSuffixB';
+
+console.log(B.resolvedFile()); // <- 'tstSuffixB.ios.ts'
+
