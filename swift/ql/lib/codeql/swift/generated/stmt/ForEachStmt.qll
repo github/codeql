@@ -2,20 +2,21 @@
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.LabeledStmt
+import codeql.swift.elements.pattern.Pattern
 
 class ForEachStmtBase extends @for_each_stmt, LabeledStmt {
-  override string toString() { result = "ForEachStmt" }
+  override string getAPrimaryQlClass() { result = "ForEachStmt" }
 
-  BraceStmt getBody() {
-    exists(BraceStmt x |
-      for_each_stmts(this, x, _) and
+  Pattern getPattern() {
+    exists(Pattern x |
+      for_each_stmts(this, x, _, _) and
       result = x.resolve()
     )
   }
 
   Expr getSequence() {
     exists(Expr x |
-      for_each_stmts(this, _, x) and
+      for_each_stmts(this, _, x, _) and
       result = x.resolve()
     )
   }
@@ -23,6 +24,15 @@ class ForEachStmtBase extends @for_each_stmt, LabeledStmt {
   Expr getWhere() {
     exists(Expr x |
       for_each_stmt_wheres(this, x) and
+      result = x.resolve()
+    )
+  }
+
+  predicate hasWhere() { exists(getWhere()) }
+
+  BraceStmt getBody() {
+    exists(BraceStmt x |
+      for_each_stmts(this, _, _, x) and
       result = x.resolve()
     )
   }

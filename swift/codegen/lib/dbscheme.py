@@ -144,13 +144,10 @@ def get_union(match):
 
 
 def iterload(file):
-    data = Re.comment.sub("", file.read())
+    with open(file) as file:
+        data = Re.comment.sub("", file.read())
     for e in Re.entity.finditer(data):
         if e["table"]:
             yield get_table(e)
         elif e["union"]:
             yield get_union(e)
-
-
-def load(file):
-    return list(iterload(file))

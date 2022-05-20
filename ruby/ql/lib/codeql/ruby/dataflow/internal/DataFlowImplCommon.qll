@@ -305,7 +305,7 @@ cached
 private module Cached {
   /**
    * If needed, call this predicate from `DataFlowImplSpecific.qll` in order to
-   * force a stage-dependency on the `DataFlowImplCommon.qll` stage and therby
+   * force a stage-dependency on the `DataFlowImplCommon.qll` stage and thereby
    * collapsing the two stages.
    */
   cached
@@ -327,6 +327,9 @@ private module Cached {
 
   cached
   predicate clearsContentCached(Node n, ContentSet c) { clearsContent(n, c) }
+
+  cached
+  predicate expectsContentCached(Node n, ContentSet c) { expectsContent(n, c) }
 
   cached
   predicate isUnreachableInCallCached(Node n, DataFlowCall call) { isUnreachableInCall(n, call) }

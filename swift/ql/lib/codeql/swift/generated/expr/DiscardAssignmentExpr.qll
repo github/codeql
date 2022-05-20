@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.Expr
 
 class DiscardAssignmentExprBase extends @discard_assignment_expr, Expr {
-  override string toString() { result = "DiscardAssignmentExpr" }
+  override string getAPrimaryQlClass() { result = "DiscardAssignmentExpr" }
 }

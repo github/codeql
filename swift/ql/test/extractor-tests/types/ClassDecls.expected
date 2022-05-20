@@ -1,0 +1,2 @@
+| types.swift:9:1:11:1 | ClassDecl | ClassType | <no parent> |
+| types.swift:10:1:10:15 | ClassDecl | ClassType | ClassType |

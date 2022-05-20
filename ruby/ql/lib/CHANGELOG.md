@@ -1,3 +1,15 @@
+## 0.2.1
+
+### Bug Fixes
+
+* The Tree-sitter Ruby grammar has been updated; this fixes several issues where Ruby code was parsed incorrectly.
+
+## 0.2.0
+
+### Breaking Changes
+
+* The signature of `allowImplicitRead` on `DataFlow::Configuration` and `TaintTracking::Configuration` has changed from `allowImplicitRead(DataFlow::Node node, DataFlow::Content c)` to `allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c)`.
+
 ## 0.1.0
 
 ### Breaking Changes
@@ -11,8 +23,8 @@
 
 ### Minor Analysis Improvements
 
-*  Whereas `ConstantValue::getString()` previously returned both string and regular-expression values, it now returns only string values. The same applies to `ConstantValue::isString(value)`.
-*  Regular-expression values can now be accessed with the new predicates `ConstantValue::getRegExp()`, `ConstantValue::isRegExp(value)`, and `ConstantValue::isRegExpWithFlags(value, flags)`.
+* Whereas `ConstantValue::getString()` previously returned both string and regular-expression values, it now returns only string values. The same applies to `ConstantValue::isString(value)`.
+* Regular-expression values can now be accessed with the new predicates `ConstantValue::getRegExp()`, `ConstantValue::isRegExp(value)`, and `ConstantValue::isRegExpWithFlags(value, flags)`.
 * The `ParseRegExp` and `RegExpTreeView` modules are now "internal" modules. Users should use `codeql.ruby.Regexp` instead.
 
 ## 0.0.13

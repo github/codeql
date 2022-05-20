@@ -19,6 +19,7 @@ RefType anOuterType(TypeVariable var) {
   result = anOuterType(var).(NestedType).getEnclosingType()
 }
 
+pragma[inline]
 RefType aTypeVisibleFrom(TypeVariable var) {
   result = anOuterType(var)
   or

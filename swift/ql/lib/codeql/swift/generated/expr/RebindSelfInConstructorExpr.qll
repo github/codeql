@@ -3,7 +3,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.VarDecl
 
 class RebindSelfInConstructorExprBase extends @rebind_self_in_constructor_expr, Expr {
-  override string toString() { result = "RebindSelfInConstructorExpr" }
+  override string getAPrimaryQlClass() { result = "RebindSelfInConstructorExpr" }
 
   Expr getSubExpr() {
     exists(Expr x |

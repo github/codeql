@@ -1,3 +1,15 @@
+## 0.1.2
+
+### Minor Analysis Improvements
+
+* The "XML external entity expansion" (`cpp/external-entity-expansion`) query has been extended to support a broader selection of XML libraries and interfaces.
+
+## 0.1.1
+
+### New Queries
+
+* An new query `cpp/external-entity-expansion` has been added. The query detects XML objects that are vulnerable to external entity expansion (XXE) attacks.
+
 ## 0.1.0
 
 ### Minor Analysis Improvements

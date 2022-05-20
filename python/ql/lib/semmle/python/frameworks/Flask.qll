@@ -411,21 +411,16 @@ module Flask {
   /** An `FileStorage` instance that originates from a flask request. */
   private class FlaskRequestFileStorageInstances extends Werkzeug::FileStorage::InstanceSource {
     FlaskRequestFileStorageInstances() {
-      // TODO: this currently only works in local-scope, since writing type-trackers for
-      // this is a little too much effort. Once API-graphs are available for more
-      // things, we can rewrite this.
-      //
       // TODO: This approach for identifying member-access is very adhoc, and we should
       // be able to do something more structured for providing modeling of the members
       // of a container-object.
-      exists(DataFlow::AttrRead files | files = request().getMember("files").getAnImmediateUse() |
-        this.asCfgNode().(SubscriptNode).getObject() = files.asCfgNode()
+      exists(API::Node files | files = request().getMember("files") |
+        this.asCfgNode().(SubscriptNode).getObject() = files.getAUse().asCfgNode()
         or
-        this.(DataFlow::MethodCallNode).calls(files, "get")
+        this = files.getMember("get").getACall()
         or
-        exists(DataFlow::MethodCallNode getlistCall | getlistCall.calls(files, "getlist") |
-          this.asCfgNode().(SubscriptNode).getObject() = getlistCall.asCfgNode()
-        )
+        this.asCfgNode().(SubscriptNode).getObject() =
+          files.getMember("getlist").getReturn().getAUse().asCfgNode()
       )
     }
   }

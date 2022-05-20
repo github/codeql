@@ -1,0 +1,2 @@
+| companion_objects.kt:1:1:6:1 | MyClass | companion_objects.kt:3:5:5:5 | MyClassCompanion | companion_objects.kt:3:5:5:5 | MyClassCompanion | companion_objects.kt:1:1:6:1 | MyClass | final,public,static |
+| companion_objects.kt:8:1:13:1 | MyInterface | companion_objects.kt:10:5:12:5 | MyInterfaceCompanion | companion_objects.kt:10:5:12:5 | MyInterfaceCompanion | companion_objects.kt:8:1:13:1 | MyInterface | final,public,static |

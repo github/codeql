@@ -12,3 +12,20 @@
 | switchstmt | switchstmt.c:1:6:1:6 | f | 7 | 8 | switchstmt.c:7:5:7:5 | switchstmt.c:7:5:7:5 | switchstmt.c:7:5:7:5 | ; | 8: return ... |
 | switchstmt | switchstmt.c:1:6:1:6 | f | 8 | 9 | switchstmt.c:8:1:8:1 | switchstmt.c:8:1:8:1 | switchstmt.c:8:1:8:1 | return ... | 8: f |
 | switchstmt | switchstmt.c:1:6:1:6 | f | 8 | 10 | switchstmt.c:1:6:1:6 | switchstmt.c:1:6:1:6 | switchstmt.c:1:6:1:6 | f | <none> |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 3 | 1 | switchstmt.cpp:3:15:12:1 | switchstmt.cpp:3:15:12:1 | switchstmt.cpp:3:15:12:1 | { ... } | 4: switch (...) ...  |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 4 | 2 | switchstmt.cpp:4:6:10:5 | switchstmt.cpp:4:6:10:5 | switchstmt.cpp:4:6:10:5 | switch (...) ...  | 5: declaration |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 5 | 3 | switchstmt.cpp:5:10:5:10 | switchstmt.cpp:5:10:5:10 | switchstmt.cpp:5:10:5:10 | declaration | 5: initializer for y |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 5 | 4 | switchstmt.cpp:5:17:5:18 | switchstmt.cpp:5:17:5:18 | switchstmt.cpp:5:17:5:18 | initializer for y | 5: x |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 5 | 5 | switchstmt.cpp:5:18:5:18 | switchstmt.cpp:5:18:5:18 | switchstmt.cpp:5:18:5:18 | x | 6: y |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 6 | 6 | switchstmt.cpp:6:10:6:10 | switchstmt.cpp:6:10:6:10 | switchstmt.cpp:6:10:6:10 | y | 6: { ... } |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 6 | 7 | switchstmt.cpp:6:13:10:5 | switchstmt.cpp:6:13:10:5 | switchstmt.cpp:6:13:10:5 | { ... } | 7: case ...: |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 6 | 7 | switchstmt.cpp:6:13:10:5 | switchstmt.cpp:6:13:10:5 | switchstmt.cpp:6:13:10:5 | { ... } | 8: case ...: |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 6 | 7 | switchstmt.cpp:6:13:10:5 | switchstmt.cpp:6:13:10:5 | switchstmt.cpp:6:13:10:5 | { ... } | 9: default:  |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 7 | 1 | switchstmt.cpp:7:14:7:14 | switchstmt.cpp:7:14:7:14 | switchstmt.cpp:7:14:7:14 | 1 | <none> |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 7 | 8 | switchstmt.cpp:7:9:7:15 | switchstmt.cpp:7:9:7:15 | switchstmt.cpp:7:9:7:15 | case ...: | 8: case ...: |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 8 | 1 | switchstmt.cpp:8:14:8:14 | switchstmt.cpp:8:14:8:14 | switchstmt.cpp:8:14:8:14 | 2 | <none> |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 8 | 9 | switchstmt.cpp:8:9:8:15 | switchstmt.cpp:8:9:8:15 | switchstmt.cpp:8:9:8:15 | case ...: | 9: default:  |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 9 | 10 | switchstmt.cpp:9:9:9:16 | switchstmt.cpp:9:9:9:16 | switchstmt.cpp:9:9:9:16 | default:  | 11: ; |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 11 | 11 | switchstmt.cpp:11:5:11:5 | switchstmt.cpp:11:5:11:5 | switchstmt.cpp:11:5:11:5 | ; | 12: return ... |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 12 | 12 | switchstmt.cpp:12:1:12:1 | switchstmt.cpp:12:1:12:1 | switchstmt.cpp:12:1:12:1 | return ... | 12: g |
+| switchstmt | switchstmt.cpp:3:6:3:6 | g | 12 | 13 | switchstmt.cpp:3:6:3:6 | switchstmt.cpp:3:6:3:6 | switchstmt.cpp:3:6:3:6 | g | <none> |

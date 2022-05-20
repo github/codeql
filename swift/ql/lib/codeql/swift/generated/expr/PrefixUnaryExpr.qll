@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ApplyExpr
 
 class PrefixUnaryExprBase extends @prefix_unary_expr, ApplyExpr {
-  override string toString() { result = "PrefixUnaryExpr" }
+  override string getAPrimaryQlClass() { result = "PrefixUnaryExpr" }
 }

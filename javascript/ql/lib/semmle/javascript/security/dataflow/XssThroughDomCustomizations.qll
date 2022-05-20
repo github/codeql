@@ -216,4 +216,32 @@ module XssThroughDom {
       }
     }
   }
+
+  /**
+   * Gets a reference to a value obtained by calling `window.getSelection()`.
+   * https://developer.mozilla.org/en-US/docs/Web/API/Selection
+   */
+  DataFlow::SourceNode getSelectionCall(DataFlow::TypeTracker t) {
+    t.start() and
+    exists(DataFlow::CallNode call |
+      call = DataFlow::globalVarRef("getSelection").getACall()
+      or
+      call = DOM::documentRef().getAMemberCall("getSelection")
+    |
+      result = call
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = getSelectionCall(t2).track(t2, t))
+  }
+
+  /**
+   * A source for text from the DOM from calling `toString()` on a `Selection` object.
+   * The `toString()` method returns the currently selected text in the DOM.
+   * https://developer.mozilla.org/en-US/docs/Web/API/Selection
+   */
+  class SelectionSource extends Source {
+    SelectionSource() {
+      this = getSelectionCall(DataFlow::TypeTracker::end()).getAMethodCall("toString")
+    }
+  }
 }

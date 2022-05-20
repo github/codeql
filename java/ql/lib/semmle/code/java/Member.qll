@@ -62,6 +62,15 @@ class Callable extends StmtParent, Member, @callable {
   }
 
   /**
+   * Gets the declared return Kotlin type of this callable (`Nothing` for
+   * constructors).
+   */
+  KotlinType getReturnKotlinType() {
+    constrsKotlinType(this, result) or
+    methodsKotlinType(this, result)
+  }
+
+  /**
    * Gets a callee that may be called from this callable.
    */
   Callable getACallee() { this.calls(result) }
@@ -181,6 +190,9 @@ class Callable extends StmtParent, Member, @callable {
 
   /** Gets the type of the formal parameter at the specified (zero-based) position. */
   Type getParameterType(int n) { params(_, result, n, this, _) }
+
+  /** Gets the type of the formal parameter at the specified (zero-based) position. */
+  KotlinType getParameterKotlinType(int n) { paramsKotlinType(this.getParameter(n), result) }
 
   /**
    * Gets the signature of this callable, including its name and the types of all
@@ -451,6 +463,20 @@ class Method extends Callable, @method {
     not this.getDeclaringType().isFinal()
   }
 
+  /** Holds if this method is a Kotlin local function. */
+  predicate isLocal() { ktLocalFunction(this) }
+
+  /**
+   * Gets the Kotlin name of this method, that is either the name of this method, or
+   * if `JvmName` annotation was applied to the declaration, then the original name.
+   */
+  string getKotlinName() {
+    ktFunctionOriginalNames(this, result)
+    or
+    not exists(string n | ktFunctionOriginalNames(this, n)) and
+    result = this.getName()
+  }
+
   override string getAPrimaryQlClass() { result = "Method" }
 }
 
@@ -600,6 +626,9 @@ class Field extends Member, ExprParent, @field, Variable {
   /** Gets the declared type of this field. */
   override Type getType() { fields(this, _, result, _, _) }
 
+  /** Gets the Kotlin type of this field. */
+  override KotlinType getKotlinType() { fieldsKotlinType(this, result) }
+
   /** Gets the type in which this field is declared. */
   override RefType getDeclaringType() { fields(this, _, _, result, _) }
 
@@ -619,6 +648,16 @@ class Field extends Member, ExprParent, @field, Variable {
       // This check also rules out assignments in explicit initializer blocks
       // (CodeQL models explicit initializer blocks as BlockStmt in initializer methods)
       exprStmt.getParent() = im.getBody()
+    )
+    or
+    // Kotlin initializers are more general than Java's, in that they may refer to
+    // primary constructor parameters. This identifies a syntactic initializer, so
+    // `class A { val y = 1 }` is an initializer, as is `class B(x: Int) { val y = x }`,
+    // but `class C { var x: Int; init { x = 1 } }` is not, and neither is
+    // `class D { var x: Int; constructor(y: Int) { x = y } }`
+    exists(KtInitializerAssignExpr e |
+      e.getDest() = this.getAnAccess() and
+      e.getSource() = result
     )
   }
 
@@ -669,4 +708,49 @@ class Field extends Member, ExprParent, @field, Variable {
 /** An instance field. */
 class InstanceField extends Field {
   InstanceField() { not this.isStatic() }
+}
+
+/** A Kotlin property. */
+class Property extends Element, Modifiable, @kt_property {
+  /** Gets the getter method for this property, if any. */
+  Method getGetter() { ktPropertyGetters(this, result) }
+
+  /** Gets the setter method for this property, if any. */
+  Method getSetter() { ktPropertySetters(this, result) }
+
+  /** Gets the backing field for this property, if any. */
+  Field getBackingField() { ktPropertyBackingFields(this, result) }
+
+  override string getAPrimaryQlClass() { result = "Property" }
+}
+
+/** A Kotlin delegated property. */
+class DelegatedProperty extends Property {
+  Variable underlying;
+
+  DelegatedProperty() { ktPropertyDelegates(this, underlying) }
+
+  /** Holds if this delegated property is declared as a local variable. */
+  predicate isLocal() { underlying instanceof LocalVariableDecl }
+
+  /** Gets the underlying local variable or field to which this property is delegating the calls. */
+  Variable getDelegatee() { result = underlying }
+
+  override string getAPrimaryQlClass() { result = "DelegatedProperty" }
+}
+
+/** A Kotlin extension function. */
+class ExtensionMethod extends Method {
+  Type extendedType;
+  KotlinType extendedKotlinType;
+
+  ExtensionMethod() { ktExtensionFunctions(this, extendedType, extendedKotlinType) }
+
+  /** Gets the type being extended by this method. */
+  Type getExtendedType() { result = extendedType }
+
+  /** Gets the Kotlin type being extended by this method. */
+  KotlinType getExtendedKotlinType() { result = extendedKotlinType }
+
+  override string getAPrimaryQlClass() { result = "ExtensionMethod" }
 }

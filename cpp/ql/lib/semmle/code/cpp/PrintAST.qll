@@ -663,17 +663,23 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     or
     s.(ComputedGotoStmt).getExpr() = e and pred = "getExpr()"
     or
+    s.(ConstexprIfStmt).getInitialization() = e and pred = "getInitialization()"
+    or
     s.(ConstexprIfStmt).getCondition() = e and pred = "getCondition()"
     or
     s.(ConstexprIfStmt).getThen() = e and pred = "getThen()"
     or
     s.(ConstexprIfStmt).getElse() = e and pred = "getElse()"
     or
+    s.(IfStmt).getInitialization() = e and pred = "getInitialization()"
+    or
     s.(IfStmt).getCondition() = e and pred = "getCondition()"
     or
     s.(IfStmt).getThen() = e and pred = "getThen()"
     or
     s.(IfStmt).getElse() = e and pred = "getElse()"
+    or
+    s.(SwitchStmt).getInitialization() = e and pred = "getInitialization()"
     or
     s.(SwitchStmt).getExpr() = e and pred = "getExpr()"
     or

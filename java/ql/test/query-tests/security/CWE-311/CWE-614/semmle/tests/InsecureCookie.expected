@@ -1,1 +1,4 @@
-| Test.java:16:4:16:29 | addCookie(...) | Cookie is added to response without the 'secure' flag being set. |
+| Test.java:19:4:19:29 | addCookie(...) | Cookie is added to response without the 'secure' flag being set. |
+| Test.java:28:4:28:29 | addCookie(...) | Cookie is added to response without the 'secure' flag being set. |
+| Test.java:37:4:37:29 | addCookie(...) | Cookie is added to response without the 'secure' flag being set. |
+| Test.java:51:4:51:29 | addCookie(...) | Cookie is added to response without the 'secure' flag being set. |

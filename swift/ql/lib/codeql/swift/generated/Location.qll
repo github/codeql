@@ -3,7 +3,7 @@ import codeql.swift.elements.Element
 import codeql.swift.elements.File
 
 class LocationBase extends @location, Element {
-  override string toString() { result = "Location" }
+  override string getAPrimaryQlClass() { result = "Location" }
 
   File getFile() {
     exists(File x |

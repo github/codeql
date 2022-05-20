@@ -2,5 +2,5 @@
 import codeql.swift.elements.type.UnarySyntaxSugarType
 
 class OptionalTypeBase extends @optional_type, UnarySyntaxSugarType {
-  override string toString() { result = "OptionalType" }
+  override string getAPrimaryQlClass() { result = "OptionalType" }
 }

@@ -2,5 +2,5 @@
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
 class InjectIntoOptionalExprBase extends @inject_into_optional_expr, ImplicitConversionExpr {
-  override string toString() { result = "InjectIntoOptionalExpr" }
+  override string getAPrimaryQlClass() { result = "InjectIntoOptionalExpr" }
 }

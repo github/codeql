@@ -15,9 +15,10 @@ class Property:
     is_single: ClassVar = False
     is_optional: ClassVar = False
     is_repeated: ClassVar = False
+    is_predicate: ClassVar = False
 
     name: str
-    type: str
+    type: str = None
 
 
 @dataclass
@@ -36,6 +37,17 @@ class RepeatedProperty(Property):
 
 
 @dataclass
+class RepeatedOptionalProperty(Property):
+    is_optional: ClassVar = True
+    is_repeated: ClassVar = True
+
+
+@dataclass
+class PredicateProperty(Property):
+    is_predicate: ClassVar = True
+
+
+@dataclass
 class Class:
     name: str
     bases: Set[str] = field(default_factory=set)
@@ -51,15 +63,16 @@ class Schema:
 
 
 def _parse_property(name, type):
-    if type.endswith("*"):
-        cls = RepeatedProperty
-        type = type[:-1]
+    if type.endswith("?*"):
+        return RepeatedOptionalProperty(name, type[:-2])
+    elif type.endswith("*"):
+        return RepeatedProperty(name, type[:-1])
     elif type.endswith("?"):
-        cls = OptionalProperty
-        type = type[:-1]
+        return OptionalProperty(name, type[:-1])
+    elif type == "predicate":
+        return PredicateProperty(name)
     else:
-        cls = SingleProperty
-    return cls(name, type)
+        return SingleProperty(name, type)
 
 
 class _DirSelector:
@@ -79,7 +92,6 @@ def load(path):
         data = yaml.load(input, Loader=yaml.SafeLoader)
     grouper = _DirSelector(data.get("_directories", {}).items())
     classes = {root_class_name: Class(root_class_name)}
-    assert root_class_name not in data
     classes.update((cls, Class(cls, dir=grouper.get(cls))) for cls in data if not cls.startswith("_"))
     for name, info in data.items():
         if name.startswith("_"):
@@ -97,7 +109,7 @@ def load(path):
                     classes[base].derived.add(name)
             elif k == "_dir":
                 cls.dir = pathlib.Path(v)
-        if not cls.bases:
+        if not cls.bases and cls.name != root_class_name:
             cls.bases.add(root_class_name)
             classes[root_class_name].derived.add(name)
 

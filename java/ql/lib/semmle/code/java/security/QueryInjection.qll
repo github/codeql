@@ -3,7 +3,8 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.javaee.Persistence
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.frameworks.MyBatis
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** A sink for database query language injection vulnerabilities. */
 abstract class QueryInjectionSink extends DataFlow::Node { }
@@ -49,7 +50,7 @@ private class MongoDbInjectionSink extends QueryInjectionSink {
       this.asExpr() = call.getArgument(0)
     )
     or
-    exists(CastExpr c |
+    exists(CastingExpr c |
       c.getExpr() = this.asExpr() and
       c.getTypeExpr().getType().(RefType).hasQualifiedName("com.mongodb", "DBObject")
     )
@@ -66,3 +67,5 @@ private class MongoJsonStep extends AdditionalQueryInjectionTaintStep {
     )
   }
 }
+
+private class MyBatisSqlInjectionSink extends QueryInjectionSink instanceof MyBatisInjectionSink { }

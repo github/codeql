@@ -1,3 +1,20 @@
+## 0.3.0
+
+### Breaking Changes
+
+* The imports made available from `import python` are no longer exposed under `DataFlow::` after doing `import semmle.python.dataflow.new.DataFlow`, for example using `DataFlow::Add` will now cause a compile error.
+
+### Minor Analysis Improvements
+
+* The modeling of `request.files` in Flask has been fixed, so we now properly handle assignments to local variables (such as `files = request.files; files['key'].filename`).
+* Added taint propagation for `io.StringIO` and `io.BytesIO`. This addition was originally [submitted as part of an experimental query by @jorgectf](https://github.com/github/codeql/pull/6112).
+
+## 0.2.0
+
+### Breaking Changes
+
+* The signature of `allowImplicitRead` on `DataFlow::Configuration` and `TaintTracking::Configuration` has changed from `allowImplicitRead(DataFlow::Node node, DataFlow::Content c)` to `allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c)`.
+
 ## 0.1.0
 
 ### Breaking Changes

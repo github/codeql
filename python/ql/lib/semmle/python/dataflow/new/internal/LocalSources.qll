@@ -6,7 +6,7 @@
  * local tracking within a function.
  */
 
-import python
+private import python
 import DataFlowPublic
 private import DataFlowPrivate
 private import semmle.python.internal.CachedStages

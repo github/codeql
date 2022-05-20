@@ -4,7 +4,7 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.typerepr.TypeRepr
 
 class EnumIsCaseExprBase extends @enum_is_case_expr, Expr {
-  override string toString() { result = "EnumIsCaseExpr" }
+  override string getAPrimaryQlClass() { result = "EnumIsCaseExpr" }
 
   Expr getSubExpr() {
     exists(Expr x |

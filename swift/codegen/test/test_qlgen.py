@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 from swift.codegen import qlgen
-from swift.codegen.lib import ql, paths
+from swift.codegen.lib import ql
 from swift.codegen.test.utils import *
 
 
@@ -18,12 +18,12 @@ ql_output_path = lambda: paths.swift_dir / "ql/lib/other/path"
 import_file = lambda: stub_path().with_suffix(".qll")
 stub_import_prefix = "stub.path."
 gen_import_prefix = "other.path."
-index_param = ql.Param("index", "int")
 
 
 def generate(opts, renderer, written=None):
     opts.ql_stub_output = stub_path()
     opts.ql_output = ql_output_path()
+    opts.ql_format = True
     renderer.written = written or []
     return run_generation(qlgen.generate, opts, renderer)
 
@@ -107,7 +107,8 @@ def test_optional_property(opts, input, renderer):
         import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
         stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
         ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
-            ql.Property(singular="Foo", type="bar", tablename="my_object_foos", tableparams=["this", "result"]),
+            ql.Property(singular="Foo", type="bar", tablename="my_object_foos", tableparams=["this", "result"],
+                        is_optional=True),
         ])
     }
 
@@ -120,8 +121,36 @@ def test_repeated_property(opts, input, renderer):
         import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
         stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
         ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
-            ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos", params=[index_param],
+            ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
                         tableparams=["this", "index", "result"]),
+        ])
+    }
+
+
+def test_repeated_optional_property(opts, input, renderer):
+    input.classes = [
+        schema.Class("MyObject", properties=[schema.RepeatedOptionalProperty("foo", "bar")]),
+    ]
+    assert generate(opts, renderer) == {
+        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
+        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
+            ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
+                        tableparams=["this", "index", "result"], is_optional=True),
+        ])
+    }
+
+
+def test_predicate_property(opts, input, renderer):
+    input.classes = [
+        schema.Class("MyObject", properties=[schema.PredicateProperty("is_foo")]),
+    ]
+    assert generate(opts, renderer) == {
+        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
+        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
+            ql.Property(singular="isFoo", type="predicate", tablename="my_object_is_foo", tableparams=["this"],
+                        is_predicate=True),
         ])
     }
 
@@ -195,4 +224,4 @@ def test_empty_cleanup(opts, input, renderer, tmp_path):
 
 
 if __name__ == '__main__':
-    sys.exit(pytest.main())
+    sys.exit(pytest.main([__file__] + sys.argv[1:]))

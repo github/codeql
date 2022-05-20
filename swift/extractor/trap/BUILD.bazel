@@ -1,16 +1,42 @@
 genrule(
-    name = "gen",
+    name = "trapgen",
     srcs = ["//swift:dbscheme"],
     outs = [
-        "TrapEntries.h",
-        "TrapTags.h",
+        "generated/TrapEntries.h",
+        "generated/TrapTags.h",
     ],
-    cmd = "$(location //swift/codegen:trapgen) --dbscheme $< --trap-output $(RULEDIR)",
+    cmd = " ".join([
+        "$(location //swift/codegen:trapgen)",
+        "--dbscheme $<",
+        "--cpp-include-dir " + package_name(),
+        "--cpp-output $(RULEDIR)/generated",
+    ]),
     exec_tools = ["//swift/codegen:trapgen"],
+)
+
+genrule(
+    name = "cppgen",
+    srcs = [
+        "//swift/codegen:schema",
+        "//swift/codegen:schema_includes",
+    ],
+    outs = [
+        "generated/TrapClasses.h",
+    ],
+    cmd = " ".join([
+        "$(location //swift/codegen:cppgen)",
+        "--schema $(location //swift/codegen:schema)",
+        "--cpp-include-dir " + package_name(),
+        "--cpp-output $(RULEDIR)/generated",
+    ]),
+    exec_tools = ["//swift/codegen:cppgen"],
 )
 
 cc_library(
     name = "trap",
-    hdrs = glob(["*.h"]) + [":gen"],
+    hdrs = glob(["*.h"]) + [
+        ":trapgen",
+        ":cppgen",
+    ],
     visibility = ["//visibility:public"],
 )

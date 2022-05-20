@@ -171,6 +171,14 @@ abstract class Configuration extends string {
   int explorationLimit() { none() }
 
   /**
+   * Holds if hidden nodes should be included in the data flow graph.
+   *
+   * This feature should only be used for debugging or when the data flow graph
+   * is not visualized (for example in a `path-problem` query).
+   */
+  predicate includeHiddenNodes() { none() }
+
+  /**
    * Holds if there is a partial data flow path from `source` to `node`. The
    * approximate distance between `node` and the closest source is `dist` and
    * is restricted to be less than or equal to `explorationLimit()`. This
@@ -498,22 +506,34 @@ private predicate readSet(NodeEx node1, ContentSet c, NodeEx node2, Configuratio
 }
 
 // inline to reduce fan-out via `getAReadContent`
-pragma[inline]
+bindingset[c]
 private predicate read(NodeEx node1, Content c, NodeEx node2, Configuration config) {
   exists(ContentSet cs |
     readSet(node1, cs, node2, config) and
-    c = cs.getAReadContent()
+    pragma[only_bind_out](c) = pragma[only_bind_into](cs).getAReadContent()
   )
 }
 
 // inline to reduce fan-out via `getAReadContent`
-pragma[inline]
+bindingset[c]
 private predicate clearsContentEx(NodeEx n, Content c) {
   exists(ContentSet cs |
     clearsContentCached(n.asNode(), cs) and
-    c = cs.getAReadContent()
+    pragma[only_bind_out](c) = pragma[only_bind_into](cs).getAReadContent()
   )
 }
+
+// inline to reduce fan-out via `getAReadContent`
+bindingset[c]
+private predicate expectsContentEx(NodeEx n, Content c) {
+  exists(ContentSet cs |
+    expectsContentCached(n.asNode(), cs) and
+    pragma[only_bind_out](c) = pragma[only_bind_into](cs).getAReadContent()
+  )
+}
+
+pragma[nomagic]
+private predicate notExpectsContent(NodeEx n) { not expectsContentCached(n.asNode(), _) }
 
 pragma[nomagic]
 private predicate store(
@@ -793,7 +813,7 @@ private module Stage1 {
    * by `revFlow`.
    */
   pragma[nomagic]
-  private predicate revFlowIsReadAndStored(Content c, Configuration conf) {
+  predicate revFlowIsReadAndStored(Content c, Configuration conf) {
     revFlowConsCand(c, conf) and
     revFlowStore(c, _, _, conf)
   }
@@ -891,7 +911,7 @@ private module Stage1 {
 
   pragma[nomagic]
   predicate readStepCand(NodeEx n1, Content c, NodeEx n2, Configuration config) {
-    revFlowIsReadAndStored(pragma[only_bind_into](c), pragma[only_bind_into](config)) and
+    revFlowIsReadAndStored(c, pragma[only_bind_into](config)) and
     read(n1, c, n2, pragma[only_bind_into](config)) and
     revFlow(n2, pragma[only_bind_into](config))
   }
@@ -1181,11 +1201,26 @@ private module Stage2 {
 
   private predicate flowIntoCall = flowIntoCallNodeCand1/5;
 
+  pragma[nomagic]
+  private predicate expectsContentCand(NodeEx node, Configuration config) {
+    exists(Content c |
+      PrevStage::revFlow(node, pragma[only_bind_into](config)) and
+      PrevStage::revFlowIsReadAndStored(c, pragma[only_bind_into](config)) and
+      expectsContentEx(node, c)
+    )
+  }
+
   bindingset[node, state, ap, config]
   private predicate filter(NodeEx node, FlowState state, Ap ap, Configuration config) {
     PrevStage::revFlowState(state, pragma[only_bind_into](config)) and
     exists(ap) and
-    not stateBarrier(node, state, config)
+    not stateBarrier(node, state, config) and
+    (
+      notExpectsContent(node)
+      or
+      ap = true and
+      expectsContentCand(node, config)
+    )
   }
 
   bindingset[ap, contentType]
@@ -1646,8 +1681,22 @@ private module Stage2 {
     storeStepFwd(_, ap, tc, _, _, config)
   }
 
-  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+  private predicate revConsCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  private predicate validAp(Ap ap, Configuration config) {
+    revFlow(_, _, _, _, ap, config) and ap instanceof ApNil
+    or
+    exists(TypedContent head, Ap tail |
+      consCand(head, tail, config) and
+      ap = apCons(head, tail)
+    )
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    revConsCand(tc, ap, config) and
+    validAp(ap, config)
   }
 
   pragma[noinline]
@@ -1740,7 +1789,8 @@ private module LocalFlowBigStep {
   private class FlowCheckNode extends NodeEx {
     FlowCheckNode() {
       castNode(this.asNode()) or
-      clearsContentCached(this.asNode(), _)
+      clearsContentCached(this.asNode(), _) or
+      expectsContentCached(this.asNode(), _)
     }
   }
 
@@ -1980,6 +2030,16 @@ private module Stage3 {
   }
 
   pragma[nomagic]
+  private predicate expectsContentCand(NodeEx node, Ap ap, Configuration config) {
+    exists(Content c |
+      PrevStage::revFlow(node, pragma[only_bind_into](config)) and
+      PrevStage::readStepCand(_, c, _, pragma[only_bind_into](config)) and
+      expectsContentEx(node, c) and
+      c = ap.getHead().getContent()
+    )
+  }
+
+  pragma[nomagic]
   private predicate castingNodeEx(NodeEx node) { node.asNode() instanceof CastingNode }
 
   bindingset[node, state, ap, config]
@@ -1987,7 +2047,12 @@ private module Stage3 {
     exists(state) and
     exists(config) and
     not clear(node, ap, config) and
-    if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), ap.getType()) else any()
+    (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), ap.getType()) else any()) and
+    (
+      notExpectsContent(node)
+      or
+      expectsContentCand(node, ap, config)
+    )
   }
 
   bindingset[ap, contentType]
@@ -2452,8 +2517,22 @@ private module Stage3 {
     storeStepFwd(_, ap, tc, _, _, config)
   }
 
-  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+  private predicate revConsCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  private predicate validAp(Ap ap, Configuration config) {
+    revFlow(_, _, _, _, ap, config) and ap instanceof ApNil
+    or
+    exists(TypedContent head, Ap tail |
+      consCand(head, tail, config) and
+      ap = apCons(head, tail)
+    )
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    revConsCand(tc, ap, config) and
+    validAp(ap, config)
   }
 
   pragma[noinline]
@@ -3279,8 +3358,22 @@ private module Stage4 {
     storeStepFwd(_, ap, tc, _, _, config)
   }
 
-  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+  private predicate revConsCand(TypedContent tc, Ap ap, Configuration config) {
     storeStepCand(_, ap, tc, _, _, config)
+  }
+
+  private predicate validAp(Ap ap, Configuration config) {
+    revFlow(_, _, _, _, ap, config) and ap instanceof ApNil
+    or
+    exists(TypedContent head, Ap tail |
+      consCand(head, tail, config) and
+      ap = apCons(head, tail)
+    )
+  }
+
+  predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    revConsCand(tc, ap, config) and
+    validAp(ap, config)
   }
 
   pragma[noinline]
@@ -3351,14 +3444,25 @@ private Configuration unbindConf(Configuration conf) {
   exists(Configuration c | result = pragma[only_bind_into](c) and conf = pragma[only_bind_into](c))
 }
 
-private predicate nodeMayUseSummary(
-  NodeEx n, FlowState state, AccessPathApprox apa, Configuration config
+pragma[nomagic]
+private predicate nodeMayUseSummary0(
+  NodeEx n, DataFlowCallable c, FlowState state, AccessPathApprox apa, Configuration config
 ) {
-  exists(DataFlowCallable c, AccessPathApprox apa0 |
-    Stage4::parameterMayFlowThrough(_, c, apa, _) and
+  exists(AccessPathApprox apa0 |
+    Stage4::parameterMayFlowThrough(_, c, _, _) and
     Stage4::revFlow(n, state, true, _, apa0, config) and
     Stage4::fwdFlow(n, state, any(CallContextCall ccc), TAccessPathApproxSome(apa), apa0, config) and
     n.getEnclosingCallable() = c
+  )
+}
+
+pragma[nomagic]
+private predicate nodeMayUseSummary(
+  NodeEx n, FlowState state, AccessPathApprox apa, Configuration config
+) {
+  exists(DataFlowCallable c |
+    Stage4::parameterMayFlowThrough(_, c, apa, config) and
+    nodeMayUseSummary0(n, c, state, apa, config)
   )
 }
 
@@ -3557,7 +3661,7 @@ private newtype TPathNode =
  * of dereference operations needed to get from the value in the node to the
  * tracked object. The final type indicates the type of the tracked object.
  */
-abstract private class AccessPath extends TAccessPath {
+private class AccessPath extends TAccessPath {
   /** Gets the head of this access path, if any. */
   abstract TypedContent getHead();
 
@@ -3772,11 +3876,14 @@ abstract private class PathNodeImpl extends PathNode {
   abstract NodeEx getNodeEx();
 
   predicate isHidden() {
-    hiddenNode(this.getNodeEx().asNode()) and
-    not this.isSource() and
-    not this instanceof PathNodeSink
-    or
-    this.getNodeEx() instanceof TNodeImplicitRead
+    not this.getConfiguration().includeHiddenNodes() and
+    (
+      hiddenNode(this.getNodeEx().asNode()) and
+      not this.isSource() and
+      not this instanceof PathNodeSink
+      or
+      this.getNodeEx() instanceof TNodeImplicitRead
+    )
   }
 
   private string ppAp() {
@@ -4257,6 +4364,12 @@ private module Subpaths {
     )
   }
 
+  pragma[nomagic]
+  private predicate hasSuccessor(PathNode pred, PathNodeMid succ, NodeEx succNode) {
+    succ = pred.getASuccessor() and
+    succNode = succ.getNodeEx()
+  }
+
   /**
    * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
    * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
@@ -4264,15 +4377,13 @@ private module Subpaths {
    */
   predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeImpl ret, PathNode out) {
     exists(ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout, PathNodeMid out0 |
-      pragma[only_bind_into](arg).getASuccessor() = par and
-      pragma[only_bind_into](arg).getASuccessor() = out0 and
-      subpaths03(arg, p, localStepToHidden*(ret), o, sout, apout) and
+      pragma[only_bind_into](arg).getASuccessor() = pragma[only_bind_into](out0) and
+      subpaths03(pragma[only_bind_into](arg), p, localStepToHidden*(ret), o, sout, apout) and
+      hasSuccessor(pragma[only_bind_into](arg), par, p) and
       not ret.isHidden() and
-      par.getNodeEx() = p and
-      out0.getNodeEx() = o and
-      out0.getState() = sout and
-      out0.getAp() = apout and
-      (out = out0 or out = out0.projectToSink())
+      pathNode(out0, o, sout, _, _, apout, _, _)
+    |
+      out = out0 or out = out0.projectToSink()
     )
   }
 
@@ -4609,6 +4720,10 @@ private module FlowExploration {
       exists(PartialPathNodeRev mid |
         revPartialPathStep(mid, node, state, sc1, sc2, sc3, ap, config) and
         not clearsContentEx(node, ap.getHead()) and
+        (
+          notExpectsContent(node) or
+          expectsContentEx(node, ap.getHead())
+        ) and
         not fullBarrier(node, config) and
         not stateBarrier(node, state, config) and
         distSink(node.getEnclosingCallable(), config) <= config.explorationLimit()
@@ -4625,6 +4740,10 @@ private module FlowExploration {
       not fullBarrier(node, config) and
       not stateBarrier(node, state, config) and
       not clearsContentEx(node, ap.getHead().getContent()) and
+      (
+        notExpectsContent(node) or
+        expectsContentEx(node, ap.getHead().getContent())
+      ) and
       if node.asNode() instanceof CastingNode
       then compatibleTypes(node.getDataFlowType(), ap.getType())
       else any()

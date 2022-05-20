@@ -10,6 +10,8 @@ class AnyGenericTypeBase extends @any_generic_type, Type {
     )
   }
 
+  predicate hasParent() { exists(getParent()) }
+
   Decl getDeclaration() {
     exists(Decl x |
       any_generic_types(this, x) and

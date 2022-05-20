@@ -12,11 +12,11 @@ _directories:
   expr: Expr$
   stmt: Stmt$
 
+Element:
+  is_unknown: predicate
+
 File:
   name: string
-
-IterableDeclContext:
-  members: Decl*
 
 Locatable:
   location: Location
@@ -31,6 +31,9 @@ Location:
 Type:
   diagnostics_name: string
   canonical_type: Type
+
+IterableDeclContext:
+  members: Decl*
 
 ExtensionDecl:
   _extends:
@@ -59,6 +62,7 @@ AnyFunctionType:
   result: Type
   param_types: Type*
   param_labels: string*
+  is_throwing: predicate
 
 AnyGenericType:
   _extends: Type
@@ -73,6 +77,8 @@ BuiltinType:
 
 DependentMemberType:
   _extends: Type
+  baseType: Type
+  associated_type_decl: AssociatedTypeDecl
 
 DynamicSelfType:
   _extends: Type
@@ -122,13 +128,11 @@ SugarType:
 
 TupleType:
   _extends: Type
+  types: Type*
+  names: string*
 
 TypeVariableType:
   _extends: Type
-
-UnknownType:
-  _extends: Type
-  name: string
 
 UnresolvedType:
   _extends: Type
@@ -231,12 +235,14 @@ GenericTypeParamType:
 
 ParenType:
   _extends: SugarType
+  type: Type
 
 SyntaxSugarType:
   _extends: SugarType
 
 TypeAliasType:
   _extends: SugarType
+  decl: TypeAliasDecl
 
 EnumCaseDecl:
   _extends: Decl
@@ -253,10 +259,11 @@ MissingMemberDecl:
 
 OperatorDecl:
   _extends: Decl
+  name: string
 
 PatternBindingDecl:
   _extends: Decl
-  inits: Expr*
+  inits: Expr?*
   patterns: Pattern*
 
 PoundDiagnosticDecl:
@@ -268,15 +275,6 @@ PrecedenceGroupDecl:
 TopLevelCodeDecl:
   _extends: Decl
   body: BraceStmt
-
-UnknownAstNode:
-  _extends:
-    - Decl
-    - Expr
-    - Pattern
-    - Stmt
-    - TypeRepr
-  name: string
 
 ValueDecl:
   _extends: Decl
@@ -598,6 +596,7 @@ YieldStmt:
 
 BoundGenericType:
   _extends: NominalOrBoundGenericNominalType
+  arg_types: Type*
 
 NominalType:
   _extends: NominalOrBoundGenericNominalType
@@ -607,6 +606,7 @@ BuiltinIntegerLiteralType:
 
 BuiltinIntegerType:
   _extends: AnyBuiltinIntegerType
+  width: int?
 
 NestedArchetypeType:
   _extends: ArchetypeType
@@ -626,12 +626,16 @@ PrimaryArchetypeType:
 
 DictionaryType:
   _extends: SyntaxSugarType
+  key_type: Type
+  value_type: Type
 
 UnarySyntaxSugarType:
   _extends: SyntaxSugarType
+  base_type: Type
 
 InfixOperatorDecl:
   _extends: OperatorDecl
+  precedence_group: PrecedenceGroupDecl?
 
 PostfixOperatorDecl:
   _extends: OperatorDecl
@@ -658,6 +662,7 @@ EnumElementDecl:
 TypeDecl:
   _extends: ValueDecl
   name: string
+  base_types: Type*
 
 AutoClosureExpr:
   _extends: AbstractClosureExpr
@@ -858,9 +863,10 @@ DoStmt:
 
 ForEachStmt:
   _extends: LabeledStmt
-  body: BraceStmt
+  pattern: Pattern
   sequence: Expr
   where: Expr?
+  body: BraceStmt
 
 LabeledConditionalStmt:
   _extends: LabeledStmt
@@ -892,7 +898,6 @@ BoundGenericStructType:
 
 ClassType:
   _extends: NominalType
-  decl: ClassDecl
 
 EnumType:
   _extends: NominalType
@@ -902,7 +907,6 @@ ProtocolType:
 
 StructType:
   _extends: NominalType
-  decl: StructDecl
 
 ArraySliceType:
   _extends: UnarySyntaxSugarType
@@ -929,6 +933,9 @@ VarDecl:
   _extends: AbstractStorageDecl
   name: string
   type: Type
+  attached_property_wrapper_type: Type?
+  parent_pattern: Pattern?
+  parent_initializer: Expr?
 
 AbstractTypeParamDecl:
   _extends: TypeDecl
@@ -1025,3 +1032,87 @@ FloatLiteralExpr:
 IntegerLiteralExpr:
   _extends: NumberLiteralExpr
   string_value: string
+
+ErrorTypeRepr:
+  _extends: TypeRepr
+
+AttributedTypeRepr:
+  _extends: TypeRepr
+
+IdentTypeRepr:
+  _extends: TypeRepr
+
+ComponentIdentTypeRepr:
+  _extends: IdentTypeRepr
+
+SimpleIdentTypeRepr:
+  _extends: ComponentIdentTypeRepr
+
+GenericIdentTypeRepr:
+  _extends: ComponentIdentTypeRepr
+
+CompoundIdentTypeRepr:
+  _extends: IdentTypeRepr
+
+FunctionTypeRepr:
+  _extends: TypeRepr
+
+ArrayTypeRepr:
+  _extends: TypeRepr
+
+DictionaryTypeRepr:
+  _extends: TypeRepr
+
+OptionalTypeRepr:
+  _extends: TypeRepr
+
+ImplicitlyUnwrappedOptionalTypeRepr:
+  _extends: TypeRepr
+
+TupleTypeRepr:
+  _extends: TypeRepr
+
+CompositionTypeRepr:
+  _extends: TypeRepr
+
+MetatypeTypeRepr:
+  _extends: TypeRepr
+
+ProtocolTypeRepr:
+  _extends: TypeRepr
+
+OpaqueReturnTypeRepr:
+  _extends: TypeRepr
+
+NamedOpaqueReturnTypeRepr:
+  _extends: TypeRepr
+
+ExistentialTypeRepr:
+  _extends: TypeRepr
+
+PlaceholderTypeRepr:
+  _extends: TypeRepr
+
+SpecifierTypeRepr:
+  _extends: TypeRepr
+
+InOutTypeRepr:
+  _extends: SpecifierTypeRepr
+
+SharedTypeRepr:
+  _extends: SpecifierTypeRepr
+
+OwnedTypeRepr:
+  _extends: SpecifierTypeRepr
+
+IsolatedTypeRepr:
+  _extends: SpecifierTypeRepr
+
+CompileTimeConstTypeRepr:
+  _extends: SpecifierTypeRepr
+
+FixedTypeRepr:
+  _extends: TypeRepr
+
+SilBoxTypeRepr:
+  _extends: TypeRepr
