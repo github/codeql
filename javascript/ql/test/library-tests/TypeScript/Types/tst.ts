@@ -351,27 +351,6 @@ const state: State<number> = {
 
 const fortyTwo = state.get(); // <- number
 
-////////////
-
-// This does not compile as of 2022-05-19 with typescript@4.7.1-rc, but it might
-// work with the actually released version:
-
-// class Container {
-//   #data = "hello!";
-
-//   get data(): typeof this.#data {
-//       return this.#data;
-//   }
-
-//   set data(value: typeof this.#data) {
-//       this.#data = value;
-//   }
-// }
-
-// const c = new Container();
-
-// const hello = c.data(); // <- string
-
 /////////////////
 
 import tstModuleES from './tstModuleES.mjs';
