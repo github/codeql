@@ -68,7 +68,7 @@ class UserModePtrCheckMacro extends Macro {
  *   parameter dummy will be regared as user-mode pointer used
  *   in unsafe_put_user without security check using access_ok
  *   but in fact dummy is only used to read memory otherwise
- *   instead of writng user-mode memory.
+ *   instead of writing user-mode memory.
  *
  *   Reading implementation of unsafe_put_user in Linux codebase,
  *   I found that there is a sizeof operation for user-mode pointer.
