@@ -56,12 +56,14 @@ class UserModePtrCheckMacro extends Macro {
  *   pointer, but in some odd situation this may lead to false
  *   positive. For example:
  *
+ *   ```
  *   void function foo(struct some_struct* __user pointer, long* dummy)
  *   {
  *       if(!access_ok(pointer))            //security check for pointer
  *           return;
  *       unsafe_put_user(*dummy, pointer);
  *   }
+ *   ```
  *
  *   parameter dummy will be regared as user-mode pointer used
  *   in unsafe_put_user without security check using access_ok
