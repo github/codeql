@@ -20,7 +20,7 @@ import semmle.code.cpp.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /*
- *  Linux SysCall is defiend by marco SYSCALL_DEFINE
+ *  Linux SysCall is defined by macro SYSCALL_DEFINE
  *  so I think this may be a generic way to model linux
  *  syscall
  */
