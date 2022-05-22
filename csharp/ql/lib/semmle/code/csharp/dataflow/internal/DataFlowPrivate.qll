@@ -743,9 +743,11 @@ private module Cached {
       FlowSummaryImpl::Public::SummarizedCallable c,
       FlowSummaryImpl::Private::SummaryNodeState state
     ) {
+      useFlowSummary(c) and
       FlowSummaryImpl::Private::summaryNodeRange(c, state)
     } or
     TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
+      useFlowSummary(c) and
       FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
     } or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
