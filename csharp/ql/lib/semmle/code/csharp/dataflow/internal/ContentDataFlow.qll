@@ -4,10 +4,10 @@
  */
 
 private import DataFlowImplCommon
-private import DataFlowPrivate as DataFlowPrivate
 
 module ContentDataFlow {
   private import DataFlowImplSpecific::Private
+  private import DataFlowImplSpecific::Private as DataFlowPrivate
   private import DataFlowImplForContentDataFlow as DF
 
   class Node = DF::Node;
@@ -253,6 +253,7 @@ module ContentDataFlow {
 
     final override FlowFeature getAFeature() { result = c.getAFeature() }
 
+    // needed to record reads/stores inside summarized callables
     final override predicate includeHiddenNodes() { any() }
   }
 
@@ -289,143 +290,239 @@ module ContentDataFlow {
     }
   }
 
-  pragma[nomagic]
-  private predicate pathNodeSuccEntry(DF::PathNode node) {
-    node.getConfiguration() instanceof Configuration and
-    (
-      any(ConfigurationAdapter config).isSource(node.getNode(), node.getState())
-      or
-      DF::PathGraph::subpaths(_, _, _, node)
-      or
-      DF::PathGraph::subpaths(_, node, _, _)
-      or
-      storeStep(_, _, _, node.getNode(), node.getState(), node.getConfiguration())
-      or
-      readStep(_, _, _, node.getNode(), node.getState(), node.getConfiguration())
-    )
-  }
+  // important to use `edges` and not `PathNode::getASuccessor()`, as the latter
+  // is not pruned for reachability
+  private predicate pathSucc = DF::PathGraph::edges/2;
 
-  pragma[nomagic]
-  private predicate pathNodeSuccExit(DF::PathNode node) {
-    node.getConfiguration() instanceof Configuration and
-    (
+  /**
+   * Provides a big-step flow relation, where flow stops at read/store steps that
+   * must be recorded, and flow via `subpaths` such that reads/stores inside
+   * summarized callables can be recorded as well.
+   */
+  private module BigStepFlow {
+    private predicate reachesSink(DF::PathNode node) {
       any(ConfigurationAdapter config).isSink(node.getNode(), node.getState())
       or
-      DF::PathGraph::subpaths(node, _, _, _)
-      or
-      DF::PathGraph::subpaths(_, _, node, _)
-      or
-      storeStep(node.getNode(), node.getState(), _, _, _, node.getConfiguration())
-      or
-      readStep(node.getNode(), node.getState(), _, _, _, node.getConfiguration())
-    )
+      exists(DF::PathNode mid |
+        pathSucc(node, mid) and
+        reachesSink(mid)
+      )
+    }
+
+    /**
+     * Holds if the flow step `pred -> succ` should not be allowed to be included
+     * in the big-step relation.
+     */
+    pragma[nomagic]
+    private predicate excludeStep(DF::PathNode pred, DF::PathNode succ) {
+      pathSucc(pred, succ) and
+      (
+        // we need to record reads/stores inside summarized callables
+        DF::PathGraph::subpaths(pred, _, _, succ)
+        or
+        // only allow flow into a summarized callable, as part of the big-step
+        // relation, when flow can reach a sink without going back out
+        DF::PathGraph::subpaths(pred, succ, _, _) and
+        not reachesSink(succ)
+        or
+        // needed to record store steps
+        storeStep(pred.getNode(), pred.getState(), _, succ.getNode(), succ.getState(),
+          pred.getConfiguration())
+        or
+        // needed to record read steps
+        readStep(pred.getNode(), pred.getState(), _, succ.getNode(), succ.getState(),
+          pred.getConfiguration())
+      )
+    }
+
+    pragma[nomagic]
+    private DataFlowCallable getEnclosingCallableImpl(DF::PathNode node) {
+      result = getNodeEnclosingCallable(node.getNode())
+    }
+
+    pragma[inline]
+    private DataFlowCallable getEnclosingCallable(DF::PathNode node) {
+      pragma[only_bind_into](result) = getEnclosingCallableImpl(pragma[only_bind_out](node))
+    }
+
+    pragma[nomagic]
+    private predicate bigStepEntry(DF::PathNode node) {
+      node.getConfiguration() instanceof Configuration and
+      (
+        any(ConfigurationAdapter config).isSource(node.getNode(), node.getState())
+        or
+        excludeStep(_, node)
+        or
+        DF::PathGraph::subpaths(_, node, _, _)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate bigStepExit(DF::PathNode node) {
+      node.getConfiguration() instanceof Configuration and
+      (
+        bigStepEntry(node)
+        or
+        any(ConfigurationAdapter config).isSink(node.getNode(), node.getState())
+        or
+        excludeStep(node, _)
+        or
+        DF::PathGraph::subpaths(_, _, node, _)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate step(DF::PathNode pred, DF::PathNode succ) {
+      pathSucc(pred, succ) and
+      not excludeStep(pred, succ)
+    }
+
+    pragma[nomagic]
+    private predicate stepRec(DF::PathNode pred, DF::PathNode succ) {
+      step(pred, succ) and
+      not bigStepEntry(pred)
+    }
+
+    private predicate stepRecPlus(DF::PathNode n1, DF::PathNode n2) = fastTC(stepRec/2)(n1, n2)
+
+    /**
+     * Holds if there is flow `pathSucc+(pred) = succ`, and such a flow path does
+     * not go through any reads/stores that need to be recorded, or summarized
+     * steps.
+     */
+    pragma[nomagic]
+    private predicate bigStep(DF::PathNode pred, DF::PathNode succ) {
+      exists(DF::PathNode mid |
+        bigStepEntry(pred) and
+        step(pred, mid)
+      |
+        succ = mid
+        or
+        stepRecPlus(mid, succ)
+      ) and
+      bigStepExit(succ)
+    }
+
+    pragma[nomagic]
+    predicate bigStepNotLocal(DF::PathNode pred, DF::PathNode succ) {
+      bigStep(pred, succ) and
+      not getEnclosingCallable(pred) = getEnclosingCallable(succ)
+    }
+
+    pragma[nomagic]
+    predicate bigStepMaybeLocal(DF::PathNode pred, DF::PathNode succ) {
+      bigStep(pred, succ) and
+      getEnclosingCallable(pred) = getEnclosingCallable(succ)
+    }
   }
 
-  pragma[nomagic]
-  private predicate pathNodeSuccRec(DF::PathNode pred, DF::PathNode succ) {
-    pathNodeSuccEntry(pred) and
-    succ = pred
-    or
-    exists(DF::PathNode mid |
-      pathNodeSuccRec(pred, mid) and
-      succ = mid.getASuccessor() and
-      not DF::PathGraph::subpaths(mid, succ, _, _) and
-      not pathNodeSuccExit(mid)
-    )
-  }
-
-  pragma[nomagic]
-  private predicate pathNodeSuccBigStep(DF::PathNode pred, DF::PathNode succ) {
-    pathNodeSuccRec(pred, succ) and
-    pathNodeSuccExit(succ)
-  }
-
+  /**
+   * Holds if `source` can reach `node`, having read `reads` from the source and
+   * written `stores` into `node`.
+   *
+   * `source` is either a source from a configuration, in which case `scReads` and
+   * `scStores` are always empty, or it is the parameter of a summarized callable,
+   * in which case `scReads` and `scStores` record the reads/stores for a summary
+   * context, that is, the reads/stores for an argument that can reach the parameter.
+   */
   pragma[nomagic]
   private predicate nodeReaches(
-    DF::PathNode source, AccessPath readsIn, AccessPath storesIn, DF::PathNode node,
-    AccessPath readsOut, AccessPath storesOut
+    DF::PathNode source, AccessPath scReads, AccessPath scStores, DF::PathNode node,
+    AccessPath reads, AccessPath stores
   ) {
     exists(ConfigurationAdapter config |
       node = source and
-      readsOut = readsIn and
-      storesOut = storesIn
+      reads = scReads and
+      stores = scStores
     |
       config.hasFlowPath(source, _) and
-      readsIn = TAccessPathNil() and
-      storesIn = TAccessPathNil()
+      scReads = TAccessPathNil() and
+      scStores = TAccessPathNil()
       or
+      // the argument in a sub path can be reached, so we start flow from the sub path
+      // parameter, while recording the read/store summary context
       exists(DF::PathNode arg |
-        nodeReachesSubpathArg(_, _, _, arg, readsIn, storesIn) and
+        nodeReachesSubpathArg(_, _, _, arg, scReads, scStores) and
         DF::PathGraph::subpaths(arg, source, _, _)
       )
     )
     or
     exists(DF::PathNode mid |
-      nodeReaches(source, readsIn, storesIn, mid, readsOut, storesOut) and
-      pathNodeSuccBigStep(mid, node)
+      nodeReaches(source, scReads, scStores, mid, reads, stores) and
+      BigStepFlow::bigStepMaybeLocal(mid, node)
+    )
+    or
+    exists(DF::PathNode mid |
+      nodeReaches(source, scReads, scStores, mid, reads, stores) and
+      BigStepFlow::bigStepNotLocal(mid, node) and
+      // when flow is not local, we cannot flow back out, so we may stop
+      // flow early when computing summary flow
+      any(ConfigurationAdapter config).hasFlowPath(source, _) and
+      scReads = TAccessPathNil() and
+      scStores = TAccessPathNil()
     )
     or
     // store step
-    exists(AccessPath storesOutMid, ContentSet c |
-      nodeReachesStore(source, readsIn, storesIn, node, c, readsOut, storesOutMid) and
-      storesOut = TAccessPathCons(c, storesOutMid)
+    exists(AccessPath storesMid, ContentSet c |
+      nodeReachesStore(source, scReads, scStores, node, c, reads, storesMid) and
+      stores = TAccessPathCons(c, storesMid)
     )
     or
     // read step
-    exists(AccessPath readsOutMid, ContentSet c |
-      nodeReachesRead(source, readsIn, storesIn, node, c, readsOutMid, storesOut) and
-      readsOut = TAccessPathCons(c, readsOutMid)
+    exists(AccessPath readsMid, ContentSet c |
+      nodeReachesRead(source, scReads, scStores, node, c, readsMid, stores) and
+      reads = TAccessPathCons(c, readsMid)
     )
     or
-    // flow-through step
-    exists(DF::PathNode mid, AccessPath readsMid, AccessPath storesMid |
-      nodeReachesSubpathArg(source, readsIn, storesIn, mid, readsMid, storesMid) and
-      subpathArgReachesOut(mid, readsMid, storesMid, node, readsOut, storesOut)
+    // flow-through step; match outer stores/reads with inner store/read summary contexts
+    exists(DF::PathNode mid, AccessPath innerScReads, AccessPath innerScStores |
+      nodeReachesSubpathArg(source, scReads, scStores, mid, innerScReads, innerScStores) and
+      subpathArgReachesOut(mid, innerScReads, innerScStores, node, reads, stores)
     )
   }
 
   pragma[nomagic]
   private predicate nodeReachesStore(
-    DF::PathNode source, AccessPath readsIn, AccessPath storesIn, DF::PathNode node, ContentSet c,
-    AccessPath readsOut, AccessPath storesOut
+    DF::PathNode source, AccessPath scReads, AccessPath scStores, DF::PathNode node, ContentSet c,
+    AccessPath reads, AccessPath stores
   ) {
     exists(DF::PathNode mid |
-      nodeReaches(source, readsIn, storesIn, mid, readsOut, storesOut) and
+      nodeReaches(source, scReads, scStores, mid, reads, stores) and
       storeStep(mid.getNode(), mid.getState(), c, node.getNode(), node.getState(),
         node.getConfiguration()) and
-      node = mid.getASuccessor()
+      pathSucc(mid, node)
     )
   }
 
   pragma[nomagic]
   private predicate nodeReachesRead(
-    DF::PathNode source, AccessPath readsIn, AccessPath storesIn, DF::PathNode node, ContentSet c,
-    AccessPath readsOut, AccessPath storesOut
+    DF::PathNode source, AccessPath scReads, AccessPath scStores, DF::PathNode node, ContentSet c,
+    AccessPath reads, AccessPath stores
   ) {
     exists(DF::PathNode mid |
-      nodeReaches(source, readsIn, storesIn, mid, readsOut, storesOut) and
+      nodeReaches(source, scReads, scStores, mid, reads, stores) and
       readStep(mid.getNode(), mid.getState(), c, node.getNode(), node.getState(),
         node.getConfiguration()) and
-      node = mid.getASuccessor()
+      pathSucc(mid, node)
     )
   }
 
   pragma[nomagic]
   private predicate nodeReachesSubpathArg(
-    DF::PathNode source, AccessPath readsIn, AccessPath storesIn, DF::PathNode arg,
-    AccessPath readsOut, AccessPath storesOut
+    DF::PathNode source, AccessPath scReads, AccessPath scStores, DF::PathNode arg,
+    AccessPath reads, AccessPath stores
   ) {
-    nodeReaches(source, readsIn, storesIn, arg, readsOut, storesOut) and
+    nodeReaches(source, scReads, scStores, arg, reads, stores) and
     DF::PathGraph::subpaths(arg, _, _, _)
   }
 
   pragma[nomagic]
   private predicate subpathArgReachesOut(
-    DF::PathNode arg, AccessPath readsIn, AccessPath storesIn, DF::PathNode out,
-    AccessPath readsOut, AccessPath storesOut
+    DF::PathNode arg, AccessPath scReads, AccessPath scStores, DF::PathNode out, AccessPath reads,
+    AccessPath stores
   ) {
     exists(DF::PathNode source, DF::PathNode ret |
-      nodeReaches(source, readsIn, storesIn, ret, readsOut, storesOut) and
+      nodeReaches(source, scReads, scStores, ret, reads, stores) and
       DF::PathGraph::subpaths(arg, source, ret, out)
     )
   }
