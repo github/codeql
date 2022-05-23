@@ -619,7 +619,7 @@ module ExprNodes {
     override predicate relevantChild(AstNode n) { n = this.getReceiver() }
   }
 
-  /** A control-flow node that wraps a `InstanceVariableAccess` AST expression. */
+  /** A control-flow node that wraps an `InstanceVariableAccess` AST expression. */
   class InstanceVariableAccessCfgNode extends ExprCfgNode {
     override InstanceVariableAccessMapping e;
 
@@ -652,7 +652,7 @@ module ExprNodes {
     final override ConstantWriteAccess getExpr() { result = ExprCfgNode.super.getExpr() }
   }
 
-  /** A control-flow node that wraps a `InstanceVariableWriteAccess` AST expression. */
+  /** A control-flow node that wraps an `InstanceVariableWriteAccess` AST expression. */
   class InstanceVariableWriteAccessCfgNode extends ExprCfgNode {
     override InstanceVariableWriteAccess e;
 
