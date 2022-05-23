@@ -79,6 +79,7 @@ private predicate memoReturnedFromMethod(Method m, MemoStmt s) {
  * This can cause stale or incorrect values to be returned when the method is called with different arguments.
  */
 predicate isImproperMemoizationMethod(Method m, Parameter p, AssignLogicalOrExpr s) {
+  m instanceof MemoCandidate and
   m.getName() != "initialize" and
   parameterUsedInMemoValue(m, p, s) and
   not parameterUsedInMemoKey(m, p, s) and
