@@ -21,7 +21,7 @@ module ParseTorrent {
         node = mod().getReturn() or
         node = mod().getMember("remote").getParameter(1).getParameter(1)
       ) and
-      this = node.getASource()
+      this = node.asSource()
     }
 
     /** Gets the API node for this torrent object. */
@@ -40,7 +40,7 @@ module ParseTorrent {
     UserControlledTorrentInfo() {
       exists(API::Node read |
         read = any(ParsedTorrent t).asApiNode().getAMember() and
-        this = read.getASource()
+        this = read.asSource()
       |
         exists(string prop |
           not (

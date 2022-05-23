@@ -118,10 +118,10 @@ module Vuex {
     Vue::Component getVueComponent() {
       exists(DataFlow::ObjectLiteralNode obj |
         obj.getASpreadProperty() = getReturn().getAValueReachableFromSource() and
-        result.getOwnOptions().getAMember().getASink() = obj
+        result.getOwnOptions().getAMember().asSink() = obj
       )
       or
-      result.getOwnOptions().getAMember().getASink() = this
+      result.getOwnOptions().getAMember().asSink() = this
     }
   }
 
@@ -147,7 +147,7 @@ module Vuex {
   /** Gets a value that is returned by a getter registered with the given name. */
   private DataFlow::Node getterPred(string name) {
     exists(string prefix, string prop |
-      result = storeConfigObject(prefix).getMember("getters").getMember(prop).getReturn().getASink() and
+      result = storeConfigObject(prefix).getMember("getters").getMember(prop).getReturn().asSink() and
       name = prefix + prop
     )
   }
@@ -155,12 +155,12 @@ module Vuex {
   /** Gets a property access that may receive the produced by a getter of the given name. */
   private DataFlow::Node getterSucc(string name) {
     exists(string prefix, string prop |
-      result = storeRef(prefix).getMember("getters").getMember(prop).getASource() and
+      result = storeRef(prefix).getMember("getters").getMember(prop).asSource() and
       prop != "*" and
       name = prefix + prop
     )
     or
-    result = getAMappedAccess("mapGetters", name).getASource()
+    result = getAMappedAccess("mapGetters", name).asSource()
   }
 
   /** Holds if `pred -> succ` is a step from a getter function to a relevant property access. */
@@ -225,7 +225,7 @@ module Vuex {
     or
     // this.name(payload)
     // methods: {...mapMutations(['name'])} }
-    result = getAMappedAccess(getMapHelperForCommitKind(kind), name).getParameter(0).getASink()
+    result = getAMappedAccess(getMapHelperForCommitKind(kind), name).getParameter(0).asSink()
   }
 
   /** Gets a node that refers the payload of a committed mutation with the given `name.` */
@@ -239,7 +239,7 @@ module Vuex {
             .getMember(getStorePropForCommitKind(kind))
             .getMember(prop)
             .getParameter(1)
-            .getASource() and
+            .asSource() and
       prop != "*" and
       name = prefix + prop
     )
@@ -294,7 +294,7 @@ module Vuex {
 
   /** Gets a value that flows into the given access path of the state. */
   DataFlow::Node stateMutationPred(string path) {
-    result = stateRefByAccessPath(path).getASink()
+    result = stateRefByAccessPath(path).asSink()
     or
     exists(ExtendCall call, string base, string prop |
       call.getDestinationOperand() = stateRefByAccessPath(base).getAValueReachableFromSource() and
@@ -304,7 +304,7 @@ module Vuex {
   }
 
   /** Gets a value that refers to the given access path of the state. */
-  DataFlow::Node stateMutationSucc(string path) { result = stateRefByAccessPath(path).getASource() }
+  DataFlow::Node stateMutationSucc(string path) { result = stateRefByAccessPath(path).asSource() }
 
   /** Holds if `pred -> succ` is a step from state mutation to state access. */
   predicate stateMutationStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -324,7 +324,7 @@ module Vuex {
     exists(MapHelperCall call |
       call.getHelperName() = "mapState" and
       component = call.getVueComponent() and
-      result = call.getLastParameter().getMember(name).getReturn().getASink()
+      result = call.getLastParameter().getMember(name).getReturn().asSink()
     )
   }
 
@@ -335,7 +335,7 @@ module Vuex {
   predicate mapStateHelperStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Vue::Component component, string name |
       pred = mapStateHelperPred(component, name) and
-      succ = pragma[only_bind_out](component).getInstance().getMember(name).getASource()
+      succ = pragma[only_bind_out](component).getInstance().getMember(name).asSource()
     )
   }
 
@@ -377,7 +377,7 @@ module Vuex {
 
     /** Gets a package that can be considered an entry point for a Vuex app. */
     private PackageJson entryPointPackage() {
-      result = getPackageJson(storeRef().getASource().getFile())
+      result = getPackageJson(storeRef().asSource().getFile())
       or
       // Any package that imports a store-creating package is considered a potential entry point.
       packageDependsOn(result, entryPointPackage())

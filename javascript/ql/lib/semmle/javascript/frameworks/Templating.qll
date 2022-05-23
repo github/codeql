@@ -233,7 +233,7 @@ module Templating {
   /** Gets an API node that may flow to `succ` through a template instantiation. */
   private API::Node getTemplateInput(DataFlow::SourceNode succ) {
     exists(TemplateInstantiation inst, API::Node base, string name |
-      base.getASink() = inst.getTemplateParamsNode() and
+      base.asSink() = inst.getTemplateParamsNode() and
       result = base.getMember(name) and
       succ =
         inst.getTemplateFile()
@@ -244,7 +244,7 @@ module Templating {
     )
     or
     exists(TemplateInstantiation inst, string accessPath |
-      result.getASink() = inst.getTemplateParamForValue(accessPath) and
+      result.asSink() = inst.getTemplateParamForValue(accessPath) and
       succ =
         inst.getTemplateFile()
             .getAnImportedFile*()
@@ -261,7 +261,7 @@ module Templating {
 
   private class TemplateInputStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      getTemplateInput(succ).getASink() = pred
+      getTemplateInput(succ).asSink() = pred
     }
   }
 
@@ -321,7 +321,7 @@ module Templating {
       result = this.getStringValue()
       or
       exists(API::Node node |
-        this = node.getASink() and
+        this = node.asSink() and
         result = node.getAValueReachingSink().getStringValue()
       )
     }
@@ -716,7 +716,7 @@ module Templating {
     override TemplateSyntax getTemplateSyntax() { result.getAPackageName() = engine }
 
     override DataFlow::SourceNode getOutput() {
-      result = this.getParameter([1, 2]).getParameter(1).getASource()
+      result = this.getParameter([1, 2]).getParameter(1).asSource()
       or
       not exists(this.getParameter([1, 2]).getParameter(1)) and
       result = this

@@ -21,7 +21,7 @@ import javascript
 
 private DataFlow::Node getNode(API::Node nd, string kind) {
   kind = "def" and
-  result = nd.getASink()
+  result = nd.asSink()
   or
   kind = "use" and
   result = nd.getAValueReachableFromSource()

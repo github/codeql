@@ -9,7 +9,7 @@ module SQL {
   abstract class SqlString extends Expr { }
 
   private class SqlStringFromModel extends SqlString {
-    SqlStringFromModel() { this = ModelOutput::getASinkNode("sql-injection").getASink().asExpr() }
+    SqlStringFromModel() { this = ModelOutput::getASinkNode("sql-injection").asSink().asExpr() }
   }
 
   /**
@@ -109,7 +109,7 @@ private module MySql {
     Credentials() {
       exists(API::Node callee, string prop |
         callee in [createConnection(), createPool()] and
-        this = callee.getParameter(0).getMember(prop).getASink().asExpr() and
+        this = callee.getParameter(0).getMember(prop).asSink().asExpr() and
         (
           prop = "user" and kind = "user name"
           or
@@ -200,7 +200,7 @@ private module Postgres {
     QueryString() {
       this = any(QueryCall qc).getAQueryArgument().asExpr()
       or
-      this = API::moduleImport("pg-cursor").getParameter(0).getASink().asExpr()
+      this = API::moduleImport("pg-cursor").getParameter(0).asSink().asExpr()
     }
   }
 
@@ -210,9 +210,9 @@ private module Postgres {
 
     Credentials() {
       exists(string prop |
-        this = [newClient(), newPool()].getParameter(0).getMember(prop).getASink().asExpr()
+        this = [newClient(), newPool()].getParameter(0).getMember(prop).asSink().asExpr()
         or
-        this = pgPromise().getParameter(0).getMember(prop).getASink().asExpr()
+        this = pgPromise().getParameter(0).getMember(prop).asSink().asExpr()
       |
         prop = "user" and kind = "user name"
         or
@@ -383,7 +383,7 @@ private module Sqlite {
   /** A call to a Sqlite query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
-      this = getAChainingQueryCall().getASource()
+      this = getAChainingQueryCall().asSource()
       or
       this = database().getMember("prepare").getACall()
     }
@@ -495,7 +495,7 @@ private module MsSql {
           or
           callee = mssql().getMember("ConnectionPool")
         ) and
-        this = callee.getParameter(0).getMember(prop).getASink().asExpr() and
+        this = callee.getParameter(0).getMember(prop).asSink().asExpr() and
         (
           prop = "user" and kind = "user name"
           or

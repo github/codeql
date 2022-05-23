@@ -69,18 +69,18 @@ module D3 {
     D3XssSink() {
       exists(API::Node htmlArg |
         htmlArg = d3Selection().getMember("html").getParameter(0) and
-        this = [htmlArg, htmlArg.getReturn()].getASink()
+        this = [htmlArg, htmlArg.getReturn()].asSink()
       )
     }
   }
 
   private class D3DomValueSource extends DOM::DomValueSource::Range {
     D3DomValueSource() {
-      this = d3Selection().getMember("each").getReceiver().getASource()
+      this = d3Selection().getMember("each").getReceiver().asSource()
       or
-      this = d3Selection().getMember("node").getReturn().getASource()
+      this = d3Selection().getMember("node").getReturn().asSource()
       or
-      this = d3Selection().getMember("nodes").getReturn().getUnknownMember().getASource()
+      this = d3Selection().getMember("nodes").getReturn().getUnknownMember().asSource()
     }
   }
 

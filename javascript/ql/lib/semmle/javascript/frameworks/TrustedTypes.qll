@@ -36,7 +36,7 @@ module TrustedTypes {
   private class PolicyInputStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(PolicyCreation policy, string method |
-        pred = policy.getReturn().getMember(method).getParameter(0).getASink() and
+        pred = policy.getReturn().getMember(method).getParameter(0).asSink() and
         succ = policy.getPolicyCallback(method).getParameter(0)
       )
     }

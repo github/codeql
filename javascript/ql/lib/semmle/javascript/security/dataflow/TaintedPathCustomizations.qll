@@ -681,7 +681,7 @@ module TaintedPath {
             .getMember(["pdf", "screenshot"])
             .getParameter(0)
             .getMember("path")
-            .getASink()
+            .asSink()
     }
   }
 
@@ -702,7 +702,7 @@ module TaintedPath {
             .getACall()
             .getParameter(1)
             .getMember("config")
-            .getASink()
+            .asSink()
     }
   }
 
@@ -716,7 +716,7 @@ module TaintedPath {
             .getMember(["readPackageAsync", "readPackageSync"])
             .getParameter(0)
             .getMember("cwd")
-            .getASink()
+            .asSink()
     }
   }
 
@@ -726,8 +726,8 @@ module TaintedPath {
   private class ShellCwdSink extends TaintedPath::Sink {
     ShellCwdSink() {
       exists(SystemCommandExecution sys, API::Node opts |
-        opts.getASink() = sys.getOptionsArg() and // assuming that an API::Node exists here.
-        this = opts.getMember("cwd").getASink()
+        opts.asSink() = sys.getOptionsArg() and // assuming that an API::Node exists here.
+        this = opts.getMember("cwd").asSink()
       )
     }
   }

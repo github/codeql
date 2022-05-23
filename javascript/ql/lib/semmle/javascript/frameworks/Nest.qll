@@ -191,7 +191,7 @@ module NestJS {
           .getAMember()
           .getMember("useFactory")
           .getReturn()
-          .getASink() = validationPipe().getInstance().getAValueReachableFromSource() and
+          .asSink() = validationPipe().getInstance().getAValueReachableFromSource() and
       folder = decorator.getFile().getParentContainer()
     )
     or
@@ -397,7 +397,7 @@ module NestJS {
     }
 
     /** Gets a value returned by the decorator's callback, which becomes the value of the decorated parameter. */
-    DataFlow::Node getResult() { result = getParameter(0).getReturn().getASink() }
+    DataFlow::Node getResult() { result = getParameter(0).getReturn().asSink() }
   }
 
   /**
@@ -425,7 +425,7 @@ module NestJS {
   private class ExpressRequestSource extends Express::RequestSource {
     ExpressRequestSource() {
       this.(DataFlow::ParameterNode).getADecorator() =
-        nestjs().getMember(["Req", "Request"]).getReturn().getASource()
+        nestjs().getMember(["Req", "Request"]).getReturn().asSource()
       or
       this =
         executionContext()
@@ -433,7 +433,7 @@ module NestJS {
             .getReturn()
             .getMember("getRequest")
             .getReturn()
-            .getASource()
+            .asSource()
     }
 
     /**
@@ -450,7 +450,7 @@ module NestJS {
   private class ExpressResponseSource extends Express::ResponseSource {
     ExpressResponseSource() {
       this.(DataFlow::ParameterNode).getADecorator() =
-        nestjs().getMember(["Res", "Response"]).getReturn().getASource()
+        nestjs().getMember(["Res", "Response"]).getReturn().asSource()
     }
 
     /**

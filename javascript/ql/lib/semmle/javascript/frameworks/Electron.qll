@@ -56,7 +56,7 @@ module Electron {
     }
   }
 
-  private API::Node browserObject() { result.getASource() instanceof NewBrowserObject }
+  private API::Node browserObject() { result.asSource() instanceof NewBrowserObject }
 
   /**
    * A data flow node whose value may originate from a browser object instantiation.

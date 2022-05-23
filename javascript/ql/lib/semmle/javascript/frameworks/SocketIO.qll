@@ -41,7 +41,7 @@ module SocketIO {
   class ServerObject extends SocketIOObject {
     API::Node node;
 
-    ServerObject() { node = newServer() and this = node.getASource() }
+    ServerObject() { node = newServer() and this = node.asSource() }
 
     /** Gets the Api node for this server. */
     API::Node asApiNode() { result = node }
@@ -119,7 +119,7 @@ module SocketIO {
     API::Node node;
 
     NamespaceBase() {
-      this = node.getASource() and
+      this = node.asSource() and
       exists(ServerObject srv |
         // namespace lookup on `srv`
         node = srv.asApiNode().getMember("sockets") and

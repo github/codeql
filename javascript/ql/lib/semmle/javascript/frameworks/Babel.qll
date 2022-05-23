@@ -198,7 +198,7 @@ module Babel {
               .getMember(["transform", "transformSync", "transformAsync"])
               .getACall() and
         pred = call.getArgument(0) and
-        succ = [call, call.getParameter(2).getParameter(0).getASource()]
+        succ = [call, call.getParameter(2).getParameter(0).asSource()]
       )
     }
   }

@@ -163,7 +163,7 @@ module Markdown {
         or
         call = API::moduleImport("markdown-it").getMember("Markdown").getAnInvocation()
       |
-        call.getParameter(0).getMember("html").getASink().mayHaveBooleanValue(true) and
+        call.getParameter(0).getMember("html").asSink().mayHaveBooleanValue(true) and
         result = call.getReturn()
       )
       or

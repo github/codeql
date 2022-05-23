@@ -134,7 +134,7 @@ module JsonSchema {
               .ref()
               .getMember(["addSchema", "validate", "compile", "compileAsync"])
               .getParameter(0)
-              .getASink()
+              .asSink()
       }
     }
   }
@@ -184,7 +184,7 @@ module JsonSchema {
       override boolean getPolarity() { none() }
 
       override DataFlow::Node getAValidationResultAccess(boolean polarity) {
-        result = this.getReturn().getMember("error").getASource() and
+        result = this.getReturn().getMember("error").asSource() and
         polarity = false
       }
     }

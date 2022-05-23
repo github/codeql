@@ -28,11 +28,11 @@ module API {
    * The most basic use of API graphs is typically as follows:
    * 1. Start with `API::moduleImport` for the relevant library.
    * 2. Follow up with a chain of accessors such as `getMember` describing how to get to the relevant API function.
-   * 3. Map the resulting API graph nodes to data-flow nodes, using `getASource` or `getASink`.
+   * 3. Map the resulting API graph nodes to data-flow nodes, using `asSource` or `asSink`.
    *
    * For example, a simplified way to get arguments to `underscore.extend` would be
    * ```ql
-   * API::moduleImport("underscore").getMember("extend").getParameter(0).getASink()
+   * API::moduleImport("underscore").getMember("extend").getParameter(0).asSink()
    * ```
    *
    * The most commonly used accessors are `getMember`, `getParameter`, and `getReturn`.
@@ -121,12 +121,12 @@ module API {
     /**
      * Get a data-flow node where this value may flow after entering the current codebase.
      *
-     * This is similar to `getASource()` but additionally includes nodes that are transitively reachable by data flow.
-     * See `getASource()` for examples.
+     * This is similar to `asSource()` but additionally includes nodes that are transitively reachable by data flow.
+     * See `asSource()` for examples.
      */
     pragma[inline]
     DataFlow::Node getAValueReachableFromSource() {
-      Impl::trackUseNode(this.getASource()).flowsTo(result)
+      Impl::trackUseNode(this.asSource()).flowsTo(result)
     }
 
     /**
@@ -134,27 +134,27 @@ module API {
      *
      * For example:
      * ```js
-     * // API::moduleImport("fs").getASource()
+     * // API::moduleImport("fs").asSource()
      * require('fs');
      *
-     * // API::moduleImport("fs").getMember("readFile").getASource()
+     * // API::moduleImport("fs").getMember("readFile").asSource()
      * require('fs').readFile;
      *
-     * // API::moduleImport("fs").getMember("readFile").getReturn().getASource()
+     * // API::moduleImport("fs").getMember("readFile").getReturn().asSource()
      * require('fs').readFile();
      *
      * require('fs').readFile(
      *  filename,
-     *  // 'y' matched by API::moduleImport("fs").getMember("readFile").getParameter(1).getParameter(0).getASource()
+     *  // 'y' matched by API::moduleImport("fs").getMember("readFile").getParameter(1).getParameter(0).asSource()
      *  y => {
      *    ...
      * });
      * ```
      */
-    DataFlow::SourceNode getASource() { Impl::use(this, result) }
+    DataFlow::SourceNode asSource() { Impl::use(this, result) }
 
-    /** DEPRECATED. This predicate has been renamed to `getASource`. */
-    deprecated DataFlow::SourceNode getAnImmediateUse() { result = this.getASource() }
+    /** DEPRECATED. This predicate has been renamed to `asSource`. */
+    deprecated DataFlow::SourceNode getAnImmediateUse() { result = this.asSource() }
 
     /** DEPRECATED. This predicate has been renamed to `getAValueReachableFromSource`. */
     deprecated DataFlow::Node getAUse() { result = this.getAValueReachableFromSource() }
@@ -162,7 +162,7 @@ module API {
     /**
      * Gets a call to the function represented by this API component.
      */
-    CallNode getACall() { result = this.getReturn().getASource() }
+    CallNode getACall() { result = this.getReturn().asSource() }
 
     /**
      * Gets a call to the function represented by this API component,
@@ -177,7 +177,7 @@ module API {
     /**
      * Gets a `new` call to the function represented by this API component.
      */
-    NewNode getAnInstantiation() { result = this.getInstance().getASource() }
+    NewNode getAnInstantiation() { result = this.getInstance().asSource() }
 
     /**
      * Gets an invocation (with our without `new`) to the function represented by this API component.
@@ -193,27 +193,27 @@ module API {
      *
      * For example:
      * ```js
-     * // 'x' is matched by API::moduleImport("foo").getParameter(0).getASink()
+     * // 'x' is matched by API::moduleImport("foo").getParameter(0).asSink()
      * require('foo')(x);
      *
-     * // 'x' is matched by API::moduleImport("foo").getParameter(0).getMember("prop").getASink()
+     * // 'x' is matched by API::moduleImport("foo").getParameter(0).getMember("prop").asSink()
      * require('foo')({
      *   prop: x
      * });
      * ```
      */
-    DataFlow::Node getASink() { Impl::rhs(this, result) }
+    DataFlow::Node asSink() { Impl::rhs(this, result) }
 
     /**
      * Get a data-flow node that transitively flows to an external library (or in general, any external codebase).
      *
-     * This is similar to `getASink()` but additionally includes nodes that transitively reach a sink by data flow.
-     * See `getASink()` for examples.
+     * This is similar to `asSink()` but additionally includes nodes that transitively reach a sink by data flow.
+     * See `asSink()` for examples.
      */
-    DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.getASink()) }
+    DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
 
-    /** DEPRECATED. This predicate has been renamed to `getASink`. */
-    deprecated DataFlow::Node getARhs() { result = this.getASink() }
+    /** DEPRECATED. This predicate has been renamed to `asSink`. */
+    deprecated DataFlow::Node getARhs() { result = this.asSink() }
 
     /** DEPRECATED. This predicate has been renamed to `getAValueReachingSink`. */
     deprecated DataFlow::Node getAValueReachingRhs() { result = this.getAValueReachingSink() }
@@ -451,7 +451,7 @@ module API {
      * In other words, the value of a use of `that` may flow into the right-hand side of a
      * definition of this node.
      */
-    predicate refersTo(Node that) { this.getASink() = that.getAValueReachableFromSource() }
+    predicate refersTo(Node that) { this.asSink() = that.getAValueReachableFromSource() }
 
     /**
      * Gets the data-flow node that gives rise to this node, if any.
@@ -1301,8 +1301,8 @@ module API {
     API::Node callee;
 
     InvokeNode() {
-      this = callee.getReturn().getASource() or
-      this = callee.getInstance().getASource() or
+      this = callee.getReturn().asSource() or
+      this = callee.getInstance().asSource() or
       this = Impl::getAPromisifiedInvocation(callee, _, _)
     }
 
@@ -1317,7 +1317,7 @@ module API {
      * Gets an API node where a RHS of the node is the `i`th argument to this call.
      */
     pragma[noinline]
-    private Node getAParameterCandidate(int i) { result.getASink() = this.getArgument(i) }
+    private Node getAParameterCandidate(int i) { result.asSink() = this.getArgument(i) }
 
     /** Gets the API node for a parameter of this invocation. */
     Node getAParameter() { result = this.getParameter(_) }
@@ -1328,13 +1328,13 @@ module API {
     /** Gets the API node for the return value of this call. */
     Node getReturn() {
       result = callee.getReturn() and
-      result.getASource() = this
+      result.asSource() = this
     }
 
     /** Gets the API node for the object constructed by this invocation. */
     Node getInstance() {
       result = callee.getInstance() and
-      result.getASource() = this
+      result.asSource() = this
     }
   }
 

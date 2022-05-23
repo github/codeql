@@ -149,7 +149,7 @@ API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathToken toke
   or
   token.getName() = "Argument" and
   token.getAnArgument() = "this" and
-  result.getASink() = node.(DataFlow::CallNode).getReceiver()
+  result.asSink() = node.(DataFlow::CallNode).getReceiver()
 }
 
 /**

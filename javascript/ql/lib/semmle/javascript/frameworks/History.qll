@@ -38,11 +38,11 @@ module History {
 
     HistoryLibaryRemoteFlow() {
       exists(API::Node loc | loc = [getBrowserHistory(), getHashHistory()].getMember("location") |
-        this = loc.getMember("hash").getASource() and kind.isFragment()
+        this = loc.getMember("hash").asSource() and kind.isFragment()
         or
-        this = loc.getMember("pathname").getASource() and kind.isPath()
+        this = loc.getMember("pathname").asSource() and kind.isPath()
         or
-        this = loc.getMember("search").getASource() and kind.isQuery()
+        this = loc.getMember("search").asSource() and kind.isQuery()
       )
     }
 
