@@ -40,7 +40,7 @@ predicate scopeLast(CfgScope scope, ControlFlowElement last, Completion c) {
   scope.(Impl::CfgScope::Range_).exit(last, c)
 }
 
-/** The maximum number of splits allowed for a given node. */
+/** Gets the maximum number of splits allowed for a given node. */
 int maxSplits() { result = 5 }
 
 class SplitKindBase = Splitting::TSplitKind;

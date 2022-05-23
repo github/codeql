@@ -100,16 +100,16 @@ module Stmts {
      */
     private BraceStmt getFirstDeferStmtBody() {
       exists(int i |
-        result = getDeferStmtBody(i) and
-        not exists(getDeferStmtBody(i + 1))
+        result = this.getDeferStmtBody(i) and
+        not exists(this.getDeferStmtBody(i + 1))
       )
     }
 
     /** Gets the body of the last `defer` statement to be executed. */
     private BraceStmt getLastDeferStmtBody() {
       exists(int i |
-        result = getDeferStmtBody(i) and
-        not exists(getDeferStmtBody(i - 1))
+        result = this.getDeferStmtBody(i) and
+        not exists(this.getDeferStmtBody(i - 1))
       )
     }
 
@@ -130,9 +130,9 @@ module Stmts {
       exists(int j |
         // The result is the j'th statement (where the index is less than or equal to i)
         result = this.getDeferStmtBody(j) and
-        getDeferIndex(j) <= i and
+        this.getDeferIndex(j) <= i and
         // and the next defer statement is _after_ the i'th statement.
-        not getDeferIndex(j + 1) <= i
+        not this.getDeferIndex(j + 1) <= i
       )
     }
 

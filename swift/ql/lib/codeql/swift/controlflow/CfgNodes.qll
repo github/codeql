@@ -75,7 +75,7 @@ class AstCfgNode extends ControlFlowNode, TElementNode {
   override Location getLocation() { result = n.getLocation() }
 
   final override string toString() {
-    exists(string s | s = n.(AstNode).toString() |
+    exists(string s | s = n.toString() |
       result = "[" + this.getSplitsString() + "] " + s
       or
       not exists(this.getSplitsString()) and result = s
