@@ -33,9 +33,9 @@ interface](https://codeql.github.com/docs/codeql-cli/) to create a database your
 download a pre-built database from [LGTM.com](https://lgtm.com/). You can then run any of the
 queries contained in this repository either on the command line or using the VS Code extension.
 
-Note that the [lgtm.com](https://github.com/github/codeql-go/tree/lgtm.com) branch of this
+Note that the [lgtm.com](https://github.com/github/codeql/tree/lgtm.com) branch of this
 repository corresponds to the version of the queries that is currently deployed on LGTM.com.
-The [main](https://github.com/github/codeql-go/tree/main) branch may contain changes that
+The [main](https://github.com/github/codeql/tree/main) branch may contain changes that
 have not been deployed yet, so you may need to upgrade databases downloaded from LGTM.com before
 running queries on them.
 

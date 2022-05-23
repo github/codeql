@@ -28,7 +28,7 @@ Viewing the abstract syntax tree of a source file
    
    .. pull-quote:: Note
 
-      If you don't have an appropriate ``printAST.ql`` query in your workspace, the **CodeQL: View AST** command won't work. To fix this, you can update your copy of the `CodeQL <https://github.com/github/codeql>`__ repository (or `CodeQL for Go <https://github.com/github/codeql-go>`__ repository) from ``main``. If you do this, you may need to upgrade your databases. Also, query caches may be discarded and your next query runs could be slower.
+      If you don't have an appropriate ``printAST.ql`` query in your workspace, the **CodeQL: View AST** command won't work. To fix this, you can update your copy of the `CodeQL <https://github.com/github/codeql>`__ repository from ``main``. If you do this, you may need to upgrade your databases. Also, query caches may be discarded and your next query runs could be slower.
 
 3. Once the query has run, the AST viewer displays the structure of the source file.
 4. To see the nested structure, click the arrows and expand the nodes.

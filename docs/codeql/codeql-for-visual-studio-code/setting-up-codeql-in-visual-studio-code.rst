@@ -69,8 +69,7 @@ There are two ways to do this:
    This ensures that the queries and libraries you write in VS Code also work in the query console on LGTM Enterprise.
 
    If you prefer to add the CodeQL queries and libraries to an :ref:`existing workspace <existing-workspace>` instead of the starter workspace, then you should
-   clone the appropriate branch of the `general CodeQL repository <https://github.com/github/codeql>`__ and the
-   `CodeQL repository for Go <https://github.com/github/codeql-go>`__ and add them to your workspace.
+   clone the appropriate branch of the `CodeQL repository <https://github.com/github/codeql>`__ and add it to your workspace.
 
 .. _starter-workspace:
 
@@ -78,8 +77,7 @@ Using the starter workspace
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The starter workspace is a Git repository. It contains:
 
-* The `repository of CodeQL libraries and queries <https://github.com/github/codeql>`__ for C/C++, C#, Java, JavaScript, Python, and Ruby. This is included as a submodule, so it can be updated without affecting your custom queries.
-* The `repository of CodeQL libraries and queries <https://github.com/github/codeql-go>`__ for Go. This is also included as a submodule.
+* The `repository of CodeQL libraries and queries <https://github.com/github/codeql>`__ all supported languages. This is included as a submodule, so it can be updated without affecting your custom queries.
 * A series of folders named ``codeql-custom-queries-<language>``. These are ready for you to start developing your own custom queries for each language, using the standard libraries. There are some example queries to get you started.
 
 To use the starter workspace:
@@ -113,10 +111,6 @@ For example, to make a custom CodeQL folder called ``my-custom-cpp-pack`` depend
     libraryPathDependencies: codeql/cpp-all
 
 For more information about why you need to add a ``qlpack.yml`` file, see ":ref:`About QL packs <about-ql-packs>`."
-
-.. pull-quote:: Note
-
-   The CodeQL libraries for Go are not included in the ``github/codeql`` repository, but are stored separately. To analyze Go projects, clone the repository at https://github.com/github/codeql-go and add it to your workspace as above.
 
 Further reading
 ----------------

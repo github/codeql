@@ -12,7 +12,7 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 2. Ensure that `<extraction-root>/codeql` is in your `PATH`.
 
-3. Clone this repository into `<extraction-root>/codeql-go` and change to this directory.
+3. Clone this repository (`github/codeql`) into `<extraction-root>/codeql-repo` and change to the directory `<extraction-root>/codeql-repo/go`.
 
 4. To build, run `make`.
 
