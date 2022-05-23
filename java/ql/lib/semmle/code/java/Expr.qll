@@ -716,20 +716,23 @@ class LongLiteral extends Literal, @longliteral {
   override string getAPrimaryQlClass() { result = "LongLiteral" }
 }
 
+/** DEPRECATED: Alias for FloatLiteral */
+deprecated class FloatingPointLiteral = FloatLiteral;
+
 /**
  * A float literal. For example, `4.2f`.
  *
  * A float literal is never negative; a preceding minus, if any, will always
  * be modeled as separate `MinusExpr`.
  */
-class FloatingPointLiteral extends Literal, @floatingpointliteral {
+class FloatLiteral extends Literal, @floatingpointliteral {
   /**
    * Gets the value of this literal as CodeQL 64-bit `float`. The value will
    * be parsed as Java 32-bit `float` and then converted to a CodeQL `float`.
    */
   float getFloatValue() { result = this.getValue().toFloat() }
 
-  override string getAPrimaryQlClass() { result = "FloatingPointLiteral" }
+  override string getAPrimaryQlClass() { result = "FloatLiteral" }
 }
 
 /**
@@ -1014,7 +1017,7 @@ class ValueOrReferenceEqualsExpr extends BinaryExpr {
  * A binary expression using either Java or Kotlin's `!=` operator.
  *
  * This might test for reference equality or might function like `Objects.equals`. If you
- * need to distinguish them, use `EQExpr` or `ValueEQExpr` instead.
+ * need to distinguish them, use `NEExpr` or `ValueNEExpr` instead.
  */
 class ValueOrReferenceNotEqualsExpr extends BinaryExpr {
   ValueOrReferenceNotEqualsExpr() { this instanceof NEExpr or this instanceof ValueNEExpr }
@@ -2461,7 +2464,7 @@ class ClassExpr extends Expr, @getclassexpr {
 }
 
 /**
- * An statement expression.
+ * A statement expression.
  *
  * In some contexts, a Kotlin expression can contain a statement.
  */

@@ -21,7 +21,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
 
     fun extractLater(d: IrDeclaration, signature: String): Boolean {
         if (d !is IrClass && !isExternalFileClassMember(d)) {
-            logger.warnElement("External declaration is neither a class, nor a top-level declaration", d)
+            logger.errorElement("External declaration is neither a class, nor a top-level declaration", d)
             return false
         }
         val ret = externalDeclsDone.add(d)
@@ -64,7 +64,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
 
                             val containingClass = getContainingClassOrSelf(irDecl)
                             if (containingClass == null) {
-                                logger.warnElement("Unable to get containing class", irDecl)
+                                logger.errorElement("Unable to get containing class", irDecl)
                                 return
                             }
                             val binaryPath = getIrClassBinaryPath(containingClass)
@@ -93,9 +93,9 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
                                         ftw.writeHasLocation(ftw.fileId, ftw.getWholeFileLocation())
                                         ftw.writeCupackage(ftw.fileId, pkgId)
 
-                                        fileExtractor.extractClassSource(irDecl, !irDecl.isFileClass, false)
+                                        fileExtractor.extractClassSource(irDecl, extractDeclarations = !irDecl.isFileClass, extractStaticInitializer = false, extractPrivateMembers = false, extractFunctionBodies = false)
                                     } else {
-                                        fileExtractor.extractDeclaration(irDecl)
+                                        fileExtractor.extractDeclaration(irDecl, extractPrivateMembers = false, extractFunctionBodies = false)
                                     }
                                 }
 

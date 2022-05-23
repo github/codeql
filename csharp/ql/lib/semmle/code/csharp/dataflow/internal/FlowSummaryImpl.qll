@@ -195,7 +195,10 @@ module Public {
   }
 
   /** A callable with a flow summary. */
-  abstract class SummarizedCallable extends DataFlowCallable {
+  abstract class SummarizedCallable extends SummarizedCallableBase {
+    bindingset[this]
+    SummarizedCallable() { any() }
+
     /**
      * Holds if data may flow from `input` to `output` through this callable.
      *
@@ -493,7 +496,7 @@ module Private {
       or
       exists(ParameterPosition pos |
         parameterReadState(c, state, pos) and
-        result.(ParamNode).isParameterOf(c, pos)
+        result.(ParamNode).isParameterOf(inject(c), pos)
       )
     )
   }
@@ -621,7 +624,7 @@ module Private {
   predicate summaryPostUpdateNode(Node post, Node pre) {
     exists(SummarizedCallable c, ParameterPosition pos |
       isParameterPostUpdate(post, c, pos) and
-      pre.(ParamNode).isParameterOf(c, pos)
+      pre.(ParamNode).isParameterOf(inject(c), pos)
     )
     or
     exists(SummarizedCallable callable, SummaryComponentStack s |
@@ -644,7 +647,7 @@ module Private {
    * node, and back out to `p`.
    */
   predicate summaryAllowParameterReturnInSelf(ParamNode p) {
-    exists(SummarizedCallable c, ParameterPosition ppos | p.isParameterOf(c, ppos) |
+    exists(SummarizedCallable c, ParameterPosition ppos | p.isParameterOf(inject(c), ppos) |
       exists(SummaryComponentStack inputContents, SummaryComponentStack outputContents |
         summary(c, inputContents, outputContents, _) and
         inputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos)) and
@@ -748,8 +751,11 @@ module Private {
     private predicate viableParam(
       DataFlowCall call, SummarizedCallable sc, ParameterPosition ppos, ParamNode p
     ) {
-      p.isParameterOf(sc, ppos) and
-      sc = viableCallable(call)
+      exists(DataFlowCallable c |
+        c = inject(sc) and
+        p.isParameterOf(c, ppos) and
+        c = viableCallable(call)
+      )
     }
 
     pragma[nomagic]
@@ -781,26 +787,39 @@ module Private {
       )
     }
 
-    pragma[nomagic]
-    private ParamNode summaryArgParam(ArgNode arg, ReturnKindExt rk, OutNodeExt out) {
-      exists(DataFlowCall call |
+    bindingset[ret]
+    private ParamNode summaryArgParam(ArgNode arg, ReturnNodeExt ret, OutNodeExt out) {
+      exists(DataFlowCall call, ReturnKindExt rk |
         result = summaryArgParam0(call, arg) and
-        out = rk.getAnOutNode(call)
+        ret.getKind() = pragma[only_bind_into](rk) and
+        out = pragma[only_bind_into](rk).getAnOutNode(call)
       )
     }
 
     /**
-     * Holds if `arg` flows to `out` using a simple flow summary, that is, a flow
-     * summary without reads and stores.
+     * Holds if `arg` flows to `out` using a simple value-preserving flow
+     * summary, that is, a flow summary without reads and stores.
      *
      * NOTE: This step should not be used in global data-flow/taint-tracking, but may
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
-    predicate summaryThroughStep(ArgNode arg, Node out, boolean preservesValue) {
-      exists(ReturnKindExt rk, ReturnNodeExt ret |
-        summaryLocalStep(summaryArgParam(arg, rk, out), ret, preservesValue) and
-        ret.getKind() = rk
+    predicate summaryThroughStepValue(ArgNode arg, Node out) {
+      exists(ReturnKind rk, ReturnNode ret, DataFlowCall call |
+        summaryLocalStep(summaryArgParam0(call, arg), ret, true) and
+        ret.getKind() = pragma[only_bind_into](rk) and
+        out = getAnOutNode(call, pragma[only_bind_into](rk))
       )
+    }
+
+    /**
+     * Holds if `arg` flows to `out` using a simple flow summary involving taint
+     * step, that is, a flow summary without reads and stores.
+     *
+     * NOTE: This step should not be used in global data-flow/taint-tracking, but may
+     * be useful to include in the exposed local data-flow/taint-tracking relations.
+     */
+    predicate summaryThroughStepTaint(ArgNode arg, Node out) {
+      exists(ReturnNodeExt ret | summaryLocalStep(summaryArgParam(arg, ret, out), ret, false))
     }
 
     /**
@@ -811,10 +830,9 @@ module Private {
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
     predicate summaryGetterStep(ArgNode arg, ContentSet c, Node out) {
-      exists(ReturnKindExt rk, Node mid, ReturnNodeExt ret |
-        summaryReadStep(summaryArgParam(arg, rk, out), c, mid) and
-        summaryLocalStep(mid, ret, _) and
-        ret.getKind() = rk
+      exists(Node mid, ReturnNodeExt ret |
+        summaryReadStep(summaryArgParam(arg, ret, out), c, mid) and
+        summaryLocalStep(mid, ret, _)
       )
     }
 
@@ -826,10 +844,9 @@ module Private {
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
     predicate summarySetterStep(ArgNode arg, ContentSet c, Node out) {
-      exists(ReturnKindExt rk, Node mid, ReturnNodeExt ret |
-        summaryLocalStep(summaryArgParam(arg, rk, out), mid, _) and
-        summaryStoreStep(mid, c, ret) and
-        ret.getKind() = rk
+      exists(Node mid, ReturnNodeExt ret |
+        summaryLocalStep(summaryArgParam(arg, ret, out), mid, _) and
+        summaryStoreStep(mid, c, ret)
       )
     }
   }
@@ -916,7 +933,8 @@ module Private {
         summaryElement(this, inSpec, outSpec, kind, false)
         or
         summaryElement(this, inSpec, outSpec, kind, true) and
-        not summaryElement(this, _, _, _, false)
+        not summaryElement(this, _, _, _, false) and
+        not this.clearsContent(_, _)
       }
 
       override predicate propagatesFlow(
@@ -1069,7 +1087,7 @@ module Private {
   /** Provides a query predicate for outputting a set of relevant flow summaries. */
   module TestOutput {
     /** A flow summary to include in the `summary/3` query predicate. */
-    abstract class RelevantSummarizedCallable extends SummarizedCallable {
+    abstract class RelevantSummarizedCallable instanceof SummarizedCallable {
       /** Gets the string representation of this callable used by `summary/1`. */
       abstract string getCallableCsv();
 
@@ -1077,8 +1095,10 @@ module Private {
       predicate relevantSummary(
         SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
       ) {
-        this.propagatesFlow(input, output, preservesValue)
+        super.propagatesFlow(input, output, preservesValue)
       }
+
+      string toString() { result = super.toString() }
     }
 
     /** Render the kind in the format used in flow summaries. */
@@ -1089,7 +1109,7 @@ module Private {
     }
 
     private string renderGenerated(RelevantSummarizedCallable c) {
-      if c.isAutoGenerated() then result = "generated:" else result = ""
+      if c.(SummarizedCallable).isAutoGenerated() then result = "generated:" else result = ""
     }
 
     /**
@@ -1119,19 +1139,21 @@ module Private {
    */
   module RenderSummarizedCallable {
     /** A summarized callable to include in the graph. */
-    abstract class RelevantSummarizedCallable extends SummarizedCallable { }
+    abstract class RelevantSummarizedCallable instanceof SummarizedCallable {
+      string toString() { result = super.toString() }
+    }
 
     private newtype TNodeOrCall =
       MkNode(Node n) {
         exists(RelevantSummarizedCallable c |
           n = summaryNode(c, _)
           or
-          n.(ParamNode).isParameterOf(c, _)
+          n.(ParamNode).isParameterOf(inject(c), _)
         )
       } or
       MkCall(DataFlowCall call) {
         call = summaryDataFlowCall(_) and
-        call.getEnclosingCallable() instanceof RelevantSummarizedCallable
+        call.getEnclosingCallable() = inject(any(RelevantSummarizedCallable c))
       }
 
     private class NodeOrCall extends TNodeOrCall {

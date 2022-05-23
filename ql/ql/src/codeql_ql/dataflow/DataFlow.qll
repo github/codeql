@@ -212,7 +212,7 @@ class SuperNode extends LocalFlow::TSuperNode {
    * The node is arbitrary and the caller should not rely on how the node is chosen.
    * The node is currently chosen such that:
    * - An `AstNodeNode` is preferred over other nodes.
-   * - A node occuring earlier is preferred over one occurring later.
+   * - A node occurring earlier is preferred over one occurring later.
    */
   Node getArbitraryRepr() { result = min(Node n | n = getANode() | n order by getInternalId(n)) }
 
@@ -343,7 +343,7 @@ class Tracker extends GlobalFlow::TEdgeLabelOrTrackerState {
   /** Holds if this is the starting point, that is, the summary of the empty path. */
   predicate start() { this = GlobalFlow::MkNoEdge() }
 
-  /** Holds if a call step has been used (possibly preceeded by return steps). */
+  /** Holds if a call step has been used (possibly preceded by return steps). */
   predicate hasCall() { this = GlobalFlow::MkHasCall() }
 
   /** Holds if either `start()` or `hasCall()` holds */

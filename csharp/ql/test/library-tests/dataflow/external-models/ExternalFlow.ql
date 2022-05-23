@@ -53,6 +53,14 @@ class Conf extends TaintTracking::Configuration {
   }
 }
 
+/**
+ * Simulate that methods with summaries are not included in the source code.
+ * This is relevant for dataflow analysis using summaries tagged as generated.
+ */
+private class MyMethod extends Method {
+  override predicate fromSource() { none() }
+}
+
 from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf
 where conf.hasFlowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()

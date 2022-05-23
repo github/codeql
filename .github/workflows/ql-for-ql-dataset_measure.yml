@@ -77,7 +77,7 @@ jobs:
           path: stats
       - run: |
           python -m pip install --user lxml
-          find stats -name 'stats.xml' -print0 | sort -z | xargs -0 python ql/scripts/merge_stats.py --output ql/ql/src/ql.dbscheme.stats --normalise ql_tokeninfo
+          find stats -name 'stats.xml' -print0 | sort -z | xargs -0 python ruby/scripts/merge_stats.py --output ql/ql/src/ql.dbscheme.stats --normalise ql_tokeninfo
       - uses: actions/upload-artifact@v3
         with:
           name: ql.dbscheme.stats

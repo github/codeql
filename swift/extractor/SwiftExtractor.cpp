@@ -12,11 +12,15 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 
-#include "swift/extractor/trap/TrapClasses.h"
+#include "swift/extractor/trap/generated/TrapClasses.h"
+#include "swift/extractor/trap/TrapOutput.h"
+#include "swift/extractor/SwiftVisitor.h"
 
 using namespace codeql;
 
-static void extractFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
+static void extractFile(const SwiftExtractorConfiguration& config,
+                        swift::CompilerInstance& compiler,
+                        swift::SourceFile& file) {
   if (std::error_code ec = llvm::sys::fs::create_directories(config.trapDir)) {
     std::cerr << "Cannot create TRAP directory: " << ec.message() << "\n";
     return;
@@ -61,24 +65,33 @@ static void extractFile(const SwiftExtractorConfiguration& config, swift::Source
     return;
   }
 
-  std::ofstream trap(tempTrapPath.str().str());
-  if (!trap) {
+  std::ofstream trapStream(tempTrapPath.str().str());
+  if (!trapStream) {
     std::error_code ec;
     ec.assign(errno, std::generic_category());
     std::cerr << "Cannot create temp trap file '" << tempTrapPath.str().str()
               << "': " << ec.message() << "\n";
     return;
   }
-  trap << "// extractor-args: ";
+  trapStream << "// extractor-args: ";
   for (auto opt : config.frontendOptions) {
-    trap << std::quoted(opt) << " ";
+    trapStream << std::quoted(opt) << " ";
   }
-  trap << "\n\n";
+  trapStream << "\n\n";
 
-  File f;
-  f.id = TrapLabel<FileTag>{};
-  f.name = srcFilePath.str().str();
-  trap << f.id << "=*\n" << f;
+  TrapOutput trap{trapStream};
+  TrapArena arena{};
+
+  // In the case of emtpy files, the dispatcher is not called, but we still want to 'record' the
+  // fact that the file was extracted
+  auto fileLabel = arena.allocateLabel<FileTag>();
+  trap.assignKey(fileLabel, srcFilePath.str().str());
+  trap.emit(FilesTrap{fileLabel, srcFilePath.str().str()});
+
+  SwiftVisitor visitor(compiler.getSourceMgr(), arena, trap);
+  for (swift::Decl* decl : file.getTopLevelDecls()) {
+    visitor.extract(decl);
+  }
 
   // TODO: Pick a better name to avoid collisions
   std::string trapName = file.getFilename().str() + ".trap";
@@ -102,11 +115,11 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
         module->getFiles().front()->getKind() == swift::FileUnitKind::Source) {
       // We can only call getMainSourceFile if the first file is of a Source kind
       swift::SourceFile& file = module->getMainSourceFile();
-      extractFile(config, file);
+      extractFile(config, compiler, file);
     }
   } else {
     for (auto s : compiler.getPrimarySourceFiles()) {
-      extractFile(config, *s);
+      extractFile(config, compiler, *s);
     }
   }
 }

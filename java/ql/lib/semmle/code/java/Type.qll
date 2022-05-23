@@ -1002,7 +1002,9 @@ class FunctionalInterface extends Interface {
  * and `double`.
  */
 class PrimitiveType extends Type, @primitive {
-  PrimitiveType() { this.getName().regexpMatch("float|double|int|boolean|short|byte|char|long") }
+  PrimitiveType() {
+    this.getName() = ["float", "double", "int", "boolean", "short", "byte", "char", "long"]
+  }
 
   /** Gets the boxed type corresponding to this primitive type. */
   BoxedType getBoxedType() { result.getPrimitiveType() = this }
@@ -1217,9 +1219,9 @@ predicate erasedHaveIntersection(RefType t1, RefType t2) {
 class IntegralType extends Type {
   IntegralType() {
     exists(string name |
-      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
     |
-      name.regexpMatch("byte|char|short|int|long")
+      name = ["byte", "char", "short", "int", "long"]
     )
   }
 }
@@ -1228,7 +1230,7 @@ class IntegralType extends Type {
 class BooleanType extends Type {
   BooleanType() {
     exists(string name |
-      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
     |
       name = "boolean"
     )
@@ -1239,9 +1241,20 @@ class BooleanType extends Type {
 class CharacterType extends Type {
   CharacterType() {
     exists(string name |
-      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
     |
       name = "char"
+    )
+  }
+}
+
+/** A numeric type, including both primitive and boxed types. */
+class NumericType extends Type {
+  NumericType() {
+    exists(string name |
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
+    |
+      name = ["byte", "short", "int", "long", "double", "float"]
     )
   }
 }
@@ -1250,9 +1263,9 @@ class CharacterType extends Type {
 class NumericOrCharType extends Type {
   NumericOrCharType() {
     exists(string name |
-      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
     |
-      name.regexpMatch("byte|char|short|int|long|double|float")
+      name = ["byte", "char", "short", "int", "long", "double", "float"]
     )
   }
 }
@@ -1261,9 +1274,9 @@ class NumericOrCharType extends Type {
 class FloatingPointType extends Type {
   FloatingPointType() {
     exists(string name |
-      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
     |
-      name.regexpMatch("float|double")
+      name = ["float", "double"]
     )
   }
 }

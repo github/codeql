@@ -15,7 +15,7 @@ import javascript
 from PropAccess acc, ArgumentsVariable args
 where
   acc.getBase() = args.getAnAccess() and
-  acc.getPropertyName().regexpMatch("caller|callee") and
+  acc.getPropertyName() = ["caller", "callee"] and
   // don't flag cases where the variable can never contain an arguments object
   not exists(Function fn | args = fn.getVariable()) and
   not exists(Parameter p | args = p.getAVariable()) and

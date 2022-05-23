@@ -7,6 +7,7 @@
  */
 
 import java
+import semmle.code.java.regex.RegexTreeView
 
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
@@ -132,6 +133,9 @@ private newtype TPrintAstNode =
   } or
   TImportsNode(CompilationUnit cu) {
     shouldPrint(cu, _) and exists(Import i | i.getCompilationUnit() = cu)
+  } or
+  TRegExpTermNode(RegExpTerm term) {
+    exists(StringLiteral str | term.getRootTerm() = getParsedRegExp(str) and shouldPrint(str, _))
   }
 
 /**
@@ -163,6 +167,19 @@ class PrintAstNode extends TPrintAstNode {
    * Gets the location of this node in the source code.
    */
   Location getLocation() { none() }
+
+  /**
+   * Holds if this node is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /**
    * Gets the value of the property of this node, where the name of the property
@@ -287,6 +304,47 @@ final class AnnotationPartNode extends ExprStmtNode {
     result = element.(ArrayInit).getAnInit()
     or
     result = element.(ArrayInit).(Annotatable).getAnAnnotation()
+  }
+}
+
+/**
+ * A node representing a `StringLiteral`.
+ * If it is used as a regular expression, then it has a single child, the root of the parsed regular expression.
+ */
+final class StringLiteralNode extends ExprStmtNode {
+  StringLiteralNode() { element instanceof StringLiteral }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex = 0 and
+    result.(RegExpTermNode).getTerm() = getParsedRegExp(element)
+  }
+}
+
+/**
+ * A node representing a regular expression term.
+ */
+class RegExpTermNode extends TRegExpTermNode, PrintAstNode {
+  RegExpTerm term;
+
+  RegExpTermNode() { this = TRegExpTermNode(term) }
+
+  /** Gets the `RegExpTerm` for this node. */
+  RegExpTerm getTerm() { result = term }
+
+  override PrintAstNode getChild(int childIndex) {
+    result.(RegExpTermNode).getTerm() = term.getChild(childIndex)
+  }
+
+  override string toString() {
+    result = "[" + strictconcat(term.getPrimaryQLClass(), " | ") + "] " + term.toString()
+  }
+
+  override Location getLocation() { result = term.getLocation() }
+
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    term.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 

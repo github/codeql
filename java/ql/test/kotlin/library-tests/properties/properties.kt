@@ -73,3 +73,26 @@ class C<T> {
         println(c.prop)
     }
 }
+
+
+val Int.x : Int
+    get() = 5
+val Double.x : Int
+    get() = 5
+
+class A {
+    private var data: Int = 0
+
+    fun setData(p: Int) {
+        data = p
+    }
+}
+
+class B {
+    private var data: Int = 5
+        get() = 42
+
+    fun setData(p: Int) {
+        data = p
+    }
+}

@@ -1,11 +1,15 @@
 import java
 
+class InstantiatedType extends ParameterizedType {
+  InstantiatedType() { typeArgs(_, _, this) }
+}
+
 Type getAMentionedType(RefType type) {
   result = type
   or
   result = getAMentionedType(type).(Array).getElementType()
   or
-  result = getAMentionedType(type).(ParameterizedType).getATypeArgument()
+  result = getAMentionedType(type).(InstantiatedType).getATypeArgument()
   or
   result = getAMentionedType(type).(NestedType).getEnclosingType()
 }
@@ -24,17 +28,26 @@ Type getATypeUsedInClass(RefType type) {
   result = getAMentionedType(getATypeUsedInClass(type))
 }
 
+Element getEnclosingElementStar(RefType e) {
+  result = e
+  or
+  result.contains(e)
+}
+
 TypeVariable getATypeVariableInScope(RefType type) {
-  result = type.getACallable().(GenericCallable).getATypeParameter()
-  or
-  result = type.(GenericType).getATypeParameter()
-  or
-  result = getAMentionedType(type.(ParameterizedType).getATypeArgument())
-  or
-  result = getATypeVariableInScope(type.getEnclosingType())
+  exists(Element e | e = getEnclosingElementStar(type) |
+    result = e.(RefType).getACallable().(GenericCallable).getATypeParameter()
+    or
+    result = e.(GenericType).getATypeParameter()
+    or
+    result = e.(GenericCallable).getATypeParameter()
+    or
+    result = getAMentionedType(e.(InstantiatedType).getATypeArgument())
+  )
 }
 
 from ClassOrInterface typeUser, TypeVariable outOfScope
 where
-  outOfScope = getAMentionedType(typeUser) and not outOfScope = getATypeVariableInScope(typeUser)
-select "Type " + typeUser + " uses out-of-scope type variable " + outOfScope
+  outOfScope = getATypeUsedInClass(typeUser) and not outOfScope = getATypeVariableInScope(typeUser)
+select "Type " + typeUser + " uses out-of-scope type variable " + outOfScope +
+    ". Note the Java extractor is known to sometimes do this; the Kotlin extractor should not."

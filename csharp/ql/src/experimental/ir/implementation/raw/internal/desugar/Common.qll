@@ -183,7 +183,7 @@ abstract class TranslatedCompilerGeneratedVariableAccess extends TranslatedCompi
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
   /**
-   * Returns the type of the accessed variable. Can be overriden when the return
+   * Returns the type of the accessed variable. Can be overridden when the return
    * type is different than the type of the underlying variable.
    */
   Type getVariableType() { result = getResultType() }

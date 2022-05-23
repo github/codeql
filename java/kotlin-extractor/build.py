@@ -35,8 +35,12 @@ def is_windows():
         return True
     return False
 
+# kotlinc might be kotlinc.bat or kotlinc.cmd on Windows, so we use `which` to find out what it is
+kotlinc = shutil.which('kotlinc')
+if kotlinc is None:
+    print("Cannot build the Kotlin extractor: no kotlinc found on your PATH", file = sys.stderr)
+    sys.exit(1)
 
-kotlinc = 'kotlinc.bat' if is_windows() else 'kotlinc'
 javac = 'javac'
 kotlin_dependency_folder = args.dependencies
 
@@ -56,7 +60,10 @@ def run_process(cmd, capture_output=False):
         cmd = ' '.join(map(quote_for_batch, cmd))
         print("Converted to Windows command: " + cmd)
     try:
-        return subprocess.run(cmd, check=True, capture_output=capture_output)
+        if capture_output:
+            return subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        else:
+            return subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError as e:
         print("In: " + os.getcwd(), file=sys.stderr)
         shell_cmd = cmd if is_windows() else shlex.join(cmd)

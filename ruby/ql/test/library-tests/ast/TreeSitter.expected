@@ -1269,6 +1269,36 @@ calls/calls.rb:
 #  356|         2: [Identifier] y
 #  357|         3: [Identifier] unknown_call
 #  358|         4: [ReservedWord] end
+#  361|   117: [Call] Call
+#  361|     0: [Identifier] list
+#  361|     1: [ReservedWord] .
+#  361|     2: [Identifier] empty?
+#  362|   118: [Call] Call
+#  362|     0: [Identifier] list
+#  362|     1: [ReservedWord] &.
+#  362|     2: [Identifier] empty?
+#  363|   119: [Call] Call
+#  363|     0: [Identifier] list
+#  363|     1: [ReservedWord] ::
+#  363|     2: [Identifier] empty?
+#  364|   120: [Call] Call
+#  364|     0: [Identifier] foo
+#  364|     1: [ReservedWord] &.
+#  364|     2: [Identifier] bar
+#  364|     3: [ArgumentList] ArgumentList
+#  364|       0: [ReservedWord] (
+#  364|       1: [Integer] 1
+#  364|       2: [ReservedWord] ,
+#  364|       3: [Integer] 2
+#  364|       4: [ReservedWord] )
+#  364|     4: [Block] Block
+#  364|       0: [ReservedWord] {
+#  364|       1: [BlockParameters] BlockParameters
+#  364|         0: [ReservedWord] |
+#  364|         1: [Identifier] x
+#  364|         2: [ReservedWord] |
+#  364|       2: [Identifier] x
+#  364|       3: [ReservedWord] }
 #    1| [Comment] # call with no receiver, arguments, or block
 #    4| [Comment] # call whose name is a scope resolution
 #    7| [Comment] # call whose name is a global scope resolution
@@ -1342,6 +1372,7 @@ calls/calls.rb:
 #  330| [Comment] # forward parameter and forwarded arguments
 #  339| [Comment] # for loop over nested array
 #  349| [Comment] # calls inside lambdas
+#  360| [Comment] # calls with various call operators
 constants/constants.rb:
 #    1| [Program] Program
 #    1|   0: [Module] Module

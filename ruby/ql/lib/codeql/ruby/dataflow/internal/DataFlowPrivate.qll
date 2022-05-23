@@ -199,9 +199,11 @@ private class Argument extends CfgNodes::ExprCfgNode {
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
+  private import TaintTrackingPrivate as TaintTrackingPrivate
+
   cached
   newtype TNode =
-    TExprNode(CfgNodes::ExprCfgNode n) or
+    TExprNode(CfgNodes::ExprCfgNode n) { TaintTrackingPrivate::forceCachingInSameStage() } or
     TReturningNode(CfgNodes::ReturningCfgNode n) or
     TSynthReturnNode(CfgScope scope, ReturnKind kind) {
       exists(ReturningNode ret |
@@ -270,7 +272,7 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, true)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo)
   }
 
   /** This is the local flow predicate that is used in type tracking. */
@@ -528,12 +530,12 @@ private module ParameterNodes {
     override predicate isSourceParameterOf(Callable c, ParameterPosition pos) { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      sc = c and pos = pos_
+      sc = c.asLibraryCallable() and pos = pos_
     }
 
     override CfgScope getCfgScope() { none() }
 
-    override DataFlowCallable getEnclosingCallable() { result = sc }
+    override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = sc }
 
     override EmptyLocation getLocationImpl() { any() }
 
@@ -552,7 +554,7 @@ class SummaryNode extends NodeImpl, TSummaryNode {
 
   override CfgScope getCfgScope() { none() }
 
-  override DataFlowCallable getEnclosingCallable() { result = c }
+  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
   override EmptyLocation getLocationImpl() { any() }
 

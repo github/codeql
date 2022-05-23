@@ -153,6 +153,15 @@ class KtComment extends Top, @ktcomment {
   /** Gets the full text of this comment. */
   string getText() { ktComments(this, _, result) }
 
+  /** Holds if this comment is an EOL comment. */
+  predicate isEolComment() { ktComments(this, 1, _) }
+
+  /** Holds if this comment is a block comment. */
+  predicate isBlockComment() { ktComments(this, 2, _) }
+
+  /** Holds if this comment is a KDoc comment. */
+  predicate isDocComment() { ktComments(this, 3, _) }
+
   /** Gets the sections of this comment. */
   KtCommentSection getSections() { ktCommentSections(result, this, _) }
 

@@ -67,7 +67,10 @@ module ExperimentalFlask {
   private class FlaskResponse extends DataFlow::CallCfgNode, HeaderDeclaration::Range {
     KeyValuePair item;
 
-    FlaskResponse() { this = Flask::Response::classRef().getACall() }
+    FlaskResponse() {
+      this = Flask::Response::classRef().getACall() and
+      item = this.getArg(_).asExpr().(Dict).getAnItem()
+    }
 
     override DataFlow::Node getNameArg() { result.asExpr() = item.getKey() }
 

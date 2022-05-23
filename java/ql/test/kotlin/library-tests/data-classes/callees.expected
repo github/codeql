@@ -5,4 +5,4 @@
 | dc.kt:0:0:0:0 | times(...) | Int.times |
 | dc.kt:0:0:0:0 | toString(...) | Arrays.toString |
 | dc.kt:0:0:0:0 | toString(...) | Arrays.toString |
-| dc.kt:1:1:1:71 | super(...) | Any.Any |
+| dc.kt:1:1:1:71 | super(...) | Object.Object |

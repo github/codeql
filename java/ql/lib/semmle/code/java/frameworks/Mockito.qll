@@ -85,7 +85,7 @@ class MockitoInitedTest extends Class {
  */
 class MockitoAnnotation extends Annotation {
   MockitoAnnotation() {
-    this.getType().getPackage().getName().matches("org.mockito") or
+    this.getType().getPackage().hasName("org.mockito") or
     this.getType().getPackage().getName().matches("org.mockito.%")
   }
 }

@@ -317,7 +317,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   /** Gets the data flow node that this call targets. */
   Node getReceiver() { result = receiver }
 
-  override DataFlowCallable getEnclosingCallable() { result = c }
+  override DataFlowCallable getEnclosingCallable() { result.asCallable() = c }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
@@ -378,7 +378,7 @@ predicate forceHighPrecision(Content c) {
 predicate nodeIsHidden(Node n) {
   n instanceof SummaryNode
   or
-  n.(ParameterNode).isParameterOf(any(SummarizedCallable c).asCallable(), _)
+  n.(ParameterNode).isParameterOf(any(SummarizedCallable c), _)
 }
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface

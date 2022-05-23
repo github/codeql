@@ -34,7 +34,7 @@ class ValueNumber extends TValueNumber {
   final Instruction getAnInstruction() { this = valueNumber(result) }
 
   /**
-   * Gets one of the instructions that was assigned this value number. The chosen instuction is
+   * Gets one of the instructions that was assigned this value number. The chosen instruction is
    * deterministic but arbitrary. Intended for use only in debugging.
    */
   final Instruction getExampleInstruction() {
