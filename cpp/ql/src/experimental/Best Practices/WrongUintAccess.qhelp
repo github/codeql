@@ -12,7 +12,7 @@
 </recommendation>
 
 <example>
-<sample src="WrongUintAcess.cpp" />
+<sample src="WrongUintAccess.cpp" />
 </example>
 
 </qhelp>
