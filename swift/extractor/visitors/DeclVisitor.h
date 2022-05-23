@@ -157,6 +157,39 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
     emitTypeDecl(decl, label);
   }
 
+  void visitAccessorDecl(swift::AccessorDecl* decl) {
+    auto label = dispatcher_.assignNewLabel(decl);
+    dispatcher_.emit(AccessorDeclsTrap{label});
+    switch (decl->getAccessorKind()) {
+      case swift::AccessorKind::Get:
+        dispatcher_.emit(AccessorDeclIsGetterTrap{label});
+        break;
+      case swift::AccessorKind::Set:
+        dispatcher_.emit(AccessorDeclIsSetterTrap{label});
+        break;
+      case swift::AccessorKind::WillSet:
+        dispatcher_.emit(AccessorDeclIsWillSetTrap{label});
+        break;
+      case swift::AccessorKind::DidSet:
+        dispatcher_.emit(AccessorDeclIsDidSetTrap{label});
+        break;
+    }
+    emitAccessorDecl(decl, label);
+  }
+
+  void visitSubscriptDecl(swift::SubscriptDecl* decl) {
+    auto label = dispatcher_.assignNewLabel(decl);
+    auto elementTypeLabel = dispatcher_.fetchLabel(decl->getElementInterfaceType());
+    dispatcher_.emit(SubscriptDeclsTrap{label, elementTypeLabel});
+    if (auto indices = decl->getIndices()) {
+      for (auto i = 0u; i < indices->size(); ++i) {
+        dispatcher_.emit(
+            SubscriptDeclParamsTrap{label, i, dispatcher_.fetchLabel(indices->get(i))});
+      }
+    }
+    emitAbstractStorageDecl(decl, label);
+  }
+
  private:
   void emitConstructorDecl(swift::ConstructorDecl* decl, TrapLabel<ConstructorDeclTag> label) {
     emitAbstractFunctionDecl(decl, label);
@@ -168,9 +201,9 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
 
   void emitAbstractFunctionDecl(swift::AbstractFunctionDecl* decl,
                                 TrapLabel<AbstractFunctionDeclTag> label) {
-    assert(decl->hasName() && "Expect functions to have name");
     assert(decl->hasParameterList() && "Expect functions to have a parameter list");
-    auto name = decl->getName().isSpecial() ? "(unnamed function decl)" : decl->getNameStr().str();
+    auto name = !decl->hasName() || decl->getName().isSpecial() ? "(unnamed function decl)"
+                                                                : decl->getNameStr().str();
     dispatcher_.emit(AbstractFunctionDeclsTrap{label, name});
     if (auto body = decl->getBody()) {
       dispatcher_.emit(AbstractFunctionDeclBodiesTrap{label, dispatcher_.fetchLabel(body)});
@@ -226,7 +259,7 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
             VarDeclAttachedPropertyWrapperTypesTrap{label, dispatcher_.fetchLabel(propertyType)});
       }
     }
-    emitValueDecl(decl, label);
+    emitAbstractStorageDecl(decl, label);
   }
 
   void emitNominalTypeDecl(swift::NominalTypeDecl* decl, TrapLabel<NominalTypeDeclTag> label) {
@@ -250,6 +283,20 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   void emitValueDecl(const swift::ValueDecl* decl, TrapLabel<ValueDeclTag> label) {
     assert(decl->getInterfaceType() && "Expect ValueDecl to have InterfaceType");
     dispatcher_.emit(ValueDeclsTrap{label, dispatcher_.fetchLabel(decl->getInterfaceType())});
+  }
+
+  void emitAccessorDecl(swift::AccessorDecl* decl, TrapLabel<AccessorDeclTag> label) {
+    emitAbstractFunctionDecl(decl, label);
+  }
+
+  void emitAbstractStorageDecl(const swift::AbstractStorageDecl* decl,
+                               TrapLabel<AbstractStorageDeclTag> label) {
+    auto i = 0u;
+    for (auto acc : decl->getAllAccessors()) {
+      dispatcher_.emit(
+          AbstractStorageDeclAccessorDeclsTrap{label, i++, dispatcher_.fetchLabel(acc)});
+    }
+    emitValueDecl(decl, label);
   }
 };
 
