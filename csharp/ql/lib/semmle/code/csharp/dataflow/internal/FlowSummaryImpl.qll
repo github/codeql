@@ -759,8 +759,8 @@ module Private {
     }
 
     pragma[nomagic]
-    private ParamNode summaryArgParam0(DataFlowCall call, ArgNode arg) {
-      exists(ParameterPosition ppos, SummarizedCallable sc |
+    private ParamNode summaryArgParam0(DataFlowCall call, ArgNode arg, SummarizedCallable sc) {
+      exists(ParameterPosition ppos |
         argumentPositionMatch(call, arg, ppos) and
         viableParam(call, sc, ppos, result)
       )
@@ -774,9 +774,9 @@ module Private {
      * or expects contents.
      */
     pragma[nomagic]
-    predicate prohibitsUseUseFlow(ArgNode arg) {
+    predicate prohibitsUseUseFlow(ArgNode arg, SummarizedCallable sc) {
       exists(ParamNode p, Node mid, ParameterPosition ppos, Node ret |
-        p = summaryArgParam0(_, arg) and
+        p = summaryArgParam0(_, arg, sc) and
         p.isParameterOf(_, ppos) and
         summaryLocalStep(p, mid, true) and
         summaryLocalStep(mid, ret, true) and
@@ -788,9 +788,11 @@ module Private {
     }
 
     bindingset[ret]
-    private ParamNode summaryArgParam(ArgNode arg, ReturnNodeExt ret, OutNodeExt out) {
+    private ParamNode summaryArgParam(
+      ArgNode arg, ReturnNodeExt ret, OutNodeExt out, SummarizedCallable sc
+    ) {
       exists(DataFlowCall call, ReturnKindExt rk |
-        result = summaryArgParam0(call, arg) and
+        result = summaryArgParam0(call, arg, sc) and
         ret.getKind() = pragma[only_bind_into](rk) and
         out = pragma[only_bind_into](rk).getAnOutNode(call)
       )
@@ -803,9 +805,9 @@ module Private {
      * NOTE: This step should not be used in global data-flow/taint-tracking, but may
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
-    predicate summaryThroughStepValue(ArgNode arg, Node out) {
+    predicate summaryThroughStepValue(ArgNode arg, Node out, SummarizedCallable sc) {
       exists(ReturnKind rk, ReturnNode ret, DataFlowCall call |
-        summaryLocalStep(summaryArgParam0(call, arg), ret, true) and
+        summaryLocalStep(summaryArgParam0(call, arg, sc), ret, true) and
         ret.getKind() = pragma[only_bind_into](rk) and
         out = getAnOutNode(call, pragma[only_bind_into](rk))
       )
@@ -818,8 +820,8 @@ module Private {
      * NOTE: This step should not be used in global data-flow/taint-tracking, but may
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
-    predicate summaryThroughStepTaint(ArgNode arg, Node out) {
-      exists(ReturnNodeExt ret | summaryLocalStep(summaryArgParam(arg, ret, out), ret, false))
+    predicate summaryThroughStepTaint(ArgNode arg, Node out, SummarizedCallable sc) {
+      exists(ReturnNodeExt ret | summaryLocalStep(summaryArgParam(arg, ret, out, sc), ret, false))
     }
 
     /**
@@ -829,9 +831,9 @@ module Private {
      * NOTE: This step should not be used in global data-flow/taint-tracking, but may
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
-    predicate summaryGetterStep(ArgNode arg, ContentSet c, Node out) {
+    predicate summaryGetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
       exists(Node mid, ReturnNodeExt ret |
-        summaryReadStep(summaryArgParam(arg, ret, out), c, mid) and
+        summaryReadStep(summaryArgParam(arg, ret, out, sc), c, mid) and
         summaryLocalStep(mid, ret, _)
       )
     }
@@ -843,9 +845,9 @@ module Private {
      * NOTE: This step should not be used in global data-flow/taint-tracking, but may
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
-    predicate summarySetterStep(ArgNode arg, ContentSet c, Node out) {
+    predicate summarySetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
       exists(Node mid, ReturnNodeExt ret |
-        summaryLocalStep(summaryArgParam(arg, ret, out), mid, _) and
+        summaryLocalStep(summaryArgParam(arg, ret, out, sc), mid, _) and
         summaryStoreStep(mid, c, ret)
       )
     }
@@ -929,12 +931,18 @@ module Private {
     private class SummarizedCallableExternal extends SummarizedCallable {
       SummarizedCallableExternal() { summaryElement(this, _, _, _, _) }
 
-      private predicate relevantSummaryElement(AccessPath inSpec, AccessPath outSpec, string kind) {
-        summaryElement(this, inSpec, outSpec, kind, false)
-        or
+      private predicate relevantSummaryElementGenerated(
+        AccessPath inSpec, AccessPath outSpec, string kind
+      ) {
         summaryElement(this, inSpec, outSpec, kind, true) and
         not summaryElement(this, _, _, _, false) and
         not this.clearsContent(_, _)
+      }
+
+      private predicate relevantSummaryElement(AccessPath inSpec, AccessPath outSpec, string kind) {
+        summaryElement(this, inSpec, outSpec, kind, false)
+        or
+        this.relevantSummaryElementGenerated(inSpec, outSpec, kind)
       }
 
       override predicate propagatesFlow(
@@ -951,7 +959,7 @@ module Private {
         )
       }
 
-      override predicate isAutoGenerated() { summaryElement(this, _, _, _, true) }
+      override predicate isAutoGenerated() { this.relevantSummaryElementGenerated(_, _, _) }
     }
 
     /** Holds if component `c` of specification `spec` cannot be parsed. */

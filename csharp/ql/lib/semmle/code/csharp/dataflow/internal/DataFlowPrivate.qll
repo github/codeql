@@ -421,7 +421,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   exists(Ssa::Definition def |
     LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
-    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom) and
+    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom,
+      any(DataFlowSummarizedCallable sc)) and
     not LocalFlow::usesInstanceField(def)
   )
   or
@@ -743,11 +744,11 @@ private module Cached {
       FlowSummaryImpl::Public::SummarizedCallable c,
       FlowSummaryImpl::Private::SummaryNodeState state
     ) {
-      useFlowSummary(c) and
+      c instanceof DataFlowSummarizedCallable and
       FlowSummaryImpl::Private::summaryNodeRange(c, state)
     } or
     TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
-      useFlowSummary(c) and
+      c instanceof DataFlowSummarizedCallable and
       FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
     } or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
@@ -771,7 +772,8 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo,
+      any(DataFlowSummarizedCallable sc))
   }
 
   cached
