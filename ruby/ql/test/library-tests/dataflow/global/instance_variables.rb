@@ -15,3 +15,7 @@ end
 foo = Foo.new
 foo.set_field(source(42))
 sink(foo.get_field) # $ hasValueFlow=42
+
+bar = Foo.new
+bar.set_field(source(5))
+sink(bar.inc_field) # $ hasTaintFlow=5
