@@ -1,5 +1,9 @@
 name: "Go: Run Tests"
-on: [pull_request]
+on:
+  pull_request:
+    paths:
+      - "go/**"
+      - .github/workflows/go-tests.yml
 jobs:
 
   test-linux:
