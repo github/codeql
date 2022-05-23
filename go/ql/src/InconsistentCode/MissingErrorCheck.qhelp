@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When a function call returns two values, a pointer and a (subtype of) error, it is conventional to assume that the pointer
+might be nil until either the pointer or error value has been checked.</p>
+
+<p>If the pointer is dereferenced without a check, an unexpected nil pointer dereference panic may occur.</p>
+</overview>
+<recommendation>
+
+<p>Ensure that the returned pointer is either directly checked against nil, or the error value is checked before using
+the returned pointer.</p>
+
+</recommendation>
+<example>
+
+<p>In the example below, <code>user</code> dereferences <code>ptr</code> without checking either
+<code>ptr</code> or <code>err</code>. This might lead to a panic.</p>
+
+<sample src="MissingErrorCheck.go" />
+
+<p>The corrected version of <code>user</code> checks <code>err</code> before using <code>ptr</code>.</p>
+
+<sample src="MissingErrorCheckGood.go" />
+
+</example>
+<references>
+
+<li>
+  The Go Blog:
+  <a href="https://blog.golang.org/error-handling-and-go">Error handling and Go</a>.
+</li>
+
+</references>
+</qhelp>

@@ -1,0 +1,13 @@
+| main.go:13:16:13:19 | meth | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.t.meth | main.go:13:7:13:10 | recv | * t |
+| main.go:23:16:23:19 | bump | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.t.bump | main.go:23:7:23:10 | recv | * t |
+| types.go:4:2:4:5 | meth | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.iHaveAMethod.meth | file://:0:0:0:0 |  | iHaveAMethod |
+| types.go:8:2:8:6 | meth1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.twoMethods.meth1 | file://:0:0:0:0 |  | twoMethods |
+| types.go:9:2:9:6 | meth2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.twoMethods.meth2 | file://:0:0:0:0 |  | twoMethods |
+| types.go:9:2:9:6 | meth2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.twoMethodsEmbedded.meth2 | file://:0:0:0:0 |  | twoMethods |
+| types.go:13:2:13:6 | meth1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.meth1Iface.meth1 | file://:0:0:0:0 |  | meth1Iface |
+| types.go:13:2:13:6 | meth1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.twoMethodsEmbedded.meth1 | file://:0:0:0:0 |  | meth1Iface |
+| types.go:23:18:23:22 | meth1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.starImpl.meth1 | file://:0:0:0:0 |  | * starImpl |
+| types.go:27:17:27:21 | meth2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.starImpl.meth2 | file://:0:0:0:0 |  | starImpl |
+| types.go:33:16:33:20 | meth1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.notImpl.meth1 | file://:0:0:0:0 |  | notImpl |
+| types.go:37:16:37:20 | meth2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.notImpl.meth2 | file://:0:0:0:0 |  | notImpl |
+| types.go:43:2:43:5 | meth | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Scopes.iHaveARedeclaredMethod.meth | file://:0:0:0:0 |  | iHaveARedeclaredMethod |

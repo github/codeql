@@ -1,0 +1,4 @@
+| DisabledCertificateCheck.go:10:32:10:55 | init of key-value pair | InsecureSkipVerify should not be used in production code. |
+| main.go:9:2:9:23 | assignment to field InsecureSkipVerify | InsecureSkipVerify should not be used in production code. |
+| main.go:57:21:57:44 | init of key-value pair | InsecureSkipVerify should not be used in production code. |
+| main.go:62:32:62:55 | init of key-value pair | InsecureSkipVerify should not be used in production code. |

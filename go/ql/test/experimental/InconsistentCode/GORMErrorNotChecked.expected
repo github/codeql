@@ -1,0 +1,1 @@
+| GORMErrorNotChecked.go:7:2:7:40 | call to First | This call appears to interact with the database without checking whether an error was encountered. |

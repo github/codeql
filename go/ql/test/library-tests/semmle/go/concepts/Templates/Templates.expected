@@ -1,0 +1,2 @@
+| main.go:26:9:26:38 | call to Execute | main.go:26:9:26:13 | templ | main.go:26:34:26:37 | data |
+| main.go:32:2:32:73 | call to ExecuteTemplate | main.go:32:2:32:6 | templ | main.go:32:49:32:72 | "This is a long message" |

@@ -19,7 +19,6 @@ jobs:
       matrix:
         repo:
           - github/codeql
-          - github/codeql-go
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

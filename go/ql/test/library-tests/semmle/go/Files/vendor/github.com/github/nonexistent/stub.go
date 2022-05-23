@@ -1,0 +1,3 @@
+package nonexistent
+
+func A() {}
