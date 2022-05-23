@@ -260,7 +260,8 @@ private module Cached {
       or
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
     } or
-    TAnyArgumentPosition()
+    TAnyArgumentPosition() or
+    TAnyKeywordArgumentPosition()
 
   cached
   newtype TParameterPosition =
@@ -279,7 +280,8 @@ private module Cached {
       or
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
     } or
-    TAnyParameterPosition()
+    TAnyParameterPosition() or
+    TAnyKeywordParameterPosition()
 }
 
 import Cached
@@ -483,6 +485,9 @@ class ParameterPosition extends TParameterPosition {
    */
   predicate isAny() { this = TAnyParameterPosition() }
 
+  /** Holds if this position represents any positional parameter. */
+  predicate isAnyNamed() { this = TAnyKeywordParameterPosition() }
+
   /** Gets a textual representation of this position. */
   string toString() {
     this.isSelf() and result = "self"
@@ -496,6 +501,8 @@ class ParameterPosition extends TParameterPosition {
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
     or
     this.isAny() and result = "any"
+    or
+    this.isAnyNamed() and result = "any-named"
   }
 }
 
@@ -519,6 +526,9 @@ class ArgumentPosition extends TArgumentPosition {
    */
   predicate isAny() { this = TAnyArgumentPosition() }
 
+  /** Holds if this position represents any positional parameter. */
+  predicate isAnyNamed() { this = TAnyKeywordArgumentPosition() }
+
   /** Gets a textual representation of this position. */
   string toString() {
     this.isSelf() and result = "self"
@@ -530,6 +540,8 @@ class ArgumentPosition extends TArgumentPosition {
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
     or
     this.isAny() and result = "any"
+    or
+    this.isAnyNamed() and result = "any-named"
   }
 }
 
@@ -551,4 +563,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isAny() and not apos.isSelf()
   or
   apos.isAny() and not ppos.isSelf()
+  or
+  ppos.isAnyNamed() and apos.isKeyword(_)
+  or
+  apos.isAnyNamed() and ppos.isKeyword(_)
 }

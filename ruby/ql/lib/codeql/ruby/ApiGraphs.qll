@@ -790,6 +790,9 @@ module API {
         result = Label::blockParameter()
         // NOTE: `self` should NOT be included, as described in the QLDoc for `isAny()`
       )
+      or
+      pos.isAnyNamed() and
+      result = Label::keywordParameter(_)
       // TODO: needs handling of `self` ArgumentPosition
       // or
       // pos.isSelf() and
@@ -820,6 +823,9 @@ module API {
         result = Label::blockParameter()
         // NOTE: `self` should NOT be included, as described in the QLDoc for `isAny()`
       )
+      or
+      pos.isAnyNamed() and
+      result = Label::keywordParameter(_)
       // TODO: needs handling of `self` ParameterPosition
       // or
       // pos.isSelf() and

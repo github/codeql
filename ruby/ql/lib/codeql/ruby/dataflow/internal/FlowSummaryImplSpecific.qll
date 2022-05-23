@@ -262,7 +262,7 @@ ArgumentPosition parseParamBody(string s) {
   result.isAny()
   or
   s = "any-named" and
-  result.isKeyword(_)
+  result.isAnyNamed()
 }
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
@@ -292,5 +292,5 @@ ParameterPosition parseArgBody(string s) {
   result.isAny()
   or
   s = "any-named" and
-  result.isKeyword(_)
+  result.isAnyNamed()
 }
