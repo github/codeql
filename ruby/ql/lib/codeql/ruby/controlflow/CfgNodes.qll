@@ -616,7 +616,7 @@ module ExprNodes {
   }
 
   private class InstanceVariableAccessMapping extends ExprChildMapping, InstanceVariableAccess {
-    override predicate relevantChild(AstNode n) { n = this.getSelfVariableAccess() }
+    override predicate relevantChild(AstNode n) { n = this.getReceiver() }
   }
 
   /** A control-flow node that wraps a `InstanceVariableAccess` AST expression. */
@@ -626,9 +626,9 @@ module ExprNodes {
     final override InstanceVariableAccess getExpr() { result = ExprCfgNode.super.getExpr() }
 
     /**
-     * Gets a synthetic `self` variable access.
+     * Gets the synthetic receiver(`self`) of this instance variable access.
      */
-    final CfgNode getSelfVariableAccess() { e.hasCfgChild(e.getSelfVariableAccess(), this, result) }
+    final CfgNode getReceiver() { e.hasCfgChild(e.getReceiver(), this, result) }
   }
 
   /** A control-flow node that wraps a `VariableWriteAccess` AST expression. */

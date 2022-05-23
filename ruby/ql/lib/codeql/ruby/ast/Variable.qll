@@ -183,14 +183,14 @@ class InstanceVariableAccess extends VariableAccess instanceof InstanceVariableA
   final override string getAPrimaryQlClass() { result = "InstanceVariableAccess" }
 
   /**
-   * Gets a synthetic `self` variable access.
+   * Gets the synthetic receiver(`self`) of this instance variable access.
    */
-  final SelfVariableAccess getSelfVariableAccess() { synthChild(this, 0, result) }
+  final SelfVariableAccess getReceiver() { synthChild(this, 0, result) }
 
   final override AstNode getAChild(string pred) {
     result = VariableAccess.super.getAChild(pred)
     or
-    pred = "getSelfVariableAccess" and result = this.getSelfVariableAccess()
+    pred = "getReceiver" and result = this.getReceiver()
   }
 }
 

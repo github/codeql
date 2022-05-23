@@ -219,7 +219,7 @@ private module Cached {
     TBlockParameterNode(MethodBase m) or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
       n instanceof Argument or
-      n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getSelfVariableAccess()
+      n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
     } or
     TSummaryNode(
       FlowSummaryImpl::Public::SummarizedCallable c,
@@ -804,7 +804,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
             ct.getName() = var.getExpr().getVariable().getName()
           ))
       )
-    ).getSelfVariableAccess()
+    ).getReceiver()
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
@@ -817,7 +817,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   node2.asExpr() =
     any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode var |
       var.getExpr() instanceof InstanceVariableReadAccess and
-      node1.asExpr() = var.getSelfVariableAccess() and
+      node1.asExpr() = var.getReceiver() and
       c.isSingleton(any(Content::FieldContent ct |
           ct.getName() = var.getExpr().getVariable().getName()
         ))
