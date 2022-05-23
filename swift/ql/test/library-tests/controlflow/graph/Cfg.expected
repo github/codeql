@@ -608,6 +608,13 @@ cfg.swift:
 #   89| NilLiteralExpr
 #-----|  -> AssignExpr
 
+#   99| enter AccessorDecl
+
+#   99| exit AccessorDecl
+
+#   99| exit AccessorDecl (normal)
+#-----|  -> exit AccessorDecl
+
 #  100| enter ConstructorDecl
 #-----|  -> DeclRefExpr
 
@@ -3877,6 +3884,13 @@ cfg.swift:
 #  348| IntegerLiteralExpr
 #-----|  -> BinaryExpr
 
+#  353| enter AccessorDecl
+
+#  353| exit AccessorDecl
+
+#  353| exit AccessorDecl (normal)
+#-----|  -> exit AccessorDecl
+
 #  354| enter ConstructorDecl
 #-----|  -> DeclRefExpr
 
@@ -4172,6 +4186,31 @@ cfg.swift:
 
 #  386| VarargExpansionExpr
 #-----|  -> CallExpr
+
+#  394| TBD (YieldStmt)
+#-----|  -> exit AccessorDecl (normal)
+
+#  394| enter AccessorDecl
+
+#  394| enter AccessorDecl
+
+#  394| enter AccessorDecl
+#-----|  -> TBD (YieldStmt)
+
+#  394| exit AccessorDecl
+
+#  394| exit AccessorDecl
+
+#  394| exit AccessorDecl
+
+#  394| exit AccessorDecl (normal)
+#-----|  -> exit AccessorDecl
+
+#  394| exit AccessorDecl (normal)
+#-----|  -> exit AccessorDecl
+
+#  394| exit AccessorDecl (normal)
+#-----|  -> exit AccessorDecl
 
 #  395| enter ConstructorDecl
 #-----|  -> IntegerLiteralExpr
