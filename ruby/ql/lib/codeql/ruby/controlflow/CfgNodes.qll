@@ -11,7 +11,7 @@ private import internal.Splitting
 
 /** An entry node for a given scope. */
 class EntryNode extends CfgNode, TEntryNode {
-  string getAPrimaryQlClass() { result = "EntryNode" }
+  override string getAPrimaryQlClass() { result = "EntryNode" }
 
   private CfgScope scope;
 
@@ -26,7 +26,7 @@ class EntryNode extends CfgNode, TEntryNode {
 
 /** An exit node for a given scope, annotated with the type of exit. */
 class AnnotatedExitNode extends CfgNode, TAnnotatedExitNode {
-  string getAPrimaryQlClass() { result = "AnnotatedExitNode" }
+  override string getAPrimaryQlClass() { result = "AnnotatedExitNode" }
 
   private CfgScope scope;
   private boolean normal;
@@ -53,7 +53,7 @@ class AnnotatedExitNode extends CfgNode, TAnnotatedExitNode {
 
 /** An exit node for a given scope. */
 class ExitNode extends CfgNode, TExitNode {
-  string getAPrimaryQlClass() { result = "ExitNode" }
+  override string getAPrimaryQlClass() { result = "ExitNode" }
 
   private CfgScope scope;
 
@@ -73,7 +73,7 @@ class ExitNode extends CfgNode, TExitNode {
  */
 class AstCfgNode extends CfgNode, TElementNode {
   /** Gets the name of the primary QL class for this node. */
-  string getAPrimaryQlClass() { result = "AstCfgNode" }
+  override string getAPrimaryQlClass() { result = "AstCfgNode" }
 
   private Splits splits;
   AstNode e;
