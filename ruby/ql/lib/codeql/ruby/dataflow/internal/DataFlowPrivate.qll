@@ -349,7 +349,14 @@ private module Cached {
     TUnknownElementContent() or
     TKnownPairValueContent(ConstantValue cv) or
     TUnknownPairValueContent() or
-    TFieldContent(string name) { name = any(InstanceVariable v).getName() }
+    TFieldContent(string name) {
+      name = any(InstanceVariable v).getName()
+      or
+      exists(SetterMethodCall c, string methodName |
+        methodName = c.getMethodName() and
+        name = "@" + methodName.prefix(methodName.length() - 1)
+      )
+    }
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
@@ -825,6 +832,20 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
       )
     ).getReceiver()
   or
+  // Attribute assignment, `receiver.property = value`
+  node2.(PostUpdateNode).getPreUpdateNode().asExpr() =
+    any(CfgNodes::ExprNodes::MethodCallCfgNode call |
+      call.getExpr() instanceof SetterMethodCall and
+      node1.asExpr() = call.getArgument(0) and
+      call.getNumberOfArguments() = 1 and
+      c.isSingleton(any(Content::FieldContent ct, string methodName |
+          methodName = call.getExpr().getMethodName() and
+          ct.getName() = "@" + methodName.prefix(methodName.length() - 1)
+        |
+          ct
+        ))
+    ).getReceiver()
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
   or
   // Needed for pairs passed into method calls where the key is not a symbol,
@@ -857,6 +878,19 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       node1.asExpr() = var.getReceiver() and
       c.isSingleton(any(Content::FieldContent ct |
           ct.getName() = var.getExpr().getVariable().getName()
+        ))
+    )
+  or
+  // Attribute read, `receiver.field`. Note that we do not check whether
+  // the `field` method is really an attribute reader. This is probably fine
+  // because the read step has only effect if there exists a matching store step
+  // (instance variable assignmentor setter method call).
+  node2.asExpr() =
+    any(CfgNodes::ExprNodes::MethodCallCfgNode call |
+      node1.asExpr() = call.getReceiver() and
+      call.getNumberOfArguments() = 0 and
+      c.isSingleton(any(Content::FieldContent ct |
+          ct.getName() = "@" + call.getExpr().getMethodName()
         ))
     )
   or
