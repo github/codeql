@@ -1,13 +1,13 @@
-private import swift as s
+private import swift as S
 private import ControlFlowGraphImpl as Impl
 private import Completion as Comp
 private import codeql.swift.controlflow.ControlFlowGraph as CFG
 private import Splitting as Splitting
 
 /** The base class for `ControlFlowTree`. */
-class ControlFlowTreeBase extends s::AstNode { }
+class ControlFlowTreeBase extends S::AstNode { }
 
-class ControlFlowElement = s::AstNode;
+class ControlFlowElement = S::AstNode;
 
 class Completion = Comp::Completion;
 
@@ -63,6 +63,6 @@ predicate successorTypeIsSimple(SuccessorType t) {
 /** Holds if `t` is an abnormal exit type out of a CFG scope. */
 predicate isAbnormalExitType(SuccessorType t) { none() } // TODO
 
-class Location = s::Location;
+class Location = S::Location;
 
 class Node = CFG::ControlFlowNode;
