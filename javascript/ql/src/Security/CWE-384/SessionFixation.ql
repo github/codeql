@@ -30,7 +30,7 @@ predicate isLoginSetup(Express::RouteSetup setup) {
         .getAPropertyRead("session")
         .getAPropertyWrite()
   )
-  // passport used to be recognized, but they have since added build-in protection against session fixation
+  // passport used to be recognized, but they have since added built-in protection against session fixation
 }
 
 /**
