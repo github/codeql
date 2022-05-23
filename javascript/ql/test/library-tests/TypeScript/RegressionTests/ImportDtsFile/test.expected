@@ -1,0 +1,1 @@
+| main.ts:2:1:2:48 | import  ... -file"; | ./has-javascript-file | has-javascript-file.js:1:1:2:0 | <toplevel> |
