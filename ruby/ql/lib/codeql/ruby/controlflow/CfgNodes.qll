@@ -626,7 +626,7 @@ module ExprNodes {
     override InstanceVariableAccess getExpr() { result = ExprCfgNode.super.getExpr() }
 
     /**
-     * Gets the synthetic receiver(`self`) of this instance variable access.
+     * Gets the synthetic receiver (`self`) of this instance variable access.
      */
     final CfgNode getReceiver() { e.hasCfgChild(e.getReceiver(), this, result) }
   }
