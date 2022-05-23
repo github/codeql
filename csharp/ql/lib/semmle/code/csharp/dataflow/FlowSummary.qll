@@ -139,28 +139,6 @@ private class RecordConstructorFlow extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableDefaultClearsContent extends Impl::Public::SummarizedCallable {
-  SummarizedCallableDefaultClearsContent() {
-    this instanceof Impl::Public::SummarizedCallable or none()
-  }
-
-  // By default, we assume that all stores into arguments are definite
-  override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
-    exists(SummaryComponentStack output, SummaryComponent target |
-      this.propagatesFlow(_, output, _) and
-      output.drop(_) =
-        SummaryComponentStack::push(SummaryComponent::content(content),
-          SummaryComponentStack::singleton(target)) and
-      not content instanceof DataFlow::ElementContent
-    |
-      target = SummaryComponent::argument(pos.getPosition())
-      or
-      target = SummaryComponent::qualifier() and
-      pos.isThisParameter()
-    )
-  }
-}
-
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
 
 private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
