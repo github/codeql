@@ -298,6 +298,20 @@ private module Cached {
     )
   }
 
+  pragma[nomagic]
+  private predicate reachedFromExprOrEntrySsaDef(Node n) {
+    localFlowStepTypeTracker(any(Node n0 |
+        n0 instanceof ExprNode
+        or
+        entrySsaDefinition(n0)
+      ), n)
+    or
+    exists(Node mid |
+      reachedFromExprOrEntrySsaDef(mid) and
+      localFlowStepTypeTracker(mid, n)
+    )
+  }
+
   cached
   predicate isLocalSourceNode(Node n) {
     n instanceof ParameterNode
@@ -305,11 +319,7 @@ private module Cached {
     n instanceof PostUpdateNodes::ExprPostUpdateNode
     or
     // Nodes that can't be reached from another entry definition or expression.
-    not localFlowStepTypeTracker+(any(Node n0 |
-        n0 instanceof ExprNode
-        or
-        entrySsaDefinition(n0)
-      ), n)
+    not reachedFromExprOrEntrySsaDef(n)
     or
     // Ensure all entry SSA definitions are local sources -- for parameters, this
     // is needed by type tracking. Note that when the parameter has a default value,
