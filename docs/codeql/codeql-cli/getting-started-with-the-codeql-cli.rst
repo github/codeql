@@ -193,8 +193,7 @@ further options on the command line.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The `CodeQL repository <https://github.com/github/codeql>`__ contains
-the queries and libraries required for CodeQL analysis of C/C++, C#, Go, Java,
-JavaScript/TypeScript, Python, and Ruby.
+the queries and libraries required for CodeQL analysis of all supported languages.
 Clone a copy of this repository into ``codeql-home``.
 
 By default, the root of the cloned repository will be called ``codeql``.
@@ -212,9 +211,9 @@ For Go analysis, run ``codeql-repo/go/scripts/install-deps.sh`` to install its d
    These have been moved to the ``github/codeql`` repository.
    It is no longer necessary to clone the ``github/codeql-go`` into a separate ``codeql-home/codeql-go`` folder.
 
-   For more information, see `this announcement <https://github.com/github/codeql-go/issues/741>`__.
+   For more information, see the `Relocation announcement <https://github.com/github/codeql-go/issues/741>`__.
 
-Within these repositories, the queries and libraries are organized into QL
+Within this repository, the queries and libraries are organized into QL
 packs. Along with the queries themselves, QL packs contain important metadata
 that tells the CodeQL CLI how to process the query files. For more information,
 see ":doc:`About QL packs <about-ql-packs>`."

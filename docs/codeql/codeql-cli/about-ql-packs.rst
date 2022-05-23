@@ -6,8 +6,7 @@ About QL packs
 QL packs are used to organize the files used in CodeQL analysis. They
 contain queries, library files, query suites, and important metadata.
 
-The `CodeQL repository <https://github.com/github/codeql>`__ contains QL packs for
-C/C++, C#, Go, Java, JavaScript, Python, and Ruby.
+The `CodeQL repository <https://github.com/github/codeql>`__ contains standard QL packs for all supported languages.
 You can also make custom QL packs to contain your own queries and libraries.
 
 QL pack structure
