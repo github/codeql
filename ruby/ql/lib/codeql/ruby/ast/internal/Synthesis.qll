@@ -211,21 +211,29 @@ private module ImplicitSelfSynthesis {
     }
   }
 
-  /**
-   * Gets the "owner" of a node. For real nodes this is the node itself, for synthetic nodes
-   * this is the closest parent that is a real node.
-   */
-  private TAstNodeReal owner(AstNode node) { result = synthParent*(node) }
+  pragma[nomagic]
+  private AstNode instanceVarAccessSynthParentStar(InstanceVariableAccess var) {
+    result = var
+    or
+    instanceVarAccessSynthParentStar(var) = getSynthChild(result, _)
+  }
 
   /**
-   * Gets the parent of a synthetic node
+   * Gets the `SelfKind` for instance variable access `var`. This is based on the
+   * "owner" of `var`; for real nodes this is the node itself, for synthetic nodes
+   * this is the closest parent that is a real node.
    */
-  private AstNode synthParent(AstNode node) { node = getSynthChild(result, _) }
+  pragma[nomagic]
+  private SelfKind getSelfKind(InstanceVariableAccess var) {
+    exists(Ruby::AstNode owner |
+      owner = toGenerated(instanceVarAccessSynthParentStar(var)) and
+      result = SelfKind(TSelfVariable(scopeOf(owner).getEnclosingSelfScope()))
+    )
+  }
 
   pragma[nomagic]
   private predicate instanceVariableSelfSynthesis(InstanceVariableAccess var, int i, Child child) {
-    child =
-      SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(owner(var))).getEnclosingSelfScope()))) and
+    child = SynthChild(getSelfKind(var)) and
     i = 0
   }
 
