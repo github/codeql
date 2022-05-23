@@ -355,7 +355,12 @@ module API {
       result.getAnImmediateUse() = this
     }
 
-    /** Gets the number of arguments of this call. Both positional and named arguments are counted. */
+    /**
+     * Gets the number of positional arguments of this call.
+     *
+     * Note: This is used for `WithArity[<n>]` in modeling-as-data, where we thought 
+     * including keyword arguments didn't make much sense.
+     */
     int getNumArgument() { result = count(this.getArg(_)) }
   }
 
