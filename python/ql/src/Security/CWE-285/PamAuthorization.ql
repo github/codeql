@@ -1,8 +1,9 @@
 /**
- * @name Authorization bypass due to incorrect usage of PAM
- * @description Using only the `pam_authenticate` call to check the validity of a login can lead to a authorization bypass.
+ * @name PAM authorization bypass due to incorrect usage
+ * @description Not using `pam_acct_mgmt` after `pam_authenticate` to check the validity of a login can lead to authorization bypass.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 8.1
  * @precision high
  * @id py/pam-auth-bypass
  * @tags security
@@ -33,4 +34,5 @@ where
     acctMgmtCall = libPam().getMember("pam_acct_mgmt").getACall() and
     DataFlow::localFlow(handle, acctMgmtCall.getArg(0))
   )
-select authenticateCall, "This PAM authentication call may be lead to an authorization bypass."
+select authenticateCall,
+  "This PAM authentication call may lead to an authorization bypass, since 'pam_acct_mgmt' is not called afterwards."

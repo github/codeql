@@ -9,7 +9,9 @@
     <p>
       A
       <code>pam_authenticate</code>
-      only verifies the credentials of a user. It does not check if a user has an appropriate authorization to actually login. This means a user with a expired login or a password can still access the system.
+      only verifies the credentials of a user. It does not check if a user has an
+      appropriate authorization to actually login. This means a user with an expired
+      login or a password can still access the system.
     </p>
 
   </overview>
@@ -26,7 +28,9 @@
 
   <example>
     <p>
-      In the following example, the code only checks the credentials of a user. Hence, in this case, a user expired with expired creds can still login. This can be verified by creating a new user account, expiring it with
+      In the following example, the code only checks the credentials of a user. Hence,
+      in this case, a user with expired credentials can still login. This can be
+      verified by creating a new user account, expiring it with
       <code>chage -E0 `username` </code>
       and then trying to log in.
     </p>
