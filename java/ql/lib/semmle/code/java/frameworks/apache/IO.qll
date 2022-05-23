@@ -1,11 +1,15 @@
 /** Custom definitions related to the Apache Commons IO library. */
 
 import java
-import IOGenerated
 private import semmle.code.java.dataflow.ExternalFlow
 
-// TODO: manual models that were not generated yet
 private class ApacheCommonsIOCustomSummaryCsv extends SummaryModelCsv {
+  /**
+   * Models that are not yet auto generated or where the generated summaries will
+   * be ignored.
+   * Note that if a callable has any handwritten summary, all generated summaries
+   * will be ignored for that callable.
+   */
   override predicate row(string row) {
     row =
       [
