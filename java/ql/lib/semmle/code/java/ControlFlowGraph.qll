@@ -911,7 +911,8 @@ private module ControlFlowGraphImpl {
     )
     or
     // the last node in an `ExprStmt` is the last node in the expression
-    last(n.(ExprStmt).getExpr(), last, completion) and completion instanceof NormalOrBooleanCompletion
+    last(n.(ExprStmt).getExpr(), last, completion) and
+    completion instanceof NormalOrBooleanCompletion
     or
     // the last node in a `StmtExpr` is the last node in the statement
     last(n.(StmtExpr).getStmt(), last, completion)
