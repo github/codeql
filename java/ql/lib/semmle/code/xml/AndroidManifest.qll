@@ -99,6 +99,9 @@ class AndroidProviderXmlElement extends AndroidComponentXmlElement {
     this.getAnAttribute().(AndroidPermissionXmlAttribute).isRead()
   }
 
+  /**
+   * Holds if this provider element has the attribute `android:grantUriPermissions` set to `true`.
+   */
   predicate grantsUriPermissions() {
     exists(AndroidXmlAttribute attr |
       this.getAnAttribute() = attr and

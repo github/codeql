@@ -111,7 +111,7 @@ string asPartialModel(TargetApiSpecific api) {
 }
 
 private predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
-  t.getName().regexpMatch("byte|char|Byte|Character")
+  t.hasName(["byte", "char", "Byte", "Character"])
 }
 
 /**

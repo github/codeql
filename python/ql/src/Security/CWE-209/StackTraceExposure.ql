@@ -14,10 +14,10 @@
  */
 
 import python
-import semmle.python.security.dataflow.StackTraceExposure
+import semmle.python.security.dataflow.StackTraceExposureQuery
 import DataFlow::PathGraph
 
-from StackTraceExposure::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ may be exposed to an external user", source.getNode(),
   "Error information"

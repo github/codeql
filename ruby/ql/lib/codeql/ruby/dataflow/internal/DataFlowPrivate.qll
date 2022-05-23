@@ -199,9 +199,11 @@ private class Argument extends CfgNodes::ExprCfgNode {
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
+  private import TaintTrackingPrivate as TaintTrackingPrivate
+
   cached
   newtype TNode =
-    TExprNode(CfgNodes::ExprCfgNode n) or
+    TExprNode(CfgNodes::ExprCfgNode n) { TaintTrackingPrivate::forceCachingInSameStage() } or
     TReturningNode(CfgNodes::ReturningCfgNode n) or
     TSynthReturnNode(CfgScope scope, ReturnKind kind) {
       exists(ReturningNode ret |
@@ -252,7 +254,7 @@ private module Cached {
     nodeTo.(SynthReturnNode).getAnInput() = nodeFrom
     or
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo) and
-    not FlowSummaryImpl::Private::Steps::summaryClearsContentArg(nodeFrom, _)
+    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom)
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
@@ -270,7 +272,7 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, true)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo)
   }
 
   /** This is the local flow predicate that is used in type tracking. */
@@ -302,12 +304,12 @@ private module Cached {
     or
     n instanceof PostUpdateNodes::ExprPostUpdateNode
     or
-    // Expressions that can't be reached from another entry definition or expression.
+    // Nodes that can't be reached from another entry definition or expression.
     not localFlowStepTypeTracker+(any(Node n0 |
         n0 instanceof ExprNode
         or
         entrySsaDefinition(n0)
-      ), n.(ExprNode))
+      ), n)
     or
     // Ensure all entry SSA definitions are local sources -- for parameters, this
     // is needed by type tracking. Note that when the parameter has a default value,
@@ -317,10 +319,17 @@ private module Cached {
   }
 
   cached
+  newtype TContentSet =
+    TSingletonContent(Content c) or
+    TAnyElementContent()
+
+  cached
   newtype TContent =
-    TKnownArrayElementContent(int i) { i in [0 .. 10] } or
-    TUnknownArrayElementContent() or
-    TAnyArrayElementContent()
+    TKnownElementContent(ConstantValue cv) {
+      not cv.isInt(_) or
+      cv.getInt() in [0 .. 10]
+    } or
+    TUnknownElementContent()
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
@@ -337,7 +346,7 @@ private module Cached {
   }
 }
 
-class TArrayElementContent = TKnownArrayElementContent or TUnknownArrayElementContent;
+class TElementContent = TKnownElementContent or TUnknownElementContent;
 
 import Cached
 
@@ -521,12 +530,12 @@ private module ParameterNodes {
     override predicate isSourceParameterOf(Callable c, ParameterPosition pos) { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      sc = c and pos = pos_
+      sc = c.asLibraryCallable() and pos = pos_
     }
 
     override CfgScope getCfgScope() { none() }
 
-    override DataFlowCallable getEnclosingCallable() { result = sc }
+    override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = sc }
 
     override EmptyLocation getLocationImpl() { any() }
 
@@ -545,7 +554,7 @@ class SummaryNode extends NodeImpl, TSummaryNode {
 
   override CfgScope getCfgScope() { none() }
 
-  override DataFlowCallable getEnclosingCallable() { result = c }
+  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
   override EmptyLocation getLocationImpl() { any() }
 
@@ -767,27 +776,21 @@ private module OutNodes {
 import OutNodes
 
 predicate jumpStep(Node pred, Node succ) {
-  SsaImpl::captureFlowIn(pred.(SsaDefinitionNode).getDefinition(),
+  SsaImpl::captureFlowIn(_, pred.(SsaDefinitionNode).getDefinition(),
     succ.(SsaDefinitionNode).getDefinition())
   or
-  SsaImpl::captureFlowOut(pred.(SsaDefinitionNode).getDefinition(),
+  SsaImpl::captureFlowOut(_, pred.(SsaDefinitionNode).getDefinition(),
     succ.(SsaDefinitionNode).getDefinition())
   or
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
 }
 
-predicate storeStep(Node node1, Content c, Node node2) {
+predicate storeStep(Node node1, ContentSet c, Node node2) {
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
 
-predicate readStep(Node node1, Content c, Node node2) {
-  exists(Content c0 | FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c0, node2) |
-    if c0 = TAnyArrayElementContent()
-    then
-      c instanceof TUnknownArrayElementContent or
-      c instanceof TKnownArrayElementContent
-    else c = c0
-  )
+predicate readStep(Node node1, ContentSet c, Node node2) {
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
 }
 
 /**
@@ -795,8 +798,16 @@ predicate readStep(Node node1, Content c, Node node2) {
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
+}
+
+/**
+ * Holds if the value that is being tracked is expected to be stored inside content `c`
+ * at node `n`.
+ */
+predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
 }
 
 private newtype TDataFlowType =
@@ -820,24 +831,13 @@ string ppReprType(DataFlowType t) { result = t.toString() }
 pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
-/**
- * A node associated with an object after an operation that might have
- * changed its state.
- *
- * This can be either the argument to a callable after the callable returns
- * (which might have mutated the argument), or the qualifier of a field after
- * an update to the field.
- *
- * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
- * to the value before the update.
- */
-abstract class PostUpdateNode extends Node {
+abstract class PostUpdateNodeImpl extends Node {
   /** Gets the node before the state update. */
   abstract Node getPreUpdateNode();
 }
 
 private module PostUpdateNodes {
-  class ExprPostUpdateNode extends PostUpdateNode, NodeImpl, TExprPostUpdateNode {
+  class ExprPostUpdateNode extends PostUpdateNodeImpl, NodeImpl, TExprPostUpdateNode {
     private CfgNodes::ExprCfgNode e;
 
     ExprPostUpdateNode() { this = TExprPostUpdateNode(e) }
@@ -851,7 +851,7 @@ private module PostUpdateNodes {
     override string toStringImpl() { result = "[post] " + e.toString() }
   }
 
-  private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
+  private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNodeImpl {
     private Node pre;
 
     SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
@@ -875,7 +875,7 @@ int accessPathLimit() { result = 5 }
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) { none() }
+predicate forceHighPrecision(Content c) { c instanceof Content::ElementContent }
 
 /** The unit type. */
 private newtype TUnit = TMkUnit()

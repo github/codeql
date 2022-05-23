@@ -117,7 +117,7 @@ class Modifiable extends Declaration, @modifiable {
    * Note that explicit interface implementations are also considered effectively
    * `private` if the implemented interface is itself effectively `private`. Finally,
    * `private protected` members are not considered effectively `private`, because
-   * they can be overriden within the declaring assembly.
+   * they can be overridden within the declaring assembly.
    */
   predicate isEffectivelyPrivate() {
     this.isReallyPrivate() or
@@ -143,7 +143,7 @@ class Modifiable extends Declaration, @modifiable {
    * considered. Explicit interface implementations are also considered effectively
    * `internal` if the implemented interface is itself effectively `internal`. Finally,
    * `internal protected` members are not considered effectively `internal`, because
-   * they can be overriden outside the declaring assembly.
+   * they can be overridden outside the declaring assembly.
    */
   predicate isEffectivelyInternal() {
     this.isReallyInternal() or

@@ -112,23 +112,26 @@ private predicate isOsFromApacheCommons(FieldAccess fa, string fieldNamePattern)
 }
 
 private class IsWindowsFromApacheCommons extends IsWindowsGuard instanceof FieldAccess {
-  IsWindowsFromApacheCommons() { isOsFromApacheCommons(this, "IS_OS_WINDOWS") }
+  IsWindowsFromApacheCommons() { isOsFromApacheCommons(this, "IS\\_OS\\_WINDOWS") }
 }
 
 private class IsSpecificWindowsVariantFromApacheCommons extends IsSpecificWindowsVariant instanceof FieldAccess {
-  IsSpecificWindowsVariantFromApacheCommons() { isOsFromApacheCommons(this, "IS_OS_WINDOWS_%") }
+  IsSpecificWindowsVariantFromApacheCommons() {
+    isOsFromApacheCommons(this, "IS\\_OS\\_WINDOWS\\_%")
+  }
 }
 
 private class IsUnixFromApacheCommons extends IsUnixGuard instanceof FieldAccess {
-  IsUnixFromApacheCommons() { isOsFromApacheCommons(this, "IS_OS_UNIX") }
+  IsUnixFromApacheCommons() { isOsFromApacheCommons(this, "IS\\_OS\\_UNIX") }
 }
 
 private class IsSpecificUnixVariantFromApacheCommons extends IsSpecificUnixVariant instanceof FieldAccess {
   IsSpecificUnixVariantFromApacheCommons() {
     isOsFromApacheCommons(this,
       [
-        "IS_OS_AIX", "IS_OS_HP_UX", "IS_OS_IRIX", "IS_OS_LINUX", "IS_OS_MAC%", "IS_OS_FREE_BSD",
-        "IS_OS_OPEN_BSD", "IS_OS_NET_BSD", "IS_OS_SOLARIS", "IS_OS_SUN_OS", "IS_OS_ZOS"
+        "IS\\_OS\\_AIX", "IS\\_OS\\_HP\\_UX", "IS\\_OS\\_IRIX", "IS\\_OS\\_LINUX", "IS\\_OS\\_MAC%",
+        "IS\\_OS\\_FREE\\_BSD", "IS\\_OS\\_OPEN\\_BSD", "IS\\_OS\\_NET\\_BSD", "IS\\_OS\\_SOLARIS",
+        "IS\\_OS\\_SUN\\_OS", "IS\\_OS\\_ZOS"
       ])
   }
 }

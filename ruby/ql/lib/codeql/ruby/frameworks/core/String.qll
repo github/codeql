@@ -5,6 +5,81 @@ private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
+private import codeql.ruby.controlflow.CfgNodes
+private import codeql.ruby.Regexp as RE
+
+/**
+ * A call to a string substitution method, i.e. `String#sub`, `String#sub!`,
+ * `String#gsub`, or `String#gsub!`.
+ *
+ * We heuristically include any call to a method matching the above names,
+ * provided it has exactly two arguments and a receiver.
+ */
+class StringSubstitutionCall extends DataFlow::CallNode {
+  StringSubstitutionCall() {
+    this.getMethodName() = ["sub", "sub!", "gsub", "gsub!"] and
+    exists(this.getReceiver()) and
+    this.getNumberOfArguments() = 2
+  }
+
+  /**
+   * Holds if this is a global substitution, i.e. this is a call to `gsub` or
+   * `gsub!`.
+   */
+  predicate isGlobal() { this.getMethodName() = ["gsub", "gsub!"] }
+
+  /**
+   * Holds if this is a destructive substitution, i.e. this is a call to `sub!`
+   * or `gsub!`.
+   */
+  predicate isDestructive() { this.getMethodName() = ["sub!", "gsub!"] }
+
+  /** Gets the first argument to this call. */
+  DataFlow::Node getPatternArgument() { result = this.getArgument(0) }
+
+  /** Gets the second argument to this call. */
+  DataFlow::Node getReplacementArgument() { result = this.getArgument(1) }
+
+  /**
+   * Gets the regular expression passed as the first (pattern) argument in this
+   * call, if any.
+   */
+  RE::RegExpPatternSource getPatternRegExp() {
+    // TODO: using local flow means we miss regexps defined as constants outside
+    // of the function scope.
+    result.(DataFlow::LocalSourceNode).flowsTo(this.getPatternArgument())
+  }
+
+  /**
+   * Gets the string value passed as the first (pattern) argument in this call,
+   * if any.
+   */
+  string getPatternString() {
+    result = this.getPatternArgument().asExpr().getConstantValue().getString()
+  }
+
+  /**
+   * Gets the string value passed as the second (replacement) argument in this
+   * call, if any.
+   */
+  string getReplacementString() {
+    result = this.getReplacementArgument().asExpr().getConstantValue().getString()
+  }
+
+  /** Gets a string that is being replaced by this call. */
+  string getAReplacedString() {
+    result = this.getPatternRegExp().getRegExpTerm().getAMatchedString()
+    or
+    result = this.getPatternString()
+  }
+
+  /** Holds if this call to `replace` replaces `old` with `new`. */
+  predicate replaces(string old, string new) {
+    old = this.getAReplacedString() and
+    new = this.getReplacementString()
+    // TODO: handle block-variant of the call
+  }
+}
 
 /**
  * Provides flow summaries for the `String` class.
@@ -58,7 +133,7 @@ module String {
     FormatSummary() { this = "%" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Argument[self]", "Argument[0]", "Argument[0].ArrayElement"] and
+      input = ["Argument[self]", "Argument[0]", "Argument[0].Element[any]"] and
       output = "ReturnValue" and
       preservesValue = false
     }
@@ -152,7 +227,7 @@ module String {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Argument[self]", "Argument[_]"] and
+      input = "Argument[self,0..]" and
       output = ["ReturnValue", "Argument[self]"] and
       preservesValue = false
     }
@@ -226,7 +301,7 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       preservesValue = false and
       input = "Argument[self]" and
-      output = "ReturnValue.ArrayElement[?]"
+      output = "ReturnValue.Element[?]"
     }
   }
 
@@ -340,7 +415,7 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
-      output = "ReturnValue.ArrayElement[" + [0, 1, 2] + "]" and
+      output = "ReturnValue.Element[0,1,2]" and
       preservesValue = false
     }
   }
@@ -405,7 +480,7 @@ module String {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       // scan(pattern) -> array
       input = "Argument[self]" and
-      output = "ReturnValue.ArrayElement[?]" and
+      output = "ReturnValue.Element[?]" and
       preservesValue = false
     }
   }
@@ -472,7 +547,7 @@ module String {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
-      output = "ReturnValue.ArrayElement[?]" and
+      output = "ReturnValue.Element[?]" and
       preservesValue = false
     }
   }
@@ -556,7 +631,7 @@ module String {
       preservesValue = false
       or
       input = "Argument[block].ReturnValue" and
-      output = "ReturnValue.ArrayElement[?]" and
+      output = "ReturnValue.Element[?]" and
       preservesValue = false
     }
   }
@@ -576,7 +651,7 @@ module String {
       preservesValue = false
       or
       input = "Argument[block].ReturnValue" and
-      output = "ReturnValue.ArrayElement[?]" and
+      output = "ReturnValue.Element[?]" and
       preservesValue = false
     }
   }

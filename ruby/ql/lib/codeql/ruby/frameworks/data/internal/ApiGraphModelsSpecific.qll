@@ -4,6 +4,7 @@
  * It must export the following members:
  * ```ql
  * class Unit // a unit type
+ * module AccessPathSyntax // a re-export of the AccessPathSyntax module
  * class InvokeNode // a type representing an invocation connected to the API graph
  * module API // the API graph module
  * predicate isPackageUsed(string package)
@@ -12,6 +13,9 @@
  * API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token)
  * predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathToken token)
  * InvokeNode getAnInvocationOf(API::Node node)
+ * predicate isExtraValidTokenNameInIdentifyingAccessPath(string name)
+ * predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name)
+ * predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument)
  * ```
  */
 
@@ -113,8 +117,8 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   result =
     node.getASuccessor(API::Label::getLabelFromArgumentPosition(FlowSummaryImplSpecific::parseParamBody(token
               .getAnArgument())))
-  // Note: The "ArrayElement" token is not implemented yet, as it ultimately requires type-tracking and
-  // API graphs to be aware of the steps involving ArrayElement contributed by the standard library model.
+  // Note: The "Element" token is not implemented yet, as it ultimately requires type-tracking and
+  // API graphs to be aware of the steps involving Element contributed by the standard library model.
   // Type-tracking cannot summarize function calls on its own, so it doesn't benefit from synthesized callables.
 }
 
@@ -159,7 +163,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
 }
 
 /**
- * Holds if `name` is a valid name for an access path token with no arguments, occuring
+ * Holds if `name` is a valid name for an access path token with no arguments, occurring
  * in an identifying access path.
  */
 predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {

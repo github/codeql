@@ -5,7 +5,7 @@
 
 import cpp
 
-from AnalysedString s, string str
+from AnalyzedString s, string str
 where
   if s.(StringLiteral).getUnspecifiedType().(DerivedType).getBaseType() instanceof Wchar_t
   then str = "[?]"

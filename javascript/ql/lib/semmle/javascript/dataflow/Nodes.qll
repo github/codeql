@@ -786,6 +786,8 @@ class MemberKind extends string {
   predicate isAccessor() { this = MemberKind::accessor() }
 }
 
+private import internal.StepSummary
+
 module MemberKind {
   /** Gets the kind of a method, such as `m() {}` */
   MemberKind method() { result = "method" }
@@ -897,16 +899,30 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
   FunctionNode getAnInstanceMember() { result = super.getAnInstanceMember(_) }
 
   /**
+   * Gets the static method, getter, or setter declared in this class with the given name and kind.
+   */
+  FunctionNode getStaticMember(string name, MemberKind kind) {
+    result = super.getStaticMember(name, kind)
+  }
+
+  /**
    * Gets the static method declared in this class with the given name.
    */
-  FunctionNode getStaticMethod(string name) { result = super.getStaticMethod(name) }
+  FunctionNode getStaticMethod(string name) {
+    result = this.getStaticMember(name, MemberKind::method())
+  }
+
+  /**
+   * Gets a static method, getter, or setter declared in this class with the given kind.
+   */
+  FunctionNode getAStaticMember(MemberKind kind) { result = super.getAStaticMember(kind) }
 
   /**
    * Gets a static method declared in this class.
    *
    * The constructor is not considered a static method.
    */
-  FunctionNode getAStaticMethod() { result = super.getAStaticMethod() }
+  FunctionNode getAStaticMethod() { result = this.getAStaticMember(MemberKind::method()) }
 
   /**
    * Gets a dataflow node that refers to the superclass of this class.
@@ -960,7 +976,16 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
       result.getAstNode().getFile() = this.getAstNode().getFile()
     )
     or
-    exists(DataFlow::TypeTracker t2 | result = this.getAClassReference(t2).track(t2, t))
+    result = this.getAClassReferenceRec(t)
+  }
+
+  pragma[noopt]
+  private DataFlow::SourceNode getAClassReferenceRec(DataFlow::TypeTracker t) {
+    exists(DataFlow::TypeTracker t2, StepSummary summary, DataFlow::SourceNode prev |
+      prev = this.getAClassReference(t2) and
+      StepSummary::step(prev, result, summary) and
+      t = t2.append(summary)
+    )
   }
 
   /**
@@ -1108,18 +1133,34 @@ module ClassNode {
     abstract FunctionNode getAnInstanceMember(MemberKind kind);
 
     /**
+     * Gets the static member of this class with the given name and kind.
+     */
+    cached
+    abstract FunctionNode getStaticMember(string name, MemberKind kind);
+
+    /**
+     * DEPRECATED. Override `getStaticMember` instead.
+     *
      * Gets the static method of this class with the given name.
      */
     cached
-    abstract FunctionNode getStaticMethod(string name);
+    deprecated FunctionNode getStaticMethod(string name) { none() }
 
     /**
+     * Gets a static member of this class of the given kind.
+     */
+    cached
+    abstract FunctionNode getAStaticMember(MemberKind kind);
+
+    /**
+     * DEPRECATED. Override `getAStaticMember` instead.
+     *
      * Gets a static method of this class.
      *
      * The constructor is not considered a static method.
      */
     cached
-    abstract FunctionNode getAStaticMethod();
+    deprecated FunctionNode getAStaticMethod() { none() }
 
     /**
      * Gets a dataflow node representing a class to be used as the super-class
@@ -1175,23 +1216,27 @@ module ClassNode {
       result = this.getConstructor().getReceiver().getAPropertySource()
     }
 
-    override FunctionNode getStaticMethod(string name) {
+    override FunctionNode getStaticMember(string name, MemberKind kind) {
       exists(MethodDeclaration method |
         method = astNode.getMethod(name) and
         method.isStatic() and
+        kind = MemberKind::of(method) and
         result = method.getBody().flow()
       )
       or
+      kind.isMethod() and
       result = this.getAPropertySource(name)
     }
 
-    override FunctionNode getAStaticMethod() {
+    override FunctionNode getAStaticMember(MemberKind kind) {
       exists(MethodDeclaration method |
         method = astNode.getAMethod() and
         method.isStatic() and
+        kind = MemberKind::of(method) and
         result = method.getBody().flow()
       )
       or
+      kind.isMethod() and
       result = this.getAPropertySource()
     }
 
@@ -1289,9 +1334,15 @@ module ClassNode {
       )
     }
 
-    override FunctionNode getStaticMethod(string name) { result = this.getAPropertySource(name) }
+    override FunctionNode getStaticMember(string name, MemberKind kind) {
+      kind.isMethod() and
+      result = this.getAPropertySource(name)
+    }
 
-    override FunctionNode getAStaticMethod() { result = this.getAPropertySource() }
+    override FunctionNode getAStaticMember(MemberKind kind) {
+      kind.isMethod() and
+      result = this.getAPropertySource()
+    }
 
     /**
      * Gets a reference to the prototype of this class.
@@ -1633,5 +1684,9 @@ class RegExpCreationNode extends DataFlow::SourceNode {
   }
 
   /** Gets a data flow node referring to this regular expression. */
-  DataFlow::SourceNode getAReference() { result = this.getAReference(DataFlow::TypeTracker::end()) }
+  cached
+  DataFlow::SourceNode getAReference() {
+    Stages::FlowSteps::ref() and
+    result = this.getAReference(DataFlow::TypeTracker::end())
+  }
 }

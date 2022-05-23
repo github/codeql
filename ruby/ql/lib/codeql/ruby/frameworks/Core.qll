@@ -12,6 +12,7 @@ import core.Module
 import core.Array
 import core.String
 import core.Regexp
+import core.IO
 
 /**
  * A system command executed via subshell literal syntax.
@@ -61,11 +62,11 @@ private class SplatSummary extends SummarizedCallable {
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     (
       // *1 = [1]
-      input = "Argument[self]" and
-      output = "ReturnValue.ArrayElement[0]"
+      input = "Argument[self].WithoutElement[any]" and
+      output = "ReturnValue.Element[0]"
       or
       // *[1] = [1]
-      input = "Argument[self]" and
+      input = "Argument[self].WithElement[any]" and
       output = "ReturnValue"
     ) and
     preservesValue = true

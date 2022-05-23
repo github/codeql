@@ -438,13 +438,27 @@ class SwitchCase extends Stmt, @case {
 
   /**
    * Gets the expression on the right-hand side of the arrow, if any.
+   *
+   * Note, this predicate gets a value when this switch case is of the form
+   * `case e1 -> e2`, where `e2` is neither a block nor a throw statement.
+   * This predicate is mutually exclusive with `getRuleStatement`.
    */
-  Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
+  Expr getRuleExpression() {
+    result.getParent() = this and result.getIndex() = -1
+    or
+    exists(ExprStmt es | es.getParent() = this and es.getIndex() = -1 | result = es.getExpr())
+  }
 
   /**
    * Gets the statement on the right-hand side of the arrow, if any.
+   *
+   * Note, this predicate gets a value when this switch case is of the form
+   * `case e1 -> { s1; s2; ... }` or `case e1 -> throw ...`.
+   * This predicate is mutually exclusive with `getRuleExpression`.
    */
-  Stmt getRuleStatement() { result.getParent() = this and result.getIndex() = -1 }
+  Stmt getRuleStatement() {
+    result.getParent() = this and result.getIndex() = -1 and not result instanceof ExprStmt
+  }
 }
 
 /** A constant `case` of a switch statement. */
@@ -556,14 +570,10 @@ class ThrowStmt extends Stmt, @throwstmt {
   override string getAPrimaryQlClass() { result = "ThrowStmt" }
 }
 
-/** A `break`, `yield` or `continue` statement. */
-class JumpStmt extends Stmt {
-  JumpStmt() {
-    this instanceof BreakStmt or
-    this instanceof YieldStmt or
-    this instanceof ContinueStmt
-  }
+private class JumpStmt_ = @breakstmt or @yieldstmt or @continuestmt;
 
+/** A `break`, `yield` or `continue` statement. */
+class JumpStmt extends Stmt, JumpStmt_ {
   /**
    * Gets the labeled statement that this `break` or
    * `continue` statement refers to, if any.
@@ -584,12 +594,7 @@ class JumpStmt extends Stmt {
     )
   }
 
-  private SwitchExpr getSwitchExprTarget() { result = this.(YieldStmt).getParent+() }
-
   private StmtParent getEnclosingTarget() {
-    result = this.getSwitchExprTarget()
-    or
-    not exists(this.getSwitchExprTarget()) and
     result = this.getAPotentialTarget() and
     not exists(Stmt other | other = this.getAPotentialTarget() | other.getEnclosingStmt+() = result)
   }
@@ -598,6 +603,7 @@ class JumpStmt extends Stmt {
    * Gets the statement or `switch` expression that this `break`, `yield` or `continue` jumps to.
    */
   StmtParent getTarget() {
+    // Note: This implementation only considers `break` and `continue`; YieldStmt overrides this predicate
     result = this.getLabelTarget()
     or
     not exists(this.getLabelTarget()) and result = this.getEnclosingTarget()
@@ -605,7 +611,7 @@ class JumpStmt extends Stmt {
 }
 
 /** A `break` statement. */
-class BreakStmt extends Stmt, @breakstmt {
+class BreakStmt extends JumpStmt, @breakstmt {
   /** Gets the label targeted by this `break` statement, if any. */
   string getLabel() { namestrings(result, _, this) }
 
@@ -626,11 +632,20 @@ class BreakStmt extends Stmt, @breakstmt {
 /**
  * A `yield` statement.
  */
-class YieldStmt extends Stmt, @yieldstmt {
+class YieldStmt extends JumpStmt, @yieldstmt {
   /**
    * Gets the value of this `yield` statement.
    */
   Expr getValue() { result.getParent() = this }
+
+  /**
+   * Gets the `switch` expression target of this `yield` statement.
+   */
+  override SwitchExpr getTarget() {
+    // Get the innermost enclosing SwitchExpr; this works because getParent() is defined for Stmt and
+    // therefore won't proceed after the innermost SwitchExpr (due to it being an Expr)
+    result = this.getParent+()
+  }
 
   override string pp() { result = "yield ..." }
 
@@ -642,7 +657,7 @@ class YieldStmt extends Stmt, @yieldstmt {
 }
 
 /** A `continue` statement. */
-class ContinueStmt extends Stmt, @continuestmt {
+class ContinueStmt extends JumpStmt, @continuestmt {
   /** Gets the label targeted by this `continue` statement, if any. */
   string getLabel() { namestrings(result, _, this) }
 
@@ -872,3 +887,27 @@ class SuperConstructorInvocationStmt extends Stmt, ConstructorCall, @superconstr
 
   override string getAPrimaryQlClass() { result = "SuperConstructorInvocationStmt" }
 }
+
+/** A Kotlin loop statement. */
+class KtLoopStmt extends Stmt, @ktloopstmt {
+  KtLoopStmt() {
+    this instanceof WhileStmt or
+    this instanceof DoStmt
+  }
+}
+
+/** A Kotlin `break` or `continue` statement. */
+abstract class KtBreakContinueStmt extends Stmt, @breakcontinuestmt {
+  KtLoopStmt loop;
+
+  KtBreakContinueStmt() { ktBreakContinueTargets(this, loop) }
+
+  /** Gets the target loop statement of this `break`. */
+  KtLoopStmt getLoopStmt() { result = loop }
+}
+
+/** A Kotlin `break` statement. */
+class KtBreakStmt extends BreakStmt, KtBreakContinueStmt { }
+
+/** A Kotlin `continue` statement. */
+class KtContinueStmt extends ContinueStmt, KtBreakContinueStmt { }

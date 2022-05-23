@@ -26,6 +26,10 @@ class CheckedCast extends CastExpr {
 predicate hasTypeTest(Variable v) {
   any(InstanceOfExpr ioe).getExpr() = v.getAnAccess()
   or
+  any(NotInstanceOfExpr nioe).getExpr() = v.getAnAccess()
+  or
+  any(SafeCastExpr sce).getExpr() = v.getAnAccess()
+  or
   exists(MethodAccess ma |
     ma.getMethod().getName() = "getClass" and
     ma.getQualifier() = v.getAnAccess()

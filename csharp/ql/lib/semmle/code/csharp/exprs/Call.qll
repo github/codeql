@@ -5,7 +5,6 @@
  */
 
 import Expr
-import semmle.code.csharp.Callable
 import semmle.code.csharp.dataflow.CallContext as CallContext
 private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
@@ -176,8 +175,8 @@ class Call extends DotNet::Call, Expr, @call {
    * - Line 10: The static target is `Type.InvokeMember()`, whereas the run-time targets
    *   are both `A.M()` and `B.M()`.
    *
-   * - Line 16: There is no static target (delegate call) but the delegate `i => { }` (line
-   *   20) is a run-time target.
+   * - Line 16: There is no static target (delegate call) but the delegate `i => { }`
+   *   (line 20) is a run-time target.
    */
   override Callable getARuntimeTarget() {
     exists(DispatchCall dc | dc.getCall() = this | result = dc.getADynamicTarget())
@@ -569,7 +568,7 @@ class DelegateLikeCall extends Call, DelegateLikeCall_ {
   final override Callable getARuntimeTarget() {
     exists(ExplicitDelegateLikeDataFlowCall call |
       this = call.getCall() and
-      result = viableCallableLambda(call, _)
+      result = viableCallableLambda(call, _).getUnderlyingCallable()
     )
   }
 

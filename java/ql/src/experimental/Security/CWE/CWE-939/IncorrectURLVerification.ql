@@ -15,7 +15,7 @@ import java
 
 /**
  * The Java class `android.R.string` specific to Android applications, which contains references to application specific resources defined in /res/values/strings.xml.
- * For example, <resources>...<string name="host">example.com</string>...</resources> in the application com.example.android.web can be referred as R.string.host with the type com.example.android.web.R$string
+ * For example, `<resources>...<string name="host">example.com</string>...</resources>` in the application com.example.android.web can be referred as R.string.host with the type com.example.android.web.R$string
  */
 class AndroidRString extends RefType {
   AndroidRString() { this.hasQualifiedName(_, "R$string") }
@@ -43,7 +43,7 @@ class UriGetHostMethod extends Method {
 }
 
 /**
- * The method access with incorrect string comparision
+ * The method access with incorrect string comparison
  */
 class HostVerificationMethodAccess extends MethodAccess {
   HostVerificationMethodAccess() {

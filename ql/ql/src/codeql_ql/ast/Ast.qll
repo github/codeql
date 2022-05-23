@@ -79,6 +79,7 @@ class AstNode extends TAstNode {
 
   /** Gets an annotation of this AST node. */
   Annotation getAnAnnotation() {
+    not this instanceof Annotation and // avoid cyclic parent-child relationship
     toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent()
   }
 
@@ -125,6 +126,9 @@ class TopLevel extends TTopLevel, AstNode {
   /** Gets a `newtype` defined at the top-level of this module. */
   NewType getANewType() { result = this.getAMember() }
 
+  /** Gets a `select` clause in the top-level of this module. */
+  Select getASelect() { result = this.getAMember() }
+
   override ModuleMember getAChild(string pred) {
     pred = directMember("getAnImport") and result = this.getAnImport()
     or
@@ -137,6 +141,8 @@ class TopLevel extends TTopLevel, AstNode {
     pred = directMember("getANewType") and result = this.getANewType()
     or
     pred = directMember("getQLDoc") and result = this.getQLDoc()
+    or
+    pred = directMember("getASelect") and result = this.getASelect()
   }
 
   QLDoc getQLDocFor(ModuleMember m) {
@@ -547,6 +553,9 @@ class VarDef extends TVarDef, AstNode {
 
   Type getType() { none() }
 
+  /** Gets a variable access to this `VarDef` */
+  VarAccess getAnAccess() { result.getDeclaration() = this }
+
   override string getAPrimaryQlClass() { result = "VarDef" }
 
   override string toString() { result = this.getName() }
@@ -910,7 +919,7 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
 class Call extends TCall, Expr, Formula {
   /** Gets the `i`th argument of this call. */
   Expr getArgument(int i) {
-    none() // overriden in sublcasses.
+    none() // overridden in sublcasses.
   }
 
   /** Gets an argument of this call, if any. */
@@ -1892,13 +1901,13 @@ class FunctionSymbol extends string {
  */
 class BinOpExpr extends TBinOpExpr, Expr {
   /** Gets the left operand of the binary expression. */
-  Expr getLeftOperand() { none() } // overriden in subclasses
+  Expr getLeftOperand() { none() } // overridden in subclasses
 
   /** Gets the right operand of the binary expression. */
-  Expr getRightOperand() { none() } // overriden in subclasses
+  Expr getRightOperand() { none() } // overridden in subclasses
 
   /** Gets the operator of the binary expression. */
-  FunctionSymbol getOperator() { none() } // overriden in subclasses
+  FunctionSymbol getOperator() { none() } // overridden in subclasses
 
   /** Gets an operand of the binary expression. */
   final Expr getAnOperand() { result = this.getLeftOperand() or result = this.getRightOperand() }
@@ -2523,8 +2532,15 @@ module YAML {
      * Gets a QLPack that this QLPack depends on.
      */
     QLPack getADependency() {
-      exists(string name | this.hasDependency(name, _) |
-        result.getName().replaceAll("-", "/") = name.replaceAll("-", "/")
+      exists(string rawDep, string dep, string name | this.hasDependency(rawDep, _) |
+        dep = rawDep.replaceAll("-", "/") and
+        name = result.getName().replaceAll("-", "/") and
+        (
+          name = dep
+          or
+          name.matches("codeql/%") and
+          name = dep + "/all"
+        )
       )
     }
 

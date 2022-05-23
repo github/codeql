@@ -26,7 +26,7 @@ predicate loopCondition(LoopStmt loop, Expr cond, boolean polarity) {
     ifstmt.getEnclosingStmt*() = loop.getBody() and
     ifstmt.getCondition() = cond and
     (
-      exit.(BreakStmt).(JumpStmt).getTarget() = loop or
+      exit.(BreakStmt).getTarget() = loop or
       exit.(ReturnStmt).getEnclosingStmt*() = loop.getBody()
     ) and
     (

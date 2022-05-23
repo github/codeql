@@ -11,7 +11,10 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.ExternalProcess
 import semmle.code.java.security.CommandArguments
 
-private class RemoteUserInputToArgumentToExecFlowConfig extends TaintTracking::Configuration {
+/**
+ * A taint-tracking configuration for unvalidated user input that is used to run an external process.
+ */
+class RemoteUserInputToArgumentToExecFlowConfig extends TaintTracking::Configuration {
   RemoteUserInputToArgumentToExecFlowConfig() {
     this = "ExecCommon::RemoteUserInputToArgumentToExecFlowConfig"
   }

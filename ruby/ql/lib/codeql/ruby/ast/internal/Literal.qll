@@ -88,9 +88,11 @@ class RationalLiteralImpl extends Expr, TRationalLiteral {
 }
 
 float getComplexValue(Ruby::Complex c) {
+  exists(int n, int d | isRationalValue(c.getChild(), n, d) and result = n.(float) / d.(float))
+  or
   exists(string s |
-    s = c.getValue() and
-    result = s.prefix(s.length() - 1).toFloat()
+    s = c.getChild().(Ruby::Token).getValue() and
+    result = s.prefix(s.length()).toFloat()
   )
 }
 
@@ -103,15 +105,24 @@ class ComplexLiteralImpl extends Expr, TComplexLiteral {
     real = 0 and imaginary = getComplexValue(g)
   }
 
-  final override string toString() { result = g.getValue() }
+  final override string toString() {
+    result = g.getChild().(Ruby::Token).getValue() + "i" or
+    result = g.getChild().(Ruby::Rational).getChild().(Ruby::Token).getValue() + "ri"
+  }
 }
 
-class NilLiteralImpl extends Expr, TNilLiteral {
+abstract class NilLiteralImpl extends Expr, TNilLiteral {
+  final override string toString() { result = "nil" }
+}
+
+class NilLiteralReal extends NilLiteralImpl, TNilLiteralReal {
   private Ruby::Nil g;
 
-  NilLiteralImpl() { this = TNilLiteral(g) }
+  NilLiteralReal() { this = TNilLiteralReal(g) }
+}
 
-  final override string toString() { result = g.getValue() }
+class NilLiteralSynth extends NilLiteralImpl, TNilLiteralSynth {
+  NilLiteralSynth() { this = TNilLiteralSynth(_, _) }
 }
 
 abstract class BooleanLiteralImpl extends Expr, TBooleanLiteral {

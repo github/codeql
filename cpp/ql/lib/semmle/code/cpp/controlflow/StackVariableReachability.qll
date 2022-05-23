@@ -80,7 +80,11 @@ abstract class StackVariableReachability extends string {
         j > i and
         sink = bb.getNode(j) and
         this.isSink(sink, v) and
-        not exists(int k | this.isBarrier(bb.getNode(k), v) | k in [i + 1 .. j - 1])
+        not exists(int k, ControlFlowNode node |
+          node = bb.getNode(k) and this.isBarrier(pragma[only_bind_into](node), v)
+        |
+          k in [i + 1 .. j - 1]
+        )
       )
       or
       not exists(int k | this.isBarrier(bb.getNode(k), v) | k > i) and

@@ -1,0 +1,26 @@
+load("//swift:rules.bzl", "swift_cc_binary")
+
+swift_cc_binary(
+    name = "extractor",
+    srcs = [
+        "SwiftDispatcher.h",
+        "SwiftExtractor.cpp",
+        "SwiftExtractor.h",
+        "SwiftExtractorConfiguration.h",
+        "SwiftTagTraits.h",
+        "SwiftVisitor.h",
+        "main.cpp",
+        "visitors/DeclVisitor.h",
+        "visitors/ExprVisitor.h",
+        "visitors/PatternVisitor.h",
+        "visitors/StmtVisitor.h",
+        "visitors/TypeReprVisitor.h",
+        "visitors/TypeVisitor.h",
+        "visitors/VisitorBase.h",
+    ],
+    visibility = ["//swift:__pkg__"],
+    deps = [
+        "//swift/extractor/trap",
+        "//swift/tools/prebuilt:swift-llvm-support",
+    ],
+)

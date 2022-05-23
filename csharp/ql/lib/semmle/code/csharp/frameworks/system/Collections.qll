@@ -54,8 +54,8 @@ private class SystemCollectionsIEnumerableClearFlow extends SummarizedCallable {
     this.hasName("Clear")
   }
 
-  override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
-    pos.isThisParameter() and
+  override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
+    (if this.(Modifiable).isStatic() then pos.getPosition() = 0 else pos.isThisParameter()) and
     content instanceof DataFlow::ElementContent
   }
 }

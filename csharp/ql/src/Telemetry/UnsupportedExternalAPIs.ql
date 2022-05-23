@@ -2,7 +2,7 @@
  * @name Usage of unsupported APIs coming from external libraries
  * @description A list of 3rd party APIs used in the codebase. Excludes APIs exposed by test libraries.
  * @kind metric
- * @tags summary
+ * @tags summary telemetry
  * @id csharp/telemetry/unsupported-external-api
  */
 

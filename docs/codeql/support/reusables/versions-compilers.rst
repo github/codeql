@@ -16,8 +16,8 @@
    .NET Core up to 3.1
 
    .NET 5, .NET 6","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
-   Go (aka Golang), "Go up to 1.17", "Go 1.11 or more recent", ``.go``
-   Java,"Java 7 to 17 [4]_","javac (OpenJDK and Oracle JDK),
+   Go (aka Golang), "Go up to 1.18", "Go 1.11 or more recent", ``.go``
+   Java,"Java 7 to 18 [4]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [5]_",``.java``
    JavaScript,ECMAScript 2021 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [6]_"
@@ -30,7 +30,7 @@
     .. [1] C++20 support is currently in beta. Supported for GCC on Linux only. Modules are *not* supported.
     .. [2] Support for the clang-cl compiler is preliminary.
     .. [3] Support for the Arm Compiler (armcc) is preliminary.
-    .. [4] Builds that execute on Java 7 to 17 can be analyzed. The analysis understands Java 17 standard language features.
+    .. [4] Builds that execute on Java 7 to 18 can be analyzed. The analysis understands Java 18 standard language features.
     .. [5] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
     .. [6] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
     .. [7] Requires glibc 2.17.

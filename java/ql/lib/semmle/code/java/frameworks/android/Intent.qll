@@ -1,7 +1,7 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.FlowSteps
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSteps
 
 /**
  * The class `android.content.Intent`.
@@ -174,6 +174,25 @@ class GrantReadUriPermissionFlag extends GrantUriPermissionFlag {
 /** The field `Intent.FLAG_GRANT_WRITE_URI_PERMISSION`. */
 class GrantWriteUriPermissionFlag extends GrantUriPermissionFlag {
   GrantWriteUriPermissionFlag() { this.hasName("FLAG_GRANT_WRITE_URI_PERMISSION") }
+}
+
+/**
+ * A value-preserving step from the Intent argument of a `startActivity` call to
+ * a `getIntent` call in the Activity the Intent pointed to in its constructor.
+ */
+private class StartActivityIntentStep extends AdditionalValueStep {
+  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(MethodAccess startActivity, MethodAccess getIntent, ClassInstanceExpr newIntent |
+      startActivity.getMethod().overrides*(any(ContextStartActivityMethod m)) and
+      getIntent.getMethod().overrides*(any(AndroidGetIntentMethod m)) and
+      newIntent.getConstructedType() instanceof TypeIntent and
+      DataFlow::localExprFlow(newIntent, startActivity.getArgument(0)) and
+      newIntent.getArgument(1).getType().(ParameterizedType).getATypeArgument() =
+        getIntent.getReceiverType() and
+      n1.asExpr() = startActivity.getArgument(0) and
+      n2.asExpr() = getIntent
+    )
+  }
 }
 
 private class IntentBundleFlowSteps extends SummaryModelCsv {

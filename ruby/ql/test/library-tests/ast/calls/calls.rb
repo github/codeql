@@ -356,3 +356,9 @@ h = -> (x) do
   y
   unknown_call
 end
+
+# calls with various call operators
+list.empty?
+list&.empty?
+list::empty?
+foo&.bar(1,2) { |x| x }

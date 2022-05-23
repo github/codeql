@@ -387,26 +387,26 @@ from ``OneTwoThree`` and ``int``.
 Non-extending subtypes
 ======================
 
-Besides extending base types, classes can also declare `instanceof` relationships with other types.
-Declaring a class as `instanceof Foo` is roughly equivalent to saying `this instanceof Foo` in the characteristic predicate.
-The main differences are that you can call methods on Bar via `super` and you can get better optimisation.
+Besides extending base types, classes can also declare ``instanceof`` relationships with other types.
+Declaring a class as ``instanceof Foo`` is roughly equivalent to saying ``this instanceof Foo`` in the characteristic predicate.
+The main differences are that you can call methods on ``Bar`` via ``super`` and you can get better optimisation.
 
 .. code-block:: ql
 
     class Foo extends int {
       Foo() { this in [1 .. 10] }
 
-      string foo_method() { result = "foo" }
+      string fooMethod() { result = "foo" }
     }
 
     class Bar instanceof Foo {
-      string toString() { result = super.foo_method() }
+      string toString() { result = super.fooMethod() }
     }
 
-In this example, the characteristic predicate from `Foo` also applies to `Bar`.
-However, `foo_method` is not exposed in `Bar`, so the query `select any(Bar b).foo_method()`
+In this example, the characteristic predicate from ``Foo`` also applies to ``Bar``.
+However, ``fooMethod`` is not exposed in ``Bar``, so the query ``select any(Bar b).fooMethod()``
 results in a compile time error. Note from the example that it is still possible to access
-methods from instanceof supertypes from within the specialising class with the `super` keyword.
+methods from instanceof supertypes from within the specialising class with the ``super`` keyword.
 
 Crucially, the instanceof **supertypes** are not **base types**.
 This means that these supertypes do not participate in overriding, and any fields of such
@@ -430,10 +430,10 @@ The following example demonstrates this.
       override string foo() { result = "bar" }
     }
 
-Here, the method `Bar::foo` does not override `Foo::foo`.
-Instead, it overrides only `Interface::foo`.
-This means that `select any(Foo f).foo()` yields only `foo`.
-Had `Bar` been defined as `extends Foo`, then `select any(Foo b)` would yield `bar`.
+Here, the method ``Bar::foo`` does not override ``Foo::foo``.
+Instead, it overrides only ``Interface::foo``.
+This means that ``select any(Foo f).foo()`` yields ``foo``.
+Had ``Bar`` been defined as ``extends Foo``, then ``select any(Foo f).foo()`` would yield ``bar``.
 
 .. _character-types:
 .. _domain-types:

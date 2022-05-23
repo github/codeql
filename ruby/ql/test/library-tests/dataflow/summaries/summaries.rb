@@ -51,6 +51,12 @@ end
 sink(Foo.namedArg(foo: tainted)) # $ hasTaintFlow=tainted
 sink(Foo.namedArg(tainted))
 
+sink(Foo.anyArg(foo: tainted)) # $ hasTaintFlow=tainted
+sink(Foo.anyArg(tainted)) # $ hasTaintFlow=tainted
+
+sink(Foo.anyPositionFromOne(tainted))
+sink(Foo.anyPositionFromOne(0, tainted)) # $ hasTaintFlow=tainted
+
 Foo.intoNamedCallback(tainted, foo: ->(x) {
   sink(x) # $ hasTaintFlow=tainted
 })
@@ -64,3 +70,16 @@ Foo.startInNamedCallback(foo: ->(x) {
 Foo.startInNamedParameter(->(foo:) {
   sink(foo.preserveTaint(source("startInNamedParameter"))) # $ hasTaintFlow=startInNamedParameter
 })
+
+a = ["elem0", source("elem1"), source("elem2")]
+sink(a[0])
+sink(a[1]) # $ hasValueFlow=elem1
+sink(a[2]) # $ hasValueFlow=elem2
+b = a.withElementOne()
+sink(b[0])
+sink(b[1]) # $ hasValueFlow=elem1
+sink(b[2])
+a.withoutElementOne()
+sink(a[0])
+sink(a[1])
+sink(a[2]) # $ hasValueFlow=elem2
