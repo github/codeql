@@ -509,3 +509,23 @@ private module Cached {
 }
 
 import Cached
+
+/**
+ * Holds if `e` is an array constructed from an array literal.
+ * Example:
+ * ```rb
+ * [1, 2, 3]
+ * C = [1, 2, 3]; C
+ * x = [1, 2, 3]; x
+ * ```
+ */
+predicate isArrayConstant(ExprCfgNode e, ArrayLiteralCfgNode arr) {
+  // [...]
+  e = arr
+  or
+  // C = [...]; C
+  e.(ExprNodes::ConstantReadAccessCfgNode).getExpr().getValue().getDesugared() = arr.getExpr()
+  or
+  // x = [...]; x
+  exists(Ssa::WriteDefinition def | def.getARead() = e and def.assigns(arr))
+}

@@ -5,6 +5,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.CFG
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.SSA
+private import codeql.ruby.ast.internal.Constant
 
 private predicate stringConstCompare(CfgNodes::ExprCfgNode g, CfgNode e, boolean branch) {
   exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode c |
@@ -137,19 +138,7 @@ deprecated class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
   StringConstArrayInclusionCall() {
     this.getMethodName() = "include?" and
     this.getArgument(0) = checkedNode and
-    exists(ExprNodes::ArrayLiteralCfgNode arr |
-      // [...].include?
-      this.getReceiver() = arr
-      or
-      // C = [...]
-      // C.include?
-      this.getReceiver().(ExprNodes::ConstantReadAccessCfgNode).getExpr().getValue().getDesugared() =
-        arr.getExpr()
-      or
-      // x = [...]
-      // x.include?
-      exists(Ssa::WriteDefinition def | def.getARead() = this.getReceiver() and def.assigns(arr))
-    |
+    exists(ExprNodes::ArrayLiteralCfgNode arr | isArrayConstant(this.getReceiver(), arr) |
       forall(ExprCfgNode elem | elem = arr.getAnArgument() |
         elem instanceof ExprNodes::StringLiteralCfgNode
       )
