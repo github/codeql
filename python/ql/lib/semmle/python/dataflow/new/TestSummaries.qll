@@ -12,6 +12,8 @@ private class SummarizedCallableIdentity extends SummarizedCallable {
 
   override Call getACall() { result.getFunc().(Name).getId() = this }
 
+  override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
+
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
     output = "ReturnValue" and
@@ -24,6 +26,8 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
   SummarizedCallableApplyLambda() { this = "apply_lambda" }
 
   override Call getACall() { result.getFunc().(Name).getId() = this }
+
+  override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[1]" and
@@ -41,6 +45,8 @@ private class SummarizedCallableReversed extends SummarizedCallable {
 
   override Call getACall() { result.getFunc().(Name).getId() = this }
 
+  override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
+
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[0].ListElement" and
     output = "ReturnValue.ListElement" and
@@ -52,6 +58,8 @@ private class SummarizedCallableMap extends SummarizedCallable {
   SummarizedCallableMap() { this = "map" }
 
   override Call getACall() { result.getFunc().(Name).getId() = this }
+
+  override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[1].ListElement" and
@@ -71,6 +79,10 @@ private class SummarizedCallableJsonLoads extends SummarizedCallable {
 
   override Call getACall() {
     result = API::moduleImport("json").getMember("loads").getACall().asExpr()
+  }
+
+  override DataFlow::ArgumentNode getACallback() {
+    result = API::moduleImport("json").getMember("loads").getAUse()
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {

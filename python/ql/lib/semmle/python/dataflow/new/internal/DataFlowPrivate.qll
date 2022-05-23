@@ -942,10 +942,9 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
   )
   or
   // summarized function
-  exists(Call call, Name arg |
-    arg = call.getAnArg() and
-    c.(LibraryCallableValue).getName() = arg.getId() and
-    creation.asExpr() = arg
+  exists(Call call |
+    creation.asExpr() = call.getAnArg() and
+    creation = c.(LibraryCallableValue).getACallback()
   )
 }
 
