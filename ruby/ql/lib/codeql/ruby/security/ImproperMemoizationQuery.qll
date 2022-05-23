@@ -2,9 +2,9 @@
  * Provides predicates for reasoning about improper memoization methods.
  */
 
-import ruby
-import codeql.ruby.DataFlow
-import codeql.ruby.dataflow.internal.DataFlowDispatch
+private import ruby
+private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.internal.DataFlowDispatch
 
 /**
  * A `||=` statement that memoizes a value by storing it in an instance variable.
