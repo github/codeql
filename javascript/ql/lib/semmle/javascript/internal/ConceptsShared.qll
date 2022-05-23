@@ -43,9 +43,6 @@ module Cryptography {
     /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
     DataFlow::Node getAnInput() { result = super.getAnInput() }
 
-    /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
-    deprecated predicate isWeak() { super.isWeak() }
-
     /**
      * Gets the block mode used to perform this cryptographic operation.
      * This may have no result - for example if the `CryptographicAlgorithm` used
@@ -69,9 +66,6 @@ module Cryptography {
 
       /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
       abstract DataFlow::Node getAnInput();
-
-      /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
-      deprecated predicate isWeak() { this.getAlgorithm().isWeak() or this.getBlockMode().isWeak() }
 
       /**
        * Gets the block mode used to perform this cryptographic operation.
