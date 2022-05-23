@@ -1,6 +1,6 @@
 import sys
 
-from swift.codegen import cppgen
+from swift.codegen.generators import cppgen
 from swift.codegen.lib import cpp
 from swift.codegen.test.utils import *
 

@@ -3,7 +3,8 @@ import pathlib
 
 import inflection
 
-from swift.codegen.lib import paths, schema, generator
+from swift.codegen.lib import schema
+from swift.codegen.generators import generator
 from swift.codegen.lib.dbscheme import *
 
 log = logging.getLogger(__name__)

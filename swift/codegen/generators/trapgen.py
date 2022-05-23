@@ -5,7 +5,8 @@ import logging
 import inflection
 from toposort import toposort_flatten
 
-from swift.codegen.lib import dbscheme, generator, cpp
+from swift.codegen.lib import dbscheme, cpp
+from swift.codegen.generators import generator
 
 log = logging.getLogger(__name__)
 

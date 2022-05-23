@@ -5,7 +5,8 @@ import logging
 import sys
 from typing import Set
 
-from . import options, render, paths
+from swift.codegen.lib import render, paths
+from swift.codegen.generators import options
 
 
 def _parse(tags: Set[str]) -> argparse.Namespace:
