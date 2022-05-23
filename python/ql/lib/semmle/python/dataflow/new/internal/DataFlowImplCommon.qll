@@ -216,10 +216,9 @@ private module LambdaFlow {
     or
     // jump step
     exists(Node mid, DataFlowType t0 |
-      revLambdaFlow(lambdaCall, kind, mid, t0, _, _, _) and
+      revLambdaFlow(lambdaCall, kind, mid, t0, _, _, lastCall) and
       toReturn = false and
-      toJump = true and
-      lastCall = TDataFlowCallNone()
+      toJump = true
     |
       jumpStepCached(node, mid) and
       t = t0

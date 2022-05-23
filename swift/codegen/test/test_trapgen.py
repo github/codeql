@@ -1,6 +1,6 @@
 import sys
 
-from swift.codegen import trapgen
+from swift.codegen.generators import trapgen
 from swift.codegen.lib import cpp, dbscheme
 from swift.codegen.test.utils import *
 

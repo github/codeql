@@ -199,9 +199,11 @@ private class Argument extends CfgNodes::ExprCfgNode {
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
+  private import TaintTrackingPrivate as TaintTrackingPrivate
+
   cached
   newtype TNode =
-    TExprNode(CfgNodes::ExprCfgNode n) or
+    TExprNode(CfgNodes::ExprCfgNode n) { TaintTrackingPrivate::forceCachingInSameStage() } or
     TReturningNode(CfgNodes::ReturningCfgNode n) or
     TSynthReturnNode(CfgScope scope, ReturnKind kind) {
       exists(ReturningNode ret |
@@ -273,7 +275,7 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, true)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo)
   }
 
   /** This is the local flow predicate that is used in type tracking. */
@@ -299,6 +301,20 @@ private module Cached {
     )
   }
 
+  pragma[nomagic]
+  private predicate reachedFromExprOrEntrySsaDef(Node n) {
+    localFlowStepTypeTracker(any(Node n0 |
+        n0 instanceof ExprNode
+        or
+        entrySsaDefinition(n0)
+      ), n)
+    or
+    exists(Node mid |
+      reachedFromExprOrEntrySsaDef(mid) and
+      localFlowStepTypeTracker(mid, n)
+    )
+  }
+
   cached
   predicate isLocalSourceNode(Node n) {
     n instanceof ParameterNode
@@ -306,11 +322,7 @@ private module Cached {
     n instanceof PostUpdateNodes::ExprPostUpdateNode
     or
     // Nodes that can't be reached from another entry definition or expression.
-    not localFlowStepTypeTracker+(any(Node n0 |
-        n0 instanceof ExprNode
-        or
-        entrySsaDefinition(n0)
-      ), n)
+    not reachedFromExprOrEntrySsaDef(n)
     or
     // Ensure all entry SSA definitions are local sources -- for parameters, this
     // is needed by type tracking. Note that when the parameter has a default value,
@@ -532,12 +544,12 @@ private module ParameterNodes {
     override predicate isSourceParameterOf(Callable c, ParameterPosition pos) { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      sc = c and pos = pos_
+      sc = c.asLibraryCallable() and pos = pos_
     }
 
     override CfgScope getCfgScope() { none() }
 
-    override DataFlowCallable getEnclosingCallable() { result = sc }
+    override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = sc }
 
     override EmptyLocation getLocationImpl() { any() }
 
@@ -556,7 +568,7 @@ class SummaryNode extends NodeImpl, TSummaryNode {
 
   override CfgScope getCfgScope() { none() }
 
-  override DataFlowCallable getEnclosingCallable() { result = c }
+  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
   override EmptyLocation getLocationImpl() { any() }
 

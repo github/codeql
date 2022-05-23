@@ -35,8 +35,12 @@ def is_windows():
         return True
     return False
 
+# kotlinc might be kotlinc.bat or kotlinc.cmd on Windows, so we use `which` to find out what it is
+kotlinc = shutil.which('kotlinc')
+if kotlinc is None:
+    print("Cannot build the Kotlin extractor: no kotlinc found on your PATH", file = sys.stderr)
+    sys.exit(1)
 
-kotlinc = 'kotlinc.bat' if is_windows() else 'kotlinc'
 javac = 'javac'
 kotlin_dependency_folder = args.dependencies
 

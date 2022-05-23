@@ -1,0 +1,4 @@
+- description: Standard LGTM queries for Go
+- apply: codeql-suites/go-lgtm-full.qls
+- apply: lgtm-displayed-only.yml
+  from: codeql/suite-helpers

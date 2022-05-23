@@ -1,0 +1,6 @@
+# github.com/github/depstubber v0.0.0-20200618063247-cc37722ad494
+## explicit
+github.com/github/depstubber
+# golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+## explicit
+golang.org/x/crypto

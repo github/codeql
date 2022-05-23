@@ -1,0 +1,26 @@
+edges
+nodes
+| SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | semmle.label | "\\bforbidden.host.org" |
+| test.go:7:21:7:24 | "\\a" | semmle.label | "\\a" |
+| test.go:9:21:9:26 | "\\\\\\a" | semmle.label | "\\\\\\a" |
+| test.go:10:21:10:27 | "x\\\\\\a" | semmle.label | "x\\\\\\a" |
+| test.go:12:21:12:28 | "\\\\\\\\\\a" | semmle.label | "\\\\\\\\\\a" |
+| test.go:14:21:14:30 | "\\\\\\\\\\\\\\a" | semmle.label | "\\\\\\\\\\\\\\a" |
+| test.go:16:21:16:32 | "\\\\\\\\\\\\\\\\\\a" | semmle.label | "\\\\\\\\\\\\\\\\\\a" |
+| test.go:20:21:20:34 | "hello\\aworld" | semmle.label | "hello\\aworld" |
+| test.go:21:21:21:36 | "hello\\\\\\aworld" | semmle.label | "hello\\\\\\aworld" |
+| test.go:22:21:22:34 | "hello\\bworld" | semmle.label | "hello\\bworld" |
+| test.go:23:21:23:36 | "hello\\\\\\bworld" | semmle.label | "hello\\\\\\bworld" |
+subpaths
+#select
+| SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | $@ used $@ contains a literal backspace \\b; did you mean \\\\b, a word boundary? | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | A regular expression | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | here |
+| test.go:7:21:7:24 | "\\a" | test.go:7:21:7:24 | "\\a" | test.go:7:21:7:24 | "\\a" | $@ used $@ contains the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text? | test.go:7:21:7:24 | "\\a" | A regular expression | test.go:7:21:7:24 | "\\a" | here |
+| test.go:9:21:9:26 | "\\\\\\a" | test.go:9:21:9:26 | "\\\\\\a" | test.go:9:21:9:26 | "\\\\\\a" | $@ used $@ contains the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text? | test.go:9:21:9:26 | "\\\\\\a" | A regular expression | test.go:9:21:9:26 | "\\\\\\a" | here |
+| test.go:10:21:10:27 | "x\\\\\\a" | test.go:10:21:10:27 | "x\\\\\\a" | test.go:10:21:10:27 | "x\\\\\\a" | $@ used $@ contains the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text? | test.go:10:21:10:27 | "x\\\\\\a" | A regular expression | test.go:10:21:10:27 | "x\\\\\\a" | here |
+| test.go:12:21:12:28 | "\\\\\\\\\\a" | test.go:12:21:12:28 | "\\\\\\\\\\a" | test.go:12:21:12:28 | "\\\\\\\\\\a" | $@ used $@ contains the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text? | test.go:12:21:12:28 | "\\\\\\\\\\a" | A regular expression | test.go:12:21:12:28 | "\\\\\\\\\\a" | here |
+| test.go:14:21:14:30 | "\\\\\\\\\\\\\\a" | test.go:14:21:14:30 | "\\\\\\\\\\\\\\a" | test.go:14:21:14:30 | "\\\\\\\\\\\\\\a" | $@ used $@ contains the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text? | test.go:14:21:14:30 | "\\\\\\\\\\\\\\a" | A regular expression | test.go:14:21:14:30 | "\\\\\\\\\\\\\\a" | here |
+| test.go:16:21:16:32 | "\\\\\\\\\\\\\\\\\\a" | test.go:16:21:16:32 | "\\\\\\\\\\\\\\\\\\a" | test.go:16:21:16:32 | "\\\\\\\\\\\\\\\\\\a" | $@ used $@ contains the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text? | test.go:16:21:16:32 | "\\\\\\\\\\\\\\\\\\a" | A regular expression | test.go:16:21:16:32 | "\\\\\\\\\\\\\\\\\\a" | here |
+| test.go:20:21:20:34 | "hello\\aworld" | test.go:20:21:20:34 | "hello\\aworld" | test.go:20:21:20:34 | "hello\\aworld" | $@ used $@ contains the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text? | test.go:20:21:20:34 | "hello\\aworld" | A regular expression | test.go:20:21:20:34 | "hello\\aworld" | here |
+| test.go:21:21:21:36 | "hello\\\\\\aworld" | test.go:21:21:21:36 | "hello\\\\\\aworld" | test.go:21:21:21:36 | "hello\\\\\\aworld" | $@ used $@ contains the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text? | test.go:21:21:21:36 | "hello\\\\\\aworld" | A regular expression | test.go:21:21:21:36 | "hello\\\\\\aworld" | here |
+| test.go:22:21:22:34 | "hello\\bworld" | test.go:22:21:22:34 | "hello\\bworld" | test.go:22:21:22:34 | "hello\\bworld" | $@ used $@ contains a literal backspace \\b; did you mean \\\\b, a word boundary? | test.go:22:21:22:34 | "hello\\bworld" | A regular expression | test.go:22:21:22:34 | "hello\\bworld" | here |
+| test.go:23:21:23:36 | "hello\\\\\\bworld" | test.go:23:21:23:36 | "hello\\\\\\bworld" | test.go:23:21:23:36 | "hello\\\\\\bworld" | $@ used $@ contains a literal backspace \\b; did you mean \\\\b, a word boundary? | test.go:23:21:23:36 | "hello\\\\\\bworld" | A regular expression | test.go:23:21:23:36 | "hello\\\\\\bworld" | here |

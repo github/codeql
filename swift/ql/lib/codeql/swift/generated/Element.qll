@@ -13,4 +13,6 @@ class ElementBase extends @element {
     or
     result = getResolveStep().resolve()
   }
+
+  predicate isUnknown() { element_is_unknown(this) }
 }

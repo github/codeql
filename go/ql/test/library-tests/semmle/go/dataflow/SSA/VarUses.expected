@@ -1,0 +1,40 @@
+| main.go:15:12:15:12 | x | main.go:13:6:13:6 | x |
+| main.go:15:15:15:15 | y | main.go:14:2:14:2 | y |
+| main.go:17:3:17:3 | y | main.go:14:2:14:2 | y |
+| main.go:19:12:19:12 | x | main.go:13:6:13:6 | x |
+| main.go:19:15:19:15 | y | main.go:14:2:14:2 | y |
+| main.go:21:7:21:7 | y | main.go:14:2:14:2 | y |
+| main.go:23:12:23:12 | x | main.go:13:6:13:6 | x |
+| main.go:23:15:23:15 | y | main.go:14:2:14:2 | y |
+| main.go:27:10:27:10 | x | main.go:26:10:26:10 | x |
+| main.go:29:10:29:10 | b | main.go:27:5:27:5 | b |
+| main.go:29:13:29:13 | a | main.go:27:2:27:2 | a |
+| main.go:31:9:31:9 | a | main.go:27:2:27:2 | a |
+| main.go:31:12:31:12 | b | main.go:27:5:27:5 | b |
+| main.go:35:3:35:3 | x | main.go:34:11:34:11 | x |
+| main.go:40:10:40:10 | x | main.go:39:2:39:2 | x |
+| main.go:42:8:42:10 | ptr | main.go:40:2:40:4 | ptr |
+| main.go:44:12:44:12 | x | main.go:39:2:39:2 | x |
+| main.go:47:13:47:18 | implicit read of result | main.go:47:13:47:18 | result |
+| main.go:52:14:52:19 | implicit read of result | main.go:52:14:52:19 | result |
+| main.go:61:12:61:12 | x | main.go:57:6:57:6 | x |
+| main.go:64:16:64:16 | i | main.go:64:6:64:6 | i |
+| main.go:70:12:70:12 | y | main.go:63:2:63:2 | y |
+| main.go:73:16:73:16 | i | main.go:73:6:73:6 | i |
+| main.go:79:12:79:12 | z | main.go:72:2:72:2 | z |
+| main.go:82:18:82:18 | implicit read of a | main.go:82:18:82:18 | a |
+| main.go:82:25:82:25 | implicit read of b | main.go:82:25:82:25 | b |
+| main.go:84:9:84:9 | x | main.go:83:2:83:2 | x |
+| main.go:84:15:84:15 | x | main.go:83:2:83:2 | x |
+| main.go:97:2:97:8 | wrapper | main.go:95:22:95:28 | wrapper |
+| main.go:97:2:97:10 | selection of s | main.go:95:38:95:38 | s |
+| main.go:100:9:100:9 | x | main.go:96:2:96:2 | x |
+| main.go:117:2:117:2 | p | main.go:110:6:110:6 | p |
+| main.go:117:2:117:4 | selection of b | main.go:105:2:105:2 | b |
+| main.go:119:12:119:12 | p | main.go:110:6:110:6 | p |
+| main.go:119:12:119:14 | selection of a | main.go:104:2:104:2 | a |
+| main.go:119:17:119:17 | p | main.go:110:6:110:6 | p |
+| main.go:119:17:119:19 | selection of b | main.go:105:2:105:2 | b |
+| main.go:119:17:119:21 | selection of a | main.go:89:2:89:2 | a |
+| main.go:119:24:119:24 | p | main.go:110:6:110:6 | p |
+| main.go:119:24:119:26 | selection of c | main.go:106:2:106:2 | c |

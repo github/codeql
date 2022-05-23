@@ -716,20 +716,23 @@ class LongLiteral extends Literal, @longliteral {
   override string getAPrimaryQlClass() { result = "LongLiteral" }
 }
 
+/** DEPRECATED: Alias for FloatLiteral */
+deprecated class FloatingPointLiteral = FloatLiteral;
+
 /**
  * A float literal. For example, `4.2f`.
  *
  * A float literal is never negative; a preceding minus, if any, will always
  * be modeled as separate `MinusExpr`.
  */
-class FloatingPointLiteral extends Literal, @floatingpointliteral {
+class FloatLiteral extends Literal, @floatingpointliteral {
   /**
    * Gets the value of this literal as CodeQL 64-bit `float`. The value will
    * be parsed as Java 32-bit `float` and then converted to a CodeQL `float`.
    */
   float getFloatValue() { result = this.getValue().toFloat() }
 
-  override string getAPrimaryQlClass() { result = "FloatingPointLiteral" }
+  override string getAPrimaryQlClass() { result = "FloatLiteral" }
 }
 
 /**

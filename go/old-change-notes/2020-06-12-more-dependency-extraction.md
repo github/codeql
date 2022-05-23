@@ -1,0 +1,2 @@
+lgtm,codescanning
+* The extractor now attempts to extract the AST of all dependencies that are related to the packages passed explicitly on the commandline, which is determined by using the module root or, if not using modules, the directory containing the source for those packages. In particular, this means if a package passed to the extractor depends on another package inside the same module, the dependency's AST will now be extracted.

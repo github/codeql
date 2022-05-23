@@ -15,9 +15,9 @@
 | literals.kt:17:30:17:33 | 15 | LongLiteral |
 | literals.kt:18:30:18:39 | 11 | LongLiteral |
 | literals.kt:19:30:19:38 | 1234567 | LongLiteral |
-| literals.kt:20:32:20:35 | 0.0 | FloatingPointLiteral |
-| literals.kt:21:32:21:37 | 123.4 | FloatingPointLiteral |
-| literals.kt:22:32:22:38 | -123.4 | FloatingPointLiteral |
+| literals.kt:20:32:20:35 | 0.0 | FloatLiteral |
+| literals.kt:21:32:21:37 | 123.4 | FloatLiteral |
+| literals.kt:22:32:22:38 | -123.4 | FloatLiteral |
 | literals.kt:23:34:23:36 | 0.0 | DoubleLiteral |
 | literals.kt:24:34:24:38 | 123.4 | DoubleLiteral |
 | literals.kt:25:34:25:39 | -123.4 | DoubleLiteral |

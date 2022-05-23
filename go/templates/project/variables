@@ -1,0 +1,4 @@
+LGTM_SRC=${src}
+SEMMLE_REPO_URL=${repository}
+LGTM_THREADS=
+revision=HEAD

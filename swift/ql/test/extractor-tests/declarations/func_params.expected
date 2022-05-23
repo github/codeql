@@ -1,0 +1,2 @@
+| test.swift:28:1:28:37 | ConcreteFuncDecl | 0 | test.swift:28:17:28:31 | ParamDecl |
+| test.swift:50:3:52:3 | ConcreteFuncDecl | 0 | test.swift:50:26:50:33 | ParamDecl |

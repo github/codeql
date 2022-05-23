@@ -13,8 +13,12 @@ function RegisterExtractorPack(id)
         table.remove(compilerArguments.argv, 1)
 
         -- Skip "info" queries in case there is nothing to extract
-        if compilerArguments.argv[1] == '-print-target-info' then return nil end
-        if compilerArguments.argv[1] == '-emit-supported-features' then return nil end
+        if compilerArguments.argv[1] == '-print-target-info' then
+            return nil
+        end
+        if compilerArguments.argv[1] == '-emit-supported-features' then
+            return nil
+        end
 
         -- Skip actions in which we cannot extract anything
         if compilerArguments.argv[1] == '-merge-modules' then return nil end
@@ -22,10 +26,11 @@ function RegisterExtractorPack(id)
         return {
             trace = true,
             replace = false,
-            invocations = {{path = swiftExtractor, arguments = compilerArguments}}
+            order = ORDER_AFTER,
+            invocation = {path = swiftExtractor, arguments = compilerArguments}
         }
     end
-    return { SwiftMatcher }
+    return {SwiftMatcher}
 end
 
 -- Return a list of minimum supported versions of the configuration file format

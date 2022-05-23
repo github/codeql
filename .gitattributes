@@ -39,6 +39,7 @@
 *.py text
 *.lua text
 *.expected text
+*.go text
 
 # Explicitly set a bunch of known extensions to binary, because Git < 2.10 will treat
 # `* text=auto eol=lf` as `* text eol=lf`
@@ -51,6 +52,14 @@
 
 java/ql/test/stubs/**/*.java linguist-generated=true
 java/ql/test/experimental/stubs/**/*.java linguist-generated=true
+
+# Force git not to modify line endings for go or html files under the go/ql directory
+go/ql/**/*.go -text
+go/ql/**/*.html -text
+# Force git not to modify line endings for go dbschemes
+go/*.dbscheme -text
+# Preserve unusual line ending from codeql-go merge
+go/extractor/opencsv/CSVReader.java -text
 
 # For some languages, upgrade script testing references really old dbscheme
 # files from legacy upgrades that have CRLF line endings. Since upgrade
