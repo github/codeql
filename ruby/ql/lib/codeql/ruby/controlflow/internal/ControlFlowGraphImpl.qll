@@ -1007,9 +1007,7 @@ module Trees {
   }
 
   private class InstanceVariableTree extends StandardPostOrderTree, InstanceVariableAccess {
-    final override ControlFlowTree getChildElement(int i) {
-      result = this.getReceiver() and i = 0
-    }
+    final override ControlFlowTree getChildElement(int i) { result = this.getReceiver() and i = 0 }
   }
 
   private class KeywordParameterTree extends DefaultValueParameterTree, KeywordParameter {
