@@ -5,7 +5,7 @@ import semmle.code.csharp.dataflow.FlowSummary
 import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import CsvValidation
 
-class SummaryModelTest extends SummaryModelCsv {
+private class SummaryModelTest extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -25,6 +25,18 @@ class SummaryModelTest extends SummaryModelCsv {
         "My.Qltest;C+Generic<,>;false;StepGeneric2<>;(S);;Argument[0];ReturnValue;value",
         "My.Qltest;C+Base<>;true;StepOverride;(T);;Argument[0];ReturnValue;value"
       ]
+  }
+}
+
+private class SummarizedCallableClear extends SummarizedCallable {
+  SummarizedCallableClear() {
+    this.getName() = ["StepPropertySetter", "StepFieldSetter"] and
+    this.getFile().getBaseName() = "Steps.cs"
+  }
+
+  override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
+    pos.isThisParameter() and
+    content instanceof DataFlow::ElementContent
   }
 }
 
