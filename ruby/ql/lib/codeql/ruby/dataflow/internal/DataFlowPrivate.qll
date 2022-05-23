@@ -794,8 +794,7 @@ predicate jumpStep(Node pred, Node succ) {
 predicate storeStep(Node node1, ContentSet c, Node node2) {
   // Instance variable assignment, `@var = src`
   node2.(PostUpdateNode).getPreUpdateNode().asExpr() =
-    any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode var |
-      var.getExpr() instanceof InstanceVariableWriteAccess and
+    any(CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode var |
       exists(CfgNodes::ExprNodes::AssignExprCfgNode assign |
         var = assign.getLhs() and
         node1.asExpr() = assign.getRhs()
@@ -815,8 +814,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
 predicate readStep(Node node1, ContentSet c, Node node2) {
   // Instance variable read access, `@var`
   node2.asExpr() =
-    any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode var |
-      var.getExpr() instanceof InstanceVariableReadAccess and
+    any(CfgNodes::ExprNodes::InstanceVariableReadAccessCfgNode var |
       node1.asExpr() = var.getReceiver() and
       c.isSingleton(any(Content::FieldContent ct |
           ct.getName() = var.getExpr().getVariable().getName()
