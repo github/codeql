@@ -38,7 +38,7 @@
 
 # Workflows
 /.github/workflows/ @github/codeql-ci-reviewers
+/.github/workflows/go-* @github/codeql-go
 /.github/workflows/js-ml-tests.yml @github/codeql-ml-powered-queries-reviewers
 /.github/workflows/ql-for-ql-* @github/codeql-ql-for-ql-reviewers
 /.github/workflows/ruby-* @github/codeql-ruby
-/.github/workflows/go-* @github/codeql-go
