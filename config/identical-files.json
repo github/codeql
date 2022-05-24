@@ -8,6 +8,7 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl6.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplForSerializability.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplForOnActivityResult.qll",
+    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplForContentDataFlow.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl3.qll",
@@ -77,6 +78,10 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/FlowSummaryImpl.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/FlowSummaryImpl.qll"
+  ],
+  "ContentDataFlow Java/C#": [
+    "java/ql/lib/semmle/code/java/dataflow/internal/ContentDataFlow.qll",
+    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/ContentDataFlow.qll"
   ],
   "SsaReadPosition Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
