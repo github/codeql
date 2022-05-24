@@ -85,6 +85,9 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
   void visitDeclRefExpr(swift::DeclRefExpr* expr) {
     auto label = dispatcher_.assignNewLabel(expr);
     dispatcher_.emit(DeclRefExprsTrap{label, dispatcher_.fetchLabel(expr->getDecl())});
+    emitAccessorSemantics<DeclRefExprHasDirectToStorageSemanticsTrap,
+                          DeclRefExprHasDirectToImplementationSemanticsTrap,
+                          DeclRefExprHasOrdinarySemanticsTrap>(expr, label);
     auto i = 0u;
     for (auto t : expr->getDeclRef().getSubstitutions().getReplacementTypes()) {
       dispatcher_.emit(DeclRefExprReplacementTypesTrap{label, i++, dispatcher_.fetchLabel(t)});
@@ -398,16 +401,24 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     emitExplicitCastExpr(expr, label);
   }
 
+  void visitLookupExpr(swift::LookupExpr* expr) {
+    auto label = dispatcher_.assignNewLabel(expr);
+    emitLookupExpr(expr, label);
+  }
+
   void visitSubscriptExpr(swift::SubscriptExpr* expr) {
     auto label = dispatcher_.assignNewLabel(expr);
-    assert(expr->getBase() && "SubscriptExpr has getBase()");
-    auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
-    dispatcher_.emit(SubscriptExprsTrap{label, baseLabel});
+    dispatcher_.emit(SubscriptExprsTrap{label});
+
+    emitAccessorSemantics<SubscriptExprHasDirectToStorageSemanticsTrap,
+                          SubscriptExprHasDirectToImplementationSemanticsTrap,
+                          SubscriptExprHasOrdinarySemanticsTrap>(expr, label);
 
     auto i = 0u;
     for (const auto& arg : *expr->getArgs()) {
       dispatcher_.emit(SubscriptExprArgumentsTrap{label, i++, emitArgument(arg)});
     }
+    emitLookupExpr(expr, label);
   }
 
   void visitDictionaryExpr(swift::DictionaryExpr* expr) {
@@ -434,10 +445,13 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
 
   void visitMemberRefExpr(swift::MemberRefExpr* expr) {
     auto label = dispatcher_.assignNewLabel(expr);
-    assert(expr->getBase() && "MemberRefExpr has getBase()");
+    dispatcher_.emit(MemberRefExprsTrap{label});
 
-    auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
-    dispatcher_.emit(MemberRefExprsTrap{label, baseLabel});
+    emitAccessorSemantics<MemberRefExprHasDirectToStorageSemanticsTrap,
+                          MemberRefExprHasDirectToImplementationSemanticsTrap,
+                          MemberRefExprHasOrdinarySemanticsTrap>(expr, label);
+
+    emitLookupExpr(expr, label);
   }
 
   void visitDerivedToBaseExpr(swift::DerivedToBaseExpr* expr) {
@@ -541,6 +555,38 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
     dispatcher_.emit(SelfApplyExprsTrap{label, baseLabel});
     emitApplyExpr(expr, label);
+  }
+
+  void emitLookupExpr(const swift::LookupExpr* expr, TrapLabel<LookupExprTag> label) {
+    assert(expr->getBase() && "LookupExpr has getBase()");
+    auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
+    assert(expr->hasDecl() && "LookupExpr has decl");
+    auto declLabel = dispatcher_.fetchLabel(expr->getDecl().getDecl());
+    dispatcher_.emit(LookupExprsTrap{label, baseLabel, declLabel});
+  }
+
+  /*
+   * `DirectToStorage`, `DirectToImplementation`, and `DirectToImplementation` must be
+   * constructable from a `Label` argument, and values of `T` must have a
+   * `getAccessSemantics` member that returns a `swift::AccessSemantics`.
+   */
+  template <typename DirectToStorage,
+            typename DirectToImplementation,
+            typename Ordinary,
+            typename T,
+            typename Label>
+  void emitAccessorSemantics(T* ast, Label label) {
+    switch (ast->getAccessSemantics()) {
+      case swift::AccessSemantics::DirectToStorage:
+        dispatcher_.emit(DirectToStorage{label});
+        break;
+      case swift::AccessSemantics::DirectToImplementation:
+        dispatcher_.emit(DirectToImplementation{label});
+        break;
+      case swift::AccessSemantics::Ordinary:
+        dispatcher_.emit(Ordinary{label});
+        break;
+    }
   }
 };
 

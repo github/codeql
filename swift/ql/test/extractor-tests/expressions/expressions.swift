@@ -91,3 +91,49 @@ class ToPtr {}
 
 let opaque = Unmanaged.passRetained(ToPtr()).toOpaque()
 Unmanaged<ToPtr>.fromOpaque(opaque)
+
+struct HasProperty {
+  var settableField: Int {
+    set { }
+    get {
+      return 0
+    }
+  }
+
+  // A field can be marked as read-only by dirctly implementing
+  // the getter between the braces.
+  var readOnlyField1: Int {
+    return 0
+  }
+
+  // Or by adding an access declaration
+  var readOnlyField2: Int {
+    get {
+      return 0
+    }
+  }
+
+  var normalField : Int
+
+  subscript(x: Int) -> Int {
+    get {
+      return 0
+    }
+    set { }
+  }
+
+  subscript(x: Int, y : Int) -> Int {
+    return 0
+  }
+}
+
+func testProperties(hp : inout HasProperty) -> Int {
+  hp.settableField = 42
+  var x = hp.settableField
+  var y = hp.readOnlyField1
+  var z = hp.readOnlyField2
+  hp.normalField = 99
+  var w = hp.normalField
+  hp[1] = 2
+  return hp[3, 4]
+}

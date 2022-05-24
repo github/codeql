@@ -77,3 +77,60 @@ func foo() -> Int {
   @ZeroWrapper var x: Int
   return x
 }
+
+struct HasPropertyAndObserver {
+  var settableField: Int {
+    set { }
+    get {
+      return 0
+    }
+  }
+
+  // A field can be marked as read-only by dirctly implementing
+  // the getter between the braces.
+  var readOnlyField1: Int {
+    return 0
+  }
+
+  // Or by adding an access declaration
+  var readOnlyField2: Int {
+    get {
+      return 0
+    }
+  }
+
+  var normalField : Int
+
+  subscript(x: Int) -> Int {
+    get {
+      return 0
+    }
+    set { }
+  }
+
+  subscript(x: Int, y : Int) -> Int {
+    return 0
+  }
+
+  var hasWillSet1 : Int {
+    willSet(newValue) { }
+  }
+
+  var hasWillSet2 : Int {
+    willSet { }
+  }
+
+  var hasDidSet1 : Int {
+    didSet(oldValue) { }
+  }
+
+  var hasDidSet2 : Int {
+    didSet { }
+  }
+
+  var hasBoth : Int {
+    willSet { }
+
+    didSet { }
+  }
+}
