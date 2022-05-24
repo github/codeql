@@ -286,6 +286,7 @@ class PropNameTracking extends DataFlow::Configuration {
     node instanceof DenyListEqualityGuard or
     node instanceof AllowListEqualityGuard or
     node instanceof HasOwnPropertyGuard or
+    node instanceof HasOwnGuard or
     node instanceof InExprGuard or
     node instanceof InstanceOfGuard or
     node instanceof TypeofGuard or
@@ -352,6 +353,19 @@ class HasOwnPropertyGuard extends DataFlow::BarrierGuardNode, CallNode {
 
   override predicate blocks(boolean outcome, Expr e) {
     e = getArgument(0).asExpr() and outcome = true
+  }
+}
+
+/** Sanitizer guard for calls to `Object.hasOwn(obj, prop)`. */
+class HasOwnGuard extends DataFlow::BarrierGuardNode, CallNode {
+  HasOwnGuard() {
+    this = DataFlow::globalVarRef("Object").getAMemberCall("hasOwn") and
+    // same check as in HasOwnPropertyGuard
+    not arePropertiesEnumerated(getArgument(0).getALocalSource())
+  }
+
+  override predicate blocks(boolean outcome, Expr e) {
+    e = getArgument(1).asExpr() and outcome = true
   }
 }
 

@@ -234,6 +234,14 @@ module MembershipCandidate {
         test = hasOwn and
         hasOwn.calls(membersNode, "hasOwnProperty")
       )
+      or
+      exists(DataFlow::CallNode hasOwn |
+        hasOwn = DataFlow::globalVarRef("Object").getAMemberCall("hasOwn")
+      |
+        hasOwn.getArgument(0).asExpr() = membersNode and
+        this = hasOwn.getArgument(1) and
+        test = hasOwn.asExpr()
+      )
     }
 
     override DataFlow::Node getTest() { result = test.flow() }
