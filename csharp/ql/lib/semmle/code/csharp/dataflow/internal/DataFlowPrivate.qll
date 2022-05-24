@@ -740,15 +740,10 @@ private module Cached {
         )
       )
     } or
-    TSummaryNode(
-      FlowSummaryImpl::Public::SummarizedCallable c,
-      FlowSummaryImpl::Private::SummaryNodeState state
-    ) {
-      c instanceof DataFlowSummarizedCallable and
+    TSummaryNode(DataFlowSummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
       FlowSummaryImpl::Private::summaryNodeRange(c, state)
     } or
-    TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
-      c instanceof DataFlowSummarizedCallable and
+    TSummaryParameterNode(DataFlowSummarizedCallable c, ParameterPosition pos) {
       FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
     } or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
