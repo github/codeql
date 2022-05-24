@@ -223,6 +223,18 @@ module Content {
     override string toString() { result = "element" }
   }
 
+  /** A field of an object, for example an instance variable. */
+  class FieldContent extends Content, TFieldContent {
+    private string name;
+
+    FieldContent() { this = TFieldContent(name) }
+
+    /** Gets the name of the field. */
+    string getName() { result = name }
+
+    override string toString() { result = name }
+  }
+
   /** Gets the element content corresponding to constant value `cv`. */
   ElementContent getElementContent(ConstantValue cv) {
     result = TKnownElementContent(cv)

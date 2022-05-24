@@ -219,7 +219,10 @@ private module Cached {
     } or
     TSelfParameterNode(MethodBase m) or
     TBlockParameterNode(MethodBase m) or
-    TExprPostUpdateNode(CfgNodes::ExprCfgNode n) { n instanceof Argument } or
+    TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
+      n instanceof Argument or
+      n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
+    } or
     TSummaryNode(
       FlowSummaryImpl::Public::SummarizedCallable c,
       FlowSummaryImpl::Private::SummaryNodeState state
@@ -339,6 +342,7 @@ private module Cached {
       not cv.isInt(_) or
       cv.getInt() in [0 .. 10]
     } or
+    TFieldContent(string name) { name = any(InstanceVariable v).getName() } or
     TUnknownElementContent()
 
   /**
@@ -795,11 +799,40 @@ predicate jumpStep(Node pred, Node succ) {
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
 }
 
+/**
+ * Holds if data can flow from `node1` to `node2` via an assignment to
+ * content `c`.
+ */
 predicate storeStep(Node node1, ContentSet c, Node node2) {
+  // Instance variable assignment, `@var = src`
+  node2.(PostUpdateNode).getPreUpdateNode().asExpr() =
+    any(CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode var |
+      exists(CfgNodes::ExprNodes::AssignExprCfgNode assign |
+        var = assign.getLhs() and
+        node1.asExpr() = assign.getRhs()
+      |
+        c.isSingleton(any(Content::FieldContent ct |
+            ct.getName() = var.getExpr().getVariable().getName()
+          ))
+      )
+    ).getReceiver()
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
 
+/**
+ * Holds if there is a read step of content `c` from `node1` to `node2`.
+ */
 predicate readStep(Node node1, ContentSet c, Node node2) {
+  // Instance variable read access, `@var`
+  node2.asExpr() =
+    any(CfgNodes::ExprNodes::InstanceVariableReadAccessCfgNode var |
+      node1.asExpr() = var.getReceiver() and
+      c.isSingleton(any(Content::FieldContent ct |
+          ct.getName() = var.getExpr().getVariable().getName()
+        ))
+    )
+  or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
 }
 

@@ -210,6 +210,38 @@ private module ImplicitSelfSynthesis {
       regularMethodCallSelfSynthesis(parent, i, child)
     }
   }
+
+  pragma[nomagic]
+  private AstNode instanceVarAccessSynthParentStar(InstanceVariableAccess var) {
+    result = var
+    or
+    instanceVarAccessSynthParentStar(var) = getSynthChild(result, _)
+  }
+
+  /**
+   * Gets the `SelfKind` for instance variable access `var`. This is based on the
+   * "owner" of `var`; for real nodes this is the node itself, for synthetic nodes
+   * this is the closest parent that is a real node.
+   */
+  pragma[nomagic]
+  private SelfKind getSelfKind(InstanceVariableAccess var) {
+    exists(Ruby::AstNode owner |
+      owner = toGenerated(instanceVarAccessSynthParentStar(var)) and
+      result = SelfKind(TSelfVariable(scopeOf(owner).getEnclosingSelfScope()))
+    )
+  }
+
+  pragma[nomagic]
+  private predicate instanceVariableSelfSynthesis(InstanceVariableAccess var, int i, Child child) {
+    child = SynthChild(getSelfKind(var)) and
+    i = 0
+  }
+
+  private class InstanceVariableSelfSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      instanceVariableSelfSynthesis(parent, i, child)
+    }
+  }
 }
 
 private module SetterDesugar {
