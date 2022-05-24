@@ -15,14 +15,15 @@ private predicate isSafeName(string name) {
         "dir", //
         "directory", //
         "file", //
-        "filename", //
+        "folder", //
+        "host", //
         "loc", //
         "location", //
         "path", //
         "root", //
         "src", //
         "source", //
-      ])
+      ] + ["", "name"])
 }
 
 /** Gets the `JSDocParamTag` for a parameter, if any. */
@@ -93,10 +94,26 @@ class StringConcatLeafEndingInSink extends StringOps::ConcatenationLeaf {
   }
 }
 
+/** A value that can be tracked from a library input. Used for sanitization
+ * (a library input property with a 'safe' name is considered a sanitizer).
+ */
+private DataFlow::SourceNode isFlowingFromLibInput() {
+  result = isFlowingFromLibInput(DataFlow::TypeTracker::end())
+}
+
+private DataFlow::SourceNode isFlowingFromLibInput(DataFlow::TypeTracker t) {
+  t.start() and result instanceof LibInputAsSource
+  or
+  exists(DataFlow::TypeTracker t2 | result = isFlowingFromLibInput(t2).track(t2, t))
+}
+
 /**
  * A sanitizer from reading a property with a name that suggests
  * the property is intended to be a path.
  */
 class SafeNameSanitizer extends TaintedPath::Sanitizer instanceof DataFlow::PropRead {
-  SafeNameSanitizer() { isSafeName(super.getPropertyName()) }
+  SafeNameSanitizer() {
+    this = isFlowingFromLibInput().getAPropertyRead*() and
+    isSafeName(this.getPropertyName())
+  }
 }
