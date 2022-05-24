@@ -229,18 +229,10 @@ module MembershipCandidate {
         membersNode = inExpr.getRightOperand()
       )
       or
-      exists(MethodCallExpr hasOwn |
-        this = hasOwn.getArgument(0).flow() and
-        test = hasOwn and
-        hasOwn.calls(membersNode, "hasOwnProperty")
-      )
-      or
-      exists(DataFlow::CallNode hasOwn |
-        hasOwn = DataFlow::globalVarRef("Object").getAMemberCall("hasOwn")
-      |
-        hasOwn.getArgument(0).asExpr() = membersNode and
-        this = hasOwn.getArgument(1) and
-        test = hasOwn.asExpr()
+      exists(HasOwnPropertyCall hasOwn |
+        this = hasOwn.getProperty() and
+        test = hasOwn.asExpr() and
+        membersNode = hasOwn.getObject().asExpr()
       )
     }
 

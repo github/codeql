@@ -560,3 +560,15 @@ function copyHasOwnProperty2(dst, src) {
         }
     }
 }
+
+function copyHasOwnProperty3(dst, src) {
+    for (let key in src) {
+        // Guarding the recursive case by dst.hasOwnProperty (or Object.hasOwn) is safe,
+        // since '__proto__' and 'constructor' are not own properties of the destination object.
+        if (_.has(dst, key)) {
+            copyHasOwnProperty3(dst[key], src[key]);
+        } else {
+            dst[key] = src[key]; // OK
+        }
+    }
+}

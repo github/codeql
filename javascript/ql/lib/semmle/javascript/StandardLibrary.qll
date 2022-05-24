@@ -192,3 +192,35 @@ class StringSplitCall extends DataFlow::MethodCallNode {
   bindingset[i]
   DataFlow::Node getASubstringRead(int i) { result = this.getAPropertyRead(i.toString()) }
 }
+
+/**
+ * A call to `Object.prototype.hasOwnProperty`, `Object.hasOwn`, or a library that implements
+ * the same functionality.
+ */
+class HasOwnPropertyCall extends DataFlow::Node instanceof DataFlow::CallNode {
+  DataFlow::Node object;
+  DataFlow::Node property;
+
+  HasOwnPropertyCall() {
+    // Make sure we handle reflective calls since libraries love to do that.
+    super.getCalleeNode().getALocalSource().(DataFlow::PropRead).getPropertyName() =
+      "hasOwnProperty" and
+    object = super.getReceiver() and
+    property = super.getArgument(0)
+    or
+    this =
+      [
+        DataFlow::globalVarRef("Object").getAMemberCall("hasOwn"), //
+        DataFlow::moduleImport("has").getACall(), //
+        LodashUnderscore::member("has").getACall()
+      ] and
+    object = super.getArgument(0) and
+    property = super.getArgument(1)
+  }
+
+  /** Gets the object whose property is being checked. */
+  DataFlow::Node getObject() { result = object }
+
+  /** Gets the property being checked. */
+  DataFlow::Node getProperty() { result = property }
+}

@@ -286,7 +286,6 @@ class PropNameTracking extends DataFlow::Configuration {
     node instanceof DenyListEqualityGuard or
     node instanceof AllowListEqualityGuard or
     node instanceof HasOwnPropertyGuard or
-    node instanceof HasOwnGuard or
     node instanceof InExprGuard or
     node instanceof InstanceOfGuard or
     node instanceof TypeofGuard or
@@ -340,32 +339,16 @@ class AllowListEqualityGuard extends DataFlow::LabeledBarrierGuardNode, ValueNod
  * but the destination object generally doesn't. It is therefore only a sanitizer when
  * used on the destination object.
  */
-class HasOwnPropertyGuard extends DataFlow::BarrierGuardNode, CallNode {
+class HasOwnPropertyGuard extends DataFlow::BarrierGuardNode instanceof HasOwnPropertyCall {
   HasOwnPropertyGuard() {
-    // Make sure we handle reflective calls since libraries love to do that.
-    getCalleeNode().getALocalSource().(DataFlow::PropRead).getPropertyName() = "hasOwnProperty" and
-    exists(getReceiver()) and
     // Try to avoid `src.hasOwnProperty` by requiring that the receiver
     // does not locally have its properties enumerated. Typically there is no
     // reason to enumerate the properties of the destination object.
-    not arePropertiesEnumerated(getReceiver().getALocalSource())
+    not arePropertiesEnumerated(super.getObject().getALocalSource())
   }
 
   override predicate blocks(boolean outcome, Expr e) {
-    e = getArgument(0).asExpr() and outcome = true
-  }
-}
-
-/** Sanitizer guard for calls to `Object.hasOwn(obj, prop)`. */
-class HasOwnGuard extends DataFlow::BarrierGuardNode, CallNode {
-  HasOwnGuard() {
-    this = DataFlow::globalVarRef("Object").getAMemberCall("hasOwn") and
-    // same check as in HasOwnPropertyGuard
-    not arePropertiesEnumerated(getArgument(0).getALocalSource())
-  }
-
-  override predicate blocks(boolean outcome, Expr e) {
-    e = getArgument(1).asExpr() and outcome = true
+    e = super.getProperty().asExpr() and outcome = true
   }
 }
 
