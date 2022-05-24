@@ -2286,9 +2286,7 @@ class ComprehensionExpr extends @comprehension_expr, Expr {
 
   /** Holds if this is a legacy postfix comprehension expression. */
   predicate isPostfix() {
-    exists(Token tk | tk = this.getFirstToken().getNextToken() |
-      not tk.getValue().regexpMatch("if|for")
-    )
+    exists(Token tk | tk = this.getFirstToken().getNextToken() | not tk.getValue() = ["if", "for"])
   }
 
   override string getAPrimaryQlClass() { result = "ComprehensionExpr" }

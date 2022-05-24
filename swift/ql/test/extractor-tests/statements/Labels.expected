@@ -1,0 +1,3 @@
+| main.swift:2:3:8:3 | ForEachStmt | label1 |
+| main.swift:10:3:12:3 | WhileStmt | label2 |
+| main.swift:15:3:17:18 | RepeatWhileStmt | label3 |

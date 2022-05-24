@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The built-in <code>recover</code> function is only useful inside deferred
+functions. Calling it in a function that is never deferred means that it will
+always return <code>nil</code> and it will never regain control of a panicking
+goroutine. The same is true of calling <code>recover</code> directly in a defer
+statement.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Carefully inspect the code to determine whether it is a mistake that should be
+fixed.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the example below, the function <code>fun1</code> is intended to recover
+from the panic. However, the function that is deferred calls another function,
+which then calls <code>recover</code>:
+</p>
+<sample src="RedundantRecover1.go" />
+<p>
+This problem can be fixed by deferring the call to the function which calls
+<code>recover</code>:
+</p>
+<sample src="RedundantRecover1Good.go" />
+
+<p>
+In the following example, <code>recover</code> is called directly in a defer
+statement, which has no effect, so the panic is not caught.
+</p>
+<sample src="RedundantRecover2.go" />
+<p>
+We can fix this by instead deferring an anonymous function which calls
+<code>recover</code>.
+</p>
+<sample src="RedundantRecover2Good.go" />
+</example>
+
+<references>
+<li>
+  <a href="https://blog.golang.org/defer-panic-and-recover">Defer, Panic, and Recover - The Go Blog</a>.
+</li>
+</references>
+
+</qhelp>

@@ -1,5 +1,6 @@
 /cpp/ @github/codeql-c-analysis
 /csharp/ @github/codeql-csharp
+/go/ @github/codeql-go
 /java/ @github/codeql-java
 /javascript/ @github/codeql-javascript
 /python/ @github/codeql-python
@@ -37,6 +38,7 @@
 
 # Workflows
 /.github/workflows/ @github/codeql-ci-reviewers
+/.github/workflows/go-* @github/codeql-go
 /.github/workflows/js-ml-tests.yml @github/codeql-ml-powered-queries-reviewers
 /.github/workflows/ql-for-ql-* @github/codeql-ql-for-ql-reviewers
 /.github/workflows/ruby-* @github/codeql-ruby

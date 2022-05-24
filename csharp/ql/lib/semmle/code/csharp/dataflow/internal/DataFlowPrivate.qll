@@ -421,7 +421,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   exists(Ssa::Definition def |
     LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
-    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom) and
+    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom,
+      any(DataFlowSummarizedCallable sc)) and
     not LocalFlow::usesInstanceField(def)
   )
   or
@@ -739,13 +740,10 @@ private module Cached {
         )
       )
     } or
-    TSummaryNode(
-      FlowSummaryImpl::Public::SummarizedCallable c,
-      FlowSummaryImpl::Private::SummaryNodeState state
-    ) {
+    TSummaryNode(DataFlowSummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
       FlowSummaryImpl::Private::summaryNodeRange(c, state)
     } or
-    TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
+    TSummaryParameterNode(DataFlowSummarizedCallable c, ParameterPosition pos) {
       FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
     } or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
@@ -769,7 +767,8 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStep(nodeFrom, nodeTo, true)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo,
+      any(DataFlowSummarizedCallable sc))
   }
 
   cached
@@ -976,17 +975,15 @@ private module ParameterNodes {
     SummaryParameterNode() { this = TSummaryParameterNode(sc, pos_) }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      sc = c and pos = pos_
+      sc = c.asSummarizedCallable() and pos = pos_
     }
 
-    override DataFlowCallable getEnclosingCallableImpl() { result = sc }
+    override DataFlowCallable getEnclosingCallableImpl() { result.asSummarizedCallable() = sc }
 
     override Type getTypeImpl() {
-      exists(int i |
-        pos_.getPosition() = i and result = sc.asSummarizedCallable().getParameter(i).getType()
-      )
+      exists(int i | pos_.getPosition() = i and result = sc.getParameter(i).getType())
       or
-      pos_.isThisParameter() and result = sc.asSummarizedCallable().getDeclaringType()
+      pos_.isThisParameter() and result = sc.getDeclaringType()
     }
 
     override ControlFlow::Node getControlFlowNodeImpl() { none() }
@@ -1464,7 +1461,7 @@ class SummaryNode extends NodeImpl, TSummaryNode {
 
   SummaryNode() { this = TSummaryNode(c, state) }
 
-  override DataFlowCallable getEnclosingCallableImpl() { result = c }
+  override DataFlowCallable getEnclosingCallableImpl() { result.asSummarizedCallable() = c }
 
   override DataFlowType getDataFlowType() {
     result = FlowSummaryImpl::Private::summaryNodeType(this)

@@ -4867,20 +4867,20 @@ samConversion.kt:
 #    2|                           0: [VarAccess] this.<fn>
 #    2|                             -1: [ThisAccess] this
 #    2|                           1: [VarAccess] <fn>
-#    2|                   1: [FieldDeclaration] Function1<Integer,Boolean> <fn>;
-#    2|                     -1: [TypeAccess] Function1<Integer,Boolean>
-#    2|                       0: [TypeAccess] Integer
-#    2|                       1: [TypeAccess] Boolean
-#   17|                   3: [Method] accept
-#   17|                     3: [TypeAccess] boolean
+#    2|                   1: [Method] accept
+#    2|                     3: [TypeAccess] boolean
 #-----|                     4: (Parameters)
-#   17|                       0: [Parameter] i
-#   17|                         0: [TypeAccess] int
+#    2|                       0: [Parameter] i
+#    2|                         0: [TypeAccess] int
 #    2|                     5: [BlockStmt] { ... }
 #    2|                       0: [ReturnStmt] return ...
 #    2|                         0: [MethodAccess] invoke(...)
 #    2|                           -1: [VarAccess] <fn>
 #    2|                           0: [VarAccess] i
+#    2|                   1: [FieldDeclaration] Function1<Integer,Boolean> <fn>;
+#    2|                     -1: [TypeAccess] Function1<Integer,Boolean>
+#    2|                       0: [TypeAccess] Integer
+#    2|                       1: [TypeAccess] Boolean
 #    2|                 -3: [TypeAccess] IntPredicate
 #    2|                 0: [LambdaExpr] ...->...
 #    2|                   -4: [AnonymousClass] new Function1<Integer,Boolean>(...) { ... }
@@ -4918,24 +4918,24 @@ samConversion.kt:
 #    4|                           0: [VarAccess] this.<fn>
 #    4|                             -1: [ThisAccess] this
 #    4|                           1: [VarAccess] <fn>
-#    4|                   1: [FieldDeclaration] Function2<Integer,Integer,Unit> <fn>;
-#    4|                     -1: [TypeAccess] Function2<Integer,Integer,Unit>
-#    4|                       0: [TypeAccess] Integer
-#    4|                       1: [TypeAccess] Integer
-#    4|                       2: [TypeAccess] Unit
-#   23|                   3: [Method] fn1
-#   23|                     3: [TypeAccess] Unit
+#    4|                   1: [Method] fn1
+#    4|                     3: [TypeAccess] Unit
 #-----|                     4: (Parameters)
-#   23|                       0: [Parameter] i
-#   23|                         0: [TypeAccess] int
-#   23|                       1: [Parameter] j
-#   23|                         0: [TypeAccess] int
+#    4|                       0: [Parameter] i
+#    4|                         0: [TypeAccess] int
+#    4|                       1: [Parameter] j
+#    4|                         0: [TypeAccess] int
 #    4|                     5: [BlockStmt] { ... }
 #    4|                       0: [ReturnStmt] return ...
 #    4|                         0: [MethodAccess] invoke(...)
 #    4|                           -1: [VarAccess] <fn>
 #    4|                           0: [VarAccess] i
 #    4|                           1: [VarAccess] j
+#    4|                   1: [FieldDeclaration] Function2<Integer,Integer,Unit> <fn>;
+#    4|                     -1: [TypeAccess] Function2<Integer,Integer,Unit>
+#    4|                       0: [TypeAccess] Integer
+#    4|                       1: [TypeAccess] Integer
+#    4|                       2: [TypeAccess] Unit
 #    4|                 -3: [TypeAccess] InterfaceFn1
 #    4|                 0: [LambdaExpr] ...->...
 #    4|                   -4: [AnonymousClass] new Function2<Integer,Integer,Unit>(...) { ... }
@@ -4972,24 +4972,24 @@ samConversion.kt:
 #    5|                           0: [VarAccess] this.<fn>
 #    5|                             -1: [ThisAccess] this
 #    5|                           1: [VarAccess] <fn>
-#    5|                   1: [FieldDeclaration] Function2<Integer,Integer,Unit> <fn>;
-#    5|                     -1: [TypeAccess] Function2<Integer,Integer,Unit>
-#    5|                       0: [TypeAccess] Integer
-#    5|                       1: [TypeAccess] Integer
-#    5|                       2: [TypeAccess] Unit
-#   23|                   3: [Method] fn1
-#   23|                     3: [TypeAccess] Unit
+#    5|                   1: [Method] fn1
+#    5|                     3: [TypeAccess] Unit
 #-----|                     4: (Parameters)
-#   23|                       0: [Parameter] i
-#   23|                         0: [TypeAccess] int
-#   23|                       1: [Parameter] j
-#   23|                         0: [TypeAccess] int
+#    5|                       0: [Parameter] i
+#    5|                         0: [TypeAccess] int
+#    5|                       1: [Parameter] j
+#    5|                         0: [TypeAccess] int
 #    5|                     5: [BlockStmt] { ... }
 #    5|                       0: [ReturnStmt] return ...
 #    5|                         0: [MethodAccess] invoke(...)
 #    5|                           -1: [VarAccess] <fn>
 #    5|                           0: [VarAccess] i
 #    5|                           1: [VarAccess] j
+#    5|                   1: [FieldDeclaration] Function2<Integer,Integer,Unit> <fn>;
+#    5|                     -1: [TypeAccess] Function2<Integer,Integer,Unit>
+#    5|                       0: [TypeAccess] Integer
+#    5|                       1: [TypeAccess] Integer
+#    5|                       2: [TypeAccess] Unit
 #    5|                 -3: [TypeAccess] InterfaceFn1
 #    5|                 0: [MemberRefExpr] ...::...
 #    5|                   -4: [AnonymousClass] new Function2<Integer,Integer,Unit>(...) { ... }
@@ -5026,24 +5026,24 @@ samConversion.kt:
 #    7|                           0: [VarAccess] this.<fn>
 #    7|                             -1: [ThisAccess] this
 #    7|                           1: [VarAccess] <fn>
-#    7|                   1: [FieldDeclaration] Function2<String,Integer,Boolean> <fn>;
-#    7|                     -1: [TypeAccess] Function2<String,Integer,Boolean>
-#    7|                       0: [TypeAccess] String
-#    7|                       1: [TypeAccess] Integer
-#    7|                       2: [TypeAccess] Boolean
-#   27|                   3: [ExtensionMethod] ext
-#   27|                     3: [TypeAccess] boolean
+#    7|                   1: [ExtensionMethod] ext
+#    7|                     3: [TypeAccess] boolean
 #-----|                     4: (Parameters)
-#   27|                       0: [Parameter] <this>
-#   27|                         0: [TypeAccess] String
-#   27|                       1: [Parameter] i
-#   27|                         0: [TypeAccess] int
+#    7|                       0: [Parameter] <this>
+#    7|                         0: [TypeAccess] String
+#    7|                       1: [Parameter] i
+#    7|                         0: [TypeAccess] int
 #    7|                     5: [BlockStmt] { ... }
 #    7|                       0: [ReturnStmt] return ...
 #    7|                         0: [MethodAccess] invoke(...)
 #    7|                           -1: [VarAccess] <fn>
 #    7|                           0: [ExtensionReceiverAccess] this
 #    7|                           1: [VarAccess] i
+#    7|                   1: [FieldDeclaration] Function2<String,Integer,Boolean> <fn>;
+#    7|                     -1: [TypeAccess] Function2<String,Integer,Boolean>
+#    7|                       0: [TypeAccess] String
+#    7|                       1: [TypeAccess] Integer
+#    7|                       2: [TypeAccess] Boolean
 #    7|                 -3: [TypeAccess] InterfaceFnExt1
 #    7|                 0: [LambdaExpr] ...->...
 #    7|                   -4: [AnonymousClass] new Function2<String,Integer,Boolean>(...) { ... }
@@ -5082,20 +5082,20 @@ samConversion.kt:
 #    9|                           0: [VarAccess] this.<fn>
 #    9|                             -1: [ThisAccess] this
 #    9|                           1: [VarAccess] <fn>
-#    9|                   1: [FieldDeclaration] Function1<Integer,Boolean> <fn>;
-#    9|                     -1: [TypeAccess] Function1<Integer,Boolean>
-#    9|                       0: [TypeAccess] Integer
-#    9|                       1: [TypeAccess] Boolean
-#   17|                   3: [Method] accept
-#   17|                     3: [TypeAccess] boolean
+#    9|                   1: [Method] accept
+#    9|                     3: [TypeAccess] boolean
 #-----|                     4: (Parameters)
-#   17|                       0: [Parameter] i
-#   17|                         0: [TypeAccess] int
+#    9|                       0: [Parameter] i
+#    9|                         0: [TypeAccess] int
 #    9|                     5: [BlockStmt] { ... }
 #    9|                       0: [ReturnStmt] return ...
 #    9|                         0: [MethodAccess] invoke(...)
 #    9|                           -1: [VarAccess] <fn>
 #    9|                           0: [VarAccess] i
+#    9|                   1: [FieldDeclaration] Function1<Integer,Boolean> <fn>;
+#    9|                     -1: [TypeAccess] Function1<Integer,Boolean>
+#    9|                       0: [TypeAccess] Integer
+#    9|                       1: [TypeAccess] Boolean
 #    9|                 -3: [TypeAccess] IntPredicate
 #    9|                 0: [WhenExpr] when ...
 #    9|                   0: [WhenBranch] ... -> ...
@@ -5347,55 +5347,65 @@ samConversion.kt:
 #   42|               0: [TypeAccess] BigArityPredicate
 #   42|               1: [ClassInstanceExpr] new (...)
 #   42|                 -4: [AnonymousClass] new BigArityPredicate(...) { ... }
-#   31|                   1: [Method] accept
-#   31|                     3: [TypeAccess] boolean
+#   42|                   1: [Constructor] 
 #-----|                     4: (Parameters)
-#   31|                       0: [Parameter] i0
-#   31|                         0: [TypeAccess] int
-#   31|                       1: [Parameter] i1
-#   31|                         0: [TypeAccess] int
-#   31|                       2: [Parameter] i2
-#   31|                         0: [TypeAccess] int
-#   31|                       3: [Parameter] i3
-#   31|                         0: [TypeAccess] int
-#   31|                       4: [Parameter] i4
-#   31|                         0: [TypeAccess] int
-#   31|                       5: [Parameter] i5
-#   31|                         0: [TypeAccess] int
-#   31|                       6: [Parameter] i6
-#   31|                         0: [TypeAccess] int
-#   31|                       7: [Parameter] i7
-#   31|                         0: [TypeAccess] int
-#   31|                       8: [Parameter] i8
-#   31|                         0: [TypeAccess] int
-#   31|                       9: [Parameter] i9
-#   31|                         0: [TypeAccess] int
-#   32|                       10: [Parameter] i10
-#   32|                         0: [TypeAccess] int
-#   32|                       11: [Parameter] i11
-#   32|                         0: [TypeAccess] int
-#   32|                       12: [Parameter] i12
-#   32|                         0: [TypeAccess] int
-#   32|                       13: [Parameter] i13
-#   32|                         0: [TypeAccess] int
-#   32|                       14: [Parameter] i14
-#   32|                         0: [TypeAccess] int
-#   32|                       15: [Parameter] i15
-#   32|                         0: [TypeAccess] int
-#   32|                       16: [Parameter] i16
-#   32|                         0: [TypeAccess] int
-#   32|                       17: [Parameter] i17
-#   32|                         0: [TypeAccess] int
-#   32|                       18: [Parameter] i18
-#   32|                         0: [TypeAccess] int
-#   32|                       19: [Parameter] i19
-#   32|                         0: [TypeAccess] int
-#   33|                       20: [Parameter] i20
-#   33|                         0: [TypeAccess] int
-#   33|                       21: [Parameter] i21
-#   33|                         0: [TypeAccess] int
-#   33|                       22: [Parameter] i22
-#   33|                         0: [TypeAccess] int
+#   42|                       0: [Parameter] <fn>
+#   42|                     5: [BlockStmt] { ... }
+#   42|                       0: [SuperConstructorInvocationStmt] super(...)
+#   42|                       1: [ExprStmt] <Expr>;
+#   42|                         0: [AssignExpr] ...=...
+#   42|                           0: [VarAccess] this.<fn>
+#   42|                             -1: [ThisAccess] this
+#   42|                           1: [VarAccess] <fn>
+#   42|                   1: [Method] accept
+#   42|                     3: [TypeAccess] boolean
+#-----|                     4: (Parameters)
+#   42|                       0: [Parameter] i0
+#   42|                         0: [TypeAccess] int
+#   42|                       1: [Parameter] i1
+#   42|                         0: [TypeAccess] int
+#   42|                       2: [Parameter] i2
+#   42|                         0: [TypeAccess] int
+#   42|                       3: [Parameter] i3
+#   42|                         0: [TypeAccess] int
+#   42|                       4: [Parameter] i4
+#   42|                         0: [TypeAccess] int
+#   42|                       5: [Parameter] i5
+#   42|                         0: [TypeAccess] int
+#   42|                       6: [Parameter] i6
+#   42|                         0: [TypeAccess] int
+#   42|                       7: [Parameter] i7
+#   42|                         0: [TypeAccess] int
+#   42|                       8: [Parameter] i8
+#   42|                         0: [TypeAccess] int
+#   42|                       9: [Parameter] i9
+#   42|                         0: [TypeAccess] int
+#   42|                       10: [Parameter] i10
+#   42|                         0: [TypeAccess] int
+#   42|                       11: [Parameter] i11
+#   42|                         0: [TypeAccess] int
+#   42|                       12: [Parameter] i12
+#   42|                         0: [TypeAccess] int
+#   42|                       13: [Parameter] i13
+#   42|                         0: [TypeAccess] int
+#   42|                       14: [Parameter] i14
+#   42|                         0: [TypeAccess] int
+#   42|                       15: [Parameter] i15
+#   42|                         0: [TypeAccess] int
+#   42|                       16: [Parameter] i16
+#   42|                         0: [TypeAccess] int
+#   42|                       17: [Parameter] i17
+#   42|                         0: [TypeAccess] int
+#   42|                       18: [Parameter] i18
+#   42|                         0: [TypeAccess] int
+#   42|                       19: [Parameter] i19
+#   42|                         0: [TypeAccess] int
+#   42|                       20: [Parameter] i20
+#   42|                         0: [TypeAccess] int
+#   42|                       21: [Parameter] i21
+#   42|                         0: [TypeAccess] int
+#   42|                       22: [Parameter] i22
+#   42|                         0: [TypeAccess] int
 #   42|                     5: [BlockStmt] { ... }
 #   42|                       0: [ReturnStmt] return ...
 #   42|                         0: [MethodAccess] invoke(...)
@@ -5427,17 +5437,7 @@ samConversion.kt:
 #   42|                               22: [VarAccess] i22
 #   42|                             -1: [TypeAccess] Object
 #   42|                             0: [IntegerLiteral] 23
-#   42|                   2: [Constructor] 
-#-----|                     4: (Parameters)
-#   42|                       0: [Parameter] <fn>
-#   42|                     5: [BlockStmt] { ... }
-#   42|                       0: [SuperConstructorInvocationStmt] super(...)
-#   42|                       1: [ExprStmt] <Expr>;
-#   42|                         0: [AssignExpr] ...=...
-#   42|                           0: [VarAccess] this.<fn>
-#   42|                             -1: [ThisAccess] this
-#   42|                           1: [VarAccess] <fn>
-#   42|                   2: [FieldDeclaration] FunctionN<Boolean> <fn>;
+#   42|                   1: [FieldDeclaration] FunctionN<Boolean> <fn>;
 #   42|                     -1: [TypeAccess] FunctionN<Boolean>
 #   42|                       0: [TypeAccess] Boolean
 #   42|                 -3: [TypeAccess] BigArityPredicate
@@ -5448,55 +5448,65 @@ samConversion.kt:
 #   43|               0: [TypeAccess] BigArityPredicate
 #   43|               1: [ClassInstanceExpr] new (...)
 #   43|                 -4: [AnonymousClass] new BigArityPredicate(...) { ... }
-#   31|                   1: [Method] accept
-#   31|                     3: [TypeAccess] boolean
+#   43|                   1: [Constructor] 
 #-----|                     4: (Parameters)
-#   31|                       0: [Parameter] i0
-#   31|                         0: [TypeAccess] int
-#   31|                       1: [Parameter] i1
-#   31|                         0: [TypeAccess] int
-#   31|                       2: [Parameter] i2
-#   31|                         0: [TypeAccess] int
-#   31|                       3: [Parameter] i3
-#   31|                         0: [TypeAccess] int
-#   31|                       4: [Parameter] i4
-#   31|                         0: [TypeAccess] int
-#   31|                       5: [Parameter] i5
-#   31|                         0: [TypeAccess] int
-#   31|                       6: [Parameter] i6
-#   31|                         0: [TypeAccess] int
-#   31|                       7: [Parameter] i7
-#   31|                         0: [TypeAccess] int
-#   31|                       8: [Parameter] i8
-#   31|                         0: [TypeAccess] int
-#   31|                       9: [Parameter] i9
-#   31|                         0: [TypeAccess] int
-#   32|                       10: [Parameter] i10
-#   32|                         0: [TypeAccess] int
-#   32|                       11: [Parameter] i11
-#   32|                         0: [TypeAccess] int
-#   32|                       12: [Parameter] i12
-#   32|                         0: [TypeAccess] int
-#   32|                       13: [Parameter] i13
-#   32|                         0: [TypeAccess] int
-#   32|                       14: [Parameter] i14
-#   32|                         0: [TypeAccess] int
-#   32|                       15: [Parameter] i15
-#   32|                         0: [TypeAccess] int
-#   32|                       16: [Parameter] i16
-#   32|                         0: [TypeAccess] int
-#   32|                       17: [Parameter] i17
-#   32|                         0: [TypeAccess] int
-#   32|                       18: [Parameter] i18
-#   32|                         0: [TypeAccess] int
-#   32|                       19: [Parameter] i19
-#   32|                         0: [TypeAccess] int
-#   33|                       20: [Parameter] i20
-#   33|                         0: [TypeAccess] int
-#   33|                       21: [Parameter] i21
-#   33|                         0: [TypeAccess] int
-#   33|                       22: [Parameter] i22
-#   33|                         0: [TypeAccess] int
+#   43|                       0: [Parameter] <fn>
+#   43|                     5: [BlockStmt] { ... }
+#   43|                       0: [SuperConstructorInvocationStmt] super(...)
+#   43|                       1: [ExprStmt] <Expr>;
+#   43|                         0: [AssignExpr] ...=...
+#   43|                           0: [VarAccess] this.<fn>
+#   43|                             -1: [ThisAccess] this
+#   43|                           1: [VarAccess] <fn>
+#   43|                   1: [Method] accept
+#   43|                     3: [TypeAccess] boolean
+#-----|                     4: (Parameters)
+#   43|                       0: [Parameter] i0
+#   43|                         0: [TypeAccess] int
+#   43|                       1: [Parameter] i1
+#   43|                         0: [TypeAccess] int
+#   43|                       2: [Parameter] i2
+#   43|                         0: [TypeAccess] int
+#   43|                       3: [Parameter] i3
+#   43|                         0: [TypeAccess] int
+#   43|                       4: [Parameter] i4
+#   43|                         0: [TypeAccess] int
+#   43|                       5: [Parameter] i5
+#   43|                         0: [TypeAccess] int
+#   43|                       6: [Parameter] i6
+#   43|                         0: [TypeAccess] int
+#   43|                       7: [Parameter] i7
+#   43|                         0: [TypeAccess] int
+#   43|                       8: [Parameter] i8
+#   43|                         0: [TypeAccess] int
+#   43|                       9: [Parameter] i9
+#   43|                         0: [TypeAccess] int
+#   43|                       10: [Parameter] i10
+#   43|                         0: [TypeAccess] int
+#   43|                       11: [Parameter] i11
+#   43|                         0: [TypeAccess] int
+#   43|                       12: [Parameter] i12
+#   43|                         0: [TypeAccess] int
+#   43|                       13: [Parameter] i13
+#   43|                         0: [TypeAccess] int
+#   43|                       14: [Parameter] i14
+#   43|                         0: [TypeAccess] int
+#   43|                       15: [Parameter] i15
+#   43|                         0: [TypeAccess] int
+#   43|                       16: [Parameter] i16
+#   43|                         0: [TypeAccess] int
+#   43|                       17: [Parameter] i17
+#   43|                         0: [TypeAccess] int
+#   43|                       18: [Parameter] i18
+#   43|                         0: [TypeAccess] int
+#   43|                       19: [Parameter] i19
+#   43|                         0: [TypeAccess] int
+#   43|                       20: [Parameter] i20
+#   43|                         0: [TypeAccess] int
+#   43|                       21: [Parameter] i21
+#   43|                         0: [TypeAccess] int
+#   43|                       22: [Parameter] i22
+#   43|                         0: [TypeAccess] int
 #   43|                     5: [BlockStmt] { ... }
 #   43|                       0: [ReturnStmt] return ...
 #   43|                         0: [MethodAccess] invoke(...)
@@ -5528,17 +5538,7 @@ samConversion.kt:
 #   43|                               22: [VarAccess] i22
 #   43|                             -1: [TypeAccess] Object
 #   43|                             0: [IntegerLiteral] 23
-#   43|                   2: [Constructor] 
-#-----|                     4: (Parameters)
-#   43|                       0: [Parameter] <fn>
-#   43|                     5: [BlockStmt] { ... }
-#   43|                       0: [SuperConstructorInvocationStmt] super(...)
-#   43|                       1: [ExprStmt] <Expr>;
-#   43|                         0: [AssignExpr] ...=...
-#   43|                           0: [VarAccess] this.<fn>
-#   43|                             -1: [ThisAccess] this
-#   43|                           1: [VarAccess] <fn>
-#   43|                   2: [FieldDeclaration] FunctionN<Boolean> <fn>;
+#   43|                   1: [FieldDeclaration] FunctionN<Boolean> <fn>;
 #   43|                     -1: [TypeAccess] FunctionN<Boolean>
 #   43|                       0: [TypeAccess] Boolean
 #   43|                 -3: [TypeAccess] BigArityPredicate
@@ -5740,20 +5740,20 @@ samConversion.kt:
 #   46|                           0: [VarAccess] this.<fn>
 #   46|                             -1: [ThisAccess] this
 #   46|                           1: [VarAccess] <fn>
-#   46|                   1: [FieldDeclaration] Function1<Integer,Boolean> <fn>;
-#   46|                     -1: [TypeAccess] Function1<Integer,Boolean>
-#   46|                       0: [TypeAccess] Integer
-#   46|                       1: [TypeAccess] Boolean
-#   50|                   3: [Method] fn
-#   50|                     3: [TypeAccess] boolean
+#   46|                   1: [Method] fn
+#   46|                     3: [TypeAccess] boolean
 #-----|                     4: (Parameters)
-#   50|                       0: [Parameter] i
-#   50|                         0: [TypeAccess] T
+#   46|                       0: [Parameter] i
+#   46|                         0: [TypeAccess] Integer
 #   46|                     5: [BlockStmt] { ... }
 #   46|                       0: [ReturnStmt] return ...
 #   46|                         0: [MethodAccess] invoke(...)
 #   46|                           -1: [VarAccess] <fn>
 #   46|                           0: [VarAccess] i
+#   46|                   1: [FieldDeclaration] Function1<Integer,Boolean> <fn>;
+#   46|                     -1: [TypeAccess] Function1<Integer,Boolean>
+#   46|                       0: [TypeAccess] Integer
+#   46|                       1: [TypeAccess] Boolean
 #   46|                 -3: [TypeAccess] SomePredicate<Integer>
 #   46|                   0: [TypeAccess] Integer
 #   46|                 0: [LambdaExpr] ...->...

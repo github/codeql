@@ -120,11 +120,11 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   /** Gets the data flow node that this call targets. */
   DataFlow::Node getReceiver() { result = receiver }
 
-  override DataFlowCallable getEnclosingCallable() { result = c }
+  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
-  override Location getLocation() { result = c.getLocation() }
+  override EmptyLocation getLocation() { any() }
 }
 
 private class NormalCall extends DataFlowCall, TNormalCall {

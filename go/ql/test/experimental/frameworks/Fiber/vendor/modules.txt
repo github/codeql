@@ -1,0 +1,6 @@
+# github.com/gofiber/fiber v1.14.6
+## explicit
+github.com/gofiber/fiber
+# github.com/gofiber/utils v0.0.10
+## explicit
+github.com/gofiber/utils

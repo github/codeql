@@ -1,7 +1,7 @@
 import subprocess
 import sys
 
-from swift.codegen import qlgen
+from swift.codegen.generators import qlgen
 from swift.codegen.lib import ql
 from swift.codegen.test.utils import *
 

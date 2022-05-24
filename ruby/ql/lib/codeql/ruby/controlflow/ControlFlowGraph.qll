@@ -28,6 +28,9 @@ class CfgScope extends Scope instanceof CfgScope::Range_ {
  * Only nodes that can be reached from an entry point are included in the CFG.
  */
 class CfgNode extends TCfgNode {
+  /** Gets the name of the primary QL class for this node. */
+  string getAPrimaryQlClass() { none() }
+
   /** Gets a textual representation of this control flow node. */
   string toString() { none() }
 

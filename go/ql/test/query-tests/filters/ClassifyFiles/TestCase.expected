@@ -1,0 +1,7 @@
+| ginkgo.go:13:1:16:1 | function declaration |
+| test1.go:5:1:5:26 | function declaration |
+| test1.go:7:1:7:27 | function declaration |
+| test1.go:15:1:15:31 | function declaration |
+| test1.go:17:1:17:32 | function declaration |
+| test1.go:25:1:25:17 | function declaration |
+| test1.go:27:1:27:18 | function declaration |

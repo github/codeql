@@ -1,0 +1,2 @@
+| main.go:46:21:46:23 | increment statement | main.go:46:2:48:2 | for statement |
+| main.go:47:3:47:9 | increment statement | main.go:46:2:48:2 | for statement |
