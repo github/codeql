@@ -183,17 +183,17 @@ module Array {
 
   /** A call to `[]` with a known index. */
   private class ElementReferenceReadKnownSummary extends ElementReferenceReadSummary {
-    private ConstantValue cv;
+    private ConstantValue index;
 
     ElementReferenceReadKnownSummary() {
-      this = methodName + "(" + cv.serialize() + ")" and
+      this = methodName + "(" + index.serialize() + ")" and
       mc.getNumberOfArguments() = 1 and
-      cv = DataFlow::Content::getKnownElementIndex(mc.getArgument(0)) and
-      if methodName = "slice" then cv.isInt(_) else any()
+      index = DataFlow::Content::getKnownElementIndex(mc.getArgument(0)) and
+      if methodName = "slice" then index.isInt(_) else any()
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[?," + cv.serialize() + "]" and
+      input = "Argument[self].Element[?," + index.serialize() + "]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -308,20 +308,20 @@ module Array {
 
   /** A call to `[]=` with a known index. */
   private class ElementReferenceStoreKnownSummary extends ElementReferenceStoreSummary {
-    private ConstantValue cv;
+    private ConstantValue index;
 
     ElementReferenceStoreKnownSummary() {
       mc.getNumberOfArguments() = 2 and
-      cv = DataFlow::Content::getKnownElementIndex(mc.getArgument(0)) and
-      this = "[" + cv.serialize() + "]="
+      index = DataFlow::Content::getKnownElementIndex(mc.getArgument(0)) and
+      this = "[" + index.serialize() + "]="
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[1]" and
-      output = "Argument[self].Element[" + cv.serialize() + "]" and
+      output = "Argument[self].Element[" + index.serialize() + "]" and
       preservesValue = true
       or
-      input = "Argument[self].WithoutElement[" + cv.serialize() + "]" and
+      input = "Argument[self].WithoutElement[" + index.serialize() + "]" and
       output = "Argument[self]" and
       preservesValue = true
     }
@@ -392,16 +392,16 @@ module Array {
   }
 
   private class AtKnownSummary extends AtSummary {
-    private ConstantValue cv;
+    private ConstantValue index;
 
     AtKnownSummary() {
-      this = "at(" + cv.serialize() + "]" and
+      this = "at(" + index.serialize() + "]" and
       mc.getNumberOfArguments() = 1 and
-      cv = DataFlow::Content::getKnownElementIndex(mc.getArgument(0))
+      index = DataFlow::Content::getKnownElementIndex(mc.getArgument(0))
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[" + cv.serialize() + ",?]" and
+      input = "Argument[self].Element[" + index.serialize() + ",?]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -537,11 +537,11 @@ module Array {
   }
 
   private class DeleteKnownSummary extends DeleteSummary {
-    private ConstantValue cv;
+    private ConstantValue index;
 
     DeleteKnownSummary() {
-      this = "delete(" + cv.serialize() + ")" and
-      mc.getArgument(0).getConstantValue() = cv
+      this = "delete(" + index.serialize() + ")" and
+      mc.getArgument(0).getConstantValue() = index
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -549,21 +549,21 @@ module Array {
       or
       (
         (
-          if cv.isInt(_)
+          if index.isInt(_)
           then
             // array indices may get shifted
-            input = "Argument[self].WithoutElement[" + cv.serialize() + "].Element[0..]" and
+            input = "Argument[self].WithoutElement[" + index.serialize() + "].Element[0..]" and
             output = "Argument[self].Element[?]"
             or
             input = "Argument[self].WithoutElement[0..]" and
             output = "Argument[self]"
           else (
-            input = "Argument[self].WithoutElement[" + cv.serialize() + "]" and
+            input = "Argument[self].WithoutElement[" + index.serialize() + "]" and
             output = "Argument[self]"
           )
         )
         or
-        input = "Argument[self].Element[" + cv.serialize() + ",?]" and
+        input = "Argument[self].Element[" + index.serialize() + ",?]" and
         output = "ReturnValue"
       ) and
       preservesValue = true
@@ -795,17 +795,17 @@ module Array {
   }
 
   private class FetchKnownSummary extends FetchSummary {
-    ConstantValue cv;
+    ConstantValue index;
 
     FetchKnownSummary() {
-      this = "fetch(" + cv.serialize() + ")" and
-      cv = mc.getArgument(0).getConstantValue() and
-      not cv.isInt(any(int i | i < 0))
+      this = "fetch(" + index.serialize() + ")" and
+      index = mc.getArgument(0).getConstantValue() and
+      not index.isInt(any(int i | i < 0))
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "Argument[self].Element[?," + cv.serialize() + "]" and
+        input = "Argument[self].Element[?," + index.serialize() + "]" and
         output = "ReturnValue"
         or
         input = "Argument[0]" and
@@ -821,8 +821,8 @@ module Array {
   private class FetchUnknownSummary extends FetchSummary {
     FetchUnknownSummary() {
       this = "fetch(index)" and
-      not exists(ConstantValue cv |
-        cv = mc.getArgument(0).getConstantValue() and not cv.isInt(any(int i | i < 0))
+      not exists(ConstantValue index |
+        index = mc.getArgument(0).getConstantValue() and not index.isInt(any(int i | i < 0))
       )
     }
 
@@ -1867,9 +1867,9 @@ module Enumerable {
       output = "ReturnValue.Element[?]" and
       preservesValue = true
       or
-      exists(ConstantValue cv |
-        not cv.isInt(_) and
-        input = "Argument[self].WithElement[" + cv.serialize() + "]" and
+      exists(ConstantValue index |
+        not index.isInt(_) and
+        input = "Argument[self].WithElement[" + index.serialize() + "]" and
         output = "ReturnValue" and
         preservesValue = true
       )

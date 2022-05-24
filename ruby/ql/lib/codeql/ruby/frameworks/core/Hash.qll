@@ -17,8 +17,8 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch
  */
 module Hash {
   // cannot use API graphs due to negative recursion
-  private predicate isHashLiteralPair(Pair pair, ConstantValue cv) {
-    cv = DataFlow::Content::getKnownElementIndex(pair.getKey()) and
+  private predicate isHashLiteralPair(Pair pair, ConstantValue key) {
+    key = DataFlow::Content::getKnownElementIndex(pair.getKey()) and
     pair = any(MethodCall mc | mc.getMethodName() = "[]").getAnArgument()
   }
 
@@ -44,23 +44,23 @@ module Hash {
   }
 
   private class HashLiteralNonSymbolSummary extends SummarizedCallable {
-    private ConstantValue cv;
+    private ConstantValue key;
 
     HashLiteralNonSymbolSummary() {
       this = "Hash.[]" and
-      isHashLiteralPair(_, cv) and
-      not cv.isSymbol(_)
+      isHashLiteralPair(_, key) and
+      not key.isSymbol(_)
     }
 
     final override MethodCall getACall() {
       result = API::getTopLevelMember("Hash").getAMethodCall("[]").getExprNode().getExpr() and
-      isHashLiteralPair(result.getAnArgument(), cv)
+      isHashLiteralPair(result.getAnArgument(), key)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       // { 'nonsymbol' => x }
-      input = "Argument[0..].PairValue[" + cv.serialize() + "]" and
-      output = "ReturnValue.Element[" + cv.serialize() + "]" and
+      input = "Argument[0..].PairValue[" + key.serialize() + "]" and
+      output = "ReturnValue.Element[" + key.serialize() + "]" and
       preservesValue = true
     }
   }
@@ -110,27 +110,27 @@ module Hash {
    */
   private class HashNewSuccessivePairsSummary extends SummarizedCallable {
     private int i;
-    private ConstantValue cv;
+    private ConstantValue key;
 
     HashNewSuccessivePairsSummary() {
-      this = "Hash[" + i + ", " + cv.serialize() + "]" and
+      this = "Hash[" + i + ", " + key.serialize() + "]" and
       i % 2 = 1 and
       exists(ElementReference er |
-        cv = er.getArgument(i - 1).getConstantValue() and
+        key = er.getArgument(i - 1).getConstantValue() and
         exists(er.getArgument(i))
       )
     }
 
     final override ElementReference getACall() {
       result.getReceiver() = API::getTopLevelMember("Hash").getAUse().asExpr().getExpr() and
-      cv = result.getArgument(i - 1).getConstantValue() and
+      key = result.getArgument(i - 1).getConstantValue() and
       exists(result.getArgument(i))
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       // Hash[:symbol, x]
       input = "Argument[" + i + "]" and
-      output = "ReturnValue.Element[" + cv.serialize() + "]" and
+      output = "ReturnValue.Element[" + key.serialize() + "]" and
       preservesValue = true
     }
   }
@@ -165,21 +165,21 @@ module Hash {
   }
 
   private class StoreKnownSummary extends StoreSummary {
-    private ConstantValue cv;
+    private ConstantValue key;
 
     StoreKnownSummary() {
-      cv = DataFlow::Content::getKnownElementIndex(mc.getArgument(0)) and
-      this = "store(" + cv.serialize() + ")"
+      key = DataFlow::Content::getKnownElementIndex(mc.getArgument(0)) and
+      this = "store(" + key.serialize() + ")"
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       super.propagatesFlowExt(input, output, preservesValue)
       or
       input = "Argument[1]" and
-      output = "Argument[self].Element[" + cv.serialize() + "]" and
+      output = "Argument[self].Element[" + key.serialize() + "]" and
       preservesValue = true
       or
-      input = "Argument[self].WithoutElement[" + cv.serialize() + "]" and
+      input = "Argument[self].WithoutElement[" + key.serialize() + "]" and
       output = "Argument[self]" and
       preservesValue = true
     }
@@ -210,17 +210,17 @@ module Hash {
   }
 
   private class AssocKnownSummary extends AssocSummary {
-    private ConstantValue cv;
+    private ConstantValue key;
 
     AssocKnownSummary() {
-      this = "assoc(" + cv.serialize() + "]" and
-      not cv.isInt(_) and // exclude arrays
+      this = "assoc(" + key.serialize() + "]" and
+      not key.isInt(_) and // exclude arrays
       mc.getNumberOfArguments() = 1 and
-      cv = DataFlow::Content::getKnownElementIndex(mc.getArgument(0))
+      key = DataFlow::Content::getKnownElementIndex(mc.getArgument(0))
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[" + cv.serialize() + ",?]" and
+      input = "Argument[self].Element[" + key.serialize() + ",?]" and
       output = "ReturnValue.Element[1]" and
       preservesValue = true
     }
@@ -325,18 +325,18 @@ abstract private class FetchValuesSummary extends SummarizedCallable {
 }
 
 private class FetchValuesKnownSummary extends FetchValuesSummary {
-  ConstantValue cv;
+  ConstantValue key;
 
   FetchValuesKnownSummary() {
     forex(Expr arg | arg = mc.getAnArgument() | exists(arg.getConstantValue())) and
-    cv = mc.getAnArgument().getConstantValue() and
-    this = "fetch_values(" + cv.serialize() + ")"
+    key = mc.getAnArgument().getConstantValue() and
+    this = "fetch_values(" + key.serialize() + ")"
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     super.propagatesFlowExt(input, output, preservesValue)
     or
-    input = "Argument[self].Element[" + cv.serialize() + "]" and
+    input = "Argument[self].Element[" + key.serialize() + "]" and
     output = "ReturnValue.Element[?]" and
     preservesValue = true
   }
@@ -407,16 +407,16 @@ abstract private class SliceSummary extends SummarizedCallable {
 }
 
 private class SliceKnownSummary extends SliceSummary {
-  ConstantValue cv;
+  ConstantValue key;
 
   SliceKnownSummary() {
-    cv = mc.getAnArgument().getConstantValue() and
-    this = "slice(" + cv.serialize() + ")" and
-    not cv.isInt(_) // covered in `Array.qll`
+    key = mc.getAnArgument().getConstantValue() and
+    this = "slice(" + key.serialize() + ")" and
+    not key.isInt(_) // covered in `Array.qll`
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    input = "Argument[self].WithElement[?," + cv.serialize() + "]" and
+    input = "Argument[self].WithElement[?," + key.serialize() + "]" and
     output = "ReturnValue" and
     preservesValue = true
   }

@@ -257,14 +257,14 @@ module Content {
 
   /** A value in a pair with a known key. */
   class KnownPairValueContent extends PairValueContent, TKnownPairValueContent {
-    private ConstantValue cv;
+    private ConstantValue key;
 
-    KnownPairValueContent() { this = TKnownPairValueContent(cv) }
+    KnownPairValueContent() { this = TKnownPairValueContent(key) }
 
     /** Gets the index in the collection. */
-    ConstantValue getIndex() { result = cv }
+    ConstantValue getIndex() { result = key }
 
-    override string toString() { result = "pair " + cv }
+    override string toString() { result = "pair " + key }
   }
 
   /** A value in a pair with an unknown key. */
