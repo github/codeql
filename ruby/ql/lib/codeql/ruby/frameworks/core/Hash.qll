@@ -27,7 +27,7 @@ module Hash {
 
     HashLiteralSymbolSummary() {
       isHashLiteralPair(_, symbol) and
-      this = "Hash.[:" + symbol.serialize() + "]"
+      this = "Hash.[" + symbol.serialize() + "]"
     }
 
     final override MethodCall getACall() {
