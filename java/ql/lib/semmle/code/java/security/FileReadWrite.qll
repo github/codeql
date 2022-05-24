@@ -3,7 +3,7 @@ import java
 /**
  * Holds if `fileAccess` is directly used in the `fileReadingExpr` to read the represented file.
  */
-predicate directFileRead(Expr fileAccess, Expr fileReadingExpr) {
+private predicate directFileRead(Expr fileAccess, Expr fileReadingExpr) {
   // `fileAccess` used to construct a class that reads a file.
   exists(ClassInstanceExpr cie |
     cie = fileReadingExpr and
@@ -64,7 +64,7 @@ class DirectFileReadExpr extends Expr {
   DirectFileReadExpr() { directFileRead(_, this) }
 
   /**
-   * Gets the `Expr` representing the file that is read
+   * Gets the `Expr` representing the file that is read.
    */
   Expr getFileExpr() { directFileRead(result, this) }
 }

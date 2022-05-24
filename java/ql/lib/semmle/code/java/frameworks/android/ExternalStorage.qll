@@ -39,7 +39,7 @@ private predicate externalStorageFlow(DataFlow::Node node1, DataFlow::Node node2
 
 /**
  * Holds if `n` is a node that reads the contents of an external file in Android.
- * This is controlable by third-party applications, so is treated as a remote flow source.
+ * This is controllable by third-party applications, so is treated as a remote flow source.
  */
 predicate androidExternalStorageSource(DataFlow::Node n) {
   exists(DataFlow::Node externalDir, DirectFileReadExpr read |
