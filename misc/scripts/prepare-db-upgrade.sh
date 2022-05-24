@@ -83,7 +83,7 @@ case "${lang}" in
   csharp | cpp | javascript | python)
     scheme_file="${lang}/ql/lib/semmlecode.${lang}.dbscheme"
     ;;
-  ruby)
+  go | ruby | swift)
     scheme_file="${lang}/ql/lib/${lang}.dbscheme"
     ;;
   *)
