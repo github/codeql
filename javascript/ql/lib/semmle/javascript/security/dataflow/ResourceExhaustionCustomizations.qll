@@ -81,8 +81,6 @@ module ResourceExhaustion {
         exists(string name |
           invk = clazz.getAMemberCall(name) and
           (
-            name = "from" and index = 2 // the length argument
-            or
             name = ["alloc", "allocUnsafe", "allocUnsafeSlow"] and index = 0 // the buffer size
           )
         )

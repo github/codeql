@@ -8,9 +8,9 @@ var server = http.createServer(function(req, res) {
   Buffer.from(s); // OK
   Buffer.from(n); // OK
   Buffer.from(x, n); // OK
-  Buffer.from(x, y, s); // NOT OK
-  Buffer.from(x, y, n); // NOT OK
-  Buffer.from(x, y, n); // NOT OK
+  Buffer.from(x, y, s); // OK - does not allocate memory
+  Buffer.from(x, y, n); // OK - does not allocate memory
+  Buffer.from(x, y, n); // OK - does not allocate memory
   Buffer.alloc(n); // NOT OK
   Buffer.allocUnsafe(n); // NOT OK
   Buffer.allocUnsafeSlow(n); // NOT OK
