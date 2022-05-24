@@ -80,4 +80,6 @@
   for (const x of uniq(arr)) {
     sink(x); // NOT OK
   }
+
+  sink(arr.at(-1)); // NOT OK
 });

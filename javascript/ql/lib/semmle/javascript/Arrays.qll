@@ -75,7 +75,7 @@ module ArrayTaintTracking {
     succ.(DataFlow::SourceNode).getAMethodCall("splice") = call
     or
     // `e = array.pop()`, `e = array.shift()`, or similar: if `array` is tainted, then so is `e`.
-    call.(DataFlow::MethodCallNode).calls(pred, ["pop", "shift", "slice", "splice"]) and
+    call.(DataFlow::MethodCallNode).calls(pred, ["pop", "shift", "slice", "splice", "at"]) and
     succ = call
     or
     // `e = Array.from(x)`: if `x` is tainted, then so is `e`.
@@ -199,13 +199,13 @@ private module ArrayDataFlow {
   }
 
   /**
-   * A step for retrieving an element from an array using `.pop()` or `.shift()`.
+   * A step for retrieving an element from an array using `.pop()`, `.shift()`, or `.at()`.
    * E.g. `array.pop()`.
    */
   private class ArrayPopStep extends DataFlow::SharedFlowStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
       exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = ["pop", "shift"] and
+        call.getMethodName() = ["pop", "shift", "at"] and
         prop = arrayElement() and
         obj = call.getReceiver() and
         element = call
