@@ -305,6 +305,27 @@ class ContentSet instanceof Content {
 }
 
 /**
+ * Holds if `g` validates the `e` upon evaluating to `branch`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
+ */
+signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
+
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard. */
+  Node getABarrierNode() {
+    exists(Guard g, SsaVariable v, boolean branch, RValue use |
+      guardChecks(g, v.getAUse(), branch) and
+      use = v.getAUse() and
+      g.controls(use.getBasicBlock(), branch) and
+      result.asExpr() = use
+    )
+  }
+}
+
+/**
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a

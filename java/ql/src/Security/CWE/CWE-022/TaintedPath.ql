@@ -19,15 +19,13 @@ import semmle.code.java.security.PathCreation
 import DataFlow::PathGraph
 import TaintedPathCommon
 
-class ContainsDotDotSanitizer extends DataFlow::BarrierGuard {
-  ContainsDotDotSanitizer() {
-    this.(MethodAccess).getMethod().hasName("contains") and
-    this.(MethodAccess).getAnArgument().(StringLiteral).getValue() = ".."
-  }
-
-  override predicate checks(Expr e, boolean branch) {
-    e = this.(MethodAccess).getQualifier() and branch = false
-  }
+predicate containsDotDotSanitizer(Guard g, Expr e, boolean branch) {
+  exists(MethodAccess contains | g = contains |
+    contains.getMethod().hasName("contains") and
+    contains.getAnArgument().(StringLiteral).getValue() = ".." and
+    e = contains.getQualifier() and
+    branch = false
+  )
 }
 
 class TaintedPathConfig extends TaintTracking::Configuration {
@@ -41,10 +39,8 @@ class TaintedPathConfig extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) {
     exists(Type t | t = node.getType() | t instanceof BoxedType or t instanceof PrimitiveType)
-  }
-
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof ContainsDotDotSanitizer
+    or
+    node = DataFlow::BarrierGuard<containsDotDotSanitizer/3>::getABarrierNode()
   }
 }
 
