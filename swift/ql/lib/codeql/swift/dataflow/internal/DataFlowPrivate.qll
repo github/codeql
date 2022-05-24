@@ -1,6 +1,7 @@
 private import swift
 private import DataFlowPublic
 private import DataFlowDispatch
+private import codeql.swift.controlflow.CfgNodes
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -25,11 +26,19 @@ abstract class NodeImpl extends Node {
   abstract string toStringImpl();
 }
 
+private class ExprNodeImpl extends ExprNode, NodeImpl {
+  override Location getLocationImpl() { result = expr.getLocation() }
+
+  override string toStringImpl() { result = expr.toString() }
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
   cached
-  newtype TNode = TODO_TNode()
+  newtype TNode =
+    TExprNode(ExprCfgNode e) or
+    TNormalParameterNode(ParamDecl p)
 
   /**
    * This is the local flow predicate that is used as a building block in global
@@ -57,6 +66,20 @@ predicate nodeIsHidden(Node n) { none() }
 private module ParameterNodes {
   abstract class ParameterNodeImpl extends NodeImpl {
     predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) { none() }
+  }
+
+  class NormalParameterNode extends ParameterNodeImpl, TNormalParameterNode {
+    ParamDecl param;
+
+    NormalParameterNode() { this = TNormalParameterNode(param) }
+
+    override Location getLocationImpl() { result = param.getLocation() }
+
+    override string toStringImpl() { result = param.toString() }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      none() // TODO
+    }
   }
 }
 
@@ -173,7 +196,9 @@ class Unit extends TUnit {
  */
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
 
-newtype LambdaCallKind = TODO_TLambdaCallKind()
+newtype LambdaCallKind =
+  TYieldCallKind() or
+  TLambdaCallKind()
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }

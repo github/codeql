@@ -3,6 +3,7 @@ private import DataFlowDispatch
 private import DataFlowPrivate
 private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.controlflow.BasicBlocks
+private import codeql.swift.controlflow.CfgNodes
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -38,7 +39,11 @@ class Node extends TNode {
  * to multiple `ExprNode`s, just like it may correspond to multiple
  * `ControlFlow::Node`s.
  */
-class ExprNode extends Node { }
+class ExprNode extends Node { 
+  ExprCfgNode expr;
+
+  ExprNode() { this = TExprNode(expr) }
+}
 
 /**
  * The value of a parameter at function entry, viewed as a node in a data
