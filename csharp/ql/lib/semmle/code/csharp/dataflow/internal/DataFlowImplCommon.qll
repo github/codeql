@@ -80,8 +80,8 @@ predicate accessPathCostLimits(int apLimit, int tupleLimit) {
 pragma[noinline]
 predicate argumentPositionMatch(DataFlowCall call, ArgNode arg, ParameterPosition ppos) {
   exists(ArgumentPosition apos |
-    arg.argumentOf(call, apos) and
-    parameterMatch(ppos, apos)
+    arg.argumentOf(call, pragma[only_bind_into](apos)) and
+    parameterMatch(ppos, pragma[only_bind_into](apos))
   )
 }
 
