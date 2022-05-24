@@ -4,37 +4,9 @@
  */
 
 private import CaptureModelsSpecific
+private import CaptureModelsSpecific as CaptureModelsSpecific
 
 class TargetApi = TargetApiSpecific;
-
-/**
- * Holds if data can flow from `node1` to `node2` either via a read or a write of an intermediate field `f`.
- */
-private predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(DataFlow::Content f |
-    DataFlowPrivate::readStep(node1, f, node2) and
-    if f instanceof DataFlow::FieldContent
-    then isRelevantType(f.(DataFlow::FieldContent).getField().getType())
-    else
-      if f instanceof DataFlow::SyntheticFieldContent
-      then isRelevantType(f.(DataFlow::SyntheticFieldContent).getField().getType())
-      else any()
-  )
-  or
-  exists(DataFlow::Content f | DataFlowPrivate::storeStep(node1, f, node2) |
-    DataFlowPrivate::containerContent(f)
-  )
-}
-
-/**
- * Holds if content `c` is either a field or synthetic field of a relevant type
- * or a container like content.
- */
-private predicate isRelevantContent(DataFlow::Content c) {
-  isRelevantType(c.(DataFlow::FieldContent).getField().getType()) or
-  isRelevantType(c.(DataFlow::SyntheticFieldContent).getField().getType()) or
-  DataFlowPrivate::containerContent(c)
-}
 
 /**
  * Gets the summary model for `api` with `input`, `output` and `kind`.
@@ -89,96 +61,63 @@ private string asSourceModel(TargetApi api, string output, string kind) {
 }
 
 /**
- * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
- */
-string captureQualifierFlow(TargetApi api) {
-  exists(DataFlowImplCommon::ReturnNodeExt ret |
-    api = returnNodeEnclosingCallable(ret) and
-    isOwnInstanceAccessNode(ret)
-  ) and
-  result = asValueModel(api, qualifierString(), "ReturnValue")
-}
-
-private int accessPathLimit() { result = 2 }
-
-/**
- * A FlowState representing a tainted read.
- */
-private class TaintRead extends DataFlow::FlowState {
-  private int step;
-
-  TaintRead() { this = "TaintRead(" + step + ")" and step in [0 .. accessPathLimit()] }
-
-  /**
-   * Gets the flow state step number.
-   */
-  int getStep() { result = step }
-}
-
-/**
- * A FlowState representing a tainted write.
- */
-private class TaintStore extends DataFlow::FlowState {
-  private int step;
-
-  TaintStore() { this = "TaintStore(" + step + ")" and step in [1 .. accessPathLimit()] }
-
-  /**
-   * Gets the flow state step number.
-   */
-  int getStep() { result = step }
-}
-
-/**
- * A TaintTracking Configuration used for tracking flow through APIs.
- * The sources are the parameters of an API and the sinks are the return values (excluding `this`) and parameters.
+ * A data flow configuration used for tracking flow through APIs.
  *
- * This can be used to generate Flow summaries for APIs from parameter to return.
+ * The sources are the parameters of an API and the sinks are the return values and parameters.
+ *
+ * We track flow paths of the form
+ *
+ * ```
+ * parameter --value-->* node
+ *           (--read--> node --value-->* node)?
+ *           --(taint|value)-->* node
+ *           (--store--> node --value-->* node)?
+ *           --value-->* return
+ * ```
+ *
+ * That is, first a sequence of 0 or more reads, followed by 0 or more taint steps,
+ * followed by 0 or more stores, with value steps allowed in between all other steps.
  */
-private class ThroughFlowConfig extends TaintTracking::Configuration {
+class ThroughFlowConfig extends ContentDataFlow::Configuration {
   ThroughFlowConfig() { this = "ThroughFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+  final override predicate isSource(DataFlow::Node source) {
     source instanceof DataFlow::ParameterNode and
-    source.getEnclosingCallable() instanceof TargetApi and
-    state.(TaintRead).getStep() = 0
+    source.getEnclosingCallable() instanceof TargetApi
   }
 
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    sink instanceof DataFlowImplCommon::ReturnNodeExt and
-    not isOwnInstanceAccessNode(sink) and
-    not exists(captureQualifierFlow(sink.asExpr().getEnclosingCallable())) and
-    (state instanceof TaintRead or state instanceof TaintStore)
+  final override predicate isSink(DataFlow::Node sink) {
+    sink instanceof DataFlowImplCommon::ReturnNodeExt
   }
 
-  override predicate isAdditionalTaintStep(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
-  ) {
-    exists(DataFlowImplCommon::TypedContent tc |
-      DataFlowImplCommon::store(node1, tc, node2, _) and
-      isRelevantContent(tc.getContent()) and
-      (
-        state1 instanceof TaintRead and state2.(TaintStore).getStep() = 1
-        or
-        state1.(TaintStore).getStep() + 1 = state2.(TaintStore).getStep()
-      )
-    )
-    or
-    exists(DataFlow::Content c |
-      DataFlowPrivate::readStep(node1, c, node2) and
-      isRelevantContent(c) and
-      state1.(TaintRead).getStep() + 1 = state2.(TaintRead).getStep()
-    )
+  final override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    taintStep(node1, node2)
   }
 
-  override predicate isSanitizer(DataFlow::Node n) {
+  final override predicate isBarrier(DataFlow::Node n) {
     exists(Type t | t = n.getType() and not isRelevantType(t))
   }
 
-  override DataFlow::FlowFeature getAFeature() {
+  final override DataFlow::FlowFeature getAFeature() {
     result instanceof DataFlow::FeatureEqualSourceSinkCallContext
   }
+
+  final override int accessPathLimit() { result = CaptureModelsSpecific::accessPathLimit() }
+
+  final override predicate isRelevantContent(DataFlow::ContentSet c) {
+    CaptureModelsSpecific::isRelevantContent(c)
+  }
+}
+
+private string printAccessPath(ContentDataFlow::AccessPath ap) {
+  not exists(ap.getHead()) and
+  result = ""
+  or
+  exists(DataFlow::Content head, ContentDataFlow::AccessPath tail |
+    head = ap.getHead() and
+    tail = ap.getTail() and
+    result = printAccessPath(tail) + "." + printContent(head)
+  )
 }
 
 /**
@@ -187,14 +126,17 @@ private class ThroughFlowConfig extends TaintTracking::Configuration {
 string captureThroughFlow(TargetApi api) {
   exists(
     ThroughFlowConfig config, DataFlow::ParameterNode p,
-    DataFlowImplCommon::ReturnNodeExt returnNodeExt, string input, string output
+    DataFlowImplCommon::ReturnNodeExt returnNodeExt, string input, string output,
+    ContentDataFlow::AccessPath reads, ContentDataFlow::AccessPath stores, boolean preservesValue,
+    string kind
   |
-    config.hasFlow(p, returnNodeExt) and
+    config.hasFlow(p, reads, returnNodeExt, stores, preservesValue) and
     returnNodeExt.getEnclosingCallable() = api and
-    input = parameterNodeAsInput(p) and
-    output = returnNodeAsOutput(returnNodeExt) and
+    input = parameterNodeAsInput(p) + printAccessPath(reads) and
+    output = returnNodeAsOutput(returnNodeExt) + printAccessPath(stores) and
     input != output and
-    result = asTaintModel(api, input, output)
+    (if preservesValue = true then kind = "value" else kind = "taint") and
+    result = asSummaryModel(api, input, output, kind)
   )
 }
 
@@ -222,7 +164,7 @@ private class FromSourceConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    isRelevantTaintStep(node1, node2)
+    isRelevantSourceTaintStep(node1, node2)
   }
 }
 
