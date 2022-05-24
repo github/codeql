@@ -249,7 +249,6 @@ edges
 | string_flow.rb:283:9:283:9 | a :  | string_flow.rb:283:9:283:14 | ...[...] :  |
 | string_flow.rb:283:9:283:9 | a :  | string_flow.rb:283:9:283:14 | ...[...] [element 0] :  |
 | string_flow.rb:283:9:283:9 | a :  | string_flow.rb:283:9:283:14 | ...[...] [element 1] :  |
-| string_flow.rb:283:9:283:9 | a :  | string_flow.rb:283:9:283:14 | ...[...] [element] :  |
 | string_flow.rb:283:9:283:9 | a [element 1] :  | string_flow.rb:283:9:283:14 | ...[...] [element 0] :  |
 | string_flow.rb:283:9:283:9 | a [element 2] :  | string_flow.rb:283:9:283:14 | ...[...] [element 1] :  |
 | string_flow.rb:283:9:283:9 | a [element] :  | string_flow.rb:283:9:283:14 | ...[...] [element] :  |
