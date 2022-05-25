@@ -20,3 +20,19 @@ func intraprocedural_with_local_flow() -> Void {
     }
     sink(arg: t1)
 }
+
+func caller_source() -> Void {
+    callee_sink(x: source())
+}
+
+func callee_sink(x: Int) -> Void {
+    sink(arg: x)
+}
+
+func callee_source() -> Int {
+    return source()
+}
+
+func caller_sink() -> Void {
+    sink(arg: callee_source())
+}
