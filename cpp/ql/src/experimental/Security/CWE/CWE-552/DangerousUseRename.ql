@@ -2,7 +2,7 @@
  * @name Dangerous use of rename
  * @description If the rename function did not work correctly, simply overwriting the destination file can lead to errors.
  * @kind problem
- * @id cpp/dangerous-use-rename
+ * @id cpp/dangerous-manual-copy-after-rename
  * @problem.severity warning
  * @precision medium
  * @tags correctness
