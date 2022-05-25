@@ -187,7 +187,6 @@ jobs:
           languages: ql
           db-location: ${{ runner.temp }}/db
           config-file: ./ql-for-ql-config.yml
-          tools: latest
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@aa93aea877e5fb8841bcb1193f672abf6e9f2980
@@ -200,4 +199,3 @@ jobs:
         with:
           name: ${{ matrix.folder }}.sarif
           path: ${{ matrix.folder }}.sarif
-
