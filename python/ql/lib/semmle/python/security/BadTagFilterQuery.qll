@@ -2,7 +2,7 @@
  * Provides precicates for reasoning about bad tag filter vulnerabilities.
  */
 
-import performance.RegexpMatching
+import regexp.RegexpMatching
 
 /**
  * Holds if the regexp `root` should be tested against `str`.

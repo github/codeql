@@ -1,6 +1,6 @@
 /** Definitions and configurations for the Polynomial ReDoS query */
 
-import semmle.code.java.security.performance.SuperlinearBackTracking
+import semmle.code.java.security.regexp.SuperlinearBackTracking
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.regex.RegexTreeView
 import semmle.code.java.regex.RegexFlowConfigs

@@ -9,7 +9,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Regexp
-private import codeql.ruby.security.performance.SuperlinearBackTracking
+private import codeql.ruby.security.regexp.SuperlinearBackTracking
 
 module PolynomialReDoS {
   /**

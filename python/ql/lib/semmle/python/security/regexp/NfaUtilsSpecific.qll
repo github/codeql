@@ -1,10 +1,9 @@
 /**
- * Provides Ruby-specific definitions for use in the ReDoSUtil module.
+ * Provides Python-specific definitions for use in the NfaUtils module.
  */
 
-import codeql.ruby.Regexp
-import codeql.Locations
-private import codeql.ruby.ast.Literal as AST
+import python
+import semmle.python.RegexTreeView
 
 /**
  * Holds if `term` is an ecape class representing e.g. `\d`.
@@ -12,44 +11,39 @@ private import codeql.ruby.ast.Literal as AST
  */
 predicate isEscapeClass(RegExpTerm term, string clazz) {
   exists(RegExpCharacterClassEscape escape | term = escape | escape.getValue() = clazz)
-  or
-  // TODO: expand to cover more properties
-  exists(RegExpNamedCharacterProperty escape | term = escape |
-    escape.getName().toLowerCase() = "digit" and
-    if escape.isInverted() then clazz = "D" else clazz = "d"
-    or
-    escape.getName().toLowerCase() = "space" and
-    if escape.isInverted() then clazz = "S" else clazz = "s"
-    or
-    escape.getName().toLowerCase() = "word" and
-    if escape.isInverted() then clazz = "W" else clazz = "w"
-  )
-}
-
-/**
- * Holds if the regular expression should not be considered.
- */
-predicate isExcluded(RegExpParent parent) {
-  parent.(RegExpTerm).getRegExp().(AST::RegExpLiteral).hasFreeSpacingFlag() // exclude free-spacing mode regexes
 }
 
 /**
  * Holds if `term` is a possessive quantifier.
- * Not currently implemented, but is used by the shared library.
+ * As python's regexes do not support possessive quantifiers, this never holds, but is used by the shared library.
  */
 predicate isPossessive(RegExpQuantifier term) { none() }
 
 /**
  * Holds if the regex that `term` is part of is used in a way that ignores any leading prefix of the input it's matched against.
- * Not yet implemented for Ruby.
+ * Not yet implemented for Python.
  */
 predicate matchesAnyPrefix(RegExpTerm term) { any() }
 
 /**
  * Holds if the regex that `term` is part of is used in a way that ignores any trailing suffix of the input it's matched against.
- * Not yet implemented for Ruby.
+ * Not yet implemented for Python.
  */
 predicate matchesAnySuffix(RegExpTerm term) { any() }
+
+/**
+ * Holds if the regular expression should not be considered.
+ *
+ * We make the pragmatic performance optimization to ignore regular expressions in files
+ * that does not belong to the project code (such as installed dependencies).
+ */
+predicate isExcluded(RegExpParent parent) {
+  not exists(parent.getRegex().getLocation().getFile().getRelativePath())
+  or
+  // Regexes with many occurrences of ".*" may cause the polynomial ReDoS computation to explode, so
+  // we explicitly exclude these.
+  count(int i | exists(parent.getRegex().getText().regexpFind("\\.\\*", i, _)) | i) > 10
+}
 
 /**
  * A module containing predicates for determining which flags a regular expression have.

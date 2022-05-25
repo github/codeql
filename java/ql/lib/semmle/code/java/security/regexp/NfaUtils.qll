@@ -1,18 +1,13 @@
 /**
- * Provides classes for working with regular expressions that can
- * perform backtracking in superlinear/exponential time.
+ * Provides classes and predicates for constructing an NFA from
+ * a regular expression, and various utilities for reasoning about
+ * the resulting NFA.
  *
- * This module contains a number of utility predicates for compiling a regular expression into a NFA and reasoning about this NFA.
- *
- * The `ReDoSConfiguration` contains a `isReDoSCandidate` predicate that is used to
- * to determine which states the prefix/suffix search should happen on.
- * There is only meant to exist one `ReDoSConfiguration` at a time.
- *
- * The predicate `hasReDoSResult` outputs a de-duplicated set of
- * states that will cause backtracking (a rejecting suffix exists).
+ * These utilities are used both by the ReDoS queries and by
+ * other queries that benefit from reasoning about NFAs.
  */
 
-import ReDoSUtilSpecific
+import NfaUtilsSpecific
 
 /**
  * Gets the char after `c` (from a simplified ASCII table).
