@@ -179,6 +179,7 @@ private class Argument extends CfgNodes::ExprCfgNode {
       this = call.getArgument(i) and
       not this.getExpr() instanceof BlockArgument and
       not this.getExpr().(Pair).getKey().getConstantValue().isSymbol(_) and
+      not this.getExpr() instanceof HashSplatExpr and
       arg.isPositional(i)
     )
     or
@@ -189,6 +190,10 @@ private class Argument extends CfgNodes::ExprCfgNode {
     )
     or
     this = call.getReceiver() and arg.isSelf()
+    or
+    this = call.getAnArgument() and
+    this.getExpr() instanceof HashSplatExpr and
+    arg.isHashSplat()
   }
 
   /** Holds if this expression is the `i`th argument of `c`. */

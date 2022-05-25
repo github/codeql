@@ -22,6 +22,10 @@ edges
 | params_flow.rb:33:12:33:19 | call to taint :  | params_flow.rb:25:12:25:13 | p1 :  |
 | params_flow.rb:33:26:33:34 | call to taint :  | params_flow.rb:25:17:25:24 | **kwargs [element :p2] :  |
 | params_flow.rb:33:41:33:49 | call to taint :  | params_flow.rb:25:17:25:24 | **kwargs [element :p3] :  |
+| params_flow.rb:34:14:34:22 | call to taint :  | params_flow.rb:35:25:35:28 | args [element :p3] :  |
+| params_flow.rb:35:12:35:20 | call to taint :  | params_flow.rb:25:12:25:13 | p1 :  |
+| params_flow.rb:35:23:35:28 | ** ... [element :p3] :  | params_flow.rb:25:17:25:24 | **kwargs [element :p3] :  |
+| params_flow.rb:35:25:35:28 | args [element :p3] :  | params_flow.rb:35:23:35:28 | ** ... [element :p3] :  |
 nodes
 | params_flow.rb:9:16:9:17 | p1 :  | semmle.label | p1 :  |
 | params_flow.rb:9:20:9:21 | p2 :  | semmle.label | p2 :  |
@@ -52,6 +56,10 @@ nodes
 | params_flow.rb:33:12:33:19 | call to taint :  | semmle.label | call to taint :  |
 | params_flow.rb:33:26:33:34 | call to taint :  | semmle.label | call to taint :  |
 | params_flow.rb:33:41:33:49 | call to taint :  | semmle.label | call to taint :  |
+| params_flow.rb:34:14:34:22 | call to taint :  | semmle.label | call to taint :  |
+| params_flow.rb:35:12:35:20 | call to taint :  | semmle.label | call to taint :  |
+| params_flow.rb:35:23:35:28 | ** ... [element :p3] :  | semmle.label | ** ... [element :p3] :  |
+| params_flow.rb:35:25:35:28 | args [element :p3] :  | semmle.label | args [element :p3] :  |
 subpaths
 #select
 | params_flow.rb:10:10:10:11 | p1 | params_flow.rb:14:12:14:19 | call to taint :  | params_flow.rb:10:10:10:11 | p1 | $@ | params_flow.rb:14:12:14:19 | call to taint :  | call to taint :  |
@@ -63,5 +71,7 @@ subpaths
 | params_flow.rb:18:10:18:11 | p2 | params_flow.rb:22:13:22:20 | call to taint :  | params_flow.rb:18:10:18:11 | p2 | $@ | params_flow.rb:22:13:22:20 | call to taint :  | call to taint :  |
 | params_flow.rb:18:10:18:11 | p2 | params_flow.rb:23:16:23:23 | call to taint :  | params_flow.rb:18:10:18:11 | p2 | $@ | params_flow.rb:23:16:23:23 | call to taint :  | call to taint :  |
 | params_flow.rb:26:10:26:11 | p1 | params_flow.rb:33:12:33:19 | call to taint :  | params_flow.rb:26:10:26:11 | p1 | $@ | params_flow.rb:33:12:33:19 | call to taint :  | call to taint :  |
+| params_flow.rb:26:10:26:11 | p1 | params_flow.rb:35:12:35:20 | call to taint :  | params_flow.rb:26:10:26:11 | p1 | $@ | params_flow.rb:35:12:35:20 | call to taint :  | call to taint :  |
 | params_flow.rb:28:10:28:22 | ( ... ) | params_flow.rb:33:26:33:34 | call to taint :  | params_flow.rb:28:10:28:22 | ( ... ) | $@ | params_flow.rb:33:26:33:34 | call to taint :  | call to taint :  |
 | params_flow.rb:29:10:29:22 | ( ... ) | params_flow.rb:33:41:33:49 | call to taint :  | params_flow.rb:29:10:29:22 | ( ... ) | $@ | params_flow.rb:33:41:33:49 | call to taint :  | call to taint :  |
+| params_flow.rb:29:10:29:22 | ( ... ) | params_flow.rb:34:14:34:22 | call to taint :  | params_flow.rb:29:10:29:22 | ( ... ) | $@ | params_flow.rb:34:14:34:22 | call to taint :  | call to taint :  |
