@@ -465,23 +465,43 @@ getExprType
 | tst.ts:352:18:352:26 | state.get | () => number |
 | tst.ts:352:18:352:28 | state.get() | number |
 | tst.ts:352:24:352:26 | get | () => number |
-| tst.ts:377:8:377:18 | tstModuleES | () => "a" \| "b" |
-| tst.ts:377:25:377:43 | './tstModuleES.mjs' | any |
-| tst.ts:379:1:379:7 | console | Console |
-| tst.ts:379:1:379:11 | console.log | (...data: any[]) => void |
-| tst.ts:379:1:379:26 | console ... leES()) | void |
-| tst.ts:379:9:379:11 | log | (...data: any[]) => void |
-| tst.ts:379:13:379:23 | tstModuleES | () => "a" \| "b" |
-| tst.ts:379:13:379:25 | tstModuleES() | "a" \| "b" |
-| tst.ts:381:10:381:21 | tstModuleCJS | () => "a" \| "b" |
-| tst.ts:381:10:381:21 | tstModuleCJS | () => "a" \| "b" |
-| tst.ts:381:30:381:49 | './tstModuleCJS.cjs' | any |
-| tst.ts:383:1:383:7 | console | Console |
-| tst.ts:383:1:383:11 | console.log | (...data: any[]) => void |
-| tst.ts:383:1:383:27 | console ... eCJS()) | void |
-| tst.ts:383:9:383:11 | log | (...data: any[]) => void |
-| tst.ts:383:13:383:24 | tstModuleCJS | () => "a" \| "b" |
-| tst.ts:383:13:383:26 | tstModuleCJS() | "a" \| "b" |
+| tst.ts:356:8:356:18 | tstModuleES | () => "a" \| "b" |
+| tst.ts:356:25:356:43 | './tstModuleES.mjs' | any |
+| tst.ts:358:1:358:7 | console | Console |
+| tst.ts:358:1:358:11 | console.log | (...data: any[]) => void |
+| tst.ts:358:1:358:26 | console ... leES()) | void |
+| tst.ts:358:9:358:11 | log | (...data: any[]) => void |
+| tst.ts:358:13:358:23 | tstModuleES | () => "a" \| "b" |
+| tst.ts:358:13:358:25 | tstModuleES() | "a" \| "b" |
+| tst.ts:360:10:360:21 | tstModuleCJS | () => "a" \| "b" |
+| tst.ts:360:10:360:21 | tstModuleCJS | () => "a" \| "b" |
+| tst.ts:360:30:360:49 | './tstModuleCJS.cjs' | any |
+| tst.ts:362:1:362:7 | console | Console |
+| tst.ts:362:1:362:11 | console.log | (...data: any[]) => void |
+| tst.ts:362:1:362:27 | console ... eCJS()) | void |
+| tst.ts:362:9:362:11 | log | (...data: any[]) => void |
+| tst.ts:362:13:362:24 | tstModuleCJS | () => "a" \| "b" |
+| tst.ts:362:13:362:26 | tstModuleCJS() | "a" \| "b" |
+| tst.ts:368:13:368:13 | A | typeof library-tests/TypeScript/Types/tstSuffixA.ts |
+| tst.ts:368:20:368:33 | './tstSuffixA' | any |
+| tst.ts:370:1:370:7 | console | Console |
+| tst.ts:370:1:370:11 | console.log | (...data: any[]) => void |
+| tst.ts:370:1:370:29 | console ... File()) | void |
+| tst.ts:370:9:370:11 | log | (...data: any[]) => void |
+| tst.ts:370:13:370:13 | A | typeof library-tests/TypeScript/Types/tstSuffixA.ts |
+| tst.ts:370:13:370:26 | A.resolvedFile | () => "tstSuffixA.ts" |
+| tst.ts:370:13:370:28 | A.resolvedFile() | "tstSuffixA.ts" |
+| tst.ts:370:15:370:26 | resolvedFile | () => "tstSuffixA.ts" |
+| tst.ts:372:13:372:13 | B | typeof library-tests/TypeScript/Types/tstSuffixB.ios.ts |
+| tst.ts:372:20:372:33 | './tstSuffixB' | any |
+| tst.ts:374:1:374:7 | console | Console |
+| tst.ts:374:1:374:11 | console.log | (...data: any[]) => void |
+| tst.ts:374:1:374:29 | console ... File()) | void |
+| tst.ts:374:9:374:11 | log | (...data: any[]) => void |
+| tst.ts:374:13:374:13 | B | typeof library-tests/TypeScript/Types/tstSuffixB.ios.ts |
+| tst.ts:374:13:374:26 | B.resolvedFile | () => "tstSuffixB.ios.ts" |
+| tst.ts:374:13:374:28 | B.resolvedFile() | "tstSuffixB.ios.ts" |
+| tst.ts:374:15:374:26 | resolvedFile | () => "tstSuffixB.ios.ts" |
 | tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
 | tstModuleCJS.cts:2:12:2:15 | Math | Math |
 | tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
@@ -502,6 +522,12 @@ getExprType
 | tstModuleES.mts:2:28:2:30 | 0.5 | 0.5 |
 | tstModuleES.mts:2:34:2:36 | 'a' | "a" |
 | tstModuleES.mts:2:40:2:42 | 'b' | "b" |
+| tstSuffixA.ts:1:17:1:28 | resolvedFile | () => "tstSuffixA.ts" |
+| tstSuffixA.ts:2:12:2:26 | 'tstSuffixA.ts' | "tstSuffixA.ts" |
+| tstSuffixB.ios.ts:1:17:1:28 | resolvedFile | () => "tstSuffixB.ios.ts" |
+| tstSuffixB.ios.ts:2:12:2:30 | 'tstSuffixB.ios.ts' | "tstSuffixB.ios.ts" |
+| tstSuffixB.ts:1:17:1:28 | resolvedFile | () => "tstSuffixB.ts" |
+| tstSuffixB.ts:2:12:2:26 | 'tstSuffixB.ts' | "tstSuffixB.ts" |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
 | type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
@@ -861,6 +887,9 @@ getTypeExprType
 | tstModuleES.mts:1:40:1:42 | 'a' | "a" |
 | tstModuleES.mts:1:40:1:48 | 'a' \| 'b' | "a" \| "b" |
 | tstModuleES.mts:1:46:1:48 | 'b' | "b" |
+| tstSuffixA.ts:1:33:1:47 | 'tstSuffixA.ts' | "tstSuffixA.ts" |
+| tstSuffixB.ios.ts:1:33:1:51 | 'tstSuffixB.ios.ts' | "tstSuffixB.ios.ts" |
+| tstSuffixB.ts:1:33:1:47 | 'tstSuffixB.ts' | "tstSuffixB.ts" |
 | type_alias.ts:1:6:1:6 | B | boolean |
 | type_alias.ts:1:10:1:16 | boolean | boolean |
 | type_alias.ts:3:8:3:8 | B | boolean |
