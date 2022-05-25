@@ -1,8 +1,8 @@
 private import semmle.code.cpp.dataflow.DataFlow
 private import DataFlow
 
-class ASTConf extends Configuration {
-  ASTConf() { this = "ASTFieldFlowConf" }
+class AstConf extends Configuration {
+  AstConf() { this = "ASTFieldFlowConf" }
 
   override predicate isSource(Node src) {
     src.asExpr() instanceof NewExpr
@@ -30,3 +30,6 @@ class ASTConf extends Configuration {
     b.asExpr().(AddressOfExpr).getOperand() = a.asExpr()
   }
 }
+
+/** DEPRECATED: Alias for AstConf */
+deprecated class ASTConf = AstConf;

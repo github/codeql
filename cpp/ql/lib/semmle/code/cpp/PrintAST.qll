@@ -9,12 +9,12 @@
 import cpp
 private import semmle.code.cpp.Print
 
-private newtype TPrintASTConfiguration = MkPrintASTConfiguration()
+private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
 /**
  * The query can extend this class to control which functions are printed.
  */
-class PrintASTConfiguration extends TPrintASTConfiguration {
+class PrintAstConfiguration extends TPrintAstConfiguration {
   /**
    * Gets a textual representation of this `PrintASTConfiguration`.
    */
@@ -27,8 +27,11 @@ class PrintASTConfiguration extends TPrintASTConfiguration {
   predicate shouldPrintFunction(Function func) { any() }
 }
 
+/** DEPRECATED: Alias for PrintAstConfiguration */
+deprecated class PrintASTConfiguration = PrintAstConfiguration;
+
 private predicate shouldPrintFunction(Function func) {
-  exists(PrintASTConfiguration config | config.shouldPrintFunction(func))
+  exists(PrintAstConfiguration config | config.shouldPrintFunction(func))
 }
 
 bindingset[s]
@@ -85,8 +88,8 @@ private Function getEnclosingFunction(Locatable ast) {
  * Most nodes are just a wrapper around `Locatable`, but we do synthesize new
  * nodes for things like parameter lists and constructor init lists.
  */
-private newtype TPrintASTNode =
-  TASTNode(Locatable ast) { shouldPrintFunction(getEnclosingFunction(ast)) } or
+private newtype TPrintAstNode =
+  TAstNode(Locatable ast) { shouldPrintFunction(getEnclosingFunction(ast)) } or
   TDeclarationEntryNode(DeclStmt stmt, DeclarationEntry entry) {
     // We create a unique node for each pair of (stmt, entry), to avoid having one node with
     // multiple parents due to extractor bug CPP-413.
@@ -106,7 +109,7 @@ private newtype TPrintASTNode =
 /**
  * A node in the output tree.
  */
-class PrintASTNode extends TPrintASTNode {
+class PrintAstNode extends TPrintAstNode {
   /**
    * Gets a textual representation of this node in the PrintAST output tree.
    */
@@ -116,17 +119,17 @@ class PrintASTNode extends TPrintASTNode {
    * Gets the child node at index `childIndex`. Child indices must be unique,
    * but need not be contiguous.
    */
-  abstract PrintASTNode getChildInternal(int childIndex);
+  abstract PrintAstNode getChildInternal(int childIndex);
 
   /**
    * Gets the child node at index `childIndex`.
    * Adds edges to fully converted expressions, that are not part of the
    * regular parent/child relation traversal.
    */
-  final PrintASTNode getChild(int childIndex) {
+  final PrintAstNode getChild(int childIndex) {
     // The exact value of `childIndex` doesn't matter, as long as we preserve the correct order.
     result =
-      rank[childIndex](PrintASTNode child, int nonConvertedIndex, boolean isConverted |
+      rank[childIndex](PrintAstNode child, int nonConvertedIndex, boolean isConverted |
         childAndAccessorPredicate(child, _, nonConvertedIndex, isConverted)
       |
         // Unconverted children come first, then sort by original child index within each group.
@@ -138,11 +141,11 @@ class PrintASTNode extends TPrintASTNode {
    * Gets the node for the `.getFullyConverted()` version of the child originally at index
    * `childIndex`, if that node has any conversions.
    */
-  private PrintASTNode getConvertedChild(int childIndex) {
+  private PrintAstNode getConvertedChild(int childIndex) {
     exists(Expr expr |
-      expr = getChildInternal(childIndex).(ASTNode).getAST() and
+      expr = getChildInternal(childIndex).(AstNode).getAst() and
       expr.getFullyConverted() instanceof Conversion and
-      result.(ASTNode).getAST() = expr.getFullyConverted() and
+      result.(AstNode).getAst() = expr.getFullyConverted() and
       not expr instanceof Conversion
     )
   }
@@ -166,12 +169,12 @@ class PrintASTNode extends TPrintASTNode {
   /**
    * Gets the children of this node.
    */
-  final PrintASTNode getAChild() { result = getChild(_) }
+  final PrintAstNode getAChild() { result = getChild(_) }
 
   /**
    * Gets the parent of this node, if any.
    */
-  final PrintASTNode getParent() { result.getAChild() = this }
+  final PrintAstNode getParent() { result.getAChild() = this }
 
   /**
    * Gets the location of this node in the source code.
@@ -196,7 +199,7 @@ class PrintASTNode extends TPrintASTNode {
    * one result tuple, with `isConverted = false`.
    */
   private predicate childAndAccessorPredicate(
-    PrintASTNode child, string childPredicate, int nonConvertedIndex, boolean isConverted
+    PrintAstNode child, string childPredicate, int nonConvertedIndex, boolean isConverted
   ) {
     child = getChildInternal(nonConvertedIndex) and
     childPredicate = getChildAccessorPredicateInternal(nonConvertedIndex) and
@@ -234,12 +237,15 @@ class PrintASTNode extends TPrintASTNode {
   private Function getEnclosingFunction() { result = getParent*().(FunctionNode).getFunction() }
 }
 
+/** DEPRECATED: Alias for PrintAstNode */
+deprecated class PrintASTNode = PrintAstNode;
+
 /**
  * Class that restricts the elements that we compute `qlClass` for.
  */
 private class PrintableElement extends Element {
   PrintableElement() {
-    exists(TASTNode(this))
+    exists(TAstNode(this))
     or
     exists(TDeclarationEntryNode(_, this))
     or
@@ -262,7 +268,7 @@ private string qlClass(PrintableElement el) {
 /**
  * A node representing an AST node.
  */
-abstract class BaseASTNode extends PrintASTNode {
+abstract class BaseAstNode extends PrintAstNode {
   Locatable ast;
 
   override string toString() { result = qlClass(ast) + ast.toString() }
@@ -272,25 +278,34 @@ abstract class BaseASTNode extends PrintASTNode {
   /**
    * Gets the AST represented by this node.
    */
-  final Locatable getAST() { result = ast }
+  final Locatable getAst() { result = ast }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated Locatable getAST() { result = getAst() }
 }
+
+/** DEPRECATED: Alias for BaseAstNode */
+deprecated class BaseASTNode = BaseAstNode;
 
 /**
  * A node representing an AST node other than a `DeclarationEntry`.
  */
-abstract class ASTNode extends BaseASTNode, TASTNode {
-  ASTNode() { this = TASTNode(ast) }
+abstract class AstNode extends BaseAstNode, TAstNode {
+  AstNode() { this = TAstNode(ast) }
 }
+
+/** DEPRECATED: Alias for AstNode */
+deprecated class ASTNode = AstNode;
 
 /**
  * A node representing an `Expr`.
  */
-class ExprNode extends ASTNode {
+class ExprNode extends AstNode {
   Expr expr;
 
   ExprNode() { expr = ast }
 
-  override ASTNode getChildInternal(int childIndex) { result.getAST() = expr.getChild(childIndex) }
+  override AstNode getChildInternal(int childIndex) { result.getAst() = expr.getChild(childIndex) }
 
   override string getProperty(string key) {
     result = super.getProperty(key)
@@ -306,7 +321,7 @@ class ExprNode extends ASTNode {
   }
 
   override string getChildAccessorPredicateInternal(int childIndex) {
-    result = getChildAccessorWithoutConversions(ast, getChildInternal(childIndex).getAST())
+    result = getChildAccessorWithoutConversions(ast, getChildInternal(childIndex).getAst())
   }
 
   /**
@@ -334,9 +349,9 @@ class ConversionNode extends ExprNode {
 
   ConversionNode() { conv = expr }
 
-  override ASTNode getChildInternal(int childIndex) {
+  override AstNode getChildInternal(int childIndex) {
     childIndex = 0 and
-    result.getAST() = conv.getExpr() and
+    result.getAst() = conv.getExpr() and
     conv.getExpr() instanceof Conversion
   }
 }
@@ -363,27 +378,27 @@ class CastNode extends ConversionNode {
 class StmtExprNode extends ExprNode {
   override StmtExpr expr;
 
-  override ASTNode getChildInternal(int childIndex) {
+  override AstNode getChildInternal(int childIndex) {
     childIndex = 0 and
-    result.getAST() = expr.getStmt()
+    result.getAst() = expr.getStmt()
   }
 }
 
 /**
  * A node representing a `DeclarationEntry`.
  */
-class DeclarationEntryNode extends BaseASTNode, TDeclarationEntryNode {
+class DeclarationEntryNode extends BaseAstNode, TDeclarationEntryNode {
   override DeclarationEntry ast;
   DeclStmt declStmt;
 
   DeclarationEntryNode() { this = TDeclarationEntryNode(declStmt, ast) }
 
-  override PrintASTNode getChildInternal(int childIndex) { none() }
+  override PrintAstNode getChildInternal(int childIndex) { none() }
 
   override string getChildAccessorPredicateInternal(int childIndex) { none() }
 
   override string getProperty(string key) {
-    result = BaseASTNode.super.getProperty(key)
+    result = BaseAstNode.super.getProperty(key)
     or
     key = "Type" and
     result = qlClass(ast.getType()) + ast.getType().toString()
@@ -396,9 +411,9 @@ class DeclarationEntryNode extends BaseASTNode, TDeclarationEntryNode {
 class VariableDeclarationEntryNode extends DeclarationEntryNode {
   override VariableDeclarationEntry ast;
 
-  override ASTNode getChildInternal(int childIndex) {
+  override AstNode getChildInternal(int childIndex) {
     childIndex = 0 and
-    result.getAST() = ast.getVariable().getInitializer()
+    result.getAst() = ast.getVariable().getInitializer()
   }
 
   override string getChildAccessorPredicateInternal(int childIndex) {
@@ -410,23 +425,23 @@ class VariableDeclarationEntryNode extends DeclarationEntryNode {
 /**
  * A node representing a `Stmt`.
  */
-class StmtNode extends ASTNode {
+class StmtNode extends AstNode {
   Stmt stmt;
 
   StmtNode() { stmt = ast }
 
-  override BaseASTNode getChildInternal(int childIndex) {
+  override BaseAstNode getChildInternal(int childIndex) {
     exists(Locatable child |
       child = stmt.getChild(childIndex) and
       (
-        result.getAST() = child.(Expr) or
-        result.getAST() = child.(Stmt)
+        result.getAst() = child.(Expr) or
+        result.getAst() = child.(Stmt)
       )
     )
   }
 
   override string getChildAccessorPredicateInternal(int childIndex) {
-    result = getChildAccessorWithoutConversions(ast, getChildInternal(childIndex).getAST())
+    result = getChildAccessorWithoutConversions(ast, getChildInternal(childIndex).getAst())
   }
 }
 
@@ -449,12 +464,12 @@ class DeclStmtNode extends StmtNode {
 /**
  * A node representing a `Parameter`.
  */
-class ParameterNode extends ASTNode {
+class ParameterNode extends AstNode {
   Parameter param;
 
   ParameterNode() { param = ast }
 
-  final override PrintASTNode getChildInternal(int childIndex) { none() }
+  final override PrintAstNode getChildInternal(int childIndex) { none() }
 
   final override string getChildAccessorPredicateInternal(int childIndex) { none() }
 
@@ -469,14 +484,14 @@ class ParameterNode extends ASTNode {
 /**
  * A node representing an `Initializer`.
  */
-class InitializerNode extends ASTNode {
+class InitializerNode extends AstNode {
   Initializer init;
 
   InitializerNode() { init = ast }
 
-  override ASTNode getChildInternal(int childIndex) {
+  override AstNode getChildInternal(int childIndex) {
     childIndex = 0 and
-    result.getAST() = init.getExpr()
+    result.getAst() = init.getExpr()
   }
 
   override string getChildAccessorPredicateInternal(int childIndex) {
@@ -488,7 +503,7 @@ class InitializerNode extends ASTNode {
 /**
  * A node representing the parameters of a `Function`.
  */
-class ParametersNode extends PrintASTNode, TParametersNode {
+class ParametersNode extends PrintAstNode, TParametersNode {
   Function func;
 
   ParametersNode() { this = TParametersNode(func) }
@@ -497,8 +512,8 @@ class ParametersNode extends PrintASTNode, TParametersNode {
 
   final override Location getLocation() { result = getRepresentativeLocation(func) }
 
-  override ASTNode getChildInternal(int childIndex) {
-    result.getAST() = func.getParameter(childIndex)
+  override AstNode getChildInternal(int childIndex) {
+    result.getAst() = func.getParameter(childIndex)
   }
 
   override string getChildAccessorPredicateInternal(int childIndex) {
@@ -515,7 +530,7 @@ class ParametersNode extends PrintASTNode, TParametersNode {
 /**
  * A node representing the initializer list of a `Constructor`.
  */
-class ConstructorInitializersNode extends PrintASTNode, TConstructorInitializersNode {
+class ConstructorInitializersNode extends PrintAstNode, TConstructorInitializersNode {
   Constructor ctor;
 
   ConstructorInitializersNode() { this = TConstructorInitializersNode(ctor) }
@@ -524,8 +539,8 @@ class ConstructorInitializersNode extends PrintASTNode, TConstructorInitializers
 
   final override Location getLocation() { result = getRepresentativeLocation(ctor) }
 
-  final override ASTNode getChildInternal(int childIndex) {
-    result.getAST() = ctor.getInitializer(childIndex)
+  final override AstNode getChildInternal(int childIndex) {
+    result.getAst() = ctor.getInitializer(childIndex)
   }
 
   final override string getChildAccessorPredicateInternal(int childIndex) {
@@ -542,7 +557,7 @@ class ConstructorInitializersNode extends PrintASTNode, TConstructorInitializers
 /**
  * A node representing the destruction list of a `Destructor`.
  */
-class DestructorDestructionsNode extends PrintASTNode, TDestructorDestructionsNode {
+class DestructorDestructionsNode extends PrintAstNode, TDestructorDestructionsNode {
   Destructor dtor;
 
   DestructorDestructionsNode() { this = TDestructorDestructionsNode(dtor) }
@@ -551,8 +566,8 @@ class DestructorDestructionsNode extends PrintASTNode, TDestructorDestructionsNo
 
   final override Location getLocation() { result = getRepresentativeLocation(dtor) }
 
-  final override ASTNode getChildInternal(int childIndex) {
-    result.getAST() = dtor.getDestruction(childIndex)
+  final override AstNode getChildInternal(int childIndex) {
+    result.getAst() = dtor.getDestruction(childIndex)
   }
 
   final override string getChildAccessorPredicateInternal(int childIndex) {
@@ -569,14 +584,14 @@ class DestructorDestructionsNode extends PrintASTNode, TDestructorDestructionsNo
 /**
  * A node representing a `Function`.
  */
-class FunctionNode extends ASTNode {
+class FunctionNode extends AstNode {
   Function func;
 
   FunctionNode() { func = ast }
 
   override string toString() { result = qlClass(func) + getIdentityString(func) }
 
-  override PrintASTNode getChildInternal(int childIndex) {
+  override PrintAstNode getChildInternal(int childIndex) {
     childIndex = 0 and
     result.(ParametersNode).getFunction() = func
     or
@@ -584,7 +599,7 @@ class FunctionNode extends ASTNode {
     result.(ConstructorInitializersNode).getConstructor() = func
     or
     childIndex = 2 and
-    result.(ASTNode).getAST() = func.getEntryPoint()
+    result.(AstNode).getAst() = func.getEntryPoint()
     or
     childIndex = 3 and
     result.(DestructorDestructionsNode).getDestructor() = func
@@ -603,7 +618,7 @@ class FunctionNode extends ASTNode {
   private int getOrder() {
     this =
       rank[result](FunctionNode node, Function function, string file, int line, int column |
-        node.getAST() = function and
+        node.getAst() = function and
         locationSortKeys(function, file, line, column)
       |
         node order by file, line, column, getIdentityString(function)
@@ -648,17 +663,23 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     or
     s.(ComputedGotoStmt).getExpr() = e and pred = "getExpr()"
     or
+    s.(ConstexprIfStmt).getInitialization() = e and pred = "getInitialization()"
+    or
     s.(ConstexprIfStmt).getCondition() = e and pred = "getCondition()"
     or
     s.(ConstexprIfStmt).getThen() = e and pred = "getThen()"
     or
     s.(ConstexprIfStmt).getElse() = e and pred = "getElse()"
     or
+    s.(IfStmt).getInitialization() = e and pred = "getInitialization()"
+    or
     s.(IfStmt).getCondition() = e and pred = "getCondition()"
     or
     s.(IfStmt).getThen() = e and pred = "getThen()"
     or
     s.(IfStmt).getElse() = e and pred = "getElse()"
+    or
+    s.(SwitchStmt).getInitialization() = e and pred = "getInitialization()"
     or
     s.(SwitchStmt).getExpr() = e and pred = "getExpr()"
     or
@@ -856,7 +877,7 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
 }
 
 /** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
-query predicate nodes(PrintASTNode node, string key, string value) {
+query predicate nodes(PrintAstNode node, string key, string value) {
   node.shouldPrint() and
   value = node.getProperty(key)
 }
@@ -865,7 +886,7 @@ query predicate nodes(PrintASTNode node, string key, string value) {
  * Holds if `target` is a child of `source` in the AST, and property `key` of the edge has the
  * given `value`.
  */
-query predicate edges(PrintASTNode source, PrintASTNode target, string key, string value) {
+query predicate edges(PrintAstNode source, PrintAstNode target, string key, string value) {
   exists(int childIndex |
     source.shouldPrint() and
     target.shouldPrint() and

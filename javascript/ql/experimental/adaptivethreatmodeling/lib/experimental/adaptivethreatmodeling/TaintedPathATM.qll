@@ -59,8 +59,8 @@ module SinkEndpointFilter {
   }
 }
 
-class TaintedPathATMConfig extends ATMConfig {
-  TaintedPathATMConfig() { this = "TaintedPathATMConfig" }
+class TaintedPathAtmConfig extends AtmConfig {
+  TaintedPathAtmConfig() { this = "TaintedPathATMConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) { source instanceof TaintedPath::Source }
 
@@ -72,6 +72,9 @@ class TaintedPathATMConfig extends ATMConfig {
 
   override EndpointType getASinkEndpointType() { result instanceof TaintedPathSinkType }
 }
+
+/** DEPRECATED: Alias for TaintedPathAtmConfig */
+deprecated class TaintedPathATMConfig = TaintedPathAtmConfig;
 
 /**
  * A taint-tracking configuration for reasoning about path injection vulnerabilities.
@@ -88,7 +91,7 @@ class Configuration extends TaintTracking::Configuration {
     label = sink.(TaintedPath::Sink).getAFlowLabel()
     or
     // Allow effective sinks to have any taint label
-    any(TaintedPathATMConfig cfg).isEffectiveSink(sink)
+    any(TaintedPathAtmConfig cfg).isEffectiveSink(sink)
   }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof TaintedPath::Sanitizer }
@@ -122,6 +125,6 @@ class BarrierGuardNodeAsSanitizerGuardNode extends TaintTracking::LabeledSanitiz
   }
 
   override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-    sanitizes(outcome, e)
+    sanitizes(outcome, e) and exists(label)
   }
 }

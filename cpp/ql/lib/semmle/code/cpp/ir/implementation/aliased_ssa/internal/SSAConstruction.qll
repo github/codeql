@@ -112,7 +112,7 @@ private module Cached {
     exists(Alias::getResultMemoryLocation(oldInstruction))
     or
     // This result was already modeled by a previous iteration of SSA.
-    Alias::canReuseSSAForOldResult(oldInstruction)
+    Alias::canReuseSsaForOldResult(oldInstruction)
   }
 
   cached
@@ -182,7 +182,7 @@ private module Cached {
    * unreachable, this predicate will recurse through any degenerate `Phi` instructions to find the
    * true definition.
    */
-  private Instruction getNewDefinitionFromOldSSA(OldIR::MemoryOperand oldOperand, Overlap overlap) {
+  private Instruction getNewDefinitionFromOldSsa(OldIR::MemoryOperand oldOperand, Overlap overlap) {
     exists(Overlap originalOverlap |
       originalOverlap = oldOperand.getDefinitionOverlap() and
       (
@@ -191,7 +191,7 @@ private module Cached {
         or
         exists(OldIR::PhiInputOperand phiOperand, Overlap phiOperandOverlap |
           phiOperand = getDegeneratePhiOperand(oldOperand.getAnyDef()) and
-          result = getNewDefinitionFromOldSSA(phiOperand, phiOperandOverlap) and
+          result = getNewDefinitionFromOldSsa(phiOperand, phiOperandOverlap) and
           overlap =
             combineOverlap(pragma[only_bind_out](phiOperandOverlap),
               pragma[only_bind_out](originalOverlap))
@@ -233,7 +233,7 @@ private module Cached {
     )
     or
     exists(OldIR::NonPhiMemoryOperand oldOperand |
-      result = getNewDefinitionFromOldSSA(oldOperand, overlap) and
+      result = getNewDefinitionFromOldSsa(oldOperand, overlap) and
       oldOperand.getUse() = instruction and
       tag = oldOperand.getOperandTag()
     )
@@ -307,13 +307,13 @@ private module Cached {
    * Gets the new definition instruction for the operand of `instr` that flows from the block
    * `newPredecessorBlock`, based on that operand's definition in the old IR.
    */
-  private Instruction getNewPhiOperandDefinitionFromOldSSA(
+  private Instruction getNewPhiOperandDefinitionFromOldSsa(
     Instruction instr, IRBlock newPredecessorBlock, Overlap overlap
   ) {
     exists(OldIR::PhiInstruction oldPhi, OldIR::PhiInputOperand oldOperand |
       oldPhi = getOldInstruction(instr) and
       oldOperand = oldPhi.getInputOperand(getOldBlock(newPredecessorBlock)) and
-      result = getNewDefinitionFromOldSSA(oldOperand, overlap)
+      result = getNewDefinitionFromOldSsa(oldOperand, overlap)
     )
   }
 
@@ -333,7 +333,7 @@ private module Cached {
       overlap = Alias::getOverlap(actualDefLocation, useLocation)
     )
     or
-    result = getNewPhiOperandDefinitionFromOldSSA(instr, newPredecessorBlock, overlap)
+    result = getNewPhiOperandDefinitionFromOldSsa(instr, newPredecessorBlock, overlap)
   }
 
   cached
@@ -412,22 +412,28 @@ private module Cached {
   }
 
   cached
-  Language::AST getInstructionAST(Instruction instr) {
-    result = getOldInstruction(instr).getAST()
+  Language::AST getInstructionAst(Instruction instr) {
+    result = getOldInstruction(instr).getAst()
     or
     exists(RawIR::Instruction blockStartInstr |
       instr = phiInstruction(blockStartInstr, _) and
-      result = blockStartInstr.getAST()
+      result = blockStartInstr.getAst()
     )
     or
     exists(RawIR::Instruction primaryInstr |
       instr = chiInstruction(primaryInstr) and
-      result = primaryInstr.getAST()
+      result = primaryInstr.getAst()
     )
     or
     exists(IRFunctionBase irFunc |
       instr = unreachedInstruction(irFunc) and result = irFunc.getFunction()
     )
+  }
+
+  /** DEPRECATED: Alias for getInstructionAst */
+  cached
+  deprecated Language::AST getInstructionAST(Instruction instr) {
+    result = getInstructionAst(instr)
   }
 
   cached
@@ -975,34 +981,40 @@ module DefUse {
   }
 }
 
-predicate canReuseSSAForMemoryResult(Instruction instruction) {
+predicate canReuseSsaForMemoryResult(Instruction instruction) {
   exists(OldInstruction oldInstruction |
     oldInstruction = getOldInstruction(instruction) and
     (
       // The previous iteration said it was reusable, so we should mark it as reusable as well.
-      Alias::canReuseSSAForOldResult(oldInstruction)
+      Alias::canReuseSsaForOldResult(oldInstruction)
       or
       // The current alias analysis says it is reusable.
-      Alias::getResultMemoryLocation(oldInstruction).canReuseSSA()
+      Alias::getResultMemoryLocation(oldInstruction).canReuseSsa()
     )
   )
   or
   exists(Alias::MemoryLocation defLocation |
     // This is a `Phi` for a reusable location, so the result of the `Phi` is reusable as well.
     instruction = phiInstruction(_, defLocation) and
-    defLocation.canReuseSSA()
+    defLocation.canReuseSsa()
   )
   // We don't support reusing SSA for any location that could create a `Chi` instruction.
 }
 
+/** DEPRECATED: Alias for canReuseSsaForMemoryResult */
+deprecated predicate canReuseSSAForMemoryResult = canReuseSsaForMemoryResult/1;
+
 /**
- * Expose some of the internal predicates to PrintSSA.qll. We do this by publically importing those modules in the
+ * Expose some of the internal predicates to PrintSSA.qll. We do this by publicly importing those modules in the
  * `DebugSSA` module, which is then imported by PrintSSA.
  */
-module DebugSSA {
+module DebugSsa {
   import PhiInsertion
   import DefUse
 }
+
+/** DEPRECATED: Alias for DebugSsa */
+deprecated module DebugSSA = DebugSsa;
 
 import CachedForDebugging
 
@@ -1038,7 +1050,7 @@ private module CachedForDebugging {
 
   private OldIR::IRTempVariable getOldTempVariable(IRTempVariable var) {
     result.getEnclosingFunction() = var.getEnclosingFunction() and
-    result.getAST() = var.getAST() and
+    result.getAst() = var.getAst() and
     result.getTag() = var.getTag()
   }
 
@@ -1061,7 +1073,7 @@ private module CachedForDebugging {
   int maxValue() { result = 2147483647 }
 }
 
-module SSAConsistency {
+module SsaConsistency {
   /**
    * Holds if a `MemoryOperand` has more than one `MemoryLocation` assigned by alias analysis.
    */
@@ -1113,6 +1125,9 @@ module SSAConsistency {
     )
   }
 }
+
+/** DEPRECATED: Alias for SsaConsistency */
+deprecated module SSAConsistency = SsaConsistency;
 
 /**
  * Provides the portion of the parameterized IR interface that is used to construct the SSA stages

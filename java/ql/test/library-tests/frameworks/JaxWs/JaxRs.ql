@@ -55,7 +55,7 @@ class JaxRsTest extends InlineExpectationsTest {
     or
     tag = "ResourceMethodOnResourceClass" and
     exists(JaxRsResourceMethod resourceMethod |
-      resourceMethod = any(JaxRsResourceClass ResourceClass).getAResourceMethod()
+      resourceMethod = any(JaxRsResourceClass resourceClass).getAResourceMethod()
     |
       resourceMethod.getLocation() = location and
       element = resourceMethod.toString() and

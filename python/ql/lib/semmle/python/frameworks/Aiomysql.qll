@@ -15,7 +15,7 @@ private module Aiomysql {
   private import semmle.python.internal.Awaited
 
   /**
-   * A `ConectionPool` is created when the result of `aiomysql.create_pool()` is awaited.
+   * Gets a `ConnectionPool` that is created when the result of `aiomysql.create_pool()` is awaited.
    * See https://aiomysql.readthedocs.io/en/stable/pool.html
    */
   API::Node connectionPool() {
@@ -23,9 +23,9 @@ private module Aiomysql {
   }
 
   /**
-   * A `Connection` is created when
+   * Gets a `Connection` that is created when
    * - the result of `aiomysql.connect()` is awaited.
-   * - the result of calling `aquire` on a `ConnectionPool` is awaited.
+   * - the result of calling `acquire` on a `ConnectionPool` is awaited.
    * See https://aiomysql.readthedocs.io/en/stable/connection.html#connection
    */
   API::Node connection() {
@@ -35,7 +35,7 @@ private module Aiomysql {
   }
 
   /**
-   * A `Cursor` is created when
+   * Gets a `Cursor` that is created when
    * - the result of calling `cursor` on a `ConnectionPool` is awaited.
    * - the result of calling `cursor` on a `Connection` is awaited.
    * See https://aiomysql.readthedocs.io/en/stable/cursors.html
@@ -47,45 +47,29 @@ private module Aiomysql {
   }
 
   /**
-   * Calling `execute` on a `Cursor` constructs a query.
+   * A query. Calling `execute` on a `Cursor` constructs a query.
    * See https://aiomysql.readthedocs.io/en/stable/cursors.html#Cursor.execute
    */
-  class CursorExecuteCall extends SqlConstruction::Range, DataFlow::CallCfgNode {
+  class CursorExecuteCall extends SqlConstruction::Range, API::CallNode {
     CursorExecuteCall() { this = cursor().getMember("execute").getACall() }
 
-    override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("operation")] }
+    override DataFlow::Node getSql() { result = this.getParameter(0, "operation").getARhs() }
   }
 
   /**
-   * This is only needed to connect the argument to the execute call with the subsequnt awaiting.
-   * It should be obsolete once we have `API::CallNode` available.
-   */
-  private DataFlow::TypeTrackingNode cursorExecuteCall(DataFlow::TypeTracker t, DataFlow::Node sql) {
-    // cursor created from connection
-    t.start() and
-    sql = result.(CursorExecuteCall).getSql()
-    or
-    exists(DataFlow::TypeTracker t2 | result = cursorExecuteCall(t2, sql).track(t2, t))
-  }
-
-  DataFlow::Node cursorExecuteCall(DataFlow::Node sql) {
-    cursorExecuteCall(DataFlow::TypeTracker::end(), sql).flowsTo(result)
-  }
-
-  /**
-   * Awaiting the result of calling `execute` executes the query.
+   * An awaited query. Awaiting the result of calling `execute` executes the query.
    * See https://aiomysql.readthedocs.io/en/stable/cursors.html#Cursor.execute
    */
   class AwaitedCursorExecuteCall extends SqlExecution::Range {
-    DataFlow::Node sql;
+    CursorExecuteCall executeCall;
 
-    AwaitedCursorExecuteCall() { this = awaited(cursorExecuteCall(sql)) }
+    AwaitedCursorExecuteCall() { this = executeCall.getReturn().getAwaited().getAnImmediateUse() }
 
-    override DataFlow::Node getSql() { result = sql }
+    override DataFlow::Node getSql() { result = executeCall.getSql() }
   }
 
   /**
-   * An `Engine` is created when the result of calling `aiomysql.sa.create_engine` is awaited.
+   * Gets an `Engine` that is created when the result of calling `aiomysql.sa.create_engine` is awaited.
    * See https://aiomysql.readthedocs.io/en/stable/sa.html#engine
    */
   API::Node engine() {
@@ -98,48 +82,30 @@ private module Aiomysql {
   }
 
   /**
-   * A `SAConnection` is created when the result of calling `aquire` on an `Engine` is awaited.
+   * Gets an `SAConnection` that is created when the result of calling `acquire` on an `Engine` is awaited.
    * See https://aiomysql.readthedocs.io/en/stable/sa.html#connection
    */
   API::Node saConnection() { result = engine().getMember("acquire").getReturn().getAwaited() }
 
   /**
-   * Calling `execute` on a `SAConnection` constructs a query.
+   * A query. Calling `execute` on a `SAConnection` constructs a query.
    * See https://aiomysql.readthedocs.io/en/stable/sa.html#aiomysql.sa.SAConnection.execute
    */
-  class SAConnectionExecuteCall extends SqlConstruction::Range, DataFlow::CallCfgNode {
+  class SAConnectionExecuteCall extends SqlConstruction::Range, API::CallNode {
     SAConnectionExecuteCall() { this = saConnection().getMember("execute").getACall() }
 
-    override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("query")] }
+    override DataFlow::Node getSql() { result = this.getParameter(0, "query").getARhs() }
   }
 
   /**
-   * This is only needed to connect the argument to the execute call with the subsequnt awaiting.
-   * It should be obsolete once we have `API::CallNode` available.
-   */
-  private DataFlow::TypeTrackingNode saConnectionExecuteCall(
-    DataFlow::TypeTracker t, DataFlow::Node sql
-  ) {
-    // saConnection created from engine
-    t.start() and
-    sql = result.(SAConnectionExecuteCall).getSql()
-    or
-    exists(DataFlow::TypeTracker t2 | result = saConnectionExecuteCall(t2, sql).track(t2, t))
-  }
-
-  DataFlow::Node saConnectionExecuteCall(DataFlow::Node sql) {
-    saConnectionExecuteCall(DataFlow::TypeTracker::end(), sql).flowsTo(result)
-  }
-
-  /**
-   * Awaiting the result of calling `execute` executes the query.
+   * An awaited query. Awaiting the result of calling `execute` executes the query.
    * See https://aiomysql.readthedocs.io/en/stable/sa.html#aiomysql.sa.SAConnection.execute
    */
   class AwaitedSAConnectionExecuteCall extends SqlExecution::Range {
-    DataFlow::Node sql;
+    SAConnectionExecuteCall execute;
 
-    AwaitedSAConnectionExecuteCall() { this = awaited(saConnectionExecuteCall(sql)) }
+    AwaitedSAConnectionExecuteCall() { this = execute.getReturn().getAwaited().getAnImmediateUse() }
 
-    override DataFlow::Node getSql() { result = sql }
+    override DataFlow::Node getSql() { result = execute.getSql() }
   }
 }

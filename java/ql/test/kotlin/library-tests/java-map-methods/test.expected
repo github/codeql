@@ -1,0 +1,4 @@
+diagnostics
+#select
+| Integer |
+| Object |

@@ -13,7 +13,7 @@ class SpringInjectionCallableEntryPoint extends CallableEntryPoint {
     this instanceof SpringBeanReflectivelyConstructed or
     // A setter method specified in the context.
     this instanceof SpringBeanPropertySetterMethod or
-    exists(this.(SpringBeanXMLAutowiredSetterMethod).getInjectedBean()) or
+    exists(this.(SpringBeanXmlAutowiredSetterMethod).getInjectedBean()) or
     this instanceof SpringBeanAutowiredCallable
   }
 }

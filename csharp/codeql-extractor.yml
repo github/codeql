@@ -16,3 +16,28 @@ file_types:
     extensions:
       - .cs
 legacy_qltest_extraction: true
+options:
+  trap:
+    title: Options pertaining to TRAP.
+    type: object
+    properties:
+      compression:
+        title: Controls compression for the TRAP files written by the extractor.
+        description: >
+          This option is only intended for use in debugging the extractor. Accepted
+          values are 'brotli' (the default, to write brotli-compressed TRAP), 'gzip', and 'none'
+          (to write uncompressed TRAP).
+        type: string
+        pattern: "^(none|gzip|brotli)$"
+  buildless:
+    title: Whether to use buildless (standalone) extraction.
+    description: >
+      A value indicating, which type of extraction the autobuilder should perform.
+      If 'true', then the standalone extractor will be used, otherwise tracing extraction
+      will be performed.
+      The default is 'false'.
+      Note that buildless extraction will generally yield less accurate analysis results,
+      and should only be used in cases where it is not possible to build
+      the code (for example if it uses inaccessible dependencies).
+    type: string
+    pattern: "^(false|true)$"

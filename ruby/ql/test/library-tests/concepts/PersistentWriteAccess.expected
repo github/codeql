@@ -1,0 +1,22 @@
+| app/controllers/users_controller.rb:5:7:5:44 | call to create! | app/controllers/users_controller.rb:5:26:5:29 | "U1" |
+| app/controllers/users_controller.rb:5:7:5:44 | call to create! | app/controllers/users_controller.rb:5:37:5:43 | call to get_uid |
+| app/controllers/users_controller.rb:6:7:6:29 | call to create | app/controllers/users_controller.rb:6:25:6:28 | "U2" |
+| app/controllers/users_controller.rb:7:7:7:31 | call to insert | app/controllers/users_controller.rb:7:26:7:29 | "U3" |
+| app/controllers/users_controller.rb:10:7:10:32 | call to update | app/controllers/users_controller.rb:10:28:10:31 | "U4" |
+| app/controllers/users_controller.rb:11:7:11:73 | call to update! | app/controllers/users_controller.rb:11:39:11:42 | "U5" |
+| app/controllers/users_controller.rb:11:7:11:73 | call to update! | app/controllers/users_controller.rb:11:53:11:56 | "U6" |
+| app/controllers/users_controller.rb:11:7:11:73 | call to update! | app/controllers/users_controller.rb:11:67:11:70 | "U7" |
+| app/controllers/users_controller.rb:14:7:14:66 | call to insert_all | app/controllers/users_controller.rb:14:31:14:34 | "U8" |
+| app/controllers/users_controller.rb:14:7:14:66 | call to insert_all | app/controllers/users_controller.rb:14:45:14:48 | "U9" |
+| app/controllers/users_controller.rb:14:7:14:66 | call to insert_all | app/controllers/users_controller.rb:14:59:14:63 | "U10" |
+| app/controllers/users_controller.rb:19:7:19:30 | call to update | app/controllers/users_controller.rb:19:25:19:29 | "U11" |
+| app/controllers/users_controller.rb:20:7:20:57 | call to update_attributes | app/controllers/users_controller.rb:20:37:20:41 | "U12" |
+| app/controllers/users_controller.rb:20:7:20:57 | call to update_attributes | app/controllers/users_controller.rb:20:49:20:55 | call to get_uid |
+| app/controllers/users_controller.rb:23:7:23:42 | call to update_attribute | app/controllers/users_controller.rb:23:37:23:41 | "U13" |
+| app/controllers/users_controller.rb:26:19:26:23 | ... = ... | app/controllers/users_controller.rb:26:19:26:23 | "U14" |
+| app/models/user.rb:4:5:4:28 | call to update | app/models/user.rb:4:23:4:27 | "U15" |
+| app/models/user.rb:5:5:5:23 | call to update | app/models/user.rb:5:18:5:22 | "U16" |
+| app/models/user.rb:6:5:6:56 | call to update_attributes | app/models/user.rb:6:35:6:39 | "U17" |
+| app/models/user.rb:6:5:6:56 | call to update_attributes | app/models/user.rb:6:51:6:54 | true |
+| app/models/user.rb:9:5:9:40 | call to update_attribute | app/models/user.rb:9:35:9:39 | "U18" |
+| app/models/user.rb:12:17:12:21 | ... = ... | app/models/user.rb:12:17:12:21 | "U19" |

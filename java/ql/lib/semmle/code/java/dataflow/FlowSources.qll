@@ -203,6 +203,7 @@ class EnvReadMethod extends Method {
   EnvReadMethod() {
     this instanceof MethodSystemGetenv or
     this instanceof PropertiesGetPropertyMethod or
+    this instanceof PropertiesGetMethod or
     this instanceof MethodSystemGetProperty
   }
 }
@@ -271,6 +272,7 @@ class ExportedAndroidContentProviderInput extends RemoteFlowSource, AndroidConte
  * calls `startActivityForResult` with an implicit Intent.
  */
 class OnActivityResultIntentSource extends OnActivityResultIncomingIntent, RemoteFlowSource {
+  cached
   OnActivityResultIntentSource() { this.isRemoteSource() }
 
   override string getSourceType() { result = "Android onActivityResult incoming Intent" }

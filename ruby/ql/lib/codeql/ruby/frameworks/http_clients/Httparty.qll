@@ -6,6 +6,7 @@ private import ruby
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
 
 /**
  * A call that makes an HTTP request using `HTTParty`.
@@ -34,7 +35,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
     this = requestUse.asExpr().getExpr()
   }
 
-  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
 
   override DataFlow::Node getResponseBody() {
     // If HTTParty can recognise the response type, it will parse and return it
@@ -78,7 +79,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
 /** Holds if `node` represents the symbol literal `verify` or `verify_peer`. */
 private predicate isVerifyLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol(["verify", "verify_peer"]) and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue(["verify", "verify_peer"]) and
     literal.flowsTo(node)
   )
 }

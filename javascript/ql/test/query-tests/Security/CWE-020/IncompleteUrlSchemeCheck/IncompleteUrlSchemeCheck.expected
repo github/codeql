@@ -1,0 +1,15 @@
+| IncompleteUrlSchemeCheck.js:5:9:5:35 | u.start ... ript:") | This check does not consider data: and vbscript:. |
+| IncompleteUrlSchemeCheck.js:16:9:16:39 | badProt ... otocol) | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:23:9:23:43 | badProt ... scheme) | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:30:9:30:43 | badProt ... scheme) | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:37:9:37:31 | scheme  ... script" | This check does not consider data: and vbscript:. |
+| IncompleteUrlSchemeCheck.js:51:9:51:31 | scheme  ... script" | This check does not consider data: and vbscript:. |
+| IncompleteUrlSchemeCheck.js:58:6:58:56 | "javasc ...  !== -1 | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:65:6:65:28 | "javasc ...  scheme | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:72:6:72:48 | /^(java ... == null | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:79:6:79:48 | /^(java ... == null | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:87:7:87:40 | /^(java ... scheme) | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:94:10:94:15 | scheme | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:104:6:104:39 | /^(java ... scheme) | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:110:12:112:29 | url  // ... :/, "") | This check does not consider vbscript:. |
+| IncompleteUrlSchemeCheck.js:124:11:124:34 | url.rep ... :/, "") | This check does not consider vbscript:. |

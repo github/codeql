@@ -41,61 +41,59 @@ private import codeql.ruby.controlflow.ControlFlowGraph
 private import Completion
 import ControlFlowGraphImplShared
 
-module CfgScope {
-  abstract class Range_ extends AstNode {
-    abstract predicate entry(AstNode first);
+abstract class CfgScopeImpl extends AstNode {
+  abstract predicate entry(AstNode first);
 
-    abstract predicate exit(AstNode last, Completion c);
+  abstract predicate exit(AstNode last, Completion c);
+}
+
+private class ToplevelScope extends CfgScopeImpl, Toplevel {
+  final override predicate entry(AstNode first) { first(this, first) }
+
+  final override predicate exit(AstNode last, Completion c) { last(this, last, c) }
+}
+
+private class EndBlockScope extends CfgScopeImpl, EndBlock {
+  final override predicate entry(AstNode first) {
+    first(this.(Trees::EndBlockTree).getBodyChild(0, _), first)
   }
 
-  private class ToplevelScope extends Range_, Toplevel {
-    final override predicate entry(AstNode first) { first(this, first) }
+  final override predicate exit(AstNode last, Completion c) {
+    last(this.(Trees::EndBlockTree).getLastBodyChild(), last, c)
+    or
+    last(this.(Trees::EndBlockTree).getBodyChild(_, _), last, c) and
+    not c instanceof NormalCompletion
+  }
+}
 
-    final override predicate exit(AstNode last, Completion c) { last(this, last, c) }
+private class BodyStmtCallableScope extends CfgScopeImpl, ASTInternal::TBodyStmt, Callable {
+  final override predicate entry(AstNode first) { this.(Trees::BodyStmtTree).firstInner(first) }
+
+  final override predicate exit(AstNode last, Completion c) {
+    this.(Trees::BodyStmtTree).lastInner(last, c)
+  }
+}
+
+private class BraceBlockScope extends CfgScopeImpl, BraceBlock {
+  final override predicate entry(AstNode first) {
+    first(this.(Trees::BraceBlockTree).getBodyChild(0, _), first)
   }
 
-  private class EndBlockScope extends Range_, EndBlock {
-    final override predicate entry(AstNode first) {
-      first(this.(Trees::EndBlockTree).getBodyChild(0, _), first)
-    }
-
-    final override predicate exit(AstNode last, Completion c) {
-      last(this.(Trees::EndBlockTree).getLastBodyChild(), last, c)
-      or
-      last(this.(Trees::EndBlockTree).getBodyChild(_, _), last, c) and
-      not c instanceof NormalCompletion
-    }
-  }
-
-  private class BodyStmtCallableScope extends Range_, ASTInternal::TBodyStmt, Callable {
-    final override predicate entry(AstNode first) { this.(Trees::BodyStmtTree).firstInner(first) }
-
-    final override predicate exit(AstNode last, Completion c) {
-      this.(Trees::BodyStmtTree).lastInner(last, c)
-    }
-  }
-
-  private class BraceBlockScope extends Range_, BraceBlock {
-    final override predicate entry(AstNode first) {
-      first(this.(Trees::BraceBlockTree).getBodyChild(0, _), first)
-    }
-
-    final override predicate exit(AstNode last, Completion c) {
-      last(this.(Trees::BraceBlockTree).getLastBodyChild(), last, c)
-      or
-      last(this.(Trees::BraceBlockTree).getBodyChild(_, _), last, c) and
-      not c instanceof NormalCompletion
-    }
+  final override predicate exit(AstNode last, Completion c) {
+    last(this.(Trees::BraceBlockTree).getLastBodyChild(), last, c)
+    or
+    last(this.(Trees::BraceBlockTree).getBodyChild(_, _), last, c) and
+    not c instanceof NormalCompletion
   }
 }
 
 /** Holds if `first` is first executed when entering `scope`. */
 pragma[nomagic]
-predicate succEntry(CfgScope::Range_ scope, AstNode first) { scope.entry(first) }
+predicate succEntry(CfgScopeImpl scope, AstNode first) { scope.entry(first) }
 
 /** Holds if `last` with completion `c` can exit `scope`. */
 pragma[nomagic]
-predicate succExit(CfgScope::Range_ scope, AstNode last, Completion c) { scope.exit(last, c) }
+predicate succExit(CfgScopeImpl scope, AstNode last, Completion c) { scope.exit(last, c) }
 
 /** Defines the CFG by dispatch on the various AST types. */
 module Trees {
@@ -347,7 +345,12 @@ module Trees {
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getParameter(i) and rescuable = false
       or
-      result = StmtSequenceTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
+      result = this.getLocalVariable(i - this.getNumberOfParameters()) and rescuable = false
+      or
+      result =
+        StmtSequenceTree.super
+            .getBodyChild(i - this.getNumberOfParameters() - count(this.getALocalVariable()),
+              rescuable)
     }
 
     override predicate first(AstNode first) { first = this }
@@ -366,7 +369,9 @@ module Trees {
     CallTree() {
       // Logical operations are handled separately
       not this instanceof UnaryLogicalOperation and
-      not this instanceof BinaryLogicalOperation
+      not this instanceof BinaryLogicalOperation and
+      // Calls with the `&.` operator are desugared
+      not this.(MethodCall).isSafeNavigation()
     }
 
     override ControlFlowTree getChildElement(int i) { result = this.getArgument(i) }
@@ -959,7 +964,12 @@ module Trees {
     final override AstNode getBodyChild(int i, boolean rescuable) {
       result = this.getParameter(i) and rescuable = false
       or
-      result = BodyStmtTree.super.getBodyChild(i - this.getNumberOfParameters(), rescuable)
+      result = this.getLocalVariable(i - this.getNumberOfParameters()) and rescuable = false
+      or
+      result =
+        BodyStmtTree.super
+            .getBodyChild(i - this.getNumberOfParameters() - count(this.getALocalVariable()),
+              rescuable)
     }
 
     override predicate propagatesAbnormal(AstNode child) { none() }
@@ -994,7 +1004,9 @@ module Trees {
     final override ControlFlowTree getChildElement(int i) { result = this.getComponent(i) }
   }
 
-  private class InstanceVariableTree extends LeafTree, InstanceVariableAccess { }
+  private class InstanceVariableTree extends StandardPostOrderTree, InstanceVariableAccess {
+    final override ControlFlowTree getChildElement(int i) { result = this.getReceiver() and i = 0 }
+  }
 
   private class KeywordParameterTree extends DefaultValueParameterTree, KeywordParameter {
     final override Expr getDefaultValueExpr() { result = this.getDefaultValue() }
@@ -1246,7 +1258,7 @@ module Trees {
 
   private class SimpleParameterTree extends NonDefaultValueParameterTree, SimpleParameter { }
 
-  // Corner case: For duplicated '_' parameters, only the first occurence has a defining
+  // Corner case: For duplicated '_' parameters, only the first occurrence has a defining
   // access. For subsequent parameters we simply include the parameter itself in the CFG
   private class SimpleParameterTreeDupUnderscore extends LeafTree, SimpleParameter {
     SimpleParameterTreeDupUnderscore() { not exists(this.getDefiningAccess()) }
@@ -1417,7 +1429,7 @@ module Trees {
 
 private Scope parent(Scope n) {
   result = n.getOuterScope() and
-  not n instanceof CfgScope::Range_
+  not n instanceof CfgScopeImpl
 }
 
 cached

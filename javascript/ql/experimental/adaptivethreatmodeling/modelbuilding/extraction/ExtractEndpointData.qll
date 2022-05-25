@@ -23,16 +23,19 @@ import NoFeaturizationRestrictionsConfig
 import Queries
 
 /** Gets the ATM configuration object for the specified query. */
-ATMConfig getATMCfg(Query query) {
+AtmConfig getAtmCfg(Query query) {
   query instanceof NosqlInjectionQuery and
-  result instanceof NosqlInjectionATM::NosqlInjectionATMConfig
+  result instanceof NosqlInjectionATM::NosqlInjectionAtmConfig
   or
-  query instanceof SqlInjectionQuery and result instanceof SqlInjectionATM::SqlInjectionATMConfig
+  query instanceof SqlInjectionQuery and result instanceof SqlInjectionATM::SqlInjectionAtmConfig
   or
-  query instanceof TaintedPathQuery and result instanceof TaintedPathATM::TaintedPathATMConfig
+  query instanceof TaintedPathQuery and result instanceof TaintedPathATM::TaintedPathAtmConfig
   or
-  query instanceof XssQuery and result instanceof XssATM::DomBasedXssATMConfig
+  query instanceof XssQuery and result instanceof XssATM::DomBasedXssAtmConfig
 }
+
+/** DEPRECATED: Alias for getAtmCfg */
+deprecated ATMConfig getATMCfg(Query query) { result = getAtmCfg(query) }
 
 /** Gets the ATM data flow configuration for the specified query. */
 DataFlow::Configuration getDataFlowCfg(Query query) {
@@ -47,7 +50,7 @@ DataFlow::Configuration getDataFlowCfg(Query query) {
 
 /** Gets a known sink for the specified query. */
 private DataFlow::Node getASink(Query query) {
-  getATMCfg(query).isKnownSink(result) and
+  getAtmCfg(query).isKnownSink(result) and
   // Only consider the source code for the project being analyzed.
   exists(result.getFile().getRelativePath())
 }
@@ -71,11 +74,12 @@ private DataFlow::Node getANotASink(NotASinkReason reason) {
  * specified query.
  */
 private DataFlow::Node getAnUnknown(Query query) {
-  (
-    getATMCfg(query).isEffectiveSink(result) or
-    getATMCfg(query).isEffectiveSinkWithOverridingScore(result, _, _)
-  ) and
+  getAtmCfg(query).isEffectiveSink(result) and
+  // Effective sinks should exclude sinks but this is a defensive requirement
   not result = getASink(query) and
+  // Effective sinks should exclude NotASink but for some queries (e.g. Xss) this is currently not always the case and
+  // so this is a defensive requirement
+  not result = getANotASink(_) and
   // Only consider the source code for the project being analyzed.
   exists(result.getFile().getRelativePath())
 }
@@ -189,7 +193,7 @@ module FlowFromSource {
 
     /** The sinks are the endpoints we're extracting. */
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel lbl) {
-      sink = getAnEndpoint(q)
+      sink = getAnEndpoint(q) and exists(lbl)
     }
   }
 }

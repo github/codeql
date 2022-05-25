@@ -15,13 +15,15 @@ import semmle.python.objects.Callables
 import semmle.python.objects.Constants
 import semmle.python.objects.Sequences
 import semmle.python.objects.Descriptors
+private import semmle.python.internal.CachedStages
 
 class ObjectInternal extends TObject {
   /** Gets a textual representation of this element. */
+  cached
   abstract string toString();
 
   /**
-   * The boolean value of this object, this may be both
+   * Gets the boolean value of this object. This may be both
    * true and false if the "object" represents a set of possible objects.
    */
   abstract boolean booleanValue();
@@ -47,7 +49,7 @@ class ObjectInternal extends TObject {
   abstract ObjectInternal getClass();
 
   /**
-   * True if this "object" can be meaningfully analysed to determine the boolean value of
+   * True if this "object" can be meaningfully analyzed to determine the boolean value of
    * equality tests on it.
    * For example, `None` or `int` can be, but `int()` or an unknown string cannot.
    */
@@ -88,14 +90,14 @@ class ObjectInternal extends TObject {
   abstract predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin);
 
   /**
-   * The integer value of things that have integer values and whose integer value is
+   * Gets the integer value of things that have integer values and whose integer value is
    * tracked.
    * That is, some ints, mainly small numbers, and bools.
    */
   abstract int intValue();
 
   /**
-   * The string value of things that have string values.
+   * Gets the string value of things that have string values.
    * That is, strings.
    */
   abstract string strValue();
@@ -213,7 +215,10 @@ class ObjectInternal extends TObject {
 class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
   override Builtin getBuiltin() { this = TBuiltinOpaqueObject(result) }
 
-  override string toString() { result = this.getBuiltin().getClass().getName() + " object" }
+  override string toString() {
+    Stages::DataFlow::ref() and
+    result = this.getBuiltin().getClass().getName() + " object"
+  }
 
   override boolean booleanValue() {
     // TO DO ... Depends on class. `result = this.getClass().instancesBooleanValue()`
@@ -497,7 +502,7 @@ module ObjectInternal {
 
   ObjectInternal superType() { result = TBuiltinClassObject(Builtin::special("super")) }
 
-  /** The old-style class type (Python 2 only) */
+  /** Gets the old-style class type (Python 2 only) */
   ObjectInternal classType() { result = TBuiltinClassObject(Builtin::special("ClassType")) }
 
   ObjectInternal emptyTuple() { result.(BuiltinTupleObjectInternal).length() = 0 }

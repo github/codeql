@@ -208,18 +208,25 @@ postWithInFlow
 | lambdas.cpp:13:7:13:7 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:13:10:17:2 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:13:10:17:2 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| lambdas.cpp:13:11:13:11 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| lambdas.cpp:13:11:13:11 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:16:3:16:11 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:20:7:20:7 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:20:10:24:2 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:20:10:24:2 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:20:10:24:2 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
-| lambdas.cpp:23:3:23:3 | (reference dereference) [post update] | PostUpdateNode should not be the target of local flow. |
+| lambdas.cpp:20:11:20:11 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| lambdas.cpp:20:11:20:11 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| lambdas.cpp:20:11:20:11 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:23:3:23:14 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:23:3:23:14 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:23:3:23:14 | v [post update] | PostUpdateNode should not be the target of local flow. |
+| lambdas.cpp:23:15:23:15 | (reference dereference) [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:28:7:28:7 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:28:10:31:2 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:28:10:31:2 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| lambdas.cpp:28:11:28:11 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| lambdas.cpp:28:11:28:11 | FieldAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:34:7:34:7 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:34:13:34:13 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:40:7:40:7 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |

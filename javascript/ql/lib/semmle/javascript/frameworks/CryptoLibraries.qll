@@ -378,10 +378,9 @@ private module CryptoJS {
  * A model of the TweetNaCl library.
  */
 private module TweetNaCl {
-  private class Apply extends CryptographicOperation {
+  private class Apply extends CryptographicOperation instanceof MethodCallExpr {
     Expr input;
     CryptographicAlgorithm algorithm;
-    MethodCallExpr mce;
 
     Apply() {
       /*
@@ -395,15 +394,14 @@ private module TweetNaCl {
        *      Also matches the "hash" method name, and the "nacl-fast" module.
        */
 
-      this = mce and
       exists(DataFlow::SourceNode mod, string name |
         name = "hash" and algorithm.matchesName("SHA512")
         or
         name = "sign" and algorithm.matchesName("ed25519")
       |
         (mod = DataFlow::moduleImport("nacl") or mod = DataFlow::moduleImport("nacl-fast")) and
-        mce = mod.getAMemberCall(name).asExpr() and
-        mce.getArgument(0) = input
+        this = mod.getAMemberCall(name).asExpr() and
+        super.getArgument(0) = input
       )
     }
 
@@ -440,10 +438,9 @@ private module HashJs {
     )
   }
 
-  private class Apply extends CryptographicOperation {
+  private class Apply extends CryptographicOperation instanceof MethodCallExpr {
     Expr input;
     CryptographicAlgorithm algorithm; // non-functional
-    MethodCallExpr mce;
 
     Apply() {
       /*
@@ -459,9 +456,8 @@ private module HashJs {
        *      Also matches where `hash.<algorithmName>()` has been replaced by a more specific require a la `require("hash.js/lib/hash/sha/512")`
        */
 
-      this = mce and
-      mce = getAlgorithmExpr(algorithm).getAMemberCall("update").asExpr() and
-      input = mce.getArgument(0)
+      this = getAlgorithmExpr(algorithm).getAMemberCall("update").asExpr() and
+      input = super.getArgument(0)
     }
 
     override Expr getInput() { result = input }
@@ -535,16 +531,14 @@ private module Forge {
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
 
-  private class Apply extends CryptographicOperation {
+  private class Apply extends CryptographicOperation instanceof MethodCallExpr {
     Expr input;
     CryptographicAlgorithm algorithm; // non-functional
-    MethodCallExpr mce;
 
     Apply() {
-      this = mce and
       exists(Cipher cipher |
-        mce = cipher.getAMemberCall("update").asExpr() and
-        mce.getArgument(0) = input and
+        this = cipher.getAMemberCall("update").asExpr() and
+        super.getArgument(0) = input and
         algorithm = cipher.getAlgorithm()
       )
     }
@@ -596,19 +590,17 @@ private module Forge {
  * A model of the md5 library.
  */
 private module Md5 {
-  private class Apply extends CryptographicOperation {
+  private class Apply extends CryptographicOperation instanceof CallExpr {
     Expr input;
     CryptographicAlgorithm algorithm;
-    CallExpr call;
 
     Apply() {
       // `require("md5")("message");`
-      this = call and
       exists(DataFlow::SourceNode mod |
         mod = DataFlow::moduleImport("md5") and
         algorithm.matchesName("MD5") and
-        call = mod.getACall().asExpr() and
-        call.getArgument(0) = input
+        this = mod.getACall().asExpr() and
+        super.getArgument(0) = input
       )
     }
 
@@ -622,14 +614,12 @@ private module Md5 {
  * A model of the bcrypt, bcryptjs, bcrypt-nodejs libraries.
  */
 private module Bcrypt {
-  private class Apply extends CryptographicOperation {
+  private class Apply extends CryptographicOperation instanceof MethodCallExpr {
     Expr input;
     CryptographicAlgorithm algorithm;
-    MethodCallExpr mce;
 
     Apply() {
       // `require("bcrypt").hash(password);` with minor naming variations
-      this = mce and
       exists(DataFlow::SourceNode mod, string moduleName, string methodName |
         algorithm.matchesName("BCRYPT") and
         (
@@ -642,8 +632,8 @@ private module Bcrypt {
           methodName = "hashSync"
         ) and
         mod = DataFlow::moduleImport(moduleName) and
-        mce = mod.getAMemberCall(methodName).asExpr() and
-        mce.getArgument(0) = input
+        this = mod.getAMemberCall(methodName).asExpr() and
+        super.getArgument(0) = input
       )
     }
 
@@ -657,20 +647,18 @@ private module Bcrypt {
  * A model of the hasha library.
  */
 private module Hasha {
-  private class Apply extends CryptographicOperation {
+  private class Apply extends CryptographicOperation instanceof CallExpr {
     Expr input;
     CryptographicAlgorithm algorithm;
-    CallExpr call;
 
     Apply() {
       // `require('hasha')('unicorn', { algorithm: "md5" });`
-      this = call and
       exists(DataFlow::SourceNode mod, string algorithmName, Expr algorithmNameNode |
         mod = DataFlow::moduleImport("hasha") and
-        call = mod.getACall().asExpr() and
-        call.getArgument(0) = input and
+        this = mod.getACall().asExpr() and
+        super.getArgument(0) = input and
         algorithm.matchesName(algorithmName) and
-        call.hasOptionArgument(1, "algorithm", algorithmNameNode) and
+        super.hasOptionArgument(1, "algorithm", algorithmNameNode) and
         algorithmNameNode.mayHaveStringValue(algorithmName)
       )
     }
@@ -695,8 +683,6 @@ private module ExpressJwt {
  */
 private module NodeRsa {
   private class CreateKey extends CryptographicKeyCreation, API::InvokeNode {
-    CryptographicAlgorithm algorithm;
-
     CreateKey() {
       this = API::moduleImport("node-rsa").getAnInstantiation()
       or

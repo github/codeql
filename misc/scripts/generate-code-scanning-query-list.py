@@ -15,7 +15,7 @@ are on the PATH. It'll try to automatically set the CodeQL search path correctly
 as long as you run the script from one of the following locations:
  - anywhere from within a clone of the CodeQL Git repo
  - from the parent directory of a clone of the CodeQL Git repo (assuming 'codeql'
-   and 'codeql-go' directories both exist)
+   directory exists)
 """
 
 parser = argparse.ArgumentParser(__name__)
@@ -75,7 +75,7 @@ def prefix_repo_nwo(filename):
     becomes:
         github/codeql/java/ql/src/MyQuery.ql
 
-    If we can't detect a known NWO (e.g. github/codeql, github/codeql-go), the
+    If we can't detect a known NWO (e.g. github/codeql), the
     path will be truncated to the root of the git repo:
         ql/java/ql/src/MyQuery.ql
 
@@ -92,13 +92,12 @@ def prefix_repo_nwo(filename):
 
     git_toplevel_dir = git_toplevel_dir_subp.stdout.strip()
 
-    # Detect 'github/codeql' and 'github/codeql-go' repositories by checking the remote (it's a bit
-    # of a hack but will work in most cases, as long as the remotes have 'codeql' and 'codeql-go'
+    # Detect 'github/codeql' repository by checking the remote (it's a bit
+    # of a hack but will work in most cases, as long as the remotes have 'codeql'
     # in the URL
     git_remotes = subprocess_run(["git","-C",dirname,"remote","-v"]).stdout.strip()
 
-    if "codeql-go" in git_remotes: prefix = "github/codeql-go"
-    elif "codeql" in git_remotes: prefix = "github/codeql"
+    if "codeql" in git_remotes: prefix = "github/codeql"
     else: prefix = os.path.basename(git_toplevel_dir)
 
     return os.path.join(prefix, filename[len(git_toplevel_dir)+1:])
@@ -142,9 +141,7 @@ with CodeQL() as codeql:
         # Define CodeQL search path so it'll find the CodeQL repositories:
         #  - anywhere in the current Git clone (including current working directory)
         #  - the 'codeql' subdirectory of the cwd
-        #
-        # (and assumes the codeql-go repo is in a similar location)
-        codeql_search_path = "./codeql:./codeql-go:."   # will be extended further down
+        codeql_search_path = "./codeql:."   # will be extended further down
 
         # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
         # can run this script from any location within the CodeQL git repository.
@@ -153,7 +150,7 @@ with CodeQL() as codeql:
 
             # Current working directory is in a Git repo. Add it to the search path, just in case it's the CodeQL repo
             git_toplevel_dir = git_toplevel_dir.stdout.strip()
-            codeql_search_path += ":" + git_toplevel_dir + ":" + git_toplevel_dir + "/../codeql-go"
+            codeql_search_path += ":" + git_toplevel_dir
         except:
             # git rev-parse --show-toplevel exited with non-zero exit code. We're not in a Git repo
             pass
@@ -172,7 +169,7 @@ with CodeQL() as codeql:
                 try:
                     queries_subp = codeql.command(["resolve","queries","--search-path", codeql_search_path, "%s-%s.qls" % (lang, pack)])
                 except Exception as e:
-                    # Resolving queries might go wrong if the github/codeql and github/codeql-go repositories are not
+                    # Resolving queries might go wrong if the github/codeql repository is not
                     # on the search path.
                     level = "Warning" if arguments.ignore_missing_query_packs else "Error"
                     print(

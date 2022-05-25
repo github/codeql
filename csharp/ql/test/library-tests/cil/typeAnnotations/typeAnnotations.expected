@@ -1178,6 +1178,7 @@
 | Parameter 1 of System.Runtime.InteropServices.MemoryMarshal.TryRead | parameter | 32 |
 | Parameter 1 of System.Runtime.InteropServices.MemoryMarshal.TryWrite | parameter | 32 |
 | Parameter 1 of System.Runtime.InteropServices.MemoryMarshal.Write | parameter | 32 |
+| Parameter 1 of System.Runtime.InteropServices.NFloat.TryParse | parameter | 32 |
 | Parameter 1 of System.Runtime.InteropServices.NativeLibrary.TryLoad | parameter | 32 |
 | Parameter 1 of System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.CreateReferenceTrackingHandle | parameter | 32 |
 | Parameter 1 of System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.UnhandledExceptionPropagationHandler.EndInvoke | parameter | 32 |
@@ -1673,6 +1674,7 @@
 | Parameter 2 of System.Runtime.InteropServices.Marshal.QueryInterface | parameter | 32 |
 | Parameter 2 of System.Runtime.InteropServices.MemoryMarshal.TryGetMemoryManager | parameter | 32 |
 | Parameter 2 of System.Runtime.InteropServices.MemoryMarshal.TryGetString | parameter | 32 |
+| Parameter 2 of System.Runtime.InteropServices.NFloat.TryFormat | parameter | 32 |
 | Parameter 2 of System.Runtime.InteropServices.NativeLibrary.TryGetExport | parameter | 32 |
 | Parameter 2 of System.Runtime.Serialization.SerializationInfo.GetElement | parameter | 32 |
 | Parameter 2 of System.Runtime.Serialization.SerializationInfo.GetElementNoThrow | parameter | 32 |
@@ -1971,6 +1973,7 @@
 | Parameter 3 of System.Runtime.InteropServices.ComWrappers.TryGetOrCreateComInterfaceForObjectInternal | parameter | 32 |
 | Parameter 3 of System.Runtime.InteropServices.MemoryMarshal.TryGetMemoryManager | parameter | 32 |
 | Parameter 3 of System.Runtime.InteropServices.MemoryMarshal.TryGetString | parameter | 32 |
+| Parameter 3 of System.Runtime.InteropServices.NFloat.TryParse | parameter | 32 |
 | Parameter 3 of System.Runtime.InteropServices.NativeLibrary.TryLoad | parameter | 32 |
 | Parameter 3 of System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.UnhandledExceptionPropagationHandler.BeginInvoke | parameter | 32 |
 | Parameter 3 of System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.UnhandledExceptionPropagationHandler.Invoke | parameter | 32 |

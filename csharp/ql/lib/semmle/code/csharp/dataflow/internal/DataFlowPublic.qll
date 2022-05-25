@@ -40,8 +40,8 @@ class Node extends TNode {
   final DotNet::Type getType() { result = this.(NodeImpl).getTypeImpl() }
 
   /** Gets the enclosing callable of this node. */
-  final DataFlowCallable getEnclosingCallable() {
-    result = this.(NodeImpl).getEnclosingCallableImpl()
+  final Callable getEnclosingCallable() {
+    result = this.(NodeImpl).getEnclosingCallableImpl().getUnderlyingCallable()
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
@@ -103,7 +103,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
   DotNet::Parameter getParameter() {
     exists(DataFlowCallable c, ParameterPosition ppos |
       super.isParameterOf(c, ppos) and
-      result = c.getParameter(ppos.getPosition())
+      result = c.getUnderlyingCallable().getParameter(ppos.getPosition())
     )
   }
 
@@ -204,12 +204,6 @@ class Content extends TContent {
 
   /** Gets the location of this content. */
   Location getLocation() { none() }
-
-  /** Gets the type of the object containing this content. */
-  deprecated Gvn::GvnType getContainerType() { none() }
-
-  /** Gets the type of this content. */
-  deprecated Gvn::GvnType getType() { none() }
 }
 
 /** A reference to a field. */
@@ -224,12 +218,6 @@ class FieldContent extends Content, TFieldContent {
   override string toString() { result = "field " + f.getName() }
 
   override Location getLocation() { result = f.getLocation() }
-
-  deprecated override Gvn::GvnType getContainerType() {
-    result = Gvn::getGlobalValueNumber(f.getDeclaringType())
-  }
-
-  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
 }
 
 /** A reference to a synthetic field. */
@@ -256,12 +244,6 @@ class PropertyContent extends Content, TPropertyContent {
   override string toString() { result = "property " + p.getName() }
 
   override Location getLocation() { result = p.getLocation() }
-
-  deprecated override Gvn::GvnType getContainerType() {
-    result = Gvn::getGlobalValueNumber(p.getDeclaringType())
-  }
-
-  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
 }
 
 /** A reference to an element in a collection. */
@@ -269,4 +251,24 @@ class ElementContent extends Content, TElementContent {
   override string toString() { result = "element" }
 
   override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
+ * An entity that represents a set of `Content`s.
+ *
+ * The set may be interpreted differently depending on whether it is
+ * stored into (`getAStoreContent`) or read from (`getAReadContent`).
+ */
+class ContentSet instanceof Content {
+  /** Gets a content that may be stored into when storing into this set. */
+  Content getAStoreContent() { result = this }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() { result = this }
+
+  /** Gets a textual representation of this content set. */
+  string toString() { result = super.toString() }
+
+  /** Gets the location of this content set. */
+  Location getLocation() { result = super.getLocation() }
 }

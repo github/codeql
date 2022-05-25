@@ -96,7 +96,7 @@ predicate allBackslashesEscaped(DataFlow::Node nd) {
 /**
  * Holds if `repl` looks like a call to "String.prototype.replace" that deliberately removes the first occurrence of `str`.
  */
-predicate removesFirstOccurence(StringReplaceCall repl, string str) {
+predicate removesFirstOccurrence(StringReplaceCall repl, string str) {
   not exists(repl.getRegExp()) and repl.replaces(str, "")
 }
 
@@ -117,8 +117,8 @@ predicate isDelimiterUnwrapper(
     or
     left = "'" and right = "'"
   |
-    removesFirstOccurence(leftUnwrap, left) and
-    removesFirstOccurence(rightUnwrap, right) and
+    removesFirstOccurrence(leftUnwrap, left) and
+    removesFirstOccurrence(rightUnwrap, right) and
     leftUnwrap.getAMethodCall() = rightUnwrap
   )
 }

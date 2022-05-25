@@ -65,10 +65,9 @@ private string getInterpolatedExpressionPattern() { result = "(?<=\\{\\{).*?(?=\
  */
 private class HtmlTextNodeAsNgSourceProvider extends NgSourceProvider, HTML::TextNode {
   string source;
-  int offset;
 
   HtmlTextNodeAsNgSourceProvider() {
-    source = this.getText().regexpFind(getInterpolatedExpressionPattern(), _, offset)
+    source = this.getText().regexpFind(getInterpolatedExpressionPattern(), _, _)
   }
 
   override predicate providesSourceAt(

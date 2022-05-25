@@ -1,0 +1,2 @@
+| SelfAssignment.go:12:2:12:16 | ... = ... | This statement assigns $@ to itself. | SelfAssignment.go:12:11:12:16 | height | an expression |
+| tst.go:5:2:5:6 | ... = ... | This statement assigns $@ to itself. | tst.go:5:6:5:6 | x | an expression |

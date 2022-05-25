@@ -12,7 +12,7 @@
  * states that will cause backtracking (a rejecting suffix exists).
  */
 
-import RegExpTreeView
+import ReDoSUtilSpecific
 
 /**
  * A configuration for which parts of a regular expression should be considered relevant for
@@ -32,7 +32,7 @@ abstract class ReDoSConfiguration extends string {
 }
 
 /**
- * Holds if repeating `pump' starting at `state` is a candidate for causing backtracking.
+ * Holds if repeating `pump` starting at `state` is a candidate for causing backtracking.
  * No check whether a rejected suffix exists has been made.
  */
 private predicate isReDoSCandidate(State state, string pump) {
@@ -119,18 +119,18 @@ class EmptyPositiveSubPatttern extends RegExpSubPattern {
  * whose root node is not a disjunction.
  */
 class RegExpRoot extends RegExpTerm {
-  RegExpParent parent;
-
   RegExpRoot() {
-    exists(RegExpAlt alt |
-      alt.isRootTerm() and
-      this = alt.getAChild() and
-      parent = alt.getParent()
+    exists(RegExpParent parent |
+      exists(RegExpAlt alt |
+        alt.isRootTerm() and
+        this = alt.getAChild() and
+        parent = alt.getParent()
+      )
+      or
+      this.isRootTerm() and
+      not this instanceof RegExpAlt and
+      parent = this.getParent()
     )
-    or
-    this.isRootTerm() and
-    not this instanceof RegExpAlt and
-    parent = this.getParent()
   }
 
   /**
@@ -466,13 +466,14 @@ private module CharacterClasses {
    * An implementation of `CharacterClass` for \d, \s, and \w.
    */
   private class PositiveCharacterClassEscape extends CharacterClass {
-    RegExpTerm cc;
     string charClass;
 
     PositiveCharacterClassEscape() {
-      isEscapeClass(cc, charClass) and
-      this = getCanonicalCharClass(cc) and
-      charClass = ["d", "s", "w"]
+      exists(RegExpTerm cc |
+        isEscapeClass(cc, charClass) and
+        this = getCanonicalCharClass(cc) and
+        charClass = ["d", "s", "w"]
+      )
     }
 
     override string getARelevantChar() {
@@ -504,13 +505,14 @@ private module CharacterClasses {
    * An implementation of `CharacterClass` for \D, \S, and \W.
    */
   private class NegativeCharacterClassEscape extends CharacterClass {
-    RegExpTerm cc;
     string charClass;
 
     NegativeCharacterClassEscape() {
-      isEscapeClass(cc, charClass) and
-      this = getCanonicalCharClass(cc) and
-      charClass = ["D", "S", "W"]
+      exists(RegExpTerm cc |
+        isEscapeClass(cc, charClass) and
+        this = getCanonicalCharClass(cc) and
+        charClass = ["D", "S", "W"]
+      )
     }
 
     override string getARelevantChar() {
@@ -608,16 +610,23 @@ State after(RegExpTerm t) {
   or
   exists(RegExpGroup grp | t = grp.getAChild() | result = after(grp))
   or
-  exists(EffectivelyStar star | t = star.getAChild() | result = before(star))
+  exists(EffectivelyStar star | t = star.getAChild() |
+    not isPossessive(star) and
+    result = before(star)
+  )
   or
   exists(EffectivelyPlus plus | t = plus.getAChild() |
-    result = before(plus) or
+    not isPossessive(plus) and
+    result = before(plus)
+    or
     result = after(plus)
   )
   or
   exists(EffectivelyQuestion opt | t = opt.getAChild() | result = after(opt))
   or
-  exists(RegExpRoot root | t = root | result = AcceptAnySuffix(root))
+  exists(RegExpRoot root | t = root |
+    if matchesAnySuffix(root) then result = AcceptAnySuffix(root) else result = Accept(root)
+  )
 }
 
 /**
@@ -688,7 +697,7 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
     lbl = Epsilon() and q2 = Accept(root)
   )
   or
-  exists(RegExpRoot root | q1 = Match(root, 0) | lbl = Any() and q2 = q1)
+  exists(RegExpRoot root | q1 = Match(root, 0) | matchesAnyPrefix(root) and lbl = Any() and q2 = q1)
   or
   exists(RegExpDollar dollar | q1 = before(dollar) |
     lbl = Epsilon() and q2 = Accept(getRoot(dollar))

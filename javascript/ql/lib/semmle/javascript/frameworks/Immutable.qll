@@ -27,7 +27,7 @@ private module Immutable {
   API::Node immutableImport() {
     result = API::moduleImport("immutable")
     or
-    result = any(ImmutableGlobalEntry i).getNode()
+    result = any(ImmutableGlobalEntry i).getANode()
   }
 
   /**

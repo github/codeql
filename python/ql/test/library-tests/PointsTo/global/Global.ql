@@ -1,5 +1,4 @@
 import python
-import python
 import semmle.python.pointsto.PointsTo
 import semmle.python.pointsto.PointsToContext
 import semmle.python.objects.ObjectInternal

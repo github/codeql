@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Cookies without <code>HttpOnly</code> attribute are accessible to JavaScript running in the same origin. In case of
+Cross-Site Scripting (XSS) vulnerability the cookie can be stolen by malicious script.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Protect sensitive cookies, such as related to authentication, by setting <code>HttpOnly</code> to <code>true</code> to make
+them not accessible to JavaScript.
+</p>
+</recommendation>
+
+<example>
+
+<p>
+In the following example the default <code>HttpOnly</code> value is <code>false</code>.
+</p>
+
+<sample src="CookieWithoutHttpOnlyBad.go" />
+
+<p>
+In the example below <code>HttpOnly</code> is set to <code>true</code>.
+</p>
+
+<sample src="CookieWithoutHttpOnlyGood.go" />
+
+</example>
+
+<references>
+
+<li><a href="https://golang.org/pkg/net/http/#Cookie">type Cookie,</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> Header,</li>
+
+</references>
+</qhelp>

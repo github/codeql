@@ -3,18 +3,21 @@ import java
 /**
  * A deployment descriptor file, typically called `struts.xml`.
  */
-class StrutsXMLFile extends XMLFile {
-  StrutsXMLFile() {
+class StrutsXmlFile extends XMLFile {
+  StrutsXmlFile() {
     count(XMLElement e | e = this.getAChild()) = 1 and
     this.getAChild().getName() = "struts"
   }
 }
 
+/** DEPRECATED: Alias for StrutsXmlFile */
+deprecated class StrutsXMLFile = StrutsXmlFile;
+
 /**
  * An XML element in a `StrutsXMLFile`.
  */
-class StrutsXMLElement extends XMLElement {
-  StrutsXMLElement() { this.getFile() instanceof StrutsXMLFile }
+class StrutsXmlElement extends XMLElement {
+  StrutsXmlElement() { this.getFile() instanceof StrutsXmlFile }
 
   /**
    * Gets the value for this element, with leading and trailing whitespace trimmed.
@@ -22,10 +25,13 @@ class StrutsXMLElement extends XMLElement {
   string getValue() { result = this.allCharactersString().trim() }
 }
 
+/** DEPRECATED: Alias for StrutsXmlElement */
+deprecated class StrutsXMLElement = StrutsXmlElement;
+
 /**
  * A `<constant>` element in a `StrutsXMLFile`.
  */
-class ConstantParameter extends StrutsXMLElement {
+class ConstantParameter extends StrutsXmlElement {
   ConstantParameter() { this.getName() = "constant" }
 
   /**

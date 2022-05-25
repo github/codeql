@@ -2,15 +2,15 @@
  * @name Supported sources in external libraries
  * @description A list of 3rd party APIs detected as sources. Excludes test and generated code.
  * @kind metric
- * @tags summary
+ * @tags summary telemetry
  * @id java/telemetry/supported-external-api-sources
  */
 
 import java
-import ExternalAPI
+import ExternalApi
 import semmle.code.java.GeneratedFiles
 
-from ExternalAPI api, int usages
+from ExternalApi api, int usages
 where
   not api.isUninteresting() and
   api.isSource() and

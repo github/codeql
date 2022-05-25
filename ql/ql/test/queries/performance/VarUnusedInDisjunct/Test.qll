@@ -69,7 +69,7 @@ predicate mixed1(Big good, Small small) {
   good =
     any(Big bad |
       small.toString().matches("%foo") and
-      // the use of good is fine, the comparison futher up binds it.
+      // the use of good is fine, the comparison further up binds it.
       // the same is not true for bad.
       (bad.toString().matches("%foo") or good.toString().regexpMatch("foo.*")) and
       small.toString().regexpMatch(".*foo")

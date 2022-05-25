@@ -29,9 +29,9 @@ module LdapJS {
 
   /** A reference to a LDAPjs client `search` options. */
   class SearchOptions extends API::Node {
-    ClientCall call;
-
-    SearchOptions() { call.getMethodName() = "search" and this = call.getParameter(1) }
+    SearchOptions() {
+      exists(ClientCall call | call.getMethodName() = "search" and this = call.getParameter(1))
+    }
   }
 
   /** A creation of an LDAPjs filter, or object containing a filter, that doesn't sanitizes the input. */

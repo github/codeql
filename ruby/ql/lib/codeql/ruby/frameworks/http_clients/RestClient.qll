@@ -6,6 +6,7 @@ private import ruby
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
 
 /**
  * A call that makes an HTTP request using `RestClient`.
@@ -37,7 +38,7 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
     )
   }
 
-  override DataFlow::Node getURL() {
+  override DataFlow::Node getAUrlPart() {
     result = requestUse.getKeywordArgument("url")
     or
     result = requestUse.getArgument(0) and
@@ -85,7 +86,7 @@ private predicate isVerifySslNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
 /** Holds if `node` can represent the symbol literal `:verify_ssl`. */
 private predicate isSslVerifyModeLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol("verify_ssl") and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("verify_ssl") and
     literal.flowsTo(node)
   )
 }

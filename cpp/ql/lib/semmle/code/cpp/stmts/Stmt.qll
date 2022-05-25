@@ -61,13 +61,6 @@ class Stmt extends StmtParent, @stmt {
 
   override Location getLocation() { stmts(underlyingElement(this), _, result) }
 
-  /**
-   * Gets an int indicating the type of statement that this represents.
-   *
-   * DEPRECATED: use the subclasses of `Stmt` rather than relying on this predicate.
-   */
-  deprecated int getKind() { stmts(underlyingElement(this), result, _) }
-
   override string toString() { none() }
 
   override Function getControlFlowScope() { result = this.getEnclosingFunction() }
@@ -221,6 +214,26 @@ class IfStmt extends ConditionalStmt, @stmt_if {
   override string getAPrimaryQlClass() { result = "IfStmt" }
 
   /**
+   * Gets the initialization statement of this 'if' statement, if any.
+   *
+   * For example, for
+   * ```
+   * if (int x = y; b) { f(); }
+   * ```
+   * the result is `int x = y;`.
+   *
+   * Does not hold if the initialization statement is missing or an empty statement, as in
+   * ```
+   * if (b) { f(); }
+   * ```
+   * or
+   * ```
+   * if (; b) { f(); }
+   * ```
+   */
+  Stmt getInitialization() { if_initialization(underlyingElement(this), unresolveElement(result)) }
+
+  /**
    * Gets the condition expression of this 'if' statement.
    *
    * For example, for
@@ -229,7 +242,7 @@ class IfStmt extends ConditionalStmt, @stmt_if {
    * ```
    * the result is `b`.
    */
-  Expr getCondition() { result = this.getChild(0) }
+  Expr getCondition() { result = this.getChild(1) }
 
   override Expr getControllingExpr() { result = this.getCondition() }
 
@@ -307,6 +320,28 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
   override string getAPrimaryQlClass() { result = "ConstexprIfStmt" }
 
   /**
+   * Gets the initialization statement of this 'constexpr if' statement, if any.
+   *
+   * For example, for
+   * ```
+   * if constexpr (int x = y; b) { f(); }
+   * ```
+   * the result is `int x = y;`.
+   *
+   * Does not hold if the initialization statement is missing or an empty statement, as in
+   * ```
+   * if constexpr (b) { f(); }
+   * ```
+   * or
+   * ```
+   * if constexpr (; b) { f(); }
+   * ```
+   */
+  Stmt getInitialization() {
+    constexpr_if_initialization(underlyingElement(this), unresolveElement(result))
+  }
+
+  /**
    * Gets the condition expression of this 'constexpr if' statement.
    *
    * For example, for
@@ -315,7 +350,7 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
    * ```
    * the result is `b`.
    */
-  Expr getCondition() { result = this.getChild(0) }
+  Expr getCondition() { result = this.getChild(1) }
 
   override Expr getControllingExpr() { result = this.getCondition() }
 
@@ -933,7 +968,7 @@ class ForStmt extends Loop, @stmt_for {
    *
    * Does not hold if the initialization statement is an empty statement, as in
    * ```
-   * for (; i < 10; i++) { j++ }
+   * for (; i < 10; i++) { j++; }
    * ```
    */
   Stmt getInitialization() { for_initialization(underlyingElement(this), unresolveElement(result)) }
@@ -1231,38 +1266,6 @@ class SwitchCase extends Stmt, @stmt_switch_case {
   int getChildNum() { switch_case(_, result, underlyingElement(this)) }
 
   /**
-   * DEPRECATED: use `SwitchCase.getAStmt` or `ControlFlowNode.getASuccessor`
-   * rather than this predicate.
-   *
-   * Gets the `BlockStmt` statement immediately following this 'switch case'
-   * statement, if any.
-   *
-   * For example, for
-   * ```
-   * switch (i) {
-   * case 5:
-   *     x = 1;
-   *     break;
-   * case 6:
-   * case 7:
-   *     { x = 2; break; }
-   * default:
-   *     { x = 3; }
-   *     x = 4;
-   *     break;
-   * }
-   * ```
-   * the `case 7:` has result `{ x = 2; break; }`, `default:` has result
-   * `{ x = 3; }`, and the others have no result.
-   */
-  deprecated BlockStmt getLabelledStmt() {
-    exists(int i, Stmt parent |
-      this = parent.getChild(i) and
-      result = parent.getChild(i + 1)
-    )
-  }
-
-  /**
    * Gets the next `SwitchCase` belonging to the same 'switch'
    * statement, if any.
    *
@@ -1510,6 +1513,28 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
   override string getAPrimaryQlClass() { result = "SwitchStmt" }
 
   /**
+   * Gets the initialization statement of this 'switch' statement, if any.
+   *
+   * For example, for
+   * ```
+   * switch (int x = y; b) { }
+   * ```
+   * the result is `int x = y;`.
+   *
+   * Does not hold if the initialization statement is missing or an empty statement, as in
+   * ```
+   * switch (b) { }
+   * ```
+   * or
+   * ```
+   * switch (; b) { }
+   * ```
+   */
+  Stmt getInitialization() {
+    switch_initialization(underlyingElement(this), unresolveElement(result))
+  }
+
+  /**
    * Gets the expression that this 'switch' statement switches on.
    *
    * For example, for
@@ -1524,7 +1549,7 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
    * ```
    * the result is `i`.
    */
-  Expr getExpr() { result = this.getChild(0) }
+  Expr getExpr() { result = this.getChild(1) }
 
   override Expr getControllingExpr() { result = this.getExpr() }
 
@@ -1735,23 +1760,6 @@ class Handler extends Stmt, @stmt_handler {
    * parameter `e`, whereas `catch(...)` does not introduce a parameter.
    */
   Parameter getParameter() { result = this.getBlock().getParameter() }
-
-  override predicate mayBeImpure() { none() }
-
-  override predicate mayBeGloballyImpure() { none() }
-}
-
-/**
- * DEPRECATED: Objective-C is no longer supported.
- * The end of a 'finally' clause.
- *
- * This has no concrete representation in the source, but makes the
- * control flow graph easier to use.
- */
-deprecated class FinallyEnd extends Stmt {
-  FinallyEnd() { none() }
-
-  override string toString() { result = "<finally end>" }
 
   override predicate mayBeImpure() { none() }
 

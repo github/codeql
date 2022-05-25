@@ -1263,11 +1263,14 @@ case.rb:
 #-----|  -> ... == ...
 
 #   86| in ... then ...
-#-----|  -> :foo
+#-----|  -> foo
 
 #   86| :foo
 #-----| match -> case ...
 #-----| no-match -> in ... then ...
+
+#   86| foo
+#-----|  -> :foo
 
 #   87| in ... then ...
 #-----|  -> foo bar
@@ -1420,8 +1423,11 @@ cfg.html.erb:
 #    5| @title
 #-----|  -> self
 
-#    5| enter cfg.html.erb
+#    5| self
 #-----|  -> @title
+
+#    5| enter cfg.html.erb
+#-----|  -> self
 
 #    5| exit cfg.html.erb
 
@@ -1435,13 +1441,16 @@ cfg.html.erb:
 #-----|  -> application
 
 #    6| "application"
-#-----|  -> :media
+#-----|  -> media
 
 #    6| application
 #-----|  -> "application"
 
 #    6| :media
 #-----|  -> all
+
+#    6| media
+#-----|  -> :media
 
 #    6| Pair
 #-----|  -> call to stylesheet_link_tag
@@ -1465,13 +1474,16 @@ cfg.html.erb:
 #-----|  -> "A"
 
 #   12| call to a
-#-----|  -> :id
+#-----|  -> id
 
 #   12| self
 #-----|  -> call to a
 
 #   12| :id
 #-----|  -> a
+
+#   12| id
+#-----|  -> :id
 
 #   12| Pair
 #-----|  -> call to link_to
@@ -1749,13 +1761,16 @@ cfg.rb:
 #-----|  -> Proc
 
 #   27| self
-#-----|  -> :puts
+#-----|  -> puts
 
 #   27| &...
 #-----|  -> call to puts
 
 #   27| :puts
 #-----|  -> &...
+
+#   27| puts
+#-----|  -> :puts
 
 #   29| Proc
 #-----|  -> { ... }
@@ -1998,13 +2013,19 @@ cfg.rb:
 #-----|  -> complex
 
 #   59| complex
-#-----|  -> 10-2i
+#-----|  -> 10
 
 #   59| ... = ...
 #-----|  -> conditional
 
-#   59| 10-2i
+#   59| 10
+#-----|  -> 2i
+
+#   59| ... - ...
 #-----|  -> ... = ...
+
+#   59| 2i
+#-----|  -> ... - ...
 
 #   60| conditional
 #-----|  -> self
@@ -2461,7 +2482,7 @@ cfg.rb:
 #-----|  -> d
 
 #   97| Pair
-#-----|  -> :e
+#-----|  -> e
 
 #   97| c
 #-----|  -> "c"
@@ -2474,6 +2495,9 @@ cfg.rb:
 
 #   97| :e
 #-----|  -> f
+
+#   97| e
+#-----|  -> :e
 
 #   97| Pair
 #-----|  -> call to []
@@ -2669,10 +2693,13 @@ cfg.rb:
 #-----|  -> ... > ...
 
 #  115| C
-#-----|  -> @field
+#-----|  -> self
 
 #  116| @field
 #-----|  -> 42
+
+#  116| self
+#-----|  -> @field
 
 #  116| ... = ...
 #-----|  -> @@static_field
@@ -3113,13 +3140,16 @@ cfg.rb:
 #-----|  -> `cat "#{...}"`
 
 #  162| symbol
-#-----|  -> :hello
+#-----|  -> hello
 
 #  162| ... = ...
 #-----|  -> delimited_symbol
 
 #  162| :hello
 #-----|  -> ... = ...
+
+#  162| hello
+#-----|  -> :hello
 
 #  164| delimited_symbol
 #-----|  -> goodbye-
@@ -3510,7 +3540,7 @@ cfg.rb:
 #-----|  -> exit forward_param
 
 #  196| forward_param
-#-----|  -> exit cfg.rb (normal)
+#-----|  -> 1
 
 #  196| a
 #-----|  -> b
@@ -3532,6 +3562,130 @@ cfg.rb:
 
 #  197| ...
 #-----|  -> call to bar
+
+#  200| 1
+#-----|  -> { ... }
+
+#  200| call to times
+#-----|  -> 2
+
+#  200| enter { ... }
+#-----|  -> a
+
+#  200| exit { ... }
+
+#  200| exit { ... } (normal)
+#-----|  -> exit { ... }
+
+#  200| { ... }
+#-----|  -> call to times
+
+#  200| a
+#-----|  -> b
+
+#  200| b
+#-----|  -> Kernel
+
+#  200| Kernel
+#-----|  -> a
+
+#  200| call to puts
+#-----|  -> exit { ... } (normal)
+
+#  200| a
+#-----|  -> call to puts
+
+#  202| 2
+#-----|  -> do ... end
+
+#  202| call to times
+#-----|  -> __synth__0__1
+
+#  202| do ... end
+#-----|  -> call to times
+
+#  202| enter do ... end
+#-----|  -> c
+
+#  202| exit do ... end
+
+#  202| exit do ... end (normal)
+#-----|  -> exit do ... end
+
+#  202| c
+#-----|  -> d
+
+#  202| d
+#-----|  -> Kernel
+
+#  202| Kernel
+#-----|  -> c
+
+#  202| call to puts
+#-----|  -> exit do ... end (normal)
+
+#  202| c
+#-----|  -> call to puts
+
+#  205| ... = ...
+#-----|  -> nil
+
+#  205| __synth__0__1
+#-----|  -> self
+
+#  205| __synth__0__1
+#-----|  -> call to ==
+
+#  205| __synth__0__1
+#-----|  -> 1
+
+#  205| call to foo
+#-----|  -> ... = ...
+
+#  205| nil
+#-----|  -> if ...
+
+#  205| self
+#-----|  -> call to foo
+
+#  205| ...
+#-----|  -> exit cfg.rb (normal)
+
+#  205| call to bar
+#-----|  -> if ...
+
+#  205| call to ==
+#-----| false -> __synth__0__1
+#-----| true -> nil
+
+#  205| if ...
+#-----|  -> ...
+
+#  205| nil
+#-----|  -> __synth__0__1
+
+#  205| 1
+#-----|  -> 2
+
+#  205| 2
+#-----|  -> { ... }
+
+#  205| enter { ... }
+#-----|  -> x
+
+#  205| exit { ... }
+
+#  205| exit { ... } (normal)
+#-----|  -> exit { ... }
+
+#  205| { ... }
+#-----|  -> call to bar
+
+#  205| x
+#-----|  -> x
+
+#  205| x
+#-----|  -> exit { ... } (normal)
 
 desugar.rb:
 #    1| enter m1
@@ -3591,14 +3745,8 @@ desugar.rb:
 #    6| call to foo
 #-----|  -> __synth__0
 
-#    6| ... = ...
-#-----|  -> call to count=
-
 #    6| __synth__0
 #-----|  -> ...
-
-#    6| __synth__0
-#-----|  -> 1
 
 #    6| call to count=
 #-----|  -> __synth__0
@@ -3606,8 +3754,14 @@ desugar.rb:
 #    6| ...
 #-----|  -> exit m2 (normal)
 
+#    6| ... = ...
+#-----|  -> call to count=
+
 #    6| 1
 #-----|  -> ... = ...
+
+#    6| __synth__0
+#-----|  -> 1
 
 #    9| enter m3
 #-----|  -> x
@@ -3629,14 +3783,8 @@ desugar.rb:
 #   10| call to foo
 #-----|  -> 0
 
-#   10| ... = ...
-#-----|  -> call to []=
-
 #   10| __synth__0
 #-----|  -> ...
-
-#   10| __synth__0
-#-----|  -> 1
 
 #   10| call to []=
 #-----|  -> __synth__0
@@ -3647,8 +3795,14 @@ desugar.rb:
 #   10| 0
 #-----|  -> __synth__0
 
+#   10| ... = ...
+#-----|  -> call to []=
+
 #   10| 1
 #-----|  -> ... = ...
+
+#   10| __synth__0
+#-----|  -> 1
 
 #   13| enter m4
 #-----|  -> x
@@ -4046,22 +4200,31 @@ desugar.rb:
 #-----|  -> call to []
 
 #   29| X
-#-----|  -> @x
+#-----|  -> self
 
 #   30| @x
 #-----|  -> 1
 
-#   30| ... = ...
+#   30| self
 #-----|  -> @x
+
+#   30| ... = ...
+#-----|  -> self
 
 #   30| 1
 #-----|  -> ... = ...
 
 #   31| @x
-#-----|  -> @x
+#-----|  -> self
 
 #   31| @x
 #-----|  -> 2
+
+#   31| self
+#-----|  -> @x
+
+#   31| self
+#-----|  -> @x
 
 #   31| ... = ...
 #-----|  -> @@y

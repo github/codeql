@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>GORM errors are returned as a field of the return value instead of a separate return value.</p>
+
+<p>It is therefore very easy to miss that an error may occur and omit error handling routines.</p>
+</overview>
+<recommendation>
+
+<p>Ensure that GORM errors are checked.</p>
+
+</recommendation>
+<example>
+
+<p>In the example below, the error from the database query is never checked:</p>
+
+<sample src="GORMErrorNotChecked.go" />
+
+<p>The corrected version checks and handles the error before returning.</p>
+
+<sample src="GORMErrorNotCheckedGood.go" />
+
+</example>
+<references>
+
+<li>
+  <a href="https://gorm.io/docs/error_handling.html">GORM Error Handling</a>.
+</li>
+
+</references>
+</qhelp>

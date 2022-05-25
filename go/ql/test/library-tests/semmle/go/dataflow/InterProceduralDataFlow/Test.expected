@@ -1,0 +1,19 @@
+| destructuring.go:6:13:6:21 | "tainted" | destructuring.go:20:11:20:12 | s1 |
+| destructuring.go:6:13:6:21 | "tainted" | destructuring.go:27:11:27:12 | s1 |
+| destructuring.go:11:13:11:26 | "also tainted" | destructuring.go:34:11:34:12 | s3 |
+| dispatch.go:32:13:32:21 | "source7" | dispatch.go:14:11:14:13 | arg |
+| dispatch.go:32:13:32:21 | "source7" | dispatch.go:19:11:19:13 | arg |
+| fields.go:10:13:10:21 | "source5" | fields.go:29:11:29:13 | selection of f |
+| fields.go:10:13:10:21 | "source5" | main.go:10:14:10:14 | x |
+| fields.go:15:14:15:23 | "source5a" | fields.go:29:11:29:13 | selection of f |
+| fields.go:15:14:15:23 | "source5a" | main.go:10:14:10:14 | x |
+| main.go:15:16:15:24 | "source1" | main.go:10:14:10:14 | x |
+| main.go:15:16:15:24 | "source1" | main.go:20:14:20:14 | x |
+| main.go:15:16:15:24 | "source1" | main.go:25:11:25:21 | call to id |
+| main.go:15:16:15:24 | "source1" | pointers.go:24:14:24:14 | x |
+| main.go:39:17:39:25 | "source4" | main.go:20:14:20:14 | x |
+| main.go:46:16:46:24 | "source2" | main.go:10:14:10:14 | x |
+| main.go:53:16:53:24 | "source3" | main.go:10:14:10:14 | x |
+| pointers.go:6:13:6:21 | "source6" | main.go:10:14:10:14 | x |
+| pointers.go:6:13:6:21 | "source6" | pointers.go:15:11:15:12 | star expression |
+| receivers.go:11:12:11:29 | type conversion | receivers.go:6:10:6:13 | recv |

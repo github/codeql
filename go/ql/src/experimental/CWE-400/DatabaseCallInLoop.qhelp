@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Database calls in loops are slower than running a single query and consume more resources. This
+can lead to denial of service attacks if the loop bounds can be controlled by an attacker.</p>
+</overview>
+<recommendation>
+
+<p>Ensure that where possible, database queries are not run in a loop, instead running a single query to get all relevant data.</p>
+
+</recommendation>
+<example>
+
+<p>In the example below, users in a database are queried one by one in a loop:</p>
+
+<sample src="DatabaseCallInLoop.go" />
+
+<p>This is corrected by running a single query that selects all of the users at once:</p>
+
+<sample src="DatabaseCallInLoopGood.go" />
+
+</example>
+<references>
+
+</references>
+</qhelp>

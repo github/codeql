@@ -55,7 +55,7 @@ private predicate powerOfTen(float f) {
 }
 
 private predicate floatTrivial(Literal lit) {
-  (lit instanceof FloatingPointLiteral or lit instanceof DoubleLiteral) and
+  (lit instanceof FloatLiteral or lit instanceof DoubleLiteral) and
   exists(float f |
     f = lit.getValue().toFloat() and
     (f.abs() <= 20.0 or powerOfTen(f))
@@ -263,7 +263,7 @@ private predicate almostPrivate(Field f) {
   or
   exists(Interface i | i = f.getDeclaringType() |
     forall(VarAccess va | va.getVariable() = f |
-      va.getEnclosingCallable().getDeclaringType().getASupertype*() = i
+      va.getEnclosingCallable().getDeclaringType().getAnAncestor() = i
     )
   )
 }

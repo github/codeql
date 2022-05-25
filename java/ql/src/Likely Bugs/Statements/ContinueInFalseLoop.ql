@@ -16,6 +16,6 @@ import java
 from DoStmt do, ContinueStmt continue
 where
   do.getCondition().(BooleanLiteral).getBooleanValue() = false and
-  continue.(JumpStmt).getTarget() = do
+  continue.getTarget() = do
 select continue, "This 'continue' never re-runs the loop - the $@ is always false.",
   do.getCondition(), "loop condition"

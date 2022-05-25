@@ -1,4 +1,4 @@
-private import ruby as rb
+private import ruby as RB
 private import ControlFlowGraphImpl as Impl
 private import Completion as Comp
 private import codeql.ruby.ast.internal.Synthesis
@@ -6,11 +6,11 @@ private import Splitting as Splitting
 private import codeql.ruby.CFG as CFG
 
 /** The base class for `ControlFlowTree`. */
-class ControlFlowTreeBase extends rb::AstNode {
+class ControlFlowTreeBase extends RB::AstNode {
   ControlFlowTreeBase() { not any(Synthesis s).excludeFromControlFlowTree(this) }
 }
 
-class ControlFlowElement = rb::AstNode;
+class ControlFlowElement = RB::AstNode;
 
 class Completion = Comp::Completion;
 
@@ -35,12 +35,12 @@ predicate getCfgScope = Impl::getCfgScope/1;
 
 /** Holds if `first` is first executed when entering `scope`. */
 predicate scopeFirst(CfgScope scope, ControlFlowElement first) {
-  scope.(Impl::CfgScope::Range_).entry(first)
+  scope.(Impl::CfgScopeImpl).entry(first)
 }
 
 /** Holds if `scope` is exited when `last` finishes with completion `c`. */
 predicate scopeLast(CfgScope scope, ControlFlowElement last, Completion c) {
-  scope.(Impl::CfgScope::Range_).exit(last, c)
+  scope.(Impl::CfgScopeImpl).exit(last, c)
 }
 
 /** The maximum number of splits allowed for a given node. */
@@ -69,6 +69,6 @@ predicate isAbnormalExitType(SuccessorType t) {
   t instanceof CFG::SuccessorTypes::ExitSuccessor
 }
 
-class Location = rb::Location;
+class Location = RB::Location;
 
 class Node = CFG::CfgNode;

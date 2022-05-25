@@ -37,6 +37,7 @@
 | lib/snapdragon.js:7:28:7:29 | a* | Strings starting with 'a' and with many repetitions of 'a' can start matching anywhere after the start of the preceeding aa*$ |
 | lib/snapdragon.js:15:26:15:27 | a* | Strings starting with 'a' and with many repetitions of 'a' can start matching anywhere after the start of the preceeding aa*$ |
 | lib/snapdragon.js:23:22:23:23 | a* | Strings starting with 'a' and with many repetitions of 'a' can start matching anywhere after the start of the preceeding aa*$ |
+| lib/subLib4/factory.js:8:3:8:4 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
 | lib/sublib/factory.js:13:14:13:15 | f* | Strings with many repetitions of 'f' can start matching anywhere after the start of the preceeding f*g |
 | polynomial-redos.js:7:24:7:26 | \\s+ | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s+$ |
 | polynomial-redos.js:8:17:8:18 |  * | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding  *, * |
@@ -118,6 +119,8 @@
 | polynomial-redos.js:116:21:116:28 | [\\d\\D]*? | Strings starting with '/*' and with many repetitions of 'a/*' can start matching anywhere after the start of the preceeding \\/\\*[\\d\\D]*?\\*\\/ |
 | polynomial-redos.js:118:17:118:23 | (#\\d+)+ | Strings with many repetitions of '9' can start matching anywhere after the start of the preceeding \\d+ |
 | polynomial-redos.js:124:33:124:35 | \\s+ | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding \\s+$ |
+| polynomial-redos.js:130:21:130:22 | c+ | Strings starting with 'c' and with many repetitions of 'c' can start matching anywhere after the start of the preceeding cc+D |
+| polynomial-redos.js:133:22:133:23 | f+ | Strings starting with 'f' and with many repetitions of 'f' can start matching anywhere after the start of the preceeding ff+G |
 | regexplib/address.js:27:3:27:5 | \\s* | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding (\\s*\\(?0\\d{4}\\)?(\\s*\|-)\\d{3}(\\s*\|-)\\d{3}\\s*) |
 | regexplib/address.js:27:48:27:50 | \\s* | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding (\\s*\\(?0\\d{3}\\)?(\\s*\|-)\\d{3}(\\s*\|-)\\d{4}\\s*) |
 | regexplib/address.js:27:93:27:95 | \\s* | Strings with many repetitions of ' ' can start matching anywhere after the start of the preceeding (\\s*(7\|8)(\\d{7}\|\\d{3}(\\-\|\\s{1})\\d{4})\\s*) |

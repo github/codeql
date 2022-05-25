@@ -87,7 +87,20 @@ newtype TNode =
   /**
    * A synthetic node representing element content in a star pattern.
    */
-  TStarPatternElementNode(MatchStarPattern target)
+  TStarPatternElementNode(MatchStarPattern target) or
+  /**
+   * INTERNAL: Do not use.
+   *
+   * A synthetic node representing the data for an ORM model saved in a DB.
+   */
+  // TODO: Limiting the classes here to the ones that are actually ORM models was
+  // non-trivial, since that logic is based on API::Node results, and trying to do this
+  // causes non-monotonic recursion, and makes the API graph evaluation recursive with
+  // data-flow, which might do bad things for performance.
+  //
+  // So for now we live with having these synthetic ORM nodes for _all_ classes, which
+  // is a bit wasteful, but we don't think it will hurt too much.
+  TSyntheticOrmModelNode(Class cls)
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -97,13 +110,19 @@ private DataFlowCallable getCallableScope(Scope s) {
   result = getCallableScope(s.getEnclosingScope())
 }
 
+private import semmle.python.internal.CachedStages
+
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
  * (`EssaNode`) or a control flow node (`CfgNode`).
  */
 class Node extends TNode {
   /** Gets a textual representation of this element. */
-  string toString() { result = "Data flow node" }
+  cached
+  string toString() {
+    Stages::DataFlow::ref() and
+    result = "Data flow node"
+  }
 
   /** Gets the scope of this node. */
   Scope getScope() { none() }
@@ -121,9 +140,11 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
+  cached
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
+    Stages::DataFlow::ref() and
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
@@ -190,7 +211,7 @@ class CallCfgNode extends CfgNode, LocalSourceNode {
    */
   Node getFunction() { result.asCfgNode() = node.getFunction() }
 
-  /** Gets the data-flow node corresponding to the i'th argument of the call corresponding to this data-flow node */
+  /** Gets the data-flow node corresponding to the i'th positional argument of the call corresponding to this data-flow node */
   Node getArg(int i) { result.asCfgNode() = node.getArg(i) }
 
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
@@ -380,8 +401,15 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 private predicate isAccessedThroughImportStar(Module m) { m = ImportStar::getStarImported(_) }
 
 private ModuleVariableNode import_star_read(Node n) {
-  ImportStar::importStarResolvesTo(n.asCfgNode(), result.getModule()) and
-  n.asCfgNode().(NameNode).getId() = result.getVariable().getId()
+  resolved_import_star_module(result.getModule(), result.getVariable().getId(), n)
+}
+
+pragma[nomagic]
+private predicate resolved_import_star_module(Module m, string name, Node n) {
+  exists(NameNode nn | nn = n.asCfgNode() |
+    ImportStar::importStarResolvesTo(pragma[only_bind_into](nn), m) and
+    nn.getId() = name
+  )
 }
 
 /**
@@ -621,4 +649,21 @@ class AttributeContent extends TAttributeContent, Content {
   string getAttribute() { result = attr }
 
   override string toString() { result = "Attribute " + attr }
+}
+
+/**
+ * An entity that represents a set of `Content`s.
+ *
+ * The set may be interpreted differently depending on whether it is
+ * stored into (`getAStoreContent`) or read from (`getAReadContent`).
+ */
+class ContentSet instanceof Content {
+  /** Gets a content that may be stored into when storing into this set. */
+  Content getAStoreContent() { result = this }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() { result = this }
+
+  /** Gets a textual representation of this content set. */
+  string toString() { result = super.toString() }
 }

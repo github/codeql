@@ -12,7 +12,7 @@ private import IntegerGuards
 /** Gets an expression that is always `null`. */
 Expr alwaysNullExpr() {
   result instanceof NullLiteral or
-  result.(CastExpr).getExpr() = alwaysNullExpr()
+  result.(CastingExpr).getExpr() = alwaysNullExpr()
 }
 
 /** Gets an equality test between an expression `e` and an enum constant `c`. */
@@ -33,6 +33,8 @@ InstanceOfExpr instanceofExpr(SsaVariable v, RefType type) {
 /**
  * Gets an expression of the form `v1 == v2` or `v1 != v2`.
  * The predicate is symmetric in `v1` and `v2`.
+ *
+ * Note this includes Kotlin's `==` and `!=` operators, which are value-equality tests.
  */
 EqualityTest varEqualityTestExpr(SsaVariable v1, SsaVariable v2, boolean isEqualExpr) {
   result.hasOperands(v1.getAUse(), v2.getAUse()) and
@@ -61,6 +63,12 @@ Expr clearlyNotNullExpr(Expr reason) {
   )
   or
   result.(CastExpr).getExpr() = clearlyNotNullExpr(reason)
+  or
+  result.(ImplicitCastExpr).getExpr() = clearlyNotNullExpr(reason)
+  or
+  result instanceof ImplicitNotNullExpr and reason = result
+  or
+  result instanceof ImplicitCoercionToUnitExpr and reason = result
   or
   result.(AssignExpr).getSource() = clearlyNotNullExpr(reason)
   or

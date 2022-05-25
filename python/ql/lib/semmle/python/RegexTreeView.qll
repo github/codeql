@@ -39,7 +39,12 @@ newtype TRegExpParent =
   /** A special character */
   TRegExpSpecialChar(Regex re, int start, int end) { re.specialCharacter(start, end, _) } or
   /** A normal character */
-  TRegExpNormalChar(Regex re, int start, int end) { re.normalCharacter(start, end) } or
+  TRegExpNormalChar(Regex re, int start, int end) {
+    re.normalCharacterSequence(start, end)
+    or
+    re.escapedCharacter(start, end) and
+    not re.specialCharacter(start, end, _)
+  } or
   /** A back reference */
   TRegExpBackRef(Regex re, int start, int end) { re.backreference(start, end) }
 
@@ -440,6 +445,8 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
   override string getPrimaryQLClass() { result = "RegExpAlt" }
 }
 
+class RegExpCharEscape = RegExpEscape;
+
 /**
  * An escaped regular expression term, that is, a regular expression
  * term starting with a backslash, which is not a backreference.
@@ -545,7 +552,7 @@ class RegExpWordBoundary extends RegExpSpecialChar {
 
 /**
  * A character class escape in a regular expression.
- * That is, an escaped charachter that denotes multiple characters.
+ * That is, an escaped character that denotes multiple characters.
  *
  * Examples:
  *
@@ -745,6 +752,9 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
    * not a capture group.
    */
   int getNumber() { result = re.getGroupNumber(start, end) }
+
+  /** Holds if this is a capture group. */
+  predicate isCapture() { exists(this.getNumber()) }
 
   /** Holds if this is a named capture group. */
   predicate isNamed() { exists(this.getName()) }

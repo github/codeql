@@ -28,14 +28,14 @@ private module RegexpMatching {
      * but if `ignorePrefix` is true, it will only match "foo".
      */
     predicate test(string str, boolean ignorePrefix) {
-      none() // maybe overriden in subclasses
+      none() // maybe overridden in subclasses
     }
 
     /**
      * Same as `test(..)`, but where the `fillsCaptureGroup` afterwards tells which capture groups were filled by the given string.
      */
     predicate testWithGroups(string str, boolean ignorePrefix) {
-      none() // maybe overriden in subclasses
+      none() // maybe overridden in subclasses
     }
 
     /**
@@ -176,8 +176,8 @@ private module RegexpMatching {
 }
 
 /** A class to test whether a regular expression matches certain HTML tags. */
-class HTMLMatchingRegExp extends RegexpMatching::MatchedRegExp {
-  HTMLMatchingRegExp() {
+class HtmlMatchingRegExp extends RegexpMatching::MatchedRegExp {
+  HtmlMatchingRegExp() {
     // the regexp must mention "<" and ">" explicitly.
     forall(string angleBracket | angleBracket = ["<", ">"] |
       any(RegExpConstant term | term.getValue().matches("%" + angleBracket + "%")).getRootTerm() =
@@ -204,12 +204,15 @@ class HTMLMatchingRegExp extends RegexpMatching::MatchedRegExp {
   }
 }
 
+/** DEPRECATED: Alias for HtmlMatchingRegExp */
+deprecated class HTMLMatchingRegExp = HtmlMatchingRegExp;
+
 /**
  * Holds if `regexp` matches some HTML tags, but misses some HTML tags that it should match.
  *
  * When adding a new case to this predicate, make sure the test string used in `matches(..)` calls are present in `HTMLMatchingRegExp::test` / `HTMLMatchingRegExp::testWithGroups`.
  */
-predicate isBadRegexpFilter(HTMLMatchingRegExp regexp, string msg) {
+predicate isBadRegexpFilter(HtmlMatchingRegExp regexp, string msg) {
   // CVE-2021-33829 - matching both "<!-- foo -->" and "<!-- foo --!>", but in different capture groups
   regexp.matches("<!-- foo -->") and
   regexp.matches("<!-- foo --!>") and

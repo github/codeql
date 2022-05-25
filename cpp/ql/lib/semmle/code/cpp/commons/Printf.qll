@@ -208,26 +208,6 @@ predicate variadicFormatter(Function f, string type, int formatParamIndex, int o
 }
 
 /**
- * A standard function such as `vprintf` that has a format parameter
- * and a variable argument list of type `va_arg`.
- *
- * DEPRECATED: Use the four argument version instead.
- */
-deprecated predicate primitiveVariadicFormatter(TopLevelFunction f, int formatParamIndex) {
-  primitiveVariadicFormatter(f, _, formatParamIndex, _)
-}
-
-/**
- * Holds if `f` is a function such as `vprintf` that has a format parameter
- * (at `formatParamIndex`) and a variable argument list of type `va_arg`.
- *
- * DEPRECATED: Use the four argument version instead.
- */
-deprecated predicate variadicFormatter(Function f, int formatParamIndex) {
-  variadicFormatter(f, _, formatParamIndex, _)
-}
-
-/**
  * A function not in the standard library which takes a `printf`-like formatting
  * string and a variable number of arguments.
  */
@@ -427,13 +407,6 @@ class FormatLiteral extends Literal {
    * Gets the function call where this format string is used.
    */
   FormattingFunctionCall getUse() { result.getFormat() = this }
-
-  /**
-   * Holds if the default meaning of `%s` is a `wchar_t *`, rather than
-   * a `char *` (either way, `%S` will have the opposite meaning).
-   * DEPRECATED: Use getDefaultCharType() instead.
-   */
-  deprecated predicate isWideCharDefault() { this.getUse().getTarget().isWideCharDefault() }
 
   /**
    * Gets the default character type expected for `%s` by this format literal.  Typically
@@ -899,7 +872,7 @@ class FormatLiteral extends Literal {
 
   private Type getConversionType1(int n) {
     exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv.regexpMatch("d|i") and
+      cnv = ["d", "i"] and
       result = this.getIntegralConversion(n) and
       not result.getUnderlyingType().(IntegralType).isExplicitlySigned() and
       not result.getUnderlyingType().(IntegralType).isExplicitlyUnsigned()
@@ -939,7 +912,7 @@ class FormatLiteral extends Literal {
 
   private Type getConversionType2(int n) {
     exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv.regexpMatch("o|u|x|X") and
+      cnv = ["o", "u", "x", "X"] and
       result = this.getIntegralConversion(n) and
       result.getUnderlyingType().(IntegralType).isUnsigned()
     )
@@ -947,7 +920,7 @@ class FormatLiteral extends Literal {
 
   private Type getConversionType3(int n) {
     exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv.regexpMatch("a|A|e|E|f|F|g|G") and result = this.getFloatingPointConversion(n)
+      cnv = ["a", "A", "e", "E", "f", "F", "g", "G"] and result = this.getFloatingPointConversion(n)
     )
   }
 
@@ -1339,7 +1312,7 @@ class FormatLiteral extends Literal {
         len =
           min(int v |
             v = this.getPrecision(n) or
-            v = this.getUse().getFormatArgument(n).(AnalysedString).getMaxLength() - 1 // (don't count null terminator)
+            v = this.getUse().getFormatArgument(n).(AnalyzedString).getMaxLength() - 1 // (don't count null terminator)
           ) and
         reason = TValueFlowAnalysis()
       )

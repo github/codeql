@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.dataflow.DataFlow4
 private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.TaintTracking2
 private import semmle.code.java.security.SensitiveActions
 
 /** A sink representing persistent storage that saves data in clear text. */
@@ -39,7 +40,7 @@ abstract class Storable extends Call {
   abstract Expr getAStore();
 }
 
-private class SensitiveSourceFlowConfig extends TaintTracking::Configuration {
+private class SensitiveSourceFlowConfig extends TaintTracking2::Configuration {
   SensitiveSourceFlowConfig() { this = "SensitiveSourceFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SensitiveExpr }
@@ -83,19 +84,4 @@ private class EncryptedValueFlowConfig extends DataFlow4::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SensitiveExpr }
-}
-
-/** A taint step for `EditText.toString` in Android. */
-private class AndroidEditTextCleartextStorageStep extends CleartextStorageAdditionalTaintStep {
-  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    // EditText.getText() return type is parsed as `Object`, so we need to
-    // add a taint step for `Object.toString` to model `editText.getText().toString()`
-    exists(MethodAccess ma, Method m |
-      ma.getMethod() = m and
-      m.getDeclaringType() instanceof TypeObject and
-      m.hasName("toString")
-    |
-      n1.asExpr() = ma.getQualifier() and n2.asExpr() = ma
-    )
-  }
 }

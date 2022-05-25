@@ -1,4 +1,4 @@
-
+// semmle-extractor-options: -std=c11
 int f1(void) {
     int x = 1;
     return 2;
@@ -98,4 +98,15 @@ void f13_func(int x)
 int f14()
 {
 	__asm__("rdtsc"); // GOOD
+}
+
+_Noreturn void f15();
+
+int f16() {
+    f15(); // GOOD
+}
+
+int f17() {
+    if (__builtin_expect(1, 0))
+        __builtin_unreachable(); // GOOD
 }

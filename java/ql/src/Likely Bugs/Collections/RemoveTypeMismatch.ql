@@ -88,7 +88,7 @@ class MismatchedContainerModification extends MethodAccess {
       containerModification(package, type, p, this.getCallee().getSignature(), i)
     |
       t = this.getCallee().getDeclaringType() and
-      t.getASupertype*().getSourceDeclaration() = g and
+      t.getAnAncestor().getSourceDeclaration() = g and
       g.hasQualifiedName(package, type) and
       indirectlyInstantiates(t, g, p, result)
     )

@@ -6,7 +6,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
-import semmle.javascript.security.dataflow.Xss
+import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 
 module UnsafeJQueryPlugin {
   private import DataFlow::FlowLabel
@@ -199,7 +199,7 @@ module UnsafeJQueryPlugin {
       DataFlow::PropRead finalRead
     |
       hasDefaultOption(plugin, defaultDef) and
-      defaultDef = getALikelyHTMLWrite(finalRead.getPropertyName()) and
+      defaultDef = getALikelyHtmlWrite(finalRead.getPropertyName()) and
       finalRead.flowsTo(sink) and
       sink.getTopLevel() = plugin.getTopLevel()
     )
@@ -209,7 +209,7 @@ module UnsafeJQueryPlugin {
    * Gets a property-write that writes a HTML-like constant string to `prop`.
    */
   pragma[noinline]
-  private DataFlow::PropWrite getALikelyHTMLWrite(string prop) {
+  private DataFlow::PropWrite getALikelyHtmlWrite(string prop) {
     exists(string default |
       result.getRhs().mayHaveStringValue(default) and
       default.regexpMatch("\\s*<.*") and

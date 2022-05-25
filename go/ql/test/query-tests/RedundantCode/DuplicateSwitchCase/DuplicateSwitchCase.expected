@@ -1,0 +1,2 @@
+| DuplicateSwitchCase.go:7:7:7:20 | ...==... | This case is a duplicate of $@. | DuplicateSwitchCase.go:5:7:5:20 | ...==... | an earlier case |
+| tst.go:9:7:9:12 | ...<... | This case is a duplicate of $@. | tst.go:5:7:5:12 | ...<... | an earlier case |

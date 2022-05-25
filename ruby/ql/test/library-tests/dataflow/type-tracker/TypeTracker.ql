@@ -13,6 +13,9 @@ query predicate track(LocalSourceNode src, TypeTracker t, LocalSourceNode dst) {
   exists(TypeTracker t2, LocalSourceNode mid | track(src, t2, mid) and dst = mid.track(t2, t))
 }
 
-query predicate trackEnd(LocalSourceNode src, LocalSourceNode dst) {
-  track(src, TypeTracker::end(), dst)
+query predicate trackEnd(LocalSourceNode src, DataFlow::Node dst) {
+  exists(LocalSourceNode end |
+    track(src, TypeTracker::end(), end) and
+    end.flowsTo(dst)
+  )
 }

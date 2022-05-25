@@ -7,7 +7,6 @@
 import javascript
 private import semmle.javascript.heuristics.SyntacticHeuristics
 private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
-private import semmle.javascript.security.TaintedObject
 import AdaptiveThreatModeling
 private import CoreKnowledge as CoreKnowledge
 private import StandardEndpointFilters as StandardEndpointFilters
@@ -87,8 +86,8 @@ module SinkEndpointFilter {
   }
 }
 
-class NosqlInjectionATMConfig extends ATMConfig {
-  NosqlInjectionATMConfig() { this = "NosqlInjectionATMConfig" }
+class NosqlInjectionAtmConfig extends AtmConfig {
+  NosqlInjectionAtmConfig() { this = "NosqlInjectionATMConfig" }
 
   override predicate isKnownSource(DataFlow::Node source) {
     source instanceof NosqlInjection::Source or TaintedObject::isSource(source, _)
@@ -103,7 +102,10 @@ class NosqlInjectionATMConfig extends ATMConfig {
   override EndpointType getASinkEndpointType() { result instanceof NosqlInjectionSinkType }
 }
 
-/** Holds if src -> trg is an additional flow step in the non-boosted NoSQL injection security query. */
+/** DEPRECATED: Alias for NosqlInjectionAtmConfig */
+deprecated class NosqlInjectionATMConfig = NosqlInjectionAtmConfig;
+
+/** Holds if src -> trg is an additional flow step in the non-boosted NoSql injection security query. */
 predicate isBaseAdditionalFlowStep(
   DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
 ) {
@@ -112,7 +114,7 @@ predicate isBaseAdditionalFlowStep(
   // additional flow step to track taint through NoSQL query objects
   inlbl = TaintedObject::label() and
   outlbl = TaintedObject::label() and
-  exists(NoSQL::Query query, DataFlow::SourceNode queryObj |
+  exists(NoSql::Query query, DataFlow::SourceNode queryObj |
     queryObj.flowsToExpr(query) and
     queryObj.flowsTo(trg) and
     src = queryObj.getAPropertyWrite().getRhs()
@@ -120,13 +122,17 @@ predicate isBaseAdditionalFlowStep(
 }
 
 /**
+ * Gets a value that is (transitively) written to `query`, where `query` is a NoSQL sink.
+ *
  * This predicate allows us to propagate data flow through property writes and array constructors
  * within a query object, enabling the security query to pick up NoSQL injection vulnerabilities
  * involving more complex queries.
  */
 DataFlow::Node getASubexpressionWithinQuery(DataFlow::Node query) {
+  any(NosqlInjectionAtmConfig cfg).isEffectiveSink(query) and
   exists(DataFlow::SourceNode receiver |
-    receiver.flowsTo(getASubexpressionWithinQuery*(query.getALocalSource())) and
+    receiver = [getASubexpressionWithinQuery(query), query].getALocalSource()
+  |
     result =
       [receiver.getAPropertyWrite().getRhs(), receiver.(DataFlow::ArrayCreationNode).getAnElement()]
   )
@@ -152,7 +158,7 @@ class Configuration extends TaintTracking::Configuration {
     sink.(NosqlInjection::Sink).getAFlowLabel() = label
     or
     // Allow effective sinks to have any taint label
-    any(NosqlInjectionATMConfig cfg).isEffectiveSink(sink)
+    any(NosqlInjectionAtmConfig cfg).isEffectiveSink(sink)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -171,7 +177,7 @@ class Configuration extends TaintTracking::Configuration {
     isBaseAdditionalFlowStep(src, trg, inlbl, outlbl)
     or
     // relaxed version of previous step to track taint through unmodeled NoSQL query objects
-    any(NosqlInjectionATMConfig cfg).isEffectiveSink(trg) and
+    any(NosqlInjectionAtmConfig cfg).isEffectiveSink(trg) and
     src = getASubexpressionWithinQuery(trg)
   }
 }

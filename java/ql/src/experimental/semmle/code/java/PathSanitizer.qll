@@ -1,6 +1,7 @@
 import java
-import semmle.code.java.controlflow.Guards
-import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.controlflow.Guards
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** A barrier guard that protects against path traversal vulnerabilities. */
 abstract class PathTraversalBarrierGuard extends DataFlow::BarrierGuard { }
@@ -20,13 +21,24 @@ private class ExactStringPathMatchGuard extends PathTraversalBarrierGuard instan
   }
 }
 
+/**
+ * Given input `e` = `v.method1(...).method2(...)...`, returns `v` where `v` is a `VarAccess`.
+ *
+ * This is used to look through field accessors such as `uri.getPath()`.
+ */
+private Expr getUnderlyingVarAccess(Expr e) {
+  result = getUnderlyingVarAccess(e.(MethodAccess).getQualifier())
+  or
+  result = e.(VarAccess)
+}
+
 private class AllowListGuard extends Guard instanceof MethodAccess {
   AllowListGuard() {
     (isStringPartialMatch(this) or isPathPartialMatch(this)) and
     not isDisallowedWord(super.getAnArgument())
   }
 
-  Expr getCheckedExpr() { result = super.getQualifier() }
+  Expr getCheckedExpr() { result = getUnderlyingVarAccess(super.getQualifier()) }
 }
 
 /**
@@ -73,7 +85,7 @@ private class BlockListGuard extends Guard instanceof MethodAccess {
     isDisallowedWord(super.getAnArgument())
   }
 
-  Expr getCheckedExpr() { result = super.getQualifier() }
+  Expr getCheckedExpr() { result = getUnderlyingVarAccess(super.getQualifier()) }
 }
 
 /**
@@ -102,7 +114,7 @@ private class BlockListBarrierGuard extends PathTraversalBarrierGuard instanceof
  * A guard that considers a string safe because it is checked for URL encoding sequences,
  * having previously been checked against a block-list of forbidden values.
  */
-private class URLEncodingBarrierGuard extends PathTraversalBarrierGuard instanceof UrlEncodingGuard {
+private class UrlEncodingBarrierGuard extends PathTraversalBarrierGuard instanceof UrlEncodingGuard {
   override predicate checks(Expr e, boolean branch) {
     e = super.getCheckedExpr() and
     branch = false and
@@ -136,15 +148,13 @@ private predicate isDisallowedWord(CompileTimeConstantExpr word) {
 
 /** A complementary guard that protects against path traversal, by looking for the literal `..`. */
 class PathTraversalGuard extends Guard instanceof MethodAccess {
-  Expr checked;
-
   PathTraversalGuard() {
     super.getMethod().getDeclaringType() instanceof TypeString and
     super.getMethod().hasName(["contains", "indexOf"]) and
     super.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".."
   }
 
-  Expr getCheckedExpr() { result = super.getQualifier() }
+  Expr getCheckedExpr() { result = getUnderlyingVarAccess(super.getQualifier()) }
 }
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */

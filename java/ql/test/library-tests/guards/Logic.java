@@ -47,4 +47,21 @@ public class Logic {
   private static void checkFalse(boolean b, String msg) {
     checkTrue(!b, msg);
   }
+
+  void f3(int i) {
+    checkTrue("i pos", i > 0);
+    checkFalse("g", g(100));
+    if (i > 10) {
+      checkTrue("", i > 20);
+    }
+    int dummy = 0;
+  }
+
+  private static void checkTrue(String msg, boolean b) {
+    if (!b) throw new Error    (msg);
+  }
+
+  private static void checkFalse(String msg, boolean b) {
+    checkTrue(!b, msg);
+  }
 }

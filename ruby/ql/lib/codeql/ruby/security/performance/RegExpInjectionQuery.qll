@@ -5,7 +5,6 @@
  * otherwise `RegExpInjectionCustomizations` should be imported instead.
  */
 
-import codeql.ruby.DataFlow::DataFlow::PathGraph
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 import RegExpInjectionCustomizations

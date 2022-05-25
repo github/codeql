@@ -1,7 +1,7 @@
 def m0(i)
     a = *source(0.1)
     sink(a[0]) # $ hasValueFlow=0.1
-    sink(a[1]) # $ hasTaintFlow=0.1 
+    sink(a[1])
     sink(a[i]) # $ hasValueFlow=0.1
 end
 
@@ -176,8 +176,8 @@ def m19
     b = ["b", 1]
     c = ["c", source(19)]
     d = [a, b, c]
-    sink (d.assoc("a")[0]) # $ hasValueFlow=19
-    sink (d.assoc("c")[0]) # $ hasValueFlow=19
+    sink (d.assoc("a")[1]) # $ hasValueFlow=19
+    sink (d.assoc("c")[1]) # $ hasValueFlow=19
 end
 
 def m20(i)
@@ -316,9 +316,9 @@ def m36
     a = [0, 1, source(36.1)]
     b = a.delete(2) { source(36.2) }
     sink b # $ hasValueFlow=36.1 $ hasValueFlow=36.2
-    sink a[0] # $ hasValueFlow=36.1
-    sink a[1] # $ hasValueFlow=36.1
-    sink a[2] # $ hasValueFlow=36.1
+    sink a[0]
+    sink a[1]
+    sink a[2]
 end
 
 def m37(i)
@@ -1603,4 +1603,11 @@ def m135
     sink c[0] # $ hasValueFlow=135.1 $ hasValueFlow=135.2
     sink c[1] # $ hasValueFlow=135.1 $ hasValueFlow=135.2
     sink c[2] # $ hasValueFlow=135.1 $ hasValueFlow=135.2
+end
+
+def m136(i)
+    a = [[0]]
+    a[i][0] = source(136.1)
+    sink(a[0][0]) # $ hasValueFlow=136.1
+    sink(a[0][1])
 end

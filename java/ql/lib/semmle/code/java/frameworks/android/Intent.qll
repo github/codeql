@@ -1,7 +1,7 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.FlowSteps
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSteps
 
 /**
  * The class `android.content.Intent`.
@@ -26,6 +26,9 @@ class TypeActivity extends Class {
  * The class `android.content.Context`.
  */
 class TypeContext extends RefType {
+  // Not inlining this makes it more likely to be used as a sentinel,
+  // which is useful when running Android queries on non-Android projects.
+  pragma[noinline]
   TypeContext() { this.hasQualifiedName("android.content", "Context") }
 }
 
@@ -84,7 +87,7 @@ class IntentGetParcelableExtraMethod extends Method {
 
 /** The class `android.os.BaseBundle`, or a class that extends it. */
 class AndroidBundle extends Class {
-  AndroidBundle() { this.getASupertype*().hasQualifiedName("android.os", "BaseBundle") }
+  AndroidBundle() { this.getAnAncestor().hasQualifiedName("android.os", "BaseBundle") }
 }
 
 /**
@@ -171,6 +174,25 @@ class GrantReadUriPermissionFlag extends GrantUriPermissionFlag {
 /** The field `Intent.FLAG_GRANT_WRITE_URI_PERMISSION`. */
 class GrantWriteUriPermissionFlag extends GrantUriPermissionFlag {
   GrantWriteUriPermissionFlag() { this.hasName("FLAG_GRANT_WRITE_URI_PERMISSION") }
+}
+
+/**
+ * A value-preserving step from the Intent argument of a `startActivity` call to
+ * a `getIntent` call in the Activity the Intent pointed to in its constructor.
+ */
+private class StartActivityIntentStep extends AdditionalValueStep {
+  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(MethodAccess startActivity, MethodAccess getIntent, ClassInstanceExpr newIntent |
+      startActivity.getMethod().overrides*(any(ContextStartActivityMethod m)) and
+      getIntent.getMethod().overrides*(any(AndroidGetIntentMethod m)) and
+      newIntent.getConstructedType() instanceof TypeIntent and
+      DataFlow::localExprFlow(newIntent, startActivity.getArgument(0)) and
+      newIntent.getArgument(1).getType().(ParameterizedType).getATypeArgument() =
+        getIntent.getReceiverType() and
+      n1.asExpr() = startActivity.getArgument(0) and
+      n2.asExpr() = getIntent
+    )
+  }
 }
 
 private class IntentBundleFlowSteps extends SummaryModelCsv {

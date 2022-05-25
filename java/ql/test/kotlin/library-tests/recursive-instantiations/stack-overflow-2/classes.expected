@@ -1,0 +1,3 @@
+| stackOverflow.kt:2:1:14:1 | MyClass |
+| stackOverflow.kt:4:13:12:13 |  |
+| stackOverflow.kt:5:17:6:17 | SomeClass |

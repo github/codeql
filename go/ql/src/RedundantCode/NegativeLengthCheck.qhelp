@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The built-in <code>len</code> function returns the length of an array, slice or similar, which is
+never less than zero. Hence, checking whether the result of a call to <code>len</code> is negative
+is either redundant or indicates a logic mistake.
+</p>
+<p>
+The same applies to the built-in function <code>cap</code>, and to unsigned integer values.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Examine the length check to see whether it is redundant and can be removed, or a mistake that
+should be fixed.
+</p>
+</recommendation>
+
+<example>
+<p>
+The example below shows a function that returns the first element of an array, triggering a panic
+if the array is empty:
+</p>
+<sample src="NegativeLengthCheck.go" />
+<p>
+However, the emptiness check is ineffective: since <code>len(xs)</code> is never less than zero, 
+the condition will never hold and no panic will be triggered. Instead, the index expression
+<code>xs[0]</code> will cause a panic.
+</p>
+<p>
+The check should be rewritten like this:
+</p>
+<sample src="NegativeLengthCheckGood.go" />
+</example>
+
+<references>
+<li>Package builtin: <a href="https://golang.org/pkg/builtin/#cap">func cap</a>.</li>
+<li>Package builtin: <a href="https://golang.org/pkg/builtin/#len">func len</a>.</li>
+</references>
+</qhelp>

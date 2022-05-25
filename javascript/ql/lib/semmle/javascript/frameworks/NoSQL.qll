@@ -3,15 +3,18 @@
  */
 
 import javascript
-import semmle.javascript.Promises
 
-module NoSQL {
+/** Provides classes for modeling NoSQL query sinks. */
+module NoSql {
   /** An expression that is interpreted as a NoSQL query. */
   abstract class Query extends Expr {
     /** Gets an expression that is interpreted as a code operator in this query. */
     DataFlow::Node getACodeOperator() { none() }
   }
 }
+
+/** DEPRECATED: Alias for NoSql */
+deprecated module NoSQL = NoSql;
 
 /**
  * Gets a value that has been assigned to the "$where" property of an object that flows to `queryArg`.
@@ -78,7 +81,7 @@ private module MongoDB {
   /**
    * An expression that is interpreted as a MongoDB query.
    */
-  class Query extends NoSQL::Query {
+  class Query extends NoSql::Query {
     QueryCall qc;
 
     Query() { this = qc.getAQueryArgument().asExpr() }
@@ -512,7 +515,7 @@ private module Mongoose {
   /**
    * An expression that is interpreted as a (part of a) MongoDB query.
    */
-  class MongoDBQueryPart extends NoSQL::Query {
+  class MongoDBQueryPart extends NoSql::Query {
     MongooseFunction f;
 
     MongoDBQueryPart() { this = f.getQueryArgument().getARhs().asExpr() }
@@ -619,7 +622,7 @@ private module Minimongo {
   /**
    * An expression that is interpreted as a Minimongo query.
    */
-  class Query extends NoSQL::Query {
+  class Query extends NoSql::Query {
     QueryCall qc;
 
     Query() { this = qc.getAQueryArgument().asExpr() }
@@ -679,7 +682,7 @@ private module MarsDB {
   /**
    * An expression that is interpreted as a MarsDB query.
    */
-  class Query extends NoSQL::Query {
+  class Query extends NoSql::Query {
     QueryCall qc;
 
     Query() { this = qc.getAQueryArgument().asExpr() }
@@ -763,7 +766,7 @@ private module Redis {
   /**
    * An expression that is interpreted as a key in a Node Redis call.
    */
-  class RedisKeyArgument extends NoSQL::Query {
+  class RedisKeyArgument extends NoSql::Query {
     RedisKeyArgument() {
       exists(string method, int argIndex |
         QuerySignatures::argumentIsAmbiguousKey(method, argIndex) and

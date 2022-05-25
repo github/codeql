@@ -90,6 +90,7 @@
  */
 
 import python
+private import semmle.python.internal.CachedStages
 
 cached
 private module SsaComputeImpl {
@@ -139,7 +140,7 @@ private module SsaComputeImpl {
       Liveness::liveAtEntry(v, succ)
     }
 
-    /** A phi node for `v` at the beginning of basic block `b`. */
+    /** Holds if there is a phi node for `v` at the beginning of basic block `b`. */
     cached
     predicate phiNode(SsaSourceVariable v, BasicBlock b) {
       (
@@ -175,8 +176,8 @@ private module SsaComputeImpl {
   }
 
   /**
-   * A ranking of the indices `i` at which there is an SSA definition or use of
-   * `v` in the basic block `b`.
+   * Holds if the `rankix`th definition or use of the SSA variable `v` in the basic block `b` occurs
+   * at index `i`.
    *
    * Basic block indices are translated to rank indices in order to skip
    * irrelevant indices at which there is no definition or use when traversing
@@ -187,14 +188,14 @@ private module SsaComputeImpl {
     i = rank[rankix](int j | variableDef(v, _, b, j) or variableUse(v, _, b, j))
   }
 
-  /** A definition of a variable occurring at the specified rank index in basic block `b`. */
+  /** Holds if there is a definition of a variable occurring at the specified rank index in basic block `b`. */
   cached
   predicate defRank(SsaSourceVariable v, BasicBlock b, int rankix, int i) {
     variableDef(v, _, b, i) and
     defUseRank(v, b, rankix, i)
   }
 
-  /** A variable access `use` of `v` in `b` at index `i`. */
+  /** Holds if there is a variable access `use` of `v` in `b` at index `i`. */
   cached
   predicate variableUse(SsaSourceVariable v, ControlFlowNode use, BasicBlock b, int i) {
     (v.getAUse() = use or v.hasRefinement(use, _)) and
@@ -205,7 +206,7 @@ private module SsaComputeImpl {
   }
 
   /**
-   * A definition of an SSA variable occurring at the specified position.
+   * Holds if there is a definition of an SSA variable occurring at the specified position.
    * This is either a phi node, a `VariableUpdate`, or a parameter.
    */
   cached
@@ -227,7 +228,7 @@ private module SsaComputeImpl {
    * dominance.
    */
 
-  /** The maximum rank index for the given variable and basic block. */
+  /** Gets the maximum rank index for the given variable and basic block. */
   cached
   int lastRank(SsaSourceVariable v, BasicBlock b) {
     result = max(int rankix | defUseRank(v, b, rankix, _))
@@ -253,7 +254,7 @@ private module SsaComputeImpl {
     i = piIndex()
   }
 
-  /** The SSA definition reaches the rank index `rankix` in its own basic block `b`. */
+  /** Holds if the SSA definition reaches the rank index `rankix` in its own basic block `b`. */
   cached
   predicate ssaDefReachesRank(SsaSourceVariable v, BasicBlock b, int i, int rankix) {
     ssaDefRank(v, b, rankix, i)
@@ -264,7 +265,7 @@ private module SsaComputeImpl {
   }
 
   /**
-   * The SSA definition of `v` at `def` reaches `use` in the same basic block
+   * Holds if the SSA definition of `v` at `def` reaches `use` in the same basic block
    * without crossing another SSA definition of `v`.
    */
   cached
@@ -303,11 +304,12 @@ private module SsaComputeImpl {
     }
 
     /**
-     * The SSA definition of `v` at `def` reaches the end of a basic block `b`, at
+     * Holds if the SSA definition of `v` at `def` reaches the end of a basic block `b`, at
      * which point it is still live, without crossing another SSA definition of `v`.
      */
     cached
     predicate reachesEndOfBlock(SsaSourceVariable v, BasicBlock defbb, int defindex, BasicBlock b) {
+      Stages::AST::ref() and
       Liveness::liveAtExit(v, b) and
       (
         defbb = b and
@@ -320,7 +322,7 @@ private module SsaComputeImpl {
     }
 
     /**
-     * The SSA definition of `v` at `(defbb, defindex)` reaches `use` without crossing another
+     * Holds if the SSA definition of `v` at `(defbb, defindex)` reaches `use` without crossing another
      * SSA definition of `v`.
      */
     cached
@@ -360,7 +362,7 @@ private module SsaComputeImpl {
       i = rank[rankix](int j | variableDefine(v, _, b, j) or variableSourceUse(v, _, b, j))
     }
 
-    /** A variable access `use` of `v` in `b` at index `i`. */
+    /** Holds if there is a variable access `use` of `v` in `b` at index `i`. */
     cached
     predicate variableSourceUse(SsaSourceVariable v, ControlFlowNode use, BasicBlock b, int i) {
       v.getASourceUse() = use and
@@ -494,8 +496,8 @@ private module SsaComputeImpl {
     predicate firstUse(EssaDefinition def, ControlFlowNode use) {
       exists(SsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
         adjacentVarRefs(v, b1, i1, b2, i2) and
-        definesAt(def, v, b1, i1) and
-        variableSourceUse(v, use, b2, i2)
+        definesAt(def, pragma[only_bind_into](v), b1, i1) and
+        variableSourceUse(pragma[only_bind_into](v), use, b2, i2)
       )
       or
       exists(

@@ -272,6 +272,28 @@ private class PpCastExpr extends PpAst, CastExpr {
   }
 }
 
+private class PpSafeCastExpr extends PpAst, SafeCastExpr {
+  override string getPart(int i) { i = 1 and result = "as?" }
+
+  override PpAst getChild(int i) {
+    i = 0 and result = this.getExpr()
+    or
+    i = 2 and result = this.getTypeExpr()
+  }
+}
+
+private class PpImplicitCastExpr extends PpAst, ImplicitCastExpr {
+  override PpAst getChild(int i) { i = 0 and result = this.getExpr() }
+}
+
+private class PpImplicitNotNullExpr extends PpAst, ImplicitNotNullExpr {
+  override PpAst getChild(int i) { i = 0 and result = this.getExpr() }
+}
+
+private class PpImplicitCoercionToUnitExpr extends PpAst, ImplicitCoercionToUnitExpr {
+  override PpAst getChild(int i) { i = 0 and result = this.getExpr() }
+}
+
 private class PpCall extends PpAst, Call {
   override string getPart(int i) {
     i = 1 and exists(this.getQualifier()) and result = "."

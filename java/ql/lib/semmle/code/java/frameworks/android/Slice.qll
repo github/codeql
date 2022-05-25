@@ -18,7 +18,7 @@ class SliceProvider extends Class {
 private class SliceProviderLifecycleStep extends AdditionalValueStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     exists(Method onCreate, Method onBind, RefType declaringClass |
-      declaringClass.getASupertype*() instanceof SliceProvider and
+      declaringClass.getAnAncestor() instanceof SliceProvider and
       onCreate.getDeclaringType() = declaringClass and
       onCreate.hasName("onCreateSliceProvider") and
       onBind.getDeclaringType() = declaringClass and
@@ -37,7 +37,7 @@ private class SliceProviderLifecycleStep extends AdditionalValueStep {
 
 private class SliceActionsInheritTaint extends DataFlow::SyntheticFieldContent,
   TaintInheritingContent {
-  SliceActionsInheritTaint() { this.getField().matches("androidx.slice.Slice.action") }
+  SliceActionsInheritTaint() { this.getField() = "androidx.slice.Slice.action" }
 }
 
 private class SliceBuildersSummaryModels extends SummaryModelCsv {

@@ -125,7 +125,7 @@ For further details about `PostUpdateNode` see [Field flow](#field-flow) below.
 
 Nodes corresponding to expressions and parameters are the most common for users
 to interact with so a couple of convenience predicates are generally included:
-```
+```ql
 DataFlowExpr Node::asExpr()
 Parameter Node::asParameter()
 ExprNode exprNode(DataFlowExpr n)
@@ -266,10 +266,23 @@ as described above.
 ## Field flow
 
 The library supports tracking flow through field stores and reads. In order to
-support this, a class `Content` and two predicates
-`storeStep(Node node1, Content f, Node node2)` and
-`readStep(Node node1, Content f, Node node2)` must be defined. It generally
-makes sense for stores to target `PostUpdateNode`s, but this is not a strict
+support this, two classes `ContentSet` and `Content`, and two predicates
+`storeStep(Node node1, ContentSet f, Node node2)` and
+`readStep(Node node1, ContentSet f, Node node2)`, must be defined. The interaction
+between `ContentSet` and `Content` is defined through
+
+```ql
+Content ContentSet::getAStoreContent();
+Content ContentSet::getAReadContent();
+```
+
+which means that a `storeStep(n1, cs, n2)` will be interpreted as storing into _any_
+of `cs.getAStoreContent()`, and dually that a `readStep(n1, cs, n2)` will be
+interpreted as reading from _any_ of `cs.getAReadContent()`. In most cases, there
+will be a simple bijection between `ContentSet` and `Content`, but when modelling
+for example flow through arrays it can be more involved (see [Example 4](#example-4)).
+
+It generally makes sense for stores to target `PostUpdateNode`s, but this is not a strict
 requirement. Besides this, certain nodes must have associated
 `PostUpdateNode`s. The node associated with a `PostUpdateNode` should be
 defined by `PostUpdateNode::getPreUpdateNode()`.
@@ -294,7 +307,7 @@ through a couple of examples.
 ### Example 1
 
 Consider the following setter and its call:
-```
+```java
 setFoo(obj, x) {
   sink1(obj.foo);
   obj.foo = x;
@@ -335,12 +348,12 @@ call sites.
 In the following two lines we would like flow from `x` to reach the
 `PostUpdateNode` of `a` through a sequence of two store steps, and this is
 indeed handled automatically by the shared library.
-```
+```java
 a.b.c = x;
 a.getB().c = x;
 ```
 The only requirement for this to work is the existence of `PostUpdateNode`s.
-For a specified read step (in `readStep(Node n1, Content f, Node n2)`) the
+For a specified read step (in `readStep(Node n1, ContentSet c, Node n2)`) the
 shared library will generate a store step in the reverse direction between the
 corresponding `PostUpdateNode`s. A similar store-through-reverse-read will be
 generated for calls that can be summarized by the shared library as getters.
@@ -370,32 +383,137 @@ itself as this represents the value of the object after construction, that is
 after the constructor has run. With this setup of `ArgumentNode`s and
 `PostUpdateNode`s we will achieve the desired flow from `source` to `sink`
 
+### Example 4
+
+Assume we want to track flow through arrays precisely:
+
+```rb
+a[0] = tainted
+a[1] = not_tainted
+sink(a[0]) # bad
+sink(a[1]) # good
+sink(a[unknown]) # bad; unknown may be 0
+
+b[unknown] = tainted
+sink(b[0]) # bad; unknown may be 0
+
+c[unknown][0] = tainted
+c[unknown][1] = not_tainted
+sink(c[0][0]) # bad; unknown may be 0
+sink(c[0][1]) # good
+```
+
+This can be done by defining
+
+```ql
+newtype TContent =
+  TKnownArrayElementContent(int i) { i in [0 .. 10] } or
+  TUnknownArrayElementContent()
+
+class Content extends TContent {
+  ...
+}
+
+newtype TContentSet =
+  TSingletonContent(Content c) or
+  TAnyArrayElementContent()
+
+class ContentSet extends TContentSet {
+  Content getAStoreContent() {
+    this = TSingletonContent(result)
+    or
+    // for reverse stores
+    this = TAnyArrayElementContent() and
+    result = TUnknownArrayElementContent()
+  }
+
+  Content getAReadContent() {
+    this = TSingletonContent(result)
+    or
+    this = TAnyArrayElementContent() and
+    (result = TUnknownArrayElementContent() or result = TKnownArrayElementContent(_))
+  }
+}
+```
+
+and we will have the following store/read steps
+```rb
+# storeStep(tainted, TSingletonContent(TKnownArrayElementContent(0)), [post update] a)
+a[0] = tainted
+
+# storeStep(not_tainted, TSingletonContent(TKnownArrayElementContent(1)), [post update] a)
+a[1] = not_tainted
+
+# readStep(a, TSingletonContent(TKnownArrayElementContent(0)), a[0])
+# readStep(a, TSingletonContent(TUnknownArrayElementContent()), a[0])
+sink(a[0]) # bad
+
+# readStep(a, TSingletonContent(TKnownArrayElementContent(1)), a[1])
+# readStep(a, TSingletonContent(TUnknownArrayElementContent()), a[1])
+sink(a[1]) # good
+
+# readStep(a, TAnyArrayElementContent(), a[unknown])
+sink(a[unknown]) # bad; unknown may be 0
+
+# storeStep(tainted, TSingletonContent(TUnknownArrayElementContent()), [post update] b)
+b[unknown] = tainted
+
+# readStep(b, TSingletonContent(TKnownArrayElementContent(0)), b[0])
+# readStep(b, TSingletonContent(TUnknownArrayElementContent()), b[0])
+sink(b[0]) # bad; unknown may be 0
+
+# storeStep(tainted, TSingletonContent(TKnownArrayElementContent(0)), [post update] c[unknown])
+# storeStep(not_tainted, TSingletonContent(TKnownArrayElementContent(1)), [post update] c[unknown])
+# readStep(c, TAnyArrayElementContent(), c[unknown])
+# storeStep([post update] c[unknown], TAnyArrayElementContent(), [post update] c) # auto-generated reverse store (see Example 2)
+c[unknown][0] = tainted
+c[unknown][1] = not_tainted
+
+
+# readStep(c[0], TSingletonContent(TKnownArrayElementContent(0)), c[0][0])
+# readStep(c[0], TSingletonContent(TUnknownArrayElementContent()), c[0][0])
+# readStep(c[0], TSingletonContent(TKnownArrayElementContent(1)), c[0][1])
+# readStep(c[0], TSingletonContent(TUnknownArrayElementContent()), c[0][1])
+# readStep(c, TSingletonContent(TKnownArrayElementContent(0)), c[0])
+# readStep(c, TSingletonContent(TUnknownArrayElementContent()), c[0])
+sink(c[0][0]) # bad; unknown may be 0
+sink(c[0][1]) # good
+```
+
 ### Field flow barriers
 
 Consider this field flow example:
-```
+```java
 obj.f = source;
 obj.f = safeValue;
 sink(obj.f);
 ```
 or the similar case when field flow is used to model collection content:
-```
+```java
 obj.add(source);
 obj.clear();
 sink(obj.get(key));
 ```
 Clearing a field or content like this should act as a barrier, and this can be
-achieved by marking the relevant `Node, Content` pair as a clear operation in
+achieved by marking the relevant `Node, ContentSet` pair as a clear operation in
 the `clearsContent` predicate. A reasonable default implementation for fields
 looks like this:
 ```ql
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
 }
 ```
 However, this relies on the local step relation using the smallest possible
 use-use steps. If local flow is implemented using def-use steps, then
 `clearsContent` might not be easy to use.
+
+Note that `clearsContent(n, cs)` is interpreted using `cs.getAReadContent()`.
+
+Dually, there exists a predicate
+```ql
+predicate expectsContent(Node n, ContentSet c);
+```
+which acts as a barrier when data is _not_ stored inside one of `c.getAReadContent()`.
 
 ## Type pruning
 
@@ -415,13 +533,13 @@ as a single entity (this improves performance). As an example, Java uses erased
 types for this purpose and a single equivalence class for all numeric types.
 
 The type of a `Node` is given by the following predicate
-```
+```ql
 DataFlowType getNodeType(Node n)
 ```
 and every `Node` should have a type.
 
 One also needs to define the string representation of a `DataFlowType`:
-```
+```ql
 string ppReprType(DataFlowType t)
 ```
 The `ppReprType` predicate is used for printing a type in the labels of
@@ -499,7 +617,7 @@ predicate nodeIsHidden(Node n)
 ### Unreachable nodes
 
 Consider:
-```
+```java
 foo(source1, false);
 foo(source2, true);
 

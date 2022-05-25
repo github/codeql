@@ -1,9 +1,10 @@
 /**
- * @name Unsafe code constructed from libary input
+ * @name Unsafe code constructed from library input
  * @description Using externally controlled strings to construct code may allow a malicious
  *              user to execute arbitrary code.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 6.1
  * @precision medium
  * @id js/unsafe-code-construction
  * @tags security

@@ -16,7 +16,7 @@
 
 import javascript
 
-from PackageJSON pack, JSONString val
+from PackageJson pack, JsonString val
 where
   [pack.getDependencies(), pack.getDevDependencies()].getPropValue(_) = val and
   val.getValue().regexpMatch("(http|ftp)://.*")

@@ -81,11 +81,11 @@ class ExcludeTarFilePy extends Sanitizer {
 
 /* Any call to an extractall method */
 class ExtractAllSink extends TaintSink {
-  CallNode call;
-
   ExtractAllSink() {
-    this = call.getFunction().(AttrNode).getObject("extractall") and
-    count(call.getAnArg()) = 0
+    exists(CallNode call |
+      this = call.getFunction().(AttrNode).getObject("extractall") and
+      not exists(call.getAnArg())
+    )
   }
 
   override predicate sinks(TaintKind kind) { kind instanceof OpenTarFile }
@@ -122,7 +122,7 @@ class ExtractMembersSink extends TaintSink {
 class TarFileInfoSanitizer extends Sanitizer {
   TarFileInfoSanitizer() { this = "TarInfo sanitizer" }
 
-  /** The test `if <path_sanitizing_test>:` clears taint on its `false` edge. */
+  /* The test `if <path_sanitizing_test>:` clears taint on its `false` edge. */
   override predicate sanitizingEdge(TaintKind taint, PyEdgeRefinement test) {
     taint instanceof TarFileInfo and
     clears_taint_on_false_edge(test.getTest(), test.getSense())

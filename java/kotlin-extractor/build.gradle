@@ -1,0 +1,59 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}"
+    id 'org.jetbrains.dokka' version '1.4.32'
+}
+
+group 'com.github.codeql'
+version '0.0.1'
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    compileOnly("org.jetbrains.kotlin:kotlin-compiler")
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        // enable the below for building with kotlinVersion=1.4.32:
+        // languageVersion = "1.5"
+    }
+}
+
+sourceSets {
+    main {
+        kotlin {
+            // change the excludes for building with other versions:
+            excludes = [
+                    "utils/versions/v_1_4_32/*.kt",
+                    "utils/versions/v_1_5_0/*.kt",
+                    "utils/versions/v_1_5_10/*.kt",
+                    "utils/versions/v_1_5_21/*.kt",
+                    "utils/versions/v_1_5_31/*.kt",
+                    "utils/versions/v_1_6_10/*.kt",
+                    "utils/versions/v_1_7_0-RC/*.kt",
+                    // "utils/versions/v_1_6_20/*.kt",
+            ]
+        }
+    }
+}
+
+jar {
+    archiveName = "${OUTPUT_JAR_NAME}"
+}
+
+task getHomeDir {
+    doLast {
+        println gradle.gradleHomeDir
+    }
+}
+
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(8))
+  }
+}

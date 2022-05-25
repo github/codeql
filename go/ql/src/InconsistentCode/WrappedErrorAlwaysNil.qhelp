@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+  The <code>pkg.errors</code> package provides the <code>errors.Wrap</code>
+  function for annotating an error with a stack trace. When passed
+  <code>nil</code>, this function returns <code>nil</code>.
+
+  When the first parameter to <code>errors.Wrap</code> is <em>always</em>
+  <code>nil</code>, the function call has no effect and likely indicates a
+  programming mistake.
+
+  A common example of this is when an <code>errors.Wrap(err, "message")</code>
+  call is copied from an earlier error-handling block in the same function and
+  used in a subsequent error-handling block that does not check
+  <code>err</code> in its guard. In this case the return of a <code>nil</code>
+  value to the caller indicates by convention that the operation succeeded, and
+  so the failure is masked.
+</p>
+</overview>
+
+<recommendation>
+<p>
+  Usually an <code>err</code> value is being referenced outside its intended
+  scope. The problem can be fixed by removing that reference, for example by
+  changing a call of the form <code>errors.Wrap(err, "message")</code> to
+  <code>errors.New("message")</code>.
+</p>
+</recommendation>
+
+<example>
+<p>
+  The example below shows an example where the <code>err</code> value returned
+  from the call to <code>f1</code> is reused in a later call, when it is known
+  to be <code>nil</code>:
+</p>
+
+<sample src="WrappedErrorAlwaysNil.go" />
+
+<p>
+  One way of fixing this is to create a new error value with
+  <code>errors.New</code>:
+</p>
+
+<sample src="WrappedErrorAlwaysNilGood.go" />
+</example>
+
+<references>
+<li>Go errors, github.com/pkg/errors: <a href="https://pkg.go.dev/github.com/pkg/errors#Wrap">errors.Wrap</a></li>
+</references>
+</qhelp>

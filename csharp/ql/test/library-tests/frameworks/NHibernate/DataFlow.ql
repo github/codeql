@@ -1,5 +1,4 @@
 import csharp
-import semmle.code.csharp.dataflow.TaintTracking
 
 class MyConfiguration extends TaintTracking::Configuration {
   MyConfiguration() { this = "MyConfiguration" }
