@@ -214,15 +214,14 @@ cfg.swift:
 #-----| match -> IntegerLiteralExpr
 
 #   33| EnumElementPattern
-#-----| match -> IsPattern
+#-----| no-match -> IsPattern
 
 #   33| IsPattern
 #-----| match -> IntegerLiteralExpr
 #-----| no-match -> CaseStmt
-#-----| no-match -> IntegerLiteralExpr
 
 #   33| EnumElementPattern
-#-----| match -> IsPattern
+#-----| no-match -> IsPattern
 
 #   33| CaseLabelItem
 #-----|  -> EnumElementPattern
@@ -242,7 +241,6 @@ cfg.swift:
 #   35| IsPattern
 #-----| match -> DeclRefExpr
 #-----| no-match -> CaseStmt
-#-----| no-match -> IntegerLiteralExpr
 
 #   35| EnumElementPattern
 #-----| no-match -> IsPattern
@@ -252,7 +250,7 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #   35| BindingPattern
-#-----| match -> IsPattern
+#-----| no-match -> IsPattern
 
 #   35| NamedPattern
 #-----| match -> BindingPattern
