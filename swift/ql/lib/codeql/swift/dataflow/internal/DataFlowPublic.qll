@@ -60,7 +60,7 @@ class ExprNode extends Node, TExprNode {
 
   ExprNode() { this = TExprNode(expr) }
 
-  override Expr asExpr() { result = expr.getNode() }
+  override Expr asExpr() { result = expr.getNode().asAstNode() }
 
   override ControlFlowNode getCfgNode() { result = expr }
 }

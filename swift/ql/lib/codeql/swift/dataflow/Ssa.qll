@@ -61,8 +61,8 @@ module Ssa {
         AssignExpr a, BasicBlock bb, int i // TODO: use CFG node for assignment expr
       |
         this.definesAt(_, bb, i) and
-        a = bb.getNode(i).getNode() and
-        value.getNode() = a.getSource()
+        a = bb.getNode(i).getNode().asAstNode() and
+        value.getNode().asAstNode() = a.getSource()
       )
     }
   }
