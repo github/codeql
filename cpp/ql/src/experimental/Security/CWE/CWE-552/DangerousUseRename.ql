@@ -21,10 +21,10 @@ predicate findFileForReadOrWrite(FunctionCall fc, FunctionCall fc1, string mode,
   fc.getASuccessor+() = fc1
 }
 
-from FunctionCall fc
+from FunctionCall renameCall
 where
   fc.getTarget().hasName("rename") and
-  exists(IfStmt ifst, Expr ec, Expr ecd, FunctionCall fc1, FunctionCall fc2 |
+  exists(IfStmt ifst, Expr ec, Expr ecd, FunctionCall readCall, FunctionCall writeCall |
     findFileForReadOrWrite(fc, fc1, "r", 0) and
     findFileForReadOrWrite(fc, fc2, "w", 1) and
     ec.getValue() = "0" and
