@@ -1,6 +1,9 @@
 edges
+| XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:19:25:19:52 | access to indexer : String |
 | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi |
 | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi |
+| XSSAspNet.cs:19:25:19:52 | access to indexer : String | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi |
+| XSSAspNet.cs:19:25:19:52 | access to indexer : String | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi |
 | XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | XSSAspNet.cs:43:28:43:55 | access to indexer |
 | XSSAspNetCore.cs:21:52:21:64 | access to property Query : IQueryCollection | XSSAspNetCore.cs:21:52:21:76 | call to operator implicit conversion |
 | XSSAspNetCore.cs:40:56:40:58 | foo : String | XSSAspNetCore.cs:44:51:44:53 | access to parameter foo |
@@ -12,6 +15,7 @@ edges
 | XSSAspNetCore.cs:72:51:72:65 | access to property Headers : IHeaderDictionary | XSSAspNetCore.cs:72:51:72:72 | call to operator implicit conversion |
 nodes
 | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| XSSAspNet.cs:19:25:19:52 | access to indexer : String | semmle.label | access to indexer : String |
 | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | semmle.label | access to local variable sayHi |
 | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | semmle.label | access to local variable sayHi |
 | XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
