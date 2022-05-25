@@ -221,9 +221,7 @@ class Unit extends TUnit {
  */
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
 
-newtype LambdaCallKind =
-  TYieldCallKind() or
-  TLambdaCallKind()
+newtype LambdaCallKind = TODO_TLambdaCallKind()
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
