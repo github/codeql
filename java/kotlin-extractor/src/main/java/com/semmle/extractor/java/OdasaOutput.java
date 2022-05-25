@@ -587,6 +587,8 @@ public class OdasaOutput {
                         else
                             log.warn("Couldn't find timestamp for jar file " + jarFilePath + " entry " + entryPath);
                     }
+                } else {
+                    log.warn("Expected JAR-file path " + vf.getPath() + " to have exactly one '!/' separator");
                 }
             }
 
