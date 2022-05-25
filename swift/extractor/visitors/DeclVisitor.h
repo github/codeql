@@ -3,6 +3,7 @@
 #include <swift/AST/Decl.h>
 #include <swift/AST/GenericParamList.h>
 #include <swift/AST/ParameterList.h>
+#include <swift/AST/ASTMangler.h>
 
 #include "swift/extractor/visitors/VisitorBase.h"
 
@@ -20,20 +21,29 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   using AstVisitorBase<DeclVisitor>::AstVisitorBase;
 
   void visitFuncDecl(swift::FuncDecl* decl) {
-    auto label = dispatcher_.assignNewLabel(decl);
+    auto label = dispatcher_.assignNewLabel(decl, mangledName(decl));
     dispatcher_.emit(ConcreteFuncDeclsTrap{label});
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return;
+    }
     emitAbstractFunctionDecl(decl, label);
   }
 
   void visitConstructorDecl(swift::ConstructorDecl* decl) {
-    auto label = dispatcher_.assignNewLabel(decl);
+    auto label = dispatcher_.assignNewLabel(decl, mangledName(decl));
     dispatcher_.emit(ConstructorDeclsTrap{label});
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return;
+    }
     emitConstructorDecl(decl, label);
   }
 
   void visitDestructorDecl(swift::DestructorDecl* decl) {
-    auto label = dispatcher_.assignNewLabel(decl);
+    auto label = dispatcher_.assignNewLabel(decl, mangledName(decl));
     dispatcher_.emit(DestructorDeclsTrap{label});
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return;
+    }
     emitDestructorDecl(decl, label);
   }
 
@@ -64,6 +74,7 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   }
 
   void visitParamDecl(swift::ParamDecl* decl) {
+    // TODO: deduplicate
     auto label = dispatcher_.assignNewLabel(decl);
     dispatcher_.emit(ParamDeclsTrap{label});
     if (decl->isInOut()) {
@@ -92,6 +103,7 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   }
 
   void visitVarDecl(swift::VarDecl* decl) {
+    // TODO: deduplicate all non-local variables
     auto label = dispatcher_.assignNewLabel(decl);
     auto introducer = static_cast<uint8_t>(decl->getIntroducer());
     dispatcher_.emit(ConcreteVarDeclsTrap{label, introducer});
@@ -99,26 +111,38 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   }
 
   void visitStructDecl(swift::StructDecl* decl) {
-    auto label = dispatcher_.assignNewLabel(decl);
+    auto label = dispatcher_.assignNewLabel(decl, mangledName(decl));
     dispatcher_.emit(StructDeclsTrap{label});
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return;
+    }
     emitNominalTypeDecl(decl, label);
   }
 
   void visitClassDecl(swift::ClassDecl* decl) {
-    auto label = dispatcher_.assignNewLabel(decl);
+    auto label = dispatcher_.assignNewLabel(decl, mangledName(decl));
     dispatcher_.emit(ClassDeclsTrap{label});
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return;
+    }
     emitNominalTypeDecl(decl, label);
   }
 
   void visitEnumDecl(swift::EnumDecl* decl) {
-    auto label = dispatcher_.assignNewLabel(decl);
+    auto label = dispatcher_.assignNewLabel(decl, mangledName(decl));
     dispatcher_.emit(EnumDeclsTrap{label});
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return;
+    }
     emitNominalTypeDecl(decl, label);
   }
 
   void visitProtocolDecl(swift::ProtocolDecl* decl) {
-    auto label = dispatcher_.assignNewLabel(decl);
+    auto label = dispatcher_.assignNewLabel(decl, mangledName(decl));
     dispatcher_.emit(ProtocolDeclsTrap{label});
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return;
+    }
     emitNominalTypeDecl(decl, label);
   }
 
@@ -132,8 +156,11 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   }
 
   void visitEnumElementDecl(swift::EnumElementDecl* decl) {
-    auto label = dispatcher_.assignNewLabel(decl);
+    auto label = dispatcher_.assignNewLabel(decl, mangledName(decl));
     dispatcher_.emit(EnumElementDeclsTrap{label, decl->getNameStr().str()});
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return;
+    }
     if (decl->hasParameterList()) {
       auto i = 0u;
       for (auto p : *decl->getParameterList()) {
@@ -143,26 +170,36 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   }
 
   void visitGenericTypeParamDecl(swift::GenericTypeParamDecl* decl) {
+    // TODO: deduplicate
     auto label = dispatcher_.assignNewLabel(decl);
     dispatcher_.emit(GenericTypeParamDeclsTrap{label});
     emitTypeDecl(decl, label);
   }
 
   void visitAssociatedTypeDecl(swift::AssociatedTypeDecl* decl) {
-    auto label = dispatcher_.assignNewLabel(decl);
+    auto label = dispatcher_.assignNewLabel(decl, mangledName(decl));
     dispatcher_.emit(AssociatedTypeDeclsTrap{label});
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return;
+    }
     emitTypeDecl(decl, label);
   }
 
   void visitTypeAliasDecl(swift::TypeAliasDecl* decl) {
-    auto label = dispatcher_.assignNewLabel(decl);
+    auto label = dispatcher_.assignNewLabel(decl, mangledName(decl));
     dispatcher_.emit(TypeAliasDeclsTrap{label});
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return;
+    }
     emitTypeDecl(decl, label);
   }
 
   void visitAccessorDecl(swift::AccessorDecl* decl) {
-    auto label = dispatcher_.assignNewLabel(decl);
+    auto label = dispatcher_.assignNewLabel(decl, mangledName(decl));
     dispatcher_.emit(AccessorDeclsTrap{label});
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return;
+    }
     switch (decl->getAccessorKind()) {
       case swift::AccessorKind::Get:
         dispatcher_.emit(AccessorDeclIsGetterTrap{label});
@@ -181,7 +218,10 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   }
 
   void visitSubscriptDecl(swift::SubscriptDecl* decl) {
-    auto label = dispatcher_.assignNewLabel(decl);
+    auto label = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return;
+    }
     auto elementTypeLabel = dispatcher_.fetchLabel(decl->getElementInterfaceType());
     dispatcher_.emit(SubscriptDeclsTrap{label, elementTypeLabel});
     if (auto indices = decl->getIndices()) {
@@ -202,6 +242,11 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   }
 
  private:
+  std::string mangledName(swift::ValueDecl* decl) {
+    // prefix adds a couple of special symbols, we don't necessary need them
+    return mangler.mangleAnyDecl(decl, /* prefix = */ false);
+  }
+
   void emitConstructorDecl(swift::ConstructorDecl* decl, TrapLabel<ConstructorDeclTag> label) {
     emitAbstractFunctionDecl(decl, label);
   }
@@ -309,6 +354,9 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
     }
     emitValueDecl(decl, label);
   }
+
+ private:
+  swift::Mangle::ASTMangler mangler;
 };
 
 }  // namespace codeql
