@@ -7,6 +7,7 @@ private import DataFlowDispatch
 private import SsaImpl as SsaImpl
 private import FlowSummaryImpl as FlowSummaryImpl
 private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
+private import codeql.ruby.frameworks.data.ModelsAsData
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -353,6 +354,17 @@ private module Cached {
       name = any(InstanceVariable v).getName()
       or
       name = "@" + any(SetterMethodCall c).getTargetName()
+      or
+      // The following equation unfortunately leads to a non-monotonic recursion error:
+      //    name = any(AccessPathToken a).getAnArgument("Field")
+      // Therefore, we use the following instead to extract the field names from the
+      // external model data. This, unfortunately, does not included any field names used
+      // in models defined in QL code.
+      exists(string input, string output |
+        ModelOutput::relevantSummaryModel(_, _, _, input, output, _)
+      |
+        name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
+      )
     }
 
   /**
