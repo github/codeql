@@ -887,13 +887,96 @@ module Decls {
 }
 
 module Exprs {
-  private class AssignExprTree extends AstStandardPostOrderTree {
-    override AssignExpr ast;
+  module AssignExprs {
+    /**
+     * The control-flow of an assignment operation.
+     *
+     * There are two implementation of this base class:
+     * - One where the left-hand side has direct-to-storage-access semantics
+     * - One where the left-hand side has direct-to-implementation-access semantics
+     */
+    abstract private class AssignExprTree extends AstControlFlowTree {
+      override AssignExpr ast;
 
-    final override ControlFlowTree getChildElement(int i) {
-      result.asAstNode() = ast.getDest().getFullyConverted() and i = 0
-      or
-      result.asAstNode() = ast.getSource().getFullyConverted() and i = 1
+      final override predicate first(ControlFlowElement first) {
+        astFirst(ast.getDest().getFullyConverted(), first)
+      }
+
+      abstract predicate isSet(ControlFlowElement n);
+
+      abstract predicate isLast(ControlFlowElement n, Completion c);
+
+      final override predicate propagatesAbnormal(ControlFlowElement child) {
+        child.asAstNode() = ast.getDest().getFullyConverted() or
+        child.asAstNode() = ast.getSource().getFullyConverted()
+      }
+
+      predicate hasWillSetObserver() { isPropertyObserverElement(any(WillSetObserver obs), ast) }
+
+      predicate hasDidSetObserver() { isPropertyObserverElement(any(WillSetObserver obs), ast) }
+
+      final override predicate last(ControlFlowElement last, Completion c) {
+        isPropertyObserverElement(last, any(DidSetObserver obs), ast) and
+        completionIsValidFor(c, last)
+        or
+        not this.hasDidSetObserver() and
+        this.isLast(last, c)
+      }
+
+      final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+        // Flow from the destination to the source
+        astLast(ast.getDest().getFullyConverted(), pred, c) and
+        c instanceof NormalCompletion and
+        astFirst(ast.getSource().getFullyConverted(), succ)
+        or
+        // Flow from the source to the `willSet` observer, if any. Otherwise, flow to the set operation
+        astLast(ast.getSource().getFullyConverted(), pred, c) and
+        c instanceof NormalCompletion and
+        (
+          if this.hasWillSetObserver()
+          then isPropertyObserverElement(succ, any(WillSetObserver obs), ast)
+          else this.isSet(succ)
+        )
+        or
+        // Flow from the set operation to the `didSet` observer, if any
+        this.isSet(pred) and
+        completionIsValidFor(c, pred) and
+        isPropertyObserverElement(succ, any(DidSetObserver obs), ast)
+      }
+    }
+
+    /**
+     * The control-flow for assignments where the left-hand side has
+     * direct-to-implmentation-access semantics.
+     */
+    class PropertyAssignExpr extends AssignExprTree {
+      AccessorDecl accessorDecl;
+
+      PropertyAssignExpr() { isPropertySetterElement(accessorDecl, ast) }
+
+      final override predicate isLast(ControlFlowElement last, Completion c) {
+        isPropertySetterElement(last, accessorDecl, ast) and
+        completionIsValidFor(c, last)
+      }
+
+      final override predicate isSet(ControlFlowElement node) {
+        isPropertySetterElement(node, _, ast)
+      }
+    }
+
+    /**
+     * The control-flow for assignments where the left-hand side has
+     * direct-to-storage-access semantics.
+     */
+    class DirectAssignExpr extends AssignExprTree {
+      DirectAssignExpr() { not this instanceof PropertyAssignExpr }
+
+      final override predicate isLast(ControlFlowElement last, Completion c) {
+        last.asAstNode() = ast and
+        completionIsValidFor(c, last)
+      }
+
+      final override predicate isSet(ControlFlowElement node) { node.asAstNode() = ast }
     }
   }
 
@@ -1122,15 +1205,139 @@ module Exprs {
     }
   }
 
-  private class DeclRefExprTree extends AstLeafTree {
-    override DeclRefExpr ast;
+  module DeclRefExprs {
+    class DeclRefExprLValueTree extends AstLeafTree {
+      override DeclRefExpr ast;
+
+      DeclRefExprLValueTree() { isLValue(ast) }
+    }
+
+    abstract class DeclRefExprRValueTree extends AstControlFlowTree {
+      override DeclRefExpr ast;
+
+      DeclRefExprRValueTree() { isRValue(ast) }
+
+      override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+        none()
+      }
+
+      override predicate propagatesAbnormal(ControlFlowElement child) { none() }
+    }
+
+    private class PropertyDeclRefRValueTree extends DeclRefExprRValueTree {
+      AccessorDecl accessor;
+
+      PropertyDeclRefRValueTree() { isPropertyGetterElement(accessor, ast) }
+
+      final override predicate first(ControlFlowElement first) {
+        isPropertyGetterElement(first, accessor, ast)
+      }
+
+      final override predicate last(ControlFlowElement last, Completion c) {
+        isPropertyGetterElement(last, accessor, ast) and
+        completionIsValidFor(c, last)
+      }
+    }
+
+    private class DirectDeclRefRValueTree extends DeclRefExprRValueTree {
+      DirectDeclRefRValueTree() { not this instanceof PropertyDeclRefRValueTree }
+
+      final override predicate first(ControlFlowElement first) { first.asAstNode() = ast }
+
+      final override predicate last(ControlFlowElement last, Completion c) {
+        last.asAstNode() = ast and
+        completionIsValidFor(c, last)
+      }
+    }
   }
 
-  private class MemberRefTree extends AstStandardPostOrderTree {
-    override MemberRefExpr ast;
+  module MemberRefs {
+    /**
+     * The control-flow of a member reference expression.
+     *
+     * There are two implementation of this base class:
+     * - One for lvalues
+     * - One for rvalues
+     */
+    abstract private class MemberRefTreeBase extends AstControlFlowTree {
+      override MemberRefExpr ast;
 
-    final override AstNode getChildElement(int i) {
-      result = ast.getBaseExpr().getFullyConverted() and i = 0
+      final override predicate propagatesAbnormal(ControlFlowElement child) {
+        child.asAstNode() = ast.getBaseExpr().getFullyConverted()
+      }
+
+      final override predicate first(ControlFlowElement first) {
+        astFirst(ast.getBaseExpr().getFullyConverted(), first)
+      }
+    }
+
+    /**
+     * The lvalue implementation of `MemberRefTreeBase`
+     */
+    private class MemberRefLValueTree extends MemberRefTreeBase {
+      MemberRefLValueTree() { isLValue(ast) }
+
+      final override predicate last(ControlFlowElement last, Completion c) {
+        last.asAstNode() = ast and
+        completionIsValidFor(c, last)
+      }
+
+      override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+        astLast(ast.getBaseExpr().getFullyConverted(), pred, c) and
+        c instanceof NormalCompletion and
+        succ.asAstNode() = ast
+      }
+    }
+
+    /**
+     * The rvalue base implementation of `MemberRefTreeBase`.
+     *
+     * There are two implementations of this class:
+     * - One for direct-storage semantics
+     * - One for calls to getters
+     */
+    abstract private class MemberRefRValueTree extends MemberRefTreeBase {
+      MemberRefRValueTree() { isRValue(ast) }
+    }
+
+    /**
+     * Control-flow for rvalue member accesses with direct-to-storage semantics
+     * or ordinary semantics without a getter.
+     */
+    private class DirectMemberRefRValue extends MemberRefRValueTree {
+      DirectMemberRefRValue() { not this instanceof PropertyMemberRefRValue }
+
+      final override predicate last(ControlFlowElement last, Completion c) {
+        last.asAstNode() = ast and
+        completionIsValidFor(c, last)
+      }
+
+      override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+        astLast(ast.getBaseExpr().getFullyConverted(), pred, c) and
+        c instanceof NormalCompletion and
+        succ.asAstNode() = ast
+      }
+    }
+
+    /**
+     * Control-flow for rvalue member accesses with direct-to-implementation semantics
+     * or ordinary semantics that includes a getter.
+     */
+    private class PropertyMemberRefRValue extends MemberRefRValueTree {
+      AccessorDecl accessor;
+
+      PropertyMemberRefRValue() { isPropertyGetterElement(accessor, ast) }
+
+      final override predicate last(ControlFlowElement last, Completion c) {
+        isPropertyGetterElement(last, accessor, ast) and
+        completionIsValidFor(c, last)
+      }
+
+      override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+        astLast(ast.getBaseExpr().getFullyConverted(), pred, c) and
+        c instanceof NormalCompletion and
+        isPropertyGetterElement(succ, accessor, ast)
+      }
     }
   }
 
