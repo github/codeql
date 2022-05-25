@@ -27,7 +27,6 @@ where
   exists(IfStmt ifst, Expr ec, Expr ecd, FunctionCall readCall, FunctionCall writeCall |
     findFileForReadOrWrite(renameCall, readCall, "r", 0) and
     findFileForReadOrWrite(renameCall, writeCall, "w", 1) and
-    ec.getValue() = "0" and
     ecd = ifst.getCondition().getAChild*() and
     (
       globalValueNumber(ecd) = globalValueNumber(renameCall) and
@@ -40,6 +39,7 @@ where
       )
     ) and
     (
+      ec.getValue() = "0" and
       ecd.(EQExpr).hasOperands(_, ec) and
       forall(Expr st | st = ifst.getThen().getASuccessor*() | st != readCall) and
       forall(Expr st | st = ifst.getThen().getASuccessor*() | st != writeCall)
