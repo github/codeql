@@ -64,6 +64,12 @@ module Ssa {
         a = bb.getNode(i).getNode().asAstNode() and
         value.getNode().asAstNode() = a.getSource()
       )
+      or
+      exists(VarDecl var, BasicBlock bb, int blockIndex, PatternBindingDecl pbd |
+        this.definesAt(var, bb, blockIndex) and
+        pbd.getAPattern() = bb.getNode(blockIndex).getNode() and
+        value.getNode() = var.getParentInitializer()
+      )
     }
   }
 }

@@ -31,12 +31,18 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override Location getLocationImpl() { result = expr.getLocation() }
 
   override string toStringImpl() { result = expr.toString() }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(expr.getScope()) }
 }
 
 private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
   override Location getLocationImpl() { result = def.getLocation() }
 
   override string toStringImpl() { result = def.toString() }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result = TDataFlowFunc(def.getBasicBlock().getScope())
+  }
 }
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -103,7 +109,11 @@ private module ParameterNodes {
     override string toStringImpl() { result = param.toString() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      none() // TODO
+      exists(FuncDecl f, int index |
+        c = TDataFlowFunc(f) and
+        f.getParam(index) = param and
+        pos = TPositionalParameter(index)
+      )
     }
   }
 }
@@ -119,7 +129,16 @@ abstract class ArgumentNode extends Node {
   final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
-private module ArgumentNodes { }
+private module ArgumentNodes {
+  class NormalArgumentNode extends ExprNode, ArgumentNode {
+    NormalArgumentNode() { exists(CallExpr call | call.getAnArgument().getExpr() = this.asExpr()) }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.asExpr().(CallExpr).getArgument(pos.(PositionalArgumentPosition).getIndex()).getExpr() =
+        this.asExpr()
+    }
+  }
+}
 
 import ArgumentNodes
 
