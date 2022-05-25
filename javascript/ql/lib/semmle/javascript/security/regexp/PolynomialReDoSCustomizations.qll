@@ -7,6 +7,7 @@
 import javascript
 import SuperlinearBackTracking
 
+/** Module containing sources, sinks, and sanitizers for polynomial regular expression denial-of-service attacks. */
 module PolynomialReDoS {
   /**
    * A data flow source node for polynomial regular expression denial-of-service vulnerabilities.

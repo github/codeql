@@ -11,6 +11,11 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Regexp
 private import codeql.ruby.security.regexp.SuperlinearBackTracking
 
+/**
+ * Provides default sources, sinks and sanitizers for reasoning about
+ * polynomial regular expression denial-of-service attacks, as well
+ * as extension points for adding your own.
+ */
 module PolynomialReDoS {
   /**
    * A data flow source node for polynomial regular expression denial-of-service vulnerabilities.
