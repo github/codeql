@@ -352,10 +352,7 @@ private module Cached {
     TFieldContent(string name) {
       name = any(InstanceVariable v).getName()
       or
-      exists(SetterMethodCall c, string methodName |
-        methodName = c.getMethodName() and
-        name = "@" + methodName.prefix(methodName.length() - 1)
-      )
+      name = "@" + any(SetterMethodCall c).getTargetName()
     }
 
   /**
@@ -835,14 +832,10 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   // Attribute assignment, `receiver.property = value`
   node2.(PostUpdateNode).getPreUpdateNode().asExpr() =
     any(CfgNodes::ExprNodes::MethodCallCfgNode call |
-      call.getExpr() instanceof SetterMethodCall and
       node1.asExpr() = call.getArgument(0) and
       call.getNumberOfArguments() = 1 and
-      c.isSingleton(any(Content::FieldContent ct, string methodName |
-          methodName = call.getExpr().getMethodName() and
-          ct.getName() = "@" + methodName.prefix(methodName.length() - 1)
-        |
-          ct
+      c.isSingleton(any(Content::FieldContent ct |
+          ct.getName() = "@" + call.getExpr().(SetterMethodCall).getTargetName()
         ))
     ).getReceiver()
   or
@@ -884,7 +877,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   // Attribute read, `receiver.field`. Note that we do not check whether
   // the `field` method is really an attribute reader. This is probably fine
   // because the read step has only effect if there exists a matching store step
-  // (instance variable assignmentor setter method call).
+  // (instance variable assignment or setter method call).
   node2.asExpr() =
     any(CfgNodes::ExprNodes::MethodCallCfgNode call |
       node1.asExpr() = call.getReceiver() and
