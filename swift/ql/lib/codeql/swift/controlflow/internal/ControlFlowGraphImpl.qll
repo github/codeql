@@ -910,7 +910,7 @@ module Exprs {
 
       predicate hasWillSetObserver() { isPropertyObserverElement(_, any(WillSetObserver obs), ast) }
 
-      predicate hasDidSetObserver() { isPropertyObserverElement(_, any(WillSetObserver obs), ast) }
+      predicate hasDidSetObserver() { isPropertyObserverElement(_, any(DidSetObserver obs), ast) }
 
       final override predicate last(ControlFlowElement last, Completion c) {
         isPropertyObserverElement(last, any(DidSetObserver obs), ast) and
