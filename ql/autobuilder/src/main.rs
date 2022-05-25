@@ -15,28 +15,38 @@ fn main() -> std::io::Result<()> {
     let mut cmd = Command::new(codeql);
     cmd.arg("database")
         .arg("index-files")
+        .arg("--include-extension=.ql")
+        .arg("--include-extension=.qll")
+        .arg("--include-extension=.dbscheme")
+        .arg("--include=**/qlpack.yml")
         .arg("--size-limit=5m")
         .arg("--language=ql")
         .arg("--working-dir=.")
         .arg(db);
 
-    let mut has_include_dir = false; // TODO: This is a horrible hack, wait for the post-merge discussion in https://github.com/github/codeql/pull/7444 to be resolved
+    let pwd = env::current_dir()?;
     for line in env::var("LGTM_INDEX_FILTERS")
         .unwrap_or_default()
         .split('\n')
     {
         if let Some(stripped) = line.strip_prefix("include:") {
-            cmd.arg("--include").arg(stripped);
-            has_include_dir = true;
+            let path = pwd
+                .join(stripped)
+                .join("**")
+                .into_os_string()
+                .into_string()
+                .unwrap();
+            cmd.arg("--also-match").arg(path);
         } else if let Some(stripped) = line.strip_prefix("exclude:") {
-            cmd.arg("--exclude").arg(stripped);
+            let path = pwd
+                .join(stripped)
+                .join("**")
+                .into_os_string()
+                .into_string()
+                .unwrap();
+            // the same as above, but starting with "!"
+            cmd.arg("--also-match").arg("!".to_owned() + &path);
         }
-    }
-    if !has_include_dir {
-        cmd.arg("--include-extension=.ql")
-            .arg("--include-extension=.qll")
-            .arg("--include-extension=.dbscheme")
-            .arg("--include=**/qlpack.yml");
     }
     let exit = &cmd.spawn()?.wait()?;
     std::process::exit(exit.code().unwrap_or(1))
