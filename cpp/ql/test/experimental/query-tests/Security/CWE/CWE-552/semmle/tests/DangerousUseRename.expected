@@ -1,5 +1,5 @@
-| test.cpp:56:7:56:12 | call to rename | If the rename function did not work correctly, simply overwriting the destination file can lead to errors. |
-| test.cpp:92:7:92:12 | call to rename | If the rename function did not work correctly, simply overwriting the destination file can lead to errors. |
-| test.cpp:128:9:128:14 | call to rename | If the rename function did not work correctly, simply overwriting the destination file can lead to errors. |
-| test.cpp:146:9:146:14 | call to rename | If the rename function did not work correctly, simply overwriting the destination file can lead to errors. |
-| test.cpp:165:7:165:12 | call to rename | If the rename function did not work correctly, simply overwriting the destination file can lead to errors. |
+| test.cpp:56:7:56:12 | call to rename | If the rename function did not work correctly, attempting to copy the contents of a source file by opening the target file without assessing permissions creates a mechanism for deleting an arbitrary system file. |
+| test.cpp:92:7:92:12 | call to rename | If the rename function did not work correctly, attempting to copy the contents of a source file by opening the target file without assessing permissions creates a mechanism for deleting an arbitrary system file. |
+| test.cpp:128:9:128:14 | call to rename | If the rename function did not work correctly, attempting to copy the contents of a source file by opening the target file without assessing permissions creates a mechanism for deleting an arbitrary system file. |
+| test.cpp:146:9:146:14 | call to rename | If the rename function did not work correctly, attempting to copy the contents of a source file by opening the target file without assessing permissions creates a mechanism for deleting an arbitrary system file. |
+| test.cpp:165:7:165:12 | call to rename | If the rename function did not work correctly, attempting to copy the contents of a source file by opening the target file without assessing permissions creates a mechanism for deleting an arbitrary system file. |
