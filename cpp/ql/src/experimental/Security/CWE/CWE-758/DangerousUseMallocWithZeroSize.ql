@@ -68,7 +68,6 @@ predicate dangerousUseBufferAndSize(FunctionCall fc) {
   exists(Expr e0 |
     fc.getASuccessor*() = e0 and
     (
-      e0 instanceof ArrayExpr and
       globalValueNumber(e0.(ArrayExpr).getArrayBase()) = globalValueNumber(fc) and
       e0.(ArrayExpr).getArrayOffset().getAChild().(VariableAccess).getTarget() =
         fc.getArgument(0).(VariableAccess).getTarget()
