@@ -14,8 +14,8 @@ import cpp
 import semmle.code.cpp.commons.Exclusions
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
-/** Holds if there are checks above the call */
-predicate existsChecks(FunctionCall fc) {
+/** Holds if there is a bitwise operation, initialization, assignment or test of the first function argument. */
+predicate existsChecksorSet(FunctionCall fc) {
   (
     exists(AssignBitwiseOperation ab |
       ab.getLValue().(VariableAccess).getTarget() = fc.getArgument(0).(VariableAccess).getTarget() and
@@ -148,7 +148,7 @@ from FunctionCall fc, string msg
 where
   fc.getTarget().hasGlobalOrStdName(["malloc", "kmalloc"]) and
   fc.getArgument(0) instanceof VariableAccess and
-  not existsChecks(fc) and
+  not existsChecksorSet(fc) and
   (
     enclosingFunctionNotCall(fc) and
     msg =
