@@ -131,7 +131,7 @@ predicate lengthMayBeEquealZero(FunctionCall fc) {
         fc.getArgument(0).(VariableAccess).getTarget() =
           ftmp.getArgument(i).(AddressOfExpr).getAnOperand().(VariableAccess).getTarget() and
         ftmp.getTarget().getParameter(i).getAnAccess() = etmp and
-        //ссылочный параметр связан с вызовом fread
+        // The length parameter is associated with the fread call.
         exists(AssignExpr aetmp, FunctionCall f1tmp |
           aetmp.getLValue().getAChild*() = etmp and
           aetmp.getRValue() = f1tmp and
