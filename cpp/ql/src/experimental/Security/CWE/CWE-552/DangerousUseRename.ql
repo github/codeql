@@ -23,26 +23,26 @@ predicate findFileForReadOrWrite(FunctionCall fc, FunctionCall fc1, string mode,
 
 from FunctionCall renameCall
 where
-  fc.getTarget().hasName("rename") and
+  renameCall.getTarget().hasName("rename") and
   exists(IfStmt ifst, Expr ec, Expr ecd, FunctionCall readCall, FunctionCall writeCall |
-    findFileForReadOrWrite(fc, fc1, "r", 0) and
-    findFileForReadOrWrite(fc, fc2, "w", 1) and
+    findFileForReadOrWrite(renameCall, readCall, "r", 0) and
+    findFileForReadOrWrite(renameCall, writeCall, "w", 1) and
     ec.getValue() = "0" and
     ecd = ifst.getCondition().getAChild*() and
     (
-      globalValueNumber(ecd) = globalValueNumber(fc) and
+      globalValueNumber(ecd) = globalValueNumber(renameCall) and
       not ecd.getParent() instanceof ComparisonOperation and
       not ecd.getParent() instanceof NotExpr
       or
       exists(Expr evp |
-        globalValueNumber(evp) = globalValueNumber(fc) and
+        globalValueNumber(evp) = globalValueNumber(renameCall) and
         ecd.(ComparisonOperation).hasOperands(evp, _)
       )
     ) and
     (
       ecd.(EQExpr).hasOperands(_, ec) and
-      forall(Expr st | st = ifst.getThen().getASuccessor*() | st != fc1) and
-      forall(Expr st | st = ifst.getThen().getASuccessor*() | st != fc2)
+      forall(Expr st | st = ifst.getThen().getASuccessor*() | st != readCall) and
+      forall(Expr st | st = ifst.getThen().getASuccessor*() | st != writeCall)
       or
       (
         not ecd instanceof EQExpr
@@ -50,9 +50,9 @@ where
         not ecd.(EQExpr).getLeftOperand().getValue() = "0" and
         not ecd.(EQExpr).getRightOperand().getValue() = "0"
       ) and
-      ifst.getThen() = fc1.getEnclosingStmt().getParentStmt*() and
-      ifst.getThen() = fc2.getEnclosingStmt().getParentStmt*()
+      ifst.getThen() = readCall.getEnclosingStmt().getParentStmt*() and
+      ifst.getThen() = writeCall.getEnclosingStmt().getParentStmt*()
     )
   )
-select fc,
+select renameCall,
   "If the rename function did not work correctly, attempting to copy the contents of a source file by opening the target file without assessing permissions creates a mechanism for deleting an arbitrary system file."
