@@ -34,10 +34,19 @@ abstract class CredentialsNode extends DataFlow::Node {
   abstract string getCredentialsKind();
 }
 
+/** Companion module to the `CredentialsExpr` class. */
+module CredentialsExpr {
+  /** Normalizes a credentials kind, mapping `username` to `user name`. */
+  bindingset[kind]
+  string normalizeKind(string kind) {
+    if kind = "username" then result = "user name" else result = kind
+  }
+}
+
 private class CredentialsFromModel extends CredentialsNode {
   string kind;
 
   CredentialsFromModel() { this = ModelOutput::getASinkNode("credentials[" + kind + "]").asSink() }
 
-  override string getCredentialsKind() { result = kind }
+  override string getCredentialsKind() { result = CredentialsExpr::normalizeKind(kind) }
 }
