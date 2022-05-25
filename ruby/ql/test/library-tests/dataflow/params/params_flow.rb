@@ -21,3 +21,13 @@ end
 keyword(p1: taint(3), p2: taint(4))
 keyword(p2: taint(5), p1: taint(6))
 keyword(:p2 => taint(7), :p1 => taint(8))
+
+def kwargs(p1:, **kwargs)
+    sink p1 # $ hasValueFlow=9
+    sink (kwargs[:p1])
+    sink (kwargs[:p2]) # $ hasValueFlow=10
+    sink (kwargs[:p3]) # $ hasValueFlow=11
+    sink (kwargs[:p4])
+end
+
+kwargs(p1: taint(9), p2: taint(10), p3: taint(11), p4: "")

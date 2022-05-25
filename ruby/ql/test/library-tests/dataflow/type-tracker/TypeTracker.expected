@@ -139,6 +139,7 @@ track
 | type_tracker.rb:27:5:27:11 | call to puts | type tracker without call steps | type_tracker.rb:31:1:31:21 | call to keyword |
 | type_tracker.rb:27:5:27:11 | call to puts | type tracker without call steps | type_tracker.rb:32:1:32:27 | call to keyword |
 | type_tracker.rb:27:10:27:11 | [post] p2 | type tracker without call steps | type_tracker.rb:27:10:27:11 | [post] p2 |
+| type_tracker.rb:30:1:30:21 | ** | type tracker without call steps | type_tracker.rb:30:1:30:21 | ** |
 | type_tracker.rb:30:1:30:21 | [post] self | type tracker with call steps | type_tracker.rb:25:1:28:3 | self (keyword) |
 | type_tracker.rb:30:1:30:21 | [post] self | type tracker with call steps | type_tracker.rb:25:1:28:3 | self in keyword |
 | type_tracker.rb:30:1:30:21 | [post] self | type tracker without call steps | type_tracker.rb:30:1:30:21 | [post] self |
@@ -155,6 +156,7 @@ track
 | type_tracker.rb:30:20:30:20 | 4 | type tracker with call steps | type_tracker.rb:25:18:25:19 | p2 |
 | type_tracker.rb:30:20:30:20 | 4 | type tracker without call steps | type_tracker.rb:30:20:30:20 | 4 |
 | type_tracker.rb:30:20:30:20 | [post] 4 | type tracker without call steps | type_tracker.rb:30:20:30:20 | [post] 4 |
+| type_tracker.rb:31:1:31:21 | ** | type tracker without call steps | type_tracker.rb:31:1:31:21 | ** |
 | type_tracker.rb:31:1:31:21 | [post] self | type tracker with call steps | type_tracker.rb:25:1:28:3 | self (keyword) |
 | type_tracker.rb:31:1:31:21 | [post] self | type tracker with call steps | type_tracker.rb:25:1:28:3 | self in keyword |
 | type_tracker.rb:31:1:31:21 | [post] self | type tracker without call steps | type_tracker.rb:31:1:31:21 | [post] self |
@@ -171,6 +173,7 @@ track
 | type_tracker.rb:31:20:31:20 | 6 | type tracker with call steps | type_tracker.rb:25:13:25:14 | p1 |
 | type_tracker.rb:31:20:31:20 | 6 | type tracker without call steps | type_tracker.rb:31:20:31:20 | 6 |
 | type_tracker.rb:31:20:31:20 | [post] 6 | type tracker without call steps | type_tracker.rb:31:20:31:20 | [post] 6 |
+| type_tracker.rb:32:1:32:27 | ** | type tracker without call steps | type_tracker.rb:32:1:32:27 | ** |
 | type_tracker.rb:32:1:32:27 | [post] self | type tracker without call steps | type_tracker.rb:32:1:32:27 | [post] self |
 | type_tracker.rb:32:1:32:27 | call to keyword | type tracker without call steps | type_tracker.rb:32:1:32:27 | call to keyword |
 | type_tracker.rb:32:9:32:11 | :p2 | type tracker without call steps | type_tracker.rb:32:9:32:11 | :p2 |
@@ -393,6 +396,7 @@ trackEnd
 | type_tracker.rb:27:5:27:11 | call to puts | type_tracker.rb:31:1:31:21 | call to keyword |
 | type_tracker.rb:27:5:27:11 | call to puts | type_tracker.rb:32:1:32:27 | call to keyword |
 | type_tracker.rb:27:10:27:11 | [post] p2 | type_tracker.rb:27:10:27:11 | [post] p2 |
+| type_tracker.rb:30:1:30:21 | ** | type_tracker.rb:30:1:30:21 | ** |
 | type_tracker.rb:30:1:30:21 | [post] self | type_tracker.rb:25:1:28:3 | self (keyword) |
 | type_tracker.rb:30:1:30:21 | [post] self | type_tracker.rb:25:1:28:3 | self in keyword |
 | type_tracker.rb:30:1:30:21 | [post] self | type_tracker.rb:26:5:26:11 | self |
@@ -415,6 +419,7 @@ trackEnd
 | type_tracker.rb:30:20:30:20 | 4 | type_tracker.rb:27:10:27:11 | p2 |
 | type_tracker.rb:30:20:30:20 | 4 | type_tracker.rb:30:20:30:20 | 4 |
 | type_tracker.rb:30:20:30:20 | [post] 4 | type_tracker.rb:30:20:30:20 | [post] 4 |
+| type_tracker.rb:31:1:31:21 | ** | type_tracker.rb:31:1:31:21 | ** |
 | type_tracker.rb:31:1:31:21 | [post] self | type_tracker.rb:25:1:28:3 | self (keyword) |
 | type_tracker.rb:31:1:31:21 | [post] self | type_tracker.rb:25:1:28:3 | self in keyword |
 | type_tracker.rb:31:1:31:21 | [post] self | type_tracker.rb:26:5:26:11 | self |
@@ -436,6 +441,7 @@ trackEnd
 | type_tracker.rb:31:20:31:20 | 6 | type_tracker.rb:26:10:26:11 | p1 |
 | type_tracker.rb:31:20:31:20 | 6 | type_tracker.rb:31:20:31:20 | 6 |
 | type_tracker.rb:31:20:31:20 | [post] 6 | type_tracker.rb:31:20:31:20 | [post] 6 |
+| type_tracker.rb:32:1:32:27 | ** | type_tracker.rb:32:1:32:27 | ** |
 | type_tracker.rb:32:1:32:27 | [post] self | type_tracker.rb:32:1:32:27 | [post] self |
 | type_tracker.rb:32:1:32:27 | call to keyword | type_tracker.rb:32:1:32:27 | call to keyword |
 | type_tracker.rb:32:9:32:11 | :p2 | type_tracker.rb:32:9:32:11 | :p2 |
