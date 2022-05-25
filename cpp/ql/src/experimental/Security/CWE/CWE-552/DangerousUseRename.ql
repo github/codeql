@@ -1,6 +1,6 @@
 /**
  * @name Dangerous use of rename
- * @description If the rename function did not work correctly, simply overwriting the destination file can lead to errors.
+ * @description If the rename function did not work correctly, attempting to copy the contents of a source file by opening the target file without assessing permissions creates a mechanism for deleting an arbitrary system file.
  * @kind problem
  * @id cpp/dangerous-manual-copy-after-rename
  * @problem.severity warning
@@ -55,4 +55,4 @@ where
     )
   )
 select fc,
-  "If the rename function did not work correctly, simply overwriting the destination file can lead to errors."
+  "If the rename function did not work correctly, attempting to copy the contents of a source file by opening the target file without assessing permissions creates a mechanism for deleting an arbitrary system file."
