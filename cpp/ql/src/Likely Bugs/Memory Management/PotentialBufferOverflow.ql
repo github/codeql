@@ -13,7 +13,7 @@
  * @deprecated This query is deprecated, use
  *             Potentially overrunning write (`cpp/overrunning-write`) and
  *             Potentially overrunning write with float to string conversion
- *             (`cpp/overrunning-write-with-float) instead.
+ *             (`cpp/overrunning-write-with-float`) instead.
  */
 
 import cpp

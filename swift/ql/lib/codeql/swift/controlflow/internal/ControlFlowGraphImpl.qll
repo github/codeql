@@ -908,6 +908,8 @@ module Exprs {
     }
   }
 
+  private class TypeTree extends LeafTree instanceof TypeExpr { }
+
   private class DynamicTypeTree extends StandardPostOrderTree instanceof DynamicTypeExpr {
     final override ControlFlowTree getChildElement(int i) {
       result = super.getBaseExpr().getFullyConverted() and i = 0
@@ -951,7 +953,13 @@ module Exprs {
     }
   }
 
-  private class DeclRefExprTree extends LeafTree, DeclRefExpr { }
+  private class DeclRefExprTree extends LeafTree instanceof DeclRefExpr { }
+
+  private class MemberRefTree extends StandardPostOrderTree instanceof MemberRefExpr {
+    final override AstNode getChildElement(int i) {
+      result = super.getBaseExpr().getFullyConverted() and i = 0
+    }
+  }
 
   private class ApplyExprTree extends StandardPostOrderTree instanceof ApplyExpr {
     ApplyExprTree() {
@@ -966,6 +974,15 @@ module Exprs {
       result = super.getFunction().getFullyConverted()
       or
       result = super.getArgument(i).getExpr().getFullyConverted()
+    }
+  }
+
+  private class DefaultArgumentTree extends LeafTree instanceof DefaultArgumentExpr { }
+
+  private class ForceValueTree extends StandardPostOrderTree instanceof ForceValueExpr {
+    override AstNode getChildElement(int i) {
+      i = 0 and
+      result = super.getSubExpr().getFullyConverted()
     }
   }
 

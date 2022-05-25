@@ -31,11 +31,14 @@ cfg.swift:
 #-----|  -> ReturnStmt
 
 #   15| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #   15| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#   15| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #   15| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -62,17 +65,23 @@ cfg.swift:
 #-----| true -> GuardStmt
 
 #   18| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #   18| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#   18| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #   18| IntegerLiteralExpr
 #-----|  -> BinaryExpr
 
 #   19| ThrowStmt
 #-----| exception -> exit ConcreteFuncDecl (normal)
+
+#   19| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #   19| DotSyntaxCallExpr
 #-----|  -> ErasureExpr
@@ -81,7 +90,7 @@ cfg.swift:
 #-----|  -> ThrowStmt
 
 #   19| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #   21| GuardStmt
 #-----|  -> DeclRefExpr
@@ -97,17 +106,23 @@ cfg.swift:
 #-----| false -> DeclRefExpr
 
 #   21| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #   21| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#   21| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #   21| IntegerLiteralExpr
 #-----|  -> BinaryExpr
 
 #   22| ThrowStmt
 #-----| exception -> exit ConcreteFuncDecl (normal)
+
+#   22| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #   22| DotSyntaxCallExpr
 #-----|  -> DeclRefExpr
@@ -119,7 +134,7 @@ cfg.swift:
 #-----|  -> ThrowStmt
 
 #   22| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #   22| DeclRefExpr
 #-----|  -> IntegerLiteralExpr
@@ -128,11 +143,14 @@ cfg.swift:
 #-----|  -> CallExpr
 
 #   22| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #   22| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#   22| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #   22| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -167,6 +185,12 @@ cfg.swift:
 #   29| CallExpr
 #-----| exception -> CaseStmt
 
+#   29| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#   29| DefaultArgumentExpr
+#-----|  -> CallExpr
+
 #   29| ArrayExpr
 #-----|  -> VarargExpansionExpr
 
@@ -177,7 +201,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #   29| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #   33| CaseStmt
 #-----|  -> CaseLabelItem
@@ -260,6 +284,12 @@ cfg.swift:
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> IntegerLiteralExpr
 
+#   38| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#   38| DefaultArgumentExpr
+#-----|  -> CallExpr
+
 #   38| ArrayExpr
 #-----|  -> VarargExpansionExpr
 
@@ -270,7 +300,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #   38| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #   39| CaseStmt
 #-----|  -> CaseLabelItem
@@ -292,6 +322,12 @@ cfg.swift:
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> IntegerLiteralExpr
 
+#   40| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#   40| DefaultArgumentExpr
+#-----|  -> CallExpr
+
 #   40| ArrayExpr
 #-----|  -> VarargExpansionExpr
 
@@ -302,7 +338,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #   40| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #   42| ReturnStmt
 #-----| return -> exit ConcreteFuncDecl (normal)
@@ -342,11 +378,14 @@ cfg.swift:
 #-----|  -> ReturnStmt
 
 #   53| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #   53| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#   53| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #   53| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -469,6 +508,9 @@ cfg.swift:
 #-----|  -> DeclRefExpr
 
 #   71| DeclRefExpr
+#-----|  -> TypeExpr
+
+#   71| TypeExpr
 #-----|  -> ConstructorRefCallExpr
 
 #   71| CallExpr
@@ -501,7 +543,20 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #   76| NamedPattern
+#-----|  -> DeclRefExpr
+
+#   76| DeclRefExpr
+#-----|  -> StringLiteralExpr
+
+#   76| CallExpr
+#-----| exception -> exit ConcreteFuncDecl (normal)
+#-----|  -> ForceValueExpr
+
+#   76| ForceValueExpr
 #-----|  -> PatternBindingDecl
+
+#   76| StringLiteralExpr
+#-----|  -> CallExpr
 
 #   77| PatternBindingDecl
 #-----|  -> ConcreteVarDecl
@@ -529,7 +584,7 @@ cfg.swift:
 #-----|  -> LoadExpr
 
 #   78| LoadExpr
-#-----|  -> BinaryExpr
+#-----|  -> DeclRefExpr
 
 #   78| BinaryExpr
 #-----|  -> InjectIntoOptionalExpr
@@ -538,11 +593,23 @@ cfg.swift:
 #-----|  -> ReturnStmt
 
 #   78| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #   78| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#   78| TypeExpr
+#-----|  -> DotSyntaxCallExpr
+
+#   78| DeclRefExpr
+#-----|  -> LoadExpr
+
+#   78| LoadExpr
+#-----|  -> ForceValueExpr
+
+#   78| ForceValueExpr
+#-----|  -> BinaryExpr
 
 #   81| enter ConcreteFuncDecl
 #-----|  -> NamedPattern
@@ -582,11 +649,14 @@ cfg.swift:
 #-----|  -> AssignExpr
 
 #   85| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #   85| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#   85| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #   85| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -623,6 +693,12 @@ cfg.swift:
 #  100| exit ConstructorDecl (normal)
 #-----|  -> exit ConstructorDecl
 
+#  101| DeclRefExpr
+#-----|  -> MemberRefExpr
+
+#  101| MemberRefExpr
+#-----|  -> DeclRefExpr
+
 #  101| AssignExpr
 #-----|  -> ReturnStmt
 
@@ -633,7 +709,7 @@ cfg.swift:
 #-----| return -> exit ConstructorDecl (normal)
 
 #  104| enter ConcreteFuncDecl
-#-----|  -> ReturnStmt
+#-----|  -> DeclRefExpr
 
 #  104| exit ConcreteFuncDecl
 
@@ -642,6 +718,12 @@ cfg.swift:
 
 #  105| ReturnStmt
 #-----| return -> exit ConcreteFuncDecl (normal)
+
+#  105| DeclRefExpr
+#-----|  -> MemberRefExpr
+
+#  105| MemberRefExpr
+#-----|  -> ReturnStmt
 
 #  109| enter ConcreteFuncDecl
 #-----|  -> NamedPattern
@@ -664,6 +746,9 @@ cfg.swift:
 #-----|  -> IntegerLiteralExpr
 
 #  110| DeclRefExpr
+#-----|  -> TypeExpr
+
+#  110| TypeExpr
 #-----|  -> ConstructorRefCallExpr
 
 #  110| CallExpr
@@ -679,6 +764,12 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #  111| NamedPattern
+#-----|  -> DeclRefExpr
+
+#  111| DeclRefExpr
+#-----|  -> MemberRefExpr
+
+#  111| MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  112| PatternBindingDecl
@@ -688,6 +779,12 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #  112| NamedPattern
+#-----|  -> TBD (DotSelfExpr)
+
+#  112| TBD (DotSelfExpr)
+#-----|  -> MemberRefExpr
+
+#  112| MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  113| PatternBindingDecl
@@ -741,6 +838,12 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #  116| NamedPattern
+#-----|  -> DeclRefExpr
+
+#  116| DeclRefExpr
+#-----|  -> MemberRefExpr
+
+#  116| MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  117| PatternBindingDecl
@@ -750,6 +853,12 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #  117| NamedPattern
+#-----|  -> TBD (DotSelfExpr)
+
+#  117| TBD (DotSelfExpr)
+#-----|  -> MemberRefExpr
+
+#  117| MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  118| PatternBindingDecl
@@ -803,6 +912,15 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #  121| NamedPattern
+#-----|  -> DeclRefExpr
+
+#  121| DeclRefExpr
+#-----|  -> LoadExpr
+
+#  121| LoadExpr
+#-----|  -> MemberRefExpr
+
+#  121| MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  122| PatternBindingDecl
@@ -812,6 +930,15 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #  122| NamedPattern
+#-----|  -> TBD (DotSelfExpr)
+
+#  122| LoadExpr
+#-----|  -> MemberRefExpr
+
+#  122| TBD (DotSelfExpr)
+#-----|  -> LoadExpr
+
+#  122| MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  123| PatternBindingDecl
@@ -871,6 +998,15 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #  126| NamedPattern
+#-----|  -> DeclRefExpr
+
+#  126| DeclRefExpr
+#-----|  -> ForceValueExpr
+
+#  126| ForceValueExpr
+#-----|  -> MemberRefExpr
+
+#  126| MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  127| PatternBindingDecl
@@ -880,6 +1016,12 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #  127| NamedPattern
+#-----|  -> TBD (DotSelfExpr)
+
+#  127| TBD (DotSelfExpr)
+#-----|  -> MemberRefExpr
+
+#  127| MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  128| PatternBindingDecl
@@ -891,6 +1033,12 @@ cfg.swift:
 #  128| NamedPattern
 #-----|  -> DeclRefExpr
 
+#  128| DeclRefExpr
+#-----|  -> ForceValueExpr
+
+#  128| ForceValueExpr
+#-----|  -> DotSyntaxCallExpr
+
 #  128| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> CallExpr
@@ -899,7 +1047,7 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  128| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> DeclRefExpr
 
 #  129| PatternBindingDecl
 #-----|  -> ConcreteVarDecl
@@ -930,10 +1078,19 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #  131| NamedPattern
-#-----|  -> InjectIntoOptionalExpr
+#-----|  -> DeclRefExpr
+
+#  131| DeclRefExpr
+#-----|  -> BindOptionalExpr
+
+#  131| BindOptionalExpr
+#-----|  -> MemberRefExpr
 
 #  131| InjectIntoOptionalExpr
 #-----|  -> OptionalEvaluationExpr
+
+#  131| MemberRefExpr
+#-----|  -> InjectIntoOptionalExpr
 
 #  131| OptionalEvaluationExpr
 #-----|  -> PatternBindingDecl
@@ -945,10 +1102,16 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #  132| NamedPattern
-#-----|  -> InjectIntoOptionalExpr
+#-----|  -> TBD (DotSelfExpr)
+
+#  132| TBD (DotSelfExpr)
+#-----|  -> MemberRefExpr
 
 #  132| InjectIntoOptionalExpr
 #-----|  -> OptionalEvaluationExpr
+
+#  132| MemberRefExpr
+#-----|  -> InjectIntoOptionalExpr
 
 #  132| OptionalEvaluationExpr
 #-----|  -> PatternBindingDecl
@@ -1034,11 +1197,14 @@ cfg.swift:
 #-----|  -> ForEachStmt
 
 #  138| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  138| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> IntegerLiteralExpr
+
+#  138| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  138| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -1129,6 +1295,12 @@ cfg.swift:
 #  166| CallExpr
 #-----|  -> exit ConcreteFuncDecl (normal)
 
+#  166| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  166| DefaultArgumentExpr
+#-----|  -> CallExpr
+
 #  166| ArrayExpr
 #-----|  -> VarargExpansionExpr
 
@@ -1139,7 +1311,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  166| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  169| DeferStmt
 #-----|  -> DeferStmt
@@ -1149,6 +1321,12 @@ cfg.swift:
 
 #  170| CallExpr
 #-----|  -> DeclRefExpr
+
+#  170| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  170| DefaultArgumentExpr
+#-----|  -> CallExpr
 
 #  170| ArrayExpr
 #-----|  -> VarargExpansionExpr
@@ -1160,7 +1338,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  170| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  173| DeferStmt
 #-----|  -> DeclRefExpr
@@ -1170,6 +1348,12 @@ cfg.swift:
 
 #  174| CallExpr
 #-----|  -> DeferStmt
+
+#  174| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  174| DefaultArgumentExpr
+#-----|  -> CallExpr
 
 #  174| ArrayExpr
 #-----|  -> VarargExpansionExpr
@@ -1181,7 +1365,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  174| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  175| DeferStmt
 #-----|  -> DeclRefExpr
@@ -1191,6 +1375,12 @@ cfg.swift:
 
 #  176| CallExpr
 #-----|  -> DeclRefExpr
+
+#  176| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  176| DefaultArgumentExpr
+#-----|  -> CallExpr
 
 #  176| ArrayExpr
 #-----|  -> VarargExpansionExpr
@@ -1202,7 +1392,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  176| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  181| enter ConcreteFuncDecl
 #-----|  -> IfStmt
@@ -1226,11 +1416,14 @@ cfg.swift:
 #-----| false -> IfStmt
 
 #  182| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  182| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  182| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  182| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -1240,6 +1433,12 @@ cfg.swift:
 
 #  183| CallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
+
+#  183| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  183| DefaultArgumentExpr
+#-----|  -> CallExpr
 
 #  183| ArrayExpr
 #-----|  -> VarargExpansionExpr
@@ -1251,7 +1450,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  183| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  185| IfStmt
 #-----|  -> DeclRefExpr
@@ -1278,11 +1477,14 @@ cfg.swift:
 #-----| false -> DeclRefExpr
 
 #  185| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  185| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  185| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  185| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -1300,11 +1502,14 @@ cfg.swift:
 #-----|  -> BinaryExpr
 
 #  185| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  185| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  185| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  185| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -1328,11 +1533,14 @@ cfg.swift:
 #-----|  -> ParenExpr
 
 #  185| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  185| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  185| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  185| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -1342,6 +1550,12 @@ cfg.swift:
 
 #  186| CallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
+
+#  186| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  186| DefaultArgumentExpr
+#-----|  -> CallExpr
 
 #  186| ArrayExpr
 #-----|  -> VarargExpansionExpr
@@ -1353,13 +1567,19 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  186| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  189| DeclRefExpr
 #-----|  -> StringLiteralExpr
 
 #  189| CallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
+
+#  189| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  189| DefaultArgumentExpr
+#-----|  -> CallExpr
 
 #  189| ArrayExpr
 #-----|  -> VarargExpansionExpr
@@ -1371,7 +1591,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  189| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  193| enter ConcreteFuncDecl
 #-----|  -> IfStmt
@@ -1428,11 +1648,14 @@ cfg.swift:
 #-----| false -> DeclRefExpr
 
 #  201| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  201| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  201| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  201| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -1444,11 +1667,14 @@ cfg.swift:
 #-----|  -> IfStmt
 
 #  202| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  202| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  202| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  202| PrefixUnaryExpr
 #-----|  -> AssignExpr
@@ -1476,11 +1702,14 @@ cfg.swift:
 #-----| false -> DeclRefExpr
 
 #  203| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  203| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  203| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  203| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -1501,11 +1730,14 @@ cfg.swift:
 #-----|  -> AssignExpr
 
 #  204| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  204| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  204| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  204| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -1636,6 +1868,12 @@ cfg.swift:
 #  225| CallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 
+#  225| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  225| DefaultArgumentExpr
+#-----|  -> CallExpr
+
 #  225| ArrayExpr
 #-----|  -> VarargExpansionExpr
 
@@ -1646,7 +1884,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  225| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  229| enter ConcreteFuncDecl
 #-----|  -> IfStmt
@@ -1673,6 +1911,12 @@ cfg.swift:
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
 
+#  231| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  231| DefaultArgumentExpr
+#-----|  -> CallExpr
+
 #  231| ArrayExpr
 #-----|  -> VarargExpansionExpr
 
@@ -1683,7 +1927,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  231| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  233| BraceStmt
 #-----|  -> DeclRefExpr
@@ -1693,6 +1937,12 @@ cfg.swift:
 
 #  234| CallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
+
+#  234| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  234| DefaultArgumentExpr
+#-----|  -> CallExpr
 
 #  234| ArrayExpr
 #-----|  -> VarargExpansionExpr
@@ -1704,7 +1954,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  234| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  237| enter ConcreteFuncDecl
 #-----|  -> IfStmt
@@ -1746,6 +1996,12 @@ cfg.swift:
 #  239| CallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 
+#  239| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  239| DefaultArgumentExpr
+#-----|  -> CallExpr
+
 #  239| ArrayExpr
 #-----|  -> VarargExpansionExpr
 
@@ -1756,7 +2012,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  239| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  243| enter ConcreteFuncDecl
 #-----|  -> NamedPattern
@@ -1782,11 +2038,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  244| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  244| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  244| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  244| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -1807,11 +2066,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  245| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  245| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  245| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  245| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -1832,11 +2094,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  246| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  246| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  246| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  246| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -1857,11 +2122,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  247| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  247| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  247| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  247| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -1882,11 +2150,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  248| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  248| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  248| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  248| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -1907,11 +2178,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  249| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  249| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  249| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  249| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -1932,11 +2206,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  250| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  250| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  250| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  250| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -1957,11 +2234,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  251| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  251| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  251| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  251| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -1982,11 +2262,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  252| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  252| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  252| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  252| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -2007,11 +2290,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  253| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  253| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  253| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  253| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -2032,11 +2318,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  254| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  254| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  254| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  254| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -2057,11 +2346,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  255| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  255| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  255| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  255| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -2082,11 +2374,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  256| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  256| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  256| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  256| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -2107,11 +2402,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  257| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  257| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  257| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  257| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -2132,11 +2430,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  258| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  258| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  258| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  258| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -2157,11 +2458,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  259| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  259| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  259| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  259| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -2270,11 +2574,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  269| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  269| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  269| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  269| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2298,11 +2605,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  270| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  270| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  270| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  270| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2326,11 +2636,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  271| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  271| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  271| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  271| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2354,11 +2667,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  272| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  272| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  272| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  272| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2382,11 +2698,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  273| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  273| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  273| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  273| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2410,11 +2729,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  274| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  274| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  274| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  274| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2438,11 +2760,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  275| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  275| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  275| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  275| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2466,11 +2791,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  276| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  276| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  276| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  276| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2494,11 +2822,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  277| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  277| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  277| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  277| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2522,11 +2853,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  278| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  278| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  278| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  278| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2730,11 +3064,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  284| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  284| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  284| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  284| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2773,11 +3110,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  285| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  285| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  285| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  285| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2816,11 +3156,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  286| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  286| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  286| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  286| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2859,11 +3202,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  287| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  287| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  287| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  287| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2902,11 +3248,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  288| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  288| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  288| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  288| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2945,11 +3294,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  289| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  289| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  289| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  289| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -2988,11 +3340,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  290| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  290| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  290| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  290| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3031,11 +3386,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  291| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  291| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  291| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  291| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3074,11 +3432,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  292| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  292| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  292| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  292| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3117,11 +3478,14 @@ cfg.swift:
 #-----|  -> SubscriptExpr
 
 #  293| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  293| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  293| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  293| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3169,11 +3533,14 @@ cfg.swift:
 #-----|  -> DeclRefExpr
 
 #  296| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  296| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  296| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  296| DeclRefExpr
 #-----|  -> InOutExpr
@@ -3197,11 +3564,14 @@ cfg.swift:
 #-----|  -> DeclRefExpr
 
 #  296| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  296| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  296| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  296| DeclRefExpr
 #-----|  -> InOutExpr
@@ -3225,11 +3595,14 @@ cfg.swift:
 #-----|  -> DeclRefExpr
 
 #  296| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  296| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  296| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  296| DeclRefExpr
 #-----|  -> InOutExpr
@@ -3253,11 +3626,14 @@ cfg.swift:
 #-----|  -> DeclRefExpr
 
 #  296| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  296| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  296| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  296| DeclRefExpr
 #-----|  -> InOutExpr
@@ -3281,11 +3657,14 @@ cfg.swift:
 #-----|  -> TupleExpr
 
 #  296| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  296| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  296| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  296| DeclRefExpr
 #-----|  -> InOutExpr
@@ -3327,11 +3706,14 @@ cfg.swift:
 #-----| true -> DeclRefExpr
 
 #  300| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  300| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  300| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  300| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3342,6 +3724,12 @@ cfg.swift:
 #  301| CallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  301| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  301| DefaultArgumentExpr
+#-----|  -> CallExpr
 
 #  301| ArrayExpr
 #-----|  -> VarargExpansionExpr
@@ -3356,7 +3744,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  301| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  302| DeclRefExpr
 #-----|  -> InOutExpr
@@ -3368,11 +3756,14 @@ cfg.swift:
 #-----|  -> DeclRefExpr
 
 #  302| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  302| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  302| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  302| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3402,11 +3793,14 @@ cfg.swift:
 #-----| false -> DeclRefExpr
 
 #  307| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  307| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  307| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  307| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3417,6 +3811,12 @@ cfg.swift:
 #  308| CallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  308| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  308| DefaultArgumentExpr
+#-----|  -> CallExpr
 
 #  308| ArrayExpr
 #-----|  -> VarargExpansionExpr
@@ -3431,7 +3831,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  308| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  309| DeclRefExpr
 #-----|  -> InOutExpr
@@ -3443,11 +3843,14 @@ cfg.swift:
 #-----|  -> IfStmt
 
 #  309| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  309| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  309| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  309| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3469,11 +3872,14 @@ cfg.swift:
 #-----| false -> IfStmt
 
 #  310| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  310| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  310| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  310| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3498,11 +3904,14 @@ cfg.swift:
 #-----| false -> DeclRefExpr
 
 #  313| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  313| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  313| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  313| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3517,6 +3926,12 @@ cfg.swift:
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
 
+#  316| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  316| DefaultArgumentExpr
+#-----|  -> CallExpr
+
 #  316| ArrayExpr
 #-----|  -> VarargExpansionExpr
 
@@ -3527,13 +3942,19 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  316| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  318| DeclRefExpr
 #-----|  -> StringLiteralExpr
 
 #  318| CallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
+
+#  318| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  318| DefaultArgumentExpr
+#-----|  -> CallExpr
 
 #  318| ArrayExpr
 #-----|  -> VarargExpansionExpr
@@ -3545,7 +3966,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  318| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  321| enter ConcreteFuncDecl
 #-----|  -> WhileStmt
@@ -3572,11 +3993,14 @@ cfg.swift:
 #-----| true -> WhileStmt
 
 #  322| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  322| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  322| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  322| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3598,11 +4022,14 @@ cfg.swift:
 #-----| false -> DeclRefExpr
 
 #  323| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  323| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  323| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  323| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3613,6 +4040,12 @@ cfg.swift:
 #  324| CallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  324| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  324| DefaultArgumentExpr
+#-----|  -> CallExpr
 
 #  324| ArrayExpr
 #-----|  -> VarargExpansionExpr
@@ -3627,7 +4060,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  324| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  325| DeclRefExpr
 #-----|  -> InOutExpr
@@ -3639,11 +4072,14 @@ cfg.swift:
 #-----|  -> IfStmt
 
 #  325| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  325| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  325| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  325| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3665,11 +4101,14 @@ cfg.swift:
 #-----| false -> IfStmt
 
 #  326| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  326| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  326| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  326| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3694,11 +4133,14 @@ cfg.swift:
 #-----| false -> DeclRefExpr
 
 #  329| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  329| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  329| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  329| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3713,6 +4155,12 @@ cfg.swift:
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
 
+#  332| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  332| DefaultArgumentExpr
+#-----|  -> CallExpr
+
 #  332| ArrayExpr
 #-----|  -> VarargExpansionExpr
 
@@ -3723,7 +4171,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  332| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  334| DeclRefExpr
 #-----|  -> StringLiteralExpr
@@ -3731,6 +4179,12 @@ cfg.swift:
 #  334| CallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  334| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  334| DefaultArgumentExpr
+#-----|  -> CallExpr
 
 #  334| ArrayExpr
 #-----|  -> VarargExpansionExpr
@@ -3742,7 +4196,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  334| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  338| enter ConcreteFuncDecl
 #-----|  -> RepeatWhileStmt
@@ -3762,6 +4216,12 @@ cfg.swift:
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
 
+#  340| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  340| DefaultArgumentExpr
+#-----|  -> CallExpr
+
 #  340| ArrayExpr
 #-----|  -> VarargExpansionExpr
 
@@ -3775,7 +4235,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  340| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  341| DeclRefExpr
 #-----|  -> InOutExpr
@@ -3787,11 +4247,14 @@ cfg.swift:
 #-----|  -> DeclRefExpr
 
 #  341| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  341| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  341| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  341| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3807,11 +4270,14 @@ cfg.swift:
 #-----| true -> DeclRefExpr
 
 #  342| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  342| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  342| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  342| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3856,11 +4322,14 @@ cfg.swift:
 #-----|  -> ParenExpr
 
 #  347| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  347| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  347| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  347| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3875,11 +4344,14 @@ cfg.swift:
 #-----|  -> DeclRefExpr
 
 #  348| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  348| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  348| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  348| IntegerLiteralExpr
 #-----|  -> BinaryExpr
@@ -3899,6 +4371,12 @@ cfg.swift:
 #  354| exit ConstructorDecl (normal)
 #-----|  -> exit ConstructorDecl
 
+#  355| DeclRefExpr
+#-----|  -> MemberRefExpr
+
+#  355| MemberRefExpr
+#-----|  -> DeclRefExpr
+
 #  355| AssignExpr
 #-----|  -> ReturnStmt
 
@@ -3909,7 +4387,7 @@ cfg.swift:
 #-----| return -> exit ConstructorDecl (normal)
 
 #  358| enter ConcreteFuncDecl
-#-----|  -> ReturnStmt
+#-----|  -> DeclRefExpr
 
 #  358| exit ConcreteFuncDecl
 
@@ -3918,6 +4396,12 @@ cfg.swift:
 
 #  359| ReturnStmt
 #-----| return -> exit ConcreteFuncDecl (normal)
+
+#  359| DeclRefExpr
+#-----|  -> MemberRefExpr
+
+#  359| MemberRefExpr
+#-----|  -> ReturnStmt
 
 #  363| enter ConcreteFuncDecl
 #-----|  -> DeclRefExpr
@@ -3995,11 +4479,14 @@ cfg.swift:
 #-----|  -> PatternBindingDecl
 
 #  368| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  368| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  368| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  368| DeclRefExpr
 #-----|  -> BinaryExpr
@@ -4040,11 +4527,14 @@ cfg.swift:
 #-----|  -> ReturnStmt
 
 #  374| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  374| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  374| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  374| DeclRefExpr
 #-----|  -> TupleElementExpr
@@ -4053,11 +4543,14 @@ cfg.swift:
 #-----|  -> BinaryExpr
 
 #  374| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  374| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  374| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  374| DeclRefExpr
 #-----|  -> TupleElementExpr
@@ -4066,11 +4559,14 @@ cfg.swift:
 #-----|  -> BinaryExpr
 
 #  374| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> TypeExpr
 
 #  374| DotSyntaxCallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 #-----|  -> DeclRefExpr
+
+#  374| TypeExpr
+#-----|  -> DotSyntaxCallExpr
 
 #  374| TupleExpr
 #-----|  -> TupleElementExpr
@@ -4175,6 +4671,12 @@ cfg.swift:
 #  386| CallExpr
 #-----| exception -> exit ConcreteFuncDecl (normal)
 
+#  386| DefaultArgumentExpr
+#-----|  -> DefaultArgumentExpr
+
+#  386| DefaultArgumentExpr
+#-----|  -> CallExpr
+
 #  386| ArrayExpr
 #-----|  -> VarargExpansionExpr
 
@@ -4185,7 +4687,7 @@ cfg.swift:
 #-----|  -> ErasureExpr
 
 #  386| VarargExpansionExpr
-#-----|  -> CallExpr
+#-----|  -> DefaultArgumentExpr
 
 #  394| TBD (YieldStmt)
 #-----|  -> exit AccessorDecl (normal)
@@ -4213,12 +4715,18 @@ cfg.swift:
 #-----|  -> exit AccessorDecl
 
 #  395| enter ConstructorDecl
-#-----|  -> IntegerLiteralExpr
+#-----|  -> DeclRefExpr
 
 #  395| exit ConstructorDecl
 
 #  395| exit ConstructorDecl (normal)
 #-----|  -> exit ConstructorDecl
+
+#  396| DeclRefExpr
+#-----|  -> MemberRefExpr
+
+#  396| MemberRefExpr
+#-----|  -> IntegerLiteralExpr
 
 #  396| AssignExpr
 #-----|  -> ReturnStmt
@@ -4230,12 +4738,18 @@ cfg.swift:
 #-----| return -> exit ConstructorDecl (normal)
 
 #  399| enter DestructorDecl
-#-----|  -> IntegerLiteralExpr
+#-----|  -> DeclRefExpr
 
 #  399| exit DestructorDecl
 
 #  399| exit DestructorDecl (normal)
 #-----|  -> exit DestructorDecl
+
+#  400| DeclRefExpr
+#-----|  -> MemberRefExpr
+
+#  400| MemberRefExpr
+#-----|  -> IntegerLiteralExpr
 
 #  400| AssignExpr
 #-----|  -> exit DestructorDecl (normal)

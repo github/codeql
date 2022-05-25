@@ -16,7 +16,7 @@ from DataFlow::Node src, DataFlow::Node sink
 where
   (
     localAdditionalTaintStep(src, sink) or
-    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
   ) and
   not FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false) and
   not FlowSummaryImpl::Private::Steps::summaryReadStep(src, _, sink) and

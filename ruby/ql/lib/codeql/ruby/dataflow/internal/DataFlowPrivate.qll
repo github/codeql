@@ -6,6 +6,7 @@ private import DataFlowPublic
 private import DataFlowDispatch
 private import SsaImpl as SsaImpl
 private import FlowSummaryImpl as FlowSummaryImpl
+private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -177,7 +178,7 @@ private class Argument extends CfgNodes::ExprCfgNode {
     exists(int i |
       this = call.getArgument(i) and
       not this.getExpr() instanceof BlockArgument and
-      not exists(this.getExpr().(Pair).getKey().getConstantValue().getSymbol()) and
+      not this.getExpr().(Pair).getKey().getConstantValue().isSymbol(_) and
       arg.isPositional(i)
     )
     or
@@ -257,7 +258,7 @@ private module Cached {
     nodeTo.(SynthReturnNode).getAnInput() = nodeFrom
     or
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo) and
-    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom)
+    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
@@ -275,7 +276,7 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
   }
 
   /** This is the local flow predicate that is used in type tracking. */
@@ -334,7 +335,10 @@ private module Cached {
   cached
   newtype TContentSet =
     TSingletonContent(Content c) or
-    TAnyElementContent()
+    TAnyElementContent() or
+    TElementLowerBoundContent(int lower) {
+      FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, lower)
+    }
 
   cached
   newtype TContent =
@@ -342,8 +346,10 @@ private module Cached {
       not cv.isInt(_) or
       cv.getInt() in [0 .. 10]
     } or
-    TFieldContent(string name) { name = any(InstanceVariable v).getName() } or
-    TUnknownElementContent()
+    TUnknownElementContent() or
+    TKnownPairValueContent(ConstantValue cv) or
+    TUnknownPairValueContent() or
+    TFieldContent(string name) { name = any(InstanceVariable v).getName() }
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
@@ -361,6 +367,8 @@ private module Cached {
 }
 
 class TElementContent = TKnownElementContent or TUnknownElementContent;
+
+class TPairValueContent = TKnownPairValueContent or TUnknownPairValueContent;
 
 import Cached
 
@@ -818,6 +826,25 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     ).getReceiver()
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
+  or
+  // Needed for pairs passed into method calls where the key is not a symbol,
+  // that is, where it is not a keyword argument.
+  node2.asExpr() =
+    any(CfgNodes::ExprNodes::PairCfgNode pair |
+      exists(CfgNodes::ExprCfgNode key |
+        key = pair.getKey() and
+        pair.getValue() = node1.asExpr()
+      |
+        exists(ConstantValue cv |
+          cv = key.getConstantValue() and
+          not cv.isSymbol(_) and // handled as a keyword argument
+          c.isSingleton(TKnownPairValueContent(cv))
+        )
+        or
+        not exists(key.getConstantValue()) and
+        c.isSingleton(TUnknownPairValueContent())
+      )
+    )
 }
 
 /**
