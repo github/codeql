@@ -1,8 +1,12 @@
 edges
+| LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | LogForging.cs:17:27:17:61 | access to indexer : String |
 | LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | LogForging.cs:20:21:20:43 | ... + ... |
 | LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | LogForging.cs:26:50:26:72 | ... + ... |
+| LogForging.cs:17:27:17:61 | access to indexer : String | LogForging.cs:20:21:20:43 | ... + ... |
+| LogForging.cs:17:27:17:61 | access to indexer : String | LogForging.cs:26:50:26:72 | ... + ... |
 nodes
 | LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| LogForging.cs:17:27:17:61 | access to indexer : String | semmle.label | access to indexer : String |
 | LogForging.cs:20:21:20:43 | ... + ... | semmle.label | ... + ... |
 | LogForging.cs:26:50:26:72 | ... + ... | semmle.label | ... + ... |
 subpaths

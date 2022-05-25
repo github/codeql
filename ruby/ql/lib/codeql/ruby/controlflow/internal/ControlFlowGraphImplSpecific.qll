@@ -35,12 +35,12 @@ predicate getCfgScope = Impl::getCfgScope/1;
 
 /** Holds if `first` is first executed when entering `scope`. */
 predicate scopeFirst(CfgScope scope, ControlFlowElement first) {
-  scope.(Impl::CfgScope::Range_).entry(first)
+  scope.(Impl::CfgScopeImpl).entry(first)
 }
 
 /** Holds if `scope` is exited when `last` finishes with completion `c`. */
 predicate scopeLast(CfgScope scope, ControlFlowElement last, Completion c) {
-  scope.(Impl::CfgScope::Range_).exit(last, c)
+  scope.(Impl::CfgScopeImpl).exit(last, c)
 }
 
 /** The maximum number of splits allowed for a given node. */

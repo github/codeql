@@ -1,0 +1,9 @@
+<project language="go">
+  <timeout>600</timeout>
+  <autoupdate>
+    <checkout>git clone -n ${repository} ${src}</checkout>
+    <checkout>git checkout ${revision}</checkout>
+    <build export="LGTM_SRC,SEMMLE_REPO_URL">${semmle_dist}/language-packs/go/tools/platform/${semmle_platform}/bin/go-autobuilder</build>
+    <build>odasa duplicateCode --ram 2048 --minimum-tokens 100</build>
+  </autoupdate>
+</project>

@@ -1,0 +1,4 @@
+| main.go:39:10:39:40 | type conversion |
+| main.go:41:20:41:30 | "Body text" |
+| main.go:63:18:63:28 | "Hello, %q" |
+| main.go:63:31:63:59 | call to EscapeString |

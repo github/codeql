@@ -1,0 +1,11 @@
+- description: Standard LGTM queries for Go, including ones not displayed by default
+- queries: .
+- apply: lgtm-selectors.yml
+  from: codeql/suite-helpers
+# These are only for IDE use.
+- exclude:
+    tags contain:
+      - ide-contextual-queries/local-definitions
+      - ide-contextual-queries/local-references
+- query: Metrics/FLinesOfCode.ql
+- query: Metrics/FLinesOfComment.ql

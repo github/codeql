@@ -88,7 +88,10 @@ module EntityFramework {
   }
 
   /** A flow summary for EntityFramework. */
-  abstract class EFSummarizedCallable extends SummarizedCallable { }
+  abstract class EFSummarizedCallable extends SummarizedCallable {
+    bindingset[this]
+    EFSummarizedCallable() { any() }
+  }
 
   private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
     override predicate required(SummaryComponent head, SummaryComponentStack tail) {

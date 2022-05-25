@@ -20,7 +20,7 @@ class UnsafeYearCreationFromArithmeticConfiguration extends TaintTracking::Confi
   override predicate isSource(DataFlow::Node source) {
     exists(ArithmeticOperation ao, PropertyAccess pa | ao = source.asExpr() |
       pa = ao.getAChild*() and
-      pa.getProperty().getQualifiedName().matches("System.DateTime.Year")
+      pa.getProperty().hasQualifiedName("System.DateTime.Year")
     )
   }
 

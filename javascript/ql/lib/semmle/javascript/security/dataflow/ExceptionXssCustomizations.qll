@@ -5,7 +5,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 
 /**
  * Provides sources, sinks, and sanitizers for reasoning about

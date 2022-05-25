@@ -19,7 +19,7 @@ predicate whitelist(Function f) {
       "nearbyintl", "rint", "rintf", "rintl", "round", "roundf", "roundl", "trunc", "truncf",
       "truncl"
     ] or
-  f.getName().matches("__builtin_%")
+  f.getName().matches("\\_\\_builtin\\_%")
 }
 
 predicate whitelistPow(FunctionCall fc) {

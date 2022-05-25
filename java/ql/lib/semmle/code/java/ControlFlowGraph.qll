@@ -286,7 +286,7 @@ private module ControlFlowGraphImpl {
    * That is, contexts where the control-flow edges depend on `value` given that `b` ends
    * with a `booleanCompletion(value, _)`.
    */
-  private predicate inBooleanContext(Expr b) {
+  private predicate inBooleanContext(ControlFlowNode b) {
     exists(LogicExpr logexpr |
       logexpr.(BinaryExpr).getLeftOperand() = b
       or
@@ -316,6 +316,10 @@ private module ControlFlowGraphImpl {
       inBooleanContext(whenexpr) and
       whenexpr.getBranch(_).getAResult() = b
     )
+    or
+    inBooleanContext(b.(ExprStmt).getExpr())
+    or
+    inBooleanContext(b.(StmtExpr).getStmt())
   }
 
   /**
@@ -907,7 +911,8 @@ private module ControlFlowGraphImpl {
     )
     or
     // the last node in an `ExprStmt` is the last node in the expression
-    last(n.(ExprStmt).getExpr(), last, completion) and completion = NormalCompletion()
+    last(n.(ExprStmt).getExpr(), last, completion) and
+    completion instanceof NormalOrBooleanCompletion
     or
     // the last node in a `StmtExpr` is the last node in the statement
     last(n.(StmtExpr).getStmt(), last, completion)

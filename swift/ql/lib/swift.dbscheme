@@ -22,21 +22,14 @@ sourceLocationPrefix(
 | @type
 ;
 
+#keyset[id]
+element_is_unknown(
+  int id: @element ref
+);
+
 files(
   unique int id: @file,
   string name: string ref
-);
-
-@iterable_decl_context =
-  @extension_decl
-| @nominal_type_decl
-;
-
-#keyset[id, index]
-iterable_decl_context_members(
-  int id: @iterable_decl_context ref,
-  int index: int ref,
-  int member: @decl ref
 );
 
 @locatable =
@@ -82,7 +75,6 @@ locations(
 | @sugar_type
 | @tuple_type
 | @type_variable_type
-| @unknown_type
 | @unresolved_type
 ;
 
@@ -91,6 +83,18 @@ types(
   int id: @type ref,
   string diagnostics_name: string ref,
   int canonical_type: @type ref
+);
+
+@iterable_decl_context =
+  @extension_decl
+| @nominal_type_decl
+;
+
+#keyset[id, index]
+iterable_decl_context_members(
+  int id: @iterable_decl_context ref,
+  int index: int ref,
+  int member: @decl ref
 );
 
 extension_decls(
@@ -209,7 +213,9 @@ any_generic_type_parents(
 ;
 
 dependent_member_types(
-  unique int id: @dependent_member_type
+  unique int id: @dependent_member_type,
+  int baseType: @type ref,
+  int associated_type_decl: @associated_type_decl ref
 );
 
 dynamic_self_types(
@@ -282,13 +288,22 @@ tuple_types(
   unique int id: @tuple_type
 );
 
-type_variable_types(
-  unique int id: @type_variable_type
+#keyset[id, index]
+tuple_type_types(
+  int id: @tuple_type ref,
+  int index: int ref,
+  int type_: @type ref
 );
 
-unknown_types(
-  unique int id: @unknown_type,
+#keyset[id, index]
+tuple_type_names(
+  int id: @tuple_type ref,
+  int index: int ref,
   string name: string ref
+);
+
+type_variable_types(
+  unique int id: @type_variable_type
 );
 
 unresolved_types(
@@ -322,7 +337,6 @@ struct_decls(
 | @pound_diagnostic_decl
 | @precedence_group_decl
 | @top_level_code_decl
-| @unknown_ast_node
 | @value_decl
 ;
 
@@ -373,7 +387,6 @@ struct_decls(
 | @tuple_element_expr
 | @tuple_expr
 | @type_expr
-| @unknown_ast_node
 | @unresolved_decl_ref_expr
 | @unresolved_dot_expr
 | @unresolved_member_expr
@@ -400,7 +413,6 @@ expr_types(
 | @paren_pattern
 | @tuple_pattern
 | @typed_pattern
-| @unknown_ast_node
 ;
 
 @stmt =
@@ -415,12 +427,29 @@ expr_types(
 | @pound_assert_stmt
 | @return_stmt
 | @throw_stmt
-| @unknown_ast_node
 | @yield_stmt
 ;
 
 @type_repr =
-  @unknown_ast_node
+  @array_type_repr
+| @attributed_type_repr
+| @composition_type_repr
+| @dictionary_type_repr
+| @error_type_repr
+| @existential_type_repr
+| @fixed_type_repr
+| @function_type_repr
+| @ident_type_repr
+| @implicitly_unwrapped_optional_type_repr
+| @metatype_type_repr
+| @named_opaque_return_type_repr
+| @opaque_return_type_repr
+| @optional_type_repr
+| @placeholder_type_repr
+| @protocol_type_repr
+| @sil_box_type_repr
+| @specifier_type_repr
+| @tuple_type_repr
 ;
 
 function_types(
@@ -526,7 +555,8 @@ generic_type_param_types(
 );
 
 paren_types(
-  unique int id: @paren_type
+  unique int id: @paren_type,
+  int type_: @type ref
 );
 
 @syntax_sugar_type =
@@ -535,7 +565,8 @@ paren_types(
 ;
 
 type_alias_types(
-  unique int id: @type_alias_type
+  unique int id: @type_alias_type,
+  int decl: @type_alias_decl ref
 );
 
 enum_case_decls(
@@ -567,6 +598,12 @@ missing_member_decls(
 | @prefix_operator_decl
 ;
 
+#keyset[id]
+operator_decls(
+  int id: @operator_decl ref,
+  string name: string ref
+);
+
 pattern_binding_decls(
   unique int id: @pattern_binding_decl
 );
@@ -596,11 +633,6 @@ precedence_group_decls(
 top_level_code_decls(
   unique int id: @top_level_code_decl,
   int body: @brace_stmt ref
-);
-
-unknown_ast_nodes(
-  unique int id: @unknown_ast_node,
-  string name: string ref
 );
 
 @value_decl =
@@ -710,6 +742,21 @@ decl_ref_expr_replacement_types(
   int id: @decl_ref_expr ref,
   int index: int ref,
   int replacement_type: @type ref
+);
+
+#keyset[id]
+decl_ref_expr_has_direct_to_storage_semantics(
+  int id: @decl_ref_expr ref
+);
+
+#keyset[id]
+decl_ref_expr_has_direct_to_implementation_semantics(
+  int id: @decl_ref_expr ref
+);
+
+#keyset[id]
+decl_ref_expr_has_ordinary_semantics(
+  int id: @decl_ref_expr ref
 );
 
 default_argument_exprs(
@@ -877,6 +924,13 @@ lazy_initializer_exprs(
 | @member_ref_expr
 | @subscript_expr
 ;
+
+#keyset[id]
+lookup_exprs(
+  int id: @lookup_expr ref,
+  int base_expr: @expr ref,
+  int member: @decl ref
+);
 
 make_temporarily_escapable_exprs(
   unique int id: @make_temporarily_escapable_expr,
@@ -1218,6 +1272,13 @@ yield_stmts(
 | @bound_generic_struct_type
 ;
 
+#keyset[id, index]
+bound_generic_type_arg_types(
+  int id: @bound_generic_type ref,
+  int index: int ref,
+  int arg_type: @type ref
+);
+
 @nominal_type =
   @class_type
 | @enum_type
@@ -1231,6 +1292,12 @@ builtin_integer_literal_types(
 
 builtin_integer_types(
   unique int id: @builtin_integer_type
+);
+
+#keyset[id]
+builtin_integer_type_widths(
+  int id: @builtin_integer_type ref,
+  int width: int ref
 );
 
 nested_archetype_types(
@@ -1255,7 +1322,9 @@ primary_archetype_types(
 );
 
 dictionary_types(
-  unique int id: @dictionary_type
+  unique int id: @dictionary_type,
+  int key_type: @type ref,
+  int value_type: @type ref
 );
 
 @unary_syntax_sugar_type =
@@ -1264,8 +1333,20 @@ dictionary_types(
 | @variadic_sequence_type
 ;
 
+#keyset[id]
+unary_syntax_sugar_types(
+  int id: @unary_syntax_sugar_type ref,
+  int base_type: @type ref
+);
+
 infix_operator_decls(
   unique int id: @infix_operator_decl
+);
+
+#keyset[id]
+infix_operator_decl_precedence_groups(
+  int id: @infix_operator_decl ref,
+  int precedence_group: @precedence_group_decl ref
 );
 
 postfix_operator_decls(
@@ -1306,6 +1387,13 @@ abstract_function_decl_params(
 | @var_decl
 ;
 
+#keyset[id, index]
+abstract_storage_decl_accessor_decls(
+  int id: @abstract_storage_decl ref,
+  int index: int ref,
+  int accessor_decl: @accessor_decl ref
+);
+
 enum_element_decls(
   unique int id: @enum_element_decl,
   string name: string ref
@@ -1328,6 +1416,13 @@ enum_element_decl_params(
 type_decls(
   int id: @type_decl ref,
   string name: string ref
+);
+
+#keyset[id, index]
+type_decl_base_types(
+  int id: @type_decl ref,
+  int index: int ref,
+  int base_type: @type ref
 );
 
 auto_closure_exprs(
@@ -1604,13 +1699,26 @@ object_literal_exprs(
 ;
 
 member_ref_exprs(
-  unique int id: @member_ref_expr,
-  int base_expr: @expr ref
+  unique int id: @member_ref_expr
+);
+
+#keyset[id]
+member_ref_expr_has_direct_to_storage_semantics(
+  int id: @member_ref_expr ref
+);
+
+#keyset[id]
+member_ref_expr_has_direct_to_implementation_semantics(
+  int id: @member_ref_expr ref
+);
+
+#keyset[id]
+member_ref_expr_has_ordinary_semantics(
+  int id: @member_ref_expr ref
 );
 
 subscript_exprs(
-  unique int id: @subscript_expr,
-  int base_expr: @expr ref
+  unique int id: @subscript_expr
 );
 
 #keyset[id, index]
@@ -1618,6 +1726,21 @@ subscript_expr_arguments(
   int id: @subscript_expr ref,
   int index: int ref,
   int argument: @argument ref
+);
+
+#keyset[id]
+subscript_expr_has_direct_to_storage_semantics(
+  int id: @subscript_expr ref
+);
+
+#keyset[id]
+subscript_expr_has_direct_to_implementation_semantics(
+  int id: @subscript_expr ref
+);
+
+#keyset[id]
+subscript_expr_has_ordinary_semantics(
+  int id: @subscript_expr ref
 );
 
 overloaded_decl_ref_exprs(
@@ -1643,8 +1766,9 @@ do_stmts(
 
 for_each_stmts(
   unique int id: @for_each_stmt,
-  int body: @brace_stmt ref,
-  int sequence: @expr ref
+  int pattern: @pattern ref,
+  int sequence: @expr ref,
+  int body: @brace_stmt ref
 );
 
 #keyset[id]
@@ -1707,8 +1831,7 @@ bound_generic_struct_types(
 );
 
 class_types(
-  unique int id: @class_type,
-  int decl: @class_decl ref
+  unique int id: @class_type
 );
 
 enum_types(
@@ -1720,8 +1843,7 @@ protocol_types(
 );
 
 struct_types(
-  unique int id: @struct_type,
-  int decl: @struct_decl ref
+  unique int id: @struct_type
 );
 
 array_slice_types(
@@ -1750,7 +1872,15 @@ destructor_decls(
 ;
 
 subscript_decls(
-  unique int id: @subscript_decl
+  unique int id: @subscript_decl,
+  int element_type: @type ref
+);
+
+#keyset[id, index]
+subscript_decl_params(
+  int id: @subscript_decl ref,
+  int index: int ref,
+  int param: @param_decl ref
 );
 
 @var_decl =
@@ -1765,6 +1895,24 @@ var_decls(
   int type_: @type ref
 );
 
+#keyset[id]
+var_decl_attached_property_wrapper_types(
+  int id: @var_decl ref,
+  int attached_property_wrapper_type: @type ref
+);
+
+#keyset[id]
+var_decl_parent_patterns(
+  int id: @var_decl ref,
+  int parent_pattern: @pattern ref
+);
+
+#keyset[id]
+var_decl_parent_initializers(
+  int id: @var_decl ref,
+  int parent_initializer: @expr ref
+);
+
 @abstract_type_param_decl =
   @associated_type_decl
 | @generic_type_param_decl
@@ -1774,7 +1922,7 @@ var_decls(
   @abstract_function_decl
 | @extension_decl
 | @generic_type_decl
-| @subscript_expr
+| @subscript_decl
 ;
 
 #keyset[id, index]
@@ -1867,6 +2015,26 @@ accessor_decls(
   unique int id: @accessor_decl
 );
 
+#keyset[id]
+accessor_decl_is_getter(
+  int id: @accessor_decl ref
+);
+
+#keyset[id]
+accessor_decl_is_setter(
+  int id: @accessor_decl ref
+);
+
+#keyset[id]
+accessor_decl_is_will_set(
+  int id: @accessor_decl ref
+);
+
+#keyset[id]
+accessor_decl_is_did_set(
+  int id: @accessor_decl ref
+);
+
 concrete_func_decls(
   unique int id: @concrete_func_decl
 );
@@ -1904,4 +2072,122 @@ float_literal_exprs(
 integer_literal_exprs(
   unique int id: @integer_literal_expr,
   string string_value: string ref
+);
+
+error_type_reprs(
+  unique int id: @error_type_repr
+);
+
+attributed_type_reprs(
+  unique int id: @attributed_type_repr
+);
+
+@ident_type_repr =
+  @component_ident_type_repr
+| @compound_ident_type_repr
+;
+
+@component_ident_type_repr =
+  @generic_ident_type_repr
+| @simple_ident_type_repr
+;
+
+simple_ident_type_reprs(
+  unique int id: @simple_ident_type_repr
+);
+
+generic_ident_type_reprs(
+  unique int id: @generic_ident_type_repr
+);
+
+compound_ident_type_reprs(
+  unique int id: @compound_ident_type_repr
+);
+
+function_type_reprs(
+  unique int id: @function_type_repr
+);
+
+array_type_reprs(
+  unique int id: @array_type_repr
+);
+
+dictionary_type_reprs(
+  unique int id: @dictionary_type_repr
+);
+
+optional_type_reprs(
+  unique int id: @optional_type_repr
+);
+
+implicitly_unwrapped_optional_type_reprs(
+  unique int id: @implicitly_unwrapped_optional_type_repr
+);
+
+tuple_type_reprs(
+  unique int id: @tuple_type_repr
+);
+
+composition_type_reprs(
+  unique int id: @composition_type_repr
+);
+
+metatype_type_reprs(
+  unique int id: @metatype_type_repr
+);
+
+protocol_type_reprs(
+  unique int id: @protocol_type_repr
+);
+
+opaque_return_type_reprs(
+  unique int id: @opaque_return_type_repr
+);
+
+named_opaque_return_type_reprs(
+  unique int id: @named_opaque_return_type_repr
+);
+
+existential_type_reprs(
+  unique int id: @existential_type_repr
+);
+
+placeholder_type_reprs(
+  unique int id: @placeholder_type_repr
+);
+
+@specifier_type_repr =
+  @compile_time_const_type_repr
+| @in_out_type_repr
+| @isolated_type_repr
+| @owned_type_repr
+| @shared_type_repr
+;
+
+in_out_type_reprs(
+  unique int id: @in_out_type_repr
+);
+
+shared_type_reprs(
+  unique int id: @shared_type_repr
+);
+
+owned_type_reprs(
+  unique int id: @owned_type_repr
+);
+
+isolated_type_reprs(
+  unique int id: @isolated_type_repr
+);
+
+compile_time_const_type_reprs(
+  unique int id: @compile_time_const_type_repr
+);
+
+fixed_type_reprs(
+  unique int id: @fixed_type_repr
+);
+
+sil_box_type_reprs(
+  unique int id: @sil_box_type_repr
 );
