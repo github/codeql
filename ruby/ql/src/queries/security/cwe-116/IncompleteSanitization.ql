@@ -116,7 +116,7 @@ predicate allBackslashesEscaped(DataFlow::Node node) {
  * Holds if `sub` looks like a string substitution call that deliberately
  * removes the first occurrence of `str`.
  */
-predicate removesFirstOccurence(StringSubstitutionCall sub, string str) {
+predicate removesFirstOccurrence(StringSubstitutionCall sub, string str) {
   not sub.isGlobal() and sub.replaces(str, "")
 }
 
@@ -158,8 +158,8 @@ predicate isDelimiterUnwrapper(StringSubstitutionCall leftUnwrap, StringSubstitu
     or
     left = "'" and right = "'"
   |
-    removesFirstOccurence(leftUnwrap, left) and
-    removesFirstOccurence(rightUnwrap, right) and
+    removesFirstOccurrence(leftUnwrap, left) and
+    removesFirstOccurrence(rightUnwrap, right) and
     rightUnwrap = getAMethodCall(leftUnwrap)
   )
 }
