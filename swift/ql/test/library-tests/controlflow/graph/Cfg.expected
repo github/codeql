@@ -214,15 +214,14 @@ cfg.swift:
 #-----| match -> IntegerLiteralExpr
 
 #   33| EnumElementPattern
-#-----| match -> IsPattern
+#-----| no-match -> IsPattern
 
 #   33| IsPattern
 #-----| match -> IntegerLiteralExpr
 #-----| no-match -> CaseStmt
-#-----| no-match -> IntegerLiteralExpr
 
 #   33| EnumElementPattern
-#-----| match -> IsPattern
+#-----| no-match -> IsPattern
 
 #   33| CaseLabelItem
 #-----|  -> EnumElementPattern
@@ -242,7 +241,6 @@ cfg.swift:
 #   35| IsPattern
 #-----| match -> DeclRefExpr
 #-----| no-match -> CaseStmt
-#-----| no-match -> IntegerLiteralExpr
 
 #   35| EnumElementPattern
 #-----| no-match -> IsPattern
@@ -252,7 +250,7 @@ cfg.swift:
 #-----|  -> NamedPattern
 
 #   35| BindingPattern
-#-----| match -> IsPattern
+#-----| no-match -> IsPattern
 
 #   35| NamedPattern
 #-----| match -> BindingPattern
@@ -272,7 +270,6 @@ cfg.swift:
 #   37| IsPattern
 #-----| match -> DeclRefExpr
 #-----| no-match -> CaseStmt
-#-----| no-match -> IntegerLiteralExpr
 
 #   37| TBD (SimpleIdentTypeRepr)
 #-----|  -> IsPattern
@@ -720,9 +717,9 @@ cfg.swift:
 #-----| return -> exit ConcreteFuncDecl (normal)
 
 #  105| DeclRefExpr
-#-----|  -> MemberRefExpr
+#-----|  -> getter for MemberRefExpr
 
-#  105| MemberRefExpr
+#  105| getter for MemberRefExpr
 #-----|  -> ReturnStmt
 
 #  109| enter ConcreteFuncDecl
@@ -767,9 +764,9 @@ cfg.swift:
 #-----|  -> DeclRefExpr
 
 #  111| DeclRefExpr
-#-----|  -> MemberRefExpr
+#-----|  -> getter for MemberRefExpr
 
-#  111| MemberRefExpr
+#  111| getter for MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  112| PatternBindingDecl
@@ -782,9 +779,9 @@ cfg.swift:
 #-----|  -> TBD (DotSelfExpr)
 
 #  112| TBD (DotSelfExpr)
-#-----|  -> MemberRefExpr
+#-----|  -> getter for MemberRefExpr
 
-#  112| MemberRefExpr
+#  112| getter for MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  113| PatternBindingDecl
@@ -841,9 +838,9 @@ cfg.swift:
 #-----|  -> DeclRefExpr
 
 #  116| DeclRefExpr
-#-----|  -> MemberRefExpr
+#-----|  -> getter for MemberRefExpr
 
-#  116| MemberRefExpr
+#  116| getter for MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  117| PatternBindingDecl
@@ -856,9 +853,9 @@ cfg.swift:
 #-----|  -> TBD (DotSelfExpr)
 
 #  117| TBD (DotSelfExpr)
-#-----|  -> MemberRefExpr
+#-----|  -> getter for MemberRefExpr
 
-#  117| MemberRefExpr
+#  117| getter for MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  118| PatternBindingDecl
@@ -918,9 +915,9 @@ cfg.swift:
 #-----|  -> LoadExpr
 
 #  121| LoadExpr
-#-----|  -> MemberRefExpr
+#-----|  -> getter for MemberRefExpr
 
-#  121| MemberRefExpr
+#  121| getter for MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  122| PatternBindingDecl
@@ -933,12 +930,12 @@ cfg.swift:
 #-----|  -> TBD (DotSelfExpr)
 
 #  122| LoadExpr
-#-----|  -> MemberRefExpr
+#-----|  -> getter for MemberRefExpr
 
 #  122| TBD (DotSelfExpr)
 #-----|  -> LoadExpr
 
-#  122| MemberRefExpr
+#  122| getter for MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  123| PatternBindingDecl
@@ -1004,9 +1001,9 @@ cfg.swift:
 #-----|  -> ForceValueExpr
 
 #  126| ForceValueExpr
-#-----|  -> MemberRefExpr
+#-----|  -> getter for MemberRefExpr
 
-#  126| MemberRefExpr
+#  126| getter for MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  127| PatternBindingDecl
@@ -1019,9 +1016,9 @@ cfg.swift:
 #-----|  -> TBD (DotSelfExpr)
 
 #  127| TBD (DotSelfExpr)
-#-----|  -> MemberRefExpr
+#-----|  -> getter for MemberRefExpr
 
-#  127| MemberRefExpr
+#  127| getter for MemberRefExpr
 #-----|  -> PatternBindingDecl
 
 #  128| PatternBindingDecl
@@ -1084,16 +1081,16 @@ cfg.swift:
 #-----|  -> BindOptionalExpr
 
 #  131| BindOptionalExpr
-#-----|  -> MemberRefExpr
+#-----|  -> getter for MemberRefExpr
 
 #  131| InjectIntoOptionalExpr
 #-----|  -> OptionalEvaluationExpr
 
-#  131| MemberRefExpr
-#-----|  -> InjectIntoOptionalExpr
-
 #  131| OptionalEvaluationExpr
 #-----|  -> PatternBindingDecl
+
+#  131| getter for MemberRefExpr
+#-----|  -> InjectIntoOptionalExpr
 
 #  132| PatternBindingDecl
 #-----|  -> ConcreteVarDecl
@@ -1105,16 +1102,16 @@ cfg.swift:
 #-----|  -> TBD (DotSelfExpr)
 
 #  132| TBD (DotSelfExpr)
-#-----|  -> MemberRefExpr
+#-----|  -> getter for MemberRefExpr
 
 #  132| InjectIntoOptionalExpr
 #-----|  -> OptionalEvaluationExpr
 
-#  132| MemberRefExpr
-#-----|  -> InjectIntoOptionalExpr
-
 #  132| OptionalEvaluationExpr
 #-----|  -> PatternBindingDecl
+
+#  132| getter for MemberRefExpr
+#-----|  -> InjectIntoOptionalExpr
 
 #  133| PatternBindingDecl
 #-----|  -> ConcreteVarDecl
@@ -2546,14 +2543,14 @@ cfg.swift:
 #  268| SubscriptExpr
 #-----|  -> IntegerLiteralExpr
 
-#  268| AssignExpr
+#  268| setter for AssignExpr
 #-----|  -> DeclRefExpr
 
 #  268| IntegerLiteralExpr
 #-----|  -> SubscriptExpr
 
 #  268| IntegerLiteralExpr
-#-----|  -> AssignExpr
+#-----|  -> setter for AssignExpr
 
 #  269| DeclRefExpr
 #-----|  -> InOutExpr
@@ -2564,14 +2561,14 @@ cfg.swift:
 #  269| InOutExpr
 #-----|  -> IntegerLiteralExpr
 
-#  269| SubscriptExpr
+#  269| getter for SubscriptExpr
 #-----|  -> InOutExpr
 
 #  269| BinaryExpr
 #-----|  -> DeclRefExpr
 
 #  269| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  269| DeclRefExpr
 #-----|  -> TypeExpr
@@ -2595,14 +2592,14 @@ cfg.swift:
 #  270| InOutExpr
 #-----|  -> IntegerLiteralExpr
 
-#  270| SubscriptExpr
+#  270| getter for SubscriptExpr
 #-----|  -> InOutExpr
 
 #  270| BinaryExpr
 #-----|  -> DeclRefExpr
 
 #  270| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  270| DeclRefExpr
 #-----|  -> TypeExpr
@@ -2626,14 +2623,14 @@ cfg.swift:
 #  271| InOutExpr
 #-----|  -> IntegerLiteralExpr
 
-#  271| SubscriptExpr
+#  271| getter for SubscriptExpr
 #-----|  -> InOutExpr
 
 #  271| BinaryExpr
 #-----|  -> DeclRefExpr
 
 #  271| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  271| DeclRefExpr
 #-----|  -> TypeExpr
@@ -2657,14 +2654,14 @@ cfg.swift:
 #  272| InOutExpr
 #-----|  -> IntegerLiteralExpr
 
-#  272| SubscriptExpr
+#  272| getter for SubscriptExpr
 #-----|  -> InOutExpr
 
 #  272| BinaryExpr
 #-----|  -> DeclRefExpr
 
 #  272| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  272| DeclRefExpr
 #-----|  -> TypeExpr
@@ -2688,14 +2685,14 @@ cfg.swift:
 #  273| InOutExpr
 #-----|  -> IntegerLiteralExpr
 
-#  273| SubscriptExpr
+#  273| getter for SubscriptExpr
 #-----|  -> InOutExpr
 
 #  273| BinaryExpr
 #-----|  -> DeclRefExpr
 
 #  273| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  273| DeclRefExpr
 #-----|  -> TypeExpr
@@ -2719,14 +2716,14 @@ cfg.swift:
 #  274| InOutExpr
 #-----|  -> IntegerLiteralExpr
 
-#  274| SubscriptExpr
+#  274| getter for SubscriptExpr
 #-----|  -> InOutExpr
 
 #  274| BinaryExpr
 #-----|  -> DeclRefExpr
 
 #  274| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  274| DeclRefExpr
 #-----|  -> TypeExpr
@@ -2750,14 +2747,14 @@ cfg.swift:
 #  275| InOutExpr
 #-----|  -> IntegerLiteralExpr
 
-#  275| SubscriptExpr
+#  275| getter for SubscriptExpr
 #-----|  -> InOutExpr
 
 #  275| BinaryExpr
 #-----|  -> DeclRefExpr
 
 #  275| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  275| DeclRefExpr
 #-----|  -> TypeExpr
@@ -2781,14 +2778,14 @@ cfg.swift:
 #  276| InOutExpr
 #-----|  -> IntegerLiteralExpr
 
-#  276| SubscriptExpr
+#  276| getter for SubscriptExpr
 #-----|  -> InOutExpr
 
 #  276| BinaryExpr
 #-----|  -> DeclRefExpr
 
 #  276| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  276| DeclRefExpr
 #-----|  -> TypeExpr
@@ -2812,14 +2809,14 @@ cfg.swift:
 #  277| InOutExpr
 #-----|  -> IntegerLiteralExpr
 
-#  277| SubscriptExpr
+#  277| getter for SubscriptExpr
 #-----|  -> InOutExpr
 
 #  277| BinaryExpr
 #-----|  -> DeclRefExpr
 
 #  277| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  277| DeclRefExpr
 #-----|  -> TypeExpr
@@ -2843,14 +2840,14 @@ cfg.swift:
 #  278| InOutExpr
 #-----|  -> IntegerLiteralExpr
 
-#  278| SubscriptExpr
+#  278| getter for SubscriptExpr
 #-----|  -> InOutExpr
 
 #  278| BinaryExpr
 #-----|  -> NamedPattern
 
 #  278| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  278| DeclRefExpr
 #-----|  -> TypeExpr
@@ -2886,11 +2883,11 @@ cfg.swift:
 #  280| LoadExpr
 #-----|  -> DeclRefExpr
 
-#  280| SubscriptExpr
+#  280| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  280| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  280| DeclRefExpr
 #-----|  -> InOutExpr
@@ -2901,11 +2898,11 @@ cfg.swift:
 #  280| LoadExpr
 #-----|  -> DeclRefExpr
 
-#  280| SubscriptExpr
+#  280| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  280| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  280| DeclRefExpr
 #-----|  -> InOutExpr
@@ -2916,11 +2913,11 @@ cfg.swift:
 #  280| LoadExpr
 #-----|  -> DeclRefExpr
 
-#  280| SubscriptExpr
+#  280| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  280| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  280| DeclRefExpr
 #-----|  -> InOutExpr
@@ -2931,11 +2928,11 @@ cfg.swift:
 #  280| LoadExpr
 #-----|  -> DeclRefExpr
 
-#  280| SubscriptExpr
+#  280| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  280| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  280| DeclRefExpr
 #-----|  -> InOutExpr
@@ -2946,11 +2943,11 @@ cfg.swift:
 #  280| LoadExpr
 #-----|  -> TupleExpr
 
-#  280| SubscriptExpr
+#  280| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  280| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  282| PatternBindingDecl
 #-----|  -> ConcreteVarDecl
@@ -3009,7 +3006,7 @@ cfg.swift:
 #  283| SubscriptExpr
 #-----|  -> DeclRefExpr
 
-#  283| AssignExpr
+#  283| setter for AssignExpr
 #-----|  -> DeclRefExpr
 
 #  283| IntegerLiteralExpr
@@ -3022,13 +3019,13 @@ cfg.swift:
 #-----|  -> IntegerLiteralExpr
 
 #  283| LoadExpr
-#-----|  -> AssignExpr
+#-----|  -> setter for AssignExpr
 
-#  283| SubscriptExpr
+#  283| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  283| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  284| DeclRefExpr
 #-----|  -> InOutExpr
@@ -3039,7 +3036,7 @@ cfg.swift:
 #  284| SubscriptExpr
 #-----|  -> DeclRefExpr
 
-#  284| AssignExpr
+#  284| setter for AssignExpr
 #-----|  -> DeclRefExpr
 
 #  284| IntegerLiteralExpr
@@ -3054,14 +3051,14 @@ cfg.swift:
 #  284| LoadExpr
 #-----|  -> IntegerLiteralExpr
 
-#  284| SubscriptExpr
+#  284| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  284| BinaryExpr
-#-----|  -> AssignExpr
+#-----|  -> setter for AssignExpr
 
 #  284| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  284| DeclRefExpr
 #-----|  -> TypeExpr
@@ -3085,7 +3082,7 @@ cfg.swift:
 #  285| SubscriptExpr
 #-----|  -> DeclRefExpr
 
-#  285| AssignExpr
+#  285| setter for AssignExpr
 #-----|  -> DeclRefExpr
 
 #  285| IntegerLiteralExpr
@@ -3100,14 +3097,14 @@ cfg.swift:
 #  285| LoadExpr
 #-----|  -> IntegerLiteralExpr
 
-#  285| SubscriptExpr
+#  285| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  285| BinaryExpr
-#-----|  -> AssignExpr
+#-----|  -> setter for AssignExpr
 
 #  285| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  285| DeclRefExpr
 #-----|  -> TypeExpr
@@ -3131,7 +3128,7 @@ cfg.swift:
 #  286| SubscriptExpr
 #-----|  -> DeclRefExpr
 
-#  286| AssignExpr
+#  286| setter for AssignExpr
 #-----|  -> DeclRefExpr
 
 #  286| IntegerLiteralExpr
@@ -3146,14 +3143,14 @@ cfg.swift:
 #  286| LoadExpr
 #-----|  -> IntegerLiteralExpr
 
-#  286| SubscriptExpr
+#  286| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  286| BinaryExpr
-#-----|  -> AssignExpr
+#-----|  -> setter for AssignExpr
 
 #  286| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  286| DeclRefExpr
 #-----|  -> TypeExpr
@@ -3177,7 +3174,7 @@ cfg.swift:
 #  287| SubscriptExpr
 #-----|  -> DeclRefExpr
 
-#  287| AssignExpr
+#  287| setter for AssignExpr
 #-----|  -> DeclRefExpr
 
 #  287| IntegerLiteralExpr
@@ -3192,14 +3189,14 @@ cfg.swift:
 #  287| LoadExpr
 #-----|  -> IntegerLiteralExpr
 
-#  287| SubscriptExpr
+#  287| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  287| BinaryExpr
-#-----|  -> AssignExpr
+#-----|  -> setter for AssignExpr
 
 #  287| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  287| DeclRefExpr
 #-----|  -> TypeExpr
@@ -3223,7 +3220,7 @@ cfg.swift:
 #  288| SubscriptExpr
 #-----|  -> DeclRefExpr
 
-#  288| AssignExpr
+#  288| setter for AssignExpr
 #-----|  -> DeclRefExpr
 
 #  288| IntegerLiteralExpr
@@ -3238,14 +3235,14 @@ cfg.swift:
 #  288| LoadExpr
 #-----|  -> IntegerLiteralExpr
 
-#  288| SubscriptExpr
+#  288| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  288| BinaryExpr
-#-----|  -> AssignExpr
+#-----|  -> setter for AssignExpr
 
 #  288| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  288| DeclRefExpr
 #-----|  -> TypeExpr
@@ -3269,7 +3266,7 @@ cfg.swift:
 #  289| SubscriptExpr
 #-----|  -> DeclRefExpr
 
-#  289| AssignExpr
+#  289| setter for AssignExpr
 #-----|  -> DeclRefExpr
 
 #  289| IntegerLiteralExpr
@@ -3284,14 +3281,14 @@ cfg.swift:
 #  289| LoadExpr
 #-----|  -> IntegerLiteralExpr
 
-#  289| SubscriptExpr
+#  289| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  289| BinaryExpr
-#-----|  -> AssignExpr
+#-----|  -> setter for AssignExpr
 
 #  289| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  289| DeclRefExpr
 #-----|  -> TypeExpr
@@ -3315,7 +3312,7 @@ cfg.swift:
 #  290| SubscriptExpr
 #-----|  -> DeclRefExpr
 
-#  290| AssignExpr
+#  290| setter for AssignExpr
 #-----|  -> DeclRefExpr
 
 #  290| IntegerLiteralExpr
@@ -3330,14 +3327,14 @@ cfg.swift:
 #  290| LoadExpr
 #-----|  -> IntegerLiteralExpr
 
-#  290| SubscriptExpr
+#  290| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  290| BinaryExpr
-#-----|  -> AssignExpr
+#-----|  -> setter for AssignExpr
 
 #  290| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  290| DeclRefExpr
 #-----|  -> TypeExpr
@@ -3361,7 +3358,7 @@ cfg.swift:
 #  291| SubscriptExpr
 #-----|  -> DeclRefExpr
 
-#  291| AssignExpr
+#  291| setter for AssignExpr
 #-----|  -> DeclRefExpr
 
 #  291| IntegerLiteralExpr
@@ -3376,14 +3373,14 @@ cfg.swift:
 #  291| LoadExpr
 #-----|  -> IntegerLiteralExpr
 
-#  291| SubscriptExpr
+#  291| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  291| BinaryExpr
-#-----|  -> AssignExpr
+#-----|  -> setter for AssignExpr
 
 #  291| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  291| DeclRefExpr
 #-----|  -> TypeExpr
@@ -3407,7 +3404,7 @@ cfg.swift:
 #  292| SubscriptExpr
 #-----|  -> DeclRefExpr
 
-#  292| AssignExpr
+#  292| setter for AssignExpr
 #-----|  -> DeclRefExpr
 
 #  292| IntegerLiteralExpr
@@ -3422,14 +3419,14 @@ cfg.swift:
 #  292| LoadExpr
 #-----|  -> IntegerLiteralExpr
 
-#  292| SubscriptExpr
+#  292| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  292| BinaryExpr
-#-----|  -> AssignExpr
+#-----|  -> setter for AssignExpr
 
 #  292| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  292| DeclRefExpr
 #-----|  -> TypeExpr
@@ -3453,7 +3450,7 @@ cfg.swift:
 #  293| SubscriptExpr
 #-----|  -> DeclRefExpr
 
-#  293| AssignExpr
+#  293| setter for AssignExpr
 #-----|  -> TuplePattern
 
 #  293| IntegerLiteralExpr
@@ -3468,14 +3465,14 @@ cfg.swift:
 #  293| LoadExpr
 #-----|  -> IntegerLiteralExpr
 
-#  293| SubscriptExpr
+#  293| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  293| BinaryExpr
-#-----|  -> AssignExpr
+#-----|  -> setter for AssignExpr
 
 #  293| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  293| DeclRefExpr
 #-----|  -> TypeExpr
@@ -3551,11 +3548,11 @@ cfg.swift:
 #  296| LoadExpr
 #-----|  -> BinaryExpr
 
-#  296| SubscriptExpr
+#  296| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  296| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  296| DeclRefExpr
 #-----|  -> DeclRefExpr
@@ -3582,11 +3579,11 @@ cfg.swift:
 #  296| LoadExpr
 #-----|  -> BinaryExpr
 
-#  296| SubscriptExpr
+#  296| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  296| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  296| DeclRefExpr
 #-----|  -> DeclRefExpr
@@ -3613,11 +3610,11 @@ cfg.swift:
 #  296| LoadExpr
 #-----|  -> BinaryExpr
 
-#  296| SubscriptExpr
+#  296| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  296| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  296| DeclRefExpr
 #-----|  -> DeclRefExpr
@@ -3644,11 +3641,11 @@ cfg.swift:
 #  296| LoadExpr
 #-----|  -> BinaryExpr
 
-#  296| SubscriptExpr
+#  296| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  296| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  296| DeclRefExpr
 #-----|  -> DeclRefExpr
@@ -3675,11 +3672,11 @@ cfg.swift:
 #  296| LoadExpr
 #-----|  -> BinaryExpr
 
-#  296| SubscriptExpr
+#  296| getter for SubscriptExpr
 #-----|  -> LoadExpr
 
 #  296| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#-----|  -> getter for SubscriptExpr
 
 #  299| enter ConcreteFuncDecl
 #-----|  -> WhileStmt
@@ -4398,9 +4395,9 @@ cfg.swift:
 #-----| return -> exit ConcreteFuncDecl (normal)
 
 #  359| DeclRefExpr
-#-----|  -> MemberRefExpr
+#-----|  -> getter for MemberRefExpr
 
-#  359| MemberRefExpr
+#  359| getter for MemberRefExpr
 #-----|  -> ReturnStmt
 
 #  363| enter ConcreteFuncDecl

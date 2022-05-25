@@ -6,6 +6,7 @@
 
 private import swift
 private import codeql.swift.controlflow.ControlFlowGraph
+private import ControlFlowElements
 private import ControlFlowGraphImpl
 private import SuccessorTypes
 
@@ -41,8 +42,8 @@ private predicate completionIsValidForStmt(Stmt stmt, Completion c) {
 
 /** A completion of a statement or an expression. */
 abstract class Completion extends TCompletion {
-  private predicate isValidForSpecific(AstNode n) {
-    completionIsValidForStmt(n, this)
+  private predicate isValidForSpecific(ControlFlowElement n) {
+    completionIsValidForStmt(n.asAstNode(), this)
     or
     mustHaveBooleanCompletion(n) and
     (
@@ -52,22 +53,24 @@ abstract class Completion extends TCompletion {
       this = TBooleanCompletion(_)
     )
     or
-    mustHaveMatchingCompletion(n) and
+    mustHaveMatchingCompletion(n.asAstNode()) and
     (
-      exists(boolean value | isMatchingConstant(n, value) | this = TMatchingCompletion(value))
+      exists(boolean value | isMatchingConstant(n.asAstNode(), value) |
+        this = TMatchingCompletion(value)
+      )
       or
-      not isMatchingConstant(n, _) and
+      not isMatchingConstant(n.asAstNode(), _) and
       this = TMatchingCompletion(_)
     )
     or
-    mustHaveThrowCompletion(n, this)
+    mustHaveThrowCompletion(n.asAstNode(), this)
   }
 
   /** Holds if this completion is valid for node `n`. */
-  predicate isValidFor(AstNode n) {
+  predicate isValidFor(ControlFlowElement n) {
     this.isValidForSpecific(n)
     or
-    mayHaveThrowCompletion(n, this)
+    mayHaveThrowCompletion(n.asAstNode(), this)
     or
     not any(Completion c).isValidForSpecific(n) and
     this = TSimpleCompletion()
@@ -87,25 +90,35 @@ abstract class Completion extends TCompletion {
 }
 
 /** Holds if node `n` has the Boolean constant value `value`. */
-private predicate isBooleanConstant(AstNode n, boolean value) {
+private predicate isBooleanConstant(ControlFlowElement n, boolean value) {
   mustHaveBooleanCompletion(n) and
-  value = n.(BooleanLiteralExpr).getValue()
+  value = n.asAstNode().(BooleanLiteralExpr).getValue()
   or
   // Boolean consants hidden inside conversions are also
   // constants that resolve to the same value.
-  isBooleanConstant(n.getResolveStep(), value)
+  exists(ControlFlowElement parent |
+    parent.asAstNode() = n.asAstNode().getResolveStep() and
+    isBooleanConstant(parent, value)
+  )
 }
 
 /**
  * Holds if a normal completion of `n` must be a Boolean completion.
  */
-private predicate mustHaveBooleanCompletion(AstNode n) { inBooleanContext(n) }
+private predicate mustHaveBooleanCompletion(ControlFlowElement n) { inBooleanContext(n) }
 
 /**
  * Holds if `n` is used in a Boolean context. That is, the value
  * that `n` evaluates to determines a true/false branch successor.
  */
-private predicate inBooleanContext(AstNode n) {
+private predicate inBooleanContext(ControlFlowElement n) {
+  astInBooleanContext(n.asAstNode()) or
+  astInBooleanContext(n.(PropertyGetterElement).getRef()) or
+  astInBooleanContext(n.(PropertySetterElement).getAssignExpr()) or
+  astInBooleanContext(n.(PropertyObserverElement).getAssignExpr())
+}
+
+private predicate astInBooleanContext(AstNode n) {
   n = any(ConditionElement condElem).getFullyUnresolved()
   or
   n = any(StmtCondition stmtCond).getFullyUnresolved()
@@ -115,30 +128,30 @@ private predicate inBooleanContext(AstNode n) {
   exists(LogicalAndExpr parent |
     n = parent.getLeftOperand().getFullyConverted()
     or
-    inBooleanContext(parent) and
+    astInBooleanContext(parent) and
     n = parent.getRightOperand().getFullyConverted()
   )
   or
   exists(LogicalOrExpr parent |
     n = parent.getLeftOperand().getFullyConverted()
     or
-    inBooleanContext(parent) and
+    astInBooleanContext(parent) and
     n = parent.getRightOperand().getFullyConverted()
   )
   or
-  n = any(NotExpr parent | inBooleanContext(parent)).getOperand().getFullyConverted()
+  n = any(NotExpr parent | astInBooleanContext(parent)).getOperand().getFullyConverted()
   or
   exists(IfExpr ifExpr |
     ifExpr.getCondition().getFullyConverted() = n
     or
-    inBooleanContext(ifExpr) and
+    astInBooleanContext(ifExpr) and
     n = ifExpr.getBranch(_).getFullyConverted()
   )
   or
   exists(ForEachStmt foreach | n = foreach.getWhere().getFullyConverted())
   or
   exists(Exprs::Conversions::ConversionOrIdentityTree parent |
-    inBooleanContext(parent) and
+    astInBooleanContext(parent.getAst()) and
     parent.convertsFrom(n)
   )
 }
@@ -477,3 +490,18 @@ class ThrowCompletion extends TThrowCompletion, Completion {
 
   override string toString() { result = "throw" }
 }
+
+/**
+ * Hold if `c` represents normal evaluation of a statement or an
+ * expression.
+ */
+predicate completionIsNormal(Completion c) { c instanceof NormalCompletion }
+
+/**
+ * Hold if `c` represents simple (normal) evaluation of a statement or an
+ * expression.
+ */
+predicate completionIsSimple(Completion c) { c instanceof SimpleCompletion }
+
+/** Holds if `c` is a valid completion for `e`. */
+predicate completionIsValidFor(Completion c, ControlFlowElement e) { c.isValidFor(e) }
