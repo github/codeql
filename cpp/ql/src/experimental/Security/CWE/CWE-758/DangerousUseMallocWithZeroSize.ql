@@ -63,7 +63,7 @@ predicate enclosingFunctionNotCall(FunctionCall fc) {
   )
 }
 
-/** Holds if buffer and length are used in string functions or arrays. */
+/** Holds if the return value of the function or the first argument is used in string functions or arrays. */
 predicate dangerousUseBufferAndSize(FunctionCall fc) {
   exists(Expr e0 |
     fc.getASuccessor*() = e0 and
