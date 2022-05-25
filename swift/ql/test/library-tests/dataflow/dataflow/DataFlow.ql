@@ -12,17 +12,14 @@ class TestConfiguration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(CallExpr sinkCall |
       sinkCall.getStaticTarget().getName() = "sink" and
-      sinkCall.getAnArgument() = sink.asExpr()
+      sinkCall.getAnArgument().getExpr() = sink.asExpr()
     )
   }
 
   override int explorationLimit() { result = 100 }
 }
 
-from DataFlow::PartialPathNode src, DataFlow::PartialPathNode sink, TestConfiguration test
+from DataFlow::PathNode src, DataFlow::PathNode sink, TestConfiguration test
 where
-  //test.isSource(src) and
-  // test.isSink(sink) and
-  //DataFlow::localFlow(src, sink)
-  test.hasPartialFlow(src, sink, _)
+  test.hasFlowPath(src, sink)
 select src, sink

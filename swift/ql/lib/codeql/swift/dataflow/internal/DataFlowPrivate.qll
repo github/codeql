@@ -188,7 +188,9 @@ class DataFlowType extends TDataFlowType {
 }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(NodeImpl n) { none() }
+DataFlowType getNodeType(NodeImpl n) {
+  any() // return the singleton DataFlowType until we support type pruning for Swift
+}
 
 /** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { result = t.toString() }
