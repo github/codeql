@@ -229,6 +229,18 @@ string captureSource(TargetApi api) {
   )
 }
 
+predicate captureSourcePath(
+  TargetApi api, DataFlow::PathNode sourcePath, DataFlow::PathNode sinkPath, string kind
+) {
+  exists(FromSourceConfiguration config, DataFlow::Node source, DataFlow::Node sink |
+    config.hasFlowPath(sourcePath, sinkPath) and
+    source = sourcePath.getNode() and
+    sink = sinkPath.getNode() and
+    ExternalFlow::sourceNode(source, kind) and
+    api = sink.getEnclosingCallable()
+  )
+}
+
 /**
  * A TaintTracking Configuration used for tracking flow through APIs.
  * The sources are the parameters of the API and the fields of the enclosing type.
@@ -256,5 +268,18 @@ string captureSink(TargetApi api) {
     api = src.getEnclosingCallable() and
     isRelevantSinkKind(kind) and
     result = asSinkModel(api, asInputArgument(src), kind)
+  )
+}
+
+predicate captureSinkPath(
+  TargetApi api, DataFlow::PathNode sourcePath, DataFlow::PathNode sinkPath, string kind
+) {
+  exists(PropagateToSinkConfiguration config, DataFlow::Node source, DataFlow::Node sink |
+    config.hasFlowPath(sourcePath, sinkPath) and
+    source = sourcePath.getNode() and
+    sink = sinkPath.getNode() and
+    ExternalFlow::sinkNode(sink, kind) and
+    api = source.getEnclosingCallable() and
+    isRelevantSinkKind(kind)
   )
 }
