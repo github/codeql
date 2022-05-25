@@ -1,6 +1,6 @@
  import android.text.Editable
 
- class TestWidget {
+ class TestWidgetKt {
 
     fun source() : Editable? { return null }
     fun sink(sink : String) {}
