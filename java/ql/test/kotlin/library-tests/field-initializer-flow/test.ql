@@ -4,9 +4,7 @@ import semmle.code.java.dataflow.DataFlow
 class Config extends DataFlow::Configuration {
   Config() { this = "Config" }
 
-  override predicate isSource(DataFlow::Node n) {
-    n.asExpr().(CompileTimeConstantExpr).getStringValue() = "Source"
-  }
+  override predicate isSource(DataFlow::Node n) { n.asExpr().(StringLiteral).getValue() = "Source" }
 
   override predicate isSink(DataFlow::Node n) {
     n.asExpr().(Argument).getCall().getCallee().getName() = "sink"

@@ -1,0 +1,14 @@
+edges
+| test.go:208:15:208:26 | call to Data : map type | test.go:209:18:209:26 | untrusted |
+| test.go:208:15:208:26 | call to Data : map type | test.go:210:10:210:18 | untrusted |
+| test.go:208:15:208:26 | call to Data : map type | test.go:211:35:211:43 | untrusted |
+nodes
+| test.go:208:15:208:26 | call to Data : map type | semmle.label | call to Data : map type |
+| test.go:209:18:209:26 | untrusted | semmle.label | untrusted |
+| test.go:210:10:210:18 | untrusted | semmle.label | untrusted |
+| test.go:211:35:211:43 | untrusted | semmle.label | untrusted |
+subpaths
+#select
+| test.go:209:18:209:26 | untrusted | test.go:208:15:208:26 | call to Data : map type | test.go:209:18:209:26 | untrusted | This path depends on $@. | test.go:208:15:208:26 | call to Data | a user-provided value |
+| test.go:210:10:210:18 | untrusted | test.go:208:15:208:26 | call to Data : map type | test.go:210:10:210:18 | untrusted | This path depends on $@. | test.go:208:15:208:26 | call to Data | a user-provided value |
+| test.go:211:35:211:43 | untrusted | test.go:208:15:208:26 | call to Data : map type | test.go:211:35:211:43 | untrusted | This path depends on $@. | test.go:208:15:208:26 | call to Data | a user-provided value |

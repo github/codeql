@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Indexing operations on arrays, slices, or strings should use an index at most one less than the
+length. If the operation uses a variable index but checks the length against a constant, this may
+indicate a logic error which could lead to an out-of-bounds access.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Inspect the code closely to determine whether the length should be compared to the index variable
+instead. For loops that iterate over every element, using a <code>range</code> loop is better than
+explicit index manipulation.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a method which checks whether slice <code>xs</code> is a prefix of slice
+<code>ys</code>:
+</p>
+<sample src="ConstantLengthComparison.go" />
+<p>
+A loop using an index variable <code>i</code> is used to iterate over the elements of
+<code>xs</code> and compare them to the corresponding elements of <code>ys</code>. However, the
+check to ensure that <code>i</code> is a valid index into <code>ys</code> is incorrectly specified
+as <code>len(ys) == 0</code>. Instead, the check should ensure that <code>len(ys)</code> is greater
+than <code>i</code>:
+</p>
+<sample src="ConstantLengthComparisonGood.go" />
+</example>
+
+<references>
+<li>The Go Programming Language Specification: <a href="https://golang.org/ref/spec#For_statements">For statements</a>.</li>
+<li>The Go Programming Language Specification: <a href="https://golang.org/ref/spec#Index_expressions">Index expressions</a>.</li>
+</references>
+</qhelp>

@@ -270,7 +270,7 @@ open class KotlinFileExtractor(
                 if (kind == ClassKind.ENUM_CLASS) {
                     tw.writeIsEnumType(classId)
                 } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
-                    logger.warnElement("Unrecognised class kind $kind", c)
+                    logger.errorElement("Unrecognised class kind $kind", c)
                 }
             }
 
@@ -404,8 +404,7 @@ open class KotlinFileExtractor(
                 }
 
                 extractClassModifiers(c, id)
-                val forceExtractSupertypeMembers = !isExternalDeclaration(c)
-                extractClassSupertypes(c, id, inReceiverContext = forceExtractSupertypeMembers)
+                extractClassSupertypes(c, id, inReceiverContext = true) // inReceiverContext = true is specified to force extraction of member prototypes of base types
 
                 return id
             }
@@ -549,7 +548,7 @@ open class KotlinFileExtractor(
             val constructorId = useFunction<DbConstructor>(enclosingConstructor)
             val enclosingClass = enclosingConstructor.parentClassOrNull
             if (enclosingClass == null) {
-                logger.warnElement("Constructor's parent is not a class", enclosingConstructor)
+                logger.errorElement("Constructor's parent is not a class", enclosingConstructor)
                 return
             }
 
@@ -654,9 +653,13 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null, locOverride: Label<DbLocation>? = null): Label<out DbCallable>? {
-        if (isFake(f)) return null
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null, locOverride: Label<DbLocation>? = null) =
+        if (isFake(f))
+            null
+        else
+            forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, idOverride, locOverride)
 
+    fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null, locOverride: Label<DbLocation>? = null): Label<out DbCallable>  {
         with("function", f) {
             DeclarationStackAdjuster(f).use {
 
@@ -807,13 +810,13 @@ open class KotlinFileExtractor(
                     }
                 } else {
                     if (p.modality != Modality.FINAL || !isExternalDeclaration(p)) {
-                        logger.errorElement("IrProperty without a getter", p)
+                        logger.warnElement("IrProperty without a getter", p)
                     }
                 }
 
                 if (setter != null) {
                     if (!p.isVar) {
-                        logger.errorElement("!isVar property with a setter", p)
+                        logger.warnElement("!isVar property with a setter", p)
                     }
                     val setterId = extractFunction(setter, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
                     if (setterId != null) {
@@ -821,7 +824,7 @@ open class KotlinFileExtractor(
                     }
                 } else {
                     if (p.isVar && !isExternalDeclaration(p)) {
-                        logger.errorElement("isVar property without a setter", p)
+                        logger.warnElement("isVar property without a setter", p)
                     }
                 }
 
@@ -1657,7 +1660,7 @@ open class KotlinFileExtractor(
                 // as they can't be extracted as external dependencies.
                 isBuiltinCallInternal(c, "less") -> {
                     if(c.origin != IrStatementOrigin.LT) {
-                        logger.errorElement("Unexpected origin for LT: ${c.origin}", c)
+                        logger.warnElement("Unexpected origin for LT: ${c.origin}", c)
                     }
                     val id = tw.getFreshIdLabel<DbLtexpr>()
                     val type = useType(c.type)
@@ -1667,7 +1670,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "lessOrEqual") -> {
                     if(c.origin != IrStatementOrigin.LTEQ) {
-                        logger.errorElement("Unexpected origin for LTEQ: ${c.origin}", c)
+                        logger.warnElement("Unexpected origin for LTEQ: ${c.origin}", c)
                     }
                     val id = tw.getFreshIdLabel<DbLeexpr>()
                     val type = useType(c.type)
@@ -1677,7 +1680,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "greater") -> {
                     if(c.origin != IrStatementOrigin.GT) {
-                        logger.errorElement("Unexpected origin for GT: ${c.origin}", c)
+                        logger.warnElement("Unexpected origin for GT: ${c.origin}", c)
                     }
                     val id = tw.getFreshIdLabel<DbGtexpr>()
                     val type = useType(c.type)
@@ -1687,7 +1690,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "greaterOrEqual") -> {
                     if(c.origin != IrStatementOrigin.GTEQ) {
-                        logger.errorElement("Unexpected origin for GTEQ: ${c.origin}", c)
+                        logger.warnElement("Unexpected origin for GTEQ: ${c.origin}", c)
                     }
                     val id = tw.getFreshIdLabel<DbGeexpr>()
                     val type = useType(c.type)
@@ -1697,7 +1700,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "EQEQ") -> {
                     if(c.origin != IrStatementOrigin.EQEQ) {
-                        logger.errorElement("Unexpected origin for EQEQ: ${c.origin}", c)
+                        logger.warnElement("Unexpected origin for EQEQ: ${c.origin}", c)
                     }
                     val id = tw.getFreshIdLabel<DbValueeqexpr>()
                     val type = useType(c.type)
@@ -1707,7 +1710,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "EQEQEQ") -> {
                     if(c.origin != IrStatementOrigin.EQEQEQ) {
-                        logger.errorElement("Unexpected origin for EQEQEQ: ${c.origin}", c)
+                        logger.warnElement("Unexpected origin for EQEQEQ: ${c.origin}", c)
                     }
                     val id = tw.getFreshIdLabel<DbEqexpr>()
                     val type = useType(c.type)
@@ -1717,7 +1720,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "ieee754equals") -> {
                     if(c.origin != IrStatementOrigin.EQEQ) {
-                        logger.errorElement("Unexpected origin for ieee754equals: ${c.origin}", c)
+                        logger.warnElement("Unexpected origin for ieee754equals: ${c.origin}", c)
                     }
                     val id = tw.getFreshIdLabel<DbEqexpr>()
                     val type = useType(c.type)
@@ -1727,7 +1730,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "CHECK_NOT_NULL") -> {
                     if(c.origin != IrStatementOrigin.EXCLEXCL) {
-                        logger.errorElement("Unexpected origin for CHECK_NOT_NULL: ${c.origin}", c)
+                        logger.warnElement("Unexpected origin for CHECK_NOT_NULL: ${c.origin}", c)
                     }
 
                     val id = tw.getFreshIdLabel<DbNotnullexpr>()
@@ -2394,7 +2397,7 @@ open class KotlinFileExtractor(
                     val stmtParent = parent.stmt(e, callable)
                     val irConstructor = declarationStack.peek() as? IrConstructor
                     if (irConstructor == null) {
-                        logger.warnElement("IrInstanceInitializerCall outside constructor", e)
+                        logger.errorElement("IrInstanceInitializerCall outside constructor", e)
                         return
                     }
                     extractInstanceInitializerBlock(stmtParent, irConstructor)
@@ -3368,7 +3371,7 @@ open class KotlinFileExtractor(
     ) {
         with("function reference", functionReferenceExpr) {
             val target = functionReferenceExpr.reflectionTarget ?: run {
-                logger.errorElement("Expected to find reflection target for function reference. Using underlying symbol instead.", functionReferenceExpr)
+                logger.warnElement("Expected to find reflection target for function reference. Using underlying symbol instead.", functionReferenceExpr)
                 functionReferenceExpr.symbol
             }
 
@@ -4035,7 +4038,15 @@ open class KotlinFileExtractor(
 
                     fun trySub(t: IrType, context: TypeContext) = if (typeSub == null) t else typeSub(t, context, pluginContext)
 
-                    extractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, idOverride = ids.function, locOverride = tw.getLocation(e))
+                    // Force extraction of this function even if this is a fake override --
+                    // This happens in the case where a functional interface inherits its only abstract member,
+                    // which usually we wouldn't extract, but in this case we're effectively using it as a template
+                    // for the real function we're extracting that will implement this interface, and it serves fine
+                    // for that purpose. By contrast if we looked through the fake to the underlying abstract method
+                    // we would need to compose generic type substitutions -- for example, if we're implementing
+                    // T UnaryOperator<T>.apply(T t) here, we would need to compose substitutions so we can implement
+                    // the real underlying R Function<T, R>.apply(T t).
+                    forceExtractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, idOverride = ids.function, locOverride = tw.getLocation(e))
 
                     //body
                     val blockId = tw.getFreshIdLabel<DbBlock>()

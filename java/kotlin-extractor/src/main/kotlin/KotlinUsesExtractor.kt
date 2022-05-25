@@ -6,6 +6,7 @@ import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
+import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.ir.declarations.*
@@ -960,7 +961,19 @@ open class KotlinUsesExtractor(
                             decl.name == f.name &&
                             decl.valueParameters.size == f.valueParameters.size
                         } ?:
-                        run {
+                        // Or check property accessors:
+                        if (f.isAccessor) {
+                            val prop = javaClass.declarations.filterIsInstance<IrProperty>().find { decl ->
+                                decl.name == (f.propertyIfAccessor as IrProperty).name
+                            }
+                            if (prop?.getter?.name == f.name)
+                                prop.getter
+                            else if (prop?.setter?.name == f.name)
+                                prop.setter
+                            else null
+                        } else {
+                            null
+                        } ?: run {
                             val parentFqName = parentClass.fqNameWhenAvailable?.asString()
                             if (!expectedMissingEquivalents.contains(parentFqName)) {
                                 logger.warn("Couldn't find a Java equivalent function to $parentFqName.${f.name} in ${javaClass.fqNameWhenAvailable}")

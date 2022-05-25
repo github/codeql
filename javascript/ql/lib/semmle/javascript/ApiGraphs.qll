@@ -604,12 +604,36 @@ module API {
           or
           lbl = Label::promisedError() and
           PromiseFlow::storeStep(rhs, pred, Promises::errorProp())
+          or
+          // The return-value of a getter G counts as a definition of property G
+          // (Ordinary methods and properties are handled as PropWrite nodes)
+          exists(string name | lbl = Label::member(name) |
+            rhs = pred.(DataFlow::ObjectLiteralNode).getPropertyGetter(name).getAReturn()
+            or
+            rhs =
+              pred.(DataFlow::ClassNode)
+                  .getStaticMember(name, DataFlow::MemberKind::getter())
+                  .getAReturn()
+          )
+          or
+          // If `new C()` escapes, generate edges to its instance members
+          exists(DataFlow::ClassNode cls, string name |
+            pred = cls.getAClassReference().getAnInstantiation() and
+            lbl = Label::member(name)
+          |
+            rhs = cls.getInstanceMethod(name)
+            or
+            rhs = cls.getInstanceMember(name, DataFlow::MemberKind::getter()).getAReturn()
+          )
         )
         or
         exists(DataFlow::ClassNode cls, string name |
           base = MkClassInstance(cls) and
-          lbl = Label::member(name) and
+          lbl = Label::member(name)
+        |
           rhs = cls.getInstanceMethod(name)
+          or
+          rhs = cls.getInstanceMember(name, DataFlow::MemberKind::getter()).getAReturn()
         )
         or
         exists(DataFlow::FunctionNode f |

@@ -1,0 +1,68 @@
+private import swift as S
+private import ControlFlowGraphImpl as Impl
+private import Completion as Comp
+private import codeql.swift.controlflow.ControlFlowGraph as CFG
+private import Splitting as Splitting
+
+/** The base class for `ControlFlowTree`. */
+class ControlFlowTreeBase extends S::AstNode { }
+
+class ControlFlowElement = S::AstNode;
+
+class Completion = Comp::Completion;
+
+/**
+ * Hold if `c` represents normal evaluation of a statement or an
+ * expression.
+ */
+predicate completionIsNormal(Completion c) { c instanceof Comp::NormalCompletion }
+
+/**
+ * Hold if `c` represents simple (normal) evaluation of a statement or an
+ * expression.
+ */
+predicate completionIsSimple(Completion c) { c instanceof Comp::SimpleCompletion }
+
+/** Holds if `c` is a valid completion for `e`. */
+predicate completionIsValidFor(Completion c, ControlFlowElement e) { c.isValidFor(e) }
+
+class CfgScope = CFG::CfgScope;
+
+predicate getCfgScope = Impl::getCfgScope/1;
+
+/** Holds if `first` is first executed when entering `scope`. */
+predicate scopeFirst(CfgScope scope, ControlFlowElement first) {
+  scope.(Impl::CfgScope::Range_).entry(first)
+}
+
+/** Holds if `scope` is exited when `last` finishes with completion `c`. */
+predicate scopeLast(CfgScope scope, ControlFlowElement last, Completion c) {
+  scope.(Impl::CfgScope::Range_).exit(last, c)
+}
+
+/** Gets the maximum number of splits allowed for a given node. */
+int maxSplits() { result = 5 }
+
+class SplitKindBase = Splitting::TSplitKind;
+
+class Split = Splitting::Split;
+
+class SuccessorType = CFG::SuccessorType;
+
+/** Gets a successor type that matches completion `c`. */
+SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
+
+/**
+ * Hold if `c` represents simple (normal) evaluation of a statement or an
+ * expression.
+ */
+predicate successorTypeIsSimple(SuccessorType t) {
+  t instanceof CFG::SuccessorTypes::NormalSuccessor
+}
+
+/** Holds if `t` is an abnormal exit type out of a CFG scope. */
+predicate isAbnormalExitType(SuccessorType t) { none() } // TODO
+
+class Location = S::Location;
+
+class Node = CFG::ControlFlowNode;

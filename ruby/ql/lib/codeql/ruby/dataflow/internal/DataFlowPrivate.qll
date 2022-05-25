@@ -6,6 +6,7 @@ private import DataFlowPublic
 private import DataFlowDispatch
 private import SsaImpl as SsaImpl
 private import FlowSummaryImpl as FlowSummaryImpl
+private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -177,7 +178,7 @@ private class Argument extends CfgNodes::ExprCfgNode {
     exists(int i |
       this = call.getArgument(i) and
       not this.getExpr() instanceof BlockArgument and
-      not exists(this.getExpr().(Pair).getKey().getConstantValue().getSymbol()) and
+      not this.getExpr().(Pair).getKey().getConstantValue().isSymbol(_) and
       arg.isPositional(i)
     )
     or
@@ -219,7 +220,10 @@ private module Cached {
     } or
     TSelfParameterNode(MethodBase m) or
     TBlockParameterNode(MethodBase m) or
-    TExprPostUpdateNode(CfgNodes::ExprCfgNode n) { n instanceof Argument } or
+    TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
+      n instanceof Argument or
+      n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
+    } or
     TSummaryNode(
       FlowSummaryImpl::Public::SummarizedCallable c,
       FlowSummaryImpl::Private::SummaryNodeState state
@@ -254,7 +258,7 @@ private module Cached {
     nodeTo.(SynthReturnNode).getAnInput() = nodeFrom
     or
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo) and
-    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom)
+    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
@@ -272,7 +276,7 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
   }
 
   /** This is the local flow predicate that is used in type tracking. */
@@ -298,6 +302,20 @@ private module Cached {
     )
   }
 
+  pragma[nomagic]
+  private predicate reachedFromExprOrEntrySsaDef(Node n) {
+    localFlowStepTypeTracker(any(Node n0 |
+        n0 instanceof ExprNode
+        or
+        entrySsaDefinition(n0)
+      ), n)
+    or
+    exists(Node mid |
+      reachedFromExprOrEntrySsaDef(mid) and
+      localFlowStepTypeTracker(mid, n)
+    )
+  }
+
   cached
   predicate isLocalSourceNode(Node n) {
     n instanceof ParameterNode
@@ -305,11 +323,7 @@ private module Cached {
     n instanceof PostUpdateNodes::ExprPostUpdateNode
     or
     // Nodes that can't be reached from another entry definition or expression.
-    not localFlowStepTypeTracker+(any(Node n0 |
-        n0 instanceof ExprNode
-        or
-        entrySsaDefinition(n0)
-      ), n)
+    not reachedFromExprOrEntrySsaDef(n)
     or
     // Ensure all entry SSA definitions are local sources -- for parameters, this
     // is needed by type tracking. Note that when the parameter has a default value,
@@ -321,7 +335,10 @@ private module Cached {
   cached
   newtype TContentSet =
     TSingletonContent(Content c) or
-    TAnyElementContent()
+    TAnyElementContent() or
+    TElementLowerBoundContent(int lower) {
+      FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, lower)
+    }
 
   cached
   newtype TContent =
@@ -329,7 +346,10 @@ private module Cached {
       not cv.isInt(_) or
       cv.getInt() in [0 .. 10]
     } or
-    TUnknownElementContent()
+    TUnknownElementContent() or
+    TKnownPairValueContent(ConstantValue cv) or
+    TUnknownPairValueContent() or
+    TFieldContent(string name) { name = any(InstanceVariable v).getName() }
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
@@ -347,6 +367,8 @@ private module Cached {
 }
 
 class TElementContent = TKnownElementContent or TUnknownElementContent;
+
+class TPairValueContent = TKnownPairValueContent or TUnknownPairValueContent;
 
 import Cached
 
@@ -785,11 +807,59 @@ predicate jumpStep(Node pred, Node succ) {
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
 }
 
+/**
+ * Holds if data can flow from `node1` to `node2` via an assignment to
+ * content `c`.
+ */
 predicate storeStep(Node node1, ContentSet c, Node node2) {
+  // Instance variable assignment, `@var = src`
+  node2.(PostUpdateNode).getPreUpdateNode().asExpr() =
+    any(CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode var |
+      exists(CfgNodes::ExprNodes::AssignExprCfgNode assign |
+        var = assign.getLhs() and
+        node1.asExpr() = assign.getRhs()
+      |
+        c.isSingleton(any(Content::FieldContent ct |
+            ct.getName() = var.getExpr().getVariable().getName()
+          ))
+      )
+    ).getReceiver()
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
+  or
+  // Needed for pairs passed into method calls where the key is not a symbol,
+  // that is, where it is not a keyword argument.
+  node2.asExpr() =
+    any(CfgNodes::ExprNodes::PairCfgNode pair |
+      exists(CfgNodes::ExprCfgNode key |
+        key = pair.getKey() and
+        pair.getValue() = node1.asExpr()
+      |
+        exists(ConstantValue cv |
+          cv = key.getConstantValue() and
+          not cv.isSymbol(_) and // handled as a keyword argument
+          c.isSingleton(TKnownPairValueContent(cv))
+        )
+        or
+        not exists(key.getConstantValue()) and
+        c.isSingleton(TUnknownPairValueContent())
+      )
+    )
 }
 
+/**
+ * Holds if there is a read step of content `c` from `node1` to `node2`.
+ */
 predicate readStep(Node node1, ContentSet c, Node node2) {
+  // Instance variable read access, `@var`
+  node2.asExpr() =
+    any(CfgNodes::ExprNodes::InstanceVariableReadAccessCfgNode var |
+      node1.asExpr() = var.getReceiver() and
+      c.isSingleton(any(Content::FieldContent ct |
+          ct.getName() = var.getExpr().getVariable().getName()
+        ))
+    )
+  or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
 }
 

@@ -1,5 +1,4 @@
 missingSuccessor
-| Test.kt:122:12:122:16 | false |
 #select
 | Test.kt:0:0:0:0 | TestKt | Class | file://:0:0:0:0 | <none> | <none> |
 | Test.kt:3:1:80:1 | Test | Class | file://:0:0:0:0 | <none> | <none> |
@@ -257,6 +256,6 @@ missingSuccessor
 | Test.kt:121:9:121:9 | y | VarAccess | Test.kt:123:8:123:10 | { ... } | BlockStmt |
 | Test.kt:122:12:122:16 | ... -> ... | WhenBranch | Test.kt:122:12:122:16 | true | BooleanLiteral |
 | Test.kt:122:12:122:16 | <Expr>; | ExprStmt | Test.kt:122:12:122:16 | false | BooleanLiteral |
-| Test.kt:122:12:122:16 | false | BooleanLiteral | file://:0:0:0:0 | <none> | <none> |
+| Test.kt:122:12:122:16 | false | BooleanLiteral | Test.kt:118:1:124:1 | fn_when | Method |
 | Test.kt:122:12:122:16 | true | BooleanLiteral | Test.kt:122:12:122:16 | <Expr>; | ExprStmt |
 | Test.kt:123:8:123:10 | { ... } | BlockStmt | Test.kt:118:1:124:1 | fn_when | Method |

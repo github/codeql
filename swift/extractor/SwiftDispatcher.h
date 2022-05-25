@@ -10,42 +10,6 @@
 
 namespace codeql {
 
-namespace detail {
-
-// The following `getKindName`s are used within "TBD" TRAP entries to visually mark an AST node as
-// not properly emitted yet.
-// TODO: To be replaced with QL counterpart
-template <typename Parent, typename Kind>
-inline std::string getKindName(Kind kind) {
-  return Parent::getKindName(kind).str();
-}
-
-template <>
-inline std::string getKindName<swift::TypeBase, swift::TypeKind>(swift::TypeKind kind) {
-  switch (kind) {
-#define TYPE(CLASS, PARENT)    \
-  case swift::TypeKind::CLASS: \
-    return #CLASS;
-#include "swift/AST/TypeNodes.def"
-    default:
-      return "Unknown";
-  }
-}
-
-template <>
-std::string inline getKindName<swift::TypeRepr, swift::TypeReprKind>(swift::TypeReprKind kind) {
-  switch (kind) {
-#define TYPEREPR(CLASS, PARENT)    \
-  case swift::TypeReprKind::CLASS: \
-    return #CLASS;
-#include "swift/AST/TypeReprNodes.def"
-    default:
-      return "Unknown";
-  }
-}
-
-}  // namespace detail
-
 // The main responsibilities of the SwiftDispatcher are as follows:
 // * redirect specific AST node emission to a corresponding visitor (statements, expressions, etc.)
 // * storing TRAP labels for emitted AST nodes (in the TrapLabelStore) to avoid re-emission
@@ -57,28 +21,22 @@ class SwiftDispatcher {
   SwiftDispatcher(const swift::SourceManager& sourceManager, TrapArena& arena, TrapOutput& trap)
       : sourceManager{sourceManager}, arena{arena}, trap{trap} {}
 
-  // This is a helper method to emit TRAP entries for AST nodes that we don't fully support yet.
-  template <typename Parent, typename Child>
-  void TBD(Child* entity, const std::string& suffix) {
-    using namespace std::string_literals;
-    auto label = assignNewLabel(entity);
-    auto kind = detail::getKindName<Parent>(static_cast<const Parent*>(entity)->getKind());
-    auto name = "TBD ("s + kind + suffix + ")";
-    if constexpr (std::is_same_v<Parent, swift::TypeBase>) {
-      trap.emit(UnknownTypesTrap{label, name});
-    } else {
-      trap.emit(UnknownAstNodesTrap{label, name});
-    }
+  template <typename Entry>
+  void emit(const Entry& entry) {
+    trap.emit(entry);
   }
 
- private:
-  // types to be supported by assignNewLabel/fetchLabel need to be listed here
-  using Store = TrapLabelStore<swift::Decl,
-                               swift::Stmt,
-                               swift::Expr,
-                               swift::Pattern,
-                               swift::TypeRepr,
-                               swift::TypeBase>;
+  // This is a helper method to emit TRAP entries for AST nodes that we don't fully support yet.
+  template <typename E>
+  void emitUnknown(E* entity) {
+    auto label = assignNewLabel(entity);
+    using Trap = BindingTrapOf<E>;
+    static_assert(sizeof(Trap) == sizeof(label),
+                  "Binding traps of unknown entities must only have the `id` field (the class "
+                  "should be empty in schema.yml)");
+    emit(Trap{label});
+    emit(ElementIsUnknownTrap{label});
+  }
 
   // This method gives a TRAP label for already emitted AST node.
   // If the AST node was not emitted yet, then the emission is dispatched to a corresponding
@@ -88,7 +46,7 @@ class SwiftDispatcher {
     // this is required so we avoid any recursive loop: a `fetchLabel` during the visit of `e` might
     // end up calling `fetchLabel` on `e` itself, so we want the visit of `e` to call `fetchLabel`
     // only after having called `assignNewLabel` on `e`.
-    assert(holds_alternative<std::monostate>(waitingForNewLabel) &&
+    assert(std::holds_alternative<std::monostate>(waitingForNewLabel) &&
            "fetchLabel called before assignNewLabel");
     if (auto l = store.get(e)) {
       return *l;
@@ -105,22 +63,38 @@ class SwiftDispatcher {
     return {};
   }
 
+  // convenience `fetchLabel` overload for `swift::Type` (which is just a wrapper for
+  // `swift::TypeBase*`)
+  TrapLabel<TypeTag> fetchLabel(swift::Type t) { return fetchLabel(t.getPointer()); }
+
+  TrapLabel<AstNodeTag> fetchLabel(swift::ASTNode node) {
+    return fetchLabelFromUnion<AstNodeTag>(node);
+  }
+
   // Due to the lazy emission approach, we must assign a label to a corresponding AST node before
   // it actually gets emitted to handle recursive cases such as recursive calls, or recursive type
   // declarations
   template <typename E>
   TrapLabelOf<E> assignNewLabel(E* e) {
     assert(waitingForNewLabel == Store::Handle{e} && "assignNewLabel called on wrong entity");
-    auto label = getLabel<TrapTagOf<E>>();
-    trap.assignStar(label);
+    auto label = createLabel<TrapTagOf<E>>();
     store.insert(e, label);
     waitingForNewLabel = std::monostate{};
     return label;
   }
 
   template <typename Tag>
-  TrapLabel<Tag> getLabel() {
-    return arena.allocateLabel<Tag>();
+  TrapLabel<Tag> createLabel() {
+    auto ret = arena.allocateLabel<Tag>();
+    trap.assignStar(ret);
+    return ret;
+  }
+
+  template <typename Tag, typename... Args>
+  TrapLabel<Tag> createLabel(Args&&... args) {
+    auto ret = arena.allocateLabel<Tag>();
+    trap.assignKey(ret, std::forward<Args>(args)...);
+    return ret;
   }
 
   template <typename Locatable>
@@ -128,27 +102,72 @@ class SwiftDispatcher {
     attachLocation(&locatable, locatableLabel);
   }
 
-  // Emits a Location TRAP entry and attaches it to an AST node
+  // Emits a Location TRAP entry and attaches it to a `Locatable` trap label
   template <typename Locatable>
   void attachLocation(Locatable* locatable, TrapLabel<LocatableTag> locatableLabel) {
-    auto start = locatable->getStartLoc();
-    auto end = locatable->getEndLoc();
+    attachLocation(locatable->getStartLoc(), locatable->getEndLoc(), locatableLabel);
+  }
+
+  // Emits a Location TRAP entry for a list of swift entities and attaches it to a `Locatable` trap
+  // label
+  template <typename Locatable>
+  void attachLocation(llvm::MutableArrayRef<Locatable>* locatables,
+                      TrapLabel<LocatableTag> locatableLabel) {
+    if (locatables->empty()) {
+      return;
+    }
+    attachLocation(locatables->front().getStartLoc(), locatables->back().getEndLoc(),
+                   locatableLabel);
+  }
+
+ private:
+  // types to be supported by assignNewLabel/fetchLabel need to be listed here
+  using Store = TrapLabelStore<swift::Decl,
+                               swift::Stmt,
+                               swift::StmtCondition,
+                               swift::CaseLabelItem,
+                               swift::Expr,
+                               swift::Pattern,
+                               swift::TypeRepr,
+                               swift::TypeBase>;
+
+  void attachLocation(swift::SourceLoc start,
+                      swift::SourceLoc end,
+                      TrapLabel<LocatableTag> locatableLabel) {
     if (!start.isValid() || !end.isValid()) {
       // invalid locations seem to come from entities synthesized by the compiler
       return;
     }
     std::string filepath = getFilepath(start);
-    auto fileLabel = arena.allocateLabel<FileTag>();
-    trap.assignKey(fileLabel, filepath);
+    auto fileLabel = createLabel<FileTag>(filepath);
     // TODO: do not emit duplicate trap entries for Files
     trap.emit(FilesTrap{fileLabel, filepath});
     auto [startLine, startColumn] = sourceManager.getLineAndColumnInBuffer(start);
     auto [endLine, endColumn] = sourceManager.getLineAndColumnInBuffer(end);
-    auto locLabel = arena.allocateLabel<LocationTag>();
-    trap.assignKey(locLabel, '{', fileLabel, "}:", startLine, ':', startColumn, ':', endLine, ':',
-                   endColumn);
+    auto locLabel = createLabel<LocationTag>('{', fileLabel, "}:", startLine, ':', startColumn, ':',
+                                             endLine, ':', endColumn);
     trap.emit(LocationsTrap{locLabel, fileLabel, startLine, startColumn, endLine, endColumn});
     trap.emit(LocatablesTrap{locatableLabel, locLabel});
+  }
+
+  template <typename Tag, typename... Ts>
+  TrapLabel<Tag> fetchLabelFromUnion(const llvm::PointerUnion<Ts...> u) {
+    TrapLabel<Tag> ret{};
+    // with logical op short-circuiting, this will stop trying on the first successful fetch
+    // don't feel tempted to replace the variable with the expression inside the `assert`, or
+    // building with `NDEBUG` will not trigger the fetching
+    bool unionCaseFound = (... || fetchLabelFromUnionCase<Tag, Ts>(u, ret));
+    assert(unionCaseFound && "llvm::PointerUnion not set to a known case");
+    return ret;
+  }
+
+  template <typename Tag, typename T, typename... Ts>
+  bool fetchLabelFromUnionCase(const llvm::PointerUnion<Ts...> u, TrapLabel<Tag>& output) {
+    if (auto e = u.template dyn_cast<T>()) {
+      output = fetchLabel(e);
+      return true;
+    }
+    return false;
   }
 
   std::string getFilepath(swift::SourceLoc loc) {
@@ -168,6 +187,8 @@ class SwiftDispatcher {
   // which are to be introduced in follow-up PRs
   virtual void visit(swift::Decl* decl) = 0;
   virtual void visit(swift::Stmt* stmt) = 0;
+  virtual void visit(swift::StmtCondition* cond) = 0;
+  virtual void visit(swift::CaseLabelItem* item) = 0;
   virtual void visit(swift::Expr* expr) = 0;
   virtual void visit(swift::Pattern* pattern) = 0;
   virtual void visit(swift::TypeRepr* type) = 0;

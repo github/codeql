@@ -10,6 +10,7 @@ import core.Object::Object
 import core.Kernel::Kernel
 import core.Module
 import core.Array
+import core.Hash
 import core.String
 import core.Regexp
 import core.IO

@@ -150,8 +150,6 @@ private module HandlebarsTaintSteps {
    * helpers registered.
    */
   class HandlebarsStep extends DataFlow::SharedFlowStep {
-    DataFlow::CallNode templatingCall;
-
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       isHandlebarsArgStep(pred, succ)
     }

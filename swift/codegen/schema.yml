@@ -12,11 +12,11 @@ _directories:
   expr: Expr$
   stmt: Stmt$
 
+Element:
+  is_unknown: predicate
+
 File:
   name: string
-
-IterableDeclContext:
-  members: Decl*
 
 Locatable:
   location: Location
@@ -31,6 +31,9 @@ Location:
 Type:
   diagnostics_name: string
   canonical_type: Type
+
+IterableDeclContext:
+  members: Decl*
 
 ExtensionDecl:
   _extends:
@@ -74,6 +77,8 @@ BuiltinType:
 
 DependentMemberType:
   _extends: Type
+  baseType: Type
+  associated_type_decl: AssociatedTypeDecl
 
 DynamicSelfType:
   _extends: Type
@@ -123,13 +128,11 @@ SugarType:
 
 TupleType:
   _extends: Type
+  types: Type*
+  names: string*
 
 TypeVariableType:
   _extends: Type
-
-UnknownType:
-  _extends: Type
-  name: string
 
 UnresolvedType:
   _extends: Type
@@ -232,12 +235,14 @@ GenericTypeParamType:
 
 ParenType:
   _extends: SugarType
+  type: Type
 
 SyntaxSugarType:
   _extends: SugarType
 
 TypeAliasType:
   _extends: SugarType
+  decl: TypeAliasDecl
 
 EnumCaseDecl:
   _extends: Decl
@@ -254,6 +259,7 @@ MissingMemberDecl:
 
 OperatorDecl:
   _extends: Decl
+  name: string
 
 PatternBindingDecl:
   _extends: Decl
@@ -269,15 +275,6 @@ PrecedenceGroupDecl:
 TopLevelCodeDecl:
   _extends: Decl
   body: BraceStmt
-
-UnknownAstNode:
-  _extends:
-    - Decl
-    - Expr
-    - Pattern
-    - Stmt
-    - TypeRepr
-  name: string
 
 ValueDecl:
   _extends: Decl
@@ -330,6 +327,9 @@ DeclRefExpr:
   _extends: Expr
   decl: Decl
   replacement_types: Type*
+  has_direct_to_storage_semantics: predicate
+  has_direct_to_implementation_semantics: predicate
+  has_ordinary_semantics: predicate
 
 DefaultArgumentExpr:
   _extends: Expr
@@ -407,6 +407,8 @@ LiteralExpr:
 
 LookupExpr:
   _extends: Expr
+  base_expr: Expr
+  member: Decl
 
 MakeTemporarilyEscapableExpr:
   _extends: Expr
@@ -599,6 +601,7 @@ YieldStmt:
 
 BoundGenericType:
   _extends: NominalOrBoundGenericNominalType
+  arg_types: Type*
 
 NominalType:
   _extends: NominalOrBoundGenericNominalType
@@ -608,6 +611,7 @@ BuiltinIntegerLiteralType:
 
 BuiltinIntegerType:
   _extends: AnyBuiltinIntegerType
+  width: int?
 
 NestedArchetypeType:
   _extends: ArchetypeType
@@ -627,12 +631,16 @@ PrimaryArchetypeType:
 
 DictionaryType:
   _extends: SyntaxSugarType
+  key_type: Type
+  value_type: Type
 
 UnarySyntaxSugarType:
   _extends: SyntaxSugarType
+  base_type: Type
 
 InfixOperatorDecl:
   _extends: OperatorDecl
+  precedence_group: PrecedenceGroupDecl?
 
 PostfixOperatorDecl:
   _extends: OperatorDecl
@@ -650,6 +658,7 @@ AbstractFunctionDecl:
 
 AbstractStorageDecl:
   _extends: ValueDecl
+  accessor_decls: AccessorDecl*
 
 EnumElementDecl:
   _extends: ValueDecl
@@ -659,6 +668,7 @@ EnumElementDecl:
 TypeDecl:
   _extends: ValueDecl
   name: string
+  base_types: Type*
 
 AutoClosureExpr:
   _extends: AbstractClosureExpr
@@ -836,14 +846,17 @@ DynamicLookupExpr:
 
 MemberRefExpr:
   _extends: LookupExpr
-  base_expr: Expr
+  has_direct_to_storage_semantics: predicate
+  has_direct_to_implementation_semantics: predicate
+  has_ordinary_semantics: predicate
 
 SubscriptExpr:
   _extends:
-    - GenericContext
     - LookupExpr
-  base_expr: Expr
   arguments: Argument*
+  has_direct_to_storage_semantics: predicate
+  has_direct_to_implementation_semantics: predicate
+  has_ordinary_semantics: predicate
 
 OverloadedDeclRefExpr:
   _extends: OverloadSetRefExpr
@@ -859,9 +872,10 @@ DoStmt:
 
 ForEachStmt:
   _extends: LabeledStmt
-  body: BraceStmt
+  pattern: Pattern
   sequence: Expr
   where: Expr?
+  body: BraceStmt
 
 LabeledConditionalStmt:
   _extends: LabeledStmt
@@ -893,7 +907,6 @@ BoundGenericStructType:
 
 ClassType:
   _extends: NominalType
-  decl: ClassDecl
 
 EnumType:
   _extends: NominalType
@@ -903,7 +916,6 @@ ProtocolType:
 
 StructType:
   _extends: NominalType
-  decl: StructDecl
 
 ArraySliceType:
   _extends: UnarySyntaxSugarType
@@ -924,12 +936,19 @@ FuncDecl:
   _extends: AbstractFunctionDecl
 
 SubscriptDecl:
-  _extends: AbstractStorageDecl
+  _extends:
+    - AbstractStorageDecl
+    - GenericContext
+  params: ParamDecl*
+  element_type: Type
 
 VarDecl:
   _extends: AbstractStorageDecl
   name: string
   type: Type
+  attached_property_wrapper_type: Type?
+  parent_pattern: Pattern?
+  parent_initializer: Expr?
 
 AbstractTypeParamDecl:
   _extends: TypeDecl
@@ -996,6 +1015,10 @@ WhileStmt:
 
 AccessorDecl:
   _extends: FuncDecl
+  is_getter: predicate
+  is_setter: predicate
+  is_will_set: predicate
+  is_did_set: predicate
 
 ConcreteFuncDecl:
   _extends: FuncDecl
@@ -1026,3 +1049,87 @@ FloatLiteralExpr:
 IntegerLiteralExpr:
   _extends: NumberLiteralExpr
   string_value: string
+
+ErrorTypeRepr:
+  _extends: TypeRepr
+
+AttributedTypeRepr:
+  _extends: TypeRepr
+
+IdentTypeRepr:
+  _extends: TypeRepr
+
+ComponentIdentTypeRepr:
+  _extends: IdentTypeRepr
+
+SimpleIdentTypeRepr:
+  _extends: ComponentIdentTypeRepr
+
+GenericIdentTypeRepr:
+  _extends: ComponentIdentTypeRepr
+
+CompoundIdentTypeRepr:
+  _extends: IdentTypeRepr
+
+FunctionTypeRepr:
+  _extends: TypeRepr
+
+ArrayTypeRepr:
+  _extends: TypeRepr
+
+DictionaryTypeRepr:
+  _extends: TypeRepr
+
+OptionalTypeRepr:
+  _extends: TypeRepr
+
+ImplicitlyUnwrappedOptionalTypeRepr:
+  _extends: TypeRepr
+
+TupleTypeRepr:
+  _extends: TypeRepr
+
+CompositionTypeRepr:
+  _extends: TypeRepr
+
+MetatypeTypeRepr:
+  _extends: TypeRepr
+
+ProtocolTypeRepr:
+  _extends: TypeRepr
+
+OpaqueReturnTypeRepr:
+  _extends: TypeRepr
+
+NamedOpaqueReturnTypeRepr:
+  _extends: TypeRepr
+
+ExistentialTypeRepr:
+  _extends: TypeRepr
+
+PlaceholderTypeRepr:
+  _extends: TypeRepr
+
+SpecifierTypeRepr:
+  _extends: TypeRepr
+
+InOutTypeRepr:
+  _extends: SpecifierTypeRepr
+
+SharedTypeRepr:
+  _extends: SpecifierTypeRepr
+
+OwnedTypeRepr:
+  _extends: SpecifierTypeRepr
+
+IsolatedTypeRepr:
+  _extends: SpecifierTypeRepr
+
+CompileTimeConstTypeRepr:
+  _extends: SpecifierTypeRepr
+
+FixedTypeRepr:
+  _extends: TypeRepr
+
+SilBoxTypeRepr:
+  _extends: TypeRepr

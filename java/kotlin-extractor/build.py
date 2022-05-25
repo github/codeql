@@ -21,6 +21,8 @@ def parse_args():
                         help='Build for all versions/kinds')
     parser.add_argument('--single', action='store_false',
                         dest='many', help='Build for a single version/kind')
+    parser.add_argument('--single-version',
+                        help='Build for a specific version/kind')
     return parser.parse_args()
 
 
@@ -35,8 +37,12 @@ def is_windows():
         return True
     return False
 
+# kotlinc might be kotlinc.bat or kotlinc.cmd on Windows, so we use `which` to find out what it is
+kotlinc = shutil.which('kotlinc')
+if kotlinc is None:
+    print("Cannot build the Kotlin extractor: no kotlinc found on your PATH", file = sys.stderr)
+    sys.exit(1)
 
-kotlinc = 'kotlinc.bat' if is_windows() else 'kotlinc'
 javac = 'javac'
 kotlin_dependency_folder = args.dependencies
 
@@ -170,8 +176,8 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
 
     for v in kotlin_plugin_versions.many_versions:
         if v != version:
-            shutil.rmtree(
-                tmp_dir + '/main/kotlin/utils/versions/v_' + v.replace('.', '_'))
+            d = tmp_dir + '/main/kotlin/utils/versions/v_' + v.replace('.', '_')
+            shutil.rmtree(d)
 
     srcs = find_sources(tmp_dir)
 
@@ -201,7 +207,9 @@ def compile_standalone(version):
             'build/temp_src',
             version)
 
-if args.many:
+if args.single_version:
+    compile_standalone(args.single_version)
+elif args.many:
     for version in kotlin_plugin_versions.many_versions:
         compile_standalone(version)
         compile_embeddable(version)

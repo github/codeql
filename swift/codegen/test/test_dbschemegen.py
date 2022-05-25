@@ -1,6 +1,6 @@
 import sys
 
-from swift.codegen import dbschemegen
+from swift.codegen.generators import dbschemegen
 from swift.codegen.lib import dbscheme
 from swift.codegen.test.utils import *
 
