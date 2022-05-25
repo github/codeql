@@ -68,10 +68,12 @@ predicate dangerousUseBufferAndSize(FunctionCall fc) {
   exists(Expr e0 |
     fc.getASuccessor*() = e0 and
     (
+      // When the return value is used as the basis of an array, the first argument is part of that array's offset expression.
       globalValueNumber(e0.(ArrayExpr).getArrayBase()) = globalValueNumber(fc) and
       e0.(ArrayExpr).getArrayOffset().getAChild().(VariableAccess).getTarget() =
         fc.getArgument(0).(VariableAccess).getTarget()
       or
+      // When the return value is used as an argument to string functions.
       e0.(FunctionCall).getTarget().hasGlobalOrStdName(["strstr", "strlen", "strcpy", "strcat"]) and
       (
         globalValueNumber(e0.(FunctionCall).getAnArgument()) = globalValueNumber(fc)
