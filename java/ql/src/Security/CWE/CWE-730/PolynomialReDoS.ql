@@ -13,7 +13,7 @@
  */
 
 import java
-import semmle.code.java.security.performance.PolynomialReDoSQuery
+import semmle.code.java.security.regexp.PolynomialReDoSQuery
 import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, PolynomialBackTrackingTerm regexp

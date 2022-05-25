@@ -3,7 +3,7 @@
  * perform backtracking in superlinear time.
  */
 
-import ReDoSUtil
+import NfaUtils
 
 /*
  * This module implements the analysis described in the paper:

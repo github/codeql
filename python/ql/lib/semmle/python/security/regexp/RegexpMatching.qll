@@ -3,7 +3,7 @@
  * and for testing which capture groups are filled when a particular regexp matches a string.
  */
 
-import ReDoSUtil
+import NfaUtils
 
 /** A root term */
 class RootTerm extends RegExpTerm {
