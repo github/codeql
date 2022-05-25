@@ -1239,7 +1239,7 @@ nodes
 | tst.ts:325:7:325:14 | [VarDecl] ErrorMap | semmle.label | [VarDecl] ErrorMap |
 | tst.ts:325:7:325:35 | [VariableDeclarator] ErrorMa ... Error> | semmle.label | [VariableDeclarator] ErrorMa ... Error> |
 | tst.ts:325:18:325:20 | [VarRef] Map | semmle.label | [VarRef] Map |
-| tst.ts:325:18:325:35 | [???] Map<string, Error> | semmle.label | [???] Map<string, Error> |
+| tst.ts:325:18:325:35 | [ExpressionWithTypeArguments] Map<string, Error> | semmle.label | [ExpressionWithTypeArguments] Map<string, Error> |
 | tst.ts:325:22:325:27 | [KeywordTypeExpr] string | semmle.label | [KeywordTypeExpr] string |
 | tst.ts:325:30:325:34 | [LocalTypeAccess] Error | semmle.label | [LocalTypeAccess] Error |
 | tst.ts:327:1:327:32 | [DeclStmt] const errorMap = ... | semmle.label | [DeclStmt] const errorMap = ... |
@@ -3852,14 +3852,14 @@ edges
 | tst.ts:325:1:325:36 | [DeclStmt] const ErrorMap = ... | tst.ts:325:7:325:35 | [VariableDeclarator] ErrorMa ... Error> | semmle.order | 1 |
 | tst.ts:325:7:325:35 | [VariableDeclarator] ErrorMa ... Error> | tst.ts:325:7:325:14 | [VarDecl] ErrorMap | semmle.label | 1 |
 | tst.ts:325:7:325:35 | [VariableDeclarator] ErrorMa ... Error> | tst.ts:325:7:325:14 | [VarDecl] ErrorMap | semmle.order | 1 |
-| tst.ts:325:7:325:35 | [VariableDeclarator] ErrorMa ... Error> | tst.ts:325:18:325:35 | [???] Map<string, Error> | semmle.label | 2 |
-| tst.ts:325:7:325:35 | [VariableDeclarator] ErrorMa ... Error> | tst.ts:325:18:325:35 | [???] Map<string, Error> | semmle.order | 2 |
-| tst.ts:325:18:325:35 | [???] Map<string, Error> | tst.ts:325:18:325:20 | [VarRef] Map | semmle.label | 1 |
-| tst.ts:325:18:325:35 | [???] Map<string, Error> | tst.ts:325:18:325:20 | [VarRef] Map | semmle.order | 1 |
-| tst.ts:325:18:325:35 | [???] Map<string, Error> | tst.ts:325:22:325:27 | [KeywordTypeExpr] string | semmle.label | 2 |
-| tst.ts:325:18:325:35 | [???] Map<string, Error> | tst.ts:325:22:325:27 | [KeywordTypeExpr] string | semmle.order | 2 |
-| tst.ts:325:18:325:35 | [???] Map<string, Error> | tst.ts:325:30:325:34 | [LocalTypeAccess] Error | semmle.label | 3 |
-| tst.ts:325:18:325:35 | [???] Map<string, Error> | tst.ts:325:30:325:34 | [LocalTypeAccess] Error | semmle.order | 3 |
+| tst.ts:325:7:325:35 | [VariableDeclarator] ErrorMa ... Error> | tst.ts:325:18:325:35 | [ExpressionWithTypeArguments] Map<string, Error> | semmle.label | 2 |
+| tst.ts:325:7:325:35 | [VariableDeclarator] ErrorMa ... Error> | tst.ts:325:18:325:35 | [ExpressionWithTypeArguments] Map<string, Error> | semmle.order | 2 |
+| tst.ts:325:18:325:35 | [ExpressionWithTypeArguments] Map<string, Error> | tst.ts:325:18:325:20 | [VarRef] Map | semmle.label | 1 |
+| tst.ts:325:18:325:35 | [ExpressionWithTypeArguments] Map<string, Error> | tst.ts:325:18:325:20 | [VarRef] Map | semmle.order | 1 |
+| tst.ts:325:18:325:35 | [ExpressionWithTypeArguments] Map<string, Error> | tst.ts:325:22:325:27 | [KeywordTypeExpr] string | semmle.label | 2 |
+| tst.ts:325:18:325:35 | [ExpressionWithTypeArguments] Map<string, Error> | tst.ts:325:22:325:27 | [KeywordTypeExpr] string | semmle.order | 2 |
+| tst.ts:325:18:325:35 | [ExpressionWithTypeArguments] Map<string, Error> | tst.ts:325:30:325:34 | [LocalTypeAccess] Error | semmle.label | 3 |
+| tst.ts:325:18:325:35 | [ExpressionWithTypeArguments] Map<string, Error> | tst.ts:325:30:325:34 | [LocalTypeAccess] Error | semmle.order | 3 |
 | tst.ts:327:1:327:32 | [DeclStmt] const errorMap = ... | tst.ts:327:7:327:31 | [VariableDeclarator] errorMa ... orMap() | semmle.label | 1 |
 | tst.ts:327:1:327:32 | [DeclStmt] const errorMap = ... | tst.ts:327:7:327:31 | [VariableDeclarator] errorMa ... orMap() | semmle.order | 1 |
 | tst.ts:327:7:327:31 | [VariableDeclarator] errorMa ... orMap() | tst.ts:327:7:327:14 | [VarDecl] errorMap | semmle.label | 1 |
