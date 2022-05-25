@@ -2,6 +2,7 @@ private import swift
 private import DataFlowPublic
 private import DataFlowDispatch
 private import codeql.swift.controlflow.CfgNodes
+private import codeql.swift.dataflow.Ssa
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -32,24 +33,48 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override string toStringImpl() { result = expr.toString() }
 }
 
+private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
+  override Location getLocationImpl() { result = def.getLocation() }
+
+  override string toStringImpl() { result = def.toString() }
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
   cached
   newtype TNode =
     TExprNode(ExprCfgNode e) or
-    TNormalParameterNode(ParamDecl p)
+    TNormalParameterNode(ParamDecl p) or
+    TSsaDefinitionNode(Ssa::Definition def)
+
+  private predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
+    exists(Ssa::Definition def |
+      // Step from assignment RHS to def
+      def.(Ssa::WriteDefinition).assigns(nodeFrom.getCfgNode()) and
+      nodeTo.asDefinition() = def
+      or
+      // step from def to first read
+      nodeFrom.asDefinition() = def and
+      nodeTo.getCfgNode() = def.getAFirstRead()
+      or
+      // use-use flow
+      def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode())
+    )
+  }
 
   /**
    * This is the local flow predicate that is used as a building block in global
    * data flow.
    */
   cached
-  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) { none() }
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+    localFlowStepCommon(nodeFrom, nodeTo)
+  }
 
   /** This is the local flow predicate that is exposed. */
   cached
-  predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) { none() }
+  predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) { localFlowStepCommon(nodeFrom, nodeTo) }
 
   cached
   newtype TContentSet = TODO_TContentSet()

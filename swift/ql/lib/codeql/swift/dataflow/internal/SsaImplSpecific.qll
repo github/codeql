@@ -20,6 +20,13 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
     assign.getDest() = v.getAnAccess() and
     certain = true
   )
+  or
+  exists(PatternBindingDecl decl, Pattern pattern |
+    bb.getNode(i).getNode() = pattern and
+    decl.getAPattern() = pattern and
+    v.getParentPattern() = pattern and
+    certain = true
+  )
 }
 
 private predicate isLValue(DeclRefExpr ref) { any(AssignExpr assign).getDest() = ref }
