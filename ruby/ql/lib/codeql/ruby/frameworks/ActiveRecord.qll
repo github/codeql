@@ -275,7 +275,18 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
     exists(MethodCall call, Expr recv |
       call = this.asExpr().getExpr() and
       recv = getUltimateReceiver(call) and
-      resolveConstant(recv) = cls.getAQualifiedName() and
+      (
+        // The receiver refers to an `ActiveRecordModelClass` by name
+        resolveConstant(recv) = cls.getAQualifiedName()
+        or
+        // The receiver is self, and the call is within a singleton method of
+        // the `ActiveRecordModelClass`
+        recv instanceof SelfVariableAccess and
+        exists(SingletonMethod callScope |
+          callScope = call.getCfgScope() and
+          callScope = cls.getAMethod()
+        )
+      ) and
       call.getMethodName() = finderMethodName()
     )
   }
@@ -293,7 +304,10 @@ private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInsta
       m = this.getCfgScope() and
       m.getEnclosingModule() = cls and
       m = cls.getAMethod()
-    )
+    ) and
+    // In a singleton method, `self` refers to the class itself rather than an
+    // instance of that class
+    not this.getSelfScope() instanceof SingletonMethod
   }
 
   final override ActiveRecordModelClass getClass() { result = cls }
