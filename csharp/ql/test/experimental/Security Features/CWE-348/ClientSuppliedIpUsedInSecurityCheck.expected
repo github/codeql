@@ -1,0 +1,23 @@
+edges
+| ClientSuppliedIpUsedInSecurityCheck.cs:13:22:13:34 | call to method GetClientIp : Object | ClientSuppliedIpUsedInSecurityCheck.cs:14:18:14:19 | access to local variable ip |
+| ClientSuppliedIpUsedInSecurityCheck.cs:25:22:25:34 | call to method GetClientIp : Object | ClientSuppliedIpUsedInSecurityCheck.cs:26:18:26:19 | access to local variable ip |
+| ClientSuppliedIpUsedInSecurityCheck.cs:52:28:52:61 | access to indexer : StringValues | ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:31 | access to local variable xfHeader : StringValues |
+| ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:31 | access to local variable xfHeader : StringValues | ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:42 | call to method ToString : String |
+| ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:42 | call to method ToString : String | ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:53 | call to method Split [element] : Object |
+| ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:53 | call to method Split [element] : Object | ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:56 | access to array element : Object |
+| ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:56 | access to array element : Object | ClientSuppliedIpUsedInSecurityCheck.cs:13:22:13:34 | call to method GetClientIp : Object |
+| ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:56 | access to array element : Object | ClientSuppliedIpUsedInSecurityCheck.cs:25:22:25:34 | call to method GetClientIp : Object |
+nodes
+| ClientSuppliedIpUsedInSecurityCheck.cs:13:22:13:34 | call to method GetClientIp : Object | semmle.label | call to method GetClientIp : Object |
+| ClientSuppliedIpUsedInSecurityCheck.cs:14:18:14:19 | access to local variable ip | semmle.label | access to local variable ip |
+| ClientSuppliedIpUsedInSecurityCheck.cs:25:22:25:34 | call to method GetClientIp : Object | semmle.label | call to method GetClientIp : Object |
+| ClientSuppliedIpUsedInSecurityCheck.cs:26:18:26:19 | access to local variable ip | semmle.label | access to local variable ip |
+| ClientSuppliedIpUsedInSecurityCheck.cs:52:28:52:61 | access to indexer : StringValues | semmle.label | access to indexer : StringValues |
+| ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:31 | access to local variable xfHeader : StringValues | semmle.label | access to local variable xfHeader : StringValues |
+| ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:42 | call to method ToString : String | semmle.label | call to method ToString : String |
+| ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:53 | call to method Split [element] : Object | semmle.label | call to method Split [element] : Object |
+| ClientSuppliedIpUsedInSecurityCheck.cs:55:24:55:56 | access to array element : Object | semmle.label | access to array element : Object |
+subpaths
+#select
+| ClientSuppliedIpUsedInSecurityCheck.cs:14:18:14:19 | access to local variable ip | ClientSuppliedIpUsedInSecurityCheck.cs:52:28:52:61 | access to indexer : StringValues | ClientSuppliedIpUsedInSecurityCheck.cs:14:18:14:19 | access to local variable ip | IP address spoofing might include code from $@. | ClientSuppliedIpUsedInSecurityCheck.cs:52:28:52:61 | access to indexer | this user input |
+| ClientSuppliedIpUsedInSecurityCheck.cs:26:18:26:19 | access to local variable ip | ClientSuppliedIpUsedInSecurityCheck.cs:52:28:52:61 | access to indexer : StringValues | ClientSuppliedIpUsedInSecurityCheck.cs:26:18:26:19 | access to local variable ip | IP address spoofing might include code from $@. | ClientSuppliedIpUsedInSecurityCheck.cs:52:28:52:61 | access to indexer | this user input |
