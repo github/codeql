@@ -1,5 +1,6 @@
 | file://:0:0:0:0 | Phi | test.swift:15:15:15:15 | DeclRefExpr |
 | file://:0:0:0:0 | Phi | test.swift:21:15:21:15 | DeclRefExpr |
+| file://:0:0:0:0 | Phi | test.swift:50:15:50:15 | DeclRefExpr |
 | test.swift:6:9:6:13 | WriteDef | test.swift:7:15:7:15 | DeclRefExpr |
 | test.swift:6:19:6:26 | CallExpr | test.swift:6:9:6:13 | WriteDef |
 | test.swift:7:15:7:15 | DeclRefExpr | test.swift:8:10:8:10 | DeclRefExpr |
@@ -13,5 +14,17 @@
 | test.swift:17:10:17:10 | IntegerLiteralExpr | test.swift:17:5:17:10 | WriteDef |
 | test.swift:19:14:19:14 | DeclRefExpr | test.swift:19:9:19:14 | WriteDef |
 | test.swift:19:14:19:14 | DeclRefExpr | test.swift:19:14:19:14 | DeclRefExpr |
-| test.swift:28:18:28:21 | ParamDecl | test.swift:29:15:29:15 | DeclRefExpr |
-| test.swift:28:18:28:21 | WriteDef | test.swift:29:15:29:15 | DeclRefExpr |
+| test.swift:29:18:29:21 | ParamDecl | test.swift:30:15:30:15 | DeclRefExpr |
+| test.swift:29:18:29:21 | WriteDef | test.swift:30:15:30:15 | DeclRefExpr |
+| test.swift:29:26:29:29 | ParamDecl | test.swift:31:15:31:15 | DeclRefExpr |
+| test.swift:29:26:29:29 | WriteDef | test.swift:31:15:31:15 | DeclRefExpr |
+| test.swift:42:16:42:19 | ParamDecl | test.swift:45:8:45:8 | DeclRefExpr |
+| test.swift:42:16:42:19 | WriteDef | test.swift:45:8:45:8 | DeclRefExpr |
+| test.swift:43:9:43:13 | WriteDef | test.swift:46:13:46:13 | DeclRefExpr |
+| test.swift:43:19:43:26 | CallExpr | test.swift:43:9:43:13 | WriteDef |
+| test.swift:46:13:46:13 | DeclRefExpr | test.swift:46:9:46:13 | WriteDef |
+| test.swift:48:13:48:13 | IntegerLiteralExpr | test.swift:48:9:48:13 | WriteDef |
+| test.swift:58:9:58:12 | WriteDef | test.swift:59:15:59:15 | DeclRefExpr |
+| test.swift:58:18:58:18 | IntegerLiteralExpr | test.swift:58:9:58:12 | WriteDef |
+| test.swift:59:15:59:15 | DeclRefExpr | test.swift:60:23:60:23 | DeclRefExpr |
+| test.swift:60:23:60:23 | DeclRefExpr | test.swift:61:15:61:15 | DeclRefExpr |

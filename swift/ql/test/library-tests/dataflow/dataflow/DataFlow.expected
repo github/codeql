@@ -2,28 +2,39 @@ edges
 | test.swift:6:19:6:26 | CallExpr :  | test.swift:7:15:7:15 | DeclRefExpr |
 | test.swift:6:19:6:26 | CallExpr :  | test.swift:9:15:9:15 | DeclRefExpr |
 | test.swift:6:19:6:26 | CallExpr :  | test.swift:10:15:10:15 | DeclRefExpr |
-| test.swift:25:20:25:27 | CallExpr :  | test.swift:28:18:28:21 | ParamDecl :  |
-| test.swift:25:20:25:27 | CallExpr :  | test.swift:28:18:28:21 | WriteDef :  |
-| test.swift:28:18:28:21 | ParamDecl :  | test.swift:29:15:29:15 | DeclRefExpr |
-| test.swift:28:18:28:21 | WriteDef :  | test.swift:29:15:29:15 | DeclRefExpr |
-| test.swift:33:12:33:19 | CallExpr :  | test.swift:37:15:37:29 | CallExpr |
+| test.swift:25:20:25:27 | CallExpr :  | test.swift:29:18:29:21 | ParamDecl :  |
+| test.swift:25:20:25:27 | CallExpr :  | test.swift:29:18:29:21 | WriteDef :  |
+| test.swift:26:26:26:33 | CallExpr :  | test.swift:29:26:29:29 | ParamDecl :  |
+| test.swift:26:26:26:33 | CallExpr :  | test.swift:29:26:29:29 | WriteDef :  |
+| test.swift:29:18:29:21 | ParamDecl :  | test.swift:30:15:30:15 | DeclRefExpr |
+| test.swift:29:18:29:21 | WriteDef :  | test.swift:30:15:30:15 | DeclRefExpr |
+| test.swift:29:26:29:29 | ParamDecl :  | test.swift:31:15:31:15 | DeclRefExpr |
+| test.swift:29:26:29:29 | WriteDef :  | test.swift:31:15:31:15 | DeclRefExpr |
+| test.swift:35:12:35:19 | CallExpr :  | test.swift:39:15:39:29 | CallExpr |
 nodes
 | test.swift:6:19:6:26 | CallExpr :  | semmle.label | CallExpr :  |
 | test.swift:7:15:7:15 | DeclRefExpr | semmle.label | DeclRefExpr |
 | test.swift:9:15:9:15 | DeclRefExpr | semmle.label | DeclRefExpr |
 | test.swift:10:15:10:15 | DeclRefExpr | semmle.label | DeclRefExpr |
 | test.swift:25:20:25:27 | CallExpr :  | semmle.label | CallExpr :  |
-| test.swift:28:18:28:21 | ParamDecl :  | semmle.label | ParamDecl :  |
-| test.swift:28:18:28:21 | ParamDecl :  | semmle.label | WriteDef :  |
-| test.swift:28:18:28:21 | WriteDef :  | semmle.label | ParamDecl :  |
-| test.swift:28:18:28:21 | WriteDef :  | semmle.label | WriteDef :  |
-| test.swift:29:15:29:15 | DeclRefExpr | semmle.label | DeclRefExpr |
-| test.swift:33:12:33:19 | CallExpr :  | semmle.label | CallExpr :  |
-| test.swift:37:15:37:29 | CallExpr | semmle.label | CallExpr |
+| test.swift:26:26:26:33 | CallExpr :  | semmle.label | CallExpr :  |
+| test.swift:29:18:29:21 | ParamDecl :  | semmle.label | ParamDecl :  |
+| test.swift:29:18:29:21 | ParamDecl :  | semmle.label | WriteDef :  |
+| test.swift:29:18:29:21 | WriteDef :  | semmle.label | ParamDecl :  |
+| test.swift:29:18:29:21 | WriteDef :  | semmle.label | WriteDef :  |
+| test.swift:29:26:29:29 | ParamDecl :  | semmle.label | ParamDecl :  |
+| test.swift:29:26:29:29 | ParamDecl :  | semmle.label | WriteDef :  |
+| test.swift:29:26:29:29 | WriteDef :  | semmle.label | ParamDecl :  |
+| test.swift:29:26:29:29 | WriteDef :  | semmle.label | WriteDef :  |
+| test.swift:30:15:30:15 | DeclRefExpr | semmle.label | DeclRefExpr |
+| test.swift:31:15:31:15 | DeclRefExpr | semmle.label | DeclRefExpr |
+| test.swift:35:12:35:19 | CallExpr :  | semmle.label | CallExpr :  |
+| test.swift:39:15:39:29 | CallExpr | semmle.label | CallExpr |
 subpaths
 #select
 | test.swift:6:19:6:26 | CallExpr :  | test.swift:7:15:7:15 | DeclRefExpr |
 | test.swift:6:19:6:26 | CallExpr :  | test.swift:9:15:9:15 | DeclRefExpr |
 | test.swift:6:19:6:26 | CallExpr :  | test.swift:10:15:10:15 | DeclRefExpr |
-| test.swift:25:20:25:27 | CallExpr :  | test.swift:29:15:29:15 | DeclRefExpr |
-| test.swift:33:12:33:19 | CallExpr :  | test.swift:37:15:37:29 | CallExpr |
+| test.swift:25:20:25:27 | CallExpr :  | test.swift:30:15:30:15 | DeclRefExpr |
+| test.swift:26:26:26:33 | CallExpr :  | test.swift:31:15:31:15 | DeclRefExpr |
+| test.swift:35:12:35:19 | CallExpr :  | test.swift:39:15:39:29 | CallExpr |
