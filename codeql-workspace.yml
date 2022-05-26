@@ -8,7 +8,9 @@ provide:
   - "go/ql/config/legacy-support/qlpack.yml"
   - "go/build/codeql-extractor-go/codeql-extractor.yml"
   - "javascript/ql/experimental/adaptivethreatmodeling/lib/qlpack.yml"
-  - "javascript/ql/experimental/adaptivethreatmodeling/model/qlpack.yml"
+  # This pack is explicitly excluded from the workspace since we
+  # require consumers to use a version of this pack from the package cache.
+  # - "javascript/ql/experimental/adaptivethreatmodeling/model/qlpack.yml"
   - "javascript/ql/experimental/adaptivethreatmodeling/modelbuilding/qlpack.yml"
   - "javascript/ql/experimental/adaptivethreatmodeling/src/qlpack.yml"
   - "csharp/ql/campaigns/Solorigate/lib/qlpack.yml"
