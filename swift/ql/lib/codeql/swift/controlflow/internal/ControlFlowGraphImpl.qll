@@ -48,15 +48,15 @@ module CfgScope {
 
   private class BodyStmtCallableScope extends Range_ instanceof AbstractFunctionDecl {
     final override predicate entry(ControlFlowElement first) {
-      exists(Stmts::BraceStmtTree tree |
-        tree.getAst() = super.getBody() and
-        tree.firstInner(first)
+      exists(Decls::FuncDeclTree tree |
+        tree.getAst() = this and
+        first = tree
       )
     }
 
     final override predicate exit(ControlFlowElement last, Completion c) {
-      exists(Stmts::BraceStmtTree tree |
-        tree.getAst() = super.getBody() and
+      exists(Decls::FuncDeclTree tree |
+        tree.getAst() = this and
         tree.last(last, c)
       )
     }
@@ -882,6 +882,21 @@ module Decls {
         i = 2 * j + 1 and
         result.asAstNode() = ast.getInit(j).getFullyConverted()
       )
+    }
+  }
+
+  class FuncDeclTree extends StandardPreOrderTree, TFuncDeclElement {
+    AbstractFunctionDecl ast;
+
+    FuncDeclTree() { this = TFuncDeclElement(ast) }
+
+    AbstractFunctionDecl getAst() { result = ast }
+
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = ast.getParam(i)
+      or
+      result.asAstNode() = ast.getBody() and
+      i = ast.getNumberOfParams()
     }
   }
 }
