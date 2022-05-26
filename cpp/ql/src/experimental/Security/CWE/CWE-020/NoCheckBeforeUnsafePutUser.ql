@@ -22,15 +22,18 @@ import semmle.code.cpp.dataflow.DataFlow
  */
 class SystemCallFunction extends Function {
   SystemCallFunction() {
-    this.getName().matches("SYSC\\_%")
+    exists(MacroInvocation m |
+      m.getMacro().getName().matches("SYSCALL\\_DEFINE%") and
+      this = m.getEnclosingFunction()
+    )
   }
 }
 
 /**
  * A value that comes from a Linux system call (sources).
  */
-class SystemParameterSource extends DataFlow::Node {
-  SystemParameterSource() {
+class SystemCallSource extends DataFlow::Node {
+  SystemCallSource() {
     exists(FunctionCall fc |
       fc.getTarget() instanceof SystemCallFunction and
       (
@@ -72,7 +75,7 @@ class UnSafePutUserMacro extends Macro {
   }
 }
 
-class ExploitableUserModePtrParam extends SystemParameterSource {
+class ExploitableUserModePtrParam extends SystemCallSource {
   ExploitableUserModePtrParam() {
     exists(UnSafePutUserMacro unsafePutUser |
       DataFlow::localFlow(this, DataFlow::exprNode(unsafePutUser.getUserModePtr()))
