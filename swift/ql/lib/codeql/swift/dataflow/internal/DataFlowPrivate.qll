@@ -155,7 +155,19 @@ abstract class ReturnNode extends Node {
   abstract ReturnKind getKind();
 }
 
-private module ReturnNodes { }
+private module ReturnNodes { 
+  class ReturnReturnNode extends ReturnNode, ExprNode {
+    ReturnReturnNode() {
+      exists(ReturnStmt stmt |
+        stmt.getResult() = this.asExpr()
+      )
+    }
+
+    override ReturnKind getKind() {
+      result instanceof NormalReturnKind
+    }
+  }
+}
 
 import ReturnNodes
 
@@ -165,7 +177,13 @@ abstract class OutNode extends Node {
   abstract DataFlowCall getCall(ReturnKind kind);
 }
 
-private module OutNodes { }
+private module OutNodes { 
+  class CallOutNode extends OutNode, DataFlowCall {
+    override DataFlowCall getCall(ReturnKind kind) {
+      result = this and kind instanceof NormalReturnKind
+    }
+  }
+}
 
 import OutNodes
 
