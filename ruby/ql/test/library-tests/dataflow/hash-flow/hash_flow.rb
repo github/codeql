@@ -723,3 +723,27 @@ def m44(x)
 end
 
 m44(:c)
+
+def m45()
+    hash1 = {
+        :a => taint(45.1),
+        :b => 1,
+        :c => taint(45.2)
+    }
+    hash2 = {
+        :d => taint(45.3),
+        :e => 2,
+        :f => taint(45.4)
+    }
+    hash = { **hash1, :g => taint(45.5), **hash2, :h => 3 }
+    sink(hash[:a]) # $ hasValueFlow=45.1
+    sink(hash[:b])
+    sink(hash[:c]) # $ hasValueFlow=45.2
+    sink(hash[:d]) # $ hasValueFlow=45.3
+    sink(hash[:e])
+    sink(hash[:f]) # $ hasValueFlow=45.4
+    sink(hash[:g]) # $ hasValueFlow=45.5
+    sink(hash[:h])
+end
+
+m45()
