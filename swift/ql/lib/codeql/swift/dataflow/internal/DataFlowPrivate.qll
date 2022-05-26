@@ -3,6 +3,7 @@ private import DataFlowPublic
 private import DataFlowDispatch
 private import codeql.swift.controlflow.CfgNodes
 private import codeql.swift.dataflow.Ssa
+private import codeql.swift.controlflow.BasicBlocks
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -51,7 +52,6 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(ExprCfgNode e) or
-    TNormalParameterNode(ParamDecl p) or
     TSsaDefinitionNode(Ssa::Definition def)
 
   private predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
@@ -99,10 +99,15 @@ private module ParameterNodes {
     predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) { none() }
   }
 
-  class NormalParameterNode extends ParameterNodeImpl, TNormalParameterNode {
+  class NormalParameterNode extends ParameterNodeImpl, SsaDefinitionNode {
     ParamDecl param;
 
-    NormalParameterNode() { this = TNormalParameterNode(param) }
+    NormalParameterNode() {
+      exists(BasicBlock bb, int i |
+        super.asDefinition().definesAt(param, bb, i) and
+        bb.getNode(i).getNode().asAstNode() = param
+      )
+    }
 
     override Location getLocationImpl() { result = param.getLocation() }
 
@@ -115,6 +120,8 @@ private module ParameterNodes {
         pos = TPositionalParameter(index)
       )
     }
+
+    override DataFlowCallable getEnclosingCallable() { isParameterOf(result, _) }
   }
 }
 

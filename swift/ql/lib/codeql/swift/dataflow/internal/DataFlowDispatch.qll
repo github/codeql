@@ -94,6 +94,13 @@ class ParameterPosition extends TParameterPosition {
   string toString() { none() }
 }
 
+class PositionalParameterPosition extends ParameterPosition, TPositionalParameter {
+  int getIndex() {
+    this = TPositionalParameter(result)
+  }
+}
+
+
 /** An argument position. */
 class ArgumentPosition extends TArgumentPosition {
   /** Gets a textual representation of this position. */
@@ -108,4 +115,9 @@ class PositionalArgumentPosition extends ArgumentPosition, TPositionalArgument {
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[inline]
-predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { none() }
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
+  ppos instanceof TThisParameter and
+  apos instanceof TThisArgument
+  or
+  ppos.(PositionalParameterPosition).getIndex() = apos.(PositionalArgumentPosition).getIndex()
+}

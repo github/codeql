@@ -13,3 +13,5 @@
 | test.swift:17:10:17:10 | IntegerLiteralExpr | test.swift:17:5:17:10 | WriteDef |
 | test.swift:19:14:19:14 | DeclRefExpr | test.swift:19:9:19:14 | WriteDef |
 | test.swift:19:14:19:14 | DeclRefExpr | test.swift:19:14:19:14 | DeclRefExpr |
+| test.swift:28:18:28:21 | ParamDecl | test.swift:29:15:29:15 | DeclRefExpr |
+| test.swift:28:18:28:21 | WriteDef | test.swift:29:15:29:15 | DeclRefExpr |
