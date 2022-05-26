@@ -36,7 +36,7 @@ void test3()
 
 	SYSC_SOMESYSTEMCALL(&v);
 
-	unsafe_put_user(123, &v); // BAD [NOT DETECTED]
+	unsafe_put_user(123, &v); // BAD
 }
 
 void test4()
@@ -64,7 +64,7 @@ void test5()
 
 	SYSC_SOMESYSTEMCALL(&myData);
 
-	unsafe_put_user(123, &(myData.x)); // BAD [NOT DETECTED]
+	unsafe_put_user(123, &(myData.x)); // BAD
 }
 
 void test6()

@@ -17,6 +17,33 @@
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
 
+/**
+ * A Linux system call.
+ */
+class SystemCallFunction extends Function {
+  SystemCallFunction() {
+    this.getName().matches("SYSC\\_%")
+  }
+}
+
+/**
+ * A value that comes from a Linux system call (sources).
+ */
+class SystemParameterSource extends DataFlow::Node {
+  SystemParameterSource() {
+    exists(FunctionCall fc |
+      fc.getTarget() instanceof SystemCallFunction and
+      (
+        this.asDefiningArgument() = fc.getAnArgument().getAChild*() or
+        this.asExpr() = fc
+      )
+    )
+  }
+}
+
+/**
+ * Macros used to check the value (barriers).
+ */
 class WriteAccessCheckMacro extends Macro {
   VariableAccess va;
 
@@ -28,6 +55,9 @@ class WriteAccessCheckMacro extends Macro {
   VariableAccess getArgument() { result = va }
 }
 
+/**
+ * The `unsafe_put_user` macro and its uses (sinks).
+ */
 class UnSafePutUserMacro extends Macro {
   PointerDereferenceExpr writeUserPtr;
 
@@ -42,15 +72,13 @@ class UnSafePutUserMacro extends Macro {
   }
 }
 
-class ExploitableUserModePtrParam extends Parameter {
+class ExploitableUserModePtrParam extends SystemParameterSource {
   ExploitableUserModePtrParam() {
-    not exists(WriteAccessCheckMacro writeAccessCheck |
-      DataFlow::localFlow(DataFlow::parameterNode(this),
-        DataFlow::exprNode(writeAccessCheck.getArgument()))
-    ) and
     exists(UnSafePutUserMacro unsafePutUser |
-      DataFlow::localFlow(DataFlow::parameterNode(this),
-        DataFlow::exprNode(unsafePutUser.getUserModePtr()))
+      DataFlow::localFlow(this, DataFlow::exprNode(unsafePutUser.getUserModePtr()))
+    ) and
+    not exists(WriteAccessCheckMacro writeAccessCheck |
+      DataFlow::localFlow(this, DataFlow::exprNode(writeAccessCheck.getArgument()))
     )
   }
 }

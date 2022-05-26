@@ -1,1 +1,3 @@
-| test.cpp:14:16:14:16 | p | unsafe_put_user write user-mode pointer $@ without check. | test.cpp:14:16:14:16 | p | p |
+| test.cpp:16:22:16:23 | ref arg & ... | unsafe_put_user write user-mode pointer $@ without check. | test.cpp:16:22:16:23 | ref arg & ... | ref arg & ... |
+| test.cpp:37:22:37:23 | ref arg & ... | unsafe_put_user write user-mode pointer $@ without check. | test.cpp:37:22:37:23 | ref arg & ... | ref arg & ... |
+| test.cpp:65:22:65:28 | ref arg & ... | unsafe_put_user write user-mode pointer $@ without check. | test.cpp:65:22:65:28 | ref arg & ... | ref arg & ... |
