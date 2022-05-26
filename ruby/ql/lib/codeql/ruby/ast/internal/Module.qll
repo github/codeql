@@ -75,11 +75,11 @@ private module Cached {
   cached
   Module getAnIncludedModule(Module m) {
     m = TResolved("Object") and result = TResolved("Kernel")
-    or
-    exists(IncludeOrPrependCall c |
-      c.getMethodName() = "include" and
-      result = getACludedModule(c, m)
-    )
+    //or
+    //exists(IncludeOrPrependCall c |
+    //  c.getMethodName() = "include" and
+    //  result = getACludedModule(c, m)
+    //)
   }
 
   cached

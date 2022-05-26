@@ -175,7 +175,25 @@ private predicate instanceMethodCall(CfgNodes::ExprNodes::CallCfgNode call, Modu
   exists(DataFlow::LocalSourceNode sourceNode |
     methodCall(call, sourceNode, method) and
     sourceNode = trackInstance(tp)
+    //(
+    //  not sourceNode instanceof SsaSelfDefinitionNode and sourceNode = trackInstance(tp)
+    //  or
+    //  sourceNode instanceof SsaSelfDefinitionNode and
+    //  exists(ClassDeclaration c | selfHasType(sourceNode, c) | tp = c or tp = c)
+    //)
   )
+}
+
+private predicate selfHasType(SsaSelfDefinitionNode self, Module tp) {
+  // `self` in method
+  tp = self.getSelfScope().(Method).getEnclosingModule().getModule()
+  or
+  // `self` in singleton method
+  flowsToSingletonMethodObject(trackInstance(tp), self.getSelfScope())
+  or
+  // `self` in top-level
+  self.getSelfScope() instanceof Toplevel and
+  tp = TResolved("Object")
 }
 
 cached
@@ -449,13 +467,29 @@ private DataFlow::LocalSourceNode trackModule(Module tp) {
  * qualifier accesses a parameter of the enclosing callable `c` (including
  * the implicit `self` parameter).
  */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
+predicate mayBenefitFromCallContext(NormalCall call, DataFlowCallable c) {
+  c = call.getEnclosingCallable() and
+  call.asCall().getReceiver().getExpr() instanceof SelfVariableAccess
+}
+
+private predicate impossibleTarget(DataFlowCallable t, DataFlowCall call, DataFlowCall ctx) {
+  
+}
 
 /**
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
+DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+  mayBenefitFromCallContext(call, _) and
+  exists(DataFlowCallable enclosing |
+    result = viableCallable(call) and
+    enclosing = call.getEnclosingCallable() and
+    enclosing = viableCallable(ctx)
+  |
+    not impossibleTarget(result, call, ctx) //... <`result` is impossible  target for `call` given `ctx`> ...
+  )
+}
 
 predicate exprNodeReturnedFrom = exprNodeReturnedFromCached/2;
 
