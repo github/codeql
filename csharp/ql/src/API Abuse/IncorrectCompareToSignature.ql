@@ -1,6 +1,6 @@
 /**
  * @name Potentially incorrect CompareTo(...) signature
- * @description The declaring type of a method with signature 'CompareTo(T)' does not implement 'IComparable<T>'.
+ * @description The declaring type of a method with signature `CompareTo(T)` does not implement `IComparable<T>`.
  * @kind problem
  * @problem.severity warning
  * @precision medium

@@ -8,7 +8,7 @@ import python
 import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 
-/** Source of BaseHTTPRequestHandler instances. */
+/** Source of BaseHttpRequestHandler instances. */
 deprecated class StdLibRequestSource extends HttpRequestTaintSource {
   StdLibRequestSource() {
     exists(ClassValue cls |
@@ -23,7 +23,7 @@ deprecated class StdLibRequestSource extends HttpRequestTaintSource {
   override predicate isSourceOf(TaintKind kind) { kind instanceof BaseHTTPRequestHandlerKind }
 }
 
-/** TaintKind for an instance of BaseHTTPRequestHandler. */
+/** TaintKind for an instance of BaseHttpRequestHandler. */
 deprecated class BaseHTTPRequestHandlerKind extends TaintKind {
   BaseHTTPRequestHandlerKind() { this = "BaseHTTPRequestHandlerKind" }
 
@@ -39,7 +39,7 @@ deprecated class BaseHTTPRequestHandlerKind extends TaintKind {
   }
 }
 
-/** TaintKind for headers (instance of HTTPMessage). */
+/** TaintKind for headers (instance of HttpMessage). */
 deprecated class HTTPMessageKind extends ExternalStringDictKind {
   override TaintKind getTaintOfMethodResult(string name) {
     result = super.getTaintOfMethodResult(name)

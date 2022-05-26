@@ -265,8 +265,6 @@ edges
 | Foo.qll:6:23:6:36 | ComparisonFormula | Foo.qll:6:23:6:28 | result | semmle.order | 11 |
 | Foo.qll:6:23:6:36 | ComparisonFormula | Foo.qll:6:32:6:36 | String | semmle.label | getRightOperand() |
 | Foo.qll:6:23:6:36 | ComparisonFormula | Foo.qll:6:32:6:36 | String | semmle.order | 13 |
-| Foo.qll:9:1:9:5 | annotation | Foo.qll:9:1:9:5 | annotation | semmle.label | getAnAnnotation() |
-| Foo.qll:9:1:9:5 | annotation | Foo.qll:9:1:9:5 | annotation | semmle.order | 14 |
 | Foo.qll:9:7:11:1 | ClasslessPredicate foo | Foo.qll:9:1:9:5 | annotation | semmle.label | getAnAnnotation() |
 | Foo.qll:9:7:11:1 | ClasslessPredicate foo | Foo.qll:9:1:9:5 | annotation | semmle.order | 14 |
 | Foo.qll:9:7:11:1 | ClasslessPredicate foo | Foo.qll:9:21:9:25 | f | semmle.label | getParameter(_) |

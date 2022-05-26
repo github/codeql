@@ -16,19 +16,19 @@ import javascript
  * Holds if the NPM package `pkg` declares a dependency on package `name`,
  * and `dep` is the corresponding declaration in the `package.json` file.
  */
-predicate declaresDependency(NPMPackage pkg, string name, JSONValue dep) {
-  dep = pkg.getPackageJSON().getDependencies().getPropValue(name)
+predicate declaresDependency(NpmPackage pkg, string name, JsonValue dep) {
+  dep = pkg.getPackageJson().getDependencies().getPropValue(name)
 }
 
 /**
  * Gets a path expression in a module belonging to `pkg`.
  */
-PathExpr getAPathExpr(NPMPackage pkg) { result.getEnclosingModule() = pkg.getAModule() }
+PathExpr getAPathExpr(NpmPackage pkg) { result.getEnclosingModule() = pkg.getAModule() }
 
 /**
  * Gets a URL-valued attribute in a module or HTML file belonging to `pkg`.
  */
-DOM::AttributeDefinition getAURLAttribute(NPMPackage pkg) {
+DOM::AttributeDefinition getAUrlAttribute(NpmPackage pkg) {
   result.getFile() = pkg.getAFile() and
   DOM::isUrlValuedAttribute(result)
 }
@@ -37,10 +37,10 @@ DOM::AttributeDefinition getAURLAttribute(NPMPackage pkg) {
  * Gets the name of a script in the 'scripts' object of `pkg`.
  * The script makes use of a declared `dependency` of `pkg`.
  */
-string getPackageScriptNameWithDependency(NPMPackage pkg, string dependency) {
-  exists(JSONObject scriptsObject, string scriptName, string script |
+string getPackageScriptNameWithDependency(NpmPackage pkg, string dependency) {
+  exists(JsonObject scriptsObject, string scriptName, string script |
     declaresDependency(pkg, dependency, _) and
-    scriptsObject = pkg.getPackageJSON().getPropValue("scripts") and
+    scriptsObject = pkg.getPackageJson().getPropValue("scripts") and
     script = scriptsObject.getPropStringValue(scriptName) and
     script.regexpMatch(".*\\b\\Q" + dependency + "\\E\\b.*") and
     result = scriptName
@@ -51,7 +51,7 @@ string getPackageScriptNameWithDependency(NPMPackage pkg, string dependency) {
  * Holds if the NPM package `pkg` declares a dependency on package `name`,
  * and uses it at least once.
  */
-predicate usesDependency(NPMPackage pkg, string name) {
+predicate usesDependency(NpmPackage pkg, string name) {
   declaresDependency(pkg, name, _) and
   (
     // there is a path expression (e.g., in a `require` or `import`) that
@@ -62,7 +62,7 @@ predicate usesDependency(NPMPackage pkg, string name) {
     )
     or
     // there is an HTML URL attribute that may reference `pkg`
-    exists(DOM::AttributeDefinition attr | attr = getAURLAttribute(pkg) |
+    exists(DOM::AttributeDefinition attr | attr = getAUrlAttribute(pkg) |
       // check whether the URL contains `node_modules/name`
       attr.getStringValue().regexpMatch(".*\\bnode_modules/\\Q" + name + "\\E(/.*)?")
     )
@@ -85,7 +85,7 @@ predicate usesDependency(NPMPackage pkg, string name) {
  * view engine definitions, which (may) implicitly require the specified
  * engine as a module.
  */
-predicate implicitRequire(NPMPackage pkg, string name) {
+predicate implicitRequire(NpmPackage pkg, string name) {
   // look for Express `set('view engine', ...)` calls
   exists(MethodCallExpr setViewEngine, string engine |
     Express::appCreation().flowsToExpr(setViewEngine.getReceiver()) and
@@ -99,7 +99,7 @@ predicate implicitRequire(NPMPackage pkg, string name) {
   )
 }
 
-from NPMPackage pkg, string name, JSONValue dep
+from NpmPackage pkg, string name, JsonValue dep
 where
   exists(pkg.getAModule()) and
   declaresDependency(pkg, name, dep) and

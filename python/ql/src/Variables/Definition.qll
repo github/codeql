@@ -5,12 +5,12 @@ import python
  */
 class Definition extends NameNode, DefinitionNode {
   /**
-   * The variable defined by this control-flow node.
+   * Gets the variable defined by this control-flow node.
    */
   Variable getVariable() { this.defines(result) }
 
   /**
-   * The SSA variable corresponding to the current definition. Since SSA variables
+   * Gets the SSA variable corresponding to the current definition. Since SSA variables
    * are only generated for definitions with at least one use, not all definitions
    * will have an SSA variable.
    */
@@ -67,7 +67,7 @@ class Definition extends NameNode, DefinitionNode {
   }
 
   /**
-   * An immediate re-definition of this definition's variable.
+   * Gets an immediate re-definition of this definition's variable.
    */
   Definition getARedef() {
     result != this and

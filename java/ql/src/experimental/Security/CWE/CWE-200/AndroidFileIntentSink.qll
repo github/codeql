@@ -2,7 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.frameworks.android.Android
 import semmle.code.java.frameworks.android.Intent
 
@@ -47,7 +47,7 @@ class AsyncTaskRunInBackgroundMethod extends Method {
 class ContextStartServiceMethod extends Method {
   ContextStartServiceMethod() {
     this.getName() = ["startService", "startForegroundService"] and
-    this.getDeclaringType().getASupertype*() instanceof TypeContext
+    this.getDeclaringType().getAnAncestor() instanceof TypeContext
   }
 }
 

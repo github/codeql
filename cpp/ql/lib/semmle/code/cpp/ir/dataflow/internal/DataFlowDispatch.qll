@@ -116,12 +116,12 @@ private module VirtualDispatch {
   /** Holds if `addressInstr` is an instruction that produces the address of `var`. */
   private predicate addressOfGlobal(Instruction addressInstr, GlobalOrNamespaceVariable var) {
     // Access directly to the global variable
-    addressInstr.(VariableAddressInstruction).getASTVariable() = var
+    addressInstr.(VariableAddressInstruction).getAstVariable() = var
     or
     // Access to a field on a global union
     exists(FieldAddressInstruction fa |
       fa = addressInstr and
-      fa.getObjectAddress().(VariableAddressInstruction).getASTVariable() = var and
+      fa.getObjectAddress().(VariableAddressInstruction).getAstVariable() = var and
       fa.getField().getDeclaringType() instanceof Union
     )
   }

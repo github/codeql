@@ -23,7 +23,12 @@ and 4 are slightly different---for further details, see the sections labeled
 **Information for macOS "Catalina" (or newer) users**. If you are using macOS
 on Apple Silicon (e.g. Apple M1), ensure that the `Xcode command-line developer
 tools <https://developer.apple.com/downloads/index.action>`__ and `Rosetta 2
-<https://support.apple.com/en-us/HT211861>`__ are installed.
+<https://support.apple.com/en-us/HT211861>`__ are installed. 
+
+.. pull-quote:: Note
+
+   The CodeQL CLI is currently not compatible with non-glibc Linux 
+   distributions such as (muslc-based) Alpine Linux.
 
 For information about installing the CodeQL CLI in a CI system to create results
 to display in GitHub as code scanning alerts, see
@@ -188,8 +193,7 @@ further options on the command line.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The `CodeQL repository <https://github.com/github/codeql>`__ contains
-the queries and libraries required for CodeQL analysis of C/C++, C#, Java,
-JavaScript/TypeScript, Python, and Ruby.
+the queries and libraries required for CodeQL analysis of all supported languages.
 Clone a copy of this repository into ``codeql-home``.
 
 By default, the root of the cloned repository will be called ``codeql``.
@@ -198,17 +202,18 @@ CLI that you will extract in step 4. If you use git on the command line, you can
 clone and rename the repository in a single step by running
 ``git clone git@github.com:github/codeql.git codeql-repo`` in the ``codeql-home`` folder.
 
-The CodeQL libraries and queries for Go analysis live in the `CodeQL for Go
-repository <https://github.com/github/codeql-go/>`__. Clone a copy of this
-repository into ``codeql-home``, and run ``codeql-go/scripts/install-deps.sh``
-to install its dependencies.
+For Go analysis, run ``codeql-repo/go/scripts/install-deps.sh`` to install its dependencies.
 
-The cloned repositories should have a sibling relationship.
-For example, if the root of the cloned CodeQL repository is
-``$HOME/codeql-home/codeql-repo``, then the root of the cloned CodeQL for Go
-repository should be ``$HOME/codeql-home/codeql-go``.
+.. pull-quote:: Note
 
-Within these repositories, the queries and libraries are organized into QL
+   The CodeQL libraries and queries for Go analysis used to live in a
+   separate `CodeQL for Go repository <https://github.com/github/codeql-go/>`__.
+   These have been moved to the ``github/codeql`` repository.
+   It is no longer necessary to clone the ``github/codeql-go`` into a separate ``codeql-home/codeql-go`` folder.
+
+   For more information, see the `Relocation announcement <https://github.com/github/codeql-go/issues/741>`__.
+
+Within this repository, the queries and libraries are organized into QL
 packs. Along with the queries themselves, QL packs contain important metadata
 that tells the CodeQL CLI how to process the query files. For more information,
 see ":doc:`About QL packs <about-ql-packs>`."

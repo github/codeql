@@ -5,17 +5,17 @@
         user: 'dbuser',  // NOT OK
         host: 'database.server.com',
         database: 'mydb',
-        password: 'abcdefgh',  // NOT OK
+        password: 'hgfedcba',  // NOT OK
         port: 3211,
     });
     client.connect();
 })();
 
 (function() {
-    require("http").request({auth: "user:abcdefgh"});  // NOT OK
-    require("https").request({auth: "user:abcdefgh"}); // NOT OK
+    require("http").request({auth: "user:hgfedcba"});  // NOT OK
+    require("https").request({auth: "user:hgfedcba"}); // NOT OK
     function getCredentials() {
-        return "user:abcdefgh";
+        return "user:hgfedcba";
     }
     require("http").request({auth: getCredentials()}); // NOT OK
     require("http").request({auth: getUnknownCredentials()}); // OK
@@ -24,37 +24,37 @@
 (function() {
     var basicAuth = require('express-basic-auth');
 
-    basicAuth({users: { 'admin': 'abcdefgh' }});  // NOT OK
+    basicAuth({users: { 'admin': 'hgfedcba' }});  // NOT OK
     var users = {};
-    users['unknown-admin-name'] = 'abcdefgh'; // NOT OK
+    users['unknown-admin-name'] = 'hgfedcba'; // NOT OK
     basicAuth({users: users});
 })();
 
 (function() {
     var basicAuth = require('basic-auth-connect');
-    basicAuth('username', 'abcdefgh'); // NOT OK
+    basicAuth('username', 'hgfedcba'); // NOT OK
     basicAuth(function(){}); // OK
 })();
 
 (function() {
     var AWS = require('aws-sdk');
-    AWS.config.update({ accessKeyId: 'username', secretAccessKey: 'abcdefgh'}); // NOT OK
-    new AWS.Config({ accessKeyId: 'username', secretAccessKey: 'abcdefgh'}); // NOT OK
+    AWS.config.update({ accessKeyId: 'username', secretAccessKey: 'hgfedcba'}); // NOT OK
+    new AWS.Config({ accessKeyId: 'username', secretAccessKey: 'hgfedcba'}); // NOT OK
     var config = new AWS.Config();
-    config.update({ accessKeyId: 'username', secretAccessKey: 'abcdefgh'}); // NOT OK
+    config.update({ accessKeyId: 'username', secretAccessKey: 'hgfedcba'}); // NOT OK
     var o = {};
-    o.secretAccessKey = 'abcdefgh'; // NOT OK
+    o.secretAccessKey = 'hgfedcba'; // NOT OK
     config.update(o);
 })();
 
 (function() {
     var request = require('request');
 
-    request.get(url).auth('username', 'abcdefgh'); // NOT OK
+    request.get(url).auth('username', 'hgfedcba'); // NOT OK
     request.get(url, {
         'auth': {
             'user': 'username', // NOT OK
-            'pass': 'abcdefgh' // NOT OK
+            'pass': 'hgfedcba' // NOT OK
         }
     });
 
@@ -66,14 +66,14 @@
         }
     });
 
-    request.post(url).auth('username', 'abcdefgh'); // NOT OK
-    request.head(url).auth('username', 'abcdefgh'); // NOT OK
+    request.post(url).auth('username', 'hgfedcba'); // NOT OK
+    request.head(url).auth('username', 'hgfedcba'); // NOT OK
 
-    request(url).auth('username', 'abcdefgh'); // NOT OK
+    request(url).auth('username', 'hgfedcba'); // NOT OK
     request(url, {
         'auth': {
             'user': 'username', // NOT OK
-            'pass': 'abcdefgh' // NOT OK
+            'pass': 'hgfedcba' // NOT OK
         }
     });
 })();
@@ -81,9 +81,9 @@
 (function() {
     const MsRest = require('ms-rest-azure');
 
-    MsRest.loginWithUsernamePassword('username', 'abcdefgh', function(){}); // NOT OK
+    MsRest.loginWithUsernamePassword('username', 'hgfedcba', function(){}); // NOT OK
     MsRest.loginWithUsernamePassword(process.env.AZURE_USER, process.env.AZURE_PASS, function(){}); // OK
-    MsRest.loginWithServicePrincipalSecret('username', 'abcdefgh', function(){}); // NOT OK
+    MsRest.loginWithServicePrincipalSecret('username', 'hgfedcba', function(){}); // NOT OK
 })();
 
 (function() {
@@ -99,26 +99,26 @@
         keyId: 'x2',// NOT OK
         storageAccount: 'x3', // NOT OK
         username: 'x4', // NOT OK
-        key: 'abcdefgh', // NOT OK
-        apiKey: 'abcdefgh', // NOT OK
-        storageAccessKey: 'abcdefgh', // NOT OK
-        password: 'abcdefgh', // NOT OK
-        token: 'abcdefgh' // NOT OK
+        key: 'hgfedcba', // NOT OK
+        apiKey: 'hgfedcba', // NOT OK
+        storageAccessKey: 'hgfedcba', // NOT OK
+        password: 'hgfedcba', // NOT OK
+        token: 'hgfedcba' // NOT OK
     });
     pkgcloud.compute.createClient({ // OK
         INNOCENT_DATA: '42'
     });
     pkgcloud.providers.SOME_PROVIDER.compute.createClient({
         username: 'x5', // NOT OK
-        password: 'abcdefgh' // NOT OK
+        password: 'hgfedcba' // NOT OK
     });
     pkgcloud.UNKNOWN_SERVICE.createClient({  // OK
         username: 'x6',
-        password: 'abcdefgh'
+        password: 'hgfedcba'
     });
     pkgcloud.providers.SOME_PROVIDER.UNKNOWN_SERVICE.createClient({
         username: 'x7', // OK
-        password: 'abcdefgh' // OK
+        password: 'hgfedcba' // OK
     });
     pkgcloud.compute.createClient({ // OK
         username: process.env.USERNAME,
@@ -127,12 +127,12 @@
 })();
 
 (function(){
-    require('crypto').createHmac('sha256', 'abcdefgh');
-    require("crypto-js/aes").encrypt('my message', 'abcdefgh');
+    require('crypto').createHmac('sha256', 'hgfedcba');
+    require("crypto-js/aes").encrypt('my message', 'hgfedcba');
 })()
 
 (function(){
-    require("cookie-session")({ secret: "abcdefgh" });
+    require("cookie-session")({ secret: "hgfedcba" });
 })()
 
 (function(){
@@ -269,4 +269,19 @@
             "Content-Type": 'application/json'
         })
     });
+});
+
+(function() {
+    require("http").request({auth: "user:{{ INSERT_HERE }}"}); // OK
+    require("http").request({auth: "user:token {{ INSERT_HERE }}"}); // OK
+    require("http").request({auth: "user:( INSERT_HERE )"}); // OK
+    require("http").request({auth: "user:{{ env.access_token }}"}); // OK
+    require("http").request({auth: "user:abcdefgh"}); // OK
+    require("http").request({auth: "user:12345678"}); // OK
+    require("http").request({auth: "user:foo"}); // OK
+    require("http").request({auth: "user:mypassword"}) // OK
+    require("http").request({auth: "user:mytoken"}) // OK
+    require("http").request({auth: "user:fake token"}) // OK
+    require("http").request({auth: "user:dcba"}) // OK
+    require("http").request({auth: "user:custom string"}) // OK
 });

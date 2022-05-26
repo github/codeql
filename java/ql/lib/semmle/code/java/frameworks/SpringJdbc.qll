@@ -3,7 +3,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** The class `org.springframework.jdbc.core.JdbcTemplate`. */
 class JdbcTemplate extends RefType {
@@ -34,6 +34,20 @@ private class SqlSinkCsv extends SinkModelCsv {
         "org.springframework.jdbc.object;SqlQuery;false;SqlQuery;;;Argument[1];sql",
         "org.springframework.jdbc.object;SqlUpdate;false;SqlUpdate;;;Argument[1];sql",
         "org.springframework.jdbc.object;UpdatableSqlQuery;false;UpdatableSqlQuery;;;Argument[1];sql"
+      ]
+  }
+}
+
+private class SsrfSinkCsv extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        //"package;type;overrides;name;signature;ext;spec;kind"
+        "org.springframework.boot.jdbc;DataSourceBuilder;false;url;(String);;Argument[0];jdbc-url",
+        "org.springframework.jdbc.datasource;AbstractDriverBasedDataSource;false;setUrl;(String);;Argument[0];jdbc-url",
+        "org.springframework.jdbc.datasource;DriverManagerDataSource;false;DriverManagerDataSource;(String);;Argument[0];jdbc-url",
+        "org.springframework.jdbc.datasource;DriverManagerDataSource;false;DriverManagerDataSource;(String,String,String);;Argument[0];jdbc-url",
+        "org.springframework.jdbc.datasource;DriverManagerDataSource;false;DriverManagerDataSource;(String,Properties);;Argument[0];jdbc-url"
       ]
   }
 }

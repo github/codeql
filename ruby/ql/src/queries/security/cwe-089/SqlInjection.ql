@@ -19,8 +19,8 @@ import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 
-class SQLInjectionConfiguration extends TaintTracking::Configuration {
-  SQLInjectionConfiguration() { this = "SQLInjectionConfiguration" }
+class SqlInjectionConfiguration extends TaintTracking::Configuration {
+  SqlInjectionConfiguration() { this = "SQLInjectionConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
@@ -32,7 +32,7 @@ class SQLInjectionConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from SQLInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from SqlInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "This SQL query depends on $@.", source.getNode(),
   "a user-provided value"

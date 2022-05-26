@@ -347,7 +347,7 @@ class ControlFlowNode extends @cfg_node, Locatable, NodeInStmtContainer {
     then result = "function in " + any(MethodDeclaration mem | mem.getBody() = this)
     else
       if this instanceof @decorator_list
-      then result = "parameter decorators of " + this.(ASTNode).getParent().(Function).describe()
+      then result = "parameter decorators of " + this.(AstNode).getParent().(Function).describe()
       else result = toString()
   }
 }

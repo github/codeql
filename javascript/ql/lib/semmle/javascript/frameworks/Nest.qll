@@ -151,7 +151,7 @@ module NestJS {
   private API::Node validationPipe() {
     result = nestjs().getMember("ValidationPipe")
     or
-    result = any(ValidationNodeEntry e).getNode()
+    result = any(ValidationNodeEntry e).getANode()
   }
 
   /**
@@ -376,11 +376,11 @@ module NestJS {
    * redirects to `https://example.com`.
    */
   private class ReturnValueAsRedirection extends ServerSideUrlRedirect::Sink {
-    NestJSRouteHandler handler;
-
     ReturnValueAsRedirection() {
-      handler.hasRedirectDecorator() and
-      this = handler.getAReturn().getALocalSource().getAPropertyWrite("url").getRhs()
+      exists(NestJSRouteHandler handler |
+        handler.hasRedirectDecorator() and
+        this = handler.getAReturn().getALocalSource().getAPropertyWrite("url").getRhs()
+      )
     }
   }
 

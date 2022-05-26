@@ -155,15 +155,27 @@ bad_asts.cpp:
 #   19|     getInitializer(0): [ConstructorFieldInit] constructor init of field x
 #   19|         Type = [IntType] int
 #   19|         ValueCategory = prvalue
-#   19|       getExpr(): [Literal] Unknown literal
+#   19|       getExpr(): [ReferenceFieldAccess] x
 #   19|           Type = [IntType] int
-#   19|           ValueCategory = prvalue
+#   19|           ValueCategory = prvalue(load)
+#   19|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+#   19|             Type = [LValueReferenceType] const Point &
+#   19|             ValueCategory = prvalue(load)
+#   19|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#   19|             Type = [SpecifiedType] const Point
+#   19|             ValueCategory = lvalue
 #   19|     getInitializer(1): [ConstructorFieldInit] constructor init of field y
 #   19|         Type = [IntType] int
 #   19|         ValueCategory = prvalue
-#   19|       getExpr(): [Literal] Unknown literal
+#   19|       getExpr(): [ReferenceFieldAccess] y
 #   19|           Type = [IntType] int
-#   19|           ValueCategory = prvalue
+#   19|           ValueCategory = prvalue(load)
+#   19|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+#   19|             Type = [LValueReferenceType] const Point &
+#   19|             ValueCategory = prvalue(load)
+#   19|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#   19|             Type = [SpecifiedType] const Point
+#   19|             ValueCategory = lvalue
 #   19|   getEntryPoint(): [BlockStmt] { ... }
 #   19|     getStmt(0): [ReturnStmt] return ...
 #   19| [MoveConstructor] void Bad::Point::Point(Bad::Point&&)
@@ -5401,7 +5413,7 @@ ir.cpp:
 #  600|   <params>: 
 #  600|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  600|         Type = [RValueReferenceType] String &&
-#  601| [ConversionConstructor] void String::String(char const*)
+#  601| [Constructor] void String::String(char const*)
 #  601|   <params>: 
 #  601|     getParameter(0): [Parameter] (unnamed parameter 0)
 #  601|         Type = [PointerType] const char *
@@ -10630,7 +10642,7 @@ ir.cpp:
 # 1330|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] constructor_only &&
-# 1335| [ConversionConstructor] void constructor_only::constructor_only(int)
+# 1335| [Constructor] void constructor_only::constructor_only(int)
 # 1335|   <params>: 
 # 1335|     getParameter(0): [Parameter] x
 # 1335|         Type = [IntType] int
@@ -11390,6 +11402,2579 @@ ir.cpp:
 # 1458|             Value = [Literal] 3
 # 1458|             ValueCategory = prvalue
 # 1459|     getStmt(1): [ReturnStmt] return ...
+# 1462| [TopLevelFunction] void array_structured_binding()
+# 1462|   <params>: 
+# 1462|   getEntryPoint(): [BlockStmt] { ... }
+# 1463|     getStmt(0): [DeclStmt] declaration
+# 1463|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of xs
+# 1463|           Type = [ArrayType] int[2]
+# 1463|         getVariable().getInitializer(): [Initializer] initializer for xs
+# 1463|           getExpr(): [ArrayAggregateLiteral] {...}
+# 1463|               Type = [ArrayType] int[2]
+# 1463|               ValueCategory = prvalue
+# 1463|             getElementExpr(0): [Literal] 1
+# 1463|                 Type = [IntType] int
+# 1463|                 Value = [Literal] 1
+# 1463|                 ValueCategory = prvalue
+# 1463|             getElementExpr(1): [Literal] 2
+# 1463|                 Type = [IntType] int
+# 1463|                 Value = [Literal] 2
+# 1463|                 ValueCategory = prvalue
+# 1465|     getStmt(1): [BlockStmt] { ... }
+# 1466|       getStmt(0): [DeclStmt] declaration
+# 1466|         getDeclarationEntry(0): (no string representation)
+# 1466|             Type = [LValueReferenceType] int(&)[2]
+# 1466|           getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
+# 1466|             getExpr(): [VariableAccess] xs
+# 1466|                 Type = [ArrayType] int[2]
+# 1466|                 ValueCategory = lvalue
+# 1466|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1466|                 Type = [LValueReferenceType] int(&)[2]
+# 1466|                 ValueCategory = prvalue
+# 1466|         getDeclarationEntry(1): [VariableDeclarationEntry] definition of x0
+# 1466|             Type = [IntType] int
+#-----|           getVariable().getInitializer(): [Initializer] initializer for x0
+#-----|             getExpr(): [ArrayExpr] access to array
+#-----|                 Type = [IntType] int
+#-----|                 ValueCategory = lvalue
+#-----|               getArrayBase(): [VariableAccess] (unnamed local variable)
+#-----|                   Type = [LValueReferenceType] int(&)[2]
+#-----|                   ValueCategory = prvalue(load)
+#-----|               getArrayOffset(): [Literal] 0
+#-----|                   Type = [LongType] unsigned long
+#-----|                   Value = [Literal] 0
+#-----|                   ValueCategory = prvalue
+#-----|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#-----|                   Type = [IntPointerType] int *
+#-----|                   ValueCategory = prvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ArrayType] int[2]
+#-----|                     ValueCategory = lvalue
+# 1466|         getDeclarationEntry(2): [VariableDeclarationEntry] definition of x1
+# 1466|             Type = [IntType] int
+#-----|           getVariable().getInitializer(): [Initializer] initializer for x1
+#-----|             getExpr(): [ArrayExpr] access to array
+#-----|                 Type = [IntType] int
+#-----|                 ValueCategory = lvalue
+#-----|               getArrayBase(): [VariableAccess] (unnamed local variable)
+#-----|                   Type = [LValueReferenceType] int(&)[2]
+#-----|                   ValueCategory = prvalue(load)
+#-----|               getArrayOffset(): [Literal] 1
+#-----|                   Type = [LongType] unsigned long
+#-----|                   Value = [Literal] 1
+#-----|                   ValueCategory = prvalue
+#-----|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#-----|                   Type = [IntPointerType] int *
+#-----|                   ValueCategory = prvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ArrayType] int[2]
+#-----|                     ValueCategory = lvalue
+# 1467|       getStmt(1): [ExprStmt] ExprStmt
+# 1467|         getExpr(): [AssignExpr] ... = ...
+# 1467|             Type = [IntType] int
+# 1467|             ValueCategory = lvalue
+# 1467|           getLValue(): [VariableAccess] x1
+# 1467|               Type = [IntType] int
+# 1467|               ValueCategory = lvalue
+# 1467|           getRValue(): [Literal] 3
+# 1467|               Type = [IntType] int
+# 1467|               Value = [Literal] 3
+# 1467|               ValueCategory = prvalue
+# 1468|       getStmt(2): [DeclStmt] declaration
+# 1468|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rx1
+# 1468|             Type = [LValueReferenceType] int &
+# 1468|           getVariable().getInitializer(): [Initializer] initializer for rx1
+# 1468|             getExpr(): [VariableAccess] x1
+# 1468|                 Type = [IntType] int
+# 1468|                 ValueCategory = lvalue
+# 1468|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1468|                 Type = [LValueReferenceType] int &
+# 1468|                 ValueCategory = prvalue
+# 1469|       getStmt(3): [DeclStmt] declaration
+# 1469|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1469|             Type = [IntType] int
+# 1469|           getVariable().getInitializer(): [Initializer] initializer for x
+# 1469|             getExpr(): [VariableAccess] x1
+# 1469|                 Type = [IntType] int
+# 1469|                 ValueCategory = prvalue(load)
+# 1472|     getStmt(2): [BlockStmt] { ... }
+# 1473|       getStmt(0): [DeclStmt] declaration
+# 1473|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of unnamed_local_variable
+# 1473|             Type = [LValueReferenceType] int(&)[2]
+# 1473|           getVariable().getInitializer(): [Initializer] initializer for unnamed_local_variable
+# 1473|             getExpr(): [VariableAccess] xs
+# 1473|                 Type = [ArrayType] int[2]
+# 1473|                 ValueCategory = lvalue
+# 1473|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1473|                 Type = [LValueReferenceType] int(&)[2]
+# 1473|                 ValueCategory = prvalue
+# 1474|       getStmt(1): [DeclStmt] declaration
+# 1474|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x0
+# 1474|             Type = [LValueReferenceType] int &
+# 1474|           getVariable().getInitializer(): [Initializer] initializer for x0
+# 1474|             getExpr(): [ArrayExpr] access to array
+# 1474|                 Type = [IntType] int
+# 1474|                 ValueCategory = lvalue
+# 1474|               getArrayBase(): [VariableAccess] unnamed_local_variable
+# 1474|                   Type = [LValueReferenceType] int(&)[2]
+# 1474|                   ValueCategory = prvalue(load)
+# 1474|               getArrayOffset(): [Literal] 0
+# 1474|                   Type = [IntType] int
+# 1474|                   Value = [Literal] 0
+# 1474|                   ValueCategory = prvalue
+# 1474|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1474|                   Type = [IntPointerType] int *
+# 1474|                   ValueCategory = prvalue
+# 1474|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1474|                     Type = [ArrayType] int[2]
+# 1474|                     ValueCategory = lvalue
+# 1474|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1474|                 Type = [LValueReferenceType] int &
+# 1474|                 ValueCategory = prvalue
+# 1475|       getStmt(2): [DeclStmt] declaration
+# 1475|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x1
+# 1475|             Type = [LValueReferenceType] int &
+# 1475|           getVariable().getInitializer(): [Initializer] initializer for x1
+# 1475|             getExpr(): [ArrayExpr] access to array
+# 1475|                 Type = [IntType] int
+# 1475|                 ValueCategory = lvalue
+# 1475|               getArrayBase(): [VariableAccess] unnamed_local_variable
+# 1475|                   Type = [LValueReferenceType] int(&)[2]
+# 1475|                   ValueCategory = prvalue(load)
+# 1475|               getArrayOffset(): [Literal] 1
+# 1475|                   Type = [IntType] int
+# 1475|                   Value = [Literal] 1
+# 1475|                   ValueCategory = prvalue
+# 1475|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1475|                   Type = [IntPointerType] int *
+# 1475|                   ValueCategory = prvalue
+# 1475|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1475|                     Type = [ArrayType] int[2]
+# 1475|                     ValueCategory = lvalue
+# 1475|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1475|                 Type = [LValueReferenceType] int &
+# 1475|                 ValueCategory = prvalue
+# 1476|       getStmt(3): [ExprStmt] ExprStmt
+# 1476|         getExpr(): [AssignExpr] ... = ...
+# 1476|             Type = [IntType] int
+# 1476|             ValueCategory = lvalue
+# 1476|           getLValue(): [VariableAccess] x1
+# 1476|               Type = [LValueReferenceType] int &
+# 1476|               ValueCategory = prvalue(load)
+# 1476|           getRValue(): [Literal] 3
+# 1476|               Type = [IntType] int
+# 1476|               Value = [Literal] 3
+# 1476|               ValueCategory = prvalue
+# 1476|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1476|               Type = [IntType] int
+# 1476|               ValueCategory = lvalue
+# 1477|       getStmt(4): [DeclStmt] declaration
+# 1477|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rx1
+# 1477|             Type = [LValueReferenceType] int &
+# 1477|           getVariable().getInitializer(): [Initializer] initializer for rx1
+# 1477|             getExpr(): [VariableAccess] x1
+# 1477|                 Type = [LValueReferenceType] int &
+# 1477|                 ValueCategory = prvalue(load)
+# 1477|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1477|                 Type = [LValueReferenceType] int &
+# 1477|                 ValueCategory = prvalue
+# 1477|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1477|                   Type = [IntType] int
+# 1477|                   ValueCategory = lvalue
+# 1478|       getStmt(5): [DeclStmt] declaration
+# 1478|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1478|             Type = [IntType] int
+# 1478|           getVariable().getInitializer(): [Initializer] initializer for x
+# 1478|             getExpr(): [VariableAccess] x1
+# 1478|                 Type = [LValueReferenceType] int &
+# 1478|                 ValueCategory = prvalue(load)
+# 1478|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1478|                 Type = [IntType] int
+# 1478|                 ValueCategory = prvalue(load)
+# 1480|     getStmt(3): [ReturnStmt] return ...
+# 1482| [CopyAssignmentOperator] StructuredBindingDataMemberMemberStruct& StructuredBindingDataMemberMemberStruct::operator=(StructuredBindingDataMemberMemberStruct const&)
+# 1482|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const StructuredBindingDataMemberMemberStruct &
+# 1482| [MoveAssignmentOperator] StructuredBindingDataMemberMemberStruct& StructuredBindingDataMemberMemberStruct::operator=(StructuredBindingDataMemberMemberStruct&&)
+# 1482|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] StructuredBindingDataMemberMemberStruct &&
+# 1482| [Constructor] void StructuredBindingDataMemberMemberStruct::StructuredBindingDataMemberMemberStruct()
+# 1482|   <params>: 
+# 1482|   <initializations>: 
+# 1482|     getInitializer(0): [ConstructorFieldInit] constructor init of field x
+# 1482|         Type = [IntType] int
+# 1482|         ValueCategory = prvalue
+# 1482|   getEntryPoint(): [BlockStmt] { ... }
+# 1482|     getStmt(0): [ReturnStmt] return ...
+# 1482| [CopyConstructor] void StructuredBindingDataMemberMemberStruct::StructuredBindingDataMemberMemberStruct(StructuredBindingDataMemberMemberStruct const&)
+# 1482|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const StructuredBindingDataMemberMemberStruct &
+# 1482| [MoveConstructor] void StructuredBindingDataMemberMemberStruct::StructuredBindingDataMemberMemberStruct(StructuredBindingDataMemberMemberStruct&&)
+# 1482|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] StructuredBindingDataMemberMemberStruct &&
+# 1486| [CopyAssignmentOperator] StructuredBindingDataMemberStruct& StructuredBindingDataMemberStruct::operator=(StructuredBindingDataMemberStruct const&)
+# 1486|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486| [Constructor] void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct()
+# 1486|   <params>: 
+# 1486|   <initializations>: 
+# 1486|     getInitializer(0): [ConstructorFieldInit] constructor init of field i
+# 1486|         Type = [IntType] int
+# 1486|         ValueCategory = prvalue
+# 1486|     getInitializer(1): [ConstructorFieldInit] constructor init of field d
+# 1486|         Type = [DoubleType] double
+# 1486|         ValueCategory = prvalue
+# 1486|     getInitializer(2): [ConstructorFieldInit] constructor init of field r
+# 1486|         Type = [LValueReferenceType] int &
+# 1486|         ValueCategory = prvalue
+# 1486|     getInitializer(3): [ConstructorFieldInit] constructor init of field p
+# 1486|         Type = [IntPointerType] int *
+# 1486|         ValueCategory = prvalue
+# 1486|     getInitializer(4): [ConstructorFieldInit] constructor init of field xs
+# 1486|         Type = [CTypedefType,NestedTypedefType] ArrayType
+# 1486|         ValueCategory = prvalue
+# 1486|     getInitializer(5): [ConstructorFieldInit] constructor init of field r_alt
+# 1486|         Type = [CTypedefType,NestedTypedefType] RefType
+# 1486|         ValueCategory = prvalue
+# 1486|     getInitializer(6): [ConstructorFieldInit] constructor init of field m
+# 1486|         Type = [Struct] StructuredBindingDataMemberMemberStruct
+# 1486|         ValueCategory = prvalue
+# 1486|       getExpr(): [ConstructorCall] call to StructuredBindingDataMemberMemberStruct
+# 1486|           Type = [VoidType] void
+# 1486|           ValueCategory = prvalue
+# 1486|   getEntryPoint(): [BlockStmt] { ... }
+# 1486|     getStmt(0): [ReturnStmt] return ...
+# 1486| [CopyConstructor] void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct(StructuredBindingDataMemberStruct const&)
+# 1486|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|   <initializations>: 
+# 1486|     getInitializer(0): [ConstructorFieldInit] constructor init of field i
+# 1486|         Type = [IntType] int
+# 1486|         ValueCategory = prvalue
+# 1486|       getExpr(): [ReferenceFieldAccess] i
+# 1486|           Type = [IntType] int
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
+# 1486|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1486|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
+# 1486|             ValueCategory = lvalue
+# 1486|     getInitializer(1): [ConstructorFieldInit] constructor init of field d
+# 1486|         Type = [DoubleType] double
+# 1486|         ValueCategory = prvalue
+# 1486|       getExpr(): [ReferenceFieldAccess] d
+# 1486|           Type = [DoubleType] double
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
+# 1486|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1486|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
+# 1486|             ValueCategory = lvalue
+# 1486|     getInitializer(2): [ConstructorFieldInit] constructor init of field b
+# 1486|         Type = [IntType] unsigned int
+# 1486|         ValueCategory = prvalue
+# 1486|       getExpr(): [ReferenceFieldAccess] b
+# 1486|           Type = [IntType] unsigned int
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
+# 1486|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1486|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
+# 1486|             ValueCategory = lvalue
+# 1486|     getInitializer(3): [ConstructorFieldInit] constructor init of field r
+# 1486|         Type = [LValueReferenceType] int &
+# 1486|         ValueCategory = prvalue
+# 1486|       getExpr(): [ReferenceFieldAccess] r
+# 1486|           Type = [LValueReferenceType] int &
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
+# 1486|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1486|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
+# 1486|             ValueCategory = lvalue
+# 1486|     getInitializer(4): [ConstructorFieldInit] constructor init of field p
+# 1486|         Type = [IntPointerType] int *
+# 1486|         ValueCategory = prvalue
+# 1486|       getExpr(): [ReferenceFieldAccess] p
+# 1486|           Type = [IntPointerType] int *
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
+# 1486|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1486|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
+# 1486|             ValueCategory = lvalue
+# 1486|     getInitializer(5): [ConstructorFieldInit] constructor init of field xs
+# 1486|         Type = [CTypedefType,NestedTypedefType] ArrayType
+# 1486|         ValueCategory = prvalue
+# 1486|       getExpr(): [ReferenceFieldAccess] xs
+# 1486|           Type = [CTypedefType,NestedTypedefType] ArrayType
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
+# 1486|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1486|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
+# 1486|             ValueCategory = lvalue
+# 1486|     getInitializer(6): [ConstructorFieldInit] constructor init of field r_alt
+# 1486|         Type = [CTypedefType,NestedTypedefType] RefType
+# 1486|         ValueCategory = prvalue
+# 1486|       getExpr(): [ReferenceFieldAccess] r_alt
+# 1486|           Type = [CTypedefType,NestedTypedefType] RefType
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
+# 1486|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1486|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
+# 1486|             ValueCategory = lvalue
+# 1486|     getInitializer(7): [ConstructorFieldInit] constructor init of field m
+# 1486|         Type = [Struct] StructuredBindingDataMemberMemberStruct
+# 1486|         ValueCategory = prvalue
+# 1486|       getExpr(): [ReferenceFieldAccess] m
+# 1486|           Type = [Struct] StructuredBindingDataMemberMemberStruct
+# 1486|           ValueCategory = prvalue(load)
+# 1486|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1486|             Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
+# 1486|             ValueCategory = prvalue(load)
+# 1486|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1486|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
+# 1486|             ValueCategory = lvalue
+# 1486|   getEntryPoint(): [BlockStmt] { ... }
+# 1486|     getStmt(0): [ReturnStmt] return ...
+# 1486| [MoveConstructor] void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct(StructuredBindingDataMemberStruct&&)
+# 1486|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] StructuredBindingDataMemberStruct &&
+# 1499| [TopLevelFunction] void data_member_structured_binding()
+# 1499|   <params>: 
+# 1499|   getEntryPoint(): [BlockStmt] { ... }
+# 1500|     getStmt(0): [DeclStmt] declaration
+# 1500|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 1500|           Type = [Struct] StructuredBindingDataMemberStruct
+# 1500|         getVariable().getInitializer(): [Initializer] initializer for s
+# 1500|           getExpr(): [ConstructorCall] call to StructuredBindingDataMemberStruct
+# 1500|               Type = [VoidType] void
+# 1500|               ValueCategory = prvalue
+# 1502|     getStmt(1): [BlockStmt] { ... }
+# 1503|       getStmt(0): [DeclStmt] declaration
+# 1503|         getDeclarationEntry(0): (no string representation)
+# 1503|             Type = [Struct] StructuredBindingDataMemberStruct
+# 1503|           getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
+# 1503|             getExpr(): [VariableAccess] s
+# 1503|                 Type = [Struct] StructuredBindingDataMemberStruct
+# 1503|                 ValueCategory = prvalue(load)
+# 1503|         getDeclarationEntry(1): [VariableDeclarationEntry] definition of i
+# 1503|             Type = [IntType] int
+#-----|           getVariable().getInitializer(): [Initializer] initializer for i
+# 1503|             getExpr(): [ValueFieldAccess] i
+# 1503|                 Type = [IntType] int
+# 1503|                 ValueCategory = lvalue
+# 1503|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1503|                   Type = [Struct] StructuredBindingDataMemberStruct
+# 1503|                   ValueCategory = lvalue
+# 1503|         getDeclarationEntry(2): [VariableDeclarationEntry] definition of d
+# 1503|             Type = [DoubleType] double
+#-----|           getVariable().getInitializer(): [Initializer] initializer for d
+# 1503|             getExpr(): [ValueFieldAccess] d
+# 1503|                 Type = [DoubleType] double
+# 1503|                 ValueCategory = lvalue
+# 1503|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1503|                   Type = [Struct] StructuredBindingDataMemberStruct
+# 1503|                   ValueCategory = lvalue
+# 1503|         getDeclarationEntry(3): [VariableDeclarationEntry] definition of b
+# 1503|             Type = [IntType] unsigned int
+#-----|           getVariable().getInitializer(): [Initializer] initializer for b
+# 1503|             getExpr(): [ValueFieldAccess] b
+# 1503|                 Type = [IntType] unsigned int
+# 1503|                 ValueCategory = lvalue
+# 1503|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1503|                   Type = [Struct] StructuredBindingDataMemberStruct
+# 1503|                   ValueCategory = lvalue
+# 1503|         getDeclarationEntry(4): [VariableDeclarationEntry] definition of r
+# 1503|             Type = [IntType] int
+#-----|           getVariable().getInitializer(): [Initializer] initializer for r
+# 1503|             getExpr(): [ValueFieldAccess] r
+# 1503|                 Type = [LValueReferenceType] int &
+# 1503|                 ValueCategory = prvalue(load)
+# 1503|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1503|                   Type = [Struct] StructuredBindingDataMemberStruct
+# 1503|                   ValueCategory = lvalue
+# 1503|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1503|                 Type = [IntType] int
+# 1503|                 ValueCategory = lvalue
+# 1503|         getDeclarationEntry(5): [VariableDeclarationEntry] definition of p
+# 1503|             Type = [IntPointerType] int *
+#-----|           getVariable().getInitializer(): [Initializer] initializer for p
+# 1503|             getExpr(): [ValueFieldAccess] p
+# 1503|                 Type = [IntPointerType] int *
+# 1503|                 ValueCategory = lvalue
+# 1503|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1503|                   Type = [Struct] StructuredBindingDataMemberStruct
+# 1503|                   ValueCategory = lvalue
+# 1503|         getDeclarationEntry(6): [VariableDeclarationEntry] definition of xs
+# 1503|             Type = [CTypedefType,NestedTypedefType] ArrayType
+#-----|           getVariable().getInitializer(): [Initializer] initializer for xs
+# 1503|             getExpr(): [ValueFieldAccess] xs
+# 1503|                 Type = [CTypedefType,NestedTypedefType] ArrayType
+# 1503|                 ValueCategory = lvalue
+# 1503|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1503|                   Type = [Struct] StructuredBindingDataMemberStruct
+# 1503|                   ValueCategory = lvalue
+# 1503|         getDeclarationEntry(7): [VariableDeclarationEntry] definition of r_alt
+# 1503|             Type = [IntType] int
+#-----|           getVariable().getInitializer(): [Initializer] initializer for r_alt
+# 1503|             getExpr(): [ValueFieldAccess] r_alt
+# 1503|                 Type = [CTypedefType,NestedTypedefType] RefType
+# 1503|                 ValueCategory = prvalue(load)
+# 1503|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1503|                   Type = [Struct] StructuredBindingDataMemberStruct
+# 1503|                   ValueCategory = lvalue
+# 1503|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1503|                 Type = [IntType] int
+# 1503|                 ValueCategory = lvalue
+# 1503|         getDeclarationEntry(8): [VariableDeclarationEntry] definition of m
+# 1503|             Type = [Struct] StructuredBindingDataMemberMemberStruct
+#-----|           getVariable().getInitializer(): [Initializer] initializer for m
+# 1503|             getExpr(): [ValueFieldAccess] m
+# 1503|                 Type = [Struct] StructuredBindingDataMemberMemberStruct
+# 1503|                 ValueCategory = lvalue
+# 1503|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1503|                   Type = [Struct] StructuredBindingDataMemberStruct
+# 1503|                   ValueCategory = lvalue
+# 1504|       getStmt(1): [ExprStmt] ExprStmt
+# 1504|         getExpr(): [AssignExpr] ... = ...
+# 1504|             Type = [DoubleType] double
+# 1504|             ValueCategory = lvalue
+# 1504|           getLValue(): [VariableAccess] d
+# 1504|               Type = [DoubleType] double
+# 1504|               ValueCategory = lvalue
+# 1504|           getRValue(): [Literal] 4.0
+# 1504|               Type = [DoubleType] double
+# 1504|               Value = [Literal] 4.0
+# 1504|               ValueCategory = prvalue
+# 1505|       getStmt(2): [DeclStmt] declaration
+# 1505|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rd
+# 1505|             Type = [LValueReferenceType] double &
+# 1505|           getVariable().getInitializer(): [Initializer] initializer for rd
+# 1505|             getExpr(): [VariableAccess] d
+# 1505|                 Type = [DoubleType] double
+# 1505|                 ValueCategory = lvalue
+# 1505|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1505|                 Type = [LValueReferenceType] double &
+# 1505|                 ValueCategory = prvalue
+# 1506|       getStmt(3): [DeclStmt] declaration
+# 1506|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
+# 1506|             Type = [IntType] int
+# 1506|           getVariable().getInitializer(): [Initializer] initializer for v
+# 1506|             getExpr(): [VariableAccess] i
+# 1506|                 Type = [IntType] int
+# 1506|                 ValueCategory = prvalue(load)
+# 1507|       getStmt(4): [ExprStmt] ExprStmt
+# 1507|         getExpr(): [AssignExpr] ... = ...
+# 1507|             Type = [IntType] int
+# 1507|             ValueCategory = lvalue
+# 1507|           getLValue(): [VariableAccess] r
+# 1507|               Type = [IntType] int
+# 1507|               ValueCategory = lvalue
+# 1507|           getRValue(): [Literal] 5
+# 1507|               Type = [IntType] int
+# 1507|               Value = [Literal] 5
+# 1507|               ValueCategory = prvalue
+# 1508|       getStmt(5): [ExprStmt] ExprStmt
+# 1508|         getExpr(): [AssignExpr] ... = ...
+# 1508|             Type = [IntType] int
+# 1508|             ValueCategory = lvalue
+# 1508|           getLValue(): [PointerDereferenceExpr] * ...
+# 1508|               Type = [IntType] int
+# 1508|               ValueCategory = lvalue
+# 1508|             getOperand(): [VariableAccess] p
+# 1508|                 Type = [IntPointerType] int *
+# 1508|                 ValueCategory = prvalue(load)
+# 1508|           getRValue(): [Literal] 6
+# 1508|               Type = [IntType] int
+# 1508|               Value = [Literal] 6
+# 1508|               ValueCategory = prvalue
+# 1509|       getStmt(6): [DeclStmt] declaration
+# 1509|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rr
+# 1509|             Type = [LValueReferenceType] int &
+# 1509|           getVariable().getInitializer(): [Initializer] initializer for rr
+# 1509|             getExpr(): [VariableAccess] r
+# 1509|                 Type = [IntType] int
+# 1509|                 ValueCategory = lvalue
+# 1509|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1509|                 Type = [LValueReferenceType] int &
+# 1509|                 ValueCategory = prvalue
+# 1510|       getStmt(7): [DeclStmt] declaration
+# 1510|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of pr
+# 1510|             Type = [IntPointerType] int *
+# 1510|           getVariable().getInitializer(): [Initializer] initializer for pr
+# 1510|             getExpr(): [AddressOfExpr] & ...
+# 1510|                 Type = [IntPointerType] int *
+# 1510|                 ValueCategory = prvalue
+# 1510|               getOperand(): [VariableAccess] r
+# 1510|                   Type = [IntType] int
+# 1510|                   ValueCategory = lvalue
+# 1511|       getStmt(8): [DeclStmt] declaration
+# 1511|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
+# 1511|             Type = [IntType] int
+# 1511|           getVariable().getInitializer(): [Initializer] initializer for w
+# 1511|             getExpr(): [VariableAccess] r
+# 1511|                 Type = [IntType] int
+# 1511|                 ValueCategory = prvalue(load)
+# 1514|     getStmt(2): [BlockStmt] { ... }
+# 1515|       getStmt(0): [DeclStmt] declaration
+# 1515|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of unnamed_local_variable
+# 1515|             Type = [Struct] StructuredBindingDataMemberStruct
+# 1515|           getVariable().getInitializer(): [Initializer] initializer for unnamed_local_variable
+# 1515|             getExpr(): [VariableAccess] s
+# 1515|                 Type = [Struct] StructuredBindingDataMemberStruct
+# 1515|                 ValueCategory = prvalue(load)
+# 1516|       getStmt(1): [DeclStmt] declaration
+# 1516|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+# 1516|             Type = [LValueReferenceType] int &
+# 1516|           getVariable().getInitializer(): [Initializer] initializer for i
+# 1516|             getExpr(): [ValueFieldAccess] i
+# 1516|                 Type = [IntType] int
+# 1516|                 ValueCategory = lvalue
+# 1516|               getQualifier(): [VariableAccess] unnamed_local_variable
+# 1516|                   Type = [Struct] StructuredBindingDataMemberStruct
+# 1516|                   ValueCategory = lvalue
+# 1516|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1516|                 Type = [LValueReferenceType] int &
+# 1516|                 ValueCategory = prvalue
+# 1517|       getStmt(2): [DeclStmt] declaration
+# 1517|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
+# 1517|             Type = [LValueReferenceType] double &
+# 1517|           getVariable().getInitializer(): [Initializer] initializer for d
+# 1517|             getExpr(): [ValueFieldAccess] d
+# 1517|                 Type = [DoubleType] double
+# 1517|                 ValueCategory = lvalue
+# 1517|               getQualifier(): [VariableAccess] unnamed_local_variable
+# 1517|                   Type = [Struct] StructuredBindingDataMemberStruct
+# 1517|                   ValueCategory = lvalue
+# 1517|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1517|                 Type = [LValueReferenceType] double &
+# 1517|                 ValueCategory = prvalue
+# 1519|       getStmt(3): [DeclStmt] declaration
+# 1519|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
+# 1519|             Type = [LValueReferenceType] int &
+# 1519|           getVariable().getInitializer(): [Initializer] initializer for r
+# 1519|             getExpr(): [ValueFieldAccess] r
+# 1519|                 Type = [LValueReferenceType] int &
+# 1519|                 ValueCategory = prvalue(load)
+# 1519|               getQualifier(): [VariableAccess] unnamed_local_variable
+# 1519|                   Type = [Struct] StructuredBindingDataMemberStruct
+# 1519|                   ValueCategory = lvalue
+# 1519|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1519|                 Type = [LValueReferenceType] int &
+# 1519|                 ValueCategory = prvalue
+# 1519|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1519|                   Type = [IntType] int
+# 1519|                   ValueCategory = lvalue
+# 1520|       getStmt(4): [DeclStmt] declaration
+# 1520|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of p
+# 1520|             Type = [LValueReferenceType] int *&
+# 1520|           getVariable().getInitializer(): [Initializer] initializer for p
+# 1520|             getExpr(): [ValueFieldAccess] p
+# 1520|                 Type = [IntPointerType] int *
+# 1520|                 ValueCategory = lvalue
+# 1520|               getQualifier(): [VariableAccess] unnamed_local_variable
+# 1520|                   Type = [Struct] StructuredBindingDataMemberStruct
+# 1520|                   ValueCategory = lvalue
+# 1520|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1520|                 Type = [LValueReferenceType] int *&
+# 1520|                 ValueCategory = prvalue
+# 1521|       getStmt(5): [ExprStmt] ExprStmt
+# 1521|         getExpr(): [AssignExpr] ... = ...
+# 1521|             Type = [DoubleType] double
+# 1521|             ValueCategory = lvalue
+# 1521|           getLValue(): [VariableAccess] d
+# 1521|               Type = [LValueReferenceType] double &
+# 1521|               ValueCategory = prvalue(load)
+# 1521|           getRValue(): [Literal] 4.0
+# 1521|               Type = [DoubleType] double
+# 1521|               Value = [Literal] 4.0
+# 1521|               ValueCategory = prvalue
+# 1521|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1521|               Type = [DoubleType] double
+# 1521|               ValueCategory = lvalue
+# 1522|       getStmt(6): [DeclStmt] declaration
+# 1522|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rd
+# 1522|             Type = [LValueReferenceType] double &
+# 1522|           getVariable().getInitializer(): [Initializer] initializer for rd
+# 1522|             getExpr(): [VariableAccess] d
+# 1522|                 Type = [LValueReferenceType] double &
+# 1522|                 ValueCategory = prvalue(load)
+# 1522|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1522|                 Type = [LValueReferenceType] double &
+# 1522|                 ValueCategory = prvalue
+# 1522|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1522|                   Type = [DoubleType] double
+# 1522|                   ValueCategory = lvalue
+# 1523|       getStmt(7): [DeclStmt] declaration
+# 1523|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
+# 1523|             Type = [IntType] int
+# 1523|           getVariable().getInitializer(): [Initializer] initializer for v
+# 1523|             getExpr(): [VariableAccess] i
+# 1523|                 Type = [LValueReferenceType] int &
+# 1523|                 ValueCategory = prvalue(load)
+# 1523|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1523|                 Type = [IntType] int
+# 1523|                 ValueCategory = prvalue(load)
+# 1524|       getStmt(8): [ExprStmt] ExprStmt
+# 1524|         getExpr(): [AssignExpr] ... = ...
+# 1524|             Type = [IntType] int
+# 1524|             ValueCategory = lvalue
+# 1524|           getLValue(): [VariableAccess] r
+# 1524|               Type = [LValueReferenceType] int &
+# 1524|               ValueCategory = prvalue(load)
+# 1524|           getRValue(): [Literal] 5
+# 1524|               Type = [IntType] int
+# 1524|               Value = [Literal] 5
+# 1524|               ValueCategory = prvalue
+# 1524|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1524|               Type = [IntType] int
+# 1524|               ValueCategory = lvalue
+# 1525|       getStmt(9): [ExprStmt] ExprStmt
+# 1525|         getExpr(): [AssignExpr] ... = ...
+# 1525|             Type = [IntType] int
+# 1525|             ValueCategory = lvalue
+# 1525|           getLValue(): [PointerDereferenceExpr] * ...
+# 1525|               Type = [IntType] int
+# 1525|               ValueCategory = lvalue
+# 1525|             getOperand(): [VariableAccess] p
+# 1525|                 Type = [LValueReferenceType] int *&
+# 1525|                 ValueCategory = prvalue(load)
+# 1525|             getOperand().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1525|                 Type = [IntPointerType] int *
+# 1525|                 ValueCategory = prvalue(load)
+# 1525|           getRValue(): [Literal] 6
+# 1525|               Type = [IntType] int
+# 1525|               Value = [Literal] 6
+# 1525|               ValueCategory = prvalue
+# 1526|       getStmt(10): [DeclStmt] declaration
+# 1526|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rr
+# 1526|             Type = [LValueReferenceType] int &
+# 1526|           getVariable().getInitializer(): [Initializer] initializer for rr
+# 1526|             getExpr(): [VariableAccess] r
+# 1526|                 Type = [LValueReferenceType] int &
+# 1526|                 ValueCategory = prvalue(load)
+# 1526|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1526|                 Type = [LValueReferenceType] int &
+# 1526|                 ValueCategory = prvalue
+# 1526|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1526|                   Type = [IntType] int
+# 1526|                   ValueCategory = lvalue
+# 1527|       getStmt(11): [DeclStmt] declaration
+# 1527|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of pr
+# 1527|             Type = [IntPointerType] int *
+# 1527|           getVariable().getInitializer(): [Initializer] initializer for pr
+# 1527|             getExpr(): [AddressOfExpr] & ...
+# 1527|                 Type = [IntPointerType] int *
+# 1527|                 ValueCategory = prvalue
+# 1527|               getOperand(): [VariableAccess] r
+# 1527|                   Type = [LValueReferenceType] int &
+# 1527|                   ValueCategory = prvalue(load)
+# 1527|               getOperand().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1527|                   Type = [IntType] int
+# 1527|                   ValueCategory = lvalue
+# 1528|       getStmt(12): [DeclStmt] declaration
+# 1528|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
+# 1528|             Type = [IntType] int
+# 1528|           getVariable().getInitializer(): [Initializer] initializer for w
+# 1528|             getExpr(): [VariableAccess] r
+# 1528|                 Type = [LValueReferenceType] int &
+# 1528|                 ValueCategory = prvalue(load)
+# 1528|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1528|                 Type = [IntType] int
+# 1528|                 ValueCategory = prvalue(load)
+# 1530|     getStmt(3): [ReturnStmt] return ...
+# 1539| [CopyAssignmentOperator] StructuredBindingTupleRefGet& StructuredBindingTupleRefGet::operator=(StructuredBindingTupleRefGet const&)
+# 1539|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const StructuredBindingTupleRefGet &
+# 1539| [Constructor] void StructuredBindingTupleRefGet::StructuredBindingTupleRefGet()
+# 1539|   <params>: 
+# 1539|   <initializations>: 
+# 1539|     getInitializer(0): [ConstructorFieldInit] constructor init of field i
+# 1539|         Type = [IntType] int
+# 1539|         ValueCategory = prvalue
+# 1539|     getInitializer(1): [ConstructorFieldInit] constructor init of field d
+# 1539|         Type = [DoubleType] double
+# 1539|         ValueCategory = prvalue
+# 1539|     getInitializer(2): [ConstructorFieldInit] constructor init of field r
+# 1539|         Type = [LValueReferenceType] int &
+# 1539|         ValueCategory = prvalue
+# 1539|   getEntryPoint(): [BlockStmt] { ... }
+# 1539|     getStmt(0): [ReturnStmt] return ...
+# 1539| [CopyConstructor] void StructuredBindingTupleRefGet::StructuredBindingTupleRefGet(StructuredBindingTupleRefGet const&)
+# 1539|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const StructuredBindingTupleRefGet &
+# 1539|   <initializations>: 
+# 1539|     getInitializer(0): [ConstructorFieldInit] constructor init of field i
+# 1539|         Type = [IntType] int
+# 1539|         ValueCategory = prvalue
+# 1539|       getExpr(): [ReferenceFieldAccess] i
+# 1539|           Type = [IntType] int
+# 1539|           ValueCategory = prvalue(load)
+# 1539|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1539|             Type = [LValueReferenceType] const StructuredBindingTupleRefGet &
+# 1539|             ValueCategory = prvalue(load)
+# 1539|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1539|             Type = [SpecifiedType] const StructuredBindingTupleRefGet
+# 1539|             ValueCategory = lvalue
+# 1539|     getInitializer(1): [ConstructorFieldInit] constructor init of field d
+# 1539|         Type = [DoubleType] double
+# 1539|         ValueCategory = prvalue
+# 1539|       getExpr(): [ReferenceFieldAccess] d
+# 1539|           Type = [DoubleType] double
+# 1539|           ValueCategory = prvalue(load)
+# 1539|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1539|             Type = [LValueReferenceType] const StructuredBindingTupleRefGet &
+# 1539|             ValueCategory = prvalue(load)
+# 1539|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1539|             Type = [SpecifiedType] const StructuredBindingTupleRefGet
+# 1539|             ValueCategory = lvalue
+# 1539|     getInitializer(2): [ConstructorFieldInit] constructor init of field r
+# 1539|         Type = [LValueReferenceType] int &
+# 1539|         ValueCategory = prvalue
+# 1539|       getExpr(): [ReferenceFieldAccess] r
+# 1539|           Type = [LValueReferenceType] int &
+# 1539|           ValueCategory = prvalue(load)
+# 1539|         getQualifier(): [VariableAccess] (unnamed parameter 0)
+# 1539|             Type = [LValueReferenceType] const StructuredBindingTupleRefGet &
+# 1539|             ValueCategory = prvalue(load)
+# 1539|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1539|             Type = [SpecifiedType] const StructuredBindingTupleRefGet
+# 1539|             ValueCategory = lvalue
+# 1539|   getEntryPoint(): [BlockStmt] { ... }
+# 1539|     getStmt(0): [ReturnStmt] return ...
+# 1539| [MoveConstructor] void StructuredBindingTupleRefGet::StructuredBindingTupleRefGet(StructuredBindingTupleRefGet&&)
+# 1539|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] StructuredBindingTupleRefGet &&
+# 1545| [MemberFunction,TemplateFunction] type& StructuredBindingTupleRefGet::get<int i>()
+# 1545|   <params>: 
+# 1549| [CopyAssignmentOperator] std::tuple_size<StructuredBindingTupleRefGet>& std::tuple_size<StructuredBindingTupleRefGet>::operator=(std::tuple_size<StructuredBindingTupleRefGet> const&)
+# 1549|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const tuple_size<StructuredBindingTupleRefGet> &
+# 1549| [MoveAssignmentOperator] std::tuple_size<StructuredBindingTupleRefGet>& std::tuple_size<StructuredBindingTupleRefGet>::operator=(std::tuple_size<StructuredBindingTupleRefGet>&&)
+# 1549|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] tuple_size<StructuredBindingTupleRefGet> &&
+# 1554| [CopyAssignmentOperator] std::tuple_element<int 0, StructuredBindingTupleRefGet>& std::tuple_element<int 0, StructuredBindingTupleRefGet>::operator=(std::tuple_element<int 0, StructuredBindingTupleRefGet> const&)
+# 1554|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const tuple_element<0, StructuredBindingTupleRefGet> &
+# 1554| [MoveAssignmentOperator] std::tuple_element<int 0, StructuredBindingTupleRefGet>& std::tuple_element<int 0, StructuredBindingTupleRefGet>::operator=(std::tuple_element<int 0, StructuredBindingTupleRefGet>&&)
+# 1554|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] tuple_element<0, StructuredBindingTupleRefGet> &&
+# 1558| [CopyAssignmentOperator] std::tuple_element<int 1, StructuredBindingTupleRefGet>& std::tuple_element<int 1, StructuredBindingTupleRefGet>::operator=(std::tuple_element<int 1, StructuredBindingTupleRefGet> const&)
+# 1558|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const tuple_element<1, StructuredBindingTupleRefGet> &
+# 1558| [MoveAssignmentOperator] std::tuple_element<int 1, StructuredBindingTupleRefGet>& std::tuple_element<int 1, StructuredBindingTupleRefGet>::operator=(std::tuple_element<int 1, StructuredBindingTupleRefGet>&&)
+# 1558|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] tuple_element<1, StructuredBindingTupleRefGet> &&
+# 1562| [CopyAssignmentOperator] std::tuple_element<int 2, StructuredBindingTupleRefGet>& std::tuple_element<int 2, StructuredBindingTupleRefGet>::operator=(std::tuple_element<int 2, StructuredBindingTupleRefGet> const&)
+# 1562|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const tuple_element<2, StructuredBindingTupleRefGet> &
+# 1562| [MoveAssignmentOperator] std::tuple_element<int 2, StructuredBindingTupleRefGet>& std::tuple_element<int 2, StructuredBindingTupleRefGet>::operator=(std::tuple_element<int 2, StructuredBindingTupleRefGet>&&)
+# 1562|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] tuple_element<2, StructuredBindingTupleRefGet> &&
+# 1567| [FunctionTemplateSpecialization,MemberFunction] std::tuple_element<int 0, StructuredBindingTupleRefGet>::type& StructuredBindingTupleRefGet::get<int 0>()
+# 1567|   <params>: 
+# 1567|   getEntryPoint(): [BlockStmt] { ... }
+# 1568|     getStmt(0): [ReturnStmt] return ...
+# 1568|       getExpr(): [PointerFieldAccess] i
+# 1568|           Type = [IntType] int
+# 1568|           ValueCategory = lvalue
+# 1568|         getQualifier(): [ThisExpr] this
+# 1568|             Type = [PointerType] StructuredBindingTupleRefGet *
+# 1568|             ValueCategory = prvalue(load)
+#-----|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+#-----|           Type = [LValueReferenceType] int &
+#-----|           ValueCategory = prvalue
+# 1571| [FunctionTemplateSpecialization,MemberFunction] std::tuple_element<int 1, StructuredBindingTupleRefGet>::type& StructuredBindingTupleRefGet::get<int 1>()
+# 1571|   <params>: 
+# 1571|   getEntryPoint(): [BlockStmt] { ... }
+# 1572|     getStmt(0): [ReturnStmt] return ...
+# 1572|       getExpr(): [PointerFieldAccess] d
+# 1572|           Type = [DoubleType] double
+# 1572|           ValueCategory = lvalue
+# 1572|         getQualifier(): [ThisExpr] this
+# 1572|             Type = [PointerType] StructuredBindingTupleRefGet *
+# 1572|             ValueCategory = prvalue(load)
+#-----|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+#-----|           Type = [LValueReferenceType] double &
+#-----|           ValueCategory = prvalue
+# 1575| [FunctionTemplateSpecialization,MemberFunction] std::tuple_element<int 2, StructuredBindingTupleRefGet>::type StructuredBindingTupleRefGet::get<int 2>()
+# 1575|   <params>: 
+# 1575|   getEntryPoint(): [BlockStmt] { ... }
+# 1576|     getStmt(0): [ReturnStmt] return ...
+# 1576|       getExpr(): [PointerFieldAccess] r
+# 1576|           Type = [LValueReferenceType] int &
+# 1576|           ValueCategory = prvalue(load)
+# 1576|         getQualifier(): [ThisExpr] this
+# 1576|             Type = [PointerType] StructuredBindingTupleRefGet *
+# 1576|             ValueCategory = prvalue(load)
+# 1576|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1576|           Type = [LValueReferenceType] int &
+# 1576|           ValueCategory = prvalue
+# 1576|         getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1576|             Type = [IntType] int
+# 1576|             ValueCategory = lvalue
+# 1579| [TopLevelFunction] void tuple_structured_binding_ref_get()
+# 1579|   <params>: 
+# 1579|   getEntryPoint(): [BlockStmt] { ... }
+# 1580|     getStmt(0): [DeclStmt] declaration
+# 1580|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of t
+# 1580|           Type = [Struct] StructuredBindingTupleRefGet
+# 1580|         getVariable().getInitializer(): [Initializer] initializer for t
+# 1580|           getExpr(): [ConstructorCall] call to StructuredBindingTupleRefGet
+# 1580|               Type = [VoidType] void
+# 1580|               ValueCategory = prvalue
+# 1582|     getStmt(1): [BlockStmt] { ... }
+# 1583|       getStmt(0): [DeclStmt] declaration
+# 1583|         getDeclarationEntry(0): (no string representation)
+# 1583|             Type = [Struct] StructuredBindingTupleRefGet
+# 1583|           getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
+# 1583|             getExpr(): [VariableAccess] t
+# 1583|                 Type = [Struct] StructuredBindingTupleRefGet
+# 1583|                 ValueCategory = prvalue(load)
+# 1583|         getDeclarationEntry(1): [VariableDeclarationEntry] definition of i
+# 1583|             Type = [LValueReferenceType] type &
+#-----|           getVariable().getInitializer(): [Initializer] initializer for i
+# 1583|             getExpr(): [FunctionCall] call to get
+# 1583|                 Type = [LValueReferenceType] type &
+# 1583|                 ValueCategory = prvalue
+# 1583|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1583|                   Type = [Struct] StructuredBindingTupleRefGet
+# 1583|                   ValueCategory = xvalue
+# 1583|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1583|                 Type = [LValueReferenceType] type &
+# 1583|                 ValueCategory = prvalue
+# 1583|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1583|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1583|                   ValueCategory = lvalue
+# 1583|         getDeclarationEntry(2): [VariableDeclarationEntry] definition of d
+# 1583|             Type = [LValueReferenceType] type &
+#-----|           getVariable().getInitializer(): [Initializer] initializer for d
+# 1583|             getExpr(): [FunctionCall] call to get
+# 1583|                 Type = [LValueReferenceType] type &
+# 1583|                 ValueCategory = prvalue
+# 1583|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1583|                   Type = [Struct] StructuredBindingTupleRefGet
+# 1583|                   ValueCategory = xvalue
+# 1583|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1583|                 Type = [LValueReferenceType] type &
+# 1583|                 ValueCategory = prvalue
+# 1583|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1583|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1583|                   ValueCategory = lvalue
+# 1583|         getDeclarationEntry(3): [VariableDeclarationEntry] definition of r
+# 1583|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+#-----|           getVariable().getInitializer(): [Initializer] initializer for r
+# 1583|             getExpr(): [FunctionCall] call to get
+# 1583|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1583|                 ValueCategory = prvalue
+# 1583|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1583|                   Type = [Struct] StructuredBindingTupleRefGet
+# 1583|                   ValueCategory = xvalue
+# 1583|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1583|                 Type = [LValueReferenceType] int &
+# 1583|                 ValueCategory = prvalue
+# 1583|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1583|                   Type = [IntType] int
+# 1583|                   ValueCategory = lvalue
+# 1584|       getStmt(1): [ExprStmt] ExprStmt
+# 1584|         getExpr(): [AssignExpr] ... = ...
+# 1584|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1584|             ValueCategory = lvalue
+# 1584|           getLValue(): [VariableAccess] d
+# 1584|               Type = [LValueReferenceType] type &
+# 1584|               ValueCategory = prvalue(load)
+# 1584|           getRValue(): [Literal] 4.0
+# 1584|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1584|               Value = [Literal] 4.0
+# 1584|               ValueCategory = prvalue
+# 1584|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1584|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1584|               ValueCategory = lvalue
+# 1585|       getStmt(2): [DeclStmt] declaration
+# 1585|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rd
+# 1585|             Type = [LValueReferenceType] double &
+# 1585|           getVariable().getInitializer(): [Initializer] initializer for rd
+# 1585|             getExpr(): [VariableAccess] d
+# 1585|                 Type = [LValueReferenceType] type &
+# 1585|                 ValueCategory = prvalue(load)
+# 1585|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1585|                 Type = [LValueReferenceType] type &
+# 1585|                 ValueCategory = prvalue
+# 1585|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1585|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1585|                   ValueCategory = lvalue
+# 1586|       getStmt(3): [DeclStmt] declaration
+# 1586|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
+# 1586|             Type = [IntType] int
+# 1586|           getVariable().getInitializer(): [Initializer] initializer for v
+# 1586|             getExpr(): [VariableAccess] i
+# 1586|                 Type = [LValueReferenceType] type &
+# 1586|                 ValueCategory = prvalue(load)
+# 1586|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1586|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1586|                 ValueCategory = prvalue(load)
+# 1587|       getStmt(4): [ExprStmt] ExprStmt
+# 1587|         getExpr(): [AssignExpr] ... = ...
+# 1587|             Type = [IntType] int
+# 1587|             ValueCategory = lvalue
+# 1587|           getLValue(): [VariableAccess] r
+# 1587|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1587|               ValueCategory = prvalue(load)
+# 1587|           getRValue(): [Literal] 5
+# 1587|               Type = [IntType] int
+# 1587|               Value = [Literal] 5
+# 1587|               ValueCategory = prvalue
+# 1587|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1587|               Type = [IntType] int
+# 1587|               ValueCategory = lvalue
+# 1588|       getStmt(5): [DeclStmt] declaration
+# 1588|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rr
+# 1588|             Type = [LValueReferenceType] int &
+# 1588|           getVariable().getInitializer(): [Initializer] initializer for rr
+# 1588|             getExpr(): [VariableAccess] r
+# 1588|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1588|                 ValueCategory = prvalue(load)
+# 1588|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1588|                 Type = [LValueReferenceType] int &
+# 1588|                 ValueCategory = prvalue
+# 1588|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1588|                   Type = [IntType] int
+# 1588|                   ValueCategory = lvalue
+# 1589|       getStmt(6): [DeclStmt] declaration
+# 1589|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
+# 1589|             Type = [IntType] int
+# 1589|           getVariable().getInitializer(): [Initializer] initializer for w
+# 1589|             getExpr(): [VariableAccess] r
+# 1589|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1589|                 ValueCategory = prvalue(load)
+# 1589|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1589|                 Type = [IntType] int
+# 1589|                 ValueCategory = prvalue(load)
+# 1592|     getStmt(2): [BlockStmt] { ... }
+# 1593|       getStmt(0): [DeclStmt] declaration
+# 1593|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of unnamed_local_variable
+# 1593|             Type = [Struct] StructuredBindingTupleRefGet
+# 1593|           getVariable().getInitializer(): [Initializer] initializer for unnamed_local_variable
+# 1593|             getExpr(): [VariableAccess] t
+# 1593|                 Type = [Struct] StructuredBindingTupleRefGet
+# 1593|                 ValueCategory = prvalue(load)
+# 1594|       getStmt(1): [DeclStmt] declaration
+# 1594|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+# 1594|             Type = [LValueReferenceType] type &
+# 1594|           getVariable().getInitializer(): [Initializer] initializer for i
+# 1594|             getExpr(): [FunctionCall] call to get
+# 1594|                 Type = [LValueReferenceType] type &
+# 1594|                 ValueCategory = prvalue
+# 1594|               getQualifier(): [VariableAccess] unnamed_local_variable
+# 1594|                   Type = [Struct] StructuredBindingTupleRefGet
+# 1594|                   ValueCategory = lvalue
+# 1594|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1594|                 Type = [LValueReferenceType] type &
+# 1594|                 ValueCategory = prvalue
+# 1594|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1594|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1594|                   ValueCategory = lvalue
+# 1595|       getStmt(2): [DeclStmt] declaration
+# 1595|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
+# 1595|             Type = [LValueReferenceType] type &
+# 1595|           getVariable().getInitializer(): [Initializer] initializer for d
+# 1595|             getExpr(): [FunctionCall] call to get
+# 1595|                 Type = [LValueReferenceType] type &
+# 1595|                 ValueCategory = prvalue
+# 1595|               getQualifier(): [VariableAccess] unnamed_local_variable
+# 1595|                   Type = [Struct] StructuredBindingTupleRefGet
+# 1595|                   ValueCategory = lvalue
+# 1595|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1595|                 Type = [LValueReferenceType] type &
+# 1595|                 ValueCategory = prvalue
+# 1595|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1595|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1595|                   ValueCategory = lvalue
+# 1596|       getStmt(3): [DeclStmt] declaration
+# 1596|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
+# 1596|             Type = [LValueReferenceType] int &
+# 1596|           getVariable().getInitializer(): [Initializer] initializer for r
+# 1596|             getExpr(): [FunctionCall] call to get
+# 1596|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1596|                 ValueCategory = prvalue
+# 1596|               getQualifier(): [VariableAccess] unnamed_local_variable
+# 1596|                   Type = [Struct] StructuredBindingTupleRefGet
+# 1596|                   ValueCategory = lvalue
+# 1596|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1596|                 Type = [LValueReferenceType] int &
+# 1596|                 ValueCategory = prvalue
+# 1596|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1596|                   Type = [IntType] int
+# 1596|                   ValueCategory = lvalue
+# 1597|       getStmt(4): [ExprStmt] ExprStmt
+# 1597|         getExpr(): [AssignExpr] ... = ...
+# 1597|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1597|             ValueCategory = lvalue
+# 1597|           getLValue(): [VariableAccess] d
+# 1597|               Type = [LValueReferenceType] type &
+# 1597|               ValueCategory = prvalue(load)
+# 1597|           getRValue(): [Literal] 4.0
+# 1597|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1597|               Value = [Literal] 4.0
+# 1597|               ValueCategory = prvalue
+# 1597|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1597|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1597|               ValueCategory = lvalue
+# 1598|       getStmt(5): [DeclStmt] declaration
+# 1598|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rd
+# 1598|             Type = [LValueReferenceType] double &
+# 1598|           getVariable().getInitializer(): [Initializer] initializer for rd
+# 1598|             getExpr(): [VariableAccess] d
+# 1598|                 Type = [LValueReferenceType] type &
+# 1598|                 ValueCategory = prvalue(load)
+# 1598|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1598|                 Type = [LValueReferenceType] type &
+# 1598|                 ValueCategory = prvalue
+# 1598|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1598|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1598|                   ValueCategory = lvalue
+# 1599|       getStmt(6): [DeclStmt] declaration
+# 1599|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
+# 1599|             Type = [IntType] int
+# 1599|           getVariable().getInitializer(): [Initializer] initializer for v
+# 1599|             getExpr(): [VariableAccess] i
+# 1599|                 Type = [LValueReferenceType] type &
+# 1599|                 ValueCategory = prvalue(load)
+# 1599|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1599|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1599|                 ValueCategory = prvalue(load)
+# 1600|       getStmt(7): [ExprStmt] ExprStmt
+# 1600|         getExpr(): [AssignExpr] ... = ...
+# 1600|             Type = [IntType] int
+# 1600|             ValueCategory = lvalue
+# 1600|           getLValue(): [VariableAccess] r
+# 1600|               Type = [LValueReferenceType] int &
+# 1600|               ValueCategory = prvalue(load)
+# 1600|           getRValue(): [Literal] 5
+# 1600|               Type = [IntType] int
+# 1600|               Value = [Literal] 5
+# 1600|               ValueCategory = prvalue
+# 1600|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1600|               Type = [IntType] int
+# 1600|               ValueCategory = lvalue
+# 1601|       getStmt(8): [DeclStmt] declaration
+# 1601|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rr
+# 1601|             Type = [LValueReferenceType] int &
+# 1601|           getVariable().getInitializer(): [Initializer] initializer for rr
+# 1601|             getExpr(): [VariableAccess] r
+# 1601|                 Type = [LValueReferenceType] int &
+# 1601|                 ValueCategory = prvalue(load)
+# 1601|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1601|                 Type = [LValueReferenceType] int &
+# 1601|                 ValueCategory = prvalue
+# 1601|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1601|                   Type = [IntType] int
+# 1601|                   ValueCategory = lvalue
+# 1602|       getStmt(9): [DeclStmt] declaration
+# 1602|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
+# 1602|             Type = [IntType] int
+# 1602|           getVariable().getInitializer(): [Initializer] initializer for w
+# 1602|             getExpr(): [VariableAccess] r
+# 1602|                 Type = [LValueReferenceType] int &
+# 1602|                 ValueCategory = prvalue(load)
+# 1602|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1602|                 Type = [IntType] int
+# 1602|                 ValueCategory = prvalue(load)
+# 1604|     getStmt(3): [ReturnStmt] return ...
+# 1606| [CopyAssignmentOperator] StructuredBindingTupleNoRefGet& StructuredBindingTupleNoRefGet::operator=(StructuredBindingTupleNoRefGet const&)
+# 1606|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const StructuredBindingTupleNoRefGet &
+# 1606| [Constructor] void StructuredBindingTupleNoRefGet::StructuredBindingTupleNoRefGet()
+# 1606|   <params>: 
+# 1606|   <initializations>: 
+# 1606|     getInitializer(0): [ConstructorFieldInit] constructor init of field i
+# 1606|         Type = [IntType] int
+# 1606|         ValueCategory = prvalue
+# 1606|     getInitializer(1): [ConstructorFieldInit] constructor init of field r
+# 1606|         Type = [LValueReferenceType] int &
+# 1606|         ValueCategory = prvalue
+# 1606|   getEntryPoint(): [BlockStmt] { ... }
+# 1606|     getStmt(0): [ReturnStmt] return ...
+# 1606| [CopyConstructor] void StructuredBindingTupleNoRefGet::StructuredBindingTupleNoRefGet(StructuredBindingTupleNoRefGet const&)
+# 1606|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const StructuredBindingTupleNoRefGet &
+# 1606| [MoveConstructor] void StructuredBindingTupleNoRefGet::StructuredBindingTupleNoRefGet(StructuredBindingTupleNoRefGet&&)
+# 1606|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] StructuredBindingTupleNoRefGet &&
+# 1611| [MemberFunction,TemplateFunction] type StructuredBindingTupleNoRefGet::get<int i>()
+# 1611|   <params>: 
+# 1615| [CopyAssignmentOperator] std::tuple_size<StructuredBindingTupleNoRefGet>& std::tuple_size<StructuredBindingTupleNoRefGet>::operator=(std::tuple_size<StructuredBindingTupleNoRefGet> const&)
+# 1615|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const tuple_size<StructuredBindingTupleNoRefGet> &
+# 1615| [MoveAssignmentOperator] std::tuple_size<StructuredBindingTupleNoRefGet>& std::tuple_size<StructuredBindingTupleNoRefGet>::operator=(std::tuple_size<StructuredBindingTupleNoRefGet>&&)
+# 1615|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] tuple_size<StructuredBindingTupleNoRefGet> &&
+# 1620| [CopyAssignmentOperator] std::tuple_element<int 0, StructuredBindingTupleNoRefGet>& std::tuple_element<int 0, StructuredBindingTupleNoRefGet>::operator=(std::tuple_element<int 0, StructuredBindingTupleNoRefGet> const&)
+# 1620|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const tuple_element<0, StructuredBindingTupleNoRefGet> &
+# 1620| [MoveAssignmentOperator] std::tuple_element<int 0, StructuredBindingTupleNoRefGet>& std::tuple_element<int 0, StructuredBindingTupleNoRefGet>::operator=(std::tuple_element<int 0, StructuredBindingTupleNoRefGet>&&)
+# 1620|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] tuple_element<0, StructuredBindingTupleNoRefGet> &&
+# 1624| [CopyAssignmentOperator] std::tuple_element<int 1, StructuredBindingTupleNoRefGet>& std::tuple_element<int 1, StructuredBindingTupleNoRefGet>::operator=(std::tuple_element<int 1, StructuredBindingTupleNoRefGet> const&)
+# 1624|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const tuple_element<1, StructuredBindingTupleNoRefGet> &
+# 1624| [MoveAssignmentOperator] std::tuple_element<int 1, StructuredBindingTupleNoRefGet>& std::tuple_element<int 1, StructuredBindingTupleNoRefGet>::operator=(std::tuple_element<int 1, StructuredBindingTupleNoRefGet>&&)
+# 1624|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] tuple_element<1, StructuredBindingTupleNoRefGet> &&
+# 1628| [CopyAssignmentOperator] std::tuple_element<int 2, StructuredBindingTupleNoRefGet>& std::tuple_element<int 2, StructuredBindingTupleNoRefGet>::operator=(std::tuple_element<int 2, StructuredBindingTupleNoRefGet> const&)
+# 1628|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const tuple_element<2, StructuredBindingTupleNoRefGet> &
+# 1628| [MoveAssignmentOperator] std::tuple_element<int 2, StructuredBindingTupleNoRefGet>& std::tuple_element<int 2, StructuredBindingTupleNoRefGet>::operator=(std::tuple_element<int 2, StructuredBindingTupleNoRefGet>&&)
+# 1628|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] tuple_element<2, StructuredBindingTupleNoRefGet> &&
+# 1633| [FunctionTemplateSpecialization,MemberFunction] std::tuple_element<int 0, StructuredBindingTupleNoRefGet>::type StructuredBindingTupleNoRefGet::get<int 0>()
+# 1633|   <params>: 
+# 1633|   getEntryPoint(): [BlockStmt] { ... }
+# 1634|     getStmt(0): [ReturnStmt] return ...
+# 1634|       getExpr(): [PointerFieldAccess] i
+# 1634|           Type = [IntType] int
+# 1634|           ValueCategory = prvalue(load)
+# 1634|         getQualifier(): [ThisExpr] this
+# 1634|             Type = [PointerType] StructuredBindingTupleNoRefGet *
+# 1634|             ValueCategory = prvalue(load)
+# 1637| [FunctionTemplateSpecialization,MemberFunction] std::tuple_element<int 1, StructuredBindingTupleNoRefGet>::type StructuredBindingTupleNoRefGet::get<int 1>()
+# 1637|   <params>: 
+# 1637|   getEntryPoint(): [BlockStmt] { ... }
+# 1638|     getStmt(0): [ReturnStmt] return ...
+# 1638|       getExpr(): [PointerFieldAccess] r
+# 1638|           Type = [LValueReferenceType] int &
+# 1638|           ValueCategory = prvalue(load)
+# 1638|         getQualifier(): [ThisExpr] this
+# 1638|             Type = [PointerType] StructuredBindingTupleNoRefGet *
+# 1638|             ValueCategory = prvalue(load)
+# 1638|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1638|           Type = [LValueReferenceType] int &
+# 1638|           ValueCategory = prvalue
+# 1638|         getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1638|             Type = [IntType] int
+# 1638|             ValueCategory = lvalue
+# 1641| [FunctionTemplateSpecialization,MemberFunction] std::tuple_element<int 2, StructuredBindingTupleNoRefGet>::type StructuredBindingTupleNoRefGet::get<int 2>()
+# 1641|   <params>: 
+# 1641|   getEntryPoint(): [BlockStmt] { ... }
+# 1642|     getStmt(0): [ReturnStmt] return ...
+# 1642|       getExpr(): [Literal] 5
+# 1642|           Type = [IntType] int
+# 1642|           Value = [Literal] 5
+# 1642|           ValueCategory = prvalue
+# 1642|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1642|           Type = [LValueReferenceType] int &
+# 1642|           ValueCategory = prvalue
+# 1642|         getExpr(): [TemporaryObjectExpr] temporary object
+# 1642|             Type = [IntType] int
+# 1642|             ValueCategory = lvalue
+# 1645| [TopLevelFunction] void tuple_structured_binding_no_ref_get()
+# 1645|   <params>: 
+# 1645|   getEntryPoint(): [BlockStmt] { ... }
+# 1646|     getStmt(0): [DeclStmt] declaration
+# 1646|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of t
+# 1646|           Type = [Struct] StructuredBindingTupleNoRefGet
+# 1646|         getVariable().getInitializer(): [Initializer] initializer for t
+# 1646|           getExpr(): [ConstructorCall] call to StructuredBindingTupleNoRefGet
+# 1646|               Type = [VoidType] void
+# 1646|               ValueCategory = prvalue
+# 1648|     getStmt(1): [BlockStmt] { ... }
+# 1649|       getStmt(0): [DeclStmt] declaration
+# 1649|         getDeclarationEntry(0): (no string representation)
+# 1649|             Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
+# 1649|           getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
+# 1649|             getExpr(): [VariableAccess] t
+# 1649|                 Type = [Struct] StructuredBindingTupleNoRefGet
+# 1649|                 ValueCategory = lvalue
+# 1649|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1649|                 Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
+# 1649|                 ValueCategory = prvalue
+# 1649|         getDeclarationEntry(1): [VariableDeclarationEntry] definition of i
+# 1649|             Type = [RValueReferenceType] type &&
+#-----|           getVariable().getInitializer(): [Initializer] initializer for i
+# 1649|             getExpr(): [FunctionCall] call to get
+# 1649|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1649|                 ValueCategory = prvalue
+# 1649|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1649|                   Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
+# 1649|                   ValueCategory = prvalue(load)
+# 1649|               getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1649|                   Type = [Struct] StructuredBindingTupleNoRefGet
+# 1649|                   ValueCategory = lvalue
+# 1649|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1649|                 Type = [LValueReferenceType] type &
+# 1649|                 ValueCategory = prvalue
+# 1649|               getExpr(): [TemporaryObjectExpr] temporary object
+# 1649|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1649|                   ValueCategory = lvalue
+# 1649|         getDeclarationEntry(2): [VariableDeclarationEntry] definition of r
+# 1649|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+#-----|           getVariable().getInitializer(): [Initializer] initializer for r
+# 1649|             getExpr(): [FunctionCall] call to get
+# 1649|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1649|                 ValueCategory = prvalue
+# 1649|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1649|                   Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
+# 1649|                   ValueCategory = prvalue(load)
+# 1649|               getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1649|                   Type = [Struct] StructuredBindingTupleNoRefGet
+# 1649|                   ValueCategory = lvalue
+# 1649|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1649|                 Type = [LValueReferenceType] int &
+# 1649|                 ValueCategory = prvalue
+# 1649|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1649|                   Type = [IntType] int
+# 1649|                   ValueCategory = lvalue
+# 1649|         getDeclarationEntry(3): [VariableDeclarationEntry] definition of rv
+# 1649|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+#-----|           getVariable().getInitializer(): [Initializer] initializer for rv
+# 1649|             getExpr(): [FunctionCall] call to get
+# 1649|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1649|                 ValueCategory = prvalue
+# 1649|               getQualifier(): [VariableAccess] (unnamed local variable)
+# 1649|                   Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
+# 1649|                   ValueCategory = prvalue(load)
+# 1649|               getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1649|                   Type = [Struct] StructuredBindingTupleNoRefGet
+# 1649|                   ValueCategory = lvalue
+# 1649|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1649|                 Type = [LValueReferenceType] int &
+# 1649|                 ValueCategory = prvalue
+# 1649|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1649|                   Type = [IntType] int
+# 1649|                   ValueCategory = xvalue
+# 1650|       getStmt(1): [ExprStmt] ExprStmt
+# 1650|         getExpr(): [AssignExpr] ... = ...
+# 1650|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1650|             ValueCategory = lvalue
+# 1650|           getLValue(): [VariableAccess] i
+# 1650|               Type = [RValueReferenceType] type &&
+# 1650|               ValueCategory = prvalue(load)
+# 1650|           getRValue(): [Literal] 4
+# 1650|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1650|               Value = [Literal] 4
+# 1650|               ValueCategory = prvalue
+# 1650|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1650|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1650|               ValueCategory = lvalue
+# 1651|       getStmt(2): [DeclStmt] declaration
+# 1651|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of ri
+# 1651|             Type = [LValueReferenceType] int &
+# 1651|           getVariable().getInitializer(): [Initializer] initializer for ri
+# 1651|             getExpr(): [VariableAccess] i
+# 1651|                 Type = [RValueReferenceType] type &&
+# 1651|                 ValueCategory = prvalue(load)
+# 1651|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1651|                 Type = [LValueReferenceType] type &
+# 1651|                 ValueCategory = prvalue
+# 1651|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1651|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1651|                   ValueCategory = lvalue
+# 1652|       getStmt(3): [DeclStmt] declaration
+# 1652|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
+# 1652|             Type = [IntType] int
+# 1652|           getVariable().getInitializer(): [Initializer] initializer for v
+# 1652|             getExpr(): [VariableAccess] i
+# 1652|                 Type = [RValueReferenceType] type &&
+# 1652|                 ValueCategory = prvalue(load)
+# 1652|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1652|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1652|                 ValueCategory = prvalue(load)
+# 1653|       getStmt(4): [ExprStmt] ExprStmt
+# 1653|         getExpr(): [AssignExpr] ... = ...
+# 1653|             Type = [IntType] int
+# 1653|             ValueCategory = lvalue
+# 1653|           getLValue(): [VariableAccess] r
+# 1653|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1653|               ValueCategory = prvalue(load)
+# 1653|           getRValue(): [Literal] 5
+# 1653|               Type = [IntType] int
+# 1653|               Value = [Literal] 5
+# 1653|               ValueCategory = prvalue
+# 1653|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1653|               Type = [IntType] int
+# 1653|               ValueCategory = lvalue
+# 1654|       getStmt(5): [DeclStmt] declaration
+# 1654|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rr
+# 1654|             Type = [LValueReferenceType] int &
+# 1654|           getVariable().getInitializer(): [Initializer] initializer for rr
+# 1654|             getExpr(): [VariableAccess] r
+# 1654|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1654|                 ValueCategory = prvalue(load)
+# 1654|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1654|                 Type = [LValueReferenceType] int &
+# 1654|                 ValueCategory = prvalue
+# 1654|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1654|                   Type = [IntType] int
+# 1654|                   ValueCategory = lvalue
+# 1655|       getStmt(6): [DeclStmt] declaration
+# 1655|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
+# 1655|             Type = [IntType] int
+# 1655|           getVariable().getInitializer(): [Initializer] initializer for w
+# 1655|             getExpr(): [VariableAccess] r
+# 1655|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1655|                 ValueCategory = prvalue(load)
+# 1655|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1655|                 Type = [IntType] int
+# 1655|                 ValueCategory = prvalue(load)
+# 1658|     getStmt(2): [BlockStmt] { ... }
+# 1659|       getStmt(0): [DeclStmt] declaration
+# 1659|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of unnamed_local_variable
+# 1659|             Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
+# 1659|           getVariable().getInitializer(): [Initializer] initializer for unnamed_local_variable
+# 1659|             getExpr(): [VariableAccess] t
+# 1659|                 Type = [Struct] StructuredBindingTupleNoRefGet
+# 1659|                 ValueCategory = lvalue
+# 1659|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1659|                 Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
+# 1659|                 ValueCategory = prvalue
+# 1660|       getStmt(1): [DeclStmt] declaration
+# 1660|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+# 1660|             Type = [RValueReferenceType] type &&
+# 1660|           getVariable().getInitializer(): [Initializer] initializer for i
+# 1660|             getExpr(): [FunctionCall] call to get
+# 1660|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1660|                 ValueCategory = prvalue
+# 1660|               getQualifier(): [VariableAccess] unnamed_local_variable
+# 1660|                   Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
+# 1660|                   ValueCategory = prvalue(load)
+# 1660|               getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1660|                   Type = [Struct] StructuredBindingTupleNoRefGet
+# 1660|                   ValueCategory = lvalue
+# 1660|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1660|                 Type = [LValueReferenceType] type &
+# 1660|                 ValueCategory = prvalue
+# 1660|               getExpr(): [TemporaryObjectExpr] temporary object
+# 1660|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1660|                   ValueCategory = lvalue
+# 1661|       getStmt(2): [DeclStmt] declaration
+# 1661|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
+# 1661|             Type = [LValueReferenceType] int &
+# 1661|           getVariable().getInitializer(): [Initializer] initializer for r
+# 1661|             getExpr(): [FunctionCall] call to get
+# 1661|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1661|                 ValueCategory = prvalue
+# 1661|               getQualifier(): [VariableAccess] unnamed_local_variable
+# 1661|                   Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
+# 1661|                   ValueCategory = prvalue(load)
+# 1661|               getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1661|                   Type = [Struct] StructuredBindingTupleNoRefGet
+# 1661|                   ValueCategory = lvalue
+# 1661|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1661|                 Type = [LValueReferenceType] int &
+# 1661|                 ValueCategory = prvalue
+# 1661|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1661|                   Type = [IntType] int
+# 1661|                   ValueCategory = lvalue
+# 1662|       getStmt(3): [DeclStmt] declaration
+# 1662|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rv
+# 1662|             Type = [RValueReferenceType] int &&
+# 1662|           getVariable().getInitializer(): [Initializer] initializer for rv
+# 1662|             getExpr(): [FunctionCall] call to get
+# 1662|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1662|                 ValueCategory = prvalue
+# 1662|               getQualifier(): [VariableAccess] unnamed_local_variable
+# 1662|                   Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
+# 1662|                   ValueCategory = prvalue(load)
+# 1662|               getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1662|                   Type = [Struct] StructuredBindingTupleNoRefGet
+# 1662|                   ValueCategory = lvalue
+# 1662|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1662|                 Type = [LValueReferenceType] int &
+# 1662|                 ValueCategory = prvalue
+# 1662|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1662|                   Type = [IntType] int
+# 1662|                   ValueCategory = xvalue
+# 1663|       getStmt(4): [ExprStmt] ExprStmt
+# 1663|         getExpr(): [AssignExpr] ... = ...
+# 1663|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1663|             ValueCategory = lvalue
+# 1663|           getLValue(): [VariableAccess] i
+# 1663|               Type = [RValueReferenceType] type &&
+# 1663|               ValueCategory = prvalue(load)
+# 1663|           getRValue(): [Literal] 4
+# 1663|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1663|               Value = [Literal] 4
+# 1663|               ValueCategory = prvalue
+# 1663|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1663|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1663|               ValueCategory = lvalue
+# 1664|       getStmt(5): [DeclStmt] declaration
+# 1664|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of ri
+# 1664|             Type = [LValueReferenceType] int &
+# 1664|           getVariable().getInitializer(): [Initializer] initializer for ri
+# 1664|             getExpr(): [VariableAccess] i
+# 1664|                 Type = [RValueReferenceType] type &&
+# 1664|                 ValueCategory = prvalue(load)
+# 1664|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1664|                 Type = [LValueReferenceType] type &
+# 1664|                 ValueCategory = prvalue
+# 1664|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1664|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1664|                   ValueCategory = lvalue
+# 1665|       getStmt(6): [DeclStmt] declaration
+# 1665|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
+# 1665|             Type = [IntType] int
+# 1665|           getVariable().getInitializer(): [Initializer] initializer for v
+# 1665|             getExpr(): [VariableAccess] i
+# 1665|                 Type = [RValueReferenceType] type &&
+# 1665|                 ValueCategory = prvalue(load)
+# 1665|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1665|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1665|                 ValueCategory = prvalue(load)
+# 1666|       getStmt(7): [ExprStmt] ExprStmt
+# 1666|         getExpr(): [AssignExpr] ... = ...
+# 1666|             Type = [IntType] int
+# 1666|             ValueCategory = lvalue
+# 1666|           getLValue(): [VariableAccess] r
+# 1666|               Type = [LValueReferenceType] int &
+# 1666|               ValueCategory = prvalue(load)
+# 1666|           getRValue(): [Literal] 5
+# 1666|               Type = [IntType] int
+# 1666|               Value = [Literal] 5
+# 1666|               ValueCategory = prvalue
+# 1666|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1666|               Type = [IntType] int
+# 1666|               ValueCategory = lvalue
+# 1667|       getStmt(8): [DeclStmt] declaration
+# 1667|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rr
+# 1667|             Type = [LValueReferenceType] int &
+# 1667|           getVariable().getInitializer(): [Initializer] initializer for rr
+# 1667|             getExpr(): [VariableAccess] r
+# 1667|                 Type = [LValueReferenceType] int &
+# 1667|                 ValueCategory = prvalue(load)
+# 1667|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1667|                 Type = [LValueReferenceType] int &
+# 1667|                 ValueCategory = prvalue
+# 1667|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1667|                   Type = [IntType] int
+# 1667|                   ValueCategory = lvalue
+# 1668|       getStmt(9): [DeclStmt] declaration
+# 1668|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
+# 1668|             Type = [IntType] int
+# 1668|           getVariable().getInitializer(): [Initializer] initializer for w
+# 1668|             getExpr(): [VariableAccess] r
+# 1668|                 Type = [LValueReferenceType] int &
+# 1668|                 ValueCategory = prvalue(load)
+# 1668|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1668|                 Type = [IntType] int
+# 1668|                 ValueCategory = prvalue(load)
+# 1670|     getStmt(3): [ReturnStmt] return ...
+# 1672| [TopLevelFunction] void array_structured_binding_non_ref_init()
+# 1672|   <params>: 
+# 1672|   getEntryPoint(): [BlockStmt] { ... }
+# 1673|     getStmt(0): [DeclStmt] declaration
+# 1673|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of xs
+# 1673|           Type = [ArrayType] int[2]
+# 1673|         getVariable().getInitializer(): [Initializer] initializer for xs
+# 1673|           getExpr(): [ArrayAggregateLiteral] {...}
+# 1673|               Type = [ArrayType] int[2]
+# 1673|               ValueCategory = prvalue
+# 1673|             getElementExpr(0): [Literal] 1
+# 1673|                 Type = [IntType] int
+# 1673|                 Value = [Literal] 1
+# 1673|                 ValueCategory = prvalue
+# 1673|             getElementExpr(1): [Literal] 2
+# 1673|                 Type = [IntType] int
+# 1673|                 Value = [Literal] 2
+# 1673|                 ValueCategory = prvalue
+# 1674|     getStmt(1): [DeclStmt] declaration
+# 1674|       getDeclarationEntry(0): (no string representation)
+# 1674|           Type = [ArrayType] int[2]
+# 1674|         getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
+# 1674|           getExpr(): [VariableAccess] xs
+# 1674|               Type = [ArrayType] int[2]
+# 1674|               ValueCategory = prvalue(load)
+# 1674|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of x0
+# 1674|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for x0
+#-----|           getExpr(): [ArrayExpr] access to array
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = lvalue
+#-----|             getArrayBase(): [VariableAccess] (unnamed local variable)
+#-----|                 Type = [ArrayType] int[2]
+#-----|                 ValueCategory = lvalue
+#-----|             getArrayOffset(): [Literal] 0
+#-----|                 Type = [LongType] unsigned long
+#-----|                 Value = [Literal] 0
+#-----|                 ValueCategory = prvalue
+#-----|             getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#-----|                 Type = [IntPointerType] int *
+#-----|                 ValueCategory = prvalue
+# 1674|       getDeclarationEntry(2): [VariableDeclarationEntry] definition of x1
+# 1674|           Type = [IntType] int
+#-----|         getVariable().getInitializer(): [Initializer] initializer for x1
+#-----|           getExpr(): [ArrayExpr] access to array
+#-----|               Type = [IntType] int
+#-----|               ValueCategory = lvalue
+#-----|             getArrayBase(): [VariableAccess] (unnamed local variable)
+#-----|                 Type = [ArrayType] int[2]
+#-----|                 ValueCategory = lvalue
+#-----|             getArrayOffset(): [Literal] 1
+#-----|                 Type = [LongType] unsigned long
+#-----|                 Value = [Literal] 1
+#-----|                 ValueCategory = prvalue
+#-----|             getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#-----|                 Type = [IntPointerType] int *
+#-----|                 ValueCategory = prvalue
+# 1675|     getStmt(2): [ReturnStmt] return ...
+# 1677| [CopyAssignmentOperator] CapturedLambdaMyObj& CapturedLambdaMyObj::operator=(CapturedLambdaMyObj const&)
+# 1677|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CapturedLambdaMyObj &
+# 1677| [MoveAssignmentOperator] CapturedLambdaMyObj& CapturedLambdaMyObj::operator=(CapturedLambdaMyObj&&)
+# 1677|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CapturedLambdaMyObj &&
+# 1677| [CopyConstructor] void CapturedLambdaMyObj::CapturedLambdaMyObj(CapturedLambdaMyObj const&)
+# 1677|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CapturedLambdaMyObj &
+# 1677| [MoveConstructor] void CapturedLambdaMyObj::CapturedLambdaMyObj(CapturedLambdaMyObj&&)
+# 1677|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CapturedLambdaMyObj &&
+# 1680| [Constructor] void CapturedLambdaMyObj::CapturedLambdaMyObj()
+# 1680|   <params>: 
+# 1680|   <initializations>: 
+# 1680|   getEntryPoint(): [BlockStmt] { ... }
+# 1680|     getStmt(0): [ReturnStmt] return ...
+# 1683| [TopLevelFunction] void captured_lambda(int, int&, int&&)
+# 1683|   <params>: 
+# 1683|     getParameter(0): [Parameter] x
+# 1683|         Type = [IntType] int
+# 1683|     getParameter(1): [Parameter] y
+# 1683|         Type = [LValueReferenceType] int &
+# 1683|     getParameter(2): [Parameter] z
+# 1683|         Type = [RValueReferenceType] int &&
+# 1684|   getEntryPoint(): [BlockStmt] { ... }
+# 1685|     getStmt(0): [DeclStmt] declaration
+# 1685|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of obj1
+# 1685|           Type = [LValueReferenceType] const CapturedLambdaMyObj &
+# 1685|         getVariable().getInitializer(): [Initializer] initializer for obj1
+# 1685|           getExpr(): [ConstructorCall] call to CapturedLambdaMyObj
+# 1685|               Type = [VoidType] void
+# 1685|               ValueCategory = prvalue
+# 1685|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1685|               Type = [LValueReferenceType] const CapturedLambdaMyObj &
+# 1685|               ValueCategory = prvalue
+# 1685|             getExpr(): [CStyleCast] (const CapturedLambdaMyObj)...
+# 1685|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1685|                 Type = [SpecifiedType] const CapturedLambdaMyObj
+# 1685|                 ValueCategory = lvalue
+# 1685|               getExpr(): [TemporaryObjectExpr] temporary object
+# 1685|                   Type = [Class] CapturedLambdaMyObj
+# 1685|                   ValueCategory = lvalue
+# 1686|     getStmt(1): [DeclStmt] declaration
+# 1686|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of obj2
+# 1686|           Type = [Class] CapturedLambdaMyObj
+# 1686|         getVariable().getInitializer(): [Initializer] initializer for obj2
+# 1686|           getExpr(): [ConstructorCall] call to CapturedLambdaMyObj
+# 1686|               Type = [VoidType] void
+# 1686|               ValueCategory = prvalue
+# 1688|     getStmt(2): [DeclStmt] declaration
+# 1688|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of lambda_outer
+# 1688|           Type = [Closure,LocalClass] decltype([...](...){...})
+# 1688|         getVariable().getInitializer(): [Initializer] initializer for lambda_outer
+# 1688|           getExpr(): [LambdaExpression] [...](...){...}
+# 1688|               Type = [Closure,LocalClass] decltype([...](...){...})
+# 1688|               ValueCategory = prvalue
+# 1688|             getInitializer(): [ClassAggregateLiteral] {...}
+# 1688|                 Type = [Closure,LocalClass] decltype([...](...){...})
+# 1688|                 ValueCategory = prvalue
+# 1688|               getFieldExpr(obj1): [VariableAccess] obj1
+# 1688|                   Type = [LValueReferenceType] const CapturedLambdaMyObj &
+# 1688|                   ValueCategory = prvalue(load)
+# 1688|               getFieldExpr(obj2): [VariableAccess] obj2
+# 1688|                   Type = [Class] CapturedLambdaMyObj
+# 1688|                   ValueCategory = prvalue(load)
+# 1688|               getFieldExpr(x): [VariableAccess] x
+# 1688|                   Type = [IntType] int
+# 1688|                   ValueCategory = prvalue(load)
+# 1688|               getFieldExpr(y): [VariableAccess] y
+# 1688|                   Type = [LValueReferenceType] int &
+# 1688|                   ValueCategory = prvalue(load)
+# 1688|               getFieldExpr(z): [VariableAccess] z
+# 1688|                   Type = [RValueReferenceType] int &&
+# 1688|                   ValueCategory = prvalue(load)
+#-----|               getFieldExpr(obj1).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                   Type = [SpecifiedType] const CapturedLambdaMyObj
+#-----|                   ValueCategory = prvalue(load)
+# 1690|               getFieldExpr(y).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1690|                   Type = [IntType] int
+# 1690|                   ValueCategory = prvalue(load)
+# 1690|               getFieldExpr(z).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1690|                   Type = [IntType] int
+# 1690|                   ValueCategory = prvalue(load)
+# 1691|     getStmt(3): [ReturnStmt] return ...
+# 1688| [CopyAssignmentOperator] (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)& (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator=((void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25) const&)
+# 1688|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1688, col. 25 &
+# 1688| [CopyConstructor] void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::(unnamed constructor)((void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25) const&)
+# 1688|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1688, col. 25 &
+# 1688| [MoveConstructor] void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::(unnamed constructor)((void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)&&)
+# 1688|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] lambda [] type at line 1688, col. 25 &&
+# 1688| [Constructor] void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::(unnamed constructor)()
+# 1688|   <params>: 
+# 1688| [ConstMemberFunction] void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const
+# 1688|   <params>: 
+# 1688|   getEntryPoint(): [BlockStmt] { ... }
+# 1689|     getStmt(0): [DeclStmt] declaration
+# 1689|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of lambda_inner
+# 1689|           Type = [Closure,LocalClass] decltype([...](...){...})
+# 1689|         getVariable().getInitializer(): [Initializer] initializer for lambda_inner
+# 1689|           getExpr(): [LambdaExpression] [...](...){...}
+# 1689|               Type = [Closure,LocalClass] decltype([...](...){...})
+# 1689|               ValueCategory = prvalue
+# 1689|             getInitializer(): [ClassAggregateLiteral] {...}
+# 1689|                 Type = [Closure,LocalClass] decltype([...](...){...})
+# 1689|                 ValueCategory = prvalue
+# 1689|               getFieldExpr(obj1): [PointerFieldAccess] obj1
+# 1689|                   Type = [SpecifiedType] const CapturedLambdaMyObj
+# 1689|                   ValueCategory = prvalue(load)
+# 1689|                 getQualifier(): [ThisExpr] this
+# 1689|                     Type = [PointerType] lambda [] type at line 1689, col. 29 *
+# 1689|                     ValueCategory = prvalue(load)
+# 1689|               getFieldExpr(obj2): [PointerFieldAccess] obj2
+# 1689|                   Type = [Class] CapturedLambdaMyObj
+# 1689|                   ValueCategory = prvalue(load)
+# 1689|                 getQualifier(): [ThisExpr] this
+# 1689|                     Type = [PointerType] lambda [] type at line 1689, col. 29 *
+# 1689|                     ValueCategory = prvalue(load)
+# 1689|               getFieldExpr(x): [PointerFieldAccess] x
+# 1689|                   Type = [IntType] int
+# 1689|                   ValueCategory = prvalue(load)
+# 1689|                 getQualifier(): [ThisExpr] this
+# 1689|                     Type = [PointerType] const lambda [] type at line 1688, col. 25 *
+# 1689|                     ValueCategory = prvalue(load)
+# 1689|               getFieldExpr(y): [PointerFieldAccess] y
+# 1689|                   Type = [IntType] int
+# 1689|                   ValueCategory = prvalue(load)
+# 1689|                 getQualifier(): [ThisExpr] this
+# 1689|                     Type = [PointerType] const lambda [] type at line 1688, col. 25 *
+# 1689|                     ValueCategory = prvalue(load)
+# 1689|               getFieldExpr(z): [PointerFieldAccess] z
+# 1689|                   Type = [IntType] int
+# 1689|                   ValueCategory = prvalue(load)
+# 1689|                 getQualifier(): [ThisExpr] this
+# 1689|                     Type = [PointerType] const lambda [] type at line 1688, col. 25 *
+# 1689|                     ValueCategory = prvalue(load)
+# 1690|     getStmt(1): [ReturnStmt] return ...
+# 1689| [CopyAssignmentOperator] (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)& (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)::operator=((void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29) const&)
+# 1689|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1689, col. 29 &
+# 1689| [CopyConstructor] void (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)::(unnamed constructor)((void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29) const&)
+# 1689|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1689, col. 29 &
+# 1689| [MoveConstructor] void (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)::(unnamed constructor)((void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)&&)
+# 1689|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] lambda [] type at line 1689, col. 29 &&
+# 1689| [Constructor] void (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)::(unnamed constructor)()
+# 1689|   <params>: 
+# 1689| [ConstMemberFunction] void (void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const)::(lambda [] type at line 1689, col. 29)::operator()() const
+# 1689|   <params>: 
+# 1689|   getEntryPoint(): [BlockStmt] { ... }
+# 1689|     getStmt(0): [EmptyStmt] ;
+# 1689|     getStmt(1): [ReturnStmt] return ...
+# 1693| [TopLevelFunction] int goto_on_same_line()
+# 1693|   <params>: 
+# 1693|   getEntryPoint(): [BlockStmt] { ... }
+# 1694|     getStmt(0): [DeclStmt] declaration
+# 1694|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1694|           Type = [IntType] int
+# 1694|         getVariable().getInitializer(): [Initializer] initializer for x
+# 1694|           getExpr(): [Literal] 42
+# 1694|               Type = [IntType] int
+# 1694|               Value = [Literal] 42
+# 1694|               ValueCategory = prvalue
+# 1695|     getStmt(1): [GotoStmt] goto ...
+# 1695|     getStmt(2): [LabelStmt] label ...:
+# 1696|     getStmt(3): [ReturnStmt] return ...
+# 1696|       getExpr(): [VariableAccess] x
+# 1696|           Type = [IntType] int
+# 1696|           ValueCategory = prvalue(load)
+# 1699| [CopyAssignmentOperator] TrivialLambdaClass& TrivialLambdaClass::operator=(TrivialLambdaClass const&)
+# 1699|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const TrivialLambdaClass &
+# 1699| [MoveAssignmentOperator] TrivialLambdaClass& TrivialLambdaClass::operator=(TrivialLambdaClass&&)
+# 1699|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] TrivialLambdaClass &&
+# 1701| [ConstMemberFunction] void TrivialLambdaClass::m() const
+# 1701|   <params>: 
+# 1701|   getEntryPoint(): [BlockStmt] { ... }
+# 1702|     getStmt(0): [DeclStmt] declaration
+# 1702|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l_m_outer
+# 1702|           Type = [Closure,LocalClass] decltype([...](...){...})
+# 1702|         getVariable().getInitializer(): [Initializer] initializer for l_m_outer
+# 1702|           getExpr(): [LambdaExpression] [...](...){...}
+# 1702|               Type = [Closure,LocalClass] decltype([...](...){...})
+# 1702|               ValueCategory = prvalue
+# 1702|             getInitializer(): [ClassAggregateLiteral] {...}
+# 1702|                 Type = [Closure,LocalClass] decltype([...](...){...})
+# 1702|                 ValueCategory = prvalue
+# 1702|               getFieldExpr((captured this)): [PointerDereferenceExpr] * ...
+# 1702|                   Type = [SpecifiedType] const TrivialLambdaClass
+# 1702|                   ValueCategory = prvalue(load)
+# 1702|                 getOperand(): [ThisExpr] this
+# 1702|                     Type = [SpecifiedType] const TrivialLambdaClass *const
+# 1702|                     ValueCategory = prvalue(load)
+# 1709|     getStmt(1): [ReturnStmt] return ...
+# 1702| [CopyAssignmentOperator] (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)& (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator=((void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26) const&)
+# 1702|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1702, col. 26 &
+# 1702| [CopyConstructor] void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::(unnamed constructor)((void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26) const&)
+# 1702|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1702, col. 26 &
+# 1702| [MoveConstructor] void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::(unnamed constructor)((void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)&&)
+# 1702|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] lambda [] type at line 1702, col. 26 &&
+# 1702| [Constructor] void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::(unnamed constructor)()
+# 1702|   <params>: 
+# 1702| [ConstMemberFunction] void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const
+# 1702|   <params>: 
+# 1702|   getEntryPoint(): [BlockStmt] { ... }
+# 1703|     getStmt(0): [ExprStmt] ExprStmt
+# 1703|       getExpr(): [FunctionCall] call to m
+# 1703|           Type = [VoidType] void
+# 1703|           ValueCategory = prvalue
+# 1703|         getQualifier(): [AddressOfExpr] & ...
+# 1703|             Type = [PointerType] const TrivialLambdaClass *
+# 1703|             ValueCategory = prvalue
+# 1703|           getOperand(): [PointerFieldAccess] (captured this)
+# 1703|               Type = [SpecifiedType] const TrivialLambdaClass
+# 1703|               ValueCategory = lvalue
+# 1703|             getQualifier(): [ThisExpr] this
+# 1703|                 Type = [PointerType] const lambda [] type at line 1702, col. 26 *
+# 1703|                 ValueCategory = prvalue(load)
+# 1705|     getStmt(1): [DeclStmt] declaration
+# 1705|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l_m_inner
+# 1705|           Type = [Closure,LocalClass] decltype([...](...){...})
+# 1705|         getVariable().getInitializer(): [Initializer] initializer for l_m_inner
+# 1705|           getExpr(): [LambdaExpression] [...](...){...}
+# 1705|               Type = [Closure,LocalClass] decltype([...](...){...})
+# 1705|               ValueCategory = prvalue
+# 1705|             getInitializer(): [ClassAggregateLiteral] {...}
+# 1705|                 Type = [Closure,LocalClass] decltype([...](...){...})
+# 1705|                 ValueCategory = prvalue
+# 1705|               getFieldExpr((captured this)): [PointerFieldAccess] (captured this)
+# 1705|                   Type = [SpecifiedType] const TrivialLambdaClass
+# 1705|                   ValueCategory = prvalue(load)
+# 1705|                 getQualifier(): [ThisExpr] this
+# 1705|                     Type = [PointerType] lambda [] type at line 1705, col. 30 *
+# 1705|                     ValueCategory = prvalue(load)
+# 1708|     getStmt(2): [ReturnStmt] return ...
+# 1705| [CopyAssignmentOperator] (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)& (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)::operator=((void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30) const&)
+# 1705|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1705, col. 30 &
+# 1705| [CopyConstructor] void (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)::(unnamed constructor)((void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30) const&)
+# 1705|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1705, col. 30 &
+# 1705| [MoveConstructor] void (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)::(unnamed constructor)((void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)&&)
+# 1705|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] lambda [] type at line 1705, col. 30 &&
+# 1705| [Constructor] void (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)::(unnamed constructor)()
+# 1705|   <params>: 
+# 1705| [ConstMemberFunction] void (void (void TrivialLambdaClass::m() const)::(lambda [] type at line 1702, col. 26)::operator()() const)::(lambda [] type at line 1705, col. 30)::operator()() const
+# 1705|   <params>: 
+# 1705|   getEntryPoint(): [BlockStmt] { ... }
+# 1706|     getStmt(0): [ExprStmt] ExprStmt
+# 1706|       getExpr(): [FunctionCall] call to m
+# 1706|           Type = [VoidType] void
+# 1706|           ValueCategory = prvalue
+# 1706|         getQualifier(): [AddressOfExpr] & ...
+# 1706|             Type = [PointerType] const TrivialLambdaClass *
+# 1706|             ValueCategory = prvalue
+# 1706|           getOperand(): [PointerFieldAccess] (captured this)
+# 1706|               Type = [SpecifiedType] const TrivialLambdaClass
+# 1706|               ValueCategory = lvalue
+# 1706|             getQualifier(): [ThisExpr] this
+# 1706|                 Type = [PointerType] const lambda [] type at line 1705, col. 30 *
+# 1706|                 ValueCategory = prvalue(load)
+# 1707|     getStmt(1): [ReturnStmt] return ...
+# 1712| [TopLevelFunction] void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&)
+# 1712|   <params>: 
+# 1712|     getParameter(0): [Parameter] p1
+# 1712|         Type = [Class] TrivialLambdaClass
+# 1712|     getParameter(1): [Parameter] p2
+# 1712|         Type = [LValueReferenceType] TrivialLambdaClass &
+# 1712|     getParameter(2): [Parameter] p3
+# 1712|         Type = [RValueReferenceType] TrivialLambdaClass &&
+# 1712|   getEntryPoint(): [BlockStmt] { ... }
+# 1713|     getStmt(0): [DeclStmt] declaration
+# 1713|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l1
+# 1713|           Type = [SpecifiedType] const TrivialLambdaClass
+# 1714|     getStmt(1): [DeclStmt] declaration
+# 1714|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l2
+# 1714|           Type = [LValueReferenceType] const TrivialLambdaClass &
+# 1714|         getVariable().getInitializer(): [Initializer] initializer for l2
+# 1714|           getExpr(): [Literal] 0
+# 1714|               Type = [Class] TrivialLambdaClass
+# 1714|               Value = [Literal] 0
+# 1714|               ValueCategory = prvalue
+# 1714|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1714|               Type = [LValueReferenceType] const TrivialLambdaClass &
+# 1714|               ValueCategory = prvalue
+# 1714|             getExpr(): [CStyleCast] (const TrivialLambdaClass)...
+# 1714|                 Conversion = [GlvalueConversion] glvalue conversion
+# 1714|                 Type = [SpecifiedType] const TrivialLambdaClass
+# 1714|                 ValueCategory = lvalue
+# 1714|               getExpr(): [TemporaryObjectExpr] temporary object
+# 1714|                   Type = [Class] TrivialLambdaClass
+# 1714|                   ValueCategory = lvalue
+# 1714|                 getExpr(): [TemporaryObjectExpr] temporary object
+# 1714|                     Type = [Class] TrivialLambdaClass
+# 1714|                     ValueCategory = prvalue(load)
+# 1716|     getStmt(2): [DeclStmt] declaration
+# 1716|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l_outer1
+# 1716|           Type = [Closure,LocalClass] decltype([...](...){...})
+# 1716|         getVariable().getInitializer(): [Initializer] initializer for l_outer1
+# 1716|           getExpr(): [LambdaExpression] [...](...){...}
+# 1716|               Type = [Closure,LocalClass] decltype([...](...){...})
+# 1716|               ValueCategory = prvalue
+# 1716|             getInitializer(): [ClassAggregateLiteral] {...}
+# 1716|                 Type = [Closure,LocalClass] decltype([...](...){...})
+# 1716|                 ValueCategory = prvalue
+# 1716|               getFieldExpr(p1): [VariableAccess] p1
+# 1716|                   Type = [Class] TrivialLambdaClass
+# 1716|                   ValueCategory = prvalue(load)
+# 1716|               getFieldExpr(p2): [VariableAccess] p2
+# 1716|                   Type = [LValueReferenceType] TrivialLambdaClass &
+# 1716|                   ValueCategory = prvalue(load)
+# 1716|               getFieldExpr(p3): [VariableAccess] p3
+# 1716|                   Type = [RValueReferenceType] TrivialLambdaClass &&
+# 1716|                   ValueCategory = prvalue(load)
+# 1716|               getFieldExpr(l1): [VariableAccess] l1
+# 1716|                   Type = [SpecifiedType] const TrivialLambdaClass
+# 1716|                   ValueCategory = prvalue(load)
+# 1716|               getFieldExpr(l2): [VariableAccess] l2
+# 1716|                   Type = [LValueReferenceType] const TrivialLambdaClass &
+# 1716|                   ValueCategory = prvalue(load)
+#-----|               getFieldExpr(p2).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                   Type = [Class] TrivialLambdaClass
+#-----|                   ValueCategory = prvalue(load)
+#-----|               getFieldExpr(p3).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                   Type = [Class] TrivialLambdaClass
+#-----|                   ValueCategory = prvalue(load)
+#-----|               getFieldExpr(l2).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                   Type = [SpecifiedType] const TrivialLambdaClass
+#-----|                   ValueCategory = prvalue(load)
+# 1719|     getStmt(3): [ReturnStmt] return ...
+# 1716| [CopyAssignmentOperator] (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)& (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator=((void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21) const&)
+# 1716|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1716, col. 21 &
+# 1716| [CopyConstructor] void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::(unnamed constructor)((void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21) const&)
+# 1716|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1716, col. 21 &
+# 1716| [MoveConstructor] void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::(unnamed constructor)((void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)&&)
+# 1716|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] lambda [] type at line 1716, col. 21 &&
+# 1716| [Constructor] void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::(unnamed constructor)()
+# 1716|   <params>: 
+# 1716| [ConstMemberFunction] void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const
+# 1716|   <params>: 
+# 1716|   getEntryPoint(): [BlockStmt] { ... }
+# 1717|     getStmt(0): [DeclStmt] declaration
+# 1717|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l_inner1
+# 1717|           Type = [Closure,LocalClass] decltype([...](...){...})
+# 1717|         getVariable().getInitializer(): [Initializer] initializer for l_inner1
+# 1717|           getExpr(): [LambdaExpression] [...](...){...}
+# 1717|               Type = [Closure,LocalClass] decltype([...](...){...})
+# 1717|               ValueCategory = prvalue
+# 1717|             getInitializer(): [ClassAggregateLiteral] {...}
+# 1717|                 Type = [Closure,LocalClass] decltype([...](...){...})
+# 1717|                 ValueCategory = prvalue
+# 1717|               getFieldExpr(p1): [PointerFieldAccess] p1
+# 1717|                   Type = [Class] TrivialLambdaClass
+# 1717|                   ValueCategory = prvalue(load)
+# 1717|                 getQualifier(): [ThisExpr] this
+# 1717|                     Type = [PointerType] lambda [] type at line 1717, col. 25 *
+# 1717|                     ValueCategory = prvalue(load)
+# 1718|     getStmt(1): [ReturnStmt] return ...
+# 1717| [CopyAssignmentOperator] (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)& (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)::operator=((void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25) const&)
+# 1717|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1717, col. 25 &
+# 1717| [CopyConstructor] void (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)::(unnamed constructor)((void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25) const&)
+# 1717|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const lambda [] type at line 1717, col. 25 &
+# 1717| [MoveConstructor] void (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)::(unnamed constructor)((void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)&&)
+# 1717|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] lambda [] type at line 1717, col. 25 &&
+# 1717| [Constructor] void (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)::(unnamed constructor)()
+# 1717|   <params>: 
+# 1717| [ConstMemberFunction] void (void (void captured_lambda2(TrivialLambdaClass, TrivialLambdaClass&, TrivialLambdaClass&&))::(lambda [] type at line 1716, col. 21)::operator()() const)::(lambda [] type at line 1717, col. 25)::operator()() const
+# 1717|   <params>: 
+# 1717|   getEntryPoint(): [BlockStmt] { ... }
+# 1717|     getStmt(0): [ReturnStmt] return ...
+# 1721| [CopyAssignmentOperator] CopyConstructorWithImplicitArgumentClass& CopyConstructorWithImplicitArgumentClass::operator=(CopyConstructorWithImplicitArgumentClass const&)
+# 1721|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorWithImplicitArgumentClass &
+# 1724| [Constructor] void CopyConstructorWithImplicitArgumentClass::CopyConstructorWithImplicitArgumentClass()
+# 1724|   <params>: 
+# 1724|   <initializations>: 
+# 1724|   getEntryPoint(): [BlockStmt] { ... }
+# 1724|     getStmt(0): [ReturnStmt] return ...
+# 1725| [CopyConstructor] void CopyConstructorWithImplicitArgumentClass::CopyConstructorWithImplicitArgumentClass(CopyConstructorWithImplicitArgumentClass const&)
+# 1725|   <params>: 
+# 1725|     getParameter(0): [Parameter] c
+# 1725|         Type = [LValueReferenceType] const CopyConstructorWithImplicitArgumentClass &
+# 1725|   <initializations>: 
+# 1725|   getEntryPoint(): [BlockStmt] { ... }
+# 1726|     getStmt(0): [ExprStmt] ExprStmt
+# 1726|       getExpr(): [AssignExpr] ... = ...
+# 1726|           Type = [IntType] int
+# 1726|           ValueCategory = lvalue
+# 1726|         getLValue(): [PointerFieldAccess] x
+# 1726|             Type = [IntType] int
+# 1726|             ValueCategory = lvalue
+# 1726|           getQualifier(): [ThisExpr] this
+# 1726|               Type = [PointerType] CopyConstructorWithImplicitArgumentClass *
+# 1726|               ValueCategory = prvalue(load)
+# 1726|         getRValue(): [ReferenceFieldAccess] x
+# 1726|             Type = [IntType] int
+# 1726|             ValueCategory = prvalue(load)
+# 1726|           getQualifier(): [VariableAccess] c
+# 1726|               Type = [LValueReferenceType] const CopyConstructorWithImplicitArgumentClass &
+# 1726|               ValueCategory = prvalue(load)
+# 1726|           getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1726|               Type = [SpecifiedType] const CopyConstructorWithImplicitArgumentClass
+# 1726|               ValueCategory = lvalue
+# 1727|     getStmt(1): [ReturnStmt] return ...
+# 1730| [CopyAssignmentOperator] CopyConstructorWithBitwiseCopyClass& CopyConstructorWithBitwiseCopyClass::operator=(CopyConstructorWithBitwiseCopyClass const&)
+# 1730|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorWithBitwiseCopyClass &
+# 1730| [MoveAssignmentOperator] CopyConstructorWithBitwiseCopyClass& CopyConstructorWithBitwiseCopyClass::operator=(CopyConstructorWithBitwiseCopyClass&&)
+# 1730|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CopyConstructorWithBitwiseCopyClass &&
+# 1730| [CopyConstructor] void CopyConstructorWithBitwiseCopyClass::CopyConstructorWithBitwiseCopyClass(CopyConstructorWithBitwiseCopyClass const&)
+# 1730|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorWithBitwiseCopyClass &
+# 1730| [MoveConstructor] void CopyConstructorWithBitwiseCopyClass::CopyConstructorWithBitwiseCopyClass(CopyConstructorWithBitwiseCopyClass&&)
+# 1730|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CopyConstructorWithBitwiseCopyClass &&
+# 1733| [Constructor] void CopyConstructorWithBitwiseCopyClass::CopyConstructorWithBitwiseCopyClass()
+# 1733|   <params>: 
+# 1733|   <initializations>: 
+# 1733|   getEntryPoint(): [BlockStmt] { ... }
+# 1733|     getStmt(0): [ReturnStmt] return ...
+# 1736| [CopyAssignmentOperator] CopyConstructorTestNonVirtualClass& CopyConstructorTestNonVirtualClass::operator=(CopyConstructorTestNonVirtualClass const&)
+# 1736|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorTestNonVirtualClass &
+# 1736| [MoveAssignmentOperator] CopyConstructorTestNonVirtualClass& CopyConstructorTestNonVirtualClass::operator=(CopyConstructorTestNonVirtualClass&&)
+# 1736|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CopyConstructorTestNonVirtualClass &&
+# 1736| [CopyConstructor] void CopyConstructorTestNonVirtualClass::CopyConstructorTestNonVirtualClass(CopyConstructorTestNonVirtualClass const&)
+# 1736|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorTestNonVirtualClass &
+# 1736|   <initializations>: 
+# 1736|     getInitializer(0): [ConstructorDirectInit] call to CopyConstructorWithImplicitArgumentClass
+# 1736|         Type = [VoidType] void
+# 1736|         ValueCategory = prvalue
+# 1736|       getArgument(0): [VariableAccess] (unnamed parameter 0)
+# 1736|           Type = [LValueReferenceType] const CopyConstructorTestNonVirtualClass &
+# 1736|           ValueCategory = prvalue(load)
+# 1736|       getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1736|           Type = [LValueReferenceType] const CopyConstructorWithImplicitArgumentClass &
+# 1736|           ValueCategory = prvalue
+# 1736|         getExpr(): [CStyleCast] (const CopyConstructorWithImplicitArgumentClass)...
+# 1736|             Conversion = [BaseClassConversion] base class conversion
+# 1736|             Type = [SpecifiedType] const CopyConstructorWithImplicitArgumentClass
+# 1736|             ValueCategory = lvalue
+# 1736|           getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1736|               Type = [SpecifiedType] const CopyConstructorTestNonVirtualClass
+# 1736|               ValueCategory = lvalue
+# 1736|     getInitializer(1): (no string representation)
+# 1736|         Type = [VirtualBaseClass] CopyConstructorWithBitwiseCopyClass
+# 1736|         ValueCategory = prvalue
+# 1736|   getEntryPoint(): [BlockStmt] { ... }
+# 1736|     getStmt(0): [ReturnStmt] return ...
+# 1736| [MoveConstructor] void CopyConstructorTestNonVirtualClass::CopyConstructorTestNonVirtualClass(CopyConstructorTestNonVirtualClass&&)
+# 1736|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CopyConstructorTestNonVirtualClass &&
+# 1740| [Constructor] void CopyConstructorTestNonVirtualClass::CopyConstructorTestNonVirtualClass()
+# 1740|   <params>: 
+# 1740|   <initializations>: 
+# 1740|     getInitializer(0): [ConstructorDirectInit] call to CopyConstructorWithImplicitArgumentClass
+# 1740|         Type = [VoidType] void
+# 1740|         ValueCategory = prvalue
+# 1740|     getInitializer(1): [ConstructorDirectInit] call to CopyConstructorWithBitwiseCopyClass
+# 1740|         Type = [VoidType] void
+# 1740|         ValueCategory = prvalue
+# 1740|   getEntryPoint(): [BlockStmt] { ... }
+# 1740|     getStmt(0): [ReturnStmt] return ...
+# 1743| [CopyAssignmentOperator] CopyConstructorTestVirtualClass& CopyConstructorTestVirtualClass::operator=(CopyConstructorTestVirtualClass const&)
+# 1743|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorTestVirtualClass &
+# 1743| [MoveAssignmentOperator] CopyConstructorTestVirtualClass& CopyConstructorTestVirtualClass::operator=(CopyConstructorTestVirtualClass&&)
+# 1743|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CopyConstructorTestVirtualClass &&
+# 1743| [CopyConstructor] void CopyConstructorTestVirtualClass::CopyConstructorTestVirtualClass(CopyConstructorTestVirtualClass const&)
+# 1743|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const CopyConstructorTestVirtualClass &
+# 1743|   <initializations>: 
+# 1743|     getInitializer(0): [ConstructorVirtualInit] call to CopyConstructorWithImplicitArgumentClass
+# 1743|         Type = [VoidType] void
+# 1743|         ValueCategory = prvalue
+# 1743|       getArgument(0): [VariableAccess] (unnamed parameter 0)
+# 1743|           Type = [LValueReferenceType] const CopyConstructorTestVirtualClass &
+# 1743|           ValueCategory = prvalue(load)
+# 1743|       getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1743|           Type = [LValueReferenceType] const CopyConstructorWithImplicitArgumentClass &
+# 1743|           ValueCategory = prvalue
+# 1743|         getExpr(): [CStyleCast] (const CopyConstructorWithImplicitArgumentClass)...
+# 1743|             Conversion = [BaseClassConversion] base class conversion
+# 1743|             Type = [SpecifiedType] const CopyConstructorWithImplicitArgumentClass
+# 1743|             ValueCategory = lvalue
+# 1743|           getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1743|               Type = [SpecifiedType] const CopyConstructorTestVirtualClass
+# 1743|               ValueCategory = lvalue
+# 1743|     getInitializer(1): (no string representation)
+# 1743|         Type = [VirtualBaseClass] CopyConstructorWithBitwiseCopyClass
+# 1743|         ValueCategory = prvalue
+# 1743|   getEntryPoint(): [BlockStmt] { ... }
+# 1743|     getStmt(0): [ReturnStmt] return ...
+# 1743| [MoveConstructor] void CopyConstructorTestVirtualClass::CopyConstructorTestVirtualClass(CopyConstructorTestVirtualClass&&)
+# 1743|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] CopyConstructorTestVirtualClass &&
+# 1747| [Constructor] void CopyConstructorTestVirtualClass::CopyConstructorTestVirtualClass()
+# 1747|   <params>: 
+# 1747|   <initializations>: 
+# 1747|     getInitializer(0): [ConstructorVirtualInit] call to CopyConstructorWithImplicitArgumentClass
+# 1747|         Type = [VoidType] void
+# 1747|         ValueCategory = prvalue
+# 1747|     getInitializer(1): [ConstructorVirtualInit] call to CopyConstructorWithBitwiseCopyClass
+# 1747|         Type = [VoidType] void
+# 1747|         ValueCategory = prvalue
+# 1747|   getEntryPoint(): [BlockStmt] { ... }
+# 1747|     getStmt(0): [ReturnStmt] return ...
+# 1750| [TopLevelFunction] int implicit_copy_constructor_test(CopyConstructorTestNonVirtualClass const&, CopyConstructorTestVirtualClass const&)
+# 1750|   <params>: 
+# 1751|     getParameter(0): [Parameter] x
+# 1751|         Type = [LValueReferenceType] const CopyConstructorTestNonVirtualClass &
+# 1752|     getParameter(1): [Parameter] y
+# 1752|         Type = [LValueReferenceType] const CopyConstructorTestVirtualClass &
+# 1752|   getEntryPoint(): [BlockStmt] { ... }
+# 1753|     getStmt(0): [DeclStmt] declaration
+# 1753|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of cx
+# 1753|           Type = [Class] CopyConstructorTestNonVirtualClass
+# 1753|         getVariable().getInitializer(): [Initializer] initializer for cx
+# 1753|           getExpr(): [ConstructorCall] call to CopyConstructorTestNonVirtualClass
+# 1753|               Type = [VoidType] void
+# 1753|               ValueCategory = prvalue
+# 1753|             getArgument(0): [VariableAccess] x
+# 1753|                 Type = [LValueReferenceType] const CopyConstructorTestNonVirtualClass &
+# 1753|                 ValueCategory = prvalue(load)
+# 1753|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1753|                 Type = [LValueReferenceType] const CopyConstructorTestNonVirtualClass &
+# 1753|                 ValueCategory = prvalue
+# 1753|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1753|                   Type = [SpecifiedType] const CopyConstructorTestNonVirtualClass
+# 1753|                   ValueCategory = lvalue
+# 1754|     getStmt(1): [DeclStmt] declaration
+# 1754|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of cy
+# 1754|           Type = [Class] CopyConstructorTestVirtualClass
+# 1754|         getVariable().getInitializer(): [Initializer] initializer for cy
+# 1754|           getExpr(): [ConstructorCall] call to CopyConstructorTestVirtualClass
+# 1754|               Type = [VoidType] void
+# 1754|               ValueCategory = prvalue
+# 1754|             getArgument(0): [VariableAccess] y
+# 1754|                 Type = [LValueReferenceType] const CopyConstructorTestVirtualClass &
+# 1754|                 ValueCategory = prvalue(load)
+# 1754|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1754|                 Type = [LValueReferenceType] const CopyConstructorTestVirtualClass &
+# 1754|                 ValueCategory = prvalue
+# 1754|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1754|                   Type = [SpecifiedType] const CopyConstructorTestVirtualClass
+# 1754|                   ValueCategory = lvalue
+# 1755|     getStmt(2): [ReturnStmt] return ...
+# 1757| [TopLevelFunction] void if_initialization(int)
+# 1757|   <params>: 
+# 1757|     getParameter(0): [Parameter] x
+# 1757|         Type = [IntType] int
+# 1757|   getEntryPoint(): [BlockStmt] { ... }
+# 1758|     getStmt(0): [IfStmt] if (...) ... 
+# 1758|       getInitialization(): [DeclStmt] declaration
+# 1758|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 1758|             Type = [IntType] int
+# 1758|           getVariable().getInitializer(): [Initializer] initializer for y
+# 1758|             getExpr(): [VariableAccess] x
+# 1758|                 Type = [IntType] int
+# 1758|                 ValueCategory = prvalue(load)
+# 1758|       getCondition(): [AddExpr] ... + ...
+# 1758|           Type = [IntType] int
+# 1758|           ValueCategory = prvalue
+# 1758|         getLeftOperand(): [VariableAccess] x
+# 1758|             Type = [IntType] int
+# 1758|             ValueCategory = prvalue(load)
+# 1758|         getRightOperand(): [Literal] 1
+# 1758|             Type = [IntType] int
+# 1758|             Value = [Literal] 1
+# 1758|             ValueCategory = prvalue
+# 1758|       getThen(): [BlockStmt] { ... }
+# 1759|         getStmt(0): [ExprStmt] ExprStmt
+# 1759|           getExpr(): [AssignExpr] ... = ...
+# 1759|               Type = [IntType] int
+# 1759|               ValueCategory = lvalue
+# 1759|             getLValue(): [VariableAccess] x
+# 1759|                 Type = [IntType] int
+# 1759|                 ValueCategory = lvalue
+# 1759|             getRValue(): [AddExpr] ... + ...
+# 1759|                 Type = [IntType] int
+# 1759|                 ValueCategory = prvalue
+# 1759|               getLeftOperand(): [VariableAccess] x
+# 1759|                   Type = [IntType] int
+# 1759|                   ValueCategory = prvalue(load)
+# 1759|               getRightOperand(): [VariableAccess] y
+# 1759|                   Type = [IntType] int
+# 1759|                   ValueCategory = prvalue(load)
+# 1758|       getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 1758|           Conversion = [BoolConversion] conversion to bool
+# 1758|           Type = [BoolType] bool
+# 1758|           ValueCategory = prvalue
+# 1762|     getStmt(1): [DeclStmt] declaration
+# 1762|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
+# 1762|           Type = [IntType] int
+# 1763|     getStmt(2): [IfStmt] if (...) ... 
+# 1763|       getInitialization(): [ExprStmt] ExprStmt
+# 1763|         getExpr(): [AssignExpr] ... = ...
+# 1763|             Type = [IntType] int
+# 1763|             ValueCategory = lvalue
+# 1763|           getLValue(): [VariableAccess] w
+# 1763|               Type = [IntType] int
+# 1763|               ValueCategory = lvalue
+# 1763|           getRValue(): [VariableAccess] x
+# 1763|               Type = [IntType] int
+# 1763|               ValueCategory = prvalue(load)
+# 1763|       getCondition(): [AddExpr] ... + ...
+# 1763|           Type = [IntType] int
+# 1763|           ValueCategory = prvalue
+# 1763|         getLeftOperand(): [VariableAccess] x
+# 1763|             Type = [IntType] int
+# 1763|             ValueCategory = prvalue(load)
+# 1763|         getRightOperand(): [Literal] 1
+# 1763|             Type = [IntType] int
+# 1763|             Value = [Literal] 1
+# 1763|             ValueCategory = prvalue
+# 1763|       getThen(): [BlockStmt] { ... }
+# 1764|         getStmt(0): [ExprStmt] ExprStmt
+# 1764|           getExpr(): [AssignExpr] ... = ...
+# 1764|               Type = [IntType] int
+# 1764|               ValueCategory = lvalue
+# 1764|             getLValue(): [VariableAccess] x
+# 1764|                 Type = [IntType] int
+# 1764|                 ValueCategory = lvalue
+# 1764|             getRValue(): [AddExpr] ... + ...
+# 1764|                 Type = [IntType] int
+# 1764|                 ValueCategory = prvalue
+# 1764|               getLeftOperand(): [VariableAccess] x
+# 1764|                   Type = [IntType] int
+# 1764|                   ValueCategory = prvalue(load)
+# 1764|               getRightOperand(): [VariableAccess] w
+# 1764|                   Type = [IntType] int
+# 1764|                   ValueCategory = prvalue(load)
+# 1763|       getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 1763|           Conversion = [BoolConversion] conversion to bool
+# 1763|           Type = [BoolType] bool
+# 1763|           ValueCategory = prvalue
+# 1767|     getStmt(3): [IfStmt] if (...) ... 
+# 1767|       getInitialization(): [ExprStmt] ExprStmt
+# 1767|         getExpr(): [AssignExpr] ... = ...
+# 1767|             Type = [IntType] int
+# 1767|             ValueCategory = lvalue
+# 1767|           getLValue(): [VariableAccess] w
+# 1767|               Type = [IntType] int
+# 1767|               ValueCategory = lvalue
+# 1767|           getRValue(): [VariableAccess] x
+# 1767|               Type = [IntType] int
+# 1767|               ValueCategory = prvalue(load)
+# 1767|       getCondition(): [ConditionDeclExpr] (condition decl)
+# 1767|           Type = [BoolType] bool
+# 1767|           ValueCategory = prvalue
+# 1767|         getVariableAccess(): [VariableAccess] w2
+# 1767|             Type = [IntType] int
+# 1767|             ValueCategory = prvalue(load)
+# 1767|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
+# 1767|             Conversion = [BoolConversion] conversion to bool
+# 1767|             Type = [BoolType] bool
+# 1767|             ValueCategory = prvalue
+# 1767|       getThen(): [BlockStmt] { ... }
+# 1768|         getStmt(0): [ExprStmt] ExprStmt
+# 1768|           getExpr(): [AssignExpr] ... = ...
+# 1768|               Type = [IntType] int
+# 1768|               ValueCategory = lvalue
+# 1768|             getLValue(): [VariableAccess] x
+# 1768|                 Type = [IntType] int
+# 1768|                 ValueCategory = lvalue
+# 1768|             getRValue(): [AddExpr] ... + ...
+# 1768|                 Type = [IntType] int
+# 1768|                 ValueCategory = prvalue
+# 1768|               getLeftOperand(): [VariableAccess] x
+# 1768|                   Type = [IntType] int
+# 1768|                   ValueCategory = prvalue(load)
+# 1768|               getRightOperand(): [VariableAccess] w
+# 1768|                   Type = [IntType] int
+# 1768|                   ValueCategory = prvalue(load)
+# 1771|     getStmt(4): [IfStmt] if (...) ... 
+# 1771|       getInitialization(): [DeclStmt] declaration
+# 1771|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
+# 1771|             Type = [IntType] int
+# 1771|           getVariable().getInitializer(): [Initializer] initializer for v
+# 1771|             getExpr(): [VariableAccess] x
+# 1771|                 Type = [IntType] int
+# 1771|                 ValueCategory = prvalue(load)
+# 1771|       getCondition(): [ConditionDeclExpr] (condition decl)
+# 1771|           Type = [BoolType] bool
+# 1771|           ValueCategory = prvalue
+# 1771|         getVariableAccess(): [VariableAccess] v2
+# 1771|             Type = [IntType] int
+# 1771|             ValueCategory = prvalue(load)
+# 1771|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
+# 1771|             Conversion = [BoolConversion] conversion to bool
+# 1771|             Type = [BoolType] bool
+# 1771|             ValueCategory = prvalue
+# 1771|       getThen(): [BlockStmt] { ... }
+# 1772|         getStmt(0): [ExprStmt] ExprStmt
+# 1772|           getExpr(): [AssignExpr] ... = ...
+# 1772|               Type = [IntType] int
+# 1772|               ValueCategory = lvalue
+# 1772|             getLValue(): [VariableAccess] x
+# 1772|                 Type = [IntType] int
+# 1772|                 ValueCategory = lvalue
+# 1772|             getRValue(): [AddExpr] ... + ...
+# 1772|                 Type = [IntType] int
+# 1772|                 ValueCategory = prvalue
+# 1772|               getLeftOperand(): [VariableAccess] x
+# 1772|                   Type = [IntType] int
+# 1772|                   ValueCategory = prvalue(load)
+# 1772|               getRightOperand(): [VariableAccess] v
+# 1772|                   Type = [IntType] int
+# 1772|                   ValueCategory = prvalue(load)
+# 1775|     getStmt(5): [DeclStmt] declaration
+# 1775|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of z
+# 1775|           Type = [IntType] int
+# 1775|         getVariable().getInitializer(): [Initializer] initializer for z
+# 1775|           getExpr(): [VariableAccess] x
+# 1775|               Type = [IntType] int
+# 1775|               ValueCategory = prvalue(load)
+# 1776|     getStmt(6): [IfStmt] if (...) ... 
+# 1776|       getCondition(): [VariableAccess] z
+# 1776|           Type = [IntType] int
+# 1776|           ValueCategory = prvalue(load)
+# 1776|       getThen(): [BlockStmt] { ... }
+# 1777|         getStmt(0): [ExprStmt] ExprStmt
+# 1777|           getExpr(): [AssignExpr] ... = ...
+# 1777|               Type = [IntType] int
+# 1777|               ValueCategory = lvalue
+# 1777|             getLValue(): [VariableAccess] x
+# 1777|                 Type = [IntType] int
+# 1777|                 ValueCategory = lvalue
+# 1777|             getRValue(): [AddExpr] ... + ...
+# 1777|                 Type = [IntType] int
+# 1777|                 ValueCategory = prvalue
+# 1777|               getLeftOperand(): [VariableAccess] x
+# 1777|                   Type = [IntType] int
+# 1777|                   ValueCategory = prvalue(load)
+# 1777|               getRightOperand(): [VariableAccess] z
+# 1777|                   Type = [IntType] int
+# 1777|                   ValueCategory = prvalue(load)
+# 1776|       getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 1776|           Conversion = [BoolConversion] conversion to bool
+# 1776|           Type = [BoolType] bool
+# 1776|           ValueCategory = prvalue
+# 1780|     getStmt(7): [IfStmt] if (...) ... 
+# 1780|       getCondition(): [ConditionDeclExpr] (condition decl)
+# 1780|           Type = [BoolType] bool
+# 1780|           ValueCategory = prvalue
+# 1780|         getVariableAccess(): [VariableAccess] z2
+# 1780|             Type = [IntType] int
+# 1780|             ValueCategory = prvalue(load)
+# 1780|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
+# 1780|             Conversion = [BoolConversion] conversion to bool
+# 1780|             Type = [BoolType] bool
+# 1780|             ValueCategory = prvalue
+# 1780|       getThen(): [BlockStmt] { ... }
+# 1781|         getStmt(0): [ExprStmt] ExprStmt
+# 1781|           getExpr(): [AssignAddExpr] ... += ...
+# 1781|               Type = [IntType] int
+# 1781|               ValueCategory = lvalue
+# 1781|             getLValue(): [VariableAccess] x
+# 1781|                 Type = [IntType] int
+# 1781|                 ValueCategory = lvalue
+# 1781|             getRValue(): [VariableAccess] z2
+# 1781|                 Type = [IntType] int
+# 1781|                 ValueCategory = prvalue(load)
+# 1783|     getStmt(8): [ReturnStmt] return ...
+# 1785| [TopLevelFunction] void switch_initialization(int)
+# 1785|   <params>: 
+# 1785|     getParameter(0): [Parameter] x
+# 1785|         Type = [IntType] int
+# 1785|   getEntryPoint(): [BlockStmt] { ... }
+# 1786|     getStmt(0): [SwitchStmt] switch (...) ... 
+# 1786|       getInitialization(): [DeclStmt] declaration
+# 1786|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 1786|             Type = [IntType] int
+# 1786|           getVariable().getInitializer(): [Initializer] initializer for y
+# 1786|             getExpr(): [VariableAccess] x
+# 1786|                 Type = [IntType] int
+# 1786|                 ValueCategory = prvalue(load)
+# 1786|       getExpr(): [AddExpr] ... + ...
+# 1786|           Type = [IntType] int
+# 1786|           ValueCategory = prvalue
+# 1786|         getLeftOperand(): [VariableAccess] x
+# 1786|             Type = [IntType] int
+# 1786|             ValueCategory = prvalue(load)
+# 1786|         getRightOperand(): [Literal] 1
+# 1786|             Type = [IntType] int
+# 1786|             Value = [Literal] 1
+# 1786|             ValueCategory = prvalue
+# 1786|       getStmt(): [BlockStmt] { ... }
+# 1787|         getStmt(0): [SwitchCase] default: 
+# 1788|         getStmt(1): [ExprStmt] ExprStmt
+# 1788|           getExpr(): [AssignExpr] ... = ...
+# 1788|               Type = [IntType] int
+# 1788|               ValueCategory = lvalue
+# 1788|             getLValue(): [VariableAccess] x
+# 1788|                 Type = [IntType] int
+# 1788|                 ValueCategory = lvalue
+# 1788|             getRValue(): [AddExpr] ... + ...
+# 1788|                 Type = [IntType] int
+# 1788|                 ValueCategory = prvalue
+# 1788|               getLeftOperand(): [VariableAccess] x
+# 1788|                   Type = [IntType] int
+# 1788|                   ValueCategory = prvalue(load)
+# 1788|               getRightOperand(): [VariableAccess] y
+# 1788|                   Type = [IntType] int
+# 1788|                   ValueCategory = prvalue(load)
+# 1791|     getStmt(1): [DeclStmt] declaration
+# 1791|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
+# 1791|           Type = [IntType] int
+# 1792|     getStmt(2): [SwitchStmt] switch (...) ... 
+# 1792|       getInitialization(): [ExprStmt] ExprStmt
+# 1792|         getExpr(): [AssignExpr] ... = ...
+# 1792|             Type = [IntType] int
+# 1792|             ValueCategory = lvalue
+# 1792|           getLValue(): [VariableAccess] w
+# 1792|               Type = [IntType] int
+# 1792|               ValueCategory = lvalue
+# 1792|           getRValue(): [VariableAccess] x
+# 1792|               Type = [IntType] int
+# 1792|               ValueCategory = prvalue(load)
+# 1792|       getExpr(): [AddExpr] ... + ...
+# 1792|           Type = [IntType] int
+# 1792|           ValueCategory = prvalue
+# 1792|         getLeftOperand(): [VariableAccess] x
+# 1792|             Type = [IntType] int
+# 1792|             ValueCategory = prvalue(load)
+# 1792|         getRightOperand(): [Literal] 1
+# 1792|             Type = [IntType] int
+# 1792|             Value = [Literal] 1
+# 1792|             ValueCategory = prvalue
+# 1792|       getStmt(): [BlockStmt] { ... }
+# 1793|         getStmt(0): [SwitchCase] default: 
+# 1794|         getStmt(1): [ExprStmt] ExprStmt
+# 1794|           getExpr(): [AssignExpr] ... = ...
+# 1794|               Type = [IntType] int
+# 1794|               ValueCategory = lvalue
+# 1794|             getLValue(): [VariableAccess] x
+# 1794|                 Type = [IntType] int
+# 1794|                 ValueCategory = lvalue
+# 1794|             getRValue(): [AddExpr] ... + ...
+# 1794|                 Type = [IntType] int
+# 1794|                 ValueCategory = prvalue
+# 1794|               getLeftOperand(): [VariableAccess] x
+# 1794|                   Type = [IntType] int
+# 1794|                   ValueCategory = prvalue(load)
+# 1794|               getRightOperand(): [VariableAccess] w
+# 1794|                   Type = [IntType] int
+# 1794|                   ValueCategory = prvalue(load)
+# 1797|     getStmt(3): [SwitchStmt] switch (...) ... 
+# 1797|       getInitialization(): [ExprStmt] ExprStmt
+# 1797|         getExpr(): [AssignExpr] ... = ...
+# 1797|             Type = [IntType] int
+# 1797|             ValueCategory = lvalue
+# 1797|           getLValue(): [VariableAccess] w
+# 1797|               Type = [IntType] int
+# 1797|               ValueCategory = lvalue
+# 1797|           getRValue(): [VariableAccess] x
+# 1797|               Type = [IntType] int
+# 1797|               ValueCategory = prvalue(load)
+# 1797|       getExpr(): [ConditionDeclExpr] (condition decl)
+# 1797|           Type = [IntType] int
+# 1797|           ValueCategory = prvalue
+# 1797|         getVariableAccess(): [VariableAccess] w2
+# 1797|             Type = [IntType] int
+# 1797|             ValueCategory = prvalue(load)
+# 1797|       getStmt(): [BlockStmt] { ... }
+# 1798|         getStmt(0): [SwitchCase] default: 
+# 1799|         getStmt(1): [ExprStmt] ExprStmt
+# 1799|           getExpr(): [AssignExpr] ... = ...
+# 1799|               Type = [IntType] int
+# 1799|               ValueCategory = lvalue
+# 1799|             getLValue(): [VariableAccess] x
+# 1799|                 Type = [IntType] int
+# 1799|                 ValueCategory = lvalue
+# 1799|             getRValue(): [AddExpr] ... + ...
+# 1799|                 Type = [IntType] int
+# 1799|                 ValueCategory = prvalue
+# 1799|               getLeftOperand(): [VariableAccess] x
+# 1799|                   Type = [IntType] int
+# 1799|                   ValueCategory = prvalue(load)
+# 1799|               getRightOperand(): [VariableAccess] w
+# 1799|                   Type = [IntType] int
+# 1799|                   ValueCategory = prvalue(load)
+# 1802|     getStmt(4): [SwitchStmt] switch (...) ... 
+# 1802|       getInitialization(): [DeclStmt] declaration
+# 1802|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
+# 1802|             Type = [IntType] int
+# 1802|           getVariable().getInitializer(): [Initializer] initializer for v
+# 1802|             getExpr(): [VariableAccess] x
+# 1802|                 Type = [IntType] int
+# 1802|                 ValueCategory = prvalue(load)
+# 1802|       getExpr(): [ConditionDeclExpr] (condition decl)
+# 1802|           Type = [IntType] int
+# 1802|           ValueCategory = prvalue
+# 1802|         getVariableAccess(): [VariableAccess] v2
+# 1802|             Type = [IntType] int
+# 1802|             ValueCategory = prvalue(load)
+# 1802|       getStmt(): [BlockStmt] { ... }
+# 1803|         getStmt(0): [SwitchCase] default: 
+# 1804|         getStmt(1): [ExprStmt] ExprStmt
+# 1804|           getExpr(): [AssignExpr] ... = ...
+# 1804|               Type = [IntType] int
+# 1804|               ValueCategory = lvalue
+# 1804|             getLValue(): [VariableAccess] x
+# 1804|                 Type = [IntType] int
+# 1804|                 ValueCategory = lvalue
+# 1804|             getRValue(): [AddExpr] ... + ...
+# 1804|                 Type = [IntType] int
+# 1804|                 ValueCategory = prvalue
+# 1804|               getLeftOperand(): [VariableAccess] x
+# 1804|                   Type = [IntType] int
+# 1804|                   ValueCategory = prvalue(load)
+# 1804|               getRightOperand(): [VariableAccess] v
+# 1804|                   Type = [IntType] int
+# 1804|                   ValueCategory = prvalue(load)
+# 1807|     getStmt(5): [DeclStmt] declaration
+# 1807|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of z
+# 1807|           Type = [IntType] int
+# 1807|         getVariable().getInitializer(): [Initializer] initializer for z
+# 1807|           getExpr(): [VariableAccess] x
+# 1807|               Type = [IntType] int
+# 1807|               ValueCategory = prvalue(load)
+# 1808|     getStmt(6): [SwitchStmt] switch (...) ... 
+# 1808|       getExpr(): [VariableAccess] z
+# 1808|           Type = [IntType] int
+# 1808|           ValueCategory = prvalue(load)
+# 1808|       getStmt(): [BlockStmt] { ... }
+# 1809|         getStmt(0): [SwitchCase] default: 
+# 1810|         getStmt(1): [ExprStmt] ExprStmt
+# 1810|           getExpr(): [AssignExpr] ... = ...
+# 1810|               Type = [IntType] int
+# 1810|               ValueCategory = lvalue
+# 1810|             getLValue(): [VariableAccess] x
+# 1810|                 Type = [IntType] int
+# 1810|                 ValueCategory = lvalue
+# 1810|             getRValue(): [AddExpr] ... + ...
+# 1810|                 Type = [IntType] int
+# 1810|                 ValueCategory = prvalue
+# 1810|               getLeftOperand(): [VariableAccess] x
+# 1810|                   Type = [IntType] int
+# 1810|                   ValueCategory = prvalue(load)
+# 1810|               getRightOperand(): [VariableAccess] z
+# 1810|                   Type = [IntType] int
+# 1810|                   ValueCategory = prvalue(load)
+# 1813|     getStmt(7): [SwitchStmt] switch (...) ... 
+# 1813|       getExpr(): [ConditionDeclExpr] (condition decl)
+# 1813|           Type = [IntType] int
+# 1813|           ValueCategory = prvalue
+# 1813|         getVariableAccess(): [VariableAccess] z2
+# 1813|             Type = [IntType] int
+# 1813|             ValueCategory = prvalue(load)
+# 1813|       getStmt(): [BlockStmt] { ... }
+# 1814|         getStmt(0): [SwitchCase] default: 
+# 1815|         getStmt(1): [ExprStmt] ExprStmt
+# 1815|           getExpr(): [AssignAddExpr] ... += ...
+# 1815|               Type = [IntType] int
+# 1815|               ValueCategory = lvalue
+# 1815|             getLValue(): [VariableAccess] x
+# 1815|                 Type = [IntType] int
+# 1815|                 ValueCategory = lvalue
+# 1815|             getRValue(): [VariableAccess] z2
+# 1815|                 Type = [IntType] int
+# 1815|                 ValueCategory = prvalue(load)
+# 1817|     getStmt(8): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

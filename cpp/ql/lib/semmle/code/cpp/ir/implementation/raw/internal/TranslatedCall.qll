@@ -175,7 +175,10 @@ abstract class TranslatedSideEffects extends TranslatedElement {
   /** Gets the expression whose side effects are being modeled. */
   abstract Expr getExpr();
 
-  final override Locatable getAST() { result = getExpr() }
+  final override Locatable getAst() { result = getExpr() }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   final override Function getFunction() { result = getExpr().getEnclosingFunction() }
 
@@ -522,7 +525,10 @@ class TranslatedArgumentExprSideEffect extends TranslatedArgumentSideEffect,
     this = TTranslatedArgumentExprSideEffect(call, arg, index, sideEffectOpcode)
   }
 
-  final override Locatable getAST() { result = arg }
+  final override Locatable getAst() { result = arg }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   final override Type getIndirectionType() {
     result = arg.getUnspecifiedType().(DerivedType).getBaseType()
@@ -553,7 +559,10 @@ class TranslatedStructorQualifierSideEffect extends TranslatedArgumentSideEffect
     index = -1
   }
 
-  final override Locatable getAST() { result = call }
+  final override Locatable getAst() { result = call }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   final override Type getIndirectionType() { result = call.getTarget().getDeclaringType() }
 
@@ -574,7 +583,10 @@ class TranslatedCallSideEffect extends TranslatedSideEffect, TTranslatedCallSide
 
   TranslatedCallSideEffect() { this = TTranslatedCallSideEffect(expr, sideEffectOpcode) }
 
-  override Locatable getAST() { result = expr }
+  override Locatable getAst() { result = expr }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   override Expr getPrimaryExpr() { result = expr }
 
@@ -612,7 +624,10 @@ class TranslatedAllocationSideEffect extends TranslatedSideEffect, TTranslatedAl
 
   TranslatedAllocationSideEffect() { this = TTranslatedAllocationSideEffect(expr) }
 
-  override Locatable getAST() { result = expr }
+  override Locatable getAst() { result = expr }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   override Expr getPrimaryExpr() { result = expr }
 

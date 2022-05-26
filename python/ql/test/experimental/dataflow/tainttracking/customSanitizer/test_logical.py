@@ -37,6 +37,21 @@ def test_basic():
         ensure_not_tainted(s) # $ SPURIOUS: tainted
 
 
+def test_if_in_depth():
+    s = TAINTED_STRING
+
+    # ensure that value is still considered tainted after guard check
+    if is_safe(s):
+        ensure_not_tainted(s)
+    ensure_tainted(s) # $ tainted
+
+    # ensure new tainted assignment to variable is not treated as safe by guard
+    if is_safe(s):
+        ensure_not_tainted(s)
+        s = TAINTED_STRING
+        ensure_tainted(s) # $ tainted
+
+
 def test_or():
     s = TAINTED_STRING
 
@@ -160,6 +175,7 @@ def test_with_exception():
 # Make tests runable
 
 test_basic()
+test_if_in_depth()
 test_or()
 test_and()
 test_tricky()

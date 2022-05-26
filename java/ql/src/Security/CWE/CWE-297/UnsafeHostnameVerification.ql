@@ -34,7 +34,7 @@ private predicate alwaysReturnsTrue(HostnameVerifierVerify m) {
  */
 class TrustAllHostnameVerifier extends RefType {
   TrustAllHostnameVerifier() {
-    this.getASupertype*() instanceof HostnameVerifier and
+    this.getAnAncestor() instanceof HostnameVerifier and
     exists(HostnameVerifierVerify m |
       m.getDeclaringType() = this and
       alwaysReturnsTrue(m)

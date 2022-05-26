@@ -1,0 +1,83 @@
+edges
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:6:20:6:27 | password |
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:8:21:8:28 | password |
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:10:21:10:28 | password |
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:12:21:12:28 | password |
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:14:23:14:30 | password |
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:16:20:16:27 | password |
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:19:33:19:40 | password |
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:21:44:21:51 | password |
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:23:33:23:40 | password |
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:26:18:26:34 | "pw: #{...}" |
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:28:26:28:33 | password |
+| logging.rb:30:8:30:55 | call to [] :  | logging.rb:37:20:37:23 | hsh1 :  |
+| logging.rb:34:1:34:15 | call to []= :  | logging.rb:39:20:39:34 | ...[...] |
+| logging.rb:37:20:37:23 | hsh1 :  | logging.rb:37:20:37:34 | ...[...] |
+| logging.rb:59:35:59:68 | "ca497451f5e883662fb1a37bc9ec7838" :  | logging.rb:63:35:63:65 | password_masked_ineffective_sub :  |
+| logging.rb:60:38:60:71 | "ca497451f5e883662fb1a37bc9ec7838" :  | logging.rb:73:20:73:53 | password_masked_ineffective_sub_ex |
+| logging.rb:61:36:61:69 | "a7e3747b19930d4f4b8181047194832f" :  | logging.rb:65:36:65:67 | password_masked_ineffective_gsub :  |
+| logging.rb:62:39:62:72 | "a7e3747b19930d4f4b8181047194832f" :  | logging.rb:75:20:75:54 | password_masked_ineffective_gsub_ex |
+| logging.rb:63:35:63:65 | password_masked_ineffective_sub :  | logging.rb:63:35:63:88 | call to sub :  |
+| logging.rb:63:35:63:88 | call to sub :  | logging.rb:69:20:69:50 | password_masked_ineffective_sub |
+| logging.rb:65:36:65:67 | password_masked_ineffective_gsub :  | logging.rb:65:36:65:86 | call to gsub :  |
+| logging.rb:65:36:65:86 | call to gsub :  | logging.rb:71:20:71:51 | password_masked_ineffective_gsub |
+| logging.rb:77:9:77:16 | password :  | logging.rb:79:15:79:22 | password |
+| logging.rb:82:16:82:49 | "65f2950df2f0e2c38d7ba2ccca767291" :  | logging.rb:83:5:83:16 | password_arg :  |
+| logging.rb:83:5:83:16 | password_arg :  | logging.rb:77:9:77:16 | password :  |
+nodes
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | semmle.label | "043697b96909e03ca907599d6420555f" :  |
+| logging.rb:6:20:6:27 | password | semmle.label | password |
+| logging.rb:8:21:8:28 | password | semmle.label | password |
+| logging.rb:10:21:10:28 | password | semmle.label | password |
+| logging.rb:12:21:12:28 | password | semmle.label | password |
+| logging.rb:14:23:14:30 | password | semmle.label | password |
+| logging.rb:16:20:16:27 | password | semmle.label | password |
+| logging.rb:19:33:19:40 | password | semmle.label | password |
+| logging.rb:21:44:21:51 | password | semmle.label | password |
+| logging.rb:23:33:23:40 | password | semmle.label | password |
+| logging.rb:26:18:26:34 | "pw: #{...}" | semmle.label | "pw: #{...}" |
+| logging.rb:28:26:28:33 | password | semmle.label | password |
+| logging.rb:30:8:30:55 | call to [] :  | semmle.label | call to [] :  |
+| logging.rb:34:1:34:15 | call to []= :  | semmle.label | call to []= :  |
+| logging.rb:37:20:37:23 | hsh1 :  | semmle.label | hsh1 :  |
+| logging.rb:37:20:37:34 | ...[...] | semmle.label | ...[...] |
+| logging.rb:39:20:39:34 | ...[...] | semmle.label | ...[...] |
+| logging.rb:59:35:59:68 | "ca497451f5e883662fb1a37bc9ec7838" :  | semmle.label | "ca497451f5e883662fb1a37bc9ec7838" :  |
+| logging.rb:60:38:60:71 | "ca497451f5e883662fb1a37bc9ec7838" :  | semmle.label | "ca497451f5e883662fb1a37bc9ec7838" :  |
+| logging.rb:61:36:61:69 | "a7e3747b19930d4f4b8181047194832f" :  | semmle.label | "a7e3747b19930d4f4b8181047194832f" :  |
+| logging.rb:62:39:62:72 | "a7e3747b19930d4f4b8181047194832f" :  | semmle.label | "a7e3747b19930d4f4b8181047194832f" :  |
+| logging.rb:63:35:63:65 | password_masked_ineffective_sub :  | semmle.label | password_masked_ineffective_sub :  |
+| logging.rb:63:35:63:88 | call to sub :  | semmle.label | call to sub :  |
+| logging.rb:65:36:65:67 | password_masked_ineffective_gsub :  | semmle.label | password_masked_ineffective_gsub :  |
+| logging.rb:65:36:65:86 | call to gsub :  | semmle.label | call to gsub :  |
+| logging.rb:69:20:69:50 | password_masked_ineffective_sub | semmle.label | password_masked_ineffective_sub |
+| logging.rb:71:20:71:51 | password_masked_ineffective_gsub | semmle.label | password_masked_ineffective_gsub |
+| logging.rb:73:20:73:53 | password_masked_ineffective_sub_ex | semmle.label | password_masked_ineffective_sub_ex |
+| logging.rb:75:20:75:54 | password_masked_ineffective_gsub_ex | semmle.label | password_masked_ineffective_gsub_ex |
+| logging.rb:77:9:77:16 | password :  | semmle.label | password :  |
+| logging.rb:79:15:79:22 | password | semmle.label | password |
+| logging.rb:82:16:82:49 | "65f2950df2f0e2c38d7ba2ccca767291" :  | semmle.label | "65f2950df2f0e2c38d7ba2ccca767291" :  |
+| logging.rb:83:5:83:16 | password_arg :  | semmle.label | password_arg :  |
+subpaths
+#select
+| logging.rb:6:20:6:27 | password | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:6:20:6:27 | password | Sensitive data returned by $@ is logged here. | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | an assignment to password |
+| logging.rb:8:21:8:28 | password | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:8:21:8:28 | password | Sensitive data returned by $@ is logged here. | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | an assignment to password |
+| logging.rb:10:21:10:28 | password | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:10:21:10:28 | password | Sensitive data returned by $@ is logged here. | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | an assignment to password |
+| logging.rb:12:21:12:28 | password | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:12:21:12:28 | password | Sensitive data returned by $@ is logged here. | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | an assignment to password |
+| logging.rb:14:23:14:30 | password | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:14:23:14:30 | password | Sensitive data returned by $@ is logged here. | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | an assignment to password |
+| logging.rb:16:20:16:27 | password | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:16:20:16:27 | password | Sensitive data returned by $@ is logged here. | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | an assignment to password |
+| logging.rb:19:33:19:40 | password | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:19:33:19:40 | password | Sensitive data returned by $@ is logged here. | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | an assignment to password |
+| logging.rb:21:44:21:51 | password | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:21:44:21:51 | password | Sensitive data returned by $@ is logged here. | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | an assignment to password |
+| logging.rb:23:33:23:40 | password | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:23:33:23:40 | password | Sensitive data returned by $@ is logged here. | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | an assignment to password |
+| logging.rb:26:18:26:34 | "pw: #{...}" | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:26:18:26:34 | "pw: #{...}" | Sensitive data returned by $@ is logged here. | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | an assignment to password |
+| logging.rb:28:26:28:33 | password | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:28:26:28:33 | password | Sensitive data returned by $@ is logged here. | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | an assignment to password |
+| logging.rb:37:20:37:34 | ...[...] | logging.rb:30:8:30:55 | call to [] :  | logging.rb:37:20:37:34 | ...[...] | Sensitive data returned by $@ is logged here. | logging.rb:30:8:30:55 | call to [] | a write to password |
+| logging.rb:39:20:39:34 | ...[...] | logging.rb:34:1:34:15 | call to []= :  | logging.rb:39:20:39:34 | ...[...] | Sensitive data returned by $@ is logged here. | logging.rb:34:1:34:15 | call to []= | a write to password |
+| logging.rb:69:20:69:50 | password_masked_ineffective_sub | logging.rb:59:35:59:68 | "ca497451f5e883662fb1a37bc9ec7838" :  | logging.rb:69:20:69:50 | password_masked_ineffective_sub | Sensitive data returned by $@ is logged here. | logging.rb:59:35:59:68 | "ca497451f5e883662fb1a37bc9ec7838" | an assignment to password_masked_ineffective_sub |
+| logging.rb:69:20:69:50 | password_masked_ineffective_sub | logging.rb:63:35:63:88 | call to sub :  | logging.rb:69:20:69:50 | password_masked_ineffective_sub | Sensitive data returned by $@ is logged here. | logging.rb:63:35:63:88 | call to sub | an assignment to password_masked_ineffective_sub |
+| logging.rb:71:20:71:51 | password_masked_ineffective_gsub | logging.rb:61:36:61:69 | "a7e3747b19930d4f4b8181047194832f" :  | logging.rb:71:20:71:51 | password_masked_ineffective_gsub | Sensitive data returned by $@ is logged here. | logging.rb:61:36:61:69 | "a7e3747b19930d4f4b8181047194832f" | an assignment to password_masked_ineffective_gsub |
+| logging.rb:71:20:71:51 | password_masked_ineffective_gsub | logging.rb:65:36:65:86 | call to gsub :  | logging.rb:71:20:71:51 | password_masked_ineffective_gsub | Sensitive data returned by $@ is logged here. | logging.rb:65:36:65:86 | call to gsub | an assignment to password_masked_ineffective_gsub |
+| logging.rb:73:20:73:53 | password_masked_ineffective_sub_ex | logging.rb:60:38:60:71 | "ca497451f5e883662fb1a37bc9ec7838" :  | logging.rb:73:20:73:53 | password_masked_ineffective_sub_ex | Sensitive data returned by $@ is logged here. | logging.rb:60:38:60:71 | "ca497451f5e883662fb1a37bc9ec7838" | an assignment to password_masked_ineffective_sub_ex |
+| logging.rb:75:20:75:54 | password_masked_ineffective_gsub_ex | logging.rb:62:39:62:72 | "a7e3747b19930d4f4b8181047194832f" :  | logging.rb:75:20:75:54 | password_masked_ineffective_gsub_ex | Sensitive data returned by $@ is logged here. | logging.rb:62:39:62:72 | "a7e3747b19930d4f4b8181047194832f" | an assignment to password_masked_ineffective_gsub_ex |
+| logging.rb:79:15:79:22 | password | logging.rb:79:15:79:22 | password | logging.rb:79:15:79:22 | password | Sensitive data returned by $@ is logged here. | logging.rb:79:15:79:22 | password | a parameter password |
+| logging.rb:79:15:79:22 | password | logging.rb:82:16:82:49 | "65f2950df2f0e2c38d7ba2ccca767291" :  | logging.rb:79:15:79:22 | password | Sensitive data returned by $@ is logged here. | logging.rb:82:16:82:49 | "65f2950df2f0e2c38d7ba2ccca767291" | an assignment to password_arg |

@@ -48,7 +48,7 @@ private predicate resolveVar(VarAccess va, VarDecl decl, string kind) {
   kind = "variable"
 }
 
-private predicate resolveField(FieldAccess va, VarDecl decl, string kind) {
+private predicate resolveField(FieldAccess va, FieldDecl decl, string kind) {
   decl = va.getDeclaration() and
   kind = "field"
 }

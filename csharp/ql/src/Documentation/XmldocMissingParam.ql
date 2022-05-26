@@ -1,6 +1,6 @@
 /**
  * @name Missing documentation for parameter
- * @description All parameters should be documented using '<param name="..."> </param>' tags.
+ * @description All parameters should be documented using `<param name="..."> </param>` tags.
  *              Ensure that the name attribute matches the name of the parameter.
  * @kind problem
  * @problem.severity recommendation

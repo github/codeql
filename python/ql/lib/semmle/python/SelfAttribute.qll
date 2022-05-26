@@ -31,7 +31,7 @@ private predicate self_attribute(Attribute attr, Class cls) {
   )
 }
 
-/** Helper class for UndefinedClassAttribute.ql &amp; MaybeUndefinedClassAttribute.ql */
+/** A helper class for UndefinedClassAttribute.ql &amp; MaybeUndefinedClassAttribute.ql */
 class SelfAttributeRead extends SelfAttribute {
   SelfAttributeRead() {
     this.getCtx() instanceof Load and

@@ -1,0 +1,5 @@
+name: codeql/swift-all
+version: 0.0.0
+dbscheme: swift.dbscheme
+extractor: swift
+library: true

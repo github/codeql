@@ -284,6 +284,10 @@ nodes
 | lib/subLib3/my-file.ts:3:28:3:31 | name |
 | lib/subLib3/my-file.ts:4:22:4:25 | name |
 | lib/subLib3/my-file.ts:4:22:4:25 | name |
+| lib/subLib/amdSub.js:3:28:3:31 | name |
+| lib/subLib/amdSub.js:3:28:3:31 | name |
+| lib/subLib/amdSub.js:4:22:4:25 | name |
+| lib/subLib/amdSub.js:4:22:4:25 | name |
 | lib/subLib/index.js:3:28:3:31 | name |
 | lib/subLib/index.js:3:28:3:31 | name |
 | lib/subLib/index.js:4:22:4:25 | name |
@@ -636,6 +640,10 @@ edges
 | lib/subLib3/my-file.ts:3:28:3:31 | name | lib/subLib3/my-file.ts:4:22:4:25 | name |
 | lib/subLib3/my-file.ts:3:28:3:31 | name | lib/subLib3/my-file.ts:4:22:4:25 | name |
 | lib/subLib3/my-file.ts:3:28:3:31 | name | lib/subLib3/my-file.ts:4:22:4:25 | name |
+| lib/subLib/amdSub.js:3:28:3:31 | name | lib/subLib/amdSub.js:4:22:4:25 | name |
+| lib/subLib/amdSub.js:3:28:3:31 | name | lib/subLib/amdSub.js:4:22:4:25 | name |
+| lib/subLib/amdSub.js:3:28:3:31 | name | lib/subLib/amdSub.js:4:22:4:25 | name |
+| lib/subLib/amdSub.js:3:28:3:31 | name | lib/subLib/amdSub.js:4:22:4:25 | name |
 | lib/subLib/index.js:3:28:3:31 | name | lib/subLib/index.js:4:22:4:25 | name |
 | lib/subLib/index.js:3:28:3:31 | name | lib/subLib/index.js:4:22:4:25 | name |
 | lib/subLib/index.js:3:28:3:31 | name | lib/subLib/index.js:4:22:4:25 | name |
@@ -727,5 +735,6 @@ edges
 | lib/subLib2/compiled-file.ts:4:13:4:28 | "rm -rf " + name | lib/subLib2/compiled-file.ts:3:26:3:29 | name | lib/subLib2/compiled-file.ts:4:25:4:28 | name | $@ based on $@ is later used in $@. | lib/subLib2/compiled-file.ts:4:13:4:28 | "rm -rf " + name | String concatenation | lib/subLib2/compiled-file.ts:3:26:3:29 | name | library input | lib/subLib2/compiled-file.ts:4:5:4:29 | cp.exec ... + name) | shell command |
 | lib/subLib2/special-file.js:4:10:4:25 | "rm -rf " + name | lib/subLib2/special-file.js:3:28:3:31 | name | lib/subLib2/special-file.js:4:22:4:25 | name | $@ based on $@ is later used in $@. | lib/subLib2/special-file.js:4:10:4:25 | "rm -rf " + name | String concatenation | lib/subLib2/special-file.js:3:28:3:31 | name | library input | lib/subLib2/special-file.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/subLib3/my-file.ts:4:10:4:25 | "rm -rf " + name | lib/subLib3/my-file.ts:3:28:3:31 | name | lib/subLib3/my-file.ts:4:22:4:25 | name | $@ based on $@ is later used in $@. | lib/subLib3/my-file.ts:4:10:4:25 | "rm -rf " + name | String concatenation | lib/subLib3/my-file.ts:3:28:3:31 | name | library input | lib/subLib3/my-file.ts:4:2:4:26 | cp.exec ... + name) | shell command |
+| lib/subLib/amdSub.js:4:10:4:25 | "rm -rf " + name | lib/subLib/amdSub.js:3:28:3:31 | name | lib/subLib/amdSub.js:4:22:4:25 | name | $@ based on $@ is later used in $@. | lib/subLib/amdSub.js:4:10:4:25 | "rm -rf " + name | String concatenation | lib/subLib/amdSub.js:3:28:3:31 | name | library input | lib/subLib/amdSub.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/subLib/index.js:4:10:4:25 | "rm -rf " + name | lib/subLib/index.js:3:28:3:31 | name | lib/subLib/index.js:4:22:4:25 | name | $@ based on $@ is later used in $@. | lib/subLib/index.js:4:10:4:25 | "rm -rf " + name | String concatenation | lib/subLib/index.js:3:28:3:31 | name | library input | lib/subLib/index.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | lib/subLib/index.js:7:32:7:35 | name | lib/subLib/index.js:8:22:8:25 | name | $@ based on $@ is later used in $@. | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | String concatenation | lib/subLib/index.js:7:32:7:35 | name | library input | lib/subLib/index.js:8:2:8:26 | cp.exec ... + name) | shell command |

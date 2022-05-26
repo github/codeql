@@ -3,7 +3,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** The class `android.content.ContentValues`. */
 class ContentValues extends Class {
@@ -50,10 +50,10 @@ private class SummaryModels extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "android.content;ContentValues;false;put;;;Argument[0];MapKey of Argument[-1];value",
-        "android.content;ContentValues;false;put;;;Argument[1];MapValue of Argument[-1];value",
-        "android.content;ContentValues;false;putAll;;;MapKey of Argument[0];MapKey of Argument[-1];value",
-        "android.content;ContentValues;false;putAll;;;MapValue of Argument[0];MapValue of Argument[-1];value"
+        "android.content;ContentValues;false;put;;;Argument[0];Argument[-1].MapKey;value",
+        "android.content;ContentValues;false;put;;;Argument[1];Argument[-1].MapValue;value",
+        "android.content;ContentValues;false;putAll;;;Argument[0].MapKey;Argument[-1].MapKey;value",
+        "android.content;ContentValues;false;putAll;;;Argument[0].MapValue;Argument[-1].MapValue;value"
       ]
   }
 }

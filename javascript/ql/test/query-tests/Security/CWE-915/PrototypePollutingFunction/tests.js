@@ -503,3 +503,48 @@ function copyPlainObject2(dst, src) {
         }
     }
 }
+
+
+function usingDefineProperty(dst, src) {
+    let keys = Object.keys(src);
+    for (let i = 0; i < keys.length; ++i) {
+        let key = keys[i];
+        if (dst[key]) {
+            usingDefineProperty(dst[key], src[key]);
+        } else {
+            var descriptor = {};
+            descriptor.value = src[key]; 
+            Object.defineProperty(dst, key, descriptor);  // NOT OK
+        }
+    }
+}
+
+function copyUsingForInAndRest(...args) {
+    const dst = args[0];
+    const src = args[1];
+    for (let key in src) {
+        if (dst[key]) {
+            copyUsingForInAndRest(dst[key], src[key]);
+        } else {
+            dst[key] = src[key]; // NOT OK
+        }
+    }
+}
+
+function forEachPropNoTempVar(obj, callback) {
+    const keys = Object.keys(obj)
+    const len = keys.length
+    for (let i = 0; i < len; i++) {
+        callback(keys[i], obj[keys[i]])
+    }
+}
+
+function mergeUsingCallback3(dst, src) {
+    forEachPropNoTempVar(src, (key, value) => {
+        if (dst[key]) {
+            mergeUsingCallback3(dst[key], value);
+        } else {
+            dst[key] = value; // NOT OK
+        }
+    });
+}

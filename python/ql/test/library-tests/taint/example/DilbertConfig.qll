@@ -17,7 +17,7 @@ class Wally extends Engineer {
   Wally() { this = "Wally" }
 }
 
-/** Then the configuration */
+/** The configuration for this example. */
 class DilbertConfig extends TaintTracking::Configuration {
   DilbertConfig() { this = "Dilbert config" }
 

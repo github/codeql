@@ -5,7 +5,7 @@ import semmle.python.dataflow.new.RemoteFlowSources
 import experimental.semmle.python.Concepts
 import semmle.python.Concepts
 
-module NoSQLInjection {
+module NoSqlInjection {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "NoSQLInjection" }
 
@@ -15,17 +15,17 @@ module NoSQLInjection {
     }
 
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-      sink = any(NoSQLQuery noSQLQuery).getQuery() and
+      sink = any(NoSqlQuery noSqlQuery).getQuery() and
       state instanceof ConvertedToDict
     }
 
-    override predicate isBarrier(DataFlow::Node node, DataFlow::FlowState state) {
+    override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
       // Block `RemoteInput` paths here, since they change state to `ConvertedToDict`
       exists(Decoding decoding | decoding.getFormat() = "JSON" and node = decoding.getOutput()) and
       state instanceof RemoteInput
     }
 
-    override predicate isAdditionalFlowStep(
+    override predicate isAdditionalTaintStep(
       DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
       DataFlow::FlowState stateTo
     ) {
@@ -38,7 +38,7 @@ module NoSQLInjection {
     }
 
     override predicate isSanitizer(DataFlow::Node sanitizer) {
-      sanitizer = any(NoSQLSanitizer noSQLSanitizer).getAnInput()
+      sanitizer = any(NoSqlSanitizer noSqlSanitizer).getAnInput()
     }
   }
 
@@ -52,3 +52,6 @@ module NoSQLInjection {
     ConvertedToDict() { this = "ConvertedToDict" }
   }
 }
+
+/** DEPRECATED: Alias for NoSqlInjection */
+deprecated module NoSQLInjection = NoSqlInjection;

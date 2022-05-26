@@ -38,13 +38,13 @@ module TaintModels {
   }
 }
 
-module ASTTest {
+module AstTest {
   private import semmle.code.cpp.dataflow.TaintTracking
   private import semmle.code.cpp.models.interfaces.Taint
 
   /** Common data flow configuration to be used by tests. */
-  class ASTTestAllocationConfig extends TaintTracking::Configuration {
-    ASTTestAllocationConfig() { this = "ASTTestAllocationConfig" }
+  class AstTestAllocationConfig extends TaintTracking::Configuration {
+    AstTestAllocationConfig() { this = "ASTTestAllocationConfig" }
 
     override predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"

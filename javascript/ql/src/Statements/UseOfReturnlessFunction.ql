@@ -49,7 +49,7 @@ predicate benignContext(Expr e) {
   e.getParent().(ExprStmt).getParent() instanceof CodeInAttribute
   or
   // and JSX-attributes.
-  e = any(JSXAttribute attr).getValue()
+  e = any(JsxAttribute attr).getValue()
   or
   exists(AwaitExpr await | await.getOperand() = e and benignContext(await))
   or

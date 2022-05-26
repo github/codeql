@@ -57,7 +57,7 @@ predicate variableValuesInterned(Variable v) {
   forall(StringValue sv | sv = v.getAnAssignedValue() | sv.isInterned())
 }
 
-from EqualityTest e, StringValue lhs, StringValue rhs
+from ReferenceEqualityTest e, StringValue lhs, StringValue rhs
 where
   e.getLeftOperand() = lhs and
   e.getRightOperand() = rhs and

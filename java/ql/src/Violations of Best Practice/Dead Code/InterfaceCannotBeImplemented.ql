@@ -22,7 +22,7 @@ from Method method, Method objMethod, Interface impossible
 where
   method.getDeclaringType() = impossible and
   objMethod = protectedObjectMethod(method.getSignature()) and
-  not hasSubtype*(objMethod.getReturnType(), method.getReturnType())
+  not hasDescendant(objMethod.getReturnType(), method.getReturnType())
 select method,
   "This method's return type conflicts with Object." + method.getName() +
     " so $@ can never be implemented.", impossible, impossible.getName()

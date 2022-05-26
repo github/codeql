@@ -34,7 +34,7 @@ class SourceCodeAnalysisAnalyzeCompletionCall extends MethodAccess {
     this.getMethod().hasName("analyzeCompletion") and
     this.getMethod()
         .getDeclaringType()
-        .getASupertype*()
+        .getAnAncestor()
         .hasQualifiedName("jdk.jshell", "SourceCodeAnalysis") and
     this.getMethod().getNumberOfParameters() = 1
   }
@@ -46,7 +46,7 @@ class CompletionInfoSourceOrRemainingCall extends MethodAccess {
     this.getMethod().getName() in ["source", "remaining"] and
     this.getMethod()
         .getDeclaringType()
-        .getASupertype*()
+        .getAnAncestor()
         .hasQualifiedName("jdk.jshell", "SourceCodeAnalysis$CompletionInfo") and
     this.getMethod().getNumberOfParameters() = 0
   }

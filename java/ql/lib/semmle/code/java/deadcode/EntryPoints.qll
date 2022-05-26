@@ -139,10 +139,10 @@ class JAXAnnotationReflectivelyConstructedClass extends ReflectivelyConstructedC
 
 class DeserializedClass extends ReflectivelyConstructedClass {
   DeserializedClass() {
-    exists(CastExpr cast, ReadObjectMethod readObject |
+    exists(CastingExpr cast, ReadObjectMethod readObject |
       cast.getExpr().(MethodAccess).getMethod() = readObject
     |
-      hasSubtype*(cast.getType(), this)
+      hasDescendant(cast.getType(), this)
     )
   }
 }
@@ -315,7 +315,7 @@ class FacesComponentReflectivelyConstructedClass extends ReflectivelyConstructed
  * Entry point for EJB home interfaces.
  */
 class EJBHome extends Interface, EntryPoint {
-  EJBHome() { this.getASupertype*().hasQualifiedName("javax.ejb", "EJBHome") }
+  EJBHome() { this.getAnAncestor().hasQualifiedName("javax.ejb", "EJBHome") }
 
   override Callable getALiveCallable() { result = this.getACallable() }
 }
@@ -324,7 +324,7 @@ class EJBHome extends Interface, EntryPoint {
  * Entry point for EJB object interfaces.
  */
 class EJBObject extends Interface, EntryPoint {
-  EJBObject() { this.getASupertype*().hasQualifiedName("javax.ejb", "EJBObject") }
+  EJBObject() { this.getAnAncestor().hasQualifiedName("javax.ejb", "EJBObject") }
 
   override Callable getALiveCallable() { result = this.getACallable() }
 }
@@ -427,8 +427,8 @@ class PersistenceCallbackMethod extends CallableEntryPoint {
  * A source class which is referred to by fully qualified name in the value of an arbitrary XML
  * attribute which has a name containing "className" or "ClassName".
  */
-class ArbitraryXMLEntryPoint extends ReflectivelyConstructedClass {
-  ArbitraryXMLEntryPoint() {
+class ArbitraryXmlEntryPoint extends ReflectivelyConstructedClass {
+  ArbitraryXmlEntryPoint() {
     this.fromSource() and
     exists(XMLAttribute attribute |
       attribute.getName() = "className" or
@@ -445,6 +445,9 @@ class ArbitraryXMLEntryPoint extends ReflectivelyConstructedClass {
     result = this.getAConstructor()
   }
 }
+
+/** DEPRECATED: Alias for ArbitraryXmlEntryPoint */
+deprecated class ArbitraryXMLEntryPoint = ArbitraryXmlEntryPoint;
 
 /** A Selenium PageObject, created by a call to PageFactory.initElements(..). */
 class SeleniumPageObjectEntryPoint extends ReflectivelyConstructedClass {

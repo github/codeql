@@ -65,16 +65,24 @@ private class DefaultIntentRedirectionSink extends IntentRedirectionSink {
 }
 
 /**
- * A default sanitizer for nodes dominated by calls to `ComponentName.getPackageName`
- * or `ComponentName.getClassName`. These are used to check whether the origin or destination
+ * A default sanitizer for `Intent` nodes dominated by calls to `ComponentName.getPackageName`
+ * and `ComponentName.getClassName`. These are used to check whether the origin or destination
  * components are trusted.
  */
 private class DefaultIntentRedirectionSanitizer extends IntentRedirectionSanitizer {
   DefaultIntentRedirectionSanitizer() {
+    this.getType() instanceof TypeIntent and
     exists(MethodAccess ma, Method m, Guard g, boolean branch |
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeComponentName and
-      m.hasName(["getPackageName", "getClassName"]) and
+      m.hasName("getPackageName") and
+      g.isEquality(ma, _, branch) and
+      g.controls(this.asExpr().getBasicBlock(), branch)
+    ) and
+    exists(MethodAccess ma, Method m, Guard g, boolean branch |
+      ma.getMethod() = m and
+      m.getDeclaringType() instanceof TypeComponentName and
+      m.hasName("getClassName") and
       g.isEquality(ma, _, branch) and
       g.controls(this.asExpr().getBasicBlock(), branch)
     )

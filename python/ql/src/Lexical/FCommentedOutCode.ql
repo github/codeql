@@ -10,7 +10,6 @@
 
 import python
 import Lexical.CommentedOutCode
-import python
 
 from File f, int n
 where n = count(CommentedOutCodeLine c | not c.maybeExampleCode() and c.getLocation().getFile() = f)

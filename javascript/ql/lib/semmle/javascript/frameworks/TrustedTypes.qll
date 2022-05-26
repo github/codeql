@@ -3,7 +3,7 @@
  */
 
 private import javascript
-private import semmle.javascript.security.dataflow.Xss
+private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomizations
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 
@@ -19,7 +19,7 @@ module TrustedTypes {
     override DataFlow::Node getARhs() { none() }
   }
 
-  private API::Node trustedTypesObj() { result = any(TrustedTypesEntry entry).getNode() }
+  private API::Node trustedTypesObj() { result = any(TrustedTypesEntry entry).getANode() }
 
   /** A call to `trustedTypes.createPolicy`. */
   class PolicyCreation extends API::CallNode {

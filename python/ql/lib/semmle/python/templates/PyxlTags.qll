@@ -57,7 +57,7 @@ class PyxlEndIfTag extends PyxlTag {
 class PyxlRawHtml extends PyxlTag {
   PyxlRawHtml() { this.getPyxlTagName() = "rawhtml" }
 
-  /** The text for this raw html, if it is simple text. */
+  /** Gets the text for this raw html, if it is simple text. */
   string getText() {
     exists(Unicode text |
       text = this.getValue() and

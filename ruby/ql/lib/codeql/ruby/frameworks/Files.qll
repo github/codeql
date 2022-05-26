@@ -6,188 +6,10 @@ private import ruby
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.frameworks.StandardLibrary
 private import codeql.ruby.dataflow.FlowSummary
-
-private DataFlow::Node ioInstanceInstantiation() {
-  result = API::getTopLevelMember("IO").getAnInstantiation() or
-  result = API::getTopLevelMember("IO").getAMethodCall(["for_fd", "open", "try_convert"])
-}
-
-private DataFlow::Node ioInstance() {
-  result = ioInstanceInstantiation()
-  or
-  exists(DataFlow::Node inst |
-    inst = ioInstance() and
-    inst.(DataFlow::LocalSourceNode).flowsTo(result)
-  )
-}
-
-// Match some simple cases where a path argument specifies a shell command to
-// be executed. For example, the `"|date"` argument in `IO.read("|date")`, which
-// will execute a shell command and read its output rather than reading from the
-// filesystem.
-private predicate pathArgSpawnsSubprocess(Expr arg) {
-  arg.getConstantValue().getStringOrSymbol().charAt(0) = "|"
-}
-
-private DataFlow::Node fileInstanceInstantiation() {
-  result = API::getTopLevelMember("File").getAnInstantiation()
-  or
-  result = API::getTopLevelMember("File").getAMethodCall(["open", "try_convert"])
-  or
-  // Calls to `Kernel.open` can yield `File` instances
-  result.(KernelMethodCall).getMethodName() = "open" and
-  // Assume that calls that don't invoke shell commands will instead open
-  // a file.
-  not pathArgSpawnsSubprocess(result.(KernelMethodCall).getArgument(0).asExpr().getExpr())
-}
-
-private DataFlow::Node fileInstance() {
-  result = fileInstanceInstantiation()
-  or
-  exists(DataFlow::Node inst |
-    inst = fileInstance() and
-    inst.(DataFlow::LocalSourceNode).flowsTo(result)
-  )
-}
-
-private string ioReaderClassMethodName() { result = ["binread", "foreach", "read", "readlines"] }
-
-private string ioReaderInstanceMethodName() {
-  result =
-    [
-      "getbyte", "getc", "gets", "pread", "read", "read_nonblock", "readbyte", "readchar",
-      "readline", "readlines", "readpartial", "sysread"
-    ]
-}
-
-private string ioReaderMethodName(string receiverKind) {
-  receiverKind = "class" and result = ioReaderClassMethodName()
-  or
-  receiverKind = "instance" and result = ioReaderInstanceMethodName()
-}
-
-/**
- * Classes and predicates for modeling the core `IO` module.
- */
-module IO {
-  /**
-   * An instance of the `IO` class, for example in
-   *
-   * ```rb
-   * rand = IO.new(IO.sysopen("/dev/random", "r"), "r")
-   * rand_data = rand.read(32)
-   * ```
-   *
-   * there are 3 `IOInstance`s - the call to `IO.new`, the assignment
-   * `rand = ...`, and the read access to `rand` on the second line.
-   */
-  class IOInstance extends DataFlow::Node {
-    IOInstance() {
-      this = ioInstance() or
-      this = fileInstance()
-    }
-  }
-
-  // "Direct" `IO` instances, i.e. cases where there is no more specific
-  // subtype such as `File`
-  private class IOInstanceStrict extends IOInstance {
-    IOInstanceStrict() { this = ioInstance() }
-  }
-
-  /**
-   * A `DataFlow::CallNode` that reads data using the `IO` class. For example,
-   * the `read` and `readline` calls in:
-   *
-   * ```rb
-   * # invokes the `date` shell command as a subprocess, returning its output as a string
-   * IO.read("|date")
-   *
-   * # reads from the file `foo.txt`, returning its first line as a string
-   * IO.new(IO.sysopen("foo.txt")).readline
-   * ```
-   *
-   * This class includes only reads that use the `IO` class directly, not those
-   * that use a subclass of `IO` such as `File`.
-   */
-  class IOReader extends DataFlow::CallNode {
-    private string receiverKind;
-
-    IOReader() {
-      // `IO` class method calls
-      receiverKind = "class" and
-      this = API::getTopLevelMember("IO").getAMethodCall(ioReaderMethodName(receiverKind))
-      or
-      // `IO` instance method calls
-      receiverKind = "instance" and
-      exists(IOInstanceStrict ii |
-        this.getReceiver() = ii and
-        this.getMethodName() = ioReaderMethodName(receiverKind)
-      )
-      // TODO: enumeration style methods such as `each`, `foreach`, etc.
-    }
-
-    /**
-     * Gets a string representation of the receiver kind, either "class" or "instance".
-     */
-    string getReceiverKind() { result = receiverKind }
-  }
-
-  /**
-   * A `DataFlow::CallNode` that reads data from the filesystem using the `IO`
-   * or `File` classes. For example, the `IO.read` and `File#readline` calls in:
-   *
-   * ```rb
-   * # reads the file `foo.txt` and returns its contents as a string.
-   * IO.read("foo.txt")
-   *
-   * # reads from the file `foo.txt`, returning its first line as a string
-   * File.new("foo.txt").readline
-   * ```
-   */
-  class FileReader extends DataFlow::CallNode, FileSystemReadAccess::Range {
-    private string receiverKind;
-    private string api;
-
-    FileReader() {
-      // A viable `IOReader` that could feasibly read from the filesystem
-      api = "IO" and
-      receiverKind = this.(IOReader).getReceiverKind() and
-      not pathArgSpawnsSubprocess(this.getArgument(0).asExpr().getExpr())
-      or
-      api = "File" and
-      (
-        // `File` class method calls
-        receiverKind = "class" and
-        this = API::getTopLevelMember(api).getAMethodCall(ioReaderMethodName(receiverKind))
-        or
-        // `File` instance method calls
-        receiverKind = "instance" and
-        exists(File::FileInstance fi |
-          this.getReceiver() = fi and
-          this.getMethodName() = ioReaderMethodName(receiverKind)
-        )
-      )
-      // TODO: enumeration style methods such as `each`, `foreach`, etc.
-    }
-
-    // TODO: Currently this only handles class method calls.
-    // Can we infer a path argument for instance method calls?
-    // e.g. by tracing back to the instantiation of that instance
-    override DataFlow::Node getAPathArgument() {
-      result = this.getArgument(0) and receiverKind = "class"
-    }
-
-    // This class represents calls that return data
-    override DataFlow::Node getADataNode() { result = this }
-
-    /**
-     * Returns the most specific core class used for this read, `IO` or `File`
-     */
-    string getAPI() { result = api }
-  }
-}
+private import core.IO
+private import core.Kernel::Kernel
+private import core.internal.IOOrFile
 
 /**
  * Classes and predicates for modeling the core `File` module.
@@ -230,7 +52,11 @@ module File {
    * ```
    */
   class FileModuleReader extends IO::FileReader {
-    FileModuleReader() { this.getAPI() = "File" }
+    FileModuleReader() { this.getApi() = "File" }
+
+    override DataFlow::Node getADataNode() { result = this.getADataNodeImpl() }
+
+    override DataFlow::Node getAPathArgument() { result = this.getAPathArgumentImpl() }
   }
 
   /**
@@ -247,7 +73,7 @@ module File {
               ])
       or
       // Instance methods
-      exists(FileInstance fi |
+      exists(File::FileInstance fi |
         this.getReceiver() = fi and
         this.getMethodName() = ["path", "to_path"]
       )
@@ -307,7 +133,7 @@ module File {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[_]" and
+      input = "Argument[0..]" and
       output = "ReturnValue" and
       preservesValue = false
     }

@@ -4,6 +4,7 @@
 
 import java
 import dataflow.DefUse
+private import semmle.code.java.environment.SystemProperty
 
 /**
  * A library method that formats a number of its arguments according to a
@@ -312,27 +313,7 @@ private predicate formatStringValue(Expr e, string fmtvalue) {
     or
     formatStringValue(e.(ChooseExpr).getAResultExpr(), fmtvalue)
     or
-    exists(Method getprop, MethodAccess ma, string prop |
-      e = ma and
-      ma.getMethod() = getprop and
-      getprop.hasName("getProperty") and
-      getprop.getDeclaringType().hasQualifiedName("java.lang", "System") and
-      getprop.getNumberOfParameters() = 1 and
-      ma.getAnArgument().(StringLiteral).getValue() = prop and
-      (prop = "line.separator" or prop = "file.separator" or prop = "path.separator") and
-      fmtvalue = "x" // dummy value
-    )
-    or
-    exists(Field f |
-      e = f.getAnAccess() and
-      f.getDeclaringType() instanceof TypeFile and
-      fmtvalue = "x" // dummy value
-    |
-      f.hasName("pathSeparator") or
-      f.hasName("pathSeparatorChar") or
-      f.hasName("separator") or
-      f.hasName("separatorChar")
-    )
+    e = getSystemProperty(["line.separator", "file.separator", "path.separator"]) and fmtvalue = "x" // dummy value
   )
 }
 

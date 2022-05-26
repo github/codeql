@@ -30,13 +30,16 @@ class TypeUri extends RefType {
 }
 
 /** The method `java.net.URLConnection::getInputStream`. */
-class URLConnectionGetInputStreamMethod extends Method {
-  URLConnectionGetInputStreamMethod() {
+class UrlConnectionGetInputStreamMethod extends Method {
+  UrlConnectionGetInputStreamMethod() {
     this.getDeclaringType() instanceof TypeUrlConnection and
     this.hasName("getInputStream") and
     this.hasNoParameters()
   }
 }
+
+/** DEPRECATED: Alias for UrlConnectionGetInputStreamMethod */
+deprecated class URLConnectionGetInputStreamMethod = UrlConnectionGetInputStreamMethod;
 
 /** The method `java.net.Socket::getInputStream`. */
 class SocketGetInputStreamMethod extends Method {
@@ -161,7 +164,7 @@ class UrlOpenConnectionMethod extends Method {
 class CreateSocketMethod extends Method {
   CreateSocketMethod() {
     this.hasName("createSocket") and
-    this.getDeclaringType().getASupertype*() instanceof TypeSocketFactory
+    this.getDeclaringType().getAnAncestor() instanceof TypeSocketFactory
   }
 }
 

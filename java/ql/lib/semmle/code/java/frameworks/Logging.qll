@@ -1,7 +1,7 @@
 /** Provides classes and predicates to reason about logging. */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 private class LoggingSummaryModels extends SummaryModelCsv {
   override predicate row(string row) {

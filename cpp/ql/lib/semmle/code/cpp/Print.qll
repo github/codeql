@@ -8,9 +8,9 @@ private import PrintAST
 private predicate shouldPrintDeclaration(Declaration decl) {
   not decl instanceof Function
   or
-  not exists(PrintASTConfiguration c)
+  not exists(PrintAstConfiguration c)
   or
-  exists(PrintASTConfiguration config | config.shouldPrintFunction(decl))
+  exists(PrintAstConfiguration config | config.shouldPrintFunction(decl))
 }
 
 /**

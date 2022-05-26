@@ -1,0 +1,9 @@
+| mail.go:15:73:15:94 | type conversion |
+| mail.go:18:19:18:23 | definition of write |
+| mail.go:26:49:26:52 | text |
+| mail.go:26:76:26:79 | text |
+| mail.go:27:20:27:23 | text |
+| mail.go:31:33:31:39 | content |
+| mail.go:36:52:36:55 | text |
+| mail.go:36:79:36:86 | content2 |
+| mail.go:37:20:37:27 | content3 |

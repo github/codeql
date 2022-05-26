@@ -7,7 +7,7 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
 /**
- * Class representing constants.
+ * A constant.
  * Includes `None`, `True` and `False` as
  * well as strings and integers.
  */

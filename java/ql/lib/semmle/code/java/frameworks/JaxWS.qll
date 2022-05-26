@@ -390,23 +390,23 @@ private class HttpHeadersModel extends SummaryModelCsv {
 }
 
 /**
- * Model MultivaluedMap, which extends Map<K, List<V>> and provides a few extra helper methods.
+ * Model MultivaluedMap, which extends `Map<K, List<V>>` and provides a few extra helper methods.
  */
 private class MultivaluedMapModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;MultivaluedMap;true;" +
         [
-          "add;;;Argument[0];MapKey of Argument[-1];value",
-          "add;;;Argument[1];Element of MapValue of Argument[-1];value",
-          "addAll;;;Argument[0];MapKey of Argument[-1];value",
-          "addAll;(Object,List);;Element of Argument[1];Element of MapValue of Argument[-1];value",
-          "addAll;(Object,Object[]);;ArrayElement of Argument[1];Element of MapValue of Argument[-1];value",
-          "addFirst;;;Argument[0];MapKey of Argument[-1];value",
-          "addFirst;;;Argument[1];Element of MapValue of Argument[-1];value",
-          "getFirst;;;Element of MapValue of Argument[-1];ReturnValue;value",
-          "putSingle;;;Argument[0];MapKey of Argument[-1];value",
-          "putSingle;;;Argument[1];Element of MapValue of Argument[-1];value"
+          "add;;;Argument[0];Argument[-1].MapKey;value",
+          "add;;;Argument[1];Argument[-1].MapValue.Element;value",
+          "addAll;;;Argument[0];Argument[-1].MapKey;value",
+          "addAll;(Object,List);;Argument[1].Element;Argument[-1].MapValue.Element;value",
+          "addAll;(Object,Object[]);;Argument[1].ArrayElement;Argument[-1].MapValue.Element;value",
+          "addFirst;;;Argument[0];Argument[-1].MapKey;value",
+          "addFirst;;;Argument[1];Argument[-1].MapValue.Element;value",
+          "getFirst;;;Argument[-1].MapValue.Element;ReturnValue;value",
+          "putSingle;;;Argument[0];Argument[-1].MapKey;value",
+          "putSingle;;;Argument[1];Argument[-1].MapValue.Element;value"
         ]
   }
 }
@@ -419,8 +419,8 @@ private class AbstractMultivaluedMapModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;AbstractMultivaluedMap;false;AbstractMultivaluedMap;;;" +
         [
-          "MapKey of Argument[0];MapKey of Argument[-1];value",
-          "MapValue of Argument[0];MapValue of Argument[-1];value"
+          "Argument[0].MapKey;Argument[-1].MapKey;value",
+          "Argument[0].MapValue;Argument[-1].MapValue;value"
         ]
   }
 }
@@ -433,10 +433,10 @@ private class MultivaluedHashMapModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;" +
         [
-          "(Map);;MapKey of Argument[0];MapKey of Argument[-1];value",
-          "(Map);;MapValue of Argument[0];Element of MapValue of Argument[-1];value",
-          "(MultivaluedMap);;MapKey of Argument[0];MapKey of Argument[-1];value",
-          "(MultivaluedMap);;MapValue of Argument[0];MapValue of Argument[-1];value"
+          "(Map);;Argument[0].MapKey;Argument[-1].MapKey;value",
+          "(Map);;Argument[0].MapValue;Argument[-1].MapValue.Element;value",
+          "(MultivaluedMap);;Argument[0].MapKey;Argument[-1].MapKey;value",
+          "(MultivaluedMap);;Argument[0].MapValue;Argument[-1].MapValue;value"
         ]
   }
 }
@@ -520,8 +520,8 @@ private class FormModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;Form;" +
         [
-          "false;Form;;;MapKey of Argument[0];Argument[-1];taint",
-          "false;Form;;;Element of MapValue of Argument[0];Argument[-1];taint",
+          "false;Form;;;Argument[0].MapKey;Argument[-1];taint",
+          "false;Form;;;Argument[0].MapValue.Element;Argument[-1];taint",
           "false;Form;;;Argument[0..1];Argument[-1];taint",
           "true;asMap;;;Argument[-1];ReturnValue;taint",
           "true;param;;;Argument[0..1];Argument[-1];taint",
@@ -571,15 +571,15 @@ private class UriBuilderModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;UriBuilder;" +
         [
-          "true;build;;;ArrayElement of Argument[0];ReturnValue;taint",
+          "true;build;;;Argument[0].ArrayElement;ReturnValue;taint",
           "true;build;;;Argument[-1];ReturnValue;taint",
-          "true;buildFromEncoded;;;ArrayElement of Argument[0];ReturnValue;taint",
+          "true;buildFromEncoded;;;Argument[0].ArrayElement;ReturnValue;taint",
           "true;buildFromEncoded;;;Argument[-1];ReturnValue;taint",
-          "true;buildFromEncodedMap;;;MapKey of Argument[0];ReturnValue;taint",
-          "true;buildFromEncodedMap;;;MapValue of Argument[0];ReturnValue;taint",
+          "true;buildFromEncodedMap;;;Argument[0].MapKey;ReturnValue;taint",
+          "true;buildFromEncodedMap;;;Argument[0].MapValue;ReturnValue;taint",
           "true;buildFromEncodedMap;;;Argument[-1];ReturnValue;taint",
-          "true;buildFromMap;;;MapKey of Argument[0];ReturnValue;taint",
-          "true;buildFromMap;;;MapValue of Argument[0];ReturnValue;taint",
+          "true;buildFromMap;;;Argument[0].MapKey;ReturnValue;taint",
+          "true;buildFromMap;;;Argument[0].MapValue;ReturnValue;taint",
           "true;buildFromMap;;;Argument[-1];ReturnValue;taint",
           "true;clone;;;Argument[-1];ReturnValue;taint",
           "true;fragment;;;Argument[0];ReturnValue;taint",
@@ -589,40 +589,40 @@ private class UriBuilderModel extends SummaryModelCsv {
           "false;fromUri;;;Argument[0];ReturnValue;taint",
           "true;host;;;Argument[0];ReturnValue;taint", "true;host;;;Argument[-1];ReturnValue;value",
           "true;matrixParam;;;Argument[0];ReturnValue;taint",
-          "true;matrixParam;;;ArrayElement of Argument[1];ReturnValue;taint",
+          "true;matrixParam;;;Argument[1].ArrayElement;ReturnValue;taint",
           "true;matrixParam;;;Argument[-1];ReturnValue;value",
           "true;path;;;Argument[0..1];ReturnValue;taint",
           "true;path;;;Argument[-1];ReturnValue;value",
           "true;queryParam;;;Argument[0];ReturnValue;taint",
-          "true;queryParam;;;ArrayElement of Argument[1];ReturnValue;taint",
+          "true;queryParam;;;Argument[1].ArrayElement;ReturnValue;taint",
           "true;queryParam;;;Argument[-1];ReturnValue;value",
           "true;replaceMatrix;;;Argument[0];ReturnValue;taint",
           "true;replaceMatrix;;;Argument[-1];ReturnValue;value",
           "true;replaceMatrixParam;;;Argument[0];ReturnValue;taint",
-          "true;replaceMatrixParam;;;ArrayElement of Argument[1];ReturnValue;taint",
+          "true;replaceMatrixParam;;;Argument[1].ArrayElement;ReturnValue;taint",
           "true;replaceMatrixParam;;;Argument[-1];ReturnValue;value",
           "true;replacePath;;;Argument[0];ReturnValue;taint",
           "true;replacePath;;;Argument[-1];ReturnValue;value",
           "true;replaceQuery;;;Argument[0];ReturnValue;taint",
           "true;replaceQuery;;;Argument[-1];ReturnValue;value",
           "true;replaceQueryParam;;;Argument[0];ReturnValue;taint",
-          "true;replaceQueryParam;;;ArrayElement of Argument[1];ReturnValue;taint",
+          "true;replaceQueryParam;;;Argument[1].ArrayElement;ReturnValue;taint",
           "true;replaceQueryParam;;;Argument[-1];ReturnValue;value",
           "true;resolveTemplate;;;Argument[0..2];ReturnValue;taint",
           "true;resolveTemplate;;;Argument[-1];ReturnValue;value",
           "true;resolveTemplateFromEncoded;;;Argument[0..1];ReturnValue;taint",
           "true;resolveTemplateFromEncoded;;;Argument[-1];ReturnValue;value",
-          "true;resolveTemplates;;;MapKey of Argument[0];ReturnValue;taint",
-          "true;resolveTemplates;;;MapValue of Argument[0];ReturnValue;taint",
+          "true;resolveTemplates;;;Argument[0].MapKey;ReturnValue;taint",
+          "true;resolveTemplates;;;Argument[0].MapValue;ReturnValue;taint",
           "true;resolveTemplates;;;Argument[-1];ReturnValue;value",
-          "true;resolveTemplatesFromEncoded;;;MapKey of Argument[0];ReturnValue;taint",
-          "true;resolveTemplatesFromEncoded;;;MapValue of Argument[0];ReturnValue;taint",
+          "true;resolveTemplatesFromEncoded;;;Argument[0].MapKey;ReturnValue;taint",
+          "true;resolveTemplatesFromEncoded;;;Argument[0].MapValue;ReturnValue;taint",
           "true;resolveTemplatesFromEncoded;;;Argument[-1];ReturnValue;value",
           "true;scheme;;;Argument[0];ReturnValue;taint",
           "true;scheme;;;Argument[-1];ReturnValue;value",
           "true;schemeSpecificPart;;;Argument[0];ReturnValue;taint",
           "true;schemeSpecificPart;;;Argument[-1];ReturnValue;value",
-          "true;segment;;;ArrayElement of Argument[0];ReturnValue;taint",
+          "true;segment;;;Argument[0].ArrayElement;ReturnValue;taint",
           "true;segment;;;Argument[-1];ReturnValue;value",
           "true;toTemplate;;;Argument[-1];ReturnValue;taint",
           "true;uri;;;Argument[0];ReturnValue;taint", "true;uri;;;Argument[-1];ReturnValue;value",

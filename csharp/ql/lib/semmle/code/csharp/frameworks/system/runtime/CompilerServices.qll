@@ -35,7 +35,7 @@ class SystemRuntimeCompilerServicesTaskAwaiterStruct extends SystemRuntimeCompil
 private class SystemRuntimeCompilerServicesTaskAwaiterFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Runtime.CompilerServices;TaskAwaiter<>;false;GetResult;();;Property[System.Threading.Tasks.Task<>.Result] of SyntheticField[m_task_task_awaiter] of Argument[Qualifier];ReturnValue;value"
+      "System.Runtime.CompilerServices;TaskAwaiter<>;false;GetResult;();;Argument[Qualifier].SyntheticField[m_task_task_awaiter].Property[System.Threading.Tasks.Task<>.Result];ReturnValue;value"
   }
 }
 
@@ -67,7 +67,7 @@ private class SyntheticConfiguredTaskAwaiterField extends SyntheticField {
 private class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>;false;GetAwaiter;();;SyntheticField[m_configuredTaskAwaiter] of Argument[Qualifier];ReturnValue;value"
+      "System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>;false;GetAwaiter;();;Argument[Qualifier].SyntheticField[m_configuredTaskAwaiter];ReturnValue;value"
   }
 }
 
@@ -89,7 +89,7 @@ class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiter
 private class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>+ConfiguredTaskAwaiter;false;GetResult;();;Property[System.Threading.Tasks.Task<>.Result] of SyntheticField[m_task_configured_task_awaitable] of Argument[Qualifier];ReturnValue;value"
+      "System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>+ConfiguredTaskAwaiter;false;GetResult;();;Argument[Qualifier].SyntheticField[m_task_configured_task_awaitable].Property[System.Threading.Tasks.Task<>.Result];ReturnValue;value"
   }
 }
 
@@ -98,8 +98,8 @@ private class SystemRuntimeCompilerServicesReadOnlyCollectionBuilderFlowModelCsv
   override predicate row(string row) {
     row =
       [
-        "System.Runtime.CompilerServices;ReadOnlyCollectionBuilder<>;false;Reverse;();;Element of Argument[0];Element of ReturnValue;value",
-        "System.Runtime.CompilerServices;ReadOnlyCollectionBuilder<>;false;Reverse;(System.Int32,System.Int32);;Element of Argument[0];Element of ReturnValue;value",
+        "System.Runtime.CompilerServices;ReadOnlyCollectionBuilder<>;false;Reverse;();;Argument[0].Element;ReturnValue.Element;value",
+        "System.Runtime.CompilerServices;ReadOnlyCollectionBuilder<>;false;Reverse;(System.Int32,System.Int32);;Argument[0].Element;ReturnValue.Element;value",
       ]
   }
 }

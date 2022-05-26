@@ -335,7 +335,7 @@ import Dispatch
 
 private Expr variableTrackStep(Expr use) {
   exists(Variable v |
-    use = v.getAnAccess() and
+    pragma[only_bind_out](use) = v.getAnAccess() and
     use.getType() instanceof RefType and
     not result instanceof NullLiteral and
     not v.(LocalVariableDecl).getDeclExpr().hasImplicitInit()
@@ -358,6 +358,7 @@ private Expr variableTrackPath(Expr use) {
 /**
  * Gets an expression by tracking `use` backwards through variable assignments.
  */
+pragma[inline]
 Expr variableTrack(Expr use) {
   result = variableTrackPath(use)
   or

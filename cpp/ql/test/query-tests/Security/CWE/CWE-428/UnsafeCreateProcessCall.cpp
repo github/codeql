@@ -99,19 +99,19 @@ void positiveTestCases()
     void* h = 0;
     wchar_t* lpApplicationName = NULL;
 
-    // CreatePorcessA
+    // CreateProcessA
     CreateProcessA(                             //BUG
         NULL,
         (char*)"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
-    // CreatePorcessW
+    // CreateProcessW
     CreateProcessW(                             //BUG
         NULL,
         (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
     
-    // CreatePorcess
+    // CreateProcess
     CreateProcess(                              //BUG
         NULL,
         (wchar_t*)L"C:\\Program Files\\MyApp",
@@ -162,7 +162,7 @@ void positiveTestCases()
         (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
-    // CreatePorcess with a hardcoded variable for application Name (NULL)
+    // CreateProcess with a hardcoded variable for application Name (NULL)
     // Variation: tab instead of space
     CreateProcess(                              //BUG
         lpApplicationName,
@@ -276,19 +276,19 @@ void negativeTestCases_quotedCommandLine()
     void* h = 0;
     wchar_t* lpApplicationName = NULL;
 
-    // CreatePorcessA
+    // CreateProcessA
     CreateProcessA(
         NULL,
         (char*)"\"C:\\Program Files\\MyApp\"",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
-    // CreatePorcessW
+    // CreateProcessW
     CreateProcessW(
         NULL,
         (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
-    // CreatePorcess
+    // CreateProcess
     CreateProcess( 
         NULL,
         (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
@@ -339,7 +339,7 @@ void negativeTestCases_quotedCommandLine()
         (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
-    // CreatePorcess with a hardcoded variable for application Name (NULL)
+    // CreateProcess with a hardcoded variable for application Name (NULL)
     CreateProcess( 
         lpApplicationName,
         (wchar_t*)L"\"C:\\Program Files\\MyApp\"",
@@ -359,19 +359,19 @@ void negativeTestCases_AppNameSet()
     void* h = 0;
     const wchar_t* lpApplicationName = (const wchar_t*)L"MyApp.exe";
 
-    // CreatePorcessA
+    // CreateProcessA
     CreateProcessA(
         (char*)"MyApp.exe",
         (char*)"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
-    // CreatePorcessW
+    // CreateProcessW
     CreateProcessW(
         (wchar_t*)L"MyApp.exe",
         (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
-    // CreatePorcess
+    // CreateProcess
     CreateProcess(
         (wchar_t*)L"MyApp.exe",
         (wchar_t*)L"C:\\Program Files\\MyApp",
@@ -422,7 +422,7 @@ void negativeTestCases_AppNameSet()
         (wchar_t*)L"C:\\Program Files\\MyApp",
         NULL, NULL, FALSE, 0, NULL, NULL, NULL, NULL);
 
-    // CreatePorcess with a hardcoded variable for application Name (NULL)
+    // CreateProcess with a hardcoded variable for application Name (NULL)
     CreateProcess(
         (wchar_t*)lpApplicationName,
         (wchar_t*)L"C:\\Program Files\\MyApp",

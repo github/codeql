@@ -18,7 +18,6 @@ where
   not lv1.isCompilerGenerated() and
   not lv2.isCompilerGenerated() and
   not lv1.getParentScope().(BlockStmt).isInMacroExpansion() and
-  not lv2.getParentScope().(BlockStmt).isInMacroExpansion() and
-  not lv1.getName() = "(unnamed local variable)"
+  not lv2.getParentScope().(BlockStmt).isInMacroExpansion()
 select lv1, "Variable " + lv1.getName() + " hides another variable of the same name (on $@).", lv2,
   "line " + lv2.getLocation().getStartLine().toString()

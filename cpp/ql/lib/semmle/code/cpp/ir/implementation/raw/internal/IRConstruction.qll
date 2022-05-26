@@ -48,7 +48,7 @@ module Raw {
   cached
   predicate hasTempVariable(Function func, Locatable ast, TempVariableTag tag, CppType type) {
     exists(TranslatedElement element |
-      element.getAST() = ast and
+      element.getAst() = ast and
       func = element.getFunction() and
       element.hasTempVariable(tag, type)
     )
@@ -75,7 +75,7 @@ module Raw {
       tag = getInstructionTag(instruction) and
       (
         result = element.getInstructionVariable(tag) or
-        result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
+        result.(IRStringLiteral).getAst() = element.getInstructionStringLiteral(tag)
       )
     )
   }
@@ -339,7 +339,7 @@ Instruction getInstructionBackEdgeSuccessor(Instruction instruction, EdgeKind ki
   // such a `goto` creates a back edge.
   exists(TranslatedElement s, GotoStmt goto |
     not isStrictlyForwardGoto(goto) and
-    goto = s.getAST() and
+    goto = s.getAst() and
     exists(InstructionTag tag |
       result = s.getInstructionSuccessor(tag, kind) and
       instruction = s.getInstruction(tag)
@@ -349,11 +349,16 @@ Instruction getInstructionBackEdgeSuccessor(Instruction instruction, EdgeKind ki
 
 /** Holds if `goto` jumps strictly forward in the program text. */
 private predicate isStrictlyForwardGoto(GotoStmt goto) {
-  goto.getLocation().isBefore(goto.getTarget().getLocation())
+  goto.getLocation().isBefore(goto.getTarget().getLocation(), _)
 }
 
-Locatable getInstructionAST(TStageInstruction instr) {
-  result = getInstructionTranslatedElement(instr).getAST()
+Locatable getInstructionAst(TStageInstruction instr) {
+  result = getInstructionTranslatedElement(instr).getAst()
+}
+
+/** DEPRECATED: Alias for getInstructionAst */
+deprecated Locatable getInstructionAST(TStageInstruction instr) {
+  result = getInstructionAst(instr)
 }
 
 CppType getInstructionResultType(TStageInstruction instr) {

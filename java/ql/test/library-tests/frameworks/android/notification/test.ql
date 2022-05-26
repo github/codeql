@@ -7,7 +7,7 @@ class SummaryModelTest extends SummaryModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-        "generatedtest;Test;false;getMapKeyDefault;(Bundle);;MapKey of Argument[0];ReturnValue;value"
+        "generatedtest;Test;false;getMapKeyDefault;(Bundle);;Argument[0].MapKey;ReturnValue;value"
       ]
   }
 }

@@ -85,7 +85,7 @@ module VarConsistency {
     strictcount(v.getDeclaration()) > 1
   }
 
-  query predicate multipleFieldDefs(FieldAccess f, VarDef decl) {
+  query predicate multipleFieldDefs(FieldAccess f, FieldDecl decl) {
     decl = f.getDeclaration() and
     strictcount(f.getDeclaration()) > 1
   }

@@ -1,8 +1,13 @@
+/**
+ * Provides modeling for the `Net::HTTP` library.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.dataflow.internal.DataFlowPublic
+private import codeql.ruby.DataFlow
 
 /**
  * A `Net::HTTP` call which initiates an HTTP request.
@@ -16,9 +21,10 @@ private import codeql.ruby.dataflow.internal.DataFlowPublic
 class NetHttpRequest extends HTTP::Client::Request::Range {
   private DataFlow::CallNode request;
   private DataFlow::Node responseBody;
+  private API::Node requestNode;
 
   NetHttpRequest() {
-    exists(API::Node requestNode, string method |
+    exists(string method |
       request = requestNode.getAnImmediateUse() and
       this = request.asExpr().getExpr()
     |
@@ -43,10 +49,19 @@ class NetHttpRequest extends HTTP::Client::Request::Range {
   }
 
   /**
-   * Gets the node representing the URL of the request.
-   * Currently unused, but may be useful in future, e.g. to filter out certain requests.
+   * Gets a node that contributes to the URL of the request.
    */
-  override DataFlow::Node getURL() { result = request.getArgument(0) }
+  override DataFlow::Node getAUrlPart() {
+    result = request.getArgument(0)
+    or
+    // Net::HTTP.new(...).get(...)
+    exists(API::Node new |
+      new = API::getTopLevelMember("Net").getMember("HTTP").getInstance() and
+      requestNode = new.getReturn(_)
+    |
+      result = new.getAnImmediateUse().(DataFlow::CallNode).getArgument(0)
+    )
+  }
 
   override DataFlow::Node getResponseBody() { result = responseBody }
 

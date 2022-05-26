@@ -109,7 +109,7 @@ module API {
      */
     cached
     Node getMember(string m) {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::member(m))
     }
 
@@ -119,7 +119,7 @@ module API {
      */
     cached
     Node getUnknownMember() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::unknownMember())
     }
 
@@ -129,7 +129,7 @@ module API {
      */
     cached
     Node getAMember() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getMember(_)
       or
       result = this.getUnknownMember()
@@ -148,7 +148,7 @@ module API {
      */
     cached
     Node getInstance() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::instance())
     }
 
@@ -160,7 +160,7 @@ module API {
      */
     cached
     Node getParameter(int i) {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::parameter(i))
     }
 
@@ -182,13 +182,12 @@ module API {
      */
     cached
     Node getReceiver() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::receiver())
     }
 
     /**
-     * Gets a node representing a parameter or the receiver of the function represented by this
-     * node.
+     * Gets a node representing a parameter of the function represented by this node.
      *
      * This predicate may result in a mix of parameters from different call sites in cases where
      * there are multiple invocations of this API component.
@@ -196,10 +195,8 @@ module API {
      */
     cached
     Node getAParameter() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getParameter(_)
-      or
-      result = this.getReceiver()
     }
 
     /**
@@ -210,7 +207,7 @@ module API {
      */
     cached
     Node getReturn() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::return())
     }
 
@@ -220,7 +217,7 @@ module API {
      */
     cached
     Node getPromised() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::promised())
     }
 
@@ -229,9 +226,75 @@ module API {
      */
     cached
     Node getPromisedError() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::promisedError())
     }
+
+    /**
+     * Gets any class that has this value as a decorator.
+     *
+     * For example:
+     * ```js
+     * import { D } from "foo";
+     *
+     * // moduleImport("foo").getMember("D").getADecoratedClass()
+     * @D
+     * class C1 {}
+     *
+     * // moduleImport("foo").getMember("D").getReturn().getADecoratedClass()
+     * @D()
+     * class C2 {}
+     * ```
+     */
+    cached
+    Node getADecoratedClass() { result = this.getASuccessor(Label::decoratedClass()) }
+
+    /**
+     * Gets any method, field, or accessor that has this value as a decorator.
+     *
+     * In the case of an accessor, this gets the return value of a getter, or argument to a setter.
+     *
+     * For example:
+     * ```js
+     * import { D } from "foo";
+     *
+     * class C {
+     *   // moduleImport("foo").getMember("D").getADecoratedMember()
+     *   @D m1() {}
+     *   @D f;
+     *   @D get g() { return this.x; }
+     *
+     *   // moduleImport("foo").getMember("D").getReturn().getADecoratedMember()
+     *   @D() m2() {}
+     *   @D() f2;
+     *   @D() get g2() { return this.x; }
+     * }
+     * ```
+     */
+    cached
+    Node getADecoratedMember() { result = this.getASuccessor(Label::decoratedMember()) }
+
+    /**
+     * Gets any parameter that has this value as a decorator.
+     *
+     * For example:
+     * ```js
+     * import { D } from "foo";
+     *
+     * class C {
+     *   method(
+     *     // moduleImport("foo").getMember("D").getADecoratedParameter()
+     *     @D
+     *     param1,
+     *     // moduleImport("foo").getMember("D").getReturn().getADecoratedParameter()
+     *     @D()
+     *     param2
+     *  ) {}
+     * }
+     * ```
+     */
+    cached
+    Node getADecoratedParameter() { result = this.getASuccessor(Label::decoratedParameter()) }
 
     /**
      * Gets a string representation of the lexicographically least among all shortest access paths
@@ -320,8 +383,8 @@ module API {
       exists(Node pred, Label::ApiLabel lbl, string predpath |
         Impl::edge(pred, lbl, this) and
         predpath = pred.getAPath(length - 1) and
-        exists(string space | if length = 1 then space = "" else space = " " |
-          result = "(" + lbl + space + predpath + ")" and
+        exists(string dot | if length = 1 then dot = "" else dot = "." |
+          result = predpath + dot + lbl and
           // avoid producing strings longer than 1MB
           result.length() < 1000 * 1000
         )
@@ -371,8 +434,12 @@ module API {
   /**
    * An API entry point.
    *
-   * Extend this class to define additional API entry points other than modules.
-   * Typical examples include global variables.
+   * By default, API graph nodes are only created for nodes that come from an external
+   * library or escape into an external library. The points where values are cross the boundary
+   * between codebases are called "entry points".
+   *
+   * Imports and exports are considered entry points by default, but additional entry points may
+   * be added by extending this class. Typical examples include global variables.
    */
   abstract class EntryPoint extends string {
     bindingset[this]
@@ -385,7 +452,10 @@ module API {
     abstract DataFlow::Node getARhs();
 
     /** Gets an API-node for this entry point. */
-    API::Node getNode() { result = root().getASuccessor(Label::entryPoint(this)) }
+    API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
+
+    /** DEPRECATED. Use `getANode()` instead. */
+    deprecated API::Node getNode() { result = this.getANode() }
   }
 
   /**
@@ -534,12 +604,36 @@ module API {
           or
           lbl = Label::promisedError() and
           PromiseFlow::storeStep(rhs, pred, Promises::errorProp())
+          or
+          // The return-value of a getter G counts as a definition of property G
+          // (Ordinary methods and properties are handled as PropWrite nodes)
+          exists(string name | lbl = Label::member(name) |
+            rhs = pred.(DataFlow::ObjectLiteralNode).getPropertyGetter(name).getAReturn()
+            or
+            rhs =
+              pred.(DataFlow::ClassNode)
+                  .getStaticMember(name, DataFlow::MemberKind::getter())
+                  .getAReturn()
+          )
+          or
+          // If `new C()` escapes, generate edges to its instance members
+          exists(DataFlow::ClassNode cls, string name |
+            pred = cls.getAClassReference().getAnInstantiation() and
+            lbl = Label::member(name)
+          |
+            rhs = cls.getInstanceMethod(name)
+            or
+            rhs = cls.getInstanceMember(name, DataFlow::MemberKind::getter()).getAReturn()
+          )
         )
         or
         exists(DataFlow::ClassNode cls, string name |
           base = MkClassInstance(cls) and
-          lbl = Label::member(name) and
+          lbl = Label::member(name)
+        |
           rhs = cls.getInstanceMethod(name)
+          or
+          rhs = cls.getInstanceMember(name, DataFlow::MemberKind::getter()).getAReturn()
         )
         or
         exists(DataFlow::FunctionNode f |
@@ -554,9 +648,10 @@ module API {
           rhs = f.getExceptionalReturn()
         )
         or
-        exists(int i |
-          lbl = Label::parameter(i) and
-          argumentPassing(base, i, rhs)
+        exists(int i | argumentPassing(base, i, rhs) |
+          lbl = Label::parameter(i)
+          or
+          i = -1 and lbl = Label::receiver()
         )
         or
         exists(DataFlow::SourceNode src, DataFlow::PropWrite pw |
@@ -564,6 +659,15 @@ module API {
         |
           lbl = Label::memberFromRef(pw)
         )
+      )
+      or
+      decoratorDualEdge(base, lbl, rhs)
+      or
+      decoratorRhsEdge(base, lbl, rhs)
+      or
+      exists(DataFlow::PropWrite write |
+        decoratorPropEdge(base, lbl, write) and
+        rhs = write.getRhs()
       )
     }
 
@@ -693,6 +797,98 @@ module API {
           base = MkSyntheticCallbackArg(_, _, call) and
           lbl = Label::parameter(1) and
           ref = awaited(call)
+        )
+        or
+        decoratorDualEdge(base, lbl, ref)
+        or
+        decoratorUseEdge(base, lbl, ref)
+        or
+        // for fields and accessors, mark the reads as use-nodes
+        decoratorPropEdge(base, lbl, ref.(DataFlow::PropRead))
+      )
+    }
+
+    /** Holds if `base` is a use-node that flows to the decorator expression of the given decorator. */
+    pragma[nomagic]
+    private predicate useNodeFlowsToDecorator(TApiNode base, Decorator decorator) {
+      exists(DataFlow::SourceNode decoratorSrc |
+        use(base, decoratorSrc) and
+        trackUseNode(decoratorSrc).flowsToExpr(decorator.getExpression())
+      )
+    }
+
+    /**
+     * Holds if `ref` corresponds to both a use and def-node that should have an incoming edge from `base` labelled `lbl`.
+     *
+     * This happens because the decorated value escapes into the decorator function, and is then replaced
+     * by the function's return value. In the JS analysis we generally assume decorators return their input,
+     * but library models may want to find the return value.
+     */
+    private predicate decoratorDualEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
+      exists(ClassDefinition cls |
+        useNodeFlowsToDecorator(base, cls.getADecorator()) and
+        lbl = Label::decoratedClass() and
+        ref = DataFlow::valueNode(cls)
+      )
+      or
+      exists(MethodDefinition method |
+        useNodeFlowsToDecorator(base, method.getADecorator()) and
+        not method instanceof AccessorMethodDefinition and
+        lbl = Label::decoratedMember() and
+        ref = DataFlow::valueNode(method.getBody())
+      )
+    }
+
+    /** Holds if `ref` is a use that should have an incoming edge from `base` labelled `lbl`, induced by a decorator. */
+    private predicate decoratorUseEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
+      exists(SetterMethodDefinition accessor |
+        useNodeFlowsToDecorator(base,
+          [accessor.getADecorator(), accessor.getCorrespondingGetter().getADecorator()]) and
+        lbl = Label::decoratedMember() and
+        ref = DataFlow::parameterNode(accessor.getBody().getParameter(0))
+      )
+      or
+      exists(Parameter param |
+        useNodeFlowsToDecorator(base, param.getADecorator()) and
+        lbl = Label::decoratedParameter() and
+        ref = DataFlow::parameterNode(param)
+      )
+    }
+
+    /** Holds if `rhs` is a def node that should have an incoming edge from `base` labelled `lbl`, induced by a decorator. */
+    private predicate decoratorRhsEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
+      exists(GetterMethodDefinition accessor |
+        useNodeFlowsToDecorator(base,
+          [accessor.getADecorator(), accessor.getCorrespondingSetter().getADecorator()]) and
+        lbl = Label::decoratedMember() and
+        rhs = DataFlow::valueNode(accessor.getBody().getAReturnedExpr())
+      )
+    }
+
+    /**
+     * Holds if `ref` is a reference to a field/accessor that should have en incoming edge from base labelled `lbl`.
+     *
+     * Since fields do not have their own data-flow nodes, we generate a node for each read or write.
+     * For property writes, the right-hand side becomes a def-node and property reads become use-nodes.
+     *
+     * For accessors this predicate computes each use of the accessor.
+     * The return value inside the accessor is computed by the `decoratorRhsEdge` predicate.
+     */
+    private predicate decoratorPropEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::PropRef ref) {
+      exists(MemberDefinition fieldLike, DataFlow::ClassNode cls |
+        fieldLike instanceof FieldDefinition
+        or
+        fieldLike instanceof AccessorMethodDefinition
+      |
+        useNodeFlowsToDecorator(base, fieldLike.getADecorator()) and
+        lbl = Label::decoratedMember() and
+        cls = fieldLike.getDeclaringClass().flow() and
+        (
+          fieldLike.isStatic() and
+          ref = cls.getAClassReference().getAPropertyReference(fieldLike.getName())
+          or
+          not fieldLike.isStatic() and
+          ref = cls.getAnInstanceReference().getAPropertyReference(fieldLike.getName())
         )
       )
     }
@@ -892,7 +1088,7 @@ module API {
      */
     cached
     predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       exists(string m |
         pred = MkRoot() and
         lbl = Label::moduleLabel(m)
@@ -1089,8 +1285,8 @@ module API {
      */
     LabelParameter parameter(int i) { result.getIndex() = i }
 
-    /** Gets the `parameter` edge label for the receiver. */
-    LabelParameter receiver() { result = parameter(-1) }
+    /** Gets the edge label for the receiver. */
+    LabelReceiver receiver() { any() }
 
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
@@ -1100,6 +1296,15 @@ module API {
 
     /** Gets the `promisedError` edge label connecting a promise to its rejected value. */
     LabelPromisedError promisedError() { any() }
+
+    /** Gets the label for an edge leading from a value `D` to any class that has `D` as a decorator. */
+    LabelDecoratedClass decoratedClass() { any() }
+
+    /** Gets the label for an edge leading from a value `D` to any method, field, or accessor that has `D` as a decorator. */
+    LabelDecoratedMethod decoratedMember() { any() }
+
+    /** Gets the label for an edge leading from a value `D` to any parameter that has `D` as a decorator. */
+    LabelDecoratedParameter decoratedParameter() { any() }
 
     /** Gets an entry-point label for the entry-point `e`. */
     LabelEntryPoint entryPoint(API::EntryPoint e) { result.getEntryPoint() = e }
@@ -1125,19 +1330,23 @@ module API {
         MkLabelUnknownMember() or
         MkLabelParameter(int i) {
           i =
-            [-1 .. max(int args |
+            [0 .. max(int args |
                 args = any(InvokeExpr invk).getNumArgument() or
                 args = any(Function f).getNumParameter()
               )] or
           i = [0 .. 10]
         } or
+        MkLabelReceiver() or
         MkLabelReturn() or
         MkLabelPromised() or
         MkLabelPromisedError() or
+        MkLabelDecoratedClass() or
+        MkLabelDecoratedMember() or
+        MkLabelDecoratedParameter() or
         MkLabelEntryPoint(API::EntryPoint e)
 
       /** A label for an entry-point. */
-      class LabelEntryPoint extends ApiLabel {
+      class LabelEntryPoint extends ApiLabel, MkLabelEntryPoint {
         API::EntryPoint e;
 
         LabelEntryPoint() { this = MkLabelEntryPoint(e) }
@@ -1145,32 +1354,26 @@ module API {
         /** Gets the EntryPoint associated with this label. */
         API::EntryPoint getEntryPoint() { result = e }
 
-        override string toString() { result = e }
+        override string toString() { result = "getASuccessor(Label::entryPoint(\"" + e + "\"))" }
       }
 
       /** A label that gets a promised value. */
-      class LabelPromised extends ApiLabel {
-        LabelPromised() { this = MkLabelPromised() }
-
-        override string toString() { result = "promised" }
+      class LabelPromised extends ApiLabel, MkLabelPromised {
+        override string toString() { result = "getPromised()" }
       }
 
       /** A label that gets a rejected promise. */
-      class LabelPromisedError extends ApiLabel {
-        LabelPromisedError() { this = MkLabelPromisedError() }
-
-        override string toString() { result = "promisedError" }
+      class LabelPromisedError extends ApiLabel, MkLabelPromisedError {
+        override string toString() { result = "getPromisedError()" }
       }
 
       /** A label that gets the return value of a function. */
-      class LabelReturn extends ApiLabel {
-        LabelReturn() { this = MkLabelReturn() }
-
-        override string toString() { result = "return" }
+      class LabelReturn extends ApiLabel, MkLabelReturn {
+        override string toString() { result = "getReturn()" }
       }
 
       /** A label for a module. */
-      class LabelModule extends ApiLabel {
+      class LabelModule extends ApiLabel, MkLabelModule {
         string mod;
 
         LabelModule() { this = MkLabelModule(mod) }
@@ -1178,18 +1381,17 @@ module API {
         /** Gets the module associated with this label. */
         string getMod() { result = mod }
 
-        override string toString() { result = "module " + mod }
+        // moduleImport is not neccesarilly the predicate to use, but it's close enough for most cases.
+        override string toString() { result = "moduleImport(\"" + mod + "\")" }
       }
 
       /** A label that gets an instance from a `new` call. */
-      class LabelInstance extends ApiLabel {
-        LabelInstance() { this = MkLabelInstance() }
-
-        override string toString() { result = "instance" }
+      class LabelInstance extends ApiLabel, MkLabelInstance {
+        override string toString() { result = "getInstance()" }
       }
 
       /** A label for the member named `prop`. */
-      class LabelMember extends ApiLabel {
+      class LabelMember extends ApiLabel, MkLabelMember {
         string prop;
 
         LabelMember() { this = MkLabelMember(prop) }
@@ -1197,26 +1399,46 @@ module API {
         /** Gets the property associated with this label. */
         string getProperty() { result = prop }
 
-        override string toString() { result = "member " + prop }
+        override string toString() { result = "getMember(\"" + prop + "\")" }
       }
 
       /** A label for a member with an unknown name. */
-      class LabelUnknownMember extends ApiLabel {
+      class LabelUnknownMember extends ApiLabel, MkLabelUnknownMember {
         LabelUnknownMember() { this = MkLabelUnknownMember() }
 
-        override string toString() { result = "member *" }
+        override string toString() { result = "getUnknownMember()" }
       }
 
       /** A label for parameter `i`. */
-      class LabelParameter extends ApiLabel {
+      class LabelParameter extends ApiLabel, MkLabelParameter {
         int i;
 
         LabelParameter() { this = MkLabelParameter(i) }
 
-        override string toString() { result = "parameter " + i }
+        override string toString() { result = "getParameter(" + i + ")" }
 
         /** Gets the index of the parameter for this label. */
         int getIndex() { result = i }
+      }
+
+      /** A label for the receiver of call, that is, the value passed as `this`. */
+      class LabelReceiver extends ApiLabel, MkLabelReceiver {
+        override string toString() { result = "getReceiver()" }
+      }
+
+      /** A label for a class decorated by the current value. */
+      class LabelDecoratedClass extends ApiLabel, MkLabelDecoratedClass {
+        override string toString() { result = "getADecoratedClass()" }
+      }
+
+      /** A label for a method, field, or accessor decorated by the current value. */
+      class LabelDecoratedMethod extends ApiLabel, MkLabelDecoratedMember {
+        override string toString() { result = "decoratedMember()" }
+      }
+
+      /** A label for a parameter decorated by the current value. */
+      class LabelDecoratedParameter extends ApiLabel, MkLabelDecoratedParameter {
+        override string toString() { result = "decoratedParameter()" }
       }
     }
   }
@@ -1251,7 +1473,7 @@ private predicate exports(string m, string prop, DataFlow::Node rhs) {
 
 /** Gets the definition of module `m`. */
 private Module importableModule(string m) {
-  exists(NPMPackage pkg, PackageJSON json | json = pkg.getPackageJSON() and not json.isPrivate() |
+  exists(NpmPackage pkg, PackageJson json | json = pkg.getPackageJson() and not json.isPrivate() |
     result = pkg.getMainModule() and
     not result.isExterns() and
     m = pkg.getPackageName()

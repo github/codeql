@@ -31,7 +31,7 @@ IRUserVariable getIRUserVariable(Function func, Variable var) {
 }
 
 IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
-  result.getAST() = ast and
+  result.getAst() = ast and
   result.getTag() = tag
 }
 
@@ -154,13 +154,6 @@ private predicate ignoreSideEffects(Expr expr) {
  * around extractor bugs. Once the relevant extractor bugs are fixed, this predicate can be removed.
  */
 private predicate isInvalidFunction(Function func) {
-  exists(Literal literal |
-    // Constructor field inits within a compiler-generated copy constructor have a source expression
-    // that is a `Literal` with no value.
-    literal = func.(Constructor).getAnInitializer().(ConstructorFieldInit).getExpr() and
-    not exists(literal.getValue())
-  )
-  or
   exists(ThisExpr thisExpr |
     // An instantiation of a member function template is not treated as a `MemberFunction` if it has
     // only non-type template arguments.
@@ -730,7 +723,10 @@ abstract class TranslatedElement extends TTranslatedElement {
   /**
    * Gets the AST node being translated.
    */
-  abstract Locatable getAST();
+  abstract Locatable getAst();
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated Locatable getAST() { result = getAst() }
 
   /**
    * Get the first instruction to be executed in the evaluation of this element.
@@ -929,16 +925,16 @@ abstract class TranslatedElement extends TTranslatedElement {
    */
   final IRTempVariable getTempVariable(TempVariableTag tag) {
     exists(Locatable ast |
-      result.getAST() = ast and
+      result.getAst() = ast and
       result.getTag() = tag and
-      hasTempVariableAndAST(tag, ast)
+      hasTempVariableAndAst(tag, ast)
     )
   }
 
   pragma[noinline]
-  private predicate hasTempVariableAndAST(TempVariableTag tag, Locatable ast) {
+  private predicate hasTempVariableAndAst(TempVariableTag tag, Locatable ast) {
     hasTempVariable(tag, _) and
-    ast = getAST()
+    ast = getAst()
   }
 
   /**

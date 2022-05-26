@@ -14,7 +14,7 @@ class Scope extends @scope {
   Scope getAnInnerScope() { result.getOuterScope() = this }
 
   /** Gets the program element this scope is associated with, if any. */
-  ASTNode getScopeElement() { scopenodes(result, this) }
+  AstNode getScopeElement() { scopenodes(result, this) }
 
   /** Gets the location of the program element this scope is associated with, if any. */
   Location getLocation() { result = this.getScopeElement().getLocation() }
@@ -32,7 +32,7 @@ class Scope extends @scope {
 /**
  * A program element that induces a scope.
  */
-class ScopeElement extends ASTNode {
+class ScopeElement extends AstNode {
   Scope s;
 
   ScopeElement() { this = s.getScopeElement() }
@@ -226,7 +226,7 @@ class ArgumentsVariable extends Variable {
  */
 class VarRef extends @varref, Identifier, BindingPattern, LexicalRef {
   /** Gets the variable this identifier refers to. */
-  override Variable getVariable() { none() } // Overriden in VarAccess and VarDecl
+  override Variable getVariable() { none() } // Overridden in VarAccess and VarDecl
 
   override string getName() { result = Identifier.super.getName() }
 
@@ -581,7 +581,7 @@ class ObjectPattern extends DestructuringPattern, @object_pattern {
  * }
  * ```
  */
-class PropertyPattern extends @property, ASTNode {
+class PropertyPattern extends @property, AstNode {
   PropertyPattern() {
     // filter out ordinary properties
     exists(ObjectPattern obj | properties(this, obj, _, _, _))

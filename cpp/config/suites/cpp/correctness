@@ -34,6 +34,7 @@
 + semmlecode-cpp-queries/Critical/NewArrayDeleteMismatch.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Critical/NewDeleteArrayMismatch.ql: /Correctness/Common Errors
 + semmlecode-cpp-queries/Critical/NewFreeMismatch.ql: /Correctness/Common Errors
++ semmlecode-cpp-queries/Likely Bugs/Memory Management/UsingExpiredStackAddress.ql: /Correctness/Common Errors
   # Exceptions
 + semmlecode-cpp-queries/Best Practices/Exceptions/AccidentalRethrow.ql: /Correctness/Exceptions
 + semmlecode-cpp-queries/Best Practices/Exceptions/CatchingByValue.ql: /Correctness/Exceptions

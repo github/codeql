@@ -1,6 +1,6 @@
 /**
- * @name Uncontrolled data used in network request
- * @description Making a network request with user-controlled data allows for request forgery attacks.
+ * @name Server-side request forgery
+ * @description Making a network request with user-controlled data in the URL allows for request forgery attacks.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.1
@@ -13,6 +13,7 @@
 import ruby
 import codeql.ruby.DataFlow
 import codeql.ruby.security.ServerSideRequestForgeryQuery
+import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)

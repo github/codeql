@@ -22,7 +22,7 @@ jobs:
     name: Check QL formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: ./.github/actions/fetch-codeql
 
@@ -35,9 +35,15 @@ jobs:
     name: Check QL compilation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: ./.github/actions/fetch-codeql
+
+      - name: Install pack dependencies
+        run: |
+          for pack in modelbuilding src; do
+            codeql pack install --mode verify -- "${pack}"
+          done
 
       - name: Check QL compilation
         run: |
@@ -53,9 +59,12 @@ jobs:
     name: Run QL tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: ./.github/actions/fetch-codeql
+
+      - name: Install pack dependencies
+        run: codeql pack install -- test
 
       - name: Run QL tests
         run: |

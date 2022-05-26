@@ -10,7 +10,7 @@ deprecated ClassValue theCheetahTemplateClass() {
 }
 
 /**
- * Sink representing the instantiation argument of any class which derives from
+ * A sink representing the instantiation argument of any class which derives from
  * the `Cheetah.Template.Template` class .
  *
  *  from Cheetah.Template import Template

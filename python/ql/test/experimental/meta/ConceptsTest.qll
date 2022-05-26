@@ -164,6 +164,42 @@ class SqlExecutionTest extends InlineExpectationsTest {
   }
 }
 
+class XPathConstructionTest extends InlineExpectationsTest {
+  XPathConstructionTest() { this = "XPathConstructionTest" }
+
+  override string getARelevantTag() { result = "constructedXPath" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(XML::XPathConstruction e, DataFlow::Node xpath |
+      exists(location.getFile().getRelativePath()) and
+      xpath = e.getXPath() and
+      location = e.getLocation() and
+      element = xpath.toString() and
+      value = prettyNodeForInlineTest(xpath) and
+      tag = "constructedXPath"
+    )
+  }
+}
+
+class XPathExecutionTest extends InlineExpectationsTest {
+  XPathExecutionTest() { this = "XPathExecutionTest" }
+
+  override string getARelevantTag() { result = "getXPath" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(XML::XPathExecution e, DataFlow::Node xpath |
+      exists(location.getFile().getRelativePath()) and
+      xpath = e.getXPath() and
+      location = e.getLocation() and
+      element = xpath.toString() and
+      value = prettyNodeForInlineTest(xpath) and
+      tag = "getXPath"
+    )
+  }
+}
+
 class EscapingTest extends InlineExpectationsTest {
   EscapingTest() { this = "EscapingTest" }
 
@@ -500,6 +536,57 @@ class HttpClientRequestTest extends InlineExpectationsTest {
       element = req.toString() and
       value = "" and
       tag = "clientRequestCertValidationDisabled"
+    )
+  }
+}
+
+class CsrfProtectionSettingTest extends InlineExpectationsTest {
+  CsrfProtectionSettingTest() { this = "CsrfProtectionSettingTest" }
+
+  override string getARelevantTag() { result = "CsrfProtectionSetting" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Server::CsrfProtectionSetting setting |
+      location = setting.getLocation() and
+      element = setting.toString() and
+      value = setting.getVerificationSetting().toString() and
+      tag = "CsrfProtectionSetting"
+    )
+  }
+}
+
+class CsrfLocalProtectionSettingTest extends InlineExpectationsTest {
+  CsrfLocalProtectionSettingTest() { this = "CsrfLocalProtectionSettingTest" }
+
+  override string getARelevantTag() { result = "CsrfLocalProtection" + ["Enabled", "Disabled"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Server::CsrfLocalProtectionSetting p |
+      location = p.getLocation() and
+      element = p.toString() and
+      value = p.getRequestHandler().getName().toString() and
+      if p.csrfEnabled()
+      then tag = "CsrfLocalProtectionEnabled"
+      else tag = "CsrfLocalProtectionDisabled"
+    )
+  }
+}
+
+class XmlParsingTest extends InlineExpectationsTest {
+  XmlParsingTest() { this = "XmlParsingTest" }
+
+  override string getARelevantTag() { result = "xmlVuln" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(XML::XmlParsing parsing, XML::XmlParsingVulnerabilityKind kind |
+      parsing.vulnerableTo(kind) and
+      location = parsing.getLocation() and
+      element = parsing.toString() and
+      value = "'" + kind + "'" and
+      tag = "xmlVuln"
     )
   }
 }

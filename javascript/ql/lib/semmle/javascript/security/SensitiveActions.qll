@@ -214,7 +214,8 @@ module PasswordHeuristics {
     or
     exists(string normalized | normalized = password.toLowerCase() |
       count(normalized.charAt(_)) = 1 or
-      normalized.regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth).*")
+      normalized
+          .regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth|fake|(my(token|password))|string|foo|bar|baz|qux|1234|3141|abcd).*")
     )
   }
 
@@ -225,19 +226,19 @@ module PasswordHeuristics {
   predicate isDummyAuthHeader(string header) {
     isDummyPassword(header)
     or
-    exists(string prefix, string suffix | prefix = getAnHTTPAuthenticationScheme() |
+    exists(string prefix, string suffix | prefix = getAnHttpAuthenticationScheme() |
       header.toLowerCase() = prefix + " " + suffix and
       isDummyPassword(suffix)
     )
     or
-    header.trim().toLowerCase() = getAnHTTPAuthenticationScheme()
+    header.trim().toLowerCase() = getAnHttpAuthenticationScheme()
   }
 
   /**
    * Gets a HTTP authentication scheme normalized to lowercase.
    * From this list: https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
    */
-  private string getAnHTTPAuthenticationScheme() {
+  private string getAnHttpAuthenticationScheme() {
     result =
       [
         "Basic", "Bearer", "Digest", "HOBA", "Mutual", "Negotiate", "OAuth", "SCRAM-SHA-1",

@@ -27,7 +27,7 @@ class ThriftIface extends Interface {
 
   /** Gets an implementation of a method of this interface. */
   Method getAnImplementingMethod() {
-    result.getDeclaringType().(Class).getASupertype+() = this and
+    result.getDeclaringType().(Class).getAStrictAncestor() = this and
     result.overrides+(this.getAMethod()) and
     not result.getFile() = this.getFile()
   }

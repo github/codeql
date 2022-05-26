@@ -6,7 +6,7 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 
-/** Class representing classes */
+/** A class. */
 abstract class ClassObjectInternal extends ObjectInternal {
   override string getName() { result = this.getClassDeclaration().getName() }
 
@@ -109,7 +109,7 @@ abstract class ClassObjectInternal extends ObjectInternal {
   override predicate isNotSubscriptedType() { any() }
 }
 
-/** Class representing Python source classes */
+/** A class that is defined in Python source. */
 class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject {
   /** Gets the scope for this Python class */
   Class getScope() {
@@ -163,7 +163,7 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
   }
 }
 
-/** Class representing built-in classes, except `type` */
+/** A built-in class, except `type`. */
 class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObject {
   override Builtin getBuiltin() { this = TBuiltinClassObject(result) }
 

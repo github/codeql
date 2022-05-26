@@ -12,7 +12,7 @@ import semmle.python.web.bottle.General
 deprecated FunctionValue bottle_redirect() { result = theBottleModule().attr("redirect") }
 
 /**
- * Represents an argument to the `bottle.redirect` function.
+ * An argument to the `bottle.redirect` function.
  */
 deprecated class BottleRedirect extends TaintSink {
   override string toString() { result = "bottle.redirect" }

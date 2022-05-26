@@ -78,7 +78,7 @@ module DataFlow {
     }
 
     /** Gets the AST node corresponding to this data flow node, if any. */
-    ASTNode getAstNode() { none() }
+    AstNode getAstNode() { none() }
 
     /** Gets the basic block to which this node belongs. */
     BasicBlock getBasicBlock() { none() }
@@ -332,7 +332,7 @@ module DataFlow {
 
     override File getFile() { result = ssa.getBasicBlock().getFile() }
 
-    override ASTNode getAstNode() { none() }
+    override AstNode getAstNode() { none() }
   }
 
   /**
@@ -353,11 +353,11 @@ module DataFlow {
           .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override string toString() { result = prop.(ASTNode).toString() }
+    override string toString() { result = prop.(AstNode).toString() }
 
-    override File getFile() { result = prop.(ASTNode).getFile() }
+    override File getFile() { result = prop.(AstNode).getFile() }
 
-    override ASTNode getAstNode() { result = prop }
+    override AstNode getAstNode() { result = prop }
   }
 
   /**
@@ -382,7 +382,7 @@ module DataFlow {
 
     override File getFile() { result = pattern.getFile() }
 
-    override ASTNode getAstNode() { result = rest }
+    override AstNode getAstNode() { result = rest }
   }
 
   /**
@@ -407,7 +407,7 @@ module DataFlow {
 
     override File getFile() { result = pattern.getFile() }
 
-    override ASTNode getAstNode() { result = elt }
+    override AstNode getAstNode() { result = elt }
   }
 
   /**
@@ -436,7 +436,7 @@ module DataFlow {
 
     override File getFile() { result = arr.getFile() }
 
-    override ASTNode getAstNode() { result = elt }
+    override AstNode getAstNode() { result = elt }
   }
 
   /**
@@ -445,9 +445,8 @@ module DataFlow {
    */
   private class ReflectiveCallNode extends Node, TReflectiveCallNode {
     MethodCallExpr call;
-    string kind;
 
-    ReflectiveCallNode() { this = TReflectiveCallNode(call, kind) }
+    ReflectiveCallNode() { this = TReflectiveCallNode(call, _) }
 
     override BasicBlock getBasicBlock() { result = call.getBasicBlock() }
 
@@ -590,6 +589,13 @@ module DataFlow {
      * Gets the node where the property write happens in the control flow graph.
      */
     abstract ControlFlowNode getWriteNode();
+
+    /**
+     * If this installs an accessor on an object, as opposed to a regular property,
+     * gets the body of the accessor. `isSetter` is true if installing a setter, and
+     * false is installing a getter.
+     */
+    DataFlow::FunctionNode getInstalledAccessor(boolean isSetter) { none() }
   }
 
   /**
@@ -629,6 +635,17 @@ module DataFlow {
 
     override Node getRhs() { result = valueNode(prop.(ValueProperty).getInit()) }
 
+    override DataFlow::FunctionNode getInstalledAccessor(boolean isSetter) {
+      (
+        prop instanceof PropertySetter and
+        isSetter = true
+        or
+        prop instanceof PropertyGetter and
+        isSetter = false
+      ) and
+      result = valueNode(prop.getInit())
+    }
+
     override ControlFlowNode getWriteNode() { result = prop }
   }
 
@@ -651,10 +668,18 @@ module DataFlow {
     override string getPropertyName() { result = astNode.getArgument(1).getStringValue() }
 
     override Node getRhs() {
-      exists(ObjectExpr obj | obj = astNode.getArgument(2) |
-        result = obj.getPropertyByName("value").getInit().flow()
+      exists(DataFlow::SourceNode descriptor |
+        descriptor = astNode.getArgument(2).flow().getALocalSource()
+      |
+        result =
+          descriptor
+              .getAPropertyWrite("get")
+              .getRhs()
+              .getALocalSource()
+              .(DataFlow::FunctionNode)
+              .getAReturn()
         or
-        result = obj.getPropertyByName("get").getInit().flow().(DataFlow::FunctionNode).getAReturn()
+        result = descriptor.getAPropertyWrite("value").getRhs()
       )
     }
 
@@ -681,6 +706,17 @@ module DataFlow {
       result = valueNode(prop.getInit())
     }
 
+    override DataFlow::FunctionNode getInstalledAccessor(boolean isSetter) {
+      (
+        prop instanceof SetterMethodDefinition and
+        isSetter = true
+        or
+        prop instanceof GetterMethodDefinition and
+        isSetter = false
+      ) and
+      result = valueNode(prop.getInit())
+    }
+
     override ControlFlowNode getWriteNode() { result = prop }
   }
 
@@ -704,6 +740,17 @@ module DataFlow {
       result = valueNode(prop.getInit())
     }
 
+    override DataFlow::FunctionNode getInstalledAccessor(boolean isSetter) {
+      (
+        prop instanceof SetterMethodDefinition and
+        isSetter = true
+        or
+        prop instanceof GetterMethodDefinition and
+        isSetter = false
+      ) and
+      result = valueNode(prop.getInit())
+    }
+
     override ControlFlowNode getWriteNode() { result = prop }
   }
 
@@ -712,7 +759,7 @@ module DataFlow {
    * the JSX element it is in.
    */
   private class JsxAttributeAsPropWrite extends PropWrite, PropNode {
-    override JSXAttribute prop;
+    override JsxAttribute prop;
 
     override Node getBase() { result = valueNode(prop.getElement()) }
 
@@ -1300,7 +1347,7 @@ module DataFlow {
    * This predicate is only defined for expressions, properties, and for statements that declare
    * a function, a class, or a TypeScript namespace or enum.
    */
-  ValueNode valueNode(ASTNode nd) { result.getAstNode() = nd }
+  ValueNode valueNode(AstNode nd) { result.getAstNode() = nd }
 
   /**
    * Gets the data flow node corresponding to `e`.
@@ -1662,11 +1709,11 @@ module DataFlow {
     or
     exists(Expr e | e = nd.asExpr() and cause = "heap" |
       e instanceof PropAccess or
-      e instanceof E4X::XMLAnyName or
-      e instanceof E4X::XMLAttributeSelector or
-      e instanceof E4X::XMLDotDotExpression or
-      e instanceof E4X::XMLFilterExpression or
-      e instanceof E4X::XMLQualifiedIdentifier or
+      e instanceof E4X::XmlAnyName or
+      e instanceof E4X::XmlAttributeSelector or
+      e instanceof E4X::XmlDotDotExpression or
+      e instanceof E4X::XmlFilterExpression or
+      e instanceof E4X::XmlQualifiedIdentifier or
       e instanceof Angular2::PipeRefExpr
     )
     or
@@ -1708,9 +1755,8 @@ module DataFlow {
   import Sources
   import TypeInference
   import Configuration
-  import TrackedNodes
   import TypeTracking
   import internal.FunctionWrapperSteps
 
-  predicate localTaintStep = TaintTracking::localTaintStep/2;
+  deprecated predicate localTaintStep = TaintTracking::localTaintStep/2;
 }

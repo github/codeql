@@ -168,9 +168,9 @@ module NodeJSLib {
     string kind;
 
     RequestInputAccess() {
-      // `req.url`
-      kind = "url" and
-      this.asExpr().(PropAccess).accesses(request, "url")
+      // `req.url` / `req.body`
+      kind = ["url", "body"] and
+      this.asExpr().(PropAccess).accesses(request, kind)
       or
       exists(PropAccess headers |
         // `req.headers.cookie`
@@ -493,7 +493,7 @@ module NodeJSLib {
    */
   module FS {
     /**
-     * A member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
+     * Gets a member `member` from module `fs` or its drop-in replacements `graceful-fs`, `fs-extra`, `original-fs`.
      */
     DataFlow::SourceNode moduleMember(string member) {
       result = fsModule(DataFlow::TypeTracker::end()).getAPropertyRead(member)
@@ -802,11 +802,6 @@ module NodeJSLib {
   }
 
   /**
-   * DEPRECATED Use `VmModuleMemberInvocation` instead.
-   */
-  deprecated class VmModuleMethodCall = VmModuleMemberInvocation;
-
-  /**
    * An invocation of a member from module `vm`
    */
   class VmModuleMemberInvocation extends DataFlow::InvokeNode {
@@ -863,8 +858,6 @@ module NodeJSLib {
      */
     abstract class Range extends ClientRequest::Range { }
   }
-
-  deprecated class CustomNodeJSClientRequest = NodeJSClientRequest::Range;
 
   /**
    * A model of a URL request in the Node.js `http` library.
@@ -1171,17 +1164,17 @@ module NodeJSLib {
    * A connection opened on a NodeJS net server.
    */
   private class NodeJSNetServerConnection extends EventEmitter::Range {
-    NodeJSNetServer server;
-
     NodeJSNetServerConnection() {
-      exists(DataFlow::MethodCallNode call |
-        call = server.ref().getAMethodCall("on") and
-        call.getArgument(0).mayHaveStringValue("connection")
-      |
-        this = call.getCallback(1).getParameter(0)
+      exists(NodeJSNetServer server |
+        exists(DataFlow::MethodCallNode call |
+          call = server.ref().getAMethodCall("on") and
+          call.getArgument(0).mayHaveStringValue("connection")
+        |
+          this = call.getCallback(1).getParameter(0)
+        )
+        or
+        this = server.getCallback([0, 1]).getParameter(0)
       )
-      or
-      this = server.getCallback([0, 1]).getParameter(0)
     }
 
     DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }
@@ -1201,9 +1194,9 @@ module NodeJSLib {
    * A data flow node representing data received from a client to a NodeJS net server, viewed as remote user input.
    */
   private class NodeJSNetServerItemAsRemoteFlow extends RemoteFlowSource {
-    NodeJSNetServerRegistration reg;
-
-    NodeJSNetServerItemAsRemoteFlow() { this = reg.getReceivedItem(_) }
+    NodeJSNetServerItemAsRemoteFlow() {
+      this = any(NodeJSNetServerRegistration reg).getReceivedItem(_)
+    }
 
     override string getSourceType() { result = "NodeJS server" }
   }

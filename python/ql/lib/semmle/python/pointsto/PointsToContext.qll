@@ -126,7 +126,7 @@ module Context {
 }
 
 /**
- * Points-to context. Context can be one of:
+ * A points-to context. Context can be one of:
  *    * "main": Used for scripts.
  *    * "import": Use for non-script modules.
  *    * "default": Use for functions and methods without caller context.

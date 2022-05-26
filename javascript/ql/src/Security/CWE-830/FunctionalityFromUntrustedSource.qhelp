@@ -1,0 +1,70 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+			Including a resource from an untrusted source or using an untrusted channel may
+			allow an attacker to include arbitrary code in the response.
+			When including an external resource (for example, a <code>script</code> element or an
+			<code>iframe</code> element) on a page, it is important to ensure that the received
+			data is not malicious.
+		</p>
+
+		<p>
+			When including external resources, it is possible to verify that the responding server
+			is the intended one by using an <code>https</code> URL.
+			This prevents a MITM (man-in-the-middle) attack where an attacker might have been able
+			to spoof a server response.
+		</p>
+
+		<p>
+			Even when <code>https</code> is used, an attacker might still compromise the server.
+			When you use a <code>script</code> element, you can check for subresource integrity -
+			that is, you can check the contents of the data received by supplying a cryptographic
+			digest of the expected sources to the <code>script</code> element. The script will only
+			load sources that match the digest and an attacker will be unable to modify the script
+			even when the server is compromised.
+		</p>
+
+		<p>
+			Subresource integrity checking is commonly recommended when importing a fixed version of
+			a library - for example, from a CDN (content-delivery network). Then, the fixed digest
+			of that version of the library can easily be added to the <code>script</code> element's
+			<code>integrity</code> attribute.
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+			When an <code>iframe</code> element is used to embed a page, it is important to use an
+			<code>https</code> URL.
+		</p>
+
+		<p>
+			When using a <code>script</code> element to load a script, it is important to use an
+			<code>https</code> URL and to consider checking subresource integrity.
+		</p>
+	</recommendation>
+
+	<example>
+		<p>
+			The following example loads the jQuery library from the jQuery CDN without using <code>https</code>
+			and without checking subresource integrity.
+		</p>
+
+		<sample src="jquery-http-nocheck.html" />
+
+		<p>
+			Instead, loading jQuery from the same domain using <code>https</code> and checking
+			subresource integrity is recommended, as in the next example.
+		</p>
+
+		<sample src="jquery-https-check.html" />
+	</example>
+
+	<references>
+		<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity">Subresource Integrity</a></li>
+		<li>Smashing Magazine: <a href="https://www.smashingmagazine.com/2019/04/understanding-subresource-integrity/">Understanding Subresource Integrity</a></li>
+	</references>
+</qhelp>

@@ -174,6 +174,24 @@ module HTML {
   }
 
   /**
+   * An HTML `<iframe>` element.
+   *
+   * Example:
+   *
+   * ```
+   * <iframe src="https://test.local/somepage.html"></iframe>
+   * ```
+   */
+  class IframeElement extends Element {
+    IframeElement() { getName() = "iframe" }
+
+    /**
+     * Gets the value of the `src` attribute.
+     */
+    string getSourcePath() { result = getAttributeByName("src").getValue() }
+  }
+
+  /**
    * An HTML `<script>` element.
    *
    * Example:
@@ -206,6 +224,11 @@ module HTML {
      * Gets the value of the `src` attribute.
      */
     string getSourcePath() { result = getAttributeByName("src").getValue() }
+
+    /**
+     * Gets the value of the `integrity` attribute.
+     */
+    string getIntegrityDigest() { result = getAttributeByName("integrity").getValue() }
 
     /**
      * Gets the folder relative to which the `src` attribute is resolved.

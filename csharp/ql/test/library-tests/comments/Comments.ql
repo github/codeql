@@ -21,6 +21,8 @@ query predicate multilineComment(
   commentLine(c, l, numLines, text, rawText)
 }
 
-query predicate xmlComment(CommentBlock c, XmlComment l, int numLines, string text, string rawText) {
+query predicate xmlComment(
+  CommentBlock c, XmlCommentLine l, int numLines, string text, string rawText
+) {
   commentLine(c, l, numLines, text, rawText)
 }

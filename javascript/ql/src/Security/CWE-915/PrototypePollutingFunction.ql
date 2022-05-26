@@ -165,23 +165,24 @@ predicate isPotentiallyObjectPrototype(SourceNode node) {
  * would typically not happen in a merge function.
  */
 predicate dynamicPropWrite(DataFlow::Node base, DataFlow::Node prop, DataFlow::Node rhs) {
-  exists(AssignExpr write, IndexExpr index |
-    index = write.getLhs() and
-    base = index.getBase().flow() and
-    prop = index.getPropertyNameExpr().flow() and
-    rhs = write.getRhs().flow() and
-    not exists(prop.getStringValue()) and
-    not arePropertiesEnumerated(base.getALocalSource()) and
-    // Prune writes that are unlikely to modify Object.prototype.
-    // This is mainly for performance, but may block certain results due to
-    // not tracking out of function returns and into callbacks.
-    isPotentiallyObjectPrototype(base.getALocalSource()) and
-    // Ignore writes with an obviously safe RHS.
-    not exists(Expr e | e = rhs.asExpr() |
-      e instanceof Literal or
-      e instanceof ObjectExpr or
-      e instanceof ArrayExpr
-    )
+  exists(
+    DataFlow::PropWrite write // includes e.g. Object.defineProperty
+  |
+    write.getBase() = base and
+    write.getPropertyNameExpr().flow() = prop and
+    rhs = write.getRhs()
+  ) and
+  not exists(prop.getStringValue()) and
+  not arePropertiesEnumerated(base.getALocalSource()) and
+  // Prune writes that are unlikely to modify Object.prototype.
+  // This is mainly for performance, but may block certain results due to
+  // not tracking out of function returns and into callbacks.
+  isPotentiallyObjectPrototype(base.getALocalSource()) and
+  // Ignore writes with an obviously safe RHS.
+  not exists(Expr e | e = rhs.asExpr() |
+    e instanceof Literal or
+    e instanceof ObjectExpr or
+    e instanceof ArrayExpr
   )
 }
 
@@ -517,7 +518,9 @@ predicate isPrototypePollutingAssignment(Node base, Node prop, Node rhs, Node pr
     if propNameSource instanceof EnumeratedPropName
     then
       cfg.hasFlow(propNameSource, prop) and
-      cfg.hasFlow(propNameSource.(EnumeratedPropName).getASourceProp(), rhs)
+      cfg.hasFlow([propNameSource, AccessPath::getAnAliasedSourceNode(propNameSource)]
+            .(EnumeratedPropName)
+            .getASourceProp(), rhs)
     else (
       cfg.hasFlow(propNameSource.(SplitPropName).getAnAlias(), prop) and
       rhs.getALocalSource() instanceof ParameterNode
@@ -566,27 +569,27 @@ class ObjectCreateNullCall extends CallNode {
 }
 
 from
-  PropNameTracking cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Node prop, Node base,
-  string msg, Node col1, Node col2
+  PropNameTracking cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Node propNameSource,
+  Node base, string msg, Node col1, Node col2
 where
-  isPollutedPropName(prop) and
+  isPollutedPropName(propNameSource) and
   cfg.hasFlowPath(source, sink) and
-  isPrototypePollutingAssignment(base, _, _, prop) and
+  isPrototypePollutingAssignment(base, _, _, propNameSource) and
   sink.getNode() = base and
-  source.getNode() = prop and
+  source.getNode() = propNameSource and
   (
     getANodeLeadingToBaseBase(base) instanceof ObjectLiteralNode
     or
     not getANodeLeadingToBaseBase(base) instanceof ObjectCreateNullCall
   ) and
   // Generate different messages for deep merge and deep assign cases.
-  if prop instanceof EnumeratedPropName
+  if propNameSource instanceof EnumeratedPropName
   then (
-    col1 = prop.(EnumeratedPropName).getSourceObject() and
+    col1 = propNameSource.(EnumeratedPropName).getSourceObject() and
     col2 = base and
     msg = "Properties are copied from $@ to $@ without guarding against prototype pollution."
   ) else (
-    col1 = prop and
+    col1 = propNameSource and
     col2 = base and
     msg =
       "The property chain $@ is recursively assigned to $@ without guarding against prototype pollution."

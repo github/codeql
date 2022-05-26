@@ -9,7 +9,6 @@
 private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
-private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.frameworks.Stdlib
@@ -24,7 +23,7 @@ private import semmle.python.frameworks.Stdlib
  * - https://docs.python-requests.org/en/latest/
  */
 private module Requests {
-  private class OutgoingRequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
+  private class OutgoingRequestCall extends HTTP::Client::Request::Range, API::CallNode {
     string methodName;
 
     OutgoingRequestCall() {
@@ -54,14 +53,11 @@ private module Requests {
       result = this.getArg(1)
     }
 
-    /** Gets the `verify` argument to this outgoing requests call. */
-    DataFlow::Node getVerifyArg() { result = this.getArgByName("verify") }
-
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      disablingNode = this.getVerifyArg() and
-      argumentOrigin = verifyArgBacktracker(disablingNode) and
+      disablingNode = this.getKeywordParameter("verify").getARhs() and
+      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingRhs() and
       argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
       not argumentOrigin.asExpr() instanceof None
     }
@@ -77,22 +73,6 @@ private module Requests {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       nodeFrom = nodeTo.(OutgoingRequestCall).getAUrlPart()
     }
-  }
-
-  /** Gets a back-reference to the verify argument `arg`. */
-  private DataFlow::TypeTrackingNode verifyArgBacktracker(
-    DataFlow::TypeBackTracker t, DataFlow::Node arg
-  ) {
-    t.start() and
-    arg = any(OutgoingRequestCall c).getVerifyArg() and
-    result = arg.getALocalSource()
-    or
-    exists(DataFlow::TypeBackTracker t2 | result = verifyArgBacktracker(t2, arg).backtrack(t2, t))
-  }
-
-  /** Gets a back-reference to the verify argument `arg`. */
-  private DataFlow::LocalSourceNode verifyArgBacktracker(DataFlow::Node arg) {
-    result = verifyArgBacktracker(DataFlow::TypeBackTracker::end(), arg)
   }
 
   // ---------------------------------------------------------------------------

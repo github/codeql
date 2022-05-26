@@ -84,7 +84,7 @@ module Templating {
     predicate isInCodeAttribute() {
       exists(TopLevel code | code = this.getParent().(HTML::Attribute).getCodeInAttribute() |
         code instanceof EventHandlerCode or
-        code instanceof JavaScriptURL
+        code instanceof JavaScriptUrl
       )
     }
 

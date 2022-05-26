@@ -10,7 +10,8 @@ namespace Semmle.Autobuild.Shared
     /// </summary>
     public class AutobuildOptions
     {
-        private const string prefix = "LGTM_INDEX_";
+        private const string lgtmPrefix = "LGTM_INDEX_";
+        private const string extractorOptionPrefix = "CODEQL_EXTRACTOR_CSHARP_OPTION_";
 
         public int SearchDepth { get; } = 3;
         public string RootDirectory { get; }
@@ -36,20 +37,21 @@ namespace Semmle.Autobuild.Shared
         public AutobuildOptions(IBuildActions actions, Language language)
         {
             RootDirectory = actions.GetCurrentDirectory();
-            VsToolsVersion = actions.GetEnvironmentVariable(prefix + "VSTOOLS_VERSION");
-            MsBuildArguments = actions.GetEnvironmentVariable(prefix + "MSBUILD_ARGUMENTS")?.AsStringWithExpandedEnvVars(actions);
-            MsBuildPlatform = actions.GetEnvironmentVariable(prefix + "MSBUILD_PLATFORM");
-            MsBuildConfiguration = actions.GetEnvironmentVariable(prefix + "MSBUILD_CONFIGURATION");
-            MsBuildTarget = actions.GetEnvironmentVariable(prefix + "MSBUILD_TARGET");
-            DotNetArguments = actions.GetEnvironmentVariable(prefix + "DOTNET_ARGUMENTS")?.AsStringWithExpandedEnvVars(actions);
-            DotNetVersion = actions.GetEnvironmentVariable(prefix + "DOTNET_VERSION");
-            BuildCommand = actions.GetEnvironmentVariable(prefix + "BUILD_COMMAND");
-            Solution = actions.GetEnvironmentVariable(prefix + "SOLUTION").AsListWithExpandedEnvVars(actions, Array.Empty<string>());
+            VsToolsVersion = actions.GetEnvironmentVariable(lgtmPrefix + "VSTOOLS_VERSION");
+            MsBuildArguments = actions.GetEnvironmentVariable(lgtmPrefix + "MSBUILD_ARGUMENTS")?.AsStringWithExpandedEnvVars(actions);
+            MsBuildPlatform = actions.GetEnvironmentVariable(lgtmPrefix + "MSBUILD_PLATFORM");
+            MsBuildConfiguration = actions.GetEnvironmentVariable(lgtmPrefix + "MSBUILD_CONFIGURATION");
+            MsBuildTarget = actions.GetEnvironmentVariable(lgtmPrefix + "MSBUILD_TARGET");
+            DotNetArguments = actions.GetEnvironmentVariable(lgtmPrefix + "DOTNET_ARGUMENTS")?.AsStringWithExpandedEnvVars(actions);
+            DotNetVersion = actions.GetEnvironmentVariable(lgtmPrefix + "DOTNET_VERSION");
+            BuildCommand = actions.GetEnvironmentVariable(lgtmPrefix + "BUILD_COMMAND");
+            Solution = actions.GetEnvironmentVariable(lgtmPrefix + "SOLUTION").AsListWithExpandedEnvVars(actions, Array.Empty<string>());
 
-            IgnoreErrors = actions.GetEnvironmentVariable(prefix + "IGNORE_ERRORS").AsBool("ignore_errors", false);
-            Buildless = actions.GetEnvironmentVariable(prefix + "BUILDLESS").AsBool("buildless", false);
-            AllSolutions = actions.GetEnvironmentVariable(prefix + "ALL_SOLUTIONS").AsBool("all_solutions", false);
-            NugetRestore = actions.GetEnvironmentVariable(prefix + "NUGET_RESTORE").AsBool("nuget_restore", true);
+            IgnoreErrors = actions.GetEnvironmentVariable(lgtmPrefix + "IGNORE_ERRORS").AsBool("ignore_errors", false);
+            Buildless = actions.GetEnvironmentVariable(lgtmPrefix + "BUILDLESS").AsBool("buildless", false) ||
+                actions.GetEnvironmentVariable(extractorOptionPrefix + "BUILDLESS").AsBool("buildless", false);
+            AllSolutions = actions.GetEnvironmentVariable(lgtmPrefix + "ALL_SOLUTIONS").AsBool("all_solutions", false);
+            NugetRestore = actions.GetEnvironmentVariable(lgtmPrefix + "NUGET_RESTORE").AsBool("nuget_restore", true);
 
             Language = language;
         }
@@ -62,21 +64,12 @@ namespace Semmle.Autobuild.Shared
             if (value is null)
                 return defaultValue;
 
-            switch (value.ToLower())
+            return value.ToLower() switch
             {
-                case "on":
-                case "yes":
-                case "true":
-                case "enabled":
-                    return true;
-                case "off":
-                case "no":
-                case "false":
-                case "disabled":
-                    return false;
-                default:
-                    throw new ArgumentOutOfRangeException(param, value, "The Boolean value is invalid.");
-            }
+                "on" or "yes" or "true" or "enabled" => true,
+                "off" or "no" or "false" or "disabled" => false,
+                _ => throw new ArgumentOutOfRangeException(param, value, "The Boolean value is invalid."),
+            };
         }
 
         public static string[] AsListWithExpandedEnvVars(this string? value, IBuildActions actions, string[] defaultValue)

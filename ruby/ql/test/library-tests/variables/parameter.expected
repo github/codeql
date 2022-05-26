@@ -1,11 +1,9 @@
 parameterVariable
 | nested_scopes.rb:15:23:15:23 | a | nested_scopes.rb:15:23:15:23 | a |
 | nested_scopes.rb:16:26:16:26 | x | nested_scopes.rb:16:26:16:26 | x |
-| nested_scopes.rb:16:29:16:29 | a | nested_scopes.rb:16:29:16:29 | a |
 | nested_scopes.rb:18:26:18:26 | x | nested_scopes.rb:18:26:18:26 | x |
 | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a |
 | parameters.rb:1:14:1:14 | x | parameters.rb:1:14:1:14 | x |
-| parameters.rb:1:18:1:18 | y | parameters.rb:1:18:1:18 | y |
 | parameters.rb:7:17:7:22 | client | parameters.rb:7:17:7:22 | client |
 | parameters.rb:7:25:7:31 | *pizzas | parameters.rb:7:26:7:31 | pizzas |
 | parameters.rb:15:15:15:19 | **map | parameters.rb:15:17:15:19 | map |

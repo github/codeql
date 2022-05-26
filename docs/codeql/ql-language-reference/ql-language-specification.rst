@@ -364,7 +364,7 @@ A *variable declaration list* provides a sequence of variables and a type for ea
 ::
 
    var_decls ::= (var_decl ("," var_decl)*)?
-   var_decl ::= type simpleId
+   var_decl ::= type lowerId
 
 A valid variable declaration list must not include two declarations with the same variable name. Moreover, if the declaration has a typing environment that applies, it must not use a variable name that is already present in that typing environment.
 
@@ -585,7 +585,7 @@ Identifiers are used in following syntactic constructs:
    dbasetype     ::= atLowerId
    predicateRef  ::= (moduleId "::")? literalId
    predicateName ::= lowerId
-   varname       ::= simpleId
+   varname       ::= lowerId
    literalId     ::= lowerId | atLowerId
 
 Integer literals (int)
@@ -948,7 +948,7 @@ The ``select`` keyword is followed by a number of *select expressions*. Select e
 ::
 
    as_exprs ::= as_expr ("," as_expr)*
-   as_expr ::= expr ("as" simpleId)?
+   as_expr ::= expr ("as" lowerId)?
 
 The keyword ``as`` gives a *label* to the select expression it is part of. No two select expressions may have the same label. No expression label may be the same as one of the variables of the select clause.
 
@@ -957,7 +957,7 @@ The ``order`` keyword, if present, is followed by a number of *ordering directiv
 ::
 
    orderbys ::= orderby ("," orderby)*
-   orderby ::= simpleId ("asc" | "desc")?
+   orderby ::= lowerId ("asc" | "desc")?
 
 Each identifier in an ordering directive must identify exactly one of the select expressions. It must either be the label of the expression, or it must be a variable expression that is equivalent to exactly one of the select expressions. The type of the designated select expression must be a subtype of a primitive type.
 
@@ -998,10 +998,14 @@ There are several kinds of expressions:
            |   literal
            |   variable
            |   super_expr
-           |   callwithresult
            |   postfix_cast
+           |   callwithresults
            |   aggregation
+           |   expression_pragma
            |   any
+           |   range
+           |   setliteral
+
 
 Parenthesized expressions
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1303,6 +1307,26 @@ The values of an ``any`` expression are those values of the expression for which
 
 The abbreviated cases for an ``any`` expression are interpreted in the same way as for an aggregation.
 
+Expression Pragma
+~~~~~~~~~~~~~~~~~
+
+Expression pragmas can be used to guide optimization.
+
+::
+   expression_pragma ::= "pragma" "[" expression_pragma_type "]" "(" expr ")"
+
+   expression_pragma_type ::= "only_bind_out" | "only_bind_into"
+
+The values of an expression pragma are the values of the contained expression.
+
+The type `only_bind_out` hints that uses of the result of the expression pragma should not be used to guide the evaluation of the result of the contained expression.
+When checking to see that all values are bound the compiler does not assume that if the result of the expression pragma is bound then the result of the contained 
+expression is bound.
+
+The type `only_bind_into` hints that uses of the contained expression should not be used to guide the evaluation of the result of the expression pragma.
+When checking to see that all values are bound the compiler does not assume that if the result of the contained expression is bound then the result of the 
+expression pragma is bound.
+
 Ranges
 ~~~~~~
 
@@ -1506,9 +1530,10 @@ A range check has the following syntax:
 
 ::
 
-   inrange ::= expr "in" range
+   inrange ::= expr "in" (range | setliteral)
 
-The formula is equivalent to ``expr "=" range``.
+
+The formula is equivalent to ``expr "=" range`` or ``expr "=" setliteral``.
 
 Calls
 ~~~~~
@@ -2017,11 +2042,11 @@ The complete grammar for QL is as follows:
 
    as_exprs ::= as_expr ("," as_expr)*
 
-   as_expr ::= expr ("as" simpleId)?
+   as_expr ::= expr ("as" lowerId)?
 
    orderbys ::= orderby ("," orderby)*
 
-   orderby ::= simpleId ("asc" | "desc")?
+   orderby ::= lowerId ("asc" | "desc")?
 
    predicate ::= qldoc? annotations head optbody
 
@@ -2070,7 +2095,7 @@ The complete grammar for QL is as follows:
          
    var_decls ::= (var_decl ("," var_decl)*)?
 
-   var_decl ::= type simpleId
+   var_decl ::= type lowerId
 
    formula ::= fparen
            |   disjunction
@@ -2107,7 +2132,7 @@ The complete grammar for QL is as follows:
 
    instanceof ::= expr "instanceof" type
 
-   inrange ::= expr "in" range
+   inrange ::= expr "in" (range | setliteral)
 
    call ::= predicateRef (closure)? "(" (exprs)? ")"
         |   primary "." predicateName (closure)? "(" (exprs)? ")"
@@ -2128,6 +2153,7 @@ The complete grammar for QL is as follows:
            |   postfix_cast
            |   callwithresults
            |   aggregation
+           |   expression_pragma
            |   any
            |   range
            |   setliteral
@@ -2159,6 +2185,10 @@ The complete grammar for QL is as follows:
                |   aggid ("[" expr "]")? "(" as_exprs ("order" "by" aggorderbys)? ")"
                |   "unique" "(" var_decls "|" (formula)? ("|" as_exprs)? ")"
  
+   expression_pragma ::= "pragma" "[" expression_pragma_type "]" "(" expr ")"
+
+   expression_pragma_type ::= "only_bind_out" | "only_bind_into"
+
    aggid ::= "avg" | "concat" | "count" | "max" | "min" | "rank" | "strictconcat" | "strictcount" | "strictsum" | "sum"
 
    aggorderbys ::= aggorderby ("," aggorderby)*
@@ -2186,6 +2216,6 @@ The complete grammar for QL is as follows:
 
    predicateName ::= lowerId
 
-   varname ::= simpleId
+   varname ::= lowerId
 
    literalId ::= lowerId | atLowerId | "any" | "none"

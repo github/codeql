@@ -1,0 +1,1 @@
+Foo.new.instance_eval("self.class", "file.rb", 3)

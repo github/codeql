@@ -59,7 +59,7 @@ module SocketIO {
     private API::Node server() {
       result = node
       or
-      exists(API::Node pred | pred = server() |
+      exists(API::Node pred | pred = this.server() |
         // invocation of a chainable method
         exists(API::CallNode mcn, string m |
           m = "adapter" or
@@ -82,11 +82,6 @@ module SocketIO {
     }
 
     override DataFlow::SourceNode ref() { result = this.server().getAUse() }
-
-    /**
-     * DEPRECATED. Always returns `this` as a `ServerObject` now represents the origin of a server.
-     */
-    deprecated DataFlow::SourceNode getOrigin() { result = this }
   }
 
   /** A data flow node that may produce (that is, create or return) a socket.io server. */
@@ -523,7 +518,7 @@ module SocketIOClient {
   }
 
   /** Gets the NPM package that contains `nd`. */
-  private NPMPackage getPackage(DataFlow::SourceNode nd) { result.getAFile() = nd.getFile() }
+  private NpmPackage getPackage(DataFlow::SourceNode nd) { result.getAFile() = nd.getFile() }
 
   /**
    * A data flow node representing an API call that receives data from the server.

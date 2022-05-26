@@ -1,8 +1,8 @@
 private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
-private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.dataflow.new.DataFlow
 
 /**
  * A data flow source of the client ip obtained according to the remote endpoint identifier specified

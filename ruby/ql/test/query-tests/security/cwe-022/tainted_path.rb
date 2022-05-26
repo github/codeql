@@ -54,8 +54,14 @@ class FooController < ActionController::Base
     @content = File.read path
   end
 
-  # GOOD - explicitly sanitized
+  # BAD
   def route9
+    path = ActiveStorage::Filename.new(params[:path])
+    @content = File.read path
+  end
+
+  # GOOD - explicitly sanitized
+  def route10
     path = ActiveStorage::Filename.new(params[:path]).sanitized
     @content = File.read path
   end

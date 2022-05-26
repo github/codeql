@@ -78,6 +78,8 @@ To avoid these problems, a data-flow ``Configuration`` comes with a mechanism fo
        */
       final predicate hasPartialFlow(PartialPathNode source, PartialPathNode node, int dist) {
 
+There is also a ``Configuration.hasPartialFlowRev`` for exploring flow backwards from a sink.
+
 As noted in the documentation for ``hasPartialFlow`` (for example, in the 
 `CodeQL for Java documentation <https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/dataflow/internal/DataFlowImpl2.qll/predicate.DataFlowImpl2$Configuration$hasPartialFlow.3.html>`__) you must first enable this by adding an override of ``explorationLimit``. For example:
 
@@ -86,6 +88,8 @@ As noted in the documentation for ``hasPartialFlow`` (for example, in the
     override int explorationLimit() { result = 5 }
 
 This defines the exploration radius within which ``hasPartialFlow`` returns results.
+
+To get good performance when using ``hasPartialFlow`` it is important to ensure the ``isSink`` predicate of the configuration has no results. Likewise, when using ``hasPartialFlowRev`` the ``isSource`` predicate of the configuration should have no results.
 
 It is also useful to focus on a single source at a time as the starting point for the flow exploration. This is most easily done by adding a temporary restriction in the ``isSource`` predicate.
 

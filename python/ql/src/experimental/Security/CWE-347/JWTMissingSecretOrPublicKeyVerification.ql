@@ -12,6 +12,6 @@
 import python
 import experimental.semmle.python.Concepts
 
-from JWTDecoding jwtDecoding
+from JwtDecoding jwtDecoding
 where not jwtDecoding.verifiesSignature()
 select jwtDecoding.getPayload(), "is not verified with a cryptographic secret or public key."

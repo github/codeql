@@ -1,0 +1,13 @@
+open3CallExecutions
+| Open3.rb:1:1:1:24 | call to popen3 |
+| Open3.rb:2:1:2:24 | call to popen2 |
+| Open3.rb:3:1:3:25 | call to popen2e |
+| Open3.rb:4:1:4:26 | call to capture3 |
+| Open3.rb:5:1:5:26 | call to capture2 |
+| Open3.rb:6:1:6:27 | call to capture2e |
+open3PipelineCallExecutions
+| Open3.rb:7:1:7:41 | call to pipeline_rw |
+| Open3.rb:8:1:8:40 | call to pipeline_r |
+| Open3.rb:9:1:9:40 | call to pipeline_w |
+| Open3.rb:10:1:10:44 | call to pipeline_start |
+| Open3.rb:11:1:11:38 | call to pipeline |

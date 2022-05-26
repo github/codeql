@@ -226,13 +226,6 @@ class AssignPointerSubExpr extends AssignOperation, @assignpsubexpr {
  * ```
  */
 class ConditionDeclExpr extends Expr, @condition_decl {
-  /**
-   * DEPRECATED: Use `getVariableAccess()` or `getInitializingExpr()` instead.
-   *
-   * Gets the access using the condition for this declaration.
-   */
-  deprecated Expr getExpr() { result = this.getChild(0) }
-
   override string getAPrimaryQlClass() { result = "ConditionDeclExpr" }
 
   /**

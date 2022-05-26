@@ -30,7 +30,6 @@
 | variables.cpp:15:12:15:13 | v1 | file://:0:0:0:0 | int[10] | StaticStorageDurationVariable |  | static |
 | variables.cpp:15:21:15:22 | pv | file://:0:0:0:0 | int * | GlobalVariable |  | static |
 | variables.cpp:15:21:15:22 | pv | file://:0:0:0:0 | int * | StaticStorageDurationVariable |  | static |
-| variables.cpp:17:7:17:8 | fp | file://:0:0:0:0 | ..(*)(..) | FunctionPointerVariable |  |  |
 | variables.cpp:17:7:17:8 | fp | file://:0:0:0:0 | ..(*)(..) | GlobalVariable |  |  |
 | variables.cpp:17:7:17:8 | fp | file://:0:0:0:0 | ..(*)(..) | StaticStorageDurationVariable |  |  |
 | variables.cpp:19:7:19:8 | v2 | file://:0:0:0:0 | float[3] | GlobalVariable |  |  |

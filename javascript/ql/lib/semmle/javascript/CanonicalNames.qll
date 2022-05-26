@@ -48,7 +48,7 @@ class CanonicalName extends @symbol {
   string getExternalModuleName() {
     symbol_module(this, result)
     or
-    exists(PackageJSON pkg |
+    exists(PackageJson pkg |
       getModule() = pkg.getMainModule() and
       result = pkg.getPackageName()
     )
@@ -160,7 +160,7 @@ class CanonicalName extends @symbol {
   /**
    * Gets a definition of the entity with this canonical name.
    */
-  ASTNode getADefinition() { none() }
+  AstNode getADefinition() { none() }
 
   /**
    * Gets a use that refers to the entity with this canonical name.

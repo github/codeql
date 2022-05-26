@@ -1,0 +1,14 @@
+edges
+| http_to_file_access.rb:3:8:3:52 | call to body :  | http_to_file_access.rb:5:12:5:15 | resp |
+| http_to_file_access.rb:9:16:9:21 | call to params :  | http_to_file_access.rb:9:16:9:30 | ...[...] :  |
+| http_to_file_access.rb:9:16:9:30 | ...[...] :  | http_to_file_access.rb:11:18:11:23 | script |
+nodes
+| http_to_file_access.rb:3:8:3:52 | call to body :  | semmle.label | call to body :  |
+| http_to_file_access.rb:5:12:5:15 | resp | semmle.label | resp |
+| http_to_file_access.rb:9:16:9:21 | call to params :  | semmle.label | call to params :  |
+| http_to_file_access.rb:9:16:9:30 | ...[...] :  | semmle.label | ...[...] :  |
+| http_to_file_access.rb:11:18:11:23 | script | semmle.label | script |
+subpaths
+#select
+| http_to_file_access.rb:5:12:5:15 | resp | http_to_file_access.rb:3:8:3:52 | call to body :  | http_to_file_access.rb:5:12:5:15 | resp | $@ flows to file system | http_to_file_access.rb:3:8:3:52 | call to body | Untrusted data |
+| http_to_file_access.rb:11:18:11:23 | script | http_to_file_access.rb:9:16:9:21 | call to params :  | http_to_file_access.rb:11:18:11:23 | script | $@ flows to file system | http_to_file_access.rb:9:16:9:21 | call to params | Untrusted data |

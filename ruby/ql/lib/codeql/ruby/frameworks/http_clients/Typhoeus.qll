@@ -1,7 +1,12 @@
+/**
+ * Provides modeling for the `Typhoeus` library.
+ */
+
 private import ruby
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
 
 /**
  * A call that makes an HTTP request using `Typhoeus`.
@@ -21,7 +26,7 @@ class TyphoeusHttpRequest extends HTTP::Client::Request::Range {
     this = requestUse.asExpr().getExpr()
   }
 
-  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 
@@ -62,7 +67,7 @@ private predicate isSslVerifyPeerFalsePair(CfgNodes::ExprNodes::PairCfgNode p) {
 /** Holds if `node` represents the symbol literal `verify` or `verify_peer`. */
 private predicate isSslVerifyPeerLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol("ssl_verifypeer") and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("ssl_verifypeer") and
     literal.flowsTo(node)
   )
 }

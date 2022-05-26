@@ -25,7 +25,7 @@ private module Mysql {
   // mysql
   // ---------------------------------------------------------------------------
   /** Provides models for the `mysql` module. */
-  module mysql {
+  module MysqlMod {
     /**
      * The mysql.connector module
      * See https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html

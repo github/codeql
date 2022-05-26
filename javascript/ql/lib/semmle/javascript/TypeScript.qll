@@ -98,7 +98,7 @@ class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespac
  * Note that imports and type parameters are not type definitions.  Consider using `TypeDecl` to capture
  * a wider class of type declarations.
  */
-class TypeDefinition extends ASTNode, @type_definition {
+class TypeDefinition extends AstNode, @type_definition {
   /**
    * Gets the identifier naming the type.
    */
@@ -376,7 +376,7 @@ class ConstructorTypeExpr extends FunctionTypeExpr, @constructor_typeexpr { }
 class PlainFunctionTypeExpr extends FunctionTypeExpr, @plain_function_typeexpr { }
 
 /** A possibly qualified identifier that declares or refers to a type. */
-abstract class TypeRef extends ASTNode { }
+abstract class TypeRef extends AstNode { }
 
 /** An identifier declaring a type name, that is, the name of a class, interface, type parameter, or import. */
 class TypeDecl extends Identifier, TypeRef, LexicalDecl {
@@ -1291,7 +1291,7 @@ class ExpressionWithTypeArguments extends @expression_with_type_arguments, Expr 
 /**
  * A program element that supports type parameters, that is, a function, class, interface, type alias, mapped type, or `infer` type.
  */
-class TypeParameterized extends @type_parameterized, ASTNode {
+class TypeParameterized extends @type_parameterized, AstNode {
   /** Gets the `n`th type parameter declared on this function or type. */
   TypeParameter getTypeParameter(int n) { none() } // Overridden in subtypes.
 
@@ -1394,7 +1394,7 @@ class NonNullAssertion extends Expr, @non_null_assertion {
 /**
  * A possibly qualified identifier that refers to or declares a local name for a namespace.
  */
-abstract class NamespaceRef extends ASTNode { }
+abstract class NamespaceRef extends AstNode { }
 
 /**
  * An identifier that declares a local name for a namespace, that is,
@@ -1602,7 +1602,7 @@ class EnumDeclaration extends NamespaceDefinition, @enum_declaration, AST::Value
  * enum Color { red = 1, green, blue }
  * ```
  */
-class EnumMember extends ASTNode, @enum_member {
+class EnumMember extends AstNode, @enum_member {
   /**
    * Gets the name of the enum member, such as `off` in `enum State { on, off }`.
    *
@@ -1679,7 +1679,7 @@ class EnumScope extends @enum_scope, Scope {
 }
 
 /**
- * Scope induced by a declaration of form `declare module "X" {...}`.
+ * A scope induced by a declaration of form `declare module "X" {...}`.
  */
 class ExternalModuleScope extends @external_module_scope, Scope {
   override string toString() { result = "external module scope" }
@@ -1754,20 +1754,6 @@ class ReferenceImport extends LineComment {
    * Gets the name of the attribute, i.e. "`path`" or "`types`".
    */
   string getAttributeName() { result = attribute }
-
-  /**
-   * DEPRECATED. This is no longer supported.
-   *
-   * Gets the file referenced by this import.
-   */
-  deprecated File getImportedFile() { none() }
-
-  /**
-   * DEPRECATED. This is no longer supported.
-   *
-   * Gets the top-level of the referenced file.
-   */
-  deprecated TopLevel getImportedTopLevel() { none() }
 }
 
 /**
@@ -1852,11 +1838,6 @@ class Type extends @type {
    * Gets the `i`th child of this type.
    */
   Type getChild(int i) { type_child(result, this, i) }
-
-  /**
-   * DEPRECATED. Property lookup on types is no longer supported.
-   */
-  deprecated Type getProperty(string name) { none() }
 
   /**
    * Gets the type of the string index signature on this type,
@@ -1959,21 +1940,6 @@ class Type extends @type {
    * Gets the number of constructor call signatures.
    */
   int getNumConstructorSignature() { result = count(this.getAConstructorSignature()) }
-
-  /**
-   * DEPRECATED. Method lookup on types is no longer supported.
-   */
-  deprecated FunctionCallSignatureType getMethod(string name) { none() }
-
-  /**
-   * DEPRECATED. Method lookup on types is no longer supported.
-   */
-  deprecated FunctionCallSignatureType getMethodOverload(string name, int n) { none() }
-
-  /**
-   * DEPRECATED. Method lookup on types is no longer supported.
-   */
-  deprecated FunctionCallSignatureType getAMethodOverload(string name) { none() }
 
   /**
    * Repeatedly unfolds union and intersection types and gets any of the underlying types,
@@ -2836,12 +2802,7 @@ class ConstructorCallSignatureType extends CallSignatureType, @constructor_signa
 private class PromiseTypeName extends TypeName {
   PromiseTypeName() {
     // The name must suggest it is a promise.
-    exists(string name | name = this.getName() |
-      name.matches("%Promise") or
-      name.matches("%PromiseLike") or
-      name.matches("%Thenable") or
-      name.matches("%Deferred")
-    ) and
+    this.getName().matches(["%Promise", "%PromiseLike", "%Thenable", "%Deferred"]) and
     // The `then` method should take a callback, taking an argument of type `T`.
     exists(TypeReference self, Type thenMethod | self = this.getType() |
       self.getNumTypeArgument() = 1 and

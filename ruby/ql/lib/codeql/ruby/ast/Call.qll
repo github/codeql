@@ -105,6 +105,14 @@ class MethodCall extends Call instanceof MethodCallImpl {
    */
   final Block getBlock() { result = super.getBlockImpl() }
 
+  /**
+   * Holds if the safe nagivation operator (`&.`) is used in this call.
+   * ```rb
+   * foo&.empty?
+   * ```
+   */
+  final predicate isSafeNavigation() { super.isSafeNavigationImpl() }
+
   override string toString() { result = "call to " + this.getMethodName() }
 
   override AstNode getAChild(string pred) {
@@ -114,6 +122,16 @@ class MethodCall extends Call instanceof MethodCallImpl {
     or
     pred = "getBlock" and result = this.getBlock()
   }
+}
+
+/**
+ * A `Method` call that has no known target.
+ * These will typically be calls to methods inherited from a superclass.
+ * TODO: When API Graphs is able to resolve calls to methods like `Kernel.send`
+ * this class is no longer necessary and should be removed.
+ */
+class UnknownMethodCall extends MethodCall {
+  UnknownMethodCall() { not exists(this.(Call).getATarget()) }
 }
 
 /**

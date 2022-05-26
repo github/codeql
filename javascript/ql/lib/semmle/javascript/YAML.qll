@@ -441,3 +441,74 @@ class YAMLParseError extends @yaml_error, Error {
 
   override string toString() { result = this.getMessage() }
 }
+
+/**
+ * A YAML node that may contain sub-nodes that can be identified by a name.
+ * I.e. a mapping, sequence, or scalar.
+ *
+ * Is used in e.g. GithHub Actions, which is quite flexible in parsing YAML.
+ *
+ * For example:
+ * ```
+ * on: pull_request
+ * ```
+ * and
+ * ```
+ * on: [pull_request]
+ * ```
+ * and
+ * ```
+ * on:
+ *   pull_request:
+ * ```
+ *
+ * are equivalent.
+ */
+class YAMLMappingLikeNode extends YAMLNode {
+  YAMLMappingLikeNode() {
+    this instanceof YAMLMapping
+    or
+    this instanceof YAMLSequence
+    or
+    this instanceof YAMLScalar
+  }
+
+  /** Gets sub-name identified by `name`. */
+  YAMLNode getNode(string name) {
+    exists(YAMLMapping mapping |
+      mapping = this and
+      result = mapping.lookup(name)
+    )
+    or
+    exists(YAMLSequence sequence, YAMLNode node |
+      sequence = this and
+      sequence.getAChildNode() = node and
+      node.eval().toString() = name and
+      result = node
+    )
+    or
+    exists(YAMLScalar scalar |
+      scalar = this and
+      scalar.getValue() = name and
+      result = scalar
+    )
+  }
+
+  /** Gets the number of elements in this mapping or sequence. */
+  int getElementCount() {
+    exists(YAMLMapping mapping |
+      mapping = this and
+      result = mapping.getNumChild() / 2
+    )
+    or
+    exists(YAMLSequence sequence |
+      sequence = this and
+      result = sequence.getNumChild()
+    )
+    or
+    exists(YAMLScalar scalar |
+      scalar = this and
+      result = 1
+    )
+  }
+}

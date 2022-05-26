@@ -14,7 +14,6 @@
 
 import csharp
 import semmle.code.asp.WebConfig
-import semmle.code.csharp.XML
 
 class Application_Error extends Method {
   Application_Error() {
@@ -24,7 +23,7 @@ class Application_Error extends Method {
   }
 }
 
-from CustomErrorsXMLElement customError
+from CustomErrorsXmlElement customError
 where
   // `<customErrors>` must be set to "off" to be dangerous
   customError.getAttributeValue("mode").toLowerCase() = "off" and

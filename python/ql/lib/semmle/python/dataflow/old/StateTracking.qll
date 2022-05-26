@@ -9,7 +9,6 @@
  */
 
 import python
-private import semmle.python.pointsto.Base
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.objects.ObjectInternal
@@ -46,14 +45,14 @@ abstract class TrackableState extends string {
   /**
    * Holds if state starts at `f`.
    * Either this predicate or `startsAt(ControlFlowNode f, Context ctx)`
-   * should be overriden by sub-classes.
+   * should be overridden by sub-classes.
    */
   predicate startsAt(ControlFlowNode f) { none() }
 
   /**
    * Holds if state starts at `f` given context `ctx`.
    * Either this predicate or `startsAt(ControlFlowNode f)`
-   * should be overriden by sub-classes.
+   * should be overridden by sub-classes.
    */
   pragma[noinline]
   predicate startsAt(ControlFlowNode f, Context ctx) { ctx.appliesTo(f) and this.startsAt(f) }
@@ -61,14 +60,14 @@ abstract class TrackableState extends string {
   /**
    * Holds if state ends at `f`.
    * Either this predicate or `endsAt(ControlFlowNode f, Context ctx)`
-   * may be overriden by sub-classes.
+   * may be overridden by sub-classes.
    */
   predicate endsAt(ControlFlowNode f) { none() }
 
   /**
    * Holds if state ends at `f` given context `ctx`.
    * Either this predicate or `endsAt(ControlFlowNode f)`
-   * may be overriden by sub-classes.
+   * may be overridden by sub-classes.
    */
   pragma[noinline]
   predicate endsAt(ControlFlowNode f, Context ctx) { ctx.appliesTo(f) and this.endsAt(f) }

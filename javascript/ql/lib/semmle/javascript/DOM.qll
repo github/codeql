@@ -76,10 +76,10 @@ module DOM {
   /**
    * A JSX element, viewed as an `ElementDefinition`.
    */
-  private class JsxElementDefinition extends ElementDefinition, @jsx_element instanceof JSXElement {
-    override string getName() { result = JSXElement.super.getName() }
+  private class JsxElementDefinition extends ElementDefinition, @jsx_element instanceof JsxElement {
+    override string getName() { result = JsxElement.super.getName() }
 
-    override AttributeDefinition getAttribute(int i) { result = JSXElement.super.getAttribute(i) }
+    override AttributeDefinition getAttribute(int i) { result = JsxElement.super.getAttribute(i) }
 
     override ElementDefinition getParent() { result = super.getJsxParent() }
   }
@@ -139,7 +139,7 @@ module DOM {
    * A JSX attribute, viewed as an `AttributeDefinition`.
    */
   private class JsxAttributeDefinition extends AttributeDefinition, @jsx_attribute {
-    JSXAttribute attr;
+    JsxAttribute attr;
 
     JsxAttributeDefinition() { this = attr }
 
@@ -300,7 +300,7 @@ module DOM {
     }
 
     /**
-     * A data flow node that might refer to some form.
+     * Gets a data flow node that might refer to some form.
      * Either by a read like `document.forms[0]`, or a property read from `document` with some constant property-name.
      * E.g. if `<form name="foobar">..</form>` exists, then `document.foobar` refers to that form.
      */
@@ -323,7 +323,7 @@ module DOM {
 
     private class DefaultRange extends Range {
       DefaultRange() {
-        this.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable
+        this.asExpr().(VarAccess).getVariable() instanceof DomGlobalVariable
         or
         exists(DataFlow::PropRead read |
           this = read and
@@ -392,7 +392,7 @@ module DOM {
    */
   private DataFlow::SourceNode domEventSource() {
     // e.g. <form onSubmit={e => e.target}/>
-    exists(JSXAttribute attr | attr.getName().matches("on%") |
+    exists(JsxAttribute attr | attr.getName().matches("on%") |
       result = attr.getValue().flow().getABoundFunctionValue(0).getParameter(0)
     )
     or
@@ -430,6 +430,12 @@ module DOM {
     result.hasUnderlyingType("Element")
     or
     result.hasUnderlyingType(any(string s | s.matches("HTML%Element")))
+    or
+    exists(DataFlow::ClassNode cls |
+      cls.getASuperClassNode().getALocalSource() =
+        DataFlow::globalVarRef(any(string s | s.matches("HTML%Element"))) and
+      result = cls.getAnInstanceReference()
+    )
   }
 
   module LocationSource {

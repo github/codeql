@@ -56,18 +56,18 @@ private class SystemIOPathFlowModelCsv extends SummaryModelCsv {
         "System.IO;Path;false;Combine;(System.String,System.String,System.String,System.String);;Argument[1];ReturnValue;taint",
         "System.IO;Path;false;Combine;(System.String,System.String,System.String,System.String);;Argument[2];ReturnValue;taint",
         "System.IO;Path;false;Combine;(System.String,System.String,System.String,System.String);;Argument[3];ReturnValue;taint",
-        "System.IO;Path;false;Combine;(System.String[]);;Element of Argument[0];ReturnValue;taint",
-        "System.IO;Path;false;GetDirectoryName;(System.ReadOnlySpan<System.Char>);;Element of Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;Combine;(System.String[]);;Argument[0].Element;ReturnValue;taint",
+        "System.IO;Path;false;GetDirectoryName;(System.ReadOnlySpan<System.Char>);;Argument[0].Element;ReturnValue;taint",
         "System.IO;Path;false;GetDirectoryName;(System.String);;Argument[0];ReturnValue;taint",
-        "System.IO;Path;false;GetExtension;(System.ReadOnlySpan<System.Char>);;Element of Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetExtension;(System.ReadOnlySpan<System.Char>);;Argument[0].Element;ReturnValue;taint",
         "System.IO;Path;false;GetExtension;(System.String);;Argument[0];ReturnValue;taint",
-        "System.IO;Path;false;GetFileName;(System.ReadOnlySpan<System.Char>);;Element of Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetFileName;(System.ReadOnlySpan<System.Char>);;Argument[0].Element;ReturnValue;taint",
         "System.IO;Path;false;GetFileName;(System.String);;Argument[0];ReturnValue;taint",
-        "System.IO;Path;false;GetFileNameWithoutExtension;(System.ReadOnlySpan<System.Char>);;Element of Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetFileNameWithoutExtension;(System.ReadOnlySpan<System.Char>);;Argument[0].Element;ReturnValue;taint",
         "System.IO;Path;false;GetFileNameWithoutExtension;(System.String);;Argument[0];ReturnValue;taint",
         "System.IO;Path;false;GetFullPath;(System.String);;Argument[0];ReturnValue;taint",
         "System.IO;Path;false;GetFullPath;(System.String,System.String);;Argument[0];ReturnValue;taint",
-        "System.IO;Path;false;GetPathRoot;(System.ReadOnlySpan<System.Char>);;Element of Argument[0];ReturnValue;taint",
+        "System.IO;Path;false;GetPathRoot;(System.ReadOnlySpan<System.Char>);;Argument[0].Element;ReturnValue;taint",
         "System.IO;Path;false;GetPathRoot;(System.String);;Argument[0];ReturnValue;taint",
         "System.IO;Path;false;GetRelativePath;(System.String,System.String);;Argument[1];ReturnValue;taint"
       ]
@@ -153,16 +153,16 @@ private class SystemIOStreamFlowModelCsv extends SummaryModelCsv {
         "System.IO;Stream;false;CopyToAsync;(System.IO.Stream);;Argument[Qualifier];Argument[0];taint",
         "System.IO;Stream;false;CopyToAsync;(System.IO.Stream,System.Int32);;Argument[Qualifier];Argument[0];taint",
         "System.IO;Stream;false;CopyToAsync;(System.IO.Stream,System.Threading.CancellationToken);;Argument[Qualifier];Argument[0];taint",
-        "System.IO;Stream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32);;Argument[Qualifier];Element of Argument[0];taint",
-        "System.IO;Stream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];Argument[Qualifier];taint",
-        "System.IO;Stream;true;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[Qualifier];Element of Argument[0];taint",
-        "System.IO;Stream;true;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Element of Argument[0];Argument[Qualifier];taint",
+        "System.IO;Stream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32);;Argument[Qualifier];Argument[0].Element;taint",
+        "System.IO;Stream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[Qualifier];taint",
+        "System.IO;Stream;true;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[Qualifier];Argument[0].Element;taint",
+        "System.IO;Stream;true;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0].Element;Argument[Qualifier];taint",
         "System.IO;Stream;true;CopyTo;(System.IO.Stream,System.Int32);;Argument[Qualifier];Argument[0];taint",
         "System.IO;Stream;true;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[Qualifier];Argument[0];taint",
-        "System.IO;Stream;true;Read;(System.Byte[],System.Int32,System.Int32);;Argument[Qualifier];Element of Argument[0];taint",
-        "System.IO;Stream;true;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[Qualifier];Element of Argument[0];taint",
-        "System.IO;Stream;true;Write;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];Argument[Qualifier];taint",
-        "System.IO;Stream;true;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Element of Argument[0];Argument[Qualifier];taint"
+        "System.IO;Stream;true;Read;(System.Byte[],System.Int32,System.Int32);;Argument[Qualifier];Argument[0].Element;taint",
+        "System.IO;Stream;true;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[Qualifier];Argument[0].Element;taint",
+        "System.IO;Stream;true;Write;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[Qualifier];taint",
+        "System.IO;Stream;true;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0].Element;Argument[Qualifier];taint"
       ]
   }
 }
@@ -183,10 +183,10 @@ private class SystemIOMemoryStreamFlowModelCsv extends SummaryModelCsv {
     row =
       [
         "System.IO;MemoryStream;false;MemoryStream;(System.Byte[]);;Argument[0];ReturnValue;taint",
-        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Boolean);;Element of Argument[0];ReturnValue;taint",
-        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32);;Element of Argument[0];ReturnValue;taint",
-        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32,System.Boolean);;Element of Argument[0];ReturnValue;taint",
-        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32,System.Boolean,System.Boolean);;Element of Argument[0];ReturnValue;taint",
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Boolean);;Argument[0].Element;ReturnValue;taint",
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;ReturnValue;taint",
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32,System.Boolean);;Argument[0].Element;ReturnValue;taint",
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32,System.Boolean,System.Boolean);;Argument[0].Element;ReturnValue;taint",
         "System.IO;MemoryStream;false;ToArray;();;Argument[Qualifier];ReturnValue;taint"
       ]
   }

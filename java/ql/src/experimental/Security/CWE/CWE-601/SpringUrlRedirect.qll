@@ -134,6 +134,6 @@ predicate springUrlRedirectTaintStep(DataFlow::Node fromNode, DataFlow::Node toN
 predicate nonLocationHeaderSanitizer(DataFlow::Node node) {
   exists(HttpHeadersAddSetMethodAccess ma, Argument firstArg | node.asExpr() = ma.getArgument(1) |
     firstArg = ma.getArgument(0) and
-    not firstArg.(CompileTimeConstantExpr).getStringValue().matches("Location")
+    not firstArg.(CompileTimeConstantExpr).getStringValue() = "Location"
   )
 }

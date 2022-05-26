@@ -24,13 +24,6 @@ private class ServiceClass extends Class {
   }
 }
 
-/** Top-level Request DTO types */
-private class RequestDTO extends Class {
-  RequestDTO() {
-    this.getABaseType*().getABaseInterface().hasQualifiedName("ServiceStack", "IReturn")
-  }
-}
-
 /** Flow sources for the ServiceStack framework */
 module Sources {
   private import semmle.code.csharp.security.dataflow.flowsources.Remote
@@ -84,14 +77,14 @@ private class ServiceStackRemoteSinkModelCsv extends SinkModelCsv {
         "ServiceStack;IRestGateway;true;Put<>;(ServiceStack.IReturn<T>);;Argument[0];remote",
         "ServiceStack;IRestGateway;true;Send<>;(ServiceStack.IReturn<T>);;Argument[0];remote",
         // IOneWayClient
-        "ServiceStack;IOneWayClient;true;SendAllOneWay;(System.Collections.Generic.IEnumerable<System.Object>);;Element of Argument[1];remote",
+        "ServiceStack;IOneWayClient;true;SendAllOneWay;(System.Collections.Generic.IEnumerable<System.Object>);;Argument[1].Element;remote",
         "ServiceStack;IOneWayClient;true;SendOneWay;(System.String,System.Object);;Argument[1];remote",
         "ServiceStack;IOneWayClient;true;SendOneWay;(System.Object);;Argument[0];remote",
         // IServiceGateway
         "ServiceStack;IServiceGateway;true;Publish;(System.Object);;Argument[0];remote",
-        "ServiceStack;IServiceGateway;true;PublishAll;(System.Collections.Generic.IEnumerable<System.Object>);;Element of Argument[0];remote",
+        "ServiceStack;IServiceGateway;true;PublishAll;(System.Collections.Generic.IEnumerable<System.Object>);;Argument[0].Element;remote",
         "ServiceStack;IServiceGateway;true;Send<>;(System.Object);;Argument[0];remote",
-        "ServiceStack;IServiceGateway;true;SendAll<>;(System.Collections.Generic.IEnumerable<System.Object>);;Element of Argument[0];remote",
+        "ServiceStack;IServiceGateway;true;SendAll<>;(System.Collections.Generic.IEnumerable<System.Object>);;Argument[0].Element;remote",
         // IRestClientAsync
         "ServiceStack;IRestClientAsync;true;CustomMethodAsync;(System.String,ServiceStack.IReturnVoid,System.Threading.CancellationToken);;Argument[1];remote",
         "ServiceStack;IRestClientAsync;true;CustomMethodAsync<>;(System.String,System.Object,System.Threading.CancellationToken);;Argument[1];remote",
@@ -119,9 +112,9 @@ private class ServiceStackRemoteSinkModelCsv extends SinkModelCsv {
         "ServiceStack;IRestGatewayAsync;true;SendAsync<>;(ServiceStack.IReturn<T>,System.Threading.CancellationToken);;Argument[0];remote",
         // IServiceGatewayAsync
         "ServiceStack;IServiceGatewayAsync;true;PublishAsync;(System.Object,System.Threading.CancellationToken);;Argument[0];remote",
-        "ServiceStack;IServiceGatewayAsync;true;PublishAllAsync;(System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken);;Element of Argument[0];remote",
+        "ServiceStack;IServiceGatewayAsync;true;PublishAllAsync;(System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken);;Argument[0].Element;remote",
         "ServiceStack;IServiceGatewayAsync;true;SendAsync<>;(System.Object,System.Threading.CancellationToken);;Argument[0];remote",
-        "ServiceStack;IServiceGatewayAsync;true;SendAllAsync<>;(System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken);;Element of Argument[0];remote",
+        "ServiceStack;IServiceGatewayAsync;true;SendAllAsync<>;(System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken);;Argument[0].Element;remote",
         // ServiceClientBase
         "ServiceStack;ServiceClientBase;true;Publish<>;(T);;Argument[0];remote",
         "ServiceStack;ServiceClientBase;true;Publish<>;(ServiceStack.Messaging.IMessage<T>);;Argument[0];remote",
@@ -266,7 +259,7 @@ private class ServiceStackCodeInjectionSinkModelCsv extends SinkModelCsv {
         "ServiceStack.Redis;IRedisClient;true;LoadLuaScript;(System.String);;Argument[0];code",
         // IRedisClientAsync
         "ServiceStack.Redis;IRedisClientAsync;true;CustomAsync;(System.Object[]);;Argument[0];code",
-        "ServiceStack.Redis;IRedisClientAsync;true;CustomAsync;(System.Object[],System.Threading.CancellationToken);;Element of Argument[0];code",
+        "ServiceStack.Redis;IRedisClientAsync;true;CustomAsync;(System.Object[],System.Threading.CancellationToken);;Argument[0].Element;code",
         "ServiceStack.Redis;IRedisClientAsync;true;ExecCachedLuaAsync;(System.String,System.Func<System.String,System.Threading.Tasks.ValueTask<T>>,System.Threading.CancellationToken);;Argument[0];code",
         "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsync;(System.String,System.String[],System.String[],System.Threading.CancellationToken);;Argument[0];code",
         "ServiceStack.Redis;IRedisClientAsync;true;ExecLuaAsync;(System.String,System.String[],System.Threading.CancellationToken);;Argument[0];code",

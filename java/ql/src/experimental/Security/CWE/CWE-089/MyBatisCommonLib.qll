@@ -45,7 +45,7 @@ class ListType extends RefType {
 }
 
 /** Holds if the specified `method` uses MyBatis Mapper XMLElement `mmxx`. */
-predicate myBatisMapperXMLElementFromMethod(Method method, MyBatisMapperXMLElement mmxx) {
+predicate myBatisMapperXmlElementFromMethod(Method method, MyBatisMapperXmlElement mmxx) {
   exists(MyBatisMapperSqlOperation mbmxe | mbmxe.getMapperMethod() = method |
     mbmxe.getAChild*() = mmxx
     or
@@ -55,6 +55,9 @@ predicate myBatisMapperXMLElementFromMethod(Method method, MyBatisMapperXMLEleme
     )
   )
 }
+
+/** DEPRECATED: Alias for myBatisMapperXmlElementFromMethod */
+deprecated predicate myBatisMapperXMLElementFromMethod = myBatisMapperXmlElementFromMethod/2;
 
 /** Holds if the specified `method` has Ibatis Sql operation annotation `isoa`. */
 predicate myBatisSqlOperationAnnotationFromMethod(Method method, IbatisSqlOperationAnnotation isoa) {

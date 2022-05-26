@@ -14,11 +14,11 @@ import ExternalAPIs
 import DataFlow::PathGraph
 
 from
-  UntrustedDataToExternalAPIConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  ExternalAPIUsedWithUntrustedData externalAPI
+  UntrustedDataToExternalApiConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  ExternalApiUsedWithUntrustedData externalApi
 where
-  sink.getNode() = externalAPI.getUntrustedDataNode() and
+  sink.getNode() = externalApi.getUntrustedDataNode() and
   config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Call to " + externalAPI.toString() + " with untrusted data from $@.", source.getNode(),
+  "Call to " + externalApi.toString() + " with untrusted data from $@.", source.getNode(),
   source.toString()

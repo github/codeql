@@ -8,7 +8,7 @@ import experimental.semmle.python.templates.SSTISink
 deprecated ClassValue theAirspeedTemplateClass() { result = Value::named("airspeed.Template") }
 
 /**
- * Sink representing the `airspeed.Template` class instantiation argument.
+ * A sink representing the `airspeed.Template` class instantiation argument.
  *
  *  import airspeed
  *  temp = airspeed.Template(`"sink"`)

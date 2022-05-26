@@ -1,6 +1,11 @@
+/**
+ * Provides modeling for the `HTTPClient` library.
+ */
+
 private import ruby
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
 
 /**
  * A call that makes an HTTP request using `HTTPClient`.
@@ -31,7 +36,7 @@ class HttpClientRequest extends HTTP::Client::Request::Range {
     this = requestUse.asExpr().getExpr()
   }
 
-  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
 
   override DataFlow::Node getResponseBody() {
     // The `get_content` and `post_content` methods return the response body as

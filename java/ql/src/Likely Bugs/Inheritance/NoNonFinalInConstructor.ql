@@ -46,13 +46,13 @@ where
   ma = unqualifiedCallToNonAbstractMethod(c, m) and
   // ... there exists an overriding method in a subtype,
   n.overrides+(m) and
-  n.getDeclaringType().getASupertype+() = c.getDeclaringType() and
+  n.getDeclaringType().getAStrictAncestor() = c.getDeclaringType() and
   // ... the method is in a supertype of c,
-  m.getDeclaringType() = c.getDeclaringType().getASupertype*() and
+  m.getDeclaringType() = c.getDeclaringType().getAnAncestor() and
   // ... `n` reads a non-final field `f`,
   fa = nonFinalFieldRead(n, f) and
   // ... which is declared in a subtype of `c`,
-  f.getDeclaringType().getASupertype+() = c.getDeclaringType() and
+  f.getDeclaringType().getAStrictAncestor() = c.getDeclaringType() and
   // ... `f` is written only in the subtype constructor, and
   fw = fieldWriteOnlyIn(d, f) and
   // ... the subtype constructor calls (possibly indirectly) the offending super constructor.

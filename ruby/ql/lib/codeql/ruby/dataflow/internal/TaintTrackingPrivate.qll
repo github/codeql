@@ -22,7 +22,7 @@ predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
 
 private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
   CfgNodes::ExprNodes::CasePatternCfgNode p
@@ -66,35 +66,64 @@ private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
     )
 }
 
-/**
- * Holds if the additional step from `nodeFrom` to `nodeTo` should be included
- * in all global taint flow configurations.
- */
 cached
-predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  // value of `case` expression into variables in patterns
-  exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprNodes::InClauseCfgNode clause |
-    nodeFrom.asExpr() = case.getValue() and
-    clause = case.getBranch(_) and
-    nodeTo.(SsaDefinitionNode).getDefinition().getControlFlowNode() =
-      variablesInPattern(clause.getPattern())
-  )
-  or
-  // operation involving `nodeFrom`
-  exists(CfgNodes::ExprNodes::OperationCfgNode op |
-    op = nodeTo.asExpr() and
-    op.getAnOperand() = nodeFrom.asExpr() and
-    not op.getExpr() instanceof AssignExpr
-  )
-  or
-  // string interpolation of `nodeFrom` into `nodeTo`
-  nodeFrom.asExpr() =
-    nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
-  or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
-  or
-  // Although flow through arrays is modelled precisely using stores/reads, we still
-  // allow flow out of a _tainted_ array. This is needed in order to support taint-
-  // tracking configurations where the source is an array.
-  readStep(nodeFrom, any(DataFlow::Content::ArrayElementContent c), nodeTo)
+private module Cached {
+  cached
+  predicate forceCachingInSameStage() { any() }
+
+  /**
+   * Holds if the additional step from `nodeFrom` to `nodeTo` should be included
+   * in all global taint flow configurations.
+   */
+  cached
+  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // value of `case` expression into variables in patterns
+    exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprNodes::InClauseCfgNode clause |
+      nodeFrom.asExpr() = case.getValue() and
+      clause = case.getBranch(_) and
+      nodeTo.(SsaDefinitionNode).getDefinition().getControlFlowNode() =
+        variablesInPattern(clause.getPattern())
+    )
+    or
+    // operation involving `nodeFrom`
+    exists(CfgNodes::ExprNodes::OperationCfgNode op |
+      op = nodeTo.asExpr() and
+      op.getAnOperand() = nodeFrom.asExpr() and
+      not op.getExpr() =
+        any(Expr e |
+          e instanceof AssignExpr or
+          e instanceof SplatExpr
+        )
+    )
+    or
+    // string interpolation of `nodeFrom` into `nodeTo`
+    nodeFrom.asExpr() =
+      nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
+    or
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    or
+    // Although flow through collections is modelled precisely using stores/reads, we still
+    // allow flow out of a _tainted_ collection. This is needed in order to support taint-
+    // tracking configurations where the source is a collection.
+    exists(DataFlow::ContentSet c | readStep(nodeFrom, c, nodeTo) |
+      c.isSingleton(any(DataFlow::Content::ElementContent ec))
+      or
+      c.isAnyElement()
+    )
+  }
+
+  /**
+   * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
+   * (intra-procedural) step.
+   */
+  cached
+  predicate localTaintStepCached(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    defaultAdditionalTaintStep(nodeFrom, nodeTo)
+    or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
+  }
 }
+
+import Cached

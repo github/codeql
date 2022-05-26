@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `ActionView` library.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
@@ -6,6 +10,9 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ast.internal.Module
 private import ActionController
 
+/**
+ * Holds if this AST node is in a context where `ActionView` methods are available.
+ */
 predicate inActionViewContext(AstNode n) {
   // Within a template
   n.getLocation().getFile() instanceof ErbFile
@@ -33,6 +40,9 @@ abstract class HtmlEscapeCall extends MethodCall {
   HtmlEscapeCall() { this.getMethodName() = ["html_escape", "html_escape_once", "h"] }
 }
 
+/**
+ * A call to a Rails method that escapes HTML.
+ */
 class RailsHtmlEscaping extends Escaping::Range, DataFlow::CallNode {
   RailsHtmlEscaping() { this.asExpr().getExpr() instanceof HtmlEscapeCall }
 
@@ -51,10 +61,13 @@ private class ActionViewHtmlEscapeCall extends HtmlEscapeCall {
 // A call in a context where some commonly used `ActionView` methods are available.
 private class ActionViewContextCall extends MethodCall {
   ActionViewContextCall() {
-    this.getReceiver() instanceof Self and
+    this.getReceiver() instanceof SelfVariableAccess and
     inActionViewContext(this)
   }
 
+  /**
+   * Holds if this call is located inside an ERb template.
+   */
   predicate isInErbFile() { this.getLocation().getFile() instanceof ErbFile }
 }
 
@@ -82,7 +95,7 @@ abstract class RenderCall extends MethodCall {
   }
 
   private string getTemplatePathValue() {
-    result = this.getTemplatePathArgument().getConstantValue().getStringOrSymbol()
+    result = this.getTemplatePathArgument().getConstantValue().getStringlikeValue()
   }
 
   // everything up to and including the final slash, but ignoring any leading slash
@@ -132,6 +145,9 @@ private class ActionViewRenderToCall extends ActionViewContextCall, RenderToCall
 class LinkToCall extends ActionViewContextCall {
   LinkToCall() { this.getMethodName() = "link_to" }
 
+  /**
+   * Gets the path argument to the call.
+   */
   Expr getPathArgument() {
     // When `link_to` is called with a block, it uses the first argument as the
     // path, and otherwise the second argument.

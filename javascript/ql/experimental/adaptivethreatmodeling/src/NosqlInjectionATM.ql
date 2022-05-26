@@ -10,6 +10,7 @@
  * @security-severity 8.8
  * @id js/ml-powered/nosql-injection
  * @tags experimental security
+ *       external/cwe/cwe-943
  */
 
 import ATM::ResultsInfo

@@ -185,11 +185,6 @@ class AmdModuleDefinition extends CallExpr {
   }
 }
 
-/**
- * DEPRECATED: Use `AmdModuleDefinition` instead.
- */
-deprecated class AMDModuleDefinition = AmdModuleDefinition;
-
 /** An AMD dependency, considered as a path expression. */
 private class AmdDependencyPath extends PathExprCandidate {
   AmdDependencyPath() {
@@ -327,8 +322,3 @@ class AmdModule extends Module {
     result = getDefine().getModuleExpr().flow()
   }
 }
-
-/**
- * DEPRECATED: Use `AmdModule` instead.
- */
-deprecated class AMDModule = AmdModule;

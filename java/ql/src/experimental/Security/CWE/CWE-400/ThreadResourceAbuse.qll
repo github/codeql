@@ -2,7 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSteps
 
 /** `java.lang.Math` data model for value comparison in the new CSV format. */
@@ -48,7 +48,7 @@ private class RunnableStartToRunStep extends AdditionalValueStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ConstructorCall cc, Method m |
       m.getDeclaringType() = cc.getConstructedType().getSourceDeclaration() and
-      cc.getConstructedType().getASupertype*().hasQualifiedName("java.lang", "Runnable") and
+      cc.getConstructedType().getAnAncestor().hasQualifiedName("java.lang", "Runnable") and
       m.hasName("run")
     |
       pred.asExpr() = cc and
@@ -66,7 +66,7 @@ private class ApacheFileUploadProgressUpdateStep extends AdditionalValueStep {
     exists(ConstructorCall cc, Method m |
       m.getDeclaringType() = cc.getConstructedType().getSourceDeclaration() and
       cc.getConstructedType()
-          .getASupertype*()
+          .getAnAncestor()
           .hasQualifiedName(["org.apache.commons.fileupload", "org.apache.commons.fileupload2"],
             "ProgressListener") and
       m.hasName("update")

@@ -5,7 +5,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 
 module IndirectCommandInjection {
   /**
@@ -83,7 +82,7 @@ module IndirectCommandInjection {
   }
 
   /**
-   * A command line parsing step from `pred` to `succ`.
+   * Holds if there is a command line parsing step from `pred` to `succ`.
    * E.g: `var succ = require("minimist")(pred)`.
    */
   predicate argsParseStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -97,7 +96,7 @@ module IndirectCommandInjection {
   }
 
   /**
-   * A Command instance from the `commander` library.
+   * Gets a Command instance from the `commander` library.
    */
   private API::Node commander() {
     result = API::moduleImport("commander")
@@ -133,7 +132,7 @@ module IndirectCommandInjection {
   }
 
   /**
-   * An array of command line arguments (`argv`) parsed by the `yargs` libary.
+   * An array of command line arguments (`argv`) parsed by the `yargs` library.
    */
   class YargsArgv extends Source {
     YargsArgv() {

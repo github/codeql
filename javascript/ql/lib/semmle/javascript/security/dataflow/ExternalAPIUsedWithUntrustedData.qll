@@ -4,4 +4,7 @@ import javascript
 private import ExternalAPIUsedWithUntrustedDataQuery as ExternalAPIUsedWithUntrustedDataQuery // ignore-query-import
 
 /** DEPRECATED. Import `ExternalAPIUsedWithUntrustedDataQuery` instead. */
-deprecated module ExternalAPIUsedWithUntrustedData = ExternalAPIUsedWithUntrustedDataQuery;
+deprecated module ExternalApiUsedWithUntrustedData = ExternalAPIUsedWithUntrustedDataQuery;
+
+/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
+deprecated module ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

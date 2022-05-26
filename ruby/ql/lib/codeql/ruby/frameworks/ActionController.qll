@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `ActionController` library.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
@@ -66,10 +70,14 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
   /** Gets a call to render from within this method. */
   RenderCall getARenderCall() { result.getParent+() = this }
 
-  // TODO: model the implicit render call when a path through the method does
-  // not end at an explicit render or redirect
-  /** Gets the controller class containing this method. */
-  ActionControllerControllerClass getControllerClass() { result = controllerClass }
+  /**
+   * Gets the controller class containing this method.
+   */
+  ActionControllerControllerClass getControllerClass() {
+    // TODO: model the implicit render call when a path through the method does
+    // not end at an explicit render or redirect
+    result = controllerClass
+  }
 
   /**
    * Gets a route to this handler, if one exists.
@@ -97,10 +105,13 @@ private class ActionControllerContextCall extends MethodCall {
   private ActionControllerControllerClass controllerClass;
 
   ActionControllerContextCall() {
-    this.getReceiver() instanceof Self and
+    this.getReceiver() instanceof SelfVariableAccess and
     this.getEnclosingModule() = controllerClass
   }
 
+  /**
+   * Gets the controller class containing this method.
+   */
   ActionControllerControllerClass getControllerClass() { result = controllerClass }
 }
 
@@ -115,10 +126,8 @@ abstract class ParamsCall extends MethodCall {
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `params` method.
  */
-class ParamsSource extends RemoteFlowSource::Range {
-  ParamsCall call;
-
-  ParamsSource() { this.asExpr().getExpr() = call }
+class ParamsSource extends HTTP::Server::RequestInputAccess::Range {
+  ParamsSource() { this.asExpr().getExpr() instanceof ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
 }
@@ -134,10 +143,8 @@ abstract class CookiesCall extends MethodCall {
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `cookies` method.
  */
-class CookiesSource extends RemoteFlowSource::Range {
-  CookiesCall call;
-
-  CookiesSource() { this.asExpr().getExpr() = call }
+class CookiesSource extends HTTP::Server::RequestInputAccess::Range {
+  CookiesSource() { this.asExpr().getExpr() instanceof CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
 }
@@ -181,7 +188,7 @@ class RedirectToCall extends ActionControllerContextCall {
   /** Gets the `ActionControllerActionMethod` to redirect to, if any */
   ActionControllerActionMethod getRedirectActionMethod() {
     exists(string methodName |
-      this.getKeywordArgument("action").getConstantValue().isStringOrSymbol(methodName) and
+      this.getKeywordArgument("action").getConstantValue().isStringlikeValue(methodName) and
       methodName = result.getName() and
       result.getEnclosingModule() = this.getControllerClass()
     )
@@ -217,7 +224,7 @@ pragma[nomagic]
 private predicate actionControllerHasHelperMethodCall(ActionControllerControllerClass c, string name) {
   exists(MethodCall mc |
     mc.getMethodName() = "helper_method" and
-    mc.getAnArgument().getConstantValue().isStringOrSymbol(name) and
+    mc.getAnArgument().getConstantValue().isStringlikeValue(name) and
     mc.getEnclosingModule() = c
   )
 }
@@ -309,7 +316,7 @@ class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::R
       call.getMethodName() = "skip_forgery_protection"
       or
       call.getMethodName() = "skip_before_action" and
-      call.getAnArgument().getConstantValue().isStringOrSymbol("verify_authenticity_token")
+      call.getAnArgument().getConstantValue().isStringlikeValue("verify_authenticity_token")
     )
   }
 

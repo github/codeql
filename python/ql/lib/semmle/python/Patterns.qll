@@ -10,6 +10,7 @@ class Pattern extends Pattern_, AstNode {
   override Scope getScope() { result = this.getCase().getScope() }
 
   /** Gets the case statement containing this pattern */
+  pragma[nomagic]
   Case getCase() { result.contains(this) }
 
   override string toString() { result = "Pattern" }

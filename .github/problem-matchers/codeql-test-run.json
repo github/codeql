@@ -1,0 +1,14 @@
+{
+    "problemMatcher": [
+        {
+            "owner": "codeql-test-run",
+            "pattern": [
+                {
+                    "regexp": "(\\[.*\\] FAILED\\((RESULT|COMPILATION)\\) (.*))$",
+                    "file": 3,
+                    "message": 1
+                }
+            ]
+        }
+    ]
+}

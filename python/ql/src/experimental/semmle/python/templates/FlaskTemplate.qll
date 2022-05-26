@@ -9,7 +9,7 @@ deprecated Value theFlaskRenderTemplateClass() {
 }
 
 /**
- * Sink representng `flask.render_template_string` function call argument.
+ * A sink representng `flask.render_template_string` function call argument.
  *
  *  from flask import render_template_string
  *  render_template_string(`sink`)

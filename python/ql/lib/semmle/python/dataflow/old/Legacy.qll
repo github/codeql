@@ -2,24 +2,7 @@ import semmle.python.dataflow.TaintTracking
 private import semmle.python.objects.ObjectInternal
 import semmle.python.dataflow.Implementation
 
-/* For backwards compatibility -- Use `TaintTrackingContext` instead. */
-deprecated class CallContext extends TaintTrackingContext {
-  TaintTrackingContext getCallee(CallNode call) { result.getCaller(call) = this }
-
-  predicate appliesToScope(Scope s) {
-    exists(PythonFunctionObjectInternal func, TaintKind param, AttributePath path, int n |
-      this = TParamContext(param, path, n) and
-      exists(TaintTrackingImplementation impl |
-        impl.callWithTaintedArgument(_, _, _, func, n, path, param) and
-        s = func.getScope()
-      )
-    )
-    or
-    this.isTop()
-  }
-}
-
-/* Backwards compatibility with config-less taint-tracking */
+/** A configuration that provides backwards compatibility with config-less taint-tracking */
 private class LegacyConfiguration extends TaintTracking::Configuration {
   LegacyConfiguration() {
     /* A name that won't be accidentally chosen by users */

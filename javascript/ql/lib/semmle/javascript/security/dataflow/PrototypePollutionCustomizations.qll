@@ -11,7 +11,7 @@ import semmle.javascript.dependencies.SemVer
 
 module PrototypePollution {
   /**
-   * Label for wrappers around tainted objects, that is, objects that are
+   * A label for wrappers around tainted objects, that is, objects that are
    * not completely user-controlled, but contain a user-controlled object.
    *
    * For example, `options` below is a tainted wrapper, but is not itself
@@ -54,11 +54,6 @@ module PrototypePollution {
     abstract DataFlow::FlowLabel getAFlowLabel();
 
     /**
-     * DEPRECATED. Override `dependencyInfo` instead.
-     */
-    deprecated Dependency getDependency() { none() }
-
-    /**
      * Holds if `moduleName` is the name of the module that defines this sink,
      * and `location` is the declaration of that dependency.
      *
@@ -89,21 +84,22 @@ module PrototypePollution {
   }
 
   class DeepExtendSink extends Sink {
-    ExtendCall call;
     string moduleName;
     Locatable location;
 
     DeepExtendSink() {
-      this = call.getASourceOperand() and
-      (
-        exists(Dependency dep |
-          isVulnerableVersionOfDeepExtendCall(call, dep) and
-          dep = location and
-          dep.info(moduleName, _)
+      exists(ExtendCall call |
+        this = call.getASourceOperand() and
+        (
+          exists(Dependency dep |
+            isVulnerableVersionOfDeepExtendCall(call, dep) and
+            dep = location and
+            dep.info(moduleName, _)
+          )
+          or
+          isVulnerableDeepExtendCallAllVersions(call, moduleName) and
+          location = call.asExpr()
         )
-        or
-        isVulnerableDeepExtendCallAllVersions(call, moduleName) and
-        location = call.asExpr()
       )
     }
 
@@ -118,11 +114,6 @@ module PrototypePollution {
       location = loc
     }
   }
-
-  /**
-   * DEPRECATED. Use `isVulnerableVersionOfDeepExtendCall` or `isVulnerableDeepExtendCallAllVersions` instead.
-   */
-  deprecated predicate isVulnerableDeepExtendCall = isVulnerableVersionOfDeepExtendCall/2;
 
   /**
    * Holds if `call` is vulnerable to prototype pollution because the callee is defined by `dep`.

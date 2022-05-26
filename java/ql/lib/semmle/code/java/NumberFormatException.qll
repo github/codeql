@@ -63,7 +63,7 @@ predicate catchesNFE(TryStmt t) {
   exists(CatchClause cc, LocalVariableDeclExpr v |
     t.getACatchClause() = cc and
     cc.getVariable() = v and
-    v.getType().(RefType).getASubtype*() instanceof NumberFormatException
+    v.getType().(RefType).getADescendant() instanceof NumberFormatException
   )
 }
 

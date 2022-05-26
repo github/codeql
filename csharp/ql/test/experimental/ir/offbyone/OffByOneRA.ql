@@ -10,17 +10,17 @@ predicate boundedArrayAccess(ElementAccess aa, int k) {
   exists(Instruction index, Instruction usage, Bound b, int delta |
     (
       // indexer access
-      usage.(CallInstruction).getAST() = aa
+      usage.(CallInstruction).getAst() = aa
       or
       // array access
-      usage.(PointerAddInstruction).getAST() = aa
+      usage.(PointerAddInstruction).getAst() = aa
     ) and
     usage.getAnOperand().getDef() = index and
     boundedInstruction(index, b, delta, true, _)
   |
     exists(PropertyAccess pa |
       k = delta and
-      b.getInstruction().getAST() = pa and
+      b.getInstruction().getAst() = pa and
       pa.getProperty().getName() = "Length" and
       pa.(QualifiableExpr).getQualifier().(VariableAccess).getTarget() =
         aa.getQualifier().(VariableAccess).getTarget()

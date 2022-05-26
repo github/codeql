@@ -2,9 +2,9 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.DataFlow3
+import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.TaintTracking3
 import semmle.code.java.security.AndroidIntentRedirection
 
 /**
@@ -38,7 +38,7 @@ private class OriginalIntentSanitizer extends IntentRedirectionSanitizer {
  * Data flow configuration used to discard incoming Intents
  * flowing directly to sinks that start Android components.
  */
-private class SameIntentBeingRelaunchedConfiguration extends DataFlow3::Configuration {
+private class SameIntentBeingRelaunchedConfiguration extends DataFlow2::Configuration {
   SameIntentBeingRelaunchedConfiguration() { this = "SameIntentBeingRelaunchedConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
@@ -74,7 +74,7 @@ private class IntentWithTaintedComponent extends DataFlow::Node {
 /**
  * A taint tracking configuration for tainted data flowing to an `Intent`'s component.
  */
-private class TaintedIntentComponentConf extends TaintTracking2::Configuration {
+private class TaintedIntentComponentConf extends TaintTracking3::Configuration {
   TaintedIntentComponentConf() { this = "TaintedIntentComponentConf" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }

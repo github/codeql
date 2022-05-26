@@ -17,7 +17,7 @@ class InsecureTrustManagerConfiguration extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof InsecureTrustManagerSink }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     (this.isSink(node) or this.isAdditionalFlowStep(node, _)) and
     node.getType() instanceof Array and
     c instanceof DataFlow::ArrayContent

@@ -1,5 +1,5 @@
 # SQL database query built from user-controlled sources (experimental)
-If a database query (such as a SQL or NoSQL query) is built from user-provided data without sufficient sanitization, a malicious user may be able to run malicious database queries.
+If a SQL query is built from user-provided data without sufficient sanitization, a malicious user may be able to run malicious database queries.
 
 Note: This CodeQL query is an experimental query. Experimental queries generate alerts using machine learning. They might include more false positives but they will improve over time.
 
@@ -7,11 +7,8 @@ Note: This CodeQL query is an experimental query. Experimental queries generate 
 ## Recommendation
 Most database connector libraries offer a way of safely embedding untrusted data into a query by means of query parameters or prepared statements.
 
-For NoSQL queries, make use of an operator like MongoDB's `$eq` to ensure that untrusted data is interpreted as a literal value and not as a query object.
-
-
 ## Example
-In the following example, assume the function `handler` is an HTTP request handler in a web application, whose parameter `req` contains the request object.
+In the following example, an `express.js` application is defining two endpoints that permit a user to query a postgres database.
 
 The handler constructs two copies of the same SQL query involving user input taken from the request object, once unsafely using string concatenation, and once safely using query parameters.
 
@@ -47,4 +44,3 @@ app.get("search", function handler(req, res) {
 
 ## References
 * Wikipedia: [SQL injection](https://en.wikipedia.org/wiki/SQL_injection).
-* MongoDB: [$eq operator](https://docs.mongodb.com/manual/reference/operator/query/eq).

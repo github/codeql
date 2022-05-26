@@ -526,8 +526,11 @@ module PrivateDjango {
   /** Gets a reference to the `django` module. */
   API::Node django() { result = API::moduleImport("django") }
 
+  /** DEPRECATED: Alias for `DjangoImpl` */
+  deprecated module django = DjangoImpl;
+
   /** Provides models for the `django` module. */
-  module django {
+  module DjangoImpl {
     // -------------------------------------------------------------------------
     // django.db
     // -------------------------------------------------------------------------
@@ -541,14 +544,17 @@ module PrivateDjango {
       DjangoDb() { this = API::moduleImport("django").getMember("db") }
     }
 
+    /** DEPRECATED: Alias for `DB` */
+    deprecated module db = DB;
+
     /** Provides models for the `django.db` module. */
-    module db {
+    module DB {
       /** Gets a reference to the `django.db.connection` object. */
       API::Node connection() { result = db().getMember("connection") }
 
       /** A `django.db.connection` is a PEP249 compliant DB connection. */
       class DjangoDbConnection extends PEP249::Connection::InstanceSource {
-        DjangoDbConnection() { this = connection().getAUse() }
+        DjangoDbConnection() { this = connection().getAnImmediateUse() }
       }
 
       // -------------------------------------------------------------------------
@@ -557,15 +563,18 @@ module PrivateDjango {
       /** Gets a reference to the `django.db.models` module. */
       API::Node models() { result = db().getMember("models") }
 
+      /** DEPRECATED: Alias for `Models` */
+      deprecated module models = Models;
+
       /** Provides models for the `django.db.models` module. */
-      module models {
+      module Models {
         /**
          * Provides models for the `django.db.models.Model` class and subclasses.
          *
          * See https://docs.djangoproject.com/en/3.1/topics/db/models/.
          */
         module Model {
-          /** Gets a reference to the `flask.views.View` class or any subclass. */
+          /** Gets a reference to the `django.db.models.Model` class or any subclass. */
           API::Node subclassRef() {
             result =
               API::moduleImport("django")
@@ -573,45 +582,242 @@ module PrivateDjango {
                   .getMember("models")
                   .getMember("Model")
                   .getASubclass*()
+            or
+            result =
+              API::moduleImport("django")
+                  .getMember("db")
+                  .getMember("models")
+                  .getMember("base")
+                  .getMember("Model")
+                  .getASubclass*()
+            or
+            result =
+              API::moduleImport("polymorphic")
+                  .getMember("models")
+                  .getMember("PolymorphicModel")
+                  .getASubclass*()
+          }
+
+          /**
+           * A source of instances of `django.db.models.Model` class or any subclass, extend this class to model new instances.
+           *
+           * This can include instantiations of the class, return values from function
+           * calls, or a special parameter that will be set when functions are called by an external
+           * library.
+           *
+           * Use the predicate `Model::instance()` to get references to instances of `django.db.models.Model` class or any subclass.
+           */
+          abstract class InstanceSource extends DataFlow::LocalSourceNode {
+            /** Gets the model class that this is an instance source of. */
+            abstract API::Node getModelClass();
+
+            /** Holds if this instance-source is fetching data from the DB. */
+            abstract predicate isDbFetch();
+          }
+
+          /** A direct instantiation of `django.db.models.Model` class or any subclass. */
+          private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+            API::Node modelClass;
+
+            ClassInstantiation() {
+              modelClass = subclassRef() and
+              this = modelClass.getACall()
+            }
+
+            override API::Node getModelClass() { result = modelClass }
+
+            override predicate isDbFetch() { none() }
+          }
+
+          /** A method call on a query-set or manager that returns an instance of a django model. */
+          private class QuerySetMethod extends InstanceSource, DataFlow::CallCfgNode {
+            API::Node modelClass;
+            string methodName;
+
+            QuerySetMethod() {
+              modelClass = subclassRef() and
+              methodName in ["get", "create", "earliest", "latest", "first", "last"] and
+              this = [manager(modelClass), querySet(modelClass)].getMember(methodName).getACall()
+            }
+
+            override API::Node getModelClass() { result = modelClass }
+
+            override predicate isDbFetch() { not methodName = "create" }
+          }
+
+          /**
+           * A method call on a query-set or manager that returns a collection
+           * containing instances of a django model.
+           */
+          class QuerySetMethodInstanceCollection extends DataFlow::CallCfgNode {
+            API::Node modelClass;
+            string methodName;
+
+            QuerySetMethodInstanceCollection() {
+              modelClass = subclassRef() and
+              this = querySetReturningMethod(modelClass, methodName).getACall() and
+              not methodName in ["none", "datetimes", "dates", "values", "values_list"]
+              or
+              // TODO: When we have flow-summaries, we should be able to model `values` and `values_list`
+              // Potentially by doing `synthetic ===store of list element==> <Model>.objects`, and then
+              // `.all()` just keeps that content, and `.first()` will do a read step (of the list element).
+              //
+              // So for `Model.objects.filter().exclude().first()` we would have
+              // 1: <Synthetic node for Model> ===store of list element==> Model.objects
+              // 2: Model.objects ==> Model.objects.filter()
+              // 3: Model.objects.filter() ==> Model.objects.filter().exclude()
+              // 4: Model.objects.filter().exclude() ===read of list element==> Model.objects.filter().exclude().first()
+              //
+              // This also means that `.none()` could clear contents. Right now we
+              // think that the result of `Model.objects.none().all()` can contain
+              // Model objects, but it will be empty due to the `.none()` part. Not
+              // that this is important, since no-one would need to write
+              // `.none().all()` code anyway, but it would be cool to be able to model it properly :D
+              //
+              //
+              // The big benefit is for how we could then model `values`/`values_list`. For example,
+              // `Model.objects.value_list(name, description)` would result in (for the attribute description)
+              // 0: <Synthetic node for Model> -- [attr description]
+              // 1: ==> Model.objects [ListElement, attr description]
+              // 2: ==> .value_list(...) [ListElement, TupleIndex 1]
+              //
+              // but for now, we just model a store step directly from the synthetic
+              // node to the method call.
+              //
+              // extra method on query-set/manager that does _not_ return a query-set,
+              // but a collection of instances.
+              modelClass = subclassRef() and
+              methodName in ["iterator", "bulk_create"] and
+              this = [manager(modelClass), querySet(modelClass)].getMember(methodName).getACall()
+            }
+
+            /** Gets the model class that this is an instance source of. */
+            API::Node getModelClass() { result = modelClass }
+
+            /** Holds if this instance-source is fetching data from the DB. */
+            predicate isDbFetch() { not methodName = "bulk_create" }
+          }
+
+          /**
+           * A method call on a query-set or manager that returns a dictionary
+           * containing instances of a django models as the values.
+           */
+          class QuerySetMethodInstanceDictValue extends DataFlow::CallCfgNode {
+            API::Node modelClass;
+
+            QuerySetMethodInstanceDictValue() {
+              modelClass = subclassRef() and
+              this = [manager(modelClass), querySet(modelClass)].getMember("in_bulk").getACall()
+            }
+
+            /** Gets the model class that this is an instance source of. */
+            API::Node getModelClass() { result = modelClass }
+
+            /** Holds if this instance-source is fetching data from the DB. */
+            predicate isDbFetch() { any() }
+          }
+
+          /**
+           * Gets a reference to an instance of `django.db.models.Model` class or any subclass,
+           * where `modelClass` specifies the class.
+           */
+          private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t, API::Node modelClass) {
+            t.start() and
+            modelClass = result.(InstanceSource).getModelClass()
+            or
+            exists(DataFlow::TypeTracker t2 | result = instance(t2, modelClass).track(t2, t))
+          }
+
+          /**
+           * Gets a reference to an instance of `django.db.models.Model` class or any subclass,
+           * where `modelClass` specifies the class.
+           */
+          DataFlow::Node instance(API::Node modelClass) {
+            instance(DataFlow::TypeTracker::end(), modelClass).flowsTo(result)
           }
         }
 
         /**
-         * Gets a reference to the Manager (django.db.models.Manager) for a django Model,
-         * accessed by `<ModelName>.objects`.
+         * Provides models for the `django.db.models.FileField` class and `ImageField` subclasses.
+         *
+         * See
+         * - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.FileField
+         * - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.ImageField
          */
-        API::Node manager() { result = Model::subclassRef().getMember("objects") }
+        module FileField {
+          /** Gets a reference to the `django.db.models.FileField` or  the `django.db.models.ImageField` class or any subclass. */
+          API::Node subclassRef() {
+            exists(string className | className in ["FileField", "ImageField"] |
+              // commonly used alias
+              result =
+                API::moduleImport("django")
+                    .getMember("db")
+                    .getMember("models")
+                    .getMember(className)
+                    .getASubclass*()
+              or
+              // actual class definition
+              result =
+                API::moduleImport("django")
+                    .getMember("db")
+                    .getMember("models")
+                    .getMember("fields")
+                    .getMember("files")
+                    .getMember(className)
+                    .getASubclass*()
+            )
+          }
+        }
+
+        /**
+         * Gets a reference to the Manager (django.db.models.Manager) for the django Model `modelClass`,
+         * accessed by `<modelClass>.objects`.
+         */
+        API::Node manager(API::Node modelClass) {
+          modelClass = Model::subclassRef() and
+          result = modelClass.getMember("objects")
+        }
 
         /**
          * Gets a method with `name` that returns a QuerySet.
          * This method can originate on a QuerySet or a Manager.
+         * `modelClass` specifies the django Model that this query-set originates from.
          *
          * See https://docs.djangoproject.com/en/3.1/ref/models/querysets/
          */
-        API::Node querySetReturningMethod(string name) {
+        API::Node querySetReturningMethod(API::Node modelClass, string name) {
           name in [
               "none", "all", "filter", "exclude", "complex_filter", "union", "intersection",
               "difference", "select_for_update", "select_related", "prefetch_related", "order_by",
               "distinct", "reverse", "defer", "only", "using", "annotate", "extra", "raw",
               "datetimes", "dates", "values", "values_list", "alias"
             ] and
-          result = [manager(), querySet()].getMember(name)
+          result = [manager(modelClass), querySet(modelClass)].getMember(name)
+          or
+          name = "get_queryset" and
+          result = manager(modelClass).getMember(name)
         }
 
         /**
          * Gets a reference to a QuerySet (django.db.models.query.QuerySet).
+         * `modelClass` specifies the django Model that this query-set originates from.
          *
          * See https://docs.djangoproject.com/en/3.1/ref/models/querysets/
          */
-        API::Node querySet() { result = querySetReturningMethod(_).getReturn() }
+        API::Node querySet(API::Node modelClass) {
+          result = querySetReturningMethod(modelClass, _).getReturn()
+        }
 
         /** Gets a reference to the `django.db.models.expressions` module. */
         API::Node expressions() { result = models().getMember("expressions") }
 
+        /** DEPRECATED: Alias for `Expressions` */
+        deprecated module expressions = Expressions;
+
         /** Provides models for the `django.db.models.expressions` module. */
-        module expressions {
-          /** Provides models for the `django.db.models.expressions.RawSQL` class. */
-          module RawSQL {
+        module Expressions {
+          /** Provides models for the `django.db.models.expressions.RawSql` class. */
+          module RawSql {
             /**
              * Gets an reference to the `django.db.models.expressions.RawSQL` class.
              */
@@ -644,6 +850,169 @@ module PrivateDjango {
               instance(DataFlow::TypeTracker::end(), sql).flowsTo(result)
             }
           }
+
+          /** DEPRECATED: Alias for RawSql */
+          deprecated module RawSQL = RawSql;
+        }
+
+        /** This internal module provides data-flow modeling of Django ORM. */
+        private module OrmDataflow {
+          private import semmle.python.dataflow.new.internal.DataFlowPrivate::Orm
+
+          /** Gets the (AST) class of the Django model class `modelClass`. */
+          Class getModelClassClass(API::Node modelClass) {
+            result.getParent() = modelClass.getAnImmediateUse().asExpr() and
+            modelClass = Model::subclassRef()
+          }
+
+          /** A synthetic node representing the data for an Django ORM model saved in a DB. */
+          class SyntheticDjangoOrmModelNode extends SyntheticOrmModelNode {
+            API::Node modelClass;
+
+            SyntheticDjangoOrmModelNode() { this.getClass() = getModelClassClass(modelClass) }
+
+            /** Gets the API node for this Django model class. */
+            API::Node getModelClass() { result = modelClass }
+          }
+
+          /**
+           * Gets a synthetic node where the data in the attribute `fieldName` can flow
+           * to, when a DB store is made on `subModel`, taking ORM inheritance into
+           * account.
+           *
+           * If `fieldName` is defined in class `base`, the results will include the
+           * synthetic node for `base` itself, the synthetic node for `subModel`, as
+           * well as all the classes in-between (in the class hierarchy).
+           */
+          SyntheticDjangoOrmModelNode nodeToStoreIn(API::Node subModel, string fieldName) {
+            exists(Class base, API::Node baseModel, API::Node resultModel |
+              baseModel = Model::subclassRef() and
+              resultModel = Model::subclassRef() and
+              baseModel.getASubclass*() = subModel and
+              base = getModelClassClass(baseModel) and
+              exists(Variable v |
+                base.getBody().getAnItem().(AssignStmt).defines(v) and
+                v.getId() = fieldName
+              )
+            |
+              baseModel.getASubclass*() = resultModel and
+              resultModel.getASubclass*() = subModel and
+              result.getModelClass() = resultModel
+            )
+          }
+
+          /**
+           * Gets the synthetic node where data could be loaded from, when a fetch is
+           * made on `modelClass`.
+           *
+           * In vanilla Django inheritance, this is simply the model itself, but if a
+           * model is based on `polymorphic.models.PolymorphicModel`, a fetch of the
+           * base-class can also yield instances of its subclasses.
+           */
+          SyntheticDjangoOrmModelNode nodeToLoadFrom(API::Node modelClass) {
+            result.getModelClass() = modelClass
+            or
+            exists(API::Node polymorphicModel |
+              polymorphicModel =
+                API::moduleImport("polymorphic").getMember("models").getMember("PolymorphicModel")
+            |
+              polymorphicModel.getASubclass+() = modelClass and
+              modelClass.getASubclass+() = result.getModelClass()
+            )
+          }
+
+          /** Additional data-flow steps for Django ORM models. */
+          class DjangOrmSteps extends AdditionalOrmSteps {
+            override predicate storeStep(
+              DataFlow::Node nodeFrom, DataFlow::Content c, DataFlow::Node nodeTo
+            ) {
+              // attribute value from constructor call -> object created
+              exists(DataFlow::CallCfgNode call, string fieldName |
+                // Note: Currently only supports kwargs, which should by far be the most
+                // common way to do things. We _should_ investigate how often
+                // positional-args are used.
+                call = Model::subclassRef().getACall() and
+                nodeFrom = call.getArgByName(fieldName) and
+                c.(DataFlow::AttributeContent).getAttribute() = fieldName and
+                nodeTo = call
+              )
+              or
+              // attribute store in `<Model>.objects.create`, `get_or_create`, and `update_or_create`
+              // see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#create
+              // see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#get-or-create
+              // see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#update-or-create
+              // TODO: This does currently not handle values passed in the `defaults` dictionary
+              exists(
+                DataFlow::CallCfgNode call, API::Node modelClass, string fieldName,
+                string methodName
+              |
+                modelClass = Model::subclassRef() and
+                methodName in ["create", "get_or_create", "update_or_create"] and
+                call = modelClass.getMember("objects").getMember(methodName).getACall() and
+                nodeFrom = call.getArgByName(fieldName) and
+                c.(DataFlow::AttributeContent).getAttribute() = fieldName and
+                (
+                  // -> object created
+                  (
+                    methodName = "create" and nodeTo = call
+                    or
+                    // TODO: for these two methods, the result is a tuple `(<Model>, bool)`,
+                    // which we need flow-summaries to model properly
+                    methodName in ["get_or_create", "update_or_create"] and none()
+                  )
+                  or
+                  // -> DB store on synthetic node
+                  nodeTo = nodeToStoreIn(modelClass, fieldName)
+                )
+              )
+              or
+              // attribute store in `<Model>.objects.[<QuerySet>].update()` -> synthetic
+              // see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#update
+              exists(DataFlow::CallCfgNode call, API::Node modelClass, string fieldName |
+                call = [manager(modelClass), querySet(modelClass)].getMember("update").getACall() and
+                nodeFrom = call.getArgByName(fieldName) and
+                c.(DataFlow::AttributeContent).getAttribute() = fieldName and
+                nodeTo = nodeToStoreIn(modelClass, fieldName)
+              )
+              or
+              // synthetic -> method-call that returns collection of ORM models (all/filter/...)
+              exists(API::Node modelClass |
+                nodeFrom = nodeToLoadFrom(modelClass) and
+                nodeTo.(Model::QuerySetMethodInstanceCollection).getModelClass() = modelClass and
+                nodeTo.(Model::QuerySetMethodInstanceCollection).isDbFetch() and
+                c instanceof DataFlow::ListElementContent
+              )
+              or
+              // synthetic -> method-call that returns dictionary with ORM models as values
+              exists(API::Node modelClass |
+                nodeFrom = nodeToLoadFrom(modelClass) and
+                nodeTo.(Model::QuerySetMethodInstanceDictValue).getModelClass() = modelClass and
+                nodeTo.(Model::QuerySetMethodInstanceDictValue).isDbFetch() and
+                c instanceof DataFlow::DictionaryElementAnyContent
+              )
+            }
+
+            override predicate jumpStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+              // save -> synthetic
+              exists(API::Node modelClass, DataFlow::MethodCallNode saveCall |
+                // TODO: The `nodeTo` should be restricted more, such that flow to
+                // base-classes are only for the fields that are defined in the
+                // base-class... but only passing on flow for a specific attribute requires flow-summaries,
+                // so we can do
+                // `obj (in obj.save call) ==read of attr==> synthetic attr on base-class ==store of attr==> synthetic for base-class`
+                nodeTo = nodeToStoreIn(modelClass, _) and
+                saveCall.calls(Model::instance(modelClass), "save") and
+                nodeFrom = saveCall.getObject()
+              )
+              or
+              // synthetic -> method-call that returns single ORM model (get/first/...)
+              exists(API::Node modelClass |
+                nodeFrom = nodeToLoadFrom(modelClass) and
+                nodeTo.(Model::InstanceSource).getModelClass() = modelClass and
+                nodeTo.(Model::InstanceSource).isDbFetch()
+              )
+            }
+          }
         }
       }
     }
@@ -659,8 +1028,8 @@ module PrivateDjango {
       DataFlow::Node sql;
 
       ObjectsAnnotate() {
-        this = django::db::models::querySetReturningMethod("annotate").getACall() and
-        django::db::models::expressions::RawSQL::instance(sql) in [
+        this = DjangoImpl::DB::Models::querySetReturningMethod(_, "annotate").getACall() and
+        DjangoImpl::DB::Models::Expressions::RawSql::instance(sql) in [
             this.getArg(_), this.getArgByName(_)
           ]
       }
@@ -677,8 +1046,8 @@ module PrivateDjango {
       DataFlow::Node sql;
 
       ObjectsAlias() {
-        this = django::db::models::querySetReturningMethod("alias").getACall() and
-        django::db::models::expressions::RawSQL::instance(sql) in [
+        this = DjangoImpl::DB::Models::querySetReturningMethod(_, "alias").getACall() and
+        DjangoImpl::DB::Models::Expressions::RawSql::instance(sql) in [
             this.getArg(_), this.getArgByName(_)
           ]
       }
@@ -694,7 +1063,7 @@ module PrivateDjango {
      * - https://docs.djangoproject.com/en/3.1/ref/models/querysets/#raw
      */
     private class ObjectsRaw extends SqlExecution::Range, DataFlow::CallCfgNode {
-      ObjectsRaw() { this = django::db::models::querySetReturningMethod("raw").getACall() }
+      ObjectsRaw() { this = DjangoImpl::DB::Models::querySetReturningMethod(_, "raw").getACall() }
 
       override DataFlow::Node getSql() { result = this.getArg(0) }
     }
@@ -705,7 +1074,9 @@ module PrivateDjango {
      * See https://docs.djangoproject.com/en/3.1/ref/models/querysets/#extra
      */
     private class ObjectsExtra extends SqlExecution::Range, DataFlow::CallCfgNode {
-      ObjectsExtra() { this = django::db::models::querySetReturningMethod("extra").getACall() }
+      ObjectsExtra() {
+        this = DjangoImpl::DB::Models::querySetReturningMethod(_, "extra").getACall()
+      }
 
       override DataFlow::Node getSql() {
         result in [
@@ -720,8 +1091,11 @@ module PrivateDjango {
     /** Gets a reference to the `django.urls` module. */
     API::Node urls() { result = django().getMember("urls") }
 
+    /** DEPRECATED: Alias for `Urls` */
+    deprecated module urls = Urls;
+
     /** Provides models for the `django.urls` module */
-    module urls {
+    module Urls {
       /**
        * Gets a reference to the `django.urls.path` function.
        * See https://docs.djangoproject.com/en/3.0/ref/urls/#path
@@ -741,10 +1115,16 @@ module PrivateDjango {
     /** Gets a reference to the `django.conf` module. */
     API::Node conf() { result = django().getMember("conf") }
 
+    /** DEPRECATED: Alias for `Conf` */
+    deprecated module conf = Conf;
+
     /** Provides models for the `django.conf` module */
-    module conf {
+    module Conf {
+      /** DEPRECATED: Alias for `ConfUrls` */
+      deprecated module conf_urls = ConfUrls;
+
       /** Provides models for the `django.conf.urls` module */
-      module conf_urls {
+      module ConfUrls {
         // -------------------------------------------------------------------------
         // django.conf.urls
         // -------------------------------------------------------------------------
@@ -767,16 +1147,22 @@ module PrivateDjango {
     /** Gets a reference to the `django.http` module. */
     API::Node http() { result = django().getMember("http") }
 
+    /** DEPRECATED: Alias for `Http` */
+    deprecated module http = Http;
+
     /** Provides models for the `django.http` module */
-    module http {
+    module Http {
       // ---------------------------------------------------------------------------
       // django.http.request
       // ---------------------------------------------------------------------------
       /** Gets a reference to the `django.http.request` module. */
       API::Node request() { result = http().getMember("request") }
 
+      /** DEPRECATED: Alias for `Request` */
+      deprecated module request = Request;
+
       /** Provides models for the `django.http.request` module. */
-      module request {
+      module Request {
         /**
          * Provides models for the `django.http.request.HttpRequest` class
          *
@@ -857,7 +1243,7 @@ module PrivateDjango {
               // special handling of the `build_absolute_uri` method, see
               // https://docs.djangoproject.com/en/3.0/ref/request-response/#django.http.HttpRequest.build_absolute_uri
               exists(DataFlow::AttrRead attr, DataFlow::CallCfgNode call, DataFlow::Node instance |
-                instance = django::http::request::HttpRequest::instance() and
+                instance = DjangoImpl::Http::Request::HttpRequest::instance() and
                 attr.getObject() = instance
               |
                 attr.getAttributeName() = "build_absolute_uri" and
@@ -934,8 +1320,11 @@ module PrivateDjango {
       /** Gets a reference to the `django.http.response` module. */
       API::Node response() { result = http().getMember("response") }
 
+      /** DEPRECATED: Alias for `Response` */
+      deprecated module response = Response;
+
       /** Provides models for the `django.http.response` module */
-      module response {
+      module Response {
         /**
          * Provides models for the `django.http.response.HttpResponse` class
          *
@@ -1669,17 +2058,17 @@ module PrivateDjango {
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
         private DataFlow::TypeTrackingNode write(
-          django::http::response::HttpResponse::InstanceSource instance, DataFlow::TypeTracker t
+          DjangoImpl::Http::Response::HttpResponse::InstanceSource instance, DataFlow::TypeTracker t
         ) {
           t.startInAttr("write") and
-          instance = django::http::response::HttpResponse::instance() and
+          instance = DjangoImpl::Http::Response::HttpResponse::instance() and
           result = instance
           or
           exists(DataFlow::TypeTracker t2 | result = write(instance, t2).track(t2, t))
         }
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
-        DataFlow::Node write(django::http::response::HttpResponse::InstanceSource instance) {
+        DataFlow::Node write(DjangoImpl::Http::Response::HttpResponse::InstanceSource instance) {
           write(instance, DataFlow::TypeTracker::end()).flowsTo(result)
         }
 
@@ -1689,7 +2078,7 @@ module PrivateDjango {
          * See https://docs.djangoproject.com/en/3.1/ref/request-response/#django.http.HttpResponse.write
          */
         class HttpResponseWriteCall extends HTTP::Server::HttpResponse::Range, DataFlow::CallCfgNode {
-          django::http::response::HttpResponse::InstanceSource instance;
+          DjangoImpl::Http::Response::HttpResponse::InstanceSource instance;
 
           HttpResponseWriteCall() { this.getFunction() = write(instance) }
 
@@ -1710,7 +2099,7 @@ module PrivateDjango {
         class DjangoResponseSetCookieCall extends HTTP::Server::CookieWrite::Range,
           DataFlow::MethodCallNode {
           DjangoResponseSetCookieCall() {
-            this.calls(django::http::response::HttpResponse::instance(), "set_cookie")
+            this.calls(DjangoImpl::Http::Response::HttpResponse::instance(), "set_cookie")
           }
 
           override DataFlow::Node getHeaderArg() { none() }
@@ -1730,7 +2119,7 @@ module PrivateDjango {
         class DjangoResponseDeleteCookieCall extends HTTP::Server::CookieWrite::Range,
           DataFlow::MethodCallNode {
           DjangoResponseDeleteCookieCall() {
-            this.calls(django::http::response::HttpResponse::instance(), "delete_cookie")
+            this.calls(DjangoImpl::Http::Response::HttpResponse::instance(), "delete_cookie")
           }
 
           override DataFlow::Node getHeaderArg() { none() }
@@ -1757,7 +2146,7 @@ module PrivateDjango {
               this.asCfgNode() = subscript
             |
               cookieLookup.getAttributeName() = "cookies" and
-              cookieLookup.getObject() = django::http::response::HttpResponse::instance() and
+              cookieLookup.getObject() = DjangoImpl::Http::Response::HttpResponse::instance() and
               exists(DataFlow::Node subscriptObj |
                 subscriptObj.asCfgNode() = subscript.getObject()
               |
@@ -1783,8 +2172,11 @@ module PrivateDjango {
     /** Gets a reference to the `django.shortcuts` module. */
     API::Node shortcuts() { result = django().getMember("shortcuts") }
 
+    /** DEPRECATED: Alias for `Shortcuts` */
+    deprecated module shortcuts = Shortcuts;
+
     /** Provides models for the `django.shortcuts` module */
-    module shortcuts {
+    module Shortcuts {
       /**
        * Gets a reference to the `django.shortcuts.redirect` function
        *
@@ -1802,7 +2194,9 @@ module PrivateDjango {
    * thereby handling user input.
    */
   class DjangoFormClass extends Class, SelfRefMixin {
-    DjangoFormClass() { this.getABase() = Django::Forms::Form::subclassRef().getAUse().asExpr() }
+    DjangoFormClass() {
+      this.getParent() = Django::Forms::Form::subclassRef().getAnImmediateUse().asExpr()
+    }
   }
 
   /**
@@ -1835,7 +2229,7 @@ module PrivateDjango {
    */
   class DjangoFormFieldClass extends Class {
     DjangoFormFieldClass() {
-      this.getABase() = Django::Forms::Field::subclassRef().getAUse().asExpr()
+      this.getParent() = Django::Forms::Field::subclassRef().getAnImmediateUse().asExpr()
     }
   }
 
@@ -1862,7 +2256,8 @@ module PrivateDjango {
   // routing modeling
   // ---------------------------------------------------------------------------
   /**
-   * In order to recognize a class as being a django view class, based on the `as_view`
+   * A class that may be a django view class. In order to recognize a class as being a django view class,
+   * based on the `as_view`
    * call, we need to be able to track such calls on _any_ class. This is provided by
    * the member predicates of this QL class.
    *
@@ -1873,7 +2268,7 @@ module PrivateDjango {
     /** Gets a reference to this class. */
     private DataFlow::TypeTrackingNode getARef(DataFlow::TypeTracker t) {
       t.start() and
-      result.asExpr().(ClassExpr) = this.getParent()
+      result.asExpr() = this.getParent()
       or
       exists(DataFlow::TypeTracker t2 | result = this.getARef(t2).track(t2, t))
     }
@@ -1937,7 +2332,7 @@ module PrivateDjango {
    */
   class DjangoViewClassFromSuperClass extends DjangoViewClass {
     DjangoViewClassFromSuperClass() {
-      this.getABase() = Django::Views::View::subclassRef().getAUse().asExpr()
+      this.getParent() = Django::Views::View::subclassRef().getAnImmediateUse().asExpr()
     }
   }
 
@@ -1973,7 +2368,7 @@ module PrivateDjango {
   /** Provides a class for modeling new django route handlers. */
   module DjangoRouteHandler {
     /**
-     * Extend this class to model new APIs. If you want to refine existing API models,
+     * A django route handler. Extend this class to model new APIs. If you want to refine existing API models,
      * extend `DjangoRouteHandler` instead.
      */
     abstract class Range extends Function { }
@@ -2059,7 +2454,7 @@ module PrivateDjango {
    * See https://docs.djangoproject.com/en/3.0/ref/urls/#path
    */
   private class DjangoUrlsPathCall extends DjangoRouteSetup, DataFlow::CallCfgNode {
-    DjangoUrlsPathCall() { this = django::urls::path().getACall() }
+    DjangoUrlsPathCall() { this = DjangoImpl::Urls::path().getACall() }
 
     override DataFlow::Node getUrlPatternArg() {
       result in [this.getArg(0), this.getArgByName("route")]
@@ -2142,7 +2537,7 @@ module PrivateDjango {
    */
   private class DjangoUrlsRePathCall extends DjangoRegexRouteSetup, DataFlow::CallCfgNode {
     DjangoUrlsRePathCall() {
-      this = django::urls::re_path().getACall() and
+      this = DjangoImpl::Urls::re_path().getACall() and
       // `django.conf.urls.url` (which we support directly with
       // `DjangoConfUrlsUrlCall`), is implemented in Django 2+ as backward compatibility
       // using `django.urls.re_path`. See
@@ -2172,7 +2567,7 @@ module PrivateDjango {
    * See https://docs.djangoproject.com/en/1.11/ref/urls/#django.conf.urls.url
    */
   private class DjangoConfUrlsUrlCall extends DjangoRegexRouteSetup, DataFlow::CallCfgNode {
-    DjangoConfUrlsUrlCall() { this = django::conf::conf_urls::url().getACall() }
+    DjangoConfUrlsUrlCall() { this = DjangoImpl::Conf::ConfUrls::url().getACall() }
 
     override DataFlow::Node getUrlPatternArg() {
       result in [this.getArg(0), this.getArgByName("regex")]
@@ -2185,7 +2580,7 @@ module PrivateDjango {
   // HttpRequest taint modeling
   // ---------------------------------------------------------------------------
   /** A parameter that will receive the django `HttpRequest` instance when a request handler is invoked. */
-  private class DjangoRequestHandlerRequestParam extends django::http::request::HttpRequest::InstanceSource,
+  private class DjangoRequestHandlerRequestParam extends DjangoImpl::Http::Request::HttpRequest::InstanceSource,
     RemoteFlowSource::Range, DataFlow::ParameterNode {
     DjangoRequestHandlerRequestParam() {
       this.getParameter() = any(DjangoRouteSetup setup).getARequestHandler().getRequestParam()
@@ -2202,7 +2597,7 @@ module PrivateDjango {
    *
    * See https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/#dynamic-filtering
    */
-  private class DjangoViewClassRequestAttributeRead extends django::http::request::HttpRequest::InstanceSource,
+  private class DjangoViewClassRequestAttributeRead extends DjangoImpl::Http::Request::HttpRequest::InstanceSource,
     RemoteFlowSource::Range, DataFlow::Node {
     DjangoViewClassRequestAttributeRead() {
       exists(DataFlow::AttrRead read | this = read |
@@ -2236,6 +2631,36 @@ module PrivateDjango {
     }
   }
 
+  /**
+   * A parameter that accepts the filename used to upload a file. This is the second
+   * parameter in functions used for the `upload_to` argument to a `FileField`.
+   *
+   * Note that the value this parameter accepts cannot contain a slash. Even when
+   * forcing the filename to contain a slash when sending the request, django does
+   * something like `input_filename.split("/")[-1]` (so other special characters still
+   * allowed). This also means that although the return value from `upload_to` is used
+   * to construct a path, path injection is not possible.
+   *
+   * See
+   *  - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.FileField.upload_to
+   *  - https://docs.djangoproject.com/en/3.1/topics/http/file-uploads/#handling-uploaded-files-with-a-model
+   */
+  private class DjangoFileFieldUploadToFunctionFilenameParam extends RemoteFlowSource::Range,
+    DataFlow::ParameterNode {
+    DjangoFileFieldUploadToFunctionFilenameParam() {
+      exists(DataFlow::CallCfgNode call, DataFlow::Node uploadToArg, Function func |
+        this.getParameter() = func.getArg(1) and
+        call = DjangoImpl::DB::Models::FileField::subclassRef().getACall() and
+        uploadToArg in [call.getArg(2), call.getArgByName("upload_to")] and
+        uploadToArg = poorMansFunctionTracker(func)
+      )
+    }
+
+    override string getSourceType() {
+      result = "django filename parameter to function used in FileField.upload_to"
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // django.shortcuts.redirect
   // ---------------------------------------------------------------------------
@@ -2249,7 +2674,7 @@ module PrivateDjango {
    */
   private class DjangoShortcutsRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
-    DjangoShortcutsRedirectCall() { this = django::shortcuts::redirect().getACall() }
+    DjangoShortcutsRedirectCall() { this = DjangoImpl::Shortcuts::redirect().getACall() }
 
     /**
      * Gets the data-flow node that specifies the location of this HTTP redirect response.
@@ -2294,5 +2719,86 @@ module PrivateDjango {
     override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
 
     override string getMimetypeDefault() { none() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Logging
+  // ---------------------------------------------------------------------------
+  /**
+   * A standard Python logger instance from Django.
+   * see https://github.com/django/django/blob/stable/4.0.x/django/utils/log.py#L11
+   */
+  private class DjangoLogger extends Stdlib::Logger::InstanceSource {
+    DjangoLogger() {
+      this =
+        API::moduleImport("django")
+            .getMember("utils")
+            .getMember("log")
+            .getMember("request_logger")
+            .getAnImmediateUse()
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Settings
+  // ---------------------------------------------------------------------------
+  /**
+   * A custom middleware stack
+   */
+  private class DjangoSettingsMiddlewareStack extends HTTP::Server::CsrfProtectionSetting::Range {
+    List list;
+
+    DjangoSettingsMiddlewareStack() {
+      this.asExpr() = list and
+      // we look for an assignment to the `MIDDLEWARE` setting
+      exists(DataFlow::Node mw |
+        mw.asVar().getName() = "MIDDLEWARE" and
+        DataFlow::localFlow(this, mw)
+      |
+        // To only include results where CSRF protection matters, we only care about CSRF
+        // protection when the django authentication middleware is enabled.
+        // Since an active session cookie is exactly what would allow an attacker to perform
+        // a CSRF attack.
+        // Notice that this does not ensure that this is not a FP, since the authentication
+        // middleware might be unused.
+        //
+        // This also strongly implies that `mw` is in fact a Django middleware setting and
+        // not just a variable named `MIDDLEWARE`.
+        list.getAnElt().(StrConst).getText() =
+          "django.contrib.auth.middleware.AuthenticationMiddleware"
+      )
+    }
+
+    override boolean getVerificationSetting() {
+      if
+        list.getAnElt().(StrConst).getText() in [
+            "django.middleware.csrf.CsrfViewMiddleware",
+            // see https://github.com/mozilla/django-session-csrf
+            "session_csrf.CsrfMiddleware"
+          ]
+      then result = true
+      else result = false
+    }
+  }
+
+  private class DjangoCsrfDecorator extends HTTP::Server::CsrfLocalProtectionSetting::Range {
+    string decoratorName;
+    Function function;
+
+    DjangoCsrfDecorator() {
+      decoratorName in ["csrf_protect", "csrf_exempt", "requires_csrf_token", "ensure_csrf_cookie"] and
+      this =
+        API::moduleImport("django")
+            .getMember("views")
+            .getMember("decorators")
+            .getMember("csrf")
+            .getMember(decoratorName)
+            .getAUse() and
+      this.asExpr() = function.getADecorator()
+    }
+
+    override Function getRequestHandler() { result = function }
+
+    override predicate csrfEnabled() { decoratorName in ["csrf_protect", "requires_csrf_token"] }
   }
 }

@@ -70,8 +70,8 @@ private RefType caughtType(TryStmt try, int index) {
 }
 
 private predicate maybeUnchecked(RefType t) {
-  t.getASupertype*().hasQualifiedName("java.lang", "RuntimeException") or
-  t.getASupertype*().hasQualifiedName("java.lang", "Error") or
+  t.getAnAncestor().hasQualifiedName("java.lang", "RuntimeException") or
+  t.getAnAncestor().hasQualifiedName("java.lang", "Error") or
   t.hasQualifiedName("java.lang", "Exception") or
   t.hasQualifiedName("java.lang", "Throwable")
 }
@@ -80,14 +80,14 @@ predicate overlappingExceptions(RefType e1, RefType e2) {
   exists(RefType throwable | throwable.hasQualifiedName("java.lang", "Throwable") |
     throwable.hasSubtype*(e1) and
     throwable.hasSubtype*(e2) and
-    e1.getASubtype*() = e2.getASubtype*()
+    e1.getADescendant() = e2.getADescendant()
   )
 }
 
 from TryStmt try, int first, int second, RefType masking, RefType masked, string multiCatchMsg
 where
   masking = caughtType(try, first) and
-  masking.getASupertype+() = masked and
+  masking.getAStrictAncestor() = masked and
   masked = caughtType(try, second) and
   forall(RefType thrownType |
     thrownType = getAThrownExceptionType(try) and

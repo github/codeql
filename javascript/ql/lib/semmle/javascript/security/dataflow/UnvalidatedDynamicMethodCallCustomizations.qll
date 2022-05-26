@@ -34,6 +34,8 @@ module UnvalidatedDynamicMethodCall {
 
   /**
    * A sanitizer for unvalidated dynamic method calls.
+   * Override the `sanitizes` predicate to specify an edge that should be sanitized.
+   * The `this` value is not seen as a sanitizer.
    */
   abstract class Sanitizer extends DataFlow::Node {
     abstract predicate sanitizes(DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl);
@@ -73,12 +75,12 @@ module UnvalidatedDynamicMethodCall {
    * A function invocation of an unsafe function, as a sink for remote unvalidated dynamic method calls.
    */
   class CalleeAsSink extends Sink {
-    InvokeExpr invk;
-
     CalleeAsSink() {
-      this = invk.getCallee().flow() and
-      // don't flag invocations inside a try-catch
-      not invk.getASuccessor() instanceof CatchClause
+      exists(InvokeExpr invk |
+        this = invk.getCallee().flow() and
+        // don't flag invocations inside a try-catch
+        not invk.getASuccessor() instanceof CatchClause
+      )
     }
 
     override DataFlow::FlowLabel getFlowLabel() {

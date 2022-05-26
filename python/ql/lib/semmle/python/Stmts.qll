@@ -323,7 +323,7 @@ class Raise extends Raise_ {
   override Expr getASubExpression() { py_exprs(result, _, this, _) }
 
   /**
-   * The expression immediately following the `raise`, this is the
+   * Gets the expression immediately following the `raise`. This is the
    * exception raised, but not accounting for tuples in Python 2.
    */
   Expr getException() {
@@ -332,7 +332,7 @@ class Raise extends Raise_ {
     result = this.getExc()
   }
 
-  /** The exception raised, accounting for tuples in Python 2. */
+  /** Gets the exception raised, accounting for tuples in Python 2. */
   Expr getRaised() {
     exists(Expr raw | raw = this.getException() |
       if not major_version() = 2 or not exists(raw.(Tuple).getAnElt())

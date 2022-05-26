@@ -52,7 +52,7 @@ private predicate isShell(Expr ex) {
 private class ListOfStringType extends CollectionType {
   ListOfStringType() {
     this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "List") and
-    this.getElementType().getASubtype*() instanceof TypeString
+    this.getElementType().getADescendant() instanceof TypeString
   }
 }
 

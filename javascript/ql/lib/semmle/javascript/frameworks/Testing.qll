@@ -3,7 +3,6 @@
  */
 
 import javascript
-import semmle.javascript.frameworks.xUnit
 import semmle.javascript.frameworks.TestingCustomizations
 
 /**
@@ -39,12 +38,14 @@ class BDDTest extends Test, @call_expr {
 }
 
 /**
- * Gets the test file for `f` with stem extension `stemExt`.
- * That is, a file named file named `<base>.<stemExt>.<ext>` in the
+ * Gets the test file for `f` with stem extension `stemExt`, where `stemExt` is "test" or "spec".
+ * That is, a file named `<base>.<stemExt>.<ext>` in the
  * same directory as `f` which is named `<base>.<ext>`.
  */
-bindingset[stemExt]
+pragma[noinline]
 File getTestFile(File f, string stemExt) {
+  stemExt = ["test", "spec"] and
+  result.getBaseName().regexpMatch(".*\\.(test|spec)\\..*") and
   result = f.getParentContainer().getFile(f.getStem() + "." + stemExt + "." + f.getExtension())
 }
 

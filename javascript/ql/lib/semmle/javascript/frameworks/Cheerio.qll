@@ -3,17 +3,17 @@
  */
 
 import javascript
-private import semmle.javascript.security.dataflow.Xss as Xss
+private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 
 module Cheerio {
-  /** A reference to the `cheerio` function, possibly with a loaded DOM. */
+  /** Gets a reference to the `cheerio` function, possibly with a loaded DOM. */
   private API::Node cheerioApi() {
     result = API::moduleImport("cheerio")
     or
     result = cheerioApi().getMember(["load", "parseHTML"]).getReturn()
   }
 
-  /** A reference to the `cheerio` function, possibly with a loaded DOM. */
+  /** Gets a reference to the `cheerio` function, possibly with a loaded DOM. */
   DataFlow::SourceNode cheerioRef() { result = cheerioApi().getAUse() }
 
   /**
@@ -25,7 +25,7 @@ module Cheerio {
 
   module CheerioObjectCreation {
     /**
-     * Creation of a `cheerio` object.
+     * The creation of a `cheerio` object.
      */
     abstract class Range extends DataFlow::SourceNode { }
 
@@ -95,7 +95,7 @@ module Cheerio {
   /**
    * An XSS sink through `cheerio`.
    */
-  class XssSink extends Xss::DomBasedXss::Sink {
+  class XssSink extends DomBasedXss::Sink {
     XssSink() {
       exists(string name | this = cheerioObjectRef().getAMethodCall(name).getAnArgument() |
         JQuery::isMethodArgumentInterpretedAsHtml(name)

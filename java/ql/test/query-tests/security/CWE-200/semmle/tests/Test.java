@@ -11,6 +11,8 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.EnumSet;
 
+import org.apache.commons.lang3.SystemUtils;
+
 public class Test {
 
     void vulnerableFileCreateTempFile() throws IOException {
@@ -278,5 +280,90 @@ public class Test {
     void notVulnerableCreateOnSystemPropertyDirs() throws IOException {
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
         tempDir.mkdirs();
+    }
+
+    void safeBecauseWindows() {
+        File tempDir = new File(System.getProperty("java.io.tmpdir"), "child");
+        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+            tempDir.mkdir(); // Safe on windows
+        }
+    }
+
+    void vulnerableBecauseInvertedPosixCheck() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        // Oops, this check should be inverted
+        if (tempDirChild.toPath().getFileSystem().supportedFileAttributeViews().contains("posix")) {
+            Files.createDirectory(tempDirChild.toPath()); // Creates with permissions 'drwxr-xr-x'
+        }
+    }
+
+    void safeBecauseCheckingForWindowsVersion() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        if (SystemUtils.IS_OS_WINDOWS_10) {
+            Files.createDirectory(tempDirChild.toPath());
+        }
+    }
+
+    void vulnerableBecauseCheckingForNotLinux() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        if (!SystemUtils.IS_OS_LINUX) {
+            Files.createDirectory(tempDirChild.toPath());
+        }
+    }
+
+    void vulnerableBecauseInvertedFileSeparatorCheck() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        // Oops, this check should be inverted
+        if (File.separatorChar != '\\') {
+            Files.createDirectory(tempDirChild.toPath()); // Creates with permissions 'drwxr-xr-x'
+        }
+    }
+
+    void safeBecauseFileSeparatorCheck() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        if (File.separatorChar == '\\') {
+            Files.createDirectory(tempDirChild.toPath());
+        }
+    }
+
+    void safeBecauseInvertedFileSeperatorCheck() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        if (File.separatorChar != '/') {
+            Files.createDirectory(tempDirChild.toPath());
+        }
+    }
+
+    void vulnerableBecauseFileSeparatorCheckElseCase() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        if (File.separatorChar == '\\') {
+            Files.createDirectory(tempDirChild.toPath()); // Safe
+        } else {
+            Files.createDirectory(tempDirChild.toPath()); // Vulnerable
+        }
+    }
+
+    void vulnerableBecauseInvertedFileSeperatorCheckElseCase() throws IOException {
+        // GIVEN:
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+
+        if (File.separatorChar != '/') {
+            Files.createDirectory(tempDirChild.toPath()); // Safe
+        } else {
+            Files.createDirectory(tempDirChild.toPath()); // Vulnerable
+        }
     }
 }

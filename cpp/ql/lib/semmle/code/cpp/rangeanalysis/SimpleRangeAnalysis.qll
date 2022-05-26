@@ -705,24 +705,6 @@ private float getTruncatedUpperBounds(Expr expr) {
     result = exprMaxVal(expr)
 }
 
-/**
- * Holds if the expression might overflow negatively. This predicate
- * does not consider the possibility that the expression might overflow
- * due to a conversion.
- *
- * DEPRECATED: use `exprMightOverflowNegatively` instead.
- */
-deprecated predicate negative_overflow(Expr expr) { exprMightOverflowNegatively(expr) }
-
-/**
- * Holds if the expression might overflow positively. This predicate
- * does not consider the possibility that the expression might overflow
- * due to a conversion.
- *
- * DEPRECATED: use `exprMightOverflowPositively` instead.
- */
-deprecated predicate positive_overflow(Expr expr) { exprMightOverflowPositively(expr) }
-
 /** Only to be called by `getTruncatedLowerBounds`. */
 private float getLowerBoundsImpl(Expr expr) {
   (
@@ -1820,5 +1802,3 @@ module SimpleRangeAnalysisInternal {
     defMightOverflowNegatively(def, v) and result = varMaxVal(v)
   }
 }
-
-private import SimpleRangeAnalysisInternal

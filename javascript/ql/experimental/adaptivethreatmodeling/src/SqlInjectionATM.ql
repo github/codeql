@@ -10,6 +10,7 @@
  * @security-severity 8.8
  * @id js/ml-powered/sql-injection
  * @tags experimental security
+ *       external/cwe/cwe-089
  */
 
 import experimental.adaptivethreatmodeling.SqlInjectionATM

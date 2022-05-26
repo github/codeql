@@ -79,7 +79,7 @@ module TaintedObject {
   }
 
   /**
-   * Sanitizer guard that blocks deep object taint.
+   * A sanitizer guard that blocks deep object taint.
    */
   abstract class SanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode { }
 

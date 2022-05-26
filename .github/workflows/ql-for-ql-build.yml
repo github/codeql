@@ -13,12 +13,13 @@ jobs:
   queries:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@erik-krogh/ql
+        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
         with:
           languages: javascript # does not matter
+          tools: latest
       - name: Get CodeQL version
         id: get-codeql-version
         run: |
@@ -28,7 +29,7 @@ jobs:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Cache queries
         id: cache-queries
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ runner.temp }}/query-pack.zip
           key: queries-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/**/qlpack.yml') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}
@@ -43,7 +44,7 @@ jobs:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
           PACKZIP: ${{ runner.temp }}/query-pack.zip
       - name: Upload query pack
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: query-pack-zip
           path: ${{ runner.temp }}/query-pack.zip
@@ -55,10 +56,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Cache entire extractor
         id: cache-extractor
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ql/target/release/ql-autobuilder
@@ -68,7 +69,7 @@ jobs:
           key: ${{ runner.os }}-extractor-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}
       - name: Cache cargo
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
@@ -90,7 +91,7 @@ jobs:
       - name: Generate dbscheme
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: ql/target/release/ql-generator --dbscheme ql/ql/src/ql.dbscheme --library ql/ql/src/codeql_ql/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: extractor-ubuntu-latest
           path: |
@@ -107,12 +108,12 @@ jobs:
       - queries
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: query-pack-zip
           path: query-pack-zip
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: extractor-ubuntu-latest
           path: linux64
@@ -130,7 +131,7 @@ jobs:
           fi
           cd pack
           zip -rq ../codeql-ql.zip .
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: codeql-ql-pack
           path: codeql-ql.zip
@@ -139,14 +140,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        folder: [cpp, csharp, java, javascript, python, ql, ruby]
+        folder: [cpp, csharp, java, javascript, python, ql, ruby, swift, go]
 
     needs:
       - package
 
     steps:
       - name: Download pack
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: codeql-ql-pack
           path: ${{ runner.temp }}/codeql-ql-pack-artifact
@@ -159,40 +160,43 @@ jobs:
           PACK: ${{ runner.temp }}/pack
       - name: Hack codeql-action options
         run: |
-          JSON=$(jq -nc --arg pack "${PACK}" '.resolve.queries=["--search-path", $pack] | .resolve.extractor=["--search-path", $pack] | .database.init=["--search-path", $pack]')
+          JSON=$(jq -nc --arg pack "${PACK}" '.database."run-queries"=["--search-path", $pack] | .resolve.queries=["--search-path", $pack] | .resolve.extractor=["--search-path", $pack] | .database.init=["--search-path", $pack]')
           echo "CODEQL_ACTION_EXTRA_OPTIONS=${JSON}" >> ${GITHUB_ENV}
         env:
           PACK: ${{ runner.temp }}/pack
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Create CodeQL config file
         run: |
           echo "paths:" > ${CONF}
           echo "  - ${FOLDER}" >> ${CONF}
           echo "paths-ignore:" >> ${CONF}
-          echo "  - ql/ql/test" >> ${CONF}
+          echo "  - ql/ql/test" >> ${CONF} 
+          echo "disable-default-queries: true" >> ${CONF}
+          echo "packs:" >> ${CONF}
+          echo "  - codeql/ql" >> ${CONF}
           echo "Config file: "
           cat ${CONF}
         env: 
           CONF: ./ql-for-ql-config.yml
           FOLDER: ${{ matrix.folder }}
-
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@erik-krogh/ql
+        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
         with:
           languages: ql
           db-location: ${{ runner.temp }}/db
           config-file: ./ql-for-ql-config.yml
+          tools: latest
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@erik-krogh/ql
+        uses: github/codeql-action/analyze@aa93aea877e5fb8841bcb1193f672abf6e9f2980
         with: 
           category: "ql-for-ql-${{ matrix.folder }}"
       - name: Copy sarif file to CWD
         run: cp ../results/ql.sarif ./${{ matrix.folder }}.sarif
       - name: Sarif as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.folder }}.sarif
           path: ${{ matrix.folder }}.sarif

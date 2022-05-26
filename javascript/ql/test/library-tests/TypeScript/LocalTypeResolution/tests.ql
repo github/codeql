@@ -1,6 +1,6 @@
 import javascript
 
-abstract class Violation extends ASTNode {
+abstract class Violation extends AstNode {
   abstract string reason();
 }
 
@@ -11,17 +11,17 @@ abstract class Violation extends ASTNode {
  * The assertion holds if `name1 = name2`, indicating that `X` resolved to the right interface.
  */
 class TypeResolutionAssertion extends TupleTypeExpr, Violation {
-  InterfaceDeclaration interface;
-  LocalTypeAccess typeAccess;
   string expected;
   string actual;
 
   TypeResolutionAssertion() {
-    typeAccess = getElementType(0) and
-    expected = getElementType(1).(StringLiteralTypeExpr).getValue() and
-    typeAccess.getLocalTypeName() = interface.getIdentifier().(TypeDecl).getLocalTypeName() and
-    actual = interface.getField("where").getTypeAnnotation().(StringLiteralTypeExpr).getValue() and
-    actual != expected
+    exists(InterfaceDeclaration interface, LocalTypeAccess typeAccess |
+      typeAccess = getElementType(0) and
+      expected = getElementType(1).(StringLiteralTypeExpr).getValue() and
+      typeAccess.getLocalTypeName() = interface.getIdentifier().(TypeDecl).getLocalTypeName() and
+      actual = interface.getField("where").getTypeAnnotation().(StringLiteralTypeExpr).getValue() and
+      actual != expected
+    )
   }
 
   override string reason() {

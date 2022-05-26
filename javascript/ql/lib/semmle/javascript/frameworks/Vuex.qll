@@ -227,7 +227,7 @@ module Vuex {
     result = getAMappedAccess(getMapHelperForCommitKind(kind), name).getParameter(0).getARhs()
   }
 
-  /** Gets a node that refers the payload of a comitted mutation with the given `name.` */
+  /** Gets a node that refers the payload of a committed mutation with the given `name.` */
   private DataFlow::Node committedPayloadSucc(string kind, string name) {
     // mutations: {
     //   name: (state, payload) => { ... }
@@ -365,19 +365,19 @@ module Vuex {
    */
   private module ProgramSlicing {
     /** Gets the innermost `package.json` file in a directory containing the given file. */
-    private PackageJSON getPackageJson(Container f) {
+    private PackageJson getPackageJson(Container f) {
       f = result.getFile().getParentContainer()
       or
       not exists(f.getFile("package.json")) and
       result = getPackageJson(f.getParentContainer())
     }
 
-    private predicate packageDependsOn(PackageJSON importer, PackageJSON dependency) {
+    private predicate packageDependsOn(PackageJson importer, PackageJson dependency) {
       importer.getADependenciesObject("").getADependency(dependency.getPackageName(), _)
     }
 
-    /** A package that can be considered an entry point for a Vuex app. */
-    private PackageJSON entryPointPackage() {
+    /** Gets a package that can be considered an entry point for a Vuex app. */
+    private PackageJson entryPointPackage() {
       result = getPackageJson(storeRef().getAnImmediateUse().getFile())
       or
       // Any package that imports a store-creating package is considered a potential entry point.
@@ -385,8 +385,8 @@ module Vuex {
     }
 
     pragma[nomagic]
-    private predicate arePackagesInSameVuexApp(PackageJSON a, PackageJSON b) {
-      exists(PackageJSON entry |
+    private predicate arePackagesInSameVuexApp(PackageJson a, PackageJson b) {
+      exists(PackageJson entry |
         entry = entryPointPackage() and
         packageDependsOn*(entry, a) and
         packageDependsOn*(entry, b)
@@ -396,7 +396,7 @@ module Vuex {
     /** Holds if the two files are considered to be part of the same Vuex app. */
     pragma[inline]
     predicate areFilesInSameVuexApp(File a, File b) {
-      not exists(PackageJSON pkg)
+      not exists(PackageJson pkg)
       or
       arePackagesInSameVuexApp(getPackageJson(a), getPackageJson(b))
     }

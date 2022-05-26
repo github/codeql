@@ -18,7 +18,7 @@ import ClientSuppliedIpUsedInSecurityCheckLib
 import DataFlow::PathGraph
 
 /**
- * Taint-tracking configuration tracing flow from obtaining a client ip from an HTTP header to a sensitive use.
+ * A taint-tracking configuration tracing flow from obtaining a client ip from an HTTP header to a sensitive use.
  */
 class ClientSuppliedIpUsedInSecurityCheckConfig extends TaintTracking::Configuration {
   ClientSuppliedIpUsedInSecurityCheckConfig() { this = "ClientSuppliedIpUsedInSecurityCheckConfig" }

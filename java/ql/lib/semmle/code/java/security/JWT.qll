@@ -7,8 +7,8 @@ private import semmle.code.java.dataflow.DataFlow
 class JwtParserWithInsecureParseSource extends DataFlow::Node {
   JwtParserWithInsecureParseSource() {
     exists(MethodAccess ma, Method m |
-      m.getDeclaringType().getASupertype*() instanceof TypeJwtParser or
-      m.getDeclaringType().getASupertype*() instanceof TypeJwtParserBuilder
+      m.getDeclaringType().getAnAncestor() instanceof TypeJwtParser or
+      m.getDeclaringType().getAnAncestor() instanceof TypeJwtParserBuilder
     |
       this.asExpr() = ma and
       ma.getMethod() = m and
@@ -31,7 +31,7 @@ class JwtParserWithInsecureParseSink extends DataFlow::Node {
     insecureParseMa.getQualifier() = this.asExpr() and
     exists(Method m |
       insecureParseMa.getMethod() = m and
-      m.getDeclaringType().getASupertype*() instanceof TypeJwtParser and
+      m.getDeclaringType().getAnAncestor() instanceof TypeJwtParser and
       m.hasName(["parse", "parseClaimsJwt", "parsePlaintextJwt"]) and
       (
         m.getNumberOfParameters() = 1

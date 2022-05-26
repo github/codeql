@@ -3,4 +3,3 @@
 - apply: code-scanning-selectors.yml
   from: codeql/suite-helpers
 - apply: codeql-suites/exclude-slow-queries.yml
-  from: codeql/cpp-queries

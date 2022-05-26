@@ -3,7 +3,7 @@
  */
 
 private import javascript
-private import semmle.javascript.security.dataflow.Xss
+private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomizations
 private import semmle.javascript.DynamicPropertyAccess

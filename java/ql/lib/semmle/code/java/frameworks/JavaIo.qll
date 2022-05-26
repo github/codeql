@@ -13,6 +13,10 @@ private class JavaIoSummaryCsv extends SummaryModelCsv {
         "java.io;Writer;true;write;;;Argument[0];Argument[-1];taint",
         "java.io;Writer;true;toString;;;Argument[-1];ReturnValue;taint",
         "java.io;CharArrayWriter;true;toCharArray;;;Argument[-1];ReturnValue;taint",
+        "java.io;ObjectInput;true;read;;;Argument[-1];Argument[0];taint",
+        "java.io;DataInput;true;readFully;;;Argument[-1];Argument[0];taint",
+        "java.io;DataInput;true;readLine;();;Argument[-1];ReturnValue;taint",
+        "java.io;DataInput;true;readUTF;();;Argument[-1];ReturnValue;taint",
         "java.nio.channels;ReadableByteChannel;true;read;(ByteBuffer);;Argument[-1];Argument[0];taint",
         "java.nio.channels;Channels;false;newChannel;(InputStream);;Argument[0];ReturnValue;taint"
       ]

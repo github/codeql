@@ -138,7 +138,9 @@ private module Cached {
     TFalseLiteral(Ruby::False g) or
     TFile(Ruby::File g) or
     TFindPattern(Ruby::FindPattern g) or
-    TFloatLiteral(Ruby::Float g) { not any(Ruby::Rational r).getChild() = g } or
+    TFloatLiteral(Ruby::Float g) {
+      not any(Ruby::Complex r).getChild() = g and not any(Ruby::Rational r).getChild() = g
+    } or
     TForExpr(Ruby::For g) or
     TForwardParameter(Ruby::ForwardParameter g) or
     TForwardArgument(Ruby::ForwardArgument g) or
@@ -160,7 +162,8 @@ private module Cached {
     } or
     THereDoc(Ruby::HeredocBeginning g) or
     TIdentifierMethodCall(Ruby::Identifier g) { isIdentifierMethodCall(g) } or
-    TIf(Ruby::If g) or
+    TIfReal(Ruby::If g) or
+    TIfSynth(AST::AstNode parent, int i) { mkSynthChild(IfKind(), parent, i) } or
     TIfModifierExpr(Ruby::IfModifier g) or
     TInClause(Ruby::InClause g) or
     TInstanceVariableAccessReal(Ruby::InstanceVariable g, AST::InstanceVariable v) {
@@ -169,7 +172,9 @@ private module Cached {
     TInstanceVariableAccessSynth(AST::AstNode parent, int i, AST::InstanceVariable v) {
       mkSynthChild(InstanceVariableAccessKind(v), parent, i)
     } or
-    TIntegerLiteralReal(Ruby::Integer g) { not any(Ruby::Rational r).getChild() = g } or
+    TIntegerLiteralReal(Ruby::Integer g) {
+      not any(Ruby::Complex r).getChild() = g and not any(Ruby::Rational r).getChild() = g
+    } or
     TIntegerLiteralSynth(AST::AstNode parent, int i, int value) {
       mkSynthChild(IntegerLiteralKind(value), parent, i)
     } or
@@ -210,7 +215,8 @@ private module Cached {
     TMulExprSynth(AST::AstNode parent, int i) { mkSynthChild(MulExprKind(), parent, i) } or
     TNEExpr(Ruby::Binary g) { g instanceof @ruby_binary_bangequal } or
     TNextStmt(Ruby::Next g) or
-    TNilLiteral(Ruby::Nil g) or
+    TNilLiteralReal(Ruby::Nil g) or
+    TNilLiteralSynth(AST::AstNode parent, int i) { mkSynthChild(NilLiteralKind(), parent, i) } or
     TNoRegExpMatchExpr(Ruby::Binary g) { g instanceof @ruby_binary_bangtilde } or
     TNotExpr(Ruby::Unary g) { g instanceof @ruby_unary_bang or g instanceof @ruby_unary_not } or
     TOptionalParameter(Ruby::OptionalParameter g) or
@@ -223,7 +229,7 @@ private module Cached {
     TRangeLiteralSynth(AST::AstNode parent, int i, boolean inclusive) {
       mkSynthChild(RangeLiteralKind(inclusive), parent, i)
     } or
-    TRationalLiteral(Ruby::Rational g) or
+    TRationalLiteral(Ruby::Rational g) { not any(Ruby::Complex r).getChild() = g } or
     TRedoStmt(Ruby::Redo g) or
     TRegExpLiteral(Ruby::Regex g) or
     TRegExpMatchExpr(Ruby::Binary g) { g instanceof @ruby_binary_equaltilde } or
@@ -247,9 +253,6 @@ private module Cached {
         or
         casePattern(g)
       )
-    } or
-    TScopeResolutionMethodCall(Ruby::ScopeResolution g, Ruby::Identifier i) {
-      isScopeResolutionMethodCall(g, i)
     } or
     TSelfReal(Ruby::Self g) or
     TSelfSynth(AST::AstNode parent, int i, AST::SelfVariable v) {
@@ -284,10 +287,12 @@ private module Cached {
     TStringInterpolationComponentRegexp(Ruby::Interpolation g) {
       g.getParent() instanceof Ruby::Regex
     } or
-    TStringTextComponentNonRegexp(Ruby::Token g) {
+    TStringTextComponentNonRegexpStringOrHeredocContent(Ruby::Token g) {
       (g instanceof Ruby::StringContent or g instanceof Ruby::HeredocContent) and
       not g.getParent() instanceof Ruby::Regex
     } or
+    TStringTextComponentNonRegexpSimpleSymbol(Ruby::SimpleSymbol g) or
+    TStringTextComponentNonRegexpHashKeySymbol(Ruby::HashKeySymbol g) or
     TStringTextComponentRegexp(Ruby::Token g) {
       (g instanceof Ruby::StringContent or g instanceof Ruby::HeredocContent) and
       g.getParent() instanceof Ruby::Regex
@@ -344,35 +349,36 @@ private module Cached {
         TFalseLiteral or TFile or TFindPattern or TFloatLiteral or TForExpr or TForwardParameter or
         TForwardArgument or TGEExpr or TGTExpr or TGlobalVariableAccessReal or
         THashKeySymbolLiteral or THashLiteral or THashPattern or THashSplatExpr or
-        THashSplatNilParameter or THashSplatParameter or THereDoc or TIdentifierMethodCall or TIf or
-        TIfModifierExpr or TInClause or TInstanceVariableAccessReal or TIntegerLiteralReal or
-        TKeywordParameter or TLEExpr or TLShiftExprReal or TLTExpr or TLambda or
-        TLeftAssignmentList or TLine or TLocalVariableAccessReal or TLogicalAndExprReal or
-        TLogicalOrExprReal or TMethod or TModuleDeclaration or TModuloExprReal or TMulExprReal or
-        TNEExpr or TNextStmt or TNilLiteral or TNoRegExpMatchExpr or TNotExpr or
-        TOptionalParameter or TPair or TParenthesizedExpr or TParenthesizedPattern or
-        TRShiftExprReal or TRangeLiteralReal or TRationalLiteral or TRedoStmt or TRegExpLiteral or
-        TRegExpMatchExpr or TRegularArrayLiteral or TRegularMethodCall or TRegularStringLiteral or
-        TRegularSuperCall or TRescueClause or TRescueModifierExpr or TRetryStmt or TReturnStmt or
-        TScopeResolutionConstantAccess or TScopeResolutionMethodCall or TSelfReal or
-        TSimpleParameterReal or TSimpleSymbolLiteral or TSingletonClass or TSingletonMethod or
-        TSpaceshipExpr or TSplatExprReal or TSplatParameter or TStringArrayLiteral or
-        TStringConcatenation or TStringEscapeSequenceComponent or TStringInterpolationComponent or
-        TStringTextComponent or TSubExprReal or TSubshellLiteral or TSymbolArrayLiteral or
-        TTernaryIfExpr or TThen or TTokenConstantAccess or TTokenMethodName or TTokenSuperCall or
-        TToplevel or TTrueLiteral or TUnaryMinusExpr or TUnaryPlusExpr or TUndefStmt or
-        TUnlessExpr or TUnlessModifierExpr or TUntilExpr or TUntilModifierExpr or
-        TReferencePattern or TWhenClause or TWhileExpr or TWhileModifierExpr or TYieldCall;
+        THashSplatNilParameter or THashSplatParameter or THereDoc or TIdentifierMethodCall or
+        TIfReal or TIfModifierExpr or TInClause or TInstanceVariableAccessReal or
+        TIntegerLiteralReal or TKeywordParameter or TLEExpr or TLShiftExprReal or TLTExpr or
+        TLambda or TLeftAssignmentList or TLine or TLocalVariableAccessReal or
+        TLogicalAndExprReal or TLogicalOrExprReal or TMethod or TModuleDeclaration or
+        TModuloExprReal or TMulExprReal or TNEExpr or TNextStmt or TNilLiteralReal or
+        TNoRegExpMatchExpr or TNotExpr or TOptionalParameter or TPair or TParenthesizedExpr or
+        TParenthesizedPattern or TRShiftExprReal or TRangeLiteralReal or TRationalLiteral or
+        TRedoStmt or TRegExpLiteral or TRegExpMatchExpr or TRegularArrayLiteral or
+        TRegularMethodCall or TRegularStringLiteral or TRegularSuperCall or TRescueClause or
+        TRescueModifierExpr or TRetryStmt or TReturnStmt or TScopeResolutionConstantAccess or
+        TSelfReal or TSimpleParameterReal or TSimpleSymbolLiteral or TSingletonClass or
+        TSingletonMethod or TSpaceshipExpr or TSplatExprReal or TSplatParameter or
+        TStringArrayLiteral or TStringConcatenation or TStringEscapeSequenceComponent or
+        TStringInterpolationComponent or TStringTextComponent or TSubExprReal or TSubshellLiteral or
+        TSymbolArrayLiteral or TTernaryIfExpr or TThen or TTokenConstantAccess or
+        TTokenMethodName or TTokenSuperCall or TToplevel or TTrueLiteral or TUnaryMinusExpr or
+        TUnaryPlusExpr or TUndefStmt or TUnlessExpr or TUnlessModifierExpr or TUntilExpr or
+        TUntilModifierExpr or TReferencePattern or TWhenClause or TWhileExpr or
+        TWhileModifierExpr or TYieldCall;
 
   class TAstNodeSynth =
     TAddExprSynth or TAssignExprSynth or TBitwiseAndExprSynth or TBitwiseOrExprSynth or
         TBitwiseXorExprSynth or TBraceBlockSynth or TClassVariableAccessSynth or
         TConstantReadAccessSynth or TDivExprSynth or TExponentExprSynth or
-        TGlobalVariableAccessSynth or TInstanceVariableAccessSynth or TIntegerLiteralSynth or
-        TLShiftExprSynth or TLocalVariableAccessSynth or TLogicalAndExprSynth or
-        TLogicalOrExprSynth or TMethodCallSynth or TModuloExprSynth or TMulExprSynth or
-        TRShiftExprSynth or TRangeLiteralSynth or TSelfSynth or TSimpleParameterSynth or
-        TSplatExprSynth or TStmtSequenceSynth or TSubExprSynth;
+        TGlobalVariableAccessSynth or TIfSynth or TInstanceVariableAccessSynth or
+        TIntegerLiteralSynth or TLShiftExprSynth or TLocalVariableAccessSynth or
+        TLogicalAndExprSynth or TLogicalOrExprSynth or TMethodCallSynth or TModuloExprSynth or
+        TMulExprSynth or TNilLiteralSynth or TRShiftExprSynth or TRangeLiteralSynth or TSelfSynth or
+        TSimpleParameterSynth or TSplatExprSynth or TStmtSequenceSynth or TSubExprSynth;
 
   /**
    * Gets the underlying TreeSitter entity for a given AST node. This does not
@@ -454,7 +460,7 @@ private module Cached {
     n = THereDoc(result) or
     n = TIdentifierMethodCall(result) or
     n = TIfModifierExpr(result) or
-    n = TIf(result) or
+    n = TIfReal(result) or
     n = TInClause(result) or
     n = TInstanceVariableAccessReal(result, _) or
     n = TIntegerLiteralReal(result) or
@@ -474,7 +480,7 @@ private module Cached {
     n = TMulExprReal(result) or
     n = TNEExpr(result) or
     n = TNextStmt(result) or
-    n = TNilLiteral(result) or
+    n = TNilLiteralReal(result) or
     n = TNoRegExpMatchExpr(result) or
     n = TNotExpr(result) or
     n = TOptionalParameter(result) or
@@ -496,7 +502,6 @@ private module Cached {
     n = TReturnStmt(result) or
     n = TRShiftExprReal(result) or
     n = TScopeResolutionConstantAccess(result, _) or
-    n = TScopeResolutionMethodCall(result, _) or
     n = TSelfReal(result) or
     n = TSimpleParameterReal(result) or
     n = TSimpleSymbolLiteral(result) or
@@ -511,7 +516,9 @@ private module Cached {
     n = TStringEscapeSequenceComponentRegexp(result) or
     n = TStringInterpolationComponentNonRegexp(result) or
     n = TStringInterpolationComponentRegexp(result) or
-    n = TStringTextComponentNonRegexp(result) or
+    n = TStringTextComponentNonRegexpStringOrHeredocContent(result) or
+    n = TStringTextComponentNonRegexpSimpleSymbol(result) or
+    n = TStringTextComponentNonRegexpHashKeySymbol(result) or
     n = TStringTextComponentRegexp(result) or
     n = TSubExprReal(result) or
     n = TSubshellLiteral(result) or
@@ -564,6 +571,8 @@ private module Cached {
     or
     result = TGlobalVariableAccessSynth(parent, i, _)
     or
+    result = TIfSynth(parent, i)
+    or
     result = TInstanceVariableAccessSynth(parent, i, _)
     or
     result = TIntegerLiteralSynth(parent, i, _)
@@ -581,6 +590,8 @@ private module Cached {
     result = TModuloExprSynth(parent, i)
     or
     result = TMulExprSynth(parent, i)
+    or
+    result = TNilLiteralSynth(parent, i)
     or
     result = TRangeLiteralSynth(parent, i, _)
     or
@@ -655,8 +666,8 @@ class TCall = TMethodCall or TYieldCall;
 class TCase = TCaseExpr or TCaseMatch;
 
 class TMethodCall =
-  TMethodCallSynth or TIdentifierMethodCall or TScopeResolutionMethodCall or TRegularMethodCall or
-      TElementReference or TSuperCall or TUnaryOperation or TBinaryOperation;
+  TMethodCallSynth or TIdentifierMethodCall or TRegularMethodCall or TElementReference or
+      TSuperCall or TUnaryOperation or TBinaryOperation;
 
 class TSuperCall = TTokenSuperCall or TRegularSuperCall;
 
@@ -667,6 +678,8 @@ class TControlExpr = TConditionalExpr or TCaseExpr or TCaseMatch or TLoop;
 
 class TConditionalExpr =
   TIfExpr or TUnlessExpr or TIfModifierExpr or TUnlessModifierExpr or TTernaryIfExpr;
+
+class TIf = TIfReal or TIfSynth;
 
 class TIfExpr = TIf or TElsif;
 
@@ -691,6 +704,8 @@ class TStmtSequence =
 
 class TBodyStmt = TBeginExpr or TModuleBase or TMethod or TLambda or TDoBlock or TSingletonMethod;
 
+class TNilLiteral = TNilLiteralReal or TNilLiteralSynth;
+
 class TLiteral =
   TEncoding or TFile or TLine or TNumericLiteral or TNilLiteral or TBooleanLiteral or
       TStringlikeLiteral or TCharacterLiteral or TArrayLiteral or THashLiteral or TRangeLiteral or
@@ -701,6 +716,10 @@ class TNumericLiteral = TIntegerLiteral or TFloatLiteral or TRationalLiteral or 
 class TIntegerLiteral = TIntegerLiteralReal or TIntegerLiteralSynth;
 
 class TBooleanLiteral = TTrueLiteral or TFalseLiteral;
+
+class TStringTextComponentNonRegexp =
+  TStringTextComponentNonRegexpStringOrHeredocContent or
+      TStringTextComponentNonRegexpSimpleSymbol or TStringTextComponentNonRegexpHashKeySymbol;
 
 class TStringTextComponent = TStringTextComponentNonRegexp or TStringTextComponentRegexp;
 

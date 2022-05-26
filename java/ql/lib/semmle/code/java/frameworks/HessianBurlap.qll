@@ -20,7 +20,7 @@ class UnsafeHessianInput extends RefType {
  */
 class UnsafeHessianInputReadObjectMethod extends Method {
   UnsafeHessianInputReadObjectMethod() {
-    this.getDeclaringType().getASupertype*() instanceof UnsafeHessianInput and
+    this.getDeclaringType().getAnAncestor() instanceof UnsafeHessianInput and
     this.getName() = "readObject"
   }
 }

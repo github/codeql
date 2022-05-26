@@ -9,7 +9,7 @@ import java
  */
 class ExpressionEvaluationMethod extends Method {
   ExpressionEvaluationMethod() {
-    this.getDeclaringType().getASupertype*() instanceof Expression and
+    this.getDeclaringType().getAnAncestor() instanceof Expression and
     this.hasName(["getValue", "getValueTypeDescriptor", "getValueType", "setValue"])
   }
 }

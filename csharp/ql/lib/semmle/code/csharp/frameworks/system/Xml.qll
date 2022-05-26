@@ -140,7 +140,7 @@ private class SystemXmlXmlNodeFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Xml;XmlNode;false;GetEnumerator;();;Element of Argument[Qualifier];Property[System.Collections.IEnumerator.Current] of ReturnValue;value",
+        "System.Xml;XmlNode;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value",
         "System.Xml;XmlNode;false;SelectNodes;(System.String);;Argument[Qualifier];ReturnValue;taint",
         "System.Xml;XmlNode;false;SelectNodes;(System.String,System.Xml.XmlNamespaceManager);;Argument[Qualifier];ReturnValue;taint",
         "System.Xml;XmlNode;false;SelectSingleNode;(System.String);;Argument[Qualifier];ReturnValue;taint",
@@ -282,6 +282,6 @@ class XmlReaderSettingsInstance extends Expr {
 private class SystemXmlXmlAttributeCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Xml;XmlAttributeCollection;false;CopyTo;(System.Xml.XmlAttribute[],System.Int32);;Element of Argument[Qualifier];Element of Argument[0];value"
+      "System.Xml;XmlAttributeCollection;false;CopyTo;(System.Xml.XmlAttribute[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value"
   }
 }

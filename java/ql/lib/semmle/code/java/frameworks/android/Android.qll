@@ -3,20 +3,14 @@
  */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.xml.AndroidManifest
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.xml.AndroidManifest
 
 /**
- * Gets a transitive superType avoiding magic optimisation
- */
-pragma[nomagic]
-private RefType getASuperTypePlus(RefType t) { result = t.getASupertype+() }
-
-/**
- * Gets a reflexive/transitive superType avoiding magic optimisation
+ * Gets a reflexive/transitive superType
  */
 pragma[inline]
-private RefType getASuperTypeStar(RefType t) { result = getASuperTypePlus(t) or result = t }
+private RefType getASuperTypeStar(RefType t) { hasDescendant(result, t) }
 
 /**
  * An Android component. That is, either an activity, a service,
@@ -188,7 +182,7 @@ class TypeParcelable extends Interface {
 class CreateFromParcelMethod extends Method {
   CreateFromParcelMethod() {
     this.hasName("createFromParcel") and
-    this.getEnclosingCallable().getDeclaringType().getASupertype*() instanceof TypeParcelable
+    this.getEnclosingCallable().getDeclaringType().getAnAncestor() instanceof TypeParcelable
   }
 }
 

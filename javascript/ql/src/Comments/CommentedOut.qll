@@ -33,12 +33,7 @@ private string getALineOfCommentedOutCode(Comment c) {
  * disregarded when looking for commented-out code.
  */
 private predicate containsCodeExample(Comment c) {
-  exists(string text | text = c.getText() |
-    text.matches("%<pre>%</pre>%") or
-    text.matches("%<code>%</code>%") or
-    text.matches("%@example%") or
-    text.matches("%```%")
-  )
+  c.getText().matches(["%<pre>%</pre>%", "%<code>%</code>%", "%@example%", "%```%"])
 }
 
 /**

@@ -64,7 +64,7 @@ class JSON2CSVTaintStep extends TaintTracking::SharedTaintStep {
  * This is not quite a `JSON.stringify` call, as it e.g. does not wrap keys in double quotes.
  * It's therefore modeled as a taint-step rather than as a `JSON.stringify` call.
  */
-class PrettyJSONTaintStep extends TaintTracking::SharedTaintStep {
+class PrettyJsonTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(API::CallNode call |
       call = API::moduleImport("prettyjson").getMember("render").getACall()
@@ -74,3 +74,6 @@ class PrettyJSONTaintStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/** DEPRECATED: Alias for PrettyJsonTaintStep */
+deprecated class PrettyJSONTaintStep = PrettyJsonTaintStep;

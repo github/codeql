@@ -75,7 +75,7 @@ private class AnalyzedSsaVariableUseWithNonLocalFlow extends AnalyzedValueNode {
 }
 
 /**
- * Flow analysis for `VarDef`s.
+ * A vardef with helper predicates for flow analysis.
  */
 class AnalyzedVarDef extends VarDef {
   /**
@@ -138,7 +138,7 @@ class AnalyzedVarDef extends VarDef {
   /**
    * Gets the toplevel syntactic unit to which this definition belongs.
    */
-  TopLevel getTopLevel() { result = this.(ASTNode).getTopLevel() }
+  TopLevel getTopLevel() { result = this.(AstNode).getTopLevel() }
 }
 
 /**
@@ -184,7 +184,7 @@ private class AnalyzedAmdParameter extends AnalyzedVarDef {
 }
 
 /**
- * Flow analysis for SSA definitions.
+ * An SSA definitions that has been analyzed.
  */
 abstract class AnalyzedSsaDefinition extends SsaDefinition {
   /**
@@ -237,7 +237,7 @@ private class AnalyzedPhiNode extends AnalyzedSsaDefinition, SsaPhiNode {
 }
 
 /**
- * Flow analysis for refinement nodes.
+ * An analyzed refinement node.
  */
 class AnalyzedRefinement extends AnalyzedSsaDefinition, SsaRefinementNode {
   override AbstractValue getAnRhsValue() {
@@ -254,7 +254,7 @@ class AnalyzedRefinement extends AnalyzedSsaDefinition, SsaRefinementNode {
 }
 
 /**
- * Flow analysis for refinement nodes where the guard is a condition.
+ * A refinement node where the guard is a condition.
  *
  * For such nodes, we want to split any indefinite abstract values flowing into the node
  * into sets of more precise abstract values to enable them to be refined.
@@ -272,7 +272,7 @@ class AnalyzedConditionGuard extends AnalyzedRefinement {
 }
 
 /**
- * Flow analysis for condition guards with an outcome of `true`.
+ * A refinement for a condition guard with an outcome of `true`.
  *
  * For example, in `if(x) s; else t;`, this will restrict the possible values of `x` at
  * the beginning of `s` to those that are truthy.
@@ -290,7 +290,7 @@ class AnalyzedPositiveConditionGuard extends AnalyzedRefinement {
 }
 
 /**
- * Flow analysis for condition guards with an outcome of `false`.
+ * A refinement for a condition guard with an outcome of `false`.
  *
  * For example, in `if(x) s; else t;`, this will restrict the possible values of `x` at
  * the beginning of `t` to those that are falsy.

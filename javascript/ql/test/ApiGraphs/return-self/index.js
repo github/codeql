@@ -1,6 +1,6 @@
 export class A {
     foo() {
-        return this; /* def (return (member foo (instance (member A (member exports (module return-self)))))) */
+        return this; /* def=moduleImport("return-self").getMember("exports").getMember("A").getInstance().getMember("foo").getReturn() */
     }
-    bar(x) { } /* use (parameter 0 (member bar (instance (member A (member exports (module return-self)))))) */
+    bar(x) { } /* use=moduleImport("return-self").getMember("exports").getMember("A").getInstance().getMember("bar").getParameter(0) */
 }

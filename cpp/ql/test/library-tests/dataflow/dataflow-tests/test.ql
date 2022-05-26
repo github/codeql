@@ -1,6 +1,6 @@
 import TestUtilities.dataflow.FlowTestCommon
 
-module ASTTest {
+module AstTest {
   private import semmle.code.cpp.dataflow.DataFlow
 
   /**
@@ -18,8 +18,8 @@ module ASTTest {
   }
 
   /** Common data flow configuration to be used by tests. */
-  class ASTTestAllocationConfig extends DataFlow::Configuration {
-    ASTTestAllocationConfig() { this = "ASTTestAllocationConfig" }
+  class AstTestAllocationConfig extends DataFlow::Configuration {
+    AstTestAllocationConfig() { this = "ASTTestAllocationConfig" }
 
     override predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
@@ -100,10 +100,10 @@ module IRTest {
   }
 
   private predicate readsVariable(LoadInstruction load, Variable var) {
-    load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
+    load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
   }
 
   private predicate writesVariable(StoreInstruction store, Variable var) {
-    store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() = var
+    store.getDestinationAddress().(VariableAddressInstruction).getAstVariable() = var
   }
 }

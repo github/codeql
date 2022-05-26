@@ -6,9 +6,9 @@ class SummaryModelTest extends SummaryModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-        "generatedtest;Test;false;newWithElementDefault;(Object);;Argument[0];Element of ReturnValue;value",
-        "generatedtest;Test;false;newWithMapKeyDefault;(Object);;Argument[0];MapKey of ReturnValue;value",
-        "generatedtest;Test;false;newWithMapValueDefault;(Object);;Argument[0];MapValue of ReturnValue;value"
+        "generatedtest;Test;false;newWithElementDefault;(Object);;Argument[0];ReturnValue.Element;value",
+        "generatedtest;Test;false;newWithMapKeyDefault;(Object);;Argument[0];ReturnValue.MapKey;value",
+        "generatedtest;Test;false;newWithMapValueDefault;(Object);;Argument[0];ReturnValue.MapValue;value"
       ]
   }
 }

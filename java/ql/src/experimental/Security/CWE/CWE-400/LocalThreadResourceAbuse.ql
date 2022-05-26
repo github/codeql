@@ -19,11 +19,11 @@ class GetInitParameter extends Method {
   GetInitParameter() {
     (
       this.getDeclaringType()
-          .getASupertype*()
+          .getAnAncestor()
           .hasQualifiedName(["javax.servlet", "jakarta.servlet"],
             ["FilterConfig", "Registration", "ServletConfig", "ServletContext"]) or
       this.getDeclaringType()
-          .getASupertype*()
+          .getAnAncestor()
           .hasQualifiedName(["javax.faces.context", "jakarta.faces.context"], "ExternalContext")
     ) and
     this.getName() = "getInitParameter"

@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.frameworks.MyBatis
 
 /**
  * A data flow sink for unvalidated user input that is used in OGNL EL evaluation.
@@ -92,7 +93,7 @@ private predicate parseCompileExpressionStep(DataFlow::Node n1, DataFlow::Node n
 private predicate getAccessorStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m |
     ma.getMethod() = m and
-    m.getDeclaringType().getASupertype*() instanceof TypeNode and
+    m.getDeclaringType().getAnAncestor() instanceof TypeNode and
     m.hasName("getAccessor")
   |
     n1.asExpr() = ma.getQualifier() and
@@ -108,7 +109,7 @@ private predicate setExpressionStep(DataFlow::Node n1, DataFlow::Node n2) {
   exists(MethodAccess ma, Method m |
     ma.getMethod() = m and
     m.hasName("setExpression") and
-    m.getDeclaringType().getASupertype*() instanceof TypeExpressionAccessor
+    m.getDeclaringType().getAnAncestor() instanceof TypeExpressionAccessor
   |
     n1.asExpr() = ma.getArgument(0) and
     n2.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = ma.getQualifier()
@@ -122,3 +123,5 @@ private class DefaultOgnlInjectionAdditionalTaintStep extends OgnlInjectionAddit
     setExpressionStep(node1, node2)
   }
 }
+
+private class MyBatisOgnlInjectionSink extends OgnlInjectionSink instanceof MyBatisInjectionSink { }

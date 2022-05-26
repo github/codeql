@@ -14,7 +14,6 @@
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Remote
 import semmle.code.csharp.security.dataflow.flowsources.Local
-import semmle.code.csharp.dataflow.TaintTracking
 import semmle.code.csharp.frameworks.Format
 import DataFlow::PathGraph
 

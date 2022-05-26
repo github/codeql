@@ -1,0 +1,42 @@
+edges
+| xpathBad.py:9:7:9:13 | ControlFlowNode for request | xpathBad.py:10:13:10:23 | ControlFlowNode for Attribute |
+| xpathBad.py:10:13:10:23 | ControlFlowNode for Attribute | xpathBad.py:10:13:10:32 | ControlFlowNode for Subscript |
+| xpathBad.py:10:13:10:32 | ControlFlowNode for Subscript | xpathBad.py:13:20:13:43 | ControlFlowNode for BinaryExpr |
+| xpathFlow.py:11:18:11:24 | ControlFlowNode for request | xpathFlow.py:11:18:11:29 | ControlFlowNode for Attribute |
+| xpathFlow.py:11:18:11:29 | ControlFlowNode for Attribute | xpathFlow.py:14:20:14:29 | ControlFlowNode for xpathQuery |
+| xpathFlow.py:20:18:20:24 | ControlFlowNode for request | xpathFlow.py:20:18:20:29 | ControlFlowNode for Attribute |
+| xpathFlow.py:20:18:20:29 | ControlFlowNode for Attribute | xpathFlow.py:23:29:23:38 | ControlFlowNode for xpathQuery |
+| xpathFlow.py:30:18:30:24 | ControlFlowNode for request | xpathFlow.py:30:18:30:29 | ControlFlowNode for Attribute |
+| xpathFlow.py:30:18:30:29 | ControlFlowNode for Attribute | xpathFlow.py:32:29:32:38 | ControlFlowNode for xpathQuery |
+| xpathFlow.py:39:18:39:24 | ControlFlowNode for request | xpathFlow.py:39:18:39:29 | ControlFlowNode for Attribute |
+| xpathFlow.py:39:18:39:29 | ControlFlowNode for Attribute | xpathFlow.py:41:31:41:40 | ControlFlowNode for xpathQuery |
+| xpathFlow.py:47:18:47:24 | ControlFlowNode for request | xpathFlow.py:47:18:47:29 | ControlFlowNode for Attribute |
+| xpathFlow.py:47:18:47:29 | ControlFlowNode for Attribute | xpathFlow.py:49:29:49:38 | ControlFlowNode for xpathQuery |
+nodes
+| xpathBad.py:9:7:9:13 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xpathBad.py:10:13:10:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xpathBad.py:10:13:10:32 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| xpathBad.py:13:20:13:43 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| xpathFlow.py:11:18:11:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xpathFlow.py:11:18:11:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xpathFlow.py:14:20:14:29 | ControlFlowNode for xpathQuery | semmle.label | ControlFlowNode for xpathQuery |
+| xpathFlow.py:20:18:20:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xpathFlow.py:20:18:20:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xpathFlow.py:23:29:23:38 | ControlFlowNode for xpathQuery | semmle.label | ControlFlowNode for xpathQuery |
+| xpathFlow.py:30:18:30:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xpathFlow.py:30:18:30:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xpathFlow.py:32:29:32:38 | ControlFlowNode for xpathQuery | semmle.label | ControlFlowNode for xpathQuery |
+| xpathFlow.py:39:18:39:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xpathFlow.py:39:18:39:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xpathFlow.py:41:31:41:40 | ControlFlowNode for xpathQuery | semmle.label | ControlFlowNode for xpathQuery |
+| xpathFlow.py:47:18:47:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xpathFlow.py:47:18:47:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xpathFlow.py:49:29:49:38 | ControlFlowNode for xpathQuery | semmle.label | ControlFlowNode for xpathQuery |
+subpaths
+#select
+| xpathBad.py:13:20:13:43 | ControlFlowNode for BinaryExpr | xpathBad.py:9:7:9:13 | ControlFlowNode for request | xpathBad.py:13:20:13:43 | ControlFlowNode for BinaryExpr | This Xpath query depends on $@. | xpathBad.py:9:7:9:13 | ControlFlowNode for request | a user-provided value |
+| xpathFlow.py:14:20:14:29 | ControlFlowNode for xpathQuery | xpathFlow.py:11:18:11:24 | ControlFlowNode for request | xpathFlow.py:14:20:14:29 | ControlFlowNode for xpathQuery | This Xpath query depends on $@. | xpathFlow.py:11:18:11:24 | ControlFlowNode for request | a user-provided value |
+| xpathFlow.py:23:29:23:38 | ControlFlowNode for xpathQuery | xpathFlow.py:20:18:20:24 | ControlFlowNode for request | xpathFlow.py:23:29:23:38 | ControlFlowNode for xpathQuery | This Xpath query depends on $@. | xpathFlow.py:20:18:20:24 | ControlFlowNode for request | a user-provided value |
+| xpathFlow.py:32:29:32:38 | ControlFlowNode for xpathQuery | xpathFlow.py:30:18:30:24 | ControlFlowNode for request | xpathFlow.py:32:29:32:38 | ControlFlowNode for xpathQuery | This Xpath query depends on $@. | xpathFlow.py:30:18:30:24 | ControlFlowNode for request | a user-provided value |
+| xpathFlow.py:41:31:41:40 | ControlFlowNode for xpathQuery | xpathFlow.py:39:18:39:24 | ControlFlowNode for request | xpathFlow.py:41:31:41:40 | ControlFlowNode for xpathQuery | This Xpath query depends on $@. | xpathFlow.py:39:18:39:24 | ControlFlowNode for request | a user-provided value |
+| xpathFlow.py:49:29:49:38 | ControlFlowNode for xpathQuery | xpathFlow.py:47:18:47:24 | ControlFlowNode for request | xpathFlow.py:49:29:49:38 | ControlFlowNode for xpathQuery | This Xpath query depends on $@. | xpathFlow.py:47:18:47:24 | ControlFlowNode for request | a user-provided value |

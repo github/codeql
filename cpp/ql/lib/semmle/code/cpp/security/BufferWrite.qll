@@ -6,7 +6,6 @@
  */
 
 import cpp
-import semmle.code.cpp.commons.Alloc
 import semmle.code.cpp.commons.Buffer
 import semmle.code.cpp.commons.Scanf
 import semmle.code.cpp.models.implementations.Strcat
@@ -156,7 +155,7 @@ class StrCopyBW extends BufferWriteCall {
     // when result exists, it is an exact flow analysis
     reason instanceof ValueFlowAnalysis and
     result =
-      this.getArgument(this.getParamSrc()).(AnalysedString).getMaxLength() * this.getCharSize()
+      this.getArgument(this.getParamSrc()).(AnalyzedString).getMaxLength() * this.getCharSize()
   }
 
   override int getMaxData(BufferWriteEstimationReason reason) {
@@ -202,7 +201,7 @@ class StrCatBW extends BufferWriteCall {
     // when result exists, it is an exact flow analysis
     reason instanceof ValueFlowAnalysis and
     result =
-      this.getArgument(this.getParamSrc()).(AnalysedString).getMaxLength() * this.getCharSize()
+      this.getArgument(this.getParamSrc()).(AnalyzedString).getMaxLength() * this.getCharSize()
   }
 
   override int getMaxData(BufferWriteEstimationReason reason) {

@@ -6,9 +6,10 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 private import semmle.python.types.Extensions
+private import semmle.python.internal.CachedStages
 
 /* Use this version for speed */
-library class CfgOrigin extends @py_object {
+class CfgOrigin extends @py_object {
   /** Gets a textual representation of this element. */
   string toString() {
     /* Not to be displayed */
@@ -145,24 +146,6 @@ module PointsTo {
     )
   }
 
-  deprecated predicate ssa_variable_points_to(
-    EssaVariable var, PointsToContext context, Object obj, ClassObject cls, CfgOrigin origin
-  ) {
-    exists(ObjectInternal value |
-      PointsToInternal::variablePointsTo(var, context, value, origin) and
-      cls = value.getClass().getSource()
-    |
-      obj = value.getSource()
-    )
-  }
-
-  deprecated CallNode get_a_call(Object func, PointsToContext context) {
-    exists(ObjectInternal value |
-      result = value.(Value).getACall(context) and
-      func = value.getSource()
-    )
-  }
-
   cached
   predicate moduleExports(ModuleObjectInternal mod, string name) {
     InterModulePointsTo::moduleExportsBoolean(mod, name) = true
@@ -292,7 +275,6 @@ module PointsToInternal {
   }
 
   /** Holds if `var` refers to `(value, origin)` given the context `context`. */
-  pragma[noinline]
   cached
   predicate variablePointsTo(
     EssaVariable var, PointsToContext context, ObjectInternal value, CfgOrigin origin
@@ -942,6 +924,7 @@ private module InterModulePointsTo {
   }
 }
 
+cached
 module InterProceduralPointsTo {
   cached
   predicate call(CallNode call, PointsToContext caller, ObjectInternal value) {
@@ -956,7 +939,7 @@ module InterProceduralPointsTo {
     PointsToInternal::pointsTo(call.getFunction(), caller, value, _)
   }
 
-  pragma[noinline]
+  cached
   predicate call_points_to(
     CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin
   ) {
@@ -1005,7 +988,7 @@ module InterProceduralPointsTo {
   }
 
   /** Points-to for parameter. `def foo(param): ...`. */
-  pragma[noinline]
+  cached
   predicate parameter_points_to(
     ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin
   ) {
@@ -1052,6 +1035,7 @@ module InterProceduralPointsTo {
     )
   }
 
+  cached
   predicate selfMethodCall(
     SelfCallsiteRefinement def, PointsToContext caller, Function func, PointsToContext callee
   ) {
@@ -1076,7 +1060,7 @@ module InterProceduralPointsTo {
   /** Helper for default_parameter_points_to */
   pragma[noinline]
   private predicate context_for_default_value(ParameterDefinition def, PointsToContext context) {
-    context.isRuntime()
+    context.isRuntime() and exists(def)
     or
     exists(PointsToContext caller, CallNode call, PythonFunctionObjectInternal func, int n |
       context.fromCall(call, func, caller) and
@@ -1122,6 +1106,7 @@ module InterProceduralPointsTo {
    * that the number of position arguments (including expansion of `*` argument) exceeds the number of positional arguments by
    * `length` and that the excess arguments start at `start`.
    */
+  cached
   predicate varargs_tuple(
     CallNode call, PointsToContext caller, Function scope, PointsToContext callee, int start,
     int length
@@ -1135,7 +1120,7 @@ module InterProceduralPointsTo {
   }
 
   /** Holds if for function scope `func` in context `callee` the `*` parameter will hold the empty tuple. */
-  predicate varargs_empty_tuple(Function func, PointsToContext callee) {
+  private predicate varargs_empty_tuple(Function func, PointsToContext callee) {
     exists(CallNode call, PointsToContext caller, int parameter_offset |
       callsite_calls_function(call, caller, func, callee, parameter_offset) and
       func.getPositionalParameterCount() - parameter_offset >=
@@ -1154,6 +1139,7 @@ module InterProceduralPointsTo {
    * Holds if the `n`th argument in call `call` with context `caller` points-to `value` from `origin`, including values in tuples
    * expanded by a `*` argument. For example, for the call `f('a', *(`x`,`y`))` the arguments are `('a', 'x', y')`
    */
+  cached
   predicate positional_argument_points_to(
     CallNode call, int n, PointsToContext caller, ObjectInternal value, ControlFlowNode origin
   ) {
@@ -1181,7 +1167,7 @@ module InterProceduralPointsTo {
   }
 
   /** Holds if the parameter definition `def` points-to `value` from `origin` given the context `context` */
-  predicate positional_parameter_points_to(
+  private predicate positional_parameter_points_to(
     ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin
   ) {
     exists(CallNode call, int argument, PointsToContext caller, Function func, int offset |
@@ -1330,7 +1316,7 @@ module InterProceduralPointsTo {
    * `var = ...; foo(); use(var)`
    * Where var may be redefined in call to `foo` if `var` escapes (is global or non-local).
    */
-  pragma[noinline]
+  cached
   predicate callsite_points_to(
     CallsiteRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin
   ) {
@@ -1429,20 +1415,51 @@ module Expressions {
   }
 
   pragma[noinline]
-  predicate subscriptPointsTo(
+  private predicate indexPointsToInt(ControlFlowNode index, PointsToContext context, int n) {
+    index = any(SubscriptNode subscr).getIndex() and
+    PointsToInternal::pointsTo(index, context, TInt(n), _)
+  }
+
+  pragma[noinline]
+  private predicate getItemSequenceObjectInternal(
+    ObjectInternal value, SequenceObjectInternal objvalue, int n
+  ) {
+    value = objvalue.getItem(n)
+  }
+
+  pragma[noinline]
+  private predicate subscriptObjectAndIndexPointsToInt(
+    SubscriptNode subscr, PointsToContext context, ControlFlowNode obj, ObjectInternal objvalue,
+    int n
+  ) {
+    exists(ControlFlowNode index |
+      subscriptObjectAndIndex(subscr, context, obj, objvalue, index) and
+      indexPointsToInt(index, context, n)
+    )
+  }
+
+  deprecated predicate subscriptPointsTo(
     SubscriptNode subscr, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
     ControlFlowNode obj, ObjectInternal objvalue
+  ) {
+    subscriptPointsTo(subscr, context, value, obj, objvalue) and
+    origin = subscr
+  }
+
+  pragma[noinline]
+  private predicate subscriptPointsTo(
+    SubscriptNode subscr, PointsToContext context, ObjectInternal value, ControlFlowNode obj,
+    ObjectInternal objvalue
   ) {
     exists(ControlFlowNode index | subscriptObjectAndIndex(subscr, context, obj, objvalue, index) |
       objvalue.subscriptUnknown() and
       value = ObjectInternal::unknown()
-      or
-      exists(int n |
-        PointsToInternal::pointsTo(index, context, TInt(n), _) and
-        value = objvalue.(SequenceObjectInternal).getItem(n)
-      )
-    ) and
-    origin = subscr
+    )
+    or
+    exists(int n |
+      subscriptObjectAndIndexPointsToInt(subscr, context, obj, objvalue, n) and
+      getItemSequenceObjectInternal(value, objvalue, n)
+    )
   }
 
   predicate subscriptPartsPointsTo(
@@ -1466,15 +1483,22 @@ module Expressions {
     index = subscr.getIndex()
   }
 
+  deprecated predicate binaryPointsTo(
+    BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
+    ControlFlowNode operand, ObjectInternal opvalue
+  ) {
+    binaryPointsTo(b, context, value, operand, opvalue) and
+    origin = b
+  }
+
   /**
    * Tracking too many binary expressions is likely to kill performance, so just say anything other than addition or bitwise or is 'unknown'.
    */
   pragma[noinline]
-  predicate binaryPointsTo(
-    BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
-    ControlFlowNode operand, ObjectInternal opvalue
+  private predicate binaryPointsTo(
+    BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode operand,
+    ObjectInternal opvalue
   ) {
-    origin = b and
     operand = genericBinaryOperand(b) and
     PointsToInternal::pointsTo(operand, context, opvalue, _) and
     value = ObjectInternal::unknown()
@@ -1491,12 +1515,19 @@ module Expressions {
     )
   }
 
-  pragma[noinline]
-  predicate addPointsTo(
+  deprecated predicate addPointsTo(
     BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
     ControlFlowNode operand, ObjectInternal opvalue
   ) {
-    origin = b and
+    addPointsTo(b, context, value, operand, opvalue) and
+    origin = b
+  }
+
+  pragma[noinline]
+  private predicate addPointsTo(
+    BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode operand,
+    ObjectInternal opvalue
+  ) {
     exists(Operator op |
       b.operands(operand, op, _)
       or
@@ -1508,12 +1539,19 @@ module Expressions {
     )
   }
 
-  pragma[noinline]
-  predicate bitOrPointsTo(
+  deprecated predicate bitOrPointsTo(
     BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
     ControlFlowNode operand, ObjectInternal opvalue
   ) {
-    origin = b and
+    bitOrPointsTo(b, context, value, operand, opvalue) and
+    origin = b
+  }
+
+  pragma[noinline]
+  private predicate bitOrPointsTo(
+    BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode operand,
+    ObjectInternal opvalue
+  ) {
     exists(Operator op, ControlFlowNode other |
       b.operands(operand, op, other)
       or
@@ -1533,10 +1571,18 @@ module Expressions {
     value = obj.intValue()
   }
 
-  pragma[noinline]
-  predicate unaryPointsTo(
+  deprecated predicate unaryPointsTo(
     UnaryExprNode u, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
     ControlFlowNode operand, ObjectInternal opvalue
+  ) {
+    unaryPointsTo(u, context, value, operand, opvalue) and
+    origin = u
+  }
+
+  pragma[noinline]
+  private predicate unaryPointsTo(
+    UnaryExprNode u, PointsToContext context, ObjectInternal value, ControlFlowNode operand,
+    ObjectInternal opvalue
   ) {
     exists(Unaryop op |
       op = u.getNode().getOp() and
@@ -1548,14 +1594,21 @@ module Expressions {
       op instanceof USub and value = ObjectInternal::fromInt(-opvalue.intValue())
       or
       not op instanceof Not and opvalue = ObjectInternal::unknown() and value = opvalue
-    ) and
-    origin = u
+    )
+  }
+
+  deprecated predicate builtinCallPointsTo(
+    CallNode call, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
+    ControlFlowNode arg, ObjectInternal argvalue
+  ) {
+    builtinCallPointsTo(call, context, value, arg, argvalue) and
+    origin = call
   }
 
   pragma[noinline]
-  predicate builtinCallPointsTo(
-    CallNode call, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
-    ControlFlowNode arg, ObjectInternal argvalue
+  private predicate builtinCallPointsTo(
+    CallNode call, PointsToContext context, ObjectInternal value, ControlFlowNode arg,
+    ObjectInternal argvalue
   ) {
     PointsToInternal::pointsTo(arg, context, argvalue, _) and
     arg = call.getArg(0) and
@@ -1569,8 +1622,7 @@ module Expressions {
       callable != ObjectInternal::builtin("hasattr") and
       callable.isClass() = false and
       value = ObjectInternal::unknown()
-    ) and
-    origin = call
+    )
   }
 
   pragma[noinline]
@@ -1585,11 +1637,10 @@ module Expressions {
 
   pragma[noinline]
   private predicate lenCallPointsTo(
-    CallNode call, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
-    ControlFlowNode arg, ObjectInternal argvalue
+    CallNode call, PointsToContext context, ObjectInternal value, ControlFlowNode arg,
+    ObjectInternal argvalue
   ) {
     len_call(call, arg, context, argvalue) and
-    origin = call and
     exists(int len | len = argvalue.length() |
       value = TInt(len) and len >= 0
       or
@@ -1815,19 +1866,26 @@ module Expressions {
   ) {
     attributePointsTo(expr, context, value, origin, subexpr, subvalue)
     or
-    subscriptPointsTo(expr, context, value, origin, subexpr, subvalue)
+    subscriptPointsTo(expr, context, value, subexpr, subvalue) and
+    origin = expr
     or
-    addPointsTo(expr, context, value, origin, subexpr, subvalue)
+    addPointsTo(expr, context, value, subexpr, subvalue) and
+    origin = expr
     or
-    bitOrPointsTo(expr, context, value, origin, subexpr, subvalue)
+    bitOrPointsTo(expr, context, value, subexpr, subvalue) and
+    origin = expr
     or
-    binaryPointsTo(expr, context, value, origin, subexpr, subvalue)
+    binaryPointsTo(expr, context, value, subexpr, subvalue) and
+    origin = expr
     or
-    unaryPointsTo(expr, context, value, origin, subexpr, subvalue)
+    unaryPointsTo(expr, context, value, subexpr, subvalue) and
+    origin = expr
     or
-    builtinCallPointsTo(expr, context, value, origin, subexpr, subvalue)
+    builtinCallPointsTo(expr, context, value, subexpr, subvalue) and
+    origin = expr
     or
-    lenCallPointsTo(expr, context, value, origin, subexpr, subvalue)
+    lenCallPointsTo(expr, context, value, subexpr, subvalue) and
+    origin = expr
     or
     typeCallPointsTo(expr, context, value, origin, subexpr, subvalue)
     or
@@ -2068,6 +2126,12 @@ module Conditionals {
   }
 }
 
+/** INTERNAL: Do not use. */
+predicate declaredAttributeVar(PythonClassObjectInternal cls, string name, EssaVariable var) {
+  name = var.getName() and
+  pragma[only_bind_into](pragma[only_bind_into](var).getAUse()) = cls.getScope().getANormalExit()
+}
+
 cached
 module Types {
   cached
@@ -2163,8 +2227,7 @@ module Types {
     or
     value != ObjectInternal::undefined() and
     exists(EssaVariable var |
-      name = var.getName() and
-      var.getAUse() = cls.(PythonClassObjectInternal).getScope().getANormalExit() and
+      declaredAttributeVar(cls, name, var) and
       PointsToInternal::variablePointsTo(var, _, value, origin)
     )
   }
@@ -2209,7 +2272,7 @@ module Types {
       func != six_add_metaclass_function() and result = false
     )
     or
-    not exists(Module m | m.getName() = "six") and result = false
+    not exists(Module m | m.getName() = "six") and result = false and exists(cls)
     or
     exists(Class pycls |
       pycls = cls.getScope() and
@@ -2336,7 +2399,7 @@ module Types {
     )
   }
 
-  /* Holds if type inference failed to compute the full class hierarchy for this class for the reason given. */
+  /** Holds if type inference failed to compute the full class hierarchy for this class for the reason given. */
   private predicate failedInference(ClassObjectInternal cls, string reason, int priority) {
     strictcount(cls.(PythonClassObjectInternal).getScope().getADecorator()) > 1 and
     reason = "Multiple decorators" and
@@ -2493,10 +2556,11 @@ module AttributePointsTo {
     f.isLoad() and var.getASourceUse() = f.(AttrNode).getObject(name)
   }
 
-  pragma[nomagic]
+  cached
   predicate variableAttributePointsTo(
     EssaVariable var, Context context, string name, ObjectInternal value, CfgOrigin origin
   ) {
+    Stages::DataFlow::ref() and
     definitionAttributePointsTo(var.getDefinition(), context, name, value, origin)
     or
     exists(EssaVariable prev |

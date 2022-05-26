@@ -1,6 +1,7 @@
 /** Provides classes for collections. */
 
 import csharp
+import semmle.code.csharp.frameworks.system.Collections
 
 private string modifyMethodName() {
   result =
@@ -64,6 +65,12 @@ class CollectionType extends RefType {
     or
     this instanceof ArrayType
   }
+}
+
+/** Holds if `t` is a collection type. */
+predicate isCollectionType(ValueOrRefType t) {
+  t.getABaseType*() instanceof SystemCollectionsIEnumerableInterface and
+  not t instanceof StringType
 }
 
 /** An object creation that creates an empty collection. */

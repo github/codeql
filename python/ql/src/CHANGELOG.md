@@ -1,3 +1,32 @@
+## 0.1.2
+
+### New Queries
+
+* "XML external entity expansion" (`py/xxe`). Results will appear by default. This query was based on [an experimental query by @jorgectf](https://github.com/github/codeql/pull/6112).
+* "XML internal entity expansion" (`py/xml-bomb`). Results will appear by default. This query was based on [an experimental query by @jorgectf](https://github.com/github/codeql/pull/6112).
+* The query "CSRF protection weakened or disabled" (`py/csrf-protection-disabled`) has been implemented. Its results will now appear by default.
+
+## 0.1.1
+
+## 0.1.0
+
+## 0.0.13
+
+## 0.0.12
+
+## 0.0.11
+
+### New Queries
+
+* The query "XPath query built from user-controlled sources" (`py/xpath-injection`) has been promoted from experimental to the main query pack. Its results will now appear by default. This query was originally [submitted as an experimental query by @porcupineyhairs](https://github.com/github/codeql/pull/6331).
+
+## 0.0.10
+
+### New Queries
+
+* The query "LDAP query built from user-controlled sources" (`py/ldap-injection`) has been promoted from experimental to the main query pack. Its results will now appear by default. This query was originally [submitted as an experimental query by @jorgectf](https://github.com/github/codeql/pull/5443).
+* The query "Log Injection" (`py/log-injection`) has been promoted from experimental to the main query pack. Its results will now appear when `security-extended` is used. This query was originally [submitted as an experimental query by @haby0](https://github.com/github/codeql/pull/6182).
+
 ## 0.0.9
 
 ### Bug Fixes

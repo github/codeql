@@ -51,7 +51,7 @@ class SpringPropertyUseShortcut extends SpringProperty {
   }
 }
 
-from SpringXMLElement springElement, string msg
+from SpringXmlElement springElement, string msg
 where
   exists(SpringConstructorArgUseShortcut cons | cons = springElement and msg = cons.getMessage())
   or

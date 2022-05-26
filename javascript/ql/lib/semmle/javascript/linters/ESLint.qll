@@ -34,7 +34,7 @@ module ESLint {
   }
 
   /** An ESLint configuration file in JSON format. */
-  abstract private class JsonConfiguration extends Configuration, JSONObject { }
+  abstract private class JsonConfiguration extends Configuration, JsonObject { }
 
   /** An `.eslintrc.json` file. */
   private class EslintrcJson extends JsonConfiguration {
@@ -47,11 +47,11 @@ module ESLint {
   }
 
   /** An ESLint configuration object in JSON format. */
-  private class JsonConfigurationObject extends ConfigurationObject, JSONObject {
+  private class JsonConfigurationObject extends ConfigurationObject, JsonObject {
     override Configuration getConfiguration() { this = result.(JsonConfiguration).getPropValue(_) }
 
     override boolean getBooleanProperty(string p) {
-      exists(string v | v = getPropValue(p).(JSONBoolean).getValue() |
+      exists(string v | v = getPropValue(p).(JsonBoolean).getValue() |
         v = "true" and result = true
         or
         v = "false" and result = false
@@ -86,7 +86,7 @@ module ESLint {
   /** An ESLint configuration embedded in a `package.json` file. */
   private class EslintConfigInPackageJson extends JsonConfiguration {
     EslintConfigInPackageJson() {
-      exists(PackageJSON pkg | this = pkg.getPropValue("eslintConfig"))
+      exists(PackageJson pkg | this = pkg.getPropValue("eslintConfig"))
     }
 
     override ConfigurationObject getGlobals() { result = getPropValue("globals") }

@@ -4,7 +4,7 @@ import semmle.code.java.Type
 
 library class JAXBElement extends Class {
   JAXBElement() {
-    this.getASupertype*().getQualifiedName() = "javax.xml.bind.JAXBElement" or
+    this.getAnAncestor().getQualifiedName() = "javax.xml.bind.JAXBElement" or
     this.getAnAnnotation().getType().getName() = "XmlRootElement"
   }
 }

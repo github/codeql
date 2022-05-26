@@ -32,13 +32,13 @@ class Type extends TType {
   string getName() { result = "???" }
 
   /**
-   * Gets a supertype of this type. This follows the user-visible type heirarchy,
+   * Gets a supertype of this type. This follows the user-visible type hierarchy,
    * and doesn't include internal types like the characteristic and domain types of classes.
    */
   Type getASuperType() { none() }
 
   /**
-   * Gets a supertype of this type in the internal heirarchy,
+   * Gets a supertype of this type in the internal hierarchy,
    * which includes the characteristic and domain types of classes.
    */
   Type getAnInternalSuperType() { result = TDontCare() }

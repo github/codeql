@@ -197,30 +197,10 @@ class Folder extends Container, @folder {
   deprecated string getName() { folders(underlyingElement(this), result) }
 
   /**
-   * DEPRECATED: use `getAbsolutePath` instead.
-   * Holds if this element is named `name`.
-   */
-  deprecated predicate hasName(string name) { name = this.getName() }
-
-  /**
-   * DEPRECATED: use `getAbsolutePath` instead.
-   * Gets the full name of this folder.
-   */
-  deprecated string getFullName() { result = this.getName() }
-
-  /**
    * DEPRECATED: use `getBaseName` instead.
    * Gets the last part of the folder name.
    */
   deprecated string getShortName() { result = this.getBaseName() }
-
-  /**
-   * DEPRECATED: use `getParentContainer` instead.
-   * Gets the parent folder.
-   */
-  deprecated Folder getParent() {
-    containerparent(unresolveElement(result), underlyingElement(this))
-  }
 }
 
 /**
@@ -307,13 +287,6 @@ class File extends Container, @file {
    * declarations that are built into the compiler.
    */
   override predicate fromSource() { numlines(underlyingElement(this), _, _, _) }
-
-  /**
-   * Holds if this file may be from a library.
-   *
-   * DEPRECATED: For historical reasons this is true for any file.
-   */
-  deprecated override predicate fromLibrary() { any() }
 
   /** Gets the metric file. */
   MetricFile getMetrics() { result = this }
@@ -427,26 +400,4 @@ class CppFile extends File {
   }
 
   override string getAPrimaryQlClass() { result = "CppFile" }
-}
-
-/**
- * DEPRECATED: Objective-C is no longer supported.
- * An Objective C source file, as determined by file extension.
- *
- * For the related notion of whether a file is compiled as Objective C
- * code, use `File.compiledAsObjC`.
- */
-deprecated class ObjCFile extends File {
-  ObjCFile() { none() }
-}
-
-/**
- * DEPRECATED: Objective-C is no longer supported.
- * An Objective C++ source file, as determined by file extension.
- *
- * For the related notion of whether a file is compiled as Objective C++
- * code, use `File.compiledAsObjCpp`.
- */
-deprecated class ObjCppFile extends File {
-  ObjCppFile() { none() }
 }

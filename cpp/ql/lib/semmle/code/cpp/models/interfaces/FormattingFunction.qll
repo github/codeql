@@ -53,14 +53,6 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
   predicate isMicrosoft() { anyFileCompiledAsMicrosoft() }
 
   /**
-   * Holds if the default meaning of `%s` is a `wchar_t *`, rather than
-   * a `char *` (either way, `%S` will have the opposite meaning).
-   *
-   * DEPRECATED: Use getDefaultCharType() instead.
-   */
-  deprecated predicate isWideCharDefault() { none() }
-
-  /**
    * Gets the character type used in the format string for this function.
    */
   Type getFormatCharType() {
@@ -100,6 +92,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * snapshots there may be multiple results where we can't tell which is correct for a
    * particular function.
    */
+  pragma[nomagic]
   Type getWideCharType() {
     result = getFormatCharType() and
     result.getSize() > 1
@@ -115,13 +108,6 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * parameter is a buffer (that is, this function behaves like `sprintf`).
    */
   int getOutputParameterIndex(boolean isStream) { none() }
-
-  /**
-   * Gets the position at which the output parameter, if any, occurs.
-   *
-   * DEPRECATED: use `getOutputParameterIndex(boolean isStream)` instead.
-   */
-  deprecated int getOutputParameterIndex() { result = getOutputParameterIndex(_) }
 
   /**
    * Holds if this function outputs to a global stream such as standard output,

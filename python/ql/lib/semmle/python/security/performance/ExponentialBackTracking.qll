@@ -51,7 +51,7 @@
  *     either a single character, a set of characters represented by a
  *     character class, or the set of all characters.
  *   * The product automaton is constructed lazily, starting with pair states
- *     `(q, q)` where `q` is a fork, and proceding along an over-approximate
+ *     `(q, q)` where `q` is a fork, and proceeding along an over-approximate
  *     step relation.
  *   * The over-approximate step relation allows transitions along pairs of
  *     abstract input symbols where the symbols have overlap in the characters they accept.
@@ -280,17 +280,6 @@ private class Trace extends TTrace {
 }
 
 /**
- * Gets a string corresponding to the trace `t`.
- */
-private string concretise(Trace t) {
-  t = Nil() and result = ""
-  or
-  exists(InputSymbol s1, InputSymbol s2, Trace rest | t = Step(s1, s2, rest) |
-    result = concretise(rest) + intersect(s1, s2)
-  )
-}
-
-/**
  * Holds if `r` is reachable from `(fork, fork)` under input `w`, and there is
  * a path from `r` back to `(fork, fork)` with `rem` steps.
  */
@@ -321,14 +310,54 @@ private StatePair getAForkPair(State fork) {
   result = MkStatePair(epsilonPred*(fork), epsilonPred*(fork))
 }
 
+private predicate hasSuffix(Trace suffix, Trace t, int i) {
+  // Declaring `t` to be a `RelevantTrace` currently causes a redundant check in the
+  // recursive case, so instead we check it explicitly here.
+  t instanceof RelevantTrace and
+  i = 0 and
+  suffix = t
+  or
+  hasSuffix(Step(_, _, suffix), t, i - 1)
+}
+
+pragma[noinline]
+private predicate hasTuple(InputSymbol s1, InputSymbol s2, Trace t, int i) {
+  hasSuffix(Step(s1, s2, _), t, i)
+}
+
+private class RelevantTrace extends Trace, Step {
+  RelevantTrace() {
+    exists(State fork, StatePair q |
+      isReachableFromFork(fork, q, this, _) and
+      q = getAForkPair(fork)
+    )
+  }
+
+  pragma[noinline]
+  private string intersect(int i) {
+    exists(InputSymbol s1, InputSymbol s2 |
+      hasTuple(s1, s2, this, i) and
+      result = intersect(s1, s2)
+    )
+  }
+
+  /** Gets a string corresponding to this trace. */
+  // the pragma is needed for the case where `intersect(s1, s2)` has multiple values,
+  // not for recursion
+  language[monotonicAggregates]
+  string concretise() {
+    result = strictconcat(int i | hasTuple(_, _, this, i) | this.intersect(i) order by i desc)
+  }
+}
+
 /**
  * Holds if `fork` is a pumpable fork with word `w`.
  */
 private predicate isPumpable(State fork, string w) {
-  exists(StatePair q, Trace t |
+  exists(StatePair q, RelevantTrace t |
     isReachableFromFork(fork, q, t, _) and
     q = getAForkPair(fork) and
-    w = concretise(t)
+    w = t.concretise()
   )
 }
 

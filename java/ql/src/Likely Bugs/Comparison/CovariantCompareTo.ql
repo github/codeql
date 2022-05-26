@@ -14,7 +14,7 @@ import java
 
 private predicate implementsComparable(RefType t, RefType param) {
   exists(ParameterizedType pt |
-    t.getASupertype*() = pt and
+    t.getAnAncestor() = pt and
     pt.getSourceDeclaration().hasQualifiedName("java.lang", "Comparable") and
     param = pt.getATypeArgument() and
     not param instanceof Wildcard and
@@ -40,7 +40,7 @@ private predicate compareTo(RefType declaring, Method m, RefType param) {
   m.fromSource() and
   m.getAParamType() = param and
   declaring = m.getDeclaringType() and
-  declaring.getASupertype*().getSourceDeclaration().hasQualifiedName("java.lang", "Comparable")
+  declaring.getAnAncestor().getSourceDeclaration().hasQualifiedName("java.lang", "Comparable")
 }
 
 from Method m, Class t, Type actual, Type desired

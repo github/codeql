@@ -14,11 +14,11 @@ on:
       - ".github/workflows/csv-coverage-metrics.yml"
 
 jobs:
-  publish:
+  publish-java:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
       - name: Create empty database
@@ -31,13 +31,40 @@ jobs:
       - name: Capture coverage information
         run: |
           DATABASE="${{ runner.temp }}/java-database"
-          codeql database analyze --format=sarif-latest --output=metrics.sarif -- "$DATABASE" ./java/ql/src/Metrics/Summaries/FrameworkCoverage.ql
-      - uses: actions/upload-artifact@v2
+          codeql database analyze --format=sarif-latest --output=metrics-java.sarif -- "$DATABASE" ./java/ql/src/Metrics/Summaries/FrameworkCoverage.ql
+      - uses: actions/upload-artifact@v3
         with:
-          name: metrics.sarif
-          path: metrics.sarif
+          name: metrics-java.sarif
+          path: metrics-java.sarif
           retention-days: 20
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@main
         with:
-          sarif_file: metrics.sarif
+          sarif_file: metrics-java.sarif
+  
+  publish-csharp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup CodeQL
+        uses: ./.github/actions/fetch-codeql
+      - name: Create empty database
+        run: |
+          DATABASE="${{ runner.temp }}/csharp-database"
+          PROJECT="${{ runner.temp }}/csharp-project"
+          dotnet new classlib --language=C# --output="$PROJECT"
+          codeql database create "$DATABASE" --language=csharp --source-root="$PROJECT" --command 'dotnet build /t:rebuild csharp-project.csproj /p:UseSharedCompilation=false'
+      - name: Capture coverage information
+        run: |
+          DATABASE="${{ runner.temp }}/csharp-database"
+          codeql database analyze --format=sarif-latest --output=metrics-csharp.sarif -- "$DATABASE" ./csharp/ql/src/Metrics/Summaries/FrameworkCoverage.ql
+      - uses: actions/upload-artifact@v3
+        with:
+          name: metrics-csharp.sarif
+          path: metrics-csharp.sarif
+          retention-days: 20
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@main
+        with:
+          sarif_file: metrics-csharp.sarif

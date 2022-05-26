@@ -51,7 +51,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? env, out IList<string> stdOut)
         {
-            var pattern = cmd + " " + args;
+            var pattern = string.IsNullOrEmpty(args) ? cmd : cmd + " " + args;
             RunProcessIn.Add(pattern);
 
             if (!RunProcessOut.TryGetValue(pattern, out var str))
@@ -62,7 +62,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             RunProcessWorkingDirectory.TryGetValue(pattern, out var wd);
 
             if (wd != workingDirectory)
-                throw new ArgumentException("Missing RunProcessWorkingDirectory " + pattern);
+                throw new ArgumentException($"Unexpected RunProcessWorkingDirectory, got {wd ?? "null"} expected {workingDirectory ?? "null"} in {pattern}");
 
             if (!RunProcess.TryGetValue(pattern, out var ret))
                 throw new ArgumentException("Missing RunProcess " + pattern);
@@ -72,12 +72,12 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? env)
         {
-            var pattern = cmd + " " + args;
+            var pattern = string.IsNullOrEmpty(args) ? cmd : cmd + " " + args;
             RunProcessIn.Add(pattern);
             RunProcessWorkingDirectory.TryGetValue(pattern, out var wd);
 
             if (wd != workingDirectory)
-                throw new ArgumentException("Missing RunProcessWorkingDirectory " + pattern);
+                throw new ArgumentException($"Unexpected RunProcessWorkingDirectory, got {wd ?? "null"} expected {workingDirectory ?? "null"} in {pattern}");
 
             if (!RunProcess.TryGetValue(pattern, out var ret))
                 throw new ArgumentException("Missing RunProcess " + pattern);
@@ -255,7 +255,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestAnd1()
         {
-            var cmd = BuildScript.Create("abc", "def ghi", false, null, null) & BuildScript.Create("odasa", null, false, null, null);
+            var cmd = BuildScript.Create("abc", "def ghi", false, null, null) & BuildScript.Create("codeql", null, false, null, null);
 
             actions.RunProcess["abc def ghi"] = 1;
             cmd.Run(actions, StartCallback, EndCallback);
@@ -269,14 +269,14 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestAnd2()
         {
-            var cmd = BuildScript.Create("odasa", null, false, null, null) & BuildScript.Create("abc", "def ghi", false, null, null);
+            var cmd = BuildScript.Create("codeql", null, false, null, null) & BuildScript.Create("abc", "def ghi", false, null, null);
 
             actions.RunProcess["abc def ghi"] = 1;
-            actions.RunProcess["odasa "] = 0;
+            actions.RunProcess["codeql"] = 0;
             cmd.Run(actions, StartCallback, EndCallback);
 
-            Assert.Equal("odasa ", actions.RunProcessIn[0]);
-            Assert.Equal("odasa ", startCallbackIn[0]);
+            Assert.Equal("codeql", actions.RunProcessIn[0]);
+            Assert.Equal("codeql", startCallbackIn[0]);
             Assert.Equal("", endCallbackIn[0]);
             Assert.Equal(0, endCallbackReturn[0]);
 
@@ -289,14 +289,14 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestOr1()
         {
-            var cmd = BuildScript.Create("odasa", null, false, null, null) | BuildScript.Create("abc", "def ghi", false, null, null);
+            var cmd = BuildScript.Create("codeql", null, false, null, null) | BuildScript.Create("abc", "def ghi", false, null, null);
 
             actions.RunProcess["abc def ghi"] = 1;
-            actions.RunProcess["odasa "] = 0;
+            actions.RunProcess["codeql"] = 0;
             cmd.Run(actions, StartCallback, EndCallback);
 
-            Assert.Equal("odasa ", actions.RunProcessIn[0]);
-            Assert.Equal("odasa ", startCallbackIn[0]);
+            Assert.Equal("codeql", actions.RunProcessIn[0]);
+            Assert.Equal("codeql", startCallbackIn[0]);
             Assert.Equal("", endCallbackIn[0]);
             Assert.Equal(0, endCallbackReturn[0]);
             Assert.Equal(1, endCallbackReturn.Count);
@@ -305,10 +305,10 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestOr2()
         {
-            var cmd = BuildScript.Create("abc", "def ghi", false, null, null) | BuildScript.Create("odasa", null, false, null, null);
+            var cmd = BuildScript.Create("abc", "def ghi", false, null, null) | BuildScript.Create("codeql", null, false, null, null);
 
             actions.RunProcess["abc def ghi"] = 1;
-            actions.RunProcess["odasa "] = 0;
+            actions.RunProcess["codeql"] = 0;
             cmd.Run(actions, StartCallback, EndCallback);
 
             Assert.Equal("abc def ghi", actions.RunProcessIn[0]);
@@ -316,8 +316,8 @@ namespace Semmle.Autobuild.CSharp.Tests
             Assert.Equal("", endCallbackIn[0]);
             Assert.Equal(1, endCallbackReturn[0]);
 
-            Assert.Equal("odasa ", actions.RunProcessIn[1]);
-            Assert.Equal("odasa ", startCallbackIn[1]);
+            Assert.Equal("codeql", actions.RunProcessIn[1]);
+            Assert.Equal("codeql", startCallbackIn[1]);
             Assert.Equal("", endCallbackIn[1]);
             Assert.Equal(0, endCallbackReturn[1]);
         }
@@ -385,9 +385,6 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_ROOT"] = $@"C:\codeql\{codeqlUpperLanguage.ToLowerInvariant()}";
             actions.GetEnvironmentVariable["CODEQL_JAVA_HOME"] = @"C:\codeql\tools\java";
             actions.GetEnvironmentVariable["CODEQL_PLATFORM"] = isWindows ? "win64" : "linux64";
-            actions.GetEnvironmentVariable["SEMMLE_DIST"] = @"C:\odasa";
-            actions.GetEnvironmentVariable["SEMMLE_JAVA_HOME"] = @"C:\odasa\tools\java";
-            actions.GetEnvironmentVariable["SEMMLE_PLATFORM_TOOLS"] = @"C:\odasa\tools";
             actions.GetEnvironmentVariable["LGTM_INDEX_VSTOOLS_VERSION"] = vsToolsVersion;
             actions.GetEnvironmentVariable["LGTM_INDEX_MSBUILD_ARGUMENTS"] = msBuildArguments;
             actions.GetEnvironmentVariable["LGTM_INDEX_MSBUILD_PLATFORM"] = msBuildPlatform;
@@ -399,6 +396,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.GetEnvironmentVariable["LGTM_INDEX_SOLUTION"] = solution;
             actions.GetEnvironmentVariable["LGTM_INDEX_IGNORE_ERRORS"] = ignoreErrors;
             actions.GetEnvironmentVariable["LGTM_INDEX_BUILDLESS"] = buildless;
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_OPTION_BUILDLESS"] = buildless;
             actions.GetEnvironmentVariable["LGTM_INDEX_ALL_SOLUTIONS"] = allSolutions;
             actions.GetEnvironmentVariable["LGTM_INDEX_NUGET_RESTORE"] = nugetRestore;
             actions.GetEnvironmentVariable["ProgramFiles(x86)"] = isWindows ? @"C:\Program Files (x86)" : null;
@@ -415,7 +413,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess["cmd.exe /C dotnet --info"] = 0;
             actions.RunProcess[@"cmd.exe /C dotnet clean C:\Project\test.csproj"] = 0;
             actions.RunProcess[@"cmd.exe /C dotnet restore C:\Project\test.csproj"] = 0;
-            actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto dotnet build --no-incremental /p:UseSharedCompilation=false C:\Project\test.csproj"] = 0;
+            actions.RunProcess[@"cmd.exe /C dotnet build --no-incremental /p:UseSharedCompilation=false C:\Project\test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project\test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -442,7 +440,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess["dotnet --info"] = 0;
             actions.RunProcess[@"dotnet clean C:\Project/test.csproj"] = 0;
             actions.RunProcess[@"dotnet restore C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"C:\odasa/tools/odasa index --auto dotnet build --no-incremental /p:UseSharedCompilation=false C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"dotnet build --no-incremental /p:UseSharedCompilation=false C:\Project/test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project/test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -600,7 +598,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestLinuxBuildCommand()
         {
-            actions.RunProcess[@"C:\odasa/tools/odasa index --auto ""./build.sh --skip-tests"""] = 0;
+            actions.RunProcess["./build.sh --skip-tests"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
@@ -621,8 +619,8 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             actions.RunProcess[@"/bin/chmod u+x C:\Project/build/build.sh"] = 0;
-            actions.RunProcess[@"C:\odasa/tools/odasa index --auto C:\Project/build/build.sh"] = 0;
-            actions.RunProcessWorkingDirectory[@"C:\odasa/tools/odasa index --auto C:\Project/build/build.sh"] = @"C:\Project/build";
+            actions.RunProcess[@"C:\Project/build/build.sh"] = 0;
+            actions.RunProcessWorkingDirectory[@"C:\Project/build/build.sh"] = @"C:\Project/build";
             actions.FileExists["csharp.log"] = true;
 
             var autobuilder = CreateAutoBuilder(false);
@@ -638,8 +636,8 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
 
             actions.RunProcess[@"/bin/chmod u+x C:\Project/build.sh"] = 0;
-            actions.RunProcess[@"C:\odasa/tools/odasa index --auto C:\Project/build.sh"] = 0;
-            actions.RunProcessWorkingDirectory[@"C:\odasa/tools/odasa index --auto C:\Project/build.sh"] = @"C:\Project";
+            actions.RunProcess[@"C:\Project/build.sh"] = 0;
+            actions.RunProcessWorkingDirectory[@"C:\Project/build.sh"] = @"C:\Project";
             actions.FileExists["csharp.log"] = false;
 
             var autobuilder = CreateAutoBuilder(false);
@@ -655,8 +653,8 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
 
             actions.RunProcess[@"/bin/chmod u+x C:\Project/build.sh"] = 0;
-            actions.RunProcess[@"C:\odasa/tools/odasa index --auto C:\Project/build.sh"] = 5;
-            actions.RunProcessWorkingDirectory[@"C:\odasa/tools/odasa index --auto C:\Project/build.sh"] = @"C:\Project";
+            actions.RunProcess[@"C:\Project/build.sh"] = 5;
+            actions.RunProcessWorkingDirectory[@"C:\Project/build.sh"] = @"C:\Project";
             actions.FileExists["csharp.log"] = true;
 
             var autobuilder = CreateAutoBuilder(false);
@@ -670,8 +668,8 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateDirectories[@"C:\Project"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
-            actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\build.bat"] = 0;
-            actions.RunProcessWorkingDirectory[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\build.bat"] = @"C:\Project";
+            actions.RunProcess[@"cmd.exe /C C:\Project\build.bat"] = 0;
+            actions.RunProcessWorkingDirectory[@"cmd.exe /C C:\Project\build.bat"] = @"C:\Project";
             actions.FileExists["csharp.log"] = true;
 
             var autobuilder = CreateAutoBuilder(true);
@@ -685,10 +683,10 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateDirectories[@"C:\Project"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
-            actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\build.bat"] = 1;
-            actions.RunProcessWorkingDirectory[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\build.bat"] = @"C:\Project";
+            actions.RunProcess[@"cmd.exe /C C:\Project\build.bat"] = 1;
+            actions.RunProcessWorkingDirectory[@"cmd.exe /C C:\Project\build.bat"] = @"C:\Project";
             actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
-            actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config"] = 0;
+            actions.RunProcess[@"cmd.exe /C C:\codeql\tools\codeql index --xml --extensions config"] = 0;
             actions.FileExists["csharp.log"] = true;
 
             var autobuilder = CreateAutoBuilder(true, ignoreErrors: "true");
@@ -698,9 +696,9 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestWindowsCmdIgnoreErrors()
         {
-            actions.RunProcess["cmd.exe /C C:\\odasa\\tools\\odasa index --auto ^\"build.cmd --skip-tests^\""] = 3;
+            actions.RunProcess["cmd.exe /C ^\"build.cmd --skip-tests^\""] = 3;
             actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
-            actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config"] = 0;
+            actions.RunProcess[@"cmd.exe /C C:\codeql\tools\codeql index --xml --extensions config"] = 0;
             actions.FileExists["csharp.log"] = true;
             SkipVsWhere();
 
@@ -717,9 +715,9 @@ namespace Semmle.Autobuild.CSharp.Tests
         public void TestWindowCSharpMsBuild()
         {
             actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\test1.sln -DisableParallelProcessing"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test1.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test1.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
             actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\test2.sln -DisableParallelProcessing"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test2.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test2.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"] = false;
@@ -748,9 +746,9 @@ namespace Semmle.Autobuild.CSharp.Tests
         public void TestWindowCSharpMsBuildMultipleSolutions()
         {
             actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test1.csproj -DisableParallelProcessing"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test1.csproj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test1.csproj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
             actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test2.csproj -DisableParallelProcessing"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test2.csproj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test2.csproj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project\test1.csproj"] = true;
             actions.FileExists[@"C:\Project\test2.csproj"] = true;
@@ -793,7 +791,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         public void TestWindowCSharpMsBuildFailed()
         {
             actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test1.sln -DisableParallelProcessing"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test1.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 1;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test1.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 1;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"] = false;
@@ -819,8 +817,8 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestSkipNugetMsBuild()
         {
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test1.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\test2.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test1.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\test2.sln /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"] = false;
@@ -864,7 +862,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess["dotnet --info"] = 0;
             actions.RunProcess[@"dotnet clean C:\Project/test.csproj"] = 0;
             actions.RunProcess[@"dotnet restore C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"C:\odasa/tools/odasa index --auto dotnet build --no-incremental /p:UseSharedCompilation=false --no-restore C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"dotnet build --no-incremental /p:UseSharedCompilation=false --no-restore C:\Project/test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project/test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -896,7 +894,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
             actions.RunProcess[@"C:\Project/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
             actions.RunProcess[@"C:\Project/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"C:\odasa/tools/odasa index --auto C:\Project/.dotnet/dotnet build --no-incremental /p:UseSharedCompilation=false C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"C:\Project/.dotnet/dotnet build --no-incremental /p:UseSharedCompilation=false C:\Project/test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists["test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -931,7 +929,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
             actions.RunProcess[@"C:\Project/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
             actions.RunProcess[@"C:\Project/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"C:\odasa/tools/odasa index --auto C:\Project/.dotnet/dotnet build --no-incremental /p:UseSharedCompilation=false C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"C:\Project/.dotnet/dotnet build --no-incremental /p:UseSharedCompilation=false C:\Project/test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists["test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -962,7 +960,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet --info"] = 0;
             actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet clean C:\Project\test.csproj"] = 0;
             actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet restore C:\Project\test.csproj"] = 0;
-            actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\.dotnet\dotnet build --no-incremental /p:UseSharedCompilation=false C:\Project\test.csproj"] = 0;
+            actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet build --no-incremental /p:UseSharedCompilation=false C:\Project\test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project\test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -1010,7 +1008,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\dirs.proj -DisableParallelProcessing"] = 1;
             actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\dirs.proj -DisableParallelProcessing"] = 0;
-            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && C:\\odasa\\tools\\odasa index --auto msbuild C:\\Project\\dirs.proj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
+            actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program Files ^(x86^)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\dirs.proj /p:UseSharedCompilation=false /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /p:MvcBuildViews=true /P:Fu=Bar"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project\a\test.csproj"] = true;
             actions.FileExists[@"C:\Project\dirs.proj"] = true;
@@ -1054,7 +1052,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess[@"nuget restore C:\Project/dirs.proj -DisableParallelProcessing"] = 1;
             actions.RunProcess[@"mono C:\Project/.nuget/nuget.exe restore C:\Project/dirs.proj -DisableParallelProcessing"] = 0;
-            actions.RunProcess[@"C:\odasa/tools/odasa index --auto msbuild C:\Project/dirs.proj /p:UseSharedCompilation=false /t:rebuild /p:MvcBuildViews=true"] = 0;
+            actions.RunProcess[@"msbuild C:\Project/dirs.proj /p:UseSharedCompilation=false /t:rebuild /p:MvcBuildViews=true"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project/a/test.csproj"] = true;
             actions.FileExists[@"C:\Project/dirs.proj"] = true;

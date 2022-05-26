@@ -413,7 +413,7 @@ module Fastify {
   /**
    * A call to `rep.view('file', { ... })`, seen as a template instantiation.
    *
-   * Assumes the presense of a plugin that provides the `view` method, such as the `point-of-view` plugin.
+   * Assumes the presence of a plugin that provides the `view` method, such as the `point-of-view` plugin.
    */
   private class ViewCall extends Templating::TemplateInstantiation::Range, DataFlow::CallNode {
     ViewCall() { this = any(ReplySource rep).ref().getAMethodCall("view") }

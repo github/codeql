@@ -101,11 +101,11 @@ class ClientSideRemoteFlowKind extends string {
  * `name` and `address` of global variable `user` should be considered as remote flow sources with
  * source type "user input".
  */
-private class RemoteFlowSourceAccessPath extends JSONString {
+private class RemoteFlowSourceAccessPath extends JsonString {
   string sourceType;
 
   RemoteFlowSourceAccessPath() {
-    exists(JSONObject specs |
+    exists(JsonObject specs |
       specs.isTopLevel() and
       this.getFile().getBaseName() = "codeql-javascript-remote-flow-sources.json" and
       this = specs.getPropValue(sourceType).getElementValue(_) and

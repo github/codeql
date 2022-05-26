@@ -6,8 +6,8 @@ query predicate cleartextPasswordExpr(CleartextPasswordExpr e) { any() }
 string getASamplePassword() {
   result =
     [
-      "abcdefgh", "sOKY6ccizpmvF*32so%Q", "XXXXXXXX", "example_password", "change_me", "",
-      "insert-auth-from-gui", "admin", "root"
+      "hgfedcba", "abcdefgh", "sOKY6ccizpmvF*32so%Q", "XXXXXXXX", "example_password", "change_me",
+      "", "insert-auth-from-gui", "admin", "root"
     ]
 }
 

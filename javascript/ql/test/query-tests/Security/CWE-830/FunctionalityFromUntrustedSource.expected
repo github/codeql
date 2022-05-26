@@ -1,0 +1,7 @@
+| DynamicCreationOfUntrustedSourceUse.html:19:28:19:129 | ('https ... /ga.js' | Script loaded using unencrypted connection. |
+| DynamicCreationOfUntrustedSourceUse.html:23:26:23:50 | 'http:/ ... e.com/' | Iframe loaded using unencrypted connection. |
+| DynamicCreationOfUntrustedSourceUse.html:34:27:34:40 | getUrl('v123') | Iframe loaded using unencrypted connection. |
+| DynamicCreationOfUntrustedSourceUse.html:38:41:38:76 | 'http:/ ... e.html' | Iframe loaded using unencrypted connection. |
+| StaticCreationOfUntrustedSourceUse.html:6:9:6:56 | <script>...</> | Script loaded using unencrypted connection. |
+| StaticCreationOfUntrustedSourceUse.html:9:9:9:58 | <iframe>...</> | Iframe loaded using unencrypted connection. |
+| StaticCreationOfUntrustedSourceUse.html:21:9:21:155 | <script>...</> | Script loaded from content delivery network with no integrity check. |

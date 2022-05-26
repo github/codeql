@@ -248,7 +248,7 @@ private class MaybeDirective extends ExprStmt {
  */
 class Directive extends MaybeDirective {
   Directive() {
-    exists(StmtContainer sc, ASTNode body, int i |
+    exists(StmtContainer sc, AstNode body, int i |
       // directives must be toplevel statements in their container
       body = sc.getBody() and
       this = body.getChildStmt(i) and
@@ -502,7 +502,7 @@ class JumpStmt extends TJumpStmt, Stmt {
    * Note that this predicate does not take `finally` clauses
    * into account, which may interrupt the jump.
    */
-  abstract ASTNode getTarget();
+  abstract AstNode getTarget();
 }
 
 /**
@@ -583,7 +583,7 @@ class WithStmt extends @with_stmt, ControlStmt {
     exists(Variable v | v = acc.getVariable() |
       v instanceof GlobalVariable
       or
-      exists(ASTNode scopeElt | scopeElt = v.getScope().getScopeElement() |
+      exists(AstNode scopeElt | scopeElt = v.getScope().getScopeElement() |
         scopeElt = this.getParent+()
       )
     )
@@ -676,7 +676,7 @@ class ThrowStmt extends @throw_stmt, JumpStmt {
    * `try` statement in whose body the throw statement occurs. If there is no such
    * `try` statement, the target defaults to the enclosing statement container.
    */
-  override ASTNode getTarget() {
+  override AstNode getTarget() {
     if exists(TryStmt ts | this.getParentStmt+() = ts.getBody())
     then
       this.getParentStmt+() = result.(TryStmt).getBody() and
@@ -802,7 +802,7 @@ class DoWhileStmt extends @do_while_stmt, LoopStmt {
  * var i = 1;
  * ```
  */
-class ExprOrVarDecl extends ASTNode {
+class ExprOrVarDecl extends AstNode {
   ExprOrVarDecl() {
     this instanceof Expr or
     this instanceof DeclStmt

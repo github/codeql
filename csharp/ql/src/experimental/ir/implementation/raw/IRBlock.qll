@@ -161,8 +161,13 @@ class IRBlock extends IRBlockBase {
    */
   pragma[noinline]
   final IRBlock dominanceFrontier() {
-    this.dominates(result.getAPredecessor()) and
-    not this.strictlyDominates(result)
+    this.getASuccessor() = result and
+    not this.immediatelyDominates(result)
+    or
+    exists(IRBlock prev | result = prev.dominanceFrontier() |
+      this.immediatelyDominates(prev) and
+      not this.immediatelyDominates(result)
+    )
   }
 
   /**
@@ -200,9 +205,14 @@ class IRBlock extends IRBlockBase {
    * post-dominate block `B`, but block `A` does post-dominate an immediate successor of block `B`.
    */
   pragma[noinline]
-  final IRBlock postPominanceFrontier() {
-    this.postDominates(result.getASuccessor()) and
-    not this.strictlyPostDominates(result)
+  final IRBlock postDominanceFrontier() {
+    this.getAPredecessor() = result and
+    not this.immediatelyPostDominates(result)
+    or
+    exists(IRBlock prev | result = prev.postDominanceFrontier() |
+      this.immediatelyPostDominates(prev) and
+      not this.immediatelyPostDominates(result)
+    )
   }
 
   /**

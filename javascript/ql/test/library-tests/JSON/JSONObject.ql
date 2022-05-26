@@ -1,6 +1,6 @@
 import semmle.javascript.JSON
 
-from JSONObject obj, string prop, JSONValue val, string strval
+from JsonObject obj, string prop, JsonValue val, string strval
 where
   val = obj.getPropValue(prop) and
   (

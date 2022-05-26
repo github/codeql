@@ -26,7 +26,7 @@ class InjectorInvokeCall extends DataFlow::CallNode, DependencyInjection {
 }
 
 /**
- * Base class for expressions that dependency-inject some of their input with AngularJS dependency injection services.
+ * An expression that dependency-inject some of its input with AngularJS dependency injection services.
  */
 abstract class DependencyInjection extends DataFlow::ValueNode {
   /**
@@ -46,23 +46,23 @@ abstract class InjectableFunction extends DataFlow::ValueNode {
   /**
    * Gets the `i`th dependency declaration, which is also named `name`.
    */
-  abstract ASTNode getDependencyDeclaration(int i, string name);
+  abstract AstNode getDependencyDeclaration(int i, string name);
 
   /**
    * Gets an ASTNode for the `name` dependency declaration.
    */
-  ASTNode getADependencyDeclaration(string name) { result = getDependencyDeclaration(_, name) }
+  AstNode getADependencyDeclaration(string name) { result = getDependencyDeclaration(_, name) }
 
   /**
    * Gets the ASTNode for the `i`th dependency declaration.
    */
-  ASTNode getDependencyDeclaration(int i) { result = getDependencyDeclaration(i, _) }
+  AstNode getDependencyDeclaration(int i) { result = getDependencyDeclaration(i, _) }
 
   /** Gets the function underlying this injectable function. */
   abstract Function asFunction();
 
   /** Gets a location where this function is explicitly dependency injected. */
-  abstract ASTNode getAnExplicitDependencyInjection();
+  abstract AstNode getAnExplicitDependencyInjection();
 
   /**
    * Gets a service corresponding to the dependency-injected `parameter`.
@@ -110,7 +110,7 @@ private class FunctionWithImplicitDependencyAnnotation extends InjectableFunctio
 
   override Function asFunction() { result = astNode }
 
-  override ASTNode getAnExplicitDependencyInjection() { none() }
+  override AstNode getAnExplicitDependencyInjection() { none() }
 }
 
 private DataFlow::PropWrite getAPropertyDependencyInjection(Function function) {
@@ -143,7 +143,7 @@ private class FunctionWithInjectProperty extends InjectableFunction {
     exists(int i | exists(getDependencyDeclaration(i, name)) | result = astNode.getParameter(i))
   }
 
-  override ASTNode getDependencyDeclaration(int i, string name) {
+  override AstNode getDependencyDeclaration(int i, string name) {
     exists(DataFlow::ValueNode decl |
       decl = dependencies.getElement(i) and
       decl.mayHaveStringValue(name) and
@@ -153,7 +153,7 @@ private class FunctionWithInjectProperty extends InjectableFunction {
 
   override Function asFunction() { result = astNode }
 
-  override ASTNode getAnExplicitDependencyInjection() {
+  override AstNode getAnExplicitDependencyInjection() {
     result = getAPropertyDependencyInjection(astNode).getAstNode()
   }
 }
@@ -176,14 +176,14 @@ private class FunctionWithExplicitDependencyAnnotation extends InjectableFunctio
     )
   }
 
-  override ASTNode getDependencyDeclaration(int i, string name) {
+  override AstNode getDependencyDeclaration(int i, string name) {
     result = astNode.getElement(i) and
     result.(Expr).mayHaveStringValue(name)
   }
 
   override Function asFunction() { result = function.getAstNode() }
 
-  override ASTNode getAnExplicitDependencyInjection() {
+  override AstNode getAnExplicitDependencyInjection() {
     result = astNode or
     result = function.(InjectableFunction).getAnExplicitDependencyInjection()
   }

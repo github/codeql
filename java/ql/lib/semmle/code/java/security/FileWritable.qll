@@ -17,7 +17,7 @@ private EnumConstant getAContainedEnumConstant(Expr enumSetRef) {
   enumSetRef
       .getType()
       .(RefType)
-      .getASupertype*()
+      .getAnAncestor()
       .getSourceDeclaration()
       .hasQualifiedName("java.util", "Set") and
   (

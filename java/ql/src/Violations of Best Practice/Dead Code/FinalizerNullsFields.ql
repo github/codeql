@@ -17,6 +17,6 @@ where
   assign.getEnclosingCallable() = m and
   null.getParent() = assign and
   lhs = assign.getDest() and
-  lhs.getField().getDeclaringType() = m.getDeclaringType().getASupertype*() and
+  lhs.getField().getDeclaringType() = m.getDeclaringType().getAnAncestor() and
   m.fromSource()
 select assign, "Finalizer nulls fields."
