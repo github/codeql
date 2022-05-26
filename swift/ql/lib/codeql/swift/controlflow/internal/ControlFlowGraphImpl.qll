@@ -884,6 +884,14 @@ module Decls {
       )
     }
   }
+
+  private class AbstractFunctionDeclTree extends AstLeafTree {
+    override AbstractFunctionDecl ast;
+  }
+
+  private class TypeDeclTree extends AstLeafTree {
+    override TypeDecl ast;
+  }
 }
 
 module Exprs {

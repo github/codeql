@@ -357,6 +357,17 @@ cfg.swift:
 #   46| ClosureExpr
 #-----|  -> ReturnStmt
 
+#   51| enter ConcreteFuncDecl
+#-----|  -> ConcreteFuncDecl
+
+#   51| exit ConcreteFuncDecl
+
+#   51| exit ConcreteFuncDecl (normal)
+#-----|  -> exit ConcreteFuncDecl
+
+#   52| ConcreteFuncDecl
+#-----|  -> DeclRefExpr
+
 #   52| enter ConcreteFuncDecl
 #-----|  -> DeclRefExpr
 
@@ -386,6 +397,12 @@ cfg.swift:
 
 #   53| DeclRefExpr
 #-----|  -> BinaryExpr
+
+#   55| ReturnStmt
+#-----| return -> exit ConcreteFuncDecl (normal)
+
+#   55| DeclRefExpr
+#-----|  -> ReturnStmt
 
 #   58| enter ConcreteFuncDecl
 #-----|  -> ClosureExpr
@@ -611,16 +628,25 @@ cfg.swift:
 #   81| enter ConcreteFuncDecl
 #-----|  -> NamedPattern
 
+#   81| exit ConcreteFuncDecl
+
+#   81| exit ConcreteFuncDecl (normal)
+#-----|  -> exit ConcreteFuncDecl
+
 #   82| PatternBindingDecl
 #-----|  -> ConcreteVarDecl
 
 #   82| ConcreteVarDecl
+#-----|  -> ConcreteFuncDecl
 
 #   82| NamedPattern
 #-----|  -> IntegerLiteralExpr
 
 #   82| IntegerLiteralExpr
 #-----|  -> PatternBindingDecl
+
+#   84| ConcreteFuncDecl
+#-----|  -> ConcreteFuncDecl
 
 #   84| enter ConcreteFuncDecl
 #-----|  -> DeclRefExpr
@@ -658,6 +684,9 @@ cfg.swift:
 #   85| IntegerLiteralExpr
 #-----|  -> BinaryExpr
 
+#   88| ConcreteFuncDecl
+#-----|  -> DeclRefExpr
+
 #   88| enter ConcreteFuncDecl
 #-----|  -> DeclRefExpr
 
@@ -674,6 +703,81 @@ cfg.swift:
 
 #   89| NilLiteralExpr
 #-----|  -> AssignExpr
+
+#   92| DeclRefExpr
+#-----|  -> DeclRefExpr
+
+#   92| CallExpr
+#-----| exception -> exit ConcreteFuncDecl (normal)
+#-----|  -> NamedPattern
+
+#   92| InOutExpr
+#-----|  -> CallExpr
+
+#   92| DeclRefExpr
+#-----|  -> InOutExpr
+
+#   93| PatternBindingDecl
+#-----|  -> ConcreteVarDecl
+
+#   93| ConcreteVarDecl
+#-----|  -> DeclRefExpr
+
+#   93| NamedPattern
+#-----|  -> TypedPattern
+
+#   93| TypedPattern
+#-----|  -> IntegerLiteralExpr
+
+#   93| InjectIntoOptionalExpr
+#-----|  -> PatternBindingDecl
+
+#   93| IntegerLiteralExpr
+#-----|  -> InjectIntoOptionalExpr
+
+#   94| DeclRefExpr
+#-----|  -> DeclRefExpr
+
+#   94| CallExpr
+#-----| exception -> exit ConcreteFuncDecl (normal)
+#-----|  -> DeclRefExpr
+
+#   94| InOutExpr
+#-----|  -> CallExpr
+
+#   94| DeclRefExpr
+#-----|  -> InOutExpr
+
+#   95| ReturnStmt
+#-----| return -> exit ConcreteFuncDecl (normal)
+
+#   95| DeclRefExpr
+#-----|  -> LoadExpr
+
+#   95| LoadExpr
+#-----|  -> DeclRefExpr
+
+#   95| BinaryExpr
+#-----|  -> ReturnStmt
+
+#   95| DeclRefExpr
+#-----|  -> TypeExpr
+
+#   95| DotSyntaxCallExpr
+#-----| exception -> exit ConcreteFuncDecl (normal)
+#-----|  -> DeclRefExpr
+
+#   95| TypeExpr
+#-----|  -> DotSyntaxCallExpr
+
+#   95| DeclRefExpr
+#-----|  -> LoadExpr
+
+#   95| LoadExpr
+#-----|  -> ForceValueExpr
+
+#   95| ForceValueExpr
+#-----|  -> BinaryExpr
 
 #   99| enter AccessorDecl
 
@@ -4786,6 +4890,17 @@ cfg.swift:
 #  405| DeclRefExpr
 #-----|  -> TupleExpr
 
+#  408| enter ConcreteFuncDecl
+#-----|  -> ClassDecl
+
+#  408| exit ConcreteFuncDecl
+
+#  408| exit ConcreteFuncDecl (normal)
+#-----|  -> exit ConcreteFuncDecl
+
+#  409| ClassDecl
+#-----|  -> StructDecl
+
 #  410| TBD (YieldStmt)
 #-----|  -> exit AccessorDecl (normal)
 
@@ -4834,6 +4949,9 @@ cfg.swift:
 #  413| ReturnStmt
 #-----| return -> exit ConstructorDecl (normal)
 
+#  416| StructDecl
+#-----|  -> EnumDecl
+
 #  417| TBD (YieldStmt)
 #-----|  -> exit AccessorDecl (normal)
 
@@ -4881,3 +4999,24 @@ cfg.swift:
 
 #  420| ReturnStmt
 #-----| return -> exit ConstructorDecl (normal)
+
+#  423| EnumDecl
+#-----|  -> NamedPattern
+
+#  428| PatternBindingDecl
+#-----|  -> ConcreteVarDecl
+
+#  428| ConcreteVarDecl
+#-----|  -> IntegerLiteralExpr
+
+#  428| NamedPattern
+#-----|  -> TypedPattern
+
+#  428| TypedPattern
+#-----|  -> PatternBindingDecl
+
+#  442| ReturnStmt
+#-----| return -> exit ConcreteFuncDecl (normal)
+
+#  442| IntegerLiteralExpr
+#-----|  -> ReturnStmt
