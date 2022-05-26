@@ -309,10 +309,7 @@ module Stmts {
     class LoopStmt = @for_each_stmt or ConditionalLoop;
 
     abstract class LoopTree extends AstPreOrderTree {
-      LoopTree() {
-        ast instanceof WhileStmt or
-        ast instanceof RepeatWhileStmt
-      }
+      LoopTree() { ast instanceof ConditionalLoop }
 
       abstract ControlFlowElement getCondition();
 
@@ -911,9 +908,9 @@ module Exprs {
         child.asAstNode() = ast.getSource().getFullyConverted()
       }
 
-      predicate hasWillSetObserver() { isPropertyObserverElement(any(WillSetObserver obs), ast) }
+      predicate hasWillSetObserver() { isPropertyObserverElement(_, any(WillSetObserver obs), ast) }
 
-      predicate hasDidSetObserver() { isPropertyObserverElement(any(WillSetObserver obs), ast) }
+      predicate hasDidSetObserver() { isPropertyObserverElement(_, any(DidSetObserver obs), ast) }
 
       final override predicate last(ControlFlowElement last, Completion c) {
         isPropertyObserverElement(last, any(DidSetObserver obs), ast) and
@@ -952,7 +949,7 @@ module Exprs {
     class PropertyAssignExpr extends AssignExprTree {
       AccessorDecl accessorDecl;
 
-      PropertyAssignExpr() { isPropertySetterElement(accessorDecl, ast) }
+      PropertyAssignExpr() { isPropertySetterElement(_, accessorDecl, ast) }
 
       final override predicate isLast(ControlFlowElement last, Completion c) {
         isPropertySetterElement(last, accessorDecl, ast) and
@@ -1227,7 +1224,7 @@ module Exprs {
     private class PropertyDeclRefRValueTree extends DeclRefExprRValueTree {
       AccessorDecl accessor;
 
-      PropertyDeclRefRValueTree() { isPropertyGetterElement(accessor, ast) }
+      PropertyDeclRefRValueTree() { isPropertyGetterElement(_, accessor, ast) }
 
       final override predicate first(ControlFlowElement first) {
         isPropertyGetterElement(first, accessor, ast)
@@ -1326,7 +1323,7 @@ module Exprs {
     private class PropertyMemberRefRValue extends MemberRefRValueTree {
       AccessorDecl accessor;
 
-      PropertyMemberRefRValue() { isPropertyGetterElement(accessor, ast) }
+      PropertyMemberRefRValue() { isPropertyGetterElement(_, accessor, ast) }
 
       final override predicate last(ControlFlowElement last, Completion c) {
         isPropertyGetterElement(last, accessor, ast) and
@@ -1516,11 +1513,7 @@ module Exprs {
     class ConversionOrIdentity = @identity_expr or @explicit_cast_expr or @implicit_conversion_expr;
 
     abstract class ConversionOrIdentityTree extends AstStandardPostOrderTree {
-      ConversionOrIdentityTree() {
-        ast instanceof IdentityExpr or
-        ast instanceof ExplicitCastExpr or
-        ast instanceof ImplicitConversionExpr
-      }
+      ConversionOrIdentityTree() { ast instanceof ConversionOrIdentity }
 
       abstract predicate convertsFrom(Expr e);
 

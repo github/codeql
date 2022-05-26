@@ -57,7 +57,7 @@ private predicate hasDirectToImplementationOrOrdinarySemantics(Expr e) {
   hasDirectToImplementationSemantics(e) or hasOrdinarySemantics(e)
 }
 
-predicate isPropertySetterElement(AccessorDecl accessor, AssignExpr assign) {
+private predicate isPropertySetterElement(AccessorDecl accessor, AssignExpr assign) {
   exists(Expr lhs | lhs = assign.getDest() |
     hasDirectToImplementationOrOrdinarySemantics(lhs) and
     accessor.isSetter() and
@@ -72,7 +72,7 @@ predicate isPropertySetterElement(
   pse = TPropertySetterElement(accessor, assign)
 }
 
-predicate isPropertyObserverElement(AccessorDecl observer, AssignExpr assign) {
+private predicate isPropertyObserverElement(AccessorDecl observer, AssignExpr assign) {
   exists(Expr lhs | lhs = assign.getDest() |
     hasDirectToImplementationOrOrdinarySemantics(lhs) and
     observer.isPropertyObserver() and
