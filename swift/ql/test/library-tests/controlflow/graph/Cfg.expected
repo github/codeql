@@ -4785,3 +4785,99 @@ cfg.swift:
 
 #  405| DeclRefExpr
 #-----|  -> TupleExpr
+
+#  410| TBD (YieldStmt)
+#-----|  -> exit AccessorDecl (normal)
+
+#  410| enter AccessorDecl
+
+#  410| enter AccessorDecl
+
+#  410| enter AccessorDecl
+#-----|  -> TBD (YieldStmt)
+
+#  410| exit AccessorDecl
+
+#  410| exit AccessorDecl
+
+#  410| exit AccessorDecl
+
+#  410| exit AccessorDecl (normal)
+#-----|  -> exit AccessorDecl
+
+#  410| exit AccessorDecl (normal)
+#-----|  -> exit AccessorDecl
+
+#  410| exit AccessorDecl (normal)
+#-----|  -> exit AccessorDecl
+
+#  411| enter ConstructorDecl
+#-----|  -> DeclRefExpr
+
+#  411| exit ConstructorDecl
+
+#  411| exit ConstructorDecl (normal)
+#-----|  -> exit ConstructorDecl
+
+#  412| DeclRefExpr
+#-----|  -> MemberRefExpr
+
+#  412| MemberRefExpr
+#-----|  -> IntegerLiteralExpr
+
+#  412| AssignExpr
+#-----|  -> ReturnStmt
+
+#  412| IntegerLiteralExpr
+#-----|  -> AssignExpr
+
+#  413| ReturnStmt
+#-----| return -> exit ConstructorDecl (normal)
+
+#  417| TBD (YieldStmt)
+#-----|  -> exit AccessorDecl (normal)
+
+#  417| enter AccessorDecl
+
+#  417| enter AccessorDecl
+
+#  417| enter AccessorDecl
+#-----|  -> TBD (YieldStmt)
+
+#  417| exit AccessorDecl
+
+#  417| exit AccessorDecl
+
+#  417| exit AccessorDecl
+
+#  417| exit AccessorDecl (normal)
+#-----|  -> exit AccessorDecl
+
+#  417| exit AccessorDecl (normal)
+#-----|  -> exit AccessorDecl
+
+#  417| exit AccessorDecl (normal)
+#-----|  -> exit AccessorDecl
+
+#  418| enter ConstructorDecl
+#-----|  -> DeclRefExpr
+
+#  418| exit ConstructorDecl
+
+#  418| exit ConstructorDecl (normal)
+#-----|  -> exit ConstructorDecl
+
+#  419| DeclRefExpr
+#-----|  -> MemberRefExpr
+
+#  419| MemberRefExpr
+#-----|  -> IntegerLiteralExpr
+
+#  419| AssignExpr
+#-----|  -> ReturnStmt
+
+#  419| IntegerLiteralExpr
+#-----|  -> AssignExpr
+
+#  420| ReturnStmt
+#-----| return -> exit ConstructorDecl (normal)
