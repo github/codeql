@@ -3,29 +3,38 @@
 
 <overview>
 <p>
-A constant-time algorithm should be used for checking the value of sensitive info.
-In other words, the comparison time should not depend on the content of the input. 
-Otherwise timing information could be used to infer the info's expected, secret value.
+  Timing Attack is based on the leakage of information of secret parameters by studying
+how long it takes the system to respond to different inputs. 
+  it can be circumvented by using a constant-time algorithm for checking the value of sensitive info, 
+more precisely, the comparison time should not depend on the content of the input. Otherwise the attacker gains
+information that is indirectly leaked by the application. This information is then used for malicious purposes, 
+such as guessing the password of a user.
 </p>
 </overview>
 
 
 <recommendation>
 <p>
-Use <code>MessageDigest.isEqual()</code> method to check the value of sensitive info.
+ Two types of countermeasures can be applied against timing attacks. The first one consists 
+in eliminating timing variations whereas the second renders these variations useless for an attacker.
+The only absolute way to prevent timing attacks is to make the computation strictly constant time,
+independent of the input.
+
+ Use <code>MessageDigest.isEqual()</code> method to securely check the value of sensitive info.
 If this method is used, then the calculation time depends only on the length of input byte arrays,
-and does not depend on the contents of the arrays.
+and does not depend on the contents of the arrays. 
+ Or you can done a function by yourself that validate an input safely.
 </p>
 </recommendation>
 <example>
 <p>
-The following example uses <code>String.equals()</code> method for validating a password.
+  The following example uses <code>String.equals()</code> method for validating a password.
 This method implements a non-constant-time algorithm:
 </p>
 <sample src="UnsafeComparison.java" />
 
-<p>
-The next example uses a safe constant-time algorithm for validating a password:
+<p> 
+  The next example use a safe constant-time algorithm for validating a password:
 </p>
 <sample src="SafeComparison.java" />
 </example>
