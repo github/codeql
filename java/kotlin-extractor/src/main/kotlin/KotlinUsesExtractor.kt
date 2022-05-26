@@ -5,16 +5,20 @@ import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.allOverridden
+import org.jetbrains.kotlin.backend.common.ir.isOverridableOrOverrides
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
 import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.descriptors.*
+import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.interpreter.getLastOverridden
 import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.types.impl.*
 import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.load.java.BuiltinMethodsWithSpecialGenericSignature
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
@@ -31,6 +35,17 @@ open class KotlinUsesExtractor(
     val pluginContext: IrPluginContext,
     val globalExtensionState: KotlinExtractorGlobalState
 ) {
+
+    val javaLangObject by lazy {
+        val result = pluginContext.referenceClass(FqName("java.lang.Object"))?.owner
+        result?.let { extractExternalClassLater(it) }
+        result
+    }
+
+    val javaLangObjectType by lazy {
+        javaLangObject?.typeWith()
+    }
+
     fun usePackage(pkg: String): Label<out DbPackage> {
         return extractPackage(pkg)
     }
@@ -789,6 +804,52 @@ open class KotlinUsesExtractor(
             else -> null
         }
 
+    val javaUtilCollection by lazy {
+        val result = pluginContext.referenceClass(FqName("java.util.Collection"))?.owner
+        result?.let { extractExternalClassLater(it) }
+        result
+    }
+
+    val wildcardCollectionType by lazy {
+        javaUtilCollection?.let {
+            it.symbol.typeWithArguments(listOf(IrStarProjectionImpl))
+        }
+    }
+
+    private fun makeCovariant(t: IrTypeArgument) =
+        t.typeOrNull?.let { makeTypeProjection(it, Variance.OUT_VARIANCE) } ?: t
+
+    private fun makeArgumentsCovariant(t: IrType) = (t as? IrSimpleType)?.let {
+        t.toBuilder().also { b -> b.arguments = b.arguments.map(this::makeCovariant) }.buildSimpleType()
+    } ?: t
+
+    fun eraseCollectionsMethodParameterType(t: IrType, collectionsMethodName: String, paramIdx: Int) =
+        when(collectionsMethodName) {
+            "contains", "remove", "containsKey", "containsValue", "get", "indexOf", "lastIndexOf" -> javaLangObjectType
+            "getOrDefault" -> if (paramIdx == 0) javaLangObjectType else null
+            "containsAll", "removeAll", "retainAll" -> wildcardCollectionType
+            // Kotlin defines these like addAll(Collection<E>); Java uses addAll(Collection<? extends E>)
+            "putAll", "addAll" -> makeArgumentsCovariant(t)
+            else -> null
+        } ?: t
+
+    private fun overridesFunctionDefinedOn(f: IrFunction, packageName: String, className: String) =
+        (f as? IrSimpleFunction)?.let {
+            it.overriddenSymbols.any { overridden ->
+                overridden.owner.parentClassOrNull?.let { defnClass ->
+                    defnClass.name.asString() == className &&
+                    defnClass.packageFqName?.asString() == packageName
+                } ?: false
+            }
+        } ?: false
+
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
+    fun overridesCollectionsMethodWithAlteredParameterTypes(f: IrFunction) =
+        BuiltinMethodsWithSpecialGenericSignature.getOverriddenBuiltinFunctionWithErasedValueParametersInJava(f.descriptor) != null ||
+                (f.name.asString() == "putAll" && overridesFunctionDefinedOn(f, "kotlin.collections", "MutableMap")) ||
+                (f.name.asString() == "addAll" && overridesFunctionDefinedOn(f, "kotlin.collections", "MutableCollection")) ||
+                (f.name.asString() == "addAll" && overridesFunctionDefinedOn(f, "kotlin.collections", "MutableList"))
+
     /*
      * This is the normal getFunctionLabel function to use. If you want
      * to refer to the function in its source class then
@@ -810,8 +871,19 @@ open class KotlinUsesExtractor(
      * `java.lang.Throwable`, which isn't what we want. So we have to
      * allow it to be passed in.
     */
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
     fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        getFunctionLabel(f.parent, maybeParentId, getFunctionShortName(f).nameInDB, f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArgsIncludingOuterClasses)
+        getFunctionLabel(
+            f.parent,
+            maybeParentId,
+            getFunctionShortName(f).nameInDB,
+            f.valueParameters,
+            f.returnType,
+            f.extensionReceiverParameter,
+            getFunctionTypeParameters(f),
+            classTypeArgsIncludingOuterClasses,
+            overridesCollectionsMethodWithAlteredParameterTypes(f)
+        )
 
     /*
      * This function actually generates the label for a function.
@@ -837,6 +909,9 @@ open class KotlinUsesExtractor(
         functionTypeParameters: List<IrTypeParameter>,
         // The type arguments of enclosing classes of the function.
         classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
+        // If true, this method implements a Java Collections interface (Collection, Map or List) and may need
+        // parameter erasure to match the way this class will appear to an external consumer of the .class file.
+        overridesCollectionsMethod: Boolean,
         // The prefix used in the label. "callable", unless a property label is created, then it's "property".
         prefix: String = "callable"
     ): String {
@@ -855,14 +930,19 @@ open class KotlinUsesExtractor(
                 enclosingClass?.let { notNullClass -> makeTypeGenericSubstitutionMap(notNullClass, notNullArgs) }
             }
         }
-        val getIdForFunctionLabel = { it: IrValueParameter ->
-            // Mimic the Java extractor's behaviour: functions with type parameters are named for their erased types;
+        val getIdForFunctionLabel = { it: IndexedValue<IrValueParameter> ->
+            // Kotlin rewrites certain Java collections types adding additional generic constraints-- for example,
+            // Collection.remove(Object) because Collection.remove(Collection::E) in the Kotlin universe.
+            // If this has happened, erase the type again to get the correct Java signature.
+            val maybeAmendedForCollections = if (overridesCollectionsMethod) eraseCollectionsMethodParameterType(it.value.type, name, it.index) else it.value.type
+            // Now substitute any class type parameters in:
+            val maybeSubbed = maybeAmendedForCollections.substituteTypeAndArguments(substitutionMap, TypeContext.OTHER, pluginContext)
+            // Finally, mimic the Java extractor's behaviour by naming functions with type parameters for their erased types;
             // those without type parameters are named for the generic type.
-            val maybeSubbed = it.type.substituteTypeAndArguments(substitutionMap, TypeContext.OTHER, pluginContext)
             val maybeErased = if (functionTypeParameters.isEmpty()) maybeSubbed else erase(maybeSubbed)
             "{${useType(maybeErased).javaResult.id}}"
         }
-        val paramTypeIds = allParams.joinToString(separator = ",", transform = getIdForFunctionLabel)
+        val paramTypeIds = allParams.withIndex().joinToString(separator = ",", transform = getIdForFunctionLabel)
         val labelReturnType =
             if (name == "<init>")
                 pluginContext.irBuiltIns.unitType
@@ -1299,7 +1379,7 @@ open class KotlinUsesExtractor(
             val returnType = getter?.returnType ?: setter?.valueParameters?.singleOrNull()?.type ?: pluginContext.irBuiltIns.unitType
             val typeParams = getFunctionTypeParameters(func)
 
-            getFunctionLabel(p.parent, parentId, p.name.asString(), listOf(), returnType, ext, typeParams, classTypeArgsIncludingOuterClasses, "property")
+            getFunctionLabel(p.parent, parentId, p.name.asString(), listOf(), returnType, ext, typeParams, classTypeArgsIncludingOuterClasses, overridesCollectionsMethod = false, prefix = "property")
         }
     }
 
