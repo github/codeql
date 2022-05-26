@@ -4,6 +4,7 @@ private import DataFlowDispatch
 private import codeql.swift.controlflow.CfgNodes
 private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.BasicBlocks
+private import codeql.swift.dataflow.internal.SsaImplCommon as SsaImpl
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -46,6 +47,13 @@ private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
   }
 }
 
+private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
+  exists(BasicBlock bb, int i | SsaImpl::lastRefRedef(def, bb, i, next) |
+    def.definesAt(_, bb, i) and
+    def = nodeFrom.asDefinition()
+  )
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -66,6 +74,9 @@ private module Cached {
       or
       // use-use flow
       def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode())
+      // step from previous read to Phi node
+      or
+      localFlowSsaInput(nodeFrom, def, nodeTo.asDefinition())
     )
   }
 
