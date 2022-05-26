@@ -41,14 +41,12 @@ module PosixSpawn {
    */
   class SystemCall extends SystemCommandExecution::Range, DataFlow::CallNode {
     SystemCall() {
-      exists(API::Node spawn | spawn = API::getTopLevelMember("POSIX").getMember("Spawn") |
-        this =
-          posixSpawnModule()
-              .getAMethodCall(["spawn", "fspawn", "popen4", "pspawn", "system", "_pspawn", "`"])
-      )
+      this =
+        posixSpawnModule()
+            .getAMethodCall(["spawn", "fspawn", "popen4", "pspawn", "system", "_pspawn", "`"])
     }
 
-    override DataFlow::Node getAnArgument() { this.argument(result, _) }
+    override DataFlow::Node getAnArgument() { this.argument(result) }
 
     // From the docs:
     // When only command is given and includes a space character, the command
@@ -64,15 +62,16 @@ module PosixSpawn {
     // is shell interpreted unless there is another argument with a string
     // constant value.
     override predicate isShellInterpreted(DataFlow::Node arg) {
-      exists(int n, int m, DataFlow::Node otherArg |
-        this.argument(arg, n) and
-        this.argument(otherArg, m) and
+      not exists(DataFlow::Node otherArg |
+        otherArg != arg and
+        this.argument(arg) and
+        this.argument(otherArg) and
         otherArg.asExpr().getConstantValue().isString(_)
       )
     }
 
-    private predicate argument(DataFlow::Node arg, int n) {
-      arg = this.getArgument(n) and
+    private predicate argument(DataFlow::Node arg) {
+      arg = this.getArgument(_) and
       not arg.asExpr() instanceof ExprNodes::HashLiteralCfgNode and
       not arg.asExpr() instanceof ExprNodes::ArrayLiteralCfgNode and
       not arg.asExpr() instanceof ExprNodes::PairCfgNode

@@ -6,6 +6,8 @@ POSIX::Spawn::Child.new(*command, input: options[:stdin].to_s, timeout: timeout)
 
 POSIX::Spawn.spawn(*(argv+[{:in => f}]))
 POSIX::Spawn::spawn('sleep 5')
+POSIX::Spawn.spawn(cmd)
+POSIX::Spawn.spawn(env, "ls")
 
 POSIX::Spawn::Child.new("ls", "-l")
 POSIX::Spawn::Child.build("echo", msg)
