@@ -321,6 +321,7 @@ class ActiveRecordInstance extends DataFlow::Node {
 
   ActiveRecordInstance() { this = instantiation or instantiation.flowsTo(this) }
 
+  /** Gets the `ActiveRecordModelClass` that this is an instance of. */
   ActiveRecordModelClass getClass() { result = instantiation.getClass() }
 }
 
