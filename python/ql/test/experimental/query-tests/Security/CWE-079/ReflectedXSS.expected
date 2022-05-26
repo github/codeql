@@ -1,6 +1,5 @@
 edges
 | flask_mail.py:13:22:13:28 | ControlFlowNode for request | flask_mail.py:13:22:13:33 | ControlFlowNode for Attribute |
-| flask_mail.py:13:22:13:28 | ControlFlowNode for request | flask_mail.py:18:14:18:20 | ControlFlowNode for request |
 | flask_mail.py:13:22:13:28 | ControlFlowNode for request | flask_mail.py:18:14:18:25 | ControlFlowNode for Attribute |
 | flask_mail.py:13:22:13:33 | ControlFlowNode for Attribute | flask_mail.py:13:22:13:41 | ControlFlowNode for Subscript |
 | flask_mail.py:18:14:18:20 | ControlFlowNode for request | flask_mail.py:18:14:18:25 | ControlFlowNode for Attribute |
@@ -15,14 +14,11 @@ edges
 | sendgrid_mail.py:37:41:37:47 | ControlFlowNode for request | sendgrid_mail.py:37:41:37:52 | ControlFlowNode for Attribute |
 | sendgrid_mail.py:37:41:37:52 | ControlFlowNode for Attribute | sendgrid_mail.py:37:41:37:68 | ControlFlowNode for Subscript |
 | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:62 | ControlFlowNode for Attribute |
-| sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:56 | ControlFlowNode for request |
 | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:61 | ControlFlowNode for Attribute |
-| sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:41:50:41:56 | ControlFlowNode for request |
 | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:57 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:41:50:41:61 | ControlFlowNode for Attribute |
 | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:62 | ControlFlowNode for Attribute | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:78 | ControlFlowNode for Subscript |
 | sendgrid_via_mail_send_post_request_body_bad.py:16:51:16:78 | ControlFlowNode for Subscript | sendgrid_via_mail_send_post_request_body_bad.py:16:26:16:79 | ControlFlowNode for Attribute() |
 | sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:56 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:61 | ControlFlowNode for Attribute |
-| sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:56 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:41:50:41:56 | ControlFlowNode for request |
 | sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:56 | ControlFlowNode for request | sendgrid_via_mail_send_post_request_body_bad.py:41:50:41:61 | ControlFlowNode for Attribute |
 | sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:61 | ControlFlowNode for Attribute | sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:76 | ControlFlowNode for Subscript |
 | sendgrid_via_mail_send_post_request_body_bad.py:27:50:27:76 | ControlFlowNode for Subscript | sendgrid_via_mail_send_post_request_body_bad.py:27:25:27:77 | ControlFlowNode for Attribute() |
