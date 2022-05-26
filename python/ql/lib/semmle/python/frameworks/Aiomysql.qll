@@ -25,7 +25,7 @@ private module Aiomysql {
   /**
    * Gets a `Connection` that is created when
    * - the result of `aiomysql.connect()` is awaited.
-   * - the result of calling `aquire` on a `ConnectionPool` is awaited.
+   * - the result of calling `acquire` on a `ConnectionPool` is awaited.
    * See https://aiomysql.readthedocs.io/en/stable/connection.html#connection
    */
   API::Node connection() {
@@ -82,7 +82,7 @@ private module Aiomysql {
   }
 
   /**
-   * Gets an `SAConnection` that is created when the result of calling `aquire` on an `Engine` is awaited.
+   * Gets an `SAConnection` that is created when the result of calling `acquire` on an `Engine` is awaited.
    * See https://aiomysql.readthedocs.io/en/stable/sa.html#connection
    */
   API::Node saConnection() { result = engine().getMember("acquire").getReturn().getAwaited() }

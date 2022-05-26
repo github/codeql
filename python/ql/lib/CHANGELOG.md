@@ -1,3 +1,42 @@
+## 0.3.0
+
+### Breaking Changes
+
+* The imports made available from `import python` are no longer exposed under `DataFlow::` after doing `import semmle.python.dataflow.new.DataFlow`, for example using `DataFlow::Add` will now cause a compile error.
+
+### Minor Analysis Improvements
+
+* The modeling of `request.files` in Flask has been fixed, so we now properly handle assignments to local variables (such as `files = request.files; files['key'].filename`).
+* Added taint propagation for `io.StringIO` and `io.BytesIO`. This addition was originally [submitted as part of an experimental query by @jorgectf](https://github.com/github/codeql/pull/6112).
+
+## 0.2.0
+
+### Breaking Changes
+
+* The signature of `allowImplicitRead` on `DataFlow::Configuration` and `TaintTracking::Configuration` has changed from `allowImplicitRead(DataFlow::Node node, DataFlow::Content c)` to `allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c)`.
+
+## 0.1.0
+
+### Breaking Changes
+
+* The recently added flow-state versions of `isBarrierIn`, `isBarrierOut`, `isSanitizerIn`, and `isSanitizerOut` in the data flow and taint tracking libraries have been removed.
+
+### Deprecated APIs
+
+* Queries importing a data-flow configuration from `semmle.python.security.dataflow`
+  should ensure that the imported file ends with `Query`, and only import its top-level
+  module. For example, a query that used `CommandInjection::Configuration` from
+  `semmle.python.security.dataflow.CommandInjection` should from now use `Configuration`
+  from `semmle.python.security.dataflow.CommandInjectionQuery` instead.
+
+### Major Analysis Improvements
+
+* Added data-flow for Django ORM models that are saved in a database (no `models.ForeignKey` support).
+
+### Minor Analysis Improvements
+
+* Improved modeling of Flask `Response` objects, so passing a response body with the keyword argument `response` is now recognized.
+
 ## 0.0.13
 
 ## 0.0.12

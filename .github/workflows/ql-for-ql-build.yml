@@ -13,7 +13,7 @@ jobs:
   queries:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Find codeql
         id: find-codeql
         uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
@@ -29,7 +29,7 @@ jobs:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Cache queries
         id: cache-queries
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ runner.temp }}/query-pack.zip
           key: queries-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/**/qlpack.yml') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}
@@ -44,7 +44,7 @@ jobs:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
           PACKZIP: ${{ runner.temp }}/query-pack.zip
       - name: Upload query pack
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: query-pack-zip
           path: ${{ runner.temp }}/query-pack.zip
@@ -56,10 +56,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Cache entire extractor
         id: cache-extractor
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ql/target/release/ql-autobuilder
@@ -69,7 +69,7 @@ jobs:
           key: ${{ runner.os }}-extractor-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}
       - name: Cache cargo
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
@@ -91,7 +91,7 @@ jobs:
       - name: Generate dbscheme
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: ql/target/release/ql-generator --dbscheme ql/ql/src/ql.dbscheme --library ql/ql/src/codeql_ql/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: extractor-ubuntu-latest
           path: |
@@ -108,12 +108,12 @@ jobs:
       - queries
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: query-pack-zip
           path: query-pack-zip
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: extractor-ubuntu-latest
           path: linux64
@@ -131,7 +131,7 @@ jobs:
           fi
           cd pack
           zip -rq ../codeql-ql.zip .
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: codeql-ql-pack
           path: codeql-ql.zip
@@ -140,14 +140,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        folder: [cpp, csharp, java, javascript, python, ql, ruby]
+        folder: [cpp, csharp, java, javascript, python, ql, ruby, swift, go]
 
     needs:
       - package
 
     steps:
       - name: Download pack
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: codeql-ql-pack
           path: ${{ runner.temp }}/codeql-ql-pack-artifact
@@ -166,7 +166,7 @@ jobs:
           PACK: ${{ runner.temp }}/pack
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Create CodeQL config file
         run: |
           echo "paths:" > ${CONF}
@@ -196,7 +196,7 @@ jobs:
       - name: Copy sarif file to CWD
         run: cp ../results/ql.sarif ./${{ matrix.folder }}.sarif
       - name: Sarif as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.folder }}.sarif
           path: ${{ matrix.folder }}.sarif

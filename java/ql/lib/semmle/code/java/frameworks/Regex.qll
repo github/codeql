@@ -1,6 +1,6 @@
 /** Definitions related to `java.util.regex`. */
 
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 private class RegexModel extends SummaryModelCsv {
   override predicate row(string s) {

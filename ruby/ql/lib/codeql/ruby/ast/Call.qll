@@ -105,6 +105,14 @@ class MethodCall extends Call instanceof MethodCallImpl {
    */
   final Block getBlock() { result = super.getBlockImpl() }
 
+  /**
+   * Holds if the safe nagivation operator (`&.`) is used in this call.
+   * ```rb
+   * foo&.empty?
+   * ```
+   */
+  final predicate isSafeNavigation() { super.isSafeNavigationImpl() }
+
   override string toString() { result = "call to " + this.getMethodName() }
 
   override AstNode getAChild(string pred) {

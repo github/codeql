@@ -37,7 +37,7 @@ private class SliceProviderLifecycleStep extends AdditionalValueStep {
 
 private class SliceActionsInheritTaint extends DataFlow::SyntheticFieldContent,
   TaintInheritingContent {
-  SliceActionsInheritTaint() { this.getField().matches("androidx.slice.Slice.action") }
+  SliceActionsInheritTaint() { this.getField() = "androidx.slice.Slice.action" }
 }
 
 private class SliceBuildersSummaryModels extends SummaryModelCsv {

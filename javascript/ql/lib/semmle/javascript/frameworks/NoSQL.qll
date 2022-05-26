@@ -3,9 +3,8 @@
  */
 
 import javascript
-import semmle.javascript.Promises
 
-/** Provices classes for modelling NoSQL query sinks. */
+/** Provides classes for modeling NoSQL query sinks. */
 module NoSql {
   /** An expression that is interpreted as a NoSQL query. */
   abstract class Query extends Expr {

@@ -90,18 +90,34 @@ string captureQualifierFlow(TargetApi api) {
   result = asValueModel(api, qualifierString(), "ReturnValue")
 }
 
+private int accessPathLimit() { result = 2 }
+
 /**
  * A FlowState representing a tainted read.
  */
 private class TaintRead extends DataFlow::FlowState {
-  TaintRead() { this = "TaintRead" }
+  private int step;
+
+  TaintRead() { this = "TaintRead(" + step + ")" and step in [0 .. accessPathLimit()] }
+
+  /**
+   * Gets the flow state step number.
+   */
+  int getStep() { result = step }
 }
 
 /**
  * A FlowState representing a tainted write.
  */
 private class TaintStore extends DataFlow::FlowState {
-  TaintStore() { this = "TaintStore" }
+  private int step;
+
+  TaintStore() { this = "TaintStore(" + step + ")" and step in [1 .. accessPathLimit()] }
+
+  /**
+   * Gets the flow state step number.
+   */
+  int getStep() { result = step }
 }
 
 /**
@@ -116,7 +132,7 @@ private class ThroughFlowConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
     source instanceof DataFlow::ParameterNode and
     source.getEnclosingCallable() instanceof TargetApi and
-    state instanceof TaintRead
+    state.(TaintRead).getStep() = 0
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
@@ -133,15 +149,17 @@ private class ThroughFlowConfig extends TaintTracking::Configuration {
     exists(DataFlowImplCommon::TypedContent tc |
       DataFlowImplCommon::store(node1, tc, node2, _) and
       isRelevantContent(tc.getContent()) and
-      (state1 instanceof TaintRead or state1 instanceof TaintStore) and
-      state2 instanceof TaintStore
+      (
+        state1 instanceof TaintRead and state2.(TaintStore).getStep() = 1
+        or
+        state1.(TaintStore).getStep() + 1 = state2.(TaintStore).getStep()
+      )
     )
     or
     exists(DataFlow::Content c |
       DataFlowPrivate::readStep(node1, c, node2) and
       isRelevantContent(c) and
-      state1 instanceof TaintRead and
-      state2 instanceof TaintRead
+      state1.(TaintRead).getStep() + 1 = state2.(TaintRead).getStep()
     )
   }
 

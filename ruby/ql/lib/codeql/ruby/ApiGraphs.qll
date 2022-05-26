@@ -576,7 +576,7 @@ module API {
         use(pred, a) and
         use(succ, b) and
         resolveConstant(b.asExpr().getExpr()) = resolveConstantWriteAccess(c) and
-        c.getSuperclassExpr() = a.asExpr().getExpr() and
+        pragma[only_bind_into](c).getSuperclassExpr() = a.asExpr().getExpr() and
         lbl = Label::subclass()
       )
       or
@@ -659,7 +659,7 @@ module API {
       private import Impl
 
       /** A label for a member, for example a constant. */
-      class LabelMember extends ApiLabel {
+      class LabelMember extends ApiLabel, MkLabelMember {
         private string member;
 
         LabelMember() { this = MkLabelMember(member) }
@@ -671,14 +671,12 @@ module API {
       }
 
       /** A label for a member with an unknown name. */
-      class LabelUnknownMember extends ApiLabel {
-        LabelUnknownMember() { this = MkLabelUnknownMember() }
-
+      class LabelUnknownMember extends ApiLabel, MkLabelUnknownMember {
         override string toString() { result = "getUnknownMember()" }
       }
 
       /** A label for a method. */
-      class LabelMethod extends ApiLabel {
+      class LabelMethod extends ApiLabel, MkLabelMethod {
         private string method;
 
         LabelMethod() { this = MkLabelMethod(method) }
@@ -690,21 +688,17 @@ module API {
       }
 
       /** A label for the return value of a method. */
-      class LabelReturn extends ApiLabel {
-        LabelReturn() { this = MkLabelReturn() }
-
+      class LabelReturn extends ApiLabel, MkLabelReturn {
         override string toString() { result = "getReturn()" }
       }
 
       /** A label for the subclass relationship. */
-      class LabelSubclass extends ApiLabel {
-        LabelSubclass() { this = MkLabelSubclass() }
-
+      class LabelSubclass extends ApiLabel, MkLabelSubclass {
         override string toString() { result = "getASubclass()" }
       }
 
       /** A label for a keyword parameter. */
-      class LabelKeywordParameter extends ApiLabel {
+      class LabelKeywordParameter extends ApiLabel, MkLabelKeywordParameter {
         private string name;
 
         LabelKeywordParameter() { this = MkLabelKeywordParameter(name) }
@@ -716,7 +710,7 @@ module API {
       }
 
       /** A label for a parameter. */
-      class LabelParameter extends ApiLabel {
+      class LabelParameter extends ApiLabel, MkLabelParameter {
         private int n;
 
         LabelParameter() { this = MkLabelParameter(n) }
@@ -728,14 +722,12 @@ module API {
       }
 
       /** A label for a block parameter. */
-      class LabelBlockParameter extends ApiLabel {
-        LabelBlockParameter() { this = MkLabelBlockParameter() }
-
+      class LabelBlockParameter extends ApiLabel, MkLabelBlockParameter {
         override string toString() { result = "getBlock()" }
       }
 
       /** A label from the root node to a custom entry point. */
-      class LabelEntryPoint extends ApiLabel {
+      class LabelEntryPoint extends ApiLabel, MkLabelEntryPoint {
         private API::EntryPoint name;
 
         LabelEntryPoint() { this = MkLabelEntryPoint(name) }

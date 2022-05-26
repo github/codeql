@@ -181,7 +181,7 @@ private string expectationCommentPattern() { result = "\\s*\\$((?:[^/]|/[^/])*)(
 /**
  * The possible columns in an expectation comment. The `TDefaultColumn` branch represents the first
  * column in a comment. This column is not precedeeded by a name. `TNamedColumn(name)` represents a
- * column containing expected results preceeded by the string `name:`.
+ * column containing expected results preceded by the string `name:`.
  */
 private newtype TColumn =
   TDefaultColumn() or

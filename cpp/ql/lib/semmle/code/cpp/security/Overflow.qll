@@ -5,8 +5,6 @@
 
 import cpp
 import semmle.code.cpp.controlflow.Dominance
-// `GlobalValueNumbering` is only imported to prevent IR re-evaluation.
-private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import semmle.code.cpp.controlflow.Guards

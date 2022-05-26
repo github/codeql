@@ -7,9 +7,9 @@
 import javascript
 import DomBasedXssCustomizations::DomBasedXss as DomBasedXssCustom
 import ReflectedXssCustomizations::ReflectedXss as ReflectedXssCustom
-import Xss as Xss
-import Xss::ExceptionXss
+import ExceptionXssCustomizations::ExceptionXss
 private import semmle.javascript.dataflow.InferredTypes
+import Xss::Shared as XssShared
 
 /**
  * Gets the name of a method that does not leak taint from its arguments if an exception is thrown by the method.
@@ -56,7 +56,7 @@ private predicate isNullOrUndefined(InferredType t) {
  */
 predicate canThrowSensitiveInformation(DataFlow::Node node) {
   not isUnlikelyToThrowSensitiveInformation(node) and
-  not node instanceof Xss::Shared::Sink and // removes duplicates from js/xss.
+  not node instanceof XssShared::Sink and // removes duplicates from js/xss.
   (
     // in the case of reflective calls the below ensures that both InvokeNodes have no known callee.
     forex(DataFlow::InvokeNode call | call.getAnArgument() = node | not exists(call.getACallee()))
@@ -71,7 +71,7 @@ predicate canThrowSensitiveInformation(DataFlow::Node node) {
 }
 
 // Materialize flow labels
-private class ConcreteNotYetThrown extends Xss::ExceptionXss::NotYetThrown {
+private class ConcreteNotYetThrown extends NotYetThrown {
   ConcreteNotYetThrown() { this = this }
 }
 
@@ -133,14 +133,14 @@ class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "ExceptionXss" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    source.(Xss::ExceptionXss::Source).getAFlowLabel() = label
+    source.(Source).getAFlowLabel() = label
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink instanceof Xss::Shared::Sink and not label instanceof NotYetThrown
+    sink instanceof XssShared::Sink and not label instanceof NotYetThrown
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Xss::Shared::Sanitizer }
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof XssShared::Sanitizer }
 
   override predicate isAdditionalFlowStep(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl

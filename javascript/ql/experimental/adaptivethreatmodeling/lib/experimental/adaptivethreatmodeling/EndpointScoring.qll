@@ -118,6 +118,7 @@ class EndpointScoringResults extends ScoringResults {
 
   pragma[inline]
   override predicate shouldResultBeIncluded(DataFlow::Node source, DataFlow::Node sink) {
+    exists(source) and
     if getCfg().isKnownSink(sink)
     then any()
     else (

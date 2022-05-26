@@ -363,7 +363,7 @@ class CallNode extends ControlFlowNode {
     )
   }
 
-  /** Gets the flow node corresponding to the nth argument of the call corresponding to this flow node */
+  /** Gets the flow node corresponding to the n'th positional argument of the call corresponding to this flow node */
   ControlFlowNode getArg(int n) {
     exists(Call c |
       this.getNode() = c and

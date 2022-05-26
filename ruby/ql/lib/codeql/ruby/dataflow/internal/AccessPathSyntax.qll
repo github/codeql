@@ -42,9 +42,7 @@ module AccessPath {
    * Parses a lower-bounded interval `n..` and gets the lower bound.
    */
   bindingset[arg]
-  private int parseLowerBound(string arg) {
-    result = arg.regexpCapture("(-?\\d+)\\.\\.", 1).toInt()
-  }
+  int parseLowerBound(string arg) { result = arg.regexpCapture("(-?\\d+)\\.\\.", 1).toInt() }
 
   /**
    * Parses an integer constant or interval (bounded or unbounded) that explicitly
@@ -151,7 +149,7 @@ class AccessPath extends string instanceof AccessPath::Range {
  * An access part token such as `Argument[1]` or `ReturnValue`, appearing in one or more access paths.
  */
 class AccessPathToken extends string {
-  AccessPathToken() { this = getRawToken(any(AccessPath path), _) }
+  AccessPathToken() { this = getRawToken(_, _) }
 
   private string getPart(int part) {
     result = this.regexpCapture("([^\\[]+)(?:\\[([^\\]]*)\\])?", part)
@@ -169,8 +167,15 @@ class AccessPathToken extends string {
   /** Gets the `n`th argument to this token, such as `x` or `y` from `Member[x,y]`. */
   string getArgument(int n) { result = this.getArgumentList().splitAt(",", n).trim() }
 
+  /** Gets the `n`th argument to this `name` token, such as `x` or `y` from `Member[x,y]`. */
+  pragma[nomagic]
+  string getArgument(string name, int n) { name = this.getName() and result = this.getArgument(n) }
+
   /** Gets an argument to this token, such as `x` or `y` from `Member[x,y]`. */
   string getAnArgument() { result = this.getArgument(_) }
+
+  /** Gets an argument to this `name` token, such as `x` or `y` from `Member[x,y]`. */
+  string getAnArgument(string name) { result = this.getArgument(name, _) }
 
   /** Gets the number of arguments to this token, such as 2 for `Member[x,y]` or zero for `ReturnValue`. */
   int getNumArgument() { result = count(int n | exists(this.getArgument(n))) }

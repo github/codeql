@@ -10,7 +10,7 @@ private module DispatchImpl {
   DataFlowCallable viableCallable(DataFlowCall c) {
     result.asCallable() = VirtualDispatch::viableCallable(c.asCall())
     or
-    result.(SummarizedCallable).asCallable() = c.asCall().getCallee().getSourceDeclaration()
+    result.asCallable().(SummarizedCallable) = c.asCall().getCallee().getSourceDeclaration()
   }
 
   /**
@@ -118,7 +118,7 @@ private module DispatchImpl {
         not failsUnification(t, t2)
       )
       or
-      result.asCallable() = def and result instanceof SummarizedCallable
+      result.asCallable() = def and def instanceof SummarizedCallable
     )
   }
 

@@ -2,7 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSteps
 
 /** `java.lang.Math` data model for value comparison in the new CSV format. */

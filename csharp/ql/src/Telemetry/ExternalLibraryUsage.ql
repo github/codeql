@@ -2,7 +2,7 @@
  * @name External libraries
  * @description A list of external libraries used in the code
  * @kind metric
- * @tags summary
+ * @tags summary telemetry
  * @id csharp/telemetry/external-libs
  */
 

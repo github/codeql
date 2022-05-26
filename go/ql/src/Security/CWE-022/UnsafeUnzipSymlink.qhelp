@@ -1,0 +1,58 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Extracting symbolic links from a malicious zip archive, without validating that the destination file path
+is within the destination directory, can cause files outside the destination directory to be overwritten.
+This can happen if there are previously-extracted symbolic links or
+directory traversal elements and links (<code>..</code>) in archive paths.
+</p>
+
+<p>
+This problem is related to the ZipSlip vulnerability which is detected by the <code>go/zipslip</code> query;
+please see that query's help for more general information about malicious archive file vulnerabilities.
+This query considers the specific case where symbolic links are extracted from an archive, in which case
+the extraction code must be aware of existing symbolic links when checking whether it is about to extract
+a link pointing to a location outside the target extraction directory.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Ensure that output paths constructed from zip archive entries are validated. This includes resolving any
+previously extracted symbolic links, for example using <code>path/filepath.EvalSymlinks</code>, to prevent writing
+files or links to unexpected locations.
+</p>
+</recommendation>
+
+<example>
+<p>
+In this example, links are extracted from an archive using the syntactic <code>filepath.Rel</code>
+function to check whether the link and its target fall within the destination directory.
+However, the extraction code doesn't resolve previously-extracted links, so a pair of links like
+<code>subdir/parent -> ..</code> followed by <code>escape -> subdir/parent/.. -> subdir/../..</code>
+leaves a link pointing to the parent of the archive root. The syntactic <code>Rel</code> is ineffective
+because it equates <code>subdir/parent/..</code> with <code>subdir/</code>, but this is not the case
+when <code>subdir/parent</code> is a symbolic link.
+</p>
+<sample src="UnsafeUnzipSymlink.go" />
+<p>To fix this vulnerability, resolve pre-existing symbolic links before checking
+that the link's target is acceptable:
+</p>
+<sample src="UnsafeUnzipSymlinkGood.go" />
+</example>
+
+<references>
+<li>
+Snyk:
+<a href="https://snyk.io/research/zip-slip-vulnerability">Zip Slip Vulnerability</a>.
+</li>
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.
+</li>
+</references>
+</qhelp>

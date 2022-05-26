@@ -1,0 +1,184 @@
+| main.go:3:6:3:11 | function source | main.go:23:31:23:36 | source |
+| main.go:3:6:3:11 | function source | main.go:31:31:31:36 | source |
+| main.go:3:6:3:11 | function source | main.go:40:30:40:35 | source |
+| main.go:3:6:3:11 | function source | main.go:46:32:46:37 | source |
+| main.go:3:6:3:11 | function source | main.go:54:17:54:22 | source |
+| main.go:3:6:3:11 | function source | main.go:62:18:62:23 | source |
+| main.go:3:6:3:11 | function source | main.go:72:17:72:22 | source |
+| main.go:3:6:3:11 | function source | main.go:80:18:80:23 | source |
+| main.go:3:6:3:11 | function source | main.go:91:16:91:21 | source |
+| main.go:3:6:3:11 | function source | main.go:98:17:98:22 | source |
+| main.go:3:6:3:11 | function source | main.go:107:22:107:27 | source |
+| main.go:3:6:3:11 | function source | main.go:114:23:114:28 | source |
+| main.go:3:6:3:11 | function source | main.go:123:23:123:28 | source |
+| main.go:3:6:3:11 | function source | main.go:130:24:130:29 | source |
+| main.go:3:6:3:11 | function source | main.go:139:29:139:34 | source |
+| main.go:3:6:3:11 | function source | main.go:146:30:146:35 | source |
+| main.go:7:6:7:9 | function sink | main.go:25:2:25:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:26:2:26:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:27:2:27:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:28:2:28:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:33:2:33:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:34:2:34:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:35:2:35:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:36:2:36:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:41:2:41:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:42:2:42:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:43:2:43:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:44:2:44:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:47:2:47:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:48:2:48:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:49:2:49:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:50:2:50:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:57:2:57:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:58:2:58:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:59:2:59:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:60:2:60:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:65:2:65:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:66:2:66:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:67:2:67:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:68:2:68:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:75:2:75:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:76:2:76:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:77:2:77:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:78:2:78:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:83:2:83:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:84:2:84:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:85:2:85:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:86:2:86:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:92:2:92:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:93:2:93:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:94:2:94:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:95:2:95:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:99:2:99:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:100:2:100:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:101:2:101:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:102:2:102:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:108:2:108:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:109:2:109:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:110:2:110:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:111:2:111:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:115:2:115:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:116:2:116:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:117:2:117:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:118:2:118:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:124:2:124:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:125:2:125:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:126:2:126:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:127:2:127:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:131:2:131:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:132:2:132:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:133:2:133:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:134:2:134:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:140:2:140:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:141:2:141:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:142:2:142:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:143:2:143:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:147:2:147:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:148:2:148:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:149:2:149:5 | sink |
+| main.go:7:6:7:9 | function sink | main.go:150:2:150:5 | sink |
+| main.go:22:2:22:6 | definition of outer | main.go:25:7:25:11 | outer |
+| main.go:22:2:22:6 | definition of outer | main.go:26:7:26:11 | outer |
+| main.go:22:2:22:6 | definition of outer | main.go:27:7:27:11 | outer |
+| main.go:22:2:22:6 | definition of outer | main.go:28:7:28:11 | outer |
+| main.go:22:11:24:2 | struct literal | main.go:22:2:22:6 | definition of outer |
+| main.go:30:2:30:7 | definition of outerp | main.go:33:7:33:12 | outerp |
+| main.go:30:2:30:7 | definition of outerp | main.go:34:7:34:12 | outerp |
+| main.go:30:2:30:7 | definition of outerp | main.go:35:7:35:12 | outerp |
+| main.go:30:2:30:7 | definition of outerp | main.go:36:7:36:12 | outerp |
+| main.go:30:12:32:2 | &... | main.go:30:2:30:7 | definition of outerp |
+| main.go:40:2:40:6 | definition of outer | main.go:41:7:41:11 | outer |
+| main.go:40:2:40:6 | definition of outer | main.go:42:7:42:11 | outer |
+| main.go:40:2:40:6 | definition of outer | main.go:43:7:43:11 | outer |
+| main.go:40:2:40:6 | definition of outer | main.go:44:7:44:11 | outer |
+| main.go:40:11:40:40 | struct literal | main.go:40:2:40:6 | definition of outer |
+| main.go:46:2:46:7 | definition of outerp | main.go:47:7:47:12 | outerp |
+| main.go:46:2:46:7 | definition of outerp | main.go:48:7:48:12 | outerp |
+| main.go:46:2:46:7 | definition of outerp | main.go:49:7:49:12 | outerp |
+| main.go:46:2:46:7 | definition of outerp | main.go:50:7:50:12 | outerp |
+| main.go:46:12:46:42 | &... | main.go:46:2:46:7 | definition of outerp |
+| main.go:54:2:54:6 | definition of inner | main.go:55:19:55:23 | inner |
+| main.go:54:11:54:25 | struct literal | main.go:54:2:54:6 | definition of inner |
+| main.go:55:2:55:7 | definition of middle | main.go:56:17:56:22 | middle |
+| main.go:55:12:55:24 | struct literal | main.go:55:2:55:7 | definition of middle |
+| main.go:56:2:56:6 | definition of outer | main.go:57:7:57:11 | outer |
+| main.go:56:2:56:6 | definition of outer | main.go:58:7:58:11 | outer |
+| main.go:56:2:56:6 | definition of outer | main.go:59:7:59:11 | outer |
+| main.go:56:2:56:6 | definition of outer | main.go:60:7:60:11 | outer |
+| main.go:56:11:56:23 | struct literal | main.go:56:2:56:6 | definition of outer |
+| main.go:62:2:62:7 | definition of innerp | main.go:63:20:63:25 | innerp |
+| main.go:62:12:62:26 | struct literal | main.go:62:2:62:7 | definition of innerp |
+| main.go:63:2:63:8 | definition of middlep | main.go:64:18:64:24 | middlep |
+| main.go:63:13:63:26 | struct literal | main.go:63:2:63:8 | definition of middlep |
+| main.go:64:2:64:7 | definition of outerp | main.go:65:7:65:12 | outerp |
+| main.go:64:2:64:7 | definition of outerp | main.go:66:7:66:12 | outerp |
+| main.go:64:2:64:7 | definition of outerp | main.go:67:7:67:12 | outerp |
+| main.go:64:2:64:7 | definition of outerp | main.go:68:7:68:12 | outerp |
+| main.go:64:12:64:25 | struct literal | main.go:64:2:64:7 | definition of outerp |
+| main.go:72:2:72:6 | definition of inner | main.go:73:26:73:30 | inner |
+| main.go:72:11:72:25 | struct literal | main.go:72:2:72:6 | definition of inner |
+| main.go:73:2:73:7 | definition of middle | main.go:74:25:74:30 | middle |
+| main.go:73:12:73:31 | struct literal | main.go:73:2:73:7 | definition of middle |
+| main.go:74:2:74:6 | definition of outer | main.go:75:7:75:11 | outer |
+| main.go:74:2:74:6 | definition of outer | main.go:76:7:76:11 | outer |
+| main.go:74:2:74:6 | definition of outer | main.go:77:7:77:11 | outer |
+| main.go:74:2:74:6 | definition of outer | main.go:78:7:78:11 | outer |
+| main.go:74:11:74:31 | struct literal | main.go:74:2:74:6 | definition of outer |
+| main.go:80:2:80:7 | definition of innerp | main.go:81:27:81:32 | innerp |
+| main.go:80:12:80:26 | struct literal | main.go:80:2:80:7 | definition of innerp |
+| main.go:81:2:81:8 | definition of middlep | main.go:82:26:82:32 | middlep |
+| main.go:81:13:81:33 | struct literal | main.go:81:2:81:8 | definition of middlep |
+| main.go:82:2:82:7 | definition of outerp | main.go:83:7:83:12 | outerp |
+| main.go:82:2:82:7 | definition of outerp | main.go:84:7:84:12 | outerp |
+| main.go:82:2:82:7 | definition of outerp | main.go:85:7:85:12 | outerp |
+| main.go:82:2:82:7 | definition of outerp | main.go:86:7:86:12 | outerp |
+| main.go:82:12:82:33 | struct literal | main.go:82:2:82:7 | definition of outerp |
+| main.go:90:6:90:10 | definition of outer | main.go:91:2:91:6 | outer |
+| main.go:90:6:90:10 | definition of outer | main.go:92:7:92:11 | outer |
+| main.go:90:6:90:10 | definition of outer | main.go:93:7:93:11 | outer |
+| main.go:90:6:90:10 | definition of outer | main.go:94:7:94:11 | outer |
+| main.go:90:6:90:10 | definition of outer | main.go:95:7:95:11 | outer |
+| main.go:90:6:90:10 | zero value for outer | main.go:90:6:90:10 | definition of outer |
+| main.go:97:6:97:11 | definition of outerp | main.go:98:2:98:7 | outerp |
+| main.go:97:6:97:11 | definition of outerp | main.go:99:7:99:12 | outerp |
+| main.go:97:6:97:11 | definition of outerp | main.go:100:7:100:12 | outerp |
+| main.go:97:6:97:11 | definition of outerp | main.go:101:7:101:12 | outerp |
+| main.go:97:6:97:11 | definition of outerp | main.go:102:7:102:12 | outerp |
+| main.go:97:6:97:11 | zero value for outerp | main.go:97:6:97:11 | definition of outerp |
+| main.go:106:6:106:10 | definition of outer | main.go:107:2:107:6 | outer |
+| main.go:106:6:106:10 | definition of outer | main.go:108:7:108:11 | outer |
+| main.go:106:6:106:10 | definition of outer | main.go:109:7:109:11 | outer |
+| main.go:106:6:106:10 | definition of outer | main.go:110:7:110:11 | outer |
+| main.go:106:6:106:10 | definition of outer | main.go:111:7:111:11 | outer |
+| main.go:106:6:106:10 | zero value for outer | main.go:106:6:106:10 | definition of outer |
+| main.go:113:6:113:11 | definition of outerp | main.go:114:2:114:7 | outerp |
+| main.go:113:6:113:11 | definition of outerp | main.go:115:7:115:12 | outerp |
+| main.go:113:6:113:11 | definition of outerp | main.go:116:7:116:12 | outerp |
+| main.go:113:6:113:11 | definition of outerp | main.go:117:7:117:12 | outerp |
+| main.go:113:6:113:11 | definition of outerp | main.go:118:7:118:12 | outerp |
+| main.go:113:6:113:11 | zero value for outerp | main.go:113:6:113:11 | definition of outerp |
+| main.go:122:6:122:10 | definition of outer | main.go:123:2:123:6 | outer |
+| main.go:122:6:122:10 | definition of outer | main.go:124:7:124:11 | outer |
+| main.go:122:6:122:10 | definition of outer | main.go:125:7:125:11 | outer |
+| main.go:122:6:122:10 | definition of outer | main.go:126:7:126:11 | outer |
+| main.go:122:6:122:10 | definition of outer | main.go:127:7:127:11 | outer |
+| main.go:122:6:122:10 | zero value for outer | main.go:122:6:122:10 | definition of outer |
+| main.go:129:6:129:11 | definition of outerp | main.go:130:2:130:7 | outerp |
+| main.go:129:6:129:11 | definition of outerp | main.go:131:7:131:12 | outerp |
+| main.go:129:6:129:11 | definition of outerp | main.go:132:7:132:12 | outerp |
+| main.go:129:6:129:11 | definition of outerp | main.go:133:7:133:12 | outerp |
+| main.go:129:6:129:11 | definition of outerp | main.go:134:7:134:12 | outerp |
+| main.go:129:6:129:11 | zero value for outerp | main.go:129:6:129:11 | definition of outerp |
+| main.go:138:6:138:10 | definition of outer | main.go:139:2:139:6 | outer |
+| main.go:138:6:138:10 | definition of outer | main.go:140:7:140:11 | outer |
+| main.go:138:6:138:10 | definition of outer | main.go:141:7:141:11 | outer |
+| main.go:138:6:138:10 | definition of outer | main.go:142:7:142:11 | outer |
+| main.go:138:6:138:10 | definition of outer | main.go:143:7:143:11 | outer |
+| main.go:138:6:138:10 | zero value for outer | main.go:138:6:138:10 | definition of outer |
+| main.go:145:6:145:11 | definition of outerp | main.go:146:2:146:7 | outerp |
+| main.go:145:6:145:11 | definition of outerp | main.go:147:7:147:12 | outerp |
+| main.go:145:6:145:11 | definition of outerp | main.go:148:7:148:12 | outerp |
+| main.go:145:6:145:11 | definition of outerp | main.go:149:7:149:12 | outerp |
+| main.go:145:6:145:11 | definition of outerp | main.go:150:7:150:12 | outerp |
+| main.go:145:6:145:11 | zero value for outerp | main.go:145:6:145:11 | definition of outerp |

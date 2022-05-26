@@ -39,6 +39,9 @@ callsWithNoArguments
 | cfg.rb:167:5:167:10 | ! ... |
 | cfg.rb:168:5:168:8 | - ... |
 | cfg.rb:194:1:194:23 | call to run_block |
+| cfg.rb:200:1:200:32 | call to times |
+| cfg.rb:202:1:202:35 | call to times |
+| cfg.rb:205:1:205:3 | call to foo |
 | desugar.rb:6:3:6:7 | call to foo |
 | desugar.rb:10:3:10:7 | call to foo |
 | desugar.rb:14:3:14:7 | call to foo |
@@ -122,6 +125,7 @@ positionalArguments
 | cfg.rb:49:8:49:13 | ... == ... | cfg.rb:49:13:49:13 | 0 |
 | cfg.rb:49:16:49:20 | ... > ... | cfg.rb:49:20:49:20 | 1 |
 | cfg.rb:49:27:49:37 | call to puts | cfg.rb:49:32:49:37 | "some" |
+| cfg.rb:59:13:59:17 | ... - ... | cfg.rb:59:16:59:17 | 2i |
 | cfg.rb:60:17:60:22 | ... < ... | cfg.rb:60:21:60:22 | 10 |
 | cfg.rb:62:4:62:4 | call to [] | cfg.rb:62:4:62:4 | 0 |
 | cfg.rb:62:7:62:12 | call to [] | cfg.rb:62:7:62:12 | 1 |
@@ -198,6 +202,11 @@ positionalArguments
 | cfg.rb:194:16:194:21 | call to puts | cfg.rb:194:21:194:21 | x |
 | cfg.rb:197:3:197:13 | call to bar | cfg.rb:197:7:197:7 | b |
 | cfg.rb:197:3:197:13 | call to bar | cfg.rb:197:10:197:12 | ... |
+| cfg.rb:200:18:200:30 | call to puts | cfg.rb:200:30:200:30 | a |
+| cfg.rb:202:19:202:31 | call to puts | cfg.rb:202:31:202:31 | c |
+| cfg.rb:205:1:205:23 | call to bar | cfg.rb:205:10:205:10 | 1 |
+| cfg.rb:205:1:205:23 | call to bar | cfg.rb:205:12:205:12 | 2 |
+| cfg.rb:205:4:205:5 | call to == | cfg.rb:205:1:205:3 | __synth__0__1 |
 | desugar.rb:2:5:2:6 | ... + ... | desugar.rb:2:8:2:8 | 1 |
 | desugar.rb:6:3:6:13 | call to count= | desugar.rb:6:17:6:17 | ... = ... |
 | desugar.rb:10:3:10:10 | call to []= | desugar.rb:10:9:10:9 | 0 |

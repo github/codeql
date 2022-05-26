@@ -13,7 +13,6 @@ private import TranslatedExpr
 private import TranslatedStmt
 private import desugar.Foreach
 private import TranslatedFunction
-private import experimental.ir.Util
 private import experimental.ir.internal.IRCSharpLanguage as Language
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {

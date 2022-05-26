@@ -24,6 +24,7 @@ getAReceiverNode
 | tst.js:23:1:23:15 | function D() {} | tst.js:25:13:25:12 | this |
 | tst.js:23:1:23:15 | function D() {} | tst.js:26:13:26:12 | this |
 | tst.js:23:1:23:15 | function D() {} | tst.js:27:4:27:3 | this |
+| tst.js:30:1:34:1 | class S ... x) {}\\n} | tst.js:30:21:30:20 | this |
 getFieldTypeAnnotation
 | fields.ts:1:1:3:1 | class B ... mber;\\n} | baseField | fields.ts:2:16:2:21 | number |
 | fields.ts:5:1:13:1 | class F ... > {};\\n} | x | fields.ts:6:27:6:32 | number |
@@ -53,6 +54,11 @@ instanceMethod
 | tst.js:15:1:15:15 | function B() {} | foo | tst.js:17:19:17:31 | function() {} | B |
 | tst.js:19:1:19:15 | function C() {} | bar | tst.js:21:19:21:31 | function() {} | C |
 | tst.js:23:1:23:15 | function D() {} | m | tst.js:27:4:27:8 | () {} | D |
+staticMember
+| tst.js:3:1:10:1 | class A ... () {}\\n} | staticMethod | method | tst.js:5:22:5:26 | () {} | A |
+| tst.js:30:1:34:1 | class S ... x) {}\\n} | getter | getter | tst.js:32:20:32:24 | () {} | StaticMembers |
+| tst.js:30:1:34:1 | class S ... x) {}\\n} | method | method | tst.js:31:16:31:20 | () {} | StaticMembers |
+| tst.js:30:1:34:1 | class S ... x) {}\\n} | setter | setter | tst.js:33:20:33:25 | (x) {} | StaticMembers |
 superClass
 | fields.ts:5:1:13:1 | class F ... > {};\\n} | fields.ts:1:1:3:1 | class B ... mber;\\n} | Foo | Base |
 | tst.js:13:1:13:21 | class A ... ds A {} | tst.js:3:1:10:1 | class A ... () {}\\n} | A2 | A |

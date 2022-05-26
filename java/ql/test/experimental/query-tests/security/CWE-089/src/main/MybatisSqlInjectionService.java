@@ -55,4 +55,21 @@ public class MybatisSqlInjectionService {
 		List<Test> result = sqlInjectionMapper.good1(id);
 		return result;
 	}
+
+	// using providers
+	public String badSelect(String input) {
+		return sqlInjectionMapper.badSelect(input);
+	}
+
+	public void badDelete(String input) {
+		sqlInjectionMapper.badDelete(input);
+	}
+
+	public void badUpdate(String input) {
+		sqlInjectionMapper.badUpdate(input);
+	}
+
+	public void badInsert(String input) {
+		sqlInjectionMapper.badInsert(input);
+	}
 }

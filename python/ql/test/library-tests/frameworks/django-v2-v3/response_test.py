@@ -1,5 +1,6 @@
 from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect, JsonResponse, HttpResponseNotFound
 from django.views.generic import RedirectView
+from django.views.decorators.csrf import csrf_protect
 import django.shortcuts
 import json
 
@@ -117,6 +118,7 @@ class CustomJsonResponse(JsonResponse):
     def __init__(self, banner, content, *args, **kwargs):
         super().__init__(content, *args, content_type="text/html", **kwargs)
 
+@csrf_protect  # $CsrfLocalProtectionEnabled=safe__custom_json_response
 def safe__custom_json_response(request):
     return CustomJsonResponse("ACME Responses", {"foo": request.GET.get("foo")})  # $HttpResponse mimetype=application/json MISSING: responseBody=Dict SPURIOUS: responseBody="ACME Responses"
 

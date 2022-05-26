@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Indexing operations on arrays, slices or strings should use an index at most one less
+than the length. If the index to be accessed is checked for being less than or equal to the length
+(<code>&lt;=</code>), instead of less than the length (<code>&lt;</code>), the index could be out
+of bounds.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use less than (<code>&lt;</code>) rather than less than or equals (<code>&lt;=</code>) when
+comparing a potential index against a length. For loops that iterate over every element, a better
+solution is to use a <code>range</code> loop instead of looping over explicit indexes.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a method which checks whether a value appears in a comma-separated
+list of values:
+</p>
+<sample src="LengthComparisonOffByOne.go" />
+<p>
+A loop using an index variable <code>i</code> is used to iterate over the elements in the comma-separated
+list. However, the terminating condition of the loop is incorrectly specified as <code>i &lt;= len(values)</code>.
+This condition holds when <code>i</code> is equal to <code>len(values)</code>, but the access <code>values[i]</code>
+in the body of the loop will be out of bounds in this case.
+</p>
+<p>
+One potential solution would be to replace <code>i &lt;= len(values)</code> with
+<code>i &lt; len(values)</code>. A better solution is to use a <code>range</code> loop instead, which
+avoids the need for explicitly manipulating the index variable:
+</p>
+<sample src="LengthComparisonOffByOneGood.go" />
+</example>
+
+<references>
+<li>The Go Programming Language Specification: <a href="https://golang.org/ref/spec#For_statements">For statements</a>.</li>
+<li>The Go Programming Language Specification: <a href="https://golang.org/ref/spec#Index_expressions">Index expressions</a>.</li>
+</references>
+</qhelp>

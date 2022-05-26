@@ -1,7 +1,6 @@
 /** Contains predicates concerning when and where files are opened and closed. */
 
 import python
-import semmle.python.GuardedControlFlow
 import semmle.python.pointsto.Filters
 
 /** Holds if `open` is a call that returns a newly opened file */

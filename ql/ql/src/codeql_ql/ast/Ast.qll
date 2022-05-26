@@ -919,7 +919,7 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
 class Call extends TCall, Expr, Formula {
   /** Gets the `i`th argument of this call. */
   Expr getArgument(int i) {
-    none() // overriden in sublcasses.
+    none() // overridden in sublcasses.
   }
 
   /** Gets an argument of this call, if any. */
@@ -1901,13 +1901,13 @@ class FunctionSymbol extends string {
  */
 class BinOpExpr extends TBinOpExpr, Expr {
   /** Gets the left operand of the binary expression. */
-  Expr getLeftOperand() { none() } // overriden in subclasses
+  Expr getLeftOperand() { none() } // overridden in subclasses
 
   /** Gets the right operand of the binary expression. */
-  Expr getRightOperand() { none() } // overriden in subclasses
+  Expr getRightOperand() { none() } // overridden in subclasses
 
   /** Gets the operator of the binary expression. */
-  FunctionSymbol getOperator() { none() } // overriden in subclasses
+  FunctionSymbol getOperator() { none() } // overridden in subclasses
 
   /** Gets an operand of the binary expression. */
   final Expr getAnOperand() { result = this.getLeftOperand() or result = this.getRightOperand() }
@@ -2532,8 +2532,15 @@ module YAML {
      * Gets a QLPack that this QLPack depends on.
      */
     QLPack getADependency() {
-      exists(string name | this.hasDependency(name, _) |
-        result.getName().replaceAll("-", "/") = name.replaceAll("-", "/")
+      exists(string rawDep, string dep, string name | this.hasDependency(rawDep, _) |
+        dep = rawDep.replaceAll("-", "/") and
+        name = result.getName().replaceAll("-", "/") and
+        (
+          name = dep
+          or
+          name.matches("codeql/%") and
+          name = dep + "/all"
+        )
       )
     }
 

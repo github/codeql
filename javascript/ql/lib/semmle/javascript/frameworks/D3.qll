@@ -1,7 +1,7 @@
 /** Provides classes and predicates modeling aspects of the `d3` library. */
 
 private import javascript
-private import semmle.javascript.security.dataflow.Xss
+private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 
 /** Provides classes and predicates modeling aspects of the `d3` library. */
 module D3 {

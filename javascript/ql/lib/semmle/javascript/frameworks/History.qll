@@ -35,10 +35,10 @@ module History {
   /**
    * A user-controlled location value read from the [history](http://npmjs.org/package/history) library.
    */
-  private class HistoryLibaryRemoteFlow extends ClientSideRemoteFlowSource {
+  private class HistoryLibraryRemoteFlow extends ClientSideRemoteFlowSource {
     ClientSideRemoteFlowKind kind;
 
-    HistoryLibaryRemoteFlow() {
+    HistoryLibraryRemoteFlow() {
       exists(API::Node loc | loc = [getBrowserHistory(), getHashHistory()].getMember("location") |
         this = loc.getMember("hash").getAnImmediateUse() and kind.isFragment()
         or

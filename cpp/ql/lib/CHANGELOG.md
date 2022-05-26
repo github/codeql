@@ -1,3 +1,30 @@
+## 0.2.1
+
+## 0.2.0
+
+### Breaking Changes
+
+* The signature of `allowImplicitRead` on `DataFlow::Configuration` and `TaintTracking::Configuration` has changed from `allowImplicitRead(DataFlow::Node node, DataFlow::Content c)` to `allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c)`.
+
+### Minor Analysis Improvements
+
+* More Windows pool allocation functions are now detected as `AllocationFunction`s.
+* The `semmle.code.cpp.commons.Buffer` library has been enhanced to handle array members of classes that do not specify a size.
+
+## 0.1.0
+
+### Breaking Changes
+
+* The recently added flow-state versions of `isBarrierIn`, `isBarrierOut`, `isSanitizerIn`, and `isSanitizerOut` in the data flow and taint tracking libraries have been removed.
+
+### New Features
+
+* A new library `semmle.code.cpp.security.PrivateData` has been added. The new library heuristically detects variables and functions dealing with sensitive private data, such as e-mail addresses and credit card numbers.
+
+### Minor Analysis Improvements
+
+* The `semmle.code.cpp.security.SensitiveExprs` library has been enhanced with some additional rules for detecting credentials.
+
 ## 0.0.13
 
 ## 0.0.12

@@ -69,7 +69,7 @@ class ExternalApi extends Callable {
 
   /** Holds if this API has a supported summary. */
   predicate hasSummary() {
-    this = any(SummarizedCallable sc).asCallable() or
+    this instanceof SummarizedCallable or
     TaintTracking::localAdditionalTaintStep(this.getAnInput(), _)
   }
 

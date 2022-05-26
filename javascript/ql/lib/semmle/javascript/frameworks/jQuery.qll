@@ -307,7 +307,7 @@ private module JQueryClientRequest {
   }
 
   /**
-   * Gets a node refering to the response contained in an `jqXHR` object.
+   * Gets a node referring to the response contained in an `jqXHR` object.
    */
   private DataFlow::SourceNode getAResponseNodeFromAnXHRObject(DataFlow::SourceNode obj) {
     result =
@@ -406,11 +406,11 @@ module JQuery {
 
     private class DefaultRange extends Range {
       DefaultRange() {
-        // either a reference to a global variable `$` or `jQuery`
-        this = DataFlow::globalVarRef(any(string jq | jq = "$" or jq = "jQuery"))
+        // either a reference to a global variable `$`, `jQuery`, or `cash`
+        this = DataFlow::globalVarRef(["$", "jQuery", "cash"])
         or
-        // or imported from a module named `jquery` or `zepto`
-        this = DataFlow::moduleImport(["jquery", "zepto"])
+        // or imported from a module named `jquery`, `zepto`, or `cash-dom`
+        this = DataFlow::moduleImport(["jquery", "zepto", "cash-dom"])
         or
         this.hasUnderlyingType("JQueryStatic")
       }

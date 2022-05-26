@@ -330,8 +330,6 @@ module ClientRequest {
      * A model of a URL request made using `require("needle")(...)`.
      */
     class PromisedNeedleRequest extends ClientRequest::Range {
-      DataFlow::Node url;
-
       PromisedNeedleRequest() { this = DataFlow::moduleImport("needle").getACall() }
 
       override DataFlow::Node getUrl() { result = this.getArgument(1) }

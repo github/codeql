@@ -20,7 +20,7 @@ private module Asyncpg {
   /**
    * Gets a `Connection` that is created when
    * - the result of `asyncpg.connect()` is awaited.
-   * - the result of calling `aquire` on a `ConnectionPool` is awaited.
+   * - the result of calling `acquire` on a `ConnectionPool` is awaited.
    */
   API::Node connection() {
     result = API::moduleImport("asyncpg").getMember("connect").getReturn().getAwaited()
@@ -33,8 +33,8 @@ private module Asyncpg {
     string methodName;
 
     SqlExecutionOnConnection() {
-      methodName in ["copy_from_query", "execute", "fetch", "fetchrow", "fetchval", "executemany"] and
-      this.calls([connectionPool().getAUse(), connection().getAUse()], methodName)
+      this = [connectionPool(), connection()].getMember(methodName).getACall() and
+      methodName in ["copy_from_query", "execute", "fetch", "fetchrow", "fetchval", "executemany"]
     }
 
     override DataFlow::Node getSql() {
@@ -51,8 +51,8 @@ private module Asyncpg {
     string methodName;
 
     FileAccessOnConnection() {
-      methodName in ["copy_from_query", "copy_from_table", "copy_to_table"] and
-      this.calls([connectionPool().getAUse(), connection().getAUse()], methodName)
+      this = [connectionPool(), connection()].getMember(methodName).getACall() and
+      methodName in ["copy_from_query", "copy_from_table", "copy_to_table"]
     }
 
     // The path argument is keyword only.
@@ -69,7 +69,7 @@ private module Asyncpg {
    * Provides models of the `PreparedStatement` class in `asyncpg`.
    * `PreparedStatement`s are created when the result of calling `prepare(query)` on a connection is awaited.
    * The result of calling `prepare(query)` is a `PreparedStatementFactory` and the argument, `query` needs to
-   * be tracked to the place where a `PreparedStatement` is created and then futher to any executing methods.
+   * be tracked to the place where a `PreparedStatement` is created and then further to any executing methods.
    * Hence the two type trackers.
    */
   module PreparedStatement {

@@ -82,6 +82,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.android.ContentProviders
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.android.Notifications
+  private import semmle.code.java.frameworks.android.SharedPreferences
   private import semmle.code.java.frameworks.android.Slice
   private import semmle.code.java.frameworks.android.SQLite
   private import semmle.code.java.frameworks.android.Widget
@@ -101,8 +102,10 @@ private module Frameworks {
   private import semmle.code.java.frameworks.JsonJava
   private import semmle.code.java.frameworks.Logging
   private import semmle.code.java.frameworks.Objects
+  private import semmle.code.java.frameworks.OkHttp
   private import semmle.code.java.frameworks.Optional
   private import semmle.code.java.frameworks.Regex
+  private import semmle.code.java.frameworks.Retrofit
   private import semmle.code.java.frameworks.Stream
   private import semmle.code.java.frameworks.Strings
   private import semmle.code.java.frameworks.ratpack.Ratpack
@@ -137,7 +140,10 @@ private module Frameworks {
   private import semmle.code.java.frameworks.MyBatis
   private import semmle.code.java.frameworks.Hibernate
   private import semmle.code.java.frameworks.jOOQ
-  private import semmle.code.java.frameworks.spring.SpringHttp
+  private import semmle.code.java.frameworks.JMS
+  private import semmle.code.java.frameworks.RabbitMQ
+  private import semmle.code.java.regex.RegexFlowModels
+  private import semmle.code.java.frameworks.KotlinStdLib
 }
 
 private predicate sourceModelCsv(string row) {
@@ -298,8 +304,12 @@ private predicate summaryModelCsv(string row) {
       "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint",
       "java.net;URI;false;toString;;;Argument[-1];ReturnValue;taint",
       "java.net;URI;false;toAsciiString;;;Argument[-1];ReturnValue;taint",
-      "java.io;File;false;toURI;;;Argument[-1];ReturnValue;taint",
-      "java.io;File;false;toPath;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;true;toURI;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;true;toPath;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;true;getAbsoluteFile;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;true;getCanonicalFile;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;true;getAbsolutePath;;;Argument[-1];ReturnValue;taint",
+      "java.io;File;true;getCanonicalPath;;;Argument[-1];ReturnValue;taint",
       "java.nio;ByteBuffer;false;array;();;Argument[-1];ReturnValue;taint",
       "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint",
       "java.io;BufferedReader;true;readLine;;;Argument[-1];ReturnValue;taint",

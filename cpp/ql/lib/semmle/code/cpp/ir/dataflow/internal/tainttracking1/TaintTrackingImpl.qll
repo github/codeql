@@ -161,7 +161,7 @@ abstract class Configuration extends DataFlow::Configuration {
     this.isAdditionalTaintStep(node1, state1, node2, state2)
   }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     (this.isSink(node) or this.isAdditionalTaintStep(node, _)) and
     defaultImplicitTaintRead(node, c)
   }

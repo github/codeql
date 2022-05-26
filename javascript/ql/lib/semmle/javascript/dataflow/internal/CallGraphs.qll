@@ -190,24 +190,42 @@ module CallGraph {
   }
 
   /**
+   * Holds if `ref` installs an accessor on an object. Such property writes should not
+   * be considered calls to an accessor.
+   */
+  pragma[nomagic]
+  private predicate isAccessorInstallation(DataFlow::PropWrite write) {
+    exists(write.getInstalledAccessor(_))
+  }
+
+  /**
    * Gets a getter or setter invoked as a result of the given property access.
    */
   cached
   DataFlow::FunctionNode getAnAccessorCallee(DataFlow::PropRef ref) {
-    exists(DataFlow::ClassNode cls, string name |
-      ref = cls.getAnInstanceMemberAccess(name) and
-      result = cls.getInstanceMember(name, DataFlow::MemberKind::getter())
+    not isAccessorInstallation(ref) and
+    (
+      exists(DataFlow::ClassNode cls, string name |
+        ref = cls.getAnInstanceMemberAccess(name) and
+        result = cls.getInstanceMember(name, DataFlow::MemberKind::getter())
+        or
+        ref = getAnInstanceMemberAssignment(cls, name) and
+        result = cls.getInstanceMember(name, DataFlow::MemberKind::setter())
+        or
+        ref = cls.getAClassReference().getAPropertyRead(name) and
+        result = cls.getStaticMember(name, DataFlow::MemberKind::getter())
+        or
+        ref = cls.getAClassReference().getAPropertyWrite(name) and
+        result = cls.getStaticMember(name, DataFlow::MemberKind::setter())
+      )
       or
-      ref = getAnInstanceMemberAssignment(cls, name) and
-      result = cls.getInstanceMember(name, DataFlow::MemberKind::setter())
-    )
-    or
-    exists(DataFlow::ObjectLiteralNode object, string name |
-      ref = getAnAllocationSiteRef(object).getAPropertyRead(name) and
-      result = object.getPropertyGetter(name)
-      or
-      ref = getAnAllocationSiteRef(object).getAPropertyWrite(name) and
-      result = object.getPropertySetter(name)
+      exists(DataFlow::ObjectLiteralNode object, string name |
+        ref = getAnAllocationSiteRef(object).getAPropertyRead(name) and
+        result = object.getPropertyGetter(name)
+        or
+        ref = getAnAllocationSiteRef(object).getAPropertyWrite(name) and
+        result = object.getPropertySetter(name)
+      )
     )
   }
 

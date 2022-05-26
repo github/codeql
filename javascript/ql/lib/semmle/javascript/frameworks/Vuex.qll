@@ -227,7 +227,7 @@ module Vuex {
     result = getAMappedAccess(getMapHelperForCommitKind(kind), name).getParameter(0).getARhs()
   }
 
-  /** Gets a node that refers the payload of a comitted mutation with the given `name.` */
+  /** Gets a node that refers the payload of a committed mutation with the given `name.` */
   private DataFlow::Node committedPayloadSucc(string kind, string name) {
     // mutations: {
     //   name: (state, payload) => { ... }

@@ -64,7 +64,7 @@ class SpringEntry extends SpringXmlElement {
 
   /**
    * Gets the bean pointed to by either the `value-ref` attribute, or a nested
-   * `<ref> or `<idref>` element, whichever is present.
+   * `<ref>` or `<idref>` element, whichever is present.
    */
   SpringBean getValueRefBean() {
     if this.hasValueRefString()

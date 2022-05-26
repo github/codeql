@@ -3,7 +3,6 @@
  */
 
 import javascript
-import semmle.javascript.Promises
 
 module SQL {
   /** A string-valued expression that is interpreted as a SQL command. */

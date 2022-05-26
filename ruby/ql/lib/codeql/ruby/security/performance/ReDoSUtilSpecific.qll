@@ -34,6 +34,24 @@ predicate isExcluded(RegExpParent parent) {
 }
 
 /**
+ * Holds if `term` is a possessive quantifier.
+ * Not currently implemented, but is used by the shared library.
+ */
+predicate isPossessive(RegExpQuantifier term) { none() }
+
+/**
+ * Holds if the regex that `term` is part of is used in a way that ignores any leading prefix of the input it's matched against.
+ * Not yet implemented for Ruby.
+ */
+predicate matchesAnyPrefix(RegExpTerm term) { any() }
+
+/**
+ * Holds if the regex that `term` is part of is used in a way that ignores any trailing suffix of the input it's matched against.
+ * Not yet implemented for Ruby.
+ */
+predicate matchesAnySuffix(RegExpTerm term) { any() }
+
+/**
  * A module containing predicates for determining which flags a regular expression have.
  */
 module RegExpFlags {

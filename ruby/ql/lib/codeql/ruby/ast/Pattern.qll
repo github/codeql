@@ -1,5 +1,4 @@
 private import codeql.ruby.AST
-private import codeql.Locations
 private import internal.AST
 private import internal.Pattern
 private import internal.TreeSitter

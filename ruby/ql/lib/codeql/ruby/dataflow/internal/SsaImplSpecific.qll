@@ -2,8 +2,6 @@
 
 private import SsaImpl as SsaImpl
 private import codeql.ruby.AST
-private import codeql.ruby.ast.Parameter
-private import codeql.ruby.ast.Variable
 private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
 private import codeql.ruby.controlflow.ControlFlowGraph
 

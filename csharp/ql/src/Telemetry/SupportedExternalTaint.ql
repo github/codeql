@@ -2,7 +2,7 @@
  * @name Supported flow steps in external libraries
  * @description A list of 3rd party APIs detected as flow steps. Excludes APIs exposed by test libraries.
  * @kind metric
- * @tags summary
+ * @tags summary telemetry
  * @id csharp/telemetry/supported-external-api-taint
  */
 

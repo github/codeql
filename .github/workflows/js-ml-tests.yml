@@ -12,6 +12,7 @@ on:
     paths:
       - "javascript/ql/experimental/adaptivethreatmodeling/**"
       - .github/workflows/js-ml-tests.yml
+  workflow_dispatch:
 
 defaults:
   run:
@@ -22,7 +23,7 @@ jobs:
     name: Check QL formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: ./.github/actions/fetch-codeql
 
@@ -35,7 +36,7 @@ jobs:
     name: Check QL compilation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: ./.github/actions/fetch-codeql
 
@@ -59,7 +60,7 @@ jobs:
     name: Run QL tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: ./.github/actions/fetch-codeql
 

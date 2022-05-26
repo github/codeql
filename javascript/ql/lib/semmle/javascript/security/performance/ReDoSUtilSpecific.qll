@@ -13,6 +13,24 @@ predicate isEscapeClass(RegExpTerm term, string clazz) {
 }
 
 /**
+ * Holds if `term` is a possessive quantifier.
+ * As javascript's regexes do not support possessive quantifiers, this never holds, but is used by the shared library.
+ */
+predicate isPossessive(RegExpQuantifier term) { none() }
+
+/**
+ * Holds if the regex that `term` is part of is used in a way that ignores any leading prefix of the input it's matched against.
+ * Not yet implemented for Javascript.
+ */
+predicate matchesAnyPrefix(RegExpTerm term) { any() }
+
+/**
+ * Holds if the regex that `term` is part of is used in a way that ignores any trailing suffix of the input it's matched against.
+ * Not yet implemented for Javascript.
+ */
+predicate matchesAnySuffix(RegExpTerm term) { any() }
+
+/**
  * Holds if the regular expression should not be considered.
  *
  * For javascript we make the pragmatic performance optimization to ignore minified files.

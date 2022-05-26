@@ -959,13 +959,18 @@ private module StdlibPrivate {
     }
   }
 
-  /** A call to `os.path.samefile` will raise an exception if an `os.stat()` call on either pathname fails. */
+  /**
+   * A call to `os.path.samefile` will raise an exception if an `os.stat()` call on either pathname fails.
+   *
+   * See https://docs.python.org/3.10/library/os.path.html#os.path.samefile
+   */
   private class OsPathSamefileCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
     OsPathSamefileCall() { this = OS::path().getMember("samefile").getACall() }
 
     override DataFlow::Node getAPathArgument() {
       result in [
-          this.getArg(0), this.getArgByName("path1"), this.getArg(1), this.getArgByName("path2")
+          // note that the f1/f2 names doesn't match the documentation, but is what actually works (tested on 3.8.10)
+          this.getArg(0), this.getArgByName("f1"), this.getArg(1), this.getArgByName("f2")
         ]
     }
   }
@@ -2534,6 +2539,56 @@ private module StdlibPrivate {
     PathLibOpenCall() { attrbuteName = "open" }
   }
 
+  /**
+   * A call to the `link_to`, `hardlink_to`, or `symlink_to` method on a `pathlib.Path` instance.
+   *
+   * See
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.link_to
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.hardlink_to
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.symlink_to
+   */
+  private class PathLibLinkToCall extends PathlibFileAccess, API::CallNode {
+    PathLibLinkToCall() { attrbuteName in ["link_to", "hardlink_to", "symlink_to"] }
+
+    override DataFlow::Node getAPathArgument() {
+      result = super.getAPathArgument()
+      or
+      result = this.getParameter(0, "target").getARhs()
+    }
+  }
+
+  /**
+   * A call to the `replace` or `rename` method on a `pathlib.Path` instance.
+   *
+   * See
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.replace
+   * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.rename
+   */
+  private class PathLibReplaceCall extends PathlibFileAccess, API::CallNode {
+    PathLibReplaceCall() { attrbuteName in ["replace", "rename"] }
+
+    override DataFlow::Node getAPathArgument() {
+      result = super.getAPathArgument()
+      or
+      result = this.getParameter(0, "target").getARhs()
+    }
+  }
+
+  /**
+   * A call to the `samefile` method on a `pathlib.Path` instance.
+   *
+   * See https://docs.python.org/3/library/pathlib.html#pathlib.Path.samefile
+   */
+  private class PathLibSameFileCall extends PathlibFileAccess, API::CallNode {
+    PathLibSameFileCall() { attrbuteName = "samefile" }
+
+    override DataFlow::Node getAPathArgument() {
+      result = super.getAPathArgument()
+      or
+      result = this.getParameter(0, "other_path").getARhs()
+    }
+  }
+
   /** An additional taint steps for objects of type `pathlib.Path` */
   private class PathlibPathTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -2836,70 +2891,6 @@ private module StdlibPrivate {
   }
 
   // ---------------------------------------------------------------------------
-  // xml.etree.ElementTree
-  // ---------------------------------------------------------------------------
-  /**
-   * An instance of `xml.etree.ElementTree.ElementTree`.
-   *
-   * See https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.ElementTree
-   */
-  private API::Node elementTreeInstance() {
-    //parse to a tree
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember("parse")
-          .getReturn()
-    or
-    // construct a tree without parsing
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember("ElementTree")
-          .getReturn()
-  }
-
-  /**
-   * An instance of `xml.etree.ElementTree.Element`.
-   *
-   * See https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element
-   */
-  private API::Node elementInstance() {
-    // parse or go to the root of a tree
-    result = elementTreeInstance().getMember(["parse", "getroot"]).getReturn()
-    or
-    // parse directly to an element
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember(["fromstring", "fromstringlist", "XML"])
-          .getReturn()
-  }
-
-  /**
-   * A call to a find method on a tree or an element will execute an XPath expression.
-   */
-  private class ElementTreeFindCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
-    string methodName;
-
-    ElementTreeFindCall() {
-      methodName in ["find", "findall", "findtext"] and
-      (
-        this = elementTreeInstance().getMember(methodName).getACall()
-        or
-        this = elementInstance().getMember(methodName).getACall()
-      )
-    }
-
-    override DataFlow::Node getXPath() { result in [this.getArg(0), this.getArgByName("match")] }
-
-    override string getName() { result = "xml.etree" }
-  }
-
-  // ---------------------------------------------------------------------------
   // urllib
   // ---------------------------------------------------------------------------
   /**
@@ -3115,6 +3106,547 @@ private module StdlibPrivate {
     override DataFlow::Node getAPathArgument() {
       result in [this.getArg(0), this.getArgByName("path")]
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // io
+  // ---------------------------------------------------------------------------
+  /**
+   * Provides models for the `io.StringIO`/`io.BytesIO` classes
+   *
+   * See https://docs.python.org/3.10/library/io.html#io.StringIO.
+   */
+  module StringIO {
+    /** Gets a reference to the `io.StringIO` class. */
+    private API::Node classRef() {
+      result = API::moduleImport("io").getMember(["StringIO", "BytesIO"])
+    }
+
+    /**
+     * A source of instances of `io.StringIO`/`io.BytesIO`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `StringIO::instance()` to get references to instances of `io.StringIO`.
+     */
+    abstract class InstanceSource extends Stdlib::FileLikeObject::InstanceSource { }
+
+    /** A direct instantiation of `io.StringIO`/`io.BytesIO`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+
+      DataFlow::Node getInitialValue() {
+        result = this.getArg(0)
+        or
+        // `initial_value` for StringIO, `initial_bytes` for BytesIO
+        result = this.getArgByName(["initial_value", "initial_bytes"])
+      }
+    }
+
+    /** Gets a reference to an instance of `io.StringIO`/`io.BytesIO`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `io.StringIO`/`io.BytesIO`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Extra taint propagation for `io.StringIO`/`io.BytesIO`.
+     */
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+      override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        nodeTo.(ClassInstantiation).getInitialValue() = nodeFrom
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // xml.etree.ElementTree
+  // ---------------------------------------------------------------------------
+  /**
+   * An instance of `xml.etree.ElementTree.ElementTree`.
+   *
+   * See https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.ElementTree
+   */
+  private API::Node elementTreeInstance() {
+    //parse to a tree
+    result =
+      API::moduleImport("xml")
+          .getMember("etree")
+          .getMember("ElementTree")
+          .getMember("parse")
+          .getReturn()
+    or
+    // construct a tree without parsing
+    result =
+      API::moduleImport("xml")
+          .getMember("etree")
+          .getMember("ElementTree")
+          .getMember("ElementTree")
+          .getReturn()
+  }
+
+  /**
+   * An instance of `xml.etree.ElementTree.Element`.
+   *
+   * See https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.Element
+   */
+  private API::Node elementInstance() {
+    // parse or go to the root of a tree
+    result = elementTreeInstance().getMember(["parse", "getroot"]).getReturn()
+    or
+    // parse directly to an element
+    result =
+      API::moduleImport("xml")
+          .getMember("etree")
+          .getMember("ElementTree")
+          .getMember(["fromstring", "fromstringlist", "XML"])
+          .getReturn()
+    or
+    result =
+      API::moduleImport("xml")
+          .getMember("etree")
+          .getMember("ElementTree")
+          .getMember("XMLParser")
+          .getReturn()
+          .getMember("close")
+          .getReturn()
+  }
+
+  /**
+   * A call to a find method on a tree or an element will execute an XPath expression.
+   */
+  private class ElementTreeFindCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
+    string methodName;
+
+    ElementTreeFindCall() {
+      methodName in ["find", "findall", "findtext"] and
+      (
+        this = elementTreeInstance().getMember(methodName).getACall()
+        or
+        this = elementInstance().getMember(methodName).getACall()
+      )
+    }
+
+    override DataFlow::Node getXPath() { result in [this.getArg(0), this.getArgByName("match")] }
+
+    override string getName() { result = "xml.etree" }
+  }
+
+  /**
+   * Provides models for `xml.etree` parsers
+   *
+   * See
+   * - https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.XMLParser
+   * - https://docs.python.org/3.10/library/xml.etree.elementtree.html#xml.etree.ElementTree.XMLPullParser
+   */
+  module XmlParser {
+    /**
+     * A source of instances of `xml.etree` parsers, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `XmlParser::instance()` to get references to instances of `xml.etree` parsers.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `xml.etree` parsers. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() {
+        this =
+          API::moduleImport("xml")
+              .getMember("etree")
+              .getMember("ElementTree")
+              .getMember(["XMLParser", "XMLPullParser"])
+              .getACall()
+      }
+    }
+
+    /** Gets a reference to an `xml.etree` parser instance. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an `xml.etree` parser instance. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * A call to the `feed` method of an `xml.etree` parser.
+     */
+    private class XmlEtreeParserFeedCall extends DataFlow::MethodCallNode, XML::XmlParsing::Range {
+      XmlEtreeParserFeedCall() { this.calls(instance(), "feed") }
+
+      override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+
+      override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) { kind.isXmlBomb() }
+
+      override predicate mayExecuteInput() { none() }
+
+      override DataFlow::Node getOutput() {
+        exists(DataFlow::Node objRef |
+          DataFlow::localFlow(this.getObject(), objRef) and
+          result.(DataFlow::MethodCallNode).calls(objRef, "close")
+        )
+      }
+    }
+  }
+
+  /**
+   * A call to either of:
+   * - `xml.etree.ElementTree.fromstring`
+   * - `xml.etree.ElementTree.fromstringlist`
+   * - `xml.etree.ElementTree.XML`
+   * - `xml.etree.ElementTree.XMLID`
+   * - `xml.etree.ElementTree.parse`
+   * - `xml.etree.ElementTree.iterparse`
+   * - `parse` method on an `xml.etree.ElementTree.ElementTree` instance
+   *
+   * See
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.fromstring
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.fromstringlist
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.XML
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.XMLID
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.parse
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.iterparse
+   */
+  private class XmlEtreeParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
+    XmlEtreeParsing() {
+      this =
+        API::moduleImport("xml")
+            .getMember("etree")
+            .getMember("ElementTree")
+            .getMember(["fromstring", "fromstringlist", "XML", "XMLID", "parse", "iterparse"])
+            .getACall()
+      or
+      this = elementTreeInstance().getMember("parse").getACall()
+    }
+
+    override DataFlow::Node getAnInput() {
+      result in [
+          this.getArg(0),
+          // fromstring / XML / XMLID
+          this.getArgByName("text"),
+          // fromstringlist
+          this.getArgByName("sequence"),
+          // parse / iterparse
+          this.getArgByName("source"),
+        ]
+    }
+
+    override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
+      // note: it does not matter what `xml.etree` parser you are using, you cannot
+      // change the security features anyway :|
+      kind.isXmlBomb()
+    }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getOutput() {
+      // Note: for `XMLID` the result of the call is a tuple with `(root, dict)`, so
+      // maybe we should not just say that the entire tuple is the decoding output... my
+      // gut feeling is that THIS instance doesn't matter too much, but that it would be
+      // nice to be able to do this in general. (this is a problem for both `lxml.etree`
+      // and `xml.etree`)
+      result = this
+    }
+  }
+
+  /**
+   * A call to `xml.etree.ElementTree.parse` or `xml.etree.ElementTree.iterparse`, which
+   * takes either a filename or a file-like object as argument. To capture the filename
+   * for path-injection, we have this subclass.
+   *
+   * See
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.parse
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.iterparse
+   */
+  private class FileAccessFromXmlEtreeParsing extends XmlEtreeParsing, FileSystemAccess::Range {
+    FileAccessFromXmlEtreeParsing() {
+      this =
+        API::moduleImport("xml")
+            .getMember("etree")
+            .getMember("ElementTree")
+            .getMember(["parse", "iterparse"])
+            .getACall()
+      or
+      this = elementTreeInstance().getMember("parse").getACall()
+      // I considered whether we should try to reduce FPs from people passing file-like
+      // objects, which will not be a file system access (and couldn't cause a
+      // path-injection).
+      //
+      // I suppose that once we have proper flow-summary support for file-like objects,
+      // we can make the XXE/XML-bomb sinks allow an access-path, while the
+      // path-injection sink wouldn't, and then we will not end up with such FPs.
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // xml.sax
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to the `setFeature` method on a XML sax parser.
+   *
+   * See https://docs.python.org/3.10/library/xml.sax.reader.html#xml.sax.xmlreader.XMLReader.setFeature
+   */
+  private class SaxParserSetFeatureCall extends API::CallNode, DataFlow::MethodCallNode {
+    SaxParserSetFeatureCall() {
+      this =
+        API::moduleImport("xml")
+            .getMember("sax")
+            .getMember("make_parser")
+            .getReturn()
+            .getMember("setFeature")
+            .getACall()
+    }
+
+    // The keyword argument names does not match documentation. I checked (with Python
+    // 3.9.5) that the names used here actually works.
+    API::Node getFeatureArg() { result = this.getParameter(0, "name") }
+
+    API::Node getStateArg() { result = this.getParameter(1, "state") }
+  }
+
+  /**
+   * Gets a reference to a XML sax parser that has `feature_external_ges` turned on.
+   *
+   * See https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
+   */
+  private DataFlow::Node saxParserWithFeatureExternalGesTurnedOn(DataFlow::TypeTracker t) {
+    t.start() and
+    exists(SaxParserSetFeatureCall call |
+      call.getFeatureArg().getARhs() =
+        API::moduleImport("xml")
+            .getMember("sax")
+            .getMember("handler")
+            .getMember("feature_external_ges")
+            .getAUse() and
+      call.getStateArg().getAValueReachingRhs().asExpr().(BooleanLiteral).booleanValue() = true and
+      result = call.getObject()
+    )
+    or
+    exists(DataFlow::TypeTracker t2 |
+      t = t2.smallstep(saxParserWithFeatureExternalGesTurnedOn(t2), result)
+    ) and
+    // take account of that we can set the feature to False, which makes the parser safe again
+    not exists(SaxParserSetFeatureCall call |
+      call.getObject() = result and
+      call.getFeatureArg().getARhs() =
+        API::moduleImport("xml")
+            .getMember("sax")
+            .getMember("handler")
+            .getMember("feature_external_ges")
+            .getAUse() and
+      call.getStateArg().getAValueReachingRhs().asExpr().(BooleanLiteral).booleanValue() = false
+    )
+  }
+
+  /**
+   * Gets a reference to a XML sax parser that has `feature_external_ges` turned on.
+   *
+   * See https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges
+   */
+  DataFlow::Node saxParserWithFeatureExternalGesTurnedOn() {
+    result = saxParserWithFeatureExternalGesTurnedOn(DataFlow::TypeTracker::end())
+  }
+
+  /**
+   * A call to the `parse` method on a SAX XML parser.
+   *
+   * See https://docs.python.org/3/library/xml.sax.reader.html#xml.sax.xmlreader.XMLReader.parse
+   */
+  private class XmlSaxInstanceParsing extends DataFlow::MethodCallNode, XML::XmlParsing::Range,
+    FileSystemAccess::Range {
+    XmlSaxInstanceParsing() {
+      this =
+        API::moduleImport("xml")
+            .getMember("sax")
+            .getMember("make_parser")
+            .getReturn()
+            .getMember("parse")
+            .getACall()
+    }
+
+    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("source")] }
+
+    override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
+      // always vuln to these
+      kind.isXmlBomb()
+      or
+      // can be vuln to other things if features has been turned on
+      this.getObject() = saxParserWithFeatureExternalGesTurnedOn() and
+      (kind.isXxe() or kind.isDtdRetrieval())
+    }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getOutput() {
+      // note: the output of parsing with SAX is that the content handler gets the
+      // data... but we don't currently model this (it's not trivial to do, and won't
+      // really give us any value, at least not as of right now).
+      none()
+    }
+
+    override DataFlow::Node getAPathArgument() {
+      // I considered whether we should try to reduce FPs from people passing file-like
+      // objects, which will not be a file system access (and couldn't cause a
+      // path-injection).
+      //
+      // I suppose that once we have proper flow-summary support for file-like objects,
+      // we can make the XXE/XML-bomb sinks allow an access-path, while the
+      // path-injection sink wouldn't, and then we will not end up with such FPs.
+      result = this.getAnInput()
+    }
+  }
+
+  /**
+   * A call to either `parse` or `parseString` from `xml.sax` module.
+   *
+   * See:
+   * - https://docs.python.org/3.10/library/xml.sax.html#xml.sax.parse
+   * - https://docs.python.org/3.10/library/xml.sax.html#xml.sax.parseString
+   */
+  private class XmlSaxParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
+    XmlSaxParsing() {
+      this =
+        API::moduleImport("xml").getMember("sax").getMember(["parse", "parseString"]).getACall()
+    }
+
+    override DataFlow::Node getAnInput() {
+      result in [
+          this.getArg(0),
+          // parseString
+          this.getArgByName("string"),
+          // parse
+          this.getArgByName("source"),
+        ]
+    }
+
+    override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
+      // always vuln to these
+      kind.isXmlBomb()
+    }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getOutput() {
+      // note: the output of parsing with SAX is that the content handler gets the
+      // data... but we don't currently model this (it's not trivial to do, and won't
+      // really give us any value, at least not as of right now).
+      none()
+    }
+  }
+
+  /**
+   * A call to `xml.sax.parse`, which takes either a filename or a file-like object as
+   * argument. To capture the filename for path-injection, we have this subclass.
+   *
+   * See
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.parse
+   * - https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.iterparse
+   */
+  private class FileAccessFromXmlSaxParsing extends XmlSaxParsing, FileSystemAccess::Range {
+    FileAccessFromXmlSaxParsing() {
+      this = API::moduleImport("xml").getMember("sax").getMember("parse").getACall()
+      // I considered whether we should try to reduce FPs from people passing file-like
+      // objects, which will not be a file system access (and couldn't cause a
+      // path-injection).
+      //
+      // I suppose that once we have proper flow-summary support for file-like objects,
+      // we can make the XXE/XML-bomb sinks allow an access-path, while the
+      // path-injection sink wouldn't, and then we will not end up with such FPs.
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // xml.dom.*
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to the `parse` or `parseString` methods from `xml.dom.minidom` or `xml.dom.pulldom`.
+   *
+   * Both of these modules are based on SAX parsers.
+   *
+   * See
+   * - https://docs.python.org/3/library/xml.dom.minidom.html#xml.dom.minidom.parse
+   * - https://docs.python.org/3/library/xml.dom.pulldom.html#xml.dom.pulldom.parse
+   */
+  private class XmlDomParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
+    XmlDomParsing() {
+      this =
+        API::moduleImport("xml")
+            .getMember("dom")
+            .getMember(["minidom", "pulldom"])
+            .getMember(["parse", "parseString"])
+            .getACall()
+    }
+
+    override DataFlow::Node getAnInput() {
+      result in [
+          this.getArg(0),
+          // parseString
+          this.getArgByName("string"),
+          // minidom.parse
+          this.getArgByName("file"),
+          // pulldom.parse
+          this.getArgByName("stream_or_string"),
+        ]
+    }
+
+    DataFlow::Node getParserArg() { result in [this.getArg(1), this.getArgByName("parser")] }
+
+    override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
+      this.getParserArg() = saxParserWithFeatureExternalGesTurnedOn() and
+      (kind.isXxe() or kind.isDtdRetrieval())
+      or
+      kind.isXmlBomb()
+    }
+
+    override predicate mayExecuteInput() { none() }
+
+    override DataFlow::Node getOutput() { result = this }
+  }
+
+  /**
+   * A call to the `parse` or `parseString` methods from `xml.dom.minidom` or
+   * `xml.dom.pulldom`, which takes either a filename or a file-like object as argument.
+   * To capture the filename for path-injection, we have this subclass.
+   *
+   * See
+   * - https://docs.python.org/3/library/xml.dom.minidom.html#xml.dom.minidom.parse
+   * - https://docs.python.org/3/library/xml.dom.pulldom.html#xml.dom.pulldom.parse
+   */
+  private class FileAccessFromXmlDomParsing extends XmlDomParsing, FileSystemAccess::Range {
+    FileAccessFromXmlDomParsing() {
+      this =
+        API::moduleImport("xml")
+            .getMember("dom")
+            .getMember(["minidom", "pulldom"])
+            .getMember("parse")
+            .getACall()
+      // I considered whether we should try to reduce FPs from people passing file-like
+      // objects, which will not be a file system access (and couldn't cause a
+      // path-injection).
+      //
+      // I suppose that once we have proper flow-summary support for file-like objects,
+      // we can make the XXE/XML-bomb sinks allow an access-path, while the
+      // path-injection sink wouldn't, and then we will not end up with such FPs.
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
   }
 }
 

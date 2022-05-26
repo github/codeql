@@ -1,3 +1,24 @@
+## 0.1.2
+
+### Minor Analysis Improvements
+
+* The "XML external entity expansion" (`cpp/external-entity-expansion`) query has been extended to support a broader selection of XML libraries and interfaces.
+
+## 0.1.1
+
+### New Queries
+
+* An new query `cpp/external-entity-expansion` has been added. The query detects XML objects that are vulnerable to external entity expansion (XXE) attacks.
+
+## 0.1.0
+
+### Minor Analysis Improvements
+
+* The `cpp/cleartext-transmission` query now recognizes additional sources, for sensitive private data such as e-mail addresses and credit card numbers.
+* The `cpp/unused-local-variable` no longer ignores functions that include lambda expressions capturing trivially copyable objects.
+* The `cpp/command-line-injection` query now takes into account calling contexts across string concatenations. This removes false positives due to mismatched calling contexts before and after string concatenations.
+* A new query, "Potential exposure of sensitive system data to an unauthorized control sphere" (`cpp/potential-system-data-exposure`) has been added. This query is focused on exposure of information that is highly likely to be sensitive, whereas the similar query "Exposure of system data to an unauthorized control sphere" (`cpp/system-data-exposure`) is focused on exposure of information on a channel that is more likely to be intercepted by an attacker.
+
 ## 0.0.13
 
 ## 0.0.12

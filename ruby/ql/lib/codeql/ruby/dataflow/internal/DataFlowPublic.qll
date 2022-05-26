@@ -5,6 +5,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.dataflow.SSA
 private import FlowSummaryImpl as FlowSummaryImpl
+private import SsaImpl as SsaImpl
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -39,9 +40,20 @@ class Node extends TNode {
   }
 
   /**
-   * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
+   * Gets a local source node from which data may flow to this node in zero or
+   * more local data-flow steps.
    */
   LocalSourceNode getALocalSource() { result.flowsTo(this) }
+
+  /**
+   * Gets a data flow node from which data may flow to this node in one local step.
+   */
+  Node getAPredecessor() { localFlowStep(result, this) }
+
+  /**
+   * Gets a data flow node to which data may flow from this node in one local step.
+   */
+  Node getASuccessor() { localFlowStep(this, result) }
 }
 
 /** A data-flow node corresponding to a call in the control-flow graph. */
@@ -191,33 +203,134 @@ class Content extends TContent {
 
 /** Provides different sub classes of `Content`. */
 module Content {
-  /** An element in an array. */
-  class ArrayElementContent extends Content, TArrayElementContent { }
+  /** An element in a collection, for example an element in an array or in a hash. */
+  class ElementContent extends Content, TElementContent { }
 
-  /** An element in an array at a known index. */
-  class KnownArrayElementContent extends ArrayElementContent, TKnownArrayElementContent {
-    private int i;
+  /** An element in a collection at a known index. */
+  class KnownElementContent extends ElementContent, TKnownElementContent {
+    private ConstantValue cv;
 
-    KnownArrayElementContent() { this = TKnownArrayElementContent(i) }
+    KnownElementContent() { this = TKnownElementContent(cv) }
 
-    /** Gets the index in the array. */
-    int getIndex() { result = i }
+    /** Gets the index in the collection. */
+    ConstantValue getIndex() { result = cv }
 
-    override string toString() { result = "array element " + i }
+    override string toString() { result = "element " + cv }
   }
 
-  /** An element in an array at an unknown index. */
-  class UnknownArrayElementContent extends ArrayElementContent, TUnknownArrayElementContent {
-    override string toString() { result = "array element" }
+  /** An element in a collection at an unknown index. */
+  class UnknownElementContent extends ElementContent, TUnknownElementContent {
+    override string toString() { result = "element" }
+  }
+
+  /** A field of an object, for example an instance variable. */
+  class FieldContent extends Content, TFieldContent {
+    private string name;
+
+    FieldContent() { this = TFieldContent(name) }
+
+    /** Gets the name of the field. */
+    string getName() { result = name }
+
+    override string toString() { result = name }
+  }
+
+  /** Gets the element content corresponding to constant value `cv`. */
+  ElementContent getElementContent(ConstantValue cv) {
+    result = TKnownElementContent(cv)
+    or
+    not exists(TKnownElementContent(cv)) and
+    result = TUnknownElementContent()
   }
 
   /**
-   * Used internally only, to represent the union of `KnownArrayElementContent`
-   * and `UnknownArrayElementContent`, to avoid combinatorial explosions in
-   * `SummaryComponentStack`s in flow summaries.
+   * Gets the constant value of `e`, which corresponds to a valid known
+   * element index. Unlike calling simply `e.getConstantValue()`, this
+   * excludes negative array indices.
    */
-  private class AnyArrayElementContent extends Content, TAnyArrayElementContent {
-    override string toString() { result = "any array element" }
+  ConstantValue getKnownElementIndex(Expr e) {
+    result = getElementContent(e.getConstantValue()).(KnownElementContent).getIndex()
+  }
+
+  /** A value in a pair with a known or unknown key. */
+  class PairValueContent extends Content, TPairValueContent { }
+
+  /** A value in a pair with a known key. */
+  class KnownPairValueContent extends PairValueContent, TKnownPairValueContent {
+    private ConstantValue key;
+
+    KnownPairValueContent() { this = TKnownPairValueContent(key) }
+
+    /** Gets the index in the collection. */
+    ConstantValue getIndex() { result = key }
+
+    override string toString() { result = "pair " + key }
+  }
+
+  /** A value in a pair with an unknown key. */
+  class UnknownPairValueContent extends PairValueContent, TUnknownPairValueContent {
+    override string toString() { result = "pair" }
+  }
+}
+
+/**
+ * An entity that represents a set of `Content`s.
+ *
+ * The set may be interpreted differently depending on whether it is
+ * stored into (`getAStoreContent`) or read from (`getAReadContent`).
+ */
+class ContentSet extends TContentSet {
+  /** Holds if this content set is the singleton `{c}`. */
+  predicate isSingleton(Content c) { this = TSingletonContent(c) }
+
+  /** Holds if this content set represents all `ElementContent`s. */
+  predicate isAnyElement() { this = TAnyElementContent() }
+
+  /**
+   * Holds if this content set represents all `KnownElementContent`s where
+   * the index is an integer greater than or equal to `lower`.
+   */
+  predicate isElementLowerBound(int lower) { this = TElementLowerBoundContent(lower) }
+
+  /** Gets a textual representation of this content set. */
+  string toString() {
+    exists(Content c |
+      this.isSingleton(c) and
+      result = c.toString()
+    )
+    or
+    this.isAnyElement() and
+    result = "any element"
+    or
+    exists(int lower |
+      this.isElementLowerBound(lower) and
+      result = lower + ".."
+    )
+  }
+
+  /** Gets a content that may be stored into when storing into this set. */
+  Content getAStoreContent() {
+    this.isSingleton(result)
+    or
+    this.isAnyElement() and
+    result = TUnknownElementContent()
+    or
+    this.isElementLowerBound(_) and
+    result = TUnknownElementContent()
+  }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() {
+    this.isSingleton(result)
+    or
+    this.isAnyElement() and
+    result instanceof Content::ElementContent
+    or
+    exists(int lower, int i |
+      this.isElementLowerBound(lower) and
+      result.(Content::KnownElementContent).getIndex().isInt(i) and
+      i >= lower
+    )
   }
 }
 
@@ -256,6 +369,26 @@ abstract class BarrierGuard extends CfgNodes::ExprCfgNode {
    */
   abstract predicate checks(CfgNode expr, boolean branch);
 
+  /**
+   * Gets an implicit entry definition for a captured variable that
+   * may be guarded, because a call to the capturing callable is guarded.
+   *
+   * This is restricted to calls where the variable is captured inside a
+   * block.
+   */
+  private Ssa::Definition getAMaybeGuardedCapturedDef() {
+    exists(
+      boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def,
+      CfgNodes::ExprNodes::CallCfgNode call
+    |
+      def.getARead() = testedNode and
+      this.checks(testedNode, branch) and
+      SsaImpl::captureFlowIn(call, def, result) and
+      this.controlsBlock(call.getBasicBlock(), branch) and
+      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
+    )
+  }
+
   final Node getAGuardedNode() {
     exists(boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def |
       def.getARead() = testedNode and
@@ -263,5 +396,7 @@ abstract class BarrierGuard extends CfgNodes::ExprCfgNode {
       this.checks(testedNode, branch) and
       this.controlsBlock(result.asExpr().getBasicBlock(), branch)
     )
+    or
+    result.asExpr() = this.getAMaybeGuardedCapturedDef().getARead()
   }
 }

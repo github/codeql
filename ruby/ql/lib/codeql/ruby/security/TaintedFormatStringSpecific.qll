@@ -7,7 +7,8 @@ import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.ApiGraphs
 import codeql.ruby.TaintTracking
-private import codeql.ruby.frameworks.Files::IO
+private import codeql.ruby.frameworks.Files
+private import codeql.ruby.frameworks.core.IO
 private import codeql.ruby.controlflow.CfgNodes
 
 /**
@@ -67,5 +68,7 @@ class KernelSprintfCall extends PrintfStyleCall {
  * A call to `IO#printf`.
  */
 class IOPrintfCall extends PrintfStyleCall {
-  IOPrintfCall() { this.getReceiver() instanceof IOInstance and this.getMethodName() = "printf" }
+  IOPrintfCall() {
+    this.getReceiver() instanceof IO::IOInstance and this.getMethodName() = "printf"
+  }
 }

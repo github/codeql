@@ -5,9 +5,8 @@
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
-import Xss::XssThroughDom
 private import XssThroughDomCustomizations::XssThroughDom
-private import semmle.javascript.security.dataflow.Xss::DomBasedXss as DomBasedXss
+private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 private import semmle.javascript.security.dataflow.UnsafeJQueryPluginCustomizations::UnsafeJQueryPlugin as UnsafeJQuery
 
 /**
@@ -29,7 +28,9 @@ class Configuration extends TaintTracking::Configuration {
     guard instanceof TypeTestGuard or
     guard instanceof UnsafeJQuery::PropertyPresenceSanitizer or
     guard instanceof UnsafeJQuery::NumberGuard or
-    guard instanceof DomBasedXss::SanitizerGuard
+    guard instanceof PrefixStringSanitizer or
+    guard instanceof QuoteGuard or
+    guard instanceof ContainsHtmlGuard
   }
 
   override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
@@ -45,8 +46,55 @@ class Configuration extends TaintTracking::Configuration {
     super.hasFlowPath(src, sink) and
     // filtering away readings of `src` that end in a URL sink.
     not (
-      sink.getNode() instanceof DomBasedXss::WriteURLSink and
+      sink.getNode() instanceof DomBasedXss::WriteUrlSink and
       src.getNode().(DomPropertySource).getPropertyName() = "src"
     )
   }
+}
+
+/**
+ * A test of form `typeof x === "something"`, preventing `x` from being a string in some cases.
+ *
+ * This sanitizer helps prune infeasible paths in type-overloaded functions.
+ */
+class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+  override EqualityTest astNode;
+  Expr operand;
+  boolean polarity;
+
+  TypeTestGuard() {
+    exists(TypeofTag tag | TaintTracking::isTypeofGuard(astNode, operand, tag) |
+      // typeof x === "string" sanitizes `x` when it evaluates to false
+      tag = "string" and
+      polarity = astNode.getPolarity().booleanNot()
+      or
+      // typeof x === "object" sanitizes `x` when it evaluates to true
+      tag != "string" and
+      polarity = astNode.getPolarity()
+    )
+  }
+
+  override predicate sanitizes(boolean outcome, Expr e) {
+    polarity = outcome and
+    e = operand
+  }
+}
+
+private import semmle.javascript.security.dataflow.Xss::Shared as Shared
+
+private class PrefixStringSanitizer extends TaintTracking::SanitizerGuardNode,
+  DomBasedXss::PrefixStringSanitizer {
+  PrefixStringSanitizer() { this = this }
+}
+
+private class PrefixString extends DataFlow::FlowLabel, DomBasedXss::PrefixString {
+  PrefixString() { this = this }
+}
+
+private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
+  QuoteGuard() { this = this }
+}
+
+private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard {
+  ContainsHtmlGuard() { this = this }
 }

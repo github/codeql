@@ -27,9 +27,9 @@ private DataFlow::TypeTrackingNode truthyLiteral(DataFlow::TypeTracker t) {
 /** Gets a reference to a truthy literal. */
 DataFlow::Node truthyLiteral() { truthyLiteral(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-from DataFlow::CallCfgNode call, DataFlow::Node debugArg
+from API::CallNode call, DataFlow::Node debugArg
 where
-  call.getFunction() = Flask::FlaskApp::instance().getMember("run").getAUse() and
+  call = Flask::FlaskApp::instance().getMember("run").getACall() and
   debugArg in [call.getArg(2), call.getArgByName("debug")] and
   debugArg = truthyLiteral()
 select call,

@@ -279,7 +279,7 @@ module ActionDispatch {
    * ```rb
    * get "/photos", to: "photos#index"
    * ```
-   * or via a convenience method like `resources`, which defines mutiple routes at once:
+   * or via a convenience method like `resources`, which defines multiple routes at once:
    * ```rb
    * resources :photos
    * ```

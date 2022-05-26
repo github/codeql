@@ -48,12 +48,12 @@ public class CollectionFlow
 {
     private string tainted;
 
-    public int ReturnArrayElement(int[] input)
+    public object ReturnArrayElement(object[] input)
     {
         return input[0];
     }
 
-    public void AssignToArray(int data, int[] target)
+    public void AssignToArray(object data, object[] target)
     {
         target[0] = data;
     }
@@ -146,7 +146,7 @@ public class GenericFlow<T>
 
 public abstract class BaseClassFlow
 {
-    public virtual int ReturnParam(int input)
+    public virtual object ReturnParam(object input)
     {
         return input;
     }
@@ -154,7 +154,7 @@ public abstract class BaseClassFlow
 
 public class DerivedClass1Flow : BaseClassFlow
 {
-    public int ReturnParam1(int input0, int input1)
+    public string ReturnParam1(string input0, string input1)
     {
         return input1;
     }
@@ -162,12 +162,12 @@ public class DerivedClass1Flow : BaseClassFlow
 
 public class DerivedClass2Flow : BaseClassFlow
 {
-    public override int ReturnParam(int input)
+    public override object ReturnParam(object input)
     {
         return input;
     }
 
-    public int ReturnParam0(int input0, int input1)
+    public string ReturnParam0(string input0, int input1)
     {
         return input0;
     }
@@ -195,13 +195,13 @@ public class OperatorFlow
     }
 
     // No flow summary as this is an implicit conversion operator.
-    public static implicit operator OperatorFlow(int i)
+    public static implicit operator OperatorFlow(string s)
     {
-        return new OperatorFlow(i);
+        return new OperatorFlow(s);
     }
 
     // No flow summary as this is an explicit conversion operator.
-    public static explicit operator OperatorFlow(byte b)
+    public static explicit operator OperatorFlow(string[] b)
     {
         return new OperatorFlow(b);
     }
@@ -220,9 +220,9 @@ public class EqualsGetHashCodeNoFlow
     }
 
     // Flow summary as this is not an override of the object Equals method.
-    public int Equals(int i)
+    public string Equals(string s)
     {
-        return i;
+        return s;
     }
 
     // No flow summary as this is an override of the GetHashCode method.

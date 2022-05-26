@@ -56,6 +56,18 @@ private module Cached {
     exists(DataFlow::Node mid | pred.flowsTo(mid) | StepSummary::smallstep(mid, succ, summary))
   }
 
+  pragma[nomagic]
+  private DataFlow::Node getAGlobalStepPredecessor(string global) {
+    result = AccessPath::getAnAssignmentTo(global) and
+    AccessPath::isAssignedInUniqueFile(global)
+  }
+
+  pragma[nomagic]
+  private DataFlow::Node getAGlobalStepSuccessor(string global) {
+    result = AccessPath::getAReferenceTo(global) and
+    AccessPath::isAssignedInUniqueFile(global)
+  }
+
   /**
    * INTERNAL: Use `TypeBackTracker.smallstep()` instead.
    */
@@ -106,20 +118,10 @@ private module Cached {
     SharedTypeTrackingStep::step(pred, succ) and
     summary = LevelStep()
     or
-    // Store to global access path
-    exists(string name |
-      pred = AccessPath::getAnAssignmentTo(name) and
-      AccessPath::isAssignedInUniqueFile(name) and
-      succ = DataFlow::globalAccessPathRootPseudoNode() and
-      summary = StoreStep(name)
-    )
-    or
-    // Load from global access path
-    exists(string name |
-      succ = AccessPath::getAReferenceTo(name) and
-      AccessPath::isAssignedInUniqueFile(name) and
-      pred = DataFlow::globalAccessPathRootPseudoNode() and
-      summary = LoadStep(name)
+    summary = LevelStep() and
+    exists(string global |
+      pred = getAGlobalStepPredecessor(global) and
+      succ = getAGlobalStepSuccessor(global)
     )
     or
     // Store to non-global access path

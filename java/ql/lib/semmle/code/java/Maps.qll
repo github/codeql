@@ -40,7 +40,7 @@ class MapMethod extends Method {
 
 /** A method that mutates the map it belongs to. */
 class MapMutator extends MapMethod {
-  MapMutator() { this.getName().regexpMatch("(put.*|remove|clear)") }
+  MapMutator() { pragma[only_bind_into](this).getName().regexpMatch("(put.*|remove|clear)") }
 }
 
 /** The `size` method of `java.util.Map`. */
@@ -53,13 +53,14 @@ class MapMutation extends MethodAccess {
   MapMutation() { this.getMethod() instanceof MapMutator }
 
   /** Holds if the result of this call is not immediately discarded. */
-  predicate resultIsChecked() { not this.getParent() instanceof ExprStmt }
+  predicate resultIsChecked() { not this instanceof ValueDiscardingExpr }
 }
 
 /** A method that queries the contents of the map it belongs to without mutating it. */
 class MapQueryMethod extends MapMethod {
   MapQueryMethod() {
-    this.getName().regexpMatch("get|containsKey|containsValue|entrySet|keySet|values|isEmpty|size")
+    pragma[only_bind_into](this).getName() =
+      ["get", "containsKey", "containsValue", "entrySet", "keySet", "values", "isEmpty", "size"]
   }
 }
 

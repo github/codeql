@@ -147,7 +147,7 @@ you could use the following command from the directory containing your database:
 
 The analysis generates a file in the v2.1.0 SARIF format that is supported by all versions of GitHub.
 This file can be uploaded to GitHub by executing ``codeql github upload-results`` or the code scanning API.
-For more information, see `Analyzing a CodeQL database <https://docs.github.com/en/code-security/secure-coding/configuring-codeql-cli-in-your-ci-system#analyzing-a-codeql-database>`__
+For more information, see `Analyzing a CodeQL database <https://docs.github.com/en/code-security/code-scanning/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system#analyzing-a-codeql-database>`__
 or `Code scanning API <https://docs.github.com/en/rest/reference/code-scanning>`__ in the GitHub documentation.
 
 CodeQL query suites are ``.qls`` files that use directives to select queries to run

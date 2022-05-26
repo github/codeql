@@ -59,7 +59,7 @@
  * A `(package,type)` pair may refer to a static type or a synthetic type name used internally in the model.
  * Synthetic type names can be used to reuse intermediate sub-paths, when there are multiple ways to access the same
  * element.
- * See `ModelsAsData.qll` for the langauge-specific interpretation of packages and static type names.
+ * See `ModelsAsData.qll` for the language-specific interpretation of packages and static type names.
  *
  * By convention, if one wants to avoid clashes with static types from the package, the type name
  * should be prefixed with a tilde character (`~`). For example, `(foo, ~Bar)` can be used to indicate that
@@ -396,7 +396,7 @@ predicate isValidTokenNameInIdentifyingAccessPath(string name) {
 }
 
 /**
- * Holds if `name` is a valid name for an access path token with no arguments, occuring
+ * Holds if `name` is a valid name for an access path token with no arguments, occurring
  * in an identifying access path.
  */
 bindingset[name]

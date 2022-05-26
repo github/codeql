@@ -13,7 +13,7 @@ import javascript
 
 /**
  * An operation that inserts or removes elements from an array while shifting all elements
- * occuring after the insertion/removal point.
+ * occurring after the insertion/removal point.
  *
  * Does not include `push` and `pop` since these never shift any elements.
  */

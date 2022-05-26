@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Comparing two identical expressions typically indicates a mistake such as a missing qualifier or a
+misspelled variable name.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Carefully inspect the comparison to determine whether it is a symptom of a bug.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the example below, the method <code>Rectangle.contains</code> is intended to check whether a
+point <code>(x, y)</code> lies inside a rectangle <code>r</code> given by its origin
+<code>(r.x, r.y)</code>, its width <code>r.width</code>, and its height <code>r.height</code>.
+</p>
+
+<sample src="CompareIdenticalValues.go" />
+
+<p>
+Note, however, that on line 9 the programmer forgot to qualify <code>r.y</code>,
+thus ending up comparing the argument <code>y</code> against itself. The comparison
+should be fixed accordingly:
+</p>
+
+<sample src="CompareIdenticalValuesGood.go" />
+</example>
+
+</qhelp>

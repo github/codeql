@@ -8,7 +8,7 @@ import javascript
  * This predicate covers four kinds of definitions:
  *
  * <table border="1">
- * <tr><th>Example<th><code>def</code><th><code>lhs</code><th><code>rhs</code></tr>
+ * <tr><th>Example</th><th><code>def</code></th><th><code>lhs</code></th><th><code>rhs</code></th></tr>
  * <tr><td><code>x = y</code><td><code>x = y</code><td><code>x</code><td><code>y</code></tr>
  * <tr><td><code>var a = b</code><td><code>var a = b</code><td><code>a</code><td><code>b</code></tr>
  * <tr><td><code>function f { ... }</code><td><code>f</code><td><code>f</code><td><code>function f { ... }</code></tr>
@@ -56,7 +56,7 @@ private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
  * where there is no explicit right hand side:
  *
  * <table border="1">
- * <tr><th>Example<th><code>def</code><th><code>lhs</code></tr>
+ * <tr><th>Example</th><th><code>def</code></th><th><code>lhs</code></th></tr>
  * <tr><td><code>x += y</code><td><code>x += y</code><td><code>x</code></tr>
  * <tr><td><code>++z.q</code><td><code>++z.q</code><td><code>z.q</code></tr>
  * <tr><td><code>import { a as b } from 'm'</code><td><code>a as b</code><td><code>b</code></tr>

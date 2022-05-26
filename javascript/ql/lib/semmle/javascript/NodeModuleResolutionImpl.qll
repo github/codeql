@@ -96,7 +96,7 @@ File resolveMainModule(PackageJson pkg, int priority) {
     or
     result = tryExtensions(main.resolve(), "index", priority)
     or
-    not exists(main.resolve()) and
+    not main.resolve() instanceof File and
     exists(int n | n = main.getNumComponent() |
       result = tryExtensions(main.resolveUpTo(n - 1), getStem(main.getComponent(n - 1)), priority)
     )

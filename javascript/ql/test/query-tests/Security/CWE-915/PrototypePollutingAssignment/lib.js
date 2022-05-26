@@ -94,3 +94,29 @@ module.exports.fixedProp = function (obj, path, value) {
   var i = 0;
   maybeProto[i + 2] = value; // OK - number properties are OK.
 }
+
+function isPossibilityOfPrototypePollution(key) {
+  return (key === '__proto__' || key === 'constructor');
+}
+
+module.exports.sanWithFcuntion = function() {
+  var obj = arguments[0];
+  var one = arguments[1];
+  var two = arguments[2];
+  var value = arguments[3];
+  
+  obj[one][two] = value; // NOT OK
+
+  if (isPossibilityOfPrototypePollution(one) || isPossibilityOfPrototypePollution(two)) {
+    throw new Error('Prototype pollution is not allowed');
+  }
+  obj[one][two] = value; // OK
+}
+
+module.exports.returnsObj = function () {
+    return {
+        set: function (obj, path, value) {
+            obj[path[0]][path[1]] = value; // NOT OK
+        }
+    }
+}

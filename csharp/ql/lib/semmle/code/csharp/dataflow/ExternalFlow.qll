@@ -86,6 +86,7 @@ private import internal.FlowSummaryImplSpecific
  */
 private module Frameworks {
   private import semmle.code.csharp.frameworks.EntityFramework
+  private import semmle.code.csharp.frameworks.Generated
   private import semmle.code.csharp.frameworks.JsonNET
   private import semmle.code.csharp.frameworks.microsoft.extensions.Primitives
   private import semmle.code.csharp.frameworks.microsoft.VisualBasic
@@ -515,9 +516,7 @@ Element interpretElement(
 /**
  * Holds if `c` has a `generated` summary.
  */
-predicate hasSummary(DataFlowCallable c, boolean generated) {
-  summaryElement(c, _, _, _, generated)
-}
+predicate hasSummary(Callable c, boolean generated) { summaryElement(c, _, _, _, generated) }
 
 cached
 private module Cached {

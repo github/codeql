@@ -3,7 +3,6 @@ import semmle.python.types.Exceptions
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.objects.Callables
 private import semmle.python.libraries.Zope
-private import semmle.python.pointsto.Base
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.Builtins
 

@@ -189,6 +189,7 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
     a = request.args
     b = a
     gl = b.getlist
+    files = request.files
     ensure_tainted(
         request.args, # $ tainted
         a, # $ tainted
@@ -202,6 +203,8 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         a.getlist('key'), # $ tainted
         b.getlist('key'), # $ tainted
         gl('key'), # $ tainted
+
+        files.get('key').filename, # $ tainted
     )
 
     # aliasing tests

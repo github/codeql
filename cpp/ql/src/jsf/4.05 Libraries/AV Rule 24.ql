@@ -13,7 +13,7 @@ import cpp
 
 from Function f
 where
-  f.getName().regexpMatch("abort|exit|getenv|system") and
+  f.getName() = ["abort", "exit", "getenv", "system"] and
   f.getFile().getAbsolutePath().matches("%stdlib.h")
 select f.getACallToThisFunction(),
   "The library functions abort, exit, getenv and system from library <stdlib.h> should not be used."

@@ -14,7 +14,6 @@
 
 import ruby
 import codeql.ruby.security.StoredXSSQuery
-import codeql.ruby.DataFlow
 import DataFlow::PathGraph
 
 from StoredXss::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink

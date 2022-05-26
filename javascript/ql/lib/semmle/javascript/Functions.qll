@@ -41,6 +41,11 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   /** Gets the `i`th parameter of this function. */
   Parameter getParameter(int i) { result = this.getChildExpr(i) }
 
+  /** Gets the `...rest` parameter, if any. */
+  Parameter getRestParameter() {
+    result = this.getParameter(this.getNumParameter() - 1) and result.isRestParameter()
+  }
+
   /** Gets a parameter of this function. */
   override Parameter getAParameter() { exists(int idx | result = this.getParameter(idx)) }
 

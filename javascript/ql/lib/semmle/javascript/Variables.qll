@@ -226,7 +226,7 @@ class ArgumentsVariable extends Variable {
  */
 class VarRef extends @varref, Identifier, BindingPattern, LexicalRef {
   /** Gets the variable this identifier refers to. */
-  override Variable getVariable() { none() } // Overriden in VarAccess and VarDecl
+  override Variable getVariable() { none() } // Overridden in VarAccess and VarDecl
 
   override string getName() { result = Identifier.super.getName() }
 

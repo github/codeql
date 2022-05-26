@@ -8,7 +8,6 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriBuilder;
@@ -16,7 +15,6 @@ import org.springframework.web.util.UriComponents;
 
 public class UriComponentsBuilder implements Cloneable, UriBuilder
 {
-    UriComponentsBuilder adaptFromForwardedHeaders(HttpHeaders p0){ return null; }
     protected UriComponentsBuilder(){}
     protected UriComponentsBuilder(UriComponentsBuilder p0){}
     public Object clone(){ return null; }

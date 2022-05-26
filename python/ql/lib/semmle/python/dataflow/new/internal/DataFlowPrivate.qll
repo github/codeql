@@ -814,6 +814,12 @@ predicate clearsContent(Node n, Content c) {
 }
 
 /**
+ * Holds if the value that is being tracked is expected to be stored inside content `c`
+ * at node `n`.
+ */
+predicate expectsContent(Node n, ContentSet c) { none() }
+
+/**
  * Holds if values stored inside attribute `c` are cleared at node `n`.
  *
  * In `obj.foo = x` any old value stored in `foo` is cleared at the pre-update node

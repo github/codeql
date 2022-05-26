@@ -22,6 +22,7 @@ class Test
         var good7 = (Action<int>)((int x) => { });
         func = x => x;
         exprFunc = x => x;
+        exprFuncUntyped = (Expression<Func<int, int?>>)(x => x); // FP
     }
 
     enum Enum
@@ -35,4 +36,5 @@ class Test
 
     private Func<int, int?> func;
     private Expression<Func<int, int?>> exprFunc;
+    private LambdaExpression exprFuncUntyped;
 }

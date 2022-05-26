@@ -1977,20 +1977,26 @@ module PathGraph {
 }
 
 /**
- * Gets an operand of the given `&&` operator.
- *
- * We use this to construct the transitive closure over a relation
- * that does not include all of `BinaryExpr.getAnOperand`.
+ * Gets a logical `and` expression, or parenthesized expression, that contains `guard`.
  */
-private Expr getALogicalAndOperand(LogAndExpr e) { result = e.getAnOperand() }
+private Expr getALogicalAndParent(BarrierGuardNode guard) {
+  barrierGuardIsRelevant(guard) and result = guard.asExpr()
+  or
+  result.(LogAndExpr).getAnOperand() = getALogicalAndParent(guard)
+  or
+  result.getUnderlyingValue() = getALogicalAndParent(guard)
+}
 
 /**
- * Gets an operand of the given `||` operator.
- *
- * We use this to construct the transitive closure over a relation
- * that does not include all of `BinaryExpr.getAnOperand`.
+ * Gets a logical `or` expression, or parenthesized expression, that contains `guard`.
  */
-private Expr getALogicalOrOperand(LogOrExpr e) { result = e.getAnOperand() }
+private Expr getALogicalOrParent(BarrierGuardNode guard) {
+  barrierGuardIsRelevant(guard) and result = guard.asExpr()
+  or
+  result.(LogOrExpr).getAnOperand() = getALogicalOrParent(guard)
+  or
+  result.getUnderlyingValue() = getALogicalOrParent(guard)
+}
 
 /**
  * A `BarrierGuardNode` that controls which data flow
@@ -2020,10 +2026,10 @@ private class BarrierGuardFunction extends Function {
         returnExpr = guard.asExpr()
         or
         // ad hoc support for conjunctions:
-        getALogicalAndOperand+(returnExpr) = guard.asExpr() and guardOutcome = true
+        getALogicalAndParent(guard) = returnExpr and guardOutcome = true
         or
         // ad hoc support for disjunctions:
-        getALogicalOrOperand+(returnExpr) = guard.asExpr() and guardOutcome = false
+        getALogicalOrParent(guard) = returnExpr and guardOutcome = false
       |
         exists(SsaExplicitDefinition ssa |
           ssa.getDef().getSource() = returnExpr and

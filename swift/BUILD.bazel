@@ -1,12 +1,19 @@
-load("@rules_pkg//:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files")
+load("@rules_pkg//:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files", "strip_prefix")
 load("@rules_pkg//:install.bzl", "pkg_install")
 load("//:defs.bzl", "codeql_platform")
+load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
+
+filegroup(
+    name = "dbscheme",
+    srcs = ["ql/lib/swift.dbscheme"],
+    visibility = ["//visibility:public"],
+)
 
 pkg_files(
-    name = "dbscheme",
+    name = "dbscheme_files",
     srcs = [
-        "ql/lib/swift.dbscheme",
         "ql/lib/swift.dbscheme.stats",
+        ":dbscheme",
     ],
 )
 
@@ -18,6 +25,12 @@ pkg_files(
 )
 
 pkg_files(
+    name = "tracing-config",
+    srcs = ["tools/tracing-config.lua"],
+    prefix = "tools",
+)
+
+pkg_files(
     name = "manifest",
     srcs = ["codeql-extractor.yml"],
 )
@@ -25,23 +38,33 @@ pkg_files(
 pkg_filegroup(
     name = "extractor-pack-generic",
     srcs = [
-        ":dbscheme",
+        ":dbscheme_files",
         ":manifest",
         ":qltest",
+        ":tracing-config",
     ],
     visibility = ["//visibility:public"],
 )
 
-pkg_files(
+pkg_runfiles(
     name = "extractor",
     srcs = ["//swift/extractor"],
-    attributes = pkg_attributes(mode = "0755"),
     prefix = "tools/" + codeql_platform,
+)
+
+pkg_files(
+    name = "swift-test-sdk-arch",
+    srcs = ["//swift/tools/prebuilt:swift-test-sdk"],
+    prefix = "qltest/" + codeql_platform,
+    strip_prefix = strip_prefix.from_pkg(),
 )
 
 pkg_filegroup(
     name = "extractor-pack-arch",
-    srcs = [":extractor"],
+    srcs = [
+        ":extractor",
+        ":swift-test-sdk-arch",
+    ],
     visibility = ["//visibility:public"],
 )
 

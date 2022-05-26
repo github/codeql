@@ -122,3 +122,21 @@ class Sub extends Super {
         $("img#id").attr("src", URL.createObjectURL(ev.target.files[0])); // NOT OK
     }
 })();
+
+(function () {
+	let elem = document.createElement('a');
+	const wSelection = getSelection();
+	const dSelection = document.getSelection();
+	let linkText = wSelection.toString() || dSelection.toString() || '';
+	elem.innerHTML = linkText; // NOT OK
+	$("#id").html(linkText); // NOT OK
+	elem.innerText = linkText; // OK
+})();
+
+const cashDom = require("cash-dom");
+
+(function () {
+    const src = document.getElementById("#link").src;
+	cash("#id").html(src); // NOT OK.
+    cashDom("#id").html(src); // NOT OK
+})();

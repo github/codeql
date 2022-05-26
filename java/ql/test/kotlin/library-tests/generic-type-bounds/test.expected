@@ -1,0 +1,11 @@
+classTVs
+| test.kt:1:12:1:21 | T | test.kt:1:1:5:1 | Test | Number |
+| test.kt:1:24:1:28 | S | test.kt:1:1:5:1 | Test | T |
+| test.kt:1:31:1:31 | R | test.kt:1:1:5:1 | Test | Object |
+| test.kt:7:22:7:22 | P | test.kt:7:1:7:67 | MultipleBounds | List<String> |
+| test.kt:7:22:7:22 | P | test.kt:7:1:7:67 | MultipleBounds | Set<String> |
+| test.kt:9:22:9:42 | T | test.kt:9:1:9:47 | RecursiveBound | RecursiveBound |
+| test.kt:11:28:11:57 | T | test.kt:11:1:11:94 | MutualRecursiveBound | MutualRecursiveBound |
+| test.kt:11:60:11:89 | S | test.kt:11:1:11:94 | MutualRecursiveBound | MutualRecursiveBound |
+functionTVs
+| test.kt:3:8:3:17 | Q | test.kt:3:3:3:26 | f | Number |

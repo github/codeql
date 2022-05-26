@@ -1,84 +1,41 @@
-/*
- * Copyright 2002-2018 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Generated automatically from org.springframework.validation.Errors for testing purposes
 
 package org.springframework.validation;
 
 import java.util.List;
-import org.springframework.lang.Nullable;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 
-public interface Errors {
-  String getObjectName();
-
-  void setNestedPath(String nestedPath);
-
-  String getNestedPath();
-
-  void pushNestedPath(String subPath);
-
-  void popNestedPath() throws IllegalStateException;
-
-  void reject(String errorCode);
-
-  void reject(String errorCode, String defaultMessage);
-
-  void reject(String errorCode, @Nullable Object[] errorArgs, @Nullable String defaultMessage);
-
-  void rejectValue(@Nullable String field, String errorCode);
-
-  void rejectValue(@Nullable String field, String errorCode, String defaultMessage);
-
-  void rejectValue(
-      @Nullable String field,
-      String errorCode,
-      @Nullable Object[] errorArgs,
-      @Nullable String defaultMessage);
-
-  void addAllErrors(Errors errors);
-
-  boolean hasErrors();
-
-  int getErrorCount();
-
-  List<ObjectError> getAllErrors();
-
-  boolean hasGlobalErrors();
-
-  int getGlobalErrorCount();
-
-  List<ObjectError> getGlobalErrors();
-
-  ObjectError getGlobalError();
-
-  boolean hasFieldErrors();
-
-  int getFieldErrorCount();
-
-  List<FieldError> getFieldErrors();
-
-  FieldError getFieldError();
-
-  boolean hasFieldErrors(String field);
-
-  int getFieldErrorCount(String field);
-
-  List<FieldError> getFieldErrors(String field);
-
-  FieldError getFieldError(String field);
-
-  Object getFieldValue(String field);
-
-  Class<?> getFieldType(String field);
+public interface Errors
+{
+    Class<? extends Object> getFieldType(String p0);
+    FieldError getFieldError();
+    FieldError getFieldError(String p0);
+    List<FieldError> getFieldErrors();
+    List<FieldError> getFieldErrors(String p0);
+    List<ObjectError> getAllErrors();
+    List<ObjectError> getGlobalErrors();
+    Object getFieldValue(String p0);
+    ObjectError getGlobalError();
+    String getNestedPath();
+    String getObjectName();
+    boolean hasErrors();
+    boolean hasFieldErrors();
+    boolean hasFieldErrors(String p0);
+    boolean hasGlobalErrors();
+    int getErrorCount();
+    int getFieldErrorCount();
+    int getFieldErrorCount(String p0);
+    int getGlobalErrorCount();
+    static String NESTED_PATH_SEPARATOR = null;
+    void addAllErrors(Errors p0);
+    void popNestedPath();
+    void pushNestedPath(String p0);
+    void reject(String p0);
+    void reject(String p0, Object[] p1, String p2);
+    void reject(String p0, String p1);
+    void rejectValue(String p0, String p1);
+    void rejectValue(String p0, String p1, Object[] p2, String p3);
+    void rejectValue(String p0, String p1, String p2);
+    void setNestedPath(String p0);
 }

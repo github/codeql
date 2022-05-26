@@ -420,7 +420,7 @@ module AccessPath {
    */
   module DominatingPaths {
     /**
-     * A classification of acccess paths into reads and writes.
+     * A classification of access paths into reads and writes.
      */
     private newtype AccessPathKind =
       AccessPathRead() or

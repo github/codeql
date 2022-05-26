@@ -3,7 +3,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** The class `org.springframework.jdbc.core.JdbcTemplate`. */
 class JdbcTemplate extends RefType {

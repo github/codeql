@@ -87,7 +87,7 @@ module TaintTracking {
     override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
       super.isLabeledBarrier(node, lbl)
       or
-      isSanitizer(node) and lbl.isTaint()
+      this.isSanitizer(node) and lbl.isTaint()
     }
 
     override predicate isBarrier(DataFlow::Node node) {
@@ -103,15 +103,15 @@ module TaintTracking {
     ) {
       super.isBarrierEdge(source, sink, lbl)
       or
-      isSanitizerEdge(source, sink, lbl)
+      this.isSanitizerEdge(source, sink, lbl)
       or
-      isSanitizerEdge(source, sink) and lbl.isTaint()
+      this.isSanitizerEdge(source, sink) and lbl.isTaint()
     }
 
     final override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
       super.isBarrierGuard(guard) or
       guard.(AdditionalSanitizerGuardNode).appliesTo(this) or
-      isSanitizerGuard(guard)
+      this.isSanitizerGuard(guard)
     }
 
     /**
@@ -121,14 +121,14 @@ module TaintTracking {
     predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
     final override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-      isAdditionalTaintStep(pred, succ) or
+      this.isAdditionalTaintStep(pred, succ) or
       sharedTaintStep(pred, succ)
     }
 
     final override predicate isAdditionalFlowStep(
       DataFlow::Node pred, DataFlow::Node succ, boolean valuePreserving
     ) {
-      isAdditionalFlowStep(pred, succ) and valuePreserving = false
+      this.isAdditionalFlowStep(pred, succ) and valuePreserving = false
     }
 
     override DataFlow::FlowLabel getDefaultSourceLabel() { result.isTaint() }
@@ -173,9 +173,9 @@ module TaintTracking {
     abstract predicate sanitizes(boolean outcome, Expr e);
 
     override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      sanitizes(outcome, e) and label.isTaint()
+      this.sanitizes(outcome, e) and label.isTaint()
       or
-      sanitizes(outcome, e, label)
+      this.sanitizes(outcome, e, label)
     }
 
     /**
@@ -1032,13 +1032,13 @@ module TaintTracking {
         name = "has" or
         name = "hasOwnProperty"
       |
-        getMethodName() = name
+        this.getMethodName() = name
       )
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
       outcome = true and
-      e = getArgument(0).asExpr()
+      e = this.getArgument(0).asExpr()
     }
 
     override predicate appliesTo(Configuration cfg) { any() }
@@ -1053,14 +1053,14 @@ module TaintTracking {
    */
   class AdHocWhitelistCheckSanitizer extends SanitizerGuardNode, DataFlow::CallNode {
     AdHocWhitelistCheckSanitizer() {
-      getCalleeName()
+      this.getCalleeName()
           .regexpMatch("(?i).*((?<!un)safe|whitelist|(?<!in)valid|allow|(?<!un)auth(?!or\\b)).*") and
-      getNumArgument() = 1
+      this.getNumArgument() = 1
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
       outcome = true and
-      e = getArgument(0).asExpr()
+      e = this.getArgument(0).asExpr()
     }
   }
 
@@ -1225,19 +1225,25 @@ module TaintTracking {
    * An equality test on `e.origin` or `e.source` where `e` is a `postMessage` event object,
    * considered as a sanitizer for `e`.
    */
-  private class PostMessageEventSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  private class PostMessageEventSanitizer extends AdditionalSanitizerGuardNode {
     VarAccess event;
-    override EqualityTest astNode;
+    boolean polarity;
 
     PostMessageEventSanitizer() {
-      exists(string prop | prop = "origin" or prop = "source" |
-        astNode.getAnOperand().(PropAccess).accesses(event, prop) and
-        event.mayReferToParameter(any(PostMessageEventHandler h).getEventParameter())
+      event.mayReferToParameter(any(PostMessageEventHandler h).getEventParameter()) and
+      exists(DataFlow::PropRead read | read.accesses(event.flow(), ["origin", "source"]) |
+        exists(EqualityTest test | polarity = test.getPolarity() and this.getAstNode() = test |
+          test.getAnOperand().flow() = read
+        )
+        or
+        exists(InclusionTest test | polarity = test.getPolarity() and this = test |
+          test.getContainedNode() = read
+        )
       )
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = astNode.getPolarity() and
+      outcome = polarity and
       e = event
     }
 

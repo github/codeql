@@ -1309,7 +1309,7 @@ module RegExp {
   }
 
   /**
-   * Holds if `term` can match any occurence of `char` within a string (not taking into account
+   * Holds if `term` can match any occurrence of `char` within a string (not taking into account
    * the context in which `term` appears).
    *
    * This predicate is under-approximate and never considers sequences to guarantee a match.

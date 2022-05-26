@@ -280,7 +280,13 @@ module API {
    * you should use `.getMember` on the parent module. For example, for nodes corresponding to the module `foo.bar`,
    * use `moduleImport("foo").getMember("bar")`.
    */
-  Node moduleImport(string m) { result = Impl::MkModuleImport(m) }
+  Node moduleImport(string m) {
+    result = Impl::MkModuleImport(m) and
+    // restrict `moduleImport` so it will never give results for a dotted name. Note
+    // that we cannot move this logic to the `MkModuleImport` construction, since we
+    // need the intermediate API graph nodes for the prefixes in `import foo.bar.baz`.
+    not m.matches("%.%")
+  }
 
   /** Gets a node corresponding to the built-in with the given name, if any. */
   Node builtin(string n) { result = moduleImport("builtins").getMember(n) }
@@ -779,7 +785,7 @@ module API {
         MkLabelAwait()
 
       /** A label for a module. */
-      class LabelModule extends ApiLabel {
+      class LabelModule extends ApiLabel, MkLabelModule {
         string mod;
 
         LabelModule() { this = MkLabelModule(mod) }
@@ -791,7 +797,7 @@ module API {
       }
 
       /** A label for the member named `prop`. */
-      class LabelMember extends ApiLabel {
+      class LabelMember extends ApiLabel, MkLabelMember {
         string member;
 
         LabelMember() { this = MkLabelMember(member) }
@@ -803,14 +809,12 @@ module API {
       }
 
       /** A label for a member with an unknown name. */
-      class LabelUnknownMember extends ApiLabel {
-        LabelUnknownMember() { this = MkLabelUnknownMember() }
-
+      class LabelUnknownMember extends ApiLabel, MkLabelUnknownMember {
         override string toString() { result = "getUnknownMember()" }
       }
 
       /** A label for parameter `i`. */
-      class LabelParameter extends ApiLabel {
+      class LabelParameter extends ApiLabel, MkLabelParameter {
         int i;
 
         LabelParameter() { this = MkLabelParameter(i) }
@@ -822,7 +826,7 @@ module API {
       }
 
       /** A label for a keyword parameter `name`. */
-      class LabelKeywordParameter extends ApiLabel {
+      class LabelKeywordParameter extends ApiLabel, MkLabelKeywordParameter {
         string name;
 
         LabelKeywordParameter() { this = MkLabelKeywordParameter(name) }
@@ -834,23 +838,17 @@ module API {
       }
 
       /** A label that gets the return value of a function. */
-      class LabelReturn extends ApiLabel {
-        LabelReturn() { this = MkLabelReturn() }
-
+      class LabelReturn extends ApiLabel, MkLabelReturn {
         override string toString() { result = "getReturn()" }
       }
 
       /** A label that gets the subclass of a class. */
-      class LabelSubclass extends ApiLabel {
-        LabelSubclass() { this = MkLabelSubclass() }
-
+      class LabelSubclass extends ApiLabel, MkLabelSubclass {
         override string toString() { result = "getASubclass()" }
       }
 
       /** A label for awaited values. */
-      class LabelAwait extends ApiLabel {
-        LabelAwait() { this = MkLabelAwait() }
-
+      class LabelAwait extends ApiLabel, MkLabelAwait {
         override string toString() { result = "getAwaited()" }
       }
     }

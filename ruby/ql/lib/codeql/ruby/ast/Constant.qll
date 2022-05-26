@@ -105,6 +105,38 @@ class ConstantValue extends TConstantValue {
 
   /** Holds if this is the `nil` value. */
   predicate isNil() { this = TNil() }
+
+  /** Gets a (unique) serialized version of this value. */
+  final string serialize() {
+    result = this.getInt().toString()
+    or
+    exists(string res | res = this.getFloat().toString() |
+      if exists(res.indexOf(".")) then result = res else result = res + ".0"
+    )
+    or
+    exists(int numerator, int denominator |
+      this.isRational(numerator, denominator) and
+      result = numerator + "/" + denominator
+    )
+    or
+    exists(float real, float imaginary |
+      this.isComplex(real, imaginary) and
+      result = real + "+" + imaginary + "i"
+    )
+    or
+    result = "\"" + this.getString().replaceAll("\"", "\\\"") + "\""
+    or
+    result = ":" + this.getSymbol()
+    or
+    exists(string s, string flags |
+      this.isRegExpWithFlags(s, flags) and
+      result = "/" + s + "/" + flags
+    )
+    or
+    result = this.getBoolean().toString()
+    or
+    this.isNil() and result = "nil"
+  }
 }
 
 /** Provides different sub classes of `ConstantValue`. */

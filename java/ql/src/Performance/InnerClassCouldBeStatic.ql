@@ -130,7 +130,9 @@ predicate potentiallyStatic(InnerClass c) {
     )
   ) and
   // JUnit Nested test classes are required to be non-static.
-  not c.hasAnnotation("org.junit.jupiter.api", "Nested")
+  not c.hasAnnotation("org.junit.jupiter.api", "Nested") and
+  // There's no `static` in kotlin:
+  not c.getLocation().getFile().isKotlinSourceFile()
 }
 
 /**

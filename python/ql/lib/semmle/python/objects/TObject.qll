@@ -243,7 +243,7 @@ predicate class_method(
  * Holds if the literal corresponding to the control flow node `n` has class `cls`.
  *
  * Helper predicate for `literal_instantiation`. Prevents a bad join with
- * `PointsToContext::appliesTo` from occuring.
+ * `PointsToContext::appliesTo` from occurring.
  */
 pragma[nomagic]
 private predicate literal_node_class(ControlFlowNode n, ClassObjectInternal cls) {

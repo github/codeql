@@ -739,6 +739,24 @@ calls/calls.rb:
 #  356|       getStmt: [LocalVariableAccess] y
 #  357|       getStmt: [MethodCall] call to unknown_call
 #  357|         getReceiver: [SelfVariableAccess] self
+#  361|   getStmt: [MethodCall] call to empty?
+#  361|     getReceiver: [MethodCall] call to list
+#  361|       getReceiver: [SelfVariableAccess] self
+#  362|   getStmt: [MethodCall] call to empty?
+#  362|     getReceiver: [MethodCall] call to list
+#  362|       getReceiver: [SelfVariableAccess] self
+#  363|   getStmt: [MethodCall] call to empty?
+#  363|     getReceiver: [MethodCall] call to list
+#  363|       getReceiver: [SelfVariableAccess] self
+#  364|   getStmt: [MethodCall] call to bar
+#  364|     getReceiver: [MethodCall] call to foo
+#  364|       getReceiver: [SelfVariableAccess] self
+#  364|     getArgument: [IntegerLiteral] 1
+#  364|     getArgument: [IntegerLiteral] 2
+#  364|     getBlock: [BraceBlock] { ... }
+#  364|       getParameter: [SimpleParameter] x
+#  364|         getDefiningAccess: [LocalVariableAccess] x
+#  364|       getStmt: [LocalVariableAccess] x
 control/cases.rb:
 #    1| [Toplevel] cases.rb
 #    2|   getStmt: [AssignExpr] ... = ...
@@ -1216,6 +1234,7 @@ control/cases.rb:
 #  150|     getBranch: [InClause] in ... then ...
 #  150|       getPattern: [ReferencePattern] ^...
 #  150|         getExpr: [InstanceVariableAccess] @foo
+#  150|           getReceiver: [SelfVariableAccess] self
 #  151|     getBranch: [InClause] in ... then ...
 #  151|       getPattern: [ReferencePattern] ^...
 #  151|         getExpr: [ClassVariableAccess] @@foo
@@ -1228,6 +1247,7 @@ control/cases.rb:
 #  156|     getBranch: [InClause] in ... then ...
 #  156|       getPattern: [ReferencePattern] ^...
 #  156|         getExpr: [InstanceVariableAccess] @foo
+#  156|           getReceiver: [SelfVariableAccess] self
 #  157|     getBranch: [InClause] in ... then ...
 #  157|       getPattern: [ReferencePattern] ^...
 #  157|         getExpr: [AddExpr] ... + ...
@@ -1716,11 +1736,11 @@ escape_sequences/escapes.rb:
 literals/literals.rb:
 #    1| [Toplevel] literals.rb
 #    2|   getStmt: [NilLiteral] nil
-#    3|   getStmt: [NilLiteral] NIL
+#    3|   getStmt: [ConstantReadAccess] NIL
 #    4|   getStmt: [BooleanLiteral] false
-#    5|   getStmt: [BooleanLiteral] FALSE
+#    5|   getStmt: [ConstantReadAccess] FALSE
 #    6|   getStmt: [BooleanLiteral] true
-#    7|   getStmt: [BooleanLiteral] TRUE
+#    7|   getStmt: [ConstantReadAccess] TRUE
 #   10|   getStmt: [IntegerLiteral] 1234
 #   11|   getStmt: [IntegerLiteral] 5_678
 #   12|   getStmt: [IntegerLiteral] 0
@@ -1752,6 +1772,8 @@ literals/literals.rb:
 #   48|   getStmt: [RationalLiteral] 23r
 #   49|   getStmt: [RationalLiteral] 9.85r
 #   52|   getStmt: [ComplexLiteral] 2i
+#   53|   getStmt: [ComplexLiteral] 3.14i
+#   56|   getStmt: [ComplexLiteral] 1.2ri
 #   59|   getStmt: [StringLiteral] ""
 #   60|   getStmt: [StringLiteral] ""
 #   61|   getStmt: [StringLiteral] "hello"
@@ -2054,10 +2076,10 @@ literals/literals.rb:
 #  139|     getStmt: [RangeLiteral] _ .. _
 #  139|       getEnd: [IntegerLiteral] 1
 #  140|   getStmt: [ParenthesizedExpr] ( ... )
-#  140|     getStmt: [SubExpr] ... - ...
-#  140|       getAnOperand/getLeftOperand/getReceiver: [RangeLiteral] _ .. _
-#  140|         getBegin: [IntegerLiteral] 0
-#  140|       getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 1
+#  140|     getStmt: [RangeLiteral] _ .. _
+#  140|       getBegin: [IntegerLiteral] 0
+#  140|       getEnd: [UnaryMinusExpr] - ...
+#  140|         getAnOperand/getOperand/getReceiver: [IntegerLiteral] 1
 #  143|   getStmt: [SubshellLiteral] `ls -l`
 #  143|     getComponent: [StringTextComponent] ls -l
 #  144|   getStmt: [SubshellLiteral] `ls -l`
@@ -2751,9 +2773,11 @@ operations/operations.rb:
 #   87|   getStmt: [ClassDeclaration] X
 #   88|     getStmt: [AssignExpr] ... = ...
 #   88|       getAnOperand/getLeftOperand: [InstanceVariableAccess] @x
+#   88|         getReceiver: [SelfVariableAccess] self
 #   88|       getAnOperand/getRightOperand: [IntegerLiteral] 1
 #   89|     getStmt: [AssignAddExpr] ... += ...
 #   89|       getAnOperand/getLeftOperand: [InstanceVariableAccess] @x
+#   89|         getReceiver: [SelfVariableAccess] self
 #   89|       getAnOperand/getRightOperand: [IntegerLiteral] 2
 #   91|     getStmt: [AssignExpr] ... = ...
 #   91|       getAnOperand/getLeftOperand: [ClassVariableAccess] @@y
@@ -2990,6 +3014,16 @@ params/params.rb:
 #   83|       getReceiver: [LocalVariableAccess] array
 #   83|       getArgument: [BlockArgument] &...
 #   83|         getValue: [LocalVariableAccess] __synth__0
+#   86|   getStmt: [MethodCall] call to run_block
+#   86|     getReceiver: [SelfVariableAccess] self
+#   86|     getBlock: [BraceBlock] { ... }
+#   86|       getParameter: [SimpleParameter] x
+#   86|         getDefiningAccess: [LocalVariableAccess] x
+#   86|       getLocalVariable: [LocalVariableAccess] y
+#   86|       getLocalVariable: [LocalVariableAccess] z
+#   86|       getStmt: [MethodCall] call to puts
+#   86|         getReceiver: [SelfVariableAccess] self
+#   86|         getArgument: [LocalVariableAccess] x
 erb/template.html.erb:
 #   19| [Toplevel] template.html.erb
 #   19|   getStmt: [StringLiteral] "hello world"

@@ -554,7 +554,7 @@ module PrivateDjango {
 
       /** A `django.db.connection` is a PEP249 compliant DB connection. */
       class DjangoDbConnection extends PEP249::Connection::InstanceSource {
-        DjangoDbConnection() { this = connection().getAUse() }
+        DjangoDbConnection() { this = connection().getAnImmediateUse() }
       }
 
       // -------------------------------------------------------------------------
@@ -734,6 +734,38 @@ module PrivateDjango {
            */
           DataFlow::Node instance(API::Node modelClass) {
             instance(DataFlow::TypeTracker::end(), modelClass).flowsTo(result)
+          }
+        }
+
+        /**
+         * Provides models for the `django.db.models.FileField` class and `ImageField` subclasses.
+         *
+         * See
+         * - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.FileField
+         * - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.ImageField
+         */
+        module FileField {
+          /** Gets a reference to the `django.db.models.FileField` or  the `django.db.models.ImageField` class or any subclass. */
+          API::Node subclassRef() {
+            exists(string className | className in ["FileField", "ImageField"] |
+              // commonly used alias
+              result =
+                API::moduleImport("django")
+                    .getMember("db")
+                    .getMember("models")
+                    .getMember(className)
+                    .getASubclass*()
+              or
+              // actual class definition
+              result =
+                API::moduleImport("django")
+                    .getMember("db")
+                    .getMember("models")
+                    .getMember("fields")
+                    .getMember("files")
+                    .getMember(className)
+                    .getASubclass*()
+            )
           }
         }
 
@@ -2599,6 +2631,36 @@ module PrivateDjango {
     }
   }
 
+  /**
+   * A parameter that accepts the filename used to upload a file. This is the second
+   * parameter in functions used for the `upload_to` argument to a `FileField`.
+   *
+   * Note that the value this parameter accepts cannot contain a slash. Even when
+   * forcing the filename to contain a slash when sending the request, django does
+   * something like `input_filename.split("/")[-1]` (so other special characters still
+   * allowed). This also means that although the return value from `upload_to` is used
+   * to construct a path, path injection is not possible.
+   *
+   * See
+   *  - https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.FileField.upload_to
+   *  - https://docs.djangoproject.com/en/3.1/topics/http/file-uploads/#handling-uploaded-files-with-a-model
+   */
+  private class DjangoFileFieldUploadToFunctionFilenameParam extends RemoteFlowSource::Range,
+    DataFlow::ParameterNode {
+    DjangoFileFieldUploadToFunctionFilenameParam() {
+      exists(DataFlow::CallCfgNode call, DataFlow::Node uploadToArg, Function func |
+        this.getParameter() = func.getArg(1) and
+        call = DjangoImpl::DB::Models::FileField::subclassRef().getACall() and
+        uploadToArg in [call.getArg(2), call.getArgByName("upload_to")] and
+        uploadToArg = poorMansFunctionTracker(func)
+      )
+    }
+
+    override string getSourceType() {
+      result = "django filename parameter to function used in FileField.upload_to"
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // django.shortcuts.redirect
   // ---------------------------------------------------------------------------
@@ -2675,5 +2737,68 @@ module PrivateDjango {
             .getMember("request_logger")
             .getAnImmediateUse()
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Settings
+  // ---------------------------------------------------------------------------
+  /**
+   * A custom middleware stack
+   */
+  private class DjangoSettingsMiddlewareStack extends HTTP::Server::CsrfProtectionSetting::Range {
+    List list;
+
+    DjangoSettingsMiddlewareStack() {
+      this.asExpr() = list and
+      // we look for an assignment to the `MIDDLEWARE` setting
+      exists(DataFlow::Node mw |
+        mw.asVar().getName() = "MIDDLEWARE" and
+        DataFlow::localFlow(this, mw)
+      |
+        // To only include results where CSRF protection matters, we only care about CSRF
+        // protection when the django authentication middleware is enabled.
+        // Since an active session cookie is exactly what would allow an attacker to perform
+        // a CSRF attack.
+        // Notice that this does not ensure that this is not a FP, since the authentication
+        // middleware might be unused.
+        //
+        // This also strongly implies that `mw` is in fact a Django middleware setting and
+        // not just a variable named `MIDDLEWARE`.
+        list.getAnElt().(StrConst).getText() =
+          "django.contrib.auth.middleware.AuthenticationMiddleware"
+      )
+    }
+
+    override boolean getVerificationSetting() {
+      if
+        list.getAnElt().(StrConst).getText() in [
+            "django.middleware.csrf.CsrfViewMiddleware",
+            // see https://github.com/mozilla/django-session-csrf
+            "session_csrf.CsrfMiddleware"
+          ]
+      then result = true
+      else result = false
+    }
+  }
+
+  private class DjangoCsrfDecorator extends HTTP::Server::CsrfLocalProtectionSetting::Range {
+    string decoratorName;
+    Function function;
+
+    DjangoCsrfDecorator() {
+      decoratorName in ["csrf_protect", "csrf_exempt", "requires_csrf_token", "ensure_csrf_cookie"] and
+      this =
+        API::moduleImport("django")
+            .getMember("views")
+            .getMember("decorators")
+            .getMember("csrf")
+            .getMember(decoratorName)
+            .getAUse() and
+      this.asExpr() = function.getADecorator()
+    }
+
+    override Function getRequestHandler() { result = function }
+
+    override predicate csrfEnabled() { decoratorName in ["csrf_protect", "requires_csrf_token"] }
   }
 }

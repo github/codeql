@@ -1,14 +1,13 @@
 /** Provides classes and predicates related to handling APIs from external libraries. */
 
 private import csharp
+private import dotnet
 private import semmle.code.csharp.dispatch.Dispatch
-private import semmle.code.csharp.dataflow.DataFlow
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
-private import semmle.code.csharp.dataflow.TaintTracking
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
@@ -26,8 +25,8 @@ class TestLibrary extends RefType {
 /**
  * An external API from either the C# Standard Library or a 3rd party library.
  */
-class ExternalApi extends DataFlowDispatch::DataFlowCallable {
-  ExternalApi() { this.fromLibrary() }
+class ExternalApi extends DotNet::Callable {
+  ExternalApi() { this.isUnboundDeclaration() and this.fromLibrary() }
 
   /**
    * Gets the unbound type, name and parameter types of this API.
@@ -81,7 +80,8 @@ class ExternalApi extends DataFlowDispatch::DataFlowCallable {
 
   /** Holds if this API has a supported summary. */
   predicate hasSummary() {
-    this instanceof SummarizedCallable or
+    this instanceof SummarizedCallable
+    or
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
 

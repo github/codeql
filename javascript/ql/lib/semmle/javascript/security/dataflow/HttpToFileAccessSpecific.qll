@@ -3,7 +3,6 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 private import HttpToFileAccessCustomizations::HttpToFileAccess
 
 /**

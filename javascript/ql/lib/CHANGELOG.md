@@ -1,3 +1,29 @@
+## 0.1.2
+
+### Deprecated APIs
+
+* The `ReflectedXss`, `StoredXss`, `XssThroughDom`, and `ExceptionXss` modules from `Xss.qll` have been deprecated.  
+  Use the `Customizations.qll` file belonging to the query instead.
+
+### Minor Analysis Improvements
+
+* The [cash](https://github.com/fabiospampinato/cash) library is now modelled as an alias for JQuery.  
+  Sinks and sources from cash should now be handled by all XSS queries. 
+* Added the `Selection` api as a DOM text source in the `js/xss-through-dom` query.
+* The security queries now recognize drag and drop data as a source, enabling the queries to flag additional alerts.
+* The security queries now recognize ClipboardEvent function parameters as a source, enabling the queries to flag additional alerts.
+
+## 0.1.1
+
+## 0.1.0
+
+### Bug Fixes
+
+* The following predicates on `API::Node` have been changed so as not to include the receiver. The receiver should now only be accessed via `getReceiver()`.
+  - `getParameter(int i)` previously included the receiver when `i = -1`
+  - `getAParameter()` previously included the receiver
+  - `getLastParameter()` previously included the receiver for calls with no arguments
+
 ## 0.0.14
 
 ## 0.0.13

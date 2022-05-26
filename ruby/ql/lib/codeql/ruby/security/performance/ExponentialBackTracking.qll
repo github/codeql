@@ -51,7 +51,7 @@
  *     either a single character, a set of characters represented by a
  *     character class, or the set of all characters.
  *   * The product automaton is constructed lazily, starting with pair states
- *     `(q, q)` where `q` is a fork, and proceding along an over-approximate
+ *     `(q, q)` where `q` is a fork, and proceeding along an over-approximate
  *     step relation.
  *   * The over-approximate step relation allows transitions along pairs of
  *     abstract input symbols where the symbols have overlap in the characters they accept.

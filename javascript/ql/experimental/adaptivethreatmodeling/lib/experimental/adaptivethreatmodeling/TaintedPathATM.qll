@@ -125,6 +125,6 @@ class BarrierGuardNodeAsSanitizerGuardNode extends TaintTracking::LabeledSanitiz
   }
 
   override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-    sanitizes(outcome, e)
+    sanitizes(outcome, e) and exists(label)
   }
 }

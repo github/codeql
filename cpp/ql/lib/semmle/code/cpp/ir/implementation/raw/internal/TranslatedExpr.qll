@@ -11,7 +11,6 @@ private import TranslatedDeclarationEntry
 private import TranslatedElement
 private import TranslatedFunction
 private import TranslatedInitialization
-private import TranslatedFunction
 private import TranslatedStmt
 import TranslatedCall
 

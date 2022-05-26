@@ -1,7 +1,7 @@
 /**
  * @name Missing documentation for return value
  * @description The method returns a value, but the return value is not documented using
- *              a '<returns>' tag.
+ *              a `<returns>` tag.
  * @kind problem
  * @problem.severity recommendation
  * @precision low

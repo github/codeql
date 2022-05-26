@@ -4,7 +4,6 @@
 
 import javascript
 import DOMProperties
-import semmle.javascript.frameworks.xUnit
 
 /**
  * Holds if `e` appears in a syntactic context where its value is discarded.

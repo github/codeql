@@ -2,7 +2,7 @@
  * Provides models for working with the JSON-java library (package `org.json`).
  */
 
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 private class FlowModels extends SummaryModelCsv {
   override predicate row(string row) {

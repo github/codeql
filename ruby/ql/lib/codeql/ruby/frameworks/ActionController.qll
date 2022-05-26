@@ -11,7 +11,6 @@ private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 private import ActionView
 private import codeql.ruby.frameworks.ActionDispatch
-private import codeql.ruby.Concepts
 
 /**
  * A `ClassDeclaration` for a class that extends `ActionController::Base`.

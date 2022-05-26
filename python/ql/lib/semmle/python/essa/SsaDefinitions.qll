@@ -4,7 +4,6 @@
  */
 
 import python
-private import semmle.python.pointsto.Base
 private import semmle.python.internal.CachedStages
 
 cached

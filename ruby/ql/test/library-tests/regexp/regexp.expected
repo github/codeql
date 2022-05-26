@@ -108,7 +108,7 @@ term
 | regexp.rb:43:2:43:3 | \\b | RegExpSpecialChar |
 | regexp.rb:43:2:43:7 | \\b!a\\B | RegExpSequence |
 | regexp.rb:43:4:43:5 | !a | RegExpConstant,RegExpNormalChar |
-| regexp.rb:43:6:43:7 | \\B | RegExpSpecialChar |
+| regexp.rb:43:6:43:7 | \\B | RegExpNonWordBoundary |
 | regexp.rb:46:2:46:6 | (foo) | RegExpGroup |
 | regexp.rb:46:2:46:7 | (foo)* | RegExpStar |
 | regexp.rb:46:2:46:10 | (foo)*bar | RegExpSequence |

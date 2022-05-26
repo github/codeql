@@ -589,6 +589,13 @@ module DataFlow {
      * Gets the node where the property write happens in the control flow graph.
      */
     abstract ControlFlowNode getWriteNode();
+
+    /**
+     * If this installs an accessor on an object, as opposed to a regular property,
+     * gets the body of the accessor. `isSetter` is true if installing a setter, and
+     * false is installing a getter.
+     */
+    DataFlow::FunctionNode getInstalledAccessor(boolean isSetter) { none() }
   }
 
   /**
@@ -627,6 +634,17 @@ module DataFlow {
     override string getPropertyName() { result = prop.getName() }
 
     override Node getRhs() { result = valueNode(prop.(ValueProperty).getInit()) }
+
+    override DataFlow::FunctionNode getInstalledAccessor(boolean isSetter) {
+      (
+        prop instanceof PropertySetter and
+        isSetter = true
+        or
+        prop instanceof PropertyGetter and
+        isSetter = false
+      ) and
+      result = valueNode(prop.getInit())
+    }
 
     override ControlFlowNode getWriteNode() { result = prop }
   }
@@ -688,6 +706,17 @@ module DataFlow {
       result = valueNode(prop.getInit())
     }
 
+    override DataFlow::FunctionNode getInstalledAccessor(boolean isSetter) {
+      (
+        prop instanceof SetterMethodDefinition and
+        isSetter = true
+        or
+        prop instanceof GetterMethodDefinition and
+        isSetter = false
+      ) and
+      result = valueNode(prop.getInit())
+    }
+
     override ControlFlowNode getWriteNode() { result = prop }
   }
 
@@ -708,6 +737,17 @@ module DataFlow {
 
     override Node getRhs() {
       not prop instanceof AccessorMethodDefinition and
+      result = valueNode(prop.getInit())
+    }
+
+    override DataFlow::FunctionNode getInstalledAccessor(boolean isSetter) {
+      (
+        prop instanceof SetterMethodDefinition and
+        isSetter = true
+        or
+        prop instanceof GetterMethodDefinition and
+        isSetter = false
+      ) and
       result = valueNode(prop.getInit())
     }
 
