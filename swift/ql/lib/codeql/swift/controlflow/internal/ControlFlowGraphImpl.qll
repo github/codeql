@@ -270,7 +270,7 @@ module Stmts {
       this.firstElement(0, succ)
       or
       // Left-to-right evaluation of elements
-      succElement(_, pred, succ, c)
+      this.succElement(_, pred, succ, c)
     }
   }
 
