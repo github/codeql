@@ -38,3 +38,4 @@
 | types.swift:21:10:21:10 | f | (Int) -> Int |
 | types.swift:21:10:21:13 | call to ... | Int |
 | types.swift:21:12:21:12 | x | Int |
+| types.swift:25:10:25:10 | 42 | Int |

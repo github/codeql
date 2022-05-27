@@ -63,6 +63,7 @@ AnyFunctionType:
   param_types: Type*
   param_labels: string*
   is_throwing: predicate
+  is_async: predicate
 
 AnyGenericType:
   _extends: Type
