@@ -6,6 +6,7 @@ import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
+import org.jetbrains.kotlin.backend.jvm.ir.getJvmNameFromAnnotation
 import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.descriptors.*
@@ -1268,9 +1269,22 @@ open class KotlinUsesExtractor(
 
     fun useValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>?): Label<out DbParam> =
         tw.getLabelFor(getValueParameterLabel(vp, parent))
+    fun isDirectlyExposedCompanionObjectField(f: IrField) =
+        f.hasAnnotation(FqName("kotlin.jvm.JvmField")) ||
+        f.correspondingPropertySymbol?.owner?.let {
+            it.isConst || it.isLateinit
+        } ?: false
+
+    fun getFieldParent(f: IrField) =
+        f.parentClassOrNull?.let {
+            if (it.isCompanion && isDirectlyExposedCompanionObjectField(f))
+                it.parent
+            else
+                null
+        } ?: f.parent
 
     fun getFieldLabel(f: IrField): String {
-        val parentId = useDeclarationParent(f.parent, false)
+        val parentId = useDeclarationParent(getFieldParent(f), false)
         return "@\"field;{$parentId};${f.name.asString()}\""
     }
 
