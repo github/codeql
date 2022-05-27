@@ -9,4 +9,6 @@ class SwitchStmt extends SwitchStmtBase {
       not exists(this.getCase(i + 1))
     )
   }
+
+  override string toString() { result = "switch " + this.getExpr().toString() + " { ... }" }
 }
