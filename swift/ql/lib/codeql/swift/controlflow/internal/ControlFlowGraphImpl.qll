@@ -476,7 +476,7 @@ module Stmts {
         or
         // Flow from last element of variable declaration ...
         astLast(ast.getPattern().getFullyUnresolved(), pred, c) and
-        c instanceof SimpleCompletion and
+        c instanceof NormalCompletion and
         (
           // ... to first element of loop body if no 'where' clause exists,
           astFirst(ast.getBody(), succ) and
