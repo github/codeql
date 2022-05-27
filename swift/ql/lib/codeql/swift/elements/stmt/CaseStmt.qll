@@ -9,4 +9,6 @@ class CaseStmt extends CaseStmtBase {
       not exists(this.getLabel(i + 1))
     )
   }
+
+  override string toString() { result = "case ..." }
 }

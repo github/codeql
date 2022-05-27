@@ -1,7 +1,11 @@
 
 typedef unsigned long size_t;
 
-void SYSC_SOMESYSTEMCALL(void *param);
+#define SYSCALL_DEFINE(name, ...) \
+	void do_sys_##name(); \
+	void sys_##name(...) { do_sys_##name(); } \
+	void do_sys_##name()
+SYSCALL_DEFINE(somesystemcall, void *param) {};
 
 bool user_access_begin_impl(const void *where, size_t sz);
 void user_access_end_impl();
@@ -13,14 +17,14 @@ void unsafe_put_user_impl(int what, const void *where, size_t sz);
 
 void test1(int p)
 {
-	SYSC_SOMESYSTEMCALL(&p);
+	sys_somesystemcall(&p);
 
 	unsafe_put_user(123, &p); // BAD
 }
 
 void test2(int p)
 {
-	SYSC_SOMESYSTEMCALL(&p);
+	sys_somesystemcall(&p);
 
 	if (user_access_begin(&p, sizeof(p)))
 	{
@@ -34,16 +38,16 @@ void test3()
 {
 	int v;
 
-	SYSC_SOMESYSTEMCALL(&v);
+	sys_somesystemcall(&v);
 
-	unsafe_put_user(123, &v); // BAD [NOT DETECTED]
+	unsafe_put_user(123, &v); // BAD
 }
 
 void test4()
 {
 	int v;
 
-	SYSC_SOMESYSTEMCALL(&v);
+	sys_somesystemcall(&v);
 
 	if (user_access_begin(&v, sizeof(v)))
 	{
@@ -62,16 +66,16 @@ void test5()
 {
 	data myData;
 
-	SYSC_SOMESYSTEMCALL(&myData);
+	sys_somesystemcall(&myData);
 
-	unsafe_put_user(123, &(myData.x)); // BAD [NOT DETECTED]
+	unsafe_put_user(123, &(myData.x)); // BAD
 }
 
 void test6()
 {
 	data myData;
 
-	SYSC_SOMESYSTEMCALL(&myData);
+	sys_somesystemcall(&myData);
 
 	if (user_access_begin(&myData, sizeof(myData)))
 	{

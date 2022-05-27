@@ -3,6 +3,7 @@
 private import swift
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl
+private import internal.ControlFlowElements
 private import CfgNodes
 private import SuccessorTypes
 
@@ -198,8 +199,18 @@ private module JoinBlockPredecessors {
 
   private predicate idOf(AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
+  private AstNode projctToAst(ControlFlowElement n) {
+    result = n.asAstNode()
+    or
+    isPropertyGetterElement(n, _, result)
+    or
+    isPropertySetterElement(n, _, result)
+    or
+    isPropertyObserverElement(n, _, result)
+  }
+
   int getId(JoinBlockPredecessor jbp) {
-    idOf(jbp.getFirstNode().(AstCfgNode).getNode(), result)
+    idOf(projctToAst(jbp.getFirstNode().(AstCfgNode).getNode()), result)
     or
     idOf(jbp.(EntryBasicBlock).getScope(), result)
   }

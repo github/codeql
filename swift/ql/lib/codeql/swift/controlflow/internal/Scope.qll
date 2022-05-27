@@ -16,7 +16,7 @@ private module Scope {
   class TypeRange = Callable::TypeRange;
 
   class Range extends AstNode, TypeRange {
-    Range getOuterScope() { result = scopeOf(this) }
+    Range getOuterScope() { result = scopeOfAst(this) }
   }
 }
 
@@ -235,14 +235,14 @@ private module Cached {
   }
 
   cached
-  AstNode getParent(AstNode ast) { getChild(result, _) = ast }
+  AstNode getParentOfAst(AstNode ast) { getChild(result, _) = ast }
 }
 
 /** Gets the enclosing scope of a node */
 cached
-AstNode scopeOf(AstNode n) {
-  exists(AstNode p | p = getParent(n) |
-    if p instanceof Scope then p = result else result = scopeOf(p)
+AstNode scopeOfAst(AstNode n) {
+  exists(AstNode p | p = getParentOfAst(n) |
+    if p instanceof Scope then p = result else result = scopeOfAst(p)
   )
 }
 

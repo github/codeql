@@ -211,6 +211,14 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
       }
       ++i;
     }
+
+    if (type->isThrowing()) {
+      dispatcher_.emit(AnyFunctionTypeIsThrowingTrap{label});
+    }
+
+    if (type->isAsync()) {
+      dispatcher_.emit(AnyFunctionTypeIsAsyncTrap{label});
+    }
   }
 
   void emitBoundGenericType(swift::BoundGenericType* type, TrapLabel<BoundGenericTypeTag> label) {
