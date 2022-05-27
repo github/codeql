@@ -1551,6 +1551,18 @@ module Exprs {
     }
   }
 
+  private class OpenExistentialTree extends AstStandardPostOrderTree {
+    override OpenExistentialExpr ast;
+
+    override ControlFlowElement getChildElement(int i) {
+      i = 0 and
+      result.asAstNode() = ast.getExistential().getFullyConverted()
+      or
+      i = 1 and
+      result.asAstNode() = ast.getSubExpr().getFullyConverted()
+    }
+  }
+
   module Conversions {
     class ConversionOrIdentity = @identity_expr or @explicit_cast_expr or @implicit_conversion_expr;
 
