@@ -176,6 +176,11 @@ any_function_type_is_throwing(
   int id: @any_function_type ref
 );
 
+#keyset[id]
+any_function_type_is_async(
+  int id: @any_function_type ref
+);
+
 @any_generic_type =
   @nominal_or_bound_generic_nominal_type
 | @unbound_generic_type
