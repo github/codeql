@@ -207,29 +207,70 @@ module Stmts {
     override FailStmt ast;
   }
 
-  private class StmtConditionTree extends AstPostOrderTree {
+  private class StmtConditionTree extends AstPreOrderTree {
     override StmtCondition ast;
 
     final override predicate propagatesAbnormal(ControlFlowElement child) {
-      child.asAstNode() = ast.getAnElement().getUnderlyingCondition()
+      child.asAstNode() = ast.getAnElement().getInitializer().getFullyConverted()
+      or
+      child.asAstNode() = ast.getAnElement().getPattern().getFullyUnresolved()
+      or
+      child.asAstNode() = ast.getAnElement().getBoolean().getFullyConverted()
     }
 
-    final override predicate first(ControlFlowElement first) {
-      astFirst(ast.getFirstElement().getUnderlyingCondition().getFullyUnresolved(), first)
+    predicate firstElement(int i, ControlFlowElement first) {
+      // If there is an initializer in the first element, evaluate that first
+      astFirst(ast.getElement(i).getInitializer().getFullyConverted(), first)
+      or
+      // Otherwise, the first element is a boolean condition.
+      not exists(ast.getElement(i).getInitializer()) and
+      astFirst(ast.getElement(i).getBoolean().getFullyConverted(), first)
+    }
+
+    predicate succElement(int i, ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Evaluate the pattern after the initializer
+      astLast(ast.getElement(i).getInitializer().getFullyConverted(), pred, c) and
+      c instanceof NormalCompletion and
+      astFirst(ast.getElement(i).getPattern().getFullyUnresolved(), succ)
+      or
+      (
+        // After evaluating the pattern
+        astLast(ast.getElement(i).getPattern().getFullyUnresolved(), pred, c)
+        or
+        // ... or the boolean ...
+        astLast(ast.getElement(i).getBoolean().getFullyConverted(), pred, c)
+      ) and
+      // We evaluate the next element
+      c instanceof NormalCompletion and
+      this.firstElement(i + 1, succ)
+    }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      // Stop if a boolean check failed
+      astLast(ast.getAnElement().getBoolean().getFullyConverted(), last, c) and
+      c instanceof FalseCompletion
+      or
+      // Stop is a pattern match failed
+      astLast(ast.getAnElement().getPattern().getFullyUnresolved(), last, c) and
+      not c.(MatchingCompletion).isMatch()
+      or
+      // Stop if we sucesfully evaluated all the conditionals
+      (
+        astLast(ast.getLastElement().getBoolean().getFullyConverted(), last, c)
+        or
+        astLast(ast.getLastElement().getPattern().getFullyUnresolved(), last, c)
+      ) and
+      c instanceof NormalCompletion
     }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      // Left-to-right evaluation of elements
-      exists(int i |
-        astLast(ast.getElement(i).getUnderlyingCondition().getFullyUnresolved(), pred, c) and
-        c instanceof NormalCompletion and
-        astFirst(ast.getElement(i + 1).getUnderlyingCondition().getFullyUnresolved(), succ)
-      )
+      // Pre-order: Flow from this ast node to the first condition
+      pred.asAstNode() = ast and
+      c instanceof SimpleCompletion and
+      this.firstElement(0, succ)
       or
-      // Post-order: flow from thrown expression to the throw statement.
-      astLast(ast.getLastElement().getUnderlyingCondition().getFullyUnresolved(), pred, c) and
-      c instanceof NormalCompletion and
-      succ.asAstNode() = ast
+      // Left-to-right evaluation of elements
+      succElement(_, pred, succ, c)
     }
   }
 
@@ -245,7 +286,7 @@ module Stmts {
     final override predicate last(ControlFlowElement last, Completion c) {
       // Condition exits with a false completion and there is no `else` branch
       astLast(ast.getCondition().getFullyUnresolved(), last, c) and
-      c instanceof FalseCompletion and
+      c instanceof FalseOrNonMatchCompletion and
       not exists(ast.getElse())
       or
       // Then/Else branch exits with any completion
@@ -261,10 +302,12 @@ module Stmts {
       astLast(ast.getCondition().getFullyUnresolved(), pred, c) and
       (
         // Flow from last element of condition to first element of then branch
-        c instanceof TrueCompletion and astFirst(ast.getThen(), succ)
+        c instanceof TrueOrMatchCompletion and
+        astFirst(ast.getThen(), succ)
         or
         // Flow from last element of condition to first element of else branch
-        c instanceof FalseCompletion and astFirst(ast.getElse(), succ)
+        c instanceof FalseOrNonMatchCompletion and
+        astFirst(ast.getElse(), succ)
       )
     }
   }
@@ -284,7 +327,7 @@ module Stmts {
       or
       // Exit when a condition is true
       astLast(ast.getCondition().getFullyUnresolved(), last, c) and
-      c instanceof TrueCompletion
+      c instanceof TrueOrMatchCompletion
     }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
@@ -295,7 +338,7 @@ module Stmts {
       or
       // Flow to the body when the condition is false
       astLast(ast.getCondition().getFullyUnresolved(), pred, c) and
-      c instanceof FalseCompletion and
+      c instanceof FalseOrNonMatchCompletion and
       astFirst(ast.getBody(), succ)
     }
   }
@@ -322,7 +365,7 @@ module Stmts {
       final override predicate last(ControlFlowElement last, Completion c) {
         // Condition exits with a false completion
         last(this.getCondition(), last, c) and
-        c instanceof FalseCompletion
+        c instanceof FalseOrNonMatchCompletion
         or
         // Body exits with a break completion
         exists(BreakCompletion break |
@@ -339,7 +382,7 @@ module Stmts {
 
       override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
         last(this.getCondition(), pred, c) and
-        c instanceof TrueCompletion and
+        c instanceof TrueOrMatchCompletion and
         first(this.getBody(), succ)
         or
         last(this.getBody(), pred, c) and
@@ -484,9 +527,8 @@ module Stmts {
       astLast(ast.getExpr().getFullyConverted(), last, c) and
       c instanceof NormalCompletion
       or
-      // A statement exits (TODO: with a `break` completion?)
-      astLast(ast.getACase().getBody(), last, c) and
-      c instanceof NormalCompletion
+      // A statement exits
+      astLast(ast.getACase().getBody(), last, c)
       // Note: There's no need for an exit with a non-match as
       // Swift's switch statements are always exhaustive.
     }
@@ -849,7 +891,7 @@ module Patterns {
       or
       // Or we got to the some/none check and it failed
       n.asAstNode() = ast and
-      not c.(MatchingCompletion).isMatch()
+      c.(MatchingCompletion).isNonMatch()
     }
 
     override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {

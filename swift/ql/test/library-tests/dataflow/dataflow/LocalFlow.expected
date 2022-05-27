@@ -1,5 +1,4 @@
 | file://:0:0:0:0 | Phi | test.swift:15:15:15:15 | t2 |
-| file://:0:0:0:0 | Phi | test.swift:21:15:21:15 | t1 |
 | test.swift:6:9:6:13 | WriteDef | test.swift:7:15:7:15 | t1 |
 | test.swift:7:15:7:15 | t1 | test.swift:8:10:8:10 | t1 |
 | test.swift:8:5:8:10 | WriteDef | test.swift:10:15:10:15 | t2 |
@@ -8,7 +7,5 @@
 | test.swift:9:15:9:15 | t1 | test.swift:11:8:11:8 | t1 |
 | test.swift:12:9:12:14 | WriteDef | test.swift:13:19:13:19 | t2 |
 | test.swift:12:14:12:14 | 0 | test.swift:12:9:12:14 | WriteDef |
-| test.swift:15:15:15:15 | t2 | test.swift:19:14:19:14 | t2 |
+| test.swift:17:5:17:10 | WriteDef | test.swift:21:15:21:15 | t1 |
 | test.swift:17:10:17:10 | 0 | test.swift:17:5:17:10 | WriteDef |
-| test.swift:19:14:19:14 | t2 | test.swift:19:9:19:14 | WriteDef |
-| test.swift:19:14:19:14 | t2 | test.swift:19:14:19:14 | t2 |

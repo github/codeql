@@ -119,7 +119,7 @@ private predicate inBooleanContext(ControlFlowElement n) {
 }
 
 private predicate astInBooleanContext(AstNode n) {
-  n = any(ConditionElement condElem).getFullyUnresolved()
+  n = any(ConditionElement condElem).getBoolean().getFullyUnresolved()
   or
   n = any(StmtCondition stmtCond).getFullyUnresolved()
   or
@@ -160,9 +160,7 @@ private predicate astInBooleanContext(AstNode n) {
  * Holds if a normal completion of `ast` must be a matching completion. Thats is,
  * whether `ast` determines a match in a `switch` or `catch` statement.
  */
-private predicate mustHaveMatchingCompletion(AstNode ast) {
-  switchMatching(_, _, ast) or catchMatching(_, _, ast)
-}
+private predicate mustHaveMatchingCompletion(AstNode ast) { ast instanceof Pattern }
 
 /**
  * Holds if `ast` must have a matching completion, and `e` is the fully converted
@@ -180,30 +178,11 @@ private predicate mustHaveMatchingCompletion(Expr e, AstNode ast) {
  * case `c`, belonging to `switch` statement `switch`.
  */
 private predicate switchMatching(SwitchStmt switch, CaseStmt c, AstNode ast) {
-  switchMatchingCaseLabelItem(switch, c, ast)
-  or
-  switchMatchingPattern(switch, c, ast)
-}
-
-/**
- * Holds if `cli` a top-level pattern of case `c`, belonging
- * to `switch` statement `switch`.
- */
-private predicate switchMatchingCaseLabelItem(SwitchStmt switch, CaseStmt c, CaseLabelItem cli) {
   switch.getACase() = c and
-  c.getALabel() = cli
-}
-
-/**
- * Holds if `pattern` is a sub-pattern of the pattern in case
- * statement `c` of the `switch` statement `switch`.
- */
-private predicate switchMatchingPattern(SwitchStmt s, CaseStmt c, Pattern pattern) {
-  s.getACase() = c and
-  exists(CaseLabelItem cli | switchMatching(s, c, cli) |
-    cli.getPattern() = pattern
+  (
+    c.getALabel() = ast
     or
-    isSubPattern+(cli.getPattern(), pattern)
+    isSubPattern+(c.getALabel().getPattern(), ast)
   )
 }
 
@@ -453,6 +432,34 @@ class MatchingCompletion extends ConditionalCompletion, TMatchingCompletion {
   override MatchingSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
   override string toString() { if this.isMatch() then result = "match" else result = "no-match" }
+}
+
+class FalseOrNonMatchCompletion instanceof ConditionalCompletion {
+  FalseOrNonMatchCompletion() {
+    this instanceof FalseCompletion
+    or
+    this.(MatchingCompletion).isNonMatch()
+  }
+
+  string toString() {
+    result = this.(FalseCompletion).toString()
+    or
+    result = this.(MatchingCompletion).toString()
+  }
+}
+
+class TrueOrMatchCompletion instanceof ConditionalCompletion {
+  TrueOrMatchCompletion() {
+    this instanceof TrueCompletion
+    or
+    this.(MatchingCompletion).isMatch()
+  }
+
+  string toString() {
+    result = this.(TrueCompletion).toString()
+    or
+    result = this.(MatchingCompletion).toString()
+  }
 }
 
 class FallthroughCompletion extends Completion, TFallthroughCompletion {
