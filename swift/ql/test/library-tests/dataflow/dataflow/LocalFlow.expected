@@ -1,0 +1,14 @@
+| file://:0:0:0:0 | Phi | test.swift:15:15:15:15 | DeclRefExpr |
+| file://:0:0:0:0 | Phi | test.swift:21:15:21:15 | DeclRefExpr |
+| test.swift:6:9:6:13 | WriteDef | test.swift:7:15:7:15 | DeclRefExpr |
+| test.swift:7:15:7:15 | DeclRefExpr | test.swift:8:10:8:10 | DeclRefExpr |
+| test.swift:8:5:8:10 | WriteDef | test.swift:10:15:10:15 | DeclRefExpr |
+| test.swift:8:10:8:10 | DeclRefExpr | test.swift:8:5:8:10 | WriteDef |
+| test.swift:8:10:8:10 | DeclRefExpr | test.swift:9:15:9:15 | DeclRefExpr |
+| test.swift:9:15:9:15 | DeclRefExpr | test.swift:11:8:11:8 | DeclRefExpr |
+| test.swift:12:9:12:14 | WriteDef | test.swift:13:19:13:19 | DeclRefExpr |
+| test.swift:12:14:12:14 | IntegerLiteralExpr | test.swift:12:9:12:14 | WriteDef |
+| test.swift:15:15:15:15 | DeclRefExpr | test.swift:19:14:19:14 | DeclRefExpr |
+| test.swift:17:10:17:10 | IntegerLiteralExpr | test.swift:17:5:17:10 | WriteDef |
+| test.swift:19:14:19:14 | DeclRefExpr | test.swift:19:9:19:14 | WriteDef |
+| test.swift:19:14:19:14 | DeclRefExpr | test.swift:19:14:19:14 | DeclRefExpr |
