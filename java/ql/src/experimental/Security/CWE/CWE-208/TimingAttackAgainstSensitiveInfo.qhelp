@@ -23,12 +23,12 @@ independent of the input.
  Use <code>MessageDigest.isEqual()</code> method to securely check the value of sensitive info.
 If this method is used, then the calculation time depends only on the length of input byte arrays,
 and does not depend on the contents of the arrays. 
- Or you can done a function by yourself that validate an input safely.
+ Unlike <code>Arrays.equals()</code> is a fail fast method, If the first byte is not equal, it will return immediately.
 </p>
 </recommendation>
 <example>
 <p>
-  The following example uses <code>String.equals()</code> method for validating a password.
+  The following example uses <code>String.equals()</code> which is a fail fast method for validating a password.
 This method implements a non-constant-time algorithm:
 </p>
 <sample src="UnsafeComparison.java" />
