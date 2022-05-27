@@ -36,13 +36,11 @@ class Configuration extends DataFlow::Configuration {
 
 private class TypeOfTestBarrier extends DataFlow::BarrierGuardNode, DataFlow::ValueNode {
   override EqualityTest astNode;
-  private Expr operand;
 
-  TypeOfTestBarrier() { astNode.getAnOperand().(TypeofExpr).getOperand() = operand }
+  TypeOfTestBarrier() { TaintTracking::isTypeofGuard(astNode, _, _) }
 
   override predicate blocks(boolean outcome, Expr e) {
-    e = operand and
-    if astNode.getAnOperand().getStringValue() = ["string", "object"]
+    if TaintTracking::isTypeofGuard(astNode, e, ["string", "object"])
     then outcome = [true, false] // separation between string/array removes type confusion in both branches
     else outcome = astNode.getPolarity() // block flow to branch where value is neither string nor array
   }
