@@ -37,7 +37,6 @@ cfg.swift:
 #-----|  -> call to ==
 
 #   15| call to ==
-#-----| exception -> exit isZero (normal)
 #-----|  -> x
 
 #   15| 0
@@ -71,7 +70,6 @@ cfg.swift:
 #-----|  -> call to >=
 
 #   18| call to >=
-#-----| exception -> exit mightThrow (normal)
 #-----|  -> x
 
 #   18| 0
@@ -116,7 +114,6 @@ cfg.swift:
 #-----|  -> call to <=
 
 #   21| call to <=
-#-----| exception -> exit mightThrow (normal)
 #-----|  -> x
 
 #   21| 0
@@ -157,7 +154,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #   22| call to +
-#-----| exception -> exit mightThrow (normal)
 #-----|  -> x
 
 #   22| 1
@@ -191,7 +187,6 @@ cfg.swift:
 #-----|  -> Did not throw.
 
 #   29| call to print
-#-----| exception -> case ...
 
 #   29| default separator
 #-----|  -> default terminator
@@ -290,7 +285,6 @@ cfg.swift:
 #-----|  -> MyError
 
 #   38| call to print
-#-----| exception -> exit tryCatch (normal)
 #-----|  -> 0
 
 #   38| default separator
@@ -332,7 +326,6 @@ cfg.swift:
 #-----|  -> "..."
 
 #   40| call to print
-#-----| exception -> exit tryCatch (normal)
 #-----|  -> 0
 
 #   40| default separator
@@ -401,7 +394,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #   53| call to +
-#-----| exception -> exit f (normal)
 #-----|  -> x
 
 #   53| y
@@ -442,7 +434,6 @@ cfg.swift:
 #-----|  -> 
 
 #   65| call to createClosure1
-#-----| exception -> exit callClosures (normal)
 #-----|  -> call to ...
 
 #   65| call to ...
@@ -464,7 +455,6 @@ cfg.swift:
 #-----|  -> 0
 
 #   66| call to createClosure2
-#-----| exception -> exit callClosures (normal)
 #-----|  -> 10
 
 #   66| call to ...
@@ -489,7 +479,6 @@ cfg.swift:
 #-----|  -> 0
 
 #   67| call to createClosure3
-#-----| exception -> exit callClosures (normal)
 #-----|  -> 10
 
 #   67| call to ...
@@ -566,7 +555,6 @@ cfg.swift:
 #-----|  -> 42
 
 #   76| call to maybeParseInt
-#-----| exception -> exit forceAndBackToOptional (normal)
 #-----|  -> ...!
 
 #   76| ...!
@@ -588,7 +576,6 @@ cfg.swift:
 #-----|  -> 42
 
 #   77| call to maybeParseInt
-#-----| exception -> exit forceAndBackToOptional (normal)
 #-----|  -> var ... = ...
 
 #   77| 42
@@ -616,7 +603,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #   78| call to +
-#-----| exception -> exit forceAndBackToOptional (normal)
 #-----|  -> nBang
 
 #   78| (Int?) ...
@@ -672,7 +658,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #   85| call to +
-#-----| exception -> exit add (normal)
 #-----|  -> a
 
 #   85| 1
@@ -821,7 +806,6 @@ cfg.swift:
 #-----|  -> call to getMyInt
 
 #  113| call to getMyInt
-#-----| exception -> exit testMemberRef (normal)
 #-----|  -> call to ...
 
 #  113| call to ...
@@ -846,7 +830,6 @@ cfg.swift:
 #-----|  -> call to getMyInt
 
 #  114| call to getMyInt
-#-----| exception -> exit testMemberRef (normal)
 #-----|  -> call to ...
 
 #  114| call to ...
@@ -903,7 +886,6 @@ cfg.swift:
 #-----|  -> call to getMyInt
 
 #  118| call to getMyInt
-#-----| exception -> exit testMemberRef (normal)
 #-----|  -> call to ...
 
 #  118| call to ...
@@ -928,7 +910,6 @@ cfg.swift:
 #-----|  -> call to getMyInt
 
 #  119| call to getMyInt
-#-----| exception -> exit testMemberRef (normal)
 #-----|  -> call to ...
 
 #  119| call to ...
@@ -994,7 +975,6 @@ cfg.swift:
 #-----|  -> (C) ...
 
 #  123| call to getMyInt
-#-----| exception -> exit testMemberRef (normal)
 #-----|  -> call to ...
 
 #  123| call to ...
@@ -1022,7 +1002,6 @@ cfg.swift:
 #-----|  -> (C) ...
 
 #  124| call to getMyInt
-#-----| exception -> exit testMemberRef (normal)
 #-----|  -> call to ...
 
 #  124| call to ...
@@ -1085,7 +1064,6 @@ cfg.swift:
 #-----|  -> call to getMyInt
 
 #  128| call to getMyInt
-#-----| exception -> exit testMemberRef (normal)
 #-----|  -> call to ...
 
 #  128| call to ...
@@ -1110,7 +1088,6 @@ cfg.swift:
 #-----|  -> call to getMyInt
 
 #  129| call to getMyInt
-#-----| exception -> exit testMemberRef (normal)
 #-----|  -> call to ...
 
 #  129| call to ...
@@ -1185,7 +1162,6 @@ cfg.swift:
 #-----|  -> call to getMyInt
 
 #  133| call to getMyInt
-#-----| exception -> exit testMemberRef (normal)
 #-----|  -> call to ...
 
 #  133| (Int?) ...
@@ -1216,7 +1192,6 @@ cfg.swift:
 #-----|  -> call to getMyInt
 
 #  134| call to getMyInt
-#-----| exception -> exit testMemberRef (normal)
 #-----|  -> call to ...
 
 #  134| (Int?) ...
@@ -1234,11 +1209,6 @@ cfg.swift:
 
 #  137| enter patterns
 #-----|  -> ...
-
-#  137| exit patterns
-
-#  137| exit patterns (normal)
-#-----|  -> exit patterns
 
 #  138| for ... in ... { ... }
 #-----| non-empty -> _
@@ -1260,7 +1230,6 @@ cfg.swift:
 #-----|  -> call to ...
 
 #  138| call to ...
-#-----| exception -> exit patterns (normal)
 #-----|  -> 0
 
 #  138| 10
@@ -1495,7 +1464,6 @@ cfg.swift:
 #-----|  -> call to >
 
 #  182| call to >
-#-----| exception -> exit m1 (normal)
 #-----|  -> x
 
 #  182| 2
@@ -1505,7 +1473,7 @@ cfg.swift:
 #-----|  -> x is greater than 2
 
 #  183| call to print
-#-----| exception -> exit m1 (normal)
+#-----|  -> exit m1 (normal)
 
 #  183| default separator
 #-----|  -> default terminator
@@ -1540,13 +1508,16 @@ cfg.swift:
 #-----| true -> { ... }
 
 #  185| ... call to && ...
+#-----| exception -> exit m1 (normal)
 #-----| false -> ... call to && ...
 #-----| true -> { ... }
 
 #  185| [false] ... call to && ...
+#-----| exception -> exit m1 (normal)
 #-----| false -> ... call to && ...
 
 #  185| ... call to && ...
+#-----| exception -> exit m1 (normal)
 #-----|  -> StmtCondition
 
 #  185| StmtCondition
@@ -1560,7 +1531,6 @@ cfg.swift:
 #-----|  -> call to <=
 
 #  185| call to <=
-#-----| exception -> exit m1 (normal)
 #-----|  -> x
 
 #  185| 2
@@ -1585,7 +1555,6 @@ cfg.swift:
 #-----|  -> call to >
 
 #  185| call to >
-#-----| exception -> exit m1 (normal)
 #-----|  -> x
 
 #  185| 0
@@ -1616,7 +1585,6 @@ cfg.swift:
 #-----|  -> call to ==
 
 #  185| call to ==
-#-----| exception -> exit m1 (normal)
 #-----|  -> x
 
 #  185| 5
@@ -1626,7 +1594,7 @@ cfg.swift:
 #-----|  -> x is 1
 
 #  186| call to print
-#-----| exception -> exit m1 (normal)
+#-----|  -> exit m1 (normal)
 
 #  186| default separator
 #-----|  -> default terminator
@@ -1654,7 +1622,7 @@ cfg.swift:
 #-----|  -> I can't guess the number
 
 #  189| call to print
-#-----| exception -> exit m1 (normal)
+#-----|  -> exit m1 (normal)
 
 #  189| default separator
 #-----|  -> default terminator
@@ -1739,7 +1707,6 @@ cfg.swift:
 #-----|  -> call to <
 
 #  201| call to <
-#-----| exception -> exit m3 (normal)
 #-----|  -> x
 
 #  201| 0
@@ -1758,7 +1725,6 @@ cfg.swift:
 #-----|  -> call to -
 
 #  202| call to -
-#-----| exception -> exit m3 (normal)
 #-----|  -> x
 
 #  202| call to ...
@@ -1793,7 +1759,6 @@ cfg.swift:
 #-----|  -> call to >
 
 #  203| call to >
-#-----| exception -> exit m3 (normal)
 #-----|  -> x
 
 #  203| 10
@@ -1821,7 +1786,6 @@ cfg.swift:
 #-----|  -> call to -
 
 #  204| call to -
-#-----| exception -> exit m3 (normal)
 #-----|  -> x
 
 #  204| 1
@@ -1951,7 +1915,7 @@ cfg.swift:
 #-----|  -> Impossible
 
 #  225| call to print
-#-----| exception -> exit constant_condition (normal)
+#-----|  -> exit constant_condition (normal)
 
 #  225| default separator
 #-----|  -> default terminator
@@ -1997,7 +1961,6 @@ cfg.swift:
 #-----|  -> true
 
 #  231| call to print
-#-----| exception -> exit empty_else (normal)
 #-----|  -> print
 
 #  231| default separator
@@ -2029,7 +1992,7 @@ cfg.swift:
 #-----|  -> done
 
 #  234| call to print
-#-----| exception -> exit empty_else (normal)
+#-----|  -> exit empty_else (normal)
 
 #  234| default separator
 #-----|  -> default terminator
@@ -2076,6 +2039,7 @@ cfg.swift:
 #-----| false -> { ... }
 
 #  238| ... call to || ...
+#-----| exception -> exit disjunct (normal)
 #-----|  -> (...)
 
 #  238| b2
@@ -2091,7 +2055,7 @@ cfg.swift:
 #-----|  -> b1 or b2
 
 #  239| call to print
-#-----| exception -> exit disjunct (normal)
+#-----|  -> exit disjunct (normal)
 
 #  239| default separator
 #-----|  -> default terminator
@@ -2145,7 +2109,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #  244| call to +
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  244| b
@@ -2173,7 +2136,6 @@ cfg.swift:
 #-----|  -> call to -
 
 #  245| call to -
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  245| b
@@ -2201,7 +2163,6 @@ cfg.swift:
 #-----|  -> call to *
 
 #  246| call to *
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  246| b
@@ -2229,7 +2190,6 @@ cfg.swift:
 #-----|  -> call to /
 
 #  247| call to /
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  247| b
@@ -2257,7 +2217,6 @@ cfg.swift:
 #-----|  -> call to %
 
 #  248| call to %
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  248| b
@@ -2285,7 +2244,6 @@ cfg.swift:
 #-----|  -> call to &
 
 #  249| call to &
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  249| b
@@ -2310,7 +2268,6 @@ cfg.swift:
 #-----|  -> call to |
 
 #  250| call to |
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  250| |
@@ -2341,7 +2298,6 @@ cfg.swift:
 #-----|  -> Int.Type
 
 #  251| call to ^
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  251| b
@@ -2369,7 +2325,6 @@ cfg.swift:
 #-----|  -> call to <<
 
 #  252| call to <<
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  252| b
@@ -2397,7 +2352,6 @@ cfg.swift:
 #-----|  -> call to >>
 
 #  253| call to >>
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  253| b
@@ -2425,7 +2379,6 @@ cfg.swift:
 #-----|  -> call to ==
 
 #  254| call to ==
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  254| b
@@ -2453,7 +2406,6 @@ cfg.swift:
 #-----|  -> call to !=
 
 #  255| call to !=
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  255| b
@@ -2481,7 +2433,6 @@ cfg.swift:
 #-----|  -> call to <
 
 #  256| call to <
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  256| b
@@ -2509,7 +2460,6 @@ cfg.swift:
 #-----|  -> call to <=
 
 #  257| call to <=
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  257| b
@@ -2537,7 +2487,6 @@ cfg.swift:
 #-----|  -> call to >
 
 #  258| call to >
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  258| b
@@ -2565,7 +2514,6 @@ cfg.swift:
 #-----|  -> call to >=
 
 #  259| call to >=
-#-----| exception -> exit binaryExprs (normal)
 #-----|  -> a
 
 #  259| b
@@ -2681,7 +2629,6 @@ cfg.swift:
 #-----|  -> call to +=
 
 #  269| call to +=
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a
 
 #  269| 1
@@ -2712,7 +2659,6 @@ cfg.swift:
 #-----|  -> call to -=
 
 #  270| call to -=
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a
 
 #  270| 1
@@ -2743,7 +2689,6 @@ cfg.swift:
 #-----|  -> call to *=
 
 #  271| call to *=
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a
 
 #  271| 1
@@ -2774,7 +2719,6 @@ cfg.swift:
 #-----|  -> call to /=
 
 #  272| call to /=
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a
 
 #  272| 1
@@ -2805,7 +2749,6 @@ cfg.swift:
 #-----|  -> call to %=
 
 #  273| call to %=
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a
 
 #  273| 1
@@ -2836,7 +2779,6 @@ cfg.swift:
 #-----|  -> call to &=
 
 #  274| call to &=
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a
 
 #  274| 1
@@ -2864,7 +2806,6 @@ cfg.swift:
 #-----|  -> call to |=
 
 #  275| call to |=
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a
 
 #  275| |=
@@ -2898,7 +2839,6 @@ cfg.swift:
 #-----|  -> Int.Type
 
 #  276| call to ^=
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a
 
 #  276| 1
@@ -2929,7 +2869,6 @@ cfg.swift:
 #-----|  -> call to <<=
 
 #  277| call to <<=
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a
 
 #  277| 1
@@ -2960,7 +2899,6 @@ cfg.swift:
 #-----|  -> call to >>=
 
 #  278| call to >>=
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a
 
 #  278| 1
@@ -3171,7 +3109,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #  284| call to +
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> b
 
 #  284| 1
@@ -3217,7 +3154,6 @@ cfg.swift:
 #-----|  -> call to -
 
 #  285| call to -
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> b
 
 #  285| 1
@@ -3263,7 +3199,6 @@ cfg.swift:
 #-----|  -> call to *
 
 #  286| call to *
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> b
 
 #  286| 1
@@ -3309,7 +3244,6 @@ cfg.swift:
 #-----|  -> call to /
 
 #  287| call to /
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> b
 
 #  287| 1
@@ -3355,7 +3289,6 @@ cfg.swift:
 #-----|  -> call to %
 
 #  288| call to %
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> b
 
 #  288| 1
@@ -3401,7 +3334,6 @@ cfg.swift:
 #-----|  -> call to &
 
 #  289| call to &
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> b
 
 #  289| 1
@@ -3444,7 +3376,6 @@ cfg.swift:
 #-----|  -> call to |
 
 #  290| call to |
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> b
 
 #  290| |
@@ -3493,7 +3424,6 @@ cfg.swift:
 #-----|  -> Int.Type
 
 #  291| call to ^
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> b
 
 #  291| 1
@@ -3539,7 +3469,6 @@ cfg.swift:
 #-----|  -> call to <<
 
 #  292| call to <<
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> b
 
 #  292| 1
@@ -3585,7 +3514,6 @@ cfg.swift:
 #-----|  -> call to >>
 
 #  293| call to >>
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> b
 
 #  293| 1
@@ -3640,7 +3568,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #  296| call to +
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a1
 
 #  296| &...
@@ -3671,7 +3598,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #  296| call to +
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a2
 
 #  296| &...
@@ -3702,7 +3628,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #  296| call to +
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a3
 
 #  296| &...
@@ -3733,7 +3658,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #  296| call to +
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a4
 
 #  296| &...
@@ -3764,7 +3688,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #  296| call to +
-#-----| exception -> exit testSubscriptExpr (normal)
 #-----|  -> a5
 
 #  296| &...
@@ -3813,7 +3736,6 @@ cfg.swift:
 #-----|  -> call to >=
 
 #  300| call to >=
-#-----| exception -> exit loop1 (normal)
 #-----|  -> x
 
 #  300| 0
@@ -3823,7 +3745,6 @@ cfg.swift:
 #-----|  -> x
 
 #  301| call to print
-#-----| exception -> exit loop1 (normal)
 #-----|  -> -=
 
 #  301| default separator
@@ -3867,7 +3788,6 @@ cfg.swift:
 #-----|  -> call to -=
 
 #  302| call to -=
-#-----| exception -> exit loop1 (normal)
 #-----|  -> x
 
 #  302| 1
@@ -3904,7 +3824,6 @@ cfg.swift:
 #-----|  -> call to >=
 
 #  307| call to >=
-#-----| exception -> exit loop2 (normal)
 #-----|  -> x
 
 #  307| 0
@@ -3914,7 +3833,6 @@ cfg.swift:
 #-----|  -> x
 
 #  308| call to print
-#-----| exception -> exit loop2 (normal)
 #-----|  -> -=
 
 #  308| default separator
@@ -3958,7 +3876,6 @@ cfg.swift:
 #-----|  -> call to -=
 
 #  309| call to -=
-#-----| exception -> exit loop2 (normal)
 #-----|  -> x
 
 #  309| 1
@@ -3987,7 +3904,6 @@ cfg.swift:
 #-----|  -> call to >
 
 #  310| call to >
-#-----| exception -> exit loop2 (normal)
 #-----|  -> x
 
 #  310| 100
@@ -4019,7 +3935,6 @@ cfg.swift:
 #-----|  -> call to >
 
 #  313| call to >
-#-----| exception -> exit loop2 (normal)
 #-----|  -> x
 
 #  313| 50
@@ -4032,7 +3947,6 @@ cfg.swift:
 #-----|  -> Iter
 
 #  316| call to print
-#-----| exception -> exit loop2 (normal)
 #-----|  -> >=
 
 #  316| default separator
@@ -4061,7 +3975,7 @@ cfg.swift:
 #-----|  -> Done
 
 #  318| call to print
-#-----| exception -> exit loop2 (normal)
+#-----|  -> exit loop2 (normal)
 
 #  318| default separator
 #-----|  -> default terminator
@@ -4116,7 +4030,6 @@ cfg.swift:
 #-----|  -> call to >=
 
 #  322| call to >=
-#-----| exception -> exit labeledLoop (normal)
 #-----|  -> x
 
 #  322| 0
@@ -4145,7 +4058,6 @@ cfg.swift:
 #-----|  -> call to >=
 
 #  323| call to >=
-#-----| exception -> exit labeledLoop (normal)
 #-----|  -> x
 
 #  323| 0
@@ -4155,7 +4067,6 @@ cfg.swift:
 #-----|  -> x
 
 #  324| call to print
-#-----| exception -> exit labeledLoop (normal)
 #-----|  -> -=
 
 #  324| default separator
@@ -4199,7 +4110,6 @@ cfg.swift:
 #-----|  -> call to -=
 
 #  325| call to -=
-#-----| exception -> exit labeledLoop (normal)
 #-----|  -> x
 
 #  325| 1
@@ -4228,7 +4138,6 @@ cfg.swift:
 #-----|  -> call to >
 
 #  326| call to >
-#-----| exception -> exit labeledLoop (normal)
 #-----|  -> x
 
 #  326| 100
@@ -4260,7 +4169,6 @@ cfg.swift:
 #-----|  -> call to >
 
 #  329| call to >
-#-----| exception -> exit labeledLoop (normal)
 #-----|  -> x
 
 #  329| 50
@@ -4273,7 +4181,6 @@ cfg.swift:
 #-----|  -> Iter
 
 #  332| call to print
-#-----| exception -> exit labeledLoop (normal)
 #-----|  -> >=
 
 #  332| default separator
@@ -4302,7 +4209,6 @@ cfg.swift:
 #-----|  -> Done
 
 #  334| call to print
-#-----| exception -> exit labeledLoop (normal)
 #-----|  -> >=
 
 #  334| default separator
@@ -4342,7 +4248,6 @@ cfg.swift:
 #-----|  -> x
 
 #  340| call to print
-#-----| exception -> exit testRepeat (normal)
 #-----|  -> -=
 
 #  340| default separator
@@ -4386,7 +4291,6 @@ cfg.swift:
 #-----|  -> call to -=
 
 #  341| call to -=
-#-----| exception -> exit testRepeat (normal)
 #-----|  -> x
 
 #  341| 1
@@ -4409,7 +4313,6 @@ cfg.swift:
 #-----|  -> call to >=
 
 #  342| call to >=
-#-----| exception -> exit testRepeat (normal)
 #-----|  -> x
 
 #  342| 0
@@ -4461,7 +4364,6 @@ cfg.swift:
 #-----|  -> call to <
 
 #  347| call to <
-#-----| exception -> exit loop_with_identity_expr (normal)
 #-----|  -> x
 
 #  347| 10
@@ -4483,7 +4385,6 @@ cfg.swift:
 #-----|  -> call to +=
 
 #  348| call to +=
-#-----| exception -> exit loop_with_identity_expr (normal)
 #-----|  -> x
 
 #  348| 1
@@ -4554,7 +4455,6 @@ cfg.swift:
 #-----|  -> call to getOptional
 
 #  364| call to getOptional
-#-----| exception -> exit testOptional (normal)
 #-----|  -> call to ...
 
 #  364| call to ...
@@ -4564,7 +4464,6 @@ cfg.swift:
 #-----|  -> call to getMyInt
 
 #  364| call to getMyInt
-#-----| exception -> exit testOptional (normal)
 #-----|  -> call to ...
 
 #  364| (Int?) ...
@@ -4618,7 +4517,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #  368| call to +
-#-----| exception -> exit testCapture (normal)
 #-----|  -> x
 
 #  368| y
@@ -4666,7 +4564,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #  374| call to +
-#-----| exception -> exit testTupleElement (normal)
 #-----|  -> t
 
 #  374| t
@@ -4682,7 +4579,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #  374| call to +
-#-----| exception -> exit testTupleElement (normal)
 #-----|  -> +
 
 #  374| t
@@ -4698,7 +4594,6 @@ cfg.swift:
 #-----|  -> call to +
 
 #  374| call to +
-#-----| exception -> exit testTupleElement (normal)
 #-----|  -> +
 
 #  374| (...)
@@ -4732,7 +4627,6 @@ cfg.swift:
 #-----|  -> cfg.Derived
 
 #  377| call to _unimplementedInitializer
-#-----| exception -> exit deinit (normal)
 
 #  377| cfg.Derived
 #-----|  -> #...
@@ -4806,7 +4700,6 @@ cfg.swift:
 #-----|  -> Did not throw.
 
 #  386| call to print
-#-----| exception -> exit doWithoutCatch (normal)
 
 #  386| default separator
 #-----|  -> default terminator
