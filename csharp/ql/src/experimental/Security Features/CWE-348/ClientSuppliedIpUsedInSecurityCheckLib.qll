@@ -22,15 +22,18 @@ private class AspNetQueryStringSource extends ClientSuppliedIpUsedInSecurityChec
   DataFlow::ExprNode {
   AspNetQueryStringSource() {
     exists(RemoteFlowSource rfs, RefType rt, IndexerAccess ia, Call c |
-      rfs.getSourceType() in [
-          "ASP.NET Core query string", "ASP.NET query string", "ASP.NET web service input"
-        ] and
-      this.getExpr() = c
-    |
       rfs.asExpr() = ia.getQualifier() and
       ia.getTarget() = rt.getAnIndexer() and
       c.getTarget() = rt.getAnIndexer().getGetter() and
-      c.getArgument(0).(StringLiteral).getValue().toLowerCase() = clientIpParameterName()
+      c.getArgument(0).(StringLiteral).getValue().toLowerCase() = clientIpParameterName() and
+      this.getExpr() = c
+    )
+    or
+    //  `Request.Headers.TryGetValue("X-Forwarded-For", out var xHeader)`
+    exists(RemoteFlowSource rfs, MethodCall mc |
+      rfs.asExpr() = mc.getQualifier() and
+      mc.getArgument(0).(StringLiteral).getValue().toLowerCase() = clientIpParameterName() and
+      this.getExpr() = mc
     )
   }
 }
@@ -45,32 +48,11 @@ private class AspNetCoreActionMethodParameterSource extends ClientSuppliedIpUsed
   DataFlow::ParameterNode {
   AspNetCoreActionMethodParameterSource() {
     exists(RemoteFlowSource rfs, Parameter p |
-      rfs.getSourceType() = "ASP.NET Core MVC action method parameter" and
-      this.getParameter() = p
-    |
       rfs.asParameter() = p and
       p.getAnAttribute().getType().hasQualifiedName("Microsoft.AspNetCore.Mvc.FromHeaderAttribute") and
       p.getAnAttribute().getNamedArgument("Name").(StringLiteral).getValue().toLowerCase() =
-        clientIpParameterName()
-    )
-  }
-}
-
-/**
- * A data flow source of the client ip obtained according to the remote endpoint identifier specified
- * (`X-Forwarded-For`, `X-Real-IP`, `Proxy-Client-IP`, etc.) in the header.
- *
- * For example: `Request.Headers.TryGetValue("X-Forwarded-For", out var xHeader)`.
- */
-private class AspNetCoreQueryStringSource extends ClientSuppliedIpUsedInSecurityCheckSource,
-  DataFlow::ExprNode {
-  AspNetCoreQueryStringSource() {
-    exists(RemoteFlowSource rfs, MethodCall mc |
-      rfs.getSourceType() = "ASP.NET Core query string" and
-      this.getExpr() = mc
-    |
-      rfs.asExpr() = mc.getQualifier() and
-      mc.getArgument(0).(StringLiteral).getValue().toLowerCase() = clientIpParameterName()
+        clientIpParameterName() and
+      this.getParameter() = p
     )
   }
 }
