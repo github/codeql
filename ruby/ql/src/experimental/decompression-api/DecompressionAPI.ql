@@ -13,6 +13,7 @@ import ruby
 import codeql.ruby.ApiGraphs
 import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.RemoteFlowSources
+import codeql.ruby.dataflow.BarrierGuards
 import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 
@@ -36,6 +37,14 @@ class Configuration extends TaintTracking::Configuration {
     // our Decompression APIs defined above will the the sinks we use for this query
     override predicate isSink(DataFlow::Node sink) {
         sink instanceof DecompressionAPIUse
+    }
+
+    // I think it would also be helpful to reduce false positives by adding a simple sanitizer config in the event
+    // that the code first checks the file name against a string literal or array of string literals before calling
+    // the decompression API
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+        guard instanceof StringConstCompare or
+        guard instanceof StringConstArrayInclusionCall
     }
   }
   
