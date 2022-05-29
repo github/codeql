@@ -11,7 +11,6 @@
  */
 
 import cpp
-import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /** Holds for a function `f`, which has an argument at index `bpos` that points to a buffer and an argument at index `spos` that points to a size. */
 predicate numberArgument(Function f, int bpos, int spos) {
