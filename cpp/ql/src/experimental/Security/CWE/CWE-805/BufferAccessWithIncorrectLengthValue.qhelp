@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Using a size argument that is larger than the buffer size will result in an out-of-memory and possibly overflow. You need to limit the value of the length argument.</p>
+<p>Using a size argument that is larger than the buffer size will result in an out-of-bounds memory access and possibly overflow. You need to limit the value of the length argument.</p>
 
 </overview>
 
