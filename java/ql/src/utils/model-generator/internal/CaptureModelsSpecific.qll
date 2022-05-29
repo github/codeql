@@ -234,5 +234,6 @@ string asInputArgument(DataFlow::Node source) {
 bindingset[kind]
 predicate isRelevantSinkKind(string kind) {
   not kind = "logging" and
-  not kind.matches("regex-use%")
+  not kind.matches("regex-use%") and
+  not kind = "write-file"
 }
