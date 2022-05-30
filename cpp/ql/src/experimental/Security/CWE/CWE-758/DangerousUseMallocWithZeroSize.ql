@@ -43,7 +43,7 @@ predicate existsChecksorSet(FunctionCall fc) {
       ifs.getCondition().getAChild*() = co and
       co.hasOperands(fc.getArgument(0).(VariableAccess).getTarget().getAnAccess(), ec) and
       exists(Expr etmp |
-          etmp.getValue() = ["0", "1"] and
+        etmp.getValue() = ["0", "1"] and
         (
           ec = etmp or
           globalValueNumber(ec) = globalValueNumber(etmp)
