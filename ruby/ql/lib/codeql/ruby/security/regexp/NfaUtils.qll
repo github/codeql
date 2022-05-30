@@ -890,6 +890,7 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
    */
   private predicate isReDoSCandidate(State state, string pump) {
     isCandidate(state, pump) and
+    not epsilonSucc*(state) = AcceptAnySuffix(_) and // pruning early - these can never get stuck in a rejecting state.
     (
       not isCandidate(epsilonSucc+(state), _)
       or
@@ -1022,7 +1023,8 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
      */
     predicate reachesOnlyRejectableSuffixes(State fork, string w) {
       isReDoSCandidate(fork, w) and
-      forex(State next | next = process(fork, w, w.length() - 1) | isLikelyRejectable(next))
+      forex(State next | next = process(fork, w, w.length() - 1) | isLikelyRejectable(next)) and
+      not epsilonSucc*(getProcessPrevious(fork, _, w)) = AcceptAnySuffix(_) // we stop `process(..)` early if we can, check here if it happened.
     }
 
     /**
@@ -1135,6 +1137,7 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
     pragma[noopt]
     private State process(State fork, string w, int i) {
       exists(State prev | prev = getProcessPrevious(fork, i, w) |
+        not prev = acceptsAnySuffix() and // we stop `process(..)` early if we can. If the successor accepts any suffix, then we know it can never be rejected.
         exists(string char, InputSymbol sym |
           char = w.charAt(i) and
           deltaClosed(prev, sym, result) and
@@ -1144,6 +1147,9 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
         )
       )
     }
+
+    /** Gets a state that can reach the `accept-any` state using only epsilon steps. */
+    private State acceptsAnySuffix() { epsilonSucc*(result) = AcceptAnySuffix(_) }
 
     /**
      * Gets a state that can be reached from pumpable `fork` consuming all
