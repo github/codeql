@@ -509,6 +509,22 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     dispatcher_.emit(IfExprsTrap{label, condLabel, thenLabel, elseLabel});
   }
 
+  void visitKeyPathDotExpr(swift::KeyPathDotExpr* expr) {
+    auto label = dispatcher_.assignNewLabel(expr);
+    dispatcher_.emit(KeyPathDotExprsTrap{label});
+  }
+
+  void visitKeyPathApplicationExpr(swift::KeyPathApplicationExpr* expr) {
+    auto label = dispatcher_.assignNewLabel(expr);
+    assert(expr->getBase() && "KeyPathApplicationExpr has getBase()");
+    assert(expr->getKeyPath() && "KeyPathApplicationExpr has getKeyPath()");
+    
+    auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
+    auto keyPathLabel = dispatcher_.fetchLabel(expr->getKeyPath());
+
+    dispatcher_.emit(KeyPathApplicationExprsTrap{label, baseLabel, keyPathLabel});
+  }
+
  private:
   TrapLabel<ArgumentTag> emitArgument(const swift::Argument& arg) {
     auto argLabel = dispatcher_.createLabel<ArgumentTag>();
