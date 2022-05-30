@@ -42,11 +42,11 @@ predicate numberArgument(Function f, int bpos, int spos) {
   or
   f.hasGlobalOrStdName(["AES_ige_encrypt", "memchr"]) and bpos = 0 and spos = 2
   or
-  f.hasGlobalOrStdName(["EVP_MAC_final"]) and bpos = 1 and spos = 3
+  f.hasGlobalOrStdName("EVP_MAC_final") and bpos = 1 and spos = 3
   or
-  f.hasGlobalOrStdName(["OBJ_obj2txt"]) and bpos = 2 and spos = 1
+  f.hasGlobalOrStdName("OBJ_obj2txt") and bpos = 2 and spos = 1
   or
-  f.hasGlobalOrStdName(["EVP_CIPHER_CTX_ctrl"]) and bpos = 3 and spos = 2
+  f.hasGlobalOrStdName("EVP_CIPHER_CTX_ctrl") and bpos = 3 and spos = 2
   or
   f.hasGlobalOrStdName(["EVP_PKEY_get_octet_string_param", "getnameinfo"]) and bpos = 2 and spos = 3
   or
@@ -57,7 +57,7 @@ predicate numberArgument(Function f, int bpos, int spos) {
   bpos = 3 and
   spos = 4
   or
-  f.hasGlobalOrStdName(["getnameinfo"]) and bpos = 4 and spos = 5
+  f.hasGlobalOrStdName("getnameinfo") and bpos = 4 and spos = 5
 }
 
 from FunctionCall fc
