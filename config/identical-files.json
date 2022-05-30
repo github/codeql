@@ -566,5 +566,21 @@
   "Typo database": [
     "javascript/ql/src/Expressions/TypoDatabase.qll",
     "ql/ql/src/codeql_ql/style/TypoDatabase.qll"
+  ],
+  "Swift declarations test file": [
+    "swift/ql/test/extractor-tests/declarations/declarations.swift",
+    "swift/ql/test/library-tests/parent/declarations.swift"
+  ],
+  "Swift statements test file": [
+    "swift/ql/test/extractor-tests/statements/statements.swift",
+    "swift/ql/test/library-tests/parent/statements.swift"
+  ],
+  "Swift expressions test file": [
+    "swift/ql/test/extractor-tests/expressions/expressions.swift",
+    "swift/ql/test/library-tests/parent/expressions.swift"
+  ],
+  "Swift patterns test file": [
+    "swift/ql/test/extractor-tests/patterns/patterns.swift",
+    "swift/ql/test/library-tests/parent/patterns.swift"
   ]
 }

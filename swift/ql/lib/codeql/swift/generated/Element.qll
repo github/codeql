@@ -14,5 +14,7 @@ class ElementBase extends @element {
     result = getResolveStep().resolve()
   }
 
+  ElementBase getAChild() { none() } // overridden by subclasses, internal use only
+
   predicate isUnknown() { element_is_unknown(this) }
 }

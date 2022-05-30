@@ -22,6 +22,7 @@ class Property:
     local_var: str = "x"
     is_optional: bool = False
     is_predicate: bool = False
+    is_child: bool = False
 
     def __post_init__(self):
         if self.tableparams:

@@ -19,6 +19,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
             type=prop.type,
             tablename=inflection.tableize(cls.name),
             tableparams=["this"] + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
+            is_child=prop.is_child,
         )
     elif prop.is_repeated:
         return ql.Property(
@@ -28,6 +29,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "index", "result"],
             is_optional=prop.is_optional,
+            is_child=prop.is_child,
         )
     elif prop.is_optional:
         return ql.Property(
@@ -36,6 +38,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "result"],
             is_optional=True,
+            is_child=prop.is_child,
         )
     elif prop.is_predicate:
         return ql.Property(

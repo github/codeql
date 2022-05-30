@@ -99,44 +99,47 @@ def test_single_properties(opts, input, renderer):
     }
 
 
-def test_optional_property(opts, input, renderer):
+@pytest.mark.parametrize("is_child", [False, True])
+def test_optional_property(opts, input, renderer, is_child):
     input.classes = [
-        schema.Class("MyObject", properties=[schema.OptionalProperty("foo", "bar")]),
+        schema.Class("MyObject", properties=[schema.OptionalProperty("foo", "bar", is_child=is_child)]),
     ]
     assert generate(opts, renderer) == {
         import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
         stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
         ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
             ql.Property(singular="Foo", type="bar", tablename="my_object_foos", tableparams=["this", "result"],
-                        is_optional=True),
+                        is_optional=True, is_child=is_child),
         ])
     }
 
 
-def test_repeated_property(opts, input, renderer):
+@pytest.mark.parametrize("is_child", [False, True])
+def test_repeated_property(opts, input, renderer, is_child):
     input.classes = [
-        schema.Class("MyObject", properties=[schema.RepeatedProperty("foo", "bar")]),
+        schema.Class("MyObject", properties=[schema.RepeatedProperty("foo", "bar", is_child=is_child)]),
     ]
     assert generate(opts, renderer) == {
         import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
         stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
         ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
             ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
-                        tableparams=["this", "index", "result"]),
+                        tableparams=["this", "index", "result"], is_child=is_child),
         ])
     }
 
 
-def test_repeated_optional_property(opts, input, renderer):
+@pytest.mark.parametrize("is_child", [False, True])
+def test_repeated_optional_property(opts, input, renderer, is_child):
     input.classes = [
-        schema.Class("MyObject", properties=[schema.RepeatedOptionalProperty("foo", "bar")]),
+        schema.Class("MyObject", properties=[schema.RepeatedOptionalProperty("foo", "bar", is_child=is_child)]),
     ]
     assert generate(opts, renderer) == {
         import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
         stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
         ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
             ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
-                        tableparams=["this", "index", "result"], is_optional=True),
+                        tableparams=["this", "index", "result"], is_optional=True, is_child=is_child),
         ])
     }
 
@@ -155,9 +158,10 @@ def test_predicate_property(opts, input, renderer):
     }
 
 
-def test_single_class_property(opts, input, renderer):
+@pytest.mark.parametrize("is_child", [False, True])
+def test_single_class_property(opts, input, renderer, is_child):
     input.classes = [
-        schema.Class("MyObject", properties=[schema.SingleProperty("foo", "Bar")]),
+        schema.Class("MyObject", properties=[schema.SingleProperty("foo", "Bar", is_child=is_child)]),
         schema.Class("Bar"),
     ]
     assert generate(opts, renderer) == {
@@ -166,7 +170,8 @@ def test_single_class_property(opts, input, renderer):
         stub_path() / "Bar.qll": ql.Stub(name="Bar", base_import=gen_import_prefix + "Bar"),
         ql_output_path() / "MyObject.qll": ql.Class(
             name="MyObject", final=True, imports=[stub_import_prefix + "Bar"], properties=[
-                ql.Property(singular="Foo", type="Bar", tablename="my_objects", tableparams=["this", "result"]),
+                ql.Property(singular="Foo", type="Bar", tablename="my_objects", tableparams=["this", "result"],
+                            is_child=is_child),
             ],
         ),
         ql_output_path() / "Bar.qll": ql.Class(name="Bar", final=True)

@@ -313,7 +313,7 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     auto varLabel = dispatcher_.fetchLabel(expr->getVar());
     auto bodyLabel = dispatcher_.fetchLabel(expr->getBody());
 
-    dispatcher_.emit(TapExprsTrap{label, varLabel, bodyLabel});
+    dispatcher_.emit(TapExprsTrap{label, bodyLabel, varLabel});
     if (auto subExpr = expr->getSubExpr()) {
       dispatcher_.emit(TapExprSubExprsTrap{label, dispatcher_.fetchLabel(subExpr)});
     }

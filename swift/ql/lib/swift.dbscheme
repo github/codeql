@@ -1002,8 +1002,8 @@ super_ref_exprs(
 
 tap_exprs(
   unique int id: @tap_expr,
-  int var: @var_decl ref,
-  int body: @brace_stmt ref
+  int body: @brace_stmt ref,
+  int var: @var_decl ref
 );
 
 #keyset[id]
