@@ -830,9 +830,9 @@
 | delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt | delegatedProperties.kt:87:31:87:46 | set | TypeAccess |
 | delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt | delegatedProperties.kt:87:31:87:46 | set | TypeAccess |
 | delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt | delegatedProperties.kt:87:31:87:46 | setExtDelegated | TypeAccess |
-| delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt.extDelegated$delegate | delegatedProperties.kt:0:0:0:0 | <clinit> | VarAccess |
-| delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt.extDelegated$delegate | delegatedProperties.kt:87:31:87:46 | getExtDelegated | VarAccess |
-| delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt.extDelegated$delegate | delegatedProperties.kt:87:31:87:46 | setExtDelegated | VarAccess |
+| delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt.extDelegated$delegateMyClass | delegatedProperties.kt:0:0:0:0 | <clinit> | VarAccess |
+| delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt.extDelegated$delegateMyClass | delegatedProperties.kt:87:31:87:46 | getExtDelegated | VarAccess |
+| delegatedProperties.kt:87:31:87:46 | DelegatedPropertiesKt.extDelegated$delegateMyClass | delegatedProperties.kt:87:31:87:46 | setExtDelegated | VarAccess |
 | delegatedProperties.kt:87:31:87:46 | Integer | delegatedProperties.kt:87:31:87:46 | getExtDelegated | TypeAccess |
 | delegatedProperties.kt:87:31:87:46 | Integer | delegatedProperties.kt:87:31:87:46 | setExtDelegated | TypeAccess |
 | delegatedProperties.kt:87:31:87:46 | Integer | file://:0:0:0:0 | <none> | TypeAccess |

@@ -22,13 +22,15 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImpl3.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImpl4.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImpl5.qll",
+    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplForContentDataFlow.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl2.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl3.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl4.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl2.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForLibraries.qll"
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForLibraries.qll",
+    "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImpl.qll"
   ],
   "DataFlow Java/C++/C#/Python Common": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
@@ -36,7 +38,8 @@
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplCommon.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplCommon.qll"
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplCommon.qll",
+    "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImplCommon.qll"
   ],
   "TaintTracking::Configuration Java/C++/C#/Python": [
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
@@ -57,7 +60,8 @@
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking3/TaintTrackingImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking4/TaintTrackingImpl.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttrackingforlibraries/TaintTrackingImpl.qll"
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttrackingforlibraries/TaintTrackingImpl.qll",
+    "swift/ql/lib/codeql/swift/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
   ],
   "DataFlow Java/C++/C#/Python Consistency checks": [
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
@@ -65,7 +69,8 @@
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplConsistency.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplConsistency.qll"
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplConsistency.qll",
+    "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImplConsistency.qll"
   ],
   "DataFlow Java/C# Flow Summaries": [
     "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll",
@@ -458,7 +463,8 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/basessa/SsaImplCommon.qll",
     "csharp/ql/lib/semmle/code/cil/internal/SsaImplCommon.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/SsaImplCommon.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/SsaImplCommon.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/SsaImplCommon.qll",
+    "swift/ql/lib/codeql/swift/dataflow/internal/SsaImplCommon.qll"
   ],
   "CryptoAlgorithms Python/JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/CryptoAlgorithms.qll",
@@ -519,7 +525,8 @@
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/AccessPathSyntax.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/AccessPathSyntax.qll",
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/AccessPathSyntax.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/AccessPathSyntax.qll"
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/AccessPathSyntax.qll",
+    "python/ql/lib/semmle/python/frameworks/data/internal/AccessPathSyntax.qll"
   ],
   "IncompleteUrlSubstringSanitization": [
     "javascript/ql/src/Security/CWE-020/IncompleteUrlSubstringSanitization.qll",
@@ -537,7 +544,8 @@
   ],
   "ApiGraphModels": [
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/ApiGraphModels.qll",
-    "ruby/ql/lib/codeql/ruby/frameworks/data/internal/ApiGraphModels.qll"
+    "ruby/ql/lib/codeql/ruby/frameworks/data/internal/ApiGraphModels.qll",
+    "python/ql/lib/semmle/python/frameworks/data/internal/ApiGraphModels.qll"
   ],
   "TaintedFormatStringQuery Ruby/JS": [
     "javascript/ql/lib/semmle/javascript/security/dataflow/TaintedFormatStringQuery.qll",

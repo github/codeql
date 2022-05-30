@@ -30,8 +30,14 @@ sourceSets {
             // change the excludes for building with other versions:
             excludes = [
                     "utils/versions/v_1_4_32/*.kt",
+                    "utils/versions/v_1_5_0/*.kt",
+                    "utils/versions/v_1_5_10/*.kt",
+                    "utils/versions/v_1_5_21/*.kt",
                     "utils/versions/v_1_5_31/*.kt",
-                    "utils/versions/v_1_6_10/*.kt"]
+                    "utils/versions/v_1_6_10/*.kt",
+                    "utils/versions/v_1_7_0-RC/*.kt",
+                    // "utils/versions/v_1_6_20/*.kt",
+            ]
         }
     }
 }

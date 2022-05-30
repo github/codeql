@@ -2,6 +2,7 @@ private import csharp
 private import TaintTrackingPublic
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.Caching
+private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.ControlFlowReachability
 private import semmle.code.csharp.dispatch.Dispatch
@@ -117,19 +118,22 @@ private module Cached {
     (
       // Simple flow through library code is included in the exposed local
       // step relation, even though flow is technically inter-procedural
-      FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo)
+      FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo,
+        any(DataFlowSummarizedCallable sc))
       or
       // Taint collection by adding a tainted element
       exists(DataFlow::ElementContent c |
         storeStep(nodeFrom, c, nodeTo)
         or
-        FlowSummaryImpl::Private::Steps::summarySetterStep(nodeFrom, c, nodeTo)
+        FlowSummaryImpl::Private::Steps::summarySetterStep(nodeFrom, c, nodeTo,
+          any(DataFlowSummarizedCallable sc))
       )
       or
       exists(DataFlow::Content c |
         readStep(nodeFrom, c, nodeTo)
         or
-        FlowSummaryImpl::Private::Steps::summaryGetterStep(nodeFrom, c, nodeTo)
+        FlowSummaryImpl::Private::Steps::summaryGetterStep(nodeFrom, c, nodeTo,
+          any(DataFlowSummarizedCallable sc))
       |
         // Taint members
         c = any(TaintedMember m).(FieldOrProperty).getContent()

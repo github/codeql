@@ -135,7 +135,7 @@ open class KotlinFileExtractor(
                     Unit
                 }
                 is IrField -> {
-                    val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
+                    val parentId = useDeclarationParent(getFieldParent(declaration), false)?.cast<DbReftype>()
                     if (parentId != null) {
                         extractField(declaration, parentId)
                     }
@@ -653,9 +653,13 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null, locOverride: Label<DbLocation>? = null): Label<out DbCallable>? {
-        if (isFake(f)) return null
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null, locOverride: Label<DbLocation>? = null) =
+        if (isFake(f))
+            null
+        else
+            forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, idOverride, locOverride)
 
+    fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null, locOverride: Label<DbLocation>? = null): Label<out DbCallable>  {
         with("function", f) {
             DeclarationStackAdjuster(f).use {
 
@@ -755,7 +759,8 @@ open class KotlinFileExtractor(
         with("field", f) {
            DeclarationStackAdjuster(f).use {
                declarationStack.push(f)
-               return extractField(useField(f), f.name.asString(), f.type, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f), f.isFinal)
+               val fNameSuffix = getExtensionReceiverType(f)?.let { it.classFqName?.asString()?.replace(".", "$$") } ?: ""
+               return extractField(useField(f), "${f.name.asString()}$fNameSuffix", f.type, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f), f.isFinal)
            }
         }
     }
@@ -825,10 +830,13 @@ open class KotlinFileExtractor(
                 }
 
                 if (bf != null && extractBackingField) {
-                    val fieldId = extractField(bf, parentId)
-                    tw.writeKtPropertyBackingFields(id, fieldId)
-                    if (p.isDelegated) {
-                        tw.writeKtPropertyDelegates(id, fieldId)
+                    val fieldParentId = useDeclarationParent(getFieldParent(bf), false)
+                    if (fieldParentId != null) {
+                        val fieldId = extractField(bf, fieldParentId.cast())
+                        tw.writeKtPropertyBackingFields(id, fieldId)
+                        if (p.isDelegated) {
+                            tw.writeKtPropertyDelegates(id, fieldId)
+                        }
                     }
                 }
 
@@ -4034,7 +4042,15 @@ open class KotlinFileExtractor(
 
                     fun trySub(t: IrType, context: TypeContext) = if (typeSub == null) t else typeSub(t, context, pluginContext)
 
-                    extractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, idOverride = ids.function, locOverride = tw.getLocation(e))
+                    // Force extraction of this function even if this is a fake override --
+                    // This happens in the case where a functional interface inherits its only abstract member,
+                    // which usually we wouldn't extract, but in this case we're effectively using it as a template
+                    // for the real function we're extracting that will implement this interface, and it serves fine
+                    // for that purpose. By contrast if we looked through the fake to the underlying abstract method
+                    // we would need to compose generic type substitutions -- for example, if we're implementing
+                    // T UnaryOperator<T>.apply(T t) here, we would need to compose substitutions so we can implement
+                    // the real underlying R Function<T, R>.apply(T t).
+                    forceExtractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, idOverride = ids.function, locOverride = tw.getLocation(e))
 
                     //body
                     val blockId = tw.getFreshIdLabel<DbBlock>()

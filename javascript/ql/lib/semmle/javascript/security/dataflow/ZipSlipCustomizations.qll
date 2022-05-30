@@ -103,7 +103,7 @@ module ZipSlip {
   class JSZipFilesSource extends Source instanceof DynamicPropertyAccess::EnumeratedPropName {
     JSZipFilesSource() {
       super.getSourceObject() =
-        API::moduleImport("jszip").getInstance().getMember("files").getAnImmediateUse()
+        API::moduleImport("jszip").getInstance().getMember("files").asSource()
     }
   }
 
@@ -116,7 +116,7 @@ module ZipSlip {
             .getMember(["forEach", "filter"])
             .getParameter(0)
             .getParameter(0)
-            .getAnImmediateUse()
+            .asSource()
     }
   }
 

@@ -116,7 +116,7 @@ class VariableAccess extends Expr instanceof VariableAccessImpl {
   predicate isImplicitWrite() {
     implicitWriteAccess(toGenerated(this))
     or
-    this = any(SimpleParameterSynthImpl p).getDefininingAccess()
+    this = any(SimpleParameterSynthImpl p).getDefiningAccess()
     or
     this = any(HashPattern p).getValue(_)
     or
