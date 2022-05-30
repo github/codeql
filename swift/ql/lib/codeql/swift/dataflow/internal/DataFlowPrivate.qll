@@ -74,8 +74,8 @@ private module Cached {
       or
       // use-use flow
       def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode())
-      // step from previous read to Phi node
       or
+      // step from previous read to Phi node
       localFlowSsaInput(nodeFrom, def, nodeTo.asDefinition())
     )
   }
