@@ -1286,6 +1286,8 @@ class ExpressionWithTypeArguments extends @expression_with_type_arguments, Expr 
   override ControlFlowNode getFirstControlFlowNode() {
     result = this.getExpression().getFirstControlFlowNode()
   }
+
+  override string getAPrimaryQlClass() { result = "ExpressionWithTypeArguments" }
 }
 
 /**
