@@ -1,7 +1,7 @@
 private import swift
 
 module CallableBase {
-  class TypeRange = @abstract_function_decl;
+  class TypeRange = @abstract_function_decl or @key_path_expr;
 
   class Range extends Scope::Range, TypeRange { }
 }
