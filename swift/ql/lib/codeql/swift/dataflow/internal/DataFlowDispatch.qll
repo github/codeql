@@ -44,9 +44,7 @@ class DataFlowCallable extends TDataFlowCallable {
  * inside library callables with a flow summary.
  */
 class DataFlowCall extends ExprNode {
-  DataFlowCall() {
-    this.asExpr() instanceof CallExpr
-  }
+  DataFlowCall() { this.asExpr() instanceof CallExpr }
 
   /** Gets the enclosing callable. */
   DataFlowCallable getEnclosingCallable() { none() }
@@ -59,19 +57,20 @@ private module Cached {
 
   /** Gets a viable run-time target for the call `call`. */
   cached
-  DataFlowCallable viableCallable(DataFlowCall call) { 
+  DataFlowCallable viableCallable(DataFlowCall call) {
     result = TDataFlowFunc(call.asExpr().(CallExpr).getStaticTarget())
   }
 
   cached
   newtype TArgumentPosition =
     TThisArgument() or
-    TPositionalArgument(int n) { n in [0 .. 100] } // we rely on default exprs generated in the caller for ordering. TODO: compute range properly. TODO: varargs?
+    // we rely on default exprs generated in the caller for ordering
+    TPositionalArgument(int n) { n = any(Argument arg).getIndex() }
 
   cached
-  newtype TParameterPosition = 
-  TThisParameter() or
-  TPositionalParameter(int n) { n in [0 .. 100] } // TODO: compute range properly
+  newtype TParameterPosition =
+    TThisParameter() or
+    TPositionalParameter(int n) { n = any(Argument arg).getIndex() }
 }
 
 import Cached
@@ -95,11 +94,8 @@ class ParameterPosition extends TParameterPosition {
 }
 
 class PositionalParameterPosition extends ParameterPosition, TPositionalParameter {
-  int getIndex() {
-    this = TPositionalParameter(result)
-  }
+  int getIndex() { this = TPositionalParameter(result) }
 }
-
 
 /** An argument position. */
 class ArgumentPosition extends TArgumentPosition {
@@ -108,9 +104,7 @@ class ArgumentPosition extends TArgumentPosition {
 }
 
 class PositionalArgumentPosition extends ArgumentPosition, TPositionalArgument {
-  int getIndex() {
-    this = TPositionalArgument(result)
-  }
+  int getIndex() { this = TPositionalArgument(result) }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
