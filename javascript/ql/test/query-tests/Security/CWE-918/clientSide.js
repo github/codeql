@@ -23,3 +23,7 @@ export function MyComponent() {
 
     request(window.location.href + '?q=123'); // OK
 }
+
+window.addEventListener('message', event => {
+    request('https://example.com/api/' + event.data.foo + '/id'); // NOT OK
+});
