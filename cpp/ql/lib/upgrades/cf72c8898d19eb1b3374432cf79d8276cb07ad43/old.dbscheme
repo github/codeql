@@ -1436,10 +1436,6 @@ initialisers(
     int location: @location_expr ref
 );
 
-braced_initialisers(
-    int init: @initialiser ref
-);
-
 /**
  * An ancestor for the expression, for cases in which we cannot
  * otherwise find the expression's parent.
