@@ -390,6 +390,8 @@ InOutExpr:
 
 KeyPathApplicationExpr:
   _extends: Expr
+  base: Expr
+  key_path: Expr
 
 KeyPathDotExpr:
   _extends: Expr
