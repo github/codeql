@@ -1,5 +1,6 @@
 import python
 import TestUtilities.InlineExpectationsTest
+private import semmle.python.dataflow.new.internal.DataFlowDispatch as TT
 
 /** Holds when `call` is resolved to `callable` using points-to based call-graph. */
 predicate pointsToCallEdge(CallNode call, Function callable) {
@@ -10,7 +11,13 @@ predicate pointsToCallEdge(CallNode call, Function callable) {
 }
 
 /** Holds when `call` is resolved to `callable` using type-tracking based call-graph. */
-predicate typeTrackerCallEdge(CallNode call, Function callable) { none() }
+predicate typeTrackerCallEdge(CallNode call, Function callable) {
+  exists(TT::DataFlowCallable dfCallable, TT::DataFlowCall dfCall |
+    dfCallable.getScope() = callable and
+    dfCall.getNode() = call and
+    dfCallable = TT::viableCallable(dfCall)
+  )
+}
 
 class CallGraphTest extends InlineExpectationsTest {
   CallGraphTest() { this = "CallGraphTest" }
