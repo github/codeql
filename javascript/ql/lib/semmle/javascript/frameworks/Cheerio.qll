@@ -14,7 +14,7 @@ module Cheerio {
   }
 
   /** Gets a reference to the `cheerio` function, possibly with a loaded DOM. */
-  DataFlow::SourceNode cheerioRef() { result = cheerioApi().getAUse() }
+  DataFlow::SourceNode cheerioRef() { result = cheerioApi().getAValueReachableFromSource() }
 
   /**
    * A creation of `cheerio` object, a collection of virtual DOM elements

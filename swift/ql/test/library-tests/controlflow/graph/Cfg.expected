@@ -1,11 +1,14 @@
 cfg.swift:
 #    5| enter returnZero
-#-----|  -> 0
+#-----|  -> returnZero
 
 #    5| exit returnZero
 
 #    5| exit returnZero (normal)
 #-----|  -> exit returnZero
+
+#    5| returnZero
+#-----|  -> 0
 
 #    5| return ...
 #-----| return -> exit returnZero (normal)
@@ -14,12 +17,18 @@ cfg.swift:
 #-----|  -> return ...
 
 #   15| enter isZero
-#-----|  -> ==
+#-----|  -> isZero
 
 #   15| exit isZero
 
 #   15| exit isZero (normal)
 #-----|  -> exit isZero
+
+#   15| isZero
+#-----|  -> x
+
+#   15| x
+#-----|  -> ==
 
 #   15| return ...
 #-----| return -> exit isZero (normal)
@@ -44,12 +53,18 @@ cfg.swift:
 #-----|  -> ... call to == ...
 
 #   17| enter mightThrow
-#-----|  -> guard ... else { ... }
+#-----|  -> mightThrow
 
 #   17| exit mightThrow
 
 #   17| exit mightThrow (normal)
 #-----|  -> exit mightThrow
+
+#   17| mightThrow
+#-----|  -> x
+
+#   17| x
+#-----|  -> guard ... else { ... }
 
 #   18| guard ... else { ... }
 #-----|  -> StmtCondition
@@ -164,12 +179,18 @@ cfg.swift:
 #-----|  -> ... call to + ...
 
 #   26| enter tryCatch
-#-----|  -> do { ... } catch { ... }
+#-----|  -> tryCatch
 
 #   26| exit tryCatch
 
 #   26| exit tryCatch (normal)
 #-----|  -> exit tryCatch
+
+#   26| tryCatch
+#-----|  -> x
+
+#   26| x
+#-----|  -> do { ... } catch { ... }
 
 #   27| do { ... } catch { ... }
 #-----|  -> mightThrow
@@ -363,13 +384,19 @@ cfg.swift:
 #   42| 0
 #-----|  -> return ...
 
+#   45| createClosure1
+#-----|  -> s
+
 #   45| enter createClosure1
-#-----|  -> { ... }
+#-----|  -> createClosure1
 
 #   45| exit createClosure1
 
 #   45| exit createClosure1 (normal)
 #-----|  -> exit createClosure1
+
+#   45| s
+#-----|  -> { ... }
 
 #   46| return ...
 #-----| return -> exit createClosure1 (normal)
@@ -377,13 +404,27 @@ cfg.swift:
 #   46| { ... }
 #-----|  -> return ...
 
+#   51| createClosure2
+#-----|  -> x
+
+#   51| enter createClosure2
+#-----|  -> createClosure2
+
+#   51| x
+
 #   52| enter f
-#-----|  -> +
+#-----|  -> f
 
 #   52| exit f
 
 #   52| exit f (normal)
 #-----|  -> exit f
+
+#   52| f
+#-----|  -> y
+
+#   52| y
+#-----|  -> +
 
 #   53| return ...
 #-----| return -> exit f (normal)
@@ -407,13 +448,19 @@ cfg.swift:
 #   53| y
 #-----|  -> ... call to + ...
 
+#   58| createClosure3
+#-----|  -> x
+
 #   58| enter createClosure3
-#-----|  -> { ... }
+#-----|  -> createClosure3
 
 #   58| exit createClosure3
 
 #   58| exit createClosure3 (normal)
 #-----|  -> exit createClosure3
+
+#   58| x
+#-----|  -> { ... }
 
 #   59| return ...
 #-----| return -> exit createClosure3 (normal)
@@ -421,8 +468,11 @@ cfg.swift:
 #   59| { ... }
 #-----|  -> return ...
 
-#   64| enter callClosures
+#   64| callClosures
 #-----|  -> x1
+
+#   64| enter callClosures
+#-----|  -> callClosures
 
 #   64| exit callClosures
 
@@ -502,12 +552,18 @@ cfg.swift:
 #-----|  -> call to ...
 
 #   70| enter maybeParseInt
-#-----|  -> n
+#-----|  -> maybeParseInt
 
 #   70| exit maybeParseInt
 
 #   70| exit maybeParseInt (normal)
 #-----|  -> exit maybeParseInt
+
+#   70| maybeParseInt
+#-----|  -> s
+
+#   70| s
+#-----|  -> n
 
 #   71| var ... = ...
 #-----|  -> n
@@ -546,12 +602,15 @@ cfg.swift:
 #-----|  -> (Int?) ...
 
 #   75| enter forceAndBackToOptional
-#-----|  -> nBang
+#-----|  -> forceAndBackToOptional
 
 #   75| exit forceAndBackToOptional
 
 #   75| exit forceAndBackToOptional (normal)
 #-----|  -> exit forceAndBackToOptional
+
+#   75| forceAndBackToOptional
+#-----|  -> nBang
 
 #   76| var ... = ...
 #-----|  -> nBang
@@ -629,6 +688,9 @@ cfg.swift:
 #-----|  -> ... call to + ...
 
 #   81| enter testInOut
+#-----|  -> testInOut
+
+#   81| testInOut
 #-----|  -> temp
 
 #   82| var ... = ...
@@ -642,13 +704,19 @@ cfg.swift:
 #   82| 10
 #-----|  -> var ... = ...
 
-#   84| enter add
+#   84| add
 #-----|  -> a
+
+#   84| enter add
+#-----|  -> add
 
 #   84| exit add
 
 #   84| exit add (normal)
 #-----|  -> exit add
+
+#   84| a
+#-----|  -> a
 
 #   85| a
 #-----|  -> +
@@ -678,13 +746,19 @@ cfg.swift:
 #   85| 1
 #-----|  -> ... call to + ...
 
-#   88| enter addOptional
+#   88| addOptional
 #-----|  -> a
+
+#   88| enter addOptional
+#-----|  -> addOptional
 
 #   88| exit addOptional
 
 #   88| exit addOptional (normal)
 #-----|  -> exit addOptional
+
+#   88| a
+#-----|  -> a
 
 #   89| a
 #-----|  -> nil
@@ -695,20 +769,43 @@ cfg.swift:
 #   89| nil
 #-----|  ->  ... = ...
 
+#   98| enter init
+#-----|  -> init
+
+#   98| exit init
+
+#   98| exit init (normal)
+#-----|  -> exit init
+
+#   98| init
+#-----|  -> { ... }
+
+#   98| { ... }
+#-----|  -> exit init (normal)
+
 #   99| enter get
+#-----|  -> get
 
 #   99| exit get
 
 #   99| exit get (normal)
 #-----|  -> exit get
 
+#   99| get
+
+#  100| deinit
+#-----|  -> n
+
 #  100| enter deinit
-#-----|  -> self
+#-----|  -> deinit
 
 #  100| exit deinit
 
 #  100| exit deinit (normal)
 #-----|  -> exit deinit
+
+#  100| n
+#-----|  -> self
 
 #  101| .myInt
 #-----|  -> n
@@ -726,12 +823,15 @@ cfg.swift:
 #-----| return -> exit deinit (normal)
 
 #  104| enter getMyInt
-#-----|  -> self
+#-----|  -> getMyInt
 
 #  104| exit getMyInt
 
 #  104| exit getMyInt (normal)
 #-----|  -> exit getMyInt
+
+#  104| getMyInt
+#-----|  -> self
 
 #  105| return ...
 #-----| return -> exit getMyInt (normal)
@@ -743,12 +843,24 @@ cfg.swift:
 #-----|  -> getter for .myInt
 
 #  109| enter testMemberRef
-#-----|  -> c
+#-----|  -> testMemberRef
 
 #  109| exit testMemberRef
 
 #  109| exit testMemberRef (normal)
 #-----|  -> exit testMemberRef
+
+#  109| testMemberRef
+#-----|  -> param
+
+#  109| param
+#-----|  -> inoutParam
+
+#  109| inoutParam
+#-----|  -> opt
+
+#  109| opt
+#-----|  -> c
 
 #  110| var ... = ...
 #-----|  -> c
@@ -1233,12 +1345,18 @@ cfg.swift:
 #-----|  -> TBD (DotSelfExpr)
 
 #  137| enter patterns
-#-----|  -> ...
+#-----|  -> patterns
 
 #  137| exit patterns
 
 #  137| exit patterns (normal)
 #-----|  -> exit patterns
+
+#  137| patterns
+#-----|  -> x
+
+#  137| x
+#-----|  -> ...
 
 #  138| for ... in ... { ... }
 #-----| non-empty -> _
@@ -1339,12 +1457,18 @@ cfg.swift:
 #-----|  -> return ...
 
 #  163| enter testDefer
-#-----|  -> defer { ... }
+#-----|  -> testDefer
 
 #  163| exit testDefer
 
 #  163| exit testDefer (normal)
 #-----|  -> exit testDefer
+
+#  163| testDefer
+#-----|  -> x
+
+#  163| x
+#-----|  -> defer { ... }
 
 #  165| defer { ... }
 #-----|  -> defer { ... }
@@ -1471,12 +1595,18 @@ cfg.swift:
 #-----|  -> [...]
 
 #  181| enter m1
-#-----|  -> if ... then { ... } else { ... }
+#-----|  -> m1
 
 #  181| exit m1
 
 #  181| exit m1 (normal)
 #-----|  -> exit m1
+
+#  181| m1
+#-----|  -> x
+
+#  181| x
+#-----|  -> if ... then { ... } else { ... }
 
 #  182| if ... then { ... } else { ... }
 #-----|  -> StmtCondition
@@ -1685,12 +1815,18 @@ cfg.swift:
 #-----|  -> [...]
 
 #  193| enter m2
-#-----|  -> if ... then { ... }
+#-----|  -> m2
 
 #  193| exit m2
 
 #  193| exit m2 (normal)
 #-----|  -> exit m2
+
+#  193| m2
+#-----|  -> b
+
+#  193| b
+#-----|  -> if ... then { ... }
 
 #  194| if ... then { ... }
 #-----|  -> StmtCondition
@@ -1715,12 +1851,18 @@ cfg.swift:
 #-----|  -> return ...
 
 #  200| enter m3
-#-----|  -> if ... then { ... }
+#-----|  -> m3
 
 #  200| exit m3
 
 #  200| exit m3 (normal)
 #-----|  -> exit m3
+
+#  200| m3
+#-----|  -> x
+
+#  200| x
+#-----|  -> if ... then { ... }
 
 #  201| if ... then { ... }
 #-----|  -> StmtCondition
@@ -1843,12 +1985,24 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  210| enter m4
-#-----|  -> b1
+#-----|  -> m4
 
 #  210| exit m4
 
 #  210| exit m4 (normal)
 #-----|  -> exit m4
+
+#  210| m4
+#-----|  -> b1
+
+#  210| b1
+#-----|  -> b2
+
+#  210| b2
+#-----|  -> b3
+
+#  210| b3
+#-----|  -> b1
 
 #  211| return ...
 #-----| return -> exit m4 (normal)
@@ -1886,13 +2040,19 @@ cfg.swift:
 #  211| !b2 || !b3
 #-----|  -> ... ? ... : ...
 
+#  214| conversionsInSplitEntry
+#-----|  -> b
+
 #  214| enter conversionsInSplitEntry
-#-----|  -> if ... then { ... } else { ... }
+#-----|  -> conversionsInSplitEntry
 
 #  214| exit conversionsInSplitEntry
 
 #  214| exit conversionsInSplitEntry (normal)
 #-----|  -> exit conversionsInSplitEntry
+
+#  214| b
+#-----|  -> if ... then { ... } else { ... }
 
 #  215| if ... then { ... } else { ... }
 #-----|  -> StmtCondition
@@ -1934,8 +2094,11 @@ cfg.swift:
 #  219| !b
 #-----|  -> return ...
 
-#  223| enter constant_condition
+#  223| constant_condition
 #-----|  -> if ... then { ... }
+
+#  223| enter constant_condition
+#-----|  -> constant_condition
 
 #  223| exit constant_condition
 
@@ -1954,13 +2117,19 @@ cfg.swift:
 #  224| true
 #-----| true -> [false] call to ...
 
+#  229| empty_else
+#-----|  -> b
+
 #  229| enter empty_else
-#-----|  -> if ... then { ... } else { ... }
+#-----|  -> empty_else
 
 #  229| exit empty_else
 
 #  229| exit empty_else (normal)
 #-----|  -> exit empty_else
+
+#  229| b
+#-----|  -> if ... then { ... } else { ... }
 
 #  230| if ... then { ... } else { ... }
 #-----|  -> StmtCondition
@@ -2032,13 +2201,22 @@ cfg.swift:
 #-----|  -> (Any) ...
 #-----|  -> (TBD (ProtocolCompositionType)) ...
 
+#  237| disjunct
+#-----|  -> b1
+
 #  237| enter disjunct
-#-----|  -> if ... then { ... }
+#-----|  -> disjunct
 
 #  237| exit disjunct
 
 #  237| exit disjunct (normal)
 #-----|  -> exit disjunct
+
+#  237| b1
+#-----|  -> b2
+
+#  237| b2
+#-----|  -> if ... then { ... }
 
 #  238| if ... then { ... }
 #-----|  -> StmtCondition
@@ -2100,13 +2278,22 @@ cfg.swift:
 #-----|  -> (Any) ...
 #-----|  -> (TBD (ProtocolCompositionType)) ...
 
+#  243| binaryExprs
+#-----|  -> a
+
 #  243| enter binaryExprs
-#-----|  -> c
+#-----|  -> binaryExprs
 
 #  243| exit binaryExprs
 
 #  243| exit binaryExprs (normal)
 #-----|  -> exit binaryExprs
+
+#  243| a
+#-----|  -> b
+
+#  243| b
+#-----|  -> c
 
 #  244| var ... = ...
 #-----|  -> c
@@ -2557,12 +2744,21 @@ cfg.swift:
 #-----|  -> ... call to >= ...
 
 #  262| enter interpolatedString
-#-----|  -> "..."
+#-----|  -> interpolatedString
 
 #  262| exit interpolatedString
 
 #  262| exit interpolatedString (normal)
 #-----|  -> exit interpolatedString
+
+#  262| interpolatedString
+#-----|  -> x
+
+#  262| x
+#-----|  -> y
+
+#  262| y
+#-----|  -> "..."
 
 #  263| return ...
 #-----| return -> exit interpolatedString (normal)
@@ -2571,12 +2767,15 @@ cfg.swift:
 #-----|  -> return ...
 
 #  266| enter testSubscriptExpr
-#-----|  -> a
+#-----|  -> testSubscriptExpr
 
 #  266| exit testSubscriptExpr
 
 #  266| exit testSubscriptExpr (normal)
 #-----|  -> exit testSubscriptExpr
+
+#  266| testSubscriptExpr
+#-----|  -> a
 
 #  267| var ... = ...
 #-----|  -> a
@@ -3784,12 +3983,18 @@ cfg.swift:
 #-----|  -> getter for ...[...]
 
 #  299| enter loop1
-#-----|  -> while ... { ... }
+#-----|  -> loop1
 
 #  299| exit loop1
 
 #  299| exit loop1 (normal)
 #-----|  -> exit loop1
+
+#  299| loop1
+#-----|  -> x
+
+#  299| x
+#-----|  -> while ... { ... }
 
 #  300| while ... { ... }
 #-----|  -> StmtCondition
@@ -3875,12 +4080,18 @@ cfg.swift:
 #-----|  -> ... call to -= ...
 
 #  306| enter loop2
-#-----|  -> while ... { ... }
+#-----|  -> loop2
 
 #  306| exit loop2
 
 #  306| exit loop2 (normal)
 #-----|  -> exit loop2
+
+#  306| loop2
+#-----|  -> x
+
+#  306| x
+#-----|  -> while ... { ... }
 
 #  307| while ... { ... }
 #-----|  -> StmtCondition
@@ -4087,12 +4298,18 @@ cfg.swift:
 #-----|  -> [...]
 
 #  321| enter labeledLoop
-#-----|  -> while ... { ... }
+#-----|  -> labeledLoop
 
 #  321| exit labeledLoop
 
 #  321| exit labeledLoop (normal)
 #-----|  -> exit labeledLoop
+
+#  321| labeledLoop
+#-----|  -> x
+
+#  321| x
+#-----|  -> while ... { ... }
 
 #  322| while ... { ... }
 #-----|  -> StmtCondition
@@ -4329,12 +4546,18 @@ cfg.swift:
 #-----|  -> [...]
 
 #  338| enter testRepeat
-#-----|  -> repeat { ... } while ... 
+#-----|  -> testRepeat
 
 #  338| exit testRepeat
 
 #  338| exit testRepeat (normal)
 #-----|  -> exit testRepeat
+
+#  338| testRepeat
+#-----|  -> x
+
+#  338| x
+#-----|  -> repeat { ... } while ... 
 
 #  339| repeat { ... } while ... 
 #-----|  -> print
@@ -4417,12 +4640,15 @@ cfg.swift:
 #-----|  -> ... call to >= ...
 
 #  345| enter loop_with_identity_expr
-#-----|  -> x
+#-----|  -> loop_with_identity_expr
 
 #  345| exit loop_with_identity_expr
 
 #  345| exit loop_with_identity_expr (normal)
 #-----|  -> exit loop_with_identity_expr
+
+#  345| loop_with_identity_expr
+#-----|  -> x
 
 #  346| var ... = ...
 #-----|  -> x
@@ -4493,20 +4719,43 @@ cfg.swift:
 #  348| 1
 #-----|  -> ... call to += ...
 
+#  352| enter init
+#-----|  -> init
+
+#  352| exit init
+
+#  352| exit init (normal)
+#-----|  -> exit init
+
+#  352| init
+#-----|  -> { ... }
+
+#  352| { ... }
+#-----|  -> exit init (normal)
+
 #  353| enter get
+#-----|  -> get
 
 #  353| exit get
 
 #  353| exit get (normal)
 #-----|  -> exit get
 
+#  353| get
+
+#  354| deinit
+#-----|  -> arg
+
 #  354| enter deinit
-#-----|  -> self
+#-----|  -> deinit
 
 #  354| exit deinit
 
 #  354| exit deinit (normal)
 #-----|  -> exit deinit
+
+#  354| arg
+#-----|  -> self
 
 #  355| .c
 #-----|  -> arg
@@ -4524,12 +4773,15 @@ cfg.swift:
 #-----| return -> exit deinit (normal)
 
 #  358| enter getOptional
-#-----|  -> self
+#-----|  -> getOptional
 
 #  358| exit getOptional
 
 #  358| exit getOptional (normal)
 #-----|  -> exit getOptional
+
+#  358| getOptional
+#-----|  -> self
 
 #  359| return ...
 #-----| return -> exit getOptional (normal)
@@ -4541,12 +4793,18 @@ cfg.swift:
 #-----|  -> getter for .c
 
 #  363| enter testOptional
-#-----|  -> getMyInt
+#-----|  -> testOptional
 
 #  363| exit testOptional
 
 #  363| exit testOptional (normal)
 #-----|  -> exit testOptional
+
+#  363| testOptional
+#-----|  -> c
+
+#  363| c
+#-----|  -> getMyInt
 
 #  364| return ...
 #-----| return -> exit testOptional (normal)
@@ -4587,12 +4845,21 @@ cfg.swift:
 #-----|  -> getOptional
 
 #  367| enter testCapture
-#-----|  -> z
+#-----|  -> testCapture
 
 #  367| exit testCapture
 
 #  367| exit testCapture (normal)
 #-----|  -> exit testCapture
+
+#  367| testCapture
+#-----|  -> x
+
+#  367| x
+#-----|  -> y
+
+#  367| y
+#-----|  -> z
 
 #  368| return ...
 #-----| return -> exit testCapture (normal)
@@ -4638,12 +4905,18 @@ cfg.swift:
 #-----|  -> var ... = ...
 
 #  373| enter testTupleElement
-#-----|  -> +
+#-----|  -> testTupleElement
 
 #  373| exit testTupleElement
 
 #  373| exit testTupleElement (normal)
 #-----|  -> exit testTupleElement
+
+#  373| testTupleElement
+#-----|  -> t
+
+#  373| t
+#-----|  -> +
 
 #  374| return ...
 #-----| return -> exit testTupleElement (normal)
@@ -4741,17 +5014,36 @@ cfg.swift:
 #  377| cfg.Derived
 #-----|  -> #...
 
+#  377| enter init
+#-----|  -> init
+
+#  377| exit init
+
+#  377| exit init (normal)
+#-----|  -> exit init
+
+#  377| init
+#-----|  -> { ... }
+
+#  377| { ... }
+#-----|  -> exit init (normal)
+
+#  377| deinit
+
 #  377| enter deinit
-#-----|  -> _unimplementedInitializer
+#-----|  -> deinit
 
 #  377| exit deinit
 
 #  377| exit deinit (normal)
 #-----|  -> exit deinit
 
-#  378| enter deinit
+#  378| deinit
 #-----|  -> call to ...
 #-----|  -> TBD (OtherConstructorDeclRefExpr)
+
+#  378| enter deinit
+#-----|  -> deinit
 
 #  378| exit deinit
 
@@ -4782,13 +5074,19 @@ cfg.swift:
 #  380| return
 #-----| return -> exit deinit (normal)
 
+#  383| doWithoutCatch
+#-----|  -> x
+
 #  383| enter doWithoutCatch
-#-----|  -> do { ... }
+#-----|  -> doWithoutCatch
 
 #  383| exit doWithoutCatch
 
 #  383| exit doWithoutCatch (normal)
 #-----|  -> exit doWithoutCatch
+
+#  383| x
+#-----|  -> do { ... }
 
 #  384| do { ... }
 #-----|  -> mightThrow
@@ -4834,13 +5132,18 @@ cfg.swift:
 #  386| [...]
 #-----|  -> [...]
 
-#  394| enter (unnamed function decl)
+#  394| (unnamed function decl)
 #-----|  -> yield ...
 #-----|  -> TBD (YieldStmt)
 
+#  394| enter (unnamed function decl)
+#-----|  -> (unnamed function decl)
+
 #  394| enter get
+#-----|  -> get
 
 #  394| enter set
+#-----|  -> set
 
 #  394| exit (unnamed function decl)
 
@@ -4857,14 +5160,24 @@ cfg.swift:
 #  394| exit set (normal)
 #-----|  -> exit set
 
+#  394| get
+
+#  394| set
+#-----|  -> value
+
+#  394| value
+
 #  394| yield ...
 #-----|  -> exit (unnamed function decl) (normal)
 
 #  394| TBD (YieldStmt)
 #-----|  -> exit (unnamed function decl) (normal)
 
-#  395| enter deinit
+#  395| deinit
 #-----|  -> self
+
+#  395| enter deinit
+#-----|  -> deinit
 
 #  395| exit deinit
 
@@ -4887,12 +5200,15 @@ cfg.swift:
 #-----| return -> exit deinit (normal)
 
 #  399| enter init
-#-----|  -> self
+#-----|  -> init
 
 #  399| exit init
 
 #  399| exit init (normal)
 #-----|  -> exit init
+
+#  399| init
+#-----|  -> self
 
 #  400| .field
 #-----|  -> 0
@@ -4906,13 +5222,22 @@ cfg.swift:
 #  400| 0
 #-----|  ->  ... = ...
 
-#  404| enter dictionaryLiteral
+#  404| dictionaryLiteral
 #-----|  -> x
+
+#  404| enter dictionaryLiteral
+#-----|  -> dictionaryLiteral
 
 #  404| exit dictionaryLiteral
 
 #  404| exit dictionaryLiteral (normal)
 #-----|  -> exit dictionaryLiteral
+
+#  404| x
+#-----|  -> y
+
+#  404| y
+#-----|  -> x
 
 #  405| return ...
 #-----| return -> exit dictionaryLiteral (normal)

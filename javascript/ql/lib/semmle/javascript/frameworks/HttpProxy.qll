@@ -19,10 +19,10 @@ private module HttpProxy {
             .getACall()
     }
 
-    override DataFlow::Node getUrl() { result = getParameter(0).getMember("target").getARhs() }
+    override DataFlow::Node getUrl() { result = getParameter(0).getMember("target").asSink() }
 
     override DataFlow::Node getHost() {
-      result = getParameter(0).getMember("target").getMember("host").getARhs()
+      result = getParameter(0).getMember("target").getMember("host").asSink()
     }
 
     override DataFlow::Node getADataNode() { none() }
@@ -49,10 +49,10 @@ private module HttpProxy {
       )
     }
 
-    override DataFlow::Node getUrl() { result = getOptionsObject().getMember("target").getARhs() }
+    override DataFlow::Node getUrl() { result = getOptionsObject().getMember("target").asSink() }
 
     override DataFlow::Node getHost() {
-      result = getOptionsObject().getMember("target").getMember("host").getARhs()
+      result = getOptionsObject().getMember("target").getMember("host").asSink()
     }
 
     override DataFlow::Node getADataNode() { none() }
@@ -78,8 +78,8 @@ private module HttpProxy {
     ProxyListenerCallback() {
       exists(API::CallNode call |
         call = any(CreateServerCall server).getReturn().getMember(["on", "once"]).getACall() and
-        call.getParameter(0).getARhs().mayHaveStringValue(event) and
-        this = call.getParameter(1).getARhs().getAFunctionValue()
+        call.getParameter(0).asSink().mayHaveStringValue(event) and
+        this = call.getParameter(1).asSink().getAFunctionValue()
       )
     }
 
