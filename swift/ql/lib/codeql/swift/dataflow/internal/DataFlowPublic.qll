@@ -69,7 +69,7 @@ class ExprNode extends Node, TExprNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node, TNormalParameterNode instanceof ParameterNodeImpl { }
+class ParameterNode extends Node, SsaDefinitionNode instanceof ParameterNodeImpl { }
 
 /**
  */
@@ -98,7 +98,7 @@ class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
 }
 
 /** Gets a node corresponding to expression `e`. */
-ExprNode exprNode(DataFlowExpr e) { none() }
+ExprNode exprNode(DataFlowExpr e) { result.asExpr() = e }
 
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.

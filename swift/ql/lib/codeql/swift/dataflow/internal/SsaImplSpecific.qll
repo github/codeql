@@ -27,6 +27,10 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
     v.getParentPattern() = pattern and
     certain = true
   )
+  or
+  v instanceof ParamDecl and
+  bb.getNode(i).getNode().asAstNode() = v and
+  certain = true
 }
 
 private predicate isLValue(DeclRefExpr ref) { any(AssignExpr assign).getDest() = ref }

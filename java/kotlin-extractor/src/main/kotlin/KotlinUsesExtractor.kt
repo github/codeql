@@ -6,6 +6,7 @@ import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
+import org.jetbrains.kotlin.backend.jvm.ir.getJvmNameFromAnnotation
 import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.descriptors.*
@@ -1269,9 +1270,34 @@ open class KotlinUsesExtractor(
     fun useValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>?): Label<out DbParam> =
         tw.getLabelFor(getValueParameterLabel(vp, parent))
 
+    fun isDirectlyExposedCompanionObjectField(f: IrField) =
+        f.hasAnnotation(FqName("kotlin.jvm.JvmField")) ||
+        f.correspondingPropertySymbol?.owner?.let {
+            it.isConst || it.isLateinit
+        } ?: false
+
+    fun getFieldParent(f: IrField) =
+        f.parentClassOrNull?.let {
+            if (it.isCompanion && isDirectlyExposedCompanionObjectField(f))
+                it.parent
+            else
+                null
+        } ?: f.parent
+
+    // Gets a field's corresponding property's extension receiver type, if any
+    fun getExtensionReceiverType(f: IrField) =
+        f.correspondingPropertySymbol?.owner?.let {
+            (it.getter ?: it.setter)?.extensionReceiverParameter?.type
+        }
+
     fun getFieldLabel(f: IrField): String {
-        val parentId = useDeclarationParent(f.parent, false)
-        return "@\"field;{$parentId};${f.name.asString()}\""
+        val parentId = useDeclarationParent(getFieldParent(f), false)
+        // Distinguish backing fields of properties based on their extension receiver type;
+        // otherwise two extension properties declared in the same enclosing context will get
+        // clashing trap labels. These are always private, so we can just make up a label without
+        // worrying about their names as seen from Java.
+        val extensionPropertyDiscriminator = getExtensionReceiverType(f)?.let { "extension;${useType(it)}" } ?: ""
+        return "@\"field;{$parentId};${extensionPropertyDiscriminator}${f.name.asString()}\""
     }
 
     fun useField(f: IrField): Label<out DbField> =
