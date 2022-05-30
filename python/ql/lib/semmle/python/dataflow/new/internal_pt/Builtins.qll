@@ -1,8 +1,8 @@
 /** Provides predicates for reasoning about built-ins in Python. */
 
 private import python
-private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.internal.ImportStar
+private import semmle.python.dataflow.new.internal_pt.DataFlowPublic as DataFlow
+private import semmle.python.dataflow.new.internal_pt.ImportStar
 
 module Builtins {
   /** Gets the name of a known built-in. */

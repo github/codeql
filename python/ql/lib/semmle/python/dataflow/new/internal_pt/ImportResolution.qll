@@ -1,6 +1,6 @@
 private import python
-private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.internal.ImportStar
+private import semmle.python.dataflow.new.internal_pt.DataFlowPublic as DataFlow
+private import semmle.python.dataflow.new.internal_pt.ImportStar
 private import semmle.python.dataflow.new.TypeTracker
 
 module ImportResolution {

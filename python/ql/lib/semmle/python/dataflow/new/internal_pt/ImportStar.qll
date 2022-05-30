@@ -1,9 +1,9 @@
 /** Provides predicates for reasoning about uses of `import *` in Python. */
 
 private import python
-private import semmle.python.dataflow.new.internal.Builtins
-private import semmle.python.dataflow.new.internal.ImportResolution
-private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal_pt.Builtins
+private import semmle.python.dataflow.new.internal_pt.ImportResolution
+private import semmle.python.dataflow.new.internal_pt.DataFlowPublic as DataFlow
 
 cached
 module ImportStar {

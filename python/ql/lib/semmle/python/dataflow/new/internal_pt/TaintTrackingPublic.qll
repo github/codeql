@@ -5,7 +5,7 @@
 
 private import python
 private import TaintTrackingPrivate
-private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal_pt.DataFlowPublic as DataFlow
 // Need to import since frameworks can extend `AdditionalTaintStep`
 private import semmle.python.Frameworks
 

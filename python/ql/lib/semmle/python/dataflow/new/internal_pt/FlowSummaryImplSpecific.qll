@@ -37,7 +37,7 @@ private import DataFlowPublic
 private import DataFlowImplCommon
 private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Public
-private import semmle.python.dataflow.new.FlowSummary as FlowSummary
+private import fixed_versions_for_copy.FlowSummary as FlowSummary
 
 class SummarizedCallableBase = string;
 

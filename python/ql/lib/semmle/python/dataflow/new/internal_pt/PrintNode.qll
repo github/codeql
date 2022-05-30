@@ -8,8 +8,8 @@
  */
 
 private import python
-private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.python.dataflow.new.internal_pt.DataFlowPublic as DataFlow
+private import semmle.python.dataflow.new.internal_pt.DataFlowPrivate as DataFlowPrivate
 
 /**
  * INTERNAL: Do not use.

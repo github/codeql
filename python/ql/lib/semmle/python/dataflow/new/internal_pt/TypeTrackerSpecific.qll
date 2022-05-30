@@ -3,9 +3,8 @@
  */
 
 private import python
-private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
-private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
-import semmle.python.internal.CachedStages
+private import semmle.python.dataflow.new.internal_pt.DataFlowPublic as DataFlowPublic
+private import semmle.python.dataflow.new.internal_pt.DataFlowPrivate as DataFlowPrivate
 
 class Node = DataFlowPublic::Node;
 
@@ -56,7 +55,7 @@ predicate levelStepNoCall(Node nodeFrom, Node nodeTo) { none() }
  * using the name of the attribute for the corresponding content.
  */
 string getPossibleContentName() {
-  Stages::TypeTracking::ref() and // the TypeTracking::append() etc. predicates that we want to cache depend on this predicate, so we can place the `ref()` call here to get around identical files.
+  // Stages::TypeTracking::ref() and // the TypeTracking::append() etc. predicates that we want to cache depend on this predicate, so we can place the `ref()` call here to get around identical files.
   result = any(DataFlowPublic::AttrRef a).getAttributeName()
 }
 

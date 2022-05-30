@@ -10,7 +10,7 @@ private import python
 import DataFlowPublic
 private import DataFlowPrivate
 private import semmle.python.internal.CachedStages
-private import semmle.python.internal.Awaited
+private import fixed_versions_for_copy.Awaited
 
 /**
  * A data flow node that is a source of local flow. This includes things like
@@ -115,22 +115,6 @@ class LocalSourceNode extends Node {
   MethodCallNode getAMethodCall(string methodName) {
     result = this.getAnAttributeRead(methodName).getACall()
   }
-
-  /**
-   * Gets a node that this node may flow to using one heap and/or interprocedural step.
-   *
-   * See `TypeTracker` for more details about how to use this.
-   */
-  pragma[inline]
-  LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
-
-  /**
-   * Gets a node that may flow into this one using one heap and/or interprocedural step.
-   *
-   * See `TypeBackTracker` for more details about how to use this.
-   */
-  pragma[inline]
-  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
 }
 
 /**
@@ -161,22 +145,6 @@ private module FutureWork {
       or
       this.(LocalSourceNode).flowsTo(node)
     }
-
-    /**
-     * Gets a node that this node may flow to using one heap and/or interprocedural step.
-     *
-     * See `TypeTracker` for more details about how to use this.
-     */
-    pragma[inline]
-    TypeTrackingNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
-
-    /**
-     * Gets a node that may flow into this one using one heap and/or interprocedural step.
-     *
-     * See `TypeBackTracker` for more details about how to use this.
-     */
-    pragma[inline]
-    TypeTrackingNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
   }
 }
 
