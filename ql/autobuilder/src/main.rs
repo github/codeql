@@ -24,30 +24,23 @@ fn main() -> std::io::Result<()> {
         .arg("--working-dir=.")
         .arg(db);
 
-    let pwd = env::current_dir()?;
     for line in env::var("LGTM_INDEX_FILTERS")
         .unwrap_or_default()
         .split('\n')
     {
         if let Some(stripped) = line.strip_prefix("include:") {
-            let path = pwd
-                .join(stripped)
-                .join("**")
-                .into_os_string()
-                .into_string()
-                .unwrap();
-            cmd.arg("--also-match").arg(path);
+            cmd.arg("--also-match").arg(absolutelyfy(stripped));
         } else if let Some(stripped) = line.strip_prefix("exclude:") {
-            let path = pwd
-                .join(stripped)
-                .join("**")
-                .into_os_string()
-                .into_string()
-                .unwrap();
-            // the same as above, but starting with "!"
-            cmd.arg("--also-match").arg("!".to_owned() + &path);
+            cmd.arg("--exclude").arg(stripped);
         }
     }
     let exit = &cmd.spawn()?.wait()?;
     std::process::exit(exit.code().unwrap_or(1))
+}
+
+// converts the relative path `stripped` to an absolute path by prepending the working directory
+fn absolutelyfy(stripped: &str) -> String {
+    let pwd = env::current_dir().unwrap();
+
+    pwd.join(stripped).into_os_string().into_string().unwrap()
 }
