@@ -97,7 +97,7 @@ predicate thisFunctionFread(FunctionCall fc, Expr exp) {
   globalValueNumber(fc.getArgument(0)) = globalValueNumber(exp)
 }
 
-/** Hods if the value of the first function argument `fc` depends on the result of calling another function. */
+/** Holds if the value of the first function argument `fc` depends on the result of calling another function. */
 predicate lengthMayBeEquealZero(FunctionCall fc) {
   exists(FunctionCall ftmp |
     ftmp.getASuccessor*() = fc and
