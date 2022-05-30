@@ -1,5 +1,5 @@
 /**
- * @name Buffer access with incorrect length value.
+ * @name Buffer access with incorrect length value
  * @description Incorrect use of the length argument in some functions will result in out-of-memory accesses.
  * @kind problem
  * @id cpp/buffer-access-with-incorrect-length-value
