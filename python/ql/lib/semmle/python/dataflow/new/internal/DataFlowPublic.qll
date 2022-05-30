@@ -31,10 +31,41 @@ newtype TNode =
     or
     node.getNode() instanceof Pattern
   } or
-  /** A synthetic node representing the value of an object before a state change */
-  TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
-  /** A synthetic node representing the value of an object after a state change. */
-  TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre) or
+  /**
+   * A synthetic node representing the value of an object before a state change.
+   *
+   * For class calls we pass a synthetic self argument, so attribute writes in
+   * `__init__` is reflected on the resulting object (we need special logic for this
+   * since there is no `return` in `__init__`)
+   */
+  // NOTE: since we can't rely on the call graph, but we want to have synthetic
+  // pre-update nodes for class calls, we end up getting synthetic pre-update nodes for
+  // ALL calls :|
+  TSyntheticPreUpdateNode(CallNode call) or
+  /**
+   * A synthetic node representing the value of an object after a state change.
+   * See QLDoc for `PostUpdateNode`.
+   */
+  TSyntheticPostUpdateNode(ControlFlowNode node) {
+    exists(CallNode call |
+      node = call.getArg(_)
+      or
+      node = call.getArgByName(_)
+    )
+    or
+    node = any(AttrNode a).getObject()
+    or
+    node = any(SubscriptNode s).getObject()
+    or
+    // self parameter when used implicitly in `super()`
+    exists(Class cls, Function func, ParameterDefinition def |
+      func = cls.getAMethod() and
+      not hasStaticmethodDecorator(func) and
+      // this matches what we do in ParameterNode
+      def.getDefiningNode() = node and
+      def.getParameter() = func.getArg(0)
+    )
+  } or
   /** A node representing a global (module-level) variable in a specific module. */
   TModuleVariableNode(Module m, GlobalVariable v) {
     v.getScope() = m and
@@ -270,13 +301,9 @@ class ExtractedParameterNode extends ParameterNodeImpl, CfgNode {
   ExtractedParameterNode() { node = def.getDefiningNode() }
 
   override predicate isParameterOf(DataFlowCallable c, ParameterPosition ppos) {
-    // TODO(call-graph): implement this!
-    none()
+    this = c.getParameter(ppos)
   }
 
-  override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
-
-  /** Gets the `Parameter` this `ParameterNode` represents. */
   override Parameter getParameter() { result = def.getParameter() }
 }
 
@@ -294,16 +321,16 @@ abstract class ArgumentNode extends Node {
   final ExtractedDataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
-/** A data flow node that represents a call argument found in the source code. */
+/**
+ * A data flow node that represents a call argument found in the source code,
+ * where the call can be resolved.
+ */
 class ExtractedArgumentNode extends ArgumentNode {
-  ExtractedArgumentNode() { this = any(ExtractedDataFlowCall c).getArgument(_) }
+  ExtractedArgumentNode() { getCallArg(_, _, _, this, _) }
 
   final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    this.extractedArgumentOf(call, pos)
-  }
-
-  predicate extractedArgumentOf(ExtractedDataFlowCall call, ArgumentPosition pos) {
-    this = call.getArgument(pos)
+    this = call.getArgument(pos) and
+    call instanceof ExtractedDataFlowCall
   }
 }
 
@@ -312,16 +339,17 @@ class ExtractedArgumentNode extends ArgumentNode {
  * changed its state.
  *
  * This can be either the argument to a callable after the callable returns
- * (which might have mutated the argument), or the qualifier of a field after
- * an update to the field.
+ * (which might have mutated the argument), the qualifier of a field after
+ * an update to the field, or a container such as a list/dictionary after an element
+ * update.
  *
  * Nodes corresponding to AST elements, for example `ExprNode`s, usually refer
- * to the value before the update with the exception of `ObjectCreationNode`s,
+ * to the value before the update with the exception of class calls,
  * which represents the value _after_ the constructor has run.
  */
-abstract class PostUpdateNode extends Node {
+class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
   /** Gets the node before the state update. */
-  abstract Node getPreUpdateNode();
+  Node getPreUpdateNode() { result = super.getPreUpdateNode() }
 }
 
 /**
