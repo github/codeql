@@ -68,3 +68,9 @@
 | expressions.swift:137:3:137:7 | ...[...] | OrdinarySemantics |
 | expressions.swift:138:10:138:10 | hp | OrdinarySemantics |
 | expressions.swift:138:10:138:17 | ...[...] | OrdinarySemantics |
+| expressions.swift:152:26:152:26 | a | OrdinarySemantics |
+| expressions.swift:152:37:152:37 | keyPathInt | OrdinarySemantics |
+| expressions.swift:153:24:153:24 | a | OrdinarySemantics |
+| expressions.swift:153:35:153:35 | keyPathB | OrdinarySemantics |
+| expressions.swift:154:22:154:22 | a | OrdinarySemantics |
+| expressions.swift:154:33:154:33 | keyPathB | OrdinarySemantics |

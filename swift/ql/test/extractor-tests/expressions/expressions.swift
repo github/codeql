@@ -137,3 +137,19 @@ func testProperties(hp : inout HasProperty) -> Int {
   hp[1] = 2
   return hp[3, 4]
 }
+
+struct B {
+  var x : Int
+}
+
+struct A {
+  var b : B
+  var bs : [B]
+  var mayB : B?
+}
+
+func test(a : A, keyPathInt : WritableKeyPath<A, Int>, keyPathB : WritableKeyPath<A, B>) {
+  var apply_keyPathInt = a[keyPath: keyPathInt]
+  var apply_keyPathB = a[keyPath: keyPathB]
+  var nested_apply = a[keyPath: keyPathB][keyPath: \B.x]
+}
