@@ -468,7 +468,7 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
         auto pathLabel = dispatcher_.fetchLabel(path);
         dispatcher_.emit(KeyPathExprParsedPathsTrap{label, pathLabel});
       }
-      if (auto root = expr->getParsedPath()) {
+      if (auto root = expr->getParsedRoot()) {
         auto rootLabel = dispatcher_.fetchLabel(root);
         dispatcher_.emit(KeyPathExprParsedRootsTrap{label, rootLabel});
       }
