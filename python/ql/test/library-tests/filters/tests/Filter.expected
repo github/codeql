@@ -4,3 +4,5 @@
 | test_foo.py:3:1:3:15 | Function test_foo |
 | unittest_test.py:3:1:3:33 | Class FooTest |
 | unittest_test.py:4:5:4:25 | Function test_valid |
+| unittest_test.py:7:1:7:49 | Class FunctionFooTest |
+| unittest_test.py:8:5:8:25 | Function test_valid |
