@@ -59,6 +59,12 @@ module PathInjection {
     FileSystemAccessAsSink() { this = any(FileSystemAccess e).getAPathArgument() }
   }
 
+  private import semmle.python.frameworks.data.ModelsAsData
+
+  private class DataAsFileSink extends Sink {
+    DataAsFileSink() { this = ModelOutput::getASinkNode("path-injection").getARhs() }
+  }
+
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */

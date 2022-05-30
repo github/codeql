@@ -371,6 +371,39 @@ class HeaderDeclaration extends DataFlow::Node {
   DataFlow::Node getValueArg() { result = range.getValueArg() }
 }
 
+/** Provides classes for modeling Csv writer APIs. */
+module CsvWriter {
+  /**
+   * A data flow node for csv writer.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `CsvWriter` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Get the parameter value of the csv writer function.
+     */
+    abstract DataFlow::Node getAnInput();
+  }
+}
+
+/**
+ * A data flow node for csv writer.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `CsvWriter::Range` instead.
+ */
+class CsvWriter extends DataFlow::Node {
+  CsvWriter::Range range;
+
+  CsvWriter() { this = range }
+
+  /**
+   * Get the parameter value of the csv writer function.
+   */
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}
+
 /**
  * A data-flow node that sets a cookie in an HTTP response.
  *

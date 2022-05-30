@@ -4,6 +4,7 @@ on:
     paths:
       - "go/**"
       - .github/workflows/go-tests.yml
+      - codeql-workspace.yml
 jobs:
 
   test-linux:

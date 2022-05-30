@@ -1,5 +1,6 @@
 private import swift
 private import DataFlowPrivate
+private import DataFlowPublic
 
 newtype TReturnKind = TNormalReturnKind()
 
@@ -42,47 +43,34 @@ class DataFlowCallable extends TDataFlowCallable {
  * A call. This includes calls from source code, as well as call(back)s
  * inside library callables with a flow summary.
  */
-class DataFlowCall extends TDataFlowCall {
+class DataFlowCall extends ExprNode {
+  DataFlowCall() { this.asExpr() instanceof CallExpr }
+
   /** Gets the enclosing callable. */
   DataFlowCallable getEnclosingCallable() { none() }
-
-  /** Gets a textual representation of this call. */
-  string toString() { none() }
-
-  /** Gets the location of this call. */
-  Location getLocation() { none() }
-
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries).
-   */
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
 }
 
 cached
 private module Cached {
   cached
-  newtype TDataFlowCallable = TODO_TDataFlowCallable()
-
-  cached
-  newtype TDataFlowCall = TODO_TDataFlowCall()
+  newtype TDataFlowCallable = TDataFlowFunc(FuncDecl func)
 
   /** Gets a viable run-time target for the call `call`. */
   cached
-  DataFlowCallable viableCallable(DataFlowCall call) { none() }
+  DataFlowCallable viableCallable(DataFlowCall call) {
+    result = TDataFlowFunc(call.asExpr().(CallExpr).getStaticTarget())
+  }
 
   cached
-  newtype TArgumentPosition = TODO_TArgumentPosition()
+  newtype TArgumentPosition =
+    TThisArgument() or
+    // we rely on default exprs generated in the caller for ordering
+    TPositionalArgument(int n) { n = any(Argument arg).getIndex() }
 
   cached
-  newtype TParameterPosition = TODO_TParameterPosition()
+  newtype TParameterPosition =
+    TThisParameter() or
+    TPositionalParameter(int n) { n = any(Argument arg).getIndex() }
 }
 
 import Cached
@@ -105,12 +93,25 @@ class ParameterPosition extends TParameterPosition {
   string toString() { none() }
 }
 
+class PositionalParameterPosition extends ParameterPosition, TPositionalParameter {
+  int getIndex() { this = TPositionalParameter(result) }
+}
+
 /** An argument position. */
 class ArgumentPosition extends TArgumentPosition {
   /** Gets a textual representation of this position. */
   string toString() { none() }
 }
 
+class PositionalArgumentPosition extends ArgumentPosition, TPositionalArgument {
+  int getIndex() { this = TPositionalArgument(result) }
+}
+
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[inline]
-predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { none() }
+predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
+  ppos instanceof TThisParameter and
+  apos instanceof TThisArgument
+  or
+  ppos.(PositionalParameterPosition).getIndex() = apos.(PositionalArgumentPosition).getIndex()
+}
