@@ -73,7 +73,10 @@ class NetHttpRequest extends HTTP::Client::Request::Range {
     //   foo.request(...)
     exists(DataFlow::CallNode setter |
       disablingNode =
-        API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse() and
+        API::getTopLevelMember("OpenSSL")
+            .getMember("SSL")
+            .getMember("VERIFY_NONE")
+            .getAValueReachableFromSource() and
       setter.asExpr().getExpr().(SetterMethodCall).getMethodName() = "verify_mode=" and
       disablingNode = setter.getArgument(0) and
       localFlow(setter.getReceiver(), request.getReceiver())

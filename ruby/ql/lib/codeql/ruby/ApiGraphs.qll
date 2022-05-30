@@ -99,7 +99,7 @@ module API {
      *
      * This includes indirect uses found via data flow.
      */
-    DataFlow::Node getAUse() {
+    DataFlow::Node getAValueReachableFromSource() {
       exists(DataFlow::LocalSourceNode src | Impl::use(this, src) |
         Impl::trackUseNode(src).flowsTo(result)
       )
@@ -108,7 +108,7 @@ module API {
     /**
      * Gets an immediate use of the API component represented by this node.
      *
-     * Unlike `getAUse()`, this predicate only gets the immediate references, not the indirect uses
+     * Unlike `getAValueReachableFromSource()`, this predicate only gets the immediate references, not the indirect uses
      * found via data flow.
      */
     DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }

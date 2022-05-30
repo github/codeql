@@ -110,7 +110,11 @@ private predicate isSslVerifyModeNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
     key.asExpr() = p.getKey() and
     value.asExpr() = p.getValue() and
     isSslVerifyModeLiteral(key) and
-    value = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse()
+    value =
+      API::getTopLevelMember("OpenSSL")
+          .getMember("SSL")
+          .getMember("VERIFY_NONE")
+          .getAValueReachableFromSource()
   )
 }
 

@@ -66,7 +66,8 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
     // Check for `ssl_verify_peer: false` in the options hash.
     exists(DataFlow::Node arg, int i |
-      i > 0 and arg = connectionNode.getAUse().(DataFlow::CallNode).getArgument(i)
+      i > 0 and
+      arg = connectionNode.getAValueReachableFromSource().(DataFlow::CallNode).getArgument(i)
     |
       argSetsVerifyPeer(arg, false, disablingNode)
     )
@@ -79,7 +80,8 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
       disableCall.asExpr().getASuccessor+() = requestUse.asExpr() and
       disablingNode = disableCall and
       not exists(DataFlow::Node arg, int i |
-        i > 0 and arg = connectionNode.getAUse().(DataFlow::CallNode).getArgument(i)
+        i > 0 and
+        arg = connectionNode.getAValueReachableFromSource().(DataFlow::CallNode).getArgument(i)
       |
         argSetsVerifyPeer(arg, true, _)
       )

@@ -58,7 +58,8 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range {
     // or
     // `{ ssl: { verify_mode: OpenSSL::SSL::VERIFY_NONE } }`
     exists(DataFlow::Node arg, int i |
-      i > 0 and arg = connectionNode.getAUse().(DataFlow::CallNode).getArgument(i)
+      i > 0 and
+      arg = connectionNode.getAValueReachableFromSource().(DataFlow::CallNode).getArgument(i)
     |
       // Either passed as an individual key:value argument, e.g.:
       // Faraday.new(..., ssl: {...})
@@ -132,7 +133,11 @@ private predicate isVerifyModeNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
     key.asExpr() = p.getKey() and
     value.asExpr() = p.getValue() and
     isSymbolLiteral(key, "verify_mode") and
-    value = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse()
+    value =
+      API::getTopLevelMember("OpenSSL")
+          .getMember("SSL")
+          .getMember("VERIFY_NONE")
+          .getAValueReachableFromSource()
   )
 }
 

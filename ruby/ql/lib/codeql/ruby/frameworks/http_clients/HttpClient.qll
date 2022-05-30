@@ -54,7 +54,10 @@ class HttpClientRequest extends HTTP::Client::Request::Range {
     // on an HTTPClient connection object `c`.
     disablingNode = connectionNode.getReturn("ssl_config").getReturn("verify_mode=").asSource() and
     disablingNode.(DataFlow::CallNode).getArgument(0) =
-      API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse()
+      API::getTopLevelMember("OpenSSL")
+          .getMember("SSL")
+          .getMember("VERIFY_NONE")
+          .getAValueReachableFromSource()
   }
 
   override string getFramework() { result = "HTTPClient" }
