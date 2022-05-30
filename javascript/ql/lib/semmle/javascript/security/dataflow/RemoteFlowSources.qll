@@ -40,7 +40,7 @@ import Cached
  * A type of remote flow source that is specific to the browser environment.
  */
 class ClientSideRemoteFlowKind extends string {
-  ClientSideRemoteFlowKind() { this = ["query", "fragment", "path", "url", "name"] }
+  ClientSideRemoteFlowKind() { this = ["query", "fragment", "path", "url", "name", "message"] }
 
   /**
    * Holds if this is the `query` kind, describing sources derived from the query parameters of the browser URL,
@@ -65,6 +65,12 @@ class ClientSideRemoteFlowKind extends string {
    * where the untrusted part of the URL is prefixed by trusted data, such as the scheme and hostname.
    */
   predicate isUrl() { this = "url" }
+
+  /**
+   * Holds if this is the `message` kind, describing sources derived from the event object passed to
+   * a `window.onmessage` event handler.
+   */
+  predicate isMessage() { this = "message" }
 
   /** Holds if this is the `query` or `fragment` kind. */
   predicate isQueryOrFragment() { this.isQuery() or this.isFragment() }
