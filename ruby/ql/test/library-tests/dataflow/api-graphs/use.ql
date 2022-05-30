@@ -29,7 +29,7 @@ class ApiUseTest extends InlineExpectationsTest {
       n = a.getAValueReachableFromSource()
       or
       tag = "def" and
-      n = a.getARhs()
+      n = a.asSink()
       or
       tag = "call" and
       n = a.(API::MethodAccessNode).getCallNode()

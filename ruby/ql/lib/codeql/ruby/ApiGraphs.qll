@@ -116,12 +116,12 @@ module API {
     /**
      * Gets a data-flow node corresponding the value flowing into this API component.
      */
-    DataFlow::Node getARhs() { Impl::def(this, result) }
+    DataFlow::Node asSink() { Impl::def(this, result) }
 
     /**
      * Gets a data-flow node that may interprocedurally flow to the value escaping into this API component.
      */
-    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.getARhs()) }
+    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.asSink()) }
 
     /**
      * Gets a call to a method on the receiver represented by this API component.
