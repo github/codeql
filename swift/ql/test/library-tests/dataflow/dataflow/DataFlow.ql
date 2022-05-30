@@ -20,6 +20,5 @@ class TestConfiguration extends DataFlow::Configuration {
 }
 
 from DataFlow::PathNode src, DataFlow::PathNode sink, TestConfiguration test
-where
-  test.hasFlowPath(src, sink)
+where test.hasFlowPath(src, sink)
 select src, sink

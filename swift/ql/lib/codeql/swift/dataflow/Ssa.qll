@@ -73,7 +73,8 @@ module Ssa {
     }
   }
 
-  cached class PhiDefinition extends Definition, SsaImplCommon::PhiNode {
+  cached
+  class PhiDefinition extends Definition, SsaImplCommon::PhiNode {
     cached
     override Location getLocation() {
       exists(BasicBlock bb, int i |
@@ -82,12 +83,10 @@ module Ssa {
       )
     }
 
-    cached Definition getPhiInput(BasicBlock bb) {
-      SsaImplCommon::phiHasInputFromBlock(this, result, bb)
-    }
+    cached
+    Definition getPhiInput(BasicBlock bb) { SsaImplCommon::phiHasInputFromBlock(this, result, bb) }
 
-    cached Definition getAPhiInput() {
-      result = this.getPhiInput(_)
-    }
+    cached
+    Definition getAPhiInput() { result = this.getPhiInput(_) }
   }
 }
