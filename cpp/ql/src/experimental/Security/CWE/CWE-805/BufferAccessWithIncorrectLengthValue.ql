@@ -62,11 +62,10 @@ predicate numberArgument(Function f, int bpos, int spos) {
 
 from FunctionCall fc
 where
-  exists(ArrayType at, int b, int s, Variable vr |
-    numberArgument(fc.getTarget(), b, s) and
-    fc.getArgument(s).getValue().toInt() > at.getByteSize() and
-    vr.getADeclarationEntry().getType() = at and
-    fc.getArgument(b).(VariableAccess).getTarget() = vr
+  exists(ArrayType array, int bufArgPos, int sizeArgPos |
+    numberArgument(fc.getTarget(), bufArgPos, sizeArgPos) and
+    fc.getArgument(sizeArgPos).getValue().toInt() > array.getByteSize() and
+    fc.getArgument(bufArgPos).(VariableAccess).getTarget().getADeclarationEntry().getType() = array
   )
 select fc,
   "Access beyond the bounds of the allocated memory is possible, the size argument used is greater than the size of the buffer."
