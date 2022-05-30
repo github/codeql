@@ -118,17 +118,6 @@ private class IOGeneratedSinksCsv extends SinkModelCsv {
   }
 }
 
-private class IOGeneratedSourcesCsv extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "org.apache.commons.io.function;IOConsumer;true;forEachIndexed;(Stream,IOConsumer);;Argument[0];generated:remote",
-        "org.apache.commons.io;IOUtils;true;copy;(InputStream,OutputStream);;Argument[1];generated:remote",
-        "org.apache.commons.io;UncheckedIO;true;apply;(IOFunction,Object);;ReturnValue;generated:remote"
-      ]
-  }
-}
-
 private class IOGeneratedSummaryCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
