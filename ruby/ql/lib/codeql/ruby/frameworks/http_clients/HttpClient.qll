@@ -29,7 +29,7 @@ class HttpClientRequest extends HTTP::Client::Request::Range {
         API::getTopLevelMember("HTTPClient").getInstance()
       ] and
     requestNode = connectionNode.getReturn(method) and
-    requestUse = requestNode.getAnImmediateUse() and
+    requestUse = requestNode.asSource() and
     method in [
         "get", "head", "delete", "options", "post", "put", "trace", "get_content", "post_content"
       ] and
@@ -52,8 +52,7 @@ class HttpClientRequest extends HTTP::Client::Request::Range {
     // Look for calls to set
     // `c.ssl_config.verify_mode = OpenSSL::SSL::VERIFY_NONE`
     // on an HTTPClient connection object `c`.
-    disablingNode =
-      connectionNode.getReturn("ssl_config").getReturn("verify_mode=").getAnImmediateUse() and
+    disablingNode = connectionNode.getReturn("ssl_config").getReturn("verify_mode=").asSource() and
     disablingNode.(DataFlow::CallNode).getArgument(0) =
       API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse()
   }

@@ -30,8 +30,8 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
   DataFlow::Node connectionUse;
 
   ExconHttpRequest() {
-    requestUse = requestNode.getAnImmediateUse() and
-    connectionUse = connectionNode.getAnImmediateUse() and
+    requestUse = requestNode.asSource() and
+    connectionUse = connectionNode.asSource() and
     connectionNode =
       [
         // one-off requests

@@ -25,7 +25,7 @@ class NetHttpRequest extends HTTP::Client::Request::Range {
 
   NetHttpRequest() {
     exists(string method |
-      request = requestNode.getAnImmediateUse() and
+      request = requestNode.asSource() and
       this = request.asExpr().getExpr()
     |
       // Net::HTTP.get(...)
@@ -59,7 +59,7 @@ class NetHttpRequest extends HTTP::Client::Request::Range {
       new = API::getTopLevelMember("Net").getMember("HTTP").getInstance() and
       requestNode = new.getReturn(_)
     |
-      result = new.getAnImmediateUse().(DataFlow::CallNode).getArgument(0)
+      result = new.asSource().(DataFlow::CallNode).getArgument(0)
     )
   }
 

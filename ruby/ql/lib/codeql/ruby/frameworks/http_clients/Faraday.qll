@@ -38,8 +38,8 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range {
       ] and
     requestNode =
       connectionNode.getReturn(["get", "head", "delete", "post", "put", "patch", "trace"]) and
-    requestUse = requestNode.getAnImmediateUse() and
-    connectionUse = connectionNode.getAnImmediateUse() and
+    requestUse = requestNode.asSource() and
+    connectionUse = connectionNode.asSource() and
     this = requestUse.asExpr().getExpr()
   }
 

@@ -22,7 +22,7 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
   API::Node connectionNode;
 
   RestClientHttpRequest() {
-    requestUse = requestNode.getAnImmediateUse() and
+    requestUse = requestNode.asSource() and
     this = requestUse.asExpr().getExpr() and
     (
       connectionNode =

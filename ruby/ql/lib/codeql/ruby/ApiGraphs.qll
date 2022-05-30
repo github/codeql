@@ -111,7 +111,7 @@ module API {
      * Unlike `getAUse()`, this predicate only gets the immediate references, not the indirect uses
      * found via data flow.
      */
-    DataFlow::LocalSourceNode getAnImmediateUse() { Impl::use(this, result) }
+    DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
 
     /**
      * Gets a data-flow node corresponding the value flowing into this API component.
@@ -126,9 +126,7 @@ module API {
     /**
      * Gets a call to a method on the receiver represented by this API component.
      */
-    DataFlow::CallNode getAMethodCall(string method) {
-      result = this.getReturn(method).getAnImmediateUse()
-    }
+    DataFlow::CallNode getAMethodCall(string method) { result = this.getReturn(method).asSource() }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -203,7 +201,7 @@ module API {
     /**
      * Gets a `new` call to the function represented by this API component.
      */
-    DataFlow::ExprNode getAnInstantiation() { result = this.getInstance().getAnImmediateUse() }
+    DataFlow::ExprNode getAnInstantiation() { result = this.getInstance().asSource() }
 
     /**
      * Gets a node representing a (direct or indirect) subclass of the class represented by this node.
