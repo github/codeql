@@ -4,6 +4,7 @@ edges
 | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() |
 | datamodel.py:44:22:44:22 | ControlFlowNode for x | datamodel.py:46:16:46:16 | ControlFlowNode for x |
 | datamodel.py:49:26:49:26 | ControlFlowNode for x | datamodel.py:50:16:50:16 | ControlFlowNode for x |
+| datamodel.py:53:22:53:22 | ControlFlowNode for x | datamodel.py:54:16:54:16 | ControlFlowNode for x |
 | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:44:22:44:22 | ControlFlowNode for x |
 | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() |
 | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:44:22:44:22 | ControlFlowNode for x |
@@ -12,10 +13,14 @@ edges
 | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
 | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:49:26:49:26 | ControlFlowNode for x |
 | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
-| datamodel.py:152:5:152:8 | [post store] ControlFlowNode for self [Attribute b] | datamodel.py:155:14:155:25 | ControlFlowNode for Customized() [Attribute b] |
-| datamodel.py:152:14:152:19 | ControlFlowNode for SOURCE | datamodel.py:152:5:152:8 | [post store] ControlFlowNode for self [Attribute b] |
-| datamodel.py:155:14:155:25 | ControlFlowNode for Customized() [Attribute b] | datamodel.py:159:6:159:15 | ControlFlowNode for customized [Attribute b] |
-| datamodel.py:159:6:159:15 | ControlFlowNode for customized [Attribute b] | datamodel.py:159:6:159:17 | ControlFlowNode for Attribute |
+| datamodel.py:88:21:88:26 | ControlFlowNode for SOURCE | datamodel.py:53:22:53:22 | ControlFlowNode for x |
+| datamodel.py:88:21:88:26 | ControlFlowNode for SOURCE | datamodel.py:88:6:88:27 | ControlFlowNode for Attribute() |
+| datamodel.py:89:21:89:26 | ControlFlowNode for SOURCE | datamodel.py:53:22:53:22 | ControlFlowNode for x |
+| datamodel.py:89:21:89:26 | ControlFlowNode for SOURCE | datamodel.py:89:6:89:27 | ControlFlowNode for Attribute() |
+| datamodel.py:161:5:161:8 | [post store] ControlFlowNode for self [Attribute b] | datamodel.py:164:14:164:25 | ControlFlowNode for Customized() [Attribute b] |
+| datamodel.py:161:14:161:19 | ControlFlowNode for SOURCE | datamodel.py:161:5:161:8 | [post store] ControlFlowNode for self [Attribute b] |
+| datamodel.py:164:14:164:25 | ControlFlowNode for Customized() [Attribute b] | datamodel.py:168:6:168:15 | ControlFlowNode for customized [Attribute b] |
+| datamodel.py:168:6:168:15 | ControlFlowNode for customized [Attribute b] | datamodel.py:168:6:168:17 | ControlFlowNode for Attribute |
 | test.py:42:10:42:26 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:43:9:43:9 | ControlFlowNode for x [Tuple element at index 1] |
 | test.py:42:21:42:26 | ControlFlowNode for SOURCE | test.py:42:10:42:26 | ControlFlowNode for Tuple [Tuple element at index 1] |
 | test.py:43:9:43:9 | ControlFlowNode for x [Tuple element at index 1] | test.py:43:9:43:12 | ControlFlowNode for Subscript |
@@ -396,6 +401,8 @@ nodes
 | datamodel.py:46:16:46:16 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | datamodel.py:49:26:49:26 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | datamodel.py:50:16:50:16 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| datamodel.py:53:22:53:22 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| datamodel.py:54:16:54:16 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
@@ -404,11 +411,15 @@ nodes
 | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| datamodel.py:152:5:152:8 | [post store] ControlFlowNode for self [Attribute b] | semmle.label | [post store] ControlFlowNode for self [Attribute b] |
-| datamodel.py:152:14:152:19 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| datamodel.py:155:14:155:25 | ControlFlowNode for Customized() [Attribute b] | semmle.label | ControlFlowNode for Customized() [Attribute b] |
-| datamodel.py:159:6:159:15 | ControlFlowNode for customized [Attribute b] | semmle.label | ControlFlowNode for customized [Attribute b] |
-| datamodel.py:159:6:159:17 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| datamodel.py:88:6:88:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:88:21:88:26 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:89:6:89:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:89:21:89:26 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:161:5:161:8 | [post store] ControlFlowNode for self [Attribute b] | semmle.label | [post store] ControlFlowNode for self [Attribute b] |
+| datamodel.py:161:14:161:19 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:164:14:164:25 | ControlFlowNode for Customized() [Attribute b] | semmle.label | ControlFlowNode for Customized() [Attribute b] |
+| datamodel.py:168:6:168:15 | ControlFlowNode for customized [Attribute b] | semmle.label | ControlFlowNode for customized [Attribute b] |
+| datamodel.py:168:6:168:17 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:42:10:42:26 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
 | test.py:42:21:42:26 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:43:9:43:9 | ControlFlowNode for x [Tuple element at index 1] | semmle.label | ControlFlowNode for x [Tuple element at index 1] |
@@ -845,6 +856,8 @@ subpaths
 | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:44:22:44:22 | ControlFlowNode for x | datamodel.py:46:16:46:16 | ControlFlowNode for x | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() |
 | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:49:26:49:26 | ControlFlowNode for x | datamodel.py:50:16:50:16 | ControlFlowNode for x | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
 | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:49:26:49:26 | ControlFlowNode for x | datamodel.py:50:16:50:16 | ControlFlowNode for x | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
+| datamodel.py:88:21:88:26 | ControlFlowNode for SOURCE | datamodel.py:53:22:53:22 | ControlFlowNode for x | datamodel.py:54:16:54:16 | ControlFlowNode for x | datamodel.py:88:6:88:27 | ControlFlowNode for Attribute() |
+| datamodel.py:89:21:89:26 | ControlFlowNode for SOURCE | datamodel.py:53:22:53:22 | ControlFlowNode for x | datamodel.py:54:16:54:16 | ControlFlowNode for x | datamodel.py:89:6:89:27 | ControlFlowNode for Attribute() |
 | test.py:380:28:380:33 | ControlFlowNode for SOURCE | test.py:375:15:375:15 | ControlFlowNode for b | test.py:376:12:376:12 | ControlFlowNode for b | test.py:380:10:380:34 | ControlFlowNode for second() |
 | test.py:388:30:388:35 | ControlFlowNode for SOURCE | test.py:375:15:375:15 | ControlFlowNode for b | test.py:376:12:376:12 | ControlFlowNode for b | test.py:388:10:388:36 | ControlFlowNode for second() |
 | test.py:396:10:396:43 | KwUnpacked b | test.py:375:15:375:15 | ControlFlowNode for b | test.py:376:12:376:12 | ControlFlowNode for b | test.py:396:10:396:43 | ControlFlowNode for second() |
@@ -862,7 +875,9 @@ subpaths
 | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | Flow found |
 | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | Flow found |
 | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | Flow found |
-| datamodel.py:159:6:159:17 | ControlFlowNode for Attribute | datamodel.py:152:14:152:19 | ControlFlowNode for SOURCE | datamodel.py:159:6:159:17 | ControlFlowNode for Attribute | Flow found |
+| datamodel.py:88:6:88:27 | ControlFlowNode for Attribute() | datamodel.py:88:21:88:26 | ControlFlowNode for SOURCE | datamodel.py:88:6:88:27 | ControlFlowNode for Attribute() | Flow found |
+| datamodel.py:89:6:89:27 | ControlFlowNode for Attribute() | datamodel.py:89:21:89:26 | ControlFlowNode for SOURCE | datamodel.py:89:6:89:27 | ControlFlowNode for Attribute() | Flow found |
+| datamodel.py:168:6:168:17 | ControlFlowNode for Attribute | datamodel.py:161:14:161:19 | ControlFlowNode for SOURCE | datamodel.py:168:6:168:17 | ControlFlowNode for Attribute | Flow found |
 | test.py:44:10:44:10 | ControlFlowNode for y | test.py:42:21:42:26 | ControlFlowNode for SOURCE | test.py:44:10:44:10 | ControlFlowNode for y | Flow found |
 | test.py:56:10:56:10 | ControlFlowNode for x | test.py:55:9:55:14 | ControlFlowNode for SOURCE | test.py:56:10:56:10 | ControlFlowNode for x | Flow found |
 | test.py:62:10:62:10 | ControlFlowNode for x | test.py:61:9:61:16 | ControlFlowNode for Str | test.py:62:10:62:10 | ControlFlowNode for x | Flow found |

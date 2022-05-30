@@ -81,6 +81,15 @@ SINK(c.classmethod(SOURCE)) #$ flow="SOURCE -> c.classmethod(..)"
 SINK(C.classmethod(SOURCE)) #$ flow="SOURCE -> C.classmethod(..)"
 SINK(c_func_obj(C, SOURCE)) #$ MISSING: flow="SOURCE -> c_func_obj(..)"
 
+# When an instance method object is created by retrieving a class method object from a class or instance, its __self__ attribute is the class itself, and its __func__ attribute is the function object underlying the class method.
+s_func_obj = C.staticmethod.__func__
+
+# When an instance method object is derived from a class method object, the “class instance” stored in __self__ will actually be the class itself, so that calling either x.f(1) or C.f(1) is equivalent to calling f(C,1) where f is the underlying function.
+SINK(c.staticmethod(SOURCE)) #$ flow="SOURCE -> c.staticmethod(..)"
+SINK(C.staticmethod(SOURCE)) #$ flow="SOURCE -> C.staticmethod(..)"
+SINK(s_func_obj(SOURCE)) #$ MISSING: flow="SOURCE -> s_func_obj(..)"
+
+
 # Generator functions
 # A function or method which uses the yield statement (see section The yield statement) is called a generator function. Such a function, when called, always returns an iterator object which can be used to execute the body of the function: calling the iterator’s iterator.__next__() method will cause the function to execute until it provides a value using the yield statement. When the function executes a return statement or falls off the end, a StopIteration exception is raised and the iterator will have reached the end of the set of values to be returned.
 def gen(x, count):
