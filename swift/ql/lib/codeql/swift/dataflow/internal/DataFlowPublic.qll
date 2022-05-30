@@ -3,6 +3,8 @@ private import DataFlowDispatch
 private import DataFlowPrivate
 private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.controlflow.BasicBlocks
+private import codeql.swift.controlflow.CfgNodes
+private import codeql.swift.dataflow.Ssa
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -29,6 +31,21 @@ class Node extends TNode {
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /**
+   * Gets this node's underlying expression, if any.
+   */
+  Expr asExpr() { none() }
+
+  /**
+   * Gets this data flow node's corresponding control flow node.
+   */
+  ControlFlowNode getCfgNode() { none() }
+
+  /**
+   * Gets this node's underlying SSA definition, if any.
+   */
+  Ssa::Definition asDefinition() { none() }
 }
 
 /**
@@ -38,13 +55,31 @@ class Node extends TNode {
  * to multiple `ExprNode`s, just like it may correspond to multiple
  * `ControlFlow::Node`s.
  */
-class ExprNode extends Node { }
+class ExprNode extends Node, TExprNode {
+  ExprCfgNode expr;
+
+  ExprNode() { this = TExprNode(expr) }
+
+  override Expr asExpr() { result = expr.getNode().asAstNode() }
+
+  override ControlFlowNode getCfgNode() { result = expr }
+}
 
 /**
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node { }
+class ParameterNode extends Node, TNormalParameterNode instanceof ParameterNodeImpl { }
+
+/**
+ */
+class SsaDefinitionNode extends Node, TSsaDefinitionNode {
+  Ssa::Definition def;
+
+  SsaDefinitionNode() { this = TSsaDefinitionNode(def) }
+
+  override Ssa::Definition asDefinition() { result = def }
+}
 
 /**
  * A node associated with an object after an operation that might have

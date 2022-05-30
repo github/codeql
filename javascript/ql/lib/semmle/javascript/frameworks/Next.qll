@@ -252,6 +252,6 @@ module NextJS {
           .getParameter(0)
           .getParameter(0)
           .getMember("router")
-          .getAnImmediateUse()
+          .asSource()
   }
 }

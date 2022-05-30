@@ -12,6 +12,7 @@ on:
     paths:
       - "javascript/ql/experimental/adaptivethreatmodeling/**"
       - .github/workflows/js-ml-tests.yml
+  workflow_dispatch:
 
 defaults:
   run:

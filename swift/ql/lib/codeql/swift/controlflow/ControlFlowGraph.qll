@@ -6,13 +6,14 @@ private import SuccessorTypes
 private import internal.ControlFlowGraphImpl
 private import internal.Completion
 private import internal.Scope
+private import internal.ControlFlowElements
 
 /** An AST node with an associated control-flow graph. */
 class CfgScope extends Scope instanceof CfgScope::Range_ {
   /** Gets the CFG scope that this scope is nested under, if any. */
   final CfgScope getOuterCfgScope() {
-    exists(AstNode parent |
-      parent = getParent(this) and
+    exists(ControlFlowElement parent |
+      parent.asAstNode() = getParentOfAst(this) and
       result = getCfgScope(parent)
     )
   }
@@ -31,7 +32,7 @@ class ControlFlowNode extends TCfgNode {
   string toString() { none() }
 
   /** Gets the AST node that this node corresponds to, if any. */
-  AstNode getNode() { none() }
+  ControlFlowElement getNode() { none() }
 
   /** Gets the location of this control flow node. */
   Location getLocation() { none() }

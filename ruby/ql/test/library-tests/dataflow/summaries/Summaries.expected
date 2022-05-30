@@ -86,6 +86,12 @@ edges
 | summaries.rb:82:1:82:1 | a [element 2] :  | summaries.rb:82:1:82:1 | [post] a [element 2] :  |
 | summaries.rb:85:6:85:6 | a [element 2] :  | summaries.rb:85:6:85:9 | ...[...] |
 | summaries.rb:85:6:85:6 | a [element 2] :  | summaries.rb:85:6:85:9 | ...[...] |
+| summaries.rb:88:1:88:1 | [post] x [@value] :  | summaries.rb:89:6:89:6 | x [@value] :  |
+| summaries.rb:88:1:88:1 | [post] x [@value] :  | summaries.rb:89:6:89:6 | x [@value] :  |
+| summaries.rb:88:13:88:26 | call to source :  | summaries.rb:88:1:88:1 | [post] x [@value] :  |
+| summaries.rb:88:13:88:26 | call to source :  | summaries.rb:88:1:88:1 | [post] x [@value] :  |
+| summaries.rb:89:6:89:6 | x [@value] :  | summaries.rb:89:6:89:16 | call to get_value |
+| summaries.rb:89:6:89:6 | x [@value] :  | summaries.rb:89:6:89:16 | call to get_value |
 nodes
 | summaries.rb:1:11:1:36 | call to identity :  | semmle.label | call to identity :  |
 | summaries.rb:1:11:1:36 | call to identity :  | semmle.label | call to identity :  |
@@ -183,6 +189,14 @@ nodes
 | summaries.rb:85:6:85:6 | a [element 2] :  | semmle.label | a [element 2] :  |
 | summaries.rb:85:6:85:9 | ...[...] | semmle.label | ...[...] |
 | summaries.rb:85:6:85:9 | ...[...] | semmle.label | ...[...] |
+| summaries.rb:88:1:88:1 | [post] x [@value] :  | semmle.label | [post] x [@value] :  |
+| summaries.rb:88:1:88:1 | [post] x [@value] :  | semmle.label | [post] x [@value] :  |
+| summaries.rb:88:13:88:26 | call to source :  | semmle.label | call to source :  |
+| summaries.rb:88:13:88:26 | call to source :  | semmle.label | call to source :  |
+| summaries.rb:89:6:89:6 | x [@value] :  | semmle.label | x [@value] :  |
+| summaries.rb:89:6:89:6 | x [@value] :  | semmle.label | x [@value] :  |
+| summaries.rb:89:6:89:16 | call to get_value | semmle.label | call to get_value |
+| summaries.rb:89:6:89:16 | call to get_value | semmle.label | call to get_value |
 subpaths
 invalidSpecComponent
 #select
@@ -227,6 +241,8 @@ invalidSpecComponent
 | summaries.rb:80:6:80:9 | ...[...] | summaries.rb:74:15:74:29 | call to source :  | summaries.rb:80:6:80:9 | ...[...] | $@ | summaries.rb:74:15:74:29 | call to source :  | call to source :  |
 | summaries.rb:85:6:85:9 | ...[...] | summaries.rb:74:32:74:46 | call to source :  | summaries.rb:85:6:85:9 | ...[...] | $@ | summaries.rb:74:32:74:46 | call to source :  | call to source :  |
 | summaries.rb:85:6:85:9 | ...[...] | summaries.rb:74:32:74:46 | call to source :  | summaries.rb:85:6:85:9 | ...[...] | $@ | summaries.rb:74:32:74:46 | call to source :  | call to source :  |
+| summaries.rb:89:6:89:16 | call to get_value | summaries.rb:88:13:88:26 | call to source :  | summaries.rb:89:6:89:16 | call to get_value | $@ | summaries.rb:88:13:88:26 | call to source :  | call to source :  |
+| summaries.rb:89:6:89:16 | call to get_value | summaries.rb:88:13:88:26 | call to source :  | summaries.rb:89:6:89:16 | call to get_value | $@ | summaries.rb:88:13:88:26 | call to source :  | call to source :  |
 warning
 | CSV type row should have 5 columns but has 2: test;TooFewColumns |
 | CSV type row should have 5 columns but has 8: test;TooManyColumns;;;Member[Foo].Instance;too;many;columns |
