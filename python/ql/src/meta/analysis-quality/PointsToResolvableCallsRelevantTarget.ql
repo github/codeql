@@ -11,4 +11,4 @@
 import python
 import CallGraphQuality
 
-select projectRoot(), count(PointsToBasedCallGraph::ResolvableCallRelevantCallee call)
+select projectRoot(), count(PointsToBasedCallGraph::ResolvableCallRelevantTarget call)
