@@ -16,7 +16,7 @@ private import semmle.python.Frameworks
 // make it more digestible.
 import MatchUnpacking
 import IterableUnpacking
-import DataFlowDispatchPointsTo
+import DataFlowDispatch
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
