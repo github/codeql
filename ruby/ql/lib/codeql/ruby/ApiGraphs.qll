@@ -123,6 +123,18 @@ module API {
      */
     DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
 
+    /** DEPRECATED. This predicate has been renamed to `getAValueReachableFromSource()`. */
+    deprecated DataFlow::Node getAUse() { result = this.getAValueReachableFromSource() }
+
+    /** DEPRECATED. This predicate has been renamed to `asSource()`. */
+    deprecated DataFlow::LocalSourceNode getAnImmediateUse() { result = this.asSource() }
+
+    /** DEPRECATED. This predicate has been renamed to `asSink()`. */
+    deprecated DataFlow::Node getARhs() { result = this.asSink() }
+
+    /** DEPRECATED. This predicate has been renamed to `getAValueReachingSink()`. */
+    deprecated DataFlow::Node getAValueReachingRhs() { result = this.getAValueReachingSink() }
+
     /**
      * Gets a call to a method on the receiver represented by this API component.
      */
