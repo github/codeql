@@ -9,4 +9,6 @@ class ConditionElement extends ConditionElementBase {
     or
     result = this.getPattern()
   }
+
+  override string toString() { result = this.getUnderlyingCondition().toString() }
 }

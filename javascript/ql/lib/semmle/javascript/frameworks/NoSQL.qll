@@ -20,7 +20,7 @@ deprecated module NoSQL = NoSql;
  * Gets a value that has been assigned to the "$where" property of an object that flows to `queryArg`.
  */
 private DataFlow::Node getADollarWhereProperty(API::Node queryArg) {
-  result = queryArg.getMember("$where").getARhs()
+  result = queryArg.getMember("$where").asSink()
 }
 
 /**
@@ -418,7 +418,7 @@ private module Mongoose {
             param = f.getParameter(0).getParameter(1)
           |
             exists(DataFlow::MethodCallNode pred |
-              // limitation: look at the previous method call	
+              // limitation: look at the previous method call
               Query::MethodSignatures::returnsDocumentQuery(pred.getMethodName(), asArray) and
               pred.getAMethodCall() = f.getACall()
             )
@@ -501,7 +501,7 @@ private module Mongoose {
 
     Credentials() {
       exists(string prop |
-        this = createConnection().getParameter(3).getMember(prop).getARhs().asExpr()
+        this = createConnection().getParameter(3).getMember(prop).asSink().asExpr()
       |
         prop = "user" and kind = "user name"
         or
@@ -518,7 +518,7 @@ private module Mongoose {
   class MongoDBQueryPart extends NoSql::Query {
     MongooseFunction f;
 
-    MongoDBQueryPart() { this = f.getQueryArgument().getARhs().asExpr() }
+    MongoDBQueryPart() { this = f.getQueryArgument().asSink().asExpr() }
 
     override DataFlow::Node getACodeOperator() {
       result = getADollarWhereProperty(f.getQueryArgument())
@@ -540,7 +540,7 @@ private module Mongoose {
 
     override DataFlow::Node getAQueryArgument() {
       // NB: the complete information is not easily accessible for deeply chained calls
-      f.getQueryArgument().getARhs() = result
+      f.getQueryArgument().asSink() = result
     }
 
     override DataFlow::Node getAResult() {
@@ -770,7 +770,7 @@ private module Redis {
     RedisKeyArgument() {
       exists(string method, int argIndex |
         QuerySignatures::argumentIsAmbiguousKey(method, argIndex) and
-        this = redis().getMember(method).getParameter(argIndex).getARhs().asExpr()
+        this = redis().getMember(method).getParameter(argIndex).asSink().asExpr()
       )
     }
   }
