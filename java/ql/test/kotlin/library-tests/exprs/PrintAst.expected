@@ -31,7 +31,7 @@ delegatedProperties.kt:
 #   87|           0: [MethodAccess] getValue(...)
 #   87|             -2: [TypeAccess] Integer
 #   87|             -1: [TypeAccess] PropertyReferenceDelegatesKt
-#   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegate
+#   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegateMyClass
 #   87|               -1: [TypeAccess] DelegatedPropertiesKt
 #    1|             1: [ExtensionReceiverAccess] this
 #   87|             2: [PropertyRefExpr] ...::...
@@ -80,7 +80,7 @@ delegatedProperties.kt:
 #   87|           0: [MethodAccess] setValue(...)
 #   87|             -2: [TypeAccess] Integer
 #   87|             -1: [TypeAccess] PropertyReferenceDelegatesKt
-#   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegate
+#   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegateMyClass
 #   87|               -1: [TypeAccess] DelegatedPropertiesKt
 #    1|             1: [ExtensionReceiverAccess] this
 #   87|             2: [PropertyRefExpr] ...::...
@@ -118,7 +118,7 @@ delegatedProperties.kt:
 #   87|                 0: [TypeAccess] MyClass
 #   87|                 1: [TypeAccess] Integer
 #   87|             3: [VarAccess] <set-?>
-#   87|     5: [FieldDeclaration] KMutableProperty0<Integer> extDelegated$delegate;
+#   87|     5: [FieldDeclaration] KMutableProperty0<Integer> extDelegated$delegateMyClass;
 #   87|       -1: [TypeAccess] KMutableProperty0<Integer>
 #   87|         0: [TypeAccess] Integer
 #   87|       0: [PropertyRefExpr] ...::...

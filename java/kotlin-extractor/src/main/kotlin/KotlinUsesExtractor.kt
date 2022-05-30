@@ -1269,6 +1269,7 @@ open class KotlinUsesExtractor(
 
     fun useValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>?): Label<out DbParam> =
         tw.getLabelFor(getValueParameterLabel(vp, parent))
+
     fun isDirectlyExposedCompanionObjectField(f: IrField) =
         f.hasAnnotation(FqName("kotlin.jvm.JvmField")) ||
         f.correspondingPropertySymbol?.owner?.let {
@@ -1283,9 +1284,20 @@ open class KotlinUsesExtractor(
                 null
         } ?: f.parent
 
+    // Gets a field's corresponding property's extension receiver type, if any
+    fun getExtensionReceiverType(f: IrField) =
+        f.correspondingPropertySymbol?.owner?.let {
+            (it.getter ?: it.setter)?.extensionReceiverParameter?.type
+        }
+
     fun getFieldLabel(f: IrField): String {
         val parentId = useDeclarationParent(getFieldParent(f), false)
-        return "@\"field;{$parentId};${f.name.asString()}\""
+        // Distinguish backing fields of properties based on their extension receiver type;
+        // otherwise two extension properties declared in the same enclosing context will get
+        // clashing trap labels. These are always private, so we can just make up a label without
+        // worrying about their names as seen from Java.
+        val extensionPropertyDiscriminator = getExtensionReceiverType(f)?.let { "extension;${useType(it)}" } ?: ""
+        return "@\"field;{$parentId};${extensionPropertyDiscriminator}${f.name.asString()}\""
     }
 
     fun useField(f: IrField): Label<out DbField> =
