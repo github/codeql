@@ -64,12 +64,12 @@ def argument_passing(
 
 @expects(7)
 def test_argument_passing1():
-    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})  #$ arg1 arg7 func=argument_passing MISSING: arg2 arg3="arg3 arg4 arg5 arg6
+    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})  #$ arg1 arg5 MISSING: arg2 arg3 arg4 arg6 arg7
 
 
 @expects(7)
 def test_argument_passing2():
-    argument_passing(arg1, arg2, arg3, f=arg6)  #$ arg1 arg2 arg3
+    argument_passing(arg1, arg2, arg3, f=arg6)  #$ arg1 arg2 arg3 arg6
 
 
 def with_pos_only(a, /, b):
@@ -94,8 +94,8 @@ def with_multiple_kw_args(a, b, c):
 def test_multiple_kw_args():
     with_multiple_kw_args(b=arg2, c=arg3, a=arg1)  #$ arg1 arg2 arg3
     with_multiple_kw_args(arg1, *(arg2,), arg3)  #$ arg1 MISSING: arg2 arg3
-    with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)  #$ arg1 arg2 arg3 func=with_multiple_kw_args MISSING:
-    with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})  #$ arg1 arg2 arg3 func=with_multiple_kw_args
+    with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)  #$ arg1 arg2 MISSING: arg3
+    with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})  #$ MISSING: arg1 arg2 arg3
 
 
 def with_default_arguments(a=arg1, b=arg2, c=arg3):  #$ arg1 arg2 arg3 func=with_default_arguments
@@ -109,7 +109,7 @@ def test_default_arguments():
     with_default_arguments()
     with_default_arguments(arg1)  #$ arg1
     with_default_arguments(b=arg2)  #$ arg2
-    with_default_arguments(**{"c": arg3})  #$ arg3 func=with_default_arguments
+    with_default_arguments(**{"c": arg3})  #$ MISSING: arg3
 
 
 # Nested constructor pattern
@@ -135,7 +135,7 @@ def grab_baz(baz):
 
 @expects(4)
 def test_grab():
-    grab_foo_bar_baz(baz=arg3, bar=arg2, foo=arg1)  #$ arg1 arg2 arg3 func=grab_bar_baz func=grab_baz
+    grab_foo_bar_baz(baz=arg3, bar=arg2, foo=arg1)  #$ arg1 MISSING: arg2 func=grab_bar_baz arg3 func=grab_baz
 
 
 # All combinations
@@ -158,7 +158,7 @@ def test_pos_star():
         if len(a) > 0:
             SINK1(a[0])
 
-    with_star(arg1)  #$ arg1 func=test_pos_star.with_star
+    with_star(arg1)  #$ MISSING: arg1 func=test_pos_star.with_star
 
 
 def test_pos_kw():
@@ -186,4 +186,4 @@ def test_kw_doublestar():
     def with_doublestar(**a):
         SINK1(a["a"])
 
-    with_doublestar(a=arg1)  #$ arg1 func=test_kw_doublestar.with_doublestar
+    with_doublestar(a=arg1)  #$ MISSING: arg1 func=test_kw_doublestar.with_doublestar

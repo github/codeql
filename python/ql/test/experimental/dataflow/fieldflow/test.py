@@ -195,6 +195,15 @@ def test_bound_method_call():
     SINK_F(foo.x) # $ SPURIOUS: flow="SOURCE, l:-4 -> foo.x"
 
 
+def call_with_source(func):
+    func(SOURCE)
+
+def test_bound_method_passed_as_arg():
+    foo = Foo(None)
+    call_with_source(foo.update_x)
+    SINK(foo.x) # $ MISSING: flow="SOURCE, l:-5 -> foo.x"
+
+
 # ------------------------------------------------------------------------------
 # Crosstalk test -- using different function based on conditional
 # ------------------------------------------------------------------------------
@@ -209,6 +218,9 @@ class CrosstalkTestX:
 
     def setvalue(self, value):
         self.x = value
+
+    def do_nothing(self, value):
+        pass
 
 
 class CrosstalkTestY:
@@ -261,10 +273,10 @@ def test_potential_crosstalk_different_name(cond=True):
 
     func(SOURCE)
 
-    SINK(objx.x) # $ MISSING: flow="SOURCE, l:-2 -> objx.x"
+    SINK(objx.x) # $ flow="SOURCE, l:-2 -> objx.x"
     SINK_F(objx.y)
     SINK_F(objy.x)
-    SINK_F(objy.y) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
+    SINK_F(objy.y) # $ flow="SOURCE, l:-5 -> objy.y"
 
 
 @expects(8) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
@@ -284,10 +296,10 @@ def test_potential_crosstalk_same_name(cond=True):
 
     func(SOURCE)
 
-    SINK(objx.x) # $ MISSING: flow="SOURCE, l:-2 -> objx.x"
+    SINK(objx.x) # $ flow="SOURCE, l:-2 -> objx.x"
     SINK_F(objx.y)
     SINK_F(objy.x)
-    SINK_F(objy.y) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
+    SINK_F(objy.y) # $ flow="SOURCE, l:-5 -> objy.y"
 
 
 @expects(10) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
@@ -314,6 +326,27 @@ def test_potential_crosstalk_same_name_object_reference(cond=True):
 
     SINK(obj.x) # $ flow="SOURCE, l:-7 -> obj.x"
     SINK_F(obj.y) # $ flow="SOURCE, l:-8 -> obj.y"
+
+
+@expects(4) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_potential_crosstalk_same_class(cond=True):
+    objx1 = CrosstalkTestX()
+    SINK_F(objx1.x)
+
+    objx2 = CrosstalkTestX()
+    SINK_F(objx2.x)
+
+    if cond:
+        func = objx1.setvalue
+    else:
+        func = objx2.do_nothing
+
+    # We want to ensure that objx2.x does not end up getting tainted, since that would
+    # be cross-talk between the self arguments are their functions.
+    func(SOURCE)
+
+    SINK(objx1.x) # $ flow="SOURCE, l:-2 -> objx1.x"
+    SINK_F(objx2.x)
 
 
 # ------------------------------------------------------------------------------
@@ -366,7 +399,7 @@ SINK(obj2.foo) # $ flow="SOURCE, l:-1 -> obj2.foo"
 
 # apparently these if statements below makes a difference :O
 # but one is not enough
-cond = os.urandom(1)[0] > 128
+cond = os.urandom(1)[0] > 128 # $ unresolved_call=os.urandom(..)
 
 if cond:
     pass

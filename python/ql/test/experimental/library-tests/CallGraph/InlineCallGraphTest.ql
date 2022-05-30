@@ -4,6 +4,8 @@ private import semmle.python.dataflow.new.internal.DataFlowDispatch as TT
 
 /** A call graph edge resolved based on Type Trackers */
 predicate pointsToCallEdge(CallNode call, Function callable) {
+  exists(call.getLocation().getFile().getRelativePath()) and
+  exists(callable.getLocation().getFile().getRelativePath()) and
   exists(PythonFunctionValue funcValue |
     funcValue.getScope() = callable and
     call = funcValue.getACall()
@@ -12,10 +14,22 @@ predicate pointsToCallEdge(CallNode call, Function callable) {
 
 /** A call graph edge resolved based on Type Trackers */
 predicate typeTrackerCallEdge(CallNode call, Function callable) {
+  exists(call.getLocation().getFile().getRelativePath()) and
+  exists(callable.getLocation().getFile().getRelativePath()) and
   exists(TT::DataFlowCallable dfCallable, TT::DataFlowCall dfCall |
     dfCallable.getScope() = callable and
     dfCall.getNode() = call and
     dfCallable = TT::viableCallable(dfCall)
+  )
+}
+
+/** Holds if the call edge is from a class call. */
+predicate typeTrackerClassCall(CallNode call, Function callable) {
+  exists(call.getLocation().getFile().getRelativePath()) and
+  exists(callable.getLocation().getFile().getRelativePath()) and
+  exists(TT::NormalCall cc |
+    cc = TT::TNormalCall(call, _, any(TT::TCallType t | t instanceof TT::CallTypeClass)) and
+    TT::TFunction(callable) = TT::viableCallable(cc)
   )
 }
 
@@ -35,7 +49,20 @@ class CallGraphTest extends InlineExpectationsTest {
     |
       location = call.getLocation() and
       element = call.toString() and
-      value = betterQualName(target)
+      if call.getLocation().getFile() = target.getLocation().getFile()
+      then value = betterQualName(target)
+      else
+        exists(string fixedRelativePath |
+          fixedRelativePath =
+            target
+                .getLocation()
+                .getFile()
+                .getRelativePath()
+                .regexpCapture(".*/CallGraph[^/]*/(.*)", 1)
+        |
+          // the value needs to be enclosed in quotes to allow special characters
+          value = "\"" + fixedRelativePath + ":" + betterQualName(target) + "\""
+        )
     )
   }
 }
@@ -53,9 +80,15 @@ string betterQualName(Function func) {
 }
 
 query predicate debug_callableNotUnique(Function callable, string message) {
-  exists(Function f | f != callable and f.getQualifiedName() = callable.getQualifiedName()) and
+  exists(callable.getLocation().getFile().getRelativePath()) and
+  exists(Function f |
+    f != callable and
+    f.getQualifiedName() = callable.getQualifiedName() and
+    f.getLocation().getFile() = callable.getLocation().getFile()
+  ) and
   message =
-    "Qualified function name '" + callable.getQualifiedName() + "' is not unique. Please fix."
+    "Qualified function name '" + callable.getQualifiedName() +
+      "' is not unique within its file. Please fix."
 }
 
 query predicate pointsTo_found_typeTracker_notFound(CallNode call, string qualname) {
@@ -70,6 +103,10 @@ query predicate pointsTo_notFound_typeTracker_found(CallNode call, string qualna
   exists(Function target |
     not pointsToCallEdge(call, target) and
     typeTrackerCallEdge(call, target) and
-    qualname = betterQualName(target)
+    qualname = betterQualName(target) and
+    // We filter out result differences for points-to and type-tracking for class calls,
+    // since otherwise it gives too much noise (these are just handled differently
+    // between the two).
+    not typeTrackerClassCall(call, target)
   )
 }

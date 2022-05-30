@@ -26,29 +26,30 @@ abstract class RoutingTest extends InlineExpectationsTest {
       element = fromNode.toString() and
       (
         tag = this.flowTag() and
-        if "\"" + tag + "\"" = this.fromValue(fromNode)
-        then value = ""
-        else value = this.fromValue(fromNode)
+        if "\"" + tag + "\"" = fromValue(fromNode) then value = "" else value = fromValue(fromNode)
         or
+        // only have result for `func` tag if the function where `arg<n>` is used, is
+        // different from the function name of the call where `arg<n>` was specified as
+        // an argument
         tag = "func" and
-        value = this.toFunc(toNode) and
-        not value = this.fromFunc(fromNode)
+        value = toFunc(toNode) and
+        not value = fromFunc(fromNode)
       )
     )
   }
+}
 
-  pragma[inline]
-  private string fromValue(DataFlow::Node fromNode) {
-    result = "\"" + prettyNode(fromNode).replaceAll("\"", "'") + "\""
-  }
+pragma[inline]
+private string fromValue(DataFlow::Node fromNode) {
+  result = "\"" + prettyNode(fromNode).replaceAll("\"", "'") + "\""
+}
 
-  pragma[inline]
-  private string fromFunc(DataFlow::ArgumentNode fromNode) {
-    result = fromNode.getCall().getNode().(CallNode).getFunction().getNode().(Name).getId()
-  }
+pragma[inline]
+private string fromFunc(DataFlow::ArgumentNode fromNode) {
+  result = fromNode.getCall().getNode().(CallNode).getFunction().getNode().(Name).getId()
+}
 
-  pragma[inline]
-  private string toFunc(DataFlow::Node toNode) {
-    result = toNode.getEnclosingCallable().getCallableValue().getScope().getQualifiedName() // TODO: More robust pretty printing?
-  }
+pragma[inline]
+private string toFunc(DataFlow::Node toNode) {
+  result = toNode.getEnclosingCallable().getQualifiedName()
 }

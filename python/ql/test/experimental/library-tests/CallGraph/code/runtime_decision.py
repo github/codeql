@@ -15,7 +15,7 @@ if len(sys.argv) >= 2 and not sys.argv[1] in ['0', 'False', 'false']:
 else:
     func = rd_bar
 
-func() # $ pt=rd_foo pt=rd_bar
+func() # $ pt,tt=rd_foo pt,tt=rd_bar
 
 # Random doesn't work with points-to :O
 if random.random() < 0.5:
@@ -23,4 +23,4 @@ if random.random() < 0.5:
 else:
     func2 = rd_bar
 
-func2() # $ pt=rd_foo pt=rd_bar
+func2() # $ pt,tt=rd_foo pt,tt=rd_bar

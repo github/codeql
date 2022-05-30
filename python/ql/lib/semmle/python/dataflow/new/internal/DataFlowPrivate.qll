@@ -39,157 +39,47 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
 //--------
 predicate isExpressionNode(ControlFlowNode node) { node.getNode() instanceof Expr }
 
-/** DEPRECATED: Alias for `SyntheticPreUpdateNode` */
-deprecated module syntheticPreUpdateNode = SyntheticPreUpdateNode;
+class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
+  CallNode node;
 
-/** A module collecting the different reasons for synthesising a pre-update node. */
-module SyntheticPreUpdateNode {
-  class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
-    NeedsSyntheticPreUpdateNode post;
+  SyntheticPreUpdateNode() { this = TSyntheticPreUpdateNode(node) }
 
-    SyntheticPreUpdateNode() { this = TSyntheticPreUpdateNode(post) }
+  /** Gets the node for which this is a synthetic pre-update node. */
+  CfgNode getPostUpdateNode() { result.getNode() = node }
 
-    /** Gets the node for which this is a synthetic pre-update node. */
-    Node getPostUpdateNode() { result = post }
+  override string toString() { result = "[pre] " + node.toString() }
 
-    override string toString() { result = "[pre " + post.label() + "] " + post.toString() }
+  override Scope getScope() { result = node.getScope() }
 
-    override Scope getScope() { result = post.getScope() }
-
-    override Location getLocation() { result = post.getLocation() }
-  }
-
-  /** A data flow node for which we should synthesise an associated pre-update node. */
-  class NeedsSyntheticPreUpdateNode extends PostUpdateNode {
-    NeedsSyntheticPreUpdateNode() { this = objectCreationNode() }
-
-    override Node getPreUpdateNode() { result.(SyntheticPreUpdateNode).getPostUpdateNode() = this }
-
-    /**
-     * Gets the label for this kind of node. This will figure in the textual representation of the synthesized pre-update node.
-     *
-     * There is currently only one reason for needing a pre-update node, so we always use that as the label.
-     */
-    string label() { result = "objCreate" }
-  }
-
-  /**
-   * Calls to constructors are treated as post-update nodes for the synthesized argument
-   * that is mapped to the `self` parameter. That way, constructor calls represent the value of the
-   * object after the constructor (currently only `__init__`) has run.
-   */
-  CfgNode objectCreationNode() {
-    // TODO(call-graph): implement this!
-    none()
-    // result.getNode().(CallNode) = any(ClassCall c).getNode()
-  }
+  override Location getLocation() { result = node.getLocation() }
 }
 
-import SyntheticPreUpdateNode
-
-/** DEPRECATED: Alias for `SyntheticPostUpdateNode` */
-deprecated module syntheticPostUpdateNode = SyntheticPostUpdateNode;
-
-/** A module collecting the different reasons for synthesising a post-update node. */
-module SyntheticPostUpdateNode {
-  /** A post-update node is synthesized for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
-  class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
-    NeedsSyntheticPostUpdateNode pre;
-
-    SyntheticPostUpdateNode() { this = TSyntheticPostUpdateNode(pre) }
-
-    override Node getPreUpdateNode() { result = pre }
-
-    override string toString() { result = "[post " + pre.label() + "] " + pre.toString() }
-
-    override Scope getScope() { result = pre.getScope() }
-
-    override Location getLocation() { result = pre.getLocation() }
-  }
-
-  /** A data flow node for which we should synthesise an associated post-update node. */
-  class NeedsSyntheticPostUpdateNode extends Node {
-    NeedsSyntheticPostUpdateNode() {
-      this = argumentPreUpdateNode()
-      or
-      this = storePreUpdateNode()
-      or
-      this = readPreUpdateNode()
-    }
-
-    /**
-     * Gets the label for this kind of node. This will figure in the textual representation of the synthesized post-update node.
-     * We favour being an arguments as the reason for the post-update node in case multiple reasons apply.
-     */
-    string label() {
-      if this = argumentPreUpdateNode()
-      then result = "arg"
-      else
-        if this = storePreUpdateNode()
-        then result = "store"
-        else result = "read"
-    }
-  }
-
-  /**
-   * Gets the pre-update node for this node.
-   *
-   * An argument might have its value changed as a result of a call.
-   * Certain arguments, such as implicit self arguments are already post-update nodes
-   * and should not have an extra node synthesised.
-   */
-  Node argumentPreUpdateNode() {
-    // TODO(call-graph): implement this!
-    none()
-    // result = any(FunctionCall c).getArg(_)
-    // or
-    // // Avoid argument 0 of method calls as those have read post-update nodes.
-    // exists(MethodCall c, int n | n > 0 | result = c.getArg(n))
-    // or
-    // result = any(SpecialCall c).getArg(_)
-    // or
-    // // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
-    // exists(ClassCall c, int n | n > 0 | result = c.getArg(n))
-    // or
-    // // any argument of any call that we have not been able to resolve
-    // exists(CallNode call | not call = any(DataFlowCall c).getNode() |
-    //   result.(CfgNode).getNode() in [call.getArg(_), call.getArgByName(_)]
-    // )
-  }
-
-  /** Gets the pre-update node associated with a store. This is used for when an object might have its value changed after a store. */
-  CfgNode storePreUpdateNode() {
-    exists(Attribute a |
-      result.getNode() = a.getObject().getAFlowNode() and
-      a.getCtx() instanceof Store
-    )
-  }
-
-  /**
-   * Gets a node marking the state change of an object after a read.
-   *
-   * A reverse read happens when the result of a read is modified, e.g. in
-   * ```python
-   * l = [ mutable ]
-   * l[0].mutate()
-   * ```
-   * we may now have changed the content of `l`. To track this, there must be
-   * a postupdate node for `l`.
-   */
-  CfgNode readPreUpdateNode() {
-    exists(Attribute a |
-      result.getNode() = a.getObject().getAFlowNode() and
-      a.getCtx() instanceof Load
-    )
-    or
-    result.getNode() = any(SubscriptNode s).getObject()
-    or
-    // The dictionary argument is read from if the callable has parameters matching the keys.
-    result.getNode().getNode() = any(Call call).getKwargs()
-  }
+abstract class PostUpdateNodeImpl extends Node {
+  /** Gets the node before the state update. */
+  abstract Node getPreUpdateNode();
 }
 
-import SyntheticPostUpdateNode
+class SyntheticPostUpdateNode extends PostUpdateNodeImpl, TSyntheticPostUpdateNode {
+  ControlFlowNode node;
+
+  SyntheticPostUpdateNode() { this = TSyntheticPostUpdateNode(node) }
+
+  override Node getPreUpdateNode() { result.(CfgNode).getNode() = node }
+
+  override string toString() { result = "[post] " + node.toString() }
+
+  override Scope getScope() { result = node.getScope() }
+
+  override Location getLocation() { result = node.getLocation() }
+}
+
+class NonSyntheticPostUpdateNode extends PostUpdateNodeImpl, CfgNode {
+  SyntheticPreUpdateNode pre;
+
+  NonSyntheticPostUpdateNode() { this = pre.getPostUpdateNode() }
+
+  override Node getPreUpdateNode() { result = pre }
+}
 
 class DataFlowExpr = Expr;
 

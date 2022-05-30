@@ -12,9 +12,9 @@ def bar():
 lam = lambda: print("lambda called")
 
 
-foo() # $ pt=foo
-indirect_foo() # $ pt=foo
-bar() # $ pt=bar
-lam() # $ pt=lambda[simple.py:12:7]
+foo() # $ pt,tt=foo
+indirect_foo() # $ pt,tt=foo
+bar() # $ pt,tt=bar
+lam() # $ pt,tt=lambda[simple.py:12:7]
 
 # python -m trace --trackcalls simple.py
