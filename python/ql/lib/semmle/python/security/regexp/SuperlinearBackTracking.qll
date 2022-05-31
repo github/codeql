@@ -218,14 +218,7 @@ string minAndMaxIntersect(InputSymbol a, InputSymbol b) {
 private newtype TTrace =
   Nil() or
   Step(InputSymbol s1, InputSymbol s2, InputSymbol s3, TTrace t) {
-    exists(StateTuple p |
-      isReachableFromStartTuple(_, _, p, t, _) and
-      step(p, s1, s2, s3, _)
-    )
-    or
-    exists(State pivot, State succ | isStartLoops(pivot, succ) |
-      t = Nil() and step(MkStateTuple(pivot, pivot, succ), s1, s2, s3, _)
-    )
+    isReachableFromStartTuple(_, _, t, s1, s2, s3, _, _)
   }
 
 /**
@@ -274,34 +267,32 @@ int distBackFromEnd(StateTuple r, StateTuple end) =
  * and there is a distance of `dist` from `tuple` to the nearest end-tuple `(pivot, succ, succ)`,
  * and a path from a start-state to `tuple` follows the transitions in `trace`.
  */
-predicate isReachableFromStartTuple(State pivot, State succ, StateTuple tuple, Trace trace, int dist) {
-  // base case. The first step is inlined to start the search after all possible 1-steps, and not just the ones with the shortest path.
-  exists(InputSymbol s1, InputSymbol s2, InputSymbol s3, State q1, State q2, State q3 |
+private predicate isReachableFromStartTuple(State pivot, State succ, StateTuple r, Trace w, int rem) {
+  exists(InputSymbol s1, InputSymbol s2, InputSymbol s3, Trace v |
+    isReachableFromStartTuple(pivot, succ, v, s1, s2, s3, r, rem) and
+    w = Step(s1, s2, s3, v)
+  )
+}
+
+private predicate isReachableFromStartTuple(
+  State pivot, State succ, Trace trace, InputSymbol s1, InputSymbol s2, InputSymbol s3,
+  StateTuple tuple, int dist
+) {
+  // base case.
+  exists(State q1, State q2, State q3 |
     isStartLoops(pivot, succ) and
     step(MkStateTuple(pivot, pivot, succ), s1, s2, s3, tuple) and
     tuple = MkStateTuple(q1, q2, q3) and
-    trace = Step(s1, s2, s3, Nil()) and
+    trace = Nil() and
     dist = distBackFromEnd(tuple, MkStateTuple(pivot, succ, succ))
   )
   or
   // recursive case
-  exists(StateTuple p, Trace v, InputSymbol s1, InputSymbol s2, InputSymbol s3 |
-    isReachableFromStartTuple(pivot, succ, p, v, dist + 1) and
-    dist = isReachableFromStartTupleHelper(pivot, succ, tuple, p, s1, s2, s3) and
-    trace = Step(s1, s2, s3, v)
+  exists(StateTuple p |
+    isReachableFromStartTuple(pivot, succ, p, trace, dist + 1) and
+    dist = distBackFromEnd(tuple, MkStateTuple(pivot, succ, succ)) and
+    step(p, s1, s2, s3, tuple)
   )
-}
-
-/**
- * Helper predicate for the recursive case in `isReachableFromStartTuple`.
- */
-pragma[noinline]
-private int isReachableFromStartTupleHelper(
-  State pivot, State succ, StateTuple r, StateTuple p, InputSymbol s1, InputSymbol s2,
-  InputSymbol s3
-) {
-  result = distBackFromEnd(r, MkStateTuple(pivot, succ, succ)) and
-  step(p, s1, s2, s3, r)
 }
 
 /**
