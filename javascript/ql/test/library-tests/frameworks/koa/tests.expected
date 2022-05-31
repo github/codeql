@@ -6,7 +6,7 @@ test_RouteSetup
 | src/koa.js:59:1:61:2 | app3.us ... url;\\n}) |
 test_RequestInputAccess
 | src/koa.js:19:3:19:18 | ctx.request.body | body | src/koa.js:10:10:28:1 | functio ... az');\\n} |
-| src/koa.js:20:3:20:23 | ctx.req ... ery.foo | parameter | src/koa.js:10:10:28:1 | functio ... az');\\n} |
+| src/koa.js:20:3:20:19 | ctx.request.query | parameter | src/koa.js:10:10:28:1 | functio ... az');\\n} |
 | src/koa.js:21:3:21:17 | ctx.request.url | url | src/koa.js:10:10:28:1 | functio ... az');\\n} |
 | src/koa.js:22:3:22:25 | ctx.req ... inalUrl | url | src/koa.js:10:10:28:1 | functio ... az');\\n} |
 | src/koa.js:23:3:23:18 | ctx.request.href | url | src/koa.js:10:10:28:1 | functio ... az');\\n} |
@@ -14,16 +14,16 @@ test_RequestInputAccess
 | src/koa.js:25:3:25:25 | ctx.req ... ers.bar | header | src/koa.js:10:10:28:1 | functio ... az');\\n} |
 | src/koa.js:26:3:26:24 | ctx.req ... ('bar') | header | src/koa.js:10:10:28:1 | functio ... az');\\n} |
 | src/koa.js:27:3:27:24 | ctx.coo ... ('baz') | cookie | src/koa.js:10:10:28:1 | functio ... az');\\n} |
-| src/koa.js:33:2:33:14 | ctx.query.foo | parameter | src/koa.js:30:10:45:1 | async c ... url);\\n} |
+| src/koa.js:33:2:33:10 | ctx.query | parameter | src/koa.js:30:10:45:1 | async c ... url);\\n} |
 | src/koa.js:34:2:34:8 | ctx.url | url | src/koa.js:30:10:45:1 | async c ... url);\\n} |
 | src/koa.js:35:2:35:16 | ctx.originalUrl | url | src/koa.js:30:10:45:1 | async c ... url);\\n} |
 | src/koa.js:36:2:36:9 | ctx.href | url | src/koa.js:30:10:45:1 | async c ... url);\\n} |
 | src/koa.js:37:2:37:15 | ctx.header.bar | header | src/koa.js:30:10:45:1 | async c ... url);\\n} |
 | src/koa.js:38:2:38:16 | ctx.headers.bar | header | src/koa.js:30:10:45:1 | async c ... url);\\n} |
 | src/koa.js:40:2:40:15 | ctx.get('bar') | header | src/koa.js:30:10:45:1 | async c ... url);\\n} |
-| src/koa.js:42:12:42:27 | ctx.query.target | parameter | src/koa.js:30:10:45:1 | async c ... url);\\n} |
+| src/koa.js:42:12:42:20 | ctx.query | parameter | src/koa.js:30:10:45:1 | async c ... url);\\n} |
 | src/koa.js:49:2:49:14 | cookies.get() | cookie | src/koa.js:47:10:56:1 | async c ... .foo;\\n} |
-| src/koa.js:52:2:52:10 | query.foo | parameter | src/koa.js:47:10:56:1 | async c ... .foo;\\n} |
+| src/koa.js:51:14:51:22 | ctx.query | parameter | src/koa.js:47:10:56:1 | async c ... .foo;\\n} |
 | src/koa.js:55:2:55:12 | headers.foo | header | src/koa.js:47:10:56:1 | async c ... .foo;\\n} |
 | src/koa.js:60:2:60:17 | this.request.url | url | src/koa.js:59:10:61:1 | functio ... .url;\\n} |
 test_RouteHandler_getAResponseHeader
