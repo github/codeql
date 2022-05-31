@@ -66,6 +66,9 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   void visitParamDecl(swift::ParamDecl* decl) {
     auto label = dispatcher_.assignNewLabel(decl);
     dispatcher_.emit(ParamDeclsTrap{label});
+    if (decl->isInOut()) {
+      dispatcher_.emit(ParamDeclIsInoutTrap{label});
+    }
     emitVarDecl(decl, label);
   }
 

@@ -1103,6 +1103,7 @@ ConcreteVarDecl:
 
 ParamDecl:
   _extends: VarDecl
+  is_inout: predicate
 
 AssociatedTypeDecl:
   _extends: AbstractTypeParamDecl
