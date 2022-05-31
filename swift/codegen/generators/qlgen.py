@@ -116,10 +116,9 @@ def generate(opts, renderer):
 
     # for example path/to/elements -> path/to/elements.qll
     include_file = stub_out.with_suffix(".qll")
-    all_imports = ql.ImportList([v for _, v in sorted(imports.items())])
+    all_imports = ql.ImportList(list(sorted(imports.values())))
     renderer.render(all_imports, include_file)
 
-    print(include_file)
     renderer.render(ql.GetParentImplementation(classes=classes, imports=[get_import(include_file, opts.swift_dir)]),
                     out / 'GetImmediateParent.qll')
 

@@ -264,8 +264,8 @@ def test_class_dir_imports(opts, input, renderer):
         schema.Class("B", bases={"A"}),
     ]
     assert generate_import_list(opts, renderer) == ql.ImportList([
-        stub_import_prefix + "another.rel.path.A",
         stub_import_prefix + "B",
+        stub_import_prefix + "another.rel.path.A",
     ])
 
 
