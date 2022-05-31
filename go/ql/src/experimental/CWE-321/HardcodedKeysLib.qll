@@ -65,26 +65,20 @@ module HardcodedKeys {
             "github.com/form3tech-oss/jwt-go", "github.com/ory/fosite/token/jwt"
           ]
       |
-        (
-          exists(DataFlow::MethodCallNode m |
-            // Models the `SignedString` method
-            // `func (t *Token) SignedString(key interface{}) (string, error)`
-            m.getTarget().hasQualifiedName(pkg, "Token", "SignedString")
-          |
-            this = m.getArgument(0)
-          )
+        exists(DataFlow::MethodCallNode m |
+          // Models the `SignedString` method
+          // `func (t *Token) SignedString(key interface{}) (string, error)`
+          m.getTarget().hasQualifiedName(pkg, "Token", "SignedString") and
+          this = m.getArgument(0)
           or
-          exists(DataFlow::MethodCallNode m |
-            // Model the `Sign` method of the `SigningMethod` interface
-            // type SigningMethod interface {
-            //   Verify(signingString, signature string, key interface{}) error
-            //   Sign(signingString string, key interface{}) (string, error)
-            //   Alg() string
-            // }
-            m.getTarget().hasQualifiedName(pkg, "SigningMethod", "Sign")
-          |
-            this = m.getArgument(1)
-          )
+          // Model the `Sign` method of the `SigningMethod` interface
+          // type SigningMethod interface {
+          //   Verify(signingString, signature string, key interface{}) error
+          //   Sign(signingString string, key interface{}) (string, error)
+          //   Alg() string
+          // }
+          m.getTarget().hasQualifiedName(pkg, "SigningMethod", "Sign") and
+          this = m.getArgument(1)
         )
       )
     }
@@ -240,12 +234,21 @@ module HardcodedKeys {
       // }
       exists(DataFlow::CallNode randread, DataFlow::Node rand, DataFlow::ElementReadNode r |
         randread.getTarget().hasQualifiedName("crypto/rand", "Read") and
-        TaintTracking::localTaint(randread.getArgument(0).getAPredecessor*().getASuccessor*(), rand) and
+        TaintTracking::localTaint(any(DataFlow::PostUpdateNode pun |
+            pun.getPreUpdateNode() = randread.getArgument(0)
+          ), rand) and
         (
+          // Flow through a ModExpr if any of the operands are tainted.
+          //  For ex, in the case shown above,
+          // `bytes[i] = characters[x%byte(len(characters))]`
+          // given x is cryptographically secure random number,
+          // we can assume that `bytes` is random and cryptographically secure.
           exists(ModExpr e | e.getAnOperand() = rand.asExpr() |
             r.reads(this, e.getGlobalValueNumber().getANode())
           )
           or
+          // This is an alternative case where the code uses `x` directly instead
+          // `bytes[i] = characters[x]`
           r.reads(this.getAPredecessor*(), rand)
         )
       )

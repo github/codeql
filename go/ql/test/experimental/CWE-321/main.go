@@ -7,7 +7,7 @@ package main
 //go:generate depstubber -vendor github.com/lestrrat/go-jwx/jwk "" New
 //go:generate depstubber -vendor github.com/square/go-jose/v3 Recipient NewEncrypter,NewSigner
 //go:generate depstubber -vendor gopkg.in/square/go-jose.v2 Recipient NewEncrypter,NewSigner
-////go:generate depstubber -vendor github.com/cristalhq/jwt/v3 Signer NewSignerHS,HS256
+//go:generate depstubber -vendor github.com/cristalhq/jwt/v3 Signer NewSignerHS,HS256
 
 import (
 	"time"
@@ -98,7 +98,6 @@ func go_kit() interface{} {
 
 		mapClaims = gjwt.MapClaims{"user": "go-kit"}
 	)
-	// e := func(ctx context.Context, i interface{}) (interface{}, error) { return ctx, nil }
 
 	return gokit.NewSigner(kid, key, nil, mapClaims) // BAD
 }
