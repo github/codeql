@@ -17,7 +17,7 @@ def run_mock():
 stub_path = lambda: paths.swift_dir / "ql/lib/stub/path"
 ql_output_path = lambda: paths.swift_dir / "ql/lib/other/path"
 import_file = lambda: stub_path().with_suffix(".qll")
-children_file = lambda: ql_output_path() / "Children.qll"
+children_file = lambda: ql_output_path() / "GetImmediateParent.qll"
 stub_import = "stub.path"
 stub_import_prefix = f"{stub_import}."
 gen_import_prefix = "other.path."
@@ -69,7 +69,7 @@ def generate_classes(opts, renderer):
 def test_empty(opts, input, renderer):
     assert generate(opts, renderer) == {
         import_file(): ql.ImportList(),
-        children_file(): ql.Children(imports=[stub_import]),
+        children_file(): ql.GetParentImplementation(imports=[stub_import]),
     }
 
 
@@ -120,7 +120,7 @@ def test_hierarchy_children(opts, input, renderer):
         schema.Class("B", bases={"A"}, derived={"D"}),
         schema.Class("A", derived={"B", "C"}),
     ]
-    assert generate_children_implementations(opts, renderer) == ql.Children(
+    assert generate_children_implementations(opts, renderer) == ql.GetParentImplementation(
         classes=[ql.Class(name="A"),
                  ql.Class(name="B", bases=["A"], imports=[stub_import_prefix + "A"]),
                  ql.Class(name="C", bases=["A"], imports=[stub_import_prefix + "A"]),

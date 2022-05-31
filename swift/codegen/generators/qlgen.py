@@ -120,8 +120,8 @@ def generate(opts, renderer):
     renderer.render(all_imports, include_file)
 
     print(include_file)
-    renderer.render(ql.Children(classes=classes, imports=[get_import(include_file, opts.swift_dir)]),
-                    out / 'Children.qll')
+    renderer.render(ql.GetParentImplementation(classes=classes, imports=[get_import(include_file, opts.swift_dir)]),
+                    out / 'GetImmediateParent.qll')
 
     renderer.cleanup(existing)
     if opts.ql_format:

@@ -95,8 +95,8 @@ class ImportList:
 
 
 @dataclass
-class Children:
-    template: ClassVar = 'ql_children'
+class GetParentImplementation:
+    template: ClassVar = 'ql_parent'
 
-    imports: List[str] = field(default_factory=list)
     classes: List[Class] = field(default_factory=list)
+    imports: List[str] = field(default_factory=list)
