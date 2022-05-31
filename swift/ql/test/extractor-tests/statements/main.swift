@@ -70,3 +70,16 @@ if case .some(_) = x {
 let numbers = [1, 2, 3]
 for number in numbers where number % 2 == 0 {
 }
+
+struct HasModifyAccessorDecl {
+  var x : Int
+  var hasModify : Int {
+    _modify {
+      yield &x
+    }
+
+    get {
+      return 0
+    }
+  }
+}

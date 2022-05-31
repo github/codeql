@@ -1,6 +1,13 @@
-| test.py:4:1:4:23 | Class MyTest |
-| test.py:6:5:6:21 | Function test_1 |
-| test.py:9:5:9:21 | Function test_2 |
 | test_foo.py:3:1:3:15 | Function test_foo |
 | unittest_test.py:3:1:3:33 | Class FooTest |
 | unittest_test.py:4:5:4:25 | Function test_valid |
+| unittest_test.py:7:1:7:49 | Class FunctionFooTest |
+| unittest_test.py:8:5:8:25 | Function test_valid |
+| unittest_test.py:11:1:11:50 | Class AsyncTest |
+| unittest_test.py:12:11:12:31 | Function test_valid |
+| unittest_test.py:17:1:17:45 | Class MyDjangoUnitTest |
+| unittest_test.py:18:5:18:25 | Function test_valid |
+| unittest_test.py:23:1:23:56 | Class MyFlaskUnitTest |
+| unittest_test.py:24:5:24:25 | Function test_valid |
+| unittest_test.py:29:1:29:59 | Class MyTornadoUnitTest |
+| unittest_test.py:30:5:30:25 | Function test_valid |

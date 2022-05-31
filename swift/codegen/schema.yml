@@ -390,6 +390,8 @@ InOutExpr:
 
 KeyPathApplicationExpr:
   _extends: Expr
+  base: Expr
+  key_path: Expr
 
 KeyPathDotExpr:
   _extends: Expr
@@ -599,6 +601,7 @@ ThrowStmt:
 
 YieldStmt:
   _extends: Stmt
+  results: Expr*
 
 BoundGenericType:
   _extends: NominalOrBoundGenericNominalType

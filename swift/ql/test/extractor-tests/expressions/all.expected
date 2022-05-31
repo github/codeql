@@ -125,6 +125,7 @@
 | expressions.swift:54:1:54:1 | _ |
 | expressions.swift:54:1:54:8 |  ... = ... |
 | expressions.swift:54:5:54:8 | #keyPath(...) |
+| expressions.swift:54:6:54:8 | TBD (UnresolvedDotExpr) |
 | expressions.swift:58:16:58:16 | 1234 |
 | expressions.swift:59:1:59:1 | unsafeFunction |
 | expressions.swift:59:1:59:34 | call to unsafeFunction |
@@ -232,3 +233,15 @@
 | expressions.swift:138:10:138:17 | ...[...] |
 | expressions.swift:138:13:138:13 | 3 |
 | expressions.swift:138:16:138:16 | 4 |
+| expressions.swift:152:26:152:26 | a |
+| expressions.swift:152:26:152:47 | \\...[...] |
+| expressions.swift:152:37:152:37 | keyPathInt |
+| expressions.swift:153:24:153:24 | a |
+| expressions.swift:153:24:153:43 | \\...[...] |
+| expressions.swift:153:35:153:35 | keyPathB |
+| expressions.swift:154:22:154:22 | a |
+| expressions.swift:154:22:154:41 | \\...[...] |
+| expressions.swift:154:22:154:56 | \\...[...] |
+| expressions.swift:154:33:154:33 | keyPathB |
+| expressions.swift:154:52:154:55 | #keyPath(...) |
+| expressions.swift:154:53:154:55 | TBD (UnresolvedDotExpr) |

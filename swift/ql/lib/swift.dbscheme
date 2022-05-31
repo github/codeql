@@ -888,7 +888,9 @@ in_out_exprs(
 );
 
 key_path_application_exprs(
-  unique int id: @key_path_application_expr
+  unique int id: @key_path_application_expr,
+  int base: @expr ref,
+  int key_path: @expr ref
 );
 
 key_path_dot_exprs(
@@ -1269,6 +1271,13 @@ throw_stmts(
 
 yield_stmts(
   unique int id: @yield_stmt
+);
+
+#keyset[id, index]
+yield_stmt_results(
+  int id: @yield_stmt ref,
+  int index: int ref,
+  int result: @expr ref
 );
 
 @bound_generic_type =

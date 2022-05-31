@@ -70,7 +70,7 @@ abstract class Completion extends TCompletion {
   predicate isValidFor(ControlFlowElement n) {
     this.isValidForSpecific(n)
     or
-    mayHaveThrowCompletion(n.asAstNode(), this)
+    mayHaveThrowCompletion(n, this)
     or
     not any(Completion c).isValidForSpecific(n) and
     this = TSimpleCompletion()
@@ -307,10 +307,16 @@ private predicate isMatchingConstant(CaseLabelItem cli, boolean value) {
 
 private predicate mustHaveThrowCompletion(ThrowStmt throw, ThrowCompletion c) { any() }
 
-private predicate mayHaveThrowCompletion(ApplyExpr n, ThrowCompletion c) {
-  // TODO: We should really just use the function type here, I think (and then check
-  // if the type has a `throws`).
-  exists(n.getStaticTarget())
+private predicate isThrowingType(AnyFunctionType type) { type.isThrowing() }
+
+private predicate mayHaveThrowCompletion(ControlFlowElement n, ThrowCompletion c) {
+  // An AST expression that may throw.
+  isThrowingType(n.asAstNode().(ApplyExpr).getFunction().getType())
+  or
+  // Getters are the only accessor declarators that may throw.
+  exists(AccessorDecl accessor | isThrowingType(accessor.getInterfaceType()) |
+    isPropertyGetterElement(n, accessor, _)
+  )
 }
 
 /**

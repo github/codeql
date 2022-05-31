@@ -491,11 +491,17 @@ open class KotlinFileExtractor(
     private fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>, idx: Int, typeSubstitution: TypeSubstitution?, parentSourceDeclaration: Label<out DbCallable>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, extractTypeAccess: Boolean, locOverride: Label<DbLocation>? = null): TypeResults {
         with("value parameter", vp) {
             val location = locOverride ?: getLocation(vp, classTypeArgsIncludingOuterClasses)
+            val maybeErasedType = (vp.parent as? IrFunction)?.let {
+                if (overridesCollectionsMethodWithAlteredParameterTypes(it))
+                    eraseCollectionsMethodParameterType(vp.type, it.name.asString(), idx)
+                else
+                    null
+            } ?: vp.type
             val id = useValueParameter(vp, parent)
             if (extractTypeAccess) {
-                extractTypeAccessRecursive(typeSubstitution?.let { it(vp.type, TypeContext.OTHER, pluginContext) } ?: vp.type, location, id, -1)
+                extractTypeAccessRecursive(typeSubstitution?.let { it(maybeErasedType, TypeContext.OTHER, pluginContext) } ?: maybeErasedType, location, id, -1)
             }
-            return extractValueParameter(id, vp.type, vp.name.asString(), location, parent, idx, typeSubstitution, useValueParameter(vp, parentSourceDeclaration), vp.isVararg)
+            return extractValueParameter(id, maybeErasedType, vp.name.asString(), location, parent, idx, typeSubstitution, useValueParameter(vp, parentSourceDeclaration), vp.isVararg)
         }
     }
 
@@ -524,7 +530,8 @@ open class KotlinFileExtractor(
                     pluginContext.irBuiltIns.unitType,
                     extensionReceiverParameter = null,
                     functionTypeParameters = listOf(),
-                    classTypeArgsIncludingOuterClasses = listOf()
+                    classTypeArgsIncludingOuterClasses = listOf(),
+                    overridesCollectionsMethod = false
                 )
                 val clinitId = tw.getLabelFor<DbMethod>(clinitLabel)
                 val returnType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
@@ -697,16 +704,17 @@ open class KotlinFileExtractor(
 
                 val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
 
-                val substReturnType = typeSubstitution?.let { it(f.returnType, TypeContext.RETURN, pluginContext) } ?: f.returnType
+                val adjustedReturnType = getAdjustedReturnType(f)
+                val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
 
                 val locId = locOverride ?: getLocation(f, classTypeArgsIncludingOuterClasses)
 
                 if (f.symbol is IrConstructorSymbol) {
                     val unitType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
                     val shortName = when {
-                        f.returnType.isAnonymous -> ""
+                        adjustedReturnType.isAnonymous -> ""
                         typeSubstitution != null -> useType(substReturnType).javaResult.shortName
-                        else -> f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString()
+                        else -> adjustedReturnType.classFqName?.shortName()?.asString() ?: f.name.asString()
                     }
                     val constrId = id.cast<DbConstructor>()
                     tw.writeConstrs(constrId, shortName, "$shortName$paramsSignature", unitType.javaResult.id, parentId, sourceDeclaration.cast<DbConstructor>())
@@ -1392,12 +1400,6 @@ open class KotlinFileExtractor(
         if (result == null) {
             logger.error("Couldn't find declaration java.lang.String.valueOf(Object)")
         }
-        result
-    }
-
-    val javaLangObject by lazy {
-        val result = pluginContext.referenceClass(FqName("java.lang.Object"))?.owner
-        result?.let { extractExternalClassLater(it) }
         result
     }
 
