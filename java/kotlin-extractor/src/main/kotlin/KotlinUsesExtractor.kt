@@ -1,6 +1,7 @@
 package com.github.codeql
 
 import com.github.codeql.utils.*
+import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
 import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -1306,7 +1307,7 @@ open class KotlinUsesExtractor(
             if (t.isArray() || t.isNullableArray()) {
                 val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
                 val erasedElementType = erase(elementType)
-                return withQuestionMark((classifier as IrClassSymbol).typeWith(erasedElementType), t.hasQuestionMark)
+                return (classifier as IrClassSymbol).typeWith(erasedElementType).codeQlWithHasQuestionMark(t.hasQuestionMark)
             }
 
             if (owner is IrClass) {
@@ -1429,7 +1430,5 @@ open class KotlinUsesExtractor(
     fun useVariable(v: IrVariable): Label<out DbLocalvar> {
         return tw.getVariableLabelFor<DbLocalvar>(v)
     }
-
-    fun withQuestionMark(t: IrType, hasQuestionMark: Boolean) = if(hasQuestionMark) t.makeNullable() else t.makeNotNull()
 
 }
