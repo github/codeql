@@ -41,6 +41,10 @@ fn main() -> std::io::Result<()> {
 // converts the relative path `stripped` to an absolute path by prepending the working directory
 fn absolutelyfy(stripped: &str) -> String {
     let pwd = env::current_dir().unwrap();
-
-    pwd.join(stripped).into_os_string().into_string().unwrap()
+    let path = pwd.join(stripped).into_os_string().into_string().unwrap();
+    if env::consts::OS == "windows" {
+        path.replace("\\", "/")
+    } else {
+        path
+    }
 }
