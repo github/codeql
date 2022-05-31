@@ -11,216 +11,232 @@ namespace codeql {
 // `swift::Decl` visitor
 class DeclVisitor : public AstVisitorBase<DeclVisitor> {
  public:
-  void translateFuncDecl(swift::FuncDecl* decl, codeql::ConcreteFuncDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::ConcreteFuncDecl translateFuncDecl(const swift::FuncDecl& decl) {
+    ConcreteFuncDecl entry{dispatcher_.assignNewLabel(decl)};
     fillAbstractFunctionDecl(decl, entry);
+    return entry;
   }
 
-  void translateConstructorDecl(swift::ConstructorDecl* decl, codeql::ConstructorDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::ConstructorDecl translateConstructorDecl(const swift::ConstructorDecl& decl) {
+    ConstructorDecl entry{dispatcher_.assignNewLabel(decl)};
     fillAbstractFunctionDecl(decl, entry);
+    return entry;
   }
 
-  void translateDestructorDecl(swift::DestructorDecl* decl, codeql::DestructorDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::DestructorDecl translateDestructorDecl(const swift::DestructorDecl& decl) {
+    DestructorDecl entry{dispatcher_.assignNewLabel(decl)};
     fillAbstractFunctionDecl(decl, entry);
+    return entry;
   }
 
-  void translatePrefixOperatorDecl(swift::PrefixOperatorDecl* decl,
-                                   codeql::PrefixOperatorDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::PrefixOperatorDecl translatePrefixOperatorDecl(const swift::PrefixOperatorDecl& decl) {
+    PrefixOperatorDecl entry{dispatcher_.assignNewLabel(decl)};
     fillOperatorDecl(decl, entry);
+    return entry;
   }
 
-  void translatePostfixOperatorDecl(swift::PostfixOperatorDecl* decl,
-                                    codeql::PostfixOperatorDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::PostfixOperatorDecl translatePostfixOperatorDecl(const swift::PostfixOperatorDecl& decl) {
+    PostfixOperatorDecl entry{dispatcher_.assignNewLabel(decl)};
     fillOperatorDecl(decl, entry);
+    return entry;
   }
 
-  void translateInfixOperatorDecl(swift::InfixOperatorDecl* decl,
-                                  codeql::InfixOperatorDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
-    entry->precedence_group = dispatcher_.fetchOptionalLabel(decl->getPrecedenceGroup());
+  codeql::InfixOperatorDecl translateInfixOperatorDecl(const swift::InfixOperatorDecl& decl) {
+    InfixOperatorDecl entry{dispatcher_.assignNewLabel(decl)};
+    entry.precedence_group = dispatcher_.fetchOptionalLabel(decl.getPrecedenceGroup());
     fillOperatorDecl(decl, entry);
+    return entry;
   }
 
-  void translatePrecedenceGroupDecl(swift::PrecedenceGroupDecl* decl,
-                                    codeql::PrecedenceGroupDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::PrecedenceGroupDecl translatePrecedenceGroupDecl(const swift::PrecedenceGroupDecl& decl) {
+    PrecedenceGroupDecl entry{dispatcher_.assignNewLabel(decl)};
+    return entry;
   }
 
-  void translateParamDecl(swift::ParamDecl* decl, codeql::ParamDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::ParamDecl translateParamDecl(const swift::ParamDecl& decl) {
+    ParamDecl entry{dispatcher_.assignNewLabel(decl)};
     fillVarDecl(decl, entry);
+    return entry;
   }
 
-  void translateTopLevelCodeDecl(swift::TopLevelCodeDecl* decl, codeql::TopLevelCodeDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
-    assert(decl->getBody() && "Expect top level code to have body");
-    entry->body = dispatcher_.fetchLabel(decl->getBody());
+  codeql::TopLevelCodeDecl translateTopLevelCodeDecl(const swift::TopLevelCodeDecl& decl) {
+    TopLevelCodeDecl entry{dispatcher_.assignNewLabel(decl)};
+    assert(decl.getBody() && "Expect top level code to have body");
+    entry.body = dispatcher_.fetchLabel(decl.getBody());
+    return entry;
   }
 
-  void translatePatternBindingDecl(swift::PatternBindingDecl* decl,
-                                   codeql::PatternBindingDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
-    for (unsigned i = 0; i < decl->getNumPatternEntries(); ++i) {
-      auto pattern = decl->getPattern(i);
+  codeql::PatternBindingDecl translatePatternBindingDecl(const swift::PatternBindingDecl& decl) {
+    PatternBindingDecl entry{dispatcher_.assignNewLabel(decl)};
+    for (unsigned i = 0; i < decl.getNumPatternEntries(); ++i) {
+      auto pattern = decl.getPattern(i);
       assert(pattern && "Expect pattern binding decl to have all patterns");
-      entry->patterns.push_back(dispatcher_.fetchLabel(pattern));
-      entry->inits.push_back(dispatcher_.fetchOptionalLabel(decl->getInit(i)));
+      entry.patterns.push_back(dispatcher_.fetchLabel(pattern));
+      entry.inits.push_back(dispatcher_.fetchOptionalLabel(decl.getInit(i)));
     }
+    return entry;
   }
 
-  void translateVarDecl(swift::VarDecl* decl, codeql::ConcreteVarDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
-    entry->introducer_int = static_cast<uint8_t>(decl->getIntroducer());
+  codeql::ConcreteVarDecl translateVarDecl(const swift::VarDecl& decl) {
+    ConcreteVarDecl entry{dispatcher_.assignNewLabel(decl)};
+    entry.introducer_int = static_cast<uint8_t>(decl.getIntroducer());
     fillVarDecl(decl, entry);
+    return entry;
   }
 
-  void translateStructDecl(swift::StructDecl* decl, codeql::StructDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::StructDecl translateStructDecl(const swift::StructDecl& decl) {
+    StructDecl entry{dispatcher_.assignNewLabel(decl)};
     fillNominalTypeDecl(decl, entry);
+    return entry;
   }
 
-  void translateClassDecl(swift::ClassDecl* decl, codeql::ClassDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::ClassDecl translateClassDecl(const swift::ClassDecl& decl) {
+    ClassDecl entry{dispatcher_.assignNewLabel(decl)};
     fillNominalTypeDecl(decl, entry);
+    return entry;
   }
 
-  void translateEnumDecl(swift::EnumDecl* decl, codeql::EnumDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::EnumDecl translateEnumDecl(const swift::EnumDecl& decl) {
+    EnumDecl entry{dispatcher_.assignNewLabel(decl)};
     fillNominalTypeDecl(decl, entry);
+    return entry;
   }
 
-  void translateProtocolDecl(swift::ProtocolDecl* decl, codeql::ProtocolDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::ProtocolDecl translateProtocolDecl(const swift::ProtocolDecl& decl) {
+    ProtocolDecl entry{dispatcher_.assignNewLabel(decl)};
     fillNominalTypeDecl(decl, entry);
+    return entry;
   }
 
-  void translateEnumCaseDecl(swift::EnumCaseDecl* decl, codeql::EnumCaseDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
-    entry->elements = dispatcher_.fetchRepeatedLabels(decl->getElements());
+  codeql::EnumCaseDecl translateEnumCaseDecl(const swift::EnumCaseDecl& decl) {
+    EnumCaseDecl entry{dispatcher_.assignNewLabel(decl)};
+    entry.elements = dispatcher_.fetchRepeatedLabels(decl.getElements());
+    return entry;
   }
 
-  void translateEnumElementDecl(swift::EnumElementDecl* decl, codeql::EnumElementDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
-    entry->name = decl->getNameStr().str();
-    if (decl->hasParameterList()) {
-      entry->params = dispatcher_.fetchRepeatedLabels(*decl->getParameterList());
+  codeql::EnumElementDecl translateEnumElementDecl(const swift::EnumElementDecl& decl) {
+    EnumElementDecl entry{dispatcher_.assignNewLabel(decl)};
+    entry.name = decl.getNameStr().str();
+    if (decl.hasParameterList()) {
+      entry.params = dispatcher_.fetchRepeatedLabels(*decl.getParameterList());
     }
     fillValueDecl(decl, entry);
+    return entry;
   }
 
-  void translateGenericTypeParamDecl(swift::GenericTypeParamDecl* decl,
-                                     GenericTypeParamDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::GenericTypeParamDecl translateGenericTypeParamDecl(
+      const swift::GenericTypeParamDecl& decl) {
+    GenericTypeParamDecl entry{dispatcher_.assignNewLabel(decl)};
     fillTypeDecl(decl, entry);
+    return entry;
   }
 
-  void translateAssociatedTypeDecl(swift::AssociatedTypeDecl* decl,
-                                   codeql::AssociatedTypeDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::AssociatedTypeDecl translateAssociatedTypeDecl(const swift::AssociatedTypeDecl& decl) {
+    AssociatedTypeDecl entry{dispatcher_.assignNewLabel(decl)};
     fillTypeDecl(decl, entry);
+    return entry;
   }
 
-  void translateTypeAliasDecl(swift::TypeAliasDecl* decl, codeql::TypeAliasDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
+  codeql::TypeAliasDecl translateTypeAliasDecl(const swift::TypeAliasDecl& decl) {
+    TypeAliasDecl entry{dispatcher_.assignNewLabel(decl)};
     fillTypeDecl(decl, entry);
+    return entry;
   }
 
-  void translateAccessorDecl(swift::AccessorDecl* decl, codeql::AccessorDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
-    switch (decl->getAccessorKind()) {
+  codeql::AccessorDecl translateAccessorDecl(const swift::AccessorDecl& decl) {
+    AccessorDecl entry{dispatcher_.assignNewLabel(decl)};
+    switch (decl.getAccessorKind()) {
       case swift::AccessorKind::Get:
-        entry->is_getter = true;
+        entry.is_getter = true;
         break;
       case swift::AccessorKind::Set:
-        entry->is_setter = true;
+        entry.is_setter = true;
         break;
       case swift::AccessorKind::WillSet:
-        entry->is_will_set = true;
+        entry.is_will_set = true;
         break;
       case swift::AccessorKind::DidSet:
-        entry->is_did_set = true;
+        entry.is_did_set = true;
         break;
     }
     fillAbstractFunctionDecl(decl, entry);
+    return entry;
   }
 
-  void translateSubscriptDecl(swift::SubscriptDecl* decl, codeql::SubscriptDecl* entry) {
-    entry->id = dispatcher_.assignNewLabel(decl);
-    entry->element_type = dispatcher_.fetchLabel(decl->getElementInterfaceType());
-    if (auto indices = decl->getIndices()) {
-      entry->params = dispatcher_.fetchRepeatedLabels(*indices);
+  codeql::SubscriptDecl translateSubscriptDecl(const swift::SubscriptDecl& decl) {
+    SubscriptDecl entry{dispatcher_.assignNewLabel(decl)};
+    entry.element_type = dispatcher_.fetchLabel(decl.getElementInterfaceType());
+    if (auto indices = decl.getIndices()) {
+      entry.params = dispatcher_.fetchRepeatedLabels(*indices);
     }
     fillAbstractStorageDecl(decl, entry);
+    return entry;
   }
 
  private:
-  void fillAbstractFunctionDecl(swift::AbstractFunctionDecl* decl,
-                                codeql::AbstractFunctionDecl* entry) {
-    assert(decl->hasParameterList() && "Expect functions to have a parameter list");
-    entry->name = !decl->hasName() || decl->getName().isSpecial() ? "(unnamed function decl)"
-                                                                  : decl->getNameStr().str();
-    entry->body = dispatcher_.fetchOptionalLabel(decl->getBody());
-    entry->params = dispatcher_.fetchRepeatedLabels(*decl->getParameters());
+  void fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
+                                codeql::AbstractFunctionDecl& entry) {
+    assert(decl.hasParameterList() && "Expect functions to have a parameter list");
+    entry.name = !decl.hasName() || decl.getName().isSpecial() ? "(unnamed function decl)"
+                                                               : decl.getNameStr().str();
+    entry.body = dispatcher_.fetchOptionalLabel(decl.getBody());
+    entry.params = dispatcher_.fetchRepeatedLabels(*decl.getParameters());
     fillValueDecl(decl, entry);
     fillGenericContext(decl, entry);
   }
 
-  void fillOperatorDecl(swift::OperatorDecl* decl, codeql::OperatorDecl* entry) {
-    entry->name = decl->getName().str().str();
+  void fillOperatorDecl(const swift::OperatorDecl& decl, codeql::OperatorDecl& entry) {
+    entry.name = decl.getName().str().str();
   }
 
-  void fillTypeDecl(swift::TypeDecl* decl, codeql::TypeDecl* entry) {
-    entry->name = decl->getNameStr().str();
-    for (auto& typeLoc : decl->getInherited()) {
+  void fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl& entry) {
+    entry.name = decl.getNameStr().str();
+    for (auto& typeLoc : decl.getInherited()) {
       if (auto type = typeLoc.getType()) {
-        entry->base_types.push_back(dispatcher_.fetchLabel(type));
+        entry.base_types.push_back(dispatcher_.fetchLabel(type));
       }
     }
     fillValueDecl(decl, entry);
   }
 
-  void fillIterableDeclContext(swift::IterableDeclContext* decl,
-                               codeql::IterableDeclContext* entry) {
-    entry->members = dispatcher_.fetchRepeatedLabels(decl->getAllMembers());
+  void fillIterableDeclContext(const swift::IterableDeclContext& decl,
+                               codeql::IterableDeclContext& entry) {
+    entry.members = dispatcher_.fetchRepeatedLabels(decl.getAllMembers());
   }
 
-  void fillVarDecl(swift::VarDecl* decl, codeql::VarDecl* entry) {
-    entry->name = decl->getNameStr().str();
-    entry->type = dispatcher_.fetchLabel(decl->getType());
-    entry->parent_pattern = dispatcher_.fetchOptionalLabel(decl->getParentPattern());
-    entry->parent_initializer = dispatcher_.fetchOptionalLabel(decl->getParentInitializer());
-    if (decl->hasAttachedPropertyWrapper()) {
-      entry->attached_property_wrapper_type =
-          dispatcher_.fetchOptionalLabel(decl->getPropertyWrapperBackingPropertyType());
+  void fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& entry) {
+    entry.name = decl.getNameStr().str();
+    entry.type = dispatcher_.fetchLabel(decl.getType());
+    entry.parent_pattern = dispatcher_.fetchOptionalLabel(decl.getParentPattern());
+    entry.parent_initializer = dispatcher_.fetchOptionalLabel(decl.getParentInitializer());
+    if (decl.hasAttachedPropertyWrapper()) {
+      entry.attached_property_wrapper_type =
+          dispatcher_.fetchOptionalLabel(decl.getPropertyWrapperBackingPropertyType());
     }
     fillAbstractStorageDecl(decl, entry);
   }
 
-  void fillNominalTypeDecl(swift::NominalTypeDecl* decl, codeql::NominalTypeDecl* entry) {
-    entry->type = dispatcher_.fetchLabel(decl->getDeclaredType());
+  void fillNominalTypeDecl(const swift::NominalTypeDecl& decl, codeql::NominalTypeDecl& entry) {
+    entry.type = dispatcher_.fetchLabel(decl.getDeclaredType());
     fillGenericContext(decl, entry);
     fillIterableDeclContext(decl, entry);
     fillTypeDecl(decl, entry);
   }
 
-  void fillGenericContext(swift::GenericContext* decl, codeql::GenericContext* entry) {
-    if (auto params = decl->getGenericParams()) {
-      entry->generic_type_params = dispatcher_.fetchRepeatedLabels(*params);
+  void fillGenericContext(const swift::GenericContext& decl, codeql::GenericContext& entry) {
+    if (auto params = decl.getGenericParams()) {
+      entry.generic_type_params = dispatcher_.fetchRepeatedLabels(*params);
     }
   }
 
-  void fillValueDecl(swift::ValueDecl* decl, codeql::ValueDecl* entry) {
-    assert(decl->getInterfaceType() && "Expect ValueDecl to have InterfaceType");
-    entry->interface_type = dispatcher_.fetchLabel(decl->getInterfaceType());
+  void fillValueDecl(const swift::ValueDecl& decl, codeql::ValueDecl& entry) {
+    assert(decl.getInterfaceType() && "Expect ValueDecl to have InterfaceType");
+    entry.interface_type = dispatcher_.fetchLabel(decl.getInterfaceType());
   }
 
-  void fillAbstractStorageDecl(swift::AbstractStorageDecl* decl,
-                               codeql::AbstractStorageDecl* entry) {
-    entry->accessor_decls = dispatcher_.fetchRepeatedLabels(decl->getAllAccessors());
+  void fillAbstractStorageDecl(const swift::AbstractStorageDecl& decl,
+                               codeql::AbstractStorageDecl& entry) {
+    entry.accessor_decls = dispatcher_.fetchRepeatedLabels(decl.getAllAccessors());
     fillValueDecl(decl, entry);
   }
 };

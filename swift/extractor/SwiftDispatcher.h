@@ -83,6 +83,11 @@ class SwiftDispatcher {
     return label;
   }
 
+  template <typename E, typename = std::enable_if_t<!std::is_pointer_v<E>>>
+  TrapLabelOf<E> assignNewLabel(E& e) {
+    return assignNewLabel(&e);
+  }
+
   template <typename Tag>
   TrapLabel<Tag> createLabel() {
     auto ret = arena.allocateLabel<Tag>();
@@ -132,10 +137,10 @@ class SwiftDispatcher {
 
   // map `fetchLabel` on the iterable `arg`, returning a vector of all labels
   template <typename Iterable>
-  auto fetchRepeatedLabels(Iterable&& arg) -> std::vector<decltype(fetchLabel(*arg.begin()))> {
+  auto fetchRepeatedLabels(Iterable&& arg) {
     std::vector<decltype(fetchLabel(*arg.begin()))> ret;
     ret.reserve(arg.size());
-    for (const auto& e : arg) {
+    for (const auto& e : std::forward<Iterable>(arg)) {
       ret.push_back(fetchLabel(e));
     }
     return ret;

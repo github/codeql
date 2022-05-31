@@ -14,9 +14,9 @@ namespace {{namespace}} {
 {{#classes}}
 
 struct {{name}}{{#has_bases}} : {{#bases}}{{^first}}, {{/first}}{{ref.name}}{{/bases}}{{/has_bases}} {
-  {{name}}() {}
-
   {{#final}}
+  explicit {{name}}({{trap_affix}}Label<{{name}}Tag> id) : id{id} {}
+
   {{trap_affix}}Label<{{name}}Tag> id{};
   {{/final}}
   {{#fields}}
