@@ -203,6 +203,14 @@ module Stmts {
     }
   }
 
+  private class YieldStmtTree extends AstStandardPostOrderTree {
+    override YieldStmt ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = ast.getResult(i).getFullyConverted()
+    }
+  }
+
   private class FailTree extends AstLeafTree {
     override FailStmt ast;
   }
