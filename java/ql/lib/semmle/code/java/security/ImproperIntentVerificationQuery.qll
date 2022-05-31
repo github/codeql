@@ -55,85 +55,20 @@ string getASystemActionName() {
 }
 
 /** An expression or XML attribute that contains the name of a system intent action. */
-class SystemActionName extends Top {
+class SystemActionName extends AndroidActionXmlElement {
   string name;
 
   SystemActionName() {
     name = getASystemActionName() and
-    (
-      this.(CompileTimeConstantExpr).getStringValue() = "android.intent.action." + name
-      or
-      this.(FieldRead).getField().hasQualifiedName("android.content", "Intent", "ACTION_" + name)
-      or
-      this.(AndroidActionXmlElement).getActionName() = "android.intent.action." + name
-    )
+    this.getActionName() = "android.intent.action." + name
   }
 
   /** Gets the name of the system intent that this expression or attribute represents. */
-  string getName() { result = name }
-
-  override string toString() { result = [this.(Expr).toString(), this.(XMLAttribute).toString()] }
-}
-
-/** A call to `Context.registerReceiver` */
-private class RegisterReceiverCall extends MethodAccess {
-  RegisterReceiverCall() {
-    this.getMethod()
-        .getASourceOverriddenMethod*()
-        .hasQualifiedName("android.content", "Context", "registerReceiver")
-  }
-
-  /** Gets the `BroadcastReceiver` argument to this call. */
-  Expr getReceiverArgument() { result = this.getArgument(0) }
-
-  /** Gets the `IntentFilter` argument to this call. */
-  Expr getFilterArgument() { result = this.getArgument(1) }
-}
-
-/** A configuration to detect uses of `registerReceiver` with system intent actions. */
-private class RegisterSystemActionConfig extends DataFlow::Configuration {
-  RegisterSystemActionConfig() { this = "RegisterSystemActionConfig" }
-
-  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SystemActionName }
-
-  override predicate isSink(DataFlow::Node node) {
-    exists(RegisterReceiverCall ma | node.asExpr() = ma.getFilterArgument())
-  }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(ConstructorCall cc |
-      cc.getConstructedType().hasQualifiedName("android.content", "IntentFilter") and
-      node1.asExpr() = cc.getArgument(0) and
-      node2.asExpr() = cc
-    )
-    or
-    exists(MethodAccess ma |
-      ma.getMethod().hasQualifiedName("android.content", "IntentFilter", "create") and
-      node1.asExpr() = ma.getArgument(0) and
-      node2.asExpr() = ma
-    )
-    or
-    exists(MethodAccess ma |
-      ma.getMethod().hasQualifiedName("android.content", "IntentFilter", "addAction") and
-      node1.asExpr() = ma.getArgument(0) and
-      node2.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = ma.getQualifier()
-    )
-  }
-}
-
-/** Holds if `rrc` registers a receiver `orm` to receive the system action `sa` that doesn't verify the intents it receives. */
-private predicate registeredUnverifiedSystemReceiver(
-  RegisterReceiverCall rrc, UnverifiedOnReceiveMethod orm, SystemActionName sa
-) {
-  exists(RegisterSystemActionConfig conf, ConstructorCall cc |
-    conf.hasFlow(DataFlow::exprNode(sa), DataFlow::exprNode(rrc.getFilterArgument())) and
-    cc.getConstructedType() = orm.getDeclaringType() and
-    DataFlow::localExprFlow(cc, rrc.getReceiverArgument())
-  )
+  string getSystemActionName() { result = name }
 }
 
 /** Holds if the XML element `rec` declares a receiver `orm` to receive the system action named `sa` that doesn't verify intents it receives. */
-private predicate xmlUnverifiedSystemReceiver(
+predicate unverifiedSystemReceiver(
   AndroidReceiverXmlElement rec, UnverifiedOnReceiveMethod orm, SystemActionName sa
 ) {
   exists(Class ormty |
@@ -141,10 +76,4 @@ private predicate xmlUnverifiedSystemReceiver(
     rec.getComponentName() = ["." + ormty.getName(), ormty.getQualifiedName()] and
     rec.getAnIntentFilterElement().getAnActionElement() = sa
   )
-}
-
-/** Holds if `reg` registers (either explicitly or through XML) a receiver `orm` to receive the system action named `sa` that doesn't verify the intents it receives. */
-predicate unverifiedSystemReceiver(Top reg, Method orm, SystemActionName sa) {
-  registeredUnverifiedSystemReceiver(reg, orm, sa) or
-  xmlUnverifiedSystemReceiver(reg, orm, sa)
 }

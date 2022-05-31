@@ -21,6 +21,7 @@ Otherwise, a third-party application could impersonate the system this way and c
   without checking that the received action is indeed <code>ACTION_SHUTDOWN</code>. This allows third-party applications to 
   send explicit intents to this receiver to cause a denial of service.</p>
 <sample src="Bad.java" />
+<sample src="AndroidManifest.xml" />
 </example>
 
 <recommendation>
