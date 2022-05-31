@@ -704,16 +704,17 @@ open class KotlinFileExtractor(
 
                 val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
 
-                val substReturnType = typeSubstitution?.let { it(f.returnType, TypeContext.RETURN, pluginContext) } ?: f.returnType
+                val adjustedReturnType = getAdjustedReturnType(f)
+                val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
 
                 val locId = locOverride ?: getLocation(f, classTypeArgsIncludingOuterClasses)
 
                 if (f.symbol is IrConstructorSymbol) {
                     val unitType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
                     val shortName = when {
-                        f.returnType.isAnonymous -> ""
+                        adjustedReturnType.isAnonymous -> ""
                         typeSubstitution != null -> useType(substReturnType).javaResult.shortName
-                        else -> f.returnType.classFqName?.shortName()?.asString() ?: f.name.asString()
+                        else -> adjustedReturnType.classFqName?.shortName()?.asString() ?: f.name.asString()
                     }
                     val constrId = id.cast<DbConstructor>()
                     tw.writeConstrs(constrId, shortName, "$shortName$paramsSignature", unitType.javaResult.id, parentId, sourceDeclaration.cast<DbConstructor>())
