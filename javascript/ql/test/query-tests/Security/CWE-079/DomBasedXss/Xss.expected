@@ -442,7 +442,8 @@ nodes
 | jwt-server.js:11:19:11:29 | decoded.foo |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
-| nodemailer.js:13:50:13:66 | req.query.message |
+| nodemailer.js:13:50:13:58 | req.query |
+| nodemailer.js:13:50:13:58 | req.query |
 | nodemailer.js:13:50:13:66 | req.query.message |
 | optionalSanitizer.js:2:7:2:39 | target |
 | optionalSanitizer.js:2:16:2:39 | documen ... .search |
@@ -1510,8 +1511,8 @@ edges
 | jwt-server.js:11:19:11:25 | decoded | jwt-server.js:11:19:11:29 | decoded.foo |
 | jwt-server.js:11:19:11:25 | decoded | jwt-server.js:11:19:11:29 | decoded.foo |
 | jwt-server.js:11:19:11:25 | decoded | jwt-server.js:11:19:11:29 | decoded.foo |
-| nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
-| nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
+| nodemailer.js:13:50:13:58 | req.query | nodemailer.js:13:50:13:66 | req.query.message |
+| nodemailer.js:13:50:13:58 | req.query | nodemailer.js:13:50:13:66 | req.query.message |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | optionalSanitizer.js:2:7:2:39 | target | optionalSanitizer.js:6:18:6:23 | target |
@@ -2224,7 +2225,7 @@ edges
 | jquery.js:28:5:28:43 | window. ... ?', '') | jquery.js:28:5:28:26 | window. ... .search | jquery.js:28:5:28:43 | window. ... ?', '') | Cross-site scripting vulnerability due to $@. | jquery.js:28:5:28:26 | window. ... .search | user-provided value |
 | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' | jquery.js:18:14:18:33 | window.location.hash | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | jquery.js:18:14:18:33 | window.location.hash | user-provided value |
 | jwt-server.js:11:19:11:29 | decoded.foo | jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:11:19:11:29 | decoded.foo | Cross-site scripting vulnerability due to $@. | jwt-server.js:7:17:7:35 | req.param("wobble") | user-provided value |
-| nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | HTML injection vulnerability due to $@. | nodemailer.js:13:50:13:66 | req.query.message | user-provided value |
+| nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | nodemailer.js:13:50:13:58 | req.query | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | HTML injection vulnerability due to $@. | nodemailer.js:13:50:13:58 | req.query | user-provided value |
 | optionalSanitizer.js:6:18:6:23 | target | optionalSanitizer.js:2:16:2:39 | documen ... .search | optionalSanitizer.js:6:18:6:23 | target | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:39 | documen ... .search | user-provided value |
 | optionalSanitizer.js:9:18:9:24 | tainted | optionalSanitizer.js:2:16:2:39 | documen ... .search | optionalSanitizer.js:9:18:9:24 | tainted | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:39 | documen ... .search | user-provided value |
 | optionalSanitizer.js:17:20:17:20 | x | optionalSanitizer.js:2:16:2:39 | documen ... .search | optionalSanitizer.js:17:20:17:20 | x | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:39 | documen ... .search | user-provided value |

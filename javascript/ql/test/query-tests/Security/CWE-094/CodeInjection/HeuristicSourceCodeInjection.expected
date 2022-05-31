@@ -88,10 +88,12 @@ nodes
 | express.js:26:17:26:35 | req.param("wobble") |
 | express.js:27:34:27:38 | taint |
 | express.js:27:34:27:38 | taint |
+| module.js:9:16:9:24 | req.query |
+| module.js:9:16:9:24 | req.query |
 | module.js:9:16:9:29 | req.query.code |
 | module.js:9:16:9:29 | req.query.code |
-| module.js:9:16:9:29 | req.query.code |
-| module.js:11:17:11:30 | req.query.code |
+| module.js:11:17:11:25 | req.query |
+| module.js:11:17:11:25 | req.query |
 | module.js:11:17:11:30 | req.query.code |
 | module.js:11:17:11:30 | req.query.code |
 | react-native.js:7:7:7:33 | tainted |
@@ -105,7 +107,8 @@ nodes
 | react.js:10:56:10:77 | documen ... on.hash |
 | react.js:10:56:10:77 | documen ... on.hash |
 | template-sinks.js:17:9:17:31 | tainted |
-| template-sinks.js:17:19:17:31 | req.query.foo |
+| template-sinks.js:17:19:17:27 | req.query |
+| template-sinks.js:17:19:17:27 | req.query |
 | template-sinks.js:17:19:17:31 | req.query.foo |
 | template-sinks.js:19:17:19:23 | tainted |
 | template-sinks.js:19:17:19:23 | tainted |
@@ -212,8 +215,14 @@ edges
 | express.js:26:9:26:35 | taint | express.js:27:34:27:38 | taint |
 | express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint |
 | express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint |
-| module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code |
-| module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code |
+| module.js:9:16:9:24 | req.query | module.js:9:16:9:29 | req.query.code |
+| module.js:9:16:9:24 | req.query | module.js:9:16:9:29 | req.query.code |
+| module.js:9:16:9:24 | req.query | module.js:9:16:9:29 | req.query.code |
+| module.js:9:16:9:24 | req.query | module.js:9:16:9:29 | req.query.code |
+| module.js:11:17:11:25 | req.query | module.js:11:17:11:30 | req.query.code |
+| module.js:11:17:11:25 | req.query | module.js:11:17:11:30 | req.query.code |
+| module.js:11:17:11:25 | req.query | module.js:11:17:11:30 | req.query.code |
+| module.js:11:17:11:25 | req.query | module.js:11:17:11:30 | req.query.code |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted |
@@ -249,7 +258,8 @@ edges
 | template-sinks.js:17:9:17:31 | tainted | template-sinks.js:31:16:31:22 | tainted |
 | template-sinks.js:17:9:17:31 | tainted | template-sinks.js:32:17:32:23 | tainted |
 | template-sinks.js:17:9:17:31 | tainted | template-sinks.js:32:17:32:23 | tainted |
-| template-sinks.js:17:19:17:31 | req.query.foo | template-sinks.js:17:9:17:31 | tainted |
+| template-sinks.js:17:19:17:27 | req.query | template-sinks.js:17:19:17:31 | req.query.foo |
+| template-sinks.js:17:19:17:27 | req.query | template-sinks.js:17:19:17:31 | req.query.foo |
 | template-sinks.js:17:19:17:31 | req.query.foo | template-sinks.js:17:9:17:31 | tainted |
 | tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) |
 | tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) |

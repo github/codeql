@@ -5,7 +5,7 @@ let app = express();
 
 app.get('/hello', function(req, res) {
     _.merge({}, req.query.foo); // NOT OK
-    _.merge({}, req.query); // NOT OK - but not flagged
+    _.merge({}, req.query); // NOT OK
 
     _.merge({}, {
         value: req.query.value // NOT OK

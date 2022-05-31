@@ -30,33 +30,34 @@ nodes
 | express.js:118:16:118:63 | [req.qu ... ection] |
 | express.js:118:16:118:72 | [req.qu ... oin('') |
 | express.js:118:16:118:72 | [req.qu ... oin('') |
-| express.js:118:17:118:30 | req.query.page |
+| express.js:118:17:118:25 | req.query |
+| express.js:118:17:118:25 | req.query |
 | express.js:118:17:118:30 | req.query.page |
 | express.js:134:16:134:36 | '/' + r ... ms.user |
 | express.js:134:16:134:36 | '/' + r ... ms.user |
-| express.js:134:22:134:36 | req.params.user |
+| express.js:134:22:134:31 | req.params |
+| express.js:134:22:134:31 | req.params |
 | express.js:134:22:134:36 | req.params.user |
 | express.js:135:16:135:37 | '//' +  ... ms.user |
 | express.js:135:16:135:37 | '//' +  ... ms.user |
-| express.js:135:23:135:37 | req.params.user |
+| express.js:135:23:135:32 | req.params |
+| express.js:135:23:135:32 | req.params |
 | express.js:135:23:135:37 | req.params.user |
 | express.js:136:16:136:36 | 'u' + r ... ms.user |
 | express.js:136:16:136:36 | 'u' + r ... ms.user |
+| express.js:136:22:136:31 | req.params |
+| express.js:136:22:136:31 | req.params |
 | express.js:136:22:136:36 | req.params.user |
-| express.js:136:22:136:36 | req.params.user |
+| express.js:143:16:143:24 | req.query |
+| express.js:143:16:143:24 | req.query |
 | express.js:143:16:143:28 | req.query.foo |
 | express.js:143:16:143:28 | req.query.foo |
-| express.js:143:16:143:28 | req.query.foo |
+| express.js:145:17:145:23 | query |
+| express.js:145:18:145:22 | query |
+| express.js:145:18:145:22 | query |
+| express.js:146:16:146:20 | query |
 | express.js:146:16:146:24 | query.foo |
 | express.js:146:16:146:24 | query.foo |
-| express.js:146:16:146:24 | query.foo |
-| express.js:150:7:150:34 | target |
-| express.js:150:16:150:34 | req.param("target") |
-| express.js:150:16:150:34 | req.param("target") |
-| express.js:155:18:155:23 | target |
-| express.js:155:18:155:23 | target |
-| express.js:160:18:160:23 | target |
-| express.js:160:18:160:23 | target |
 | koa.js:6:6:6:27 | url |
 | koa.js:6:12:6:27 | ctx.query.target |
 | koa.js:6:12:6:27 | ctx.query.target |
@@ -131,28 +132,30 @@ edges
 | express.js:83:16:83:34 | req.param("target") | express.js:83:7:83:34 | target |
 | express.js:118:16:118:63 | [req.qu ... ection] | express.js:118:16:118:72 | [req.qu ... oin('') |
 | express.js:118:16:118:63 | [req.qu ... ection] | express.js:118:16:118:72 | [req.qu ... oin('') |
+| express.js:118:17:118:25 | req.query | express.js:118:17:118:30 | req.query.page |
+| express.js:118:17:118:25 | req.query | express.js:118:17:118:30 | req.query.page |
 | express.js:118:17:118:30 | req.query.page | express.js:118:16:118:63 | [req.qu ... ection] |
-| express.js:118:17:118:30 | req.query.page | express.js:118:16:118:63 | [req.qu ... ection] |
+| express.js:134:22:134:31 | req.params | express.js:134:22:134:36 | req.params.user |
+| express.js:134:22:134:31 | req.params | express.js:134:22:134:36 | req.params.user |
 | express.js:134:22:134:36 | req.params.user | express.js:134:16:134:36 | '/' + r ... ms.user |
 | express.js:134:22:134:36 | req.params.user | express.js:134:16:134:36 | '/' + r ... ms.user |
-| express.js:134:22:134:36 | req.params.user | express.js:134:16:134:36 | '/' + r ... ms.user |
-| express.js:134:22:134:36 | req.params.user | express.js:134:16:134:36 | '/' + r ... ms.user |
+| express.js:135:23:135:32 | req.params | express.js:135:23:135:37 | req.params.user |
+| express.js:135:23:135:32 | req.params | express.js:135:23:135:37 | req.params.user |
 | express.js:135:23:135:37 | req.params.user | express.js:135:16:135:37 | '//' +  ... ms.user |
 | express.js:135:23:135:37 | req.params.user | express.js:135:16:135:37 | '//' +  ... ms.user |
-| express.js:135:23:135:37 | req.params.user | express.js:135:16:135:37 | '//' +  ... ms.user |
-| express.js:135:23:135:37 | req.params.user | express.js:135:16:135:37 | '//' +  ... ms.user |
+| express.js:136:22:136:31 | req.params | express.js:136:22:136:36 | req.params.user |
+| express.js:136:22:136:31 | req.params | express.js:136:22:136:36 | req.params.user |
 | express.js:136:22:136:36 | req.params.user | express.js:136:16:136:36 | 'u' + r ... ms.user |
 | express.js:136:22:136:36 | req.params.user | express.js:136:16:136:36 | 'u' + r ... ms.user |
-| express.js:136:22:136:36 | req.params.user | express.js:136:16:136:36 | 'u' + r ... ms.user |
-| express.js:136:22:136:36 | req.params.user | express.js:136:16:136:36 | 'u' + r ... ms.user |
-| express.js:143:16:143:28 | req.query.foo | express.js:143:16:143:28 | req.query.foo |
-| express.js:146:16:146:24 | query.foo | express.js:146:16:146:24 | query.foo |
-| express.js:150:7:150:34 | target | express.js:155:18:155:23 | target |
-| express.js:150:7:150:34 | target | express.js:155:18:155:23 | target |
-| express.js:150:7:150:34 | target | express.js:160:18:160:23 | target |
-| express.js:150:7:150:34 | target | express.js:160:18:160:23 | target |
-| express.js:150:16:150:34 | req.param("target") | express.js:150:7:150:34 | target |
-| express.js:150:16:150:34 | req.param("target") | express.js:150:7:150:34 | target |
+| express.js:143:16:143:24 | req.query | express.js:143:16:143:28 | req.query.foo |
+| express.js:143:16:143:24 | req.query | express.js:143:16:143:28 | req.query.foo |
+| express.js:143:16:143:24 | req.query | express.js:143:16:143:28 | req.query.foo |
+| express.js:143:16:143:24 | req.query | express.js:143:16:143:28 | req.query.foo |
+| express.js:145:17:145:23 | query | express.js:146:16:146:20 | query |
+| express.js:145:18:145:22 | query | express.js:145:17:145:23 | query |
+| express.js:145:18:145:22 | query | express.js:145:17:145:23 | query |
+| express.js:146:16:146:20 | query | express.js:146:16:146:24 | query.foo |
+| express.js:146:16:146:20 | query | express.js:146:16:146:24 | query.foo |
 | koa.js:6:6:6:27 | url | koa.js:7:15:7:17 | url |
 | koa.js:6:6:6:27 | url | koa.js:7:15:7:17 | url |
 | koa.js:6:6:6:27 | url | koa.js:8:18:8:20 | url |
@@ -206,14 +209,12 @@ edges
 | express.js:74:16:74:43 | `${req. ... )}/foo` | express.js:74:19:74:37 | req.param("target") | express.js:74:16:74:43 | `${req. ... )}/foo` | Untrusted URL redirection due to $@. | express.js:74:19:74:37 | req.param("target") | user-provided value |
 | express.js:90:18:90:23 | target | express.js:83:16:83:34 | req.param("target") | express.js:90:18:90:23 | target | Untrusted URL redirection due to $@. | express.js:83:16:83:34 | req.param("target") | user-provided value |
 | express.js:97:16:97:21 | target | express.js:83:16:83:34 | req.param("target") | express.js:97:16:97:21 | target | Untrusted URL redirection due to $@. | express.js:83:16:83:34 | req.param("target") | user-provided value |
-| express.js:118:16:118:72 | [req.qu ... oin('') | express.js:118:17:118:30 | req.query.page | express.js:118:16:118:72 | [req.qu ... oin('') | Untrusted URL redirection due to $@. | express.js:118:17:118:30 | req.query.page | user-provided value |
-| express.js:134:16:134:36 | '/' + r ... ms.user | express.js:134:22:134:36 | req.params.user | express.js:134:16:134:36 | '/' + r ... ms.user | Untrusted URL redirection due to $@. | express.js:134:22:134:36 | req.params.user | user-provided value |
-| express.js:135:16:135:37 | '//' +  ... ms.user | express.js:135:23:135:37 | req.params.user | express.js:135:16:135:37 | '//' +  ... ms.user | Untrusted URL redirection due to $@. | express.js:135:23:135:37 | req.params.user | user-provided value |
-| express.js:136:16:136:36 | 'u' + r ... ms.user | express.js:136:22:136:36 | req.params.user | express.js:136:16:136:36 | 'u' + r ... ms.user | Untrusted URL redirection due to $@. | express.js:136:22:136:36 | req.params.user | user-provided value |
-| express.js:143:16:143:28 | req.query.foo | express.js:143:16:143:28 | req.query.foo | express.js:143:16:143:28 | req.query.foo | Untrusted URL redirection due to $@. | express.js:143:16:143:28 | req.query.foo | user-provided value |
-| express.js:146:16:146:24 | query.foo | express.js:146:16:146:24 | query.foo | express.js:146:16:146:24 | query.foo | Untrusted URL redirection due to $@. | express.js:146:16:146:24 | query.foo | user-provided value |
-| express.js:155:18:155:23 | target | express.js:150:16:150:34 | req.param("target") | express.js:155:18:155:23 | target | Untrusted URL redirection due to $@. | express.js:150:16:150:34 | req.param("target") | user-provided value |
-| express.js:160:18:160:23 | target | express.js:150:16:150:34 | req.param("target") | express.js:160:18:160:23 | target | Untrusted URL redirection due to $@. | express.js:150:16:150:34 | req.param("target") | user-provided value |
+| express.js:118:16:118:72 | [req.qu ... oin('') | express.js:118:17:118:25 | req.query | express.js:118:16:118:72 | [req.qu ... oin('') | Untrusted URL redirection due to $@. | express.js:118:17:118:25 | req.query | user-provided value |
+| express.js:134:16:134:36 | '/' + r ... ms.user | express.js:134:22:134:31 | req.params | express.js:134:16:134:36 | '/' + r ... ms.user | Untrusted URL redirection due to $@. | express.js:134:22:134:31 | req.params | user-provided value |
+| express.js:135:16:135:37 | '//' +  ... ms.user | express.js:135:23:135:32 | req.params | express.js:135:16:135:37 | '//' +  ... ms.user | Untrusted URL redirection due to $@. | express.js:135:23:135:32 | req.params | user-provided value |
+| express.js:136:16:136:36 | 'u' + r ... ms.user | express.js:136:22:136:31 | req.params | express.js:136:16:136:36 | 'u' + r ... ms.user | Untrusted URL redirection due to $@. | express.js:136:22:136:31 | req.params | user-provided value |
+| express.js:143:16:143:28 | req.query.foo | express.js:143:16:143:24 | req.query | express.js:143:16:143:28 | req.query.foo | Untrusted URL redirection due to $@. | express.js:143:16:143:24 | req.query | user-provided value |
+| express.js:146:16:146:24 | query.foo | express.js:145:18:145:22 | query | express.js:146:16:146:24 | query.foo | Untrusted URL redirection due to $@. | express.js:145:18:145:22 | query | user-provided value |
 | koa.js:7:15:7:17 | url | koa.js:6:12:6:27 | ctx.query.target | koa.js:7:15:7:17 | url | Untrusted URL redirection due to $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |
 | koa.js:8:15:8:26 | `${url}${x}` | koa.js:6:12:6:27 | ctx.query.target | koa.js:8:15:8:26 | `${url}${x}` | Untrusted URL redirection due to $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |
 | koa.js:14:16:14:18 | url | koa.js:6:12:6:27 | ctx.query.target | koa.js:14:16:14:18 | url | Untrusted URL redirection due to $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |

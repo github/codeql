@@ -454,7 +454,8 @@ nodes
 | jwt.js:6:14:6:20 | decoded |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
-| nodemailer.js:13:50:13:66 | req.query.message |
+| nodemailer.js:13:50:13:58 | req.query |
+| nodemailer.js:13:50:13:58 | req.query |
 | nodemailer.js:13:50:13:66 | req.query.message |
 | optionalSanitizer.js:2:7:2:39 | target |
 | optionalSanitizer.js:2:16:2:39 | documen ... .search |
@@ -1572,8 +1573,8 @@ edges
 | jwt.js:5:19:5:34 | jwt_decode(data) | jwt.js:5:9:5:34 | decoded |
 | jwt.js:5:30:5:33 | data | jwt.js:5:19:5:34 | jwt_decode(data) |
 | jwt.js:5:30:5:33 | data | jwt.js:5:19:5:34 | jwt_decode(data) |
-| nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
-| nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
+| nodemailer.js:13:50:13:58 | req.query | nodemailer.js:13:50:13:66 | req.query.message |
+| nodemailer.js:13:50:13:58 | req.query | nodemailer.js:13:50:13:66 | req.query.message |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` |
 | optionalSanitizer.js:2:7:2:39 | target | optionalSanitizer.js:6:18:6:23 | target |
