@@ -238,5 +238,7 @@ Element getAnImmediateChild(Element e) {
  * if `e` has conversions, `getImmediateParent(e)` will give the bottom conversion in the hidden AST.
  */
 Element getImmediateParent(Element e) {
+  // `unique` is used here to tell the optimizer that there is in fact only one result
+  // this is tested by the `library-tests/parent/no_double_parents.ql` test
   result = unique(Element x | e = getAnImmediateChild(x) | x)
 }
