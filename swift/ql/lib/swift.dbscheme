@@ -1273,6 +1273,13 @@ yield_stmts(
   unique int id: @yield_stmt
 );
 
+#keyset[id, index]
+yield_stmt_results(
+  int id: @yield_stmt ref,
+  int index: int ref,
+  int result: @expr ref
+);
+
 @bound_generic_type =
   @bound_generic_class_type
 | @bound_generic_enum_type
