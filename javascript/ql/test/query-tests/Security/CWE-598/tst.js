@@ -46,7 +46,7 @@ app.get('/rest/user/change-password', mkHandler());
 
 function mkHandler() {
     return (req, res) => {
-        const username = req.param('username'); // NOT OK - usernames are fine
+        const username = req.param('username'); // OK - usernames are fine
         const currentPassword = req.param('current'); // NOT OK - password read
         checkUser(username, currentPassword, (result) => {
             res.send(result);
