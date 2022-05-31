@@ -28,10 +28,6 @@ class PamAcctMgmt extends Method {
   PamAcctMgmt() { this.hasQualifiedName("github.com/msteinert/pam", "Transaction", "AcctMgmt") }
 }
 
-class PamTransaction extends StructType {
-  PamTransaction() { this.hasQualifiedName("github.com/msteinert/pam", "Transaction") }
-}
-
 class PamStartFunc extends Function {
   PamStartFunc() { this.hasQualifiedName("github.com/msteinert/pam", ["StartFunc", "Start"]) }
 }
