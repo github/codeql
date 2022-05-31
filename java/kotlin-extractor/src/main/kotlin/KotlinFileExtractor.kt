@@ -497,17 +497,17 @@ open class KotlinFileExtractor(
                 else
                     null
             } ?: vp.type
+            val substitutedType = typeSubstitution?.let { it(maybeErasedType, TypeContext.OTHER, pluginContext) } ?: maybeErasedType
             val id = useValueParameter(vp, parent)
             if (extractTypeAccess) {
-                extractTypeAccessRecursive(typeSubstitution?.let { it(maybeErasedType, TypeContext.OTHER, pluginContext) } ?: maybeErasedType, location, id, -1)
+                extractTypeAccessRecursive(substitutedType, location, id, -1)
             }
-            return extractValueParameter(id, maybeErasedType, vp.name.asString(), location, parent, idx, typeSubstitution, useValueParameter(vp, parentSourceDeclaration), vp.isVararg)
+            return extractValueParameter(id, substitutedType, vp.name.asString(), location, parent, idx, useValueParameter(vp, parentSourceDeclaration), vp.isVararg)
         }
     }
 
-    private fun extractValueParameter(id: Label<out DbParam>, t: IrType, name: String, locId: Label<DbLocation>, parent: Label<out DbCallable>, idx: Int, typeSubstitution: TypeSubstitution?, paramSourceDeclaration: Label<out DbParam>, isVararg: Boolean): TypeResults {
-        val substitutedType = typeSubstitution?.let { it(t, TypeContext.OTHER, pluginContext) } ?: t
-        val type = useType(substitutedType)
+    private fun extractValueParameter(id: Label<out DbParam>, t: IrType, name: String, locId: Label<DbLocation>, parent: Label<out DbCallable>, idx: Int, paramSourceDeclaration: Label<out DbParam>, isVararg: Boolean): TypeResults {
+        val type = useType(t)
         tw.writeParams(id, type.javaResult.id, idx, parent, paramSourceDeclaration)
         tw.writeParamsKotlinType(id, type.kotlinResult.id)
         tw.writeHasLocation(id, locId)
@@ -2930,7 +2930,7 @@ open class KotlinFileExtractor(
             stmtIdx: Int
         ) {
             val paramId = tw.getFreshIdLabel<DbParam>()
-            val paramTypeRes = extractValueParameter(paramId, paramType, paramName, locId, ids.constructor, paramIdx, null, paramId, false)
+            val paramTypeRes = extractValueParameter(paramId, paramType, paramName, locId, ids.constructor, paramIdx, paramId, false)
 
             val assignmentStmtId = tw.getFreshIdLabel<DbExprstmt>()
             tw.writeStmts_exprstmt(assignmentStmtId, ids.constructorBlock, stmtIdx, ids.constructor)
@@ -3566,7 +3566,7 @@ open class KotlinFileExtractor(
 
         val parameters = parameterTypes.mapIndexed { idx, p ->
             val paramId = tw.getFreshIdLabel<DbParam>()
-            val paramType = extractValueParameter(paramId, p, "a$idx", locId, methodId, idx, null, paramId, false)
+            val paramType = extractValueParameter(paramId, p, "a$idx", locId, methodId, idx, paramId, false)
 
             Pair(paramId, paramType)
         }
