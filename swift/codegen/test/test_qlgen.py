@@ -52,12 +52,13 @@ def generate_classes(opts, renderer):
     stub_files = set()
     base_files = set()
     for f in files:
-        if f.is_relative_to(stub_path()):
+        try:
             stub_files.add(f.relative_to(stub_path()))
-        elif f.is_relative_to(ql_output_path()):
-            base_files.add(f.relative_to(ql_output_path()))
-        else:
-            assert False, f"{f} is in wrong directory"
+        except ValueError:
+            try:
+                base_files.add(f.relative_to(ql_output_path()))
+            except ValueError:
+                assert False, f"{f} is in wrong directory"
     assert stub_files == base_files
     return {
         str(f): (ret[stub_path() / f], ret[ql_output_path() / f])
