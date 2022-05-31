@@ -46,7 +46,7 @@ module HardcodedKeys {
   /**
    * A hardcoded string literal as a source for JWT token signing vulnerabilities.
    */
-  class HardcodedStringSource extends Source {
+  private class HardcodedStringSource extends Source {
     HardcodedStringSource() {
       this.asExpr() instanceof StringLit and
       not (isTestCode(this.asExpr()) or isDemoCode(this.asExpr()))
@@ -166,7 +166,7 @@ module HardcodedKeys {
   }
 
   /** Mark an empty string returned with an error as a sanitizer */
-  class EmptyErrorSanitizer extends Sanitizer {
+  private class EmptyErrorSanitizer extends Sanitizer {
     EmptyErrorSanitizer() {
       exists(ReturnStmt r, DataFlow::CallNode c |
         c.getTarget().hasQualifiedName("errors", "New") and
@@ -178,7 +178,7 @@ module HardcodedKeys {
   }
 
   /** Mark any formatting string call as a sanitizer */
-  class FormattingSanitizer extends Sanitizer {
+  private class FormattingSanitizer extends Sanitizer {
     FormattingSanitizer() { exists(Formatting::StringFormatCall s | s.getAResult() = this) }
   }
 
@@ -188,19 +188,6 @@ module HardcodedKeys {
    */
   private class RandSliceSanitizer extends Sanitizer {
     RandSliceSanitizer() {
-      exists(DataFlow::CallNode randint, string name, DataFlow::ElementReadNode r |
-        (
-          randint.getTarget().hasQualifiedName("math/rand", name) or
-          randint.getTarget().(Method).hasQualifiedName("math/rand", "Rand", name)
-        ) and
-        name =
-          [
-            "ExpFloat64", "Float32", "Float64", "Int", "Int31", "Int31n", "Int63", "Int63n", "Intn",
-            "NormFloat64", "Uint32", "Uint64"
-          ] and
-        r.reads(this, randint.getAResult().getASuccessor*())
-      )
-      or
       // Sanitize flows like this:
       // func GenerateCryptoString(n int) (string, error) {
       //   const chars = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-"
@@ -215,12 +202,20 @@ module HardcodedKeys {
       //   return string(ret), nil
       // }
       exists(
-        DataFlow::CallNode randint, DataFlow::MethodCallNode bigint, DataFlow::ElementReadNode r
+        DataFlow::CallNode randint, string name, DataFlow::ElementReadNode r, DataFlow::Node index
       |
-        randint.getTarget().hasQualifiedName("crypto/rand", "Int") and
-        bigint.getTarget().hasQualifiedName("math/big", "Int", "Int64") and
-        bigint.getReceiver() = randint.getResult(0).getASuccessor*() and
-        r.reads(this, bigint.getAResult().getASuccessor*())
+        (
+          randint.getTarget().hasQualifiedName("math/rand", name) or
+          randint.getTarget().(Method).hasQualifiedName("math/rand", "Rand", name) or
+          randint.getTarget().hasQualifiedName("crypto/rand", "Int")
+        ) and
+        name =
+          [
+            "ExpFloat64", "Float32", "Float64", "Int", "Int31", "Int31n", "Int63", "Int63n", "Intn",
+            "NormFloat64", "Uint32", "Uint64"
+          ] and
+        TaintTracking::localTaint(randint.getAResult(), index) and
+        r.reads(this, index)
       )
       or
       // Sanitize flows like :
@@ -232,26 +227,46 @@ module HardcodedKeys {
       //   }
       //   return string(bytes)
       // }
-      exists(DataFlow::CallNode randread, DataFlow::Node rand, DataFlow::ElementReadNode r |
+      exists(DataFlow::CallNode randread, DataFlow::Node rand |
         randread.getTarget().hasQualifiedName("crypto/rand", "Read") and
         TaintTracking::localTaint(any(DataFlow::PostUpdateNode pun |
             pun.getPreUpdateNode() = randread.getArgument(0)
           ), rand) and
-        (
-          // Flow through a ModExpr if any of the operands are tainted.
-          //  For ex, in the case shown above,
-          // `bytes[i] = characters[x%byte(len(characters))]`
-          // given x is cryptographically secure random number,
-          // we can assume that `bytes` is random and cryptographically secure.
-          exists(ModExpr e | e.getAnOperand() = rand.asExpr() |
-            r.reads(this, e.getGlobalValueNumber().getANode())
-          )
-          or
-          // This is an alternative case where the code uses `x` directly instead
-          // `bytes[i] = characters[x]`
-          r.reads(this.getAPredecessor*(), rand)
-        )
+        this.(DataFlow::ElementReadNode).reads(_, rand)
       )
+    }
+  }
+
+  /**
+   * Models flow from a call to `Int64` if the receiver is tainted
+   */
+  private class BigIntFlow extends TaintTracking::FunctionModel {
+    BigIntFlow() { this.(Method).hasQualifiedName("math/big", "Int", "Int64") }
+
+    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
+      inp.isReceiver() and
+      outp.isResult(0)
+    }
+  }
+
+  /*
+   * This is code is used to model taint flow through a binary operation such as a
+   * modulo `%` operation or an addition `+` operation
+   */
+
+  private class BinExpAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    // This is required to model the sanitizers for the `HardcodedKeys` query.
+    // This is required to correctly detect a sanitizer such as the one shown below.
+    // func GenerateRandomString(size int) string {
+    //   var bytes = make([]byte, size)
+    //   rand.Read(bytes)
+    //   for i, x := range bytes {
+    //     bytes[i] = characters[x%byte(len(characters))]
+    //   }
+    //   return string(bytes)
+    // }
+    override predicate step(DataFlow::Node prev, DataFlow::Node succ) {
+      exists(BinaryExpr b | b.getAnOperand() = prev.asExpr() | succ.asExpr() = b)
     }
   }
 
@@ -267,6 +282,8 @@ module HardcodedKeys {
 
     override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof Sanitizer }
 
+    // override predicate isAdditionalTaintStep(DataFlow::Node prev, DataFlow::Node succ) {
+    // }
     override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       guard instanceof SanitizerGuard
     }
