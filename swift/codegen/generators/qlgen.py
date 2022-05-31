@@ -99,6 +99,7 @@ def generate(opts, renderer):
     data = schema.load(input)
 
     classes = [get_ql_class(cls) for cls in data.classes]
+    classes.sort(key=lambda cls: cls.name)
     imports = {}
 
     for c in classes:
@@ -113,10 +114,14 @@ def generate(opts, renderer):
             stub = ql.Stub(name=c.name, base_import=get_import(qll, opts.swift_dir))
             renderer.render(stub, stub_file)
 
-    # for example path/to/syntax/generated -> path/to/syntax.qll
+    # for example path/to/elements -> path/to/elements.qll
     include_file = stub_out.with_suffix(".qll")
     all_imports = ql.ImportList([v for _, v in sorted(imports.items())])
     renderer.render(all_imports, include_file)
+
+    print(include_file)
+    renderer.render(ql.Children(classes=classes, imports=[get_import(include_file, opts.swift_dir)]),
+                    out / 'Children.qll')
 
     renderer.cleanup(existing)
     if opts.ql_format:

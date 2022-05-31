@@ -1,7 +1,6 @@
 private import codeql.swift.generated.AstNode
+private import codeql.swift.generated.Children
 
 class AstNode extends AstNodeBase {
-  AstNode getParent() {
-    result = unique(AstNode x | this = x.getAChild() and not exists(x.getResolveStep()) | x)
-  }
+  AstNode getParent() { result = unique(AstNode x | this = getAChild(x) | x) }
 }

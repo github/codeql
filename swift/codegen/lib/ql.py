@@ -92,3 +92,11 @@ class ImportList:
     template: ClassVar = 'ql_imports'
 
     imports: List[str] = field(default_factory=list)
+
+
+@dataclass
+class Children:
+    template: ClassVar = 'ql_children'
+
+    imports: List[str] = field(default_factory=list)
+    classes: List[Class] = field(default_factory=list)

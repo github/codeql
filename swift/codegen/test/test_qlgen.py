@@ -1,3 +1,4 @@
+import pathlib
 import subprocess
 import sys
 
@@ -16,7 +17,9 @@ def run_mock():
 stub_path = lambda: paths.swift_dir / "ql/lib/stub/path"
 ql_output_path = lambda: paths.swift_dir / "ql/lib/other/path"
 import_file = lambda: stub_path().with_suffix(".qll")
-stub_import_prefix = "stub.path."
+children_file = lambda: ql_output_path() / "Children.qll"
+stub_import = "stub.path"
+stub_import_prefix = f"{stub_import}."
 gen_import_prefix = "other.path."
 
 
@@ -24,13 +27,48 @@ def generate(opts, renderer, written=None):
     opts.ql_stub_output = stub_path()
     opts.ql_output = ql_output_path()
     opts.ql_format = True
+    opts.swift_dir = paths.swift_dir
     renderer.written = written or []
     return run_generation(qlgen.generate, opts, renderer)
 
 
+def generate_import_list(opts, renderer):
+    ret = generate(opts, renderer)
+    assert import_file() in ret
+    return ret[import_file()]
+
+
+def generate_children_implementations(opts, renderer):
+    ret = generate(opts, renderer)
+    assert children_file() in ret
+    return ret[children_file()]
+
+
+def generate_classes(opts, renderer):
+    ret = generate(opts, renderer)
+    files = {x for x in ret}
+    files.remove(import_file())
+    files.remove(children_file())
+    stub_files = set()
+    base_files = set()
+    for f in files:
+        if f.is_relative_to(stub_path()):
+            stub_files.add(f.relative_to(stub_path()))
+        elif f.is_relative_to(ql_output_path()):
+            base_files.add(f.relative_to(ql_output_path()))
+        else:
+            assert False, f"{f} is in wrong directory"
+    assert stub_files == base_files
+    return {
+        str(f): (ret[stub_path() / f], ret[ql_output_path() / f])
+        for f in base_files
+    }
+
+
 def test_empty(opts, input, renderer):
     assert generate(opts, renderer) == {
-        import_file(): ql.ImportList()
+        import_file(): ql.ImportList(),
+        children_file(): ql.Children(imports=[stub_import]),
     }
 
 
@@ -38,10 +76,9 @@ def test_one_empty_class(opts, input, renderer):
     input.classes = [
         schema.Class("A")
     ]
-    assert generate(opts, renderer) == {
-        import_file(): ql.ImportList([stub_import_prefix + "A"]),
-        stub_path() / "A.qll": ql.Stub(name="A", base_import=gen_import_prefix + "A"),
-        ql_output_path() / "A.qll": ql.Class(name="A", final=True),
+    assert generate_classes(opts, renderer) == {
+        "A.qll": (ql.Stub(name="A", base_import=gen_import_prefix + "A"),
+                  ql.Class(name="A", final=True)),
     }
 
 
@@ -52,31 +89,57 @@ def test_hierarchy(opts, input, renderer):
         schema.Class("B", bases={"A"}, derived={"D"}),
         schema.Class("A", derived={"B", "C"}),
     ]
-    assert generate(opts, renderer) == {
-        import_file(): ql.ImportList([stub_import_prefix + cls for cls in "ABCD"]),
-        stub_path() / "A.qll": ql.Stub(name="A", base_import=gen_import_prefix + "A"),
-        stub_path() / "B.qll": ql.Stub(name="B", base_import=gen_import_prefix + "B"),
-        stub_path() / "C.qll": ql.Stub(name="C", base_import=gen_import_prefix + "C"),
-        stub_path() / "D.qll": ql.Stub(name="D", base_import=gen_import_prefix + "D"),
-        ql_output_path() / "A.qll": ql.Class(name="A"),
-        ql_output_path() / "B.qll": ql.Class(name="B", bases=["A"], imports=[stub_import_prefix + "A"]),
-        ql_output_path() / "C.qll": ql.Class(name="C", bases=["A"], imports=[stub_import_prefix + "A"]),
-        ql_output_path() / "D.qll": ql.Class(name="D", final=True, bases=["B", "C"],
-                                             imports=[stub_import_prefix + cls for cls in "BC"]),
-
+    assert generate_classes(opts, renderer) == {
+        "A.qll": (ql.Stub(name="A", base_import=gen_import_prefix + "A"),
+                  ql.Class(name="A")),
+        "B.qll": (ql.Stub(name="B", base_import=gen_import_prefix + "B"),
+                  ql.Class(name="B", bases=["A"], imports=[stub_import_prefix + "A"])),
+        "C.qll": (ql.Stub(name="C", base_import=gen_import_prefix + "C"),
+                  ql.Class(name="C", bases=["A"], imports=[stub_import_prefix + "A"])),
+        "D.qll": (ql.Stub(name="D", base_import=gen_import_prefix + "D"),
+                  ql.Class(name="D", final=True, bases=["B", "C"],
+                           imports=[stub_import_prefix + cls for cls in "BC"])),
     }
+
+
+def test_hierarchy_imports(opts, input, renderer):
+    input.classes = [
+        schema.Class("D", bases={"B", "C"}),
+        schema.Class("C", bases={"A"}, derived={"D"}),
+        schema.Class("B", bases={"A"}, derived={"D"}),
+        schema.Class("A", derived={"B", "C"}),
+    ]
+    assert generate_import_list(opts, renderer) == ql.ImportList([stub_import_prefix + cls for cls in "ABCD"])
+
+
+def test_hierarchy_children(opts, input, renderer):
+    input.classes = [
+        schema.Class("D", bases={"B", "C"}),
+        schema.Class("C", bases={"A"}, derived={"D"}),
+        schema.Class("B", bases={"A"}, derived={"D"}),
+        schema.Class("A", derived={"B", "C"}),
+    ]
+    assert generate_children_implementations(opts, renderer) == ql.Children(
+        classes=[ql.Class(name="A"),
+                 ql.Class(name="B", bases=["A"], imports=[stub_import_prefix + "A"]),
+                 ql.Class(name="C", bases=["A"], imports=[stub_import_prefix + "A"]),
+                 ql.Class(name="D", final=True, bases=["B", "C"],
+                          imports=[stub_import_prefix + cls for cls in "BC"]),
+                 ],
+        imports=[stub_import],
+    )
 
 
 def test_single_property(opts, input, renderer):
     input.classes = [
         schema.Class("MyObject", properties=[schema.SingleProperty("foo", "bar")]),
     ]
-    assert generate(opts, renderer) == {
-        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
-        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
-            ql.Property(singular="Foo", type="bar", tablename="my_objects", tableparams=["this", "result"]),
-        ])
+    assert generate_classes(opts, renderer) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         ql.Class(name="MyObject", final=True, properties=[
+                             ql.Property(singular="Foo", type="bar", tablename="my_objects",
+                                         tableparams=["this", "result"]),
+                         ])),
     }
 
 
@@ -88,14 +151,16 @@ def test_single_properties(opts, input, renderer):
             schema.SingleProperty("three", "z"),
         ]),
     ]
-    assert generate(opts, renderer) == {
-        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
-        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
-            ql.Property(singular="One", type="x", tablename="my_objects", tableparams=["this", "result", "_", "_"]),
-            ql.Property(singular="Two", type="y", tablename="my_objects", tableparams=["this", "_", "result", "_"]),
-            ql.Property(singular="Three", type="z", tablename="my_objects", tableparams=["this", "_", "_", "result"]),
-        ])
+    assert generate_classes(opts, renderer) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         ql.Class(name="MyObject", final=True, properties=[
+                             ql.Property(singular="One", type="x", tablename="my_objects",
+                                         tableparams=["this", "result", "_", "_"]),
+                             ql.Property(singular="Two", type="y", tablename="my_objects",
+                                         tableparams=["this", "_", "result", "_"]),
+                             ql.Property(singular="Three", type="z", tablename="my_objects",
+                                         tableparams=["this", "_", "_", "result"]),
+                         ])),
     }
 
 
@@ -104,13 +169,13 @@ def test_optional_property(opts, input, renderer, is_child):
     input.classes = [
         schema.Class("MyObject", properties=[schema.OptionalProperty("foo", "bar", is_child=is_child)]),
     ]
-    assert generate(opts, renderer) == {
-        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
-        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
-            ql.Property(singular="Foo", type="bar", tablename="my_object_foos", tableparams=["this", "result"],
-                        is_optional=True, is_child=is_child),
-        ])
+    assert generate_classes(opts, renderer) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         ql.Class(name="MyObject", final=True, properties=[
+                             ql.Property(singular="Foo", type="bar", tablename="my_object_foos",
+                                         tableparams=["this", "result"],
+                                         is_optional=True, is_child=is_child),
+                         ])),
     }
 
 
@@ -119,13 +184,12 @@ def test_repeated_property(opts, input, renderer, is_child):
     input.classes = [
         schema.Class("MyObject", properties=[schema.RepeatedProperty("foo", "bar", is_child=is_child)]),
     ]
-    assert generate(opts, renderer) == {
-        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
-        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
-            ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
-                        tableparams=["this", "index", "result"], is_child=is_child),
-        ])
+    assert generate_classes(opts, renderer) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         ql.Class(name="MyObject", final=True, properties=[
+                             ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
+                                         tableparams=["this", "index", "result"], is_child=is_child),
+                         ])),
     }
 
 
@@ -134,13 +198,12 @@ def test_repeated_optional_property(opts, input, renderer, is_child):
     input.classes = [
         schema.Class("MyObject", properties=[schema.RepeatedOptionalProperty("foo", "bar", is_child=is_child)]),
     ]
-    assert generate(opts, renderer) == {
-        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
-        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
-            ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
-                        tableparams=["this", "index", "result"], is_optional=True, is_child=is_child),
-        ])
+    assert generate_classes(opts, renderer) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         ql.Class(name="MyObject", final=True, properties=[
+                             ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
+                                         tableparams=["this", "index", "result"], is_optional=True, is_child=is_child),
+                         ])),
     }
 
 
@@ -148,13 +211,13 @@ def test_predicate_property(opts, input, renderer):
     input.classes = [
         schema.Class("MyObject", properties=[schema.PredicateProperty("is_foo")]),
     ]
-    assert generate(opts, renderer) == {
-        import_file(): ql.ImportList([stub_import_prefix + "MyObject"]),
-        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-        ql_output_path() / "MyObject.qll": ql.Class(name="MyObject", final=True, properties=[
-            ql.Property(singular="isFoo", type="predicate", tablename="my_object_is_foo", tableparams=["this"],
-                        is_predicate=True),
-        ])
+    assert generate_classes(opts, renderer) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         ql.Class(name="MyObject", final=True, properties=[
+                             ql.Property(singular="isFoo", type="predicate", tablename="my_object_is_foo",
+                                         tableparams=["this"],
+                                         is_predicate=True),
+                         ])),
     }
 
 
@@ -164,17 +227,17 @@ def test_single_class_property(opts, input, renderer, is_child):
         schema.Class("MyObject", properties=[schema.SingleProperty("foo", "Bar", is_child=is_child)]),
         schema.Class("Bar"),
     ]
-    assert generate(opts, renderer) == {
-        import_file(): ql.ImportList([stub_import_prefix + cls for cls in ("Bar", "MyObject")]),
-        stub_path() / "MyObject.qll": ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-        stub_path() / "Bar.qll": ql.Stub(name="Bar", base_import=gen_import_prefix + "Bar"),
-        ql_output_path() / "MyObject.qll": ql.Class(
-            name="MyObject", final=True, imports=[stub_import_prefix + "Bar"], properties=[
-                ql.Property(singular="Foo", type="Bar", tablename="my_objects", tableparams=["this", "result"],
-                            is_child=is_child),
-            ],
-        ),
-        ql_output_path() / "Bar.qll": ql.Class(name="Bar", final=True)
+    assert generate_classes(opts, renderer) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         ql.Class(
+                             name="MyObject", final=True, imports=[stub_import_prefix + "Bar"], properties=[
+                                 ql.Property(singular="Foo", type="Bar", tablename="my_objects",
+                                             tableparams=["this", "result"],
+                                             is_child=is_child),
+                             ],
+                         )),
+        "Bar.qll": (ql.Stub(name="Bar", base_import=gen_import_prefix + "Bar"),
+                    ql.Class(name="Bar", final=True)),
     }
 
 
@@ -184,17 +247,25 @@ def test_class_dir(opts, input, renderer):
         schema.Class("A", derived={"B"}, dir=dir),
         schema.Class("B", bases={"A"}),
     ]
-    assert generate(opts, renderer) == {
-        import_file(): ql.ImportList([
-            stub_import_prefix + "another.rel.path.A",
-            stub_import_prefix + "B",
-        ]),
-        stub_path() / dir / "A.qll": ql.Stub(name="A", base_import=gen_import_prefix + "another.rel.path.A"),
-        stub_path() / "B.qll": ql.Stub(name="B", base_import=gen_import_prefix + "B"),
-        ql_output_path() / dir / "A.qll": ql.Class(name="A", dir=dir),
-        ql_output_path() / "B.qll": ql.Class(name="B", final=True, bases=["A"],
-                                             imports=[stub_import_prefix + "another.rel.path.A"])
+    assert generate_classes(opts, renderer) == {
+        f"{dir}/A.qll": (ql.Stub(name="A", base_import=gen_import_prefix + "another.rel.path.A"),
+                         ql.Class(name="A", dir=dir)),
+        "B.qll": (ql.Stub(name="B", base_import=gen_import_prefix + "B"),
+                  ql.Class(name="B", final=True, bases=["A"],
+                           imports=[stub_import_prefix + "another.rel.path.A"])),
     }
+
+
+def test_class_dir_imports(opts, input, renderer):
+    dir = pathlib.Path("another/rel/path")
+    input.classes = [
+        schema.Class("A", derived={"B"}, dir=dir),
+        schema.Class("B", bases={"A"}),
+    ]
+    assert generate_import_list(opts, renderer) == ql.ImportList([
+        stub_import_prefix + "another.rel.path.A",
+        stub_import_prefix + "B",
+    ])
 
 
 def test_format(opts, input, renderer, run_mock):
@@ -212,9 +283,10 @@ def test_empty_cleanup(opts, input, renderer):
     assert renderer.mock_calls[-1] == mock.call.cleanup(set())
 
 
-def test_empty_cleanup(opts, input, renderer, tmp_path):
-    opts.ql_output = tmp_path / "gen"
-    opts.ql_stub_output = tmp_path / "stub"
+def test_non_empty_cleanup(opts, input, renderer, tmp_path):
+    opts.swift_dir = tmp_path
+    opts.ql_output = tmp_path / "ql" / "lib" / "gen"
+    opts.ql_stub_output = tmp_path / "ql" / "lib" / "stub"
     renderer.written = []
     ql_a = opts.ql_output / "A.qll"
     ql_b = opts.ql_output / "B.qll"
