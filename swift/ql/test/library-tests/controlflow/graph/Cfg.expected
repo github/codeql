@@ -5129,8 +5129,6 @@ cfg.swift:
 #-----|  -> [...]
 
 #  394| (unnamed function decl)
-#-----|  -> yield ...
-#-----|  -> TBD (YieldStmt)
 
 #  394| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5140,11 +5138,6 @@ cfg.swift:
 
 #  394| enter set
 #-----|  -> set
-
-#  394| exit (unnamed function decl)
-
-#  394| exit (unnamed function decl) (normal)
-#-----|  -> exit (unnamed function decl)
 
 #  394| exit get
 
@@ -5162,12 +5155,6 @@ cfg.swift:
 #-----|  -> value
 
 #  394| value
-
-#  394| yield ...
-#-----|  -> exit (unnamed function decl) (normal)
-
-#  394| TBD (YieldStmt)
-#-----|  -> exit (unnamed function decl) (normal)
 
 #  395| deinit
 #-----|  -> self
