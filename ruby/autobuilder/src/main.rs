@@ -43,7 +43,7 @@ fn absolutelyfy(stripped: &str) -> String {
     let pwd = env::current_dir().unwrap();
     let path = pwd.join(stripped).into_os_string().into_string().unwrap();
     if env::consts::OS == "windows" {
-        path.replace("\\", "/")
+        "/".to_owned() + &path.replace("\\", "/")
     } else {
         path
     }
