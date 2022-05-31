@@ -194,7 +194,16 @@ private module Cached {
       result = guard.getCondition()
     )
     or
-    result = ast.(StmtCondition).getElement(index).getUnderlyingCondition()
+    exists(StmtCondition stmtCond | stmtCond = ast |
+      index = 0 and
+      result = stmtCond.getElement(index).getPattern()
+      or
+      index = 1 and
+      result = stmtCond.getElement(index).getInitializer()
+      or
+      index = 2 and
+      result = stmtCond.getElement(index).getBoolean()
+    )
     or
     exists(IfStmt ifStmt | ifStmt = ast |
       index = 0 and

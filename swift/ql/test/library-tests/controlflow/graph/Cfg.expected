@@ -66,17 +66,17 @@ cfg.swift:
 #-----|  -> guard ... else { ... }
 
 #   18| guard ... else { ... }
-#-----|  -> >=
+#-----|  -> StmtCondition
 
 #   18| x
 #-----|  -> 0
 
 #   18| ... call to >= ...
-#-----|  -> StmtCondition
-
-#   18| StmtCondition
 #-----| false -> error1
 #-----| true -> guard ... else { ... }
+
+#   18| StmtCondition
+#-----|  -> >=
 
 #   18| >=
 #-----|  -> Int.Type
@@ -110,17 +110,17 @@ cfg.swift:
 #-----|  -> MyError.Type
 
 #   21| guard ... else { ... }
-#-----|  -> <=
+#-----|  -> StmtCondition
 
 #   21| x
 #-----|  -> 0
 
 #   21| ... call to <= ...
-#-----|  -> StmtCondition
-
-#   21| StmtCondition
 #-----| true -> exit mightThrow (normal)
 #-----| false -> error3
+
+#   21| StmtCondition
+#-----|  -> <=
 
 #   21| <=
 #-----|  -> Int.Type
@@ -475,7 +475,7 @@ cfg.swift:
 #-----|  -> x1
 
 #   65| x1
-#-----|  -> createClosure1
+#-----| no-match -> createClosure1
 
 #   65| x1
 #-----|  -> x2
@@ -496,7 +496,7 @@ cfg.swift:
 #-----|  -> x2
 
 #   66| x2
-#-----|  -> createClosure2
+#-----| no-match -> createClosure2
 
 #   66| x2
 #-----|  -> x3
@@ -520,7 +520,7 @@ cfg.swift:
 #-----|  -> x3
 
 #   67| x3
-#-----|  -> createClosure3
+#-----| no-match -> createClosure3
 
 #   67| x3
 #-----|  -> exit callClosures (normal)
@@ -558,13 +558,13 @@ cfg.swift:
 #-----|  -> n
 
 #   71| n
-#-----|  -> ... as ...
+#-----| no-match -> ... as ...
 
 #   71| n
 #-----|  -> n
 
 #   71| ... as ...
-#-----|  -> deinit
+#-----| no-match -> deinit
 
 #   71| Int.Type
 #-----|  -> call to ...
@@ -605,7 +605,7 @@ cfg.swift:
 #-----|  -> nBang
 
 #   76| nBang
-#-----|  -> maybeParseInt
+#-----| no-match -> maybeParseInt
 
 #   76| nBang
 #-----|  -> n
@@ -626,7 +626,7 @@ cfg.swift:
 #-----|  -> n
 
 #   77| n
-#-----|  -> maybeParseInt
+#-----| no-match -> maybeParseInt
 
 #   77| n
 #-----|  -> +
@@ -683,7 +683,7 @@ cfg.swift:
 #-----|  -> temp
 
 #   82| temp
-#-----|  -> 10
+#-----| no-match -> 10
 
 #   82| temp
 
@@ -851,7 +851,7 @@ cfg.swift:
 #-----|  -> c
 
 #  110| c
-#-----|  -> deinit
+#-----| no-match -> deinit
 
 #  110| c
 #-----|  -> n1
@@ -875,7 +875,7 @@ cfg.swift:
 #-----|  -> n1
 
 #  111| n1
-#-----|  -> c
+#-----| no-match -> c
 
 #  111| n1
 #-----|  -> n2
@@ -890,8 +890,8 @@ cfg.swift:
 #-----|  -> n2
 
 #  112| n2
-#-----|  -> .self
-#-----|  -> TBD (DotSelfExpr)
+#-----| no-match -> .self
+#-----| no-match -> TBD (DotSelfExpr)
 
 #  112| n2
 #-----|  -> n3
@@ -909,7 +909,7 @@ cfg.swift:
 #-----|  -> n3
 
 #  113| n3
-#-----|  -> getMyInt
+#-----| no-match -> getMyInt
 
 #  113| n3
 #-----|  -> n4
@@ -930,7 +930,7 @@ cfg.swift:
 #-----|  -> n4
 
 #  114| n4
-#-----|  -> getMyInt
+#-----| no-match -> getMyInt
 
 #  114| n4
 #-----|  -> n5
@@ -955,7 +955,7 @@ cfg.swift:
 #-----|  -> n5
 
 #  116| n5
-#-----|  -> param
+#-----| no-match -> param
 
 #  116| n5
 #-----|  -> n6
@@ -970,8 +970,8 @@ cfg.swift:
 #-----|  -> n6
 
 #  117| n6
-#-----|  -> .self
-#-----|  -> TBD (DotSelfExpr)
+#-----| no-match -> .self
+#-----| no-match -> TBD (DotSelfExpr)
 
 #  117| n6
 #-----|  -> n7
@@ -989,7 +989,7 @@ cfg.swift:
 #-----|  -> n7
 
 #  118| n7
-#-----|  -> getMyInt
+#-----| no-match -> getMyInt
 
 #  118| n7
 #-----|  -> n8
@@ -1010,7 +1010,7 @@ cfg.swift:
 #-----|  -> n8
 
 #  119| n8
-#-----|  -> getMyInt
+#-----| no-match -> getMyInt
 
 #  119| n8
 #-----|  -> n9
@@ -1035,7 +1035,7 @@ cfg.swift:
 #-----|  -> n9
 
 #  121| n9
-#-----|  -> inoutParam
+#-----| no-match -> inoutParam
 
 #  121| n9
 #-----|  -> n10
@@ -1053,8 +1053,8 @@ cfg.swift:
 #-----|  -> n10
 
 #  122| n10
-#-----|  -> .self
-#-----|  -> TBD (DotSelfExpr)
+#-----| no-match -> .self
+#-----| no-match -> TBD (DotSelfExpr)
 
 #  122| n10
 #-----|  -> n11
@@ -1075,7 +1075,7 @@ cfg.swift:
 #-----|  -> n11
 
 #  123| n11
-#-----|  -> getMyInt
+#-----| no-match -> getMyInt
 
 #  123| n11
 #-----|  -> n12
@@ -1099,7 +1099,7 @@ cfg.swift:
 #-----|  -> n12
 
 #  124| n12
-#-----|  -> getMyInt
+#-----| no-match -> getMyInt
 
 #  124| n12
 #-----|  -> n13
@@ -1127,7 +1127,7 @@ cfg.swift:
 #-----|  -> n13
 
 #  126| n13
-#-----|  -> opt
+#-----| no-match -> opt
 
 #  126| n13
 #-----|  -> n14
@@ -1145,8 +1145,8 @@ cfg.swift:
 #-----|  -> n14
 
 #  127| n14
-#-----|  -> .self
-#-----|  -> TBD (DotSelfExpr)
+#-----| no-match -> .self
+#-----| no-match -> TBD (DotSelfExpr)
 
 #  127| n14
 #-----|  -> n15
@@ -1164,7 +1164,7 @@ cfg.swift:
 #-----|  -> n15
 
 #  128| n15
-#-----|  -> getMyInt
+#-----| no-match -> getMyInt
 
 #  128| n15
 #-----|  -> n16
@@ -1188,7 +1188,7 @@ cfg.swift:
 #-----|  -> n16
 
 #  129| n16
-#-----|  -> getMyInt
+#-----| no-match -> getMyInt
 
 #  129| n16
 #-----|  -> n17
@@ -1213,7 +1213,7 @@ cfg.swift:
 #-----|  -> n17
 
 #  131| n17
-#-----|  -> opt
+#-----| no-match -> opt
 
 #  131| n17
 #-----|  -> n18
@@ -1237,8 +1237,8 @@ cfg.swift:
 #-----|  -> n18
 
 #  132| n18
-#-----|  -> .self
-#-----|  -> TBD (DotSelfExpr)
+#-----| no-match -> .self
+#-----| no-match -> TBD (DotSelfExpr)
 
 #  132| n18
 #-----|  -> n19
@@ -1262,7 +1262,7 @@ cfg.swift:
 #-----|  -> n19
 
 #  133| n19
-#-----|  -> getMyInt
+#-----| no-match -> getMyInt
 
 #  133| n19
 #-----|  -> n20
@@ -1292,7 +1292,7 @@ cfg.swift:
 #-----|  -> n20
 
 #  134| n20
-#-----|  -> getMyInt
+#-----| no-match -> getMyInt
 
 #  134| n20
 #-----|  -> exit testMemberRef (normal)
@@ -1322,6 +1322,11 @@ cfg.swift:
 #  137| enter patterns
 #-----|  -> patterns
 
+#  137| exit patterns
+
+#  137| exit patterns (normal)
+#-----|  -> exit patterns
+
 #  137| patterns
 #-----|  -> x
 
@@ -1333,7 +1338,7 @@ cfg.swift:
 #-----| empty -> switch x { ... }
 
 #  138| _
-#-----|  -> { ... }
+#-----| no-match -> { ... }
 
 #  138| 0
 #-----|  -> 10
@@ -1386,6 +1391,7 @@ cfg.swift:
 #-----|  -> 1
 
 #  142| return ...
+#-----| return -> exit patterns (normal)
 
 #  142| true
 #-----|  -> return ...
@@ -1404,6 +1410,7 @@ cfg.swift:
 #-----|  -> x
 
 #  145| return ...
+#-----| return -> exit patterns (normal)
 
 #  145| true
 #-----|  -> return ...
@@ -1418,6 +1425,7 @@ cfg.swift:
 #-----|  -> _
 
 #  147| return ...
+#-----| return -> exit patterns (normal)
 
 #  147| false
 #-----|  -> return ...
@@ -1575,17 +1583,17 @@ cfg.swift:
 #-----|  -> if ... then { ... } else { ... }
 
 #  182| if ... then { ... } else { ... }
-#-----|  -> >
+#-----|  -> StmtCondition
 
 #  182| x
 #-----|  -> 2
 
 #  182| ... call to > ...
-#-----|  -> StmtCondition
-
-#  182| StmtCondition
 #-----| true -> print
 #-----| false -> if ... then { ... } else { ... }
+
+#  182| StmtCondition
+#-----|  -> >
 
 #  182| >
 #-----|  -> Int.Type
@@ -1628,7 +1636,7 @@ cfg.swift:
 #-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  185| if ... then { ... } else { ... }
-#-----|  -> <=
+#-----|  -> StmtCondition
 
 #  185| x
 #-----|  -> 2
@@ -1639,19 +1647,23 @@ cfg.swift:
 
 #  185| ... call to && ...
 #-----| exception -> exit m1 (normal)
-#-----| false -> ... call to && ...
+#-----| false -> [false] ... call to && ...
 #-----| true -> { ... }
 
 #  185| [false] ... call to && ...
 #-----| exception -> exit m1 (normal)
-#-----| false -> ... call to && ...
+#-----| false -> [false] ... call to && ...
 
 #  185| ... call to && ...
 #-----| exception -> exit m1 (normal)
-#-----|  -> StmtCondition
+#-----| true -> print
+#-----| false -> print
 
 #  185| StmtCondition
-#-----| true -> print
+#-----|  -> <=
+
+#  185| [false] ... call to && ...
+#-----| exception -> exit m1 (normal)
 #-----| false -> print
 
 #  185| <=
@@ -1791,14 +1803,14 @@ cfg.swift:
 #-----|  -> if ... then { ... }
 
 #  194| if ... then { ... }
-#-----|  -> b
+#-----|  -> StmtCondition
 
 #  194| StmtCondition
-#-----| true -> 0
-#-----| false -> 1
+#-----|  -> b
 
 #  194| b
-#-----|  -> StmtCondition
+#-----| true -> 0
+#-----| false -> 1
 
 #  195| return ...
 #-----| return -> exit m2 (normal)
@@ -1827,7 +1839,7 @@ cfg.swift:
 #-----|  -> if ... then { ... }
 
 #  201| if ... then { ... }
-#-----|  -> <
+#-----|  -> StmtCondition
 
 #  201| (Int) ...
 #-----|  -> 0
@@ -1836,11 +1848,11 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  201| ... call to < ...
-#-----|  -> StmtCondition
-
-#  201| StmtCondition
 #-----| true -> x
 #-----| false -> x
+
+#  201| StmtCondition
+#-----|  -> <
 
 #  201| <
 #-----|  -> Int.Type
@@ -1879,7 +1891,7 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  203| if ... then { ... }
-#-----|  -> >
+#-----|  -> StmtCondition
 
 #  203| (Int) ...
 #-----|  -> 10
@@ -1888,11 +1900,11 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  203| ... call to > ...
-#-----|  -> StmtCondition
-
-#  203| StmtCondition
 #-----| true -> x
 #-----| false -> x
+
+#  203| StmtCondition
+#-----|  -> >
 
 #  203| >
 #-----|  -> Int.Type
@@ -2013,30 +2025,32 @@ cfg.swift:
 #-----|  -> if ... then { ... } else { ... }
 
 #  215| if ... then { ... } else { ... }
-#-----|  -> b
+#-----|  -> StmtCondition
 
 #  215| b
 #-----| true -> true
 #-----| false -> false
 
-#  215| ... ? ... : ...
-#-----|  -> StmtCondition
-
 #  215| StmtCondition
-#-----| true -> b
+#-----|  -> b
+
+#  215| [false] ... ? ... : ...
 #-----| false -> !b
 
-#  215| (...)
-#-----|  -> ... ? ... : ...
+#  215| [true] ... ? ... : ...
+#-----| true -> b
+
+#  215| [true] (...)
+#-----| true -> [true] ... ? ... : ...
 
 #  215| true
-#-----|  -> (...)
+#-----| true -> [true] (...)
 
-#  215| (Bool) ...
-#-----|  -> ... ? ... : ...
+#  215| [false] (Bool) ...
+#-----| false -> [false] ... ? ... : ...
 
 #  215| false
-#-----|  -> (Bool) ...
+#-----| false -> [false] (Bool) ...
 
 #  216| return ...
 #-----| return -> exit conversionsInSplitEntry (normal)
@@ -2062,45 +2076,16 @@ cfg.swift:
 #-----|  -> exit constant_condition
 
 #  224| if ... then { ... }
-#-----|  -> true
-
-#  224| StmtCondition
-#-----| false -> exit constant_condition (normal)
-#-----| true -> print
-
-#  224| call to ...
 #-----|  -> StmtCondition
 
+#  224| StmtCondition
+#-----|  -> true
+
+#  224| [false] call to ...
+#-----| false -> exit constant_condition (normal)
+
 #  224| true
-#-----|  -> call to ...
-
-#  225| print
-#-----|  -> Impossible
-
-#  225| call to print
-#-----|  -> exit constant_condition (normal)
-
-#  225| default separator
-#-----|  -> default terminator
-
-#  225| default terminator
-#-----|  -> call to print
-
-#  225| (Any) ...
-#-----|  -> [...]
-
-#  225| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
-#  225| Impossible
-#-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
-
-#  225| [...]
-#-----|  -> default separator
-
-#  225| [...]
-#-----|  -> [...]
+#-----| true -> [false] call to ...
 
 #  229| empty_else
 #-----|  -> b
@@ -2117,14 +2102,14 @@ cfg.swift:
 #-----|  -> if ... then { ... } else { ... }
 
 #  230| if ... then { ... } else { ... }
-#-----|  -> b
+#-----|  -> StmtCondition
 
 #  230| StmtCondition
-#-----| true -> print
-#-----| false -> { ... }
+#-----|  -> b
 
 #  230| b
-#-----|  -> StmtCondition
+#-----| true -> print
+#-----| false -> { ... }
 
 #  231| print
 #-----|  -> true
@@ -2203,22 +2188,29 @@ cfg.swift:
 #-----|  -> if ... then { ... }
 
 #  238| if ... then { ... }
-#-----|  -> b1
-
-#  238| (...)
 #-----|  -> StmtCondition
 
 #  238| StmtCondition
+#-----|  -> b1
+
+#  238| [false] (...)
 #-----| false -> exit disjunct (normal)
+
+#  238| [true] (...)
 #-----| true -> print
 
 #  238| b1
-#-----| true -> ... call to || ...
+#-----| true -> [true] ... call to || ...
 #-----| false -> { ... }
 
 #  238| ... call to || ...
 #-----| exception -> exit disjunct (normal)
-#-----|  -> (...)
+#-----| false -> [false] (...)
+#-----| true -> [true] (...)
+
+#  238| [true] ... call to || ...
+#-----| exception -> exit disjunct (normal)
+#-----| true -> [true] (...)
 
 #  238| b2
 #-----|  -> return ...
@@ -2278,7 +2270,7 @@ cfg.swift:
 #-----|  -> c
 
 #  244| c
-#-----|  -> +
+#-----| no-match -> +
 
 #  244| c
 #-----|  -> d
@@ -2305,7 +2297,7 @@ cfg.swift:
 #-----|  -> d
 
 #  245| d
-#-----|  -> -
+#-----| no-match -> -
 
 #  245| d
 #-----|  -> e
@@ -2332,7 +2324,7 @@ cfg.swift:
 #-----|  -> e
 
 #  246| e
-#-----|  -> *
+#-----| no-match -> *
 
 #  246| e
 #-----|  -> f
@@ -2359,7 +2351,7 @@ cfg.swift:
 #-----|  -> f
 
 #  247| f
-#-----|  -> /
+#-----| no-match -> /
 
 #  247| f
 #-----|  -> g
@@ -2386,7 +2378,7 @@ cfg.swift:
 #-----|  -> g
 
 #  248| g
-#-----|  -> %
+#-----| no-match -> %
 
 #  248| g
 #-----|  -> h
@@ -2413,7 +2405,7 @@ cfg.swift:
 #-----|  -> h
 
 #  249| h
-#-----|  -> &
+#-----| no-match -> &
 
 #  249| h
 #-----|  -> i
@@ -2440,7 +2432,7 @@ cfg.swift:
 #-----|  -> i
 
 #  250| i
-#-----|  -> |
+#-----| no-match -> |
 
 #  250| i
 #-----|  -> j
@@ -2467,7 +2459,7 @@ cfg.swift:
 #-----|  -> j
 
 #  251| j
-#-----|  -> ^
+#-----| no-match -> ^
 
 #  251| j
 #-----|  -> k
@@ -2494,7 +2486,7 @@ cfg.swift:
 #-----|  -> k
 
 #  252| k
-#-----|  -> <<
+#-----| no-match -> <<
 
 #  252| k
 #-----|  -> l
@@ -2521,7 +2513,7 @@ cfg.swift:
 #-----|  -> l
 
 #  253| l
-#-----|  -> >>
+#-----| no-match -> >>
 
 #  253| l
 #-----|  -> o
@@ -2548,7 +2540,7 @@ cfg.swift:
 #-----|  -> o
 
 #  254| o
-#-----|  -> ==
+#-----| no-match -> ==
 
 #  254| o
 #-----|  -> p
@@ -2575,7 +2567,7 @@ cfg.swift:
 #-----|  -> p
 
 #  255| p
-#-----|  -> !=
+#-----| no-match -> !=
 
 #  255| p
 #-----|  -> q
@@ -2602,7 +2594,7 @@ cfg.swift:
 #-----|  -> q
 
 #  256| q
-#-----|  -> <
+#-----| no-match -> <
 
 #  256| q
 #-----|  -> r
@@ -2629,7 +2621,7 @@ cfg.swift:
 #-----|  -> r
 
 #  257| r
-#-----|  -> <=
+#-----| no-match -> <=
 
 #  257| r
 #-----|  -> s
@@ -2656,7 +2648,7 @@ cfg.swift:
 #-----|  -> s
 
 #  258| s
-#-----|  -> >
+#-----| no-match -> >
 
 #  258| s
 #-----|  -> t
@@ -2683,7 +2675,7 @@ cfg.swift:
 #-----|  -> t
 
 #  259| t
-#-----|  -> >=
+#-----| no-match -> >=
 
 #  259| t
 #-----|  -> exit binaryExprs (normal)
@@ -2744,7 +2736,7 @@ cfg.swift:
 #-----|  -> a
 
 #  267| a
-#-----|  -> 0
+#-----| no-match -> 0
 
 #  267| a
 #-----|  -> a
@@ -3107,7 +3099,7 @@ cfg.swift:
 #-----|  -> tupleWithA
 
 #  280| tupleWithA
-#-----|  -> a
+#-----| no-match -> a
 
 #  280| tupleWithA
 #-----|  -> b
@@ -3194,7 +3186,7 @@ cfg.swift:
 #-----|  -> b
 
 #  282| b
-#-----|  -> 0
+#-----| no-match -> 0
 
 #  282| b
 #-----|  -> b
@@ -3725,19 +3717,35 @@ cfg.swift:
 #-----|  -> a1
 
 #  295| a1
-#-----|  -> tupleWithA
+#-----| match -> a2
+#-----| no-match -> tupleWithA
 
 #  295| a1
 #-----|  -> a2
 
 #  295| a2
+#-----| match -> a3
+#-----| no-match -> tupleWithA
+
+#  295| a2
 #-----|  -> a3
+
+#  295| a3
+#-----| match -> a4
+#-----| no-match -> tupleWithA
 
 #  295| a3
 #-----|  -> a4
 
 #  295| a4
+#-----| match -> a5
+#-----| no-match -> tupleWithA
+
+#  295| a4
 #-----|  -> a5
+
+#  295| a5
+#-----| no-match -> tupleWithA
 
 #  295| a5
 #-----|  -> +
@@ -3919,7 +3927,7 @@ cfg.swift:
 #-----|  -> while ... { ... }
 
 #  300| while ... { ... }
-#-----|  -> >=
+#-----|  -> StmtCondition
 
 #  300| (Int) ...
 #-----|  -> 0
@@ -3928,11 +3936,11 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  300| ... call to >= ...
-#-----|  -> StmtCondition
-
-#  300| StmtCondition
 #-----| false -> exit loop1 (normal)
 #-----| true -> print
+
+#  300| StmtCondition
+#-----|  -> >=
 
 #  300| >=
 #-----|  -> Int.Type
@@ -3984,7 +3992,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  302| ... call to -= ...
-#-----|  -> >=
+#-----|  -> StmtCondition
 
 #  302| -=
 #-----|  -> Int.Type
@@ -4013,7 +4021,7 @@ cfg.swift:
 #-----|  -> while ... { ... }
 
 #  307| while ... { ... }
-#-----|  -> >=
+#-----|  -> StmtCondition
 
 #  307| (Int) ...
 #-----|  -> 0
@@ -4022,11 +4030,11 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  307| ... call to >= ...
-#-----|  -> StmtCondition
-
-#  307| StmtCondition
 #-----| true -> print
 #-----| false -> print
+
+#  307| StmtCondition
+#-----|  -> >=
 
 #  307| >=
 #-----|  -> Int.Type
@@ -4093,7 +4101,7 @@ cfg.swift:
 #-----|  -> ... call to -= ...
 
 #  310| if ... then { ... } else { ... }
-#-----|  -> >
+#-----|  -> StmtCondition
 
 #  310| (Int) ...
 #-----|  -> 100
@@ -4102,11 +4110,11 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  310| ... call to > ...
-#-----|  -> StmtCondition
-
-#  310| StmtCondition
 #-----| true -> break
 #-----| false -> if ... then { ... }
+
+#  310| StmtCondition
+#-----|  -> >
 
 #  310| >
 #-----|  -> Int.Type
@@ -4124,7 +4132,7 @@ cfg.swift:
 #-----|  -> print
 
 #  313| if ... then { ... }
-#-----|  -> >
+#-----|  -> StmtCondition
 
 #  313| (Int) ...
 #-----|  -> 50
@@ -4133,11 +4141,11 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  313| ... call to > ...
-#-----|  -> StmtCondition
-
-#  313| StmtCondition
 #-----| true -> continue
 #-----| false -> print
+
+#  313| StmtCondition
+#-----|  -> >
 
 #  313| >
 #-----|  -> Int.Type
@@ -4152,13 +4160,13 @@ cfg.swift:
 #-----|  -> ... call to > ...
 
 #  314| continue
-#-----| continue -> >=
+#-----| continue -> StmtCondition
 
 #  316| print
 #-----|  -> Iter
 
 #  316| call to print
-#-----|  -> >=
+#-----|  -> StmtCondition
 
 #  316| default separator
 #-----|  -> default terminator
@@ -4225,7 +4233,7 @@ cfg.swift:
 #-----|  -> while ... { ... }
 
 #  322| while ... { ... }
-#-----|  -> >=
+#-----|  -> StmtCondition
 
 #  322| (Int) ...
 #-----|  -> 0
@@ -4234,11 +4242,11 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  322| ... call to >= ...
-#-----|  -> StmtCondition
-
-#  322| StmtCondition
 #-----| false -> exit labeledLoop (normal)
 #-----| true -> while ... { ... }
+
+#  322| StmtCondition
+#-----|  -> >=
 
 #  322| >=
 #-----|  -> Int.Type
@@ -4253,7 +4261,7 @@ cfg.swift:
 #-----|  -> ... call to >= ...
 
 #  323| while ... { ... }
-#-----|  -> >=
+#-----|  -> StmtCondition
 
 #  323| (Int) ...
 #-----|  -> 0
@@ -4262,11 +4270,11 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  323| ... call to >= ...
-#-----|  -> StmtCondition
-
-#  323| StmtCondition
 #-----| true -> print
 #-----| false -> print
+
+#  323| StmtCondition
+#-----|  -> >=
 
 #  323| >=
 #-----|  -> Int.Type
@@ -4333,7 +4341,7 @@ cfg.swift:
 #-----|  -> ... call to -= ...
 
 #  326| if ... then { ... } else { ... }
-#-----|  -> >
+#-----|  -> StmtCondition
 
 #  326| (Int) ...
 #-----|  -> 100
@@ -4342,11 +4350,11 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  326| ... call to > ...
-#-----|  -> StmtCondition
-
-#  326| StmtCondition
 #-----| true -> break outer
 #-----| false -> if ... then { ... }
+
+#  326| StmtCondition
+#-----|  -> >
 
 #  326| >
 #-----|  -> Int.Type
@@ -4364,7 +4372,7 @@ cfg.swift:
 #-----|  -> exit labeledLoop (normal)
 
 #  329| if ... then { ... }
-#-----|  -> >
+#-----|  -> StmtCondition
 
 #  329| (Int) ...
 #-----|  -> 50
@@ -4373,11 +4381,11 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  329| ... call to > ...
-#-----|  -> StmtCondition
-
-#  329| StmtCondition
 #-----| true -> continue inner
 #-----| false -> print
+
+#  329| StmtCondition
+#-----|  -> >
 
 #  329| >
 #-----|  -> Int.Type
@@ -4392,13 +4400,13 @@ cfg.swift:
 #-----|  -> ... call to > ...
 
 #  330| continue inner
-#-----| continue -> >=
+#-----| continue -> StmtCondition
 
 #  332| print
 #-----|  -> Iter
 
 #  332| call to print
-#-----|  -> >=
+#-----|  -> StmtCondition
 
 #  332| default separator
 #-----|  -> default terminator
@@ -4426,7 +4434,7 @@ cfg.swift:
 #-----|  -> Done
 
 #  334| call to print
-#-----|  -> >=
+#-----|  -> StmtCondition
 
 #  334| default separator
 #-----|  -> default terminator
@@ -4556,7 +4564,7 @@ cfg.swift:
 #-----|  -> x
 
 #  346| x
-#-----|  -> 0
+#-----| no-match -> 0
 
 #  346| x
 #-----|  -> while ... { ... }
@@ -4565,13 +4573,15 @@ cfg.swift:
 #-----|  -> var ... = ...
 
 #  347| while ... { ... }
-#-----|  -> <
-
-#  347| (...)
 #-----|  -> StmtCondition
 
 #  347| StmtCondition
+#-----|  -> <
+
+#  347| [false] (...)
 #-----| false -> exit loop_with_identity_expr (normal)
+
+#  347| [true] (...)
 #-----| true -> +=
 
 #  347| (Int) ...
@@ -4581,7 +4591,8 @@ cfg.swift:
 #-----|  -> (Int) ...
 
 #  347| ... call to < ...
-#-----|  -> (...)
+#-----| false -> [false] (...)
+#-----| true -> [true] (...)
 
 #  347| <
 #-----|  -> Int.Type
@@ -4602,7 +4613,7 @@ cfg.swift:
 #-----|  -> &...
 
 #  348| ... call to += ...
-#-----|  -> <
+#-----|  -> StmtCondition
 
 #  348| +=
 #-----|  -> Int.Type
@@ -4766,7 +4777,7 @@ cfg.swift:
 #-----|  -> { ... }
 
 #  368| z
-#-----|  -> +
+#-----| no-match -> +
 
 #  368| var ... = ...
 #-----|  -> t
@@ -4790,7 +4801,7 @@ cfg.swift:
 #-----|  -> ... call to + ...
 
 #  368| t
-#-----|  -> literal
+#-----| no-match -> literal
 
 #  368| var ... = ...
 #-----|  -> { ... }
