@@ -61,8 +61,8 @@ class PamStartToAuthenticateConfig extends TaintTracking::Configuration {
 }
 
 from
-  PamStartToAcctMgmtConfig acctMgmtConfig, PamStartToAuthenticateConfig authConfig, DataFlow::Node source,
-  DataFlow::Node sink
+  PamStartToAcctMgmtConfig acctMgmtConfig, PamStartToAuthenticateConfig authConfig,
+  DataFlow::Node source, DataFlow::Node sink
 where
   not isInTestFile(source.asExpr()) and
   (authConfig.hasFlow(source, sink) and not acctMgmtConfig.hasFlow(source, _))
