@@ -4,13 +4,13 @@ The Swift codeql package is an experimental and unsupported work in progress.
 
 ## Usage
 
-First ensure you have Bazel installed, e.g. with
+First ensure you have Bazel installed, for example with
 
 ```bash
 brew install bazelisk
 ```
 
-then run
+then from the `ql` directory run
 
 ```bash
 bazel run //swift:create-extractor-pack
