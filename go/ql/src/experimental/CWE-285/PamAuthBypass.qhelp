@@ -7,8 +7,7 @@
             to check the validity of a login can lead to authorization bypass vulnerabilities.
         </p>
         <p>
-            A
-            <code>pam.Authenticate</code>
+            A <code>pam.Authenticate</code> call
             only verifies the credentials of a user. It does not check if a user has an
       appropriate authorization to actually login. This means a user with an expired
       login or a password can still access the system.
