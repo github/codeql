@@ -52,7 +52,7 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
 
   void translateParamDecl(swift::ParamDecl* decl, codeql::ParamDecl* entry) {
     entry->id = dispatcher_.assignNewLabel(decl);
-    fillAbstractVarDecl(decl, entry);
+    fillVarDecl(decl, entry);
   }
 
   void translateTopLevelCodeDecl(swift::TopLevelCodeDecl* decl, codeql::TopLevelCodeDecl* entry) {
@@ -75,7 +75,7 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   void translateVarDecl(swift::VarDecl* decl, codeql::ConcreteVarDecl* entry) {
     entry->id = dispatcher_.assignNewLabel(decl);
     entry->introducer_int = static_cast<uint8_t>(decl->getIntroducer());
-    fillAbstractVarDecl(decl, entry);
+    fillVarDecl(decl, entry);
   }
 
   void translateStructDecl(swift::StructDecl* decl, codeql::StructDecl* entry) {
@@ -161,8 +161,8 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   void fillAbstractFunctionDecl(swift::AbstractFunctionDecl* decl,
                                 codeql::AbstractFunctionDecl* entry) {
     assert(decl->hasParameterList() && "Expect functions to have a parameter list");
-    entry->name =        !decl->hasName() || decl->getName().isSpecial() ? "(unnamed function decl)"
-                                                : decl->getNameStr().str();
+    entry->name = !decl->hasName() || decl->getName().isSpecial() ? "(unnamed function decl)"
+                                                                  : decl->getNameStr().str();
     entry->body = dispatcher_.fetchOptionalLabel(decl->getBody());
     entry->params = dispatcher_.fetchRepeatedLabels(*decl->getParameters());
     fillValueDecl(decl, entry);
@@ -188,7 +188,8 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
     entry->members = dispatcher_.fetchRepeatedLabels(decl->getAllMembers());
   }
 
-  void fillAbstractVarDecl(swift::VarDecl* decl, codeql::VarDecl* entry) {
+  void fillVarDecl(swift::VarDecl* decl, codeql::VarDecl* entry) {
+    entry->name = decl->getNameStr().str();
     entry->type = dispatcher_.fetchLabel(decl->getType());
     entry->parent_pattern = dispatcher_.fetchOptionalLabel(decl->getParentPattern());
     entry->parent_initializer = dispatcher_.fetchOptionalLabel(decl->getParentInitializer());
