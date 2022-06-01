@@ -92,6 +92,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.apache.IO
   private import semmle.code.java.frameworks.apache.Lang
   private import semmle.code.java.frameworks.Flexjson
+  private import semmle.code.java.frameworks.generated
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
