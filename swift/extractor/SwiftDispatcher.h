@@ -126,21 +126,24 @@ class SwiftDispatcher {
   }
 
   // return `std::optional(fetchLabel(arg))` if arg converts to true, otherwise std::nullopt
+  // universal reference `Arg&&` is used to catch both temporary and non-const references, not
+  // for perfect forwarding
   template <typename Arg>
-  auto fetchOptionalLabel(Arg&& arg)
-      -> std::optional<decltype(fetchLabel(std::forward<Arg>(arg)))> {
+  auto fetchOptionalLabel(Arg&& arg) -> std::optional<decltype(fetchLabel(arg))> {
     if (arg) {
-      return fetchLabel(std::forward<Arg>(arg));
+      return fetchLabel(arg);
     }
     return std::nullopt;
   }
 
   // map `fetchLabel` on the iterable `arg`, returning a vector of all labels
+  // universal reference `Arg&&` is used to catch both temporary and non-const references, not
+  // for perfect forwarding
   template <typename Iterable>
   auto fetchRepeatedLabels(Iterable&& arg) {
     std::vector<decltype(fetchLabel(*arg.begin()))> ret;
     ret.reserve(arg.size());
-    for (const auto& e : std::forward<Iterable>(arg)) {
+    for (auto&& e : arg) {
       ret.push_back(fetchLabel(e));
     }
     return ret;
