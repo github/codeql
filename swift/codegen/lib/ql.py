@@ -99,4 +99,3 @@ class GetParentImplementation:
     template: ClassVar = 'ql_parent'
 
     classes: List[Class] = field(default_factory=list)
-    imports: List[str] = field(default_factory=list)

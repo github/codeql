@@ -119,8 +119,7 @@ def generate(opts, renderer):
     all_imports = ql.ImportList(list(sorted(imports.values())))
     renderer.render(all_imports, include_file)
 
-    renderer.render(ql.GetParentImplementation(classes=classes, imports=[get_import(include_file, opts.swift_dir)]),
-                    out / 'GetImmediateParent.qll')
+    renderer.render(ql.GetParentImplementation(classes), out / 'GetImmediateParent.qll')
 
     renderer.cleanup(existing)
     if opts.ql_format:
