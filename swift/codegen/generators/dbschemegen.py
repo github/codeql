@@ -4,7 +4,6 @@ import pathlib
 import inflection
 
 from swift.codegen.lib import schema
-from swift.codegen.generators import generator
 from swift.codegen.lib.dbscheme import *
 
 log = logging.getLogger(__name__)
@@ -93,9 +92,3 @@ def generate(opts, renderer):
                       declarations=get_declarations(data))
 
     renderer.render(dbscheme, out)
-
-
-tags = ("schema", "dbscheme")
-
-if __name__ == "__main__":
-    generator.run()
