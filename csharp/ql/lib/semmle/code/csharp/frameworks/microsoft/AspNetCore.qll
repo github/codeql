@@ -62,6 +62,14 @@ class MicrosoftAspNetCoreMvcNonActionAttribute extends MicrosoftAspNetCoreMvcAtt
   MicrosoftAspNetCoreMvcNonActionAttribute() { this.getType().hasName("NonActionAttribute") }
 }
 
+class MicrosoftAspNetCoreMvcNonControllerAttribute extends MicrosoftAspNetCoreMvcAttribute {
+  MicrosoftAspNetCoreMvcNonControllerAttribute() { getType().hasName("NonControllerAttribute") }
+}
+
+class MicrosoftAspNetCoreMvcControllerAttribute extends MicrosoftAspNetCoreMvcAttribute {
+  MicrosoftAspNetCoreMvcControllerAttribute() { getType().hasName("ControllerAttribute") }
+}
+
 /** The `Microsoft.AspNetCore.Antiforgery` namespace. */
 class MicrosoftAspNetCoreAntiforgeryNamespace extends Namespace {
   MicrosoftAspNetCoreAntiforgeryNamespace() {
@@ -185,7 +193,12 @@ class MicrosoftAspNetCoreMvcControllerBaseClass extends Class {
 /** A subtype of `Microsoft.AspNetCore.Mvc.Controller` or `Microsoft.AspNetCore.Mvc.ControllerBase`. */
 class MicrosoftAspNetCoreMvcController extends Class {
   MicrosoftAspNetCoreMvcController() {
-    this.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
+    (
+      getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass or
+      getABaseType*().hasName("%Controller") or
+      getABaseType*().getAnAttribute() instanceof MicrosoftAspNetCoreMvcControllerAttribute
+    ) and
+    not getABaseType*().getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonControllerAttribute
   }
 
   /** Gets an action method for this controller. */
