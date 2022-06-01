@@ -83,7 +83,7 @@ class SwiftDispatcher {
     return label;
   }
 
-  template <typename E, typename = std::enable_if_t<!std::is_pointer_v<E>>>
+  template <typename E, std::enable_if_t<!std::is_pointer_v<E>>* = nullptr>
   TrapLabelOf<E> assignNewLabel(E& e) {
     return assignNewLabel(&e);
   }
