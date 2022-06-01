@@ -132,6 +132,10 @@ private class ElementWithChildAccessor extends Element {
     or
     exists(TapExpr x | interpolated_string_literal_expr_appending_exprs(this, x) and result = x)
     or
+    exists(TypeRepr x | is_pattern_cast_type_reprs(this, x) and result = x)
+    or
+    exists(Pattern x | is_pattern_sub_patterns(this, x) and result = x)
+    or
     exists(Expr x | key_path_application_exprs(this, x, _) and result = x)
     or
     exists(Expr x | key_path_application_exprs(this, _, x) and result = x)

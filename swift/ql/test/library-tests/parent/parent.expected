@@ -940,11 +940,14 @@
 | patterns.swift:41:5:41:18 | case ... | CaseStmt | patterns.swift:41:10:41:13 | ... is ... | CaseLabelItem |
 | patterns.swift:41:5:41:18 | case ... | CaseStmt | patterns.swift:41:18:41:18 | { ... } | BraceStmt |
 | patterns.swift:41:10:41:13 | ... is ... | CaseLabelItem | patterns.swift:41:10:41:13 | ... is ... | IsPattern |
+| patterns.swift:41:10:41:13 | ... is ... | IsPattern | patterns.swift:41:13:41:13 | TBD (SimpleIdentTypeRepr) | SimpleIdentTypeRepr |
 | patterns.swift:41:18:41:18 | { ... } | BraceStmt | patterns.swift:41:18:41:18 | is pattern | StringLiteralExpr |
 | patterns.swift:42:5:42:27 | case ... | CaseStmt | patterns.swift:42:10:42:19 | let ... | CaseLabelItem |
 | patterns.swift:42:5:42:27 | case ... | CaseStmt | patterns.swift:42:27:42:27 | { ... } | BraceStmt |
 | patterns.swift:42:10:42:19 | let ... | BindingPattern | patterns.swift:42:14:42:19 | ... is ... | IsPattern |
 | patterns.swift:42:10:42:19 | let ... | CaseLabelItem | patterns.swift:42:10:42:19 | let ... | BindingPattern |
+| patterns.swift:42:14:42:19 | ... is ... | IsPattern | patterns.swift:42:14:42:14 | x | NamedPattern |
+| patterns.swift:42:14:42:19 | ... is ... | IsPattern | patterns.swift:42:19:42:19 | TBD (SimpleIdentTypeRepr) | SimpleIdentTypeRepr |
 | patterns.swift:42:27:42:27 | { ... } | BraceStmt | patterns.swift:42:27:42:27 | as pattern | StringLiteralExpr |
 | patterns.swift:43:5:43:13 | case ... | CaseStmt | patterns.swift:43:10:43:10 | _ | CaseLabelItem |
 | patterns.swift:43:5:43:13 | case ... | CaseStmt | patterns.swift:43:13:43:13 | { ... } | BraceStmt |
@@ -1044,6 +1047,7 @@
 | statements.swift:27:5:29:3 | case ... | CaseStmt | statements.swift:27:11:27:11 | ... is ... | CaseLabelItem |
 | statements.swift:27:5:29:3 | case ... | CaseStmt | statements.swift:27:26:29:3 | { ... } | BraceStmt |
 | statements.swift:27:11:27:11 | ... is ... | CaseLabelItem | statements.swift:27:11:27:11 | ... is ... | IsPattern |
+| statements.swift:27:11:27:11 | ... is ... | IsPattern | statements.swift:27:11:27:19 | .failed | EnumElementPattern |
 | statements.swift:27:26:29:3 | { ... } | BraceStmt | statements.swift:28:5:28:27 | call to print | CallExpr |
 | statements.swift:28:5:28:27 | call to print | CallExpr | statements.swift:28:5:28:5 | print | DeclRefExpr |
 | statements.swift:28:11:28:11 | (Any) ... | ErasureExpr | statements.swift:28:11:28:11 | AnError.failed | StringLiteralExpr |

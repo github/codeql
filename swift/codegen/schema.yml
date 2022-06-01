@@ -559,8 +559,9 @@ ExprPattern:
 
 IsPattern:
   _extends: Pattern
-  cast_type_repr: TypeRepr?
-  sub_pattern: Pattern?
+  _children:
+    cast_type_repr: TypeRepr?
+    sub_pattern: Pattern?
 
 NamedPattern:
   _extends: Pattern
