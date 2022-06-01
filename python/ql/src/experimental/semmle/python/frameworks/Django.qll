@@ -190,7 +190,7 @@ private module ExperimentalPrivateDjango {
       }
     }
 
-    module email {
+    module Email {
       /** https://docs.djangoproject.com/en/3.2/topics/email/ */
       private API::Node djangoMail() {
         result = API::moduleImport("django").getMember("core").getMember("mail")

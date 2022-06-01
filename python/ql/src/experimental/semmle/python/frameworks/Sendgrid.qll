@@ -20,8 +20,6 @@ private module Sendgrid {
   /** Gets a reference to `sendgrid.helpers.mail.Mail` */
   private API::Node sendgridMailInstance() { result = sendgridMailHelper().getMember("Mail") }
 
-  /** Gets a call to `sendgrid.helpers.mail.Mail()`. */
-  private DataFlow::CallCfgNode sendgridMailCall() { result = sendgridMailInstance().getACall() }
 
   /** Gets a reference to a `SendGridAPIClient` instance. */
   private API::Node sendgridApiClient() {
@@ -137,7 +135,7 @@ private module Sendgrid {
       or
       exists(KeyValuePair footer, Dict generalDict, KeyValuePair enablePair, KeyValuePair htmlPair |
         footer.getKey().(StrConst).getText() = ["footer", "subscription_tracking"] and
-        footer.getValue().(Dict) = generalDict and
+        footer.getValue() = generalDict and
         // check footer is enabled
         enablePair.getKey().(StrConst).getText() = "enable" and
         exists(enablePair.getValue().(True)) and
