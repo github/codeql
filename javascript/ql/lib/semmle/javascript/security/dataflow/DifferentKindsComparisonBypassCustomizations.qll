@@ -33,7 +33,11 @@ module DifferentKindsComparisonBypass {
   class RequestInputComparisonSource extends Source {
     HTTP::RequestInputAccess input;
 
-    RequestInputComparisonSource() { input = this }
+    RequestInputComparisonSource() {
+      if exists(input.(DataFlow::SourceNode).getAPropertyRead())
+      then input.(DataFlow::SourceNode).getAPropertyRead() = this
+      else input = this
+    }
 
     override predicate isSuspiciousToCompareWith(Source other) {
       input.getKind() != other.(RequestInputComparisonSource).getInput().getKind()
