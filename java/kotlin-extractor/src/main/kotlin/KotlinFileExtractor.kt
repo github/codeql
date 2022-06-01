@@ -497,7 +497,9 @@ open class KotlinFileExtractor(
                 else
                     null
             } ?: vp.type
-            val substitutedType = typeSubstitution?.let { it(maybeErasedType, TypeContext.OTHER, pluginContext) } ?: maybeErasedType
+            val typeWithWildcards = addJavaLoweringWildcards(maybeErasedType, true)
+            val substitutedType = typeSubstitution?.let { it(typeWithWildcards, TypeContext.OTHER, pluginContext) } ?: typeWithWildcards
+
             val id = useValueParameter(vp, parent)
             if (extractTypeAccess) {
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
@@ -704,7 +706,7 @@ open class KotlinFileExtractor(
 
                 val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
 
-                val adjustedReturnType = getAdjustedReturnType(f)
+                val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false)
                 val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
 
                 val locId = locOverride ?: getLocation(f, classTypeArgsIncludingOuterClasses)
