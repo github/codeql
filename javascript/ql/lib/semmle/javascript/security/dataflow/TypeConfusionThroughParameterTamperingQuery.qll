@@ -40,9 +40,12 @@ private class TypeOfTestBarrier extends DataFlow::BarrierGuardNode, DataFlow::Va
   TypeOfTestBarrier() { TaintTracking::isTypeofGuard(astNode, _, _) }
 
   override predicate blocks(boolean outcome, Expr e) {
-    if TaintTracking::isTypeofGuard(astNode, e, ["string", "object"])
-    then outcome = [true, false] // separation between string/array removes type confusion in both branches
-    else outcome = astNode.getPolarity() // block flow to branch where value is neither string nor array
+    exists(string tag |
+      TaintTracking::isTypeofGuard(astNode, e, tag) and
+      if tag = ["string", "object"]
+      then outcome = [true, false] // separation between string/array removes type confusion in both branches
+      else outcome = astNode.getPolarity() // block flow to branch where value is neither string nor array
+    )
   }
 }
 
