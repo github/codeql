@@ -18,8 +18,8 @@ stub_path = lambda: paths.swift_dir / "ql/lib/stub/path"
 ql_output_path = lambda: paths.swift_dir / "ql/lib/other/path"
 import_file = lambda: stub_path().with_suffix(".qll")
 children_file = lambda: ql_output_path() / "GetImmediateParent.qll"
-stub_import = "stub.path"
-stub_import_prefix = f"{stub_import}."
+stub_import_prefix = "stub.path."
+root_import = stub_import_prefix + "Element"
 gen_import_prefix = "other.path."
 
 
@@ -69,7 +69,7 @@ def generate_classes(opts, renderer):
 def test_empty(opts, input, renderer):
     assert generate(opts, renderer) == {
         import_file(): ql.ImportList(),
-        children_file(): ql.GetParentImplementation(imports=[stub_import]),
+        children_file(): ql.GetParentImplementation(),
     }
 
 
@@ -127,7 +127,6 @@ def test_hierarchy_children(opts, input, renderer):
                  ql.Class(name="D", final=True, bases=["B", "C"],
                           imports=[stub_import_prefix + cls for cls in "BC"]),
                  ],
-        imports=[stub_import],
     )
 
 
