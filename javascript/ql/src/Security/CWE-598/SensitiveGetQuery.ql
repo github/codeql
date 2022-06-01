@@ -21,7 +21,11 @@ where
   setup.getAChild+() = handler and
   input.getRouteHandler() = handler.getFunction() and
   input.getKind() = "parameter" and
-  input.(DataFlow::SourceNode).flowsToExpr(sensitive) and
+  (
+    input.(DataFlow::SourceNode).getAPropertyRead*().flowsToExpr(sensitive)
+    or
+    input.(DataFlow::SourceNode).flowsToExpr(sensitive)
+  ) and
   not sensitive.getClassification() = SensitiveDataClassification::id()
 select input, "$@ for GET requests uses query parameter as sensitive data.", handler,
   "Route handler"

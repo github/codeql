@@ -22,7 +22,7 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/login2", (req, res) => {
-    const username = req.param('username'); // NOT OK - usernames are fine
+    const username = req.param('username'); // OK - usernames are fine
     const password = req.param('password'); // NOT OK - password read
     checkUser(username, password, (result) => {
         res.send(result);
