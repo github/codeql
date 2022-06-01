@@ -22,7 +22,6 @@ Kotlin:
   - java/kotlin-extractor/**/*
   - java/kotlin-explorer/**/*
   - java/ql/test/kotlin/**/*
-  - change-notes/**/*java.*
 
 Python:
   - python/**/*
