@@ -497,9 +497,9 @@ open class KotlinFileExtractor(
                 else
                     null
             } ?: vp.type
-            val typeWithWildcards = addJavaLoweringWildcards(maybeErasedType, true)
+            val javaType = ((vp.parent as? IrFunction)?.let { getJavaMethod(it) })?.valueParameters?.getOrNull(idx)?.type
+            val typeWithWildcards = addJavaLoweringWildcards(maybeErasedType, !hasWildcardSuppressionAnnotation(vp), javaType)
             val substitutedType = typeSubstitution?.let { it(typeWithWildcards, TypeContext.OTHER, pluginContext) } ?: typeWithWildcards
-
             val id = useValueParameter(vp, parent)
             if (extractTypeAccess) {
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
@@ -533,7 +533,9 @@ open class KotlinFileExtractor(
                     extensionReceiverParameter = null,
                     functionTypeParameters = listOf(),
                     classTypeArgsIncludingOuterClasses = listOf(),
-                    overridesCollectionsMethod = false
+                    overridesCollectionsMethod = false,
+                    javaSignature = null,
+                    addParameterWildcardsByDefault = false
                 )
                 val clinitId = tw.getLabelFor<DbMethod>(clinitLabel)
                 val returnType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
@@ -706,7 +708,7 @@ open class KotlinFileExtractor(
 
                 val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
 
-                val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false)
+                val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false, getJavaMethod(f)?.returnType)
                 val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
 
                 val locId = locOverride ?: getLocation(f, classTypeArgsIncludingOuterClasses)

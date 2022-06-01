@@ -7,6 +7,7 @@ import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.ir.isFinalClass
+import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
 import org.jetbrains.kotlin.backend.jvm.ir.getJvmNameFromAnnotation
 import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
@@ -21,6 +22,8 @@ import org.jetbrains.kotlin.ir.types.impl.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.BuiltinMethodsWithSpecialGenericSignature
 import org.jetbrains.kotlin.load.java.JvmAbi
+import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
+import org.jetbrains.kotlin.load.java.structure.*
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
@@ -852,23 +855,30 @@ open class KotlinUsesExtractor(
                 (f.name.asString() == "addAll" && overridesFunctionDefinedOn(f, "kotlin.collections", "MutableList"))
 
 
-    private fun wildcardAdditionAllowed(v: Variance, t: IrType, inParameterContext: Boolean) =
+    private val jvmWildcardAnnotation = FqName("kotlin.jvm.JvmWildcard")
+    private val jvmWildcardSuppressionAnnotaton = FqName("kotlin.jvm.JvmSuppressWildcards")
+
+    private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean) =
         when {
-            t.hasAnnotation(FqName("kotlin.jvm.JvmWildcard")) -> true
-            !inParameterContext -> false // By default, wildcards are only automatically added for method parameters.
-            t.hasAnnotation(FqName("kotlin.jvm.JvmSuppressWildcards")) -> false
+            t.hasAnnotation(jvmWildcardAnnotation) -> true
+            !addByDefault -> false
+            t.hasAnnotation(jvmWildcardSuppressionAnnotaton) -> false
             v == Variance.IN_VARIANCE -> !(t.isNullableAny() || t.isAny())
             v == Variance.OUT_VARIANCE -> ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
             else -> false
         }
 
-    private fun addJavaLoweringArgumentWildcards(p: IrTypeParameter, t: IrTypeArgument, inParameterContext: Boolean): IrTypeArgument =
+    private fun addJavaLoweringArgumentWildcards(p: IrTypeParameter, t: IrTypeArgument, addByDefault: Boolean, javaType: JavaType?): IrTypeArgument =
         (t as? IrTypeProjection)?.let {
-            val newBase = addJavaLoweringWildcards(it.type, inParameterContext)
+            val newBase = addJavaLoweringWildcards(it.type, addByDefault, javaType)
             val newVariance =
                 if (it.variance == Variance.INVARIANT &&
                     p.variance != Variance.INVARIANT &&
-                    wildcardAdditionAllowed(p.variance, it.type, inParameterContext))
+                    // The next line forbids inferring a wildcard type when we have a corresponding Java type with conflicting variance.
+                    // For example, Java might declare f(Comparable<CharSequence> cs), in which case we shouldn't add a `? super ...`
+                    // wildcard. Note if javaType is unknown (e.g. this is a Kotlin source element), we assume wildcards should be added.
+                    (javaType?.let { jt -> jt is JavaWildcardType && jt.isExtends == (p.variance == Variance.OUT_VARIANCE) } != false) &&
+                    wildcardAdditionAllowed(p.variance, it.type, addByDefault))
                     p.variance
                 else
                     it.variance
@@ -878,14 +888,22 @@ open class KotlinUsesExtractor(
                 null
         } ?: t
 
-    fun addJavaLoweringWildcards(t: IrType, inParameterContext: Boolean): IrType =
+    fun getJavaTypeArgument(jt: JavaType, idx: Int) =
+        when(jt) {
+            is JavaClassifierType -> jt.typeArguments.getOrNull(idx)
+            is JavaArrayType -> if (idx == 0) jt.componentType else null
+            else -> null
+        }
+
+    fun addJavaLoweringWildcards(t: IrType, addByDefault: Boolean, javaType: JavaType?): IrType =
         (t as? IrSimpleType)?.let {
             val typeParams = it.classOrNull?.owner?.typeParameters ?: return t
-            val newArgs = typeParams.zip(it.arguments).map { pair ->
+            val newArgs = typeParams.zip(it.arguments).mapIndexed { idx, pair ->
                 addJavaLoweringArgumentWildcards(
                     pair.first,
                     pair.second,
-                    inParameterContext
+                    addByDefault,
+                    javaType?.let { jt -> getJavaTypeArgument(jt, idx) }
                 )
             }
             return if (newArgs.zip(it.arguments).all { pair -> pair.first === pair.second })
@@ -927,6 +945,14 @@ open class KotlinUsesExtractor(
         return otherKeySet.returnType.codeQlWithHasQuestionMark(false)
     }
 
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
+    fun getJavaMethod(f: IrFunction) = (f.descriptor.source as? JavaSourceElement)?.javaElement as? JavaMethod
+
+    fun hasWildcardSuppressionAnnotation(d: IrDeclaration) =
+        d.hasAnnotation(jvmWildcardSuppressionAnnotaton) ||
+        // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
+        d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotaton) == true }
+
     /*
      * There are some pairs of classes (e.g. `kotlin.Throwable` and
      * `java.lang.Throwable`) which are really just 2 different names
@@ -947,7 +973,9 @@ open class KotlinUsesExtractor(
             f.extensionReceiverParameter,
             getFunctionTypeParameters(f),
             classTypeArgsIncludingOuterClasses,
-            overridesCollectionsMethodWithAlteredParameterTypes(f)
+            overridesCollectionsMethodWithAlteredParameterTypes(f),
+            getJavaMethod(f),
+            !hasWildcardSuppressionAnnotation(f)
         )
 
     /*
@@ -977,6 +1005,11 @@ open class KotlinUsesExtractor(
         // If true, this method implements a Java Collections interface (Collection, Map or List) and may need
         // parameter erasure to match the way this class will appear to an external consumer of the .class file.
         overridesCollectionsMethod: Boolean,
+        // The Java signature of this callable, if known.
+        javaSignature: JavaMethod?,
+        // If true, Java wildcards implied by Kotlin type parameter variance should be added by default to this function's value parameters' types.
+        // (Return-type wildcard addition is always off by default)
+        addParameterWildcardsByDefault: Boolean,
         // The prefix used in the label. "callable", unless a property label is created, then it's "property".
         prefix: String = "callable"
     ): String {
@@ -1001,7 +1034,7 @@ open class KotlinUsesExtractor(
             // If this has happened, erase the type again to get the correct Java signature.
             val maybeAmendedForCollections = if (overridesCollectionsMethod) eraseCollectionsMethodParameterType(it.value.type, name, it.index) else it.value.type
             // Add any wildcard types that the Kotlin compiler would add in the Java lowering of this function:
-            val withAddedWildcards = addJavaLoweringWildcards(maybeAmendedForCollections, true)
+            val withAddedWildcards = addJavaLoweringWildcards(maybeAmendedForCollections, addParameterWildcardsByDefault, javaSignature?.let { sig -> sig.valueParameters[it.index].type })
             // Now substitute any class type parameters in:
             val maybeSubbed = withAddedWildcards.substituteTypeAndArguments(substitutionMap, TypeContext.OTHER, pluginContext)
             // Finally, mimic the Java extractor's behaviour by naming functions with type parameters for their erased types;
@@ -1473,7 +1506,7 @@ open class KotlinUsesExtractor(
             val returnType = getter?.returnType ?: setter?.valueParameters?.singleOrNull()?.type ?: pluginContext.irBuiltIns.unitType
             val typeParams = getFunctionTypeParameters(func)
 
-            getFunctionLabel(p.parent, parentId, p.name.asString(), listOf(), returnType, ext, typeParams, classTypeArgsIncludingOuterClasses, overridesCollectionsMethod = false, prefix = "property")
+            getFunctionLabel(p.parent, parentId, p.name.asString(), listOf(), returnType, ext, typeParams, classTypeArgsIncludingOuterClasses, overridesCollectionsMethod = false, javaSignature = null, addParameterWildcardsByDefault = false, prefix = "property")
         }
     }
 
