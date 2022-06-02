@@ -19,6 +19,9 @@ import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
+import org.jetbrains.kotlin.load.java.structure.JavaClass
+import org.jetbrains.kotlin.load.java.structure.JavaTypeParameter
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -172,7 +175,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractTypeParameter(tp: IrTypeParameter, apparentIndex: Int): Label<out DbTypevariable>? {
+    fun extractTypeParameter(tp: IrTypeParameter, apparentIndex: Int, javaTypeParameter: JavaTypeParameter?): Label<out DbTypevariable>? {
         with("type parameter", tp) {
             val parentId = getTypeParameterParentLabel(tp) ?: return null
             val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
@@ -184,10 +187,21 @@ open class KotlinFileExtractor(
             val locId = tw.getLocation(tp)
             tw.writeHasLocation(id, locId)
 
+            // Annoyingly, we have no obvious way to pair up the bounds of an IrTypeParameter and a JavaTypeParameter
+            // because JavaTypeParameter provides a Collection not an ordered list, so we can only do our best here:
+            fun tryGetJavaBound(idx: Int) =
+                when(tp.superTypes.size) {
+                    1 -> javaTypeParameter?.upperBounds?.singleOrNull()
+                    else -> (javaTypeParameter?.upperBounds as? List)?.getOrNull(idx)
+                }
+
             tp.superTypes.forEachIndexed { boundIdx, bound ->
                 if(!(bound.isAny() || bound.isNullableAny())) {
                     tw.getLabelFor<DbTypebound>("@\"bound;$boundIdx;{$id}\"") {
-                        tw.writeTypeBounds(it, useType(bound).javaResult.id.cast<DbReftype>(), boundIdx, id)
+                        // Note we don't look for @JvmSuppressWildcards here because it doesn't seem to have any impact
+                        // on kotlinc adding wildcards to type parameter bounds.
+                        val boundWithWildcards = addJavaLoweringWildcards(bound, true, tryGetJavaBound(tp.index))
+                        tw.writeTypeBounds(it, useType(boundWithWildcards).javaResult.id.cast<DbReftype>(), boundIdx, id)
                     }
                 }
             }
@@ -383,7 +397,9 @@ open class KotlinFileExtractor(
 
                 extractEnclosingClass(c, id, locId, listOf())
 
-                c.typeParameters.mapIndexed { idx, param -> extractTypeParameter(param, idx) }
+                val javaClass = (c.source as? JavaSourceElement)?.javaElement as? JavaClass
+
+                c.typeParameters.mapIndexed { idx, param -> extractTypeParameter(param, idx, javaClass?.typeParameters?.getOrNull(idx)) }
                 if (extractDeclarations) {
                     c.declarations.map { extractDeclaration(it, extractPrivateMembers = extractPrivateMembers, extractFunctionBodies = extractFunctionBodies) }
                     if (extractStaticInitializer)
@@ -675,7 +691,8 @@ open class KotlinFileExtractor(
         with("function", f) {
             DeclarationStackAdjuster(f).use {
 
-                getFunctionTypeParameters(f).mapIndexed { idx, tp -> extractTypeParameter(tp, idx) }
+                val javaMethod = getJavaMethod(f)
+                getFunctionTypeParameters(f).mapIndexed { idx, tp -> extractTypeParameter(tp, idx, javaMethod?.typeParameters?.getOrNull(idx)) }
 
                 val id =
                     idOverride
@@ -709,7 +726,7 @@ open class KotlinFileExtractor(
 
                 val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
 
-                val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false, getJavaMethod(f)?.returnType)
+                val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false, javaMethod?.returnType)
                 val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
 
                 val locId = locOverride ?: getLocation(f, classTypeArgsIncludingOuterClasses)
