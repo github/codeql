@@ -62,12 +62,14 @@ class MicrosoftAspNetCoreMvcNonActionAttribute extends MicrosoftAspNetCoreMvcAtt
   MicrosoftAspNetCoreMvcNonActionAttribute() { this.getType().hasName("NonActionAttribute") }
 }
 
+/** A `Microsoft.AspNetCore.Mvc.NonController` attribute. */
 class MicrosoftAspNetCoreMvcNonControllerAttribute extends MicrosoftAspNetCoreMvcAttribute {
   MicrosoftAspNetCoreMvcNonControllerAttribute() {
     this.getType().hasName("NonControllerAttribute")
   }
 }
 
+/** A `Microsoft.AspNetCore.Mvc.Controller` attribute. */
 class MicrosoftAspNetCoreMvcControllerAttribute extends MicrosoftAspNetCoreMvcAttribute {
   MicrosoftAspNetCoreMvcControllerAttribute() { this.getType().hasName("ControllerAttribute") }
 }
