@@ -196,7 +196,6 @@ module HardcodedKeys {
    * contributing a dangerous hardcoded key.
    */
   private class ReturnedAlongsideErrorSanitizerGuard extends Sanitizer {
-
     ReturnedAlongsideErrorSanitizerGuard() {
       exists(ControlFlow::ConditionGuardNode guard, SsaWithFields errorVar, ReturnStmt r |
         guard.ensuresNeq(errorVar.getAUse(), Builtin::nil().getARead()) and
@@ -205,7 +204,6 @@ module HardcodedKeys {
         this.asExpr() = r.getExpr(0)
       )
     }
-
   }
 
   /** Mark any formatting string call as a sanitizer */
