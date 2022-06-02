@@ -188,6 +188,26 @@ module HardcodedKeys {
     }
   }
 
+  /**
+   * Marks anything returned alongside an error-value that is known
+   * to be non-nil by virtue of a guarding check as harmless.
+   *
+   * For example, `if err != nil { return "", err }` is unlikely to be
+   * contributing a dangerous hardcoded key.
+   */
+  private class ReturnedAlongsideErrorSanitizerGuard extends Sanitizer {
+
+    ReturnedAlongsideErrorSanitizerGuard() {
+      exists(ControlFlow::ConditionGuardNode guard, SsaWithFields errorVar, ReturnStmt r |
+        guard.ensuresNeq(errorVar.getAUse(), Builtin::nil().getARead()) and
+        guard.dominates(this.getBasicBlock()) and
+        r.getExpr(1) = errorVar.getAUse().asExpr() and
+        this.asExpr() = r.getExpr(0)
+      )
+    }
+
+  }
+
   /** Mark any formatting string call as a sanitizer */
   private class FormattingSanitizer extends Sanitizer {
     FormattingSanitizer() { exists(Formatting::StringFormatCall s | s.getAResult() = this) }
