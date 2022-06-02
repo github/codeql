@@ -47,19 +47,23 @@ module CfgScope {
   }
 
   private class BodyStmtCallableScope extends Range_ instanceof AbstractFunctionDecl {
-    final override predicate entry(ControlFlowElement first) {
-      exists(Decls::FuncDeclTree tree |
-        tree.getAst() = this and
-        first = tree
-      )
-    }
+    Decls::FuncDeclTree tree;
 
-    final override predicate exit(ControlFlowElement last, Completion c) {
-      exists(Decls::FuncDeclTree tree |
-        tree.getAst() = this and
-        tree.last(last, c)
-      )
-    }
+    BodyStmtCallableScope() { tree.getAst() = this }
+
+    final override predicate entry(ControlFlowElement first) { first(tree, first) }
+
+    final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
+  }
+
+  private class KeyPathScope extends Range_ instanceof KeyPathExpr {
+    AstControlFlowTree tree;
+
+    KeyPathScope() { tree.getAst() = this.getParsedRoot().getFullyConverted() }
+
+    final override predicate entry(ControlFlowElement first) { first(tree, first) }
+
+    final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
   }
 }
 
@@ -1112,6 +1116,20 @@ module Exprs {
     }
   }
 
+  class KeyPathTree extends AstLeafTree {
+    override KeyPathExpr ast;
+  }
+
+  class KeyPathApplicationTree extends AstStandardPostOrderTree {
+    override KeyPathApplicationExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getBase().getFullyConverted()
+      or
+      i = 1 and result.asAstNode() = ast.getKeyPath().getFullyConverted()
+    }
+  }
+
   private class InOutTree extends AstStandardPostOrderTree {
     override InOutExpr ast;
 
@@ -1648,7 +1666,9 @@ private module Cached {
     result = scopeOfAst(n.asAstNode()) or
     result = scopeOfAst(n.(PropertyGetterElement).getRef()) or
     result = scopeOfAst(n.(PropertySetterElement).getAssignExpr()) or
-    result = scopeOfAst(n.(PropertyObserverElement).getAssignExpr())
+    result = scopeOfAst(n.(PropertyObserverElement).getAssignExpr()) or
+    result = n.(FuncDeclElement).getAst() or
+    result = n.(KeyPathElement).getAst()
   }
 
   cached

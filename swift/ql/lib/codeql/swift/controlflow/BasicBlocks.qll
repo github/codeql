@@ -207,6 +207,10 @@ private module JoinBlockPredecessors {
     isPropertySetterElement(n, _, result)
     or
     isPropertyObserverElement(n, _, result)
+    or
+    result = n.(KeyPathElement).getAst()
+    or
+    result = n.(FuncDeclElement).getAst()
   }
 
   int getId(JoinBlockPredecessor jbp) {
