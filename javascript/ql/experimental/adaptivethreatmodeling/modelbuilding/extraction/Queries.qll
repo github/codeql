@@ -16,18 +16,15 @@ abstract class Query extends TQuery {
   string toString() { result = getName() }
 }
 
-class NosqlInjectionQuery extends Query, TNosqlInjectionQuery {
-  override string getName() { result = "NosqlInjection" }
-}
-
-class SqlInjectionQuery extends Query, TSqlInjectionQuery {
-  override string getName() { result = "SqlInjection" }
-}
-
-class TaintedPathQuery extends Query, TTaintedPathQuery {
-  override string getName() { result = "TaintedPath" }
-}
-
+// class NosqlInjectionQuery extends Query, TNosqlInjectionQuery {
+//   override string getName() { result = "NosqlInjection" }
+// }
+// class SqlInjectionQuery extends Query, TSqlInjectionQuery {
+//   override string getName() { result = "SqlInjection" }
+// }
+// class TaintedPathQuery extends Query, TTaintedPathQuery {
+//   override string getName() { result = "TaintedPath" }
+// }
 class XssQuery extends Query, TXssQuery {
   override string getName() { result = "Xss" }
 }
