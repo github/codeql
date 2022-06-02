@@ -113,14 +113,6 @@ func lejwt2() (interface{}, error) {
 	return le.New(sharedKeyglobal) // BAD
 }
 
-func BarrierGuardTest() (interface{}, error) {
-	sharedKey := ""
-	if sharedKey != "" {
-		return le.New([]byte(sharedKey)) // GOOD
-	}
-	return "", nil
-}
-
 func main() {
 	return
 }

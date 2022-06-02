@@ -13,7 +13,7 @@ import (
 	cristal "github.com/cristalhq/jwt/v3"
 )
 
-func cristalhq() (interface{}, error) {
+func check_ok() (interface{}, error) {
 	key := []byte(`key`)
 	return cristal.NewSignerHS(cristal.HS256, key) // BAD
 }
@@ -40,6 +40,7 @@ func GenerateCryptoString2(n int) (string, error) {
 	}
 	return string(ret), nil
 }
+
 func GenerateRandomString3(size int) string {
 	const characters = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`
 	var bytes = make([]byte, size)
@@ -72,45 +73,44 @@ func RandString(length int64) string {
 
 	return string(result)
 }
-func genKey(size int) (string, error) {
-	err := errors.New("size too small")
-	return "", err
-}
-func test1() {
+
+func randIntSanitizerModulo_test() (interface{}, error) {
 	key := GenerateRandomString(32)
-	return cristal.NewSignerHS(cristal.HS256, key) // GOOD
+	return cristal.NewSignerHS(cristal.HS256, []byte(key)) // GOOD
 }
 
-func test2() {
+func randIntSanitizer_test() (interface{}, error) {
 	key2, _ := GenerateCryptoString2(32)
-	return cristal.NewSignerHS(cristal.HS256, key2) // GOOD
+	return cristal.NewSignerHS(cristal.HS256, []byte(key2)) // GOOD
 }
 
-func test3() {
+func formattingSanitizer_test() (interface{}, error) {
 	key3 := RandAuthToken()
-	return cristal.NewSignerHS(cristal.HS256, key3) // GOOD
+	return cristal.NewSignerHS(cristal.HS256, []byte(key3)) // GOOD
 }
 
-func test4() (interface{}, error) {
-	key4, err := genKey(21)
-	if err != nil {
-		return nil, err
+func genKey() (string, error) {
+	k := "asd"
+	e := errors.New("no key")
+	return k, e
+}
+
+func emptyErrorSanitizer_test() (interface{}, error) {
+	key4, _ := genKey()
+	return cristal.NewSignerHS(cristal.HS256, []byte(key4)) // GOOD
+}
+
+func compareSanitizerTest() (interface{}, error) {
+	key5 := ""
+	if key5 != "" {
+		return cristal.NewSignerHS(cristal.HS256, []byte(key5)) // GOOD
 	}
-
-	return cristal.NewSignerHS(cristal.HS256, key4) // BAD
+	return "", nil
 }
 
-func test5() (interface{}, error) {
-	temp := "test"
-	if temp != "test" {
-		return cristal.NewSignerHS(cristal.HS256, []byte(temp)), nil // GOOD
-	} else {
-		return nil, nil
-	}
-}
-func test6() {
-	key := GenerateRandomString3(32)
-	return cristal.NewSignerHS(cristal.HS256, key) // GOOD
+func randReadSanitizer_test() (interface{}, error) {
+	key6 := GenerateRandomString3(32)
+	return cristal.NewSignerHS(cristal.HS256, []byte(key6)) // GOOD
 }
 
 func main() {
