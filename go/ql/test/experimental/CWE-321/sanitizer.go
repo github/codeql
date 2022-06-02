@@ -73,12 +73,8 @@ func RandString(length int64) string {
 	return string(result)
 }
 func genKey(size int) (string, error) {
-	if size < 10 {
-		err := errors.New("size too small")
-		return "", err
-	} else {
-		return "asd", nil
-	}
+	err := errors.New("size too small")
+	return "", err
 }
 func test1() {
 	key := GenerateRandomString(32)

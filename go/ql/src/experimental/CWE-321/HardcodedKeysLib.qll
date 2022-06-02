@@ -182,57 +182,65 @@ module HardcodedKeys {
     FormattingSanitizer() { exists(Formatting::StringFormatCall s | s.getAResult() = this) }
   }
 
+  private string getRandIntFunctionName() {
+    result =
+      [
+        "ExpFloat64", "Float32", "Float64", "Int", "Int31", "Int31n", "Int63", "Int63n", "Intn",
+        "NormFloat64", "Uint32", "Uint64"
+      ]
+  }
+
+  private DataFlow::CallNode getARandIntCall() {
+    result.getTarget().hasQualifiedName("math/rand", getRandIntFunctionName()) or
+    result.getTarget().(Method).hasQualifiedName("math/rand", "Rand", getRandIntFunctionName()) or
+    result.getTarget().hasQualifiedName("crypto/rand", "Int")
+  }
+
+  private DataFlow::CallNode getARandReadCall() {
+    result.getTarget().hasQualifiedName("crypto/rand", "Read")
+  }
+
   /**
    * Mark any taint arising from a read on a tainted slice with a random index as a
    * sanitizer for all instances of the taint
    */
   private class RandSliceSanitizer extends Sanitizer {
     RandSliceSanitizer() {
-      // Sanitize flows like this:
-      // func GenerateCryptoString(n int) (string, error) {
-      //   const chars = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-"
-      //   ret := make([]byte, n)
-      //   for i := range ret {
-      //     num, err := crand.Int(crand.Reader, big.NewInt(int64(len(chars))))
-      //     if err != nil {
-      //       return "", err
-      //     }
-      //     ret[i] = chars[num.Int64()]
-      //   }
-      //   return string(ret), nil
-      // }
-      exists(
-        DataFlow::CallNode randint, string name, DataFlow::ElementReadNode r, DataFlow::Node index
+      exists(DataFlow::Node randomValue, DataFlow::Node index |
+        // Sanitize flows like this:
+        // func GenerateCryptoString(n int) (string, error) {
+        //   const chars = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-"
+        //   ret := make([]byte, n)
+        //   for i := range ret {
+        //     num, err := crand.Int(crand.Reader, big.NewInt(int64(len(chars))))
+        //     if err != nil {
+        //       return "", err
+        //     }
+        //     ret[i] = chars[num.Int64()]
+        //   }
+        //   return string(ret), nil
+        // }
+        randomValue = getARandIntCall().getAResult()
+        or
+        // Sanitize flows like :
+        // func GenerateRandomString(size int) string {
+        //   var bytes = make([]byte, size)
+        //   rand.Read(bytes)
+        //   for i, x := range bytes {
+        //     bytes[i] = characters[x%byte(len(characters))]
+        //   }
+        //   return string(bytes)
+        // }
+        randomValue =
+          any(DataFlow::PostUpdateNode pun |
+            pun.getPreUpdateNode() = getARandReadCall().getArgument(0)
+          )
       |
+        TaintTracking::localTaint(randomValue, index) and
         (
-          randint.getTarget().hasQualifiedName("math/rand", name) or
-          randint.getTarget().(Method).hasQualifiedName("math/rand", "Rand", name) or
-          randint.getTarget().hasQualifiedName("crypto/rand", "Int")
-        ) and
-        name =
-          [
-            "ExpFloat64", "Float32", "Float64", "Int", "Int31", "Int31n", "Int63", "Int63n", "Intn",
-            "NormFloat64", "Uint32", "Uint64"
-          ] and
-        TaintTracking::localTaint(randint.getAResult(), index) and
-        r.reads(this, index)
-      )
-      or
-      // Sanitize flows like :
-      // func GenerateRandomString(size int) string {
-      //   var bytes = make([]byte, size)
-      //   rand.Read(bytes)
-      //   for i, x := range bytes {
-      //     bytes[i] = characters[x%byte(len(characters))]
-      //   }
-      //   return string(bytes)
-      // }
-      exists(DataFlow::CallNode randread, DataFlow::Node rand |
-        randread.getTarget().hasQualifiedName("crypto/rand", "Read") and
-        TaintTracking::localTaint(any(DataFlow::PostUpdateNode pun |
-            pun.getPreUpdateNode() = randread.getArgument(0)
-          ), rand) and
-        this.(DataFlow::ElementReadNode).reads(_, rand)
+          this.(DataFlow::ElementReadNode).reads(_, randomValue) or
+          any(DataFlow::ElementReadNode r).reads(this, index)
+        )
       )
     }
   }
@@ -250,7 +258,7 @@ module HardcodedKeys {
   }
 
   /*
-   * This is code is used to model taint flow through a binary operation such as a
+   * Models taint flow through a binary operation such as a
    * modulo `%` operation or an addition `+` operation
    */
 
@@ -282,8 +290,6 @@ module HardcodedKeys {
 
     override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof Sanitizer }
 
-    // override predicate isAdditionalTaintStep(DataFlow::Node prev, DataFlow::Node succ) {
-    // }
     override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       guard instanceof SanitizerGuard
     }
