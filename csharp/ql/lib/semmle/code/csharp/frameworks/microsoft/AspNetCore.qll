@@ -194,9 +194,16 @@ class MicrosoftAspNetCoreMvcControllerBaseClass extends Class {
   }
 }
 
-/** A subtype of `Microsoft.AspNetCore.Mvc.Controller` or `Microsoft.AspNetCore.Mvc.ControllerBase`. */
+/** A valid ASP.NET Core controller according to https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/actions?view=aspnetcore-3.1 */
 class MicrosoftAspNetCoreMvcController extends Class {
   MicrosoftAspNetCoreMvcController() {
+    exists(Assembly a, string name |
+      a.getName() = name and
+      (
+        name = "Microsoft.AspNetCore.Mvc.Core" or
+        name = "Microsoft.AspNetCore.Mvc.ViewFeatures"
+      )
+    ) and
     (
       this.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass or
       this.getABaseType*().getName().matches("%Controller") or
