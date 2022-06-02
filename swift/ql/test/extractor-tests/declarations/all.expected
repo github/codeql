@@ -1,6 +1,6 @@
 | declarations.swift:1:1:7:1 | Foo |
-| declarations.swift:1:8:1:8 | deinit |
-| declarations.swift:1:8:1:8 | deinit |
+| declarations.swift:1:8:1:8 | init |
+| declarations.swift:1:8:1:8 | init |
 | declarations.swift:1:8:1:8 | x |
 | declarations.swift:2:3:2:11 | var ... = ... |
 | declarations.swift:2:7:2:7 | (unnamed function decl) |
@@ -86,9 +86,9 @@
 | declarations.swift:41:7:41:7 | set |
 | declarations.swift:41:7:41:7 | value |
 | declarations.swift:42:3:42:3 | self |
-| declarations.swift:42:3:44:3 | deinit |
+| declarations.swift:42:3:44:3 | init |
 | declarations.swift:46:3:46:3 | self |
-| declarations.swift:46:3:48:3 | init |
+| declarations.swift:46:3:48:3 | deinit |
 | declarations.swift:50:3:52:3 | +- |
 | declarations.swift:50:26:50:33 | other |
 | declarations.swift:55:8:55:17 | +- |
@@ -96,7 +96,7 @@
 | declarations.swift:64:7:64:16 | +++ |
 | declarations.swift:66:7:66:21 | *** |
 | declarations.swift:68:18:74:1 | ZeroWrapper |
-| declarations.swift:68:25:68:25 | deinit |
+| declarations.swift:68:25:68:25 | init |
 | declarations.swift:69:3:73:3 | var ... = ... |
 | declarations.swift:69:7:69:7 | wrappedValue |
 | declarations.swift:70:5:72:5 | get |
@@ -106,12 +106,12 @@
 | declarations.swift:77:20:77:20 | get |
 | declarations.swift:77:20:77:20 | x |
 | declarations.swift:81:1:136:1 | HasPropertyAndObserver |
-| declarations.swift:81:8:81:8 | deinit |
 | declarations.swift:81:8:81:8 | hasBoth |
 | declarations.swift:81:8:81:8 | hasDidSet1 |
 | declarations.swift:81:8:81:8 | hasDidSet2 |
 | declarations.swift:81:8:81:8 | hasWillSet1 |
 | declarations.swift:81:8:81:8 | hasWillSet2 |
+| declarations.swift:81:8:81:8 | init |
 | declarations.swift:81:8:81:8 | normalField |
 | declarations.swift:82:3:87:3 | var ... = ... |
 | declarations.swift:82:7:82:7 | (unnamed function decl) |
