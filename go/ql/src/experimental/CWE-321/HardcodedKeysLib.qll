@@ -237,10 +237,7 @@ module HardcodedKeys {
           )
       |
         TaintTracking::localTaint(randomValue, index) and
-        (
-          this.(DataFlow::ElementReadNode).reads(_, randomValue) or
-          any(DataFlow::ElementReadNode r).reads(this, index)
-        )
+        this.(DataFlow::ElementReadNode).reads(_, index)
       )
     }
   }
