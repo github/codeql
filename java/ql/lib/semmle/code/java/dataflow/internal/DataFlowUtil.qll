@@ -305,7 +305,7 @@ class ContentSet instanceof Content {
 }
 
 /**
- * Holds if `g` validates the `e` upon evaluating to `branch`.
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
  *
  * The expression `e` is expected to be a syntactic part of the guard `g`.
  * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
