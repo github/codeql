@@ -36,3 +36,17 @@ class Configuration extends TaintTracking::Configuration {
     guard instanceof HostnameSanitizerGuard
   }
 }
+
+/**
+ * A call to a function called `isLocalUrl` or similar, which is
+ * considered to sanitize a variable for purposes of URL redirection.
+ */
+class LocalUrlSanitizingGuard extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
+  LocalUrlSanitizingGuard() { this.getCalleeName().regexpMatch("(?i)(is_?)?local_?url") }
+
+  override predicate sanitizes(boolean outcome, Expr e) {
+    // `isLocalUrl(e)` sanitizes `e` if it evaluates to `true`
+    this.getAnArgument().asExpr() = e and
+    outcome = true
+  }
+}

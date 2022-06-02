@@ -71,8 +71,6 @@ class ClientRequest extends DataFlow::InvokeNode instanceof ClientRequest::Range
   DataFlow::Node getASavePath() { result = super.getASavePath() }
 }
 
-deprecated class CustomClientRequest = ClientRequest::Range;
-
 module ClientRequest {
   /**
    * A call that performs a request to a URL.
@@ -267,7 +265,7 @@ module ClientRequest {
       or
       responseType = this.getResponseType() and
       promise = false and
-      result = this.getReturn().getPromisedError().getMember("response").getAnImmediateUse()
+      result = this.getReturn().getPromisedError().getMember("response").asSource()
     }
   }
 
@@ -332,8 +330,6 @@ module ClientRequest {
      * A model of a URL request made using `require("needle")(...)`.
      */
     class PromisedNeedleRequest extends ClientRequest::Range {
-      DataFlow::Node url;
-
       PromisedNeedleRequest() { this = DataFlow::moduleImport("needle").getACall() }
 
       override DataFlow::Node getUrl() { result = this.getArgument(1) }
@@ -467,7 +463,7 @@ module ClientRequest {
    */
   private API::Node netSocketInstantiation(DataFlow::NewNode socket) {
     result = API::moduleImport("net").getMember("Socket").getInstance() and
-    socket = result.getAnImmediateUse()
+    socket = result.asSource()
   }
 
   /**
@@ -548,8 +544,8 @@ module ClientRequest {
    *
    * Note: Prefer to use the `ClientRequest` class as it is more general.
    */
-  class XMLHttpRequest extends ClientRequest::Range {
-    XMLHttpRequest() {
+  class XmlHttpRequest extends ClientRequest::Range {
+    XmlHttpRequest() {
       this = DataFlow::globalVarRef("XMLHttpRequest").getAnInstantiation()
       or
       // closure shim for XMLHttpRequest
@@ -619,6 +615,9 @@ module ClientRequest {
       )
     }
   }
+
+  /** DEPRECATED: Alias for XmlHttpRequest */
+  deprecated class XMLHttpRequest = XmlHttpRequest;
 
   /**
    * A model of a URL request made using the `XhrIo` class from the closure library.
@@ -790,8 +789,8 @@ module ClientRequest {
   /**
    * A model of a URL request made using `jsdom.fromUrl()`.
    */
-  class JSDOMFromUrl extends ClientRequest::Range {
-    JSDOMFromUrl() {
+  class JSDomFromUrl extends ClientRequest::Range {
+    JSDomFromUrl() {
       this = API::moduleImport("jsdom").getMember("JSDOM").getMember("fromURL").getACall()
     }
 
@@ -801,6 +800,9 @@ module ClientRequest {
 
     override DataFlow::Node getADataNode() { none() }
   }
+
+  /** DEPRECATED: Alias for JSDomFromUrl */
+  deprecated class JSDOMFromUrl = JSDomFromUrl;
 
   /**
    * Classes and predicates modeling the `apollo-client` library.
@@ -825,7 +827,7 @@ module ClientRequest {
     class ApolloClientRequest extends ClientRequest::Range, API::InvokeNode {
       ApolloClientRequest() { this = apolloUriCallee().getAnInvocation() }
 
-      override DataFlow::Node getUrl() { result = this.getParameter(0).getMember("uri").getARhs() }
+      override DataFlow::Node getUrl() { result = this.getParameter(0).getMember("uri").asSink() }
 
       override DataFlow::Node getHost() { none() }
 
@@ -846,10 +848,10 @@ module ClientRequest {
 
     override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
-    override DataFlow::Node getHost() { result = this.getParameter(0).getMember("host").getARhs() }
+    override DataFlow::Node getHost() { result = this.getParameter(0).getMember("host").asSink() }
 
     override DataFlow::Node getADataNode() {
-      result = form.getMember("append").getACall().getParameter(1).getARhs()
+      result = form.getMember("append").getACall().getParameter(1).asSink()
     }
   }
 }

@@ -10,7 +10,7 @@ deprecated ClassValue theChameleonPageTemplateClass() {
 }
 
 /**
- * Sink representing the `chameleon.PageTemplate` class instantiation argument.
+ * A sink representing the `chameleon.PageTemplate` class instantiation argument.
  *
  *  from chameleon import PageTemplate
  *  template = PageTemplate(`sink`)

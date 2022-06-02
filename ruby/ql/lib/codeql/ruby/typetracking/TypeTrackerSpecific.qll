@@ -88,10 +88,7 @@ predicate callStep(Node nodeFrom, Node nodeTo) {
   // we model it as a call step, in order to avoid computing a potential
   // self-cross product of all calls to a function that returns one of its parameters
   // (only to later filter that flow out using `TypeTracker::append`).
-  nodeTo =
-    DataFlowPrivate::LocalFlow::getParameterDefNode(nodeFrom
-          .(DataFlowPublic::ParameterNode)
-          .getParameter())
+  DataFlowPrivate::LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
 }
 
 /**
@@ -150,7 +147,7 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, string content) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     content = getSetterCallAttributeName(call.getExpr()) and
-    nodeTo.(DataFlowPrivate::PostUpdateNode).getPreUpdateNode().asExpr() = call.getReceiver() and
+    nodeTo.(DataFlowPublic::PostUpdateNode).getPreUpdateNode().asExpr() = call.getReceiver() and
     call.getExpr() instanceof AST::SetterMethodCall and
     call.getArgument(call.getNumberOfArguments() - 1) =
       nodeFrom.(DataFlowPublic::ExprNode).getExprNode()

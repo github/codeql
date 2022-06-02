@@ -101,11 +101,11 @@ class ClientSideRemoteFlowKind extends string {
  * `name` and `address` of global variable `user` should be considered as remote flow sources with
  * source type "user input".
  */
-private class RemoteFlowSourceAccessPath extends JSONString {
+private class RemoteFlowSourceAccessPath extends JsonString {
   string sourceType;
 
   RemoteFlowSourceAccessPath() {
-    exists(JSONObject specs |
+    exists(JsonObject specs |
       specs.isTopLevel() and
       this.getFile().getBaseName() = "codeql-javascript-remote-flow-sources.json" and
       this = specs.getPropValue(sourceType).getElementValue(_) and
@@ -164,9 +164,7 @@ private class ExternalRemoteFlowSourceSpecEntryPoint extends API::EntryPoint {
 
   string getName() { result = name }
 
-  override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef(name) }
-
-  override DataFlow::Node getARhs() { none() }
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef(name) }
 }
 
 /**
@@ -175,7 +173,7 @@ private class ExternalRemoteFlowSourceSpecEntryPoint extends API::EntryPoint {
 private class ExternalRemoteFlowSource extends RemoteFlowSource {
   RemoteFlowSourceAccessPath ap;
 
-  ExternalRemoteFlowSource() { Stages::Taint::ref() and this = ap.resolve().getAnImmediateUse() }
+  ExternalRemoteFlowSource() { Stages::Taint::ref() and this = ap.resolve().asSource() }
 
   override string getSourceType() { result = ap.getSourceType() }
 }

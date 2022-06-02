@@ -96,22 +96,6 @@ class Parameter extends LocalScopeVariable, @parameter {
   }
 
   /**
-   * Gets the name of this parameter in the given block (which should be
-   * the body of a function with which the parameter is associated).
-   *
-   * DEPRECATED: this method was used in a previous implementation of
-   * getName, but is no longer in use.
-   */
-  deprecated string getNameInBlock(BlockStmt b) {
-    exists(ParameterDeclarationEntry pde |
-      pde.getFunctionDeclarationEntry().getBlock() = b and
-      this.getFunction().getBlock() = b and
-      pde.getVariable() = this and
-      result = pde.getName()
-    )
-  }
-
-  /**
    * Holds if this parameter has a name.
    *
    * In other words, this predicate holds precisely when the result of

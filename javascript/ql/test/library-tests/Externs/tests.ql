@@ -10,7 +10,7 @@ query predicate externalDecl(ExternalDecl decl) { any() }
 
 query predicate externalTypedef(ExternalTypedef typ) { any() }
 
-query predicate externalVarDecl_getInit(ExternalVarDecl decl, ASTNode init) {
+query predicate externalVarDecl_getInit(ExternalVarDecl decl, AstNode init) {
   decl.getInit() = init
 }
 

@@ -60,7 +60,7 @@ private module LDAP {
      *
      * See `LDAP2QueryMethods`
      */
-    private class LDAP2Query extends DataFlow::CallCfgNode, LDAPQuery::Range {
+    private class LDAP2Query extends DataFlow::CallCfgNode, LdapQuery::Range {
       LDAP2Query() { this.getFunction() = ldapQuery() }
 
       override DataFlow::Node getQuery() {
@@ -98,7 +98,7 @@ private module LDAP {
      *
      * See `LDAP2BindMethods`
      */
-    private class LDAP2Bind extends DataFlow::CallCfgNode, LDAPBind::Range {
+    private class LDAP2Bind extends DataFlow::CallCfgNode, LdapBind::Range {
       LDAP2Bind() { this.getFunction() = ldapBind() }
 
       override DataFlow::Node getPassword() {
@@ -149,7 +149,7 @@ private module LDAP {
      *
      * See https://github.com/python-ldap/python-ldap/blob/7ce471e238cdd9a4dd8d17baccd1c9e05e6f894a/Lib/ldap/dn.py#L17
      */
-    private class LDAP2EscapeDNCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
+    private class LDAP2EscapeDNCall extends DataFlow::CallCfgNode, LdapEscape::Range {
       LDAP2EscapeDNCall() { this = ldap().getMember("dn").getMember("escape_dn_chars").getACall() }
 
       override DataFlow::Node getAnInput() { result = this.getArg(0) }
@@ -160,7 +160,7 @@ private module LDAP {
      *
      * See https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap-filter.html#ldap.filter.escape_filter_chars
      */
-    private class LDAP2EscapeFilterCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
+    private class LDAP2EscapeFilterCall extends DataFlow::CallCfgNode, LdapEscape::Range {
       LDAP2EscapeFilterCall() {
         this = ldap().getMember("filter").getMember("escape_filter_chars").getACall()
       }
@@ -190,7 +190,7 @@ private module LDAP {
     /**
      * A class to find `ldap3` methods executing a query.
      */
-    private class LDAP3Query extends DataFlow::CallCfgNode, LDAPQuery::Range {
+    private class LDAP3Query extends DataFlow::CallCfgNode, LdapQuery::Range {
       LDAP3Query() {
         this.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() =
           ldap3Connection().getACall() and
@@ -203,7 +203,7 @@ private module LDAP {
     /**
      * A class to find `ldap3` methods binding a connection.
      */
-    class LDAP3Bind extends DataFlow::CallCfgNode, LDAPBind::Range {
+    class LDAP3Bind extends DataFlow::CallCfgNode, LdapBind::Range {
       LDAP3Bind() { this = ldap3Connection().getACall() }
 
       override DataFlow::Node getPassword() {
@@ -241,7 +241,7 @@ private module LDAP {
      *
      * See https://github.com/cannatag/ldap3/blob/4d33166f0869b929f59c6e6825a1b9505eb99967/ldap3/utils/dn.py#L390
      */
-    private class LDAP3EscapeDNCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
+    private class LDAP3EscapeDNCall extends DataFlow::CallCfgNode, LdapEscape::Range {
       LDAP3EscapeDNCall() { this = ldap3Utils().getMember("dn").getMember("escape_rdn").getACall() }
 
       override DataFlow::Node getAnInput() { result = this.getArg(0) }
@@ -252,7 +252,7 @@ private module LDAP {
      *
      * See https://github.com/cannatag/ldap3/blob/4d33166f0869b929f59c6e6825a1b9505eb99967/ldap3/utils/conv.py#L91
      */
-    private class LDAP3EscapeFilterCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
+    private class LDAP3EscapeFilterCall extends DataFlow::CallCfgNode, LdapEscape::Range {
       LDAP3EscapeFilterCall() {
         this = ldap3Utils().getMember("conv").getMember("escape_filter_chars").getACall()
       }

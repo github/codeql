@@ -51,7 +51,7 @@
  *     either a single character, a set of characters represented by a
  *     character class, or the set of all characters.
  *   * The product automaton is constructed lazily, starting with pair states
- *     `(q, q)` where `q` is a fork, and proceding along an over-approximate
+ *     `(q, q)` where `q` is a fork, and proceeding along an over-approximate
  *     step relation.
  *   * The over-approximate step relation allows transitions along pairs of
  *     abstract input symbols where the symbols have overlap in the characters they accept.
@@ -141,26 +141,28 @@ private class StatePair extends TStatePair {
 }
 
 /**
- * Holds for all constructed state pairs.
+ * Holds for `(fork, fork)` state pairs when `isFork(fork, _, _, _, _)` holds.
  *
- * Used in `statePairDist`
+ * Used in `statePairDistToFork`
  */
-private predicate isStatePair(StatePair p) { any() }
+private predicate isStatePairFork(StatePair p) {
+  exists(State fork | p = MkStatePair(fork, fork) and isFork(fork, _, _, _, _))
+}
 
 /**
  * Holds if there are transitions from the components of `q` to the corresponding
  * components of `r`.
  *
- * Used in `statePairDist`
+ * Used in `statePairDistToFork`
  */
-private predicate delta2(StatePair q, StatePair r) { step(q, _, _, r) }
+private predicate reverseStep(StatePair r, StatePair q) { step(q, _, _, r) }
 
 /**
  * Gets the minimum length of a path from `q` to `r` in the
  * product automaton.
  */
-private int statePairDist(StatePair q, StatePair r) =
-  shortestDistances(isStatePair/1, delta2/2)(q, r, result)
+private int statePairDistToFork(StatePair q, StatePair r) =
+  shortestDistances(isStatePairFork/1, reverseStep/2)(r, q, result)
 
 /**
  * Holds if there are transitions from `q` to `r1` and from `q` to `r2`
@@ -255,14 +257,7 @@ private predicate step(StatePair q, InputSymbol s1, InputSymbol s2, State r1, St
 
 private newtype TTrace =
   Nil() or
-  Step(InputSymbol s1, InputSymbol s2, TTrace t) {
-    exists(StatePair p |
-      isReachableFromFork(_, p, t, _) and
-      step(p, s1, s2, _)
-    )
-    or
-    t = Nil() and isFork(_, s1, s2, _, _)
-  }
+  Step(InputSymbol s1, InputSymbol s2, TTrace t) { isReachableFromFork(_, _, s1, s2, t, _) }
 
 /**
  * A list of pairs of input symbols that describe a path in the product automaton
@@ -280,35 +275,32 @@ private class Trace extends TTrace {
 }
 
 /**
- * Gets a string corresponding to the trace `t`.
- */
-private string concretise(Trace t) {
-  t = Nil() and result = ""
-  or
-  exists(InputSymbol s1, InputSymbol s2, Trace rest | t = Step(s1, s2, rest) |
-    result = concretise(rest) + intersect(s1, s2)
-  )
-}
-
-/**
  * Holds if `r` is reachable from `(fork, fork)` under input `w`, and there is
  * a path from `r` back to `(fork, fork)` with `rem` steps.
  */
 private predicate isReachableFromFork(State fork, StatePair r, Trace w, int rem) {
+  exists(InputSymbol s1, InputSymbol s2, Trace v |
+    isReachableFromFork(fork, r, s1, s2, v, rem) and
+    w = Step(s1, s2, v)
+  )
+}
+
+private predicate isReachableFromFork(
+  State fork, StatePair r, InputSymbol s1, InputSymbol s2, Trace v, int rem
+) {
   // base case
-  exists(InputSymbol s1, InputSymbol s2, State q1, State q2 |
+  exists(State q1, State q2 |
     isFork(fork, s1, s2, q1, q2) and
     r = MkStatePair(q1, q2) and
-    w = Step(s1, s2, Nil()) and
-    rem = statePairDist(r, MkStatePair(fork, fork))
+    v = Nil() and
+    rem = statePairDistToFork(r, MkStatePair(fork, fork))
   )
   or
   // recursive case
-  exists(StatePair p, Trace v, InputSymbol s1, InputSymbol s2 |
+  exists(StatePair p |
     isReachableFromFork(fork, p, v, rem + 1) and
     step(p, s1, s2, r) and
-    w = Step(s1, s2, v) and
-    rem >= statePairDist(r, MkStatePair(fork, fork))
+    rem = statePairDistToFork(r, MkStatePair(fork, fork))
   )
 }
 
@@ -321,14 +313,54 @@ private StatePair getAForkPair(State fork) {
   result = MkStatePair(epsilonPred*(fork), epsilonPred*(fork))
 }
 
+private predicate hasSuffix(Trace suffix, Trace t, int i) {
+  // Declaring `t` to be a `RelevantTrace` currently causes a redundant check in the
+  // recursive case, so instead we check it explicitly here.
+  t instanceof RelevantTrace and
+  i = 0 and
+  suffix = t
+  or
+  hasSuffix(Step(_, _, suffix), t, i - 1)
+}
+
+pragma[noinline]
+private predicate hasTuple(InputSymbol s1, InputSymbol s2, Trace t, int i) {
+  hasSuffix(Step(s1, s2, _), t, i)
+}
+
+private class RelevantTrace extends Trace, Step {
+  RelevantTrace() {
+    exists(State fork, StatePair q |
+      isReachableFromFork(fork, q, this, _) and
+      q = getAForkPair(fork)
+    )
+  }
+
+  pragma[noinline]
+  private string intersect(int i) {
+    exists(InputSymbol s1, InputSymbol s2 |
+      hasTuple(s1, s2, this, i) and
+      result = intersect(s1, s2)
+    )
+  }
+
+  /** Gets a string corresponding to this trace. */
+  // the pragma is needed for the case where `intersect(s1, s2)` has multiple values,
+  // not for recursion
+  language[monotonicAggregates]
+  string concretise() {
+    result = strictconcat(int i | hasTuple(_, _, this, i) | this.intersect(i) order by i desc)
+  }
+}
+
 /**
  * Holds if `fork` is a pumpable fork with word `w`.
  */
 private predicate isPumpable(State fork, string w) {
-  exists(StatePair q, Trace t |
+  exists(StatePair q, RelevantTrace t |
     isReachableFromFork(fork, q, t, _) and
     q = getAForkPair(fork) and
-    w = concretise(t)
+    w = t.concretise()
   )
 }
 

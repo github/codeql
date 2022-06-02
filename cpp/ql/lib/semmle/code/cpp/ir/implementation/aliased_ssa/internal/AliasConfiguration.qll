@@ -2,12 +2,12 @@ private import AliasConfigurationInternal
 private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
 private import cpp
 private import AliasAnalysis
-private import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.SimpleSSA as UnaliasedSSA
+private import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.SimpleSSA as UnaliasedSsa
 
 private newtype TAllocation =
   TVariableAllocation(IRVariable var) {
     // Only model variables that were not already handled in unaliased SSA.
-    not UnaliasedSSA::canReuseSSAForVariable(var)
+    not UnaliasedSsa::canReuseSsaForVariable(var)
   } or
   TIndirectParameterAllocation(IRAutomaticVariable var) {
     exists(InitializeIndirectionInstruction instr | instr.getIRVariable() = var)

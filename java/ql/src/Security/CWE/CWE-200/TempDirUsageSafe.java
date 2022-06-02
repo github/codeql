@@ -1,9 +1,13 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
+
 import java.util.EnumSet;
+
 
 public class TempDirUsageSafe {
     void exampleSafe() throws IOException {
@@ -30,7 +34,7 @@ public class TempDirUsageSafe {
         createTempFile(tempChildFile.toPath()); // GOOD: Good has permissions `-rw-------`
     }
 
-    static void createTempFile(Path tempDir) {
+    static void createTempFile(Path tempDirChild) {
         try {
             if (tempDirChild.getFileSystem().supportedFileAttributeViews().contains("posix")) {
                 // Explicit permissions setting is only required on unix-like systems because

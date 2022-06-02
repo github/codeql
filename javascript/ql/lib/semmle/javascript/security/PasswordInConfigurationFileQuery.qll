@@ -16,9 +16,9 @@ import semmle.javascript.security.SensitiveActions
  */
 predicate config(string key, string val, Locatable valElement) {
   (
-    exists(JSONObject obj | not exists(PackageJSON p | obj = p.getADependenciesObject(_)) |
+    exists(JsonObject obj | not exists(PackageJson p | obj = p.getADependenciesObject(_)) |
       obj.getPropValue(key) = valElement and
-      val = valElement.(JSONString).getValue()
+      val = valElement.(JsonString).getValue()
     )
     or
     exists(YAMLMapping m, YAMLString keyElement |

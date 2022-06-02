@@ -3,7 +3,7 @@ import experimental.ir.implementation.raw.internal.reachability.ReachableBlock a
 import experimental.ir.implementation.raw.internal.reachability.Dominance as Dominance
 import experimental.ir.implementation.unaliased_ssa.IR as NewIR
 import experimental.ir.implementation.raw.internal.IRConstruction as RawStage
-import experimental.ir.implementation.internal.TInstruction::UnaliasedSSAInstructions as SSAInstructions
+import experimental.ir.implementation.internal.TInstruction::UnaliasedSsaInstructions as SSAInstructions
 import experimental.ir.internal.IRCSharpLanguage as Language
 import SimpleSSA as Alias
-import experimental.ir.implementation.internal.TOperand::UnaliasedSSAOperands as SSAOperands
+import experimental.ir.implementation.internal.TOperand::UnaliasedSsaOperands as SSAOperands

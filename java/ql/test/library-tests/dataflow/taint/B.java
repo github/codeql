@@ -11,7 +11,7 @@ public class B {
 
   public static void sink(Object o) { }
 
-  public static void maintest() throws java.io.UnsupportedEncodingException, java.net.MalformedURLException {
+  public static void maintest() throws java.io.UnsupportedEncodingException, java.net.MalformedURLException, java.io.IOException {
     String[] args = taint();
     // tainted - access to main args
     String[] aaaargs = args;
@@ -155,6 +155,12 @@ public class B {
 
     // Tainted File to Path to File
     sink(new java.io.File(s).toPath().toFile());
+
+    // Tainted file to absolute file
+    sink(new java.io.File(s).getAbsoluteFile());
+
+    // Tainted file to canonical file
+    sink(new java.io.File(s).getCanonicalFile());
 
     return;
   }

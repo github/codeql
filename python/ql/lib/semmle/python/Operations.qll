@@ -1,6 +1,6 @@
 import python
 
-/** Base class for operators */
+/** The base class for operators */
 class Operator extends Operator_ {
   /** Gets the name of the special method used to implement this operator */
   string getSpecialMethodName() { none() }
@@ -131,7 +131,7 @@ class Compare extends Compare_ {
   }
 }
 
-/** List of comparison operators in a comparison */
+/** A list of comparison operators in a comparison */
 class CmpopList extends CmpopList_ { }
 
 /** A comparison operator */

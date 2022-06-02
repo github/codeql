@@ -37,7 +37,7 @@ private module Cached {
    *      along the chain of addresses computed by `StoreNodeInstr.getInner` to identify field writes
    *      and call `storeStep` accordingly (i.e., for an expression like `a.b.c = x`, we visit `c`, then
    *      `b`, then `a`).
-   *   2. Flow is transfered from a `WriteSideEffectInstruction` to a `StoreNodeOperand` after flow
+   *   2. Flow is transferred from a `WriteSideEffectInstruction` to a `StoreNodeOperand` after flow
    *      returns to a caller. Flow will then proceed to the defining instruction of the operand (because
    *      the `StoreNodeInstr` computed by `StoreNodeOperand.getInner()` is the `StoreNode` containing
    *      the defining instruction), and then along the chain computed by `StoreNodeInstr.getInner` like
@@ -157,14 +157,6 @@ class Node extends TIRDataFlowNode {
    * a partial definition of `&x`).
    */
   Expr asPartialDefinition() { result = this.(PartialDefinitionNode).getDefinedExpr() }
-
-  /**
-   * DEPRECATED: See UninitializedNode.
-   *
-   * Gets the uninitialized local variable corresponding to this node, if
-   * any.
-   */
-  deprecated LocalVariable asUninitialized() { none() }
 
   /**
    * Gets an upper bound on the type of this node.
@@ -439,7 +431,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   SsaPhiNode() { this = TSsaPhiNode(phi) }
 
-  /* Get the phi node associated with this node. */
+  /** Gets the phi node associated with this node. */
   Ssa::PhiNode getPhiNode() { result = phi }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
@@ -558,22 +550,6 @@ class ParameterIndirectionNode extends ParameterNode {
   }
 
   override string toString() { result = "*" + instr.getIRVariable().toString() }
-}
-
-/**
- * DEPRECATED: Data flow was never an accurate way to determine what
- * expressions might be uninitialized. It errs on the side of saying that
- * everything is uninitialized, and this is even worse in the IR because the IR
- * doesn't use syntactic hints to rule out variables that are definitely
- * initialized.
- *
- * The value of an uninitialized local variable, viewed as a node in a data
- * flow graph.
- */
-deprecated class UninitializedNode extends Node {
-  UninitializedNode() { none() }
-
-  LocalVariable getLocalVariable() { none() }
 }
 
 /**
@@ -724,14 +700,6 @@ InstructionNode instructionNode(Instruction instr) { result.getInstruction() = i
  * Gets the node corresponding to `operand`.
  */
 OperandNode operandNode(Operand operand) { result.getOperand() = operand }
-
-/**
- * DEPRECATED: use `definitionByReferenceNodeFromArgument` instead.
- *
- * Gets the `Node` corresponding to a definition by reference of the variable
- * that is passed as `argument` of a call.
- */
-deprecated DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
 
 /**
  * Gets the `Node` corresponding to the value of evaluating `e` or any of its
@@ -1093,6 +1061,34 @@ class ArrayContent extends Content, TArrayContent {
 /** A reference through the contents of some collection-like container. */
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "<element>" }
+}
+
+/**
+ * An entity that represents a set of `Content`s.
+ *
+ * The set may be interpreted differently depending on whether it is
+ * stored into (`getAStoreContent`) or read from (`getAReadContent`).
+ */
+class ContentSet instanceof Content {
+  /** Gets a content that may be stored into when storing into this set. */
+  Content getAStoreContent() { result = this }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() { result = this }
+
+  /** Gets a textual representation of this content set. */
+  string toString() { result = super.toString() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    super.hasLocationInfo(path, sl, sc, el, ec)
+  }
 }
 
 /**

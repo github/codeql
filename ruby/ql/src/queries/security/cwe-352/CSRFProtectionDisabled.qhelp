@@ -6,7 +6,7 @@
   <overview>
     <p>
       Cross-site request forgery (CSRF) is a type of vulnerability in which an
-      attacker is able to force a user carry out an action that the user did
+      attacker is able to force a user to carry out an action that the user did
       not intend.
     </p>
 

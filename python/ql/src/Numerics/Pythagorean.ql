@@ -10,36 +10,30 @@
  */
 
 import python
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.ApiGraphs
 
-predicate squareOp(BinaryExpr e) {
-  e.getOp() instanceof Pow and e.getRight().(IntegerLiteral).getN() = "2"
-}
-
-predicate squareMul(BinaryExpr e) {
-  e.getOp() instanceof Mult and e.getRight().(Name).getId() = e.getLeft().(Name).getId()
-}
-
-predicate squareRef(Name e) {
-  e.isUse() and
-  exists(SsaVariable v, Expr s | v.getVariable() = e.getVariable() |
-    s = v.getDefinition().getNode().getParentNode().(AssignStmt).getValue() and
-    square(s)
+DataFlow::ExprNode squareOp() {
+  exists(BinaryExpr e | e = result.asExpr() |
+    e.getOp() instanceof Pow and e.getRight().(IntegerLiteral).getN() = "2"
   )
 }
 
-predicate square(Expr e) {
-  squareOp(e)
-  or
-  squareMul(e)
-  or
-  squareRef(e)
+DataFlow::ExprNode squareMul() {
+  exists(BinaryExpr e | e = result.asExpr() |
+    e.getOp() instanceof Mult and e.getRight().(Name).getId() = e.getLeft().(Name).getId()
+  )
 }
 
-from Call c, BinaryExpr s
+DataFlow::ExprNode square() { result in [squareOp(), squareMul()] }
+
+from DataFlow::CallCfgNode c, BinaryExpr s, DataFlow::ExprNode left, DataFlow::ExprNode right
 where
-  c.getFunc().toString() = "sqrt" and
-  c.getArg(0) = s and
+  c = API::moduleImport("math").getMember("sqrt").getACall() and
+  c.getArg(0).asExpr() = s and
   s.getOp() instanceof Add and
-  square(s.getLeft()) and
-  square(s.getRight())
+  left.asExpr() = s.getLeft() and
+  right.asExpr() = s.getRight() and
+  left.getALocalSource() = square() and
+  right.getALocalSource() = square()
 select c, "Pythagorean calculation with sub-optimal numerics"

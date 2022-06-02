@@ -32,7 +32,7 @@ class OpenUriRequest extends HTTP::Client::Request::Range {
     this = requestUse.asExpr().getExpr()
   }
 
-  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
 
   override DataFlow::Node getResponseBody() {
     result = requestNode.getAMethodCall(["read", "readlines"])
@@ -65,7 +65,7 @@ class OpenUriKernelOpenRequest extends HTTP::Client::Request::Range {
     this = requestUse.asExpr().getExpr()
   }
 
-  override DataFlow::Node getURL() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
 
   override DataFlow::CallNode getResponseBody() {
     result.asExpr().getExpr().(MethodCall).getMethodName() in ["read", "readlines"] and
@@ -117,7 +117,7 @@ private predicate isSslVerifyModeNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
 /** Holds if `node` can represent the symbol literal `:ssl_verify_mode`. */
 private predicate isSslVerifyModeLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol("ssl_verify_mode") and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("ssl_verify_mode") and
     literal.flowsTo(node)
   )
 }

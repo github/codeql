@@ -105,7 +105,7 @@ private class AccessUse extends Access, Use {
     not this.(PropertyAccess).getParent().getParent() instanceof Property // Property initializer
   }
 
-  /** Gets the qualifier of this acccess, if any. */
+  /** Gets the qualifier of this access, if any. */
   private Expr getFormatQualifier() {
     result = this.(QualifiableExpr).getQualifier() and
     not result.isImplicit()

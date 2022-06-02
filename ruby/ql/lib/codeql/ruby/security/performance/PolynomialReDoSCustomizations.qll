@@ -8,8 +8,7 @@ private import codeql.ruby.AST as AST
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
-private import codeql.ruby.security.performance.ParseRegExp as RegExp
-private import codeql.ruby.security.performance.RegExpTreeView
+private import codeql.ruby.Regexp
 private import codeql.ruby.security.performance.SuperlinearBackTracking
 
 module PolynomialReDoS {

@@ -30,12 +30,15 @@ private module FastApi {
    *
    * See https://fastapi.tiangolo.com/tutorial/bigger-applications/.
    */
-  module APIRouter {
-    /** Gets a reference to an instance of `fastapi.APIRouter`. */
+  module ApiRouter {
+    /** Gets a reference to an instance of `fastapi.ApiRouter`. */
     API::Node instance() {
       result = API::moduleImport("fastapi").getMember("APIRouter").getASubclass*().getReturn()
     }
   }
+
+  /** DEPRECATED: Alias for ApiRouter */
+  deprecated module APIRouter = ApiRouter;
 
   // ---------------------------------------------------------------------------
   // routing modeling
@@ -54,7 +57,7 @@ private module FastApi {
       |
         this = App::instance().getMember(routeAddingMethod).getACall()
         or
-        this = APIRouter::instance().getMember(routeAddingMethod).getACall()
+        this = ApiRouter::instance().getMember(routeAddingMethod).getACall()
       )
     }
 

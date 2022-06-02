@@ -157,15 +157,6 @@ class AnalysedExpr extends Expr {
   }
 
   /**
-   * DEPRECATED: Use `getNonNullSuccessor` instead, which does the same.
-   */
-  deprecated ControlFlowNode getValidSuccessor(LocalScopeVariable v) {
-    this.isValidCheck(v) and result = this.getATrueSuccessor()
-    or
-    this.isNullCheck(v) and result = this.getAFalseSuccessor()
-  }
-
-  /**
    * Holds if this is a `VariableAccess` of `v` nested inside a condition.
    */
   predicate isUse(LocalScopeVariable v) {

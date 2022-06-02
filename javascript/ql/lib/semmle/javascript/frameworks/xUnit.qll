@@ -19,7 +19,7 @@ private predicate xUnitDetected() {
 private predicate possiblyAttribute(Expr e, string name) {
   exists(Identifier id | id = e or id = e.(CallExpr).getCallee() |
     name = id.getName() and
-    name.regexpMatch("Async|Data|Fact|Fixture|Import|ImportJson|Skip|Trait")
+    name = ["Async", "Data", "Fact", "Fixture", "Import", "ImportJson", "Skip", "Trait"]
   )
 }
 

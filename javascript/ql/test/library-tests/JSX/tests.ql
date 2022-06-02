@@ -1,22 +1,22 @@
 import javascript
 
-query predicate htmlElements(JSXElement e) { e.getNameExpr() instanceof Label }
+query predicate htmlElements(JsxElement e) { e.getNameExpr() instanceof Label }
 
-query predicate jsxElementAttribute(JSXElement elt, int i, JSXAttribute attr) {
+query predicate jsxElementAttribute(JsxElement elt, int i, JsxAttribute attr) {
   attr = elt.getAttribute(i)
 }
 
-query predicate jsxElementAttributeName(JSXElement elt, int i, string name) {
+query predicate jsxElementAttributeName(JsxElement elt, int i, string name) {
   name = elt.getAttribute(i).getName()
 }
 
-query predicate jsxElementBody(JSXElement elt, int i, Expr body) { elt.getBodyElement(i) = body }
+query predicate jsxElementBody(JsxElement elt, int i, Expr body) { elt.getBodyElement(i) = body }
 
-query predicate jsxElementName(JSXElement elt, JSXName nameExpr, string name) {
+query predicate jsxElementName(JsxElement elt, JsxName nameExpr, string name) {
   elt.getNameExpr() = nameExpr and
   name = elt.getName()
 }
 
-query predicate jsxFragments(JSXFragment fragment, int i, Expr body) {
+query predicate jsxFragments(JsxFragment fragment, int i, Expr body) {
   fragment.getBodyElement(i) = body
 }

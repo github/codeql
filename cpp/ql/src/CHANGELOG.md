@@ -1,3 +1,61 @@
+## 0.1.3
+
+### Minor Analysis Improvements
+
+* The "XML external entity expansion" (`cpp/external-entity-expansion`) query precision has been increased to `high`.
+* The `cpp/unused-local-variable` no longer ignores functions that include `if` and `switch` statements with C++17-style initializers.
+
+## 0.1.2
+
+### Minor Analysis Improvements
+
+* The "XML external entity expansion" (`cpp/external-entity-expansion`) query has been extended to support a broader selection of XML libraries and interfaces.
+
+## 0.1.1
+
+### New Queries
+
+* An new query `cpp/external-entity-expansion` has been added. The query detects XML objects that are vulnerable to external entity expansion (XXE) attacks.
+
+## 0.1.0
+
+### Minor Analysis Improvements
+
+* The `cpp/cleartext-transmission` query now recognizes additional sources, for sensitive private data such as e-mail addresses and credit card numbers.
+* The `cpp/unused-local-variable` no longer ignores functions that include lambda expressions capturing trivially copyable objects.
+* The `cpp/command-line-injection` query now takes into account calling contexts across string concatenations. This removes false positives due to mismatched calling contexts before and after string concatenations.
+* A new query, "Potential exposure of sensitive system data to an unauthorized control sphere" (`cpp/potential-system-data-exposure`) has been added. This query is focused on exposure of information that is highly likely to be sensitive, whereas the similar query "Exposure of system data to an unauthorized control sphere" (`cpp/system-data-exposure`) is focused on exposure of information on a channel that is more likely to be intercepted by an attacker.
+
+## 0.0.13
+
+## 0.0.12
+
+### Minor Analysis Improvements
+
+* The `cpp/overflow-destination`, `cpp/unclear-array-index-validation`, and `cpp/uncontrolled-allocation-size` queries have been modernized and converted to `path-problem` queries and provide more true positive results.
+* The `cpp/system-data-exposure` query has been increased from `medium` to `high` precision, following a number of improvements to the query logic.
+
+## 0.0.11
+
+### Breaking Changes
+
+* The deprecated queries `cpp/duplicate-block`, `cpp/duplicate-function`, `cpp/duplicate-class`, `cpp/duplicate-file`, `cpp/mostly-duplicate-function`,`cpp/similar-file`, `cpp/duplicated-lines-in-files` have been removed.
+
+### Deprecated Predicates and Classes
+
+* The predicates and classes in the `CodeDuplication` library have been deprecated.
+
+### New Queries
+
+* A new query titled "Use of expired stack-address" (`cpp/using-expired-stack-address`) has been added.
+  This query finds accesses to expired stack-allocated memory that escaped via a global variable.
+* A new `cpp/insufficient-key-size` query has been added to the default query suite for C/C++. The query finds uses of certain cryptographic algorithms where the key size is too small to provide adequate encryption strength.
+
+### Minor Analysis Improvements
+
+* The "Failure to use HTTPS URLs" (`cpp/non-https-url`) has been improved reducing false positive results, and its precision has been increased to 'high'.
+* The `cpp/system-data-exposure` query has been modernized and has converted to a `path-problem` query. There are now fewer false positive results.
+
 ## 0.0.10
 
 ### Deprecated Classes

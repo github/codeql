@@ -61,7 +61,7 @@ private class ActionViewHtmlEscapeCall extends HtmlEscapeCall {
 // A call in a context where some commonly used `ActionView` methods are available.
 private class ActionViewContextCall extends MethodCall {
   ActionViewContextCall() {
-    this.getReceiver() instanceof Self and
+    this.getReceiver() instanceof SelfVariableAccess and
     inActionViewContext(this)
   }
 
@@ -95,7 +95,7 @@ abstract class RenderCall extends MethodCall {
   }
 
   private string getTemplatePathValue() {
-    result = this.getTemplatePathArgument().getConstantValue().getStringOrSymbol()
+    result = this.getTemplatePathArgument().getConstantValue().getStringlikeValue()
   }
 
   // everything up to and including the final slash, but ignoring any leading slash

@@ -2,7 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A data flow sink for unvalidated user input that is used in XSLT transformation.
@@ -112,7 +112,7 @@ private predicate documentBuilderStep(DataFlow::Node n1, DataFlow::Node n2) {
  * `new DOMSource(tainted)`.
  */
 private predicate domSourceStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeDOMSource |
+  exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeDomSource |
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
   )
@@ -179,8 +179,8 @@ private class TypeStAXSource extends Class {
 }
 
 /** The class `javax.xml.transform.dom.DOMSource`. */
-private class TypeDOMSource extends Class {
-  TypeDOMSource() { this.hasQualifiedName("javax.xml.transform.dom", "DOMSource") }
+private class TypeDomSource extends Class {
+  TypeDomSource() { this.hasQualifiedName("javax.xml.transform.dom", "DOMSource") }
 }
 
 /** The interface `javax.xml.transform.Templates`. */

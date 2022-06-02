@@ -24,13 +24,6 @@ private class ServiceClass extends Class {
   }
 }
 
-/** Top-level Request DTO types */
-private class RequestDTO extends Class {
-  RequestDTO() {
-    this.getABaseType*().getABaseInterface().hasQualifiedName("ServiceStack", "IReturn")
-  }
-}
-
 /** Flow sources for the ServiceStack framework */
 module Sources {
   private import semmle.code.csharp.security.dataflow.flowsources.Remote

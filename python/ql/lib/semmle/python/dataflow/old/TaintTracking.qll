@@ -138,9 +138,6 @@ abstract class TaintKind extends string {
     exists(TaintedNode n | n.getTaintKind() = this and n.getCfgNode() = expr)
   }
 
-  /** DEPRECATED -- Use getType() instead */
-  deprecated ClassObject getClass() { none() }
-
   /**
    * Gets the class of this kind of taint.
    * For example, if this were a kind of string taint
@@ -180,7 +177,7 @@ abstract class TaintKind extends string {
 }
 
 /**
- * Alias of `TaintKind`, so the two types can be used interchangeably.
+ * An Alias of `TaintKind`, so the two types can be used interchangeably.
  */
 class FlowLabel = TaintKind;
 
@@ -561,7 +558,7 @@ module DataFlowExtension {
     ControlFlowNode getACalleeSuccessorNode(CallNode call) { none() }
   }
 
-  /** Data flow variable that modifies the basic data-flow. */
+  /** A data flow variable that modifies the basic data-flow. */
   class DataFlowVariable extends EssaVariable {
     /**
      * Gets a successor node for data-flow.
@@ -608,48 +605,10 @@ private import semmle.python.pointsto.PointsTo
  */
 module DataFlow {
   /**
-   * Generic taint kind, source and sink classes for convenience and
+   * The generic taint kind, source and sink classes for convenience and
    * compatibility with other language libraries
    */
   class Extension = DataFlowExtension::DataFlowNode;
-
-  abstract deprecated class Configuration extends string {
-    bindingset[this]
-    Configuration() { this = this }
-
-    abstract predicate isSource(ControlFlowNode source);
-
-    abstract predicate isSink(ControlFlowNode sink);
-
-    private predicate hasFlowPath(TaintedNode source, TaintedNode sink) {
-      source.getConfiguration() = this and
-      this.isSource(source.getCfgNode()) and
-      this.isSink(sink.getCfgNode()) and
-      source.flowsTo(sink)
-    }
-
-    predicate hasFlow(ControlFlowNode source, ControlFlowNode sink) {
-      exists(TaintedNode psource, TaintedNode psink |
-        psource.getCfgNode() = source and
-        psink.getCfgNode() = sink and
-        this.isSource(source) and
-        this.isSink(sink) and
-        this.hasFlowPath(psource, psink)
-      )
-    }
-  }
-
-  deprecated private class ConfigurationAdapter extends TaintTracking::Configuration instanceof Configuration {
-    override predicate isSource(DataFlow::Node node, TaintKind kind) {
-      Configuration.super.isSource(node.asCfgNode()) and
-      kind instanceof DataFlowType
-    }
-
-    override predicate isSink(DataFlow::Node node, TaintKind kind) {
-      Configuration.super.isSink(node.asCfgNode()) and
-      kind instanceof DataFlowType
-    }
-  }
 
   private newtype TDataFlowNode =
     TEssaNode(EssaVariable var) or
@@ -670,9 +629,6 @@ module DataFlow {
     abstract Location getLocation();
 
     AstNode asAstNode() { result = this.asCfgNode().getNode() }
-
-    /** For backwards compatibility -- Use asAstNode() instead */
-    deprecated AstNode getNode() { result = this.asAstNode() }
   }
 
   class CfgNode extends Node, TCfgNode {
@@ -709,9 +665,10 @@ module DataFlow {
 }
 
 deprecated private class DataFlowType extends TaintKind {
+  // this only exists to avoid an empty recursion error in the type checker
   DataFlowType() {
     this = "Data flow" and
-    exists(DataFlow::Configuration c)
+    1 = 2
   }
 }
 

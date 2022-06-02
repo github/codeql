@@ -14,8 +14,8 @@ import semmle.code.cpp.dataflow.TaintTracking
 import ExternalAPIs
 import DataFlow::PathGraph
 
-from UntrustedDataToExternalAPIConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
+from UntrustedDataToExternalApiConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink, source, sink,
-  "Call to " + sink.getNode().(ExternalAPIDataNode).getExternalFunction().toString() +
+  "Call to " + sink.getNode().(ExternalApiDataNode).getExternalFunction().toString() +
     " with untrusted data from $@.", source, source.toString()

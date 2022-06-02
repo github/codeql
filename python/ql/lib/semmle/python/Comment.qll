@@ -59,7 +59,7 @@ class CommentBlock extends @py_comment {
   /** Gets a textual representation of this element. */
   string toString() { result = "Comment block" }
 
-  /** The length of this comment block (in comments) */
+  /** Gets the length of this comment block (in comments) */
   int length() { result = max(int i | comment_block_part(this, _, i)) }
 
   /**

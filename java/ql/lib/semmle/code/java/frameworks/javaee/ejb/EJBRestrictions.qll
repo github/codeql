@@ -10,26 +10,6 @@ import EJB
 abstract class ForbiddenCallable extends Callable { }
 
 /**
- * Specialized version of the `polyCalls(..)` predicate for the use
- * case of finding "shortest" call chains from EJBs to forbidden
- * methods. This is the same as `polyCalls(..)`, with two exceptions:
- *
- * - It does not consider calls into an EJB method.
- * - It does not consider calls from "forbidden callables".
- */
-private predicate ejbPolyCalls(Callable origin, Callable target) {
-  origin.polyCalls(target) and
-  not exists(EJB ejb | target = ejb.getACallable()) and
-  not origin instanceof ForbiddenCallable
-}
-
-private predicate ejbPolyCallsPlus(Callable origin, Callable target) {
-  exists(EJB ejb | origin = ejb.getACallable() | ejbPolyCalls(origin, target))
-  or
-  exists(Callable mid | ejbPolyCallsPlus(origin, mid) and ejbPolyCalls(mid, target))
-}
-
-/**
  * Holds if there exists a call chain from an EJB-`Callable` `origin` to a `ForbiddenCallable` `target`
  * that does not contain any intermediate EJB-`Callable` or `ForbiddenCallable`,
  * and where `call` is the direct call site of `target`.

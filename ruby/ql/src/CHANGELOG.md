@@ -1,3 +1,36 @@
+## 0.1.3
+
+## 0.1.2
+
+## 0.1.1
+
+### New Queries
+
+* Added a new query, `rb/insecure-download`. The query finds cases where executables and other sensitive files are downloaded over an insecure connection, which may allow for man-in-the-middle attacks.
+* Added a new query, `rb/regex/missing-regexp-anchor`, which finds regular expressions which are improperly anchored. Validations using such expressions are at risk of being bypassed.
+* Added a new query, `rb/incomplete-sanitization`. The query finds string transformations that do not replace or escape all occurrences of a meta-character.
+
+## 0.1.0
+
+### New Queries
+
+* Added a new query, `rb/insecure-dependency`. The query finds cases where Ruby gems may be downloaded over an insecure communication channel.
+* Added a new query, `rb/weak-cryptographic-algorithm`. The query finds uses of cryptographic algorithms that are known to be weak, such as DES.
+* Added a new query, `rb/http-tainted-format-string`. The query finds cases where data from remote user input is used in a string formatting method in a way that allows arbitrary format specifiers to be inserted.
+* Added a new query, `rb/http-to-file-access`. The query finds cases where data from remote user input is written to a file.
+* Added a new query, `rb/incomplete-url-substring-sanitization`. The query finds instances where a URL is incompletely sanitized due to insufficient checks.
+
+## 0.0.13
+
+## 0.0.12
+
+### New Queries
+
+* Added a new query, `rb/clear-text-storage-sensitive-data`. The query finds cases where sensitive information, such as user credentials, are stored as cleartext.
+* Added a new query, `rb/incomplete-hostname-regexp`. The query finds instances where a hostname is incompletely sanitized due to an unescaped character in a regular expression.
+
+## 0.0.11
+
 ## 0.0.10
 
 ### New Queries

@@ -11,7 +11,6 @@
  */
 
 import python
-import semmle.python.SelfAttribute
 import Equality
 
 predicate class_stores_to_attribute(ClassValue cls, SelfAttributeStore store, string name) {

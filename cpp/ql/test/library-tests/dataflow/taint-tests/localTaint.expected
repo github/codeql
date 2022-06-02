@@ -27,7 +27,8 @@
 | arrayassignment.cpp:29:8:29:13 | call to source | arrayassignment.cpp:29:2:29:15 | ... = ... |  |
 | arrayassignment.cpp:29:8:29:13 | call to source | arrayassignment.cpp:33:7:33:9 | r_x |  |
 | arrayassignment.cpp:32:8:32:10 | p_x | arrayassignment.cpp:32:7:32:10 | * ... | TAINT |
-| arrayassignment.cpp:37:7:37:7 | Unknown literal | arrayassignment.cpp:37:7:37:7 | constructor init of field i | TAINT |
+| arrayassignment.cpp:37:7:37:7 | i | arrayassignment.cpp:37:7:37:7 | constructor init of field i | TAINT |
+| arrayassignment.cpp:37:7:37:7 | i | arrayassignment.cpp:37:7:37:7 | i |  |
 | arrayassignment.cpp:37:7:37:7 | this | arrayassignment.cpp:37:7:37:7 | constructor init of field i [pre-this] |  |
 | arrayassignment.cpp:40:2:40:6 | this | arrayassignment.cpp:40:12:40:15 | constructor init of field i [pre-this] |  |
 | arrayassignment.cpp:40:12:40:15 | 0 | arrayassignment.cpp:40:12:40:15 | constructor init of field i | TAINT |
@@ -284,6 +285,7 @@
 | copyableclass_declonly.cpp:67:13:67:18 | call to source | copyableclass_declonly.cpp:67:13:67:20 | call to MyCopyableClassDeclOnly | TAINT |
 | copyableclass_declonly.cpp:67:13:67:20 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:67:8:67:9 | ref arg s3 | TAINT |
 | copyableclass_declonly.cpp:67:13:67:20 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:67:11:67:11 | call to operator= | TAINT |
+| file://:0:0:0:0 | (unnamed parameter 0) | arrayassignment.cpp:37:7:37:7 | (unnamed parameter 0) |  |
 | file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
 | file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
 | file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
@@ -299,6 +301,27 @@
 | file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
 | file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
 | file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:75:8:75:8 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:75:8:75:8 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | structlikeclass.cpp:5:7:5:7 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | structlikeclass.cpp:5:7:5:7 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | taint.cpp:228:11:228:11 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | taint.cpp:228:11:228:11 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | taint.cpp:235:11:235:11 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | taint.cpp:235:11:235:11 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | taint.cpp:235:11:235:11 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | taint.cpp:243:11:243:11 | (unnamed parameter 0) |  |
+| file://:0:0:0:0 | (unnamed parameter 0) | taint.cpp:243:11:243:11 | (unnamed parameter 0) |  |
 | format.cpp:16:21:16:21 | s | format.cpp:16:21:16:21 | s |  |
 | format.cpp:16:21:16:21 | s | format.cpp:22:22:22:22 | s |  |
 | format.cpp:16:31:16:31 | n | format.cpp:22:25:22:25 | n |  |
@@ -3554,8 +3577,10 @@
 | standalone_iterators.cpp:120:2:120:3 | it | standalone_iterators.cpp:120:5:120:5 | call to operator+= | TAINT |
 | standalone_iterators.cpp:120:2:120:3 | ref arg it | standalone_iterators.cpp:121:7:121:8 | it |  |
 | standalone_iterators.cpp:120:8:120:13 | call to source | standalone_iterators.cpp:120:2:120:3 | ref arg it | TAINT |
-| stl.h:75:8:75:8 | Unknown literal | stl.h:75:8:75:8 | constructor init of field container | TAINT |
-| stl.h:75:8:75:8 | Unknown literal | stl.h:75:8:75:8 | constructor init of field container | TAINT |
+| stl.h:75:8:75:8 | container | stl.h:75:8:75:8 | constructor init of field container | TAINT |
+| stl.h:75:8:75:8 | container | stl.h:75:8:75:8 | constructor init of field container | TAINT |
+| stl.h:75:8:75:8 | container | stl.h:75:8:75:8 | container |  |
+| stl.h:75:8:75:8 | container | stl.h:75:8:75:8 | container |  |
 | stl.h:75:8:75:8 | this | stl.h:75:8:75:8 | constructor init of field container [pre-this] |  |
 | stl.h:75:8:75:8 | this | stl.h:75:8:75:8 | constructor init of field container [pre-this] |  |
 | stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
@@ -3573,16 +3598,6 @@
 | stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
 | stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
 | stl.h:292:53:292:63 | 0 | stl.h:292:46:292:64 | (no string representation) | TAINT |
-| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field first | TAINT |
-| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field first | TAINT |
-| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field first | TAINT |
-| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field first | TAINT |
-| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field first | TAINT |
-| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field second | TAINT |
-| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field second | TAINT |
-| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field second | TAINT |
-| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field second | TAINT |
-| stl.h:389:9:389:9 | Unknown literal | stl.h:389:9:389:9 | constructor init of field second | TAINT |
 | stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
 | stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
 | stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
@@ -3593,6 +3608,26 @@
 | stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
 | stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
 | stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
+| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | constructor init of field first | TAINT |
+| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | constructor init of field first | TAINT |
+| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | constructor init of field first | TAINT |
+| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | constructor init of field first | TAINT |
+| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | constructor init of field first | TAINT |
+| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | first |  |
+| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | first |  |
+| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | first |  |
+| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | first |  |
+| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | first |  |
+| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | constructor init of field second | TAINT |
+| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | constructor init of field second | TAINT |
+| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | constructor init of field second | TAINT |
+| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | constructor init of field second | TAINT |
+| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | constructor init of field second | TAINT |
+| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | second |  |
+| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | second |  |
+| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | second |  |
+| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | second |  |
+| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | second |  |
 | stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
 | stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
 | stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
@@ -5354,10 +5389,12 @@
 | stringstream.cpp:266:54:266:58 | ref arg call to flush | stringstream.cpp:266:35:266:39 | ref arg call to write | TAINT |
 | stringstream.cpp:266:68:266:72 | xyz | stringstream.cpp:266:54:266:58 | ref arg call to flush | TAINT |
 | stringstream.cpp:266:68:266:72 | xyz | stringstream.cpp:266:62:266:66 | call to write | TAINT |
-| structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
-| structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |
 | structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |
+| structlikeclass.cpp:5:7:5:7 | v | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
+| structlikeclass.cpp:5:7:5:7 | v | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
+| structlikeclass.cpp:5:7:5:7 | v | structlikeclass.cpp:5:7:5:7 | v |  |
+| structlikeclass.cpp:5:7:5:7 | v | structlikeclass.cpp:5:7:5:7 | v |  |
 | structlikeclass.cpp:8:2:8:16 | this | structlikeclass.cpp:8:28:8:32 | constructor init of field v [pre-this] |  |
 | structlikeclass.cpp:8:22:8:23 | _v | structlikeclass.cpp:8:30:8:31 | _v |  |
 | structlikeclass.cpp:8:30:8:31 | _v | structlikeclass.cpp:8:28:8:32 | constructor init of field v | TAINT |
@@ -5973,24 +6010,29 @@
 | taint.cpp:226:9:226:10 | 0 | taint.cpp:261:7:261:7 | w |  |
 | taint.cpp:228:10:232:2 | [...](...){...} | taint.cpp:233:7:233:7 | a |  |
 | taint.cpp:228:10:232:2 | {...} | taint.cpp:228:10:232:2 | [...](...){...} |  |
-| taint.cpp:228:11:228:11 | Unknown literal | taint.cpp:228:11:228:11 | constructor init of field t | TAINT |
-| taint.cpp:228:11:228:11 | Unknown literal | taint.cpp:228:11:228:11 | constructor init of field u | TAINT |
 | taint.cpp:228:11:228:11 | constructor init of field t [post-this] | taint.cpp:228:11:228:11 | constructor init of field u [pre-this] |  |
 | taint.cpp:228:11:228:11 | constructor init of field t [pre-this] | taint.cpp:228:11:228:11 | constructor init of field u [pre-this] |  |
+| taint.cpp:228:11:228:11 | t | taint.cpp:228:11:228:11 | constructor init of field t | TAINT |
+| taint.cpp:228:11:228:11 | t | taint.cpp:228:11:228:11 | t |  |
 | taint.cpp:228:11:228:11 | this | taint.cpp:228:11:228:11 | constructor init of field t [pre-this] |  |
+| taint.cpp:228:11:228:11 | u | taint.cpp:228:11:228:11 | constructor init of field u | TAINT |
+| taint.cpp:228:11:228:11 | u | taint.cpp:228:11:228:11 | u |  |
 | taint.cpp:228:17:228:17 | this | taint.cpp:229:3:229:6 | this |  |
 | taint.cpp:229:3:229:6 | this | taint.cpp:230:3:230:6 | this |  |
 | taint.cpp:230:3:230:6 | this | file://:0:0:0:0 | this |  |
 | taint.cpp:235:10:239:2 | [...](...){...} | taint.cpp:240:2:240:2 | b |  |
 | taint.cpp:235:10:239:2 | {...} | taint.cpp:235:10:239:2 | [...](...){...} |  |
-| taint.cpp:235:11:235:11 | Unknown literal | taint.cpp:235:11:235:11 | constructor init of field t | TAINT |
-| taint.cpp:235:11:235:11 | Unknown literal | taint.cpp:235:11:235:11 | constructor init of field u | TAINT |
-| taint.cpp:235:11:235:11 | Unknown literal | taint.cpp:235:11:235:11 | constructor init of field v | TAINT |
 | taint.cpp:235:11:235:11 | constructor init of field t [post-this] | taint.cpp:235:11:235:11 | constructor init of field u [pre-this] |  |
 | taint.cpp:235:11:235:11 | constructor init of field t [pre-this] | taint.cpp:235:11:235:11 | constructor init of field u [pre-this] |  |
 | taint.cpp:235:11:235:11 | constructor init of field u [post-this] | taint.cpp:235:11:235:11 | constructor init of field v [pre-this] |  |
 | taint.cpp:235:11:235:11 | constructor init of field u [pre-this] | taint.cpp:235:11:235:11 | constructor init of field v [pre-this] |  |
+| taint.cpp:235:11:235:11 | t | taint.cpp:235:11:235:11 | constructor init of field t | TAINT |
+| taint.cpp:235:11:235:11 | t | taint.cpp:235:11:235:11 | t |  |
 | taint.cpp:235:11:235:11 | this | taint.cpp:235:11:235:11 | constructor init of field t [pre-this] |  |
+| taint.cpp:235:11:235:11 | u | taint.cpp:235:11:235:11 | constructor init of field u | TAINT |
+| taint.cpp:235:11:235:11 | u | taint.cpp:235:11:235:11 | u |  |
+| taint.cpp:235:11:235:11 | v | taint.cpp:235:11:235:11 | constructor init of field v | TAINT |
+| taint.cpp:235:11:235:11 | v | taint.cpp:235:11:235:11 | v |  |
 | taint.cpp:235:15:235:15 | this | taint.cpp:236:3:236:6 | this |  |
 | taint.cpp:236:3:236:6 | this | taint.cpp:237:3:237:6 | this |  |
 | taint.cpp:237:3:237:6 | this | taint.cpp:238:3:238:14 | this |  |
@@ -5998,11 +6040,13 @@
 | taint.cpp:238:7:238:12 | call to source | taint.cpp:238:3:238:14 | ... = ... |  |
 | taint.cpp:243:10:246:2 | [...](...){...} | taint.cpp:247:2:247:2 | c |  |
 | taint.cpp:243:10:246:2 | {...} | taint.cpp:243:10:246:2 | [...](...){...} |  |
-| taint.cpp:243:11:243:11 | Unknown literal | taint.cpp:243:11:243:11 | constructor init of field t | TAINT |
-| taint.cpp:243:11:243:11 | Unknown literal | taint.cpp:243:11:243:11 | constructor init of field u | TAINT |
 | taint.cpp:243:11:243:11 | constructor init of field t [post-this] | taint.cpp:243:11:243:11 | constructor init of field u [pre-this] |  |
 | taint.cpp:243:11:243:11 | constructor init of field t [pre-this] | taint.cpp:243:11:243:11 | constructor init of field u [pre-this] |  |
+| taint.cpp:243:11:243:11 | t | taint.cpp:243:11:243:11 | constructor init of field t | TAINT |
+| taint.cpp:243:11:243:11 | t | taint.cpp:243:11:243:11 | t |  |
 | taint.cpp:243:11:243:11 | this | taint.cpp:243:11:243:11 | constructor init of field t [pre-this] |  |
+| taint.cpp:243:11:243:11 | u | taint.cpp:243:11:243:11 | constructor init of field u | TAINT |
+| taint.cpp:243:11:243:11 | u | taint.cpp:243:11:243:11 | u |  |
 | taint.cpp:243:15:243:15 | this | taint.cpp:244:3:244:6 | this |  |
 | taint.cpp:244:3:244:6 | this | taint.cpp:245:3:245:6 | this |  |
 | taint.cpp:249:11:252:2 | [...](...){...} | taint.cpp:253:2:253:2 | d |  |

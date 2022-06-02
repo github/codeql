@@ -14,7 +14,6 @@ namespace Semmle.Extraction.Tests
 
         public OptionsTests()
         {
-            Environment.SetEnvironmentVariable("SEMMLE_EXTRACTOR_OPTIONS", "");
             Environment.SetEnvironmentVariable("LGTM_INDEX_EXTRACTOR", "");
         }
 
@@ -126,14 +125,14 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void EnvironmentVariables()
         {
-            Environment.SetEnvironmentVariable("SEMMLE_EXTRACTOR_OPTIONS", "--cil c");
+            Environment.SetEnvironmentVariable("LGTM_INDEX_EXTRACTOR", "--cil c");
             options = CSharp.Options.CreateWithEnvironment(new string[] { "a", "b" });
             Assert.True(options.CIL);
             Assert.Equal("a", options.CompilerArguments[0]);
             Assert.Equal("b", options.CompilerArguments[1]);
             Assert.Equal("c", options.CompilerArguments[2]);
 
-            Environment.SetEnvironmentVariable("SEMMLE_EXTRACTOR_OPTIONS", "");
+            Environment.SetEnvironmentVariable("LGTM_INDEX_EXTRACTOR", "");
             Environment.SetEnvironmentVariable("LGTM_INDEX_EXTRACTOR", "--nocil");
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--cil" });
             Assert.False(options.CIL);

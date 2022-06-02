@@ -12,7 +12,7 @@
 import javascript
 import semmle.javascript.RestrictedLocations
 
-from AngularJS::InjectableFunction f, ASTNode explicitInjection
+from AngularJS::InjectableFunction f, AstNode explicitInjection
 where
   count(f.getAnExplicitDependencyInjection()) > 1 and
   explicitInjection = f.getAnExplicitDependencyInjection()

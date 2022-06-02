@@ -105,6 +105,14 @@ class MethodCall extends Call instanceof MethodCallImpl {
    */
   final Block getBlock() { result = super.getBlockImpl() }
 
+  /**
+   * Holds if the safe nagivation operator (`&.`) is used in this call.
+   * ```rb
+   * foo&.empty?
+   * ```
+   */
+  final predicate isSafeNavigation() { super.isSafeNavigationImpl() }
+
   override string toString() { result = "call to " + this.getMethodName() }
 
   override AstNode getAChild(string pred) {
@@ -137,6 +145,21 @@ class SetterMethodCall extends MethodCall, TMethodCallSynth {
   SetterMethodCall() { this = TMethodCallSynth(_, _, _, true, _) }
 
   final override string getAPrimaryQlClass() { result = "SetterMethodCall" }
+
+  /**
+   * Gets the name of the method being called without the trailing `=`. For example, in the following
+   * two statements the target name is `value`:
+   * ```rb
+   * foo.value=(1)
+   * foo.value = 1
+   * ```
+   */
+  final string getTargetName() {
+    exists(string methodName |
+      methodName = this.getMethodName() and
+      result = methodName.prefix(methodName.length() - 1)
+    )
+  }
 }
 
 /**

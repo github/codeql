@@ -45,7 +45,7 @@ abstract deprecated class StringKind extends TaintKind {
 deprecated private class StringEqualitySanitizer extends Sanitizer {
   StringEqualitySanitizer() { this = "string equality sanitizer" }
 
-  /** The test `if untrusted == "KNOWN_VALUE":` sanitizes `untrusted` on its `true` edge. */
+  /* The test `if untrusted == "KNOWN_VALUE":` sanitizes `untrusted` on its `true` edge. */
   override predicate sanitizingEdge(TaintKind taint, PyEdgeRefinement test) {
     taint instanceof StringKind and
     exists(ControlFlowNode const, Cmpop op | const.getNode() instanceof StrConst |

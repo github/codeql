@@ -79,6 +79,7 @@ class AstNode extends TAstNode {
 
   /** Gets an annotation of this AST node. */
   Annotation getAnAnnotation() {
+    not this instanceof Annotation and // avoid cyclic parent-child relationship
     toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent()
   }
 
@@ -125,6 +126,9 @@ class TopLevel extends TTopLevel, AstNode {
   /** Gets a `newtype` defined at the top-level of this module. */
   NewType getANewType() { result = this.getAMember() }
 
+  /** Gets a `select` clause in the top-level of this module. */
+  Select getASelect() { result = this.getAMember() }
+
   override ModuleMember getAChild(string pred) {
     pred = directMember("getAnImport") and result = this.getAnImport()
     or
@@ -135,6 +139,10 @@ class TopLevel extends TTopLevel, AstNode {
     pred = directMember("getAModule") and result = this.getAModule()
     or
     pred = directMember("getANewType") and result = this.getANewType()
+    or
+    pred = directMember("getQLDoc") and result = this.getQLDoc()
+    or
+    pred = directMember("getASelect") and result = this.getASelect()
   }
 
   QLDoc getQLDocFor(ModuleMember m) {
@@ -154,6 +162,16 @@ class QLDoc extends TQLDoc, AstNode {
   string getContents() { result = qldoc.getValue() }
 
   override string getAPrimaryQlClass() { result = "QLDoc" }
+}
+
+class BlockComment extends TBlockComment, AstNode {
+  QL::BlockComment comment;
+
+  BlockComment() { this = TBlockComment(comment) }
+
+  string getContents() { result = comment.getValue() }
+
+  override string getAPrimaryQlClass() { result = "BlockComment" }
 }
 
 /**
@@ -535,6 +553,9 @@ class VarDef extends TVarDef, AstNode {
 
   Type getType() { none() }
 
+  /** Gets a variable access to this `VarDef` */
+  VarAccess getAnAccess() { result.getDeclaration() = this }
+
   override string getAPrimaryQlClass() { result = "VarDef" }
 
   override string toString() { result = this.getName() }
@@ -898,7 +919,7 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
 class Call extends TCall, Expr, Formula {
   /** Gets the `i`th argument of this call. */
   Expr getArgument(int i) {
-    none() // overriden in sublcasses.
+    none() // overridden in sublcasses.
   }
 
   /** Gets an argument of this call, if any. */
@@ -1115,6 +1136,21 @@ class Import extends TImport, ModuleMember, ModuleRef {
    */
   string getQualifiedName(int i) {
     result = imp.getChild(0).(QL::ImportModuleExpr).getChild().getName(i).getValue()
+  }
+
+  /**
+   * Gets the full string specifying the module being imported.
+   */
+  string getImportString() {
+    exists(string selec |
+      not exists(getSelectionName(_)) and selec = ""
+      or
+      selec =
+        "::" + strictconcat(int i, string q | q = this.getSelectionName(i) | q, "::" order by i)
+    |
+      result =
+        strictconcat(int i, string q | q = this.getQualifiedName(i) | q, "." order by i) + selec
+    )
   }
 
   final override FileOrModule getResolvedModule() { resolve(this, result) }
@@ -1865,15 +1901,15 @@ class FunctionSymbol extends string {
  */
 class BinOpExpr extends TBinOpExpr, Expr {
   /** Gets the left operand of the binary expression. */
-  Expr getLeftOperand() { none() } // overriden in subclasses
+  Expr getLeftOperand() { none() } // overridden in subclasses
 
-  /* Gets the right operand of the binary expression. */
-  Expr getRightOperand() { none() } // overriden in subclasses
+  /** Gets the right operand of the binary expression. */
+  Expr getRightOperand() { none() } // overridden in subclasses
 
   /** Gets the operator of the binary expression. */
-  FunctionSymbol getOperator() { none() } // overriden in subclasses
+  FunctionSymbol getOperator() { none() } // overridden in subclasses
 
-  /* Gets an operand of the binary expression. */
+  /** Gets an operand of the binary expression. */
   final Expr getAnOperand() { result = this.getLeftOperand() or result = this.getRightOperand() }
 }
 
@@ -2299,35 +2335,38 @@ class BindingSet extends Annotation {
  */
 module YAML {
   /** A node in a YAML file */
-  class YAMLNode extends TYAMLNode, AstNode {
+  class YAMLNode extends TYamlNode, AstNode {
     /** Holds if the predicate is a root node (has no parent) */
     predicate isRoot() { not exists(this.getParent()) }
   }
 
   /** A YAML comment. */
-  class YAMLComment extends TYamlCommemt, YAMLNode {
+  class YamlComment extends TYamlCommemt, YAMLNode {
     QL::YamlComment yamlcomment;
 
-    YAMLComment() { this = TYamlCommemt(yamlcomment) }
+    YamlComment() { this = TYamlCommemt(yamlcomment) }
 
-    override string getAPrimaryQlClass() { result = "YAMLComment" }
+    override string getAPrimaryQlClass() { result = "YamlComment" }
   }
 
+  /** DEPRECATED: Alias for YamlComment */
+  deprecated class YAMLComment = YamlComment;
+
   /** A YAML entry. */
-  class YAMLEntry extends TYamlEntry, YAMLNode {
+  class YamlEntry extends TYamlEntry, YAMLNode {
     QL::YamlEntry yamle;
 
-    YAMLEntry() { this = TYamlEntry(yamle) }
+    YamlEntry() { this = TYamlEntry(yamle) }
 
     /** Gets the key of this YAML entry. */
-    YAMLKey getKey() {
+    YamlKey getKey() {
       exists(QL::YamlKeyvaluepair pair |
         pair.getParent() = yamle and
         result = TYamlKey(pair.getKey())
       )
     }
 
-    YAMLListItem getListItem() { toQL(result).getParent() = yamle }
+    YamlListItem getListItem() { toQL(result).getParent() = yamle }
 
     /** Gets the value of this YAML entry. */
     YAMLValue getValue() {
@@ -2337,14 +2376,17 @@ module YAML {
       )
     }
 
-    override string getAPrimaryQlClass() { result = "YAMLEntry" }
+    override string getAPrimaryQlClass() { result = "YamlEntry" }
   }
 
+  /** DEPRECATED: Alias for YamlEntry */
+  deprecated class YAMLEntry = YamlEntry;
+
   /** A YAML key. */
-  class YAMLKey extends TYamlKey, YAMLNode {
+  class YamlKey extends TYamlKey, YAMLNode {
     QL::YamlKey yamlkey;
 
-    YAMLKey() { this = TYamlKey(yamlkey) }
+    YamlKey() { this = TYamlKey(yamlkey) }
 
     /**
      * Gets the value of this YAML key.
@@ -2355,13 +2397,13 @@ module YAML {
       )
     }
 
-    override string getAPrimaryQlClass() { result = "YAMLKey" }
+    override string getAPrimaryQlClass() { result = "YamlKey" }
 
     /** Gets the value of this YAML value. */
     string getNamePart(int i) {
       i = 0 and result = yamlkey.getChild(0).(QL::SimpleId).getValue()
       or
-      exists(YAMLKey child |
+      exists(YamlKey child |
         child = TYamlKey(yamlkey.getChild(1)) and
         result = child.getNamePart(i - 1)
       )
@@ -2376,19 +2418,25 @@ module YAML {
     }
   }
 
+  /** DEPRECATED: Alias for YamlKey */
+  deprecated class YAMLKey = YamlKey;
+
   /** A YAML list item. */
-  class YAMLListItem extends TYamlListitem, YAMLNode {
+  class YamlListItem extends TYamlListitem, YAMLNode {
     QL::YamlListitem yamllistitem;
 
-    YAMLListItem() { this = TYamlListitem(yamllistitem) }
+    YamlListItem() { this = TYamlListitem(yamllistitem) }
 
     /**
      * Gets the value of this YAML list item.
      */
     YAMLValue getValue() { result = TYamlValue(yamllistitem.getChild()) }
 
-    override string getAPrimaryQlClass() { result = "YAMLListItem" }
+    override string getAPrimaryQlClass() { result = "YamlListItem" }
   }
+
+  /** DEPRECATED: Alias for YamlListItem */
+  deprecated class YAMLListItem = YamlListItem;
 
   /** A YAML value. */
   class YAMLValue extends TYamlValue, YAMLNode {
@@ -2414,7 +2462,7 @@ module YAML {
     QLPack() { this = MKQlPack(file) }
 
     private string getProperty(string name) {
-      exists(YAMLEntry entry |
+      exists(YamlEntry entry |
         entry.isRoot() and
         entry.getKey().getQualifiedName() = name and
         result = entry.getValue().getValue().trim() and
@@ -2436,8 +2484,8 @@ module YAML {
     /** Gets the file that this `QLPack` represents. */
     File getFile() { result = file }
 
-    private predicate isADependency(YAMLEntry entry) {
-      exists(YAMLEntry deps |
+    private predicate isADependency(YamlEntry entry) {
+      exists(YamlEntry deps |
         deps.getLocation().getFile() = file and entry.getLocation().getFile() = file
       |
         deps.isRoot() and
@@ -2446,7 +2494,7 @@ module YAML {
         entry.getLocation().getStartColumn() > deps.getLocation().getStartColumn()
       )
       or
-      exists(YAMLEntry prev | this.isADependency(prev) |
+      exists(YamlEntry prev | this.isADependency(prev) |
         prev.getLocation().getFile() = file and
         entry.getLocation().getFile() = file and
         entry.getLocation().getStartLine() = 1 + prev.getLocation().getStartLine() and
@@ -2455,7 +2503,7 @@ module YAML {
     }
 
     predicate hasDependency(string name, string version) {
-      exists(YAMLEntry entry | this.isADependency(entry) |
+      exists(YamlEntry entry | this.isADependency(entry) |
         entry.getKey().getQualifiedName().trim() = name and
         entry.getValue().getValue() = version
         or
@@ -2484,8 +2532,15 @@ module YAML {
      * Gets a QLPack that this QLPack depends on.
      */
     QLPack getADependency() {
-      exists(string name | this.hasDependency(name, _) |
-        result.getName().replaceAll("-", "/") = name.replaceAll("-", "/")
+      exists(string rawDep, string dep, string name | this.hasDependency(rawDep, _) |
+        dep = rawDep.replaceAll("-", "/") and
+        name = result.getName().replaceAll("-", "/") and
+        (
+          name = dep
+          or
+          name.matches("codeql/%") and
+          name = dep + "/all"
+        )
       )
     }
 

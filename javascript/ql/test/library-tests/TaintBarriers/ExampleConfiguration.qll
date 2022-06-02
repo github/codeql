@@ -1,5 +1,4 @@
 import javascript
-import semmle.javascript.security.dataflow.RemoteFlowSources
 
 class ExampleConfiguration extends TaintTracking::Configuration {
   ExampleConfiguration() { this = "ExampleConfiguration" }

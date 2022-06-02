@@ -66,11 +66,7 @@ constants/Constants.java:
 #   20|                 1: [IntegerLiteral] 5
 #   20|               1: [IntegerLiteral] 1
 #   20|               2: [IntegerLiteral] 2
-#   21|         11: [LocalVariableDeclStmt] var ...;
-#   21|           0: [TypeAccess] char
-#   21|           1: [LocalVariableDeclExpr] charLiteral
-#   21|             0: [CharacterLiteral] 'a'
-#   23|         12: [ReturnStmt] return ...
+#   22|         11: [ReturnStmt] return ...
 constants/Initializers.java:
 #    0| [CompilationUnit] Initializers
 #    3|   1: [Class] Initializers
@@ -516,13 +512,3 @@ constants/Values.java:
 #   90|           0: [TypeAccess] int
 #   90|           1: [LocalVariableDeclExpr] var_nonfinald_local
 #   90|             0: [VarAccess] var_field
-#   91|         68: [LocalVariableDeclStmt] var ...;
-#   91|           0: [TypeAccess] String
-#   91|           1: [LocalVariableDeclExpr] concatenatedString
-#   91|             0: [StringLiteral] "a" + "b"
-#   92|         69: [LocalVariableDeclStmt] var ...;
-#   92|           0: [TypeAccess] String
-#   92|           1: [LocalVariableDeclExpr] concatenatedChar
-#   92|             0: [AddExpr] ... + ...
-#   92|               0: [StringLiteral] "ab"
-#   92|               1: [CharacterLiteral] 'c'

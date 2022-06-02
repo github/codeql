@@ -88,7 +88,10 @@ module EntityFramework {
   }
 
   /** A flow summary for EntityFramework. */
-  abstract class EFSummarizedCallable extends SummarizedCallable { }
+  abstract class EFSummarizedCallable extends SummarizedCallable {
+    bindingset[this]
+    EFSummarizedCallable() { any() }
+  }
 
   private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
     override predicate required(SummaryComponent head, SummaryComponentStack tail) {
@@ -254,6 +257,30 @@ module EntityFramework {
           "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Threading.CancellationToken,System.Object[]);;Argument[0];sql",
           "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Object[]);;Argument[0];sql",
           "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql"
+        ]
+    }
+  }
+
+  /** A sink method in `Microsoft.EntityFrameworkCore.RelationalQueryableExtensions` that executes SQL. */
+  private class MicrosoftEntityFrameworkCoreRelationalQueryableExtensionsSinkModelCsv extends SinkModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "Microsoft.EntityFrameworkCore;RelationalQueryableExtensions;false;FromSqlRaw<>;(Microsoft.EntityFrameworkCore.DbSet<TEntity>,System.String,System.Object[]);;Argument[1];sql",
+        ]
+    }
+  }
+
+  /** A sink method in `Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions` that executes SQL. */
+  private class MicrosoftEntityFrameworkCoreRelationalDatabaseFacadeExtensionsSinkModelCsv extends SinkModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRaw;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>);;Argument[1];sql",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRaw;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[]);;Argument[1];sql",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Threading.CancellationToken);;Argument[1];sql",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[]);;Argument[1];sql",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken);;Argument[1];sql",
         ]
     }
   }

@@ -1,7 +1,7 @@
 /** Provides classes and predicates modeling aspects of the `d3` library. */
 
 private import javascript
-private import semmle.javascript.security.dataflow.Xss
+private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 
 /** Provides classes and predicates modeling aspects of the `d3` library. */
 module D3 {
@@ -9,9 +9,7 @@ module D3 {
   private class D3GlobalEntry extends API::EntryPoint {
     D3GlobalEntry() { this = "D3GlobalEntry" }
 
-    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("d3") }
-
-    override DataFlow::Node getARhs() { none() }
+    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("d3") }
   }
 
   /** Gets an API node referring to the `d3` module. */
@@ -23,7 +21,7 @@ module D3 {
     or
     result = API::moduleImport("d3-node").getInstance().getMember("d3")
     or
-    result = any(D3GlobalEntry i).getNode()
+    result = any(D3GlobalEntry i).getANode()
   }
 
   /**
@@ -71,18 +69,18 @@ module D3 {
     D3XssSink() {
       exists(API::Node htmlArg |
         htmlArg = d3Selection().getMember("html").getParameter(0) and
-        this = [htmlArg, htmlArg.getReturn()].getARhs()
+        this = [htmlArg, htmlArg.getReturn()].asSink()
       )
     }
   }
 
   private class D3DomValueSource extends DOM::DomValueSource::Range {
     D3DomValueSource() {
-      this = d3Selection().getMember("each").getReceiver().getAnImmediateUse()
+      this = d3Selection().getMember("each").getReceiver().asSource()
       or
-      this = d3Selection().getMember("node").getReturn().getAnImmediateUse()
+      this = d3Selection().getMember("node").getReturn().asSource()
       or
-      this = d3Selection().getMember("nodes").getReturn().getUnknownMember().getAnImmediateUse()
+      this = d3Selection().getMember("nodes").getReturn().getUnknownMember().asSource()
     }
   }
 

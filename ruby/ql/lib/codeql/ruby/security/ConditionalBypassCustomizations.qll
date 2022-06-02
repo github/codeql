@@ -5,7 +5,6 @@
 
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
-private import codeql.ruby.controlflow.BasicBlocks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.security.SensitiveActions
 

@@ -1,0 +1,2 @@
+| Foo.qll:2:11:2:38 | ClasslessPredicate dead1 | Code is dead |
+| Foo.qll:6:3:6:30 | ClasslessPredicate dead2 | Code is dead |

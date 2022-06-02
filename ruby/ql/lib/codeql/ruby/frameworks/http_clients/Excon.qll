@@ -52,7 +52,7 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 
-  override DataFlow::Node getURL() {
+  override DataFlow::Node getAUrlPart() {
     // For one-off requests, the URL is in the first argument of the request method call.
     // For connection re-use, the URL is split between the first argument of the `new` call
     // and the `path` keyword argument of the request method call.
@@ -125,7 +125,7 @@ private predicate setsDefaultVerification(DataFlow::CallNode callNode, boolean v
 
 private predicate isSslVerifyPeerLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol("ssl_verify_peer") and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("ssl_verify_peer") and
     literal.flowsTo(node)
   )
 }

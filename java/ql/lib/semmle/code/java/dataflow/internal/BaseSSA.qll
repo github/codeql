@@ -476,18 +476,21 @@ class BaseSsaVariable extends TBaseSsaVariable {
   }
 
   /** Gets the `ControlFlowNode` at which this SSA variable is defined. */
-  ControlFlowNode getCFGNode() {
+  ControlFlowNode getCfgNode() {
     this = TSsaPhiNode(_, result) or
     this = TSsaUpdate(_, result, _, _) or
     this = TSsaEntryDef(_, result)
   }
 
+  /** DEPRECATED: Alias for getCfgNode */
+  deprecated ControlFlowNode getCFGNode() { result = this.getCfgNode() }
+
   string toString() { none() }
 
-  Location getLocation() { result = this.getCFGNode().getLocation() }
+  Location getLocation() { result = this.getCfgNode().getLocation() }
 
   /** Gets the `BasicBlock` in which this SSA variable is defined. */
-  BasicBlock getBasicBlock() { result = this.getCFGNode().getBasicBlock() }
+  BasicBlock getBasicBlock() { result = this.getCfgNode().getBasicBlock() }
 
   /** Gets an access of this SSA variable. */
   RValue getAUse() { ssaDefReachesUse(_, this, result) }
@@ -533,7 +536,7 @@ class BaseSsaVariable extends TBaseSsaVariable {
 class BaseSsaUpdate extends BaseSsaVariable, TSsaUpdate {
   BaseSsaUpdate() {
     exists(VariableUpdate upd |
-      upd = this.getCFGNode() and getDestVar(upd) = this.getSourceVariable()
+      upd = this.getCfgNode() and getDestVar(upd) = this.getSourceVariable()
     )
   }
 
@@ -541,7 +544,7 @@ class BaseSsaUpdate extends BaseSsaVariable, TSsaUpdate {
 
   /** Gets the `VariableUpdate` defining the SSA variable. */
   VariableUpdate getDefiningExpr() {
-    result = this.getCFGNode() and getDestVar(result) = this.getSourceVariable()
+    result = this.getCfgNode() and getDestVar(result) = this.getSourceVariable()
   }
 }
 
@@ -562,7 +565,7 @@ class BaseSsaImplicitInit extends BaseSsaVariable, TSsaEntryDef {
    */
   predicate isParameterDefinition(Parameter p) {
     this.getSourceVariable() = TLocalVar(p.getCallable(), p) and
-    p.getCallable().getBody() = this.getCFGNode()
+    p.getCallable().getBody() = this.getCfgNode()
   }
 }
 
@@ -574,7 +577,7 @@ class BaseSsaPhiNode extends BaseSsaVariable, TSsaPhiNode {
   BaseSsaVariable getAPhiInput() {
     exists(BasicBlock phiPred, BaseSsaSourceVariable v |
       v = this.getSourceVariable() and
-      this.getCFGNode().(BasicBlock).getABBPredecessor() = phiPred and
+      this.getCfgNode().(BasicBlock).getABBPredecessor() = phiPred and
       ssaDefReachesEndOfBlock(v, result, phiPred)
     )
   }

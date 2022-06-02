@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Assigning a variable to itself typically indicates a mistake such as a missing qualifier or a
+misspelled variable name.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Carefully inspect the assignment to check for misspellings or missing qualifiers.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the example below, the struct type <code>Rect</code> has two setter methods
+<code>setWidth</code> and <code>setHeight</code> that are meant to be used to update the
+<code>width</code> and <code>height</code> fields, respectively:
+</p>
+<sample src="SelfAssignment.go" />
+<p>
+Note, however, that in <code>setHeight</code> the programmer forgot to qualify the left-hand side
+of the assignment with the receiver variable <code>r</code>, so the method performs a useless
+assignment of the <code>width</code> parameter to itself and leaves the <code>width</code>
+field unchanged.
+</p>
+<p>
+To fix this issue, insert a qualifier:
+</p>
+<sample src="SelfAssignmentGood.go" />
+</example>
+
+<references>
+<li>The Go Programming Language Specification: <a href="https://golang.org/ref/spec#Assignments">Assignments</a>.</li>
+</references>
+</qhelp>

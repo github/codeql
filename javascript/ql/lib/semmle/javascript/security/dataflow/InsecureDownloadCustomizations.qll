@@ -47,16 +47,22 @@ module InsecureDownload {
     /**
      * A flow-label for file URLs that are both sensitive and downloaded over an insecure connection.
      */
-    class SensitiveInsecureURL extends DataFlow::FlowLabel {
-      SensitiveInsecureURL() { this = "sensitiveInsecure" }
+    class SensitiveInsecureUrl extends DataFlow::FlowLabel {
+      SensitiveInsecureUrl() { this = "sensitiveInsecure" }
     }
+
+    /** DEPRECATED: Alias for SensitiveInsecureUrl */
+    deprecated class SensitiveInsecureURL = SensitiveInsecureUrl;
 
     /**
      * A flow-label for a URL that is downloaded over an insecure connection.
      */
-    class InsecureURL extends DataFlow::FlowLabel {
-      InsecureURL() { this = "insecure" }
+    class InsecureUrl extends DataFlow::FlowLabel {
+      InsecureUrl() { this = "insecure" }
     }
+
+    /** DEPRECATED: Alias for InsecureUrl */
+    deprecated class InsecureURL = InsecureUrl;
   }
 
   /**
@@ -72,10 +78,10 @@ module InsecureDownload {
     }
 
     override DataFlow::FlowLabel getALabel() {
-      result instanceof Label::InsecureURL
+      result instanceof Label::InsecureUrl
       or
       hasUnsafeExtension(str) and
-      result instanceof Label::SensitiveInsecureURL
+      result instanceof Label::SensitiveInsecureUrl
     }
   }
 
@@ -106,20 +112,23 @@ module InsecureDownload {
    * A url downloaded by a client-request, seen as a sink for download of
    * sensitive file through insecure connection.
    */
-  class ClientRequestURL extends Sink {
+  class ClientRequestUrl extends Sink {
     ClientRequest request;
 
-    ClientRequestURL() { this = request.getUrl() }
+    ClientRequestUrl() { this = request.getUrl() }
 
     override DataFlow::Node getDownloadCall() { result = request }
 
     override DataFlow::FlowLabel getALabel() {
-      result instanceof Label::SensitiveInsecureURL
+      result instanceof Label::SensitiveInsecureUrl
       or
       hasUnsafeExtension(request.getASavePath().getStringValue()) and
-      result instanceof Label::InsecureURL
+      result instanceof Label::InsecureUrl
     }
   }
+
+  /** DEPRECATED: Alias for ClientRequestUrl */
+  deprecated class ClientRequestURL = ClientRequestUrl;
 
   /**
    * Gets a node for the response from `request`, type-tracked using `t`.
@@ -145,7 +154,7 @@ module InsecureDownload {
       )
     }
 
-    override DataFlow::FlowLabel getALabel() { result instanceof Label::InsecureURL }
+    override DataFlow::FlowLabel getALabel() { result instanceof Label::InsecureUrl }
 
     override DataFlow::Node getDownloadCall() { result = request }
   }

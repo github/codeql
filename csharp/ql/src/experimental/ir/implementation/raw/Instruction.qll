@@ -41,7 +41,7 @@ class Instruction extends Construction::TStageInstruction {
   }
 
   /** Gets a textual representation of this element. */
-  final string toString() { result = this.getOpcode().toString() + ": " + this.getAST().toString() }
+  final string toString() { result = this.getOpcode().toString() + ": " + this.getAst().toString() }
 
   /**
    * Gets a string showing the result, opcode, and operands of the instruction, equivalent to what
@@ -136,7 +136,7 @@ class Instruction extends Construction::TStageInstruction {
   string getResultId() {
     this.shouldGenerateDumpStrings() and
     result =
-      this.getResultPrefix() + this.getAST().getLocation().getStartLine() + "_" + this.getLineRank()
+      this.getResultPrefix() + this.getAst().getLocation().getStartLine() + "_" + this.getLineRank()
   }
 
   /**
@@ -208,12 +208,15 @@ class Instruction extends Construction::TStageInstruction {
   /**
    * Gets the AST that caused this instruction to be generated.
    */
-  final Language::AST getAST() { result = Construction::getInstructionAST(this) }
+  final Language::AST getAst() { result = Construction::getInstructionAst(this) }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated Language::AST getAST() { result = this.getAst() }
 
   /**
    * Gets the location of the source code for this instruction.
    */
-  final Language::Location getLocation() { result = this.getAST().getLocation() }
+  final Language::Location getLocation() { result = this.getAst().getLocation() }
 
   /**
    * Gets the  `Expr` whose result is computed by this instruction, if any. The `Expr` may be a
@@ -459,7 +462,10 @@ class VariableInstruction extends Instruction {
   /**
    * Gets the AST variable that this instruction's IR variable refers to, if one exists.
    */
-  final Language::Variable getASTVariable() { result = var.(IRUserVariable).getVariable() }
+  final Language::Variable getAstVariable() { result = var.(IRUserVariable).getVariable() }
+
+  /** DEPRECATED: Alias for getAstVariable */
+  deprecated Language::Variable getASTVariable() { result = this.getAstVariable() }
 }
 
 /**

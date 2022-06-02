@@ -1,5 +1,6 @@
 import python
 private import semmle.python.types.Builtins
+private import semmle.python.internal.CachedStages
 
 /**
  * An alias in an import statement, the `mod as name` part of `import mod as name`. May be artificial;
@@ -35,6 +36,8 @@ class ImportExpr extends ImportExpr_ {
   }
 
   /**
+   * Gets the level of this import.
+   *
    * The language specifies level as -1 if relative imports are to be tried first, 0 for absolute imports,
    * and level > 0 for explicit relative imports.
    */
@@ -165,13 +168,6 @@ class Import extends Import_ {
     result = this.getAName().getValue().(ImportMember).getModule()
   }
 
-  /**
-   * Use getAnImportedModuleName(),
-   * possibly combined with ModuleObject.importedAs()
-   * Gets a module imported by this import statement
-   */
-  deprecated Module getAModule() { result.getName() = this.getAnImportedModuleName() }
-
   /** Whether this a `from ... import ...` statement */
   predicate isFromImport() { this.getAName().getValue() instanceof ImportMember }
 
@@ -188,7 +184,7 @@ class Import extends Import_ {
    * For example, for the import statement `import bar` which
    * is a relative import in package "foo", this would return
    * "foo.bar".
-   * The import statment `from foo import bar` would return
+   * The import statement `from foo import bar` would return
    * `foo` and `foo.bar`
    */
   string getAnImportedModuleName() {
@@ -208,20 +204,15 @@ class Import extends Import_ {
 /** An import * statement */
 class ImportStar extends ImportStar_ {
   /* syntax: from modname import * */
+  cached
   ImportExpr getModuleExpr() {
+    Stages::AST::ref() and
     result = this.getModule()
     or
     result = this.getModule().(ImportMember).getModule()
   }
 
   override string toString() { result = "from " + this.getModuleExpr().getName() + " import *" }
-
-  /**
-   * Use getAnImportedModuleName(),
-   * possibly combined with ModuleObject.importedAs()
-   * Gets the module imported by this import * statement
-   */
-  deprecated Module getTheModule() { result.getName() = this.getImportedModuleName() }
 
   override Expr getASubExpression() { result = this.getModule() }
 

@@ -28,8 +28,8 @@ class GuardCondition extends Expr {
     or
     // the IR short-circuits if(!x)
     // don't produce a guard condition for `y = !x` and other non-short-circuited cases
-    not exists(Instruction inst | this = inst.getAST()) and
-    exists(IRGuardCondition ir | this.(LogicalNotExpr).getOperand() = ir.getAST())
+    not exists(Instruction inst | this = inst.getAst()) and
+    exists(IRGuardCondition ir | this.(LogicalNotExpr).getOperand() = ir.getAst())
   }
 
   /**
@@ -172,8 +172,8 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
  */
 private class GuardConditionFromShortCircuitNot extends GuardCondition, LogicalNotExpr {
   GuardConditionFromShortCircuitNot() {
-    not exists(Instruction inst | this = inst.getAST()) and
-    exists(IRGuardCondition ir | this.getOperand() = ir.getAST())
+    not exists(Instruction inst | this = inst.getAst()) and
+    exists(IRGuardCondition ir | this.getOperand() = ir.getAst())
   }
 
   override predicate controls(BasicBlock controlled, boolean testIsTrue) {
@@ -267,7 +267,7 @@ private class GuardConditionFromIR extends GuardCondition {
   private predicate controlsBlock1(BasicBlock controlled, boolean testIsTrue) {
     exists(IRBlock irb |
       forex(IRGuardCondition inst | inst = ir | inst.controls(irb, testIsTrue)) and
-      irb.getAnInstruction().getAST().(ControlFlowElement).getAControlFlowNode().getBasicBlock() =
+      irb.getAnInstruction().getAst().(ControlFlowElement).getAControlFlowNode().getBasicBlock() =
         controlled and
       not isUnreachedBlock(irb)
     )

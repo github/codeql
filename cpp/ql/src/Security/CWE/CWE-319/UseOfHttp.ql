@@ -3,6 +3,7 @@
  * @description Non-HTTPS connections can be intercepted by third parties.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 8.1
  * @precision high
  * @id cpp/non-https-url
  * @tags security

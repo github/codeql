@@ -8,7 +8,7 @@ import experimental.semmle.python.templates.SSTISink
 deprecated ClassValue theTRenderTemplateClass() { result = Value::named("trender.TRender") }
 
 /**
- * Sink representing the `trender.TRender` class instantiation argument.
+ * A sink representing the `trender.TRender` class instantiation argument.
  *
  *  from trender import TRender
  *  template = TRender(`sink`)

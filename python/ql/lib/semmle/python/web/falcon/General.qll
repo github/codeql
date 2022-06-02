@@ -1,7 +1,7 @@
 import python
 import semmle.python.web.Http
 
-/** The falcon API class */
+/** Gets the falcon API class */
 deprecated ClassValue theFalconAPIClass() { result = Value::named("falcon.API") }
 
 /** Holds if `route` is routed to `resource` */

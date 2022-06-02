@@ -55,7 +55,10 @@ class IRVariable extends TIRVariable {
    * Gets the AST node that declared this variable, or that introduced this
    * variable as part of the AST-to-IR translation.
    */
-  Language::AST getAST() { none() }
+  Language::AST getAst() { none() }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated Language::AST getAST() { result = getAst() }
 
   /**
    * Gets an identifier string for the variable. This identifier is unique
@@ -66,7 +69,7 @@ class IRVariable extends TIRVariable {
   /**
    * Gets the source location of this variable.
    */
-  final Language::Location getLocation() { result = getAST().getLocation() }
+  final Language::Location getLocation() { result = getAst().getLocation() }
 
   /**
    * Gets the IR for the function that references this variable.
@@ -90,7 +93,10 @@ class IRUserVariable extends IRVariable, TIRUserVariable {
 
   final override string toString() { result = getVariable().toString() }
 
-  final override Language::AST getAST() { result = var }
+  final override Language::AST getAst() { result = var }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Language::AST getAST() { result = getAst() }
 
   final override string getUniqueId() {
     result = getVariable().toString() + " " + getVariable().getLocation().toString()
@@ -157,7 +163,10 @@ class IRGeneratedVariable extends IRVariable {
 
   final override Language::LanguageType getLanguageType() { result = type }
 
-  final override Language::AST getAST() { result = ast }
+  final override Language::AST getAst() { result = ast }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Language::AST getAST() { result = getAst() }
 
   override string toString() { result = getBaseString() + getLocationString() }
 

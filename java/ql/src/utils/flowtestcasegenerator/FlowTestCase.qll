@@ -41,7 +41,7 @@ private class CallableToTest extends Callable {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
-      summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _) and
+      summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) and
       this = interpretElement(namespace, type, subtypes, name, signature, ext) and
       this.isPublic() and
       getRootType(this.getDeclaringType()).(RefType).isPublic()
@@ -64,7 +64,8 @@ private newtype TTestCase =
       string inputSpec, string outputSpec
     |
       any(TargetSummaryModelCsv tsmc).row(row) and
-      summaryModel(namespace, type, subtypes, name, signature, ext, inputSpec, outputSpec, kind, row) and
+      summaryModel(namespace, type, subtypes, name, signature, ext, inputSpec, outputSpec, kind,
+        false, row) and
       callable = interpretElement(namespace, type, subtypes, name, signature, ext) and
       Private::External::interpretSpec(inputSpec, input) and
       Private::External::interpretSpec(outputSpec, output)

@@ -137,7 +137,7 @@ module SqlAlchemy {
    *
    * See https://docs.sqlalchemy.org/en/14/core/connections.html#dbapi-connections.
    */
-  module DBAPIConnection {
+  module DBApiConnection {
     /**
      * A source of instances of DB-API Connections, extend this class to model new instances.
      *
@@ -149,8 +149,8 @@ module SqlAlchemy {
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
-    private class DBAPIConnectionSources extends InstanceSource, PEP249::Connection::InstanceSource {
-      DBAPIConnectionSources() {
+    private class DBApiConnectionSources extends InstanceSource, PEP249::Connection::InstanceSource {
+      DBApiConnectionSources() {
         this.(DataFlow::MethodCallNode).calls(Engine::instance(), "raw_connection")
         or
         this.(DataFlow::AttrRead).accesses(Connection::instance(), "connection")
@@ -168,6 +168,9 @@ module SqlAlchemy {
     /** Gets a reference to an instance of DB-API Connections. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
   }
+
+  /** DEPRECATED: Alias for DBApiConnection */
+  deprecated module DBAPIConnection = DBApiConnection;
 
   /**
    * Provides models for the `sqlalchemy.orm.Session` class

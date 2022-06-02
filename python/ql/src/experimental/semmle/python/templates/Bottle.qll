@@ -10,7 +10,7 @@ deprecated ClassValue theBottleSimpleTemplateClass() {
 }
 
 /**
- * Sink representing the `bottle.SimpleTemplate` class instantiation argument.
+ * A sink representing the `bottle.SimpleTemplate` class instantiation argument.
  *
  *  from bottle import SimpleTemplate
  *  template = SimpleTemplate(`sink`)
@@ -29,7 +29,7 @@ deprecated class BottleSimpleTemplateSink extends SSTISink {
 }
 
 /**
- * Sink representing the `bottle.template` function call argument.
+ * A sink representing the `bottle.template` function call argument.
  *
  *  from bottle import template
  *  tmp = template(`sink`)

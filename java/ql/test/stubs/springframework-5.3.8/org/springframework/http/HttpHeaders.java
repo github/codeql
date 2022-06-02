@@ -23,7 +23,6 @@ import org.springframework.util.MultiValueMap;
 
 public class HttpHeaders implements MultiValueMap<String, String>, Serializable
 {
-    final MultiValueMap<String, String> headers = null;
     protected List<String> getETagValuesAsList(String p0){ return null; }
     protected String getFieldValues(String p0){ return null; }
     protected String toCommaDelimitedString(List<String> p0){ return null; }
@@ -216,5 +215,4 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable
     public void setUpgrade(String p0){}
     public void setVary(List<String> p0){}
     public void setZonedDateTime(String p0, ZonedDateTime p1){}
-    static String formatDate(long p0){ return null; }
 }

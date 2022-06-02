@@ -5,7 +5,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.security.CleartextStorageQuery
 import semmle.code.java.security.Files
 import semmle.code.xml.AndroidManifest

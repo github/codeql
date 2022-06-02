@@ -14,13 +14,16 @@ private import semmle.code.java.dataflow.ExternalFlow
 /**
  * A `@com.fasterxml.jackson.annotation.JsonIgnore` annoation.
  */
-class JacksonJSONIgnoreAnnotation extends NonReflectiveAnnotation {
-  JacksonJSONIgnoreAnnotation() {
+class JacksonJsonIgnoreAnnotation extends NonReflectiveAnnotation {
+  JacksonJsonIgnoreAnnotation() {
     exists(AnnotationType anntp | anntp = this.getType() |
       anntp.hasQualifiedName("com.fasterxml.jackson.annotation", "JsonIgnore")
     )
   }
 }
+
+/** DEPRECATED: Alias for JacksonJsonIgnoreAnnotation */
+deprecated class JacksonJSONIgnoreAnnotation = JacksonJsonIgnoreAnnotation;
 
 /** A type whose values may be serialized using the Jackson JSON framework. */
 abstract class JacksonSerializableType extends Type { }
@@ -143,7 +146,7 @@ class JacksonSerializableField extends SerializableField {
       not superType instanceof TypeObject and
       superType.fromSource()
     ) and
-    not this.getAnAnnotation() instanceof JacksonJSONIgnoreAnnotation
+    not this.getAnAnnotation() instanceof JacksonJsonIgnoreAnnotation
   }
 }
 
@@ -155,7 +158,7 @@ class JacksonDeserializableField extends DeserializableField {
       not superType instanceof TypeObject and
       superType.fromSource()
     ) and
-    not this.getAnAnnotation() instanceof JacksonJSONIgnoreAnnotation
+    not this.getAnAnnotation() instanceof JacksonJsonIgnoreAnnotation
   }
 }
 

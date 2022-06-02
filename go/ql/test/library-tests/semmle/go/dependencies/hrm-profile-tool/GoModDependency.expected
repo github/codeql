@@ -1,0 +1,5 @@
+| go.mod:4:2:4:61 | go.mod require line | github.com/ajstarks/svgo | v0.0.0-20180830174826-7338bd80e790 | github.com/ajstarks/svgo | v0.0.0-20180830174826-7338bd80e790 |
+| go.mod:5:2:5:48 | go.mod require line | github.com/clj/hrm-profile-tool/cmd/hrm | v0.0.0 | ./cmd/hrm | unknown |
+| go.mod:6:2:6:53 | go.mod require line | github.com/clj/hrm-profile-tool/instructions | v0.0.0 | ./instructions | unknown |
+| go.mod:7:2:7:48 | go.mod require line | github.com/clj/hrm-profile-tool/profile | v0.0.0 | ./profile | unknown |
+| go.mod:8:2:8:47 | go.mod require line | github.com/clj/hrm-profile-tool/render | v0.0.0 | ./render | unknown |

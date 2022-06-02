@@ -8,6 +8,6 @@
 
 import javascript
 
-from JSXAttribute a
+from JsxAttribute a
 where a.getName() = "dangerouslySetInnerHTML"
 select a

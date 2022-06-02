@@ -339,19 +339,16 @@ class AllowListEqualityGuard extends DataFlow::LabeledBarrierGuardNode, ValueNod
  * but the destination object generally doesn't. It is therefore only a sanitizer when
  * used on the destination object.
  */
-class HasOwnPropertyGuard extends DataFlow::BarrierGuardNode, CallNode {
+class HasOwnPropertyGuard extends DataFlow::BarrierGuardNode instanceof HasOwnPropertyCall {
   HasOwnPropertyGuard() {
-    // Make sure we handle reflective calls since libraries love to do that.
-    getCalleeNode().getALocalSource().(DataFlow::PropRead).getPropertyName() = "hasOwnProperty" and
-    exists(getReceiver()) and
     // Try to avoid `src.hasOwnProperty` by requiring that the receiver
     // does not locally have its properties enumerated. Typically there is no
     // reason to enumerate the properties of the destination object.
-    not arePropertiesEnumerated(getReceiver().getALocalSource())
+    not arePropertiesEnumerated(super.getObject().getALocalSource())
   }
 
   override predicate blocks(boolean outcome, Expr e) {
-    e = getArgument(0).asExpr() and outcome = true
+    e = super.getProperty().asExpr() and outcome = true
   }
 }
 
@@ -518,7 +515,9 @@ predicate isPrototypePollutingAssignment(Node base, Node prop, Node rhs, Node pr
     if propNameSource instanceof EnumeratedPropName
     then
       cfg.hasFlow(propNameSource, prop) and
-      cfg.hasFlow(propNameSource.(EnumeratedPropName).getASourceProp(), rhs)
+      cfg.hasFlow([propNameSource, AccessPath::getAnAliasedSourceNode(propNameSource)]
+            .(EnumeratedPropName)
+            .getASourceProp(), rhs)
     else (
       cfg.hasFlow(propNameSource.(SplitPropName).getAnAlias(), prop) and
       rhs.getALocalSource() instanceof ParameterNode
@@ -567,27 +566,27 @@ class ObjectCreateNullCall extends CallNode {
 }
 
 from
-  PropNameTracking cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Node prop, Node base,
-  string msg, Node col1, Node col2
+  PropNameTracking cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Node propNameSource,
+  Node base, string msg, Node col1, Node col2
 where
-  isPollutedPropName(prop) and
+  isPollutedPropName(propNameSource) and
   cfg.hasFlowPath(source, sink) and
-  isPrototypePollutingAssignment(base, _, _, prop) and
+  isPrototypePollutingAssignment(base, _, _, propNameSource) and
   sink.getNode() = base and
-  source.getNode() = prop and
+  source.getNode() = propNameSource and
   (
     getANodeLeadingToBaseBase(base) instanceof ObjectLiteralNode
     or
     not getANodeLeadingToBaseBase(base) instanceof ObjectCreateNullCall
   ) and
   // Generate different messages for deep merge and deep assign cases.
-  if prop instanceof EnumeratedPropName
+  if propNameSource instanceof EnumeratedPropName
   then (
-    col1 = prop.(EnumeratedPropName).getSourceObject() and
+    col1 = propNameSource.(EnumeratedPropName).getSourceObject() and
     col2 = base and
     msg = "Properties are copied from $@ to $@ without guarding against prototype pollution."
   ) else (
-    col1 = prop and
+    col1 = propNameSource and
     col2 = base and
     msg =
       "The property chain $@ is recursively assigned to $@ without guarding against prototype pollution."

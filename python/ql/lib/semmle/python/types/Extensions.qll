@@ -30,42 +30,8 @@ abstract class PointsToExtension extends @py_flow_node {
  * sources of data to the points-to analysis.
  */
 
-/** DEPRECATED -- Use PointsToExtension instead */
-abstract deprecated class CustomPointsToFact extends @py_flow_node {
-  string toString() { result = "CustomPointsToFact with missing toString" }
-
-  abstract predicate pointsTo(Context context, Object value, ClassObject cls, ControlFlowNode origin);
-}
-
-/** DEPRECATED -- Use PointsToExtension instead */
-deprecated class FinalCustomPointsToFact = CustomPointsToFact;
-
-abstract deprecated class CustomPointsToOriginFact extends CustomPointsToFact {
-  abstract predicate pointsTo(Object value, ClassObject cls);
-
-  override predicate pointsTo(Context context, Object value, ClassObject cls, ControlFlowNode origin) {
-    this.pointsTo(value, cls) and origin = this and context.appliesTo(this)
-  }
-}
-
-/* Custom points-to fact with inferred class */
-abstract deprecated class CustomPointsToObjectFact extends CustomPointsToFact {
-  abstract predicate pointsTo(Object value);
-
-  override predicate pointsTo(Context context, Object value, ClassObject cls, ControlFlowNode origin) {
-    this.pointsTo(value) and cls = simple_types(value) and origin = this and context.appliesTo(this)
-  }
-}
-
-/** DEPRECATED -- Unsupported; do not use */
-abstract deprecated class CustomPointsToAttribute extends Object {
-  abstract predicate attributePointsTo(
-    string name, Object value, ClassObject cls, ControlFlowNode origin
-  );
-}
-
 /* An example */
-/** Any variable iterating over range or xrange must be an integer */
+/** An extension representing the fact that a variable iterating over range or xrange must be an integer */
 class RangeIterationVariableFact extends PointsToExtension {
   RangeIterationVariableFact() {
     exists(For f, ControlFlowNode iterable |
@@ -142,41 +108,4 @@ class ReModulePointToExtension extends PointsToExtension {
 
   pragma[noinline]
   private predicate pointsTo_helper(Context context) { context.appliesTo(this) }
-}
-
-deprecated private class BackwardCompatiblePointToExtension extends PointsToExtension instanceof CustomPointsToFact {
-  override predicate pointsTo(Context context, ObjectInternal value, ControlFlowNode origin) {
-    exists(Object obj, ClassObject cls |
-      CustomPointsToFact.super.pointsTo(context, obj, cls, origin)
-    |
-      value.getBuiltin() = obj
-      or
-      obj instanceof ControlFlowNode and
-      exists(ClassObjectInternal c |
-        c.getSource() = cls and
-        value = TUnknownInstance(c)
-      )
-    )
-    or
-    exists(ObjectInternal owner, string name |
-      PointsTo::pointsTo(this.(AttrNode).getObject(name), context, owner, _) and
-      additionalAttribute(owner, name, value, origin)
-    )
-  }
-}
-
-deprecated private predicate additionalAttribute(
-  ObjectInternal owner, string name, ObjectInternal value, ControlFlowNode origin
-) {
-  exists(Object obj, ClassObject cls |
-    owner.getSource().(CustomPointsToAttribute).attributePointsTo(name, obj, cls, origin)
-  |
-    value.getBuiltin() = obj
-    or
-    obj instanceof ControlFlowNode and
-    exists(ClassObjectInternal c |
-      c.getSource() = cls and
-      value = TUnknownInstance(c)
-    )
-  )
 }

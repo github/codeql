@@ -2,7 +2,7 @@ import python
 import Loop
 import semmle.python.dataflow.TaintTracking
 
-/** Marker for "uninitialized". */
+/** A marker for "uninitialized". */
 class Uninitialized extends TaintKind {
   Uninitialized() { this = "undefined" }
 }

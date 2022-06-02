@@ -3,6 +3,7 @@
 import javascript
 private import NodeModuleResolutionImpl
 private import semmle.javascript.DynamicPropertyAccess as DynamicPropertyAccess
+private import semmle.javascript.internal.CachedStages
 
 /**
  * A Node.js module.
@@ -113,6 +114,7 @@ class NodeModule extends Module {
   }
 
   override DataFlow::Node getABulkExportedNode() {
+    Stages::Imports::ref() and
     exists(DataFlow::PropWrite write |
       write.getBase().asExpr() = this.getModuleVariable().getAnAccess() and
       write.getPropertyName() = "exports" and

@@ -1,0 +1,20 @@
+## 0.0.12
+
+### Breaking Changes
+
+* The flow state variants of `isBarrier` and `isAdditionalFlowStep` are no longer exposed in the taint tracking library. The `isSanitizer` and `isAdditionalTaintStep` predicates should be used instead.
+
+### Deprecated APIs
+
+* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### New Features
+
+* The data flow and taint tracking libraries have been extended with versions of `isBarrierIn`, `isBarrierOut`, and `isBarrierGuard`, respectively `isSanitizerIn`, `isSanitizerOut`, and `isSanitizerGuard`, that support flow states.
+
+### Minor Analysis Improvements
+
+* `DefaultOptions::exits` now holds for C11 functions with the `_Noreturn` or `noreturn` specifier.
+* `hasImplicitCopyConstructor` and `hasImplicitCopyAssignmentOperator` now correctly handle implicitly-deleted operators in templates.
+* All deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.

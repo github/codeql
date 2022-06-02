@@ -1,3 +1,51 @@
+## 0.1.3
+
+### New Queries
+
+* The `js/actions/command-injection` query has been added. It highlights GitHub Actions workflows that may allow an 
+  attacker to execute arbitrary code in the workflow.
+  The query previously existed an experimental query.
+* A new query `js/insecure-temporary-file` has been added. The query detects the creation of temporary files that may be accessible by others users. The query is not run by default. 
+
+## 0.1.2
+
+### New Queries
+
+* The `js/missing-origin-check` query has been added. It highlights "message" event handlers that do not check the origin of the event.  
+  The query previously existed as the experimental `js/missing-postmessageorigin-verification` query.
+
+## 0.1.1
+
+### Minor Analysis Improvements
+
+* The call graph now deals more precisely with calls to accessors (getters and setters).
+  Previously, calls to static accessors were not resolved, and some method calls were
+  incorrectly seen as calls to an accessor. Both issues have been fixed.
+
+## 0.1.0
+
+### New Queries
+
+* The `js/resource-exhaustion` query has been added. It highlights locations where an attacker can cause a large amount of resources to be consumed. 
+  The query previously existed as an experimental query.
+
+### Minor Analysis Improvements
+
+* Improved handling of custom DOM elements, potentially leading to more alerts for the XSS queries.
+* Improved taint tracking through calls to the `Array.prototype.reduce` function.
+
+## 0.0.14
+
+## 0.0.13
+
+### Minor Analysis Improvements
+
+* Fixed an issue that would sometimes prevent the data-flow analysis from finding flow
+  paths through a function that stores its result on an object.
+  This may lead to more results for the security queries.
+
+## 0.0.12
+
 ## 0.0.11
 
 ### New Queries

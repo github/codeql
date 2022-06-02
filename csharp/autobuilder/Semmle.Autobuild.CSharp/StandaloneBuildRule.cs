@@ -17,10 +17,6 @@ namespace Semmle.Autobuild.CSharp
                 {
                     standalone = builder.Actions.PathCombine(builder.CodeQLExtractorLangRoot, "tools", builder.CodeQlPlatform, "Semmle.Extraction.CSharp.Standalone");
                 }
-                else if (builder.SemmlePlatformTools is not null)
-                {
-                    standalone = builder.Actions.PathCombine(builder.SemmlePlatformTools, "csharp", "Semmle.Extraction.CSharp.Standalone");
-                }
                 else
                 {
                     return BuildScript.Failure;

@@ -117,11 +117,14 @@ class SearchRequestFilterSink extends Sink {
  *
  * This will match the encoding methods provided by the AntiXSS library.
  */
-class LDAPEncodeSanitizer extends Sanitizer {
-  LDAPEncodeSanitizer() {
+class LdapEncodeSanitizer extends Sanitizer {
+  LdapEncodeSanitizer() {
     this.getExpr().(MethodCall).getTarget().getName().regexpMatch("(?i)LDAP.*Encode.*")
   }
 }
+
+/** DEPRECATED: Alias for LdapEncodeSanitizer */
+deprecated class LDAPEncodeSanitizer = LdapEncodeSanitizer;
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 

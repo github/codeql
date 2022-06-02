@@ -42,7 +42,9 @@ class AndroidFileLeakConfig extends TaintTracking::Configuration {
       OnActivityForResultMethod oafr, ConditionBlock cb, CompileTimeConstantExpr cc,
       VarAccess intentVar
     |
-      cb.getCondition().(EQExpr).hasOperands(oafr.getParameter(0).getAnAccess(), cc) and
+      cb.getCondition()
+          .(ValueOrReferenceEqualsExpr)
+          .hasOperands(oafr.getParameter(0).getAnAccess(), cc) and
       cc.getIntValue() = any(AndroidFileIntentInput fi).getRequestCode() and
       intentVar.getType() instanceof TypeIntent and
       cb.controls(intentVar.getBasicBlock(), true) and

@@ -557,24 +557,6 @@ class MemberVariable extends Variable, @membervariable {
 }
 
 /**
- * A C/C++ function pointer variable.
- *
- * DEPRECATED: use `Variable.getType() instanceof FunctionPointerType` instead.
- */
-deprecated class FunctionPointerVariable extends Variable {
-  FunctionPointerVariable() { this.getType() instanceof FunctionPointerType }
-}
-
-/**
- * A C/C++ function pointer member variable.
- *
- * DEPRECATED: use `MemberVariable.getType() instanceof FunctionPointerType` instead.
- */
-deprecated class FunctionPointerMemberVariable extends MemberVariable {
-  FunctionPointerMemberVariable() { this instanceof FunctionPointerVariable }
-}
-
-/**
  * A C++14 variable template. For example, in the following code the variable
  * template `v` defines a family of variables:
  * ```

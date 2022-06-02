@@ -1,5 +1,4 @@
 import codeql.ruby.AST
-import codeql.ruby.ast.Variable
 
 query predicate variableAccess(VariableAccess access, Variable variable, Scope scope) {
   variable = access.getVariable() and

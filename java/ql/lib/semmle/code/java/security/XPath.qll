@@ -2,7 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A sink that represents a method that interprets XPath expressions.

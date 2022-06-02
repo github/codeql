@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+			Using user-controlled input in GitHub Actions may lead to
+			code injection in contexts like <i>run:</i> or <i>script:</i>.
+		</p>
+        <p>
+            Code injection in GitHub Actions may allow an attacker to 
+            exfiltrate the temporary GitHub repository authorization token. 
+            The token might have write access to the repository, allowing an attacker
+             to use the token to make changes to the repository.
+        </p>
+	</overview>
+
+	<recommendation>
+		<p>
+			The best practice to avoid code injection vulnerabilities
+			in GitHub workflows is to set the untrusted input value of the expression
+			to an intermediate environment variable.
+		</p>
+        <p>
+            It is also recommended to limit the permissions of any tokens used 
+            by a workflow such as the the GITHUB_TOKEN. 
+        </p>
+	</recommendation>
+
+	<example>
+		<p>
+			The following example lets a user inject an arbitrary shell command:
+		</p>
+		<sample src="examples/comment_issue_bad.yml" />
+
+		<p>
+			The following example uses shell syntax to read
+			the environment variable and will prevent the attack:
+		</p>
+		<sample src="examples/comment_issue_good.yml" />
+	</example>
+
+	<references>
+		<li>GitHub Security Lab Research: <a href="https://securitylab.github.com/research/github-actions-untrusted-input">Keeping your GitHub Actions and workflows secure: Untrusted input</a>.</li>
+        <li>GitHub Docs: <a href="https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions">Security hardening for GitHub Actions</a>.</li>
+        <li>GitHub Docs: <a href="https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token">Permissions for the GITHUB_TOKEN</a>.</li>
+	</references>
+</qhelp>

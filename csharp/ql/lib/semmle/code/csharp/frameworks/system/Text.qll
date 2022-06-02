@@ -32,7 +32,7 @@ private class SystemTextStringBuilderClearFlow extends SummarizedCallable {
     this = any(SystemTextStringBuilderClass s).getAMethod("Clear")
   }
 
-  override predicate clearsContent(ParameterPosition pos, DataFlow::Content content) {
+  override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
     pos.isThisParameter() and
     content instanceof DataFlow::ElementContent
   }

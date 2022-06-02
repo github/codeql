@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+A value is assigned to a field, but its value is never read. This means that the assignment
+has no effect, and could indicate a logic error or incomplete code.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Examine the assignment closely to determine whether it is redundant, or whether it is perhaps
+a symptom of another bug.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a simple <code>struct</code> type wrapping an integer counter with a
+method <code>reset</code> that sets the counter to zero.
+</p>
+<sample src="DeadStoreOfField.go" />
+<p>
+However, the receiver variable of <code>reset</code> is declared to be of type
+<code>counter</code>, not <code>*counter</code>, so the receiver value is passed into the method
+by value, not by reference. Consequently, the method does not actually mutate its receiver as
+intended.
+</p>
+<p>
+To fix this, change the type of the receiver variable to <code>*counter</code>:
+</p>
+<sample src="DeadStoreOfFieldGood.go" />
+</example>
+
+<references>
+<li>Go Frequently Asked Questions: <a href="https://golang.org/doc/faq#methods_on_values_or_pointers">Should I define methods on values or pointers?</a></li>
+<li>The Go Programming Language Specification: <a href="https://golang.org/ref/spec#Method_declarations">Method declarations</a>.</li>
+</references>
+</qhelp>

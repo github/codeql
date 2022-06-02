@@ -6,22 +6,6 @@ import javascript
 
 module LazyCache {
   /**
-   * DEPRECATED. DO NOT USE.
-   *
-   * A lazy-cache object, usually created through an expression of form `require('lazy-cache')(require)`.
-   */
-  deprecated class LazyCacheObject extends DataFlow::SourceNode {
-    LazyCacheObject() {
-      // Use `require` directly instead of `moduleImport` to avoid recursion.
-      // For the same reason, avoid `Import.getImportedPath`.
-      exists(Require req |
-        req.getArgument(0).getStringValue() = "lazy-cache" and
-        this = req.flow().(DataFlow::SourceNode).getAnInvocation()
-      )
-    }
-  }
-
-  /**
    * A variable containing a lazy-cache object.
    */
   class LazyCacheVariable extends LocalVariable {

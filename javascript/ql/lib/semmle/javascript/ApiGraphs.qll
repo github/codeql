@@ -2,11 +2,7 @@
  * Provides an implementation of  _API graphs_, which are an abstract representation of the API
  * surface used and/or defined by a code base.
  *
- * The nodes of the API graph represent definitions and uses of API components. The edges are
- * directed and labeled; they specify how the components represented by nodes relate to each other.
- * For example, if one of the nodes represents a definition of an API function, then there
- * will be nodes corresponding to the function's parameters, which are connected to the function
- * node by edges labeled `parameter <i>`.
+ * See `API::Node` for more in-depth documentation.
  */
 
 import javascript
@@ -14,50 +10,159 @@ private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import internal.CachedStages
 
 /**
- * Provides classes and predicates for working with APIs defined or used in a database.
+ * Provides classes and predicates for working with the API boundary between the current
+ * codebase and external libraries.
+ *
+ * See `API::Node` for more in-depth documentation.
  */
 module API {
   /**
-   * An abstract representation of a definition or use of an API component such as a function
-   * exported by an npm package, a parameter of such a function, or its result.
+   * A node in the API graph, representing a value that has crossed the boundary between this
+   * codebase and an external library (or in general, any external codebase).
+   *
+   * ### Basic usage
+   *
+   * API graphs are typically used to identify "API calls", that is, calls to an external function
+   * whose implementation is not necessarily part of the current codebase.
+   *
+   * The most basic use of API graphs is typically as follows:
+   * 1. Start with `API::moduleImport` for the relevant library.
+   * 2. Follow up with a chain of accessors such as `getMember` describing how to get to the relevant API function.
+   * 3. Map the resulting API graph nodes to data-flow nodes, using `asSource` or `asSink`.
+   *
+   * For example, a simplified way to get arguments to `underscore.extend` would be
+   * ```ql
+   * API::moduleImport("underscore").getMember("extend").getParameter(0).asSink()
+   * ```
+   *
+   * The most commonly used accessors are `getMember`, `getParameter`, and `getReturn`.
+   *
+   * ### API graph nodes
+   *
+   * There are two kinds of nodes in the API graphs, distinguished by who is "holding" the value:
+   * - **Use-nodes** represent values held by the current codebase, which came from an external library.
+   *   (The current codebase is "using" a value that came from the library).
+   * - **Def-nodes** represent values held by the external library, which came from this codebase.
+   *   (The current codebase "defines" the value seen by the library).
+   *
+   * API graph nodes are associated with data-flow nodes in the current codebase.
+   * (Since external libraries are not part of the database, there is no way to associate with concrete
+   * data-flow nodes from the external library).
+   * - **Use-nodes** are associated with data-flow nodes where a value enters the current codebase,
+   *   such as the return value of a call to an external function.
+   * - **Def-nodes** are associated with data-flow nodes where a value leaves the current codebase,
+   *   such as an argument passed in a call to an external function.
+   *
+   *
+   * ### Access paths and edge labels
+   *
+   * Nodes in the API graph are associated with a set of access paths, describing a series of operations
+   * that may be performed to obtain that value.
+   *
+   * For example, the access path `API::moduleImport("lodash").getMember("extend")` represents the action of
+   * importing `lodash` and then accessing the member `extend` on the resulting object.
+   * It would be associated with an expression such as `require("lodash").extend`.
+   *
+   * Each edge in the graph is labelled by such an "operation". For an edge `A->B`, the type of the `A` node
+   * determines who is performing the operation, and the type of the `B` node determines who ends up holding
+   * the result:
+   * - An edge starting from a use-node describes what the current codebase is doing to a value that
+   *   came from a library.
+   * - An edge starting from a def-node describes what the external library might do to a value that
+   *   came from the current codebase.
+   * - An edge ending in a use-node means the result ends up in the current codebase (at its associated data-flow node).
+   * - An edge ending in a def-node means the result ends up in external code (its associated data-flow node is
+   *   the place where it was "last seen" in the current codebase before flowing out)
+   *
+   * Because the implementation of the external library is not visible, it is not known exactly what operations
+   * it will perform on values that flow there. Instead, the edges starting from a def-node are operations that would
+   * lead to an observable effect within the current codebase; without knowing for certain if the library will actually perform
+   * those operations. (When constructing these edges, we assume the library is somewhat well-behaved).
+   *
+   * For example, given this snippet:
+   * ```js
+   * require('foo')(x => { doSomething(x) })
+   * ```
+   * A callback is passed to the external function `foo`. We can't know if `foo` will actually invoke this callback.
+   * But _if_ the library should decide to invoke the callback, then a value will flow into the current codebase via the `x` parameter.
+   * For that reason, an edge is generated representing the argument-passing operation that might be performed by `foo`.
+   * This edge is going from the def-node associated with the callback to the use-node associated with the parameter `x`.
+   *
+   * ### Thinking in operations versus code patterns
+   *
+   * Treating edges as "operations" helps avoid a pitfall in which library models become overly specific to certain code patterns.
+   * Consider the following two equivalent calls to `foo`:
+   * ```js
+   * const foo = require('foo');
+   *
+   * foo({
+   *   myMethod(x) {...}
+   * });
+   *
+   * foo({
+   *   get myMethod() {
+   *     return function(x) {...}
+   *   }
+   * });
+   * ```
+   * If `foo` calls `myMethod` on its first parameter, either of the `myMethod` implementations will be invoked.
+   * And indeed, the access path `API::moduleImport("foo").getParameter(0).getMember("myMethod").getParameter(0)` correctly
+   * identifies both `x` parameters.
+   *
+   * Observe how `getMember("myMethod")` behaves when the member is defined via a getter. When thinking in code patterns,
+   * it might seem obvious that `getMember` should have obtained a reference to the getter method itself.
+   * But when seeing it as an access to `myMethod` performed by the library, we can deduce that the relevant expression
+   * on the client side is actually the return-value of the getter.
+   *
+   * Although one may think of API graphs as a tool to find certain program elements in the codebase,
+   * it can lead to some situations where intuition does not match what works best in practice.
    */
   class Node extends Impl::TApiNode {
     /**
-     * Gets a data-flow node corresponding to a use of the API component represented by this node.
+     * Get a data-flow node where this value may flow after entering the current codebase.
      *
-     * For example, `require('fs').readFileSync` is a use of the function `readFileSync` from the
-     * `fs` module, and `require('fs').readFileSync(file)` is a use of the return of that function.
-     *
-     * This includes indirect uses found via data flow, meaning that in
-     * `f(obj.foo); function f(x) {};` both `obj.foo` and `x` are uses of the `foo` member from `obj`.
-     *
-     * As another example, in the assignment `exports.plusOne = (x) => x+1` the two references to
-     * `x` are uses of the first parameter of `plusOne`.
+     * This is similar to `asSource()` but additionally includes nodes that are transitively reachable by data flow.
+     * See `asSource()` for examples.
      */
     pragma[inline]
-    DataFlow::Node getAUse() {
-      exists(DataFlow::SourceNode src | Impl::use(this, src) |
-        Impl::trackUseNode(src).flowsTo(result)
-      )
+    DataFlow::Node getAValueReachableFromSource() {
+      Impl::trackUseNode(this.asSource()).flowsTo(result)
     }
 
     /**
-     * Gets an immediate use of the API component represented by this node.
+     * Get a data-flow node where this value enters the current codebase.
      *
-     * For example, `require('fs').readFileSync` is a an immediate use of the `readFileSync` member
-     * from the `fs` module.
+     * For example:
+     * ```js
+     * // API::moduleImport("fs").asSource()
+     * require('fs');
      *
-     * Unlike `getAUse()`, this predicate only gets the immediate references, not the indirect uses
-     * found via data flow. This means that in `const x = fs.readFile` only `fs.readFile` is a reference
-     * to the `readFile` member of `fs`, neither `x` nor any node that `x` flows to is a reference to
-     * this API component.
+     * // API::moduleImport("fs").getMember("readFile").asSource()
+     * require('fs').readFile;
+     *
+     * // API::moduleImport("fs").getMember("readFile").getReturn().asSource()
+     * require('fs').readFile();
+     *
+     * require('fs').readFile(
+     *  filename,
+     *  // 'y' matched by API::moduleImport("fs").getMember("readFile").getParameter(1).getParameter(0).asSource()
+     *  y => {
+     *    ...
+     * });
+     * ```
      */
-    DataFlow::SourceNode getAnImmediateUse() { Impl::use(this, result) }
+    DataFlow::SourceNode asSource() { Impl::use(this, result) }
+
+    /** DEPRECATED. This predicate has been renamed to `asSource`. */
+    deprecated DataFlow::SourceNode getAnImmediateUse() { result = this.asSource() }
+
+    /** DEPRECATED. This predicate has been renamed to `getAValueReachableFromSource`. */
+    deprecated DataFlow::Node getAUse() { result = this.getAValueReachableFromSource() }
 
     /**
      * Gets a call to the function represented by this API component.
      */
-    CallNode getACall() { result = this.getReturn().getAnImmediateUse() }
+    CallNode getACall() { result = this.getReturn().asSource() }
 
     /**
      * Gets a call to the function represented by this API component,
@@ -72,7 +177,7 @@ module API {
     /**
      * Gets a `new` call to the function represented by this API component.
      */
-    NewNode getAnInstantiation() { result = this.getInstance().getAnImmediateUse() }
+    NewNode getAnInstantiation() { result = this.getInstance().asSource() }
 
     /**
      * Gets an invocation (with our without `new`) to the function represented by this API component.
@@ -80,26 +185,38 @@ module API {
     InvokeNode getAnInvocation() { result = this.getACall() or result = this.getAnInstantiation() }
 
     /**
-     * Gets a data-flow node corresponding to the right-hand side of a definition of the API
-     * component represented by this node.
+     * Get a data-flow node where this value leaves the current codebase and flows into an
+     * external library (or in general, any external codebase).
      *
-     * For example, in the assignment `exports.plusOne = (x) => x+1`, the function expression
-     * `(x) => x+1` is the right-hand side of the  definition of the member `plusOne` of
-     * the enclosing module, and the expression `x+1` is the right-had side of the definition of
-     * its result.
+     * Concretely, this is either an argument passed to a call to external code,
+     * or the right-hand side of a property write on an object flowing into such a call.
      *
-     * Note that for parameters, it is the arguments flowing into that parameter that count as
-     * right-hand sides of the definition, not the declaration of the parameter itself.
-     * Consequently, in `require('fs').readFileSync(file)`, `file` is the right-hand
-     * side of a definition of the first parameter of `readFileSync` from the `fs` module.
+     * For example:
+     * ```js
+     * // 'x' is matched by API::moduleImport("foo").getParameter(0).asSink()
+     * require('foo')(x);
+     *
+     * // 'x' is matched by API::moduleImport("foo").getParameter(0).getMember("prop").asSink()
+     * require('foo')({
+     *   prop: x
+     * });
+     * ```
      */
-    DataFlow::Node getARhs() { Impl::rhs(this, result) }
+    DataFlow::Node asSink() { Impl::rhs(this, result) }
 
     /**
-     * Gets a data-flow node that may interprocedurally flow to the right-hand side of a definition
-     * of the API component represented by this node.
+     * Get a data-flow node that transitively flows to an external library (or in general, any external codebase).
+     *
+     * This is similar to `asSink()` but additionally includes nodes that transitively reach a sink by data flow.
+     * See `asSink()` for examples.
      */
-    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.getARhs()) }
+    DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
+
+    /** DEPRECATED. This predicate has been renamed to `asSink`. */
+    deprecated DataFlow::Node getARhs() { result = this.asSink() }
+
+    /** DEPRECATED. This predicate has been renamed to `getAValueReachingSink`. */
+    deprecated DataFlow::Node getAValueReachingRhs() { result = this.getAValueReachingSink() }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -109,7 +226,7 @@ module API {
      */
     cached
     Node getMember(string m) {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::member(m))
     }
 
@@ -119,7 +236,7 @@ module API {
      */
     cached
     Node getUnknownMember() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::unknownMember())
     }
 
@@ -129,7 +246,7 @@ module API {
      */
     cached
     Node getAMember() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getMember(_)
       or
       result = this.getUnknownMember()
@@ -148,7 +265,7 @@ module API {
      */
     cached
     Node getInstance() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::instance())
     }
 
@@ -160,7 +277,7 @@ module API {
      */
     cached
     Node getParameter(int i) {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::parameter(i))
     }
 
@@ -182,13 +299,12 @@ module API {
      */
     cached
     Node getReceiver() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::receiver())
     }
 
     /**
-     * Gets a node representing a parameter or the receiver of the function represented by this
-     * node.
+     * Gets a node representing a parameter of the function represented by this node.
      *
      * This predicate may result in a mix of parameters from different call sites in cases where
      * there are multiple invocations of this API component.
@@ -196,10 +312,8 @@ module API {
      */
     cached
     Node getAParameter() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getParameter(_)
-      or
-      result = this.getReceiver()
     }
 
     /**
@@ -210,7 +324,7 @@ module API {
      */
     cached
     Node getReturn() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::return())
     }
 
@@ -220,7 +334,7 @@ module API {
      */
     cached
     Node getPromised() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::promised())
     }
 
@@ -229,9 +343,75 @@ module API {
      */
     cached
     Node getPromisedError() {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::promisedError())
     }
+
+    /**
+     * Gets any class that has this value as a decorator.
+     *
+     * For example:
+     * ```js
+     * import { D } from "foo";
+     *
+     * // moduleImport("foo").getMember("D").getADecoratedClass()
+     * @D
+     * class C1 {}
+     *
+     * // moduleImport("foo").getMember("D").getReturn().getADecoratedClass()
+     * @D()
+     * class C2 {}
+     * ```
+     */
+    cached
+    Node getADecoratedClass() { result = this.getASuccessor(Label::decoratedClass()) }
+
+    /**
+     * Gets any method, field, or accessor that has this value as a decorator.
+     *
+     * In the case of an accessor, this gets the return value of a getter, or argument to a setter.
+     *
+     * For example:
+     * ```js
+     * import { D } from "foo";
+     *
+     * class C {
+     *   // moduleImport("foo").getMember("D").getADecoratedMember()
+     *   @D m1() {}
+     *   @D f;
+     *   @D get g() { return this.x; }
+     *
+     *   // moduleImport("foo").getMember("D").getReturn().getADecoratedMember()
+     *   @D() m2() {}
+     *   @D() f2;
+     *   @D() get g2() { return this.x; }
+     * }
+     * ```
+     */
+    cached
+    Node getADecoratedMember() { result = this.getASuccessor(Label::decoratedMember()) }
+
+    /**
+     * Gets any parameter that has this value as a decorator.
+     *
+     * For example:
+     * ```js
+     * import { D } from "foo";
+     *
+     * class C {
+     *   method(
+     *     // moduleImport("foo").getMember("D").getADecoratedParameter()
+     *     @D
+     *     param1,
+     *     // moduleImport("foo").getMember("D").getReturn().getADecoratedParameter()
+     *     @D()
+     *     param2
+     *  ) {}
+     * }
+     * ```
+     */
+    cached
+    Node getADecoratedParameter() { result = this.getASuccessor(Label::decoratedParameter()) }
 
     /**
      * Gets a string representation of the lexicographically least among all shortest access paths
@@ -271,7 +451,7 @@ module API {
      * In other words, the value of a use of `that` may flow into the right-hand side of a
      * definition of this node.
      */
-    predicate refersTo(Node that) { this.getARhs() = that.getAUse() }
+    predicate refersTo(Node that) { this.asSink() = that.getAValueReachableFromSource() }
 
     /**
      * Gets the data-flow node that gives rise to this node, if any.
@@ -320,8 +500,8 @@ module API {
       exists(Node pred, Label::ApiLabel lbl, string predpath |
         Impl::edge(pred, lbl, this) and
         predpath = pred.getAPath(length - 1) and
-        exists(string space | if length = 1 then space = "" else space = " " |
-          result = "(" + lbl + space + predpath + ")" and
+        exists(string dot | if length = 1 then dot = "" else dot = "." |
+          result = predpath + dot + lbl and
           // avoid producing strings longer than 1MB
           result.length() < 1000 * 1000
         )
@@ -371,21 +551,34 @@ module API {
   /**
    * An API entry point.
    *
-   * Extend this class to define additional API entry points other than modules.
-   * Typical examples include global variables.
+   * By default, API graph nodes are only created for nodes that come from an external
+   * library or escape into an external library. The points where values are cross the boundary
+   * between codebases are called "entry points".
+   *
+   * Imports and exports are considered entry points by default, but additional entry points may
+   * be added by extending this class. Typical examples include global variables.
    */
   abstract class EntryPoint extends string {
     bindingset[this]
     EntryPoint() { any() }
 
-    /** Gets a data-flow node that uses this entry point. */
-    abstract DataFlow::SourceNode getAUse();
+    /** DEPRECATED. This predicate has been renamed to `getASource`. */
+    deprecated DataFlow::SourceNode getAUse() { none() }
 
-    /** Gets a data-flow node that defines this entry point. */
-    abstract DataFlow::Node getARhs();
+    /** DEPRECATED. This predicate has been renamed to `getASink`. */
+    deprecated DataFlow::SourceNode getARhs() { none() }
+
+    /** Gets a data-flow node where a value enters the current codebase through this entry-point. */
+    DataFlow::SourceNode getASource() { none() }
+
+    /** Gets a data-flow node where a value leaves the current codebase through this entry-point. */
+    DataFlow::Node getASink() { none() }
 
     /** Gets an API-node for this entry point. */
-    API::Node getNode() { result = root().getASuccessor(Label::entryPoint(this)) }
+    API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
+
+    /** DEPRECATED. Use `getANode()` instead. */
+    deprecated API::Node getNode() { result = this.getANode() }
   }
 
   /**
@@ -497,7 +690,7 @@ module API {
         base = MkRoot() and
         exists(EntryPoint e |
           lbl = Label::entryPoint(e) and
-          rhs = e.getARhs()
+          rhs = e.getASink()
         )
         or
         exists(string m, string prop |
@@ -534,12 +727,36 @@ module API {
           or
           lbl = Label::promisedError() and
           PromiseFlow::storeStep(rhs, pred, Promises::errorProp())
+          or
+          // The return-value of a getter G counts as a definition of property G
+          // (Ordinary methods and properties are handled as PropWrite nodes)
+          exists(string name | lbl = Label::member(name) |
+            rhs = pred.(DataFlow::ObjectLiteralNode).getPropertyGetter(name).getAReturn()
+            or
+            rhs =
+              pred.(DataFlow::ClassNode)
+                  .getStaticMember(name, DataFlow::MemberKind::getter())
+                  .getAReturn()
+          )
+          or
+          // If `new C()` escapes, generate edges to its instance members
+          exists(DataFlow::ClassNode cls, string name |
+            pred = cls.getAClassReference().getAnInstantiation() and
+            lbl = Label::member(name)
+          |
+            rhs = cls.getInstanceMethod(name)
+            or
+            rhs = cls.getInstanceMember(name, DataFlow::MemberKind::getter()).getAReturn()
+          )
         )
         or
         exists(DataFlow::ClassNode cls, string name |
           base = MkClassInstance(cls) and
-          lbl = Label::member(name) and
+          lbl = Label::member(name)
+        |
           rhs = cls.getInstanceMethod(name)
+          or
+          rhs = cls.getInstanceMember(name, DataFlow::MemberKind::getter()).getAReturn()
         )
         or
         exists(DataFlow::FunctionNode f |
@@ -554,9 +771,10 @@ module API {
           rhs = f.getExceptionalReturn()
         )
         or
-        exists(int i |
-          lbl = Label::parameter(i) and
-          argumentPassing(base, i, rhs)
+        exists(int i | argumentPassing(base, i, rhs) |
+          lbl = Label::parameter(i)
+          or
+          i = -1 and lbl = Label::receiver()
         )
         or
         exists(DataFlow::SourceNode src, DataFlow::PropWrite pw |
@@ -564,6 +782,15 @@ module API {
         |
           lbl = Label::memberFromRef(pw)
         )
+      )
+      or
+      decoratorDualEdge(base, lbl, rhs)
+      or
+      decoratorRhsEdge(base, lbl, rhs)
+      or
+      exists(DataFlow::PropWrite write |
+        decoratorPropEdge(base, lbl, write) and
+        rhs = write.getRhs()
       )
     }
 
@@ -640,7 +867,7 @@ module API {
         base = MkRoot() and
         exists(EntryPoint e |
           lbl = Label::entryPoint(e) and
-          ref = e.getAUse()
+          ref = e.getASource()
         )
         or
         // property reads
@@ -693,6 +920,98 @@ module API {
           base = MkSyntheticCallbackArg(_, _, call) and
           lbl = Label::parameter(1) and
           ref = awaited(call)
+        )
+        or
+        decoratorDualEdge(base, lbl, ref)
+        or
+        decoratorUseEdge(base, lbl, ref)
+        or
+        // for fields and accessors, mark the reads as use-nodes
+        decoratorPropEdge(base, lbl, ref.(DataFlow::PropRead))
+      )
+    }
+
+    /** Holds if `base` is a use-node that flows to the decorator expression of the given decorator. */
+    pragma[nomagic]
+    private predicate useNodeFlowsToDecorator(TApiNode base, Decorator decorator) {
+      exists(DataFlow::SourceNode decoratorSrc |
+        use(base, decoratorSrc) and
+        trackUseNode(decoratorSrc).flowsToExpr(decorator.getExpression())
+      )
+    }
+
+    /**
+     * Holds if `ref` corresponds to both a use and def-node that should have an incoming edge from `base` labelled `lbl`.
+     *
+     * This happens because the decorated value escapes into the decorator function, and is then replaced
+     * by the function's return value. In the JS analysis we generally assume decorators return their input,
+     * but library models may want to find the return value.
+     */
+    private predicate decoratorDualEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
+      exists(ClassDefinition cls |
+        useNodeFlowsToDecorator(base, cls.getADecorator()) and
+        lbl = Label::decoratedClass() and
+        ref = DataFlow::valueNode(cls)
+      )
+      or
+      exists(MethodDefinition method |
+        useNodeFlowsToDecorator(base, method.getADecorator()) and
+        not method instanceof AccessorMethodDefinition and
+        lbl = Label::decoratedMember() and
+        ref = DataFlow::valueNode(method.getBody())
+      )
+    }
+
+    /** Holds if `ref` is a use that should have an incoming edge from `base` labelled `lbl`, induced by a decorator. */
+    private predicate decoratorUseEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
+      exists(SetterMethodDefinition accessor |
+        useNodeFlowsToDecorator(base,
+          [accessor.getADecorator(), accessor.getCorrespondingGetter().getADecorator()]) and
+        lbl = Label::decoratedMember() and
+        ref = DataFlow::parameterNode(accessor.getBody().getParameter(0))
+      )
+      or
+      exists(Parameter param |
+        useNodeFlowsToDecorator(base, param.getADecorator()) and
+        lbl = Label::decoratedParameter() and
+        ref = DataFlow::parameterNode(param)
+      )
+    }
+
+    /** Holds if `rhs` is a def node that should have an incoming edge from `base` labelled `lbl`, induced by a decorator. */
+    private predicate decoratorRhsEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
+      exists(GetterMethodDefinition accessor |
+        useNodeFlowsToDecorator(base,
+          [accessor.getADecorator(), accessor.getCorrespondingSetter().getADecorator()]) and
+        lbl = Label::decoratedMember() and
+        rhs = DataFlow::valueNode(accessor.getBody().getAReturnedExpr())
+      )
+    }
+
+    /**
+     * Holds if `ref` is a reference to a field/accessor that should have en incoming edge from base labelled `lbl`.
+     *
+     * Since fields do not have their own data-flow nodes, we generate a node for each read or write.
+     * For property writes, the right-hand side becomes a def-node and property reads become use-nodes.
+     *
+     * For accessors this predicate computes each use of the accessor.
+     * The return value inside the accessor is computed by the `decoratorRhsEdge` predicate.
+     */
+    private predicate decoratorPropEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::PropRef ref) {
+      exists(MemberDefinition fieldLike, DataFlow::ClassNode cls |
+        fieldLike instanceof FieldDefinition
+        or
+        fieldLike instanceof AccessorMethodDefinition
+      |
+        useNodeFlowsToDecorator(base, fieldLike.getADecorator()) and
+        lbl = Label::decoratedMember() and
+        cls = fieldLike.getDeclaringClass().flow() and
+        (
+          fieldLike.isStatic() and
+          ref = cls.getAClassReference().getAPropertyReference(fieldLike.getName())
+          or
+          not fieldLike.isStatic() and
+          ref = cls.getAnInstanceReference().getAPropertyReference(fieldLike.getName())
         )
       )
     }
@@ -892,7 +1211,7 @@ module API {
      */
     cached
     predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
-      Stages::APIStage::ref() and
+      Stages::ApiStage::ref() and
       exists(string m |
         pred = MkRoot() and
         lbl = Label::moduleLabel(m)
@@ -982,8 +1301,8 @@ module API {
     API::Node callee;
 
     InvokeNode() {
-      this = callee.getReturn().getAnImmediateUse() or
-      this = callee.getInstance().getAnImmediateUse() or
+      this = callee.getReturn().asSource() or
+      this = callee.getInstance().asSource() or
       this = Impl::getAPromisifiedInvocation(callee, _, _)
     }
 
@@ -998,7 +1317,7 @@ module API {
      * Gets an API node where a RHS of the node is the `i`th argument to this call.
      */
     pragma[noinline]
-    private Node getAParameterCandidate(int i) { result.getARhs() = this.getArgument(i) }
+    private Node getAParameterCandidate(int i) { result.asSink() = this.getArgument(i) }
 
     /** Gets the API node for a parameter of this invocation. */
     Node getAParameter() { result = this.getParameter(_) }
@@ -1009,13 +1328,13 @@ module API {
     /** Gets the API node for the return value of this call. */
     Node getReturn() {
       result = callee.getReturn() and
-      result.getAnImmediateUse() = this
+      result.asSource() = this
     }
 
     /** Gets the API node for the object constructed by this invocation. */
     Node getInstance() {
       result = callee.getInstance() and
-      result.getAnImmediateUse() = this
+      result.asSource() = this
     }
   }
 
@@ -1089,8 +1408,8 @@ module API {
      */
     LabelParameter parameter(int i) { result.getIndex() = i }
 
-    /** Gets the `parameter` edge label for the receiver. */
-    LabelParameter receiver() { result = parameter(-1) }
+    /** Gets the edge label for the receiver. */
+    LabelReceiver receiver() { any() }
 
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
@@ -1100,6 +1419,15 @@ module API {
 
     /** Gets the `promisedError` edge label connecting a promise to its rejected value. */
     LabelPromisedError promisedError() { any() }
+
+    /** Gets the label for an edge leading from a value `D` to any class that has `D` as a decorator. */
+    LabelDecoratedClass decoratedClass() { any() }
+
+    /** Gets the label for an edge leading from a value `D` to any method, field, or accessor that has `D` as a decorator. */
+    LabelDecoratedMethod decoratedMember() { any() }
+
+    /** Gets the label for an edge leading from a value `D` to any parameter that has `D` as a decorator. */
+    LabelDecoratedParameter decoratedParameter() { any() }
 
     /** Gets an entry-point label for the entry-point `e`. */
     LabelEntryPoint entryPoint(API::EntryPoint e) { result.getEntryPoint() = e }
@@ -1125,19 +1453,23 @@ module API {
         MkLabelUnknownMember() or
         MkLabelParameter(int i) {
           i =
-            [-1 .. max(int args |
+            [0 .. max(int args |
                 args = any(InvokeExpr invk).getNumArgument() or
                 args = any(Function f).getNumParameter()
               )] or
           i = [0 .. 10]
         } or
+        MkLabelReceiver() or
         MkLabelReturn() or
         MkLabelPromised() or
         MkLabelPromisedError() or
+        MkLabelDecoratedClass() or
+        MkLabelDecoratedMember() or
+        MkLabelDecoratedParameter() or
         MkLabelEntryPoint(API::EntryPoint e)
 
       /** A label for an entry-point. */
-      class LabelEntryPoint extends ApiLabel {
+      class LabelEntryPoint extends ApiLabel, MkLabelEntryPoint {
         API::EntryPoint e;
 
         LabelEntryPoint() { this = MkLabelEntryPoint(e) }
@@ -1145,32 +1477,26 @@ module API {
         /** Gets the EntryPoint associated with this label. */
         API::EntryPoint getEntryPoint() { result = e }
 
-        override string toString() { result = e }
+        override string toString() { result = "getASuccessor(Label::entryPoint(\"" + e + "\"))" }
       }
 
       /** A label that gets a promised value. */
-      class LabelPromised extends ApiLabel {
-        LabelPromised() { this = MkLabelPromised() }
-
-        override string toString() { result = "promised" }
+      class LabelPromised extends ApiLabel, MkLabelPromised {
+        override string toString() { result = "getPromised()" }
       }
 
       /** A label that gets a rejected promise. */
-      class LabelPromisedError extends ApiLabel {
-        LabelPromisedError() { this = MkLabelPromisedError() }
-
-        override string toString() { result = "promisedError" }
+      class LabelPromisedError extends ApiLabel, MkLabelPromisedError {
+        override string toString() { result = "getPromisedError()" }
       }
 
       /** A label that gets the return value of a function. */
-      class LabelReturn extends ApiLabel {
-        LabelReturn() { this = MkLabelReturn() }
-
-        override string toString() { result = "return" }
+      class LabelReturn extends ApiLabel, MkLabelReturn {
+        override string toString() { result = "getReturn()" }
       }
 
       /** A label for a module. */
-      class LabelModule extends ApiLabel {
+      class LabelModule extends ApiLabel, MkLabelModule {
         string mod;
 
         LabelModule() { this = MkLabelModule(mod) }
@@ -1178,18 +1504,17 @@ module API {
         /** Gets the module associated with this label. */
         string getMod() { result = mod }
 
-        override string toString() { result = "module " + mod }
+        // moduleImport is not neccesarilly the predicate to use, but it's close enough for most cases.
+        override string toString() { result = "moduleImport(\"" + mod + "\")" }
       }
 
       /** A label that gets an instance from a `new` call. */
-      class LabelInstance extends ApiLabel {
-        LabelInstance() { this = MkLabelInstance() }
-
-        override string toString() { result = "instance" }
+      class LabelInstance extends ApiLabel, MkLabelInstance {
+        override string toString() { result = "getInstance()" }
       }
 
       /** A label for the member named `prop`. */
-      class LabelMember extends ApiLabel {
+      class LabelMember extends ApiLabel, MkLabelMember {
         string prop;
 
         LabelMember() { this = MkLabelMember(prop) }
@@ -1197,26 +1522,46 @@ module API {
         /** Gets the property associated with this label. */
         string getProperty() { result = prop }
 
-        override string toString() { result = "member " + prop }
+        override string toString() { result = "getMember(\"" + prop + "\")" }
       }
 
       /** A label for a member with an unknown name. */
-      class LabelUnknownMember extends ApiLabel {
+      class LabelUnknownMember extends ApiLabel, MkLabelUnknownMember {
         LabelUnknownMember() { this = MkLabelUnknownMember() }
 
-        override string toString() { result = "member *" }
+        override string toString() { result = "getUnknownMember()" }
       }
 
       /** A label for parameter `i`. */
-      class LabelParameter extends ApiLabel {
+      class LabelParameter extends ApiLabel, MkLabelParameter {
         int i;
 
         LabelParameter() { this = MkLabelParameter(i) }
 
-        override string toString() { result = "parameter " + i }
+        override string toString() { result = "getParameter(" + i + ")" }
 
         /** Gets the index of the parameter for this label. */
         int getIndex() { result = i }
+      }
+
+      /** A label for the receiver of call, that is, the value passed as `this`. */
+      class LabelReceiver extends ApiLabel, MkLabelReceiver {
+        override string toString() { result = "getReceiver()" }
+      }
+
+      /** A label for a class decorated by the current value. */
+      class LabelDecoratedClass extends ApiLabel, MkLabelDecoratedClass {
+        override string toString() { result = "getADecoratedClass()" }
+      }
+
+      /** A label for a method, field, or accessor decorated by the current value. */
+      class LabelDecoratedMethod extends ApiLabel, MkLabelDecoratedMember {
+        override string toString() { result = "decoratedMember()" }
+      }
+
+      /** A label for a parameter decorated by the current value. */
+      class LabelDecoratedParameter extends ApiLabel, MkLabelDecoratedParameter {
+        override string toString() { result = "decoratedParameter()" }
       }
     }
   }
@@ -1251,7 +1596,7 @@ private predicate exports(string m, string prop, DataFlow::Node rhs) {
 
 /** Gets the definition of module `m`. */
 private Module importableModule(string m) {
-  exists(NPMPackage pkg, PackageJSON json | json = pkg.getPackageJSON() and not json.isPrivate() |
+  exists(NpmPackage pkg, PackageJson json | json = pkg.getPackageJson() and not json.isPrivate() |
     result = pkg.getMainModule() and
     not result.isExterns() and
     m = pkg.getPackageName()

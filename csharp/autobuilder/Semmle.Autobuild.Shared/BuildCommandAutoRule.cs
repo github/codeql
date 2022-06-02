@@ -58,7 +58,7 @@ namespace Semmle.Autobuild.Shared
                 if (vsTools is not null)
                     command.CallBatFile(vsTools.Path);
 
-                builder.MaybeIndex(command, scriptPath);
+                command.RunCommand(scriptPath);
                 return command.Script;
             });
         }

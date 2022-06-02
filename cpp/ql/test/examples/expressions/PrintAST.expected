@@ -128,7 +128,7 @@ ConstructorCall.cpp:
 #    1|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
-#    3| [ConversionConstructor] void C::C(int)
+#    3| [Constructor] void C::C(int)
 #    3|   <params>: 
 #    3|     getParameter(0): [Parameter] i
 #    3|         Type = [IntType] int

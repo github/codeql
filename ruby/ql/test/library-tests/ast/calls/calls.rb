@@ -345,3 +345,20 @@ foo(x: 42)
 foo(x:, novar:)
 foo(X: 42)
 foo(X:)
+
+# calls inside lambdas
+y = 1
+one = ->(x) { y }
+f = ->(x) { foo x }
+g = ->(x) { unknown_call }
+h = -> (x) do
+  x
+  y
+  unknown_call
+end
+
+# calls with various call operators
+list.empty?
+list&.empty?
+list::empty?
+foo&.bar(1,2) { |x| x }

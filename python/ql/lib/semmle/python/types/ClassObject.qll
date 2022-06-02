@@ -63,13 +63,13 @@ class ClassObject extends Object {
   ClassObject getAnImproperSuperType() { result = this.getABaseType*() }
 
   /**
-   * Whether this class is a new style class.
+   * Holds if this class is a new style class.
    * A new style class is one that implicitly or explicitly inherits from `object`.
    */
   predicate isNewStyle() { Types::isNewStyle(this.theClass()) }
 
   /**
-   * Whether this class is an old style class.
+   * Holds if this class is an old style class.
    * An old style class is one that does not inherit from `object`.
    */
   predicate isOldStyle() { Types::isOldStyle(this.theClass()) }
@@ -166,7 +166,7 @@ class ClassObject extends Object {
     not this.failedInference()
   }
 
-  /* Whether this class is abstract. */
+  /** Holds if this class is abstract. */
   predicate isAbstract() {
     this.getMetaClass() = theAbcMetaClassObject()
     or
@@ -357,7 +357,7 @@ class ClassObject extends Object {
 }
 
 /**
- * The 'str' class. This is the same as the 'bytes' class for
+ * Gets the 'str' class. This is the same as the 'bytes' class for
  * Python 2 and the 'unicode' class for Python 3
  */
 ClassObject theStrType() {
@@ -375,128 +375,128 @@ ClassObject theAbcMetaClassObject() {
 }
 
 /* Common builtin classes */
-/** The built-in class NoneType */
+/** Gets the built-in class NoneType */
 ClassObject theNoneType() { result.asBuiltin() = Builtin::special("NoneType") }
 
-/** The built-in class 'bool' */
+/** Gets the built-in class 'bool' */
 ClassObject theBoolType() { result.asBuiltin() = Builtin::special("bool") }
 
-/** The builtin class 'type' */
+/** Gets the builtin class 'type' */
 ClassObject theTypeType() { result.asBuiltin() = Builtin::special("type") }
 
-/** The builtin object ClassType (for old-style classes) */
+/** Gets the builtin object ClassType (for old-style classes) */
 ClassObject theClassType() { result.asBuiltin() = Builtin::special("ClassType") }
 
-/** The builtin object InstanceType (for old-style classes) */
+/** Gets the builtin object InstanceType (for old-style classes) */
 ClassObject theInstanceType() { result.asBuiltin() = Builtin::special("InstanceType") }
 
-/** The builtin class 'tuple' */
+/** Gets the builtin class 'tuple' */
 ClassObject theTupleType() { result.asBuiltin() = Builtin::special("tuple") }
 
-/** The builtin class 'int' */
+/** Gets the builtin class 'int' */
 ClassObject theIntType() { result.asBuiltin() = Builtin::special("int") }
 
-/** The builtin class 'long' (Python 2 only) */
+/** Gets the builtin class 'long' (Python 2 only) */
 ClassObject theLongType() { result.asBuiltin() = Builtin::special("long") }
 
-/** The builtin class 'float' */
+/** Gets the builtin class 'float' */
 ClassObject theFloatType() { result.asBuiltin() = Builtin::special("float") }
 
-/** The builtin class 'complex' */
+/** Gets the builtin class 'complex' */
 ClassObject theComplexType() { result.asBuiltin() = Builtin::special("complex") }
 
-/** The builtin class 'object' */
+/** Gets the builtin class 'object' */
 ClassObject theObjectType() { result.asBuiltin() = Builtin::special("object") }
 
-/** The builtin class 'list' */
+/** Gets the builtin class 'list' */
 ClassObject theListType() { result.asBuiltin() = Builtin::special("list") }
 
-/** The builtin class 'dict' */
+/** Gets the builtin class 'dict' */
 ClassObject theDictType() { result.asBuiltin() = Builtin::special("dict") }
 
-/** The builtin class 'Exception' */
+/** Gets the builtin class 'Exception' */
 ClassObject theExceptionType() { result.asBuiltin() = Builtin::special("Exception") }
 
-/** The builtin class for unicode. unicode in Python2, str in Python3 */
+/** Gets the builtin class for unicode. unicode in Python2, str in Python3 */
 ClassObject theUnicodeType() { result.asBuiltin() = Builtin::special("unicode") }
 
-/** The builtin class '(x)range' */
+/** Gets the builtin class '(x)range' */
 ClassObject theRangeType() {
   result = Object::builtin("xrange")
   or
   major_version() = 3 and result = Object::builtin("range")
 }
 
-/** The builtin class for bytes. str in Python2, bytes in Python3 */
+/** Gets the builtin class for bytes. str in Python2, bytes in Python3 */
 ClassObject theBytesType() { result.asBuiltin() = Builtin::special("bytes") }
 
-/** The builtin class 'set' */
+/** Gets the builtin class 'set' */
 ClassObject theSetType() { result.asBuiltin() = Builtin::special("set") }
 
-/** The builtin class 'property' */
+/** Gets the builtin class 'property' */
 ClassObject thePropertyType() { result.asBuiltin() = Builtin::special("property") }
 
-/** The builtin class 'BaseException' */
+/** Gets the builtin class 'BaseException' */
 ClassObject theBaseExceptionType() { result.asBuiltin() = Builtin::special("BaseException") }
 
-/** The class of builtin-functions */
+/** Gets the class of builtin-functions */
 ClassObject theBuiltinFunctionType() {
   result.asBuiltin() = Builtin::special("BuiltinFunctionType")
 }
 
-/** The class of Python functions */
+/** Gets the class of Python functions */
 ClassObject thePyFunctionType() { result.asBuiltin() = Builtin::special("FunctionType") }
 
-/** The builtin class 'classmethod' */
+/** Gets the builtin class 'classmethod' */
 ClassObject theClassMethodType() { result.asBuiltin() = Builtin::special("ClassMethod") }
 
-/** The builtin class 'staticmethod' */
+/** Gets the builtin class 'staticmethod' */
 ClassObject theStaticMethodType() { result.asBuiltin() = Builtin::special("StaticMethod") }
 
-/** The class of modules */
+/** Gets the class of modules */
 ClassObject theModuleType() { result.asBuiltin() = Builtin::special("ModuleType") }
 
-/** The class of generators */
+/** Gets the class of generators */
 ClassObject theGeneratorType() { result.asBuiltin() = Builtin::special("generator") }
 
-/** The builtin class 'TypeError' */
+/** Gets the builtin class 'TypeError' */
 ClassObject theTypeErrorType() { result.asBuiltin() = Builtin::special("TypeError") }
 
-/** The builtin class 'AttributeError' */
+/** Gets the builtin class 'AttributeError' */
 ClassObject theAttributeErrorType() { result.asBuiltin() = Builtin::special("AttributeError") }
 
-/** The builtin class 'KeyError' */
+/** Gets the builtin class 'KeyError' */
 ClassObject theKeyErrorType() { result.asBuiltin() = Builtin::special("KeyError") }
 
-/** The builtin class of bound methods */
+/** Gets the builtin class of bound methods */
 pragma[noinline]
 ClassObject theBoundMethodType() { result.asBuiltin() = Builtin::special("MethodType") }
 
-/** The builtin class of builtin properties */
+/** Gets the builtin class of builtin properties */
 ClassObject theGetSetDescriptorType() {
   result.asBuiltin() = Builtin::special("GetSetDescriptorType")
 }
 
-/** The method descriptor class */
+/** Gets the method descriptor class */
 ClassObject theMethodDescriptorType() {
   result.asBuiltin() = Builtin::special("MethodDescriptorType")
 }
 
-/** The class of builtin properties */
+/** Gets the class of builtin properties */
 ClassObject theBuiltinPropertyType() {
   /* This is CPython specific */
   result.isC() and
   result.getName() = "getset_descriptor"
 }
 
-/** The builtin class 'IOError' */
+/** Gets the builtin class 'IOError' */
 ClassObject theIOErrorType() { result = Object::builtin("IOError") }
 
-/** The builtin class 'super' */
+/** Gets the builtin class 'super' */
 ClassObject theSuperType() { result = Object::builtin("super") }
 
-/** The builtin class 'StopIteration' */
+/** Gets the builtin class 'StopIteration' */
 ClassObject theStopIterationType() { result = Object::builtin("StopIteration") }
 
-/** The builtin class 'NotImplementedError' */
+/** Gets the builtin class 'NotImplementedError' */
 ClassObject theNotImplementedErrorType() { result = Object::builtin("NotImplementedError") }

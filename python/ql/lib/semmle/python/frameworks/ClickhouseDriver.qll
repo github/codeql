@@ -20,7 +20,7 @@ private import semmle.python.frameworks.PEP249
  */
 module ClickhouseDriver {
   /**
-   * `clickhouse_driver` implements PEP249,
+   * A model of `clickhouse-driver`, which implements PEP249,
    * providing ways to execute SQL statements against a database.
    */
   class ClickHouseDriverPEP249 extends PEP249::PEP249ModuleApiNode {

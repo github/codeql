@@ -42,7 +42,7 @@ void tests(FILE *log, myStruct &s)
 {
 	fprintf(log, "password = %s\n", s.password); // BAD
 	fprintf(log, "thepasswd = %s\n", s.thepasswd); // BAD
-	fprintf(log, "accountkey = %s\n", s.accountkey); // DUBIOUS [NOT REPORTED]
+	fprintf(log, "accountkey = %s\n", s.accountkey); // BAD
 	fprintf(log, "password_hash = %s\n", s.password_hash); // GOOD
 	fprintf(log, "encrypted_passwd = %s\n", s.encrypted_passwd); // GOOD
 	fprintf(log, "password_file = %s\n", s.password_file); // GOOD

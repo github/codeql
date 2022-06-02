@@ -7,7 +7,7 @@ import experimental.semmle.python.templates.SSTISink
 deprecated ClassValue theDjangoTemplateClass() { result = Value::named("django.template.Template") }
 
 /**
- * Sink representng `django.template.Template` class instantiation argument.
+ * A sink representng `django.template.Template` class instantiation argument.
  *
  *  from django.template import Template
  *  template = Template(`sink`)

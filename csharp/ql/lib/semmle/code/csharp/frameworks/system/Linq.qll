@@ -2,14 +2,14 @@
  * Provides classes related to the namespace `System.Linq`.
  */
 
-private import csharp as csharp
+private import csharp as CSharp
 private import semmle.code.csharp.frameworks.System as System
 private import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
 
 /** Definitions relating to the `System.Linq` namespace. */
 module SystemLinq {
   /** The `System.Linq` namespace. */
-  class Namespace extends csharp::Namespace {
+  class Namespace extends CSharp::Namespace {
     Namespace() {
       this.getParentNamespace() instanceof System::SystemNamespace and
       this.hasUndecoratedName("Linq")
@@ -17,7 +17,7 @@ module SystemLinq {
   }
 
   /** A class in the `System.Linq` namespace. */
-  class Class extends csharp::Class {
+  class Class extends CSharp::Class {
     Class() { this.getNamespace() instanceof Namespace }
   }
 
@@ -26,10 +26,10 @@ module SystemLinq {
     SystemLinqEnumerableClass() { this.hasName("Enumerable") }
 
     /** Gets a `Count()` method. */
-    csharp::ExtensionMethod getACountMethod() { result = this.getAMethod("Count<>") }
+    CSharp::ExtensionMethod getACountMethod() { result = this.getAMethod("Count<>") }
 
     /** Gets an `Any()` method. */
-    csharp::ExtensionMethod getAnAnyMethod() { result = this.getAMethod("Any<>") }
+    CSharp::ExtensionMethod getAnAnyMethod() { result = this.getAMethod("Any<>") }
   }
 }
 

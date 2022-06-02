@@ -11,7 +11,6 @@ private import TranslatedDeclarationEntry
 private import TranslatedElement
 private import TranslatedFunction
 private import TranslatedInitialization
-private import TranslatedFunction
 private import TranslatedStmt
 import TranslatedCall
 
@@ -74,7 +73,10 @@ abstract class TranslatedExpr extends TranslatedElement {
     expr.isGLValueCategory()
   }
 
-  final override Locatable getAST() { result = expr }
+  final override Locatable getAst() { result = expr }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = this.getAst() }
 
   final override Function getFunction() { result = expr.getEnclosingFunction() }
 
@@ -1709,7 +1711,7 @@ abstract class TranslatedAllocationSize extends TranslatedExpr, TTranslatedAlloc
 }
 
 TranslatedAllocationSize getTranslatedAllocationSize(NewOrNewArrayExpr newExpr) {
-  result.getAST() = newExpr
+  result.getAst() = newExpr
 }
 
 /**
@@ -1875,7 +1877,7 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
 }
 
 TranslatedAllocatorCall getTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
-  result.getAST() = newExpr
+  result.getAst() = newExpr
 }
 
 /**

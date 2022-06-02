@@ -511,13 +511,6 @@ module FinallySplitting {
     predicate isEntryNode() { first(try.getFinally(), this) }
   }
 
-  /** A control flow element that does not belong to a `finally` block. */
-  private class NonFinallyControlFlowElement extends ControlFlowElement {
-    NonFinallyControlFlowElement() {
-      not this = any(Statements::TryStmtTree t).getAFinallyDescendant()
-    }
-  }
-
   /**
    * A split for elements belonging to a `finally` block, which determines how to
    * continue execution after leaving the `finally` block. For example, in

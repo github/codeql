@@ -1,6 +1,6 @@
 /**
  * Provides a taint-tracking configuration for reasoning about code
- * constructed from libary input vulnerabilities.
+ * constructed from library input vulnerabilities.
  *
  * Note, for performance reasons: only import this file if
  * `UnsafeCodeConstruction::Configuration` is needed, otherwise

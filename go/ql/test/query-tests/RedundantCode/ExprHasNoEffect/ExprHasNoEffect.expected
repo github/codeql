@@ -1,0 +1,4 @@
+| ExprHasNoEffect.go:13:2:13:13 | call to addDays | This expression has no effect. |
+| main.go:26:2:26:7 | call to f1 | This expression has no effect. |
+| main.go:28:2:28:11 | call to f1 | This expression has no effect. |
+| main.go:29:2:29:8 | call to abs | This expression has no effect. |

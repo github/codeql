@@ -11,7 +11,7 @@ module NextJS {
   /**
    * Gets a `package.json` that depends on the `Next.js` library.
    */
-  PackageJSON getANextPackage() { result.getDependencies().getADependency("next", _) }
+  PackageJson getANextPackage() { result.getDependencies().getADependency("next", _) }
 
   /**
    * Gets a "pages" folder in a `Next.js` application.
@@ -159,12 +159,36 @@ module NextJS {
   }
 
   /**
+   * A function that handles both a request and response from Next.js, seen as a routehandler.
+   */
+  class NextReqResHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    DataFlow::ParameterNode req;
+    DataFlow::ParameterNode res;
+
+    NextReqResHandler() {
+      res = this.getAParameter() and
+      req = this.getAParameter() and
+      req.hasUnderlyingType("next", "NextApiRequest") and
+      res.hasUnderlyingType("next", "NextApiResponse")
+    }
+
+    /** Gets the request parameter */
+    DataFlow::ParameterNode getRequest() { result = req }
+
+    /** Gets the response parameter */
+    DataFlow::ParameterNode getResponse() { result = res }
+  }
+
+  /**
    * A NodeJS HTTP request object in a Next.js page.
    */
   class NextHttpRequestSource extends NodeJSLib::RequestSource {
-    NextHttpRouteHandler rh;
+    HTTP::RouteHandler rh;
 
-    NextHttpRequestSource() { this = rh.getParameter(0).getAPropertyRead("req") }
+    NextHttpRequestSource() {
+      this = rh.(NextHttpRouteHandler).getParameter(0).getAPropertyRead("req") or
+      this = rh.(NextReqResHandler).getRequest()
+    }
 
     override HTTP::RouteHandler getRouteHandler() { result = rh }
   }
@@ -173,9 +197,12 @@ module NextJS {
    * A NodeJS HTTP response object in a Next.js page.
    */
   class NextHttpResponseSource extends NodeJSLib::ResponseSource {
-    NextHttpRouteHandler rh;
+    HTTP::RouteHandler rh;
 
-    NextHttpResponseSource() { this = rh.getParameter(0).getAPropertyRead("res") }
+    NextHttpResponseSource() {
+      this = rh.(NextHttpRouteHandler).getParameter(0).getAPropertyRead("res") or
+      this = rh.(NextReqResHandler).getResponse()
+    }
 
     override HTTP::RouteHandler getRouteHandler() { result = rh }
   }
@@ -195,20 +222,23 @@ module NextJS {
    * The response (res) includes a set of Express.js-like methods,
    * and we therefore model the routehandler as an Express.js routehandler.
    */
-  class NextAPIRouteHandler extends DataFlow::FunctionNode, Express::RouteHandler,
+  class NextApiRouteHandler extends DataFlow::FunctionNode, Express::RouteHandler,
     HTTP::Servers::StandardRouteHandler {
-    NextAPIRouteHandler() {
+    NextApiRouteHandler() {
       exists(Module mod | mod.getFile().getParentContainer() = apiFolder() |
         this = mod.getAnExportedValue("default").getAFunctionValue()
       )
     }
 
     override Parameter getRouteHandlerParameter(string kind) {
-      kind = "request" and result = getFunction().getParameter(0)
+      kind = "request" and result = this.getFunction().getParameter(0)
       or
-      kind = "response" and result = getFunction().getParameter(1)
+      kind = "response" and result = this.getFunction().getParameter(1)
     }
   }
+
+  /** DEPRECATED: Alias for NextApiRouteHandler */
+  deprecated class NextAPIRouteHandler = NextApiRouteHandler;
 
   /**
    * Gets a reference to a [Next.js router](https://nextjs.org/docs/api-reference/next/router).
@@ -222,6 +252,6 @@ module NextJS {
           .getParameter(0)
           .getParameter(0)
           .getMember("router")
-          .getAnImmediateUse()
+          .asSource()
   }
 }

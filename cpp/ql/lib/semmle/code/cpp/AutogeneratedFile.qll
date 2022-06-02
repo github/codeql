@@ -84,6 +84,7 @@ private int fileHeaderLimit(File f) {
     fc = fileFirstComment(f) and
     result =
       min(int line |
+        // code ending the initial comments
         exists(DeclarationEntry de, Location l |
           l = de.getLocation() and
           l.getFile() = f and
@@ -105,7 +106,13 @@ private int fileHeaderLimit(File f) {
           line > fc
         )
         or
+        // end of the file
         line = f.getMetrics().getNumberOfLines()
+        or
+        // rarely, we've seen extremely long sequences of initial comments
+        // (and/or limitations in the above constraints) cause an overflow of
+        // the maximum string length. So don't look past 1000 lines regardless.
+        line = 1000
       )
   )
 }

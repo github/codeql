@@ -8,8 +8,8 @@ import java
 /**
  * An EJB deployment descriptor XML file named `ejb-jar.xml`.
  */
-class EjbJarXMLFile extends XMLFile {
-  EjbJarXMLFile() { this.getStem() = "ejb-jar" }
+class EjbJarXmlFile extends XMLFile {
+  EjbJarXmlFile() { this.getStem() = "ejb-jar" }
 
   /** Gets the root `ejb-jar` XML element of this `ejb-jar.xml` file. */
   EjbJarRootElement getRoot() { result = this.getAChild() }
@@ -35,10 +35,13 @@ class EjbJarXMLFile extends XMLFile {
   }
 }
 
+/** DEPRECATED: Alias for EjbJarXmlFile */
+deprecated class EjbJarXMLFile = EjbJarXmlFile;
+
 /** The root `ejb-jar` XML element in an `ejb-jar.xml` file. */
 class EjbJarRootElement extends XMLElement {
   EjbJarRootElement() {
-    this.getParent() instanceof EjbJarXMLFile and
+    this.getParent() instanceof EjbJarXmlFile and
     this.getName() = "ejb-jar"
   }
 

@@ -6,7 +6,7 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 
-/** Class representing property objects in Python */
+/** A property object. */
 class PropertyInternal extends ObjectInternal, TProperty {
   /** Gets the name of this property */
   override string getName() { result = this.getGetter().getName() }

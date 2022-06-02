@@ -138,7 +138,7 @@ class AnalyzedVarDef extends VarDef {
   /**
    * Gets the toplevel syntactic unit to which this definition belongs.
    */
-  TopLevel getTopLevel() { result = this.(ASTNode).getTopLevel() }
+  TopLevel getTopLevel() { result = this.(AstNode).getTopLevel() }
 }
 
 /**

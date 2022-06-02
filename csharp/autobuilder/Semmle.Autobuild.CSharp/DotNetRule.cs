@@ -240,7 +240,7 @@ namespace Semmle.Autobuild.CSharp
         private static BuildScript GetBuildScript(Autobuilder builder, string? dotNetPath, IDictionary<string, string>? environment, string projOrSln)
         {
             var build = new CommandBuilder(builder.Actions, null, environment);
-            var script = builder.MaybeIndex(build, DotNetCommand(builder.Actions, dotNetPath)).
+            var script = build.RunCommand(DotNetCommand(builder.Actions, dotNetPath)).
                 Argument("build").
                 Argument("--no-incremental");
 

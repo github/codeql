@@ -12,7 +12,7 @@ import semmle.python.PrintAst
 import analysis.DefinitionTracking
 
 /**
- * The source file to generate an AST from.
+ * Gets the source file that will be used to generate the AST.
  */
 external string selectedSourceFile();
 

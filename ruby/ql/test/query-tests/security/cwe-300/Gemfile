@@ -1,0 +1,56 @@
+source "https://rubygems.org" # GOOD
+source "http://rubygems.org" # $result=BAD
+source "ftp://rubygems.org" # $result=BAD
+source "ftps://rubygems.org" # GOOD
+source "unknown://rubygems.org" # GOOD
+
+git_source(:a) { "https://github.com"   } # GOOD
+git_source(:b) { "http://github.com"    } # $result=BAD
+git_source(:c) { "ftp://github.com"     } # $result=BAD
+git_source(:d) { "ftps://github.com"    } # GOOD
+git_source(:e) { "unknown://github.com" } # GOOD
+
+git_source(:f) { |name| "https://github.com/#{name}" } # GOOD
+git_source(:g) { |name| "http://github.com/#{name}" } # $result=BAD
+git_source(:h) { |name| "ftp://github.com/#{name}" } # $result=BAD
+git_source(:i) { |name| "ftps://github.com/#{name}" } # GOOD
+git_source(:j) { |name| "unknown://github.com/#{name}" } # GOOD
+
+git_source(:k) do |name|
+    foo
+    "https://github.com/#{name}" } # GOOD
+end
+git_source(:l) do |name|
+    foo
+    "http://github.com/#{name}" } # $result=BAD
+end
+git_source(:m) do |name|
+    foo
+    "ftp://github.com/#{name}" } # $result=BAD
+end
+git_source(:n) do |name|
+    foo
+    "ftps://github.com/#{name}" } # GOOD
+end
+git_source(:o) do |name|
+    foo
+    "unknown://github.com/#{name}" } # GOOD
+end
+
+gem "jwt", "1.2.3", git: "https://github.com/jwt/ruby-jwt" # GOOD
+gem "jwt", "1.2.3", git: "http://github.com/jwt/ruby-jwt" # $result=BAD
+gem "jwt", "1.2.3", git: "ftp://github.com/jwt/ruby-jwt" # $result=BAD
+gem "jwt", "1.2.3", git: "ftps://github.com/jwt/ruby-jwt" # GOOD
+gem "jwt", "1.2.3", git: "unknown://github.com/jwt/ruby-jwt" # GOOD
+
+gem "jwt", "1.2.3", :git => "https://github.com/jwt/ruby-jwt" # GOOD
+gem "jwt", "1.2.3", :git => "http://github.com/jwt/ruby-jwt" # $result=BAD
+gem "jwt", "1.2.3", :git => "ftp://github.com/jwt/ruby-jwt" # $result=BAD
+gem "jwt", "1.2.3", :git => "ftps://github.com/jwt/ruby-jwt" # GOOD
+gem "jwt", "1.2.3", :git => "unknown://github.com/jwt/ruby-jwt" # GOOD
+
+gem "jwt", "1.2.3", source: "https://rubygems.org" # GOOD
+gem "jwt", "1.2.3", source: "http://rubygems.org" # $result=BAD
+gem "jwt", "1.2.3", source: "ftp://rubygems.org" # $result=BAD
+gem "jwt", "1.2.3", source: "ftps://rubygems.org" # GOOD
+gem "jwt", "1.2.3", source: "unknown://rubygems.org" # GOOD

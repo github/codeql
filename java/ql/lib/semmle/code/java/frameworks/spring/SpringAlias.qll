@@ -3,7 +3,7 @@ import semmle.code.java.frameworks.spring.SpringXMLElement
 import semmle.code.java.frameworks.spring.SpringBean
 
 /** An `<alias>` element in Spring XML files. */
-class SpringAlias extends SpringXMLElement {
+class SpringAlias extends SpringXmlElement {
   SpringAlias() { this.getName() = "alias" }
 
   /** Gets the value of the `alias` attribute. */

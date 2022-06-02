@@ -26,7 +26,7 @@
                     var vsTools = MsBuildRule.GetVcVarsBatFile(builder);
                     if (vsTools is not null)
                         command.CallBatFile(vsTools.Path);
-                    builder.MaybeIndex(command, builder.Options.BuildCommand);
+                    command.RunCommand(builder.Options.BuildCommand);
 
                     return command.Script;
                 });

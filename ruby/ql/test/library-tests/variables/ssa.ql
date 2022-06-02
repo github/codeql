@@ -1,6 +1,5 @@
 import codeql.ruby.AST
 import codeql.ruby.CFG
-import codeql.ruby.ast.Variable
 import codeql.ruby.dataflow.SSA
 
 query predicate definition(Ssa::Definition def, Variable v) { def.getSourceVariable() = v }

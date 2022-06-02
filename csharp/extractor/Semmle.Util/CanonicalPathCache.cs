@@ -234,9 +234,7 @@ namespace Semmle.Util
         /// <returns>A new CanonicalPathCache.</returns>
         public static CanonicalPathCache Create(ILogger logger, int maxCapacity)
         {
-            var preserveSymlinks =
-                Environment.GetEnvironmentVariable("CODEQL_PRESERVE_SYMLINKS") == "true" ||
-                Environment.GetEnvironmentVariable("SEMMLE_PRESERVE_SYMLINKS") == "true";
+            var preserveSymlinks = Environment.GetEnvironmentVariable("CODEQL_PRESERVE_SYMLINKS") == "true";
             return Create(logger, maxCapacity, preserveSymlinks ? CanonicalPathCache.Symlinks.Preserve : CanonicalPathCache.Symlinks.Follow);
 
         }

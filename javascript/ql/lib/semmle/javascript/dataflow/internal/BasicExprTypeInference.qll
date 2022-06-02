@@ -129,8 +129,8 @@ private class AnalyzedEnumDeclaration extends DataFlow::AnalyzedValueNode {
 /**
  * Flow analysis for JSX elements and fragments.
  */
-private class AnalyzedJSXNode extends DataFlow::AnalyzedValueNode {
-  override JSXNode astNode;
+private class AnalyzedJsxNode extends DataFlow::AnalyzedValueNode {
+  override JsxNode astNode;
 
   override AbstractValue getALocalValue() { result = TAbstractOtherObject() }
 }
@@ -138,8 +138,8 @@ private class AnalyzedJSXNode extends DataFlow::AnalyzedValueNode {
 /**
  * Flow analysis for qualified JSX names.
  */
-private class AnalyzedJSXQualifiedName extends DataFlow::AnalyzedValueNode {
-  override JSXQualifiedName astNode;
+private class AnalyzedJsxQualifiedName extends DataFlow::AnalyzedValueNode {
+  override JsxQualifiedName astNode;
 
   override AbstractValue getALocalValue() { result = TAbstractOtherObject() }
 }
@@ -147,8 +147,8 @@ private class AnalyzedJSXQualifiedName extends DataFlow::AnalyzedValueNode {
 /**
  * Flow analysis for empty JSX expressions.
  */
-private class AnalyzedJSXEmptyExpression extends DataFlow::AnalyzedValueNode {
-  override JSXEmptyExpr astNode;
+private class AnalyzedJsxEmptyExpression extends DataFlow::AnalyzedValueNode {
+  override JsxEmptyExpr astNode;
 
   override AbstractValue getALocalValue() { result = TAbstractUndefined() }
 }

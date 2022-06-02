@@ -8,10 +8,6 @@
  * The package name refers to an NPM package name or a path within a package name such as `lodash/extend`.
  * The string `global` refers to the global object (whether it came from the `global` package or not).
  *
- * The following tokens have a language-specific interpretation:
- *  - `Instance`: the value returned by a `new`-call to a function
- *  - `Awaited`: the value from a resolved promise
- *
  * A `(package, type)` tuple may refer to the exported type named `type` from the NPM package `package`.
  * For example, `(express, Request)` would match a parameter below due to the type annotation:
  * ```ts
@@ -30,7 +26,7 @@ import Shared::ModelOutput as ModelOutput
  * A remote flow source originating from a CSV source row.
  */
 private class RemoteFlowSourceFromCsv extends RemoteFlowSource {
-  RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").getAnImmediateUse() }
+  RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").asSource() }
 
   override string getSourceType() { result = "Remote flow" }
 }
@@ -41,8 +37,8 @@ private class RemoteFlowSourceFromCsv extends RemoteFlowSource {
 private predicate summaryStepNodes(DataFlow::Node pred, DataFlow::Node succ, string kind) {
   exists(API::Node predNode, API::Node succNode |
     Specific::summaryStep(predNode, succNode, kind) and
-    pred = predNode.getARhs() and
-    succ = succNode.getAnImmediateUse()
+    pred = predNode.asSink() and
+    succ = succNode.asSource()
   )
 }
 

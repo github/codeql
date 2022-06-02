@@ -1,0 +1,1 @@
+| Type Test uses out-of-scope type variable K. Note the Java extractor is known to sometimes do this; the Kotlin extractor should not. |

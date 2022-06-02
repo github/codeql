@@ -2,24 +2,31 @@
  * Contains the language-specific part of the models-as-data implementation found in `ApiGraphModels.qll`.
  *
  * It must export the following members:
- * ```codeql
+ * ```ql
  * class Unit // a unit type
+ * module AccessPathSyntax // a re-export of the AccessPathSyntax module
+ * class InvokeNode // a type representing an invocation connected to the API graph
  * module API // the API graph module
  * predicate isPackageUsed(string package)
  * API::Node getExtraNodeFromPath(string package, string type, string path, int n)
  * API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token)
- * API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathToken token)
- * predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPathToken token)
+ * API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token)
+ * predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathToken token)
+ * InvokeNode getAnInvocationOf(API::Node node)
+ * predicate isExtraValidTokenNameInIdentifyingAccessPath(string name)
+ * predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name)
+ * predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument)
  * ```
  */
 
-private import javascript as js
-private import js::DataFlow as DataFlow
+private import javascript as JS
+private import JS::DataFlow as DataFlow
 private import ApiGraphModels
 
-class Unit = js::Unit;
+class Unit = JS::Unit;
 
-module API = js::API;
+// Re-export libraries needed by ApiGraphModels.qll
+module API = JS::API;
 
 import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
 private import AccessPathSyntax
@@ -54,9 +61,7 @@ private class GlobalApiEntryPoint extends API::EntryPoint {
     this = "GlobalApiEntryPoint:" + global
   }
 
-  override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef(global) }
-
-  override DataFlow::Node getARhs() { none() }
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef(global) }
 
   /** Gets the name of the global variable. */
   string getGlobal() { result = global }
@@ -66,7 +71,7 @@ private class GlobalApiEntryPoint extends API::EntryPoint {
  * Gets an API node referring to the given global variable (if relevant).
  */
 private API::Node getGlobalNode(string globalName) {
-  result = any(GlobalApiEntryPoint e | e.getGlobal() = globalName).getNode()
+  result = any(GlobalApiEntryPoint e | e.getGlobal() = globalName).getANode()
 }
 
 /** Gets a JavaScript-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
@@ -119,6 +124,19 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   // API graphs do not use store/load steps for arrays
   token.getName() = ["ArrayElement", "Element"] and
   result = node.getUnknownMember()
+  or
+  token.getName() = "Parameter" and
+  token.getAnArgument() = "this" and
+  result = node.getReceiver()
+  or
+  token.getName() = "DecoratedClass" and
+  result = node.getADecoratedClass()
+  or
+  token.getName() = "DecoratedMember" and
+  result = node.getADecoratedMember()
+  or
+  token.getName() = "DecoratedParameter" and
+  result = node.getADecoratedParameter()
 }
 
 /**
@@ -128,6 +146,10 @@ bindingset[token]
 API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathToken token) {
   token.getName() = "Instance" and
   result = node.getInstance()
+  or
+  token.getName() = "Argument" and
+  token.getAnArgument() = "this" and
+  result.asSink() = node.(DataFlow::CallNode).getReceiver()
 }
 
 /**
@@ -147,10 +169,12 @@ predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPat
  * Holds if `path` is an input or output spec for a summary with the given `base` node.
  */
 pragma[nomagic]
-private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath path) {
-  ModelOutput::resolvedSummaryBase(base, path, _, _)
-  or
-  ModelOutput::resolvedSummaryBase(base, _, path, _)
+private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath inputOrOutput) {
+  exists(string package, string type, string input, string output, string path |
+    ModelOutput::relevantSummaryModel(package, type, path, input, output, _) and
+    ModelOutput::resolvedSummaryBase(package, type, path, base) and
+    inputOrOutput = [input, output]
+  )
 }
 
 /**
@@ -178,8 +202,12 @@ private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPat
  * Holds if a CSV summary contributed the step `pred -> succ` of the given `kind`.
  */
 predicate summaryStep(API::Node pred, API::Node succ, string kind) {
-  exists(API::InvokeNode base, AccessPath input, AccessPath output |
-    ModelOutput::resolvedSummaryBase(base, input, output, kind) and
+  exists(
+    string package, string type, string path, API::InvokeNode base, AccessPath input,
+    AccessPath output
+  |
+    ModelOutput::relevantSummaryModel(package, type, path, input, output, kind) and
+    ModelOutput::resolvedSummaryBase(package, type, path, base) and
     pred = getNodeFromInputOutputPath(base, input) and
     succ = getNodeFromInputOutputPath(base, output)
   )
@@ -189,3 +217,37 @@ class InvokeNode = API::InvokeNode;
 
 /** Gets an `InvokeNode` corresponding to an invocation of `node`. */
 InvokeNode getAnInvocationOf(API::Node node) { result = node.getAnInvocation() }
+
+/**
+ * Holds if `name` is a valid name for an access path token in the identifying access path.
+ */
+bindingset[name]
+predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
+  name =
+    [
+      "Member", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
+      "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+    ]
+}
+
+/**
+ * Holds if `name` is a valid name for an access path token with no arguments, occurring
+ * in an identifying access path.
+ */
+predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
+  name =
+    [
+      "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
+      "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+    ]
+}
+
+/**
+ * Holds if `argument` is a valid argument to an access path token with the given `name`, occurring
+ * in an identifying access path.
+ */
+bindingset[name, argument]
+predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
+  name = ["Member"] and
+  exists(argument)
+}
