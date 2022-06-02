@@ -404,3 +404,25 @@ class Structors {
 func dictionaryLiteral(x: Int, y: Int) -> [String: Int] {
   return ["x": x, "y": y]
 }
+
+struct B {
+  var x : Int
+}
+
+struct A {
+  var b : B
+  var bs : [B]
+  var mayB : B?
+}
+
+func test(a : A) {
+  var kpGet_b_x = \A.b.x
+  var kpGet_bs_0_x = \A.bs[0].x
+  var kpGet_mayB_force_x = \A.mayB!.x
+  var kpGet_mayB_x = \A.mayB?.x
+
+  var apply_kpGet_b_x = a[keyPath: kpGet_b_x]
+  var apply_kpGet_bs_0_x = a[keyPath: kpGet_bs_0_x]
+  var apply_kpGet_mayB_force_x = a[keyPath: kpGet_mayB_force_x]
+  var apply_kpGet_mayB_x = a[keyPath: kpGet_mayB_x]
+}
