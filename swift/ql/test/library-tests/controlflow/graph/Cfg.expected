@@ -4948,8 +4948,8 @@ cfg.swift:
 #-----|  -> exit init
 
 #  378| init
-#-----|  -> call to ...
 #-----|  -> TBD (OtherConstructorDeclRefExpr)
+#-----|  -> call to ...
 
 #  379| super
 #-----|  -> call to ...
@@ -4963,10 +4963,10 @@ cfg.swift:
 #  379| self = ...
 #-----|  -> return
 
-#  379| call to ...
+#  379| TBD (OtherConstructorDeclRefExpr)
 #-----|  -> super
 
-#  379| TBD (OtherConstructorDeclRefExpr)
+#  379| call to ...
 #-----|  -> super
 
 #  379| 0
