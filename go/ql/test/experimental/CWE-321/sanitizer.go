@@ -112,7 +112,3 @@ func randReadSanitizer_test() (interface{}, error) {
 	key6 := GenerateRandomString3(32)
 	return cristal.NewSignerHS(cristal.HS256, []byte(key6)) // GOOD
 }
-
-func main() {
-	return
-}
