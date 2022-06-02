@@ -26,7 +26,8 @@ class TaintFlowTest extends InlineExpectationsTest {
     exists(DataFlow::Node sink | any(Configuration c).hasFlow(_, sink) |
       element = sink.toString() and
       value = "" and
-      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn())
+      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
     )
   }
 }

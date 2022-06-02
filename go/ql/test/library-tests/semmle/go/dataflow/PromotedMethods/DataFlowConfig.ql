@@ -30,7 +30,8 @@ class PromotedMethodsTest extends InlineExpectationsTest {
     exists(TestConfig config, DataFlow::Node source, DataFlow::Node sink |
       config.hasFlow(source, sink)
     |
-      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = sink.toString() and
       value = source.getEnclosingCallable().getName() and
       tag = "promotedmethods"

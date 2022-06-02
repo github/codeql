@@ -29,7 +29,8 @@ class PromotedFieldsTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(TestConfig config, DataFlow::PathNode source, DataFlow::PathNode sink |
       config.hasFlowPath(source, sink) and
-      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = sink.toString() and
       value = "" and
       tag = "promotedfields"

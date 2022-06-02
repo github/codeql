@@ -10,7 +10,8 @@ class UntrustedFlowSourceTest extends InlineExpectationsTest {
     tag = "untrustedflowsource" and
     value = element and
     exists(UntrustedFlowSource src | value = "\"" + src.toString() + "\"" |
-      src.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn())
+      src.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
     )
   }
 }
@@ -25,7 +26,8 @@ class HeaderWriteTest extends InlineExpectationsTest {
     exists(HTTP::HeaderWrite hw, string name, string val | element = hw.toString() |
       hw.definesHeader(name, val) and
       value = name + ":" + val and
-      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn())
+      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
     )
   }
 }
@@ -37,7 +39,8 @@ class LoggerTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(LoggerCall log |
-      log.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      log.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = log.toString() and
       value = log.getAMessageComponent().toString() and
       tag = "logger"

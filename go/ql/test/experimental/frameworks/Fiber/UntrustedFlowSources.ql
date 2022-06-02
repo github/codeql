@@ -16,7 +16,8 @@ class UntrustedFlowSourceTest extends InlineExpectationsTest {
     |
       element = arg.toString() and
       value = "" and
-      arg.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn())
+      arg.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
     )
   }
 }
