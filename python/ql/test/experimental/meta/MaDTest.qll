@@ -11,7 +11,9 @@ class MadSinkTest extends InlineExpectationsTest {
   MadSinkTest() { this = "MadSinkTest" }
 
   override string getARelevantTag() {
-    exists(string kind | exists(ModelOutput::getASinkNode(kind)) | result = "mad-sink__" + kind)
+    exists(string kind | exists(ModelOutput::getASinkNode(kind)) |
+      result = "mad-sink[" + kind + "]"
+    )
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
@@ -21,7 +23,7 @@ class MadSinkTest extends InlineExpectationsTest {
       location = sink.getLocation() and
       element = sink.toString() and
       value = prettyNodeForInlineTest(sink) and
-      tag = "mad-sink__" + kind
+      tag = "mad-sink[" + kind + "]"
     )
   }
 }
