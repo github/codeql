@@ -5,7 +5,6 @@ import inflection
 from toposort import toposort_flatten
 
 from swift.codegen.lib import cpp, schema
-from swift.codegen.generators import generator
 
 
 def _get_type(t: str, trap_affix: str) -> str:
@@ -64,13 +63,8 @@ class Processor:
 
 
 def generate(opts, renderer):
+    assert opts.cpp_output
     processor = Processor({cls.name: cls for cls in schema.load(opts.schema).classes}, opts.trap_affix)
     out = opts.cpp_output
     renderer.render(cpp.ClassList(processor.get_classes(), opts.cpp_namespace, opts.trap_affix,
                                   opts.cpp_include_dir, opts.schema), out / f"{opts.trap_affix}Classes.h")
-
-
-tags = ("cpp", "schema")
-
-if __name__ == "__main__":
-    generator.run()

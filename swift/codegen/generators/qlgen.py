@@ -7,7 +7,6 @@ import subprocess
 import inflection
 
 from swift.codegen.lib import schema, ql
-from swift.codegen.generators import generator
 
 log = logging.getLogger(__name__)
 
@@ -124,9 +123,3 @@ def generate(opts, renderer):
     renderer.cleanup(existing)
     if opts.ql_format:
         format(opts.codeql_binary, renderer.written)
-
-
-tags = ("schema", "ql")
-
-if __name__ == "__main__":
-    generator.run()
