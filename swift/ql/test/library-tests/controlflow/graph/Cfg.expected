@@ -564,7 +564,7 @@ cfg.swift:
 #-----|  -> n
 
 #   71| ... as ...
-#-----| no-match -> deinit
+#-----| no-match -> init
 
 #   71| Int.Type
 #-----|  -> call to ...
@@ -572,7 +572,7 @@ cfg.swift:
 #   71| call to ...
 #-----|  -> s
 
-#   71| deinit
+#   71| init
 #-----|  -> Int.Type
 
 #   71| call to ...
@@ -754,19 +754,19 @@ cfg.swift:
 #   89| nil
 #-----|  ->  ... = ...
 
-#   98| enter init
-#-----|  -> init
-
-#   98| exit init
-
-#   98| exit init (normal)
-#-----|  -> exit init
-
-#   98| init
+#   98| deinit
 #-----|  -> { ... }
 
+#   98| enter deinit
+#-----|  -> deinit
+
+#   98| exit deinit
+
+#   98| exit deinit (normal)
+#-----|  -> exit deinit
+
 #   98| { ... }
-#-----|  -> exit init (normal)
+#-----|  -> exit deinit (normal)
 
 #   99| enter get
 #-----|  -> get
@@ -778,16 +778,16 @@ cfg.swift:
 
 #   99| get
 
-#  100| deinit
+#  100| enter init
+#-----|  -> init
+
+#  100| exit init
+
+#  100| exit init (normal)
+#-----|  -> exit init
+
+#  100| init
 #-----|  -> n
-
-#  100| enter deinit
-#-----|  -> deinit
-
-#  100| exit deinit
-
-#  100| exit deinit (normal)
-#-----|  -> exit deinit
 
 #  100| n
 #-----|  -> self
@@ -805,7 +805,7 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  102| return
-#-----| return -> exit deinit (normal)
+#-----| return -> exit init (normal)
 
 #  104| enter getMyInt
 #-----|  -> getMyInt
@@ -851,7 +851,7 @@ cfg.swift:
 #-----|  -> c
 
 #  110| c
-#-----| no-match -> deinit
+#-----| no-match -> init
 
 #  110| c
 #-----|  -> n1
@@ -862,7 +862,7 @@ cfg.swift:
 #  110| call to ...
 #-----|  -> 42
 
-#  110| deinit
+#  110| init
 #-----|  -> C.Type
 
 #  110| call to ...
@@ -4627,19 +4627,19 @@ cfg.swift:
 #  348| 1
 #-----|  -> ... call to += ...
 
-#  352| enter init
-#-----|  -> init
-
-#  352| exit init
-
-#  352| exit init (normal)
-#-----|  -> exit init
-
-#  352| init
+#  352| deinit
 #-----|  -> { ... }
 
+#  352| enter deinit
+#-----|  -> deinit
+
+#  352| exit deinit
+
+#  352| exit deinit (normal)
+#-----|  -> exit deinit
+
 #  352| { ... }
-#-----|  -> exit init (normal)
+#-----|  -> exit deinit (normal)
 
 #  353| enter get
 #-----|  -> get
@@ -4651,16 +4651,16 @@ cfg.swift:
 
 #  353| get
 
-#  354| deinit
+#  354| enter init
+#-----|  -> init
+
+#  354| exit init
+
+#  354| exit init (normal)
+#-----|  -> exit init
+
+#  354| init
 #-----|  -> arg
-
-#  354| enter deinit
-#-----|  -> deinit
-
-#  354| exit deinit
-
-#  354| exit deinit (normal)
-#-----|  -> exit deinit
 
 #  354| arg
 #-----|  -> self
@@ -4678,7 +4678,7 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  356| return
-#-----| return -> exit deinit (normal)
+#-----| return -> exit init (normal)
 
 #  358| enter getOptional
 #-----|  -> getOptional
@@ -4915,21 +4915,8 @@ cfg.swift:
 #  377| cfg.Derived
 #-----|  -> #...
 
-#  377| enter init
-#-----|  -> init
-
-#  377| exit init
-
-#  377| exit init (normal)
-#-----|  -> exit init
-
-#  377| init
-#-----|  -> { ... }
-
-#  377| { ... }
-#-----|  -> exit init (normal)
-
 #  377| deinit
+#-----|  -> { ... }
 
 #  377| enter deinit
 #-----|  -> deinit
@@ -4939,17 +4926,30 @@ cfg.swift:
 #  377| exit deinit (normal)
 #-----|  -> exit deinit
 
-#  378| deinit
+#  377| { ... }
+#-----|  -> exit deinit (normal)
+
+#  377| enter init
+#-----|  -> init
+
+#  377| exit init
+
+#  377| exit init (normal)
+#-----|  -> exit init
+
+#  377| init
+
+#  378| enter init
+#-----|  -> init
+
+#  378| exit init
+
+#  378| exit init (normal)
+#-----|  -> exit init
+
+#  378| init
 #-----|  -> call to ...
 #-----|  -> TBD (OtherConstructorDeclRefExpr)
-
-#  378| enter deinit
-#-----|  -> deinit
-
-#  378| exit deinit
-
-#  378| exit deinit (normal)
-#-----|  -> exit deinit
 
 #  379| super
 #-----|  -> call to ...
@@ -4973,7 +4973,7 @@ cfg.swift:
 #-----|  -> call to ...
 
 #  380| return
-#-----| return -> exit deinit (normal)
+#-----| return -> exit init (normal)
 
 #  383| doWithoutCatch
 #-----|  -> x
@@ -5068,16 +5068,16 @@ cfg.swift:
 #  394| yield ...
 #-----|  -> exit (unnamed function decl) (normal)
 
-#  395| deinit
+#  395| enter init
+#-----|  -> init
+
+#  395| exit init
+
+#  395| exit init (normal)
+#-----|  -> exit init
+
+#  395| init
 #-----|  -> self
-
-#  395| enter deinit
-#-----|  -> deinit
-
-#  395| exit deinit
-
-#  395| exit deinit (normal)
-#-----|  -> exit deinit
 
 #  396| .field
 #-----|  -> 10
@@ -5092,18 +5092,18 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  397| return
-#-----| return -> exit deinit (normal)
+#-----| return -> exit init (normal)
 
-#  399| enter init
-#-----|  -> init
-
-#  399| exit init
-
-#  399| exit init (normal)
-#-----|  -> exit init
-
-#  399| init
+#  399| deinit
 #-----|  -> self
+
+#  399| enter deinit
+#-----|  -> deinit
+
+#  399| exit deinit
+
+#  399| exit deinit (normal)
+#-----|  -> exit deinit
 
 #  400| .field
 #-----|  -> 0
@@ -5112,7 +5112,7 @@ cfg.swift:
 #-----|  -> .field
 
 #  400|  ... = ...
-#-----|  -> exit init (normal)
+#-----|  -> exit deinit (normal)
 
 #  400| 0
 #-----|  ->  ... = ...
