@@ -8,7 +8,7 @@ class FileSystemAccessTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(FileSystemAccess f |
-      f.hasLocationInfo(file, line, _, _, _) and
+      f.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = f.toString() and
       value = f.getAPathArgument().toString() and
       tag = "fsaccess"

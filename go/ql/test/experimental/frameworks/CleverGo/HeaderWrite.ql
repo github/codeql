@@ -12,7 +12,7 @@ class HttpHeaderWriteTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     // Dynamic key-value header:
     exists(HTTP::HeaderWrite hw |
-      hw.hasLocationInfo(file, line, _, _, _) and
+      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       (
         element = hw.getName().toString() and
         value = hw.getName().toString() and
@@ -26,7 +26,7 @@ class HttpHeaderWriteTest extends InlineExpectationsTest {
     or
     // Static key, dynamic value header:
     exists(HTTP::HeaderWrite hw |
-      hw.hasLocationInfo(file, line, _, _, _) and
+      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       (
         element = hw.getHeaderName().toString() and
         value = hw.getHeaderName() and
@@ -40,7 +40,7 @@ class HttpHeaderWriteTest extends InlineExpectationsTest {
     or
     // Static key, static value header:
     exists(HTTP::HeaderWrite hw |
-      hw.hasLocationInfo(file, line, _, _, _) and
+      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       (
         element = hw.getHeaderName().toString() and
         value = hw.getHeaderName() and

@@ -13,7 +13,7 @@ class ImplementsComparableTest extends InlineExpectationsTest {
       ts.getName().matches("testComparable%") and
       ts.getATypeParameterDecl().getTypeConstraint().implementsComparable()
     |
-      ts.hasLocationInfo(file, line, _, _, _) and
+      ts.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = ts.getName() and
       value = ""
     )

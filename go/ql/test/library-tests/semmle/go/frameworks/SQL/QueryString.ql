@@ -9,7 +9,7 @@ class SQLTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "query" and
     exists(SQL::Query q, SQL::QueryString qs, string qsFile, int qsLine | qs = q.getAQueryString() |
-      q.hasLocationInfo(file, line, _, _, _) and
+      q.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       qs.hasLocationInfo(qsFile, qsLine, _, _, _) and
       element = q.toString() and
       value = qs.toString()
@@ -26,7 +26,7 @@ class QueryString extends InlineExpectationsTest {
     tag = "querystring" and
     element = "" and
     exists(SQL::QueryString qs | not exists(SQL::Query q | qs = q.getAQueryString()) |
-      qs.hasLocationInfo(file, line, _, _, _) and
+      qs.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       value = qs.toString()
     )
   }

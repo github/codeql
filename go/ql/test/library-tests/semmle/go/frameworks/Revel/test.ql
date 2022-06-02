@@ -25,7 +25,7 @@ class MissingDataFlowTest extends InlineExpectationsTest {
     value = "" and
     exists(Sink sink |
       not any(TestConfig c).hasFlow(_, sink) and
-      sink.hasLocationInfo(file, line, _, _, _) and
+      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = sink.toString()
     )
   }
@@ -39,7 +39,7 @@ class HttpResponseBodyTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "responsebody" and
     exists(HTTP::ResponseBody rb |
-      rb.hasLocationInfo(file, line, _, _, _) and
+      rb.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = rb.toString() and
       value = "'" + rb.toString() + "'"
     )

@@ -33,7 +33,7 @@ class DataFlowTest extends InlineExpectationsTest {
     exists(DataFlow::Node sink | any(TestConfig c).hasFlow(_, sink) |
       element = sink.toString() and
       value = sink.toString() and
-      sink.hasLocationInfo(file, line, _, _, _)
+      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn())
     )
   }
 }

@@ -8,7 +8,7 @@ class NoSQLQueryTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(NoSQL::Query q |
-      q.hasLocationInfo(file, line, _, _, _) and
+      q.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = q.toString() and
       value = q.toString() and
       tag = "nosqlquery"

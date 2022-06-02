@@ -11,7 +11,7 @@ class HttpHandler extends InlineExpectationsTest {
     exists(HTTP::RequestHandler h, DataFlow::Node check |
       element = h.toString() and value = check.toString()
     |
-      h.hasLocationInfo(file, line, _, _, _) and
+      h.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(), location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       h.guardedBy(check)
     )
   }
