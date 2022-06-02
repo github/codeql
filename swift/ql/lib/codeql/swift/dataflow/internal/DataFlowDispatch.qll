@@ -1,7 +1,6 @@
 private import swift
 private import DataFlowPrivate
 private import DataFlowPublic
-private import codeql.swift.controlflow.ControlFlowGraph
 
 newtype TReturnKind = TNormalReturnKind()
 
@@ -54,7 +53,7 @@ class DataFlowCall extends ExprNode {
 cached
 private module Cached {
   cached
-  newtype TDataFlowCallable = TDataFlowFunc(CfgScope scope)
+  newtype TDataFlowCallable = TDataFlowFunc(FuncDecl func)
 
   /** Gets a viable run-time target for the call `call`. */
   cached
