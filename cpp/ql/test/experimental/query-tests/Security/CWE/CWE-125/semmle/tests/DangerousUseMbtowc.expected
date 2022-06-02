@@ -1,8 +1,8 @@
-| test.cpp:61:27:61:32 | call to mbtowc | Size can be less than maximum character length, use macro MB_CUR_MAX. |
-| test.cpp:70:27:70:32 | call to mbtowc | Size can be less than maximum character length, use macro MB_CUR_MAX. |
-| test.cpp:98:11:98:16 | call to mbtowc | Access beyond the allocated memory is possible, the length can change without changing the pointer. |
-| test.cpp:114:11:114:16 | call to mbtowc | Access beyond the allocated memory is possible, the length can change without changing the pointer. |
-| test.cpp:130:11:130:16 | call to mbtowc | Access beyond the allocated memory is possible, the length can change without changing the pointer. |
-| test.cpp:147:11:147:16 | call to mbtowc | Access beyond the allocated memory is possible, the length can change without changing the pointer. |
-| test.cpp:169:11:169:16 | call to mbtowc | Access beyond the allocated memory is possible, the length can change without changing the pointer. |
-| test.cpp:185:11:185:16 | call to mbtowc | Maybe you're using the function's return value incorrectly. |
+| test.cpp:66:27:66:32 | call to mbtowc | Size can be less than maximum character length, use macro MB_CUR_MAX. |
+| test.cpp:76:27:76:32 | call to mbtowc | Size can be less than maximum character length, use macro MB_CUR_MAX. |
+| test.cpp:106:11:106:16 | call to mbtowc | Access beyond the allocated memory is possible, the length can change without changing the pointer. |
+| test.cpp:123:11:123:16 | call to mbtowc | Access beyond the allocated memory is possible, the length can change without changing the pointer. |
+| test.cpp:140:11:140:16 | call to mbtowc | Access beyond the allocated memory is possible, the length can change without changing the pointer. |
+| test.cpp:158:11:158:16 | call to mbtowc | Access beyond the allocated memory is possible, the length can change without changing the pointer. |
+| test.cpp:181:11:181:16 | call to mbtowc | Access beyond the allocated memory is possible, the length can change without changing the pointer. |
+| test.cpp:197:11:197:16 | call to mbtowc | Maybe you're using the function's return value incorrectly. |
