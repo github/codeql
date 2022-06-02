@@ -1,7 +1,7 @@
-| test.cpp:123:17:123:22 | call to malloc | The length parameter for the function of the memory allocation function is passed from outside and is not checked for equality zero. |
-| test.cpp:132:17:132:22 | call to malloc | The length parameter for the function of the memory allocation function is passed from outside and is not checked for equality zero. |
-| test.cpp:142:18:142:23 | call to malloc | The length parameter for the function of the memory allocation function is passed from outside and is not checked for equality zero. |
-| test.cpp:156:36:156:41 | call to malloc | The length of the memory allocation function parameter is related to the call to the read from file function or can be equal to zero. |
-| test.cpp:173:36:173:41 | call to malloc | The length of the memory allocation function parameter is related to the call to the read from file function or can be equal to zero. |
-| test.cpp:190:36:190:41 | call to malloc | The length of the memory allocation function parameter is related to the call to the read from file function or can be equal to zero. |
-| test.cpp:207:36:207:41 | call to malloc | The length of the memory allocation function parameter is related to the call to the read from file function or can be equal to zero. |
+| test.cpp:120:17:120:22 | call to malloc | The length parameter for the function of the memory allocation function is passed from outside and is not checked for equality zero. |
+| test.cpp:129:17:129:22 | call to malloc | The length parameter for the function of the memory allocation function is passed from outside and is not checked for equality zero. |
+| test.cpp:139:18:139:23 | call to malloc | The length parameter for the function of the memory allocation function is passed from outside and is not checked for equality zero. |
+| test.cpp:151:36:151:41 | call to malloc | The length of the memory allocation function parameter is related to the call to the read from file function or can be equal to zero. |
+| test.cpp:168:36:168:41 | call to malloc | The length of the memory allocation function parameter is related to the call to the read from file function or can be equal to zero. |
+| test.cpp:185:36:185:41 | call to malloc | The length of the memory allocation function parameter is related to the call to the read from file function or can be equal to zero. |
+| test.cpp:202:36:202:41 | call to malloc | The length of the memory allocation function parameter is related to the call to the read from file function or can be equal to zero. |
