@@ -199,7 +199,7 @@ class MicrosoftAspNetCoreMvcController extends Class {
   MicrosoftAspNetCoreMvcController() {
     (
       this.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass or
-      this.getABaseType*().hasName("%Controller") or
+      this.getABaseType*().getName().matches("%Controller") or
       this.getABaseType*().getAnAttribute() instanceof MicrosoftAspNetCoreMvcControllerAttribute
     ) and
     not this.getABaseType*().getAnAttribute() instanceof
