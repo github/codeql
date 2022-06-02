@@ -165,9 +165,15 @@ module HardcodedKeys {
     }
   }
 
-  /** Mark an empty string returned with an error as a sanitizer */
-  private class EmptyErrorSanitizer extends Sanitizer {
-    EmptyErrorSanitizer() {
+  /**
+   * Marks anything returned with an error as a sanitized.
+   *
+   * Typically this means contexts like `return "", errors.New("Oh no")`,
+   * where we can be reasonably confident downstream users won't mistake
+   * that empty string for a usable key.
+   */
+  private class ReturnedAlongsideErrorSanitizer extends Sanitizer {
+    ReturnedAlongsideErrorSanitizer() {
       exists(ReturnStmt r, DataFlow::CallNode c |
         c.getTarget().hasQualifiedName("errors", "New") and
         r.getNumChild() > 1 and
