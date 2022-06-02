@@ -313,6 +313,12 @@ class ContentSet instanceof Content {
  */
 signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
 
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
