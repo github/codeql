@@ -154,13 +154,18 @@ module HardcodedKeys {
   }
 
   /**
-   * Mark any comparision expression where any operand is tainted as a
-   * sanitizer for all instances of the taint
+   * Sanitizes any other use of an operand to a comparison, on the assumption that this may filter
+   * out special constant values -- for example, in context `if key != "invalid_key" { ... }`,
+   * if `"invalid_key"` is indeed the only dangerous key then guarded uses of `key` are likely
+   * to be safe.
+   *
+   * TODO: Before promoting this query look at replacing this with something more principled.
    */
   private class CompareExprSanitizer extends Sanitizer {
     CompareExprSanitizer() {
-      exists(BinaryExpr c |
-        c.getAnOperand().getGlobalValueNumber() = this.asExpr().getGlobalValueNumber()
+      exists(ComparisonExpr c |
+        c.getAnOperand().getGlobalValueNumber() = this.asExpr().getGlobalValueNumber() and
+        not this.asExpr() instanceof Literal
       )
     }
   }
