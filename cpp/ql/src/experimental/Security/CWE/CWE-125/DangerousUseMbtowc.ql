@@ -19,7 +19,10 @@ predicate exprMayBeString(Expr exp) {
     exists(StringLiteral sl | globalValueNumber(exp) = globalValueNumber(sl))
     or
     exists(FunctionCall fctmp |
-      globalValueNumber(fctmp.getAnArgument()) = globalValueNumber(exp) and
+      (
+        fctmp.getAnArgument().(VariableAccess).getTarget() = exp.(VariableAccess).getTarget() or
+        globalValueNumber(fctmp.getAnArgument()) = globalValueNumber(exp)
+      ) and
       fctmp.getTarget().hasGlobalOrStdName(["strlen", "strcat", "strncat", "strcpy", "sptintf"])
     )
     or
