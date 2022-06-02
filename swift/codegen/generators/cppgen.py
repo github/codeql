@@ -1,3 +1,16 @@
+"""
+C++ trap class generation
+
+`generate(opts, renderer)` will generate `TrapClasses.h` out of a `yml` schema file.
+
+Each class in the schema gets a corresponding `struct` in `TrapClasses.h`, where:
+* inheritance is preserved
+* each property will be a corresponding field in the `struct` (with repeated properties mapping to `std::vector` and
+  optional ones to `std::optional`)
+* final classes get a streaming operator that serializes the whole class into the corresponding trap emissions (using
+  `TrapEntries.h` from `trapgen`).
+"""
+
 import functools
 from typing import Dict
 
@@ -7,7 +20,7 @@ from toposort import toposort_flatten
 from swift.codegen.lib import cpp, schema
 
 
-def _get_type(t: str, trap_affix: str) -> str:
+def _get_type(t: str) -> str:
     if t is None:
         # this is a predicate
         return "bool"
@@ -16,11 +29,11 @@ def _get_type(t: str, trap_affix: str) -> str:
     if t == "boolean":
         return "bool"
     if t[0].isupper():
-        return f"{trap_affix}Label<{t}Tag>"
+        return f"TrapLabel<{t}Tag>"
     return t
 
 
-def _get_field(cls: schema.Class, p: schema.Property, trap_affix: str) -> cpp.Field:
+def _get_field(cls: schema.Class, p: schema.Property) -> cpp.Field:
     trap_name = None
     if not p.is_single:
         trap_name = inflection.camelize(f"{cls.name}_{p.name}")
@@ -28,7 +41,7 @@ def _get_field(cls: schema.Class, p: schema.Property, trap_affix: str) -> cpp.Fi
             trap_name = inflection.pluralize(trap_name)
     args = dict(
         field_name=p.name + ("_" if p.name in cpp.cpp_keywords else ""),
-        type=_get_type(p.type, trap_affix),
+        type=_get_type(p.type),
         is_optional=p.is_optional,
         is_repeated=p.is_repeated,
         is_predicate=p.is_predicate,
@@ -39,9 +52,8 @@ def _get_field(cls: schema.Class, p: schema.Property, trap_affix: str) -> cpp.Fi
 
 
 class Processor:
-    def __init__(self, data: Dict[str, schema.Class], trap_affix: str):
+    def __init__(self, data: Dict[str, schema.Class]):
         self._classmap = data
-        self._trap_affix = trap_affix
 
     @functools.lru_cache(maxsize=None)
     def _get_class(self, name: str) -> cpp.Class:
@@ -52,7 +64,7 @@ class Processor:
         return cpp.Class(
             name=name,
             bases=[self._get_class(b) for b in cls.bases],
-            fields=[_get_field(cls, p, self._trap_affix) for p in cls.properties],
+            fields=[_get_field(cls, p) for p in cls.properties],
             final=not cls.derived,
             trap_name=trap_name,
         )
@@ -64,7 +76,6 @@ class Processor:
 
 def generate(opts, renderer):
     assert opts.cpp_output
-    processor = Processor({cls.name: cls for cls in schema.load(opts.schema).classes}, opts.trap_affix)
+    processor = Processor({cls.name: cls for cls in schema.load(opts.schema).classes})
     out = opts.cpp_output
-    renderer.render(cpp.ClassList(processor.get_classes(), opts.cpp_namespace, opts.trap_affix,
-                                  opts.cpp_include_dir, opts.schema), out / f"{opts.trap_affix}Classes.h")
+    renderer.render(cpp.ClassList(processor.get_classes(), opts.schema), out / f"TrapClasses.h")
