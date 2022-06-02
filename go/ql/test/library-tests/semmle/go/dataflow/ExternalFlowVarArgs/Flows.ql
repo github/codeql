@@ -34,7 +34,7 @@ class DataFlowTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "dataflow" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "dataflow" and
     exists(DataFlow::Node sink | any(DataConfiguration c).hasFlow(_, sink) |
       element = sink.toString() and
@@ -61,7 +61,7 @@ class TaintFlowTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "taintflow" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "taintflow" and
     exists(DataFlow::Node sink | any(TaintConfiguration c).hasFlow(_, sink) |
       element = sink.toString() and

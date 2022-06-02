@@ -20,7 +20,7 @@ class MissingDataFlowTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "noflow" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "noflow" and
     value = "" and
     exists(Sink sink |
@@ -36,7 +36,7 @@ class HttpResponseBodyTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "responsebody" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "responsebody" and
     exists(HTTP::ResponseBody rb |
       rb.hasLocationInfo(file, line, _, _, _) and

@@ -26,7 +26,7 @@ class PromotedMethodsTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "promotedmethods" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(TestConfig config, DataFlow::Node source, DataFlow::Node sink |
       config.hasFlow(source, sink)
     |

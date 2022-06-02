@@ -9,7 +9,7 @@ class HttpHeaderWriteTest extends InlineExpectationsTest {
     result = ["headerKeyNode", "headerValNode", "headerKey", "headerVal"]
   }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     // Dynamic key-value header:
     exists(HTTP::HeaderWrite hw |
       hw.hasLocationInfo(file, line, _, _, _) and

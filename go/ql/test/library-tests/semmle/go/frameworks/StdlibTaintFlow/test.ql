@@ -6,7 +6,7 @@ class FileSystemAccessTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "fsaccess" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(FileSystemAccess f |
       f.hasLocationInfo(file, line, _, _, _) and
       element = f.toString() and

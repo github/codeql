@@ -6,7 +6,7 @@ class K8sIoApimachineryPkgRuntimeTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "KsIoClientGo" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(K8sIoClientGo::SecretInterfaceSource source |
       source.hasLocationInfo(file, line, _, _, _) and
       element = source.toString() and

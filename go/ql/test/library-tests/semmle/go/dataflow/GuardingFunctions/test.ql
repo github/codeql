@@ -28,7 +28,7 @@ class DataFlowTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "dataflow" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "dataflow" and
     exists(DataFlow::Node sink | any(TestConfig c).hasFlow(_, sink) |
       element = sink.toString() and

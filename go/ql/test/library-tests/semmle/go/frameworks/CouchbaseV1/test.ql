@@ -7,7 +7,7 @@ class SqlInjectionTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "sqlinjection" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "sqlinjection" and
     exists(DataFlow::Node sink | any(SqlInjection::Configuration c).hasFlow(_, sink) |
       element = sink.toString() and
