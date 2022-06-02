@@ -372,7 +372,7 @@ methodWithDuplicate
 | Map<String,String> | replace | String |
 | Map<String,String> | replaceAll | BiFunction<? super String,? super String,? extends String> |
 | MutableCollection | add | E |
-| MutableCollection | addAll | Collection |
+| MutableCollection | addAll | Collection<? extends E> |
 | MutableCollection | remove | Object |
 | MutableCollection | removeAll | Collection<?> |
 | MutableCollection | removeIf | Predicate<? super E> |
@@ -380,7 +380,6 @@ methodWithDuplicate
 | MutableList | add | E |
 | MutableList | add | int |
 | MutableList | addAll | Collection<? extends E> |
-| MutableList | addAll | Collection<E> |
 | MutableList | addAll | int |
 | MutableList | listIterator | int |
 | MutableList | remove | Object |
@@ -403,7 +402,7 @@ methodWithDuplicate
 | MutableMap | merge | V |
 | MutableMap | put | K |
 | MutableMap | put | V |
-| MutableMap | putAll | Map<? extends K,V> |
+| MutableMap | putAll | Map<? extends K,? extends V> |
 | MutableMap | putIfAbsent | K |
 | MutableMap | putIfAbsent | V |
 | MutableMap | remove | Object |

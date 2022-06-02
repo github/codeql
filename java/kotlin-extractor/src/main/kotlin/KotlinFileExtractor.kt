@@ -19,7 +19,11 @@ import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
+import org.jetbrains.kotlin.load.java.structure.JavaClass
+import org.jetbrains.kotlin.load.java.structure.JavaTypeParameter
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
 import java.io.Closeable
 import java.util.*
@@ -171,7 +175,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractTypeParameter(tp: IrTypeParameter, apparentIndex: Int): Label<out DbTypevariable>? {
+    fun extractTypeParameter(tp: IrTypeParameter, apparentIndex: Int, javaTypeParameter: JavaTypeParameter?): Label<out DbTypevariable>? {
         with("type parameter", tp) {
             val parentId = getTypeParameterParentLabel(tp) ?: return null
             val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
@@ -183,10 +187,21 @@ open class KotlinFileExtractor(
             val locId = tw.getLocation(tp)
             tw.writeHasLocation(id, locId)
 
+            // Annoyingly, we have no obvious way to pair up the bounds of an IrTypeParameter and a JavaTypeParameter
+            // because JavaTypeParameter provides a Collection not an ordered list, so we can only do our best here:
+            fun tryGetJavaBound(idx: Int) =
+                when(tp.superTypes.size) {
+                    1 -> javaTypeParameter?.upperBounds?.singleOrNull()
+                    else -> (javaTypeParameter?.upperBounds as? List)?.getOrNull(idx)
+                }
+
             tp.superTypes.forEachIndexed { boundIdx, bound ->
                 if(!(bound.isAny() || bound.isNullableAny())) {
                     tw.getLabelFor<DbTypebound>("@\"bound;$boundIdx;{$id}\"") {
-                        tw.writeTypeBounds(it, useType(bound).javaResult.id.cast<DbReftype>(), boundIdx, id)
+                        // Note we don't look for @JvmSuppressWildcards here because it doesn't seem to have any impact
+                        // on kotlinc adding wildcards to type parameter bounds.
+                        val boundWithWildcards = addJavaLoweringWildcards(bound, true, tryGetJavaBound(tp.index))
+                        tw.writeTypeBounds(it, useType(boundWithWildcards).javaResult.id.cast<DbReftype>(), boundIdx, id)
                     }
                 }
             }
@@ -382,7 +397,9 @@ open class KotlinFileExtractor(
 
                 extractEnclosingClass(c, id, locId, listOf())
 
-                c.typeParameters.mapIndexed { idx, param -> extractTypeParameter(param, idx) }
+                val javaClass = (c.source as? JavaSourceElement)?.javaElement as? JavaClass
+
+                c.typeParameters.mapIndexed { idx, param -> extractTypeParameter(param, idx, javaClass?.typeParameters?.getOrNull(idx)) }
                 if (extractDeclarations) {
                     c.declarations.map { extractDeclaration(it, extractPrivateMembers = extractPrivateMembers, extractFunctionBodies = extractFunctionBodies) }
                     if (extractStaticInitializer)
@@ -497,7 +514,9 @@ open class KotlinFileExtractor(
                 else
                     null
             } ?: vp.type
-            val substitutedType = typeSubstitution?.let { it(maybeErasedType, TypeContext.OTHER, pluginContext) } ?: maybeErasedType
+            val javaType = ((vp.parent as? IrFunction)?.let { getJavaMethod(it) })?.valueParameters?.getOrNull(idx)?.type
+            val typeWithWildcards = addJavaLoweringWildcards(maybeErasedType, !hasWildcardSuppressionAnnotation(vp), javaType)
+            val substitutedType = typeSubstitution?.let { it(typeWithWildcards, TypeContext.OTHER, pluginContext) } ?: typeWithWildcards
             val id = useValueParameter(vp, parent)
             if (extractTypeAccess) {
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
@@ -531,7 +550,9 @@ open class KotlinFileExtractor(
                     extensionReceiverParameter = null,
                     functionTypeParameters = listOf(),
                     classTypeArgsIncludingOuterClasses = listOf(),
-                    overridesCollectionsMethod = false
+                    overridesCollectionsMethod = false,
+                    javaSignature = null,
+                    addParameterWildcardsByDefault = false
                 )
                 val clinitId = tw.getLabelFor<DbMethod>(clinitLabel)
                 val returnType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
@@ -670,7 +691,8 @@ open class KotlinFileExtractor(
         with("function", f) {
             DeclarationStackAdjuster(f).use {
 
-                getFunctionTypeParameters(f).mapIndexed { idx, tp -> extractTypeParameter(tp, idx) }
+                val javaMethod = getJavaMethod(f)
+                getFunctionTypeParameters(f).mapIndexed { idx, tp -> extractTypeParameter(tp, idx, javaMethod?.typeParameters?.getOrNull(idx)) }
 
                 val id =
                     idOverride
@@ -704,7 +726,7 @@ open class KotlinFileExtractor(
 
                 val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
 
-                val adjustedReturnType = getAdjustedReturnType(f)
+                val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false, javaMethod?.returnType)
                 val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
 
                 val locId = locOverride ?: getLocation(f, classTypeArgsIncludingOuterClasses)
@@ -3745,6 +3767,17 @@ open class KotlinFileExtractor(
     }
 
     /**
+     * Extracts a single wildcard type access expression with no enclosing callable and statement.
+     */
+    private fun extractWildcardTypeAccess(type: TypeResults, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
+        val id = tw.getFreshIdLabel<DbWildcardtypeaccess>()
+        tw.writeExprs_wildcardtypeaccess(id, type.javaResult.id, parent, idx)
+        tw.writeExprsKotlinType(id, type.kotlinResult.id)
+        tw.writeHasLocation(id, location)
+        return id
+    }
+
+    /**
      * Extracts a single type access expression with no enclosing callable and statement.
      */
     private fun extractTypeAccess(type: TypeResults, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
@@ -3769,14 +3802,35 @@ open class KotlinFileExtractor(
     }
 
     /**
+     * Extracts a type argument type access, introducing a wildcard type access if appropriate, or directly calling
+     * `extractTypeAccessRecursive` if the argument is invariant.
+     * No enclosing callable and statement is extracted, this is useful for type access extraction in field declarations.
+     */
+    private fun extractWildcardTypeAccessRecursive(t: IrTypeArgument, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int) {
+        val typeLabels by lazy { TypeResults(getTypeArgumentLabel(t), TypeResult(fakeKotlinType(), "TODO", "TODO")) }
+        when (t) {
+            is IrStarProjection -> extractWildcardTypeAccess(typeLabels, location, parent, idx)
+            is IrTypeProjection -> when(t.variance) {
+                Variance.INVARIANT -> extractTypeAccessRecursive(t.type, location, parent, idx, TypeContext.GENERIC_ARGUMENT)
+                else -> {
+                    val wildcardLabel = extractWildcardTypeAccess(typeLabels, location, parent, idx)
+                    // Mimic a Java extractor oddity, that it uses the child index to indicate what kind of wildcard this is
+                    val boundChildIdx = if (t.variance == Variance.OUT_VARIANCE) 0 else 1
+                    extractTypeAccessRecursive(t.type, location, wildcardLabel, boundChildIdx, TypeContext.GENERIC_ARGUMENT)
+                }
+            }
+        }
+    }
+
+    /**
      * Extracts a type access expression and its child type access expressions in case of a generic type. Nested generics are also handled.
      * No enclosing callable and statement is extracted, this is useful for type access extraction in field declarations.
      */
     private fun extractTypeAccessRecursive(t: IrType, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
         val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx)
         if (t is IrSimpleType) {
-            t.arguments.filterIsInstance<IrType>().forEachIndexed { argIdx, arg ->
-                extractTypeAccessRecursive(arg, location, typeAccessId, argIdx, TypeContext.GENERIC_ARGUMENT)
+            t.arguments.forEachIndexed { argIdx, arg ->
+                extractWildcardTypeAccessRecursive(arg, location, typeAccessId, argIdx)
             }
         }
         return typeAccessId
