@@ -9,7 +9,7 @@ unsigned long copy_from_user (void * to, void * from, unsigned long n);
 int fread(char *buf, int size, int count, FILE *fp);
 int getSize3();
 int getLen3(char *s);
-
+FILE *getFile();
 int getSize2()
 {
   int m;
@@ -27,12 +27,14 @@ int getSize1()
 }
 int getLen4() {
   char c[1];
+  ef = getFile();
   fread(c, 1, 1, ef);
   return (int)*c;
 }
 int getLen2()
 {
   char str[4] = {0xff, 0xff, 0xff, 0xff};
+  ef = getFile();
   fread(str, 1, 4, ef);
   return getLen3(str);
 }
@@ -40,8 +42,6 @@ void getLen1(int * len)
 {
   *len = getLen2();
 }
-
-
 void goodTest1()
 {
   char *ptr;
@@ -114,9 +114,6 @@ void goodTest7(int len)
 	 ptr[len-1] = 0;
 	 free(ptr);
 }
-
-//CVE-2013-6378
-//export and not check
 void badTest1(int len)
 {
   char *ptr;
@@ -146,8 +143,6 @@ void badTest3(int len,char buf[])
     free(ptr);
   }
 }
-//CVE-2017-6886 
-//len in fread result
 void badTest4(char buf[],FILE *f1)
 {
   char *ptr;
