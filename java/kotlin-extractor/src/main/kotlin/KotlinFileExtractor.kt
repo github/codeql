@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
 import java.io.Closeable
 import java.util.*
@@ -3749,6 +3750,17 @@ open class KotlinFileExtractor(
     }
 
     /**
+     * Extracts a single wildcard type access expression with no enclosing callable and statement.
+     */
+    private fun extractWildcardTypeAccess(type: TypeResults, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
+        val id = tw.getFreshIdLabel<DbWildcardtypeaccess>()
+        tw.writeExprs_wildcardtypeaccess(id, type.javaResult.id, parent, idx)
+        tw.writeExprsKotlinType(id, type.kotlinResult.id)
+        tw.writeHasLocation(id, location)
+        return id
+    }
+
+    /**
      * Extracts a single type access expression with no enclosing callable and statement.
      */
     private fun extractTypeAccess(type: TypeResults, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
@@ -3773,14 +3785,35 @@ open class KotlinFileExtractor(
     }
 
     /**
+     * Extracts a type argument type access, introducing a wildcard type access if appropriate, or directly calling
+     * `extractTypeAccessRecursive` if the argument is invariant.
+     * No enclosing callable and statement is extracted, this is useful for type access extraction in field declarations.
+     */
+    private fun extractWildcardTypeAccessRecursive(t: IrTypeArgument, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int) {
+        val typeLabels by lazy { TypeResults(getTypeArgumentLabel(t), TypeResult(fakeKotlinType(), "TODO", "TODO")) }
+        when (t) {
+            is IrStarProjection -> extractWildcardTypeAccess(typeLabels, location, parent, idx)
+            is IrTypeProjection -> when(t.variance) {
+                Variance.INVARIANT -> extractTypeAccessRecursive(t.type, location, parent, idx, TypeContext.GENERIC_ARGUMENT)
+                else -> {
+                    val wildcardLabel = extractWildcardTypeAccess(typeLabels, location, parent, idx)
+                    // Mimic a Java extractor oddity, that it uses the child index to indicate what kind of wildcard this is
+                    val boundChildIdx = if (t.variance == Variance.OUT_VARIANCE) 0 else 1
+                    extractTypeAccessRecursive(t.type, location, wildcardLabel, boundChildIdx, TypeContext.GENERIC_ARGUMENT)
+                }
+            }
+        }
+    }
+
+    /**
      * Extracts a type access expression and its child type access expressions in case of a generic type. Nested generics are also handled.
      * No enclosing callable and statement is extracted, this is useful for type access extraction in field declarations.
      */
     private fun extractTypeAccessRecursive(t: IrType, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
         val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx)
         if (t is IrSimpleType) {
-            t.arguments.filterIsInstance<IrType>().forEachIndexed { argIdx, arg ->
-                extractTypeAccessRecursive(arg, location, typeAccessId, argIdx, TypeContext.GENERIC_ARGUMENT)
+            t.arguments.forEachIndexed { argIdx, arg ->
+                extractWildcardTypeAccessRecursive(arg, location, typeAccessId, argIdx)
             }
         }
         return typeAccessId
