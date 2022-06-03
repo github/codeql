@@ -4,9 +4,9 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
- * @precision high
- * @id rb/user-controlled-bypass
- * @tags security
+ * @precision medium
+ * @id rb/user-controlled-file-decompression
+ * @tags security external/cwe/cwe-409
  */
 
 import ruby
