@@ -25,7 +25,7 @@ repos:
 
       - id: sync-files
         name: Fix files required to be identical
-        files: \.(qll?|qhelp)$
+        files: \.(qll?|qhelp|swift)$
         language: system
         entry: python3 config/sync-files.py --latest
         pass_filenames: false

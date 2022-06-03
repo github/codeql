@@ -64,6 +64,29 @@ module Ssa {
         a = bb.getNode(i).getNode().asAstNode() and
         value.getNode().asAstNode() = a.getSource()
       )
+      or
+      exists(VarDecl var, BasicBlock bb, int blockIndex, PatternBindingDecl pbd |
+        this.definesAt(var, bb, blockIndex) and
+        pbd.getAPattern() = bb.getNode(blockIndex).getNode().asAstNode() and
+        value.getNode().asAstNode() = var.getParentInitializer()
+      )
     }
+  }
+
+  cached
+  class PhiDefinition extends Definition, SsaImplCommon::PhiNode {
+    cached
+    override Location getLocation() {
+      exists(BasicBlock bb, int i |
+        this.definesAt(_, bb, i) and
+        result = bb.getLocation()
+      )
+    }
+
+    cached
+    Definition getPhiInput(BasicBlock bb) { SsaImplCommon::phiHasInputFromBlock(this, result, bb) }
+
+    cached
+    Definition getAPhiInput() { result = this.getPhiInput(_) }
   }
 }

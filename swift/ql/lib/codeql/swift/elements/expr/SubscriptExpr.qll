@@ -14,4 +14,6 @@ class SubscriptExpr extends SubscriptExprBase {
       not exists(this.getArgument(i + 1))
     )
   }
+
+  override string toString() { result = "...[...]" }
 }

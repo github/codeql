@@ -3,6 +3,7 @@ private import swift
 cached
 newtype TControlFlowElement =
   TAstElement(AstNode n) or
+  TFuncDeclElement(AbstractFunctionDecl func) { func.hasBody() } or
   TPropertyGetterElement(Decl accessor, Expr ref) { isPropertyGetterElement(accessor, ref) } or
   TPropertySetterElement(AccessorDecl accessor, AssignExpr assign) {
     isPropertySetterElement(accessor, assign)
@@ -57,7 +58,7 @@ private predicate hasDirectToImplementationOrOrdinarySemantics(Expr e) {
   hasDirectToImplementationSemantics(e) or hasOrdinarySemantics(e)
 }
 
-predicate isPropertySetterElement(AccessorDecl accessor, AssignExpr assign) {
+private predicate isPropertySetterElement(AccessorDecl accessor, AssignExpr assign) {
   exists(Expr lhs | lhs = assign.getDest() |
     hasDirectToImplementationOrOrdinarySemantics(lhs) and
     accessor.isSetter() and
@@ -72,7 +73,7 @@ predicate isPropertySetterElement(
   pse = TPropertySetterElement(accessor, assign)
 }
 
-predicate isPropertyObserverElement(AccessorDecl observer, AssignExpr assign) {
+private predicate isPropertyObserverElement(AccessorDecl observer, AssignExpr assign) {
   exists(Expr lhs | lhs = assign.getDest() |
     hasDirectToImplementationOrOrdinarySemantics(lhs) and
     observer.isPropertyObserver() and
@@ -160,4 +161,14 @@ class PropertyObserverElement extends ControlFlowElement, TPropertyObserverEleme
   predicate isDidSet() { observer.isDidSet() }
 
   AssignExpr getAssignExpr() { result = assign }
+}
+
+class FuncDeclElement extends ControlFlowElement, TFuncDeclElement {
+  AbstractFunctionDecl func;
+
+  FuncDeclElement() { this = TFuncDeclElement(func) }
+
+  override string toString() { result = func.toString() }
+
+  override Location getLocation() { result = func.getLocation() }
 }

@@ -6,7 +6,6 @@ import inflection
 from toposort import toposort_flatten
 
 from swift.codegen.lib import dbscheme, cpp
-from swift.codegen.generators import generator
 
 log = logging.getLogger(__name__)
 
@@ -57,6 +56,7 @@ def get_trap(t: dbscheme.Table, trap_affix: str):
 
 
 def generate(opts, renderer):
+    assert opts.cpp_output
     tag_graph = {}
     out = opts.cpp_output
 
@@ -81,9 +81,3 @@ def generate(opts, renderer):
             id=tag,
         ))
     renderer.render(cpp.TagList(tags, opts.cpp_namespace, opts.dbscheme), out / f"{opts.trap_affix}Tags.h")
-
-
-tags = ("cpp", "dbscheme")
-
-if __name__ == "__main__":
-    generator.run()

@@ -31,7 +31,7 @@ delegatedProperties.kt:
 #   87|           0: [MethodAccess] getValue(...)
 #   87|             -2: [TypeAccess] Integer
 #   87|             -1: [TypeAccess] PropertyReferenceDelegatesKt
-#   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegate
+#   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegateMyClass
 #   87|               -1: [TypeAccess] DelegatedPropertiesKt
 #    1|             1: [ExtensionReceiverAccess] this
 #   87|             2: [PropertyRefExpr] ...::...
@@ -80,7 +80,7 @@ delegatedProperties.kt:
 #   87|           0: [MethodAccess] setValue(...)
 #   87|             -2: [TypeAccess] Integer
 #   87|             -1: [TypeAccess] PropertyReferenceDelegatesKt
-#   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegate
+#   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegateMyClass
 #   87|               -1: [TypeAccess] DelegatedPropertiesKt
 #    1|             1: [ExtensionReceiverAccess] this
 #   87|             2: [PropertyRefExpr] ...::...
@@ -118,7 +118,7 @@ delegatedProperties.kt:
 #   87|                 0: [TypeAccess] MyClass
 #   87|                 1: [TypeAccess] Integer
 #   87|             3: [VarAccess] <set-?>
-#   87|     5: [FieldDeclaration] KMutableProperty0<Integer> extDelegated$delegate;
+#   87|     5: [FieldDeclaration] KMutableProperty0<Integer> extDelegated$delegateMyClass;
 #   87|       -1: [TypeAccess] KMutableProperty0<Integer>
 #   87|         0: [TypeAccess] Integer
 #   87|       0: [PropertyRefExpr] ...::...
@@ -237,9 +237,10 @@ delegatedProperties.kt:
 #   18|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   18|         0: [Parameter] map
-#   18|           0: [TypeAccess] Map<String,Object>
+#   18|           0: [TypeAccess] Map<String,? extends Object>
 #   18|             0: [TypeAccess] String
-#   18|             1: [TypeAccess] Object
+#   18|             1: [WildcardTypeAccess] ? ...
+#   18|               0: [TypeAccess] Object
 #   18|       5: [BlockStmt] { ... }
 #   19|         0: [BlockStmt] { ... }
 #   19|           0: [LocalVariableDeclStmt] var ...;
@@ -425,6 +426,7 @@ delegatedProperties.kt:
 #   27|                                 0: [TypeAccess] Object
 #   27|                               1: [Parameter] property
 #   27|                                 0: [TypeAccess] KProperty<?>
+#   27|                                   0: [WildcardTypeAccess] ? ...
 #   27|                             5: [BlockStmt] { ... }
 #   27|                               0: [ReturnStmt] return ...
 #   27|                                 0: [MethodAccess] getCurValue(...)
@@ -436,6 +438,7 @@ delegatedProperties.kt:
 #   28|                                 0: [TypeAccess] Object
 #   28|                               1: [Parameter] property
 #   28|                                 0: [TypeAccess] KProperty<?>
+#   28|                                   0: [WildcardTypeAccess] ? ...
 #   28|                               2: [Parameter] value
 #   28|                                 0: [TypeAccess] int
 #   28|                             5: [BlockStmt] { ... }
@@ -734,6 +737,7 @@ delegatedProperties.kt:
 #   46|           0: [TypeAccess] Owner
 #   46|         1: [Parameter] property
 #   46|           0: [TypeAccess] KProperty<?>
+#   46|             0: [WildcardTypeAccess] ? ...
 #   46|       5: [BlockStmt] { ... }
 #   47|         0: [ReturnStmt] return ...
 #   47|           0: [IntegerLiteral] 1
@@ -744,6 +748,7 @@ delegatedProperties.kt:
 #   49|           0: [TypeAccess] Owner
 #   49|         1: [Parameter] property
 #   49|           0: [TypeAccess] KProperty<?>
+#   49|             0: [WildcardTypeAccess] ? ...
 #   49|         2: [Parameter] value
 #   49|           0: [TypeAccess] Integer
 #   49|       5: [BlockStmt] { ... }
@@ -759,6 +764,7 @@ delegatedProperties.kt:
 #   54|           0: [TypeAccess] Owner
 #   54|         1: [Parameter] prop
 #   54|           0: [TypeAccess] KProperty<?>
+#   54|             0: [WildcardTypeAccess] ? ...
 #   54|       5: [BlockStmt] { ... }
 #   56|         0: [ReturnStmt] return ...
 #   56|           0: [ClassInstanceExpr] new ResourceDelegate(...)
@@ -3081,8 +3087,9 @@ funcExprs.kt:
 #    2|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #    2|         0: [Parameter] f
-#    2|           0: [TypeAccess] Function0<Object>
-#    2|             0: [TypeAccess] Object
+#    2|           0: [TypeAccess] Function0<? extends Object>
+#    2|             0: [WildcardTypeAccess] ? ...
+#    2|               0: [TypeAccess] Object
 #    2|       5: [BlockStmt] { ... }
 #    2|         0: [ExprStmt] <Expr>;
 #    2|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -3093,8 +3100,9 @@ funcExprs.kt:
 #    3|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #    3|         0: [Parameter] f
-#    3|           0: [TypeAccess] Function0<Object>
-#    3|             0: [TypeAccess] Object
+#    3|           0: [TypeAccess] Function0<? extends Object>
+#    3|             0: [WildcardTypeAccess] ? ...
+#    3|               0: [TypeAccess] Object
 #    3|       5: [BlockStmt] { ... }
 #    3|         0: [ExprStmt] <Expr>;
 #    3|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -3107,8 +3115,9 @@ funcExprs.kt:
 #    4|         0: [Parameter] x
 #    4|           0: [TypeAccess] int
 #    4|         1: [Parameter] f
-#    4|           0: [TypeAccess] Function1<Integer,Integer>
-#    4|             0: [TypeAccess] Integer
+#    4|           0: [TypeAccess] Function1<? super Integer,Integer>
+#    4|             0: [WildcardTypeAccess] ? ...
+#    4|               1: [TypeAccess] Integer
 #    4|             1: [TypeAccess] Integer
 #    4|       5: [BlockStmt] { ... }
 #    4|         0: [ExprStmt] <Expr>;
@@ -3123,9 +3132,10 @@ funcExprs.kt:
 #    5|         0: [Parameter] x
 #    5|           0: [TypeAccess] int
 #    5|         1: [Parameter] f
-#    5|           0: [TypeAccess] Function1<Object,Object>
+#    5|           0: [TypeAccess] Function1<Object,? extends Object>
 #    5|             0: [TypeAccess] Object
-#    5|             1: [TypeAccess] Object
+#    5|             1: [WildcardTypeAccess] ? ...
+#    5|               0: [TypeAccess] Object
 #    5|       5: [BlockStmt] { ... }
 #    5|         0: [ExprStmt] <Expr>;
 #    5|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -3139,9 +3149,11 @@ funcExprs.kt:
 #    6|         0: [Parameter] x
 #    6|           0: [TypeAccess] int
 #    6|         1: [Parameter] f
-#    6|           0: [TypeAccess] Function2<FuncRef,Integer,Integer>
-#    6|             0: [TypeAccess] FuncRef
-#    6|             1: [TypeAccess] Integer
+#    6|           0: [TypeAccess] Function2<? super FuncRef,? super Integer,Integer>
+#    6|             0: [WildcardTypeAccess] ? ...
+#    6|               1: [TypeAccess] FuncRef
+#    6|             1: [WildcardTypeAccess] ? ...
+#    6|               1: [TypeAccess] Integer
 #    6|             2: [TypeAccess] Integer
 #    6|       5: [BlockStmt] { ... }
 #    6|         0: [ExprStmt] <Expr>;
@@ -3158,9 +3170,11 @@ funcExprs.kt:
 #    7|         0: [Parameter] x
 #    7|           0: [TypeAccess] int
 #    7|         1: [Parameter] f
-#    7|           0: [TypeAccess] Function2<Integer,Integer,Integer>
-#    7|             0: [TypeAccess] Integer
-#    7|             1: [TypeAccess] Integer
+#    7|           0: [TypeAccess] Function2<? super Integer,? super Integer,Integer>
+#    7|             0: [WildcardTypeAccess] ? ...
+#    7|               1: [TypeAccess] Integer
+#    7|             1: [WildcardTypeAccess] ? ...
+#    7|               1: [TypeAccess] Integer
 #    7|             2: [TypeAccess] Integer
 #    7|       5: [BlockStmt] { ... }
 #    7|         0: [ExprStmt] <Expr>;
@@ -3176,9 +3190,11 @@ funcExprs.kt:
 #    8|         0: [Parameter] x
 #    8|           0: [TypeAccess] int
 #    8|         1: [Parameter] f
-#    8|           0: [TypeAccess] Function2<Integer,Integer,Integer>
-#    8|             0: [TypeAccess] Integer
-#    8|             1: [TypeAccess] Integer
+#    8|           0: [TypeAccess] Function2<? super Integer,? super Integer,Integer>
+#    8|             0: [WildcardTypeAccess] ? ...
+#    8|               1: [TypeAccess] Integer
+#    8|             1: [WildcardTypeAccess] ? ...
+#    8|               1: [TypeAccess] Integer
 #    8|             2: [TypeAccess] Integer
 #    8|       5: [BlockStmt] { ... }
 #    8|         0: [ExprStmt] <Expr>;
@@ -3194,11 +3210,14 @@ funcExprs.kt:
 #    9|         0: [Parameter] x
 #    9|           0: [TypeAccess] int
 #    9|         1: [Parameter] f
-#    9|           0: [TypeAccess] Function1<Integer,Function1<Integer,Double>>
-#    9|             0: [TypeAccess] Integer
-#    9|             1: [TypeAccess] Function1<Integer,Double>
-#    9|               0: [TypeAccess] Integer
-#    9|               1: [TypeAccess] Double
+#    9|           0: [TypeAccess] Function1<? super Integer,? extends Function1<? super Integer,Double>>
+#    9|             0: [WildcardTypeAccess] ? ...
+#    9|               1: [TypeAccess] Integer
+#    9|             1: [WildcardTypeAccess] ? ...
+#    9|               0: [TypeAccess] Function1<? super Integer,Double>
+#    9|                 0: [WildcardTypeAccess] ? ...
+#    9|                   1: [TypeAccess] Integer
+#    9|                 1: [TypeAccess] Double
 #    9|       5: [BlockStmt] { ... }
 #    9|         0: [ExprStmt] <Expr>;
 #    9|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -3214,29 +3233,51 @@ funcExprs.kt:
 #   11|         0: [Parameter] x
 #   11|           0: [TypeAccess] int
 #   11|         1: [Parameter] f
-#   11|           0: [TypeAccess] Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>
-#   11|             0: [TypeAccess] Integer
-#   11|             1: [TypeAccess] Integer
-#   11|             2: [TypeAccess] Integer
-#   11|             3: [TypeAccess] Integer
-#   11|             4: [TypeAccess] Integer
-#   11|             5: [TypeAccess] Integer
-#   11|             6: [TypeAccess] Integer
-#   11|             7: [TypeAccess] Integer
-#   11|             8: [TypeAccess] Integer
-#   11|             9: [TypeAccess] Integer
-#   11|             10: [TypeAccess] Integer
-#   11|             11: [TypeAccess] Integer
-#   11|             12: [TypeAccess] Integer
-#   11|             13: [TypeAccess] Integer
-#   11|             14: [TypeAccess] Integer
-#   11|             15: [TypeAccess] Integer
-#   11|             16: [TypeAccess] Integer
-#   11|             17: [TypeAccess] Integer
-#   11|             18: [TypeAccess] Integer
-#   11|             19: [TypeAccess] Integer
-#   11|             20: [TypeAccess] Integer
-#   11|             21: [TypeAccess] Integer
+#   11|           0: [TypeAccess] Function22<? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,? super Integer,Unit>
+#   11|             0: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             1: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             2: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             3: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             4: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             5: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             6: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             7: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             8: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             9: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             10: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             11: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             12: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             13: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             14: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             15: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             16: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             17: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             18: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             19: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             20: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
+#   11|             21: [WildcardTypeAccess] ? ...
+#   11|               1: [TypeAccess] Integer
 #   11|             22: [TypeAccess] Unit
 #   11|       5: [BlockStmt] { ... }
 #   12|         0: [ExprStmt] <Expr>;
@@ -3271,29 +3312,52 @@ funcExprs.kt:
 #   14|           0: [TypeAccess] int
 #   14|         1: [Parameter] f
 #   14|           0: [TypeAccess] FunctionN<String>
-#   14|             0: [TypeAccess] Integer
-#   14|             1: [TypeAccess] Integer
-#   14|             2: [TypeAccess] Integer
-#   14|             3: [TypeAccess] Integer
-#   14|             4: [TypeAccess] Integer
-#   14|             5: [TypeAccess] Integer
-#   14|             6: [TypeAccess] Integer
-#   14|             7: [TypeAccess] Integer
-#   14|             8: [TypeAccess] Integer
-#   14|             9: [TypeAccess] Integer
-#   14|             10: [TypeAccess] Integer
-#   14|             11: [TypeAccess] Integer
-#   14|             12: [TypeAccess] Integer
-#   14|             13: [TypeAccess] Integer
-#   14|             14: [TypeAccess] Integer
-#   14|             15: [TypeAccess] Integer
-#   14|             16: [TypeAccess] Integer
-#   14|             17: [TypeAccess] Integer
-#   14|             18: [TypeAccess] Integer
-#   14|             19: [TypeAccess] Integer
-#   14|             20: [TypeAccess] Integer
-#   14|             21: [TypeAccess] Integer
-#   14|             22: [TypeAccess] Integer
+#   14|             0: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             1: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             2: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             3: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             4: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             5: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             6: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             7: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             8: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             9: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             10: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             11: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             12: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             13: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             14: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             15: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             16: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             17: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             18: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             19: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             20: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             21: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
+#   14|             22: [WildcardTypeAccess] ? ...
+#   14|               1: [TypeAccess] Integer
 #   14|             23: [TypeAccess] String
 #   14|       5: [BlockStmt] { ... }
 #   15|         0: [ExprStmt] <Expr>;
@@ -3335,30 +3399,54 @@ funcExprs.kt:
 #   17|           0: [TypeAccess] int
 #   17|         1: [Parameter] f
 #   17|           0: [TypeAccess] FunctionN<String>
-#   17|             0: [TypeAccess] FuncRef
-#   17|             1: [TypeAccess] Integer
-#   17|             2: [TypeAccess] Integer
-#   17|             3: [TypeAccess] Integer
-#   17|             4: [TypeAccess] Integer
-#   17|             5: [TypeAccess] Integer
-#   17|             6: [TypeAccess] Integer
-#   17|             7: [TypeAccess] Integer
-#   17|             8: [TypeAccess] Integer
-#   17|             9: [TypeAccess] Integer
-#   17|             10: [TypeAccess] Integer
-#   17|             11: [TypeAccess] Integer
-#   17|             12: [TypeAccess] Integer
-#   17|             13: [TypeAccess] Integer
-#   17|             14: [TypeAccess] Integer
-#   17|             15: [TypeAccess] Integer
-#   17|             16: [TypeAccess] Integer
-#   17|             17: [TypeAccess] Integer
-#   17|             18: [TypeAccess] Integer
-#   17|             19: [TypeAccess] Integer
-#   17|             20: [TypeAccess] Integer
-#   17|             21: [TypeAccess] Integer
-#   17|             22: [TypeAccess] Integer
-#   17|             23: [TypeAccess] Integer
+#   17|             0: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] FuncRef
+#   17|             1: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             2: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             3: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             4: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             5: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             6: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             7: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             8: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             9: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             10: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             11: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             12: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             13: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             14: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             15: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             16: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             17: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             18: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             19: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             20: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             21: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             22: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
+#   17|             23: [WildcardTypeAccess] ? ...
+#   17|               1: [TypeAccess] Integer
 #   17|             24: [TypeAccess] String
 #   17|       5: [BlockStmt] { ... }
 #   18|         0: [ExprStmt] <Expr>;
@@ -4496,8 +4584,9 @@ funcExprs.kt:
 #   58|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   58|         0: [Parameter] l
-#   58|           0: [TypeAccess] Function0<T>
-#   58|             0: [TypeAccess] T
+#   58|           0: [TypeAccess] Function0<? extends T>
+#   58|             0: [WildcardTypeAccess] ? ...
+#   58|               0: [TypeAccess] T
 #   58|       5: [BlockStmt] { ... }
 #   59|     15: [ExtensionMethod] f3
 #   59|       3: [TypeAccess] int
@@ -4685,10 +4774,11 @@ funcExprs.kt:
 #   77|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   77|         0: [Parameter] f
-#   77|           0: [TypeAccess] Function1<Generic<Generic<Integer>>,String>
-#   77|             0: [TypeAccess] Generic<Generic<Integer>>
-#   77|               0: [TypeAccess] Generic<Integer>
-#   77|                 0: [TypeAccess] Integer
+#   77|           0: [TypeAccess] Function1<? super Generic<Generic<Integer>>,String>
+#   77|             0: [WildcardTypeAccess] ? ...
+#   77|               1: [TypeAccess] Generic<Generic<Integer>>
+#   77|                 0: [TypeAccess] Generic<Integer>
+#   77|                   0: [TypeAccess] Integer
 #   77|             1: [TypeAccess] String
 #   77|       5: [BlockStmt] { ... }
 #   79|     6: [Class,GenericType,ParameterizedType] Generic

@@ -7,7 +7,6 @@ import subprocess
 import inflection
 
 from swift.codegen.lib import schema, ql
-from swift.codegen.generators import generator
 
 log = logging.getLogger(__name__)
 
@@ -19,6 +18,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
             type=prop.type,
             tablename=inflection.tableize(cls.name),
             tableparams=["this"] + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
+            is_child=prop.is_child,
         )
     elif prop.is_repeated:
         return ql.Property(
@@ -28,6 +28,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "index", "result"],
             is_optional=prop.is_optional,
+            is_child=prop.is_child,
         )
     elif prop.is_optional:
         return ql.Property(
@@ -36,6 +37,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "result"],
             is_optional=True,
+            is_child=prop.is_child,
         )
     elif prop.is_predicate:
         return ql.Property(
@@ -96,6 +98,7 @@ def generate(opts, renderer):
     data = schema.load(input)
 
     classes = [get_ql_class(cls) for cls in data.classes]
+    classes.sort(key=lambda cls: cls.name)
     imports = {}
 
     for c in classes:
@@ -110,17 +113,13 @@ def generate(opts, renderer):
             stub = ql.Stub(name=c.name, base_import=get_import(qll, opts.swift_dir))
             renderer.render(stub, stub_file)
 
-    # for example path/to/syntax/generated -> path/to/syntax.qll
+    # for example path/to/elements -> path/to/elements.qll
     include_file = stub_out.with_suffix(".qll")
-    all_imports = ql.ImportList([v for _, v in sorted(imports.items())])
+    all_imports = ql.ImportList(list(sorted(imports.values())))
     renderer.render(all_imports, include_file)
+
+    renderer.render(ql.GetParentImplementation(classes), out / 'GetImmediateParent.qll')
 
     renderer.cleanup(existing)
     if opts.ql_format:
         format(opts.codeql_binary, renderer.written)
-
-
-tags = ("schema", "ql")
-
-if __name__ == "__main__":
-    generator.run()

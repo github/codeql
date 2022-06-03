@@ -83,3 +83,7 @@ a.withoutElementOne()
 sink(a[0])
 sink(a[1])
 sink(a[2]) # $ hasValueFlow=elem2
+
+x = Foo.new
+x.set_value(source("attr"))
+sink(x.get_value) # $ hasValueFlow=attr

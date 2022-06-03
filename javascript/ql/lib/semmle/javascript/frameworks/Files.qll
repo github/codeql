@@ -89,7 +89,7 @@ private API::Node globbyFileNameSource() {
  * A file name or an array of file names from the `globby` library.
  */
 private class GlobbyFileNameSource extends FileNameSource {
-  GlobbyFileNameSource() { this = globbyFileNameSource().getAnImmediateUse() }
+  GlobbyFileNameSource() { this = globbyFileNameSource().asSource() }
 }
 
 /** Gets a file name or an array of file names from the `fast-glob` library. */
@@ -116,7 +116,7 @@ private API::Node fastGlobFileName() {
  * A file name or an array of file names from the `fast-glob` library.
  */
 private class FastGlobFileNameSource extends FileNameSource {
-  FastGlobFileNameSource() { this = fastGlobFileName().getAnImmediateUse() }
+  FastGlobFileNameSource() { this = fastGlobFileName().asSource() }
 }
 
 /**
@@ -200,7 +200,7 @@ private class RecursiveReadDir extends FileSystemAccess, FileNameProducer, API::
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 
-  override DataFlow::Node getAFileName() { result = this.trackFileSource().getAnImmediateUse() }
+  override DataFlow::Node getAFileName() { result = this.trackFileSource().asSource() }
 
   private API::Node trackFileSource() {
     result = this.getParameter([1 .. 2]).getParameter(1)
@@ -223,7 +223,7 @@ private module JsonFile {
 
     override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 
-    override DataFlow::Node getADataNode() { result = this.trackRead().getAnImmediateUse() }
+    override DataFlow::Node getADataNode() { result = this.trackRead().asSource() }
 
     private API::Node trackRead() {
       this.getCalleeName() = "readFile" and
@@ -272,7 +272,7 @@ private class LoadJsonFile extends FileSystemReadAccess, API::CallNode {
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 
-  override DataFlow::Node getADataNode() { result = this.trackRead().getAnImmediateUse() }
+  override DataFlow::Node getADataNode() { result = this.trackRead().asSource() }
 
   private API::Node trackRead() {
     this.getCalleeName() = "sync" and result = this.getReturn()
@@ -310,7 +310,7 @@ private class WalkDir extends FileNameProducer, FileSystemAccess, API::CallNode 
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 
-  override DataFlow::Node getAFileName() { result = this.trackFileSource().getAnImmediateUse() }
+  override DataFlow::Node getAFileName() { result = this.trackFileSource().asSource() }
 
   private API::Node trackFileSource() {
     not this.getCalleeName() = ["sync", "async"] and

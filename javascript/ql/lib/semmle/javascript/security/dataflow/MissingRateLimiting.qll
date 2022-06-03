@@ -152,9 +152,7 @@ abstract class RateLimitingMiddleware extends DataFlow::SourceNode {
  * A rate limiter constructed using the `express-rate-limit` package.
  */
 class ExpressRateLimit extends RateLimitingMiddleware {
-  ExpressRateLimit() {
-    this = API::moduleImport("express-rate-limit").getReturn().getAnImmediateUse()
-  }
+  ExpressRateLimit() { this = API::moduleImport("express-rate-limit").getReturn().asSource() }
 }
 
 /**
@@ -162,7 +160,7 @@ class ExpressRateLimit extends RateLimitingMiddleware {
  */
 class BruteForceRateLimit extends RateLimitingMiddleware {
   BruteForceRateLimit() {
-    this = API::moduleImport("express-brute").getInstance().getMember("prevent").getAnImmediateUse()
+    this = API::moduleImport("express-brute").getInstance().getMember("prevent").asSource()
   }
 }
 
@@ -174,7 +172,7 @@ class BruteForceRateLimit extends RateLimitingMiddleware {
  */
 class RouteHandlerLimitedByExpressLimiter extends RateLimitingMiddleware {
   RouteHandlerLimitedByExpressLimiter() {
-    this = API::moduleImport("express-limiter").getReturn().getReturn().getAnImmediateUse()
+    this = API::moduleImport("express-limiter").getReturn().getReturn().asSource()
   }
 
   override Routing::Node getRoutingNode() {
@@ -211,7 +209,7 @@ class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
       rateLimiterClass = API::moduleImport("rate-limiter-flexible").getMember(rateLimiterClassName) and
       rateLimiterConsume = rateLimiterClass.getInstance().getMember("consume") and
       request.getParameter() = getRouteHandlerParameter(this.getFunction(), "request") and
-      request.getAPropertyRead().flowsTo(rateLimiterConsume.getAParameter().getARhs())
+      request.getAPropertyRead().flowsTo(rateLimiterConsume.getAParameter().asSink())
     )
   }
 }
