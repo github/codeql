@@ -417,40 +417,81 @@ open class KotlinUsesExtractor(
         } ?: f
     }
 
+    private fun tryReplaceType(cBeforeReplacement: IrClass, argsIncludingOuterClassesBeforeReplacement: List<IrTypeArgument>?): Pair<IrClass, List<IrTypeArgument>?> {
+        val c = tryReplaceAndroidSyntheticClass(cBeforeReplacement)
+        val p = tryReplaceParcelizeRawType(c)
+        return Pair(
+            p?.first ?: c,
+            p?.second ?: argsIncludingOuterClassesBeforeReplacement
+        )
+    }
+
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun addClassLabel(cBeforeReplacement: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
-        val c = tryReplaceAndroidSyntheticClass(cBeforeReplacement)
-        val classLabelResult = getClassLabel(c, argsIncludingOuterClasses)
+    private fun addClassLabel(cBeforeReplacement: IrClass, argsIncludingOuterClassesBeforeReplacement: List<IrTypeArgument>?, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
+        val replaced = tryReplaceType(cBeforeReplacement, argsIncludingOuterClassesBeforeReplacement)
+        val replacedClass = replaced.first
+        val replacedArgsIncludingOuterClasses = replaced.second
+
+        val classLabelResult = getClassLabel(replacedClass, replacedArgsIncludingOuterClasses)
 
         var instanceSeenBefore = true
 
-        val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classLabelResult.classLabel, {
+        val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classLabelResult.classLabel) {
             instanceSeenBefore = false
 
-            extractClassLaterIfExternal(c)
-        })
+            extractClassLaterIfExternal(replacedClass)
+        }
 
-        if (argsIncludingOuterClasses == null || argsIncludingOuterClasses.isNotEmpty()) {
+        if (replacedArgsIncludingOuterClasses == null || replacedArgsIncludingOuterClasses.isNotEmpty()) {
             // If this is a generic type instantiation or a raw type then it has no
             // source entity, so we need to extract it here
-            val extractorWithCSource by lazy { this.withFileOfClass(c) }
+            val extractorWithCSource by lazy { this.withFileOfClass(replacedClass) }
 
             if (!instanceSeenBefore) {
-                extractorWithCSource.extractClassInstance(c, argsIncludingOuterClasses)
+                extractorWithCSource.extractClassInstance(replacedClass, replacedArgsIncludingOuterClasses)
             }
 
             if (inReceiverContext && tw.lm.genericSpecialisationsExtracted.add(classLabelResult.classLabel)) {
-                val supertypeMode = if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses)
-                extractorWithCSource.extractClassSupertypes(c, classLabel, supertypeMode, true)
-                extractorWithCSource.extractNonPrivateMemberPrototypes(c, argsIncludingOuterClasses, classLabel)
+                val supertypeMode = if (replacedArgsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(replacedArgsIncludingOuterClasses)
+                extractorWithCSource.extractClassSupertypes(replacedClass, classLabel, supertypeMode, true)
+                extractorWithCSource.extractNonPrivateMemberPrototypes(replacedClass, replacedArgsIncludingOuterClasses, classLabel)
             }
         }
 
         return TypeResult(
             classLabel,
-            c.fqNameWhenAvailable?.asString(),
+            replacedClass.fqNameWhenAvailable?.asString(),
             classLabelResult.shortName)
+    }
+
+    private fun tryReplaceParcelizeRawType(c: IrClass): Pair<IrClass, List<IrTypeArgument>?>? {
+        if (c.superTypes.isNotEmpty() ||
+            c.origin != IrDeclarationOrigin.DEFINED ||
+            c.hasEqualFqName(FqName("java.lang.Object"))) {
+            return null
+        }
+
+        fun tryGetPair(arity: Int): Pair<IrClass, List<IrTypeArgument>?>? {
+            val replaced = pluginContext.referenceClass(c.fqNameWhenAvailable!!)?.owner ?: return null
+            return Pair(replaced, List(arity) { makeTypeProjection(pluginContext.irBuiltIns.anyNType, Variance.INVARIANT) })
+        }
+
+        // The list of types handled here match https://github.com/JetBrains/kotlin/blob/d7c7d1efd2c0983c13b175e9e4b1cda979521159/plugins/parcelize/parcelize-compiler/src/org/jetbrains/kotlin/parcelize/ir/AndroidSymbols.kt
+        // Specifically, types are added for generic types created in AndroidSymbols.kt.
+        // This replacement is from a raw type to its matching parameterized type with `Object` type arguments.
+        return when (c.fqNameWhenAvailable?.asString()) {
+            "java.util.ArrayList" -> tryGetPair(1)
+            "java.util.LinkedHashMap" -> tryGetPair(2)
+            "java.util.LinkedHashSet" -> tryGetPair(1)
+            "java.util.List" -> tryGetPair(1)
+            "java.util.TreeMap" -> tryGetPair(2)
+            "java.util.TreeSet" -> tryGetPair(1)
+
+            "java.lang.Class" -> tryGetPair(1)
+
+            else -> null
+        }
     }
 
     fun useAnonymousClass(c: IrClass) =
@@ -721,7 +762,17 @@ open class KotlinUsesExtractor(
                 } else {
                     extractFileClass(dp)
                 }
-            is IrClass -> if (classTypeArguments != null && !dp.isAnonymousObject) useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id else useClassSource(dp)
+            is IrClass ->
+                if (classTypeArguments != null && !dp.isAnonymousObject) {
+                    useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id
+                } else {
+                    val replacedType = tryReplaceParcelizeRawType(dp)
+                    if (replacedType == null) {
+                        useClassSource(dp)
+                    } else {
+                        useClassInstance(replacedType.first, replacedType.second, inReceiverContext).typeResult.id
+                    }
+                }
             is IrFunction -> useFunction(dp)
             is IrExternalPackageFragment -> {
                 // TODO
