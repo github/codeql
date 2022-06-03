@@ -417,13 +417,21 @@ open class KotlinUsesExtractor(
         } ?: f
     }
 
-    // `typeArgs` can be null to describe a raw generic type.
-    // For non-generic types it will be zero-length list.
-    private fun addClassLabel(cBeforeReplacement: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
+    private fun tryReplaceType(cBeforeReplacement: IrClass, argsIncludingOuterClassesBeforeReplacement: List<IrTypeArgument>?): Pair<IrClass, List<IrTypeArgument>?> {
         val c = tryReplaceAndroidSyntheticClass(cBeforeReplacement)
         val p = tryReplaceParcelizeRawType(c)
-        val replacedClass = p?.first ?: c
-        val replacedArgsIncludingOuterClasses = p?.second ?: argsIncludingOuterClasses
+        return Pair(
+            p?.first ?: c,
+            p?.second ?: argsIncludingOuterClassesBeforeReplacement
+        )
+    }
+
+    // `typeArgs` can be null to describe a raw generic type.
+    // For non-generic types it will be zero-length list.
+    private fun addClassLabel(cBeforeReplacement: IrClass, argsIncludingOuterClassesBeforeReplacement: List<IrTypeArgument>?, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
+        val replaced = tryReplaceType(cBeforeReplacement, argsIncludingOuterClassesBeforeReplacement)
+        val replacedClass = replaced.first
+        val replacedArgsIncludingOuterClasses = replaced.second
 
         val classLabelResult = getClassLabel(replacedClass, replacedArgsIncludingOuterClasses)
 
@@ -453,7 +461,7 @@ open class KotlinUsesExtractor(
 
         return TypeResult(
             classLabel,
-            c.fqNameWhenAvailable?.asString(),
+            replacedClass.fqNameWhenAvailable?.asString(),
             classLabelResult.shortName)
     }
 
@@ -758,10 +766,12 @@ open class KotlinUsesExtractor(
                 if (classTypeArguments != null && !dp.isAnonymousObject) {
                     useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id
                 } else {
-                    // `inReceiverContext == false` is used unless we have identified that we're dealing with a raw type
-                    // produced by the Parcelize plugin. In that case we're using the original `inReceiverContext`. Note
-                    // that the type in this case is being replaced later in `addClassLabel` to a non-raw type.
-                    useClassSource(dp, inReceiverContext && tryReplaceParcelizeRawType(dp) != null)
+                    val replacedType = tryReplaceParcelizeRawType(dp)
+                    if (replacedType == null) {
+                        useClassSource(dp)
+                    } else {
+                        useClassInstance(replacedType.first, replacedType.second, inReceiverContext).typeResult.id
+                    }
                 }
             is IrFunction -> useFunction(dp)
             is IrExternalPackageFragment -> {
@@ -1322,13 +1332,13 @@ open class KotlinUsesExtractor(
             unquotedLabel.shortName)
     }
 
-    fun useClassSource(c: IrClass, inReceiverContext: Boolean = false): Label<out DbClassorinterface> {
+    fun useClassSource(c: IrClass): Label<out DbClassorinterface> {
         if (c.isAnonymousObject) {
             return useAnonymousClass(c).javaResult.id.cast<DbClass>()
         }
 
         // For source classes, the label doesn't include and type arguments
-        val classTypeResult = addClassLabel(c, listOf(), inReceiverContext)
+        val classTypeResult = addClassLabel(c, listOf())
         return classTypeResult.id
     }
 
