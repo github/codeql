@@ -194,7 +194,11 @@ class MicrosoftAspNetCoreMvcControllerBaseClass extends Class {
   }
 }
 
-/** A valid ASP.NET Core controller according to https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/actions?view=aspnetcore-3.1 */
+/**
+ * A valid ASP.NET Core controller according to:
+ *  https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/actions?view=aspnetcore-3.1
+ * https://github.com/dotnet/aspnetcore/blob/b3c93967ba508b8ef139add27132d9483c1a9eb4/src/Mvc/Mvc.Core/src/Controllers/ControllerFeatureProvider.cs#L39-L75
+ */
 class MicrosoftAspNetCoreMvcController extends Class {
   MicrosoftAspNetCoreMvcController() {
     exists(Assembly a, string name |
@@ -204,6 +208,9 @@ class MicrosoftAspNetCoreMvcController extends Class {
         name = "Microsoft.AspNetCore.Mvc.ViewFeatures"
       )
     ) and
+    this.isPublic() and
+    not this.isAbstract() and
+    not this.containsTypeParameters() and
     (
       this.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass or
       this.getABaseType*().getName().matches("%Controller") or
