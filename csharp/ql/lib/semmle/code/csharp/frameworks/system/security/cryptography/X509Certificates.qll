@@ -35,14 +35,14 @@ private class SystemSecurityCryptographyX509CertificatesX509Certificate2Collecti
   override predicate row(string row) {
     row =
       [
-        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;Add;(System.Security.Cryptography.X509Certificates.X509Certificate2);;Argument[0];Argument[Qualifier].Element;value",
-        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;AddRange;(System.Security.Cryptography.X509Certificates.X509Certificate2Collection);;Argument[0].Element;Argument[Qualifier].Element;value",
-        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;AddRange;(System.Security.Cryptography.X509Certificates.X509Certificate2[]);;Argument[0].Element;Argument[Qualifier].Element;value",
-        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;Find;(System.Security.Cryptography.X509Certificates.X509FindType,System.Object,System.Boolean);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509Certificate2Enumerator.Current];value",
-        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;Insert;(System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate2);;Argument[1];Argument[Qualifier].Element;value",
-        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;set_Item;(System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate2);;Argument[1];Argument[Qualifier].Element;value",
+        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;Add;(System.Security.Cryptography.X509Certificates.X509Certificate2);;Argument[0];Argument[Qualifier].Element;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;AddRange;(System.Security.Cryptography.X509Certificates.X509Certificate2Collection);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;AddRange;(System.Security.Cryptography.X509Certificates.X509Certificate2[]);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;Find;(System.Security.Cryptography.X509Certificates.X509FindType,System.Object,System.Boolean);;Argument[Qualifier].Element;ReturnValue;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509Certificate2Enumerator.Current];value;manual",
+        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;Insert;(System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate2);;Argument[1];Argument[Qualifier].Element;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509Certificate2Collection;false;set_Item;(System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate2);;Argument[1];Argument[Qualifier].Element;value;manual",
       ]
   }
 }
@@ -52,14 +52,14 @@ private class SystemSecurityCryptographyX509CertificatesX509CertificateCollectio
   override predicate row(string row) {
     row =
       [
-        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;Add;(System.Security.Cryptography.X509Certificates.X509Certificate);;Argument[0];Argument[Qualifier].Element;value",
-        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;AddRange;(System.Security.Cryptography.X509Certificates.X509CertificateCollection);;Argument[0].Element;Argument[Qualifier].Element;value",
-        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;AddRange;(System.Security.Cryptography.X509Certificates.X509Certificate[]);;Argument[0].Element;Argument[Qualifier].Element;value",
-        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;CopyTo;(System.Security.Cryptography.X509Certificates.X509Certificate[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value",
-        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509CertificateCollection+X509CertificateEnumerator.Current];value",
-        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;Insert;(System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate);;Argument[1];Argument[Qualifier].Element;value",
-        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;set_Item;(System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate);;Argument[1];Argument[Qualifier].Element;value",
+        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;Add;(System.Security.Cryptography.X509Certificates.X509Certificate);;Argument[0];Argument[Qualifier].Element;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;AddRange;(System.Security.Cryptography.X509Certificates.X509CertificateCollection);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;AddRange;(System.Security.Cryptography.X509Certificates.X509Certificate[]);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;CopyTo;(System.Security.Cryptography.X509Certificates.X509Certificate[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509CertificateCollection+X509CertificateEnumerator.Current];value;manual",
+        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;Insert;(System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate);;Argument[1];Argument[Qualifier].Element;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509CertificateCollection;false;set_Item;(System.Int32,System.Security.Cryptography.X509Certificates.X509Certificate);;Argument[1];Argument[Qualifier].Element;value;manual",
       ]
   }
 }
@@ -69,8 +69,8 @@ private class SystemSecurityCryptographyX509CertificatesX509ClainElementCollecti
   override predicate row(string row) {
     row =
       [
-        "System.Security.Cryptography.X509Certificates;X509ChainElementCollection;false;CopyTo;(System.Security.Cryptography.X509Certificates.X509ChainElement[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value",
-        "System.Security.Cryptography.X509Certificates;X509ChainElementCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509ChainElementEnumerator.Current];value",
+        "System.Security.Cryptography.X509Certificates;X509ChainElementCollection;false;CopyTo;(System.Security.Cryptography.X509Certificates.X509ChainElement[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509ChainElementCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509ChainElementEnumerator.Current];value;manual",
       ]
   }
 }
@@ -80,9 +80,9 @@ private class SystemSecurityCryptographyX509CertificatesX509ExtensionCollectionF
   override predicate row(string row) {
     row =
       [
-        "System.Security.Cryptography.X509Certificates;X509ExtensionCollection;false;Add;(System.Security.Cryptography.X509Certificates.X509Extension);;Argument[0];Argument[Qualifier].Element;value",
-        "System.Security.Cryptography.X509Certificates;X509ExtensionCollection;false;CopyTo;(System.Security.Cryptography.X509Certificates.X509Extension[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value",
-        "System.Security.Cryptography.X509Certificates;X509ExtensionCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509ExtensionEnumerator.Current];value",
+        "System.Security.Cryptography.X509Certificates;X509ExtensionCollection;false;Add;(System.Security.Cryptography.X509Certificates.X509Extension);;Argument[0];Argument[Qualifier].Element;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509ExtensionCollection;false;CopyTo;(System.Security.Cryptography.X509Certificates.X509Extension[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
+        "System.Security.Cryptography.X509Certificates;X509ExtensionCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Security.Cryptography.X509Certificates.X509ExtensionEnumerator.Current];value;manual",
       ]
   }
 }
