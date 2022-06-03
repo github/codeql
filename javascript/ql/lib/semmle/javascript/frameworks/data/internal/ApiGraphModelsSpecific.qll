@@ -61,9 +61,7 @@ private class GlobalApiEntryPoint extends API::EntryPoint {
     this = "GlobalApiEntryPoint:" + global
   }
 
-  override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef(global) }
-
-  override DataFlow::Node getARhs() { none() }
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef(global) }
 
   /** Gets the name of the global variable. */
   string getGlobal() { result = global }
@@ -151,7 +149,7 @@ API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathToken toke
   or
   token.getName() = "Argument" and
   token.getAnArgument() = "this" and
-  result.getARhs() = node.(DataFlow::CallNode).getReceiver()
+  result.asSink() = node.(DataFlow::CallNode).getReceiver()
 }
 
 /**

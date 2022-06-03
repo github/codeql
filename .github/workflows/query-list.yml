@@ -5,6 +5,8 @@ on:
     branches:
      - main
      - 'rc/**'
+    tags:
+     - 'codeql-cli/*'
   pull_request:
     paths:
       - '.github/workflows/query-list.yml'

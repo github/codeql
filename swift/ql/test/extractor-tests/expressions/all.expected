@@ -46,7 +46,7 @@
 | expressions.swift:21:14:21:14 | 11 |
 | expressions.swift:27:13:27:13 | Klass.Type |
 | expressions.swift:27:13:27:13 | call to ... |
-| expressions.swift:27:13:27:13 | deinit |
+| expressions.swift:27:13:27:13 | init |
 | expressions.swift:27:13:27:19 | call to ... |
 | expressions.swift:29:9:29:19 | [...] |
 | expressions.swift:29:10:29:10 | 1 |
@@ -125,6 +125,7 @@
 | expressions.swift:54:1:54:1 | _ |
 | expressions.swift:54:1:54:8 |  ... = ... |
 | expressions.swift:54:5:54:8 | #keyPath(...) |
+| expressions.swift:54:6:54:8 | TBD (UnresolvedDotExpr) |
 | expressions.swift:58:16:58:16 | 1234 |
 | expressions.swift:59:1:59:1 | unsafeFunction |
 | expressions.swift:59:1:59:34 | call to unsafeFunction |
@@ -166,7 +167,7 @@
 | expressions.swift:79:19:79:19 | 22 |
 | expressions.swift:83:15:83:15 | Derived.Type |
 | expressions.swift:83:15:83:15 | call to ... |
-| expressions.swift:83:15:83:15 | deinit |
+| expressions.swift:83:15:83:15 | init |
 | expressions.swift:83:15:83:23 | call to ... |
 | expressions.swift:84:1:84:1 | _ |
 | expressions.swift:84:1:84:13 |  ... = ... |
@@ -187,7 +188,7 @@
 | expressions.swift:92:24:92:24 | passRetained |
 | expressions.swift:92:37:92:37 | ToPtr.Type |
 | expressions.swift:92:37:92:37 | call to ... |
-| expressions.swift:92:37:92:37 | deinit |
+| expressions.swift:92:37:92:37 | init |
 | expressions.swift:92:37:92:43 | call to ... |
 | expressions.swift:92:46:92:46 | toOpaque |
 | expressions.swift:93:1:93:16 | Unmanaged<ToPtr>.Type |
@@ -232,3 +233,15 @@
 | expressions.swift:138:10:138:17 | ...[...] |
 | expressions.swift:138:13:138:13 | 3 |
 | expressions.swift:138:16:138:16 | 4 |
+| expressions.swift:152:26:152:26 | a |
+| expressions.swift:152:26:152:47 | \\...[...] |
+| expressions.swift:152:37:152:37 | keyPathInt |
+| expressions.swift:153:24:153:24 | a |
+| expressions.swift:153:24:153:43 | \\...[...] |
+| expressions.swift:153:35:153:35 | keyPathB |
+| expressions.swift:154:22:154:22 | a |
+| expressions.swift:154:22:154:41 | \\...[...] |
+| expressions.swift:154:22:154:56 | \\...[...] |
+| expressions.swift:154:33:154:33 | keyPathB |
+| expressions.swift:154:52:154:55 | #keyPath(...) |
+| expressions.swift:154:53:154:55 | TBD (UnresolvedDotExpr) |

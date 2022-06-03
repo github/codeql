@@ -5,10 +5,12 @@ on:
     branches: [main]
     paths:
       - "ql/**"
+      - codeql-workspace.yml
   pull_request:
     branches: [main]
     paths:
       - "ql/**"
+      - codeql-workspace.yml
 
 env:
   CARGO_TERM_COLOR: always

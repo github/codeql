@@ -33,6 +33,8 @@ int getFileExtensionPriority(string ext) {
   ext = "json" and result = 8
   or
   ext = "node" and result = 9
+  or
+  ext = "d.ts" and result = 10
 }
 
 int prioritiesPerCandidate() { result = 3 * (numberOfExtensions() + 1) }

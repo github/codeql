@@ -777,10 +777,10 @@ module Private {
     predicate prohibitsUseUseFlow(ArgNode arg, SummarizedCallable sc) {
       exists(ParamNode p, Node mid, ParameterPosition ppos, Node ret |
         p = summaryArgParam0(_, arg, sc) and
-        p.isParameterOf(_, ppos) and
+        p.isParameterOf(_, pragma[only_bind_into](ppos)) and
         summaryLocalStep(p, mid, true) and
         summaryLocalStep(mid, ret, true) and
-        isParameterPostUpdate(ret, _, ppos)
+        isParameterPostUpdate(ret, _, pragma[only_bind_into](ppos))
       |
         summaryClearsContent(mid, _) or
         summaryExpectsContent(mid, _)

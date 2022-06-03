@@ -1,5 +1,7 @@
 import sys
 
+import pytest
+
 from swift.codegen.test.utils import *
 
 root_name = schema.root_class_name
@@ -163,8 +165,42 @@ Element:
     assert ret.classes == [
         schema.Class(root_name, properties=[
             schema.SingleProperty('x', 'string'),
-         ]),
+        ]),
     ]
+
+
+def test_children(load):
+    ret = load("""
+A:
+    a: string
+    b: B*
+    _children:
+        c: C
+        d: D*
+        e: E?
+        f: F?*
+""")
+    assert ret.classes == [
+        schema.Class(root_name, derived={'A'}),
+        schema.Class('A', bases={root_name}, properties=[
+            schema.SingleProperty('a', 'string'),
+            schema.RepeatedProperty('b', 'B'),
+            schema.SingleProperty('c', 'C', is_child=True),
+            schema.RepeatedProperty('d', 'D', is_child=True),
+            schema.OptionalProperty('e', 'E', is_child=True),
+            schema.RepeatedOptionalProperty('f', 'F', is_child=True),
+        ]),
+    ]
+
+
+@pytest.mark.parametrize("type", ["string", "int", "boolean", "predicate"])
+def test_builtin_and_predicate_children_not_allowed(load, type):
+    with pytest.raises(AssertionError):
+        load(f"""
+A:
+    _children:
+        x: {type}
+""")
 
 
 if __name__ == '__main__':
