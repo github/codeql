@@ -22,12 +22,14 @@ class DecompressionAPIUse extends DataFlow::Node {
     // this should find the first argument of Zlib::Inflate.inflate or Zip::File.extract
     DecompressionAPIUse() {
         this = API::getTopLevelMember("Zlib").getMember("Inflate").getAMethodCall("inflate").getArgument(0) or
-        this = API::getTopLevelMember("Zip").getMember("File").getAMethodCall("extract").getArgument(0)
+        this = API::getTopLevelMember("Zip").getMember("File").getAMethodCall("open").getArgument(0) or
+        this = API::getTopLevelMember("Zip").getMember("Entry").getAMethodCall("extract").getArgument(0)
     }
+
 }
 
 class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "DecompressionAPI" }
+    Configuration() { this = "DecompressionAPIUse" }
   
     // this predicate will be used to contstrain our query to find instances where only remote user-controlled data flows to the sink
     override predicate isSource(DataFlow::Node source) {
