@@ -347,18 +347,18 @@ module CsvValidation {
     )
     or
     exists(string pred, string row, int expect |
-      sourceModel(row) and expect = 8 and pred = "source"
+      sourceModel(row) and expect = 9 and pred = "source"
       or
-      sinkModel(row) and expect = 8 and pred = "sink"
+      sinkModel(row) and expect = 9 and pred = "sink"
       or
-      summaryModel(row) and expect = 9 and pred = "summary"
+      summaryModel(row) and expect = 10 and pred = "summary"
     |
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
         cols != expect and
         msg =
           "Wrong number of columns in " + pred + " model row, expected " + expect + ", got " + cols +
-            "."
+            " in " + row + "."
       )
       or
       exists(string b |
