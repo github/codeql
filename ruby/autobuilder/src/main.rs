@@ -29,22 +29,11 @@ fn main() -> std::io::Result<()> {
         .split('\n')
     {
         if let Some(stripped) = line.strip_prefix("include:") {
-            cmd.arg("--also-match").arg(absolutelyfy(stripped));
+            cmd.arg("--also-match").arg(stripped);
         } else if let Some(stripped) = line.strip_prefix("exclude:") {
             cmd.arg("--exclude").arg(stripped);
         }
     }
     let exit = &cmd.spawn()?.wait()?;
     std::process::exit(exit.code().unwrap_or(1))
-}
-
-// converts the relative path `stripped` to an absolute path by prepending the working directory
-fn absolutelyfy(stripped: &str) -> String {
-    let pwd = env::current_dir().unwrap();
-    let path = pwd.join(stripped).into_os_string().into_string().unwrap();
-    if env::consts::OS == "windows" {
-        "/".to_owned() + &path.replace("\\", "/")
-    } else {
-        path
-    }
 }
