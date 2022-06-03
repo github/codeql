@@ -1,5 +1,4 @@
 private import codeql.swift.generated.Locatable
-private import codeql.swift.elements.Location
 
 class Locatable extends LocatableBase {
   override Location getLocation() {
