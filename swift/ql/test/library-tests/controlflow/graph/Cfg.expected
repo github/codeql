@@ -4811,10 +4811,6 @@ cfg.swift:
 #-----|  -> exit init
 
 #  378| init
-<<<<<<< HEAD
-=======
-#-----|  -> TBD (OtherConstructorDeclRefExpr)
->>>>>>> d532f3b4d5 (Swift: extract system and builtin modules separately)
 #-----|  -> call to ...
 
 #  379| super
@@ -4829,15 +4825,9 @@ cfg.swift:
 #  379| self = ...
 #-----|  -> return
 
-#  379| TBD (OtherConstructorDeclRefExpr)
-#-----|  -> super
-
-<<<<<<< HEAD
-=======
 #  379| call to ...
 #-----|  -> super
 
->>>>>>> d532f3b4d5 (Swift: extract system and builtin modules separately)
 #  379| 0
 #-----|  -> call to ...
 
