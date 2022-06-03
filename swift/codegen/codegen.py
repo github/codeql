@@ -32,7 +32,7 @@ def _parse_args() -> argparse.Namespace:
                    help="output directory for QL stub/customization files (default %(default)s). Defines also the "
                         "generated qll file importing every class file")
     p.add_argument("--ql-format", action="store_true", default=True,
-                   help="use codeql to autoformat QL files (which is the default default)")
+                   help="use codeql to autoformat QL files (which is the default)")
     p.add_argument("--no-ql-format", action="store_false", dest="ql_format", help="do not format QL files")
     p.add_argument("--codeql-binary", default="codeql", help="command to use for QL formatting (default %(default)s)")
     p.add_argument("--cpp-output", type=_abspath,
