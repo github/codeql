@@ -20,7 +20,6 @@ private module Sendgrid {
   /** Gets a reference to `sendgrid.helpers.mail.Mail` */
   private API::Node sendgridMailInstance() { result = sendgridMailHelper().getMember("Mail") }
 
-
   /** Gets a reference to a `SendGridAPIClient` instance. */
   private API::Node sendgridApiClient() {
     result = sendgrid().getMember("SendGridAPIClient").getReturn()

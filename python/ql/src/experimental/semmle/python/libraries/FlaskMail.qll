@@ -18,7 +18,6 @@ private module FlaskMail {
   /** Gets a reference to `flask_mail.Mail()`, `flask_sendmail.Mail()` and `flask.ext.sendmail.Mail()`. */
   private API::Node flaskMailInstance() { result = flaskMail().getMember("Mail").getReturn() }
 
-
   /**
    * Gets a call to `mail.send()`.
    *
