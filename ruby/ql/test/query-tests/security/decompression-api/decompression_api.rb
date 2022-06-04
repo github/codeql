@@ -1,6 +1,6 @@
 class TestController < ActionController::Base
     def unsafe_zlib_unzip
-        Zlib::Inflate.inflate(params[:path])
+        Zlib::Inflate.inflate(params[:fname])
     end
 
     def safe_zlib_unzip
@@ -10,11 +10,11 @@ class TestController < ActionController::Base
 
     DECOMPRESSION_LIB = Zlib
     def unsafe_zlib_unzip_const
-        DECOMPRESSION_LIB::Inflate.inflate(params[:path])
+        DECOMPRESSION_LIB::Inflate.inflate(params[:fname])
     end
 
     def unsafe_zlib_unzip
-        Zip::File.open(params[:file]) do |zip_file|
+        Zip::File.open(params[:fname]) do |zip_file|
             zip_file.each do |entry|
                 entry.extract(entry.name)
             end
@@ -26,14 +26,16 @@ class TestController < ActionController::Base
     end
 
     def sanitized_zlib_unzip
-        if "safe_file.gz" == params[:path]
-            Zlib::Inflate.inflate(params[:path])
+        fname = params[:fname]
+        if fname == "safe_file.gz"
+            Zlib::Inflate.inflate(fname)
         end
     end
 
     def sanitized_array_zlib_unzip
-        if ["safe_file1.gz", "safe_file2.gz"].include? params[:path]
-            Zlib::Inflate.inflate(params[:path])
+        fname = params[:fname]
+        if ["safe_file1.gz", "safe_file2.gz"].include? fname
+            Zlib::Inflate.inflate(fname)
         end
     end
 
