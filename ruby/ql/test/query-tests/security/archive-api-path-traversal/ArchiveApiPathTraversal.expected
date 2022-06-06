@@ -1,0 +1,24 @@
+edges
+| ArchiveApiPathTraversal.rb:4:26:4:31 | call to params :  | ArchiveApiPathTraversal.rb:4:26:4:42 | ...[...] :  |
+| ArchiveApiPathTraversal.rb:4:26:4:42 | ...[...] :  | ArchiveApiPathTraversal.rb:11:17:11:27 | destination :  |
+| ArchiveApiPathTraversal.rb:8:11:8:16 | call to params :  | ArchiveApiPathTraversal.rb:8:11:8:23 | ...[...] :  |
+| ArchiveApiPathTraversal.rb:8:11:8:23 | ...[...] :  | ArchiveApiPathTraversal.rb:29:13:29:16 | file :  |
+| ArchiveApiPathTraversal.rb:11:17:11:27 | destination :  | ArchiveApiPathTraversal.rb:14:38:14:48 | destination :  |
+| ArchiveApiPathTraversal.rb:14:28:14:67 | call to join :  | ArchiveApiPathTraversal.rb:21:21:21:36 | destination_file |
+| ArchiveApiPathTraversal.rb:14:38:14:48 | destination :  | ArchiveApiPathTraversal.rb:14:28:14:67 | call to join :  |
+| ArchiveApiPathTraversal.rb:29:13:29:16 | file :  | ArchiveApiPathTraversal.rb:30:20:30:23 | file |
+nodes
+| ArchiveApiPathTraversal.rb:4:26:4:31 | call to params :  | semmle.label | call to params :  |
+| ArchiveApiPathTraversal.rb:4:26:4:42 | ...[...] :  | semmle.label | ...[...] :  |
+| ArchiveApiPathTraversal.rb:8:11:8:16 | call to params :  | semmle.label | call to params :  |
+| ArchiveApiPathTraversal.rb:8:11:8:23 | ...[...] :  | semmle.label | ...[...] :  |
+| ArchiveApiPathTraversal.rb:11:17:11:27 | destination :  | semmle.label | destination :  |
+| ArchiveApiPathTraversal.rb:14:28:14:67 | call to join :  | semmle.label | call to join :  |
+| ArchiveApiPathTraversal.rb:14:38:14:48 | destination :  | semmle.label | destination :  |
+| ArchiveApiPathTraversal.rb:21:21:21:36 | destination_file | semmle.label | destination_file |
+| ArchiveApiPathTraversal.rb:29:13:29:16 | file :  | semmle.label | file :  |
+| ArchiveApiPathTraversal.rb:30:20:30:23 | file | semmle.label | file |
+subpaths
+#select
+| ArchiveApiPathTraversal.rb:21:21:21:36 | destination_file | ArchiveApiPathTraversal.rb:4:26:4:31 | call to params :  | ArchiveApiPathTraversal.rb:21:21:21:36 | destination_file | This call to $@ appears to extract an archive using user-controlled data $@ to set the filename. If the filename is not properly handled, they could end up writing to unintended places in the filesystem. | call to open | call to open | call to params :  | call to params :  |
+| ArchiveApiPathTraversal.rb:30:20:30:23 | file | ArchiveApiPathTraversal.rb:8:11:8:16 | call to params :  | ArchiveApiPathTraversal.rb:30:20:30:23 | file | This call to $@ appears to extract an archive using user-controlled data $@ to set the filename. If the filename is not properly handled, they could end up writing to unintended places in the filesystem. | call to open | call to open | call to params :  | call to params :  |
