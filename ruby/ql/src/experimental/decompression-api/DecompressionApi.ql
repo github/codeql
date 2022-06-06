@@ -22,7 +22,6 @@ class DecompressionApiUse extends DataFlow::Node {
     // this should find the first argument of Zlib::Inflate.inflate or Zip::File.extract
     DecompressionApiUse() {
         this = API::getTopLevelMember("Zlib").getMember("Inflate").getAMethodCall("inflate").getArgument(0) or
-        this = API::getTopLevelMember("Zip").getMember("File").getAMethodCall("open").getArgument(0) or
         this = API::getTopLevelMember("Zip").getMember("Entry").getAMethodCall("extract").getArgument(0)
     }
 
