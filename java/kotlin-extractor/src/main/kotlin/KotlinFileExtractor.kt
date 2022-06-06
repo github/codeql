@@ -2594,10 +2594,7 @@ open class KotlinFileExtractor(
                         tw.writeCallableEnclosingExpr(id, callable)
                         tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
-                        val vId = if (owner is IrValueParameter && owner.isExtensionReceiver())
-                            useValueParameter(owner, useFunction(owner.parent as IrFunction))
-                        else
-                            useValueDeclaration(owner)
+                        val vId = useValueDeclaration(owner)
                         if (vId != null) {
                             tw.writeVariableBinding(id, vId)
                         }
