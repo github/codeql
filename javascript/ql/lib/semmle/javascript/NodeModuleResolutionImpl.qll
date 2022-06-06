@@ -198,3 +198,29 @@ private class FilesPath extends PathExpr, @json_string {
 private module FilesPath {
   FilesPath of(PackageJson pkg) { result.getPackageJson() = pkg }
 }
+
+/**
+ * A JSON string in a `package.json` file specifying the path of the
+ * TypeScript typings entry point.
+ */
+class TypingsModulePathString extends PathString {
+  PackageJson pkg;
+
+  TypingsModulePathString() {
+    this = pkg.getTypings()
+    or
+    not exists(pkg.getTypings()) and
+    this = pkg.getMain().regexpReplaceAll("\\.[mc]?js$", ".d.ts")
+  }
+
+  /** Gets the `package.json` file containing this path. */
+  PackageJson getPackageJson() { result = pkg }
+
+  override Folder getARootFolder() { result = pkg.getFile().getParentContainer() }
+}
+
+/** Companion module to the `TypingsModulePathString` class. */
+module TypingsModulePathString {
+  /** Get the typings path for the given `package.json` file. */
+  TypingsModulePathString of(PackageJson pkg) { result.getPackageJson() = pkg }
+}
