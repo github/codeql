@@ -17,10 +17,10 @@ import codeql.ruby.dataflow.BarrierGuards
 import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 
-class DecompressionAPIUse extends DataFlow::Node {
+class DecompressionApiUse extends DataFlow::Node {
 
     // this should find the first argument of Zlib::Inflate.inflate or Zip::File.extract
-    DecompressionAPIUse() {
+    DecompressionApiUse() {
         this = API::getTopLevelMember("Zlib").getMember("Inflate").getAMethodCall("inflate").getArgument(0) or
         this = API::getTopLevelMember("Zip").getMember("File").getAMethodCall("open").getArgument(0) or
         this = API::getTopLevelMember("Zip").getMember("Entry").getAMethodCall("extract").getArgument(0)
@@ -29,7 +29,7 @@ class DecompressionAPIUse extends DataFlow::Node {
 }
 
 class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "DecompressionAPIUse" }
+    Configuration() { this = "DecompressionApiUse" }
   
     // this predicate will be used to contstrain our query to find instances where only remote user-controlled data flows to the sink
     override predicate isSource(DataFlow::Node source) {
@@ -38,7 +38,7 @@ class Configuration extends TaintTracking::Configuration {
 
     // our Decompression APIs defined above will the the sinks we use for this query
     override predicate isSink(DataFlow::Node sink) {
-        sink instanceof DecompressionAPIUse
+        sink instanceof DecompressionApiUse
     }
 
     // I think it would also be helpful to reduce false positives by adding a simple sanitizer config in the event
