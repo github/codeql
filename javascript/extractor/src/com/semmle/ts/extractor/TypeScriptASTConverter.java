@@ -591,7 +591,7 @@ public class TypeScriptASTConverter {
         return convertTryStatement(node, loc);
       case "TupleType":
         return convertTupleType(node, loc);
-      case "NamedTupleMember": 
+      case "NamedTupleMember":
         return convertNamedTupleMember(node, loc);
       case "TypeAliasDeclaration":
         return convertTypeAliasDeclaration(node, loc);
@@ -1710,7 +1710,10 @@ public class TypeScriptASTConverter {
     }
     if (nameNode instanceof Literal) {
       // Declaration of form: declare module "X" {...}
-      return new ExternalModuleDeclaration(loc, (Literal) nameNode, body);
+      ExternalModuleDeclaration decl = new ExternalModuleDeclaration(loc, (Literal) nameNode, body);
+      attachSymbolInformation(decl, node);
+      System.out.println("ExternalModuleDeclaration symbol = " + decl.getSymbol());
+      return decl;
     }
     if (hasFlag(node, "GlobalAugmentation")) {
       // Declaration of form: declare global {...}

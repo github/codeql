@@ -713,7 +713,7 @@ case @symbol.kind of
 ;
 
 @type_with_symbol = @type_reference | @typevariable_type | @typeof_type | @unique_symbol_type;
-@ast_node_with_symbol = @type_definition | @namespace_definition | @toplevel | @typeaccess | @namespace_access | @var_decl | @function | @invokeexpr | @import_declaration | @external_module_reference;
+@ast_node_with_symbol = @type_definition | @namespace_definition | @toplevel | @typeaccess | @namespace_access | @var_decl | @function | @invokeexpr | @import_declaration | @external_module_reference | @external_module_declaration;
 
 ast_node_symbol(
   unique int node: @ast_node_with_symbol ref,
