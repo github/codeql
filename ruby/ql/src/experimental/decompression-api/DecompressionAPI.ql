@@ -54,4 +54,4 @@ class Configuration extends TaintTracking::Configuration {
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where
   config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This call to $@ is unsafe because user-controlled data is used to set the object being decompressed, which could lead to a denial of service attack or malicious code extracted from an unknown source."
+select sink.getNode(), source, sink, "This call to $@ is unsafe because user-controlled data is used to set the object being decompressed, which could lead to a denial of service attack or malicious code extracted from an unknown source.", sink.getNode().asExpr().getExpr().getParent().toString(), sink.getNode().asExpr().getExpr().getParent().toString()
