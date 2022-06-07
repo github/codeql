@@ -8,4 +8,4 @@ extractor: go
 defaultSuiteFile: codeql-suites/go-code-scanning.qls
 dependencies:
   codeql/go-all: "*"
-  codeql/suite-helpers: ~0.0.2
+  codeql/suite-helpers: "*"
