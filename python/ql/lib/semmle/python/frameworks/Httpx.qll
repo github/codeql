@@ -18,6 +18,11 @@ private import semmle.python.ApiGraphs
  * - https://www.python-httpx.org/
  */
 private module HttpxModel {
+  /**
+   * An outgoing HTTP request, from the `httpx` library.
+   *
+   * See https://www.python-httpx.org/api/
+   */
   private class RequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
     string methodName;
 
@@ -47,7 +52,7 @@ private module HttpxModel {
   /**
    * Provides models for the `httpx.[Async]Client` class
    *
-   * See https://www.python-httpx.org/async/
+   * See https://www.python-httpx.org/api/#client
    */
   module Client {
     /** Get a reference to the `httpx.Client` or `httpx.AsyncClient` class. */

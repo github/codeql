@@ -15,10 +15,11 @@ response = client.options("url") # $ clientRequestUrlPart="url"
 response = client.request("method", url="url") # $ clientRequestUrlPart="url"
 response = client.stream("method", url="url") # $ clientRequestUrlPart="url"
 
-client = httpx.AsyncClient()
-response = client.get("url") # $ clientRequestUrlPart="url"
-response = client.post("url") # $ clientRequestUrlPart="url"
-response = client.patch("url") # $ clientRequestUrlPart="url"
-response = client.options("url") # $ clientRequestUrlPart="url"
-response = client.request("method", url="url") # $ clientRequestUrlPart="url"
-response = client.stream("method", url="url") # $ clientRequestUrlPart="url"
+async def async_test():
+    client = httpx.AsyncClient()
+    response = await client.get("url") # $ clientRequestUrlPart="url"
+    response = await client.post("url") # $ clientRequestUrlPart="url"
+    response = await client.patch("url") # $ clientRequestUrlPart="url"
+    response = await client.options("url") # $ clientRequestUrlPart="url"
+    response = await client.request("method", url="url") # $ clientRequestUrlPart="url"
+    response = await client.stream("method", url="url") # $ clientRequestUrlPart="url"
