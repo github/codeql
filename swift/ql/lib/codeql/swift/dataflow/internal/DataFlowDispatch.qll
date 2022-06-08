@@ -2,7 +2,9 @@ private import swift
 private import DataFlowPrivate
 private import DataFlowPublic
 
-newtype TReturnKind = TNormalReturnKind()
+newtype TReturnKind =
+  TNormalReturnKind() or
+  TParamReturnKind(int i) { exists(ParamDecl param | param.getIndex() = i) }
 
 /**
  * Gets a node that can read the value returned from `call` with return kind
@@ -28,15 +30,35 @@ class NormalReturnKind extends ReturnKind, TNormalReturnKind {
 }
 
 /**
+ * A value returned from a callable using an `inout` parameter.
+ */
+class ParamReturnKind extends ReturnKind, TParamReturnKind {
+  int index;
+
+  ParamReturnKind() { this = TParamReturnKind(index) }
+
+  int getIndex() {
+    result = index
+  }
+
+  override string toString() { result = "param(" + index + ")" }
+}
+
+/**
  * A callable. This includes callables from source code, as well as callables
  * defined in library code.
  */
 class DataFlowCallable extends TDataFlowCallable {
+  AbstractFunctionDecl func;
+
+  DataFlowCallable() {
+    this = TDataFlowFunc(func)
+  }
   /** Gets a textual representation of this callable. */
-  string toString() { none() }
+  string toString() { result = func.toString() }
 
   /** Gets the location of this callable. */
-  Location getLocation() { none() }
+  Location getLocation() { result = func.getLocation() }
 }
 
 /**
@@ -47,7 +69,7 @@ class DataFlowCall extends ExprNode {
   DataFlowCall() { this.asExpr() instanceof CallExpr }
 
   /** Gets the enclosing callable. */
-  DataFlowCallable getEnclosingCallable() { none() }
+  DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(this.getCfgNode().getScope()) }
 }
 
 cached

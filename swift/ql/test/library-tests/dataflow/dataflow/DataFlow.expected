@@ -12,6 +12,20 @@ edges
 | test.swift:29:26:29:29 | y :  | test.swift:31:15:31:15 | y |
 | test.swift:35:12:35:19 | call to source :  | test.swift:39:15:39:29 | call to callee_source |
 | test.swift:43:19:43:26 | call to source :  | test.swift:50:15:50:15 | t |
+| test.swift:54:11:54:18 | call to source :  | test.swift:55:5:55:5 | arg[return] :  |
+| test.swift:55:5:55:5 | arg[return] :  | test.swift:61:5:61:24 | arg :  |
+| test.swift:61:5:61:24 | arg :  | test.swift:62:15:62:15 | x |
+| test.swift:65:16:65:28 | WriteDef :  | test.swift:69:5:69:5 | arg1[return] :  |
+| test.swift:65:16:65:28 | WriteDef :  | test.swift:69:5:69:5 | arg2[return] :  |
+| test.swift:65:16:65:28 | arg1 :  | test.swift:69:5:69:5 | arg1[return] :  |
+| test.swift:65:16:65:28 | arg1 :  | test.swift:69:5:69:5 | arg2[return] :  |
+| test.swift:73:18:73:25 | call to source :  | test.swift:75:21:75:22 | &... :  |
+| test.swift:75:5:75:33 | arg1 :  | test.swift:76:15:76:15 | x |
+| test.swift:75:5:75:33 | arg2 :  | test.swift:77:15:77:15 | y |
+| test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | WriteDef :  |
+| test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  |
+| test.swift:75:21:75:22 | &... :  | test.swift:75:5:75:33 | arg1 :  |
+| test.swift:75:21:75:22 | &... :  | test.swift:75:5:75:33 | arg2 :  |
 nodes
 | test.swift:6:19:6:26 | call to source :  | semmle.label | call to source :  |
 | test.swift:7:15:7:15 | t1 | semmle.label | t1 |
@@ -33,7 +47,27 @@ nodes
 | test.swift:39:15:39:29 | call to callee_source | semmle.label | call to callee_source |
 | test.swift:43:19:43:26 | call to source :  | semmle.label | call to source :  |
 | test.swift:50:15:50:15 | t | semmle.label | t |
+| test.swift:54:11:54:18 | call to source :  | semmle.label | call to source :  |
+| test.swift:55:5:55:5 | arg[return] :  | semmle.label | arg[return] :  |
+| test.swift:61:5:61:24 | arg :  | semmle.label | arg :  |
+| test.swift:62:15:62:15 | x | semmle.label | x |
+| test.swift:65:16:65:28 | WriteDef :  | semmle.label | WriteDef :  |
+| test.swift:65:16:65:28 | WriteDef :  | semmle.label | arg1 :  |
+| test.swift:65:16:65:28 | arg1 :  | semmle.label | WriteDef :  |
+| test.swift:65:16:65:28 | arg1 :  | semmle.label | arg1 :  |
+| test.swift:69:5:69:5 | arg1[return] :  | semmle.label | arg1[return] :  |
+| test.swift:69:5:69:5 | arg2[return] :  | semmle.label | arg2[return] :  |
+| test.swift:73:18:73:25 | call to source :  | semmle.label | call to source :  |
+| test.swift:75:5:75:33 | arg1 :  | semmle.label | arg1 :  |
+| test.swift:75:5:75:33 | arg2 :  | semmle.label | arg2 :  |
+| test.swift:75:21:75:22 | &... :  | semmle.label | &... :  |
+| test.swift:76:15:76:15 | x | semmle.label | x |
+| test.swift:77:15:77:15 | y | semmle.label | y |
 subpaths
+| test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | WriteDef :  | test.swift:69:5:69:5 | arg1[return] :  | test.swift:75:5:75:33 | arg1 :  |
+| test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | WriteDef :  | test.swift:69:5:69:5 | arg2[return] :  | test.swift:75:5:75:33 | arg2 :  |
+| test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  | test.swift:69:5:69:5 | arg1[return] :  | test.swift:75:5:75:33 | arg1 :  |
+| test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  | test.swift:69:5:69:5 | arg2[return] :  | test.swift:75:5:75:33 | arg2 :  |
 #select
 | test.swift:6:19:6:26 | call to source :  | test.swift:7:15:7:15 | t1 |
 | test.swift:6:19:6:26 | call to source :  | test.swift:9:15:9:15 | t1 |
@@ -42,3 +76,6 @@ subpaths
 | test.swift:26:26:26:33 | call to source :  | test.swift:31:15:31:15 | y |
 | test.swift:35:12:35:19 | call to source :  | test.swift:39:15:39:29 | call to callee_source |
 | test.swift:43:19:43:26 | call to source :  | test.swift:50:15:50:15 | t |
+| test.swift:54:11:54:18 | call to source :  | test.swift:62:15:62:15 | x |
+| test.swift:73:18:73:25 | call to source :  | test.swift:76:15:76:15 | x |
+| test.swift:73:18:73:25 | call to source :  | test.swift:77:15:77:15 | y |

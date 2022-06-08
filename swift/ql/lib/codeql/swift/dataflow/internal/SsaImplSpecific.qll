@@ -28,6 +28,14 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
     certain = true
   )
   or
+  exists(CallExpr call, Argument arg |
+    arg.getExpr().(InOutExpr).getSubExpr() = v.getAnAccess() and
+    call.getAnArgument() = arg and
+    call.getStaticTarget().getParam(arg.getIndex()).isInout() and
+    bb.getNode(i).getNode().asAstNode() = call and
+    certain = false
+  )
+  or
   v instanceof ParamDecl and
   bb.getNode(i).getNode().asAstNode() = v and
   certain = true
@@ -40,6 +48,14 @@ predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) 
     not isLValue(ref) and
     bb.getNode(i).getNode().asAstNode() = ref and
     v = ref.getDecl() and
+    certain = true
+  )
+  or
+  exists(ReturnStmt return, AbstractFunctionDecl func |
+    bb.getNode(i).getNode().asAstNode() = return and
+    v.(ParamDecl).isInout() and
+    func.getAParam() = v and
+    bb.getScope() = func and
     certain = true
   )
 }
