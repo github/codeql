@@ -102,3 +102,15 @@ class ExprCfgNode extends AstCfgNode {
   /** Gets the underlying expression. */
   Expr getExpr() { result = e }
 }
+
+class ApplyExprCfgNode extends ExprCfgNode {
+  override ApplyExpr e;
+
+  ExprCfgNode getArgument(int index) {
+    result.getNode().asAstNode() = e.getArgument(index).getExpr()
+  }
+}
+
+class CallExprCfgNode extends ApplyExprCfgNode {
+  override CallExpr e;
+}
