@@ -20,9 +20,14 @@ private import semmle.python.frameworks.Stdlib
  *
  * See
  * - https://pypi.org/project/requests/
- * - https://docs.python-requests.org/en/latest/
+ * - https://requests.readthedocs.io/en/latest/
  */
 private module Requests {
+  /**
+   * An outgoing HTTP request, from the `requests` library.
+   *
+   * See https://requests.readthedocs.io/en/latest/api/#requests.request
+   */
   private class OutgoingRequestCall extends HTTP::Client::Request::Range, API::CallNode {
     string methodName;
 
@@ -82,7 +87,7 @@ private module Requests {
   /**
    * Provides models for the `requests.models.Response` class
    *
-   * See https://docs.python-requests.org/en/latest/api/#requests.Response.
+   * See https://requests.readthedocs.io/en/latest/api/#requests.Response.
    */
   module Response {
     /** Gets a reference to the `requests.models.Response` class. */
