@@ -260,6 +260,7 @@ private module Cached {
       or
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
     } or
+    THashSplatArgumentPosition() or
     TAnyArgumentPosition() or
     TAnyKeywordArgumentPosition()
 
@@ -280,6 +281,7 @@ private module Cached {
       or
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
     } or
+    THashSplatParameterPosition() or
     TAnyParameterPosition() or
     TAnyKeywordParameterPosition()
 }
@@ -479,6 +481,9 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a keyword parameter named `name`. */
   predicate isKeyword(string name) { this = TKeywordParameterPosition(name) }
 
+  /** Holds if this position represents a hash-splat parameter. */
+  predicate isHashSplat() { this = THashSplatParameterPosition() }
+
   /**
    * Holds if this position represents any parameter, except `self` parameters. This
    * includes both positional, named, and block parameters.
@@ -499,6 +504,8 @@ class ParameterPosition extends TParameterPosition {
     exists(int pos | this.isPositionalLowerBound(pos) and result = "position " + pos + "..")
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
+    or
+    this.isHashSplat() and result = "**"
     or
     this.isAny() and result = "any"
     or
@@ -529,6 +536,12 @@ class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents any positional parameter. */
   predicate isAnyNamed() { this = TAnyKeywordArgumentPosition() }
 
+  /**
+   * Holds if this position represents a synthesized argument containing all keyword
+   * arguments wrapped in a hash.
+   */
+  predicate isHashSplat() { this = THashSplatArgumentPosition() }
+
   /** Gets a textual representation of this position. */
   string toString() {
     this.isSelf() and result = "self"
@@ -542,6 +555,8 @@ class ArgumentPosition extends TArgumentPosition {
     this.isAny() and result = "any"
     or
     this.isAnyNamed() and result = "any-named"
+    or
+    this.isHashSplat() and result = "**"
   }
 }
 
@@ -559,6 +574,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   )
   or
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
+  or
+  ppos.isHashSplat() and apos.isHashSplat()
   or
   ppos.isAny() and not apos.isSelf()
   or

@@ -24,14 +24,14 @@ edges
 | summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:57:27:57:33 | tainted :  |
 | summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:61:32:61:38 | tainted :  |
 | summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:63:23:63:29 | tainted :  |
-| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:98:16:98:22 | tainted :  |
-| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:104:14:104:20 | tainted :  |
-| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:107:16:107:22 | tainted |
-| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:107:16:107:22 | tainted |
-| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:108:21:108:27 | tainted |
-| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:108:21:108:27 | tainted |
-| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:111:26:111:32 | tainted |
-| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:111:26:111:32 | tainted |
+| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:102:16:102:22 | tainted :  |
+| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:108:14:108:20 | tainted :  |
+| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:111:16:111:22 | tainted |
+| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:111:16:111:22 | tainted |
+| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:112:21:112:27 | tainted |
+| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:112:21:112:27 | tainted |
+| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:115:26:115:32 | tainted |
+| summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:115:26:115:32 | tainted |
 | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:1:11:1:36 | call to identity :  |
 | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:1:11:1:36 | call to identity :  |
 | summaries.rb:4:12:7:3 | call to apply_block :  | summaries.rb:9:6:9:13 | tainted2 |
@@ -96,17 +96,23 @@ edges
 | summaries.rb:85:1:85:1 | a [element 2] :  | summaries.rb:85:1:85:1 | [post] a [element 2] :  |
 | summaries.rb:88:6:88:6 | a [element 2] :  | summaries.rb:88:6:88:9 | ...[...] |
 | summaries.rb:88:6:88:6 | a [element 2] :  | summaries.rb:88:6:88:9 | ...[...] |
-| summaries.rb:98:16:98:22 | [post] tainted :  | summaries.rb:104:14:104:20 | tainted :  |
-| summaries.rb:98:16:98:22 | [post] tainted :  | summaries.rb:107:16:107:22 | tainted |
-| summaries.rb:98:16:98:22 | [post] tainted :  | summaries.rb:108:21:108:27 | tainted |
-| summaries.rb:98:16:98:22 | [post] tainted :  | summaries.rb:111:26:111:32 | tainted |
-| summaries.rb:98:16:98:22 | tainted :  | summaries.rb:98:16:98:22 | [post] tainted :  |
-| summaries.rb:98:16:98:22 | tainted :  | summaries.rb:98:25:98:25 | [post] y :  |
-| summaries.rb:98:16:98:22 | tainted :  | summaries.rb:98:33:98:33 | [post] z :  |
-| summaries.rb:98:25:98:25 | [post] y :  | summaries.rb:100:6:100:6 | y |
-| summaries.rb:98:33:98:33 | [post] z :  | summaries.rb:101:6:101:6 | z |
-| summaries.rb:104:1:104:1 | [post] x :  | summaries.rb:105:6:105:6 | x |
-| summaries.rb:104:14:104:20 | tainted :  | summaries.rb:104:1:104:1 | [post] x :  |
+| summaries.rb:91:1:91:1 | [post] x [@value] :  | summaries.rb:92:6:92:6 | x [@value] :  |
+| summaries.rb:91:1:91:1 | [post] x [@value] :  | summaries.rb:92:6:92:6 | x [@value] :  |
+| summaries.rb:91:13:91:26 | call to source :  | summaries.rb:91:1:91:1 | [post] x [@value] :  |
+| summaries.rb:91:13:91:26 | call to source :  | summaries.rb:91:1:91:1 | [post] x [@value] :  |
+| summaries.rb:92:6:92:6 | x [@value] :  | summaries.rb:92:6:92:16 | call to get_value |
+| summaries.rb:92:6:92:6 | x [@value] :  | summaries.rb:92:6:92:16 | call to get_value |
+| summaries.rb:102:16:102:22 | [post] tainted :  | summaries.rb:108:14:108:20 | tainted :  |
+| summaries.rb:102:16:102:22 | [post] tainted :  | summaries.rb:111:16:111:22 | tainted |
+| summaries.rb:102:16:102:22 | [post] tainted :  | summaries.rb:112:21:112:27 | tainted |
+| summaries.rb:102:16:102:22 | [post] tainted :  | summaries.rb:115:26:115:32 | tainted |
+| summaries.rb:102:16:102:22 | tainted :  | summaries.rb:102:16:102:22 | [post] tainted :  |
+| summaries.rb:102:16:102:22 | tainted :  | summaries.rb:102:25:102:25 | [post] y :  |
+| summaries.rb:102:16:102:22 | tainted :  | summaries.rb:102:33:102:33 | [post] z :  |
+| summaries.rb:102:25:102:25 | [post] y :  | summaries.rb:104:6:104:6 | y |
+| summaries.rb:102:33:102:33 | [post] z :  | summaries.rb:105:6:105:6 | z |
+| summaries.rb:108:1:108:1 | [post] x :  | summaries.rb:109:6:109:6 | x |
+| summaries.rb:108:14:108:20 | tainted :  | summaries.rb:108:1:108:1 | [post] x :  |
 nodes
 | summaries.rb:1:11:1:36 | call to identity :  | semmle.label | call to identity :  |
 | summaries.rb:1:11:1:36 | call to identity :  | semmle.label | call to identity :  |
@@ -206,21 +212,29 @@ nodes
 | summaries.rb:88:6:88:6 | a [element 2] :  | semmle.label | a [element 2] :  |
 | summaries.rb:88:6:88:9 | ...[...] | semmle.label | ...[...] |
 | summaries.rb:88:6:88:9 | ...[...] | semmle.label | ...[...] |
-| summaries.rb:98:16:98:22 | [post] tainted :  | semmle.label | [post] tainted :  |
-| summaries.rb:98:16:98:22 | tainted :  | semmle.label | tainted :  |
-| summaries.rb:98:25:98:25 | [post] y :  | semmle.label | [post] y :  |
-| summaries.rb:98:33:98:33 | [post] z :  | semmle.label | [post] z :  |
-| summaries.rb:100:6:100:6 | y | semmle.label | y |
-| summaries.rb:101:6:101:6 | z | semmle.label | z |
-| summaries.rb:104:1:104:1 | [post] x :  | semmle.label | [post] x :  |
-| summaries.rb:104:14:104:20 | tainted :  | semmle.label | tainted :  |
-| summaries.rb:105:6:105:6 | x | semmle.label | x |
-| summaries.rb:107:16:107:22 | tainted | semmle.label | tainted |
-| summaries.rb:107:16:107:22 | tainted | semmle.label | tainted |
-| summaries.rb:108:21:108:27 | tainted | semmle.label | tainted |
-| summaries.rb:108:21:108:27 | tainted | semmle.label | tainted |
-| summaries.rb:111:26:111:32 | tainted | semmle.label | tainted |
-| summaries.rb:111:26:111:32 | tainted | semmle.label | tainted |
+| summaries.rb:91:1:91:1 | [post] x [@value] :  | semmle.label | [post] x [@value] :  |
+| summaries.rb:91:1:91:1 | [post] x [@value] :  | semmle.label | [post] x [@value] :  |
+| summaries.rb:91:13:91:26 | call to source :  | semmle.label | call to source :  |
+| summaries.rb:91:13:91:26 | call to source :  | semmle.label | call to source :  |
+| summaries.rb:92:6:92:6 | x [@value] :  | semmle.label | x [@value] :  |
+| summaries.rb:92:6:92:6 | x [@value] :  | semmle.label | x [@value] :  |
+| summaries.rb:92:6:92:16 | call to get_value | semmle.label | call to get_value |
+| summaries.rb:92:6:92:16 | call to get_value | semmle.label | call to get_value |
+| summaries.rb:102:16:102:22 | [post] tainted :  | semmle.label | [post] tainted :  |
+| summaries.rb:102:16:102:22 | tainted :  | semmle.label | tainted :  |
+| summaries.rb:102:25:102:25 | [post] y :  | semmle.label | [post] y :  |
+| summaries.rb:102:33:102:33 | [post] z :  | semmle.label | [post] z :  |
+| summaries.rb:104:6:104:6 | y | semmle.label | y |
+| summaries.rb:105:6:105:6 | z | semmle.label | z |
+| summaries.rb:108:1:108:1 | [post] x :  | semmle.label | [post] x :  |
+| summaries.rb:108:14:108:20 | tainted :  | semmle.label | tainted :  |
+| summaries.rb:109:6:109:6 | x | semmle.label | x |
+| summaries.rb:111:16:111:22 | tainted | semmle.label | tainted |
+| summaries.rb:111:16:111:22 | tainted | semmle.label | tainted |
+| summaries.rb:112:21:112:27 | tainted | semmle.label | tainted |
+| summaries.rb:112:21:112:27 | tainted | semmle.label | tainted |
+| summaries.rb:115:26:115:32 | tainted | semmle.label | tainted |
+| summaries.rb:115:26:115:32 | tainted | semmle.label | tainted |
 subpaths
 invalidSpecComponent
 #select
@@ -266,15 +280,17 @@ invalidSpecComponent
 | summaries.rb:83:6:83:9 | ...[...] | summaries.rb:77:15:77:29 | call to source :  | summaries.rb:83:6:83:9 | ...[...] | $@ | summaries.rb:77:15:77:29 | call to source :  | call to source :  |
 | summaries.rb:88:6:88:9 | ...[...] | summaries.rb:77:32:77:46 | call to source :  | summaries.rb:88:6:88:9 | ...[...] | $@ | summaries.rb:77:32:77:46 | call to source :  | call to source :  |
 | summaries.rb:88:6:88:9 | ...[...] | summaries.rb:77:32:77:46 | call to source :  | summaries.rb:88:6:88:9 | ...[...] | $@ | summaries.rb:77:32:77:46 | call to source :  | call to source :  |
-| summaries.rb:100:6:100:6 | y | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:100:6:100:6 | y | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
-| summaries.rb:101:6:101:6 | z | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:101:6:101:6 | z | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
-| summaries.rb:105:6:105:6 | x | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:105:6:105:6 | x | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
-| summaries.rb:107:16:107:22 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:107:16:107:22 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
-| summaries.rb:107:16:107:22 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:107:16:107:22 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
-| summaries.rb:108:21:108:27 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:108:21:108:27 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
-| summaries.rb:108:21:108:27 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:108:21:108:27 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
-| summaries.rb:111:26:111:32 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:111:26:111:32 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
-| summaries.rb:111:26:111:32 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:111:26:111:32 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
+| summaries.rb:92:6:92:16 | call to get_value | summaries.rb:91:13:91:26 | call to source :  | summaries.rb:92:6:92:16 | call to get_value | $@ | summaries.rb:91:13:91:26 | call to source :  | call to source :  |
+| summaries.rb:92:6:92:16 | call to get_value | summaries.rb:91:13:91:26 | call to source :  | summaries.rb:92:6:92:16 | call to get_value | $@ | summaries.rb:91:13:91:26 | call to source :  | call to source :  |
+| summaries.rb:104:6:104:6 | y | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:104:6:104:6 | y | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
+| summaries.rb:105:6:105:6 | z | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:105:6:105:6 | z | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
+| summaries.rb:109:6:109:6 | x | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:109:6:109:6 | x | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
+| summaries.rb:111:16:111:22 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:111:16:111:22 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
+| summaries.rb:111:16:111:22 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:111:16:111:22 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
+| summaries.rb:112:21:112:27 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:112:21:112:27 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
+| summaries.rb:112:21:112:27 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:112:21:112:27 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
+| summaries.rb:115:26:115:32 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:115:26:115:32 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
+| summaries.rb:115:26:115:32 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:115:26:115:32 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
 warning
 | CSV type row should have 5 columns but has 2: test;TooFewColumns |
 | CSV type row should have 5 columns but has 8: test;TooManyColumns;;;Member[Foo].Instance;too;many;columns |

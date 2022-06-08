@@ -73,3 +73,15 @@ private class SplatSummary extends SummarizedCallable {
     preservesValue = true
   }
 }
+
+private class HashSplatSummary extends SummarizedCallable {
+  HashSplatSummary() { this = "**(hash-splat)" }
+
+  override HashSplatExpr getACall() { any() }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "Argument[self].WithElement[any]" and
+    output = "ReturnValue" and
+    preservesValue = true
+  }
+}

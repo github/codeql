@@ -6,6 +6,7 @@
 
 private import swift
 private import codeql.swift.controlflow.ControlFlowGraph
+private import ControlFlowElements
 private import ControlFlowGraphImpl
 private import SuccessorTypes
 
@@ -41,8 +42,8 @@ private predicate completionIsValidForStmt(Stmt stmt, Completion c) {
 
 /** A completion of a statement or an expression. */
 abstract class Completion extends TCompletion {
-  private predicate isValidForSpecific(AstNode n) {
-    completionIsValidForStmt(n, this)
+  private predicate isValidForSpecific(ControlFlowElement n) {
+    completionIsValidForStmt(n.asAstNode(), this)
     or
     mustHaveBooleanCompletion(n) and
     (
@@ -52,19 +53,21 @@ abstract class Completion extends TCompletion {
       this = TBooleanCompletion(_)
     )
     or
-    mustHaveMatchingCompletion(n) and
+    mustHaveMatchingCompletion(n.asAstNode()) and
     (
-      exists(boolean value | isMatchingConstant(n, value) | this = TMatchingCompletion(value))
+      exists(boolean value | isMatchingConstant(n.asAstNode(), value) |
+        this = TMatchingCompletion(value)
+      )
       or
-      not isMatchingConstant(n, _) and
+      not isMatchingConstant(n.asAstNode(), _) and
       this = TMatchingCompletion(_)
     )
     or
-    mustHaveThrowCompletion(n, this)
+    mustHaveThrowCompletion(n.asAstNode(), this)
   }
 
   /** Holds if this completion is valid for node `n`. */
-  predicate isValidFor(AstNode n) {
+  predicate isValidFor(ControlFlowElement n) {
     this.isValidForSpecific(n)
     or
     mayHaveThrowCompletion(n, this)
@@ -87,26 +90,36 @@ abstract class Completion extends TCompletion {
 }
 
 /** Holds if node `n` has the Boolean constant value `value`. */
-private predicate isBooleanConstant(AstNode n, boolean value) {
+private predicate isBooleanConstant(ControlFlowElement n, boolean value) {
   mustHaveBooleanCompletion(n) and
-  value = n.(BooleanLiteralExpr).getValue()
+  value = n.asAstNode().(BooleanLiteralExpr).getValue()
   or
   // Boolean consants hidden inside conversions are also
   // constants that resolve to the same value.
-  isBooleanConstant(n.getResolveStep(), value)
+  exists(ControlFlowElement parent |
+    parent.asAstNode() = n.asAstNode().getResolveStep() and
+    isBooleanConstant(parent, value)
+  )
 }
 
 /**
  * Holds if a normal completion of `n` must be a Boolean completion.
  */
-private predicate mustHaveBooleanCompletion(AstNode n) { inBooleanContext(n) }
+private predicate mustHaveBooleanCompletion(ControlFlowElement n) { inBooleanContext(n) }
 
 /**
  * Holds if `n` is used in a Boolean context. That is, the value
  * that `n` evaluates to determines a true/false branch successor.
  */
-private predicate inBooleanContext(AstNode n) {
-  n = any(ConditionElement condElem).getFullyUnresolved()
+private predicate inBooleanContext(ControlFlowElement n) {
+  astInBooleanContext(n.asAstNode()) or
+  astInBooleanContext(n.(PropertyGetterElement).getRef()) or
+  astInBooleanContext(n.(PropertySetterElement).getAssignExpr()) or
+  astInBooleanContext(n.(PropertyObserverElement).getAssignExpr())
+}
+
+private predicate astInBooleanContext(AstNode n) {
+  n = any(ConditionElement condElem).getBoolean().getFullyUnresolved()
   or
   n = any(StmtCondition stmtCond).getFullyUnresolved()
   or
@@ -115,30 +128,30 @@ private predicate inBooleanContext(AstNode n) {
   exists(LogicalAndExpr parent |
     n = parent.getLeftOperand().getFullyConverted()
     or
-    inBooleanContext(parent) and
+    astInBooleanContext(parent) and
     n = parent.getRightOperand().getFullyConverted()
   )
   or
   exists(LogicalOrExpr parent |
     n = parent.getLeftOperand().getFullyConverted()
     or
-    inBooleanContext(parent) and
+    astInBooleanContext(parent) and
     n = parent.getRightOperand().getFullyConverted()
   )
   or
-  n = any(NotExpr parent | inBooleanContext(parent)).getOperand().getFullyConverted()
+  n = any(NotExpr parent | astInBooleanContext(parent)).getOperand().getFullyConverted()
   or
   exists(IfExpr ifExpr |
     ifExpr.getCondition().getFullyConverted() = n
     or
-    inBooleanContext(ifExpr) and
+    astInBooleanContext(ifExpr) and
     n = ifExpr.getBranch(_).getFullyConverted()
   )
   or
   exists(ForEachStmt foreach | n = foreach.getWhere().getFullyConverted())
   or
   exists(Exprs::Conversions::ConversionOrIdentityTree parent |
-    inBooleanContext(parent) and
+    astInBooleanContext(parent.getAst()) and
     parent.convertsFrom(n)
   )
 }
@@ -147,9 +160,7 @@ private predicate inBooleanContext(AstNode n) {
  * Holds if a normal completion of `ast` must be a matching completion. Thats is,
  * whether `ast` determines a match in a `switch` or `catch` statement.
  */
-private predicate mustHaveMatchingCompletion(AstNode ast) {
-  switchMatching(_, _, ast) or catchMatching(_, _, ast)
-}
+private predicate mustHaveMatchingCompletion(AstNode ast) { ast instanceof Pattern }
 
 /**
  * Holds if `ast` must have a matching completion, and `e` is the fully converted
@@ -167,30 +178,11 @@ private predicate mustHaveMatchingCompletion(Expr e, AstNode ast) {
  * case `c`, belonging to `switch` statement `switch`.
  */
 private predicate switchMatching(SwitchStmt switch, CaseStmt c, AstNode ast) {
-  switchMatchingCaseLabelItem(switch, c, ast)
-  or
-  switchMatchingPattern(switch, c, ast)
-}
-
-/**
- * Holds if `cli` a top-level pattern of case `c`, belonging
- * to `switch` statement `switch`.
- */
-private predicate switchMatchingCaseLabelItem(SwitchStmt switch, CaseStmt c, CaseLabelItem cli) {
   switch.getACase() = c and
-  c.getALabel() = cli
-}
-
-/**
- * Holds if `pattern` is a sub-pattern of the pattern in case
- * statement `c` of the `switch` statement `switch`.
- */
-private predicate switchMatchingPattern(SwitchStmt s, CaseStmt c, Pattern pattern) {
-  s.getACase() = c and
-  exists(CaseLabelItem cli | switchMatching(s, c, cli) |
-    cli.getPattern() = pattern
+  (
+    c.getALabel() = ast
     or
-    isSubPattern+(cli.getPattern(), pattern)
+    isSubPattern+(c.getALabel().getPattern(), ast)
   )
 }
 
@@ -315,10 +307,16 @@ private predicate isMatchingConstant(CaseLabelItem cli, boolean value) {
 
 private predicate mustHaveThrowCompletion(ThrowStmt throw, ThrowCompletion c) { any() }
 
-private predicate mayHaveThrowCompletion(ApplyExpr n, ThrowCompletion c) {
-  // TODO: We should really just use the function type here, I think (and then check
-  // if the type has a `throws`).
-  exists(n.getStaticTarget())
+private predicate isThrowingType(AnyFunctionType type) { type.isThrowing() }
+
+private predicate mayHaveThrowCompletion(ControlFlowElement n, ThrowCompletion c) {
+  // An AST expression that may throw.
+  isThrowingType(n.asAstNode().(ApplyExpr).getFunction().getType())
+  or
+  // Getters are the only accessor declarators that may throw.
+  exists(AccessorDecl accessor | isThrowingType(accessor.getInterfaceType()) |
+    isPropertyGetterElement(n, accessor, _)
+  )
 }
 
 /**
@@ -442,6 +440,34 @@ class MatchingCompletion extends ConditionalCompletion, TMatchingCompletion {
   override string toString() { if this.isMatch() then result = "match" else result = "no-match" }
 }
 
+class FalseOrNonMatchCompletion instanceof ConditionalCompletion {
+  FalseOrNonMatchCompletion() {
+    this instanceof FalseCompletion
+    or
+    this.(MatchingCompletion).isNonMatch()
+  }
+
+  string toString() {
+    result = this.(FalseCompletion).toString()
+    or
+    result = this.(MatchingCompletion).toString()
+  }
+}
+
+class TrueOrMatchCompletion instanceof ConditionalCompletion {
+  TrueOrMatchCompletion() {
+    this instanceof TrueCompletion
+    or
+    this.(MatchingCompletion).isMatch()
+  }
+
+  string toString() {
+    result = this.(TrueCompletion).toString()
+    or
+    result = this.(MatchingCompletion).toString()
+  }
+}
+
 class FallthroughCompletion extends Completion, TFallthroughCompletion {
   CaseStmt dest;
 
@@ -477,3 +503,18 @@ class ThrowCompletion extends TThrowCompletion, Completion {
 
   override string toString() { result = "throw" }
 }
+
+/**
+ * Hold if `c` represents normal evaluation of a statement or an
+ * expression.
+ */
+predicate completionIsNormal(Completion c) { c instanceof NormalCompletion }
+
+/**
+ * Hold if `c` represents simple (normal) evaluation of a statement or an
+ * expression.
+ */
+predicate completionIsSimple(Completion c) { c instanceof SimpleCompletion }
+
+/** Holds if `c` is a valid completion for `e`. */
+predicate completionIsValidFor(Completion c, ControlFlowElement e) { c.isValidFor(e) }

@@ -94,9 +94,15 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
     ppos.isAny()
     or
     ppos.isPositionalLowerBound(AccessPath::parseLowerBound(arg))
+    or
+    arg = "hash-splat" and
+    ppos.isHashSplat()
   )
   or
   result = interpretElementArg(c.getAnArgument("Element"))
+  or
+  result =
+    FlowSummary::SummaryComponent::content(TSingletonContent(TFieldContent(c.getAnArgument("Field"))))
   or
   exists(ContentSet cs |
     FlowSummary::SummaryComponent::content(cs) = interpretElementArg(c.getAnArgument("WithElement")) and

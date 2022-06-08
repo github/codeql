@@ -66,6 +66,8 @@ private class StepsFromModel extends ModelInput::SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
+        ";any;Method[set_value];Argument[0];Argument[self].Field[@value];value",
+        ";any;Method[get_value];Argument[self].Field[@value];ReturnValue;value",
         ";;Member[Foo].Method[firstArg];Argument[0];ReturnValue;taint",
         ";;Member[Foo].Method[secondArg];Argument[1];ReturnValue;taint",
         ";;Member[Foo].Method[onlyWithoutBlock].WithoutBlock;Argument[0];ReturnValue;taint",

@@ -873,6 +873,18 @@ class DeclarationSpace extends string {
   DeclarationSpace() { this = "variable" or this = "type" or this = "namespace" }
 }
 
+/** Module containing the `DeclarationSpace` constants. */
+module DeclarationSpace {
+  /** Gets the declaration space for variables/values. */
+  DeclarationSpace variable() { result = "variable" }
+
+  /** Gets the declaration space for types. */
+  DeclarationSpace type() { result = "type" }
+
+  /** Gets the declaration space for namespaces. */
+  DeclarationSpace namespace() { result = "namespace" }
+}
+
 /**
  * A name that is declared in a particular scope.
  *

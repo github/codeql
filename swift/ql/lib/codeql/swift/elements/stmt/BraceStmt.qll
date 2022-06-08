@@ -9,4 +9,6 @@ class BraceStmt extends BraceStmtBase {
       not exists(this.getElement(i + 1))
     )
   }
+
+  override string toString() { result = "{ ... }" }
 }

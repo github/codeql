@@ -19,6 +19,7 @@ class Property:
 
     name: str
     type: str = None
+    is_child: bool = False
 
 
 @dataclass
@@ -62,17 +63,18 @@ class Schema:
     includes: Set[str] = field(default_factory=set)
 
 
-def _parse_property(name, type):
+def _parse_property(name: str, type: str, is_child: bool = False):
+    assert not (is_child and type[0].islower()), f"children must have class type, got {type} for {name}"
     if type.endswith("?*"):
-        return RepeatedOptionalProperty(name, type[:-2])
+        return RepeatedOptionalProperty(name, type[:-2], is_child=is_child)
     elif type.endswith("*"):
-        return RepeatedProperty(name, type[:-1])
+        return RepeatedProperty(name, type[:-1], is_child=is_child)
     elif type.endswith("?"):
-        return OptionalProperty(name, type[:-1])
+        return OptionalProperty(name, type[:-1], is_child=is_child)
     elif type == "predicate":
         return PredicateProperty(name)
     else:
-        return SingleProperty(name, type)
+        return SingleProperty(name, type, is_child=is_child)
 
 
 class _DirSelector:
@@ -109,6 +111,8 @@ def load(path):
                     classes[base].derived.add(name)
             elif k == "_dir":
                 cls.dir = pathlib.Path(v)
+            elif k == "_children":
+                cls.properties.extend(_parse_property(kk, vv, is_child=True) for kk, vv in v.items())
         if not cls.bases and cls.name != root_class_name:
             cls.bases.add(root_class_name)
             classes[root_class_name].derived.add(name)

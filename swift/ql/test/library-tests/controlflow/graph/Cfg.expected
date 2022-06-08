@@ -1,4276 +1,5159 @@
 cfg.swift:
-#    5| enter ConcreteFuncDecl
-#-----|  -> IntegerLiteralExpr
+#    5| enter returnZero
+#-----|  -> returnZero
 
-#    5| exit ConcreteFuncDecl
+#    5| exit returnZero
 
-#    5| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#    5| exit returnZero (normal)
+#-----|  -> exit returnZero
 
-#    5| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#    5| returnZero
+#-----|  -> 0
 
-#    5| IntegerLiteralExpr
-#-----|  -> ReturnStmt
+#    5| return ...
+#-----| return -> exit returnZero (normal)
 
-#   15| enter ConcreteFuncDecl
-#-----|  -> DeclRefExpr
+#    5| 0
+#-----|  -> return ...
 
-#   15| exit ConcreteFuncDecl
+#   15| enter isZero
+#-----|  -> isZero
 
-#   15| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   15| exit isZero
 
-#   15| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#   15| exit isZero (normal)
+#-----|  -> exit isZero
 
-#   15| DeclRefExpr
-#-----|  -> IntegerLiteralExpr
+#   15| isZero
+#-----|  -> x
 
-#   15| BinaryExpr
-#-----|  -> ReturnStmt
+#   15| x
+#-----|  -> ==
 
-#   15| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#   15| return ...
+#-----| return -> exit isZero (normal)
 
-#   15| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#   15| x
+#-----|  -> 0
 
-#   15| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#   15| ... call to == ...
+#-----|  -> return ...
 
-#   17| enter ConcreteFuncDecl
-#-----|  -> GuardStmt
+#   15| ==
+#-----|  -> Int.Type
 
-#   17| exit ConcreteFuncDecl
+#   15| Int.Type
+#-----|  -> call to ==
 
-#   17| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   15| call to ==
+#-----|  -> x
 
-#   18| GuardStmt
-#-----|  -> DeclRefExpr
+#   15| 0
+#-----|  -> ... call to == ...
 
-#   18| DeclRefExpr
-#-----|  -> IntegerLiteralExpr
+#   17| enter mightThrow
+#-----|  -> mightThrow
 
-#   18| BinaryExpr
+#   17| exit mightThrow
+
+#   17| exit mightThrow (normal)
+#-----|  -> exit mightThrow
+
+#   17| mightThrow
+#-----|  -> x
+
+#   17| x
+#-----|  -> guard ... else { ... }
+
+#   18| guard ... else { ... }
 #-----|  -> StmtCondition
+
+#   18| x
+#-----|  -> 0
+
+#   18| ... call to >= ...
+#-----| false -> error1
+#-----| true -> guard ... else { ... }
 
 #   18| StmtCondition
-#-----| false -> DeclRefExpr
-#-----| true -> GuardStmt
+#-----|  -> >=
 
-#   18| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#   18| >=
+#-----|  -> Int.Type
 
-#   18| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#   18| Int.Type
+#-----|  -> call to >=
 
-#   18| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#   18| call to >=
+#-----|  -> x
 
-#   19| ThrowStmt
-#-----| exception -> exit ConcreteFuncDecl (normal)
+#   18| 0
+#-----|  -> ... call to >= ...
 
-#   19| DotSyntaxCallExpr
-#-----|  -> ErasureExpr
+#   19| throw ...
+#-----| exception -> exit mightThrow (normal)
 
-#   19| ErasureExpr
-#-----|  -> ThrowStmt
+#   19| MyError.Type
+#-----|  -> call to ...
 
-#   19| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#   19| (Error) ...
+#-----|  -> throw ...
 
-#   21| GuardStmt
-#-----|  -> DeclRefExpr
+#   19| (TBD (ExistentialType)) ...
+#-----|  -> throw ...
 
-#   21| DeclRefExpr
-#-----|  -> IntegerLiteralExpr
+#   19| call to ...
+#-----|  -> (Error) ...
+#-----|  -> (TBD (ExistentialType)) ...
 
-#   21| BinaryExpr
+#   19| error1
+#-----|  -> MyError.Type
+
+#   21| guard ... else { ... }
 #-----|  -> StmtCondition
 
+#   21| x
+#-----|  -> 0
+
+#   21| ... call to <= ...
+#-----| true -> exit mightThrow (normal)
+#-----| false -> error3
+
 #   21| StmtCondition
-#-----| true -> exit ConcreteFuncDecl (normal)
-#-----| false -> DeclRefExpr
+#-----|  -> <=
 
-#   21| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#   21| <=
+#-----|  -> Int.Type
 
-#   21| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#   21| Int.Type
+#-----|  -> call to <=
 
-#   21| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#   21| call to <=
+#-----|  -> x
 
-#   22| ThrowStmt
-#-----| exception -> exit ConcreteFuncDecl (normal)
+#   21| 0
+#-----|  -> ... call to <= ...
 
-#   22| DotSyntaxCallExpr
-#-----|  -> DeclRefExpr
+#   22| throw ...
+#-----| exception -> exit mightThrow (normal)
 
-#   22| CallExpr
-#-----|  -> ErasureExpr
+#   22| MyError.Type
+#-----|  -> call to ...
 
-#   22| ErasureExpr
-#-----|  -> ThrowStmt
+#   22| call to ...
+#-----|  -> +
 
-#   22| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#   22| (Error) ...
+#-----|  -> throw ...
 
-#   22| DeclRefExpr
-#-----|  -> IntegerLiteralExpr
+#   22| (TBD (ExistentialType)) ...
+#-----|  -> throw ...
 
-#   22| BinaryExpr
-#-----|  -> CallExpr
+#   22| call to ...
+#-----|  -> (Error) ...
+#-----|  -> (TBD (ExistentialType)) ...
 
-#   22| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#   22| error3
+#-----|  -> MyError.Type
 
-#   22| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#   22| x
+#-----|  -> 1
 
-#   22| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#   22| ... call to + ...
+#-----|  -> call to ...
 
-#   26| enter ConcreteFuncDecl
-#-----|  -> DoCatchStmt
+#   22| +
+#-----|  -> Int.Type
 
-#   26| exit ConcreteFuncDecl
+#   22| Int.Type
+#-----|  -> call to +
 
-#   26| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   22| call to +
+#-----|  -> x
 
-#   27| DoCatchStmt
-#-----|  -> DeclRefExpr
+#   22| 1
+#-----|  -> ... call to + ...
 
-#   28| TryExpr
-#-----|  -> DeclRefExpr
+#   26| enter tryCatch
+#-----|  -> tryCatch
 
-#   28| DeclRefExpr
-#-----|  -> IntegerLiteralExpr
+#   26| exit tryCatch
 
-#   28| CallExpr
-#-----|  -> TryExpr
-#-----| exception -> CaseStmt
+#   26| exit tryCatch (normal)
+#-----|  -> exit tryCatch
 
-#   28| IntegerLiteralExpr
-#-----|  -> CallExpr
+#   26| tryCatch
+#-----|  -> x
 
-#   29| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#   26| x
+#-----|  -> do { ... } catch { ... }
 
-#   29| CallExpr
-#-----| exception -> CaseStmt
+#   27| do { ... } catch { ... }
+#-----|  -> mightThrow
 
-#   29| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#   28| try ...
+#-----|  -> print
 
-#   29| ErasureExpr
-#-----|  -> ArrayExpr
+#   28| mightThrow
+#-----|  -> 0
 
-#   29| StringLiteralExpr
-#-----|  -> ErasureExpr
+#   28| call to mightThrow
+#-----|  -> try ...
+#-----| exception -> case ...
 
-#   29| VarargExpansionExpr
-#-----|  -> CallExpr
+#   28| 0
+#-----|  -> call to mightThrow
 
-#   33| CaseStmt
-#-----|  -> CaseLabelItem
+#   29| print
+#-----|  -> Did not throw.
 
-#   33| CaseLabelItem
-#-----|  -> EnumElementPattern
+#   29| call to print
 
-#   33| IsPattern
-#-----| no-match -> CaseLabelItem
-#-----| match -> IntegerLiteralExpr
+#   29| default separator
+#-----|  -> default terminator
 
-#   33| EnumElementPattern
-#-----| match -> IsPattern
+#   29| default terminator
+#-----|  -> call to print
 
-#   33| IsPattern
-#-----| match -> IntegerLiteralExpr
-#-----| no-match -> CaseStmt
-#-----| no-match -> IntegerLiteralExpr
+#   29| (Any) ...
+#-----|  -> [...]
 
-#   33| EnumElementPattern
-#-----| match -> IsPattern
+#   29| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#   33| CaseLabelItem
-#-----|  -> EnumElementPattern
+#   29| Did not throw.
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#   34| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#   29| [...]
+#-----|  -> default separator
 
-#   34| IntegerLiteralExpr
-#-----|  -> ReturnStmt
+#   29| [...]
+#-----|  -> [...]
 
-#   35| CaseStmt
-#-----|  -> CaseLabelItem
+#   33| case ...
+#-----|  -> ... is ...
 
-#   35| CaseLabelItem
-#-----|  -> EnumElementPattern
+#   33| ... is ...
+#-----|  -> .error1
 
-#   35| IsPattern
-#-----| match -> DeclRefExpr
-#-----| no-match -> CaseStmt
-#-----| no-match -> IntegerLiteralExpr
+#   33| ... is ...
+#-----| no-match -> ... is ...
+#-----| match -> 0
 
-#   35| EnumElementPattern
-#-----| no-match -> IsPattern
-#-----| match -> TuplePattern
+#   33| .error1
+#-----| no-match -> ... is ...
 
-#   35| TuplePattern
-#-----|  -> NamedPattern
+#   33| ... is ...
+#-----| match -> 0
+#-----| no-match -> case ...
 
-#   35| BindingPattern
-#-----| match -> IsPattern
+#   33| .error2
+#-----| no-match -> ... is ...
 
-#   35| NamedPattern
-#-----| match -> BindingPattern
+#   33| ... is ...
+#-----|  -> .error2
 
-#   36| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#   34| return ...
+#-----| return -> exit tryCatch (normal)
 
-#   36| DeclRefExpr
-#-----|  -> ReturnStmt
+#   34| 0
+#-----|  -> return ...
 
-#   37| CaseStmt
-#-----|  -> CaseLabelItem
+#   35| case ...
+#-----|  -> ... is ...
 
-#   37| CaseLabelItem
+#   35| ... is ...
+#-----| match -> withParam
+#-----| no-match -> case ...
+
+#   35| ... is ...
+#-----|  -> .error3(...)
+
+#   35| .error3(...)
+#-----| no-match -> ... is ...
+#-----| match -> (...)
+
+#   35| (...)
+#-----|  -> withParam
+
+#   35| let ...
+#-----| no-match -> ... is ...
+
+#   35| withParam
+#-----| match -> let ...
+
+#   36| return ...
+#-----| return -> exit tryCatch (normal)
+
+#   36| withParam
+#-----|  -> return ...
+
+#   37| case ...
+#-----|  -> ... is ...
+
+#   37| ... is ...
 #-----|  -> TBD (SimpleIdentTypeRepr)
 
-#   37| IsPattern
-#-----| match -> DeclRefExpr
-#-----| no-match -> CaseStmt
-#-----| no-match -> IntegerLiteralExpr
+#   37| ... is ...
+#-----| match -> print
+#-----| no-match -> case ...
 
 #   37| TBD (SimpleIdentTypeRepr)
-#-----|  -> IsPattern
+#-----|  -> ... is ...
 
-#   38| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#   38| print
+#-----|  -> MyError
 
-#   38| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> IntegerLiteralExpr
+#   38| call to print
+#-----|  -> 0
 
-#   38| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#   38| default separator
+#-----|  -> default terminator
 
-#   38| ErasureExpr
-#-----|  -> ArrayExpr
+#   38| default terminator
+#-----|  -> call to print
 
-#   38| StringLiteralExpr
-#-----|  -> ErasureExpr
+#   38| (Any) ...
+#-----|  -> [...]
 
-#   38| VarargExpansionExpr
-#-----|  -> CallExpr
+#   38| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#   39| CaseStmt
-#-----|  -> CaseLabelItem
+#   38| MyError
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#   39| BindingPattern
-#-----| match -> DeclRefExpr
-#-----| no-match -> IntegerLiteralExpr
+#   38| [...]
+#-----|  -> default separator
 
-#   39| CaseLabelItem
-#-----|  -> NamedPattern
+#   38| [...]
+#-----|  -> [...]
 
-#   39| NamedPattern
-#-----| match -> BindingPattern
+#   39| case ...
+#-----|  -> let ...
 
-#   40| DeclRefExpr
-#-----|  -> InterpolatedStringLiteralExpr
+#   39| error
+#-----| match -> let ...
 
-#   40| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> IntegerLiteralExpr
+#   39| let ...
+#-----| match -> print
+#-----| no-match -> 0
 
-#   40| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#   39| let ...
+#-----|  -> error
 
-#   40| ErasureExpr
-#-----|  -> ArrayExpr
+#   40| print
+#-----|  -> "..."
 
-#   40| InterpolatedStringLiteralExpr
-#-----|  -> ErasureExpr
+#   40| call to print
+#-----|  -> 0
 
-#   40| VarargExpansionExpr
-#-----|  -> CallExpr
+#   40| default separator
+#-----|  -> default terminator
 
-#   42| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#   40| default terminator
+#-----|  -> call to print
 
-#   42| IntegerLiteralExpr
-#-----|  -> ReturnStmt
+#   40| "..."
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#   45| enter ConcreteFuncDecl
-#-----|  -> ClosureExpr
+#   40| (Any) ...
+#-----|  -> [...]
 
-#   45| exit ConcreteFuncDecl
+#   40| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#   45| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   40| [...]
+#-----|  -> default separator
 
-#   46| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#   40| [...]
+#-----|  -> [...]
 
-#   46| ClosureExpr
-#-----|  -> ReturnStmt
+#   42| return ...
+#-----| return -> exit tryCatch (normal)
 
-#   52| enter ConcreteFuncDecl
-#-----|  -> DeclRefExpr
+#   42| 0
+#-----|  -> return ...
 
-#   52| exit ConcreteFuncDecl
+#   45| createClosure1
+#-----|  -> s
 
-#   52| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   45| enter createClosure1
+#-----|  -> createClosure1
 
-#   53| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#   45| exit createClosure1
 
-#   53| DeclRefExpr
-#-----|  -> DeclRefExpr
+#   45| exit createClosure1 (normal)
+#-----|  -> exit createClosure1
 
-#   53| BinaryExpr
-#-----|  -> ReturnStmt
+#   45| s
+#-----|  -> { ... }
 
-#   53| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#   46| return ...
+#-----| return -> exit createClosure1 (normal)
 
-#   53| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#   46| { ... }
+#-----|  -> return ...
 
-#   53| DeclRefExpr
-#-----|  -> BinaryExpr
+#   51| createClosure2
+#-----|  -> x
 
-#   58| enter ConcreteFuncDecl
-#-----|  -> ClosureExpr
+#   51| enter createClosure2
+#-----|  -> createClosure2
 
-#   58| exit ConcreteFuncDecl
+#   51| x
 
-#   58| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   52| enter f
+#-----|  -> f
 
-#   59| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#   52| exit f
 
-#   59| ClosureExpr
-#-----|  -> ReturnStmt
+#   52| exit f (normal)
+#-----|  -> exit f
 
-#   64| enter ConcreteFuncDecl
-#-----|  -> NamedPattern
+#   52| f
+#-----|  -> y
 
-#   64| exit ConcreteFuncDecl
+#   52| y
+#-----|  -> +
 
-#   64| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   53| return ...
+#-----| return -> exit f (normal)
 
-#   65| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#   53| x
+#-----|  -> y
 
-#   65| ConcreteVarDecl
-#-----|  -> NamedPattern
+#   53| ... call to + ...
+#-----|  -> return ...
 
-#   65| NamedPattern
-#-----|  -> DeclRefExpr
+#   53| +
+#-----|  -> Int.Type
 
-#   65| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#   53| Int.Type
+#-----|  -> call to +
 
-#   65| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#   53| call to +
+#-----|  -> x
 
-#   65| CallExpr
-#-----|  -> PatternBindingDecl
+#   53| y
+#-----|  -> ... call to + ...
 
-#   65| StringLiteralExpr
-#-----|  -> CallExpr
+#   58| createClosure3
+#-----|  -> x
 
-#   66| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#   58| enter createClosure3
+#-----|  -> createClosure3
 
-#   66| ConcreteVarDecl
-#-----|  -> NamedPattern
+#   58| exit createClosure3
 
-#   66| NamedPattern
-#-----|  -> DeclRefExpr
+#   58| exit createClosure3 (normal)
+#-----|  -> exit createClosure3
 
-#   66| DeclRefExpr
-#-----|  -> IntegerLiteralExpr
+#   58| x
+#-----|  -> { ... }
 
-#   66| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> IntegerLiteralExpr
+#   59| return ...
+#-----| return -> exit createClosure3 (normal)
 
-#   66| CallExpr
-#-----|  -> PatternBindingDecl
+#   59| { ... }
+#-----|  -> return ...
 
-#   66| IntegerLiteralExpr
-#-----|  -> CallExpr
+#   64| callClosures
+#-----|  -> x1
 
-#   66| IntegerLiteralExpr
-#-----|  -> CallExpr
+#   64| enter callClosures
+#-----|  -> callClosures
 
-#   67| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#   64| exit callClosures
 
-#   67| ConcreteVarDecl
-#-----|  -> exit ConcreteFuncDecl (normal)
+#   64| exit callClosures (normal)
+#-----|  -> exit callClosures
 
-#   67| NamedPattern
-#-----|  -> DeclRefExpr
+#   65| var ... = ...
+#-----|  -> x1
 
-#   67| DeclRefExpr
-#-----|  -> IntegerLiteralExpr
+#   65| x1
+#-----| no-match -> createClosure1
 
-#   67| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> IntegerLiteralExpr
+#   65| x1
+#-----|  -> x2
 
-#   67| CallExpr
-#-----|  -> PatternBindingDecl
+#   65| createClosure1
+#-----|  -> 
 
-#   67| IntegerLiteralExpr
-#-----|  -> CallExpr
+#   65| call to createClosure1
+#-----|  -> call to ...
 
-#   67| IntegerLiteralExpr
-#-----|  -> CallExpr
+#   65| call to ...
+#-----|  -> var ... = ...
 
-#   70| enter ConcreteFuncDecl
-#-----|  -> NamedPattern
+#   65| 
+#-----|  -> call to createClosure1
 
-#   70| exit ConcreteFuncDecl
+#   66| var ... = ...
+#-----|  -> x2
 
-#   70| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   66| x2
+#-----| no-match -> createClosure2
 
-#   71| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#   66| x2
+#-----|  -> x3
 
-#   71| ConcreteVarDecl
-#-----|  -> DeclRefExpr
+#   66| createClosure2
+#-----|  -> 0
 
-#   71| NamedPattern
-#-----|  -> TypedPattern
+#   66| call to createClosure2
+#-----|  -> 10
 
-#   71| TypedPattern
-#-----|  -> DeclRefExpr
+#   66| call to ...
+#-----|  -> var ... = ...
 
-#   71| ConstructorRefCallExpr
-#-----|  -> DeclRefExpr
+#   66| 0
+#-----|  -> call to createClosure2
 
-#   71| DeclRefExpr
-#-----|  -> ConstructorRefCallExpr
+#   66| 10
+#-----|  -> call to ...
 
-#   71| CallExpr
-#-----|  -> PatternBindingDecl
+#   67| var ... = ...
+#-----|  -> x3
 
-#   71| DeclRefExpr
-#-----|  -> CallExpr
+#   67| x3
+#-----| no-match -> createClosure3
 
-#   72| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#   67| x3
+#-----|  -> exit callClosures (normal)
 
-#   72| DeclRefExpr
-#-----|  -> LoadExpr
+#   67| createClosure3
+#-----|  -> 0
 
-#   72| LoadExpr
-#-----|  -> ReturnStmt
+#   67| call to createClosure3
+#-----|  -> 10
 
-#   75| enter ConcreteFuncDecl
-#-----|  -> NamedPattern
+#   67| call to ...
+#-----|  -> var ... = ...
 
-#   75| exit ConcreteFuncDecl
+#   67| 0
+#-----|  -> call to createClosure3
 
-#   75| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   67| 10
+#-----|  -> call to ...
 
-#   76| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#   70| enter maybeParseInt
+#-----|  -> maybeParseInt
 
-#   76| ConcreteVarDecl
-#-----|  -> NamedPattern
+#   70| exit maybeParseInt
 
-#   76| NamedPattern
-#-----|  -> PatternBindingDecl
+#   70| exit maybeParseInt (normal)
+#-----|  -> exit maybeParseInt
 
-#   77| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#   70| maybeParseInt
+#-----|  -> s
 
-#   77| ConcreteVarDecl
-#-----|  -> DeclRefExpr
+#   70| s
+#-----|  -> n
 
-#   77| NamedPattern
-#-----|  -> DeclRefExpr
+#   71| var ... = ...
+#-----|  -> n
 
-#   77| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#   71| n
+#-----| no-match -> ... as ...
 
-#   77| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> PatternBindingDecl
+#   71| n
+#-----|  -> n
 
-#   77| StringLiteralExpr
-#-----|  -> CallExpr
+#   71| ... as ...
+#-----| no-match -> init
 
-#   78| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#   71| Int.Type
+#-----|  -> call to ...
 
-#   78| DeclRefExpr
-#-----|  -> LoadExpr
+#   71| call to ...
+#-----|  -> s
 
-#   78| LoadExpr
-#-----|  -> BinaryExpr
+#   71| init
+#-----|  -> Int.Type
 
-#   78| BinaryExpr
-#-----|  -> InjectIntoOptionalExpr
+#   71| call to ...
+#-----|  -> var ... = ...
 
-#   78| InjectIntoOptionalExpr
-#-----|  -> ReturnStmt
+#   71| s
+#-----|  -> call to ...
 
-#   78| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#   72| return ...
+#-----| return -> exit maybeParseInt (normal)
 
-#   78| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#   72| (Int?) ...
+#-----|  -> return ...
 
-#   81| enter ConcreteFuncDecl
-#-----|  -> NamedPattern
+#   72| n
+#-----|  -> (Int?) ...
 
-#   82| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#   75| enter forceAndBackToOptional
+#-----|  -> forceAndBackToOptional
 
-#   82| ConcreteVarDecl
+#   75| exit forceAndBackToOptional
 
-#   82| NamedPattern
-#-----|  -> IntegerLiteralExpr
+#   75| exit forceAndBackToOptional (normal)
+#-----|  -> exit forceAndBackToOptional
 
-#   82| IntegerLiteralExpr
-#-----|  -> PatternBindingDecl
+#   75| forceAndBackToOptional
+#-----|  -> nBang
 
-#   84| enter ConcreteFuncDecl
-#-----|  -> DeclRefExpr
+#   76| var ... = ...
+#-----|  -> nBang
 
-#   84| exit ConcreteFuncDecl
+#   76| nBang
+#-----| no-match -> maybeParseInt
 
-#   84| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   76| nBang
+#-----|  -> n
 
-#   85| DeclRefExpr
-#-----|  -> DeclRefExpr
+#   76| maybeParseInt
+#-----|  -> 42
 
-#   85| AssignExpr
-#-----|  -> exit ConcreteFuncDecl (normal)
+#   76| call to maybeParseInt
+#-----|  -> ...!
 
-#   85| DeclRefExpr
-#-----|  -> LoadExpr
+#   76| ...!
+#-----|  -> var ... = ...
 
-#   85| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#   76| 42
+#-----|  -> call to maybeParseInt
 
-#   85| BinaryExpr
-#-----|  -> AssignExpr
+#   77| var ... = ...
+#-----|  -> n
 
-#   85| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#   77| n
+#-----| no-match -> maybeParseInt
 
-#   85| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#   77| n
+#-----|  -> +
 
-#   85| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#   77| maybeParseInt
+#-----|  -> 42
 
-#   88| enter ConcreteFuncDecl
-#-----|  -> DeclRefExpr
+#   77| call to maybeParseInt
+#-----|  -> var ... = ...
 
-#   88| exit ConcreteFuncDecl
+#   77| 42
+#-----|  -> call to maybeParseInt
 
-#   88| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   78| return ...
+#-----| return -> exit forceAndBackToOptional (normal)
 
-#   89| DeclRefExpr
-#-----|  -> NilLiteralExpr
+#   78| (Int) ...
+#-----|  -> n
 
-#   89| AssignExpr
-#-----|  -> exit ConcreteFuncDecl (normal)
+#   78| nBang
+#-----|  -> (Int) ...
 
-#   89| NilLiteralExpr
-#-----|  -> AssignExpr
+#   78| (Int?) ...
+#-----|  -> return ...
 
-#   99| enter AccessorDecl
+#   78| ... call to + ...
+#-----|  -> (Int?) ...
 
-#   99| exit AccessorDecl
+#   78| +
+#-----|  -> Int.Type
 
-#   99| exit AccessorDecl (normal)
-#-----|  -> exit AccessorDecl
+#   78| Int.Type
+#-----|  -> call to +
 
-#  100| enter ConstructorDecl
-#-----|  -> DeclRefExpr
+#   78| call to +
+#-----|  -> nBang
 
-#  100| exit ConstructorDecl
+#   78| (Int?) ...
+#-----|  -> ...!
 
-#  100| exit ConstructorDecl (normal)
-#-----|  -> exit ConstructorDecl
+#   78| n
+#-----|  -> (Int?) ...
 
-#  101| AssignExpr
-#-----|  -> ReturnStmt
+#   78| ...!
+#-----|  -> ... call to + ...
 
-#  101| DeclRefExpr
-#-----|  -> AssignExpr
+#   81| enter testInOut
+#-----|  -> testInOut
 
-#  102| ReturnStmt
-#-----| return -> exit ConstructorDecl (normal)
+#   81| testInOut
+#-----|  -> temp
 
-#  104| enter ConcreteFuncDecl
-#-----|  -> ReturnStmt
+#   82| var ... = ...
+#-----|  -> temp
 
-#  104| exit ConcreteFuncDecl
+#   82| temp
+#-----| no-match -> 10
 
-#  104| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   82| temp
 
-#  105| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#   82| 10
+#-----|  -> var ... = ...
 
-#  109| enter ConcreteFuncDecl
-#-----|  -> NamedPattern
+#   84| add
+#-----|  -> a
 
-#  109| exit ConcreteFuncDecl
+#   84| enter add
+#-----|  -> add
 
-#  109| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#   84| exit add
 
-#  110| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#   84| exit add (normal)
+#-----|  -> exit add
 
-#  110| ConcreteVarDecl
-#-----|  -> NamedPattern
+#   84| a
+#-----|  -> a
 
-#  110| NamedPattern
-#-----|  -> DeclRefExpr
+#   85| a
+#-----|  -> +
 
-#  110| ConstructorRefCallExpr
-#-----|  -> IntegerLiteralExpr
+#   85|  ... = ...
+#-----|  -> exit add (normal)
 
-#  110| DeclRefExpr
-#-----|  -> ConstructorRefCallExpr
+#   85| (Int) ...
+#-----|  -> 1
 
-#  110| CallExpr
-#-----|  -> PatternBindingDecl
+#   85| a
+#-----|  -> (Int) ...
 
-#  110| IntegerLiteralExpr
-#-----|  -> CallExpr
+#   85| ... call to + ...
+#-----|  ->  ... = ...
 
-#  111| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#   85| +
+#-----|  -> Int.Type
 
-#  111| ConcreteVarDecl
-#-----|  -> NamedPattern
+#   85| Int.Type
+#-----|  -> call to +
 
-#  111| NamedPattern
-#-----|  -> PatternBindingDecl
+#   85| call to +
+#-----|  -> a
 
-#  112| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#   85| 1
+#-----|  -> ... call to + ...
 
-#  112| ConcreteVarDecl
-#-----|  -> NamedPattern
+#   88| addOptional
+#-----|  -> a
 
-#  112| NamedPattern
-#-----|  -> PatternBindingDecl
+#   88| enter addOptional
+#-----|  -> addOptional
 
-#  113| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#   88| exit addOptional
 
-#  113| ConcreteVarDecl
-#-----|  -> NamedPattern
+#   88| exit addOptional (normal)
+#-----|  -> exit addOptional
 
-#  113| NamedPattern
-#-----|  -> DeclRefExpr
+#   88| a
+#-----|  -> a
 
-#  113| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#   89| a
+#-----|  -> nil
 
-#  113| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#   89|  ... = ...
+#-----|  -> exit addOptional (normal)
 
-#  113| CallExpr
-#-----|  -> PatternBindingDecl
+#   89| nil
+#-----|  ->  ... = ...
 
-#  113| DeclRefExpr
-#-----|  -> DeclRefExpr
+#   98| deinit
+#-----|  -> { ... }
 
-#  114| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#   98| enter deinit
+#-----|  -> deinit
 
-#  114| ConcreteVarDecl
-#-----|  -> NamedPattern
+#   98| exit deinit
 
-#  114| NamedPattern
-#-----|  -> DeclRefExpr
+#   98| exit deinit (normal)
+#-----|  -> exit deinit
+
+#   98| { ... }
+#-----|  -> exit deinit (normal)
+
+#   99| enter get
+#-----|  -> get
+
+#   99| exit get
+
+#   99| exit get (normal)
+#-----|  -> exit get
+
+#   99| get
+
+#  100| enter init
+#-----|  -> init
+
+#  100| exit init
+
+#  100| exit init (normal)
+#-----|  -> exit init
+
+#  100| init
+#-----|  -> n
+
+#  100| n
+#-----|  -> self
+
+#  101| .myInt
+#-----|  -> n
+
+#  101| self
+#-----|  -> .myInt
+
+#  101|  ... = ...
+#-----|  -> return
+
+#  101| n
+#-----|  ->  ... = ...
+
+#  102| return
+#-----| return -> exit init (normal)
+
+#  104| enter getMyInt
+#-----|  -> getMyInt
+
+#  104| exit getMyInt
+
+#  104| exit getMyInt (normal)
+#-----|  -> exit getMyInt
+
+#  104| getMyInt
+#-----|  -> self
+
+#  105| return ...
+#-----| return -> exit getMyInt (normal)
+
+#  105| getter for .myInt
+#-----|  -> return ...
+
+#  105| self
+#-----|  -> getter for .myInt
+
+#  109| enter testMemberRef
+#-----|  -> testMemberRef
+
+#  109| exit testMemberRef
+
+#  109| exit testMemberRef (normal)
+#-----|  -> exit testMemberRef
+
+#  109| testMemberRef
+#-----|  -> param
+
+#  109| param
+#-----|  -> inoutParam
+
+#  109| inoutParam
+#-----|  -> opt
+
+#  109| opt
+#-----|  -> c
+
+#  110| var ... = ...
+#-----|  -> c
+
+#  110| c
+#-----| no-match -> init
+
+#  110| c
+#-----|  -> n1
+
+#  110| C.Type
+#-----|  -> call to ...
+
+#  110| call to ...
+#-----|  -> 42
+
+#  110| init
+#-----|  -> C.Type
+
+#  110| call to ...
+#-----|  -> var ... = ...
+
+#  110| 42
+#-----|  -> call to ...
+
+#  111| var ... = ...
+#-----|  -> n1
+
+#  111| n1
+#-----| no-match -> c
+
+#  111| n1
+#-----|  -> n2
+
+#  111| c
+#-----|  -> getter for .myInt
+
+#  111| getter for .myInt
+#-----|  -> var ... = ...
+
+#  112| var ... = ...
+#-----|  -> n2
+
+#  112| n2
+#-----| no-match -> .self
+#-----| no-match -> TBD (DotSelfExpr)
+
+#  112| n2
+#-----|  -> n3
+
+#  112| .self
+#-----|  -> getter for .myInt
+
+#  112| TBD (DotSelfExpr)
+#-----|  -> getter for .myInt
+
+#  112| getter for .myInt
+#-----|  -> var ... = ...
+
+#  113| var ... = ...
+#-----|  -> n3
+
+#  113| n3
+#-----| no-match -> getMyInt
+
+#  113| n3
+#-----|  -> n4
+
+#  113| c
+#-----|  -> call to getMyInt
+
+#  113| call to getMyInt
+#-----|  -> call to ...
+
+#  113| call to ...
+#-----|  -> var ... = ...
+
+#  113| getMyInt
+#-----|  -> c
+
+#  114| var ... = ...
+#-----|  -> n4
+
+#  114| n4
+#-----| no-match -> getMyInt
+
+#  114| n4
+#-----|  -> n5
+
+#  114| .self
+#-----|  -> call to getMyInt
 
 #  114| TBD (DotSelfExpr)
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> call to getMyInt
 
-#  114| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#  114| call to getMyInt
+#-----|  -> call to ...
 
-#  114| CallExpr
-#-----|  -> PatternBindingDecl
+#  114| call to ...
+#-----|  -> var ... = ...
 
-#  114| DeclRefExpr
+#  114| getMyInt
+#-----|  -> .self
 #-----|  -> TBD (DotSelfExpr)
 
-#  116| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  116| var ... = ...
+#-----|  -> n5
 
-#  116| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  116| n5
+#-----| no-match -> param
 
-#  116| NamedPattern
-#-----|  -> PatternBindingDecl
+#  116| n5
+#-----|  -> n6
 
-#  117| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  116| param
+#-----|  -> getter for .myInt
 
-#  117| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  116| getter for .myInt
+#-----|  -> var ... = ...
 
-#  117| NamedPattern
-#-----|  -> PatternBindingDecl
+#  117| var ... = ...
+#-----|  -> n6
 
-#  118| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  117| n6
+#-----| no-match -> .self
+#-----| no-match -> TBD (DotSelfExpr)
 
-#  118| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  117| n6
+#-----|  -> n7
 
-#  118| NamedPattern
-#-----|  -> DeclRefExpr
+#  117| .self
+#-----|  -> getter for .myInt
 
-#  118| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  117| TBD (DotSelfExpr)
+#-----|  -> getter for .myInt
 
-#  118| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#  117| getter for .myInt
+#-----|  -> var ... = ...
 
-#  118| CallExpr
-#-----|  -> PatternBindingDecl
+#  118| var ... = ...
+#-----|  -> n7
 
-#  118| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  118| n7
+#-----| no-match -> getMyInt
 
-#  119| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  118| n7
+#-----|  -> n8
 
-#  119| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  118| param
+#-----|  -> call to getMyInt
 
-#  119| NamedPattern
-#-----|  -> DeclRefExpr
+#  118| call to getMyInt
+#-----|  -> call to ...
+
+#  118| call to ...
+#-----|  -> var ... = ...
+
+#  118| getMyInt
+#-----|  -> param
+
+#  119| var ... = ...
+#-----|  -> n8
+
+#  119| n8
+#-----| no-match -> getMyInt
+
+#  119| n8
+#-----|  -> n9
+
+#  119| .self
+#-----|  -> call to getMyInt
 
 #  119| TBD (DotSelfExpr)
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> call to getMyInt
 
-#  119| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#  119| call to getMyInt
+#-----|  -> call to ...
 
-#  119| CallExpr
-#-----|  -> PatternBindingDecl
+#  119| call to ...
+#-----|  -> var ... = ...
 
-#  119| DeclRefExpr
+#  119| getMyInt
+#-----|  -> .self
 #-----|  -> TBD (DotSelfExpr)
 
-#  121| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  121| var ... = ...
+#-----|  -> n9
 
-#  121| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  121| n9
+#-----| no-match -> inoutParam
 
-#  121| NamedPattern
-#-----|  -> PatternBindingDecl
+#  121| n9
+#-----|  -> n10
 
-#  122| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  121| (C) ...
+#-----|  -> getter for .myInt
 
-#  122| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  121| inoutParam
+#-----|  -> (C) ...
 
-#  122| NamedPattern
-#-----|  -> PatternBindingDecl
+#  121| getter for .myInt
+#-----|  -> var ... = ...
 
-#  123| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  122| var ... = ...
+#-----|  -> n10
 
-#  123| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  122| n10
+#-----| no-match -> .self
+#-----| no-match -> TBD (DotSelfExpr)
 
-#  123| NamedPattern
-#-----|  -> DeclRefExpr
+#  122| n10
+#-----|  -> n11
 
-#  123| DeclRefExpr
-#-----|  -> LoadExpr
+#  122| (C) ...
+#-----|  -> getter for .myInt
 
-#  123| LoadExpr
-#-----|  -> DotSyntaxCallExpr
+#  122| .self
+#-----|  -> (C) ...
 
-#  123| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#  122| TBD (DotSelfExpr)
+#-----|  -> (C) ...
 
-#  123| CallExpr
-#-----|  -> PatternBindingDecl
+#  122| getter for .myInt
+#-----|  -> var ... = ...
 
-#  123| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  123| var ... = ...
+#-----|  -> n11
 
-#  124| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  123| n11
+#-----| no-match -> getMyInt
 
-#  124| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  123| n11
+#-----|  -> n12
 
-#  124| NamedPattern
-#-----|  -> DeclRefExpr
+#  123| (C) ...
+#-----|  -> call to getMyInt
 
-#  124| LoadExpr
-#-----|  -> DotSyntaxCallExpr
+#  123| inoutParam
+#-----|  -> (C) ...
+
+#  123| call to getMyInt
+#-----|  -> call to ...
+
+#  123| call to ...
+#-----|  -> var ... = ...
+
+#  123| getMyInt
+#-----|  -> inoutParam
+
+#  124| var ... = ...
+#-----|  -> n12
+
+#  124| n12
+#-----| no-match -> getMyInt
+
+#  124| n12
+#-----|  -> n13
+
+#  124| (C) ...
+#-----|  -> call to getMyInt
+
+#  124| .self
+#-----|  -> (C) ...
 
 #  124| TBD (DotSelfExpr)
-#-----|  -> LoadExpr
+#-----|  -> (C) ...
 
-#  124| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#  124| call to getMyInt
+#-----|  -> call to ...
 
-#  124| CallExpr
-#-----|  -> PatternBindingDecl
+#  124| call to ...
+#-----|  -> var ... = ...
 
-#  124| DeclRefExpr
+#  124| getMyInt
+#-----|  -> .self
 #-----|  -> TBD (DotSelfExpr)
 
-#  126| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  126| var ... = ...
+#-----|  -> n13
 
-#  126| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  126| n13
+#-----| no-match -> opt
 
-#  126| NamedPattern
-#-----|  -> PatternBindingDecl
+#  126| n13
+#-----|  -> n14
 
-#  127| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  126| opt
+#-----|  -> ...!
 
-#  127| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  126| ...!
+#-----|  -> getter for .myInt
 
-#  127| NamedPattern
-#-----|  -> PatternBindingDecl
+#  126| getter for .myInt
+#-----|  -> var ... = ...
 
-#  128| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  127| var ... = ...
+#-----|  -> n14
 
-#  128| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  127| n14
+#-----| no-match -> .self
+#-----| no-match -> TBD (DotSelfExpr)
 
-#  128| NamedPattern
-#-----|  -> DeclRefExpr
+#  127| n14
+#-----|  -> n15
 
-#  128| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#  127| .self
+#-----|  -> getter for .myInt
 
-#  128| CallExpr
-#-----|  -> PatternBindingDecl
+#  127| TBD (DotSelfExpr)
+#-----|  -> getter for .myInt
 
-#  128| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  127| getter for .myInt
+#-----|  -> var ... = ...
 
-#  129| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  128| var ... = ...
+#-----|  -> n15
 
-#  129| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  128| n15
+#-----| no-match -> getMyInt
 
-#  129| NamedPattern
-#-----|  -> DeclRefExpr
+#  128| n15
+#-----|  -> n16
+
+#  128| opt
+#-----|  -> ...!
+
+#  128| ...!
+#-----|  -> call to getMyInt
+
+#  128| call to getMyInt
+#-----|  -> call to ...
+
+#  128| call to ...
+#-----|  -> var ... = ...
+
+#  128| getMyInt
+#-----|  -> opt
+
+#  129| var ... = ...
+#-----|  -> n16
+
+#  129| n16
+#-----| no-match -> getMyInt
+
+#  129| n16
+#-----|  -> n17
+
+#  129| .self
+#-----|  -> call to getMyInt
 
 #  129| TBD (DotSelfExpr)
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> call to getMyInt
 
-#  129| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#  129| call to getMyInt
+#-----|  -> call to ...
 
-#  129| CallExpr
-#-----|  -> PatternBindingDecl
+#  129| call to ...
+#-----|  -> var ... = ...
 
-#  129| DeclRefExpr
+#  129| getMyInt
+#-----|  -> .self
 #-----|  -> TBD (DotSelfExpr)
 
-#  131| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  131| var ... = ...
+#-----|  -> n17
 
-#  131| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  131| n17
+#-----| no-match -> opt
 
-#  131| NamedPattern
-#-----|  -> InjectIntoOptionalExpr
+#  131| n17
+#-----|  -> n18
 
-#  131| InjectIntoOptionalExpr
+#  131| opt
+#-----|  -> ...?
+
+#  131| ...?
+#-----|  -> getter for .myInt
+
+#  131| (Int?) ...
 #-----|  -> OptionalEvaluationExpr
 
 #  131| OptionalEvaluationExpr
-#-----|  -> PatternBindingDecl
+#-----|  -> var ... = ...
 
-#  132| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  131| getter for .myInt
+#-----|  -> (Int?) ...
 
-#  132| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  132| var ... = ...
+#-----|  -> n18
 
-#  132| NamedPattern
-#-----|  -> InjectIntoOptionalExpr
+#  132| n18
+#-----| no-match -> .self
+#-----| no-match -> TBD (DotSelfExpr)
 
-#  132| InjectIntoOptionalExpr
+#  132| n18
+#-----|  -> n19
+
+#  132| .self
+#-----|  -> getter for .myInt
+
+#  132| TBD (DotSelfExpr)
+#-----|  -> getter for .myInt
+
+#  132| (Int?) ...
 #-----|  -> OptionalEvaluationExpr
 
 #  132| OptionalEvaluationExpr
-#-----|  -> PatternBindingDecl
+#-----|  -> var ... = ...
 
-#  133| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  132| getter for .myInt
+#-----|  -> (Int?) ...
 
-#  133| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  133| var ... = ...
+#-----|  -> n19
 
-#  133| NamedPattern
-#-----|  -> DeclRefExpr
+#  133| n19
+#-----| no-match -> getMyInt
 
-#  133| DeclRefExpr
-#-----|  -> BindOptionalExpr
+#  133| n19
+#-----|  -> n20
 
-#  133| BindOptionalExpr
-#-----|  -> DotSyntaxCallExpr
+#  133| opt
+#-----|  -> ...?
 
-#  133| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#  133| ...?
+#-----|  -> call to getMyInt
 
-#  133| CallExpr
-#-----|  -> InjectIntoOptionalExpr
+#  133| call to getMyInt
+#-----|  -> call to ...
 
-#  133| InjectIntoOptionalExpr
+#  133| (Int?) ...
 #-----|  -> OptionalEvaluationExpr
 
 #  133| OptionalEvaluationExpr
-#-----|  -> PatternBindingDecl
+#-----|  -> var ... = ...
 
-#  133| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  133| call to ...
+#-----|  -> (Int?) ...
 
-#  134| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  133| getMyInt
+#-----|  -> opt
 
-#  134| ConcreteVarDecl
-#-----|  -> exit ConcreteFuncDecl (normal)
+#  134| var ... = ...
+#-----|  -> n20
 
-#  134| NamedPattern
-#-----|  -> DeclRefExpr
+#  134| n20
+#-----| no-match -> getMyInt
+
+#  134| n20
+#-----|  -> exit testMemberRef (normal)
+
+#  134| .self
+#-----|  -> call to getMyInt
 
 #  134| TBD (DotSelfExpr)
-#-----|  -> DotSyntaxCallExpr
+#-----|  -> call to getMyInt
 
-#  134| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#  134| call to getMyInt
+#-----|  -> call to ...
 
-#  134| CallExpr
-#-----|  -> InjectIntoOptionalExpr
-
-#  134| InjectIntoOptionalExpr
+#  134| (Int?) ...
 #-----|  -> OptionalEvaluationExpr
 
 #  134| OptionalEvaluationExpr
-#-----|  -> PatternBindingDecl
+#-----|  -> var ... = ...
 
-#  134| DeclRefExpr
+#  134| call to ...
+#-----|  -> (Int?) ...
+
+#  134| getMyInt
+#-----|  -> .self
 #-----|  -> TBD (DotSelfExpr)
 
-#  137| enter ConcreteFuncDecl
-#-----|  -> DeclRefExpr
+#  137| enter patterns
+#-----|  -> patterns
 
-#  137| exit ConcreteFuncDecl
+#  137| exit patterns
 
-#  137| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  137| exit patterns (normal)
+#-----|  -> exit patterns
 
-#  138| ForEachStmt
-#-----| non-empty -> AnyPattern
-#-----| empty -> SwitchStmt
+#  137| patterns
+#-----|  -> x
 
-#  138| AnyPattern
-#-----|  -> BraceStmt
+#  137| x
+#-----|  -> ...
 
-#  138| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  138| for ... in ... { ... }
+#-----| non-empty -> _
+#-----| empty -> switch x { ... }
 
-#  138| BinaryExpr
-#-----|  -> ForEachStmt
+#  138| _
+#-----| no-match -> { ... }
 
-#  138| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  138| 0
+#-----|  -> 10
 
-#  138| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> IntegerLiteralExpr
+#  138| ... call to ... ...
+#-----|  -> for ... in ... { ... }
 
-#  138| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  138| ...
+#-----|  -> Int.Type
 
-#  138| BraceStmt
-#-----|  -> ForEachStmt
+#  138| Int.Type
+#-----|  -> call to ...
 
-#  140| SwitchStmt
-#-----|  -> DeclRefExpr
+#  138| call to ...
+#-----|  -> 0
 
-#  140| DeclRefExpr
-#-----|  -> CaseStmt
+#  138| 10
+#-----|  -> ... call to ... ...
 
-#  141| CaseStmt
-#-----|  -> CaseLabelItem
+#  138| { ... }
+#-----|  -> for ... in ... { ... }
 
-#  141| CaseLabelItem
-#-----|  -> IntegerLiteralExpr
+#  140| switch x { ... }
+#-----|  -> x
 
-#  141| ExprPattern
-#-----| no-match -> CaseLabelItem
-#-----| match -> BooleanLiteralExpr
+#  140| x
+#-----|  -> case ...
 
-#  141| IntegerLiteralExpr
-#-----|  -> ExprPattern
+#  141| case ...
+#-----|  -> 0
 
-#  141| CaseLabelItem
-#-----|  -> IntegerLiteralExpr
+#  141| 0
+#-----|  -> 0
 
-#  141| ExprPattern
-#-----| match -> BooleanLiteralExpr
-#-----| no-match -> CaseStmt
+#  141| 0
+#-----| no-match -> 1
+#-----| match -> true
 
-#  141| IntegerLiteralExpr
-#-----|  -> ExprPattern
+#  141| 0
+#-----|  -> 0
 
-#  142| ReturnStmt
+#  141| 1
+#-----|  -> 1
 
-#  142| BooleanLiteralExpr
-#-----|  -> ReturnStmt
+#  141| 1
+#-----| match -> true
+#-----| no-match -> case ...
 
-#  144| CaseStmt
-#-----|  -> CaseLabelItem
+#  141| 1
+#-----|  -> 1
 
-#  144| DeclRefExpr
-#-----|  -> ExprPattern
+#  142| return ...
+#-----| return -> exit patterns (normal)
 
-#  144| ExprPattern
-#-----| match -> BooleanLiteralExpr
-#-----| no-match -> CaseStmt
+#  142| true
+#-----|  -> return ...
 
-#  144| CaseLabelItem
-#-----|  -> DeclRefExpr
+#  144| case ...
+#-----|  -> x
 
-#  145| ReturnStmt
+#  144| x
+#-----| match -> true
+#-----| no-match -> case ...
 
-#  145| BooleanLiteralExpr
-#-----|  -> ReturnStmt
+#  144| x
+#-----|  -> x
 
-#  146| AnyPattern
-#-----| match -> BooleanLiteralExpr
+#  144| x
+#-----|  -> x
 
-#  146| CaseLabelItem
-#-----|  -> AnyPattern
+#  145| return ...
+#-----| return -> exit patterns (normal)
 
-#  146| CaseStmt
-#-----|  -> CaseLabelItem
+#  145| true
+#-----|  -> return ...
 
-#  147| ReturnStmt
+#  146| _
+#-----|  -> _
 
-#  147| BooleanLiteralExpr
-#-----|  -> ReturnStmt
+#  146| _
+#-----| match -> false
 
-#  163| enter ConcreteFuncDecl
-#-----|  -> DeferStmt
+#  146| case ...
+#-----|  -> _
 
-#  163| exit ConcreteFuncDecl
+#  147| return ...
+#-----| return -> exit patterns (normal)
 
-#  163| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  147| false
+#-----|  -> return ...
 
-#  165| DeferStmt
-#-----|  -> DeferStmt
+#  163| enter testDefer
+#-----|  -> testDefer
 
-#  166| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  163| exit testDefer
 
-#  166| CallExpr
-#-----|  -> exit ConcreteFuncDecl (normal)
+#  163| exit testDefer (normal)
+#-----|  -> exit testDefer
 
-#  166| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  163| testDefer
+#-----|  -> x
 
-#  166| ErasureExpr
-#-----|  -> ArrayExpr
+#  163| x
+#-----|  -> defer { ... }
 
-#  166| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  165| defer { ... }
+#-----|  -> defer { ... }
 
-#  166| VarargExpansionExpr
-#-----|  -> CallExpr
+#  166| print
+#-----|  -> 4
 
-#  169| DeferStmt
-#-----|  -> DeferStmt
+#  166| call to print
+#-----|  -> exit testDefer (normal)
 
-#  170| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  166| default separator
+#-----|  -> default terminator
 
-#  170| CallExpr
-#-----|  -> DeclRefExpr
+#  166| default terminator
+#-----|  -> call to print
 
-#  170| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  166| (Any) ...
+#-----|  -> [...]
 
-#  170| ErasureExpr
-#-----|  -> ArrayExpr
+#  166| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  170| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  166| 4
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  170| VarargExpansionExpr
-#-----|  -> CallExpr
+#  166| [...]
+#-----|  -> default separator
 
-#  173| DeferStmt
-#-----|  -> DeclRefExpr
+#  166| [...]
+#-----|  -> [...]
 
-#  174| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  169| defer { ... }
+#-----|  -> defer { ... }
 
-#  174| CallExpr
-#-----|  -> DeferStmt
+#  170| print
+#-----|  -> 3
 
-#  174| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  170| call to print
+#-----|  -> print
 
-#  174| ErasureExpr
-#-----|  -> ArrayExpr
+#  170| default separator
+#-----|  -> default terminator
 
-#  174| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  170| default terminator
+#-----|  -> call to print
 
-#  174| VarargExpansionExpr
-#-----|  -> CallExpr
+#  170| (Any) ...
+#-----|  -> [...]
 
-#  175| DeferStmt
-#-----|  -> DeclRefExpr
+#  170| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  176| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  170| 3
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  176| CallExpr
-#-----|  -> DeclRefExpr
+#  170| [...]
+#-----|  -> default separator
 
-#  176| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  170| [...]
+#-----|  -> [...]
 
-#  176| ErasureExpr
-#-----|  -> ArrayExpr
+#  173| defer { ... }
+#-----|  -> print
 
-#  176| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  174| print
+#-----|  -> 1
 
-#  176| VarargExpansionExpr
-#-----|  -> CallExpr
+#  174| call to print
+#-----|  -> defer { ... }
 
-#  181| enter ConcreteFuncDecl
-#-----|  -> IfStmt
+#  174| default separator
+#-----|  -> default terminator
 
-#  181| exit ConcreteFuncDecl
+#  174| default terminator
+#-----|  -> call to print
 
-#  181| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  174| (Any) ...
+#-----|  -> [...]
 
-#  182| IfStmt
-#-----|  -> DeclRefExpr
+#  174| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  182| DeclRefExpr
-#-----|  -> IntegerLiteralExpr
+#  174| 1
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  182| BinaryExpr
+#  174| [...]
+#-----|  -> default separator
+
+#  174| [...]
+#-----|  -> [...]
+
+#  175| defer { ... }
+#-----|  -> print
+
+#  176| print
+#-----|  -> 2
+
+#  176| call to print
+#-----|  -> print
+
+#  176| default separator
+#-----|  -> default terminator
+
+#  176| default terminator
+#-----|  -> call to print
+
+#  176| (Any) ...
+#-----|  -> [...]
+
+#  176| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
+
+#  176| 2
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
+
+#  176| [...]
+#-----|  -> default separator
+
+#  176| [...]
+#-----|  -> [...]
+
+#  181| enter m1
+#-----|  -> m1
+
+#  181| exit m1
+
+#  181| exit m1 (normal)
+#-----|  -> exit m1
+
+#  181| m1
+#-----|  -> x
+
+#  181| x
+#-----|  -> if ... then { ... } else { ... }
+
+#  182| if ... then { ... } else { ... }
 #-----|  -> StmtCondition
+
+#  182| x
+#-----|  -> 2
+
+#  182| ... call to > ...
+#-----| true -> print
+#-----| false -> if ... then { ... } else { ... }
 
 #  182| StmtCondition
-#-----| true -> DeclRefExpr
-#-----| false -> IfStmt
+#-----|  -> >
 
-#  182| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  182| >
+#-----|  -> Int.Type
 
-#  182| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  182| Int.Type
+#-----|  -> call to >
 
-#  182| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  182| call to >
+#-----|  -> x
 
-#  183| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  182| 2
+#-----|  -> ... call to > ...
 
-#  183| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
+#  183| print
+#-----|  -> x is greater than 2
 
-#  183| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  183| call to print
+#-----|  -> exit m1 (normal)
 
-#  183| ErasureExpr
-#-----|  -> ArrayExpr
+#  183| default separator
+#-----|  -> default terminator
 
-#  183| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  183| default terminator
+#-----|  -> call to print
 
-#  183| VarargExpansionExpr
-#-----|  -> CallExpr
+#  183| (Any) ...
+#-----|  -> [...]
 
-#  185| IfStmt
-#-----|  -> DeclRefExpr
+#  183| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  185| DeclRefExpr
-#-----|  -> IntegerLiteralExpr
+#  183| [...]
+#-----|  -> default separator
 
-#  185| BinaryExpr
-#-----| false -> [false] BinaryExpr
-#-----| true -> AutoClosureExpr
+#  183| [...]
+#-----|  -> [...]
 
-#  185| BinaryExpr
-#-----| false -> BinaryExpr
-#-----| true -> AutoClosureExpr
+#  183| x is greater than 2
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  185| [false] BinaryExpr
-#-----| false -> BinaryExpr
-
-#  185| BinaryExpr
+#  185| if ... then { ... } else { ... }
 #-----|  -> StmtCondition
 
+#  185| x
+#-----|  -> 2
+
+#  185| ... call to <= ...
+#-----| false -> [false] ... call to && ...
+#-----| true -> { ... }
+
+#  185| ... call to && ...
+#-----| exception -> exit m1 (normal)
+#-----| false -> [false] ... call to && ...
+#-----| true -> { ... }
+
+#  185| [false] ... call to && ...
+#-----| exception -> exit m1 (normal)
+#-----| false -> [false] ... call to && ...
+
+#  185| ... call to && ...
+#-----| exception -> exit m1 (normal)
+#-----| true -> print
+#-----| false -> print
+
 #  185| StmtCondition
-#-----| true -> DeclRefExpr
-#-----| false -> DeclRefExpr
+#-----|  -> <=
 
-#  185| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  185| [false] ... call to && ...
+#-----| exception -> exit m1 (normal)
+#-----| false -> print
 
-#  185| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  185| <=
+#-----|  -> Int.Type
 
-#  185| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  185| Int.Type
+#-----|  -> call to <=
 
-#  185| DeclRefExpr
-#-----|  -> IntegerLiteralExpr
+#  185| call to <=
+#-----|  -> x
 
-#  185| AutoClosureExpr
-#-----|  -> DeclRefExpr
+#  185| 2
+#-----|  -> ... call to <= ...
 
-#  185| BinaryExpr
-#-----|  -> ReturnStmt
+#  185| x
+#-----|  -> 0
 
-#  185| ReturnStmt
-#-----|  -> BinaryExpr
+#  185| ... call to > ...
+#-----|  -> return ...
 
-#  185| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  185| return ...
+#-----|  -> ... call to && ...
 
-#  185| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  185| { ... }
+#-----|  -> >
 
-#  185| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  185| >
+#-----|  -> Int.Type
 
-#  185| AutoClosureExpr
-#-----|  -> DeclRefExpr
+#  185| Int.Type
+#-----|  -> call to >
 
-#  185| PrefixUnaryExpr
-#-----|  -> ReturnStmt
+#  185| call to >
+#-----|  -> x
 
-#  185| ReturnStmt
-#-----|  -> BinaryExpr
+#  185| 0
+#-----|  -> ... call to > ...
 
-#  185| ParenExpr
-#-----|  -> PrefixUnaryExpr
+#  185| call to ...
+#-----|  -> return ...
 
-#  185| DeclRefExpr
-#-----|  -> IntegerLiteralExpr
+#  185| return ...
+#-----|  -> ... call to && ...
 
-#  185| BinaryExpr
-#-----|  -> ParenExpr
+#  185| { ... }
+#-----|  -> ==
 
-#  185| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  185| (...)
+#-----|  -> call to ...
 
-#  185| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  185| x
+#-----|  -> 5
 
-#  185| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  185| ... call to == ...
+#-----|  -> (...)
 
-#  186| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  185| ==
+#-----|  -> Int.Type
 
-#  186| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
+#  185| Int.Type
+#-----|  -> call to ==
 
-#  186| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  185| call to ==
+#-----|  -> x
 
-#  186| ErasureExpr
-#-----|  -> ArrayExpr
+#  185| 5
+#-----|  -> ... call to == ...
 
-#  186| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  186| print
+#-----|  -> x is 1
 
-#  186| VarargExpansionExpr
-#-----|  -> CallExpr
+#  186| call to print
+#-----|  -> exit m1 (normal)
 
-#  189| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  186| default separator
+#-----|  -> default terminator
 
-#  189| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
+#  186| default terminator
+#-----|  -> call to print
 
-#  189| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  186| (Any) ...
+#-----|  -> [...]
 
-#  189| ErasureExpr
-#-----|  -> ArrayExpr
+#  186| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  189| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  186| [...]
+#-----|  -> default separator
 
-#  189| VarargExpansionExpr
-#-----|  -> CallExpr
+#  186| [...]
+#-----|  -> [...]
 
-#  193| enter ConcreteFuncDecl
-#-----|  -> IfStmt
+#  186| x is 1
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  193| exit ConcreteFuncDecl
+#  189| print
+#-----|  -> I can't guess the number
 
-#  193| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  189| call to print
+#-----|  -> exit m1 (normal)
 
-#  194| IfStmt
-#-----|  -> DeclRefExpr
+#  189| default separator
+#-----|  -> default terminator
 
-#  194| DeclRefExpr
+#  189| default terminator
+#-----|  -> call to print
+
+#  189| (Any) ...
+#-----|  -> [...]
+
+#  189| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
+
+#  189| I can't guess the number
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
+
+#  189| [...]
+#-----|  -> default separator
+
+#  189| [...]
+#-----|  -> [...]
+
+#  193| enter m2
+#-----|  -> m2
+
+#  193| exit m2
+
+#  193| exit m2 (normal)
+#-----|  -> exit m2
+
+#  193| m2
+#-----|  -> b
+
+#  193| b
+#-----|  -> if ... then { ... }
+
+#  194| if ... then { ... }
 #-----|  -> StmtCondition
 
 #  194| StmtCondition
-#-----| true -> IntegerLiteralExpr
-#-----| false -> IntegerLiteralExpr
+#-----|  -> b
 
-#  195| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  194| b
+#-----| true -> 0
+#-----| false -> 1
 
-#  195| IntegerLiteralExpr
-#-----|  -> ReturnStmt
+#  195| return ...
+#-----| return -> exit m2 (normal)
 
-#  197| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  195| 0
+#-----|  -> return ...
 
-#  197| IntegerLiteralExpr
-#-----|  -> ReturnStmt
+#  197| return ...
+#-----| return -> exit m2 (normal)
 
-#  200| enter ConcreteFuncDecl
-#-----|  -> IfStmt
+#  197| 1
+#-----|  -> return ...
 
-#  200| exit ConcreteFuncDecl
+#  200| enter m3
+#-----|  -> m3
 
-#  200| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  200| exit m3
 
-#  201| IfStmt
-#-----|  -> DeclRefExpr
+#  200| exit m3 (normal)
+#-----|  -> exit m3
 
-#  201| DeclRefExpr
-#-----|  -> LoadExpr
+#  200| m3
+#-----|  -> x
 
-#  201| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  200| x
+#-----|  -> if ... then { ... }
 
-#  201| BinaryExpr
+#  201| if ... then { ... }
 #-----|  -> StmtCondition
+
+#  201| (Int) ...
+#-----|  -> 0
+
+#  201| x
+#-----|  -> (Int) ...
+
+#  201| ... call to < ...
+#-----| true -> x
+#-----| false -> x
 
 #  201| StmtCondition
-#-----| true -> DeclRefExpr
-#-----| false -> DeclRefExpr
+#-----|  -> <
 
-#  201| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  201| <
+#-----|  -> Int.Type
 
-#  201| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  201| Int.Type
+#-----|  -> call to <
 
-#  201| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  201| call to <
+#-----|  -> x
 
-#  202| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  201| 0
+#-----|  -> ... call to < ...
 
-#  202| AssignExpr
-#-----|  -> IfStmt
+#  202| x
+#-----|  -> -
 
-#  202| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  202|  ... = ...
+#-----|  -> if ... then { ... }
 
-#  202| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  202| -
+#-----|  -> Int.Type
 
-#  202| PrefixUnaryExpr
-#-----|  -> AssignExpr
+#  202| Int.Type
+#-----|  -> call to -
 
-#  202| DeclRefExpr
-#-----|  -> LoadExpr
+#  202| call to -
+#-----|  -> x
 
-#  202| LoadExpr
-#-----|  -> PrefixUnaryExpr
+#  202| call to ...
+#-----|  ->  ... = ...
 
-#  203| IfStmt
-#-----|  -> DeclRefExpr
+#  202| (Int) ...
+#-----|  -> call to ...
 
-#  203| DeclRefExpr
-#-----|  -> LoadExpr
+#  202| x
+#-----|  -> (Int) ...
 
-#  203| LoadExpr
-#-----|  -> IntegerLiteralExpr
-
-#  203| BinaryExpr
+#  203| if ... then { ... }
 #-----|  -> StmtCondition
+
+#  203| (Int) ...
+#-----|  -> 10
+
+#  203| x
+#-----|  -> (Int) ...
+
+#  203| ... call to > ...
+#-----| true -> x
+#-----| false -> x
 
 #  203| StmtCondition
-#-----| true -> DeclRefExpr
-#-----| false -> DeclRefExpr
+#-----|  -> >
 
-#  203| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  203| >
+#-----|  -> Int.Type
 
-#  203| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  203| Int.Type
+#-----|  -> call to >
 
-#  203| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  203| call to >
+#-----|  -> x
 
-#  204| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  203| 10
+#-----|  -> ... call to > ...
 
-#  204| AssignExpr
-#-----|  -> DeclRefExpr
+#  204| x
+#-----|  -> -
 
-#  204| DeclRefExpr
-#-----|  -> LoadExpr
+#  204|  ... = ...
+#-----|  -> x
 
-#  204| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  204| (Int) ...
+#-----|  -> 1
 
-#  204| BinaryExpr
-#-----|  -> AssignExpr
+#  204| x
+#-----|  -> (Int) ...
 
-#  204| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  204| ... call to - ...
+#-----|  ->  ... = ...
 
-#  204| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  204| -
+#-----|  -> Int.Type
 
-#  204| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  204| Int.Type
+#-----|  -> call to -
 
-#  207| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  204| call to -
+#-----|  -> x
 
-#  207| DeclRefExpr
-#-----|  -> LoadExpr
+#  204| 1
+#-----|  -> ... call to - ...
 
-#  207| LoadExpr
-#-----|  -> ReturnStmt
+#  207| return ...
+#-----| return -> exit m3 (normal)
 
-#  210| enter ConcreteFuncDecl
-#-----|  -> DeclRefExpr
+#  207| (Int) ...
+#-----|  -> return ...
 
-#  210| exit ConcreteFuncDecl
+#  207| x
+#-----|  -> (Int) ...
 
-#  210| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  210| enter m4
+#-----|  -> m4
 
-#  211| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  210| exit m4
 
-#  211| [false] ParenExpr
-#-----| false -> StringLiteralExpr
+#  210| exit m4 (normal)
+#-----|  -> exit m4
 
-#  211| [true] ParenExpr
-#-----| true -> StringLiteralExpr
+#  210| m4
+#-----|  -> b1
 
-#  211| IfExpr
-#-----|  -> ReturnStmt
+#  210| b1
+#-----|  -> b2
 
-#  211| DeclRefExpr
-#-----| true -> DeclRefExpr
-#-----| false -> DeclRefExpr
+#  210| b2
+#-----|  -> b3
 
-#  211| [false] IfExpr
-#-----| false -> [false] ParenExpr
+#  210| b3
+#-----|  -> b1
 
-#  211| [true] IfExpr
-#-----| true -> [true] ParenExpr
+#  211| return ...
+#-----| return -> exit m4 (normal)
 
-#  211| DeclRefExpr
-#-----| false -> [false] IfExpr
-#-----| true -> [true] IfExpr
+#  211| [false] (...)
+#-----| false -> !b2 || !b3
 
-#  211| DeclRefExpr
-#-----| false -> [false] IfExpr
-#-----| true -> [true] IfExpr
+#  211| [true] (...)
+#-----| true -> b2 || b3
 
-#  211| StringLiteralExpr
-#-----|  -> IfExpr
+#  211| ... ? ... : ...
+#-----|  -> return ...
 
-#  211| StringLiteralExpr
-#-----|  -> IfExpr
+#  211| b1
+#-----| true -> b2
+#-----| false -> b3
 
-#  214| enter ConcreteFuncDecl
-#-----|  -> IfStmt
+#  211| [false] ... ? ... : ...
+#-----| false -> [false] (...)
 
-#  214| exit ConcreteFuncDecl
+#  211| [true] ... ? ... : ...
+#-----| true -> [true] (...)
 
-#  214| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  211| b2
+#-----| false -> [false] ... ? ... : ...
+#-----| true -> [true] ... ? ... : ...
 
-#  215| IfStmt
-#-----|  -> DeclRefExpr
+#  211| b3
+#-----| false -> [false] ... ? ... : ...
+#-----| true -> [true] ... ? ... : ...
 
-#  215| DeclRefExpr
-#-----| true -> BooleanLiteralExpr
-#-----| false -> BooleanLiteralExpr
+#  211| b2 || b3
+#-----|  -> ... ? ... : ...
 
-#  215| IfExpr
+#  211| !b2 || !b3
+#-----|  -> ... ? ... : ...
+
+#  214| conversionsInSplitEntry
+#-----|  -> b
+
+#  214| enter conversionsInSplitEntry
+#-----|  -> conversionsInSplitEntry
+
+#  214| exit conversionsInSplitEntry
+
+#  214| exit conversionsInSplitEntry (normal)
+#-----|  -> exit conversionsInSplitEntry
+
+#  214| b
+#-----|  -> if ... then { ... } else { ... }
+
+#  215| if ... then { ... } else { ... }
 #-----|  -> StmtCondition
 
+#  215| b
+#-----| true -> true
+#-----| false -> false
+
 #  215| StmtCondition
-#-----| true -> StringLiteralExpr
-#-----| false -> StringLiteralExpr
+#-----|  -> b
 
-#  215| ParenExpr
-#-----|  -> IfExpr
+#  215| [false] ... ? ... : ...
+#-----| false -> !b
 
-#  215| BooleanLiteralExpr
-#-----|  -> ParenExpr
+#  215| [true] ... ? ... : ...
+#-----| true -> b
 
-#  215| CoerceExpr
-#-----|  -> IfExpr
+#  215| [true] (...)
+#-----| true -> [true] ... ? ... : ...
 
-#  215| BooleanLiteralExpr
-#-----|  -> CoerceExpr
+#  215| true
+#-----| true -> [true] (...)
 
-#  216| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  215| [false] (Bool) ...
+#-----| false -> [false] ... ? ... : ...
 
-#  216| StringLiteralExpr
-#-----|  -> ReturnStmt
+#  215| false
+#-----| false -> [false] (Bool) ...
 
-#  219| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  216| return ...
+#-----| return -> exit conversionsInSplitEntry (normal)
 
-#  219| StringLiteralExpr
-#-----|  -> ReturnStmt
+#  216| b
+#-----|  -> return ...
 
-#  223| enter ConcreteFuncDecl
-#-----|  -> IfStmt
+#  219| return ...
+#-----| return -> exit conversionsInSplitEntry (normal)
 
-#  223| exit ConcreteFuncDecl
+#  219| !b
+#-----|  -> return ...
 
-#  223| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  223| constant_condition
+#-----|  -> if ... then { ... }
 
-#  224| IfStmt
-#-----|  -> BooleanLiteralExpr
+#  223| enter constant_condition
+#-----|  -> constant_condition
 
-#  224| PrefixUnaryExpr
+#  223| exit constant_condition
+
+#  223| exit constant_condition (normal)
+#-----|  -> exit constant_condition
+
+#  224| if ... then { ... }
 #-----|  -> StmtCondition
 
 #  224| StmtCondition
-#-----| false -> exit ConcreteFuncDecl (normal)
-#-----| true -> DeclRefExpr
+#-----|  -> true
 
-#  224| BooleanLiteralExpr
-#-----|  -> PrefixUnaryExpr
+#  224| [false] call to ...
+#-----| false -> exit constant_condition (normal)
 
-#  225| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  224| true
+#-----| true -> [false] call to ...
 
-#  225| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
+#  229| empty_else
+#-----|  -> b
 
-#  225| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  229| enter empty_else
+#-----|  -> empty_else
 
-#  225| ErasureExpr
-#-----|  -> ArrayExpr
+#  229| exit empty_else
 
-#  225| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  229| exit empty_else (normal)
+#-----|  -> exit empty_else
 
-#  225| VarargExpansionExpr
-#-----|  -> CallExpr
+#  229| b
+#-----|  -> if ... then { ... } else { ... }
 
-#  229| enter ConcreteFuncDecl
-#-----|  -> IfStmt
-
-#  229| exit ConcreteFuncDecl
-
-#  229| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
-
-#  230| IfStmt
-#-----|  -> DeclRefExpr
-
-#  230| DeclRefExpr
+#  230| if ... then { ... } else { ... }
 #-----|  -> StmtCondition
 
 #  230| StmtCondition
-#-----| true -> DeclRefExpr
-#-----| false -> BraceStmt
+#-----|  -> b
 
-#  231| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  230| b
+#-----| true -> print
+#-----| false -> { ... }
 
-#  231| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  231| print
+#-----|  -> true
 
-#  231| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  231| call to print
+#-----|  -> print
 
-#  231| ErasureExpr
-#-----|  -> ArrayExpr
+#  231| default separator
+#-----|  -> default terminator
 
-#  231| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  231| default terminator
+#-----|  -> call to print
 
-#  231| VarargExpansionExpr
-#-----|  -> CallExpr
+#  231| (Any) ...
+#-----|  -> [...]
 
-#  233| BraceStmt
-#-----|  -> DeclRefExpr
+#  231| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  234| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  231| [...]
+#-----|  -> default separator
 
-#  234| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
+#  231| [...]
+#-----|  -> [...]
 
-#  234| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  231| true
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  234| ErasureExpr
-#-----|  -> ArrayExpr
+#  233| { ... }
+#-----|  -> print
 
-#  234| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  234| print
+#-----|  -> done
 
-#  234| VarargExpansionExpr
-#-----|  -> CallExpr
+#  234| call to print
+#-----|  -> exit empty_else (normal)
 
-#  237| enter ConcreteFuncDecl
-#-----|  -> IfStmt
+#  234| default separator
+#-----|  -> default terminator
 
-#  237| exit ConcreteFuncDecl
+#  234| default terminator
+#-----|  -> call to print
 
-#  237| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  234| (Any) ...
+#-----|  -> [...]
 
-#  238| IfStmt
-#-----|  -> DeclRefExpr
+#  234| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  238| ParenExpr
+#  234| [...]
+#-----|  -> default separator
+
+#  234| [...]
+#-----|  -> [...]
+
+#  234| done
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
+
+#  237| disjunct
+#-----|  -> b1
+
+#  237| enter disjunct
+#-----|  -> disjunct
+
+#  237| exit disjunct
+
+#  237| exit disjunct (normal)
+#-----|  -> exit disjunct
+
+#  237| b1
+#-----|  -> b2
+
+#  237| b2
+#-----|  -> if ... then { ... }
+
+#  238| if ... then { ... }
 #-----|  -> StmtCondition
 
 #  238| StmtCondition
-#-----| false -> exit ConcreteFuncDecl (normal)
-#-----| true -> DeclRefExpr
+#-----|  -> b1
 
-#  238| DeclRefExpr
-#-----| true -> BinaryExpr
-#-----| false -> AutoClosureExpr
+#  238| [false] (...)
+#-----| false -> exit disjunct (normal)
 
-#  238| BinaryExpr
-#-----|  -> ParenExpr
+#  238| [true] (...)
+#-----| true -> print
 
-#  238| AutoClosureExpr
-#-----|  -> DeclRefExpr
+#  238| b1
+#-----| true -> [true] ... call to || ...
+#-----| false -> { ... }
 
-#  238| DeclRefExpr
-#-----|  -> ReturnStmt
+#  238| ... call to || ...
+#-----| exception -> exit disjunct (normal)
+#-----| false -> [false] (...)
+#-----| true -> [true] (...)
 
-#  238| ReturnStmt
-#-----|  -> BinaryExpr
+#  238| [true] ... call to || ...
+#-----| exception -> exit disjunct (normal)
+#-----| true -> [true] (...)
 
-#  239| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  238| b2
+#-----|  -> return ...
 
-#  239| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
+#  238| return ...
+#-----|  -> ... call to || ...
 
-#  239| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  238| { ... }
+#-----|  -> b2
 
-#  239| ErasureExpr
-#-----|  -> ArrayExpr
+#  239| print
+#-----|  -> b1 or b2
 
-#  239| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  239| call to print
+#-----|  -> exit disjunct (normal)
 
-#  239| VarargExpansionExpr
-#-----|  -> CallExpr
+#  239| default separator
+#-----|  -> default terminator
 
-#  243| enter ConcreteFuncDecl
-#-----|  -> NamedPattern
+#  239| default terminator
+#-----|  -> call to print
 
-#  243| exit ConcreteFuncDecl
+#  239| (Any) ...
+#-----|  -> [...]
 
-#  243| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  239| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  244| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  239| [...]
+#-----|  -> default separator
 
-#  244| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  239| [...]
+#-----|  -> [...]
 
-#  244| NamedPattern
-#-----|  -> DeclRefExpr
+#  239| b1 or b2
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  244| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  243| binaryExprs
+#-----|  -> a
 
-#  244| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  243| enter binaryExprs
+#-----|  -> binaryExprs
 
-#  244| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  243| exit binaryExprs
 
-#  244| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  243| exit binaryExprs (normal)
+#-----|  -> exit binaryExprs
 
-#  244| DeclRefExpr
-#-----|  -> BinaryExpr
+#  243| a
+#-----|  -> b
 
-#  245| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  243| b
+#-----|  -> c
 
-#  245| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  244| var ... = ...
+#-----|  -> c
 
-#  245| NamedPattern
-#-----|  -> DeclRefExpr
+#  244| c
+#-----| no-match -> +
 
-#  245| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  244| c
+#-----|  -> d
 
-#  245| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  244| a
+#-----|  -> b
 
-#  245| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  244| ... call to + ...
+#-----|  -> var ... = ...
 
-#  245| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  244| +
+#-----|  -> Int.Type
 
-#  245| DeclRefExpr
-#-----|  -> BinaryExpr
+#  244| Int.Type
+#-----|  -> call to +
 
-#  246| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  244| call to +
+#-----|  -> a
 
-#  246| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  244| b
+#-----|  -> ... call to + ...
 
-#  246| NamedPattern
-#-----|  -> DeclRefExpr
+#  245| var ... = ...
+#-----|  -> d
 
-#  246| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  245| d
+#-----| no-match -> -
 
-#  246| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  245| d
+#-----|  -> e
 
-#  246| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  245| a
+#-----|  -> b
 
-#  246| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  245| ... call to - ...
+#-----|  -> var ... = ...
 
-#  246| DeclRefExpr
-#-----|  -> BinaryExpr
+#  245| -
+#-----|  -> Int.Type
 
-#  247| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  245| Int.Type
+#-----|  -> call to -
 
-#  247| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  245| call to -
+#-----|  -> a
 
-#  247| NamedPattern
-#-----|  -> DeclRefExpr
+#  245| b
+#-----|  -> ... call to - ...
 
-#  247| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  246| var ... = ...
+#-----|  -> e
 
-#  247| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  246| e
+#-----| no-match -> *
 
-#  247| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  246| e
+#-----|  -> f
 
-#  247| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  246| a
+#-----|  -> b
 
-#  247| DeclRefExpr
-#-----|  -> BinaryExpr
+#  246| ... call to * ...
+#-----|  -> var ... = ...
 
-#  248| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  246| *
+#-----|  -> Int.Type
 
-#  248| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  246| Int.Type
+#-----|  -> call to *
 
-#  248| NamedPattern
-#-----|  -> DeclRefExpr
+#  246| call to *
+#-----|  -> a
 
-#  248| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  246| b
+#-----|  -> ... call to * ...
 
-#  248| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  247| var ... = ...
+#-----|  -> f
 
-#  248| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  247| f
+#-----| no-match -> /
 
-#  248| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  247| f
+#-----|  -> g
 
-#  248| DeclRefExpr
-#-----|  -> BinaryExpr
+#  247| a
+#-----|  -> b
 
-#  249| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  247| ... call to / ...
+#-----|  -> var ... = ...
 
-#  249| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  247| /
+#-----|  -> Int.Type
 
-#  249| NamedPattern
-#-----|  -> DeclRefExpr
+#  247| Int.Type
+#-----|  -> call to /
 
-#  249| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  247| call to /
+#-----|  -> a
 
-#  249| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  247| b
+#-----|  -> ... call to / ...
 
-#  249| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  248| var ... = ...
+#-----|  -> g
 
-#  249| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  248| g
+#-----| no-match -> %
 
-#  249| DeclRefExpr
-#-----|  -> BinaryExpr
+#  248| g
+#-----|  -> h
 
-#  250| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  248| a
+#-----|  -> b
 
-#  250| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  248| ... call to % ...
+#-----|  -> var ... = ...
 
-#  250| NamedPattern
-#-----|  -> DeclRefExpr
+#  248| %
+#-----|  -> Int.Type
 
-#  250| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  248| Int.Type
+#-----|  -> call to %
 
-#  250| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  248| call to %
+#-----|  -> a
 
-#  250| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  248| b
+#-----|  -> ... call to % ...
 
-#  250| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  249| var ... = ...
+#-----|  -> h
 
-#  250| DeclRefExpr
-#-----|  -> BinaryExpr
+#  249| h
+#-----| no-match -> &
 
-#  251| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  249| h
+#-----|  -> i
 
-#  251| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  249| a
+#-----|  -> b
 
-#  251| NamedPattern
-#-----|  -> DeclRefExpr
+#  249| ... call to & ...
+#-----|  -> var ... = ...
 
-#  251| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  249| &
+#-----|  -> Int.Type
 
-#  251| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  249| Int.Type
+#-----|  -> call to &
 
-#  251| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  249| call to &
+#-----|  -> a
 
-#  251| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  249| b
+#-----|  -> ... call to & ...
 
-#  251| DeclRefExpr
-#-----|  -> BinaryExpr
+#  250| var ... = ...
+#-----|  -> i
 
-#  252| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  250| i
+#-----| no-match -> |
 
-#  252| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  250| i
+#-----|  -> j
 
-#  252| NamedPattern
-#-----|  -> DeclRefExpr
+#  250| a
+#-----|  -> b
 
-#  252| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  250| ... call to | ...
+#-----|  -> var ... = ...
 
-#  252| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  250| Int.Type
+#-----|  -> call to |
 
-#  252| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  250| call to |
+#-----|  -> a
 
-#  252| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  250| |
+#-----|  -> Int.Type
 
-#  252| DeclRefExpr
-#-----|  -> BinaryExpr
+#  250| b
+#-----|  -> ... call to | ...
 
-#  253| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  251| var ... = ...
+#-----|  -> j
 
-#  253| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  251| j
+#-----| no-match -> ^
 
-#  253| NamedPattern
-#-----|  -> DeclRefExpr
+#  251| j
+#-----|  -> k
 
-#  253| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  251| a
+#-----|  -> b
 
-#  253| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  251| ... call to ^ ...
+#-----|  -> var ... = ...
 
-#  253| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  251| Int.Type
+#-----|  -> call to ^
 
-#  253| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  251| ^
+#-----|  -> Int.Type
 
-#  253| DeclRefExpr
-#-----|  -> BinaryExpr
+#  251| call to ^
+#-----|  -> a
 
-#  254| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  251| b
+#-----|  -> ... call to ^ ...
 
-#  254| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  252| var ... = ...
+#-----|  -> k
 
-#  254| NamedPattern
-#-----|  -> DeclRefExpr
+#  252| k
+#-----| no-match -> <<
 
-#  254| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  252| k
+#-----|  -> l
 
-#  254| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  252| a
+#-----|  -> b
 
-#  254| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  252| ... call to << ...
+#-----|  -> var ... = ...
 
-#  254| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  252| <<
+#-----|  -> Int.Type
 
-#  254| DeclRefExpr
-#-----|  -> BinaryExpr
+#  252| Int.Type
+#-----|  -> call to <<
 
-#  255| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  252| call to <<
+#-----|  -> a
 
-#  255| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  252| b
+#-----|  -> ... call to << ...
 
-#  255| NamedPattern
-#-----|  -> DeclRefExpr
+#  253| var ... = ...
+#-----|  -> l
 
-#  255| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  253| l
+#-----| no-match -> >>
 
-#  255| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  253| l
+#-----|  -> o
 
-#  255| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  253| a
+#-----|  -> b
 
-#  255| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  253| ... call to >> ...
+#-----|  -> var ... = ...
 
-#  255| DeclRefExpr
-#-----|  -> BinaryExpr
+#  253| >>
+#-----|  -> Int.Type
 
-#  256| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  253| Int.Type
+#-----|  -> call to >>
 
-#  256| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  253| call to >>
+#-----|  -> a
 
-#  256| NamedPattern
-#-----|  -> DeclRefExpr
+#  253| b
+#-----|  -> ... call to >> ...
 
-#  256| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  254| var ... = ...
+#-----|  -> o
 
-#  256| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  254| o
+#-----| no-match -> ==
 
-#  256| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  254| o
+#-----|  -> p
 
-#  256| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  254| a
+#-----|  -> b
 
-#  256| DeclRefExpr
-#-----|  -> BinaryExpr
+#  254| ... call to == ...
+#-----|  -> var ... = ...
 
-#  257| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  254| ==
+#-----|  -> Int.Type
 
-#  257| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  254| Int.Type
+#-----|  -> call to ==
 
-#  257| NamedPattern
-#-----|  -> DeclRefExpr
+#  254| call to ==
+#-----|  -> a
 
-#  257| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  254| b
+#-----|  -> ... call to == ...
 
-#  257| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  255| var ... = ...
+#-----|  -> p
 
-#  257| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  255| p
+#-----| no-match -> !=
 
-#  257| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  255| p
+#-----|  -> q
 
-#  257| DeclRefExpr
-#-----|  -> BinaryExpr
+#  255| a
+#-----|  -> b
 
-#  258| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  255| ... call to != ...
+#-----|  -> var ... = ...
 
-#  258| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  255| !=
+#-----|  -> Int.Type
 
-#  258| NamedPattern
-#-----|  -> DeclRefExpr
+#  255| Int.Type
+#-----|  -> call to !=
 
-#  258| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  255| call to !=
+#-----|  -> a
 
-#  258| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  255| b
+#-----|  -> ... call to != ...
 
-#  258| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  256| var ... = ...
+#-----|  -> q
 
-#  258| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  256| q
+#-----| no-match -> <
 
-#  258| DeclRefExpr
-#-----|  -> BinaryExpr
+#  256| q
+#-----|  -> r
 
-#  259| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  256| a
+#-----|  -> b
 
-#  259| ConcreteVarDecl
-#-----|  -> exit ConcreteFuncDecl (normal)
+#  256| ... call to < ...
+#-----|  -> var ... = ...
 
-#  259| NamedPattern
-#-----|  -> DeclRefExpr
+#  256| <
+#-----|  -> Int.Type
 
-#  259| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  256| Int.Type
+#-----|  -> call to <
 
-#  259| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  256| call to <
+#-----|  -> a
 
-#  259| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  256| b
+#-----|  -> ... call to < ...
 
-#  259| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  257| var ... = ...
+#-----|  -> r
 
-#  259| DeclRefExpr
-#-----|  -> BinaryExpr
+#  257| r
+#-----| no-match -> <=
 
-#  262| enter ConcreteFuncDecl
-#-----|  -> InterpolatedStringLiteralExpr
+#  257| r
+#-----|  -> s
 
-#  262| exit ConcreteFuncDecl
+#  257| a
+#-----|  -> b
 
-#  262| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  257| ... call to <= ...
+#-----|  -> var ... = ...
 
-#  263| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  257| <=
+#-----|  -> Int.Type
 
-#  263| InterpolatedStringLiteralExpr
-#-----|  -> ReturnStmt
+#  257| Int.Type
+#-----|  -> call to <=
 
-#  266| enter ConcreteFuncDecl
-#-----|  -> NamedPattern
+#  257| call to <=
+#-----|  -> a
 
-#  266| exit ConcreteFuncDecl
+#  257| b
+#-----|  -> ... call to <= ...
 
-#  266| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  258| var ... = ...
+#-----|  -> s
 
-#  267| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  258| s
+#-----| no-match -> >
 
-#  267| ConcreteVarDecl
-#-----|  -> DeclRefExpr
+#  258| s
+#-----|  -> t
 
-#  267| NamedPattern
-#-----|  -> IntegerLiteralExpr
+#  258| a
+#-----|  -> b
 
-#  267| ArrayExpr
-#-----|  -> PatternBindingDecl
+#  258| ... call to > ...
+#-----|  -> var ... = ...
 
-#  267| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  258| >
+#-----|  -> Int.Type
 
-#  267| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  258| Int.Type
+#-----|  -> call to >
 
-#  267| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  258| call to >
+#-----|  -> a
 
-#  267| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  258| b
+#-----|  -> ... call to > ...
 
-#  267| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  259| var ... = ...
+#-----|  -> t
 
-#  267| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  259| t
+#-----| no-match -> >=
 
-#  267| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  259| t
+#-----|  -> exit binaryExprs (normal)
 
-#  267| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  259| a
+#-----|  -> b
 
-#  267| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  259| ... call to >= ...
+#-----|  -> var ... = ...
 
-#  267| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  259| >=
+#-----|  -> Int.Type
 
-#  267| IntegerLiteralExpr
-#-----|  -> ArrayExpr
+#  259| Int.Type
+#-----|  -> call to >=
 
-#  268| DeclRefExpr
-#-----|  -> InOutExpr
+#  259| call to >=
+#-----|  -> a
 
-#  268| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  259| b
+#-----|  -> ... call to >= ...
 
-#  268| SubscriptExpr
-#-----|  -> IntegerLiteralExpr
+#  262| enter interpolatedString
+#-----|  -> interpolatedString
 
-#  268| AssignExpr
-#-----|  -> DeclRefExpr
+#  262| exit interpolatedString
 
-#  268| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  262| exit interpolatedString (normal)
+#-----|  -> exit interpolatedString
 
-#  268| IntegerLiteralExpr
-#-----|  -> AssignExpr
+#  262| interpolatedString
+#-----|  -> x
 
-#  269| DeclRefExpr
-#-----|  -> InOutExpr
+#  262| x
+#-----|  -> y
 
-#  269| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  262| y
+#-----|  -> "..."
 
-#  269| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  263| return ...
+#-----| return -> exit interpolatedString (normal)
 
-#  269| SubscriptExpr
-#-----|  -> InOutExpr
+#  263| "..."
+#-----|  -> return ...
 
-#  269| BinaryExpr
-#-----|  -> DeclRefExpr
+#  266| enter testSubscriptExpr
+#-----|  -> testSubscriptExpr
 
-#  269| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  266| exit testSubscriptExpr
 
-#  269| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  266| exit testSubscriptExpr (normal)
+#-----|  -> exit testSubscriptExpr
 
-#  269| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  266| testSubscriptExpr
+#-----|  -> a
 
-#  269| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  267| var ... = ...
+#-----|  -> a
 
-#  270| DeclRefExpr
-#-----|  -> InOutExpr
+#  267| a
+#-----| no-match -> 0
 
-#  270| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  267| a
+#-----|  -> a
 
-#  270| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  267| [...]
+#-----|  -> var ... = ...
 
-#  270| SubscriptExpr
-#-----|  -> InOutExpr
+#  267| 0
+#-----|  -> 1
 
-#  270| BinaryExpr
-#-----|  -> DeclRefExpr
+#  267| 1
+#-----|  -> 2
 
-#  270| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  267| 2
+#-----|  -> 3
 
-#  270| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  267| 3
+#-----|  -> 4
 
-#  270| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  267| 4
+#-----|  -> 5
 
-#  270| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  267| 5
+#-----|  -> 6
 
-#  271| DeclRefExpr
-#-----|  -> InOutExpr
+#  267| 6
+#-----|  -> 7
 
-#  271| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  267| 7
+#-----|  -> 8
 
-#  271| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  267| 8
+#-----|  -> 9
 
-#  271| SubscriptExpr
-#-----|  -> InOutExpr
+#  267| 9
+#-----|  -> 10
 
-#  271| BinaryExpr
-#-----|  -> DeclRefExpr
+#  267| 10
+#-----|  -> [...]
 
-#  271| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  268| &...
+#-----|  -> 0
 
-#  271| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  268| a
+#-----|  -> &...
 
-#  271| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  268| ...[...]
+#-----|  -> 0
 
-#  271| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  268| setter for  ... = ...
+#-----|  -> +=
 
-#  272| DeclRefExpr
-#-----|  -> InOutExpr
+#  268| 0
+#-----|  -> ...[...]
 
-#  272| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  268| 0
+#-----|  -> setter for  ... = ...
 
-#  272| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  269| &...
+#-----|  -> 1
 
-#  272| SubscriptExpr
-#-----|  -> InOutExpr
+#  269| a
+#-----|  -> &...
 
-#  272| BinaryExpr
-#-----|  -> DeclRefExpr
+#  269| &...
+#-----|  -> 1
 
-#  272| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  269| getter for ...[...]
+#-----|  -> &...
 
-#  272| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  269| ... call to += ...
+#-----|  -> -=
 
-#  272| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  269| 1
+#-----|  -> getter for ...[...]
 
-#  272| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  269| +=
+#-----|  -> Int.Type
 
-#  273| DeclRefExpr
-#-----|  -> InOutExpr
+#  269| Int.Type
+#-----|  -> call to +=
 
-#  273| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  269| call to +=
+#-----|  -> a
 
-#  273| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  269| 1
+#-----|  -> ... call to += ...
 
-#  273| SubscriptExpr
-#-----|  -> InOutExpr
+#  270| &...
+#-----|  -> 2
 
-#  273| BinaryExpr
-#-----|  -> DeclRefExpr
+#  270| a
+#-----|  -> &...
 
-#  273| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  270| &...
+#-----|  -> 1
 
-#  273| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  270| getter for ...[...]
+#-----|  -> &...
 
-#  273| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  270| ... call to -= ...
+#-----|  -> *=
 
-#  273| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  270| 2
+#-----|  -> getter for ...[...]
 
-#  274| DeclRefExpr
-#-----|  -> InOutExpr
+#  270| -=
+#-----|  -> Int.Type
 
-#  274| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  270| Int.Type
+#-----|  -> call to -=
 
-#  274| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  270| call to -=
+#-----|  -> a
 
-#  274| SubscriptExpr
-#-----|  -> InOutExpr
+#  270| 1
+#-----|  -> ... call to -= ...
 
-#  274| BinaryExpr
-#-----|  -> DeclRefExpr
+#  271| &...
+#-----|  -> 3
 
-#  274| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  271| a
+#-----|  -> &...
 
-#  274| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  271| &...
+#-----|  -> 1
 
-#  274| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  271| getter for ...[...]
+#-----|  -> &...
 
-#  274| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  271| ... call to *= ...
+#-----|  -> /=
 
-#  275| DeclRefExpr
-#-----|  -> InOutExpr
+#  271| 3
+#-----|  -> getter for ...[...]
 
-#  275| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  271| *=
+#-----|  -> Int.Type
 
-#  275| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  271| Int.Type
+#-----|  -> call to *=
 
-#  275| SubscriptExpr
-#-----|  -> InOutExpr
+#  271| call to *=
+#-----|  -> a
 
-#  275| BinaryExpr
-#-----|  -> DeclRefExpr
+#  271| 1
+#-----|  -> ... call to *= ...
 
-#  275| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  272| &...
+#-----|  -> 4
 
-#  275| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  272| a
+#-----|  -> &...
 
-#  275| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  272| &...
+#-----|  -> 1
 
-#  275| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  272| getter for ...[...]
+#-----|  -> &...
 
-#  276| DeclRefExpr
-#-----|  -> InOutExpr
+#  272| ... call to /= ...
+#-----|  -> %=
 
-#  276| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  272| 4
+#-----|  -> getter for ...[...]
 
-#  276| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  272| /=
+#-----|  -> Int.Type
 
-#  276| SubscriptExpr
-#-----|  -> InOutExpr
+#  272| Int.Type
+#-----|  -> call to /=
 
-#  276| BinaryExpr
-#-----|  -> DeclRefExpr
+#  272| call to /=
+#-----|  -> a
 
-#  276| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  272| 1
+#-----|  -> ... call to /= ...
 
-#  276| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  273| &...
+#-----|  -> 5
 
-#  276| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  273| a
+#-----|  -> &...
 
-#  276| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  273| &...
+#-----|  -> 1
 
-#  277| DeclRefExpr
-#-----|  -> InOutExpr
+#  273| getter for ...[...]
+#-----|  -> &...
 
-#  277| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  273| ... call to %= ...
+#-----|  -> &=
 
-#  277| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  273| 5
+#-----|  -> getter for ...[...]
 
-#  277| SubscriptExpr
-#-----|  -> InOutExpr
+#  273| %=
+#-----|  -> Int.Type
 
-#  277| BinaryExpr
-#-----|  -> DeclRefExpr
+#  273| Int.Type
+#-----|  -> call to %=
 
-#  277| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  273| call to %=
+#-----|  -> a
 
-#  277| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  273| 1
+#-----|  -> ... call to %= ...
 
-#  277| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  274| &...
+#-----|  -> 6
 
-#  277| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  274| a
+#-----|  -> &...
 
-#  278| DeclRefExpr
-#-----|  -> InOutExpr
+#  274| &...
+#-----|  -> 1
 
-#  278| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  274| getter for ...[...]
+#-----|  -> &...
 
-#  278| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  274| ... call to &= ...
+#-----|  -> |=
 
-#  278| SubscriptExpr
-#-----|  -> InOutExpr
+#  274| 6
+#-----|  -> getter for ...[...]
 
-#  278| BinaryExpr
-#-----|  -> NamedPattern
+#  274| &=
+#-----|  -> Int.Type
 
-#  278| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  274| Int.Type
+#-----|  -> call to &=
 
-#  278| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  274| call to &=
+#-----|  -> a
 
-#  278| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  274| 1
+#-----|  -> ... call to &= ...
 
-#  278| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  275| &...
+#-----|  -> 7
 
-#  280| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  275| a
+#-----|  -> &...
 
-#  280| ConcreteVarDecl
-#-----|  -> NamedPattern
+#  275| &...
+#-----|  -> 1
 
-#  280| NamedPattern
-#-----|  -> DeclRefExpr
+#  275| getter for ...[...]
+#-----|  -> &...
 
-#  280| TupleExpr
-#-----|  -> PatternBindingDecl
+#  275| ... call to |= ...
+#-----|  -> ^=
 
-#  280| DeclRefExpr
-#-----|  -> InOutExpr
+#  275| 7
+#-----|  -> getter for ...[...]
 
-#  280| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  275| Int.Type
+#-----|  -> call to |=
 
-#  280| LoadExpr
-#-----|  -> DeclRefExpr
+#  275| call to |=
+#-----|  -> a
 
-#  280| SubscriptExpr
-#-----|  -> LoadExpr
+#  275| |=
+#-----|  -> Int.Type
 
-#  280| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  275| 1
+#-----|  -> ... call to |= ...
 
-#  280| DeclRefExpr
-#-----|  -> InOutExpr
+#  276| &...
+#-----|  -> 8
 
-#  280| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  276| a
+#-----|  -> &...
 
-#  280| LoadExpr
-#-----|  -> DeclRefExpr
+#  276| &...
+#-----|  -> 1
 
-#  280| SubscriptExpr
-#-----|  -> LoadExpr
+#  276| getter for ...[...]
+#-----|  -> &...
 
-#  280| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  276| ... call to ^= ...
+#-----|  -> <<=
 
-#  280| DeclRefExpr
-#-----|  -> InOutExpr
+#  276| 8
+#-----|  -> getter for ...[...]
 
-#  280| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  276| Int.Type
+#-----|  -> call to ^=
 
-#  280| LoadExpr
-#-----|  -> DeclRefExpr
+#  276| ^=
+#-----|  -> Int.Type
 
-#  280| SubscriptExpr
-#-----|  -> LoadExpr
+#  276| call to ^=
+#-----|  -> a
 
-#  280| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  276| 1
+#-----|  -> ... call to ^= ...
 
-#  280| DeclRefExpr
-#-----|  -> InOutExpr
+#  277| &...
+#-----|  -> 9
 
-#  280| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  277| a
+#-----|  -> &...
 
-#  280| LoadExpr
-#-----|  -> DeclRefExpr
+#  277| &...
+#-----|  -> 1
 
-#  280| SubscriptExpr
-#-----|  -> LoadExpr
+#  277| getter for ...[...]
+#-----|  -> &...
 
-#  280| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  277| ... call to <<= ...
+#-----|  -> >>=
 
-#  280| DeclRefExpr
-#-----|  -> InOutExpr
+#  277| 9
+#-----|  -> getter for ...[...]
 
-#  280| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  277| <<=
+#-----|  -> Int.Type
 
-#  280| LoadExpr
-#-----|  -> TupleExpr
+#  277| Int.Type
+#-----|  -> call to <<=
 
-#  280| SubscriptExpr
-#-----|  -> LoadExpr
+#  277| call to <<=
+#-----|  -> a
 
-#  280| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  277| 1
+#-----|  -> ... call to <<= ...
 
-#  282| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  278| &...
+#-----|  -> 10
 
-#  282| ConcreteVarDecl
-#-----|  -> DeclRefExpr
+#  278| a
+#-----|  -> &...
 
-#  282| NamedPattern
-#-----|  -> IntegerLiteralExpr
+#  278| &...
+#-----|  -> 1
 
-#  282| ArrayExpr
-#-----|  -> PatternBindingDecl
+#  278| getter for ...[...]
+#-----|  -> &...
 
-#  282| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  278| ... call to >>= ...
+#-----|  -> tupleWithA
 
-#  282| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  278| 10
+#-----|  -> getter for ...[...]
 
-#  282| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  278| >>=
+#-----|  -> Int.Type
 
-#  282| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  278| Int.Type
+#-----|  -> call to >>=
 
-#  282| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  278| call to >>=
+#-----|  -> a
 
-#  282| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  278| 1
+#-----|  -> ... call to >>= ...
 
-#  282| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  280| var ... = ...
+#-----|  -> tupleWithA
 
-#  282| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  280| tupleWithA
+#-----| no-match -> a
 
-#  282| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  280| tupleWithA
+#-----|  -> b
 
-#  282| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  280| (...)
+#-----|  -> var ... = ...
 
-#  282| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  280| &...
+#-----|  -> 0
 
-#  282| IntegerLiteralExpr
-#-----|  -> ArrayExpr
+#  280| a
+#-----|  -> &...
 
-#  283| DeclRefExpr
-#-----|  -> InOutExpr
+#  280| (Int) ...
+#-----|  -> a
 
-#  283| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  280| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  283| SubscriptExpr
-#-----|  -> DeclRefExpr
+#  280| 0
+#-----|  -> getter for ...[...]
 
-#  283| AssignExpr
-#-----|  -> DeclRefExpr
+#  280| &...
+#-----|  -> 1
 
-#  283| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  280| a
+#-----|  -> &...
 
-#  283| DeclRefExpr
-#-----|  -> InOutExpr
+#  280| (Int) ...
+#-----|  -> a
 
-#  283| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  280| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  283| LoadExpr
-#-----|  -> AssignExpr
+#  280| 1
+#-----|  -> getter for ...[...]
 
-#  283| SubscriptExpr
-#-----|  -> LoadExpr
+#  280| &...
+#-----|  -> 2
 
-#  283| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  280| a
+#-----|  -> &...
 
-#  284| DeclRefExpr
-#-----|  -> InOutExpr
+#  280| (Int) ...
+#-----|  -> a
 
-#  284| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  280| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  284| SubscriptExpr
-#-----|  -> DeclRefExpr
+#  280| 2
+#-----|  -> getter for ...[...]
 
-#  284| AssignExpr
-#-----|  -> DeclRefExpr
+#  280| &...
+#-----|  -> 3
 
-#  284| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  280| a
+#-----|  -> &...
 
-#  284| DeclRefExpr
-#-----|  -> InOutExpr
+#  280| (Int) ...
+#-----|  -> a
 
-#  284| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  280| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  284| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  280| 3
+#-----|  -> getter for ...[...]
 
-#  284| SubscriptExpr
-#-----|  -> LoadExpr
+#  280| &...
+#-----|  -> 4
 
-#  284| BinaryExpr
-#-----|  -> AssignExpr
+#  280| a
+#-----|  -> &...
 
-#  284| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  280| (Int) ...
+#-----|  -> (...)
 
-#  284| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  280| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  284| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  280| 4
+#-----|  -> getter for ...[...]
 
-#  284| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  282| var ... = ...
+#-----|  -> b
 
-#  285| DeclRefExpr
-#-----|  -> InOutExpr
+#  282| b
+#-----| no-match -> 0
 
-#  285| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  282| b
+#-----|  -> b
 
-#  285| SubscriptExpr
-#-----|  -> DeclRefExpr
+#  282| [...]
+#-----|  -> var ... = ...
 
-#  285| AssignExpr
-#-----|  -> DeclRefExpr
+#  282| 0
+#-----|  -> 1
 
-#  285| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  282| 1
+#-----|  -> 2
 
-#  285| DeclRefExpr
-#-----|  -> InOutExpr
+#  282| 2
+#-----|  -> 3
 
-#  285| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  282| 3
+#-----|  -> 4
 
-#  285| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  282| 4
+#-----|  -> 5
 
-#  285| SubscriptExpr
-#-----|  -> LoadExpr
+#  282| 5
+#-----|  -> 6
 
-#  285| BinaryExpr
-#-----|  -> AssignExpr
+#  282| 6
+#-----|  -> 7
 
-#  285| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  282| 7
+#-----|  -> 8
 
-#  285| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  282| 8
+#-----|  -> 9
 
-#  285| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  282| 9
+#-----|  -> 10
 
-#  285| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  282| 10
+#-----|  -> 11
 
-#  286| DeclRefExpr
-#-----|  -> InOutExpr
+#  282| 11
+#-----|  -> [...]
 
-#  286| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  283| &...
+#-----|  -> 0
 
-#  286| SubscriptExpr
-#-----|  -> DeclRefExpr
+#  283| b
+#-----|  -> &...
 
-#  286| AssignExpr
-#-----|  -> DeclRefExpr
+#  283| ...[...]
+#-----|  -> a
 
-#  286| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  283| setter for  ... = ...
+#-----|  -> b
 
-#  286| DeclRefExpr
-#-----|  -> InOutExpr
+#  283| 0
+#-----|  -> ...[...]
 
-#  286| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  283| &...
+#-----|  -> 10
 
-#  286| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  283| a
+#-----|  -> &...
 
-#  286| SubscriptExpr
-#-----|  -> LoadExpr
+#  283| (Int) ...
+#-----|  -> setter for  ... = ...
 
-#  286| BinaryExpr
-#-----|  -> AssignExpr
+#  283| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  286| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  283| 10
+#-----|  -> getter for ...[...]
 
-#  286| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  284| &...
+#-----|  -> 1
 
-#  286| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  284| b
+#-----|  -> &...
 
-#  286| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  284| ...[...]
+#-----|  -> +
 
-#  287| DeclRefExpr
-#-----|  -> InOutExpr
+#  284| setter for  ... = ...
+#-----|  -> b
 
-#  287| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  284| 1
+#-----|  -> ...[...]
 
-#  287| SubscriptExpr
-#-----|  -> DeclRefExpr
+#  284| &...
+#-----|  -> 0
 
-#  287| AssignExpr
-#-----|  -> DeclRefExpr
+#  284| b
+#-----|  -> &...
 
-#  287| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  284| (Int) ...
+#-----|  -> 1
 
-#  287| DeclRefExpr
-#-----|  -> InOutExpr
+#  284| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  287| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  284| ... call to + ...
+#-----|  -> setter for  ... = ...
 
-#  287| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  284| 0
+#-----|  -> getter for ...[...]
 
-#  287| SubscriptExpr
-#-----|  -> LoadExpr
+#  284| +
+#-----|  -> Int.Type
 
-#  287| BinaryExpr
-#-----|  -> AssignExpr
+#  284| Int.Type
+#-----|  -> call to +
 
-#  287| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  284| call to +
+#-----|  -> b
 
-#  287| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  284| 1
+#-----|  -> ... call to + ...
 
-#  287| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  285| &...
+#-----|  -> 2
 
-#  287| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  285| b
+#-----|  -> &...
 
-#  288| DeclRefExpr
-#-----|  -> InOutExpr
+#  285| ...[...]
+#-----|  -> -
 
-#  288| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  285| setter for  ... = ...
+#-----|  -> b
 
-#  288| SubscriptExpr
-#-----|  -> DeclRefExpr
+#  285| 2
+#-----|  -> ...[...]
 
-#  288| AssignExpr
-#-----|  -> DeclRefExpr
+#  285| &...
+#-----|  -> 1
 
-#  288| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  285| b
+#-----|  -> &...
 
-#  288| DeclRefExpr
-#-----|  -> InOutExpr
+#  285| (Int) ...
+#-----|  -> 1
 
-#  288| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  285| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  288| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  285| ... call to - ...
+#-----|  -> setter for  ... = ...
 
-#  288| SubscriptExpr
-#-----|  -> LoadExpr
+#  285| 1
+#-----|  -> getter for ...[...]
 
-#  288| BinaryExpr
-#-----|  -> AssignExpr
+#  285| -
+#-----|  -> Int.Type
 
-#  288| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  285| Int.Type
+#-----|  -> call to -
 
-#  288| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  285| call to -
+#-----|  -> b
 
-#  288| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  285| 1
+#-----|  -> ... call to - ...
 
-#  288| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  286| &...
+#-----|  -> 3
 
-#  289| DeclRefExpr
-#-----|  -> InOutExpr
+#  286| b
+#-----|  -> &...
 
-#  289| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  286| ...[...]
+#-----|  -> *
 
-#  289| SubscriptExpr
-#-----|  -> DeclRefExpr
+#  286| setter for  ... = ...
+#-----|  -> b
 
-#  289| AssignExpr
-#-----|  -> DeclRefExpr
+#  286| 3
+#-----|  -> ...[...]
 
-#  289| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  286| &...
+#-----|  -> 2
 
-#  289| DeclRefExpr
-#-----|  -> InOutExpr
+#  286| b
+#-----|  -> &...
 
-#  289| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  286| (Int) ...
+#-----|  -> 1
 
-#  289| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  286| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  289| SubscriptExpr
-#-----|  -> LoadExpr
+#  286| ... call to * ...
+#-----|  -> setter for  ... = ...
 
-#  289| BinaryExpr
-#-----|  -> AssignExpr
+#  286| 2
+#-----|  -> getter for ...[...]
 
-#  289| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  286| *
+#-----|  -> Int.Type
 
-#  289| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  286| Int.Type
+#-----|  -> call to *
 
-#  289| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  286| call to *
+#-----|  -> b
 
-#  289| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  286| 1
+#-----|  -> ... call to * ...
 
-#  290| DeclRefExpr
-#-----|  -> InOutExpr
+#  287| &...
+#-----|  -> 4
 
-#  290| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  287| b
+#-----|  -> &...
 
-#  290| SubscriptExpr
-#-----|  -> DeclRefExpr
+#  287| ...[...]
+#-----|  -> /
 
-#  290| AssignExpr
-#-----|  -> DeclRefExpr
+#  287| setter for  ... = ...
+#-----|  -> b
 
-#  290| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  287| 4
+#-----|  -> ...[...]
 
-#  290| DeclRefExpr
-#-----|  -> InOutExpr
+#  287| &...
+#-----|  -> 3
 
-#  290| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  287| b
+#-----|  -> &...
 
-#  290| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  287| (Int) ...
+#-----|  -> 1
 
-#  290| SubscriptExpr
-#-----|  -> LoadExpr
+#  287| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  290| BinaryExpr
-#-----|  -> AssignExpr
+#  287| ... call to / ...
+#-----|  -> setter for  ... = ...
 
-#  290| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  287| 3
+#-----|  -> getter for ...[...]
 
-#  290| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  287| /
+#-----|  -> Int.Type
 
-#  290| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  287| Int.Type
+#-----|  -> call to /
 
-#  290| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  287| call to /
+#-----|  -> b
 
-#  291| DeclRefExpr
-#-----|  -> InOutExpr
+#  287| 1
+#-----|  -> ... call to / ...
 
-#  291| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  288| &...
+#-----|  -> 5
 
-#  291| SubscriptExpr
-#-----|  -> DeclRefExpr
+#  288| b
+#-----|  -> &...
 
-#  291| AssignExpr
-#-----|  -> DeclRefExpr
+#  288| ...[...]
+#-----|  -> %
 
-#  291| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  288| setter for  ... = ...
+#-----|  -> b
 
-#  291| DeclRefExpr
-#-----|  -> InOutExpr
+#  288| 5
+#-----|  -> ...[...]
 
-#  291| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  288| &...
+#-----|  -> 4
 
-#  291| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  288| b
+#-----|  -> &...
 
-#  291| SubscriptExpr
-#-----|  -> LoadExpr
+#  288| (Int) ...
+#-----|  -> 1
 
-#  291| BinaryExpr
-#-----|  -> AssignExpr
+#  288| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  291| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  288| ... call to % ...
+#-----|  -> setter for  ... = ...
 
-#  291| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  288| 4
+#-----|  -> getter for ...[...]
 
-#  291| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  288| %
+#-----|  -> Int.Type
 
-#  291| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  288| Int.Type
+#-----|  -> call to %
 
-#  292| DeclRefExpr
-#-----|  -> InOutExpr
+#  288| call to %
+#-----|  -> b
 
-#  292| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  288| 1
+#-----|  -> ... call to % ...
 
-#  292| SubscriptExpr
-#-----|  -> DeclRefExpr
+#  289| &...
+#-----|  -> 6
 
-#  292| AssignExpr
-#-----|  -> DeclRefExpr
+#  289| b
+#-----|  -> &...
 
-#  292| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  289| ...[...]
+#-----|  -> &
 
-#  292| DeclRefExpr
-#-----|  -> InOutExpr
+#  289| setter for  ... = ...
+#-----|  -> b
 
-#  292| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  289| 6
+#-----|  -> ...[...]
 
-#  292| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  289| &...
+#-----|  -> 5
 
-#  292| SubscriptExpr
-#-----|  -> LoadExpr
+#  289| b
+#-----|  -> &...
 
-#  292| BinaryExpr
-#-----|  -> AssignExpr
+#  289| (Int) ...
+#-----|  -> 1
 
-#  292| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  289| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  292| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  289| ... call to & ...
+#-----|  -> setter for  ... = ...
 
-#  292| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  289| 5
+#-----|  -> getter for ...[...]
 
-#  292| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  289| &
+#-----|  -> Int.Type
 
-#  293| DeclRefExpr
-#-----|  -> InOutExpr
+#  289| Int.Type
+#-----|  -> call to &
 
-#  293| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  289| call to &
+#-----|  -> b
 
-#  293| SubscriptExpr
-#-----|  -> DeclRefExpr
+#  289| 1
+#-----|  -> ... call to & ...
 
-#  293| AssignExpr
-#-----|  -> TuplePattern
+#  290| &...
+#-----|  -> 7
 
-#  293| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  290| b
+#-----|  -> &...
 
-#  293| DeclRefExpr
-#-----|  -> InOutExpr
+#  290| ...[...]
+#-----|  -> |
 
-#  293| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  290| setter for  ... = ...
+#-----|  -> b
 
-#  293| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  290| 7
+#-----|  -> ...[...]
 
-#  293| SubscriptExpr
-#-----|  -> LoadExpr
+#  290| &...
+#-----|  -> 6
 
-#  293| BinaryExpr
-#-----|  -> AssignExpr
+#  290| b
+#-----|  -> &...
 
-#  293| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  290| (Int) ...
+#-----|  -> 1
 
-#  293| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  290| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  293| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  290| ... call to | ...
+#-----|  -> setter for  ... = ...
 
-#  293| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  290| 6
+#-----|  -> getter for ...[...]
 
-#  295| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  290| Int.Type
+#-----|  -> call to |
 
-#  295| TuplePattern
-#-----|  -> NamedPattern
+#  290| call to |
+#-----|  -> b
 
-#  295| ConcreteVarDecl
-#-----|  -> ConcreteVarDecl
+#  290| |
+#-----|  -> Int.Type
 
-#  295| NamedPattern
-#-----|  -> DeclRefExpr
+#  290| 1
+#-----|  -> ... call to | ...
 
-#  295| ConcreteVarDecl
-#-----|  -> ConcreteVarDecl
+#  291| &...
+#-----|  -> 8
 
-#  295| ConcreteVarDecl
-#-----|  -> ConcreteVarDecl
+#  291| b
+#-----|  -> &...
 
-#  295| ConcreteVarDecl
-#-----|  -> ConcreteVarDecl
+#  291| ...[...]
+#-----|  -> ^
 
-#  295| ConcreteVarDecl
-#-----|  -> DeclRefExpr
+#  291| setter for  ... = ...
+#-----|  -> b
 
-#  295| DeclRefExpr
-#-----|  -> LoadExpr
+#  291| 8
+#-----|  -> ...[...]
 
-#  295| LoadExpr
-#-----|  -> PatternBindingDecl
+#  291| &...
+#-----|  -> 7
 
-#  296| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  291| b
+#-----|  -> &...
 
-#  296| TupleExpr
-#-----|  -> ReturnStmt
+#  291| (Int) ...
+#-----|  -> 1
 
-#  296| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  291| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  296| BinaryExpr
-#-----|  -> DeclRefExpr
+#  291| ... call to ^ ...
+#-----|  -> setter for  ... = ...
 
-#  296| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  291| 7
+#-----|  -> getter for ...[...]
 
-#  296| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  291| Int.Type
+#-----|  -> call to ^
 
-#  296| DeclRefExpr
-#-----|  -> InOutExpr
+#  291| ^
+#-----|  -> Int.Type
 
-#  296| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  291| call to ^
+#-----|  -> b
 
-#  296| LoadExpr
-#-----|  -> BinaryExpr
+#  291| 1
+#-----|  -> ... call to ^ ...
 
-#  296| SubscriptExpr
-#-----|  -> LoadExpr
+#  292| &...
+#-----|  -> 9
 
-#  296| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  292| b
+#-----|  -> &...
 
-#  296| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  292| ...[...]
+#-----|  -> <<
 
-#  296| BinaryExpr
-#-----|  -> DeclRefExpr
+#  292| setter for  ... = ...
+#-----|  -> b
 
-#  296| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  292| 9
+#-----|  -> ...[...]
 
-#  296| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  292| &...
+#-----|  -> 8
 
-#  296| DeclRefExpr
-#-----|  -> InOutExpr
+#  292| b
+#-----|  -> &...
 
-#  296| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  292| (Int) ...
+#-----|  -> 1
 
-#  296| LoadExpr
-#-----|  -> BinaryExpr
+#  292| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  296| SubscriptExpr
-#-----|  -> LoadExpr
+#  292| ... call to << ...
+#-----|  -> setter for  ... = ...
 
-#  296| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  292| 8
+#-----|  -> getter for ...[...]
 
-#  296| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  292| <<
+#-----|  -> Int.Type
 
-#  296| BinaryExpr
-#-----|  -> DeclRefExpr
+#  292| Int.Type
+#-----|  -> call to <<
 
-#  296| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  292| call to <<
+#-----|  -> b
 
-#  296| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  292| 1
+#-----|  -> ... call to << ...
 
-#  296| DeclRefExpr
-#-----|  -> InOutExpr
+#  293| &...
+#-----|  -> 10
 
-#  296| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  293| b
+#-----|  -> &...
 
-#  296| LoadExpr
-#-----|  -> BinaryExpr
+#  293| ...[...]
+#-----|  -> >>
 
-#  296| SubscriptExpr
-#-----|  -> LoadExpr
+#  293| setter for  ... = ...
+#-----|  -> (...)
 
-#  296| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  293| 10
+#-----|  -> ...[...]
 
-#  296| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  293| &...
+#-----|  -> 9
 
-#  296| BinaryExpr
-#-----|  -> DeclRefExpr
+#  293| b
+#-----|  -> &...
 
-#  296| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  293| (Int) ...
+#-----|  -> 1
 
-#  296| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  293| getter for ...[...]
+#-----|  -> (Int) ...
 
-#  296| DeclRefExpr
-#-----|  -> InOutExpr
+#  293| ... call to >> ...
+#-----|  -> setter for  ... = ...
 
-#  296| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  293| 9
+#-----|  -> getter for ...[...]
 
-#  296| LoadExpr
-#-----|  -> BinaryExpr
+#  293| >>
+#-----|  -> Int.Type
 
-#  296| SubscriptExpr
-#-----|  -> LoadExpr
+#  293| Int.Type
+#-----|  -> call to >>
 
-#  296| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  293| call to >>
+#-----|  -> b
 
-#  296| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  293| 1
+#-----|  -> ... call to >> ...
 
-#  296| BinaryExpr
-#-----|  -> TupleExpr
+#  295| var ... = ...
+#-----|  -> a1
 
-#  296| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  295| (...)
+#-----|  -> a1
 
-#  296| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  295| a1
+#-----| match -> a2
+#-----| no-match -> tupleWithA
 
-#  296| DeclRefExpr
-#-----|  -> InOutExpr
+#  295| a1
+#-----|  -> a2
 
-#  296| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  295| a2
+#-----| match -> a3
+#-----| no-match -> tupleWithA
 
-#  296| LoadExpr
-#-----|  -> BinaryExpr
+#  295| a2
+#-----|  -> a3
 
-#  296| SubscriptExpr
-#-----|  -> LoadExpr
+#  295| a3
+#-----| match -> a4
+#-----| no-match -> tupleWithA
 
-#  296| IntegerLiteralExpr
-#-----|  -> SubscriptExpr
+#  295| a3
+#-----|  -> a4
 
-#  299| enter ConcreteFuncDecl
-#-----|  -> WhileStmt
+#  295| a4
+#-----| match -> a5
+#-----| no-match -> tupleWithA
 
-#  299| exit ConcreteFuncDecl
+#  295| a4
+#-----|  -> a5
 
-#  299| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  295| a5
+#-----| no-match -> tupleWithA
 
-#  300| WhileStmt
-#-----|  -> DeclRefExpr
+#  295| a5
+#-----|  -> +
 
-#  300| DeclRefExpr
-#-----|  -> LoadExpr
+#  295| ((Int, Int, Int, Int, Int)) ...
+#-----|  -> var ... = ...
 
-#  300| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  295| tupleWithA
+#-----|  -> ((Int, Int, Int, Int, Int)) ...
 
-#  300| BinaryExpr
+#  296| return ...
+#-----| return -> exit testSubscriptExpr (normal)
+
+#  296| (...)
+#-----|  -> return ...
+
+#  296| a1
+#-----|  -> b
+
+#  296| ... call to + ...
+#-----|  -> +
+
+#  296| +
+#-----|  -> Int.Type
+
+#  296| Int.Type
+#-----|  -> call to +
+
+#  296| call to +
+#-----|  -> a1
+
+#  296| &...
+#-----|  -> 0
+
+#  296| b
+#-----|  -> &...
+
+#  296| (Int) ...
+#-----|  -> ... call to + ...
+
+#  296| getter for ...[...]
+#-----|  -> (Int) ...
+
+#  296| 0
+#-----|  -> getter for ...[...]
+
+#  296| a2
+#-----|  -> b
+
+#  296| ... call to + ...
+#-----|  -> +
+
+#  296| +
+#-----|  -> Int.Type
+
+#  296| Int.Type
+#-----|  -> call to +
+
+#  296| call to +
+#-----|  -> a2
+
+#  296| &...
+#-----|  -> 1
+
+#  296| b
+#-----|  -> &...
+
+#  296| (Int) ...
+#-----|  -> ... call to + ...
+
+#  296| getter for ...[...]
+#-----|  -> (Int) ...
+
+#  296| 1
+#-----|  -> getter for ...[...]
+
+#  296| a3
+#-----|  -> b
+
+#  296| ... call to + ...
+#-----|  -> +
+
+#  296| +
+#-----|  -> Int.Type
+
+#  296| Int.Type
+#-----|  -> call to +
+
+#  296| call to +
+#-----|  -> a3
+
+#  296| &...
+#-----|  -> 2
+
+#  296| b
+#-----|  -> &...
+
+#  296| (Int) ...
+#-----|  -> ... call to + ...
+
+#  296| getter for ...[...]
+#-----|  -> (Int) ...
+
+#  296| 2
+#-----|  -> getter for ...[...]
+
+#  296| a4
+#-----|  -> b
+
+#  296| ... call to + ...
+#-----|  -> +
+
+#  296| +
+#-----|  -> Int.Type
+
+#  296| Int.Type
+#-----|  -> call to +
+
+#  296| call to +
+#-----|  -> a4
+
+#  296| &...
+#-----|  -> 3
+
+#  296| b
+#-----|  -> &...
+
+#  296| (Int) ...
+#-----|  -> ... call to + ...
+
+#  296| getter for ...[...]
+#-----|  -> (Int) ...
+
+#  296| 3
+#-----|  -> getter for ...[...]
+
+#  296| a5
+#-----|  -> b
+
+#  296| ... call to + ...
+#-----|  -> (...)
+
+#  296| +
+#-----|  -> Int.Type
+
+#  296| Int.Type
+#-----|  -> call to +
+
+#  296| call to +
+#-----|  -> a5
+
+#  296| &...
+#-----|  -> 4
+
+#  296| b
+#-----|  -> &...
+
+#  296| (Int) ...
+#-----|  -> ... call to + ...
+
+#  296| getter for ...[...]
+#-----|  -> (Int) ...
+
+#  296| 4
+#-----|  -> getter for ...[...]
+
+#  299| enter loop1
+#-----|  -> loop1
+
+#  299| exit loop1
+
+#  299| exit loop1 (normal)
+#-----|  -> exit loop1
+
+#  299| loop1
+#-----|  -> x
+
+#  299| x
+#-----|  -> while ... { ... }
+
+#  300| while ... { ... }
 #-----|  -> StmtCondition
+
+#  300| (Int) ...
+#-----|  -> 0
+
+#  300| x
+#-----|  -> (Int) ...
+
+#  300| ... call to >= ...
+#-----| false -> exit loop1 (normal)
+#-----| true -> print
 
 #  300| StmtCondition
-#-----| false -> exit ConcreteFuncDecl (normal)
-#-----| true -> DeclRefExpr
+#-----|  -> >=
 
-#  300| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  300| >=
+#-----|  -> Int.Type
 
-#  300| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  300| Int.Type
+#-----|  -> call to >=
 
-#  300| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  300| call to >=
+#-----|  -> x
 
-#  301| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  300| 0
+#-----|  -> ... call to >= ...
 
-#  301| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  301| print
+#-----|  -> x
 
-#  301| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  301| call to print
+#-----|  -> -=
 
-#  301| DeclRefExpr
-#-----|  -> LoadExpr
+#  301| default separator
+#-----|  -> default terminator
 
-#  301| ErasureExpr
-#-----|  -> ArrayExpr
+#  301| default terminator
+#-----|  -> call to print
 
-#  301| LoadExpr
-#-----|  -> ErasureExpr
+#  301| (Int) ...
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  301| VarargExpansionExpr
-#-----|  -> CallExpr
+#  301| (Any) ...
+#-----|  -> [...]
 
-#  302| DeclRefExpr
-#-----|  -> InOutExpr
+#  301| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  302| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  301| [...]
+#-----|  -> default separator
 
-#  302| BinaryExpr
-#-----|  -> DeclRefExpr
+#  301| [...]
+#-----|  -> [...]
 
-#  302| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  301| x
+#-----|  -> (Int) ...
 
-#  302| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  302| &...
+#-----|  -> 1
 
-#  302| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  302| x
+#-----|  -> &...
 
-#  306| enter ConcreteFuncDecl
-#-----|  -> WhileStmt
-
-#  306| exit ConcreteFuncDecl
-
-#  306| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
-
-#  307| WhileStmt
-#-----|  -> DeclRefExpr
-
-#  307| DeclRefExpr
-#-----|  -> LoadExpr
-
-#  307| LoadExpr
-#-----|  -> IntegerLiteralExpr
-
-#  307| BinaryExpr
+#  302| ... call to -= ...
 #-----|  -> StmtCondition
+
+#  302| -=
+#-----|  -> Int.Type
+
+#  302| Int.Type
+#-----|  -> call to -=
+
+#  302| call to -=
+#-----|  -> x
+
+#  302| 1
+#-----|  -> ... call to -= ...
+
+#  306| enter loop2
+#-----|  -> loop2
+
+#  306| exit loop2
+
+#  306| exit loop2 (normal)
+#-----|  -> exit loop2
+
+#  306| loop2
+#-----|  -> x
+
+#  306| x
+#-----|  -> while ... { ... }
+
+#  307| while ... { ... }
+#-----|  -> StmtCondition
+
+#  307| (Int) ...
+#-----|  -> 0
+
+#  307| x
+#-----|  -> (Int) ...
+
+#  307| ... call to >= ...
+#-----| true -> print
+#-----| false -> print
 
 #  307| StmtCondition
-#-----| true -> DeclRefExpr
-#-----| false -> DeclRefExpr
+#-----|  -> >=
 
-#  307| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  307| >=
+#-----|  -> Int.Type
 
-#  307| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  307| Int.Type
+#-----|  -> call to >=
 
-#  307| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  307| call to >=
+#-----|  -> x
 
-#  308| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  307| 0
+#-----|  -> ... call to >= ...
 
-#  308| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  308| print
+#-----|  -> x
 
-#  308| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  308| call to print
+#-----|  -> -=
 
-#  308| DeclRefExpr
-#-----|  -> LoadExpr
+#  308| default separator
+#-----|  -> default terminator
 
-#  308| ErasureExpr
-#-----|  -> ArrayExpr
+#  308| default terminator
+#-----|  -> call to print
 
-#  308| LoadExpr
-#-----|  -> ErasureExpr
+#  308| (Int) ...
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  308| VarargExpansionExpr
-#-----|  -> CallExpr
+#  308| (Any) ...
+#-----|  -> [...]
 
-#  309| DeclRefExpr
-#-----|  -> InOutExpr
+#  308| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  309| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  308| [...]
+#-----|  -> default separator
 
-#  309| BinaryExpr
-#-----|  -> IfStmt
+#  308| [...]
+#-----|  -> [...]
 
-#  309| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  308| x
+#-----|  -> (Int) ...
 
-#  309| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  309| &...
+#-----|  -> 1
 
-#  309| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  309| x
+#-----|  -> &...
 
-#  310| IfStmt
-#-----|  -> DeclRefExpr
+#  309| ... call to -= ...
+#-----|  -> if ... then { ... } else { ... }
 
-#  310| DeclRefExpr
-#-----|  -> LoadExpr
+#  309| -=
+#-----|  -> Int.Type
 
-#  310| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  309| Int.Type
+#-----|  -> call to -=
 
-#  310| BinaryExpr
+#  309| call to -=
+#-----|  -> x
+
+#  309| 1
+#-----|  -> ... call to -= ...
+
+#  310| if ... then { ... } else { ... }
 #-----|  -> StmtCondition
+
+#  310| (Int) ...
+#-----|  -> 100
+
+#  310| x
+#-----|  -> (Int) ...
+
+#  310| ... call to > ...
+#-----| true -> break
+#-----| false -> if ... then { ... }
 
 #  310| StmtCondition
-#-----| true -> BreakStmt
-#-----| false -> IfStmt
+#-----|  -> >
 
-#  310| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  310| >
+#-----|  -> Int.Type
 
-#  310| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  310| Int.Type
+#-----|  -> call to >
 
-#  310| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  310| call to >
+#-----|  -> x
 
-#  311| BreakStmt
-#-----|  -> DeclRefExpr
+#  310| 100
+#-----|  -> ... call to > ...
 
-#  313| IfStmt
-#-----|  -> DeclRefExpr
+#  311| break
+#-----|  -> print
 
-#  313| DeclRefExpr
-#-----|  -> LoadExpr
-
-#  313| LoadExpr
-#-----|  -> IntegerLiteralExpr
-
-#  313| BinaryExpr
+#  313| if ... then { ... }
 #-----|  -> StmtCondition
+
+#  313| (Int) ...
+#-----|  -> 50
+
+#  313| x
+#-----|  -> (Int) ...
+
+#  313| ... call to > ...
+#-----| true -> continue
+#-----| false -> print
 
 #  313| StmtCondition
-#-----| true -> ContinueStmt
-#-----| false -> DeclRefExpr
+#-----|  -> >
 
-#  313| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  313| >
+#-----|  -> Int.Type
 
-#  313| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  313| Int.Type
+#-----|  -> call to >
 
-#  313| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  313| call to >
+#-----|  -> x
 
-#  314| ContinueStmt
-#-----| continue -> DeclRefExpr
+#  313| 50
+#-----|  -> ... call to > ...
 
-#  316| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  314| continue
+#-----| continue -> StmtCondition
 
-#  316| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  316| print
+#-----|  -> Iter
 
-#  316| ArrayExpr
-#-----|  -> VarargExpansionExpr
-
-#  316| ErasureExpr
-#-----|  -> ArrayExpr
-
-#  316| StringLiteralExpr
-#-----|  -> ErasureExpr
-
-#  316| VarargExpansionExpr
-#-----|  -> CallExpr
-
-#  318| DeclRefExpr
-#-----|  -> StringLiteralExpr
-
-#  318| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-
-#  318| ArrayExpr
-#-----|  -> VarargExpansionExpr
-
-#  318| ErasureExpr
-#-----|  -> ArrayExpr
-
-#  318| StringLiteralExpr
-#-----|  -> ErasureExpr
-
-#  318| VarargExpansionExpr
-#-----|  -> CallExpr
-
-#  321| enter ConcreteFuncDecl
-#-----|  -> WhileStmt
-
-#  321| exit ConcreteFuncDecl
-
-#  321| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
-
-#  322| WhileStmt
-#-----|  -> DeclRefExpr
-
-#  322| DeclRefExpr
-#-----|  -> LoadExpr
-
-#  322| LoadExpr
-#-----|  -> IntegerLiteralExpr
-
-#  322| BinaryExpr
+#  316| call to print
 #-----|  -> StmtCondition
+
+#  316| default separator
+#-----|  -> default terminator
+
+#  316| default terminator
+#-----|  -> call to print
+
+#  316| (Any) ...
+#-----|  -> [...]
+
+#  316| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
+
+#  316| Iter
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
+
+#  316| [...]
+#-----|  -> default separator
+
+#  316| [...]
+#-----|  -> [...]
+
+#  318| print
+#-----|  -> Done
+
+#  318| call to print
+#-----|  -> exit loop2 (normal)
+
+#  318| default separator
+#-----|  -> default terminator
+
+#  318| default terminator
+#-----|  -> call to print
+
+#  318| (Any) ...
+#-----|  -> [...]
+
+#  318| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
+
+#  318| Done
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
+
+#  318| [...]
+#-----|  -> default separator
+
+#  318| [...]
+#-----|  -> [...]
+
+#  321| enter labeledLoop
+#-----|  -> labeledLoop
+
+#  321| exit labeledLoop
+
+#  321| exit labeledLoop (normal)
+#-----|  -> exit labeledLoop
+
+#  321| labeledLoop
+#-----|  -> x
+
+#  321| x
+#-----|  -> while ... { ... }
+
+#  322| while ... { ... }
+#-----|  -> StmtCondition
+
+#  322| (Int) ...
+#-----|  -> 0
+
+#  322| x
+#-----|  -> (Int) ...
+
+#  322| ... call to >= ...
+#-----| false -> exit labeledLoop (normal)
+#-----| true -> while ... { ... }
 
 #  322| StmtCondition
-#-----| false -> exit ConcreteFuncDecl (normal)
-#-----| true -> WhileStmt
+#-----|  -> >=
 
-#  322| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  322| >=
+#-----|  -> Int.Type
 
-#  322| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  322| Int.Type
+#-----|  -> call to >=
 
-#  322| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  322| call to >=
+#-----|  -> x
 
-#  323| WhileStmt
-#-----|  -> DeclRefExpr
+#  322| 0
+#-----|  -> ... call to >= ...
 
-#  323| DeclRefExpr
-#-----|  -> LoadExpr
-
-#  323| LoadExpr
-#-----|  -> IntegerLiteralExpr
-
-#  323| BinaryExpr
+#  323| while ... { ... }
 #-----|  -> StmtCondition
+
+#  323| (Int) ...
+#-----|  -> 0
+
+#  323| x
+#-----|  -> (Int) ...
+
+#  323| ... call to >= ...
+#-----| true -> print
+#-----| false -> print
 
 #  323| StmtCondition
-#-----| true -> DeclRefExpr
-#-----| false -> DeclRefExpr
+#-----|  -> >=
 
-#  323| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  323| >=
+#-----|  -> Int.Type
 
-#  323| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  323| Int.Type
+#-----|  -> call to >=
 
-#  323| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  323| call to >=
+#-----|  -> x
 
-#  324| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  323| 0
+#-----|  -> ... call to >= ...
 
-#  324| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  324| print
+#-----|  -> x
 
-#  324| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  324| call to print
+#-----|  -> -=
 
-#  324| DeclRefExpr
-#-----|  -> LoadExpr
+#  324| default separator
+#-----|  -> default terminator
 
-#  324| ErasureExpr
-#-----|  -> ArrayExpr
+#  324| default terminator
+#-----|  -> call to print
 
-#  324| LoadExpr
-#-----|  -> ErasureExpr
+#  324| (Int) ...
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  324| VarargExpansionExpr
-#-----|  -> CallExpr
+#  324| (Any) ...
+#-----|  -> [...]
 
-#  325| DeclRefExpr
-#-----|  -> InOutExpr
+#  324| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  325| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  324| [...]
+#-----|  -> default separator
 
-#  325| BinaryExpr
-#-----|  -> IfStmt
+#  324| [...]
+#-----|  -> [...]
 
-#  325| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  324| x
+#-----|  -> (Int) ...
 
-#  325| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  325| &...
+#-----|  -> 1
 
-#  325| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  325| x
+#-----|  -> &...
 
-#  326| IfStmt
-#-----|  -> DeclRefExpr
+#  325| ... call to -= ...
+#-----|  -> if ... then { ... } else { ... }
 
-#  326| DeclRefExpr
-#-----|  -> LoadExpr
+#  325| -=
+#-----|  -> Int.Type
 
-#  326| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  325| Int.Type
+#-----|  -> call to -=
 
-#  326| BinaryExpr
+#  325| call to -=
+#-----|  -> x
+
+#  325| 1
+#-----|  -> ... call to -= ...
+
+#  326| if ... then { ... } else { ... }
 #-----|  -> StmtCondition
+
+#  326| (Int) ...
+#-----|  -> 100
+
+#  326| x
+#-----|  -> (Int) ...
+
+#  326| ... call to > ...
+#-----| true -> break outer
+#-----| false -> if ... then { ... }
 
 #  326| StmtCondition
-#-----| true -> BreakStmt
-#-----| false -> IfStmt
+#-----|  -> >
 
-#  326| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  326| >
+#-----|  -> Int.Type
 
-#  326| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  326| Int.Type
+#-----|  -> call to >
 
-#  326| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  326| call to >
+#-----|  -> x
 
-#  327| BreakStmt
-#-----|  -> exit ConcreteFuncDecl (normal)
+#  326| 100
+#-----|  -> ... call to > ...
 
-#  329| IfStmt
-#-----|  -> DeclRefExpr
+#  327| break outer
+#-----|  -> exit labeledLoop (normal)
 
-#  329| DeclRefExpr
-#-----|  -> LoadExpr
-
-#  329| LoadExpr
-#-----|  -> IntegerLiteralExpr
-
-#  329| BinaryExpr
+#  329| if ... then { ... }
 #-----|  -> StmtCondition
 
+#  329| (Int) ...
+#-----|  -> 50
+
+#  329| x
+#-----|  -> (Int) ...
+
+#  329| ... call to > ...
+#-----| true -> continue inner
+#-----| false -> print
+
 #  329| StmtCondition
-#-----| true -> ContinueStmt
-#-----| false -> DeclRefExpr
+#-----|  -> >
 
-#  329| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  329| >
+#-----|  -> Int.Type
 
-#  329| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  329| Int.Type
+#-----|  -> call to >
 
-#  329| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  329| call to >
+#-----|  -> x
 
-#  330| ContinueStmt
-#-----| continue -> DeclRefExpr
+#  329| 50
+#-----|  -> ... call to > ...
 
-#  332| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  330| continue inner
+#-----| continue -> StmtCondition
 
-#  332| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  332| print
+#-----|  -> Iter
 
-#  332| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  332| call to print
+#-----|  -> StmtCondition
 
-#  332| ErasureExpr
-#-----|  -> ArrayExpr
+#  332| default separator
+#-----|  -> default terminator
 
-#  332| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  332| default terminator
+#-----|  -> call to print
 
-#  332| VarargExpansionExpr
-#-----|  -> CallExpr
+#  332| (Any) ...
+#-----|  -> [...]
 
-#  334| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  332| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  334| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  332| Iter
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  334| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  332| [...]
+#-----|  -> default separator
 
-#  334| ErasureExpr
-#-----|  -> ArrayExpr
+#  332| [...]
+#-----|  -> [...]
 
-#  334| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  334| print
+#-----|  -> Done
 
-#  334| VarargExpansionExpr
-#-----|  -> CallExpr
+#  334| call to print
+#-----|  -> StmtCondition
 
-#  338| enter ConcreteFuncDecl
-#-----|  -> RepeatWhileStmt
+#  334| default separator
+#-----|  -> default terminator
 
-#  338| exit ConcreteFuncDecl
+#  334| default terminator
+#-----|  -> call to print
 
-#  338| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  334| (Any) ...
+#-----|  -> [...]
 
-#  339| RepeatWhileStmt
-#-----|  -> DeclRefExpr
+#  334| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  340| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  334| Done
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  340| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  334| [...]
+#-----|  -> default separator
 
-#  340| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  334| [...]
+#-----|  -> [...]
 
-#  340| DeclRefExpr
-#-----|  -> LoadExpr
+#  338| enter testRepeat
+#-----|  -> testRepeat
 
-#  340| ErasureExpr
-#-----|  -> ArrayExpr
+#  338| exit testRepeat
 
-#  340| LoadExpr
-#-----|  -> ErasureExpr
+#  338| exit testRepeat (normal)
+#-----|  -> exit testRepeat
 
-#  340| VarargExpansionExpr
-#-----|  -> CallExpr
+#  338| testRepeat
+#-----|  -> x
 
-#  341| DeclRefExpr
-#-----|  -> InOutExpr
+#  338| x
+#-----|  -> repeat { ... } while ... 
 
-#  341| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  339| repeat { ... } while ... 
+#-----|  -> print
 
-#  341| BinaryExpr
-#-----|  -> DeclRefExpr
+#  340| print
+#-----|  -> x
 
-#  341| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  340| call to print
+#-----|  -> -=
 
-#  341| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  340| default separator
+#-----|  -> default terminator
 
-#  341| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  340| default terminator
+#-----|  -> call to print
 
-#  342| DeclRefExpr
-#-----|  -> LoadExpr
+#  340| (Int) ...
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  342| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  340| (Any) ...
+#-----|  -> [...]
 
-#  342| BinaryExpr
-#-----| false -> exit ConcreteFuncDecl (normal)
-#-----| true -> DeclRefExpr
+#  340| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  342| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  340| [...]
+#-----|  -> default separator
 
-#  342| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  340| [...]
+#-----|  -> [...]
 
-#  342| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  340| x
+#-----|  -> (Int) ...
 
-#  345| enter ConcreteFuncDecl
-#-----|  -> NamedPattern
+#  341| &...
+#-----|  -> 1
 
-#  345| exit ConcreteFuncDecl
+#  341| x
+#-----|  -> &...
 
-#  345| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  341| ... call to -= ...
+#-----|  -> >=
 
-#  346| PatternBindingDecl
-#-----|  -> ConcreteVarDecl
+#  341| -=
+#-----|  -> Int.Type
 
-#  346| ConcreteVarDecl
-#-----|  -> WhileStmt
+#  341| Int.Type
+#-----|  -> call to -=
 
-#  346| NamedPattern
-#-----|  -> IntegerLiteralExpr
+#  341| call to -=
+#-----|  -> x
 
-#  346| IntegerLiteralExpr
-#-----|  -> PatternBindingDecl
+#  341| 1
+#-----|  -> ... call to -= ...
 
-#  347| WhileStmt
-#-----|  -> DeclRefExpr
+#  342| (Int) ...
+#-----|  -> 0
 
-#  347| ParenExpr
+#  342| x
+#-----|  -> (Int) ...
+
+#  342| ... call to >= ...
+#-----| false -> exit testRepeat (normal)
+#-----| true -> print
+
+#  342| >=
+#-----|  -> Int.Type
+
+#  342| Int.Type
+#-----|  -> call to >=
+
+#  342| call to >=
+#-----|  -> x
+
+#  342| 0
+#-----|  -> ... call to >= ...
+
+#  345| enter loop_with_identity_expr
+#-----|  -> loop_with_identity_expr
+
+#  345| exit loop_with_identity_expr
+
+#  345| exit loop_with_identity_expr (normal)
+#-----|  -> exit loop_with_identity_expr
+
+#  345| loop_with_identity_expr
+#-----|  -> x
+
+#  346| var ... = ...
+#-----|  -> x
+
+#  346| x
+#-----| no-match -> 0
+
+#  346| x
+#-----|  -> while ... { ... }
+
+#  346| 0
+#-----|  -> var ... = ...
+
+#  347| while ... { ... }
 #-----|  -> StmtCondition
 
 #  347| StmtCondition
-#-----| false -> exit ConcreteFuncDecl (normal)
-#-----| true -> DeclRefExpr
+#-----|  -> <
 
-#  347| DeclRefExpr
-#-----|  -> LoadExpr
+#  347| [false] (...)
+#-----| false -> exit loop_with_identity_expr (normal)
 
-#  347| LoadExpr
-#-----|  -> IntegerLiteralExpr
+#  347| [true] (...)
+#-----| true -> +=
 
-#  347| BinaryExpr
-#-----|  -> ParenExpr
+#  347| (Int) ...
+#-----|  -> 10
 
-#  347| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  347| x
+#-----|  -> (Int) ...
 
-#  347| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  347| ... call to < ...
+#-----| false -> [false] (...)
+#-----| true -> [true] (...)
 
-#  347| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  347| <
+#-----|  -> Int.Type
 
-#  348| DeclRefExpr
-#-----|  -> InOutExpr
+#  347| Int.Type
+#-----|  -> call to <
 
-#  348| InOutExpr
-#-----|  -> IntegerLiteralExpr
+#  347| call to <
+#-----|  -> x
 
-#  348| BinaryExpr
-#-----|  -> DeclRefExpr
+#  347| 10
+#-----|  -> ... call to < ...
 
-#  348| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  348| &...
+#-----|  -> 1
 
-#  348| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  348| x
+#-----|  -> &...
 
-#  348| IntegerLiteralExpr
-#-----|  -> BinaryExpr
+#  348| ... call to += ...
+#-----|  -> StmtCondition
 
-#  353| enter AccessorDecl
+#  348| +=
+#-----|  -> Int.Type
 
-#  353| exit AccessorDecl
+#  348| Int.Type
+#-----|  -> call to +=
 
-#  353| exit AccessorDecl (normal)
-#-----|  -> exit AccessorDecl
+#  348| call to +=
+#-----|  -> x
 
-#  354| enter ConstructorDecl
-#-----|  -> DeclRefExpr
+#  348| 1
+#-----|  -> ... call to += ...
 
-#  354| exit ConstructorDecl
+#  352| deinit
+#-----|  -> { ... }
 
-#  354| exit ConstructorDecl (normal)
-#-----|  -> exit ConstructorDecl
+#  352| enter deinit
+#-----|  -> deinit
 
-#  355| AssignExpr
-#-----|  -> ReturnStmt
+#  352| exit deinit
 
-#  355| DeclRefExpr
-#-----|  -> AssignExpr
+#  352| exit deinit (normal)
+#-----|  -> exit deinit
 
-#  356| ReturnStmt
-#-----| return -> exit ConstructorDecl (normal)
+#  352| { ... }
+#-----|  -> exit deinit (normal)
 
-#  358| enter ConcreteFuncDecl
-#-----|  -> ReturnStmt
+#  353| enter get
+#-----|  -> get
 
-#  358| exit ConcreteFuncDecl
+#  353| exit get
 
-#  358| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  353| exit get (normal)
+#-----|  -> exit get
 
-#  359| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  353| get
 
-#  363| enter ConcreteFuncDecl
-#-----|  -> DeclRefExpr
+#  354| enter init
+#-----|  -> init
 
-#  363| exit ConcreteFuncDecl
+#  354| exit init
 
-#  363| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  354| exit init (normal)
+#-----|  -> exit init
 
-#  364| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  354| init
+#-----|  -> arg
 
-#  364| DeclRefExpr
-#-----|  -> BindOptionalExpr
+#  354| arg
+#-----|  -> self
 
-#  364| BindOptionalExpr
-#-----|  -> DotSyntaxCallExpr
+#  355| .c
+#-----|  -> arg
 
-#  364| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#  355| self
+#-----|  -> .c
 
-#  364| CallExpr
-#-----|  -> BindOptionalExpr
+#  355|  ... = ...
+#-----|  -> return
 
-#  364| BindOptionalExpr
-#-----|  -> DotSyntaxCallExpr
+#  355| arg
+#-----|  ->  ... = ...
 
-#  364| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> CallExpr
+#  356| return
+#-----| return -> exit init (normal)
 
-#  364| CallExpr
-#-----|  -> InjectIntoOptionalExpr
+#  358| enter getOptional
+#-----|  -> getOptional
 
-#  364| InjectIntoOptionalExpr
+#  358| exit getOptional
+
+#  358| exit getOptional (normal)
+#-----|  -> exit getOptional
+
+#  358| getOptional
+#-----|  -> self
+
+#  359| return ...
+#-----| return -> exit getOptional (normal)
+
+#  359| getter for .c
+#-----|  -> return ...
+
+#  359| self
+#-----|  -> getter for .c
+
+#  363| enter testOptional
+#-----|  -> testOptional
+
+#  363| exit testOptional
+
+#  363| exit testOptional (normal)
+#-----|  -> exit testOptional
+
+#  363| testOptional
+#-----|  -> c
+
+#  363| c
+#-----|  -> getMyInt
+
+#  364| return ...
+#-----| return -> exit testOptional (normal)
+
+#  364| c
+#-----|  -> ...?
+
+#  364| ...?
+#-----|  -> call to getOptional
+
+#  364| call to getOptional
+#-----|  -> call to ...
+
+#  364| call to ...
+#-----|  -> ...?
+
+#  364| ...?
+#-----|  -> call to getMyInt
+
+#  364| call to getMyInt
+#-----|  -> call to ...
+
+#  364| (Int?) ...
 #-----|  -> OptionalEvaluationExpr
 
 #  364| OptionalEvaluationExpr
-#-----|  -> ReturnStmt
+#-----|  -> return ...
 
-#  364| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  364| call to ...
+#-----|  -> (Int?) ...
 
-#  364| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  364| getOptional
+#-----|  -> c
 
-#  367| enter ConcreteFuncDecl
-#-----|  -> NamedPattern
+#  364| getMyInt
+#-----|  -> getOptional
 
-#  367| exit ConcreteFuncDecl
+#  367| enter testCapture
+#-----|  -> testCapture
 
-#  367| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  367| exit testCapture
 
-#  368| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  367| exit testCapture (normal)
+#-----|  -> exit testCapture
 
-#  368| CaptureListExpr
-#-----|  -> ReturnStmt
+#  367| testCapture
+#-----|  -> x
 
-#  368| ClosureExpr
-#-----|  -> CaptureListExpr
+#  367| x
+#-----|  -> y
 
-#  368| NamedPattern
-#-----|  -> DeclRefExpr
+#  367| y
+#-----|  -> z
 
-#  368| PatternBindingDecl
-#-----|  -> NamedPattern
+#  368| return ...
+#-----| return -> exit testCapture (normal)
 
-#  368| DeclRefExpr
-#-----|  -> DeclRefExpr
+#  368| { ... }
+#-----|  -> return ...
 
-#  368| BinaryExpr
-#-----|  -> PatternBindingDecl
+#  368| { ... }
+#-----|  -> { ... }
 
-#  368| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  368| z
+#-----| no-match -> +
 
-#  368| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  368| var ... = ...
+#-----|  -> t
 
-#  368| DeclRefExpr
-#-----|  -> BinaryExpr
+#  368| x
+#-----|  -> y
 
-#  368| NamedPattern
-#-----|  -> StringLiteralExpr
+#  368| ... call to + ...
+#-----|  -> var ... = ...
 
-#  368| PatternBindingDecl
-#-----|  -> ClosureExpr
+#  368| +
+#-----|  -> Int.Type
 
-#  368| StringLiteralExpr
-#-----|  -> PatternBindingDecl
+#  368| Int.Type
+#-----|  -> call to +
 
-#  373| enter ConcreteFuncDecl
-#-----|  -> DeclRefExpr
+#  368| call to +
+#-----|  -> x
 
-#  373| exit ConcreteFuncDecl
+#  368| y
+#-----|  -> ... call to + ...
 
-#  373| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  368| t
+#-----| no-match -> literal
 
-#  374| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  368| var ... = ...
+#-----|  -> { ... }
 
-#  374| DeclRefExpr
-#-----|  -> TupleElementExpr
+#  368| literal
+#-----|  -> var ... = ...
 
-#  374| TupleElementExpr
-#-----|  -> DeclRefExpr
+#  373| enter testTupleElement
+#-----|  -> testTupleElement
 
-#  374| BinaryExpr
-#-----|  -> DeclRefExpr
+#  373| exit testTupleElement
 
-#  374| BinaryExpr
-#-----|  -> IntegerLiteralExpr
+#  373| exit testTupleElement (normal)
+#-----|  -> exit testTupleElement
 
-#  374| BinaryExpr
-#-----|  -> ReturnStmt
+#  373| testTupleElement
+#-----|  -> t
 
-#  374| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  373| t
+#-----|  -> +
 
-#  374| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  374| return ...
+#-----| return -> exit testTupleElement (normal)
 
-#  374| DeclRefExpr
-#-----|  -> TupleElementExpr
+#  374| t
+#-----|  -> .0
 
-#  374| TupleElementExpr
-#-----|  -> BinaryExpr
+#  374| .0
+#-----|  -> t
 
-#  374| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  374| ... call to + ...
+#-----|  -> t
 
-#  374| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  374| ... call to + ...
+#-----|  -> 1
 
-#  374| DeclRefExpr
-#-----|  -> TupleElementExpr
+#  374| ... call to + ...
+#-----|  -> return ...
 
-#  374| TupleElementExpr
-#-----|  -> BinaryExpr
+#  374| +
+#-----|  -> Int.Type
 
-#  374| DeclRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  374| Int.Type
+#-----|  -> call to +
 
-#  374| DotSyntaxCallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> DeclRefExpr
+#  374| call to +
+#-----|  -> t
 
-#  374| TupleExpr
-#-----|  -> TupleElementExpr
+#  374| t
+#-----|  -> .1
 
-#  374| TupleElementExpr
-#-----|  -> BinaryExpr
+#  374| .1
+#-----|  -> ... call to + ...
 
-#  374| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  374| +
+#-----|  -> Int.Type
 
-#  374| IntegerLiteralExpr
-#-----|  -> IntegerLiteralExpr
+#  374| Int.Type
+#-----|  -> call to +
 
-#  374| IntegerLiteralExpr
-#-----|  -> TupleExpr
+#  374| call to +
+#-----|  -> +
 
-#  377| CallExpr
-#-----| exception -> exit ConstructorDecl (normal)
+#  374| t
+#-----|  -> .2
 
-#  377| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  374| .2
+#-----|  -> ... call to + ...
 
-#  377| MagicIdentifierLiteralExpr
-#-----|  -> MagicIdentifierLiteralExpr
+#  374| +
+#-----|  -> Int.Type
 
-#  377| MagicIdentifierLiteralExpr
-#-----|  -> MagicIdentifierLiteralExpr
+#  374| Int.Type
+#-----|  -> call to +
 
-#  377| MagicIdentifierLiteralExpr
-#-----|  -> MagicIdentifierLiteralExpr
+#  374| call to +
+#-----|  -> +
 
-#  377| MagicIdentifierLiteralExpr
-#-----|  -> CallExpr
+#  374| (...)
+#-----|  -> .0
 
-#  377| StringLiteralExpr
-#-----|  -> MagicIdentifierLiteralExpr
+#  374| .0
+#-----|  -> ... call to + ...
 
-#  377| enter ConstructorDecl
-#-----|  -> DeclRefExpr
+#  374| 1
+#-----|  -> 2
 
-#  377| exit ConstructorDecl
+#  374| 2
+#-----|  -> 3
 
-#  377| exit ConstructorDecl (normal)
-#-----|  -> exit ConstructorDecl
+#  374| 3
+#-----|  -> (...)
 
-#  378| enter ConstructorDecl
+#  377| #...
+#-----|  -> #...
+
+#  377| #...
+#-----|  -> #...
+
+#  377| #...
+#-----|  -> #...
+
+#  377| #...
+#-----|  -> call to _unimplementedInitializer
+
+#  377| _unimplementedInitializer
+#-----|  -> cfg.Derived
+
+#  377| call to _unimplementedInitializer
+
+#  377| cfg.Derived
+#-----|  -> #...
+
+#  377| deinit
+#-----|  -> { ... }
+
+#  377| enter deinit
+#-----|  -> deinit
+
+#  377| exit deinit
+
+#  377| exit deinit (normal)
+#-----|  -> exit deinit
+
+#  377| { ... }
+#-----|  -> exit deinit (normal)
+
+#  377| enter init
+#-----|  -> init
+
+#  377| exit init
+
+#  377| exit init (normal)
+#-----|  -> exit init
+
+#  377| init
+
+#  378| enter init
+#-----|  -> init
+
+#  378| exit init
+
+#  378| exit init (normal)
+#-----|  -> exit init
+
+#  378| init
+#-----|  -> call to ...
 #-----|  -> TBD (OtherConstructorDeclRefExpr)
 
-#  378| exit ConstructorDecl
+#  379| super
+#-----|  -> call to ...
 
-#  378| exit ConstructorDecl (normal)
-#-----|  -> exit ConstructorDecl
+#  379| call to ...
+#-----|  -> 0
 
-#  379| SuperRefExpr
-#-----|  -> DotSyntaxCallExpr
+#  379| call to ...
+#-----|  -> self = ...
 
-#  379| DotSyntaxCallExpr
-#-----|  -> IntegerLiteralExpr
+#  379| self = ...
+#-----|  -> return
 
-#  379| CallExpr
-#-----|  -> RebindSelfInConstructorExpr
-
-#  379| RebindSelfInConstructorExpr
-#-----|  -> ReturnStmt
+#  379| call to ...
+#-----|  -> super
 
 #  379| TBD (OtherConstructorDeclRefExpr)
-#-----|  -> SuperRefExpr
+#-----|  -> super
 
-#  379| IntegerLiteralExpr
-#-----|  -> CallExpr
+#  379| 0
+#-----|  -> call to ...
 
-#  380| ReturnStmt
-#-----| return -> exit ConstructorDecl (normal)
+#  380| return
+#-----| return -> exit init (normal)
 
-#  383| enter ConcreteFuncDecl
-#-----|  -> DoStmt
+#  383| doWithoutCatch
+#-----|  -> x
 
-#  383| exit ConcreteFuncDecl
+#  383| enter doWithoutCatch
+#-----|  -> doWithoutCatch
 
-#  383| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  383| exit doWithoutCatch
 
-#  384| DoStmt
-#-----|  -> DeclRefExpr
+#  383| exit doWithoutCatch (normal)
+#-----|  -> exit doWithoutCatch
 
-#  385| TryExpr
-#-----|  -> DeclRefExpr
+#  383| x
+#-----|  -> do { ... }
 
-#  385| DeclRefExpr
-#-----|  -> IntegerLiteralExpr
+#  384| do { ... }
+#-----|  -> mightThrow
 
-#  385| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
-#-----|  -> TryExpr
+#  385| try ...
+#-----|  -> print
 
-#  385| IntegerLiteralExpr
-#-----|  -> CallExpr
+#  385| mightThrow
+#-----|  -> 0
 
-#  386| DeclRefExpr
-#-----|  -> StringLiteralExpr
+#  385| call to mightThrow
+#-----| exception -> exit doWithoutCatch (normal)
+#-----|  -> try ...
 
-#  386| CallExpr
-#-----| exception -> exit ConcreteFuncDecl (normal)
+#  385| 0
+#-----|  -> call to mightThrow
 
-#  386| ArrayExpr
-#-----|  -> VarargExpansionExpr
+#  386| print
+#-----|  -> Did not throw.
 
-#  386| ErasureExpr
-#-----|  -> ArrayExpr
+#  386| call to print
 
-#  386| StringLiteralExpr
-#-----|  -> ErasureExpr
+#  386| default separator
+#-----|  -> default terminator
 
-#  386| VarargExpansionExpr
-#-----|  -> CallExpr
+#  386| default terminator
+#-----|  -> call to print
 
-#  394| TBD (YieldStmt)
-#-----|  -> exit AccessorDecl (normal)
+#  386| (Any) ...
+#-----|  -> [...]
 
-#  394| enter AccessorDecl
+#  386| (TBD (ProtocolCompositionType)) ...
+#-----|  -> [...]
 
-#  394| enter AccessorDecl
+#  386| Did not throw.
+#-----|  -> (Any) ...
+#-----|  -> (TBD (ProtocolCompositionType)) ...
 
-#  394| enter AccessorDecl
-#-----|  -> TBD (YieldStmt)
+#  386| [...]
+#-----|  -> default separator
 
-#  394| exit AccessorDecl
+#  386| [...]
+#-----|  -> [...]
 
-#  394| exit AccessorDecl
+#  394| (unnamed function decl)
 
-#  394| exit AccessorDecl
+#  394| enter (unnamed function decl)
+#-----|  -> (unnamed function decl)
 
-#  394| exit AccessorDecl (normal)
-#-----|  -> exit AccessorDecl
+#  394| enter get
+#-----|  -> get
 
-#  394| exit AccessorDecl (normal)
-#-----|  -> exit AccessorDecl
+#  394| enter set
+#-----|  -> set
 
-#  394| exit AccessorDecl (normal)
-#-----|  -> exit AccessorDecl
+#  394| exit (unnamed function decl)
 
-#  395| enter ConstructorDecl
-#-----|  -> IntegerLiteralExpr
+#  394| exit (unnamed function decl) (normal)
+#-----|  -> exit (unnamed function decl)
 
-#  395| exit ConstructorDecl
+#  394| exit get
 
-#  395| exit ConstructorDecl (normal)
-#-----|  -> exit ConstructorDecl
+#  394| exit get (normal)
+#-----|  -> exit get
 
-#  396| AssignExpr
-#-----|  -> ReturnStmt
+#  394| exit set
 
-#  396| IntegerLiteralExpr
-#-----|  -> AssignExpr
+#  394| exit set (normal)
+#-----|  -> exit set
 
-#  397| ReturnStmt
-#-----| return -> exit ConstructorDecl (normal)
+#  394| get
 
-#  399| enter DestructorDecl
-#-----|  -> IntegerLiteralExpr
+#  394| set
+#-----|  -> value
 
-#  399| exit DestructorDecl
+#  394| value
 
-#  399| exit DestructorDecl (normal)
-#-----|  -> exit DestructorDecl
+#  394| yield ...
+#-----|  -> exit (unnamed function decl) (normal)
 
-#  400| AssignExpr
-#-----|  -> exit DestructorDecl (normal)
+#  395| enter init
+#-----|  -> init
 
-#  400| IntegerLiteralExpr
-#-----|  -> AssignExpr
+#  395| exit init
 
-#  404| enter ConcreteFuncDecl
-#-----|  -> StringLiteralExpr
+#  395| exit init (normal)
+#-----|  -> exit init
 
-#  404| exit ConcreteFuncDecl
+#  395| init
+#-----|  -> self
 
-#  404| exit ConcreteFuncDecl (normal)
-#-----|  -> exit ConcreteFuncDecl
+#  396| .field
+#-----|  -> 10
 
-#  405| ReturnStmt
-#-----| return -> exit ConcreteFuncDecl (normal)
+#  396| self
+#-----|  -> .field
 
-#  405| DictionaryExpr
-#-----|  -> ReturnStmt
+#  396|  ... = ...
+#-----|  -> return
 
-#  405| StringLiteralExpr
-#-----|  -> DeclRefExpr
+#  396| 10
+#-----|  ->  ... = ...
 
-#  405| TupleExpr
-#-----|  -> StringLiteralExpr
+#  397| return
+#-----| return -> exit init (normal)
 
-#  405| DeclRefExpr
-#-----|  -> TupleExpr
+#  399| deinit
+#-----|  -> self
 
-#  405| StringLiteralExpr
-#-----|  -> DeclRefExpr
+#  399| enter deinit
+#-----|  -> deinit
 
-#  405| TupleExpr
-#-----|  -> DictionaryExpr
+#  399| exit deinit
 
-#  405| DeclRefExpr
-#-----|  -> TupleExpr
+#  399| exit deinit (normal)
+#-----|  -> exit deinit
+
+#  400| .field
+#-----|  -> 0
+
+#  400| self
+#-----|  -> .field
+
+#  400|  ... = ...
+#-----|  -> exit deinit (normal)
+
+#  400| 0
+#-----|  ->  ... = ...
+
+#  404| dictionaryLiteral
+#-----|  -> x
+
+#  404| enter dictionaryLiteral
+#-----|  -> dictionaryLiteral
+
+#  404| exit dictionaryLiteral
+
+#  404| exit dictionaryLiteral (normal)
+#-----|  -> exit dictionaryLiteral
+
+#  404| x
+#-----|  -> y
+
+#  404| y
+#-----|  -> x
+
+#  405| return ...
+#-----| return -> exit dictionaryLiteral (normal)
+
+#  405| [...]
+#-----|  -> return ...
+
+#  405| x
+#-----|  -> x
+
+#  405| (...)
+#-----|  -> y
+
+#  405| x
+#-----|  -> (...)
+
+#  405| y
+#-----|  -> y
+
+#  405| (...)
+#-----|  -> [...]
+
+#  405| y
+#-----|  -> (...)

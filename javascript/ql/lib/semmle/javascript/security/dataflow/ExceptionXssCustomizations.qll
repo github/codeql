@@ -61,7 +61,7 @@ module ExceptionXss {
    */
   private class JsonSchemaValidationError extends Source {
     JsonSchemaValidationError() {
-      this = any(JsonSchema::Ajv::Instance i).getAValidationError().getAnImmediateUse()
+      this = any(JsonSchema::Ajv::Instance i).getAValidationError().asSource()
       or
       this = any(JsonSchema::Joi::JoiValidationErrorRead r).getAValidationResultAccess(_)
     }

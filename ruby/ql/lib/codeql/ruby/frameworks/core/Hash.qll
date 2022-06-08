@@ -65,6 +65,22 @@ module Hash {
     }
   }
 
+  private class HashLiteralHashSplatSummary extends SummarizedCallable {
+    HashLiteralHashSplatSummary() { this = "Hash.[**]" }
+
+    final override MethodCall getACall() {
+      result = API::getTopLevelMember("Hash").getAMethodCall("[]").getExprNode().getExpr() and
+      result.getAnArgument() instanceof HashSplatExpr
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // { **hash }
+      input = "Argument[hash-splat].WithElement[any]" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
   /**
    * `Hash[]` called on an existing hash, e.g.
    *

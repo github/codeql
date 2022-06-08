@@ -88,6 +88,10 @@ sink(a[1])
 sink(a[2]) # $ hasValueFlow=elem2
 
 x = Foo.new
+x.set_value(source("attr"))
+sink(x.get_value) # $ hasValueFlow=attr
+
+x = Foo.new
 y = []
 z = []
 # This just highlights that none of x,y,z was tainted before

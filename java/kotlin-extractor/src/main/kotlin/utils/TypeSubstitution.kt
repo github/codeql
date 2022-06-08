@@ -2,6 +2,7 @@ package com.github.codeql.utils
 
 import com.github.codeql.KotlinUsesExtractor
 import com.github.codeql.getJavaEquivalentClassId
+import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.createImplicitParameterDeclarationWithWrappedDescriptor
 import org.jetbrains.kotlin.backend.common.lower.parents
@@ -66,7 +67,7 @@ private fun subProjectedType(substitutionMap: Map<IrTypeParameterSymbol, IrTypeA
             if (conflictingVariance(outerVariance, substitutedTypeArg.variance))
                 IrStarProjectionImpl
             else {
-                val newProjectedType = substitutedTypeArg.type.let { if (t.hasQuestionMark) it.withHasQuestionMark(true) else it }
+                val newProjectedType = substitutedTypeArg.type.let { if (t.hasQuestionMark) it.codeQlWithHasQuestionMark(true) else it }
                 val newVariance = combineVariance(outerVariance, substitutedTypeArg.variance)
                 makeTypeProjection(newProjectedType, newVariance)
             }
@@ -191,7 +192,7 @@ fun IrTypeArgument.withQuestionMark(b: Boolean): IrTypeArgument =
         is IrStarProjection -> this
         is IrTypeProjection ->
             this.type.let { when(it) {
-                is IrSimpleType -> if (it.hasQuestionMark == b) this else makeTypeProjection(it.withHasQuestionMark(b), this.variance)
+                is IrSimpleType -> if (it.hasQuestionMark == b) this else makeTypeProjection(it.codeQlWithHasQuestionMark(b), this.variance)
                 else -> this
             }}
         else -> this
