@@ -58,6 +58,7 @@ private module Requests {
     ) {
       disablingNode = this.getKeywordParameter("verify").getARhs() and
       argumentOrigin = this.getKeywordParameter("verify").getAValueReachingRhs() and
+      // requests treats `None` as the default and all other "falsey" values as `False`.
       argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
       not argumentOrigin.asExpr() instanceof None
     }
