@@ -16,7 +16,7 @@
 
 <li>
   CERT Coding Standard:
-  <a href="https://wiki.sei.cmu.edu/confluence/display/c/MSC15-C.+Do+not+depend+on+undefined+behavior">MSC15-C. Do not depend on undefined behavior - SEI CERT C Coding Standard - Confluence</a>.
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/MEM04-C.+Beware+of+zero-length+allocations">MEM04-C. Beware of zero-length allocations - SEI CERT C Coding Standard - Confluence</a>.
 </li>
 
 </references>
