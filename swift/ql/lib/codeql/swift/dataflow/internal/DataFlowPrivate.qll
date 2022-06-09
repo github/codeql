@@ -261,7 +261,7 @@ private module OutNodes {
     }
 
     override DataFlowCallable getEnclosingCallable() {
-      result = TDataFlowFunc(getCall(_).getCfgNode().getScope())
+      result = TDataFlowFunc(this.getCall(_).getCfgNode().getScope())
     }
 
     override Location getLocationImpl() { result = call.getLocation() }
