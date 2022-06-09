@@ -38,9 +38,7 @@
 | test.swift:66:9:66:15 | WriteDef | test.swift:68:12:68:12 | temp |
 | test.swift:66:21:66:21 | arg1 | test.swift:66:9:66:15 | WriteDef |
 | test.swift:67:5:67:12 | WriteDef | test.swift:69:5:69:5 | arg1[return] |
-| test.swift:67:5:67:12 | WriteDef | test.swift:69:5:69:5 | arg2[return] |
 | test.swift:67:12:67:12 | arg2 | test.swift:67:5:67:12 | WriteDef |
-| test.swift:68:5:68:12 | WriteDef | test.swift:69:5:69:5 | arg1[return] |
 | test.swift:68:5:68:12 | WriteDef | test.swift:69:5:69:5 | arg2[return] |
 | test.swift:68:12:68:12 | temp | test.swift:68:5:68:12 | WriteDef |
 | test.swift:73:9:73:12 | WriteDef | test.swift:75:22:75:22 | x |

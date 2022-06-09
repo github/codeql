@@ -73,7 +73,12 @@ private module Cached {
     }
 
   private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
-    def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode())
+    def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode()) and
+    (
+      nodeTo instanceof InoutReturnNode
+      implies
+      nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable()
+    )
   }
 
   private predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
@@ -84,7 +89,12 @@ private module Cached {
       or
       // step from def to first read
       nodeFrom.asDefinition() = def and
-      nodeTo.getCfgNode() = def.getAFirstRead()
+      nodeTo.getCfgNode() = def.getAFirstRead() and
+      (
+        nodeTo instanceof InoutReturnNode
+        implies
+        nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable()
+      )
       or
       // use-use flow
       localSsaFlowStepUseUse(def, nodeFrom, nodeTo)
