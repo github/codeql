@@ -82,9 +82,7 @@ class SsaDefinitionNode extends Node, TSsaDefinitionNode {
 }
 
 class InoutReturnNode extends Node instanceof InoutReturnNodeImpl {
-
   ParamDecl getParameter() { result = super.getParameter() }
-
 }
 
 /**

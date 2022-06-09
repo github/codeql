@@ -37,9 +37,7 @@ class ParamReturnKind extends ReturnKind, TParamReturnKind {
 
   ParamReturnKind() { this = TParamReturnKind(index) }
 
-  int getIndex() {
-    result = index
-  }
+  int getIndex() { result = index }
 
   override string toString() { result = "param(" + index + ")" }
 }
@@ -51,9 +49,8 @@ class ParamReturnKind extends ReturnKind, TParamReturnKind {
 class DataFlowCallable extends TDataFlowCallable {
   AbstractFunctionDecl func;
 
-  DataFlowCallable() {
-    this = TDataFlowFunc(func)
-  }
+  DataFlowCallable() { this = TDataFlowFunc(func) }
+
   /** Gets a textual representation of this callable. */
   string toString() { result = func.toString() }
 

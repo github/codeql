@@ -72,7 +72,8 @@ module Ssa {
       )
     }
 
-    cached predicate isInoutDef(ExprCfgNode argument) {
+    cached
+    predicate isInoutDef(ExprCfgNode argument) {
       exists(
         CallExpr c, BasicBlock bb, int blockIndex, int argIndex, VarDecl v, InOutExpr argExpr // TODO: use CFG node for assignment expr
       |

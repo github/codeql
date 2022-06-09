@@ -1,6 +1,7 @@
 /**
  * @kind path-problem
  */
+
 import swift
 import codeql.swift.dataflow.DataFlow
 import DataFlow::PathGraph
