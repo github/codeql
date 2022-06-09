@@ -69,13 +69,13 @@ subpaths
 | test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  | test.swift:69:5:69:5 | arg1[return] :  | test.swift:75:5:75:33 | arg1 :  |
 | test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  | test.swift:69:5:69:5 | arg2[return] :  | test.swift:75:5:75:33 | arg2 :  |
 #select
-| test.swift:6:19:6:26 | call to source :  | test.swift:7:15:7:15 | t1 |
-| test.swift:6:19:6:26 | call to source :  | test.swift:9:15:9:15 | t1 |
-| test.swift:6:19:6:26 | call to source :  | test.swift:10:15:10:15 | t2 |
-| test.swift:25:20:25:27 | call to source :  | test.swift:30:15:30:15 | x |
-| test.swift:26:26:26:33 | call to source :  | test.swift:31:15:31:15 | y |
-| test.swift:35:12:35:19 | call to source :  | test.swift:39:15:39:29 | call to callee_source |
-| test.swift:43:19:43:26 | call to source :  | test.swift:50:15:50:15 | t |
-| test.swift:54:11:54:18 | call to source :  | test.swift:62:15:62:15 | x |
-| test.swift:73:18:73:25 | call to source :  | test.swift:76:15:76:15 | x |
-| test.swift:73:18:73:25 | call to source :  | test.swift:77:15:77:15 | y |
+| test.swift:7:15:7:15 | t1 | test.swift:6:19:6:26 | call to source :  | test.swift:7:15:7:15 | t1 | result |
+| test.swift:9:15:9:15 | t1 | test.swift:6:19:6:26 | call to source :  | test.swift:9:15:9:15 | t1 | result |
+| test.swift:10:15:10:15 | t2 | test.swift:6:19:6:26 | call to source :  | test.swift:10:15:10:15 | t2 | result |
+| test.swift:30:15:30:15 | x | test.swift:25:20:25:27 | call to source :  | test.swift:30:15:30:15 | x | result |
+| test.swift:31:15:31:15 | y | test.swift:26:26:26:33 | call to source :  | test.swift:31:15:31:15 | y | result |
+| test.swift:39:15:39:29 | call to callee_source | test.swift:35:12:35:19 | call to source :  | test.swift:39:15:39:29 | call to callee_source | result |
+| test.swift:50:15:50:15 | t | test.swift:43:19:43:26 | call to source :  | test.swift:50:15:50:15 | t | result |
+| test.swift:62:15:62:15 | x | test.swift:54:11:54:18 | call to source :  | test.swift:62:15:62:15 | x | result |
+| test.swift:76:15:76:15 | x | test.swift:73:18:73:25 | call to source :  | test.swift:76:15:76:15 | x | result |
+| test.swift:77:15:77:15 | y | test.swift:73:18:73:25 | call to source :  | test.swift:77:15:77:15 | y | result |
