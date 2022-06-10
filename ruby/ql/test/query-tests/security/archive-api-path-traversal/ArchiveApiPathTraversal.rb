@@ -1,11 +1,43 @@
 class TestContoller < ActionController::Base
   
+  # this is vulnerable
   def upload
     untar params[:file], params[:filename]
   end
 
+  # this is vulnerable
   def unpload_zip
     unzip params[:file]
+  end
+
+  # these are not vulnerable because of the string compare sanitizer
+  def safe_upload_string_compare
+    filename = params[:filename]
+    if filename == "safefile.tar"
+      untar params[:file], filename
+    end
+  end
+
+  def safe_upload_zip_string_compare
+    filename = params[:filename]
+    if filename == "safefile.zip"
+      unzip filename
+    end
+  end
+
+  # these are not vulnerable beacuse of the string array compare sanitizer
+  def safe_upload_string_array_compare
+    filename = params[:filename]
+    if ["safefile1.tar", "safefile2.tar"].include? filename
+      untar params[:file], filename
+    end
+  end
+
+  def safe_upload_zip_string_array_compare
+    filename = params[:filename]
+    if ["safefile1.zip", "safefile2.zip"].include? filename
+      unzip filename
+    end
   end
 
   def untar(io, destination)
