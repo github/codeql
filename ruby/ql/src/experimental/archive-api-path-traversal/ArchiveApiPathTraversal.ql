@@ -3,7 +3,7 @@
  * @description User-controlled data that flows into File I/O of archive libraries could be dangerous
  * @kind path-problem
  * @problem.severity error
- * @security-severity 7.0
+ * @security-severity 7.5
  * @precision medium
  * @id rb/user-controlled-path-traversal-archive-library
  * @tags security external/cwe/cwe-22
