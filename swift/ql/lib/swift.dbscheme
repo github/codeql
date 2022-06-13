@@ -2062,6 +2062,11 @@ param_decls(
   unique int id: @param_decl
 );
 
+#keyset[id]
+param_decl_is_inout(
+  int id: @param_decl ref
+);
+
 associated_type_decls(
   unique int id: @associated_type_decl
 );
