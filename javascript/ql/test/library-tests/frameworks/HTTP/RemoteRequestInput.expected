@@ -1,8 +1,8 @@
 | connect.js:6:5:6:11 | req.url | url |
 | connect.js:7:5:7:21 | req.cookies.get() | cookie |
 | express.js:12:5:12:19 | req.param("p1") | parameter |
-| express.js:13:5:13:17 | req.params.p2 | parameter |
-| express.js:14:5:14:16 | req.query.p3 | parameter |
+| express.js:13:5:13:14 | req.params | parameter |
+| express.js:14:5:14:13 | req.query | parameter |
 | express.js:15:5:15:12 | req.body | body |
 | express.js:16:5:16:11 | req.url | url |
 | express.js:17:5:17:19 | req.originalUrl | url |
@@ -15,7 +15,7 @@
 | hapi.js:8:9:8:24 | request.url.path | url |
 | hapi.js:9:9:9:26 | request.headers.p3 | header |
 | hapi.js:10:9:10:24 | request.state.p4 | cookie |
-| koa.js:6:5:6:24 | ctx.request.query.p1 | parameter |
+| koa.js:6:5:6:21 | ctx.request.query | parameter |
 | koa.js:7:5:7:20 | ctx.request.body | body |
 | koa.js:8:5:8:19 | ctx.request.url | url |
 | koa.js:9:5:9:27 | ctx.req ... inalUrl | url |

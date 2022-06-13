@@ -7,7 +7,7 @@
 			Sanitizing untrusted HTTP request parameters is a common
 			technique for preventing injection attacks such as SQL injection or
 			path traversal. This is sometimes done by checking if the request
-			parameters contain blacklisted substrings.
+			parameters contain blocklisted substrings.
 
 		</p>
 
