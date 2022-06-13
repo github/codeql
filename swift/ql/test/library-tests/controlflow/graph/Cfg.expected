@@ -5152,3 +5152,340 @@ cfg.swift:
 
 #  405| y
 #-----|  -> (...)
+
+#  409| (unnamed function decl)
+
+#  409| enter (unnamed function decl)
+#-----|  -> (unnamed function decl)
+
+#  409| enter get
+#-----|  -> get
+
+#  409| enter set
+#-----|  -> set
+
+#  409| exit (unnamed function decl)
+
+#  409| exit (unnamed function decl) (normal)
+#-----|  -> exit (unnamed function decl)
+
+#  409| exit get
+
+#  409| exit get (normal)
+#-----|  -> exit get
+
+#  409| exit set
+
+#  409| exit set (normal)
+#-----|  -> exit set
+
+#  409| get
+
+#  409| set
+#-----|  -> value
+
+#  409| value
+
+#  409| yield ...
+#-----|  -> exit (unnamed function decl) (normal)
+
+#  413| (unnamed function decl)
+
+#  413| enter (unnamed function decl)
+#-----|  -> (unnamed function decl)
+
+#  413| enter get
+#-----|  -> get
+
+#  413| enter set
+#-----|  -> set
+
+#  413| exit (unnamed function decl)
+
+#  413| exit (unnamed function decl) (normal)
+#-----|  -> exit (unnamed function decl)
+
+#  413| exit get
+
+#  413| exit get (normal)
+#-----|  -> exit get
+
+#  413| exit set
+
+#  413| exit set (normal)
+#-----|  -> exit set
+
+#  413| get
+
+#  413| set
+#-----|  -> value
+
+#  413| value
+
+#  413| yield ...
+#-----|  -> exit (unnamed function decl) (normal)
+
+#  414| (unnamed function decl)
+
+#  414| enter (unnamed function decl)
+#-----|  -> (unnamed function decl)
+
+#  414| enter get
+#-----|  -> get
+
+#  414| enter set
+#-----|  -> set
+
+#  414| exit (unnamed function decl)
+
+#  414| exit (unnamed function decl) (normal)
+#-----|  -> exit (unnamed function decl)
+
+#  414| exit get
+
+#  414| exit get (normal)
+#-----|  -> exit get
+
+#  414| exit set
+
+#  414| exit set (normal)
+#-----|  -> exit set
+
+#  414| get
+
+#  414| set
+#-----|  -> value
+
+#  414| value
+
+#  414| yield ...
+#-----|  -> exit (unnamed function decl) (normal)
+
+#  415| (unnamed function decl)
+
+#  415| enter (unnamed function decl)
+#-----|  -> (unnamed function decl)
+
+#  415| enter get
+#-----|  -> get
+
+#  415| enter set
+#-----|  -> set
+
+#  415| exit (unnamed function decl)
+
+#  415| exit (unnamed function decl) (normal)
+#-----|  -> exit (unnamed function decl)
+
+#  415| exit get
+
+#  415| exit get (normal)
+#-----|  -> exit get
+
+#  415| exit set
+
+#  415| exit set (normal)
+#-----|  -> exit set
+
+#  415| get
+
+#  415| set
+#-----|  -> value
+
+#  415| value
+
+#  415| yield ...
+#-----|  -> exit (unnamed function decl) (normal)
+
+#  418| enter test
+#-----|  -> test
+
+#  418| exit test
+
+#  418| exit test (normal)
+#-----|  -> exit test
+
+#  418| test
+#-----|  -> a
+
+#  418| a
+#-----|  -> kpGet_b_x
+
+#  419| var ... = ...
+#-----|  -> kpGet_b_x
+
+#  419| kpGet_b_x
+#-----| match -> #keyPath(...)
+
+#  419| kpGet_b_x
+#-----|  -> kpGet_bs_0_x
+
+#  419| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  419| enter #keyPath(...)
+#-----|  -> TBD (UnresolvedDotExpr)
+
+#  419| exit #keyPath(...)
+
+#  419| exit #keyPath(...) (normal)
+#-----|  -> exit #keyPath(...)
+
+#  419| TBD (UnresolvedDotExpr)
+#-----|  -> exit #keyPath(...) (normal)
+
+#  420| var ... = ...
+#-----|  -> kpGet_bs_0_x
+
+#  420| kpGet_bs_0_x
+#-----| match -> #keyPath(...)
+
+#  420| kpGet_bs_0_x
+#-----|  -> kpGet_mayB_force_x
+
+#  420| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  420| enter #keyPath(...)
+#-----|  -> TBD (UnresolvedDotExpr)
+
+#  420| exit #keyPath(...)
+
+#  420| exit #keyPath(...) (normal)
+#-----|  -> exit #keyPath(...)
+
+#  420| TBD (UnresolvedDotExpr)
+#-----|  -> exit #keyPath(...) (normal)
+
+#  421| var ... = ...
+#-----|  -> kpGet_mayB_force_x
+
+#  421| kpGet_mayB_force_x
+#-----| match -> #keyPath(...)
+
+#  421| kpGet_mayB_force_x
+#-----|  -> kpGet_mayB_x
+
+#  421| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  421| enter #keyPath(...)
+#-----|  -> TBD (UnresolvedDotExpr)
+
+#  421| exit #keyPath(...)
+
+#  421| exit #keyPath(...) (normal)
+#-----|  -> exit #keyPath(...)
+
+#  421| TBD (UnresolvedDotExpr)
+#-----|  -> exit #keyPath(...) (normal)
+
+#  422| var ... = ...
+#-----|  -> kpGet_mayB_x
+
+#  422| kpGet_mayB_x
+#-----| match -> #keyPath(...)
+
+#  422| kpGet_mayB_x
+#-----|  -> apply_kpGet_b_x
+
+#  422| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  422| enter #keyPath(...)
+#-----|  -> TBD (UnresolvedDotExpr)
+
+#  422| exit #keyPath(...)
+
+#  422| exit #keyPath(...) (normal)
+#-----|  -> exit #keyPath(...)
+
+#  422| OptionalEvaluationExpr
+#-----|  -> exit #keyPath(...) (normal)
+
+#  422| TBD (UnresolvedDotExpr)
+#-----|  -> OptionalEvaluationExpr
+
+#  424| var ... = ...
+#-----|  -> apply_kpGet_b_x
+
+#  424| apply_kpGet_b_x
+#-----| match -> a
+
+#  424| apply_kpGet_b_x
+#-----|  -> apply_kpGet_bs_0_x
+
+#  424| a
+#-----|  -> kpGet_b_x
+
+#  424| \...[...]
+#-----|  -> var ... = ...
+
+#  424| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  424| kpGet_b_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  425| var ... = ...
+#-----|  -> apply_kpGet_bs_0_x
+
+#  425| apply_kpGet_bs_0_x
+#-----| match -> a
+
+#  425| apply_kpGet_bs_0_x
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  425| a
+#-----|  -> kpGet_bs_0_x
+
+#  425| \...[...]
+#-----|  -> var ... = ...
+
+#  425| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  425| kpGet_bs_0_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  426| var ... = ...
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  426| apply_kpGet_mayB_force_x
+#-----| match -> a
+
+#  426| apply_kpGet_mayB_force_x
+#-----|  -> apply_kpGet_mayB_x
+
+#  426| a
+#-----|  -> kpGet_mayB_force_x
+
+#  426| \...[...]
+#-----|  -> var ... = ...
+
+#  426| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  426| kpGet_mayB_force_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  427| var ... = ...
+#-----|  -> apply_kpGet_mayB_x
+
+#  427| apply_kpGet_mayB_x
+#-----| match -> a
+
+#  427| apply_kpGet_mayB_x
+#-----|  -> exit test (normal)
+
+#  427| a
+#-----|  -> kpGet_mayB_x
+
+#  427| \...[...]
+#-----|  -> var ... = ...
+
+#  427| (KeyPath<A, Int?>) ...
+#-----|  -> \...[...]
+
+#  427| kpGet_mayB_x
+#-----|  -> (KeyPath<A, Int?>) ...

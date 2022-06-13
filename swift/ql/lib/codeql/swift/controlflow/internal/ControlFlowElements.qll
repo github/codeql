@@ -10,7 +10,8 @@ newtype TControlFlowElement =
   } or
   TPropertyObserverElement(AccessorDecl observer, AssignExpr assign) {
     isPropertyObserverElement(observer, assign)
-  }
+  } or
+  TKeyPathElement(KeyPathExpr expr)
 
 predicate isLValue(Expr e) { any(AssignExpr assign).getDest() = e }
 
@@ -171,4 +172,18 @@ class FuncDeclElement extends ControlFlowElement, TFuncDeclElement {
   override string toString() { result = func.toString() }
 
   override Location getLocation() { result = func.getLocation() }
+
+  AbstractFunctionDecl getAst() { result = func }
+}
+
+class KeyPathElement extends ControlFlowElement, TKeyPathElement {
+  KeyPathExpr expr;
+
+  KeyPathElement() { this = TKeyPathElement(expr) }
+
+  override Location getLocation() { result = expr.getLocation() }
+
+  KeyPathExpr getAst() { result = expr }
+
+  override string toString() { result = expr.toString() }
 }
