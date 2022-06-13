@@ -278,7 +278,7 @@ cfg.swift:
 #-----|  -> withParam
 
 #   35| let ...
-#-----| no-match -> ... is ...
+#-----| match -> ... is ...
 
 #   35| withParam
 #-----| match -> let ...
@@ -338,7 +338,6 @@ cfg.swift:
 
 #   39| let ...
 #-----| match -> print
-#-----| no-match -> 0
 
 #   39| let ...
 #-----|  -> error
@@ -475,7 +474,7 @@ cfg.swift:
 #-----|  -> x1
 
 #   65| x1
-#-----| no-match -> createClosure1
+#-----| match -> createClosure1
 
 #   65| x1
 #-----|  -> x2
@@ -496,7 +495,7 @@ cfg.swift:
 #-----|  -> x2
 
 #   66| x2
-#-----| no-match -> createClosure2
+#-----| match -> createClosure2
 
 #   66| x2
 #-----|  -> x3
@@ -520,7 +519,7 @@ cfg.swift:
 #-----|  -> x3
 
 #   67| x3
-#-----| no-match -> createClosure3
+#-----| match -> createClosure3
 
 #   67| x3
 #-----|  -> exit callClosures (normal)
@@ -558,13 +557,13 @@ cfg.swift:
 #-----|  -> n
 
 #   71| n
-#-----| no-match -> ... as ...
+#-----| match -> ... as ...
 
 #   71| n
 #-----|  -> n
 
 #   71| ... as ...
-#-----| no-match -> init
+#-----| match -> init
 
 #   71| Int.Type
 #-----|  -> call to ...
@@ -605,7 +604,7 @@ cfg.swift:
 #-----|  -> nBang
 
 #   76| nBang
-#-----| no-match -> maybeParseInt
+#-----| match -> maybeParseInt
 
 #   76| nBang
 #-----|  -> n
@@ -626,7 +625,7 @@ cfg.swift:
 #-----|  -> n
 
 #   77| n
-#-----| no-match -> maybeParseInt
+#-----| match -> maybeParseInt
 
 #   77| n
 #-----|  -> +
@@ -683,7 +682,7 @@ cfg.swift:
 #-----|  -> temp
 
 #   82| temp
-#-----| no-match -> 10
+#-----| match -> 10
 
 #   82| temp
 
@@ -851,7 +850,7 @@ cfg.swift:
 #-----|  -> c
 
 #  110| c
-#-----| no-match -> init
+#-----| match -> init
 
 #  110| c
 #-----|  -> n1
@@ -875,7 +874,7 @@ cfg.swift:
 #-----|  -> n1
 
 #  111| n1
-#-----| no-match -> c
+#-----| match -> c
 
 #  111| n1
 #-----|  -> n2
@@ -890,8 +889,8 @@ cfg.swift:
 #-----|  -> n2
 
 #  112| n2
-#-----| no-match -> .self
-#-----| no-match -> TBD (DotSelfExpr)
+#-----| match -> .self
+#-----| match -> TBD (DotSelfExpr)
 
 #  112| n2
 #-----|  -> n3
@@ -909,7 +908,7 @@ cfg.swift:
 #-----|  -> n3
 
 #  113| n3
-#-----| no-match -> getMyInt
+#-----| match -> getMyInt
 
 #  113| n3
 #-----|  -> n4
@@ -930,7 +929,7 @@ cfg.swift:
 #-----|  -> n4
 
 #  114| n4
-#-----| no-match -> getMyInt
+#-----| match -> getMyInt
 
 #  114| n4
 #-----|  -> n5
@@ -955,7 +954,7 @@ cfg.swift:
 #-----|  -> n5
 
 #  116| n5
-#-----| no-match -> param
+#-----| match -> param
 
 #  116| n5
 #-----|  -> n6
@@ -970,8 +969,8 @@ cfg.swift:
 #-----|  -> n6
 
 #  117| n6
-#-----| no-match -> .self
-#-----| no-match -> TBD (DotSelfExpr)
+#-----| match -> .self
+#-----| match -> TBD (DotSelfExpr)
 
 #  117| n6
 #-----|  -> n7
@@ -989,7 +988,7 @@ cfg.swift:
 #-----|  -> n7
 
 #  118| n7
-#-----| no-match -> getMyInt
+#-----| match -> getMyInt
 
 #  118| n7
 #-----|  -> n8
@@ -1010,7 +1009,7 @@ cfg.swift:
 #-----|  -> n8
 
 #  119| n8
-#-----| no-match -> getMyInt
+#-----| match -> getMyInt
 
 #  119| n8
 #-----|  -> n9
@@ -1035,7 +1034,7 @@ cfg.swift:
 #-----|  -> n9
 
 #  121| n9
-#-----| no-match -> inoutParam
+#-----| match -> inoutParam
 
 #  121| n9
 #-----|  -> n10
@@ -1053,8 +1052,8 @@ cfg.swift:
 #-----|  -> n10
 
 #  122| n10
-#-----| no-match -> .self
-#-----| no-match -> TBD (DotSelfExpr)
+#-----| match -> .self
+#-----| match -> TBD (DotSelfExpr)
 
 #  122| n10
 #-----|  -> n11
@@ -1075,7 +1074,7 @@ cfg.swift:
 #-----|  -> n11
 
 #  123| n11
-#-----| no-match -> getMyInt
+#-----| match -> getMyInt
 
 #  123| n11
 #-----|  -> n12
@@ -1099,7 +1098,7 @@ cfg.swift:
 #-----|  -> n12
 
 #  124| n12
-#-----| no-match -> getMyInt
+#-----| match -> getMyInt
 
 #  124| n12
 #-----|  -> n13
@@ -1127,7 +1126,7 @@ cfg.swift:
 #-----|  -> n13
 
 #  126| n13
-#-----| no-match -> opt
+#-----| match -> opt
 
 #  126| n13
 #-----|  -> n14
@@ -1145,8 +1144,8 @@ cfg.swift:
 #-----|  -> n14
 
 #  127| n14
-#-----| no-match -> .self
-#-----| no-match -> TBD (DotSelfExpr)
+#-----| match -> .self
+#-----| match -> TBD (DotSelfExpr)
 
 #  127| n14
 #-----|  -> n15
@@ -1164,7 +1163,7 @@ cfg.swift:
 #-----|  -> n15
 
 #  128| n15
-#-----| no-match -> getMyInt
+#-----| match -> getMyInt
 
 #  128| n15
 #-----|  -> n16
@@ -1188,7 +1187,7 @@ cfg.swift:
 #-----|  -> n16
 
 #  129| n16
-#-----| no-match -> getMyInt
+#-----| match -> getMyInt
 
 #  129| n16
 #-----|  -> n17
@@ -1213,7 +1212,7 @@ cfg.swift:
 #-----|  -> n17
 
 #  131| n17
-#-----| no-match -> opt
+#-----| match -> opt
 
 #  131| n17
 #-----|  -> n18
@@ -1237,8 +1236,8 @@ cfg.swift:
 #-----|  -> n18
 
 #  132| n18
-#-----| no-match -> .self
-#-----| no-match -> TBD (DotSelfExpr)
+#-----| match -> .self
+#-----| match -> TBD (DotSelfExpr)
 
 #  132| n18
 #-----|  -> n19
@@ -1262,7 +1261,7 @@ cfg.swift:
 #-----|  -> n19
 
 #  133| n19
-#-----| no-match -> getMyInt
+#-----| match -> getMyInt
 
 #  133| n19
 #-----|  -> n20
@@ -1292,7 +1291,7 @@ cfg.swift:
 #-----|  -> n20
 
 #  134| n20
-#-----| no-match -> getMyInt
+#-----| match -> getMyInt
 
 #  134| n20
 #-----|  -> exit testMemberRef (normal)
@@ -1338,7 +1337,7 @@ cfg.swift:
 #-----| empty -> switch x { ... }
 
 #  138| _
-#-----| no-match -> { ... }
+#-----| match -> { ... }
 
 #  138| 0
 #-----|  -> 10
@@ -2270,7 +2269,7 @@ cfg.swift:
 #-----|  -> c
 
 #  244| c
-#-----| no-match -> +
+#-----| match -> +
 
 #  244| c
 #-----|  -> d
@@ -2297,7 +2296,7 @@ cfg.swift:
 #-----|  -> d
 
 #  245| d
-#-----| no-match -> -
+#-----| match -> -
 
 #  245| d
 #-----|  -> e
@@ -2324,7 +2323,7 @@ cfg.swift:
 #-----|  -> e
 
 #  246| e
-#-----| no-match -> *
+#-----| match -> *
 
 #  246| e
 #-----|  -> f
@@ -2351,7 +2350,7 @@ cfg.swift:
 #-----|  -> f
 
 #  247| f
-#-----| no-match -> /
+#-----| match -> /
 
 #  247| f
 #-----|  -> g
@@ -2378,7 +2377,7 @@ cfg.swift:
 #-----|  -> g
 
 #  248| g
-#-----| no-match -> %
+#-----| match -> %
 
 #  248| g
 #-----|  -> h
@@ -2405,7 +2404,7 @@ cfg.swift:
 #-----|  -> h
 
 #  249| h
-#-----| no-match -> &
+#-----| match -> &
 
 #  249| h
 #-----|  -> i
@@ -2432,7 +2431,7 @@ cfg.swift:
 #-----|  -> i
 
 #  250| i
-#-----| no-match -> |
+#-----| match -> |
 
 #  250| i
 #-----|  -> j
@@ -2459,7 +2458,7 @@ cfg.swift:
 #-----|  -> j
 
 #  251| j
-#-----| no-match -> ^
+#-----| match -> ^
 
 #  251| j
 #-----|  -> k
@@ -2486,7 +2485,7 @@ cfg.swift:
 #-----|  -> k
 
 #  252| k
-#-----| no-match -> <<
+#-----| match -> <<
 
 #  252| k
 #-----|  -> l
@@ -2513,7 +2512,7 @@ cfg.swift:
 #-----|  -> l
 
 #  253| l
-#-----| no-match -> >>
+#-----| match -> >>
 
 #  253| l
 #-----|  -> o
@@ -2540,7 +2539,7 @@ cfg.swift:
 #-----|  -> o
 
 #  254| o
-#-----| no-match -> ==
+#-----| match -> ==
 
 #  254| o
 #-----|  -> p
@@ -2567,7 +2566,7 @@ cfg.swift:
 #-----|  -> p
 
 #  255| p
-#-----| no-match -> !=
+#-----| match -> !=
 
 #  255| p
 #-----|  -> q
@@ -2594,7 +2593,7 @@ cfg.swift:
 #-----|  -> q
 
 #  256| q
-#-----| no-match -> <
+#-----| match -> <
 
 #  256| q
 #-----|  -> r
@@ -2621,7 +2620,7 @@ cfg.swift:
 #-----|  -> r
 
 #  257| r
-#-----| no-match -> <=
+#-----| match -> <=
 
 #  257| r
 #-----|  -> s
@@ -2648,7 +2647,7 @@ cfg.swift:
 #-----|  -> s
 
 #  258| s
-#-----| no-match -> >
+#-----| match -> >
 
 #  258| s
 #-----|  -> t
@@ -2675,7 +2674,7 @@ cfg.swift:
 #-----|  -> t
 
 #  259| t
-#-----| no-match -> >=
+#-----| match -> >=
 
 #  259| t
 #-----|  -> exit binaryExprs (normal)
@@ -2736,7 +2735,7 @@ cfg.swift:
 #-----|  -> a
 
 #  267| a
-#-----| no-match -> 0
+#-----| match -> 0
 
 #  267| a
 #-----|  -> a
@@ -3099,7 +3098,7 @@ cfg.swift:
 #-----|  -> tupleWithA
 
 #  280| tupleWithA
-#-----| no-match -> a
+#-----| match -> a
 
 #  280| tupleWithA
 #-----|  -> b
@@ -3186,7 +3185,7 @@ cfg.swift:
 #-----|  -> b
 
 #  282| b
-#-----| no-match -> 0
+#-----| match -> 0
 
 #  282| b
 #-----|  -> b
@@ -3718,34 +3717,30 @@ cfg.swift:
 
 #  295| a1
 #-----| match -> a2
-#-----| no-match -> tupleWithA
 
 #  295| a1
 #-----|  -> a2
 
 #  295| a2
 #-----| match -> a3
-#-----| no-match -> tupleWithA
 
 #  295| a2
 #-----|  -> a3
 
 #  295| a3
 #-----| match -> a4
-#-----| no-match -> tupleWithA
 
 #  295| a3
 #-----|  -> a4
 
 #  295| a4
 #-----| match -> a5
-#-----| no-match -> tupleWithA
 
 #  295| a4
 #-----|  -> a5
 
 #  295| a5
-#-----| no-match -> tupleWithA
+#-----| match -> tupleWithA
 
 #  295| a5
 #-----|  -> +
@@ -4564,7 +4559,7 @@ cfg.swift:
 #-----|  -> x
 
 #  346| x
-#-----| no-match -> 0
+#-----| match -> 0
 
 #  346| x
 #-----|  -> while ... { ... }
@@ -4777,7 +4772,7 @@ cfg.swift:
 #-----|  -> { ... }
 
 #  368| z
-#-----| no-match -> +
+#-----| match -> +
 
 #  368| var ... = ...
 #-----|  -> t
@@ -4801,7 +4796,7 @@ cfg.swift:
 #-----|  -> ... call to + ...
 
 #  368| t
-#-----| no-match -> literal
+#-----| match -> literal
 
 #  368| var ... = ...
 #-----|  -> { ... }
