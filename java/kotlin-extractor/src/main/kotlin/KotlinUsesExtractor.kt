@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
+import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.*
@@ -379,17 +380,18 @@ open class KotlinUsesExtractor(
         } ?: c
     }
 
-    fun tryReplaceAndroidSyntheticFunction(f: IrSimpleFunction): IrSimpleFunction {
+    private fun tryReplaceFunctionInSyntheticClass(f: IrFunction, getClassReplacement: (IrClass) -> IrClass): IrFunction {
         val parentClass = f.parent as? IrClass ?: return f
-        val replacementClass = tryReplaceAndroidSyntheticClass(parentClass)
+        val replacementClass = getClassReplacement(parentClass) //tryReplaceAndroidSyntheticClass(parentClass)
         if (replacementClass === parentClass)
             return f
         return globalExtensionState.syntheticToRealFunctionMap.getOrPut(f) {
             val result = replacementClass.declarations.find { replacementDecl ->
-                replacementDecl is IrSimpleFunction && replacementDecl.name == f.name && replacementDecl.valueParameters.zip(f.valueParameters).all {
-                    it.first.type == it.second.type
+                replacementDecl is IrSimpleFunction && replacementDecl.name == f.name && replacementDecl.valueParameters.size == f.valueParameters.size && replacementDecl.valueParameters.zip(f.valueParameters).all {
+                    it.first.type == it.second.type ||
+                    erase(it.first.type) == it.second.type
                 }
-            } as IrSimpleFunction?
+            } as IrFunction?
             if (result == null) {
                 logger.warn("Failed to replace synthetic class function ${f.name}")
             } else {
@@ -397,6 +399,17 @@ open class KotlinUsesExtractor(
             }
             result
         } ?: f
+    }
+
+    fun tryReplaceSyntheticFunction(f: IrFunction): IrFunction {
+        val androidReplacement = tryReplaceFunctionInSyntheticClass(f) { tryReplaceAndroidSyntheticClass(it) }
+        val parcelizeReplacement = tryReplaceFunctionInSyntheticClass(androidReplacement) { tryReplaceParcelizeRawType(it)?.first ?: it }
+        return if (parcelizeReplacement !== androidReplacement) {
+            // The Parcelize plugin uses synthetic function symbols. These are being replaced, and we're not returning fake overrides, but their override target.
+            parcelizeReplacement.realOverrideTarget
+        } else {
+            parcelizeReplacement
+        }
     }
 
     fun tryReplaceAndroidSyntheticField(f: IrField): IrField {
@@ -492,6 +505,27 @@ open class KotlinUsesExtractor(
 
             else -> null
         }
+    }
+
+    private fun tryReplaceParcelizeFunction(f: IrFunction): IrFunction {
+        val parentClass = f.parent as? IrClass ?: return f
+
+        if (parentClass.fqNameWhenAvailable == null ||
+            parentClass.fqNameWhenAvailable!!.asString() != "android.os.Parcel" ||
+            f.name.asString() != "readParcelable") {
+            return f
+        }
+
+        // `android.os.Parcel.readParcelable` is generic, but Parcelize uses a non-generic function symbol, so we're trying to replace it:
+
+        val replacedClass = pluginContext.referenceClass(parentClass.fqNameWhenAvailable!!)?.owner ?: return f
+        val replacedFunction = replacedClass.declarations.find { it is IrFunction && it.name == f.name } as IrFunction?
+        if (replacedFunction == null) {
+            logger.warn("Failed to replace android.os.Parcel.readParcelable function")
+            return f
+        }
+
+        return replacedFunction
     }
 
     fun useAnonymousClass(c: IrClass) =
@@ -1218,12 +1252,18 @@ open class KotlinUsesExtractor(
                 }
             } as IrFunction? ?: f
 
+    private fun replaceFunction(f: IrFunction, noReplace: Boolean = false): IrFunction {
+        val realFunction = kotlinFunctionToJavaEquivalent(f, noReplace)
+        // Parcelize replacement needs to happen regardless of `noReplace`
+        return tryReplaceParcelizeFunction(realFunction)
+    }
+
     fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
         if (f.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(f)
             return ids.function.cast<T>()
         } else {
-            val realFunction = kotlinFunctionToJavaEquivalent(f, noReplace)
+            val realFunction = replaceFunction(f, noReplace)
             return useFunctionCommon<T>(realFunction, getFunctionLabel(realFunction, classTypeArgsIncludingOuterClasses))
         }
     }
