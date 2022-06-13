@@ -11,11 +11,10 @@
     sink(arr[i]); // NOT OK
   }
 
-
   arr.forEach((e) => sink(e)); // NOT OK
   arr.map((e) => sink(e)); // NOT OK
 
-  [1, 2, 3].map(i => "source").forEach(e => sink(e)); // NOT OK.
+  [1, 2, 3].map((i) => "source").forEach((e) => sink(e)); // NOT OK.
 
   sink(arr.pop()); // NOT OK
 
@@ -40,13 +39,12 @@
   }
   sink(arr6.pop()); // NOT OK
 
-
   ["source"].forEach((e, i, ary) => {
     sink(ary.pop()); // NOT OK
     sink(ary); // OK - its the array itself, not an element.
   });
 
-  sink(arr[0]); // OK - tuple like usage. 
+  sink(arr[0]); // OK - tuple like usage.
 
   for (const x of arr) {
     sink(x); // NOT OK
@@ -59,7 +57,7 @@
   for (const x of [...arr]) {
     sink(x); // NOT OK
   }
-  
+
   var arr7 = [];
   arr7.push(...arr);
   for (const x of arr7) {
@@ -82,4 +80,7 @@
   }
 
   sink(arr.at(-1)); // NOT OK
+
+  sink(["source"].filter((x) => x)); // NOT OK
+  sink(["source"].filter((x) => !!x)); // NOT OK
 });
