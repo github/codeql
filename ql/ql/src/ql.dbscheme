@@ -601,13 +601,11 @@ ql_member_predicate_def(
   int return_type: @ql_memberPredicate_returnType_type ref
 );
 
-@ql_module_implements_type = @ql_reserved_word | @ql_signature_expr
-
 #keyset[ql_module, index]
 ql_module_implements(
   int ql_module: @ql_module ref,
   int index: int ref,
-  unique int implements: @ql_module_implements_type ref
+  unique int implements: @ql_signature_expr ref
 );
 
 #keyset[ql_module, index]

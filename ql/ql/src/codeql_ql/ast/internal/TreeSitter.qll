@@ -945,7 +945,7 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Module" }
 
     /** Gets the node corresponding to the field `implements`. */
-    final AstNode getImplements(int i) { ql_module_implements(this, i, result) }
+    final SignatureExpr getImplements(int i) { ql_module_implements(this, i, result) }
 
     /** Gets the node corresponding to the field `name`. */
     final ModuleName getName() { ql_module_def(this, result) }
