@@ -288,12 +288,16 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
 module CsvValidation {
   /** Holds if some row in a CSV-based flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
-    exists(string pred, string namespace, string type, string name, string signature, string ext |
-      sourceModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "source"
+    exists(
+      string pred, string namespace, string type, string name, string signature, string ext,
+      string provenance
+    |
+      sourceModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "source"
       or
-      sinkModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "sink"
+      sinkModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "sink"
       or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "summary"
+      summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
+      pred = "summary"
     |
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
@@ -309,6 +313,9 @@ module CsvValidation {
       or
       not ext.regexpMatch("|Attribute") and
       msg = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
+      or
+      not provenance = ["manual", "generated"] and
+      msg = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
     or
     exists(string pred, AccessPath input, string part |
