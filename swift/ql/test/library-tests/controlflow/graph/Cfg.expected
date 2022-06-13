@@ -5154,8 +5154,6 @@ cfg.swift:
 #-----|  -> (...)
 
 #  409| (unnamed function decl)
-#-----|  -> yield ...
-#-----|  -> TBD (YieldStmt)
 
 #  409| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5191,12 +5189,7 @@ cfg.swift:
 #  409| yield ...
 #-----|  -> exit (unnamed function decl) (normal)
 
-#  409| TBD (YieldStmt)
-#-----|  -> exit (unnamed function decl) (normal)
-
 #  413| (unnamed function decl)
-#-----|  -> yield ...
-#-----|  -> TBD (YieldStmt)
 
 #  413| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5232,12 +5225,7 @@ cfg.swift:
 #  413| yield ...
 #-----|  -> exit (unnamed function decl) (normal)
 
-#  413| TBD (YieldStmt)
-#-----|  -> exit (unnamed function decl) (normal)
-
 #  414| (unnamed function decl)
-#-----|  -> yield ...
-#-----|  -> TBD (YieldStmt)
 
 #  414| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5273,12 +5261,7 @@ cfg.swift:
 #  414| yield ...
 #-----|  -> exit (unnamed function decl) (normal)
 
-#  414| TBD (YieldStmt)
-#-----|  -> exit (unnamed function decl) (normal)
-
 #  415| (unnamed function decl)
-#-----|  -> yield ...
-#-----|  -> TBD (YieldStmt)
 
 #  415| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5314,9 +5297,6 @@ cfg.swift:
 #  415| yield ...
 #-----|  -> exit (unnamed function decl) (normal)
 
-#  415| TBD (YieldStmt)
-#-----|  -> exit (unnamed function decl) (normal)
-
 #  418| enter test
 #-----|  -> test
 
@@ -5335,7 +5315,7 @@ cfg.swift:
 #-----|  -> kpGet_b_x
 
 #  419| kpGet_b_x
-#-----|  -> #keyPath(...)
+#-----| match -> #keyPath(...)
 
 #  419| kpGet_b_x
 #-----|  -> kpGet_bs_0_x
@@ -5358,7 +5338,7 @@ cfg.swift:
 #-----|  -> kpGet_bs_0_x
 
 #  420| kpGet_bs_0_x
-#-----|  -> #keyPath(...)
+#-----| match -> #keyPath(...)
 
 #  420| kpGet_bs_0_x
 #-----|  -> kpGet_mayB_force_x
@@ -5381,7 +5361,7 @@ cfg.swift:
 #-----|  -> kpGet_mayB_force_x
 
 #  421| kpGet_mayB_force_x
-#-----|  -> #keyPath(...)
+#-----| match -> #keyPath(...)
 
 #  421| kpGet_mayB_force_x
 #-----|  -> kpGet_mayB_x
@@ -5404,7 +5384,7 @@ cfg.swift:
 #-----|  -> kpGet_mayB_x
 
 #  422| kpGet_mayB_x
-#-----|  -> #keyPath(...)
+#-----| match -> #keyPath(...)
 
 #  422| kpGet_mayB_x
 #-----|  -> apply_kpGet_b_x
@@ -5430,7 +5410,7 @@ cfg.swift:
 #-----|  -> apply_kpGet_b_x
 
 #  424| apply_kpGet_b_x
-#-----|  -> a
+#-----| match -> a
 
 #  424| apply_kpGet_b_x
 #-----|  -> apply_kpGet_bs_0_x
@@ -5451,7 +5431,7 @@ cfg.swift:
 #-----|  -> apply_kpGet_bs_0_x
 
 #  425| apply_kpGet_bs_0_x
-#-----|  -> a
+#-----| match -> a
 
 #  425| apply_kpGet_bs_0_x
 #-----|  -> apply_kpGet_mayB_force_x
@@ -5472,7 +5452,7 @@ cfg.swift:
 #-----|  -> apply_kpGet_mayB_force_x
 
 #  426| apply_kpGet_mayB_force_x
-#-----|  -> a
+#-----| match -> a
 
 #  426| apply_kpGet_mayB_force_x
 #-----|  -> apply_kpGet_mayB_x
@@ -5493,7 +5473,7 @@ cfg.swift:
 #-----|  -> apply_kpGet_mayB_x
 
 #  427| apply_kpGet_mayB_x
-#-----|  -> a
+#-----| match -> a
 
 #  427| apply_kpGet_mayB_x
 #-----|  -> exit test (normal)
