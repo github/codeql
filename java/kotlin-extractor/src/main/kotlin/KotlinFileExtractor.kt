@@ -4054,17 +4054,14 @@ open class KotlinFileExtractor(
                     }
 
                     val typeOwner = e.typeOperandClassifier.owner
-                    val samMember = if (typeOwner !is IrClass) {
+                    if (typeOwner !is IrClass) {
                         logger.errorElement("Expected to find SAM conversion to IrClass. Found '${typeOwner.javaClass}' instead. Can't implement SAM interface.", e)
                         return
-                    } else {
-                        val samMember = typeOwner.declarations.filterIsInstance<IrFunction>().find { it is IrOverridableMember && it.modality == Modality.ABSTRACT }
-                        if (samMember == null) {
-                            logger.errorElement("Couldn't find SAM member in type '${typeOwner.kotlinFqName.asString()}'. Can't implement SAM interface.", e)
-                            return
-                        } else {
-                            samMember
-                        }
+                    }
+                    val samMember = typeOwner.declarations.filterIsInstance<IrFunction>().find { it is IrOverridableMember && it.modality == Modality.ABSTRACT }
+                    if (samMember == null) {
+                        logger.errorElement("Couldn't find SAM member in type '${typeOwner.kotlinFqName.asString()}'. Can't implement SAM interface.", e)
+                        return
                     }
 
                     val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
