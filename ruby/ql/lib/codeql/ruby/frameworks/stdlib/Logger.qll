@@ -35,7 +35,7 @@ module Logger {
 
   /**
    * An instantiation of a logger that responds to the std lib logging methods.
-   * This can be extended to recognise additional instances that conform to the
+   * This can be extended to recognize additional instances that conform to the
    * same interface.
    */
   abstract class LoggerInstantiation extends DataFlow::Node { }
