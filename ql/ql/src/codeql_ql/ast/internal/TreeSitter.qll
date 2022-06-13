@@ -977,18 +977,6 @@ module QL {
     final override AstNode getAFieldOrChild() { ql_module_alias_body_def(this, result) }
   }
 
-  /** A class representing `moduleApplication` nodes. */
-  class ModuleApplication extends @ql_module_application, AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "ModuleApplication" }
-
-    /** Gets the `i`th child of this node. */
-    final SignatureExpr getChild(int i) { ql_module_application_child(this, i, result) }
-
-    /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_module_application_child(this, _, result) }
-  }
-
   /** A class representing `moduleExpr` nodes. */
   class ModuleExpr extends @ql_module_expr, AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -1004,6 +992,18 @@ module QL {
     final override AstNode getAFieldOrChild() {
       ql_module_expr_name(this, result) or ql_module_expr_def(this, result)
     }
+  }
+
+  /** A class representing `moduleInstantiation` nodes. */
+  class ModuleInstantiation extends @ql_module_instantiation, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ModuleInstantiation" }
+
+    /** Gets the `i`th child of this node. */
+    final SignatureExpr getChild(int i) { ql_module_instantiation_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { ql_module_instantiation_child(this, _, result) }
   }
 
   /** A class representing `moduleMember` nodes. */
