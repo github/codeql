@@ -62,6 +62,10 @@
  *    sources "remote" indicates a default remote flow source, and for summaries
  *    "taint" indicates a default additional taint step and "value" indicates a
  *    globally applicable value-preserving step.
+ * 9. The `provenance` column is tag to indicate the origin of the summary.
+ *    There are two supported values: "generated" and "manual". "generated" means that
+ *    the model has been emitted by the model generator tool and "manual" means
+ *    that the model has been written by hand.
  */
 
 import java
@@ -415,17 +419,10 @@ private predicate summaryModel(string row) {
   any(SummaryModelCsv s).row(row)
 }
 
-bindingset[input]
-private predicate getKind(string input, string kind, boolean generated) {
-  input.splitAt(":", 0) = "generated" and kind = input.splitAt(":", 1) and generated = true
-  or
-  not input.matches("%:%") and kind = input and generated = false
-}
-
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, boolean generated
+  string output, string kind, string provenance
 ) {
   exists(string row |
     sourceModel(row) and
@@ -437,14 +434,15 @@ predicate sourceModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = output and
-    exists(string k | row.splitAt(";", 7) = k and getKind(k, kind, generated))
+    row.splitAt(";", 7) = kind and
+    row.splitAt(";", 8) = provenance
   )
 }
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, boolean generated
+  string input, string kind, string provenance
 ) {
   exists(string row |
     sinkModel(row) and
@@ -456,22 +454,23 @@ predicate sinkModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
-    exists(string k | row.splitAt(";", 7) = k and getKind(k, kind, generated))
+    row.splitAt(";", 7) = kind and
+    row.splitAt(";", 8) = provenance
   )
 }
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, boolean generated
+  string input, string output, string kind, string provenance
 ) {
-  summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, generated, _)
+  summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
 }
 
 /** Holds if a summary model `row` exists for the given parameters. */
 predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, boolean generated, string row
+  string input, string output, string kind, string provenance, string row
 ) {
   summaryModel(row) and
   row.splitAt(";", 0) = namespace and
@@ -483,7 +482,8 @@ predicate summaryModel(
   row.splitAt(";", 5) = ext and
   row.splitAt(";", 6) = input and
   row.splitAt(";", 7) = output and
-  exists(string k | row.splitAt(";", 8) = k and getKind(k, kind, generated))
+  row.splitAt(";", 8) = kind and
+  row.splitAt(";", 9) = provenance
 }
 
 private predicate relevantPackage(string package) {
@@ -517,25 +517,25 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
     part = "source" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string output, boolean generated |
+        string ext, string output, string provenance |
         canonicalPkgLink(package, subpkg) and
-        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, generated)
+        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, provenance)
       )
     or
     part = "sink" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, boolean generated |
+        string ext, string input, string provenance |
         canonicalPkgLink(package, subpkg) and
-        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, generated)
+        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, provenance)
       )
     or
     part = "summary" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, boolean generated |
+        string ext, string input, string output, string provenance |
         canonicalPkgLink(package, subpkg) and
-        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, generated)
+        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, provenance)
       )
   )
 }
@@ -544,12 +544,16 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
 module CsvValidation {
   /** Holds if some row in a CSV-based flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
-    exists(string pred, string namespace, string type, string name, string signature, string ext |
-      sourceModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "source"
+    exists(
+      string pred, string namespace, string type, string name, string signature, string ext,
+      string provenance
+    |
+      sourceModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "source"
       or
-      sinkModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "sink"
+      sinkModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "sink"
       or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "summary"
+      summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
+      pred = "summary"
     |
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
@@ -565,6 +569,9 @@ module CsvValidation {
       or
       not ext.regexpMatch("|Annotated") and
       msg = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
+      or
+      not provenance = ["manual", "generated"] and
+      msg = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
     or
     exists(string pred, string input, string part |
@@ -596,18 +603,18 @@ module CsvValidation {
     )
     or
     exists(string pred, string row, int expect |
-      sourceModel(row) and expect = 8 and pred = "source"
+      sourceModel(row) and expect = 9 and pred = "source"
       or
-      sinkModel(row) and expect = 8 and pred = "sink"
+      sinkModel(row) and expect = 9 and pred = "sink"
       or
-      summaryModel(row) and expect = 9 and pred = "summary"
+      summaryModel(row) and expect = 10 and pred = "summary"
     |
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
         cols != expect and
         msg =
           "Wrong number of columns in " + pred + " model row, expected " + expect + ", got " + cols +
-            "."
+            " in " + row + "."
       )
       or
       exists(string b |
@@ -617,9 +624,8 @@ module CsvValidation {
       )
     )
     or
-    exists(string row, string k, string kind | summaryModel(row) |
-      k = row.splitAt(";", 8) and
-      getKind(k, kind, _) and
+    exists(string row, string kind | summaryModel(row) |
+      kind = row.splitAt(";", 8) and
       not kind = ["taint", "value"] and
       msg = "Invalid kind \"" + kind + "\" in summary model."
     )
