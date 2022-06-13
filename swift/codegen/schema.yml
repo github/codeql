@@ -19,9 +19,12 @@ File:
   name: string
 
 Locatable:
-  location: Location
+  location:
+    type: Location
+    _tags: [no_qltest]
 
 Location:
+  _tags: [ no_qltest ]
   file: File
   start_line: int
   start_column: int
