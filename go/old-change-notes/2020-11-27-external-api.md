@@ -1,0 +1,4 @@
+lgtm,codescanning
+* A new query "Untrusted data passed to external API" (`go/untrusted-data-to-external-api`) has been added. The query reports external APIs that use untrusted data. This query is designed primarily to help identify which APIs may be relevant for security analysis of this application.
+* A new query "Untrusted data passed to unknown external API" (`go/untrusted-data-to-unknown-external-api`) has been added. The query reports external APIs that use untrusted data and which are not already known to be safe. This query is designed primarily to help identify which APIs may be relevant for security analysis of this application.
+* A new query "Frequency counts for external APIs that are used with untrusted data" (`go/count-untrusted-data-external-api`) has been added. The query reports external APIs that use untrusted data. It displays the same results as "Untrusted data passed to external API" (`go/untrusted-data-to-external-api`) but in a table.

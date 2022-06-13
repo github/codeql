@@ -576,7 +576,7 @@ module API {
         use(pred, a) and
         use(succ, b) and
         resolveConstant(b.asExpr().getExpr()) = resolveConstantWriteAccess(c) and
-        c.getSuperclassExpr() = a.asExpr().getExpr() and
+        pragma[only_bind_into](c).getSuperclassExpr() = a.asExpr().getExpr() and
         lbl = Label::subclass()
       )
       or

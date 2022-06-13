@@ -5,6 +5,7 @@ on:
     paths:
       - "swift/**"
       - .github/workflows/swift-qltest.yml
+      - codeql-workspace.yml
     branches:
       - main
 defaults:

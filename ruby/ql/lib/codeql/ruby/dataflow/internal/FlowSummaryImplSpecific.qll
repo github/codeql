@@ -67,6 +67,11 @@ private SummaryComponent interpretElementArg(string arg) {
   arg = "any" and
   result = FlowSummary::SummaryComponent::elementAny()
   or
+  exists(int lower |
+    ParsePositions::isParsedElementLowerBoundPosition(arg, lower) and
+    result = FlowSummary::SummaryComponent::elementLowerBound(lower)
+  )
+  or
   exists(ConstantValue cv | result = FlowSummary::SummaryComponent::elementKnown(cv) |
     cv.isInt(AccessPath::parseInt(arg))
     or
@@ -89,9 +94,15 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
     ppos.isAny()
     or
     ppos.isPositionalLowerBound(AccessPath::parseLowerBound(arg))
+    or
+    arg = "hash-splat" and
+    ppos.isHashSplat()
   )
   or
   result = interpretElementArg(c.getAnArgument("Element"))
+  or
+  result =
+    FlowSummary::SummaryComponent::content(TSingletonContent(TFieldContent(c.getAnArgument("Field"))))
   or
   exists(ContentSet cs |
     FlowSummary::SummaryComponent::content(cs) = interpretElementArg(c.getAnArgument("WithElement")) and
@@ -102,6 +113,16 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
     FlowSummary::SummaryComponent::content(cs) =
       interpretElementArg(c.getAnArgument("WithoutElement")) and
     result = FlowSummary::SummaryComponent::withoutContent(cs)
+  )
+  or
+  exists(string arg | arg = c.getAnArgument("PairValue") |
+    arg = "?" and
+    result = FlowSummary::SummaryComponent::pairValueUnknown()
+    or
+    exists(ConstantValue cv |
+      result = FlowSummary::SummaryComponent::pairValueKnown(cv) and
+      cv.serialize() = arg
+    )
   )
 }
 
@@ -217,6 +238,13 @@ module ParsePositions {
     )
   }
 
+  private predicate isElementBody(string body) {
+    exists(AccessPathToken tok |
+      tok.getName() = "Element" and
+      body = tok.getAnArgument()
+    )
+  }
+
   predicate isParsedParameterPosition(string c, int i) {
     isParamBody(c) and
     i = AccessPath::parseInt(c)
@@ -240,6 +268,11 @@ module ParsePositions {
   predicate isParsedKeywordArgumentPosition(string c, string paramName) {
     isArgBody(c) and
     c = paramName + ":"
+  }
+
+  predicate isParsedElementLowerBoundPosition(string c, int lower) {
+    isElementBody(c) and
+    lower = AccessPath::parseLowerBound(c)
   }
 }
 

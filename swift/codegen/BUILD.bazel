@@ -14,41 +14,13 @@ filegroup(
 
 py_binary(
     name = "codegen",
-    srcs = glob(
-        ["*.py"],
-        exclude = ["trapgen.py"],
-    ),
-    visibility = ["//swift/codegen/test:__pkg__"],
-    deps = ["//swift/codegen/lib"],
-)
-
-# as opposed to the above, that is meant to only be run with bazel run,
-# we need to be precise with data dependencies of this which is meant be run during build
-py_binary(
-    name = "trapgen",
-    srcs = ["trapgen.py"],
-    data = [
-        "//swift:dbscheme",
-        "//swift/codegen/templates:trap",
-    ],
-    visibility = ["//swift:__subpackages__"],
-    deps = [
-        "//swift/codegen/lib",
-        requirement("toposort"),
-    ],
-)
-
-py_binary(
-    name = "cppgen",
-    srcs = ["cppgen.py"],
+    srcs = ["codegen.py"],
     data = [
         ":schema",
         ":schema_includes",
         "//swift/codegen/templates:cpp",
+        "//swift/codegen/templates:trap",
     ],
     visibility = ["//swift:__subpackages__"],
-    deps = [
-        "//swift/codegen/lib",
-        requirement("toposort"),
-    ],
+    deps = ["//swift/codegen/generators"],
 )

@@ -528,22 +528,23 @@ private class CipherNode extends DataFlow::Node {
 private class CipherOperation extends Cryptography::CryptographicOperation::Range,
   DataFlow::CallNode {
   private CipherNode cipherNode;
-  private DataFlow::Node input;
 
   CipherOperation() {
     // cipher instantiation is counted as a cipher operation with no input
     cipherNode = this and cipherNode instanceof CipherInstantiation
     or
     this.getReceiver() = cipherNode and
-    this.getMethodName() = "update" and
-    input = this.getArgument(0)
+    this.getMethodName() = "update"
   }
 
   override Cryptography::EncryptionAlgorithm getAlgorithm() {
     result = cipherNode.getCipher().getAlgorithm()
   }
 
-  override DataFlow::Node getAnInput() { result = input }
+  override DataFlow::Node getAnInput() {
+    this.getMethodName() = "update" and
+    result = this.getArgument(0)
+  }
 
   override predicate isWeak() {
     cipherNode.getCipher().isWeak() or

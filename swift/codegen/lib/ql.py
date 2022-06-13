@@ -1,3 +1,17 @@
+"""
+QL files generation
+
+`generate(opts, renderer)` will generate QL classes and manage stub files out of a `yml` schema file.
+
+Each class (for example, `Foo`) in the schema triggers:
+* generation of a `FooBase` class implementation translating all properties into appropriate getters
+* if not created or already customized, generation of a stub file which defines `Foo` as extending `FooBase`. This can
+  be used to add hand-written code to `Foo`, which requires removal of the `// generated` header comment in that file.
+  All generated base classes actually import these customizations when referencing other classes.
+Generated files that do not correspond any more to any class in the schema are deleted. Customized stubs are however
+left behind and must be dealt with by hand.
+"""
+
 import pathlib
 from dataclasses import dataclass, field
 from typing import List, ClassVar
@@ -22,6 +36,7 @@ class Property:
     local_var: str = "x"
     is_optional: bool = False
     is_predicate: bool = False
+    is_child: bool = False
 
     def __post_init__(self):
         if self.tableparams:
@@ -91,3 +106,10 @@ class ImportList:
     template: ClassVar = 'ql_imports'
 
     imports: List[str] = field(default_factory=list)
+
+
+@dataclass
+class GetParentImplementation:
+    template: ClassVar = 'ql_parent'
+
+    classes: List[Class] = field(default_factory=list)

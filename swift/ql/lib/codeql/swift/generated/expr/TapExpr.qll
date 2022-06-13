@@ -15,15 +15,15 @@ class TapExprBase extends @tap_expr, Expr {
 
   predicate hasSubExpr() { exists(getSubExpr()) }
 
-  VarDecl getVar() {
-    exists(VarDecl x |
+  BraceStmt getBody() {
+    exists(BraceStmt x |
       tap_exprs(this, x, _) and
       result = x.resolve()
     )
   }
 
-  BraceStmt getBody() {
-    exists(BraceStmt x |
+  VarDecl getVar() {
+    exists(VarDecl x |
       tap_exprs(this, _, x) and
       result = x.resolve()
     )

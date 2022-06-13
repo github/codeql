@@ -112,7 +112,7 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(node1, node2)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(node1, node2, _)
   }
 
   /**
@@ -154,7 +154,7 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   not exists(FieldRead fr |
     hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
   ) and
-  not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1)
+  not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1, _)
   or
   ThisFlow::adjacentThisRefs(node1, node2)
   or

@@ -223,12 +223,53 @@ module Content {
     override string toString() { result = "element" }
   }
 
+  /** A field of an object, for example an instance variable. */
+  class FieldContent extends Content, TFieldContent {
+    private string name;
+
+    FieldContent() { this = TFieldContent(name) }
+
+    /** Gets the name of the field. */
+    string getName() { result = name }
+
+    override string toString() { result = name }
+  }
+
   /** Gets the element content corresponding to constant value `cv`. */
   ElementContent getElementContent(ConstantValue cv) {
     result = TKnownElementContent(cv)
     or
     not exists(TKnownElementContent(cv)) and
     result = TUnknownElementContent()
+  }
+
+  /**
+   * Gets the constant value of `e`, which corresponds to a valid known
+   * element index. Unlike calling simply `e.getConstantValue()`, this
+   * excludes negative array indices.
+   */
+  ConstantValue getKnownElementIndex(Expr e) {
+    result = getElementContent(e.getConstantValue()).(KnownElementContent).getIndex()
+  }
+
+  /** A value in a pair with a known or unknown key. */
+  class PairValueContent extends Content, TPairValueContent { }
+
+  /** A value in a pair with a known key. */
+  class KnownPairValueContent extends PairValueContent, TKnownPairValueContent {
+    private ConstantValue key;
+
+    KnownPairValueContent() { this = TKnownPairValueContent(key) }
+
+    /** Gets the index in the collection. */
+    ConstantValue getIndex() { result = key }
+
+    override string toString() { result = "pair " + key }
+  }
+
+  /** A value in a pair with an unknown key. */
+  class UnknownPairValueContent extends PairValueContent, TUnknownPairValueContent {
+    override string toString() { result = "pair" }
   }
 }
 
@@ -245,6 +286,12 @@ class ContentSet extends TContentSet {
   /** Holds if this content set represents all `ElementContent`s. */
   predicate isAnyElement() { this = TAnyElementContent() }
 
+  /**
+   * Holds if this content set represents all `KnownElementContent`s where
+   * the index is an integer greater than or equal to `lower`.
+   */
+  predicate isElementLowerBound(int lower) { this = TElementLowerBoundContent(lower) }
+
   /** Gets a textual representation of this content set. */
   string toString() {
     exists(Content c |
@@ -253,7 +300,12 @@ class ContentSet extends TContentSet {
     )
     or
     this.isAnyElement() and
-    result = "any array element"
+    result = "any element"
+    or
+    exists(int lower |
+      this.isElementLowerBound(lower) and
+      result = lower + ".."
+    )
   }
 
   /** Gets a content that may be stored into when storing into this set. */
@@ -261,6 +313,9 @@ class ContentSet extends TContentSet {
     this.isSingleton(result)
     or
     this.isAnyElement() and
+    result = TUnknownElementContent()
+    or
+    this.isElementLowerBound(_) and
     result = TUnknownElementContent()
   }
 
@@ -270,6 +325,12 @@ class ContentSet extends TContentSet {
     or
     this.isAnyElement() and
     result instanceof Content::ElementContent
+    or
+    exists(int lower, int i |
+      this.isElementLowerBound(lower) and
+      result.(Content::KnownElementContent).getIndex().isInt(i) and
+      i >= lower
+    )
   }
 }
 

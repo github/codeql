@@ -23,4 +23,12 @@ class DeclRefExprBase extends @decl_ref_expr, Expr {
   Type getAReplacementType() { result = getReplacementType(_) }
 
   int getNumberOfReplacementTypes() { result = count(getAReplacementType()) }
+
+  predicate hasDirectToStorageSemantics() { decl_ref_expr_has_direct_to_storage_semantics(this) }
+
+  predicate hasDirectToImplementationSemantics() {
+    decl_ref_expr_has_direct_to_implementation_semantics(this)
+  }
+
+  predicate hasOrdinarySemantics() { decl_ref_expr_has_ordinary_semantics(this) }
 }

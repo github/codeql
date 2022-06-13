@@ -153,7 +153,11 @@ class SwiftDispatcher {
   template <typename Tag, typename... Ts>
   TrapLabel<Tag> fetchLabelFromUnion(const llvm::PointerUnion<Ts...> u) {
     TrapLabel<Tag> ret{};
-    assert((... || fetchLabelFromUnionCase<Tag, Ts>(u, ret)) && "llvm::PointerUnion not set");
+    // with logical op short-circuiting, this will stop trying on the first successful fetch
+    // don't feel tempted to replace the variable with the expression inside the `assert`, or
+    // building with `NDEBUG` will not trigger the fetching
+    bool unionCaseFound = (... || fetchLabelFromUnionCase<Tag, Ts>(u, ret));
+    assert(unionCaseFound && "llvm::PointerUnion not set to a known case");
     return ret;
   }
 

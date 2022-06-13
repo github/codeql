@@ -1,0 +1,2 @@
+| IncompleteUrlSchemeCheck.go:7:19:7:42 | ...==... | This check does not consider data and vbscript. |
+| main.go:17:5:17:44 | call to HasPrefix | This check does not consider vbscript. |

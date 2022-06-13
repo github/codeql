@@ -51,14 +51,14 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
     or
     // Treat container flow as taint for the local taint flow relation
     exists(DataFlow::Content c | containerContent(c) |
       readStep(src, c, sink) or
       storeStep(src, c, sink) or
-      FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink) or
-      FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink)
+      FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink, _) or
+      FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink, _)
     )
   }
 

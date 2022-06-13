@@ -1,0 +1,6 @@
++ go-queries/definitions.ql
+    @_namespace com.lgtm/go-queries
++ go-queries/AlertSuppression.ql
+    @_namespace com.lgtm/go-queries
++ go-queries/filters/ClassifyFiles.ql
+    @_namespace com.lgtm/go-queries

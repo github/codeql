@@ -176,6 +176,11 @@ any_function_type_is_throwing(
   int id: @any_function_type ref
 );
 
+#keyset[id]
+any_function_type_is_async(
+  int id: @any_function_type ref
+);
+
 @any_generic_type =
   @nominal_or_bound_generic_nominal_type
 | @unbound_generic_type
@@ -744,6 +749,21 @@ decl_ref_expr_replacement_types(
   int replacement_type: @type ref
 );
 
+#keyset[id]
+decl_ref_expr_has_direct_to_storage_semantics(
+  int id: @decl_ref_expr ref
+);
+
+#keyset[id]
+decl_ref_expr_has_direct_to_implementation_semantics(
+  int id: @decl_ref_expr ref
+);
+
+#keyset[id]
+decl_ref_expr_has_ordinary_semantics(
+  int id: @decl_ref_expr ref
+);
+
 default_argument_exprs(
   unique int id: @default_argument_expr,
   int param_decl: @param_decl ref,
@@ -868,7 +888,9 @@ in_out_exprs(
 );
 
 key_path_application_exprs(
-  unique int id: @key_path_application_expr
+  unique int id: @key_path_application_expr,
+  int base: @expr ref,
+  int key_path: @expr ref
 );
 
 key_path_dot_exprs(
@@ -909,6 +931,13 @@ lazy_initializer_exprs(
 | @member_ref_expr
 | @subscript_expr
 ;
+
+#keyset[id]
+lookup_exprs(
+  int id: @lookup_expr ref,
+  int base_expr: @expr ref,
+  int member: @decl ref
+);
 
 make_temporarily_escapable_exprs(
   unique int id: @make_temporarily_escapable_expr,
@@ -973,8 +1002,8 @@ super_ref_exprs(
 
 tap_exprs(
   unique int id: @tap_expr,
-  int var: @var_decl ref,
-  int body: @brace_stmt ref
+  int body: @brace_stmt ref,
+  int var: @var_decl ref
 );
 
 #keyset[id]
@@ -1244,6 +1273,13 @@ yield_stmts(
   unique int id: @yield_stmt
 );
 
+#keyset[id, index]
+yield_stmt_results(
+  int id: @yield_stmt ref,
+  int index: int ref,
+  int result: @expr ref
+);
+
 @bound_generic_type =
   @bound_generic_class_type
 | @bound_generic_enum_type
@@ -1364,6 +1400,13 @@ abstract_function_decl_params(
   @subscript_decl
 | @var_decl
 ;
+
+#keyset[id, index]
+abstract_storage_decl_accessor_decls(
+  int id: @abstract_storage_decl ref,
+  int index: int ref,
+  int accessor_decl: @accessor_decl ref
+);
 
 enum_element_decls(
   unique int id: @enum_element_decl,
@@ -1670,13 +1713,26 @@ object_literal_exprs(
 ;
 
 member_ref_exprs(
-  unique int id: @member_ref_expr,
-  int base_expr: @expr ref
+  unique int id: @member_ref_expr
+);
+
+#keyset[id]
+member_ref_expr_has_direct_to_storage_semantics(
+  int id: @member_ref_expr ref
+);
+
+#keyset[id]
+member_ref_expr_has_direct_to_implementation_semantics(
+  int id: @member_ref_expr ref
+);
+
+#keyset[id]
+member_ref_expr_has_ordinary_semantics(
+  int id: @member_ref_expr ref
 );
 
 subscript_exprs(
-  unique int id: @subscript_expr,
-  int base_expr: @expr ref
+  unique int id: @subscript_expr
 );
 
 #keyset[id, index]
@@ -1684,6 +1740,21 @@ subscript_expr_arguments(
   int id: @subscript_expr ref,
   int index: int ref,
   int argument: @argument ref
+);
+
+#keyset[id]
+subscript_expr_has_direct_to_storage_semantics(
+  int id: @subscript_expr ref
+);
+
+#keyset[id]
+subscript_expr_has_direct_to_implementation_semantics(
+  int id: @subscript_expr ref
+);
+
+#keyset[id]
+subscript_expr_has_ordinary_semantics(
+  int id: @subscript_expr ref
 );
 
 overloaded_decl_ref_exprs(
@@ -1815,7 +1886,15 @@ destructor_decls(
 ;
 
 subscript_decls(
-  unique int id: @subscript_decl
+  unique int id: @subscript_decl,
+  int element_type: @type ref
+);
+
+#keyset[id, index]
+subscript_decl_params(
+  int id: @subscript_decl ref,
+  int index: int ref,
+  int param: @param_decl ref
 );
 
 @var_decl =
@@ -1857,7 +1936,7 @@ var_decl_parent_initializers(
   @abstract_function_decl
 | @extension_decl
 | @generic_type_decl
-| @subscript_expr
+| @subscript_decl
 ;
 
 #keyset[id, index]
@@ -1948,6 +2027,26 @@ while_stmts(
 
 accessor_decls(
   unique int id: @accessor_decl
+);
+
+#keyset[id]
+accessor_decl_is_getter(
+  int id: @accessor_decl ref
+);
+
+#keyset[id]
+accessor_decl_is_setter(
+  int id: @accessor_decl ref
+);
+
+#keyset[id]
+accessor_decl_is_will_set(
+  int id: @accessor_decl ref
+);
+
+#keyset[id]
+accessor_decl_is_did_set(
+  int id: @accessor_decl ref
 );
 
 concrete_func_decls(

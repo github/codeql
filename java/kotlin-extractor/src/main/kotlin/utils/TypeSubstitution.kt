@@ -2,6 +2,7 @@ package com.github.codeql.utils
 
 import com.github.codeql.KotlinUsesExtractor
 import com.github.codeql.getJavaEquivalentClassId
+import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.createImplicitParameterDeclarationWithWrappedDescriptor
 import org.jetbrains.kotlin.backend.common.lower.parents
@@ -36,6 +37,30 @@ fun IrType.substituteTypeArguments(params: List<IrTypeParameter>, arguments: Lis
         else -> this
     }
 
+fun IrSimpleType.substituteTypeArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>): IrSimpleType {
+    if (substitutionMap.isEmpty()) return this
+
+    val newArguments = arguments.map {
+        if (it is IrTypeProjection) {
+            val itType = it.type
+            if (itType is IrSimpleType) {
+                subProjectedType(substitutionMap, itType, it.variance)
+            } else {
+                it
+            }
+        } else {
+            it
+        }
+    }
+
+    return IrSimpleTypeImpl(
+        classifier,
+        hasQuestionMark,
+        newArguments,
+        annotations
+    )
+}
+
 /**
  * Returns true if substituting `innerVariance T` into the context `outerVariance []` discards all knowledge about
  * what T could be.
@@ -66,7 +91,7 @@ private fun subProjectedType(substitutionMap: Map<IrTypeParameterSymbol, IrTypeA
             if (conflictingVariance(outerVariance, substitutedTypeArg.variance))
                 IrStarProjectionImpl
             else {
-                val newProjectedType = substitutedTypeArg.type.let { if (t.hasQuestionMark) it.withHasQuestionMark(true) else it }
+                val newProjectedType = substitutedTypeArg.type.let { if (t.hasQuestionMark) it.codeQlWithHasQuestionMark(true) else it }
                 val newVariance = combineVariance(outerVariance, substitutedTypeArg.variance)
                 makeTypeProjection(newProjectedType, newVariance)
             }
@@ -74,30 +99,6 @@ private fun subProjectedType(substitutionMap: Map<IrTypeParameterSymbol, IrTypeA
             substitutedTypeArg
         }
     } ?: makeTypeProjection(t.substituteTypeArguments(substitutionMap), outerVariance)
-
-fun IrSimpleType.substituteTypeArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>): IrSimpleType {
-    if (substitutionMap.isEmpty()) return this
-
-    val newArguments = arguments.map {
-        if (it is IrTypeProjection) {
-            val itType = it.type
-            if (itType is IrSimpleType) {
-                subProjectedType(substitutionMap, itType, it.variance)
-            } else {
-                it
-            }
-        } else {
-            it
-        }
-    }
-
-    return IrSimpleTypeImpl(
-        classifier,
-        hasQuestionMark,
-        newArguments,
-        annotations
-    )
-}
 
 fun IrTypeArgument.upperBound(context: IrPluginContext) =
     when(this) {
@@ -191,7 +192,7 @@ fun IrTypeArgument.withQuestionMark(b: Boolean): IrTypeArgument =
         is IrStarProjection -> this
         is IrTypeProjection ->
             this.type.let { when(it) {
-                is IrSimpleType -> if (it.hasQuestionMark == b) this else makeTypeProjection(it.withHasQuestionMark(b), this.variance)
+                is IrSimpleType -> if (it.hasQuestionMark == b) this else makeTypeProjection(it.codeQlWithHasQuestionMark(b), this.variance)
                 else -> this
             }}
         else -> this

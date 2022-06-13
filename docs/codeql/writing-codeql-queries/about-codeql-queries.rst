@@ -121,7 +121,7 @@ Select clauses for diagnostic queries (``@kind diagnostic``) and summary metric 
 Viewing the standard CodeQL queries
 ***********************************
 
-One of the easiest ways to get started writing your own queries is to modify an existing query. To view the standard CodeQL queries, or to try out other examples, visit the `CodeQL <https://github.com/github/codeql>`__ and `CodeQL for Go <https://github.com/github/codeql-go>`__ repositories on GitHub. 
+One of the easiest ways to get started writing your own queries is to modify an existing query. To view the standard CodeQL queries, or to try out other examples, visit the `CodeQL <https://github.com/github/codeql>`__ repository on GitHub.
 
 You can also find examples of queries developed to find security vulnerabilities and bugs in open source software projects on the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and in the associated `repository <https://github.com/github/securitylab>`__.
 

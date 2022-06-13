@@ -1,0 +1,4 @@
+| InconsistentLoopOrientation.go:10:34:10:36 | decrement statement | This loop counts downward, but its variable is $@ upward. | InconsistentLoopOrientation.go:10:22:10:31 | ...<... | bounded |
+| main.go:9:30:9:32 | decrement statement | This loop counts downward, but its variable is $@ upward. | main.go:9:18:9:27 | ...<... | bounded |
+| main.go:14:32:14:34 | increment statement | This loop counts upward, but its variable is $@ downward. | main.go:14:25:14:29 | ...>... | bounded |
+| main.go:25:34:25:36 | decrement statement | This loop counts downward, but its variable is $@ upward. | main.go:25:22:25:31 | ...<... | bounded |
