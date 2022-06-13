@@ -626,7 +626,8 @@ module AiohttpWebModel {
         // and just go with the LHS
         this.asCfgNode() = subscript
       |
-        subscript.getObject() = aiohttpResponseInstance().getMember("cookies").getAUse().asCfgNode() and
+        subscript.getObject() =
+          aiohttpResponseInstance().getMember("cookies").getAValueReachableFromSource().asCfgNode() and
         value.asCfgNode() = subscript.(DefinitionNode).getValue() and
         index.asCfgNode() = subscript.getIndex()
       )

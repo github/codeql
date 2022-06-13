@@ -64,7 +64,7 @@ private module Yaml {
         loader_arg =
           API::moduleImport("yaml")
               .getMember(["SafeLoader", "BaseLoader", "CSafeLoader", "CBaseLoader"])
-              .getAUse()
+              .getAValueReachableFromSource()
       )
     }
 

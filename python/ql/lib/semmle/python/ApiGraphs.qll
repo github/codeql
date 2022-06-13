@@ -106,7 +106,7 @@ module API {
      * ```
      * both `obj.foo` and `x` are uses of the `foo` member from `obj`.
      */
-    DataFlow::Node getAUse() {
+    DataFlow::Node getAValueReachableFromSource() {
       exists(DataFlow::LocalSourceNode src | Impl::use(this, src) |
         Impl::trackUseNode(src).flowsTo(result)
       )

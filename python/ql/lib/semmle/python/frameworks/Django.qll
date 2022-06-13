@@ -2799,7 +2799,7 @@ module PrivateDjango {
             .getMember("decorators")
             .getMember("csrf")
             .getMember(decoratorName)
-            .getAUse() and
+            .getAValueReachableFromSource() and
       this.asExpr() = function.getADecorator()
     }
 

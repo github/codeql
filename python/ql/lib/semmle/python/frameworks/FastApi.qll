@@ -90,7 +90,8 @@ private module FastApi {
   private class PydanticModelRequestHandlerParam extends Pydantic::BaseModel::InstanceSource,
     DataFlow::ParameterNode {
     PydanticModelRequestHandlerParam() {
-      this.getParameter().getAnnotation() = Pydantic::BaseModel::subclassRef().getAUse().asExpr() and
+      this.getParameter().getAnnotation() =
+        Pydantic::BaseModel::subclassRef().getAValueReachableFromSource().asExpr() and
       any(FastApiRouteSetup rs).getARequestHandler().getArgByName(_) = this.getParameter()
     }
   }
@@ -104,7 +105,8 @@ private module FastApi {
   private class WebSocketRequestHandlerParam extends Starlette::WebSocket::InstanceSource,
     DataFlow::ParameterNode {
     WebSocketRequestHandlerParam() {
-      this.getParameter().getAnnotation() = Starlette::WebSocket::classRef().getAUse().asExpr() and
+      this.getParameter().getAnnotation() =
+        Starlette::WebSocket::classRef().getAValueReachableFromSource().asExpr() and
       any(FastApiRouteSetup rs).getARequestHandler().getArgByName(_) = this.getParameter()
     }
   }
@@ -165,7 +167,7 @@ private module FastApi {
       // user-defined subclasses
       exists(Class cls, API::Node base |
         base = getModeledResponseClass(_).getASubclass*() and
-        cls.getABase() = base.getAUse().asExpr() and
+        cls.getABase() = base.getAValueReachableFromSource().asExpr() and
         responseClass.asSource().asExpr() = cls.getParent()
       |
         exists(Assign assign | assign = cls.getAStmt() |
@@ -257,7 +259,7 @@ private module FastApi {
 
       override string getMimetypeDefault() {
         exists(API::Node responseClass |
-          responseClass.getAUse() = routeSetup.getResponseClassArg() and
+          responseClass.getAValueReachableFromSource() = routeSetup.getResponseClassArg() and
           result = getDefaultMimeType(responseClass)
         )
         or
@@ -274,7 +276,7 @@ private module FastApi {
       FileSystemAccess::Range {
       FastApiRequestHandlerFileResponseReturn() {
         exists(API::Node responseClass |
-          responseClass.getAUse() = routeSetup.getResponseClassArg() and
+          responseClass.getAValueReachableFromSource() = routeSetup.getResponseClassArg() and
           responseClass = getModeledResponseClass("FileResponse").getASubclass*()
         )
       }
@@ -292,7 +294,7 @@ private module FastApi {
       HTTP::Server::HttpRedirectResponse::Range {
       FastApiRequestHandlerRedirectReturn() {
         exists(API::Node responseClass |
-          responseClass.getAUse() = routeSetup.getResponseClassArg() and
+          responseClass.getAValueReachableFromSource() = routeSetup.getResponseClassArg() and
           responseClass = getModeledResponseClass("RedirectResponse").getASubclass*()
         )
       }
@@ -311,7 +313,7 @@ private module FastApi {
     class RequestHandlerParam extends InstanceSource, DataFlow::ParameterNode {
       RequestHandlerParam() {
         this.getParameter().getAnnotation() =
-          getModeledResponseClass(_).getASubclass*().getAUse().asExpr() and
+          getModeledResponseClass(_).getASubclass*().getAValueReachableFromSource().asExpr() and
         any(FastApiRouteSetup rs).getARequestHandler().getArgByName(_) = this.getParameter()
       }
     }

@@ -145,9 +145,9 @@ private module CryptographyModel {
 
     override int getKeySizeWithOrigin(DataFlow::Node origin) {
       exists(API::Node n | n = Ecc::predefinedCurveClass(result) and origin = n.asSource() |
-        this.getCurveArg() = n.getAUse()
+        this.getCurveArg() = n.getAValueReachableFromSource()
         or
-        this.getCurveArg() = n.getReturn().getAUse()
+        this.getCurveArg() = n.getReturn().getAValueReachableFromSource()
       )
     }
 
@@ -189,12 +189,12 @@ private module CryptographyModel {
               .getMember("ciphers")
               .getMember("Cipher")
               .getACall() and
-        algorithmClassRef(algorithmName).getReturn().getAUse() in [
+        algorithmClassRef(algorithmName).getReturn().getAValueReachableFromSource() in [
             call.getArg(0), call.getArgByName("algorithm")
           ] and
         exists(DataFlow::Node modeArg | modeArg in [call.getArg(1), call.getArgByName("mode")] |
-          if modeArg = modeClassRef(_).getReturn().getAUse()
-          then modeArg = modeClassRef(modeName).getReturn().getAUse()
+          if modeArg = modeClassRef(_).getReturn().getAValueReachableFromSource()
+          then modeArg = modeClassRef(modeName).getReturn().getAValueReachableFromSource()
           else modeName = "<None or unknown>"
         )
       )
@@ -252,7 +252,7 @@ private module CryptographyModel {
               .getMember("hashes")
               .getMember("Hash")
               .getACall() and
-        algorithmClassRef(algorithmName).getReturn().getAUse() in [
+        algorithmClassRef(algorithmName).getReturn().getAValueReachableFromSource() in [
             call.getArg(0), call.getArgByName("algorithm")
           ]
       )

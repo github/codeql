@@ -24,7 +24,7 @@ private DataFlow::Node getNode(API::Node nd, string kind) {
   result = nd.asSink()
   or
   kind = "use" and
-  result = nd.getAUse()
+  result = nd.getAValueReachableFromSource()
 }
 
 private string getLocStr(Location loc) {
