@@ -10,19 +10,13 @@ output_dir = pathlib.Path("path", "to", "output")
 @pytest.fixture
 def generate(opts, renderer, input):
     opts.cpp_output = output_dir
-    opts.cpp_namespace = "test_namespace"
-    opts.trap_affix = "TestTrapAffix"
-    opts.cpp_include_dir = "my/include/dir"
 
     def ret(classes):
         input.classes = classes
         generated = run_generation(cppgen.generate, opts, renderer)
-        assert set(generated) == {output_dir / "TestTrapAffixClasses.h"}
-        generated = generated[output_dir / "TestTrapAffixClasses.h"]
+        assert set(generated) == {output_dir / "TrapClasses.h"}
+        generated = generated[output_dir / "TrapClasses.h"]
         assert isinstance(generated, cpp.ClassList)
-        assert generated.namespace == opts.cpp_namespace
-        assert generated.trap_affix == opts.trap_affix
-        assert generated.include_dir == opts.cpp_include_dir
         return generated.classes
 
     return ret
@@ -72,7 +66,7 @@ def test_complex_hierarchy_topologically_ordered(generate):
     ("a", "a"),
     ("string", "std::string"),
     ("boolean", "bool"),
-    ("MyClass", "TestTrapAffixLabel<MyClassTag>"),
+    ("MyClass", "TrapLabel<MyClassTag>"),
 ])
 @pytest.mark.parametrize("property_cls,optional,repeated,trap_name", [
     (schema.SingleProperty, False, False, None),
