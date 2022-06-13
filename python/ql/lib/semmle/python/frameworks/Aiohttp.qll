@@ -685,8 +685,8 @@ private module AiohttpClientModel {
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
         exists(API::Node param | param = this.getKeywordParameter(["ssl", "verify_ssl"]) |
-          disablingNode = param.getARhs() and
-          argumentOrigin = param.getAValueReachingRhs() and
+          disablingNode = param.asSink() and
+          argumentOrigin = param.getAValueReachingSink() and
           // aiohttp.client treats `None` as the default and all other "falsey" values as `False`.
           argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
           not argumentOrigin.asExpr() instanceof None

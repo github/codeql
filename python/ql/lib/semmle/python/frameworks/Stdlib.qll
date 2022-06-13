@@ -2657,7 +2657,7 @@ private module StdlibPrivate {
   /** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
   private API::CallNode hashlibNewCall(string algorithmName) {
     algorithmName =
-      result.getParameter(0, "name").getAValueReachingRhs().asExpr().(StrConst).getText() and
+      result.getParameter(0, "name").getAValueReachingSink().asExpr().(StrConst).getText() and
     result = API::moduleImport("hashlib").getMember("new").getACall()
   }
 
@@ -3443,7 +3443,7 @@ private module StdlibPrivate {
             .getMember("handler")
             .getMember("feature_external_ges")
             .getAValueReachableFromSource() and
-      call.getStateArg().getAValueReachingRhs().asExpr().(BooleanLiteral).booleanValue() = true and
+      call.getStateArg().getAValueReachingSink().asExpr().(BooleanLiteral).booleanValue() = true and
       result = call.getObject()
     )
     or
@@ -3459,7 +3459,7 @@ private module StdlibPrivate {
             .getMember("handler")
             .getMember("feature_external_ges")
             .getAValueReachableFromSource() and
-      call.getStateArg().getAValueReachingRhs().asExpr().(BooleanLiteral).booleanValue() = false
+      call.getStateArg().getAValueReachingSink().asExpr().(BooleanLiteral).booleanValue() = false
     )
   }
 

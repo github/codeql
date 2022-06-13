@@ -134,7 +134,7 @@ module API {
      * Gets a data-flow node that may interprocedurally flow to the right-hand side of a definition
      * of the API component represented by this node.
      */
-    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.asSink()) }
+    DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
 
     /**
      * Gets an immediate use of the API component represented by this node.
