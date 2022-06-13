@@ -12,7 +12,7 @@ predicate isKnownKind(AccessorDecl decl, string kind) {
 
 from AccessorDecl decl, string kind
 where
-  exists(decl.getLocation()) and
+  decl.getLocation().getFile().getName().matches("%swift/ql/test%") and
   (
     isKnownKind(decl, kind)
     or
