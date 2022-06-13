@@ -629,6 +629,27 @@ module CsvValidation {
       not kind = ["taint", "value"] and
       msg = "Invalid kind \"" + kind + "\" in summary model."
     )
+    or
+    exists(string row, string kind | sinkModel(row) |
+      kind = row.splitAt(";", 7) and
+      not kind =
+        [
+          "open-url", "jndi-injection", "ldap", "sql", "jdbc-url", "logging", "mvel", "xpath",
+          "groovy", "xss", "ognl-injection", "intent-start", "pending-intent-sent",
+          "url-open-stream", "url-redirect", "create-file", "write-file", "set-hostname-verifier",
+          "header-splitting", "information-leak", "xslt", "jexl", "bean-validation"
+        ] and
+      not kind.matches("regex-use%") and
+      not kind.matches("qltest%") and
+      msg = "Invalid kind \"" + kind + "\" in sink model."
+    )
+    or
+    exists(string row, string kind | sourceModel(row) |
+      kind = row.splitAt(";", 7) and
+      not kind = ["remote", "contentprovider", "android-widget"] and
+      not kind.matches("qltest%") and
+      msg = "Invalid kind \"" + kind + "\" in source model."
+    )
   }
 }
 
