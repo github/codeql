@@ -91,7 +91,7 @@ class BasicTaintTracking extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink = ModelOutput::getASinkNode("test-sink").getARhs()
+    sink = ModelOutput::getASinkNode("test-sink").asSink()
   }
 }
 
@@ -100,7 +100,7 @@ query predicate taintFlow(DataFlow::Node source, DataFlow::Node sink) {
 }
 
 query predicate isSink(DataFlow::Node node, string kind) {
-  node = ModelOutput::getASinkNode(kind).getARhs()
+  node = ModelOutput::getASinkNode(kind).asSink()
 }
 
 query predicate isSource(DataFlow::Node node, string kind) {

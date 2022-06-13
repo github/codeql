@@ -19,7 +19,7 @@ class MadSinkTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     exists(DataFlow::Node sink, string kind |
-      sink = ModelOutput::getASinkNode(kind).getARhs() and
+      sink = ModelOutput::getASinkNode(kind).asSink() and
       location = sink.getLocation() and
       element = sink.toString() and
       value = prettyNodeForInlineTest(sink) and

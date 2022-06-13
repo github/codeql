@@ -2553,7 +2553,7 @@ private module StdlibPrivate {
     override DataFlow::Node getAPathArgument() {
       result = super.getAPathArgument()
       or
-      result = this.getParameter(0, "target").getARhs()
+      result = this.getParameter(0, "target").asSink()
     }
   }
 
@@ -2570,7 +2570,7 @@ private module StdlibPrivate {
     override DataFlow::Node getAPathArgument() {
       result = super.getAPathArgument()
       or
-      result = this.getParameter(0, "target").getARhs()
+      result = this.getParameter(0, "target").asSink()
     }
   }
 
@@ -2585,7 +2585,7 @@ private module StdlibPrivate {
     override DataFlow::Node getAPathArgument() {
       result = super.getAPathArgument()
       or
-      result = this.getParameter(0, "other_path").getARhs()
+      result = this.getParameter(0, "other_path").asSink()
     }
   }
 
@@ -2670,7 +2670,7 @@ private module StdlibPrivate {
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
-    override DataFlow::Node getAnInput() { result = this.getParameter(1, "data").getARhs() }
+    override DataFlow::Node getAnInput() { result = this.getParameter(1, "data").asSink() }
 
     override Cryptography::BlockMode getBlockMode() { none() }
   }
@@ -3433,7 +3433,7 @@ private module StdlibPrivate {
   private DataFlow::Node saxParserWithFeatureExternalGesTurnedOn(DataFlow::TypeTracker t) {
     t.start() and
     exists(SaxParserSetFeatureCall call |
-      call.getFeatureArg().getARhs() =
+      call.getFeatureArg().asSink() =
         API::moduleImport("xml")
             .getMember("sax")
             .getMember("handler")
@@ -3449,7 +3449,7 @@ private module StdlibPrivate {
     // take account of that we can set the feature to False, which makes the parser safe again
     not exists(SaxParserSetFeatureCall call |
       call.getObject() = result and
-      call.getFeatureArg().getARhs() =
+      call.getFeatureArg().asSink() =
         API::moduleImport("xml")
             .getMember("sax")
             .getMember("handler")

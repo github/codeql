@@ -128,13 +128,13 @@ module API {
      * ```
      * `x` is the right-hand side of a definition of the first parameter of `bar` from the `mypkg.foo` module.
      */
-    DataFlow::Node getARhs() { Impl::rhs(this, result) }
+    DataFlow::Node asSink() { Impl::rhs(this, result) }
 
     /**
      * Gets a data-flow node that may interprocedurally flow to the right-hand side of a definition
      * of the API component represented by this node.
      */
-    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.getARhs()) }
+    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.asSink()) }
 
     /**
      * Gets an immediate use of the API component represented by this node.
@@ -390,14 +390,14 @@ module API {
      * Gets an API node where a RHS of the node is the `i`th argument to this call.
      */
     pragma[noinline]
-    private Node getAParameterCandidate(int i) { result.getARhs() = this.getArg(i) }
+    private Node getAParameterCandidate(int i) { result.asSink() = this.getArg(i) }
 
     /** Gets the API node for a parameter of this invocation. */
     Node getAParameter() { result = this.getParameter(_) }
 
     /** Gets the object that this method-call is being called on, if this is a method-call */
     Node getSelfParameter() {
-      result.getARhs() = this.(DataFlow::MethodCallNode).getObject() and
+      result.asSink() = this.(DataFlow::MethodCallNode).getObject() and
       result = callee.getSelfParameter()
     }
 
@@ -417,7 +417,7 @@ module API {
 
     pragma[noinline]
     private Node getAKeywordParameterCandidate(string name) {
-      result.getARhs() = this.getArgByName(name)
+      result.asSink() = this.getArgByName(name)
     }
 
     /** Gets the API node for the return value of this call. */

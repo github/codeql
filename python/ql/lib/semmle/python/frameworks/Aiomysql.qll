@@ -53,7 +53,7 @@ private module Aiomysql {
   class CursorExecuteCall extends SqlConstruction::Range, API::CallNode {
     CursorExecuteCall() { this = cursor().getMember("execute").getACall() }
 
-    override DataFlow::Node getSql() { result = this.getParameter(0, "operation").getARhs() }
+    override DataFlow::Node getSql() { result = this.getParameter(0, "operation").asSink() }
   }
 
   /**
@@ -94,7 +94,7 @@ private module Aiomysql {
   class SAConnectionExecuteCall extends SqlConstruction::Range, API::CallNode {
     SAConnectionExecuteCall() { this = saConnection().getMember("execute").getACall() }
 
-    override DataFlow::Node getSql() { result = this.getParameter(0, "query").getARhs() }
+    override DataFlow::Node getSql() { result = this.getParameter(0, "query").asSink() }
   }
 
   /**
