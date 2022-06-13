@@ -1320,15 +1320,20 @@ module QL {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SignatureExpr" }
 
+    /** Gets the node corresponding to the field `arity`. */
+    final Integer getArity() { ql_signature_expr_arity(this, result) }
+
     /** Gets the node corresponding to the field `name`. */
     final SimpleId getName() { ql_signature_expr_def(this, result) }
 
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_signature_expr_child(this, i, result) }
+    /** Gets the node corresponding to the field `qualifier`. */
+    final ModuleExpr getQualifier() { ql_signature_expr_qualifier(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      ql_signature_expr_def(this, result) or ql_signature_expr_child(this, _, result)
+      ql_signature_expr_arity(this, result) or
+      ql_signature_expr_def(this, result) or
+      ql_signature_expr_qualifier(this, result)
     }
   }
 

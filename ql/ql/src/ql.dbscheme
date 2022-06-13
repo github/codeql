@@ -890,13 +890,14 @@ ql_set_literal_def(
   unique int id: @ql_set_literal
 );
 
-@ql_signatureExpr_child_type = @ql_module_expr | @ql_token_integer
+ql_signature_expr_arity(
+  unique int ql_signature_expr: @ql_signature_expr ref,
+  unique int arity: @ql_token_integer ref
+);
 
-#keyset[ql_signature_expr, index]
-ql_signature_expr_child(
-  int ql_signature_expr: @ql_signature_expr ref,
-  int index: int ref,
-  unique int child: @ql_signatureExpr_child_type ref
+ql_signature_expr_qualifier(
+  unique int ql_signature_expr: @ql_signature_expr ref,
+  unique int qualifier: @ql_module_expr ref
 );
 
 ql_signature_expr_def(
