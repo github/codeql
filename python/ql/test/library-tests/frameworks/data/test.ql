@@ -87,7 +87,7 @@ class BasicTaintTracking extends TaintTracking::Configuration {
   BasicTaintTracking() { this = "BasicTaintTracking" }
 
   override predicate isSource(DataFlow::Node source) {
-    source = ModelOutput::getASourceNode("test-source").getAnImmediateUse()
+    source = ModelOutput::getASourceNode("test-source").asSource()
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -104,7 +104,7 @@ query predicate isSink(DataFlow::Node node, string kind) {
 }
 
 query predicate isSource(DataFlow::Node node, string kind) {
-  node = ModelOutput::getASourceNode(kind).getAnImmediateUse()
+  node = ModelOutput::getASourceNode(kind).asSource()
 }
 
 class SyntaxErrorTest extends ModelInput::SinkModelCsv {

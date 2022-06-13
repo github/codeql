@@ -243,9 +243,7 @@ module AiohttpWebModel {
 
   /** A class that has a super-type which is an aiohttp.web View class. */
   class AiohttpViewClassFromSuperClass extends AiohttpViewClass {
-    AiohttpViewClassFromSuperClass() {
-      this.getParent() = View::subclassRef().getAnImmediateUse().asExpr()
-    }
+    AiohttpViewClassFromSuperClass() { this.getParent() = View::subclassRef().asSource().asExpr() }
   }
 
   /** A class that is used in a route-setup, therefore being considered an aiohttp.web View class. */

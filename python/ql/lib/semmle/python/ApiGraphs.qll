@@ -147,12 +147,12 @@ module API {
      * to the `escape` member of `re`, neither `x` nor any node that `x` flows to is a reference to
      * this API component.
      */
-    DataFlow::LocalSourceNode getAnImmediateUse() { Impl::use(this, result) }
+    DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
 
     /**
      * Gets a call to the function represented by this API component.
      */
-    CallNode getACall() { result = this.getReturn().getAnImmediateUse() }
+    CallNode getACall() { result = this.getReturn().asSource() }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -377,7 +377,7 @@ module API {
   class CallNode extends DataFlow::CallCfgNode {
     API::Node callee;
 
-    CallNode() { this = callee.getReturn().getAnImmediateUse() }
+    CallNode() { this = callee.getReturn().asSource() }
 
     /** Gets the API node for the `i`th parameter of this invocation. */
     pragma[nomagic]
@@ -423,7 +423,7 @@ module API {
     /** Gets the API node for the return value of this call. */
     Node getReturn() {
       result = callee.getReturn() and
-      result.getAnImmediateUse() = this
+      result.asSource() = this
     }
 
     /**

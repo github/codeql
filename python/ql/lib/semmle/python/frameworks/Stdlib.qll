@@ -274,7 +274,7 @@ module Stdlib {
       ClassInstantiation() {
         this = subclassRef().getACall()
         or
-        this = API::moduleImport("logging").getMember("root").getAnImmediateUse()
+        this = API::moduleImport("logging").getMember("root").asSource()
         or
         this = API::moduleImport("logging").getMember("getLogger").getACall()
       }
@@ -1767,11 +1767,11 @@ private module StdlibPrivate {
           or
           nodeFrom.asCfgNode() = nodeTo.asCfgNode().(CallNode).getFunction() and
           (
-            nodeFrom = getvalueRef().getAUse() and nodeTo = getvalueResult().getAnImmediateUse()
+            nodeFrom = getvalueRef().getAUse() and nodeTo = getvalueResult().asSource()
             or
-            nodeFrom = getfirstRef().getAUse() and nodeTo = getfirstResult().getAnImmediateUse()
+            nodeFrom = getfirstRef().getAUse() and nodeTo = getfirstResult().asSource()
             or
-            nodeFrom = getlistRef().getAUse() and nodeTo = getlistResult().getAnImmediateUse()
+            nodeFrom = getlistRef().getAUse() and nodeTo = getlistResult().asSource()
           )
           or
           // Indexing
@@ -1939,7 +1939,7 @@ private module StdlibPrivate {
 
     /** A HttpRequestHandler class definition (most likely in project code). */
     class HttpRequestHandlerClassDef extends Class {
-      HttpRequestHandlerClassDef() { this.getParent() = subclassRef().getAnImmediateUse().asExpr() }
+      HttpRequestHandlerClassDef() { this.getParent() = subclassRef().asSource().asExpr() }
     }
 
     /** DEPRECATED: Alias for HttpRequestHandlerClassDef */
@@ -2037,7 +2037,7 @@ private module StdlibPrivate {
               .getMember("simple_server")
               .getMember("WSGIServer")
               .getASubclass*()
-              .getAnImmediateUse()
+              .asSource()
               .asExpr()
       }
     }

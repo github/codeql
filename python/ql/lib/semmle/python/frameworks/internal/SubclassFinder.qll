@@ -204,7 +204,7 @@ private module NotExposed {
     FindSubclassesSpec spec, string newSubclassQualified, ClassExpr classExpr, Module mod,
     Location loc
   ) {
-    classExpr = newOrExistingModeling(spec).getASubclass*().getAnImmediateUse().asExpr() and
+    classExpr = newOrExistingModeling(spec).getASubclass*().asSource().asExpr() and
     classExpr.getScope() = mod and
     newSubclassQualified = mod.getName() + "." + classExpr.getName() and
     loc = classExpr.getLocation() and

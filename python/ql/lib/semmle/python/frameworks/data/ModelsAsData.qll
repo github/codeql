@@ -23,7 +23,7 @@ private import semmle.python.dataflow.new.TaintTracking
  * A remote flow source originating from a CSV source row.
  */
 private class RemoteFlowSourceFromCsv extends RemoteFlowSource {
-  RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").getAnImmediateUse() }
+  RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").asSource() }
 
   override string getSourceType() { result = "Remote flow (from model)" }
 }
@@ -35,7 +35,7 @@ private predicate summaryStepNodes(DataFlow::Node pred, DataFlow::Node succ, str
   exists(API::Node predNode, API::Node succNode |
     Specific::summaryStep(predNode, succNode, kind) and
     pred = predNode.asSink() and
-    succ = succNode.getAnImmediateUse()
+    succ = succNode.asSource()
   )
 }
 

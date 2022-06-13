@@ -144,9 +144,7 @@ private module CryptographyModel {
     DataFlow::Node getCurveArg() { result in [this.getArg(0), this.getArgByName("curve")] }
 
     override int getKeySizeWithOrigin(DataFlow::Node origin) {
-      exists(API::Node n |
-        n = Ecc::predefinedCurveClass(result) and origin = n.getAnImmediateUse()
-      |
+      exists(API::Node n | n = Ecc::predefinedCurveClass(result) and origin = n.asSource() |
         this.getCurveArg() = n.getAUse()
         or
         this.getCurveArg() = n.getReturn().getAUse()

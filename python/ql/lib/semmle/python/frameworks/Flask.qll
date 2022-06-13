@@ -195,7 +195,7 @@ module Flask {
 
     FlaskViewClass() {
       api_node = Views::View::subclassRef() and
-      this.getParent() = api_node.getAnImmediateUse().asExpr()
+      this.getParent() = api_node.asSource().asExpr()
     }
 
     /** Gets a function that could handle incoming requests, if any. */
@@ -220,7 +220,7 @@ module Flask {
   class FlaskMethodViewClass extends FlaskViewClass {
     FlaskMethodViewClass() {
       api_node = Views::MethodView::subclassRef() and
-      this.getParent() = api_node.getAnImmediateUse().asExpr()
+      this.getParent() = api_node.asSource().asExpr()
     }
 
     override Function getARequestHandler() {
@@ -404,7 +404,7 @@ module Flask {
 
   private class RequestAttrMultiDict extends Werkzeug::MultiDict::InstanceSource {
     RequestAttrMultiDict() {
-      this = request().getMember(["args", "values", "form", "files"]).getAnImmediateUse()
+      this = request().getMember(["args", "values", "form", "files"]).asSource()
     }
   }
 
@@ -427,14 +427,12 @@ module Flask {
 
   /** An `Headers` instance that originates from a flask request. */
   private class FlaskRequestHeadersInstances extends Werkzeug::Headers::InstanceSource {
-    FlaskRequestHeadersInstances() { this = request().getMember("headers").getAnImmediateUse() }
+    FlaskRequestHeadersInstances() { this = request().getMember("headers").asSource() }
   }
 
   /** An `Authorization` instance that originates from a flask request. */
   private class FlaskRequestAuthorizationInstances extends Werkzeug::Authorization::InstanceSource {
-    FlaskRequestAuthorizationInstances() {
-      this = request().getMember("authorization").getAnImmediateUse()
-    }
+    FlaskRequestAuthorizationInstances() { this = request().getMember("authorization").asSource() }
   }
 
   // ---------------------------------------------------------------------------
@@ -574,6 +572,6 @@ module Flask {
    * - https://flask.palletsprojects.com/en/2.0.x/logging/
    */
   private class FlaskLogger extends Stdlib::Logger::InstanceSource {
-    FlaskLogger() { this = FlaskApp::instance().getMember("logger").getAnImmediateUse() }
+    FlaskLogger() { this = FlaskApp::instance().getMember("logger").asSource() }
   }
 }

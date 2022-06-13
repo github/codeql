@@ -63,7 +63,7 @@ private module Aiopg {
   class AwaitedCursorExecuteCall extends SqlExecution::Range {
     CursorExecuteCall execute;
 
-    AwaitedCursorExecuteCall() { this = execute.getReturn().getAwaited().getAnImmediateUse() }
+    AwaitedCursorExecuteCall() { this = execute.getReturn().getAwaited().asSource() }
 
     override DataFlow::Node getSql() { result = execute.getSql() }
   }
@@ -100,7 +100,7 @@ private module Aiopg {
   class AwaitedSAConnectionExecuteCall extends SqlExecution::Range {
     SAConnectionExecuteCall excute;
 
-    AwaitedSAConnectionExecuteCall() { this = excute.getReturn().getAwaited().getAnImmediateUse() }
+    AwaitedSAConnectionExecuteCall() { this = excute.getReturn().getAwaited().asSource() }
 
     override DataFlow::Node getSql() { result = excute.getSql() }
   }

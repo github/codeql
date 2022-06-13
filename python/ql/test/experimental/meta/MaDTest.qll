@@ -38,7 +38,7 @@ class MadSourceTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     exists(DataFlow::Node source, string kind |
-      source = ModelOutput::getASourceNode(kind).getAnImmediateUse() and
+      source = ModelOutput::getASourceNode(kind).asSource() and
       location = source.getLocation() and
       element = source.toString() and
       value = prettyNodeForInlineTest(source) and

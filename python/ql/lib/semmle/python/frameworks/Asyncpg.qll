@@ -71,7 +71,7 @@ private module Asyncpg {
       CursorCreation() {
         exists(CursorConstruction c |
           sql = c.getSql() and
-          this = c.getReturn().getAwaited().getAnImmediateUse()
+          this = c.getReturn().getAwaited().asSource()
         )
         or
         exists(API::CallNode prepareCall |
@@ -86,7 +86,7 @@ private module Asyncpg {
                 .getMember("cursor")
                 .getReturn()
                 .getAwaited()
-                .getAnImmediateUse()
+                .asSource()
         )
       }
 
