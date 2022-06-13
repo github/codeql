@@ -951,7 +951,7 @@ module QL {
     final ModuleName getName() { ql_module_def(this, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final AstNode getParameter(int i) { ql_module_parameter(this, i, result) }
+    final ModuleParam getParameter(int i) { ql_module_parameter(this, i, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { ql_module_child(this, i, result) }

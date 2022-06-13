@@ -610,13 +610,11 @@ ql_module_implements(
   unique int implements: @ql_module_implements_type ref
 );
 
-@ql_module_parameter_type = @ql_module_param | @ql_reserved_word
-
 #keyset[ql_module, index]
 ql_module_parameter(
   int ql_module: @ql_module ref,
   int index: int ref,
-  unique int parameter: @ql_module_parameter_type ref
+  unique int parameter: @ql_module_param ref
 );
 
 @ql_module_child_type = @ql_module_alias_body | @ql_module_member
