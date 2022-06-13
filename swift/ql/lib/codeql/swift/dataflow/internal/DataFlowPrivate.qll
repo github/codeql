@@ -62,11 +62,7 @@ private module Cached {
   newtype TNode =
     TExprNode(ExprCfgNode e) or
     TSsaDefinitionNode(Ssa::Definition def) or
-    TInoutReturnNode(ParamDecl param, ControlFlowNode exit) {
-      param.isInout() and
-      exit.getScope() = param.getDeclaringFunction() and
-      exit.getNode().asAstNode() instanceof ReturnStmt
-    } or
+    TInoutReturnNode(ParamDecl param) { param.isInout() } or
     TInOutUpdateNode(ParamDecl param, CallExpr call) {
       param.isInout() and
       call.getStaticTarget() = param.getDeclaringFunction()
@@ -216,7 +212,11 @@ private module ReturnNodes {
     ParamDecl param;
     ControlFlowNode exit;
 
-    InoutReturnNodeImpl() { this = TInoutReturnNode(param, exit) }
+    InoutReturnNodeImpl() {
+      this = TInoutReturnNode(param) and
+      exit instanceof ExitNode and
+      exit.getScope() = param.getDeclaringFunction()
+    }
 
     override ReturnKind getKind() { result.(ParamReturnKind).getIndex() = param.getIndex() }
 

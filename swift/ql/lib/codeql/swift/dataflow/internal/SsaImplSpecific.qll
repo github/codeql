@@ -3,6 +3,7 @@
 private import swift
 private import codeql.swift.controlflow.BasicBlocks as BasicBlocks
 private import codeql.swift.controlflow.ControlFlowGraph
+private import codeql.swift.controlflow.CfgNodes
 
 class BasicBlock = BasicBlocks::BasicBlock;
 
@@ -51,8 +52,8 @@ predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) 
     certain = true
   )
   or
-  exists(ReturnStmt return, AbstractFunctionDecl func |
-    bb.getNode(i).getNode().asAstNode() = return and
+  exists(ExitNode exit, AbstractFunctionDecl func |
+    bb.getNode(i) = exit and
     v.(ParamDecl).isInout() and
     func.getAParam() = v and
     bb.getScope() = func and
