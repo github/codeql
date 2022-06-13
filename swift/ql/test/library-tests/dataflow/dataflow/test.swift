@@ -76,3 +76,32 @@ func swapUser() {
     sink(arg: x)
     sink(arg: y)
 }
+
+func inoutSourceWithoutReturn(arg: inout Int) {
+    arg = source()
+}
+
+func inoutSourceMultipleReturn(arg: inout Int, bool: Bool) {
+    if(bool) {
+        arg = source()
+        return
+    } else {
+        arg = source()
+    }
+}
+
+func inoutUser2(bool: Bool) {
+    do {
+        var x: Int = 0
+        sink(arg: x) // clean
+        inoutSourceWithoutReturn(arg: &x)
+        sink(arg: x) // tainted
+    }
+
+    do {
+        var x: Int = 0
+        sink(arg: x) // clean
+        inoutSourceMultipleReturn(arg: &x, bool: bool)
+        sink(arg: x) // tainted by two sources
+    }
+}

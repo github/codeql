@@ -22,6 +22,9 @@ edges
 | test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | WriteDef :  |
 | test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  |
 | test.swift:75:21:75:22 | &... :  | test.swift:75:5:75:33 | arg2 :  |
+| test.swift:86:15:86:22 | call to source :  | test.swift:87:9:87:9 | arg[return] :  |
+| test.swift:87:9:87:9 | arg[return] :  | test.swift:104:9:104:54 | arg :  |
+| test.swift:104:9:104:54 | arg :  | test.swift:105:19:105:19 | x |
 nodes
 | test.swift:6:19:6:26 | call to source :  | semmle.label | call to source :  |
 | test.swift:7:15:7:15 | t1 | semmle.label | t1 |
@@ -56,6 +59,10 @@ nodes
 | test.swift:75:5:75:33 | arg2 :  | semmle.label | arg2 :  |
 | test.swift:75:21:75:22 | &... :  | semmle.label | &... :  |
 | test.swift:77:15:77:15 | y | semmle.label | y |
+| test.swift:86:15:86:22 | call to source :  | semmle.label | call to source :  |
+| test.swift:87:9:87:9 | arg[return] :  | semmle.label | arg[return] :  |
+| test.swift:104:9:104:54 | arg :  | semmle.label | arg :  |
+| test.swift:105:19:105:19 | x | semmle.label | x |
 subpaths
 | test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | WriteDef :  | test.swift:69:5:69:5 | arg2[return] :  | test.swift:75:5:75:33 | arg2 :  |
 | test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  | test.swift:69:5:69:5 | arg2[return] :  | test.swift:75:5:75:33 | arg2 :  |
@@ -69,3 +76,4 @@ subpaths
 | test.swift:50:15:50:15 | t | test.swift:43:19:43:26 | call to source :  | test.swift:50:15:50:15 | t | result |
 | test.swift:62:15:62:15 | x | test.swift:54:11:54:18 | call to source :  | test.swift:62:15:62:15 | x | result |
 | test.swift:77:15:77:15 | y | test.swift:73:18:73:25 | call to source :  | test.swift:77:15:77:15 | y | result |
+| test.swift:105:19:105:19 | x | test.swift:86:15:86:22 | call to source :  | test.swift:105:19:105:19 | x | result |

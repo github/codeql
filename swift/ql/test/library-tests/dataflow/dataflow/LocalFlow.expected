@@ -51,3 +51,21 @@
 | test.swift:75:5:75:33 | arg2 | test.swift:75:5:75:33 | WriteDef |
 | test.swift:75:22:75:22 | x | test.swift:75:21:75:22 | &... |
 | test.swift:75:32:75:32 | y | test.swift:75:31:75:32 | &... |
+| test.swift:84:48:84:54 | WriteDef | test.swift:85:8:85:8 | bool |
+| test.swift:84:48:84:54 | bool | test.swift:85:8:85:8 | bool |
+| test.swift:86:9:86:22 | WriteDef | test.swift:87:9:87:9 | arg[return] |
+| test.swift:86:15:86:22 | call to source | test.swift:86:9:86:22 | WriteDef |
+| test.swift:93:17:93:23 | WriteDef | test.swift:104:50:104:50 | bool |
+| test.swift:93:17:93:23 | bool | test.swift:104:50:104:50 | bool |
+| test.swift:95:13:95:16 | WriteDef | test.swift:96:19:96:19 | x |
+| test.swift:95:22:95:22 | 0 | test.swift:95:13:95:16 | WriteDef |
+| test.swift:96:19:96:19 | x | test.swift:97:40:97:40 | x |
+| test.swift:97:9:97:41 | WriteDef | test.swift:98:19:98:19 | x |
+| test.swift:97:9:97:41 | arg | test.swift:97:9:97:41 | WriteDef |
+| test.swift:97:40:97:40 | x | test.swift:97:39:97:40 | &... |
+| test.swift:102:13:102:16 | WriteDef | test.swift:103:19:103:19 | x |
+| test.swift:102:22:102:22 | 0 | test.swift:102:13:102:16 | WriteDef |
+| test.swift:103:19:103:19 | x | test.swift:104:41:104:41 | x |
+| test.swift:104:9:104:54 | WriteDef | test.swift:105:19:105:19 | x |
+| test.swift:104:9:104:54 | arg | test.swift:104:9:104:54 | WriteDef |
+| test.swift:104:41:104:41 | x | test.swift:104:40:104:41 | &... |
