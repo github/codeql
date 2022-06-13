@@ -21,8 +21,8 @@ private class PauseThreadDataModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        "java.lang;Thread;true;sleep;;;Argument[0];thread-pause",
-        "java.util.concurrent;TimeUnit;true;sleep;;;Argument[0];thread-pause"
+        "java.lang;Thread;true;sleep;;;Argument[0];thread-pause;manual",
+        "java.util.concurrent;TimeUnit;true;sleep;;;Argument[0];thread-pause;manual"
       ]
   }
 }
