@@ -153,10 +153,10 @@ class Log4jInjectionSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "org.apache.logging.log4j.message;MapMessage;true;with;;;Argument[1];Argument[-1];taint",
-        "org.apache.logging.log4j.message;MapMessage;true;with;;;Argument[-1];ReturnValue;value",
-        "org.apache.logging.log4j.message;MapMessage;true;put;;;Argument[1];Argument[-1];taint",
-        "org.apache.logging.log4j.message;MapMessage;true;putAll;;;Argument[0].MapValue;Argument[-1];taint",
+        "org.apache.logging.log4j.message;MapMessage;true;with;;;Argument[1];Argument[-1];taint;manual",
+        "org.apache.logging.log4j.message;MapMessage;true;with;;;Argument[-1];ReturnValue;value;manual",
+        "org.apache.logging.log4j.message;MapMessage;true;put;;;Argument[1];Argument[-1];taint;manual",
+        "org.apache.logging.log4j.message;MapMessage;true;putAll;;;Argument[0].MapValue;Argument[-1];taint;manual",
       ]
   }
 }
