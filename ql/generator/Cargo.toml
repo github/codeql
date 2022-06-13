@@ -11,4 +11,4 @@ clap = "2.33"
 node-types = { path = "../node-types" }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
-tree-sitter-ql = { git = "https://github.com/tausbn/tree-sitter-ql.git", rev = "7928a971a9a408f7ad59876c2ecda4a5329a6795" }
+tree-sitter-ql = { git = "https://github.com/tausbn/tree-sitter-ql.git", rev = "a8e519e676ff6e7aa9c1d0a8a329edefcaac69ae" }

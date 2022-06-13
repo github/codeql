@@ -679,17 +679,10 @@ ql_module_name_def(
   int child: @ql_token_simple_id ref
 );
 
-@ql_moduleParam_child_type = @ql_signature_expr | @ql_token_simple_id
-
-#keyset[ql_module_param, index]
-ql_module_param_child(
-  int ql_module_param: @ql_module_param ref,
-  int index: int ref,
-  unique int child: @ql_moduleParam_child_type ref
-);
-
 ql_module_param_def(
-  unique int id: @ql_module_param
+  unique int id: @ql_module_param,
+  int parameter: @ql_token_simple_id ref,
+  int signature: @ql_signature_expr ref
 );
 
 @ql_mul_expr_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable

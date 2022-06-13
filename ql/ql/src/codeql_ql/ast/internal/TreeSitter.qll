@@ -1035,11 +1035,16 @@ module QL {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ModuleParam" }
 
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_module_param_child(this, i, result) }
+    /** Gets the node corresponding to the field `parameter`. */
+    final SimpleId getParameter() { ql_module_param_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `signature`. */
+    final SignatureExpr getSignature() { ql_module_param_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_module_param_child(this, _, result) }
+    final override AstNode getAFieldOrChild() {
+      ql_module_param_def(this, result, _) or ql_module_param_def(this, _, result)
+    }
   }
 
   /** A class representing `mul_expr` nodes. */
