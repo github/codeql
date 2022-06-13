@@ -64,8 +64,8 @@ private newtype TTestCase =
       string inputSpec, string outputSpec
     |
       any(TargetSummaryModelCsv tsmc).row(row) and
-      summaryModel(namespace, type, subtypes, name, signature, ext, inputSpec, outputSpec, kind,
-        false, row) and
+      summaryModel(namespace, type, subtypes, name, signature, ext, inputSpec, outputSpec, kind, _,
+        row) and
       callable = interpretElement(namespace, type, subtypes, name, signature, ext) and
       Private::External::interpretSpec(inputSpec, input) and
       Private::External::interpretSpec(outputSpec, output)
