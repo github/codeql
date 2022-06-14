@@ -92,19 +92,10 @@ module API {
    */
   class Node extends Impl::TApiNode {
     /**
-     * Gets a data-flow node corresponding to a use of the API component represented by this node.
+     * Gets a data-flow node where this value may flow after entering the current codebase.
      *
-     * For example, `import re; re.escape` is a use of the `escape` function from the
-     * `re` module, and `import re; re.escape("hello")` is a use of the return of that function.
-     *
-     * This includes indirect uses found via data flow, meaning that in
-     * ```python
-     * def f(x):
-     *     pass
-     *
-     * f(obj.foo)
-     * ```
-     * both `obj.foo` and `x` are uses of the `foo` member from `obj`.
+     * This is similar to `asSource()` but additionally includes nodes that are transitively reachable by data flow.
+     * See `asSource()` for examples.
      */
     DataFlow::Node getAValueReachableFromSource() {
       exists(DataFlow::LocalSourceNode src | Impl::use(this, src) |
@@ -113,39 +104,48 @@ module API {
     }
 
     /**
-     * Gets a data-flow node corresponding to the right-hand side of a definition of the API
-     * component represented by this node.
+     * Gets a data-flow node where this value leaves the current codebase and flows into an
+     * external library (or in general, any external codebase).
      *
-     * For example, in the property write `foo.bar = x`, variable `x` is the the right-hand side
-     * of a write to the `bar` property of `foo`.
+     * Concretely, this is either an argument passed to a call to external code,
+     * or the right-hand side of a property write on an object flowing into such a call.
      *
-     * Note that for parameters, it is the arguments flowing into that parameter that count as
-     * right-hand sides of the definition, not the declaration of the parameter itself.
-     * Consequently, in :
+     * For example:
      * ```python
-     * from mypkg import foo;
+     * import foo
+     *
+     * # 'x' is matched by API::moduleImport("foo").getMember("bar").getParameter(0).asSink()
      * foo.bar(x)
+     *
+     * # 'x' is matched by API::moduleImport("foo").getMember("bar").getParameter(0).getMember("prop").asSink()
+     * obj.prop = x
+     * foo.bar(obj);
      * ```
-     * `x` is the right-hand side of a definition of the first parameter of `bar` from the `mypkg.foo` module.
      */
     DataFlow::Node asSink() { Impl::rhs(this, result) }
 
     /**
-     * Gets a data-flow node that may interprocedurally flow to the right-hand side of a definition
-     * of the API component represented by this node.
+     * Gets a data-flow node that transitively flows to an external library (or in general, any external codebase).
+     *
+     * This is similar to `asSink()` but additionally includes nodes that transitively reach a sink by data flow.
+     * See `asSink()` for examples.
      */
     DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
 
     /**
-     * Gets an immediate use of the API component represented by this node.
+     * Gets a data-flow node where this value enters the current codebase.
      *
-     * For example, `import re; re.escape` is a an immediate use of the `escape` member
-     * from the `re` module.
+     * For example:
+     * ```python
+     * # API::moduleImport("re").asSource()
+     * import re
      *
-     * Unlike `getAUse()`, this predicate only gets the immediate references, not the indirect uses
-     * found via data flow. This means that in `x = re.escape` only `re.escape` is a reference
-     * to the `escape` member of `re`, neither `x` nor any node that `x` flows to is a reference to
-     * this API component.
+     * # API::moduleImport("re").getMember("escape").asSource()
+     * re.escape
+     *
+     * # API::moduleImport("re").getMember("escape").getReturn().asSource()
+     * re.escape()
+     * ```
      */
     DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
 
