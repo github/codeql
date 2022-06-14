@@ -90,6 +90,18 @@ open class KotlinUsesExtractor(
         makeDescription(FqName("java.lang.Enum"), "<get-ordinal>") to "ordinal",
         makeDescription(StandardNames.FqNames._enum.toSafe(), "<get-name>") to "name",
         makeDescription(FqName("java.lang.Enum"), "<get-name>") to "name",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toByte") to "byteValue",
+        makeDescription(FqName("java.lang.Number"), "toByte") to "byteValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toShort") to "shortValue",
+        makeDescription(FqName("java.lang.Number"), "toShort") to "shortValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toInt") to "intValue",
+        makeDescription(FqName("java.lang.Number"), "toInt") to "intValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toLong") to "longValue",
+        makeDescription(FqName("java.lang.Number"), "toLong") to "longValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toFloat") to "floatValue",
+        makeDescription(FqName("java.lang.Number"), "toFloat") to "floatValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toDouble") to "doubleValue",
+        makeDescription(FqName("java.lang.Number"), "toDouble") to "doubleValue",
     )
 
     private val specialFunctionShortNames = specialFunctions.keys.map { it.functionName }.toSet()
