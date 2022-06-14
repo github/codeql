@@ -97,7 +97,7 @@ open class KotlinUsesExtractor(
     fun getSpecialJvmName(f: IrFunction): String? {
         if (specialFunctionShortNames.contains(f.name) && f is IrSimpleFunction) {
             f.allOverridden(true).forEach { overriddenFunc ->
-                overriddenFunc.parentAsClass.fqNameWhenAvailable?.let { parentFqName ->
+                overriddenFunc.parentClassOrNull?.fqNameWhenAvailable?.let { parentFqName ->
                     specialFunctions[MethodKey(parentFqName, f.name)]?.let {
                         return it
                     }
