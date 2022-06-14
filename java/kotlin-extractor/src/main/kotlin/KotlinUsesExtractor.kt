@@ -83,7 +83,9 @@ open class KotlinUsesExtractor(
         makeDescription(StandardNames.FqNames.map, "<get-values>") to "values",
         makeDescription(FqName("java.util.Map"), "<get-values>") to "values",
         makeDescription(StandardNames.FqNames.map, "<get-entries>") to "entrySet",
-        makeDescription(FqName("java.util.Map"), "<get-entries>") to "entrySet"
+        makeDescription(FqName("java.util.Map"), "<get-entries>") to "entrySet",
+        makeDescription(StandardNames.FqNames.mutableList, "removeAt") to "remove",
+        makeDescription(FqName("java.util.List"), "removeAt") to "remove"
     )
 
     private val specialFunctionShortNames = specialFunctions.keys.map { it.functionName }.toSet()
