@@ -125,7 +125,6 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
     ) and
     type = getTypeForPRValue(getVariableType(varUsed))
   }
-
 }
 
 TranslatedGlobalOrNamespaceVarInit getTranslatedVarInit(GlobalOrNamespaceVariable var) {
