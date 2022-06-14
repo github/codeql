@@ -9432,6 +9432,13 @@ ir.cpp:
 # 1750|     v1750_7(void)       = ExitFunction             : 
 
 # 1757| void if_initialization(int)
+# 1757|   Block 0
+# 1757|     v1757_1(void)       = EnterFunction          : 
+# 1757|     mu1757_2(unknown)   = AliasedDefinition      : 
+# 1757|     mu1757_3(unknown)   = InitializeNonLocal     : 
+# 1757|     r1757_4(glval<int>) = VariableAddress[x]     : 
+# 1757|     mu1757_5(int)       = InitializeParameter[x] : &:r1757_4
+
 # 1758|   (no string representation)
 # 1758|     CopyValue: (condition decl)
 # 1758|     ConditionalBranch: (condition decl)
@@ -9443,13 +9450,6 @@ ir.cpp:
 # 1763|     ConditionalBranch: (condition decl)
 #-----|   False -> Block 6
 #-----|   True -> Block 5
-
-# 1757|   Block 0
-# 1757|     v1757_1(void)       = EnterFunction          : 
-# 1757|     mu1757_2(unknown)   = AliasedDefinition      : 
-# 1757|     mu1757_3(unknown)   = InitializeNonLocal     : 
-# 1757|     r1757_4(glval<int>) = VariableAddress[x]     : 
-# 1757|     mu1757_5(int)       = InitializeParameter[x] : &:r1757_4
 
 # 1758|   Block 1
 # 1758|     r1758_1(glval<int>) = VariableAddress[x] : 
@@ -9592,6 +9592,13 @@ ir.cpp:
 # 1757|     v1757_8(void) = ExitFunction : 
 
 # 1785| void switch_initialization(int)
+# 1785|   Block 0
+# 1785|     v1785_1(void)       = EnterFunction          : 
+# 1785|     mu1785_2(unknown)   = AliasedDefinition      : 
+# 1785|     mu1785_3(unknown)   = InitializeNonLocal     : 
+# 1785|     r1785_4(glval<int>) = VariableAddress[x]     : 
+# 1785|     mu1785_5(int)       = InitializeParameter[x] : &:r1785_4
+
 # 1786|   (no string representation)
 # 1786|     CopyValue: (condition decl)
 # 1786|     Switch: switch (...) ... 
@@ -9601,13 +9608,6 @@ ir.cpp:
 # 1792|     CopyValue: (condition decl)
 # 1792|     Switch: switch (...) ... 
 #-----|   Default -> Block 4
-
-# 1785|   Block 0
-# 1785|     v1785_1(void)       = EnterFunction          : 
-# 1785|     mu1785_2(unknown)   = AliasedDefinition      : 
-# 1785|     mu1785_3(unknown)   = InitializeNonLocal     : 
-# 1785|     r1785_4(glval<int>) = VariableAddress[x]     : 
-# 1785|     mu1785_5(int)       = InitializeParameter[x] : &:r1785_4
 
 # 1786|   Block 1
 # 1786|     r1786_1(glval<int>) = VariableAddress[x] : 

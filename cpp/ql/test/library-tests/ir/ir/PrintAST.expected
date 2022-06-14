@@ -13565,22 +13565,22 @@ ir.cpp:
 # 1757|         Type = [IntType] int
 # 1757|   getEntryPoint(): [BlockStmt] { ... }
 # 1758|     getStmt(0): [IfStmt] if (...) ... 
-# 1758|       getInitialization(): [DeclStmt] declaration
-# 1758|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
-# 1758|             Type = [IntType] int
-# 1758|           getVariable().getInitializer(): [Initializer] initializer for y
-# 1758|             getExpr(): [VariableAccess] x
-# 1758|                 Type = [IntType] int
-# 1758|                 ValueCategory = prvalue(load)
-# 1758|       getCondition(): [AddExpr] ... + ...
-# 1758|           Type = [IntType] int
+# 1758|       getCondition(): [ConditionDeclExpr] (condition decl)
+# 1758|           Type = [BoolType] bool
 # 1758|           ValueCategory = prvalue
-# 1758|         getLeftOperand(): [VariableAccess] x
+# 1758|         getChild(0): [AddExpr] ... + ...
 # 1758|             Type = [IntType] int
-# 1758|             ValueCategory = prvalue(load)
-# 1758|         getRightOperand(): [Literal] 1
-# 1758|             Type = [IntType] int
-# 1758|             Value = [Literal] 1
+# 1758|             ValueCategory = prvalue
+# 1758|           getLeftOperand(): [VariableAccess] x
+# 1758|               Type = [IntType] int
+# 1758|               ValueCategory = prvalue(load)
+# 1758|           getRightOperand(): [Literal] 1
+# 1758|               Type = [IntType] int
+# 1758|               Value = [Literal] 1
+# 1758|               ValueCategory = prvalue
+# 1758|         getChild(0).getFullyConverted(): [CStyleCast] (bool)...
+# 1758|             Conversion = [BoolConversion] conversion to bool
+# 1758|             Type = [BoolType] bool
 # 1758|             ValueCategory = prvalue
 # 1758|       getThen(): [BlockStmt] { ... }
 # 1759|         getStmt(0): [ExprStmt] ExprStmt
@@ -13599,33 +13599,26 @@ ir.cpp:
 # 1759|               getRightOperand(): [VariableAccess] y
 # 1759|                   Type = [IntType] int
 # 1759|                   ValueCategory = prvalue(load)
-# 1758|       getCondition().getFullyConverted(): [CStyleCast] (bool)...
-# 1758|           Conversion = [BoolConversion] conversion to bool
-# 1758|           Type = [BoolType] bool
-# 1758|           ValueCategory = prvalue
 # 1762|     getStmt(1): [DeclStmt] declaration
 # 1762|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
 # 1762|           Type = [IntType] int
 # 1763|     getStmt(2): [IfStmt] if (...) ... 
-# 1763|       getInitialization(): [ExprStmt] ExprStmt
-# 1763|         getExpr(): [AssignExpr] ... = ...
+# 1763|       getCondition(): [ConditionDeclExpr] (condition decl)
+# 1763|           Type = [BoolType] bool
+# 1763|           ValueCategory = prvalue
+# 1763|         getChild(0): [AddExpr] ... + ...
 # 1763|             Type = [IntType] int
-# 1763|             ValueCategory = lvalue
-# 1763|           getLValue(): [VariableAccess] w
-# 1763|               Type = [IntType] int
-# 1763|               ValueCategory = lvalue
-# 1763|           getRValue(): [VariableAccess] x
+# 1763|             ValueCategory = prvalue
+# 1763|           getLeftOperand(): [VariableAccess] x
 # 1763|               Type = [IntType] int
 # 1763|               ValueCategory = prvalue(load)
-# 1763|       getCondition(): [AddExpr] ... + ...
-# 1763|           Type = [IntType] int
-# 1763|           ValueCategory = prvalue
-# 1763|         getLeftOperand(): [VariableAccess] x
-# 1763|             Type = [IntType] int
-# 1763|             ValueCategory = prvalue(load)
-# 1763|         getRightOperand(): [Literal] 1
-# 1763|             Type = [IntType] int
-# 1763|             Value = [Literal] 1
+# 1763|           getRightOperand(): [Literal] 1
+# 1763|               Type = [IntType] int
+# 1763|               Value = [Literal] 1
+# 1763|               ValueCategory = prvalue
+# 1763|         getChild(0).getFullyConverted(): [CStyleCast] (bool)...
+# 1763|             Conversion = [BoolConversion] conversion to bool
+# 1763|             Type = [BoolType] bool
 # 1763|             ValueCategory = prvalue
 # 1763|       getThen(): [BlockStmt] { ... }
 # 1764|         getStmt(0): [ExprStmt] ExprStmt
@@ -13644,21 +13637,7 @@ ir.cpp:
 # 1764|               getRightOperand(): [VariableAccess] w
 # 1764|                   Type = [IntType] int
 # 1764|                   ValueCategory = prvalue(load)
-# 1763|       getCondition().getFullyConverted(): [CStyleCast] (bool)...
-# 1763|           Conversion = [BoolConversion] conversion to bool
-# 1763|           Type = [BoolType] bool
-# 1763|           ValueCategory = prvalue
 # 1767|     getStmt(3): [IfStmt] if (...) ... 
-# 1767|       getInitialization(): [ExprStmt] ExprStmt
-# 1767|         getExpr(): [AssignExpr] ... = ...
-# 1767|             Type = [IntType] int
-# 1767|             ValueCategory = lvalue
-# 1767|           getLValue(): [VariableAccess] w
-# 1767|               Type = [IntType] int
-# 1767|               ValueCategory = lvalue
-# 1767|           getRValue(): [VariableAccess] x
-# 1767|               Type = [IntType] int
-# 1767|               ValueCategory = prvalue(load)
 # 1767|       getCondition(): [ConditionDeclExpr] (condition decl)
 # 1767|           Type = [BoolType] bool
 # 1767|           ValueCategory = prvalue
@@ -13687,13 +13666,6 @@ ir.cpp:
 # 1768|                   Type = [IntType] int
 # 1768|                   ValueCategory = prvalue(load)
 # 1771|     getStmt(4): [IfStmt] if (...) ... 
-# 1771|       getInitialization(): [DeclStmt] declaration
-# 1771|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
-# 1771|             Type = [IntType] int
-# 1771|           getVariable().getInitializer(): [Initializer] initializer for v
-# 1771|             getExpr(): [VariableAccess] x
-# 1771|                 Type = [IntType] int
-# 1771|                 ValueCategory = prvalue(load)
 # 1771|       getCondition(): [ConditionDeclExpr] (condition decl)
 # 1771|           Type = [BoolType] bool
 # 1771|           ValueCategory = prvalue
@@ -13782,23 +13754,19 @@ ir.cpp:
 # 1785|         Type = [IntType] int
 # 1785|   getEntryPoint(): [BlockStmt] { ... }
 # 1786|     getStmt(0): [SwitchStmt] switch (...) ... 
-# 1786|       getInitialization(): [DeclStmt] declaration
-# 1786|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
-# 1786|             Type = [IntType] int
-# 1786|           getVariable().getInitializer(): [Initializer] initializer for y
-# 1786|             getExpr(): [VariableAccess] x
-# 1786|                 Type = [IntType] int
-# 1786|                 ValueCategory = prvalue(load)
-# 1786|       getExpr(): [AddExpr] ... + ...
+# 1786|       getExpr(): [ConditionDeclExpr] (condition decl)
 # 1786|           Type = [IntType] int
 # 1786|           ValueCategory = prvalue
-# 1786|         getLeftOperand(): [VariableAccess] x
+# 1786|         getChild(0): [AddExpr] ... + ...
 # 1786|             Type = [IntType] int
-# 1786|             ValueCategory = prvalue(load)
-# 1786|         getRightOperand(): [Literal] 1
-# 1786|             Type = [IntType] int
-# 1786|             Value = [Literal] 1
 # 1786|             ValueCategory = prvalue
+# 1786|           getLeftOperand(): [VariableAccess] x
+# 1786|               Type = [IntType] int
+# 1786|               ValueCategory = prvalue(load)
+# 1786|           getRightOperand(): [Literal] 1
+# 1786|               Type = [IntType] int
+# 1786|               Value = [Literal] 1
+# 1786|               ValueCategory = prvalue
 # 1786|       getStmt(): [BlockStmt] { ... }
 # 1787|         getStmt(0): [SwitchCase] default: 
 # 1788|         getStmt(1): [ExprStmt] ExprStmt
@@ -13821,26 +13789,19 @@ ir.cpp:
 # 1791|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of w
 # 1791|           Type = [IntType] int
 # 1792|     getStmt(2): [SwitchStmt] switch (...) ... 
-# 1792|       getInitialization(): [ExprStmt] ExprStmt
-# 1792|         getExpr(): [AssignExpr] ... = ...
-# 1792|             Type = [IntType] int
-# 1792|             ValueCategory = lvalue
-# 1792|           getLValue(): [VariableAccess] w
-# 1792|               Type = [IntType] int
-# 1792|               ValueCategory = lvalue
-# 1792|           getRValue(): [VariableAccess] x
-# 1792|               Type = [IntType] int
-# 1792|               ValueCategory = prvalue(load)
-# 1792|       getExpr(): [AddExpr] ... + ...
+# 1792|       getExpr(): [ConditionDeclExpr] (condition decl)
 # 1792|           Type = [IntType] int
 # 1792|           ValueCategory = prvalue
-# 1792|         getLeftOperand(): [VariableAccess] x
+# 1792|         getChild(0): [AddExpr] ... + ...
 # 1792|             Type = [IntType] int
-# 1792|             ValueCategory = prvalue(load)
-# 1792|         getRightOperand(): [Literal] 1
-# 1792|             Type = [IntType] int
-# 1792|             Value = [Literal] 1
 # 1792|             ValueCategory = prvalue
+# 1792|           getLeftOperand(): [VariableAccess] x
+# 1792|               Type = [IntType] int
+# 1792|               ValueCategory = prvalue(load)
+# 1792|           getRightOperand(): [Literal] 1
+# 1792|               Type = [IntType] int
+# 1792|               Value = [Literal] 1
+# 1792|               ValueCategory = prvalue
 # 1792|       getStmt(): [BlockStmt] { ... }
 # 1793|         getStmt(0): [SwitchCase] default: 
 # 1794|         getStmt(1): [ExprStmt] ExprStmt
@@ -13860,16 +13821,6 @@ ir.cpp:
 # 1794|                   Type = [IntType] int
 # 1794|                   ValueCategory = prvalue(load)
 # 1797|     getStmt(3): [SwitchStmt] switch (...) ... 
-# 1797|       getInitialization(): [ExprStmt] ExprStmt
-# 1797|         getExpr(): [AssignExpr] ... = ...
-# 1797|             Type = [IntType] int
-# 1797|             ValueCategory = lvalue
-# 1797|           getLValue(): [VariableAccess] w
-# 1797|               Type = [IntType] int
-# 1797|               ValueCategory = lvalue
-# 1797|           getRValue(): [VariableAccess] x
-# 1797|               Type = [IntType] int
-# 1797|               ValueCategory = prvalue(load)
 # 1797|       getExpr(): [ConditionDeclExpr] (condition decl)
 # 1797|           Type = [IntType] int
 # 1797|           ValueCategory = prvalue
@@ -13895,13 +13846,6 @@ ir.cpp:
 # 1799|                   Type = [IntType] int
 # 1799|                   ValueCategory = prvalue(load)
 # 1802|     getStmt(4): [SwitchStmt] switch (...) ... 
-# 1802|       getInitialization(): [DeclStmt] declaration
-# 1802|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
-# 1802|             Type = [IntType] int
-# 1802|           getVariable().getInitializer(): [Initializer] initializer for v
-# 1802|             getExpr(): [VariableAccess] x
-# 1802|                 Type = [IntType] int
-# 1802|                 ValueCategory = prvalue(load)
 # 1802|       getExpr(): [ConditionDeclExpr] (condition decl)
 # 1802|           Type = [IntType] int
 # 1802|           ValueCategory = prvalue
