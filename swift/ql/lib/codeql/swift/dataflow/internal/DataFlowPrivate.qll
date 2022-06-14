@@ -6,6 +6,8 @@ private import codeql.swift.controlflow.CfgNodes
 private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.BasicBlocks
 private import codeql.swift.dataflow.internal.SsaImplCommon as SsaImpl
+private import codeql.swift.dataflow.FlowSummary as FlowSummary
+private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -66,7 +68,8 @@ private module Cached {
     TInOutUpdateNode(ParamDecl param, CallExpr call) {
       param.isInout() and
       call.getStaticTarget() = param.getDeclaringFunction()
-    }
+    } or
+    TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state)
 
   private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
     def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode()) and
@@ -102,13 +105,7 @@ private module Cached {
     )
     or
     exists(ParamReturnKind kind, ExprCfgNode arg |
-      arg =
-        nodeFrom
-            .(InOutUpdateNode)
-            .getCall(kind)
-            .getCfgNode()
-            .(CallExprCfgNode)
-            .getArgument(kind.getIndex()) and
+      arg = nodeFrom.(InOutUpdateNode).getCall(kind).asCall().getArgument(kind.getIndex()) and
       nodeTo.asDefinition().(Ssa::WriteDefinition).isInoutDef(arg)
     )
     or
@@ -173,6 +170,20 @@ private module ParameterNodes {
 
 import ParameterNodes
 
+/** A data-flow node used to model flow summaries. */
+class SummaryNode extends NodeImpl, TSummaryNode {
+  private FlowSummaryImpl::Public::SummarizedCallable c;
+  private FlowSummaryImpl::Private::SummaryNodeState state;
+
+  SummaryNode() { this = TSummaryNode(c, state) }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(c) }
+
+  override UnknownLocation getLocationImpl() { any() }
+
+  override string toStringImpl() { result = "[summary] " + state + " in " + c }
+}
+
 /** A data-flow node that represents a call argument. */
 abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
@@ -187,7 +198,7 @@ private module ArgumentNodes {
     NormalArgumentNode() { exists(CallExpr call | call.getAnArgument().getExpr() = this.asExpr()) }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      call.asExpr().(CallExpr).getArgument(pos.(PositionalArgumentPosition).getIndex()).getExpr() =
+      call.asCall().getArgument(pos.(PositionalArgumentPosition).getIndex()).getExpr() =
         this.asExpr()
     }
   }
@@ -232,6 +243,14 @@ private module ReturnNodes {
 
     override string toStringImpl() { result = param.toString() + "[return]" }
   }
+
+  private class SummaryReturnNode extends SummaryNode, ReturnNode {
+    private ReturnKind rk;
+
+    SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this, rk) }
+
+    override ReturnKind getKind() { result = rk }
+  }
 }
 
 import ReturnNodes
@@ -243,9 +262,13 @@ abstract class OutNode extends Node {
 }
 
 private module OutNodes {
-  class CallOutNode extends OutNode, DataFlowCall {
+  class CallOutNode extends OutNode, ExprNodeImpl {
+    ApplyExprCfgNode apply;
+
+    CallOutNode() { apply = this.getCfgNode() }
+
     override DataFlowCall getCall(ReturnKind kind) {
-      result = this and kind instanceof NormalReturnKind
+      result.asCall() = apply and kind instanceof NormalReturnKind
     }
   }
 
@@ -256,12 +279,12 @@ private module OutNodes {
     InOutUpdateNode() { this = TInOutUpdateNode(param, call) }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      result.asExpr() = call and
+      result.asCall().getExpr() = call and
       kind.(ParamReturnKind).getIndex() = param.getIndex()
     }
 
     override DataFlowCallable getEnclosingCallable() {
-      result = TDataFlowFunc(this.getCall(_).getCfgNode().getScope())
+      result = this.getCall(_).getEnclosingCallable()
     }
 
     override Location getLocationImpl() { result = call.getLocation() }
