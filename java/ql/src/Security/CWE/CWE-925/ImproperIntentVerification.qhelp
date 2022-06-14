@@ -6,13 +6,13 @@
 
 <overview>
 <p>
-When an android application uses a <code>BroadcastReciever</code> to receive intents, 
+When an Android application uses a <code>BroadcastReceiver</code> to receive intents, 
 it is also able to receive explicit intents that are sent directly to it, regardless of its filter.
 
 Certain intent actions are only able to be sent by the operating system, not third-party applications. 
 However, a <code>BroadcastReceiver</code> that is registered to receive system intents is still able to receive 
-other intents from a third-party application, so it should check that the intent received has the expected action.
-Otherwise, a third-party application could impersonate the system this way and cause unintended behavior, such as a denial of service.
+intents from a third-party application, so it should check that the intent received has the expected action.
+Otherwise, a third-party application could impersonate the system this way to cause unintended behavior, such as a denial of service.
 </p>
 </overview>
 

@@ -1,6 +1,6 @@
 /**
- * @name Improper Verification of Intent by Broadcast Receiver
- * @description The Android application uses a Broadcast Receiver that receives an Intent but does not properly verify that the Intent came from an authorized source.
+ * @name Improper verification of intent by broadcast receiver
+ * @description A broadcast reciever that does not verify intents it recieves may be susceptible to unintended behaviour by third party applications sending it explicit intents.
  * @kind problem
  * @problem.severity warning
  * @security-severity 8.2
