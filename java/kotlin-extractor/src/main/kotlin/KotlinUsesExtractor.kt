@@ -85,7 +85,11 @@ open class KotlinUsesExtractor(
         makeDescription(StandardNames.FqNames.map, "<get-entries>") to "entrySet",
         makeDescription(FqName("java.util.Map"), "<get-entries>") to "entrySet",
         makeDescription(StandardNames.FqNames.mutableList, "removeAt") to "remove",
-        makeDescription(FqName("java.util.List"), "removeAt") to "remove"
+        makeDescription(FqName("java.util.List"), "removeAt") to "remove",
+        makeDescription(StandardNames.FqNames._enum.toSafe(), "<get-ordinal>") to "ordinal",
+        makeDescription(FqName("java.lang.Enum"), "<get-ordinal>") to "ordinal",
+        makeDescription(StandardNames.FqNames._enum.toSafe(), "<get-name>") to "name",
+        makeDescription(FqName("java.lang.Enum"), "<get-name>") to "name",
     )
 
     private val specialFunctionShortNames = specialFunctions.keys.map { it.functionName }.toSet()
