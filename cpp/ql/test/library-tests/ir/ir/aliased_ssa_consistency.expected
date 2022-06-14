@@ -6,8 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ir.cpp:1757:28:1757:28 | InitializeParameter: x | Instruction 'InitializeParameter: x' has no successors in function '$@'. | ir.cpp:1757:6:1757:22 | void if_initialization(int) | void if_initialization(int) |
-| ir.cpp:1785:32:1785:32 | InitializeParameter: x | Instruction 'InitializeParameter: x' has no successors in function '$@'. | ir.cpp:1785:6:1785:26 | void switch_initialization(int) | void switch_initialization(int) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

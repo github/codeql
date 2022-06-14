@@ -1,8 +1,4 @@
 missingOperand
-| ir.cpp:1758:9:1758:24 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | ir.cpp:1757:6:1757:22 | void if_initialization(int) | void if_initialization(int) |
-| ir.cpp:1763:14:1763:20 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | ir.cpp:1757:6:1757:22 | void if_initialization(int) | void if_initialization(int) |
-| ir.cpp:1786:13:1786:28 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | ir.cpp:1785:6:1785:26 | void switch_initialization(int) | void switch_initialization(int) |
-| ir.cpp:1792:18:1792:24 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | ir.cpp:1785:6:1785:26 | void switch_initialization(int) | void switch_initialization(int) |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -11,14 +7,6 @@ duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 | ../../../include/memory.h:68:25:68:33 | CopyValue: (reference to) | Instruction 'CopyValue: (reference to)' has no successors in function '$@'. | ../../../include/memory.h:67:5:67:5 | void std::unique_ptr<int, std::default_delete<int>>::~unique_ptr() | void std::unique_ptr<int, std::default_delete<int>>::~unique_ptr() |
-| ir.cpp:1757:28:1757:28 | InitializeParameter: x | Instruction 'InitializeParameter: x' has no successors in function '$@'. | ir.cpp:1757:6:1757:22 | void if_initialization(int) | void if_initialization(int) |
-| ir.cpp:1758:20:1758:24 | CompareNE: (bool)... | Instruction 'CompareNE: (bool)...' has no successors in function '$@'. | ir.cpp:1757:6:1757:22 | void if_initialization(int) | void if_initialization(int) |
-| ir.cpp:1762:9:1762:9 | Uninitialized: definition of w | Instruction 'Uninitialized: definition of w' has no successors in function '$@'. | ir.cpp:1757:6:1757:22 | void if_initialization(int) | void if_initialization(int) |
-| ir.cpp:1763:16:1763:20 | CompareNE: (bool)... | Instruction 'CompareNE: (bool)...' has no successors in function '$@'. | ir.cpp:1757:6:1757:22 | void if_initialization(int) | void if_initialization(int) |
-| ir.cpp:1785:32:1785:32 | InitializeParameter: x | Instruction 'InitializeParameter: x' has no successors in function '$@'. | ir.cpp:1785:6:1785:26 | void switch_initialization(int) | void switch_initialization(int) |
-| ir.cpp:1786:24:1786:28 | Add: ... + ... | Instruction 'Add: ... + ...' has no successors in function '$@'. | ir.cpp:1785:6:1785:26 | void switch_initialization(int) | void switch_initialization(int) |
-| ir.cpp:1791:9:1791:9 | Uninitialized: definition of w | Instruction 'Uninitialized: definition of w' has no successors in function '$@'. | ir.cpp:1785:6:1785:26 | void switch_initialization(int) | void switch_initialization(int) |
-| ir.cpp:1792:20:1792:24 | Add: ... + ... | Instruction 'Add: ... + ...' has no successors in function '$@'. | ir.cpp:1785:6:1785:26 | void switch_initialization(int) | void switch_initialization(int) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -40,12 +28,6 @@ nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 nonUniqueIRVariable
-| ir.cpp:1759:17:1759:17 | VariableAddress: y | Variable address instruction 'VariableAddress: y' has no associated variable, in function '$@'. | ir.cpp:1757:6:1757:22 | void if_initialization(int) | void if_initialization(int) |
-| ir.cpp:1771:29:1771:29 | VariableAddress: v | Variable address instruction 'VariableAddress: v' has no associated variable, in function '$@'. | ir.cpp:1757:6:1757:22 | void if_initialization(int) | void if_initialization(int) |
-| ir.cpp:1772:17:1772:17 | VariableAddress: v | Variable address instruction 'VariableAddress: v' has no associated variable, in function '$@'. | ir.cpp:1757:6:1757:22 | void if_initialization(int) | void if_initialization(int) |
-| ir.cpp:1788:17:1788:17 | VariableAddress: y | Variable address instruction 'VariableAddress: y' has no associated variable, in function '$@'. | ir.cpp:1785:6:1785:26 | void switch_initialization(int) | void switch_initialization(int) |
-| ir.cpp:1802:33:1802:33 | VariableAddress: v | Variable address instruction 'VariableAddress: v' has no associated variable, in function '$@'. | ir.cpp:1785:6:1785:26 | void switch_initialization(int) | void switch_initialization(int) |
-| ir.cpp:1804:17:1804:17 | VariableAddress: v | Variable address instruction 'VariableAddress: v' has no associated variable, in function '$@'. | ir.cpp:1785:6:1785:26 | void switch_initialization(int) | void switch_initialization(int) |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType
