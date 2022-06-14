@@ -9,7 +9,6 @@ import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.ir.isFinalClass
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
-import org.jetbrains.kotlin.backend.jvm.ir.getJvmNameFromAnnotation
 import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.descriptors.*
@@ -996,7 +995,7 @@ open class KotlinUsesExtractor(
             getFunctionTypeParameters(f),
             classTypeArgsIncludingOuterClasses,
             overridesCollectionsMethodWithAlteredParameterTypes(f),
-            getJavaMethod(f),
+            getJavaCallable(f),
             !hasWildcardSuppressionAnnotation(f)
         )
 
@@ -1028,7 +1027,7 @@ open class KotlinUsesExtractor(
         // parameter erasure to match the way this class will appear to an external consumer of the .class file.
         overridesCollectionsMethod: Boolean,
         // The Java signature of this callable, if known.
-        javaSignature: JavaMethod?,
+        javaSignature: JavaMember?,
         // If true, Java wildcards implied by Kotlin type parameter variance should be added by default to this function's value parameters' types.
         // (Return-type wildcard addition is always off by default)
         addParameterWildcardsByDefault: Boolean,
@@ -1056,7 +1055,7 @@ open class KotlinUsesExtractor(
             // If this has happened, erase the type again to get the correct Java signature.
             val maybeAmendedForCollections = if (overridesCollectionsMethod) eraseCollectionsMethodParameterType(it.value.type, name, it.index) else it.value.type
             // Add any wildcard types that the Kotlin compiler would add in the Java lowering of this function:
-            val withAddedWildcards = addJavaLoweringWildcards(maybeAmendedForCollections, addParameterWildcardsByDefault, javaSignature?.let { sig -> sig.valueParameters[it.index].type })
+            val withAddedWildcards = addJavaLoweringWildcards(maybeAmendedForCollections, addParameterWildcardsByDefault, javaSignature?.let { sig -> getJavaValueParameterType(sig, it.index) })
             // Now substitute any class type parameters in:
             val maybeSubbed = withAddedWildcards.substituteTypeAndArguments(substitutionMap, TypeContext.OTHER, pluginContext)
             // Finally, mimic the Java extractor's behaviour by naming functions with type parameters for their erased types;
@@ -1103,7 +1102,13 @@ open class KotlinUsesExtractor(
     }
 
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    fun getJavaMethod(f: IrFunction) = (f.descriptor.source as? JavaSourceElement)?.javaElement as? JavaMethod
+    fun getJavaCallable(f: IrFunction) = (f.descriptor.source as? JavaSourceElement)?.javaElement as? JavaMember
+
+    fun getJavaValueParameterType(m: JavaMember, idx: Int) = when(m) {
+        is JavaMethod -> m.valueParameters[idx].type
+        is JavaConstructor -> m.valueParameters[idx].type
+        else -> null
+    }
 
     fun hasWildcardSuppressionAnnotation(d: IrDeclaration) =
         d.hasAnnotation(jvmWildcardSuppressionAnnotaton) ||
