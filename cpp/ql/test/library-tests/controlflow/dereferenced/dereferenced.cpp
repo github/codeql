@@ -16,7 +16,7 @@ void test1(int *ptr, int &ref)
 	ptr[0] = 0; // `ptr` dereferenced
 	ptr = 0;
 
-	(*ptr)++; // `ptr` dereferenced
+	(*ptr)++; // `ptr`, `*ptr` dereferenced
 	*(ptr++); // `ptr++` dereferenced
 	ptr++;
 
