@@ -975,7 +975,8 @@ optional_evaluation_exprs(
 );
 
 other_constructor_decl_ref_exprs(
-  unique int id: @other_constructor_decl_ref_expr
+  unique int id: @other_constructor_decl_ref_expr,
+  int constructor_decl: @constructor_decl ref
 );
 
 @overload_set_ref_expr =

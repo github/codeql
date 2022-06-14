@@ -162,7 +162,6 @@
 | expressions.swift:79:5:79:11 | call to ... |
 | expressions.swift:79:5:79:21 | call to ... |
 | expressions.swift:79:5:79:21 | self = ... |
-| expressions.swift:79:11:79:11 | TBD (OtherConstructorDeclRefExpr) |
 | expressions.swift:79:11:79:11 | call to ... |
 | expressions.swift:79:19:79:19 | 22 |
 | expressions.swift:83:15:83:15 | Derived.Type |

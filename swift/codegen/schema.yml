@@ -471,6 +471,7 @@ OptionalEvaluationExpr:
     sub_expr: Expr
 
 OtherConstructorDeclRefExpr:
+  constructor_decl: ConstructorDecl
   _extends: Expr
 
 OverloadSetRefExpr:
