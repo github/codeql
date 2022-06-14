@@ -148,7 +148,11 @@ private string getASrcFolderName() { result = ["ts", "js", "src", "lib"] }
 class MainModulePath extends PathExpr, @json_string {
   PackageJson pkg;
 
-  MainModulePath() { this = pkg.getPropValue(["main", "module"]) }
+  MainModulePath() {
+    this = pkg.getPropValue(["main", "module"])
+    or
+    this = getAJsonChild*(pkg.getPropValue("exports"))
+  }
 
   /** Gets the `package.json` file in which this path occurs. */
   PackageJson getPackageJson() { result = pkg }
@@ -163,6 +167,9 @@ class MainModulePath extends PathExpr, @json_string {
     result = pkg.getFile().getParentContainer()
   }
 }
+
+/** Gets the value of a property from the JSON object `obj`. */
+private JsonValue getAJsonChild(JsonObject obj) { result = obj.getPropValue(_) }
 
 module MainModulePath {
   MainModulePath of(PackageJson pkg) { result.getPackageJson() = pkg }
