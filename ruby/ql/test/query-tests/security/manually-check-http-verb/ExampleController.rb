@@ -18,8 +18,16 @@ class ExampleController < ActionController::Base
   end
 end
 
+class OtherController < ActionController::Base
+  def other_action
+    if env['REQUEST_METHOD'] == "GET"
+      Other.find(params[:id])
+    end
+  end
+end
+
 class ResourceController < ActionController::Base
-    # This method should have 1 vulnerable line
+    # This method should have 1 vulnerable line, but is currently failing because it's not a comparison node
     def resource_action
       case env['REQUEST_METHOD']
       when "GET"
