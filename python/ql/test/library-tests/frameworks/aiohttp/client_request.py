@@ -20,6 +20,8 @@ resp = s.options("url") # $ clientRequestUrlPart="url"
 # see https://docs.aiohttp.org/en/stable/client_reference.html#aiohttp.ClientSession.request
 s.get("url", ssl=False) # $ clientRequestUrlPart="url" clientRequestCertValidationDisabled
 s.get("url", ssl=0) # $ clientRequestUrlPart="url" clientRequestCertValidationDisabled
+# None is treated as default and so does _not_ disable the check
+s.get("url", ssl=None) # $ clientRequestUrlPart="url"
 
 # deprecated since 3.0, but still supported
 s.get("url", verify_ssl=False) # $ clientRequestUrlPart="url" clientRequestCertValidationDisabled
