@@ -1292,6 +1292,10 @@ module Exprs {
       DeclRefExprLValueTree() { isLValue(ast) }
     }
 
+    class OtherConstructorDeclRefTree extends AstLeafTree {
+      override OtherConstructorDeclRefExpr ast;
+    }
+
     abstract class DeclRefExprRValueTree extends AstControlFlowTree {
       override DeclRefExpr ast;
 

@@ -66,6 +66,9 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   void visitParamDecl(swift::ParamDecl* decl) {
     auto label = dispatcher_.assignNewLabel(decl);
     dispatcher_.emit(ParamDeclsTrap{label});
+    if (decl->isInOut()) {
+      dispatcher_.emit(ParamDeclIsInoutTrap{label});
+    }
     emitVarDecl(decl, label);
   }
 
@@ -188,6 +191,14 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
       }
     }
     emitAbstractStorageDecl(decl, label);
+  }
+
+  void visitExtensionDecl(swift::ExtensionDecl* decl) {
+    auto label = dispatcher_.assignNewLabel(decl);
+    auto typeLabel = dispatcher_.fetchLabel(decl->getExtendedNominal());
+    dispatcher_.emit(ExtensionDeclsTrap{label, typeLabel});
+    emitGenericContext(decl, label);
+    emitIterableDeclContext(decl, label);
   }
 
  private:
