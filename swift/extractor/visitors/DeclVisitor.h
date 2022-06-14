@@ -195,7 +195,8 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
 
   void visitExtensionDecl(swift::ExtensionDecl* decl) {
     auto label = dispatcher_.assignNewLabel(decl);
-    dispatcher_.emit(ExtensionDeclsTrap{label});
+    auto typeLabel = dispatcher_.fetchLabel(decl->getExtendedNominal());
+    dispatcher_.emit(ExtensionDeclsTrap{label, typeLabel});
     emitGenericContext(decl, label);
     emitIterableDeclContext(decl, label);
   }

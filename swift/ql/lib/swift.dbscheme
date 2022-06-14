@@ -98,7 +98,8 @@ iterable_decl_context_members(
 );
 
 extension_decls(
-  unique int id: @extension_decl
+  unique int id: @extension_decl,
+  int extended_type_decl: @nominal_type_decl ref
 );
 
 @nominal_type_decl =
