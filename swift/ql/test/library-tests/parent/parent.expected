@@ -326,6 +326,13 @@
 | declarations.swift:132:5:132:15 | willSet | AccessorDecl | declarations.swift:132:5:132:5 | newValue | ParamDecl |
 | declarations.swift:132:5:132:15 | willSet | AccessorDecl | declarations.swift:132:13:132:15 | { ... } | BraceStmt |
 | declarations.swift:134:5:134:14 | didSet | AccessorDecl | declarations.swift:134:12:134:14 | { ... } | BraceStmt |
+| declarations.swift:139:3:141:3 | id | ConcreteFuncDecl | declarations.swift:139:20:141:3 | { ... } | BraceStmt |
+| declarations.swift:139:20:141:3 | { ... } | BraceStmt | declarations.swift:140:5:140:12 | return ... | ReturnStmt |
+| declarations.swift:140:5:140:12 | return ... | ReturnStmt | declarations.swift:140:12:140:12 | self | DeclRefExpr |
+| declarations.swift:144:1:144:4 | call to id | DotSyntaxCallExpr | declarations.swift:144:4:144:4 | id | DeclRefExpr |
+| declarations.swift:144:1:144:7 | call to ... | CallExpr | declarations.swift:144:1:144:4 | call to id | DotSyntaxCallExpr |
+| declarations.swift:144:1:144:7 | { ... } | BraceStmt | declarations.swift:144:1:144:7 | call to ... | CallExpr |
+| declarations.swift:144:1:144:7 | { ... } | TopLevelCodeDecl | declarations.swift:144:1:144:7 | { ... } | BraceStmt |
 | expressions.swift:1:1:1:9 | var ... = ... | PatternBindingDecl | expressions.swift:1:5:1:5 | a | NamedPattern |
 | expressions.swift:1:1:1:9 | var ... = ... | PatternBindingDecl | expressions.swift:1:9:1:9 | 15 | IntegerLiteralExpr |
 | expressions.swift:1:1:1:9 | { ... } | BraceStmt | expressions.swift:1:1:1:9 | var ... = ... | PatternBindingDecl |
