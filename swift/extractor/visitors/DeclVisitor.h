@@ -193,6 +193,13 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
     emitAbstractStorageDecl(decl, label);
   }
 
+  void visitExtensionDecl(swift::ExtensionDecl* decl) {
+    auto label = dispatcher_.assignNewLabel(decl);
+    dispatcher_.emit(ExtensionDeclsTrap{label});
+    emitGenericContext(decl, label);
+    emitIterableDeclContext(decl, label);
+  }
+
  private:
   void emitConstructorDecl(swift::ConstructorDecl* decl, TrapLabel<ConstructorDeclTag> label) {
     emitAbstractFunctionDecl(decl, label);
