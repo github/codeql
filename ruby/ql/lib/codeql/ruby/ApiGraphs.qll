@@ -92,12 +92,10 @@ module API {
    */
   class Node extends Impl::TApiNode {
     /**
-     * Gets a data-flow node corresponding to a use of the API component represented by this node.
+     * Gets a data-flow node where this value may flow after entering the current codebase.
      *
-     * For example, `Kernel.format "%s world!", "Hello"` is a use of the return of the `format` function of
-     * the `Kernel` module.
-     *
-     * This includes indirect uses found via data flow.
+     * This is similar to `asSource()` but additionally includes nodes that are transitively reachable by data flow.
+     * See `asSource()` for examples.
      */
     DataFlow::Node getAValueReachableFromSource() {
       exists(DataFlow::LocalSourceNode src | Impl::use(this, src) |
@@ -106,20 +104,50 @@ module API {
     }
 
     /**
-     * Gets an immediate use of the API component represented by this node.
+     * Gets a data-flow node where this value enters the current codebase.
      *
-     * Unlike `getAValueReachableFromSource()`, this predicate only gets the immediate references, not the indirect uses
-     * found via data flow.
+     * For example:
+     * ```ruby
+     * # API::getTopLevelMember("Foo").asSource()
+     * Foo
+     *
+     * # API::getTopLevelMember("Foo").getMethod("bar").getReturn().asSource()
+     * Foo.bar
+     *
+     * # 'x' is found by:
+     * # API::getTopLevelMember("Foo").getMethod("bar").getBlock().getParameter(0).asSource()
+     * Foo.bar do |x|
+     * end
+     * ```
      */
     DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
 
     /**
-     * Gets a data-flow node corresponding the value flowing into this API component.
+     * Gets a data-flow node where this value leaves the current codebase and flows into an
+     * external library (or in general, any external codebase).
+     *
+     * Concretely, this corresponds to an argument passed to a call to external code.
+     *
+     * For example:
+     * ```ruby
+     * # 'x' is found by:
+     * # API::getTopLevelMember("Foo").getMethod("bar").getParameter(0).asSink()
+     * Foo.bar(x)
+     *
+     * Foo.bar(-> {
+     *   # 'x' is found by:
+     *   # API::getTopLevelMember("Foo").getMethod("bar").getParameter(0).getReturn().asSink()
+     *   x
+     * })
+     * ```
      */
     DataFlow::Node asSink() { Impl::def(this, result) }
 
     /**
-     * Gets a data-flow node that may interprocedurally flow to the value escaping into this API component.
+     * Get a data-flow node that transitively flows to an external library (or in general, any external codebase).
+     *
+     * This is similar to `asSink()` but additionally includes nodes that transitively reach a sink by data flow.
+     * See `asSink()` for examples.
      */
     DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
 
