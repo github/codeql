@@ -36,6 +36,7 @@ IterableDeclContext:
   members: Decl*
 
 ExtensionDecl:
+  extended_type_decl: NominalTypeDecl
   _extends:
     - GenericContext
     - IterableDeclContext
