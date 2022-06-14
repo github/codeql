@@ -137,13 +137,13 @@ module QL {
     /** Gets the node corresponding to the field `name`. */
     final LiteralId getName() { ql_arityless_predicate_expr_def(this, result) }
 
-    /** Gets the child of this node. */
-    final ModuleExpr getChild() { ql_arityless_predicate_expr_child(this, result) }
+    /** Gets the node corresponding to the field `qualifier`. */
+    final ModuleExpr getQualifier() { ql_arityless_predicate_expr_qualifier(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       ql_arityless_predicate_expr_def(this, result) or
-      ql_arityless_predicate_expr_child(this, result)
+      ql_arityless_predicate_expr_qualifier(this, result)
     }
   }
 
@@ -1320,20 +1320,15 @@ module QL {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SignatureExpr" }
 
-    /** Gets the node corresponding to the field `arity`. */
-    final Integer getArity() { ql_signature_expr_arity(this, result) }
+    /** Gets the node corresponding to the field `predicate`. */
+    final PredicateExpr getPredicate() { ql_signature_expr_predicate(this, result) }
 
-    /** Gets the node corresponding to the field `name`. */
-    final SimpleId getName() { ql_signature_expr_def(this, result) }
-
-    /** Gets the node corresponding to the field `qualifier`. */
-    final ModuleExpr getQualifier() { ql_signature_expr_qualifier(this, result) }
+    /** Gets the node corresponding to the field `type_expr`. */
+    final TypeExpr getTypeExpr() { ql_signature_expr_type_expr(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      ql_signature_expr_arity(this, result) or
-      ql_signature_expr_def(this, result) or
-      ql_signature_expr_qualifier(this, result)
+      ql_signature_expr_predicate(this, result) or ql_signature_expr_type_expr(this, result)
     }
   }
 
@@ -1417,12 +1412,17 @@ module QL {
     /** Gets the node corresponding to the field `name`. */
     final ClassName getName() { ql_type_expr_name(this, result) }
 
+    /** Gets the node corresponding to the field `qualifier`. */
+    final ModuleExpr getQualifier() { ql_type_expr_qualifier(this, result) }
+
     /** Gets the child of this node. */
     final AstNode getChild() { ql_type_expr_child(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      ql_type_expr_name(this, result) or ql_type_expr_child(this, result)
+      ql_type_expr_name(this, result) or
+      ql_type_expr_qualifier(this, result) or
+      ql_type_expr_child(this, result)
     }
   }
 

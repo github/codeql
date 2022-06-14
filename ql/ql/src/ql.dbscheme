@@ -95,9 +95,9 @@ ql_annotation_def(
   int name: @ql_token_annot_name ref
 );
 
-ql_arityless_predicate_expr_child(
+ql_arityless_predicate_expr_qualifier(
   unique int ql_arityless_predicate_expr: @ql_arityless_predicate_expr ref,
-  unique int child: @ql_module_expr ref
+  unique int qualifier: @ql_module_expr ref
 );
 
 ql_arityless_predicate_expr_def(
@@ -886,19 +886,18 @@ ql_set_literal_def(
   unique int id: @ql_set_literal
 );
 
-ql_signature_expr_arity(
+ql_signature_expr_predicate(
   unique int ql_signature_expr: @ql_signature_expr ref,
-  unique int arity: @ql_token_integer ref
+  unique int predicate: @ql_predicate_expr ref
 );
 
-ql_signature_expr_qualifier(
+ql_signature_expr_type_expr(
   unique int ql_signature_expr: @ql_signature_expr ref,
-  unique int qualifier: @ql_module_expr ref
+  unique int type_expr: @ql_type_expr ref
 );
 
 ql_signature_expr_def(
-  unique int id: @ql_signature_expr,
-  int name: @ql_token_simple_id ref
+  unique int id: @ql_signature_expr
 );
 
 ql_special_call_def(
@@ -929,7 +928,12 @@ ql_type_expr_name(
   unique int name: @ql_token_class_name ref
 );
 
-@ql_typeExpr_child_type = @ql_module_expr | @ql_token_dbtype | @ql_token_primitive_type
+ql_type_expr_qualifier(
+  unique int ql_type_expr: @ql_type_expr ref,
+  unique int qualifier: @ql_module_expr ref
+);
+
+@ql_typeExpr_child_type = @ql_token_dbtype | @ql_token_primitive_type
 
 ql_type_expr_child(
   unique int ql_type_expr: @ql_type_expr ref,
