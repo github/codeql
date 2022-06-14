@@ -17,6 +17,4 @@ class Element extends ElementBase {
 
 class UnknownElement extends Element {
   UnknownElement() { isUnknown() }
-
-  override string toString() { result = "TBD (" + getPrimaryQlClasses() + ")" }
 }
