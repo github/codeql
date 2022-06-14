@@ -518,11 +518,19 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     auto label = dispatcher_.assignNewLabel(expr);
     assert(expr->getBase() && "KeyPathApplicationExpr has getBase()");
     assert(expr->getKeyPath() && "KeyPathApplicationExpr has getKeyPath()");
-    
+
     auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
     auto keyPathLabel = dispatcher_.fetchLabel(expr->getKeyPath());
 
     dispatcher_.emit(KeyPathApplicationExprsTrap{label, baseLabel, keyPathLabel});
+  }
+
+  void visitOtherConstructorDeclRefExpr(swift::OtherConstructorDeclRefExpr* expr) {
+    auto label = dispatcher_.assignNewLabel(expr);
+    assert(expr->getDecl() && "OtherConstructorDeclRefExpr has getDecl()");
+
+    auto ctorLabel = dispatcher_.fetchLabel(expr->getDecl());
+    dispatcher_.emit(OtherConstructorDeclRefExprsTrap{label, ctorLabel});
   }
 
  private:
