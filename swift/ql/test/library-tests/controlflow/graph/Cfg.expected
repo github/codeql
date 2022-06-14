@@ -99,12 +99,8 @@ cfg.swift:
 #   19| (Error) ...
 #-----|  -> throw ...
 
-#   19| (TBD (ExistentialType)) ...
-#-----|  -> throw ...
-
 #   19| call to ...
 #-----|  -> (Error) ...
-#-----|  -> (TBD (ExistentialType)) ...
 
 #   19| error1
 #-----|  -> MyError.Type
@@ -146,12 +142,8 @@ cfg.swift:
 #   22| (Error) ...
 #-----|  -> throw ...
 
-#   22| (TBD (ExistentialType)) ...
-#-----|  -> throw ...
-
 #   22| call to ...
 #-----|  -> (Error) ...
-#-----|  -> (TBD (ExistentialType)) ...
 
 #   22| error3
 #-----|  -> MyError.Type
@@ -218,12 +210,8 @@ cfg.swift:
 #   29| (Any) ...
 #-----|  -> [...]
 
-#   29| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #   29| Did not throw.
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #   29| [...]
 #-----|  -> default separator
@@ -293,13 +281,13 @@ cfg.swift:
 #-----|  -> ... is ...
 
 #   37| ... is ...
-#-----|  -> TBD (SimpleIdentTypeRepr)
+#-----|  -> SimpleIdentTypeRepr
 
 #   37| ... is ...
 #-----| match -> print
 #-----| no-match -> case ...
 
-#   37| TBD (SimpleIdentTypeRepr)
+#   37| SimpleIdentTypeRepr
 #-----|  -> ... is ...
 
 #   38| print
@@ -317,12 +305,8 @@ cfg.swift:
 #   38| (Any) ...
 #-----|  -> [...]
 
-#   38| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #   38| MyError
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #   38| [...]
 #-----|  -> default separator
@@ -356,12 +340,8 @@ cfg.swift:
 
 #   40| "..."
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #   40| (Any) ...
-#-----|  -> [...]
-
-#   40| (TBD (ProtocolCompositionType)) ...
 #-----|  -> [...]
 
 #   40| [...]
@@ -890,15 +870,11 @@ cfg.swift:
 
 #  112| n2
 #-----| match -> .self
-#-----| match -> TBD (DotSelfExpr)
 
 #  112| n2
 #-----|  -> n3
 
 #  112| .self
-#-----|  -> getter for .myInt
-
-#  112| TBD (DotSelfExpr)
 #-----|  -> getter for .myInt
 
 #  112| getter for .myInt
@@ -937,9 +913,6 @@ cfg.swift:
 #  114| .self
 #-----|  -> call to getMyInt
 
-#  114| TBD (DotSelfExpr)
-#-----|  -> call to getMyInt
-
 #  114| call to getMyInt
 #-----|  -> call to ...
 
@@ -948,7 +921,6 @@ cfg.swift:
 
 #  114| getMyInt
 #-----|  -> .self
-#-----|  -> TBD (DotSelfExpr)
 
 #  116| var ... = ...
 #-----|  -> n5
@@ -970,15 +942,11 @@ cfg.swift:
 
 #  117| n6
 #-----| match -> .self
-#-----| match -> TBD (DotSelfExpr)
 
 #  117| n6
 #-----|  -> n7
 
 #  117| .self
-#-----|  -> getter for .myInt
-
-#  117| TBD (DotSelfExpr)
 #-----|  -> getter for .myInt
 
 #  117| getter for .myInt
@@ -1017,9 +985,6 @@ cfg.swift:
 #  119| .self
 #-----|  -> call to getMyInt
 
-#  119| TBD (DotSelfExpr)
-#-----|  -> call to getMyInt
-
 #  119| call to getMyInt
 #-----|  -> call to ...
 
@@ -1028,7 +993,6 @@ cfg.swift:
 
 #  119| getMyInt
 #-----|  -> .self
-#-----|  -> TBD (DotSelfExpr)
 
 #  121| var ... = ...
 #-----|  -> n9
@@ -1053,7 +1017,6 @@ cfg.swift:
 
 #  122| n10
 #-----| match -> .self
-#-----| match -> TBD (DotSelfExpr)
 
 #  122| n10
 #-----|  -> n11
@@ -1062,9 +1025,6 @@ cfg.swift:
 #-----|  -> getter for .myInt
 
 #  122| .self
-#-----|  -> (C) ...
-
-#  122| TBD (DotSelfExpr)
 #-----|  -> (C) ...
 
 #  122| getter for .myInt
@@ -1109,9 +1069,6 @@ cfg.swift:
 #  124| .self
 #-----|  -> (C) ...
 
-#  124| TBD (DotSelfExpr)
-#-----|  -> (C) ...
-
 #  124| call to getMyInt
 #-----|  -> call to ...
 
@@ -1120,7 +1077,6 @@ cfg.swift:
 
 #  124| getMyInt
 #-----|  -> .self
-#-----|  -> TBD (DotSelfExpr)
 
 #  126| var ... = ...
 #-----|  -> n13
@@ -1145,15 +1101,11 @@ cfg.swift:
 
 #  127| n14
 #-----| match -> .self
-#-----| match -> TBD (DotSelfExpr)
 
 #  127| n14
 #-----|  -> n15
 
 #  127| .self
-#-----|  -> getter for .myInt
-
-#  127| TBD (DotSelfExpr)
 #-----|  -> getter for .myInt
 
 #  127| getter for .myInt
@@ -1195,9 +1147,6 @@ cfg.swift:
 #  129| .self
 #-----|  -> call to getMyInt
 
-#  129| TBD (DotSelfExpr)
-#-----|  -> call to getMyInt
-
 #  129| call to getMyInt
 #-----|  -> call to ...
 
@@ -1206,7 +1155,6 @@ cfg.swift:
 
 #  129| getMyInt
 #-----|  -> .self
-#-----|  -> TBD (DotSelfExpr)
 
 #  131| var ... = ...
 #-----|  -> n17
@@ -1237,15 +1185,11 @@ cfg.swift:
 
 #  132| n18
 #-----| match -> .self
-#-----| match -> TBD (DotSelfExpr)
 
 #  132| n18
 #-----|  -> n19
 
 #  132| .self
-#-----|  -> getter for .myInt
-
-#  132| TBD (DotSelfExpr)
 #-----|  -> getter for .myInt
 
 #  132| (Int?) ...
@@ -1299,9 +1243,6 @@ cfg.swift:
 #  134| .self
 #-----|  -> call to getMyInt
 
-#  134| TBD (DotSelfExpr)
-#-----|  -> call to getMyInt
-
 #  134| call to getMyInt
 #-----|  -> call to ...
 
@@ -1316,7 +1257,6 @@ cfg.swift:
 
 #  134| getMyInt
 #-----|  -> .self
-#-----|  -> TBD (DotSelfExpr)
 
 #  137| enter patterns
 #-----|  -> patterns
@@ -1461,12 +1401,8 @@ cfg.swift:
 #  166| (Any) ...
 #-----|  -> [...]
 
-#  166| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  166| 4
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  166| [...]
 #-----|  -> default separator
@@ -1492,12 +1428,8 @@ cfg.swift:
 #  170| (Any) ...
 #-----|  -> [...]
 
-#  170| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  170| 3
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  170| [...]
 #-----|  -> default separator
@@ -1523,12 +1455,8 @@ cfg.swift:
 #  174| (Any) ...
 #-----|  -> [...]
 
-#  174| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  174| 1
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  174| [...]
 #-----|  -> default separator
@@ -1554,12 +1482,8 @@ cfg.swift:
 #  176| (Any) ...
 #-----|  -> [...]
 
-#  176| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  176| 2
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  176| [...]
 #-----|  -> default separator
@@ -1621,9 +1545,6 @@ cfg.swift:
 #  183| (Any) ...
 #-----|  -> [...]
 
-#  183| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  183| [...]
 #-----|  -> default separator
 
@@ -1632,7 +1553,6 @@ cfg.swift:
 
 #  183| x is greater than 2
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  185| if ... then { ... } else { ... }
 #-----|  -> StmtCondition
@@ -1746,9 +1666,6 @@ cfg.swift:
 #  186| (Any) ...
 #-----|  -> [...]
 
-#  186| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  186| [...]
 #-----|  -> default separator
 
@@ -1757,7 +1674,6 @@ cfg.swift:
 
 #  186| x is 1
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  189| print
 #-----|  -> I can't guess the number
@@ -1774,12 +1690,8 @@ cfg.swift:
 #  189| (Any) ...
 #-----|  -> [...]
 
-#  189| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  189| I can't guess the number
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  189| [...]
 #-----|  -> default separator
@@ -2125,9 +2037,6 @@ cfg.swift:
 #  231| (Any) ...
 #-----|  -> [...]
 
-#  231| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  231| [...]
 #-----|  -> default separator
 
@@ -2136,7 +2045,6 @@ cfg.swift:
 
 #  231| true
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  233| { ... }
 #-----|  -> print
@@ -2156,9 +2064,6 @@ cfg.swift:
 #  234| (Any) ...
 #-----|  -> [...]
 
-#  234| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  234| [...]
 #-----|  -> default separator
 
@@ -2167,7 +2072,6 @@ cfg.swift:
 
 #  234| done
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  237| disjunct
 #-----|  -> b1
@@ -2235,9 +2139,6 @@ cfg.swift:
 #  239| (Any) ...
 #-----|  -> [...]
 
-#  239| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  239| [...]
 #-----|  -> default separator
 
@@ -2246,7 +2147,6 @@ cfg.swift:
 
 #  239| b1 or b2
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  243| binaryExprs
 #-----|  -> a
@@ -3961,15 +3861,11 @@ cfg.swift:
 #  301| default terminator
 #-----|  -> call to print
 
-#  301| (Int) ...
-#-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
-
 #  301| (Any) ...
 #-----|  -> [...]
 
-#  301| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
+#  301| (Int) ...
+#-----|  -> (Any) ...
 
 #  301| [...]
 #-----|  -> default separator
@@ -4055,15 +3951,11 @@ cfg.swift:
 #  308| default terminator
 #-----|  -> call to print
 
-#  308| (Int) ...
-#-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
-
 #  308| (Any) ...
 #-----|  -> [...]
 
-#  308| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
+#  308| (Int) ...
+#-----|  -> (Any) ...
 
 #  308| [...]
 #-----|  -> default separator
@@ -4172,12 +4064,8 @@ cfg.swift:
 #  316| (Any) ...
 #-----|  -> [...]
 
-#  316| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  316| Iter
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  316| [...]
 #-----|  -> default separator
@@ -4200,12 +4088,8 @@ cfg.swift:
 #  318| (Any) ...
 #-----|  -> [...]
 
-#  318| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  318| Done
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  318| [...]
 #-----|  -> default separator
@@ -4295,15 +4179,11 @@ cfg.swift:
 #  324| default terminator
 #-----|  -> call to print
 
-#  324| (Int) ...
-#-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
-
 #  324| (Any) ...
 #-----|  -> [...]
 
-#  324| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
+#  324| (Int) ...
+#-----|  -> (Any) ...
 
 #  324| [...]
 #-----|  -> default separator
@@ -4412,12 +4292,8 @@ cfg.swift:
 #  332| (Any) ...
 #-----|  -> [...]
 
-#  332| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  332| Iter
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  332| [...]
 #-----|  -> default separator
@@ -4440,12 +4316,8 @@ cfg.swift:
 #  334| (Any) ...
 #-----|  -> [...]
 
-#  334| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  334| Done
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  334| [...]
 #-----|  -> default separator
@@ -4482,15 +4354,11 @@ cfg.swift:
 #  340| default terminator
 #-----|  -> call to print
 
-#  340| (Int) ...
-#-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
-
 #  340| (Any) ...
 #-----|  -> [...]
 
-#  340| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
+#  340| (Int) ...
+#-----|  -> (Any) ...
 
 #  340| [...]
 #-----|  -> default separator
@@ -5010,12 +4878,8 @@ cfg.swift:
 #  386| (Any) ...
 #-----|  -> [...]
 
-#  386| (TBD (ProtocolCompositionType)) ...
-#-----|  -> [...]
-
 #  386| Did not throw.
 #-----|  -> (Any) ...
-#-----|  -> (TBD (ProtocolCompositionType)) ...
 
 #  386| [...]
 #-----|  -> default separator
@@ -5320,14 +5184,14 @@ cfg.swift:
 #-----|  -> var ... = ...
 
 #  419| enter #keyPath(...)
-#-----|  -> TBD (UnresolvedDotExpr)
+#-----|  -> UnresolvedDotExpr
 
 #  419| exit #keyPath(...)
 
 #  419| exit #keyPath(...) (normal)
 #-----|  -> exit #keyPath(...)
 
-#  419| TBD (UnresolvedDotExpr)
+#  419| UnresolvedDotExpr
 #-----|  -> exit #keyPath(...) (normal)
 
 #  420| var ... = ...
@@ -5343,14 +5207,14 @@ cfg.swift:
 #-----|  -> var ... = ...
 
 #  420| enter #keyPath(...)
-#-----|  -> TBD (UnresolvedDotExpr)
+#-----|  -> UnresolvedDotExpr
 
 #  420| exit #keyPath(...)
 
 #  420| exit #keyPath(...) (normal)
 #-----|  -> exit #keyPath(...)
 
-#  420| TBD (UnresolvedDotExpr)
+#  420| UnresolvedDotExpr
 #-----|  -> exit #keyPath(...) (normal)
 
 #  421| var ... = ...
@@ -5366,14 +5230,14 @@ cfg.swift:
 #-----|  -> var ... = ...
 
 #  421| enter #keyPath(...)
-#-----|  -> TBD (UnresolvedDotExpr)
+#-----|  -> UnresolvedDotExpr
 
 #  421| exit #keyPath(...)
 
 #  421| exit #keyPath(...) (normal)
 #-----|  -> exit #keyPath(...)
 
-#  421| TBD (UnresolvedDotExpr)
+#  421| UnresolvedDotExpr
 #-----|  -> exit #keyPath(...) (normal)
 
 #  422| var ... = ...
@@ -5389,7 +5253,7 @@ cfg.swift:
 #-----|  -> var ... = ...
 
 #  422| enter #keyPath(...)
-#-----|  -> TBD (UnresolvedDotExpr)
+#-----|  -> UnresolvedDotExpr
 
 #  422| exit #keyPath(...)
 
@@ -5399,7 +5263,7 @@ cfg.swift:
 #  422| OptionalEvaluationExpr
 #-----|  -> exit #keyPath(...) (normal)
 
-#  422| TBD (UnresolvedDotExpr)
+#  422| UnresolvedDotExpr
 #-----|  -> OptionalEvaluationExpr
 
 #  424| var ... = ...
