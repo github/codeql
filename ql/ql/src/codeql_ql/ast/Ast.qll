@@ -673,7 +673,7 @@ class TypeExpr extends TType, AstNode {
    * Gets the module of the type, if it exists.
    * E.g. `DataFlow` in `DataFlow::Node`.
    */
-  ModuleExpr getModule() { toQL(result) = type.getChild() }
+  ModuleExpr getModule() { toQL(result) = type.getQualifier() }
 
   /**
    * Gets the type that this type reference refers to.

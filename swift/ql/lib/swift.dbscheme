@@ -659,6 +659,13 @@ value_decls(
 | @closure_expr
 ;
 
+#keyset[id, index]
+abstract_closure_expr_params(
+  int id: @abstract_closure_expr ref,
+  int index: int ref,
+  int param: @param_decl ref
+);
+
 @any_try_expr =
   @force_try_expr
 | @optional_try_expr

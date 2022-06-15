@@ -293,6 +293,8 @@ ValueDecl:
 
 AbstractClosureExpr:
   _extends: Expr
+  _children:
+    params: ParamDecl*
 
 AnyTryExpr:
   _extends: Expr
