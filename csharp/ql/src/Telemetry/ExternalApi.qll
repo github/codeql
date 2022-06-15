@@ -109,12 +109,12 @@ class ExternalApi extends DotNet::Callable {
 }
 
 /**
- * A limit for the number of results produced by a telemetry query.
+ * Gets the limit for the number of results produced by a telemetry query.
  */
 int resultLimit() { result = 1000 }
 
 /**
- * A predicate signature for relevant usage counts of an External API `api`.
+ * Holds if the relevant usage count of `api` is `usages`.
  */
 signature predicate relevantUsagesSig(ExternalApi api, int usages);
 

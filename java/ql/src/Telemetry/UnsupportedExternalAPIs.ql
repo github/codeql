@@ -8,7 +8,6 @@
 
 import java
 import ExternalApi
-import semmle.code.java.GeneratedFiles
 
 private predicate getRelevantUsages(ExternalApi api, int usages) {
   not api.isUninteresting() and
