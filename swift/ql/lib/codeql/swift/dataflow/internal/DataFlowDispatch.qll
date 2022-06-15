@@ -3,6 +3,7 @@ private import DataFlowPrivate
 private import DataFlowPublic
 private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.controlflow.CfgNodes
+private import codeql.swift.controlflow.internal.Scope
 private import FlowSummaryImpl as FlowSummaryImpl
 private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
@@ -52,17 +53,17 @@ class ParamReturnKind extends ReturnKind, TParamReturnKind {
  * defined in library code.
  */
 class DataFlowCallable extends TDataFlowCallable {
-  AbstractFunctionDecl func;
+  CfgScope scope;
 
-  DataFlowCallable() { this = TDataFlowFunc(func) }
+  DataFlowCallable() { this = TDataFlowFunc(scope) }
 
   /** Gets a textual representation of this callable. */
-  string toString() { result = func.toString() }
+  string toString() { result = scope.toString() }
 
   /** Gets the location of this callable. */
-  Location getLocation() { result = func.getLocation() }
+  Location getLocation() { result = scope.getLocation() }
 
-  AbstractFunctionDecl getUnderlyingCallable() { result = func }
+  Callable::TypeRange getUnderlyingCallable() { result = scope }
 }
 
 cached
