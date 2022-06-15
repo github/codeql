@@ -30,5 +30,5 @@ def my_class_decorator(cls):
 class MyViewWithDecorator(View): #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass()
     pass
 
-class SubclassFromDecorated(MyViewWithDecorator): #$ MISSING: use=moduleImport("flask").getMember("views").getMember("View").getASubclass().getASubclass()
+class SubclassFromDecorated(MyViewWithDecorator): #$ use=moduleImport("flask").getMember("views").getMember("View").getASubclass().getASubclass()
     pass
