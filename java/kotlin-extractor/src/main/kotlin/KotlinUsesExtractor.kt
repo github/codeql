@@ -83,7 +83,25 @@ open class KotlinUsesExtractor(
         makeDescription(StandardNames.FqNames.map, "<get-values>") to "values",
         makeDescription(FqName("java.util.Map"), "<get-values>") to "values",
         makeDescription(StandardNames.FqNames.map, "<get-entries>") to "entrySet",
-        makeDescription(FqName("java.util.Map"), "<get-entries>") to "entrySet"
+        makeDescription(FqName("java.util.Map"), "<get-entries>") to "entrySet",
+        makeDescription(StandardNames.FqNames.mutableList, "removeAt") to "remove",
+        makeDescription(FqName("java.util.List"), "removeAt") to "remove",
+        makeDescription(StandardNames.FqNames._enum.toSafe(), "<get-ordinal>") to "ordinal",
+        makeDescription(FqName("java.lang.Enum"), "<get-ordinal>") to "ordinal",
+        makeDescription(StandardNames.FqNames._enum.toSafe(), "<get-name>") to "name",
+        makeDescription(FqName("java.lang.Enum"), "<get-name>") to "name",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toByte") to "byteValue",
+        makeDescription(FqName("java.lang.Number"), "toByte") to "byteValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toShort") to "shortValue",
+        makeDescription(FqName("java.lang.Number"), "toShort") to "shortValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toInt") to "intValue",
+        makeDescription(FqName("java.lang.Number"), "toInt") to "intValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toLong") to "longValue",
+        makeDescription(FqName("java.lang.Number"), "toLong") to "longValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toFloat") to "floatValue",
+        makeDescription(FqName("java.lang.Number"), "toFloat") to "floatValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toDouble") to "doubleValue",
+        makeDescription(FqName("java.lang.Number"), "toDouble") to "doubleValue",
     )
 
     private val specialFunctionShortNames = specialFunctions.keys.map { it.functionName }.toSet()
@@ -91,7 +109,7 @@ open class KotlinUsesExtractor(
     fun getSpecialJvmName(f: IrFunction): String? {
         if (specialFunctionShortNames.contains(f.name) && f is IrSimpleFunction) {
             f.allOverridden(true).forEach { overriddenFunc ->
-                overriddenFunc.parentAsClass.fqNameWhenAvailable?.let { parentFqName ->
+                overriddenFunc.parentClassOrNull?.fqNameWhenAvailable?.let { parentFqName ->
                     specialFunctions[MethodKey(parentFqName, f.name)]?.let {
                         return it
                     }
