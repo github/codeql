@@ -10,7 +10,7 @@ edition = "2018"
 flate2 = "1.0"
 node-types = { path = "../node-types" }
 tree-sitter = "0.19"
-tree-sitter-ql = { git = "https://github.com/tausbn/tree-sitter-ql.git", rev = "c3d626a77cf5acc5d8c11aaf91c12348880c8eca" }
+tree-sitter-ql = { git = "https://github.com/erik-krogh/tree-sitter-ql.git", rev = "d8da4b8190a3c1f3fab293016bbbb60469e56ea3" }
 clap = "2.33"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }

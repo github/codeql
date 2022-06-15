@@ -697,7 +697,7 @@ class Module extends TModule, ModuleDeclaration {
 
   override string getAPrimaryQlClass() { result = "Module" }
 
-  override string getName() { result = mod.getName().getChild().getValue() }
+  override string getName() { result = mod.getName().getValue() }
 
   /**
    * Gets a member of the module.
@@ -1116,7 +1116,7 @@ class Import extends TImport, ModuleMember, ModuleRef {
    * import semmle.javascript.dataflow.Configuration as Flow
    * ```
    */
-  string importedAs() { result = imp.getChild(1).(QL::ModuleName).getChild().getValue() }
+  string importedAs() { result = imp.getChild(1).(QL::ModuleName).getValue() }
 
   /**
    * Gets the `i`th selected name from the imported module.
@@ -2187,9 +2187,13 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
    * is `Bar`.
    */
   string getName() {
-    result = me.getName().(QL::SimpleId).getValue()
+    result = me.getName().(QL::ModuleName).getValue()
     or
-    not exists(me.getName()) and result = me.getChild().(QL::SimpleId).getValue()
+    not exists(me.getName()) and result = me.getChild().(QL::ModuleName).getValue()
+    or
+    exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
+      result = instantiation.getName().getValue()
+    )
   }
 
   /**

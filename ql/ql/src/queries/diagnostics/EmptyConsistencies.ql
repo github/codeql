@@ -42,4 +42,12 @@ where
   VarConsistency::noFieldDef(node) and msg = "VarConsistency::noFieldDef"
   or
   VarConsistency::noVarDef(node) and msg = "VarConsistency::noVarDef"
+  or
+  node instanceof ModuleExpr and
+  not exists(node.(ModuleExpr).getName()) and
+  msg = "exists(ModuleExpr::getName)"
+  or
+  node instanceof ModuleExpr and
+  count(node.(ModuleExpr).getName()) >= 2 and
+  msg = "unique(ModuleExpr::getName)"
 select node, msg
