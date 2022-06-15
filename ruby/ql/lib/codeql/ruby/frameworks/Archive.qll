@@ -8,7 +8,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
 
 /**
- * Classes and predicates for modelling the RubyZip library
+ * Classes and predicates for modeling the RubyZip library
  */
 module RubyZip {
   /**
