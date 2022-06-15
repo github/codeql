@@ -8,6 +8,7 @@ private import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.frameworks.ActiveStorage
 private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.ActiveSupport
+private import codeql.ruby.frameworks.Archive
 private import codeql.ruby.frameworks.GraphQL
 private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.frameworks.Stdlib
