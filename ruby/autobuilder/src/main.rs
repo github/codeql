@@ -29,7 +29,7 @@ fn main() -> std::io::Result<()> {
         .split('\n')
     {
         if let Some(stripped) = line.strip_prefix("include:") {
-            cmd.arg("--also-match").arg(stripped);
+            cmd.arg("--also-match=".to_owned() + stripped);
         } else if let Some(stripped) = line.strip_prefix("exclude:") {
             cmd.arg("--exclude").arg(stripped);
         }
