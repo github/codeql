@@ -24,7 +24,7 @@ class SwiftDispatcher {
                   TrapArena& arena,
                   TrapOutput& trap,
                   SwiftExtractionMode extractionMode,
-                  swift::ModuleDecl* currentModule,
+                  swift::ModuleDecl& currentModule,
                   llvm::StringRef currentFileName)
       : sourceManager{sourceManager},
         arena{arena},
@@ -143,7 +143,7 @@ class SwiftDispatcher {
   bool shouldEmitDeclBody(swift::Decl* decl) {
     switch (extractionMode) {
       case SwiftExtractionMode::Module: {
-        return currentModule == decl->getModuleContext();
+        return &currentModule == decl->getModuleContext();
       } break;
       case SwiftExtractionMode::PrimaryFile: {
         swift::SourceLoc location = decl->getStartLoc();
@@ -151,7 +151,7 @@ class SwiftDispatcher {
           return false;
         }
         auto declFileName = sourceManager.getDisplayNameForLoc(location).str();
-        return currentModule == decl->getModuleContext() && declFileName == currentFileName;
+        return &currentModule == decl->getModuleContext() && declFileName == currentFileName;
       } break;
       default:
         return false;
@@ -239,7 +239,7 @@ class SwiftDispatcher {
   Store store;
   Store::Handle waitingForNewLabel{std::monostate{}};
   SwiftExtractionMode extractionMode;
-  swift::ModuleDecl* currentModule;
+  swift::ModuleDecl& currentModule;
   llvm::StringRef currentFileName;
 };
 

@@ -52,7 +52,7 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
 static void extractDeclarations(const SwiftExtractorConfiguration& config,
                                 swift::CompilerInstance& compiler,
                                 SwiftExtractionMode extractionMode,
-                                swift::ModuleDecl* module,
+                                swift::ModuleDecl& module,
                                 llvm::StringRef fileName,
                                 llvm::ArrayRef<swift::Decl*> topLevelDecls) {
   // The extractor can be called several times from different processes with
@@ -133,14 +133,14 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
       llvm::SmallVector<swift::Decl*> decls;
       module->getTopLevelDecls(decls);
       // TODO: pass ModuleDecl directly when we have module extraction in place?
-      extractDeclarations(config, compiler, SwiftExtractionMode::Module, module,
+      extractDeclarations(config, compiler, SwiftExtractionMode::Module, *module,
                           module->getModuleFilename(), decls);
     } else {
       // The extraction will only work if one (or more) `-primary-file` CLI option is provided,
       // which is what always happens in case of `swift build` and `xcodebuild`
       for (auto primaryFile : module->getPrimarySourceFiles()) {
         archiveFile(config, *primaryFile);
-        extractDeclarations(config, compiler, SwiftExtractionMode::PrimaryFile, module,
+        extractDeclarations(config, compiler, SwiftExtractionMode::PrimaryFile, *module,
                             primaryFile->getFilename(), primaryFile->getTopLevelDecls());
       }
     }
