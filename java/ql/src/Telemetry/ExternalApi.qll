@@ -98,3 +98,36 @@ class ExternalApi extends Callable {
 
 /** DEPRECATED: Alias for ExternalApi */
 deprecated class ExternalAPI = ExternalApi;
+
+/**
+ * A limit for the number of results produced by a telemetry query.
+ */
+int resultLimit() { result = 1000 }
+
+/**
+ * A predicate signature for relevant usage counts of an External API `api`.
+ */
+signature predicate relevantUsagesSig(ExternalApi api, int usages);
+
+/**
+ * Given a predicate to count relevant API usages, this module provides a predicate
+ * for restricting the number or returned results based on a certain limit.
+ */
+module Results<relevantUsagesSig/2 getRelevantUsages> {
+  private int getOrder(ExternalApi api) {
+    api =
+      rank[result](ExternalApi a, int usages |
+        getRelevantUsages(a, usages)
+      |
+        a order by usages desc, a.getApiName()
+      )
+  }
+
+  /**
+   * Holds if `api` is being used `usages` times and if it is
+   * in the top results (guarded by resultLimit).
+   */
+  predicate restrict(ExternalApi api, int usages) {
+    getRelevantUsages(api, usages) and getOrder(api) <= resultLimit()
+  }
+}
