@@ -15,7 +15,9 @@ module RubyZip {
    * A call to `Zip::File.open`, considered as a `FileSystemAccess`.
    */
   class RubyZipFileOpen extends DataFlow::CallNode, FileSystemAccess::Range {
-    RubyZipFileOpen() { this = API::getTopLevelMember("Zip").getMember("File").getAMethodCall("open") }
+    RubyZipFileOpen() {
+      this = API::getTopLevelMember("Zip").getMember("File").getAMethodCall("open")
+    }
 
     override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
   }
