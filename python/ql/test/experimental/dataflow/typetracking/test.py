@@ -65,6 +65,9 @@ def to_inner_scope():
     also_x = foo() # $ MISSING: tracked
     print(also_x) # $ MISSING: tracked
 
+# ------------------------------------------------------------------------------
+# Function decorator
+# ------------------------------------------------------------------------------
 
 def my_decorator(func):
     # This part doesn't make any sense in a normal decorator, but just shows how we
