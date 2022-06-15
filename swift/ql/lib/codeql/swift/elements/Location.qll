@@ -9,3 +9,7 @@ class Location extends LocationBase {
     ec = getEndColumn()
   }
 }
+
+class UnknownLocation extends Location {
+  UnknownLocation() { hasLocationInfo("", 0, 0, 0, 0) }
+}

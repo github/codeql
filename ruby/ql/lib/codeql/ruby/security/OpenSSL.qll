@@ -29,7 +29,9 @@ private string rankedInsecureAlgorithm(int i) {
   // weak hash algorithms and block modes as well.
   result =
     rank[i](string s |
-      isWeakEncryptionAlgorithm(s) or isWeakHashingAlgorithm(s) or isWeakBlockMode(s)
+      isWeakEncryptionAlgorithm(s) or
+      isWeakHashingAlgorithm(s) or
+      s.(Cryptography::BlockMode).isWeak()
     )
 }
 
@@ -329,13 +331,9 @@ private API::Node cipherApi() {
   result = API::getTopLevelMember("OpenSSL").getMember("Cipher").getMember("Cipher")
 }
 
-private class BlockMode extends string {
-  BlockMode() { this = ["ECB", "CBC", "GCM", "CCM", "CFB", "OFB", "CTR"] }
-}
-
 private newtype TCipherMode =
   TStreamCipher() or
-  TBlockMode(BlockMode blockMode)
+  TBlockMode(Cryptography::BlockMode blockMode)
 
 /**
  * Represents the mode used by this stream cipher.
@@ -343,7 +341,8 @@ private newtype TCipherMode =
  * block mode.
  */
 private class CipherMode extends TCipherMode {
-  private BlockMode getBlockMode() { this = TBlockMode(result) }
+  /** Gets the underlying block mode, if any. */
+  Cryptography::BlockMode getBlockMode() { this = TBlockMode(result) }
 
   /** Gets a textual representation of this node. */
   string toString() {
@@ -360,7 +359,7 @@ private class CipherMode extends TCipherMode {
   predicate isBlockMode(string s) { this.getBlockMode() = s.toUpperCase() }
 
   /** Holds if this cipher mode is a weak block mode. */
-  predicate isWeak() { isWeakBlockMode(this.getBlockMode()) }
+  predicate isWeak() { this.getBlockMode().isWeak() }
 }
 
 private string getStringArgument(DataFlow::CallNode call, int i) {
@@ -369,6 +368,25 @@ private string getStringArgument(DataFlow::CallNode call, int i) {
 
 private int getIntArgument(DataFlow::CallNode call, int i) {
   result = call.getArgument(i).asExpr().getConstantValue().getInt()
+}
+
+bindingset[blockCipherName]
+private Cryptography::BlockMode getCandidateBlockModeFromCipherName(string blockCipherName) {
+  result = blockCipherName.splitAt("-", [1, 2]).toUpperCase()
+}
+
+/**
+ * Gets the block mode specified as part of a block cipher name used to
+ * instantiate an `OpenSSL::Cipher` instance. If the block mode is not
+ * explicitly specified, this defaults to "CBC".
+ */
+bindingset[blockCipherName]
+private Cryptography::BlockMode getBlockModeFromCipherName(string blockCipherName) {
+  // Extract the block mode from the cipher name
+  result = getCandidateBlockModeFromCipherName(blockCipherName)
+  or
+  // Fall back on the OpenSSL default of CBC if the block mode is unspecified
+  not exists(getCandidateBlockModeFromCipherName(blockCipherName)) and result = "CBC"
 }
 
 /**
@@ -382,8 +400,9 @@ private predicate cipherInstantiationGeneric(
     // `OpenSSL::Cipher.new('<cipherName>')`
     call = cipherApi().getAnInstantiation() and
     cipherName = getStringArgument(call, 0) and
-    // CBC is used by default
-    cipherMode.isBlockMode("CBC")
+    if cipher.getAlgorithm().isStreamCipher()
+    then cipherMode = TStreamCipher()
+    else cipherMode.isBlockMode(getBlockModeFromCipherName(cipherName))
   )
 }
 
@@ -398,12 +417,12 @@ private predicate cipherInstantiationAES(
   exists(string cipherName | cipher.matchesName(cipherName) |
     // `OpenSSL::Cipher::AES` instantiations
     call = cipherApi().getMember("AES").getAnInstantiation() and
-    exists(string keyLength, string blockMode |
+    exists(string keyLength, Cryptography::BlockMode blockMode |
       // `OpenSSL::Cipher::AES.new('<keyLength-blockMode>')
       exists(string arg0 |
         arg0 = getStringArgument(call, 0) and
         keyLength = arg0.splitAt("-", 0) and
-        blockMode = arg0.splitAt("-", 1).toUpperCase()
+        blockMode = getBlockModeFromCipherName(arg0)
       )
       or
       // `OpenSSL::Cipher::AES.new(<keyLength>, '<blockMode>')`
@@ -419,7 +438,7 @@ private predicate cipherInstantiationAES(
       call = cipherApi().getMember(mod).getAnInstantiation() and
       // Canonical representation is `AES-<keyLength>`
       blockAlgo = "AES-" + mod.suffix(3) and
-      exists(string blockMode |
+      exists(Cryptography::BlockMode blockMode |
         if exists(getStringArgument(call, 0))
         then
           // `OpenSSL::Cipher::<blockAlgo>.new('<blockMode>')`
@@ -446,7 +465,7 @@ private predicate cipherInstantiationSpecific(
     // Block ciphers with dedicated modules
     exists(string blockAlgo | blockAlgo = ["BF", "CAST5", "DES", "IDEA", "RC2"] |
       call = cipherApi().getMember(blockAlgo).getAnInstantiation() and
-      exists(string blockMode |
+      exists(Cryptography::BlockMode blockMode |
         if exists(getStringArgument(call, 0))
         then
           // `OpenSSL::Cipher::<blockAlgo>.new('<blockMode>')`
@@ -528,25 +547,25 @@ private class CipherNode extends DataFlow::Node {
 private class CipherOperation extends Cryptography::CryptographicOperation::Range,
   DataFlow::CallNode {
   private CipherNode cipherNode;
-  private DataFlow::Node input;
 
   CipherOperation() {
     // cipher instantiation is counted as a cipher operation with no input
     cipherNode = this and cipherNode instanceof CipherInstantiation
     or
     this.getReceiver() = cipherNode and
-    this.getMethodName() = "update" and
-    input = this.getArgument(0)
+    this.getMethodName() = "update"
   }
 
   override Cryptography::EncryptionAlgorithm getAlgorithm() {
     result = cipherNode.getCipher().getAlgorithm()
   }
 
-  override DataFlow::Node getAnInput() { result = input }
+  override DataFlow::Node getAnInput() {
+    this.getMethodName() = "update" and
+    result = this.getArgument(0)
+  }
 
-  override predicate isWeak() {
-    cipherNode.getCipher().isWeak() or
-    cipherNode.getCipherMode().isWeak()
+  override Cryptography::BlockMode getBlockMode() {
+    result = cipherNode.getCipherMode().getBlockMode()
   }
 }

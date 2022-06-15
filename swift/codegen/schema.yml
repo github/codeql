@@ -36,6 +36,7 @@ IterableDeclContext:
   members: Decl*
 
 ExtensionDecl:
+  extended_type_decl: NominalTypeDecl
   _extends:
     - GenericContext
     - IterableDeclContext
@@ -470,6 +471,7 @@ OptionalEvaluationExpr:
     sub_expr: Expr
 
 OtherConstructorDeclRefExpr:
+  constructor_decl: ConstructorDecl
   _extends: Expr
 
 OverloadSetRefExpr:
@@ -1103,6 +1105,7 @@ ConcreteVarDecl:
 
 ParamDecl:
   _extends: VarDecl
+  is_inout: predicate
 
 AssociatedTypeDecl:
   _extends: AbstractTypeParamDecl

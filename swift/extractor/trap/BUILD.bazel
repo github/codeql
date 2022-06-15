@@ -15,7 +15,6 @@ genrule(
         "--generate=dbscheme,trap,cpp",
         "--schema $(location //swift/codegen:schema)",
         "--dbscheme $(RULEDIR)/generated/swift.dbscheme",
-        "--cpp-include-dir " + package_name(),
         "--cpp-output $(RULEDIR)/generated",
     ]),
     exec_tools = ["//swift/codegen"],
