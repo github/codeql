@@ -90,7 +90,7 @@ module TarSlip {
     }
   }
 
-  /* Members argument to extract method */
+  /** The `members` argument `extractall` is considered a sink. */
   class ExtractMembersSink extends Sink {
     ExtractMembersSink() {
       exists(DataFlow::CallCfgNode call |
@@ -105,6 +105,10 @@ module TarSlip {
     }
   }
 
+  /**
+   * For a "check-like function name" (matching `"%path"`), `checkPath`,
+   * and a call `checkPath(info.name)`, the variable `info` is considered checked.
+   */
   class TarFileInfoSanitizer extends SanitizerGuard {
     ControlFlowNode tarInfo;
 
@@ -117,9 +121,9 @@ module TarSlip {
         attr.getObject() = tarInfo
       |
         // Assume that any test with "path" in it is a sanitizer
-        call.getAChild*().(AttrNode).getName().matches("%path")
+        call.getAChild*().(AttrNode).getName().toLowerCase().matches("%path")
         or
-        call.getAChild*().(NameNode).getId().matches("%path")
+        call.getAChild*().(NameNode).getId().toLowerCase().matches("%path")
       )
     }
 
@@ -127,19 +131,5 @@ module TarSlip {
       checked = tarInfo and
       branch in [true, false]
     }
-
-    DataFlow::ExprNode shouldGuard() {
-      tarInfo.dominates(result.asCfgNode()) and
-      // exists(EssaDefinition def |
-      //   def.getAUse() = tarInfo and
-      //   def.getAUse() = result.asCfgNode()
-      // ) and
-      exists(SsaSourceVariable v |
-        v.getAUse() = tarInfo and
-        v.getAUse() = result.asCfgNode()
-      )
-    }
   }
-
-  DataFlow::ExprNode getAGuardedNode(TarFileInfoSanitizer tfis) { result = tfis.getAGuardedNode() }
 }
