@@ -47,9 +47,9 @@ void do_source()
 void do_sink()
 {
 	sink(global1);
-	sink(global2); // $ MISSING: ast,ir
-	sink(global3); // $ MISSING: ast,ir
-	sink(global4); // $ MISSING: ast,ir
+	sink(global2); // $ ir MISSING: ast
+	sink(global3); // $ ir MISSING: ast
+	sink(global4); // $ ir MISSING: ast
 	sink(global5);
 	sink(global6);
 	sink(global7); // $ ir MISSING: ast
