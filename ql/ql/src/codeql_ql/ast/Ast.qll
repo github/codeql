@@ -726,11 +726,9 @@ class Module extends TModule, ModuleDeclaration {
   /** Holds if the `i`th parameter of this module has `name` and type `sig`. */
   predicate hasParameter(int i, string name, SignatureExpr sig) {
     exists(QL::ModuleParam param |
-      param = mod.getParameter(i) and name = param.getParameter().getValue()
-    |
-      toQL(sig) = param.getSignature().getPredicate()
-      or
-      toQL(sig) = param.getSignature().getTypeExpr()
+      param = mod.getParameter(i) and
+      name = param.getParameter().getValue() and
+      sig.toQL() = param.getSignature()
     )
   }
 }
@@ -2240,15 +2238,24 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
    */
   SignatureExpr getArgument(int i) {
     exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
-      toQL(result) = instantiation.getChild(i).getPredicate()
-      or
-      toQL(result) = instantiation.getChild(i).getTypeExpr()
+      result.toQL() = instantiation.getChild(i)
     )
   }
 }
 
 /** A signature expression, either a `PredicateExpr` or a `TypeExpr`. */
-class SignatureExpr extends TSignatureExpr, AstNode { }
+class SignatureExpr extends TSignatureExpr, AstNode {
+  QL::SignatureExpr sig;
+
+  SignatureExpr() {
+    toQL(this) = sig.getPredicate()
+    or
+    toQL(this) = sig.getTypeExpr()
+  }
+
+  /** Gets the generated AST node that contains this signature expression. */
+  QL::SignatureExpr toQL() { result = sig }
+}
 
 /** An argument to an annotation. */
 private class AnnotationArg extends TAnnotationArg, AstNode {
