@@ -65,6 +65,16 @@ module CfgScope {
 
     final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
   }
+
+  private class ClosureExprScope extends Range_ instanceof ClosureExpr {
+    Exprs::ClosureExprTree tree;
+
+    ClosureExprScope() { tree.getAst() = this }
+
+    final override predicate entry(ControlFlowElement first) { first(tree, first) }
+
+    final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
+  }
 }
 
 /** Holds if `first` is first executed when entering `scope`. */
@@ -1043,6 +1053,21 @@ module Exprs {
       }
 
       final override predicate isSet(ControlFlowElement node) { node.asAstNode() = ast }
+    }
+  }
+
+  class ClosureExprTree extends StandardPreOrderTree, TClosureElement {
+    ClosureExpr expr;
+
+    ClosureExprTree() { this = TClosureElement(expr) }
+
+    ClosureExpr getAst() { result = expr }
+
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = expr.getParam(i)
+      or
+      result.asAstNode() = expr.getBody() and
+      i = expr.getNumberOfParams()
     }
   }
 
