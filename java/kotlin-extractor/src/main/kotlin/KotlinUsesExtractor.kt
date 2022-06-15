@@ -9,7 +9,6 @@ import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.ir.isFinalClass
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
-import org.jetbrains.kotlin.backend.jvm.ir.getJvmNameFromAnnotation
 import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.descriptors.*
@@ -975,35 +974,6 @@ open class KotlinUsesExtractor(
         return getFunctionLabel(f, null, classTypeArgsIncludingOuterClasses)
     }
 
-    fun getAdjustedReturnType(f: IrFunction) : IrType {
-        // The return type of `java.util.concurrent.ConcurrentHashMap<K,V>.keySet/0` is defined as `Set<K>` in the stubs inside the Android SDK.
-        // This does not match the Java SDK return type: `ConcurrentHashMap.KeySetView<K,V>`, so it's adjusted here.
-        // This is a deliberate change in the Android SDK: https://github.com/AndroidSDKSources/android-sdk-sources-for-api-level-31/blob/2c56b25f619575bea12f9c5520ed2259620084ac/java/util/concurrent/ConcurrentHashMap.java#L1244-L1249
-        // The annotation on the source is not visible in the android.jar, so we can't make the change based on that.
-        // TODO: there are other instances of `dalvik.annotation.codegen.CovariantReturnType` in the Android SDK, we should handle those too if they cause DB inconsistencies
-        val parentClass = f.parentClassOrNull
-        if (parentClass == null ||
-            parentClass.fqNameWhenAvailable?.asString() != "java.util.concurrent.ConcurrentHashMap" ||
-            getFunctionShortName(f).nameInDB != "keySet" ||
-            f.valueParameters.isNotEmpty() ||
-            f.returnType.classFqName?.asString() != "kotlin.collections.MutableSet") {
-            return f.returnType
-        }
-
-        val otherKeySet = parentClass.declarations.filterIsInstance<IrFunction>().find { it.name.asString() == "keySet" && it.valueParameters.size == 1 }
-            ?: return f.returnType
-
-        return otherKeySet.returnType.codeQlWithHasQuestionMark(false)
-    }
-
-    @OptIn(ObsoleteDescriptorBasedAPI::class)
-    fun getJavaMethod(f: IrFunction) = (f.descriptor.source as? JavaSourceElement)?.javaElement as? JavaMethod
-
-    fun hasWildcardSuppressionAnnotation(d: IrDeclaration) =
-        d.hasAnnotation(jvmWildcardSuppressionAnnotaton) ||
-        // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
-        d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotaton) == true }
-
     /*
      * There are some pairs of classes (e.g. `kotlin.Throwable` and
      * `java.lang.Throwable`) which are really just 2 different names
@@ -1025,7 +995,7 @@ open class KotlinUsesExtractor(
             getFunctionTypeParameters(f),
             classTypeArgsIncludingOuterClasses,
             overridesCollectionsMethodWithAlteredParameterTypes(f),
-            getJavaMethod(f),
+            getJavaCallable(f),
             !hasWildcardSuppressionAnnotation(f)
         )
 
@@ -1057,7 +1027,7 @@ open class KotlinUsesExtractor(
         // parameter erasure to match the way this class will appear to an external consumer of the .class file.
         overridesCollectionsMethod: Boolean,
         // The Java signature of this callable, if known.
-        javaSignature: JavaMethod?,
+        javaSignature: JavaMember?,
         // If true, Java wildcards implied by Kotlin type parameter variance should be added by default to this function's value parameters' types.
         // (Return-type wildcard addition is always off by default)
         addParameterWildcardsByDefault: Boolean,
@@ -1085,7 +1055,7 @@ open class KotlinUsesExtractor(
             // If this has happened, erase the type again to get the correct Java signature.
             val maybeAmendedForCollections = if (overridesCollectionsMethod) eraseCollectionsMethodParameterType(it.value.type, name, it.index) else it.value.type
             // Add any wildcard types that the Kotlin compiler would add in the Java lowering of this function:
-            val withAddedWildcards = addJavaLoweringWildcards(maybeAmendedForCollections, addParameterWildcardsByDefault, javaSignature?.let { sig -> sig.valueParameters[it.index].type })
+            val withAddedWildcards = addJavaLoweringWildcards(maybeAmendedForCollections, addParameterWildcardsByDefault, javaSignature?.let { sig -> getJavaValueParameterType(sig, it.index) })
             // Now substitute any class type parameters in:
             val maybeSubbed = withAddedWildcards.substituteTypeAndArguments(substitutionMap, TypeContext.OTHER, pluginContext)
             // Finally, mimic the Java extractor's behaviour by naming functions with type parameters for their erased types;
@@ -1109,6 +1079,41 @@ open class KotlinUsesExtractor(
         val typeArgSuffix = if (functionTypeParameters.isNotEmpty() && classTypeArgsIncludingOuterClasses.isNullOrEmpty()) "<${functionTypeParameters.size}>" else "";
         return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
     }
+
+    fun getAdjustedReturnType(f: IrFunction) : IrType {
+        // The return type of `java.util.concurrent.ConcurrentHashMap<K,V>.keySet/0` is defined as `Set<K>` in the stubs inside the Android SDK.
+        // This does not match the Java SDK return type: `ConcurrentHashMap.KeySetView<K,V>`, so it's adjusted here.
+        // This is a deliberate change in the Android SDK: https://github.com/AndroidSDKSources/android-sdk-sources-for-api-level-31/blob/2c56b25f619575bea12f9c5520ed2259620084ac/java/util/concurrent/ConcurrentHashMap.java#L1244-L1249
+        // The annotation on the source is not visible in the android.jar, so we can't make the change based on that.
+        // TODO: there are other instances of `dalvik.annotation.codegen.CovariantReturnType` in the Android SDK, we should handle those too if they cause DB inconsistencies
+        val parentClass = f.parentClassOrNull
+        if (parentClass == null ||
+            parentClass.fqNameWhenAvailable?.asString() != "java.util.concurrent.ConcurrentHashMap" ||
+            getFunctionShortName(f).nameInDB != "keySet" ||
+            f.valueParameters.isNotEmpty() ||
+            f.returnType.classFqName?.asString() != "kotlin.collections.MutableSet") {
+            return f.returnType
+        }
+
+        val otherKeySet = parentClass.declarations.filterIsInstance<IrFunction>().find { it.name.asString() == "keySet" && it.valueParameters.size == 1 }
+            ?: return f.returnType
+
+        return otherKeySet.returnType.codeQlWithHasQuestionMark(false)
+    }
+
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
+    fun getJavaCallable(f: IrFunction) = (f.descriptor.source as? JavaSourceElement)?.javaElement as? JavaMember
+
+    fun getJavaValueParameterType(m: JavaMember, idx: Int) = when(m) {
+        is JavaMethod -> m.valueParameters[idx].type
+        is JavaConstructor -> m.valueParameters[idx].type
+        else -> null
+    }
+
+    fun hasWildcardSuppressionAnnotation(d: IrDeclaration) =
+        d.hasAnnotation(jvmWildcardSuppressionAnnotaton) ||
+        // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
+        d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotaton) == true }
 
     protected fun IrFunction.isLocalFunction(): Boolean {
         return this.visibility == DescriptorVisibilities.LOCAL

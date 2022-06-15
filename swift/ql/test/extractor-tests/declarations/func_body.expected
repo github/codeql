@@ -50,3 +50,4 @@
 | declarations.swift:131:7:131:7 | set | declarations.swift:131:7:131:7 | { ... } |
 | declarations.swift:132:5:132:15 | willSet | declarations.swift:132:13:132:15 | { ... } |
 | declarations.swift:134:5:134:14 | didSet | declarations.swift:134:12:134:14 | { ... } |
+| declarations.swift:139:3:141:3 | id | declarations.swift:139:20:141:3 | { ... } |

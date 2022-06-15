@@ -266,10 +266,21 @@ private predicate isIrrefutableMatch(Pattern p) {
 }
 
 /**
+ * Holds if the ast node `ast` is a (possibly top-level) pattern that constantly matches (`value = true`) or
+ * constantly non-matches (`value = false`).
+ */
+private predicate isMatchingConstant(AstNode ast, boolean value) {
+  isMatchingConstantItem(ast, value)
+  or
+  isIrrefutableMatch(ast) and
+  value = true
+}
+
+/**
  * Holds if the top-level pattern `cli` constantly matches (`value = true`) or
  * constantly non-matches (`value = false`).
  */
-private predicate isMatchingConstant(CaseLabelItem cli, boolean value) {
+private predicate isMatchingConstantItem(CaseLabelItem cli, boolean value) {
   // If the pattern always matches
   isIrrefutableMatch(cli.getPattern()) and
   (

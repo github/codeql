@@ -1,6 +1,7 @@
 private import swift
 private import DataFlowPublic
 private import DataFlowDispatch
+private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.controlflow.CfgNodes
 private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.BasicBlocks
@@ -20,7 +21,7 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
 }
 
 abstract class NodeImpl extends Node {
-  DataFlowCallable getEnclosingCallable() { none() }
+  abstract DataFlowCallable getEnclosingCallable();
 
   /** Do not call: use `getLocation()` instead. */
   abstract Location getLocationImpl();
@@ -60,7 +61,21 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(ExprCfgNode e) or
-    TSsaDefinitionNode(Ssa::Definition def)
+    TSsaDefinitionNode(Ssa::Definition def) or
+    TInoutReturnNode(ParamDecl param) { param.isInout() } or
+    TInOutUpdateNode(ParamDecl param, CallExpr call) {
+      param.isInout() and
+      call.getStaticTarget() = param.getDeclaringFunction()
+    }
+
+  private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
+    def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode()) and
+    (
+      nodeTo instanceof InoutReturnNode
+      implies
+      nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable()
+    )
+  }
 
   private predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     exists(Ssa::Definition def |
@@ -70,14 +85,34 @@ private module Cached {
       or
       // step from def to first read
       nodeFrom.asDefinition() = def and
-      nodeTo.getCfgNode() = def.getAFirstRead()
+      nodeTo.getCfgNode() = def.getAFirstRead() and
+      (
+        nodeTo instanceof InoutReturnNode
+        implies
+        nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable()
+      )
       or
       // use-use flow
-      def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode())
+      localSsaFlowStepUseUse(def, nodeFrom, nodeTo)
       or
+      //localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+      //or
       // step from previous read to Phi node
       localFlowSsaInput(nodeFrom, def, nodeTo.asDefinition())
     )
+    or
+    exists(ParamReturnKind kind, ExprCfgNode arg |
+      arg =
+        nodeFrom
+            .(InOutUpdateNode)
+            .getCall(kind)
+            .getCfgNode()
+            .(CallExprCfgNode)
+            .getArgument(kind.getIndex()) and
+      nodeTo.asDefinition().(Ssa::WriteDefinition).isInoutDef(arg)
+    )
+    or
+    nodeFrom.asExpr() = nodeTo.asExpr().(InOutExpr).getSubExpr()
   }
 
   /**
@@ -172,6 +207,31 @@ private module ReturnNodes {
 
     override ReturnKind getKind() { result instanceof NormalReturnKind }
   }
+
+  class InoutReturnNodeImpl extends ReturnNode, TInoutReturnNode, NodeImpl {
+    ParamDecl param;
+    ControlFlowNode exit;
+
+    InoutReturnNodeImpl() {
+      this = TInoutReturnNode(param) and
+      exit instanceof ExitNode and
+      exit.getScope() = param.getDeclaringFunction()
+    }
+
+    override ReturnKind getKind() { result.(ParamReturnKind).getIndex() = param.getIndex() }
+
+    override ControlFlowNode getCfgNode() { result = exit }
+
+    override DataFlowCallable getEnclosingCallable() {
+      result = TDataFlowFunc(param.getDeclaringFunction())
+    }
+
+    ParamDecl getParameter() { result = param }
+
+    override Location getLocationImpl() { result = exit.getLocation() }
+
+    override string toStringImpl() { result = param.toString() + "[return]" }
+  }
 }
 
 import ReturnNodes
@@ -187,6 +247,26 @@ private module OutNodes {
     override DataFlowCall getCall(ReturnKind kind) {
       result = this and kind instanceof NormalReturnKind
     }
+  }
+
+  class InOutUpdateNode extends OutNode, TInOutUpdateNode, NodeImpl {
+    ParamDecl param;
+    CallExpr call;
+
+    InOutUpdateNode() { this = TInOutUpdateNode(param, call) }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      result.asExpr() = call and
+      kind.(ParamReturnKind).getIndex() = param.getIndex()
+    }
+
+    override DataFlowCallable getEnclosingCallable() {
+      result = TDataFlowFunc(this.getCall(_).getCfgNode().getScope())
+    }
+
+    override Location getLocationImpl() { result = call.getLocation() }
+
+    override string toStringImpl() { result = param.toString() }
   }
 }
 

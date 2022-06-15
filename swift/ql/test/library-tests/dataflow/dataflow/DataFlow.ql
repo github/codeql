@@ -1,3 +1,7 @@
+/**
+ * @kind path-problem
+ */
+
 import swift
 import codeql.swift.dataflow.DataFlow
 import DataFlow::PathGraph
@@ -21,4 +25,4 @@ class TestConfiguration extends DataFlow::Configuration {
 
 from DataFlow::PathNode src, DataFlow::PathNode sink, TestConfiguration test
 where test.hasFlowPath(src, sink)
-select src, sink
+select sink, src, sink, "result"

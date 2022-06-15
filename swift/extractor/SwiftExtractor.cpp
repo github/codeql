@@ -84,6 +84,15 @@ static void extractFile(const SwiftExtractorConfiguration& config,
   TrapOutput trap{trapStream};
   TrapArena arena{};
 
+  // TODO move default location emission elsewhere, possibly in a separate global trap file
+  auto unknownFileLabel = arena.allocateLabel<FileTag>();
+  // the following cannot conflict with actual files as those have an absolute path starting with /
+  trap.assignKey(unknownFileLabel, "unknown");
+  trap.emit(FilesTrap{unknownFileLabel});
+  auto unknownLocationLabel = arena.allocateLabel<LocationTag>();
+  trap.assignKey(unknownLocationLabel, "unknown");
+  trap.emit(LocationsTrap{unknownLocationLabel, unknownFileLabel});
+
   // In the case of emtpy files, the dispatcher is not called, but we still want to 'record' the
   // fact that the file was extracted
   // TODO: to be moved elsewhere
