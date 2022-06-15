@@ -706,14 +706,31 @@ open class KotlinUsesExtractor(
             )
 
             (s.isBoxedArray && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
-                var dimensions = 1
-                var isPrimitiveArray = s.isPrimitiveArray()
-                val componentType = s.getArrayElementType(pluginContext.irBuiltIns)
-                var elementType = componentType
+
+                fun replaceComponentTypeWithAny(t: IrSimpleType, dimensions: Int): IrSimpleType =
+                    if (dimensions == 0)
+                        pluginContext.irBuiltIns.anyType as IrSimpleType
+                    else
+                        t.toBuilder().also { it.arguments = (it.arguments[0] as IrTypeProjection)
+                            .let { oldArg ->
+                                listOf(makeTypeProjection(replaceComponentTypeWithAny(oldArg.type as IrSimpleType, dimensions - 1), oldArg.variance))
+                            }
+                        }.buildSimpleType()
+
+                var componentType = s.getArrayElementType(pluginContext.irBuiltIns)
+                var isPrimitiveArray = false
+                var dimensions = 0
+                var elementType: IrType = s
                 while (elementType.isBoxedArray || elementType.isPrimitiveArray()) {
                     dimensions++
-                    if(elementType.isPrimitiveArray())
+                    if (elementType.isPrimitiveArray())
                         isPrimitiveArray = true
+                    if (((elementType as IrSimpleType).arguments.singleOrNull() as? IrTypeProjection)?.variance == Variance.IN_VARIANCE) {
+                        // Because Java's arrays are covariant, Kotlin will render Array<in X> as Object[], Array<Array<in X>> as Object[][] etc.
+                        componentType = replaceComponentTypeWithAny(s, dimensions - 1)
+                        elementType = pluginContext.irBuiltIns.anyType as IrSimpleType
+                        break
+                    }
                     elementType = elementType.getArrayElementType(pluginContext.irBuiltIns)
                 }
 
@@ -926,13 +943,33 @@ open class KotlinUsesExtractor(
     private val jvmWildcardAnnotation = FqName("kotlin.jvm.JvmWildcard")
     private val jvmWildcardSuppressionAnnotaton = FqName("kotlin.jvm.JvmSuppressWildcards")
 
+    private fun arrayExtendsAdditionAllowed(t: IrSimpleType): Boolean =
+        // Note the array special case includes Array<*>, which does permit adding `? extends ...` (making `? extends Object[]` in that case)
+        // Surprisingly Array<in X> does permit this as well, though the contravariant array lowers to Object[] so this ends up `? extends Object[]` as well.
+        t.arguments[0].let {
+            when (it) {
+                is IrTypeProjection -> when (it.variance) {
+                    Variance.INVARIANT -> false
+                    Variance.IN_VARIANCE -> !(it.type.isAny() || it.type.isNullableAny())
+                    Variance.OUT_VARIANCE -> extendsAdditionAllowed(it.type)
+                }
+                else -> true
+            }
+        }
+
+    private fun extendsAdditionAllowed(t: IrType) =
+        if (t.isBoxedArray)
+            arrayExtendsAdditionAllowed(t as IrSimpleType)
+        else
+            ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
+
     private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean) =
         when {
             t.hasAnnotation(jvmWildcardAnnotation) -> true
             !addByDefault -> false
             t.hasAnnotation(jvmWildcardSuppressionAnnotaton) -> false
             v == Variance.IN_VARIANCE -> !(t.isNullableAny() || t.isAny())
-            v == Variance.OUT_VARIANCE -> ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
+            v == Variance.OUT_VARIANCE -> extendsAdditionAllowed(t)
             else -> false
         }
 
