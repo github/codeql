@@ -51,6 +51,8 @@ module TarSlip {
   }
 
   /**
+   * A sanitizer based on file name. This beacuse we extract the standard library.
+   *
    * For efficiency we don't want to track the flow of taint
    * around the tarfile module.
    */
@@ -59,6 +61,8 @@ module TarSlip {
   }
 
   /**
+   * A sink capturing method calls to `extractall`.
+   *
    * For a call to `file.extractall` without arguments, `file` is considered a sink.
    */
   class ExtractAllSink extends Sink {
@@ -106,7 +110,9 @@ module TarSlip {
   }
 
   /**
-   * For a "check-like function name" (matching `"%path"`), `checkPath`,
+   * A sanitizer guard heuristic.
+   *
+   * For a "check-like function-name" (matching `"%path"`), `checkPath`,
    * and a call `checkPath(info.name)`, the variable `info` is considered checked.
    */
   class TarFileInfoSanitizer extends SanitizerGuard {
@@ -121,9 +127,9 @@ module TarSlip {
         attr.getObject() = tarInfo
       |
         // Assume that any test with "path" in it is a sanitizer
-        call.getAChild*().(AttrNode).getName().toLowerCase().matches("%path")
+        call.getAChild*().(AttrNode).getName().matches("%path")
         or
-        call.getAChild*().(NameNode).getId().toLowerCase().matches("%path")
+        call.getAChild*().(NameNode).getId().matches("%path")
       )
     }
 
