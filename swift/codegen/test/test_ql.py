@@ -57,7 +57,7 @@ def test_property_is_repeated(plural, expected):
     (True, False, None, False),
     (False, True, None, False),
 ])
-def test_property_is_repeated(is_optional, is_predicate, plural, expected):
+def test_property_is_single(is_optional, is_predicate, plural, expected):
     prop = ql.Property("foo", "Foo", "props", ["x"], plural=plural, is_predicate=is_predicate, is_optional=is_optional)
     assert prop.is_single is expected
 
