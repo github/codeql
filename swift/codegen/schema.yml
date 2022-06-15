@@ -13,15 +13,20 @@ _directories:
   stmt: Stmt$
 
 Element:
-  is_unknown: predicate
+  is_unknown:
+    type: predicate
+    _tags: [ no_qltest ]
 
 File:
   name: string
 
 Locatable:
-  location: Location
+  location:
+    type: Location
+    _tags: [no_qltest]
 
 Location:
+  _tags: [ no_qltest ]
   file: File
   start_line: int
   start_column: int
@@ -288,6 +293,8 @@ ValueDecl:
 
 AbstractClosureExpr:
   _extends: Expr
+  _children:
+    params: ParamDecl*
 
 AnyTryExpr:
   _extends: Expr

@@ -634,9 +634,11 @@ ql_module_alias_body_def(
   int child: @ql_module_expr ref
 );
 
+@ql_moduleExpr_name_type = @ql_module_instantiation | @ql_token_simple_id
+
 ql_module_expr_name(
   unique int ql_module_expr: @ql_module_expr ref,
-  unique int name: @ql_token_simple_id ref
+  unique int name: @ql_moduleExpr_name_type ref
 );
 
 @ql_moduleExpr_child_type = @ql_module_expr | @ql_module_instantiation | @ql_token_simple_id

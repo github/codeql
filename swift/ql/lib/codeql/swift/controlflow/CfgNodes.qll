@@ -109,6 +109,8 @@ class ApplyExprCfgNode extends ExprCfgNode {
   ExprCfgNode getArgument(int index) {
     result.getNode().asAstNode() = e.getArgument(index).getExpr()
   }
+
+  AbstractFunctionDecl getStaticTarget() { result = e.getStaticTarget() }
 }
 
 class CallExprCfgNode extends ApplyExprCfgNode {
