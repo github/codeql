@@ -3,5 +3,5 @@ import codeql.swift.elements
 import TestUtils
 
 from AssociatedTypeDecl x, int index
-where toBeTested(x)
+where toBeTested(x) and not x.isUnknown()
 select x, index, x.getBaseType(index)

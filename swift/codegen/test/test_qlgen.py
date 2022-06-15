@@ -406,8 +406,10 @@ def test_test_total_properties(opts, generate_tests):
         ]),
     ]) == {
                "B/B.ql": ql.ClassTester(class_name="B", properties=[
-                   ql.PropertyForTest(getter="getX", is_single=True, type="string"),
-                   ql.PropertyForTest(getter="y", is_predicate=True, type="predicate"),
+                   ql.PropertyForTest(
+                       getter="getX", is_single=True, type="string"),
+                   ql.PropertyForTest(
+                       getter="y", is_predicate=True, type="predicate"),
                ])
            }
 
@@ -443,12 +445,54 @@ def test_test_properties_deduplicated(opts, generate_tests):
         schema.Class("Final", bases={"A", "B"}),
     ]) == {
                "Final/Final.ql": ql.ClassTester(class_name="Final", properties=[
-                   ql.PropertyForTest(getter="getX", is_single=True, type="string"),
+                   ql.PropertyForTest(
+                       getter="getX", is_single=True, type="string"),
                ]),
                "Final/Final_getY.ql": ql.PropertyTester(class_name="Final",
                                                         property=ql.PropertyForTest(getter="getY", is_repeated=True,
                                                                                     type="int")),
            }
+
+
+def test_test_properties_skipped(opts, generate_tests):
+    write(opts.ql_test_output / "Derived" / "test.swift")
+    assert generate_tests([
+        schema.Class("Base", derived={"Derived"}, properties=[
+            schema.SingleProperty("x", "string", tags=["no_qltest", "foo"]),
+            schema.RepeatedProperty("y", "int", tags=["bar", "no_qltest"]),
+        ]),
+        schema.Class("Derived", bases={"Base"}, properties=[
+            schema.PredicateProperty("a", tags=["no_qltest"]),
+            schema.OptionalProperty(
+                "b", "int", tags=["bar", "no_qltest", "baz"]),
+        ]),
+    ]) == {
+               "Derived/Derived.ql": ql.ClassTester(class_name="Derived"),
+           }
+
+
+def test_test_base_class_skipped(opts, generate_tests):
+    write(opts.ql_test_output / "Derived" / "test.swift")
+    assert generate_tests([
+        schema.Class("Base", derived={"Derived"}, tags=["no_qltest", "foo"], properties=[
+            schema.SingleProperty("x", "string"),
+            schema.RepeatedProperty("y", "int"),
+        ]),
+        schema.Class("Derived", bases={"Base"}),
+    ]) == {
+               "Derived/Derived.ql": ql.ClassTester(class_name="Derived"),
+           }
+
+
+def test_test_final_class_skipped(opts, generate_tests):
+    write(opts.ql_test_output / "Derived" / "test.swift")
+    assert generate_tests([
+        schema.Class("Base", derived={"Derived"}),
+        schema.Class("Derived", bases={"Base"}, tags=["no_qltest", "foo"], properties=[
+            schema.SingleProperty("x", "string"),
+            schema.RepeatedProperty("y", "int"),
+        ]),
+    ]) == {}
 
 
 if __name__ == '__main__':

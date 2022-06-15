@@ -79,6 +79,7 @@ class Class:
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
     imports: List[str] = field(default_factory=list)
+    skip_qltest: bool = False
 
     def __post_init__(self):
         self.bases = sorted(self.bases)

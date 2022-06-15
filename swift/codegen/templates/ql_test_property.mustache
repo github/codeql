@@ -5,6 +5,6 @@ import TestUtils
 
 {{#property}}
 from {{class_name}} x{{#is_repeated}}, int index{{/is_repeated}}
-where toBeTested(x)
+where toBeTested(x) and not x.isUnknown()
 select x, {{#is_repeated}}index, {{/is_repeated}}x.{{getter}}({{#is_repeated}}index{{/is_repeated}})
 {{/property}}

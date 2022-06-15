@@ -29,7 +29,8 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
             **common_args,
             singular=inflection.camelize(prop.name),
             tablename=inflection.tableize(cls.name),
-            tableparams=["this"] + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
+            tableparams=[
+                "this"] + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
         )
     elif prop.is_repeated:
         return ql.Property(
@@ -49,7 +50,8 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
     elif prop.is_predicate:
         return ql.Property(
             **common_args,
-            singular=inflection.camelize(prop.name, uppercase_first_letter=False),
+            singular=inflection.camelize(
+                prop.name, uppercase_first_letter=False),
             tablename=inflection.underscore(f"{cls.name}_{prop.name}"),
             tableparams=["this"],
         )
@@ -62,6 +64,7 @@ def get_ql_class(cls: schema.Class):
         final=not cls.derived,
         properties=[get_ql_property(cls, p) for p in cls.properties],
         dir=cls.dir,
+        skip_qltest="no_qltest" in cls.tags,
     )
 
 
@@ -100,20 +103,22 @@ def format(codeql, files):
         log.debug(line.strip())
 
 
-def _get_all_properties(cls: ql.Class, lookup: typing.Dict[str, ql.Class]) -> typing.Iterable[ql.Property]:
+def _get_all_properties(cls: ql.Class, lookup: typing.Dict[str, ql.Class]) -> typing.Iterable[
+        typing.Tuple[ql.Class, ql.Property]]:
     for b in cls.bases:
-        for p in _get_all_properties(lookup[b], lookup):
-            yield p
+        base = lookup[b]
+        for item in _get_all_properties(base, lookup):
+            yield item
     for p in cls.properties:
-        yield p
+        yield cls, p
 
 
 def _get_all_properties_to_be_tested(cls: ql.Class, lookup: typing.Dict[str, ql.Class]) -> typing.Iterable[
         ql.PropertyForTest]:
     # deduplicate using id
     already_seen = set()
-    for p in _get_all_properties(cls, lookup):
-        if not p.skip_qltest and id(p) not in already_seen:
+    for c, p in _get_all_properties(cls, lookup):
+        if not (c.skip_qltest or p.skip_qltest or id(p) in already_seen):
             already_seen.add(id(p))
             yield ql.PropertyForTest(p.getter, p.type, p.is_single, p.is_predicate, p.is_repeated)
 
@@ -153,7 +158,8 @@ def generate(opts, renderer):
         renderer.render(c, qll)
         stub_file = stub_out / c.path.with_suffix(".qll")
         if not stub_file.is_file() or is_generated(stub_file):
-            stub = ql.Stub(name=c.name, base_import=get_import(qll, opts.swift_dir))
+            stub = ql.Stub(
+                name=c.name, base_import=get_import(qll, opts.swift_dir))
             renderer.render(stub, stub_file)
 
     # for example path/to/elements -> path/to/elements.qll
@@ -161,22 +167,26 @@ def generate(opts, renderer):
     all_imports = ql.ImportList(list(sorted(imports.values())))
     renderer.render(all_imports, include_file)
 
-    renderer.render(ql.GetParentImplementation(classes), out / 'GetImmediateParent.qll')
+    renderer.render(ql.GetParentImplementation(
+        classes), out / 'GetImmediateParent.qll')
 
     for c in classes:
-        if not c.final:
+        if not c.final or c.skip_qltest:
             continue
         test_dir = test_out / c.path
         test_dir.mkdir(parents=True, exist_ok=True)
         if not any(test_dir.glob("*.swift")):
             log.warning(f"no test source in {c.path}")
-            renderer.render(ql.MissingTestInstructions(), test_dir / missing_test_source_filename)
+            renderer.render(ql.MissingTestInstructions(),
+                            test_dir / missing_test_source_filename)
             continue
         total_props, partial_props = _partition(_get_all_properties_to_be_tested(c, lookup),
                                                 lambda p: p.is_single or p.is_predicate)
-        renderer.render(ql.ClassTester(class_name=c.name, properties=total_props), test_dir / f"{c.name}.ql")
+        renderer.render(ql.ClassTester(class_name=c.name,
+                                       properties=total_props), test_dir / f"{c.name}.ql")
         for p in partial_props:
-            renderer.render(ql.PropertyTester(class_name=c.name, property=p), test_dir / f"{c.name}_{p.getter}.ql")
+            renderer.render(ql.PropertyTester(class_name=c.name,
+                                              property=p), test_dir / f"{c.name}_{p.getter}.ql")
 
     renderer.cleanup(existing)
     if opts.ql_format:

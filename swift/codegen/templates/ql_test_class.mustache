@@ -4,7 +4,7 @@ import codeql.swift.elements
 import TestUtils
 
 from {{class_name}} x{{#properties}}, {{#is_single}}{{type}}{{/is_single}}{{#is_predicate}}string{{/is_predicate}} {{getter}}{{/properties}}
-where toBeTested(x)
+where toBeTested(x) and not x.isUnknown()
 {{#properties}}
 {{#is_single}}
 and {{getter}} = x.{{getter}}()

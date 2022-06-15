@@ -13,7 +13,9 @@ _directories:
   stmt: Stmt$
 
 Element:
-  is_unknown: predicate
+  is_unknown:
+    type: predicate
+    _tags: [ no_qltest ]
 
 File:
   name: string

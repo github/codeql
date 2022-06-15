@@ -1,2 +1,2 @@
-| file://:0:0:0:0 |  | isUnknown: | no | getName: |  |
-| hello.swift:0:0:0:0 | hello.swift | isUnknown: | no | getName: | hello.swift |
+| file://:0:0:0:0 |  | getName: |  |
+| hello.swift:0:0:0:0 | hello.swift | getName: | hello.swift |
