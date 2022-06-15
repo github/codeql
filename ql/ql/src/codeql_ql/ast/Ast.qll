@@ -719,6 +719,19 @@ class Module extends TModule, ModuleDeclaration {
     pred = directMember("getAlias") and result = this.getAlias()
     or
     pred = directMember("getAMember") and result = this.getAMember()
+    or
+    exists(int i | pred = indexedMember("hasParameter", i) and hasParameter(i, _, result))
+  }
+
+  /** Holds if the `i`th parameter of this module has `name` and type `sig`. */
+  predicate hasParameter(int i, string name, SignatureExpr sig) {
+    exists(QL::ModuleParam param |
+      param = mod.getParameter(i) and name = param.getParameter().getValue()
+    |
+      toQL(sig) = param.getSignature().getPredicate()
+      or
+      toQL(sig) = param.getSignature().getTypeExpr()
+    )
   }
 }
 
@@ -2225,7 +2238,7 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
    * Gets the `i`th type argument if this module is a module instantiation.
    * The result is either a `PredicateExpr` or a `TypeExpr`.
    */
-  AstNode getArgument(int i) {
+  SignatureExpr getArgument(int i) {
     exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
       toQL(result) = instantiation.getChild(i).getPredicate()
       or
@@ -2233,6 +2246,9 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
     )
   }
 }
+
+/** A signature expression, either a `PredicateExpr` or a `TypeExpr`. */
+class SignatureExpr extends TSignatureExpr, AstNode { }
 
 /** An argument to an annotation. */
 private class AnnotationArg extends TAnnotationArg, AstNode {

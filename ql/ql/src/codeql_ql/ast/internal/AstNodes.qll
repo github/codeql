@@ -87,6 +87,8 @@ class TModuleRef = TImport or TModuleExpr;
 
 class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
 
+class TSignatureExpr = TPredicateExpr or TType;
+
 /** DEPRECATED: Alias for TYamlNode */
 deprecated class TYAMLNode = TYamlNode;
 
