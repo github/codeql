@@ -373,8 +373,40 @@ cfg.swift:
 #   46| return ...
 #-----| return -> exit createClosure1 (normal)
 
+#   46| enter { ... }
+#-----|  -> { ... }
+
+#   46| exit { ... }
+
+#   46| exit { ... } (normal)
+#-----|  -> exit { ... }
+
 #   46| { ... }
 #-----|  -> return ...
+
+#   46| { ... }
+#-----|  -> +
+
+#   47| return ...
+#-----| return -> exit { ... } (normal)
+
+#   47| s
+#-----|  -> 
+
+#   47| ... call to + ...
+#-----|  -> return ...
+
+#   47| +
+#-----|  -> String.Type
+
+#   47| String.Type
+#-----|  -> call to +
+
+#   47| call to +
+#-----|  -> s
+
+#   47| 
+#-----|  -> ... call to + ...
 
 #   51| createClosure2
 #-----|  -> x
@@ -436,8 +468,43 @@ cfg.swift:
 #   59| return ...
 #-----| return -> exit createClosure3 (normal)
 
+#   59| enter { ... }
+#-----|  -> { ... }
+
+#   59| exit { ... }
+
+#   59| exit { ... } (normal)
+#-----|  -> exit { ... }
+
 #   59| { ... }
 #-----|  -> return ...
+
+#   59| { ... }
+#-----|  -> y
+
+#   60| y
+#-----|  -> +
+
+#   60| x
+#-----|  -> y
+
+#   60| ... call to + ...
+#-----|  -> return ...
+
+#   60| return ...
+#-----| return -> exit { ... } (normal)
+
+#   60| +
+#-----|  -> Int.Type
+
+#   60| Int.Type
+#-----|  -> call to +
+
+#   60| call to +
+#-----|  -> x
+
+#   60| y
+#-----|  -> ... call to + ...
 
 #   64| callClosures
 #-----|  -> x1
@@ -4633,11 +4700,22 @@ cfg.swift:
 #  368| return ...
 #-----| return -> exit testCapture (normal)
 
+#  368| enter { ... }
+#-----|  -> { ... }
+
+#  368| exit { ... }
+
+#  368| exit { ... } (normal)
+#-----|  -> exit { ... }
+
 #  368| { ... }
 #-----|  -> return ...
 
 #  368| { ... }
 #-----|  -> { ... }
+
+#  368| { ... }
+#-----|  -> z
 
 #  368| z
 #-----| match -> +
@@ -4671,6 +4749,12 @@ cfg.swift:
 
 #  368| literal
 #-----|  -> var ... = ...
+
+#  369| return ...
+#-----| return -> exit { ... } (normal)
+
+#  369| z
+#-----|  -> return ...
 
 #  373| enter testTupleElement
 #-----|  -> testTupleElement

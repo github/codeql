@@ -49,14 +49,15 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
   }
 }
 
-static void extractFile(const SwiftExtractorConfiguration& config,
-                        swift::CompilerInstance& compiler,
-                        swift::SourceFile& file) {
+static void extractDeclarations(const SwiftExtractorConfiguration& config,
+                                swift::CompilerInstance& compiler,
+                                llvm::StringRef filename,
+                                llvm::ArrayRef<swift::Decl*> topLevelDecls) {
   // The extractor can be called several times from different processes with
   // the same input file(s)
   // We are using PID to avoid concurrent access
   // TODO: find a more robust approach to avoid collisions?
-  std::string tempTrapName = file.getFilename().str() + '.' + std::to_string(getpid()) + ".trap";
+  std::string tempTrapName = filename.str() + '.' + std::to_string(getpid()) + ".trap";
   llvm::SmallString<PATH_MAX> tempTrapPath(config.trapDir);
   llvm::sys::path::append(tempTrapPath, tempTrapName);
 
@@ -84,7 +85,7 @@ static void extractFile(const SwiftExtractorConfiguration& config,
   TrapOutput trap{trapStream};
   TrapArena arena{};
 
-  // TODO move default location emission elsewhere, possibly in a separate global trap file
+  // TODO: move default location emission elsewhere, possibly in a separate global trap file
   auto unknownFileLabel = arena.allocateLabel<FileTag>();
   // the following cannot conflict with actual files as those have an absolute path starting with /
   trap.assignKey(unknownFileLabel, "unknown");
@@ -93,22 +94,23 @@ static void extractFile(const SwiftExtractorConfiguration& config,
   trap.assignKey(unknownLocationLabel, "unknown");
   trap.emit(LocationsTrap{unknownLocationLabel, unknownFileLabel});
 
-  // In the case of emtpy files, the dispatcher is not called, but we still want to 'record' the
-  // fact that the file was extracted
-  // TODO: to be moved elsewhere
-  llvm::SmallString<PATH_MAX> srcFilePath(file.getFilename());
-  llvm::sys::fs::make_absolute(srcFilePath);
-  auto fileLabel = arena.allocateLabel<FileTag>();
-  trap.assignKey(fileLabel, srcFilePath.str().str());
-  trap.emit(FilesTrap{fileLabel, srcFilePath.str().str()});
-
   SwiftVisitor visitor(compiler.getSourceMgr(), arena, trap);
-  for (swift::Decl* decl : file.getTopLevelDecls()) {
+  for (swift::Decl* decl : topLevelDecls) {
     visitor.extract(decl);
+  }
+  if (topLevelDecls.empty()) {
+    // In the case of emtpy files, the dispatcher is not called, but we still want to 'record' the
+    // fact that the file was extracted
+    // TODO: to be moved elsewhere
+    llvm::SmallString<PATH_MAX> srcFilePath(filename);
+    llvm::sys::fs::make_absolute(srcFilePath);
+    auto fileLabel = arena.allocateLabel<FileTag>();
+    trap.assignKey(fileLabel, srcFilePath.str().str());
+    trap.emit(FilesTrap{fileLabel, srcFilePath.str().str()});
   }
 
   // TODO: Pick a better name to avoid collisions
-  std::string trapName = file.getFilename().str() + ".trap";
+  std::string trapName = filename.str() + ".trap";
   llvm::SmallString<PATH_MAX> trapPath(config.trapDir);
   llvm::sys::path::append(trapPath, trapName);
 
@@ -121,10 +123,24 @@ static void extractFile(const SwiftExtractorConfiguration& config,
 
 void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
                                swift::CompilerInstance& compiler) {
-  // The extraction will only work if one (or more) `-primary-file` CLI option is provided, which
-  // is what always happen in case of `swift build` and `xcodebuild`
-  for (auto s : compiler.getPrimarySourceFiles()) {
-    archiveFile(config, *s);
-    extractFile(config, compiler, *s);
+  for (auto& [_, module] : compiler.getASTContext().getLoadedModules()) {
+    // We only extract system and builtin modules here as the other "user" modules can be built
+    // during the build process and then re-used at a later stage. In this case, we extract the
+    // user code twice: once during the module build in a form of a source file, and then as
+    // a pre-built module during building of the dependent source files.
+    if (module->isSystemModule() || module->isBuiltinModule()) {
+      llvm::SmallVector<swift::Decl*> decls;
+      module->getTopLevelDecls(decls);
+      // TODO: pass ModuleDecl directly when we have module extraction in place?
+      extractDeclarations(config, compiler, module->getModuleFilename(), decls);
+    } else {
+      // The extraction will only work if one (or more) `-primary-file` CLI option is provided,
+      // which is what always happens in case of `swift build` and `xcodebuild`
+      for (auto primaryFile : module->getPrimarySourceFiles()) {
+        archiveFile(config, *primaryFile);
+        extractDeclarations(config, compiler, primaryFile->getFilename(),
+                            primaryFile->getTopLevelDecls());
+      }
+    }
   }
 }

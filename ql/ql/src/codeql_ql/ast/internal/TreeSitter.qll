@@ -983,7 +983,7 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ModuleExpr" }
 
     /** Gets the node corresponding to the field `name`. */
-    final SimpleId getName() { ql_module_expr_name(this, result) }
+    final AstNode getName() { ql_module_expr_name(this, result) }
 
     /** Gets the child of this node. */
     final AstNode getChild() { ql_module_expr_def(this, result) }

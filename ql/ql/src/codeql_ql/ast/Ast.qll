@@ -2187,7 +2187,7 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
    * is `Bar`.
    */
   string getName() {
-    result = me.getName().getValue()
+    result = me.getName().(QL::SimpleId).getValue()
     or
     not exists(me.getName()) and result = me.getChild().(QL::SimpleId).getValue()
   }
