@@ -132,6 +132,10 @@ module Results<relevantUsagesSig/2 getRelevantUsages> {
       )
   }
 
+  /**
+   * Holds if `api` is being used `usages` times and if it is
+   * in the top results (guarded by resultLimit).
+   */
   predicate restrict(ExternalApi api, int usages) {
     getRelevantUsages(api, usages) and getOrder(api) <= resultLimit()
   }
