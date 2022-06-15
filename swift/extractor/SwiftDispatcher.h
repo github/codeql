@@ -19,7 +19,7 @@ enum class SwiftExtractionMode { Module, PrimaryFile };
 // node (AST nodes that are not types: declarations, statements, expressions, etc.).
 class SwiftDispatcher {
  public:
-  // sourceManager, arena, and trap are supposed to outlive the SwiftDispatcher
+  // all references passed as parameters to this constructor are supposed to outlive the SwiftDispatcher
   SwiftDispatcher(const swift::SourceManager& sourceManager,
                   TrapArena& arena,
                   TrapOutput& trap,
