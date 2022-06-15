@@ -2217,6 +2217,20 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
     result = super.getAChild(pred)
     or
     pred = directMember("getQualifier") and result = this.getQualifier()
+    or
+    exists(int i | pred = indexedMember("getArgument", i) and result = this.getArgument(i))
+  }
+
+  /**
+   * Gets the `i`th type argument if this module is a module instantiation.
+   * The result is either a `PredicateExpr` or a `TypeExpr`.
+   */
+  AstNode getArgument(int i) {
+    exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
+      toQL(result) = instantiation.getChild(i).getPredicate()
+      or
+      toQL(result) = instantiation.getChild(i).getTypeExpr()
+    )
   }
 }
 
