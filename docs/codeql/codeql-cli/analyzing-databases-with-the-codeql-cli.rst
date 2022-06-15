@@ -135,6 +135,60 @@ pack names and use the ``--download`` flag::
 The ``analyze`` command above runs the default suite from ``microsoft/coding-standards v1.0.0`` and the latest version of ``github/security-queries`` on the specified database.
 For further information about default suites, see ":ref:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`".
 
+Running a subset of queries in a CodeQL pack
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Additionally, you can include a path at the end of a pack specification to run a subset of queries inside the pack. This applies to any command that locates or runs queries within a pack.
+
+The complete way to specify a set of queries is in the form ``scope/name@range:path``, where:
+
+- ``scope/name`` is the qualified name of a CodeQL pack.
+- ``range`` is a `semver range <https://docs.npmjs.com/cli/v6/using-npm/semver#ranges>`_.
+- ``path`` is a file system path to a single query, a directory containing queries, or a query suite file.
+
+If a ``scope/name`` is specified, the ``range`` and ``path`` are
+optional. A missing ``range`` implies the latest version of the
+specified pack. A missing ``path`` implies the default query suite
+of the specified pack.
+
+The ``path`` can be one of a ``*.ql`` query file, a directory
+containing one or more queries, or a ``.qls`` query suite file. If
+there is no pack name specified, then a ``path`` must be provided,
+and will be interpreted relative to the current working directory
+of the current process.
+
+If a ``scope/name`` and ``path`` are specified, then the ``path`` cannot
+be absolute. It is considered relative to the root of the CodeQL
+pack.
+
+The relevant commands are:
+
+* `codeql database analyze <../manual/database-analyze>`__.
+* `codeql database run-queries <../manual/database-run-queries>`__.
+* `codeql execute queries <../manual/execute-queries>`__.
+* `codeql resolve queries <../manual/resolve-queries>`__.
+
+For example::
+
+    # Analyze a database using all queries in the experimental/Security folder within the codeql/cpp-queries
+    # CodeQL query pack.
+    codeql database analyze --format=sarif-latest --output=results <db> \
+        codeql/cpp-queries:experimental/Security
+
+    # Analyse using only the RedundantNullCheckParam.ql query in the codeql/cpp-queries CodeQL query pack.
+    codeql database analyze --format=sarif-latest --output=results <db> \
+        'codeql/cpp-queries:experimental/Likely Bugs/RedundantNullCheckParam.ql'
+
+    # Analyse using the cpp-security-and-quality.qls query suite in the codeql/cpp-queries CodeQL query pack.
+    codeql database analyze --format=sarif-latest --output=results <db> \
+        'codeql/cpp-queries:codeql-suites/cpp-security-and-quality.qls'
+
+    # Analyse using the cpp-security-and-quality.qls query suite from a version of the codeql/cpp-queries pack
+    # that is >= 0.0.3 and < 0.1.0 (the highest compatible version will be chosen).
+    # All valid semver ranges are allowed. See https://docs.npmjs.com/cli/v6/using-npm/semver#ranges
+    codeql database analyze --format=sarif-latest --output=results <db> \
+       'codeql/cpp-queries@~0.0.3:codeql-suites/cpp-security-and-quality.qls'
+
 For more information about CodeQL packs, see :doc:`About CodeQL Packs <about-codeql-packs>`.
 
 Running query suites
