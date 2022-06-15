@@ -72,3 +72,21 @@ The ``analyze`` command will run the default suite of any specified CodeQL packs
 ::
 
    codeql <database> analyze <scope>/<pack> <scope>/<other-pack>
+
+Managing packs on GitHub Enterprise Server
+------------------------------------------
+
+By default, CodeQL will download packs from and publish packs to the GitHub.com Container registry.
+You can manage packs on GitHub Enterprise Server 3.6 and later by creating a ``qlconfig.yml`` file to tell CodeQL which Container registry to use for each pack.
+Create the ``~/.codeql/qlconfig.yml`` file using your preferred text editor, and add entries to specify which registry to use for each pack name pattern.
+For example, the following ``qlconfig.yml`` file associates all packs with the Container registry for the GitHub Enterprise Server at ``GHE_HOSTNAME``, except packs matching ``codeql/*``, which are associated with the GitHub.com Container registry:
+
+.. code-block:: yaml
+
+   registries:
+   - packages: '*'
+   url: https://containers.GHE_HOSTNAME/v2/
+   - packages: 'codeql/*'
+   url: https://ghcr.io/v2/
+
+You can now use ``codeql pack publish``, ``codeql pack download``, and ``codeql database analyze`` to manage packs on GitHub Enterprise Server.
