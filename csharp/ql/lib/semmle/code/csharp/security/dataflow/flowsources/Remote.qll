@@ -179,7 +179,12 @@ abstract class AspNetCoreRemoteFlowSource extends RemoteFlowSource { }
  */
 private class AspNetCoreRemoteFlowSourceMember extends TaintTracking::TaintedMember {
   AspNetCoreRemoteFlowSourceMember() {
-    this.getDeclaringType() = any(AspNetCoreRemoteFlowSource source).getType()
+    this.getDeclaringType() = any(AspNetCoreRemoteFlowSource source).getType() and
+    this.isPublic() and
+    not this.isStatic() and
+    exists(Property p | p = this |
+      p.isAutoImplemented() and p.getGetter().isPublic() and p.getSetter().isPublic()
+    )
   }
 }
 
