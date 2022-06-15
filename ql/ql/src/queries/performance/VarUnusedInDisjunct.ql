@@ -17,8 +17,16 @@ import ql
  */
 pragma[noinline]
 predicate alwaysBindsVar(VarDef var, AstNode node) {
-  // base case
-  node.(VarAccess).getDeclaration() = var and
+  (
+    // base case
+    node.(VarAccess).getDeclaration() = var
+    or
+    exists(Class clz |
+      node.(FieldAccess).getDeclaration().getVarDecl() = var and
+      node.(FieldAccess).getDeclaration() = clz.getAField() and // <- ensuring that the field is not inherited from a super class
+      node.getEnclosingPredicate() = clz.getCharPred() // <- in non-charpred, the fields are implicitly bound by their relation to `this`.
+    )
+  ) and
   not isSmallType(var.getType()) // <- early pruning
   or
   // recursive cases
@@ -205,8 +213,9 @@ predicate badDisjunction(EffectiveDisjunction disj, VarDef var) {
   not isTinyAssignment(disj.getAnOperand())
 }
 
-from EffectiveDisjunction disj, VarDef var
+from EffectiveDisjunction disj, VarDef var, string type
 where
   badDisjunction(disj, var) and
-  not badDisjunction(disj.getParent(), var) // avoid duplicate reporting of the same error
-select disj, "The variable " + var.getName() + " is only used in one side of disjunct."
+  not badDisjunction(disj.getParent(), var) and // avoid duplicate reporting of the same error
+  if var.getParent() instanceof FieldDecl then type = "field" else type = "variable"
+select disj, "The $@ is only used in one side of disjunct.", var, type + " " + var.getName()
