@@ -18,39 +18,26 @@ import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 
 class DecompressionApiUse extends DataFlow::Node {
-
-    // this should find the first argument of Zlib::Inflate.inflate or Zip::File.extract
-    DecompressionApiUse() {
-        this = API::getTopLevelMember("Zlib").getMember("Inflate").getAMethodCall("inflate").getArgument(0) or
-        this = API::getTopLevelMember("Zip").getMember("Entry").getAMethodCall("extract").getArgument(0)
-    }
-
+  // this should find the first argument of Zlib::Inflate.inflate or Zip::File.extract
+  DecompressionApiUse() {
+    this =
+      API::getTopLevelMember("Zlib").getMember("Inflate").getAMethodCall("inflate").getArgument(0)
+  }
 }
 
 class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "DecompressionApiUse" }
-  
-    // this predicate will be used to contstrain our query to find instances where only remote user-controlled data flows to the sink
-    override predicate isSource(DataFlow::Node source) {
-        source instanceof RemoteFlowSource
-    }
+  Configuration() { this = "DecompressionApiUse" }
 
-    // our Decompression APIs defined above will the the sinks we use for this query
-    override predicate isSink(DataFlow::Node sink) {
-        sink instanceof DecompressionApiUse
-    }
+  // this predicate will be used to contstrain our query to find instances where only remote user-controlled data flows to the sink
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-    // I think it would also be helpful to reduce false positives by adding a simple sanitizer config in the event
-    // that the code first checks the file name against a string literal or array of string literals before calling
-    // the decompression API
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-        guard instanceof StringConstCompare or
-        guard instanceof StringConstArrayInclusionCall
-    }
-  }
-  
+  // our Decompression APIs defined above will the the sinks we use for this query
+  override predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionApiUse }
+}
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where
-  config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This call to $@ is unsafe because user-controlled data is used to set the object being decompressed, which could lead to a denial of service attack or malicious code extracted from an unknown source.", sink.getNode().asExpr().getExpr().getParent().toString(), sink.getNode().asExpr().getExpr().getParent().toString()
+where config.hasFlowPath(source, sink)
+select sink.getNode(), source, sink,
+  "This call to $@ is unsafe because user-controlled data is used to set the object being decompressed, which could lead to a denial of service attack or malicious code extracted from an unknown source.",
+  sink.getNode().asExpr().getExpr().getParent(),
+  sink.getNode().asExpr().getExpr().getParent().toString()

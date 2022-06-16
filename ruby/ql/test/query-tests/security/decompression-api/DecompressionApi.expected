@@ -1,12 +1,12 @@
 edges
-| decompression_api.rb:3:31:3:36 | call to params :  | decompression_api.rb:3:31:3:44 | ...[...] |
-| decompression_api.rb:13:44:13:49 | call to params :  | decompression_api.rb:13:44:13:57 | ...[...] |
+| decompression_api.rb:3:31:3:36 | call to params :  | decompression_api.rb:3:31:3:43 | ...[...] |
+| decompression_api.rb:13:44:13:49 | call to params :  | decompression_api.rb:13:44:13:56 | ...[...] |
 nodes
 | decompression_api.rb:3:31:3:36 | call to params :  | semmle.label | call to params :  |
-| decompression_api.rb:3:31:3:44 | ...[...] | semmle.label | ...[...] |
+| decompression_api.rb:3:31:3:43 | ...[...] | semmle.label | ...[...] |
 | decompression_api.rb:13:44:13:49 | call to params :  | semmle.label | call to params :  |
-| decompression_api.rb:13:44:13:57 | ...[...] | semmle.label | ...[...] |
+| decompression_api.rb:13:44:13:56 | ...[...] | semmle.label | ...[...] |
 subpaths
 #select
-| decompression_api.rb:3:31:3:44 | ...[...] | decompression_api.rb:3:31:3:36 | call to params :  | decompression_api.rb:3:31:3:44 | ...[...] | This call to $@ is unsafe because user-controlled data is used to set the object being decompressed, which could lead to a denial of service attack or malicious code extracted from an unknown source. | call to inflate | call to inflate |
-| decompression_api.rb:13:44:13:57 | ...[...] | decompression_api.rb:13:44:13:49 | call to params :  | decompression_api.rb:13:44:13:57 | ...[...] | This call to $@ is unsafe because user-controlled data is used to set the object being decompressed, which could lead to a denial of service attack or malicious code extracted from an unknown source. | call to inflate | call to inflate |
+| decompression_api.rb:3:31:3:43 | ...[...] | decompression_api.rb:3:31:3:36 | call to params :  | decompression_api.rb:3:31:3:43 | ...[...] | This call to $@ is unsafe because user-controlled data is used to set the object being decompressed, which could lead to a denial of service attack or malicious code extracted from an unknown source. | decompression_api.rb:3:9:3:44 | call to inflate | call to inflate |
+| decompression_api.rb:13:44:13:56 | ...[...] | decompression_api.rb:13:44:13:49 | call to params :  | decompression_api.rb:13:44:13:56 | ...[...] | This call to $@ is unsafe because user-controlled data is used to set the object being decompressed, which could lead to a denial of service attack or malicious code extracted from an unknown source. | decompression_api.rb:13:9:13:57 | call to inflate | call to inflate |
