@@ -10,6 +10,11 @@ class TestContoller < ActionController::Base
     unzip params[:file]
   end
 
+  # this is vulnerable
+  def create_new_zip
+    zip params[:filename], files
+  end
+
   # these are not vulnerable because of the string compare sanitizer
   def safe_upload_string_compare
     filename = params[:filename]
@@ -63,6 +68,14 @@ class TestContoller < ActionController::Base
     Zip::File.open(file) do |zip_file|
       zip_file.each do |entry|
         entry.extract
+      end
+    end
+  end
+
+  def zip(filename, files = [])
+    Zip::File.new(filename) do |zf|
+      files.each do |f|
+        zf.add f
       end
     end
   end
