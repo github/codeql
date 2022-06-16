@@ -70,10 +70,16 @@ private module Cached {
       definesPredicate(m, pc.getPredicateName(), pc.getNumberOfArguments(), p, public)
     )
     or
-    exists(Module mod, PredicateExpr sig |
-      mod.hasParameter(_, pc.getPredicateName(), sig) and
-      p = sig.getResolvedPredicate() and // <- this is a `signature predicate`, but that's fine.
-      sig.getArity() = pc.getNumberOfArguments() // TODO: resolve all instantiations?
+    exists(Module mod, PredicateExpr sig, int i |
+      mod.hasParameter(i, pc.getPredicateName(), sig) and
+      sig.getArity() = pc.getNumberOfArguments()
+    |
+      p = sig.getResolvedPredicate() // <- this is a `signature predicate`, but that's fine.
+      or
+      exists(ModuleExpr inst, SignatureExpr arg | inst.getResolvedModule().asModule() = mod |
+        arg = inst.getArgument(i) and
+        p = arg.asPredicate().getResolvedPredicate()
+      )
     )
   }
 
