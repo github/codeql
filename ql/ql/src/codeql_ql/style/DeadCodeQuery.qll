@@ -167,6 +167,9 @@ private AstNode aliveStep(AstNode prev) {
   or
   // a module parameter is alive is the module is alive
   prev.(Module).hasParameter(_, _, result)
+  or
+  // the implements of a module
+  result = prev.(Module).getImplements(_)
 }
 
 private AstNode deprecated() {
