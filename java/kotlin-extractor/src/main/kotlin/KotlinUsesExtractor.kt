@@ -1,21 +1,28 @@
 package com.github.codeql
 
 import com.github.codeql.utils.*
+import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
 import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.allOverridden
+import org.jetbrains.kotlin.backend.common.ir.isFinalClass
+import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
 import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.descriptors.*
+import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.types.impl.*
 import org.jetbrains.kotlin.ir.util.*
+import org.jetbrains.kotlin.load.java.BuiltinMethodsWithSpecialGenericSignature
 import org.jetbrains.kotlin.load.java.JvmAbi
+import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
+import org.jetbrains.kotlin.load.java.structure.*
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
@@ -31,6 +38,17 @@ open class KotlinUsesExtractor(
     val pluginContext: IrPluginContext,
     val globalExtensionState: KotlinExtractorGlobalState
 ) {
+
+    val javaLangObject by lazy {
+        val result = pluginContext.referenceClass(FqName("java.lang.Object"))?.owner
+        result?.let { extractExternalClassLater(it) }
+        result
+    }
+
+    val javaLangObjectType by lazy {
+        javaLangObject?.typeWith()
+    }
+
     fun usePackage(pkg: String): Label<out DbPackage> {
         return extractPackage(pkg)
     }
@@ -65,7 +83,25 @@ open class KotlinUsesExtractor(
         makeDescription(StandardNames.FqNames.map, "<get-values>") to "values",
         makeDescription(FqName("java.util.Map"), "<get-values>") to "values",
         makeDescription(StandardNames.FqNames.map, "<get-entries>") to "entrySet",
-        makeDescription(FqName("java.util.Map"), "<get-entries>") to "entrySet"
+        makeDescription(FqName("java.util.Map"), "<get-entries>") to "entrySet",
+        makeDescription(StandardNames.FqNames.mutableList, "removeAt") to "remove",
+        makeDescription(FqName("java.util.List"), "removeAt") to "remove",
+        makeDescription(StandardNames.FqNames._enum.toSafe(), "<get-ordinal>") to "ordinal",
+        makeDescription(FqName("java.lang.Enum"), "<get-ordinal>") to "ordinal",
+        makeDescription(StandardNames.FqNames._enum.toSafe(), "<get-name>") to "name",
+        makeDescription(FqName("java.lang.Enum"), "<get-name>") to "name",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toByte") to "byteValue",
+        makeDescription(FqName("java.lang.Number"), "toByte") to "byteValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toShort") to "shortValue",
+        makeDescription(FqName("java.lang.Number"), "toShort") to "shortValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toInt") to "intValue",
+        makeDescription(FqName("java.lang.Number"), "toInt") to "intValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toLong") to "longValue",
+        makeDescription(FqName("java.lang.Number"), "toLong") to "longValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toFloat") to "floatValue",
+        makeDescription(FqName("java.lang.Number"), "toFloat") to "floatValue",
+        makeDescription(StandardNames.FqNames.number.toSafe(), "toDouble") to "doubleValue",
+        makeDescription(FqName("java.lang.Number"), "toDouble") to "doubleValue",
     )
 
     private val specialFunctionShortNames = specialFunctions.keys.map { it.functionName }.toSet()
@@ -73,7 +109,7 @@ open class KotlinUsesExtractor(
     fun getSpecialJvmName(f: IrFunction): String? {
         if (specialFunctionShortNames.contains(f.name) && f is IrSimpleFunction) {
             f.allOverridden(true).forEach { overriddenFunc ->
-                overriddenFunc.parentAsClass.fqNameWhenAvailable?.let { parentFqName ->
+                overriddenFunc.parentClassOrNull?.fqNameWhenAvailable?.let { parentFqName ->
                     specialFunctions[MethodKey(parentFqName, f.name)]?.let {
                         return it
                     }
@@ -398,40 +434,81 @@ open class KotlinUsesExtractor(
         } ?: f
     }
 
+    private fun tryReplaceType(cBeforeReplacement: IrClass, argsIncludingOuterClassesBeforeReplacement: List<IrTypeArgument>?): Pair<IrClass, List<IrTypeArgument>?> {
+        val c = tryReplaceAndroidSyntheticClass(cBeforeReplacement)
+        val p = tryReplaceParcelizeRawType(c)
+        return Pair(
+            p?.first ?: c,
+            p?.second ?: argsIncludingOuterClassesBeforeReplacement
+        )
+    }
+
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun addClassLabel(cBeforeReplacement: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
-        val c = tryReplaceAndroidSyntheticClass(cBeforeReplacement)
-        val classLabelResult = getClassLabel(c, argsIncludingOuterClasses)
+    private fun addClassLabel(cBeforeReplacement: IrClass, argsIncludingOuterClassesBeforeReplacement: List<IrTypeArgument>?, inReceiverContext: Boolean = false): TypeResult<DbClassorinterface> {
+        val replaced = tryReplaceType(cBeforeReplacement, argsIncludingOuterClassesBeforeReplacement)
+        val replacedClass = replaced.first
+        val replacedArgsIncludingOuterClasses = replaced.second
+
+        val classLabelResult = getClassLabel(replacedClass, replacedArgsIncludingOuterClasses)
 
         var instanceSeenBefore = true
 
-        val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classLabelResult.classLabel, {
+        val classLabel : Label<out DbClassorinterface> = tw.getLabelFor(classLabelResult.classLabel) {
             instanceSeenBefore = false
 
-            extractClassLaterIfExternal(c)
-        })
+            extractClassLaterIfExternal(replacedClass)
+        }
 
-        if (argsIncludingOuterClasses == null || argsIncludingOuterClasses.isNotEmpty()) {
+        if (replacedArgsIncludingOuterClasses == null || replacedArgsIncludingOuterClasses.isNotEmpty()) {
             // If this is a generic type instantiation or a raw type then it has no
             // source entity, so we need to extract it here
-            val extractorWithCSource by lazy { this.withFileOfClass(c) }
+            val extractorWithCSource by lazy { this.withFileOfClass(replacedClass) }
 
             if (!instanceSeenBefore) {
-                extractorWithCSource.extractClassInstance(c, argsIncludingOuterClasses)
+                extractorWithCSource.extractClassInstance(replacedClass, replacedArgsIncludingOuterClasses)
             }
 
             if (inReceiverContext && tw.lm.genericSpecialisationsExtracted.add(classLabelResult.classLabel)) {
-                val supertypeMode = if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses)
-                extractorWithCSource.extractClassSupertypes(c, classLabel, supertypeMode, true)
-                extractorWithCSource.extractNonPrivateMemberPrototypes(c, argsIncludingOuterClasses, classLabel)
+                val supertypeMode = if (replacedArgsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(replacedArgsIncludingOuterClasses)
+                extractorWithCSource.extractClassSupertypes(replacedClass, classLabel, supertypeMode, true)
+                extractorWithCSource.extractNonPrivateMemberPrototypes(replacedClass, replacedArgsIncludingOuterClasses, classLabel)
             }
         }
 
         return TypeResult(
             classLabel,
-            c.fqNameWhenAvailable?.asString(),
+            replacedClass.fqNameWhenAvailable?.asString(),
             classLabelResult.shortName)
+    }
+
+    private fun tryReplaceParcelizeRawType(c: IrClass): Pair<IrClass, List<IrTypeArgument>?>? {
+        if (c.superTypes.isNotEmpty() ||
+            c.origin != IrDeclarationOrigin.DEFINED ||
+            c.hasEqualFqName(FqName("java.lang.Object"))) {
+            return null
+        }
+
+        fun tryGetPair(arity: Int): Pair<IrClass, List<IrTypeArgument>?>? {
+            val replaced = pluginContext.referenceClass(c.fqNameWhenAvailable!!)?.owner ?: return null
+            return Pair(replaced, List(arity) { makeTypeProjection(pluginContext.irBuiltIns.anyNType, Variance.INVARIANT) })
+        }
+
+        // The list of types handled here match https://github.com/JetBrains/kotlin/blob/d7c7d1efd2c0983c13b175e9e4b1cda979521159/plugins/parcelize/parcelize-compiler/src/org/jetbrains/kotlin/parcelize/ir/AndroidSymbols.kt
+        // Specifically, types are added for generic types created in AndroidSymbols.kt.
+        // This replacement is from a raw type to its matching parameterized type with `Object` type arguments.
+        return when (c.fqNameWhenAvailable?.asString()) {
+            "java.util.ArrayList" -> tryGetPair(1)
+            "java.util.LinkedHashMap" -> tryGetPair(2)
+            "java.util.LinkedHashSet" -> tryGetPair(1)
+            "java.util.List" -> tryGetPair(1)
+            "java.util.TreeMap" -> tryGetPair(2)
+            "java.util.TreeSet" -> tryGetPair(1)
+
+            "java.lang.Class" -> tryGetPair(1)
+
+            else -> null
+        }
     }
 
     fun useAnonymousClass(c: IrClass) =
@@ -702,7 +779,17 @@ open class KotlinUsesExtractor(
                 } else {
                     extractFileClass(dp)
                 }
-            is IrClass -> if (classTypeArguments != null && !dp.isAnonymousObject) useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id else useClassSource(dp)
+            is IrClass ->
+                if (classTypeArguments != null && !dp.isAnonymousObject) {
+                    useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id
+                } else {
+                    val replacedType = tryReplaceParcelizeRawType(dp)
+                    if (replacedType == null) {
+                        useClassSource(dp)
+                    } else {
+                        useClassInstance(replacedType.first, replacedType.second, inReceiverContext).typeResult.id
+                    }
+                }
             is IrFunction -> useFunction(dp)
             is IrExternalPackageFragment -> {
                 // TODO
@@ -789,6 +876,110 @@ open class KotlinUsesExtractor(
             else -> null
         }
 
+    val javaUtilCollection by lazy {
+        val result = pluginContext.referenceClass(FqName("java.util.Collection"))?.owner
+        result?.let { extractExternalClassLater(it) }
+        result
+    }
+
+    val wildcardCollectionType by lazy {
+        javaUtilCollection?.let {
+            it.symbol.typeWithArguments(listOf(IrStarProjectionImpl))
+        }
+    }
+
+    private fun makeCovariant(t: IrTypeArgument) =
+        t.typeOrNull?.let { makeTypeProjection(it, Variance.OUT_VARIANCE) } ?: t
+
+    private fun makeArgumentsCovariant(t: IrType) = (t as? IrSimpleType)?.let {
+        t.toBuilder().also { b -> b.arguments = b.arguments.map(this::makeCovariant) }.buildSimpleType()
+    } ?: t
+
+    fun eraseCollectionsMethodParameterType(t: IrType, collectionsMethodName: String, paramIdx: Int) =
+        when(collectionsMethodName) {
+            "contains", "remove", "containsKey", "containsValue", "get", "indexOf", "lastIndexOf" -> javaLangObjectType
+            "getOrDefault" -> if (paramIdx == 0) javaLangObjectType else null
+            "containsAll", "removeAll", "retainAll" -> wildcardCollectionType
+            // Kotlin defines these like addAll(Collection<E>); Java uses addAll(Collection<? extends E>)
+            "putAll", "addAll" -> makeArgumentsCovariant(t)
+            else -> null
+        } ?: t
+
+    private fun overridesFunctionDefinedOn(f: IrFunction, packageName: String, className: String) =
+        (f as? IrSimpleFunction)?.let {
+            it.overriddenSymbols.any { overridden ->
+                overridden.owner.parentClassOrNull?.let { defnClass ->
+                    defnClass.name.asString() == className &&
+                    defnClass.packageFqName?.asString() == packageName
+                } ?: false
+            }
+        } ?: false
+
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
+    fun overridesCollectionsMethodWithAlteredParameterTypes(f: IrFunction) =
+        BuiltinMethodsWithSpecialGenericSignature.getOverriddenBuiltinFunctionWithErasedValueParametersInJava(f.descriptor) != null ||
+                (f.name.asString() == "putAll" && overridesFunctionDefinedOn(f, "kotlin.collections", "MutableMap")) ||
+                (f.name.asString() == "addAll" && overridesFunctionDefinedOn(f, "kotlin.collections", "MutableCollection")) ||
+                (f.name.asString() == "addAll" && overridesFunctionDefinedOn(f, "kotlin.collections", "MutableList"))
+
+
+    private val jvmWildcardAnnotation = FqName("kotlin.jvm.JvmWildcard")
+    private val jvmWildcardSuppressionAnnotaton = FqName("kotlin.jvm.JvmSuppressWildcards")
+
+    private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean) =
+        when {
+            t.hasAnnotation(jvmWildcardAnnotation) -> true
+            !addByDefault -> false
+            t.hasAnnotation(jvmWildcardSuppressionAnnotaton) -> false
+            v == Variance.IN_VARIANCE -> !(t.isNullableAny() || t.isAny())
+            v == Variance.OUT_VARIANCE -> ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
+            else -> false
+        }
+
+    private fun addJavaLoweringArgumentWildcards(p: IrTypeParameter, t: IrTypeArgument, addByDefault: Boolean, javaType: JavaType?): IrTypeArgument =
+        (t as? IrTypeProjection)?.let {
+            val newBase = addJavaLoweringWildcards(it.type, addByDefault, javaType)
+            val newVariance =
+                if (it.variance == Variance.INVARIANT &&
+                    p.variance != Variance.INVARIANT &&
+                    // The next line forbids inferring a wildcard type when we have a corresponding Java type with conflicting variance.
+                    // For example, Java might declare f(Comparable<CharSequence> cs), in which case we shouldn't add a `? super ...`
+                    // wildcard. Note if javaType is unknown (e.g. this is a Kotlin source element), we assume wildcards should be added.
+                    (javaType?.let { jt -> jt is JavaWildcardType && jt.isExtends == (p.variance == Variance.OUT_VARIANCE) } != false) &&
+                    wildcardAdditionAllowed(p.variance, it.type, addByDefault))
+                    p.variance
+                else
+                    it.variance
+            if (newBase !== it.type || newVariance != it.variance)
+                makeTypeProjection(newBase, newVariance)
+            else
+                null
+        } ?: t
+
+    fun getJavaTypeArgument(jt: JavaType, idx: Int) =
+        when(jt) {
+            is JavaClassifierType -> jt.typeArguments.getOrNull(idx)
+            is JavaArrayType -> if (idx == 0) jt.componentType else null
+            else -> null
+        }
+
+    fun addJavaLoweringWildcards(t: IrType, addByDefault: Boolean, javaType: JavaType?): IrType =
+        (t as? IrSimpleType)?.let {
+            val typeParams = it.classOrNull?.owner?.typeParameters ?: return t
+            val newArgs = typeParams.zip(it.arguments).mapIndexed { idx, pair ->
+                addJavaLoweringArgumentWildcards(
+                    pair.first,
+                    pair.second,
+                    addByDefault,
+                    javaType?.let { jt -> getJavaTypeArgument(jt, idx) }
+                )
+            }
+            return if (newArgs.zip(it.arguments).all { pair -> pair.first === pair.second })
+                t
+            else
+                it.toBuilder().also { builder -> builder.arguments = newArgs }.buildSimpleType()
+        } ?: t
+
     /*
      * This is the normal getFunctionLabel function to use. If you want
      * to refer to the function in its source class then
@@ -810,8 +1001,21 @@ open class KotlinUsesExtractor(
      * `java.lang.Throwable`, which isn't what we want. So we have to
      * allow it to be passed in.
     */
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
     fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        getFunctionLabel(f.parent, maybeParentId, getFunctionShortName(f).nameInDB, f.valueParameters, f.returnType, f.extensionReceiverParameter, getFunctionTypeParameters(f), classTypeArgsIncludingOuterClasses)
+        getFunctionLabel(
+            f.parent,
+            maybeParentId,
+            getFunctionShortName(f).nameInDB,
+            f.valueParameters,
+            getAdjustedReturnType(f),
+            f.extensionReceiverParameter,
+            getFunctionTypeParameters(f),
+            classTypeArgsIncludingOuterClasses,
+            overridesCollectionsMethodWithAlteredParameterTypes(f),
+            getJavaCallable(f),
+            !hasWildcardSuppressionAnnotation(f)
+        )
 
     /*
      * This function actually generates the label for a function.
@@ -837,6 +1041,14 @@ open class KotlinUsesExtractor(
         functionTypeParameters: List<IrTypeParameter>,
         // The type arguments of enclosing classes of the function.
         classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
+        // If true, this method implements a Java Collections interface (Collection, Map or List) and may need
+        // parameter erasure to match the way this class will appear to an external consumer of the .class file.
+        overridesCollectionsMethod: Boolean,
+        // The Java signature of this callable, if known.
+        javaSignature: JavaMember?,
+        // If true, Java wildcards implied by Kotlin type parameter variance should be added by default to this function's value parameters' types.
+        // (Return-type wildcard addition is always off by default)
+        addParameterWildcardsByDefault: Boolean,
         // The prefix used in the label. "callable", unless a property label is created, then it's "property".
         prefix: String = "callable"
     ): String {
@@ -855,19 +1067,28 @@ open class KotlinUsesExtractor(
                 enclosingClass?.let { notNullClass -> makeTypeGenericSubstitutionMap(notNullClass, notNullArgs) }
             }
         }
-        val getIdForFunctionLabel = { it: IrValueParameter ->
-            // Mimic the Java extractor's behaviour: functions with type parameters are named for their erased types;
+        val getIdForFunctionLabel = { it: IndexedValue<IrValueParameter> ->
+            // Kotlin rewrites certain Java collections types adding additional generic constraints-- for example,
+            // Collection.remove(Object) because Collection.remove(Collection::E) in the Kotlin universe.
+            // If this has happened, erase the type again to get the correct Java signature.
+            val maybeAmendedForCollections = if (overridesCollectionsMethod) eraseCollectionsMethodParameterType(it.value.type, name, it.index) else it.value.type
+            // Add any wildcard types that the Kotlin compiler would add in the Java lowering of this function:
+            val withAddedWildcards = addJavaLoweringWildcards(maybeAmendedForCollections, addParameterWildcardsByDefault, javaSignature?.let { sig -> getJavaValueParameterType(sig, it.index) })
+            // Now substitute any class type parameters in:
+            val maybeSubbed = withAddedWildcards.substituteTypeAndArguments(substitutionMap, TypeContext.OTHER, pluginContext)
+            // Finally, mimic the Java extractor's behaviour by naming functions with type parameters for their erased types;
             // those without type parameters are named for the generic type.
-            val maybeSubbed = it.type.substituteTypeAndArguments(substitutionMap, TypeContext.OTHER, pluginContext)
             val maybeErased = if (functionTypeParameters.isEmpty()) maybeSubbed else erase(maybeSubbed)
             "{${useType(maybeErased).javaResult.id}}"
         }
-        val paramTypeIds = allParams.joinToString(separator = ",", transform = getIdForFunctionLabel)
+        val paramTypeIds = allParams.withIndex().joinToString(separator = ",", transform = getIdForFunctionLabel)
         val labelReturnType =
             if (name == "<init>")
                 pluginContext.irBuiltIns.unitType
             else
                 erase(returnType.substituteTypeAndArguments(substitutionMap, TypeContext.RETURN, pluginContext))
+        // Note that `addJavaLoweringWildcards` is not required here because the return type used to form the function
+        // label is always erased.
         val returnTypeId = useType(labelReturnType, TypeContext.RETURN).javaResult.id
         // This suffix is added to generic methods (and constructors) to match the Java extractor's behaviour.
         // Comments in that extractor indicates it didn't want the label of the callable to clash with the raw
@@ -876,6 +1097,41 @@ open class KotlinUsesExtractor(
         val typeArgSuffix = if (functionTypeParameters.isNotEmpty() && classTypeArgsIncludingOuterClasses.isNullOrEmpty()) "<${functionTypeParameters.size}>" else "";
         return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
     }
+
+    fun getAdjustedReturnType(f: IrFunction) : IrType {
+        // The return type of `java.util.concurrent.ConcurrentHashMap<K,V>.keySet/0` is defined as `Set<K>` in the stubs inside the Android SDK.
+        // This does not match the Java SDK return type: `ConcurrentHashMap.KeySetView<K,V>`, so it's adjusted here.
+        // This is a deliberate change in the Android SDK: https://github.com/AndroidSDKSources/android-sdk-sources-for-api-level-31/blob/2c56b25f619575bea12f9c5520ed2259620084ac/java/util/concurrent/ConcurrentHashMap.java#L1244-L1249
+        // The annotation on the source is not visible in the android.jar, so we can't make the change based on that.
+        // TODO: there are other instances of `dalvik.annotation.codegen.CovariantReturnType` in the Android SDK, we should handle those too if they cause DB inconsistencies
+        val parentClass = f.parentClassOrNull
+        if (parentClass == null ||
+            parentClass.fqNameWhenAvailable?.asString() != "java.util.concurrent.ConcurrentHashMap" ||
+            getFunctionShortName(f).nameInDB != "keySet" ||
+            f.valueParameters.isNotEmpty() ||
+            f.returnType.classFqName?.asString() != "kotlin.collections.MutableSet") {
+            return f.returnType
+        }
+
+        val otherKeySet = parentClass.declarations.filterIsInstance<IrFunction>().find { it.name.asString() == "keySet" && it.valueParameters.size == 1 }
+            ?: return f.returnType
+
+        return otherKeySet.returnType.codeQlWithHasQuestionMark(false)
+    }
+
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
+    fun getJavaCallable(f: IrFunction) = (f.descriptor.source as? JavaSourceElement)?.javaElement as? JavaMember
+
+    fun getJavaValueParameterType(m: JavaMember, idx: Int) = when(m) {
+        is JavaMethod -> m.valueParameters[idx].type
+        is JavaConstructor -> m.valueParameters[idx].type
+        else -> null
+    }
+
+    fun hasWildcardSuppressionAnnotation(d: IrDeclaration) =
+        d.hasAnnotation(jvmWildcardSuppressionAnnotaton) ||
+        // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
+        d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotaton) == true }
 
     protected fun IrFunction.isLocalFunction(): Boolean {
         return this.visibility == DescriptorVisibilities.LOCAL
@@ -1227,7 +1483,7 @@ open class KotlinUsesExtractor(
             if (t.isArray() || t.isNullableArray()) {
                 val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
                 val erasedElementType = erase(elementType)
-                return withQuestionMark((classifier as IrClassSymbol).typeWith(erasedElementType), t.hasQuestionMark)
+                return (classifier as IrClassSymbol).typeWith(erasedElementType).codeQlWithHasQuestionMark(t.hasQuestionMark)
             }
 
             if (owner is IrClass) {
@@ -1269,9 +1525,34 @@ open class KotlinUsesExtractor(
     fun useValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>?): Label<out DbParam> =
         tw.getLabelFor(getValueParameterLabel(vp, parent))
 
+    fun isDirectlyExposedCompanionObjectField(f: IrField) =
+        f.hasAnnotation(FqName("kotlin.jvm.JvmField")) ||
+        f.correspondingPropertySymbol?.owner?.let {
+            it.isConst || it.isLateinit
+        } ?: false
+
+    fun getFieldParent(f: IrField) =
+        f.parentClassOrNull?.let {
+            if (it.isCompanion && isDirectlyExposedCompanionObjectField(f))
+                it.parent
+            else
+                null
+        } ?: f.parent
+
+    // Gets a field's corresponding property's extension receiver type, if any
+    fun getExtensionReceiverType(f: IrField) =
+        f.correspondingPropertySymbol?.owner?.let {
+            (it.getter ?: it.setter)?.extensionReceiverParameter?.type
+        }
+
     fun getFieldLabel(f: IrField): String {
-        val parentId = useDeclarationParent(f.parent, false)
-        return "@\"field;{$parentId};${f.name.asString()}\""
+        val parentId = useDeclarationParent(getFieldParent(f), false)
+        // Distinguish backing fields of properties based on their extension receiver type;
+        // otherwise two extension properties declared in the same enclosing context will get
+        // clashing trap labels. These are always private, so we can just make up a label without
+        // worrying about their names as seen from Java.
+        val extensionPropertyDiscriminator = getExtensionReceiverType(f)?.let { "extension;${useType(it)}" } ?: ""
+        return "@\"field;{$parentId};${extensionPropertyDiscriminator}${f.name.asString()}\""
     }
 
     fun useField(f: IrField): Label<out DbField> =
@@ -1299,7 +1580,7 @@ open class KotlinUsesExtractor(
             val returnType = getter?.returnType ?: setter?.valueParameters?.singleOrNull()?.type ?: pluginContext.irBuiltIns.unitType
             val typeParams = getFunctionTypeParameters(func)
 
-            getFunctionLabel(p.parent, parentId, p.name.asString(), listOf(), returnType, ext, typeParams, classTypeArgsIncludingOuterClasses, "property")
+            getFunctionLabel(p.parent, parentId, p.name.asString(), listOf(), returnType, ext, typeParams, classTypeArgsIncludingOuterClasses, overridesCollectionsMethod = false, javaSignature = null, addParameterWildcardsByDefault = false, prefix = "property")
         }
     }
 
@@ -1325,7 +1606,5 @@ open class KotlinUsesExtractor(
     fun useVariable(v: IrVariable): Label<out DbLocalvar> {
         return tw.getVariableLabelFor<DbLocalvar>(v)
     }
-
-    fun withQuestionMark(t: IrType, hasQuestionMark: Boolean) = if(hasQuestionMark) t.makeNullable() else t.makeNotNull()
 
 }

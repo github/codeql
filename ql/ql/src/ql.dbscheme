@@ -95,9 +95,9 @@ ql_annotation_def(
   int name: @ql_token_annot_name ref
 );
 
-ql_arityless_predicate_expr_child(
+ql_arityless_predicate_expr_qualifier(
   unique int ql_arityless_predicate_expr: @ql_arityless_predicate_expr ref,
-  unique int child: @ql_module_expr ref
+  unique int qualifier: @ql_module_expr ref
 );
 
 ql_arityless_predicate_expr_def(
@@ -601,6 +601,20 @@ ql_member_predicate_def(
   int return_type: @ql_memberPredicate_returnType_type ref
 );
 
+#keyset[ql_module, index]
+ql_module_implements(
+  int ql_module: @ql_module ref,
+  int index: int ref,
+  unique int implements: @ql_signature_expr ref
+);
+
+#keyset[ql_module, index]
+ql_module_parameter(
+  int ql_module: @ql_module ref,
+  int index: int ref,
+  unique int parameter: @ql_module_param ref
+);
+
 @ql_module_child_type = @ql_module_alias_body | @ql_module_member
 
 #keyset[ql_module, index]
@@ -620,16 +634,29 @@ ql_module_alias_body_def(
   int child: @ql_module_expr ref
 );
 
+@ql_moduleExpr_name_type = @ql_module_instantiation | @ql_token_simple_id
+
 ql_module_expr_name(
   unique int ql_module_expr: @ql_module_expr ref,
-  unique int name: @ql_token_simple_id ref
+  unique int name: @ql_moduleExpr_name_type ref
 );
 
-@ql_moduleExpr_child_type = @ql_module_expr | @ql_token_simple_id
+@ql_moduleExpr_child_type = @ql_module_expr | @ql_module_instantiation | @ql_token_simple_id
 
 ql_module_expr_def(
   unique int id: @ql_module_expr,
   int child: @ql_moduleExpr_child_type ref
+);
+
+#keyset[ql_module_instantiation, index]
+ql_module_instantiation_child(
+  int ql_module_instantiation: @ql_module_instantiation ref,
+  int index: int ref,
+  unique int child: @ql_signature_expr ref
+);
+
+ql_module_instantiation_def(
+  unique int id: @ql_module_instantiation
 );
 
 @ql_moduleMember_child_type = @ql_annotation | @ql_classless_predicate | @ql_dataclass | @ql_datatype | @ql_import_directive | @ql_module | @ql_select | @ql_token_qldoc
@@ -648,6 +675,12 @@ ql_module_member_def(
 ql_module_name_def(
   unique int id: @ql_module_name,
   int child: @ql_token_simple_id ref
+);
+
+ql_module_param_def(
+  unique int id: @ql_module_param,
+  int parameter: @ql_token_simple_id ref,
+  int signature: @ql_signature_expr ref
 );
 
 @ql_mul_expr_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
@@ -855,6 +888,20 @@ ql_set_literal_def(
   unique int id: @ql_set_literal
 );
 
+ql_signature_expr_predicate(
+  unique int ql_signature_expr: @ql_signature_expr ref,
+  unique int predicate: @ql_predicate_expr ref
+);
+
+ql_signature_expr_type_expr(
+  unique int ql_signature_expr: @ql_signature_expr ref,
+  unique int type_expr: @ql_type_expr ref
+);
+
+ql_signature_expr_def(
+  unique int id: @ql_signature_expr
+);
+
 ql_special_call_def(
   unique int id: @ql_special_call,
   int child: @ql_token_special_id ref
@@ -883,7 +930,12 @@ ql_type_expr_name(
   unique int name: @ql_token_class_name ref
 );
 
-@ql_typeExpr_child_type = @ql_module_expr | @ql_token_dbtype | @ql_token_primitive_type
+ql_type_expr_qualifier(
+  unique int ql_type_expr: @ql_type_expr ref,
+  unique int qualifier: @ql_module_expr ref
+);
+
+@ql_typeExpr_child_type = @ql_token_dbtype | @ql_token_primitive_type
 
 ql_type_expr_child(
   unique int ql_type_expr: @ql_type_expr ref,
@@ -1057,7 +1109,7 @@ case @ql_token.kind of
 ;
 
 
-@ql_ast_node = @ql_add_expr | @ql_aggregate | @ql_annot_arg | @ql_annotation | @ql_arityless_predicate_expr | @ql_as_expr | @ql_as_exprs | @ql_body | @ql_bool | @ql_call_body | @ql_call_or_unqual_agg_expr | @ql_charpred | @ql_class_member | @ql_classless_predicate | @ql_comp_term | @ql_conjunction | @ql_dataclass | @ql_datatype | @ql_datatype_branch | @ql_datatype_branches | @ql_db_annotation | @ql_db_args_annotation | @ql_db_branch | @ql_db_case_decl | @ql_db_col_type | @ql_db_column | @ql_db_entry | @ql_db_repr_type | @ql_db_table | @ql_db_table_name | @ql_db_union_decl | @ql_disjunction | @ql_expr_aggregate_body | @ql_expr_annotation | @ql_field | @ql_full_aggregate_body | @ql_higher_order_term | @ql_if_term | @ql_implication | @ql_import_directive | @ql_import_module_expr | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_member_predicate | @ql_module | @ql_module_alias_body | @ql_module_expr | @ql_module_member | @ql_module_name | @ql_mul_expr | @ql_negation | @ql_order_by | @ql_order_bys | @ql_par_expr | @ql_predicate_alias_body | @ql_predicate_expr | @ql_prefix_cast | @ql_ql | @ql_qual_module_expr | @ql_qualified_expr | @ql_qualified_rhs | @ql_quantified | @ql_range | @ql_select | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_token | @ql_type_alias_body | @ql_type_expr | @ql_type_union_body | @ql_unary_expr | @ql_unqual_agg_body | @ql_var_decl | @ql_var_name | @ql_variable | @ql_yaml_comment | @ql_yaml_entry | @ql_yaml_key | @ql_yaml_keyvaluepair | @ql_yaml_listitem
+@ql_ast_node = @ql_add_expr | @ql_aggregate | @ql_annot_arg | @ql_annotation | @ql_arityless_predicate_expr | @ql_as_expr | @ql_as_exprs | @ql_body | @ql_bool | @ql_call_body | @ql_call_or_unqual_agg_expr | @ql_charpred | @ql_class_member | @ql_classless_predicate | @ql_comp_term | @ql_conjunction | @ql_dataclass | @ql_datatype | @ql_datatype_branch | @ql_datatype_branches | @ql_db_annotation | @ql_db_args_annotation | @ql_db_branch | @ql_db_case_decl | @ql_db_col_type | @ql_db_column | @ql_db_entry | @ql_db_repr_type | @ql_db_table | @ql_db_table_name | @ql_db_union_decl | @ql_disjunction | @ql_expr_aggregate_body | @ql_expr_annotation | @ql_field | @ql_full_aggregate_body | @ql_higher_order_term | @ql_if_term | @ql_implication | @ql_import_directive | @ql_import_module_expr | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_member_predicate | @ql_module | @ql_module_alias_body | @ql_module_expr | @ql_module_instantiation | @ql_module_member | @ql_module_name | @ql_module_param | @ql_mul_expr | @ql_negation | @ql_order_by | @ql_order_bys | @ql_par_expr | @ql_predicate_alias_body | @ql_predicate_expr | @ql_prefix_cast | @ql_ql | @ql_qual_module_expr | @ql_qualified_expr | @ql_qualified_rhs | @ql_quantified | @ql_range | @ql_select | @ql_set_literal | @ql_signature_expr | @ql_special_call | @ql_super_ref | @ql_token | @ql_type_alias_body | @ql_type_expr | @ql_type_union_body | @ql_unary_expr | @ql_unqual_agg_body | @ql_var_decl | @ql_var_name | @ql_variable | @ql_yaml_comment | @ql_yaml_entry | @ql_yaml_key | @ql_yaml_keyvaluepair | @ql_yaml_listitem
 
 @ql_ast_node_parent = @file | @ql_ast_node
 

@@ -1,35 +1,36 @@
-| types.swift:1:9:1:9 | IntegerLiteralExpr | StructType |
-| types.swift:3:1:3:1 | DeclRefExpr | FunctionType |
-| types.swift:3:1:3:13 | CallExpr | TupleType |
-| types.swift:3:6:3:6 | DefaultArgumentExpr | StructType |
-| types.swift:3:6:3:6 | DefaultArgumentExpr | StructType |
-| types.swift:3:7:3:7 | DeclRefExpr | StructType |
-| types.swift:3:7:3:11 | ArrayExpr | TBD (VariadicSequenceType) |
-| types.swift:3:7:3:11 | BinaryExpr | StructType |
-| types.swift:3:7:3:11 | ErasureExpr | TBD (ProtocolCompositionType) |
-| types.swift:3:7:3:11 | VarargExpansionExpr | TBD (VariadicSequenceType) |
-| types.swift:3:9:3:9 | DeclRefExpr | FunctionType |
-| types.swift:3:9:3:9 | DotSyntaxCallExpr | FunctionType |
-| types.swift:3:9:3:9 | TypeExpr | MetatypeType |
-| types.swift:3:11:3:11 | IntegerLiteralExpr | StructType |
-| types.swift:7:16:7:16 | ConstructorRefCallExpr | FunctionType |
-| types.swift:7:16:7:16 | DeclRefExpr | FunctionType |
-| types.swift:7:16:7:16 | TypeExpr | MetatypeType |
-| types.swift:7:16:7:18 | CallExpr | StructType |
-| types.swift:13:17:13:17 | ConstructorRefCallExpr | FunctionType |
-| types.swift:13:17:13:17 | DeclRefExpr | FunctionType |
-| types.swift:13:17:13:17 | TypeExpr | MetatypeType |
-| types.swift:13:17:13:19 | CallExpr | ClassType |
-| types.swift:14:22:14:24 | ConstructorRefCallExpr | FunctionType |
-| types.swift:14:22:14:24 | TypeExpr | MetatypeType |
-| types.swift:14:22:14:31 | CallExpr | ClassType |
-| types.swift:14:24:14:24 | DeclRefExpr | FunctionType |
-| types.swift:17:10:17:10 | DeclRefExpr | StructType |
-| types.swift:17:10:17:14 | BinaryExpr | StructType |
-| types.swift:17:12:17:12 | DeclRefExpr | FunctionType |
-| types.swift:17:12:17:12 | DotSyntaxCallExpr | FunctionType |
-| types.swift:17:12:17:12 | TypeExpr | MetatypeType |
-| types.swift:17:14:17:14 | DeclRefExpr | StructType |
-| types.swift:21:10:21:10 | DeclRefExpr | FunctionType |
-| types.swift:21:10:21:13 | CallExpr | StructType |
-| types.swift:21:12:21:12 | DeclRefExpr | StructType |
+| types.swift:1:9:1:9 | 42 | Int |
+| types.swift:3:1:3:1 | print | (Any..., String, String) -> () |
+| types.swift:3:1:3:13 | call to print | () |
+| types.swift:3:6:3:6 | default separator | String |
+| types.swift:3:6:3:6 | default terminator | String |
+| types.swift:3:7:3:7 | x | Int |
+| types.swift:3:7:3:11 | (Any) ... | Any |
+| types.swift:3:7:3:11 | ... call to + ... | Int |
+| types.swift:3:7:3:11 | [...] | Any... |
+| types.swift:3:7:3:11 | [...] | Any... |
+| types.swift:3:9:3:9 | + | (Int.Type) -> (Int, Int) -> Int |
+| types.swift:3:9:3:9 | Int.Type | Int.Type |
+| types.swift:3:9:3:9 | call to + | (Int, Int) -> Int |
+| types.swift:3:11:3:11 | 10 | Int |
+| types.swift:7:16:7:16 | X.Type | X.Type |
+| types.swift:7:16:7:16 | call to ... | () -> X |
+| types.swift:7:16:7:16 | init | (X.Type) -> () -> X |
+| types.swift:7:16:7:18 | call to ... | X |
+| types.swift:13:17:13:17 | C.Type | C.Type |
+| types.swift:13:17:13:17 | call to ... | () -> C |
+| types.swift:13:17:13:17 | init | (C.Type) -> () -> C |
+| types.swift:13:17:13:19 | call to ... | C |
+| types.swift:14:22:14:24 | C.Nested.Type | C.Nested.Type |
+| types.swift:14:22:14:24 | call to ... | () -> C.Nested |
+| types.swift:14:22:14:31 | call to ... | C.Nested |
+| types.swift:14:24:14:24 | init | (C.Nested.Type) -> () -> C.Nested |
+| types.swift:17:10:17:10 | x | Int |
+| types.swift:17:10:17:14 | ... call to + ... | Int |
+| types.swift:17:12:17:12 | + | (Int.Type) -> (Int, Int) -> Int |
+| types.swift:17:12:17:12 | Int.Type | Int.Type |
+| types.swift:17:12:17:12 | call to + | (Int, Int) -> Int |
+| types.swift:17:14:17:14 | y | Int |
+| types.swift:21:10:21:10 | f | (Int) -> Int |
+| types.swift:21:10:21:13 | call to ... | Int |
+| types.swift:21:12:21:12 | x | Int |
+| types.swift:25:10:25:10 | 42 | Int |

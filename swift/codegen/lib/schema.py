@@ -3,9 +3,16 @@
 import pathlib
 import re
 from dataclasses import dataclass, field
-from typing import List, Set, Dict, ClassVar
+from typing import List, Set, Union, Dict, ClassVar
 
 import yaml
+
+
+class Error(Exception):
+
+    def __str__(self):
+        return f"schema.Error{args}"
+
 
 root_class_name = "Element"
 
@@ -19,6 +26,8 @@ class Property:
 
     name: str
     type: str = None
+    is_child: bool = False
+    tags: List[str] = field(default_factory=list)
 
 
 @dataclass
@@ -54,6 +63,7 @@ class Class:
     derived: Set[str] = field(default_factory=set)
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
+    tags: List[str] = field(default_factory=list)
 
 
 @dataclass
@@ -62,17 +72,24 @@ class Schema:
     includes: Set[str] = field(default_factory=set)
 
 
-def _parse_property(name, type):
-    if type.endswith("?*"):
-        return RepeatedOptionalProperty(name, type[:-2])
-    elif type.endswith("*"):
-        return RepeatedProperty(name, type[:-1])
-    elif type.endswith("?"):
-        return OptionalProperty(name, type[:-1])
-    elif type == "predicate":
-        return PredicateProperty(name)
+def _parse_property(name: str, type: Union[str, Dict[str, str]], is_child: bool = False):
+    if isinstance(type, dict):
+        tags = type.get("_tags", [])
+        type = type["type"]
     else:
-        return SingleProperty(name, type)
+        tags = []
+    if is_child and type[0].islower():
+        raise Error(f"children must have class type, got {type} for {name}")
+    if type.endswith("?*"):
+        return RepeatedOptionalProperty(name, type[:-2], is_child=is_child, tags=tags)
+    elif type.endswith("*"):
+        return RepeatedProperty(name, type[:-1], is_child=is_child, tags=tags)
+    elif type.endswith("?"):
+        return OptionalProperty(name, type[:-1], is_child=is_child, tags=tags)
+    elif type == "predicate":
+        return PredicateProperty(name, tags=tags)
+    else:
+        return SingleProperty(name, type, is_child=is_child, tags=tags)
 
 
 class _DirSelector:
@@ -96,7 +113,8 @@ def load(path):
     for name, info in data.items():
         if name.startswith("_"):
             continue
-        assert name[0].isupper()
+        if not name[0].isupper():
+            raise Error(f"keys in the schema file must be capitalized class names or metadata, got {name}")
         cls = classes[name]
         for k, v in info.items():
             if not k.startswith("_"):
@@ -109,6 +127,12 @@ def load(path):
                     classes[base].derived.add(name)
             elif k == "_dir":
                 cls.dir = pathlib.Path(v)
+            elif k == "_children":
+                cls.properties.extend(_parse_property(kk, vv, is_child=True) for kk, vv in v.items())
+            elif k == "_tags":
+                cls.tags = v
+            else:
+                raise Error(f"unknown metadata {k} for class {name}")
         if not cls.bases and cls.name != root_class_name:
             cls.bases.add(root_class_name)
             classes[root_class_name].derived.add(name)

@@ -10,4 +10,5 @@
 | tst.js:50:3:50:49 | new Syn ... o me?") | This expression has no effect. |
 | tst.js:51:3:51:36 | new Err ... age(e)) | This expression has no effect. |
 | tst.js:62:2:62:20 | o.trivialNonGetter1 | This expression has no effect. |
+| tst.js:78:24:78:24 | o | This expression has no effect. |
 | uselessfn.js:1:1:1:15 | (functi ... .");\\n}) | This expression has no effect. |

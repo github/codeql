@@ -313,7 +313,7 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     auto varLabel = dispatcher_.fetchLabel(expr->getVar());
     auto bodyLabel = dispatcher_.fetchLabel(expr->getBody());
 
-    dispatcher_.emit(TapExprsTrap{label, varLabel, bodyLabel});
+    dispatcher_.emit(TapExprsTrap{label, bodyLabel, varLabel});
     if (auto subExpr = expr->getSubExpr()) {
       dispatcher_.emit(TapExprSubExprsTrap{label, dispatcher_.fetchLabel(subExpr)});
     }
@@ -368,6 +368,7 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     assert(expr->getBody() && "ClosureExpr has getBody()");
     auto bodyLabel = dispatcher_.fetchLabel(expr->getBody());
     dispatcher_.emit(ClosureExprsTrap{label, bodyLabel});
+    emitAbstractClosureExpr(expr, label);
   }
 
   void visitAutoClosureExpr(swift::AutoClosureExpr* expr) {
@@ -375,6 +376,7 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     assert(expr->getBody() && "AutoClosureExpr has getBody()");
     auto bodyLabel = dispatcher_.fetchLabel(expr->getBody());
     dispatcher_.emit(AutoClosureExprsTrap{label, bodyLabel});
+    emitAbstractClosureExpr(expr, label);
   }
 
   void visitCoerceExpr(swift::CoerceExpr* expr) {
@@ -468,7 +470,7 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
         auto pathLabel = dispatcher_.fetchLabel(path);
         dispatcher_.emit(KeyPathExprParsedPathsTrap{label, pathLabel});
       }
-      if (auto root = expr->getParsedPath()) {
+      if (auto root = expr->getParsedRoot()) {
         auto rootLabel = dispatcher_.fetchLabel(root);
         dispatcher_.emit(KeyPathExprParsedRootsTrap{label, rootLabel});
       }
@@ -509,7 +511,41 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     dispatcher_.emit(IfExprsTrap{label, condLabel, thenLabel, elseLabel});
   }
 
+  void visitKeyPathDotExpr(swift::KeyPathDotExpr* expr) {
+    auto label = dispatcher_.assignNewLabel(expr);
+    dispatcher_.emit(KeyPathDotExprsTrap{label});
+  }
+
+  void visitKeyPathApplicationExpr(swift::KeyPathApplicationExpr* expr) {
+    auto label = dispatcher_.assignNewLabel(expr);
+    assert(expr->getBase() && "KeyPathApplicationExpr has getBase()");
+    assert(expr->getKeyPath() && "KeyPathApplicationExpr has getKeyPath()");
+
+    auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
+    auto keyPathLabel = dispatcher_.fetchLabel(expr->getKeyPath());
+
+    dispatcher_.emit(KeyPathApplicationExprsTrap{label, baseLabel, keyPathLabel});
+  }
+
+  void visitOtherConstructorDeclRefExpr(swift::OtherConstructorDeclRefExpr* expr) {
+    auto label = dispatcher_.assignNewLabel(expr);
+    assert(expr->getDecl() && "OtherConstructorDeclRefExpr has getDecl()");
+
+    auto ctorLabel = dispatcher_.fetchLabel(expr->getDecl());
+    dispatcher_.emit(OtherConstructorDeclRefExprsTrap{label, ctorLabel});
+  }
+
  private:
+  void emitAbstractClosureExpr(swift::AbstractClosureExpr* expr,
+                               TrapLabel<AbstractClosureExprTag> label) {
+    assert(expr->getParameters() && "AbstractClosureExpr has getParameters()");
+    auto params = expr->getParameters();
+    for (auto i = 0u; i < params->size(); ++i) {
+      dispatcher_.emit(
+          AbstractClosureExprParamsTrap{label, i, dispatcher_.fetchLabel(params->get(i))});
+    }
+  }
+
   TrapLabel<ArgumentTag> emitArgument(const swift::Argument& arg) {
     auto argLabel = dispatcher_.createLabel<ArgumentTag>();
     assert(arg.getExpr() && "Argument has getExpr");

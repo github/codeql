@@ -143,7 +143,7 @@ API::CallNode passportAuthenticateCall() {
  */
 API::CallNode nonSessionBasedAuthMiddleware() {
   result = passportAuthenticateCall() and
-  result.getParameter(1).getMember("session").getARhs().mayHaveBooleanValue(false)
+  result.getParameter(1).getMember("session").asSink().mayHaveBooleanValue(false)
 }
 
 /**

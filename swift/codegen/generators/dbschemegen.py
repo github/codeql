@@ -1,10 +1,24 @@
-#!/usr/bin/env python3
+"""
+dbscheme file generation
+
+`generate(opts, renderer)` will generate a `dbscheme` file out of a `yml` schema file.
+
+Each final class in the schema file will get a corresponding defining DB table with the id and single properties as
+columns.
+Moreover:
+* single properties in non-final classes will also trigger generation of a table with an id reference and all single
+  properties as columns
+* each optional property will trigger generation of a table with an id reference and the property value as columns
+* each repeated property will trigger generation of a table with an id reference, an `int` index and the property value
+  as columns
+The type hierarchy will be translated to corresponding `union` declarations.
+"""
+
 import pathlib
 
 import inflection
 
 from swift.codegen.lib import schema
-from swift.codegen.generators import generator
 from swift.codegen.lib.dbscheme import *
 
 log = logging.getLogger(__name__)
@@ -64,9 +78,8 @@ def cls_to_dbscheme(cls: schema.Class):
                 name=inflection.underscore(f"{cls.name}_{f.name}"),
                 columns=[
                     Column("id", type=dbtype(cls.name)),
-                 ],
+                ],
             )
-
 
 
 def get_declarations(data: schema.Schema):
@@ -93,9 +106,3 @@ def generate(opts, renderer):
                       declarations=get_declarations(data))
 
     renderer.render(dbscheme, out)
-
-
-tags = ("schema", "dbscheme")
-
-if __name__ == "__main__":
-    generator.run()

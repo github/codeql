@@ -64,6 +64,42 @@ module Ssa {
         a = bb.getNode(i).getNode().asAstNode() and
         value.getNode().asAstNode() = a.getSource()
       )
+      or
+      exists(VarDecl var, BasicBlock bb, int blockIndex, PatternBindingDecl pbd |
+        this.definesAt(var, bb, blockIndex) and
+        pbd.getAPattern() = bb.getNode(blockIndex).getNode().asAstNode() and
+        value.getNode().asAstNode() = var.getParentInitializer()
+      )
     }
+
+    cached
+    predicate isInoutDef(ExprCfgNode argument) {
+      exists(
+        CallExpr c, BasicBlock bb, int blockIndex, int argIndex, VarDecl v, InOutExpr argExpr // TODO: use CFG node for assignment expr
+      |
+        this.definesAt(v, bb, blockIndex) and
+        bb.getNode(blockIndex).getNode().asAstNode() = c and
+        c.getArgument(argIndex).getExpr() = argExpr and
+        argExpr = argument.getNode().asAstNode() and
+        argExpr.getSubExpr() = v.getAnAccess() // TODO: fields?
+      )
+    }
+  }
+
+  cached
+  class PhiDefinition extends Definition, SsaImplCommon::PhiNode {
+    cached
+    override Location getLocation() {
+      exists(BasicBlock bb, int i |
+        this.definesAt(_, bb, i) and
+        result = bb.getLocation()
+      )
+    }
+
+    cached
+    Definition getPhiInput(BasicBlock bb) { SsaImplCommon::phiHasInputFromBlock(this, result, bb) }
+
+    cached
+    Definition getAPhiInput() { result = this.getPhiInput(_) }
   }
 }

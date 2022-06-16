@@ -13,4 +13,10 @@ class IfStmt extends IfStmtBase {
     b = false and
     result = this.getElse()
   }
+
+  override string toString() {
+    if this.hasElse()
+    then result = "if ... then { ... } else { ... }"
+    else result = "if ... then { ... }"
+  }
 }

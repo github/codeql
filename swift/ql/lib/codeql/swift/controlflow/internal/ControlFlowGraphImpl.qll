@@ -47,19 +47,33 @@ module CfgScope {
   }
 
   private class BodyStmtCallableScope extends Range_ instanceof AbstractFunctionDecl {
-    final override predicate entry(ControlFlowElement first) {
-      exists(Stmts::BraceStmtTree tree |
-        tree.getAst() = super.getBody() and
-        tree.firstInner(first)
-      )
-    }
+    Decls::FuncDeclTree tree;
 
-    final override predicate exit(ControlFlowElement last, Completion c) {
-      exists(Stmts::BraceStmtTree tree |
-        tree.getAst() = super.getBody() and
-        tree.last(last, c)
-      )
-    }
+    BodyStmtCallableScope() { tree.getAst() = this }
+
+    final override predicate entry(ControlFlowElement first) { first(tree, first) }
+
+    final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
+  }
+
+  private class KeyPathScope extends Range_ instanceof KeyPathExpr {
+    AstControlFlowTree tree;
+
+    KeyPathScope() { tree.getAst() = this.getParsedRoot().getFullyConverted() }
+
+    final override predicate entry(ControlFlowElement first) { first(tree, first) }
+
+    final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
+  }
+
+  private class ClosureExprScope extends Range_ instanceof ClosureExpr {
+    Exprs::ClosureExprTree tree;
+
+    ClosureExprScope() { tree.getAst() = this }
+
+    final override predicate entry(ControlFlowElement first) { first(tree, first) }
+
+    final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
   }
 }
 
@@ -203,33 +217,82 @@ module Stmts {
     }
   }
 
+  private class YieldStmtTree extends AstStandardPostOrderTree {
+    override YieldStmt ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = ast.getResult(i).getFullyConverted()
+    }
+  }
+
   private class FailTree extends AstLeafTree {
     override FailStmt ast;
   }
 
-  private class StmtConditionTree extends AstPostOrderTree {
+  private class StmtConditionTree extends AstPreOrderTree {
     override StmtCondition ast;
 
     final override predicate propagatesAbnormal(ControlFlowElement child) {
-      child.asAstNode() = ast.getAnElement().getUnderlyingCondition()
+      child.asAstNode() = ast.getAnElement().getInitializer().getFullyConverted()
+      or
+      child.asAstNode() = ast.getAnElement().getPattern().getFullyUnresolved()
+      or
+      child.asAstNode() = ast.getAnElement().getBoolean().getFullyConverted()
     }
 
-    final override predicate first(ControlFlowElement first) {
-      astFirst(ast.getFirstElement().getUnderlyingCondition().getFullyUnresolved(), first)
+    predicate firstElement(int i, ControlFlowElement first) {
+      // If there is an initializer in the first element, evaluate that first
+      astFirst(ast.getElement(i).getInitializer().getFullyConverted(), first)
+      or
+      // Otherwise, the first element is a boolean condition.
+      not exists(ast.getElement(i).getInitializer()) and
+      astFirst(ast.getElement(i).getBoolean().getFullyConverted(), first)
+    }
+
+    predicate succElement(int i, ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      // Evaluate the pattern after the initializer
+      astLast(ast.getElement(i).getInitializer().getFullyConverted(), pred, c) and
+      c instanceof NormalCompletion and
+      astFirst(ast.getElement(i).getPattern().getFullyUnresolved(), succ)
+      or
+      (
+        // After evaluating the pattern
+        astLast(ast.getElement(i).getPattern().getFullyUnresolved(), pred, c)
+        or
+        // ... or the boolean ...
+        astLast(ast.getElement(i).getBoolean().getFullyConverted(), pred, c)
+      ) and
+      // We evaluate the next element
+      c instanceof NormalCompletion and
+      this.firstElement(i + 1, succ)
+    }
+
+    final override predicate last(ControlFlowElement last, Completion c) {
+      // Stop if a boolean check failed
+      astLast(ast.getAnElement().getBoolean().getFullyConverted(), last, c) and
+      c instanceof FalseCompletion
+      or
+      // Stop is a pattern match failed
+      astLast(ast.getAnElement().getPattern().getFullyUnresolved(), last, c) and
+      not c.(MatchingCompletion).isMatch()
+      or
+      // Stop if we sucesfully evaluated all the conditionals
+      (
+        astLast(ast.getLastElement().getBoolean().getFullyConverted(), last, c)
+        or
+        astLast(ast.getLastElement().getPattern().getFullyUnresolved(), last, c)
+      ) and
+      c instanceof NormalCompletion
     }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      // Left-to-right evaluation of elements
-      exists(int i |
-        astLast(ast.getElement(i).getUnderlyingCondition().getFullyUnresolved(), pred, c) and
-        c instanceof NormalCompletion and
-        astFirst(ast.getElement(i + 1).getUnderlyingCondition().getFullyUnresolved(), succ)
-      )
+      // Pre-order: Flow from this ast node to the first condition
+      pred.asAstNode() = ast and
+      c instanceof SimpleCompletion and
+      this.firstElement(0, succ)
       or
-      // Post-order: flow from thrown expression to the throw statement.
-      astLast(ast.getLastElement().getUnderlyingCondition().getFullyUnresolved(), pred, c) and
-      c instanceof NormalCompletion and
-      succ.asAstNode() = ast
+      // Left-to-right evaluation of elements
+      this.succElement(_, pred, succ, c)
     }
   }
 
@@ -245,7 +308,7 @@ module Stmts {
     final override predicate last(ControlFlowElement last, Completion c) {
       // Condition exits with a false completion and there is no `else` branch
       astLast(ast.getCondition().getFullyUnresolved(), last, c) and
-      c instanceof FalseCompletion and
+      c instanceof FalseOrNonMatchCompletion and
       not exists(ast.getElse())
       or
       // Then/Else branch exits with any completion
@@ -261,10 +324,12 @@ module Stmts {
       astLast(ast.getCondition().getFullyUnresolved(), pred, c) and
       (
         // Flow from last element of condition to first element of then branch
-        c instanceof TrueCompletion and astFirst(ast.getThen(), succ)
+        c instanceof TrueOrMatchCompletion and
+        astFirst(ast.getThen(), succ)
         or
         // Flow from last element of condition to first element of else branch
-        c instanceof FalseCompletion and astFirst(ast.getElse(), succ)
+        c instanceof FalseOrNonMatchCompletion and
+        astFirst(ast.getElse(), succ)
       )
     }
   }
@@ -284,7 +349,7 @@ module Stmts {
       or
       // Exit when a condition is true
       astLast(ast.getCondition().getFullyUnresolved(), last, c) and
-      c instanceof TrueCompletion
+      c instanceof TrueOrMatchCompletion
     }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
@@ -295,7 +360,7 @@ module Stmts {
       or
       // Flow to the body when the condition is false
       astLast(ast.getCondition().getFullyUnresolved(), pred, c) and
-      c instanceof FalseCompletion and
+      c instanceof FalseOrNonMatchCompletion and
       astFirst(ast.getBody(), succ)
     }
   }
@@ -309,10 +374,7 @@ module Stmts {
     class LoopStmt = @for_each_stmt or ConditionalLoop;
 
     abstract class LoopTree extends AstPreOrderTree {
-      LoopTree() {
-        ast instanceof WhileStmt or
-        ast instanceof RepeatWhileStmt
-      }
+      LoopTree() { ast instanceof ConditionalLoop }
 
       abstract ControlFlowElement getCondition();
 
@@ -325,7 +387,7 @@ module Stmts {
       final override predicate last(ControlFlowElement last, Completion c) {
         // Condition exits with a false completion
         last(this.getCondition(), last, c) and
-        c instanceof FalseCompletion
+        c instanceof FalseOrNonMatchCompletion
         or
         // Body exits with a break completion
         exists(BreakCompletion break |
@@ -342,7 +404,7 @@ module Stmts {
 
       override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
         last(this.getCondition(), pred, c) and
-        c instanceof TrueCompletion and
+        c instanceof TrueOrMatchCompletion and
         first(this.getBody(), succ)
         or
         last(this.getBody(), pred, c) and
@@ -436,7 +498,7 @@ module Stmts {
         or
         // Flow from last element of variable declaration ...
         astLast(ast.getPattern().getFullyUnresolved(), pred, c) and
-        c instanceof SimpleCompletion and
+        c instanceof NormalCompletion and
         (
           // ... to first element of loop body if no 'where' clause exists,
           astFirst(ast.getBody(), succ) and
@@ -487,9 +549,8 @@ module Stmts {
       astLast(ast.getExpr().getFullyConverted(), last, c) and
       c instanceof NormalCompletion
       or
-      // A statement exits (TODO: with a `break` completion?)
-      astLast(ast.getACase().getBody(), last, c) and
-      c instanceof NormalCompletion
+      // A statement exits
+      astLast(ast.getACase().getBody(), last, c)
       // Note: There's no need for an exit with a non-match as
       // Swift's switch statements are always exhaustive.
     }
@@ -852,7 +913,7 @@ module Patterns {
       or
       // Or we got to the some/none check and it failed
       n.asAstNode() = ast and
-      not c.(MatchingCompletion).isMatch()
+      c.(MatchingCompletion).isNonMatch()
     }
 
     override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
@@ -884,6 +945,21 @@ module Decls {
       )
     }
   }
+
+  class FuncDeclTree extends StandardPreOrderTree, TFuncDeclElement {
+    AbstractFunctionDecl ast;
+
+    FuncDeclTree() { this = TFuncDeclElement(ast) }
+
+    AbstractFunctionDecl getAst() { result = ast }
+
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = ast.getParam(i)
+      or
+      result.asAstNode() = ast.getBody() and
+      i = ast.getNumberOfParams()
+    }
+  }
 }
 
 module Exprs {
@@ -911,9 +987,9 @@ module Exprs {
         child.asAstNode() = ast.getSource().getFullyConverted()
       }
 
-      predicate hasWillSetObserver() { isPropertyObserverElement(any(WillSetObserver obs), ast) }
+      predicate hasWillSetObserver() { isPropertyObserverElement(_, any(WillSetObserver obs), ast) }
 
-      predicate hasDidSetObserver() { isPropertyObserverElement(any(WillSetObserver obs), ast) }
+      predicate hasDidSetObserver() { isPropertyObserverElement(_, any(DidSetObserver obs), ast) }
 
       final override predicate last(ControlFlowElement last, Completion c) {
         isPropertyObserverElement(last, any(DidSetObserver obs), ast) and
@@ -952,7 +1028,7 @@ module Exprs {
     class PropertyAssignExpr extends AssignExprTree {
       AccessorDecl accessorDecl;
 
-      PropertyAssignExpr() { isPropertySetterElement(accessorDecl, ast) }
+      PropertyAssignExpr() { isPropertySetterElement(_, accessorDecl, ast) }
 
       final override predicate isLast(ControlFlowElement last, Completion c) {
         isPropertySetterElement(last, accessorDecl, ast) and
@@ -977,6 +1053,21 @@ module Exprs {
       }
 
       final override predicate isSet(ControlFlowElement node) { node.asAstNode() = ast }
+    }
+  }
+
+  class ClosureExprTree extends StandardPreOrderTree, TClosureElement {
+    ClosureExpr expr;
+
+    ClosureExprTree() { this = TClosureElement(expr) }
+
+    ClosureExpr getAst() { result = expr }
+
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = expr.getParam(i)
+      or
+      result.asAstNode() = expr.getBody() and
+      i = expr.getNumberOfParams()
     }
   }
 
@@ -1047,6 +1138,20 @@ module Exprs {
       override AutoClosureExpr ast;
 
       AutoClosureTree() { not this instanceof LogicalAutoClosureTree }
+    }
+  }
+
+  class KeyPathTree extends AstLeafTree {
+    override KeyPathExpr ast;
+  }
+
+  class KeyPathApplicationTree extends AstStandardPostOrderTree {
+    override KeyPathApplicationExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getBase().getFullyConverted()
+      or
+      i = 1 and result.asAstNode() = ast.getKeyPath().getFullyConverted()
     }
   }
 
@@ -1212,6 +1317,10 @@ module Exprs {
       DeclRefExprLValueTree() { isLValue(ast) }
     }
 
+    class OtherConstructorDeclRefTree extends AstLeafTree {
+      override OtherConstructorDeclRefExpr ast;
+    }
+
     abstract class DeclRefExprRValueTree extends AstControlFlowTree {
       override DeclRefExpr ast;
 
@@ -1227,7 +1336,7 @@ module Exprs {
     private class PropertyDeclRefRValueTree extends DeclRefExprRValueTree {
       AccessorDecl accessor;
 
-      PropertyDeclRefRValueTree() { isPropertyGetterElement(accessor, ast) }
+      PropertyDeclRefRValueTree() { isPropertyGetterElement(_, accessor, ast) }
 
       final override predicate first(ControlFlowElement first) {
         isPropertyGetterElement(first, accessor, ast)
@@ -1326,7 +1435,7 @@ module Exprs {
     private class PropertyMemberRefRValue extends MemberRefRValueTree {
       AccessorDecl accessor;
 
-      PropertyMemberRefRValue() { isPropertyGetterElement(accessor, ast) }
+      PropertyMemberRefRValue() { isPropertyGetterElement(_, accessor, ast) }
 
       final override predicate last(ControlFlowElement last, Completion c) {
         isPropertyGetterElement(last, accessor, ast) and
@@ -1512,15 +1621,23 @@ module Exprs {
     }
   }
 
+  private class OpenExistentialTree extends AstStandardPostOrderTree {
+    override OpenExistentialExpr ast;
+
+    override ControlFlowElement getChildElement(int i) {
+      i = 0 and
+      result.asAstNode() = ast.getExistential().getFullyConverted()
+      or
+      i = 1 and
+      result.asAstNode() = ast.getSubExpr().getFullyConverted()
+    }
+  }
+
   module Conversions {
     class ConversionOrIdentity = @identity_expr or @explicit_cast_expr or @implicit_conversion_expr;
 
     abstract class ConversionOrIdentityTree extends AstStandardPostOrderTree {
-      ConversionOrIdentityTree() {
-        ast instanceof IdentityExpr or
-        ast instanceof ExplicitCastExpr or
-        ast instanceof ImplicitConversionExpr
-      }
+      ConversionOrIdentityTree() { ast instanceof ConversionOrIdentity }
 
       abstract predicate convertsFrom(Expr e);
 
@@ -1578,7 +1695,9 @@ private module Cached {
     result = scopeOfAst(n.asAstNode()) or
     result = scopeOfAst(n.(PropertyGetterElement).getRef()) or
     result = scopeOfAst(n.(PropertySetterElement).getAssignExpr()) or
-    result = scopeOfAst(n.(PropertyObserverElement).getAssignExpr())
+    result = scopeOfAst(n.(PropertyObserverElement).getAssignExpr()) or
+    result = n.(FuncDeclElement).getAst() or
+    result = n.(KeyPathElement).getAst()
   }
 
   cached
