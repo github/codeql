@@ -37,7 +37,7 @@ def test_basic():
     if not is_safe(s):
         ensure_tainted(s) # $ tainted
     else:
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
 
 
 def test_if_in_depth():
@@ -108,7 +108,7 @@ def test_and():
         ensure_tainted(s) # $ tainted
     else:
         # cannot be tainted
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
 
 
 def test_tricky():
@@ -127,14 +127,14 @@ def test_nesting_not():
     s = TAINTED_STRING
 
     if not(not(is_safe(s))):
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
     else:
         ensure_tainted(s) # $ tainted
 
     if not(not(not(is_safe(s)))):
         ensure_tainted(s) # $ tainted
     else:
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
 
 
 # Adding `and True` makes the sanitizer trigger when it would otherwise not. See output in
@@ -164,7 +164,7 @@ def test_with_return():
     if not is_safe(s):
         return
 
-    ensure_not_tainted(s) # $ SPURIOUS: tainted
+    ensure_not_tainted(s)
 
 
 def test_with_return_neg():
@@ -182,7 +182,7 @@ def test_with_exception():
     if not is_safe(s):
         raise Exception("unsafe")
 
-    ensure_not_tainted(s) # $ SPURIOUS: tainted
+    ensure_not_tainted(s)
 
 def test_with_exception_neg():
     s = TAINTED_STRING

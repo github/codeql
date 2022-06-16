@@ -527,16 +527,32 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
   override Location getLocation() { result = consumer.getLocation() }
 }
 
+ControlFlowNode guardNode(ConditionBlock conditionBlock, boolean flipped) {
+  result = conditionBlock.getLastNode() and
+  flipped = false
+  or
+  exists(UnaryExprNode notNode |
+    result = notNode.getOperand() and
+    notNode.getNode().getOp() instanceof Not
+  |
+    notNode = guardNode(conditionBlock, flipped.booleanNot())
+  )
+}
+
 /**
  * A node that controls whether other nodes are evaluated.
  */
 class GuardNode extends ControlFlowNode {
   ConditionBlock conditionBlock;
+  boolean flipped;
 
-  GuardNode() { this = conditionBlock.getLastNode() }
+  GuardNode() { this = guardNode(conditionBlock, flipped) }
 
   /** Holds if this guard controls block `b` upon evaluating to `branch`. */
-  predicate controlsBlock(BasicBlock b, boolean branch) { conditionBlock.controls(b, branch) }
+  predicate controlsBlock(BasicBlock b, boolean branch) {
+    branch in [true, false] and
+    conditionBlock.controls(b, branch.booleanXor(flipped))
+  }
 }
 
 /**
