@@ -69,7 +69,9 @@ module UrlRedirect {
           // We exclude any handlers with names containing create/update/destroy, as these are not likely to handle GET requests.
           not exists(method.(ActionControllerActionMethod).getARoute()) and
           not method.getName().regexpMatch(".*(create|update|destroy).*")
-        )
+        ) and
+        // If this redirect is an ActionController method call, it is only vulnerable if it allows external redirects.
+        forall(RedirectToCall c | c = e.asExpr().getExpr() | c.allowsExternalRedirect())
       )
     }
   }
