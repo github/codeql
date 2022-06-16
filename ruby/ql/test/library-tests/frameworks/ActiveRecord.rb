@@ -33,6 +33,8 @@ class FooController < ActionController::Base
     SQL
     User.where.not("user.id = '#{params[:id]}'")
     User.authenticate(params[:name], params[:pass])
+    User.find_by_name("alice")
+    User.not_a_find_by_method("bob")
   end
 end
 

@@ -1,17 +1,17 @@
 actionControllerControllerClasses
-| ActiveRecord.rb:23:1:37:3 | FooController |
-| ActiveRecord.rb:39:1:62:3 | BarController |
-| ActiveRecord.rb:64:1:68:3 | BazController |
+| ActiveRecord.rb:23:1:39:3 | FooController |
+| ActiveRecord.rb:41:1:64:3 | BarController |
+| ActiveRecord.rb:66:1:70:3 | BazController |
 | app/controllers/comments_controller.rb:1:1:7:3 | CommentsController |
 | app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController |
 | app/controllers/photos_controller.rb:1:1:4:3 | PhotosController |
 | app/controllers/posts_controller.rb:1:1:10:3 | PostsController |
 | app/controllers/users/notifications_controller.rb:2:3:5:5 | NotificationsController |
 actionControllerActionMethods
-| ActiveRecord.rb:27:3:36:5 | some_request_handler |
-| ActiveRecord.rb:40:3:45:5 | some_other_request_handler |
-| ActiveRecord.rb:47:3:61:5 | safe_paths |
-| ActiveRecord.rb:65:3:67:5 | yet_another_handler |
+| ActiveRecord.rb:27:3:38:5 | some_request_handler |
+| ActiveRecord.rb:42:3:47:5 | some_other_request_handler |
+| ActiveRecord.rb:49:3:63:5 | safe_paths |
+| ActiveRecord.rb:67:3:69:5 | yet_another_handler |
 | app/controllers/comments_controller.rb:2:3:3:5 | index |
 | app/controllers/comments_controller.rb:5:3:6:5 | show |
 | app/controllers/foo/bars_controller.rb:5:3:7:5 | index |
@@ -30,12 +30,12 @@ paramsCalls
 | ActiveRecord.rb:34:34:34:39 | call to params |
 | ActiveRecord.rb:35:23:35:28 | call to params |
 | ActiveRecord.rb:35:38:35:43 | call to params |
-| ActiveRecord.rb:41:10:41:15 | call to params |
-| ActiveRecord.rb:48:11:48:16 | call to params |
-| ActiveRecord.rb:52:12:52:17 | call to params |
-| ActiveRecord.rb:57:12:57:17 | call to params |
-| ActiveRecord.rb:60:15:60:20 | call to params |
-| ActiveRecord.rb:66:21:66:26 | call to params |
+| ActiveRecord.rb:43:10:43:15 | call to params |
+| ActiveRecord.rb:50:11:50:16 | call to params |
+| ActiveRecord.rb:54:12:54:17 | call to params |
+| ActiveRecord.rb:59:12:59:17 | call to params |
+| ActiveRecord.rb:62:15:62:20 | call to params |
+| ActiveRecord.rb:68:21:68:26 | call to params |
 | app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
 | app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
 | app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
@@ -49,12 +49,12 @@ paramsSources
 | ActiveRecord.rb:34:34:34:39 | call to params |
 | ActiveRecord.rb:35:23:35:28 | call to params |
 | ActiveRecord.rb:35:38:35:43 | call to params |
-| ActiveRecord.rb:41:10:41:15 | call to params |
-| ActiveRecord.rb:48:11:48:16 | call to params |
-| ActiveRecord.rb:52:12:52:17 | call to params |
-| ActiveRecord.rb:57:12:57:17 | call to params |
-| ActiveRecord.rb:60:15:60:20 | call to params |
-| ActiveRecord.rb:66:21:66:26 | call to params |
+| ActiveRecord.rb:43:10:43:15 | call to params |
+| ActiveRecord.rb:50:11:50:16 | call to params |
+| ActiveRecord.rb:54:12:54:17 | call to params |
+| ActiveRecord.rb:59:12:59:17 | call to params |
+| ActiveRecord.rb:62:15:62:20 | call to params |
+| ActiveRecord.rb:68:21:68:26 | call to params |
 | app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
 | app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
 | app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
