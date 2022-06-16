@@ -2257,6 +2257,12 @@ class SignatureExpr extends TSignatureExpr, AstNode {
 
   /** Gets the generated AST node that contains this signature expression. */
   QL::SignatureExpr toQL() { result = sig }
+
+  /** Gets this signature expression if it represents a predicate expression. */
+  PredicateExpr asPredicate() { result = this }
+
+  /** Gets this signature expression if it represents a type expression. */
+  TypeExpr asType() { result = this }
 }
 
 /** An argument to an annotation. */

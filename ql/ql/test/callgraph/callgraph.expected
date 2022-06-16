@@ -23,6 +23,8 @@ getTarget
 | Overrides.qll:29:3:29:10 | MemberCall | Overrides.qll:8:3:8:41 | ClassPredicate baz |
 | ParamModules.qll:5:28:5:41 | PredicateCall | ParamModules.qll:2:13:2:36 | ClasslessPredicate fooSig |
 | ParamModules.qll:10:26:10:49 | PredicateCall | ParamModules.qll:5:5:5:43 | ClasslessPredicate bar |
+| ParamModules.qll:26:27:26:53 | PredicateCall | ParamModules.qll:17:5:17:42 | ClasslessPredicate getAnEven |
+| ParamModules.qll:26:27:26:61 | MemberCall | ParamModules.qll:23:5:23:39 | ClassPredicate myFoo |
 | packs/other/OtherThing.qll:5:3:5:8 | PredicateCall | packs/lib/LibThing/Foo.qll:1:1:1:30 | ClasslessPredicate foo |
 | packs/other/OtherThing.qll:6:3:6:8 | PredicateCall | packs/src/SrcThing.qll:8:1:8:30 | ClasslessPredicate bar |
 | packs/src/SrcThing.qll:4:3:4:8 | PredicateCall | packs/lib/LibThing/Foo.qll:1:1:1:30 | ClasslessPredicate foo |

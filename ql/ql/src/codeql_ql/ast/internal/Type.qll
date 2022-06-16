@@ -323,6 +323,23 @@ private predicate defines(FileOrModule m, string name, Type t, boolean public) {
     public = getPublicBool(im) and
     defines(im.getResolvedModule(), name, t, true)
   )
+  or
+  // classes in parameterized modules.
+  exists(Module mod, SignatureExpr param, int i |
+    m.asModule() = mod and
+    mod.hasParameter(i, name, param) and
+    public = true
+  |
+    // we resolve it both to the signature type
+    t = param.asType().getResolvedType()
+    or
+    // or any instantiated type
+    exists(ModuleExpr inst, SignatureExpr arg |
+      inst.getArgument(i) = arg and
+      inst.getResolvedModule() = m and
+      t = arg.asType().getResolvedType()
+    )
+  )
 }
 
 module TyConsistency {

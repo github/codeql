@@ -11,7 +11,19 @@ module PredicateSig {
 }
 
 module ClassSig {
-  // TODO:
+  signature class FooSig extends int;
+
+  module UsesFoo<FooSig FooImpl> {
+    FooImpl getAnEven() { result % 2 = 0 }
+  }
+
+  class MyFoo extends int {
+    MyFoo() { this = [0 .. 10] }
+
+    string myFoo() { result = "myFoo" }
+  }
+
+  string use() { result = UsesFoo<MyFoo>::getAnEven().myFoo() }
 }
 
 module ModuleSig {
