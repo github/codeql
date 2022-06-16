@@ -162,6 +162,8 @@ class QLDoc extends TQLDoc, AstNode {
   string getContents() { result = qldoc.getValue() }
 
   override string getAPrimaryQlClass() { result = "QLDoc" }
+
+  override AstNode getParent() { result.getQLDoc() = this }
 }
 
 class BlockComment extends TBlockComment, AstNode {
@@ -2313,7 +2315,7 @@ class Annotation extends TAnnotation, AstNode {
   /** Gets the node corresponding to the field `name`. */
   string getName() { result = annot.getName().getValue() }
 
-  override AstNode getParent() { result = AstNode.super.getParent() }
+  override AstNode getParent() { result.getAnAnnotation() = this }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)

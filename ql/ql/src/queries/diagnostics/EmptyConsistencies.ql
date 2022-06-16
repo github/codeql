@@ -31,7 +31,9 @@ where
   TypeConsistency::multiplePrimitivesExpr(node, _, _) and
   msg = "TypeConsistency::multiplePrimitivesExpr"
   or
-  AstConsistency::nonTotalGetParent(node) and msg = "AstConsistency::nonTotalGetParent" // TODO: unique parent
+  AstConsistency::nonTotalGetParent(node) and msg = "AstConsistency::nonTotalGetParent"
+  or
+  AstConsistency::nonUniqueParent(node) and msg = "AstConsistency::nonUniqueParent"
   or
   TypeConsistency::noResolve(node) and msg = "TypeConsistency::noResolve"
   or
@@ -47,4 +49,3 @@ where
   or
   VarConsistency::noVarDef(node) and msg = "VarConsistency::noVarDef"
 select node, msg
-// TODO: vardef consistency.

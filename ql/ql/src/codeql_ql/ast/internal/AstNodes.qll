@@ -231,4 +231,6 @@ module AstConsistency {
     not node instanceof YAML::YAMLNode and // parents for YAML doens't work
     not (node instanceof QLDoc and node.getLocation().getFile().getExtension() = "dbscheme") // qldoc in dbschemes are not hooked up
   }
+
+  query predicate nonUniqueParent(AstNode node) { count(node.getParent()) >= 2 }
 }
