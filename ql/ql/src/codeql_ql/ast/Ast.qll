@@ -722,7 +722,7 @@ class Module extends TModule, ModuleDeclaration {
     or
     pred = directMember("getAMember") and result = this.getAMember()
     or
-    exists(int i | pred = indexedMember("hasParameter", i) and hasParameter(i, _, result))
+    exists(int i | pred = indexedMember("hasParameter", i) and this.hasParameter(i, _, result))
   }
 
   /** Holds if the `i`th parameter of this module has `name` and type `sig`. */
