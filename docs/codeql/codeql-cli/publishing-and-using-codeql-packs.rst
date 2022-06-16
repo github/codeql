@@ -90,3 +90,21 @@ For example, the following ``qlconfig.yml`` file associates all packs with the C
    url: https://ghcr.io/v2/
 
 You can now use ``codeql pack publish``, ``codeql pack download``, and ``codeql database analyze`` to manage packs on GitHub Enterprise Server.
+
+Authenticating to GitHub Container registries
+---------------------------------------------
+
+You can download a private pack or publish a pack by authenticating to the appropriate GitHub Container registry.
+
+You can authenticate to the GitHub.com Container registry in two ways:
+
+1. Pass the ``--github-auth-stdin`` option to the CodeQL CLI, then supply a GitHub Apps token or personal access token via standard input.
+2. Set the ``GITHUB_TOKEN`` environment variable to a GitHub Apps token or personal access token.
+
+Similarly, you can authenticate to a GHES Container registry, or authenticate to multiple registries simultaneously (for example to download or analyze private packs from multiple registries) in two ways:
+
+1. Pass the ``--registries-auth-stdin`` option to the CodeQL CLI, then supply a registry authentication string via standard input.
+2. Set the ``CODEQL_REGISTRIES_AUTH`` environment variable to a registry authentication string.
+
+A registry authentication string is a comma-separated list of ``<registry-url>=<token>`` pairs, where ``registry-url`` is a GitHub Container registry URL, for example ``https://containers.GHE_HOSTNAME/v2/`` and ``token`` is a GitHub Apps token or personal access token for that GitHub Container registry.
+This ensures that each token is only passed to the Container registry you specify.
