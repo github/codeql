@@ -3,6 +3,7 @@
  */
 
 private import codeql.ruby.frameworks.Core
+private import codeql.ruby.frameworks.ActionCable
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.frameworks.ActiveStorage
