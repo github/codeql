@@ -1,4 +1,15 @@
-#!/usr/bin/env python3
+"""
+C++ trap entry generation
+
+`generate(opts, renderer)` will generate `TrapTags.h` (for types of labels) and `TrapEntries.h` (for trap emission) out
+of a dbscheme file.
+
+Each table in the `dbscheme` gets a corresponding `struct` defined in `TrapEntries.h` with a field for each column and
+an appropriate streaming operator for the trap emission.
+
+Unions in the `dbscheme` are used to populate a hierarchy of tags (empty structs) in `TrapTags.h` that is used to
+enforce a type system on trap labels (see `TrapLabel.h`).
+"""
 
 import logging
 
@@ -15,10 +26,10 @@ def get_tag_name(s):
     return inflection.camelize(s[1:])
 
 
-def get_cpp_type(schema_type: str, trap_affix: str):
+def get_cpp_type(schema_type: str):
     if schema_type.startswith("@"):
         tag = get_tag_name(schema_type)
-        return f"{trap_affix}Label<{tag}Tag>"
+        return f"TrapLabel<{tag}Tag>"
     if schema_type == "string":
         return "std::string"
     if schema_type == "boolean":
@@ -26,13 +37,13 @@ def get_cpp_type(schema_type: str, trap_affix: str):
     return schema_type
 
 
-def get_field(c: dbscheme.Column, trap_affix: str):
+def get_field(c: dbscheme.Column):
     args = {
         "field_name": c.schema_name,
         "type": c.type,
     }
     args.update(cpp.get_field_override(c.schema_name))
-    args["type"] = get_cpp_type(args["type"], trap_affix)
+    args["type"] = get_cpp_type(args["type"])
     return cpp.Field(**args)
 
 
@@ -43,14 +54,14 @@ def get_binding_column(t: dbscheme.Table):
         return None
 
 
-def get_trap(t: dbscheme.Table, trap_affix: str):
+def get_trap(t: dbscheme.Table):
     id = get_binding_column(t)
     if id:
-        id = get_field(id, trap_affix)
+        id = get_field(id)
     return cpp.Trap(
         table_name=t.name,
         name=inflection.camelize(t.name),
-        fields=[get_field(c, trap_affix) for c in t.columns],
+        fields=[get_field(c) for c in t.columns],
         id=id,
     )
 
@@ -63,14 +74,14 @@ def generate(opts, renderer):
     traps = []
     for e in dbscheme.iterload(opts.dbscheme):
         if e.is_table:
-            traps.append(get_trap(e, opts.trap_affix))
+            traps.append(get_trap(e))
         elif e.is_union:
             tag_graph.setdefault(e.lhs, set())
             for d in e.rhs:
                 tag_graph.setdefault(d.type, set()).add(e.lhs)
 
-    renderer.render(cpp.TrapList(traps, opts.cpp_namespace, opts.trap_affix, opts.cpp_include_dir, opts.dbscheme),
-                    out / f"{opts.trap_affix}Entries.h")
+    renderer.render(cpp.TrapList(traps, opts.dbscheme),
+                    out / f"TrapEntries.h")
 
     tags = []
     for index, tag in enumerate(toposort_flatten(tag_graph)):
@@ -80,4 +91,4 @@ def generate(opts, renderer):
             index=index,
             id=tag,
         ))
-    renderer.render(cpp.TagList(tags, opts.cpp_namespace, opts.dbscheme), out / f"{opts.trap_affix}Tags.h")
+    renderer.render(cpp.TagList(tags, opts.dbscheme), out / f"TrapTags.h")

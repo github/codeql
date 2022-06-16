@@ -673,7 +673,7 @@ class TypeExpr extends TType, AstNode {
    * Gets the module of the type, if it exists.
    * E.g. `DataFlow` in `DataFlow::Node`.
    */
-  ModuleExpr getModule() { toQL(result) = type.getChild() }
+  ModuleExpr getModule() { toQL(result) = type.getQualifier() }
 
   /**
    * Gets the type that this type reference refers to.
@@ -2187,7 +2187,7 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
    * is `Bar`.
    */
   string getName() {
-    result = me.getName().getValue()
+    result = me.getName().(QL::SimpleId).getValue()
     or
     not exists(me.getName()) and result = me.getChild().(QL::SimpleId).getValue()
   }

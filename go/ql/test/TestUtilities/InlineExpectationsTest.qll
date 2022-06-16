@@ -93,7 +93,7 @@
 private import InlineExpectationsTestPrivate
 
 /**
- * Base class for tests with inline expectations. The test extends this class to provide the actual
+ * The base class for tests with inline expectations. The test extends this class to provide the actual
  * results of the query, which are then compared with the expected results in comments to produce a
  * list of failure messages that point out where the actual results differ from the expected
  * results.
@@ -121,11 +121,17 @@ abstract class InlineExpectationsTest extends string {
    * - `value` - The value of the result, which will be matched against the value associated with
    *   `tag` in any expected result comment on that line.
    */
-  abstract predicate hasActualResult(string file, int line, string element, string tag, string value);
+  abstract predicate hasActualResult(Location location, string element, string tag, string value);
 
-  predicate hasActualResult(Location location, string element, string tag, string value) {
-    this.hasActualResult(location.getFile().getAbsolutePath(), location.getStartLine(), element,
-      tag, value)
+  /**
+   * Holds if there is an optional result on the specified location.
+   *
+   * This is similar to `hasActualResult`, but returns results that do not require a matching annotation.
+   * A failure will still arise if there is an annotation that does not match any results, but not vice versa.
+   * Override this predicate to specify optional results.
+   */
+  predicate hasOptionalResult(Location location, string element, string tag, string value) {
+    none()
   }
 
   final predicate hasFailureMessage(FailureLocatable element, string message) {
@@ -139,13 +145,14 @@ abstract class InlineExpectationsTest extends string {
         )
         or
         not exists(ValidExpectation expectation | expectation.matchesActualResult(actualResult)) and
-        message = "Unexpected result: " + actualResult.getExpectationText()
+        message = "Unexpected result: " + actualResult.getExpectationText() and
+        not actualResult.isOptional()
       )
     )
     or
     exists(ValidExpectation expectation |
       not exists(ActualResult actualResult | expectation.matchesActualResult(actualResult)) and
-      expectation.getTag() = this.getARelevantTag() and
+      expectation.getTag() = getARelevantTag() and
       element = expectation and
       (
         expectation instanceof GoodExpectation and
@@ -174,7 +181,7 @@ private string expectationCommentPattern() { result = "\\s*\\$((?:[^/]|/[^/])*)(
 /**
  * The possible columns in an expectation comment. The `TDefaultColumn` branch represents the first
  * column in a comment. This column is not precedeeded by a name. `TNamedColumn(name)` represents a
- * column containing expected results preceeded by the string `name:`.
+ * column containing expected results preceded by the string `name:`.
  */
 private newtype TColumn =
   TDefaultColumn() or
@@ -248,9 +255,13 @@ private string expectationPattern() {
 
 private newtype TFailureLocatable =
   TActualResult(
-    InlineExpectationsTest test, Location location, string element, string tag, string value
+    InlineExpectationsTest test, Location location, string element, string tag, string value,
+    boolean optional
   ) {
-    test.hasActualResult(location, element, tag, value)
+    test.hasActualResult(location, element, tag, value) and
+    optional = false
+    or
+    test.hasOptionalResult(location, element, tag, value) and optional = true
   } or
   TValidExpectation(ExpectationComment comment, string tag, string value, string knownFailure) {
     exists(TColumn column, string tags |
@@ -269,7 +280,7 @@ class FailureLocatable extends TFailureLocatable {
 
   Location getLocation() { none() }
 
-  final string getExpectationText() { result = this.getTag() + "=" + this.getValue() }
+  final string getExpectationText() { result = getTag() + "=" + getValue() }
 
   string getTag() { none() }
 
@@ -282,8 +293,9 @@ class ActualResult extends FailureLocatable, TActualResult {
   string element;
   string tag;
   string value;
+  boolean optional;
 
-  ActualResult() { this = TActualResult(test, location, element, tag, value) }
+  ActualResult() { this = TActualResult(test, location, element, tag, value, optional) }
 
   override string toString() { result = element }
 
@@ -294,6 +306,8 @@ class ActualResult extends FailureLocatable, TActualResult {
   override string getTag() { result = tag }
 
   override string getValue() { result = value }
+
+  predicate isOptional() { optional = true }
 }
 
 abstract private class Expectation extends FailureLocatable {
@@ -318,24 +332,24 @@ private class ValidExpectation extends Expectation, TValidExpectation {
   string getKnownFailure() { result = knownFailure }
 
   predicate matchesActualResult(ActualResult actualResult) {
-    this.getLocation().getStartLine() = actualResult.getLocation().getStartLine() and
-    this.getLocation().getFile() = actualResult.getLocation().getFile() and
-    this.getTag() = actualResult.getTag() and
-    this.getValue() = actualResult.getValue()
+    getLocation().getStartLine() = actualResult.getLocation().getStartLine() and
+    getLocation().getFile() = actualResult.getLocation().getFile() and
+    getTag() = actualResult.getTag() and
+    getValue() = actualResult.getValue()
   }
 }
 
 /* Note: These next three classes correspond to all the possible values of type `TColumn`. */
 class GoodExpectation extends ValidExpectation {
-  GoodExpectation() { this.getKnownFailure() = "" }
+  GoodExpectation() { getKnownFailure() = "" }
 }
 
 class FalsePositiveExpectation extends ValidExpectation {
-  FalsePositiveExpectation() { this.getKnownFailure() = "SPURIOUS" }
+  FalsePositiveExpectation() { getKnownFailure() = "SPURIOUS" }
 }
 
 class FalseNegativeExpectation extends ValidExpectation {
-  FalseNegativeExpectation() { this.getKnownFailure() = "MISSING" }
+  FalseNegativeExpectation() { getKnownFailure() = "MISSING" }
 }
 
 class InvalidExpectation extends Expectation, TInvalidExpectation {

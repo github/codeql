@@ -21,7 +21,9 @@ import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.JavaClass
+import org.jetbrains.kotlin.load.java.structure.JavaMethod
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameter
+import org.jetbrains.kotlin.load.java.structure.JavaTypeParameterListOwner
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -514,7 +516,7 @@ open class KotlinFileExtractor(
                 else
                     null
             } ?: vp.type
-            val javaType = ((vp.parent as? IrFunction)?.let { getJavaMethod(it) })?.valueParameters?.getOrNull(idx)?.type
+            val javaType = (vp.parent as? IrFunction)?.let { getJavaCallable(it)?.let { jCallable -> getJavaValueParameterType(jCallable, idx) } }
             val typeWithWildcards = addJavaLoweringWildcards(maybeErasedType, !hasWildcardSuppressionAnnotation(vp), javaType)
             val substitutedType = typeSubstitution?.let { it(typeWithWildcards, TypeContext.OTHER, pluginContext) } ?: typeWithWildcards
             val id = useValueParameter(vp, parent)
@@ -681,18 +683,18 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>? = null) =
+    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
         if (isFake(f))
             null
         else
-            forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, idOverride, null)
+            forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, null, null)
 
     fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>?, locOverride: Label<DbLocation>?): Label<out DbCallable>  {
         with("function", f) {
             DeclarationStackAdjuster(f).use {
 
-                val javaMethod = getJavaMethod(f)
-                getFunctionTypeParameters(f).mapIndexed { idx, tp -> extractTypeParameter(tp, idx, javaMethod?.typeParameters?.getOrNull(idx)) }
+                val javaCallable = getJavaCallable(f)
+                getFunctionTypeParameters(f).mapIndexed { idx, tp -> extractTypeParameter(tp, idx, (javaCallable as? JavaTypeParameterListOwner)?.typeParameters?.getOrNull(idx)) }
 
                 val id =
                     idOverride
@@ -726,7 +728,7 @@ open class KotlinFileExtractor(
 
                 val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
 
-                val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false, javaMethod?.returnType)
+                val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false, (javaCallable as? JavaMethod)?.returnType)
                 val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
 
                 val locId = locOverride ?: getLocation(f, classTypeArgsIncludingOuterClasses)
@@ -2594,10 +2596,7 @@ open class KotlinFileExtractor(
                         tw.writeCallableEnclosingExpr(id, callable)
                         tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
-                        val vId = if (owner is IrValueParameter && owner.isExtensionReceiver())
-                            useValueParameter(owner, useFunction(owner.parent as IrFunction))
-                        else
-                            useValueDeclaration(owner)
+                        val vId = useValueDeclaration(owner)
                         if (vId != null) {
                             tw.writeVariableBinding(id, vId)
                         }
@@ -4057,17 +4056,14 @@ open class KotlinFileExtractor(
                     }
 
                     val typeOwner = e.typeOperandClassifier.owner
-                    val samMember = if (typeOwner !is IrClass) {
+                    if (typeOwner !is IrClass) {
                         logger.errorElement("Expected to find SAM conversion to IrClass. Found '${typeOwner.javaClass}' instead. Can't implement SAM interface.", e)
                         return
-                    } else {
-                        val samMember = typeOwner.declarations.filterIsInstance<IrFunction>().find { it is IrOverridableMember && it.modality == Modality.ABSTRACT }
-                        if (samMember == null) {
-                            logger.errorElement("Couldn't find SAM member in type '${typeOwner.kotlinFqName.asString()}'. Can't implement SAM interface.", e)
-                            return
-                        } else {
-                            samMember
-                        }
+                    }
+                    val samMember = typeOwner.declarations.filterIsInstance<IrFunction>().find { it is IrOverridableMember && it.modality == Modality.ABSTRACT }
+                    if (samMember == null) {
+                        logger.errorElement("Couldn't find SAM member in type '${typeOwner.kotlinFqName.asString()}'. Can't implement SAM interface.", e)
+                        return
                     }
 
                     val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")

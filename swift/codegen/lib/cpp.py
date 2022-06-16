@@ -101,9 +101,6 @@ class TrapList:
     template: ClassVar = 'trap_traps'
 
     traps: List[Trap]
-    namespace: str
-    trap_affix: str
-    include_dir: str
     source: str
 
 
@@ -112,7 +109,6 @@ class TagList:
     template: ClassVar = 'trap_tags'
 
     tags: List[Tag]
-    namespace: str
     source: str
 
 
@@ -149,7 +145,4 @@ class ClassList:
     template: ClassVar = "cpp_classes"
 
     classes: List[Class]
-    namespace: str
-    trap_affix: str
-    include_dir: str
     source: str

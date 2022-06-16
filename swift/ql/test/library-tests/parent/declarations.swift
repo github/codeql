@@ -134,3 +134,12 @@ struct HasPropertyAndObserver {
     didSet { }
   }
 }
+
+extension Int {
+  func id() -> Int {
+    return self
+  }
+}
+
+42.id()
+

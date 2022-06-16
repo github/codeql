@@ -47,19 +47,33 @@ module CfgScope {
   }
 
   private class BodyStmtCallableScope extends Range_ instanceof AbstractFunctionDecl {
-    final override predicate entry(ControlFlowElement first) {
-      exists(Decls::FuncDeclTree tree |
-        tree.getAst() = this and
-        first = tree
-      )
-    }
+    Decls::FuncDeclTree tree;
 
-    final override predicate exit(ControlFlowElement last, Completion c) {
-      exists(Decls::FuncDeclTree tree |
-        tree.getAst() = this and
-        tree.last(last, c)
-      )
-    }
+    BodyStmtCallableScope() { tree.getAst() = this }
+
+    final override predicate entry(ControlFlowElement first) { first(tree, first) }
+
+    final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
+  }
+
+  private class KeyPathScope extends Range_ instanceof KeyPathExpr {
+    AstControlFlowTree tree;
+
+    KeyPathScope() { tree.getAst() = this.getParsedRoot().getFullyConverted() }
+
+    final override predicate entry(ControlFlowElement first) { first(tree, first) }
+
+    final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
+  }
+
+  private class ClosureExprScope extends Range_ instanceof ClosureExpr {
+    Exprs::ClosureExprTree tree;
+
+    ClosureExprScope() { tree.getAst() = this }
+
+    final override predicate entry(ControlFlowElement first) { first(tree, first) }
+
+    final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
   }
 }
 
@@ -1042,6 +1056,21 @@ module Exprs {
     }
   }
 
+  class ClosureExprTree extends StandardPreOrderTree, TClosureElement {
+    ClosureExpr expr;
+
+    ClosureExprTree() { this = TClosureElement(expr) }
+
+    ClosureExpr getAst() { result = expr }
+
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = expr.getParam(i)
+      or
+      result.asAstNode() = expr.getBody() and
+      i = expr.getNumberOfParams()
+    }
+  }
+
   private class BindOptionalTree extends AstStandardPostOrderTree {
     override BindOptionalExpr ast;
 
@@ -1109,6 +1138,20 @@ module Exprs {
       override AutoClosureExpr ast;
 
       AutoClosureTree() { not this instanceof LogicalAutoClosureTree }
+    }
+  }
+
+  class KeyPathTree extends AstLeafTree {
+    override KeyPathExpr ast;
+  }
+
+  class KeyPathApplicationTree extends AstStandardPostOrderTree {
+    override KeyPathApplicationExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getBase().getFullyConverted()
+      or
+      i = 1 and result.asAstNode() = ast.getKeyPath().getFullyConverted()
     }
   }
 
@@ -1272,6 +1315,10 @@ module Exprs {
       override DeclRefExpr ast;
 
       DeclRefExprLValueTree() { isLValue(ast) }
+    }
+
+    class OtherConstructorDeclRefTree extends AstLeafTree {
+      override OtherConstructorDeclRefExpr ast;
     }
 
     abstract class DeclRefExprRValueTree extends AstControlFlowTree {
@@ -1648,7 +1695,9 @@ private module Cached {
     result = scopeOfAst(n.asAstNode()) or
     result = scopeOfAst(n.(PropertyGetterElement).getRef()) or
     result = scopeOfAst(n.(PropertySetterElement).getAssignExpr()) or
-    result = scopeOfAst(n.(PropertyObserverElement).getAssignExpr())
+    result = scopeOfAst(n.(PropertyObserverElement).getAssignExpr()) or
+    result = n.(FuncDeclElement).getAst() or
+    result = n.(KeyPathElement).getAst()
   }
 
   cached

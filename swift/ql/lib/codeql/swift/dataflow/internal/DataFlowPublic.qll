@@ -81,6 +81,10 @@ class SsaDefinitionNode extends Node, TSsaDefinitionNode {
   override Ssa::Definition asDefinition() { result = def }
 }
 
+class InoutReturnNode extends Node instanceof InoutReturnNodeImpl {
+  ParamDecl getParameter() { result = super.getParameter() }
+}
+
 /**
  * A node associated with an object after an operation that might have
  * changed its state.
