@@ -24,11 +24,11 @@ private class ContainerOrModule extends TContainerOrModule {
     this = TFolder(_) and result = "folder"
   }
 
-    /** Gets the module for this imported module. */
-    Module asModule() { this = TModule(result) }
+  /** Gets the module for this imported module. */
+  Module asModule() { this = TModule(result) }
 
-    /** Gets the file for this file. */
-    File asFile() { this = TFile(result) }
+  /** Gets the file for this file. */
+  File asFile() { this = TFile(result) }
 }
 
 private class TFileOrModule = TFile or TModule;
@@ -115,7 +115,6 @@ class Module_ extends FileOrModule, TModule {
 }
 
 // class ModuleRef = AstNodes::TModuleExpr or AstNodes::TType;
-
 private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
   not m = TFile(any(File f | f.getExtension() = "ql")) and
   exists(string q | q = imp.getQualifiedName(i) |
@@ -209,7 +208,7 @@ private module Cached {
 
   /** Holds if module expression `me` resolves to `m`. */
   cached
-  predicate resolveModuleRef(ModuleRef me, FileOrModule m) { // TODO: name.
+  predicate resolveModuleRef(ModuleRef me, FileOrModule m) {
     not m = TFile(any(File f | f.getExtension() = "ql")) and
     not exists(me.(ModuleExpr).getQualifier()) and
     exists(ContainerOrModule enclosing, string name | resolveModuleRefHelper(me, enclosing, name) |
@@ -257,17 +256,17 @@ private predicate definesModule(
     or
     m = TModule(any(Module mod | public = getPublicBool(mod)))
   )
-   or
+  or
   // signature module in a paramertized module
-  exists(Module mod, SignatureExpr sig, ModuleParameterRef ty, int i | 
+  exists(Module mod, SignatureExpr sig, ModuleParameterRef ty, int i |
     mod = container.asModule() and
     mod.hasParameter(i, name, sig) and
     public = false and
-    ty = sig.asModuleRef() 
-    |
+    ty = sig.asModuleRef()
+  |
     m = ty.getResolvedModule()
     or
-    exists(ModuleExpr inst | inst.getResolvedModule().asModule() = mod | 
+    exists(ModuleExpr inst | inst.getResolvedModule().asModule() = mod |
       m = inst.getArgument(i).asModuleRef().getResolvedModule()
     )
   )
@@ -307,12 +306,14 @@ module ModConsistency {
         .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
-  query predicate noResolveModuleRef(ModuleRef me) { // TODO: name?
+  query predicate noResolveModuleRef(ModuleRef me) {
     not exists(me.getResolvedModule()) and
     not me.getLocation()
         .getFile()
         .getAbsolutePath()
-        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*") and
+    // this ModuleRef might really be a type.
+    not exists(me.(TypeExpr).getResolvedType())
   }
 
   query predicate multipleResolve(Import imp, int c, ContainerOrModule m) {

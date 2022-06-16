@@ -2191,17 +2191,14 @@ class DontCare extends TDontCare, Expr {
   override string getAPrimaryQlClass() { result = "DontCare" }
 }
 
-/** A reference to a module as part of a parameterized module (or it's instantiation) */
-class ModuleParameterRef extends ModuleRef, TModuleParameterRef {
-  QL::TypeExpr type;
-
-  ModuleParameterRef() { this = TModuleParameterRef(type) }
-
+/**
+ * A type expression seen as a reference to a module as part of a parameterized module (or it's instantiation).
+ * This might not be a reference to a module, but we assume so until we find out in the resolve phase.
+ */
+class ModuleParameterRef extends ModuleRef instanceof TypeExpr {
   final override FileOrModule getResolvedModule() { resolveModuleRef(this, result) }
 
-  override string getName() { result = type.getName().getValue() }
-
-  override string getAPrimaryQlClass() { result = "ModuleParameterRef" }
+  override string getName() { result = TypeExpr.super.getClassName() }
 }
 
 /** A module expression. Such as `DataFlow` in `DataFlow::Node` */
@@ -2219,7 +2216,15 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
    *
    * is `Bar`.
    */
-  override string getName() { result = getNameForModuleExpr(me) }
+  override string getName() {
+    result = me.getName().(QL::SimpleId).getValue()
+    or
+    not exists(me.getName()) and result = me.getChild().(QL::SimpleId).getValue()
+    or
+    exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
+      result = instantiation.getName().getChild().getValue()
+    )
+  }
 
   /**
    * Gets the qualifier of this module expression. For example, the qualifier of

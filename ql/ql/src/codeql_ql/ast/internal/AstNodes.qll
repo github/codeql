@@ -19,11 +19,7 @@ newtype TAstNode =
   TNewType(QL::Datatype dt) or
   TNewTypeBranch(QL::DatatypeBranch branch) or
   TImport(QL::ImportDirective imp) or
-  // splitting up the TypeExpr based on whether they are a reference to a type or to a module, with some duplicates. 
-  TType(QL::TypeExpr type) { not isDefinitelyModuleParameter(type) } or
-  TModuleParameterRef(QL::TypeExpr type) {
-    isDefinitelyModuleParameter(type) or mightBeModuleParameter(type)
-  } or
+  TType(QL::TypeExpr type) or
   TDisjunction(QL::Disjunction disj) or
   TConjunction(QL::Conjunction conj) or
   TComparisonFormula(QL::CompTerm comp) or
@@ -87,43 +83,11 @@ class TExpr =
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
-class TModuleRef = TImport or TModuleExpr or TModuleParameterRef;
+class TModuleRef = TImport or TModuleExpr or TType;
 
 class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
 
-class TSignatureExpr = TPredicateExpr or TType or TModuleParameterRef;
-
-private predicate isDefinitelyModuleParameter(QL::TypeExpr type) {
-  // the signature of a parameterized module
-  exists(QL::SignatureExpr expr, QL::Module m, QL::ModuleParam param, string name |
-    param = m.getParameter(_) and
-    name = param.getParameter().getValue() and
-    expr = param.getSignature() and
-    type = expr.getTypeExpr() and
-    // we have a ref to it, to confirm that it's actually a module.
-    exists(QL::ModuleExpr ref | getNameForModuleExpr(ref) = name | ref.getParent+() = m)
-  )
-  or
-  // the implements clause of a module.
-  exists(QL::Module qlmod | qlmod.getImplements(_).getTypeExpr() = type)
-}
-
-private predicate mightBeModuleParameter(QL::TypeExpr type) {
-  // or it's in an instantiation. The only way to know for sure if it's a module ref or not is to try, so we just have duplicates in the AST.
-  // we spuriously have both TypeExpr and ModuleParameterRef for the same thing.
-  exists(QL::ModuleInstantiation inst | type = inst.getChild(_).getTypeExpr())
-}
-
-// ensuring non-monotonic recursion by outlining predicate out of `ModuleExpr`
-string getNameForModuleExpr(QL::ModuleExpr me) {
-  result = me.getName().(QL::SimpleId).getValue()
-  or
-  not exists(me.getName()) and result = me.getChild().(QL::SimpleId).getValue()
-  or
-  exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
-    result = instantiation.getName().getChild().getValue()
-  )
-}
+class TSignatureExpr = TPredicateExpr or TType;
 
 /** DEPRECATED: Alias for TYamlNode */
 deprecated class TYAMLNode = TYamlNode;
@@ -211,8 +175,6 @@ QL::AstNode toQL(AST::AstNode n) {
   n = TNewType(result)
   or
   n = TNewTypeBranch(result)
-  or
-  n = TModuleParameterRef(result)
   or
   n = TImport(result)
   or

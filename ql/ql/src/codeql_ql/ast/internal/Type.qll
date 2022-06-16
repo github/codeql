@@ -350,7 +350,6 @@ module TyConsistency {
         .getAbsolutePath()
         .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*") and
     // we have some duplicate with moduleRef, so that might be resolved correctly.
-    // TODO: Collapse both ModuleRef and TypeExpr into one class?
     not exists(ModuleRef ref | AstNodes::toQL(te) = AstNodes::toQL(ref) |
       exists(ref.getResolvedModule())
     )
