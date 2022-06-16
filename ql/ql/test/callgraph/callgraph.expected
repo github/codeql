@@ -21,6 +21,8 @@ getTarget
 | Overrides.qll:24:39:24:48 | MemberCall | Overrides.qll:22:12:22:44 | ClassPredicate bar |
 | Overrides.qll:28:3:28:9 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
 | Overrides.qll:29:3:29:10 | MemberCall | Overrides.qll:8:3:8:41 | ClassPredicate baz |
+| ParamModules.qll:5:28:5:41 | PredicateCall | ParamModules.qll:2:13:2:36 | ClasslessPredicate fooSig |
+| ParamModules.qll:10:26:10:49 | PredicateCall | ParamModules.qll:5:5:5:43 | ClasslessPredicate bar |
 | packs/other/OtherThing.qll:5:3:5:8 | PredicateCall | packs/lib/LibThing/Foo.qll:1:1:1:30 | ClasslessPredicate foo |
 | packs/other/OtherThing.qll:6:3:6:8 | PredicateCall | packs/src/SrcThing.qll:8:1:8:30 | ClasslessPredicate bar |
 | packs/src/SrcThing.qll:4:3:4:8 | PredicateCall | packs/lib/LibThing/Foo.qll:1:1:1:30 | ClasslessPredicate foo |
@@ -33,3 +35,5 @@ exprPredicate
 | Foo.qll:26:22:26:31 | predicate | Foo.qll:20:3:20:54 | ClasslessPredicate myThing2 |
 | Foo.qll:47:55:47:62 | predicate | Foo.qll:42:20:42:27 | NewTypeBranch MkRoot |
 | Foo.qll:47:65:47:70 | predicate | Foo.qll:44:9:44:56 | ClasslessPredicate edge |
+| ParamModules.qll:4:18:4:25 | predicate | ParamModules.qll:2:13:2:36 | ClasslessPredicate fooSig |
+| ParamModules.qll:10:34:10:40 | predicate | ParamModules.qll:8:3:8:35 | ClasslessPredicate myFoo |
