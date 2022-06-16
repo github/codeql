@@ -69,6 +69,12 @@ private module Cached {
     |
       definesPredicate(m, pc.getPredicateName(), pc.getNumberOfArguments(), p, public)
     )
+    or
+    exists(Module mod, PredicateExpr sig |
+      mod.hasParameter(_, pc.getPredicateName(), sig) and
+      p = sig.getResolvedPredicate() and // <- this is a `signature predicate`, but that's fine.
+      sig.getArity() = pc.getNumberOfArguments()
+    )
   }
 
   private predicate resolveMemberCall(MemberCall mc, PredicateOrBuiltin p) {
