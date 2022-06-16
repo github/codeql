@@ -18,7 +18,7 @@ import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 
 class DecompressionApiUse extends DataFlow::Node {
-  // this should find the first argument of Zlib::Inflate.inflate or Zip::File.extract
+  // this should find the first argument of Zlib::Inflate.inflate
   DecompressionApiUse() {
     this =
       API::getTopLevelMember("Zlib").getMember("Inflate").getAMethodCall("inflate").getArgument(0)
