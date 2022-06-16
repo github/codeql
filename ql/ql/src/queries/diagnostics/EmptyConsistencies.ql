@@ -31,7 +31,7 @@ where
   TypeConsistency::multiplePrimitivesExpr(node, _, _) and
   msg = "TypeConsistency::multiplePrimitivesExpr"
   or
-  AstConsistency::nonTotalGetParent(node) and msg = "AstConsistency::nonTotalGetParent"
+  AstConsistency::nonTotalGetParent(node) and msg = "AstConsistency::nonTotalGetParent" // TODO: unique parent
   or
   TypeConsistency::noResolve(node) and msg = "TypeConsistency::noResolve"
   or
@@ -39,15 +39,12 @@ where
   or
   ModConsistency::noResolveModuleExpr(node) and msg = "ModConsistency::noResolveModuleExpr"
   or
+  ModConsistency::noName(node) and msg = "ModConsistency::noName"
+  or
+  ModConsistency::nonUniqueName(node) and msg = "ModConsistency::nonUniqueName"
+  or
   VarConsistency::noFieldDef(node) and msg = "VarConsistency::noFieldDef"
   or
   VarConsistency::noVarDef(node) and msg = "VarConsistency::noVarDef"
-  or
-  node instanceof ModuleExpr and
-  not exists(node.(ModuleExpr).getName()) and
-  msg = "exists(ModuleExpr::getName)"
-  or
-  node instanceof ModuleExpr and
-  count(node.(ModuleExpr).getName()) >= 2 and
-  msg = "unique(ModuleExpr::getName)"
 select node, msg
+// TODO: vardef consistency.

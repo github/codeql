@@ -311,4 +311,8 @@ module ModConsistency {
     c > 1 and
     resolveModuleExpr(me, m)
   }
+
+  query predicate noName(Module mod) { not exists(mod.getName()) }
+
+  query predicate nonUniqueName(Module mod) { count(mod.getName()) >= 2 }
 }
