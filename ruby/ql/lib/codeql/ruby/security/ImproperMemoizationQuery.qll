@@ -41,7 +41,7 @@ private class HashMemoStmt extends MemoStmt {
  * A method that may be performing memoization.
  */
 private class MemoCandidate extends Method {
-  MemoCandidate() { exists(MemoStmt m | m.getEnclosingMethod() = this) }
+  MemoCandidate() { this = any(MemoStmt m).getEnclosingMethod() }
 }
 
 /**
@@ -49,7 +49,7 @@ private class MemoCandidate extends Method {
  */
 private predicate parameterUsedInMemoValue(Method m, Parameter p, MemoStmt a) {
   p = m.getAParameter() and
-  a.getParent+() = m and
+  a.getEnclosingMethod() = m and
   p.getAVariable().getAnAccess().getParent*() = a.getRightOperand()
 }
 
@@ -58,7 +58,7 @@ private predicate parameterUsedInMemoValue(Method m, Parameter p, MemoStmt a) {
  */
 private predicate parameterUsedInMemoKey(Method m, Parameter p, HashMemoStmt a) {
   p = m.getAParameter() and
-  a.getParent+() = m and
+  a.getEnclosingMethod() = m and
   p.getAVariable().getAnAccess().getParent+() = a.getLeftOperand()
 }
 
