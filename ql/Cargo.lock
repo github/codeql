@@ -514,7 +514,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-ql"
 version = "0.19.0"
-source = "git+https://github.com/erik-krogh/tree-sitter-ql.git?rev=d8da4b8190a3c1f3fab293016bbbb60469e56ea3#d8da4b8190a3c1f3fab293016bbbb60469e56ea3"
+source = "git+https://github.com/erik-krogh/tree-sitter-ql.git?rev=343cc5873e20510586ade803659ef8ce153bd603#343cc5873e20510586ade803659ef8ce153bd603"
 dependencies = [
  "cc",
  "tree-sitter",

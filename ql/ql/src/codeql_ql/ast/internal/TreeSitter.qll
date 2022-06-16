@@ -1023,10 +1023,16 @@ module QL {
     final override AstNode getAFieldOrChild() { ql_module_member_child(this, _, result) }
   }
 
-  /** A class representing `moduleName` tokens. */
-  class ModuleName extends @ql_token_module_name, Token {
+  /** A class representing `moduleName` nodes. */
+  class ModuleName extends @ql_module_name, AstNode {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ModuleName" }
+
+    /** Gets the child of this node. */
+    final SimpleId getChild() { ql_module_name_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { ql_module_name_def(this, result) }
   }
 
   /** A class representing `moduleParam` nodes. */
