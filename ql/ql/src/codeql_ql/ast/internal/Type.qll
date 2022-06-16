@@ -355,11 +355,14 @@ module TyConsistency {
     )
   }
 
-  query predicate multipleResolve(TypeExpr te, int c, Type t) {
-    c = strictcount(Type t0 | resolveTypeExpr(te, t0)) and
-    c > 1 and
-    resolveTypeExpr(te, t)
-  }
+  // This can happen with parameterized modules.
+  /*
+   * query predicate multipleResolve(TypeExpr te, int c, Type t) {
+   *    c = strictcount(Type t0 | resolveTypeExpr(te, t0)) and
+   *    c > 1 and
+   *    resolveTypeExpr(te, t)
+   *  }
+   */
 
   query predicate multiplePrimitives(TypeExpr te, int c, PrimitiveType t) {
     c = strictcount(PrimitiveType t0 | resolveTypeExpr(te, t0)) and

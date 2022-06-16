@@ -326,11 +326,14 @@ module ModConsistency {
         .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
-  query predicate multipleResolveModuleRef(ModuleExpr me, int c, ContainerOrModule m) {
-    c = strictcount(ContainerOrModule m0 | resolveModuleRef(me, m0)) and
-    c > 1 and
-    resolveModuleRef(me, m)
-  }
+  // This can happen with parameterized modules.
+  /*
+   * query predicate multipleResolveModuleRef(ModuleExpr me, int c, ContainerOrModule m) {
+   *    c = strictcount(ContainerOrModule m0 | resolveModuleRef(me, m0)) and
+   *    c > 1 and
+   *    resolveModuleRef(me, m)
+   *  }
+   */
 
   query predicate noName(Module mod) { not exists(mod.getName()) }
 

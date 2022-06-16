@@ -174,17 +174,20 @@ module PredConsistency {
     c > 1 and
     resolvePredicateExpr(pe, p)
   }
+  // This can happen with parametarized modules
+  /*
+   * query predicate multipleResolveCall(Call call, int c, PredicateOrBuiltin p) {
+   *    c =
+   *      strictcount(PredicateOrBuiltin p0 |
+   *        resolveCall(call, p0) and
+   *        // aliases are expected to resolve to multiple.
+   *        not exists(p0.(ClasslessPredicate).getAlias()) and
+   *        // overridden predicates may have multiple targets
+   *        not p0.(ClassPredicate).isOverride()
+   *      ) and
+   *    c > 1 and
+   *    resolveCall(call, p)
+   *  }
+   */
 
-  query predicate multipleResolveCall(Call call, int c, PredicateOrBuiltin p) {
-    c =
-      strictcount(PredicateOrBuiltin p0 |
-        resolveCall(call, p0) and
-        // aliases are expected to resolve to multiple.
-        not exists(p0.(ClasslessPredicate).getAlias()) and
-        // overridden predicates may have multiple targets
-        not p0.(ClassPredicate).isOverride()
-      ) and
-    c > 1 and
-    resolveCall(call, p)
   }
-}
