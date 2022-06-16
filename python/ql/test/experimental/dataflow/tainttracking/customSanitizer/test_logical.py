@@ -22,6 +22,9 @@ def random_choice():
 def is_safe(arg):
     return arg == "safe"
 
+def is_unsafe(arg):
+    return arg == TAINTED_STRING
+
 
 def test_basic():
     s = TAINTED_STRING
@@ -164,6 +167,15 @@ def test_with_return():
     ensure_not_tainted(s) # $ SPURIOUS: tainted
 
 
+def test_with_return_neg():
+    s = TAINTED_STRING
+
+    if is_unsafe(s):
+        return
+
+    ensure_not_tainted(s)
+
+
 def test_with_exception():
     s = TAINTED_STRING
 
@@ -171,6 +183,14 @@ def test_with_exception():
         raise Exception("unsafe")
 
     ensure_not_tainted(s) # $ SPURIOUS: tainted
+
+def test_with_exception_neg():
+    s = TAINTED_STRING
+
+    if is_unsafe(s):
+        raise Exception("unsafe")
+
+    ensure_not_tainted(s)
 
 # Make tests runable
 
@@ -182,7 +202,12 @@ test_tricky()
 test_nesting_not()
 test_nesting_not_with_and_true()
 test_with_return()
+test_with_return_neg()
 try:
     test_with_exception()
+except:
+    pass
+try:
+    test_with_exception_neg()
 except:
     pass
