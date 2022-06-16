@@ -39,7 +39,7 @@ where
   or
   ModConsistency::noResolve(node) and msg = "ModConsistency::noResolve"
   or
-  ModConsistency::noResolveModuleExpr(node) and msg = "ModConsistency::noResolveModuleExpr"
+  ModConsistency::noResolveModuleRef(node) and msg = "ModConsistency::noResolveModuleRef"
   or
   ModConsistency::noName(node) and msg = "ModConsistency::noName"
   or

@@ -712,6 +712,9 @@ class Module extends TModule, ModuleDeclaration {
     exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
   }
 
+  /** Gets a ref to the module that this module implements. */
+  ModuleParameterRef getImplements(int i) { toQL(result) = mod.getImplements(i).getTypeExpr() }
+
   /** Gets the module expression that this module is an alias for, if any. */
   ModuleExpr getAlias() { toQL(result) = mod.getAFieldOrChild().(QL::ModuleAliasBody).getChild() }
 
@@ -721,6 +724,8 @@ class Module extends TModule, ModuleDeclaration {
     pred = directMember("getAlias") and result = this.getAlias()
     or
     pred = directMember("getAMember") and result = this.getAMember()
+    or
+    exists(int i | pred = indexedMember("getImplements", i) and result = this.getImplements(i))
     or
     exists(int i | pred = indexedMember("hasParameter", i) and this.hasParameter(i, _, result))
   }
@@ -1110,6 +1115,8 @@ class InlineCast extends TInlineCast, Expr {
 class ModuleRef extends AstNode, TModuleRef {
   /** Gets the module that this entity resolves to. */
   FileOrModule getResolvedModule() { none() }
+
+  string getName() { none() }
 }
 
 /**
@@ -2184,6 +2191,19 @@ class DontCare extends TDontCare, Expr {
   override string getAPrimaryQlClass() { result = "DontCare" }
 }
 
+/** A reference to a module as part of a parameterized module (or it's instantiation) */
+class ModuleParameterRef extends ModuleRef, TModuleParameterRef {
+  QL::TypeExpr type;
+
+  ModuleParameterRef() { this = TModuleParameterRef(type) }
+
+  final override FileOrModule getResolvedModule() { resolveModuleRef(this, result) }
+
+  override string getName() { result = type.getName().getValue() }
+
+  override string getAPrimaryQlClass() { result = "ModuleParameterRef" }
+}
+
 /** A module expression. Such as `DataFlow` in `DataFlow::Node` */
 class ModuleExpr extends TModuleExpr, ModuleRef {
   QL::ModuleExpr me;
@@ -2199,15 +2219,7 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
    *
    * is `Bar`.
    */
-  string getName() {
-    result = me.getName().(QL::SimpleId).getValue()
-    or
-    not exists(me.getName()) and result = me.getChild().(QL::SimpleId).getValue()
-    or
-    exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
-      result = instantiation.getName().getChild().getValue()
-    )
-  }
+  override string getName() { result = getNameForModuleExpr(me) }
 
   /**
    * Gets the qualifier of this module expression. For example, the qualifier of
@@ -2220,7 +2232,7 @@ class ModuleExpr extends TModuleExpr, ModuleRef {
    */
   ModuleExpr getQualifier() { result = TModuleExpr(me.getChild()) }
 
-  final override FileOrModule getResolvedModule() { resolveModuleExpr(this, result) }
+  final override FileOrModule getResolvedModule() { resolveModuleRef(this, result) }
 
   final override string toString() { result = this.getName() }
 
@@ -2252,7 +2264,7 @@ class SignatureExpr extends TSignatureExpr, AstNode {
   SignatureExpr() {
     toQL(this) = sig.getPredicate()
     or
-    toQL(this) = sig.getTypeExpr()
+    toQL(this) = sig.getTypeExpr() // both `TypeExpr` and `ModuleParameterRef`
   }
 
   /** Gets the generated AST node that contains this signature expression. */
@@ -2263,6 +2275,8 @@ class SignatureExpr extends TSignatureExpr, AstNode {
 
   /** Gets this signature expression if it represents a type expression. */
   TypeExpr asType() { result = this }
+
+  ModuleParameterRef asModuleRef() { result = this }
 }
 
 /** An argument to an annotation. */

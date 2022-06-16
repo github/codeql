@@ -27,5 +27,37 @@ module ClassSig {
 }
 
 module ModuleSig {
-  // TODO:
+  signature module FooSig {
+    class A;
+
+    A getThing();
+  }
+
+  module UsesFoo<FooSig FooImpl> {
+    B getThing() { result = FooImpl::getThing() }
+
+    class B = FooImpl::A;
+  }
+
+  module MyFoo implements FooSig {
+    class C extends int {
+      C() { this = [0 .. 10] }
+
+      string myFoo() { result = "myFoo" }
+    }
+
+    class A = C;
+
+    C getThing() { any() }
+  }
+
+  module ImplStuff {
+    module Inst = UsesFoo<MyFoo>;
+
+    class D = Inst::B;
+
+    string use1() { result = Inst::getThing().myFoo() }
+
+    string use2(Inst::B b) { result = b.myFoo() }
+  }
 }
