@@ -41,6 +41,12 @@ class FileOrModule extends TFileOrModule, ContainerOrModule {
     or
     result = this.asModule().getLocation().getFile()
   }
+
+  Type toType() {
+    result.(FileType).getDeclaration().getLocation().getFile() = this.asFile()
+    or
+    result.(ModuleType).getDeclaration() = this.asModule()
+  }
 }
 
 private class File_ extends FileOrModule, TFile {
@@ -207,7 +213,7 @@ private module Cached {
 
   /** Holds if module expression `me` resolves to `m`. */
   cached
-  predicate resolveModuleRef(ModuleRef me, FileOrModule m) {
+  predicate resolveModuleRef(TypeRef me, FileOrModule m) {
     not m = TFile(any(File f | f.getExtension() = "ql")) and
     not exists(me.(ModuleExpr).getQualifier()) and
     exists(ContainerOrModule enclosing, string name | resolveModuleRefHelper(me, enclosing, name) |
@@ -221,9 +227,9 @@ private module Cached {
   }
 
   pragma[noinline]
-  private predicate resolveModuleRefHelper(ModuleRef me, ContainerOrModule enclosing, string name) {
+  private predicate resolveModuleRefHelper(TypeRef me, ContainerOrModule enclosing, string name) {
     enclosing = getEnclosingModule(me).getEnclosing*() and
-    name = me.getName()
+    name = [me.(ModuleExpr).getName(), me.(TypeExpr).getClassName()]
   }
 }
 
@@ -257,18 +263,18 @@ private predicate definesModule(
   )
   or
   // signature module in a paramertized module
-  exists(Module mod, SignatureExpr sig, ModuleParameterRef ty, int i |
+  exists(Module mod, SignatureExpr sig, TypeExpr ty, int i |
     mod = container.asModule() and
     mod.hasParameter(i, name, sig) and
     public = false and
-    ty = sig.asModuleRef()
+    ty = sig.asType()
   |
     // resolve to the signature module
     m = ty.getResolvedModule()
     or
     // resolve to the arguments of the instantiated module
     exists(ModuleExpr inst | inst.getResolvedModule().asModule() = mod |
-      m = inst.getArgument(i).asModuleRef().getResolvedModule()
+      m = inst.getArgument(i).asType().getResolvedModule()
     )
   )
   or
@@ -305,16 +311,6 @@ module ModConsistency {
         .getFile()
         .getAbsolutePath()
         .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
-  }
-
-  query predicate noResolveModuleRef(ModuleRef me) {
-    not exists(me.getResolvedModule()) and
-    not me.getLocation()
-        .getFile()
-        .getAbsolutePath()
-        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*") and
-    // this ModuleRef might really be a type.
-    not exists(me.(TypeExpr).getResolvedType())
   }
 
   query predicate multipleResolve(Import imp, int c, ContainerOrModule m) {

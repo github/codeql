@@ -39,8 +39,6 @@ where
   or
   ModConsistency::noResolve(node) and msg = "ModConsistency::noResolve"
   or
-  ModConsistency::noResolveModuleRef(node) and msg = "ModConsistency::noResolveModuleRef"
-  or
   ModConsistency::noName(node) and msg = "ModConsistency::noName"
   or
   ModConsistency::nonUniqueName(node) and msg = "ModConsistency::nonUniqueName"

@@ -83,7 +83,7 @@ class TExpr =
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
-class TModuleRef = TImport or TModuleExpr or TType;
+class TTypeRef = TImport or TModuleExpr or TType;
 
 class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
 

@@ -14,7 +14,9 @@ private newtype TType =
   TDontCare() or
   TClassChar(Class c) { isActualClass(c) } or
   TClassDomain(Class c) { isActualClass(c) } or
-  TDatabase(string s) { exists(TypeExpr t | t.isDBType() and s = t.getClassName()) }
+  TDatabase(string s) { exists(TypeExpr t | t.isDBType() and s = t.getClassName()) } or
+  TFile(TopLevel t) or
+  TModule(Module m)
 
 private predicate primTypeName(string s) { s = ["int", "float", "string", "boolean", "date"] }
 
@@ -108,6 +110,26 @@ class ClassType extends Type, TClass {
       other.getDeclaringType().getASuperType+() = result.getDeclaringType()
     )
   }
+}
+
+class FileType extends Type, TFile {
+  TopLevel decl;
+
+  FileType() { this = TFile(decl) }
+
+  override string getName() { result = decl.getLocation().getFile().getBaseName() }
+
+  override TopLevel getDeclaration() { result = decl }
+}
+
+class ModuleType extends Type, TModule {
+  Module decl;
+
+  ModuleType() { this = TModule(decl) }
+
+  override string getName() { result = decl.getName() }
+
+  override Module getDeclaration() { result = decl }
 }
 
 private PredicateOrBuiltin declaredPred(Type ty, string name, int arity) {
@@ -343,16 +365,12 @@ private predicate defines(FileOrModule m, string name, Type t, boolean public) {
 }
 
 module TyConsistency {
-  query predicate noResolve(TypeExpr te) {
-    not resolveTypeExpr(te, _) and
+  query predicate noResolve(TypeRef te) {
+    not exists(te.getResolvedType()) and
     not te.getLocation()
         .getFile()
         .getAbsolutePath()
-        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*") and
-    // we have some duplicate with moduleRef, so that might be resolved correctly.
-    not exists(ModuleRef ref | AstNodes::toQL(te) = AstNodes::toQL(ref) |
-      exists(ref.getResolvedModule())
-    )
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
   // This can happen with parameterized modules.
