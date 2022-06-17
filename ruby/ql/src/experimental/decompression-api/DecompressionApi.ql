@@ -18,11 +18,18 @@ import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 
 class DecompressionApiUse extends DataFlow::Node {
+  private DataFlow::CallNode call;
+
   // this should find the first argument of Zlib::Inflate.inflate
   DecompressionApiUse() {
-    this =
-      API::getTopLevelMember("Zlib").getMember("Inflate").getAMethodCall("inflate").getArgument(0)
+    this = call.getArgument(0) and
+    (
+      call = API::getTopLevelMember("Zlib").getMember("Inflate").getAMethodCall("inflate") or
+      call = API::getTopLevelMember("Zip").getMember("File").getAMethodCall("open_buffer")
+    )
   }
+
+  DataFlow::CallNode getCall() { result = call }
 }
 
 class Configuration extends TaintTracking::Configuration {
@@ -32,12 +39,14 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   // our Decompression APIs defined above will the the sinks we use for this query
-  override predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionApiUse }
+  override predicate isSink(DataFlow::Node sink) {
+    sink.(DataFlow::CallNode) instanceof DecompressionApiUse
+  }
 }
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink,
+select sink.getNode().(DecompressionApiUse), source, sink,
   "This call to $@ is unsafe because user-controlled data is used to set the object being decompressed, which could lead to a denial of service attack or malicious code extracted from an unknown source.",
-  sink.getNode().asExpr().getExpr().getParent(),
-  sink.getNode().asExpr().getExpr().getParent().toString()
+  sink.getNode().(DecompressionApiUse).getCall(),
+  sink.getNode().(DecompressionApiUse).getCall().getMethodName()
