@@ -25,9 +25,11 @@ module AllocationSizeOverflow {
   }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A guard node that prevents allocation-size overflow.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A sanitizer node that prevents allocation-size overflow.
@@ -73,12 +75,18 @@ module AllocationSizeOverflow {
     }
   }
 
+  private predicate allocationSizeCheck(DataFlow::Node g, Expr e, boolean branch) {
+    exists(DataFlow::Node lesser |
+      g.(DataFlow::RelationalComparisonNode).leq(branch, lesser, _, _) and
+      not lesser.isConst() and
+      globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(lesser)
+    )
+  }
+
   /** A check of the allocation size, acting as a guard to prevent allocation-size overflow. */
-  class AllocationSizeCheck extends DataFlow::BarrierGuard, DataFlow::RelationalComparisonNode {
-    override predicate checks(Expr e, boolean branch) {
-      exists(DataFlow::Node lesser | this.leq(branch, lesser, _, _) and not lesser.isConst() |
-        globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(lesser)
-      )
+  class AllocationSizeCheckBarrier extends DataFlow::Node {
+    AllocationSizeCheckBarrier() {
+      this = DataFlow::BarrierGuard<allocationSizeCheck/3>::getABarrierNode()
     }
   }
 
@@ -92,20 +100,24 @@ module AllocationSizeOverflow {
     DefaultSink() {
       this instanceof OverflowProneOperand and
       localStep*(this, allocsz) and
-      not exists(AllocationSizeCheck g | allocsz = g.getAGuardedNode())
+      not allocsz instanceof AllocationSizeCheckBarrier
     }
 
     override DataFlow::Node getAllocationSize() { result = allocsz }
   }
 
+  private predicate lengthCheck(DataFlow::Node g, Expr e, boolean branch) {
+    exists(DataFlow::CallNode lesser |
+      g.(DataFlow::RelationalComparisonNode).leq(branch, lesser, _, _)
+    |
+      lesser = Builtin::len().getACall() and
+      globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(lesser.getArgument(0))
+    )
+  }
+
   /** A length check, acting as a guard to prevent allocation-size overflow. */
-  class LengthCheck extends SanitizerGuard, DataFlow::RelationalComparisonNode {
-    override predicate checks(Expr e, boolean branch) {
-      exists(DataFlow::CallNode lesser | this.leq(branch, lesser, _, _) |
-        lesser = Builtin::len().getACall() and
-        globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(lesser.getArgument(0))
-      )
-    }
+  class LengthCheckSanitizer extends Sanitizer {
+    LengthCheckSanitizer() { this = DataFlow::BarrierGuard<lengthCheck/3>::getABarrierNode() }
   }
 
   /**
