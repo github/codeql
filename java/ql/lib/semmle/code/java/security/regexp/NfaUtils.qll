@@ -499,10 +499,10 @@ private module CharacterClasses {
   /** Gets a representative for all char classes that match the same chars as `c`. */
   CharacterClass normalize(CharacterClass c) {
     exists(string normalization |
-      normalization = getMormalizationString(c) and
+      normalization = getNormalizationString(c) and
       result =
         min(CharacterClass cc, string raw |
-          getMormalizationString(cc) = normalization and cc = CharClass(raw)
+          getNormalizationString(cc) = normalization and cc = CharClass(raw)
         |
           cc order by raw
         )
@@ -510,7 +510,7 @@ private module CharacterClasses {
   }
 
   /** Gets a string representing all the chars matched by `c` */
-  private string getMormalizationString(CharacterClass c) {
+  private string getNormalizationString(CharacterClass c) {
     (c instanceof PositiveCharacterClass or c instanceof PositiveCharacterClassEscape) and
     result = concat(string char | c.matches(char) and char = CharacterClasses::getARelevantChar())
     or
