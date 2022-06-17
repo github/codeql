@@ -313,7 +313,7 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     auto varLabel = dispatcher_.fetchLabel(expr->getVar());
     auto bodyLabel = dispatcher_.fetchLabel(expr->getBody());
 
-    dispatcher_.emit(TapExprsTrap{label, varLabel, bodyLabel});
+    dispatcher_.emit(TapExprsTrap{label, bodyLabel, varLabel});
     if (auto subExpr = expr->getSubExpr()) {
       dispatcher_.emit(TapExprSubExprsTrap{label, dispatcher_.fetchLabel(subExpr)});
     }
@@ -518,11 +518,19 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     auto label = dispatcher_.assignNewLabel(expr);
     assert(expr->getBase() && "KeyPathApplicationExpr has getBase()");
     assert(expr->getKeyPath() && "KeyPathApplicationExpr has getKeyPath()");
-    
+
     auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
     auto keyPathLabel = dispatcher_.fetchLabel(expr->getKeyPath());
 
     dispatcher_.emit(KeyPathApplicationExprsTrap{label, baseLabel, keyPathLabel});
+  }
+
+  void visitOtherConstructorDeclRefExpr(swift::OtherConstructorDeclRefExpr* expr) {
+    auto label = dispatcher_.assignNewLabel(expr);
+    assert(expr->getDecl() && "OtherConstructorDeclRefExpr has getDecl()");
+
+    auto ctorLabel = dispatcher_.fetchLabel(expr->getDecl());
+    dispatcher_.emit(OtherConstructorDeclRefExprsTrap{label, ctorLabel});
   }
 
  private:

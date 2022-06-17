@@ -98,7 +98,8 @@ iterable_decl_context_members(
 );
 
 extension_decls(
-  unique int id: @extension_decl
+  unique int id: @extension_decl,
+  int extended_type_decl: @nominal_type_decl ref
 );
 
 @nominal_type_decl =
@@ -974,7 +975,8 @@ optional_evaluation_exprs(
 );
 
 other_constructor_decl_ref_exprs(
-  unique int id: @other_constructor_decl_ref_expr
+  unique int id: @other_constructor_decl_ref_expr,
+  int constructor_decl: @constructor_decl ref
 );
 
 @overload_set_ref_expr =
@@ -1002,8 +1004,8 @@ super_ref_exprs(
 
 tap_exprs(
   unique int id: @tap_expr,
-  int var: @var_decl ref,
-  int body: @brace_stmt ref
+  int body: @brace_stmt ref,
+  int var: @var_decl ref
 );
 
 #keyset[id]
@@ -2060,6 +2062,11 @@ concrete_var_decls(
 
 param_decls(
   unique int id: @param_decl
+);
+
+#keyset[id]
+param_decl_is_inout(
+  int id: @param_decl ref
 );
 
 associated_type_decls(

@@ -5,30 +5,25 @@
 | types.swift:3:6:3:6 | default terminator | String |
 | types.swift:3:7:3:7 | x | Int |
 | types.swift:3:7:3:11 | (Any) ... | Any |
-| types.swift:3:7:3:11 | (Any) ... | TBD (ProtocolCompositionType) |
-| types.swift:3:7:3:11 | (TBD (ProtocolCompositionType)) ... | Any |
-| types.swift:3:7:3:11 | (TBD (ProtocolCompositionType)) ... | TBD (ProtocolCompositionType) |
 | types.swift:3:7:3:11 | ... call to + ... | Int |
 | types.swift:3:7:3:11 | [...] | Any... |
 | types.swift:3:7:3:11 | [...] | Any... |
-| types.swift:3:7:3:11 | [...] | TBD (VariadicSequenceType) |
-| types.swift:3:7:3:11 | [...] | TBD (VariadicSequenceType) |
 | types.swift:3:9:3:9 | + | (Int.Type) -> (Int, Int) -> Int |
 | types.swift:3:9:3:9 | Int.Type | Int.Type |
 | types.swift:3:9:3:9 | call to + | (Int, Int) -> Int |
 | types.swift:3:11:3:11 | 10 | Int |
 | types.swift:7:16:7:16 | X.Type | X.Type |
 | types.swift:7:16:7:16 | call to ... | () -> X |
-| types.swift:7:16:7:16 | deinit | (X.Type) -> () -> X |
+| types.swift:7:16:7:16 | init | (X.Type) -> () -> X |
 | types.swift:7:16:7:18 | call to ... | X |
 | types.swift:13:17:13:17 | C.Type | C.Type |
 | types.swift:13:17:13:17 | call to ... | () -> C |
-| types.swift:13:17:13:17 | deinit | (C.Type) -> () -> C |
+| types.swift:13:17:13:17 | init | (C.Type) -> () -> C |
 | types.swift:13:17:13:19 | call to ... | C |
 | types.swift:14:22:14:24 | C.Nested.Type | C.Nested.Type |
 | types.swift:14:22:14:24 | call to ... | () -> C.Nested |
 | types.swift:14:22:14:31 | call to ... | C.Nested |
-| types.swift:14:24:14:24 | deinit | (C.Nested.Type) -> () -> C.Nested |
+| types.swift:14:24:14:24 | init | (C.Nested.Type) -> () -> C.Nested |
 | types.swift:17:10:17:10 | x | Int |
 | types.swift:17:10:17:14 | ... call to + ... | Int |
 | types.swift:17:12:17:12 | + | (Int.Type) -> (Int, Int) -> Int |

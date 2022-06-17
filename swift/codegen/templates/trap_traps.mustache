@@ -5,15 +5,15 @@
 #include <iostream>
 #include <string>
 
-#include "{{include_dir}}/{{trap_affix}}Label.h"
-#include "{{include_dir}}/{{trap_affix}}TagTraits.h"
-#include "./{{trap_affix}}Tags.h"
+#include "swift/extractor/trap/TrapLabel.h"
+#include "swift/extractor/trap/TrapTagTraits.h"
+#include "./TrapTags.h"
 
-namespace {{namespace}} {
+namespace codeql {
 {{#traps}}
 
 // {{table_name}}
-struct {{name}}{{trap_affix}} {
+struct {{name}}Trap {
   static constexpr bool is_binding = {{#id}}true{{/id}}{{^id}}false{{/id}};
 {{#id}}
   {{type}} getBoundLabel() const { return {{field_name}}; }
@@ -24,7 +24,7 @@ struct {{name}}{{trap_affix}} {
 {{/fields}}
 };
 
-inline std::ostream &operator<<(std::ostream &out, const {{name}}{{trap_affix}} &e) {
+inline std::ostream &operator<<(std::ostream &out, const {{name}}Trap &e) {
   out << "{{table_name}}("{{#fields}}{{^first}} << ", "{{/first}}
       << {{#get_streamer}}e.{{field_name}}{{/get_streamer}}{{/fields}} << ")";
   return out;
@@ -34,7 +34,7 @@ inline std::ostream &operator<<(std::ostream &out, const {{name}}{{trap_affix}} 
 namespace detail {
 template<>
 struct ToBindingTrapFunctor<{{type}}> {
-  using type = {{name}}{{trap_affix}};
+  using type = {{name}}Trap;
 };
 }
 {{/id}}

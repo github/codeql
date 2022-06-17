@@ -3,28 +3,48 @@
 #include <swift/AST/Decl.h>
 #include <swift/AST/GenericParamList.h>
 #include <swift/AST/ParameterList.h>
+#include <swift/AST/ASTMangler.h>
 
 #include "swift/extractor/visitors/VisitorBase.h"
 
 namespace codeql {
 
 // `swift::Decl` visitor
+// TODO all `std::variant` here should really be `std::optional`, but we need those kinds of
+// "forward declarations" while our extraction is incomplete
 class DeclVisitor : public AstVisitorBase<DeclVisitor> {
  public:
-  codeql::ConcreteFuncDecl translateFuncDecl(const swift::FuncDecl& decl) {
-    ConcreteFuncDecl entry{dispatcher_.assignNewLabel(decl)};
+  using AstVisitorBase<DeclVisitor>::AstVisitorBase;
+
+  std::variant<codeql::ConcreteFuncDecl, codeql::ConcreteFuncDeclsTrap> translateFuncDecl(
+      const swift::FuncDecl& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return ConcreteFuncDeclsTrap{id};
+    }
+    ConcreteFuncDecl entry{id};
     fillAbstractFunctionDecl(decl, entry);
     return entry;
   }
 
-  codeql::ConstructorDecl translateConstructorDecl(const swift::ConstructorDecl& decl) {
-    ConstructorDecl entry{dispatcher_.assignNewLabel(decl)};
+  std::variant<codeql::ConstructorDecl, codeql::ConstructorDeclsTrap> translateConstructorDecl(
+      const swift::ConstructorDecl& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return ConstructorDeclsTrap{id};
+    }
+    ConstructorDecl entry{id};
     fillAbstractFunctionDecl(decl, entry);
     return entry;
   }
 
-  codeql::DestructorDecl translateDestructorDecl(const swift::DestructorDecl& decl) {
-    DestructorDecl entry{dispatcher_.assignNewLabel(decl)};
+  std::variant<codeql::DestructorDecl, codeql::DestructorDeclsTrap> translateDestructorDecl(
+      const swift::DestructorDecl& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return DestructorDeclsTrap{id};
+    }
+    DestructorDecl entry{id};
     fillAbstractFunctionDecl(decl, entry);
     return entry;
   }
@@ -54,8 +74,10 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   }
 
   codeql::ParamDecl translateParamDecl(const swift::ParamDecl& decl) {
+    // TODO: deduplicate
     ParamDecl entry{dispatcher_.assignNewLabel(decl)};
     fillVarDecl(decl, entry);
+    entry.is_inout = decl.isInOut();
     return entry;
   }
 
@@ -78,32 +100,53 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   }
 
   codeql::ConcreteVarDecl translateVarDecl(const swift::VarDecl& decl) {
+    // TODO: deduplicate all non-local variables
     ConcreteVarDecl entry{dispatcher_.assignNewLabel(decl)};
     entry.introducer_int = static_cast<uint8_t>(decl.getIntroducer());
     fillVarDecl(decl, entry);
     return entry;
   }
 
-  codeql::StructDecl translateStructDecl(const swift::StructDecl& decl) {
-    StructDecl entry{dispatcher_.assignNewLabel(decl)};
+  std::variant<codeql::StructDecl, codeql::StructDeclsTrap> translateStructDecl(
+      const swift::StructDecl& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return StructDeclsTrap{id};
+    }
+    StructDecl entry{id};
     fillNominalTypeDecl(decl, entry);
     return entry;
   }
 
-  codeql::ClassDecl translateClassDecl(const swift::ClassDecl& decl) {
-    ClassDecl entry{dispatcher_.assignNewLabel(decl)};
+  std::variant<codeql::ClassDecl, codeql::ClassDeclsTrap> translateClassDecl(
+      const swift::ClassDecl& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return ClassDeclsTrap{id};
+    }
+    ClassDecl entry{id};
     fillNominalTypeDecl(decl, entry);
     return entry;
   }
 
-  codeql::EnumDecl translateEnumDecl(const swift::EnumDecl& decl) {
-    EnumDecl entry{dispatcher_.assignNewLabel(decl)};
+  std::variant<codeql::EnumDecl, codeql::EnumDeclsTrap> translateEnumDecl(
+      const swift::EnumDecl& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return EnumDeclsTrap{id};
+    }
+    EnumDecl entry{id};
     fillNominalTypeDecl(decl, entry);
     return entry;
   }
 
-  codeql::ProtocolDecl translateProtocolDecl(const swift::ProtocolDecl& decl) {
-    ProtocolDecl entry{dispatcher_.assignNewLabel(decl)};
+  std::variant<codeql::ProtocolDecl, codeql::ProtocolDeclsTrap> translateProtocolDecl(
+      const swift::ProtocolDecl& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return ProtocolDeclsTrap{id};
+    }
+    ProtocolDecl entry{id};
     fillNominalTypeDecl(decl, entry);
     return entry;
   }
@@ -114,8 +157,13 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
     return entry;
   }
 
-  codeql::EnumElementDecl translateEnumElementDecl(const swift::EnumElementDecl& decl) {
-    EnumElementDecl entry{dispatcher_.assignNewLabel(decl)};
+  std::variant<codeql::EnumElementDecl, codeql::EnumElementDeclsTrap> translateEnumElementDecl(
+      const swift::EnumElementDecl& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return EnumElementDeclsTrap{id, decl.getNameStr().str()};
+    }
+    EnumElementDecl entry{id};
     entry.name = decl.getNameStr().str();
     if (decl.hasParameterList()) {
       entry.params = dispatcher_.fetchRepeatedLabels(*decl.getParameterList());
@@ -126,25 +174,41 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
 
   codeql::GenericTypeParamDecl translateGenericTypeParamDecl(
       const swift::GenericTypeParamDecl& decl) {
+    // TODO: deduplicate
     GenericTypeParamDecl entry{dispatcher_.assignNewLabel(decl)};
     fillTypeDecl(decl, entry);
     return entry;
   }
 
-  codeql::AssociatedTypeDecl translateAssociatedTypeDecl(const swift::AssociatedTypeDecl& decl) {
-    AssociatedTypeDecl entry{dispatcher_.assignNewLabel(decl)};
+  std::variant<codeql::AssociatedTypeDecl, codeql::AssociatedTypeDeclsTrap>
+  translateAssociatedTypeDecl(const swift::AssociatedTypeDecl& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return AssociatedTypeDeclsTrap{id};
+    }
+    AssociatedTypeDecl entry{id};
     fillTypeDecl(decl, entry);
     return entry;
   }
 
-  codeql::TypeAliasDecl translateTypeAliasDecl(const swift::TypeAliasDecl& decl) {
-    TypeAliasDecl entry{dispatcher_.assignNewLabel(decl)};
+  std::variant<codeql::TypeAliasDecl, codeql::TypeAliasDeclsTrap> translateTypeAliasDecl(
+      const swift::TypeAliasDecl& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return TypeAliasDeclsTrap{id};
+    }
+    TypeAliasDecl entry{id};
     fillTypeDecl(decl, entry);
     return entry;
   }
 
-  codeql::AccessorDecl translateAccessorDecl(const swift::AccessorDecl& decl) {
-    AccessorDecl entry{dispatcher_.assignNewLabel(decl)};
+  std::variant<codeql::AccessorDecl, codeql::AccessorDeclsTrap> translateAccessorDecl(
+      const swift::AccessorDecl& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return AccessorDeclsTrap{id};
+    }
+    AccessorDecl entry{id};
     switch (decl.getAccessorKind()) {
       case swift::AccessorKind::Get:
         entry.is_getter = true;
@@ -163,8 +227,12 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
     return entry;
   }
 
-  codeql::SubscriptDecl translateSubscriptDecl(const swift::SubscriptDecl& decl) {
-    SubscriptDecl entry{dispatcher_.assignNewLabel(decl)};
+  std::optional<codeql::SubscriptDecl> translateSubscriptDecl(const swift::SubscriptDecl& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (!dispatcher_.shouldEmitDeclBody(decl)) {
+      return std::nullopt;
+    }
+    SubscriptDecl entry{id};
     entry.element_type = dispatcher_.fetchLabel(decl.getElementInterfaceType());
     if (auto indices = decl.getIndices()) {
       entry.params = dispatcher_.fetchRepeatedLabels(*indices);
@@ -173,7 +241,20 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
     return entry;
   }
 
+  codeql::ExtensionDecl translateExtensionDecl(const swift::ExtensionDecl& decl) {
+    ExtensionDecl entry{dispatcher_.assignNewLabel(decl)};
+    entry.extended_type_decl = dispatcher_.fetchLabel(decl.getExtendedNominal());
+    fillGenericContext(decl, entry);
+    fillIterableDeclContext(decl, entry);
+    return entry;
+  }
+
  private:
+  std::string mangledName(const swift::ValueDecl& decl) {
+    // prefix adds a couple of special symbols, we don't necessary need them
+    return mangler.mangleAnyDecl(&decl, /* prefix = */ false);
+  }
+
   void fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
                                 codeql::AbstractFunctionDecl& entry) {
     assert(decl.hasParameterList() && "Expect functions to have a parameter list");
@@ -239,6 +320,9 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
     entry.accessor_decls = dispatcher_.fetchRepeatedLabels(decl.getAllAccessors());
     fillValueDecl(decl, entry);
   }
+
+ private:
+  swift::Mangle::ASTMangler mangler;
 };
 
 }  // namespace codeql
