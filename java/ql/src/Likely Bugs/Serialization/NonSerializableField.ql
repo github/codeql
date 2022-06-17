@@ -96,5 +96,4 @@ where
   not exceptions(c, f) and
   reason = nonSerialReason(f.getType())
 select f,
-  "This field is in a serializable class, " + " but is not serializable itself because " + reason +
-    "."
+  "This field is in a serializable class, but is not serializable itself because " + reason + "."

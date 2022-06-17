@@ -33,11 +33,15 @@ where
   or
   AstConsistency::nonTotalGetParent(node) and msg = "AstConsistency::nonTotalGetParent"
   or
+  AstConsistency::nonUniqueParent(node) and msg = "AstConsistency::nonUniqueParent"
+  or
   TypeConsistency::noResolve(node) and msg = "TypeConsistency::noResolve"
   or
   ModConsistency::noResolve(node) and msg = "ModConsistency::noResolve"
   or
-  ModConsistency::noResolveModuleExpr(node) and msg = "ModConsistency::noResolveModuleExpr"
+  ModConsistency::noName(node) and msg = "ModConsistency::noName"
+  or
+  ModConsistency::nonUniqueName(node) and msg = "ModConsistency::nonUniqueName"
   or
   VarConsistency::noFieldDef(node) and msg = "VarConsistency::noFieldDef"
   or
