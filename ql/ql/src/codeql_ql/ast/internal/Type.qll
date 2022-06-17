@@ -330,10 +330,10 @@ private predicate defines(FileOrModule m, string name, Type t, boolean public) {
     mod.hasParameter(i, name, param) and
     public = true
   |
-    // we resolve it both to the signature type
+    // resolve to the signature class
     t = param.asType().getResolvedType()
     or
-    // or any instantiated type
+    // resolve to the instantiations
     exists(ModuleExpr inst, SignatureExpr arg |
       inst.getArgument(i) = arg and
       inst.getResolvedModule() = m and

@@ -114,7 +114,6 @@ class Module_ extends FileOrModule, TModule {
   }
 }
 
-// class ModuleRef = AstNodes::TModuleExpr or AstNodes::TType;
 private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
   not m = TFile(any(File f | f.getExtension() = "ql")) and
   exists(string q | q = imp.getQualifiedName(i) |
@@ -264,8 +263,10 @@ private predicate definesModule(
     public = false and
     ty = sig.asModuleRef()
   |
+    // resolve to the signature module
     m = ty.getResolvedModule()
     or
+    // resolve to the arguments of the instantiated module
     exists(ModuleExpr inst | inst.getResolvedModule().asModule() = mod |
       m = inst.getArgument(i).asModuleRef().getResolvedModule()
     )

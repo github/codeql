@@ -74,8 +74,10 @@ private module Cached {
       mod.hasParameter(i, pc.getPredicateName(), sig) and
       sig.getArity() = pc.getNumberOfArguments()
     |
+      // resolve to the signature predicate
       p = sig.getResolvedPredicate() // <- this is a `signature predicate`, but that's fine.
       or
+      // resolve to the instantiations
       exists(ModuleExpr inst, SignatureExpr arg | inst.getResolvedModule().asModule() = mod |
         arg = inst.getArgument(i) and
         p = arg.asPredicate().getResolvedPredicate()
