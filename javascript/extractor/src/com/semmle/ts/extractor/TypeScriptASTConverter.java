@@ -1712,7 +1712,6 @@ public class TypeScriptASTConverter {
       // Declaration of form: declare module "X" {...}
       ExternalModuleDeclaration decl = new ExternalModuleDeclaration(loc, (Literal) nameNode, body);
       attachSymbolInformation(decl, node);
-      System.out.println("ExternalModuleDeclaration symbol = " + decl.getSymbol());
       return decl;
     }
     if (hasFlag(node, "GlobalAugmentation")) {
