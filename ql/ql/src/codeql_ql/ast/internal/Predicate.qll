@@ -176,7 +176,7 @@ module PredConsistency {
     c > 1 and
     resolvePredicateExpr(pe, p)
   }
-  // This can happen with parametarized modules
+  // This can happen with parameterized modules
   /*
    * query predicate multipleResolveCall(Call call, int c, PredicateOrBuiltin p) {
    *    c =
