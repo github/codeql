@@ -2226,9 +2226,7 @@ class ModuleExpr extends TModuleExpr, TypeRef {
     or
     not exists(me.getName()) and result = me.getChild().(QL::SimpleId).getValue()
     or
-    exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
-      result = instantiation.getName().getChild().getValue()
-    )
+    result = me.getChild().(QL::ModuleInstantiation).getName().getChild().getValue()
   }
 
   /**
@@ -2263,9 +2261,7 @@ class ModuleExpr extends TModuleExpr, TypeRef {
    * The result is either a `PredicateExpr` or a `TypeExpr`.
    */
   SignatureExpr getArgument(int i) {
-    exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
-      result.toQL() = instantiation.getChild(i)
-    )
+    result.toQL() = me.getChild().(QL::ModuleInstantiation).getChild(i)
   }
 }
 
