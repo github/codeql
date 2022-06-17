@@ -90,11 +90,13 @@ deprecated class NormalizedPathNotCheckedConfiguration extends TaintTracking2::C
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  override predicate isSanitizer(DataFlow::Node node) {
+    node instanceof Path::SafeAccessCheck
+    or
+    node instanceof Sanitizer
+  }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof Path::SafeAccessCheck
-    or
     guard instanceof SanitizerGuard
   }
 }
