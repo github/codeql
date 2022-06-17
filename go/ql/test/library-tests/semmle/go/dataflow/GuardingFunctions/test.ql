@@ -1,12 +1,10 @@
 import go
 import TestUtilities.InlineExpectationsTest
 
-class IsBad extends DataFlow::BarrierGuard, DataFlow::CallNode {
-  IsBad() { this.getTarget().getName() = "isBad" }
-
-  override predicate checks(Expr e, boolean branch) {
-    e = this.getAnArgument().asExpr() and branch = false
-  }
+predicate isBad(DataFlow::Node g, Expr e, boolean branch) {
+  g.(DataFlow::CallNode).getTarget().getName() = "isBad" and
+  e = g.(DataFlow::CallNode).getAnArgument().asExpr() and
+  branch = false
 }
 
 class TestConfig extends DataFlow::Configuration {
@@ -20,7 +18,9 @@ class TestConfig extends DataFlow::Configuration {
     sink = any(DataFlow::CallNode c | c.getTarget().getName() = "sink").getAnArgument()
   }
 
-  override predicate isBarrierGuard(DataFlow::BarrierGuard bg) { bg instanceof IsBad }
+  override predicate isBarrier(DataFlow::Node node) {
+    node = DataFlow::BarrierGuard<isBad/3>::getABarrierNode()
+  }
 }
 
 class DataFlowTest extends InlineExpectationsTest {
