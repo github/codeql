@@ -682,8 +682,17 @@ class TypeExpr extends TType, TypeRef {
     // resolve type
     resolveTypeExpr(this, result)
     or
-    // if it resolves to a module
-    exists(FileOrModule mod | resolveModuleRef(this, mod) | result = mod.toType())
+    // if it resolves to a module,
+    exists(FileOrModule mod | resolveModuleRef(this, mod) | result = mod.toType()) and
+    result instanceof ModuleType and
+    // we can get spurious results in some cases, so we restrict to where it is possible to have a module.
+    (
+      // only possible if this is inside a moduleInstantiation.
+      this = any(ModuleExpr mod).getArgument(_).asType()
+      or
+      // or if it's a parameter to a parameterized module
+      this = any(SignatureExpr sig, Module mod | mod.hasParameter(_, _, sig) | sig).asType()
+    )
   }
 
   override AstNode getAChild(string pred) {
