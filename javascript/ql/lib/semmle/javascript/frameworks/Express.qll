@@ -33,6 +33,11 @@ module Express {
     or
     // `app = [new] express.Router()`
     result = DataFlow::moduleMember("express", "Router").getAnInvocation()
+    or
+    exists(DataFlow::SourceNode app |
+      app.hasUnderlyingType("probot/lib/application", "Application") and
+      result = app.getAMethodCall("route")
+    )
   }
 
   /**
@@ -1042,5 +1047,23 @@ module Express {
     }
 
     override DataFlow::SourceNode getOutput() { result = this.getCallback(2).getParameter(1) }
+  }
+
+  private class ResumeDispatchRefinement extends Routing::RouteHandler {
+    ResumeDispatchRefinement() { getFunction() instanceof RouteHandler }
+
+    override predicate mayResumeDispatch() { getAParameter().getName() = "next" }
+
+    override predicate definitelyResumesDispatch() { getAParameter().getName() = "next" }
+  }
+
+  private class ExpressStaticResumeDispatchRefinement extends Routing::Node {
+    ExpressStaticResumeDispatchRefinement() {
+      this = Routing::getNode(DataFlow::moduleMember("express", "static").getACall())
+    }
+
+    override predicate mayResumeDispatch() { none() }
+
+    override predicate definitelyResumesDispatch() { none() }
   }
 }

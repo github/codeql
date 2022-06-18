@@ -148,6 +148,18 @@ module Routing {
       this instanceof MkRouter
     }
 
+    /**
+     * Like `mayResumeDispatch` but without the assumption that functions with an unknown
+     * implementation invoke their continuation.
+     */
+    predicate definitelyResumesDispatch() {
+      this.getLastChild().definitelyResumesDispatch()
+      or
+      exists(this.(RouteHandler).getAContinuationInvocation())
+      or
+      this instanceof MkRouter
+    }
+
     /** Gets the parent of this node, provided that this node may invoke its continuation. */
     private Node getContinuationParent() {
       result = this.getParent() and
