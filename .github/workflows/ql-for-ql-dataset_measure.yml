@@ -36,7 +36,7 @@ jobs:
             ql/target
           key: ${{ runner.os }}-qltest-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
       - name: Build Extractor
-        run: cd ql; env "PATH=$PATH:`dirname ${CODEQL}`" ./create-extractor-pack.sh
+        run: cd ql; env "PATH=$PATH:`dirname ${CODEQL}`" ./scripts/create-extractor-pack.sh
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Checkout ${{ matrix.repo }}
