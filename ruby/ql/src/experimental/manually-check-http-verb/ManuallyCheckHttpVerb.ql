@@ -17,7 +17,7 @@ class HttpVerbMethod extends MethodCall {
     this instanceof CheckGetRequest or
     this instanceof CheckPostRequest or
     this instanceof CheckPatchRequest or
-    this instanceof CheckPostRequest or
+    this instanceof CheckPutRequest or
     this instanceof CheckDeleteRequest or
     this instanceof CheckHeadRequest
   }
