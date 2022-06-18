@@ -1,0 +1,2 @@
+| test.kt:1:100:1:109 | mutableIterator(...) | mutableIterator |
+| test.kt:3:73:3:82 | iterator(...) | iterator |

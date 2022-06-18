@@ -22,7 +22,7 @@ jobs:
         run: |
           bazel run //swift/codegen
           git add swift
-          git diff --exit-code --stat HEAD
+          git diff --exit-code HEAD
       - name: Generate C++ files
         run: |
           bazel run //swift/codegen:codegen -- --generate=trap,cpp --cpp-output=$PWD/swift-generated-headers
