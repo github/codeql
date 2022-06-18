@@ -12,15 +12,14 @@
 import ruby
 import codeql.ruby.DataFlow
 
-class ManuallyCheckHttpVerb extends DataFlow::CallNode {
-  ManuallyCheckHttpVerb() {
+class HttpVerbMethod extends MethodCall {
+  HttpVerbMethod() {
     this instanceof CheckGetRequest or
     this instanceof CheckPostRequest or
     this instanceof CheckPatchRequest or
     this instanceof CheckPostRequest or
     this instanceof CheckDeleteRequest or
-    this instanceof CheckHeadRequest or
-    this instanceof CheckRequestMethodFromEnv
+    this instanceof CheckHeadRequest
   }
 }
 
@@ -53,30 +52,33 @@ class GetRequestMethodFromEnv extends ElementReference {
   }
 }
 
-class CheckGetRequest extends DataFlow::CallNode {
+class CheckGetRequest extends MethodCall {
   CheckGetRequest() { this.getMethodName() = "get?" }
 }
 
-class CheckPostRequest extends DataFlow::CallNode {
+class CheckPostRequest extends MethodCall {
   CheckPostRequest() { this.getMethodName() = "post?" }
 }
 
-class CheckPutRequest extends DataFlow::CallNode {
+class CheckPutRequest extends MethodCall {
   CheckPutRequest() { this.getMethodName() = "put?" }
 }
 
-class CheckPatchRequest extends DataFlow::CallNode {
+class CheckPatchRequest extends MethodCall {
   CheckPatchRequest() { this.getMethodName() = "patch?" }
 }
 
-class CheckDeleteRequest extends DataFlow::CallNode {
+class CheckDeleteRequest extends MethodCall {
   CheckDeleteRequest() { this.getMethodName() = "delete?" }
 }
 
-class CheckHeadRequest extends DataFlow::CallNode {
+class CheckHeadRequest extends MethodCall {
   CheckHeadRequest() { this.getMethodName() = "head?" }
 }
 
-from ManuallyCheckHttpVerb check
-select check,
+from CheckRequestMethodFromEnv env, AstNode node
+where
+  node instanceof HttpVerbMethod or
+  node = env.asExpr().getExpr()
+select node,
   "Manually checking HTTP verbs is an indication that multiple requests are routed to the same controller action. This could lead to bypassing necessary authorization methods and other protections, like CSRF protection. Prefer using different controller actions for each HTTP method and relying Rails routing to handle mappting resources and verbs to specific methods."
