@@ -13,7 +13,6 @@ import ruby
 import codeql.ruby.ApiGraphs
 import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.RemoteFlowSources
-import codeql.ruby.dataflow.BarrierGuards
 import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 
