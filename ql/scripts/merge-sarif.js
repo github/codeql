@@ -18,9 +18,6 @@ async function main(files) {
   out.runs[0].artifacts = []; // the indexes in these won't make sense, so I hope this works.
   out.runs[0].results = combinedResults;
 
-  // workaround until https://github.com/microsoft/sarif-vscode-extension/pull/436/ is part of a release
-  out["$schema"] = "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0"; 
-
   fs.writeFileSync(outFile, JSON.stringify(out, null, 2));
 }
 main(process.argv.splice(2));

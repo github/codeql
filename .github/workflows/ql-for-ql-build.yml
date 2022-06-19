@@ -192,6 +192,9 @@ jobs:
           category: "ql-for-ql-${{ matrix.folder }}"
       - name: Copy sarif file to CWD
         run: cp ../results/ql.sarif ./${{ matrix.folder }}.sarif
+      - name: Fixup the $scema in sarif  # Until https://github.com/microsoft/sarif-vscode-extension/pull/436/ is part in a stable release
+        run: |
+          sed -i 's/\$schema.*/\$schema": "https:\/\/raw.githubusercontent.com\/oasis-tcs\/sarif-spec\/master\/Schemata\/sarif-schema-2.1.0",/' ${{ matrix.folder }}.sarif 
       - name: Sarif as artifact
         uses: actions/upload-artifact@v3
         with:
