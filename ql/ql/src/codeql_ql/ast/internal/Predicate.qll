@@ -31,7 +31,8 @@ private predicate definesPredicate(
       name = alias.getName() and
       resolvePredicateExpr(alias.getAlias(), p) and
       public = getPublicBool(alias) and
-      arity = alias.getArity()
+      arity = alias.getArity() and
+      arity = p.getArity()
     )
   )
 }
@@ -53,10 +54,12 @@ private module Cached {
   }
 
   private predicate resolvePredicateCall(PredicateCall pc, PredicateOrBuiltin p) {
+    // calls to class methods
     exists(Class c, ClassType t |
       c = pc.getParent*() and
       t = c.getType() and
-      p = t.getClassPredicate(pc.getPredicateName(), pc.getNumberOfArguments())
+      p = t.getClassPredicate(pc.getPredicateName(), pc.getNumberOfArguments()) and
+      not exists(pc.getQualifier()) // no module qualifier, because then it's not a call to a class method.
     )
     or
     exists(FileOrModule m, boolean public |
