@@ -95,15 +95,24 @@ private module Cached {
     )
     or
     // super calls - and `this.method()` calls in charpreds. (Basically: in charpreds there is no difference between super and this.)
-    exists(AstNode sup, ClassType type, Type supertype |
+    exists(AstNode sup, Type supertype |
       sup instanceof Super
       or
       sup.(ThisAccess).getEnclosingPredicate() instanceof CharPred
     |
       mc.getBase() = sup and
-      sup.getEnclosingPredicate().getParent().(Class).getType() = type and
-      supertype in [type.getASuperType(), type.getAnInstanceofType()] and
-      p = supertype.getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
+      p = supertype.getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments()) and
+      (
+        // super.method()
+        not exists(mc.getSuperType()) and
+        exists(ClassType type |
+          sup.getEnclosingPredicate().getParent().(Class).getType() = type and
+          supertype in [type.getASuperType(), type.getAnInstanceofType()]
+        )
+        or
+        // Class.super.method()
+        supertype = mc.getSuperType().getResolvedType()
+      )
     )
   }
 

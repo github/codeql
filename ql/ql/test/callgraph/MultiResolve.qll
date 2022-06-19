@@ -24,3 +24,19 @@ module MyMod {
     }
   }
 }
+
+class Super1 extends int {
+  Super1() { this = 42 }
+
+  predicate foo() { any() }
+}
+
+class Super2 extends int {
+  Super2() { this = 42 }
+
+  predicate foo() { none() }
+}
+
+class Sub extends Super1, Super2 {
+  override predicate foo() { Super1.super.foo() } // <- should resolve to Super1::foo()
+}
