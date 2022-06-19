@@ -205,7 +205,7 @@ module PredConsistency {
       strictcount(ClasslessPredicate p0 |
         resolvePredicateExpr(pe, p0) and
         // aliases are expected to resolve to multiple.
-        not exists(p0.(ClasslessPredicate).getAlias())
+        not exists(p0.getAlias())
       ) and
     c > 1 and
     resolvePredicateExpr(pe, p)
