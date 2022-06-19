@@ -332,7 +332,19 @@ module ModConsistency {
    *  }
    */
 
-  query predicate noName(Module mod) { not exists(mod.getName()) }
+  query predicate noName(AstNode mod) {
+    mod instanceof Module and
+    not exists(mod.(Module).getName())
+    or
+    mod instanceof ModuleExpr and
+    not exists(mod.(ModuleExpr).getName())
+  }
 
-  query predicate nonUniqueName(Module mod) { count(mod.getName()) >= 2 }
+  query predicate nonUniqueName(AstNode mod) {
+    mod instanceof Module and
+    count(mod.(Module).getName()) >= 2
+    or
+    mod instanceof ModuleExpr and
+    count(mod.(ModuleExpr).getName()) >= 2
+  }
 }
