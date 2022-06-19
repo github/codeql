@@ -24,6 +24,9 @@ where
   or
   PredConsistency::multipleResolveCall(node, _, _) and msg = "PredConsistency::multipleResolveCall"
   or
+  PredConsistency::multipleResolvePredicateExpr(node, _, _) and
+  msg = "PredConsistency::multipleResolvePredicateExpr"
+  or
   TypeConsistency::exprNoType(node) and msg = "TypeConsistency::exprNoType"
   or
   TypeConsistency::varDefNoType(node) and msg = "TypeConsistency::varDefNoType"

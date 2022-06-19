@@ -49,6 +49,5 @@ exprPredicate
 | Foo.qll:47:55:47:62 | predicate | Foo.qll:42:20:42:27 | NewTypeBranch MkRoot |
 | Foo.qll:47:65:47:70 | predicate | Foo.qll:44:9:44:56 | ClasslessPredicate edge |
 | MultiResolve.qll:12:19:12:23 | predicate | MultiResolve.qll:1:1:4:1 | ClasslessPredicate foo |
-| MultiResolve.qll:12:19:12:23 | predicate | MultiResolve.qll:6:1:10:1 | ClasslessPredicate foo |
 | ParamModules.qll:4:18:4:25 | predicate | ParamModules.qll:2:13:2:36 | ClasslessPredicate fooSig |
 | ParamModules.qll:10:34:10:40 | predicate | ParamModules.qll:8:3:8:35 | ClasslessPredicate myFoo |

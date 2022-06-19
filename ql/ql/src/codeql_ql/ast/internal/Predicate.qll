@@ -49,7 +49,8 @@ private module Cached {
       m = pe.getQualifier().getResolvedModule() and
       public = true
     |
-      definesPredicate(m, pe.getName(), p.getArity(), p, public)
+      definesPredicate(m, pe.getName(), p.getArity(), p, public) and
+      p.getArity() = pe.getArity()
     )
   }
 
@@ -200,7 +201,12 @@ module PredConsistency {
   }
 
   query predicate multipleResolvePredicateExpr(PredicateExpr pe, int c, ClasslessPredicate p) {
-    c = strictcount(ClasslessPredicate p0 | resolvePredicateExpr(pe, p0)) and
+    c =
+      strictcount(ClasslessPredicate p0 |
+        resolvePredicateExpr(pe, p0) and
+        // aliases are expected to resolve to multiple.
+        not exists(p0.(ClasslessPredicate).getAlias())
+      ) and
     c > 1 and
     resolvePredicateExpr(pe, p)
   }
