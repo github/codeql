@@ -88,7 +88,23 @@ private module Cached {
     )
   }
 
+  /**
+   *  Holds if `mc` is a `this.method()` call to a predicate defined in the same class.
+   * helps avoid spuriously resolving to predicates in super-classes.
+   */
+  private predicate resolveSelfClassCalls(MemberCall mc, PredicateOrBuiltin p) {
+    exists(Class c |
+      mc.getBase() instanceof ThisAccess and
+      c = mc.getEnclosingPredicate().getParent() and
+      p = c.getClassPredicate(mc.getMemberName()) and
+      p.getArity() = mc.getNumberOfArguments()
+    )
+  }
+
   private predicate resolveMemberCall(MemberCall mc, PredicateOrBuiltin p) {
+    resolveSelfClassCalls(mc, p)
+    or
+    not resolveSelfClassCalls(mc, _) and
     exists(Type t |
       t = mc.getBase().getType() and
       p = t.getClassPredicate(mc.getMemberName(), mc.getNumberOfArguments())
@@ -188,20 +204,20 @@ module PredConsistency {
     c > 1 and
     resolvePredicateExpr(pe, p)
   }
-  // This can happen with parameterized modules
-  /*
-   * query predicate multipleResolveCall(Call call, int c, PredicateOrBuiltin p) {
-   *    c =
-   *      strictcount(PredicateOrBuiltin p0 |
-   *        resolveCall(call, p0) and
-   *        // aliases are expected to resolve to multiple.
-   *        not exists(p0.(ClasslessPredicate).getAlias()) and
-   *        // overridden predicates may have multiple targets
-   *        not p0.(ClassPredicate).isOverride()
-   *      ) and
-   *    c > 1 and
-   *    resolveCall(call, p)
-   *  }
-   */
 
+  query predicate multipleResolveCall(Call call, int c, PredicateOrBuiltin p) {
+    c =
+      strictcount(PredicateOrBuiltin p0 |
+        resolveCall(call, p0) and
+        // aliases are expected to resolve to multiple.
+        not exists(p0.(ClasslessPredicate).getAlias()) and
+        // overridden predicates may have multiple targets
+        not p0.(ClassPredicate).isOverride() and
+        not p0 instanceof Relation // <- DB relations resolve to both a relation and a predicate.
+      ) and
+    c > 1 and
+    resolveCall(call, p) and
+    // parameterized modules are expected to resolve to multiple.
+    not exists(Predicate sig | not exists(sig.getBody()) and resolveCall(call, sig))
   }
+}

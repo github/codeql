@@ -229,7 +229,8 @@ private module Cached {
   pragma[noinline]
   private predicate resolveModuleRefHelper(TypeRef me, ContainerOrModule enclosing, string name) {
     enclosing = getEnclosingModule(me).getEnclosing*() and
-    name = [me.(ModuleExpr).getName(), me.(TypeExpr).getClassName()]
+    name = [me.(ModuleExpr).getName(), me.(TypeExpr).getClassName()] and
+    (not me instanceof ModuleExpr or not enclosing instanceof Folder_) // module expressions are not imports, so they can't resolve to a file (which is contained in a folder).
   }
 }
 

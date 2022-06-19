@@ -18,10 +18,11 @@ getTarget
 | MultiResolve.qll:14:25:14:35 | PredicateCall | MultiResolve.qll:12:1:12:24 | ClasslessPredicate myFoo |
 | MultiResolve.qll:23:7:23:18 | PredicateCall | MultiResolve.qll:17:3:17:27 | ClasslessPredicate bar |
 | MultiResolve.qll:41:30:41:47 | MemberCall | MultiResolve.qll:31:3:31:27 | ClassPredicate foo |
+| MultiResolve.qll:49:3:49:12 | PredicateCall | MultiResolve.qll:45:3:45:27 | ClasslessPredicate foo |
+| MultiResolve.qll:53:30:53:47 | MemberCall | MultiResolve.qll:37:3:37:28 | ClassPredicate foo |
+| MultiResolve.qll:56:5:56:14 | MemberCall | MultiResolve.qll:53:12:53:49 | ClassPredicate foo |
 | Overrides.qll:8:30:8:39 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
-| Overrides.qll:16:39:16:48 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
 | Overrides.qll:16:39:16:48 | MemberCall | Overrides.qll:14:12:14:43 | ClassPredicate bar |
-| Overrides.qll:24:39:24:48 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
 | Overrides.qll:24:39:24:48 | MemberCall | Overrides.qll:22:12:22:44 | ClassPredicate bar |
 | Overrides.qll:28:3:28:9 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
 | Overrides.qll:29:3:29:10 | MemberCall | Overrides.qll:8:3:8:41 | ClassPredicate baz |
