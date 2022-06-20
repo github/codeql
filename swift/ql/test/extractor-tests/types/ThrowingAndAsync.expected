@@ -1,4 +1,4 @@
-| types.swift:24:1:26:1 | throwingFunc | () throws -> Int | throws |
-| types.swift:28:1:28:36 | asyncFunction | (Int) async -> () | async |
-| types.swift:30:1:30:54 | throwingAndAsyncFunction | (Int) async throws -> () | async |
-| types.swift:30:1:30:54 | throwingAndAsyncFunction | (Int) async throws -> () | throws |
+| types.swift:24:1:26:1 | throwingFunc() | () throws -> Int | throws |
+| types.swift:28:1:28:36 | asyncFunction(x:) | (Int) async -> () | async |
+| types.swift:30:1:30:54 | throwingAndAsyncFunction(x:) | (Int) async throws -> () | async |
+| types.swift:30:1:30:54 | throwingAndAsyncFunction(x:) | (Int) async throws -> () | throws |
