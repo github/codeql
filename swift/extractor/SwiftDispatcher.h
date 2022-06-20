@@ -19,7 +19,8 @@ enum class SwiftExtractionMode { Module, PrimaryFile };
 // node (AST nodes that are not types: declarations, statements, expressions, etc.).
 class SwiftDispatcher {
  public:
-  // all references passed as parameters to this constructor are supposed to outlive the SwiftDispatcher
+  // all references passed as parameters to this constructor are supposed to outlive the
+  // SwiftDispatcher
   SwiftDispatcher(const swift::SourceManager& sourceManager,
                   TrapArena& arena,
                   TrapOutput& trap,
@@ -137,9 +138,11 @@ class SwiftDispatcher {
   // Depending on the SwiftExtractionMode the scope is defined as follows:
   //  - SwiftExtractionMode::Module: the current scope means the current module. This is used in
   //    the case of system or builtin modules.
-  //  - SwiftExtractionMode::PrimaryFile: in this mode, we extract several files belnoging to the
-  //    same module one by one. In this mode, the restrict emission only to the same file ignoring
+  //  - SwiftExtractionMode::PrimaryFile: in this mode, we extract several files belonging to the
+  //    same module one by one. In this mode, we restrict emission only to the same file ignoring
   //    all the other files.
+  // TODO this currently does not extract compiler-synthesized entities without a valid location,
+  // this will be fixed in an upcoming PR
   bool shouldEmitDeclBody(swift::Decl* decl) {
     switch (extractionMode) {
       case SwiftExtractionMode::Module: {
