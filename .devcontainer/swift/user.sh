@@ -8,6 +8,10 @@ echo "--search-path /workspaces/codeql" > /home/vscode/.config/codeql/config
 cd /workspaces/codeql
 bazel run swift/create-extractor-pack
 
+#install and set up pre-commit
+python3 -m pip install pre-commit
+pre-commit install
+
 cat >> $HOME/.bashrc << EOF
 
 # have the codeql binary installed by vscode automatically in PATH
