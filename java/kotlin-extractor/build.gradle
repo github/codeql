@@ -35,8 +35,8 @@ sourceSets {
                     "utils/versions/v_1_5_21/*.kt",
                     "utils/versions/v_1_5_31/*.kt",
                     "utils/versions/v_1_6_10/*.kt",
-                    "utils/versions/v_1_7_0-RC/*.kt",
-                    // "utils/versions/v_1_6_20/*.kt",
+                    // "utils/versions/v_1_7_0-RC/*.kt",
+                    "utils/versions/v_1_6_20/*.kt",
             ]
         }
     }
