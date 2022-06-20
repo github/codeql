@@ -9,8 +9,8 @@ cd /workspaces/codeql
 bazel run swift/create-extractor-pack
 
 #install and set up pre-commit
-python3 -m pip install pre-commit
-pre-commit install
+python3 -m pip install pre-commit --no-warn-script-location
+$HOME/.local/bin/pre-commit install
 
 cat >> $HOME/.bashrc << EOF
 
