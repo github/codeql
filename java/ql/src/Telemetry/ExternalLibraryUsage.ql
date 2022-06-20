@@ -22,7 +22,7 @@ private predicate getRelevantUsages(string jarname, int usages) {
 private int getOrder(string jarname) {
   jarname =
     rank[result](string jar, int usages |
-      exists(ExternalApi api | jar = api.jarContainer()) and getRelevantUsages(jar, usages)
+      getRelevantUsages(jar, usages)
     |
       jar order by usages desc, jar
     )
