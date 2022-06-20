@@ -180,7 +180,7 @@ abstract class TranslatedSideEffects extends TranslatedElement {
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }
 
-  final override Function getFunction() { result = getExpr().getEnclosingFunction() }
+  final override Declaration getFunction() { result = getExpr().getEnclosingDeclaration() }
 
   final override TranslatedElement getChild(int i) {
     result =
@@ -375,7 +375,7 @@ abstract class TranslatedSideEffect extends TranslatedElement {
     kind instanceof GotoEdge
   }
 
-  final override Function getFunction() { result = getParent().getFunction() }
+  final override Declaration getFunction() { result = getParent().getFunction() }
 
   final override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
     tag = OnlyInstructionTag() and
@@ -434,13 +434,6 @@ abstract class TranslatedArgumentSideEffect extends TranslatedSideEffect {
   final override int getInstructionIndex(InstructionTag tag) {
     tag = OnlyInstructionTag() and
     result = index
-  }
-
-  /**
-   * Gets the `TranslatedFunction` containing this expression.
-   */
-  final TranslatedFunction getEnclosingFunction() {
-    result = getTranslatedFunction(call.getEnclosingFunction())
   }
 
   final override predicate sideEffectInstruction(Opcode opcode, CppType type) {
