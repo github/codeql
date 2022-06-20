@@ -199,7 +199,9 @@ postWithInFlow
 | example.c:28:22:28:25 | & ... [post update] | PostUpdateNode should not be the target of local flow. |
 | example.c:28:23:28:25 | pos [post update] | PostUpdateNode should not be the target of local flow. |
 | globals.cpp:5:9:5:13 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
+| globals.cpp:9:5:9:19 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | globals.cpp:13:5:13:19 | flowTestGlobal1 [post update] | PostUpdateNode should not be the target of local flow. |
+| globals.cpp:16:12:16:26 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | globals.cpp:23:5:23:19 | flowTestGlobal2 [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:8:6:8:6 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:9:6:9:6 | VariableAddress [post update] | PostUpdateNode should not be the target of local flow. |

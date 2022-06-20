@@ -258,8 +258,7 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   void fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
                                 codeql::AbstractFunctionDecl& entry) {
     assert(decl.hasParameterList() && "Expect functions to have a parameter list");
-    entry.name = !decl.hasName() || decl.getName().isSpecial() ? "(unnamed function decl)"
-                                                               : decl.getNameStr().str();
+    entry.name = !decl.hasName() ? "(unnamed function decl)" : constructName(decl.getName());
     entry.body = dispatcher_.fetchOptionalLabel(decl.getBody());
     entry.params = dispatcher_.fetchRepeatedLabels(*decl.getParameters());
     fillValueDecl(decl, entry);
@@ -319,6 +318,22 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
                                codeql::AbstractStorageDecl& entry) {
     entry.accessor_decls = dispatcher_.fetchRepeatedLabels(decl.getAllAccessors());
     fillValueDecl(decl, entry);
+  }
+
+  // Constructs a `std::string` of the form `f(x:y:)` for a declaration
+  // like `func f(x first: Int, y second: Int) {  }`
+  std::string constructName(const swift::DeclName& declName) {
+    std::string name = declName.getBaseName().userFacingName().str();
+    name += "(";
+    for (const auto& argName : declName.getArgumentNames()) {
+      if (argName.empty()) {
+        name += "_:";
+      } else {
+        name += argName.str().str() + ":";
+      }
+    }
+    name += ")";
+    return name;
   }
 
  private:
