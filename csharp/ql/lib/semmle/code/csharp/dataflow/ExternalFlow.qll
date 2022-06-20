@@ -69,7 +69,7 @@
  *    sources "remote" indicates a default remote flow source, and for summaries
  *    "taint" indicates a default additional taint step and "value" indicates a
  *    globally applicable value-preserving step.
- * 9. The `provenance` column is tag to indicate the origin of the summary.
+ * 9. The `provenance` column is a tag to indicate the origin of the summary.
  *    There are two supported values: "generated" and "manual". "generated" means that
  *    the model has been emitted by the model generator tool and "manual" means
  *    that the model has been written by hand. This information is used in a heuristic
