@@ -62,8 +62,8 @@
 | declarations.swift:24:5:24:44 | var ... = ... |
 | declarations.swift:24:9:24:9 | doesNotNeedToBeSettable |
 | declarations.swift:24:40:24:40 | get |
-| declarations.swift:25:5:25:22 | random |
-| declarations.swift:28:1:28:37 | a_function |
+| declarations.swift:25:5:25:22 | random() |
+| declarations.swift:28:1:28:37 | a_function(a_parameter:) |
 | declarations.swift:28:17:28:31 | a_parameter |
 | declarations.swift:30:1:30:18 | var ... = ... |
 | declarations.swift:30:1:30:18 | { ... } |
@@ -89,7 +89,7 @@
 | declarations.swift:42:3:44:3 | init |
 | declarations.swift:46:3:46:3 | self |
 | declarations.swift:46:3:48:3 | deinit |
-| declarations.swift:50:3:52:3 | +- |
+| declarations.swift:50:3:52:3 | +-(_:) |
 | declarations.swift:50:26:50:33 | other |
 | declarations.swift:55:8:55:17 | +- |
 | declarations.swift:57:1:62:1 | precedencegroup ... |
@@ -100,7 +100,7 @@
 | declarations.swift:69:3:73:3 | var ... = ... |
 | declarations.swift:69:7:69:7 | wrappedValue |
 | declarations.swift:70:5:72:5 | get |
-| declarations.swift:76:1:79:1 | foo |
+| declarations.swift:76:1:79:1 | foo() |
 | declarations.swift:77:16:77:23 | var ... = ... |
 | declarations.swift:77:20:77:20 | _x |
 | declarations.swift:77:20:77:20 | get |
@@ -206,6 +206,6 @@
 | declarations.swift:132:5:132:15 | willSet |
 | declarations.swift:134:5:134:14 | didSet |
 | declarations.swift:138:1:142:1 | extension |
-| declarations.swift:139:3:141:3 | id |
+| declarations.swift:139:3:141:3 | id() |
 | declarations.swift:139:8:139:8 | self |
 | declarations.swift:144:1:144:7 | { ... } |

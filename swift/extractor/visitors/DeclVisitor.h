@@ -258,8 +258,7 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   void emitAbstractFunctionDecl(swift::AbstractFunctionDecl* decl,
                                 TrapLabel<AbstractFunctionDeclTag> label) {
     assert(decl->hasParameterList() && "Expect functions to have a parameter list");
-    auto name = !decl->hasName() || decl->getName().isSpecial() ? "(unnamed function decl)"
-                                                                : decl->getNameStr().str();
+    auto name = !decl->hasName() ? "(unnamed function decl)" : constructName(decl->getName());
     dispatcher_.emit(AbstractFunctionDeclsTrap{label, name});
     if (auto body = decl->getBody()) {
       dispatcher_.emit(AbstractFunctionDeclBodiesTrap{label, dispatcher_.fetchLabel(body)});
@@ -353,6 +352,22 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
           AbstractStorageDeclAccessorDeclsTrap{label, i++, dispatcher_.fetchLabel(acc)});
     }
     emitValueDecl(decl, label);
+  }
+
+  // Constructs a `std::string` of the form `f(x:y:)` for a declaration
+  // like `func f(x first: Int, y second: Int) {  }`
+  std::string constructName(swift::DeclName declName) {
+    std::string name = declName.getBaseName().userFacingName().str();
+    name += "(";
+    for (auto argName : declName.getArgumentNames()) {
+      if (argName.empty()) {
+        name += "_:";
+      } else {
+        name += argName.str().str() + ":";
+      }
+    }
+    name += ")";
+    return name;
   }
 
  private:
