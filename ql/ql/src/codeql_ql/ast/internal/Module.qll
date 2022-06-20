@@ -218,6 +218,20 @@ private module Cached {
     not exists(me.(ModuleExpr).getQualifier()) and
     exists(ContainerOrModule enclosing, string name | resolveModuleRefHelper(me, enclosing, name) |
       definesModule(enclosing, name, m, _)
+    ) and
+    (
+      not me instanceof TypeExpr
+      or
+      // remove some spurious results that can happen with `TypeExpr`
+      me instanceof TypeExpr and
+      m instanceof Module_ and // TypeExpr can only resolve to a Module, and only in some scenarios
+      (
+        // only possible if this is inside a moduleInstantiation.
+        me = any(ModuleExpr mod).getArgument(_).asType()
+        or
+        // or if it's a parameter to a parameterized module
+        me = any(SignatureExpr sig, Module mod | mod.hasParameter(_, _, sig) | sig).asType()
+      )
     )
     or
     exists(FileOrModule mid |
