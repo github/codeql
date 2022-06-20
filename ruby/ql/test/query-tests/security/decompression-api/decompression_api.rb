@@ -1,7 +1,8 @@
 class TestController < ActionController::Base
     # this should get picked up
     def unsafe_zlib_unzip
-        Zlib::Inflate.inflate(params[:file])
+        path = params[:file]
+        Zlib::Inflate.inflate(path)
     end
 
     # this should not get picked up
