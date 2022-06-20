@@ -6,8 +6,10 @@
 #include <sstream>
 #include <memory>
 #include <unistd.h>
+#include <unordered_set>
 
 #include <swift/AST/SourceFile.h>
+#include <swift/Basic/FileTypes.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -124,6 +126,17 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
 
 void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
                                swift::CompilerInstance& compiler) {
+  // The frontend can be called in many different ways.
+  // At each invocation we only extract system and builtin modules and any input source files that
+  // have an output associated with them.
+  std::unordered_set<std::string> sourceFiles;
+  auto inputFiles = compiler.getInvocation().getFrontendOptions().InputsAndOutputs.getAllInputs();
+  for (auto& input : inputFiles) {
+    if (input.getType() == swift::file_types::TY_Swift && !input.outputFilename().empty()) {
+      sourceFiles.insert(input.getFileName());
+    }
+  }
+
   for (auto& [_, module] : compiler.getASTContext().getLoadedModules()) {
     // We only extract system and builtin modules here as the other "user" modules can be built
     // during the build process and then re-used at a later stage. In this case, we extract the
@@ -135,12 +148,16 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
       // TODO: pass ModuleDecl directly when we have module extraction in place?
       extractDeclarations(config, decls, compiler, *module);
     } else {
-      // The extraction will only work if one (or more) `-primary-file` CLI option is provided,
-      // which is what always happens in case of `swift build` and `xcodebuild`
-      for (auto primaryFile : module->getPrimarySourceFiles()) {
-        archiveFile(config, *primaryFile);
-        extractDeclarations(config, primaryFile->getTopLevelDecls(), compiler, *module,
-                            primaryFile);
+      for (auto file : module->getFiles()) {
+        if (!llvm::isa<swift::SourceFile>(file)) {
+          continue;
+        }
+        auto sourceFile = llvm::cast<swift::SourceFile>(file);
+        if (sourceFiles.count(sourceFile->getFilename().str()) == 0) {
+          continue;
+        }
+        archiveFile(config, *sourceFile);
+        extractDeclarations(config, sourceFile->getTopLevelDecls(), compiler, *module, sourceFile);
       }
     }
   }
