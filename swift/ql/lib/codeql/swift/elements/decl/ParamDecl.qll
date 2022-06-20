@@ -2,7 +2,6 @@ private import codeql.swift.generated.decl.ParamDecl
 private import codeql.swift.elements.decl.AbstractFunctionDecl
 private import codeql.swift.elements.expr.AbstractClosureExpr
 
-
 class ParamDecl extends ParamDeclBase {
   /** Gets the function which declares this parameter. */
   AbstractFunctionDecl getDeclaringFunction() { result.getAParam() = this }

@@ -48,9 +48,8 @@ module Ssa {
       result = this.(PhiDefinition).getAPhiInput()
     }
 
-    cached Definition getAnUltimateDefinition() {
-      result = this.getAPhiInputOrPriorDefinition()
-    }
+    cached
+    Definition getAnUltimateDefinition() { result = this.getAPhiInputOrPriorDefinition() }
   }
 
   cached
