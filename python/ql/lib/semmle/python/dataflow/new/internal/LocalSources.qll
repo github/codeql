@@ -36,7 +36,7 @@ class LocalSourceNode extends Node {
   LocalSourceNode() {
     Stages::DataFlow::ref() and
     this instanceof ExprNode and
-    not simpleLocalFlowStep(_, this)
+    not simpleLocalFlowStepForTypetracking(_, this)
     or
     // We include all module variable nodes, as these act as stepping stones between writes and
     // reads of global variables. Without them, type tracking based on `LocalSourceNode`s would be

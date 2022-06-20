@@ -91,7 +91,7 @@ ReturnKind getReturnValueKind() { any() }
 
 /**
  * All definitions in this module are required by the shared implementation
- * (for source/sink interpretation), but they are unused for Ruby, where
+ * (for source/sink interpretation), but they are unused for Python, where
  * we rely on API graphs instead.
  */
 private module UnusedSourceSinkInterpretation {
