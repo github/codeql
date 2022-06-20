@@ -12,4 +12,76 @@
 
 import swift
 
-select "TODO"
+predicate isSource(Expr e) {
+  // result of a call to to `String.count`
+  exists(MemberRefExpr member |
+    member.getBaseExpr().getType().toString() = "String" and // TODO: use of toString
+    member.getMember().toString() = "count" and // TODO: use of toString
+    e = member
+  )
+  // TODO: other sources such as NSString.length, with different set of sinks
+}
+
+predicate isSink(Expr e) {
+  // arguments to method calls...
+  exists(
+    string className, string methodName, string argName, ClassDecl c, AbstractFunctionDecl f,
+    CallExpr call, int arg
+  |
+    (
+      // `NSRange.init`
+      className = "NSRange" and
+      methodName = "init" and
+      argName = ["location", "length"]
+      or
+      // `NSString.character`
+      className = ["NSString", "NSMutableString"] and
+      methodName = "character" and
+      argName = "at"
+      or
+      // `NSString.character`
+      className = ["NSString", "NSMutableString"] and
+      methodName = "substring" and
+      argName = ["from", "to"]
+      or
+      // `NSMutableString.insert`
+      className = "NSMutableString" and
+      methodName = "insert" and
+      argName = "at"
+    ) and
+    c.toString() = className and // TODO: use of toString
+    c.getAMember() = f and // TODO: will this even work if its defined in a parent class?
+    call.getFunction().(ApplyExpr).getFunction().(DeclRefExpr).getDecl() = f and
+    call.getFunction().(ApplyExpr).getFunction().toString() = methodName and // TODO: use of toString
+    call.getFunction()
+        .(ApplyExpr)
+        .getFunction()
+        .(DeclRefExpr)
+        .getDecl()
+        .(AbstractFunctionDecl)
+        .getParam(arg)
+        .getName() = argName and
+    call.getArgument(arg).getExpr() = e
+  )
+  or
+  // arguments to function calls...
+  exists(string funcName, string argName, CallExpr call, int arg |
+    // `NSMakeRange`
+    funcName = "NSMakeRange" and
+    argName = ["loc", "len"] and
+    call.getStaticTarget().getName() = funcName and
+    call.getStaticTarget().getParam(arg).getName() = argName and
+    call.getArgument(arg).getExpr() = e
+  )
+}
+
+string describe(Element e) {
+  isSource(e) and result = "isSource"
+  or
+  isSink(e) and result = "isSink"
+  or
+  isSource(e) and isSink(e) and result = "***RESULT***"
+}
+
+from Locatable e
+select e.getLocation(), e, strictconcat(describe(e), ", ")
