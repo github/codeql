@@ -39,6 +39,18 @@ module Ssa {
         read2 = bb2.getNode(i2)
       )
     }
+
+    /**
+     * Gets an SSA definition whose value can flow to this one in one step. This
+     * includes inputs to phi nodes and the prior definitions of uncertain writes.
+     */
+    private Definition getAPhiInputOrPriorDefinition() {
+      result = this.(PhiDefinition).getAPhiInput()
+    }
+
+    cached Definition getAnUltimateDefinition() {
+      result = this.getAPhiInputOrPriorDefinition()
+    }
   }
 
   cached

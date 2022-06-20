@@ -46,6 +46,8 @@ class Node extends TNode {
    * Gets this node's underlying SSA definition, if any.
    */
   Ssa::Definition asDefinition() { none() }
+
+  ParamDecl asParameter() { none() }
 }
 
 /**

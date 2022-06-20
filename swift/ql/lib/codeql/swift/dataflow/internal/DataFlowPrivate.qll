@@ -157,12 +157,18 @@ private module ParameterNodes {
     override string toStringImpl() { result = param.toString() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      exists(FuncDecl f, int index |
+      exists(CfgScope f, int index |
         c = TDataFlowFunc(f) and
-        f.getParam(index) = param and
+        (
+          f.(AbstractFunctionDecl).getParam(index) = param
+          or
+          f.(AbstractClosureExpr).getParam(index) = param
+        ) and
         pos = TPositionalParameter(index)
       )
     }
+
+    override ParamDecl asParameter() { result = param }
 
     override DataFlowCallable getEnclosingCallable() { isParameterOf(result, _) }
   }

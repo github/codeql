@@ -144,7 +144,7 @@ private module Cached {
   /** Gets a viable run-time target for the call `call`. */
   cached
   DataFlowCallable viableCallable(DataFlowCall call) {
-    result = TDataFlowFunc(call.asCall().getStaticTarget())
+    result = DispatchFlow::viableCallableRec(call)
   }
 
   cached
@@ -165,13 +165,19 @@ import Cached
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
+predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { DispatchFlow::mayBenefitFromCallContext(call, c, _) }
 
 /**
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
+DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+  exists(int index, Node argNode |
+    DispatchFlow::mayBenefitFromCallContext(call, DispatchFlow::viableCallableRec(ctx), index) and
+    argNode.asExpr() = ctx.asCall().getArgument(index).getExpr() and
+    DispatchFlow::reaches(result, argNode)
+  )
+}
 
 /** A parameter position. */
 class ParameterPosition extends TParameterPosition {
@@ -200,4 +206,74 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   apos instanceof TThisArgument
   or
   ppos.(PositionalParameterPosition).getIndex() = apos.(PositionalArgumentPosition).getIndex()
+}
+
+private Node getCallTargetNode(DataFlowCall call) {
+  result.asExpr() = call.asCall().getExpr().(ApplyExpr).getFunction()
+}
+
+private module DispatchFlow {
+  DataFlowCallable viableCallableRec(DataFlowCall call) {
+    result = TDataFlowFunc(call.asCall().getStaticTarget())
+    or
+    reaches(result, getCallTargetNode(call))
+  }
+
+  predicate reaches(DataFlowCallable callable, Node node) {
+    // Base cases
+    // Closures
+    callable.getUnderlyingCallable() = node.asExpr()
+    or
+    // Reference to a function declaration
+    node.asExpr().(DeclRefExpr).getDecl() = callable.getUnderlyingCallable()
+    or
+    // recursive cases
+    exists(Node mid |
+      reaches(callable, mid) and
+      bigStep(mid, node)
+      or
+      reaches(callable, mid) and
+      interproceduralStep(mid, node)
+    )
+  }
+
+  predicate interproceduralStep(Node first, Node second) {
+    exists(
+      DataFlowCall call, DataFlowCallable callable, ArgumentPosition apos, ParameterPosition ppos
+    |
+      isArgumentNode(first, call, apos) and
+      isParameterNode(second, callable, ppos) and
+      parameterMatch(ppos, apos) and
+      callable = viableCallableRec(call)
+    )
+    or
+    exists(DataFlowCall call |
+      second.(OutNode).getCall(first.(ReturnNode).getKind()) = call and
+      nodeGetEnclosingCallable(first) = viableCallableRec(call)
+    )
+  }
+
+  predicate bigStep(Node start, Node end) {
+    // TODO: restrict to interesting starts?
+    start = end
+    or
+    exists(Node mid |
+      bigStep(start, mid) and
+      localFlowStepImpl(mid, end)
+    )
+  }
+
+  /**
+   * Holds if `call` is a call through a function pointer, and the pointer
+   * value is given as the `arg`'th argument to `f`.
+   */
+  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable f, int arg) {
+    exists(ParameterNode param |
+      bigStep(param, getCallTargetNode(call)) and
+      (
+        param.asParameter() = f.getUnderlyingCallable().(AbstractFunctionDecl).getParam(arg) or
+        param.asParameter() = f.getUnderlyingCallable().(ClosureExpr).getParam(arg)
+      )
+    )
+  }
 }
