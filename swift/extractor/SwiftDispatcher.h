@@ -138,8 +138,6 @@ class SwiftDispatcher {
   //  - extracting a primary source file: in this mode, we extract several files belonging to the
   //    same module one by one. In this mode, we restrict emission only to the same file ignoring
   //    all the other files.
-  // TODO this currently does not extract compiler-synthesized entities without a valid location,
-  // this will be fixed in an upcoming PR
   bool shouldEmitDeclBody(swift::Decl* decl) {
     if (decl->getModuleContext() != &currentModule) {
       return false;
