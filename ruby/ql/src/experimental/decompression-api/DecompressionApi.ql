@@ -39,7 +39,7 @@ class Configuration extends TaintTracking::Configuration {
 
   // our Decompression APIs defined above will the the sinks we use for this query
   override predicate isSink(DataFlow::Node sink) {
-    sink.(DataFlow::CallNode) instanceof DecompressionApiUse
+    sink instanceof DecompressionApiUse
   }
 }
 
