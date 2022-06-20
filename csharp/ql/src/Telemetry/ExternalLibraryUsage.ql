@@ -22,7 +22,6 @@ private predicate getRelevantUsages(string info, int usages) {
 private int getOrder(string info) {
   info =
     rank[result](string i, int usages |
-      exists(ExternalApi api | i = api.getInfoPrefix()) and
       getRelevantUsages(i, usages)
     |
       i order by usages desc, i
