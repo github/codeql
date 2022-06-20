@@ -291,7 +291,7 @@ func main() {
 	}
 
 	// Go 1.16 and later won't automatically attempt to update go.mod / go.sum during package loading, so try to update them here:
-	if depMode == GoGetWithModules && semver.Compare(getEnvGoSemVer(), "1.16") >= 0 {
+	if modMode != ModVendor && depMode == GoGetWithModules && semver.Compare(getEnvGoSemVer(), "1.16") >= 0 {
 		// stat go.mod and go.sum
 		beforeGoModFileInfo, beforeGoModErr := os.Stat("go.mod")
 		if beforeGoModErr != nil {

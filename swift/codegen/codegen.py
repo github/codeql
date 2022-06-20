@@ -31,6 +31,8 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--ql-stub-output", type=_abspath, default=paths.swift_dir / "ql/lib/codeql/swift/elements",
                    help="output directory for QL stub/customization files (default %(default)s). Defines also the "
                         "generated qll file importing every class file")
+    p.add_argument("--ql-test-output", type=_abspath, default=paths.swift_dir / "ql/test/extractor-tests/generated",
+                   help="output directory for QL generated extractor test files (default %(default)s)")
     p.add_argument("--ql-format", action="store_true", default=True,
                    help="use codeql to autoformat QL files (which is the default)")
     p.add_argument("--no-ql-format", action="store_false", dest="ql_format", help="do not format QL files")

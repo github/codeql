@@ -634,9 +634,11 @@ ql_module_alias_body_def(
   int child: @ql_module_expr ref
 );
 
+@ql_moduleExpr_name_type = @ql_module_instantiation | @ql_token_simple_id
+
 ql_module_expr_name(
   unique int ql_module_expr: @ql_module_expr ref,
-  unique int name: @ql_token_simple_id ref
+  unique int name: @ql_moduleExpr_name_type ref
 );
 
 @ql_moduleExpr_child_type = @ql_module_expr | @ql_module_instantiation | @ql_token_simple_id
@@ -654,7 +656,8 @@ ql_module_instantiation_child(
 );
 
 ql_module_instantiation_def(
-  unique int id: @ql_module_instantiation
+  unique int id: @ql_module_instantiation,
+  int name: @ql_module_name ref
 );
 
 @ql_moduleMember_child_type = @ql_annotation | @ql_classless_predicate | @ql_dataclass | @ql_datatype | @ql_import_directive | @ql_module | @ql_select | @ql_token_qldoc

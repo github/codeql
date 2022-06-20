@@ -14,12 +14,14 @@ _directories:
 
 Element:
   is_unknown: predicate
+  _tags: [ no_qltest ]
 
 File:
   name: string
 
 Locatable:
   location: Location?
+  _tags: [ no_qltest ]
 
 Location:
   file: File
@@ -27,6 +29,7 @@ Location:
   start_column: int
   end_line: int
   end_column: int
+  _tags: [ no_qltest ]
 
 Type:
   diagnostics_name: string
@@ -288,6 +291,8 @@ ValueDecl:
 
 AbstractClosureExpr:
   _extends: Expr
+  _children:
+    params: ParamDecl*
 
 AnyTryExpr:
   _extends: Expr
