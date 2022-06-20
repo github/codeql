@@ -39,9 +39,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   // our Decompression APIs defined above will be the sinks we use for this query
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof DecompressionApiUse
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionApiUse }
 }
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
