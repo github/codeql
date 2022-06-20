@@ -662,7 +662,7 @@ private module AiohttpClientModel {
     private API::Node instance() { result = classRef().getReturn() }
 
     /** A method call on a ClientSession that sends off a request */
-    private class OutgoingRequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
+    private class OutgoingRequestCall extends HTTP::Client::Request::Range, API::CallNode {
       string methodName;
 
       OutgoingRequestCall() {
@@ -685,8 +685,14 @@ private module AiohttpClientModel {
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
-        // TODO: Look into disabling certificate validation
-        none()
+        exists(API::Node param | param = this.getKeywordParameter(["ssl", "verify_ssl"]) |
+          disablingNode = param.getARhs() and
+          argumentOrigin = param.getAValueReachingRhs() and
+          // aiohttp.client treats `None` as the default and all other "falsey" values as `False`.
+          argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
+          not argumentOrigin.asExpr() instanceof None
+        )
+        // TODO: Handling of SSLContext passed as ssl/ssl_context arguments
       }
     }
   }

@@ -21,3 +21,5 @@
 | Logging.rb:73:5:73:63 | call to log | Logging.rb:73:36:73:45 | "message1" |
 | Logging.rb:74:5:74:76 | call to log | Logging.rb:74:36:74:45 | "message2" |
 | Logging.rb:74:5:74:76 | call to log | Logging.rb:74:48:74:58 | "progname2" |
+| Logging.rb:81:1:81:21 | call to debug | Logging.rb:81:16:81:20 | "msg" |
+| Logging.rb:82:1:82:21 | call to debug | Logging.rb:82:16:82:20 | "msg" |
