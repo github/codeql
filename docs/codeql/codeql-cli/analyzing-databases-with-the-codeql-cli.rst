@@ -161,34 +161,22 @@ If a ``scope/name`` and ``path`` are specified, then the ``path`` cannot
 be absolute. It is considered relative to the root of the CodeQL
 pack.
 
-The relevant commands are:
-
-* `codeql database analyze <../manual/database-analyze>`__.
-* `codeql database run-queries <../manual/database-run-queries>`__.
-* `codeql execute queries <../manual/execute-queries>`__.
-* `codeql resolve queries <../manual/resolve-queries>`__.
-
 For example::
 
-    # Analyze a database using all queries in the experimental/Security folder within the codeql/cpp-queries
-    # CodeQL query pack.
+To analyze a database using all queries in the `experimental/Security` folder within the `codeql/cpp-queries` CodeQL pack you can use::
+
     codeql database analyze --format=sarif-latest --output=results <db> \
         codeql/cpp-queries:experimental/Security
 
-    # Analyse using only the RedundantNullCheckParam.ql query in the codeql/cpp-queries CodeQL query pack.
+To run the `RedundantNullCheckParam.ql` query in the `codeql/cpp-queries` CodeQL pack use::
+
     codeql database analyze --format=sarif-latest --output=results <db> \
         'codeql/cpp-queries:experimental/Likely Bugs/RedundantNullCheckParam.ql'
 
-    # Analyse using the cpp-security-and-quality.qls query suite in the codeql/cpp-queries CodeQL query pack.
-    codeql database analyze --format=sarif-latest --output=results <db> \
-        'codeql/cpp-queries:codeql-suites/cpp-security-and-quality.qls'
+To analyze your database using the `cpp-security-and-quality.qls` query suite from a version of the `codeql/cpp-queries` CodeQL pack that is >= 0.0.3 and < 0.1.0 (the highest compatible version will be chosen) you can use::
 
-    # Analyse using the cpp-security-and-quality.qls query suite from a version of the codeql/cpp-queries pack
-    # that is >= 0.0.3 and < 0.1.0 (the highest compatible version will be chosen).
-    # All valid semver ranges are allowed. See https://docs.npmjs.com/cli/v6/using-npm/semver#ranges
     codeql database analyze --format=sarif-latest --output=results <db> \
        'codeql/cpp-queries@~0.0.3:codeql-suites/cpp-security-and-quality.qls'
-
 For more information about CodeQL packs, see :doc:`About CodeQL Packs <about-codeql-packs>`.
 
 Running query suites
