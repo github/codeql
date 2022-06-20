@@ -10,8 +10,6 @@
 
 namespace codeql {
 
-enum class SwiftExtractionMode { Module, PrimaryFile };
-
 // The main responsibilities of the SwiftDispatcher are as follows:
 // * redirect specific AST node emission to a corresponding visitor (statements, expressions, etc.)
 // * storing TRAP labels for emitted AST nodes (in the TrapLabelStore) to avoid re-emission
@@ -19,20 +17,18 @@ enum class SwiftExtractionMode { Module, PrimaryFile };
 // node (AST nodes that are not types: declarations, statements, expressions, etc.).
 class SwiftDispatcher {
  public:
-  // all references passed as parameters to this constructor are supposed to outlive the
-  // SwiftDispatcher
+  // all references and pointers passed as parameters to this constructor are supposed to outlive
+  // the SwiftDispatcher
   SwiftDispatcher(const swift::SourceManager& sourceManager,
                   TrapArena& arena,
                   TrapOutput& trap,
-                  SwiftExtractionMode extractionMode,
                   swift::ModuleDecl& currentModule,
-                  llvm::StringRef currentFileName)
+                  swift::SourceFile* currentPrimarySourceFile = nullptr)
       : sourceManager{sourceManager},
         arena{arena},
         trap{trap},
-        extractionMode(extractionMode),
         currentModule{currentModule},
-        currentFileName(currentFileName) {}
+        currentPrimarySourceFile{currentPrimarySourceFile} {}
 
   template <typename Entry>
   void emit(const Entry& entry) {
@@ -135,29 +131,24 @@ class SwiftDispatcher {
 
   // In order to not emit duplicated entries for declarations, we restrict emission to only
   // Decls declared within the current "scope".
-  // Depending on the SwiftExtractionMode the scope is defined as follows:
-  //  - SwiftExtractionMode::Module: the current scope means the current module. This is used in
-  //    the case of system or builtin modules.
-  //  - SwiftExtractionMode::PrimaryFile: in this mode, we extract several files belonging to the
+  // Depending on the whether we are extracting a primary source file or not the scope is defined as
+  // follows:
+  //  - not extracting a primary source file (`currentPrimarySourceFile == nullptr`): the current
+  //    scope means the current module. This is used in the case of system or builtin modules.
+  //  - extracting a primary source file: in this mode, we extract several files belonging to the
   //    same module one by one. In this mode, we restrict emission only to the same file ignoring
   //    all the other files.
   // TODO this currently does not extract compiler-synthesized entities without a valid location,
   // this will be fixed in an upcoming PR
   bool shouldEmitDeclBody(swift::Decl* decl) {
-    switch (extractionMode) {
-      case SwiftExtractionMode::Module: {
-        return &currentModule == decl->getModuleContext();
-      } break;
-      case SwiftExtractionMode::PrimaryFile: {
-        swift::SourceLoc location = decl->getStartLoc();
-        if (!location.isValid()) {
-          return false;
-        }
-        auto declFileName = sourceManager.getDisplayNameForLoc(location).str();
-        return &currentModule == decl->getModuleContext() && declFileName == currentFileName;
-      } break;
-      default:
-        return false;
+    if (decl->getModuleContext() != &currentModule) {
+      return false;
+    }
+    if (!currentPrimarySourceFile) {
+      return true;
+    }
+    if (auto context = decl->getDeclContext()) {
+      return currentPrimarySourceFile == context->getParentSourceFile();
     }
     return false;
   }
@@ -241,9 +232,8 @@ class SwiftDispatcher {
   TrapOutput& trap;
   Store store;
   Store::Handle waitingForNewLabel{std::monostate{}};
-  SwiftExtractionMode extractionMode;
   swift::ModuleDecl& currentModule;
-  llvm::StringRef currentFileName;
+  swift::SourceFile* currentPrimarySourceFile;
 };
 
 }  // namespace codeql
