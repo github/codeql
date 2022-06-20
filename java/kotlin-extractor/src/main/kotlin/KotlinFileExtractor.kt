@@ -3233,7 +3233,7 @@ open class KotlinFileExtractor(
             tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
             this.writeExpressionMetadataToTrapFile(callId, invokeLabels.methodId, retId)
 
-            tw.writeCallableBinding(callId as Label<out DbCaller>, getId)
+            tw.writeCallableBinding(callId, getId)
 
             this.writeThisAccess(callId, invokeLabels.methodId, retId)
             for ((pIdx, p) in invokeLabels.parameters.withIndex()) {
