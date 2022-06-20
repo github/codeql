@@ -4895,7 +4895,7 @@ cfg.swift:
 #-----|  -> exit init
 
 #  378| init
-#-----|  -> call to ...
+#-----|  -> init
 
 #  379| super
 #-----|  -> call to ...
@@ -4909,7 +4909,7 @@ cfg.swift:
 #  379| self = ...
 #-----|  -> return
 
-#  379| call to ...
+#  379| init
 #-----|  -> super
 
 #  379| 0
