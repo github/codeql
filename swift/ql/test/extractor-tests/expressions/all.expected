@@ -11,37 +11,37 @@
 | expressions.swift:7:11:7:10 | call to ... |
 | expressions.swift:7:11:7:11 | $interpolation |
 | expressions.swift:7:11:7:11 | &... |
-| expressions.swift:7:11:7:11 | call to appendLiteral |
+| expressions.swift:7:11:7:11 | call to appendLiteral(_:) |
 | expressions.swift:7:18:7:18 | $interpolation |
 | expressions.swift:7:18:7:18 | &... |
-| expressions.swift:7:18:7:18 | appendInterpolation |
-| expressions.swift:7:18:7:18 | call to appendInterpolation |
+| expressions.swift:7:18:7:18 | appendInterpolation(_:) |
+| expressions.swift:7:18:7:18 | call to appendInterpolation(_:) |
 | expressions.swift:7:18:7:20 | call to ... |
 | expressions.swift:7:19:7:19 | a |
 | expressions.swift:7:21:7:21 |  |
 | expressions.swift:7:21:7:21 | $interpolation |
 | expressions.swift:7:21:7:21 | &... |
 | expressions.swift:7:21:7:21 | call to ... |
-| expressions.swift:7:21:7:21 | call to appendLiteral |
+| expressions.swift:7:21:7:21 | call to appendLiteral(_:) |
 | expressions.swift:8:15:8:15 | nil |
 | expressions.swift:15:9:15:9 | x |
-| expressions.swift:15:9:15:14 | ... call to != ... |
-| expressions.swift:15:11:15:11 | != |
+| expressions.swift:15:9:15:14 | ... call to !=(_:_:) ... |
+| expressions.swift:15:11:15:11 | !=(_:_:) |
 | expressions.swift:15:11:15:11 | Int.Type |
-| expressions.swift:15:11:15:11 | call to != |
+| expressions.swift:15:11:15:11 | call to !=(_:_:) |
 | expressions.swift:15:14:15:14 | 0 |
 | expressions.swift:16:11:16:11 | AnError.Type |
 | expressions.swift:16:11:16:19 | (Error) ... |
 | expressions.swift:16:11:16:19 | call to ... |
 | expressions.swift:16:19:16:19 | failed |
 | expressions.swift:20:1:20:16 | try! ... |
-| expressions.swift:20:6:20:6 | failure |
-| expressions.swift:20:6:20:16 | call to failure |
+| expressions.swift:20:6:20:6 | failure(_:) |
+| expressions.swift:20:6:20:16 | call to failure(_:) |
 | expressions.swift:20:14:20:14 | 11 |
 | expressions.swift:21:1:21:16 | try? ... |
-| expressions.swift:21:6:21:6 | failure |
+| expressions.swift:21:6:21:6 | failure(_:) |
 | expressions.swift:21:6:21:16 | (()?) ... |
-| expressions.swift:21:6:21:16 | call to failure |
+| expressions.swift:21:6:21:16 | call to failure(_:) |
 | expressions.swift:21:14:21:14 | 11 |
 | expressions.swift:27:13:27:13 | Klass.Type |
 | expressions.swift:27:13:27:13 | call to ... |
@@ -70,8 +70,8 @@
 | expressions.swift:34:1:34:12 |  ... = ... |
 | expressions.swift:34:5:34:5 | 15 |
 | expressions.swift:34:5:34:12 | (Double) ... |
-| expressions.swift:35:1:35:1 | print |
-| expressions.swift:35:1:35:13 | call to print |
+| expressions.swift:35:1:35:1 | print(_:separator:terminator:) |
+| expressions.swift:35:1:35:13 | call to print(_:separator:terminator:) |
 | expressions.swift:35:6:35:6 | default separator |
 | expressions.swift:35:6:35:6 | default terminator |
 | expressions.swift:35:7:35:7 | d |
@@ -84,66 +84,66 @@
 | expressions.swift:38:3:38:15 | call to ... |
 | expressions.swift:38:11:38:11 | 5 |
 | expressions.swift:38:14:38:14 | 7 |
-| expressions.swift:41:1:41:1 | closured |
-| expressions.swift:41:1:43:1 | call to closured |
+| expressions.swift:41:1:41:1 | closured(closure:) |
+| expressions.swift:41:1:43:1 | call to closured(closure:) |
 | expressions.swift:41:10:43:1 | { ... } |
 | expressions.swift:42:12:42:12 | x |
-| expressions.swift:42:12:42:16 | ... call to + ... |
-| expressions.swift:42:14:42:14 | + |
+| expressions.swift:42:12:42:16 | ... call to +(_:_:) ... |
+| expressions.swift:42:14:42:14 | +(_:_:) |
 | expressions.swift:42:14:42:14 | Int.Type |
-| expressions.swift:42:14:42:14 | call to + |
+| expressions.swift:42:14:42:14 | call to +(_:_:) |
 | expressions.swift:42:16:42:16 | y |
-| expressions.swift:44:1:44:1 | closured |
-| expressions.swift:44:1:46:1 | call to closured |
+| expressions.swift:44:1:44:1 | closured(closure:) |
+| expressions.swift:44:1:46:1 | call to closured(closure:) |
 | expressions.swift:44:10:46:1 | { ... } |
 | expressions.swift:45:12:45:12 | x |
-| expressions.swift:45:12:45:16 | ... call to + ... |
-| expressions.swift:45:14:45:14 | + |
+| expressions.swift:45:12:45:16 | ... call to +(_:_:) ... |
+| expressions.swift:45:14:45:14 | +(_:_:) |
 | expressions.swift:45:14:45:14 | Int.Type |
-| expressions.swift:45:14:45:14 | call to + |
+| expressions.swift:45:14:45:14 | call to +(_:_:) |
 | expressions.swift:45:16:45:16 | y |
-| expressions.swift:47:1:47:1 | closured |
-| expressions.swift:47:1:47:27 | call to closured |
+| expressions.swift:47:1:47:1 | closured(closure:) |
+| expressions.swift:47:1:47:27 | call to closured(closure:) |
 | expressions.swift:47:10:47:27 | { ... } |
 | expressions.swift:47:19:47:19 | $0 |
-| expressions.swift:47:19:47:24 | ... call to + ... |
-| expressions.swift:47:22:47:22 | + |
+| expressions.swift:47:19:47:24 | ... call to +(_:_:) ... |
+| expressions.swift:47:22:47:22 | +(_:_:) |
 | expressions.swift:47:22:47:22 | Int.Type |
-| expressions.swift:47:22:47:22 | call to + |
+| expressions.swift:47:22:47:22 | call to +(_:_:) |
 | expressions.swift:47:24:47:24 | $1 |
-| expressions.swift:48:1:48:1 | closured |
-| expressions.swift:48:1:48:20 | call to closured |
+| expressions.swift:48:1:48:1 | closured(closure:) |
+| expressions.swift:48:1:48:20 | call to closured(closure:) |
 | expressions.swift:48:10:48:20 | { ... } |
 | expressions.swift:48:12:48:12 | $0 |
-| expressions.swift:48:12:48:17 | ... call to + ... |
-| expressions.swift:48:15:48:15 | + |
+| expressions.swift:48:12:48:17 | ... call to +(_:_:) ... |
+| expressions.swift:48:15:48:15 | +(_:_:) |
 | expressions.swift:48:15:48:15 | Int.Type |
-| expressions.swift:48:15:48:15 | call to + |
+| expressions.swift:48:15:48:15 | call to +(_:_:) |
 | expressions.swift:48:17:48:17 | $1 |
 | expressions.swift:54:1:54:1 | _ |
 | expressions.swift:54:1:54:8 |  ... = ... |
 | expressions.swift:54:5:54:8 | #keyPath(...) |
 | expressions.swift:54:6:54:8 | UnresolvedDotExpr |
 | expressions.swift:58:16:58:16 | 1234 |
-| expressions.swift:59:1:59:1 | unsafeFunction |
-| expressions.swift:59:1:59:34 | call to unsafeFunction |
+| expressions.swift:59:1:59:1 | unsafeFunction(pointer:) |
+| expressions.swift:59:1:59:34 | call to unsafeFunction(pointer:) |
 | expressions.swift:59:25:59:26 | &... |
 | expressions.swift:59:25:59:26 | (UnsafePointer<Int>) ... |
 | expressions.swift:59:26:59:26 | myNumber |
-| expressions.swift:60:1:60:1 | withUnsafePointer |
-| expressions.swift:60:1:60:63 | call to withUnsafePointer |
+| expressions.swift:60:1:60:1 | withUnsafePointer(to:_:) |
+| expressions.swift:60:1:60:63 | call to withUnsafePointer(to:_:) |
 | expressions.swift:60:23:60:23 | (Int) ... |
 | expressions.swift:60:23:60:23 | myNumber |
 | expressions.swift:60:33:60:63 | ((UnsafePointer<Int>) throws -> ()) ... |
 | expressions.swift:60:33:60:63 | { ... } |
-| expressions.swift:60:35:60:35 | unsafeFunction |
-| expressions.swift:60:35:60:61 | call to unsafeFunction |
+| expressions.swift:60:35:60:35 | unsafeFunction(pointer:) |
+| expressions.swift:60:35:60:61 | call to unsafeFunction(pointer:) |
 | expressions.swift:60:59:60:59 | $0 |
 | expressions.swift:64:8:64:8 | x |
-| expressions.swift:64:8:64:12 | ... call to < ... |
-| expressions.swift:64:10:64:10 | < |
+| expressions.swift:64:8:64:12 | ... call to <(_:_:) ... |
+| expressions.swift:64:10:64:10 | <(_:_:) |
 | expressions.swift:64:10:64:10 | Int.Type |
-| expressions.swift:64:10:64:10 | call to < |
+| expressions.swift:64:10:64:10 | call to <(_:_:) |
 | expressions.swift:64:12:64:12 | 0 |
 | expressions.swift:73:5:73:5 | .xx |
 | expressions.swift:73:5:73:5 | self |
@@ -153,8 +153,8 @@
 | expressions.swift:77:7:77:7 | #... |
 | expressions.swift:77:7:77:7 | #... |
 | expressions.swift:77:7:77:7 | #... |
-| expressions.swift:77:7:77:7 | _unimplementedInitializer |
-| expressions.swift:77:7:77:7 | call to _unimplementedInitializer |
+| expressions.swift:77:7:77:7 | _unimplementedInitializer(className:initName:file:line:column:) |
+| expressions.swift:77:7:77:7 | call to _unimplementedInitializer(className:initName:file:line:column:) |
 | expressions.swift:77:7:77:7 | expressions.Derived |
 | expressions.swift:79:5:79:5 | super |
 | expressions.swift:79:5:79:11 | call to ... |
@@ -178,20 +178,20 @@
 | expressions.swift:88:1:88:7 | ...! |
 | expressions.swift:88:3:88:3 | a |
 | expressions.swift:92:14:92:14 | Unmanaged<ToPtr>.Type |
-| expressions.swift:92:14:92:24 | call to passRetained |
+| expressions.swift:92:14:92:24 | call to passRetained(_:) |
 | expressions.swift:92:14:92:44 | call to ... |
-| expressions.swift:92:14:92:46 | call to toOpaque |
+| expressions.swift:92:14:92:46 | call to toOpaque() |
 | expressions.swift:92:14:92:55 | call to ... |
-| expressions.swift:92:24:92:24 | passRetained |
+| expressions.swift:92:24:92:24 | passRetained(_:) |
 | expressions.swift:92:37:92:37 | ToPtr.Type |
 | expressions.swift:92:37:92:37 | call to ... |
 | expressions.swift:92:37:92:37 | init |
 | expressions.swift:92:37:92:43 | call to ... |
-| expressions.swift:92:46:92:46 | toOpaque |
+| expressions.swift:92:46:92:46 | toOpaque() |
 | expressions.swift:93:1:93:16 | Unmanaged<ToPtr>.Type |
-| expressions.swift:93:1:93:18 | call to fromOpaque |
+| expressions.swift:93:1:93:18 | call to fromOpaque(_:) |
 | expressions.swift:93:1:93:35 | call to ... |
-| expressions.swift:93:18:93:18 | fromOpaque |
+| expressions.swift:93:18:93:18 | fromOpaque(_:) |
 | expressions.swift:93:29:93:29 | (UnsafeRawPointer) ... |
 | expressions.swift:93:29:93:29 | opaque |
 | expressions.swift:99:14:99:14 | 0 |
