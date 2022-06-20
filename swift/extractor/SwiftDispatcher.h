@@ -17,9 +17,18 @@ namespace codeql {
 // node (AST nodes that are not types: declarations, statements, expressions, etc.).
 class SwiftDispatcher {
  public:
-  // sourceManager, arena, and trap are supposed to outlive the SwiftDispatcher
-  SwiftDispatcher(const swift::SourceManager& sourceManager, TrapArena& arena, TrapOutput& trap)
-      : sourceManager{sourceManager}, arena{arena}, trap{trap} {}
+  // all references and pointers passed as parameters to this constructor are supposed to outlive
+  // the SwiftDispatcher
+  SwiftDispatcher(const swift::SourceManager& sourceManager,
+                  TrapArena& arena,
+                  TrapOutput& trap,
+                  swift::ModuleDecl& currentModule,
+                  swift::SourceFile* currentPrimarySourceFile = nullptr)
+      : sourceManager{sourceManager},
+        arena{arena},
+        trap{trap},
+        currentModule{currentModule},
+        currentPrimarySourceFile{currentPrimarySourceFile} {}
 
   template <typename Entry>
   void emit(const Entry& entry) {
@@ -74,10 +83,10 @@ class SwiftDispatcher {
   // Due to the lazy emission approach, we must assign a label to a corresponding AST node before
   // it actually gets emitted to handle recursive cases such as recursive calls, or recursive type
   // declarations
-  template <typename E>
-  TrapLabelOf<E> assignNewLabel(E* e) {
+  template <typename E, typename... Args>
+  TrapLabelOf<E> assignNewLabel(E* e, Args&&... args) {
     assert(waitingForNewLabel == Store::Handle{e} && "assignNewLabel called on wrong entity");
-    auto label = createLabel<TrapTagOf<E>>();
+    auto label = createLabel<TrapTagOf<E>>(std::forward<Args>(args)...);
     store.insert(e, label);
     waitingForNewLabel = std::monostate{};
     return label;
@@ -118,6 +127,28 @@ class SwiftDispatcher {
     }
     attachLocation(locatables->front().getStartLoc(), locatables->back().getEndLoc(),
                    locatableLabel);
+  }
+
+  // In order to not emit duplicated entries for declarations, we restrict emission to only
+  // Decls declared within the current "scope".
+  // Depending on the whether we are extracting a primary source file or not the scope is defined as
+  // follows:
+  //  - not extracting a primary source file (`currentPrimarySourceFile == nullptr`): the current
+  //    scope means the current module. This is used in the case of system or builtin modules.
+  //  - extracting a primary source file: in this mode, we extract several files belonging to the
+  //    same module one by one. In this mode, we restrict emission only to the same file ignoring
+  //    all the other files.
+  bool shouldEmitDeclBody(swift::Decl* decl) {
+    if (decl->getModuleContext() != &currentModule) {
+      return false;
+    }
+    if (!currentPrimarySourceFile) {
+      return true;
+    }
+    if (auto context = decl->getDeclContext()) {
+      return currentPrimarySourceFile == context->getParentSourceFile();
+    }
+    return false;
   }
 
  private:
@@ -199,6 +230,8 @@ class SwiftDispatcher {
   TrapOutput& trap;
   Store store;
   Store::Handle waitingForNewLabel{std::monostate{}};
+  swift::ModuleDecl& currentModule;
+  swift::SourceFile* currentPrimarySourceFile;
 };
 
 }  // namespace codeql

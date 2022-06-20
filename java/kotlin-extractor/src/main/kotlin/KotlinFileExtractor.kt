@@ -1532,7 +1532,7 @@ open class KotlinFileExtractor(
 
     fun extractCall(c: IrCall, callable: Label<out DbCallable>, stmtExprParent: StmtExprParent) {
         with("call", c) {
-            val target = tryReplaceAndroidSyntheticFunction(c.symbol.owner)
+            val target = tryReplaceSyntheticFunction(c.symbol.owner)
 
             // The vast majority of types of call want an expr context, so make one available lazily:
             val exprParent by lazy {

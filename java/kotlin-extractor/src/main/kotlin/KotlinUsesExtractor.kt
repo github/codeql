@@ -322,17 +322,17 @@ open class KotlinUsesExtractor(
         } ?: c
     }
 
-    fun tryReplaceAndroidSyntheticFunction(f: IrSimpleFunction): IrSimpleFunction {
+    private fun tryReplaceFunctionInSyntheticClass(f: IrFunction, getClassReplacement: (IrClass) -> IrClass): IrFunction {
         val parentClass = f.parent as? IrClass ?: return f
-        val replacementClass = tryReplaceAndroidSyntheticClass(parentClass)
+        val replacementClass = getClassReplacement(parentClass)
         if (replacementClass === parentClass)
             return f
         return globalExtensionState.syntheticToRealFunctionMap.getOrPut(f) {
             val result = replacementClass.declarations.find { replacementDecl ->
-                replacementDecl is IrSimpleFunction && replacementDecl.name == f.name && replacementDecl.valueParameters.zip(f.valueParameters).all {
-                    it.first.type == it.second.type
+                replacementDecl is IrSimpleFunction && replacementDecl.name == f.name && replacementDecl.valueParameters.size == f.valueParameters.size && replacementDecl.valueParameters.zip(f.valueParameters).all {
+                    erase(it.first.type) == erase(it.second.type)
                 }
-            } as IrSimpleFunction?
+            } as IrFunction?
             if (result == null) {
                 logger.warn("Failed to replace synthetic class function ${f.name}")
             } else {
@@ -340,6 +340,11 @@ open class KotlinUsesExtractor(
             }
             result
         } ?: f
+    }
+
+    fun tryReplaceSyntheticFunction(f: IrFunction): IrFunction {
+        val androidReplacement = tryReplaceFunctionInSyntheticClass(f) { tryReplaceAndroidSyntheticClass(it) }
+        return tryReplaceFunctionInSyntheticClass(androidReplacement) { tryReplaceParcelizeRawType(it)?.first ?: it }
     }
 
     fun tryReplaceAndroidSyntheticField(f: IrField): IrField {

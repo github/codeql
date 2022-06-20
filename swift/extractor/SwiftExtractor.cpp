@@ -50,13 +50,15 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
 }
 
 static void extractDeclarations(const SwiftExtractorConfiguration& config,
+                                llvm::ArrayRef<swift::Decl*> topLevelDecls,
                                 swift::CompilerInstance& compiler,
-                                llvm::StringRef filename,
-                                llvm::ArrayRef<swift::Decl*> topLevelDecls) {
+                                swift::ModuleDecl& module,
+                                swift::SourceFile* primaryFile = nullptr) {
   // The extractor can be called several times from different processes with
   // the same input file(s)
   // We are using PID to avoid concurrent access
   // TODO: find a more robust approach to avoid collisions?
+  llvm::StringRef filename = primaryFile ? primaryFile->getFilename() : module.getModuleFilename();
   std::string tempTrapName = filename.str() + '.' + std::to_string(getpid()) + ".trap";
   llvm::SmallString<PATH_MAX> tempTrapPath(config.trapDir);
   llvm::sys::path::append(tempTrapPath, tempTrapName);
@@ -94,19 +96,18 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   trap.assignKey(unknownLocationLabel, "unknown");
   trap.emit(LocationsTrap{unknownLocationLabel, unknownFileLabel});
 
-  SwiftVisitor visitor(compiler.getSourceMgr(), arena, trap);
-  for (swift::Decl* decl : topLevelDecls) {
+  SwiftVisitor visitor(compiler.getSourceMgr(), arena, trap, module, primaryFile);
+  for (auto decl : topLevelDecls) {
     visitor.extract(decl);
   }
   if (topLevelDecls.empty()) {
-    // In the case of emtpy files, the dispatcher is not called, but we still want to 'record' the
+    // In the case of empty files, the dispatcher is not called, but we still want to 'record' the
     // fact that the file was extracted
-    // TODO: to be moved elsewhere
-    llvm::SmallString<PATH_MAX> srcFilePath(filename);
-    llvm::sys::fs::make_absolute(srcFilePath);
+    llvm::SmallString<PATH_MAX> name(filename);
+    llvm::sys::fs::make_absolute(name);
     auto fileLabel = arena.allocateLabel<FileTag>();
-    trap.assignKey(fileLabel, srcFilePath.str().str());
-    trap.emit(FilesTrap{fileLabel, srcFilePath.str().str()});
+    trap.assignKey(fileLabel, name.str().str());
+    trap.emit(FilesTrap{fileLabel, name.str().str()});
   }
 
   // TODO: Pick a better name to avoid collisions
@@ -132,14 +133,14 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
       llvm::SmallVector<swift::Decl*> decls;
       module->getTopLevelDecls(decls);
       // TODO: pass ModuleDecl directly when we have module extraction in place?
-      extractDeclarations(config, compiler, module->getModuleFilename(), decls);
+      extractDeclarations(config, decls, compiler, *module);
     } else {
       // The extraction will only work if one (or more) `-primary-file` CLI option is provided,
       // which is what always happens in case of `swift build` and `xcodebuild`
       for (auto primaryFile : module->getPrimarySourceFiles()) {
         archiveFile(config, *primaryFile);
-        extractDeclarations(config, compiler, primaryFile->getFilename(),
-                            primaryFile->getTopLevelDecls());
+        extractDeclarations(config, primaryFile->getTopLevelDecls(), compiler, *module,
+                            primaryFile);
       }
     }
   }

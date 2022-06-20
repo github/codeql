@@ -567,7 +567,7 @@
 | expressions.swift:78:3:80:3 | init | ConstructorDecl | expressions.swift:78:10:80:3 | { ... } | BraceStmt |
 | expressions.swift:78:10:80:3 | { ... } | BraceStmt | expressions.swift:79:5:79:21 | self = ... | RebindSelfInConstructorExpr |
 | expressions.swift:78:10:80:3 | { ... } | BraceStmt | expressions.swift:80:3:80:3 | return | ReturnStmt |
-| expressions.swift:79:5:79:11 | call to ... | DotSyntaxCallExpr | expressions.swift:79:11:79:11 | call to ... | OtherConstructorDeclRefExpr |
+| expressions.swift:79:5:79:11 | call to ... | DotSyntaxCallExpr | expressions.swift:79:11:79:11 | init | OtherConstructorDeclRefExpr |
 | expressions.swift:79:5:79:21 | call to ... | CallExpr | expressions.swift:79:5:79:11 | call to ... | DotSyntaxCallExpr |
 | expressions.swift:79:5:79:21 | self = ... | RebindSelfInConstructorExpr | expressions.swift:78:3:78:3 | self | ParamDecl |
 | expressions.swift:79:5:79:21 | self = ... | RebindSelfInConstructorExpr | expressions.swift:79:5:79:21 | call to ... | CallExpr |
