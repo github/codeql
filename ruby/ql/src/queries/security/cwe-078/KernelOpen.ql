@@ -59,9 +59,9 @@ class Configuration extends TaintTracking::Configuration {
     exists(IOReadCall c | c.getArgument(0) = sink)
   }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StringConstCompare or
-    guard instanceof StringConstArrayInclusionCall
+  override predicate isSanitizer(DataFlow::Node node) {
+    node instanceof StringConstCompareBarrier or
+    node instanceof StringConstArrayInclusionCallBarrier
   }
 }
 
