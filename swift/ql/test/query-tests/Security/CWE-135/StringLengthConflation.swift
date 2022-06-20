@@ -1,7 +1,47 @@
 
+// --- stubs ---
+
+func print(_ items: Any...) {}
+
+typealias unichar = UInt16
+
+class NSString
+{
+    init(string: String) { length = string.count }
+
+    func character(at: Int) -> unichar { return 0 }
+    func substring(from: Int) -> String { return "" }
+    func substring(to: Int) -> String { return "" }
+
+    var length: Int
+}
+
+class NSMutableString
+{
+    init(string: String) { length = string.count }
+
+    func character(at: Int) -> unichar { return 0 }
+    func substring(from: Int) -> String { return "" }
+    func substring(to: Int) -> String { return "" }
+    func insert(_: String, at: Int) {}
+
+    var length: Int
+}
+
+class NSRange
+{
+    init(location: Int, length: Int) { self.description = "" }
+
+    var description: String
+}
+
+func NSMakeRange(_ loc: Int, _ len: Int) -> NSRange { return NSRange(location: loc, length: len) }
+
+// --- tests ---
+
 func test(s: String) {
-    /*let ns = NSString(string: s)
-    let nms = NSString(string: s)
+    let ns = NSString(string: s)
+    let nms = NSMutableString(string: s)
  
     print("'\(s)'")
     print("count \(s.count) length \(ns.length)")
@@ -58,27 +98,27 @@ func test(s: String) {
 
     let nstr1 = ns.character(at: ns.length - 1) // GOOD
     let nmstr1 = nms.character(at: nms.length - 1) // GOOD
-    let nstr2 = ns.character(at: s.count - 1) // BAD: String length used in NString
+    let nstr2 = ns.character(at: s.count - 1) // BAD: String length used in NSString
     let nmstr2 = nms.character(at: s.count - 1) // BAD: String length used in NString
     print("character '\(nstr1)' '\(nmstr1)' / '\(nstr2)' '\(nmstr2)'")
 
     let nstr3 = ns.substring(from: ns.length - 1) // GOOD
     let nmstr3 = nms.substring(from: nms.length - 1) // GOOD
-    let nstr4 = ns.substring(from: s.count - 1) // BAD: String length used in NString
+    let nstr4 = ns.substring(from: s.count - 1) // BAD: String length used in NSString
     let nmstr4 = nms.substring(from: s.count - 1) // BAD: String length used in NString
     print("substring from '\(nstr3)' '\(nmstr3)' / '\(nstr4)' '\(nmstr4)'")
 
     let nstr5 = ns.substring(to: ns.length - 1) // GOOD
     let nmstr5 = nms.substring(to: nms.length - 1) // GOOD
-    let nstr6 = ns.substring(to: s.count - 1) // BAD: String length used in NString
+    let nstr6 = ns.substring(to: s.count - 1) // BAD: String length used in NSString
     let nmstr6 = nms.substring(to: s.count - 1) // BAD: String length used in NString
     print("substring to '\(nstr5)' '\(nmstr5)' / '\(nstr6)' '\(nmstr6)'")
 
     let nmstr7 = NSMutableString(string: s)
     nmstr7.insert("*", at: nms.length - 1) // GOOD
     let nmstr8 = NSMutableString(string: s)
-    nmstr8.insert("*", at: s.count - 1) // BAD: String length used in NString
-    print("insert '\(nmstr7)' / '\(nmstr8)'")*/
+    nmstr8.insert("*", at: s.count - 1) // BAD: String length used in NSString
+    print("insert '\(nmstr7)' / '\(nmstr8)'")
 }
 
 // `begin :thumbsup: end`, with thumbs up emoji and skin tone modifier
