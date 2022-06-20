@@ -34,7 +34,7 @@ class DecompressionApiUse extends DataFlow::Node {
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "DecompressionApiUse" }
 
-  // this predicate will be used to contstrain our query to find instances where only remote user-controlled data flows to the sink
+  // this predicate will be used to constrain our query to find instances where only remote user-controlled data flows to the sink
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   // our Decompression APIs defined above will the the sinks we use for this query
