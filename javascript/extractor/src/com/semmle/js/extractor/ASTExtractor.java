@@ -2191,6 +2191,7 @@ public class ASTExtractor {
       visitAll(nd.getBody(), key);
       contextManager.leaveContainer();
       scopeManager.leaveScope();
+      emitNodeSymbol(nd, key);
       return key;
     }
 
