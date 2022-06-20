@@ -43,7 +43,7 @@ function RegisterExtractorPack(id)
       end
       -- derive -resource-dir based on the compilerPath
       -- e.g.: /usr/bin/swift-frontend -> /usr/bin/../lib/swift
-      local last_slash_index = string.find(compilerPath, "/swift%-frontend")
+      local last_slash_index = string.find(compilerPath, "/[^/]*$")
       local compiler_dir = string.sub(compilerPath, 1, last_slash_index)
       local resource_dir = compiler_dir .. '../lib/swift'
       table.insert(args, '-resource-dir')
