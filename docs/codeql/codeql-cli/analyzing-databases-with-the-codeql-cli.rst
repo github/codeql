@@ -160,9 +160,6 @@ of the current process.
 If a ``scope/name`` and ``path`` are specified, then the ``path`` cannot
 be absolute. It is considered relative to the root of the CodeQL
 pack.
-
-For example::
-
 To analyze a database using all queries in the `experimental/Security` folder within the `codeql/cpp-queries` CodeQL pack you can use::
 
     codeql database analyze --format=sarif-latest --output=results <db> \
