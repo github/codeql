@@ -14,7 +14,7 @@ function RegisterExtractorPack(id)
 
     -- removes upsupported CLI arg including the following how_many args
     function strip_unsupported_arg(args, arg, how_many)
-      index = indexOf(args, arg)
+      local index = indexOf(args, arg)
       if index then
         table.remove(args, index)
         while (how_many > 0)
@@ -37,7 +37,7 @@ function RegisterExtractorPack(id)
     -- without a proper -resource-dir compiler-specific headers cannot be found which leads to
     -- broken extraction
     function insert_resource_dir_if_needed(compilerPath, args)
-      resource_dir_index = indexOf(args, '-resource-dir')
+      local resource_dir_index = indexOf(args, '-resource-dir')
       if resource_dir_index then
         return
       end
