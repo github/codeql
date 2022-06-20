@@ -19,7 +19,7 @@ import DataFlow::PathGraph
 class DecompressionApiUse extends DataFlow::Node {
   private DataFlow::CallNode call;
 
-  // this should find the first argument of Zlib::Inflate.inflate
+  // this should find the first argument in calls to Zlib::Inflate.inflate or Zip::File.open_buffer
   DecompressionApiUse() {
     this = call.getArgument(0) and
     (
@@ -28,6 +28,7 @@ class DecompressionApiUse extends DataFlow::Node {
     )
   }
 
+  // returns calls to Zlib::Inflate.inflate or Zip::File.open_buffer
   DataFlow::CallNode getCall() { result = call }
 }
 
@@ -37,7 +38,7 @@ class Configuration extends TaintTracking::Configuration {
   // this predicate will be used to constrain our query to find instances where only remote user-controlled data flows to the sink
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  // our Decompression APIs defined above will the the sinks we use for this query
+  // our Decompression APIs defined above will be the sinks we use for this query
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof DecompressionApiUse
   }
