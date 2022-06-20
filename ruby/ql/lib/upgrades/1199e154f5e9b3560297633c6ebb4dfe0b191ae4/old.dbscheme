@@ -1356,40 +1356,24 @@ ruby_ast_node_info(
   int loc: @location ref
 );
 
-erb_comment_directive_child(
-  unique int erb_comment_directive: @erb_comment_directive ref,
-  unique int child: @erb_token_comment ref
-);
-
 erb_comment_directive_def(
-  unique int id: @erb_comment_directive
-);
-
-erb_directive_child(
-  unique int erb_directive: @erb_directive ref,
-  unique int child: @erb_token_code ref
+  unique int id: @erb_comment_directive,
+  int child: @erb_token_comment ref
 );
 
 erb_directive_def(
-  unique int id: @erb_directive
-);
-
-erb_graphql_directive_child(
-  unique int erb_graphql_directive: @erb_graphql_directive ref,
-  unique int child: @erb_token_code ref
+  unique int id: @erb_directive,
+  int child: @erb_token_code ref
 );
 
 erb_graphql_directive_def(
-  unique int id: @erb_graphql_directive
-);
-
-erb_output_directive_child(
-  unique int erb_output_directive: @erb_output_directive ref,
-  unique int child: @erb_token_code ref
+  unique int id: @erb_graphql_directive,
+  int child: @erb_token_code ref
 );
 
 erb_output_directive_def(
-  unique int id: @erb_output_directive
+  unique int id: @erb_output_directive,
+  int child: @erb_token_code ref
 );
 
 @erb_template_child_type = @erb_comment_directive | @erb_directive | @erb_graphql_directive | @erb_output_directive | @erb_token_content
