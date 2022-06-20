@@ -51,7 +51,7 @@ module TarSlip {
   }
 
   /**
-   * A sanitizer based on file name. This beacuse we extract the standard library.
+   * A sanitizer based on file name. This because we extract the standard library.
    *
    * For efficiency we don't want to track the flow of taint
    * around the tarfile module.
