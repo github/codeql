@@ -23,6 +23,10 @@ class HttpVerbMethod extends MethodCall {
   }
 }
 
+class ControllerClass extends ModuleBase {
+  ControllerClass() { this.getModule().getSuperClass+().toString() = "ApplicationController" }
+}
+
 class CheckRequestMethodFromEnv extends DataFlow::CallNode {
   CheckRequestMethodFromEnv() {
     // is this node an instance of `env["REQUEST_METHOD"]
@@ -78,7 +82,10 @@ class CheckHeadRequest extends MethodCall {
 
 from CheckRequestMethodFromEnv env, AstNode node
 where
-  node instanceof HttpVerbMethod or
-  node = env.asExpr().getExpr()
+  (
+    node instanceof HttpVerbMethod or
+    node = env.asExpr().getExpr()
+  ) and
+  node.getEnclosingModule() instanceof ControllerClass
 select node,
   "Manually checking HTTP verbs is an indication that multiple requests are routed to the same controller action. This could lead to bypassing necessary authorization methods and other protections, like CSRF protection. Prefer using different controller actions for each HTTP method and relying Rails routing to handle mappting resources and verbs to specific methods."
