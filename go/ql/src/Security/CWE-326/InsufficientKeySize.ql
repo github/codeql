@@ -34,7 +34,7 @@ class RsaKeyTrackingConfiguration extends DataFlow::Configuration {
 }
 
 /**
- * A comparison which guarantees that an expression is at least 2048,
+ * Holds if `g` is a comparison which guarantees that `e` is at least 2048 on `branch`,
  * considered as a barrier guard for key sizes.
  */
 predicate comparisonBarrierGuard(DataFlow::Node g, Expr e, boolean branch) {
