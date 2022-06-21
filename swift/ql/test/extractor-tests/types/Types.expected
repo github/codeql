@@ -5,14 +5,9 @@
 | types.swift:3:6:3:6 | default terminator | String |
 | types.swift:3:7:3:7 | x | Int |
 | types.swift:3:7:3:11 | (Any) ... | Any |
-| types.swift:3:7:3:11 | (Any) ... | TBD (ProtocolCompositionType) |
-| types.swift:3:7:3:11 | (TBD (ProtocolCompositionType)) ... | Any |
-| types.swift:3:7:3:11 | (TBD (ProtocolCompositionType)) ... | TBD (ProtocolCompositionType) |
 | types.swift:3:7:3:11 | ... call to + ... | Int |
 | types.swift:3:7:3:11 | [...] | Any... |
 | types.swift:3:7:3:11 | [...] | Any... |
-| types.swift:3:7:3:11 | [...] | TBD (VariadicSequenceType) |
-| types.swift:3:7:3:11 | [...] | TBD (VariadicSequenceType) |
 | types.swift:3:9:3:9 | + | (Int.Type) -> (Int, Int) -> Int |
 | types.swift:3:9:3:9 | Int.Type | Int.Type |
 | types.swift:3:9:3:9 | call to + | (Int, Int) -> Int |

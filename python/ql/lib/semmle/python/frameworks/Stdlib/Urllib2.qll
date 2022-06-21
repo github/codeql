@@ -30,7 +30,8 @@ private module Urllib2 {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      // TODO: Look into disabling certificate validation
+      // cannot enable/disable certificate validation on this object, only when used
+      // with `urlopen`, which is modeled below
       none()
     }
   }
@@ -49,7 +50,8 @@ private module Urllib2 {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      // TODO: Look into disabling certificate validation
+      // will validate certificate by default
+      // TODO: Handling of insecure SSLContext passed to context argument
       none()
     }
   }

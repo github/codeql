@@ -9,7 +9,6 @@ import org.jetbrains.kotlin.backend.common.ir.allOverridden
 import org.jetbrains.kotlin.backend.common.ir.isFinalClass
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
-import org.jetbrains.kotlin.backend.jvm.ir.getJvmNameFromAnnotation
 import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.descriptors.*
@@ -66,62 +65,6 @@ open class KotlinUsesExtractor(
         TypeResult(extractFileClass(f), "", ""),
         TypeResult(fakeKotlinType(), "", "")
     )
-
-    private data class MethodKey(val className: FqName, val functionName: Name)
-
-    private fun makeDescription(className: FqName, functionName: String) = MethodKey(className, Name.guessByFirstCharacter(functionName))
-
-    // This essentially mirrors SpecialBridgeMethods.kt, a backend pass which isn't easily available to our extractor.
-    private val specialFunctions = mapOf(
-        makeDescription(StandardNames.FqNames.collection, "<get-size>") to "size",
-        makeDescription(FqName("java.util.Collection"), "<get-size>") to "size",
-        makeDescription(StandardNames.FqNames.map, "<get-size>") to "size",
-        makeDescription(FqName("java.util.Map"), "<get-size>") to "size",
-        makeDescription(StandardNames.FqNames.charSequence.toSafe(), "<get-length>") to "length",
-        makeDescription(FqName("java.lang.CharSequence"), "<get-length>") to "length",
-        makeDescription(StandardNames.FqNames.map, "<get-keys>") to "keySet",
-        makeDescription(FqName("java.util.Map"), "<get-keys>") to "keySet",
-        makeDescription(StandardNames.FqNames.map, "<get-values>") to "values",
-        makeDescription(FqName("java.util.Map"), "<get-values>") to "values",
-        makeDescription(StandardNames.FqNames.map, "<get-entries>") to "entrySet",
-        makeDescription(FqName("java.util.Map"), "<get-entries>") to "entrySet"
-    )
-
-    private val specialFunctionShortNames = specialFunctions.keys.map { it.functionName }.toSet()
-
-    fun getSpecialJvmName(f: IrFunction): String? {
-        if (specialFunctionShortNames.contains(f.name) && f is IrSimpleFunction) {
-            f.allOverridden(true).forEach { overriddenFunc ->
-                overriddenFunc.parentAsClass.fqNameWhenAvailable?.let { parentFqName ->
-                    specialFunctions[MethodKey(parentFqName, f.name)]?.let {
-                        return it
-                    }
-                }
-            }
-        }
-        return null
-    }
-
-    fun getJvmName(container: IrAnnotationContainer): String? {
-        for(a: IrConstructorCall in container.annotations) {
-            val t = a.type
-            if (t is IrSimpleType && a.valueArgumentsCount == 1) {
-                val owner = t.classifier.owner
-                val v = a.getValueArgument(0)
-                if (owner is IrClass) {
-                    val aPkg = owner.packageFqName?.asString()
-                    val name = owner.name.asString()
-                    if(aPkg == "kotlin.jvm" && name == "JvmName" && v is IrConst<*>) {
-                        val value = v.value
-                        if (value is String) {
-                            return value
-                        }
-                    }
-                }
-            }
-        }
-        return (container as? IrFunction)?.let { getSpecialJvmName(container) }
-    }
 
     @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
     fun extractFileClass(f: IrFile): Label<out DbClass> {
@@ -996,7 +939,7 @@ open class KotlinUsesExtractor(
             getFunctionTypeParameters(f),
             classTypeArgsIncludingOuterClasses,
             overridesCollectionsMethodWithAlteredParameterTypes(f),
-            getJavaMethod(f),
+            getJavaCallable(f),
             !hasWildcardSuppressionAnnotation(f)
         )
 
@@ -1028,7 +971,7 @@ open class KotlinUsesExtractor(
         // parameter erasure to match the way this class will appear to an external consumer of the .class file.
         overridesCollectionsMethod: Boolean,
         // The Java signature of this callable, if known.
-        javaSignature: JavaMethod?,
+        javaSignature: JavaMember?,
         // If true, Java wildcards implied by Kotlin type parameter variance should be added by default to this function's value parameters' types.
         // (Return-type wildcard addition is always off by default)
         addParameterWildcardsByDefault: Boolean,
@@ -1056,7 +999,7 @@ open class KotlinUsesExtractor(
             // If this has happened, erase the type again to get the correct Java signature.
             val maybeAmendedForCollections = if (overridesCollectionsMethod) eraseCollectionsMethodParameterType(it.value.type, name, it.index) else it.value.type
             // Add any wildcard types that the Kotlin compiler would add in the Java lowering of this function:
-            val withAddedWildcards = addJavaLoweringWildcards(maybeAmendedForCollections, addParameterWildcardsByDefault, javaSignature?.let { sig -> sig.valueParameters[it.index].type })
+            val withAddedWildcards = addJavaLoweringWildcards(maybeAmendedForCollections, addParameterWildcardsByDefault, javaSignature?.let { sig -> getJavaValueParameterType(sig, it.index) })
             // Now substitute any class type parameters in:
             val maybeSubbed = withAddedWildcards.substituteTypeAndArguments(substitutionMap, TypeContext.OTHER, pluginContext)
             // Finally, mimic the Java extractor's behaviour by naming functions with type parameters for their erased types;
@@ -1103,7 +1046,13 @@ open class KotlinUsesExtractor(
     }
 
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    fun getJavaMethod(f: IrFunction) = (f.descriptor.source as? JavaSourceElement)?.javaElement as? JavaMethod
+    fun getJavaCallable(f: IrFunction) = (f.descriptor.source as? JavaSourceElement)?.javaElement as? JavaMember
+
+    fun getJavaValueParameterType(m: JavaMember, idx: Int) = when(m) {
+        is JavaMethod -> m.valueParameters[idx].type
+        is JavaConstructor -> m.valueParameters[idx].type
+        else -> null
+    }
 
     fun hasWildcardSuppressionAnnotation(d: IrDeclaration) =
         d.hasAnnotation(jvmWildcardSuppressionAnnotaton) ||

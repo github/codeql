@@ -4,6 +4,7 @@ cached
 newtype TControlFlowElement =
   TAstElement(AstNode n) or
   TFuncDeclElement(AbstractFunctionDecl func) { func.hasBody() } or
+  TClosureElement(ClosureExpr clos) or
   TPropertyGetterElement(Decl accessor, Expr ref) { isPropertyGetterElement(accessor, ref) } or
   TPropertySetterElement(AccessorDecl accessor, AssignExpr assign) {
     isPropertySetterElement(accessor, assign)
@@ -184,6 +185,18 @@ class KeyPathElement extends ControlFlowElement, TKeyPathElement {
   override Location getLocation() { result = expr.getLocation() }
 
   KeyPathExpr getAst() { result = expr }
+
+  override string toString() { result = expr.toString() }
+}
+
+class ClosureElement extends ControlFlowElement, TClosureElement {
+  ClosureExpr expr;
+
+  ClosureElement() { this = TClosureElement(expr) }
+
+  override Location getLocation() { result = expr.getLocation() }
+
+  ClosureExpr getAst() { result = expr }
 
   override string toString() { result = expr.toString() }
 }

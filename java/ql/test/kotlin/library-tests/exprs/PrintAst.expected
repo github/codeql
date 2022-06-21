@@ -2057,44 +2057,44 @@ exprs.kt:
 #   39|         27: [LocalVariableDeclStmt] var ...;
 #   39|           1: [LocalVariableDeclExpr] by6
 #   39|             0: [ValueEQExpr] ... (value equals) ...
-#   39|               0: [MethodAccess] toInt(...)
+#   39|               0: [MethodAccess] intValue(...)
 #   39|                 -1: [VarAccess] byx
-#   39|               1: [MethodAccess] toInt(...)
+#   39|               1: [MethodAccess] intValue(...)
 #   39|                 -1: [VarAccess] byy
 #   40|         28: [LocalVariableDeclStmt] var ...;
 #   40|           1: [LocalVariableDeclExpr] by7
 #   40|             0: [ValueNEExpr] ... (value not-equals) ...
-#   40|               0: [MethodAccess] toInt(...)
+#   40|               0: [MethodAccess] intValue(...)
 #   40|                 -1: [VarAccess] byx
-#   40|               1: [MethodAccess] toInt(...)
+#   40|               1: [MethodAccess] intValue(...)
 #   40|                 -1: [VarAccess] byy
 #   41|         29: [LocalVariableDeclStmt] var ...;
 #   41|           1: [LocalVariableDeclExpr] by8
 #   41|             0: [LTExpr] ... < ...
-#   41|               0: [MethodAccess] toInt(...)
+#   41|               0: [MethodAccess] intValue(...)
 #   41|                 -1: [VarAccess] byx
-#   41|               1: [MethodAccess] toInt(...)
+#   41|               1: [MethodAccess] intValue(...)
 #   41|                 -1: [VarAccess] byy
 #   42|         30: [LocalVariableDeclStmt] var ...;
 #   42|           1: [LocalVariableDeclExpr] by9
 #   42|             0: [LEExpr] ... <= ...
-#   42|               0: [MethodAccess] toInt(...)
+#   42|               0: [MethodAccess] intValue(...)
 #   42|                 -1: [VarAccess] byx
-#   42|               1: [MethodAccess] toInt(...)
+#   42|               1: [MethodAccess] intValue(...)
 #   42|                 -1: [VarAccess] byy
 #   43|         31: [LocalVariableDeclStmt] var ...;
 #   43|           1: [LocalVariableDeclExpr] by10
 #   43|             0: [GTExpr] ... > ...
-#   43|               0: [MethodAccess] toInt(...)
+#   43|               0: [MethodAccess] intValue(...)
 #   43|                 -1: [VarAccess] byx
-#   43|               1: [MethodAccess] toInt(...)
+#   43|               1: [MethodAccess] intValue(...)
 #   43|                 -1: [VarAccess] byy
 #   44|         32: [LocalVariableDeclStmt] var ...;
 #   44|           1: [LocalVariableDeclExpr] by11
 #   44|             0: [GEExpr] ... >= ...
-#   44|               0: [MethodAccess] toInt(...)
+#   44|               0: [MethodAccess] intValue(...)
 #   44|                 -1: [VarAccess] byx
-#   44|               1: [MethodAccess] toInt(...)
+#   44|               1: [MethodAccess] intValue(...)
 #   44|                 -1: [VarAccess] byy
 #   45|         33: [LocalVariableDeclStmt] var ...;
 #   45|           1: [LocalVariableDeclExpr] by12
@@ -2132,44 +2132,44 @@ exprs.kt:
 #   53|         40: [LocalVariableDeclStmt] var ...;
 #   53|           1: [LocalVariableDeclExpr] s6
 #   53|             0: [ValueEQExpr] ... (value equals) ...
-#   53|               0: [MethodAccess] toInt(...)
+#   53|               0: [MethodAccess] intValue(...)
 #   53|                 -1: [VarAccess] sx
-#   53|               1: [MethodAccess] toInt(...)
+#   53|               1: [MethodAccess] intValue(...)
 #   53|                 -1: [VarAccess] sy
 #   54|         41: [LocalVariableDeclStmt] var ...;
 #   54|           1: [LocalVariableDeclExpr] s7
 #   54|             0: [ValueNEExpr] ... (value not-equals) ...
-#   54|               0: [MethodAccess] toInt(...)
+#   54|               0: [MethodAccess] intValue(...)
 #   54|                 -1: [VarAccess] sx
-#   54|               1: [MethodAccess] toInt(...)
+#   54|               1: [MethodAccess] intValue(...)
 #   54|                 -1: [VarAccess] sy
 #   55|         42: [LocalVariableDeclStmt] var ...;
 #   55|           1: [LocalVariableDeclExpr] s8
 #   55|             0: [LTExpr] ... < ...
-#   55|               0: [MethodAccess] toInt(...)
+#   55|               0: [MethodAccess] intValue(...)
 #   55|                 -1: [VarAccess] sx
-#   55|               1: [MethodAccess] toInt(...)
+#   55|               1: [MethodAccess] intValue(...)
 #   55|                 -1: [VarAccess] sy
 #   56|         43: [LocalVariableDeclStmt] var ...;
 #   56|           1: [LocalVariableDeclExpr] s9
 #   56|             0: [LEExpr] ... <= ...
-#   56|               0: [MethodAccess] toInt(...)
+#   56|               0: [MethodAccess] intValue(...)
 #   56|                 -1: [VarAccess] sx
-#   56|               1: [MethodAccess] toInt(...)
+#   56|               1: [MethodAccess] intValue(...)
 #   56|                 -1: [VarAccess] sy
 #   57|         44: [LocalVariableDeclStmt] var ...;
 #   57|           1: [LocalVariableDeclExpr] s10
 #   57|             0: [GTExpr] ... > ...
-#   57|               0: [MethodAccess] toInt(...)
+#   57|               0: [MethodAccess] intValue(...)
 #   57|                 -1: [VarAccess] sx
-#   57|               1: [MethodAccess] toInt(...)
+#   57|               1: [MethodAccess] intValue(...)
 #   57|                 -1: [VarAccess] sy
 #   58|         45: [LocalVariableDeclStmt] var ...;
 #   58|           1: [LocalVariableDeclExpr] s11
 #   58|             0: [GEExpr] ... >= ...
-#   58|               0: [MethodAccess] toInt(...)
+#   58|               0: [MethodAccess] intValue(...)
 #   58|                 -1: [VarAccess] sx
-#   58|               1: [MethodAccess] toInt(...)
+#   58|               1: [MethodAccess] intValue(...)
 #   58|                 -1: [VarAccess] sy
 #   59|         46: [LocalVariableDeclStmt] var ...;
 #   59|           1: [LocalVariableDeclExpr] s12
