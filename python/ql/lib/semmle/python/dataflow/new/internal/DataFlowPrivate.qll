@@ -22,7 +22,7 @@ import DataFlowDispatchPointsTo
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
   p.isParameterOf(c, pos)
 }
 

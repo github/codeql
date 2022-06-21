@@ -289,14 +289,11 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
  * flow graph.
  */
 class ParameterNode extends Node, TParameterNode instanceof ParameterNodeImpl {
-  /**
-   * Holds if this node is the parameter of callable `c` at the
-   * (zero-based) index `i`.
-   */
-  final predicate isParameterOf(DataFlowCallable c, int i) { super.isParameterOf(c, i) }
+  /** Gets the parameter corresponding to this node, if any. */
+  final Parameter getParameter() { result = super.getParameter() }
 }
 
-/** A parameter node foudn in the source code (not in a summary). */
+/** A parameter node found in the source code (not in a summary). */
 class SourceParameterNode extends ParameterNodeImpl, CfgNode {
   //, LocalSourceNode {
   ParameterDefinition def;
@@ -313,7 +310,7 @@ class SourceParameterNode extends ParameterNodeImpl, CfgNode {
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 
   /** Gets the `Parameter` this `ParameterNode` represents. */
-  Parameter getParameter() { result = def.getParameter() }
+  override Parameter getParameter() { result = def.getParameter() }
 }
 
 class LocalSourceParameterNode extends SourceParameterNode, LocalSourceNode { }

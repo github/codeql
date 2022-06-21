@@ -2238,8 +2238,7 @@ module PrivateDjango {
    *
    * See https://docs.djangoproject.com/en/3.1/ref/forms/validation/#form-and-field-validation
    */
-  private class DjangoFormFieldValueParam extends RemoteFlowSource::Range,
-    DataFlow::SourceParameterNode {
+  private class DjangoFormFieldValueParam extends RemoteFlowSource::Range, DataFlow::ParameterNode {
     DjangoFormFieldValueParam() {
       exists(DjangoFormFieldClass cls, Function meth |
         cls.getAMethod() = meth and
@@ -2582,7 +2581,7 @@ module PrivateDjango {
   // ---------------------------------------------------------------------------
   /** A parameter that will receive the django `HttpRequest` instance when a request handler is invoked. */
   private class DjangoRequestHandlerRequestParam extends DjangoImpl::Http::Request::HttpRequest::InstanceSource,
-    RemoteFlowSource::Range, DataFlow::SourceParameterNode {
+    RemoteFlowSource::Range, DataFlow::ParameterNode {
     DjangoRequestHandlerRequestParam() {
       this.getParameter() = any(DjangoRouteSetup setup).getARequestHandler().getRequestParam()
       or
@@ -2647,7 +2646,7 @@ module PrivateDjango {
    *  - https://docs.djangoproject.com/en/3.1/topics/http/file-uploads/#handling-uploaded-files-with-a-model
    */
   private class DjangoFileFieldUploadToFunctionFilenameParam extends RemoteFlowSource::Range,
-    DataFlow::SourceParameterNode {
+    DataFlow::ParameterNode {
     DjangoFileFieldUploadToFunctionFilenameParam() {
       exists(DataFlow::CallCfgNode call, DataFlow::Node uploadToArg, Function func |
         this.getParameter() = func.getArg(1) and

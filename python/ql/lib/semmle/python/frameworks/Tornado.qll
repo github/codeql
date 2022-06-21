@@ -127,7 +127,7 @@ private module Tornado {
 
         /** The `self` parameter in a method on the `tornado.web.RequestHandler` class or any subclass. */
         private class SelfParam extends InstanceSource, RemoteFlowSource::Range,
-          DataFlow::SourceParameterNode {
+          DataFlow::ParameterNode {
           SelfParam() {
             exists(RequestHandlerClass cls | cls.getAMethod().getArg(0) = this.getParameter())
           }

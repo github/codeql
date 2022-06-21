@@ -72,7 +72,7 @@ private DataFlow::Node getSimpleMethodReferenceWithinClass(Function func) {
     pragma[only_bind_into](cls).getAMethod() = func and
     pragma[only_bind_into](cls).getAMethod() = otherFunc
   |
-    selfRefOtherFunc.getALocalSource().(DataFlow::SourceParameterNode).getParameter() =
+    selfRefOtherFunc.getALocalSource().(DataFlow::ParameterNode).getParameter() =
       otherFunc.getArg(0) and
     result.(DataFlow::AttrRead).accesses(selfRefOtherFunc, func.getName())
   )

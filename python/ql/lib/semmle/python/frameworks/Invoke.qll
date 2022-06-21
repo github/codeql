@@ -40,7 +40,7 @@ private module Invoke {
             or
             exists(Function func |
               func.getADecorator() = invoke().getMember("task").getAUse().asExpr() and
-              result.(DataFlow::SourceParameterNode).getParameter() = func.getArg(0)
+              result.(DataFlow::ParameterNode).getParameter() = func.getArg(0)
             )
           )
           or

@@ -88,7 +88,7 @@ private module FastApi {
    * Pydantic model.
    */
   private class PydanticModelRequestHandlerParam extends Pydantic::BaseModel::InstanceSource,
-    DataFlow::SourceParameterNode {
+    DataFlow::ParameterNode {
     PydanticModelRequestHandlerParam() {
       this.getParameter().getAnnotation() = Pydantic::BaseModel::subclassRef().getAUse().asExpr() and
       any(FastApiRouteSetup rs).getARequestHandler().getArgByName(_) = this.getParameter()
@@ -102,7 +102,7 @@ private module FastApi {
    * A parameter to a request handler that has a WebSocket type-annotation.
    */
   private class WebSocketRequestHandlerParam extends Starlette::WebSocket::InstanceSource,
-    DataFlow::SourceParameterNode {
+    DataFlow::ParameterNode {
     WebSocketRequestHandlerParam() {
       this.getParameter().getAnnotation() = Starlette::WebSocket::classRef().getAUse().asExpr() and
       any(FastApiRouteSetup rs).getARequestHandler().getArgByName(_) = this.getParameter()
@@ -308,7 +308,7 @@ private module FastApi {
      * A parameter to a FastAPI request-handler that has a `fastapi.Response`
      * type-annotation.
      */
-    class RequestHandlerParam extends InstanceSource, DataFlow::SourceParameterNode {
+    class RequestHandlerParam extends InstanceSource, DataFlow::ParameterNode {
       RequestHandlerParam() {
         this.getParameter().getAnnotation() =
           getModeledResponseClass(_).getASubclass*().getAUse().asExpr() and

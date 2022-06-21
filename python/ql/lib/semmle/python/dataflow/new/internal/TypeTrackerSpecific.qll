@@ -44,7 +44,7 @@ private DataFlowPrivate::DataFlowCallable getCallableForArgument(
 }
 
 /** Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call. */
-predicate callStep(DataFlowPublic::ArgumentNode nodeFrom, DataFlowPublic::ParameterNode nodeTo) {
+predicate callStep(DataFlowPublic::ArgumentNode nodeFrom, DataFlowPrivate::ParameterNodeImpl nodeTo) {
   // TODO: Support special methods?
   exists(DataFlowPrivate::DataFlowCallable callable, int i |
     callable = getCallableForArgument(nodeFrom, i) and

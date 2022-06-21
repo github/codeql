@@ -22,7 +22,7 @@ abstract class SelfRefMixin extends Class {
    */
   private DataFlow::TypeTrackingNode getASelfRef(DataFlow::TypeTracker t) {
     t.start() and
-    result.(DataFlow::SourceParameterNode).getParameter() = this.getAMethod().getArg(0)
+    result.(DataFlow::ParameterNode).getParameter() = this.getAMethod().getArg(0)
     or
     exists(DataFlow::TypeTracker t2 | result = this.getASelfRef(t2).track(t2, t))
   }

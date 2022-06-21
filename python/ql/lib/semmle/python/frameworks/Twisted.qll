@@ -143,7 +143,7 @@ private module Twisted {
    * when a twisted request handler is called.
    */
   class TwistedResourceRequestHandlerRequestParam extends RemoteFlowSource::Range,
-    Request::InstanceSource, DataFlow::SourceParameterNode {
+    Request::InstanceSource, DataFlow::ParameterNode {
     TwistedResourceRequestHandlerRequestParam() {
       this.getParameter() = any(TwistedResourceRequestHandler handler).getRequestParameter()
     }
@@ -156,7 +156,7 @@ private module Twisted {
    * that is also given remote user input. (a bit like RoutedParameter).
    */
   class TwistedResourceRequestHandlerExtraSources extends RemoteFlowSource::Range,
-    DataFlow::SourceParameterNode {
+    DataFlow::ParameterNode {
     TwistedResourceRequestHandlerExtraSources() {
       exists(TwistedResourceRequestHandler func, int i |
         func.getName() in ["getChild", "getChildWithDefault"] and i = 1

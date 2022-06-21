@@ -662,6 +662,8 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
  * flow graph.
  */
 abstract class ParameterNodeImpl extends Node {
+  abstract Parameter getParameter();
+
   /**
    * Holds if this node is the parameter of callable `c` at the
    * (zero-based) index `i`.
@@ -675,6 +677,8 @@ class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
   private int pos;
 
   SummaryParameterNode() { this = TSummaryParameterNode(sc, pos) }
+
+  override Parameter getParameter() { none() }
 
   override predicate isParameterOf(DataFlowCallable c, int i) { sc = c and i = pos }
 
