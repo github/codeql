@@ -25,7 +25,7 @@ repos:
 
       - id: sync-files
         name: Fix files required to be identical
-        files: \.(qll?|qhelp)$
+        files: \.(qll?|qhelp|swift)$
         language: system
         entry: python3 config/sync-files.py --latest
         pass_filenames: false
@@ -40,7 +40,7 @@ repos:
         name: Run Swift checked in code generation
         files: ^swift/(codegen/|.*/generated/|ql/lib/(swift\.dbscheme$|codeql/swift/elements))
         language: system
-        entry: bazel run //swift/codegen
+        entry: bazel run //swift/codegen -- --quiet
         pass_filenames: false
 
       - id: swift-codegen-unit-tests

@@ -100,7 +100,7 @@ module XML {
     }
 
     override DataFlow::Node getAResult() {
-      result = [doc(), element(), attr()].getAnImmediateUse()
+      result = [doc(), element(), attr()].asSource()
       or
       result = element().getMember(["name", "text"]).getACall()
       or
@@ -282,11 +282,7 @@ module XML {
 
     override DataFlow::Node getAResult() {
       result =
-        parser
-            .getReturn()
-            .getMember(any(string s | s.matches("on%")))
-            .getAParameter()
-            .getAnImmediateUse()
+        parser.getReturn().getMember(any(string s | s.matches("on%"))).getAParameter().asSource()
     }
   }
 
@@ -330,6 +326,7 @@ module XML {
       none()
     }
 
+    pragma[noinline]
     override DataFlow::Node getAResult() {
       result =
         parser

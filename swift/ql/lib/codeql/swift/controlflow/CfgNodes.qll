@@ -4,6 +4,7 @@ private import swift
 private import BasicBlocks
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl
+private import internal.ControlFlowElements
 private import internal.Splitting
 
 /** An entry node for a given scope. */
@@ -66,11 +67,11 @@ class ExitNode extends ControlFlowNode, TExitNode {
  */
 class AstCfgNode extends ControlFlowNode, TElementNode {
   private Splits splits;
-  private AstNode n;
+  private ControlFlowElement n;
 
   AstCfgNode() { this = TElementNode(_, n, splits) }
 
-  final override AstNode getNode() { result = n }
+  final override ControlFlowElement getNode() { result = n }
 
   override Location getLocation() { result = n.getLocation() }
 
@@ -96,8 +97,22 @@ class AstCfgNode extends ControlFlowNode, TElementNode {
 class ExprCfgNode extends AstCfgNode {
   Expr e;
 
-  ExprCfgNode() { e = this.getNode() }
+  ExprCfgNode() { e = this.getNode().asAstNode() }
 
   /** Gets the underlying expression. */
   Expr getExpr() { result = e }
+}
+
+class ApplyExprCfgNode extends ExprCfgNode {
+  override ApplyExpr e;
+
+  ExprCfgNode getArgument(int index) {
+    result.getNode().asAstNode() = e.getArgument(index).getExpr()
+  }
+
+  AbstractFunctionDecl getStaticTarget() { result = e.getStaticTarget() }
+}
+
+class CallExprCfgNode extends ApplyExprCfgNode {
+  override CallExpr e;
 }

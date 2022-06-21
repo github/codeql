@@ -38,7 +38,7 @@ files(
 ;
 
 #keyset[id]
-locatables(
+locatable_locations(
   int id: @locatable ref,
   int location: @location ref
 );
@@ -98,7 +98,8 @@ iterable_decl_context_members(
 );
 
 extension_decls(
-  unique int id: @extension_decl
+  unique int id: @extension_decl,
+  int extended_type_decl: @nominal_type_decl ref
 );
 
 @nominal_type_decl =
@@ -173,6 +174,11 @@ any_function_type_param_labels(
 
 #keyset[id]
 any_function_type_is_throwing(
+  int id: @any_function_type ref
+);
+
+#keyset[id]
+any_function_type_is_async(
   int id: @any_function_type ref
 );
 
@@ -653,6 +659,13 @@ value_decls(
 | @closure_expr
 ;
 
+#keyset[id, index]
+abstract_closure_expr_params(
+  int id: @abstract_closure_expr ref,
+  int index: int ref,
+  int param: @param_decl ref
+);
+
 @any_try_expr =
   @force_try_expr
 | @optional_try_expr
@@ -883,7 +896,9 @@ in_out_exprs(
 );
 
 key_path_application_exprs(
-  unique int id: @key_path_application_expr
+  unique int id: @key_path_application_expr,
+  int base: @expr ref,
+  int key_path: @expr ref
 );
 
 key_path_dot_exprs(
@@ -967,7 +982,8 @@ optional_evaluation_exprs(
 );
 
 other_constructor_decl_ref_exprs(
-  unique int id: @other_constructor_decl_ref_expr
+  unique int id: @other_constructor_decl_ref_expr,
+  int constructor_decl: @constructor_decl ref
 );
 
 @overload_set_ref_expr =
@@ -995,8 +1011,8 @@ super_ref_exprs(
 
 tap_exprs(
   unique int id: @tap_expr,
-  int var: @var_decl ref,
-  int body: @brace_stmt ref
+  int body: @brace_stmt ref,
+  int var: @var_decl ref
 );
 
 #keyset[id]
@@ -1264,6 +1280,13 @@ throw_stmts(
 
 yield_stmts(
   unique int id: @yield_stmt
+);
+
+#keyset[id, index]
+yield_stmt_results(
+  int id: @yield_stmt ref,
+  int index: int ref,
+  int result: @expr ref
 );
 
 @bound_generic_type =
@@ -2046,6 +2069,11 @@ concrete_var_decls(
 
 param_decls(
   unique int id: @param_decl
+);
+
+#keyset[id]
+param_decl_is_inout(
+  int id: @param_decl ref
 );
 
 associated_type_decls(

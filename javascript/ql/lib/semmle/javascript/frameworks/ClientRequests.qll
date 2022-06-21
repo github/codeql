@@ -265,7 +265,7 @@ module ClientRequest {
       or
       responseType = this.getResponseType() and
       promise = false and
-      result = this.getReturn().getPromisedError().getMember("response").getAnImmediateUse()
+      result = this.getReturn().getPromisedError().getMember("response").asSource()
     }
   }
 
@@ -463,7 +463,7 @@ module ClientRequest {
    */
   private API::Node netSocketInstantiation(DataFlow::NewNode socket) {
     result = API::moduleImport("net").getMember("Socket").getInstance() and
-    socket = result.getAnImmediateUse()
+    socket = result.asSource()
   }
 
   /**
@@ -827,7 +827,7 @@ module ClientRequest {
     class ApolloClientRequest extends ClientRequest::Range, API::InvokeNode {
       ApolloClientRequest() { this = apolloUriCallee().getAnInvocation() }
 
-      override DataFlow::Node getUrl() { result = this.getParameter(0).getMember("uri").getARhs() }
+      override DataFlow::Node getUrl() { result = this.getParameter(0).getMember("uri").asSink() }
 
       override DataFlow::Node getHost() { none() }
 
@@ -848,10 +848,10 @@ module ClientRequest {
 
     override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
-    override DataFlow::Node getHost() { result = this.getParameter(0).getMember("host").getARhs() }
+    override DataFlow::Node getHost() { result = this.getParameter(0).getMember("host").asSink() }
 
     override DataFlow::Node getADataNode() {
-      result = form.getMember("append").getACall().getParameter(1).getARhs()
+      result = form.getMember("append").getACall().getParameter(1).asSink()
     }
   }
 }

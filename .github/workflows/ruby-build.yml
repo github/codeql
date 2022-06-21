@@ -5,6 +5,7 @@ on:
     paths:
       - "ruby/**"
       - .github/workflows/ruby-build.yml
+      - codeql-workspace.yml
     branches:
       - main
       - "rc/*"
@@ -12,6 +13,7 @@ on:
     paths:
       - "ruby/**"
       - .github/workflows/ruby-build.yml
+      - codeql-workspace.yml
     branches:
       - main
       - "rc/*"

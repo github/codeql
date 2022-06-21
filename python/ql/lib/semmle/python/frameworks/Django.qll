@@ -464,7 +464,15 @@ module Django {
 
     /** A file-like object instance that originates from a `UploadedFile`. */
     class UploadedFileFileLikeInstances extends Stdlib::FileLikeObject::InstanceSource {
-      UploadedFileFileLikeInstances() { this.(DataFlow::AttrRead).accesses(instance(), "file") }
+      UploadedFileFileLikeInstances() {
+        // in the bottom of
+        // https://docs.djangoproject.com/en/4.0/ref/files/file/#django.core.files.File
+        // it's mentioned that the File object itself has proxy methods for
+        // `read`/`write`/... that forwards to the underlying file object.
+        this = instance()
+        or
+        this.(DataFlow::AttrRead).accesses(instance(), "file")
+      }
     }
   }
 

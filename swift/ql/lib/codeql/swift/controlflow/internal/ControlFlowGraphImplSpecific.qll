@@ -1,30 +1,14 @@
 private import swift as S
 private import ControlFlowGraphImpl as Impl
-private import Completion as Comp
+import Completion
 private import codeql.swift.controlflow.ControlFlowGraph as CFG
 private import Splitting as Splitting
+private import Scope
+import ControlFlowElements
+import AstControlFlowTrees
 
 /** The base class for `ControlFlowTree`. */
-class ControlFlowTreeBase extends S::AstNode { }
-
-class ControlFlowElement = S::AstNode;
-
-class Completion = Comp::Completion;
-
-/**
- * Hold if `c` represents normal evaluation of a statement or an
- * expression.
- */
-predicate completionIsNormal(Completion c) { c instanceof Comp::NormalCompletion }
-
-/**
- * Hold if `c` represents simple (normal) evaluation of a statement or an
- * expression.
- */
-predicate completionIsSimple(Completion c) { c instanceof Comp::SimpleCompletion }
-
-/** Holds if `c` is a valid completion for `e`. */
-predicate completionIsValidFor(Completion c, ControlFlowElement e) { c.isValidFor(e) }
+class ControlFlowTreeBase = ControlFlowElement;
 
 class CfgScope = CFG::CfgScope;
 

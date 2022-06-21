@@ -21,6 +21,16 @@ getTarget
 | Overrides.qll:24:39:24:48 | MemberCall | Overrides.qll:22:12:22:44 | ClassPredicate bar |
 | Overrides.qll:28:3:28:9 | MemberCall | Overrides.qll:6:3:6:29 | ClassPredicate bar |
 | Overrides.qll:29:3:29:10 | MemberCall | Overrides.qll:8:3:8:41 | ClassPredicate baz |
+| ParamModules.qll:5:28:5:41 | PredicateCall | ParamModules.qll:2:13:2:36 | ClasslessPredicate fooSig |
+| ParamModules.qll:5:28:5:41 | PredicateCall | ParamModules.qll:8:3:8:35 | ClasslessPredicate myFoo |
+| ParamModules.qll:10:26:10:49 | PredicateCall | ParamModules.qll:5:5:5:43 | ClasslessPredicate bar |
+| ParamModules.qll:26:27:26:53 | PredicateCall | ParamModules.qll:17:5:17:42 | ClasslessPredicate getAnEven |
+| ParamModules.qll:26:27:26:61 | MemberCall | ParamModules.qll:23:5:23:39 | ClassPredicate myFoo |
+| ParamModules.qll:37:29:37:47 | PredicateCall | ParamModules.qll:33:5:33:17 | ClasslessPredicate getThing |
+| ParamModules.qll:37:29:37:47 | PredicateCall | ParamModules.qll:51:5:51:26 | ClasslessPredicate getThing |
+| ParamModules.qll:59:30:59:45 | PredicateCall | ParamModules.qll:37:5:37:49 | ClasslessPredicate getThing |
+| ParamModules.qll:59:30:59:53 | MemberCall | ParamModules.qll:46:7:46:41 | ClassPredicate myFoo |
+| ParamModules.qll:61:39:61:47 | MemberCall | ParamModules.qll:46:7:46:41 | ClassPredicate myFoo |
 | packs/other/OtherThing.qll:5:3:5:8 | PredicateCall | packs/lib/LibThing/Foo.qll:1:1:1:30 | ClasslessPredicate foo |
 | packs/other/OtherThing.qll:6:3:6:8 | PredicateCall | packs/src/SrcThing.qll:8:1:8:30 | ClasslessPredicate bar |
 | packs/src/SrcThing.qll:4:3:4:8 | PredicateCall | packs/lib/LibThing/Foo.qll:1:1:1:30 | ClasslessPredicate foo |
@@ -33,3 +43,5 @@ exprPredicate
 | Foo.qll:26:22:26:31 | predicate | Foo.qll:20:3:20:54 | ClasslessPredicate myThing2 |
 | Foo.qll:47:55:47:62 | predicate | Foo.qll:42:20:42:27 | NewTypeBranch MkRoot |
 | Foo.qll:47:65:47:70 | predicate | Foo.qll:44:9:44:56 | ClasslessPredicate edge |
+| ParamModules.qll:4:18:4:25 | predicate | ParamModules.qll:2:13:2:36 | ClasslessPredicate fooSig |
+| ParamModules.qll:10:34:10:40 | predicate | ParamModules.qll:8:3:8:35 | ClasslessPredicate myFoo |

@@ -58,11 +58,6 @@ inline auto trapQuoted(const std::string& s) {
   return std::quoted(s, '"', '"');
 }
 
-template <typename Tag>
-struct Binding {
-  TrapLabel<Tag> id;
-};
-
 }  // namespace codeql
 
 namespace std {

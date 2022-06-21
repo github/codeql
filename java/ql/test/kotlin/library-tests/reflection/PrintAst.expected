@@ -211,9 +211,11 @@ reflection.kt:
 #  102|         0: [Parameter] l
 #  102|           0: [TypeAccess] T
 #  102|         1: [Parameter] transform
-#  102|           0: [TypeAccess] Function1<T,R>
-#  102|             0: [TypeAccess] T
-#  102|             1: [TypeAccess] R
+#  102|           0: [TypeAccess] Function1<? super T,? extends R>
+#  102|             0: [WildcardTypeAccess] ? ...
+#  102|               1: [TypeAccess] T
+#  102|             1: [WildcardTypeAccess] ? ...
+#  102|               0: [TypeAccess] R
 #  102|       5: [BlockStmt] { ... }
 #  103|     8: [Method] fn12
 #-----|       2: (Generic Parameters)
@@ -224,9 +226,11 @@ reflection.kt:
 #  103|         0: [Parameter] l
 #  103|           0: [TypeAccess] T1
 #  103|         1: [Parameter] l2
-#  103|           0: [TypeAccess] Function1<T1,R>
-#  103|             0: [TypeAccess] T1
-#  103|             1: [TypeAccess] R
+#  103|           0: [TypeAccess] Function1<? super T1,? extends R>
+#  103|             0: [WildcardTypeAccess] ? ...
+#  103|               1: [TypeAccess] T1
+#  103|             1: [WildcardTypeAccess] ? ...
+#  103|               0: [TypeAccess] R
 #  103|       5: [BlockStmt] { ... }
 #  121|     9: [Method] fn1
 #  121|       3: [TypeAccess] int
@@ -557,6 +561,7 @@ reflection.kt:
 #-----|                       4: (Parameters)
 #   24|                         0: [Parameter] it
 #   24|                           0: [TypeAccess] KCallable<?>
+#   24|                             0: [WildcardTypeAccess] ? ...
 #   24|                       5: [BlockStmt] { ... }
 #   24|                         0: [ReturnStmt] return ...
 #   24|                           0: [ValueEQExpr] ... (value equals) ...

@@ -17,13 +17,34 @@ namespace codeql {
 // node (AST nodes that are not types: declarations, statements, expressions, etc.).
 class SwiftDispatcher {
  public:
-  // sourceManager, arena, and trap are supposed to outlive the SwiftDispatcher
-  SwiftDispatcher(const swift::SourceManager& sourceManager, TrapArena& arena, TrapOutput& trap)
-      : sourceManager{sourceManager}, arena{arena}, trap{trap} {}
+  // all references and pointers passed as parameters to this constructor are supposed to outlive
+  // the SwiftDispatcher
+  SwiftDispatcher(const swift::SourceManager& sourceManager,
+                  TrapArena& arena,
+                  TrapOutput& trap,
+                  swift::ModuleDecl& currentModule,
+                  swift::SourceFile* currentPrimarySourceFile = nullptr)
+      : sourceManager{sourceManager},
+        arena{arena},
+        trap{trap},
+        currentModule{currentModule},
+        currentPrimarySourceFile{currentPrimarySourceFile} {}
 
   template <typename Entry>
   void emit(const Entry& entry) {
     trap.emit(entry);
+  }
+
+  template <typename Entry>
+  void emit(const std::optional<Entry>& entry) {
+    if (entry) {
+      emit(*entry);
+    }
+  }
+
+  template <typename... Cases>
+  void emit(const std::variant<Cases...>& entry) {
+    std::visit([this](const auto& e) { this->emit(e); }, entry);
   }
 
   // This is a helper method to emit TRAP entries for AST nodes that we don't fully support yet.
@@ -74,13 +95,18 @@ class SwiftDispatcher {
   // Due to the lazy emission approach, we must assign a label to a corresponding AST node before
   // it actually gets emitted to handle recursive cases such as recursive calls, or recursive type
   // declarations
-  template <typename E>
-  TrapLabelOf<E> assignNewLabel(E* e) {
+  template <typename E, typename... Args>
+  TrapLabelOf<E> assignNewLabel(E* e, Args&&... args) {
     assert(waitingForNewLabel == Store::Handle{e} && "assignNewLabel called on wrong entity");
-    auto label = createLabel<TrapTagOf<E>>();
+    auto label = createLabel<TrapTagOf<E>>(std::forward<Args>(args)...);
     store.insert(e, label);
     waitingForNewLabel = std::monostate{};
     return label;
+  }
+
+  template <typename E, typename... Args, std::enable_if_t<!std::is_pointer_v<E>>* = nullptr>
+  TrapLabelOf<E> assignNewLabel(const E& e, Args&&... args) {
+    return assignNewLabel(&e, std::forward<Args>(args)...);
   }
 
   template <typename Tag>
@@ -120,6 +146,52 @@ class SwiftDispatcher {
                    locatableLabel);
   }
 
+  // return `std::optional(fetchLabel(arg))` if arg converts to true, otherwise std::nullopt
+  // universal reference `Arg&&` is used to catch both temporary and non-const references, not
+  // for perfect forwarding
+  template <typename Arg>
+  auto fetchOptionalLabel(Arg&& arg) -> std::optional<decltype(fetchLabel(arg))> {
+    if (arg) {
+      return fetchLabel(arg);
+    }
+    return std::nullopt;
+  }
+
+  // map `fetchLabel` on the iterable `arg`, returning a vector of all labels
+  // universal reference `Arg&&` is used to catch both temporary and non-const references, not
+  // for perfect forwarding
+  template <typename Iterable>
+  auto fetchRepeatedLabels(Iterable&& arg) {
+    std::vector<decltype(fetchLabel(*arg.begin()))> ret;
+    ret.reserve(arg.size());
+    for (auto&& e : arg) {
+      ret.push_back(fetchLabel(e));
+    }
+    return ret;
+  }
+
+  // In order to not emit duplicated entries for declarations, we restrict emission to only
+  // Decls declared within the current "scope".
+  // Depending on the whether we are extracting a primary source file or not the scope is defined as
+  // follows:
+  //  - not extracting a primary source file (`currentPrimarySourceFile == nullptr`): the current
+  //    scope means the current module. This is used in the case of system or builtin modules.
+  //  - extracting a primary source file: in this mode, we extract several files belonging to the
+  //    same module one by one. In this mode, we restrict emission only to the same file ignoring
+  //    all the other files.
+  bool shouldEmitDeclBody(const swift::Decl& decl) {
+    if (decl.getModuleContext() != &currentModule) {
+      return false;
+    }
+    if (!currentPrimarySourceFile) {
+      return true;
+    }
+    if (auto context = decl.getDeclContext()) {
+      return currentPrimarySourceFile == context->getParentSourceFile();
+    }
+    return false;
+  }
+
  private:
   // types to be supported by assignNewLabel/fetchLabel need to be listed here
   using Store = TrapLabelStore<swift::Decl,
@@ -147,7 +219,7 @@ class SwiftDispatcher {
     auto locLabel = createLabel<LocationTag>('{', fileLabel, "}:", startLine, ':', startColumn, ':',
                                              endLine, ':', endColumn);
     trap.emit(LocationsTrap{locLabel, fileLabel, startLine, startColumn, endLine, endColumn});
-    trap.emit(LocatablesTrap{locatableLabel, locLabel});
+    trap.emit(LocatableLocationsTrap{locatableLabel, locLabel});
   }
 
   template <typename Tag, typename... Ts>
@@ -199,6 +271,8 @@ class SwiftDispatcher {
   TrapOutput& trap;
   Store store;
   Store::Handle waitingForNewLabel{std::monostate{}};
+  swift::ModuleDecl& currentModule;
+  swift::SourceFile* currentPrimarySourceFile;
 };
 
 }  // namespace codeql

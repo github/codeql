@@ -65,6 +65,22 @@ module Hash {
     }
   }
 
+  private class HashLiteralHashSplatSummary extends SummarizedCallable {
+    HashLiteralHashSplatSummary() { this = "Hash.[**]" }
+
+    final override MethodCall getACall() {
+      result = API::getTopLevelMember("Hash").getAMethodCall("[]").getExprNode().getExpr() and
+      result.getAnArgument() instanceof HashSplatExpr
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // { **hash }
+      input = "Argument[hash-splat].WithElement[any]" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
+
   /**
    * `Hash[]` called on an existing hash, e.g.
    *
@@ -362,10 +378,10 @@ private class MergeSummary extends SimpleSummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     (
-      input = "Argument[any].WithElement[any]" and
+      input = "Argument[self,any].WithElement[any]" and
       output = "ReturnValue"
       or
-      input = "Argument[any].Element[any]" and
+      input = "Argument[self,any].Element[any]" and
       output = "Argument[block].Parameter[1,2]"
     ) and
     preservesValue = true
@@ -377,10 +393,10 @@ private class MergeBangSummary extends SimpleSummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     (
-      input = "Argument[any].WithElement[any]" and
+      input = "Argument[self,any].WithElement[any]" and
       output = ["ReturnValue", "Argument[self]"]
       or
-      input = "Argument[any].Element[any]" and
+      input = "Argument[self,any].Element[any]" and
       output = "Argument[block].Parameter[1,2]"
     ) and
     preservesValue = true

@@ -239,12 +239,24 @@ private string getColumnString(TColumn column) {
 
 /**
  * RegEx pattern to match a single expected result, not including the leading `$`. It consists of one or
- * more comma-separated tags containing only letters, digits, `-` and `_` (note that the first character
- * must not be a digit), optionally followed by `=` and the expected value.
+ * more comma-separated tags optionally followed by `=` and the expected value.
+ *
+ * Tags must be only letters, digits, `-` and `_` (note that the first character
+ * must not be a digit), but can contain anything enclosed in a single set of
+ * square brackets.
+ *
+ * Examples:
+ * - `tag`
+ * - `tag=value`
+ * - `tag,tag2=value`
+ * - `tag[foo bar]=value`
+ *
+ * Not allowed:
+ * - `tag[[[foo bar]`
  */
 private string expectationPattern() {
   exists(string tag, string tags, string value |
-    tag = "[A-Za-z-_][A-Za-z-_0-9]*" and
+    tag = "[A-Za-z-_](?:[A-Za-z-_0-9]|\\[[^\\]\\]]*\\])*" and
     tags = "((?:" + tag + ")(?:\\s*,\\s*" + tag + ")*)" and
     // In Python, we allow both `"` and `'` for strings, as well as the prefixes `bru`.
     // For example, `b"foo"`.

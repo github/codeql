@@ -1,5 +1,7 @@
 import sys
 
+import pytest
+
 from swift.codegen.test.utils import *
 
 root_name = schema.root_class_name
@@ -125,12 +127,12 @@ A:
 
 
 def test_lowercase_rejected(load):
-    with pytest.raises(AssertionError):
+    with pytest.raises(schema.Error):
         load("aLowercase: {}")
 
 
 def test_digit_rejected(load):
-    with pytest.raises(AssertionError):
+    with pytest.raises(schema.Error):
         load("1digit: {}")
 
 
@@ -163,8 +165,94 @@ Element:
     assert ret.classes == [
         schema.Class(root_name, properties=[
             schema.SingleProperty('x', 'string'),
-         ]),
+        ]),
     ]
+
+
+def test_children(load):
+    ret = load("""
+A:
+    a: string
+    b: B*
+    _children:
+        c: C
+        d: D*
+        e: E?
+        f: F?*
+""")
+    assert ret.classes == [
+        schema.Class(root_name, derived={'A'}),
+        schema.Class('A', bases={root_name}, properties=[
+            schema.SingleProperty('a', 'string'),
+            schema.RepeatedProperty('b', 'B'),
+            schema.SingleProperty('c', 'C', is_child=True),
+            schema.RepeatedProperty('d', 'D', is_child=True),
+            schema.OptionalProperty('e', 'E', is_child=True),
+            schema.RepeatedOptionalProperty('f', 'F', is_child=True),
+        ]),
+    ]
+
+
+@pytest.mark.parametrize("type", ["string", "int", "boolean", "predicate"])
+def test_builtin_and_predicate_children_not_allowed(load, type):
+    with pytest.raises(schema.Error):
+        load(f"""
+A:
+    _children:
+        x: {type}
+""")
+
+
+def test_property_with_explicit_type(load):
+    ret = load("""
+A:
+    x: 
+      type: string*
+""")
+    assert ret.classes == [
+        schema.Class(root_name, derived={'A'}),
+        schema.Class('A', bases={root_name}, properties=[
+            schema.RepeatedProperty('x', 'string'),
+        ]),
+    ]
+
+
+def test_property_with_explicit_type_and_tags(load):
+    ret = load("""
+A:
+    x: 
+      type: string*
+      _tags: [foo, bar]
+""")
+    assert ret.classes == [
+        schema.Class(root_name, derived={'A'}),
+        schema.Class('A', bases={root_name}, properties=[
+            schema.RepeatedProperty('x', 'string', tags=["foo", "bar"]),
+        ]),
+    ]
+
+
+def test_class_with_tags(load):
+    ret = load("""
+A:
+    x: string*
+    _tags: [foo, bar]
+""")
+    assert ret.classes == [
+        schema.Class(root_name, derived={'A'}),
+        schema.Class('A', bases={root_name}, properties=[
+            schema.RepeatedProperty('x', 'string'),
+        ], tags=["foo", "bar"]),
+    ]
+
+
+def test_class_with_unknown_metadata(load):
+    with pytest.raises(schema.Error):
+        load("""
+A:
+    x: string*
+    _foobar: yeah
+""")
 
 
 if __name__ == '__main__':

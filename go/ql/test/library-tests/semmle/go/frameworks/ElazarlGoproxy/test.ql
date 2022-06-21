@@ -6,11 +6,12 @@ class UntrustedFlowSourceTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "untrustedflowsource" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "untrustedflowsource" and
     value = element and
     exists(UntrustedFlowSource src | value = "\"" + src.toString() + "\"" |
-      src.hasLocationInfo(file, line, _, _, _)
+      src.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
     )
   }
 }
@@ -20,12 +21,13 @@ class HeaderWriteTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "headerwrite" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "headerwrite" and
     exists(HTTP::HeaderWrite hw, string name, string val | element = hw.toString() |
       hw.definesHeader(name, val) and
       value = name + ":" + val and
-      hw.hasLocationInfo(file, line, _, _, _)
+      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
     )
   }
 }
@@ -35,9 +37,10 @@ class LoggerTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "logger" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(LoggerCall log |
-      log.hasLocationInfo(file, line, _, _, _) and
+      log.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = log.toString() and
       value = log.getAMessageComponent().toString() and
       tag = "logger"

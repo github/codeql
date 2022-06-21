@@ -487,7 +487,8 @@ class CryptographicOperationTest extends InlineExpectationsTest {
 
   override string getARelevantTag() {
     result in [
-        "CryptographicOperation", "CryptographicOperationInput", "CryptographicOperationAlgorithm"
+        "CryptographicOperation", "CryptographicOperationInput", "CryptographicOperationAlgorithm",
+        "CryptographicOperationBlockMode"
       ]
   }
 
@@ -507,6 +508,10 @@ class CryptographicOperationTest extends InlineExpectationsTest {
         element = cryptoOperation.toString() and
         value = cryptoOperation.getAlgorithm().getName() and
         tag = "CryptographicOperationAlgorithm"
+        or
+        element = cryptoOperation.toString() and
+        value = cryptoOperation.getBlockMode() and
+        tag = "CryptographicOperationBlockMode"
       )
     )
   }

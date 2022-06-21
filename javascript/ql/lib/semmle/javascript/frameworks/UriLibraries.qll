@@ -190,7 +190,7 @@ module Querystringify {
    * Gets a data flow source node for member `name` of the querystringify library.
    */
   DataFlow::SourceNode querystringifyMember(string name) {
-    result = querystringify().getMember(name).getAnImmediateUse()
+    result = querystringify().getMember(name).asSource()
   }
 
   /** Gets an API node referring to the `querystringify` module. */

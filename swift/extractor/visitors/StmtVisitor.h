@@ -206,6 +206,16 @@ class StmtVisitor : public AstVisitorBase<StmtVisitor> {
     dispatcher_.emit(FallthroughStmtsTrap{label, sourceLabel, destLabel});
   }
 
+  void visitYieldStmt(swift::YieldStmt* stmt) {
+    auto label = dispatcher_.assignNewLabel(stmt);
+    dispatcher_.emit(YieldStmtsTrap{label});
+    auto i = 0u;
+    for(auto* expr : stmt->getYields()) {
+      auto exprLabel = dispatcher_.fetchLabel(expr);
+      dispatcher_.emit(YieldStmtResultsTrap{label, i++, exprLabel});
+    }
+  }
+
  private:
   void emitLabeledStmt(const swift::LabeledStmt* stmt, TrapLabel<LabeledStmtTag> label) {
     if (stmt->getLabelInfo()) {
