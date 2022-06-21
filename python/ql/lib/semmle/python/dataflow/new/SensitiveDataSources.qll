@@ -305,7 +305,7 @@ private module SensitiveDataModeling {
   }
 
   /** A parameter where the name indicates it will receive sensitive data. */
-  class SensitiveParameter extends SensitiveDataSource::Range, DataFlow::SourceParameterNode {
+  class SensitiveParameter extends SensitiveDataSource::Range, DataFlow::ParameterNode {
     SensitiveDataClassification classification;
 
     SensitiveParameter() { this.getParameter().getName() = sensitiveString(classification) }

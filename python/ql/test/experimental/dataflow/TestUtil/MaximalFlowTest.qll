@@ -25,7 +25,7 @@ class MaximalFlowsConfig extends DataFlow::Configuration {
     exists(node.getLocation().getFile().getRelativePath()) and
     not node.asCfgNode() instanceof CallNode and
     not node.asCfgNode().getNode() instanceof Return and
-    not node instanceof DataFlow::SourceParameterNode and
+    not node instanceof DataFlow::ParameterNode and
     not node instanceof DataFlow::PostUpdateNode and
     // not node.asExpr() instanceof FunctionExpr and
     // not node.asExpr() instanceof ClassExpr and

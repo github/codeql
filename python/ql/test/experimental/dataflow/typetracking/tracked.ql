@@ -89,7 +89,7 @@ private DataFlow::TypeTrackingNode tracked_self(TypeTracker t) {
   exists(Function f |
     f.isMethod() and
     f.getName() = "track_self" and
-    result.(DataFlow::SourceParameterNode).getParameter() = f.getArg(0)
+    result.(DataFlow::ParameterNode).getParameter() = f.getArg(0)
   )
   or
   exists(TypeTracker t2 | result = tracked_self(t2).track(t2, t))

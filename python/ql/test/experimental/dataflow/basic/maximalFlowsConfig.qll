@@ -9,7 +9,7 @@ class MaximalFlowsConfig extends DataFlow::Configuration {
   MaximalFlowsConfig() { this = "AllFlowsConfig" }
 
   override predicate isSource(DataFlow::Node node) {
-    node instanceof DataFlow::SourceParameterNode
+    node instanceof DataFlow::ParameterNode
     or
     node instanceof DataFlow::EssaNode and
     not exists(DataFlow::EssaNode pred | DataFlow::localFlowStep(pred, node))

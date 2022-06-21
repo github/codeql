@@ -828,7 +828,7 @@ module HTTP {
     }
 
     /** A parameter that will receive parts of the url when handling an incoming request. */
-    private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::SourceParameterNode {
+    private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
       RequestHandler handler;
 
       RoutedParameter() { this.getParameter() = handler.getARoutedParameter() }
