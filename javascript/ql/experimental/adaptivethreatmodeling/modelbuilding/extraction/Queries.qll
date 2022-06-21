@@ -18,10 +18,6 @@ abstract class Query extends TQuery {
   string toString() { result = getName() }
 }
 
-class CodeInjectionQuery extends Query, TCodeInjectionQuery {
-  override string getName() { result = "CodeInjection" }
-}
-
 class NosqlInjectionQuery extends Query, TNosqlInjectionQuery {
   override string getName() { result = "NosqlInjection" }
 }

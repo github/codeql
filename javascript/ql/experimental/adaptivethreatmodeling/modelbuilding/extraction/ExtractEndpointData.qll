@@ -14,7 +14,6 @@ import experimental.adaptivethreatmodeling.EndpointFeatures as EndpointFeatures
 import experimental.adaptivethreatmodeling.EndpointScoring as EndpointScoring
 import experimental.adaptivethreatmodeling.EndpointTypes
 import experimental.adaptivethreatmodeling.FilteringReasons
-import experimental.adaptivethreatmodeling.CodeInjectionATM as CodeInjectionATM
 import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionATM
 import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionATM
 import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathATM
@@ -26,8 +25,6 @@ import Queries
 
 /** Gets the ATM configuration object for the specified query. */
 AtmConfig getAtmCfg(Query query) {
-  query instanceof CodeInjectionQuery and result instanceof CodeInjectionATM::CodeInjectionAtmConfig
-  or
   query instanceof NosqlInjectionQuery and
   result instanceof NosqlInjectionATM::NosqlInjectionAtmConfig
   or
@@ -45,8 +42,6 @@ deprecated ATMConfig getATMCfg(Query query) { result = getAtmCfg(query) }
 
 /** Gets the ATM data flow configuration for the specified query. */
 DataFlow::Configuration getDataFlowCfg(Query query) {
-  query instanceof CodeInjectionQuery and result instanceof CodeInjectionATM::Configuration
-  or
   query instanceof NosqlInjectionQuery and result instanceof NosqlInjectionATM::Configuration
   or
   query instanceof SqlInjectionQuery and result instanceof SqlInjectionATM::Configuration
