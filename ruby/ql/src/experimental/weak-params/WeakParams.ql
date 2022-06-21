@@ -18,6 +18,10 @@ class WeakParams extends AstNode {
   }
 }
 
+class ControllerClass extends ModuleBase {
+  ControllerClass() { this.getModule().getSuperClass+().toString() = "ApplicationController" }
+}
+
 class StrongParamsMethod extends Method {
   StrongParamsMethod() { this.getName().regexpMatch(".*_params") }
 }
@@ -41,6 +45,8 @@ class ParamsReference extends ElementReference {
 }
 
 from WeakParams params
-where not params.getEnclosingMethod() instanceof StrongParamsMethod
+where
+  not params.getEnclosingMethod() instanceof StrongParamsMethod and
+  params.getEnclosingModule() instanceof ControllerClass
 select params,
   "By exposing all keys in request parameters or by blindy accessing them, unintended parameters could be used and lead to mass-assignment or have other unexpected side-effects."
