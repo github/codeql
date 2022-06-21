@@ -2,7 +2,9 @@ import java
 
 class OnReceivedSslErrorMethod extends Method {
   OnReceivedSslErrorMethod() {
-    this.hasQualifiedName("android.webkit", "WebViewClient", "onReceivedSslError")
+    this.overrides*(any(Method m |
+        m.hasQualifiedName("android.webkit", "WebViewClient", "onReceivedSslError")
+      ))
   }
 
   Parameter handlerArg() { result = this.getParameter(1) }
