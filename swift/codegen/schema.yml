@@ -54,6 +54,10 @@ NominalTypeDecl:
 AstNode:
   _extends: Locatable
 
+ValueParametrizedNode:
+  _children:
+    params: ParamDecl*
+
 ConditionElement:
   _extends: Locatable
   _children:
@@ -290,9 +294,9 @@ ValueDecl:
   interface_type: Type
 
 AbstractClosureExpr:
-  _extends: Expr
-  _children:
-    params: ParamDecl*
+  _extends:
+    - Expr
+    - ValueParametrizedNode
 
 AnyTryExpr:
   _extends: Expr
@@ -712,10 +716,10 @@ AbstractFunctionDecl:
   _extends:
     - GenericContext
     - ValueDecl
+    - ValueParametrizedNode
   name: string
   _children:
     body: BraceStmt?
-    params: ParamDecl*
 
 AbstractStorageDecl:
   _extends: ValueDecl

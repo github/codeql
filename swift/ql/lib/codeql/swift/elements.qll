@@ -4,6 +4,7 @@ import codeql.swift.elements.Element
 import codeql.swift.elements.File
 import codeql.swift.elements.Locatable
 import codeql.swift.elements.Location
+import codeql.swift.elements.ValueParametrizedNode
 import codeql.swift.elements.decl.AbstractFunctionDecl
 import codeql.swift.elements.decl.AbstractStorageDecl
 import codeql.swift.elements.decl.AbstractTypeParamDecl

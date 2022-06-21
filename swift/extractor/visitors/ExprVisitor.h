@@ -542,7 +542,7 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     auto params = expr->getParameters();
     for (auto i = 0u; i < params->size(); ++i) {
       dispatcher_.emit(
-          AbstractClosureExprParamsTrap{label, i, dispatcher_.fetchLabel(params->get(i))});
+          ValueParametrizedNodeParamsTrap{label, i, dispatcher_.fetchLabel(params->get(i))});
     }
   }
 

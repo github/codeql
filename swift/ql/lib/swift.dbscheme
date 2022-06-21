@@ -20,6 +20,7 @@ sourceLocationPrefix(
 | @locatable
 | @location
 | @type
+| @value_parametrized_node
 ;
 
 #keyset[id]
@@ -124,6 +125,18 @@ nominal_type_decls(
 | @stmt_condition
 | @type_repr
 ;
+
+@value_parametrized_node =
+  @abstract_closure_expr
+| @abstract_function_decl
+;
+
+#keyset[id, index]
+value_parametrized_node_params(
+  int id: @value_parametrized_node ref,
+  int index: int ref,
+  int param: @param_decl ref
+);
 
 condition_elements(
   unique int id: @condition_element
@@ -658,13 +671,6 @@ value_decls(
   @auto_closure_expr
 | @closure_expr
 ;
-
-#keyset[id, index]
-abstract_closure_expr_params(
-  int id: @abstract_closure_expr ref,
-  int index: int ref,
-  int param: @param_decl ref
-);
 
 @any_try_expr =
   @force_try_expr
@@ -1396,13 +1402,6 @@ abstract_function_decls(
 abstract_function_decl_bodies(
   int id: @abstract_function_decl ref,
   int body: @brace_stmt ref
-);
-
-#keyset[id, index]
-abstract_function_decl_params(
-  int id: @abstract_function_decl ref,
-  int index: int ref,
-  int param: @param_decl ref
 );
 
 @abstract_storage_decl =
