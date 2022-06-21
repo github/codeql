@@ -39,29 +39,22 @@ module HardcodedSymmetricEncryptionKey {
     StringLiteralSource() { this.asExpr() instanceof StringLiteral }
   }
 
-  private class SymmetricEncryptionKeyPropertySink extends Sink {
-    SymmetricEncryptionKeyPropertySink() {
-      this.asExpr() = any(SymmetricAlgorithm sa).getKeyProperty().getAnAssignedValue()
-    }
-
-    override string getDescription() { result = "'Key' property assignment" }
-  }
-
-  private class SymmetricAlgorithmCreateSinkCsv extends SinkModelCsv {
+  private class SymmetricAlgorithmSinkCsv extends SinkModelCsv {
     override predicate row(string row) {
       row =
         [
           "System.Security.Cryptography;SymmetricAlgorithm;true;CreateEncryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-encryptor",
           "System.Security.Cryptography;SymmetricAlgorithm;true;CreateDecryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-decryptor",
+          "System.Security.Cryptography;SymmetricAlgorithm;true;set_Key;(System.Byte[]);;Argument[0];encryption-keyprop",
           "Windows.Security.Cryptography.Core;SymmetricKeyAlgorithmProvider;false;CreateSymmetricKey;(Windows.Storage.Streams.IBuffer);;Argument[0];encryption-symmetrickey"
         ]
     }
   }
 
-  private class SymmetricAlgorithmCreateEncryptorSink extends Sink {
+  private class SymmetricAlgorithmSink extends Sink {
     private string kind;
 
-    SymmetricAlgorithmCreateEncryptorSink() { sinkNode(this, kind) and kind.matches("encryption%") }
+    SymmetricAlgorithmSink() { sinkNode(this, kind) and kind.matches("encryption%") }
 
     override string getDescription() {
       kind = "encryption-encryptor" and result = "Encryptor(rgbKey, IV)"
@@ -69,6 +62,8 @@ module HardcodedSymmetricEncryptionKey {
       kind = "encryption-decryptor" and result = "Decryptor(rgbKey, IV)"
       or
       kind = "encryption-symmetrickey" and result = "CreateSymmetricKey(IBuffer keyMaterial)"
+      or
+      kind = "encryption-keyprop" and result = "'Key' property assignment"
     }
   }
 
