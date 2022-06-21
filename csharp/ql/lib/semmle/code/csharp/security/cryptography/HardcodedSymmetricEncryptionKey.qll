@@ -4,6 +4,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 module HardcodedSymmetricEncryptionKey {
   private import semmle.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
@@ -46,22 +47,24 @@ module HardcodedSymmetricEncryptionKey {
     override string getDescription() { result = "'Key' property assignment" }
   }
 
-  private class SymmetricEncryptionCreateEncryptorSink extends Sink {
-    SymmetricEncryptionCreateEncryptorSink() {
-      exists(SymmetricAlgorithm ag, MethodCall mc | mc = ag.getASymmetricEncryptor() |
-        this.asExpr() = mc.getArgumentForName("rgbKey")
-      )
+  private class SymmetricAlgorithmCreateSinkCsv extends SinkModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          "System.Security.Cryptography;SymmetricAlgorithm;true;CreateEncryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-encryptor",
+          "System.Security.Cryptography;SymmetricAlgorithm;true;CreateDecryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-decryptor"
+        ]
     }
+  }
+
+  private class SymmetricAlgorithmCreateEncryptorSink extends Sink {
+    SymmetricAlgorithmCreateEncryptorSink() { sinkNode(this, "encryption-encryptor") }
 
     override string getDescription() { result = "Encryptor(rgbKey, IV)" }
   }
 
-  private class SymmetricEncryptionCreateDecryptorSink extends Sink {
-    SymmetricEncryptionCreateDecryptorSink() {
-      exists(SymmetricAlgorithm ag, MethodCall mc | mc = ag.getASymmetricDecryptor() |
-        this.asExpr() = mc.getArgumentForName("rgbKey")
-      )
-    }
+  private class SymmetricAlgorithmCreateDecryptorSink extends Sink {
+    SymmetricAlgorithmCreateDecryptorSink() { sinkNode(this, "encryption-decryptor") }
 
     override string getDescription() { result = "Decryptor(rgbKey, IV)" }
   }
