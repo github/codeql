@@ -13,7 +13,7 @@ import DataFlow::PathGraph
 import semmle.go.dataflow.internal.TaintTrackingUtil
 
 /**
- * A barrier-guard, which represents comparison and equality with zero.
+ * Holds if `g` is a barrier-guard which checks `e` is nonzero on `branch`.
  */
 predicate divideByZeroSanitizerGuard(DataFlow::Node g, Expr e, boolean branch) {
   exists(DataFlow::Node zero, DataFlow::Node checked |
