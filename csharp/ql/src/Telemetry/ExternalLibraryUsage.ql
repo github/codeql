@@ -21,11 +21,7 @@ private predicate getRelevantUsages(string info, int usages) {
 
 private int getOrder(string info) {
   info =
-    rank[result](string i, int usages |
-      getRelevantUsages(i, usages)
-    |
-      i order by usages desc, i
-    )
+    rank[result](string i, int usages | getRelevantUsages(i, usages) | i order by usages desc, i)
 }
 
 from ExternalApi api, string info, int usages
