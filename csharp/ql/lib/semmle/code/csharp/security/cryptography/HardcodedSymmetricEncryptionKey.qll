@@ -58,15 +58,15 @@ module HardcodedSymmetricEncryptionKey {
   }
 
   private class SymmetricAlgorithmCreateEncryptorSink extends Sink {
-    SymmetricAlgorithmCreateEncryptorSink() { sinkNode(this, "encryption-encryptor") }
+    private string kind;
 
-    override string getDescription() { result = "Encryptor(rgbKey, IV)" }
-  }
+    SymmetricAlgorithmCreateEncryptorSink() { sinkNode(this, kind) and kind.matches("encryption%") }
 
-  private class SymmetricAlgorithmCreateDecryptorSink extends Sink {
-    SymmetricAlgorithmCreateDecryptorSink() { sinkNode(this, "encryption-decryptor") }
-
-    override string getDescription() { result = "Decryptor(rgbKey, IV)" }
+    override string getDescription() {
+      kind = "encryption-encryptor" and result = "Encryptor(rgbKey, IV)"
+      or
+      kind = "encryption-decryptor" and result = "Decryptor(rgbKey, IV)"
+    }
   }
 
   private class CreateSymmetricKeySink extends Sink {
