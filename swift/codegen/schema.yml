@@ -380,6 +380,7 @@ EnumIsCaseExpr:
 
 ErrorExpr:
   _extends: Expr
+  _tags: [ no_qltest ]  # unexpected emission
 
 ExplicitCastExpr:
   _extends: Expr
@@ -454,6 +455,7 @@ ObjCSelectorExpr:
   _children:
     sub_expr: Expr
   method: AbstractFunctionDecl
+  _tags: [ no_qltest ]  # to be tested in integration tests
 
 OneWayExpr:
   _extends: Expr
@@ -493,6 +495,9 @@ RebindSelfInConstructorExpr:
 
 SequenceExpr:
   _extends: Expr
+  _children:
+    elements: Expr*
+  _tags: [ no_qltest ]  # we should really never extract these, as these should be resolved to trees of operations
 
 SuperRefExpr:
   _extends: Expr
@@ -523,18 +528,28 @@ TypeExpr:
 
 UnresolvedDeclRefExpr:
   _extends: Expr
+  name: string?
+  _tags: [ no_qltest ]  # we should really never extract these
 
 UnresolvedDotExpr:
   _extends: Expr
+  _children:
+    base: Expr
+  name: string
+  _tags: [ no_qltest ]  # we should really never extract these
 
 UnresolvedMemberExpr:
   _extends: Expr
+  name: string
+  _tags: [ no_qltest ]  # we should really never extract these
 
 UnresolvedPatternExpr:
   _extends: Expr
+  _tags: [ no_qltest ]  # we should really never extract these
 
 UnresolvedSpecializeExpr:
   _extends: Expr
+  _tags: [ no_qltest ]  # we should really never extract these
 
 VarargExpansionExpr:
   _extends: Expr
@@ -808,9 +823,11 @@ ArrayToPointerExpr:
 
 BridgeFromObjCExpr:
   _extends: ImplicitConversionExpr
+  _tags: [ no_qltest ]  # to be tested in integration tests
 
 BridgeToObjCExpr:
   _extends: ImplicitConversionExpr
+  _tags: [ no_qltest ]  # to be tested in integration tests
 
 ClassMetatypeToObjectExpr:
   _extends: ImplicitConversionExpr
@@ -820,6 +837,7 @@ CollectionUpcastConversionExpr:
 
 ConditionalBridgeFromObjCExpr:
   _extends: ImplicitConversionExpr
+  _tags: [ no_qltest ]  # to be tested in integration tests
 
 CovariantFunctionConversionExpr:
   _extends: ImplicitConversionExpr

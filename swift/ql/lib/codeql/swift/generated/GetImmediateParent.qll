@@ -134,6 +134,8 @@ Element getAnImmediateChild(Element e) {
       or
       self_apply_exprs(e, x)
       or
+      sequence_expr_elements(e, _, x)
+      or
       subscript_expr_arguments(e, _, x)
       or
       tap_expr_sub_exprs(e, x)
@@ -145,6 +147,8 @@ Element getAnImmediateChild(Element e) {
       tuple_expr_elements(e, _, x)
       or
       type_expr_type_reprs(e, x)
+      or
+      unresolved_dot_exprs(e, x, _)
       or
       vararg_expansion_exprs(e, x)
       or

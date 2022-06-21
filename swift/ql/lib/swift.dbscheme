@@ -1004,6 +1004,13 @@ sequence_exprs(
   unique int id: @sequence_expr
 );
 
+#keyset[id, index]
+sequence_expr_elements(
+  int id: @sequence_expr ref,
+  int index: int ref,
+  int element: @expr ref
+);
+
 super_ref_exprs(
   unique int id: @super_ref_expr,
   int self: @var_decl ref
@@ -1052,12 +1059,21 @@ unresolved_decl_ref_exprs(
   unique int id: @unresolved_decl_ref_expr
 );
 
+#keyset[id]
+unresolved_decl_ref_expr_names(
+  int id: @unresolved_decl_ref_expr ref,
+  string name: string ref
+);
+
 unresolved_dot_exprs(
-  unique int id: @unresolved_dot_expr
+  unique int id: @unresolved_dot_expr,
+  int base: @expr ref,
+  string name: string ref
 );
 
 unresolved_member_exprs(
-  unique int id: @unresolved_member_expr
+  unique int id: @unresolved_member_expr,
+  string name: string ref
 );
 
 unresolved_pattern_exprs(
