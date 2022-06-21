@@ -6,7 +6,9 @@
 
 import javascript
 import AdaptiveThreatModeling
+import StandardEndpointFilters as StandardEndpointFilters
 private import semmle.javascript.dataflow.InferredTypes
+private import semmle.javascript.heuristics.SyntacticHeuristics
 private import semmle.javascript.security.dataflow.XssThroughDomCustomizations::XssThroughDom
 private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 private import semmle.javascript.security.dataflow.UnsafeJQueryPluginCustomizations::UnsafeJQueryPlugin as UnsafeJQuery
@@ -15,8 +17,6 @@ private import semmle.javascript.security.dataflow.UnsafeJQueryPluginCustomizati
  * This module provides logic to filter candidate sinks to those which are likely XSS sinks.
  */
 module SinkEndpointFilter {
-  private import StandardEndpointFilters as StandardEndpointFilters
-
   /**
    * Provides a set of reasons why a given data flow node should be excluded as a sink candidate.
    *
@@ -25,6 +25,38 @@ module SinkEndpointFilter {
    */
   string getAReasonSinkExcluded(DataFlow::Node sinkCandidate) {
     result = StandardEndpointFilters::getAReasonSinkExcluded(sinkCandidate)
+    or
+    exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
+      call.getCalleeName() = "setState"
+    ) and
+    result = "setState calls ought to be safe in react applications"
+    or
+    // Require XSS sink candidates to be (a) arguments to external library calls (possibly
+    // indirectly), or (b) heuristic sinks.
+    //
+    // Heuristic sinks are copied from the `HeuristicDomBasedXssSink` class defined within
+    // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
+    // We can't reuse the class because importing that file would cause us to treat these
+    // heuristic sinks as known sinks.
+    not StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(sinkCandidate) and
+    not (
+      isAssignedToOrConcatenatedWith(sinkCandidate, "(?i)(html|innerhtml)")
+      or
+      isArgTo(sinkCandidate, "(?i)(html|render)")
+      or
+      sinkCandidate instanceof StringOps::HtmlConcatenationLeaf
+      or
+      isConcatenatedWithStrings("(?is).*<[a-z ]+.*", sinkCandidate, "(?s).*>.*")
+      or
+      // In addition to the heuristic sinks from `HeuristicDomBasedXssSink`, explicitly allow
+      // property writes like `elem.innerHTML = <TAINT>` that may not be picked up as HTML
+      // concatenation leaves.
+      exists(DataFlow::PropWrite pw |
+        pw.getPropertyName().regexpMatch("(?i).*html*") and
+        pw.getRhs() = sinkCandidate
+      )
+    ) and
+    result = "not a direct argument to a likely external library call or a heuristic sink"
   }
 }
 
