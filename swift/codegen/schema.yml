@@ -13,25 +13,23 @@ _directories:
   stmt: Stmt$
 
 Element:
-  is_unknown:
-    type: predicate
-    _tags: [ no_qltest ]
+  is_unknown: predicate
+  _tags: [ no_qltest ]
 
 File:
   name: string
 
 Locatable:
-  location:
-    type: Location
-    _tags: [no_qltest]
+  location: Location?
+  _tags: [ no_qltest ]
 
 Location:
-  _tags: [ no_qltest ]
   file: File
   start_line: int
   start_column: int
   end_line: int
   end_column: int
+  _tags: [ no_qltest ]
 
 Type:
   diagnostics_name: string

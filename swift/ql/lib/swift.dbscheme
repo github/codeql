@@ -38,7 +38,7 @@ files(
 ;
 
 #keyset[id]
-locatables(
+locatable_locations(
   int id: @locatable ref,
   int location: @location ref
 );

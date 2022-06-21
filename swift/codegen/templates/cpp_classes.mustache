@@ -7,12 +7,18 @@
 #include <vector>
 
 #include "swift/extractor/trap/TrapLabel.h"
+#include "swift/extractor/trap/TrapTagTraits.h"
 #include "./TrapEntries.h"
 
 namespace codeql {
 {{#classes}}
 
-struct {{name}}{{#final}} : Binding<{{name}}Tag>{{#bases}}, {{ref.name}}{{/bases}}{{/final}}{{^final}}{{#has_bases}}: {{#bases}}{{^first}}, {{/first}}{{ref.name}}{{/bases}}{{/has_bases}}{{/final}} {
+struct {{name}}{{#has_bases}} : {{#bases}}{{^first}}, {{/first}}{{ref.name}}{{/bases}}{{/has_bases}} {
+  {{#final}}
+  explicit {{name}}(TrapLabel<{{name}}Tag> id) : id{id} {}
+
+  TrapLabel<{{name}}Tag> id{};
+  {{/final}}
   {{#fields}}
   {{type}} {{field_name}}{};
   {{/fields}}
@@ -53,6 +59,11 @@ struct {{name}}{{#final}} : Binding<{{name}}Tag>{{#bases}}, {{ref.name}}{{/bases
     {{/is_repeated}}
     {{/fields}}
   }
+};
+
+template <>
+struct detail::ToTrapClassFunctor<{{name}}Tag> {
+  using type = {{name}};
 };
 {{/classes}}
 }
