@@ -200,7 +200,7 @@ private class LoadSpringResourceFlowStep extends SummaryModelCsv {
       [
         "org.springframework.core.io;ClassPathResource;false;ClassPathResource;;;Argument[0];Argument[-1];taint",
         "org.springframework.core.io;ClassPathResource;true;" +
-          ["getFilename", "getPath", "getURL", "resolveURL"] + ";;;Argument[-1];ReturnValue;value",
+          ["getFilename", "getPath", "getURL", "resolveURL"] + ";;;Argument[-1];ReturnValue;taint",
         "org.springframework.core.io;ResourceLoader;true;getResource;;;Argument[0];ReturnValue;taint",
         "org.springframework.core.io;Resource;true;createRelative;;;Argument[0];ReturnValue;taint"
       ]
