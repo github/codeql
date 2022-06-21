@@ -331,7 +331,7 @@ class ActiveRecordInstance extends DataFlow::Node {
 }
 
 // A call whose receiver may be an active record model object
-private class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
+class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
   private ActiveRecordInstance instance;
 
   ActiveRecordInstanceMethodCall() { this.getReceiver() = instance }
