@@ -54,6 +54,11 @@ NominalTypeDecl:
 AstNode:
   _extends: Locatable
 
+Callable:
+  _children:
+    params: ParamDecl*
+    body: BraceStmt?
+
 ConditionElement:
   _extends: Locatable
   _children:
@@ -290,9 +295,9 @@ ValueDecl:
   interface_type: Type
 
 AbstractClosureExpr:
-  _extends: Expr
-  _children:
-    params: ParamDecl*
+  _extends:
+    - Expr
+    - Callable
 
 AnyTryExpr:
   _extends: Expr
@@ -712,10 +717,8 @@ AbstractFunctionDecl:
   _extends:
     - GenericContext
     - ValueDecl
+    - Callable
   name: string
-  _children:
-    body: BraceStmt?
-    params: ParamDecl*
 
 AbstractStorageDecl:
   _extends: ValueDecl
@@ -735,13 +738,9 @@ TypeDecl:
 
 AutoClosureExpr:
   _extends: AbstractClosureExpr
-  _children:
-    body: BraceStmt
 
 ClosureExpr:
   _extends: AbstractClosureExpr
-  _children:
-    body: BraceStmt
 
 ForceTryExpr:
   _extends: AnyTryExpr
