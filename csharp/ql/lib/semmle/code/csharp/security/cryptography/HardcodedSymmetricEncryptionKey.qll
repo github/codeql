@@ -52,7 +52,8 @@ module HardcodedSymmetricEncryptionKey {
       row =
         [
           "System.Security.Cryptography;SymmetricAlgorithm;true;CreateEncryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-encryptor",
-          "System.Security.Cryptography;SymmetricAlgorithm;true;CreateDecryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-decryptor"
+          "System.Security.Cryptography;SymmetricAlgorithm;true;CreateDecryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-decryptor",
+          "Windows.Security.Cryptography.Core;SymmetricKeyAlgorithmProvider;false;CreateSymmetricKey;(Windows.Storage.Streams.IBuffer);;Argument[0];encryption-symmetrickey"
         ]
     }
   }
@@ -66,20 +67,9 @@ module HardcodedSymmetricEncryptionKey {
       kind = "encryption-encryptor" and result = "Encryptor(rgbKey, IV)"
       or
       kind = "encryption-decryptor" and result = "Decryptor(rgbKey, IV)"
+      or
+      kind = "encryption-symmetrickey" and result = "CreateSymmetricKey(IBuffer keyMaterial)"
     }
-  }
-
-  private class CreateSymmetricKeySink extends Sink {
-    CreateSymmetricKeySink() {
-      exists(MethodCall mc, Method m |
-        mc.getTarget() = m and
-        m.hasQualifiedName("Windows.Security.Cryptography.Core.SymmetricKeyAlgorithmProvider",
-          "CreateSymmetricKey") and
-        this.asExpr() = mc.getArgumentForName("keyMaterial")
-      )
-    }
-
-    override string getDescription() { result = "CreateSymmetricKey(IBuffer keyMaterial)" }
   }
 
   private class CryptographicBuffer extends Class {
