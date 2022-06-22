@@ -161,6 +161,40 @@ def test_nested_obj_method():
     SINK(a.obj.foo) # $ flow="SOURCE, l:-3 -> a.obj.foo"
 
 # ------------------------------------------------------------------------------
+# Bound Method calls
+# ------------------------------------------------------------------------------
+
+class Foo:
+    def __init__(self, x):
+        self.x = x
+
+    def update_x(self, x):
+        self.x = x
+
+@expects(7) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_bound_method_call():
+    # direct assignment
+    foo = Foo(None)
+    SINK_F(foo.x)
+    foo.x = SOURCE
+    SINK(foo.x) # $ flow="SOURCE, l:-1 -> foo.x"
+    foo.x = None
+    SINK_F(foo.x)
+
+    # assignment through function
+    foo = Foo(SOURCE)
+    SINK(foo.x) # $ flow="SOURCE, l:-1 -> foo.x"
+    foo.update_x(None)
+    SINK_F(foo.x) # $ flow="SOURCE, l:-3 -> foo.x"
+
+    # assignment through bound-method calls
+    foo = Foo(SOURCE)
+    ux = foo.update_x
+    SINK(foo.x) # $ flow="SOURCE, l:-2 -> foo.x"
+    ux(None)
+    SINK_F(foo.x) # $ SPURIOUS: flow="SOURCE, l:-4 -> foo.x"
+
+# ------------------------------------------------------------------------------
 # Global scope
 # ------------------------------------------------------------------------------
 
