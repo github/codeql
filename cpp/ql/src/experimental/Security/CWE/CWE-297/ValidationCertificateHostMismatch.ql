@@ -63,6 +63,34 @@ predicate checkHostnameUp102() {
   )
 }
 
+predicate checkHostnameGnuTLS() {
+  exists(FunctionCall functionCheckHost |
+    functionCheckHost
+        .getTarget()
+        .hasName(["gnutls_x509_crt_check_hostname", "gnutls_x509_crt_check_hostname2"])
+    or
+    functionCheckHost.getTarget().hasName("gnutls_certificate_verify_peers3") and
+    not functionCheckHost.getArgument(1).getValue() = "0"
+  )
+}
+
+predicate checkHostnameBOOST1() {
+  exists(FunctionCall functionCallBackForCheck |
+    functionCallBackForCheck.getTarget().hasName("set_verify_callback")
+  )
+}
+
+predicate checkHostnameBOOST2() {
+  exists(FunctionCall functionCallBackForCheck |
+    functionCallBackForCheck.getTarget().hasName("set_verify_callback") and
+    not functionCallBackForCheck
+        .getArgument(0)
+        .(FunctionCall)
+        .getTarget()
+        .hasName(["rfc2818_verification", "host_name_verification"])
+  )
+}
+
 from FunctionCall fc
 where
   not checkHostnameOlder1() and
@@ -70,4 +98,17 @@ where
   not checkHostnameUp110() and
   not checkHostnameUp102() and
   fc.getTarget().hasName(["SSL_set_verify", "SSL_get_peer_certificate", "SSL_get_verify_result"])
+  or
+  not checkHostnameGnuTLS() and
+  fc.getTarget()
+      .hasName([
+          "gnutls_certificate_verify_peers", "gnutls_certificate_verify_peers2",
+          "gnutls_certificate_verify_peers3"
+        ])
+  or
+  (
+    not checkHostnameBOOST1() or
+    checkHostnameBOOST2()
+  ) and
+  fc.getTarget().hasName("set_verify_mode")
 select fc.getEnclosingFunction(), "You may have missed checking the name of the certificate."
