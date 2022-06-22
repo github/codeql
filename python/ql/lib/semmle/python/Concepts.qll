@@ -119,16 +119,21 @@ module Path {
   }
 
   /** A data-flow node that checks that a path is safe to access. */
-  class SafeAccessCheck extends DataFlow::BarrierGuard instanceof SafeAccessCheck::Range {
-    override predicate checks(ControlFlowNode node, boolean branch) {
-      SafeAccessCheck::Range.super.checks(node, branch)
-    }
+  class SafeAccessCheck extends DataFlow::ExprNode {
+    SafeAccessCheck() { this = DataFlow::BarrierGuard<safeAccessCheck/3>::getABarrierNode() }
+  }
+
+  private predicate safeAccessCheck(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+    g.(SafeAccessCheck::Range).checks(node, branch)
   }
 
   /** Provides a class for modeling new path safety checks. */
   module SafeAccessCheck {
     /** A data-flow node that checks that a path is safe to access. */
-    abstract class Range extends DataFlow::BarrierGuard { }
+    abstract class Range extends DataFlow::GuardNode {
+      /** Holds if this guard validates `node` upon evaluating to `branch`. */
+      abstract predicate checks(ControlFlowNode node, boolean branch);
+    }
   }
 }
 

@@ -363,20 +363,16 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     dispatcher_.emit(DiscardAssignmentExprsTrap{label});
   }
 
-  void visitClosureExpr(swift::ClosureExpr* expr) {
-    auto label = dispatcher_.assignNewLabel(expr);
-    assert(expr->getBody() && "ClosureExpr has getBody()");
-    auto bodyLabel = dispatcher_.fetchLabel(expr->getBody());
-    dispatcher_.emit(ClosureExprsTrap{label, bodyLabel});
-    emitAbstractClosureExpr(expr, label);
+  codeql::ClosureExpr translateClosureExpr(const swift::ClosureExpr& expr) {
+    ClosureExpr entry{dispatcher_.assignNewLabel(expr)};
+    fillAbstractClosureExpr(expr, entry);
+    return entry;
   }
 
-  void visitAutoClosureExpr(swift::AutoClosureExpr* expr) {
-    auto label = dispatcher_.assignNewLabel(expr);
-    assert(expr->getBody() && "AutoClosureExpr has getBody()");
-    auto bodyLabel = dispatcher_.fetchLabel(expr->getBody());
-    dispatcher_.emit(AutoClosureExprsTrap{label, bodyLabel});
-    emitAbstractClosureExpr(expr, label);
+  codeql::AutoClosureExpr translateAutoClosureExpr(const swift::AutoClosureExpr& expr) {
+    AutoClosureExpr entry{dispatcher_.assignNewLabel(expr)};
+    fillAbstractClosureExpr(expr, entry);
+    return entry;
   }
 
   void visitCoerceExpr(swift::CoerceExpr* expr) {
@@ -536,14 +532,12 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
   }
 
  private:
-  void emitAbstractClosureExpr(swift::AbstractClosureExpr* expr,
-                               TrapLabel<AbstractClosureExprTag> label) {
-    assert(expr->getParameters() && "AbstractClosureExpr has getParameters()");
-    auto params = expr->getParameters();
-    for (auto i = 0u; i < params->size(); ++i) {
-      dispatcher_.emit(
-          AbstractClosureExprParamsTrap{label, i, dispatcher_.fetchLabel(params->get(i))});
-    }
+  void fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,
+                               codeql::AbstractClosureExpr& entry) {
+    assert(expr.getParameters() && "AbstractClosureExpr has getParameters()");
+    assert(expr.getBody() && "AbstractClosureExpr has getBody()");
+    entry.params = dispatcher_.fetchRepeatedLabels(*expr.getParameters());
+    entry.body = dispatcher_.fetchLabel(expr.getBody());
   }
 
   TrapLabel<ArgumentTag> emitArgument(const swift::Argument& arg) {

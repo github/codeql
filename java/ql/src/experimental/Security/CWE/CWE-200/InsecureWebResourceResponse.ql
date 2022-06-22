@@ -24,9 +24,7 @@ class InsecureWebResourceResponseConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof WebResourceResponseSink }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof PathTraversalBarrierGuard
-  }
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof PathTraversalSanitizer }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, InsecureWebResourceResponseConfig conf

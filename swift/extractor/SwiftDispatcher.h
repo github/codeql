@@ -35,6 +35,18 @@ class SwiftDispatcher {
     trap.emit(entry);
   }
 
+  template <typename Entry>
+  void emit(const std::optional<Entry>& entry) {
+    if (entry) {
+      emit(*entry);
+    }
+  }
+
+  template <typename... Cases>
+  void emit(const std::variant<Cases...>& entry) {
+    std::visit([this](const auto& e) { this->emit(e); }, entry);
+  }
+
   // This is a helper method to emit TRAP entries for AST nodes that we don't fully support yet.
   template <typename E>
   void emitUnknown(E* entity) {
@@ -92,6 +104,11 @@ class SwiftDispatcher {
     return label;
   }
 
+  template <typename E, typename... Args, std::enable_if_t<!std::is_pointer_v<E>>* = nullptr>
+  TrapLabelOf<E> assignNewLabel(const E& e, Args&&... args) {
+    return assignNewLabel(&e, std::forward<Args>(args)...);
+  }
+
   template <typename Tag>
   TrapLabel<Tag> createLabel() {
     auto ret = arena.allocateLabel<Tag>();
@@ -129,6 +146,30 @@ class SwiftDispatcher {
                    locatableLabel);
   }
 
+  // return `std::optional(fetchLabel(arg))` if arg converts to true, otherwise std::nullopt
+  // universal reference `Arg&&` is used to catch both temporary and non-const references, not
+  // for perfect forwarding
+  template <typename Arg>
+  auto fetchOptionalLabel(Arg&& arg) -> std::optional<decltype(fetchLabel(arg))> {
+    if (arg) {
+      return fetchLabel(arg);
+    }
+    return std::nullopt;
+  }
+
+  // map `fetchLabel` on the iterable `arg`, returning a vector of all labels
+  // universal reference `Arg&&` is used to catch both temporary and non-const references, not
+  // for perfect forwarding
+  template <typename Iterable>
+  auto fetchRepeatedLabels(Iterable&& arg) {
+    std::vector<decltype(fetchLabel(*arg.begin()))> ret;
+    ret.reserve(arg.size());
+    for (auto&& e : arg) {
+      ret.push_back(fetchLabel(e));
+    }
+    return ret;
+  }
+
   // In order to not emit duplicated entries for declarations, we restrict emission to only
   // Decls declared within the current "scope".
   // Depending on the whether we are extracting a primary source file or not the scope is defined as
@@ -138,14 +179,14 @@ class SwiftDispatcher {
   //  - extracting a primary source file: in this mode, we extract several files belonging to the
   //    same module one by one. In this mode, we restrict emission only to the same file ignoring
   //    all the other files.
-  bool shouldEmitDeclBody(swift::Decl* decl) {
-    if (decl->getModuleContext() != &currentModule) {
+  bool shouldEmitDeclBody(const swift::Decl& decl) {
+    if (decl.getModuleContext() != &currentModule) {
       return false;
     }
     if (!currentPrimarySourceFile) {
       return true;
     }
-    if (auto context = decl->getDeclContext()) {
+    if (auto context = decl.getDeclContext()) {
       return currentPrimarySourceFile == context->getParentSourceFile();
     }
     return false;
@@ -178,7 +219,7 @@ class SwiftDispatcher {
     auto locLabel = createLabel<LocationTag>('{', fileLabel, "}:", startLine, ':', startColumn, ':',
                                              endLine, ':', endColumn);
     trap.emit(LocationsTrap{locLabel, fileLabel, startLine, startColumn, endLine, endColumn});
-    trap.emit(LocatablesTrap{locatableLabel, locLabel});
+    trap.emit(LocatableLocationsTrap{locatableLabel, locLabel});
   }
 
   template <typename Tag, typename... Ts>

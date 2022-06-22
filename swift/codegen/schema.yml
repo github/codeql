@@ -13,25 +13,23 @@ _directories:
   stmt: Stmt$
 
 Element:
-  is_unknown:
-    type: predicate
-    _tags: [ no_qltest ]
+  is_unknown: predicate
+  _tags: [ no_qltest ]
 
 File:
   name: string
 
 Locatable:
-  location:
-    type: Location
-    _tags: [no_qltest]
+  location: Location?
+  _tags: [ no_qltest ]
 
 Location:
-  _tags: [ no_qltest ]
   file: File
   start_line: int
   start_column: int
   end_line: int
   end_column: int
+  _tags: [ no_qltest ]
 
 Type:
   diagnostics_name: string
@@ -55,6 +53,11 @@ NominalTypeDecl:
 
 AstNode:
   _extends: Locatable
+
+Callable:
+  _children:
+    params: ParamDecl*
+    body: BraceStmt?
 
 ConditionElement:
   _extends: Locatable
@@ -292,9 +295,9 @@ ValueDecl:
   interface_type: Type
 
 AbstractClosureExpr:
-  _extends: Expr
-  _children:
-    params: ParamDecl*
+  _extends:
+    - Expr
+    - Callable
 
 AnyTryExpr:
   _extends: Expr
@@ -714,10 +717,8 @@ AbstractFunctionDecl:
   _extends:
     - GenericContext
     - ValueDecl
+    - Callable
   name: string
-  _children:
-    body: BraceStmt?
-    params: ParamDecl*
 
 AbstractStorageDecl:
   _extends: ValueDecl
@@ -737,13 +738,9 @@ TypeDecl:
 
 AutoClosureExpr:
   _extends: AbstractClosureExpr
-  _children:
-    body: BraceStmt
 
 ClosureExpr:
   _extends: AbstractClosureExpr
-  _children:
-    body: BraceStmt
 
 ForceTryExpr:
   _extends: AnyTryExpr

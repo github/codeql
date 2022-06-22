@@ -18,10 +18,10 @@ module RequestForgery {
   abstract private class Sink extends DataFlow::ExprNode { }
 
   /**
-   * A data flow BarrierGuard which blocks the flow of taint for
+   * A data flow Barrier that blocks the flow of taint for
    * server side request forgery vulnerabilities.
    */
-  abstract private class BarrierGuard extends DataFlow::BarrierGuard { }
+  abstract private class Barrier extends DataFlow::Node { }
 
   /**
    * A data flow configuration for detecting server side request forgery vulnerabilities.
@@ -51,9 +51,7 @@ module RequestForgery {
       pathCombineStep(prev, succ)
     }
 
-    override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof BarrierGuard
-    }
+    override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
   }
 
   /**
@@ -129,17 +127,18 @@ module RequestForgery {
    * to be a guard for Server Side Request Forgery(SSRF) Vulnerabilities.
    * This guard considers all checks as valid.
    */
-  private class BaseUriGuard extends BarrierGuard, MethodCall {
-    BaseUriGuard() { this.getTarget().hasQualifiedName("System.Uri", "IsBaseOf") }
+  private predicate baseUriGuard(Guard g, Expr e, AbstractValue v) {
+    g.(MethodCall).getTarget().hasQualifiedName("System.Uri", "IsBaseOf") and
+    // we consider any checks against the tainted value to sainitize the taint.
+    // This implies any check such as shown below block the taint flow.
+    // Uri url = new Uri("whitelist.com")
+    // if (url.isBaseOf(`taint1))
+    (e = g.(MethodCall).getArgument(0) or e = g.(MethodCall).getQualifier()) and
+    v.(AbstractValues::BooleanValue).getValue() = true
+  }
 
-    override predicate checks(Expr e, AbstractValue v) {
-      // we consider any checks against the tainted value to sainitize the taint.
-      // This implies any check such as shown below block the taint flow.
-      // Uri url = new Uri("whitelist.com")
-      // if (url.isBaseOf(`taint1))
-      (e = this.getArgument(0) or e = this.getQualifier()) and
-      v.(AbstractValues::BooleanValue).getValue() = true
-    }
+  private class BaseUriBarrier extends Barrier {
+    BaseUriBarrier() { this = DataFlow::BarrierGuard<baseUriGuard/3>::getABarrierNode() }
   }
 
   /**
@@ -147,18 +146,19 @@ module RequestForgery {
    * to be a guard for Server Side Request Forgery(SSRF) Vulnerabilities.
    * This guard considers all checks as valid.
    */
-  private class StringStartsWithBarrierGuard extends BarrierGuard, MethodCall {
-    StringStartsWithBarrierGuard() {
-      this.getTarget().hasQualifiedName("System.String", "StartsWith")
-    }
+  private predicate stringStartsWithGuard(Guard g, Expr e, AbstractValue v) {
+    g.(MethodCall).getTarget().hasQualifiedName("System.String", "StartsWith") and
+    // Any check such as the ones shown below
+    // "https://myurl.com/".startsWith(`taint`)
+    // `taint`.startsWith("https://myurl.com/")
+    // are assumed to sainitize the taint
+    (e = g.(MethodCall).getQualifier() or g.(MethodCall).getArgument(0) = e) and
+    v.(AbstractValues::BooleanValue).getValue() = true
+  }
 
-    override predicate checks(Expr e, AbstractValue v) {
-      // Any check such as the ones shown below
-      // "https://myurl.com/".startsWith(`taint`)
-      // `taint`.startsWith("https://myurl.com/")
-      // are assumed to sainitize the taint
-      (e = this.getQualifier() or this.getArgument(0) = e) and
-      v.(AbstractValues::BooleanValue).getValue() = true
+  private class StringStartsWithBarrier extends Barrier {
+    StringStartsWithBarrier() {
+      this = DataFlow::BarrierGuard<stringStartsWithGuard/3>::getABarrierNode()
     }
   }
 

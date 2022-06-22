@@ -20,9 +20,26 @@ class VisitorBase {
 }  // namespace detail
 
 // we want to override the default swift visitor behaviour of chaining calls to immediate
-// superclasses by default and instead provide our own TBD default (using the exact type)
-#define DEFAULT(KIND, CLASS, PARENT) \
-  void visit##CLASS##KIND(swift::CLASS##KIND* e) { dispatcher_.emitUnknown(e); }
+// superclasses by default and instead provide our own TBD default (using the exact type).
+// Moreover, if the implementation class has translate##CLASS##KIND (that uses generated C++
+// classes), we want to use that. We detect that by checking its return type. If it is different
+// from void (which is what is returned by a private unimplemented member function here) it means
+// we have implemented it in the visitor.
+#define DEFAULT(KIND, CLASS, PARENT)                                                              \
+ public:                                                                                          \
+  void visit##CLASS##KIND(swift::CLASS##KIND* e) {                                                \
+    using TranslateResult = std::invoke_result_t<decltype(&CrtpSubclass::translate##CLASS##KIND), \
+                                                 CrtpSubclass, swift::CLASS##KIND>;               \
+    constexpr bool hasTranslateImplementation = !std::is_same_v<TranslateResult, void>;           \
+    if constexpr (hasTranslateImplementation) {                                                   \
+      dispatcher_.emit(static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(*e));             \
+    } else {                                                                                      \
+      dispatcher_.emitUnknown(e);                                                                 \
+    }                                                                                             \
+  }                                                                                               \
+                                                                                                  \
+ private:                                                                                         \
+  void translate##CLASS##KIND(const swift::CLASS##KIND&);
 
 // base class for our AST visitors, getting a SwiftDispatcher member and default emission for
 // unknown/TBD entities. Like `swift::ASTVisitor`, this uses CRTP (the Curiously Recurring Template

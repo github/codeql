@@ -34,9 +34,11 @@ module UrlRedirect {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for "URL redirection" vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * Additional taint steps for "URL redirection" vulnerabilities.
@@ -77,7 +79,7 @@ module UrlRedirect {
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
+  class StringConstCompareAsSanitizer extends Sanitizer, StringConstCompareBarrier { }
 
   /**
    * Some methods will propagate taint to their return values.
