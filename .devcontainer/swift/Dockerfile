@@ -5,4 +5,5 @@ FROM mcr.microsoft.com/vscode/devcontainers/cpp:0-ubuntu-22.04
 
 USER root
 ADD root.sh /tmp/root.sh
+ADD update-codeql.sh /usr/local/bin/update-codeql
 RUN bash /tmp/root.sh && rm /tmp/root.sh

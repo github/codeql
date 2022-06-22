@@ -17,3 +17,6 @@ curl -fSsL -o /usr/local/bin/bazelisk https://github.com/bazelbuild/bazelisk/rel
 echo "${BAZELISK_DOWNLOAD_SHA} */usr/local/bin/bazelisk" | sha256sum --check -
 chmod 0755 /usr/local/bin/bazelisk
 ln -s bazelisk /usr/local/bin/bazel
+
+# install latest codeql
+update-codeql

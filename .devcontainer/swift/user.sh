@@ -11,5 +11,3 @@ bazel run swift/create-extractor-pack
 #install and set up pre-commit
 python3 -m pip install pre-commit --no-warn-script-location
 $HOME/.local/bin/pre-commit install
-
-cat $(dirname $0)/user_bashrc.sh >> $HOME/.bashrc
