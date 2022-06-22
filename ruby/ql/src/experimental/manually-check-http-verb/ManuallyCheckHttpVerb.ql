@@ -28,14 +28,9 @@ class CheckGetFromEnv extends AstNode {
   CheckGetFromEnv() {
     // is this node an instance of `env["REQUEST_METHOD"]
     this instanceof GetRequestMethodFromEnv and
-    (
-      // and is this node a param of a call to `.include?`
-      exists(MethodCall call | call.getAnArgument() = this | call.getMethodName() = "include?")
-      or
-      // check if env["REQUEST_METHOD"] is compared to GET
-      exists(EqualityOperation eq | eq.getAChild() = this |
-        eq.getAChild().(StringLiteral).toString() = "GET"
-      )
+    // check if env["REQUEST_METHOD"] is compared to GET
+    exists(EqualityOperation eq | eq.getAChild() = this |
+      eq.getAChild().(StringLiteral).toString() = "GET"
     )
   }
 }
