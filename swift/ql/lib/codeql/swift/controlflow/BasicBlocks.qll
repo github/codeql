@@ -214,15 +214,15 @@ private module JoinBlockPredecessors {
   }
 
   int getId(JoinBlockPredecessor jbp) {
-    idOf(projctToAst(jbp.getFirstNode().(AstCfgNode).getNode()), result)
+    idOf(projctToAst(jbp.getFirstNode().(CfgNode).getNode()), result)
     or
     idOf(jbp.(EntryBasicBlock).getScope(), result)
   }
 
   string getSplitString(JoinBlockPredecessor jbp) {
-    result = jbp.getFirstNode().(AstCfgNode).getSplitsString()
+    result = jbp.getFirstNode().(CfgNode).getSplitsString()
     or
-    not exists(jbp.getFirstNode().(AstCfgNode).getSplitsString()) and
+    not exists(jbp.getFirstNode().(CfgNode).getSplitsString()) and
     result = ""
   }
 }

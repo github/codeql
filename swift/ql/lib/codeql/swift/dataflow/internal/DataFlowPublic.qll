@@ -56,13 +56,14 @@ class Node extends TNode {
  * `ControlFlow::Node`s.
  */
 class ExprNode extends Node, TExprNode {
-  ExprCfgNode expr;
+  CfgNode n;
+  Expr expr;
 
-  ExprNode() { this = TExprNode(expr) }
+  ExprNode() { this = TExprNode(n, expr) }
 
-  override Expr asExpr() { result = expr.getNode().asAstNode() }
+  override Expr asExpr() { result = expr }
 
-  override ControlFlowNode getCfgNode() { result = expr }
+  override ControlFlowNode getCfgNode() { result = n }
 }
 
 /**
