@@ -7,6 +7,10 @@
 | c.h:4:12:4:13 | ks | array of {int} | 1 |
 | c.h:8:12:8:14 | iss | array of {array of 2 {int}} | 1 |
 | c.h:10:12:10:12 | i | int | 1 |
+| d.cpp:3:7:3:8 | xs | array of {int} | 1 |
+| d.h:3:14:3:15 | xs | array of 2 {int} | 1 |
+| file://:0:0:0:0 | (unnamed parameter 0) | reference to {const {struct __va_list_tag}} | 1 |
+| file://:0:0:0:0 | (unnamed parameter 0) | rvalue reference to {struct __va_list_tag} | 1 |
 | file://:0:0:0:0 | fp_offset | unsigned int | 1 |
 | file://:0:0:0:0 | gp_offset | unsigned int | 1 |
 | file://:0:0:0:0 | overflow_arg_area | pointer to {void} | 1 |
