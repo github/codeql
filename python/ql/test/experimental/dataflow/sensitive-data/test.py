@@ -58,8 +58,8 @@ def my_func(password): # $ SensitiveDataSource=password
 
 # FP where the `cert` in `uncertainty` makes us treat it like a certificate
 # https://github.com/github/codeql/issues/9632
-def my_other_func(uncertainty): # $ SPURIOUS: SensitiveDataSource=certificate
-    print(uncertainty) # $ SPURIOUS: SensitiveUse=certificate
+def my_other_func(uncertainty):
+    print(uncertainty)
 
 password = some_function() # $ SensitiveDataSource=password
 print(password) # $ SensitiveUse=password
