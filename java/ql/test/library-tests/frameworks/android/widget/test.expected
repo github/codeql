@@ -1,0 +1,4 @@
+failures
+valueOf
+| TestWidgetKt.kt:10:16:10:25 | valueOf(...) |
+| TestWidgetKt.kt:13:17:13:26 | valueOf(...) |

@@ -44,7 +44,7 @@
 | expressions.swift:21:6:21:16 | call to failure(_:) | CallExpr |
 | expressions.swift:21:14:21:14 | 11 | IntegerLiteralExpr |
 | expressions.swift:27:13:27:13 | Klass.Type | TypeExpr |
-| expressions.swift:27:13:27:13 | call to ... | ConstructorRefCallExpr |
+| expressions.swift:27:13:27:13 | call to init | ConstructorRefCallExpr |
 | expressions.swift:27:13:27:13 | init | DeclRefExpr |
 | expressions.swift:27:13:27:19 | call to ... | CallExpr |
 | expressions.swift:29:9:29:19 | [...] | DictionaryExpr |
@@ -164,7 +164,7 @@
 | expressions.swift:79:11:79:11 | init | OtherConstructorDeclRefExpr |
 | expressions.swift:79:19:79:19 | 22 | IntegerLiteralExpr |
 | expressions.swift:83:15:83:15 | Derived.Type | TypeExpr |
-| expressions.swift:83:15:83:15 | call to ... | ConstructorRefCallExpr |
+| expressions.swift:83:15:83:15 | call to init | ConstructorRefCallExpr |
 | expressions.swift:83:15:83:15 | init | DeclRefExpr |
 | expressions.swift:83:15:83:23 | call to ... | CallExpr |
 | expressions.swift:84:1:84:1 | _ | DiscardAssignmentExpr |
@@ -185,7 +185,7 @@
 | expressions.swift:92:14:92:55 | call to ... | CallExpr |
 | expressions.swift:92:24:92:24 | passRetained(_:) | DeclRefExpr |
 | expressions.swift:92:37:92:37 | ToPtr.Type | TypeExpr |
-| expressions.swift:92:37:92:37 | call to ... | ConstructorRefCallExpr |
+| expressions.swift:92:37:92:37 | call to init | ConstructorRefCallExpr |
 | expressions.swift:92:37:92:37 | init | DeclRefExpr |
 | expressions.swift:92:37:92:43 | call to ... | CallExpr |
 | expressions.swift:92:46:92:46 | toOpaque() | DeclRefExpr |
