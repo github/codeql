@@ -50,7 +50,7 @@ module HeuristicNames {
    * Gets a regular expression that identifies strings that may indicate the presence of secret
    * or trusted data.
    */
-  string maybeSecret() { result = "(?is).*((?<!is)secret|(?<!un|is)trusted).*" }
+  string maybeSecret() { result = "(?is).*((?<!is|is_)secret|(?<!un|un_|is|is_)trusted).*" }
 
   /**
    * Gets a regular expression that identifies strings that may indicate the presence of
