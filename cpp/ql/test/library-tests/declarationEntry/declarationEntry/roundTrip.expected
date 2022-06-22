@@ -39,7 +39,7 @@
 | file://:0:0:0:0 | definition of gp_offset | file://:0:0:0:0 | gp_offset | yes |
 | file://:0:0:0:0 | definition of overflow_arg_area | file://:0:0:0:0 | overflow_arg_area | yes |
 | file://:0:0:0:0 | definition of reg_save_area | file://:0:0:0:0 | reg_save_area | yes |
-| forwardDeclaration.cpp:1:7:1:13 | declaration of myClass | declarationEntry.cpp:39:7:39:13 | myClass | no |
+| forwardDeclaration.cpp:1:7:1:13 | declaration of myClass | declarationEntry.cpp:39:7:39:13 | myClass | yes |
 | forwardDeclaration.cpp:3:10:3:19 | definition of myClassPtr | forwardDeclaration.cpp:3:10:3:19 | myClassPtr | yes |
 | macro.c:2:1:2:3 | declaration of foo | macro.c:2:1:2:3 | foo | yes |
 | macro.c:4:5:4:8 | definition of main | macro.c:4:5:4:8 | main | yes |
