@@ -18,7 +18,8 @@ import java.util.zip.GZIPOutputStream
 
 class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: String, val sourceFilePath: String, val primitiveTypeMapping: PrimitiveTypeMapping, val pluginContext: IrPluginContext, val globalExtensionState: KotlinExtractorGlobalState, val diagnosticTrapWriter: TrapWriter) {
 
-    val externalDeclsDone = HashSet<Pair<FqName, String>>()
+    val declBinaryNames = HashMap<IrDeclaration, String>()
+    val externalDeclsDone = HashSet<Pair<String, String>>()
     val externalDeclWorkList = ArrayList<Pair<IrDeclaration, String>>()
 
     val propertySignature = ";property"
@@ -29,7 +30,8 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
             logger.errorElement("External declaration is neither a class, nor a top-level declaration", d)
             return false
         }
-        val ret = externalDeclsDone.add(Pair(d.fqNameWhenAvailable!!, signature))
+        val declBinaryName = declBinaryNames.getOrPut(d) { getIrDeclBinaryName(d) }
+        val ret = externalDeclsDone.add(Pair(declBinaryName, signature))
         if (ret) externalDeclWorkList.add(Pair(d, signature))
         return ret
     }
