@@ -11,8 +11,10 @@
  */
 
 import swift
+import codeql.swift.dataflow.DataFlow
+import DataFlow::PathGraph
 
-predicate isSource(Expr e) {
+predicate isSource0(Expr e) {
   // result of a call to to `String.count`
   exists(MemberRefExpr member |
     member.getBaseExpr().getType().toString() = "String" and // TODO: use of toString
@@ -22,7 +24,7 @@ predicate isSource(Expr e) {
   // TODO: other sources such as NSString.length, with different set of sinks
 }
 
-predicate isSink(Expr e) {
+predicate isSink0(Expr e) {
   // arguments to method calls...
   exists(
     string className, string methodName, string argName, ClassDecl c, AbstractFunctionDecl f,
@@ -75,13 +77,18 @@ predicate isSink(Expr e) {
   )
 }
 
-string describe(Element e) {
-  isSource(e) and result = "isSource"
-  or
-  isSink(e) and result = "isSink"
-  or
-  isSource(e) and isSink(e) and result = "***RESULT***"
+class StringLengthConflationConfiguration extends DataFlow::Configuration {
+  StringLengthConflationConfiguration() { this = "StringLengthConflationConfiguration" }
+
+  override predicate isSource(DataFlow::Node node, string flowstate) {
+    isSource0(node.asExpr()) and flowstate = "String"
+  }
+
+  override predicate isSink(DataFlow::Node node, string flowstate) {
+    isSink0(node.asExpr()) and flowstate = "String"
+  }
 }
 
-from Locatable e
-select e.getLocation(), e, strictconcat(describe(e), ", ")
+from StringLengthConflationConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
+select sink, source, sink, "RESULT"

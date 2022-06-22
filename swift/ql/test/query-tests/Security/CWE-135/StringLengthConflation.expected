@@ -1,45 +1,6 @@
-| StringLengthConflation.swift:10:37:10:44 | Location | StringLengthConflation.swift:10:37:10:44 | .count | isSource |
-| StringLengthConflation.swift:21:37:21:44 | Location | StringLengthConflation.swift:21:37:21:44 | .count | isSource |
-| StringLengthConflation.swift:38:80:38:80 | Location | StringLengthConflation.swift:38:80:38:80 | loc | isSink |
-| StringLengthConflation.swift:38:93:38:93 | Location | StringLengthConflation.swift:38:93:38:93 | len | isSink |
-| StringLengthConflation.swift:47:20:47:22 | Location | StringLengthConflation.swift:47:20:47:22 | .count | isSource |
-| StringLengthConflation.swift:52:43:52:45 | Location | StringLengthConflation.swift:52:43:52:45 | .count | isSource |
-| StringLengthConflation.swift:59:47:59:49 | Location | StringLengthConflation.swift:59:47:59:49 | .count | isSource |
-| StringLengthConflation.swift:64:33:64:35 | Location | StringLengthConflation.swift:64:33:64:35 | .count | isSource |
-| StringLengthConflation.swift:71:30:71:30 | Location | StringLengthConflation.swift:71:30:71:30 | 0 | isSink |
-| StringLengthConflation.swift:71:33:71:36 | Location | StringLengthConflation.swift:71:33:71:36 | .length | isSink |
-| StringLengthConflation.swift:72:30:72:30 | Location | StringLengthConflation.swift:72:30:72:30 | 0 | isSink |
-| StringLengthConflation.swift:72:33:72:35 | Location | StringLengthConflation.swift:72:33:72:35 | .count | ***RESULT***, isSink, isSource |
-| StringLengthConflation.swift:73:30:73:30 | Location | StringLengthConflation.swift:73:30:73:30 | 0 | isSink |
-| StringLengthConflation.swift:73:33:73:46 | Location | StringLengthConflation.swift:73:33:73:46 | .count | isSink |
-| StringLengthConflation.swift:74:30:74:30 | Location | StringLengthConflation.swift:74:30:74:30 | 0 | isSink |
-| StringLengthConflation.swift:74:33:74:78 | Location | StringLengthConflation.swift:74:33:74:78 | call to ... | isSink |
-| StringLengthConflation.swift:77:36:77:36 | Location | StringLengthConflation.swift:77:36:77:36 | 0 | isSink |
-| StringLengthConflation.swift:77:47:77:50 | Location | StringLengthConflation.swift:77:47:77:50 | .length | isSink |
-| StringLengthConflation.swift:78:36:78:36 | Location | StringLengthConflation.swift:78:36:78:36 | 0 | isSink |
-| StringLengthConflation.swift:78:47:78:49 | Location | StringLengthConflation.swift:78:47:78:49 | .count | ***RESULT***, isSink, isSource |
-| StringLengthConflation.swift:83:28:83:30 | Location | StringLengthConflation.swift:83:28:83:30 | .count | isSource |
-| StringLengthConflation.swift:87:27:87:29 | Location | StringLengthConflation.swift:87:27:87:29 | .count | isSource |
-| StringLengthConflation.swift:91:25:91:27 | Location | StringLengthConflation.swift:91:25:91:27 | .count | isSource |
-| StringLengthConflation.swift:95:25:95:27 | Location | StringLengthConflation.swift:95:25:95:27 | .count | isSource |
-| StringLengthConflation.swift:99:34:99:46 | Location | StringLengthConflation.swift:99:34:99:46 | ... call to - ... | isSink |
-| StringLengthConflation.swift:100:36:100:49 | Location | StringLengthConflation.swift:100:36:100:49 | ... call to - ... | isSink |
-| StringLengthConflation.swift:101:34:101:36 | Location | StringLengthConflation.swift:101:34:101:36 | .count | isSource |
-| StringLengthConflation.swift:101:34:101:44 | Location | StringLengthConflation.swift:101:34:101:44 | ... call to - ... | isSink |
-| StringLengthConflation.swift:102:36:102:38 | Location | StringLengthConflation.swift:102:36:102:38 | .count | isSource |
-| StringLengthConflation.swift:102:36:102:46 | Location | StringLengthConflation.swift:102:36:102:46 | ... call to - ... | isSink |
-| StringLengthConflation.swift:105:36:105:48 | Location | StringLengthConflation.swift:105:36:105:48 | ... call to - ... | isSink |
-| StringLengthConflation.swift:106:38:106:51 | Location | StringLengthConflation.swift:106:38:106:51 | ... call to - ... | isSink |
-| StringLengthConflation.swift:107:36:107:38 | Location | StringLengthConflation.swift:107:36:107:38 | .count | isSource |
-| StringLengthConflation.swift:107:36:107:46 | Location | StringLengthConflation.swift:107:36:107:46 | ... call to - ... | isSink |
-| StringLengthConflation.swift:108:38:108:40 | Location | StringLengthConflation.swift:108:38:108:40 | .count | isSource |
-| StringLengthConflation.swift:108:38:108:48 | Location | StringLengthConflation.swift:108:38:108:48 | ... call to - ... | isSink |
-| StringLengthConflation.swift:111:34:111:46 | Location | StringLengthConflation.swift:111:34:111:46 | ... call to - ... | isSink |
-| StringLengthConflation.swift:112:36:112:49 | Location | StringLengthConflation.swift:112:36:112:49 | ... call to - ... | isSink |
-| StringLengthConflation.swift:113:34:113:36 | Location | StringLengthConflation.swift:113:34:113:36 | .count | isSource |
-| StringLengthConflation.swift:113:34:113:44 | Location | StringLengthConflation.swift:113:34:113:44 | ... call to - ... | isSink |
-| StringLengthConflation.swift:114:36:114:38 | Location | StringLengthConflation.swift:114:36:114:38 | .count | isSource |
-| StringLengthConflation.swift:114:36:114:46 | Location | StringLengthConflation.swift:114:36:114:46 | ... call to - ... | isSink |
-| StringLengthConflation.swift:118:28:118:41 | Location | StringLengthConflation.swift:118:28:118:41 | ... call to - ... | isSink |
-| StringLengthConflation.swift:120:28:120:30 | Location | StringLengthConflation.swift:120:28:120:30 | .count | isSource |
-| StringLengthConflation.swift:120:28:120:38 | Location | StringLengthConflation.swift:120:28:120:38 | ... call to - ... | isSink |
+edges
+nodes
+| StringLengthConflation.swift:78:47:78:49 | .count | semmle.label | .count |
+subpaths
+#select
+| StringLengthConflation.swift:78:47:78:49 | .count | StringLengthConflation.swift:78:47:78:49 | .count | StringLengthConflation.swift:78:47:78:49 | .count | RESULT |
