@@ -37,7 +37,7 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
 
   override string toStringImpl() { result = expr.toString() }
 
-  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(expr.getScope()) }
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
 }
 
 private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
@@ -62,7 +62,7 @@ cached
 private module Cached {
   cached
   newtype TNode =
-    TExprNode(ExprCfgNode e) or
+    TExprNode(CfgNode n, Expr e) { hasExprNode(n, e) } or
     TSsaDefinitionNode(Ssa::Definition def) or
     TInoutReturnNode(ParamDecl param) { param.isInout() } or
     TInOutUpdateNode(ParamDecl param, CallExpr call) {
@@ -70,6 +70,14 @@ private module Cached {
       call.getStaticTarget() = param.getDeclaringFunction()
     } or
     TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state)
+
+  private predicate hasExprNode(CfgNode n, Expr e) {
+    n.(ExprCfgNode).getExpr() = e
+    or
+    n.(PropertyGetterCfgNode).getRef() = e
+    or
+    n.(PropertySetterCfgNode).getAssignExpr() = e
+  }
 
   private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
     def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode()) and
