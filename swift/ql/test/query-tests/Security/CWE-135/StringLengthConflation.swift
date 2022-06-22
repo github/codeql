@@ -5,7 +5,11 @@ func print(_ items: Any...) {}
 
 typealias unichar = UInt16
 
-class NSString
+class NSObject
+{
+}
+
+class NSString : NSObject
 {
     init(string: String) { length = string.count }
 
@@ -16,16 +20,9 @@ class NSString
     var length: Int
 }
 
-class NSMutableString
+class NSMutableString : NSString
 {
-    init(string: String) { length = string.count }
-
-    func character(at: Int) -> unichar { return 0 }
-    func substring(from: Int) -> String { return "" }
-    func substring(to: Int) -> String { return "" }
     func insert(_: String, at: Int) {}
-
-    var length: Int
 }
 
 class NSRange
@@ -36,6 +33,9 @@ class NSRange
 }
 
 func NSMakeRange(_ loc: Int, _ len: Int) -> NSRange { return NSRange(location: loc, length: len) }
+
+
+
 
 // --- tests ---
 
