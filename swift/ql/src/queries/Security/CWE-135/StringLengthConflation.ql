@@ -71,7 +71,7 @@ predicate isSink0(Expr e) {
     // `NSMakeRange`
     funcName = "NSMakeRange" and
     argName = ["loc", "len"] and
-    call.getStaticTarget().getName() = funcName and
+    call.getStaticTarget().getName().matches(funcName + "%") and
     call.getStaticTarget().getParam(arg).getName() = argName and
     call.getArgument(arg).getExpr() = e
   )
