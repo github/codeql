@@ -10,8 +10,8 @@ private class MathCompDataModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "java.lang;Math;false;min;;;Argument[0..1];ReturnValue;value",
-        "java.lang;Math;false;max;;;Argument[0..1];ReturnValue;value"
+        "java.lang;Math;false;min;;;Argument[0..1];ReturnValue;value;manual",
+        "java.lang;Math;false;max;;;Argument[0..1];ReturnValue;value;manual"
       ]
   }
 }
@@ -21,8 +21,8 @@ private class PauseThreadDataModel extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        "java.lang;Thread;true;sleep;;;Argument[0];thread-pause",
-        "java.util.concurrent;TimeUnit;true;sleep;;;Argument[0];thread-pause"
+        "java.lang;Thread;true;sleep;;;Argument[0];thread-pause;manual",
+        "java.util.concurrent;TimeUnit;true;sleep;;;Argument[0];thread-pause;manual"
       ]
   }
 }

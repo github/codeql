@@ -196,8 +196,8 @@ private class PathDataModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "java.nio.file;Paths;true;get;;;Argument[0];ReturnValue;taint",
-        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint"
+        "java.nio.file;Paths;true;get;;;Argument[0];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual"
       ]
   }
 }

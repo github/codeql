@@ -37,11 +37,11 @@ private class SystemDataCommonDbConnectionStringBuilderFlowModelCsv extends Exte
   override predicate row(string row) {
     row =
       [
-        "System.Data.Common;DbConnectionStringBuilder;false;Add;(System.String,System.Object);;Argument[0];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value",
-        "System.Data.Common;DbConnectionStringBuilder;false;Add;(System.String,System.Object);;Argument[1];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value",
-        "System.Data.Common;DbConnectionStringBuilder;false;get_Item;(System.String);;Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue;value",
-        "System.Data.Common;DbConnectionStringBuilder;false;set_Item;(System.String,System.Object);;Argument[0];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value",
-        "System.Data.Common;DbConnectionStringBuilder;false;set_Item;(System.String,System.Object);;Argument[1];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value",
+        "System.Data.Common;DbConnectionStringBuilder;false;Add;(System.String,System.Object);;Argument[0];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+        "System.Data.Common;DbConnectionStringBuilder;false;Add;(System.String,System.Object);;Argument[1];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+        "System.Data.Common;DbConnectionStringBuilder;false;get_Item;(System.String);;Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue;value;manual",
+        "System.Data.Common;DbConnectionStringBuilder;false;set_Item;(System.String,System.Object);;Argument[0];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+        "System.Data.Common;DbConnectionStringBuilder;false;set_Item;(System.String,System.Object);;Argument[1];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
       ]
   }
 }
@@ -51,14 +51,14 @@ private class SystemDataCommonDataColumnMappingCollectionFlowModelCsv extends Ex
   override predicate row(string row) {
     row =
       [
-        "System.Data.Common;DataColumnMappingCollection;false;AddRange;(System.Array);;Argument[0].Element;Argument[Qualifier].Element;value",
-        "System.Data.Common;DataColumnMappingCollection;false;AddRange;(System.Data.Common.DataColumnMapping[]);;Argument[0].Element;Argument[Qualifier].Element;value",
-        "System.Data.Common;DataColumnMappingCollection;false;CopyTo;(System.Data.Common.DataColumnMapping[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value",
-        "System.Data.Common;DataColumnMappingCollection;false;Insert;(System.Int32,System.Data.Common.DataColumnMapping);;Argument[1];Argument[Qualifier].Element;value",
-        "System.Data.Common;DataColumnMappingCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.Data.Common;DataColumnMappingCollection;false;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.Data.Common;DataColumnMappingCollection;false;set_Item;(System.Int32,System.Data.Common.DataColumnMapping);;Argument[1];Argument[Qualifier].Element;value",
-        "System.Data.Common;DataColumnMappingCollection;false;set_Item;(System.String,System.Data.Common.DataColumnMapping);;Argument[1];Argument[Qualifier].Element;value",
+        "System.Data.Common;DataColumnMappingCollection;false;AddRange;(System.Array);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
+        "System.Data.Common;DataColumnMappingCollection;false;AddRange;(System.Data.Common.DataColumnMapping[]);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
+        "System.Data.Common;DataColumnMappingCollection;false;CopyTo;(System.Data.Common.DataColumnMapping[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
+        "System.Data.Common;DataColumnMappingCollection;false;Insert;(System.Int32,System.Data.Common.DataColumnMapping);;Argument[1];Argument[Qualifier].Element;value;manual",
+        "System.Data.Common;DataColumnMappingCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value;manual",
+        "System.Data.Common;DataColumnMappingCollection;false;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value;manual",
+        "System.Data.Common;DataColumnMappingCollection;false;set_Item;(System.Int32,System.Data.Common.DataColumnMapping);;Argument[1];Argument[Qualifier].Element;value;manual",
+        "System.Data.Common;DataColumnMappingCollection;false;set_Item;(System.String,System.Data.Common.DataColumnMapping);;Argument[1];Argument[Qualifier].Element;value;manual",
       ]
   }
 }
@@ -68,14 +68,14 @@ private class SystemDataCommonDataTableMappingCollectionFlowModelCsv extends Ext
   override predicate row(string row) {
     row =
       [
-        "System.Data.Common;DataTableMappingCollection;false;AddRange;(System.Array);;Argument[0].Element;Argument[Qualifier].Element;value",
-        "System.Data.Common;DataTableMappingCollection;false;AddRange;(System.Data.Common.DataTableMapping[]);;Argument[0].Element;Argument[Qualifier].Element;value",
-        "System.Data.Common;DataTableMappingCollection;false;CopyTo;(System.Data.Common.DataTableMapping[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value",
-        "System.Data.Common;DataTableMappingCollection;false;Insert;(System.Int32,System.Data.Common.DataTableMapping);;Argument[1];Argument[Qualifier].Element;value",
-        "System.Data.Common;DataTableMappingCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.Data.Common;DataTableMappingCollection;false;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.Data.Common;DataTableMappingCollection;false;set_Item;(System.Int32,System.Data.Common.DataTableMapping);;Argument[1];Argument[Qualifier].Element;value",
-        "System.Data.Common;DataTableMappingCollection;false;set_Item;(System.String,System.Data.Common.DataTableMapping);;Argument[1];Argument[Qualifier].Element;value",
+        "System.Data.Common;DataTableMappingCollection;false;AddRange;(System.Array);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
+        "System.Data.Common;DataTableMappingCollection;false;AddRange;(System.Data.Common.DataTableMapping[]);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
+        "System.Data.Common;DataTableMappingCollection;false;CopyTo;(System.Data.Common.DataTableMapping[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
+        "System.Data.Common;DataTableMappingCollection;false;Insert;(System.Int32,System.Data.Common.DataTableMapping);;Argument[1];Argument[Qualifier].Element;value;manual",
+        "System.Data.Common;DataTableMappingCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value;manual",
+        "System.Data.Common;DataTableMappingCollection;false;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value;manual",
+        "System.Data.Common;DataTableMappingCollection;false;set_Item;(System.Int32,System.Data.Common.DataTableMapping);;Argument[1];Argument[Qualifier].Element;value;manual",
+        "System.Data.Common;DataTableMappingCollection;false;set_Item;(System.String,System.Data.Common.DataTableMapping);;Argument[1];Argument[Qualifier].Element;value;manual",
       ]
   }
 }
@@ -85,13 +85,13 @@ private class SystemDataCommonDbParameterCollectionFlowModelCsv extends External
   override predicate row(string row) {
     row =
       [
-        "System.Data.Common;DbParameterCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.Data.Common;DbParameterCollection;false;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.Data.Common;DbParameterCollection;false;set_Item;(System.Int32,System.Data.Common.DbParameter);;Argument[1];Argument[Qualifier].Element;value",
-        "System.Data.Common;DbParameterCollection;false;set_Item;(System.String,System.Data.Common.DbParameter);;Argument[1];Argument[Qualifier].Element;value",
-        "System.Data.Common;DbParameterCollection;true;Add;(System.Object);;Argument[0];Argument[Qualifier].Element;value",
-        "System.Data.Common;DbParameterCollection;true;AddRange;(System.Array);;Argument[0].Element;Argument[Qualifier].Element;value",
-        "System.Data.Common;DbParameterCollection;true;Insert;(System.Int32,System.Object);;Argument[1];Argument[Qualifier].Element;value",
+        "System.Data.Common;DbParameterCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value;manual",
+        "System.Data.Common;DbParameterCollection;false;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value;manual",
+        "System.Data.Common;DbParameterCollection;false;set_Item;(System.Int32,System.Data.Common.DbParameter);;Argument[1];Argument[Qualifier].Element;value;manual",
+        "System.Data.Common;DbParameterCollection;false;set_Item;(System.String,System.Data.Common.DbParameter);;Argument[1];Argument[Qualifier].Element;value;manual",
+        "System.Data.Common;DbParameterCollection;true;Add;(System.Object);;Argument[0];Argument[Qualifier].Element;value;manual",
+        "System.Data.Common;DbParameterCollection;true;AddRange;(System.Array);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
+        "System.Data.Common;DbParameterCollection;true;Insert;(System.Int32,System.Object);;Argument[1];Argument[Qualifier].Element;value;manual",
       ]
   }
 }
