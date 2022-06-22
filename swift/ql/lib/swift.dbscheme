@@ -955,7 +955,12 @@ lazy_initializer_exprs(
 #keyset[id]
 lookup_exprs(
   int id: @lookup_expr ref,
-  int base_expr: @expr ref,
+  int base_expr: @expr ref
+);
+
+#keyset[id]
+lookup_expr_members(
+  int id: @lookup_expr ref,
   int member: @decl ref
 );
 

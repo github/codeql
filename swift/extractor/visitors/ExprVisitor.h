@@ -643,9 +643,11 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
   void emitLookupExpr(const swift::LookupExpr* expr, TrapLabel<LookupExprTag> label) {
     assert(expr->getBase() && "LookupExpr has getBase()");
     auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
-    assert(expr->hasDecl() && "LookupExpr has decl");
-    auto declLabel = dispatcher_.fetchLabel(expr->getDecl().getDecl());
-    dispatcher_.emit(LookupExprsTrap{label, baseLabel, declLabel});
+    dispatcher_.emit(LookupExprsTrap{label, baseLabel});
+    if (expr->hasDecl()) {
+      auto declLabel = dispatcher_.fetchLabel(expr->getDecl().getDecl());
+      dispatcher_.emit(LookupExprMembersTrap{label, declLabel});
+    }
   }
 
   /*

@@ -27,10 +27,10 @@
 | expressions.swift:15:9:15:9 | x | DeclRefExpr |
 | expressions.swift:15:9:15:14 | ... call to !=(_:_:) ... | BinaryExpr |
 | expressions.swift:15:11:15:11 | !=(_:_:) | DeclRefExpr |
-| expressions.swift:15:11:15:11 | FixedTypeRepr | TypeExpr |
+| expressions.swift:15:11:15:11 | Int.Type | TypeExpr |
 | expressions.swift:15:11:15:11 | call to !=(_:_:) | DotSyntaxCallExpr |
 | expressions.swift:15:14:15:14 | 0 | IntegerLiteralExpr |
-| expressions.swift:16:11:16:11 | SimpleIdentTypeRepr | TypeExpr |
+| expressions.swift:16:11:16:11 | AnError.Type | TypeExpr |
 | expressions.swift:16:11:16:19 | (Error) ... | ErasureExpr |
 | expressions.swift:16:11:16:19 | call to ... | DotSyntaxCallExpr |
 | expressions.swift:16:19:16:19 | failed | DeclRefExpr |
@@ -43,7 +43,7 @@
 | expressions.swift:21:6:21:16 | (()?) ... | InjectIntoOptionalExpr |
 | expressions.swift:21:6:21:16 | call to failure(_:) | CallExpr |
 | expressions.swift:21:14:21:14 | 11 | IntegerLiteralExpr |
-| expressions.swift:27:13:27:13 | SimpleIdentTypeRepr | TypeExpr |
+| expressions.swift:27:13:27:13 | Klass.Type | TypeExpr |
 | expressions.swift:27:13:27:13 | call to ... | ConstructorRefCallExpr |
 | expressions.swift:27:13:27:13 | init | DeclRefExpr |
 | expressions.swift:27:13:27:19 | call to ... | CallExpr |
@@ -90,7 +90,7 @@
 | expressions.swift:42:12:42:12 | x | DeclRefExpr |
 | expressions.swift:42:12:42:16 | ... call to +(_:_:) ... | BinaryExpr |
 | expressions.swift:42:14:42:14 | +(_:_:) | DeclRefExpr |
-| expressions.swift:42:14:42:14 | FixedTypeRepr | TypeExpr |
+| expressions.swift:42:14:42:14 | Int.Type | TypeExpr |
 | expressions.swift:42:14:42:14 | call to +(_:_:) | DotSyntaxCallExpr |
 | expressions.swift:42:16:42:16 | y | DeclRefExpr |
 | expressions.swift:44:1:44:1 | closured(closure:) | DeclRefExpr |
@@ -99,7 +99,7 @@
 | expressions.swift:45:12:45:12 | x | DeclRefExpr |
 | expressions.swift:45:12:45:16 | ... call to +(_:_:) ... | BinaryExpr |
 | expressions.swift:45:14:45:14 | +(_:_:) | DeclRefExpr |
-| expressions.swift:45:14:45:14 | FixedTypeRepr | TypeExpr |
+| expressions.swift:45:14:45:14 | Int.Type | TypeExpr |
 | expressions.swift:45:14:45:14 | call to +(_:_:) | DotSyntaxCallExpr |
 | expressions.swift:45:16:45:16 | y | DeclRefExpr |
 | expressions.swift:47:1:47:1 | closured(closure:) | DeclRefExpr |
@@ -108,7 +108,7 @@
 | expressions.swift:47:19:47:19 | $0 | DeclRefExpr |
 | expressions.swift:47:19:47:24 | ... call to +(_:_:) ... | BinaryExpr |
 | expressions.swift:47:22:47:22 | +(_:_:) | DeclRefExpr |
-| expressions.swift:47:22:47:22 | FixedTypeRepr | TypeExpr |
+| expressions.swift:47:22:47:22 | Int.Type | TypeExpr |
 | expressions.swift:47:22:47:22 | call to +(_:_:) | DotSyntaxCallExpr |
 | expressions.swift:47:24:47:24 | $1 | DeclRefExpr |
 | expressions.swift:48:1:48:1 | closured(closure:) | DeclRefExpr |
@@ -117,13 +117,13 @@
 | expressions.swift:48:12:48:12 | $0 | DeclRefExpr |
 | expressions.swift:48:12:48:17 | ... call to +(_:_:) ... | BinaryExpr |
 | expressions.swift:48:15:48:15 | +(_:_:) | DeclRefExpr |
-| expressions.swift:48:15:48:15 | FixedTypeRepr | TypeExpr |
+| expressions.swift:48:15:48:15 | Int.Type | TypeExpr |
 | expressions.swift:48:15:48:15 | call to +(_:_:) | DotSyntaxCallExpr |
 | expressions.swift:48:17:48:17 | $1 | DeclRefExpr |
 | expressions.swift:54:1:54:1 | _ | DiscardAssignmentExpr |
 | expressions.swift:54:1:54:8 |  ... = ... | AssignExpr |
 | expressions.swift:54:5:54:8 | #keyPath(...) | KeyPathExpr |
-| expressions.swift:54:6:54:6 | SimpleIdentTypeRepr | TypeExpr |
+| expressions.swift:54:6:54:6 | (no string representation) | TypeExpr |
 | expressions.swift:54:6:54:8 | ... .x | UnresolvedDotExpr |
 | expressions.swift:58:16:58:16 | 1234 | IntegerLiteralExpr |
 | expressions.swift:59:1:59:1 | unsafeFunction(pointer:) | DeclRefExpr |
@@ -143,7 +143,7 @@
 | expressions.swift:64:8:64:8 | x | DeclRefExpr |
 | expressions.swift:64:8:64:12 | ... call to <(_:_:) ... | BinaryExpr |
 | expressions.swift:64:10:64:10 | <(_:_:) | DeclRefExpr |
-| expressions.swift:64:10:64:10 | FixedTypeRepr | TypeExpr |
+| expressions.swift:64:10:64:10 | Int.Type | TypeExpr |
 | expressions.swift:64:10:64:10 | call to <(_:_:) | DotSyntaxCallExpr |
 | expressions.swift:64:12:64:12 | 0 | IntegerLiteralExpr |
 | expressions.swift:73:5:73:5 | .xx | MemberRefExpr |
@@ -163,7 +163,7 @@
 | expressions.swift:79:5:79:21 | self = ... | RebindSelfInConstructorExpr |
 | expressions.swift:79:11:79:11 | init | OtherConstructorDeclRefExpr |
 | expressions.swift:79:19:79:19 | 22 | IntegerLiteralExpr |
-| expressions.swift:83:15:83:15 | SimpleIdentTypeRepr | TypeExpr |
+| expressions.swift:83:15:83:15 | Derived.Type | TypeExpr |
 | expressions.swift:83:15:83:15 | call to ... | ConstructorRefCallExpr |
 | expressions.swift:83:15:83:15 | init | DeclRefExpr |
 | expressions.swift:83:15:83:23 | call to ... | CallExpr |
@@ -178,18 +178,18 @@
 | expressions.swift:88:1:88:6 | ...[...] | SubscriptExpr |
 | expressions.swift:88:1:88:7 | ...! | ForceValueExpr |
 | expressions.swift:88:3:88:3 | a | StringLiteralExpr |
-| expressions.swift:92:14:92:14 | SimpleIdentTypeRepr | TypeExpr |
+| expressions.swift:92:14:92:14 | Unmanaged<ToPtr>.Type | TypeExpr |
 | expressions.swift:92:14:92:24 | call to passRetained(_:) | DotSyntaxCallExpr |
 | expressions.swift:92:14:92:44 | call to ... | CallExpr |
 | expressions.swift:92:14:92:46 | call to toOpaque() | DotSyntaxCallExpr |
 | expressions.swift:92:14:92:55 | call to ... | CallExpr |
 | expressions.swift:92:24:92:24 | passRetained(_:) | DeclRefExpr |
-| expressions.swift:92:37:92:37 | SimpleIdentTypeRepr | TypeExpr |
+| expressions.swift:92:37:92:37 | ToPtr.Type | TypeExpr |
 | expressions.swift:92:37:92:37 | call to ... | ConstructorRefCallExpr |
 | expressions.swift:92:37:92:37 | init | DeclRefExpr |
 | expressions.swift:92:37:92:43 | call to ... | CallExpr |
 | expressions.swift:92:46:92:46 | toOpaque() | DeclRefExpr |
-| expressions.swift:93:1:93:16 | ...<...> | TypeExpr |
+| expressions.swift:93:1:93:16 | Unmanaged<ToPtr>.Type | TypeExpr |
 | expressions.swift:93:1:93:18 | call to fromOpaque(_:) | DotSyntaxCallExpr |
 | expressions.swift:93:1:93:35 | call to ... | CallExpr |
 | expressions.swift:93:18:93:18 | fromOpaque(_:) | DeclRefExpr |
@@ -242,5 +242,5 @@
 | expressions.swift:154:22:154:56 | \\...[...] | KeyPathApplicationExpr |
 | expressions.swift:154:33:154:33 | keyPathB | DeclRefExpr |
 | expressions.swift:154:52:154:55 | #keyPath(...) | KeyPathExpr |
-| expressions.swift:154:53:154:53 | SimpleIdentTypeRepr | TypeExpr |
+| expressions.swift:154:53:154:53 | (no string representation) | TypeExpr |
 | expressions.swift:154:53:154:55 | ... .x | UnresolvedDotExpr |

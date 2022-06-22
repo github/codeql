@@ -446,7 +446,7 @@ LookupExpr:
   _extends: Expr
   _children:
     base_expr: Expr
-  member: Decl
+  member: Decl?
 
 MakeTemporarilyEscapableExpr:
   _extends: Expr

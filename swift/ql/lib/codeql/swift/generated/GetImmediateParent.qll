@@ -102,7 +102,7 @@ Element getAnImmediateChild(Element e) {
       or
       lazy_initializer_exprs(e, x)
       or
-      lookup_exprs(e, x, _)
+      lookup_exprs(e, x)
       or
       make_temporarily_escapable_exprs(e, x, _, _)
       or
