@@ -37,6 +37,10 @@ f = not_found.get_passwd # $ SensitiveDataSource=password
 x = f()
 print(x) # $ SensitiveUse=password
 
+# some prefixes makes us ignore it as a source
+not_found.isSecret
+not_found.is_secret # $ SPURIOUS: SensitiveDataSource=secret
+
 def my_func(non_sensitive_name):
     x = non_sensitive_name()
     print(x) # $ SensitiveUse=password
