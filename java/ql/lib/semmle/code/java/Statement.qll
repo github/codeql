@@ -29,7 +29,8 @@ class Stmt extends StmtParent, ExprParent, @stmt {
    */
   Stmt getEnclosingStmt() {
     result = this.getParent() or
-    result = this.getParent().(SwitchExpr).getEnclosingStmt()
+    result = this.getParent().(SwitchExpr).getEnclosingStmt() or
+    result = this.getParent().(WhenExpr).getEnclosingStmt()
   }
 
   /** Holds if this statement is the child of the specified parent at the specified (zero-based) position. */
