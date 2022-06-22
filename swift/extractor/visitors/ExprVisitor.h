@@ -271,13 +271,10 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     emitImplicitConversionExpr(expr, label);
   }
 
-  void visitTypeExpr(swift::TypeExpr* expr) {
-    auto label = dispatcher_.assignNewLabel(expr);
-    dispatcher_.emit(TypeExprsTrap{label});
-    if (auto repr = expr->getTypeRepr()) {
-      auto typeLabel = dispatcher_.fetchLabel(repr);
-      dispatcher_.emit(TypeExprTypeReprsTrap{label, typeLabel});
-    }
+  codeql::TypeExpr translateTypeExpr(const swift::TypeExpr& expr) {
+    TypeExpr entry{dispatcher_.assignNewLabel(expr)};
+    entry.type_repr = dispatcher_.fetchOptionalLabel(expr.getTypeRepr());
+    return entry;
   }
 
   codeql::ParenExpr translateParenExpr(const swift::ParenExpr& expr) {

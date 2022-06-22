@@ -541,7 +541,6 @@ UnresolvedDotExpr:
   _children:
     base: Expr
   name: string
-  _tags: [ no_qltest ]  # we should really never extract these
 
 UnresolvedMemberExpr:
   _extends: Expr
