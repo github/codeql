@@ -3,7 +3,7 @@
 #include <swift/AST/ASTVisitor.h>
 #include <swift/AST/TypeVisitor.h>
 
-#include "swift/extractor/SwiftDispatcher.h"
+#include "swift/extractor/infra/SwiftDispatcher.h"
 
 namespace codeql {
 
