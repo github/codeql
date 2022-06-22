@@ -157,7 +157,7 @@ private module ParameterNodes {
     override string toStringImpl() { result = param.toString() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      exists(FuncDecl f, int index |
+      exists(Callable f, int index |
         c = TDataFlowFunc(f) and
         f.getParam(index) = param and
         pos = TPositionalParameter(index)
@@ -375,13 +375,25 @@ class Unit extends TUnit {
  */
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
 
-newtype LambdaCallKind = TODO_TLambdaCallKind()
+newtype LambdaCallKind = TLambdaCallKind()
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+  kind = TLambdaCallKind() and
+  (
+    // Closures
+    c.getUnderlyingCallable() = creation.asExpr()
+    or
+    // Reference to a function declaration
+    creation.asExpr().(DeclRefExpr).getDecl() = c.getUnderlyingCallable()
+  )
+}
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
-predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  kind = TLambdaCallKind() and
+  receiver.asExpr() = call.asCall().getExpr().(ApplyExpr).getFunction()
+}
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
