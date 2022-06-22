@@ -25,6 +25,12 @@
 | declarationEntry.cpp:31:4:31:19 | definition of myMemberVariable | declarationEntry.cpp:31:4:31:19 | myMemberVariable | yes |
 | declarationEntry.cpp:34:22:34:28 | definition of mtc_int | declarationEntry.cpp:34:22:34:28 | mtc_int | yes |
 | declarationEntry.cpp:35:24:35:32 | definition of mtc_short | declarationEntry.cpp:35:24:35:32 | mtc_short | yes |
+| declarationEntry.cpp:39:7:39:7 | declaration of operator= | declarationEntry.cpp:39:7:39:7 | operator= | yes |
+| declarationEntry.cpp:39:7:39:7 | declaration of operator= | declarationEntry.cpp:39:7:39:7 | operator= | yes |
+| declarationEntry.cpp:39:7:39:13 | definition of myClass | declarationEntry.cpp:39:7:39:13 | myClass | yes |
+| declarationEntry.cpp:42:6:42:21 | definition of myMemberVariable | declarationEntry.cpp:42:6:42:21 | myMemberVariable | yes |
+| file://:0:0:0:0 | declaration of 1st parameter | file://:0:0:0:0 | (unnamed parameter 0) | yes |
+| file://:0:0:0:0 | declaration of 1st parameter | file://:0:0:0:0 | (unnamed parameter 0) | yes |
 | file://:0:0:0:0 | declaration of 1st parameter | file://:0:0:0:0 | (unnamed parameter 0) | yes |
 | file://:0:0:0:0 | declaration of 1st parameter | file://:0:0:0:0 | (unnamed parameter 0) | yes |
 | file://:0:0:0:0 | declaration of 1st parameter | file://:0:0:0:0 | (unnamed parameter 0) | yes |
@@ -33,5 +39,7 @@
 | file://:0:0:0:0 | definition of gp_offset | file://:0:0:0:0 | gp_offset | yes |
 | file://:0:0:0:0 | definition of overflow_arg_area | file://:0:0:0:0 | overflow_arg_area | yes |
 | file://:0:0:0:0 | definition of reg_save_area | file://:0:0:0:0 | reg_save_area | yes |
+| forwardDeclaration.cpp:1:7:1:13 | declaration of myClass | declarationEntry.cpp:39:7:39:13 | myClass | no |
+| forwardDeclaration.cpp:3:10:3:19 | definition of myClassPtr | forwardDeclaration.cpp:3:10:3:19 | myClassPtr | yes |
 | macro.c:2:1:2:3 | declaration of foo | macro.c:2:1:2:3 | foo | yes |
 | macro.c:4:5:4:8 | definition of main | macro.c:4:5:4:8 | main | yes |
