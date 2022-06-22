@@ -2,7 +2,7 @@
 #define NULL  0
 #define X509_CHECK_FLAG_NO_PARTIAL_WILDCARDS 1
 #define SSL_VERIFY_PEER 1
-# define STACK_OF(type) struct type
+#define STACK_OF(type) struct type
 
 typedef unsigned long size_t;
 
@@ -48,7 +48,7 @@ int SKM_sk_num(struct GENERAL_NAME * a);
 #define 	sk_GENERAL_NAME_num(st)   SKM_sk_num((st))
 GENERAL_NAME* SKM_sk_value(struct GENERAL_NAME * a,int b);
 #define sk_GENERAL_NAME_value(st, i)   SKM_sk_value((st), (i))
-
+/*
 bool goodTest1(SSL *ssl,char * host,int nid) // GOOD
 {
   X509 *cert;
@@ -136,4 +136,18 @@ bool goodTest5(SSL *ssl,char * host) // GOOD
   if (!X509_VERIFY_PARAM_set1_host(param, host,strlen(host))) return false;
   SSL_set_verify(ssl, SSL_VERIFY_PEER, NULL);
   return true;
+}
+*/
+bool badTest1(SSL *ssl) // BAD :no hostname verification in certificate
+{
+  X509 *cert;
+  int result;
+
+  result = SSL_get_verify_result(ssl);
+  if (result == X509_V_OK)
+  {
+    cert = SSL_get_peer_certificate(ssl);
+    if(cert) return true;
+  }
+  return false;
 }
