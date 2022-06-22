@@ -12,11 +12,4 @@ bazel run swift/create-extractor-pack
 python3 -m pip install pre-commit --no-warn-script-location
 $HOME/.local/bin/pre-commit install
 
-cat >> $HOME/.bashrc << EOF
-
-# have the codeql binary installed by vscode automatically in PATH
-bin=\$(ls \$HOME/.vscode-remote/data/User/globalStorage/github.vscode-codeql/*/codeql/codeql -t 2>/dev/null | head -1)
-if [[ -n \$bin ]]; then
-  export PATH=\$PATH:$(dirname "\$bin")
-fi
-EOF
+cat $(dirname $0)/user_bashrc.sh >> $HOME/.bashrc
