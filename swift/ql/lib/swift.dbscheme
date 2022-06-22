@@ -14,6 +14,7 @@ sourceLocationPrefix(
 
 @element =
   @argument
+| @callable
 | @file
 | @generic_context
 | @iterable_decl_context
@@ -124,6 +125,24 @@ nominal_type_decls(
 | @stmt_condition
 | @type_repr
 ;
+
+@callable =
+  @abstract_closure_expr
+| @abstract_function_decl
+;
+
+#keyset[id, index]
+callable_params(
+  int id: @callable ref,
+  int index: int ref,
+  int param: @param_decl ref
+);
+
+#keyset[id]
+callable_bodies(
+  int id: @callable ref,
+  int body: @brace_stmt ref
+);
 
 condition_elements(
   unique int id: @condition_element
@@ -658,13 +677,6 @@ value_decls(
   @auto_closure_expr
 | @closure_expr
 ;
-
-#keyset[id, index]
-abstract_closure_expr_params(
-  int id: @abstract_closure_expr ref,
-  int index: int ref,
-  int param: @param_decl ref
-);
 
 @any_try_expr =
   @force_try_expr
@@ -1408,19 +1420,6 @@ abstract_function_decls(
   string name: string ref
 );
 
-#keyset[id]
-abstract_function_decl_bodies(
-  int id: @abstract_function_decl ref,
-  int body: @brace_stmt ref
-);
-
-#keyset[id, index]
-abstract_function_decl_params(
-  int id: @abstract_function_decl ref,
-  int index: int ref,
-  int param: @param_decl ref
-);
-
 @abstract_storage_decl =
   @subscript_decl
 | @var_decl
@@ -1465,13 +1464,11 @@ type_decl_base_types(
 );
 
 auto_closure_exprs(
-  unique int id: @auto_closure_expr,
-  int body: @brace_stmt ref
+  unique int id: @auto_closure_expr
 );
 
 closure_exprs(
-  unique int id: @closure_expr,
-  int body: @brace_stmt ref
+  unique int id: @closure_expr
 );
 
 force_try_exprs(

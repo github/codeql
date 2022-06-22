@@ -9,12 +9,6 @@ private import codeql.swift.dataflow.DataFlow
  */
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
-/**
- * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
- * but not in local taint.
- */
-predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
-
 cached
 private module Cached {
   /**

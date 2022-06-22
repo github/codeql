@@ -74,8 +74,8 @@ private class LoadUrlSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "java.io;FileInputStream;true;FileInputStream;;;Argument[0];Argument[-1];taint",
-        "android.webkit;WebResourceRequest;false;getUrl;;;Argument[-1];ReturnValue;taint"
+        "java.io;FileInputStream;true;FileInputStream;;;Argument[0];Argument[-1];taint;manual",
+        "android.webkit;WebResourceRequest;false;getUrl;;;Argument[-1];ReturnValue;taint;manual"
       ]
   }
 }

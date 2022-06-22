@@ -228,16 +228,22 @@ abstract class DefaultTaintSanitizer extends DataFlow::Node { }
 predicate defaultTaintSanitizer(DataFlow::Node node) { node instanceof DefaultTaintSanitizer }
 
 /**
+ * DEPRECATED: Use `DefaultTaintSanitizer` instead.
+ *
  * A sanitizer guard in all global taint flow configurations but not in local taint.
  */
-abstract class DefaultTaintSanitizerGuard extends DataFlow::BarrierGuard { }
+abstract deprecated class DefaultTaintSanitizerGuard extends DataFlow::BarrierGuard { }
 
-/**
- * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
- * but not in local taint.
- */
-predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) {
-  guard instanceof DefaultTaintSanitizerGuard
+private predicate equalityTestGuard(DataFlow::Node g, Expr e, boolean outcome) {
+  exists(DataFlow::EqualityTestNode eq, DataFlow::Node nonConstNode |
+    eq = g and
+    eq.getAnOperand().isConst() and
+    nonConstNode = eq.getAnOperand() and
+    not nonConstNode.isConst() and
+    not eq.getAnOperand() = Builtin::nil().getARead() and
+    e = nonConstNode.asExpr() and
+    outcome = eq.getPolarity()
+  )
 }
 
 /**
@@ -247,20 +253,8 @@ predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) {
  * Note that comparisons to `nil` are excluded. This is needed for performance
  * reasons.
  */
-class EqualityTestGuard extends DefaultTaintSanitizerGuard, DataFlow::EqualityTestNode {
-  DataFlow::Node nonConstNode;
-
-  EqualityTestGuard() {
-    this.getAnOperand().isConst() and
-    nonConstNode = this.getAnOperand() and
-    not nonConstNode.isConst() and
-    not this.getAnOperand() = Builtin::nil().getARead()
-  }
-
-  override predicate checks(Expr e, boolean outcome) {
-    e = nonConstNode.asExpr() and
-    outcome = this.getPolarity()
-  }
+class EqualityTestBarrier extends DefaultTaintSanitizer {
+  EqualityTestBarrier() { this = DataFlow::BarrierGuard<equalityTestGuard/3>::getABarrierNode() }
 }
 
 /**
@@ -398,6 +392,16 @@ predicate inputIsConstantIfOutputHasProperty(
   )
 }
 
+private predicate listOfConstantsComparisonSanitizerGuard(DataFlow::Node g, Expr e, boolean outcome) {
+  exists(DataFlow::Node guardedExpr |
+    exists(DataFlow::Node outputNode, DataFlow::Property p |
+      inputIsConstantIfOutputHasProperty(guardedExpr, outputNode, p) and
+      p.checkOn(g, outcome, outputNode)
+    ) and
+    e = guardedExpr.asExpr()
+  )
+}
+
 /**
  * A comparison against a list of constants, acting as a sanitizer guard for
  * `guardedExpr` by restricting it to a known value.
@@ -406,18 +410,8 @@ predicate inputIsConstantIfOutputHasProperty(
  * it could equally look for a check for membership of a constant map or
  * constant array, which does not need to be in its own function.
  */
-class ListOfConstantsComparisonSanitizerGuard extends TaintTracking::DefaultTaintSanitizerGuard {
-  DataFlow::Node guardedExpr;
-  boolean outcome;
-
+class ListOfConstantsComparisonSanitizerGuard extends TaintTracking::DefaultTaintSanitizer {
   ListOfConstantsComparisonSanitizerGuard() {
-    exists(DataFlow::Node outputNode, DataFlow::Property p |
-      inputIsConstantIfOutputHasProperty(guardedExpr, outputNode, p) and
-      p.checkOn(this, outcome, outputNode)
-    )
-  }
-
-  override predicate checks(Expr e, boolean branch) {
-    e = guardedExpr.asExpr() and branch = outcome
+    this = DataFlow::BarrierGuard<listOfConstantsComparisonSanitizerGuard/3>::getABarrierNode()
   }
 }
