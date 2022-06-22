@@ -17,7 +17,7 @@ class NSString : NSObject
     func substring(from: Int) -> String { return "" }
     func substring(to: Int) -> String { return "" }
 
-    var length: Int
+    private(set) var length: Int
 }
 
 class NSMutableString : NSString
@@ -29,7 +29,7 @@ class NSRange
 {
     init(location: Int, length: Int) { self.description = "" }
 
-    var description: String
+    private(set) var description: String
 }
 
 func NSMakeRange(_ loc: Int, _ len: Int) -> NSRange { return NSRange(location: loc, length: len) }
