@@ -55,6 +55,7 @@ if __name__ == "__main__":
     check_tests_valid("coverage.classes")
     check_tests_valid("coverage.test")
     check_tests_valid("coverage.argumentPassing")
+    check_tests_valid("coverage.datamodel")
     check_tests_valid("variable-capture.in")
     check_tests_valid("variable-capture.nonlocal")
     check_tests_valid("variable-capture.dict")
