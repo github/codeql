@@ -181,6 +181,12 @@ class ParameterPosition extends TParameterPosition {
 
 class PositionalParameterPosition extends ParameterPosition, TPositionalParameter {
   int getIndex() { this = TPositionalParameter(result) }
+
+  override string toString() { result = this.getIndex().toString() }
+}
+
+class ThisParameterPosition extends ParameterPosition, TThisParameter {
+  override string toString() { result = "this" }
 }
 
 /** An argument position. */
@@ -191,6 +197,12 @@ class ArgumentPosition extends TArgumentPosition {
 
 class PositionalArgumentPosition extends ArgumentPosition, TPositionalArgument {
   int getIndex() { this = TPositionalArgument(result) }
+
+  override string toString() { result = this.getIndex().toString() }
+}
+
+class ThisArgumentPosition extends ArgumentPosition, TThisArgument {
+  override string toString() { result = "this" }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */

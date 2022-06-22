@@ -613,9 +613,9 @@ cfg.swift:
 #-----| match -> init
 
 #   71| Int.Type
-#-----|  -> call to ...
+#-----|  -> call to init
 
-#   71| call to ...
+#   71| call to init
 #-----|  -> s
 
 #   71| init
@@ -903,9 +903,9 @@ cfg.swift:
 #-----|  -> n1
 
 #  110| C.Type
-#-----|  -> call to ...
+#-----|  -> call to init
 
-#  110| call to ...
+#  110| call to init
 #-----|  -> 42
 
 #  110| init

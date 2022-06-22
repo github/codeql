@@ -44,7 +44,7 @@
 | expressions.swift:21:6:21:16 | call to failure(_:) |
 | expressions.swift:21:14:21:14 | 11 |
 | expressions.swift:27:13:27:13 | Klass.Type |
-| expressions.swift:27:13:27:13 | call to ... |
+| expressions.swift:27:13:27:13 | call to init |
 | expressions.swift:27:13:27:13 | init |
 | expressions.swift:27:13:27:19 | call to ... |
 | expressions.swift:29:9:29:19 | [...] |
@@ -163,7 +163,7 @@
 | expressions.swift:79:11:79:11 | init |
 | expressions.swift:79:19:79:19 | 22 |
 | expressions.swift:83:15:83:15 | Derived.Type |
-| expressions.swift:83:15:83:15 | call to ... |
+| expressions.swift:83:15:83:15 | call to init |
 | expressions.swift:83:15:83:15 | init |
 | expressions.swift:83:15:83:23 | call to ... |
 | expressions.swift:84:1:84:1 | _ |
@@ -184,7 +184,7 @@
 | expressions.swift:92:14:92:55 | call to ... |
 | expressions.swift:92:24:92:24 | passRetained(_:) |
 | expressions.swift:92:37:92:37 | ToPtr.Type |
-| expressions.swift:92:37:92:37 | call to ... |
+| expressions.swift:92:37:92:37 | call to init |
 | expressions.swift:92:37:92:37 | init |
 | expressions.swift:92:37:92:43 | call to ... |
 | expressions.swift:92:46:92:46 | toOpaque() |
