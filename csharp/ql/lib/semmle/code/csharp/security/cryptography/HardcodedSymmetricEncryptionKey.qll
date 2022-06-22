@@ -43,10 +43,10 @@ module HardcodedSymmetricEncryptionKey {
     override predicate row(string row) {
       row =
         [
-          "System.Security.Cryptography;SymmetricAlgorithm;true;CreateEncryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-encryptor",
-          "System.Security.Cryptography;SymmetricAlgorithm;true;CreateDecryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-decryptor",
-          "System.Security.Cryptography;SymmetricAlgorithm;true;set_Key;(System.Byte[]);;Argument[0];encryption-keyprop",
-          "Windows.Security.Cryptography.Core;SymmetricKeyAlgorithmProvider;false;CreateSymmetricKey;(Windows.Storage.Streams.IBuffer);;Argument[0];encryption-symmetrickey"
+          "System.Security.Cryptography;SymmetricAlgorithm;true;CreateEncryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-encryptor;manual",
+          "System.Security.Cryptography;SymmetricAlgorithm;true;CreateDecryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-decryptor;manual",
+          "System.Security.Cryptography;SymmetricAlgorithm;true;set_Key;(System.Byte[]);;Argument[0];encryption-keyprop;manual",
+          "Windows.Security.Cryptography.Core;SymmetricKeyAlgorithmProvider;false;CreateSymmetricKey;(Windows.Storage.Streams.IBuffer);;Argument[0];encryption-symmetrickey;manual"
         ]
     }
   }
