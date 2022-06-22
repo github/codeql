@@ -46,7 +46,7 @@ namespace HardcodedSymmetricEncryptionKey
             // GOOD (this function hashes password)
             var de = DecryptWithPassword(ct, c, iv);
 
-            // BAD: harc-coded password passed to Decrypt
+            // BAD: hard-coded password passed to Decrypt
             var de1 = Decrypt(ct, c, iv);
 
             // BAD [NOT DETECTED]
