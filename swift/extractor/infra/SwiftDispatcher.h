@@ -2,8 +2,9 @@
 
 #include "swift/extractor/trap/TrapArena.h"
 #include "swift/extractor/trap/TrapLabelStore.h"
+#include "swift/extractor/trap/TrapOutput.h"
 #include "swift/extractor/trap/generated/TrapClasses.h"
-#include "swift/extractor/SwiftTagTraits.h"
+#include "swift/extractor/infra/SwiftTagTraits.h"
 #include <swift/AST/SourceFile.h>
 #include <swift/Basic/SourceManager.h>
 #include <llvm/Support/FileSystem.h>

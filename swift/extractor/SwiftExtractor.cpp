@@ -14,7 +14,7 @@
 
 #include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/trap/TrapOutput.h"
-#include "swift/extractor/SwiftVisitor.h"
+#include "swift/extractor/visitors/SwiftVisitor.h"
 
 using namespace codeql;
 

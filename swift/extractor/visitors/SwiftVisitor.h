@@ -1,6 +1,6 @@
 #pragma once
 
-#include "swift/extractor/SwiftDispatcher.h"
+#include "swift/extractor/infra/SwiftDispatcher.h"
 #include "swift/extractor/visitors/DeclVisitor.h"
 #include "swift/extractor/visitors/ExprVisitor.h"
 #include "swift/extractor/visitors/StmtVisitor.h"

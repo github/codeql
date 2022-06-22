@@ -39,32 +39,32 @@ MAP_TAG(StmtCondition);
 MAP_TAG(CaseLabelItem);
 #define ABSTRACT_STMT(CLASS, PARENT) MAP_SUBTAG(CLASS##Stmt, PARENT)
 #define STMT(CLASS, PARENT) ABSTRACT_STMT(CLASS, PARENT)
-#include "swift/AST/StmtNodes.def"
+#include <swift/AST/StmtNodes.def>
 
 MAP_TAG(Expr);
 #define ABSTRACT_EXPR(CLASS, PARENT) MAP_SUBTAG(CLASS##Expr, PARENT)
 #define EXPR(CLASS, PARENT) ABSTRACT_EXPR(CLASS, PARENT)
-#include "swift/AST/ExprNodes.def"
+#include <swift/AST/ExprNodes.def>
 
 MAP_TAG(Decl);
 #define ABSTRACT_DECL(CLASS, PARENT) MAP_SUBTAG(CLASS##Decl, PARENT)
 #define DECL(CLASS, PARENT) ABSTRACT_DECL(CLASS, PARENT)
-#include "swift/AST/DeclNodes.def"
+#include <swift/AST/DeclNodes.def>
 
 MAP_TAG(Pattern);
 #define ABSTRACT_PATTERN(CLASS, PARENT) MAP_SUBTAG(CLASS##Pattern, PARENT)
 #define PATTERN(CLASS, PARENT) ABSTRACT_PATTERN(CLASS, PARENT)
-#include "swift/AST/PatternNodes.def"
+#include <swift/AST/PatternNodes.def>
 
 MAP_TAG(TypeRepr);
 #define ABSTRACT_TYPEREPR(CLASS, PARENT) MAP_SUBTAG(CLASS##TypeRepr, PARENT)
 #define TYPEREPR(CLASS, PARENT) ABSTRACT_TYPEREPR(CLASS, PARENT)
-#include "swift/AST/TypeReprNodes.def"
+#include <swift/AST/TypeReprNodes.def>
 
 MAP_TYPE_TO_TAG(TypeBase, TypeTag);
 #define ABSTRACT_TYPE(CLASS, PARENT) MAP_SUBTAG(CLASS##Type, PARENT)
 #define TYPE(CLASS, PARENT) ABSTRACT_TYPE(CLASS, PARENT)
-#include "swift/AST/TypeNodes.def"
+#include <swift/AST/TypeNodes.def>
 
 OVERRIDE_TAG(FuncDecl, ConcreteFuncDeclTag);
 OVERRIDE_TAG(VarDecl, ConcreteVarDeclTag);

@@ -1,3 +1,5 @@
+load("//swift:rules.bzl", "swift_cc_library")
+
 genrule(
     name = "cppgen",
     srcs = [
@@ -26,7 +28,7 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-cc_library(
+swift_cc_library(
     name = "trap",
     hdrs = glob(["*.h"]) + [
         "generated/TrapEntries.h",
