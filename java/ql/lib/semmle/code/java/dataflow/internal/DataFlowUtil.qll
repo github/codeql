@@ -332,6 +332,8 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
 }
 
 /**
+ * DEPRECATED: Use `BarrierGuard` module instead.
+ *
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -340,7 +342,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends Guard {
+deprecated class BarrierGuard extends Guard {
   /** Holds if this guard validates `e` upon evaluating to `branch`. */
   abstract predicate checks(Expr e, boolean branch);
 

@@ -28,7 +28,7 @@ module UnsafeUnzipSymlink {
       node instanceof EvalSymlinksInvalidator
     }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       guard instanceof EvalSymlinksInvalidatorGuard
     }
   }
@@ -59,7 +59,7 @@ module UnsafeUnzipSymlink {
       node instanceof SymlinkSanitizer
     }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       guard instanceof SymlinkSanitizerGuard
     }
   }

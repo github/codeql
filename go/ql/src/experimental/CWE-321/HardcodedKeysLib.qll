@@ -29,11 +29,6 @@ module HardcodedKeys {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * A sanitizer guard for JWT token signing vulnerabilities.
-   */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
-
   private predicate isTestCode(Expr e) {
     e.getFile().getAbsolutePath().toLowerCase().matches("%test%") and
     not e.getFile().getAbsolutePath().toLowerCase().matches("%ql/test%")
@@ -315,9 +310,5 @@ module HardcodedKeys {
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof Sanitizer }
-
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
-    }
   }
 }
