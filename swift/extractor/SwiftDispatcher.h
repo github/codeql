@@ -64,6 +64,7 @@ class SwiftDispatcher {
   // visitor (see `visit(T *)` methods below).
   template <typename E>
   TrapLabelOf<E> fetchLabel(E* e) {
+    assert(e && "trying to fetch a label on nullptr, maybe fetchOptionalLabel is to be used?");
     // this is required so we avoid any recursive loop: a `fetchLabel` during the visit of `e` might
     // end up calling `fetchLabel` on `e` itself, so we want the visit of `e` to call `fetchLabel`
     // only after having called `assignNewLabel` on `e`.

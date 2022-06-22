@@ -271,19 +271,16 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     emitImplicitConversionExpr(expr, label);
   }
 
-  void visitTypeExpr(swift::TypeExpr* expr) {
-    auto label = dispatcher_.assignNewLabel(expr);
-    dispatcher_.emit(TypeExprsTrap{label});
-    if (auto repr = expr->getTypeRepr()) {
-      auto typeLabel = dispatcher_.fetchLabel(repr);
-      dispatcher_.emit(TypeExprTypeReprsTrap{label, typeLabel});
-    }
+  codeql::TypeExpr translateTypeExpr(const swift::TypeExpr& expr) {
+    TypeExpr entry{dispatcher_.assignNewLabel(expr)};
+    entry.type_repr = dispatcher_.fetchOptionalLabel(expr.getTypeRepr());
+    return entry;
   }
 
-  void visitParenExpr(swift::ParenExpr* expr) {
-    auto label = dispatcher_.assignNewLabel(expr);
-    dispatcher_.emit(ParenExprsTrap{label});
-    emitIdentityExpr(expr, label);
+  codeql::ParenExpr translateParenExpr(const swift::ParenExpr& expr) {
+    ParenExpr entry{dispatcher_.assignNewLabel(expr)};
+    fillIdentityExpr(expr, entry);
+    return entry;
   }
 
   void visitLoadExpr(swift::LoadExpr* expr) {
@@ -531,6 +528,62 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     dispatcher_.emit(OtherConstructorDeclRefExprsTrap{label, ctorLabel});
   }
 
+  codeql::UnresolvedDeclRefExpr translateUnresolvedDeclRefExpr(
+      const swift::UnresolvedDeclRefExpr& expr) {
+    codeql::UnresolvedDeclRefExpr entry{dispatcher_.assignNewLabel(expr)};
+    if (expr.hasName()) {
+      llvm::SmallVector<char> scratch;
+      entry.name = expr.getName().getString(scratch).str();
+    }
+    return entry;
+  }
+
+  codeql::UnresolvedDotExpr translateUnresolvedDotExpr(const swift::UnresolvedDotExpr& expr) {
+    codeql::UnresolvedDotExpr entry{dispatcher_.assignNewLabel(expr)};
+    assert(expr.getBase() && "Expect UnresolvedDotExpr to have a base");
+    entry.base = dispatcher_.fetchLabel(expr.getBase());
+    llvm::SmallVector<char> scratch;
+    entry.name = expr.getName().getString(scratch).str();
+    return entry;
+  }
+
+  codeql::UnresolvedMemberExpr translateUnresolvedMemberExpr(
+      const swift::UnresolvedMemberExpr& expr) {
+    UnresolvedMemberExpr entry{dispatcher_.assignNewLabel(expr)};
+    llvm::SmallVector<char> scratch;
+    entry.name = expr.getName().getString(scratch).str();
+    return entry;
+  }
+
+  codeql::SequenceExpr translateSequenceExpr(const swift::SequenceExpr& expr) {
+    SequenceExpr entry{dispatcher_.assignNewLabel(expr)};
+    entry.elements = dispatcher_.fetchRepeatedLabels(expr.getElements());
+    return entry;
+  }
+
+  codeql::BridgeToObjCExpr translateBridgeToObjCExpr(const swift::BridgeToObjCExpr& expr) {
+    BridgeToObjCExpr entry{dispatcher_.assignNewLabel(expr)};
+    entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+    return entry;
+  }
+
+  codeql::BridgeFromObjCExpr translateBridgeFromObjCExpr(const swift::BridgeFromObjCExpr& expr) {
+    BridgeFromObjCExpr entry{dispatcher_.assignNewLabel(expr)};
+    entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
+    return entry;
+  }
+
+  codeql::DotSelfExpr translateDotSelfExpr(const swift::DotSelfExpr& expr) {
+    DotSelfExpr entry{dispatcher_.assignNewLabel(expr)};
+    fillIdentityExpr(expr, entry);
+    return entry;
+  }
+
+  codeql::ErrorExpr translateErrorExpr(const swift::ErrorExpr& expr) {
+    ErrorExpr entry{dispatcher_.assignNewLabel(expr)};
+    return entry;
+  }
+
  private:
   void fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,
                                codeql::AbstractClosureExpr& entry) {
@@ -560,9 +613,9 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
     dispatcher_.emit(ExplicitCastExprsTrap{label, dispatcher_.fetchLabel(expr->getSubExpr())});
   }
 
-  void emitIdentityExpr(swift::IdentityExpr* expr, TrapLabel<IdentityExprTag> label) {
-    assert(expr->getSubExpr() && "IdentityExpr has getSubExpr()");
-    dispatcher_.emit(IdentityExprsTrap{label, dispatcher_.fetchLabel(expr->getSubExpr())});
+  void fillIdentityExpr(const swift::IdentityExpr& expr, codeql::IdentityExpr& entry) {
+    assert(expr.getSubExpr() && "IdentityExpr has getSubExpr()");
+    entry.sub_expr = dispatcher_.fetchLabel(expr.getSubExpr());
   }
 
   void emitAnyTryExpr(swift::AnyTryExpr* expr, TrapLabel<AnyTryExprTag> label) {
@@ -590,9 +643,11 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
   void emitLookupExpr(const swift::LookupExpr* expr, TrapLabel<LookupExprTag> label) {
     assert(expr->getBase() && "LookupExpr has getBase()");
     auto baseLabel = dispatcher_.fetchLabel(expr->getBase());
-    assert(expr->hasDecl() && "LookupExpr has decl");
-    auto declLabel = dispatcher_.fetchLabel(expr->getDecl().getDecl());
-    dispatcher_.emit(LookupExprsTrap{label, baseLabel, declLabel});
+    dispatcher_.emit(LookupExprsTrap{label, baseLabel});
+    if (expr->hasDecl()) {
+      auto declLabel = dispatcher_.fetchLabel(expr->getDecl().getDecl());
+      dispatcher_.emit(LookupExprMembersTrap{label, declLabel});
+    }
   }
 
   /*

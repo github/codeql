@@ -936,10 +936,13 @@ cfg.swift:
 #-----|  -> n2
 
 #  112| n2
-#-----| match -> .self
+#-----| match -> c
 
 #  112| n2
 #-----|  -> n3
+
+#  112| c
+#-----|  -> .self
 
 #  112| .self
 #-----|  -> getter for .myInt
@@ -977,6 +980,9 @@ cfg.swift:
 #  114| n4
 #-----|  -> n5
 
+#  114| c
+#-----|  -> .self
+
 #  114| .self
 #-----|  -> call to getMyInt()
 
@@ -987,7 +993,7 @@ cfg.swift:
 #-----|  -> var ... = ...
 
 #  114| getMyInt()
-#-----|  -> .self
+#-----|  -> c
 
 #  116| var ... = ...
 #-----|  -> n5
@@ -1008,10 +1014,13 @@ cfg.swift:
 #-----|  -> n6
 
 #  117| n6
-#-----| match -> .self
+#-----| match -> param
 
 #  117| n6
 #-----|  -> n7
+
+#  117| param
+#-----|  -> .self
 
 #  117| .self
 #-----|  -> getter for .myInt
@@ -1049,6 +1058,9 @@ cfg.swift:
 #  119| n8
 #-----|  -> n9
 
+#  119| param
+#-----|  -> .self
+
 #  119| .self
 #-----|  -> call to getMyInt()
 
@@ -1059,7 +1071,7 @@ cfg.swift:
 #-----|  -> var ... = ...
 
 #  119| getMyInt()
-#-----|  -> .self
+#-----|  -> param
 
 #  121| var ... = ...
 #-----|  -> n9
@@ -1083,10 +1095,13 @@ cfg.swift:
 #-----|  -> n10
 
 #  122| n10
-#-----| match -> .self
+#-----| match -> inoutParam
 
 #  122| n10
 #-----|  -> n11
+
+#  122| inoutParam
+#-----|  -> .self
 
 #  122| (C) ...
 #-----|  -> getter for .myInt
@@ -1130,6 +1145,9 @@ cfg.swift:
 #  124| n12
 #-----|  -> n13
 
+#  124| inoutParam
+#-----|  -> .self
+
 #  124| (C) ...
 #-----|  -> call to getMyInt()
 
@@ -1143,7 +1161,7 @@ cfg.swift:
 #-----|  -> var ... = ...
 
 #  124| getMyInt()
-#-----|  -> .self
+#-----|  -> inoutParam
 
 #  126| var ... = ...
 #-----|  -> n13
@@ -1167,10 +1185,16 @@ cfg.swift:
 #-----|  -> n14
 
 #  127| n14
-#-----| match -> .self
+#-----| match -> opt
 
 #  127| n14
 #-----|  -> n15
+
+#  127| opt
+#-----|  -> ...!
+
+#  127| ...!
+#-----|  -> .self
 
 #  127| .self
 #-----|  -> getter for .myInt
@@ -1211,6 +1235,12 @@ cfg.swift:
 #  129| n16
 #-----|  -> n17
 
+#  129| opt
+#-----|  -> ...!
+
+#  129| ...!
+#-----|  -> .self
+
 #  129| .self
 #-----|  -> call to getMyInt()
 
@@ -1221,7 +1251,7 @@ cfg.swift:
 #-----|  -> var ... = ...
 
 #  129| getMyInt()
-#-----|  -> .self
+#-----|  -> opt
 
 #  131| var ... = ...
 #-----|  -> n17
@@ -1251,10 +1281,16 @@ cfg.swift:
 #-----|  -> n18
 
 #  132| n18
-#-----| match -> .self
+#-----| match -> opt
 
 #  132| n18
 #-----|  -> n19
+
+#  132| opt
+#-----|  -> ...?
+
+#  132| ...?
+#-----|  -> .self
 
 #  132| .self
 #-----|  -> getter for .myInt
@@ -1307,6 +1343,12 @@ cfg.swift:
 #  134| n20
 #-----|  -> exit testMemberRef(param:inoutParam:opt:) (normal)
 
+#  134| opt
+#-----|  -> ...?
+
+#  134| ...?
+#-----|  -> .self
+
 #  134| .self
 #-----|  -> call to getMyInt()
 
@@ -1323,7 +1365,7 @@ cfg.swift:
 #-----|  -> (Int?) ...
 
 #  134| getMyInt()
-#-----|  -> .self
+#-----|  -> opt
 
 #  137| enter patterns(x:)
 #-----|  -> patterns(x:)
@@ -5259,17 +5301,6 @@ cfg.swift:
 #  419| #keyPath(...)
 #-----|  -> var ... = ...
 
-#  419| enter #keyPath(...)
-#-----|  -> UnresolvedDotExpr
-
-#  419| exit #keyPath(...)
-
-#  419| exit #keyPath(...) (normal)
-#-----|  -> exit #keyPath(...)
-
-#  419| UnresolvedDotExpr
-#-----|  -> exit #keyPath(...) (normal)
-
 #  420| var ... = ...
 #-----|  -> kpGet_bs_0_x
 
@@ -5281,17 +5312,6 @@ cfg.swift:
 
 #  420| #keyPath(...)
 #-----|  -> var ... = ...
-
-#  420| enter #keyPath(...)
-#-----|  -> UnresolvedDotExpr
-
-#  420| exit #keyPath(...)
-
-#  420| exit #keyPath(...) (normal)
-#-----|  -> exit #keyPath(...)
-
-#  420| UnresolvedDotExpr
-#-----|  -> exit #keyPath(...) (normal)
 
 #  421| var ... = ...
 #-----|  -> kpGet_mayB_force_x
@@ -5305,17 +5325,6 @@ cfg.swift:
 #  421| #keyPath(...)
 #-----|  -> var ... = ...
 
-#  421| enter #keyPath(...)
-#-----|  -> UnresolvedDotExpr
-
-#  421| exit #keyPath(...)
-
-#  421| exit #keyPath(...) (normal)
-#-----|  -> exit #keyPath(...)
-
-#  421| UnresolvedDotExpr
-#-----|  -> exit #keyPath(...) (normal)
-
 #  422| var ... = ...
 #-----|  -> kpGet_mayB_x
 
@@ -5327,20 +5336,6 @@ cfg.swift:
 
 #  422| #keyPath(...)
 #-----|  -> var ... = ...
-
-#  422| enter #keyPath(...)
-#-----|  -> UnresolvedDotExpr
-
-#  422| exit #keyPath(...)
-
-#  422| exit #keyPath(...) (normal)
-#-----|  -> exit #keyPath(...)
-
-#  422| OptionalEvaluationExpr
-#-----|  -> exit #keyPath(...) (normal)
-
-#  422| UnresolvedDotExpr
-#-----|  -> OptionalEvaluationExpr
 
 #  424| var ... = ...
 #-----|  -> apply_kpGet_b_x

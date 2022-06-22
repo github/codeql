@@ -513,7 +513,9 @@
 | expressions.swift:54:1:54:8 |  ... = ... | AssignExpr | expressions.swift:54:5:54:8 | #keyPath(...) | KeyPathExpr |
 | expressions.swift:54:1:54:8 | { ... } | BraceStmt | expressions.swift:54:1:54:8 |  ... = ... | AssignExpr |
 | expressions.swift:54:1:54:8 | { ... } | TopLevelCodeDecl | expressions.swift:54:1:54:8 | { ... } | BraceStmt |
-| expressions.swift:54:5:54:8 | #keyPath(...) | KeyPathExpr | expressions.swift:54:6:54:8 | UnresolvedDotExpr | UnresolvedDotExpr |
+| expressions.swift:54:5:54:8 | #keyPath(...) | KeyPathExpr | expressions.swift:54:6:54:8 | ... .x | UnresolvedDotExpr |
+| expressions.swift:54:6:54:6 | (no string representation) | TypeExpr | expressions.swift:54:6:54:6 | SimpleIdentTypeRepr | SimpleIdentTypeRepr |
+| expressions.swift:54:6:54:8 | ... .x | UnresolvedDotExpr | expressions.swift:54:6:54:6 | (no string representation) | TypeExpr |
 | expressions.swift:56:1:57:1 | unsafeFunction(pointer:) | ConcreteFuncDecl | expressions.swift:56:21:56:47 | pointer | ParamDecl |
 | expressions.swift:56:1:57:1 | unsafeFunction(pointer:) | ConcreteFuncDecl | expressions.swift:56:50:57:1 | { ... } | BraceStmt |
 | expressions.swift:58:1:58:16 | var ... = ... | PatternBindingDecl | expressions.swift:58:5:58:5 | myNumber | NamedPattern |
@@ -812,7 +814,9 @@
 | expressions.swift:154:22:154:41 | \\...[...] | KeyPathApplicationExpr | expressions.swift:154:33:154:33 | keyPathB | DeclRefExpr |
 | expressions.swift:154:22:154:56 | \\...[...] | KeyPathApplicationExpr | expressions.swift:154:22:154:41 | \\...[...] | KeyPathApplicationExpr |
 | expressions.swift:154:22:154:56 | \\...[...] | KeyPathApplicationExpr | expressions.swift:154:52:154:55 | #keyPath(...) | KeyPathExpr |
-| expressions.swift:154:52:154:55 | #keyPath(...) | KeyPathExpr | expressions.swift:154:53:154:55 | UnresolvedDotExpr | UnresolvedDotExpr |
+| expressions.swift:154:52:154:55 | #keyPath(...) | KeyPathExpr | expressions.swift:154:53:154:55 | ... .x | UnresolvedDotExpr |
+| expressions.swift:154:53:154:53 | (no string representation) | TypeExpr | expressions.swift:154:53:154:53 | SimpleIdentTypeRepr | SimpleIdentTypeRepr |
+| expressions.swift:154:53:154:55 | ... .x | UnresolvedDotExpr | expressions.swift:154:53:154:53 | (no string representation) | TypeExpr |
 | patterns.swift:1:1:7:1 | basic_patterns() | ConcreteFuncDecl | patterns.swift:1:23:7:1 | { ... } | BraceStmt |
 | patterns.swift:1:23:7:1 | { ... } | BraceStmt | patterns.swift:2:5:2:18 | var ... = ... | PatternBindingDecl |
 | patterns.swift:1:23:7:1 | { ... } | BraceStmt | patterns.swift:2:9:2:9 | an_int | ConcreteVarDecl |
@@ -881,6 +885,9 @@
 | patterns.swift:16:5:16:17 | case ... | CaseStmt | patterns.swift:16:17:16:17 | { ... } | BraceStmt |
 | patterns.swift:16:10:16:14 | SequenceExpr | CaseLabelItem | patterns.swift:16:10:16:14 | SequenceExpr | ExprPattern |
 | patterns.swift:16:10:16:14 | SequenceExpr | ExprPattern | patterns.swift:16:10:16:14 | SequenceExpr | SequenceExpr |
+| patterns.swift:16:10:16:14 | SequenceExpr | SequenceExpr | patterns.swift:16:10:16:10 | 1 | IntegerLiteralExpr |
+| patterns.swift:16:10:16:14 | SequenceExpr | SequenceExpr | patterns.swift:16:12:16:12 | OverloadedDeclRefExpr | OverloadedDeclRefExpr |
+| patterns.swift:16:10:16:14 | SequenceExpr | SequenceExpr | patterns.swift:16:14:16:14 | 2 | IntegerLiteralExpr |
 | patterns.swift:16:17:16:17 | { ... } | BraceStmt | patterns.swift:16:17:16:17 | expr | StringLiteralExpr |
 | patterns.swift:17:5:17:13 | case ... | CaseStmt | patterns.swift:17:10:17:10 | _ | CaseLabelItem |
 | patterns.swift:17:5:17:13 | case ... | CaseStmt | patterns.swift:17:13:17:13 | { ... } | BraceStmt |

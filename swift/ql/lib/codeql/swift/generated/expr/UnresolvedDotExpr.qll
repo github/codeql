@@ -3,4 +3,13 @@ import codeql.swift.elements.expr.Expr
 
 class UnresolvedDotExprBase extends @unresolved_dot_expr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedDotExpr" }
+
+  Expr getBase() {
+    exists(Expr x |
+      unresolved_dot_exprs(this, x, _) and
+      result = x.resolve()
+    )
+  }
+
+  string getName() { unresolved_dot_exprs(this, _, result) }
 }
