@@ -10,12 +10,12 @@ private class ExternalStorageDirSourceModel extends SourceModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;spec;kind"
-        "android.content;Context;true;getExternalFilesDir;(String);;ReturnValue;android-external-storage-dir",
-        "android.content;Context;true;getExternalFilesDirs;(String);;ReturnValue;android-external-storage-dir",
-        "android.content;Context;true;getExternalCacheDir;();;ReturnValue;android-external-storage-dir",
-        "android.content;Context;true;getExternalCacheDirs;();;ReturnValue;android-external-storage-dir",
-        "android.os;Environment;false;getExternalStorageDirectory;();;ReturnValue;android-external-storage-dir",
-        "android.os;Environment;false;getExternalStoragePublicDirectory;(String);;ReturnValue;android-external-storage-dir",
+        "android.content;Context;true;getExternalFilesDir;(String);;ReturnValue;android-external-storage-dir;manual",
+        "android.content;Context;true;getExternalFilesDirs;(String);;ReturnValue;android-external-storage-dir;manual",
+        "android.content;Context;true;getExternalCacheDir;();;ReturnValue;android-external-storage-dir;manual",
+        "android.content;Context;true;getExternalCacheDirs;();;ReturnValue;android-external-storage-dir;manual",
+        "android.os;Environment;false;getExternalStorageDirectory;();;ReturnValue;android-external-storage-dir;manual",
+        "android.os;Environment;false;getExternalStoragePublicDirectory;(String);;ReturnValue;android-external-storage-dir;manual",
       ]
   }
 }
