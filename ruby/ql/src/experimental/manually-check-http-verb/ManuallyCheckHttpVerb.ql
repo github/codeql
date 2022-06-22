@@ -12,39 +12,30 @@
 import ruby
 import codeql.ruby.DataFlow
 
-class HttpVerbMethod extends MethodCall {
-  HttpVerbMethod() {
-    this instanceof CheckGetRequest or
-    this instanceof CheckPostRequest or
-    this instanceof CheckPatchRequest or
-    this instanceof CheckPutRequest or
-    this instanceof CheckDeleteRequest or
-    this instanceof CheckHeadRequest
-  }
+class CheckNotGetRequest extends ConditionalExpr {
+  CheckNotGetRequest() { this.getCondition() instanceof CheckGetRequest }
+}
+
+class CheckGetRequest extends MethodCall {
+  CheckGetRequest() { this.getMethodName() = "get?" }
 }
 
 class ControllerClass extends ModuleBase {
   ControllerClass() { this.getModule().getSuperClass+().toString() = "ApplicationController" }
 }
 
-class CheckRequestMethodFromEnv extends DataFlow::CallNode {
-  CheckRequestMethodFromEnv() {
+class CheckGetFromEnv extends AstNode {
+  CheckGetFromEnv() {
     // is this node an instance of `env["REQUEST_METHOD"]
-    this.getExprNode().getNode() instanceof GetRequestMethodFromEnv and
+    this instanceof GetRequestMethodFromEnv and
     (
       // and is this node a param of a call to `.include?`
-      exists(MethodCall call | call.getAnArgument() = this.getExprNode().getNode() |
-        call.getMethodName() = "include?"
-      )
+      exists(MethodCall call | call.getAnArgument() = this | call.getMethodName() = "include?")
       or
-      exists(DataFlow::Node node |
-        node.asExpr().getExpr().(MethodCall).getMethodName() = "include?"
-      |
-        node.getALocalSource() = this
+      // check if env["REQUEST_METHOD"] is compared to GET
+      exists(EqualityOperation eq | eq.getAChild() = this |
+        eq.getAChild().(StringLiteral).toString() = "GET"
       )
-      or
-      // or is this node on either size of an equality comparison
-      exists(EqualityOperation eq | eq.getAChild() = this.getExprNode().getNode())
     )
   }
 }
@@ -56,35 +47,11 @@ class GetRequestMethodFromEnv extends ElementReference {
   }
 }
 
-class CheckGetRequest extends MethodCall {
-  CheckGetRequest() { this.getMethodName() = "get?" }
-}
-
-class CheckPostRequest extends MethodCall {
-  CheckPostRequest() { this.getMethodName() = "post?" }
-}
-
-class CheckPutRequest extends MethodCall {
-  CheckPutRequest() { this.getMethodName() = "put?" }
-}
-
-class CheckPatchRequest extends MethodCall {
-  CheckPatchRequest() { this.getMethodName() = "patch?" }
-}
-
-class CheckDeleteRequest extends MethodCall {
-  CheckDeleteRequest() { this.getMethodName() = "delete?" }
-}
-
-class CheckHeadRequest extends MethodCall {
-  CheckHeadRequest() { this.getMethodName() = "head?" }
-}
-
-from CheckRequestMethodFromEnv env, AstNode node
+from AstNode node
 where
   (
-    node instanceof HttpVerbMethod or
-    node = env.asExpr().getExpr()
+    node instanceof CheckNotGetRequest or
+    node instanceof CheckGetFromEnv
   ) and
   node.getEnclosingModule() instanceof ControllerClass
 select node,
