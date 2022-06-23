@@ -1,3 +1,13 @@
+## 0.3.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
+### Minor Analysis Improvements
+
+Added a flow step for `String.valueOf` calls on tainted `android.text.Editable` objects. 
+
 ## 0.2.3
 
 ## 0.2.2
