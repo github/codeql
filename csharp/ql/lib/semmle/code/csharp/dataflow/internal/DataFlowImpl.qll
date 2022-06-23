@@ -562,7 +562,8 @@ pragma[nomagic]
 private predicate store(
   NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType, Configuration config
 ) {
-  store(pragma[only_bind_into](node1.asNode()), tc, pragma[only_bind_into](node2.asNode()), contentType) and
+  store(pragma[only_bind_into](node1.asNode()), tc, pragma[only_bind_into](node2.asNode()),
+    contentType) and
   read(_, tc.getContent(), _, config) and
   stepFilter(node1, node2, config)
 }
