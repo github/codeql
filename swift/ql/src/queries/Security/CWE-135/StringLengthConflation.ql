@@ -81,6 +81,17 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
   }
 }
 
-from StringLengthConflationConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "RESULT"
+from
+  StringLengthConflationConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  string flowstate, string message
+where
+  config.hasFlowPath(source, sink) and
+  config.isSink(sink.getNode(), flowstate) and
+  (
+    flowstate = "String" and
+    message = "This String length is used in an NSString, but it may not be equivalent."
+    or
+    flowstate = "NSString" and
+    message = "This NSString length is used in a String, but it may not be equivalent."
+  )
+select sink.getNode(), source, sink, message
