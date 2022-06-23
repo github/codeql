@@ -50,7 +50,9 @@ class Element extends @element, Top {
     exists(int i | compiler_generated(this, i) |
       i = 1 and result = "Declaring classes of adapter functions in Kotlin"
       or
-      i = 2 and result = "Generated data class members"
+      i = 2 and result = "Generated data class member"
+      or
+      i = 3 and result = "Default property accessor"
     )
   }
 }
