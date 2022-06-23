@@ -8,16 +8,27 @@ output_dir = pathlib.Path("path", "to", "output")
 
 
 @pytest.fixture
-def generate(opts, renderer, input):
+def generate_grouped(opts, renderer, input):
     opts.cpp_output = output_dir
 
     def ret(classes):
         input.classes = classes
         generated = run_generation(cppgen.generate, opts, renderer)
-        assert set(generated) == {output_dir / "TrapClasses"}
-        generated = generated[output_dir / "TrapClasses"]
-        assert isinstance(generated, cpp.ClassList)
-        return generated.classes
+        for f, g in generated.items():
+            assert isinstance(g, cpp.ClassList), f
+            assert g.include_parent is (f.parent != output_dir)
+            assert f.name == "TrapClasses", f
+        return {str(f.parent.relative_to(output_dir)): g.classes for f, g in generated.items()}
+
+    return ret
+
+
+@pytest.fixture
+def generate(generate_grouped):
+    def ret(classes):
+        generated = generate_grouped(classes)
+        assert set(generated) == {"."}
+        return generated["."]
 
     return ret
 
@@ -88,10 +99,12 @@ def test_class_with_field(generate, type, expected, property_cls, optional, repe
 
 def test_class_with_predicate(generate):
     assert generate([
-        schema.Class(name="MyClass", properties=[schema.PredicateProperty("prop")]),
+        schema.Class(name="MyClass", properties=[
+            schema.PredicateProperty("prop")]),
     ]) == [
                cpp.Class(name="MyClass",
-                         fields=[cpp.Field("prop", "bool", trap_name="MyClassProp", is_predicate=True)],
+                         fields=[
+                             cpp.Field("prop", "bool", trap_name="MyClassProp", is_predicate=True)],
                          trap_name="MyClasses",
                          final=True)
            ]
@@ -134,6 +147,22 @@ def test_class_with_keyword_field(generate, name):
                          trap_name="MyClasses",
                          final=True)
            ]
+
+
+def test_classes_with_dirs(generate_grouped):
+    cbase = cpp.Class(name="CBase")
+    assert generate_grouped([
+        schema.Class(name="A"),
+        schema.Class(name="B", dir=pathlib.Path("foo")),
+        schema.Class(name="C", bases={"CBase"}, dir=pathlib.Path("bar")),
+        schema.Class(name="CBase", derived={"C"}, dir=pathlib.Path("bar")),
+        schema.Class(name="D", dir=pathlib.Path("foo/bar/baz")),
+    ]) == {
+               ".": [cpp.Class(name="A", trap_name="As", final=True)],
+               "foo": [cpp.Class(name="B", trap_name="Bs", final=True)],
+               "bar": [cbase, cpp.Class(name="C", bases=[cbase], trap_name="Cs", final=True)],
+               "foo/bar/baz": [cpp.Class(name="D", trap_name="Ds", final=True)],
+           }
 
 
 if __name__ == '__main__':

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "swift/extractor/visitors/VisitorBase.h"
+#include "swift/extractor/trap/generated/stmt/TrapClasses.h"
 
 namespace codeql {
 

@@ -1,5 +1,7 @@
 load("//swift:rules.bzl", "swift_cc_library")
 
+_dirs = ("", "decl/", "expr/", "pattern/", "stmt/", "type/", "typerepr/")
+
 genrule(
     name = "cppgen",
     srcs = [
@@ -7,12 +9,13 @@ genrule(
         "//swift/codegen:schema_includes",
     ],
     outs = [
-        "generated/TrapEntries.h",
-        "generated/TrapEntries.cpp",
-        "generated/TrapTags.h",
-        "generated/TrapClasses.h",
-        "generated/TrapClasses.cpp",
         "generated/swift.dbscheme",
+        "generated/TrapTags.h",
+    ] + [
+        "generated/%s%s.%s" % (dir, name, ext)
+        for dir in _dirs
+        for name in ("TrapEntries", "TrapClasses")
+        for ext in ("h", "cpp")
     ],
     cmd = " ".join([
         "$(location //swift/codegen)",
@@ -33,13 +36,16 @@ filegroup(
 swift_cc_library(
     name = "trap",
     srcs = [
-        "generated/TrapClasses.cpp",
-        "generated/TrapEntries.cpp",
+        "generated/%s%s.cpp" % (dir, name)
+        for dir in _dirs
+        for name in ("TrapEntries", "TrapClasses")
     ],
     hdrs = glob(["*.h"]) + [
-        "generated/TrapEntries.h",
         "generated/TrapTags.h",
-        "generated/TrapClasses.h",
+    ] + [
+        "generated/%s%s.h" % (dir, name)
+        for dir in _dirs
+        for name in ("TrapEntries", "TrapClasses")
     ],
     visibility = ["//visibility:public"],
 )

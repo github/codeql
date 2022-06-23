@@ -148,3 +148,4 @@ class ClassList:
 
     classes: List[Class]
     source: str
+    include_parent: bool = False

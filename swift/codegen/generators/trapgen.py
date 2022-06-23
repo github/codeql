@@ -12,6 +12,7 @@ enforce a type system on trap labels (see `TrapLabel.h`).
 """
 
 import logging
+import pathlib
 
 import inflection
 from toposort import toposort_flatten
@@ -71,16 +72,18 @@ def generate(opts, renderer):
     tag_graph = {}
     out = opts.cpp_output
 
-    traps = []
+    traps = {pathlib.Path(): []}
     for e in dbscheme.iterload(opts.dbscheme):
         if e.is_table:
-            traps.append(get_trap(e))
+            traps.setdefault(e.dir, []).append(get_trap(e))
         elif e.is_union:
             tag_graph.setdefault(e.lhs, set())
             for d in e.rhs:
                 tag_graph.setdefault(d.type, set()).add(e.lhs)
 
-    renderer.render(cpp.TrapList(traps, opts.dbscheme), out / "TrapEntries")
+    for dir, entries in traps.items():
+        dir = dir or pathlib.Path()
+        renderer.render(cpp.TrapList(entries, opts.dbscheme), out / dir / "TrapEntries")
 
     tags = []
     for index, tag in enumerate(toposort_flatten(tag_graph)):

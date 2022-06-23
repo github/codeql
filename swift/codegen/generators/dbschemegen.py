@@ -35,6 +35,7 @@ def cls_to_dbscheme(cls: schema.Class):
     """ Yield all dbscheme entities needed to model class `cls` """
     if cls.derived:
         yield Union(dbtype(cls.name), (dbtype(c) for c in cls.derived))
+    dir = cls.dir if cls.dir != pathlib.Path() else None
     # output a table specific to a class only if it is a leaf class or it has 1-to-1 properties
     # Leaf classes need a table to bind the `@` ids
     # 1-to-1 properties are added to a class specific table
@@ -49,7 +50,8 @@ def cls_to_dbscheme(cls: schema.Class):
                         Column("id", type=dbtype(cls.name), binding=binding),
                     ] + [
                         Column(f.name, dbtype(f.type)) for f in cls.properties if f.is_single
-                    ]
+                    ],
+            dir=dir,
         )
     # use property-specific tables for 1-to-many and 1-to-at-most-1 properties
     for f in cls.properties:
@@ -61,7 +63,8 @@ def cls_to_dbscheme(cls: schema.Class):
                     Column("id", type=dbtype(cls.name)),
                     Column("index", type="int"),
                     Column(inflection.singularize(f.name), dbtype(f.type)),
-                ]
+                ],
+                dir=dir,
             )
         elif f.is_optional:
             yield Table(
@@ -71,6 +74,7 @@ def cls_to_dbscheme(cls: schema.Class):
                     Column("id", type=dbtype(cls.name)),
                     Column(f.name, dbtype(f.type)),
                 ],
+                dir=dir,
             )
         elif f.is_predicate:
             yield Table(
@@ -79,6 +83,7 @@ def cls_to_dbscheme(cls: schema.Class):
                 columns=[
                     Column("id", type=dbtype(cls.name)),
                 ],
+                dir=dir,
             )
 
 
