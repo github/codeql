@@ -6,7 +6,7 @@
  *       JsonWebTokenHandler
  *       manual-verification-required
  * @id cs/JsonWebTokenHandler/security-validations-disabled
- * @problem.severity warning
+ * @problem.severity error
  * @precision high
  */
 

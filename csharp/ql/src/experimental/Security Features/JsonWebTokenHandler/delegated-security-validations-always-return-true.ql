@@ -7,7 +7,7 @@
  *       JsonWebTokenHandler
  *       manual-verification-required
  * @id cs/JsonWebTokenHandler/delegated-security-validations-always-return-true
- * @problem.severity warning
+ * @problem.severity error
  * @precision high
  */
 
