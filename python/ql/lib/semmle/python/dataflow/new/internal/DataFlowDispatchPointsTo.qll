@@ -656,7 +656,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   /** Gets the data flow node that this call targets. */
   Node getReceiver() { result = receiver }
 
-  override DataFlowCallable getEnclosingCallable() { result = c }
+  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
   override DataFlowCallable getCallable() { none() }
 
@@ -666,7 +666,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
-  override Location getLocation() { result = c.getLocation() }
+  override Location getLocation() { none() }
 }
 
 /**
@@ -692,9 +692,11 @@ class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
 
   override Parameter getParameter() { none() }
 
-  override predicate isParameterOf(DataFlowCallable c, int i) { sc = c and i = pos }
+  override predicate isParameterOf(DataFlowCallable c, int i) {
+    sc = c.asLibraryCallable() and i = pos
+  }
 
-  override DataFlowCallable getEnclosingCallable() { result = sc }
+  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = sc }
 }
 
 /** A data-flow node used to model flow summaries. */
@@ -704,7 +706,7 @@ class SummaryNode extends Node, TSummaryNode {
 
   SummaryNode() { this = TSummaryNode(c, state) }
 
-  override DataFlowCallable getEnclosingCallable() { result = c }
+  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
   override string toString() { result = "[summary] " + state + " in " + c }
 }

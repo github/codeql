@@ -47,36 +47,9 @@ module SummaryComponentStack {
 }
 
 /** A callable with a flow summary, identified by a unique string. */
-abstract class SummarizedCallable extends LibraryCallable {
+abstract class SummarizedCallable extends LibraryCallable, Impl::Public::SummarizedCallable {
   bindingset[this]
   SummarizedCallable() { any() }
-
-  /**
-   * Holds if data may flow from `input` to `output` through this callable.
-   *
-   * `preservesValue` indicates whether this is a value-preserving step
-   * or a taint-step.
-   *
-   * Input specifications are restricted to stacks that end with
-   * `SummaryComponent::argument(_)`, preceded by zero or more
-   * `SummaryComponent::return()` or `SummaryComponent::content(_)` components.
-   *
-   * Output specifications are restricted to stacks that end with
-   * `SummaryComponent::return()` or `SummaryComponent::argument(_)`.
-   *
-   * Output stacks ending with `SummaryComponent::return()` can be preceded by zero
-   * or more `SummaryComponent::content(_)` components.
-   *
-   * Output stacks ending with `SummaryComponent::argument(_)` can be preceded by an
-   * optional `SummaryComponent::parameter(_)` component, which in turn can be preceded
-   * by zero or more `SummaryComponent::content(_)` components.
-   */
-  pragma[nomagic]
-  predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    none()
-  }
 
   /**
    * Same as
@@ -91,29 +64,35 @@ abstract class SummarizedCallable extends LibraryCallable {
    */
   pragma[nomagic]
   predicate propagatesFlowExt(string input, string output, boolean preservesValue) { none() }
-
-  /**
-   * Holds if values stored inside `content` are cleared on objects passed as
-   * arguments at position `pos` to this callable.
-   */
-  pragma[nomagic]
-  predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) { none() }
-}
-
-private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable {
-  private SummarizedCallable sc;
-
-  SummarizedCallableAdapter() { this = TLibraryCallable(sc) }
-
-  final override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    sc.propagatesFlow(input, output, preservesValue)
-  }
-
-  final override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
-    sc.clearsContent(pos, content)
-  }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
+//
+// TODO: Implement this
+//
+// private class SummarizedCallableFromModel extends SummarizedCallable {
+//   string package;
+//   string type;
+//   string path;
+//   SummarizedCallableFromModel() {
+//     ModelOutput::relevantSummaryModel(package, type, path, _, _, _) and
+//     this = package + ";" + type + ";" + path
+//   }
+//   override Call getACall() {
+//     exists(API::MethodAccessNode base |
+//       ModelOutput::resolvedSummaryBase(package, type, path, base) and
+//       result = base.getCallNode().asExpr().getExpr()
+//     )
+//   }
+//   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+//     exists(string kind |
+//       ModelOutput::relevantSummaryModel(package, type, path, input, output, kind)
+//     |
+//       kind = "value" and
+//       preservesValue = true
+//       or
+//       kind = "taint" and
+//       preservesValue = false
+//     )
+//   }
+// }

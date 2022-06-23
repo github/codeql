@@ -55,7 +55,8 @@ predicate callStep(DataFlowPublic::ArgumentNode nodeFrom, DataFlowPrivate::Param
 /** Holds if `nodeFrom` steps to `nodeTo` by being returned from a call. */
 predicate returnStep(DataFlowPrivate::ReturnNode nodeFrom, Node nodeTo) {
   exists(DataFlowPrivate::DataFlowSourceCall call |
-    nodeFrom.getEnclosingCallable() = call.getCallable() and nodeTo.asCfgNode() = call.getNode()
+    nodeFrom.getEnclosingCallable() = call.getCallable() and
+    nodeTo.(DataFlowPublic::CfgNode).getNode() = call.getNode()
   )
 }
 

@@ -417,7 +417,7 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
   EssaNode getAWrite() {
-    result.asVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
+    result.getVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
   }
 
   override DataFlowCallable getEnclosingCallable() { result.(DataFlowModuleScope).getScope() = mod }
