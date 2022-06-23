@@ -6,7 +6,7 @@
 
 ### Minor Analysis Improvements
 
-* The query "Use of a broken or weak cryptographic algorithm" (`rb/weak-cryptographic-algorithm`) now report if a cryptographic operation is potentially insecure due to use of a weak block mode.
+* The query "Use of a broken or weak cryptographic algorithm" (`rb/weak-cryptographic-algorithm`) now reports if a cryptographic operation is potentially insecure due to use of a weak block mode.
 
 ## 0.1.4
 
