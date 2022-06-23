@@ -790,6 +790,8 @@ open class KotlinFileExtractor(
                             tw.writeCompiler_generated(methodId, 2)
                         IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR ->
                             tw.writeCompiler_generated(methodId, 3)
+                        IrDeclarationOrigin.ENUM_CLASS_SPECIAL_MEMBER ->
+                            tw.writeCompiler_generated(methodId, 5)
                     }
 
                     if (extractMethodAndParameterTypeAccesses) {
