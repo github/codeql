@@ -1,27 +1,32 @@
 #include <fstream>
 #include <iomanip>
 #include <stdlib.h>
+#include <unordered_set>
+#include <vector>
+#include <string>
+#include <iostream>
 
 #include <swift/Basic/LLVMInitialize.h>
 #include <swift/FrontendTool/FrontendTool.h>
 
 #include "SwiftExtractor.h"
+#include "SwiftOutputRewrite.h"
 
 using namespace std::string_literals;
 
 // This is part of the swiftFrontendTool interface, we hook into the
 // compilation pipeline and extract files after the Swift frontend performed
-// semantic analysys
+// semantic analysis
 class Observer : public swift::FrontendObserver {
  public:
   explicit Observer(const codeql::SwiftExtractorConfiguration& config) : config{config} {}
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
-    // Original compiler and the extractor-compiler get into conflicts when
-    // both produce the same output files.
-    // TODO: change the final artifact destinations instead of disabling
-    // the artifact generation completely?
-    invocation.getFrontendOptions().RequestedAction = swift::FrontendOptions::ActionType::Typecheck;
+    auto& overlays = invocation.getSearchPathOptions().VFSOverlayFiles;
+    auto vfsFiles = codeql::collectVFSFiles(config);
+    for (auto& vfsFile : vfsFiles) {
+      overlays.push_back(vfsFile);
+    }
   }
 
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
@@ -54,12 +59,26 @@ int main(int argc, char** argv) {
   configuration.scratchDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", ".");
 
   configuration.tempTrapDir = configuration.scratchDir + "/swift-trap-temp";
+  configuration.VFSDir = configuration.scratchDir + "/swift-vfs";
+  configuration.tempVFSDir = configuration.scratchDir + "/swift-vfs-temp";
+  configuration.tempArtifactDir = configuration.scratchDir + "/swift-extraction-artifacts";
+
+  configuration.frontendOptions.reserve(argc - 1);
+  for (int i = 1; i < argc; i++) {
+    configuration.frontendOptions.push_back(argv[i]);
+  }
+  configuration.patchedFrontendOptions = configuration.frontendOptions;
+
+  auto remapping =
+      codeql::rewriteOutputsInPlace(configuration, configuration.patchedFrontendOptions);
+  codeql::ensureNewPathsExist(remapping);
+  codeql::storeRemappingForVFS(configuration, remapping);
 
   std::vector<const char*> args;
-  for (int i = 1; i < argc; i++) {
-    args.push_back(argv[i]);
+  for (auto& arg : configuration.patchedFrontendOptions) {
+    args.push_back(arg.c_str());
   }
-  std::copy(std::begin(args), std::end(args), std::back_inserter(configuration.frontendOptions));
+
   Observer observer(configuration);
   int frontend_rc = swift::performFrontend(args, "swift-extractor", (void*)main, &observer);
   return frontend_rc;

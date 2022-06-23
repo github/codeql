@@ -80,11 +80,17 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
               << "': " << ec.message() << "\n";
     return;
   }
-  trapStream << "// extractor-args: ";
+  trapStream << "/* extractor-args:\n";
   for (auto opt : config.frontendOptions) {
-    trapStream << std::quoted(opt) << " ";
+    trapStream << "  " << std::quoted(opt) << " \\\n";
   }
-  trapStream << "\n\n";
+  trapStream << "\n*/\n";
+
+  trapStream << "/* swift-frontend-args:\n";
+  for (auto opt : config.patchedFrontendOptions) {
+    trapStream << "  " << std::quoted(opt) << " \\\n";
+  }
+  trapStream << "\n*/\n";
 
   TrapOutput trap{trapStream};
   TrapArena arena{};
