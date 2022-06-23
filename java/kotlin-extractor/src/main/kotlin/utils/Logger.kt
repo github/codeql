@@ -226,7 +226,7 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
         loggerBase.info(tw, msg)
     }
 
-    fun warn(msg: String, extraInfo: String?) {
+    private fun warn(msg: String, extraInfo: String?) {
         loggerBase.warn(tw, msg, extraInfo)
     }
     fun warn(msg: String, exn: Throwable) {
@@ -236,7 +236,7 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
         warn(msg, null)
     }
 
-    fun error(msg: String, extraInfo: String?) {
+    private fun error(msg: String, extraInfo: String?) {
         loggerBase.error(tw, msg, extraInfo)
     }
     fun error(msg: String) {

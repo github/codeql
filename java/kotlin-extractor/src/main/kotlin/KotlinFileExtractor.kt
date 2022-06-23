@@ -41,7 +41,7 @@ open class KotlinFileExtractor(
     globalExtensionState: KotlinExtractorGlobalState
 ): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState) {
 
-    inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
+    private inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
         val name = when (element) {
             is IrFile -> element.name
             is IrDeclarationWithName -> element.name.asString()
@@ -2192,7 +2192,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun getStatementOriginOperator(origin: IrStatementOrigin?) = when (origin) {
+    private fun getStatementOriginOperator(origin: IrStatementOrigin?) = when (origin) {
         IrStatementOrigin.PLUSEQ -> "plus"
         IrStatementOrigin.MINUSEQ -> "minus"
         IrStatementOrigin.MULTEQ -> "times"
