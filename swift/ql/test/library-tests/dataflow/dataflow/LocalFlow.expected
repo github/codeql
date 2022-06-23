@@ -74,3 +74,31 @@
 | test.swift:104:9:104:54 | WriteDef | test.swift:105:19:105:19 | x |
 | test.swift:104:9:104:54 | arg | test.swift:104:9:104:54 | WriteDef |
 | test.swift:104:41:104:41 | x | test.swift:104:40:104:41 | &... |
+| test.swift:109:9:109:14 | WriteDef | test.swift:110:12:110:12 | arg |
+| test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg |
+| test.swift:113:14:113:19 | WriteDef | test.swift:114:19:114:19 | arg |
+| test.swift:113:14:113:19 | arg | test.swift:114:19:114:19 | arg |
+| test.swift:113:24:113:41 | WriteDef | test.swift:114:12:114:12 | lambda |
+| test.swift:113:24:113:41 | lambda | test.swift:114:12:114:12 | lambda |
+| test.swift:118:9:118:12 | WriteDef | test.swift:119:31:119:31 | x |
+| test.swift:118:18:118:25 | call to source() | test.swift:118:9:118:12 | WriteDef |
+| test.swift:119:9:119:12 | WriteDef | test.swift:120:15:120:15 | y |
+| test.swift:119:18:119:44 | call to forward(arg:lambda:) | test.swift:119:9:119:12 | WriteDef |
+| test.swift:122:9:122:12 | WriteDef | test.swift:126:15:126:15 | z |
+| test.swift:122:18:125:6 | call to forward(arg:lambda:) | test.swift:122:9:122:12 | WriteDef |
+| test.swift:123:10:123:13 | WriteDef | test.swift:124:16:124:16 | i |
+| test.swift:123:10:123:13 | i | test.swift:124:16:124:16 | i |
+| test.swift:128:9:128:16 | WriteDef | test.swift:132:15:132:15 | clean |
+| test.swift:128:22:131:6 | call to forward(arg:lambda:) | test.swift:128:9:128:16 | WriteDef |
+| test.swift:141:9:141:9 | WriteDef | test.swift:145:15:145:15 | lambda2 |
+| test.swift:141:19:144:5 | { ... } | test.swift:141:9:141:9 | WriteDef |
+| test.swift:142:10:142:13 | WriteDef | test.swift:143:16:143:16 | i |
+| test.swift:142:10:142:13 | i | test.swift:143:16:143:16 | i |
+| test.swift:147:9:147:9 | WriteDef | test.swift:151:15:151:15 | lambdaSource |
+| test.swift:147:24:150:5 | { ... } | test.swift:147:9:147:9 | WriteDef |
+| test.swift:151:15:151:15 | lambdaSource | test.swift:159:16:159:16 | lambdaSource |
+| test.swift:153:9:153:9 | WriteDef | test.swift:157:5:157:5 | lambdaSink |
+| test.swift:153:22:156:5 | { ... } | test.swift:153:9:153:9 | WriteDef |
+| test.swift:154:10:154:13 | WriteDef | test.swift:155:19:155:19 | i |
+| test.swift:154:10:154:13 | i | test.swift:155:19:155:19 | i |
+| test.swift:157:5:157:5 | lambdaSink | test.swift:159:5:159:5 | lambdaSink |

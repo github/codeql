@@ -105,3 +105,56 @@ func inoutUser2(bool: Bool) {
         sink(arg: x) // tainted by two sources
     }
 }
+
+func id(arg: Int) -> Int {
+    return arg
+}
+
+func forward(arg: Int, lambda: (Int) -> Int) -> Int {
+    return lambda(arg)
+}
+
+func forwarder() {
+    var x: Int = source()
+    var y: Int = forward(arg: x, lambda: id)
+    sink(arg: y)
+
+    var z: Int = forward(arg: source(), lambda: {
+        (i: Int) -> Int in
+        return i
+    })
+    sink(arg: z)
+    
+    var clean: Int = forward(arg: source(), lambda: {
+        (i: Int) -> Int in
+        return 0
+    })
+    sink(arg: clean)
+}
+
+func lambdaFlows() {
+    var lambda1 = {
+        () -> Void in
+        sink(arg: source())
+    }
+
+    var lambda2 = {
+        (i: Int) -> Int in
+        return i
+    }
+    sink(arg: lambda2(source()))
+
+    var lambdaSource = {
+        () -> Int in
+        return source()
+    }
+    sink(arg: lambdaSource())
+
+    var lambdaSink = {
+        (i: Int) -> Void in
+        sink(arg: i)
+    }
+    lambdaSink(source())
+
+    lambdaSink(lambdaSource())
+}
