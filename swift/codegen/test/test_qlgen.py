@@ -2,6 +2,8 @@ import pathlib
 import subprocess
 import sys
 
+import pytest
+
 from swift.codegen.generators import qlgen
 from swift.codegen.lib import ql
 from swift.codegen.test.utils import *
@@ -36,17 +38,22 @@ gen_import_prefix = "other.path."
 
 
 @pytest.fixture
-def generate(input, opts, renderer):
+def qlgen_opts(opts):
     opts.ql_stub_output = stub_path()
     opts.ql_output = ql_output_path()
     opts.ql_test_output = ql_test_output_path()
     opts.ql_format = True
     opts.swift_dir = paths.swift_dir
+    return opts
+
+
+@pytest.fixture
+def generate(input, qlgen_opts, renderer):
     renderer.written = []
 
     def func(classes):
         input.classes = classes
-        return run_generation(qlgen.generate, opts, renderer)
+        return run_generation(qlgen.generate, qlgen_opts, renderer)
 
     return func
 
@@ -349,7 +356,7 @@ def test_empty_cleanup(generate, renderer):
     assert renderer.mock_calls[-1] == mock.call.cleanup(set())
 
 
-def test_non_empty_cleanup(opts, generate, renderer, tmp_path):
+def test_non_empty_cleanup(opts, generate, renderer):
     ql_a = opts.ql_output / "A.qll"
     ql_b = opts.ql_output / "B.qll"
     stub_a = opts.ql_stub_output / "A.qll"
@@ -367,6 +374,13 @@ def test_non_empty_cleanup(opts, generate, renderer, tmp_path):
     generate([])
     assert renderer.mock_calls[-1] == mock.call.cleanup(
         {ql_a, ql_b, stub_a, test_a, test_b})
+
+
+def test_modified_stub_still_generated(qlgen_opts, renderer):
+    stub = qlgen_opts.ql_stub_output / "A.qll"
+    write(stub, "// generated\n\n\n\nsomething\n")
+    with pytest.raises(qlgen.ModifiedStubMarkedAsGeneratedError):
+        run_generation(qlgen.generate, qlgen_opts, renderer)
 
 
 def test_test_missing_source(generate_tests):
