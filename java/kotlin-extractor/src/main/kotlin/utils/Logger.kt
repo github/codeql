@@ -207,20 +207,6 @@ open class LoggerBase(val logCounter: LogCounter) {
 }
 
 open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
-    private fun getDiagnosticLocation(): String? {
-        val st = Exception().stackTrace
-        for(x in st) {
-            when(x.className) {
-                "com.github.codeql.Logger",
-                "com.github.codeql.FileLogger" -> {}
-                else -> {
-                    return x.toString()
-                }
-            }
-        }
-        return null
-    }
-
     fun flush() {
         tw.flush()
         loggerBase.flush()
