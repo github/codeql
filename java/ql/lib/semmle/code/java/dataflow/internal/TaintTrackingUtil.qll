@@ -51,14 +51,14 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
     or
     // Treat container flow as taint for the local taint flow relation
     exists(DataFlow::Content c | containerContent(c) |
       readStep(src, c, sink) or
       storeStep(src, c, sink) or
-      FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink) or
-      FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink)
+      FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink, _) or
+      FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink, _)
     )
   }
 
@@ -111,12 +111,6 @@ private module Cached {
     node.asExpr() instanceof ValidatedVariableAccess
   }
 }
-
-/**
- * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
- * but not in local taint.
- */
-predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
 import Cached
 
@@ -190,7 +184,7 @@ private predicate localAdditionalTaintUpdateStep(Expr src, Expr sink) {
 
 private class BulkData extends RefType {
   BulkData() {
-    this.(Array).getElementType().(PrimitiveType).getName().regexpMatch("byte|char")
+    this.(Array).getElementType().(PrimitiveType).hasName(["byte", "char"])
     or
     exists(RefType t | this.getASourceSupertype*() = t |
       t.hasQualifiedName("java.io", "InputStream") or
@@ -321,7 +315,7 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
   exists(Method springResponseEntityOfOk |
     sink.getMethod() = springResponseEntityOfOk and
     springResponseEntityOfOk.getDeclaringType() instanceof SpringResponseEntity and
-    springResponseEntityOfOk.getName().regexpMatch("ok|of") and
+    springResponseEntityOfOk.hasName(["ok", "of"]) and
     tracked = sink.getArgument(0) and
     tracked.getType() instanceof TypeString
   )
@@ -329,7 +323,7 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
   exists(Method springResponseEntityBody |
     sink.getMethod() = springResponseEntityBody and
     springResponseEntityBody.getDeclaringType() instanceof SpringResponseEntityBodyBuilder and
-    springResponseEntityBody.getName().regexpMatch("body") and
+    springResponseEntityBody.hasName("body") and
     tracked = sink.getArgument(0) and
     tracked.getType() instanceof TypeString
   )

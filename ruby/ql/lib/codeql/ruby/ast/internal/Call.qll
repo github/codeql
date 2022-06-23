@@ -28,6 +28,8 @@ abstract class MethodCallImpl extends CallImpl, TMethodCall {
   abstract string getMethodNameImpl();
 
   abstract Block getBlockImpl();
+
+  predicate isSafeNavigationImpl() { none() }
 }
 
 class MethodCallSynth extends MethodCallImpl, TMethodCallSynth {
@@ -89,6 +91,10 @@ class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
   final override int getNumberOfArgumentsImpl() { result = count(g.getArguments().getChild(_)) }
 
   final override Block getBlockImpl() { toGenerated(result) = g.getBlock() }
+
+  final override predicate isSafeNavigationImpl() {
+    g.getOperator().(Ruby::Token).getValue() = "&."
+  }
 }
 
 class ElementReferenceImpl extends MethodCallImpl, TElementReference {

@@ -39,6 +39,12 @@ class TrapOutput {
     print(e);
   }
 
+  template <typename... Args>
+  void debug(const Args&... args) {
+    out_ << "// DEBUG: ";
+    (out_ << ... << args) << '\n';
+  }
+
  private:
   template <typename... Args>
   void print(const Args&... args) {

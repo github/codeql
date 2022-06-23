@@ -180,7 +180,7 @@ module ArgumentPassing {
   /**
    * Gets the node representing the argument to `call` that is passed to the parameter at
    * (zero-based) index `paramN` in `callable`. If this is a positional argument, it must appear
-   * at an index, `argN`, in `call` wich satisfies `paramN = mapping.getParamN(argN)`.
+   * at an index, `argN`, in `call` which satisfies `paramN = mapping.getParamN(argN)`.
    *
    * `mapping` will be the identity for function calls, but not for method- or constructor calls,
    * where the first parameter is `self` and the first positional argument is passed to the second positional parameter.

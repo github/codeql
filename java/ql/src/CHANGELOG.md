@@ -1,3 +1,32 @@
+## 0.1.4
+
+## 0.1.3
+
+### New Queries
+
+* Two new queries "Inefficient regular expression" (`java/redos`) and "Polynomial regular expression used on uncontrolled data" (`java/polynomial-redos`) have been added.
+These queries help find instances of Regular Expression Denial of Service vulnerabilities. 
+
+### Minor Analysis Improvements
+
+* Query `java/sensitive-log` has received several improvements.
+  * It no longer considers usernames as sensitive information.
+  * The conditions to consider a variable a constant (and therefore exclude it as user-provided sensitive information) have been tightened.
+  * A sanitizer has been added to handle certain elements introduced by a Kotlin compiler plugin that have deceptive names.
+
+## 0.1.2
+
+### Query Metadata Changes
+
+* Query `java/predictable-seed` now has a tag for CWE-337. 
+
+### Minor Analysis Improvements
+
+* Query `java/insecure-cookie` now tolerates setting a cookie's secure flag to `request.isSecure()`. This means servlets that intentionally accept unencrypted connections will no longer raise an alert.
+* The query `java/non-https-urls` has been simplified
+and no longer requires its sinks to be `MethodAccess`es.
+* The logic to detect `WebView`s with JavaScript (and optionally file access) enabled in the query `java/android/unsafe-android-webview-fetch` has been improved.
+
 ## 0.1.1
 
 ### Minor Analysis Improvements
@@ -26,7 +55,7 @@ this respect.
 
 ### Minor Analysis Improvements
 
-* Updated "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) to remove false-positives when OS is properly used as logical guard.
+ * Updated "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) to remove false-positives when OS is properly used as logical guard.
 
 ## 0.0.11
 

@@ -111,12 +111,18 @@ class ComplexLiteralImpl extends Expr, TComplexLiteral {
   }
 }
 
-class NilLiteralImpl extends Expr, TNilLiteral {
+abstract class NilLiteralImpl extends Expr, TNilLiteral {
+  final override string toString() { result = "nil" }
+}
+
+class NilLiteralReal extends NilLiteralImpl, TNilLiteralReal {
   private Ruby::Nil g;
 
-  NilLiteralImpl() { this = TNilLiteral(g) }
+  NilLiteralReal() { this = TNilLiteralReal(g) }
+}
 
-  final override string toString() { result = g.getValue() }
+class NilLiteralSynth extends NilLiteralImpl, TNilLiteralSynth {
+  NilLiteralSynth() { this = TNilLiteralSynth(_, _) }
 }
 
 abstract class BooleanLiteralImpl extends Expr, TBooleanLiteral {

@@ -49,7 +49,7 @@ module Private {
   /** Class to represent float and double literals. */
   class RealLiteral extends J::Literal {
     RealLiteral() {
-      this instanceof J::FloatingPointLiteral or
+      this instanceof J::FloatLiteral or
       this instanceof J::DoubleLiteral
     }
   }
@@ -191,7 +191,7 @@ private module Impl {
   /** Gets the constant `float` value of non-`ConstantIntegerExpr` expressions. */
   float getNonIntegerValue(Expr e) {
     result = e.(LongLiteral).getValue().toFloat() or
-    result = e.(FloatingPointLiteral).getValue().toFloat() or
+    result = e.(FloatLiteral).getValue().toFloat() or
     result = e.(DoubleLiteral).getValue().toFloat()
   }
 

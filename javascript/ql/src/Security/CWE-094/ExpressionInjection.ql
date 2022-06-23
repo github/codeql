@@ -6,7 +6,7 @@
  * @problem.severity warning
  * @security-severity 9.3
  * @precision high
- * @id js/actions/injection
+ * @id js/actions/command-injection
  * @tags actions
  *       security
  *       external/cwe/cwe-094

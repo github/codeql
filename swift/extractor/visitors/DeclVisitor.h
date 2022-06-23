@@ -1,22 +1,72 @@
 #pragma once
 
-#include "swift/extractor/SwiftDispatcher.h"
-#include <swift/AST/ASTVisitor.h>
+#include <swift/AST/Decl.h>
+#include <swift/AST/ASTMangler.h>
+
+#include "swift/extractor/visitors/VisitorBase.h"
 
 namespace codeql {
 
-class DeclVisitor : public swift::DeclVisitor<DeclVisitor> {
+// `swift::Decl` visitor
+// TODO all `std::variant` here should really be `std::optional`, but we need those kinds of
+// "forward declarations" while our extraction is incomplete
+class DeclVisitor : public AstVisitorBase<DeclVisitor> {
  public:
-  // SwiftDispatcher should outlive the DeclVisitor
-  DeclVisitor(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
+  using AstVisitorBase<DeclVisitor>::AstVisitorBase;
 
-  template <typename E>
-  void visitDecl(E* decl) {
-    dispatcher.TBD<swift::Decl>(decl, "Decl");
-  }
+  std::variant<codeql::ConcreteFuncDecl, codeql::ConcreteFuncDeclsTrap> translateFuncDecl(
+      const swift::FuncDecl& decl);
+  std::variant<codeql::ConstructorDecl, codeql::ConstructorDeclsTrap> translateConstructorDecl(
+      const swift::ConstructorDecl& decl);
+  std::variant<codeql::DestructorDecl, codeql::DestructorDeclsTrap> translateDestructorDecl(
+      const swift::DestructorDecl& decl);
+  codeql::PrefixOperatorDecl translatePrefixOperatorDecl(const swift::PrefixOperatorDecl& decl);
+  codeql::PostfixOperatorDecl translatePostfixOperatorDecl(const swift::PostfixOperatorDecl& decl);
+  codeql::InfixOperatorDecl translateInfixOperatorDecl(const swift::InfixOperatorDecl& decl);
+  codeql::PrecedenceGroupDecl translatePrecedenceGroupDecl(const swift::PrecedenceGroupDecl& decl);
+  codeql::ParamDecl translateParamDecl(const swift::ParamDecl& decl);
+  codeql::TopLevelCodeDecl translateTopLevelCodeDecl(const swift::TopLevelCodeDecl& decl);
+  codeql::PatternBindingDecl translatePatternBindingDecl(const swift::PatternBindingDecl& decl);
+  codeql::ConcreteVarDecl translateVarDecl(const swift::VarDecl& decl);
+  std::variant<codeql::StructDecl, codeql::StructDeclsTrap> translateStructDecl(
+      const swift::StructDecl& decl);
+  std::variant<codeql::ClassDecl, codeql::ClassDeclsTrap> translateClassDecl(
+      const swift::ClassDecl& decl);
+  std::variant<codeql::EnumDecl, codeql::EnumDeclsTrap> translateEnumDecl(
+      const swift::EnumDecl& decl);
+  std::variant<codeql::ProtocolDecl, codeql::ProtocolDeclsTrap> translateProtocolDecl(
+      const swift::ProtocolDecl& decl);
+  codeql::EnumCaseDecl translateEnumCaseDecl(const swift::EnumCaseDecl& decl);
+  std::variant<codeql::EnumElementDecl, codeql::EnumElementDeclsTrap> translateEnumElementDecl(
+      const swift::EnumElementDecl& decl);
+  codeql::GenericTypeParamDecl translateGenericTypeParamDecl(
+      const swift::GenericTypeParamDecl& decl);
+  std::variant<codeql::AssociatedTypeDecl, codeql::AssociatedTypeDeclsTrap>
+  translateAssociatedTypeDecl(const swift::AssociatedTypeDecl& decl);
+  std::variant<codeql::TypeAliasDecl, codeql::TypeAliasDeclsTrap> translateTypeAliasDecl(
+      const swift::TypeAliasDecl& decl);
+  std::variant<codeql::AccessorDecl, codeql::AccessorDeclsTrap> translateAccessorDecl(
+      const swift::AccessorDecl& decl);
+  std::optional<codeql::SubscriptDecl> translateSubscriptDecl(const swift::SubscriptDecl& decl);
+  codeql::ExtensionDecl translateExtensionDecl(const swift::ExtensionDecl& decl);
 
  private:
-  SwiftDispatcher& dispatcher;
+  std::string mangledName(const swift::ValueDecl& decl);
+  void fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
+                                codeql::AbstractFunctionDecl& entry);
+  void fillOperatorDecl(const swift::OperatorDecl& decl, codeql::OperatorDecl& entry);
+  void fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl& entry);
+  void fillIterableDeclContext(const swift::IterableDeclContext& decl,
+                               codeql::IterableDeclContext& entry);
+  void fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& entry);
+  void fillNominalTypeDecl(const swift::NominalTypeDecl& decl, codeql::NominalTypeDecl& entry);
+  void fillGenericContext(const swift::GenericContext& decl, codeql::GenericContext& entry);
+  void fillValueDecl(const swift::ValueDecl& decl, codeql::ValueDecl& entry);
+  void fillAbstractStorageDecl(const swift::AbstractStorageDecl& decl,
+                               codeql::AbstractStorageDecl& entry);
+
+ private:
+  swift::Mangle::ASTMangler mangler;
 };
 
 }  // namespace codeql

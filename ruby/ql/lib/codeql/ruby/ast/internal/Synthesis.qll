@@ -21,6 +21,7 @@ newtype SynthKind =
   DivExprKind() or
   ExponentExprKind() or
   GlobalVariableAccessKind(GlobalVariable v) or
+  IfKind() or
   InstanceVariableAccessKind(InstanceVariable v) or
   IntegerLiteralKind(int i) { i in [-1000 .. 1000] } or
   LShiftExprKind() or
@@ -33,6 +34,7 @@ newtype SynthKind =
   } or
   ModuloExprKind() or
   MulExprKind() or
+  NilLiteralKind() or
   RangeLiteralKind(boolean inclusive) { inclusive in [false, true] } or
   RShiftExprKind() or
   SimpleParameterKind() or
@@ -206,6 +208,38 @@ private module ImplicitSelfSynthesis {
   private class RegularMethodCallSelfSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       regularMethodCallSelfSynthesis(parent, i, child)
+    }
+  }
+
+  pragma[nomagic]
+  private AstNode instanceVarAccessSynthParentStar(InstanceVariableAccess var) {
+    result = var
+    or
+    instanceVarAccessSynthParentStar(var) = getSynthChild(result, _)
+  }
+
+  /**
+   * Gets the `SelfKind` for instance variable access `var`. This is based on the
+   * "owner" of `var`; for real nodes this is the node itself, for synthetic nodes
+   * this is the closest parent that is a real node.
+   */
+  pragma[nomagic]
+  private SelfKind getSelfKind(InstanceVariableAccess var) {
+    exists(Ruby::AstNode owner |
+      owner = toGenerated(instanceVarAccessSynthParentStar(var)) and
+      result = SelfKind(TSelfVariable(scopeOf(owner).getEnclosingSelfScope()))
+    )
+  }
+
+  pragma[nomagic]
+  private predicate instanceVariableSelfSynthesis(InstanceVariableAccess var, int i, Child child) {
+    child = SynthChild(getSelfKind(var)) and
+    i = 0
+  }
+
+  private class InstanceVariableSelfSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      instanceVariableSelfSynthesis(parent, i, child)
     }
   }
 }
@@ -1079,6 +1113,126 @@ private module AnonymousBlockParameterSynth {
         param = anonymousBlockParameter() and
         scopeOf(toGenerated(parent)).getEnclosingMethod() = scopeOf(toGenerated(param)) and
         child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+      )
+    }
+  }
+}
+
+private module SafeNavigationCallDesugar {
+  /**
+   * ```rb
+   * receiver&.method(args) { ... }
+   * ```
+   * desugars to
+   *
+   * ```rb
+   * __synth__0 = receiver
+   * if nil == __synth__0 then nil else __synth__0.method(args) {...} end
+   * ```
+   */
+  pragma[nomagic]
+  private predicate safeNavigationCallSynthesis(AstNode parent, int i, Child child) {
+    exists(RegularMethodCall call, LocalVariableAccessSynthKind local |
+      call.isSafeNavigationImpl() and
+      local = LocalVariableAccessSynthKind(TLocalVariableSynth(call.getReceiverImpl(), 0))
+    |
+      parent = call and
+      i = -1 and
+      child = SynthChild(StmtSequenceKind())
+      or
+      exists(TStmtSequenceSynth seq | seq = TStmtSequenceSynth(call, -1) |
+        parent = seq and
+        (
+          child = SynthChild(AssignExprKind()) and i = 0
+          or
+          child = SynthChild(IfKind()) and i = 1
+        )
+        or
+        parent = TAssignExprSynth(seq, 0) and
+        (
+          child = SynthChild(local) and
+          i = 0
+          or
+          child = childRef(call.getReceiverImpl()) and i = 1
+        )
+        or
+        exists(TIfSynth ifExpr | ifExpr = TIfSynth(seq, 1) |
+          parent = ifExpr and
+          (
+            child = SynthChild(MethodCallKind("==", false, 2)) and
+            i = 0
+            or
+            child = SynthChild(NilLiteralKind()) and i = 1
+            or
+            child =
+              SynthChild(MethodCallKind(call.getMethodNameImpl(), false,
+                  call.getNumberOfArgumentsImpl())) and
+            i = 2
+          )
+          or
+          parent = TMethodCallSynth(ifExpr, 0, _, _, _) and
+          (
+            child = SynthChild(NilLiteralKind()) and i = 0
+            or
+            child = SynthChild(local) and
+            i = 1
+          )
+          or
+          parent = TMethodCallSynth(ifExpr, 2, _, _, _) and
+          (
+            i = 0 and
+            child = SynthChild(local)
+            or
+            child = childRef(call.getArgumentImpl(i - 1))
+            or
+            child = childRef(call.getBlockImpl()) and i = -2
+          )
+        )
+      )
+    )
+  }
+
+  private class SafeNavigationCallSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      safeNavigationCallSynthesis(parent, i, child)
+    }
+
+    final override predicate methodCall(string name, boolean setter, int arity) {
+      exists(RegularMethodCall call |
+        call.isSafeNavigationImpl() and
+        name = call.getMethodNameImpl() and
+        setter = false and
+        arity = call.getNumberOfArgumentsImpl()
+      )
+      or
+      name = "==" and setter = false and arity = 2
+    }
+
+    final override predicate localVariable(AstNode n, int i) {
+      i = 0 and n = any(RegularMethodCall c | c.isSafeNavigationImpl()).getReceiverImpl()
+    }
+
+    override predicate location(AstNode n, Location l) {
+      exists(RegularMethodCall call, StmtSequence seq |
+        call.isSafeNavigationImpl() and seq = call.getDesugared()
+      |
+        n = seq.getStmt(0) and
+        hasLocation(call.getReceiverImpl(), l)
+        or
+        n = seq.getStmt(1) and
+        l = toGenerated(call).(Ruby::Call).getOperator().getLocation()
+        or
+        n = seq.getStmt(1).(IfExpr).getCondition().(MethodCall).getArgument(0) and
+        hasLocation(call.getReceiverImpl(), l)
+        or
+        n = seq.getStmt(1).(IfExpr).getThen() and
+        hasLocation(call.getReceiverImpl(), l)
+        or
+        n = seq.getStmt(1).(IfExpr).getElse() and
+        hasLocation(call, l)
+        or
+        n = seq.getStmt(1).(IfExpr).getElse().(MethodCall).getReceiver() and
+        hasLocation(call.getReceiverImpl(), l)
       )
     }
   }

@@ -1,0 +1,41 @@
+| main.go:13:6:13:6 | definition of x |
+| main.go:14:2:14:2 | definition of y |
+| main.go:17:3:17:3 | definition of y |
+| main.go:19:2:19:2 | y = phi(def@14:2, def@17:3) |
+| main.go:21:3:21:3 | definition of x |
+| main.go:23:2:23:2 | x = phi(def@13:6, def@21:3) |
+| main.go:26:10:26:10 | definition of x |
+| main.go:27:2:27:2 | definition of a |
+| main.go:27:5:27:5 | definition of b |
+| main.go:29:3:29:3 | definition of a |
+| main.go:29:6:29:6 | definition of b |
+| main.go:31:9:31:9 | a = phi(def@27:2, def@29:3) |
+| main.go:31:9:31:9 | b = phi(def@27:5, def@29:6) |
+| main.go:34:11:34:11 | definition of x |
+| main.go:39:2:39:2 | definition of x |
+| main.go:40:2:40:4 | definition of ptr |
+| main.go:48:2:48:7 | definition of result |
+| main.go:52:14:52:19 | definition of result |
+| main.go:57:6:57:6 | definition of x |
+| main.go:58:6:58:6 | x = phi(def@57:6, def@59:3) |
+| main.go:59:3:59:3 | definition of x |
+| main.go:63:2:63:2 | definition of y |
+| main.go:64:6:64:6 | definition of i |
+| main.go:64:16:64:18 | definition of i |
+| main.go:65:6:65:6 | i = phi(def@64:16, def@64:6) |
+| main.go:65:6:65:6 | y = phi(def@63:2, def@68:3) |
+| main.go:68:3:68:3 | definition of y |
+| main.go:73:6:73:6 | definition of i |
+| main.go:73:16:73:18 | definition of i |
+| main.go:74:3:74:3 | definition of z |
+| main.go:74:3:74:3 | i = phi(def@73:16, def@73:6) |
+| main.go:82:25:82:25 | definition of b |
+| main.go:83:2:83:2 | definition of x |
+| main.go:84:5:84:5 | definition of a |
+| main.go:95:22:95:28 | definition of wrapper |
+| main.go:96:2:96:2 | definition of x |
+| main.go:97:2:99:3 | capture variable x |
+| main.go:98:3:98:3 | definition of x |
+| main.go:112:3:112:3 | definition of p |
+| main.go:114:3:114:3 | definition of p |
+| main.go:117:2:117:2 | p = phi(def@112:3, def@114:3) |

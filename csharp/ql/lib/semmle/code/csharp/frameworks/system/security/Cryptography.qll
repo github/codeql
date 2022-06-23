@@ -24,9 +24,9 @@ private class SystemSecurityCryptographyAsnEncondedDataCollectionFlowModelCsv ex
   override predicate row(string row) {
     row =
       [
-        "System.Security.Cryptography;AsnEncodedDataCollection;false;Add;(System.Security.Cryptography.AsnEncodedData);;Argument[0];Argument[Qualifier].Element;value",
-        "System.Security.Cryptography;AsnEncodedDataCollection;false;CopyTo;(System.Security.Cryptography.AsnEncodedData[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value",
-        "System.Security.Cryptography;AsnEncodedDataCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Security.Cryptography.AsnEncodedDataEnumerator.Current];value",
+        "System.Security.Cryptography;AsnEncodedDataCollection;false;Add;(System.Security.Cryptography.AsnEncodedData);;Argument[0];Argument[Qualifier].Element;value;manual",
+        "System.Security.Cryptography;AsnEncodedDataCollection;false;CopyTo;(System.Security.Cryptography.AsnEncodedData[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
+        "System.Security.Cryptography;AsnEncodedDataCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Security.Cryptography.AsnEncodedDataEnumerator.Current];value;manual",
       ]
   }
 }
@@ -36,9 +36,9 @@ private class SystemSecurityCryptographyOidCollectionFlowModelCsv extends Summar
   override predicate row(string row) {
     row =
       [
-        "System.Security.Cryptography;OidCollection;false;Add;(System.Security.Cryptography.Oid);;Argument[0];Argument[Qualifier].Element;value",
-        "System.Security.Cryptography;OidCollection;false;CopyTo;(System.Security.Cryptography.Oid[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value",
-        "System.Security.Cryptography;OidCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Security.Cryptography.OidEnumerator.Current];value",
+        "System.Security.Cryptography;OidCollection;false;Add;(System.Security.Cryptography.Oid);;Argument[0];Argument[Qualifier].Element;value;manual",
+        "System.Security.Cryptography;OidCollection;false;CopyTo;(System.Security.Cryptography.Oid[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
+        "System.Security.Cryptography;OidCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Security.Cryptography.OidEnumerator.Current];value;manual",
       ]
   }
 }

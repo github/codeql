@@ -1,0 +1,3 @@
+class myClass;
+
+myClass *myClassPtr;

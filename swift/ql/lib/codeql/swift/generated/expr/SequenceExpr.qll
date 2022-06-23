@@ -3,4 +3,15 @@ import codeql.swift.elements.expr.Expr
 
 class SequenceExprBase extends @sequence_expr, Expr {
   override string getAPrimaryQlClass() { result = "SequenceExpr" }
+
+  Expr getElement(int index) {
+    exists(Expr x |
+      sequence_expr_elements(this, index, x) and
+      result = x.resolve()
+    )
+  }
+
+  Expr getAnElement() { result = getElement(_) }
+
+  int getNumberOfElements() { result = count(getAnElement()) }
 }

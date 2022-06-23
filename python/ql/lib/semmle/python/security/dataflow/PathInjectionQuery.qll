@@ -47,11 +47,11 @@ class Configuration extends TaintTracking::Configuration {
     node instanceof Path::PathNormalization and
     state instanceof NotNormalized
     or
-    node = any(Path::SafeAccessCheck c).getAGuardedNode() and
+    node instanceof Path::SafeAccessCheck and
     state instanceof NormalizedUnchecked
   }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof SanitizerGuard
   }
 

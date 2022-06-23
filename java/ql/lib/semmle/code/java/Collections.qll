@@ -92,7 +92,7 @@ class CollectionMutation extends MethodAccess {
 /** A method that queries the contents of a collection without mutating it. */
 class CollectionQueryMethod extends CollectionMethod {
   CollectionQueryMethod() {
-    pragma[only_bind_into](this).getName().regexpMatch("contains|containsAll|get|size|peek")
+    pragma[only_bind_into](this).getName() = ["contains", "containsAll", "get", "size", "peek"]
   }
 }
 

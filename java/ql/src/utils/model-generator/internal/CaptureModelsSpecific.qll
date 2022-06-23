@@ -111,7 +111,7 @@ string asPartialModel(TargetApiSpecific api) {
 }
 
 private predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
-  t.getName().regexpMatch("byte|char|Byte|Character")
+  t.hasName(["byte", "char", "Byte", "Character"])
 }
 
 /**
@@ -232,4 +232,8 @@ string asInputArgument(DataFlow::Node source) {
  * Holds if `kind` is a relevant sink kind for creating sink models.
  */
 bindingset[kind]
-predicate isRelevantSinkKind(string kind) { not kind = "logging" }
+predicate isRelevantSinkKind(string kind) {
+  not kind = "logging" and
+  not kind.matches("regex-use%") and
+  not kind = "write-file"
+}

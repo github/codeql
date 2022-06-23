@@ -21,7 +21,7 @@ private class CredentialsFromModel extends CredentialsExpr {
   string kind;
 
   CredentialsFromModel() {
-    this = ModelOutput::getASinkNode("credentials[" + kind + "]").getARhs().asExpr()
+    this = ModelOutput::getASinkNode("credentials[" + kind + "]").asSink().asExpr()
   }
 
   override string getCredentialsKind() { result = kind }

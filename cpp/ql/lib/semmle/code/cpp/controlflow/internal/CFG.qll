@@ -970,7 +970,7 @@ private predicate subEdge(Pos p1, Node n1, Node n2, Pos p2) {
 private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) {
   subEdge(p1, n1, n2, p2)
   or
-  // If `n1` has sub-nodes to accomodate destructors, but there are none to be
+  // If `n1` has sub-nodes to accommodate destructors, but there are none to be
   // called, connect the "before destructors" node directly to the "after
   // destructors" node. For performance, only do this when the nodes exist.
   exists(Pos afterDtors | afterDtors.isAfterDestructors() | subEdge(afterDtors, n1, _, _)) and

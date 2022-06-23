@@ -19,22 +19,20 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
     val externalDeclsDone = HashSet<IrDeclaration>()
     val externalDeclWorkList = ArrayList<Pair<IrDeclaration, String>>()
 
+    val propertySignature = ";property"
+    val fieldSignature = ";field"
+
     fun extractLater(d: IrDeclaration, signature: String): Boolean {
         if (d !is IrClass && !isExternalFileClassMember(d)) {
-            logger.warnElement("External declaration is neither a class, nor a top-level declaration", d)
+            logger.errorElement("External declaration is neither a class, nor a top-level declaration", d)
             return false
         }
         val ret = externalDeclsDone.add(d)
         if (ret) externalDeclWorkList.add(Pair(d, signature))
         return ret
     }
-
-    val propertySignature = ";property"
-    val fieldSignature = ";field"
-
     fun extractLater(p: IrProperty) = extractLater(p, propertySignature)
     fun extractLater(f: IrField) = extractLater(f, fieldSignature)
-
     fun extractLater(c: IrClass) = extractLater(c, "")
 
     fun extractExternalClasses() {
@@ -64,7 +62,7 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
 
                             val containingClass = getContainingClassOrSelf(irDecl)
                             if (containingClass == null) {
-                                logger.warnElement("Unable to get containing class", irDecl)
+                                logger.errorElement("Unable to get containing class", irDecl)
                                 return
                             }
                             val binaryPath = getIrClassBinaryPath(containingClass)

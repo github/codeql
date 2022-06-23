@@ -84,7 +84,7 @@ public class CleartextStorageAndroidFilesystemTest extends Activity {
 
     // PrintStream
     {
-      // java.io;PrintStream;false;PrintStream;(File);;Argument[0];create-file"
+      // java.io;PrintStream;false;PrintStream;(File);;Argument[0];create-file;manual"
       PrintStream ps = new PrintStream(new File("some_file.txt"));
       // java.io;PrintStream;true;append;;;Argument[0];write-file
       ps.append(name + ":" + password); // $ hasCleartextStorageAndroidFilesystem
@@ -231,7 +231,7 @@ public class CleartextStorageAndroidFilesystemTest extends Activity {
       Path path = Path.of("some_file.txt");
       String contents = name + ":" + password;
       // java.nio.file;Files;false;write;;;Argument[0];create-file
-      // java.nio.file;Files;false;write;;;Argument[1];write-file",
+      // java.nio.file;Files;false;write;;;Argument[1];write-file;manual",
       Files.write(path, contents.getBytes()); // $ hasCleartextStorageAndroidFilesystem
     }
     {
@@ -242,7 +242,7 @@ public class CleartextStorageAndroidFilesystemTest extends Activity {
     {
       Path path = Path.of("some_file.txt");
       // java.nio.file;Files;false;writeString;;;Argument[0];create-file
-      // java.nio.file;Files;false;writeString;;;Argument[1];write-file"
+      // java.nio.file;Files;false;writeString;;;Argument[1];write-file;manual"
       Files.writeString(path, name + ":" + password); // $ hasCleartextStorageAndroidFilesystem
     }
 

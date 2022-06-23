@@ -28,14 +28,14 @@ private module RegexpMatching {
      * but if `ignorePrefix` is true, it will only match "foo".
      */
     predicate test(string str, boolean ignorePrefix) {
-      none() // maybe overriden in subclasses
+      none() // maybe overridden in subclasses
     }
 
     /**
      * Same as `test(..)`, but where the `fillsCaptureGroup` afterwards tells which capture groups were filled by the given string.
      */
     predicate testWithGroups(string str, boolean ignorePrefix) {
-      none() // maybe overriden in subclasses
+      none() // maybe overridden in subclasses
     }
 
     /**

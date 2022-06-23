@@ -27,4 +27,6 @@ class AnyFunctionTypeBase extends @any_function_type, Type {
   int getNumberOfParamLabels() { result = count(getAParamLabel()) }
 
   predicate isThrowing() { any_function_type_is_throwing(this) }
+
+  predicate isAsync() { any_function_type_is_async(this) }
 }

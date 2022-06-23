@@ -33,9 +33,9 @@ private class SystemNetWebUtilityFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Net;WebUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint",
-        "System.Net;WebUtility;false;HtmlEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint",
-        "System.Net;WebUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint"
+        "System.Net;WebUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint;manual",
+        "System.Net;WebUtility;false;HtmlEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint;manual",
+        "System.Net;WebUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint;manual"
       ]
   }
 }
@@ -77,8 +77,8 @@ private class SystemNetIPHostEntryClassFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Net;IPHostEntry;false;get_Aliases;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Net;IPHostEntry;false;get_HostName;();;Argument[Qualifier];ReturnValue;taint"
+        "System.Net;IPHostEntry;false;get_Aliases;();;Argument[Qualifier];ReturnValue;taint;manual",
+        "System.Net;IPHostEntry;false;get_HostName;();;Argument[Qualifier];ReturnValue;taint;manual"
       ]
   }
 }
@@ -94,7 +94,7 @@ class SystemNetCookieClass extends SystemNetClass {
 /** Data flow for `System.Net.Cookie`. */
 private class SystemNetCookieClassFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
-    row = "System.Net;Cookie;false;get_Value;();;Argument[Qualifier];ReturnValue;taint"
+    row = "System.Net;Cookie;false;get_Value;();;Argument[Qualifier];ReturnValue;taint;manual"
   }
 }
 
@@ -102,7 +102,7 @@ private class SystemNetCookieClassFlowModelCsv extends SummaryModelCsv {
 private class SystemNetHttpListenerPrefixCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Net;HttpListenerPrefixCollection;false;CopyTo;(System.Array,System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value"
+      "System.Net;HttpListenerPrefixCollection;false;CopyTo;(System.Array,System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual"
   }
 }
 
@@ -110,7 +110,7 @@ private class SystemNetHttpListenerPrefixCollectionFlowModelCsv extends SummaryM
 private class SystemNetCookieCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Net;CookieCollection;false;Add;(System.Net.CookieCollection);;Argument[0];Argument[Qualifier].Element;value"
+      "System.Net;CookieCollection;false;Add;(System.Net.CookieCollection);;Argument[0];Argument[Qualifier].Element;value;manual"
   }
 }
 
@@ -118,6 +118,6 @@ private class SystemNetCookieCollectionFlowModelCsv extends SummaryModelCsv {
 private class SystemNetWebHeaderCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Net;WebHeaderCollection;false;Add;(System.String);;Argument[0];Argument[Qualifier].Element;value"
+      "System.Net;WebHeaderCollection;false;Add;(System.String);;Argument[0];Argument[Qualifier].Element;value;manual"
   }
 }

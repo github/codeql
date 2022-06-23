@@ -337,15 +337,15 @@ private predicate safeCast(Type fromtyp, Type totyp) {
   exists(PrimitiveType pfrom, PrimitiveType pto | pfrom = fromtyp and pto = totyp |
     pfrom = pto
     or
-    pfrom.hasName("char") and pto.getName().regexpMatch("int|long|float|double")
+    pfrom.hasName("char") and pto.hasName(["int", "long", "float", "double"])
     or
-    pfrom.hasName("byte") and pto.getName().regexpMatch("short|int|long|float|double")
+    pfrom.hasName("byte") and pto.hasName(["short", "int", "long", "float", "double"])
     or
-    pfrom.hasName("short") and pto.getName().regexpMatch("int|long|float|double")
+    pfrom.hasName("short") and pto.hasName(["int", "long", "float", "double"])
     or
-    pfrom.hasName("int") and pto.getName().regexpMatch("long|float|double")
+    pfrom.hasName("int") and pto.hasName(["long", "float", "double"])
     or
-    pfrom.hasName("long") and pto.getName().regexpMatch("float|double")
+    pfrom.hasName("long") and pto.hasName(["float", "double"])
     or
     pfrom.hasName("float") and pto.hasName("double")
     or

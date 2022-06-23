@@ -17,7 +17,7 @@ class Conf extends DataFlow::Configuration {
     )
   }
 
-  override int fieldFlowBranchLimit() { result = 10 }
+  override int fieldFlowBranchLimit() { result = 100 }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf

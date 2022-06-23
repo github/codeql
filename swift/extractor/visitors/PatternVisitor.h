@@ -1,38 +1,23 @@
 #pragma once
 
-#include "swift/extractor/SwiftDispatcher.h"
-#include <swift/AST/ASTVisitor.h>
+#include "swift/extractor/visitors/VisitorBase.h"
 
 namespace codeql {
 
-namespace detail {
-// swift code lacks default implementations of visitor for some entities. We can add those here
-// while we do not have yet all implemented. This is a simplified version of the corresponding Expr
-// code in swift/AST/ASTVisitor.h
-template <typename CrtpSubclass>
-class PatchedPatternVisitor : public swift::PatternVisitor<CrtpSubclass> {
+class PatternVisitor : public AstVisitorBase<PatternVisitor> {
  public:
-#define PATTERN(CLASS, PARENT)                                 \
-  void visit##CLASS##Pattern(swift::CLASS##Pattern* E) {       \
-    return static_cast<CrtpSubclass*>(this)->visit##PARENT(E); \
-  }
-#include "swift/AST/PatternNodes.def"
+  using AstVisitorBase<PatternVisitor>::AstVisitorBase;
+
+  void visitNamedPattern(swift::NamedPattern* pattern);
+  void visitTypedPattern(swift::TypedPattern* pattern);
+  void visitTuplePattern(swift::TuplePattern* pattern);
+  void visitAnyPattern(swift::AnyPattern* pattern);
+  void visitBindingPattern(swift::BindingPattern* pattern);
+  void visitEnumElementPattern(swift::EnumElementPattern* pattern);
+  void visitOptionalSomePattern(swift::OptionalSomePattern* pattern);
+  void visitIsPattern(swift::IsPattern* pattern);
+  void visitExprPattern(swift::ExprPattern* pattern);
+  void visitParenPattern(swift::ParenPattern* pattern);
+  void visitBoolPattern(swift::BoolPattern* pattern);
 };
-
-}  // namespace detail
-
-class PatternVisitor : public detail::PatchedPatternVisitor<PatternVisitor> {
- public:
-  // SwiftDispatcher should outlive the PatternVisitor
-  PatternVisitor(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
-
-  template <typename E>
-  void visitPattern(E* pattern) {
-    dispatcher.TBD<swift::Pattern>(pattern, "Pattern");
-  }
-
- private:
-  SwiftDispatcher& dispatcher;
-};
-
 }  // namespace codeql

@@ -1049,7 +1049,7 @@ class SafeTransformerFactory extends VarAccess {
   }
 }
 
-/** A `Transformer` created from a safely configured `TranformerFactory`. */
+/** A `Transformer` created from a safely configured `TransformerFactory`. */
 class SafeTransformer extends MethodAccess {
   SafeTransformer() {
     exists(SafeTransformerFactoryFlowConfig stf, Method m |

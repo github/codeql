@@ -69,6 +69,20 @@ private module Cached {
     |
       definesPredicate(m, pc.getPredicateName(), pc.getNumberOfArguments(), p, public)
     )
+    or
+    exists(Module mod, PredicateExpr sig, int i |
+      mod.hasParameter(i, pc.getPredicateName(), sig) and
+      sig.getArity() = pc.getNumberOfArguments()
+    |
+      // resolve to the signature predicate
+      p = sig.getResolvedPredicate() // <- this is a `signature predicate`, but that's fine.
+      or
+      // resolve to the instantiations
+      exists(ModuleExpr inst, SignatureExpr arg | inst.getResolvedModule().asModule() = mod |
+        arg = inst.getArgument(i) and
+        p = arg.asPredicate().getResolvedPredicate()
+      )
+    )
   }
 
   private predicate resolveMemberCall(MemberCall mc, PredicateOrBuiltin p) {
@@ -162,17 +176,20 @@ module PredConsistency {
     c > 1 and
     resolvePredicateExpr(pe, p)
   }
+  // This can happen with parametarized modules
+  /*
+   * query predicate multipleResolveCall(Call call, int c, PredicateOrBuiltin p) {
+   *    c =
+   *      strictcount(PredicateOrBuiltin p0 |
+   *        resolveCall(call, p0) and
+   *        // aliases are expected to resolve to multiple.
+   *        not exists(p0.(ClasslessPredicate).getAlias()) and
+   *        // overridden predicates may have multiple targets
+   *        not p0.(ClassPredicate).isOverride()
+   *      ) and
+   *    c > 1 and
+   *    resolveCall(call, p)
+   *  }
+   */
 
-  query predicate multipleResolveCall(Call call, int c, PredicateOrBuiltin p) {
-    c =
-      strictcount(PredicateOrBuiltin p0 |
-        resolveCall(call, p0) and
-        // aliases are expected to resolve to multiple.
-        not exists(p0.(ClasslessPredicate).getAlias()) and
-        // overridden predicates may have multiple targets
-        not p0.(ClassPredicate).isOverride()
-      ) and
-    c > 1 and
-    resolveCall(call, p)
   }
-}

@@ -3,6 +3,7 @@
     "module": "esnext",
     "target": "esnext",
     "lib": ["dom", "esnext"],
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "moduleSuffixes": [".ios", ""]
   }
 }

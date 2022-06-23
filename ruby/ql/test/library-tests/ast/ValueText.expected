@@ -74,6 +74,12 @@ exprValue
 | calls/calls.rb:346:8:346:9 | 42 | 42 | int |
 | calls/calls.rb:347:5:347:5 | :X | :X | symbol |
 | calls/calls.rb:350:5:350:5 | 1 | 1 | int |
+| calls/calls.rb:362:1:362:4 | nil | nil | nil |
+| calls/calls.rb:362:5:362:6 | nil | nil | nil |
+| calls/calls.rb:364:1:364:3 | nil | nil | nil |
+| calls/calls.rb:364:4:364:5 | nil | nil | nil |
+| calls/calls.rb:364:10:364:10 | 1 | 1 | int |
+| calls/calls.rb:364:12:364:12 | 2 | 2 | int |
 | constants/constants.rb:3:19:3:27 | "const_a" | const_a | string |
 | constants/constants.rb:6:15:6:23 | "const_b" | const_b | string |
 | constants/constants.rb:17:12:17:18 | "Hello" | Hello | string |
@@ -963,6 +969,12 @@ exprCfgNodeValue
 | calls/calls.rb:346:8:346:9 | 42 | 42 | int |
 | calls/calls.rb:347:5:347:5 | :X | :X | symbol |
 | calls/calls.rb:350:5:350:5 | 1 | 1 | int |
+| calls/calls.rb:362:1:362:4 | nil | nil | nil |
+| calls/calls.rb:362:5:362:6 | nil | nil | nil |
+| calls/calls.rb:364:1:364:3 | nil | nil | nil |
+| calls/calls.rb:364:4:364:5 | nil | nil | nil |
+| calls/calls.rb:364:10:364:10 | 1 | 1 | int |
+| calls/calls.rb:364:12:364:12 | 2 | 2 | int |
 | constants/constants.rb:3:19:3:27 | "const_a" | const_a | string |
 | constants/constants.rb:6:15:6:23 | "const_b" | const_b | string |
 | constants/constants.rb:17:12:17:18 | "Hello" | Hello | string |

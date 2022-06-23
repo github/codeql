@@ -184,7 +184,7 @@ class Import extends Import_ {
    * For example, for the import statement `import bar` which
    * is a relative import in package "foo", this would return
    * "foo.bar".
-   * The import statment `from foo import bar` would return
+   * The import statement `from foo import bar` would return
    * `foo` and `foo.bar`
    */
   string getAnImportedModuleName() {

@@ -1,3 +1,21 @@
+## 0.1.4
+
+## 0.1.3
+
+### New Queries
+
+* The `js/actions/command-injection` query has been added. It highlights GitHub Actions workflows that may allow an 
+  attacker to execute arbitrary code in the workflow.
+  The query previously existed an experimental query.
+* A new query `js/insecure-temporary-file` has been added. The query detects the creation of temporary files that may be accessible by others users. The query is not run by default. 
+
+## 0.1.2
+
+### New Queries
+
+* The `js/missing-origin-check` query has been added. It highlights "message" event handlers that do not check the origin of the event.  
+  The query previously existed as the experimental `js/missing-postmessageorigin-verification` query.
+
 ## 0.1.1
 
 ### Minor Analysis Improvements

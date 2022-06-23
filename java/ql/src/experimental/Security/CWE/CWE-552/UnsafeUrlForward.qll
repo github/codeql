@@ -154,8 +154,8 @@ private class ServletGetPathSource extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [
-        "javax.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote",
-        "jakarta.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote"
+        "javax.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote;manual",
+        "jakarta.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote;manual"
       ]
   }
 }
@@ -165,13 +165,13 @@ private class FilePathFlowStep extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint",
-        "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint",
-        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint",
-        "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint",
-        "io.undertow.server.handlers.resource;Resource;true;getFile;;;Argument[-1];ReturnValue;taint",
-        "io.undertow.server.handlers.resource;Resource;true;getFilePath;;;Argument[-1];ReturnValue;taint",
-        "io.undertow.server.handlers.resource;Resource;true;getPath;;;Argument[-1];ReturnValue;taint"
+        "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint;manual",
+        "io.undertow.server.handlers.resource;Resource;true;getFile;;;Argument[-1];ReturnValue;taint;manual",
+        "io.undertow.server.handlers.resource;Resource;true;getFilePath;;;Argument[-1];ReturnValue;taint;manual",
+        "io.undertow.server.handlers.resource;Resource;true;getPath;;;Argument[-1];ReturnValue;taint;manual"
       ]
   }
 }

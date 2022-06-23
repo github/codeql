@@ -37,7 +37,7 @@ private module Cached {
    *      along the chain of addresses computed by `StoreNodeInstr.getInner` to identify field writes
    *      and call `storeStep` accordingly (i.e., for an expression like `a.b.c = x`, we visit `c`, then
    *      `b`, then `a`).
-   *   2. Flow is transfered from a `WriteSideEffectInstruction` to a `StoreNodeOperand` after flow
+   *   2. Flow is transferred from a `WriteSideEffectInstruction` to a `StoreNodeOperand` after flow
    *      returns to a caller. Flow will then proceed to the defining instruction of the operand (because
    *      the `StoreNodeInstr` computed by `StoreNodeOperand.getInner()` is the `StoreNode` containing
    *      the defining instruction), and then along the chain computed by `StoreNodeInstr.getInner` like
@@ -100,7 +100,7 @@ class Node extends TIRDataFlowNode {
   Declaration getEnclosingCallable() { none() } // overridden in subclasses
 
   /** Gets the function to which this node belongs, if any. */
-  Function getFunction() { none() } // overridden in subclasses
+  Declaration getFunction() { none() } // overridden in subclasses
 
   /** Gets the type of this node. */
   IRType getType() { none() } // overridden in subclasses
@@ -196,7 +196,7 @@ class InstructionNode extends Node, TInstructionNode {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Function getFunction() { result = instr.getEnclosingFunction() }
+  override Declaration getFunction() { result = instr.getEnclosingFunction() }
 
   override IRType getType() { result = instr.getResultIRType() }
 
@@ -222,7 +222,7 @@ class OperandNode extends Node, TOperandNode {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Function getFunction() { result = op.getUse().getEnclosingFunction() }
+  override Declaration getFunction() { result = op.getUse().getEnclosingFunction() }
 
   override IRType getType() { result = op.getIRType() }
 
@@ -274,7 +274,7 @@ class StoreNodeInstr extends StoreNode, TStoreNodeInstr {
   /** Gets the underlying instruction. */
   Instruction getInstruction() { result = instr }
 
-  override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
+  override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
 
   override IRType getType() { result = this.getInstruction().getResultIRType() }
 
@@ -328,7 +328,7 @@ class StoreNodeOperand extends StoreNode, TStoreNodeOperand {
   /** Gets the underlying operand. */
   Operand getOperand() { result = operand }
 
-  override Function getFunction() { result = operand.getDef().getEnclosingFunction() }
+  override Declaration getFunction() { result = operand.getDef().getEnclosingFunction() }
 
   override IRType getType() { result = operand.getIRType() }
 
@@ -384,7 +384,7 @@ class ReadNode extends Node, TReadNode {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
+  override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
 
   override IRType getType() { result = this.getInstruction().getResultIRType() }
 
@@ -436,7 +436,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Function getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
+  override Declaration getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
 
   override IRType getType() { result instanceof IRVoidType }
 
@@ -673,7 +673,7 @@ class VariableNode extends Node, TVariableNode {
   /** Gets the variable corresponding to this node. */
   Variable getVariable() { result = v }
 
-  override Function getFunction() { none() }
+  override Declaration getFunction() { none() }
 
   override Declaration getEnclosingCallable() {
     // When flow crosses from one _enclosing callable_ to another, the
@@ -1092,6 +1092,56 @@ class ContentSet instanceof Content {
 }
 
 /**
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
+ */
+signature predicate guardChecksSig(IRGuardCondition g, Expr e, boolean branch);
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  ExprNode getABarrierNode() {
+    exists(IRGuardCondition g, ValueNumber value, boolean edge |
+      guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
+      result.asInstruction() = value.getAnInstruction() and
+      g.controls(result.asInstruction().getBlock(), edge)
+    )
+  }
+}
+
+/**
+ * Holds if the guard `g` validates the instruction `instr` upon evaluating to `branch`.
+ */
+signature predicate instructionGuardChecksSig(IRGuardCondition g, Instruction instr, boolean branch);
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an instruction.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  ExprNode getABarrierNode() {
+    exists(IRGuardCondition g, ValueNumber value, boolean edge |
+      instructionGuardChecks(g, value.getAnInstruction(), edge) and
+      result.asInstruction() = value.getAnInstruction() and
+      g.controls(result.asInstruction().getBlock(), edge)
+    )
+  }
+}
+
+/**
+ * DEPRECATED: Use `BarrierGuard` module instead.
+ *
  * A guard that validates some instruction.
  *
  * To use this in a configuration, extend the class and provide a
@@ -1100,7 +1150,7 @@ class ContentSet instanceof Content {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends IRGuardCondition {
+deprecated class BarrierGuard extends IRGuardCondition {
   /** Override this predicate to hold if this guard validates `instr` upon evaluating to `b`. */
   predicate checksInstr(Instruction instr, boolean b) { none() }
 

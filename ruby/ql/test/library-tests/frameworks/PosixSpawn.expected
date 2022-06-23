@@ -1,0 +1,29 @@
+systemCalls
+| PosixSpawn.rb:1:1:1:32 | call to popen4 | PosixSpawn.rb:1:22:1:25 | "ls" | false |
+| PosixSpawn.rb:1:1:1:32 | call to popen4 | PosixSpawn.rb:1:28:1:31 | "-l" | false |
+| PosixSpawn.rb:2:1:2:31 | call to popen4 | PosixSpawn.rb:2:21:2:24 | "ls" | false |
+| PosixSpawn.rb:2:1:2:31 | call to popen4 | PosixSpawn.rb:2:27:2:30 | "-l" | false |
+| PosixSpawn.rb:7:1:7:40 | call to spawn | PosixSpawn.rb:7:20:7:39 | * ... | true |
+| PosixSpawn.rb:8:1:8:30 | call to spawn | PosixSpawn.rb:8:21:8:29 | "sleep 5" | true |
+| PosixSpawn.rb:9:1:9:23 | call to spawn | PosixSpawn.rb:9:20:9:22 | call to cmd | true |
+| PosixSpawn.rb:10:1:10:29 | call to spawn | PosixSpawn.rb:10:20:10:22 | call to env | false |
+| PosixSpawn.rb:10:1:10:29 | call to spawn | PosixSpawn.rb:10:25:10:28 | "ls" | true |
+| PosixSpawn.rb:15:1:15:60 | call to system | PosixSpawn.rb:15:21:15:25 | "foo" | false |
+| PosixSpawn.rb:15:1:15:60 | call to system | PosixSpawn.rb:15:28:15:32 | "bar" | false |
+| PosixSpawn.rb:15:1:15:60 | call to system | PosixSpawn.rb:15:35:15:44 | "--a-flag" | false |
+| PosixSpawn.rb:15:1:15:60 | call to system | PosixSpawn.rb:15:47:15:52 | call to before | false |
+| PosixSpawn.rb:15:1:15:60 | call to system | PosixSpawn.rb:15:55:15:59 | call to after | false |
+| PosixSpawn.rb:17:1:17:28 | call to fspawn | PosixSpawn.rb:17:21:17:27 | call to command | true |
+| PosixSpawn.rb:18:1:18:28 | call to pspawn | PosixSpawn.rb:18:21:18:27 | call to command | true |
+| PosixSpawn.rb:19:1:19:28 | call to popen4 | PosixSpawn.rb:19:21:19:27 | call to command | true |
+| PosixSpawn.rb:21:1:21:28 | call to ` | PosixSpawn.rb:21:16:21:20 | "foo" | false |
+| PosixSpawn.rb:21:1:21:28 | call to ` | PosixSpawn.rb:21:23:21:27 | "bar" | false |
+childCalls
+| PosixSpawn.rb:4:1:4:77 | call to new | PosixSpawn.rb:4:25:4:39 | call to [] | false |
+| PosixSpawn.rb:4:1:4:77 | call to new | PosixSpawn.rb:4:42:4:51 | ... + ... | false |
+| PosixSpawn.rb:4:1:4:77 | call to new | PosixSpawn.rb:4:54:4:58 | * ... | false |
+| PosixSpawn.rb:5:1:5:80 | call to new | PosixSpawn.rb:5:25:5:32 | * ... | false |
+| PosixSpawn.rb:12:1:12:35 | call to new | PosixSpawn.rb:12:25:12:28 | "ls" | false |
+| PosixSpawn.rb:12:1:12:35 | call to new | PosixSpawn.rb:12:31:12:34 | "-l" | false |
+| PosixSpawn.rb:13:1:13:38 | call to build | PosixSpawn.rb:13:27:13:32 | "echo" | false |
+| PosixSpawn.rb:13:1:13:38 | call to build | PosixSpawn.rb:13:35:13:37 | call to msg | false |

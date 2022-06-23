@@ -3,4 +3,21 @@ import codeql.swift.elements.type.Type
 
 class TupleTypeBase extends @tuple_type, Type {
   override string getAPrimaryQlClass() { result = "TupleType" }
+
+  Type getType(int index) {
+    exists(Type x |
+      tuple_type_types(this, index, x) and
+      result = x.resolve()
+    )
+  }
+
+  Type getAType() { result = getType(_) }
+
+  int getNumberOfTypes() { result = count(getAType()) }
+
+  string getName(int index) { tuple_type_names(this, index, result) }
+
+  string getAName() { result = getName(_) }
+
+  int getNumberOfNames() { result = count(getAName()) }
 }

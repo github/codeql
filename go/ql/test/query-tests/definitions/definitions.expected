@@ -1,0 +1,4 @@
+| main.go:6:26:6:28 | who | main.go:5:12:5:14 | who | V |
+| main.go:11:2:11:6 | greet | main.go:5:6:5:10 | greet | V |
+| main.go:11:8:11:12 | world | main.go:10:2:10:6 | world | V |
+| main.go:12:2:12:7 | greet2 | greet.go:5:6:5:11 | greet2 | V |

@@ -52,7 +52,7 @@ module CodeInjection {
   }
 
   /**
-   * A template tag occuring in JS code, viewed as a code injection sink.
+   * A template tag occurring in JS code, viewed as a code injection sink.
    */
   class TemplateTagInScriptSink extends Sink {
     TemplateTagInScriptSink() {

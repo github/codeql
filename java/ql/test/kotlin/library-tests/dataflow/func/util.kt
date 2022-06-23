@@ -1,23 +1,23 @@
 class Processor {
-    fun <R> process(f: () -> R) : R {
+    fun <R1> process(f: () -> R1) : R1 {
         return f()
     }
 
-    fun <T, R> process(f: (T) -> R, arg: T) : R {
+    fun <T, R2> process(f: (T) -> R2, arg: T) : R2 {
         return f(arg)
     }
 
-    fun <T0, T1, R> process(f: (T0, T1) -> R, arg0: T0, arg1: T1) : R {
+    fun <T0, T1, R3> process(f: (T0, T1) -> R3, arg0: T0, arg1: T1) : R3 {
         return f(arg0, arg1)
     }
 
-    fun <T, R> process(
-        f: (T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T) -> R,
-        a: T, b: T) : R {
+    fun <T, R4> process(
+        f: (T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T) -> R4,
+        a: T, b: T) : R4 {
         return f(a,b,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a)
     }
 
-    fun <T, R> processExt(f: T.(T) -> R, ext: T, arg: T) : R {
+    fun <T, R5> processExt(f: T.(T) -> R5, ext: T, arg: T) : R5 {
         return ext.f(arg)
     }
 }
