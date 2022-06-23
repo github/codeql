@@ -104,6 +104,35 @@
 | dataClass.kt:1:34:1:46 | this.y | VarAccess |
 | dataClass.kt:1:34:1:46 | y | VarAccess |
 | dataClass.kt:1:34:1:46 | y | VarAccess |
+| enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumClass[] | TypeAccess |
+| enumClass.kt:0:0:0:0 | String | TypeAccess |
+| enumClass.kt:1:1:4:1 | EnumClass | TypeAccess |
+| enumClass.kt:1:1:4:1 | Unit | TypeAccess |
+| enumClass.kt:1:1:4:1 | new Enum(...) | ClassInstanceExpr |
+| enumClass.kt:1:22:1:31 | ...=... | KtInitializerAssignExpr |
+| enumClass.kt:1:22:1:31 | int | TypeAccess |
+| enumClass.kt:1:22:1:31 | int | TypeAccess |
+| enumClass.kt:1:22:1:31 | int | TypeAccess |
+| enumClass.kt:1:22:1:31 | this | ThisAccess |
+| enumClass.kt:1:22:1:31 | this.v | VarAccess |
+| enumClass.kt:1:22:1:31 | v | VarAccess |
+| enumClass.kt:1:22:1:31 | v | VarAccess |
+| enumClass.kt:2:5:2:13 | ...=... | KtInitializerAssignExpr |
+| enumClass.kt:2:5:2:13 | EnumClass | TypeAccess |
+| enumClass.kt:2:5:2:13 | EnumClass | TypeAccess |
+| enumClass.kt:2:5:2:13 | EnumClass | TypeAccess |
+| enumClass.kt:2:5:2:13 | EnumClass.enum1 | VarAccess |
+| enumClass.kt:2:5:2:13 | new EnumClass(...) | ClassInstanceExpr |
+| enumClass.kt:2:11:2:11 | 1 | IntegerLiteral |
+| enumClass.kt:3:5:3:12 | ...=... | KtInitializerAssignExpr |
+| enumClass.kt:3:5:3:12 | EnumClass | TypeAccess |
+| enumClass.kt:3:5:3:12 | EnumClass | TypeAccess |
+| enumClass.kt:3:5:3:12 | EnumClass | TypeAccess |
+| enumClass.kt:3:5:3:12 | EnumClass.enum2 | VarAccess |
+| enumClass.kt:3:5:3:12 | new EnumClass(...) | ClassInstanceExpr |
+| enumClass.kt:3:11:3:11 | 1 | IntegerLiteral |
 | methods2.kt:4:1:5:1 | Unit | TypeAccess |
 | methods2.kt:4:26:4:31 | int | TypeAccess |
 | methods2.kt:4:34:4:39 | int | TypeAccess |
