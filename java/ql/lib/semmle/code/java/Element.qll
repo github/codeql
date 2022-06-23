@@ -53,6 +53,8 @@ class Element extends @element, Top {
       i = 2 and result = "Generated data class member"
       or
       i = 3 and result = "Default property accessor"
+      or
+      i = 4 and result = "Class initialisation method <clinit>"
     )
   }
 }

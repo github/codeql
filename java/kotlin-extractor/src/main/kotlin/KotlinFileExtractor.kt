@@ -595,6 +595,8 @@ open class KotlinFileExtractor(
                 tw.writeMethods(clinitId, "<clinit>", "<clinit>()", returnType.javaResult.id, parentId, clinitId)
                 tw.writeMethodsKotlinType(clinitId, returnType.kotlinResult.id)
 
+                tw.writeCompiler_generated(clinitId, 4)
+
                 val locId = tw.getWholeFileLocation()
                 tw.writeHasLocation(clinitId, locId)
 
