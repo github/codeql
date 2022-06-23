@@ -1211,10 +1211,15 @@ ktPropertyDelegates(
   unique int variableId: @variable ref
 )
 
+/**
+ * If `id` is a compiler generated element, then the kind indicates the
+ * reason that the compiler generated it.
+ * See `Element.compilerGeneratedReason()` for an explanation of what
+ * each `kind` means.
+ */
 compiler_generated(
   unique int id: @element ref,
   int kind: int ref
-  // 1: Declaring classes of adapter functions in Kotlin
 )
 
 ktFunctionOriginalNames(

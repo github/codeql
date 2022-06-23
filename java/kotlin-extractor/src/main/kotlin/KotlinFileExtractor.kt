@@ -783,6 +783,9 @@ open class KotlinFileExtractor(
                     val methodId = id.cast<DbMethod>()
                     tw.writeMethods(methodId, shortName.nameInDB, "${shortName.nameInDB}$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration.cast<DbMethod>())
                     tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
+                    if (f.origin == IrDeclarationOrigin.GENERATED_DATA_CLASS_MEMBER) {
+                        tw.writeCompiler_generated(methodId, 2)
+                    }
 
                     if (extractMethodAndParameterTypeAccesses) {
                         extractTypeAccessRecursive(substReturnType, locId, id, -1)
