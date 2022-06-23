@@ -1210,16 +1210,12 @@ open class KotlinUsesExtractor(
     }
 
     fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
-        return kotlinFunctionToJavaEquivalent(f, noReplace).let {
-            useFunction(it, getFunctionLabel(it, parentId, classTypeArgsIncludingOuterClasses))
-        }
-    }
-
-    private fun <T: DbCallable> useFunction(f: IrFunction, label: String): Label<out T> {
+        val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
+        val label = getFunctionLabel(javaFun, parentId, classTypeArgsIncludingOuterClasses)
         val id: Label<T> = tw.getLabelFor(label)
-        if (isExternalDeclaration(f)) {
-            extractFunctionLaterIfExternalFileMember(f)
-            extractExternalEnclosingClassLater(f)
+        if (isExternalDeclaration(javaFun)) {
+            extractFunctionLaterIfExternalFileMember(javaFun)
+            extractExternalEnclosingClassLater(javaFun)
         }
         return id
     }
