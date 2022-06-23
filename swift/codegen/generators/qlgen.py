@@ -19,7 +19,7 @@ class FormatError(Exception):
 def get_ql_property(cls: schema.Class, prop: schema.Property):
     common_args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
-        skip_qltest="no_qltest" in prop.tags,
+        skip_qltest="skip_qltest" in prop.pragmas,
         is_child=prop.is_child,
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
@@ -64,7 +64,7 @@ def get_ql_class(cls: schema.Class):
         final=not cls.derived,
         properties=[get_ql_property(cls, p) for p in cls.properties],
         dir=cls.dir,
-        skip_qltest="no_qltest" in cls.tags,
+        skip_qltest="skip_qltest" in cls.pragmas,
     )
 
 
