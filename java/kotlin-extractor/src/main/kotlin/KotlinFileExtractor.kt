@@ -371,7 +371,7 @@ open class KotlinFileExtractor(
         // add method:
         val obinitLabel = getObinitLabel(c)
         val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
-        val returnType = useType(pluginContext.irBuiltIns.unitType)
+        val returnType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
         tw.writeMethods(obinitId, "<obinit>", "<obinit>()", returnType.javaResult.id, parentId, obinitId)
         tw.writeMethodsKotlinType(obinitId, returnType.kotlinResult.id)
 
