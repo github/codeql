@@ -14,8 +14,8 @@ def generate(opts, renderer, input):
     def ret(classes):
         input.classes = classes
         generated = run_generation(cppgen.generate, opts, renderer)
-        assert set(generated) == {output_dir / "TrapClasses.h"}
-        generated = generated[output_dir / "TrapClasses.h"]
+        assert set(generated) == {output_dir / "TrapClasses"}
+        generated = generated[output_dir / "TrapClasses"]
         assert isinstance(generated, cpp.ClassList)
         return generated.classes
 

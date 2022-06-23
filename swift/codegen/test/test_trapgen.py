@@ -15,8 +15,8 @@ def generate(opts, renderer, dbscheme_input):
         dbscheme_input.entities = entities
         generated = run_generation(trapgen.generate, opts, renderer)
         assert set(generated) == {output_dir /
-                                  "TrapEntries.h", output_dir / "TrapTags.h"}
-        return generated[output_dir / "TrapEntries.h"], generated[output_dir / "TrapTags.h"]
+                                  "TrapEntries", output_dir / "TrapTags"}
+        return generated[output_dir / "TrapEntries"], generated[output_dir / "TrapTags"]
 
     return ret
 

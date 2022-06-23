@@ -8,8 +8,10 @@ genrule(
     ],
     outs = [
         "generated/TrapEntries.h",
+        "generated/TrapEntries.cpp",
         "generated/TrapTags.h",
         "generated/TrapClasses.h",
+        "generated/TrapClasses.cpp",
         "generated/swift.dbscheme",
     ],
     cmd = " ".join([
@@ -30,6 +32,10 @@ filegroup(
 
 swift_cc_library(
     name = "trap",
+    srcs = [
+        "generated/TrapClasses.cpp",
+        "generated/TrapEntries.cpp",
+    ],
     hdrs = glob(["*.h"]) + [
         "generated/TrapEntries.h",
         "generated/TrapTags.h",

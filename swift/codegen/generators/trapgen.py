@@ -80,8 +80,7 @@ def generate(opts, renderer):
             for d in e.rhs:
                 tag_graph.setdefault(d.type, set()).add(e.lhs)
 
-    renderer.render(cpp.TrapList(traps, opts.dbscheme),
-                    out / f"TrapEntries.h")
+    renderer.render(cpp.TrapList(traps, opts.dbscheme), out / "TrapEntries")
 
     tags = []
     for index, tag in enumerate(toposort_flatten(tag_graph)):
@@ -91,4 +90,4 @@ def generate(opts, renderer):
             index=index,
             id=tag,
         ))
-    renderer.render(cpp.TagList(tags, opts.dbscheme), out / f"TrapTags.h")
+    renderer.render(cpp.TagList(tags, opts.dbscheme), out / "TrapTags")

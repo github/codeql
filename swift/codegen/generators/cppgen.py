@@ -78,4 +78,4 @@ def generate(opts, renderer):
     assert opts.cpp_output
     processor = Processor({cls.name: cls for cls in schema.load(opts.schema).classes})
     out = opts.cpp_output
-    renderer.render(cpp.ClassList(processor.get_classes(), opts.schema), out / f"TrapClasses.h")
+    renderer.render(cpp.ClassList(processor.get_classes(), opts.schema), out / "TrapClasses")
