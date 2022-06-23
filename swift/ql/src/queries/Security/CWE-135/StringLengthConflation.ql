@@ -21,7 +21,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
     // result of a call to to `String.count`
     exists(MemberRefExpr member |
       member.getBaseExpr().getType().getName() = "String" and
-      member.getMember().toString() = "count" and // TODO: use of toString
+      member.getMember().(VarDecl).getName() = "count" and
       node.asExpr() = member and
       flowstate = "String"
     )
@@ -36,28 +36,39 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       (
         // `NSRange.init`
         className = "NSRange" and
-        methodName = "init" and
+        methodName = "init(location:length:)" and
         paramName = ["location", "length"]
         or
         // `NSString.character`
         className = ["NSString", "NSMutableString"] and
-        methodName = "character" and
+        methodName = "character(at:)" and
         paramName = "at"
         or
         // `NSString.character`
         className = ["NSString", "NSMutableString"] and
-        methodName = "substring" and
-        paramName = ["from", "to"]
+        methodName = "substring(from:)" and
+        paramName = "from"
+        or
+        // `NSString.character`
+        className = ["NSString", "NSMutableString"] and
+        methodName = "substring(to:)" and
+        paramName = "to"
         or
         // `NSMutableString.insert`
         className = "NSMutableString" and
-        methodName = "insert" and
+        methodName = "insert(_:at:)" and
         paramName = "at"
       ) and
-      c.toString() = className and // TODO: use of toString
+      c.getName() = className and
       c.getAMember() = f and // TODO: will this even work if its defined in a parent class?
       call.getFunction().(ApplyExpr).getFunction().(DeclRefExpr).getDecl() = f and
-      call.getFunction().(ApplyExpr).getFunction().toString() = methodName and // TODO: use of toString
+      call.getFunction()
+          .(ApplyExpr)
+          .getFunction()
+          .(DeclRefExpr)
+          .getDecl()
+          .(AbstractFunctionDecl)
+          .getName() = methodName and
       f.getParam(arg).getName() = paramName and
       call.getArgument(arg).getExpr() = node.asExpr() and
       flowstate = "String" // `String` length flowing into `NSString`
