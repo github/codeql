@@ -14,48 +14,13 @@ import experimental.adaptivethreatmodeling.EndpointFeatures as EndpointFeatures
 import experimental.adaptivethreatmodeling.EndpointScoring as EndpointScoring
 import experimental.adaptivethreatmodeling.EndpointTypes
 import experimental.adaptivethreatmodeling.FilteringReasons
-import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionATM
-import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionATM
-import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathATM
-import experimental.adaptivethreatmodeling.XssATM as XssATM
-import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomATM
 import Labels
 import NoFeaturizationRestrictionsConfig
 import Queries
 
-/** Gets the ATM configuration object for the specified query. */
-AtmConfig getAtmCfg(Query query) {
-  query instanceof NosqlInjectionQuery and
-  result instanceof NosqlInjectionATM::NosqlInjectionAtmConfig
-  or
-  query instanceof SqlInjectionQuery and result instanceof SqlInjectionATM::SqlInjectionAtmConfig
-  or
-  query instanceof TaintedPathQuery and result instanceof TaintedPathATM::TaintedPathAtmConfig
-  or
-  query instanceof XssQuery and result instanceof XssATM::DomBasedXssAtmConfig
-  or
-  query instanceof XssThroughDomQuery and result instanceof XssThroughDomATM::XssThroughDomAtmConfig
-}
-
-/** DEPRECATED: Alias for getAtmCfg */
-deprecated ATMConfig getATMCfg(Query query) { result = getAtmCfg(query) }
-
-/** Gets the ATM data flow configuration for the specified query. */
-DataFlow::Configuration getDataFlowCfg(Query query) {
-  query instanceof NosqlInjectionQuery and result instanceof NosqlInjectionATM::Configuration
-  or
-  query instanceof SqlInjectionQuery and result instanceof SqlInjectionATM::Configuration
-  or
-  query instanceof TaintedPathQuery and result instanceof TaintedPathATM::Configuration
-  or
-  query instanceof XssQuery and result instanceof XssATM::Configuration
-  or
-  query instanceof XssThroughDomQuery and result instanceof XssThroughDomATM::Configuration
-}
-
 /** Gets a known sink for the specified query. */
-private DataFlow::Node getASink(Query query) {
-  getAtmCfg(query).isKnownSink(result) and
+private DataFlow::Node getASink(AtmConfig atmConfig) {
+  atmConfig.isKnownSink(result) and
   // Only consider the source code for the project being analyzed.
   exists(result.getFile().getRelativePath())
 }
@@ -78,10 +43,10 @@ private DataFlow::Node getANotASink(NotASinkReason reason) {
  * In other words, this is an endpoint that is not `Sink`, `NotASink`, or `LikelyNotASink` for the
  * specified query.
  */
-private DataFlow::Node getAnUnknown(Query query) {
-  getAtmCfg(query).isEffectiveSink(result) and
+private DataFlow::Node getAnUnknown(AtmConfig atmConfig) {
+  atmConfig.isEffectiveSink(result) and
   // Effective sinks should exclude sinks but this is a defensive requirement
-  not result = getASink(query) and
+  not result = getASink(atmConfig) and
   // Effective sinks should exclude NotASink but for some queries (e.g. Xss) this is currently not always the case and
   // so this is a defensive requirement
   not result = getANotASink(_) and
@@ -90,16 +55,18 @@ private DataFlow::Node getAnUnknown(Query query) {
 }
 
 /** Gets the query-specific sink label for the given endpoint, if such a label exists. */
-private EndpointLabel getSinkLabelForEndpoint(DataFlow::Node endpoint, Query query) {
-  endpoint = getASink(query) and result instanceof SinkLabel
+private EndpointLabel getSinkLabelForEndpoint(DataFlow::Node endpoint, AtmConfig atmConfig) {
+  endpoint = getASink(atmConfig) and result instanceof SinkLabel
   or
   endpoint = getANotASink(_) and result instanceof NotASinkLabel
   or
-  endpoint = getAnUnknown(query) and result instanceof UnknownLabel
+  endpoint = getAnUnknown(atmConfig) and result instanceof UnknownLabel
 }
 
 /** Gets an endpoint that should be extracted. */
-DataFlow::Node getAnEndpoint(Query query) { exists(getSinkLabelForEndpoint(result, query)) }
+DataFlow::Node getAnEndpoint(AtmConfig atmConfig) {
+  exists(getSinkLabelForEndpoint(result, atmConfig))
+}
 
 /**
  * Endpoints and associated metadata.
@@ -112,11 +79,12 @@ DataFlow::Node getAnEndpoint(Query query) { exists(getSinkLabelForEndpoint(resul
  * for technical information about the design of this predicate.
  */
 predicate endpoints(
-  DataFlow::Node endpoint, string queryName, string key, string value, string valueType
+  DataFlow::Node endpoint, AtmConfig atmConfig, string queryName, string key, string value,
+  string valueType
 ) {
   exists(Query query |
     // Only provide metadata for labelled endpoints, since we do not extract all endpoints.
-    endpoint = getAnEndpoint(query) and
+    endpoint = getAnEndpoint(atmConfig) and
     queryName = query.getName() and
     (
       // Holds if there is a taint flow path from a known source to the endpoint
@@ -141,7 +109,7 @@ predicate endpoints(
       or
       // The label for this query, considering the endpoint as a sink.
       key = "sinkLabel" and
-      value = getSinkLabelForEndpoint(endpoint, query).getEncoding() and
+      value = getSinkLabelForEndpoint(endpoint, atmConfig).getEncoding() and
       valueType = "string"
       or
       // The reason, or reasons, why the endpoint was labeled NotASink for this query.
@@ -160,8 +128,10 @@ predicate endpoints(
  * `endpoint`. To preserve compatibility with the data pipeline, this relation will instead set
  * `featureValue` to the empty string in this case.
  */
-predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
-  endpoints(endpoint, _, _, _, _) and
+predicate tokenFeatures(
+  DataFlow::Node endpoint, AtmConfig atmConfig, string featureName, string featureValue
+) {
+  endpoints(endpoint, atmConfig, _, _, _, _) and
   (
     EndpointFeatures::tokenFeatures(endpoint, featureName, featureValue)
     or
@@ -188,17 +158,19 @@ module FlowFromSource {
    */
   private class Configuration extends DataFlow::Configuration {
     Query q;
+    AtmConfig atmConfig;
+    DataFlow::Configuration dataFlowConfig;
 
-    Configuration() { this = getDataFlowCfg(q) }
+    Configuration() { this = dataFlowConfig }
 
     Query getQuery() { result = q }
 
     /** The sinks are the endpoints we're extracting. */
-    override predicate isSink(DataFlow::Node sink) { sink = getAnEndpoint(q) }
+    override predicate isSink(DataFlow::Node sink) { sink = getAnEndpoint(atmConfig) }
 
     /** The sinks are the endpoints we're extracting. */
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel lbl) {
-      sink = getAnEndpoint(q) and exists(lbl)
+      sink = getAnEndpoint(atmConfig) and exists(lbl)
     }
   }
 }
