@@ -190,7 +190,7 @@ open class KotlinUsesExtractor(
         }
 
     // The Kotlin compiler internal representation of Outer<A, B>.Inner<C, D>.InnerInner<E, F>.someFunction<G, H>.LocalClass<I, J> is LocalClass<I, J, G, H, E, F, C, D, A, B>. This function returns [A, B, C, D, E, F, G, H, I, J].
-    fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
+    private fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
         if(argsIncludingOuterClasses.isNullOrEmpty())
             return argsIncludingOuterClasses
         val ret = ArrayList<IrTypeArgument>()
@@ -237,7 +237,7 @@ open class KotlinUsesExtractor(
         return UseClassInstanceResult(classTypeResult, extractClass)
     }
 
-    fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
+    private fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
 
     fun extractClassLaterIfExternal(c: IrClass) {
         if (isExternalDeclaration(c)) {
@@ -1427,7 +1427,7 @@ open class KotlinUsesExtractor(
         return t
     }
 
-    fun eraseTypeParameter(t: IrTypeParameter) =
+    private fun eraseTypeParameter(t: IrTypeParameter) =
         erase(t.superTypes[0])
 
     /**
