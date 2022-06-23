@@ -12,7 +12,16 @@ from swift.codegen.lib import schema, ql
 log = logging.getLogger(__name__)
 
 
-class FormatError(Exception):
+class Error(Exception):
+    def __str__(self):
+        return self.args[0]
+
+
+class FormatError(Error):
+    pass
+
+
+class ModifiedStubMarkedAsGeneratedError(Error):
     pass
 
 
@@ -84,11 +93,22 @@ def get_classes_used_by(cls: ql.Class):
     return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper()))
 
 
-def is_generated(file):
+def _is_generated_stub(file, check_modification=False):
     with open(file) as contents:
         for line in contents:
-            return line.startswith("// generated")
-        return False
+            if not line.startswith("// generated"):
+                return False
+            break
+        else:
+            # no lines
+            return False
+        if check_modification:
+            # one line already read, if we can read 4 other we are past the normal stub generation
+            line_threshold = 4
+            if sum(1 for _ in zip(range(line_threshold), contents)) == line_threshold:
+                raise ModifiedStubMarkedAsGeneratedError(
+                    f"{file.name} stub was modified but is still marked as generated")
+        return True
 
 
 def format(codeql, files):
@@ -138,7 +158,7 @@ def generate(opts, renderer):
     test_out = opts.ql_test_output
     missing_test_source_filename = "MISSING_SOURCE.txt"
     existing = {q for q in out.rglob("*.qll")}
-    existing |= {q for q in stub_out.rglob("*.qll") if is_generated(q)}
+    existing |= {q for q in stub_out.rglob("*.qll") if _is_generated_stub(q, check_modification=True)}
     existing |= {q for q in test_out.rglob("*.ql")}
     existing |= {q for q in test_out.rglob(missing_test_source_filename)}
 
@@ -157,7 +177,7 @@ def generate(opts, renderer):
         c.imports = [imports[t] for t in get_classes_used_by(c)]
         renderer.render(c, qll)
         stub_file = stub_out / c.path.with_suffix(".qll")
-        if not stub_file.is_file() or is_generated(stub_file):
+        if not stub_file.is_file() or _is_generated_stub(stub_file):
             stub = ql.Stub(
                 name=c.name, base_import=get_import(qll, opts.swift_dir))
             renderer.render(stub, stub_file)
