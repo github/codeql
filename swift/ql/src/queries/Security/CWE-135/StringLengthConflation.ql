@@ -58,14 +58,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       c.getAMember() = f and // TODO: will this even work if its defined in a parent class?
       call.getFunction().(ApplyExpr).getFunction().(DeclRefExpr).getDecl() = f and
       call.getFunction().(ApplyExpr).getFunction().toString() = methodName and // TODO: use of toString
-      call.getFunction()
-          .(ApplyExpr)
-          .getFunction()
-          .(DeclRefExpr)
-          .getDecl()
-          .(AbstractFunctionDecl)
-          .getParam(arg)
-          .getName() = argName and
+      f.getParam(arg).getName() = argName and
       call.getArgument(arg).getExpr() = node.asExpr() and
       flowstate = "String" // `String` length flowing into `NSString`
     )
@@ -73,9 +66,9 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
     // arguments to function calls...
     exists(string funcName, string argName, CallExpr call, int arg |
       // `NSMakeRange`
-      funcName = "NSMakeRange" and
+      funcName = "NSMakeRange(_:_:)" and
       argName = ["loc", "len"] and
-      call.getStaticTarget().getName().matches(funcName + "%") and
+      call.getStaticTarget().getName() = funcName and
       call.getStaticTarget().getParam(arg).getName() = argName and
       call.getArgument(arg).getExpr() = node.asExpr() and
       flowstate = "String" // `String` length flowing into `NSString`
@@ -85,4 +78,4 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
 
 from StringLengthConflationConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink, source, sink, "RESULT"
+select sink.getNode(), source, sink, "RESULT"
