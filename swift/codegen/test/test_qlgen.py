@@ -458,13 +458,13 @@ def test_test_properties_skipped(opts, generate_tests):
     write(opts.ql_test_output / "Derived" / "test.swift")
     assert generate_tests([
         schema.Class("Base", derived={"Derived"}, properties=[
-            schema.SingleProperty("x", "string", tags=["no_qltest", "foo"]),
-            schema.RepeatedProperty("y", "int", tags=["bar", "no_qltest"]),
+            schema.SingleProperty("x", "string", pragmas=["skip_qltest", "foo"]),
+            schema.RepeatedProperty("y", "int", pragmas=["bar", "skip_qltest"]),
         ]),
         schema.Class("Derived", bases={"Base"}, properties=[
-            schema.PredicateProperty("a", tags=["no_qltest"]),
+            schema.PredicateProperty("a", pragmas=["skip_qltest"]),
             schema.OptionalProperty(
-                "b", "int", tags=["bar", "no_qltest", "baz"]),
+                "b", "int", pragmas=["bar", "skip_qltest", "baz"]),
         ]),
     ]) == {
                "Derived/Derived.ql": ql.ClassTester(class_name="Derived"),
@@ -474,7 +474,7 @@ def test_test_properties_skipped(opts, generate_tests):
 def test_test_base_class_skipped(opts, generate_tests):
     write(opts.ql_test_output / "Derived" / "test.swift")
     assert generate_tests([
-        schema.Class("Base", derived={"Derived"}, tags=["no_qltest", "foo"], properties=[
+        schema.Class("Base", derived={"Derived"}, pragmas=["skip_qltest", "foo"], properties=[
             schema.SingleProperty("x", "string"),
             schema.RepeatedProperty("y", "int"),
         ]),
@@ -488,7 +488,7 @@ def test_test_final_class_skipped(opts, generate_tests):
     write(opts.ql_test_output / "Derived" / "test.swift")
     assert generate_tests([
         schema.Class("Base", derived={"Derived"}),
-        schema.Class("Derived", bases={"Base"}, tags=["no_qltest", "foo"], properties=[
+        schema.Class("Derived", bases={"Base"}, pragmas=["skip_qltest", "foo"], properties=[
             schema.SingleProperty("x", "string"),
             schema.RepeatedProperty("y", "int"),
         ]),
