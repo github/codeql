@@ -69,7 +69,7 @@ class ExternalApiDataNode extends DataFlow::Node {
   int i;
 
   ExternalApiDataNode() {
-    exists(DataFlowPrivate::DataFlowSourceCall call |
+    exists(DataFlowPrivate::DataFlowCall call |
       exists(call.getLocation().getFile().getRelativePath())
     |
       callable = call.getCallable() and

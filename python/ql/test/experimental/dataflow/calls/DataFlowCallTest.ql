@@ -15,7 +15,7 @@ class DataFlowCallTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(DataFlowSourceCall call |
+    exists(DataFlowCall call |
       location = call.getLocation() and
       element = call.toString()
     |

@@ -11,6 +11,6 @@
 import python
 import semmle.python.dataflow.new.internal.DataFlowPrivate
 
-from DataFlowSourceCall c, DataFlowCallableValue f
+from DataFlowCall c, DataFlowCallableValue f
 where c.getCallable() = f
 select c, "Call to $@", f.getScope(), f.toString()

@@ -459,6 +459,18 @@ abstract class DataFlowCall extends TDataFlowCall {
   /** Gets the enclosing callable of this call. */
   abstract DataFlowCallable getEnclosingCallable();
 
+  /** Get the callable to which this call goes. */
+  abstract DataFlowCallable getCallable();
+
+  /**
+   * Gets the argument to this call that will be sent
+   * to the `n`th parameter of the callable.
+   */
+  abstract Node getArg(int n);
+
+  /** Get the control flow node representing this call. */
+  abstract ControlFlowNode getNode();
+
   /** Gets the location of this dataflow call. */
   abstract Location getLocation();
 
@@ -480,17 +492,11 @@ abstract class DataFlowCall extends TDataFlowCall {
 abstract class DataFlowSourceCall extends DataFlowCall, TDataFlowSourceCall {
   final override Location getLocation() { result = this.getNode().getLocation() }
 
-  /** Get the callable to which this call goes. */
-  abstract DataFlowCallable getCallable();
+  abstract override DataFlowCallable getCallable();
 
-  /**
-   * Gets the argument to this call that will be sent
-   * to the `n`th parameter of the callable.
-   */
-  abstract Node getArg(int n);
+  abstract override Node getArg(int n);
 
-  /** Get the control flow node representing this call. */
-  abstract ControlFlowNode getNode();
+  abstract override ControlFlowNode getNode();
 }
 
 /** A call associated with a `CallNode`. */
@@ -651,6 +657,12 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   Node getReceiver() { result = receiver }
 
   override DataFlowCallable getEnclosingCallable() { result = c }
+
+  override DataFlowCallable getCallable() { none() }
+
+  override Node getArg(int n) { none() }
+
+  override ControlFlowNode getNode() { none() }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
