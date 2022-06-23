@@ -1205,17 +1205,17 @@ open class KotlinUsesExtractor(
             val ids = getLocallyVisibleFunctionLabels(f)
             return ids.function.cast<T>()
         } else {
-            val realFunction = kotlinFunctionToJavaEquivalent(f, noReplace)
-            return useFunctionCommon<T>(realFunction, getFunctionLabel(realFunction, classTypeArgsIncludingOuterClasses))
+            return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
         }
     }
 
-    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false) =
-        kotlinFunctionToJavaEquivalent(f, noReplace).let {
-            useFunctionCommon<T>(it, getFunctionLabel(it, parentId, classTypeArgsIncludingOuterClasses))
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
+        return kotlinFunctionToJavaEquivalent(f, noReplace).let {
+            useFunction(it, getFunctionLabel(it, parentId, classTypeArgsIncludingOuterClasses))
         }
+    }
 
-    private fun <T: DbCallable> useFunctionCommon(f: IrFunction, label: String): Label<out T> {
+    private fun <T: DbCallable> useFunction(f: IrFunction, label: String): Label<out T> {
         val id: Label<T> = tw.getLabelFor(label)
         if (isExternalDeclaration(f)) {
             extractFunctionLaterIfExternalFileMember(f)
