@@ -30,46 +30,46 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node node, string flowstate) {
     // arguments to method calls...
     exists(
-      string className, string methodName, string argName, ClassDecl c, AbstractFunctionDecl f,
+      string className, string methodName, string paramName, ClassDecl c, AbstractFunctionDecl f,
       CallExpr call, int arg
     |
       (
         // `NSRange.init`
         className = "NSRange" and
         methodName = "init" and
-        argName = ["location", "length"]
+        paramName = ["location", "length"]
         or
         // `NSString.character`
         className = ["NSString", "NSMutableString"] and
         methodName = "character" and
-        argName = "at"
+        paramName = "at"
         or
         // `NSString.character`
         className = ["NSString", "NSMutableString"] and
         methodName = "substring" and
-        argName = ["from", "to"]
+        paramName = ["from", "to"]
         or
         // `NSMutableString.insert`
         className = "NSMutableString" and
         methodName = "insert" and
-        argName = "at"
+        paramName = "at"
       ) and
       c.toString() = className and // TODO: use of toString
       c.getAMember() = f and // TODO: will this even work if its defined in a parent class?
       call.getFunction().(ApplyExpr).getFunction().(DeclRefExpr).getDecl() = f and
       call.getFunction().(ApplyExpr).getFunction().toString() = methodName and // TODO: use of toString
-      f.getParam(arg).getName() = argName and
+      f.getParam(arg).getName() = paramName and
       call.getArgument(arg).getExpr() = node.asExpr() and
       flowstate = "String" // `String` length flowing into `NSString`
     )
     or
     // arguments to function calls...
-    exists(string funcName, string argName, CallExpr call, int arg |
+    exists(string funcName, string paramName, CallExpr call, int arg |
       // `NSMakeRange`
       funcName = "NSMakeRange(_:_:)" and
-      argName = ["loc", "len"] and
+      paramName = ["loc", "len"] and
       call.getStaticTarget().getName() = funcName and
-      call.getStaticTarget().getParam(arg).getName() = argName and
+      call.getStaticTarget().getParam(arg).getName() = paramName and
       call.getArgument(arg).getExpr() = node.asExpr() and
       flowstate = "String" // `String` length flowing into `NSString`
     )
