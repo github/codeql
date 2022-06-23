@@ -43,7 +43,7 @@ abstract class RoutingTest extends InlineExpectationsTest {
   }
 
   pragma[inline]
-  private string fromFunc(DataFlow::ArgumentSourceNode fromNode) {
+  private string fromFunc(DataFlow::ArgumentNode fromNode) {
     result = fromNode.getCall().getNode().(CallNode).getFunction().getNode().(Name).getId()
   }
 

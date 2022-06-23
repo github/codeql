@@ -322,6 +322,9 @@ SourceParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
   abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
+
+  /** Gets the call in which this node is an argument, if any. */
+  final DataFlowSourceCall getCall() { this.argumentOf(result, _) }
 }
 
 /** A data flow node that represents a call argument. */
@@ -335,9 +338,6 @@ class ArgumentSourceNode extends ArgumentNode {
   predicate sourceArgumentOf(DataFlowSourceCall call, ArgumentPosition pos) {
     this = call.getArg(pos)
   }
-
-  /** Gets the call in which this node is an argument. */
-  final DataFlowSourceCall getCall() { this.argumentOf(result, _) }
 }
 
 /**
