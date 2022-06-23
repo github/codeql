@@ -149,11 +149,8 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
       extractDeclarations(config, decls, compiler, *module);
     } else {
       for (auto file : module->getFiles()) {
-        if (!llvm::isa<swift::SourceFile>(file)) {
-          continue;
-        }
-        auto sourceFile = llvm::cast<swift::SourceFile>(file);
-        if (sourceFiles.count(sourceFile->getFilename().str()) == 0) {
+        auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
+        if (!sourceFile || sourceFiles.count(sourceFile->getFilename().str()) == 0) {
           continue;
         }
         archiveFile(config, *sourceFile);
