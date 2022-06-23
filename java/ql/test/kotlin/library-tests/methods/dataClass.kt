@@ -1,1 +1,1 @@
-data class DataClass(val x: Int, val y: String)
+data class DataClass(val x: Int, var y: String)

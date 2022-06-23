@@ -2,6 +2,7 @@
 | dataClass.kt:0:0:0:0 | copy | dataClass.kt:1:22:1:31 | x | 0 |
 | dataClass.kt:0:0:0:0 | copy | dataClass.kt:1:34:1:46 | y | 1 |
 | dataClass.kt:0:0:0:0 | equals | dataClass.kt:0:0:0:0 | other | 0 |
+| dataClass.kt:1:34:1:46 | setY | dataClass.kt:1:34:1:46 | <set-?> | 0 |
 | methods2.kt:4:1:5:1 | fooBarTopLevelMethod | methods2.kt:4:26:4:31 | x | 0 |
 | methods2.kt:4:1:5:1 | fooBarTopLevelMethod | methods2.kt:4:34:4:39 | y | 1 |
 | methods2.kt:8:5:9:5 | fooBarClassMethod | methods2.kt:8:27:8:32 | x | 0 |

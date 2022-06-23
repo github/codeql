@@ -1,15 +1,16 @@
 methods
 | clinit.kt:0:0:0:0 | ClinitKt | clinit.kt:0:0:0:0 | <clinit> | <clinit>() |  |  |
-| clinit.kt:0:0:0:0 | ClinitKt | clinit.kt:3:1:3:24 | getTopLevelInt | getTopLevelInt() | public, static |  |
-| clinit.kt:0:0:0:0 | ClinitKt | clinit.kt:3:1:3:24 | setTopLevelInt | setTopLevelInt(int) | public, static |  |
+| clinit.kt:0:0:0:0 | ClinitKt | clinit.kt:3:1:3:24 | getTopLevelInt | getTopLevelInt() | public, static | Compiler generated |
+| clinit.kt:0:0:0:0 | ClinitKt | clinit.kt:3:1:3:24 | setTopLevelInt | setTopLevelInt(int) | public, static | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | component1 | component1() | public | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | component2 | component2() | public | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | copy | copy(int,java.lang.String) | public | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | equals | equals(java.lang.Object) | override, public | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | hashCode | hashCode() | override, public | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | toString | toString() | override, public | Compiler generated |
-| dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:1:22:1:31 | getX | getX() | public |  |
-| dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:1:34:1:46 | getY | getY() | public |  |
+| dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:1:22:1:31 | getX | getX() | public | Compiler generated |
+| dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:1:34:1:46 | getY | getY() | public | Compiler generated |
+| dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:1:34:1:46 | setY | setY(java.lang.String) | public | Compiler generated |
 | methods2.kt:0:0:0:0 | Methods2Kt | methods2.kt:4:1:5:1 | fooBarTopLevelMethod | fooBarTopLevelMethod(int,int) | public, static |  |
 | methods2.kt:7:1:10:1 | Class2 | methods2.kt:8:5:9:5 | fooBarClassMethod | fooBarClassMethod(int,int) | public |  |
 | methods3.kt:0:0:0:0 | Methods3Kt | methods3.kt:3:1:3:42 | fooBarTopLevelMethodExt | fooBarTopLevelMethodExt(int,int) | public, static |  |
