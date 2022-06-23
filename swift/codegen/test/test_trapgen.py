@@ -122,8 +122,9 @@ def test_one_table_overridden_underscore_named_field(generate_traps):
     assert generate_traps([
         dbscheme.Table(name="foos", columns=[dbscheme.Column("whatever_", "bar")]),
     ]) == [
-               cpp.Trap("foos", name="Foos", fields=[cpp.Field("whatever", "bar")]),
-           ]
+        cpp.Trap("foos", name="Foos", fields=[cpp.Field("whatever", "bar")]),
+    ]
+
 
 def test_one_table_no_tags(generate_tags):
     assert generate_tags([

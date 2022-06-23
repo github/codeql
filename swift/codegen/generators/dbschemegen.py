@@ -46,10 +46,10 @@ def cls_to_dbscheme(cls: schema.Class):
             keyset=keyset,
             name=inflection.tableize(cls.name),
             columns=[
-                        Column("id", type=dbtype(cls.name), binding=binding),
-                    ] + [
-                        Column(f.name, dbtype(f.type)) for f in cls.properties if f.is_single
-                    ]
+                Column("id", type=dbtype(cls.name), binding=binding),
+            ] + [
+                Column(f.name, dbtype(f.type)) for f in cls.properties if f.is_single
+            ]
         )
     # use property-specific tables for 1-to-many and 1-to-at-most-1 properties
     for f in cls.properties:

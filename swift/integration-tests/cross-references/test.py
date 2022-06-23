@@ -4,4 +4,3 @@ run_codeql_database_create([
  'swift package clean',
  'swift build'
 ], lang='swift')
-

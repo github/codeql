@@ -266,7 +266,6 @@ A:
 """)
 
 
-
 def test_class_with_pragmas(load):
     ret = load("""
 A:
