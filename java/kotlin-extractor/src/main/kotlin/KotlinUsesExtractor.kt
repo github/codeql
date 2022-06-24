@@ -190,7 +190,7 @@ open class KotlinUsesExtractor(
         }
 
     // The Kotlin compiler internal representation of Outer<A, B>.Inner<C, D>.InnerInner<E, F>.someFunction<G, H>.LocalClass<I, J> is LocalClass<I, J, G, H, E, F, C, D, A, B>. This function returns [A, B, C, D, E, F, G, H, I, J].
-    fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
+    private fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
         if(argsIncludingOuterClasses.isNullOrEmpty())
             return argsIncludingOuterClasses
         val ret = ArrayList<IrTypeArgument>()
@@ -237,7 +237,7 @@ open class KotlinUsesExtractor(
         return UseClassInstanceResult(classTypeResult, extractClass)
     }
 
-    fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
+    private fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
 
     fun extractClassLaterIfExternal(c: IrClass) {
         if (isExternalDeclaration(c)) {
@@ -637,14 +637,31 @@ open class KotlinUsesExtractor(
             )
 
             (s.isBoxedArray && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
-                var dimensions = 1
-                var isPrimitiveArray = s.isPrimitiveArray()
-                val componentType = s.getArrayElementType(pluginContext.irBuiltIns)
-                var elementType = componentType
+
+                fun replaceComponentTypeWithAny(t: IrSimpleType, dimensions: Int): IrSimpleType =
+                    if (dimensions == 0)
+                        pluginContext.irBuiltIns.anyType as IrSimpleType
+                    else
+                        t.toBuilder().also { it.arguments = (it.arguments[0] as IrTypeProjection)
+                            .let { oldArg ->
+                                listOf(makeTypeProjection(replaceComponentTypeWithAny(oldArg.type as IrSimpleType, dimensions - 1), oldArg.variance))
+                            }
+                        }.buildSimpleType()
+
+                var componentType = s.getArrayElementType(pluginContext.irBuiltIns)
+                var isPrimitiveArray = false
+                var dimensions = 0
+                var elementType: IrType = s
                 while (elementType.isBoxedArray || elementType.isPrimitiveArray()) {
                     dimensions++
-                    if(elementType.isPrimitiveArray())
+                    if (elementType.isPrimitiveArray())
                         isPrimitiveArray = true
+                    if (((elementType as IrSimpleType).arguments.singleOrNull() as? IrTypeProjection)?.variance == Variance.IN_VARIANCE) {
+                        // Because Java's arrays are covariant, Kotlin will render Array<in X> as Object[], Array<Array<in X>> as Object[][] etc.
+                        componentType = replaceComponentTypeWithAny(s, dimensions - 1)
+                        elementType = pluginContext.irBuiltIns.anyType as IrSimpleType
+                        break
+                    }
                     elementType = elementType.getArrayElementType(pluginContext.irBuiltIns)
                 }
 
@@ -857,13 +874,33 @@ open class KotlinUsesExtractor(
     private val jvmWildcardAnnotation = FqName("kotlin.jvm.JvmWildcard")
     private val jvmWildcardSuppressionAnnotaton = FqName("kotlin.jvm.JvmSuppressWildcards")
 
+    private fun arrayExtendsAdditionAllowed(t: IrSimpleType): Boolean =
+        // Note the array special case includes Array<*>, which does permit adding `? extends ...` (making `? extends Object[]` in that case)
+        // Surprisingly Array<in X> does permit this as well, though the contravariant array lowers to Object[] so this ends up `? extends Object[]` as well.
+        t.arguments[0].let {
+            when (it) {
+                is IrTypeProjection -> when (it.variance) {
+                    Variance.INVARIANT -> false
+                    Variance.IN_VARIANCE -> !(it.type.isAny() || it.type.isNullableAny())
+                    Variance.OUT_VARIANCE -> extendsAdditionAllowed(it.type)
+                }
+                else -> true
+            }
+        }
+
+    private fun extendsAdditionAllowed(t: IrType) =
+        if (t.isBoxedArray)
+            arrayExtendsAdditionAllowed(t as IrSimpleType)
+        else
+            ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
+
     private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean) =
         when {
             t.hasAnnotation(jvmWildcardAnnotation) -> true
             !addByDefault -> false
             t.hasAnnotation(jvmWildcardSuppressionAnnotaton) -> false
             v == Variance.IN_VARIANCE -> !(t.isNullableAny() || t.isAny())
-            v == Variance.OUT_VARIANCE -> ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
+            v == Variance.OUT_VARIANCE -> extendsAdditionAllowed(t)
             else -> false
         }
 
@@ -1109,15 +1146,6 @@ open class KotlinUsesExtractor(
         return res
     }
 
-    fun <T: DbCallable> useFunctionCommon(f: IrFunction, label: String): Label<out T> {
-        val id: Label<T> = tw.getLabelFor(label)
-        if (isExternalDeclaration(f)) {
-            extractFunctionLaterIfExternalFileMember(f)
-            extractExternalEnclosingClassLater(f)
-        }
-        return id
-    }
-
     // These are classes with Java equivalents, but whose methods don't all exist on those Java equivalents--
     // for example, the numeric classes define arithmetic functions (Int.plus, Long.or and so on) that lower to
     // primitive arithmetic on the JVM, but which we extract as calls to reflect the source syntax more closely.
@@ -1173,19 +1201,23 @@ open class KotlinUsesExtractor(
             } as IrFunction? ?: f
 
     fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
+        return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
+    }
+
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
         if (f.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(f)
             return ids.function.cast<T>()
-        } else {
-            val realFunction = kotlinFunctionToJavaEquivalent(f, noReplace)
-            return useFunctionCommon<T>(realFunction, getFunctionLabel(realFunction, classTypeArgsIncludingOuterClasses))
         }
+        val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
+        val label = getFunctionLabel(javaFun, parentId, classTypeArgsIncludingOuterClasses)
+        val id: Label<T> = tw.getLabelFor(label)
+        if (isExternalDeclaration(javaFun)) {
+            extractFunctionLaterIfExternalFileMember(javaFun)
+            extractExternalEnclosingClassLater(javaFun)
+        }
+        return id
     }
-
-    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false) =
-        kotlinFunctionToJavaEquivalent(f, noReplace).let {
-            useFunctionCommon<T>(it, getFunctionLabel(it, parentId, classTypeArgsIncludingOuterClasses))
-        }
 
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
@@ -1427,7 +1459,7 @@ open class KotlinUsesExtractor(
         return t
     }
 
-    fun eraseTypeParameter(t: IrTypeParameter) =
+    private fun eraseTypeParameter(t: IrTypeParameter) =
         erase(t.superTypes[0])
 
     /**

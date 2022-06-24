@@ -1,0 +1,4 @@
+| Param | getDiagnosticsName: | Param | getCanonicalType: | Param | getName: | Param | getInterfaceType: | Param |
+| ParamWithProtocols | getDiagnosticsName: | ParamWithProtocols | getCanonicalType: | ParamWithProtocols | getName: | ParamWithProtocols | getInterfaceType: | ParamWithProtocols |
+| ParamWithSuperclass | getDiagnosticsName: | ParamWithSuperclass | getCanonicalType: | ParamWithSuperclass | getName: | ParamWithSuperclass | getInterfaceType: | ParamWithSuperclass |
+| ParamWithSuperclassAndProtocols | getDiagnosticsName: | ParamWithSuperclassAndProtocols | getCanonicalType: | ParamWithSuperclassAndProtocols | getName: | ParamWithSuperclassAndProtocols | getInterfaceType: | ParamWithSuperclassAndProtocols |

@@ -32,7 +32,6 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
   exists(CallExpr call, Argument arg |
     arg.getExpr().(InOutExpr).getSubExpr() = v.getAnAccess() and
     call.getAnArgument() = arg and
-    call.getStaticTarget().getParam(arg.getIndex()).isInout() and
     bb.getNode(i).getNode().asAstNode() = call and
     certain = false
   )

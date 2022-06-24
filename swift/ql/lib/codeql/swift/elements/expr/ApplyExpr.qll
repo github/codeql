@@ -1,9 +1,9 @@
 private import codeql.swift.generated.expr.ApplyExpr
-private import codeql.swift.elements.decl.FuncDecl
+private import codeql.swift.elements.decl.AbstractFunctionDecl
 private import codeql.swift.elements.expr.DeclRefExpr
 
 class ApplyExpr extends ApplyExprBase {
-  FuncDecl getStaticTarget() { result = this.getFunction().(DeclRefExpr).getDecl() }
+  AbstractFunctionDecl getStaticTarget() { result = this.getFunction().(DeclRefExpr).getDecl() }
 
   override string toString() {
     result = "call to " + this.getStaticTarget().toString()

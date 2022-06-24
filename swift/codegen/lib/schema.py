@@ -2,6 +2,7 @@
 
 import pathlib
 import re
+import typing
 from dataclasses import dataclass, field
 from typing import List, Set, Union, Dict, ClassVar
 
@@ -11,7 +12,7 @@ import yaml
 class Error(Exception):
 
     def __str__(self):
-        return f"schema.Error{args}"
+        return self.args[0]
 
 
 root_class_name = "Element"
@@ -27,7 +28,7 @@ class Property:
     name: str
     type: str = None
     is_child: bool = False
-    tags: List[str] = field(default_factory=list)
+    pragmas: List[str] = field(default_factory=list)
 
 
 @dataclass
@@ -63,7 +64,7 @@ class Class:
     derived: Set[str] = field(default_factory=set)
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
-    tags: List[str] = field(default_factory=list)
+    pragmas: List[str] = field(default_factory=list)
 
 
 @dataclass
@@ -72,24 +73,38 @@ class Schema:
     includes: Set[str] = field(default_factory=set)
 
 
-def _parse_property(name: str, type: Union[str, Dict[str, str]], is_child: bool = False):
-    if isinstance(type, dict):
-        tags = type.get("_tags", [])
-        type = type["type"]
+_StrOrList = Union[str, List[str]]
+
+
+def _auto_list(data: _StrOrList) -> List[str]:
+    if isinstance(data, list):
+        return data
+    return [data]
+
+
+def _parse_property(name: str, data: Union[str, Dict[str, _StrOrList]], is_child: bool = False):
+    if isinstance(data, dict):
+        if "type" not in data:
+            raise Error(f"property {name} has no type")
+        pragmas = _auto_list(data.pop("_pragma", []))
+        type = data.pop("type")
+        if data:
+            raise Error(f"unknown metadata {', '.join(data)} in property {name}")
     else:
-        tags = []
+        pragmas = []
+        type = data
     if is_child and type[0].islower():
         raise Error(f"children must have class type, got {type} for {name}")
     if type.endswith("?*"):
-        return RepeatedOptionalProperty(name, type[:-2], is_child=is_child, tags=tags)
+        return RepeatedOptionalProperty(name, type[:-2], is_child=is_child, pragmas=pragmas)
     elif type.endswith("*"):
-        return RepeatedProperty(name, type[:-1], is_child=is_child, tags=tags)
+        return RepeatedProperty(name, type[:-1], is_child=is_child, pragmas=pragmas)
     elif type.endswith("?"):
-        return OptionalProperty(name, type[:-1], is_child=is_child, tags=tags)
+        return OptionalProperty(name, type[:-1], is_child=is_child, pragmas=pragmas)
     elif type == "predicate":
-        return PredicateProperty(name, tags=tags)
+        return PredicateProperty(name, pragmas=pragmas)
     else:
-        return SingleProperty(name, type, is_child=is_child, tags=tags)
+        return SingleProperty(name, type, is_child=is_child, pragmas=pragmas)
 
 
 class _DirSelector:
@@ -120,8 +135,7 @@ def load(path):
             if not k.startswith("_"):
                 cls.properties.append(_parse_property(k, v))
             elif k == "_extends":
-                if not isinstance(v, list):
-                    v = [v]
+                v = _auto_list(v)
                 for base in v:
                     cls.bases.add(base)
                     classes[base].derived.add(name)
@@ -129,8 +143,8 @@ def load(path):
                 cls.dir = pathlib.Path(v)
             elif k == "_children":
                 cls.properties.extend(_parse_property(kk, vv, is_child=True) for kk, vv in v.items())
-            elif k == "_tags":
-                cls.tags = v
+            elif k == "_pragma":
+                cls.pragmas = _auto_list(v)
             else:
                 raise Error(f"unknown metadata {k} for class {name}")
         if not cls.bases and cls.name != root_class_name:

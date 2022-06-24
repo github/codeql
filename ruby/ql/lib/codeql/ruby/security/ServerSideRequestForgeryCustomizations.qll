@@ -32,9 +32,11 @@ module ServerSideRequestForgery {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for "URL redirection" vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /** A source of remote user input, considered as a flow source for server side request forgery. */
   class RemoteFlowSourceAsSource extends Source {
