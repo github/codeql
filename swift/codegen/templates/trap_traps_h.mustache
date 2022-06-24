@@ -7,28 +7,19 @@
 
 #include "swift/extractor/trap/TrapLabel.h"
 #include "swift/extractor/trap/TrapTagTraits.h"
-#include "./TrapTags.h"
+#include "swift/extractor/trap/generated/TrapTags.h"
 
 namespace codeql {
 {{#traps}}
 
 // {{table_name}}
 struct {{name}}Trap {
-  static constexpr bool is_binding = {{#id}}true{{/id}}{{^id}}false{{/id}};
-{{#id}}
-  {{type}} getBoundLabel() const { return {{field_name}}; }
-{{/id}}
-
 {{#fields}}
   {{type}} {{field_name}}{};
 {{/fields}}
 };
 
-inline std::ostream &operator<<(std::ostream &out, const {{name}}Trap &e) {
-  out << "{{table_name}}("{{#fields}}{{^first}} << ", "{{/first}}
-      << {{#get_streamer}}e.{{field_name}}{{/get_streamer}}{{/fields}} << ")";
-  return out;
-}
+std::ostream &operator<<(std::ostream &out, const {{name}}Trap &e);
 {{#id}}
 
 namespace detail {

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "swift/extractor/visitors/VisitorBase.h"
+#include "swift/extractor/trap/generated/type/TrapClasses.h"
+
 namespace codeql {
 class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
  public:

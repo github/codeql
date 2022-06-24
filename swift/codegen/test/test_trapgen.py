@@ -8,33 +8,47 @@ output_dir = pathlib.Path("path", "to", "output")
 
 
 @pytest.fixture
-def generate(opts, renderer, dbscheme_input):
+def generate_grouped(opts, renderer, dbscheme_input):
     opts.cpp_output = output_dir
 
     def ret(entities):
         dbscheme_input.entities = entities
         generated = run_generation(trapgen.generate, opts, renderer)
-        assert set(generated) == {output_dir /
-                                  "TrapEntries.h", output_dir / "TrapTags.h"}
-        return generated[output_dir / "TrapEntries.h"], generated[output_dir / "TrapTags.h"]
+        dirs = {f.parent for f in generated}
+        assert all(isinstance(f, pathlib.Path) for f in generated)
+        assert all(f.name in ("TrapEntries", "TrapTags") for f in generated)
+        assert set(f for f in generated if f.name == "TrapTags") == {output_dir / "TrapTags"}
+        return ({
+            str(d.relative_to(output_dir)): generated[d / "TrapEntries"] for d in dirs
+        }, generated[output_dir / "TrapTags"])
 
     return ret
 
 
 @pytest.fixture
-def generate_traps(opts, generate):
+def generate_grouped_traps(generate_grouped):
     def ret(entities):
-        traps, _ = generate(entities)
-        assert isinstance(traps, cpp.TrapList)
-        return traps.traps
+        generated, _ = generate_grouped(entities)
+        assert all(isinstance(g, cpp.TrapList) for g in generated.values())
+        return {d: traps.traps for d, traps in generated.items()}
 
     return ret
 
 
 @pytest.fixture
-def generate_tags(opts, generate):
+def generate_traps(generate_grouped_traps):
     def ret(entities):
-        _, tags = generate(entities)
+        generated = generate_grouped_traps(entities)
+        assert set(generated) == {"."}
+        return generated["."]
+
+    return ret
+
+
+@pytest.fixture
+def generate_tags(generate_grouped):
+    def ret(entities):
+        _, tags = generate_grouped(entities)
         assert isinstance(tags, cpp.TagList)
         return tags.tags
 
@@ -124,6 +138,18 @@ def test_one_table_overridden_underscore_named_field(generate_traps):
     ]) == [
         cpp.Trap("foos", name="Foos", fields=[cpp.Field("whatever", "bar")]),
     ]
+
+
+def test_tables_with_dir(generate_grouped_traps):
+    assert generate_grouped_traps([
+        dbscheme.Table(name="x", columns=[dbscheme.Column("i", "int")]),
+        dbscheme.Table(name="y", columns=[dbscheme.Column("i", "int")], dir=pathlib.Path("foo")),
+        dbscheme.Table(name="z", columns=[dbscheme.Column("i", "int")], dir=pathlib.Path("foo/bar")),
+    ]) == {
+        ".": [cpp.Trap("x", name="X", fields=[cpp.Field("i", "int")])],
+        "foo": [cpp.Trap("y", name="Y", fields=[cpp.Field("i", "int")])],
+        "foo/bar": [cpp.Trap("z", name="Z", fields=[cpp.Field("i", "int")])],
+    }
 
 
 def test_one_table_no_tags(generate_tags):
