@@ -3,4 +3,11 @@ import codeql.swift.elements.type.Type
 
 class InOutTypeBase extends @in_out_type, Type {
   override string getAPrimaryQlClass() { result = "InOutType" }
+
+  Type getObjectType() {
+    exists(Type x |
+      in_out_types(this, x) and
+      result = x.resolve()
+    )
+  }
 }

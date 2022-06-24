@@ -271,4 +271,11 @@ codeql::VariadicSequenceType TypeVisitor::translateVariadicSequenceType(
   return entry;
 }
 
+codeql::InOutType TypeVisitor::translateInOutType(const swift::InOutType& type) {
+  codeql::InOutType entry{dispatcher_.assignNewLabel(type)};
+  entry.object_type = dispatcher_.fetchLabel(type.getObjectType());
+  fillType(type, entry);
+  return entry;
+}
+
 }  // namespace codeql

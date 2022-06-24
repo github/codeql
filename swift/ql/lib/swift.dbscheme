@@ -253,7 +253,8 @@ error_types(  //dir=type
 );
 
 in_out_types(  //dir=type
-  unique int id: @in_out_type
+  unique int id: @in_out_type,
+  int object_type: @type ref
 );
 
 l_value_types(  //dir=type

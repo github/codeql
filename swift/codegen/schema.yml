@@ -100,6 +100,7 @@ ErrorType:
 
 InOutType:
   _extends: Type
+  object_type: Type
 
 LValueType:
   _extends: Type

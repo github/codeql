@@ -42,6 +42,7 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
   codeql::DynamicSelfType translateDynamicSelfType(const swift::DynamicSelfType& type);
   codeql::VariadicSequenceType translateVariadicSequenceType(
       const swift::VariadicSequenceType& type);
+  codeql::InOutType translateInOutType(const swift::InOutType& type);
 
  private:
   void fillType(const swift::TypeBase& type, codeql::Type& entry);
