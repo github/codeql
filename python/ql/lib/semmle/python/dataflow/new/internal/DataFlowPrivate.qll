@@ -340,6 +340,17 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
     def.getDefinition() = nodeFrom.asCfgNode() and
     def.getVariable() = nodeTo.(ModuleVariableNode).getVariable()
   )
+  or
+  // Class variable read
+  readClassVarStep(nodeFrom, nodeTo)
+}
+
+/** A read of a class variable */
+predicate readClassVarStep(EssaNode nodeFrom, AttrRead nodeTo) {
+  exists(ClassDef classDef, SsaVariable c | classDef.defines(c.getVariable()) |
+    nodeFrom.getVar().getScope() = classDef.getDefinedClass() and
+    nodeTo.getObject().(CallCfgNode).getFunction().(CfgNode).getNode() = c.getAUse()
+  )
 }
 
 /**
