@@ -2197,8 +2197,6 @@ open class KotlinFileExtractor(
         }
     }
 
-    private val loopIdMap: MutableMap<IrLoop, Label<out DbKtloopstmt>> = mutableMapOf()
-
     // todo: calculating the enclosing ref type could be done through this, instead of walking up the declaration parent chain
     private val declarationStack: Stack<IrDeclaration> = Stack()
 
@@ -2446,32 +2444,10 @@ open class KotlinFileExtractor(
                     }
                 }
                 is IrWhileLoop -> {
-                    val stmtParent = parent.stmt(e, callable)
-                    val id = tw.getFreshIdLabel<DbWhilestmt>()
-                    loopIdMap[e] = id
-                    val locId = tw.getLocation(e)
-                    tw.writeStmts_whilestmt(id, stmtParent.parent, stmtParent.idx, callable)
-                    tw.writeHasLocation(id, locId)
-                    extractExpressionExpr(e.condition, callable, id, 0, id)
-                    val body = e.body
-                    if(body != null) {
-                        extractExpressionStmt(body, callable, id, 1)
-                    }
-                    loopIdMap.remove(e)
+                    extractLoop(e, parent, callable)
                 }
                 is IrDoWhileLoop -> {
-                    val stmtParent = parent.stmt(e, callable)
-                    val id = tw.getFreshIdLabel<DbDostmt>()
-                    loopIdMap[e] = id
-                    val locId = tw.getLocation(e)
-                    tw.writeStmts_dostmt(id, stmtParent.parent, stmtParent.idx, callable)
-                    tw.writeHasLocation(id, locId)
-                    extractExpressionExpr(e.condition, callable, id, 0, id)
-                    val body = e.body
-                    if(body != null) {
-                        extractExpressionStmt(body, callable, id, 1)
-                    }
-                    loopIdMap.remove(e)
+                    extractLoop(e, parent, callable)
                 }
                 is IrInstanceInitializerCall -> {
                     val irConstructor = declarationStack.peek() as? IrConstructor
@@ -2985,6 +2961,49 @@ open class KotlinFileExtractor(
                 }
             }
             return
+        }
+    }
+
+    private fun extractLoop(
+        loop: IrLoop,
+        stmtExprParent: StmtExprParent,
+        callable: Label<out DbCallable>
+    ) {
+        val stmtParent = stmtExprParent.stmt(loop, callable)
+        val locId = tw.getLocation(loop)
+
+        val idx: Int
+        val parent: Label<out DbStmtparent>
+
+        val label = loop.label
+        if (label != null) {
+            val labeledStmt = tw.getFreshIdLabel<DbLabeledstmt>()
+            tw.writeStmts_labeledstmt(labeledStmt, stmtParent.parent, stmtParent.idx, callable)
+            tw.writeHasLocation(labeledStmt, locId)
+
+            tw.writeNamestrings(label, "", labeledStmt)
+            idx = 0
+            parent = labeledStmt
+        } else {
+            idx = stmtParent.idx
+            parent = stmtParent.parent
+        }
+
+        val id = if (loop is IrWhileLoop) {
+            val id = tw.getFreshIdLabel<DbWhilestmt>()
+            tw.writeStmts_whilestmt(id, parent, idx, callable)
+            id
+        } else {
+            val id = tw.getFreshIdLabel<DbDostmt>()
+            tw.writeStmts_dostmt(id, parent, idx, callable)
+            id
+        }
+
+        tw.writeHasLocation(id, locId)
+        extractExpressionExpr(loop.condition, callable, id, 0, id)
+        val body = loop.body
+        if (body != null) {
+            extractExpressionStmt(body, callable, id, 1)
         }
     }
 
@@ -4261,7 +4280,7 @@ open class KotlinFileExtractor(
 
     private fun extractBreakContinue(
         e: IrBreakContinue,
-        id: Label<out DbBreakcontinuestmt>
+        id: Label<out DbNamedexprorstmt>
     ) {
         with("break/continue", e) {
             val locId = tw.getLocation(e)
@@ -4270,14 +4289,6 @@ open class KotlinFileExtractor(
             if (label != null) {
                 tw.writeNamestrings(label, "", id)
             }
-
-            val loopId = loopIdMap[e.loop]
-            if (loopId == null) {
-                logger.errorElement("Missing break/continue target", e)
-                return
-            }
-
-            tw.writeKtBreakContinueTargets(id, loopId)
         }
     }
 
