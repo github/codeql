@@ -93,6 +93,7 @@ DependentMemberType:
 
 DynamicSelfType:
   _extends: Type
+  static_self_type: Type
 
 ErrorType:
   _extends: Type

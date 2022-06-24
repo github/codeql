@@ -244,7 +244,8 @@ dependent_member_types(  //dir=type
 );
 
 dynamic_self_types(  //dir=type
-  unique int id: @dynamic_self_type
+  unique int id: @dynamic_self_type,
+  int static_self_type: @type ref
 );
 
 error_types(  //dir=type

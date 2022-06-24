@@ -39,6 +39,7 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
       const swift::PrimaryArchetypeType& type);
   codeql::NestedArchetypeType translateNestedArchetypeType(const swift::NestedArchetypeType& type);
   codeql::ExistentialType translateExistentialType(const swift::ExistentialType& type);
+  codeql::DynamicSelfType translateDynamicSelfType(const swift::DynamicSelfType& type);
 
  private:
   void fillType(const swift::TypeBase& type, codeql::Type& entry);

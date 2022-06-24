@@ -253,9 +253,16 @@ void TypeVisitor::fillArchetypeType(const swift::ArchetypeType& type, ArchetypeT
   entry.superclass = dispatcher_.fetchOptionalLabel(type.getSuperclass());
   fillType(type, entry);
 }
+
 codeql::ExistentialType TypeVisitor::translateExistentialType(const swift::ExistentialType& type) {
   codeql::ExistentialType entry{dispatcher_.assignNewLabel(type)};
   entry.constraint = dispatcher_.fetchLabel(type.getConstraintType());
+  fillType(type, entry);
+  return entry;
+}
+codeql::DynamicSelfType TypeVisitor::translateDynamicSelfType(const swift::DynamicSelfType& type) {
+  codeql::DynamicSelfType entry{dispatcher_.assignNewLabel(type)};
+  entry.static_self_type = dispatcher_.fetchLabel(type.getSelfType());
   fillType(type, entry);
   return entry;
 }
