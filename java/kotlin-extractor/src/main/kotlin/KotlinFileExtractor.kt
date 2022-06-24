@@ -595,7 +595,7 @@ open class KotlinFileExtractor(
                 tw.writeMethods(clinitId, "<clinit>", "<clinit>()", returnType.javaResult.id, parentId, clinitId)
                 tw.writeMethodsKotlinType(clinitId, returnType.kotlinResult.id)
 
-                tw.writeCompiler_generated(clinitId, 4)
+                tw.writeCompiler_generated(clinitId, CompilerGeneratedKinds.CLASS_INITIALISATION_METHOD.kind)
 
                 val locId = tw.getWholeFileLocation()
                 tw.writeHasLocation(clinitId, locId)
@@ -787,11 +787,11 @@ open class KotlinFileExtractor(
                     tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
                     when (f.origin) {
                         IrDeclarationOrigin.GENERATED_DATA_CLASS_MEMBER ->
-                            tw.writeCompiler_generated(methodId, 2)
+                            tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.GENERATED_DATA_CLASS_MEMBER.kind)
                         IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR ->
-                            tw.writeCompiler_generated(methodId, 3)
+                            tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.DEFAULT_PROPERTY_ACCESSOR.kind)
                         IrDeclarationOrigin.ENUM_CLASS_SPECIAL_MEMBER ->
-                            tw.writeCompiler_generated(methodId, 5)
+                            tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.ENUM_CLASS_SPECIAL_MEMBER.kind)
                     }
 
                     if (extractMethodAndParameterTypeAccesses) {
@@ -1083,7 +1083,7 @@ open class KotlinFileExtractor(
                         tw.writeKtLocalFunction(ids.function)
 
                         if (s.origin == IrDeclarationOrigin.ADAPTER_FOR_CALLABLE_REFERENCE) {
-                            tw.writeCompiler_generated(classId, 1)
+                            tw.writeCompiler_generated(classId, CompilerGeneratedKinds.DECLARING_CLASSES_OF_ADAPTER_FUNCTIONS.kind)
                         }
                     } else {
                         logger.errorElement("Expected to find local function", s)
@@ -4379,5 +4379,13 @@ open class KotlinFileExtractor(
         override fun close() {
             declarationStack.pop()
         }
+    }
+
+    private enum class CompilerGeneratedKinds(val kind: Int) {
+        DECLARING_CLASSES_OF_ADAPTER_FUNCTIONS(1),
+        GENERATED_DATA_CLASS_MEMBER(2),
+        DEFAULT_PROPERTY_ACCESSOR(3),
+        CLASS_INITIALISATION_METHOD(4),
+        ENUM_CLASS_SPECIAL_MEMBER(5)
     }
 }
