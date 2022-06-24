@@ -273,7 +273,8 @@ protocol_composition_types(  //dir=type
 );
 
 existential_types(  //dir=type
-  unique int id: @existential_type
+  unique int id: @existential_type,
+  int constraint: @type ref
 );
 
 @reference_storage_type =

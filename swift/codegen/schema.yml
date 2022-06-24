@@ -115,6 +115,7 @@ ProtocolCompositionType:
 
 ExistentialType:
   _extends: Type
+  constraint: Type
 
 ReferenceStorageType:
   _extends: Type
