@@ -1146,15 +1146,6 @@ open class KotlinUsesExtractor(
         return res
     }
 
-    fun <T: DbCallable> useFunctionCommon(f: IrFunction, label: String): Label<out T> {
-        val id: Label<T> = tw.getLabelFor(label)
-        if (isExternalDeclaration(f)) {
-            extractFunctionLaterIfExternalFileMember(f)
-            extractExternalEnclosingClassLater(f)
-        }
-        return id
-    }
-
     // These are classes with Java equivalents, but whose methods don't all exist on those Java equivalents--
     // for example, the numeric classes define arithmetic functions (Int.plus, Long.or and so on) that lower to
     // primitive arithmetic on the JVM, but which we extract as calls to reflect the source syntax more closely.
@@ -1214,15 +1205,20 @@ open class KotlinUsesExtractor(
             val ids = getLocallyVisibleFunctionLabels(f)
             return ids.function.cast<T>()
         } else {
-            val realFunction = kotlinFunctionToJavaEquivalent(f, noReplace)
-            return useFunctionCommon<T>(realFunction, getFunctionLabel(realFunction, classTypeArgsIncludingOuterClasses))
+            return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
         }
     }
 
-    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false) =
-        kotlinFunctionToJavaEquivalent(f, noReplace).let {
-            useFunctionCommon<T>(it, getFunctionLabel(it, parentId, classTypeArgsIncludingOuterClasses))
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
+        val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
+        val label = getFunctionLabel(javaFun, parentId, classTypeArgsIncludingOuterClasses)
+        val id: Label<T> = tw.getLabelFor(label)
+        if (isExternalDeclaration(javaFun)) {
+            extractFunctionLaterIfExternalFileMember(javaFun)
+            extractExternalEnclosingClassLater(javaFun)
         }
+        return id
+    }
 
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
