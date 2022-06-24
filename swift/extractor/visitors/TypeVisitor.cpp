@@ -166,11 +166,11 @@ void TypeVisitor::visitLValueType(swift::LValueType* type) {
   dispatcher_.emit(LValueTypesTrap{label, dispatcher_.fetchLabel(type->getObjectType())});
 }
 
-void TypeVisitor::visitPrimaryArchetypeType(swift::PrimaryArchetypeType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  assert(type->getInterfaceType() && "expect PrimaryArchetypeType to have InterfaceType");
-  dispatcher_.emit(
-      PrimaryArchetypeTypesTrap{label, dispatcher_.fetchLabel(type->getInterfaceType())});
+codeql::PrimaryArchetypeType TypeVisitor::translatePrimaryArchetypeType(
+    const swift::PrimaryArchetypeType& type) {
+  PrimaryArchetypeType entry{dispatcher_.assignNewLabel(type)};
+  fillArchetypeType(type, entry);
+  return entry;
 }
 
 void TypeVisitor::visitUnboundGenericType(swift::UnboundGenericType* type) {
@@ -230,6 +230,28 @@ void TypeVisitor::emitAnyGenericType(swift::AnyGenericType* type,
   if (auto parent = type->getParent()) {
     dispatcher_.emit(AnyGenericTypeParentsTrap{label, dispatcher_.fetchLabel(parent)});
   }
+}
+
+codeql::NestedArchetypeType TypeVisitor::translateNestedArchetypeType(
+    const swift::NestedArchetypeType& type) {
+  codeql::NestedArchetypeType entry{dispatcher_.assignNewLabel(type)};
+  entry.parent = dispatcher_.fetchLabel(type.getParent());
+  entry.associated_type_declaration = dispatcher_.fetchLabel(type.getAssocType());
+  fillArchetypeType(type, entry);
+  return entry;
+}
+
+void TypeVisitor::fillType(const swift::TypeBase& type, codeql::Type& entry) {
+  entry.diagnostics_name = type.getString();
+  entry.canonical_type = dispatcher_.fetchLabel(type.getCanonicalType());
+}
+
+void TypeVisitor::fillArchetypeType(const swift::ArchetypeType& type, ArchetypeType& entry) {
+  entry.interface_type = dispatcher_.fetchLabel(type.getInterfaceType());
+  entry.name = type.getName().str().str();
+  entry.protocols = dispatcher_.fetchRepeatedLabels(type.getConformsTo());
+  entry.superclass = dispatcher_.fetchOptionalLabel(type.getSuperclass());
+  fillType(type, entry);
 }
 
 }  // namespace codeql

@@ -33,11 +33,15 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
   void visitGenericFunctionType(swift::GenericFunctionType* type);
   void visitGenericTypeParamType(swift::GenericTypeParamType* type);
   void visitLValueType(swift::LValueType* type);
-  void visitPrimaryArchetypeType(swift::PrimaryArchetypeType* type);
   void visitUnboundGenericType(swift::UnboundGenericType* type);
   void visitBoundGenericType(swift::BoundGenericType* type);
+  codeql::PrimaryArchetypeType translatePrimaryArchetypeType(
+      const swift::PrimaryArchetypeType& type);
+  codeql::NestedArchetypeType translateNestedArchetypeType(const swift::NestedArchetypeType& type);
 
  private:
+  void fillType(const swift::TypeBase& type, codeql::Type& entry);
+  void fillArchetypeType(const swift::ArchetypeType& type, codeql::ArchetypeType& entry);
   void emitUnarySyntaxSugarType(const swift::UnarySyntaxSugarType* type,
                                 TrapLabel<UnarySyntaxSugarTypeTag> label);
   void emitAnyFunctionType(const swift::AnyFunctionType* type, TrapLabel<AnyFunctionTypeTag> label);

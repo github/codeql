@@ -239,6 +239,10 @@ WeakStorageType:
 
 ArchetypeType:
   _extends: SubstitutableType
+  name: string
+  interface_type: Type
+  superclass: Type?
+  protocols: ProtocolDecl*
 
 GenericTypeParamType:
   _extends: SubstitutableType
@@ -694,6 +698,8 @@ BuiltinIntegerType:
 
 NestedArchetypeType:
   _extends: ArchetypeType
+  parent: ArchetypeType
+  associated_type_declaration: AssociatedTypeDecl
 
 SequenceArchetypeType:
   _extends: ArchetypeType
@@ -706,7 +712,6 @@ OpenedArchetypeType:
 
 PrimaryArchetypeType:
   _extends: ArchetypeType
-  interface_type: GenericTypeParamType
 
 DictionaryType:
   _extends: SyntaxSugarType
