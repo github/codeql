@@ -16,7 +16,7 @@ import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * any direct parameters reference that happens outside of a strong params method but inside
+ * A direct parameters reference that happens outside of a strong params method but inside
  * of a controller class
  */
 class WeakParams extends Expr {
@@ -45,7 +45,7 @@ class StrongParamsMethod extends Method {
 }
 
 /**
- * a call to a method that exposes or accesses all parameters from an inbound HTTP request
+ * A call to a method that exposes or accesses all parameters from an inbound HTTP request
  */
 predicate allParamsAccess(MethodCall call) {
   call.getMethodName() = "expose_all" or
@@ -65,7 +65,7 @@ class ParamsReference extends ElementReference {
 }
 
 /**
- * returns either Model or ViewModel classes with a base class of `ViewModel`, `ApplicationRecord` or includes `ActionModel::Model`,
+ * A Model or ViewModel classes with a base class of `ViewModel`, `ApplicationRecord` or includes `ActionModel::Model`,
  * which are required to support the strong parameters pattern
  */
 class ModelClass extends ModuleBase {
@@ -81,16 +81,15 @@ class ModelClass extends ModuleBase {
  * where the receiver is an instance of ModelClass
  */
 class ModelClassMethodArgument extends DataFlow::Node {
-  private DataFlow::CallNode call;
 
   ModelClassMethodArgument() {
-    this = call.getArgument(_) and
-    call.getExprNode().getNode().getParent+() instanceof ModelClass
+    exists( DataFlow::CallNode call | this = call.getArgument(_) |
+      call.getExprNode().getNode().getParent+() instanceof ModelClass )
   }
 }
 
 /**
- * Taint tracking config where the source is a weak params access in a controller and the sink
+ * A Taint tracking config where the source is a weak params access in a controller and the sink
  * is a method call of a model class
  */
 class Configuration extends TaintTracking::Configuration {
