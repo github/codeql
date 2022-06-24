@@ -11,7 +11,7 @@ class RootTerm extends RegExpTerm {
 }
 
 /**
- * Holds if it should be tested whether `reg` matches `str`.
+ * Holds if it should be tested whether `root` matches `str`.
  *
  * If `ignorePrefix` is true, then a regexp without a start anchor will be treated as if it had a start anchor.
  * E.g. a regular expression `/foo$/` will match any string that ends with "foo",

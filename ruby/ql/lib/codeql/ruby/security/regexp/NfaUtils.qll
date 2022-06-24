@@ -890,7 +890,7 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
    */
   private predicate isReDoSCandidate(State state, string pump) {
     isCandidate(state, pump) and
-    not epsilonSucc*(state) = AcceptAnySuffix(_) and // pruning early - these can never get stuck in a rejecting state.
+    not state = acceptsAnySuffix() and // pruning early - these can never get stuck in a rejecting state.
     (
       not isCandidate(epsilonSucc+(state), _)
       or
@@ -906,6 +906,9 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
         )
     )
   }
+
+  /** Gets a state that can reach the `accept-any` state using only epsilon steps. */
+  private State acceptsAnySuffix() { epsilonSucc*(result) = AcceptAnySuffix(_) }
 
   /**
    * Predicates for constructing a prefix string that leads to a given state.
@@ -1148,9 +1151,6 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
       )
     }
 
-    /** Gets a state that can reach the `accept-any` state using only epsilon steps. */
-    private State acceptsAnySuffix() { epsilonSucc*(result) = AcceptAnySuffix(_) }
-
     /**
      * Gets a state that can be reached from pumpable `fork` consuming all
      * chars in `w` any number of times followed by the first `i` characters of `w`.
@@ -1243,8 +1243,8 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
 }
 
 /**
- * A module that describes a tree where each node has one or more accosiated characters.
- * The root node has no accosiated character.
+ * A module that describes a tree where each node has one or more associated characters, also known as a trie.
+ * The root node has no associated character.
  * This module is a signature used in `Concretizer`.
  */
 signature module CharTree {
@@ -1256,7 +1256,7 @@ signature module CharTree {
 
   /**
    * Holds if `n` is at the end of a tree. I.e. a node that should have a result in the `Concretizer` module.
-   * A leaf can still have children.
+   * Such a node can still have children.
    */
   predicate isARelevantEnd(CharNode n);
 
@@ -1291,32 +1291,33 @@ module Concretizer<CharTree Impl> {
   private predicate isRoot(Node n) { not exists(getPrev(n)) }
 
   /** Gets the distance from a root to `n`. */
-  private int nodeDist(Node n) {
+  private int nodeDepth(Node n) {
     result = 0 and isRoot(n)
     or
     isRelevant(n) and
-    exists(Node prev | result = nodeDist(prev) + 1 | prev = getPrev(n))
+    exists(Node prev | result = nodeDepth(prev) + 1 | prev = getPrev(n))
   }
 
-  /** Holds if `n` is part of a chain that we want to compute a string for. */
+  /** Gets an ancestor of `end`, where `end` is a node that should have a result in `concretize`. */
   private Node getANodeInLongChain(Node end) {
     isARelevantEnd(end) and result = end
     or
     exists(Node prev | prev = getANodeInLongChain(end) | result = getPrev(prev))
   }
 
+  /** Gets the `i`th character on the path from the root to `n`. */
   pragma[noinline]
   private string getPrefixChar(Node n, int i) {
     exists(Node prev |
       result = getChar(prev) and
       prev = getANodeInLongChain(n) and
-      i = nodeDist(n) - nodeDist(prev)
+      i = nodeDepth(prev)
     )
   }
 
   /** Gets a string corresponding to `node`. */
   language[monotonicAggregates]
   string concretize(Node n) {
-    result = strictconcat(int i | exists(getPrefixChar(n, i)) | getPrefixChar(n, i) order by i desc)
+    result = strictconcat(int i | exists(getPrefixChar(n, i)) | getPrefixChar(n, i) order by i)
   }
 }
