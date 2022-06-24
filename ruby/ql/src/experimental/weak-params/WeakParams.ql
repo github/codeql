@@ -14,21 +14,38 @@ import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 
+/**
+ * any direct parameters reference that happens outside of a strong params method but inside
+ * of a controller class
+ */
 class WeakParams extends Expr {
   WeakParams() {
-    allParamsAccess(this) or
-    this instanceof ParamsReference
+    (
+      allParamsAccess(this) or
+      this instanceof ParamsReference
+    ) and
+    this.getEnclosingModule() instanceof ControllerClass and
+    not this.getEnclosingMethod() instanceof StrongParamsMethod
   }
 }
 
+/**
+ * A controller class, which extendsd `ApplicationController`
+ */
 class ControllerClass extends ModuleBase {
   ControllerClass() { this.getModule().getSuperClass+().toString() = "ApplicationController" }
 }
 
+/**
+ * A method that follows the strong params naming convention
+ */
 class StrongParamsMethod extends Method {
   StrongParamsMethod() { this.getName().regexpMatch(".*_params") }
 }
 
+/**
+ * a call to a method that exposes or accesses all parameters from an inbound HTTP request
+ */
 predicate allParamsAccess(MethodCall call) {
   call.getMethodName() = "expose_all" or
   call.getMethodName() = "original_hash" or
@@ -39,10 +56,17 @@ predicate allParamsAccess(MethodCall call) {
   call.getMethodName() = "POST"
 }
 
+/**
+ * A reference to an element in the `params` object
+ */
 class ParamsReference extends ElementReference {
   ParamsReference() { this.getAChild().toString() = "params" }
 }
 
+/**
+ * returns either Model or ViewModel classes with a base class of `ViewModel` or includes `ActionModel::Model`,
+ * which are required to support the strong parameters pattern
+ */
 class ModelClass extends ModuleBase {
   ModelClass() {
     this.getModule().getSuperClass+().toString() = "ViewModel" or
@@ -50,6 +74,10 @@ class ModelClass extends ModuleBase {
   }
 }
 
+/**
+ * A DataFlow::Node representation that corresponds to any argument passed into a method call
+ * where the receiver is an instance of ModelClass
+ */
 class ModelClassMethodArgument extends DataFlow::Node {
   private DataFlow::CallNode call;
 
@@ -59,6 +87,10 @@ class ModelClassMethodArgument extends DataFlow::Node {
   }
 }
 
+/**
+ * Taint tracking config where the source is a weak params access in a controller and the sink
+ * is a method call of a model class
+ */
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "Configuration" }
 
@@ -70,10 +102,5 @@ class Configuration extends TaintTracking::Configuration {
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode().(ModelClassMethodArgument), source, sink, "This is bad"
-// from WeakParams params
-// where
-//   not params.getEnclosingMethod() instanceof StrongParamsMethod and
-//   params.getEnclosingModule() instanceof ControllerClass
-// select params,
-//   "By exposing all keys in request parameters or by blindy accessing them, unintended parameters could be used and lead to mass-assignment or have other unexpected side-effects."
+select sink.getNode().(ModelClassMethodArgument), source, sink,
+  "By exposing all keys in request parameters or by blindy accessing them, unintended parameters could be used and lead to mass-assignment or have other unexpected side-effects. It is safer to follow the 'strong parameters' pattern in Rails, which is outlined here: https://api.rubyonrails.org/classes/ActionController/StrongParameters.html"
