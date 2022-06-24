@@ -27,8 +27,8 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
   void visitDependentMemberType(swift::DependentMemberType* type);
   void visitParenType(swift::ParenType* type);
   void visitUnarySyntaxSugarType(swift::UnarySyntaxSugarType* type);
-  void visitOptionalType(swift::OptionalType* type);
-  void visitArraySliceType(swift::ArraySliceType* type);
+  codeql::OptionalType translateOptionalType(const swift::OptionalType& type);
+  codeql::ArraySliceType translateArraySliceType(const swift::ArraySliceType& type);
   void visitDictionaryType(swift::DictionaryType* type);
   void visitGenericFunctionType(swift::GenericFunctionType* type);
   void visitGenericTypeParamType(swift::GenericTypeParamType* type);
@@ -40,12 +40,14 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
   codeql::NestedArchetypeType translateNestedArchetypeType(const swift::NestedArchetypeType& type);
   codeql::ExistentialType translateExistentialType(const swift::ExistentialType& type);
   codeql::DynamicSelfType translateDynamicSelfType(const swift::DynamicSelfType& type);
+  codeql::VariadicSequenceType translateVariadicSequenceType(
+      const swift::VariadicSequenceType& type);
 
  private:
   void fillType(const swift::TypeBase& type, codeql::Type& entry);
   void fillArchetypeType(const swift::ArchetypeType& type, codeql::ArchetypeType& entry);
-  void emitUnarySyntaxSugarType(const swift::UnarySyntaxSugarType* type,
-                                TrapLabel<UnarySyntaxSugarTypeTag> label);
+  void fillUnarySyntaxSugarType(const swift::UnarySyntaxSugarType& type,
+                                codeql::UnarySyntaxSugarType& entry);
   void emitAnyFunctionType(const swift::AnyFunctionType* type, TrapLabel<AnyFunctionTypeTag> label);
   void emitBoundGenericType(swift::BoundGenericType* type, TrapLabel<BoundGenericTypeTag> label);
   void emitAnyGenericType(swift::AnyGenericType* type, TrapLabel<AnyGenericTypeTag> label);

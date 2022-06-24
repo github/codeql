@@ -121,21 +121,16 @@ void TypeVisitor::visitParenType(swift::ParenType* type) {
   dispatcher_.emit(ParenTypesTrap{label, typeLabel});
 }
 
-void TypeVisitor::visitUnarySyntaxSugarType(swift::UnarySyntaxSugarType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  emitUnarySyntaxSugarType(type, label);
+codeql::OptionalType TypeVisitor::translateOptionalType(const swift::OptionalType& type) {
+  codeql::OptionalType entry{dispatcher_.assignNewLabel(type)};
+  fillUnarySyntaxSugarType(type, entry);
+  return entry;
 }
 
-void TypeVisitor::visitOptionalType(swift::OptionalType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(OptionalTypesTrap{label});
-  emitUnarySyntaxSugarType(type, label);
-}
-
-void TypeVisitor::visitArraySliceType(swift::ArraySliceType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(ArraySliceTypesTrap{label});
-  emitUnarySyntaxSugarType(type, label);
+codeql::ArraySliceType TypeVisitor::translateArraySliceType(const swift::ArraySliceType& type) {
+  codeql::ArraySliceType entry{dispatcher_.assignNewLabel(type)};
+  fillUnarySyntaxSugarType(type, entry);
+  return entry;
 }
 
 void TypeVisitor::visitDictionaryType(swift::DictionaryType* type) {
@@ -184,10 +179,11 @@ void TypeVisitor::visitBoundGenericType(swift::BoundGenericType* type) {
   emitBoundGenericType(type, label);
 }
 
-void TypeVisitor::emitUnarySyntaxSugarType(const swift::UnarySyntaxSugarType* type,
-                                           TrapLabel<UnarySyntaxSugarTypeTag> label) {
-  assert(type->getBaseType() && "expect UnarySyntaxSugarType to have BaseType");
-  dispatcher_.emit(UnarySyntaxSugarTypesTrap{label, dispatcher_.fetchLabel(type->getBaseType())});
+void TypeVisitor::fillUnarySyntaxSugarType(const swift::UnarySyntaxSugarType& type,
+                                           codeql::UnarySyntaxSugarType& entry) {
+  assert(type.getBaseType() && "expect UnarySyntaxSugarType to have BaseType");
+  entry.base_type = dispatcher_.fetchLabel(type.getBaseType());
+  fillType(type, entry);
 }
 
 void TypeVisitor::emitAnyFunctionType(const swift::AnyFunctionType* type,
@@ -260,10 +256,18 @@ codeql::ExistentialType TypeVisitor::translateExistentialType(const swift::Exist
   fillType(type, entry);
   return entry;
 }
+
 codeql::DynamicSelfType TypeVisitor::translateDynamicSelfType(const swift::DynamicSelfType& type) {
   codeql::DynamicSelfType entry{dispatcher_.assignNewLabel(type)};
   entry.static_self_type = dispatcher_.fetchLabel(type.getSelfType());
   fillType(type, entry);
+  return entry;
+}
+
+codeql::VariadicSequenceType TypeVisitor::translateVariadicSequenceType(
+    const swift::VariadicSequenceType& type) {
+  codeql::VariadicSequenceType entry{dispatcher_.assignNewLabel(type)};
+  fillUnarySyntaxSugarType(type, entry);
   return entry;
 }
 
