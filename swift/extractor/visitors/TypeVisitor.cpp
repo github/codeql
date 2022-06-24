@@ -278,4 +278,30 @@ codeql::InOutType TypeVisitor::translateInOutType(const swift::InOutType& type) 
   return entry;
 }
 
+codeql::UnmanagedStorageType TypeVisitor::translateUnmanagedStorageType(
+    const swift::UnmanagedStorageType& type) {
+  codeql::UnmanagedStorageType entry{dispatcher_.assignNewLabel(type)};
+  fillReferenceStorageType(type, entry);
+  return entry;
+}
+
+codeql::UnownedStorageType TypeVisitor::translateUnownedStorageType(
+    const swift::UnownedStorageType& type) {
+  codeql::UnownedStorageType entry{dispatcher_.assignNewLabel(type)};
+  fillReferenceStorageType(type, entry);
+  return entry;
+}
+
+codeql::WeakStorageType TypeVisitor::translateWeakStorageType(const swift::WeakStorageType& type) {
+  codeql::WeakStorageType entry{dispatcher_.assignNewLabel(type)};
+  fillReferenceStorageType(type, entry);
+  return entry;
+}
+
+void TypeVisitor::fillReferenceStorageType(const swift::ReferenceStorageType& type,
+                                           codeql::ReferenceStorageType& entry) {
+  entry.referent_type = dispatcher_.fetchLabel(type.getReferentType());
+  fillType(type, entry);
+}
+
 }  // namespace codeql

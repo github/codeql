@@ -121,6 +121,7 @@ ExistentialType:
 
 ReferenceStorageType:
   _extends: Type
+  referent_type: Type
 
 SilBlockStorageType:
   _extends: Type

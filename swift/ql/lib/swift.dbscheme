@@ -285,6 +285,12 @@ existential_types(  //dir=type
 | @weak_storage_type
 ;
 
+#keyset[id]
+reference_storage_types(  //dir=type
+  int id: @reference_storage_type ref,
+  int referent_type: @type ref
+);
+
 sil_block_storage_types(  //dir=type
   unique int id: @sil_block_storage_type
 );

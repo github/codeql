@@ -43,12 +43,18 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
   codeql::VariadicSequenceType translateVariadicSequenceType(
       const swift::VariadicSequenceType& type);
   codeql::InOutType translateInOutType(const swift::InOutType& type);
+  codeql::UnmanagedStorageType translateUnmanagedStorageType(
+      const swift::UnmanagedStorageType& type);
+  codeql::WeakStorageType translateWeakStorageType(const swift::WeakStorageType& type);
+  codeql::UnownedStorageType translateUnownedStorageType(const swift::UnownedStorageType& type);
 
  private:
   void fillType(const swift::TypeBase& type, codeql::Type& entry);
   void fillArchetypeType(const swift::ArchetypeType& type, codeql::ArchetypeType& entry);
   void fillUnarySyntaxSugarType(const swift::UnarySyntaxSugarType& type,
                                 codeql::UnarySyntaxSugarType& entry);
+  void fillReferenceStorageType(const swift::ReferenceStorageType& type,
+                                codeql::ReferenceStorageType& entry);
   void emitAnyFunctionType(const swift::AnyFunctionType* type, TrapLabel<AnyFunctionTypeTag> label);
   void emitBoundGenericType(swift::BoundGenericType* type, TrapLabel<BoundGenericTypeTag> label);
   void emitAnyGenericType(swift::AnyGenericType* type, TrapLabel<AnyGenericTypeTag> label);
