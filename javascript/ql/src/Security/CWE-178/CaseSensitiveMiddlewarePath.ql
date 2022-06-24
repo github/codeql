@@ -20,6 +20,12 @@ string invertCase(string s) {
   if s.regexpMatch(".*[a-z].*") then result = s.toUpperCase() else result = s.toLowerCase()
 }
 
+RegExpCharacterClass getEnclosingClass(RegExpTerm term) {
+  term = result.getAChild()
+  or
+  term = result.getAChild().(RegExpRange).getAChild()
+}
+
 /**
  * Holds if `term` distinguishes between upper and lower case letters, assuming the `i` flag is not present.
  */
@@ -28,7 +34,7 @@ predicate isCaseSensitiveRegExp(RegExpTerm term) {
   exists(RegExpConstant const |
     const = term.getAChild*() and
     const.getValue().regexpMatch(".*[a-zA-Z].*") and
-    not const.getParent().(RegExpCharacterClass).getAChild().(RegExpConstant).getValue() =
+    not getEnclosingClass(const).getAChild().(RegExpConstant).getValue() =
       invertCase(const.getValue()) and
     not const.getParent*() instanceof RegExpNegativeLookahead and
     not const.getParent*() instanceof RegExpNegativeLookbehind
@@ -59,8 +65,11 @@ string getExampleString(RegExpTerm term) {
 }
 
 string getCaseSensitiveBypassExample(RegExpTerm term) {
-  result = invertCase(getExampleString(term)) and
-  result != ""
+  exists(string example |
+    example = getExampleString(term) and
+    result = invertCase(example) and
+    result != example // getting an example string is approximate; ensure we got a proper case-change example
+  )
 }
 
 /**
@@ -83,7 +92,7 @@ predicate isCaseSensitiveMiddleware(
     isCaseSensitiveRegExp(regexp.getRoot()) and
     exists(string flags |
       flags = regexp.getFlags() and
-      not flags.matches("%i%")
+      not RegExp::isIgnoreCase(flags)
     )
   )
 }
