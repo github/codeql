@@ -732,12 +732,9 @@ open class KotlinFileExtractor(
 
                 val id =
                     idOverride
-                        ?: if (f.isLocalFunction())
-                            getLocallyVisibleFunctionLabels(f).function
-                        else
-                            // If this is a class that would ordinarily be replaced by a Java equivalent (e.g. kotlin.Map -> java.util.Map),
-                            // don't replace here, really extract the Kotlin version:
-                            useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses, noReplace = true)
+                        ?: // If this is a class that would ordinarily be replaced by a Java equivalent (e.g. kotlin.Map -> java.util.Map),
+                           // don't replace here, really extract the Kotlin version:
+                           useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses, noReplace = true)
 
                 val sourceDeclaration =
                     if (typeSubstitution != null && idOverride == null)
