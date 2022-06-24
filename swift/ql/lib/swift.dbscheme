@@ -244,7 +244,8 @@ dependent_member_types(  //dir=type
 );
 
 dynamic_self_types(  //dir=type
-  unique int id: @dynamic_self_type
+  unique int id: @dynamic_self_type,
+  int static_self_type: @type ref
 );
 
 error_types(  //dir=type
@@ -252,7 +253,8 @@ error_types(  //dir=type
 );
 
 in_out_types(  //dir=type
-  unique int id: @in_out_type
+  unique int id: @in_out_type,
+  int object_type: @type ref
 );
 
 l_value_types(  //dir=type
@@ -273,7 +275,8 @@ protocol_composition_types(  //dir=type
 );
 
 existential_types(  //dir=type
-  unique int id: @existential_type
+  unique int id: @existential_type,
+  int constraint: @type ref
 );
 
 @reference_storage_type =
@@ -281,6 +284,12 @@ existential_types(  //dir=type
 | @unowned_storage_type
 | @weak_storage_type
 ;
+
+#keyset[id]
+reference_storage_types(  //dir=type
+  int id: @reference_storage_type ref,
+  int referent_type: @type ref
+);
 
 sil_block_storage_types(  //dir=type
   unique int id: @sil_block_storage_type
@@ -573,6 +582,26 @@ weak_storage_types(  //dir=type
 | @primary_archetype_type
 | @sequence_archetype_type
 ;
+
+#keyset[id]
+archetype_types(  //dir=type
+  int id: @archetype_type ref,
+  string name: string ref,
+  int interface_type: @type ref
+);
+
+#keyset[id]
+archetype_type_superclasses(  //dir=type
+  int id: @archetype_type ref,
+  int superclass: @type ref
+);
+
+#keyset[id, index]
+archetype_type_protocols(  //dir=type
+  int id: @archetype_type ref,
+  int index: int ref,
+  int protocol: @protocol_decl ref
+);
 
 generic_type_param_types(  //dir=type
   unique int id: @generic_type_param_type,
@@ -1357,7 +1386,9 @@ builtin_integer_type_widths(  //dir=type
 );
 
 nested_archetype_types(  //dir=type
-  unique int id: @nested_archetype_type
+  unique int id: @nested_archetype_type,
+  int parent: @archetype_type ref,
+  int associated_type_declaration: @associated_type_decl ref
 );
 
 sequence_archetype_types(  //dir=type
@@ -1373,8 +1404,7 @@ opened_archetype_types(  //dir=type
 );
 
 primary_archetype_types(  //dir=type
-  unique int id: @primary_archetype_type,
-  int interface_type: @generic_type_param_type ref
+  unique int id: @primary_archetype_type
 );
 
 dictionary_types(  //dir=type

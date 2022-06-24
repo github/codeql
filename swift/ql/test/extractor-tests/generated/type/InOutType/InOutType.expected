@@ -1,0 +1,2 @@
+| inout Int | getDiagnosticsName: | inout Int | getCanonicalType: | inout Int | getObjectType: | Int |
+| inout S | getDiagnosticsName: | inout S | getCanonicalType: | inout S | getObjectType: | S |
