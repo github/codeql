@@ -6,16 +6,17 @@ predicate isInterestingClass(Class c) {
 
 from Callable c, string paramOrReturnName, Type paramOrReturnType
 where
-isInterestingClass(c.getDeclaringType()) and
-(
-  exists(Parameter p |
-    p = c.getAParameter() and
-    paramOrReturnName = p.getName() and
-    paramOrReturnType = p.getType()
+  isInterestingClass(c.getDeclaringType()) and
+  (
+    exists(Parameter p |
+      p = c.getAParameter() and
+      paramOrReturnName = p.getName() and
+      paramOrReturnType = p.getType()
+    )
+    or
+    paramOrReturnName = "return" and
+    paramOrReturnType = c.getReturnType() and
+    not paramOrReturnType instanceof VoidType
   )
-  or
-  paramOrReturnName = "return" and
-  paramOrReturnType = c.getReturnType() and
-  not paramOrReturnType instanceof VoidType
-)
-select c.getDeclaringType().getQualifiedName(), c.getName(), paramOrReturnName, paramOrReturnType.toString()
+select c.getDeclaringType().getQualifiedName(), c.getName(), paramOrReturnName,
+  paramOrReturnType.toString()

@@ -30,21 +30,27 @@ query predicate nestedTypes(NestedType nt, RefType parent) {
   parent = nt.getEnclosingType()
 }
 
-query predicate javaKotlinCalleeAgreement(MethodAccess javaMa, MethodAccess kotlinMa, Callable callee) {
+query predicate javaKotlinCalleeAgreement(
+  MethodAccess javaMa, MethodAccess kotlinMa, Callable callee
+) {
   javaMa.getCallee() = callee and
   kotlinMa.getCallee() = callee and
   javaMa.getFile().getExtension() = "java" and
   kotlinMa.getFile().getExtension() = "kt"
 }
 
-query predicate javaKotlinConstructorAgreement(ClassInstanceExpr javaCie, ClassInstanceExpr kotlinCie, Constructor constructor) {
+query predicate javaKotlinConstructorAgreement(
+  ClassInstanceExpr javaCie, ClassInstanceExpr kotlinCie, Constructor constructor
+) {
   javaCie.getConstructor() = constructor and
   kotlinCie.getConstructor() = constructor and
   javaCie.getFile().getExtension() = "java" and
   kotlinCie.getFile().getExtension() = "kt"
 }
 
-query predicate javaKotlinLocalTypeAgreement(LocalVariableDecl javaDecl, LocalVariableDecl kotlinDecl, RefType agreedType) {
+query predicate javaKotlinLocalTypeAgreement(
+  LocalVariableDecl javaDecl, LocalVariableDecl kotlinDecl, RefType agreedType
+) {
   javaDecl.getType() = agreedType and
   kotlinDecl.getType() = agreedType and
   javaDecl.getFile().getExtension() = "java" and

@@ -1,16 +1,14 @@
 import java
 
 class ExtLibParameter extends Parameter {
-  ExtLibParameter() {
-    this.getCallable().getName() = ["testParameterTypes", "takesSelfMethod"]
-  }
+  ExtLibParameter() { this.getCallable().getName() = ["testParameterTypes", "takesSelfMethod"] }
 }
 
-query predicate parameterTypes(ExtLibParameter p, string t) {
-  p.getType().toString() = t
-}
+query predicate parameterTypes(ExtLibParameter p, string t) { p.getType().toString() = t }
 
-query predicate arrayTypes(ExtLibParameter p, Array at, string elementType, int dimension, string componentType) {
+query predicate arrayTypes(
+  ExtLibParameter p, Array at, string elementType, int dimension, string componentType
+) {
   p.getType() = at and
   at.getElementType().toString() = elementType and
   at.getDimension() = dimension and
@@ -19,7 +17,11 @@ query predicate arrayTypes(ExtLibParameter p, Array at, string elementType, int 
 
 query predicate wildcardTypes(ExtLibParameter p, Wildcard wc, string boundKind, string bound) {
   // Expose details of wildcard types:
-  wc = [p.getType().(ParameterizedType).getATypeArgument(), p.getType().(ParameterizedType).getATypeArgument().(ParameterizedType).getATypeArgument()] and
+  wc =
+    [
+      p.getType().(ParameterizedType).getATypeArgument(),
+      p.getType().(ParameterizedType).getATypeArgument().(ParameterizedType).getATypeArgument()
+    ] and
   (
     boundKind = "upper" and bound = wc.getUpperBoundType().toString()
     or
@@ -35,6 +37,4 @@ query predicate parameterizedTypes(ExtLibParameter p, string ptstr, string typeA
   )
 }
 
-query predicate libCallables(Callable c) {
-  c.getFile().getBaseName().matches("%Lib.java")
-}
+query predicate libCallables(Callable c) { c.getFile().getBaseName().matches("%Lib.java") }
