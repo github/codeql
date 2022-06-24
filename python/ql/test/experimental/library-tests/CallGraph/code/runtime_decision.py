@@ -18,7 +18,7 @@ else:
     func = rd_bar
 
 # calls:rd_foo calls:rd_bar
-func()
+func() # $ pt=rd_foo pt=rd_bar
 
 # Random doesn't work with points-to :O
 if random.random() < 0.5:
@@ -27,4 +27,4 @@ else:
     func2 = rd_bar
 
 # calls:rd_foo calls:rd_bar
-func2()
+func2() # $ pt=rd_foo pt=rd_bar

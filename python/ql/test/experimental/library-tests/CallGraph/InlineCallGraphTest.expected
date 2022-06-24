@@ -1,0 +1,4 @@
+failures
+debug_callableNotUnique
+| code/class_advanced.py:18:5:18:18 | Function arg | Qualified function name 'B.arg' is not unique. Please fix. |
+| code/class_advanced.py:23:5:23:25 | Function arg | Qualified function name 'B.arg' is not unique. Please fix. |
