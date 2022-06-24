@@ -4,9 +4,10 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 5.0
- * @precision low
+ * @precision medium
  * @id rb/weak-params
  * @tags security
+ *       external/cwe/cwe-223
  */
 
 import ruby
@@ -64,12 +65,13 @@ class ParamsReference extends ElementReference {
 }
 
 /**
- * returns either Model or ViewModel classes with a base class of `ViewModel` or includes `ActionModel::Model`,
+ * returns either Model or ViewModel classes with a base class of `ViewModel`, `ApplicationRecord` or includes `ActionModel::Model`,
  * which are required to support the strong parameters pattern
  */
 class ModelClass extends ModuleBase {
   ModelClass() {
     this.getModule().getSuperClass+().toString() = "ViewModel" or
+    this.getModule().getSuperClass+().toString() = "ApplicationRecord" or
     this.getModule().getSuperClass+().getAnIncludedModule().toString() = "ActionModel::Model"
   }
 }
