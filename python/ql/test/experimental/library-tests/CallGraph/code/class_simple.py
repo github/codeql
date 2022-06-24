@@ -25,13 +25,13 @@ class A(object):
 a = A(42)
 
 # calls:A.some_method
-a.some_method()
+a.some_method() # $ pt=A.some_method
 # calls:A.some_staticmethod
-a.some_staticmethod()
+a.some_staticmethod() # $ pt=A.some_staticmethod
 # calls:A.some_classmethod
-a.some_classmethod()
+a.some_classmethod() # $ pt=A.some_classmethod
 
 # calls:A.some_staticmethod
-A.some_staticmethod()
+A.some_staticmethod() # $ pt=A.some_staticmethod
 # calls:A.some_classmethod
-A.some_classmethod()
+A.some_classmethod() # $ pt=A.some_classmethod

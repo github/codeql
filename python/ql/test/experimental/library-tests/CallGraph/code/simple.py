@@ -16,12 +16,12 @@ lam = lambda: print("lambda called")
 
 
 # calls:foo
-foo()
+foo() # $ pt=foo
 # calls:foo
-indirect_foo()
+indirect_foo() # $ pt=foo
 # calls:bar
-bar()
+bar() # $ pt=bar
 # calls:lam
-lam()
+lam() # $ pt=lambda[simple.py:15:7]
 
 # python -m trace --trackcalls simple.py

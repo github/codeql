@@ -18,11 +18,11 @@ def _ignored():
 def _works_since_called():
     print('_works_since_called')
     # calls:some_function
-    some_function()
+    some_function() # $ pt=some_function
 
 def works_even_though_not_called():
     # calls:some_function
-    some_function()
+    some_function() # $ pt=some_function
 
 globals()['_ignored']()
-_works_since_called()
+_works_since_called() # $ pt=_works_since_called
