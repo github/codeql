@@ -378,7 +378,7 @@ def test_non_empty_cleanup(opts, generate, renderer):
 
 def test_modified_stub_still_generated(qlgen_opts, renderer):
     stub = qlgen_opts.ql_stub_output / "A.qll"
-    write(stub, "// generated\n\n\n\nsomething\n")
+    write(stub, "// generated\nprivate import foo\n\nclass Bar extends BarBase {\n  int x() { none() }\n}\n")
     with pytest.raises(qlgen.ModifiedStubMarkedAsGeneratedError):
         run_generation(qlgen.generate, qlgen_opts, renderer)
 
