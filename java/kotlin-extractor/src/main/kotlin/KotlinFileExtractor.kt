@@ -318,7 +318,7 @@ open class KotlinFileExtractor(
             // Extract the outer <-> inner class relationship, passing on any type arguments in excess to this class' parameters if this is an inner class.
             // For example, in `class Outer<T> { inner class Inner<S> { } }`, `Inner<Int, String>` nests within `Outer<Int>` and raw `Inner<>` within `Outer<>`,
             // but for a similar non-`inner` (in Java terms, static nested) class both `Inner<Int>` and `Inner<>` nest within the unbound type `Outer`.
-            val useBoundOuterType = (c.isInner || c.isLocal) && (c.parents.firstNotNullOfOrNull {
+            val useBoundOuterType = (c.isInner || c.isLocal) && (c.parents.map { // Would use `firstNotNullOfOrNull`, but this doesn't exist in Kotlin 1.4
                 when(it) {
                     is IrClass -> when {
                         it.typeParameters.isNotEmpty() -> true // Type parameters visible to this class -- extract an enclosing bound or raw type.
@@ -327,7 +327,7 @@ open class KotlinFileExtractor(
                     }
                     else -> null // Look through enclosing non-class entities (this may need to change)
                 }
-            } ?: false)
+            }.firstOrNull { it != null } ?: false)
 
             extractEnclosingClass(c, id, locId, if (useBoundOuterType) argsIncludingOuterClasses?.drop(c.typeParameters.size) else listOf())
 
