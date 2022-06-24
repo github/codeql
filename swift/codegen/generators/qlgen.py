@@ -2,8 +2,10 @@
 
 import logging
 import pathlib
+import re
 import subprocess
 import typing
+import itertools
 
 import inflection
 
@@ -93,7 +95,10 @@ def get_classes_used_by(cls: ql.Class):
     return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper()))
 
 
-def _is_generated_stub(file, check_modification=False):
+_generated_stub_re = re.compile(r"private import .*\n\nclass \w+ extends \w+ \{[ \n]\}", re.MULTILINE)
+
+
+def _is_generated_stub(file):
     with open(file) as contents:
         for line in contents:
             if not line.startswith("// generated"):
@@ -102,12 +107,12 @@ def _is_generated_stub(file, check_modification=False):
         else:
             # no lines
             return False
-        if check_modification:
-            # one line already read, if we can read 5 other we are past the normal stub generation
-            line_threshold = 5
-            if sum(1 for _ in zip(range(line_threshold), contents)) == line_threshold:
-                raise ModifiedStubMarkedAsGeneratedError(
-                    f"{file.name} stub was modified but is still marked as generated")
+        # one line already read, if we can read 5 other we are past the normal stub generation
+        line_threshold = 5
+        first_lines = list(itertools.islice(contents, line_threshold))
+        if len(first_lines) == line_threshold or not _generated_stub_re.match("".join(first_lines)):
+            raise ModifiedStubMarkedAsGeneratedError(
+                f"{file.name} stub was modified but is still marked as generated")
         return True
 
 
@@ -157,8 +162,9 @@ def generate(opts, renderer):
     stub_out = opts.ql_stub_output
     test_out = opts.ql_test_output
     missing_test_source_filename = "MISSING_SOURCE.txt"
+
     existing = {q for q in out.rglob("*.qll")}
-    existing |= {q for q in stub_out.rglob("*.qll") if _is_generated_stub(q, check_modification=True)}
+    existing |= {q for q in stub_out.rglob("*.qll") if _is_generated_stub(q)}
     existing |= {q for q in test_out.rglob("*.ql")}
     existing |= {q for q in test_out.rglob(missing_test_source_filename)}
 
