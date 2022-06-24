@@ -177,3 +177,13 @@ SINK(global_obj.foo) # $ flow="SOURCE, l:-1 -> global_obj.foo"
 
 def func_defined_after():
     SINK(global_obj.foo) # $ MISSING: flow="SOURCE, l:-4 -> global_obj.foo"
+
+# ------------------------------------------------------------------------------
+# Class variable
+# ------------------------------------------------------------------------------
+
+# FP reported here: https://github.com/github/codeql/discussions/9684
+class WithClassVariable():
+    VAR = SOURCE
+
+SINK(WithClassVariable().VAR) # $ MISSING: flow="SOURCE, l:-2 -> WithClassVariable().VAR"
