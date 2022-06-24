@@ -2,8 +2,8 @@
  * @name String length conflation
  * @description Using a length value from an `NSString` in a `String`, or a count from a `String` in an `NSString`, may cause unexpected behavior.
  * @kind problem
- * @problem.severity TODO
- * @security-severity TODO
+ * @problem.severity error
+ * @security-severity 7.8
  * @precision TODO
  * @id swift/string-length-conflation
  * @tags security
