@@ -22,7 +22,8 @@ from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode 
 where
   cfg.hasFlowPath(source, sink) and
   not isFlowLikelyInBaseQuery(source.getNode(), sink.getNode()) and
-  score = getScoreForFlow(source.getNode(), sink.getNode())
+  score = getScoreForFlow(source.getNode(), sink.getNode()) and
+  sink.getNode().getStartLine() % 2 = 0
 select sink.getNode(), source, sink,
   "(Experimental) This may be a cross-site scripting vulnerability due to $@. Identified using machine learning.",
   source.getNode(), "a user-provided value", score
