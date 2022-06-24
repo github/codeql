@@ -103,8 +103,8 @@ def _is_generated_stub(file, check_modification=False):
             # no lines
             return False
         if check_modification:
-            # one line already read, if we can read 4 other we are past the normal stub generation
-            line_threshold = 4
+            # one line already read, if we can read 5 other we are past the normal stub generation
+            line_threshold = 5
             if sum(1 for _ in zip(range(line_threshold), contents)) == line_threshold:
                 raise ModifiedStubMarkedAsGeneratedError(
                     f"{file.name} stub was modified but is still marked as generated")
