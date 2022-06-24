@@ -14,14 +14,14 @@ _directories:
 
 Element:
   is_unknown: predicate
-  _tags: [ no_qltest ]
+  _pragma: skip_qltest
 
 File:
   name: string
 
 Locatable:
   location: Location?
-  _tags: [ no_qltest ]
+  _pragma: skip_qltest
 
 Location:
   file: File
@@ -29,7 +29,7 @@ Location:
   start_column: int
   end_line: int
   end_column: int
-  _tags: [ no_qltest ]
+  _pragma: skip_qltest
 
 Type:
   diagnostics_name: string
@@ -385,7 +385,7 @@ EnumIsCaseExpr:
 
 ErrorExpr:
   _extends: Expr
-  _tags: [ no_qltest ]  # unexpected emission
+  _pragma: skip_qltest  # unexpected emission
 
 ExplicitCastExpr:
   _extends: Expr
@@ -460,7 +460,7 @@ ObjCSelectorExpr:
   _children:
     sub_expr: Expr
   method: AbstractFunctionDecl
-  _tags: [ no_qltest ]  # to be tested in integration tests
+  _pragma: skip_qltest  # to be tested in integration tests
 
 OneWayExpr:
   _extends: Expr
@@ -502,7 +502,7 @@ SequenceExpr:
   _extends: Expr
   _children:
     elements: Expr*
-  _tags: [ no_qltest ]  # we should really never extract these, as these should be resolved to trees of operations
+  _pragma: skip_qltest  # we should really never extract these, as these should be resolved to trees of operations
 
 SuperRefExpr:
   _extends: Expr
@@ -534,7 +534,7 @@ TypeExpr:
 UnresolvedDeclRefExpr:
   _extends: Expr
   name: string?
-  _tags: [ no_qltest ]  # we should really never extract these
+  _pragma: skip_qltest  # we should really never extract these
 
 UnresolvedDotExpr:
   _extends: Expr
@@ -545,15 +545,15 @@ UnresolvedDotExpr:
 UnresolvedMemberExpr:
   _extends: Expr
   name: string
-  _tags: [ no_qltest ]  # we should really never extract these
+  _pragma: skip_qltest  # we should really never extract these
 
 UnresolvedPatternExpr:
   _extends: Expr
-  _tags: [ no_qltest ]  # we should really never extract these
+  _pragma: skip_qltest  # we should really never extract these
 
 UnresolvedSpecializeExpr:
   _extends: Expr
-  _tags: [ no_qltest ]  # we should really never extract these
+  _pragma: skip_qltest  # we should really never extract these
 
 VarargExpansionExpr:
   _extends: Expr
@@ -821,11 +821,11 @@ ArrayToPointerExpr:
 
 BridgeFromObjCExpr:
   _extends: ImplicitConversionExpr
-  _tags: [ no_qltest ]  # to be tested in integration tests
+  _pragma: skip_qltest  # to be tested in integration tests
 
 BridgeToObjCExpr:
   _extends: ImplicitConversionExpr
-  _tags: [ no_qltest ]  # to be tested in integration tests
+  _pragma: skip_qltest  # to be tested in integration tests
 
 ClassMetatypeToObjectExpr:
   _extends: ImplicitConversionExpr
@@ -835,7 +835,7 @@ CollectionUpcastConversionExpr:
 
 ConditionalBridgeFromObjCExpr:
   _extends: ImplicitConversionExpr
-  _tags: [ no_qltest ]  # to be tested in integration tests
+  _pragma: skip_qltest  # to be tested in integration tests
 
 CovariantFunctionConversionExpr:
   _extends: ImplicitConversionExpr
