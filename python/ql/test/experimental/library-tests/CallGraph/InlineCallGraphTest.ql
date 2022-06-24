@@ -35,22 +35,41 @@ class CallGraphTest extends InlineExpectationsTest {
     |
       location = call.getLocation() and
       element = call.toString() and
-      (
-        // note: `target.getQualifiedName` for Lambdas is just "lambda", so is not very useful :|
-        not target.isLambda() and
-        value = target.getQualifiedName()
-        or
-        target.isLambda() and
-        value =
-          "lambda[" + target.getLocation().getFile().getShortName() + ":" +
-            target.getLocation().getStartLine() + ":" + target.getLocation().getStartColumn() + "]"
-      )
+      value = betterQualName(target)
     )
   }
+}
+
+bindingset[func]
+string betterQualName(Function func) {
+  // note: `target.getQualifiedName` for Lambdas is just "lambda", so is not very useful :|
+  not func.isLambda() and
+  result = func.getQualifiedName()
+  or
+  func.isLambda() and
+  result =
+    "lambda[" + func.getLocation().getFile().getShortName() + ":" +
+      func.getLocation().getStartLine() + ":" + func.getLocation().getStartColumn() + "]"
 }
 
 query predicate debug_callableNotUnique(Function callable, string message) {
   exists(Function f | f != callable and f.getQualifiedName() = callable.getQualifiedName()) and
   message =
     "Qualified function name '" + callable.getQualifiedName() + "' is not unique. Please fix."
+}
+
+query predicate pointsTo_found_typeTracker_notFound(CallNode call, string qualname) {
+  exists(Function target |
+    pointsToCallEdge(call, target) and
+    not typeTrackerCallEdge(call, target) and
+    qualname = betterQualName(target)
+  )
+}
+
+query predicate pointsTo_notFound_typeTracker_found(CallNode call, string qualname) {
+  exists(Function target |
+    not pointsToCallEdge(call, target) and
+    typeTrackerCallEdge(call, target) and
+    qualname = betterQualName(target)
+  )
 }
