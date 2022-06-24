@@ -187,3 +187,10 @@ class WithClassVariable():
     VAR = SOURCE
 
 SINK(WithClassVariable().VAR) # $ flow="SOURCE, l:-2 -> WithClassVariable().VAR"
+
+
+class AlsoWithClassVariable():
+    VAR = NONSOURCE
+
+AlsoWithClassVariable().VAR = SOURCE
+SINK(AlsoWithClassVariable().VAR) # $ MISSING: flow="SOURCE, l:-3 -> AlsoWithClassVariable().VAR"
