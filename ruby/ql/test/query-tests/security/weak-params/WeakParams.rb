@@ -7,9 +7,12 @@ class TestController < ActionController::Base
     TestObject.new(request.query_parameters)
   end
 
+  def update
+    TestObect.update(object_params)
+  end
+
   # 
   def object_params
-    p = params.query_parameters
     params.require(:uuid).permit(:notes)
   end
 end
