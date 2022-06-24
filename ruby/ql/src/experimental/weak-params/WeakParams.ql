@@ -45,7 +45,7 @@ class StrongParamsMethod extends Method {
 }
 
 /**
- * A call to a method that exposes or accesses all parameters from an inbound HTTP request
+ * Holds call to a method that exposes or accesses all parameters from an inbound HTTP request
  */
 predicate allParamsAccess(MethodCall call) {
   call.getMethodName() = "expose_all" or
