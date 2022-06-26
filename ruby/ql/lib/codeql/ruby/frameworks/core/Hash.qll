@@ -378,10 +378,10 @@ private class MergeSummary extends SimpleSummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     (
-      input = "Argument[any].WithElement[any]" and
+      input = "Argument[self,any].WithElement[any]" and
       output = "ReturnValue"
       or
-      input = "Argument[any].Element[any]" and
+      input = "Argument[self,any].Element[any]" and
       output = "Argument[block].Parameter[1,2]"
     ) and
     preservesValue = true
@@ -393,10 +393,10 @@ private class MergeBangSummary extends SimpleSummarizedCallable {
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     (
-      input = "Argument[any].WithElement[any]" and
+      input = "Argument[self,any].WithElement[any]" and
       output = ["ReturnValue", "Argument[self]"]
       or
-      input = "Argument[any].Element[any]" and
+      input = "Argument[self,any].Element[any]" and
       output = "Argument[block].Parameter[1,2]"
     ) and
     preservesValue = true

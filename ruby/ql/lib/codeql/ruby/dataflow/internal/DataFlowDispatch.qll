@@ -260,7 +260,9 @@ private module Cached {
       or
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
     } or
-    THashSplatArgumentPosition()
+    THashSplatArgumentPosition() or
+    TAnyArgumentPosition() or
+    TAnyKeywordArgumentPosition()
 
   cached
   newtype TParameterPosition =
@@ -280,7 +282,8 @@ private module Cached {
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
     } or
     THashSplatParameterPosition() or
-    TAnyParameterPosition()
+    TAnyParameterPosition() or
+    TAnyKeywordParameterPosition()
 }
 
 import Cached
@@ -482,10 +485,13 @@ class ParameterPosition extends TParameterPosition {
   predicate isHashSplat() { this = THashSplatParameterPosition() }
 
   /**
-   * Holds if this position represents any parameter. This includes both positional
-   * and named parameters.
+   * Holds if this position represents any parameter, except `self` parameters. This
+   * includes both positional, named, and block parameters.
    */
   predicate isAny() { this = TAnyParameterPosition() }
+
+  /** Holds if this position represents any positional parameter. */
+  predicate isAnyNamed() { this = TAnyKeywordParameterPosition() }
 
   /** Gets a textual representation of this position. */
   string toString() {
@@ -502,6 +508,8 @@ class ParameterPosition extends TParameterPosition {
     this.isHashSplat() and result = "**"
     or
     this.isAny() and result = "any"
+    or
+    this.isAnyNamed() and result = "any-named"
   }
 }
 
@@ -520,6 +528,15 @@ class ArgumentPosition extends TArgumentPosition {
   predicate isKeyword(string name) { this = TKeywordArgumentPosition(name) }
 
   /**
+   * Holds if this position represents any argument, except `self` arguments. This
+   * includes both positional, named, and block arguments.
+   */
+  predicate isAny() { this = TAnyArgumentPosition() }
+
+  /** Holds if this position represents any positional parameter. */
+  predicate isAnyNamed() { this = TAnyKeywordArgumentPosition() }
+
+  /**
    * Holds if this position represents a synthesized argument containing all keyword
    * arguments wrapped in a hash.
    */
@@ -535,12 +552,16 @@ class ArgumentPosition extends TArgumentPosition {
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
     or
+    this.isAny() and result = "any"
+    or
+    this.isAnyNamed() and result = "any-named"
+    or
     this.isHashSplat() and result = "**"
   }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
-pragma[inline]
+pragma[nomagic]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isSelf() and apos.isSelf()
   or
@@ -556,5 +577,11 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   ppos.isHashSplat() and apos.isHashSplat()
   or
-  ppos.isAny() and exists(apos)
+  ppos.isAny() and not apos.isSelf()
+  or
+  apos.isAny() and not ppos.isSelf()
+  or
+  ppos.isAnyNamed() and apos.isKeyword(_)
+  or
+  apos.isAnyNamed() and ppos.isKeyword(_)
 }

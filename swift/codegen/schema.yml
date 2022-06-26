@@ -13,25 +13,23 @@ _directories:
   stmt: Stmt$
 
 Element:
-  is_unknown:
-    type: predicate
-    _tags: [ no_qltest ]
+  is_unknown: predicate
+  _pragma: skip_qltest
 
 File:
   name: string
 
 Locatable:
-  location:
-    type: Location
-    _tags: [no_qltest]
+  location: Location?
+  _pragma: skip_qltest
 
 Location:
-  _tags: [ no_qltest ]
   file: File
   start_line: int
   start_column: int
   end_line: int
   end_column: int
+  _pragma: skip_qltest
 
 Type:
   diagnostics_name: string
@@ -55,6 +53,11 @@ NominalTypeDecl:
 
 AstNode:
   _extends: Locatable
+
+Callable:
+  _children:
+    params: ParamDecl*
+    body: BraceStmt?
 
 ConditionElement:
   _extends: Locatable
@@ -90,12 +93,14 @@ DependentMemberType:
 
 DynamicSelfType:
   _extends: Type
+  static_self_type: Type
 
 ErrorType:
   _extends: Type
 
 InOutType:
   _extends: Type
+  object_type: Type
 
 LValueType:
   _extends: Type
@@ -112,9 +117,11 @@ ProtocolCompositionType:
 
 ExistentialType:
   _extends: Type
+  constraint: Type
 
 ReferenceStorageType:
   _extends: Type
+  referent_type: Type
 
 SilBlockStorageType:
   _extends: Type
@@ -236,6 +243,10 @@ WeakStorageType:
 
 ArchetypeType:
   _extends: SubstitutableType
+  name: string
+  interface_type: Type
+  superclass: Type?
+  protocols: ProtocolDecl*
 
 GenericTypeParamType:
   _extends: SubstitutableType
@@ -292,9 +303,9 @@ ValueDecl:
   interface_type: Type
 
 AbstractClosureExpr:
-  _extends: Expr
-  _children:
-    params: ParamDecl*
+  _extends:
+    - Expr
+    - Callable
 
 AnyTryExpr:
   _extends: Expr
@@ -382,6 +393,7 @@ EnumIsCaseExpr:
 
 ErrorExpr:
   _extends: Expr
+  _pragma: skip_qltest  # unexpected emission
 
 ExplicitCastExpr:
   _extends: Expr
@@ -442,7 +454,7 @@ LookupExpr:
   _extends: Expr
   _children:
     base_expr: Expr
-  member: Decl
+  member: Decl?
 
 MakeTemporarilyEscapableExpr:
   _extends: Expr
@@ -456,6 +468,7 @@ ObjCSelectorExpr:
   _children:
     sub_expr: Expr
   method: AbstractFunctionDecl
+  _pragma: skip_qltest  # to be tested in integration tests
 
 OneWayExpr:
   _extends: Expr
@@ -495,6 +508,9 @@ RebindSelfInConstructorExpr:
 
 SequenceExpr:
   _extends: Expr
+  _children:
+    elements: Expr*
+  _pragma: skip_qltest  # we should really never extract these, as these should be resolved to trees of operations
 
 SuperRefExpr:
   _extends: Expr
@@ -525,18 +541,27 @@ TypeExpr:
 
 UnresolvedDeclRefExpr:
   _extends: Expr
+  name: string?
+  _pragma: skip_qltest  # we should really never extract these
 
 UnresolvedDotExpr:
   _extends: Expr
+  _children:
+    base: Expr
+  name: string
 
 UnresolvedMemberExpr:
   _extends: Expr
+  name: string
+  _pragma: skip_qltest  # we should really never extract these
 
 UnresolvedPatternExpr:
   _extends: Expr
+  _pragma: skip_qltest  # we should really never extract these
 
 UnresolvedSpecializeExpr:
   _extends: Expr
+  _pragma: skip_qltest  # we should really never extract these
 
 VarargExpansionExpr:
   _extends: Expr
@@ -677,6 +702,8 @@ BuiltinIntegerType:
 
 NestedArchetypeType:
   _extends: ArchetypeType
+  parent: ArchetypeType
+  associated_type_declaration: AssociatedTypeDecl
 
 SequenceArchetypeType:
   _extends: ArchetypeType
@@ -689,7 +716,6 @@ OpenedArchetypeType:
 
 PrimaryArchetypeType:
   _extends: ArchetypeType
-  interface_type: GenericTypeParamType
 
 DictionaryType:
   _extends: SyntaxSugarType
@@ -714,10 +740,8 @@ AbstractFunctionDecl:
   _extends:
     - GenericContext
     - ValueDecl
+    - Callable
   name: string
-  _children:
-    body: BraceStmt?
-    params: ParamDecl*
 
 AbstractStorageDecl:
   _extends: ValueDecl
@@ -737,13 +761,9 @@ TypeDecl:
 
 AutoClosureExpr:
   _extends: AbstractClosureExpr
-  _children:
-    body: BraceStmt
 
 ClosureExpr:
   _extends: AbstractClosureExpr
-  _children:
-    body: BraceStmt
 
 ForceTryExpr:
   _extends: AnyTryExpr
@@ -810,9 +830,11 @@ ArrayToPointerExpr:
 
 BridgeFromObjCExpr:
   _extends: ImplicitConversionExpr
+  _pragma: skip_qltest  # to be tested in integration tests
 
 BridgeToObjCExpr:
   _extends: ImplicitConversionExpr
+  _pragma: skip_qltest  # to be tested in integration tests
 
 ClassMetatypeToObjectExpr:
   _extends: ImplicitConversionExpr
@@ -822,6 +844,7 @@ CollectionUpcastConversionExpr:
 
 ConditionalBridgeFromObjCExpr:
   _extends: ImplicitConversionExpr
+  _pragma: skip_qltest  # to be tested in integration tests
 
 CovariantFunctionConversionExpr:
   _extends: ImplicitConversionExpr

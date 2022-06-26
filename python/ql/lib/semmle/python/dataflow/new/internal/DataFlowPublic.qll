@@ -540,6 +540,35 @@ class GuardNode extends ControlFlowNode {
 }
 
 /**
+ * Holds if the guard `g` validates `node` upon evaluating to `branch`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
+ */
+signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean branch);
+
+/**
+ * Provides a set of barrier nodes for a guard that validates a node.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  ExprNode getABarrierNode() {
+    exists(GuardNode g, EssaDefinition def, ControlFlowNode node, boolean branch |
+      AdjacentUses::useOfDef(def, node) and
+      guardChecks(g, node, branch) and
+      AdjacentUses::useOfDef(def, result.asCfgNode()) and
+      g.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
+    )
+  }
+}
+
+/**
+ * DEPRECATED: Use `BarrierGuard` module instead.
+ *
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -548,7 +577,7 @@ class GuardNode extends ControlFlowNode {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends GuardNode {
+deprecated class BarrierGuard extends GuardNode {
   /** Holds if this guard validates `node` upon evaluating to `branch`. */
   abstract predicate checks(ControlFlowNode node, boolean branch);
 

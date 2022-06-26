@@ -780,6 +780,24 @@ module API {
       or
       pos.isBlock() and
       result = Label::blockParameter()
+      or
+      pos.isAny() and
+      (
+        result = Label::parameter(_)
+        or
+        result = Label::keywordParameter(_)
+        or
+        result = Label::blockParameter()
+        // NOTE: `self` should NOT be included, as described in the QLDoc for `isAny()`
+      )
+      or
+      pos.isAnyNamed() and
+      result = Label::keywordParameter(_)
+      //
+      // Note: there is currently no API graph label for `self`.
+      // It was omitted since in practice it means going back to where you came from.
+      // For example, `base.getMethod("foo").getSelf()` would just be `base`.
+      // However, it's possible we'll need it later, for identifying `self` parameters or post-update nodes.
     }
 
     /** Gets the API graph label corresponding to the given parameter position. */
@@ -796,6 +814,24 @@ module API {
       or
       pos.isBlock() and
       result = Label::blockParameter()
+      or
+      pos.isAny() and
+      (
+        result = Label::parameter(_)
+        or
+        result = Label::keywordParameter(_)
+        or
+        result = Label::blockParameter()
+        // NOTE: `self` should NOT be included, as described in the QLDoc for `isAny()`
+      )
+      or
+      pos.isAnyNamed() and
+      result = Label::keywordParameter(_)
+      //
+      // Note: there is currently no API graph label for `self`.
+      // It was omitted since in practice it means going back to where you came from.
+      // For example, `base.getMethod("foo").getSelf()` would just be `base`.
+      // However, it's possible we'll need it later, for identifying `self` parameters or post-update nodes.
     }
   }
 }

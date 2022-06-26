@@ -1068,6 +1068,7 @@ export class TypeTable {
             let superType = this.typeChecker.getTypeFromTypeNode(typeExpr);
             if (superType == null) continue;
             let baseTypeSymbol = superType.symbol;
+            baseTypeSymbol = (baseTypeSymbol as any)?.type?.symbol ?? baseTypeSymbol;
             if (baseTypeSymbol == null) continue;
             let baseId = this.getSymbolId(baseTypeSymbol);
             // Note: take care not to perform a recursive call between the two `push` calls.

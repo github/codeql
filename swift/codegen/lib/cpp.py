@@ -99,7 +99,7 @@ class Tag:
 @dataclass
 class TrapList:
     template: ClassVar = 'trap_traps'
-
+    extensions = ["h", "cpp"]
     traps: List[Trap]
     source: str
 
@@ -107,6 +107,7 @@ class TrapList:
 @dataclass
 class TagList:
     template: ClassVar = 'trap_tags'
+    extensions = ["h"]
 
     tags: List[Tag]
     source: str
@@ -143,6 +144,8 @@ class Class:
 @dataclass
 class ClassList:
     template: ClassVar = "cpp_classes"
+    extensions: ClassVar = ["h", "cpp"]
 
     classes: List[Class]
     source: str
+    include_parent: bool = False

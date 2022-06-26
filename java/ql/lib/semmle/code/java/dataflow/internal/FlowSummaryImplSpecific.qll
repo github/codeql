@@ -55,6 +55,13 @@ DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
   exists(rk)
 }
 
+bindingset[provenance]
+private boolean isGenerated(string provenance) {
+  provenance = "generated" and result = true
+  or
+  provenance != "generated" and result = false
+}
+
 /**
  * Holds if an external flow summary exists for `c` with input specification
  * `input`, output specification `output`, kind `kind`, and a flag `generated`
@@ -62,9 +69,11 @@ DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
  */
 predicate summaryElement(Callable c, string input, string output, string kind, boolean generated) {
   exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string provenance
   |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, generated) and
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) and
+    generated = isGenerated(provenance) and
     c = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
@@ -122,9 +131,11 @@ class SourceOrSinkElement = Top;
  */
 predicate sourceElement(SourceOrSinkElement e, string output, string kind, boolean generated) {
   exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string provenance
   |
-    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, generated) and
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance) and
+    generated = isGenerated(provenance) and
     e = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
@@ -136,9 +147,11 @@ predicate sourceElement(SourceOrSinkElement e, string output, string kind, boole
  */
 predicate sinkElement(SourceOrSinkElement e, string input, string kind, boolean generated) {
   exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string provenance
   |
-    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, generated) and
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance) and
+    generated = isGenerated(provenance) and
     e = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }

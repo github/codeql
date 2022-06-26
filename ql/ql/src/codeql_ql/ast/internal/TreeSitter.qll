@@ -999,11 +999,16 @@ module QL {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ModuleInstantiation" }
 
+    /** Gets the node corresponding to the field `name`. */
+    final ModuleName getName() { ql_module_instantiation_def(this, result) }
+
     /** Gets the `i`th child of this node. */
     final SignatureExpr getChild(int i) { ql_module_instantiation_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_module_instantiation_child(this, _, result) }
+    final override AstNode getAFieldOrChild() {
+      ql_module_instantiation_def(this, result) or ql_module_instantiation_child(this, _, result)
+    }
   }
 
   /** A class representing `moduleMember` nodes. */

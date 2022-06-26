@@ -1925,10 +1925,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "CommentDirective" }
 
     /** Gets the child of this node. */
-    final Comment getChild() { erb_comment_directive_def(this, result) }
+    final Comment getChild() { erb_comment_directive_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_comment_directive_def(this, result) }
+    final override AstNode getAFieldOrChild() { erb_comment_directive_child(this, result) }
   }
 
   /** A class representing `content` tokens. */
@@ -1943,10 +1943,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "Directive" }
 
     /** Gets the child of this node. */
-    final Code getChild() { erb_directive_def(this, result) }
+    final Code getChild() { erb_directive_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_directive_def(this, result) }
+    final override AstNode getAFieldOrChild() { erb_directive_child(this, result) }
   }
 
   /** A class representing `graphql_directive` nodes. */
@@ -1955,10 +1955,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "GraphqlDirective" }
 
     /** Gets the child of this node. */
-    final Code getChild() { erb_graphql_directive_def(this, result) }
+    final Code getChild() { erb_graphql_directive_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_graphql_directive_def(this, result) }
+    final override AstNode getAFieldOrChild() { erb_graphql_directive_child(this, result) }
   }
 
   /** A class representing `output_directive` nodes. */
@@ -1967,10 +1967,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "OutputDirective" }
 
     /** Gets the child of this node. */
-    final Code getChild() { erb_output_directive_def(this, result) }
+    final Code getChild() { erb_output_directive_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_output_directive_def(this, result) }
+    final override AstNode getAFieldOrChild() { erb_output_directive_child(this, result) }
   }
 
   /** A class representing `template` nodes. */

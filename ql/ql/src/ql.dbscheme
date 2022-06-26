@@ -656,7 +656,8 @@ ql_module_instantiation_child(
 );
 
 ql_module_instantiation_def(
-  unique int id: @ql_module_instantiation
+  unique int id: @ql_module_instantiation,
+  int name: @ql_module_name ref
 );
 
 @ql_moduleMember_child_type = @ql_annotation | @ql_classless_predicate | @ql_dataclass | @ql_datatype | @ql_import_directive | @ql_module | @ql_select | @ql_token_qldoc

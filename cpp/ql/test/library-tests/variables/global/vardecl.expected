@@ -1,5 +1,17 @@
 | a.c:4:5:4:6 | definition of is | array of {int} | 1 |
 | a.h:2:12:2:13 | declaration of is | array of 4 {int} | 1 |
+| c.c:2:5:2:6 | definition of js | array of {int} | 1 |
+| c.c:4:5:4:6 | definition of ks | array of 4 {int} | 1 |
+| c.c:6:5:6:6 | definition of ls | array of 4 {int} | 1 |
+| c.c:8:5:8:7 | definition of iss | array of 4 {array of 2 {int}} | 1 |
+| c.c:12:11:12:11 | definition of i | typedef {int} as "int_alias" | 1 |
+| c.h:2:12:2:13 | declaration of js | array of {int} | 1 |
+| c.h:4:12:4:13 | declaration of ks | array of {int} | 1 |
+| c.h:6:12:6:13 | declaration of ls | array of 4 {int} | 1 |
+| c.h:8:12:8:14 | declaration of iss | array of {array of 2 {int}} | 1 |
+| c.h:10:12:10:12 | declaration of i | int | 1 |
+| d.cpp:3:7:3:8 | definition of xs | array of {int} | 1 |
+| d.h:3:14:3:15 | declaration of xs | array of 2 {int} | 1 |
 | file://:0:0:0:0 | definition of fp_offset | unsigned int | 1 |
 | file://:0:0:0:0 | definition of gp_offset | unsigned int | 1 |
 | file://:0:0:0:0 | definition of overflow_arg_area | pointer to {void} | 1 |

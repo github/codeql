@@ -66,80 +66,6 @@ open class KotlinUsesExtractor(
         TypeResult(fakeKotlinType(), "", "")
     )
 
-    private data class MethodKey(val className: FqName, val functionName: Name)
-
-    private fun makeDescription(className: FqName, functionName: String) = MethodKey(className, Name.guessByFirstCharacter(functionName))
-
-    // This essentially mirrors SpecialBridgeMethods.kt, a backend pass which isn't easily available to our extractor.
-    private val specialFunctions = mapOf(
-        makeDescription(StandardNames.FqNames.collection, "<get-size>") to "size",
-        makeDescription(FqName("java.util.Collection"), "<get-size>") to "size",
-        makeDescription(StandardNames.FqNames.map, "<get-size>") to "size",
-        makeDescription(FqName("java.util.Map"), "<get-size>") to "size",
-        makeDescription(StandardNames.FqNames.charSequence.toSafe(), "<get-length>") to "length",
-        makeDescription(FqName("java.lang.CharSequence"), "<get-length>") to "length",
-        makeDescription(StandardNames.FqNames.map, "<get-keys>") to "keySet",
-        makeDescription(FqName("java.util.Map"), "<get-keys>") to "keySet",
-        makeDescription(StandardNames.FqNames.map, "<get-values>") to "values",
-        makeDescription(FqName("java.util.Map"), "<get-values>") to "values",
-        makeDescription(StandardNames.FqNames.map, "<get-entries>") to "entrySet",
-        makeDescription(FqName("java.util.Map"), "<get-entries>") to "entrySet",
-        makeDescription(StandardNames.FqNames.mutableList, "removeAt") to "remove",
-        makeDescription(FqName("java.util.List"), "removeAt") to "remove",
-        makeDescription(StandardNames.FqNames._enum.toSafe(), "<get-ordinal>") to "ordinal",
-        makeDescription(FqName("java.lang.Enum"), "<get-ordinal>") to "ordinal",
-        makeDescription(StandardNames.FqNames._enum.toSafe(), "<get-name>") to "name",
-        makeDescription(FqName("java.lang.Enum"), "<get-name>") to "name",
-        makeDescription(StandardNames.FqNames.number.toSafe(), "toByte") to "byteValue",
-        makeDescription(FqName("java.lang.Number"), "toByte") to "byteValue",
-        makeDescription(StandardNames.FqNames.number.toSafe(), "toShort") to "shortValue",
-        makeDescription(FqName("java.lang.Number"), "toShort") to "shortValue",
-        makeDescription(StandardNames.FqNames.number.toSafe(), "toInt") to "intValue",
-        makeDescription(FqName("java.lang.Number"), "toInt") to "intValue",
-        makeDescription(StandardNames.FqNames.number.toSafe(), "toLong") to "longValue",
-        makeDescription(FqName("java.lang.Number"), "toLong") to "longValue",
-        makeDescription(StandardNames.FqNames.number.toSafe(), "toFloat") to "floatValue",
-        makeDescription(FqName("java.lang.Number"), "toFloat") to "floatValue",
-        makeDescription(StandardNames.FqNames.number.toSafe(), "toDouble") to "doubleValue",
-        makeDescription(FqName("java.lang.Number"), "toDouble") to "doubleValue",
-    )
-
-    private val specialFunctionShortNames = specialFunctions.keys.map { it.functionName }.toSet()
-
-    fun getSpecialJvmName(f: IrFunction): String? {
-        if (specialFunctionShortNames.contains(f.name) && f is IrSimpleFunction) {
-            f.allOverridden(true).forEach { overriddenFunc ->
-                overriddenFunc.parentClassOrNull?.fqNameWhenAvailable?.let { parentFqName ->
-                    specialFunctions[MethodKey(parentFqName, f.name)]?.let {
-                        return it
-                    }
-                }
-            }
-        }
-        return null
-    }
-
-    fun getJvmName(container: IrAnnotationContainer): String? {
-        for(a: IrConstructorCall in container.annotations) {
-            val t = a.type
-            if (t is IrSimpleType && a.valueArgumentsCount == 1) {
-                val owner = t.classifier.owner
-                val v = a.getValueArgument(0)
-                if (owner is IrClass) {
-                    val aPkg = owner.packageFqName?.asString()
-                    val name = owner.name.asString()
-                    if(aPkg == "kotlin.jvm" && name == "JvmName" && v is IrConst<*>) {
-                        val value = v.value
-                        if (value is String) {
-                            return value
-                        }
-                    }
-                }
-            }
-        }
-        return (container as? IrFunction)?.let { getSpecialJvmName(container) }
-    }
-
     @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
     fun extractFileClass(f: IrFile): Label<out DbClass> {
         val fileName = f.fileEntry.name
@@ -264,7 +190,7 @@ open class KotlinUsesExtractor(
         }
 
     // The Kotlin compiler internal representation of Outer<A, B>.Inner<C, D>.InnerInner<E, F>.someFunction<G, H>.LocalClass<I, J> is LocalClass<I, J, G, H, E, F, C, D, A, B>. This function returns [A, B, C, D, E, F, G, H, I, J].
-    fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
+    private fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
         if(argsIncludingOuterClasses.isNullOrEmpty())
             return argsIncludingOuterClasses
         val ret = ArrayList<IrTypeArgument>()
@@ -311,7 +237,7 @@ open class KotlinUsesExtractor(
         return UseClassInstanceResult(classTypeResult, extractClass)
     }
 
-    fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
+    private fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
 
     fun extractClassLaterIfExternal(c: IrClass) {
         if (isExternalDeclaration(c)) {
@@ -396,17 +322,17 @@ open class KotlinUsesExtractor(
         } ?: c
     }
 
-    fun tryReplaceAndroidSyntheticFunction(f: IrSimpleFunction): IrSimpleFunction {
+    private fun tryReplaceFunctionInSyntheticClass(f: IrFunction, getClassReplacement: (IrClass) -> IrClass): IrFunction {
         val parentClass = f.parent as? IrClass ?: return f
-        val replacementClass = tryReplaceAndroidSyntheticClass(parentClass)
+        val replacementClass = getClassReplacement(parentClass)
         if (replacementClass === parentClass)
             return f
         return globalExtensionState.syntheticToRealFunctionMap.getOrPut(f) {
             val result = replacementClass.declarations.find { replacementDecl ->
-                replacementDecl is IrSimpleFunction && replacementDecl.name == f.name && replacementDecl.valueParameters.zip(f.valueParameters).all {
-                    it.first.type == it.second.type
+                replacementDecl is IrSimpleFunction && replacementDecl.name == f.name && replacementDecl.valueParameters.size == f.valueParameters.size && replacementDecl.valueParameters.zip(f.valueParameters).all {
+                    erase(it.first.type) == erase(it.second.type)
                 }
-            } as IrSimpleFunction?
+            } as IrFunction?
             if (result == null) {
                 logger.warn("Failed to replace synthetic class function ${f.name}")
             } else {
@@ -414,6 +340,11 @@ open class KotlinUsesExtractor(
             }
             result
         } ?: f
+    }
+
+    fun tryReplaceSyntheticFunction(f: IrFunction): IrFunction {
+        val androidReplacement = tryReplaceFunctionInSyntheticClass(f) { tryReplaceAndroidSyntheticClass(it) }
+        return tryReplaceFunctionInSyntheticClass(androidReplacement) { tryReplaceParcelizeRawType(it)?.first ?: it }
     }
 
     fun tryReplaceAndroidSyntheticField(f: IrField): IrField {
@@ -706,14 +637,31 @@ open class KotlinUsesExtractor(
             )
 
             (s.isBoxedArray && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
-                var dimensions = 1
-                var isPrimitiveArray = s.isPrimitiveArray()
-                val componentType = s.getArrayElementType(pluginContext.irBuiltIns)
-                var elementType = componentType
+
+                fun replaceComponentTypeWithAny(t: IrSimpleType, dimensions: Int): IrSimpleType =
+                    if (dimensions == 0)
+                        pluginContext.irBuiltIns.anyType as IrSimpleType
+                    else
+                        t.toBuilder().also { it.arguments = (it.arguments[0] as IrTypeProjection)
+                            .let { oldArg ->
+                                listOf(makeTypeProjection(replaceComponentTypeWithAny(oldArg.type as IrSimpleType, dimensions - 1), oldArg.variance))
+                            }
+                        }.buildSimpleType()
+
+                var componentType = s.getArrayElementType(pluginContext.irBuiltIns)
+                var isPrimitiveArray = false
+                var dimensions = 0
+                var elementType: IrType = s
                 while (elementType.isBoxedArray || elementType.isPrimitiveArray()) {
                     dimensions++
-                    if(elementType.isPrimitiveArray())
+                    if (elementType.isPrimitiveArray())
                         isPrimitiveArray = true
+                    if (((elementType as IrSimpleType).arguments.singleOrNull() as? IrTypeProjection)?.variance == Variance.IN_VARIANCE) {
+                        // Because Java's arrays are covariant, Kotlin will render Array<in X> as Object[], Array<Array<in X>> as Object[][] etc.
+                        componentType = replaceComponentTypeWithAny(s, dimensions - 1)
+                        elementType = pluginContext.irBuiltIns.anyType as IrSimpleType
+                        break
+                    }
                     elementType = elementType.getArrayElementType(pluginContext.irBuiltIns)
                 }
 
@@ -926,13 +874,33 @@ open class KotlinUsesExtractor(
     private val jvmWildcardAnnotation = FqName("kotlin.jvm.JvmWildcard")
     private val jvmWildcardSuppressionAnnotaton = FqName("kotlin.jvm.JvmSuppressWildcards")
 
+    private fun arrayExtendsAdditionAllowed(t: IrSimpleType): Boolean =
+        // Note the array special case includes Array<*>, which does permit adding `? extends ...` (making `? extends Object[]` in that case)
+        // Surprisingly Array<in X> does permit this as well, though the contravariant array lowers to Object[] so this ends up `? extends Object[]` as well.
+        t.arguments[0].let {
+            when (it) {
+                is IrTypeProjection -> when (it.variance) {
+                    Variance.INVARIANT -> false
+                    Variance.IN_VARIANCE -> !(it.type.isAny() || it.type.isNullableAny())
+                    Variance.OUT_VARIANCE -> extendsAdditionAllowed(it.type)
+                }
+                else -> true
+            }
+        }
+
+    private fun extendsAdditionAllowed(t: IrType) =
+        if (t.isBoxedArray)
+            arrayExtendsAdditionAllowed(t as IrSimpleType)
+        else
+            ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
+
     private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean) =
         when {
             t.hasAnnotation(jvmWildcardAnnotation) -> true
             !addByDefault -> false
             t.hasAnnotation(jvmWildcardSuppressionAnnotaton) -> false
             v == Variance.IN_VARIANCE -> !(t.isNullableAny() || t.isAny())
-            v == Variance.OUT_VARIANCE -> ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
+            v == Variance.OUT_VARIANCE -> extendsAdditionAllowed(t)
             else -> false
         }
 
@@ -1178,15 +1146,6 @@ open class KotlinUsesExtractor(
         return res
     }
 
-    fun <T: DbCallable> useFunctionCommon(f: IrFunction, label: String): Label<out T> {
-        val id: Label<T> = tw.getLabelFor(label)
-        if (isExternalDeclaration(f)) {
-            extractFunctionLaterIfExternalFileMember(f)
-            extractExternalEnclosingClassLater(f)
-        }
-        return id
-    }
-
     // These are classes with Java equivalents, but whose methods don't all exist on those Java equivalents--
     // for example, the numeric classes define arithmetic functions (Int.plus, Long.or and so on) that lower to
     // primitive arithmetic on the JVM, but which we extract as calls to reflect the source syntax more closely.
@@ -1242,19 +1201,23 @@ open class KotlinUsesExtractor(
             } as IrFunction? ?: f
 
     fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
+        return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
+    }
+
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
         if (f.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(f)
             return ids.function.cast<T>()
-        } else {
-            val realFunction = kotlinFunctionToJavaEquivalent(f, noReplace)
-            return useFunctionCommon<T>(realFunction, getFunctionLabel(realFunction, classTypeArgsIncludingOuterClasses))
         }
+        val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
+        val label = getFunctionLabel(javaFun, parentId, classTypeArgsIncludingOuterClasses)
+        val id: Label<T> = tw.getLabelFor(label)
+        if (isExternalDeclaration(javaFun)) {
+            extractFunctionLaterIfExternalFileMember(javaFun)
+            extractExternalEnclosingClassLater(javaFun)
+        }
+        return id
     }
-
-    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false) =
-        kotlinFunctionToJavaEquivalent(f, noReplace).let {
-            useFunctionCommon<T>(it, getFunctionLabel(it, parentId, classTypeArgsIncludingOuterClasses))
-        }
 
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
@@ -1496,7 +1459,7 @@ open class KotlinUsesExtractor(
         return t
     }
 
-    fun eraseTypeParameter(t: IrTypeParameter) =
+    private fun eraseTypeParameter(t: IrTypeParameter) =
         erase(t.superTypes[0])
 
     /**

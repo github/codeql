@@ -198,7 +198,11 @@ class ErbCommentDirective extends ErbDirective {
 
   override ErbComment getToken() { toGenerated(result) = g.getChild() }
 
-  final override string toString() { result = "<%#" + this.getToken().toString() + "%>" }
+  final override string toString() {
+    result = "<%#" + this.getToken().toString() + "%>"
+    or
+    not exists(this.getToken()) and result = "<%#%>"
+  }
 
   final override string getAPrimaryQlClass() { result = "ErbCommentDirective" }
 }
@@ -223,7 +227,11 @@ class ErbGraphqlDirective extends ErbDirective {
 
   override ErbCode getToken() { toGenerated(result) = g.getChild() }
 
-  final override string toString() { result = "<%graphql" + this.getToken().toString() + "%>" }
+  final override string toString() {
+    result = "<%graphql" + this.getToken().toString() + "%>"
+    or
+    not exists(this.getToken()) and result = "<%graphql%>"
+  }
 
   final override string getAPrimaryQlClass() { result = "ErbGraphqlDirective" }
 }
@@ -248,7 +256,11 @@ class ErbOutputDirective extends ErbDirective {
 
   override ErbCode getToken() { toGenerated(result) = g.getChild() }
 
-  final override string toString() { result = "<%=" + this.getToken().toString() + "%>" }
+  final override string toString() {
+    result = "<%=" + this.getToken().toString() + "%>"
+    or
+    not exists(this.getToken()) and result = "<%=%>"
+  }
 
   final override string getAPrimaryQlClass() { result = "ErbOutputDirective" }
 }
@@ -266,7 +278,11 @@ class ErbExecutionDirective extends ErbDirective {
 
   ErbExecutionDirective() { this = TDirective(g) }
 
-  final override string toString() { result = "<%" + this.getToken().toString() + "%>" }
+  final override string toString() {
+    result = "<%" + this.getToken().toString() + "%>"
+    or
+    not exists(this.getToken()) and result = "<%-%>"
+  }
 
   final override string getAPrimaryQlClass() { result = "ErbExecutionDirective" }
 }

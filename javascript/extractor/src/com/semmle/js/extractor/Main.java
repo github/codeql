@@ -43,7 +43,7 @@ public class Main {
    * A version identifier that should be updated every time the extractor changes in such a way that
    * it may produce different tuples for the same file under the same {@link ExtractorConfig}.
    */
-  public static final String EXTRACTOR_VERSION = "2022-05-24";
+  public static final String EXTRACTOR_VERSION = "2022-06-08";
 
   public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -153,7 +153,7 @@ public class Main {
         ensureFileIsExtracted(file, ap);
       }
     }
-    
+
     TypeScriptParser tsParser = extractorState.getTypeScriptParser();
     tsParser.setTypescriptRam(extractorConfig.getTypeScriptRam());
     if (containsTypeScriptFiles()) {
@@ -460,7 +460,7 @@ public class Main {
     if (ap.has(P_TYPESCRIPT)) return TypeScriptMode.BASIC;
     return TypeScriptMode.NONE;
   }
-  
+
   private Path inferSourceRoot(ArgsParser ap) {
     List<File> files = getFilesArg(ap);
     Path sourceRoot = files.iterator().next().toPath().toAbsolutePath().getParent();
