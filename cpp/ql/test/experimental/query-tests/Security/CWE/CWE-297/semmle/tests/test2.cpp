@@ -33,16 +33,6 @@ namespace boost
     }
   }
 }
-/*
-void goodTest1(boost::asio::ssl::stream  sock){ // GOOD
-  sock.set_verify_mode(boost::asio::ssl::verify_peer);
-  sock.set_verify_callback(boost::asio::ssl::host_name_verification("host.name"));
-}
-void goodTest2(boost::asio::ssl::stream  sock){ // GOOD
-  sock.set_verify_mode(boost::asio::ssl::verify_peer);
-  sock.set_verify_callback(boost::asio::ssl::rfc2818_verification("host.name"));
-}
-*/
 void badTest1(boost::asio::ssl::stream  sock){ // BAD
   sock.set_verify_mode(boost::asio::ssl::verify_peer);
 }
