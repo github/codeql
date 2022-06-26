@@ -65,7 +65,11 @@ where
   exists(ArrayType array, int bufArgPos, int sizeArgPos |
     numberArgument(fc.getTarget(), bufArgPos, sizeArgPos) and
     fc.getArgument(pragma[only_bind_into](sizeArgPos)).getValue().toInt() > array.getByteSize() and
-    fc.getArgument(pragma[only_bind_into](bufArgPos)).(VariableAccess).getTarget().getADeclarationEntry().getType() = array
+    fc.getArgument(pragma[only_bind_into](bufArgPos))
+        .(VariableAccess)
+        .getTarget()
+        .getADeclarationEntry()
+        .getType() = array
   )
 select fc,
   "Access beyond the bounds of the allocated memory is possible, the size argument used is greater than the size of the buffer."
