@@ -13,8 +13,17 @@
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
-predicate checkHostnameOlder1() {
-  exists(FunctionCall fctmp1 |
+FunctionCall getParentCall(FunctionCall f1, FunctionCall f2) {
+  result = f1 and f1.getEnclosingFunction() = f2.getEnclosingFunction()
+  or
+  result = getParentCall(f1.getEnclosingFunction().getACallToThisFunction(), f2)
+  or
+  result = getParentCall(f1, f2.getEnclosingFunction().getACallToThisFunction())
+}
+
+predicate checkHostnameOlder1(FunctionCall fc) {
+  exists(FunctionCall fctmp1, FunctionCall fcNode |
+    fcNode = getParentCall(fctmp1, fc) and
     fctmp1.getTarget().hasName("X509_get_ext_d2i") and
     (
       exists(MacroInvocation mi1tmp, MacroInvocation mi2tmp |
@@ -30,19 +39,28 @@ predicate checkHostnameOlder1() {
   )
 }
 
-predicate checkHostnameOlder2() {
-  exists(FunctionCall fctmp1, FunctionCall fctmp2, FunctionCall fctmp3, FunctionCall fctmp4 |
+predicate checkHostnameOlder2(FunctionCall fc) {
+  exists(
+    FunctionCall fctmp1, FunctionCall fctmp2, FunctionCall fctmp3, FunctionCall fctmp4,
+    FunctionCall fcNode
+  |
+    fcNode = getParentCall(fctmp1, fc) and
+    fctmp3 != fctmp4 and
     globalValueNumber(fctmp1) = globalValueNumber(fctmp3.getArgument(0)) and
     globalValueNumber(fctmp2) = globalValueNumber(fctmp4.getArgument(0)) and
     fctmp1.getTarget().hasName("X509_get_subject_name") and
     fctmp2.getTarget().hasName("X509_get_subject_name") and
     fctmp3.getTarget().hasName("X509_NAME_get_text_by_NID") and
-    fctmp4.getTarget().hasName("X509_NAME_get_text_by_NID")
+    (
+      fctmp4.getTarget().hasName("X509_NAME_get_text_by_NID") or
+      fctmp4.getTarget().hasName("X509_NAME_get_entry")
+    )
   )
 }
 
-predicate checkHostnameUp110() {
-  exists(FunctionCall fctmp1, FunctionCall fctmp2, FunctionCall fctmp3 |
+predicate checkHostnameUp110(FunctionCall fc) {
+  exists(FunctionCall fctmp1, FunctionCall fctmp2, FunctionCall fctmp3, FunctionCall fcNode |
+    fcNode = getParentCall(fctmp1, fc) and
     globalValueNumber(fctmp1.getArgument(0)) = globalValueNumber(fctmp2.getArgument(0)) and
     globalValueNumber(fctmp2.getArgument(0)) = globalValueNumber(fctmp3.getArgument(0)) and
     fctmp1.getTarget().hasName("SSL_set_hostflags") and
@@ -51,8 +69,12 @@ predicate checkHostnameUp110() {
   )
 }
 
-predicate checkHostnameUp102() {
-  exists(FunctionCall fctmp1, FunctionCall fctmp2, FunctionCall fctmp3, FunctionCall fctmp4 |
+predicate checkHostnameUp102(FunctionCall fc) {
+  exists(
+    FunctionCall fctmp1, FunctionCall fctmp2, FunctionCall fctmp3, FunctionCall fctmp4,
+    FunctionCall fcNode
+  |
+    fcNode = getParentCall(fctmp1, fc) and
     globalValueNumber(fctmp1.getArgument(0)) = globalValueNumber(fctmp4.getArgument(0)) and
     globalValueNumber(fctmp1) = globalValueNumber(fctmp2.getArgument(0)) and
     globalValueNumber(fctmp1) = globalValueNumber(fctmp3.getArgument(0)) and
@@ -63,25 +85,30 @@ predicate checkHostnameUp102() {
   )
 }
 
-predicate checkHostnameGnuTLS() {
-  exists(FunctionCall functionCheckHost |
-    functionCheckHost
-        .getTarget()
-        .hasName(["gnutls_x509_crt_check_hostname", "gnutls_x509_crt_check_hostname2"])
-    or
-    functionCheckHost.getTarget().hasName("gnutls_certificate_verify_peers3") and
-    not functionCheckHost.getArgument(1).getValue() = "0"
+predicate checkHostnameGnuTLS(FunctionCall fc) {
+  exists(FunctionCall functionCheckHost, FunctionCall fcNode |
+    fcNode = getParentCall(functionCheckHost, fc) and
+    (
+      functionCheckHost
+          .getTarget()
+          .hasName(["gnutls_x509_crt_check_hostname", "gnutls_x509_crt_check_hostname2"])
+      or
+      functionCheckHost.getTarget().hasName("gnutls_certificate_verify_peers3") and
+      not functionCheckHost.getArgument(1).getValue() = "0"
+    )
   )
 }
 
-predicate checkHostnameBOOST1() {
-  exists(FunctionCall functionCallBackForCheck |
+predicate checkHostnameBOOST1(FunctionCall fc) {
+  exists(FunctionCall functionCallBackForCheck, FunctionCall fcNode |
+    fcNode = getParentCall(functionCallBackForCheck, fc) and
     functionCallBackForCheck.getTarget().hasName("set_verify_callback")
   )
 }
 
-predicate checkHostnameBOOST2() {
-  exists(FunctionCall functionCallBackForCheck |
+predicate checkHostnameBOOST2(FunctionCall fc) {
+  exists(FunctionCall functionCallBackForCheck, FunctionCall fcNode |
+    fcNode = getParentCall(functionCallBackForCheck, fc) and
     functionCallBackForCheck.getTarget().hasName("set_verify_callback") and
     not functionCallBackForCheck
         .getArgument(0)
@@ -93,13 +120,13 @@ predicate checkHostnameBOOST2() {
 
 from FunctionCall fc
 where
-  not checkHostnameOlder1() and
-  not checkHostnameOlder2() and
-  not checkHostnameUp110() and
-  not checkHostnameUp102() and
+  not checkHostnameOlder1(fc) and
+  not checkHostnameOlder2(fc) and
+  not checkHostnameUp110(fc) and
+  not checkHostnameUp102(fc) and
   fc.getTarget().hasName(["SSL_set_verify", "SSL_get_peer_certificate", "SSL_get_verify_result"])
   or
-  not checkHostnameGnuTLS() and
+  not checkHostnameGnuTLS(fc) and
   fc.getTarget()
       .hasName([
           "gnutls_certificate_verify_peers", "gnutls_certificate_verify_peers2",
@@ -107,8 +134,8 @@ where
         ])
   or
   (
-    not checkHostnameBOOST1() or
-    checkHostnameBOOST2()
+    not checkHostnameBOOST1(fc) or
+    checkHostnameBOOST2(fc)
   ) and
   fc.getTarget().hasName("set_verify_mode")
 select fc.getEnclosingFunction(), "You may have missed checking the name of the certificate."
