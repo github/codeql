@@ -349,7 +349,17 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
 predicate readClassVarStep(EssaNode nodeFrom, AttrRead nodeTo) {
   exists(ClassDef classDef, SsaVariable c | classDef.defines(c.getVariable()) |
     nodeFrom.getVar().getScope() = classDef.getDefinedClass() and
-    nodeTo.getObject().(CallCfgNode).getFunction().(CfgNode).getNode() = c.getAUse()
+    nodeTo.getObject().(CallCfgNode).getFunction().(CfgNode).getNode() = c.getAUse() and
+    nodeTo.getAttributeName() = nodeFrom.getVar().getName()
+  )
+}
+
+/** A write to a class variable */
+predicate writeClassVarStep(AttrWrite nodeFrom, EssaNode nodeTo) {
+  exists(ClassDef classDef, SsaVariable c | classDef.defines(c.getVariable()) |
+    nodeTo.getVar().getScope() = classDef.getDefinedClass() and
+    nodeFrom.getObject().(CallCfgNode).getFunction().(CfgNode).getNode() = c.getAUse() and
+    nodeFrom.getAttributeName() = nodeTo.getVar().getName()
   )
 }
 
