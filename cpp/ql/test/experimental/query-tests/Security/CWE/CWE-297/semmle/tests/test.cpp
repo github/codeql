@@ -48,7 +48,6 @@ int SKM_sk_num(struct GENERAL_NAME * a);
 #define 	sk_GENERAL_NAME_num(st)   SKM_sk_num((st))
 GENERAL_NAME* SKM_sk_value(struct GENERAL_NAME * a,int b);
 #define sk_GENERAL_NAME_value(st, i)   SKM_sk_value((st), (i))
-/*
 bool goodTest1(SSL *ssl,char * host,int nid) // GOOD
 {
   X509 *cert;
@@ -98,6 +97,7 @@ bool goodTest2(SSL *ssl,char * host,int nid) // GOOD
   }
   return false;
 }
+
 bool goodTest3(SSL *ssl,char * host,int nid) // GOOD
 {
   X509 *cert;
@@ -105,16 +105,14 @@ bool goodTest3(SSL *ssl,char * host,int nid) // GOOD
   char *data;
   STACK_OF(GENERAL_NAME) *names = NULL;
   GENERAL_NAME *altname;
-  X509_NAME *name;
   X509_NAME_ENTRY * centry;
   result = SSL_get_verify_result(ssl);
   if (result == X509_V_OK)
   {
     cert = SSL_get_peer_certificate(ssl);
-    if (name == NULL) return false;
-    len = X509_NAME_get_index_by_NID (X509_get_subject_name (cert), nid, -1);
+    len = X509_NAME_get_text_by_NID (X509_get_subject_name (cert), nid, NULL, 0);
     if (len < 0) return false;
-    centry = X509_NAME_get_entry(X509_get_subject_name((X509 *) cert), len);
+    centry = X509_NAME_get_entry(X509_get_subject_name(cert), len);
     if(centry == NULL) return false;
     data = (char *) ASN1_STRING_data(X509_NAME_ENTRY_get_data(centry));
     if(cmpNames(host,data)==0) return true;
@@ -137,7 +135,6 @@ bool goodTest5(SSL *ssl,char * host) // GOOD
   SSL_set_verify(ssl, SSL_VERIFY_PEER, NULL);
   return true;
 }
-*/
 bool badTest1(SSL *ssl) // BAD :no hostname verification in certificate
 {
   X509 *cert;
