@@ -58,6 +58,9 @@ abstract class Modifiable extends Element {
   /** Holds if this element has an `internal` modifier. */
   predicate isInternal() { this.hasModifier("internal") }
 
+  /** Holds if this element has an `inline` modifier. */
+  predicate isInline() { this.hasModifier("inline") }
+
   /** Holds if this element has a `volatile` modifier. */
   predicate isVolatile() { this.hasModifier("volatile") }
 
