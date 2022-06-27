@@ -23,6 +23,14 @@ class BarsController < ApplicationController
     render "foo/bars/show", locals: { display_text: dt, safe_text: "hello" }
   end
   
+  def go_back
+    redirect_back_or_to action: "index"
+  end
+
+  def go_back_2
+    redirect_back fallback_location: { action: "index" }
+  end
+
   private
 
   def unreachable_action
