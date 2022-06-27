@@ -11,6 +11,19 @@ methods
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:1:22:1:31 | getX | getX() | public | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:1:34:1:46 | getY | getY() | public | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:1:34:1:46 | setY | setY(java.lang.String) | public | Compiler generated |
+| delegates.kt:3:1:12:1 | MyClass | delegates.kt:4:18:6:5 | getLazyProp | getLazyProp() | public | Compiler generated |
+| delegates.kt:3:1:12:1 | MyClass | delegates.kt:8:32:11:5 | getObservableProp | getObservableProp() | public | Compiler generated |
+| delegates.kt:3:1:12:1 | MyClass | delegates.kt:8:32:11:5 | setObservableProp | setObservableProp(java.lang.String) | public | Compiler generated |
+| delegates.kt:4:18:6:5 | new KProperty1<MyClass,Integer>(...) { ... } | delegates.kt:4:18:6:5 | get | get(MyClass) | override, public |  |
+| delegates.kt:4:18:6:5 | new KProperty1<MyClass,Integer>(...) { ... } | delegates.kt:4:18:6:5 | invoke | invoke(MyClass) | override, public |  |
+| delegates.kt:4:26:6:5 | new Function0<Integer>(...) { ... } | delegates.kt:4:26:6:5 | invoke | invoke() | override, public |  |
+| delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | delegates.kt:8:32:11:5 | get | get(MyClass) | override, public |  |
+| delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | delegates.kt:8:32:11:5 | get | get(MyClass) | override, public |  |
+| delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | delegates.kt:8:32:11:5 | invoke | invoke(MyClass) | override, public |  |
+| delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | delegates.kt:8:32:11:5 | invoke | invoke(MyClass) | override, public |  |
+| delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | delegates.kt:8:32:11:5 | set | set(MyClass,java.lang.String) | override, public |  |
+| delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | delegates.kt:8:32:11:5 | set | set(MyClass,java.lang.String) | override, public |  |
+| delegates.kt:8:66:11:5 | new Function3<KProperty<?>,String,String,Unit>(...) { ... } | delegates.kt:8:66:11:5 | invoke | invoke(kotlin.reflect.KProperty,java.lang.String,java.lang.String) | override, public |  |
 | enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:0:0:0:0 | <clinit> | <clinit>() |  | Compiler generated |
 | enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:0:0:0:0 | valueOf | valueOf(java.lang.String) | public, static | Compiler generated |
 | enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:0:0:0:0 | values | values() | public, static | Compiler generated |
@@ -33,6 +46,12 @@ methods
 | methods.kt:5:1:19:1 | Class | methods.kt:18:5:18:36 | noExplicitVisibilityFun | noExplicitVisibilityFun() | public |  |
 constructors
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:1:6:1:47 | DataClass | DataClass(int,java.lang.String) |
+| delegates.kt:3:1:12:1 | MyClass | delegates.kt:3:1:12:1 | MyClass | MyClass() |
+| delegates.kt:4:18:6:5 | new KProperty1<MyClass,Integer>(...) { ... } | delegates.kt:4:18:6:5 |  |  |
+| delegates.kt:4:26:6:5 | new Function0<Integer>(...) { ... } | delegates.kt:4:26:6:5 |  |  |
+| delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | delegates.kt:8:32:11:5 |  |  |
+| delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | delegates.kt:8:32:11:5 |  |  |
+| delegates.kt:8:66:11:5 | new Function3<KProperty<?>,String,String,Unit>(...) { ... } | delegates.kt:8:66:11:5 |  |  |
 | enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:1:6:4:1 | EnumClass | EnumClass(int) |
 | methods2.kt:7:1:10:1 | Class2 | methods2.kt:7:1:10:1 | Class2 | Class2() |
 | methods3.kt:5:1:7:1 | Class3 | methods3.kt:5:1:7:1 | Class3 | Class3() |
