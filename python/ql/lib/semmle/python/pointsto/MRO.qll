@@ -344,12 +344,12 @@ private class ClassListList extends TClassListList {
     )
   }
 
-  private predicate legalMergeCandidate(ClassObjectInternal cls, ClassListList remaining) {
-    cls = this.getAHead() and remaining = this
+  private predicate legalMergeCandidate(ClassObjectInternal cls, ClassListList remainingList) {
+    cls = this.getAHead() and remainingList = this
     or
-    this.legalMergeCandidate(cls, ConsList(Empty(), remaining))
+    this.legalMergeCandidate(cls, ConsList(Empty(), remainingList))
     or
-    this.legalMergeCandidateNonEmpty(cls, remaining, Empty())
+    this.legalMergeCandidateNonEmpty(cls, remainingList, Empty())
   }
 
   pragma[noinline]
