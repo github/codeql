@@ -1,0 +1,47 @@
+| main.go:13:6:13:6 | assignment to x | main.go:13:6:13:6 | x | main.go:13:6:13:6 | zero value for x |
+| main.go:14:2:14:2 | assignment to y | main.go:14:2:14:2 | y | main.go:14:7:14:8 | 23 |
+| main.go:17:3:17:3 | assignment to y | main.go:14:2:14:2 | y | main.go:17:3:17:9 | ... += ... |
+| main.go:21:3:21:3 | assignment to x | main.go:13:6:13:6 | x | main.go:21:7:21:7 | y |
+| main.go:26:10:26:10 | initialization of x | main.go:26:10:26:10 | x | main.go:26:10:26:10 | argument corresponding to x |
+| main.go:27:2:27:2 | assignment to a | main.go:27:2:27:2 | a | main.go:27:10:27:10 | x |
+| main.go:27:5:27:5 | assignment to b | main.go:27:5:27:5 | b | main.go:27:13:27:13 | 0 |
+| main.go:29:3:29:3 | assignment to a | main.go:27:2:27:2 | a | main.go:29:10:29:10 | b |
+| main.go:29:6:29:6 | assignment to b | main.go:27:5:27:5 | b | main.go:29:13:29:13 | a |
+| main.go:34:11:34:11 | initialization of x | main.go:34:11:34:11 | x | main.go:34:11:34:11 | argument corresponding to x |
+| main.go:39:2:39:2 | assignment to x | main.go:39:2:39:2 | x | main.go:39:7:39:8 | 23 |
+| main.go:40:2:40:4 | assignment to ptr | main.go:40:2:40:4 | ptr | main.go:40:9:40:10 | &... |
+| main.go:47:13:47:18 | initialization of result | main.go:47:13:47:18 | result | main.go:47:13:47:18 | zero value for result |
+| main.go:48:2:48:7 | assignment to result | main.go:47:13:47:18 | result | main.go:48:11:48:12 | 42 |
+| main.go:52:14:52:19 | initialization of result | main.go:52:14:52:19 | result | main.go:52:14:52:19 | zero value for result |
+| main.go:57:6:57:6 | assignment to x | main.go:57:6:57:6 | x | main.go:57:6:57:6 | zero value for x |
+| main.go:59:3:59:3 | assignment to x | main.go:57:6:57:6 | x | main.go:59:7:59:7 | 2 |
+| main.go:63:2:63:2 | assignment to y | main.go:63:2:63:2 | y | main.go:63:7:63:7 | 1 |
+| main.go:64:6:64:6 | assignment to i | main.go:64:6:64:6 | i | main.go:64:11:64:11 | 0 |
+| main.go:64:16:64:18 | increment statement | main.go:64:6:64:6 | i | main.go:64:16:64:18 | rhs of increment statement |
+| main.go:68:3:68:3 | assignment to y | main.go:63:2:63:2 | y | main.go:68:7:68:7 | 2 |
+| main.go:72:2:72:2 | assignment to z | main.go:72:2:72:2 | z | main.go:72:7:72:7 | 1 |
+| main.go:73:6:73:6 | assignment to i | main.go:73:6:73:6 | i | main.go:73:11:73:11 | 0 |
+| main.go:73:16:73:18 | increment statement | main.go:73:6:73:6 | i | main.go:73:16:73:18 | rhs of increment statement |
+| main.go:74:3:74:3 | assignment to z | main.go:72:2:72:2 | z | main.go:74:7:74:7 | 2 |
+| main.go:82:18:82:18 | initialization of a | main.go:82:18:82:18 | a | main.go:82:18:82:18 | zero value for a |
+| main.go:82:25:82:25 | initialization of b | main.go:82:25:82:25 | b | main.go:82:25:82:25 | zero value for b |
+| main.go:83:2:83:2 | assignment to x | main.go:83:2:83:2 | x | main.go:83:7:83:8 | 23 |
+| main.go:84:2:84:2 | assignment to x | main.go:83:2:83:2 | x | main.go:84:9:84:12 | ...+... |
+| main.go:84:5:84:5 | assignment to a | main.go:82:18:82:18 | a | main.go:84:15:84:15 | x |
+| main.go:93:15:93:16 | initialization of cb | main.go:93:15:93:16 | cb | main.go:93:15:93:16 | argument corresponding to cb |
+| main.go:95:22:95:28 | initialization of wrapper | main.go:95:22:95:28 | wrapper | main.go:95:22:95:28 | argument corresponding to wrapper |
+| main.go:96:2:96:2 | assignment to x | main.go:96:2:96:2 | x | main.go:96:7:96:7 | 0 |
+| main.go:98:3:98:3 | assignment to x | main.go:96:2:96:2 | x | main.go:98:7:98:7 | 1 |
+| main.go:110:6:110:6 | assignment to p | main.go:110:6:110:6 | p | main.go:110:6:110:6 | zero value for p |
+| main.go:112:3:112:3 | assignment to p | main.go:110:6:110:6 | p | main.go:112:7:112:24 | struct literal |
+| main.go:112:9:112:9 | init of 2 | main.go:104:2:104:2 | a | main.go:112:9:112:9 | 2 |
+| main.go:112:12:112:18 | init of struct literal | main.go:105:2:105:2 | b | main.go:112:12:112:18 | struct literal |
+| main.go:112:14:112:14 | init of 1 | main.go:89:2:89:2 | a | main.go:112:14:112:14 | 1 |
+| main.go:112:17:112:17 | init of 5 | main.go:90:2:90:2 | b | main.go:112:17:112:17 | 5 |
+| main.go:112:21:112:23 | init of 'n' | main.go:106:2:106:2 | c | main.go:112:21:112:23 | 'n' |
+| main.go:114:3:114:3 | assignment to p | main.go:110:6:110:6 | p | main.go:114:7:114:24 | struct literal |
+| main.go:114:9:114:9 | init of 3 | main.go:104:2:104:2 | a | main.go:114:9:114:9 | 3 |
+| main.go:114:12:114:18 | init of struct literal | main.go:105:2:105:2 | b | main.go:114:12:114:18 | struct literal |
+| main.go:114:14:114:14 | init of 4 | main.go:89:2:89:2 | a | main.go:114:14:114:14 | 4 |
+| main.go:114:17:114:17 | init of 5 | main.go:90:2:90:2 | b | main.go:114:17:114:17 | 5 |
+| main.go:114:21:114:23 | init of '2' | main.go:106:2:106:2 | c | main.go:114:21:114:23 | '2' |

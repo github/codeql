@@ -1,4 +1,4 @@
 import javascript
 
 from string mod, string tp
-select mod, tp, API::Node::ofType(mod, tp).getAnImmediateUse()
+select mod, tp, API::Node::ofType(mod, tp).asSource()

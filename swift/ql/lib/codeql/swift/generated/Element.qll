@@ -8,9 +8,11 @@ class ElementBase extends @element {
 
   ElementBase getResolveStep() { none() } // overridden by subclasses
 
-  ElementBase resolve() {
+  final ElementBase resolve() {
     not exists(getResolveStep()) and result = this
     or
     result = getResolveStep().resolve()
   }
+
+  predicate isUnknown() { element_is_unknown(this) }
 }

@@ -42,16 +42,16 @@ class AnnotatedCall extends DataFlow::Node {
   string getCallTargetName() { result = calls }
 
   AnnotatedFunction getAnExpectedCallee(string kind_) {
-    result.getCalleeName() = getCallTargetName() and
+    result.getCalleeName() = this.getCallTargetName() and
     kind = kind_
   }
 
   int getBoundArgs() { result = getAnnotation(this.getAstNode(), "boundArgs").toInt() }
 
   int getBoundArgsOrMinusOne() {
-    result = getBoundArgs()
+    result = this.getBoundArgs()
     or
-    not exists(getBoundArgs()) and
+    not exists(this.getBoundArgs()) and
     result = -1
   }
 

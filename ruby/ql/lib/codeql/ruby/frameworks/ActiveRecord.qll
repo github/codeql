@@ -54,7 +54,7 @@ class ActiveRecordModelClass extends ClassDeclaration {
         // In Rails applications `ApplicationRecord` typically extends `ActiveRecord::Base`, but we
         // treat it separately in case the `ApplicationRecord` definition is not in the database.
         API::getTopLevelMember("ApplicationRecord")
-      ].getASubclass().getAUse().asExpr().getExpr()
+      ].getASubclass().getAValueReachableFromSource().asExpr().getExpr()
   }
 
   // Gets the class declaration for this class and all of its super classes
@@ -240,7 +240,7 @@ abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range,
 // Names of class methods on ActiveRecord models that may return one or more
 // instances of that model. This also includes the `initialize` method.
 // See https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html
-private string finderMethodName() {
+private string staticFinderMethodName() {
   exists(string baseName |
     baseName =
       [
@@ -275,8 +275,24 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
     exists(MethodCall call, Expr recv |
       call = this.asExpr().getExpr() and
       recv = getUltimateReceiver(call) and
-      resolveConstant(recv) = cls.getAQualifiedName() and
-      call.getMethodName() = finderMethodName()
+      (
+        // The receiver refers to an `ActiveRecordModelClass` by name
+        resolveConstant(recv) = cls.getAQualifiedName()
+        or
+        // The receiver is self, and the call is within a singleton method of
+        // the `ActiveRecordModelClass`
+        recv instanceof SelfVariableAccess and
+        exists(SingletonMethod callScope |
+          callScope = call.getCfgScope() and
+          callScope = cls.getAMethod()
+        )
+      ) and
+      (
+        call.getMethodName() = staticFinderMethodName()
+        or
+        // dynamically generated finder methods
+        call.getMethodName().indexOf("find_by_") = 0
+      )
     )
   }
 
@@ -293,18 +309,24 @@ private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInsta
       m = this.getCfgScope() and
       m.getEnclosingModule() = cls and
       m = cls.getAMethod()
-    )
+    ) and
+    // In a singleton method, `self` refers to the class itself rather than an
+    // instance of that class
+    not this.getSelfScope() instanceof SingletonMethod
   }
 
   final override ActiveRecordModelClass getClass() { result = cls }
 }
 
-// A (locally tracked) active record model object
-private class ActiveRecordInstance extends DataFlow::Node {
+/**
+ * An instance of an `ActiveRecord` model object.
+ */
+class ActiveRecordInstance extends DataFlow::Node {
   private ActiveRecordModelInstantiation instantiation;
 
   ActiveRecordInstance() { this = instantiation or instantiation.flowsTo(this) }
 
+  /** Gets the `ActiveRecordModelClass` that this is an instance of. */
   ActiveRecordModelClass getClass() { result = instantiation.getClass() }
 }
 
@@ -337,7 +359,7 @@ private module Persistence {
   }
 
   /**
-   * Holds if `call` has a keyword argument of with value `value`.
+   * Holds if `call` has a keyword argument with value `value`.
    */
   private predicate keywordArgumentWithValue(DataFlow::CallNode call, DataFlow::ExprNode value) {
     exists(ExprNodes::PairCfgNode pair | pair = call.getArgument(_).asExpr() |
@@ -388,6 +410,28 @@ private module Persistence {
         )
       )
     }
+  }
+
+  /**
+   *  A call to `ActiveRecord::Relation#touch_all`, which updates the `updated_at`
+   *  attribute on all records in the relation, setting it to the current time or
+   *  the time specified. If passed additional attribute names, they will also be
+   *  updated with the time.
+   *  Examples:
+   *  ```rb
+   * Person.all.touch_all
+   * Person.where(name: "David").touch_all
+   * Person.all.touch_all(:created_at)
+   * Person.all.touch_all(time: Time.new(2020, 5, 16, 0, 0, 0))
+   * ```
+   */
+  private class TouchAllCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
+    TouchAllCall() {
+      exists(this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass()) and
+      this.getMethodName() = "touch_all"
+    }
+
+    override DataFlow::Node getValue() { result = this.getKeywordArgument("time") }
   }
 
   /** A call to e.g. `User.insert_all([{name: "foo"}, {name: "bar"}])` */

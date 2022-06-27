@@ -9,5 +9,7 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     n instanceof BlockArgumentNode
     or
     n instanceof SummaryNode
+    or
+    n instanceof HashSplatArgumentsNode
   }
 }

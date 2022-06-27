@@ -110,13 +110,11 @@ where
   ref.getWith().getStep() = step and
   step.getJob() = job and
   uses.getGitHubRepository() = "actions/checkout" and
-  (
-    ref.getValue().matches("%github.event.pull_request.head.ref%") or
-    ref.getValue().matches("%github.event.pull_request.head.sha%") or
-    ref.getValue().matches("%github.event.pull_request.number%") or
-    ref.getValue().matches("%github.event.number%") or
-    ref.getValue().matches("%github.head_ref%")
-  ) and
+  ref.getValue()
+      .matches([
+          "%github.event.pull_request.head.ref%", "%github.event.pull_request.head.sha%",
+          "%github.event.pull_request.number%", "%github.event.number%", "%github.head_ref%"
+        ]) and
   step instanceof ProbableStep and
   job instanceof ProbableJob
 select step, "Potential unsafe checkout of untrusted pull request on `pull_request_target`"

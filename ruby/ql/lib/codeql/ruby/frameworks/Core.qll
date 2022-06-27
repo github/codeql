@@ -10,6 +10,7 @@ import core.Object::Object
 import core.Kernel::Kernel
 import core.Module
 import core.Array
+import core.Hash
 import core.String
 import core.Regexp
 import core.IO
@@ -69,6 +70,18 @@ private class SplatSummary extends SummarizedCallable {
       input = "Argument[self].WithElement[any]" and
       output = "ReturnValue"
     ) and
+    preservesValue = true
+  }
+}
+
+private class HashSplatSummary extends SummarizedCallable {
+  HashSplatSummary() { this = "**(hash-splat)" }
+
+  override HashSplatExpr getACall() { any() }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "Argument[self].WithElement[any]" and
+    output = "ReturnValue" and
     preservesValue = true
   }
 }

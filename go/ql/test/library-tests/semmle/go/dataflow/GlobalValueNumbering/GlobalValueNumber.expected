@@ -1,0 +1,44 @@
+| main.go:6:2:6:5 | 1 | main.go:14:7:14:7 | 1 |
+| main.go:10:2:10:2 | definition of x | main.go:10:7:10:7 | 0 |
+| main.go:10:7:10:7 | 0 | main.go:10:7:10:7 | 0 |
+| main.go:11:6:11:6 | definition of y | main.go:10:7:10:7 | 0 |
+| main.go:11:6:11:6 | zero value for y | main.go:10:7:10:7 | 0 |
+| main.go:12:2:12:18 | call to Println | main.go:12:2:12:18 | call to Println |
+| main.go:12:14:12:14 | x | main.go:10:7:10:7 | 0 |
+| main.go:12:17:12:17 | y | main.go:10:7:10:7 | 0 |
+| main.go:14:2:14:2 | definition of z | main.go:14:7:14:7 | 1 |
+| main.go:14:7:14:7 | 1 | main.go:14:7:14:7 | 1 |
+| main.go:15:2:15:9 | call to bump | main.go:15:2:15:9 | call to bump |
+| main.go:16:2:16:21 | call to Println | main.go:16:2:16:21 | call to Println |
+| main.go:16:14:16:14 | x | main.go:10:7:10:7 | 0 |
+| main.go:16:17:16:17 | y | main.go:10:7:10:7 | 0 |
+| main.go:18:2:18:3 | definition of ss | main.go:18:8:18:24 | call to make |
+| main.go:18:8:18:24 | call to make | main.go:18:8:18:24 | call to make |
+| main.go:18:23:18:23 | 3 | main.go:18:23:18:23 | 3 |
+| main.go:19:5:19:5 | 2 | main.go:19:5:19:5 | 2 |
+| main.go:19:10:19:24 | "Hello, world!" | main.go:19:10:19:24 | "Hello, world!" |
+| main.go:20:2:20:16 | call to Println | main.go:20:2:20:16 | call to Println |
+| main.go:23:14:23:16 | implicit read of res | main.go:24:8:24:8 | 4 |
+| main.go:23:14:23:16 | zero value for res | main.go:10:7:10:7 | 0 |
+| main.go:24:2:24:4 | definition of res | main.go:24:8:24:8 | 4 |
+| main.go:24:8:24:8 | 4 | main.go:24:8:24:8 | 4 |
+| main.go:28:15:28:17 | implicit read of res | main.go:30:9:30:9 | 6 |
+| main.go:28:15:28:17 | zero value for res | main.go:10:7:10:7 | 0 |
+| main.go:29:8:29:8 | 5 | main.go:29:8:29:8 | 5 |
+| main.go:30:9:30:9 | 6 | main.go:30:9:30:9 | 6 |
+| main.go:30:9:30:9 | definition of res | main.go:30:9:30:9 | 6 |
+| main.go:33:15:33:17 | definition of res | main.go:10:7:10:7 | 0 |
+| main.go:33:15:33:17 | zero value for res | main.go:10:7:10:7 | 0 |
+| main.go:34:2:34:4 | definition of res | main.go:34:8:34:8 | 7 |
+| main.go:34:8:34:8 | 7 | main.go:34:8:34:8 | 7 |
+| main.go:35:8:37:4 | function call | main.go:35:8:37:4 | function call |
+| main.go:36:3:36:5 | definition of res | main.go:36:9:36:9 | 8 |
+| main.go:36:9:36:9 | 8 | main.go:36:9:36:9 | 8 |
+| main.go:38:9:38:9 | 9 | main.go:38:9:38:9 | 9 |
+| main.go:38:9:38:9 | definition of res | main.go:38:9:38:9 | 9 |
+| regressions.go:5:11:5:31 | call to Sizeof | regressions.go:5:11:5:31 | call to Sizeof |
+| regressions.go:7:11:7:15 | false | regressions.go:7:11:7:15 | false |
+| regressions.go:9:11:9:12 | !... | regressions.go:11:11:11:14 | true |
+| regressions.go:11:11:11:14 | true | regressions.go:11:11:11:14 | true |
+| regressions.go:30:9:30:22 | call to getPayload | regressions.go:30:9:30:22 | call to getPayload |
+| regressions.go:30:26:30:39 | call to getPayload | regressions.go:30:26:30:39 | call to getPayload |

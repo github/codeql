@@ -1,8 +1,23 @@
+import collections
+import pathlib
 import sys
 
-from swift.codegen import dbschemegen
+import pytest
+
+from swift.codegen.generators import dbschemegen
 from swift.codegen.lib import dbscheme
 from swift.codegen.test.utils import *
+
+
+InputExpectedPair = collections.namedtuple("InputExpectedPair", ("input", "expected"))
+
+
+@pytest.fixture(params=[
+    InputExpectedPair(pathlib.Path(), None),
+    InputExpectedPair(pathlib.Path("foodir"), pathlib.Path("foodir")),
+])
+def dir_param(request):
+    return request.param
 
 
 def generate(opts, renderer):
@@ -37,9 +52,9 @@ def test_includes(opts, input, renderer):
     )
 
 
-def test_empty_final_class(opts, input, renderer):
+def test_empty_final_class(opts, input, renderer, dir_param):
     input.classes = [
-        schema.Class("Object"),
+        schema.Class("Object", dir=dir_param.input),
     ]
     assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
@@ -49,16 +64,17 @@ def test_empty_final_class(opts, input, renderer):
                 name="objects",
                 columns=[
                     dbscheme.Column('id', '@object', binding=True),
-                ]
+                ],
+                dir=dir_param.expected,
             )
         ],
     )
 
 
-def test_final_class_with_single_scalar_field(opts, input, renderer):
+def test_final_class_with_single_scalar_field(opts, input, renderer, dir_param):
     input.classes = [
 
-        schema.Class("Object", properties=[
+        schema.Class("Object", dir=dir_param.input, properties=[
             schema.SingleProperty("foo", "bar"),
         ]),
     ]
@@ -71,15 +87,15 @@ def test_final_class_with_single_scalar_field(opts, input, renderer):
                 columns=[
                     dbscheme.Column('id', '@object', binding=True),
                     dbscheme.Column('foo', 'bar'),
-                ]
+                ], dir=dir_param.expected,
             )
         ],
     )
 
 
-def test_final_class_with_single_class_field(opts, input, renderer):
+def test_final_class_with_single_class_field(opts, input, renderer, dir_param):
     input.classes = [
-        schema.Class("Object", properties=[
+        schema.Class("Object", dir=dir_param.input, properties=[
             schema.SingleProperty("foo", "Bar"),
         ]),
     ]
@@ -92,15 +108,15 @@ def test_final_class_with_single_class_field(opts, input, renderer):
                 columns=[
                     dbscheme.Column('id', '@object', binding=True),
                     dbscheme.Column('foo', '@bar'),
-                ]
+                ], dir=dir_param.expected,
             )
         ],
     )
 
 
-def test_final_class_with_optional_field(opts, input, renderer):
+def test_final_class_with_optional_field(opts, input, renderer, dir_param):
     input.classes = [
-        schema.Class("Object", properties=[
+        schema.Class("Object", dir=dir_param.input, properties=[
             schema.OptionalProperty("foo", "bar"),
         ]),
     ]
@@ -112,7 +128,7 @@ def test_final_class_with_optional_field(opts, input, renderer):
                 name="objects",
                 columns=[
                     dbscheme.Column('id', '@object', binding=True),
-                ]
+                ], dir=dir_param.expected,
             ),
             dbscheme.Table(
                 name="object_foos",
@@ -120,16 +136,16 @@ def test_final_class_with_optional_field(opts, input, renderer):
                 columns=[
                     dbscheme.Column('id', '@object'),
                     dbscheme.Column('foo', 'bar'),
-                ]
+                ], dir=dir_param.expected,
             ),
         ],
     )
 
 
 @pytest.mark.parametrize("property_cls", [schema.RepeatedProperty, schema.RepeatedOptionalProperty])
-def test_final_class_with_repeated_field(opts, input, renderer, property_cls):
+def test_final_class_with_repeated_field(opts, input, renderer, property_cls, dir_param):
     input.classes = [
-        schema.Class("Object", properties=[
+        schema.Class("Object", dir=dir_param.input, properties=[
             property_cls("foo", "bar"),
         ]),
     ]
@@ -141,7 +157,7 @@ def test_final_class_with_repeated_field(opts, input, renderer, property_cls):
                 name="objects",
                 columns=[
                     dbscheme.Column('id', '@object', binding=True),
-                ]
+                ], dir=dir_param.expected,
             ),
             dbscheme.Table(
                 name="object_foos",
@@ -150,15 +166,15 @@ def test_final_class_with_repeated_field(opts, input, renderer, property_cls):
                     dbscheme.Column('id', '@object'),
                     dbscheme.Column('index', 'int'),
                     dbscheme.Column('foo', 'bar'),
-                ]
+                ], dir=dir_param.expected,
             ),
         ],
     )
 
 
-def test_final_class_with_predicate_field(opts, input, renderer):
+def test_final_class_with_predicate_field(opts, input, renderer, dir_param):
     input.classes = [
-        schema.Class("Object", properties=[
+        schema.Class("Object", dir=dir_param.input, properties=[
             schema.PredicateProperty("foo"),
         ]),
     ]
@@ -170,22 +186,22 @@ def test_final_class_with_predicate_field(opts, input, renderer):
                 name="objects",
                 columns=[
                     dbscheme.Column('id', '@object', binding=True),
-                ]
+                ], dir=dir_param.expected,
             ),
             dbscheme.Table(
                 name="object_foo",
                 keyset=dbscheme.KeySet(["id"]),
                 columns=[
                     dbscheme.Column('id', '@object'),
-                ]
+                ], dir=dir_param.expected,
             ),
         ],
     )
 
 
-def test_final_class_with_more_fields(opts, input, renderer):
+def test_final_class_with_more_fields(opts, input, renderer, dir_param):
     input.classes = [
-        schema.Class("Object", properties=[
+        schema.Class("Object", dir=dir_param.input, properties=[
             schema.SingleProperty("one", "x"),
             schema.SingleProperty("two", "y"),
             schema.OptionalProperty("three", "z"),
@@ -204,7 +220,7 @@ def test_final_class_with_more_fields(opts, input, renderer):
                     dbscheme.Column('id', '@object', binding=True),
                     dbscheme.Column('one', 'x'),
                     dbscheme.Column('two', 'y'),
-                ]
+                ], dir=dir_param.expected,
             ),
             dbscheme.Table(
                 name="object_threes",
@@ -212,7 +228,7 @@ def test_final_class_with_more_fields(opts, input, renderer):
                 columns=[
                     dbscheme.Column('id', '@object'),
                     dbscheme.Column('three', 'z'),
-                ]
+                ], dir=dir_param.expected,
             ),
             dbscheme.Table(
                 name="object_fours",
@@ -221,7 +237,7 @@ def test_final_class_with_more_fields(opts, input, renderer):
                     dbscheme.Column('id', '@object'),
                     dbscheme.Column('index', 'int'),
                     dbscheme.Column('four', 'u'),
-                ]
+                ], dir=dir_param.expected,
             ),
             dbscheme.Table(
                 name="object_fives",
@@ -230,14 +246,14 @@ def test_final_class_with_more_fields(opts, input, renderer):
                     dbscheme.Column('id', '@object'),
                     dbscheme.Column('index', 'int'),
                     dbscheme.Column('five', 'v'),
-                ]
+                ], dir=dir_param.expected,
             ),
             dbscheme.Table(
                 name="object_six",
                 keyset=dbscheme.KeySet(["id"]),
                 columns=[
                     dbscheme.Column('id', '@object'),
-                ]
+                ], dir=dir_param.expected,
             ),
         ],
     )
@@ -246,8 +262,7 @@ def test_final_class_with_more_fields(opts, input, renderer):
 def test_empty_class_with_derived(opts, input, renderer):
     input.classes = [
         schema.Class(
-            name="Base",
-            derived={"Left", "Right"}),
+            name="Base", derived={"Left", "Right"}),
     ]
     assert generate(opts, renderer) == dbscheme.Scheme(
         src=schema_file,
@@ -261,11 +276,12 @@ def test_empty_class_with_derived(opts, input, renderer):
     )
 
 
-def test_class_with_derived_and_single_property(opts, input, renderer):
+def test_class_with_derived_and_single_property(opts, input, renderer, dir_param):
     input.classes = [
         schema.Class(
             name="Base",
             derived={"Left", "Right"},
+            dir=dir_param.input,
             properties=[
                 schema.SingleProperty("single", "Prop"),
             ]),
@@ -284,17 +300,19 @@ def test_class_with_derived_and_single_property(opts, input, renderer):
                 columns=[
                     dbscheme.Column('id', '@base'),
                     dbscheme.Column('single', '@prop'),
-                ]
+                ],
+                dir=dir_param.expected,
             )
         ],
     )
 
 
-def test_class_with_derived_and_optional_property(opts, input, renderer):
+def test_class_with_derived_and_optional_property(opts, input, renderer, dir_param):
     input.classes = [
         schema.Class(
             name="Base",
             derived={"Left", "Right"},
+            dir=dir_param.input,
             properties=[
                 schema.OptionalProperty("opt", "Prop"),
             ]),
@@ -313,16 +331,18 @@ def test_class_with_derived_and_optional_property(opts, input, renderer):
                 columns=[
                     dbscheme.Column('id', '@base'),
                     dbscheme.Column('opt', '@prop'),
-                ]
+                ],
+                dir=dir_param.expected,
             )
         ],
     )
 
 
-def test_class_with_derived_and_repeated_property(opts, input, renderer):
+def test_class_with_derived_and_repeated_property(opts, input, renderer, dir_param):
     input.classes = [
         schema.Class(
             name="Base",
+            dir=dir_param.input,
             derived={"Left", "Right"},
             properties=[
                 schema.RepeatedProperty("rep", "Prop"),
@@ -343,7 +363,8 @@ def test_class_with_derived_and_repeated_property(opts, input, renderer):
                     dbscheme.Column('id', '@base'),
                     dbscheme.Column('index', 'int'),
                     dbscheme.Column('rep', '@prop'),
-                ]
+                ],
+                dir=dir_param.expected,
             )
         ],
     )

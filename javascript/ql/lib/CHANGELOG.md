@@ -1,3 +1,11 @@
+## 0.1.4
+
+## 0.1.3
+
+### Minor Analysis Improvements
+
+* The `isLibaryFile` predicate from `ClassifyFiles.qll` has been renamed to `isLibraryFile` to fix a typo. 
+
 ## 0.1.2
 
 ### Deprecated APIs

@@ -94,6 +94,12 @@ nodes
 | lib.js:108:3:108:10 | obj[one] |
 | lib.js:108:3:108:10 | obj[one] |
 | lib.js:108:7:108:9 | one |
+| lib.js:118:29:118:32 | path |
+| lib.js:118:29:118:32 | path |
+| lib.js:119:13:119:24 | obj[path[0]] |
+| lib.js:119:13:119:24 | obj[path[0]] |
+| lib.js:119:17:119:20 | path |
+| lib.js:119:17:119:23 | path[0] |
 | sublib/sub.js:1:37:1:40 | path |
 | sublib/sub.js:1:37:1:40 | path |
 | sublib/sub.js:2:3:2:14 | obj[path[0]] |
@@ -236,6 +242,11 @@ edges
 | lib.js:104:13:104:24 | arguments[1] | lib.js:104:7:104:24 | one |
 | lib.js:108:7:108:9 | one | lib.js:108:3:108:10 | obj[one] |
 | lib.js:108:7:108:9 | one | lib.js:108:3:108:10 | obj[one] |
+| lib.js:118:29:118:32 | path | lib.js:119:17:119:20 | path |
+| lib.js:118:29:118:32 | path | lib.js:119:17:119:20 | path |
+| lib.js:119:17:119:20 | path | lib.js:119:17:119:23 | path[0] |
+| lib.js:119:17:119:23 | path[0] | lib.js:119:13:119:24 | obj[path[0]] |
+| lib.js:119:17:119:23 | path[0] | lib.js:119:13:119:24 | obj[path[0]] |
 | sublib/sub.js:1:37:1:40 | path | sublib/sub.js:2:7:2:10 | path |
 | sublib/sub.js:1:37:1:40 | path | sublib/sub.js:2:7:2:10 | path |
 | sublib/sub.js:2:7:2:10 | path | sublib/sub.js:2:7:2:13 | path[0] |
@@ -295,6 +306,7 @@ edges
 | lib.js:70:13:70:24 | obj[path[0]] | lib.js:59:18:59:18 | s | lib.js:70:13:70:24 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:59:18:59:18 | s | library input |
 | lib.js:87:10:87:14 | proto | lib.js:83:14:83:25 | arguments[1] | lib.js:87:10:87:14 | proto | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:83:14:83:25 | arguments[1] | library input |
 | lib.js:108:3:108:10 | obj[one] | lib.js:104:13:104:24 | arguments[1] | lib.js:108:3:108:10 | obj[one] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:104:13:104:24 | arguments[1] | library input |
+| lib.js:119:13:119:24 | obj[path[0]] | lib.js:118:29:118:32 | path | lib.js:119:13:119:24 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:118:29:118:32 | path | library input |
 | sublib/sub.js:2:3:2:14 | obj[path[0]] | sublib/sub.js:1:37:1:40 | path | sublib/sub.js:2:3:2:14 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | sublib/sub.js:1:37:1:40 | path | library input |
 | tst.js:8:5:8:17 | object[taint] | tst.js:5:24:5:37 | req.query.data | tst.js:8:5:8:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | user controlled input |
 | tst.js:9:5:9:17 | object[taint] | tst.js:5:24:5:37 | req.query.data | tst.js:9:5:9:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:5:24:5:37 | req.query.data | user controlled input |

@@ -94,12 +94,6 @@ private string getNodeProperty(DataFlow::Node node, string key) {
       any(DataFlow::Configuration cfg).isBarrierIn(node) and kind = "in"
       or
       any(DataFlow::Configuration cfg).isBarrierOut(node) and kind = "out"
-      or
-      exists(DataFlow::BarrierGuard guard |
-        any(DataFlow::Configuration cfg).isBarrierGuard(guard) and
-        node = guard.getAGuardedNode() and
-        kind = "guard(" + guard.getResultId() + ")"
-      )
     |
       kind, ", "
     )
