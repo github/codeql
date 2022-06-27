@@ -419,7 +419,9 @@ private ClassListList list_of_linearization_of_bases_plus_bases(ClassObjectInter
   result = ConsList(bases(cls), EmptyList()) and n = Types::base_count(cls) and n > 1
   or
   exists(ClassListList partial |
-    partial = list_of_linearization_of_bases_plus_bases(cls, n + 1) and
+    partial =
+      list_of_linearization_of_bases_plus_bases(pragma[only_bind_into](cls),
+        pragma[only_bind_into](n + 1)) and
     result = ConsList(Mro::newStyleMro(Types::getBase(cls, n)), partial)
   )
 }
