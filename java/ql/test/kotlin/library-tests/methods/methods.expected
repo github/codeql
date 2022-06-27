@@ -24,13 +24,14 @@ methods
 | methods5.kt:5:3:5:27 |  | methods5.kt:5:3:5:27 | a | a(int) | public |  |
 | methods5.kt:9:3:9:32 |  | methods5.kt:9:3:9:32 | f1 | f1(foo.bar.C1,int) | public |  |
 | methods.kt:0:0:0:0 | MethodsKt | methods.kt:2:1:3:1 | topLevelMethod | topLevelMethod(int,int) | public, static |  |
-| methods.kt:5:1:19:1 | Class | methods.kt:6:5:7:5 | classMethod | classMethod(int,int) | public |  |
-| methods.kt:5:1:19:1 | Class | methods.kt:9:5:12:5 | anotherClassMethod | anotherClassMethod(int,int) | public |  |
-| methods.kt:5:1:19:1 | Class | methods.kt:14:12:14:29 | publicFun | publicFun() | public |  |
-| methods.kt:5:1:19:1 | Class | methods.kt:15:15:15:35 | protectedFun | protectedFun() | protected |  |
-| methods.kt:5:1:19:1 | Class | methods.kt:16:13:16:31 | privateFun | privateFun() | private |  |
-| methods.kt:5:1:19:1 | Class | methods.kt:17:14:17:33 | internalFun | internalFun() | internal |  |
-| methods.kt:5:1:19:1 | Class | methods.kt:18:5:18:36 | noExplicitVisibilityFun | noExplicitVisibilityFun() | public |  |
+| methods.kt:5:1:20:1 | Class | methods.kt:6:5:7:5 | classMethod | classMethod(int,int) | public |  |
+| methods.kt:5:1:20:1 | Class | methods.kt:9:5:12:5 | anotherClassMethod | anotherClassMethod(int,int) | public |  |
+| methods.kt:5:1:20:1 | Class | methods.kt:14:12:14:29 | publicFun | publicFun() | public |  |
+| methods.kt:5:1:20:1 | Class | methods.kt:15:15:15:35 | protectedFun | protectedFun() | protected |  |
+| methods.kt:5:1:20:1 | Class | methods.kt:16:13:16:31 | privateFun | privateFun() | private |  |
+| methods.kt:5:1:20:1 | Class | methods.kt:17:14:17:33 | internalFun | internalFun() | internal |  |
+| methods.kt:5:1:20:1 | Class | methods.kt:18:5:18:36 | noExplicitVisibilityFun | noExplicitVisibilityFun() | public |  |
+| methods.kt:5:1:20:1 | Class | methods.kt:19:12:19:29 | inlineFun | inlineFun() | inline, public |  |
 constructors
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:1:6:1:47 | DataClass | DataClass(int,java.lang.String) |
 | enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:1:6:4:1 | EnumClass | EnumClass(int) |
@@ -41,7 +42,7 @@ constructors
 | methods5.kt:5:3:5:27 |  | methods5.kt:5:3:5:27 |  |  |
 | methods5.kt:9:3:9:32 |  | methods5.kt:9:3:9:32 |  |  |
 | methods5.kt:13:1:13:14 | C1 | methods5.kt:13:1:13:14 | C1 | C1() |
-| methods.kt:5:1:19:1 | Class | methods.kt:5:1:19:1 | Class | Class() |
+| methods.kt:5:1:20:1 | Class | methods.kt:5:1:20:1 | Class | Class() |
 extensions
 | methods3.kt:3:1:3:42 | fooBarTopLevelMethodExt | file://:0:0:0:0 | int |
 | methods3.kt:6:5:6:46 | fooBarTopLevelMethodExt | file://:0:0:0:0 | int |
