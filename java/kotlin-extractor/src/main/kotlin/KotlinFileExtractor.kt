@@ -881,6 +881,9 @@ open class KotlinFileExtractor(
                     val getterId = extractFunction(getter, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
                     if (getterId != null) {
                         tw.writeKtPropertyGetters(id, getterId)
+                        if (getter.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR) {
+                            tw.writeCompiler_generated(getterId, CompilerGeneratedKinds.DELEGATED_PROPERTY_GETTER.kind)
+                        }
                     }
                 } else {
                     if (p.modality != Modality.FINAL || !isExternalDeclaration(p)) {
@@ -895,6 +898,9 @@ open class KotlinFileExtractor(
                     val setterId = extractFunction(setter, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
                     if (setterId != null) {
                         tw.writeKtPropertySetters(id, setterId)
+                        if (setter.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR) {
+                            tw.writeCompiler_generated(setterId, CompilerGeneratedKinds.DELEGATED_PROPERTY_SETTER.kind)
+                        }
                     }
                 } else {
                     if (p.isVar && !isExternalDeclaration(p)) {
@@ -4383,6 +4389,8 @@ open class KotlinFileExtractor(
         GENERATED_DATA_CLASS_MEMBER(2),
         DEFAULT_PROPERTY_ACCESSOR(3),
         CLASS_INITIALISATION_METHOD(4),
-        ENUM_CLASS_SPECIAL_MEMBER(5)
+        ENUM_CLASS_SPECIAL_MEMBER(5),
+        DELEGATED_PROPERTY_GETTER(6),
+        DELEGATED_PROPERTY_SETTER(7),
     }
 }
