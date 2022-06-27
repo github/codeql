@@ -121,21 +121,16 @@ void TypeVisitor::visitParenType(swift::ParenType* type) {
   dispatcher_.emit(ParenTypesTrap{label, typeLabel});
 }
 
-void TypeVisitor::visitUnarySyntaxSugarType(swift::UnarySyntaxSugarType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  emitUnarySyntaxSugarType(type, label);
+codeql::OptionalType TypeVisitor::translateOptionalType(const swift::OptionalType& type) {
+  codeql::OptionalType entry{dispatcher_.assignNewLabel(type)};
+  fillUnarySyntaxSugarType(type, entry);
+  return entry;
 }
 
-void TypeVisitor::visitOptionalType(swift::OptionalType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(OptionalTypesTrap{label});
-  emitUnarySyntaxSugarType(type, label);
-}
-
-void TypeVisitor::visitArraySliceType(swift::ArraySliceType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(ArraySliceTypesTrap{label});
-  emitUnarySyntaxSugarType(type, label);
+codeql::ArraySliceType TypeVisitor::translateArraySliceType(const swift::ArraySliceType& type) {
+  codeql::ArraySliceType entry{dispatcher_.assignNewLabel(type)};
+  fillUnarySyntaxSugarType(type, entry);
+  return entry;
 }
 
 void TypeVisitor::visitDictionaryType(swift::DictionaryType* type) {
@@ -166,11 +161,11 @@ void TypeVisitor::visitLValueType(swift::LValueType* type) {
   dispatcher_.emit(LValueTypesTrap{label, dispatcher_.fetchLabel(type->getObjectType())});
 }
 
-void TypeVisitor::visitPrimaryArchetypeType(swift::PrimaryArchetypeType* type) {
-  auto label = dispatcher_.assignNewLabel(type);
-  assert(type->getInterfaceType() && "expect PrimaryArchetypeType to have InterfaceType");
-  dispatcher_.emit(
-      PrimaryArchetypeTypesTrap{label, dispatcher_.fetchLabel(type->getInterfaceType())});
+codeql::PrimaryArchetypeType TypeVisitor::translatePrimaryArchetypeType(
+    const swift::PrimaryArchetypeType& type) {
+  PrimaryArchetypeType entry{dispatcher_.assignNewLabel(type)};
+  fillArchetypeType(type, entry);
+  return entry;
 }
 
 void TypeVisitor::visitUnboundGenericType(swift::UnboundGenericType* type) {
@@ -184,10 +179,11 @@ void TypeVisitor::visitBoundGenericType(swift::BoundGenericType* type) {
   emitBoundGenericType(type, label);
 }
 
-void TypeVisitor::emitUnarySyntaxSugarType(const swift::UnarySyntaxSugarType* type,
-                                           TrapLabel<UnarySyntaxSugarTypeTag> label) {
-  assert(type->getBaseType() && "expect UnarySyntaxSugarType to have BaseType");
-  dispatcher_.emit(UnarySyntaxSugarTypesTrap{label, dispatcher_.fetchLabel(type->getBaseType())});
+void TypeVisitor::fillUnarySyntaxSugarType(const swift::UnarySyntaxSugarType& type,
+                                           codeql::UnarySyntaxSugarType& entry) {
+  assert(type.getBaseType() && "expect UnarySyntaxSugarType to have BaseType");
+  entry.base_type = dispatcher_.fetchLabel(type.getBaseType());
+  fillType(type, entry);
 }
 
 void TypeVisitor::emitAnyFunctionType(const swift::AnyFunctionType* type,
@@ -230,6 +226,82 @@ void TypeVisitor::emitAnyGenericType(swift::AnyGenericType* type,
   if (auto parent = type->getParent()) {
     dispatcher_.emit(AnyGenericTypeParentsTrap{label, dispatcher_.fetchLabel(parent)});
   }
+}
+
+codeql::NestedArchetypeType TypeVisitor::translateNestedArchetypeType(
+    const swift::NestedArchetypeType& type) {
+  codeql::NestedArchetypeType entry{dispatcher_.assignNewLabel(type)};
+  entry.parent = dispatcher_.fetchLabel(type.getParent());
+  entry.associated_type_declaration = dispatcher_.fetchLabel(type.getAssocType());
+  fillArchetypeType(type, entry);
+  return entry;
+}
+
+void TypeVisitor::fillType(const swift::TypeBase& type, codeql::Type& entry) {
+  entry.diagnostics_name = type.getString();
+  entry.canonical_type = dispatcher_.fetchLabel(type.getCanonicalType());
+}
+
+void TypeVisitor::fillArchetypeType(const swift::ArchetypeType& type, ArchetypeType& entry) {
+  entry.interface_type = dispatcher_.fetchLabel(type.getInterfaceType());
+  entry.name = type.getName().str().str();
+  entry.protocols = dispatcher_.fetchRepeatedLabels(type.getConformsTo());
+  entry.superclass = dispatcher_.fetchOptionalLabel(type.getSuperclass());
+  fillType(type, entry);
+}
+
+codeql::ExistentialType TypeVisitor::translateExistentialType(const swift::ExistentialType& type) {
+  codeql::ExistentialType entry{dispatcher_.assignNewLabel(type)};
+  entry.constraint = dispatcher_.fetchLabel(type.getConstraintType());
+  fillType(type, entry);
+  return entry;
+}
+
+codeql::DynamicSelfType TypeVisitor::translateDynamicSelfType(const swift::DynamicSelfType& type) {
+  codeql::DynamicSelfType entry{dispatcher_.assignNewLabel(type)};
+  entry.static_self_type = dispatcher_.fetchLabel(type.getSelfType());
+  fillType(type, entry);
+  return entry;
+}
+
+codeql::VariadicSequenceType TypeVisitor::translateVariadicSequenceType(
+    const swift::VariadicSequenceType& type) {
+  codeql::VariadicSequenceType entry{dispatcher_.assignNewLabel(type)};
+  fillUnarySyntaxSugarType(type, entry);
+  return entry;
+}
+
+codeql::InOutType TypeVisitor::translateInOutType(const swift::InOutType& type) {
+  codeql::InOutType entry{dispatcher_.assignNewLabel(type)};
+  entry.object_type = dispatcher_.fetchLabel(type.getObjectType());
+  fillType(type, entry);
+  return entry;
+}
+
+codeql::UnmanagedStorageType TypeVisitor::translateUnmanagedStorageType(
+    const swift::UnmanagedStorageType& type) {
+  codeql::UnmanagedStorageType entry{dispatcher_.assignNewLabel(type)};
+  fillReferenceStorageType(type, entry);
+  return entry;
+}
+
+codeql::UnownedStorageType TypeVisitor::translateUnownedStorageType(
+    const swift::UnownedStorageType& type) {
+  codeql::UnownedStorageType entry{dispatcher_.assignNewLabel(type)};
+  fillReferenceStorageType(type, entry);
+  return entry;
+}
+
+codeql::WeakStorageType TypeVisitor::translateWeakStorageType(const swift::WeakStorageType& type) {
+  codeql::WeakStorageType entry{dispatcher_.assignNewLabel(type)};
+  fillReferenceStorageType(type, entry);
+  return entry;
+}
+
+void TypeVisitor::fillReferenceStorageType(const swift::ReferenceStorageType& type,
+                                           codeql::ReferenceStorageType& entry) {
+  entry.referent_type = dispatcher_.fetchLabel(type.getReferentType());
+  fillType(type, entry);
 }
 
 }  // namespace codeql

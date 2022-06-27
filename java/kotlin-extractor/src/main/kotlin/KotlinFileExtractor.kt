@@ -595,6 +595,8 @@ open class KotlinFileExtractor(
                 tw.writeMethods(clinitId, "<clinit>", "<clinit>()", returnType.javaResult.id, parentId, clinitId)
                 tw.writeMethodsKotlinType(clinitId, returnType.kotlinResult.id)
 
+                tw.writeCompiler_generated(clinitId, CompilerGeneratedKinds.CLASS_INITIALISATION_METHOD.kind)
+
                 val locId = tw.getWholeFileLocation()
                 tw.writeHasLocation(clinitId, locId)
 
@@ -732,12 +734,9 @@ open class KotlinFileExtractor(
 
                 val id =
                     idOverride
-                        ?: if (f.isLocalFunction())
-                            getLocallyVisibleFunctionLabels(f).function
-                        else
-                            // If this is a class that would ordinarily be replaced by a Java equivalent (e.g. kotlin.Map -> java.util.Map),
-                            // don't replace here, really extract the Kotlin version:
-                            useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses, noReplace = true)
+                        ?: // If this is a class that would ordinarily be replaced by a Java equivalent (e.g. kotlin.Map -> java.util.Map),
+                           // don't replace here, really extract the Kotlin version:
+                           useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses, noReplace = true)
 
                 val sourceDeclaration =
                     if (typeSubstitution != null && idOverride == null)
@@ -783,6 +782,14 @@ open class KotlinFileExtractor(
                     val methodId = id.cast<DbMethod>()
                     tw.writeMethods(methodId, shortName.nameInDB, "${shortName.nameInDB}$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration.cast<DbMethod>())
                     tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
+                    when (f.origin) {
+                        IrDeclarationOrigin.GENERATED_DATA_CLASS_MEMBER ->
+                            tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.GENERATED_DATA_CLASS_MEMBER.kind)
+                        IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR ->
+                            tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.DEFAULT_PROPERTY_ACCESSOR.kind)
+                        IrDeclarationOrigin.ENUM_CLASS_SPECIAL_MEMBER ->
+                            tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.ENUM_CLASS_SPECIAL_MEMBER.kind)
+                    }
 
                     if (extractMethodAndParameterTypeAccesses) {
                         extractTypeAccessRecursive(substReturnType, locId, id, -1)
@@ -1073,7 +1080,7 @@ open class KotlinFileExtractor(
                         tw.writeKtLocalFunction(ids.function)
 
                         if (s.origin == IrDeclarationOrigin.ADAPTER_FOR_CALLABLE_REFERENCE) {
-                            tw.writeCompiler_generated(classId, 1)
+                            tw.writeCompiler_generated(classId, CompilerGeneratedKinds.DECLARING_CLASSES_OF_ADAPTER_FUNCTIONS.kind)
                         }
                     } else {
                         logger.errorElement("Expected to find local function", s)
@@ -4369,5 +4376,13 @@ open class KotlinFileExtractor(
         override fun close() {
             declarationStack.pop()
         }
+    }
+
+    private enum class CompilerGeneratedKinds(val kind: Int) {
+        DECLARING_CLASSES_OF_ADAPTER_FUNCTIONS(1),
+        GENERATED_DATA_CLASS_MEMBER(2),
+        DEFAULT_PROPERTY_ACCESSOR(3),
+        CLASS_INITIALISATION_METHOD(4),
+        ENUM_CLASS_SPECIAL_MEMBER(5)
     }
 }

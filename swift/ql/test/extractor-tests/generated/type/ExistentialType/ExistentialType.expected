@@ -1,0 +1,2 @@
+| ExplicitExistential | getDiagnosticsName: | ExplicitExistential | getCanonicalType: | ExplicitExistential | getConstraint: | ExplicitExistential |
+| ImplicitExistential | getDiagnosticsName: | ImplicitExistential | getCanonicalType: | ImplicitExistential | getConstraint: | ImplicitExistential |

@@ -93,12 +93,14 @@ DependentMemberType:
 
 DynamicSelfType:
   _extends: Type
+  static_self_type: Type
 
 ErrorType:
   _extends: Type
 
 InOutType:
   _extends: Type
+  object_type: Type
 
 LValueType:
   _extends: Type
@@ -115,9 +117,11 @@ ProtocolCompositionType:
 
 ExistentialType:
   _extends: Type
+  constraint: Type
 
 ReferenceStorageType:
   _extends: Type
+  referent_type: Type
 
 SilBlockStorageType:
   _extends: Type
@@ -239,6 +243,10 @@ WeakStorageType:
 
 ArchetypeType:
   _extends: SubstitutableType
+  name: string
+  interface_type: Type
+  superclass: Type?
+  protocols: ProtocolDecl*
 
 GenericTypeParamType:
   _extends: SubstitutableType
@@ -694,6 +702,8 @@ BuiltinIntegerType:
 
 NestedArchetypeType:
   _extends: ArchetypeType
+  parent: ArchetypeType
+  associated_type_declaration: AssociatedTypeDecl
 
 SequenceArchetypeType:
   _extends: ArchetypeType
@@ -706,7 +716,6 @@ OpenedArchetypeType:
 
 PrimaryArchetypeType:
   _extends: ArchetypeType
-  interface_type: GenericTypeParamType
 
 DictionaryType:
   _extends: SyntaxSugarType

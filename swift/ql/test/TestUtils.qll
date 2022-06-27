@@ -12,6 +12,10 @@ predicate toBeTested(Element e) {
       e = loc.(ValueDecl).getInterfaceType()
       or
       e = loc.(NominalTypeDecl).getType()
+      or
+      e = loc.(VarDecl).getType()
+      or
+      e = loc.(Expr).getType()
     )
   )
 }

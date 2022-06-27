@@ -1201,15 +1201,14 @@ open class KotlinUsesExtractor(
             } as IrFunction? ?: f
 
     fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
-        if (f.isLocalFunction()) {
-            val ids = getLocallyVisibleFunctionLabels(f)
-            return ids.function.cast<T>()
-        } else {
-            return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
-        }
+        return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
     }
 
     fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
+        if (f.isLocalFunction()) {
+            val ids = getLocallyVisibleFunctionLabels(f)
+            return ids.function.cast<T>()
+        }
         val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
         val label = getFunctionLabel(javaFun, parentId, classTypeArgsIncludingOuterClasses)
         val id: Label<T> = tw.getLabelFor(label)
