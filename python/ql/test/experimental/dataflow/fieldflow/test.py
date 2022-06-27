@@ -173,7 +173,7 @@ def test_nested_obj_method():
 # scope tests into multiple functions, since we wouldn't know which one did the initial
 # import that does all the printing :|
 
-@expects(18 + 2) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+@expects(22 + 2) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
 def test_global_scope():
     import fieldflow.test_global
 
