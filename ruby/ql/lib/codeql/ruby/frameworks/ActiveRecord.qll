@@ -54,7 +54,7 @@ class ActiveRecordModelClass extends ClassDeclaration {
         // In Rails applications `ApplicationRecord` typically extends `ActiveRecord::Base`, but we
         // treat it separately in case the `ApplicationRecord` definition is not in the database.
         API::getTopLevelMember("ApplicationRecord")
-      ].getASubclass().getAUse().asExpr().getExpr()
+      ].getASubclass().getAValueReachableFromSource().asExpr().getExpr()
   }
 
   // Gets the class declaration for this class and all of its super classes

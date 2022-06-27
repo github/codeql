@@ -132,7 +132,7 @@ class CustomValueSink extends DefaultValueFlowConf {
   override predicate isSink(DataFlow::Node sink) {
     super.isSink(sink)
     or
-    sink = ModelOutput::getASinkNode("test-sink").getARhs()
+    sink = ModelOutput::getASinkNode("test-sink").asSink()
   }
 }
 
@@ -140,7 +140,7 @@ class CustomTaintSink extends DefaultTaintFlowConf {
   override predicate isSink(DataFlow::Node sink) {
     super.isSink(sink)
     or
-    sink = ModelOutput::getASinkNode("test-sink").getARhs()
+    sink = ModelOutput::getASinkNode("test-sink").asSink()
   }
 }
 
