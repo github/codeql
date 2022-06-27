@@ -3,4 +3,8 @@
 | enum_is_case.swift:6:1:6:1 | ... is some | Bool |
 | enum_is_case.swift:7:1:7:1 | ... is some | Bool |
 | enum_is_case.swift:9:1:9:19 | ... is some | Bool |
-| enum_is_case.swift:14:1:14:18 | ... is some | Bool |
+| enum_is_case.swift:20:1:20:18 | ... is some | Bool |
+| enum_is_case.swift:22:1:22:5 | ... is some | Bool |
+| enum_is_case.swift:23:1:23:10 | ... is some | Bool |
+| enum_is_case.swift:24:1:24:10 | ... is some | Bool |
+| enum_is_case.swift:25:1:25:8 | ... is some | Bool |
