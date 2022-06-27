@@ -41,7 +41,7 @@ open class KotlinFileExtractor(
     globalExtensionState: KotlinExtractorGlobalState
 ): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState) {
 
-    inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
+    private inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
         val name = when (element) {
             is IrFile -> element.name
             is IrDeclarationWithName -> element.name.asString()
@@ -86,12 +86,16 @@ open class KotlinFileExtractor(
         }
     }
 
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
     private fun isFake(d: IrDeclarationWithVisibility): Boolean {
         val visibility = d.visibility
         if (visibility is DelegatedDescriptorVisibility && visibility.delegate == Visibilities.InvisibleFake) {
             return true
         }
         if (d.isFakeOverride) {
+            return true
+        }
+        if ((d as? IrFunction)?.descriptor?.isHiddenToOvercomeSignatureClash == true) {
             return true
         }
         return false
@@ -367,6 +371,27 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(stmtId, locId)
     }
 
+    fun extractObinitFunction(c: IrClass, parentId: Label<out DbClassorinterface>) {
+        // add method:
+        val obinitLabel = getObinitLabel(c)
+        val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
+        val returnType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
+        tw.writeMethods(obinitId, "<obinit>", "<obinit>()", returnType.javaResult.id, parentId, obinitId)
+        tw.writeMethodsKotlinType(obinitId, returnType.kotlinResult.id)
+
+        val locId = tw.getLocation(c)
+        tw.writeHasLocation(obinitId, locId)
+
+        addModifiers(obinitId, "private")
+
+        // add body:
+        val blockId = tw.getFreshIdLabel<DbBlock>()
+        tw.writeStmts_block(blockId, obinitId, 0, obinitId)
+        tw.writeHasLocation(blockId, locId)
+
+        extractDeclInitializers(c.declarations, false) { Pair(blockId, obinitId) }
+    }
+
     fun extractClassSource(c: IrClass, extractDeclarations: Boolean, extractStaticInitializer: Boolean, extractPrivateMembers: Boolean, extractFunctionBodies: Boolean): Label<out DbClassorinterface> {
         with("class source", c) {
             DeclarationStackAdjuster(c).use {
@@ -420,6 +445,9 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(instance.id, locId)
                     addModifiers(instance.id, "public", "static", "final")
                     tw.writeClass_object(id.cast<DbClass>(), instance.id)
+                }
+                if (extractFunctionBodies && needsObinitFunction(c)) {
+                    extractObinitFunction(c, id)
                 }
 
                 extractClassModifiers(c, id)
@@ -567,6 +595,8 @@ open class KotlinFileExtractor(
                 tw.writeMethods(clinitId, "<clinit>", "<clinit>()", returnType.javaResult.id, parentId, clinitId)
                 tw.writeMethodsKotlinType(clinitId, returnType.kotlinResult.id)
 
+                tw.writeCompiler_generated(clinitId, CompilerGeneratedKinds.CLASS_INITIALISATION_METHOD.kind)
+
                 val locId = tw.getWholeFileLocation()
                 tw.writeHasLocation(clinitId, locId)
 
@@ -704,12 +734,9 @@ open class KotlinFileExtractor(
 
                 val id =
                     idOverride
-                        ?: if (f.isLocalFunction())
-                            getLocallyVisibleFunctionLabels(f).function
-                        else
-                            // If this is a class that would ordinarily be replaced by a Java equivalent (e.g. kotlin.Map -> java.util.Map),
-                            // don't replace here, really extract the Kotlin version:
-                            useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses, noReplace = true)
+                        ?: // If this is a class that would ordinarily be replaced by a Java equivalent (e.g. kotlin.Map -> java.util.Map),
+                           // don't replace here, really extract the Kotlin version:
+                           useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses, noReplace = true)
 
                 val sourceDeclaration =
                     if (typeSubstitution != null && idOverride == null)
@@ -755,6 +782,14 @@ open class KotlinFileExtractor(
                     val methodId = id.cast<DbMethod>()
                     tw.writeMethods(methodId, shortName.nameInDB, "${shortName.nameInDB}$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration.cast<DbMethod>())
                     tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
+                    when (f.origin) {
+                        IrDeclarationOrigin.GENERATED_DATA_CLASS_MEMBER ->
+                            tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.GENERATED_DATA_CLASS_MEMBER.kind)
+                        IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR ->
+                            tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.DEFAULT_PROPERTY_ACCESSOR.kind)
+                        IrDeclarationOrigin.ENUM_CLASS_SPECIAL_MEMBER ->
+                            tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.ENUM_CLASS_SPECIAL_MEMBER.kind)
+                    }
 
                     if (extractMethodAndParameterTypeAccesses) {
                         extractTypeAccessRecursive(substReturnType, locId, id, -1)
@@ -1045,7 +1080,7 @@ open class KotlinFileExtractor(
                         tw.writeKtLocalFunction(ids.function)
 
                         if (s.origin == IrDeclarationOrigin.ADAPTER_FOR_CALLABLE_REFERENCE) {
-                            tw.writeCompiler_generated(classId, 1)
+                            tw.writeCompiler_generated(classId, CompilerGeneratedKinds.DECLARING_CLASSES_OF_ADAPTER_FUNCTIONS.kind)
                         }
                     } else {
                         logger.errorElement("Expected to find local function", s)
@@ -2101,6 +2136,22 @@ open class KotlinFileExtractor(
         enclosingStmt: Label<out DbStmt>
     ): Label<DbNewexpr> = extractNewExpr(useFunction<DbConstructor>(calledConstructor, constructorTypeArgs), constructedType, locId, parent, idx, callable, enclosingStmt)
 
+    private fun needsObinitFunction(c: IrClass) = c.primaryConstructor == null && c.constructors.count() > 1
+
+    private fun getObinitLabel(c: IrClass) = getFunctionLabel(
+        c,
+        null,
+        "<obinit>",
+        listOf(),
+        pluginContext.irBuiltIns.unitType,
+        null,
+        functionTypeParameters = listOf(),
+        classTypeArgsIncludingOuterClasses = listOf(),
+        overridesCollectionsMethod = false,
+        javaSignature = null,
+        addParameterWildcardsByDefault = false
+    )
+
     private fun extractConstructorCall(
         e: IrFunctionAccessExpression,
         parent: Label<out DbExprparent>,
@@ -2153,8 +2204,6 @@ open class KotlinFileExtractor(
         }
     }
 
-    private val loopIdMap: MutableMap<IrLoop, Label<out DbKtloopstmt>> = mutableMapOf()
-
     // todo: calculating the enclosing ref type could be done through this, instead of walking up the declaration parent chain
     private val declarationStack: Stack<IrDeclaration> = Stack()
 
@@ -2192,7 +2241,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun getStatementOriginOperator(origin: IrStatementOrigin?) = when (origin) {
+    private fun getStatementOriginOperator(origin: IrStatementOrigin?) = when (origin) {
         IrStatementOrigin.PLUSEQ -> "plus"
         IrStatementOrigin.MINUSEQ -> "minus"
         IrStatementOrigin.MULTEQ -> "times"
@@ -2402,41 +2451,35 @@ open class KotlinFileExtractor(
                     }
                 }
                 is IrWhileLoop -> {
-                    val stmtParent = parent.stmt(e, callable)
-                    val id = tw.getFreshIdLabel<DbWhilestmt>()
-                    loopIdMap[e] = id
-                    val locId = tw.getLocation(e)
-                    tw.writeStmts_whilestmt(id, stmtParent.parent, stmtParent.idx, callable)
-                    tw.writeHasLocation(id, locId)
-                    extractExpressionExpr(e.condition, callable, id, 0, id)
-                    val body = e.body
-                    if(body != null) {
-                        extractExpressionStmt(body, callable, id, 1)
-                    }
-                    loopIdMap.remove(e)
+                    extractLoop(e, parent, callable)
                 }
                 is IrDoWhileLoop -> {
-                    val stmtParent = parent.stmt(e, callable)
-                    val id = tw.getFreshIdLabel<DbDostmt>()
-                    loopIdMap[e] = id
-                    val locId = tw.getLocation(e)
-                    tw.writeStmts_dostmt(id, stmtParent.parent, stmtParent.idx, callable)
-                    tw.writeHasLocation(id, locId)
-                    extractExpressionExpr(e.condition, callable, id, 0, id)
-                    val body = e.body
-                    if(body != null) {
-                        extractExpressionStmt(body, callable, id, 1)
-                    }
-                    loopIdMap.remove(e)
+                    extractLoop(e, parent, callable)
                 }
                 is IrInstanceInitializerCall -> {
-                    val stmtParent = parent.stmt(e, callable)
                     val irConstructor = declarationStack.peek() as? IrConstructor
                     if (irConstructor == null) {
                         logger.errorElement("IrInstanceInitializerCall outside constructor", e)
                         return
                     }
-                    extractInstanceInitializerBlock(stmtParent, irConstructor)
+                    if (needsObinitFunction(irConstructor.parentAsClass)) {
+                        val exprParent = parent.expr(e, callable)
+                        val id = tw.getFreshIdLabel<DbMethodaccess>()
+                        val type = useType(pluginContext.irBuiltIns.unitType)
+                        val locId = tw.getLocation(e)
+                        val methodLabel = getObinitLabel(irConstructor.parentAsClass)
+                        val methodId = tw.getLabelFor<DbMethod>(methodLabel)
+                        tw.writeExprs_methodaccess(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                        tw.writeHasLocation(id, locId)
+                        tw.writeCallableEnclosingExpr(id, callable)
+                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                        tw.writeCallableBinding(id, methodId)
+                    }
+                    else {
+                        val stmtParent = parent.stmt(e, callable)
+                        extractInstanceInitializerBlock(stmtParent, irConstructor)
+                    }
                 }
                 is IrConstructorCall -> {
                     val exprParent = parent.expr(e, callable)
@@ -2925,6 +2968,49 @@ open class KotlinFileExtractor(
                 }
             }
             return
+        }
+    }
+
+    private fun extractLoop(
+        loop: IrLoop,
+        stmtExprParent: StmtExprParent,
+        callable: Label<out DbCallable>
+    ) {
+        val stmtParent = stmtExprParent.stmt(loop, callable)
+        val locId = tw.getLocation(loop)
+
+        val idx: Int
+        val parent: Label<out DbStmtparent>
+
+        val label = loop.label
+        if (label != null) {
+            val labeledStmt = tw.getFreshIdLabel<DbLabeledstmt>()
+            tw.writeStmts_labeledstmt(labeledStmt, stmtParent.parent, stmtParent.idx, callable)
+            tw.writeHasLocation(labeledStmt, locId)
+
+            tw.writeNamestrings(label, "", labeledStmt)
+            idx = 0
+            parent = labeledStmt
+        } else {
+            idx = stmtParent.idx
+            parent = stmtParent.parent
+        }
+
+        val id = if (loop is IrWhileLoop) {
+            val id = tw.getFreshIdLabel<DbWhilestmt>()
+            tw.writeStmts_whilestmt(id, parent, idx, callable)
+            id
+        } else {
+            val id = tw.getFreshIdLabel<DbDostmt>()
+            tw.writeStmts_dostmt(id, parent, idx, callable)
+            id
+        }
+
+        tw.writeHasLocation(id, locId)
+        extractExpressionExpr(loop.condition, callable, id, 0, id)
+        val body = loop.body
+        if (body != null) {
+            extractExpressionStmt(body, callable, id, 1)
         }
     }
 
@@ -4201,7 +4287,7 @@ open class KotlinFileExtractor(
 
     private fun extractBreakContinue(
         e: IrBreakContinue,
-        id: Label<out DbBreakcontinuestmt>
+        id: Label<out DbNamedexprorstmt>
     ) {
         with("break/continue", e) {
             val locId = tw.getLocation(e)
@@ -4210,14 +4296,6 @@ open class KotlinFileExtractor(
             if (label != null) {
                 tw.writeNamestrings(label, "", id)
             }
-
-            val loopId = loopIdMap[e.loop]
-            if (loopId == null) {
-                logger.errorElement("Missing break/continue target", e)
-                return
-            }
-
-            tw.writeKtBreakContinueTargets(id, loopId)
         }
     }
 
@@ -4298,5 +4376,13 @@ open class KotlinFileExtractor(
         override fun close() {
             declarationStack.pop()
         }
+    }
+
+    private enum class CompilerGeneratedKinds(val kind: Int) {
+        DECLARING_CLASSES_OF_ADAPTER_FUNCTIONS(1),
+        GENERATED_DATA_CLASS_MEMBER(2),
+        DEFAULT_PROPERTY_ACCESSOR(3),
+        CLASS_INITIALISATION_METHOD(4),
+        ENUM_CLASS_SPECIAL_MEMBER(5)
     }
 }

@@ -19,7 +19,7 @@ class TyphoeusHttpRequest extends HTTP::Client::Request::Range {
   API::Node requestNode;
 
   TyphoeusHttpRequest() {
-    requestUse = requestNode.getAnImmediateUse() and
+    requestUse = requestNode.asSource() and
     requestNode =
       API::getTopLevelMember("Typhoeus")
           .getReturn(["get", "head", "delete", "options", "post", "put", "patch"]) and
