@@ -186,12 +186,12 @@ def func_defined_after():
 class WithClassVariable():
     VAR = SOURCE
 
-SINK(WithClassVariable.VAR) # $ flow="SOURCE, l:-2 -> WithClassVariable.VAR"
+SINK(WithClassVariable.VAR) # $ MISSING: flow="SOURCE, l:-2 -> WithClassVariable.VAR"
 SINK(WithClassVariable().VAR) # $ flow="SOURCE, l:-3 -> WithClassVariable().VAR"
 
 class AlsoWithClassVariable():
     VAR = NONSOURCE
 
 AlsoWithClassVariable.VAR = SOURCE
-SINK(AlsoWithClassVariable.VAR) # $ flow="SOURCE, l:-3 -> AlsoWithClassVariable.VAR"
-SINK(AlsoWithClassVariable().VAR) # $ flow="SOURCE, l:-4 -> AlsoWithClassVariable().VAR"
+SINK(AlsoWithClassVariable.VAR) # $ flow="SOURCE, l:-1 -> AlsoWithClassVariable.VAR"
+SINK(AlsoWithClassVariable().VAR) # $ MISSING: flow="SOURCE, l:-4 -> AlsoWithClassVariable().VAR"
