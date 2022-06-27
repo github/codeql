@@ -14,6 +14,11 @@ import swift
 import codeql.swift.dataflow.DataFlow
 import DataFlow::PathGraph
 
+/**
+ * A configuration for tracking string lengths originating from source that is
+ * a `String` or an `NSString` object, to a sink of a different kind that
+ * expects an incompatible measure of length.
+ */
 class StringLengthConflationConfiguration extends DataFlow::Configuration {
   StringLengthConflationConfiguration() { this = "StringLengthConflationConfiguration" }
 
