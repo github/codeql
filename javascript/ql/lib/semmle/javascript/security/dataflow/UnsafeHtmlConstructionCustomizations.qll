@@ -180,4 +180,18 @@ module UnsafeHtmlConstruction {
 
     override string describe() { result = "Markdown rendering" }
   }
+
+  /** A test of form `typeof x === "something"`, preventing `x` from being a string in some cases. */
+  class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+    override EqualityTest astNode;
+    Expr operand;
+    boolean polarity;
+
+    TypeTestGuard() { TaintTracking::isStringTypeGuard(astNode, operand, polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      polarity = outcome and
+      e = operand
+    }
+  }
 }
