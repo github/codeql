@@ -24,7 +24,7 @@ module Railties {
           API::getTopLevelMember("Rails")
               .getMember("Generators")
               .getMember("Actions")
-              .getAUse()
+              .getAValueReachableFromSource()
               .asExpr()
               .getExpr()
       )
