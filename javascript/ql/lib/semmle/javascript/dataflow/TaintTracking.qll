@@ -1126,9 +1126,7 @@ module TaintTracking {
     )
   }
 
-  /**
-   * Holds if `test` is of the form `typeof x === "something"`, preventing `x` from being a string in some cases.
-   */
+  /** A test for the value of `typeof x`, restricting the potential types of `x`. */
   predicate isStringTypeGuard(EqualityTest test, Expr operand, boolean polarity) {
     exists(TypeofTag tag | TaintTracking::isTypeofGuard(test, operand, tag) |
       // typeof x === "string" sanitizes `x` when it evaluates to false
