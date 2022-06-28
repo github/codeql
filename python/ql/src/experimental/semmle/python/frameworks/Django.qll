@@ -86,11 +86,13 @@ private module ExperimentalPrivateDjango {
             t.start() and
             (
               exists(SubscriptNode subscript |
-                subscript.getObject() = baseClassRef().getReturn().getAUse().asCfgNode() and
+                subscript.getObject() =
+                  baseClassRef().getReturn().getAValueReachableFromSource().asCfgNode() and
                 result.asCfgNode() = subscript
               )
               or
-              result.(DataFlow::AttrRead).getObject() = baseClassRef().getReturn().getAUse()
+              result.(DataFlow::AttrRead).getObject() =
+                baseClassRef().getReturn().getAValueReachableFromSource()
             )
             or
             exists(DataFlow::TypeTracker t2 | result = headerInstance(t2).track(t2, t))

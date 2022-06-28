@@ -181,7 +181,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractTypeParameter(tp: IrTypeParameter, apparentIndex: Int, javaTypeParameter: JavaTypeParameter?): Label<out DbTypevariable>? {
+    private fun extractTypeParameter(tp: IrTypeParameter, apparentIndex: Int, javaTypeParameter: JavaTypeParameter?): Label<out DbTypevariable>? {
         with("type parameter", tp) {
             val parentId = getTypeParameterParentLabel(tp) ?: return null
             val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
@@ -216,7 +216,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractVisibility(elementForLocation: IrElement, id: Label<out DbModifiable>, v: DescriptorVisibility) {
+    private fun extractVisibility(elementForLocation: IrElement, id: Label<out DbModifiable>, v: DescriptorVisibility) {
         with("visibility", elementForLocation) {
             when (v) {
                 DescriptorVisibilities.PRIVATE -> addModifiers(id, "private")
@@ -250,7 +250,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractClassModifiers(c: IrClass, id: Label<out DbClassorinterface>) {
+    private fun extractClassModifiers(c: IrClass, id: Label<out DbClassorinterface>) {
         with("class modifiers", c) {
             when (c.modality) {
                 Modality.FINAL -> addModifiers(id, "final")
@@ -371,7 +371,7 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(stmtId, locId)
     }
 
-    fun extractObinitFunction(c: IrClass, parentId: Label<out DbClassorinterface>) {
+    private fun extractObinitFunction(c: IrClass, parentId: Label<out DbClassorinterface>) {
         // add method:
         val obinitLabel = getObinitLabel(c)
         val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
@@ -506,7 +506,7 @@ open class KotlinFileExtractor(
 
     data class FieldResult(val id: Label<DbField>, val name: String)
 
-    fun useCompanionObjectClassInstance(c: IrClass): FieldResult? {
+    private fun useCompanionObjectClassInstance(c: IrClass): FieldResult? {
         val parent = c.parent
         if(!c.isCompanion) {
             logger.error("Using companion instance for non-companion class")
@@ -524,7 +524,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun useObjectClassInstance(c: IrClass): FieldResult {
+    private fun useObjectClassInstance(c: IrClass): FieldResult {
         if(!c.isNonCompanionObject) {
             logger.error("Using instance for non-object class")
         }
@@ -719,13 +719,13 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+    private fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
         if (isFake(f))
             null
         else
             forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, null, null)
 
-    fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>?, locOverride: Label<DbLocation>?): Label<out DbCallable>  {
+    private fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>?, locOverride: Label<DbLocation>?): Label<out DbCallable>  {
         with("function", f) {
             DeclarationStackAdjuster(f).use {
 
@@ -809,6 +809,9 @@ open class KotlinFileExtractor(
                 }
 
                 extractVisibility(f, id, f.visibility)
+                if (f.isInline) {
+                    addModifiers(id, "inline")
+                }
                 if (isStaticFunction(f)) {
                     addModifiers(id, "static")
                 }
@@ -828,7 +831,7 @@ open class KotlinFileExtractor(
                 && f.symbol !is IrConstructorSymbol     // not a constructor
     }
 
-    fun extractField(f: IrField, parentId: Label<out DbReftype>): Label<out DbField> {
+    private fun extractField(f: IrField, parentId: Label<out DbReftype>): Label<out DbField> {
         with("field", f) {
            DeclarationStackAdjuster(f).use {
                declarationStack.push(f)
@@ -862,7 +865,7 @@ open class KotlinFileExtractor(
         return id
     }
 
-    fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, extractFunctionBodies: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
+    private fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, extractFunctionBodies: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
         with("property", p) {
             if (isFake(p)) return
 
@@ -937,7 +940,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractEnumEntry(ee: IrEnumEntry, parentId: Label<out DbReftype>, extractTypeAccess: Boolean) {
+    private fun extractEnumEntry(ee: IrEnumEntry, parentId: Label<out DbReftype>, extractTypeAccess: Boolean) {
         with("enum entry", ee) {
             DeclarationStackAdjuster(ee).use {
                 val id = useEnumEntry(ee)
@@ -959,7 +962,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractTypeAlias(ta: IrTypeAlias) {
+    private fun extractTypeAlias(ta: IrTypeAlias) {
         with("type alias", ta) {
             if (ta.typeParameters.isNotEmpty()) {
                 // TODO: Extract this information
@@ -974,7 +977,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
+    private fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
         with("body", b) {
             when (b) {
                 is IrBlockBody -> extractBlockBody(b, callable)
@@ -987,7 +990,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>) {
+    private fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>) {
         with("block body", b) {
             val id = tw.getFreshIdLabel<DbBlock>()
             val locId = tw.getLocation(b)
@@ -999,7 +1002,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractSyntheticBody(b: IrSyntheticBody, callable: Label<out DbCallable>) {
+    private fun extractSyntheticBody(b: IrSyntheticBody, callable: Label<out DbCallable>) {
         with("synthetic body", b) {
             when (b.kind) {
                 IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
@@ -1008,7 +1011,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractExpressionBody(b: IrExpressionBody, callable: Label<out DbCallable>) {
+    private fun extractExpressionBody(b: IrExpressionBody, callable: Label<out DbCallable>) {
         with("expression body", b) {
             val blockId = tw.getFreshIdLabel<DbBlock>()
             val locId = tw.getLocation(b)
@@ -1032,7 +1035,7 @@ open class KotlinFileExtractor(
         return v
     }
 
-    fun extractVariable(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+    private fun extractVariable(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         with("variable", v) {
             val stmtId = tw.getFreshIdLabel<DbLocalvariabledeclstmt>()
             val locId = tw.getLocation(getVariableLocationProvider(v))
@@ -1042,7 +1045,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractVariableExpr(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
+    private fun extractVariableExpr(v: IrVariable, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
         with("variable expr", v) {
             val varId = useVariable(v)
             val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
@@ -1066,7 +1069,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractStatement(s: IrStatement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+    private fun extractStatement(s: IrStatement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         with("statement", s) {
             when(s) {
                 is IrExpression -> {
@@ -1405,7 +1408,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun findFunction(cls: IrClass, name: String): IrFunction? = cls.declarations.find { it is IrFunction && it.name.asString() == name } as IrFunction?
+    private fun findFunction(cls: IrClass, name: String): IrFunction? = cls.declarations.find { it is IrFunction && it.name.asString() == name } as IrFunction?
 
     val jvmIntrinsicsClass by lazy {
         val result = pluginContext.referenceClass(FqName("kotlin.jvm.internal.Intrinsics"))?.owner
@@ -1413,7 +1416,7 @@ open class KotlinFileExtractor(
         result
     }
 
-    fun findJdkIntrinsicOrWarn(name: String, warnAgainstElement: IrElement): IrFunction? {
+    private fun findJdkIntrinsicOrWarn(name: String, warnAgainstElement: IrElement): IrFunction? {
         val result = jvmIntrinsicsClass?.let { findFunction(it, name) }
         if(result == null) {
             logger.errorElement("Couldn't find JVM intrinsic function $name", warnAgainstElement)
@@ -1507,7 +1510,7 @@ open class KotlinFileExtractor(
         result
     }
 
-    fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, hasQuestionMark: Boolean? = false): Boolean {
+    private fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, hasQuestionMark: Boolean? = false): Boolean {
         val verbose = false
         fun verboseln(s: String) { if(verbose) println(s) }
         verboseln("Attempting match for $pkgName $classNameLogged $fName")
@@ -1551,10 +1554,10 @@ open class KotlinFileExtractor(
         return true
     }
 
-    fun isFunction(target: IrFunction, pkgName: String, className: String, fName: String, hasQuestionMark: Boolean? = false) =
+    private fun isFunction(target: IrFunction, pkgName: String, className: String, fName: String, hasQuestionMark: Boolean? = false) =
         isFunction(target, pkgName, className, { it == className }, fName, hasQuestionMark)
 
-    fun isNumericFunction(target: IrFunction, fName: String): Boolean {
+    private fun isNumericFunction(target: IrFunction, fName: String): Boolean {
         return isFunction(target, "kotlin", "Int", fName) ||
                 isFunction(target, "kotlin", "Byte", fName) ||
                 isFunction(target, "kotlin", "Short", fName) ||
@@ -1563,7 +1566,7 @@ open class KotlinFileExtractor(
                 isFunction(target, "kotlin", "Double", fName)
     }
 
-    fun isArrayType(typeName: String) =
+    private fun isArrayType(typeName: String) =
         when(typeName) {
             "Array" -> true
             "IntArray" -> true
@@ -1577,7 +1580,7 @@ open class KotlinFileExtractor(
             else -> false
         }
 
-    fun extractCall(c: IrCall, callable: Label<out DbCallable>, stmtExprParent: StmtExprParent) {
+    private fun extractCall(c: IrCall, callable: Label<out DbCallable>, stmtExprParent: StmtExprParent) {
         with("call", c) {
             val target = tryReplaceSyntheticFunction(c.symbol.owner)
 
@@ -2256,7 +2259,7 @@ open class KotlinFileExtractor(
         else -> null
     }
 
-    fun getUpdateInPlaceRHS(origin: IrStatementOrigin?, isExpectedLhs: (IrExpression?) -> Boolean, updateRhs: IrExpression): IrExpression? {
+    private fun getUpdateInPlaceRHS(origin: IrStatementOrigin?, isExpectedLhs: (IrExpression?) -> Boolean, updateRhs: IrExpression): IrExpression? {
         // Check for a desugared in-place update operator, such as "v += e":
         return getStatementOriginOperator(origin)?.let {
             if (updateRhs is IrCall &&
@@ -2271,7 +2274,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun writeUpdateInPlaceExpr(origin: IrStatementOrigin, tw: TrapWriter, id: Label<DbAssignexpr>, type: TypeResults, exprParent: ExprParent): Boolean {
+    private fun writeUpdateInPlaceExpr(origin: IrStatementOrigin, tw: TrapWriter, id: Label<DbAssignexpr>, type: TypeResults, exprParent: ExprParent): Boolean {
         when(origin) {
             IrStatementOrigin.PLUSEQ -> tw.writeExprs_assignaddexpr(id.cast<DbAssignaddexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
             IrStatementOrigin.MINUSEQ -> tw.writeExprs_assignsubexpr(id.cast<DbAssignsubexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
@@ -2283,7 +2286,7 @@ open class KotlinFileExtractor(
         return true
     }
 
-    fun tryExtractArrayUpdate(e: IrContainerExpression, callable: Label<out DbCallable>, parent: StmtExprParent): Boolean {
+    private fun tryExtractArrayUpdate(e: IrContainerExpression, callable: Label<out DbCallable>, parent: StmtExprParent): Boolean {
         /*
          * We're expecting the pattern
          * {
@@ -2354,7 +2357,7 @@ open class KotlinFileExtractor(
         return false
     }
 
-    fun extractExpressionStmt(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+    private fun extractExpressionStmt(e: IrExpression, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         extractExpression(e, callable, StmtParent(parent, idx))
     }
 
@@ -2362,7 +2365,7 @@ open class KotlinFileExtractor(
         extractExpression(e, callable, ExprParent(parent, idx, enclosingStmt))
     }
 
-    fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: StmtExprParent) {
+    private fun extractExpression(e: IrExpression, callable: Label<out DbCallable>, parent: StmtExprParent) {
         with("expression", e) {
             when(e) {
                 is IrDelegatingConstructorCall -> {
@@ -3825,7 +3828,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractVarargElement(e: IrVarargElement, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
+    private fun extractVarargElement(e: IrVarargElement, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
         with("vararg element", e) {
             val argExpr = when(e) {
                 is IrExpression -> e
@@ -4017,7 +4020,7 @@ open class KotlinFileExtractor(
         return initId
     }
 
-    fun extractTypeOperatorCall(e: IrTypeOperatorCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
+    private fun extractTypeOperatorCall(e: IrTypeOperatorCall, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>) {
         with("type operator call", e) {
             when(e.operator) {
                 IrTypeOperator.CAST -> {
