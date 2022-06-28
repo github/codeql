@@ -17,7 +17,6 @@ import experimental.adaptivethreatmodeling.FilteringReasons
 import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionATM
 import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionATM
 import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathATM
-import experimental.adaptivethreatmodeling.XssATM as XssATM
 import experimental.adaptivethreatmodeling.XssThroughDomATM as XssThroughDomATM
 import Labels
 import NoFeaturizationRestrictionsConfig
@@ -32,8 +31,6 @@ AtmConfig getAtmCfg(Query query) {
   or
   query instanceof TaintedPathQuery and result instanceof TaintedPathATM::TaintedPathAtmConfig
   or
-  query instanceof XssQuery and result instanceof XssATM::DomBasedXssAtmConfig
-  or
   query instanceof XssThroughDomQuery and result instanceof XssThroughDomATM::XssThroughDomAtmConfig
 }
 
@@ -47,8 +44,6 @@ DataFlow::Configuration getDataFlowCfg(Query query) {
   query instanceof SqlInjectionQuery and result instanceof SqlInjectionATM::Configuration
   or
   query instanceof TaintedPathQuery and result instanceof TaintedPathATM::Configuration
-  or
-  query instanceof XssQuery and result instanceof XssATM::Configuration
   or
   query instanceof XssThroughDomQuery and result instanceof XssThroughDomATM::Configuration
 }

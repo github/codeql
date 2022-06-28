@@ -30,10 +30,6 @@ class TaintedPathQuery extends Query, TTaintedPathQuery {
   override string getName() { result = "TaintedPath" }
 }
 
-class XssQuery extends Query, TXssQuery {
-  override string getName() { result = "Xss" }
-}
-
 class XssThroughDomQuery extends Query, TXssThroughDomQuery {
   override string getName() { result = "XssThroughDom" }
 }
