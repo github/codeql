@@ -11,7 +11,6 @@
 | PartialPathTraversalTest.java:94:14:94:63 | startsWith(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal |
 | PartialPathTraversalTest.java:102:14:102:63 | startsWith(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal |
 | PartialPathTraversalTest.java:105:14:105:64 | startsWith(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal |
-| PartialPathTraversalTest.java:150:9:150:43 | startsWith(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal |
 | PartialPathTraversalTest.java:173:14:173:63 | startsWith(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal |
 | PartialPathTraversalTest.java:191:18:191:87 | startsWith(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal |
 | PartialPathTraversalTest.java:209:14:209:64 | startsWith(...) | Partial Path Traversal Vulnerability due to insufficient guard against path traversal |

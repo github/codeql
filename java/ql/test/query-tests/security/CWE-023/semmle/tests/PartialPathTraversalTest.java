@@ -211,6 +211,13 @@ public class PartialPathTraversalTest {
         }
     }
 
+    void foo23(File dir, File parent) throws IOException {
+        String parentCanonical = parent.getCanonicalPath();
+        if (!dir.getCanonicalPath().startsWith(parentCanonical + "/")) {
+            throw new IOException("Invalid directory: " + dir.getCanonicalPath());
+        }
+    }
+
     public void doesNotFlag() {
         "hello".startsWith("goodbye");
     }
