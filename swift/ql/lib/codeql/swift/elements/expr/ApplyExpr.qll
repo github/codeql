@@ -11,8 +11,7 @@ class ApplyExpr extends ApplyExprBase {
     not exists(this.getStaticTarget()) and
     result = "call to " + this.getFunction().toString()
     or
-    not exists(this.getStaticTarget()) and
-    not exists(this.getFunction()) and
+    not exists(this.getFunction()) and // (this implies there is no `getStaticTarget` either)
     result = "call to ..."
   }
 }
