@@ -76,10 +76,16 @@ The ``analyze`` command will run the default suite of any specified CodeQL packs
 Managing packs on GitHub Enterprise Server
 ------------------------------------------
 
-By default, CodeQL will download packs from and publish packs to the GitHub.com Container registry.
+.. pull-quote::
+
+   Note
+
+   Managing packs on GitHub Enterprise Server is only available for GitHub Enterprise Server 3.6 and later.
+
+By default, CodeQL will download packs from and publish packs to the Container registry on GitHub.com.
 You can manage packs on GitHub Enterprise Server 3.6 and later by creating a ``qlconfig.yml`` file to tell CodeQL which Container registry to use for each pack.
 Create the ``~/.codeql/qlconfig.yml`` file using your preferred text editor, and add entries to specify which registry to use for each pack name pattern.
-For example, the following ``qlconfig.yml`` file associates all packs with the Container registry for the GitHub Enterprise Server at ``GHE_HOSTNAME``, except packs matching ``codeql/*``, which are associated with the GitHub.com Container registry:
+For example, the following ``qlconfig.yml`` file associates all packs with the Container registry for the GitHub Enterprise Server at ``GHE_HOSTNAME``, except packs matching ``codeql/*``, which are associated with the Container registry on GitHub.com:
 
 .. code-block:: yaml
 
@@ -96,7 +102,7 @@ Authenticating to GitHub Container registries
 
 You can download a private pack or publish a pack by authenticating to the appropriate GitHub Container registry.
 
-You can authenticate to the GitHub.com Container registry in two ways:
+You can authenticate to the Container registry on GitHub.com in two ways:
 
 1. Pass the ``--github-auth-stdin`` option to the CodeQL CLI, then supply a GitHub Apps token or personal access token via standard input.
 2. Set the ``GITHUB_TOKEN`` environment variable to a GitHub Apps token or personal access token.

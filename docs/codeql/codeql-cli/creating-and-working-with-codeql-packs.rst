@@ -73,6 +73,6 @@ This command downloads all dependencies to the shared cache on the local disk.
 
    Note
 
-   By default ``codeql pack install`` will install dependencies from the GitHub.com Container registry.
+   By default ``codeql pack install`` will install dependencies from the Container registry on GitHub.com.
    You can install dependencies from a GitHub Enterprise Server Container registry by creating a ``qlconfig.yml`` file.
    For more information, see ":doc:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`."
