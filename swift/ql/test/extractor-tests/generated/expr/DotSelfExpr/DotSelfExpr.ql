@@ -2,10 +2,9 @@
 import codeql.swift.elements
 import TestUtils
 
-from DotSelfExpr x, string isUnknown, Expr getSubExpr
+from DotSelfExpr x, Expr getSubExpr
 where
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.isUnknown() then isUnknown = "yes" else isUnknown = "no") and
   getSubExpr = x.getSubExpr()
-select x, "isUnknown:", isUnknown, "getSubExpr:", getSubExpr
+select x, "getSubExpr:", getSubExpr

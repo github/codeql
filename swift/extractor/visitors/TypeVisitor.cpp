@@ -304,4 +304,74 @@ void TypeVisitor::fillReferenceStorageType(const swift::ReferenceStorageType& ty
   fillType(type, entry);
 }
 
+codeql::ProtocolCompositionType TypeVisitor::translateProtocolCompositionType(
+    const swift::ProtocolCompositionType& type) {
+  auto entry = createEntry(type);
+  entry.members = dispatcher_.fetchRepeatedLabels(type.getMembers());
+  return entry;
+}
+
+codeql::BuiltinIntegerLiteralType TypeVisitor::translateBuiltinIntegerLiteralType(
+    const swift::BuiltinIntegerLiteralType& type) {
+  return createEntry(type);
+}
+
+codeql::BuiltinIntegerType TypeVisitor::translateBuiltinIntegerType(
+    const swift::BuiltinIntegerType& type) {
+  auto entry = createEntry(type);
+  if (type.isFixedWidth()) {
+    entry.width = type.getFixedWidth();
+  }
+  return entry;
+}
+
+codeql::BuiltinBridgeObjectType TypeVisitor::translateBuiltinBridgeObjectType(
+    const swift::BuiltinBridgeObjectType& type) {
+  return createEntry(type);
+}
+
+codeql::BuiltinDefaultActorStorageType TypeVisitor::translateBuiltinDefaultActorStorageType(
+    const swift::BuiltinDefaultActorStorageType& type) {
+  return createEntry(type);
+}
+
+codeql::BuiltinExecutorType TypeVisitor::translateBuiltinExecutorType(
+    const swift::BuiltinExecutorType& type) {
+  return createEntry(type);
+}
+
+codeql::BuiltinFloatType TypeVisitor::translateBuiltinFloatType(
+    const swift::BuiltinFloatType& type) {
+  return createEntry(type);
+}
+
+codeql::BuiltinJobType TypeVisitor::translateBuiltinJobType(const swift::BuiltinJobType& type) {
+  return createEntry(type);
+}
+
+codeql::BuiltinNativeObjectType TypeVisitor::translateBuiltinNativeObjectType(
+    const swift::BuiltinNativeObjectType& type) {
+  return createEntry(type);
+}
+
+codeql::BuiltinRawPointerType TypeVisitor::translateBuiltinRawPointerType(
+    const swift::BuiltinRawPointerType& type) {
+  return createEntry(type);
+}
+
+codeql::BuiltinRawUnsafeContinuationType TypeVisitor::translateBuiltinRawUnsafeContinuationType(
+    const swift::BuiltinRawUnsafeContinuationType& type) {
+  return createEntry(type);
+}
+
+codeql::BuiltinUnsafeValueBufferType TypeVisitor::translateBuiltinUnsafeValueBufferType(
+    const swift::BuiltinUnsafeValueBufferType& type) {
+  return createEntry(type);
+}
+
+codeql::BuiltinVectorType TypeVisitor::translateBuiltinVectorType(
+    const swift::BuiltinVectorType& type) {
+  return createEntry(type);
+}
+
 }  // namespace codeql

@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from AssociatedTypeDecl x
+from BuiltinIntegerType x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getLocation()
+select x, x.getWidth()
