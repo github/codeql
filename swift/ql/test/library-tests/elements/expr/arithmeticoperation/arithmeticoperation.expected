@@ -3,4 +3,4 @@
 | arithmeticoperation.swift:8:6:8:10 | ... call to *(_:_:) ... | BinaryArithmeticOperation, MulExpr |
 | arithmeticoperation.swift:9:6:9:10 | ... call to /(_:_:) ... | BinaryArithmeticOperation, DivExpr |
 | arithmeticoperation.swift:10:6:10:10 | ... call to %(_:_:) ... | BinaryArithmeticOperation, RemExpr |
-| arithmeticoperation.swift:11:6:11:7 | call to call to -(_:) | UnaryArithmeticOperation, UnaryMinusExpr |
+| arithmeticoperation.swift:11:6:11:7 | call to -(_:) | UnaryArithmeticOperation, UnaryMinusExpr |
