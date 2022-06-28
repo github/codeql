@@ -48,8 +48,8 @@ module API {
    *   (The current codebase "defines" the value seen by the library).
    *
    * API graph nodes are associated with data-flow nodes in the current codebase.
-   * (Since external libraries are not part of the database, there is no way to associate with concrete
-   * data-flow nodes from the external library).
+   * (API graphs are designed to work when external libraries are not part of the database,
+   * so we do not associate with concrete data-flow nodes from the external library).
    * - **Use-nodes** are associated with data-flow nodes where a value enters the current codebase,
    *   such as the return value of a call to an external function.
    * - **Def-nodes** are associated with data-flow nodes where a value leaves the current codebase,
