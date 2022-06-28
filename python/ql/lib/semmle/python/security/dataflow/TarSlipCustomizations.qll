@@ -131,7 +131,7 @@ module TarSlip {
       or
       call.getAChild*().(NameNode).getId().matches("%path")
     ) and
-    branch in [true, false]
+    branch = false
   }
 
   /**
