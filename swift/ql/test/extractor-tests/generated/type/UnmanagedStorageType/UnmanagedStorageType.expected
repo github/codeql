@@ -1,1 +1,2 @@
 | A? | getDiagnosticsName: | A? | getCanonicalType: | Optional<A> | getReferentType: | A? |
+| Optional<A> | getDiagnosticsName: | Optional<A> | getCanonicalType: | Optional<A> | getReferentType: | Optional<A> |
