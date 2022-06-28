@@ -52,4 +52,3 @@ from PossibleTimingAttackAgainstSignature config, DataFlow::PathNode source, Dat
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Possible Timing attack against $@ validation.", source,
   source.getNode()
-
