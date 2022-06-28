@@ -2,10 +2,11 @@
 import codeql.swift.elements
 import TestUtils
 
-from UnresolvedDotExpr x, Expr getBase, string getName
+from UnresolvedDotExpr x, string isUnknown, Expr getBase, string getName
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.isUnknown() then isUnknown = "yes" else isUnknown = "no") and
   getBase = x.getBase() and
   getName = x.getName()
-select x, "getBase:", getBase, "getName:", getName
+select x, "isUnknown:", isUnknown, "getBase:", getBase, "getName:", getName

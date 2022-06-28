@@ -2,7 +2,7 @@
 import codeql.swift.elements
 import TestUtils
 
-from DotSelfExpr x, string isUnknown, Expr getSubExpr
+from BridgeToObjCExpr x, string isUnknown, Expr getSubExpr
 where
   toBeTested(x) and
   not x.isUnknown() and

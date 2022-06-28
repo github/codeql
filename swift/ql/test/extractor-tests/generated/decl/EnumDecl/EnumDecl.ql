@@ -2,11 +2,13 @@
 import codeql.swift.elements
 import TestUtils
 
-from EnumDecl x, Type getInterfaceType, string getName, Type getType
+from EnumDecl x, string isUnknown, Type getInterfaceType, string getName, Type getType
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.isUnknown() then isUnknown = "yes" else isUnknown = "no") and
   getInterfaceType = x.getInterfaceType() and
   getName = x.getName() and
   getType = x.getType()
-select x, "getInterfaceType:", getInterfaceType, "getName:", getName, "getType:", getType
+select x, "isUnknown:", isUnknown, "getInterfaceType:", getInterfaceType, "getName:", getName,
+  "getType:", getType

@@ -2,12 +2,15 @@
 import codeql.swift.elements
 import TestUtils
 
-from InOutType x, string getDiagnosticsName, Type getCanonicalType, Type getObjectType
+from
+  InOutType x, string isUnknown, string getDiagnosticsName, Type getCanonicalType,
+  Type getObjectType
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.isUnknown() then isUnknown = "yes" else isUnknown = "no") and
   getDiagnosticsName = x.getDiagnosticsName() and
   getCanonicalType = x.getCanonicalType() and
   getObjectType = x.getObjectType()
-select x, "getDiagnosticsName:", getDiagnosticsName, "getCanonicalType:", getCanonicalType,
-  "getObjectType:", getObjectType
+select x, "isUnknown:", isUnknown, "getDiagnosticsName:", getDiagnosticsName, "getCanonicalType:",
+  getCanonicalType, "getObjectType:", getObjectType
