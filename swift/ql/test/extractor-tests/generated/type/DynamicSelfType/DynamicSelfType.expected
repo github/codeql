@@ -1,1 +1,1 @@
-| Self | getDiagnosticsName: | Self | getCanonicalType: | Self | getStaticSelfType: | X |
+| Self | getName: | Self | getCanonicalType: | Self | getStaticSelfType: | X |

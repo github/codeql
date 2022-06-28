@@ -4,11 +4,9 @@ import codeql.swift.elements.type.SubstitutableType
 import codeql.swift.elements.type.Type
 
 class ArchetypeTypeBase extends @archetype_type, SubstitutableType {
-  string getName() { archetype_types(this, result, _) }
-
   Type getInterfaceType() {
     exists(Type x |
-      archetype_types(this, _, x) and
+      archetype_types(this, x) and
       result = x.resolve()
     )
   }

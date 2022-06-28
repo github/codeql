@@ -2,12 +2,12 @@
 import codeql.swift.elements
 import TestUtils
 
-from UnownedStorageType x, string getDiagnosticsName, Type getCanonicalType, Type getReferentType
+from UnownedStorageType x, string getName, Type getCanonicalType, Type getReferentType
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getDiagnosticsName = x.getDiagnosticsName() and
+  getName = x.getName() and
   getCanonicalType = x.getCanonicalType() and
   getReferentType = x.getReferentType()
-select x, "getDiagnosticsName:", getDiagnosticsName, "getCanonicalType:", getCanonicalType,
-  "getReferentType:", getReferentType
+select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getReferentType:",
+  getReferentType
