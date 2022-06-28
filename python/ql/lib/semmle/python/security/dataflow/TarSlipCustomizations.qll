@@ -112,8 +112,9 @@ module TarSlip {
   /**
    * A sanitizer guard heuristic.
    *
-   * For a "check-like function-name" (matching `"%path"`), `checkPath`,
-   * and a call `checkPath(info.name)`, the variable `info` is considered checked.
+   * The test `if <check_path>(info.name)` should clear taint for `info`,
+   * where `<check_path>` is any function matching `"%path"`.
+   * `info` is assumed to be a `TarInfo` instance.
    */
   class TarFileInfoSanitizer extends SanitizerGuard {
     ControlFlowNode tarInfo;
