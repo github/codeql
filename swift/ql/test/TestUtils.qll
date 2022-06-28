@@ -9,13 +9,18 @@ predicate toBeTested(Element e) {
     (
       e = loc
       or
-      e = loc.(ValueDecl).getInterfaceType()
-      or
-      e = loc.(NominalTypeDecl).getType()
-      or
-      e = loc.(VarDecl).getType()
-      or
-      e = loc.(Expr).getType()
+      exists(Type t |
+        (e = t or e = t.(ExistentialType).getConstraint() or e = t.getCanonicalType()) and
+        (
+          t = loc.(ValueDecl).getInterfaceType()
+          or
+          t = loc.(NominalTypeDecl).getType()
+          or
+          t = loc.(VarDecl).getType()
+          or
+          t = loc.(Expr).getType()
+        )
+      )
     )
   )
 }
