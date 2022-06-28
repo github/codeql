@@ -386,10 +386,10 @@ private class ClassListList extends TClassListList {
 
 private ClassList flatten_list(ClassListList list, int n) {
   need_flattening(list) and
-  exists(ClassList head, ClassListList tail | list = ConsList(head, tail) |
+  exists(ClassList head, ClassListList tail | pragma[only_bind_out](list) = ConsList(head, tail) |
     n = head.length() and result = tail.flatten()
     or
-    result = Cons(head.getItem(n), flatten_list(list, n + 1))
+    result = Cons(head.getItem(n), flatten_list(pragma[only_bind_out](list), n + 1))
   )
 }
 
