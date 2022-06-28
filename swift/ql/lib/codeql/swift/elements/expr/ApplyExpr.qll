@@ -9,6 +9,10 @@ class ApplyExpr extends ApplyExprBase {
     result = "call to " + this.getStaticTarget().toString()
     or
     not exists(this.getStaticTarget()) and
+    result = "call to " + this.getFunction().toString()
+    or
+    not exists(this.getStaticTarget()) and
+    not exists(this.getFunction()) and
     result = "call to ..."
   }
 }
