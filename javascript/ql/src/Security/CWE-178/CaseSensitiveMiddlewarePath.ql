@@ -16,7 +16,7 @@ import javascript
  * Converts `s` to upper case, or to lower-case if it was already upper case.
  */
 bindingset[s]
-string invertCase(string s) {
+string toOtherCase(string s) {
   if s.regexpMatch(".*[a-z].*") then result = s.toUpperCase() else result = s.toLowerCase()
 }
 
@@ -35,7 +35,7 @@ predicate isCaseSensitiveRegExp(RegExpTerm term) {
     const = term.getAChild*() and
     const.getValue().regexpMatch(".*[a-zA-Z].*") and
     not getEnclosingClass(const).getAChild().(RegExpConstant).getValue() =
-      invertCase(const.getValue()) and
+      toOtherCase(const.getValue()) and
     not const.getParent*() instanceof RegExpNegativeLookahead and
     not const.getParent*() instanceof RegExpNegativeLookbehind
   )
@@ -67,7 +67,7 @@ string getExampleString(RegExpTerm term) {
 string getCaseSensitiveBypassExample(RegExpTerm term) {
   exists(string example |
     example = getExampleString(term) and
-    result = invertCase(example) and
+    result = toOtherCase(example) and
     result != example // getting an example string is approximate; ensure we got a proper case-change example
   )
 }
