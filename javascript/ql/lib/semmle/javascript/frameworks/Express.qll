@@ -1050,11 +1050,11 @@ module Express {
   }
 
   private class ResumeDispatchRefinement extends Routing::RouteHandler {
-    ResumeDispatchRefinement() { getFunction() instanceof RouteHandler }
+    ResumeDispatchRefinement() { this.getFunction() instanceof RouteHandler }
 
-    override predicate mayResumeDispatch() { getAParameter().getName() = "next" }
+    override predicate mayResumeDispatch() { this.getAParameter().getName() = "next" }
 
-    override predicate definitelyResumesDispatch() { getAParameter().getName() = "next" }
+    override predicate definitelyResumesDispatch() { this.getAParameter().getName() = "next" }
   }
 
   private class ExpressStaticResumeDispatchRefinement extends Routing::Node {
