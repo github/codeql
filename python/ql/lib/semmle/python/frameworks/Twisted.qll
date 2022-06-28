@@ -33,7 +33,7 @@ private module Twisted {
             .getMember("resource")
             .getMember("Resource")
             .getASubclass*()
-            .getAnImmediateUse()
+            .asSource()
             .asExpr()
     }
 
