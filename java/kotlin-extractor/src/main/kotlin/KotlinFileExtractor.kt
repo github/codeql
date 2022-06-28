@@ -809,6 +809,9 @@ open class KotlinFileExtractor(
                 }
 
                 extractVisibility(f, id, f.visibility)
+                if (f.isInline) {
+                    addModifiers(id, "inline")
+                }
                 if (isStaticFunction(f)) {
                     addModifiers(id, "static")
                 }
