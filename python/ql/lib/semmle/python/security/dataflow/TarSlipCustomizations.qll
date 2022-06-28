@@ -32,12 +32,14 @@ module TarSlip {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for "tar slip" vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
-   * A source of exception info, considered as a flow source.
+   * A call to `tarfile.open`, considered as a flow source.
    */
   class TarfileOpen extends Source {
     TarfileOpen() {
@@ -45,7 +47,7 @@ module TarSlip {
       // If argument refers to a string object, then it's a hardcoded path and
       // this tarfile is safe.
       not this.(DataFlow::CallCfgNode).getArg(0).getALocalSource().asExpr() instanceof StrConst and
-      /* Ignore opens within the tarfile module itself */
+      // Ignore opens within the tarfile module itself
       not this.getLocation().getFile().getBaseName() = "tarfile.py"
     }
   }
@@ -110,33 +112,38 @@ module TarSlip {
   }
 
   /**
+   * Holds if `g` clears taint for `tarInfo`.
+   *
+   * The test `if <check_path>(info.name)` should clear taint for `info`,
+   * where `<check_path>` is any function matching `"%path"`.
+   * `info` is assumed to be a `TarInfo` instance.
+   */
+  predicate tarFileInfoSanitizer(DataFlow::GuardNode g, ControlFlowNode tarInfo, boolean branch) {
+    exists(CallNode call, AttrNode attr |
+      g = call and
+      // We must test the name of the tar info object.
+      attr = call.getAnArg() and
+      attr.getName() = "name" and
+      attr.getObject() = tarInfo
+    |
+      // Assume that any test with "path" in it is a sanitizer
+      call.getAChild*().(AttrNode).getName().matches("%path")
+      or
+      call.getAChild*().(NameNode).getId().matches("%path")
+    ) and
+    branch in [true, false]
+  }
+
+  /**
    * A sanitizer guard heuristic.
    *
    * The test `if <check_path>(info.name)` should clear taint for `info`,
    * where `<check_path>` is any function matching `"%path"`.
    * `info` is assumed to be a `TarInfo` instance.
    */
-  class TarFileInfoSanitizer extends SanitizerGuard {
-    ControlFlowNode tarInfo;
-
+  class TarFileInfoSanitizer extends Sanitizer {
     TarFileInfoSanitizer() {
-      exists(CallNode call, AttrNode attr |
-        this = call and
-        // We must test the name of the tar info object.
-        attr = call.getAnArg() and
-        attr.getName() = "name" and
-        attr.getObject() = tarInfo
-      |
-        // Assume that any test with "path" in it is a sanitizer
-        call.getAChild*().(AttrNode).getName().matches("%path")
-        or
-        call.getAChild*().(NameNode).getId().matches("%path")
-      )
-    }
-
-    override predicate checks(ControlFlowNode checked, boolean branch) {
-      checked = tarInfo and
-      branch in [true, false]
+      this = DataFlow::BarrierGuard<tarFileInfoSanitizer/3>::getABarrierNode()
     }
   }
 }

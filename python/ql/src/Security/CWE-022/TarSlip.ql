@@ -13,7 +13,7 @@
  */
 
 import python
-import semmle.python.security.dataflow.TarSlip
+import semmle.python.security.dataflow.TarSlipQuery
 import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
