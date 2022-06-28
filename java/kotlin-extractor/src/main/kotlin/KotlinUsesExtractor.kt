@@ -108,14 +108,24 @@ open class KotlinUsesExtractor(
     }
     data class TypeResults(val javaResult: TypeResult<DbType>, val kotlinResult: TypeResult<DbKt_type>)
 
-    fun useType(t: IrType, context: TypeContext = TypeContext.OTHER) =
+    fun useTypeOrFake(t: IrType, context: TypeContext = TypeContext.OTHER): TypeResults {
+        val tr = useType(t, context)
+        if(tr == null) {
+            return TypeResults(TypeResult(fakeLabel(), "unknown", "unknown"), TypeResult(fakeLabel(), "unknown", "unknown"))
+        } else {
+            return tr
+        }
+    }
+
+    fun useType(t: IrType, context: TypeContext = TypeContext.OTHER): TypeResults? {
         when(t) {
-            is IrSimpleType -> useSimpleType(t, context)
+            is IrSimpleType -> return useSimpleType(t, context)
             else -> {
                 logger.error("Unrecognised IrType: " + t.javaClass)
-                TypeResults(TypeResult(fakeLabel(), "unknown", "unknown"), TypeResult(fakeLabel(), "unknown", "unknown"))
+                return null
             }
         }
+    }
 
     fun getJavaEquivalentClass(c: IrClass) =
         getJavaEquivalentClassId(c)?.let { pluginContext.referenceClass(it.asSingleFqName()) }?.owner
@@ -289,7 +299,7 @@ open class KotlinUsesExtractor(
                 f.valueParameters
             }
 
-            val paramTypes = parameters.map { useType(erase(it.type)) }
+            val paramTypes = parameters.map { useTypeOrFake(erase(it.type)) }
             val signature = paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
@@ -533,8 +543,8 @@ open class KotlinUsesExtractor(
         // Ensure we extract Array<Int> as Integer[], not int[], for example:
         fun nullableIfNotPrimitive(type: IrType) = if (type.isPrimitiveType() && !isPrimitiveArray) type.makeNullable() else type
 
-        val componentTypeResults = useType(nullableIfNotPrimitive(componentType))
-        val elementTypeLabel = useType(nullableIfNotPrimitive(elementType)).javaResult.id
+        val componentTypeResults = useTypeOrFake(nullableIfNotPrimitive(componentType))
+        val elementTypeLabel = useTypeOrFake(nullableIfNotPrimitive(elementType)).javaResult.id
 
         val javaShortName = componentTypeResults.javaResult.shortName + "[]"
 
@@ -550,7 +560,7 @@ open class KotlinUsesExtractor(
 
             // array.length
             val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
-            val intTypeIds = useType(pluginContext.irBuiltIns.intType)
+            val intTypeIds = useTypeOrFake(pluginContext.irBuiltIns.intType)
             tw.writeFields(length, "length", intTypeIds.javaResult.id, it, length)
             tw.writeFieldsKotlinType(length, intTypeIds.kotlinResult.id)
             addModifiers(length, "public", "final")
@@ -558,7 +568,7 @@ open class KotlinUsesExtractor(
             // Note we will only emit one `clone()` method per Java array type, so we choose `Array<C?>` as its Kotlin
             // return type, where C is the component type with any nested arrays themselves invariant and nullable.
             val kotlinCloneReturnType = getInvariantNullableArrayType(arrayType).makeNullable()
-            val kotlinCloneReturnTypeLabel = useType(kotlinCloneReturnType).kotlinResult.id
+            val kotlinCloneReturnTypeLabel = useTypeOrFake(kotlinCloneReturnType).kotlinResult.id
 
             val clone = tw.getLabelFor<DbMethod>("@\"callable;{$it}.clone(){$it}\"")
             tw.writeMethods(clone, "clone", "clone()", it, it, clone)
@@ -1047,7 +1057,7 @@ open class KotlinUsesExtractor(
             // Finally, mimic the Java extractor's behaviour by naming functions with type parameters for their erased types;
             // those without type parameters are named for the generic type.
             val maybeErased = if (functionTypeParameters.isEmpty()) maybeSubbed else erase(maybeSubbed)
-            "{${useType(maybeErased).javaResult.id}}"
+            "{${useTypeOrFake(maybeErased).javaResult.id}}"
         }
         val paramTypeIds = allParams.withIndex().joinToString(separator = ",", transform = getIdForFunctionLabel)
         val labelReturnType =
@@ -1057,7 +1067,7 @@ open class KotlinUsesExtractor(
                 erase(returnType.substituteTypeAndArguments(substitutionMap, TypeContext.RETURN, pluginContext))
         // Note that `addJavaLoweringWildcards` is not required here because the return type used to form the function
         // label is always erased.
-        val returnTypeId = useType(labelReturnType, TypeContext.RETURN).javaResult.id
+        val returnTypeId = useTypeOrFake(labelReturnType, TypeContext.RETURN).javaResult.id
         // This suffix is added to generic methods (and constructors) to match the Java extractor's behaviour.
         // Comments in that extractor indicates it didn't want the label of the callable to clash with the raw
         // method (and presumably that disambiguation is never needed when the method belongs to a parameterized
@@ -1235,11 +1245,11 @@ open class KotlinUsesExtractor(
         // Note this function doesn't return a signature because type arguments are never incorporated into function signatures.
         return when (arg) {
             is IrStarProjection -> {
-                val anyTypeLabel = useType(pluginContext.irBuiltIns.anyType).javaResult.id.cast<DbReftype>()
+                val anyTypeLabel = useTypeOrFake(pluginContext.irBuiltIns.anyType).javaResult.id.cast<DbReftype>()
                 TypeResult(extractBoundedWildcard(1, "@\"wildcard;\"", "?", anyTypeLabel), null, "?")
             }
             is IrTypeProjection -> {
-                val boundResults = useType(arg.type, TypeContext.GENERIC_ARGUMENT)
+                val boundResults = useTypeOrFake(arg.type, TypeContext.GENERIC_ARGUMENT)
                 val boundLabel = boundResults.javaResult.id.cast<DbReftype>()
 
                 return if(arg.variance == Variance.INVARIANT)
@@ -1349,7 +1359,7 @@ open class KotlinUsesExtractor(
     private fun useTypeParameter(param: IrTypeParameter) =
         TypeResult(
             tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(param)),
-            useType(eraseTypeParameter(param)).javaResult.signature,
+            useTypeOrFake(eraseTypeParameter(param)).javaResult.signature,
             param.name.asString()
         )
 
@@ -1514,7 +1524,7 @@ open class KotlinUsesExtractor(
         // otherwise two extension properties declared in the same enclosing context will get
         // clashing trap labels. These are always private, so we can just make up a label without
         // worrying about their names as seen from Java.
-        val extensionPropertyDiscriminator = getExtensionReceiverType(f)?.let { "extension;${useType(it)}" } ?: ""
+        val extensionPropertyDiscriminator = getExtensionReceiverType(f)?.let { "extension;${useTypeOrFake(it)}" } ?: ""
         return "@\"field;{$parentId};${extensionPropertyDiscriminator}${f.name.asString()}\""
     }
 
