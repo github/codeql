@@ -35,4 +35,3 @@ from TimingAttackAgainstsignature config, DataFlow::PathNode source, DataFlow::P
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Timing attack against $@ validation.", source,
   source.getNode()
-
