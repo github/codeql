@@ -2,13 +2,11 @@ private predicate hasDefinition(@globalvariable g) {
   exists(@var_decl vd | var_decls(vd, g, _, _, _) | var_def(vd))
 }
 
-pragma[noinline]
 private predicate onlyOneCompleteGlobalVariableExistsWithMangledName(@mangledname name) {
   strictcount(@globalvariable g | hasDefinition(g) and mangled_name(g, name)) = 1
 }
 
 /** Holds if `g` is a unique global variable with a definition named `name`. */
-pragma[noinline]
 private predicate isGlobalWithMangledNameAndWithDefinition(@mangledname name, @globalvariable g) {
   hasDefinition(g) and
   mangled_name(g, name) and
@@ -16,7 +14,6 @@ private predicate isGlobalWithMangledNameAndWithDefinition(@mangledname name, @g
 }
 
 /** Holds if `g` is a global variable without a definition named `name`. */
-pragma[noinline]
 private predicate isGlobalWithMangledNameAndWithoutDefinition(@mangledname name, @globalvariable g) {
   not hasDefinition(g) and
   mangled_name(g, name)
