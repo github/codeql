@@ -27,10 +27,10 @@ RegExpCharacterClass getEnclosingClass(RegExpTerm term) {
 }
 
 /**
- * Holds if `term` distinguishes between upper and lower case letters, assuming the `i` flag is not present.
+ * Holds if `term` seems to distinguish between upper and lower case letters, assuming the `i` flag is not present.
  */
 pragma[inline]
-predicate isCaseSensitiveRegExp(RegExpTerm term) {
+predicate isLikelyCaseSensitiveRegExp(RegExpTerm term) {
   exists(RegExpConstant const |
     const = term.getAChild*() and
     const.getValue().regexpMatch(".*[a-zA-Z].*") and
@@ -89,7 +89,7 @@ predicate isCaseSensitiveMiddleware(
     ) and
     arg = call.getArgument(0) and
     regexp.getAReference().flowsTo(arg) and
-    isCaseSensitiveRegExp(regexp.getRoot()) and
+    isLikelyCaseSensitiveRegExp(regexp.getRoot()) and
     exists(string flags |
       flags = regexp.getFlags() and
       not RegExp::isIgnoreCase(flags)
