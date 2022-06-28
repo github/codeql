@@ -31,4 +31,3 @@ from ClientSuppliedSecretConfig config, DataFlow::PathNode source, DataFlow::Pat
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Timing attack against $@ validation.", source.getNode(),
   "client-supplied token"
-
