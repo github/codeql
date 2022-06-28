@@ -15,6 +15,9 @@ class ArithmeticOperation extends Expr {
     this instanceof UnaryArithmeticOperation
   }
 
+  /**
+   * Gets an operand of this arithmetic operation.
+   */
   Expr getAnOperand() {
     result = this.(BinaryArithmeticOperation).getAnOperand()
     or
