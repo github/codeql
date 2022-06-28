@@ -330,7 +330,7 @@ class ActiveRecordInstance extends DataFlow::Node {
   ActiveRecordModelClass getClass() { result = instantiation.getClass() }
 }
 
-/** The `ActiveRecordInstance` receiver of this call. */
+/** A call whose receiver may be an active record model object */
 class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
   private ActiveRecordInstance instance;
 
