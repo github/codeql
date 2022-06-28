@@ -121,6 +121,9 @@ module API {
      * obj.prop = x
      * foo.bar(obj);
      * ```
+     *
+     * This predicate does not include nodes transitively reaching the sink by data flow;
+     * use `getAValueReachingSink` for that.
      */
     DataFlow::Node asSink() { Impl::rhs(this, result) }
 
@@ -146,6 +149,9 @@ module API {
      * # API::moduleImport("re").getMember("escape").getReturn().asSource()
      * re.escape()
      * ```
+     *
+     * This predicate does not include nodes transitively reachable by data flow;
+     * use `getAValueReachableFromSource` for that.
      */
     DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
 
