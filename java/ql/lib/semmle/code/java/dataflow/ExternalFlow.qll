@@ -647,7 +647,7 @@ module CsvValidation {
     or
     exists(string row, string kind | sourceModel(row) |
       kind = row.splitAt(";", 7) and
-      not kind = ["remote", "contentprovider", "android-widget"] and
+      not kind = ["remote", "contentprovider", "android-widget", "android-external-storage-dir"] and
       not kind.matches("qltest%") and
       msg = "Invalid kind \"" + kind + "\" in source model."
     )
