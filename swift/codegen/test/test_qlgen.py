@@ -480,13 +480,13 @@ def test_test_properties_skipped(opts, generate_tests):
     write(opts.ql_test_output / "Derived" / "test.swift")
     assert generate_tests([
         schema.Class("Base", derived={"Derived"}, properties=[
-            schema.SingleProperty("x", "string", pragmas=["skip_qltest", "foo"]),
-            schema.RepeatedProperty("y", "int", pragmas=["bar", "skip_qltest"]),
+            schema.SingleProperty("x", "string", pragmas=["qltest_skip", "foo"]),
+            schema.RepeatedProperty("y", "int", pragmas=["bar", "qltest_skip"]),
         ]),
         schema.Class("Derived", bases={"Base"}, properties=[
-            schema.PredicateProperty("a", pragmas=["skip_qltest"]),
+            schema.PredicateProperty("a", pragmas=["qltest_skip"]),
             schema.OptionalProperty(
-                "b", "int", pragmas=["bar", "skip_qltest", "baz"]),
+                "b", "int", pragmas=["bar", "qltest_skip", "baz"]),
         ]),
     ]) == {
         "Derived/Derived.ql": ql.ClassTester(class_name="Derived"),
@@ -496,7 +496,7 @@ def test_test_properties_skipped(opts, generate_tests):
 def test_test_base_class_skipped(opts, generate_tests):
     write(opts.ql_test_output / "Derived" / "test.swift")
     assert generate_tests([
-        schema.Class("Base", derived={"Derived"}, pragmas=["skip_qltest", "foo"], properties=[
+        schema.Class("Base", derived={"Derived"}, pragmas=["qltest_skip", "foo"], properties=[
             schema.SingleProperty("x", "string"),
             schema.RepeatedProperty("y", "int"),
         ]),
@@ -510,11 +510,53 @@ def test_test_final_class_skipped(opts, generate_tests):
     write(opts.ql_test_output / "Derived" / "test.swift")
     assert generate_tests([
         schema.Class("Base", derived={"Derived"}),
-        schema.Class("Derived", bases={"Base"}, pragmas=["skip_qltest", "foo"], properties=[
+        schema.Class("Derived", bases={"Base"}, pragmas=["qltest_skip", "foo"], properties=[
             schema.SingleProperty("x", "string"),
             schema.RepeatedProperty("y", "int"),
         ]),
     ]) == {}
+
+
+def test_test_class_hierarchy_collapse(opts, generate_tests):
+    write(opts.ql_test_output / "Base" / "test.swift")
+    assert generate_tests([
+        schema.Class("Base", derived={"D1", "D2"}, pragmas=["foo", "qltest_collapse_hierarchy"]),
+        schema.Class("D1", bases={"Base"}, properties=[schema.SingleProperty("x", "string")]),
+        schema.Class("D2", bases={"Base"}, derived={"D3"}, properties=[schema.SingleProperty("y", "string")]),
+        schema.Class("D3", bases={"D2"}, properties=[schema.SingleProperty("z", "string")]),
+    ]) == {
+        "Base/Base.ql": ql.ClassTester(class_name="Base"),
+    }
+
+
+def test_test_class_hierarchy_uncollapse(opts, generate_tests):
+    for d in ("Base", "D3", "D4"):
+        write(opts.ql_test_output / d / "test.swift")
+    assert generate_tests([
+        schema.Class("Base", derived={"D1", "D2"}, pragmas=["foo", "qltest_collapse_hierarchy"]),
+        schema.Class("D1", bases={"Base"}, properties=[schema.SingleProperty("x", "string")]),
+        schema.Class("D2", bases={"Base"}, derived={"D3", "D4"}, pragmas=["qltest_uncollapse_hierarchy", "bar"]),
+        schema.Class("D3", bases={"D2"}),
+        schema.Class("D4", bases={"D2"}),
+    ]) == {
+        "Base/Base.ql": ql.ClassTester(class_name="Base"),
+        "D3/D3.ql": ql.ClassTester(class_name="D3"),
+        "D4/D4.ql": ql.ClassTester(class_name="D4"),
+    }
+
+
+def test_test_class_hierarchy_uncollapse_at_final(opts, generate_tests):
+    for d in ("Base", "D3"):
+        write(opts.ql_test_output / d / "test.swift")
+    assert generate_tests([
+        schema.Class("Base", derived={"D1", "D2"}, pragmas=["foo", "qltest_collapse_hierarchy"]),
+        schema.Class("D1", bases={"Base"}, properties=[schema.SingleProperty("x", "string")]),
+        schema.Class("D2", bases={"Base"}, derived={"D3"}),
+        schema.Class("D3", bases={"D2"}, pragmas=["qltest_uncollapse_hierarchy", "bar"]),
+    ]) == {
+        "Base/Base.ql": ql.ClassTester(class_name="Base"),
+        "D3/D3.ql": ql.ClassTester(class_name="D3"),
+    }
 
 
 if __name__ == '__main__':
