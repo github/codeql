@@ -32,7 +32,7 @@ module API {
    * 2. Follow up with a chain of accessors such as `getMember` describing how to get to the relevant API function.
    * 3. Map the resulting API graph nodes to data-flow nodes, using `asSource` or `asSink`.
    *
-   * For example, a simplified way to get arguments to `json.dumps` would be
+   * For example, a simplified way to get the first argument of a call to `json.dumps` would be
    * ```ql
    * API::moduleImport("json").getMember("dumps").getParameter(0).asSink()
    * ```
@@ -108,7 +108,7 @@ module API {
      * external library (or in general, any external codebase).
      *
      * Concretely, this is either an argument passed to a call to external code,
-     * or the right-hand side of a property write on an object flowing into such a call.
+     * or the right-hand side of an attribute write on an object flowing into such a call.
      *
      * For example:
      * ```python
