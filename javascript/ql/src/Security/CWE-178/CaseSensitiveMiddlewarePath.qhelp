@@ -13,7 +13,7 @@ Paths specified using a string are case insensitive, whereas regular expressions
 
 <recommendation>
 <p>
-When using a regular expression as a middlware path, make sure the regular expression is
+When using a regular expression as a middleware path, make sure the regular expression is
 case insensitive by adding the <code>i</code> flag.
 </p>
 </recommendation>
