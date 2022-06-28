@@ -138,7 +138,7 @@ For further information about default suites, see ":ref:`Publishing and using Co
 Running a subset of queries in a CodeQL pack
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Additionally, CodeQL CLI v2.10.0 or later, you can include a path at the end of a pack specification to run a subset of queries inside the pack. This applies to any command that locates or runs queries within a pack.
+Additionally, CodeQL CLI v2.8.1 or later, you can include a path at the end of a pack specification to run a subset of queries inside the pack. This applies to any command that locates or runs queries within a pack.
 
 The complete way to specify a set of queries is in the form ``scope/name@range:path``, where:
 
