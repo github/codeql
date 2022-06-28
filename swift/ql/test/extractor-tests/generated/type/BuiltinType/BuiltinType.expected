@@ -1,0 +1,11 @@
+| Builtin.BridgeObject | getDiagnosticsName: | Builtin.BridgeObject | getCanonicalType: | Builtin.BridgeObject |
+| Builtin.DefaultActorStorage | getDiagnosticsName: | Builtin.DefaultActorStorage | getCanonicalType: | Builtin.DefaultActorStorage |
+| Builtin.Executor | getDiagnosticsName: | Builtin.Executor | getCanonicalType: | Builtin.Executor |
+| Builtin.FPIEEE32 | getDiagnosticsName: | Builtin.FPIEEE32 | getCanonicalType: | Builtin.FPIEEE32 |
+| Builtin.FPIEEE64 | getDiagnosticsName: | Builtin.FPIEEE64 | getCanonicalType: | Builtin.FPIEEE64 |
+| Builtin.IntLiteral | getDiagnosticsName: | Builtin.IntLiteral | getCanonicalType: | Builtin.IntLiteral |
+| Builtin.Job | getDiagnosticsName: | Builtin.Job | getCanonicalType: | Builtin.Job |
+| Builtin.NativeObject | getDiagnosticsName: | Builtin.NativeObject | getCanonicalType: | Builtin.NativeObject |
+| Builtin.RawPointer | getDiagnosticsName: | Builtin.RawPointer | getCanonicalType: | Builtin.RawPointer |
+| Builtin.RawUnsafeContinuation | getDiagnosticsName: | Builtin.RawUnsafeContinuation | getCanonicalType: | Builtin.RawUnsafeContinuation |
+| Builtin.UnsafeValueBuffer | getDiagnosticsName: | Builtin.UnsafeValueBuffer | getCanonicalType: | Builtin.UnsafeValueBuffer |

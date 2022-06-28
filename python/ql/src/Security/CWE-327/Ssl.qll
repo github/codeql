@@ -15,7 +15,10 @@ class SSLContextCreation extends ContextCreation, DataFlow::CallCfgNode {
       protocolArg in [this.getArg(0), this.getArgByName("protocol")]
     |
       protocolArg =
-        [ssl.specific_version(result).getAUse(), ssl.unspecific_version(result).getAUse()]
+        [
+          ssl.specific_version(result).getAValueReachableFromSource(),
+          ssl.unspecific_version(result).getAValueReachableFromSource()
+        ]
     )
     or
     not exists(this.getArg(_)) and
@@ -54,7 +57,11 @@ class OptionsAugOr extends ProtocolRestriction, DataFlow::CfgNode {
       aa.getTarget() = attr.getNode() and
       attr.getName() = "options" and
       attr.getObject() = node and
-      flag = API::moduleImport("ssl").getMember("OP_NO_" + restriction).getAUse().asExpr() and
+      flag =
+        API::moduleImport("ssl")
+            .getMember("OP_NO_" + restriction)
+            .getAValueReachableFromSource()
+            .asExpr() and
       (
         aa.getValue() = flag
         or
@@ -79,7 +86,11 @@ class OptionsAugAndNot extends ProtocolUnrestriction, DataFlow::CfgNode {
       attr.getObject() = node and
       notFlag.getOp() instanceof Invert and
       notFlag.getOperand() = flag and
-      flag = API::moduleImport("ssl").getMember("OP_NO_" + restriction).getAUse().asExpr() and
+      flag =
+        API::moduleImport("ssl")
+            .getMember("OP_NO_" + restriction)
+            .getAValueReachableFromSource()
+            .asExpr() and
       (
         aa.getValue() = notFlag
         or
@@ -134,7 +145,10 @@ class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction, Data
       this = aw.getObject() and
       aw.getAttributeName() = "minimum_version" and
       aw.getValue() =
-        API::moduleImport("ssl").getMember("TLSVersion").getMember(restriction).getAUse()
+        API::moduleImport("ssl")
+            .getMember("TLSVersion")
+            .getMember(restriction)
+            .getAValueReachableFromSource()
     )
   }
 
@@ -188,7 +202,8 @@ class Ssl extends TlsLibrary {
 
   override DataFlow::CallCfgNode insecure_connection_creation(ProtocolVersion version) {
     result = API::moduleImport("ssl").getMember("wrap_socket").getACall() and
-    this.specific_version(version).getAUse() = result.getArgByName("ssl_version") and
+    this.specific_version(version).getAValueReachableFromSource() =
+      result.getArgByName("ssl_version") and
     version.isInsecure()
   }
 
