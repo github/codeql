@@ -31,7 +31,15 @@ class ArithmeticOperation extends Expr {
  * a + b
  * ```
  */
-abstract class BinaryArithmeticOperation extends BinaryExpr { }
+class BinaryArithmeticOperation extends BinaryExpr {
+  BinaryArithmeticOperation() {
+    this instanceof AddExpr or
+    this instanceof SubExpr or
+    this instanceof MulExpr or
+    this instanceof DivExpr or
+    this instanceof RemExpr
+  }
+}
 
 /**
  * An add expression.
@@ -39,7 +47,7 @@ abstract class BinaryArithmeticOperation extends BinaryExpr { }
  * a + b
  * ```
  */
-class AddExpr extends BinaryArithmeticOperation {
+class AddExpr extends BinaryExpr {
   AddExpr() { this.getFunction().(DotSyntaxCallExpr).getStaticTarget().getName() = "+(_:_:)" }
 }
 
@@ -49,7 +57,7 @@ class AddExpr extends BinaryArithmeticOperation {
  * a - b
  * ```
  */
-class SubExpr extends BinaryArithmeticOperation {
+class SubExpr extends BinaryExpr {
   SubExpr() { this.getFunction().(DotSyntaxCallExpr).getStaticTarget().getName() = "-(_:_:)" }
 }
 
@@ -59,7 +67,7 @@ class SubExpr extends BinaryArithmeticOperation {
  * a * b
  * ```
  */
-class MulExpr extends BinaryArithmeticOperation {
+class MulExpr extends BinaryExpr {
   MulExpr() { this.getFunction().(DotSyntaxCallExpr).getStaticTarget().getName() = "*(_:_:)" }
 }
 
@@ -69,7 +77,7 @@ class MulExpr extends BinaryArithmeticOperation {
  * a / b
  * ```
  */
-class DivExpr extends BinaryArithmeticOperation {
+class DivExpr extends BinaryExpr {
   DivExpr() { this.getFunction().(DotSyntaxCallExpr).getStaticTarget().getName() = "/(_:_:)" }
 }
 
@@ -79,7 +87,7 @@ class DivExpr extends BinaryArithmeticOperation {
  * a % b
  * ```
  */
-class RemExpr extends BinaryArithmeticOperation {
+class RemExpr extends BinaryExpr {
   RemExpr() { this.getFunction().(DotSyntaxCallExpr).getStaticTarget().getName() = "%(_:_:)" }
 }
 
@@ -89,7 +97,9 @@ class RemExpr extends BinaryArithmeticOperation {
  * -a
  * ```
  */
-abstract class UnaryArithmeticOperation extends PrefixUnaryExpr { }
+class UnaryArithmeticOperation extends PrefixUnaryExpr {
+  UnaryArithmeticOperation() { this instanceof UnaryMinusExpr }
+}
 
 /**
  * A unary minus expression.
@@ -97,6 +107,6 @@ abstract class UnaryArithmeticOperation extends PrefixUnaryExpr { }
  * -a
  * ```
  */
-class UnaryMinusExpr extends UnaryArithmeticOperation {
+class UnaryMinusExpr extends PrefixUnaryExpr {
   UnaryMinusExpr() { this.getFunction().(DotSyntaxCallExpr).getStaticTarget().getName() = "-(_:)" }
 }
