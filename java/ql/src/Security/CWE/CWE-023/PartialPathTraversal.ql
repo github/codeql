@@ -39,14 +39,24 @@ class SystemPropFileSeparatorExpr extends FileSeparatorExpr {
 }
 
 class StringLiteralFileSeparatorExpr extends FileSeparatorExpr, StringLiteral {
-  StringLiteralFileSeparatorExpr() { this.getValue() = "/" }
+  StringLiteralFileSeparatorExpr() {
+    this.getValue().matches("%/") or this.getValue().matches("%\\")
+  }
+}
+
+class CharacterLiteralFileSeparatorExpr extends FileSeparatorExpr, CharacterLiteral {
+  CharacterLiteralFileSeparatorExpr() { this.getValue() = "/" or this.getValue() = "\\" }
 }
 
 class FileSeparatorAppend extends AddExpr {
   FileSeparatorAppend() { this.getRightOperand() instanceof FileSeparatorExpr }
 }
 
-predicate isSafe(Expr expr) { DataFlow::localExprFlow(any(FileSeparatorAppend fsa), expr) }
+predicate isSafe(Expr expr) {
+  DataFlow::localExprFlow(any(Expr e |
+      e instanceof FileSeparatorAppend or e instanceof FileSeparatorExpr
+    ), expr)
+}
 
 from MethodAccess ma
 where

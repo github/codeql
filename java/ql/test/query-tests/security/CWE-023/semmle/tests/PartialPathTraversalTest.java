@@ -218,8 +218,22 @@ public class PartialPathTraversalTest {
         }
     }
 
+    void foo24(File dir, File parent) throws IOException {
+        String parentCanonical = parent.getCanonicalPath();
+        if (!dir.getCanonicalPath().startsWith(parentCanonical + '/')) {
+            throw new IOException("Invalid directory: " + dir.getCanonicalPath());
+        }
+    }
+
     public void doesNotFlag() {
         "hello".startsWith("goodbye");
+    }
+
+    public void doesNotFlagBackslash(File file) throws IOException {
+        // https://github.com/jenkinsci/jenkins/blob/be3cf6bffe7aa2fe2307c424fa418519f3bbd73b/core/src/main/java/hudson/util/jna/Kernel32Utils.java#L77-L77
+        if (!file.getCanonicalPath().startsWith("\\\\")) {
+            throw new RuntimeException("Boom");
+        }
     }
 
 }
