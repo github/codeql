@@ -7,8 +7,7 @@
 how long it takes the system to respond to different inputs. 
   it can be circumvented by using a constant-time algorithm for checking the value of sensitive info, 
 more precisely, the comparison time should not depend on the content of the input. Otherwise the attacker gains
-information that is indirectly leaked by the application. This information is then used for malicious purposes, 
-such as guessing the password of a user.
+information that is indirectly leaked by the application. This information is then used for malicious purposes.
 </p>
 </overview>
 
