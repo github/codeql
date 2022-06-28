@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity error
  * @security-severity 7.8
- * @precision TODO
+ * @precision high
  * @id swift/string-length-conflation
  * @tags security
  *       external/cwe/cwe-135
