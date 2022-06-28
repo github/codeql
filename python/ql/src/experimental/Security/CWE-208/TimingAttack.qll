@@ -165,4 +165,3 @@ class UserInputInComparisonConfig extends TaintTracking3::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof CompareSink }
 }
-
