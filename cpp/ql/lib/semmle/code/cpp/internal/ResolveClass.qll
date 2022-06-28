@@ -27,7 +27,7 @@ private predicate existsCompleteWithName(string name, @usertype d) {
 pragma[noinline]
 private predicate onlyOneCompleteClassExistsWithName(string name) {
   not mangled_name(_, _) and
-  strictcount(@usertype c | is_complete(c) and getTopLevelClassName(c) = name) = 1
+  exists(unique(@usertype c | is_complete(c) and getTopLevelClassName(c) = name))
 }
 
 /**
@@ -70,7 +70,7 @@ private predicate existsCompleteWithMangledName(@mangledname name, @usertype d) 
 
 pragma[noinline]
 private predicate onlyOneCompleteClassExistsWithMangledName(@mangledname name) {
-  strictcount(@usertype c | is_complete(c) and getClassMangledName(c) = name) = 1
+  exists(unique(@usertype c | is_complete(c) and getClassMangledName(c) = name))
 }
 
 /** Holds if `c` is an incomplete class named `name`. */
