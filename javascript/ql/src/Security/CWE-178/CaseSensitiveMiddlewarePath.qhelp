@@ -7,6 +7,7 @@
 <p>
 Using a case-sensitive regular expression path in a middleware route enables an attacker to bypass that middleware
 when accessing an endpoint with a case-insensitive path.
+Paths specified using a string are case insensitive, whereas regular expressions are case sensitive by default.
 </p>
 </overview>
 
