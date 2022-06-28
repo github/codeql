@@ -1,3 +1,10 @@
+## 0.2.0
+
+### Minor Analysis Improvements
+
+* The `js/resource-exhaustion` query no longer treats the 3-argument version of `Buffer.from` as a sink,
+  since it does not allocate a new buffer.
+
 ## 0.1.4
 
 ## 0.1.3

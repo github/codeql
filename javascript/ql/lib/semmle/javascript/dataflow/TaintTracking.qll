@@ -1126,6 +1126,19 @@ module TaintTracking {
     )
   }
 
+  /** A test for the value of `typeof x`, restricting the potential types of `x`. */
+  predicate isStringTypeGuard(EqualityTest test, Expr operand, boolean polarity) {
+    exists(TypeofTag tag | TaintTracking::isTypeofGuard(test, operand, tag) |
+      // typeof x === "string" sanitizes `x` when it evaluates to false
+      tag = "string" and
+      polarity = test.getPolarity().booleanNot()
+      or
+      // typeof x === "object" sanitizes `x` when it evaluates to true
+      tag != "string" and
+      polarity = test.getPolarity()
+    )
+  }
+
   /** Holds if `guard` is a test that checks if `operand` is a number. */
   predicate isNumberGuard(DataFlow::Node guard, Expr operand, boolean polarity) {
     exists(DataFlow::CallNode isNaN |
