@@ -24,7 +24,7 @@ An attack might look like this:
 
 <recommendation>
 <p>
-Do not use a call <code>SslerrorHandler.proceed</code> unconditonally. 
+Do not use a call <code>SslerrorHandler.proceed</code> unconditionally. 
 If you have to use a self-signed certificate, only accept that certificate, not all certificates. 
 </p>
 

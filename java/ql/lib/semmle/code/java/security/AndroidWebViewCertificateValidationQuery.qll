@@ -1,4 +1,4 @@
-/** Defintions for the web view certificate validation query */
+/** Definitions for the web view certificate validation query */
 
 import java
 
@@ -28,7 +28,7 @@ private class SslProceedCall extends MethodAccess {
   }
 }
 
-/** Holds if `m` trusts all certifiates by calling `SslErrorHandler.proceed` unconditionally. */
+/** Holds if `m` trusts all certificates by calling `SslErrorHandler.proceed` unconditionally. */
 predicate trustsAllCerts(OnReceivedSslErrorMethod m) {
   exists(SslProceedCall pr | pr.getQualifier().(VarAccess).getVariable() = m.handlerArg()) and
   not exists(SslCancelCall ca | ca.getQualifier().(VarAccess).getVariable() = m.handlerArg())
