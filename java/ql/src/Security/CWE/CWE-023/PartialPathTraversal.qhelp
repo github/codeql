@@ -28,7 +28,7 @@ returns a <b>non</b>-slash-terminated path string, so a <code>"/"</code> must be
 
 
 In this example, the <code>if</code> statement checks if <code>parent.getCanonicalPath()</code> 
-is a prefix of <code>dir.getCanonicalPath()</dir>. However, <code>parent.getCanonicalPath()</code> is 
+is a prefix of <code>dir.getCanonicalPath()</code>. However, <code>parent.getCanonicalPath()</code> is 
 not slash-terminated. So, the user that supplies <code>dir</code> may be allowed to access siblings of <code>parent</code> 
 and not just children of <code>parent</code>, which is a security issue.
 
