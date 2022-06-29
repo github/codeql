@@ -62,13 +62,13 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   // TODO: find a more robust approach to avoid collisions?
   llvm::StringRef filename = primaryFile ? primaryFile->getFilename() : module.getModuleFilename();
   std::string tempTrapName = filename.str() + '.' + std::to_string(getpid()) + ".trap";
-  llvm::SmallString<PATH_MAX> tempTrapPath(config.trapDir);
+  llvm::SmallString<PATH_MAX> tempTrapPath(config.tempTrapDir);
   llvm::sys::path::append(tempTrapPath, tempTrapName);
 
-  llvm::StringRef trapParent = llvm::sys::path::parent_path(tempTrapPath);
-  if (std::error_code ec = llvm::sys::fs::create_directories(trapParent)) {
-    std::cerr << "Cannot create trap directory '" << trapParent.str() << "': " << ec.message()
-              << "\n";
+  llvm::StringRef tempTrapParent = llvm::sys::path::parent_path(tempTrapPath);
+  if (std::error_code ec = llvm::sys::fs::create_directories(tempTrapParent)) {
+    std::cerr << "Cannot create temp trap directory '" << tempTrapParent.str()
+              << "': " << ec.message() << "\n";
     return;
   }
 
@@ -116,6 +116,13 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   std::string trapName = filename.str() + ".trap";
   llvm::SmallString<PATH_MAX> trapPath(config.trapDir);
   llvm::sys::path::append(trapPath, trapName);
+
+  llvm::StringRef trapParent = llvm::sys::path::parent_path(trapPath);
+  if (std::error_code ec = llvm::sys::fs::create_directories(trapParent)) {
+    std::cerr << "Cannot create trap directory '" << trapParent.str() << "': " << ec.message()
+              << "\n";
+    return;
+  }
 
   // TODO: The last process wins. Should we do better than that?
   if (std::error_code ec = llvm::sys::fs::rename(tempTrapPath, trapPath)) {
