@@ -138,7 +138,7 @@ For further information about default suites, see ":ref:`Publishing and using Co
 Running a subset of queries in a CodeQL pack
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Additionally, CodeQL CLI v2.8.1 or later, you can include a path at the end of a pack specification to run a subset of queries inside the pack. This applies to any command that locates or runs queries within a pack.
+If you are using CodeQL CLI v2.8.1 or later, you can include a path at the end of a pack specification to run a subset of queries inside the pack. This applies to any command that locates or runs queries within a pack.
 
 The complete way to specify a set of queries is in the form ``scope/name@range:path``, where:
 
@@ -146,20 +146,21 @@ The complete way to specify a set of queries is in the form ``scope/name@range:p
 - ``range`` is a `semver range <https://docs.npmjs.com/cli/v6/using-npm/semver#ranges>`_.
 - ``path`` is a file system path to a single query, a directory containing queries, or a query suite file.
 
-If a ``scope/name`` is specified, the ``range`` and ``path`` are
-optional. A missing ``range`` implies the latest version of the
-specified pack. A missing ``path`` implies the default query suite
-of the specified pack.
+When you specify a ``scope/name``, the ``range`` and ``path`` are
+optional. If you omit a ``range`` then the latest version of the
+specified pack is used. If you omit a ``path`` then the default query suite
+of the specified pack is used.
 
 The ``path`` can be one of a ``*.ql`` query file, a directory
 containing one or more queries, or a ``.qls`` query suite file. If
-there is no pack name specified, then a ``path`` must be provided,
-and will be interpreted relative to the current working directory
+you omit a pack name, then you must provide a ``path``,
+which will be interpreted relative to the working directory
 of the current process.
 
-If a ``scope/name`` and ``path`` are specified, then the ``path`` cannot
+If you specify a ``scope/name`` and ``path``, then the ``path`` cannot
 be absolute. It is considered relative to the root of the CodeQL
 pack.
+
 To analyze a database using all queries in the `experimental/Security` folder within the `codeql/cpp-queries` CodeQL pack you can use::
 
     codeql database analyze --format=sarif-latest --output=results <db> \
