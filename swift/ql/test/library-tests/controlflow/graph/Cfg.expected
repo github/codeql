@@ -1670,11 +1670,17 @@ cfg.swift:
 #-----|  -> 2
 
 #  185| ... call to <=(_:_:) ...
-#-----|  -> { ... }
+#-----| false -> [false] ... call to &&(_:_:) ...
+#-----| true -> { ... }
 
 #  185| ... call to &&(_:_:) ...
 #-----| exception -> exit m1(x:) (normal)
-#-----|  -> { ... }
+#-----| false -> [false] ... call to &&(_:_:) ...
+#-----| true -> { ... }
+
+#  185| [false] ... call to &&(_:_:) ...
+#-----| exception -> exit m1(x:) (normal)
+#-----| false -> [false] ... call to &&(_:_:) ...
 
 #  185| ... call to &&(_:_:) ...
 #-----| exception -> exit m1(x:) (normal)
@@ -1682,7 +1688,11 @@ cfg.swift:
 #-----| false -> print(_:separator:terminator:)
 
 #  185| StmtCondition
-#-----|  -> &&(_:_:)
+#-----|  -> <=(_:_:)
+
+#  185| [false] ... call to &&(_:_:) ...
+#-----| exception -> exit m1(x:) (normal)
+#-----| false -> print(_:separator:terminator:)
 
 #  185| <=(_:_:)
 #-----|  -> Int.Type
@@ -1696,29 +1706,59 @@ cfg.swift:
 #  185| 2
 #-----|  -> ... call to <=(_:_:) ...
 
-#  185| &&(_:_:)
-#-----|  -> Bool.Type
+#  185| x
+#-----|  -> 0
 
-#  185| Bool.Type
-#-----|  -> call to &&(_:_:)
+#  185| ... call to >(_:_:) ...
+#-----|  -> return ...
 
-#  185| call to &&(_:_:)
-#-----|  -> <=(_:_:)
-
-#  185| { ... }
+#  185| return ...
 #-----|  -> ... call to &&(_:_:) ...
 
-#  185| &&(_:_:)
-#-----|  -> Bool.Type
+#  185| { ... }
+#-----|  -> >(_:_:)
 
-#  185| Bool.Type
-#-----|  -> call to &&(_:_:)
+#  185| >(_:_:)
+#-----|  -> Int.Type
 
-#  185| call to &&(_:_:)
-#-----|  -> &&(_:_:)
+#  185| Int.Type
+#-----|  -> call to >(_:_:)
+
+#  185| call to >(_:_:)
+#-----|  -> x
+
+#  185| 0
+#-----|  -> ... call to >(_:_:) ...
+
+#  185| call to ...
+#-----|  -> return ...
+
+#  185| return ...
+#-----|  -> ... call to &&(_:_:) ...
 
 #  185| { ... }
-#-----|  -> ... call to &&(_:_:) ...
+#-----|  -> ==(_:_:)
+
+#  185| (...)
+#-----|  -> call to ...
+
+#  185| x
+#-----|  -> 5
+
+#  185| ... call to ==(_:_:) ...
+#-----|  -> (...)
+
+#  185| ==(_:_:)
+#-----|  -> Int.Type
+
+#  185| Int.Type
+#-----|  -> call to ==(_:_:)
+
+#  185| call to ==(_:_:)
+#-----|  -> x
+
+#  185| 5
+#-----|  -> ... call to ==(_:_:) ...
 
 #  186| print(_:separator:terminator:)
 #-----|  -> x is 1
@@ -2058,48 +2098,14 @@ cfg.swift:
 #  224| if ... then { ... }
 #-----|  -> StmtCondition
 
-#  224| !(_:)
-#-----|  -> Bool.Type
-
-#  224| Bool.Type
-#-----|  -> call to !(_:)
-
-#  224| call to !(_:)
+#  224| StmtCondition
 #-----|  -> true
 
-#  224| StmtCondition
-#-----|  -> !(_:)
-
-#  224| call to ...
+#  224| [false] call to ...
 #-----| false -> exit constant_condition() (normal)
-#-----| true -> print(_:separator:terminator:)
 
 #  224| true
-#-----|  -> call to ...
-
-#  225| print(_:separator:terminator:)
-#-----|  -> Impossible
-
-#  225| call to print(_:separator:terminator:)
-#-----|  -> exit constant_condition() (normal)
-
-#  225| default separator
-#-----|  -> default terminator
-
-#  225| default terminator
-#-----|  -> call to print(_:separator:terminator:)
-
-#  225| (Any) ...
-#-----|  -> [...]
-
-#  225| Impossible
-#-----|  -> (Any) ...
-
-#  225| [...]
-#-----|  -> default separator
-
-#  225| [...]
-#-----|  -> [...]
+#-----| true -> [false] call to ...
 
 #  229| empty_else(b:)
 #-----|  -> b
@@ -2197,7 +2203,7 @@ cfg.swift:
 #-----|  -> StmtCondition
 
 #  238| StmtCondition
-#-----|  -> ||(_:_:)
+#-----|  -> b1
 
 #  238| [false] (...)
 #-----| false -> exit disjunct(b1:b2:) (normal)
@@ -2206,24 +2212,26 @@ cfg.swift:
 #-----| true -> print(_:separator:terminator:)
 
 #  238| b1
-#-----|  -> { ... }
+#-----| true -> [true] ... call to ||(_:_:) ...
+#-----| false -> { ... }
 
 #  238| ... call to ||(_:_:) ...
 #-----| exception -> exit disjunct(b1:b2:) (normal)
 #-----| false -> [false] (...)
 #-----| true -> [true] (...)
 
-#  238| Bool.Type
-#-----|  -> call to ||(_:_:)
+#  238| [true] ... call to ||(_:_:) ...
+#-----| exception -> exit disjunct(b1:b2:) (normal)
+#-----| true -> [true] (...)
 
-#  238| call to ||(_:_:)
-#-----|  -> b1
+#  238| b2
+#-----|  -> return ...
 
-#  238| ||(_:_:)
-#-----|  -> Bool.Type
+#  238| return ...
+#-----|  -> ... call to ||(_:_:) ...
 
 #  238| { ... }
-#-----|  -> ... call to ||(_:_:) ...
+#-----|  -> b2
 
 #  239| print(_:separator:terminator:)
 #-----|  -> b1 or b2
