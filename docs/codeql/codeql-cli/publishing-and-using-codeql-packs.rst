@@ -73,27 +73,27 @@ The ``analyze`` command will run the default suite of any specified CodeQL packs
 
    codeql <database> analyze <scope>/<pack> <scope>/<other-pack>
 
-Managing packs on GitHub Enterprise Server
+Working with CodeQL packs on GitHub Enterprise Server
 ------------------------------------------
 
 .. pull-quote::
 
    Note
 
-   Managing packs on GitHub Enterprise Server is only available for GitHub Enterprise Server 3.6 and later.
+   The Container registry for GitHub Enterprise Server supports CodeQL query packs from GitHub Enterprise Server 3.6 onward.
 
-By default, CodeQL will download packs from and publish packs to the Container registry on GitHub.com.
-You can manage packs on GitHub Enterprise Server 3.6 and later by creating a ``qlconfig.yml`` file to tell CodeQL which Container registry to use for each pack.
-Create the ``~/.codeql/qlconfig.yml`` file using your preferred text editor, and add entries to specify which registry to use for each pack name pattern.
+By default, the CodeQL CLI expects to download CodeQL packs from and publish packs to the Container registry on GitHub.com. However, you can also work with CodeQL packs in a Container registry on GitHub Enterprise Server 3.6, and later, by creating a ``qlconfig.yml`` file to tell the CLI which Container registry to use for each pack.
+
+Create a ``~/.codeql/qlconfig.yml`` file using your preferred text editor, and add entries to specify which registry to use for one or more package name patterns.
 For example, the following ``qlconfig.yml`` file associates all packs with the Container registry for the GitHub Enterprise Server at ``GHE_HOSTNAME``, except packs matching ``codeql/*``, which are associated with the Container registry on GitHub.com:
 
 .. code-block:: yaml
 
    registries:
    - packages: '*'
-   url: https://containers.GHE_HOSTNAME/v2/
+     url: https://containers.GHE_HOSTNAME/v2/
    - packages: 'codeql/*'
-   url: https://ghcr.io/v2/
+     url: https://ghcr.io/v2/
 
 You can now use ``codeql pack publish``, ``codeql pack download``, and ``codeql database analyze`` to manage packs on GitHub Enterprise Server.
 
@@ -107,7 +107,7 @@ You can authenticate to the Container registry on GitHub.com in two ways:
 1. Pass the ``--github-auth-stdin`` option to the CodeQL CLI, then supply a GitHub Apps token or personal access token via standard input.
 2. Set the ``GITHUB_TOKEN`` environment variable to a GitHub Apps token or personal access token.
 
-Similarly, you can authenticate to a GHES Container registry, or authenticate to multiple registries simultaneously (for example to download or analyze private packs from multiple registries) in two ways:
+Similarly, you can authenticate to a GHES Container registry, or authenticate to multiple registries simultaneously (for example, to download or run private packs from multiple registries) in two ways:
 
 1. Pass the ``--registries-auth-stdin`` option to the CodeQL CLI, then supply a registry authentication string via standard input.
 2. Set the ``CODEQL_REGISTRIES_AUTH`` environment variable to a registry authentication string.
