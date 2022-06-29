@@ -1,7 +1,7 @@
 /**
  * @name String length conflation
  * @description Using a length value from an `NSString` in a `String`, or a count from a `String` in an `NSString`, may cause unexpected behavior.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
  * @precision high
