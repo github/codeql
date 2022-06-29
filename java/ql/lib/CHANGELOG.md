@@ -1,3 +1,26 @@
+## 0.3.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
+### Minor Analysis Improvements
+
+Added a flow step for `String.valueOf` calls on tainted `android.text.Editable` objects. 
+
+## 0.2.3
+
+## 0.2.2
+
+### Deprecated APIs
+
+* The QL class `FloatingPointLiteral` has been renamed to `FloatLiteral`.
+
+### Minor Analysis Improvements
+
+* Fixed a sanitizer of the query `java/android/intent-redirection`. Now, for an intent to be considered
+  safe against intent redirection, both its package name and class name must be checked.
+
 ## 0.2.1
 
 ### New Features

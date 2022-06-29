@@ -274,7 +274,7 @@ module Stdlib {
       ClassInstantiation() {
         this = subclassRef().getACall()
         or
-        this = API::moduleImport("logging").getMember("root").getAnImmediateUse()
+        this = API::moduleImport("logging").getMember("root").asSource()
         or
         this = API::moduleImport("logging").getMember("getLogger").getACall()
       }
@@ -1727,15 +1727,16 @@ private module StdlibPrivate {
       private DataFlow::TypeTrackingNode fieldList(DataFlow::TypeTracker t) {
         t.start() and
         // TODO: Should have better handling of subscripting
-        result.asCfgNode().(SubscriptNode).getObject() = instance().getAUse().asCfgNode()
+        result.asCfgNode().(SubscriptNode).getObject() =
+          instance().getAValueReachableFromSource().asCfgNode()
         or
         exists(DataFlow::TypeTracker t2 | result = fieldList(t2).track(t2, t))
       }
 
       /** Gets a reference to a list of fields. */
       DataFlow::Node fieldList() {
-        result = getlistResult().getAUse() or
-        result = getvalueResult().getAUse() or
+        result = getlistResult().getAValueReachableFromSource() or
+        result = getvalueResult().getAValueReachableFromSource() or
         fieldList(DataFlow::TypeTracker::end()).flowsTo(result)
       }
 
@@ -1744,16 +1745,16 @@ private module StdlibPrivate {
         t.start() and
         // TODO: Should have better handling of subscripting
         result.asCfgNode().(SubscriptNode).getObject() =
-          [instance().getAUse(), fieldList()].asCfgNode()
+          [instance().getAValueReachableFromSource(), fieldList()].asCfgNode()
         or
         exists(DataFlow::TypeTracker t2 | result = field(t2).track(t2, t))
       }
 
       /** Gets a reference to a field. */
       DataFlow::Node field() {
-        result = getfirstResult().getAUse()
+        result = getfirstResult().getAValueReachableFromSource()
         or
-        result = getvalueResult().getAUse()
+        result = getvalueResult().getAValueReachableFromSource()
         or
         field(DataFlow::TypeTracker::end()).flowsTo(result)
       }
@@ -1762,20 +1763,23 @@ private module StdlibPrivate {
         override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
           // Methods
           nodeFrom = nodeTo.(DataFlow::AttrRead).getObject() and
-          nodeFrom = instance().getAUse() and
-          nodeTo = [getvalueRef(), getfirstRef(), getlistRef()].getAUse()
+          nodeFrom = instance().getAValueReachableFromSource() and
+          nodeTo = [getvalueRef(), getfirstRef(), getlistRef()].getAValueReachableFromSource()
           or
           nodeFrom.asCfgNode() = nodeTo.asCfgNode().(CallNode).getFunction() and
           (
-            nodeFrom = getvalueRef().getAUse() and nodeTo = getvalueResult().getAnImmediateUse()
+            nodeFrom = getvalueRef().getAValueReachableFromSource() and
+            nodeTo = getvalueResult().asSource()
             or
-            nodeFrom = getfirstRef().getAUse() and nodeTo = getfirstResult().getAnImmediateUse()
+            nodeFrom = getfirstRef().getAValueReachableFromSource() and
+            nodeTo = getfirstResult().asSource()
             or
-            nodeFrom = getlistRef().getAUse() and nodeTo = getlistResult().getAnImmediateUse()
+            nodeFrom = getlistRef().getAValueReachableFromSource() and
+            nodeTo = getlistResult().asSource()
           )
           or
           // Indexing
-          nodeFrom in [instance().getAUse(), fieldList()] and
+          nodeFrom in [instance().getAValueReachableFromSource(), fieldList()] and
           nodeTo.asCfgNode().(SubscriptNode).getObject() = nodeFrom.asCfgNode()
           or
           // Attributes on Field
@@ -1939,7 +1943,7 @@ private module StdlibPrivate {
 
     /** A HttpRequestHandler class definition (most likely in project code). */
     class HttpRequestHandlerClassDef extends Class {
-      HttpRequestHandlerClassDef() { this.getParent() = subclassRef().getAnImmediateUse().asExpr() }
+      HttpRequestHandlerClassDef() { this.getParent() = subclassRef().asSource().asExpr() }
     }
 
     /** DEPRECATED: Alias for HttpRequestHandlerClassDef */
@@ -2037,7 +2041,7 @@ private module StdlibPrivate {
               .getMember("simple_server")
               .getMember("WSGIServer")
               .getASubclass*()
-              .getAnImmediateUse()
+              .asSource()
               .asExpr()
       }
     }
@@ -2553,7 +2557,7 @@ private module StdlibPrivate {
     override DataFlow::Node getAPathArgument() {
       result = super.getAPathArgument()
       or
-      result = this.getParameter(0, "target").getARhs()
+      result = this.getParameter(0, "target").asSink()
     }
   }
 
@@ -2570,7 +2574,7 @@ private module StdlibPrivate {
     override DataFlow::Node getAPathArgument() {
       result = super.getAPathArgument()
       or
-      result = this.getParameter(0, "target").getARhs()
+      result = this.getParameter(0, "target").asSink()
     }
   }
 
@@ -2585,7 +2589,7 @@ private module StdlibPrivate {
     override DataFlow::Node getAPathArgument() {
       result = super.getAPathArgument()
       or
-      result = this.getParameter(0, "other_path").getARhs()
+      result = this.getParameter(0, "other_path").asSink()
     }
   }
 
@@ -2653,7 +2657,7 @@ private module StdlibPrivate {
   /** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
   private API::CallNode hashlibNewCall(string algorithmName) {
     algorithmName =
-      result.getParameter(0, "name").getAValueReachingRhs().asExpr().(StrConst).getText() and
+      result.getParameter(0, "name").getAValueReachingSink().asExpr().(StrConst).getText() and
     result = API::moduleImport("hashlib").getMember("new").getACall()
   }
 
@@ -2670,7 +2674,9 @@ private module StdlibPrivate {
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
-    override DataFlow::Node getAnInput() { result = this.getParameter(1, "data").getARhs() }
+    override DataFlow::Node getAnInput() { result = this.getParameter(1, "data").asSink() }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 
   /**
@@ -2686,6 +2692,8 @@ private module StdlibPrivate {
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 
   /** Helper predicate for the `HashLibGenericHashOperation` charpred, to prevent a bad join order. */
@@ -2709,6 +2717,8 @@ private module StdlibPrivate {
     HashlibGenericHashOperation() { hashClass = hashlibMember(hashName) }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 
   /**
@@ -3427,13 +3437,13 @@ private module StdlibPrivate {
   private DataFlow::Node saxParserWithFeatureExternalGesTurnedOn(DataFlow::TypeTracker t) {
     t.start() and
     exists(SaxParserSetFeatureCall call |
-      call.getFeatureArg().getARhs() =
+      call.getFeatureArg().asSink() =
         API::moduleImport("xml")
             .getMember("sax")
             .getMember("handler")
             .getMember("feature_external_ges")
-            .getAUse() and
-      call.getStateArg().getAValueReachingRhs().asExpr().(BooleanLiteral).booleanValue() = true and
+            .getAValueReachableFromSource() and
+      call.getStateArg().getAValueReachingSink().asExpr().(BooleanLiteral).booleanValue() = true and
       result = call.getObject()
     )
     or
@@ -3443,13 +3453,13 @@ private module StdlibPrivate {
     // take account of that we can set the feature to False, which makes the parser safe again
     not exists(SaxParserSetFeatureCall call |
       call.getObject() = result and
-      call.getFeatureArg().getARhs() =
+      call.getFeatureArg().asSink() =
         API::moduleImport("xml")
             .getMember("sax")
             .getMember("handler")
             .getMember("feature_external_ges")
-            .getAUse() and
-      call.getStateArg().getAValueReachingRhs().asExpr().(BooleanLiteral).booleanValue() = false
+            .getAValueReachableFromSource() and
+      call.getStateArg().getAValueReachingSink().asExpr().(BooleanLiteral).booleanValue() = false
     )
   }
 

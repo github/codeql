@@ -1,3 +1,21 @@
+## 0.2.0
+
+### Minor Analysis Improvements
+
+* The `js/resource-exhaustion` query no longer treats the 3-argument version of `Buffer.from` as a sink,
+  since it does not allocate a new buffer.
+
+## 0.1.4
+
+## 0.1.3
+
+### New Queries
+
+* The `js/actions/command-injection` query has been added. It highlights GitHub Actions workflows that may allow an 
+  attacker to execute arbitrary code in the workflow.
+  The query previously existed an experimental query.
+* A new query `js/insecure-temporary-file` has been added. The query detects the creation of temporary files that may be accessible by others users. The query is not run by default. 
+
 ## 0.1.2
 
 ### New Queries

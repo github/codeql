@@ -17,50 +17,50 @@ private class RatpackExecModel extends SummaryModelCsv {
       "ratpack.exec;Promise;true;" +
         [
           // `Promise` creation methods
-          "value;;;Argument[0];ReturnValue.Element;value",
-          "flatten;;;Argument[0].ReturnValue.Element;ReturnValue.Element;value",
-          "sync;;;Argument[0].ReturnValue;ReturnValue.Element;value",
+          "value;;;Argument[0];ReturnValue.Element;value;manual",
+          "flatten;;;Argument[0].ReturnValue.Element;ReturnValue.Element;value;manual",
+          "sync;;;Argument[0].ReturnValue;ReturnValue.Element;value;manual",
           // `Promise` value transformation methods
-          "map;;;Argument[-1].Element;Argument[0].Parameter[0];value",
-          "map;;;Argument[0].ReturnValue;ReturnValue.Element;value",
-          "blockingMap;;;Argument[-1].Element;Argument[0].Parameter[0];value",
-          "blockingMap;;;Argument[0].ReturnValue;ReturnValue.Element;value",
-          "mapError;;;Argument[1].ReturnValue;ReturnValue.Element;value",
+          "map;;;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
+          "map;;;Argument[0].ReturnValue;ReturnValue.Element;value;manual",
+          "blockingMap;;;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
+          "blockingMap;;;Argument[0].ReturnValue;ReturnValue.Element;value;manual",
+          "mapError;;;Argument[1].ReturnValue;ReturnValue.Element;value;manual",
           // `apply` passes the qualifier to the function as the first argument
-          "apply;;;Argument[-1].Element;Argument[0].Parameter[0].Element;value",
-          "apply;;;Argument[0].ReturnValue.Element;ReturnValue.Element;value",
+          "apply;;;Argument[-1].Element;Argument[0].Parameter[0].Element;value;manual",
+          "apply;;;Argument[0].ReturnValue.Element;ReturnValue.Element;value;manual",
           // `Promise` termination method
-          "then;;;Argument[-1].Element;Argument[0].Parameter[0];value",
+          "then;;;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
           // 'next' accesses qualifier the 'Promise' value and also returns the qualifier
-          "next;;;Argument[-1].Element;Argument[0].Parameter[0];value",
-          "nextOp;;;Argument[-1].Element;Argument[0].Parameter[0];value",
-          "flatOp;;;Argument[-1].Element;Argument[0].Parameter[0];value",
+          "next;;;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
+          "nextOp;;;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
+          "flatOp;;;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
           // `nextOpIf` accesses qualifier the 'Promise' value and also returns the qualifier
-          "nextOpIf;;;Argument[-1].Element;Argument[0].Parameter[0];value",
-          "nextOpIf;;;Argument[-1].Element;Argument[1].Parameter[0];value",
+          "nextOpIf;;;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
+          "nextOpIf;;;Argument[-1].Element;Argument[1].Parameter[0];value;manual",
           // 'cacheIf' accesses qualifier the 'Promise' value and also returns the qualifier
-          "cacheIf;;;Argument[-1].Element;Argument[0].Parameter[0];value",
+          "cacheIf;;;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
           // 'route' accesses qualifier the 'Promise' value, and conditionally returns the qualifier or
           // the result of the second argument
-          "route;;;Argument[-1].Element;Argument[0].Parameter[0];value",
-          "route;;;Argument[-1].Element;Argument[1].Parameter[0];value",
-          "route;;;Argument[-1];ReturnValue;value",
+          "route;;;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
+          "route;;;Argument[-1].Element;Argument[1].Parameter[0];value;manual",
+          "route;;;Argument[-1];ReturnValue;value;manual",
           // `flatMap` type methods return their returned `Promise`
-          "flatMap;;;Argument[-1].Element;Argument[0].Parameter[0];value",
-          "flatMap;;;Argument[0].ReturnValue.Element;ReturnValue.Element;value",
-          "flatMapError;;;Argument[1].ReturnValue.Element;ReturnValue.Element;value",
+          "flatMap;;;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
+          "flatMap;;;Argument[0].ReturnValue.Element;ReturnValue.Element;value;manual",
+          "flatMapError;;;Argument[1].ReturnValue.Element;ReturnValue.Element;value;manual",
           // `blockingOp` passes the value to the argument
-          "blockingOp;;;Argument[-1].Element;Argument[0].Parameter[0];value",
+          "blockingOp;;;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
           // `replace` returns the passed `Promise`
-          "replace;;;Argument[0].Element;ReturnValue.Element;value",
+          "replace;;;Argument[0].Element;ReturnValue.Element;value;manual",
           // `mapIf` methods conditionally map their values, or return themselves
-          "mapIf;;;Argument[-1].Element;Argument[0].Parameter[0];value",
-          "mapIf;;;Argument[-1].Element;Argument[1].Parameter[0];value",
-          "mapIf;;;Argument[-1].Element;Argument[2].Parameter[0];value",
-          "mapIf;;;Argument[1].ReturnValue;ReturnValue.Element;value",
-          "mapIf;;;Argument[2].ReturnValue;ReturnValue.Element;value",
+          "mapIf;;;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
+          "mapIf;;;Argument[-1].Element;Argument[1].Parameter[0];value;manual",
+          "mapIf;;;Argument[-1].Element;Argument[2].Parameter[0];value;manual",
+          "mapIf;;;Argument[1].ReturnValue;ReturnValue.Element;value;manual",
+          "mapIf;;;Argument[2].ReturnValue;ReturnValue.Element;value;manual",
           // `wiretap` wraps the qualifier `Promise` value in a `Result` and passes it to the argument
-          "wiretap;;;Argument[-1].Element;Argument[0].Parameter[0].Element;value"
+          "wiretap;;;Argument[-1].Element;Argument[0].Parameter[0].Element;value;manual"
         ]
     or
     exists(string left, string right |
@@ -71,33 +71,34 @@ private class RatpackExecModel extends SummaryModelCsv {
         "ratpack.exec;Promise;true;" +
           [
             // `left`, `right`, `flatLeft`, `flatRight` all pass the qualifier `Promise` element as the other `Pair` field
-            "left;;;Argument[-1].Element;ReturnValue.Element." + right + ";value",
-            "right;;;Argument[-1].Element;ReturnValue.Element." + left + ";value",
-            "flatLeft;;;Argument[-1].Element;ReturnValue.Element." + right + ";value",
-            "flatRight;;;Argument[-1].Element;ReturnValue.Element." + left + ";value",
+            "left;;;Argument[-1].Element;ReturnValue.Element." + right + ";value;manual",
+            "right;;;Argument[-1].Element;ReturnValue.Element." + left + ";value;manual",
+            "flatLeft;;;Argument[-1].Element;ReturnValue.Element." + right + ";value;manual",
+            "flatRight;;;Argument[-1].Element;ReturnValue.Element." + left + ";value;manual",
             // `left` and `right` taking a `Promise` create a `Promise` of the `Pair`
-            "left;(Promise);;Argument[0].Element;ReturnValue.Element." + left + ";value",
-            "right;(Promise);;Argument[0].Element;ReturnValue.Element." + right + ";value",
+            "left;(Promise);;Argument[0].Element;ReturnValue.Element." + left + ";value;manual",
+            "right;(Promise);;Argument[0].Element;ReturnValue.Element." + right + ";value;manual",
             // `left` and `right` taking a `Function` pass the qualifier element then create a `Pair` with the returned value
-            "left;(Function);;Argument[-1].Element;Argument[0].Parameter[0];value",
-            "flatLeft;(Function);;Argument[-1].Element;Argument[0].Parameter[0];value",
-            "right;(Function);;Argument[-1].Element;Argument[0].Parameter[0];value",
-            "flatRight;(Function);;Argument[-1].Element;Argument[0].Parameter[0];value",
-            "left;(Function);;Argument[0].ReturnValue;ReturnValue.Element." + left + ";value",
+            "left;(Function);;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
+            "flatLeft;(Function);;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
+            "right;(Function);;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
+            "flatRight;(Function);;Argument[-1].Element;Argument[0].Parameter[0];value;manual",
+            "left;(Function);;Argument[0].ReturnValue;ReturnValue.Element." + left + ";value;manual",
             "flatLeft;(Function);;Argument[0].ReturnValue.Element;ReturnValue.Element." + left +
-              ";value",
-            "right;(Function);;Argument[0].ReturnValue;ReturnValue.Element." + right + ";value",
+              ";value;manual",
+            "right;(Function);;Argument[0].ReturnValue;ReturnValue.Element." + right +
+              ";value;manual",
             "flatRight;(Function);;Argument[0].ReturnValue.Element;ReturnValue.Element." + right +
-              ";value"
+              ";value;manual"
           ]
     )
     or
     row =
       "ratpack.exec;Result;true;" +
         [
-          "success;;;Argument[0];ReturnValue.Element;value",
-          "getValue;;;Argument[-1].Element;ReturnValue;value",
-          "getValueOrThrow;;;Argument[-1].Element;ReturnValue;value"
+          "success;;;Argument[0];ReturnValue.Element;value;manual",
+          "getValue;;;Argument[-1].Element;ReturnValue;value;manual",
+          "getValueOrThrow;;;Argument[-1].Element;ReturnValue;value;manual"
         ]
   }
 }

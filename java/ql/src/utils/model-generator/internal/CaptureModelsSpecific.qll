@@ -232,4 +232,8 @@ string asInputArgument(DataFlow::Node source) {
  * Holds if `kind` is a relevant sink kind for creating sink models.
  */
 bindingset[kind]
-predicate isRelevantSinkKind(string kind) { not kind = "logging" }
+predicate isRelevantSinkKind(string kind) {
+  not kind = "logging" and
+  not kind.matches("regex-use%") and
+  not kind = "write-file"
+}

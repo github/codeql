@@ -1027,18 +1027,16 @@ module TaintTracking {
   class WhitelistContainmentCallSanitizer extends AdditionalSanitizerGuardNode,
     DataFlow::MethodCallNode {
     WhitelistContainmentCallSanitizer() {
-      exists(string name |
-        name = "contains" or
-        name = "has" or
-        name = "hasOwnProperty"
-      |
-        this.getMethodName() = name
-      )
+      this.getMethodName() = ["contains", "has", "hasOwnProperty", "hasOwn"]
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = true and
-      e = this.getArgument(0).asExpr()
+      exists(int propertyIndex |
+        if this.getMethodName() = "hasOwn" then propertyIndex = 1 else propertyIndex = 0
+      |
+        outcome = true and
+        e = this.getArgument(propertyIndex).asExpr()
+      )
     }
 
     override predicate appliesTo(Configuration cfg) { any() }
@@ -1125,6 +1123,19 @@ module TaintTracking {
     exists(Expr str, TypeofExpr typeof | test.hasOperands(str, typeof) |
       str.mayHaveStringValue(tag) and
       typeof.getOperand() = operand
+    )
+  }
+
+  /** A test for the value of `typeof x`, restricting the potential types of `x`. */
+  predicate isStringTypeGuard(EqualityTest test, Expr operand, boolean polarity) {
+    exists(TypeofTag tag | TaintTracking::isTypeofGuard(test, operand, tag) |
+      // typeof x === "string" sanitizes `x` when it evaluates to false
+      tag = "string" and
+      polarity = test.getPolarity().booleanNot()
+      or
+      // typeof x === "object" sanitizes `x` when it evaluates to true
+      tag != "string" and
+      polarity = test.getPolarity()
     )
   }
 

@@ -1,3 +1,26 @@
+## 0.3.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
+## 0.2.3
+
+### Minor Analysis Improvements
+
+- Calls to `Zip::File.open` and `Zip::File.new` have been added as `FileSystemAccess` sinks. As a result queries like `rb/path-injection` now flag up cases where users may access arbitrary archive files.
+
+## 0.2.2
+
+### Major Analysis Improvements
+
+* Added data-flow support for [hashes](https://docs.ruby-lang.org/en/3.1/Hash.html).
+
+### Minor Analysis Improvements
+
+* Support for data flow through instance variables has been added.
+* Support of the safe navigation operator (`&.`) has been added; there is a new predicate `MethodCall.isSafeNavigation()`.
+
 ## 0.2.1
 
 ### Bug Fixes

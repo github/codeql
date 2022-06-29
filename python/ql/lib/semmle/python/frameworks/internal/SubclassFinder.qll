@@ -152,7 +152,7 @@ private module NotExposed {
     FindSubclassesSpec spec, string newAliasFullyQualified, ImportMember importMember, Module mod,
     Location loc
   ) {
-    importMember = newOrExistingModeling(spec).getAUse().asExpr() and
+    importMember = newOrExistingModeling(spec).getAValueReachableFromSource().asExpr() and
     importMember.getScope() = mod and
     loc = importMember.getLocation() and
     (
@@ -182,7 +182,7 @@ private module NotExposed {
     // WHAT A HACK :D :D
     relevantClass.getPath() =
       relevantClass.getAPredecessor().getPath() + ".getMember(\"" + relevantName + "\")" and
-    relevantClass.getAPredecessor().getAUse().asExpr() = importStar.getModule() and
+    relevantClass.getAPredecessor().getAValueReachableFromSource().asExpr() = importStar.getModule() and
     (
       mod.isPackageInit() and
       newAliasFullyQualified = mod.getPackageName() + "." + relevantName
@@ -204,7 +204,7 @@ private module NotExposed {
     FindSubclassesSpec spec, string newSubclassQualified, ClassExpr classExpr, Module mod,
     Location loc
   ) {
-    classExpr = newOrExistingModeling(spec).getASubclass*().getAnImmediateUse().asExpr() and
+    classExpr = newOrExistingModeling(spec).getASubclass*().asSource().asExpr() and
     classExpr.getScope() = mod and
     newSubclassQualified = mod.getName() + "." + classExpr.getName() and
     loc = classExpr.getLocation() and

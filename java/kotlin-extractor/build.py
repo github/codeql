@@ -97,19 +97,19 @@ def compile_to_dir(srcs, classpath, java_classpath, output):
                  '-classpath', os.path.pathsep.join([output, classpath, java_classpath])] + [s for s in srcs if s.endswith(".java")])
 
 
-def compile_to_jar(srcs, classpath, java_classpath, output):
-    builddir = 'build/classes'
+def compile_to_jar(build_dir, srcs, classpath, java_classpath, output):
+    class_dir = build_dir + '/classes'
 
-    if os.path.exists(builddir):
-        shutil.rmtree(builddir)
-    os.makedirs(builddir)
+    if os.path.exists(class_dir):
+        shutil.rmtree(class_dir)
+    os.makedirs(class_dir)
 
-    compile_to_dir(srcs, classpath, java_classpath, builddir)
+    compile_to_dir(srcs, classpath, java_classpath, class_dir)
 
     run_process(['jar', 'cf', output,
-                 '-C', builddir, '.',
+                 '-C', class_dir, '.',
                  '-C', 'src/main/resources', 'META-INF'])
-    shutil.rmtree(builddir)
+    shutil.rmtree(class_dir)
 
 
 def find_sources(path):
@@ -166,26 +166,28 @@ def transform_to_embeddable(srcs):
             f.write(content)
 
 
-def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output, tmp_dir, version):
+def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output, build_dir, version):
     classpath = patterns_to_classpath(dependency_folder, jars)
     java_classpath = patterns_to_classpath(dependency_folder, java_jars)
 
-    if os.path.exists(tmp_dir):
-        shutil.rmtree(tmp_dir)
-    shutil.copytree('src', tmp_dir)
+    tmp_src_dir = build_dir + '/temp_src'
+
+    if os.path.exists(tmp_src_dir):
+        shutil.rmtree(tmp_src_dir)
+    shutil.copytree('src', tmp_src_dir)
 
     for v in kotlin_plugin_versions.many_versions:
         if v != version:
-            d = tmp_dir + '/main/kotlin/utils/versions/v_' + v.replace('.', '_')
+            d = tmp_src_dir + '/main/kotlin/utils/versions/v_' + v.replace('.', '_')
             shutil.rmtree(d)
 
-    srcs = find_sources(tmp_dir)
+    srcs = find_sources(tmp_src_dir)
 
     transform_to_embeddable(srcs)
 
-    compile_to_jar(srcs, classpath, java_classpath, output)
+    compile_to_jar(build_dir, srcs, classpath, java_classpath, output)
 
-    shutil.rmtree(tmp_dir)
+    shutil.rmtree(tmp_src_dir)
 
 
 def compile_embeddable(version):
@@ -194,7 +196,7 @@ def compile_embeddable(version):
             kotlin_dependency_folder,
             transform_to_embeddable,
             'codeql-extractor-kotlin-embeddable-%s.jar' % (version),
-            'build/temp_src',
+            'build_embeddable_' + version,
             version)
 
 
@@ -204,7 +206,7 @@ def compile_standalone(version):
             kotlin_dependency_folder,
             lambda srcs: None,
             'codeql-extractor-kotlin-standalone-%s.jar' % (version),
-            'build/temp_src',
+            'build_standalone_' + version,
             version)
 
 if args.single_version:

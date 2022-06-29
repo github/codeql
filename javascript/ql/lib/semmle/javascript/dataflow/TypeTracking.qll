@@ -70,6 +70,12 @@ class TypeTracker extends TTypeTracker {
     step = LoadStep(prop) and result = MkTypeTracker(hasCall, "")
     or
     exists(string p | step = StoreStep(p) and prop = "" and result = MkTypeTracker(hasCall, p))
+    or
+    exists(PropertySet props |
+      step = WithoutPropStep(props) and
+      not prop = props.getAProperty() and
+      result = this
+    )
   }
 
   /** Gets a textual representation of this summary. */
@@ -373,6 +379,26 @@ class SharedTypeTrackingStep extends Unit {
   ) {
     none()
   }
+
+  /**
+   * Holds if type-tracking should step from `pred` to `succ` but block flow of `props` through here.
+   *
+   * This can be seen as taking a copy of the value in `pred` but without the properties in `props`.
+   */
+  predicate withoutPropStep(DataFlow::Node pred, DataFlow::Node succ, PropertySet props) { none() }
+}
+
+/**
+ * A representative for a set of property names.
+ *
+ * Currently this is used to denote a set of properties in `withoutPropStep`.
+ */
+abstract class PropertySet extends string {
+  bindingset[this]
+  PropertySet() { any() }
+
+  /** Gets a property contained in this property set. */
+  abstract string getAProperty();
 }
 
 /** Provides access to the steps contributed by subclasses of `SharedTypeTrackingStep`. */
@@ -412,6 +438,15 @@ module SharedTypeTrackingStep {
     DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
   ) {
     any(SharedTypeTrackingStep s).loadStoreStep(pred, succ, loadProp, storeProp)
+  }
+
+  /**
+   * Holds if type-tracking should step from `pred` to `succ` but block flow of `prop` through here.
+   *
+   * This can be seen as taking a copy of the value in `pred` but without the properties in `props`.
+   */
+  predicate withoutPropStep(DataFlow::Node pred, DataFlow::Node succ, PropertySet props) {
+    any(SharedTypeTrackingStep s).withoutPropStep(pred, succ, props)
   }
 }
 

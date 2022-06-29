@@ -1,3 +1,17 @@
+## 0.2.0
+
+### New Queries
+
+* Added a new query, `rb/improper-memoization`. The query finds cases where the parameter of a memoization method is not used in the memoization key.
+
+### Minor Analysis Improvements
+
+* The query "Use of a broken or weak cryptographic algorithm" (`rb/weak-cryptographic-algorithm`) now reports if a cryptographic operation is potentially insecure due to use of a weak block mode.
+
+## 0.1.4
+
+## 0.1.3
+
 ## 0.1.2
 
 ## 0.1.1

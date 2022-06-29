@@ -1,3 +1,17 @@
+"""
+QL files generation
+
+`generate(opts, renderer)` will generate QL classes and manage stub files out of a `yml` schema file.
+
+Each class (for example, `Foo`) in the schema triggers:
+* generation of a `FooBase` class implementation translating all properties into appropriate getters
+* if not created or already customized, generation of a stub file which defines `Foo` as extending `FooBase`. This can
+  be used to add hand-written code to `Foo`, which requires removal of the `// generated` header comment in that file.
+  All generated base classes actually import these customizations when referencing other classes.
+Generated files that do not correspond any more to any class in the schema are deleted. Customized stubs are however
+left behind and must be dealt with by hand.
+"""
+
 import pathlib
 from dataclasses import dataclass, field
 from typing import List, ClassVar
@@ -22,6 +36,8 @@ class Property:
     local_var: str = "x"
     is_optional: bool = False
     is_predicate: bool = False
+    is_child: bool = False
+    qltest_skip: bool = False
 
     def __post_init__(self):
         if self.tableparams:
@@ -48,6 +64,10 @@ class Property:
     def is_repeated(self):
         return bool(self.plural)
 
+    @property
+    def is_single(self):
+        return not (self.is_optional or self.is_repeated or self.is_predicate)
+
 
 @dataclass
 class Class:
@@ -59,6 +79,9 @@ class Class:
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
     imports: List[str] = field(default_factory=list)
+    qltest_skip: bool = False
+    qltest_collapse_hierarchy: bool = False
+    qltest_uncollapse_hierarchy: bool = False
 
     def __post_init__(self):
         self.bases = sorted(self.bases)
@@ -91,3 +114,40 @@ class ImportList:
     template: ClassVar = 'ql_imports'
 
     imports: List[str] = field(default_factory=list)
+
+
+@dataclass
+class GetParentImplementation:
+    template: ClassVar = 'ql_parent'
+
+    classes: List[Class] = field(default_factory=list)
+
+
+@dataclass
+class PropertyForTest:
+    getter: str
+    type: str = None
+    is_single: bool = False
+    is_predicate: bool = False
+    is_repeated: bool = False
+
+
+@dataclass
+class ClassTester:
+    template: ClassVar = 'ql_test_class'
+
+    class_name: str
+    properties: List[PropertyForTest] = field(default_factory=list)
+
+
+@dataclass
+class PropertyTester:
+    template: ClassVar = 'ql_test_property'
+
+    class_name: str
+    property: PropertyForTest
+
+
+@dataclass
+class MissingTestInstructions:
+    template: ClassVar = 'ql_test_missing'

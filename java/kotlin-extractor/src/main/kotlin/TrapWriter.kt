@@ -277,12 +277,6 @@ open class FileTrapWriter (
         return getLocation(e.startOffset, e.endOffset)
     }
     /**
-     * Gets a label for the location representing the whole of this file.
-     */
-    fun getWholeFileLocation(): Label<DbLocation> {
-        return getWholeFileLocation(fileId)
-    }
-    /**
      * Gets a label for the location corresponding to `startOffset` and
      * `endOffset` within this file.
      */
@@ -302,6 +296,12 @@ open class FileTrapWriter (
         // where we have actually determined the start/end lines/columns
         // to be 0.
         return "file://$filePath"
+    }
+    /**
+     * Gets a label for the location representing the whole of this file.
+     */
+    fun getWholeFileLocation(): Label<DbLocation> {
+        return getWholeFileLocation(fileId)
     }
 }
 

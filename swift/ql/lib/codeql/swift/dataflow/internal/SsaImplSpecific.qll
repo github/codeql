@@ -3,6 +3,7 @@
 private import swift
 private import codeql.swift.controlflow.BasicBlocks as BasicBlocks
 private import codeql.swift.controlflow.ControlFlowGraph
+private import codeql.swift.controlflow.CfgNodes
 
 class BasicBlock = BasicBlocks::BasicBlock;
 
@@ -27,6 +28,17 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
     v.getParentPattern() = pattern and
     certain = true
   )
+  or
+  exists(CallExpr call, Argument arg |
+    arg.getExpr().(InOutExpr).getSubExpr() = v.getAnAccess() and
+    call.getAnArgument() = arg and
+    bb.getNode(i).getNode().asAstNode() = call and
+    certain = false
+  )
+  or
+  v instanceof ParamDecl and
+  bb.getNode(i).getNode().asAstNode() = v and
+  certain = true
 }
 
 private predicate isLValue(DeclRefExpr ref) { any(AssignExpr assign).getDest() = ref }
@@ -36,6 +48,14 @@ predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) 
     not isLValue(ref) and
     bb.getNode(i).getNode().asAstNode() = ref and
     v = ref.getDecl() and
+    certain = true
+  )
+  or
+  exists(ExitNode exit, AbstractFunctionDecl func |
+    bb.getNode(i) = exit and
+    v.(ParamDecl).isInout() and
+    func.getAParam() = v and
+    bb.getScope() = func and
     certain = true
   )
 }

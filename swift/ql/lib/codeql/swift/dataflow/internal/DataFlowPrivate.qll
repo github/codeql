@@ -1,8 +1,13 @@
 private import swift
 private import DataFlowPublic
 private import DataFlowDispatch
+private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.controlflow.CfgNodes
 private import codeql.swift.dataflow.Ssa
+private import codeql.swift.controlflow.BasicBlocks
+private import codeql.swift.dataflow.internal.SsaImplCommon as SsaImpl
+private import codeql.swift.dataflow.FlowSummary as FlowSummary
+private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -18,7 +23,7 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
 }
 
 abstract class NodeImpl extends Node {
-  DataFlowCallable getEnclosingCallable() { none() }
+  abstract DataFlowCallable getEnclosingCallable();
 
   /** Do not call: use `getLocation()` instead. */
   abstract Location getLocationImpl();
@@ -31,12 +36,25 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override Location getLocationImpl() { result = expr.getLocation() }
 
   override string toStringImpl() { result = expr.toString() }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
 }
 
 private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
   override Location getLocationImpl() { result = def.getLocation() }
 
   override string toStringImpl() { result = def.toString() }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result = TDataFlowFunc(def.getBasicBlock().getScope())
+  }
+}
+
+private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
+  exists(BasicBlock bb, int i | SsaImpl::lastRefRedef(def, bb, i, next) |
+    def.definesAt(_, bb, i) and
+    def = nodeFrom.asDefinition()
+  )
 }
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -44,9 +62,31 @@ cached
 private module Cached {
   cached
   newtype TNode =
-    TExprNode(ExprCfgNode e) or
-    TNormalParameterNode(ParamDecl p) or
-    TSsaDefinitionNode(Ssa::Definition def)
+    TExprNode(CfgNode n, Expr e) { hasExprNode(n, e) } or
+    TSsaDefinitionNode(Ssa::Definition def) or
+    TInoutReturnNode(ParamDecl param) { param.isInout() } or
+    TInOutUpdateNode(ParamDecl param, CallExpr call) {
+      param.isInout() and
+      call.getStaticTarget() = param.getDeclaringFunction()
+    } or
+    TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state)
+
+  private predicate hasExprNode(CfgNode n, Expr e) {
+    n.(ExprCfgNode).getExpr() = e
+    or
+    n.(PropertyGetterCfgNode).getRef() = e
+    or
+    n.(PropertySetterCfgNode).getAssignExpr() = e
+  }
+
+  private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
+    def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode()) and
+    (
+      nodeTo instanceof InoutReturnNode
+      implies
+      nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable()
+    )
+  }
 
   private predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     exists(Ssa::Definition def |
@@ -56,11 +96,28 @@ private module Cached {
       or
       // step from def to first read
       nodeFrom.asDefinition() = def and
-      nodeTo.getCfgNode() = def.getAFirstRead()
+      nodeTo.getCfgNode() = def.getAFirstRead() and
+      (
+        nodeTo instanceof InoutReturnNode
+        implies
+        nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable()
+      )
       or
       // use-use flow
-      def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode())
+      localSsaFlowStepUseUse(def, nodeFrom, nodeTo)
+      or
+      //localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+      //or
+      // step from previous read to Phi node
+      localFlowSsaInput(nodeFrom, def, nodeTo.asDefinition())
     )
+    or
+    exists(ParamReturnKind kind, ExprCfgNode arg |
+      arg = nodeFrom.(InOutUpdateNode).getCall(kind).asCall().getArgument(kind.getIndex()) and
+      nodeTo.asDefinition().(Ssa::WriteDefinition).isInoutDef(arg)
+    )
+    or
+    nodeFrom.asExpr() = nodeTo.asExpr().(InOutExpr).getSubExpr()
   }
 
   /**
@@ -93,22 +150,47 @@ private module ParameterNodes {
     predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) { none() }
   }
 
-  class NormalParameterNode extends ParameterNodeImpl, TNormalParameterNode {
+  class NormalParameterNode extends ParameterNodeImpl, SsaDefinitionNode {
     ParamDecl param;
 
-    NormalParameterNode() { this = TNormalParameterNode(param) }
+    NormalParameterNode() {
+      exists(BasicBlock bb, int i |
+        super.asDefinition().definesAt(param, bb, i) and
+        bb.getNode(i).getNode().asAstNode() = param
+      )
+    }
 
     override Location getLocationImpl() { result = param.getLocation() }
 
     override string toStringImpl() { result = param.toString() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      none() // TODO
+      exists(Callable f, int index |
+        c = TDataFlowFunc(f) and
+        f.getParam(index) = param and
+        pos = TPositionalParameter(index)
+      )
     }
+
+    override DataFlowCallable getEnclosingCallable() { isParameterOf(result, _) }
   }
 }
 
 import ParameterNodes
+
+/** A data-flow node used to model flow summaries. */
+class SummaryNode extends NodeImpl, TSummaryNode {
+  private FlowSummaryImpl::Public::SummarizedCallable c;
+  private FlowSummaryImpl::Private::SummaryNodeState state;
+
+  SummaryNode() { this = TSummaryNode(c, state) }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(c) }
+
+  override UnknownLocation getLocationImpl() { any() }
+
+  override string toStringImpl() { result = "[summary] " + state + " in " + c }
+}
 
 /** A data-flow node that represents a call argument. */
 abstract class ArgumentNode extends Node {
@@ -119,7 +201,16 @@ abstract class ArgumentNode extends Node {
   final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
-private module ArgumentNodes { }
+private module ArgumentNodes {
+  class NormalArgumentNode extends ExprNode, ArgumentNode {
+    NormalArgumentNode() { exists(CallExpr call | call.getAnArgument().getExpr() = this.asExpr()) }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.asCall().getArgument(pos.(PositionalArgumentPosition).getIndex()).getExpr() =
+        this.asExpr()
+    }
+  }
+}
 
 import ArgumentNodes
 
@@ -129,7 +220,46 @@ abstract class ReturnNode extends Node {
   abstract ReturnKind getKind();
 }
 
-private module ReturnNodes { }
+private module ReturnNodes {
+  class ReturnReturnNode extends ReturnNode, ExprNode {
+    ReturnReturnNode() { exists(ReturnStmt stmt | stmt.getResult() = this.asExpr()) }
+
+    override ReturnKind getKind() { result instanceof NormalReturnKind }
+  }
+
+  class InoutReturnNodeImpl extends ReturnNode, TInoutReturnNode, NodeImpl {
+    ParamDecl param;
+    ControlFlowNode exit;
+
+    InoutReturnNodeImpl() {
+      this = TInoutReturnNode(param) and
+      exit instanceof ExitNode and
+      exit.getScope() = param.getDeclaringFunction()
+    }
+
+    override ReturnKind getKind() { result.(ParamReturnKind).getIndex() = param.getIndex() }
+
+    override ControlFlowNode getCfgNode() { result = exit }
+
+    override DataFlowCallable getEnclosingCallable() {
+      result = TDataFlowFunc(param.getDeclaringFunction())
+    }
+
+    ParamDecl getParameter() { result = param }
+
+    override Location getLocationImpl() { result = exit.getLocation() }
+
+    override string toStringImpl() { result = param.toString() + "[return]" }
+  }
+
+  private class SummaryReturnNode extends SummaryNode, ReturnNode {
+    private ReturnKind rk;
+
+    SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this, rk) }
+
+    override ReturnKind getKind() { result = rk }
+  }
+}
 
 import ReturnNodes
 
@@ -139,7 +269,37 @@ abstract class OutNode extends Node {
   abstract DataFlowCall getCall(ReturnKind kind);
 }
 
-private module OutNodes { }
+private module OutNodes {
+  class CallOutNode extends OutNode, ExprNodeImpl {
+    ApplyExprCfgNode apply;
+
+    CallOutNode() { apply = this.getCfgNode() }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      result.asCall() = apply and kind instanceof NormalReturnKind
+    }
+  }
+
+  class InOutUpdateNode extends OutNode, TInOutUpdateNode, NodeImpl {
+    ParamDecl param;
+    CallExpr call;
+
+    InOutUpdateNode() { this = TInOutUpdateNode(param, call) }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      result.asCall().getExpr() = call and
+      kind.(ParamReturnKind).getIndex() = param.getIndex()
+    }
+
+    override DataFlowCallable getEnclosingCallable() {
+      result = this.getCall(_).getEnclosingCallable()
+    }
+
+    override Location getLocationImpl() { result = call.getLocation() }
+
+    override string toStringImpl() { result = param.toString() }
+  }
+}
 
 import OutNodes
 
@@ -169,7 +329,9 @@ class DataFlowType extends TDataFlowType {
 }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(NodeImpl n) { none() }
+DataFlowType getNodeType(NodeImpl n) {
+  any() // return the singleton DataFlowType until we support type pruning for Swift
+}
 
 /** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { result = t.toString() }
@@ -221,13 +383,25 @@ class Unit extends TUnit {
  */
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
 
-newtype LambdaCallKind = TODO_TLambdaCallKind()
+newtype LambdaCallKind = TLambdaCallKind()
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+  kind = TLambdaCallKind() and
+  (
+    // Closures
+    c.getUnderlyingCallable() = creation.asExpr()
+    or
+    // Reference to a function declaration
+    creation.asExpr().(DeclRefExpr).getDecl() = c.getUnderlyingCallable()
+  )
+}
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
-predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  kind = TLambdaCallKind() and
+  receiver.asExpr() = call.asCall().getExpr().(ApplyExpr).getFunction()
+}
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }

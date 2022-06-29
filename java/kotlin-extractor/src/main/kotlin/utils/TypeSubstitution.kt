@@ -37,6 +37,30 @@ fun IrType.substituteTypeArguments(params: List<IrTypeParameter>, arguments: Lis
         else -> this
     }
 
+fun IrSimpleType.substituteTypeArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>): IrSimpleType {
+    if (substitutionMap.isEmpty()) return this
+
+    val newArguments = arguments.map {
+        if (it is IrTypeProjection) {
+            val itType = it.type
+            if (itType is IrSimpleType) {
+                subProjectedType(substitutionMap, itType, it.variance)
+            } else {
+                it
+            }
+        } else {
+            it
+        }
+    }
+
+    return IrSimpleTypeImpl(
+        classifier,
+        hasQuestionMark,
+        newArguments,
+        annotations
+    )
+}
+
 /**
  * Returns true if substituting `innerVariance T` into the context `outerVariance []` discards all knowledge about
  * what T could be.
@@ -75,30 +99,6 @@ private fun subProjectedType(substitutionMap: Map<IrTypeParameterSymbol, IrTypeA
             substitutedTypeArg
         }
     } ?: makeTypeProjection(t.substituteTypeArguments(substitutionMap), outerVariance)
-
-fun IrSimpleType.substituteTypeArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>): IrSimpleType {
-    if (substitutionMap.isEmpty()) return this
-
-    val newArguments = arguments.map {
-        if (it is IrTypeProjection) {
-            val itType = it.type
-            if (itType is IrSimpleType) {
-                subProjectedType(substitutionMap, itType, it.variance)
-            } else {
-                it
-            }
-        } else {
-            it
-        }
-    }
-
-    return IrSimpleTypeImpl(
-        classifier,
-        hasQuestionMark,
-        newArguments,
-        annotations
-    )
-}
 
 fun IrTypeArgument.upperBound(context: IrPluginContext) =
     when(this) {

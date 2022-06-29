@@ -1,3 +1,21 @@
+## 0.2.0
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 4.7.
+
+### Minor Analysis Improvements
+
+* All new ECMAScript 2022 features are now supported.
+
+## 0.1.4
+
+## 0.1.3
+
+### Minor Analysis Improvements
+
+* The `isLibaryFile` predicate from `ClassifyFiles.qll` has been renamed to `isLibraryFile` to fix a typo. 
+
 ## 0.1.2
 
 ### Deprecated APIs

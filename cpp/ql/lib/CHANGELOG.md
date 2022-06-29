@@ -1,3 +1,29 @@
+## 0.3.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
+### Bug Fixes
+
+* `UserType.getADeclarationEntry()` now yields all forward declarations when the user type is a `class`, `struct`, or `union`.
+
+## 0.2.3
+
+### New Features
+
+* An `isBraced` predicate was added to the `Initializer` class which holds when a C++ braced initializer was used in the initialization.
+
+## 0.2.2
+
+### Deprecated APIs
+
+ * The `AnalysedString` class in the `StringAnalysis` module has been replaced with `AnalyzedString`, to follow our style guide. The old name still exists as a deprecated alias.
+
+### New Features
+
+* A `getInitialization` predicate was added to the `ConstexprIfStmt`, `IfStmt`, and `SwitchStmt` classes that yields the C++17-style initializer of the `if` or `switch` statement when it exists.
+
 ## 0.2.1
 
 ## 0.2.0

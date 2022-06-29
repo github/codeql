@@ -6,10 +6,11 @@ class FunctionIsVariadicTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "isVariadic" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(CallExpr ce |
       ce.getTarget().isVariadic() and
-      ce.hasLocationInfo(file, line, _, _, _) and
+      ce.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = ce.toString() and
       value = "" and
       tag = "isVariadic"

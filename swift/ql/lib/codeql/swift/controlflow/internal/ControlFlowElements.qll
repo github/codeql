@@ -3,13 +3,16 @@ private import swift
 cached
 newtype TControlFlowElement =
   TAstElement(AstNode n) or
+  TFuncDeclElement(AbstractFunctionDecl func) { func.hasBody() } or
+  TClosureElement(ClosureExpr clos) or
   TPropertyGetterElement(Decl accessor, Expr ref) { isPropertyGetterElement(accessor, ref) } or
   TPropertySetterElement(AccessorDecl accessor, AssignExpr assign) {
     isPropertySetterElement(accessor, assign)
   } or
   TPropertyObserverElement(AccessorDecl observer, AssignExpr assign) {
     isPropertyObserverElement(observer, assign)
-  }
+  } or
+  TKeyPathElement(KeyPathExpr expr)
 
 predicate isLValue(Expr e) { any(AssignExpr assign).getDest() = e }
 
@@ -160,4 +163,40 @@ class PropertyObserverElement extends ControlFlowElement, TPropertyObserverEleme
   predicate isDidSet() { observer.isDidSet() }
 
   AssignExpr getAssignExpr() { result = assign }
+}
+
+class FuncDeclElement extends ControlFlowElement, TFuncDeclElement {
+  AbstractFunctionDecl func;
+
+  FuncDeclElement() { this = TFuncDeclElement(func) }
+
+  override string toString() { result = func.toString() }
+
+  override Location getLocation() { result = func.getLocation() }
+
+  AbstractFunctionDecl getAst() { result = func }
+}
+
+class KeyPathElement extends ControlFlowElement, TKeyPathElement {
+  KeyPathExpr expr;
+
+  KeyPathElement() { this = TKeyPathElement(expr) }
+
+  override Location getLocation() { result = expr.getLocation() }
+
+  KeyPathExpr getAst() { result = expr }
+
+  override string toString() { result = expr.toString() }
+}
+
+class ClosureElement extends ControlFlowElement, TClosureElement {
+  ClosureExpr expr;
+
+  ClosureElement() { this = TClosureElement(expr) }
+
+  override Location getLocation() { result = expr.getLocation() }
+
+  ClosureExpr getAst() { result = expr }
+
+  override string toString() { result = expr.toString() }
 }

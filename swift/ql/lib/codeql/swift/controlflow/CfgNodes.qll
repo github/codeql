@@ -61,15 +61,15 @@ class ExitNode extends ControlFlowNode, TExitNode {
 /**
  * A node for an AST node.
  *
- * Each AST node maps to zero or more `AstCfgNode`s: zero when the node is unreachable
+ * Each AST node maps to zero or more `CfgNode`s: zero when the node is unreachable
  * (dead) code or not important for control flow, and multiple when there are different
  * splits for the AST node.
  */
-class AstCfgNode extends ControlFlowNode, TElementNode {
+class CfgNode extends ControlFlowNode, TElementNode {
   private Splits splits;
-  private ControlFlowElement n;
+  ControlFlowElement n;
 
-  AstCfgNode() { this = TElementNode(_, n, splits) }
+  CfgNode() { this = TElementNode(_, n, splits) }
 
   final override ControlFlowElement getNode() { result = n }
 
@@ -94,11 +94,39 @@ class AstCfgNode extends ControlFlowNode, TElementNode {
 }
 
 /** A control-flow node that wraps an AST expression. */
-class ExprCfgNode extends AstCfgNode {
+class ExprCfgNode extends CfgNode {
   Expr e;
 
   ExprCfgNode() { e = this.getNode().asAstNode() }
 
   /** Gets the underlying expression. */
   Expr getExpr() { result = e }
+}
+
+/** A control-flow node that wraps a property getter. */
+class PropertyGetterCfgNode extends CfgNode {
+  override PropertyGetterElement n;
+
+  Expr getRef() { result = n.getRef() }
+}
+
+/** A control-flow node that wraps a property setter. */
+class PropertySetterCfgNode extends CfgNode {
+  override PropertySetterElement n;
+
+  AssignExpr getAssignExpr() { result = n.getAssignExpr() }
+}
+
+class ApplyExprCfgNode extends ExprCfgNode {
+  override ApplyExpr e;
+
+  ExprCfgNode getArgument(int index) {
+    result.getNode().asAstNode() = e.getArgument(index).getExpr()
+  }
+
+  AbstractFunctionDecl getStaticTarget() { result = e.getStaticTarget() }
+}
+
+class CallExprCfgNode extends ApplyExprCfgNode {
+  override CallExpr e;
 }
