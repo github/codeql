@@ -14,10 +14,13 @@ class Definition extends TLocalDefinition {
   /** Gets a textual representation of this element. */
   string toString() { result = "Definition " + this.getAstNode().getLocation().toString() }
 
+  /** Gets the AST Node associated with this element */
   AstNode getAstNode() { this = TLocalDefinition(result) }
 
+  /** Gets the Module associated with this element */
   Module getModule() { result = this.getAstNode().getScope().getEnclosingModule() }
 
+  /** Gets the source location of the AST Node associated with this element */
   Location getLocation() { result = this.getAstNode().getLocation() }
 }
 
