@@ -71,6 +71,10 @@ private predicate isNonConstantComparisonCallArgument(Expr p) {
   exists(NonConstantTimeComparisonCall call | p = [call.getArgument(0), call.getArgument(1)])
 }
 
+/**
+ * A configuration that tracks data flow from variable that may hold sensitive data
+ * to methods that compare data using a non-constant-time algorithm.
+ */
 class NonConstantTimeComparisonConfig extends TaintTracking::Configuration {
   NonConstantTimeComparisonConfig() { this = "NonConstantTimeComparisonConfig" }
 
