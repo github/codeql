@@ -16,6 +16,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
+/** A string for `match` that identifies strings that look like they represent secret data. */
 private string suspicious() {
   result =
     [
@@ -54,10 +55,18 @@ private class NonConstantTimeComparisonCall extends StaticMethodAccess {
   }
 }
 
+/**
+ * Holds if `firstObject` and `secondObject` are compared using a method
+ * that does not use a constant-time algorithm, for example, `String.equals()`.
+ */
 private predicate isNonConstantEqualsCallArgument(Expr e) {
-  exists(NonConstantTimeEqualsCall call | e = [call.getQualifier(), call.getArgument(0)])
+  exists(NonConstantTimeEqualsCall call | e = [call.getQualifier(), call.getAnArgument()])
 }
 
+/**
+ * Holds if `firstInput` and `secondInput` are compared using a static method
+ * that does not use a constant-time algorithm, for example, `Arrays.equals()`.
+ */
 private predicate isNonConstantComparisonCallArgument(Expr p) {
   exists(NonConstantTimeComparisonCall call | p = [call.getArgument(0), call.getArgument(1)])
 }
