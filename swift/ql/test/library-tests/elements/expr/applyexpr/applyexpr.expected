@@ -1,3 +1,3 @@
-| applyexpr.swift:3:3:3:7 | bar | getFunction:bar |
+| applyexpr.swift:3:3:3:7 | call to ... | getFunction:bar |
 | applyexpr.swift:6:1:6:38 | call to foo(_:) | getArgument(0):: { ... }, getFunction:foo(_:), getStaticTarget:foo(_:) |
 | applyexpr.swift:6:7:6:35 | call to print(_:separator:terminator:) | getArgument(0):: [...], getArgument(1):separator: default separator, getArgument(2):terminator: default terminator, getFunction:print(_:separator:terminator:), getStaticTarget:print(_:separator:terminator:) |
