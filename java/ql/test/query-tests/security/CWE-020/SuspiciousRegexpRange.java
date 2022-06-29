@@ -29,5 +29,9 @@ class SuspiciousRegexpRange {
         Pattern overlapsWithClass1 = Pattern.compile("[0-9\\d]*"); // NOT OK
         
         Pattern overlapsWithClass2 = Pattern.compile("[\\w,.-?:*+]*"); // NOT OK
+
+        Pattern nested = Pattern.compile("[[A-Za-z_][A-Za-z0-9._-]]*"); // OK, the dash it at the end
+
+        Pattern octal = Pattern.compile("[\000-\037\040-\045]*"); // OK
     }
 }
