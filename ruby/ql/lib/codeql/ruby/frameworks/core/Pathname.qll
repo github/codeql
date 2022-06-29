@@ -6,6 +6,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
+private import codeql.ruby.frameworks.data.ModelsAsData
 
 /**
  * Modeling of the `Pathname` class from the Ruby standard library.
@@ -113,106 +114,75 @@ module Pathname {
     override DataFlow::Node getAPermissionNode() { result = permissionArg }
   }
 
-  /** Flow summary for `Pathname.new`. */
-  private class NewSummary extends SummarizedCallable {
-    NewSummary() { this = "Pathname.new" }
-
-    override MethodCall getACall() {
-      result = API::getTopLevelMember("Pathname").getAnInstantiation().getExprNode().getExpr()
-    }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[0]" and
-      output = "ReturnValue" and
-      preservesValue = false
-    }
-  }
-
-  /** Flow summary for `Pathname#dirname`. */
-  private class DirnameSummary extends SimpleSummarizedCallable {
-    DirnameSummary() { this = "dirname" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self]" and
-      output = "ReturnValue" and
-      preservesValue = false
-    }
-  }
-
-  /** Flow summary for `Pathname#each_filename`. */
-  private class EachFilenameSummary extends SimpleSummarizedCallable {
-    EachFilenameSummary() { this = "each_filename" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self]" and
-      output = "Argument[block].Parameter[0]" and
-      preservesValue = false
-    }
-  }
-
-  /** Flow summary for `Pathname#expand_path`. */
-  private class ExpandPathSummary extends SimpleSummarizedCallable {
-    ExpandPathSummary() { this = "expand_path" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self]" and
-      output = "ReturnValue" and
-      preservesValue = false
+  /**
+   * Type summaries for the `Pathname` class, i.e. method calls that produce new
+   * `Pathname` instances.
+   */
+  private class PathnameTypeSummary extends ModelInput::TypeModelCsv {
+    override predicate row(string row) {
+      // package1;type1;package2;type2;path
+      row =
+        [
+          // Pathname.new : Pathname
+          ";Pathname;;;Member[Pathname].Instance",
+          // Pathname#+(path) : Pathname
+          ";Pathname;;Pathname;Method[+].ReturnValue",
+          // Pathname#/(path) : Pathname
+          ";Pathname;;Pathname;Method[/].ReturnValue",
+          // Pathname#basename(path) : Pathname
+          ";Pathname;;Pathname;Method[basename].ReturnValue",
+          // Pathname#cleanpath(path) : Pathname
+          ";Pathname;;Pathname;Method[cleanpath].ReturnValue",
+          // Pathname#expand_path(path) : Pathname
+          ";Pathname;;Pathname;Method[expand_path].ReturnValue",
+          // Pathname#join(path) : Pathname
+          ";Pathname;;Pathname;Method[join].ReturnValue",
+          // Pathname#realpath(path) : Pathname
+          ";Pathname;;Pathname;Method[realpath].ReturnValue",
+          // Pathname#relative_path_from(path) : Pathname
+          ";Pathname;;Pathname;Method[relative_path_from].ReturnValue",
+          // Pathname#sub(path) : Pathname
+          ";Pathname;;Pathname;Method[sub].ReturnValue",
+          // Pathname#sub_ext(path) : Pathname
+          ";Pathname;;Pathname;Method[sub_ext].ReturnValue",
+          // Pathname#to_path(path) : Pathname
+          ";Pathname;;Pathname;Method[to_path].ReturnValue",
+        ]
     }
   }
 
-  /** Flow summary for `Pathname#join`. */
-  private class JoinSummary extends SimpleSummarizedCallable {
-    JoinSummary() { this = "join" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Argument[self]", "Argument[any]"] and
-      output = "ReturnValue" and
-      preservesValue = false
-    }
-  }
-
-  /** Flow summary for `Pathname#parent`. */
-  private class ParentSummary extends SimpleSummarizedCallable {
-    ParentSummary() { this = "parent" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self]" and
-      output = "ReturnValue" and
-      preservesValue = false
-    }
-  }
-
-  /** Flow summary for `Pathname#realpath`. */
-  private class RealpathSummary extends SimpleSummarizedCallable {
-    RealpathSummary() { this = "realpath" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self]" and
-      output = "ReturnValue" and
-      preservesValue = false
-    }
-  }
-
-  /** Flow summary for `Pathname#relative_path_from`. */
-  private class RelativePathFromSummary extends SimpleSummarizedCallable {
-    RelativePathFromSummary() { this = "relative_path_from" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self]" and
-      output = "ReturnValue" and
-      preservesValue = false
-    }
-  }
-
-  /** Flow summary for `Pathname#to_path`. */
-  private class ToPathSummary extends SimpleSummarizedCallable {
-    ToPathSummary() { this = "to_path" }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self]" and
-      output = "ReturnValue" and
-      preservesValue = false
+  /** Taint flow summaries for the `Pathname` class. */
+  private class PathnameTaintSummary extends ModelInput::SummaryModelCsv {
+    override predicate row(string row) {
+      row =
+        [
+          // Pathname.new(path)
+          ";;Member[Pathname].Method[new];Argument[0];ReturnValue;taint",
+          // Pathname#dirname
+          ";Pathname;Method[dirname];Argument[self];ReturnValue;taint",
+          // Pathname#each_filename
+          ";Pathname;Method[each_filename];Argument[self];Argument[block].Parameter[0];taint",
+          // Pathname#expand_path
+          ";Pathname;Method[expand_path];Argument[self];ReturnValue;taint",
+          // Pathname#join
+          ";Pathname;Method[join];Argument[self,any];ReturnValue;taint",
+          // Pathname#parent
+          ";Pathname;Method[parent];Argument[self];ReturnValue;taint",
+          // Pathname#realpath
+          ";Pathname;Method[realpath];Argument[self];ReturnValue;taint",
+          // Pathname#relative_path_from
+          ";Pathname;Method[relative_path_from];Argument[self];ReturnValue;taint",
+          // Pathname#to_path
+          ";Pathname;Method[to_path];Argument[self];ReturnValue;taint",
+          // Pathname#basename
+          ";Pathname;Method[basename];Argument[self];ReturnValue;taint",
+          // Pathname#cleanpath
+          ";Pathname;Method[cleanpath];Argument[self];ReturnValue;taint",
+          // Pathname#sub
+          ";Pathname;Method[sub];Argument[self];ReturnValue;taint",
+          // Pathname#sub_ext
+          ";Pathname;Method[sub_ext];Argument[self];ReturnValue;taint",
+        ]
     }
   }
 }
