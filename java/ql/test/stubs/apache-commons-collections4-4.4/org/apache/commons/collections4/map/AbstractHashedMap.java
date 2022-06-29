@@ -30,7 +30,7 @@ public class AbstractHashedMap<K, V> extends AbstractMap<K, V> implements Iterab
     protected AbstractHashedMap(int p0){}
     protected AbstractHashedMap(int p0, float p1){}
     protected AbstractHashedMap(int p0, float p1, int p2){}
-    protected AbstractHashedMap.HashEntry<K, V> createEntry(AbstractHashedMap.HashEntry<K, V> p0, int p1, K p2, V p3){ return null; }
+    protected AbstractHashedMap.HashEntry<K, V> createTypeEntry(AbstractHashedMap.HashEntry<K, V> p0, int p1, K p2, V p3){ return null; }
     protected AbstractHashedMap.HashEntry<K, V> entryNext(AbstractHashedMap.HashEntry<K, V> p0){ return null; }
     protected AbstractHashedMap.HashEntry<K, V> getEntry(Object p0){ return null; }
     protected AbstractHashedMap<K, V> clone(){ return null; }

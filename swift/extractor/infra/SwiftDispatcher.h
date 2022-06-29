@@ -112,6 +112,12 @@ class SwiftDispatcher {
     return assignNewLabel(&e, std::forward<Args>(args)...);
   }
 
+  // convenience methods for structured C++ creation
+  template <typename E, typename... Args, std::enable_if_t<!std::is_pointer_v<E>>* = nullptr>
+  auto createEntry(const E& e, Args&&... args) {
+    return TrapClassOf<E>{assignNewLabel(&e, std::forward<Args>(args)...)};
+  }
+
   template <typename Tag>
   TrapLabel<Tag> createLabel() {
     auto ret = arena.allocateLabel<Tag>();
