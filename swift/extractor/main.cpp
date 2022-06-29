@@ -51,6 +51,10 @@ int main(int argc, char** argv) {
   codeql::SwiftExtractorConfiguration configuration{};
   configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", ".");
   configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
+  configuration.scratchDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", ".");
+
+  configuration.tempTrapDir = configuration.scratchDir + "/swift-trap-temp";
+
   std::vector<const char*> args;
   for (int i = 1; i < argc; i++) {
     args.push_back(argv[i]);

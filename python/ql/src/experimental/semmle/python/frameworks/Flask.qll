@@ -29,7 +29,11 @@ module ExperimentalFlask {
 
   /** Gets a reference to a header instance. */
   private DataFlow::LocalSourceNode headerInstance() {
-    result = [Flask::Response::classRef(), flaskMakeResponse()].getReturn().getAMember().getAUse()
+    result =
+      [Flask::Response::classRef(), flaskMakeResponse()]
+          .getReturn()
+          .getAMember()
+          .getAValueReachableFromSource()
   }
 
   /** Gets a reference to a header instance call/subscript */

@@ -44,8 +44,8 @@ private module HttpxModel {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      disablingNode = this.getKeywordParameter("verify").getARhs() and
-      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingRhs() and
+      disablingNode = this.getKeywordParameter("verify").asSink() and
+      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingSink() and
       // unlike `requests`, httpx treats `None` as turning off verify (and not as the default)
       argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false
       // TODO: Handling of insecure SSLContext passed to verify argument
@@ -89,8 +89,8 @@ private module HttpxModel {
           constructor = classRef().getACall() and
           this = constructor.getReturn().getMember(methodName).getACall()
         |
-          disablingNode = constructor.getKeywordParameter("verify").getARhs() and
-          argumentOrigin = constructor.getKeywordParameter("verify").getAValueReachingRhs() and
+          disablingNode = constructor.getKeywordParameter("verify").asSink() and
+          argumentOrigin = constructor.getKeywordParameter("verify").getAValueReachingSink() and
           // unlike `requests`, httpx treats `None` as turning off verify (and not as the default)
           argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false
           // TODO: Handling of insecure SSLContext passed to verify argument

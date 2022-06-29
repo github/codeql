@@ -17,6 +17,7 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.javase.WebSocket
 import semmle.code.java.frameworks.android.Android
+import semmle.code.java.frameworks.android.ExternalStorage
 import semmle.code.java.frameworks.android.OnActivityResultSource
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.play.Play
@@ -150,6 +151,12 @@ private class ThriftIfaceParameterSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "Thrift Iface parameter" }
+}
+
+private class AndroidExternalStorageSource extends RemoteFlowSource {
+  AndroidExternalStorageSource() { androidExternalStorageSource(this) }
+
+  override string getSourceType() { result = "Android external storage" }
 }
 
 /** Class for `tainted` user input. */

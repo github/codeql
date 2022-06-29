@@ -1,10 +1,10 @@
 /**
  * @name String length conflation
  * @description Using a length value from an `NSString` in a `String`, or a count from a `String` in an `NSString`, may cause unexpected behavior.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
- * @precision TODO
+ * @precision high
  * @id swift/string-length-conflation
  * @tags security
  *       external/cwe/cwe-135
@@ -63,8 +63,8 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       c.getAMember() = f and // TODO: will this even work if its defined in a parent class?
       call.getFunction().(ApplyExpr).getStaticTarget() = f and
       f.getName() = methodName and
-      f.getParam(arg).getName() = paramName and
-      call.getArgument(arg).getExpr() = node.asExpr() and
+      f.getParam(pragma[only_bind_into](arg)).getName() = paramName and
+      call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
       flowstate = "String" // `String` length flowing into `NSString`
     )
     or
@@ -74,8 +74,8 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       funcName = "NSMakeRange(_:_:)" and
       paramName = ["loc", "len"] and
       call.getStaticTarget().getName() = funcName and
-      call.getStaticTarget().getParam(arg).getName() = paramName and
-      call.getArgument(arg).getExpr() = node.asExpr() and
+      call.getStaticTarget().getParam(pragma[only_bind_into](arg)).getName() = paramName and
+      call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
       flowstate = "String" // `String` length flowing into `NSString`
     )
   }

@@ -274,6 +274,13 @@ protocol_composition_types(  //dir=type
   unique int id: @protocol_composition_type
 );
 
+#keyset[id, index]
+protocol_composition_type_members(  //dir=type
+  int id: @protocol_composition_type ref,
+  int index: int ref,
+  int member: @type ref
+);
+
 existential_types(  //dir=type
   unique int id: @existential_type,
   int constraint: @type ref

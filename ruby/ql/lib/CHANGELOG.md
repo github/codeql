@@ -1,4 +1,14 @@
+## 0.3.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
 ## 0.2.3
+
+### Minor Analysis Improvements
+
+- Calls to `Zip::File.open` and `Zip::File.new` have been added as `FileSystemAccess` sinks. As a result queries like `rb/path-injection` now flag up cases where users may access arbitrary archive files.
 
 ## 0.2.2
 

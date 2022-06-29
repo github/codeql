@@ -90,7 +90,9 @@ private module LDAP {
 
     /**List of SSL-demanding options */
     private class LDAPSSLOptions extends DataFlow::Node {
-      LDAPSSLOptions() { this = ldap().getMember("OPT_X_TLS_" + ["DEMAND", "HARD"]).getAUse() }
+      LDAPSSLOptions() {
+        this = ldap().getMember("OPT_X_TLS_" + ["DEMAND", "HARD"]).getAValueReachableFromSource()
+      }
     }
 
     /**
