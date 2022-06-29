@@ -22,6 +22,14 @@ export function greySink(data) {
     ${data}
     ---
     `
-    const { content } = matter(str);
-    console.log(content);
+    const res = matter(str);
+    console.log(res);
+
+    matter(str, { // OK
+        engines: {
+            js: function (data) {
+                console.log("NOPE");
+            }
+        }
+    });
 }
