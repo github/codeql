@@ -51,6 +51,11 @@ module CodeInjection {
     }
   }
 
+  /** An expression parsed by the `gray-matter` library. */
+  class GrayMatterSink extends Sink {
+    GrayMatterSink() { this = DataFlow::moduleImport("gray-matter").getACall().getArgument(0) }
+  }
+
   /**
    * A template tag occurring in JS code, viewed as a code injection sink.
    */

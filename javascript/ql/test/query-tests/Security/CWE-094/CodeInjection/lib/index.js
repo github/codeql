@@ -13,3 +13,15 @@ export function safeAssignment(obj, value) {
 global.unsafeDeserialize = function (data) {
   return eval("(" + data + ")"); // NOT OK
 }
+
+const matter = require("gray-matter");
+
+export function greySink(data) {
+    const str = `
+    ---js
+    ${data}
+    ---
+    `
+    const { content } = matter(str);
+    console.log(content);
+}
