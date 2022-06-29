@@ -344,12 +344,12 @@ private class ClassListList extends TClassListList {
     )
   }
 
-  private predicate legalMergeCandidate(ClassObjectInternal cls, ClassListList remaining) {
-    cls = this.getAHead() and remaining = this
+  private predicate legalMergeCandidate(ClassObjectInternal cls, ClassListList remainingList) {
+    cls = this.getAHead() and remainingList = this
     or
-    this.legalMergeCandidate(cls, ConsList(Empty(), remaining))
+    this.legalMergeCandidate(cls, ConsList(Empty(), remainingList))
     or
-    this.legalMergeCandidateNonEmpty(cls, remaining, Empty())
+    this.legalMergeCandidateNonEmpty(cls, remainingList, Empty())
   }
 
   pragma[noinline]
@@ -419,7 +419,9 @@ private ClassListList list_of_linearization_of_bases_plus_bases(ClassObjectInter
   result = ConsList(bases(cls), EmptyList()) and n = Types::base_count(cls) and n > 1
   or
   exists(ClassListList partial |
-    partial = list_of_linearization_of_bases_plus_bases(cls, n + 1) and
+    partial =
+      list_of_linearization_of_bases_plus_bases(pragma[only_bind_into](cls),
+        pragma[only_bind_into](n + 1)) and
     result = ConsList(Mro::newStyleMro(Types::getBase(cls, n)), partial)
   )
 }
