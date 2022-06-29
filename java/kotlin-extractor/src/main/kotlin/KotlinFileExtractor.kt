@@ -406,6 +406,8 @@ open class KotlinFileExtractor(
         extractDeclInitializers(c.declarations, false) { Pair(blockId, obinitId) }
     }
 
+    val jvmStaticFqName = FqName("kotlin.jvm.JvmStatic")
+
     fun extractClassSource(c: IrClass, extractDeclarations: Boolean, extractStaticInitializer: Boolean, extractPrivateMembers: Boolean, extractFunctionBodies: Boolean): Label<out DbClassorinterface> {
         with("class source", c) {
             DeclarationStackAdjuster(c).use {
@@ -442,9 +444,10 @@ open class KotlinFileExtractor(
 
                 c.typeParameters.mapIndexed { idx, param -> extractTypeParameter(param, idx, javaClass?.typeParameters?.getOrNull(idx)) }
                 if (extractDeclarations) {
-                    c.declarations.map { extractDeclaration(it, extractPrivateMembers = extractPrivateMembers, extractFunctionBodies = extractFunctionBodies) }
+                    c.declarations.forEach { extractDeclaration(it, extractPrivateMembers = extractPrivateMembers, extractFunctionBodies = extractFunctionBodies) }
                     if (extractStaticInitializer)
                         extractStaticInitializer(c, id)
+                    extractJvmStaticProxyMethods(c, id, extractPrivateMembers, extractFunctionBodies)
                 }
                 if (c.isNonCompanionObject) {
                     // For `object MyObject { ... }`, the .class has an
@@ -468,6 +471,75 @@ open class KotlinFileExtractor(
                 extractClassSupertypes(c, id, inReceiverContext = true) // inReceiverContext = true is specified to force extraction of member prototypes of base types
 
                 return id
+            }
+        }
+    }
+
+    private fun extractJvmStaticProxyMethods(c: IrClass, classId: Label<out DbClassorinterface>, extractPrivateMembers: Boolean, extractFunctionBodies: Boolean) {
+
+        // Add synthetic forwarders for any JvmStatic methods or properties:
+        val companionObject = c.companionObject() ?: return
+
+        val cType = c.typeWith()
+        val companionType = companionObject.typeWith()
+
+        fun makeProxyFunction(f: IrFunction) {
+            // Emit a function in class `c` that delegates to the same function defined on `c.CompanionInstance`.
+            val proxyFunctionId = tw.getLabelFor<DbMethod>(getFunctionLabel(f, classId, listOf()))
+            // We extract the function prototype with its ID overridden to belong to `c` not the companion object,
+            // but suppress outputting the body, which we will replace with a delegating call below.
+            forceExtractFunction(f, classId, extractBody = false, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution = null, classTypeArgsIncludingOuterClasses = listOf(), idOverride = proxyFunctionId, locOverride = null)
+            addModifiers(proxyFunctionId, "static")
+            if (extractFunctionBodies) {
+                val realFunctionLocId = tw.getLocation(f)
+                extractExpressionBody(proxyFunctionId, realFunctionLocId).also { returnId ->
+                    extractRawMethodAccess(
+                        f,
+                        realFunctionLocId,
+                        f.returnType,
+                        proxyFunctionId,
+                        returnId,
+                        0,
+                        returnId,
+                        f.valueParameters.size,
+                        { argParent, idxOffset ->
+                            f.valueParameters.forEachIndexed { idx, param ->
+                                val syntheticParamId = useValueParameter(param, proxyFunctionId)
+                                extractVariableAccess(syntheticParamId, param.type, realFunctionLocId, argParent, idxOffset + idx, proxyFunctionId, returnId)
+                            }
+                        },
+                        companionType,
+                        { callId ->
+                            val companionField = useCompanionObjectClassInstance(companionObject)?.id
+                            extractVariableAccess(companionField, companionType, realFunctionLocId, callId, -1, proxyFunctionId, returnId).also { varAccessId ->
+                                extractTypeAccessRecursive(cType, realFunctionLocId, varAccessId, -1, proxyFunctionId, returnId)
+                            }
+                        },
+                        null
+                    )
+                }
+            }
+        }
+
+        companionObject.declarations.forEach {
+            if (shouldExtractDecl(it, extractPrivateMembers)) {
+                val wholeDeclAnnotated = it.hasAnnotation(jvmStaticFqName)
+                when(it) {
+                    is IrFunction -> {
+                        if (wholeDeclAnnotated)
+                            makeProxyFunction(it)
+                    }
+                    is IrProperty -> {
+                        it.getter?.let { getter ->
+                            if (wholeDeclAnnotated || getter.hasAnnotation(jvmStaticFqName))
+                                makeProxyFunction(getter)
+                        }
+                        it.setter?.let { setter ->
+                            if (wholeDeclAnnotated || setter.hasAnnotation(jvmStaticFqName))
+                                makeProxyFunction(setter)
+                        }
+                    }
+                }
             }
         }
     }
@@ -824,13 +896,13 @@ open class KotlinFileExtractor(
                 }
 
                 extractVisibility(f, id, f.visibility)
+
                 if (f.isInline) {
                     addModifiers(id, "inline")
                 }
-                if (isStaticFunction(f)) {
+                if (f.willExtractAsStatic) {
                     addModifiers(id, "static")
                 }
-
                 if (f is IrSimpleFunction && f.overriddenSymbols.isNotEmpty()) {
                     addModifiers(id, "override")
                 }
@@ -1028,15 +1100,21 @@ open class KotlinFileExtractor(
 
     private fun extractExpressionBody(b: IrExpressionBody, callable: Label<out DbCallable>) {
         with("expression body", b) {
-            val blockId = tw.getFreshIdLabel<DbBlock>()
             val locId = tw.getLocation(b)
-            tw.writeStmts_block(blockId, callable, 0, callable)
-            tw.writeHasLocation(blockId, locId)
+            extractExpressionBody(callable, locId).also { returnId ->
+                extractExpressionExpr(b.expression, callable, returnId, 0, returnId)
+            }
+        }
+    }
 
-            val returnId = tw.getFreshIdLabel<DbReturnstmt>()
+    fun extractExpressionBody(callable: Label<out DbCallable>, locId: Label<out DbLocation>): Label<out DbStmt> {
+        val blockId = tw.getFreshIdLabel<DbBlock>()
+        tw.writeStmts_block(blockId, callable, 0, callable)
+        tw.writeHasLocation(blockId, locId)
+
+        return tw.getFreshIdLabel<DbReturnstmt>().also { returnId ->
             tw.writeStmts_returnstmt(returnId, blockId, 0, callable)
             tw.writeHasLocation(returnId, locId)
-            extractExpressionExpr(b.expression, callable, returnId, 0, returnId)
         }
     }
 
@@ -1307,10 +1385,48 @@ open class KotlinFileExtractor(
         typeArguments: List<IrType> = listOf(),
         extractClassTypeArguments: Boolean = false) {
 
+        val locId = tw.getLocation(callsite)
+
+        extractRawMethodAccess(
+            syntacticCallTarget,
+            locId,
+            callsite.type,
+            enclosingCallable,
+            callsiteParent,
+            childIdx,
+            enclosingStmt,
+            valueArguments.size,
+            { argParent, idxOffset -> extractCallValueArguments(argParent, valueArguments, enclosingStmt, enclosingCallable, idxOffset) },
+            dispatchReceiver?.type,
+            dispatchReceiver?.let { { callId -> extractExpressionExpr(dispatchReceiver, enclosingCallable, callId, -1, enclosingStmt) } },
+            extensionReceiver?.let { { argParent -> extractExpressionExpr(extensionReceiver, enclosingCallable, argParent, 0, enclosingStmt) } },
+            typeArguments,
+            extractClassTypeArguments
+        )
+
+    }
+
+
+    fun extractRawMethodAccess(
+        syntacticCallTarget: IrFunction,
+        locId: Label<DbLocation>,
+        returnType: IrType,
+        enclosingCallable: Label<out DbCallable>,
+        callsiteParent: Label<out DbExprparent>,
+        childIdx: Int,
+        enclosingStmt: Label<out DbStmt>,
+        nValueArguments: Int,
+        extractValueArguments: (Label<out DbExpr>, Int) -> Unit,
+        drType: IrType?,
+        extractDispatchReceiver: ((Label<out DbExpr>) -> Unit)?,
+        extractExtensionReceiver: ((Label<out DbExpr>) -> Unit)?,
+        typeArguments: List<IrType> = listOf(),
+        extractClassTypeArguments: Boolean = false) {
+
         val callTarget = syntacticCallTarget.target.realOverrideTarget
         val id = tw.getFreshIdLabel<DbMethodaccess>()
-        val type = useType(callsite.type)
-        val locId = tw.getLocation(callsite)
+        val type = useType(returnType)
+
         tw.writeExprs_methodaccess(id, type.javaResult.id, callsiteParent, childIdx)
         tw.writeExprsKotlinType(id, type.kotlinResult.id)
         tw.writeHasLocation(id, locId)
@@ -1319,8 +1435,6 @@ open class KotlinFileExtractor(
 
         // type arguments at index -2, -3, ...
         extractTypeArguments(typeArguments, locId, id, enclosingCallable, enclosingStmt, -2, true)
-
-        val drType = dispatchReceiver?.type
 
         val isFunctionInvoke = drType != null
                 && drType is IrSimpleType
@@ -1364,44 +1478,48 @@ open class KotlinFileExtractor(
 
             tw.writeCallableBinding(id, methodId)
 
-            if (dispatchReceiver != null) {
-                extractExpressionExpr(dispatchReceiver, enclosingCallable, id, -1, enclosingStmt)
-            } else if (isStaticFunction(callTarget)) {
+            if (callTarget.willExtractAsStatic) {
                 extractStaticTypeAccessQualifier(callTarget, id, locId, enclosingCallable, enclosingStmt)
+            } else if (extractDispatchReceiver != null) {
+                extractDispatchReceiver(id)
             }
         }
 
-        val idxOffset = if (extensionReceiver != null) 1 else 0
+        val idxOffset = if (extractExtensionReceiver != null) 1 else 0
 
         val argParent = if (isBigArityFunctionInvoke) {
-            extractArrayCreationWithInitializer(id, valueArguments.size + idxOffset, locId, enclosingCallable, enclosingStmt)
+            extractArrayCreationWithInitializer(id, nValueArguments + idxOffset, locId, enclosingCallable, enclosingStmt)
         } else {
             id
         }
 
-        if (extensionReceiver != null) {
-            extractExpressionExpr(extensionReceiver, enclosingCallable, argParent, 0, enclosingStmt)
+        if (extractExtensionReceiver != null) {
+            extractExtensionReceiver(argParent)
         }
 
-        extractCallValueArguments(argParent, valueArguments, enclosingStmt, enclosingCallable, idxOffset)
+        extractValueArguments(argParent, idxOffset)
     }
 
     private fun extractStaticTypeAccessQualifier(target: IrDeclaration, parentExpr: Label<out DbExprparent>, locId: Label<DbLocation>, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) {
-        if (target.isStaticOfClass) {
+        if (target.willExtractAsStaticMemberOfClass) {
             extractTypeAccessRecursive(target.parentAsClass.toRawType(), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
-        } else if (target.isStaticOfFile) {
+        } else if (target.willExtractAsStaticMemberOfFile) {
             extractTypeAccess(useFileClassType(target.parent as IrFile), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
         }
     }
 
-    private val IrDeclaration.isStaticOfClass: Boolean
-        get() = this.isStatic && parent is IrClass
+    private val IrDeclaration.willExtractAsStaticMemberOfClass: Boolean
+        get() = this.willExtractAsStatic && parent is IrClass
 
-    private val IrDeclaration.isStaticOfFile: Boolean
-        get() = this.isStatic && parent is IrFile
+    private val IrDeclaration.willExtractAsStaticMemberOfFile: Boolean
+        get() = this.willExtractAsStatic && parent is IrFile
 
-    private val IrDeclaration.isStatic: Boolean
-        get() = this is IrSimpleFunction && dispatchReceiverParameter == null ||
+    private fun isStaticAnnotatedNonCompanionMember(f: IrSimpleFunction) =
+        f.parentClassOrNull?.isNonCompanionObject == true &&
+                (f.hasAnnotation(jvmStaticFqName) || f.correspondingPropertySymbol?.owner?.hasAnnotation(jvmStaticFqName) == true)
+
+    private val IrDeclaration.willExtractAsStatic: Boolean
+        get() = this is IrSimpleFunction && (isStaticFunction(this) || isStaticAnnotatedNonCompanionMember(this)) ||
                 this is IrField && this.isStatic ||
                 this is IrEnumEntry
 
@@ -2623,78 +2741,22 @@ open class KotlinFileExtractor(
                     val exprParent = parent.expr(e, callable)
                     val owner = e.symbol.owner
                     if (owner is IrValueParameter && owner.index == -1 && !owner.isExtensionReceiver()) {
-                        val id = tw.getFreshIdLabel<DbThisaccess>()
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_thisaccess(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        tw.writeHasLocation(id, locId)
-                        tw.writeCallableEnclosingExpr(id, callable)
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-
-
-                        fun extractTypeAccess(parent: IrClass){
-                            extractTypeAccessRecursive(parent.typeWith(listOf()), locId, id, 0, callable, exprParent.enclosingStmt)
-                        }
-
-                        when(val ownerParent = owner.parent) {
-                            is IrFunction -> {
-                                if (ownerParent.dispatchReceiverParameter == owner &&
-                                    ownerParent.extensionReceiverParameter != null) {
-
-                                    val ownerParent2 = ownerParent.parent
-                                    if (ownerParent2 is IrClass){
-                                        extractTypeAccess(ownerParent2)
-                                    } else {
-                                        logger.errorElement("Unhandled qualifier for this", e)
-                                    }
-                                }
-                            }
-                            is IrClass -> {
-                                if (ownerParent.thisReceiver == owner) {
-                                    extractTypeAccess(ownerParent)
-                                }
-                            }
-                            else -> {
-                                logger.errorElement("Unexpected owner parent for this access: " + ownerParent.javaClass, e)
-                            }
-                        }
+                        extractThisAccess(e, exprParent, callable)
                     } else {
-                        val id = tw.getFreshIdLabel<DbVaraccess>()
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_varaccess(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        tw.writeHasLocation(id, locId)
-                        tw.writeCallableEnclosingExpr(id, callable)
-                        tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-
-                        val vId = useValueDeclaration(owner)
-                        if (vId != null) {
-                            tw.writeVariableBinding(id, vId)
-                        }
+                        extractVariableAccess(useValueDeclaration(owner), e.type, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
                     }
                 }
                 is IrGetField -> {
                     val exprParent = parent.expr(e, callable)
-                    val id = tw.getFreshIdLabel<DbVaraccess>()
-                    val type = useType(e.type)
-                    val locId = tw.getLocation(e)
-                    tw.writeExprs_varaccess(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    tw.writeHasLocation(id, locId)
-                    tw.writeCallableEnclosingExpr(id, callable)
-                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
                     val owner = tryReplaceAndroidSyntheticField(e.symbol.owner)
-                    val vId = useField(owner)
-                    tw.writeVariableBinding(id, vId)
-                    tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-
-                    val receiver = e.receiver
-                    if (receiver != null) {
-                        extractExpressionExpr(receiver, callable, id, -1, exprParent.enclosingStmt)
-                    } else if (owner.isStatic) {
-                        extractStaticTypeAccessQualifier(owner, id, locId, callable, exprParent.enclosingStmt)
+                    val locId = tw.getLocation(e)
+                    extractVariableAccess(useField(owner), e.type, locId, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt).also { id ->
+                        val receiver = e.receiver
+                        if (receiver != null) {
+                            extractExpressionExpr(receiver, callable, id, -1, exprParent.enclosingStmt)
+                        } else if (owner.isStatic) {
+                            extractStaticTypeAccessQualifier(owner, id, locId, callable, exprParent.enclosingStmt)
+                        }
                     }
                 }
                 is IrGetEnumValue -> {
@@ -2994,6 +3056,71 @@ open class KotlinFileExtractor(
             return
         }
     }
+
+    private fun extractThisAccess(e: IrGetValue, exprParent: ExprParent, callable: Label<out DbCallable>) {
+        val containingDeclaration = declarationStack.peek()
+        val locId = tw.getLocation(e)
+        val type = useType(e.type)
+
+        if (containingDeclaration.willExtractAsStatic && containingDeclaration.parentClassOrNull?.isNonCompanionObject == true) {
+            // Use of `this` in a non-companion object member that will be lowered to a static function -- replace with a reference
+            // to the corresponding static object instance.
+            val instanceField = useObjectClassInstance(containingDeclaration.parentAsClass)
+            extractVariableAccess(instanceField.id, e.type, locId, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt).also { varAccessId ->
+                extractStaticTypeAccessQualifier(containingDeclaration, varAccessId, locId, callable, exprParent.enclosingStmt)
+            }
+        } else {
+            val id = tw.getFreshIdLabel<DbThisaccess>()
+
+            tw.writeExprs_thisaccess(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+            tw.writeExprsKotlinType(id, type.kotlinResult.id)
+            tw.writeHasLocation(id, locId)
+            tw.writeCallableEnclosingExpr(id, callable)
+            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+
+            fun extractTypeAccess(parent: IrClass) {
+                extractTypeAccessRecursive(parent.typeWith(listOf()), locId, id, 0, callable, exprParent.enclosingStmt)
+            }
+
+            val owner = e.symbol.owner
+            when(val ownerParent = owner.parent) {
+                is IrFunction -> {
+                    if (ownerParent.dispatchReceiverParameter == owner &&
+                        ownerParent.extensionReceiverParameter != null) {
+
+                        val ownerParent2 = ownerParent.parent
+                        if (ownerParent2 is IrClass){
+                            extractTypeAccess(ownerParent2)
+                        } else {
+                            logger.errorElement("Unhandled qualifier for this", e)
+                        }
+                    }
+                }
+                is IrClass -> {
+                    if (ownerParent.thisReceiver == owner) {
+                        extractTypeAccess(ownerParent)
+                    }
+                }
+                else -> {
+                    logger.errorElement("Unexpected owner parent for this access: " + ownerParent.javaClass, e)
+                }
+            }
+        }
+    }
+
+    private fun extractVariableAccess(variable: Label<out DbVariable>?, irType: IrType, locId: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) =
+        tw.getFreshIdLabel<DbVaraccess>().also {
+            val type = useType(irType)
+            tw.writeExprs_varaccess(it, type.javaResult.id, parent, idx)
+            tw.writeExprsKotlinType(it, type.kotlinResult.id)
+            tw.writeHasLocation(it, locId)
+            tw.writeCallableEnclosingExpr(it, callable)
+            tw.writeStatementEnclosingExpr(it, enclosingStmt)
+
+            if (variable != null) {
+                tw.writeVariableBinding(it, variable)
+            }
+        }
 
     private fun extractLoop(
         loop: IrLoop,
