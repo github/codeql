@@ -12,7 +12,7 @@ struct SwiftExtractorConfiguration {
   // A temporary directory that exists during database creation, but is deleted once the DB is
   // finalized.
   std::string scratchDir;
-  // A temporary directory that contains TRAP files before they moved into the final destination.
+  // A temporary directory that contains TRAP files before they are moved into their final destination.
   // Subdirectory of the scratchDir.
   std::string tempTrapDir;
 
