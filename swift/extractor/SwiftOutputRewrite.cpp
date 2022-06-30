@@ -12,7 +12,7 @@
 #include <iostream>
 
 // Creates a copy of the output file map and updated remapping table in place
-// It does not change the original map file as it is dependent upon by the original compiler
+// It does not change the original map file as it is depended upon by the original compiler
 // Returns path to the newly created output file map on success, or None in a case of failure
 static std::optional<std::string> rewriteOutputFileMap(
     const codeql::SwiftExtractorConfiguration& config,
@@ -58,7 +58,7 @@ static std::optional<std::string> rewriteOutputFileMap(
   return newPath;
 }
 
-// This is Xcode-specific workaround to produce alias names for an existing .swiftmodule file.
+// This is an Xcode-specific workaround to produce alias names for an existing .swiftmodule file.
 // In the case of Xcode, it calls the Swift compiler and asks it to produce a Swift module.
 // Once it's done, Xcode moves the .swiftmodule file in another location, and the location is
 // rather arbitrary. Here are examples of such locations:
@@ -84,10 +84,10 @@ static std::optional<std::string> rewriteOutputFileMap(
 // The <Triple> here is a normalized target triple (e.g. arm64-apple-iphoneos15.4 ->
 // arm64-apple-iphoneos).
 //
-// This method construct those aliases for a module only if it comes from Xcode, which is detected
-// by the presence of `Intermediates.noindex` directory in the module path.
+// This method constructs those aliases for a module only if it comes from Xcode, which is detected
+// by the presence of an `Intermediates.noindex` directory in the module path.
 //
-// In the case of Swift Package Manager (`swift build`) this is not needed.
+// In the case of the Swift Package Manager (`swift build`) this is not needed.
 static std::vector<std::string> computeModuleAliases(llvm::StringRef modulePath,
                                                      const std::string& targetTriple) {
   if (modulePath.empty()) {

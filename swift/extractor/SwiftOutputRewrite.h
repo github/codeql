@@ -16,8 +16,8 @@ std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
     SwiftExtractorConfiguration& config,
     std::vector<std::string>& CLIArgs);
 
-// Recreate all the redirected new paths as the Swift compiler expects them to be present
-void ensureNewPathsExist(const std::unordered_map<std::string, std::string>& remapping);
+// Create directories for all the redirected new paths as the Swift compiler expects them to exist.
+void ensureDirectoriesForNewPathsExist(const std::unordered_map<std::string, std::string>& remapping);
 
 // Stores remapped `.swiftmoduile`s in a YAML file for later consumption by the
 // llvm::RedirectingFileSystem via Swift's VFSOverlayFiles.
