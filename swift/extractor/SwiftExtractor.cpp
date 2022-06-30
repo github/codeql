@@ -76,7 +76,7 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   auto name = getTrapFilename(module, primaryFile);
   llvm::StringRef filename(name);
   std::string tempTrapName = filename.str() + '.' + std::to_string(getpid()) + ".trap";
-  llvm::SmallString<PATH_MAX> tempTrapPath(config.tempTrapDir);
+  llvm::SmallString<PATH_MAX> tempTrapPath(config.getTempTrapDir());
   llvm::sys::path::append(tempTrapPath, tempTrapName);
 
   llvm::StringRef tempTrapParent = llvm::sys::path::parent_path(tempTrapPath);
