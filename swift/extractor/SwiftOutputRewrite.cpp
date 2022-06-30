@@ -225,7 +225,7 @@ std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
   }
 
   // This doesn't really belong here, but we've got Xcode...
-  for (auto& [oldPath, newPath] : remapping) {
+  for (const auto& [oldPath, newPath] : remapping) {
     llvm::StringRef path(oldPath);
     auto aliases = computeModuleAliases(path, targetTriple);
     for (auto& alias : aliases) {
