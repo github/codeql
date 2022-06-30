@@ -251,9 +251,9 @@ void storeRemappingForVFS(const SwiftExtractorConfiguration& config,
                           const std::unordered_map<std::string, std::string>& remapping) {
   // Only create remapping for the .swiftmodule files
   std::unordered_map<std::string, std::string> modules;
-  for (auto& [oldPath, newPath] : remapping) {
+  for (const auto& [oldPath, newPath] : remapping) {
     if (llvm::StringRef(oldPath).endswith(".swiftmodule")) {
-      modules[oldPath] = newPath;
+      modules.emplace(oldPath, newPath);
     }
   }
 
