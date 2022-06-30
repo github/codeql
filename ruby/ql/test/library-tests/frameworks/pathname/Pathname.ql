@@ -1,7 +1,7 @@
 private import ruby
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
-private import codeql.ruby.frameworks.core.Pathname
+private import codeql.ruby.frameworks.stdlib.Pathname
 
 query predicate pathnameInstances(Pathname::PathnameInstance i) { any() }
 

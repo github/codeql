@@ -14,7 +14,6 @@ import core.Hash
 import core.String
 import core.Regexp
 import core.IO
-import core.Pathname
 
 /**
  * A system command executed via subshell literal syntax.
