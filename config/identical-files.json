@@ -453,11 +453,11 @@
     "python/ql/src/Lexical/CommentedOutCodeReferences.inc.qhelp"
   ],
   "IDE Contextual Queries": [
-    "cpp/ql/src/IDEContextual.qll",
-    "csharp/ql/src/IDEContextual.qll",
-    "java/ql/src/IDEContextual.qll",
-    "javascript/ql/src/IDEContextual.qll",
-    "python/ql/src/analysis/IDEContextual.qll"
+    "cpp/ql/lib/IDEContextual.qll",
+    "csharp/ql/lib/IDEContextual.qll",
+    "java/ql/lib/IDEContextual.qll",
+    "javascript/ql/lib/IDEContextual.qll",
+    "python/ql/lib/analysis/IDEContextual.qll"
   ],
   "SSA C#": [
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
