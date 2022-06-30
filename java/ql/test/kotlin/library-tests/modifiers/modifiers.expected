@@ -11,7 +11,7 @@
 | modifiers.kt:4:5:4:22 | c | Field | final |
 | modifiers.kt:4:5:4:22 | c | Field | private |
 | modifiers.kt:4:5:4:22 | c | Property | internal |
-| modifiers.kt:4:14:4:22 | getC | Method | internal |
+| modifiers.kt:4:14:4:22 | getC$main | Method | internal |
 | modifiers.kt:5:5:5:34 | d | Field | final |
 | modifiers.kt:5:5:5:34 | d | Field | private |
 | modifiers.kt:5:5:5:34 | d | Property | public |
