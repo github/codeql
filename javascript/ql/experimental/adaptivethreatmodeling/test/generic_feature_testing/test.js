@@ -1,5 +1,9 @@
-(async function(){
-    f(endpoint);
+import { bar, F, p } from 'lib1';
+import * as o from 'lib2';
+const f = require('lib3');
+
+(async function () {
+    f(endpoint, 12);
     f({p: endpoint});
     f({p: {q: endpoint}});
     o.m(endpoint);
@@ -15,4 +19,17 @@
     function foo() {
         bar(endpoint);
     }
+    (f() ? f : o.m)(endpoint);
 });
+
+function f({ endpoint }) {}
+
+const g = async () => undefined;
+
+const o = { m: () => undefined }
+
+const url = f();
+
+const x = f() + "<a target=\"_blank\" href=\"" + endpoint + "\"></a>";
+
+const y = "foo"+ endpoint + "bar";

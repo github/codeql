@@ -202,7 +202,16 @@ string getASupportedFeatureName() {
       f instanceof CalleeApiName or
       f instanceof CalleeAccessPath or
       f instanceof CalleeAccessPathWithStructuralInfo or
-      f instanceof EnclosingFunctionBody
+      f instanceof EnclosingFunctionBody or
+      f instanceof ContextFunctionInterfaces or
+      f instanceof ContextSurroundingFunctionParameters or
+      f instanceof FileImports or
+      f instanceof CalleeImports or
+      f instanceof CalleeFlexibleAccessPath or
+      f instanceof InputAccessPathFromCallee or
+      f instanceof InputArgumentIndex or
+      f instanceof AssignedToPropName or
+      f instanceof StringConcatenatedWith
     ).getName()
 }
 
@@ -219,7 +228,7 @@ predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string feat
 }
 
 /**
- * See EndpointFeauture
+ * See EndpointFeature
  */
 private newtype TEndpointFeature =
   TEnclosingFunctionName() or
@@ -230,9 +239,15 @@ private newtype TEndpointFeature =
   TCalleeAccessPath() or
   TCalleeAccessPathWithStructuralInfo() or
   TEnclosingFunctionBody() or
-  TCallee_AccessPath() or
-  TInput_AccessPathFromCallee() or
-  TInput_ArgumentIndex()
+  TFileImports() or
+  TCalleeImports() or
+  TCalleeFlexibleAccessPath() or
+  TInputAccessPathFromCallee() or
+  TInputArgumentIndex() or
+  TContextFunctionInterfaces() or
+  TContextSurroundingFunctionParameters() or
+  TAssignedToPropName() or
+  TStringConcatenatedWith()
 
 /**
  * An implementation of an endpoint feature: produces feature names and values for used in ML.
@@ -405,8 +420,189 @@ class EnclosingFunctionBody extends EndpointFeature, TEnclosingFunctionBody {
   override string getName() { result = "enclosingFunctionBody" }
 
   override string getValue(DataFlow::Node endpoint) {
+    endpoint = any(FeaturizationConfig cfg).getAnEndpointToFeaturize() and
     result =
       FunctionBodyFeatures::getBodyTokensFeature(FunctionBodyFeatures::getRepresentativeFunctionForEndpoint(endpoint))
+  }
+}
+
+/**
+ * The feature for the imports defined in the file containing an endpoint.
+ *
+ * ### Example
+ *
+ * ```javascript
+ * import { findOne } from 'mongoose';
+ * import * as _ from 'lodash';
+ * const pg = require('pg');
+ *
+ * // ...
+ * ```
+ *
+ * In this file, all endpoints will have the value `lodash mongoose pg` for the feature `fileImports`.
+ */
+class FileImports extends EndpointFeature, TFileImports {
+  override string getName() { result = "fileImports" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    result = SyntacticUtilities::getImportPathsForFile(endpoint.getFile())
+  }
+}
+
+/**
+ * The feature for the function parameters of the functions that enclose an endpoint.
+ *
+ * ### Example
+ * ```javascript
+ * function f(a, b) {
+ *   // ...
+ *   const g = (c, d) => x.foo(endpoint);
+ * //                          ^^^^^^^^
+ * }
+ * ```
+ * In the above example, the feature for the marked endpoint has value '(a, b)\n(c, d)'.
+ */
+class ContextSurroundingFunctionParameters extends EndpointFeature,
+  TContextSurroundingFunctionParameters {
+  override string getName() { result = "contextSurroundingFunctionParameters" }
+
+  Function getRelevantFunction(DataFlow::Node endpoint) {
+    result = endpoint.asExpr().getEnclosingFunction*()
+  }
+
+  override string getValue(DataFlow::Node endpoint) {
+    result =
+      concat(string functionParameterLine, Function f |
+        f = getRelevantFunction(endpoint) and
+        functionParameterLine = SyntacticUtilities::getFunctionParametersFeatureComponent(f)
+      |
+        functionParameterLine, "\n"
+        order by
+          f.getLocation().getStartLine(), f.getLocation().getStartColumn()
+      )
+  }
+}
+
+/**
+ * The feature that gives the name an endpoint is assigned to (if any).
+ *
+ * ### Example
+ * ```javascript
+ * const div = document.createElement('div');
+ * div.innerHTML = endpoint; // feature value is 'innerHTML'
+ * ```
+ */
+class AssignedToPropName extends EndpointFeature, TAssignedToPropName {
+  override string getName() { result = "assignedToPropName" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    exists(DataFlow::PropWrite w | w.getRhs().asExpr().getUnderlyingValue().flow() = endpoint |
+      result = w.getPropertyName()
+    )
+  }
+}
+
+/**
+ * The feature that shows the text an endpoint is being concatenated with.class
+ *
+ * ### Example
+ *
+ * ```javascript
+ * const x = 'foo' + endpoint + 'bar'; // feature value is `'foo' -endpoint- 'bar'`
+ */
+class StringConcatenatedWith extends EndpointFeature, TStringConcatenatedWith {
+  override string getName() { result = "stringConcatenatedWith" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    exists(StringOps::ConcatenationRoot root |
+      root.getALeaf() = endpoint and
+      result =
+        concat(StringOps::ConcatenationLeaf p |
+            p.getRoot() = root and
+            (
+              p.getStartLine() < endpoint.getStartLine()
+              or
+              p.getStartLine() = endpoint.getStartLine() and
+              p.getStartColumn() < endpoint.getStartColumn()
+            )
+          |
+            SyntacticUtilities::renderStringConcatOperand(p), " + "
+            order by
+              p.getStartLine(), p.getStartColumn()
+          ) + " -endpoint- " +
+          concat(StringOps::ConcatenationLeaf p |
+            p.getRoot() = root and
+            (
+              p.getStartLine() > endpoint.getStartLine()
+              or
+              p.getStartLine() = endpoint.getStartLine() and
+              p.getStartColumn() > endpoint.getStartColumn()
+            )
+          |
+            SyntacticUtilities::renderStringConcatOperand(p), " + "
+            order by
+              p.getStartLine(), p.getStartColumn()
+          )
+    )
+  }
+}
+
+/**
+ * The feature for the imports used in the callee of an invocation.
+ *
+ * ### Example
+ *
+ * ```javascript
+ * import * as _ from 'lodash';
+ *
+ * // ...
+ * _.deepClone(someObject);
+ * //          ^^^^^^^^^^ will have the value `lodash` for the feature `calleeImports`.
+ * ```
+ */
+class CalleeImports extends EndpointFeature, TCalleeImports {
+  override string getName() { result = "calleeImports" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    not result = SyntacticUtilities::getUnknownSymbol() and
+    exists(DataFlow::InvokeNode invk |
+      (
+        invk.getAnArgument() = endpoint or
+        SyntacticUtilities::getANestedInitializerValue(invk.getAnArgument()
+              .asExpr()
+              .getUnderlyingValue()).flow() = endpoint
+      ) and
+      result =
+        concat(string importPath |
+          importPath = SyntacticUtilities::getCalleeImportPath(invk.getCalleeNode())
+        |
+          importPath, " " order by importPath
+        )
+    )
+  }
+}
+
+/**
+ * The feature for the interfaces of all named functions in the same file as the endpoint.
+ *
+ * ### Example
+ * ```javascript
+ * // Will return: "f(a, b, c)\ng(x, y, z)\nh(u, v)" for this file.
+ * function f(a, b, c) { ... }
+ *
+ * function g(x, y, z) {
+ *   function h(u, v) { ... }
+ *   ...
+ * }
+ * ```
+ *
+ * The feature value for the marked endpoint will be `f(a, b, c)\ng(x, y, z)\nh(u, v)`.
+ */
+class ContextFunctionInterfaces extends EndpointFeature, TContextFunctionInterfaces {
+  override string getName() { result = "contextFunctionInterfaces" }
+
+  override string getValue(DataFlow::Node endpoint) {
+    result = SyntacticUtilities::getFunctionInterfacesForFile(endpoint.getFile())
   }
 }
 
@@ -414,8 +610,88 @@ class EnclosingFunctionBody extends EndpointFeature, TEnclosingFunctionBody {
  * Syntactic utilities for feature value computation.
  */
 private module SyntacticUtilities {
+  bindingset[start, end]
+  string renderStringConcatOperands(DataFlow::Node root, int start, int end) {
+    result =
+      concat(int i, string operand |
+        i = [start .. end] and
+        operand = renderStringConcatOperand(StringConcatenation::getOperand(root, i))
+      |
+        operand, " + " order by i
+      )
+  }
+
+  string renderStringConcatOperand(DataFlow::Node operand) {
+    if exists(unique(string v | operand.mayHaveStringValue(v)))
+    then result = "'" + any(string v | operand.mayHaveStringValue(v)) + "'"
+    else result = getSimpleAccessPath(operand)
+  }
+
+  /** Gets all the imports defined in the file containing the endpoint. */
+  string getImportPathsForFile(File file) {
+    result =
+      concat(string importPath |
+        importPath = SyntacticUtilities::getImportPathForFile(file)
+      |
+        importPath, " " order by importPath
+      )
+  }
+
+  /** Gets an import located in `file`. */
+  string getImportPathForFile(File file) {
+    result = any(Import imp | imp.getFile() = file).getImportedPath().getValue()
+  }
+
   /**
-   * Gets a property initializer value in a an object literal or one of its nested object literals.
+   * Gets the feature component for the parameters of a function.
+   *
+   * ```javascript
+   * function f(a, b, c) { // will return "(a, b, c)" for this function
+   *  return a + b + c;
+   * }
+   *
+   * async function g(a) { // will return "(a)" for this function
+   *   return 2*a
+   * };
+   *
+   * const h = (b) => 3*b; // will return "(b)" for this function
+   * ```
+   */
+  string getFunctionParametersFeatureComponent(Function f) {
+    result =
+      "(" +
+        concat(string parameter, int i |
+          parameter = getParameterNameOrUnknown(f.getParameter(i))
+        |
+          parameter, ", " order by i
+        ) + ")"
+  }
+
+  /**
+   * Gets the function interfaces of all named functions in a file, concatenated together.
+   *
+   * ```javascript
+   * // Will return: "f(a, b, c)\ng(x, y, z)\nh(u, v)" for this file.
+   * function f(a, b, c) { ... }
+   *
+   * function g(x, y, z) {
+   *   function h(u, v) { ... }
+   *   ...
+   * }
+   */
+  string getFunctionInterfacesForFile(File file) {
+    result =
+      concat(Function func, string line |
+        func.getFile() = file and
+        exists(func.getName()) and
+        line = func.getName() + getFunctionParametersFeatureComponent(func)
+      |
+        line, "\n" order by line
+      )
+  }
+
+  /**
+   * Gets a property initializer value in an object literal or one of its nested object literals.
    */
   Expr getANestedInitializerValue(ObjectExpr o) {
     exists(Expr init | init = o.getAProperty().getInit().getUnderlyingValue() |
@@ -454,6 +730,31 @@ private module SyntacticUtilities {
         result = getSimpleParameterAccessPath(w.getBase()) + "." + getPropertyNameOrUnknown(w)
       )
     else result = getUnknownSymbol()
+  }
+
+  /**
+   * Gets the imported package path that this node depends on, if any.
+   *
+   * Otherwise, returns '?'.
+   *
+   * XXX Be careful with using this in your features, as it might teach the model
+   * a fixed list of "dangerous" libraries that could lead to bad generalization.
+   */
+  string getCalleeImportPath(DataFlow::Node node) {
+    exists(DataFlow::Node src | src = node.getALocalSource() |
+      if src instanceof DataFlow::ModuleImportNode
+      then result = src.(DataFlow::ModuleImportNode).getPath()
+      else
+        if src instanceof DataFlow::PropRead
+        then result = getCalleeImportPath(src.(DataFlow::PropRead).getBase())
+        else
+          if src instanceof DataFlow::InvokeNode
+          then result = getCalleeImportPath(src.(DataFlow::InvokeNode).getCalleeNode())
+          else
+            if src.asExpr() instanceof AwaitExpr
+            then result = getCalleeImportPath(src.asExpr().(AwaitExpr).getOperand().flow())
+            else result = getUnknownSymbol()
+    )
   }
 
   /**
@@ -524,6 +825,13 @@ private module SyntacticUtilities {
     then result = ref.getPropertyName()
     else result = getUnknownSymbol()
   }
+
+  /**
+   * Gets the parameter name if it exists, or `?` if it is unknown.
+   */
+  string getParameterNameOrUnknown(Parameter p) {
+    if exists(p.getName()) then result = p.getName() else result = getUnknownSymbol()
+  }
 }
 
 /**
@@ -542,8 +850,8 @@ private module SyntacticUtilities {
  * foo[complex()].bar(endpoint); // -> foo.?.bar
  * ```
  */
-class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
-  override string getName() { result = "Callee_AccessPath" }
+class CalleeFlexibleAccessPath extends EndpointFeature, TCalleeFlexibleAccessPath {
+  override string getName() { result = "CalleeFlexibleAccessPath" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
@@ -565,7 +873,7 @@ class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
  *
  * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
  *
- * This feature, together with `Input_ArgumentIndex` is intended as a far superior version of the `ArgumentIndexFeature`.
+ * This feature, together with `InputArgumentIndex` is intended as a far superior version of the `ArgumentIndexFeature`.
  *
  * Examples:
  * ```
@@ -573,8 +881,8 @@ class Callee_AccessPath extends EndpointFeature, TCallee_AccessPath {
  * foo(x, { bar: { baz: endpoint } }); // -> bar.baz
  * ```
  */
-class Input_AccessPathFromCallee extends EndpointFeature, TInput_AccessPathFromCallee {
-  override string getName() { result = "Input_AccessPathFromCallee" }
+class InputAccessPathFromCallee extends EndpointFeature, TInputAccessPathFromCallee {
+  override string getName() { result = "InputAccessPathFromCallee" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk |
@@ -600,14 +908,14 @@ class Input_AccessPathFromCallee extends EndpointFeature, TInput_AccessPathFromC
  * foo(x, { bar: { baz: endpoint } }); // -> 1
  * ```
  */
-class Input_ArgumentIndex extends EndpointFeature, TInput_ArgumentIndex {
-  override string getName() { result = "Input_ArgumentIndex" }
+class InputArgumentIndex extends EndpointFeature, TInputArgumentIndex {
+  override string getName() { result = "InputArgumentIndex" }
 
   override string getValue(DataFlow::Node endpoint) {
     exists(DataFlow::InvokeNode invk, DataFlow::Node arg, int i | arg = invk.getArgument(i) |
       result = i + "" and
       (
-        invk.getAnArgument() = endpoint
+        invk.getArgument(i) = endpoint
         or
         SyntacticUtilities::getANestedInitializerValue(arg.asExpr().getUnderlyingValue()).flow() =
           endpoint
