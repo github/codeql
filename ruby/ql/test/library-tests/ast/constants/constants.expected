@@ -61,6 +61,13 @@ constantAccess
 | constants.rb:71:5:71:14 | FOURTY_SIX | write | FOURTY_SIX | ConstantAssignment |
 | constants.rb:73:18:73:21 | Mod3 | read | Mod3 | ConstantReadAccess |
 | constants.rb:73:18:73:33 | FOURTY_SIX | read | FOURTY_SIX | ConstantReadAccess |
+| constants.rb:78:5:78:13 | Array | read | Array | ConstantReadAccess |
+| constants.rb:79:1:79:1 | A | write | A | ConstantAssignment |
+| constants.rb:79:5:79:13 | Array | read | Array | ConstantReadAccess |
+| constants.rb:80:1:80:1 | B | write | B | ConstantAssignment |
+| constants.rb:81:1:81:1 | C | write | C | ConstantAssignment |
+| constants.rb:81:5:81:5 | A | read | A | ConstantReadAccess |
+| constants.rb:82:5:82:5 | B | read | B | ConstantReadAccess |
 getConst
 | constants.rb:1:1:15:3 | ModuleA | CONST_B | constants.rb:6:15:6:23 | "const_b" |
 | constants.rb:1:1:15:3 | ModuleA | FOURTY_FOUR | constants.rb:53:17:53:29 | "fourty-four" |
@@ -133,3 +140,12 @@ constantWriteAccessQualifiedName
 | constants.rb:70:3:72:5 | Mod5 | Mod3::Mod5 |
 | constants.rb:71:5:71:14 | FOURTY_SIX | Mod1::Mod3::Mod5::FOURTY_SIX |
 | constants.rb:71:5:71:14 | FOURTY_SIX | Mod3::Mod5::FOURTY_SIX |
+| constants.rb:79:1:79:1 | A | A |
+| constants.rb:80:1:80:1 | B | B |
+| constants.rb:81:1:81:1 | C | C |
+arrayConstant
+| constants.rb:20:13:20:37 | call to [] | constants.rb:20:13:20:37 | call to [] |
+| constants.rb:78:5:78:13 | call to [] | constants.rb:78:5:78:13 | call to [] |
+| constants.rb:79:5:79:13 | call to [] | constants.rb:79:5:79:13 | call to [] |
+| constants.rb:80:5:80:5 | a | constants.rb:78:5:78:13 | call to [] |
+| constants.rb:81:5:81:5 | A | constants.rb:79:5:79:13 | call to [] |
