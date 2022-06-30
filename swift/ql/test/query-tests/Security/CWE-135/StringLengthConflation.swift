@@ -98,26 +98,26 @@ func test(s: String) {
 
     let nstr1 = ns.character(at: ns.length - 1) // GOOD
     let nmstr1 = nms.character(at: nms.length - 1) // GOOD
-    let nstr2 = ns.character(at: s.count - 1) // BAD: String length used in NSString [NOT DETECTED]
-    let nmstr2 = nms.character(at: s.count - 1) // BAD: String length used in NString [NOT DETECTED]
+    let nstr2 = ns.character(at: s.count - 1) // BAD: String length used in NSString
+    let nmstr2 = nms.character(at: s.count - 1) // BAD: String length used in NString
     print("character '\(nstr1)' '\(nmstr1)' / '\(nstr2)' '\(nmstr2)'")
 
     let nstr3 = ns.substring(from: ns.length - 1) // GOOD
     let nmstr3 = nms.substring(from: nms.length - 1) // GOOD
-    let nstr4 = ns.substring(from: s.count - 1) // BAD: String length used in NSString [NOT DETECTED]
-    let nmstr4 = nms.substring(from: s.count - 1) // BAD: String length used in NString [NOT DETECTED]
+    let nstr4 = ns.substring(from: s.count - 1) // BAD: String length used in NSString
+    let nmstr4 = nms.substring(from: s.count - 1) // BAD: String length used in NString
     print("substring from '\(nstr3)' '\(nmstr3)' / '\(nstr4)' '\(nmstr4)'")
 
     let nstr5 = ns.substring(to: ns.length - 1) // GOOD
     let nmstr5 = nms.substring(to: nms.length - 1) // GOOD
-    let nstr6 = ns.substring(to: s.count - 1) // BAD: String length used in NSString [NOT DETECTED]
-    let nmstr6 = nms.substring(to: s.count - 1) // BAD: String length used in NString [NOT DETECTED]
+    let nstr6 = ns.substring(to: s.count - 1) // BAD: String length used in NSString
+    let nmstr6 = nms.substring(to: s.count - 1) // BAD: String length used in NString
     print("substring to '\(nstr5)' '\(nmstr5)' / '\(nstr6)' '\(nmstr6)'")
 
     let nmstr7 = NSMutableString(string: s)
     nmstr7.insert("*", at: nms.length - 1) // GOOD
     let nmstr8 = NSMutableString(string: s)
-    nmstr8.insert("*", at: s.count - 1) // BAD: String length used in NSString [NOT DETECTED]
+    nmstr8.insert("*", at: s.count - 1) // BAD: String length used in NSString
     print("insert '\(nmstr7)' / '\(nmstr8)'")
 }
 

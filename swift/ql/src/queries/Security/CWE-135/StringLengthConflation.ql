@@ -84,6 +84,12 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       flowstate = "String" // `String` length flowing into `NSString`
     )
   }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // allow flow through `+` and `-`.
+    node2.asExpr().(AddExpr).getAnOperand() = node1.asExpr() or
+    node2.asExpr().(SubExpr).getAnOperand() = node1.asExpr()
+  }
 }
 
 from
