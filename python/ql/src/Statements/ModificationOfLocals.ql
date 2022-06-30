@@ -11,8 +11,11 @@
  */
 
 import python
+private import semmle.python.ApiGraphs::API as API
 
-predicate originIsLocals(ControlFlowNode n) { n.pointsTo(_, _, Value::named("locals").getACall()) }
+predicate originIsLocals(ControlFlowNode n) {
+  n.pointsTo(_, _, API::moduleImport("locals").getACall().getNode())
+}
 
 predicate modification_of_locals(ControlFlowNode f) {
   originIsLocals(f.(SubscriptNode).getObject()) and

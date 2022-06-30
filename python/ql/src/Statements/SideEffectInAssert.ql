@@ -12,6 +12,7 @@
  */
 
 import python
+private import semmle.python.ApiGraphs::API as API
 
 predicate func_with_side_effects(Expr e) {
   exists(string name | name = e.(Attribute).getName() or name = e.(Name).getId() |
@@ -22,11 +23,11 @@ predicate func_with_side_effects(Expr e) {
 }
 
 predicate call_with_side_effect(Call e) {
-  e.getAFlowNode() = Value::named("subprocess.call").getACall()
+  e.getAFlowNode() = API::moduleImport("subprocess").getMember("call").getACall().getNode()
   or
-  e.getAFlowNode() = Value::named("subprocess.check_call").getACall()
+  e.getAFlowNode() = API::moduleImport("subprocess").getMember("check_call").getACall().getNode()
   or
-  e.getAFlowNode() = Value::named("subprocess.check_output").getACall()
+  e.getAFlowNode() = API::moduleImport("subprocess").getMember("check_output").getACall().getNode()
 }
 
 predicate probable_side_effect(Expr e) {
