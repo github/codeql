@@ -81,7 +81,7 @@ open class KotlinFileExtractor(
                 }
             }
 
-            file.declarations.map { extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true) }
+            file.declarations.forEach { extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true) }
             extractStaticInitializer(file, null)
             CommentExtractor(this, file, tw.fileId).extract()
         }
