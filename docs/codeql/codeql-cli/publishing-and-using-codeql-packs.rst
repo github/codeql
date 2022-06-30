@@ -74,7 +74,7 @@ The ``analyze`` command will run the default suite of any specified CodeQL packs
    codeql <database> analyze <scope>/<pack> <scope>/<other-pack>
 
 Working with CodeQL packs on GitHub Enterprise Server
-------------------------------------------
+-----------------------------------------------------
 
 .. pull-quote::
 
