@@ -170,7 +170,7 @@ std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
   std::unordered_map<std::string, std::string> remapping;
 
   // TODO: handle filelists?
-  std::unordered_set<std::string> pathRewriteOptions({
+  const std::unordered_set<std::string> pathRewriteOptions({
       "-emit-dependencies-path",
       "-emit-module-path",
       "-emit-module-doc-path",
