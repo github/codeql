@@ -32,13 +32,6 @@ module TarSlip {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "tar slip" vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * A call to `tarfile.open`, considered as a flow source.
    */
   class TarfileOpen extends Source {
