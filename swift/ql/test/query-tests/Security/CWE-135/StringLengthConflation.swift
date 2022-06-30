@@ -50,28 +50,28 @@ func test(s: String) {
     // --- constructing a String.Index from integer ---
 
     let ix1 = String.Index(encodedOffset: s.count) // GOOD
-    let ix2 = String.Index(encodedOffset: ns.length) // BAD: NSString length used in String.Index
-    let ix3 = String.Index(encodedOffset: s.utf8.count) // BAD: String.utf8 length used in String.Index
-    let ix4 = String.Index(encodedOffset: s.utf16.count) // BAD: String.utf16 length used in String.Index
-    let ix5 = String.Index(encodedOffset: s.unicodeScalars.count) // BAD: string.unicodeScalars length used in String.Index
+    let ix2 = String.Index(encodedOffset: ns.length) // BAD: NSString length used in String.Index [NOT DETECTED]
+    let ix3 = String.Index(encodedOffset: s.utf8.count) // BAD: String.utf8 length used in String.Index [NOT DETECTED]
+    let ix4 = String.Index(encodedOffset: s.utf16.count) // BAD: String.utf16 length used in String.Index [NOT DETECTED]
+    let ix5 = String.Index(encodedOffset: s.unicodeScalars.count) // BAD: string.unicodeScalars length used in String.Index [NOT DETECTED]
     print("String.Index '\(ix1.encodedOffset)' / '\(ix2.encodedOffset)' '\(ix3.encodedOffset)' '\(ix4.encodedOffset)' '\(ix5.encodedOffset)'")
 
     let ix6 = s.index(s.startIndex, offsetBy: s.count / 2) // GOOD
-    let ix7 = s.index(s.startIndex, offsetBy: ns.length / 2) // BAD: NSString length used in String.Index
+    let ix7 = s.index(s.startIndex, offsetBy: ns.length / 2) // BAD: NSString length used in String.Index [NOT DETECTED]
     print("index '\(ix6.encodedOffset)' / '\(ix7.encodedOffset)'")
 
     var ix8 = s.startIndex
     s.formIndex(&ix8, offsetBy: s.count / 2) // GOOD
     var ix9 = s.startIndex
-    s.formIndex(&ix9, offsetBy: ns.length / 2) // BAD: NSString length used in String.Index
+    s.formIndex(&ix9, offsetBy: ns.length / 2) // BAD: NSString length used in String.Index [NOT DETECTED]
     print("formIndex '\(ix8.encodedOffset)' / '\(ix9.encodedOffset)'")
 
     // --- constructing an NSRange from integers ---
 
     let range1 = NSMakeRange(0, ns.length) // GOOD
     let range2 = NSMakeRange(0, s.count) // BAD: String length used in NSMakeRange
-    let range3 = NSMakeRange(0, s.reversed().count) // BAD: String length used in NSMakeRange
-    let range4 = NSMakeRange(0, s.distance(from: s.startIndex, to: s.endIndex))  // BAD: String length used in NSMakeRange
+    let range3 = NSMakeRange(0, s.reversed().count) // BAD: String length used in NSMakeRange [NOT DETECTED]
+    let range4 = NSMakeRange(0, s.distance(from: s.startIndex, to: s.endIndex))  // BAD: String length used in NSMakeRange [NOT DETECTED]
     print("NSMakeRange '\(range1.description)' / '\(range2.description)' '\(range3.description)' '\(range4.description)'")
 
     let range5 = NSRange(location: 0, length: ns.length) // GOOD
@@ -81,19 +81,19 @@ func test(s: String) {
     // --- String operations using an integer directly ---
 
     let str1 = s.dropFirst(s.count - 1) // GOOD
-    let str2 = s.dropFirst(ns.length - 1) // BAD: NSString length used in String
+    let str2 = s.dropFirst(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
     print("dropFirst '\(str1)' / '\(str2)'")
 
     let str3 = s.dropLast(s.count - 1) // GOOD
-    let str4 = s.dropLast(ns.length - 1) // BAD: NSString length used in String
+    let str4 = s.dropLast(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
     print("dropLast '\(str3)' / '\(str4)'")
 
     let str5 = s.prefix(s.count - 1) // GOOD
-    let str6 = s.prefix(ns.length - 1) // BAD: NSString length used in String
+    let str6 = s.prefix(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
     print("prefix '\(str5)' / '\(str6)'")
 
     let str7 = s.suffix(s.count - 1) // GOOD
-    let str8 = s.suffix(ns.length - 1) // BAD: NSString length used in String
+    let str8 = s.suffix(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
     print("suffix '\(str7)' / '\(str8)'")
 
     let nstr1 = ns.character(at: ns.length - 1) // GOOD
