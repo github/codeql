@@ -537,7 +537,7 @@ final class ClassInterfaceNode extends ElementNode {
       rank[childIndex](Element e, string file, int line, int column, string childStr |
         e = this.getADeclaration() and
         locationSortKeys(e, file, line, column) and
-        childStr = result.toString()
+        childStr = e.toString()
       |
         e order by file, line, column, childStr
       )

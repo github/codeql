@@ -192,7 +192,7 @@ test.kt:
 #   16|           0: [ReturnStmt] return ...
 #   16|             0: [VarAccess] this.staticProp
 #   16|               -1: [ThisAccess] this
-#   16|       5: [Method] setStaticProp
+#   16|       6: [Method] setStaticProp
 #   16|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   16|           0: [Parameter] <set-?>
@@ -204,14 +204,17 @@ test.kt:
 #   16|               0: [VarAccess] this.staticProp
 #   16|                 -1: [ThisAccess] this
 #   16|               1: [VarAccess] <set-?>
-#   17|       7: [Method] getNonStaticProp
+#   17|       7: [FieldDeclaration] String nonStaticProp;
+#   17|         -1: [TypeAccess] String
+#   17|         0: [StringLiteral] b
+#   17|       8: [Method] getNonStaticProp
 #-----|         1: (Annotations)
 #   17|         3: [TypeAccess] String
 #   17|         5: [BlockStmt] { ... }
 #   17|           0: [ReturnStmt] return ...
 #   17|             0: [VarAccess] this.nonStaticProp
 #   17|               -1: [ThisAccess] this
-#   17|       7: [Method] setNonStaticProp
+#   17|       9: [Method] setNonStaticProp
 #   17|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #   17|           0: [Parameter] <set-?>
@@ -223,9 +226,6 @@ test.kt:
 #   17|               0: [VarAccess] this.nonStaticProp
 #   17|                 -1: [ThisAccess] this
 #   17|               1: [VarAccess] <set-?>
-#   17|       7: [FieldDeclaration] String nonStaticProp;
-#   17|         -1: [TypeAccess] String
-#   17|         0: [StringLiteral] b
 #   20|       10: [Method] getPropWithStaticGetter
 #-----|         1: (Annotations)
 #   20|         3: [TypeAccess] String
@@ -276,7 +276,15 @@ test.kt:
 #   13|             -1: [VarAccess] HasCompanion.Companion
 #   13|               -1: [TypeAccess] HasCompanion
 #   13|             0: [VarAccess] s
-#   16|     5: [Method] setStaticProp
+#   16|     5: [Method] getStaticProp
+#-----|       1: (Annotations)
+#   16|       3: [TypeAccess] String
+#   16|       5: [BlockStmt] { ... }
+#   16|         0: [ReturnStmt] return ...
+#   16|           0: [MethodAccess] getStaticProp(...)
+#   16|             -1: [VarAccess] HasCompanion.Companion
+#   16|               -1: [TypeAccess] HasCompanion
+#   16|     6: [Method] setStaticProp
 #   16|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   16|         0: [Parameter] <set-?>
@@ -288,14 +296,6 @@ test.kt:
 #   16|             -1: [VarAccess] HasCompanion.Companion
 #   16|               -1: [TypeAccess] HasCompanion
 #   16|             0: [VarAccess] <set-?>
-#   16|     5: [Method] getStaticProp
-#-----|       1: (Annotations)
-#   16|       3: [TypeAccess] String
-#   16|       5: [BlockStmt] { ... }
-#   16|         0: [ReturnStmt] return ...
-#   16|           0: [MethodAccess] getStaticProp(...)
-#   16|             -1: [VarAccess] HasCompanion.Companion
-#   16|               -1: [TypeAccess] HasCompanion
 #   20|     7: [Method] getPropWithStaticGetter
 #-----|       1: (Annotations)
 #   20|       3: [TypeAccess] String
@@ -357,7 +357,15 @@ test.kt:
 #   36|     5: [FieldDeclaration] String staticProp;
 #   36|       -1: [TypeAccess] String
 #   36|       0: [StringLiteral] a
-#   36|     6: [Method] setStaticProp
+#   36|     6: [Method] getStaticProp
+#-----|       1: (Annotations)
+#   36|       3: [TypeAccess] String
+#   36|       5: [BlockStmt] { ... }
+#   36|         0: [ReturnStmt] return ...
+#   36|           0: [VarAccess] NonCompanion.INSTANCE.staticProp
+#   36|             -1: [VarAccess] NonCompanion.INSTANCE
+#   36|               -1: [TypeAccess] NonCompanion
+#   36|     7: [Method] setStaticProp
 #   36|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   36|         0: [Parameter] <set-?>
@@ -370,22 +378,17 @@ test.kt:
 #   36|               -1: [VarAccess] NonCompanion.INSTANCE
 #   36|                 -1: [TypeAccess] NonCompanion
 #   36|             1: [VarAccess] <set-?>
-#   36|     6: [Method] getStaticProp
-#-----|       1: (Annotations)
-#   36|       3: [TypeAccess] String
-#   36|       5: [BlockStmt] { ... }
-#   36|         0: [ReturnStmt] return ...
-#   36|           0: [VarAccess] NonCompanion.INSTANCE.staticProp
-#   36|             -1: [VarAccess] NonCompanion.INSTANCE
-#   36|               -1: [TypeAccess] NonCompanion
-#   37|     8: [Method] getNonStaticProp
+#   37|     8: [FieldDeclaration] String nonStaticProp;
+#   37|       -1: [TypeAccess] String
+#   37|       0: [StringLiteral] b
+#   37|     9: [Method] getNonStaticProp
 #-----|       1: (Annotations)
 #   37|       3: [TypeAccess] String
 #   37|       5: [BlockStmt] { ... }
 #   37|         0: [ReturnStmt] return ...
 #   37|           0: [VarAccess] this.nonStaticProp
 #   37|             -1: [ThisAccess] this
-#   37|     8: [Method] setNonStaticProp
+#   37|     10: [Method] setNonStaticProp
 #   37|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   37|         0: [Parameter] <set-?>
@@ -397,9 +400,6 @@ test.kt:
 #   37|             0: [VarAccess] this.nonStaticProp
 #   37|               -1: [ThisAccess] this
 #   37|             1: [VarAccess] <set-?>
-#   37|     8: [FieldDeclaration] String nonStaticProp;
-#   37|       -1: [TypeAccess] String
-#   37|       0: [StringLiteral] b
 #   40|     11: [Method] getPropWithStaticGetter
 #-----|       1: (Annotations)
 #   40|       3: [TypeAccess] String
