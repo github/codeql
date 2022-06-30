@@ -490,6 +490,7 @@ open class KotlinFileExtractor(
             // but suppress outputting the body, which we will replace with a delegating call below.
             forceExtractFunction(f, classId, extractBody = false, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution = null, classTypeArgsIncludingOuterClasses = listOf(), idOverride = proxyFunctionId, locOverride = null)
             addModifiers(proxyFunctionId, "static")
+            tw.writeCompiler_generated(proxyFunctionId, CompilerGeneratedKinds.JVMSTATIC_PROXY_METHOD.kind)
             if (extractFunctionBodies) {
                 val realFunctionLocId = tw.getLocation(f)
                 extractExpressionBody(proxyFunctionId, realFunctionLocId).also { returnId ->
@@ -4537,5 +4538,6 @@ open class KotlinFileExtractor(
         ENUM_CLASS_SPECIAL_MEMBER(5),
         DELEGATED_PROPERTY_GETTER(6),
         DELEGATED_PROPERTY_SETTER(7),
+        JVMSTATIC_PROXY_METHOD(8),
     }
 }
