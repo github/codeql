@@ -119,7 +119,7 @@ module TarSlip {
       attr.getName() = "name" and
       attr.getObject() = tarInfo
     |
-      // Assume that any test with "path" in it is a sanitizer
+      // The assumption that any test that matches %path is a sanitizer might be too broad.
       call.getAChild*().(AttrNode).getName().matches("%path")
       or
       call.getAChild*().(NameNode).getId().matches("%path")
