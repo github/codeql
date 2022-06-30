@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
 
   auto remapping =
       codeql::rewriteOutputsInPlace(configuration, configuration.patchedFrontendOptions);
-  codeql::ensureNewPathsExist(remapping);
+  codeql::ensureDirectoriesForNewPathsExist(remapping);
   codeql::storeRemappingForVFS(configuration, remapping);
 
   std::vector<const char*> args;

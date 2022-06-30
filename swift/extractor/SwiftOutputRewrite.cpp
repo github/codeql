@@ -226,7 +226,8 @@ std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
   return remapping;
 }
 
-void ensureNewPathsExist(const std::unordered_map<std::string, std::string>& remapping) {
+void ensureDirectoriesForNewPathsExist(
+    const std::unordered_map<std::string, std::string>& remapping) {
   for (auto& [_, newPath] : remapping) {
     llvm::SmallString<PATH_MAX> filepath(newPath);
     llvm::StringRef parent = llvm::sys::path::parent_path(filepath);
