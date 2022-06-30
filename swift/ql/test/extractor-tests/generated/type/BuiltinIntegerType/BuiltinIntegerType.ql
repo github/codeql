@@ -2,10 +2,10 @@
 import codeql.swift.elements
 import TestUtils
 
-from BuiltinIntegerType x, string getDiagnosticsName, Type getCanonicalType
+from BuiltinIntegerType x, string getName, Type getCanonicalType
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getDiagnosticsName = x.getDiagnosticsName() and
+  getName = x.getName() and
   getCanonicalType = x.getCanonicalType()
-select x, "getDiagnosticsName:", getDiagnosticsName, "getCanonicalType:", getCanonicalType
+select x, "getName:", getName, "getCanonicalType:", getCanonicalType

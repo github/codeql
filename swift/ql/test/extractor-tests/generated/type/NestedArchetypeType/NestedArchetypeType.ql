@@ -3,17 +3,16 @@ import codeql.swift.elements
 import TestUtils
 
 from
-  NestedArchetypeType x, string getDiagnosticsName, Type getCanonicalType, string getName,
-  Type getInterfaceType, ArchetypeType getParent, AssociatedTypeDecl getAssociatedTypeDeclaration
+  NestedArchetypeType x, string getName, Type getCanonicalType, Type getInterfaceType,
+  ArchetypeType getParent, AssociatedTypeDecl getAssociatedTypeDeclaration
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getDiagnosticsName = x.getDiagnosticsName() and
-  getCanonicalType = x.getCanonicalType() and
   getName = x.getName() and
+  getCanonicalType = x.getCanonicalType() and
   getInterfaceType = x.getInterfaceType() and
   getParent = x.getParent() and
   getAssociatedTypeDeclaration = x.getAssociatedTypeDeclaration()
-select x, "getDiagnosticsName:", getDiagnosticsName, "getCanonicalType:", getCanonicalType,
-  "getName:", getName, "getInterfaceType:", getInterfaceType, "getParent:", getParent,
-  "getAssociatedTypeDeclaration:", getAssociatedTypeDeclaration
+select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getInterfaceType:",
+  getInterfaceType, "getParent:", getParent, "getAssociatedTypeDeclaration:",
+  getAssociatedTypeDeclaration

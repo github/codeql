@@ -82,7 +82,7 @@ locations(
 #keyset[id]
 types(  //dir=type
   int id: @type ref,
-  string diagnostics_name: string ref,
+  string name: string ref,
   int canonical_type: @type ref
 );
 
@@ -593,7 +593,6 @@ weak_storage_types(  //dir=type
 #keyset[id]
 archetype_types(  //dir=type
   int id: @archetype_type ref,
-  string name: string ref,
   int interface_type: @type ref
 );
 
@@ -611,8 +610,7 @@ archetype_type_protocols(  //dir=type
 );
 
 generic_type_param_types(  //dir=type
-  unique int id: @generic_type_param_type,
-  string name: string ref
+  unique int id: @generic_type_param_type
 );
 
 paren_types(  //dir=type
