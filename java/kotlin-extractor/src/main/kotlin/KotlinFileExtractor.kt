@@ -6,6 +6,7 @@ import com.github.codeql.utils.versions.functionN
 import com.github.codeql.utils.versions.getIrStubFromDescriptor
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
 import org.jetbrains.kotlin.descriptors.*
@@ -314,8 +315,21 @@ open class KotlinFileExtractor(
             val locId = getLocation(c, argsIncludingOuterClasses)
             tw.writeHasLocation(id, locId)
 
-            // Extract the outer <-> inner class relationship, passing on any type arguments in excess to this class' parameters.
-            extractEnclosingClass(c, id, locId, argsIncludingOuterClasses?.drop(c.typeParameters.size) ?: listOf())
+            // Extract the outer <-> inner class relationship, passing on any type arguments in excess to this class' parameters if this is an inner class.
+            // For example, in `class Outer<T> { inner class Inner<S> { } }`, `Inner<Int, String>` nests within `Outer<Int>` and raw `Inner<>` within `Outer<>`,
+            // but for a similar non-`inner` (in Java terms, static nested) class both `Inner<Int>` and `Inner<>` nest within the unbound type `Outer`.
+            val useBoundOuterType = (c.isInner || c.isLocal) && (c.parents.map { // Would use `firstNotNullOfOrNull`, but this doesn't exist in Kotlin 1.4
+                when(it) {
+                    is IrClass -> when {
+                        it.typeParameters.isNotEmpty() -> true // Type parameters visible to this class -- extract an enclosing bound or raw type.
+                        !(it.isInner || it.isLocal) -> false // No type parameters seen yet, and this is a static class -- extract an enclosing unbound type.
+                        else -> null // No type parameters seen here, but may be visible enclosing type parameters; keep searching.
+                    }
+                    else -> null // Look through enclosing non-class entities (this may need to change)
+                }
+            }.firstOrNull { it != null } ?: false)
+
+            extractEnclosingClass(c, id, locId, if (useBoundOuterType) argsIncludingOuterClasses?.drop(c.typeParameters.size) else listOf())
 
             return id
         }
@@ -458,7 +472,8 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun extractEnclosingClass(innerDeclaration: IrDeclaration, innerId: Label<out DbClassorinterface>, innerLocId: Label<DbLocation>, parentClassTypeArguments: List<IrTypeArgument>) {
+    // If `parentClassTypeArguments` is null, the parent class is a raw type.
+    private fun extractEnclosingClass(innerDeclaration: IrDeclaration, innerId: Label<out DbClassorinterface>, innerLocId: Label<DbLocation>, parentClassTypeArguments: List<IrTypeArgument>?) {
         with("enclosing class", innerDeclaration) {
             var parent: IrDeclarationParent? = innerDeclaration.parent
             while (parent != null) {
