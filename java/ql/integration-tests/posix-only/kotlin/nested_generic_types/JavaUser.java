@@ -21,6 +21,15 @@ public class JavaUser {
     String result4 = d.identity("goodbye");
     Short result5 = e.returnSixth(1, "hello", 1.0f, 1.0, 1L, (short)1);
 
+    OuterGeneric<String>.InnerNotGeneric innerGetterTest = (new OuterGeneric<String>()).getInnerNotGeneric();
+    OuterNotGeneric.InnerGeneric<String> innerGetterTest2 = (new OuterNotGeneric()).getInnerGeneric();
+
+    TypeParamVisibility<String> tpv = new TypeParamVisibility<String>();
+    TypeParamVisibility<String>.VisibleBecauseInner<String> visibleBecauseInner = tpv.getVisibleBecauseInner();
+    TypeParamVisibility<String>.VisibleBecauseInnerIndirectContainer.VisibleBecauseInnerIndirect<String> visibleBecauseInnerIndirect = tpv.getVisibleBecauseInnerIndirect();
+    TypeParamVisibility.NotVisibleBecauseStatic<String> notVisibleBecauseStatic = tpv.getNotVisibleBecauseStatic();
+    TypeParamVisibility.NotVisibleBecauseStaticIndirectContainer.NotVisibleBecauseStaticIndirect<String> notVisibleBecauseStaticIndirect = tpv.getNotVisibleBecauseStaticIndirect();
+
   }
 
 }
