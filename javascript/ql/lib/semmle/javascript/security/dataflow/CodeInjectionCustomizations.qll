@@ -53,13 +53,13 @@ module CodeInjection {
 
   /** An expression parsed by the `gray-matter` library. */
   class GrayMatterSink extends Sink {
-    API::CallNode call;
-
     GrayMatterSink() {
-      call = DataFlow::moduleImport("gray-matter").getACall() and
-      this = call.getArgument(0) and
-      // if the js/javascript engine is set, then we assume they are set to something safe.
-      not exists(call.getParameter(1).getMember("engines").getMember(["js", "javascript"]))
+      exists(API::CallNode call |
+        call = DataFlow::moduleImport("gray-matter").getACall() and
+        this = call.getArgument(0) and
+        // if the js/javascript engine is set, then we assume they are set to something safe.
+        not exists(call.getParameter(1).getMember("engines").getMember(["js", "javascript"]))
+      )
     }
   }
 
