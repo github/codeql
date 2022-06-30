@@ -11,7 +11,7 @@
 #include <optional>
 #include <iostream>
 
-// Creates a copy of the output file map and updated remapping table in place
+// Creates a copy of the output file map and updates remapping table in place
 // It does not change the original map file as it is depended upon by the original compiler
 // Returns path to the newly created output file map on success, or None in a case of failure
 static std::optional<std::string> rewriteOutputFileMap(
@@ -96,7 +96,12 @@ static std::vector<std::string> computeModuleAliases(llvm::StringRef modulePath,
   if (!modulePath.endswith(".swiftmodule")) {
     return {};
   }
-
+  // Deconstructing the Xcode generated path
+  //
+  // clang-format off
+  //                          intermediatesDirIndex               destinationDir (2)                              arch(5)
+  // DerivedData/FooBar/Build/Intermediates.noindex/FooBar.build/Debug-iphonesimulator/FooBar.build/Objects-normal/x86_64/FooBar.swiftmodule
+  // clang-format on
   llvm::SmallVector<llvm::StringRef> chunks;
   modulePath.split(chunks, '/');
   size_t intermediatesDirIndex = 0;
@@ -110,9 +115,14 @@ static std::vector<std::string> computeModuleAliases(llvm::StringRef modulePath,
   if (intermediatesDirIndex == 0) {
     return {};
   }
+  size_t destinationDirIndex = intermediatesDirIndex + 2;
+  size_t archIndex = intermediatesDirIndex + 5;
+  if (archIndex >= chunks.size()) {
+    return {};
+  }
   // e.g. Debug-iphoneos, Release-iphonesimulator, etc.
-  auto destinationDir = chunks[intermediatesDirIndex + 2].str();
-  auto arch = chunks[intermediatesDirIndex + 5].str();
+  auto destinationDir = chunks[destinationDirIndex].str();
+  auto arch = chunks[archIndex].str();
   auto moduleNameWithExt = chunks.back();
   auto moduleName = moduleNameWithExt.substr(0, moduleNameWithExt.find_last_of('.'));
   std::string relocatedModulePath = chunks[0].str();

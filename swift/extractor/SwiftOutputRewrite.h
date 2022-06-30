@@ -17,7 +17,8 @@ std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
     std::vector<std::string>& CLIArgs);
 
 // Create directories for all the redirected new paths as the Swift compiler expects them to exist.
-void ensureDirectoriesForNewPathsExist(const std::unordered_map<std::string, std::string>& remapping);
+void ensureDirectoriesForNewPathsExist(
+    const std::unordered_map<std::string, std::string>& remapping);
 
 // Stores remapped `.swiftmoduile`s in a YAML file for later consumption by the
 // llvm::RedirectingFileSystem via Swift's VFSOverlayFiles.
@@ -25,6 +26,7 @@ void storeRemappingForVFS(const SwiftExtractorConfiguration& config,
                           const std::unordered_map<std::string, std::string>& remapping);
 
 // Returns a list of VFS YAML files produced by all the extractor processes.
+// This is separate from storeRemappingForVFS as we also collect files produced by other processes.
 std::vector<std::string> collectVFSFiles(const SwiftExtractorConfiguration& config);
 
 }  // namespace codeql
