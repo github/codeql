@@ -488,7 +488,7 @@ open class KotlinFileExtractor(
             val proxyFunctionId = tw.getLabelFor<DbMethod>(getFunctionLabel(f, classId, listOf()))
             // We extract the function prototype with its ID overridden to belong to `c` not the companion object,
             // but suppress outputting the body, which we will replace with a delegating call below.
-            forceExtractFunction(f, classId, extractBody = false, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution = null, classTypeArgsIncludingOuterClasses = listOf(), idOverride = proxyFunctionId, locOverride = null)
+            forceExtractFunction(f, classId, extractBody = false, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution = null, classTypeArgsIncludingOuterClasses = listOf(), idOverride = proxyFunctionId, locOverride = null, extractOrigin = false)
             addModifiers(proxyFunctionId, "static")
             tw.writeCompiler_generated(proxyFunctionId, CompilerGeneratedKinds.JVMSTATIC_PROXY_METHOD.kind)
             if (extractFunctionBodies) {
@@ -813,7 +813,7 @@ open class KotlinFileExtractor(
         else
             forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, null, null)
 
-    private fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>?, locOverride: Label<DbLocation>?): Label<out DbCallable>  {
+    private fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>?, locOverride: Label<DbLocation>?, extractOrigin: Boolean = true): Label<out DbCallable>  {
         with("function", f) {
             DeclarationStackAdjuster(f).use {
 
@@ -870,13 +870,15 @@ open class KotlinFileExtractor(
                     val methodId = id.cast<DbMethod>()
                     tw.writeMethods(methodId, shortName.nameInDB, "${shortName.nameInDB}$paramsSignature", returnType.javaResult.id, parentId, sourceDeclaration.cast<DbMethod>())
                     tw.writeMethodsKotlinType(methodId, returnType.kotlinResult.id)
-                    when (f.origin) {
-                        IrDeclarationOrigin.GENERATED_DATA_CLASS_MEMBER ->
-                            tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.GENERATED_DATA_CLASS_MEMBER.kind)
-                        IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR ->
-                            tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.DEFAULT_PROPERTY_ACCESSOR.kind)
-                        IrDeclarationOrigin.ENUM_CLASS_SPECIAL_MEMBER ->
-                            tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.ENUM_CLASS_SPECIAL_MEMBER.kind)
+                    if (extractOrigin) {
+                        when (f.origin) {
+                            IrDeclarationOrigin.GENERATED_DATA_CLASS_MEMBER ->
+                                tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.GENERATED_DATA_CLASS_MEMBER.kind)
+                            IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR ->
+                                tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.DEFAULT_PROPERTY_ACCESSOR.kind)
+                            IrDeclarationOrigin.ENUM_CLASS_SPECIAL_MEMBER ->
+                                tw.writeCompiler_generated(methodId, CompilerGeneratedKinds.ENUM_CLASS_SPECIAL_MEMBER.kind)
+                        }
                     }
 
                     if (extractMethodAndParameterTypeAccesses) {
