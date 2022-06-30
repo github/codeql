@@ -901,7 +901,7 @@ open class KotlinFileExtractor(
                 if (f.isInline) {
                     addModifiers(id, "inline")
                 }
-                if (f.willExtractAsStatic) {
+                if (f.shouldExtractAsStatic) {
                     addModifiers(id, "static")
                 }
                 if (f is IrSimpleFunction && f.overriddenSymbols.isNotEmpty()) {
@@ -1479,7 +1479,7 @@ open class KotlinFileExtractor(
 
             tw.writeCallableBinding(id, methodId)
 
-            if (callTarget.willExtractAsStatic) {
+            if (callTarget.shouldExtractAsStatic) {
                 extractStaticTypeAccessQualifier(callTarget, id, locId, enclosingCallable, enclosingStmt)
             } else if (extractDispatchReceiver != null) {
                 extractDispatchReceiver(id)
@@ -1502,24 +1502,24 @@ open class KotlinFileExtractor(
     }
 
     private fun extractStaticTypeAccessQualifier(target: IrDeclaration, parentExpr: Label<out DbExprparent>, locId: Label<DbLocation>, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) {
-        if (target.willExtractAsStaticMemberOfClass) {
+        if (target.shouldExtractAsStaticMemberOfClass) {
             extractTypeAccessRecursive(target.parentAsClass.toRawType(), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
-        } else if (target.willExtractAsStaticMemberOfFile) {
+        } else if (target.shouldExtractAsStaticMemberOfFile) {
             extractTypeAccess(useFileClassType(target.parent as IrFile), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
         }
     }
 
-    private val IrDeclaration.willExtractAsStaticMemberOfClass: Boolean
-        get() = this.willExtractAsStatic && parent is IrClass
+    private val IrDeclaration.shouldExtractAsStaticMemberOfClass: Boolean
+        get() = this.shouldExtractAsStatic && parent is IrClass
 
-    private val IrDeclaration.willExtractAsStaticMemberOfFile: Boolean
-        get() = this.willExtractAsStatic && parent is IrFile
+    private val IrDeclaration.shouldExtractAsStaticMemberOfFile: Boolean
+        get() = this.shouldExtractAsStatic && parent is IrFile
 
     private fun isStaticAnnotatedNonCompanionMember(f: IrSimpleFunction) =
         f.parentClassOrNull?.isNonCompanionObject == true &&
                 (f.hasAnnotation(jvmStaticFqName) || f.correspondingPropertySymbol?.owner?.hasAnnotation(jvmStaticFqName) == true)
 
-    private val IrDeclaration.willExtractAsStatic: Boolean
+    private val IrDeclaration.shouldExtractAsStatic: Boolean
         get() = this is IrSimpleFunction && (isStaticFunction(this) || isStaticAnnotatedNonCompanionMember(this)) ||
                 this is IrField && this.isStatic ||
                 this is IrEnumEntry
@@ -3063,7 +3063,7 @@ open class KotlinFileExtractor(
         val locId = tw.getLocation(e)
         val type = useType(e.type)
 
-        if (containingDeclaration.willExtractAsStatic && containingDeclaration.parentClassOrNull?.isNonCompanionObject == true) {
+        if (containingDeclaration.shouldExtractAsStatic && containingDeclaration.parentClassOrNull?.isNonCompanionObject == true) {
             // Use of `this` in a non-companion object member that will be lowered to a static function -- replace with a reference
             // to the corresponding static object instance.
             val instanceField = useObjectClassInstance(containingDeclaration.parentAsClass)
