@@ -7,6 +7,7 @@
 #include <memory>
 #include <unistd.h>
 #include <unordered_set>
+#include <queue>
 
 #include <swift/AST/SourceFile.h>
 #include <swift/Basic/FileTypes.h>
@@ -51,6 +52,18 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
   }
 }
 
+static std::string getTrapFilename(swift::ModuleDecl& module, swift::SourceFile* primaryFile) {
+  if (primaryFile) {
+    return primaryFile->getFilename().str();
+  }
+  // Several modules with different name might come from .pcm (clang module) files
+  // In this case we want to differentiate them
+  std::string filename = module.getModuleFilename().str();
+  filename += "-";
+  filename += module.getName().str();
+  return filename;
+}
+
 static void extractDeclarations(const SwiftExtractorConfiguration& config,
                                 llvm::ArrayRef<swift::Decl*> topLevelDecls,
                                 swift::CompilerInstance& compiler,
@@ -60,7 +73,8 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   // the same input file(s)
   // We are using PID to avoid concurrent access
   // TODO: find a more robust approach to avoid collisions?
-  llvm::StringRef filename = primaryFile ? primaryFile->getFilename() : module.getModuleFilename();
+  auto name = getTrapFilename(module, primaryFile);
+  llvm::StringRef filename(name);
   std::string tempTrapName = filename.str() + '.' + std::to_string(getpid()) + ".trap";
   llvm::SmallString<PATH_MAX> tempTrapPath(config.tempTrapDir);
   llvm::sys::path::append(tempTrapPath, tempTrapName);
@@ -144,7 +158,31 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
     }
   }
 
+  // getASTContext().getLoadedModules() does not provide all the modules available within the
+  // program.
+  // We need to iterate over all the imported modules (recursively) to see the whole "universe."
+  std::unordered_set<swift::ModuleDecl*> allModules;
+  std::queue<swift::ModuleDecl*> worklist;
   for (auto& [_, module] : compiler.getASTContext().getLoadedModules()) {
+    worklist.push(module);
+    allModules.insert(module);
+  }
+
+  while (!worklist.empty()) {
+    auto module = worklist.front();
+    worklist.pop();
+    llvm::SmallVector<swift::ImportedModule> importedModules;
+    // TODO: we may need more than just Exported ones
+    module->getImportedModules(importedModules, swift::ModuleDecl::ImportFilterKind::Exported);
+    for (auto& imported : importedModules) {
+      if (allModules.count(imported.importedModule) == 0) {
+        worklist.push(imported.importedModule);
+        allModules.insert(imported.importedModule);
+      }
+    }
+  }
+
+  for (auto& module : allModules) {
     // We only extract system and builtin modules here as the other "user" modules can be built
     // during the build process and then re-used at a later stage. In this case, we extract the
     // user code twice: once during the module build in a form of a source file, and then as
