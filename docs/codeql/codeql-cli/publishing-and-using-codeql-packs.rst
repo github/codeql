@@ -90,10 +90,13 @@ For example, the following ``qlconfig.yml`` file associates all packs with the C
 .. code-block:: yaml
 
    registries:
-   - packages: '*'
-     url: https://containers.GHE_HOSTNAME/v2/
    - packages: 'codeql/*'
      url: https://ghcr.io/v2/
+   - packages: '*'
+     url: https://containers.GHE_HOSTNAME/v2/
+
+The CodeQL CLI will determine which registry to use for a given package name by finding the first item in the ``registries`` list with a ``packages`` property that matches that package name.
+This means that you'll generally want to define the most specific package name patterns first.
 
 You can now use ``codeql pack publish``, ``codeql pack download``, and ``codeql database analyze`` to manage packs on GitHub Enterprise Server.
 
