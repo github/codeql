@@ -28,12 +28,12 @@ class NSMutableString : NSString
 class NSRange
 {
     init(location: Int, length: Int) { self.description = "" }
+    init<R, S>(_ r: R, in: S) { self.description = "" }
 
     private(set) var description: String
 }
 
 func NSMakeRange(_ loc: Int, _ len: Int) -> NSRange { return NSRange(location: loc, length: len) }
-
 
 
 
@@ -77,6 +77,15 @@ func test(s: String) {
     let range5 = NSRange(location: 0, length: ns.length) // GOOD
     let range6 = NSRange(location: 0, length: s.count) // BAD: String length used in NSMakeRange
     print("NSRange '\(range5.description)' / '\(range6.description)'")
+
+    // --- converting Range to NSRange ---
+
+    let range7 = s.startIndex ..< s.endIndex
+    let range8 = NSRange(range7, in: s) // GOOD
+    let location = s.distance(from: s.startIndex, to: range7.lowerBound)
+    let length = s.distance(from: range7.lowerBound, to: range7.upperBound)
+    let range9 = NSRange(location: location, length: length) // BAD [NOT DETECTED]
+    print("NSRange '\(range8.description)' / '\(range9.description)'")
 
     // --- String operations using an integer directly ---
 
