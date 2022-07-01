@@ -13,6 +13,7 @@ edges
 | StringLengthConflation.swift:135:36:135:38 | .count :  | StringLengthConflation.swift:135:36:135:46 | ... call to -(_:_:) ... |
 | StringLengthConflation.swift:141:28:141:30 | .count :  | StringLengthConflation.swift:141:28:141:38 | ... call to -(_:_:) ... |
 nodes
+| StringLengthConflation.swift:53:43:53:46 | .length | semmle.label | .length |
 | StringLengthConflation.swift:72:33:72:35 | .count | semmle.label | .count |
 | StringLengthConflation.swift:78:47:78:49 | .count | semmle.label | .count |
 | StringLengthConflation.swift:93:28:93:31 | .length :  | semmle.label | .length :  |
@@ -43,6 +44,7 @@ nodes
 | StringLengthConflation.swift:141:28:141:38 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
 subpaths
 #select
+| StringLengthConflation.swift:53:43:53:46 | .length | StringLengthConflation.swift:53:43:53:46 | .length | StringLengthConflation.swift:53:43:53:46 | .length | This NSString length is used in a String, but it may not be equivalent. |
 | StringLengthConflation.swift:72:33:72:35 | .count | StringLengthConflation.swift:72:33:72:35 | .count | StringLengthConflation.swift:72:33:72:35 | .count | This String length is used in an NSString, but it may not be equivalent. |
 | StringLengthConflation.swift:78:47:78:49 | .count | StringLengthConflation.swift:78:47:78:49 | .count | StringLengthConflation.swift:78:47:78:49 | .count | This String length is used in an NSString, but it may not be equivalent. |
 | StringLengthConflation.swift:93:28:93:40 | ... call to -(_:_:) ... | StringLengthConflation.swift:93:28:93:31 | .length :  | StringLengthConflation.swift:93:28:93:40 | ... call to -(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |

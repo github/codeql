@@ -50,7 +50,7 @@ func test(s: String) {
     // --- constructing a String.Index from integer ---
 
     let ix1 = String.Index(encodedOffset: s.count) // GOOD
-    let ix2 = String.Index(encodedOffset: ns.length) // BAD: NSString length used in String.Index [NOT DETECTED]
+    let ix2 = String.Index(encodedOffset: ns.length) // BAD: NSString length used in String.Index
     let ix3 = String.Index(encodedOffset: s.utf8.count) // BAD: String.utf8 length used in String.Index [NOT DETECTED]
     let ix4 = String.Index(encodedOffset: s.utf16.count) // BAD: String.utf16 length used in String.Index [NOT DETECTED]
     let ix5 = String.Index(encodedOffset: s.unicodeScalars.count) // BAD: string.unicodeScalars length used in String.Index [NOT DETECTED]

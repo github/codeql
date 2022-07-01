@@ -102,6 +102,10 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
         // `prefix`, `suffix`
         funcName = ["prefix(_:)", "suffix(_:)"] and
         paramName = "maxLength"
+        or
+        // `String.Index.init`
+        funcName = "init(encodedOffset:)" and
+        paramName = "offset"
       ) and
       call.getFunction().(ApplyExpr).getStaticTarget().getName() = funcName and
       call.getFunction()
