@@ -134,7 +134,7 @@ open class KotlinFileExtractor(
                 is IrProperty -> {
                     val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
                     if (parentId != null) {
-                        extractProperty(declaration, parentId, extractBackingField = true, extractFunctionBodies = extractFunctionBodies, null, listOf())
+                        extractProperty(declaration, parentId, extractBackingField = true, extractFunctionBodies = extractFunctionBodies, extractPrivateMembers = extractPrivateMembers, null, listOf())
                     }
                     Unit
                 }
@@ -364,7 +364,7 @@ open class KotlinFileExtractor(
                 if (shouldExtractDecl(it, false)) {
                     when(it) {
                         is IrFunction -> extractFunction(it, id, extractBody = false, extractMethodAndParameterTypeAccesses = false, typeParamSubstitution, argsIncludingOuterClasses)
-                        is IrProperty -> extractProperty(it, id, extractBackingField = false, extractFunctionBodies = false, typeParamSubstitution, argsIncludingOuterClasses)
+                        is IrProperty -> extractProperty(it, id, extractBackingField = false, extractFunctionBodies = false, extractPrivateMembers = false, typeParamSubstitution, argsIncludingOuterClasses)
                         else -> {}
                     }
                 }
@@ -955,7 +955,7 @@ open class KotlinFileExtractor(
         return id
     }
 
-    private fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, extractFunctionBodies: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
+    private fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, extractFunctionBodies: Boolean, extractPrivateMembers: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
         with("property", p) {
             if (isFake(p)) return
 
@@ -970,7 +970,11 @@ open class KotlinFileExtractor(
                 val getter = p.getter
                 val setter = p.setter
 
-                if (getter != null) {
+                if (getter == null) {
+                    if (p.modality != Modality.FINAL || !isExternalDeclaration(p)) {
+                        logger.warnElement("IrProperty without a getter", p)
+                    }
+                } else if (shouldExtractDecl(getter, extractPrivateMembers)) {
                     val getterId = extractFunction(getter, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution, classTypeArgsIncludingOuterClasses)?.cast<DbMethod>()
                     if (getterId != null) {
                         tw.writeKtPropertyGetters(id, getterId)
@@ -978,13 +982,13 @@ open class KotlinFileExtractor(
                             tw.writeCompiler_generated(getterId, CompilerGeneratedKinds.DELEGATED_PROPERTY_GETTER.kind)
                         }
                     }
-                } else {
-                    if (p.modality != Modality.FINAL || !isExternalDeclaration(p)) {
-                        logger.warnElement("IrProperty without a getter", p)
-                    }
                 }
 
-                if (setter != null) {
+                if (setter == null) {
+                    if (p.isVar && !isExternalDeclaration(p)) {
+                        logger.warnElement("isVar property without a setter", p)
+                    }
+                } else if (shouldExtractDecl(setter, extractPrivateMembers)) {
                     if (!p.isVar) {
                         logger.warnElement("!isVar property with a setter", p)
                     }
@@ -994,10 +998,6 @@ open class KotlinFileExtractor(
                         if (setter.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR) {
                             tw.writeCompiler_generated(setterId, CompilerGeneratedKinds.DELEGATED_PROPERTY_SETTER.kind)
                         }
-                    }
-                } else {
-                    if (p.isVar && !isExternalDeclaration(p)) {
-                        logger.warnElement("isVar property without a setter", p)
                     }
                 }
 
