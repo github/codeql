@@ -134,7 +134,10 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   for (auto decl : topLevelDecls) {
     visitor.extract(decl);
   }
-  if (topLevelDecls.empty()) {
+  // TODO the following will be moved to the dispatcher when we start caching swift file objects
+  // for the moment, topLevelDecls always contains the current module, which does not have a file
+  // associated with it, so we need a special case when there are no top level declarations
+  if (topLevelDecls.size() == 1) {
     // In the case of empty files, the dispatcher is not called, but we still want to 'record' the
     // fact that the file was extracted
     llvm::SmallString<PATH_MAX> name(filename);
