@@ -90,31 +90,31 @@ func test(s: String) {
     // --- String operations using an integer directly ---
 
     let str1 = s.dropFirst(s.count - 1) // GOOD
-    let str2 = s.dropFirst(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
+    let str2 = s.dropFirst(ns.length - 1) // BAD: NSString length used in String
     print("dropFirst '\(str1)' / '\(str2)'")
 
     let str3 = s.dropLast(s.count - 1) // GOOD
-    let str4 = s.dropLast(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
+    let str4 = s.dropLast(ns.length - 1) // BAD: NSString length used in String
     print("dropLast '\(str3)' / '\(str4)'")
 
     let str5 = s.prefix(s.count - 1) // GOOD
-    let str6 = s.prefix(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
+    let str6 = s.prefix(ns.length - 1) // BAD: NSString length used in String
     print("prefix '\(str5)' / '\(str6)'")
 
     let str7 = s.suffix(s.count - 1) // GOOD
-    let str8 = s.suffix(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
+    let str8 = s.suffix(ns.length - 1) // BAD: NSString length used in String
     print("suffix '\(str7)' / '\(str8)'")
 
     var str9 = s
     str9.removeFirst(s.count - 1) // GOOD
     var str10 = s
-    str10.removeFirst(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
+    str10.removeFirst(ns.length - 1) // BAD: NSString length used in String
     print("removeFirst '\(str9)' / '\(str10)'")
 
     var str11 = s
     str11.removeLast(s.count - 1) // GOOD
     var str12 = s
-    str12.removeLast(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
+    str12.removeLast(ns.length - 1) // BAD: NSString length used in String
     print("removeLast '\(str11)' / '\(str12)'")
 
     let nstr1 = ns.character(at: ns.length - 1) // GOOD

@@ -30,6 +30,14 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       node.asExpr() = member and
       flowstate = "String"
     )
+    or
+    // result of a call to to `NSString.length`
+    exists(MemberRefExpr member |
+      member.getBaseExpr().getType().getName() = ["NSString", "NSMutableString"] and
+      member.getMember().(VarDecl).getName() = "length" and
+      node.asExpr() = member and
+      flowstate = "NSString"
+    )
   }
 
   override predicate isSink(DataFlow::Node node, string flowstate) {
@@ -82,6 +90,27 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       call.getStaticTarget().getParam(pragma[only_bind_into](arg)).getName() = paramName and
       call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
       flowstate = "String" // `String` length flowing into `NSString`
+    )
+    or
+    // arguments to function calls...
+    exists(string funcName, string paramName, CallExpr call, int arg |
+      (
+        // `dropFirst`, `dropLast`, `removeFirst`, `removeLast`
+        funcName = ["dropFirst(_:)", "dropLast(_:)", "removeFirst(_:)", "removeLast(_:)"] and
+        paramName = "k"
+        or
+        // `prefix`, `suffix`
+        funcName = ["prefix(_:)", "suffix(_:)"] and
+        paramName = "maxLength"
+      ) and
+      call.getFunction().(ApplyExpr).getStaticTarget().getName() = funcName and
+      call.getFunction()
+          .(ApplyExpr)
+          .getStaticTarget()
+          .getParam(pragma[only_bind_into](arg))
+          .getName() = paramName and
+      call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
+      flowstate = "NSString" // `NSString` length flowing into `String`
     )
   }
 
