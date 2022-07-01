@@ -4,6 +4,7 @@ private import dotnet
 private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowPublic
 private import DataFlowPrivate
+private import semmle.code.csharp.controlflow.internal.Splitting
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 private import semmle.code.csharp.dataflow.ExternalFlow
@@ -39,6 +40,16 @@ DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
         // C# callable without C# implementation in the database
         unboundDecl.matchesHandle(result.(CIL::Callable))
   )
+  or
+  result = c.getUnboundDeclaration() and
+  isDefaultConstructorWithMemberInit(result)
+}
+
+private predicate isDefaultConstructorWithMemberInit(InstanceConstructor c) {
+  c.isUnboundDeclaration() and
+  c.getFile().fromSource() and
+  not c.hasBody() and
+  InitializerSplitting::constructorInitializes(c, _)
 }
 
 /**
