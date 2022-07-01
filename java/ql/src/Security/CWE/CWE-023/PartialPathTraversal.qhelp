@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p> User inputted file paths can often pose security risks if a program does not correctly handle them. In particular, if a user 
+<p>User supplied file paths can often pose security risks if a program does not correctly handle them. In particular, if a user 
 is meant to access files under a certain directory but does not enters a path under that directory, they can gain access to 
 (and potentially modify/delete) unexpected, possibly sensitive resources. </p>
 
