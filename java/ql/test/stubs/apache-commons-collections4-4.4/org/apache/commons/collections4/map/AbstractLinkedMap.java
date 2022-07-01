@@ -16,7 +16,7 @@ abstract public class AbstractLinkedMap<K, V> extends AbstractHashedMap<K, V> im
     protected AbstractLinkedMap(int p0){}
     protected AbstractLinkedMap(int p0, float p1){}
     protected AbstractLinkedMap(int p0, float p1, int p2){}
-    protected AbstractLinkedMap.LinkEntry<K, V> createTypeEntry(AbstractHashedMap.HashEntry<K, V> p0, int p1, K p2, V p3){ return null; }
+    protected AbstractLinkedMap.LinkEntry<K, V> createEntry(AbstractHashedMap.HashEntry<K, V> p0, int p1, K p2, V p3){ return null; }
     protected AbstractLinkedMap.LinkEntry<K, V> entryAfter(AbstractLinkedMap.LinkEntry<K, V> p0){ return null; }
     protected AbstractLinkedMap.LinkEntry<K, V> entryBefore(AbstractLinkedMap.LinkEntry<K, V> p0){ return null; }
     protected AbstractLinkedMap.LinkEntry<K, V> getEntry(Object p0){ return null; }
