@@ -179,6 +179,11 @@ class SwiftDispatcher {
     return ret;
   }
 
+  template <typename... Args>
+  void emitDebugInfo(const Args&... args) {
+    trap.debug(std::forward<Args>(args)...);
+  }
+
   // In order to not emit duplicated entries for declarations, we restrict emission to only
   // Decls declared within the current "scope".
   // Depending on the whether we are extracting a primary source file or not the scope is defined as
@@ -192,7 +197,9 @@ class SwiftDispatcher {
     if (decl.getModuleContext() != &currentModule) {
       return false;
     }
-    if (!currentPrimarySourceFile) {
+    // ModuleDecl is a special case: if it passed the previous test, it is the current module
+    // but it never has a source file, so we short circuit to emit it in any case
+    if (!currentPrimarySourceFile || decl.getKind() == swift::DeclKind::Module) {
       return true;
     }
     if (auto context = decl.getDeclContext()) {

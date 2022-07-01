@@ -644,7 +644,20 @@ if_config_decls(  //dir=decl
 );
 
 import_decls(  //dir=decl
-  unique int id: @import_decl
+  unique int id: @import_decl,
+  int module: @module_decl ref
+);
+
+#keyset[id]
+import_decl_is_exported(  //dir=decl
+  int id: @import_decl ref
+);
+
+#keyset[id, index]
+import_decl_declarations(  //dir=decl
+  int id: @import_decl ref,
+  int index: int ref,
+  int declaration: @value_decl ref
 );
 
 missing_member_decls(  //dir=decl
@@ -2016,6 +2029,16 @@ generic_context_generic_type_params(  //dir=decl
 
 module_decls(  //dir=decl
   unique int id: @module_decl
+);
+
+#keyset[id]
+module_decl_is_builtin_module(  //dir=decl
+  int id: @module_decl ref
+);
+
+#keyset[id]
+module_decl_is_system_module(  //dir=decl
+  int id: @module_decl ref
 );
 
 constructor_ref_call_exprs(  //dir=expr

@@ -64,8 +64,19 @@ static std::string getTrapFilename(swift::ModuleDecl& module, swift::SourceFile*
   return filename;
 }
 
+static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& module,
+                                                        swift::SourceFile* primaryFile = nullptr) {
+  llvm::SmallVector<swift::Decl*> ret;
+  ret.push_back(&module);
+  if (primaryFile) {
+    primaryFile->getTopLevelDecls(ret);
+  } else {
+    module.getTopLevelDecls(ret);
+  }
+  return ret;
+}
+
 static void extractDeclarations(const SwiftExtractorConfiguration& config,
-                                llvm::ArrayRef<swift::Decl*> topLevelDecls,
                                 swift::CompilerInstance& compiler,
                                 swift::ModuleDecl& module,
                                 swift::SourceFile* primaryFile = nullptr) {
@@ -119,6 +130,7 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   trap.emit(LocationsTrap{unknownLocationLabel, unknownFileLabel});
 
   SwiftVisitor visitor(compiler.getSourceMgr(), arena, trap, module, primaryFile);
+  auto topLevelDecls = getTopLevelDecls(module, primaryFile);
   for (auto decl : topLevelDecls) {
     visitor.extract(decl);
   }
@@ -203,10 +215,7 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
     // user code twice: once during the module build in a form of a source file, and then as
     // a pre-built module during building of the dependent source files.
     if (module->isSystemModule() || module->isBuiltinModule()) {
-      llvm::SmallVector<swift::Decl*> decls;
-      module->getTopLevelDecls(decls);
-      // TODO: pass ModuleDecl directly when we have module extraction in place?
-      extractDeclarations(config, decls, compiler, *module);
+      extractDeclarations(config, compiler, *module);
     } else {
       for (auto file : module->getFiles()) {
         auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
@@ -214,7 +223,7 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
           continue;
         }
         archiveFile(config, *sourceFile);
-        extractDeclarations(config, sourceFile->getTopLevelDecls(), compiler, *module, sourceFile);
+        extractDeclarations(config, compiler, *module, sourceFile);
       }
     }
   }
