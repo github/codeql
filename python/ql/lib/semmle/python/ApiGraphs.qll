@@ -721,7 +721,7 @@ module API {
     DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src) {
       Stages::TypeTracking::ref() and
       result = trackUseNode(src, DataFlow::TypeTracker::end()) and
-      not result instanceof DataFlow::ModuleVariableNode
+      result instanceof DataFlow::ExprNode
     }
 
     /**
