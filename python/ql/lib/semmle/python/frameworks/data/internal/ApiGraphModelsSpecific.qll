@@ -33,7 +33,15 @@ private import AccessPathSyntax
 /**
  * Holds if models describing `package` may be relevant for the analysis of this database.
  */
-predicate isPackageUsed(string package) { exists(API::moduleImport(package)) }
+bindingset[package]
+predicate isPackageUsed(string package) {
+  // We would like to ask for imports here,
+  // but that entails non-monotonic recursion.
+  // For now, we follow Ruby and just allow all packages.
+  //
+  // exists(API::moduleImport(package))
+  any()
+}
 
 /** Gets a Python-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
 bindingset[package, type, path]
