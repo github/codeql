@@ -18,7 +18,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os : [ubuntu-20.04, macos-latest]
+        os:
+          - ubuntu-20.04
+#          - macos-latest  TODO
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/fetch-codeql
