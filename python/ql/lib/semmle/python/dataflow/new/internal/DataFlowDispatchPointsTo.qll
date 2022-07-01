@@ -332,9 +332,9 @@ abstract class NonLibraryDataFlowCallable extends DataFlowCallable {
   /** Gets a callable value for this callable, if one exists. */
   abstract CallableValue getCallableValue();
 
-  abstract CallNode getACall2();
+  abstract CallNode getANonLibraryCall();
 
-  final override CallNode getACall() { result = this.getACall2() }
+  final override CallNode getACall() { result = this.getANonLibraryCall() }
 }
 
 /** A class representing a callable value. */
@@ -345,7 +345,7 @@ class DataFlowCallableValue extends NonLibraryDataFlowCallable, TCallableValue {
 
   override string toString() { result = callable.toString() }
 
-  override CallNode getACall2() { result = callable.getACall() }
+  override CallNode getANonLibraryCall() { result = callable.getACall() }
 
   override Scope getScope() { result = callable.getScope() }
 
@@ -364,7 +364,7 @@ class DataFlowLambda extends NonLibraryDataFlowCallable, TLambda {
 
   override string toString() { result = lambda.toString() }
 
-  override CallNode getACall2() { result = this.getCallableValue().getACall() }
+  override CallNode getANonLibraryCall() { result = this.getCallableValue().getACall() }
 
   override Scope getScope() { result = lambda.getEvaluatingScope() }
 
@@ -387,7 +387,7 @@ class DataFlowModuleScope extends NonLibraryDataFlowCallable, TModule {
 
   override string toString() { result = mod.toString() }
 
-  override CallNode getACall2() { none() }
+  override CallNode getANonLibraryCall() { none() }
 
   override Scope getScope() { result = mod }
 
