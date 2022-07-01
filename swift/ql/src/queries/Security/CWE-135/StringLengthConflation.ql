@@ -23,12 +23,20 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
   StringLengthConflationConfiguration() { this = "StringLengthConflationConfiguration" }
 
   override predicate isSource(DataFlow::Node node, string flowstate) {
-    // result of a call to to `String.count`
+    // result of a call to `String.count`
     exists(MemberRefExpr member |
       member.getBaseExpr().getType().getName() = "String" and
       member.getMember().(VarDecl).getName() = "count" and
       node.asExpr() = member and
       flowstate = "String"
+    )
+    or
+    // result of a call to `NSString.length`
+    exists(MemberRefExpr member |
+      member.getBaseExpr().getType().getName() = ["NSString", "NSMutableString"] and
+      member.getMember().(VarDecl).getName() = "length" and
+      node.asExpr() = member and
+      flowstate = "NSString"
     )
   }
 
@@ -83,12 +91,44 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
       flowstate = "String" // `String` length flowing into `NSString`
     )
+    or
+    // arguments to function calls...
+    exists(string funcName, string paramName, CallExpr call, int arg |
+      (
+        // `String.dropFirst`, `String.dropLast`, `String.removeFirst`, `String.removeLast`
+        funcName = ["dropFirst(_:)", "dropLast(_:)", "removeFirst(_:)", "removeLast(_:)"] and
+        paramName = "k"
+        or
+        // `String.prefix`, `String.suffix`
+        funcName = ["prefix(_:)", "suffix(_:)"] and
+        paramName = "maxLength"
+        or
+        // `String.Index.init`
+        funcName = "init(encodedOffset:)" and
+        paramName = "offset"
+        or
+        // `String.index`
+        funcName = ["index(_:offsetBy:)", "index(_:offsetBy:limitBy:)"] and
+        paramName = "n"
+        or
+        // `String.formIndex`
+        funcName = ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and
+        paramName = "distance"
+      ) and
+      call.getFunction().(ApplyExpr).getStaticTarget().getName() = funcName and
+      call.getFunction()
+          .(ApplyExpr)
+          .getStaticTarget()
+          .getParam(pragma[only_bind_into](arg))
+          .getName() = paramName and
+      call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
+      flowstate = "NSString" // `NSString` length flowing into `String`
+    )
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // allow flow through `+` and `-`.
-    node2.asExpr().(AddExpr).getAnOperand() = node1.asExpr() or
-    node2.asExpr().(SubExpr).getAnOperand() = node1.asExpr()
+    // allow flow through `+`, `-`, `*` etc.
+    node2.asExpr().(ArithmeticOperation).getAnOperand() = node1.asExpr()
   }
 }
 
