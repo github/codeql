@@ -19,11 +19,12 @@ static std::optional<std::string> rewriteOutputFileMap(
     const std::string& outputFileMapPath,
     const std::vector<std::string>& inputs,
     std::unordered_map<std::string, std::string>& remapping) {
-  auto newPath = config.tempArtifactDir + '/' + outputFileMapPath;
+  auto newMapPath = config.getTempArtifactDir() + '/' + outputFileMapPath;
 
   // TODO: do not assume absolute path for the second parameter
   auto outputMapOrError = swift::OutputFileMap::loadFromPath(outputFileMapPath, "");
   if (!outputMapOrError) {
+    std::cerr << "Cannot load output map: '" << outputFileMapPath << "'\n";
     return std::nullopt;
   }
   auto oldOutputMap = outputMapOrError.get();
@@ -39,13 +40,13 @@ static std::optional<std::string> rewriteOutputFileMap(
     newMap.copyFrom(*oldMap);
     for (auto& entry : newMap) {
       auto oldPath = entry.getSecond();
-      auto newPath = config.tempArtifactDir + '/' + oldPath;
+      auto newPath = config.getTempArtifactDir() + '/' + oldPath;
       entry.getSecond() = newPath;
       remapping[oldPath] = newPath;
     }
   }
   std::error_code ec;
-  llvm::SmallString<PATH_MAX> filepath(newPath);
+  llvm::SmallString<PATH_MAX> filepath(newMapPath);
   llvm::StringRef parent = llvm::sys::path::parent_path(filepath);
   if (std::error_code ec = llvm::sys::fs::create_directories(parent)) {
     std::cerr << "Cannot create relocated output map dir: '" << parent.str()
@@ -53,9 +54,9 @@ static std::optional<std::string> rewriteOutputFileMap(
     return std::nullopt;
   }
 
-  llvm::raw_fd_ostream fd(newPath, ec, llvm::sys::fs::OF_None);
+  llvm::raw_fd_ostream fd(newMapPath, ec, llvm::sys::fs::OF_None);
   newOutputMap.write(fd, keys);
-  return newPath;
+  return newMapPath;
 }
 
 // This is an Xcode-specific workaround to produce alias names for an existing .swiftmodule file.
@@ -132,30 +133,27 @@ static std::vector<std::string> computeModuleAliases(llvm::StringRef modulePath,
   relocatedModulePath += "/Products/";
   relocatedModulePath += destinationDir + '/';
 
-  std::vector<std::string> moduleLocations;
+  // clang-format off
+  std::vector<std::string> moduleLocations = {
+    // First case
+    relocatedModulePath + moduleNameWithExt.str() + '/',
+    // Second case
+    relocatedModulePath + moduleName.str() + '/' + moduleNameWithExt.str() + '/',
+    // Third case
+    relocatedModulePath + moduleName.str() + '/' + moduleName.str() + ".framework/Modules/" + moduleNameWithExt.str() + '/',
+  };
+  // clang-format on
 
-  std::string firstCase = relocatedModulePath;
-  firstCase += moduleNameWithExt.str() + '/';
-  moduleLocations.push_back(firstCase);
-
-  std::string secondCase = relocatedModulePath;
-  secondCase += moduleName.str() + '/';
-  secondCase += moduleNameWithExt.str() + '/';
-  moduleLocations.push_back(secondCase);
-
-  std::string thirdCase = relocatedModulePath;
-  thirdCase += moduleName.str() + '/';
-  thirdCase += moduleName.str() + ".framework/Modules/";
-  thirdCase += moduleNameWithExt.str() + '/';
-  moduleLocations.push_back(thirdCase);
+  std::vector<std::string> archs({arch});
+  if (!targetTriple.empty()) {
+    llvm::Triple triple(targetTriple);
+    archs.push_back(swift::getTargetSpecificModuleTriple(triple).normalize());
+  }
 
   std::vector<std::string> aliases;
   for (auto& location : moduleLocations) {
-    aliases.push_back(location + arch + ".swiftmodule");
-    if (!targetTriple.empty()) {
-      llvm::Triple triple(targetTriple);
-      auto moduleTriple = swift::getTargetSpecificModuleTriple(triple);
-      aliases.push_back(location + moduleTriple.normalize() + ".swiftmodule");
+    for (auto& a : archs) {
+      aliases.push_back(location + a + ".swiftmodule");
     }
   }
 
@@ -195,7 +193,7 @@ std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
   for (size_t i = 0; i < CLIArgs.size(); i++) {
     if (pathRewriteOptions.count(CLIArgs[i])) {
       auto oldPath = CLIArgs[i + 1];
-      auto newPath = config.tempArtifactDir + '/' + oldPath;
+      auto newPath = config.getTempArtifactDir() + '/' + oldPath;
       CLIArgs[++i] = newPath;
       newLocations.push_back(newPath);
 
@@ -261,12 +259,12 @@ void storeRemappingForVFS(const SwiftExtractorConfiguration& config,
     return;
   }
 
-  if (std::error_code ec = llvm::sys::fs::create_directories(config.tempVFSDir)) {
+  if (std::error_code ec = llvm::sys::fs::create_directories(config.getTempVFSDir())) {
     std::cerr << "Cannot create temp VFS directory: " << ec.message() << "\n";
     return;
   }
 
-  if (std::error_code ec = llvm::sys::fs::create_directories(config.VFSDir)) {
+  if (std::error_code ec = llvm::sys::fs::create_directories(config.getVFSDir())) {
     std::cerr << "Cannot create VFS directory: " << ec.message() << "\n";
     return;
   }
@@ -274,7 +272,7 @@ void storeRemappingForVFS(const SwiftExtractorConfiguration& config,
   // Constructing the VFS yaml file in a temp folder so that the other process doesn't read it
   // while it is not complete
   // TODO: Pick a more robust way to not collide with files from other processes
-  auto tempVfsPath = config.tempVFSDir + '/' + std::to_string(getpid()) + "-vfs.yaml";
+  auto tempVfsPath = config.getTempVFSDir() + '/' + std::to_string(getpid()) + "-vfs.yaml";
   std::error_code ec;
   llvm::raw_fd_ostream fd(tempVfsPath, ec, llvm::sys::fs::OF_None);
   if (ec) {
@@ -299,7 +297,7 @@ void storeRemappingForVFS(const SwiftExtractorConfiguration& config,
   fd << "}\n";
 
   fd.flush();
-  auto vfsPath = config.VFSDir + '/' + std::to_string(getpid()) + "-vfs.yaml";
+  auto vfsPath = config.getVFSDir() + '/' + std::to_string(getpid()) + "-vfs.yaml";
   if (std::error_code ec = llvm::sys::fs::rename(tempVfsPath, vfsPath)) {
     std::cerr << "Cannot move temp VFS file '" << tempVfsPath << "' -> '" << vfsPath
               << "': " << ec.message() << "\n";
@@ -308,7 +306,7 @@ void storeRemappingForVFS(const SwiftExtractorConfiguration& config,
 }
 
 std::vector<std::string> collectVFSFiles(const SwiftExtractorConfiguration& config) {
-  auto vfsDir = config.VFSDir + '/';
+  auto vfsDir = config.getVFSDir() + '/';
   if (!llvm::sys::fs::exists(vfsDir)) {
     return {};
   }

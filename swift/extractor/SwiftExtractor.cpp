@@ -76,7 +76,7 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   auto name = getTrapFilename(module, primaryFile);
   llvm::StringRef filename(name);
   std::string tempTrapName = filename.str() + '.' + std::to_string(getpid()) + ".trap";
-  llvm::SmallString<PATH_MAX> tempTrapPath(config.tempTrapDir);
+  llvm::SmallString<PATH_MAX> tempTrapPath(config.getTempTrapDir());
   llvm::sys::path::append(tempTrapPath, tempTrapName);
 
   llvm::StringRef tempTrapParent = llvm::sys::path::parent_path(tempTrapPath);
@@ -151,8 +151,7 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   }
 }
 
-void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
-                               swift::CompilerInstance& compiler) {
+static std::unordered_set<std::string> collectInputFilenames(swift::CompilerInstance& compiler) {
   // The frontend can be called in many different ways.
   // At each invocation we only extract system and builtin modules and any input source files that
   // have an output associated with them.
@@ -163,7 +162,10 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
       sourceFiles.insert(input.getFileName());
     }
   }
+  return sourceFiles;
+}
 
+static std::unordered_set<swift::ModuleDecl*> collectModules(swift::CompilerInstance& compiler) {
   // getASTContext().getLoadedModules() does not provide all the modules available within the
   // program.
   // We need to iterate over all the imported modules (recursively) to see the whole "universe."
@@ -187,8 +189,15 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
       }
     }
   }
+  return allModules;
+}
 
-  for (auto& module : allModules) {
+void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
+                               swift::CompilerInstance& compiler) {
+  auto inputFiles = collectInputFilenames(compiler);
+  auto modules = collectModules(compiler);
+
+  for (auto& module : modules) {
     // We only extract system and builtin modules here as the other "user" modules can be built
     // during the build process and then re-used at a later stage. In this case, we extract the
     // user code twice: once during the module build in a form of a source file, and then as
@@ -201,7 +210,7 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
     } else {
       for (auto file : module->getFiles()) {
         auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
-        if (!sourceFile || sourceFiles.count(sourceFile->getFilename().str()) == 0) {
+        if (!sourceFile || inputFiles.count(sourceFile->getFilename().str()) == 0) {
           continue;
         }
         archiveFile(config, *sourceFile);

@@ -58,11 +58,6 @@ int main(int argc, char** argv) {
   configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
   configuration.scratchDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", ".");
 
-  configuration.tempTrapDir = configuration.scratchDir + "/swift-trap-temp";
-  configuration.VFSDir = configuration.scratchDir + "/swift-vfs";
-  configuration.tempVFSDir = configuration.scratchDir + "/swift-vfs-temp";
-  configuration.tempArtifactDir = configuration.scratchDir + "/swift-extraction-artifacts";
-
   configuration.frontendOptions.reserve(argc - 1);
   for (int i = 1; i < argc; i++) {
     configuration.frontendOptions.push_back(argv[i]);
