@@ -103,10 +103,10 @@ module ArgumentPassing {
    * Used to limit the size of predicates.
    */
   predicate connects(CallNode call, CallableValue callable) {
-    exists(NonLibraryDataFlowSourceCall c, NonLibraryDataFlowCallable k |
+    exists(NonLibraryNormalCall c, NonLibraryDataFlowCallable k |
       call = c.getNode() and
       callable = k.getCallableValue() and
-      k = c.getCallable2()
+      k = c.getNonLibraryCallable()
     )
   }
 
@@ -438,7 +438,7 @@ newtype TDataFlowCall =
    * Includes function calls, method calls, class calls and library calls.
    * All these will be associated with a `CallNode`.
    */
-  TNonSpecialCall(CallNode call) or
+  TNormalCall(CallNode call) or
   /**
    * Includes calls to special methods.
    * These will be associated with a `SpecialMethodCallNode`.
@@ -449,7 +449,8 @@ newtype TDataFlowCall =
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
 
-class TDataFlowSourceCall = TSpecialCall or TNonSpecialCall;
+/** A call found in the program source (as opposed to a synthesised summary call). */
+class TDataFlowSourceCall = TSpecialCall or TNormalCall;
 
 /** A call that is taken into account by the global data flow computation. */
 abstract class DataFlowCall extends TDataFlowCall {
@@ -500,10 +501,10 @@ abstract class DataFlowSourceCall extends DataFlowCall, TDataFlowSourceCall {
 }
 
 /** A call associated with a `CallNode`. */
-class NonSpecialCall extends DataFlowSourceCall, TNonSpecialCall {
+class NormalCall extends DataFlowSourceCall, TNormalCall {
   CallNode call;
 
-  NonSpecialCall() { this = TNonSpecialCall(call) }
+  NormalCall() { this = TNormalCall(call) }
 
   override string toString() { result = call.toString() }
 
@@ -516,14 +517,15 @@ class NonSpecialCall extends DataFlowSourceCall, TNonSpecialCall {
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
 }
 
-abstract class NonLibraryDataFlowSourceCall extends NonSpecialCall {
-  abstract Node getArg2(int n);
+/** A (non-special) call that does not go to a library callable. */
+abstract class NonLibraryNormalCall extends NormalCall {
+  abstract Node getNonLibraryArg(int n);
 
-  final override Node getArg(int n) { result = this.getArg2(n) }
+  final override Node getArg(int n) { result = this.getNonLibraryArg(n) }
 
-  abstract DataFlowCallable getCallable2();
+  abstract DataFlowCallable getNonLibraryCallable();
 
-  final override DataFlowCallable getCallable() { result = this.getCallable2() }
+  final override DataFlowCallable getCallable() { result = this.getNonLibraryCallable() }
 }
 
 /**
@@ -532,7 +534,7 @@ abstract class NonLibraryDataFlowSourceCall extends NonSpecialCall {
  * Bound method calls and class calls insert an argument for the explicit
  * `self` parameter, and special method calls have special argument passing.
  */
-class FunctionCall extends NonLibraryDataFlowSourceCall {
+class FunctionCall extends NonLibraryNormalCall {
   NonLibraryDataFlowCallable callable;
 
   FunctionCall() {
@@ -540,13 +542,15 @@ class FunctionCall extends NonLibraryDataFlowSourceCall {
     call = callable.getACall()
   }
 
-  override Node getArg2(int n) { result = getArg(call, TNoShift(), callable.getCallableValue(), n) }
+  override Node getNonLibraryArg(int n) {
+    result = getArg(call, TNoShift(), callable.getCallableValue(), n)
+  }
 
-  override DataFlowCallable getCallable2() { result = callable }
+  override DataFlowCallable getNonLibraryCallable() { result = callable }
 }
 
 /** A call to a lambda. */
-class LambdaCall extends NonLibraryDataFlowSourceCall {
+class LambdaCall extends NonLibraryNormalCall {
   NonLibraryDataFlowCallable callable;
 
   LambdaCall() {
@@ -554,29 +558,33 @@ class LambdaCall extends NonLibraryDataFlowSourceCall {
     callable = TLambda(any(Function f))
   }
 
-  override Node getArg2(int n) { result = getArg(call, TNoShift(), callable.getCallableValue(), n) }
+  override Node getNonLibraryArg(int n) {
+    result = getArg(call, TNoShift(), callable.getCallableValue(), n)
+  }
 
-  override DataFlowCallable getCallable2() { result = callable }
+  override DataFlowCallable getNonLibraryCallable() { result = callable }
 }
 
 /**
  * Represents a call to a bound method call.
  * The node representing the instance is inserted as argument to the `self` parameter.
  */
-class MethodCall extends NonLibraryDataFlowSourceCall {
+class MethodCall extends NonLibraryNormalCall {
   FunctionValue bm;
 
   MethodCall() { call = bm.getAMethodCall() }
 
   private CallableValue getCallableValue() { result = bm }
 
-  override Node getArg2(int n) {
+  override Node getNonLibraryArg(int n) {
     n > 0 and result = getArg(call, TShiftOneUp(), this.getCallableValue(), n)
     or
     n = 0 and result = TCfgNode(call.getFunction().(AttrNode).getObject())
   }
 
-  override DataFlowCallable getCallable2() { result = TCallableValue(this.getCallableValue()) }
+  override DataFlowCallable getNonLibraryCallable() {
+    result = TCallableValue(this.getCallableValue())
+  }
 }
 
 /**
@@ -585,7 +593,7 @@ class MethodCall extends NonLibraryDataFlowSourceCall {
  * That makes the call node be the post-update node holding the value of the object
  * after the constructor has run.
  */
-class ClassCall extends NonLibraryDataFlowSourceCall {
+class ClassCall extends NonLibraryNormalCall {
   ClassValue c;
 
   ClassCall() {
@@ -595,13 +603,15 @@ class ClassCall extends NonLibraryDataFlowSourceCall {
 
   private CallableValue getCallableValue() { c.getScope().getInitMethod() = result.getScope() }
 
-  override Node getArg2(int n) {
+  override Node getNonLibraryArg(int n) {
     n > 0 and result = getArg(call, TShiftOneUp(), this.getCallableValue(), n)
     or
     n = 0 and result = TSyntheticPreUpdateNode(TCfgNode(call))
   }
 
-  override DataFlowCallable getCallable2() { result = TCallableValue(this.getCallableValue()) }
+  override DataFlowCallable getNonLibraryCallable() {
+    result = TCallableValue(this.getCallableValue())
+  }
 }
 
 /** A call to a special method. */
@@ -626,7 +636,7 @@ class SpecialCall extends DataFlowSourceCall, TSpecialCall {
 }
 
 /** A call to a summarized callable. */
-class LibraryCall extends NonSpecialCall {
+class LibraryCall extends NormalCall {
   LibraryCallable callable;
 
   LibraryCall() { call.getNode() = callable.getACall() }

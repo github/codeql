@@ -13,7 +13,7 @@ class UnresolvedCallExpectations extends InlineExpectationsTest {
     exists(location.getFile().getRelativePath()) and
     exists(CallNode call |
       not exists(DataFlowPrivate::DataFlowCall dfc | dfc.getNode() = call |
-        // For every `CallNode`, there is a `DataFlowCall` in the form of a `NonSpecialCall`.
+        // For every `CallNode`, there is a `DataFlowCall` in the form of a `NormalCall`.
         // It does not really count, as it has some abstract overrides. For instance, it does not
         // define `getCallable`, so checking for the existence of this guarantees that we are in a
         // properly resolved call.
