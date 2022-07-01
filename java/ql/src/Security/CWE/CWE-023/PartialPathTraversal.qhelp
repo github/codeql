@@ -7,12 +7,12 @@
 is meant to access files under a certain directory but does not enters a path under that directory, they can gain access to 
 (and potentially modify/delete) unexpected, possibly sensitive resources. </p>
 
-<p> Suppose a program is to only accept paths that point to files/folders within directory <code>DIR</code>. 
-To ensure that a user inputted path, say <code>SUBDIR</code>, is a subdirectory of <code>DIR</code>, the 
-program verifies that <code>DIR</code> is a prefix of <code>SUBDIR</code>.
-However, this check is not satisfactory: unless <code>DIR</code> is not slash-terminated, 
+<p>Suppose a program is to only accept paths that point to files/folders within directory <code>DIR</code>. 
+To ensure that a user supplied path, say <code>SUBDIR</code>, is a subdirectory of <code>DIR</code>, the 
+program verifies, using string comparisons, that <code>DIR</code> is a prefix of <code>SUBDIR</code>.
+However, if <code>DIR</code> is not slash-terminated, such a check would not be sufficient. 
 <code>SUBDIR</code> may be allowed to also access siblings of <code>DIR</code> and not 
-just children of <code>DIR</code>, which is a security issue. </p>
+just children of <code>DIR</code>, which is a security vulnerability.</p>
 
 </overview>
 <recommendation>
