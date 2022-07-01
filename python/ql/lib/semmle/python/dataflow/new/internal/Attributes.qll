@@ -50,6 +50,9 @@ abstract class AttrRef extends Node {
    * better results.
    */
   abstract string getAttributeName();
+
+  /** Holds if a name could not be determined for this attribute. */
+  predicate unknownAttribute() { not exists(this.getAttributeName()) }
 }
 
 /**
