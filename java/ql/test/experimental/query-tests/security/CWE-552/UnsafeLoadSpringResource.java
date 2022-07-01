@@ -1,6 +1,7 @@
 package com.example;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -31,7 +32,7 @@ public class UnsafeLoadSpringResource {
 		char[] buffer = new char[4096];
 		StringBuilder out = new StringBuilder();
 		try {
-			Reader in = new InputStreamReader(clr.getInputStream(), "UTF-8");
+			Reader in = new FileReader(clr.getFilename());
 			for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
 				out.append(buffer, 0, numRead);
 			}
@@ -103,6 +104,7 @@ public class UnsafeLoadSpringResource {
 
 	@GetMapping("/file3")
 	//BAD: Get resource from ResourceLoader (same as application context) without input validation
+	// Note it is not detected without the generic `resource.getInputStream()` check
 	public String getFileContent3(@RequestParam(name="fileName") String fileName) {
 		String content = null;
 
