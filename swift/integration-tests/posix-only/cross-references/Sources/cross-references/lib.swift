@@ -27,4 +27,3 @@ infix operator ~
 func ~(lhs: Int, rhs: Int) -> Int {
     return lhs
 }
-
