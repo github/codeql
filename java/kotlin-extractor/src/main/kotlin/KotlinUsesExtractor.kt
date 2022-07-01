@@ -970,7 +970,7 @@ open class KotlinUsesExtractor(
      * allow it to be passed in.
     */
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    private fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+    fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
         getFunctionLabel(
             f.parent,
             maybeParentId,

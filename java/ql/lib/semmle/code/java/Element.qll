@@ -57,6 +57,12 @@ class Element extends @element, Top {
       i = 4 and result = "Class initialisation method <clinit>"
       or
       i = 5 and result = "Enum class special member"
+      or
+      i = 6 and result = "Getter for a Kotlin delegated property"
+      or
+      i = 7 and result = "Setter for a Kotlin delegated property"
+      or
+      i = 8 and result = "Proxy static method for a @JvmStatic-annotated function or property"
     )
   }
 }
