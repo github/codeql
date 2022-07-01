@@ -53,7 +53,8 @@ indeed slash-terminated, the user supplying <code>dir</code> can only access chi
 <li>
 OWASP:
 <a href="https://owasp.org/www-community/attacks/Path_Traversal">Partial Path Traversal</a>.
-<a href="https://github.com/ESAPI/esapi-java-legacy/blob/develop/documentation/GHSL-2022-008_The_OWASP_Enterprise_Security_API.md"> ESAPI </a>
+CVE-2022-23457:
+<a href="https://github.com/ESAPI/esapi-java-legacy/blob/develop/documentation/GHSL-2022-008_The_OWASP_Enterprise_Security_API.md"> ESAPI Vulnerability Report</a>
 </li>
 
 </references>
