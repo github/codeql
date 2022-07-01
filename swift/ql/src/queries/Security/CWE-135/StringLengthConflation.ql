@@ -95,17 +95,25 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
     // arguments to function calls...
     exists(string funcName, string paramName, CallExpr call, int arg |
       (
-        // `dropFirst`, `dropLast`, `removeFirst`, `removeLast`
+        // `String.dropFirst`, `String.dropLast`, `String.removeFirst`, `String.removeLast`
         funcName = ["dropFirst(_:)", "dropLast(_:)", "removeFirst(_:)", "removeLast(_:)"] and
         paramName = "k"
         or
-        // `prefix`, `suffix`
+        // `String.prefix`, `String.suffix`
         funcName = ["prefix(_:)", "suffix(_:)"] and
         paramName = "maxLength"
         or
         // `String.Index.init`
         funcName = "init(encodedOffset:)" and
         paramName = "offset"
+        or
+        // `String.index`
+        funcName = ["index(_:offsetBy:)", "index(_:offsetBy:limitBy:)"] and
+        paramName = "n"
+        or
+        // `String.formIndex`
+        funcName = ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and
+        paramName = "distance"
       ) and
       call.getFunction().(ApplyExpr).getStaticTarget().getName() = funcName and
       call.getFunction()
@@ -119,9 +127,8 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // allow flow through `+` and `-`.
-    node2.asExpr().(AddExpr).getAnOperand() = node1.asExpr() or
-    node2.asExpr().(SubExpr).getAnOperand() = node1.asExpr()
+    // allow flow through `+`, `-`, `*` etc.
+    node2.asExpr().(ArithmeticOperation).getAnOperand() = node1.asExpr()
   }
 }
 
