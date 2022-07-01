@@ -49,7 +49,7 @@ open class KotlinUsesExtractor(
         javaLangObject?.typeWith()
     }
 
-    fun usePackage(pkg: String): Label<out DbPackage> {
+    private fun usePackage(pkg: String): Label<out DbPackage> {
         return extractPackage(pkg)
     }
 
@@ -154,12 +154,12 @@ open class KotlinUsesExtractor(
         } ?: argsIncludingOuterClasses
     }
 
-    fun isStaticClass(c: IrClass) = c.visibility != DescriptorVisibilities.LOCAL && !c.isInner
+    private fun isStaticClass(c: IrClass) = c.visibility != DescriptorVisibilities.LOCAL && !c.isInner
 
     // Gets nested inner classes starting at `c` and proceeding outwards to the innermost enclosing static class.
     // For example, for (java syntax) `class A { static class B { class C { class D { } } } }`,
     // `nonStaticParentsWithSelf(D)` = `[D, C, B]`.
-    fun parentsWithTypeParametersInScope(c: IrClass): List<IrDeclarationParent> {
+    private fun parentsWithTypeParametersInScope(c: IrClass): List<IrDeclarationParent> {
         val parentsList = c.parentsWithSelf.toList()
         val firstOuterClassIdx = parentsList.indexOfFirst { it is IrClass && isStaticClass(it) }
         return if (firstOuterClassIdx == -1) parentsList else parentsList.subList(0, firstOuterClassIdx + 1)
@@ -168,14 +168,14 @@ open class KotlinUsesExtractor(
     // Gets the type parameter symbols that are in scope for class `c` in Kotlin order (i.e. for
     // `class NotInScope<T> { static class OutermostInScope<A, B> { class QueryClass<C, D> { } } }`,
     // `getTypeParametersInScope(QueryClass)` = `[C, D, A, B]`.
-    fun getTypeParametersInScope(c: IrClass) =
+    private fun getTypeParametersInScope(c: IrClass) =
         parentsWithTypeParametersInScope(c).mapNotNull({ getTypeParameters(it) }).flatten()
 
     // Returns a map from `c`'s type variables in scope to type arguments `argsIncludingOuterClasses`.
     // Hack for the time being: the substituted types are always nullable, to prevent downstream code
     // from replacing a generic parameter by a primitive. As and when we extract Kotlin types we will
     // need to track this information in more detail.
-    fun makeTypeGenericSubstitutionMap(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>) =
+    private fun makeTypeGenericSubstitutionMap(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>) =
         getTypeParametersInScope(c).map({ it.symbol }).zip(argsIncludingOuterClasses.map { it.withQuestionMark(true) }).toMap()
 
     fun makeGenericSubstitutionFunction(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>) =
@@ -190,7 +190,7 @@ open class KotlinUsesExtractor(
         }
 
     // The Kotlin compiler internal representation of Outer<A, B>.Inner<C, D>.InnerInner<E, F>.someFunction<G, H>.LocalClass<I, J> is LocalClass<I, J, G, H, E, F, C, D, A, B>. This function returns [A, B, C, D, E, F, G, H, I, J].
-    fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
+    private fun orderTypeArgsLeftToRight(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): List<IrTypeArgument>? {
         if(argsIncludingOuterClasses.isNullOrEmpty())
             return argsIncludingOuterClasses
         val ret = ArrayList<IrTypeArgument>()
@@ -237,15 +237,15 @@ open class KotlinUsesExtractor(
         return UseClassInstanceResult(classTypeResult, extractClass)
     }
 
-    fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
+    private fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
 
-    fun extractClassLaterIfExternal(c: IrClass) {
+    private fun extractClassLaterIfExternal(c: IrClass) {
         if (isExternalDeclaration(c)) {
             extractExternalClassLater(c)
         }
     }
 
-    fun extractExternalEnclosingClassLater(d: IrDeclaration) {
+    private fun extractExternalEnclosingClassLater(d: IrDeclaration) {
         when (val parent = d.parent) {
             is IrClass -> extractExternalClassLater(parent)
             is IrFunction -> extractExternalEnclosingClassLater(parent)
@@ -254,7 +254,7 @@ open class KotlinUsesExtractor(
         }
     }
 
-    fun extractPropertyLaterIfExternalFileMember(p: IrProperty) {
+    private fun extractPropertyLaterIfExternalFileMember(p: IrProperty) {
         if (isExternalFileClassMember(p)) {
             extractExternalClassLater(p.parentAsClass)
             dependencyCollector?.addDependency(p, externalClassExtractor.propertySignature)
@@ -262,7 +262,7 @@ open class KotlinUsesExtractor(
         }
     }
 
-    fun extractFieldLaterIfExternalFileMember(f: IrField) {
+    private fun extractFieldLaterIfExternalFileMember(f: IrField) {
         if (isExternalFileClassMember(f)) {
             extractExternalClassLater(f.parentAsClass)
             dependencyCollector?.addDependency(f, externalClassExtractor.fieldSignature)
@@ -270,7 +270,7 @@ open class KotlinUsesExtractor(
         }
     }
 
-    fun extractFunctionLaterIfExternalFileMember(f: IrFunction) {
+    private fun extractFunctionLaterIfExternalFileMember(f: IrFunction) {
         if (isExternalFileClassMember(f)) {
             extractExternalClassLater(f.parentAsClass)
             (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
@@ -301,7 +301,7 @@ open class KotlinUsesExtractor(
         externalClassExtractor.extractLater(c)
     }
 
-    fun tryReplaceAndroidSyntheticClass(c: IrClass): IrClass {
+    private fun tryReplaceAndroidSyntheticClass(c: IrClass): IrClass {
         // The Android Kotlin Extensions Gradle plugin introduces synthetic functions, fields and classes. The most
         // obvious signature is that they lack any supertype information even though they are not root classes.
         // If possible, replace them by a real version of the same class.
@@ -503,7 +503,7 @@ open class KotlinUsesExtractor(
     // but returns boxed arrays with a nullable, invariant component type, with any nested arrays
     // similarly transformed. For example, Array<out Array<in E>> would become Array<Array<E?>?>
     // Array<*> will become Array<Any?>.
-    fun getInvariantNullableArrayType(arrayType: IrSimpleType): IrSimpleType =
+    private fun getInvariantNullableArrayType(arrayType: IrSimpleType): IrSimpleType =
         if (arrayType.isPrimitiveArray())
             arrayType
         else {
@@ -528,7 +528,7 @@ open class KotlinUsesExtractor(
                 )
         }
 
-    fun useArrayType(arrayType: IrSimpleType, componentType: IrType, elementType: IrType, dimensions: Int, isPrimitiveArray: Boolean): TypeResults {
+    private fun useArrayType(arrayType: IrSimpleType, componentType: IrType, elementType: IrType, dimensions: Int, isPrimitiveArray: Boolean): TypeResults {
 
         // Ensure we extract Array<Int> as Integer[], not int[], for example:
         fun nullableIfNotPrimitive(type: IrType) = if (type.isPrimitiveType() && !isPrimitiveArray) type.makeNullable() else type
@@ -579,7 +579,7 @@ open class KotlinUsesExtractor(
         RETURN, GENERIC_ARGUMENT, OTHER
     }
 
-    fun useSimpleType(s: IrSimpleType, context: TypeContext): TypeResults {
+    private fun useSimpleType(s: IrSimpleType, context: TypeContext): TypeResults {
         if (s.abbreviation != null) {
             // TODO: Extract this information
         }
@@ -810,14 +810,14 @@ open class KotlinUsesExtractor(
         return if (f is IrConstructor) f.typeParameters else f.typeParameters.filter { it.parent == f }
     }
 
-    fun getTypeParameters(dp: IrDeclarationParent): List<IrTypeParameter> =
+    private fun getTypeParameters(dp: IrDeclarationParent): List<IrTypeParameter> =
         when(dp) {
             is IrClass -> dp.typeParameters
             is IrFunction -> getFunctionTypeParameters(dp)
             else -> listOf()
         }
 
-    fun getEnclosingClass(it: IrDeclarationParent): IrClass? =
+    private fun getEnclosingClass(it: IrDeclarationParent): IrClass? =
         when(it) {
             is IrClass -> it
             is IrFunction -> getEnclosingClass(it.parent)
@@ -924,7 +924,7 @@ open class KotlinUsesExtractor(
                 null
         } ?: t
 
-    fun getJavaTypeArgument(jt: JavaType, idx: Int) =
+    private fun getJavaTypeArgument(jt: JavaType, idx: Int) =
         when(jt) {
             is JavaClassifierType -> jt.typeArguments.getOrNull(idx)
             is JavaArrayType -> if (idx == 0) jt.componentType else null
@@ -1146,15 +1146,6 @@ open class KotlinUsesExtractor(
         return res
     }
 
-    fun <T: DbCallable> useFunctionCommon(f: IrFunction, label: String): Label<out T> {
-        val id: Label<T> = tw.getLabelFor(label)
-        if (isExternalDeclaration(f)) {
-            extractFunctionLaterIfExternalFileMember(f)
-            extractExternalEnclosingClassLater(f)
-        }
-        return id
-    }
-
     // These are classes with Java equivalents, but whose methods don't all exist on those Java equivalents--
     // for example, the numeric classes define arithmetic functions (Int.plus, Long.or and so on) that lower to
     // primitive arithmetic on the JVM, but which we extract as calls to reflect the source syntax more closely.
@@ -1162,7 +1153,7 @@ open class KotlinUsesExtractor(
         "kotlin.Boolean", "kotlin.Byte", "kotlin.Char", "kotlin.Double", "kotlin.Float", "kotlin.Int", "kotlin.Long", "kotlin.Number", "kotlin.Short"
     )
 
-    fun kotlinFunctionToJavaEquivalent(f: IrFunction, noReplace: Boolean) =
+    private fun kotlinFunctionToJavaEquivalent(f: IrFunction, noReplace: Boolean) =
         if (noReplace)
             f
         else
@@ -1210,19 +1201,23 @@ open class KotlinUsesExtractor(
             } as IrFunction? ?: f
 
     fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
+        return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
+    }
+
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
         if (f.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(f)
             return ids.function.cast<T>()
-        } else {
-            val realFunction = kotlinFunctionToJavaEquivalent(f, noReplace)
-            return useFunctionCommon<T>(realFunction, getFunctionLabel(realFunction, classTypeArgsIncludingOuterClasses))
         }
+        val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
+        val label = getFunctionLabel(javaFun, parentId, classTypeArgsIncludingOuterClasses)
+        val id: Label<T> = tw.getLabelFor(label)
+        if (isExternalDeclaration(javaFun)) {
+            extractFunctionLaterIfExternalFileMember(javaFun)
+            extractExternalEnclosingClassLater(javaFun)
+        }
+        return id
     }
-
-    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false) =
-        kotlinFunctionToJavaEquivalent(f, noReplace).let {
-            useFunctionCommon<T>(it, getFunctionLabel(it, parentId, classTypeArgsIncludingOuterClasses))
-        }
 
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
@@ -1351,14 +1346,14 @@ open class KotlinUsesExtractor(
         return "@\"typevar;{$parentLabel};${param.name}\""
     }
 
-    fun useTypeParameter(param: IrTypeParameter) =
+    private fun useTypeParameter(param: IrTypeParameter) =
         TypeResult(
             tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(param)),
             useType(eraseTypeParameter(param)).javaResult.signature,
             param.name.asString()
         )
 
-    fun extractModifier(m: String): Label<DbModifier> {
+    private fun extractModifier(m: String): Label<DbModifier> {
         val modifierLabel = "@\"modifier;$m\""
         val id: Label<DbModifier> = tw.getLabelFor(modifierLabel, {
             tw.writeModifiers(it, m)
@@ -1440,7 +1435,7 @@ open class KotlinUsesExtractor(
      * Note that `Array<T>` is retained (with `T` itself erased) because these are expected to be lowered to Java
      * arrays, which are not generic.
      */
-    fun erase (t: IrType): IrType {
+    private fun erase (t: IrType): IrType {
         if (t is IrSimpleType) {
             val classifier = t.classifier
             val owner = classifier.owner
@@ -1464,7 +1459,7 @@ open class KotlinUsesExtractor(
         return t
     }
 
-    fun eraseTypeParameter(t: IrTypeParameter) =
+    private fun eraseTypeParameter(t: IrTypeParameter) =
         erase(t.superTypes[0])
 
     /**
@@ -1493,7 +1488,7 @@ open class KotlinUsesExtractor(
     fun useValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>?): Label<out DbParam> =
         tw.getLabelFor(getValueParameterLabel(vp, parent))
 
-    fun isDirectlyExposedCompanionObjectField(f: IrField) =
+    private fun isDirectlyExposedCompanionObjectField(f: IrField) =
         f.hasAnnotation(FqName("kotlin.jvm.JvmField")) ||
         f.correspondingPropertySymbol?.owner?.let {
             it.isConst || it.isLateinit
@@ -1519,7 +1514,7 @@ open class KotlinUsesExtractor(
         // otherwise two extension properties declared in the same enclosing context will get
         // clashing trap labels. These are always private, so we can just make up a label without
         // worrying about their names as seen from Java.
-        val extensionPropertyDiscriminator = getExtensionReceiverType(f)?.let { "extension;${useType(it)}" } ?: ""
+        val extensionPropertyDiscriminator = getExtensionReceiverType(f)?.let { "extension;${useType(it).javaResult.id}" } ?: ""
         return "@\"field;{$parentId};${extensionPropertyDiscriminator}${f.name.asString()}\""
     }
 

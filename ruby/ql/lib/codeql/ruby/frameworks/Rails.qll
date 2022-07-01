@@ -63,11 +63,7 @@ private module Config {
       )
       or
       // `Rails.application.config`
-      this =
-        API::getTopLevelMember("Rails")
-            .getReturn("application")
-            .getReturn("config")
-            .getAnImmediateUse()
+      this = API::getTopLevelMember("Rails").getReturn("application").getReturn("config").asSource()
       or
       // `Rails.application.configure { ... config ... }`
       // `Rails::Application.configure { ... config ... }`

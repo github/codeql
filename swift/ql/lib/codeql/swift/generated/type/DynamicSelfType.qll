@@ -3,4 +3,11 @@ import codeql.swift.elements.type.Type
 
 class DynamicSelfTypeBase extends @dynamic_self_type, Type {
   override string getAPrimaryQlClass() { result = "DynamicSelfType" }
+
+  Type getStaticSelfType() {
+    exists(Type x |
+      dynamic_self_types(this, x) and
+      result = x.resolve()
+    )
+  }
 }

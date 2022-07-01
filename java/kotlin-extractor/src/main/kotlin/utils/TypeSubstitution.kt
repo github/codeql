@@ -37,7 +37,7 @@ fun IrType.substituteTypeArguments(params: List<IrTypeParameter>, arguments: Lis
         else -> this
     }
 
-fun IrSimpleType.substituteTypeArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>): IrSimpleType {
+private fun IrSimpleType.substituteTypeArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>): IrSimpleType {
     if (substitutionMap.isEmpty()) return this
 
     val newArguments = arguments.map {
@@ -100,7 +100,7 @@ private fun subProjectedType(substitutionMap: Map<IrTypeParameterSymbol, IrTypeA
         }
     } ?: makeTypeProjection(t.substituteTypeArguments(substitutionMap), outerVariance)
 
-fun IrTypeArgument.upperBound(context: IrPluginContext) =
+private fun IrTypeArgument.upperBound(context: IrPluginContext) =
     when(this) {
         is IrStarProjection -> context.irBuiltIns.anyNType
         is IrTypeProjection -> when(this.variance) {
@@ -111,7 +111,7 @@ fun IrTypeArgument.upperBound(context: IrPluginContext) =
         else -> context.irBuiltIns.anyNType
     }
 
-fun IrTypeArgument.lowerBound(context: IrPluginContext) =
+private fun IrTypeArgument.lowerBound(context: IrPluginContext) =
     when(this) {
         is IrStarProjection -> context.irBuiltIns.nothingType
         is IrTypeProjection -> when(this.variance) {
@@ -200,7 +200,7 @@ fun IrTypeArgument.withQuestionMark(b: Boolean): IrTypeArgument =
 
 typealias TypeSubstitution = (IrType, KotlinUsesExtractor.TypeContext, IrPluginContext) -> IrType
 
-fun matchingTypeParameters(l: IrTypeParameter?, r: IrTypeParameter): Boolean {
+private fun matchingTypeParameters(l: IrTypeParameter?, r: IrTypeParameter): Boolean {
     if (l === r)
         return true
     if (l == null)

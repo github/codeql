@@ -2,8 +2,10 @@
 
 import logging
 import pathlib
+import re
 import subprocess
 import typing
+import itertools
 
 import inflection
 
@@ -12,14 +14,23 @@ from swift.codegen.lib import schema, ql
 log = logging.getLogger(__name__)
 
 
-class FormatError(Exception):
+class Error(Exception):
+    def __str__(self):
+        return self.args[0]
+
+
+class FormatError(Error):
+    pass
+
+
+class ModifiedStubMarkedAsGeneratedError(Error):
     pass
 
 
 def get_ql_property(cls: schema.Class, prop: schema.Property):
     common_args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
-        skip_qltest="no_qltest" in prop.tags,
+        qltest_skip="qltest_skip" in prop.pragmas,
         is_child=prop.is_child,
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
@@ -58,13 +69,14 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
 
 
 def get_ql_class(cls: schema.Class):
+    pragmas = {k: True for k in cls.pragmas if k.startswith("ql")}
     return ql.Class(
         name=cls.name,
         bases=cls.bases,
         final=not cls.derived,
         properties=[get_ql_property(cls, p) for p in cls.properties],
         dir=cls.dir,
-        skip_qltest="no_qltest" in cls.tags,
+        **pragmas,
     )
 
 
@@ -84,11 +96,25 @@ def get_classes_used_by(cls: ql.Class):
     return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper()))
 
 
-def is_generated(file):
+_generated_stub_re = re.compile(r"private import .*\n\nclass \w+ extends \w+ \{[ \n]\}", re.MULTILINE)
+
+
+def _is_generated_stub(file):
     with open(file) as contents:
         for line in contents:
-            return line.startswith("// generated")
-        return False
+            if not line.startswith("// generated"):
+                return False
+            break
+        else:
+            # no lines
+            return False
+        # one line already read, if we can read 5 other we are past the normal stub generation
+        line_threshold = 5
+        first_lines = list(itertools.islice(contents, line_threshold))
+        if len(first_lines) == line_threshold or not _generated_stub_re.match("".join(first_lines)):
+            raise ModifiedStubMarkedAsGeneratedError(
+                f"{file.name} stub was modified but is still marked as generated")
+        return True
 
 
 def format(codeql, files):
@@ -118,7 +144,7 @@ def _get_all_properties_to_be_tested(cls: ql.Class, lookup: typing.Dict[str, ql.
     # deduplicate using id
     already_seen = set()
     for c, p in _get_all_properties(cls, lookup):
-        if not (c.skip_qltest or p.skip_qltest or id(p) in already_seen):
+        if not (c.qltest_skip or p.qltest_skip or id(p) in already_seen):
             already_seen.add(id(p))
             yield ql.PropertyForTest(p.getter, p.type, p.is_single, p.is_predicate, p.is_repeated)
 
@@ -131,14 +157,29 @@ def _partition(l, pred):
     return res
 
 
+def _is_in_qltest_collapsed_hierachy(cls: ql.Class, lookup: typing.Dict[str, ql.Class]):
+    return cls.qltest_collapse_hierarchy or _is_under_qltest_collapsed_hierachy(cls, lookup)
+
+
+def _is_under_qltest_collapsed_hierachy(cls: ql.Class, lookup: typing.Dict[str, ql.Class]):
+    return not cls.qltest_uncollapse_hierarchy and any(
+        _is_in_qltest_collapsed_hierachy(lookup[b], lookup) for b in cls.bases)
+
+
+def _should_skip_qltest(cls: ql.Class, lookup: typing.Dict[str, ql.Class]):
+    return cls.qltest_skip or not (cls.final or cls.qltest_collapse_hierarchy) or _is_under_qltest_collapsed_hierachy(
+        cls, lookup)
+
+
 def generate(opts, renderer):
     input = opts.schema
     out = opts.ql_output
     stub_out = opts.ql_stub_output
     test_out = opts.ql_test_output
     missing_test_source_filename = "MISSING_SOURCE.txt"
+
     existing = {q for q in out.rglob("*.qll")}
-    existing |= {q for q in stub_out.rglob("*.qll") if is_generated(q)}
+    existing |= {q for q in stub_out.rglob("*.qll") if _is_generated_stub(q)}
     existing |= {q for q in test_out.rglob("*.ql")}
     existing |= {q for q in test_out.rglob(missing_test_source_filename)}
 
@@ -157,7 +198,7 @@ def generate(opts, renderer):
         c.imports = [imports[t] for t in get_classes_used_by(c)]
         renderer.render(c, qll)
         stub_file = stub_out / c.path.with_suffix(".qll")
-        if not stub_file.is_file() or is_generated(stub_file):
+        if not stub_file.is_file() or _is_generated_stub(stub_file):
             stub = ql.Stub(
                 name=c.name, base_import=get_import(qll, opts.swift_dir))
             renderer.render(stub, stub_file)
@@ -170,7 +211,7 @@ def generate(opts, renderer):
         classes), out / 'GetImmediateParent.qll')
 
     for c in classes:
-        if not c.final or c.skip_qltest:
+        if _should_skip_qltest(c, lookup):
             continue
         test_dir = test_out / c.path
         test_dir.mkdir(parents=True, exist_ok=True)

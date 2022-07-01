@@ -4,6 +4,7 @@
 #include <swift/AST/ASTMangler.h>
 
 #include "swift/extractor/visitors/VisitorBase.h"
+#include "swift/extractor/trap/generated/decl/TrapClasses.h"
 
 namespace codeql {
 

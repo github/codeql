@@ -18,7 +18,7 @@
 {{#keyset}}
 #keyset[{{#ids}}{{^first}}, {{/first}}{{id}}{{/ids}}]
 {{/keyset}}
-{{name}}({{#columns}}{{^first}},{{/first}}
+{{name}}({{#dir}}  //dir={{.}}{{/dir}}{{#columns}}{{^first}},{{/first}}
   {{lhstype}} {{name}}: {{rhstype}}{{/columns}}
 );
 {{/is_table}}
