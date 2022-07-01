@@ -81,8 +81,8 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
   void emitAnyGenericType(swift::AnyGenericType* type, TrapLabel<AnyGenericTypeTag> label);
 
   template <typename T>
-  auto createEntry(const T& type) {
-    TrapClassOf<T> entry{dispatcher_.assignNewLabel(type)};
+  auto createTypeEntry(const T& type) {
+    auto entry = dispatcher_.createEntry(type);
     fillType(type, entry);
     return entry;
   }

@@ -273,6 +273,9 @@ IfConfigDecl:
 
 ImportDecl:
   _extends: Decl
+  is_exported: predicate
+  module: ModuleDecl
+  declarations: ValueDecl*
 
 MissingMemberDecl:
   _extends: Decl
@@ -1067,6 +1070,8 @@ GenericTypeDecl:
 
 ModuleDecl:
   _extends: TypeDecl
+  is_builtin_module: predicate
+  is_system_module: predicate
 
 ConstructorRefCallExpr:
   _extends: SelfApplyExpr

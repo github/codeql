@@ -50,6 +50,8 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
       const swift::AccessorDecl& decl);
   std::optional<codeql::SubscriptDecl> translateSubscriptDecl(const swift::SubscriptDecl& decl);
   codeql::ExtensionDecl translateExtensionDecl(const swift::ExtensionDecl& decl);
+  codeql::ImportDecl translateImportDecl(const swift::ImportDecl& decl);
+  std::optional<codeql::ModuleDecl> translateModuleDecl(const swift::ModuleDecl& decl);
 
  private:
   std::string mangledName(const swift::ValueDecl& decl);
@@ -65,6 +67,15 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   void fillValueDecl(const swift::ValueDecl& decl, codeql::ValueDecl& entry);
   void fillAbstractStorageDecl(const swift::AbstractStorageDecl& decl,
                                codeql::AbstractStorageDecl& entry);
+
+  template <typename D>
+  std::optional<TrapClassOf<D>> createNamedEntry(const D& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (dispatcher_.shouldEmitDeclBody(decl)) {
+      return TrapClassOf<D>{id};
+    }
+    return std::nullopt;
+  }
 
  private:
   swift::Mangle::ASTMangler mangler;

@@ -241,16 +241,15 @@ std::variant<codeql::AccessorDecl, codeql::AccessorDeclsTrap> DeclVisitor::trans
 
 std::optional<codeql::SubscriptDecl> DeclVisitor::translateSubscriptDecl(
     const swift::SubscriptDecl& decl) {
-  auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
-  if (!dispatcher_.shouldEmitDeclBody(decl)) {
+  auto entry = createNamedEntry(decl);
+  if (!entry) {
     return std::nullopt;
   }
-  SubscriptDecl entry{id};
-  entry.element_type = dispatcher_.fetchLabel(decl.getElementInterfaceType());
+  entry->element_type = dispatcher_.fetchLabel(decl.getElementInterfaceType());
   if (auto indices = decl.getIndices()) {
-    entry.params = dispatcher_.fetchRepeatedLabels(*indices);
+    entry->params = dispatcher_.fetchRepeatedLabels(*indices);
   }
-  fillAbstractStorageDecl(decl, entry);
+  fillAbstractStorageDecl(decl, *entry);
   return entry;
 }
 
@@ -262,7 +261,32 @@ codeql::ExtensionDecl DeclVisitor::translateExtensionDecl(const swift::Extension
   return entry;
 }
 
+codeql::ImportDecl DeclVisitor::translateImportDecl(const swift::ImportDecl& decl) {
+  auto entry = dispatcher_.createEntry(decl);
+  entry.is_exported = decl.isExported();
+  entry.module = dispatcher_.fetchLabel(decl.getModule());
+  entry.declarations = dispatcher_.fetchRepeatedLabels(decl.getDecls());
+  return entry;
+}
+
+std::optional<codeql::ModuleDecl> DeclVisitor::translateModuleDecl(const swift::ModuleDecl& decl) {
+  auto entry = createNamedEntry(decl);
+  if (!entry) {
+    return std::nullopt;
+  }
+  entry->is_builtin_module = decl.isBuiltinModule();
+  entry->is_system_module = decl.isSystemModule();
+  fillTypeDecl(decl, *entry);
+  return entry;
+}
+
 std::string DeclVisitor::mangledName(const swift::ValueDecl& decl) {
+  // ASTMangler::mangleAnyDecl crashes when called on `ModuleDecl`
+  // TODO find a more unique string working also when different modules are compiled with the same
+  // name
+  if (decl.getKind() == swift::DeclKind::Module) {
+    return static_cast<const swift::ModuleDecl&>(decl).getRealName().str().str();
+  }
   // prefix adds a couple of special symbols, we don't necessary need them
   return mangler.mangleAnyDecl(&decl, /* prefix = */ false);
 }
