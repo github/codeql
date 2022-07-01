@@ -96,6 +96,18 @@ func test(s: String) {
     let str8 = s.suffix(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
     print("suffix '\(str7)' / '\(str8)'")
 
+    var str9 = s
+    str9.removeFirst(s.count - 1) // GOOD
+    var str10 = s
+    str10.removeFirst(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
+    print("removeFirst '\(str9)' / '\(str10)'")
+
+    var str11 = s
+    str11.removeLast(s.count - 1) // GOOD
+    var str12 = s
+    str12.removeLast(ns.length - 1) // BAD: NSString length used in String [NOT DETECTED]
+    print("removeLast '\(str11)' / '\(str12)'")
+
     let nstr1 = ns.character(at: ns.length - 1) // GOOD
     let nmstr1 = nms.character(at: nms.length - 1) // GOOD
     let nstr2 = ns.character(at: s.count - 1) // BAD: String length used in NSString
