@@ -42,7 +42,7 @@ methods
 | methods.kt:5:1:20:1 | Class | methods.kt:14:12:14:29 | publicFun | publicFun() | public |  |
 | methods.kt:5:1:20:1 | Class | methods.kt:15:15:15:35 | protectedFun | protectedFun() | protected |  |
 | methods.kt:5:1:20:1 | Class | methods.kt:16:13:16:31 | privateFun | privateFun() | private |  |
-| methods.kt:5:1:20:1 | Class | methods.kt:17:14:17:33 | internalFun | internalFun() | internal |  |
+| methods.kt:5:1:20:1 | Class | methods.kt:17:14:17:33 | internalFun$main | internalFun$main() | internal |  |
 | methods.kt:5:1:20:1 | Class | methods.kt:18:5:18:36 | noExplicitVisibilityFun | noExplicitVisibilityFun() | public |  |
 | methods.kt:5:1:20:1 | Class | methods.kt:19:12:19:29 | inlineFun | inlineFun() | inline, public |  |
 constructors
