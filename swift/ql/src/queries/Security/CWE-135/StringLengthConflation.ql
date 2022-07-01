@@ -23,7 +23,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
   StringLengthConflationConfiguration() { this = "StringLengthConflationConfiguration" }
 
   override predicate isSource(DataFlow::Node node, string flowstate) {
-    // result of a call to to `String.count`
+    // result of a call to `String.count`
     exists(MemberRefExpr member |
       member.getBaseExpr().getType().getName() = "String" and
       member.getMember().(VarDecl).getName() = "count" and
@@ -31,7 +31,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       flowstate = "String"
     )
     or
-    // result of a call to to `NSString.length`
+    // result of a call to `NSString.length`
     exists(MemberRefExpr member |
       member.getBaseExpr().getType().getName() = ["NSString", "NSMutableString"] and
       member.getMember().(VarDecl).getName() = "length" and
