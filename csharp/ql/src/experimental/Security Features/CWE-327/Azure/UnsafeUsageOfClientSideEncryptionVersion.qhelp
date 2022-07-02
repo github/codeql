@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+
+  <overview>
+    <p>Azure Storage .NET, Java, and Python SDKs support encryption on the client with a customer-managed key that is maintained in Azure Key Vault or another key store.</p>
+    <p>Current release versions of the Azure Storage SDKs use cipher block chaining (CBC mode) for client-side encryption (referred to as <code>v1</code>).</p>
+
+  </overview>
+  <recommendation>
+
+    <p>Consider switching to <code>v1</code> client-side encryption.</p>
+
+  </recommendation>
+  <example>
+
+    <p>The following example shows an HTTP request parameter being used directly in a forming a
+new request without validating the input, which facilitates SSRF attacks.
+It also shows how to remedy the problem by validating the user input against a known fixed string.
+</p>
+
+    <sample src="UnsafeUsageOfClientSideEncryptionVersion.cs" />
+
+  </example>
+  <references>
+    <li>
+      <a href="http://aka.ms/azstorageclientencryptionblog">Azure Storage Client Encryption Blog.</a>
+    </li>
+
+  </references>
+</qhelp>
