@@ -76,6 +76,8 @@ fileSystemAccesses
 | Files.rb:41:1:41:26 | call to open |
 | Files.rb:41:1:41:43 | call to write |
 | Files.rb:48:1:48:40 | call to printf |
+| Files.rb:49:1:49:30 | call to write |
+| Files.rb:50:1:50:37 | call to atomic_write |
 fileNameSources
 | Files.rb:10:6:10:18 | call to path |
 | Files.rb:11:6:11:21 | call to to_path |
@@ -86,7 +88,11 @@ fileWriters
 | Files.rb:40:1:40:22 | call to puts |
 | Files.rb:41:1:41:43 | call to write |
 | Files.rb:48:1:48:40 | call to printf |
+| Files.rb:49:1:49:30 | call to write |
+| Files.rb:50:1:50:37 | call to atomic_write |
 fileSystemWriteAccesses
 | Files.rb:40:1:40:22 | call to puts |
 | Files.rb:41:1:41:43 | call to write |
 | Files.rb:48:1:48:40 | call to printf |
+| Files.rb:49:1:49:30 | call to write |
+| Files.rb:50:1:50:37 | call to atomic_write |

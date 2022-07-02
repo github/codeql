@@ -6,8 +6,11 @@
 #include <sstream>
 #include <memory>
 #include <unistd.h>
+#include <unordered_set>
+#include <queue>
 
 #include <swift/AST/SourceFile.h>
+#include <swift/Basic/FileTypes.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -49,8 +52,31 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
   }
 }
 
+static std::string getTrapFilename(swift::ModuleDecl& module, swift::SourceFile* primaryFile) {
+  if (primaryFile) {
+    return primaryFile->getFilename().str();
+  }
+  // Several modules with different name might come from .pcm (clang module) files
+  // In this case we want to differentiate them
+  std::string filename = module.getModuleFilename().str();
+  filename += "-";
+  filename += module.getName().str();
+  return filename;
+}
+
+static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& module,
+                                                        swift::SourceFile* primaryFile = nullptr) {
+  llvm::SmallVector<swift::Decl*> ret;
+  ret.push_back(&module);
+  if (primaryFile) {
+    primaryFile->getTopLevelDecls(ret);
+  } else {
+    module.getTopLevelDecls(ret);
+  }
+  return ret;
+}
+
 static void extractDeclarations(const SwiftExtractorConfiguration& config,
-                                llvm::ArrayRef<swift::Decl*> topLevelDecls,
                                 swift::CompilerInstance& compiler,
                                 swift::ModuleDecl& module,
                                 swift::SourceFile* primaryFile = nullptr) {
@@ -58,15 +84,16 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   // the same input file(s)
   // We are using PID to avoid concurrent access
   // TODO: find a more robust approach to avoid collisions?
-  llvm::StringRef filename = primaryFile ? primaryFile->getFilename() : module.getModuleFilename();
+  auto name = getTrapFilename(module, primaryFile);
+  llvm::StringRef filename(name);
   std::string tempTrapName = filename.str() + '.' + std::to_string(getpid()) + ".trap";
-  llvm::SmallString<PATH_MAX> tempTrapPath(config.trapDir);
+  llvm::SmallString<PATH_MAX> tempTrapPath(config.getTempTrapDir());
   llvm::sys::path::append(tempTrapPath, tempTrapName);
 
-  llvm::StringRef trapParent = llvm::sys::path::parent_path(tempTrapPath);
-  if (std::error_code ec = llvm::sys::fs::create_directories(trapParent)) {
-    std::cerr << "Cannot create trap directory '" << trapParent.str() << "': " << ec.message()
-              << "\n";
+  llvm::StringRef tempTrapParent = llvm::sys::path::parent_path(tempTrapPath);
+  if (std::error_code ec = llvm::sys::fs::create_directories(tempTrapParent)) {
+    std::cerr << "Cannot create temp trap directory '" << tempTrapParent.str()
+              << "': " << ec.message() << "\n";
     return;
   }
 
@@ -78,11 +105,17 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
               << "': " << ec.message() << "\n";
     return;
   }
-  trapStream << "// extractor-args: ";
+  trapStream << "/* extractor-args:\n";
   for (auto opt : config.frontendOptions) {
-    trapStream << std::quoted(opt) << " ";
+    trapStream << "  " << std::quoted(opt) << " \\\n";
   }
-  trapStream << "\n\n";
+  trapStream << "\n*/\n";
+
+  trapStream << "/* swift-frontend-args:\n";
+  for (auto opt : config.patchedFrontendOptions) {
+    trapStream << "  " << std::quoted(opt) << " \\\n";
+  }
+  trapStream << "\n*/\n";
 
   TrapOutput trap{trapStream};
   TrapArena arena{};
@@ -97,10 +130,14 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   trap.emit(LocationsTrap{unknownLocationLabel, unknownFileLabel});
 
   SwiftVisitor visitor(compiler.getSourceMgr(), arena, trap, module, primaryFile);
+  auto topLevelDecls = getTopLevelDecls(module, primaryFile);
   for (auto decl : topLevelDecls) {
     visitor.extract(decl);
   }
-  if (topLevelDecls.empty()) {
+  // TODO the following will be moved to the dispatcher when we start caching swift file objects
+  // for the moment, topLevelDecls always contains the current module, which does not have a file
+  // associated with it, so we need a special case when there are no top level declarations
+  if (topLevelDecls.size() == 1) {
     // In the case of empty files, the dispatcher is not called, but we still want to 'record' the
     // fact that the file was extracted
     llvm::SmallString<PATH_MAX> name(filename);
@@ -115,6 +152,13 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   llvm::SmallString<PATH_MAX> trapPath(config.trapDir);
   llvm::sys::path::append(trapPath, trapName);
 
+  llvm::StringRef trapParent = llvm::sys::path::parent_path(trapPath);
+  if (std::error_code ec = llvm::sys::fs::create_directories(trapParent)) {
+    std::cerr << "Cannot create trap directory '" << trapParent.str() << "': " << ec.message()
+              << "\n";
+    return;
+  }
+
   // TODO: The last process wins. Should we do better than that?
   if (std::error_code ec = llvm::sys::fs::rename(tempTrapPath, trapPath)) {
     std::cerr << "Cannot rename temp trap file '" << tempTrapPath.str().str() << "' -> '"
@@ -122,25 +166,67 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   }
 }
 
+static std::unordered_set<std::string> collectInputFilenames(swift::CompilerInstance& compiler) {
+  // The frontend can be called in many different ways.
+  // At each invocation we only extract system and builtin modules and any input source files that
+  // have an output associated with them.
+  std::unordered_set<std::string> sourceFiles;
+  auto inputFiles = compiler.getInvocation().getFrontendOptions().InputsAndOutputs.getAllInputs();
+  for (auto& input : inputFiles) {
+    if (input.getType() == swift::file_types::TY_Swift && !input.outputFilename().empty()) {
+      sourceFiles.insert(input.getFileName());
+    }
+  }
+  return sourceFiles;
+}
+
+static std::unordered_set<swift::ModuleDecl*> collectModules(swift::CompilerInstance& compiler) {
+  // getASTContext().getLoadedModules() does not provide all the modules available within the
+  // program.
+  // We need to iterate over all the imported modules (recursively) to see the whole "universe."
+  std::unordered_set<swift::ModuleDecl*> allModules;
+  std::queue<swift::ModuleDecl*> worklist;
+  for (auto& [_, module] : compiler.getASTContext().getLoadedModules()) {
+    worklist.push(module);
+    allModules.insert(module);
+  }
+
+  while (!worklist.empty()) {
+    auto module = worklist.front();
+    worklist.pop();
+    llvm::SmallVector<swift::ImportedModule> importedModules;
+    // TODO: we may need more than just Exported ones
+    module->getImportedModules(importedModules, swift::ModuleDecl::ImportFilterKind::Exported);
+    for (auto& imported : importedModules) {
+      if (allModules.count(imported.importedModule) == 0) {
+        worklist.push(imported.importedModule);
+        allModules.insert(imported.importedModule);
+      }
+    }
+  }
+  return allModules;
+}
+
 void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
                                swift::CompilerInstance& compiler) {
-  for (auto& [_, module] : compiler.getASTContext().getLoadedModules()) {
+  auto inputFiles = collectInputFilenames(compiler);
+  auto modules = collectModules(compiler);
+
+  for (auto& module : modules) {
     // We only extract system and builtin modules here as the other "user" modules can be built
     // during the build process and then re-used at a later stage. In this case, we extract the
     // user code twice: once during the module build in a form of a source file, and then as
     // a pre-built module during building of the dependent source files.
     if (module->isSystemModule() || module->isBuiltinModule()) {
-      llvm::SmallVector<swift::Decl*> decls;
-      module->getTopLevelDecls(decls);
-      // TODO: pass ModuleDecl directly when we have module extraction in place?
-      extractDeclarations(config, decls, compiler, *module);
+      extractDeclarations(config, compiler, *module);
     } else {
-      // The extraction will only work if one (or more) `-primary-file` CLI option is provided,
-      // which is what always happens in case of `swift build` and `xcodebuild`
-      for (auto primaryFile : module->getPrimarySourceFiles()) {
-        archiveFile(config, *primaryFile);
-        extractDeclarations(config, primaryFile->getTopLevelDecls(), compiler, *module,
-                            primaryFile);
+      for (auto file : module->getFiles()) {
+        auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
+        if (!sourceFile || inputFiles.count(sourceFile->getFilename().str()) == 0) {
+          continue;
+        }
+        archiveFile(config, *sourceFile);
+        extractDeclarations(config, compiler, *module, sourceFile);
       }
     }
   }

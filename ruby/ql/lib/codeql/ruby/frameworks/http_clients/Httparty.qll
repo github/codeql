@@ -28,7 +28,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
   DataFlow::CallNode requestUse;
 
   HttpartyRequest() {
-    requestUse = requestNode.getAnImmediateUse() and
+    requestUse = requestNode.asSource() and
     requestNode =
       API::getTopLevelMember("HTTParty")
           .getReturn(["get", "head", "delete", "options", "post", "put", "patch"]) and

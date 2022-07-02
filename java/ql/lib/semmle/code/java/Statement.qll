@@ -888,27 +888,3 @@ class SuperConstructorInvocationStmt extends Stmt, ConstructorCall, @superconstr
 
   override string getAPrimaryQlClass() { result = "SuperConstructorInvocationStmt" }
 }
-
-/** A Kotlin loop statement. */
-class KtLoopStmt extends Stmt, @ktloopstmt {
-  KtLoopStmt() {
-    this instanceof WhileStmt or
-    this instanceof DoStmt
-  }
-}
-
-/** A Kotlin `break` or `continue` statement. */
-abstract class KtBreakContinueStmt extends Stmt, @breakcontinuestmt {
-  KtLoopStmt loop;
-
-  KtBreakContinueStmt() { ktBreakContinueTargets(this, loop) }
-
-  /** Gets the target loop statement of this `break`. */
-  KtLoopStmt getLoopStmt() { result = loop }
-}
-
-/** A Kotlin `break` statement. */
-class KtBreakStmt extends BreakStmt, KtBreakContinueStmt { }
-
-/** A Kotlin `continue` statement. */
-class KtContinueStmt extends ContinueStmt, KtBreakContinueStmt { }

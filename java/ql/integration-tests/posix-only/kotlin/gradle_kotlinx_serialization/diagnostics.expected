@@ -1,0 +1,1 @@
+| CodeQL Kotlin extractor | 2 |  | Unbound object value, trying to use class stub from descriptor | app/src/main/kotlin/testProject/App.kt:7:1:8:55 | app/src/main/kotlin/testProject/App.kt:7:1:8:55 |

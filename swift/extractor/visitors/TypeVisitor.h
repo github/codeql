@@ -1,6 +1,8 @@
 #pragma once
 
 #include "swift/extractor/visitors/VisitorBase.h"
+#include "swift/extractor/trap/generated/type/TrapClasses.h"
+
 namespace codeql {
 class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
  public:
@@ -25,22 +27,65 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
   void visitDependentMemberType(swift::DependentMemberType* type);
   void visitParenType(swift::ParenType* type);
   void visitUnarySyntaxSugarType(swift::UnarySyntaxSugarType* type);
-  void visitOptionalType(swift::OptionalType* type);
-  void visitArraySliceType(swift::ArraySliceType* type);
+  codeql::OptionalType translateOptionalType(const swift::OptionalType& type);
+  codeql::ArraySliceType translateArraySliceType(const swift::ArraySliceType& type);
   void visitDictionaryType(swift::DictionaryType* type);
   void visitGenericFunctionType(swift::GenericFunctionType* type);
   void visitGenericTypeParamType(swift::GenericTypeParamType* type);
   void visitLValueType(swift::LValueType* type);
-  void visitPrimaryArchetypeType(swift::PrimaryArchetypeType* type);
   void visitUnboundGenericType(swift::UnboundGenericType* type);
   void visitBoundGenericType(swift::BoundGenericType* type);
+  codeql::PrimaryArchetypeType translatePrimaryArchetypeType(
+      const swift::PrimaryArchetypeType& type);
+  codeql::NestedArchetypeType translateNestedArchetypeType(const swift::NestedArchetypeType& type);
+  codeql::ExistentialType translateExistentialType(const swift::ExistentialType& type);
+  codeql::DynamicSelfType translateDynamicSelfType(const swift::DynamicSelfType& type);
+  codeql::VariadicSequenceType translateVariadicSequenceType(
+      const swift::VariadicSequenceType& type);
+  codeql::InOutType translateInOutType(const swift::InOutType& type);
+  codeql::UnmanagedStorageType translateUnmanagedStorageType(
+      const swift::UnmanagedStorageType& type);
+  codeql::WeakStorageType translateWeakStorageType(const swift::WeakStorageType& type);
+  codeql::UnownedStorageType translateUnownedStorageType(const swift::UnownedStorageType& type);
+  codeql::ProtocolCompositionType translateProtocolCompositionType(
+      const swift::ProtocolCompositionType& type);
+  codeql::BuiltinIntegerLiteralType translateBuiltinIntegerLiteralType(
+      const swift::BuiltinIntegerLiteralType& type);
+  codeql::BuiltinIntegerType translateBuiltinIntegerType(const swift::BuiltinIntegerType& type);
+  codeql::BuiltinBridgeObjectType translateBuiltinBridgeObjectType(
+      const swift::BuiltinBridgeObjectType& type);
+  codeql::BuiltinDefaultActorStorageType translateBuiltinDefaultActorStorageType(
+      const swift::BuiltinDefaultActorStorageType& type);
+  codeql::BuiltinExecutorType translateBuiltinExecutorType(const swift::BuiltinExecutorType& type);
+  codeql::BuiltinFloatType translateBuiltinFloatType(const swift::BuiltinFloatType& type);
+  codeql::BuiltinJobType translateBuiltinJobType(const swift::BuiltinJobType& type);
+  codeql::BuiltinNativeObjectType translateBuiltinNativeObjectType(
+      const swift::BuiltinNativeObjectType& type);
+  codeql::BuiltinRawPointerType translateBuiltinRawPointerType(
+      const swift::BuiltinRawPointerType& type);
+  codeql::BuiltinRawUnsafeContinuationType translateBuiltinRawUnsafeContinuationType(
+      const swift::BuiltinRawUnsafeContinuationType& type);
+  codeql::BuiltinUnsafeValueBufferType translateBuiltinUnsafeValueBufferType(
+      const swift::BuiltinUnsafeValueBufferType& type);
+  codeql::BuiltinVectorType translateBuiltinVectorType(const swift::BuiltinVectorType& type);
 
  private:
-  void emitUnarySyntaxSugarType(const swift::UnarySyntaxSugarType* type,
-                                TrapLabel<UnarySyntaxSugarTypeTag> label);
+  void fillType(const swift::TypeBase& type, codeql::Type& entry);
+  void fillArchetypeType(const swift::ArchetypeType& type, codeql::ArchetypeType& entry);
+  void fillUnarySyntaxSugarType(const swift::UnarySyntaxSugarType& type,
+                                codeql::UnarySyntaxSugarType& entry);
+  void fillReferenceStorageType(const swift::ReferenceStorageType& type,
+                                codeql::ReferenceStorageType& entry);
   void emitAnyFunctionType(const swift::AnyFunctionType* type, TrapLabel<AnyFunctionTypeTag> label);
   void emitBoundGenericType(swift::BoundGenericType* type, TrapLabel<BoundGenericTypeTag> label);
   void emitAnyGenericType(swift::AnyGenericType* type, TrapLabel<AnyGenericTypeTag> label);
+
+  template <typename T>
+  auto createTypeEntry(const T& type) {
+    auto entry = dispatcher_.createEntry(type);
+    fillType(type, entry);
+    return entry;
+  }
 };
 
 }  // namespace codeql

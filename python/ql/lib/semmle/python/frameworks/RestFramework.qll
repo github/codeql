@@ -115,7 +115,7 @@ private module RestFramework {
    */
   class RestFrameworkApiViewClass extends PrivateDjango::DjangoViewClassFromSuperClass {
     RestFrameworkApiViewClass() {
-      this.getParent() = any(ModeledApiViewClasses c).getASubclass*().getAnImmediateUse().asExpr()
+      this.getParent() = any(ModeledApiViewClasses c).getASubclass*().asSource().asExpr()
     }
 
     override Function getARequestHandler() {

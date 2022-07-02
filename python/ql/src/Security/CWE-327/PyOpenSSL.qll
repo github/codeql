@@ -17,7 +17,8 @@ class PyOpenSSLContextCreation extends ContextCreation, DataFlow::CallCfgNode {
       protocolArg in [this.getArg(0), this.getArgByName("method")]
     |
       protocolArg in [
-          pyo.specific_version(result).getAUse(), pyo.unspecific_version(result).getAUse()
+          pyo.specific_version(result).getAValueReachableFromSource(),
+          pyo.unspecific_version(result).getAValueReachableFromSource()
         ]
     )
   }
@@ -43,9 +44,10 @@ class SetOptionsCall extends ProtocolRestriction, DataFlow::CallCfgNode {
   }
 
   override ProtocolVersion getRestriction() {
-    API::moduleImport("OpenSSL").getMember("SSL").getMember("OP_NO_" + result).getAUse() in [
-        this.getArg(0), this.getArgByName("options")
-      ]
+    API::moduleImport("OpenSSL")
+          .getMember("SSL")
+          .getMember("OP_NO_" + result)
+          .getAValueReachableFromSource() in [this.getArg(0), this.getArgByName("options")]
   }
 }
 

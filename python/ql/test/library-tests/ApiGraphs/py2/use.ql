@@ -9,7 +9,7 @@ class ApiUseTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "use" }
 
   private predicate relevant_node(API::Node a, DataFlow::Node n, Location l) {
-    n = a.getAUse() and l = n.getLocation()
+    n = a.getAValueReachableFromSource() and l = n.getLocation()
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
