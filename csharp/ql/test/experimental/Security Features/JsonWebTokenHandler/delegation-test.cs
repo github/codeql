@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.IdentityModel.JsonWebTokens;
 
-namespace WilsonTest
+namespace JsonWebTokenHandlerTest
 {
-    public class Wilson_03
+    public class JsonWebTokenHandler_00
     {
         public static object ThrowIfNull(string name, object value)
         {

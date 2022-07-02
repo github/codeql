@@ -2,7 +2,7 @@ import csharp
 import DataFlow
 
 /**
- * Abstract PropertyWrite for `TokenValidationParameters`.
+ * An abstract PropertyWrite for `TokenValidationParameters`.
  * Not really necessary anymore, but keeping it in case we want to extend the queries to check on other properties.
  */
 abstract class TokenValidationParametersPropertyWrite extends PropertyWrite { }
@@ -18,14 +18,14 @@ class TokenValidationParametersPropertyWriteToBypassSensitiveValidation extends 
       p.getAnAccess() = this and
       c.getAProperty() = p and
       p.getName() in [
-          "ValidateIssuer", "ValidateAudience", "ValidateLifetime", "RequireExpirationTime"
+          "ValidateIssuer", "ValidateAudience", "ValidateLifetime", "RequireExpirationTime", "RequireAudience"
         ]
     )
   }
 }
 
 /**
- * Dataflow from a `false` value to an to a write sensitive property for `TokenValidationParameters`.
+ * A dataflow from a `false` value to a write sensitive property for `TokenValidationParameters`.
  */
 class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation extends TaintTracking::Configuration {
   FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation() {
@@ -33,12 +33,14 @@ class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation 
   }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr().(BoolLiteral).getValue() = "false"
+    source.asExpr().getValue() = "false" and
+    source.asExpr().getType() instanceof BoolType
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(TokenValidationParametersPropertyWrite pw, Assignment a | a.getLValue() = pw |
+    exists(Assignment a | 
       sink.asExpr() = a.getRValue()
+      and a.getLValue() instanceof TokenValidationParametersPropertyWrite
     )
   }
 }
@@ -55,7 +57,7 @@ predicate isAssemblyOlderVersion(string assemblyName, string ver) {
 }
 
 /**
- * Method `ValidateToken` for `Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler` or other Token handler that shares the same behavior characteristics
+ * A method `ValidateToken` for `Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler` or other Token handler that shares the same behavior characteristics
  */
 class JsonWebTokenHandlerValidateTokenMethod extends Method {
   JsonWebTokenHandlerValidateTokenMethod() {
@@ -78,7 +80,7 @@ class JsonWebTokenHandlerValidateTokenCall extends MethodCall {
 }
 
 /**
- * Read access for properties `IsValid` or `Exception` for `Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateToken`
+ * A read access for properties `IsValid` or `Exception` for `Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateToken`
  */
 class TokenValidationResultIsValidCall extends PropertyRead {
   TokenValidationResultIsValidCall() {
@@ -116,7 +118,7 @@ predicate hasAFlowToTokenValidationResultIsValidCall(JsonWebTokenHandlerValidate
 }
 
 /**
- * Property write for security-sensitive properties for `Microsoft.IdentityModel.Tokens.TokenValidationParameters`
+ * A property write for security-sensitive properties for `Microsoft.IdentityModel.Tokens.TokenValidationParameters`
  */
 class TokenValidationParametersPropertyWriteToValidationDelegated extends PropertyWrite {
   TokenValidationParametersPropertyWriteToValidationDelegated() {
@@ -136,7 +138,7 @@ class TokenValidationParametersPropertyWriteToValidationDelegated extends Proper
 /**
  * Holds if the callable has a return statement and it always returns true for all such statements
  */
-predicate callableHasARetrunStmtAndAlwaysReturnsTrue(Callable c) {
+predicate callableHasAReturnStmtAndAlwaysReturnsTrue(Callable c) {
   c.getReturnType().toString() = "Boolean" and
   forall(ReturnStmt rs | rs.getEnclosingCallable() = c |
     rs.getChildExpr(0).(BoolLiteral).getBoolValue() = true
@@ -153,7 +155,7 @@ predicate lambdaExprReturnsOnlyLiteralTrue(LambdaExpr le) {
 
 class CallableAlwaysReturnsTrue extends Callable {
   CallableAlwaysReturnsTrue() {
-    callableHasARetrunStmtAndAlwaysReturnsTrue(this)
+    callableHasAReturnStmtAndAlwaysReturnsTrue(this)
     or
     lambdaExprReturnsOnlyLiteralTrue(this)
     or
@@ -195,7 +197,7 @@ class CallableAlwaysReturnsTrueHigherPrecision extends CallableAlwaysReturnsTrue
 }
 
 /**
- * Property Write for the `IssuerValidator` property for `Microsoft.IdentityModel.Tokens.TokenValidationParameters`
+ * A property Write for the `IssuerValidator` property for `Microsoft.IdentityModel.Tokens.TokenValidationParameters`
  */
 class TokenValidationParametersPropertyWriteToValidationDelegatedIssuerValidator extends PropertyWrite {
   TokenValidationParametersPropertyWriteToValidationDelegatedIssuerValidator() {
@@ -204,7 +206,7 @@ class TokenValidationParametersPropertyWriteToValidationDelegatedIssuerValidator
     |
       p.getAnAccess() = this and
       c.getAProperty() = p and
-      p.getName() in ["IssuerValidator"]
+      p.hasName("IssuerValidator")
     )
   }
 }
@@ -214,22 +216,22 @@ class TokenValidationParametersPropertyWriteToValidationDelegatedIssuerValidator
  */
 private class CallableReturnsStringAndArg0IsString extends Callable {
   CallableReturnsStringAndArg0IsString() {
-    this.getReturnType().toString() = "String" and
+    this.getReturnType() instanceof StringType and
     this.getParameter(0).getType().toString() = "String"
   }
 }
 
 /**
- * A Callable that always retrun the 1st argument, both of `string` type
+ * A Callable that always return the 1st argument, both of `string` type
  */
-class CallableAlwatsReturnsParameter0 extends CallableReturnsStringAndArg0IsString {
-  CallableAlwatsReturnsParameter0() {
+class CallableAlwaysReturnsParameter0 extends CallableReturnsStringAndArg0IsString {
+  CallableAlwaysReturnsParameter0() {
     forall(ReturnStmt rs | rs.getEnclosingCallable() = this |
       rs.getChild(0) = this.getParameter(0).getAnAccess()
     ) and
     exists(ReturnStmt rs | rs.getEnclosingCallable() = this)
     or
-    exists(LambdaExpr le, Call call, CallableAlwatsReturnsParameter0 cat | this = le |
+    exists(LambdaExpr le, Call call, CallableAlwaysReturnsParameter0 cat | this = le |
       call = le.getExpressionBody() and
       cat.getACall() = call
     )
@@ -239,17 +241,17 @@ class CallableAlwatsReturnsParameter0 extends CallableReturnsStringAndArg0IsStri
 }
 
 /**
- * A Callable that always retrun the 1st argument, both of `string` type. Higher precision
+ * A Callable that always return the 1st argument, both of `string` type. Higher precision
  */
-class CallableAlwatsReturnsParameter0MayThrowExceptions extends CallableReturnsStringAndArg0IsString {
-  CallableAlwatsReturnsParameter0MayThrowExceptions() {
+class CallableAlwaysReturnsParameter0MayThrowExceptions extends CallableReturnsStringAndArg0IsString {
+  CallableAlwaysReturnsParameter0MayThrowExceptions() {
     callableOnlyThrowsArgumentNullException(this) and
     forall(ReturnStmt rs | rs.getEnclosingCallable() = this |
       rs.getChild(0) = this.getParameter(0).getAnAccess()
     ) and
     exists(ReturnStmt rs | rs.getEnclosingCallable() = this)
     or
-    exists(LambdaExpr le, Call call, CallableAlwatsReturnsParameter0MayThrowExceptions cat |
+    exists(LambdaExpr le, Call call, CallableAlwaysReturnsParameter0MayThrowExceptions cat |
       this = le
     |
       call = le.getExpressionBody() and

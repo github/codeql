@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Microsoft.IdentityModel.Tokens;
 
-namespace WilsonTest
+namespace JsonWebTokenHandlerTest
 {
-    public class Wilson_02
+    public class JsonWebTokenHandler_class01
     {
         public void TestCase01()
         {
