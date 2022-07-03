@@ -1,7 +1,3 @@
-namespace std
-{
-  class string{};
-}
 namespace boost
 {
   namespace asio
@@ -14,13 +10,13 @@ namespace boost
       {
       public:
         typedef bool result_type;
-        explicit rfc2818_verification(const std::string& host) {}
+        explicit rfc2818_verification(const char * host) {}
       };
       class host_name_verification
       {
       public:
         typedef bool result_type;
-        explicit host_name_verification(const std::string& host) {}
+        explicit host_name_verification(const char * host) {}
       };
       class stream
       {
@@ -32,6 +28,15 @@ namespace boost
       };
     }
   }
+}
+
+void goodTest1(boost::asio::ssl::stream  sock){ // GOOD
+  sock.set_verify_mode(boost::asio::ssl::verify_peer);
+  sock.set_verify_callback(boost::asio::ssl::host_name_verification("host.name"));
+}
+void goodTest2(boost::asio::ssl::stream  sock){ // GOOD
+  sock.set_verify_mode(boost::asio::ssl::verify_peer);
+  sock.set_verify_callback(boost::asio::ssl::rfc2818_verification("host.name"));
 }
 void badTest1(boost::asio::ssl::stream  sock){ // BAD
   sock.set_verify_mode(boost::asio::ssl::verify_peer);
