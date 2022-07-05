@@ -20,5 +20,5 @@ from
 where
   config.hasFlow(source, sink) and
   exists(Assignment a | a.getLValue() = pw | sink.asExpr() = a.getRValue())
-select sink, "The security sensitive property $@ is being disabled by the followign value: $@.", pw,
+select sink, "The security sensitive property $@ is being disabled by the following value: $@.", pw,
   pw.getTarget().toString(), source, "false"
