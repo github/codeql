@@ -18,7 +18,7 @@ import csharp
  */
 predicate isCreatingAzureClientSideEncryptionObject(ObjectCreation oc, Class c, Expr e) {
   exists(Parameter p | p.hasName("version") |
-    c.getQualifiedName() in ["Azure.Storage.ClientSideEncryptionOptions"] and
+    c.hasQualifiedName("Azure.Storage.ClientSideEncryptionOptions") and
     oc.getTarget() = c.getAConstructor() and
     e = oc.getArgumentForParameter(p)
   )
@@ -28,7 +28,7 @@ predicate isCreatingAzureClientSideEncryptionObject(ObjectCreation oc, Class c, 
  * Holds if `oc` is an object creation of the outdated type `c` = `Microsoft.Azure.Storage.Blob.BlobEncryptionPolicy`
  */
 predicate isCreatingOutdatedAzureClientSideEncryptionObject(ObjectCreation oc, Class c) {
-  c.getQualifiedName() in ["Microsoft.Azure.Storage.Blob.BlobEncryptionPolicy"] and
+  c.hasQualifiedName("Microsoft.Azure.Storage.Blob.BlobEncryptionPolicy") and
   oc.getTarget() = c.getAConstructor()
 }
 
@@ -37,7 +37,7 @@ predicate isCreatingOutdatedAzureClientSideEncryptionObject(ObjectCreation oc, C
  * version 2+ for client-side encryption and if the argument for the constructor `version`
  * is set to a secure value.
  */
-predicate isObjectCreationSafe(Class c, Expr versionExpr, Assembly asm) {
+predicate isObjectCreationSafe(Expr versionExpr, Assembly asm) {
   // Check if the Azure.Storage assembly version has the fix
   exists(int versionCompare |
     versionCompare = asm.getVersion().compareTo("12.12.0.0") and
@@ -66,7 +66,7 @@ where
   (
     exists(Expr e2 |
       isCreatingAzureClientSideEncryptionObject(e, c, e2) and
-      not isObjectCreationSafe(c, e2, asm)
+      not isObjectCreationSafe(e2, asm)
     )
     or
     isCreatingOutdatedAzureClientSideEncryptionObject(e, c)
