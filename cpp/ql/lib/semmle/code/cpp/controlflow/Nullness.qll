@@ -169,7 +169,10 @@ class AnalysedExpr extends Expr {
    */
   predicate isDef(LocalScopeVariable v) {
     this.inCondition() and
-    this.(Assignment).getLValue() = v.getAnAccess()
+    (
+      this.(Assignment).getLValue() = v.getAnAccess() or
+      exists(Initializer i | this.getEnclosingStmt() = i.getEnclosingStmt() and v = i.getDeclaration())
+    ) 
   }
 
   /**
