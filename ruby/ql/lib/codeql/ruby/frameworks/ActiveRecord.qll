@@ -135,7 +135,7 @@ private Expr sqlFragmentArgument(MethodCall call) {
       result = call.getKeywordArgument("lock")
       or
       // Calls to `annotate` can be used to add block comments to SQL queries. These are potentially vulnerable to
-      // SQLi if user supplied input is passed in as an argument. 
+      // SQLi if user supplied input is passed in as an argument.
       methodName = "annotate" and
       result = call.getArgument(_)
     )
