@@ -34,10 +34,12 @@ module PolynomialReDoS {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for polynomial regular expression denial of service
    * vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -108,23 +110,21 @@ module PolynomialReDoS {
     override DataFlow::Node getHighlight() { result = matchNode }
   }
 
+  private predicate lengthGuard(CfgNodes::ExprCfgNode g, CfgNode node, boolean branch) {
+    exists(DataFlow::Node input, DataFlow::CallNode length, DataFlow::ExprNode operand |
+      length.asExpr().getExpr().(AST::MethodCall).getMethodName() = "length" and
+      length.getReceiver() = input and
+      length.flowsTo(operand) and
+      operand.getExprNode() = g.(CfgNodes::ExprNodes::RelationalOperationCfgNode).getAnOperand() and
+      node = input.asExpr() and
+      branch = true
+    )
+  }
+
   /**
    * A check on the length of a string, seen as a sanitizer guard.
    */
-  class LengthGuard extends SanitizerGuard, CfgNodes::ExprNodes::RelationalOperationCfgNode {
-    private DataFlow::Node input;
-
-    LengthGuard() {
-      exists(DataFlow::CallNode length, DataFlow::ExprNode operand |
-        length.asExpr().getExpr().(AST::MethodCall).getMethodName() = "length" and
-        length.getReceiver() = input and
-        length.flowsTo(operand) and
-        operand.getExprNode() = this.getAnOperand()
-      )
-    }
-
-    override predicate checks(CfgNode node, boolean branch) {
-      node = input.asExpr() and branch = true
-    }
+  class LengthGuard extends Sanitizer {
+    LengthGuard() { this = DataFlow::BarrierGuard<lengthGuard/3>::getABarrierNode() }
   }
 }

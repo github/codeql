@@ -230,4 +230,15 @@ modifiers
 | reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | invoke | override |
 | reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | invoke | public |
 compGenerated
+| file://<external>/Class2.class:0:0:0:0 | getValue | 3 |
+| file://<external>/Class2.class:0:0:0:0 | getValue | 3 |
+| file://<external>/KTypeProjection.class:0:0:0:0 | contravariant | 8 |
+| file://<external>/KTypeProjection.class:0:0:0:0 | covariant | 8 |
+| file://<external>/KTypeProjection.class:0:0:0:0 | invariant | 8 |
+| reflection.kt:33:9:33:23 | getP0 | 3 |
+| reflection.kt:34:9:34:23 | getP1 | 3 |
+| reflection.kt:34:9:34:23 | setP1 | 3 |
+| reflection.kt:83:17:83:28 | getValue | 3 |
+| reflection.kt:105:18:105:31 | getProp1 | 3 |
+| reflection.kt:105:18:105:31 | setProp1 | 3 |
 | reflection.kt:126:9:126:13 |  | 1 |

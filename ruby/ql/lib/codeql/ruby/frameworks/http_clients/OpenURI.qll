@@ -28,7 +28,7 @@ class OpenUriRequest extends HTTP::Client::Request::Range {
         [API::getTopLevelMember("URI"), API::getTopLevelMember("URI").getReturn("parse")]
             .getReturn("open"), API::getTopLevelMember("OpenURI").getReturn("open_uri")
       ] and
-    requestUse = requestNode.getAnImmediateUse() and
+    requestUse = requestNode.asSource() and
     this = requestUse.asExpr().getExpr()
   }
 
@@ -110,7 +110,11 @@ private predicate isSslVerifyModeNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
     key.asExpr() = p.getKey() and
     value.asExpr() = p.getValue() and
     isSslVerifyModeLiteral(key) and
-    value = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse()
+    value =
+      API::getTopLevelMember("OpenSSL")
+          .getMember("SSL")
+          .getMember("VERIFY_NONE")
+          .getAValueReachableFromSource()
   )
 }
 

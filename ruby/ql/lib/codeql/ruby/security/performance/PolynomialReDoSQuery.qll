@@ -30,7 +30,7 @@ module PolynomialReDoS {
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard node) {
+    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard node) {
       node instanceof SanitizerGuard
     }
   }

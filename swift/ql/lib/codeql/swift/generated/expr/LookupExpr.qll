@@ -5,15 +5,17 @@ import codeql.swift.elements.expr.Expr
 class LookupExprBase extends @lookup_expr, Expr {
   Expr getBaseExpr() {
     exists(Expr x |
-      lookup_exprs(this, x, _) and
+      lookup_exprs(this, x) and
       result = x.resolve()
     )
   }
 
   Decl getMember() {
     exists(Decl x |
-      lookup_exprs(this, _, x) and
+      lookup_expr_members(this, x) and
       result = x.resolve()
     )
   }
+
+  predicate hasMember() { exists(getMember()) }
 }

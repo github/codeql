@@ -165,6 +165,9 @@ predicate whitelisted(UnusedLocal v) {
     or
     // ignore ambient declarations - too noisy
     vd.isAmbient()
+    or
+    // ignore variables in template placeholders, as each placeholder sees a different copy of the variable
+    vd.getTopLevel() instanceof Templating::TemplateTopLevel
   )
   or
   exists(Expr eval | eval instanceof DirectEval or eval instanceof GeneratedCodeExpr |

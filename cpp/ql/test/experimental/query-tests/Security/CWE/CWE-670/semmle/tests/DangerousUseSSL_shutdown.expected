@@ -1,0 +1,2 @@
+| test.cpp:45:20:45:31 | call to SSL_shutdown | You need to handle the return value SSL_shutdown |
+| test.cpp:61:11:61:22 | call to SSL_shutdown | You need to handle the return value SSL_shutdown |

@@ -14,14 +14,14 @@ _directories:
 
 Element:
   is_unknown: predicate
-  _tags: [ no_qltest ]
+  _pragma: qltest_skip
 
 File:
   name: string
 
 Locatable:
   location: Location?
-  _tags: [ no_qltest ]
+  _pragma: qltest_skip
 
 Location:
   file: File
@@ -29,10 +29,10 @@ Location:
   start_column: int
   end_line: int
   end_column: int
-  _tags: [ no_qltest ]
+  _pragma: qltest_skip
 
 Type:
-  diagnostics_name: string
+  name: string
   canonical_type: Type
 
 IterableDeclContext:
@@ -85,6 +85,7 @@ AnyMetatypeType:
 
 BuiltinType:
   _extends: Type
+  _pragma: qltest_collapse_hierarchy
 
 DependentMemberType:
   _extends: Type
@@ -93,12 +94,14 @@ DependentMemberType:
 
 DynamicSelfType:
   _extends: Type
+  static_self_type: Type
 
 ErrorType:
   _extends: Type
 
 InOutType:
   _extends: Type
+  object_type: Type
 
 LValueType:
   _extends: Type
@@ -112,12 +115,15 @@ PlaceholderType:
 
 ProtocolCompositionType:
   _extends: Type
+  members: Type*
 
 ExistentialType:
   _extends: Type
+  constraint: Type
 
 ReferenceStorageType:
   _extends: Type
+  referent_type: Type
 
 SilBlockStorageType:
   _extends: Type
@@ -239,10 +245,12 @@ WeakStorageType:
 
 ArchetypeType:
   _extends: SubstitutableType
+  interface_type: Type
+  superclass: Type?
+  protocols: ProtocolDecl*
 
 GenericTypeParamType:
   _extends: SubstitutableType
-  name: string
 
 ParenType:
   _extends: SugarType
@@ -265,6 +273,9 @@ IfConfigDecl:
 
 ImportDecl:
   _extends: Decl
+  is_exported: predicate
+  module: ModuleDecl
+  declarations: ValueDecl*
 
 MissingMemberDecl:
   _extends: Decl
@@ -385,6 +396,7 @@ EnumIsCaseExpr:
 
 ErrorExpr:
   _extends: Expr
+  _pragma: qltest_skip  # unexpected emission
 
 ExplicitCastExpr:
   _extends: Expr
@@ -445,7 +457,7 @@ LookupExpr:
   _extends: Expr
   _children:
     base_expr: Expr
-  member: Decl
+  member: Decl?
 
 MakeTemporarilyEscapableExpr:
   _extends: Expr
@@ -459,6 +471,7 @@ ObjCSelectorExpr:
   _children:
     sub_expr: Expr
   method: AbstractFunctionDecl
+  _pragma: qltest_skip  # to be tested in integration tests
 
 OneWayExpr:
   _extends: Expr
@@ -498,6 +511,9 @@ RebindSelfInConstructorExpr:
 
 SequenceExpr:
   _extends: Expr
+  _children:
+    elements: Expr*
+  _pragma: qltest_skip  # we should really never extract these, as these should be resolved to trees of operations
 
 SuperRefExpr:
   _extends: Expr
@@ -528,18 +544,27 @@ TypeExpr:
 
 UnresolvedDeclRefExpr:
   _extends: Expr
+  name: string?
+  _pragma: qltest_skip  # we should really never extract these
 
 UnresolvedDotExpr:
   _extends: Expr
+  _children:
+    base: Expr
+  name: string
 
 UnresolvedMemberExpr:
   _extends: Expr
+  name: string
+  _pragma: qltest_skip  # we should really never extract these
 
 UnresolvedPatternExpr:
   _extends: Expr
+  _pragma: qltest_skip  # we should really never extract these
 
 UnresolvedSpecializeExpr:
   _extends: Expr
+  _pragma: qltest_skip  # we should really never extract these
 
 VarargExpansionExpr:
   _extends: Expr
@@ -676,10 +701,13 @@ BuiltinIntegerLiteralType:
 
 BuiltinIntegerType:
   _extends: AnyBuiltinIntegerType
+  _pragma: qltest_uncollapse_hierarchy
   width: int?
 
 NestedArchetypeType:
   _extends: ArchetypeType
+  parent: ArchetypeType
+  associated_type_declaration: AssociatedTypeDecl
 
 SequenceArchetypeType:
   _extends: ArchetypeType
@@ -692,7 +720,6 @@ OpenedArchetypeType:
 
 PrimaryArchetypeType:
   _extends: ArchetypeType
-  interface_type: GenericTypeParamType
 
 DictionaryType:
   _extends: SyntaxSugarType
@@ -807,9 +834,11 @@ ArrayToPointerExpr:
 
 BridgeFromObjCExpr:
   _extends: ImplicitConversionExpr
+  _pragma: qltest_skip  # to be tested in integration tests
 
 BridgeToObjCExpr:
   _extends: ImplicitConversionExpr
+  _pragma: qltest_skip  # to be tested in integration tests
 
 ClassMetatypeToObjectExpr:
   _extends: ImplicitConversionExpr
@@ -819,6 +848,7 @@ CollectionUpcastConversionExpr:
 
 ConditionalBridgeFromObjCExpr:
   _extends: ImplicitConversionExpr
+  _pragma: qltest_skip  # to be tested in integration tests
 
 CovariantFunctionConversionExpr:
   _extends: ImplicitConversionExpr
@@ -1040,6 +1070,8 @@ GenericTypeDecl:
 
 ModuleDecl:
   _extends: TypeDecl
+  is_builtin_module: predicate
+  is_system_module: predicate
 
 ConstructorRefCallExpr:
   _extends: SelfApplyExpr

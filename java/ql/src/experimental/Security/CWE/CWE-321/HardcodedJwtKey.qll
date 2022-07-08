@@ -131,15 +131,15 @@ private class VerificationFlowStep extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "com.auth0.jwt.interfaces;Verification;true;build;;;Argument[-1];ReturnValue;taint",
+        "com.auth0.jwt.interfaces;Verification;true;build;;;Argument[-1];ReturnValue;taint;manual",
         "com.auth0.jwt.interfaces;Verification;true;" +
           ["acceptLeeway", "acceptExpiresAt", "acceptNotBefore", "acceptIssuedAt", "ignoreIssuedAt"]
-          + ";;;Argument[-1];ReturnValue;value",
+          + ";;;Argument[-1];ReturnValue;value;manual",
         "com.auth0.jwt.interfaces;Verification;true;with" +
           [
             "Issuer", "Subject", "Audience", "AnyOfAudience", "ClaimPresence", "Claim",
             "ArrayClaim", "JWTId"
-          ] + ";;;Argument[-1];ReturnValue;value"
+          ] + ";;;Argument[-1];ReturnValue;value;manual"
       ]
   }
 }

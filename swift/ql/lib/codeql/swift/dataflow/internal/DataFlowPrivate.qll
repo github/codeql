@@ -37,7 +37,7 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
 
   override string toStringImpl() { result = expr.toString() }
 
-  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(expr.getScope()) }
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
 }
 
 private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
@@ -62,7 +62,7 @@ cached
 private module Cached {
   cached
   newtype TNode =
-    TExprNode(ExprCfgNode e) or
+    TExprNode(CfgNode n, Expr e) { hasExprNode(n, e) } or
     TSsaDefinitionNode(Ssa::Definition def) or
     TInoutReturnNode(ParamDecl param) { param.isInout() } or
     TInOutUpdateNode(ParamDecl param, CallExpr call) {
@@ -70,6 +70,14 @@ private module Cached {
       call.getStaticTarget() = param.getDeclaringFunction()
     } or
     TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state)
+
+  private predicate hasExprNode(CfgNode n, Expr e) {
+    n.(ExprCfgNode).getExpr() = e
+    or
+    n.(PropertyGetterCfgNode).getRef() = e
+    or
+    n.(PropertySetterCfgNode).getAssignExpr() = e
+  }
 
   private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
     def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode()) and
@@ -157,7 +165,7 @@ private module ParameterNodes {
     override string toStringImpl() { result = param.toString() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      exists(FuncDecl f, int index |
+      exists(Callable f, int index |
         c = TDataFlowFunc(f) and
         f.getParam(index) = param and
         pos = TPositionalParameter(index)
@@ -375,13 +383,25 @@ class Unit extends TUnit {
  */
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
 
-newtype LambdaCallKind = TODO_TLambdaCallKind()
+newtype LambdaCallKind = TLambdaCallKind()
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+  kind = TLambdaCallKind() and
+  (
+    // Closures
+    c.getUnderlyingCallable() = creation.asExpr()
+    or
+    // Reference to a function declaration
+    creation.asExpr().(DeclRefExpr).getDecl() = c.getUnderlyingCallable()
+  )
+}
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
-predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  kind = TLambdaCallKind() and
+  receiver.asExpr() = call.asCall().getExpr().(ApplyExpr).getFunction()
+}
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
