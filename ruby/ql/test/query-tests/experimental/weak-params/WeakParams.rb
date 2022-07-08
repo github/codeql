@@ -8,7 +8,7 @@ class TestController < ActionController::Base
   end
 
   def update
-    TestObect.update(object_params)
+    TestObject.update(object_params)
   end
 
   # 
