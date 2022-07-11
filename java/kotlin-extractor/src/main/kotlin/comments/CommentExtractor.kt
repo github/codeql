@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.psi.psiUtil.startOffset
 class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private val file: IrFile, private val fileLabel: Label<out DbFile>) {
     private val tw = fileExtractor.tw
     private val logger = fileExtractor.logger
-    private val psi2Ir = Psi2Ir()
+    private val psi2Ir = Psi2Ir(logger)
     private val ktFile = psi2Ir.getKtFile(file)
 
     fun extract() {
