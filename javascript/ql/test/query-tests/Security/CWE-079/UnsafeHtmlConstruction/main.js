@@ -85,3 +85,11 @@ module.exports.types = function (val) {
         $("#foo").html("<span>" + val + "</span>"); // OK
     }
 }
+
+function createHTML(x) {
+    return "<span>" + x + "</span>"; // NOT OK
+}
+
+module.exports.usesCreateHTML = function (x) {
+    $("#foo").html(createHTML(x));
+}
