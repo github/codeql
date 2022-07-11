@@ -24,7 +24,7 @@ predicate isCreatingOutdatedAzureClientSideEncryptionObject(Call call, Class c) 
     (
       type = "EncryptedBlobClientBuilder" and
       package = "com.azure.storage.blob.specialized.cryptography" and
-      not exists(Expr e | e = call.getArgument(0))
+      constructor.hasNoParameters()
       or
       type = "BlobEncryptionPolicy" and package = "com.microsoft.azure.storage.blob"
     )
