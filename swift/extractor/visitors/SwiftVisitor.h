@@ -21,6 +21,7 @@ class SwiftVisitor : private SwiftDispatcher {
 
  private:
   void visit(swift::Decl* decl) override { declVisitor.visit(decl); }
+  void visit(const swift::IfConfigClause* clause) override { declVisitor.visit(clause); }
   void visit(swift::Stmt* stmt) override { stmtVisitor.visit(stmt); }
   void visit(swift::StmtCondition* cond) override { stmtVisitor.visitStmtCondition(cond); }
   void visit(swift::CaseLabelItem* item) override { stmtVisitor.visitCaseLabelItem(item); }

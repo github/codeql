@@ -78,7 +78,7 @@ class SwiftDispatcher {
     waitingForNewLabel = e;
     visit(e);
     if (auto l = store.get(e)) {
-      if constexpr (!std::is_base_of_v<swift::TypeBase, E>) {
+      if constexpr (std::is_base_of_v<LocatableTag, TrapTagOf<E>>) {
         attachLocation(e, *l);
       }
       return *l;
@@ -93,6 +93,10 @@ class SwiftDispatcher {
 
   TrapLabel<AstNodeTag> fetchLabel(swift::ASTNode node) {
     return fetchLabelFromUnion<AstNodeTag>(node);
+  }
+
+  TrapLabel<IfConfigClauseTag> fetchLabel(const swift::IfConfigClause& clause) {
+    return fetchLabel(&clause);
   }
 
   // Due to the lazy emission approach, we must assign a label to a corresponding AST node before
@@ -141,6 +145,15 @@ class SwiftDispatcher {
   template <typename Locatable>
   void attachLocation(Locatable* locatable, TrapLabel<LocatableTag> locatableLabel) {
     attachLocation(locatable->getStartLoc(), locatable->getEndLoc(), locatableLabel);
+  }
+
+  void attachLocation(const swift::IfConfigClause* clause, TrapLabel<LocatableTag> locatableLabel) {
+    attachLocation(clause->Loc, clause->Loc, locatableLabel);
+  }
+
+  // Emits a Location TRAP entry and attaches it to a `Locatable` trap label for a given `SourceLoc`
+  void attachLocation(swift::SourceLoc loc, TrapLabel<LocatableTag> locatableLabel) {
+    attachLocation(loc, loc, locatableLabel);
   }
 
   // Emits a Location TRAP entry for a list of swift entities and attaches it to a `Locatable` trap
@@ -217,7 +230,8 @@ class SwiftDispatcher {
                                swift::Expr,
                                swift::Pattern,
                                swift::TypeRepr,
-                               swift::TypeBase>;
+                               swift::TypeBase,
+                               swift::IfConfigClause>;
 
   void attachLocation(swift::SourceLoc start,
                       swift::SourceLoc end,
@@ -274,6 +288,7 @@ class SwiftDispatcher {
   // TODO: The following methods are supposed to redirect TRAP emission to correpsonding visitors,
   // which are to be introduced in follow-up PRs
   virtual void visit(swift::Decl* decl) = 0;
+  virtual void visit(const swift::IfConfigClause* clause) = 0;
   virtual void visit(swift::Stmt* stmt) = 0;
   virtual void visit(swift::StmtCondition* cond) = 0;
   virtual void visit(swift::CaseLabelItem* item) = 0;
