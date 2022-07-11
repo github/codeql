@@ -120,7 +120,7 @@ private string sensitiveheaders() {
 /**
  * A config that tracks data flow from remote user input to cryptographic operations
  */
-private class UserInputMsgConfig extends TaintTracking::Configuration {
+class UserInputMsgConfig extends TaintTracking::Configuration {
   UserInputMsgConfig() { this = "UserInputMsgConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
