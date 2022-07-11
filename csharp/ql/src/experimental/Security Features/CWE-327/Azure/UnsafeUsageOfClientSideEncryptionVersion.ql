@@ -14,7 +14,7 @@ import csharp
 
 /**
  * Holds if `oc` is creating an object of type `c` = `Azure.Storage.ClientSideEncryptionOptions`
- * and `e` is the `version` argument to the contructor
+ * and `e` is the `version` argument to the constructor
  */
 predicate isCreatingAzureClientSideEncryptionObject(ObjectCreation oc, Class c, Expr e) {
   exists(Parameter p | p.hasName("version") |
