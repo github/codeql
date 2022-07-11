@@ -367,5 +367,10 @@ codeql::BuiltinVectorType TypeVisitor::translateBuiltinVectorType(
     const swift::BuiltinVectorType& type) {
   return createTypeEntry(type);
 }
-
+codeql::OpenedArchetypeType TypeVisitor::translateOpenedArchetypeType(
+    const swift::OpenedArchetypeType& type) {
+  auto entry = createTypeEntry(type);
+  fillArchetypeType(type, entry);
+  return entry;
+}
 }  // namespace codeql
