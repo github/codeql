@@ -16,7 +16,8 @@ import org.jetbrains.kotlin.psi.psiUtil.startOffset
 class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private val file: IrFile, private val fileLabel: Label<out DbFile>) {
     private val tw = fileExtractor.tw
     private val logger = fileExtractor.logger
-    private val ktFile = Psi2Ir().getKtFile(file)
+    private val psi2Ir = Psi2Ir()
+    private val ktFile = psi2Ir.getKtFile(file)
 
     fun extract() {
         if (ktFile == null) {
@@ -85,7 +86,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                 val ownerPsi = getKDocOwner(comment) ?: return
 
                 val owners = mutableListOf<IrElement>()
-                file.accept(IrVisitorLookup(ownerPsi, file), owners)
+                file.accept(IrVisitorLookup(psi2Ir, ownerPsi, file), owners)
 
                 for (ownerIr in owners) {
                     val ownerLabel =
