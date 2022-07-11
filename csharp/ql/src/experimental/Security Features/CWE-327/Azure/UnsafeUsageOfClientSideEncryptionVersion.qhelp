@@ -14,11 +14,6 @@
   </recommendation>
   <example>
 
-    <p>The following example shows an HTTP request parameter being used directly in a forming a
-new request without validating the input, which facilitates SSRF attacks.
-It also shows how to remedy the problem by validating the user input against a known fixed string.
-</p>
-
     <sample src="UnsafeUsageOfClientSideEncryptionVersion.cs" />
 
   </example>
