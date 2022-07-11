@@ -33,16 +33,25 @@ predicate isCreatingOutdatedAzureClientSideEncryptionObject(ObjectCreation oc, C
 }
 
 /**
- * Holds if the Azure.Storage assembly for `c` is a version knwon to support
- * version 2+ for client-side encryption and if the argument for the constructor `version`
- * is set to a secure value.
+ * Holds if the Azure.Storage assembly for `c` is a version known to support
+ * version 2+ for client-side encryption
  */
-predicate isObjectCreationSafe(Expr versionExpr, Assembly asm) {
-  // Check if the Azure.Storage assembly version has the fix
+predicate doesAzureStorageAssemblySupportSafeClientSideEncryption(Assembly asm) {
   exists(int versionCompare |
     versionCompare = asm.getVersion().compareTo("12.12.0.0") and
     versionCompare >= 0
   ) and
+  asm.getName() = "Azure.Storage.Common"
+}
+
+/**
+ * Holds if the Azure.Storage assembly for `c` is a version known to support
+ * version 2+ for client-side encryption and if the argument for the constructor `version`
+ * is set to a secure value.
+ */
+predicate isObjectCreationArgumentSafeAndUsingSafeVersionOfAssembly(Expr versionExpr, Assembly asm) {
+  // Check if the Azure.Storage assembly version has the fix
+  doesAzureStorageAssemblySupportSafeClientSideEncryption(asm) and
   // and that the version argument for the constructor is guaranteed to be Version2
   isExprAnAccessToSafeClientSideEncryptionVersionValue(versionExpr)
 }
@@ -56,8 +65,6 @@ predicate isExprAnAccessToSafeClientSideEncryptionVersionValue(Expr e) {
     ec.hasQualifiedName("Azure.Storage.ClientSideEncryptionVersion.V2_0") and
     ec.getAnAccess() = e
   )
-  or
-  e.getValue().toInt() >= 2
 }
 
 from Expr e, Class c, Assembly asm
@@ -66,10 +73,9 @@ where
   (
     exists(Expr e2 |
       isCreatingAzureClientSideEncryptionObject(e, c, e2) and
-      not isObjectCreationSafe(e2, asm)
+      not isObjectCreationArgumentSafeAndUsingSafeVersionOfAssembly(e2, asm)
     )
     or
     isCreatingOutdatedAzureClientSideEncryptionObject(e, c)
   )
-select e,
-  "Unsafe usage of v1 version of Azure Storage client-side encryption (CVE-2022-PENDING). See http://aka.ms/azstorageclientencryptionblog"
+select e, "Unsafe usage of v1 version of Azure Storage client-side encryption."

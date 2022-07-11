@@ -21,6 +21,9 @@
     <li>
       <a href="http://aka.ms/azstorageclientencryptionblog">Azure Storage Client Encryption Blog.</a>
     </li>
+    <li>
+      <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-PENDING">CVE-2022-PENDING</a>
+    </li>
 
   </references>
 </qhelp>

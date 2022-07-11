@@ -13,7 +13,7 @@
 import java
 
 /**
- * Holds if the call `call` is an object creation for a class `EncryptedBlobClientBuilder` 
+ * Holds if the call `call` is an object creation for a class `EncryptedBlobClientBuilder`
  * that takes no arguments, which means that it is using V1 encryption
  */
 predicate isCreatingOutdatedAzureClientSideEncryptionObject(Call call, Class c) {
@@ -31,8 +31,8 @@ predicate isCreatingOutdatedAzureClientSideEncryptionObject(Call call, Class c) 
   )
 }
 
-/** 
- * Holds if the call `call` is an object creation for a class `EncryptedBlobClientBuilder` 
+/**
+ * Holds if the call `call` is an object creation for a class `EncryptedBlobClientBuilder`
  * that takes `versionArg` as the argument for the version.
  */
 predicate isCreatingAzureClientSideEncryptionObjectNewVersion(Call call, Class c, Expr versionArg) {
@@ -47,7 +47,7 @@ predicate isCreatingAzureClientSideEncryptionObjectNewVersion(Call call, Class c
 }
 
 /**
- * Holds if the call `call` is an object creation for a class `EncryptedBlobClientBuilder` 
+ * Holds if the call `call` is an object creation for a class `EncryptedBlobClientBuilder`
  * that takes `versionArg` as the argument for the version, and the version number is safe
  */
 predicate isCreatingSafeAzureClientSideEncryptionObject(Call call, Class c, Expr versionArg) {
@@ -67,5 +67,4 @@ where
   )
   or
   isCreatingOutdatedAzureClientSideEncryptionObject(e, c)
-select e,
-  "Unsafe usage of v1 version of Azure Storage client-side encryption (CVE-2022-PENDING). See http://aka.ms/azstorageclientencryptionblog"
+select e, "Unsafe usage of v1 version of Azure Storage client-side encryption."
