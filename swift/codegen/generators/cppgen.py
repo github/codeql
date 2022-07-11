@@ -13,6 +13,7 @@ Each class in the schema gets a corresponding `struct` in `TrapClasses.h`, where
 
 import functools
 import pathlib
+import typing
 from typing import Dict
 
 import inflection
@@ -34,22 +35,25 @@ def _get_type(t: str) -> str:
     return t
 
 
-def _get_field(cls: schema.Class, p: schema.Property) -> cpp.Field:
-    trap_name = None
-    if not p.is_single:
-        trap_name = inflection.camelize(f"{cls.name}_{p.name}")
-        if not p.is_predicate:
-            trap_name = inflection.pluralize(trap_name)
-    args = dict(
-        field_name=p.name + ("_" if p.name in cpp.cpp_keywords else ""),
-        type=_get_type(p.type),
-        is_optional=p.is_optional,
-        is_repeated=p.is_repeated,
-        is_predicate=p.is_predicate,
-        trap_name=trap_name,
-    )
-    args.update(cpp.get_field_override(p.name))
-    return cpp.Field(**args)
+def _get_fields(cls: schema.Class) -> typing.Iterable[cpp.Field]:
+    for p in cls.properties:
+        if "cpp_skip" in p.pragmas:
+            continue
+        trap_name = None
+        if not p.is_single:
+            trap_name = inflection.camelize(f"{cls.name}_{p.name}")
+            if not p.is_predicate:
+                trap_name = inflection.pluralize(trap_name)
+        args = dict(
+            field_name=p.name + ("_" if p.name in cpp.cpp_keywords else ""),
+            type=_get_type(p.type),
+            is_optional=p.is_optional,
+            is_repeated=p.is_repeated,
+            is_predicate=p.is_predicate,
+            trap_name=trap_name,
+        )
+        args.update(cpp.get_field_override(p.name))
+        yield cpp.Field(**args)
 
 
 class Processor:
@@ -65,7 +69,7 @@ class Processor:
         return cpp.Class(
             name=name,
             bases=[self._get_class(b) for b in cls.bases],
-            fields=[_get_field(cls, p) for p in cls.properties],
+            fields=list(_get_fields(cls)),
             final=not cls.derived,
             trap_name=trap_name,
         )
