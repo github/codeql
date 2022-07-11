@@ -11,6 +11,7 @@
  */
 
 import java
+import semmle.code.java.dataflow.DataFlow
 
 /**
  * Holds if the call `call` is an object creation for a class `EncryptedBlobClientBuilder`
@@ -47,15 +48,36 @@ predicate isCreatingAzureClientSideEncryptionObjectNewVersion(Call call, Class c
 }
 
 /**
+ * A config that tracks `EncryptedBlobClientBuilder.version` argument initialization.
+ */
+private class EncryptedBlobClientBuilderEncryptionVersionConfig extends DataFlow::Configuration {
+  EncryptedBlobClientBuilderEncryptionVersionConfig() {
+    this = "EncryptedBlobClientBuilderEncryptionVersionConfig"
+  }
+
+  override predicate isSource(DataFlow::Node source) {
+    exists(FieldRead fr, Field f | fr = source.asExpr() |
+      f.getAnAccess() = fr and
+      f.hasQualifiedName("com.azure.storage.blob.specialized.cryptography", "EncryptionVersion",
+        "V2")
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    isCreatingAzureClientSideEncryptionObjectNewVersion(_, _, sink.asExpr())
+  }
+}
+
+/**
  * Holds if the call `call` is an object creation for a class `EncryptedBlobClientBuilder`
  * that takes `versionArg` as the argument for the version, and the version number is safe
  */
 predicate isCreatingSafeAzureClientSideEncryptionObject(Call call, Class c, Expr versionArg) {
   isCreatingAzureClientSideEncryptionObjectNewVersion(call, c, versionArg) and
-  exists(FieldRead fr, Field f |
-    fr = versionArg and
-    f.getAnAccess() = fr and
-    f.hasQualifiedName("com.azure.storage.blob.specialized.cryptography", "EncryptionVersion", "V2")
+  exists(EncryptedBlobClientBuilderEncryptionVersionConfig config, DataFlow::Node sink |
+    sink.asExpr() = versionArg
+  |
+    config.hasFlow(_, sink)
   )
 }
 

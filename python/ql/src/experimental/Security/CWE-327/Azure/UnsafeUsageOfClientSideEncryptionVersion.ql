@@ -11,6 +11,7 @@
  */
 
 import python
+import semmle.python.ApiGraphs
 
 predicate isUnsafeClientSideAzureStorageEncryptionViaAttributes(Call call, AttrNode node) {
   exists(ControlFlowNode ctrlFlowNode, AssignStmt astmt, Attribute a |
@@ -33,8 +34,10 @@ predicate isUnsafeClientSideAzureStorageEncryptionViaAttributes(Call call, AttrN
 }
 
 predicate isUnsafeClientSideAzureStorageEncryptionViaObjectCreation(Call call, ControlFlowNode node) {
-  exists(Keyword k | k.getAFlowNode() = node |
-    call.getFunc().(Name).getId() in ["ContainerClient", "BlobClient", "BlobServiceClient"] and
+  exists(API::Node c, string s, Keyword k | k.getAFlowNode() = node |
+    c.getACall().asExpr() = call and
+    c = API::moduleImport("azure").getMember("storage").getMember("blob").getMember(s) and
+    s in ["ContainerClient", "BlobClient", "BlobServiceClient"] and
     k.getArg() = "key_encryption_key" and
     k = call.getANamedArg() and
     not k.getValue() instanceof None and
