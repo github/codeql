@@ -103,7 +103,7 @@ You can now use ``codeql pack publish``, ``codeql pack download``, and ``codeql 
 Authenticating to GitHub Container registries
 ---------------------------------------------
 
-You can download a private pack or publish a pack by authenticating to the appropriate GitHub Container registry.
+You can publish packs and download private packs by authenticating to the appropriate GitHub Container registry.
 
 You can authenticate to the Container registry on GitHub.com in two ways:
 
@@ -115,5 +115,10 @@ Similarly, you can authenticate to a GHES Container registry, or authenticate to
 1. Pass the ``--registries-auth-stdin`` option to the CodeQL CLI, then supply a registry authentication string via standard input.
 2. Set the ``CODEQL_REGISTRIES_AUTH`` environment variable to a registry authentication string.
 
-A registry authentication string is a comma-separated list of ``<registry-url>=<token>`` pairs, where ``registry-url`` is a GitHub Container registry URL, for example ``https://containers.GHE_HOSTNAME/v2/`` and ``token`` is a GitHub Apps token or personal access token for that GitHub Container registry.
+A registry authentication string is a comma-separated list of ``<registry-url>=<token>`` pairs, where ``registry-url`` is a GitHub Container registry URL, such as ``https://containers.GHE_HOSTNAME/v2/``, and ``token`` is a GitHub Apps token or personal access token for that GitHub Container registry.
 This ensures that each token is only passed to the Container registry you specify.
+For instance, the following registry authentication string specifies that the CodeQL CLI should authenticate to the Container registry on GitHub.com using the token ``<token1>`` and to the Container registry for the GHES instance at ``GHE_HOSTNAME`` using the token ``<token2>``:
+
+.. code-block:: none
+
+   https://ghcr.io/v2/=<token1>,https://containers.GHE_HOSTNAME/v2/=<token2>
