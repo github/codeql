@@ -195,7 +195,7 @@ module Flask {
 
     FlaskViewClass() {
       api_node = Views::View::subclassRef() and
-      this.getParent() = api_node.getAnImmediateUse().asExpr()
+      this.getParent() = api_node.asSource().asExpr()
     }
 
     /** Gets a function that could handle incoming requests, if any. */
@@ -220,7 +220,7 @@ module Flask {
   class FlaskMethodViewClass extends FlaskViewClass {
     FlaskMethodViewClass() {
       api_node = Views::MethodView::subclassRef() and
-      this.getParent() = api_node.getAnImmediateUse().asExpr()
+      this.getParent() = api_node.asSource().asExpr()
     }
 
     override Function getARequestHandler() {
@@ -305,7 +305,7 @@ module Flask {
       )
       or
       exists(FlaskViewClass vc |
-        this.getViewArg() = vc.asViewResult().getAUse() and
+        this.getViewArg() = vc.asViewResult().getAValueReachableFromSource() and
         result = vc.getARequestHandler()
       )
     }
@@ -339,7 +339,7 @@ module Flask {
    */
   private class FlaskRequestSource extends RemoteFlowSource::Range {
     FlaskRequestSource() {
-      this = request().getAUse() and
+      this = request().getAValueReachableFromSource() and
       not any(Import imp).contains(this.asExpr()) and
       not exists(ControlFlowNode def | this.asVar().getSourceVariable().hasDefiningNode(def) |
         any(Import imp).contains(def.getNode())
@@ -357,7 +357,7 @@ module Flask {
   private class InstanceTaintSteps extends InstanceTaintStepsHelper {
     InstanceTaintSteps() { this = "flask.Request" }
 
-    override DataFlow::Node getInstance() { result = request().getAUse() }
+    override DataFlow::Node getInstance() { result = request().getAValueReachableFromSource() }
 
     override string getAttributeName() {
       result in [
@@ -404,7 +404,7 @@ module Flask {
 
   private class RequestAttrMultiDict extends Werkzeug::MultiDict::InstanceSource {
     RequestAttrMultiDict() {
-      this = request().getMember(["args", "values", "form", "files"]).getAnImmediateUse()
+      this = request().getMember(["args", "values", "form", "files"]).asSource()
     }
   }
 
@@ -415,26 +415,25 @@ module Flask {
       // be able to do something more structured for providing modeling of the members
       // of a container-object.
       exists(API::Node files | files = request().getMember("files") |
-        this.asCfgNode().(SubscriptNode).getObject() = files.getAUse().asCfgNode()
+        this.asCfgNode().(SubscriptNode).getObject() =
+          files.getAValueReachableFromSource().asCfgNode()
         or
         this = files.getMember("get").getACall()
         or
         this.asCfgNode().(SubscriptNode).getObject() =
-          files.getMember("getlist").getReturn().getAUse().asCfgNode()
+          files.getMember("getlist").getReturn().getAValueReachableFromSource().asCfgNode()
       )
     }
   }
 
   /** An `Headers` instance that originates from a flask request. */
   private class FlaskRequestHeadersInstances extends Werkzeug::Headers::InstanceSource {
-    FlaskRequestHeadersInstances() { this = request().getMember("headers").getAnImmediateUse() }
+    FlaskRequestHeadersInstances() { this = request().getMember("headers").asSource() }
   }
 
   /** An `Authorization` instance that originates from a flask request. */
   private class FlaskRequestAuthorizationInstances extends Werkzeug::Authorization::InstanceSource {
-    FlaskRequestAuthorizationInstances() {
-      this = request().getMember("authorization").getAnImmediateUse()
-    }
+    FlaskRequestAuthorizationInstances() { this = request().getMember("authorization").asSource() }
   }
 
   // ---------------------------------------------------------------------------
@@ -574,6 +573,6 @@ module Flask {
    * - https://flask.palletsprojects.com/en/2.0.x/logging/
    */
   private class FlaskLogger extends Stdlib::Logger::InstanceSource {
-    FlaskLogger() { this = FlaskApp::instance().getMember("logger").getAnImmediateUse() }
+    FlaskLogger() { this = FlaskApp::instance().getMember("logger").asSource() }
   }
 }

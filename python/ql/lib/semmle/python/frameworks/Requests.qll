@@ -61,8 +61,8 @@ private module Requests {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      disablingNode = this.getKeywordParameter("verify").getARhs() and
-      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingRhs() and
+      disablingNode = this.getKeywordParameter("verify").asSink() and
+      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingSink() and
       // requests treats `None` as the default and all other "falsey" values as `False`.
       argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
       not argumentOrigin.asExpr() instanceof None

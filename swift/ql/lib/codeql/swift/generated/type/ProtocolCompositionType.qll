@@ -3,4 +3,15 @@ import codeql.swift.elements.type.Type
 
 class ProtocolCompositionTypeBase extends @protocol_composition_type, Type {
   override string getAPrimaryQlClass() { result = "ProtocolCompositionType" }
+
+  Type getMember(int index) {
+    exists(Type x |
+      protocol_composition_type_members(this, index, x) and
+      result = x.resolve()
+    )
+  }
+
+  Type getAMember() { result = getMember(_) }
+
+  int getNumberOfMembers() { result = count(getAMember()) }
 }

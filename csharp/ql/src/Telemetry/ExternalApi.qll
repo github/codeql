@@ -107,3 +107,36 @@ class ExternalApi extends DotNet::Callable {
   /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
   predicate isSupported() { this.hasSummary() or this.isSource() or this.isSink() }
 }
+
+/**
+ * Gets the limit for the number of results produced by a telemetry query.
+ */
+int resultLimit() { result = 1000 }
+
+/**
+ * Holds if the relevant usage count of `api` is `usages`.
+ */
+signature predicate relevantUsagesSig(ExternalApi api, int usages);
+
+/**
+ * Given a predicate to count relevant API usages, this module provides a predicate
+ * for restricting the number or returned results based on a certain limit.
+ */
+module Results<relevantUsagesSig/2 getRelevantUsages> {
+  private int getOrder(ExternalApi api) {
+    api =
+      rank[result](ExternalApi a, int usages |
+        getRelevantUsages(a, usages)
+      |
+        a order by usages desc, a.getInfo()
+      )
+  }
+
+  /**
+   * Holds if `api` is being used `usages` times and if it is
+   * in the top results (guarded by resultLimit).
+   */
+  predicate restrict(ExternalApi api, int usages) {
+    getRelevantUsages(api, usages) and getOrder(api) <= resultLimit()
+  }
+}

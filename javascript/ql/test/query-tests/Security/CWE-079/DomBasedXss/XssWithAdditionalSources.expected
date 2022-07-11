@@ -1038,6 +1038,10 @@ nodes
 | tst.js:476:20:476:22 | url |
 | tst.js:486:22:486:24 | url |
 | tst.js:486:22:486:24 | url |
+| tst.js:491:23:491:35 | location.hash |
+| tst.js:491:23:491:35 | location.hash |
+| tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:491:23:491:45 | locatio ... bstr(1) |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
@@ -2143,6 +2147,10 @@ edges
 | tst.js:471:13:471:36 | documen ... .search | tst.js:471:13:471:46 | documen ... bstr(1) |
 | tst.js:471:13:471:36 | documen ... .search | tst.js:471:13:471:46 | documen ... bstr(1) |
 | tst.js:471:13:471:46 | documen ... bstr(1) | tst.js:471:7:471:46 | url |
+| tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |

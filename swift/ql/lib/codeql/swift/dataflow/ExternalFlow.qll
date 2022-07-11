@@ -78,7 +78,7 @@ private import internal.FlowSummaryImplSpecific
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
-  /* TODO */
+  private import codeql.swift.frameworks.StandardLibrary.String
 }
 
 /**
@@ -344,11 +344,86 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
 }
 
+private string paramsStringPart(AbstractFunctionDecl c, int i) {
+  i = -1 and result = "(" and exists(c)
+  or
+  exists(int n, string p | c.getParam(n).getType().toString() = p |
+    i = 2 * n and result = p
+    or
+    i = 2 * n - 1 and result = "," and n != 0
+  )
+  or
+  i = 2 * c.getNumberOfParams() and result = ")"
+}
+
+/**
+ * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
+ *
+ * Returns the empty string if the callable has no parameters.
+ * Parameter types are represented by their type erasure.
+ */
+cached
+string paramsString(AbstractFunctionDecl c) {
+  result = concat(int i | | paramsStringPart(c, i) order by i)
+}
+
+bindingset[func]
+predicate matchesSignature(AbstractFunctionDecl func, string signature) {
+  signature = "" or
+  paramsString(func) = signature
+}
+
+private NominalType getDeclType(IterableDeclContext decl) {
+  result = decl.(ClassDecl).getType()
+  or
+  result = decl.(StructDecl).getType()
+  or
+  result = getDeclType(decl.(ExtensionDecl).getExtendedTypeDecl())
+  or
+  result = decl.(EnumDecl).getType()
+  or
+  result = decl.(ProtocolDecl).getType()
+}
+
+/**
+ * Gets the element in module `namespace` that satisfies the following properties:
+ * 1. If the element is a member of a class-like type, then the class-like type has name `type`
+ * 2. If `subtypes = true` and the element is a member of a class-like type, then overrides of the element
+ *    are also returned.
+ * 3. The element has name `name`
+ * 4. If `signature` is non-empty, then the element has a list of parameter types described by `signature`.
+ *
+ * NOTE: `namespace` is currently not used (since we don't properly extract modules yet).
+ */
 pragma[nomagic]
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
-  none() // TODO
+  namespace = "" and // TODO: Fill out when we properly extract modules.
+  (
+    exists(AbstractFunctionDecl func |
+      func.getName() = name and
+      type = "" and
+      matchesSignature(func, signature) and
+      subtypes = false and
+      not result instanceof MethodDecl and
+      result = func
+    )
+    or
+    exists(NominalType nomType, IterableDeclContext decl, MethodDecl method |
+      method.getName() = name and
+      method = decl.getAMember() and
+      nomType.getName() = type and
+      matchesSignature(method, signature) and
+      result = method
+    |
+      subtypes = true and
+      getDeclType(decl) = nomType.getADerivedType*()
+      or
+      subtypes = false and
+      getDeclType(decl) = nomType
+    )
+  )
 }
 
 /** Gets the source/sink/summary element corresponding to the supplied parameters. */

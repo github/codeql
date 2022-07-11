@@ -75,3 +75,13 @@ module.exports.intentionalTemplate = function (obj) {
     const html = "<span>" + obj.spanTemplate + "</span>"; // OK
     document.querySelector("#template").innerHTML = html;
 }
+
+module.exports.types = function (val) {
+    if (typeof val === "string") {
+        $("#foo").html("<span>" + val + "</span>"); // NOT OK
+    } else if (typeof val === "number") {
+        $("#foo").html("<span>" + val + "</span>"); // OK
+    } else if (typeof val === "boolean") {
+        $("#foo").html("<span>" + val + "</span>"); // OK
+    }
+}

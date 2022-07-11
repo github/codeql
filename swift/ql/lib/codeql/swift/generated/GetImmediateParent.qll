@@ -18,9 +18,9 @@ Element getAnImmediateChild(Element e) {
     (
       none()
       or
-      abstract_function_decl_bodies(e, x)
+      callable_params(e, _, x)
       or
-      abstract_function_decl_params(e, _, x)
+      callable_bodies(e, x)
       or
       abstract_storage_decl_accessor_decls(e, _, x)
       or
@@ -36,8 +36,6 @@ Element getAnImmediateChild(Element e) {
       or
       top_level_code_decls(e, x)
       or
-      abstract_closure_expr_params(e, _, x)
-      or
       any_try_exprs(e, x)
       or
       apply_exprs(e, x)
@@ -52,15 +50,11 @@ Element getAnImmediateChild(Element e) {
       or
       assign_exprs(e, _, x)
       or
-      auto_closure_exprs(e, x)
-      or
       bind_optional_exprs(e, x)
       or
       capture_list_expr_binding_decls(e, _, x)
       or
       capture_list_exprs(e, x)
-      or
-      closure_exprs(e, x)
       or
       dictionary_expr_elements(e, _, x)
       or
@@ -108,7 +102,7 @@ Element getAnImmediateChild(Element e) {
       or
       lazy_initializer_exprs(e, x)
       or
-      lookup_exprs(e, x, _)
+      lookup_exprs(e, x)
       or
       make_temporarily_escapable_exprs(e, x, _, _)
       or
@@ -134,6 +128,8 @@ Element getAnImmediateChild(Element e) {
       or
       self_apply_exprs(e, x)
       or
+      sequence_expr_elements(e, _, x)
+      or
       subscript_expr_arguments(e, _, x)
       or
       tap_expr_sub_exprs(e, x)
@@ -145,6 +141,8 @@ Element getAnImmediateChild(Element e) {
       tuple_expr_elements(e, _, x)
       or
       type_expr_type_reprs(e, x)
+      or
+      unresolved_dot_exprs(e, x, _)
       or
       vararg_expansion_exprs(e, x)
       or

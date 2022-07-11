@@ -19,6 +19,7 @@ def _parse_args() -> argparse.Namespace:
                    help="specify what targets to generate as a comma separated list, choosing among dbscheme, ql, trap "
                         "and cpp")
     p.add_argument("--verbose", "-v", action="store_true", help="print more information")
+    p.add_argument("--quiet", "-q", action="store_true", help="only print errors")
     p.add_argument("--swift-dir", type=_abspath, default=paths.swift_dir,
                    help="the directory that should be regarded as the root of the swift codebase. Used to compute QL "
                         "imports and in some comments (default %(default)s)")
@@ -48,7 +49,12 @@ def _abspath(x: str) -> pathlib.Path:
 
 def run():
     opts = _parse_args()
-    log_level = logging.DEBUG if opts.verbose else logging.INFO
+    if opts.verbose:
+        log_level = logging.DEBUG
+    elif opts.quiet:
+        log_level = logging.ERROR
+    else:
+        log_level = logging.INFO
     logging.basicConfig(format="{levelname} {message}", style='{', level=log_level)
     exe_path = paths.exe_file.relative_to(opts.swift_dir)
     for target in opts.generate:

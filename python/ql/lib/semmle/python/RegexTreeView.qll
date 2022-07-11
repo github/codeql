@@ -1000,11 +1000,22 @@ class RegExpBackRef extends RegExpTerm, TRegExpBackRef {
 
   /** Gets the capture group this back reference refers to. */
   RegExpGroup getGroup() {
-    result.getLiteral() = this.getLiteral() and
-    (
-      result.getNumber() = this.getNumber() or
-      result.getName() = this.getName()
-    )
+    this.hasLiteralAndNumber(result.getLiteral(), result.getNumber()) or
+    this.hasLiteralAndName(result.getLiteral(), result.getName())
+  }
+
+  /** Join-order helper for `getGroup`. */
+  pragma[nomagic]
+  private predicate hasLiteralAndNumber(RegExpLiteral literal, int number) {
+    literal = this.getLiteral() and
+    number = this.getNumber()
+  }
+
+  /** Join-order helper for `getGroup`. */
+  pragma[nomagic]
+  private predicate hasLiteralAndName(RegExpLiteral literal, string name) {
+    literal = this.getLiteral() and
+    name = this.getName()
   }
 
   override RegExpTerm getChild(int i) { none() }

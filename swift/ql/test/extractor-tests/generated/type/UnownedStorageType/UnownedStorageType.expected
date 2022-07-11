@@ -1,0 +1,2 @@
+| A? | getName: | A? | getCanonicalType: | Optional<A> | getReferentType: | A? |
+| Optional<A> | getName: | Optional<A> | getCanonicalType: | Optional<A> | getReferentType: | Optional<A> |
