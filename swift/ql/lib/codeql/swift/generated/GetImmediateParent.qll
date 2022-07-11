@@ -144,6 +144,8 @@ Element getAnImmediateChild(Element e) {
       or
       unresolved_dot_exprs(e, x, _)
       or
+      unresolved_pattern_exprs(e, x)
+      or
       vararg_expansion_exprs(e, x)
       or
       binding_patterns(e, x)

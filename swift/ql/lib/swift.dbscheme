@@ -1141,7 +1141,8 @@ unresolved_member_exprs(  //dir=expr
 );
 
 unresolved_pattern_exprs(  //dir=expr
-  unique int id: @unresolved_pattern_expr
+  unique int id: @unresolved_pattern_expr,
+  int sub_pattern: @pattern ref
 );
 
 unresolved_specialize_exprs(  //dir=expr
