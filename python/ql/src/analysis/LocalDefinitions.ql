@@ -8,7 +8,7 @@
  */
 
 import python
-import DefinitionTracking
+import analysis.DefinitionTracking
 
 external string selectedSourceFile();
 

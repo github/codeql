@@ -1,5 +1,5 @@
-| Builtin.Int8 | getDiagnosticsName: | Builtin.Int8 | getCanonicalType: | Builtin.Int8 |
-| Builtin.Int16 | getDiagnosticsName: | Builtin.Int16 | getCanonicalType: | Builtin.Int16 |
-| Builtin.Int32 | getDiagnosticsName: | Builtin.Int32 | getCanonicalType: | Builtin.Int32 |
-| Builtin.Int64 | getDiagnosticsName: | Builtin.Int64 | getCanonicalType: | Builtin.Int64 |
-| Builtin.Word | getDiagnosticsName: | Builtin.Word | getCanonicalType: | Builtin.Word |
+| Builtin.Int8 | getName: | Builtin.Int8 | getCanonicalType: | Builtin.Int8 |
+| Builtin.Int16 | getName: | Builtin.Int16 | getCanonicalType: | Builtin.Int16 |
+| Builtin.Int32 | getName: | Builtin.Int32 | getCanonicalType: | Builtin.Int32 |
+| Builtin.Int64 | getName: | Builtin.Int64 | getCanonicalType: | Builtin.Int64 |
+| Builtin.Word | getName: | Builtin.Word | getCanonicalType: | Builtin.Word |

@@ -122,13 +122,13 @@ void TypeVisitor::visitParenType(swift::ParenType* type) {
 }
 
 codeql::OptionalType TypeVisitor::translateOptionalType(const swift::OptionalType& type) {
-  auto entry = createEntry(type);
+  auto entry = createTypeEntry(type);
   fillUnarySyntaxSugarType(type, entry);
   return entry;
 }
 
 codeql::ArraySliceType TypeVisitor::translateArraySliceType(const swift::ArraySliceType& type) {
-  auto entry = createEntry(type);
+  auto entry = createTypeEntry(type);
   fillUnarySyntaxSugarType(type, entry);
   return entry;
 }
@@ -152,7 +152,7 @@ void TypeVisitor::visitGenericFunctionType(swift::GenericFunctionType* type) {
 
 void TypeVisitor::visitGenericTypeParamType(swift::GenericTypeParamType* type) {
   auto label = dispatcher_.assignNewLabel(type);
-  dispatcher_.emit(GenericTypeParamTypesTrap{label, type->getName().str().str()});
+  dispatcher_.emit(GenericTypeParamTypesTrap{label});
 }
 
 void TypeVisitor::visitLValueType(swift::LValueType* type) {
@@ -163,7 +163,7 @@ void TypeVisitor::visitLValueType(swift::LValueType* type) {
 
 codeql::PrimaryArchetypeType TypeVisitor::translatePrimaryArchetypeType(
     const swift::PrimaryArchetypeType& type) {
-  auto entry = createEntry(type);
+  auto entry = createTypeEntry(type);
   fillArchetypeType(type, entry);
   return entry;
 }
@@ -229,7 +229,7 @@ void TypeVisitor::emitAnyGenericType(swift::AnyGenericType* type,
 
 codeql::NestedArchetypeType TypeVisitor::translateNestedArchetypeType(
     const swift::NestedArchetypeType& type) {
-  auto entry = createEntry(type);
+  auto entry = createTypeEntry(type);
   entry.parent = dispatcher_.fetchLabel(type.getParent());
   entry.associated_type_declaration = dispatcher_.fetchLabel(type.getAssocType());
   fillArchetypeType(type, entry);
@@ -237,38 +237,37 @@ codeql::NestedArchetypeType TypeVisitor::translateNestedArchetypeType(
 }
 
 void TypeVisitor::fillType(const swift::TypeBase& type, codeql::Type& entry) {
-  entry.diagnostics_name = type.getString();
+  entry.name = type.getString();
   entry.canonical_type = dispatcher_.fetchLabel(type.getCanonicalType());
 }
 
 void TypeVisitor::fillArchetypeType(const swift::ArchetypeType& type, ArchetypeType& entry) {
   entry.interface_type = dispatcher_.fetchLabel(type.getInterfaceType());
-  entry.name = type.getName().str().str();
   entry.protocols = dispatcher_.fetchRepeatedLabels(type.getConformsTo());
   entry.superclass = dispatcher_.fetchOptionalLabel(type.getSuperclass());
 }
 
 codeql::ExistentialType TypeVisitor::translateExistentialType(const swift::ExistentialType& type) {
-  auto entry = createEntry(type);
+  auto entry = createTypeEntry(type);
   entry.constraint = dispatcher_.fetchLabel(type.getConstraintType());
   return entry;
 }
 
 codeql::DynamicSelfType TypeVisitor::translateDynamicSelfType(const swift::DynamicSelfType& type) {
-  auto entry = createEntry(type);
+  auto entry = createTypeEntry(type);
   entry.static_self_type = dispatcher_.fetchLabel(type.getSelfType());
   return entry;
 }
 
 codeql::VariadicSequenceType TypeVisitor::translateVariadicSequenceType(
     const swift::VariadicSequenceType& type) {
-  auto entry = createEntry(type);
+  auto entry = createTypeEntry(type);
   fillUnarySyntaxSugarType(type, entry);
   return entry;
 }
 
 codeql::InOutType TypeVisitor::translateInOutType(const swift::InOutType& type) {
-  auto entry = createEntry(type);
+  auto entry = createTypeEntry(type);
   entry.object_type = dispatcher_.fetchLabel(type.getObjectType());
   return entry;
 }
@@ -301,19 +300,19 @@ void TypeVisitor::fillReferenceStorageType(const swift::ReferenceStorageType& ty
 
 codeql::ProtocolCompositionType TypeVisitor::translateProtocolCompositionType(
     const swift::ProtocolCompositionType& type) {
-  auto entry = createEntry(type);
+  auto entry = createTypeEntry(type);
   entry.members = dispatcher_.fetchRepeatedLabels(type.getMembers());
   return entry;
 }
 
 codeql::BuiltinIntegerLiteralType TypeVisitor::translateBuiltinIntegerLiteralType(
     const swift::BuiltinIntegerLiteralType& type) {
-  return createEntry(type);
+  return createTypeEntry(type);
 }
 
 codeql::BuiltinIntegerType TypeVisitor::translateBuiltinIntegerType(
     const swift::BuiltinIntegerType& type) {
-  auto entry = createEntry(type);
+  auto entry = createTypeEntry(type);
   if (type.isFixedWidth()) {
     entry.width = type.getFixedWidth();
   }
@@ -322,51 +321,51 @@ codeql::BuiltinIntegerType TypeVisitor::translateBuiltinIntegerType(
 
 codeql::BuiltinBridgeObjectType TypeVisitor::translateBuiltinBridgeObjectType(
     const swift::BuiltinBridgeObjectType& type) {
-  return createEntry(type);
+  return createTypeEntry(type);
 }
 
 codeql::BuiltinDefaultActorStorageType TypeVisitor::translateBuiltinDefaultActorStorageType(
     const swift::BuiltinDefaultActorStorageType& type) {
-  return createEntry(type);
+  return createTypeEntry(type);
 }
 
 codeql::BuiltinExecutorType TypeVisitor::translateBuiltinExecutorType(
     const swift::BuiltinExecutorType& type) {
-  return createEntry(type);
+  return createTypeEntry(type);
 }
 
 codeql::BuiltinFloatType TypeVisitor::translateBuiltinFloatType(
     const swift::BuiltinFloatType& type) {
-  return createEntry(type);
+  return createTypeEntry(type);
 }
 
 codeql::BuiltinJobType TypeVisitor::translateBuiltinJobType(const swift::BuiltinJobType& type) {
-  return createEntry(type);
+  return createTypeEntry(type);
 }
 
 codeql::BuiltinNativeObjectType TypeVisitor::translateBuiltinNativeObjectType(
     const swift::BuiltinNativeObjectType& type) {
-  return createEntry(type);
+  return createTypeEntry(type);
 }
 
 codeql::BuiltinRawPointerType TypeVisitor::translateBuiltinRawPointerType(
     const swift::BuiltinRawPointerType& type) {
-  return createEntry(type);
+  return createTypeEntry(type);
 }
 
 codeql::BuiltinRawUnsafeContinuationType TypeVisitor::translateBuiltinRawUnsafeContinuationType(
     const swift::BuiltinRawUnsafeContinuationType& type) {
-  return createEntry(type);
+  return createTypeEntry(type);
 }
 
 codeql::BuiltinUnsafeValueBufferType TypeVisitor::translateBuiltinUnsafeValueBufferType(
     const swift::BuiltinUnsafeValueBufferType& type) {
-  return createEntry(type);
+  return createTypeEntry(type);
 }
 
 codeql::BuiltinVectorType TypeVisitor::translateBuiltinVectorType(
     const swift::BuiltinVectorType& type) {
-  return createEntry(type);
+  return createTypeEntry(type);
 }
 
 }  // namespace codeql

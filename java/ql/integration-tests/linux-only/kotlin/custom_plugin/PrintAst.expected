@@ -48,7 +48,7 @@ c.kt:
 d.kt:
 #    0| [CompilationUnit] d
 #    1|   1: [Class] D
-#    0|     1: [FieldDeclaration] String bar;
+#    0|     2: [FieldDeclaration] String bar;
 #    0|       -1: [TypeAccess] String
 #    0|       0: [StringLiteral] Foobar
 #    1|     3: [Constructor] D
@@ -67,7 +67,7 @@ e.kt:
 #    0|               -3: [TypeAccess] ArrayList<Object>
 #    0|               0: [IntegerLiteral] 1
 #    0|             0: [NullLiteral] null
-#    0|     1: [Method] <fn_LinkedHashMap>
+#    0|     2: [Method] <fn_LinkedHashMap>
 #    0|       3: [TypeAccess] Object
 #    0|       5: [BlockStmt] { ... }
 #    0|         0: [ReturnStmt] return ...

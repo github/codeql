@@ -82,7 +82,7 @@ locations(
 #keyset[id]
 types(  //dir=type
   int id: @type ref,
-  string diagnostics_name: string ref,
+  string name: string ref,
   int canonical_type: @type ref
 );
 
@@ -593,7 +593,6 @@ weak_storage_types(  //dir=type
 #keyset[id]
 archetype_types(  //dir=type
   int id: @archetype_type ref,
-  string name: string ref,
   int interface_type: @type ref
 );
 
@@ -611,8 +610,7 @@ archetype_type_protocols(  //dir=type
 );
 
 generic_type_param_types(  //dir=type
-  unique int id: @generic_type_param_type,
-  string name: string ref
+  unique int id: @generic_type_param_type
 );
 
 paren_types(  //dir=type
@@ -646,7 +644,20 @@ if_config_decls(  //dir=decl
 );
 
 import_decls(  //dir=decl
-  unique int id: @import_decl
+  unique int id: @import_decl,
+  int module: @module_decl ref
+);
+
+#keyset[id]
+import_decl_is_exported(  //dir=decl
+  int id: @import_decl ref
+);
+
+#keyset[id, index]
+import_decl_declarations(  //dir=decl
+  int id: @import_decl ref,
+  int index: int ref,
+  int declaration: @value_decl ref
 );
 
 missing_member_decls(  //dir=decl
@@ -2018,6 +2029,16 @@ generic_context_generic_type_params(  //dir=decl
 
 module_decls(  //dir=decl
   unique int id: @module_decl
+);
+
+#keyset[id]
+module_decl_is_builtin_module(  //dir=decl
+  int id: @module_decl ref
+);
+
+#keyset[id]
+module_decl_is_system_module(  //dir=decl
+  int id: @module_decl ref
 );
 
 constructor_ref_call_exprs(  //dir=expr

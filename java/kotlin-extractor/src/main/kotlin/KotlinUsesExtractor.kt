@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
 import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
 import org.jetbrains.kotlin.builtins.StandardNames
+import org.jetbrains.kotlin.codegen.JvmCodegenUtil
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.*
@@ -23,8 +24,10 @@ import org.jetbrains.kotlin.load.java.BuiltinMethodsWithSpecialGenericSignature
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.*
+import org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.name.NameUtils
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -754,11 +757,25 @@ open class KotlinUsesExtractor(
 
     data class FunctionNames(val nameInDB: String, val kotlinName: String)
 
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
+    private fun getJvmModuleName(f: IrFunction) =
+        NameUtils.sanitizeAsJavaIdentifier(
+            getJvmModuleNameForDeserializedDescriptor(f.descriptor) ?: JvmCodegenUtil.getModuleName(pluginContext.moduleDescriptor)
+        )
+
     fun getFunctionShortName(f: IrFunction) : FunctionNames {
         if (f.origin == IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA || f.isAnonymousFunction)
             return FunctionNames(
                 OperatorNameConventions.INVOKE.asString(),
                 OperatorNameConventions.INVOKE.asString())
+
+        fun getSuffixIfInternal() =
+            if (f.visibility == DescriptorVisibilities.INTERNAL) {
+                "\$" + getJvmModuleName(f)
+            } else {
+                ""
+            }
+
         (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
             val propName = it.owner.name.asString()
             val getter = it.owner.getter
@@ -774,35 +791,26 @@ open class KotlinUsesExtractor(
                 }
             }
 
-            when (f) {
-                getter -> {
-                    val defaultFunctionName = JvmAbi.getterName(propName)
-                    val defaultDbName = if (getter.visibility == DescriptorVisibilities.PRIVATE && getter.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR) {
-                        // In JVM these functions don't exist, instead the backing field is accessed directly
-                        defaultFunctionName + "\$private"
-                    } else {
-                        defaultFunctionName
-                    }
-                    return FunctionNames(getJvmName(getter) ?: defaultDbName, defaultFunctionName)
-                }
-                setter -> {
-                    val defaultFunctionName = JvmAbi.setterName(propName)
-                    val defaultDbName = if (setter.visibility == DescriptorVisibilities.PRIVATE && setter.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR) {
-                        // In JVM these functions don't exist, instead the backing field is accessed directly
-                        defaultFunctionName + "\$private"
-                    } else {
-                        defaultFunctionName
-                    }
-                    return FunctionNames(getJvmName(setter) ?: defaultDbName, defaultFunctionName)
-                }
+            val maybeFunctionName = when (f) {
+                getter -> JvmAbi.getterName(propName)
+                setter -> JvmAbi.setterName(propName)
                 else -> {
                     logger.error(
                         "Function has a corresponding property, but is neither the getter nor the setter"
                     )
+                    null
                 }
             }
+            maybeFunctionName?.let { defaultFunctionName ->
+                val suffix = if (f.visibility == DescriptorVisibilities.PRIVATE && f.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR) {
+                    "\$private"
+                } else {
+                    getSuffixIfInternal()
+                }
+                return FunctionNames(getJvmName(f) ?: "$defaultFunctionName$suffix", defaultFunctionName)
+            }
         }
-        return FunctionNames(getJvmName(f) ?: f.name.asString(), f.name.asString())
+        return FunctionNames(getJvmName(f) ?: "${f.name.asString()}${getSuffixIfInternal()}", f.name.asString())
     }
 
     // This excludes class type parameters that show up in (at least) constructors' typeParameters list.
@@ -970,7 +978,7 @@ open class KotlinUsesExtractor(
      * allow it to be passed in.
     */
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    private fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+    fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
         getFunctionLabel(
             f.parent,
             maybeParentId,
@@ -1514,7 +1522,7 @@ open class KotlinUsesExtractor(
         // otherwise two extension properties declared in the same enclosing context will get
         // clashing trap labels. These are always private, so we can just make up a label without
         // worrying about their names as seen from Java.
-        val extensionPropertyDiscriminator = getExtensionReceiverType(f)?.let { "extension;${useType(it)}" } ?: ""
+        val extensionPropertyDiscriminator = getExtensionReceiverType(f)?.let { "extension;${useType(it).javaResult.id}" } ?: ""
         return "@\"field;{$parentId};${extensionPropertyDiscriminator}${f.name.asString()}\""
     }
 

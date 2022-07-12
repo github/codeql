@@ -28,12 +28,12 @@ class NSMutableString : NSString
 class NSRange
 {
     init(location: Int, length: Int) { self.description = "" }
+    init<R, S>(_ r: R, in: S) { self.description = "" }
 
     private(set) var description: String
 }
 
 func NSMakeRange(_ loc: Int, _ len: Int) -> NSRange { return NSRange(location: loc, length: len) }
-
 
 
 
@@ -51,9 +51,9 @@ func test(s: String) {
 
     let ix1 = String.Index(encodedOffset: s.count) // GOOD
     let ix2 = String.Index(encodedOffset: ns.length) // BAD: NSString length used in String.Index
-    let ix3 = String.Index(encodedOffset: s.utf8.count) // BAD: String.utf8 length used in String.Index
-    let ix4 = String.Index(encodedOffset: s.utf16.count) // BAD: String.utf16 length used in String.Index
-    let ix5 = String.Index(encodedOffset: s.unicodeScalars.count) // BAD: string.unicodeScalars length used in String.Index
+    let ix3 = String.Index(encodedOffset: s.utf8.count) // BAD: String.utf8 length used in String.Index [NOT DETECTED]
+    let ix4 = String.Index(encodedOffset: s.utf16.count) // BAD: String.utf16 length used in String.Index [NOT DETECTED]
+    let ix5 = String.Index(encodedOffset: s.unicodeScalars.count) // BAD: string.unicodeScalars length used in String.Index [NOT DETECTED]
     print("String.Index '\(ix1.encodedOffset)' / '\(ix2.encodedOffset)' '\(ix3.encodedOffset)' '\(ix4.encodedOffset)' '\(ix5.encodedOffset)'")
 
     let ix6 = s.index(s.startIndex, offsetBy: s.count / 2) // GOOD
@@ -70,13 +70,22 @@ func test(s: String) {
 
     let range1 = NSMakeRange(0, ns.length) // GOOD
     let range2 = NSMakeRange(0, s.count) // BAD: String length used in NSMakeRange
-    let range3 = NSMakeRange(0, s.reversed().count) // BAD: String length used in NSMakeRange
-    let range4 = NSMakeRange(0, s.distance(from: s.startIndex, to: s.endIndex))  // BAD: String length used in NSMakeRange
+    let range3 = NSMakeRange(0, s.reversed().count) // BAD: String length used in NSMakeRange [NOT DETECTED]
+    let range4 = NSMakeRange(0, s.distance(from: s.startIndex, to: s.endIndex))  // BAD: String length used in NSMakeRange [NOT DETECTED]
     print("NSMakeRange '\(range1.description)' / '\(range2.description)' '\(range3.description)' '\(range4.description)'")
 
     let range5 = NSRange(location: 0, length: ns.length) // GOOD
     let range6 = NSRange(location: 0, length: s.count) // BAD: String length used in NSMakeRange
     print("NSRange '\(range5.description)' / '\(range6.description)'")
+
+    // --- converting Range to NSRange ---
+
+    let range7 = s.startIndex ..< s.endIndex
+    let range8 = NSRange(range7, in: s) // GOOD
+    let location = s.distance(from: s.startIndex, to: range7.lowerBound)
+    let length = s.distance(from: range7.lowerBound, to: range7.upperBound)
+    let range9 = NSRange(location: location, length: length) // BAD [NOT DETECTED]
+    print("NSRange '\(range8.description)' / '\(range9.description)'")
 
     // --- String operations using an integer directly ---
 
@@ -95,6 +104,18 @@ func test(s: String) {
     let str7 = s.suffix(s.count - 1) // GOOD
     let str8 = s.suffix(ns.length - 1) // BAD: NSString length used in String
     print("suffix '\(str7)' / '\(str8)'")
+
+    var str9 = s
+    str9.removeFirst(s.count - 1) // GOOD
+    var str10 = s
+    str10.removeFirst(ns.length - 1) // BAD: NSString length used in String
+    print("removeFirst '\(str9)' / '\(str10)'")
+
+    var str11 = s
+    str11.removeLast(s.count - 1) // GOOD
+    var str12 = s
+    str12.removeLast(ns.length - 1) // BAD: NSString length used in String
+    print("removeLast '\(str11)' / '\(str12)'")
 
     let nstr1 = ns.character(at: ns.length - 1) // GOOD
     let nmstr1 = nms.character(at: nms.length - 1) // GOOD

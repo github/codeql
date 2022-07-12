@@ -32,7 +32,7 @@ Location:
   _pragma: qltest_skip
 
 Type:
-  diagnostics_name: string
+  name: string
   canonical_type: Type
 
 IterableDeclContext:
@@ -245,14 +245,12 @@ WeakStorageType:
 
 ArchetypeType:
   _extends: SubstitutableType
-  name: string
   interface_type: Type
   superclass: Type?
   protocols: ProtocolDecl*
 
 GenericTypeParamType:
   _extends: SubstitutableType
-  name: string
 
 ParenType:
   _extends: SugarType
@@ -275,6 +273,9 @@ IfConfigDecl:
 
 ImportDecl:
   _extends: Decl
+  is_exported: predicate
+  module: ModuleDecl
+  declarations: ValueDecl*
 
 MissingMemberDecl:
   _extends: Decl
@@ -1069,6 +1070,8 @@ GenericTypeDecl:
 
 ModuleDecl:
   _extends: TypeDecl
+  is_builtin_module: predicate
+  is_system_module: predicate
 
 ConstructorRefCallExpr:
   _extends: SelfApplyExpr

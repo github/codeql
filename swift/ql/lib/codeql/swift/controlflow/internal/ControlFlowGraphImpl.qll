@@ -946,6 +946,37 @@ module Decls {
     }
   }
 
+  /**
+   * The control-flow of a type declaration. This is necessary to skip past local type
+   * declarations that occur inside bodies like in:
+   * ```swift
+   * func foo() -> Int {
+   *   let x = 42
+   *   class C {}
+   *   return x
+   * }
+   * ```
+   */
+  private class TypeDeclTree extends AstLeafTree {
+    override TypeDecl ast;
+  }
+
+  /**
+   * The control-flow of a function declaration. This is necessary to skip past local function
+   * declarations that occur inside bodies like in:
+   * ```swift
+   * func foo() -> Int {
+   *   let x = 42
+   *   func bar() { ... }
+   *   return x
+   * }
+   * ```
+   */
+  private class AbstractFunctionDeclTree extends AstLeafTree {
+    override AbstractFunctionDecl ast;
+  }
+
+  /** The control-flow of a function declaration body. */
   class FuncDeclTree extends StandardPreOrderTree, TFuncDeclElement {
     AbstractFunctionDecl ast;
 
