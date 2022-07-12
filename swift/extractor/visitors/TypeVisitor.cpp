@@ -8,6 +8,12 @@ void TypeVisitor::visit(swift::TypeBase* type) {
   dispatcher_.emit(TypesTrap{label, type->getString(), canonicalLabel});
 }
 
+void TypeVisitor::visit(const swift::TypeRepr& typeRepr, swift::Type type) {
+  auto entry = dispatcher_.createEntry(typeRepr);
+  entry.type = dispatcher_.fetchLabel(type);
+  dispatcher_.emit(entry);
+}
+
 void TypeVisitor::visitProtocolType(swift::ProtocolType* type) {
   auto label = dispatcher_.assignNewLabel(type);
   dispatcher_.emit(ProtocolTypesTrap{label});

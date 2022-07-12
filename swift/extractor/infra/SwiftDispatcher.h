@@ -64,8 +64,8 @@ class SwiftDispatcher {
   // This method gives a TRAP label for already emitted AST node.
   // If the AST node was not emitted yet, then the emission is dispatched to a corresponding
   // visitor (see `visit(T *)` methods below).
-  template <typename E>
-  TrapLabelOf<E> fetchLabel(E* e) {
+  template <typename E, typename... Args>
+  TrapLabelOf<E> fetchLabel(E* e, Args&&... args) {
     assert(e && "trying to fetch a label on nullptr, maybe fetchOptionalLabel is to be used?");
     // this is required so we avoid any recursive loop: a `fetchLabel` during the visit of `e` might
     // end up calling `fetchLabel` on `e` itself, so we want the visit of `e` to call `fetchLabel`
@@ -76,7 +76,7 @@ class SwiftDispatcher {
       return *l;
     }
     waitingForNewLabel = e;
-    visit(e);
+    visit(e, std::forward<Args>(args)...);
     if (auto l = store.get(e)) {
       if constexpr (!std::is_base_of_v<swift::TypeBase, E>) {
         attachLocation(e, *l);
@@ -158,10 +158,10 @@ class SwiftDispatcher {
   // return `std::optional(fetchLabel(arg))` if arg converts to true, otherwise std::nullopt
   // universal reference `Arg&&` is used to catch both temporary and non-const references, not
   // for perfect forwarding
-  template <typename Arg>
-  auto fetchOptionalLabel(Arg&& arg) -> std::optional<decltype(fetchLabel(arg))> {
+  template <typename Arg, typename... Args>
+  auto fetchOptionalLabel(Arg&& arg, Args&&... args) -> std::optional<decltype(fetchLabel(arg))> {
     if (arg) {
-      return fetchLabel(arg);
+      return fetchLabel(arg, std::forward<Args>(args)...);
     }
     return std::nullopt;
   }
@@ -251,9 +251,11 @@ class SwiftDispatcher {
 
   template <typename Tag, typename T, typename... Ts>
   bool fetchLabelFromUnionCase(const llvm::PointerUnion<Ts...> u, TrapLabel<Tag>& output) {
-    if (auto e = u.template dyn_cast<T>()) {
-      output = fetchLabel(e);
-      return true;
+    if constexpr (!std::is_same_v<T, swift::TypeRepr*>) {
+      if (auto e = u.template dyn_cast<T>()) {
+        output = fetchLabel(e);
+        return true;
+      }
     }
     return false;
   }
@@ -279,7 +281,7 @@ class SwiftDispatcher {
   virtual void visit(swift::CaseLabelItem* item) = 0;
   virtual void visit(swift::Expr* expr) = 0;
   virtual void visit(swift::Pattern* pattern) = 0;
-  virtual void visit(swift::TypeRepr* type) = 0;
+  virtual void visit(swift::TypeRepr* typeRepr, swift::Type type) = 0;
   virtual void visit(swift::TypeBase* type) = 0;
 
   const swift::SourceManager& sourceManager;
