@@ -251,6 +251,10 @@ class SwiftDispatcher {
 
   template <typename Tag, typename T, typename... Ts>
   bool fetchLabelFromUnionCase(const llvm::PointerUnion<Ts...> u, TrapLabel<Tag>& output) {
+    // we rely on the fact that when we extract `ASTNode` instances (which only happens
+    // on `BraceStmt` elements), we cannot encounter a standalone `TypeRepr` there, so we skip
+    // this case, which would be problematic as we would not be able to provide the corresponding
+    // type
     if constexpr (!std::is_same_v<T, swift::TypeRepr*>) {
       if (auto e = u.template dyn_cast<T>()) {
         output = fetchLabel(e);
