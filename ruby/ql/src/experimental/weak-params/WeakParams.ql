@@ -38,19 +38,14 @@ class ActionControllerRequest extends DataFlow::Node {
 class WeakParams extends DataFlow::CallNode {
   WeakParams() {
     this.getReceiver() instanceof ActionControllerRequest and
-    allParamsAccess(this.asExpr().getExpr())
+    (
+      this.getMethodName() = "path_parametes" or
+      this.getMethodName() = "query_parameters" or
+      this.getMethodName() = "request_parameters" or
+      this.getMethodName() = "GET" or
+      this.getMethodName() = "POST"
+    )
   }
-}
-
-/**
- * Holds call to a method that exposes or accesses all parameters from an inbound HTTP request
- */
-predicate allParamsAccess(MethodCall call) {
-  call.getMethodName() = "path_parametes" or
-  call.getMethodName() = "query_parameters" or
-  call.getMethodName() = "request_parameters" or
-  call.getMethodName() = "GET" or
-  call.getMethodName() = "POST"
 }
 
 /**
