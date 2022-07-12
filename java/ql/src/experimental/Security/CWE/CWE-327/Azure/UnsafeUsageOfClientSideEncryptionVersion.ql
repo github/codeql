@@ -14,8 +14,8 @@ import java
 import semmle.code.java.dataflow.DataFlow
 
 /**
- * Holds if the call `call` is an object creation for a class `EncryptedBlobClientBuilder`
- * that takes no arguments, which means that it is using V1 encryption
+ * Holds if `call` is an object creation for a class `EncryptedBlobClientBuilder`
+ * that takes no arguments, which means that it is using V1 encryption.
  */
 predicate isCreatingOutdatedAzureClientSideEncryptionObject(Call call, Class c) {
   exists(string package, string type, Constructor constructor |
