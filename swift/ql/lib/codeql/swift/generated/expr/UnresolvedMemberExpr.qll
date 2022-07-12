@@ -3,4 +3,6 @@ import codeql.swift.elements.expr.Expr
 
 class UnresolvedMemberExprBase extends @unresolved_member_expr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedMemberExpr" }
+
+  string getName() { unresolved_member_exprs(this, result) }
 }

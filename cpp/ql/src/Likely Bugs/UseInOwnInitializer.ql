@@ -15,6 +15,7 @@ class VariableAccessInInitializer extends VariableAccess {
   Variable var;
   Initializer init;
 
+  pragma[nomagic]
   VariableAccessInInitializer() {
     init.getDeclaration() = var and
     init.getExpr().getAChild*() = this

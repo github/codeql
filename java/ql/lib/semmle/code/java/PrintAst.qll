@@ -534,10 +534,12 @@ final class ClassInterfaceNode extends ElementNode {
     or
     childIndex >= 0 and
     result.(ElementNode).getElement() =
-      rank[childIndex](Element e, string file, int line, int column |
-        e = this.getADeclaration() and locationSortKeys(e, file, line, column)
+      rank[childIndex](Element e, string file, int line, int column, string childStr |
+        e = this.getADeclaration() and
+        locationSortKeys(e, file, line, column) and
+        childStr = e.toString()
       |
-        e order by file, line, column
+        e order by file, line, column, childStr
       )
   }
 }

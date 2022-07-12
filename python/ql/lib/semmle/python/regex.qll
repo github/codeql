@@ -75,7 +75,7 @@ private string canonical_name(API::Node flag) {
  */
 private DataFlow::TypeTrackingNode re_flag_tracker(string flag_name, DataFlow::TypeTracker t) {
   t.start() and
-  exists(API::Node flag | flag_name = canonical_name(flag) and result = flag.getAnImmediateUse())
+  exists(API::Node flag | flag_name = canonical_name(flag) and result = flag.asSource())
   or
   exists(BinaryExprNode binop, DataFlow::Node operand |
     operand.getALocalSource() = re_flag_tracker(flag_name, t.continue()) and

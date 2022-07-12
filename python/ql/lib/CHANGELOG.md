@@ -1,3 +1,11 @@
+## 0.5.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
+## 0.4.1
+
 ## 0.4.0
 
 ### Breaking Changes

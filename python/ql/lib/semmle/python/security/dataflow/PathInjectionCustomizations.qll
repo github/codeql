@@ -43,9 +43,11 @@ module PathInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for "path injection" vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -62,11 +64,11 @@ module PathInjection {
   private import semmle.python.frameworks.data.ModelsAsData
 
   private class DataAsFileSink extends Sink {
-    DataAsFileSink() { this = ModelOutput::getASinkNode("path-injection").getARhs() }
+    DataAsFileSink() { this = ModelOutput::getASinkNode("path-injection").asSink() }
   }
 
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
+  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
 }

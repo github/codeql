@@ -1,0 +1,4 @@
+| Param | getName: | Param | getCanonicalType: | Param | getInterfaceType: | Param |
+| ParamWithProtocols | getName: | ParamWithProtocols | getCanonicalType: | ParamWithProtocols | getInterfaceType: | ParamWithProtocols |
+| ParamWithSuperclass | getName: | ParamWithSuperclass | getCanonicalType: | ParamWithSuperclass | getInterfaceType: | ParamWithSuperclass |
+| ParamWithSuperclassAndProtocols | getName: | ParamWithSuperclassAndProtocols | getCanonicalType: | ParamWithSuperclassAndProtocols | getInterfaceType: | ParamWithSuperclassAndProtocols |

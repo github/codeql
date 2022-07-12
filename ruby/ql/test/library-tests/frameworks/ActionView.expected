@@ -14,7 +14,7 @@ rawCalls
 renderCalls
 | app/controllers/foo/bars_controller.rb:6:5:6:37 | call to render |
 | app/controllers/foo/bars_controller.rb:23:5:23:76 | call to render |
-| app/controllers/foo/bars_controller.rb:29:5:29:17 | call to render |
+| app/controllers/foo/bars_controller.rb:37:5:37:17 | call to render |
 | app/views/foo/bars/show.html.erb:31:5:31:89 | call to render |
 renderToCalls
 | app/controllers/foo/bars_controller.rb:15:16:15:97 | call to render_to_string |

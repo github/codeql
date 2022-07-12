@@ -17,7 +17,7 @@ class SummarizedCallableBase = AbstractFunctionDecl;
 DataFlowCallable inject(SummarizedCallable c) { result = TDataFlowFunc(c) }
 
 /** Gets the parameter position of the instance parameter. */
-ArgumentPosition instanceParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
+ArgumentPosition instanceParameterPosition() { result instanceof ThisArgumentPosition }
 
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
@@ -31,7 +31,7 @@ DataFlowType getContentType(Content c) { any() }
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c]
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  any() // TODO
+  any() // TODO once we have type pruning
 }
 
 /**
@@ -39,7 +39,7 @@ DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
  * synthesized call that targets a callback of type `t`.
  */
 DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
-  none() // TODO
+  any() // TODO once we have type pruning
 }
 
 /**
@@ -47,7 +47,7 @@ DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
  * callback of type `t`.
  */
 DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
-  none() // TODO
+  any() // TODO once we have type pruning
 }
 
 /**
@@ -97,12 +97,12 @@ predicate sinkElement(Element e, string input, string kind, boolean generated) {
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
-  none() // TODO
+  none() // TODO once we have field flow
 }
 
 /** Gets the textual representation of the content in the format used for flow summaries. */
 private string getContentSpecificCsv(Content c) {
-  none() // TODO
+  none() // TODO once we have field flow
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
@@ -117,14 +117,10 @@ string getComponentSpecificCsv(SummaryComponent sc) {
 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
-string getParameterPositionCsv(ParameterPosition pos) {
-  none() // TODO
-}
+string getParameterPositionCsv(ParameterPosition pos) { result = pos.toString() }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
-string getArgumentPositionCsv(ArgumentPosition pos) {
-  none() // TODO
-}
+string getArgumentPositionCsv(ArgumentPosition pos) { result = pos.toString() }
 
 /** Holds if input specification component `c` needs a reference. */
 predicate inputNeedsReferenceSpecific(string c) { none() }
@@ -187,11 +183,21 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[s]
 ArgumentPosition parseParamBody(string s) {
-  none() // TODO
+  exists(int index | index = AccessPath::parseInt(s) |
+    result.(PositionalArgumentPosition).getIndex() = index
+    or
+    index = -1 and
+    result instanceof ThisArgumentPosition
+  )
 }
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
 bindingset[s]
 ParameterPosition parseArgBody(string s) {
-  none() // TODO
+  exists(int index | index = AccessPath::parseInt(s) |
+    result.(PositionalParameterPosition).getIndex() = index
+    or
+    index = -1 and
+    result instanceof ThisParameterPosition
+  )
 }

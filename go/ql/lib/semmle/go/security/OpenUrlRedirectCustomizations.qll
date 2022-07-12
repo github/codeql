@@ -32,9 +32,11 @@ module OpenUrlRedirect {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Barrier` instead.
+   *
    * A barrier guard for unvalidated URL redirect vulnerabilities.
    */
-  abstract class BarrierGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class BarrierGuard extends DataFlow::BarrierGuard { }
 
   /**
    * An additional taint propagation step specific to this query.
@@ -98,20 +100,20 @@ module OpenUrlRedirect {
    * A call to a function called `isLocalUrl`, `isValidRedirect`, or similar, which is
    * considered a barrier guard for sanitizing untrusted URLs.
    */
-  class RedirectCheckBarrierGuardAsBarrierGuard extends RedirectCheckBarrierGuard, BarrierGuard { }
+  class RedirectCheckBarrierGuardAsBarrierGuard extends RedirectCheckBarrier, Barrier { }
 
   /**
    * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheck, BarrierGuard { }
+  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, Barrier { }
 
   /**
    * A check against a constant value or the `Hostname` function,
    * considered a barrier guard for url flow.
    */
-  class UrlCheckAsBarrierGuard extends UrlCheck, BarrierGuard { }
+  class UrlCheckAsBarrierGuard extends UrlCheckBarrier, Barrier { }
 }
 
 /** A sink for an open redirect, considered as a sink for safe URL flow. */

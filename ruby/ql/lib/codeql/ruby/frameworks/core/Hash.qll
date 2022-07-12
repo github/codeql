@@ -99,7 +99,8 @@ module Hash {
     HashNewSummary() { this = "Hash[]" }
 
     final override ElementReference getACall() {
-      result.getReceiver() = API::getTopLevelMember("Hash").getAUse().asExpr().getExpr() and
+      result.getReceiver() =
+        API::getTopLevelMember("Hash").getAValueReachableFromSource().asExpr().getExpr() and
       result.getNumberOfArguments() = 1
     }
 
@@ -138,7 +139,8 @@ module Hash {
     }
 
     final override ElementReference getACall() {
-      result.getReceiver() = API::getTopLevelMember("Hash").getAUse().asExpr().getExpr() and
+      result.getReceiver() =
+        API::getTopLevelMember("Hash").getAValueReachableFromSource().asExpr().getExpr() and
       key = result.getArgument(i - 1).getConstantValue() and
       exists(result.getArgument(i))
     }

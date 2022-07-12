@@ -58,3 +58,6 @@ go/main
 # node_modules folders except in the JS test suite
 node_modules/
 !/javascript/ql/test/**/node_modules/
+
+# Temporary folders for working with generated models
+.model-temp

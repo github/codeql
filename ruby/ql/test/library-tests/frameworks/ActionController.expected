@@ -3,7 +3,7 @@ actionControllerControllerClasses
 | ActiveRecord.rb:41:1:64:3 | BarController |
 | ActiveRecord.rb:66:1:70:3 | BazController |
 | app/controllers/comments_controller.rb:1:1:7:3 | CommentsController |
-| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController |
+| app/controllers/foo/bars_controller.rb:3:1:39:3 | BarsController |
 | app/controllers/photos_controller.rb:1:1:4:3 | PhotosController |
 | app/controllers/posts_controller.rb:1:1:10:3 | PostsController |
 | app/controllers/users/notifications_controller.rb:2:3:5:5 | NotificationsController |
@@ -17,6 +17,8 @@ actionControllerActionMethods
 | app/controllers/foo/bars_controller.rb:5:3:7:5 | index |
 | app/controllers/foo/bars_controller.rb:9:3:18:5 | show_debug |
 | app/controllers/foo/bars_controller.rb:20:3:24:5 | show |
+| app/controllers/foo/bars_controller.rb:26:3:28:5 | go_back |
+| app/controllers/foo/bars_controller.rb:30:3:32:5 | go_back_2 |
 | app/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/controllers/posts_controller.rb:2:3:3:5 | index |
 | app/controllers/posts_controller.rb:5:3:6:5 | show |
@@ -66,10 +68,12 @@ cookiesSources
 | app/controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies |
 redirectToCalls
 | app/controllers/foo/bars_controller.rb:17:5:17:30 | call to redirect_to |
+| app/controllers/foo/bars_controller.rb:27:5:27:39 | call to redirect_back_or_to |
+| app/controllers/foo/bars_controller.rb:31:5:31:56 | call to redirect_back |
 actionControllerHelperMethods
 getAssociatedControllerClasses
-| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
-| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
+| app/controllers/foo/bars_controller.rb:3:1:39:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
+| app/controllers/foo/bars_controller.rb:3:1:39:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
 controllerTemplateFiles
-| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
-| app/controllers/foo/bars_controller.rb:3:1:31:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
+| app/controllers/foo/bars_controller.rb:3:1:39:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
+| app/controllers/foo/bars_controller.rb:3:1:39:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |

@@ -115,15 +115,13 @@ private module Cached {
    */
   cached
   predicate isClass(@usertype t) {
-    (
-      usertypes(t, _, 1) or
-      usertypes(t, _, 2) or
-      usertypes(t, _, 3) or
-      usertypes(t, _, 6) or
-      usertypes(t, _, 10) or
-      usertypes(t, _, 11) or
-      usertypes(t, _, 12)
-    )
+    usertypes(t, _, 1) or
+    usertypes(t, _, 2) or
+    usertypes(t, _, 3) or
+    usertypes(t, _, 6) or
+    usertypes(t, _, 10) or
+    usertypes(t, _, 11) or
+    usertypes(t, _, 12)
   }
 
   cached

@@ -405,6 +405,43 @@ func dictionaryLiteral(x: Int, y: Int) -> [String: Int] {
   return ["x": x, "y": y]
 }
 
+func localDeclarations() -> Int {
+  class MyLocalClass {
+    var x: Int
+    init() {
+      x = 10
+    }
+  }
+
+  struct MyLocalStruct {
+    var x: Int
+    init() {
+      x = 10
+    }
+  }
+
+  enum MyLocalEnum {
+    case A
+    case B
+  }
+
+  var myLocalVar : Int;
+
+  // Error: declaration is only valid at file scope
+  // extension Int {
+  //   func myExtensionMethod() -> Int {
+  //     return self
+  //   }
+  // }
+
+  // protocol 'MyProtocol' cannot be nested inside another declaration
+  //   protocol MyProtocol {
+  //     func myMethod()
+  //   }
+
+  return 0
+}
+
 struct B {
   var x : Int
 }

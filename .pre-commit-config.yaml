@@ -15,6 +15,12 @@ repos:
       - id: clang-format
         files: ^swift/.*\.(h|c|cpp)$
 
+  - repo: https://github.com/pre-commit/mirrors-autopep8
+    rev: v1.6.0
+    hooks:
+      - id: autopep8
+        files: ^swift/codegen/.*\.py
+
   - repo: local
     hooks:
       - id: codeql-format
@@ -40,7 +46,7 @@ repos:
         name: Run Swift checked in code generation
         files: ^swift/(codegen/|.*/generated/|ql/lib/(swift\.dbscheme$|codeql/swift/elements))
         language: system
-        entry: bazel run //swift/codegen
+        entry: bazel run //swift/codegen -- --quiet
         pass_filenames: false
 
       - id: swift-codegen-unit-tests
