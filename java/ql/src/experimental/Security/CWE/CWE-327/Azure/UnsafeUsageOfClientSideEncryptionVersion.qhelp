@@ -4,12 +4,12 @@
 
   <overview>
     <p>Azure Storage .NET, Java, and Python SDKs support encryption on the client with a customer-managed key that is maintained in Azure Key Vault or another key store.</p>
-    <p>Current release versions of the Azure Storage SDKs use cipher block chaining (CBC mode) for client-side encryption (referred to as <code>v1</code>).</p>
+    <p>The Azure Storage SDK version 12.18.0 or later supports version <code>V2</code> for client-side encryption. All previous versions of Azure Storage SDK only support client-side encryption <code>V1</code> which is unsafe.</p>
 
   </overview>
   <recommendation>
 
-    <p>Consider switching to <code>v2</code> client-side encryption.</p>
+    <p>Consider switching to <code>V2</code> client-side encryption.</p>
 
   </recommendation>
   <example>
