@@ -33,8 +33,8 @@ predicate isCreatingOutdatedAzureClientSideEncryptionObject(Call call, Class c) 
 }
 
 /**
- * Holds if the call `call` is an object creation for a class `EncryptedBlobClientBuilder`
- * that takes `versionArg` as the argument for the version.
+ * Holds if `call` is an object creation for a class `EncryptedBlobClientBuilder`
+ * that takes `versionArg` as the argument specifying the encryption version.
  */
 predicate isCreatingAzureClientSideEncryptionObjectNewVersion(Call call, Class c, Expr versionArg) {
   exists(string package, string type, Constructor constructor |
