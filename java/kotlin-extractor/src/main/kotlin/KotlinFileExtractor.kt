@@ -30,6 +30,7 @@ import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
 import java.io.Closeable
 import java.util.*
+import kotlin.collections.ArrayList
 
 open class KotlinFileExtractor(
     override val logger: FileLogger,
@@ -39,7 +40,8 @@ open class KotlinFileExtractor(
     externalClassExtractor: ExternalDeclExtractor,
     primitiveTypeMapping: PrimitiveTypeMapping,
     pluginContext: IrPluginContext,
-    globalExtensionState: KotlinExtractorGlobalState
+    val declarationStack: DeclarationStack,
+    globalExtensionState: KotlinExtractorGlobalState,
 ): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState) {
 
     private inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
@@ -475,7 +477,7 @@ open class KotlinFileExtractor(
             val proxyFunctionId = tw.getLabelFor<DbMethod>(getFunctionLabel(f, classId, listOf()))
             // We extract the function prototype with its ID overridden to belong to `c` not the companion object,
             // but suppress outputting the body, which we will replace with a delegating call below.
-            forceExtractFunction(f, classId, extractBody = false, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution = null, classTypeArgsIncludingOuterClasses = listOf(), idOverride = proxyFunctionId, locOverride = null, extractOrigin = false)
+            forceExtractFunction(f, classId, extractBody = false, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution = null, classTypeArgsIncludingOuterClasses = listOf(), extractOrigin = false, OverriddenFunctionAttributes(id = proxyFunctionId))
             addModifiers(proxyFunctionId, "static")
             tw.writeCompiler_generated(proxyFunctionId, CompilerGeneratedKinds.JVMSTATIC_PROXY_METHOD.kind)
             if (extractFunctionBodies) {
@@ -514,8 +516,12 @@ open class KotlinFileExtractor(
                 val wholeDeclAnnotated = it.hasAnnotation(jvmStaticFqName)
                 when(it) {
                     is IrFunction -> {
-                        if (wholeDeclAnnotated)
+                        if (wholeDeclAnnotated) {
                             makeProxyFunction(it)
+                            if (it.hasAnnotation(jvmOverloadsFqName)) {
+                                extractGeneratedOverloads(it, classId, classId, extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, typeSubstitution = null, classTypeArgsIncludingOuterClasses = listOf())
+                            }
+                        }
                     }
                     is IrProperty -> {
                         it.getter?.let { getter ->
@@ -818,38 +824,139 @@ open class KotlinFileExtractor(
     private fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
         if (isFake(f))
             null
-        else
-            forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, null, null)
+        else {
+            forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses).also {
+                extractGeneratedOverloads(f, parentId, null, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses)
+            }
+        }
 
-    private fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, idOverride: Label<DbMethod>?, locOverride: Label<DbLocation>?, extractOrigin: Boolean = true): Label<out DbCallable>  {
+    private val jvmOverloadsFqName = FqName("kotlin.jvm.JvmOverloads")
+
+    private fun extractGeneratedOverloads(f: IrFunction, parentId: Label<out DbReftype>, maybeSourceParentId: Label<out DbReftype>?, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
+        if (!f.hasAnnotation(jvmOverloadsFqName))
+            return
+
+        fun extractGeneratedOverload(paramList: List<IrElement>) {
+            val overloadParameters = paramList.filterIsInstance<IrValueParameter>()
+            // Note `overloadParameters` have incorrect parents and indices, since there is no actual IrFunction describing the required synthetic overload.
+            // We have to use the `overriddenAttributes` element of `DeclarationStackAdjuster` to fix up references to these parameters while we're extracting
+            // these synthetic overloads.
+            val overloadId = tw.getLabelFor<DbCallable>(getFunctionLabel(f, parentId, classTypeArgsIncludingOuterClasses, overloadParameters))
+            val sourceParentId =
+                maybeSourceParentId ?:
+                    if (typeSubstitution != null)
+                        useDeclarationParent(f.parent, false)
+                    else
+                        parentId
+            val sourceDeclId = tw.getLabelFor<DbCallable>(getFunctionLabel(f, sourceParentId, listOf(), overloadParameters))
+            val overriddenAttributes = OverriddenFunctionAttributes(id = overloadId, sourceDeclarationId = sourceDeclId, valueParameters = overloadParameters)
+            forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = overriddenAttributes)
+            tw.writeCompiler_generated(overloadId, CompilerGeneratedKinds.JVMOVERLOADS_METHOD.kind)
+            val realFunctionLocId = tw.getLocation(f)
+            if (extractBody) {
+
+                DeclarationStackAdjuster(f, overriddenAttributes).use {
+
+                    fun extractNormalArgs(argParentId: Label<out DbExprparent>, idxOffset: Int, enclosingStmtId: Label<out DbStmt>) {
+                        paramList.forEachIndexed { idx, param ->
+                            when(param) {
+                                is IrValueParameter -> {
+                                    // Forward a parameter:
+                                    val syntheticParamId = useValueParameter(param, overloadId)
+                                    extractVariableAccess(syntheticParamId, param.type, realFunctionLocId, argParentId, idxOffset + idx, overloadId, enclosingStmtId)
+                                }
+                                is IrExpression -> {
+                                    // Supply a default argument:
+                                    extractExpressionExpr(param, overloadId, argParentId, idxOffset + idx, enclosingStmtId)
+                                }
+                                else -> {
+                                    logger.errorElement("Unexpected parameter list entry", param)
+                                }
+                            }
+                        }
+                    }
+
+                    // Create a synthetic function body that calls the real function supplying default arguments where required:
+                    if (f is IrConstructor) {
+                        val blockId = tw.getFreshIdLabel<DbBlock>()
+                        tw.writeStmts_block(blockId, overloadId, 0, overloadId)
+                        tw.writeHasLocation(blockId, realFunctionLocId)
+
+                        val constructorCallId = tw.getFreshIdLabel<DbConstructorinvocationstmt>()
+                        tw.writeStmts_constructorinvocationstmt(constructorCallId, blockId, 0, overloadId)
+                        tw.writeHasLocation(constructorCallId, realFunctionLocId)
+                        tw.writeCallableBinding(constructorCallId, useFunction(f))
+
+                        extractNormalArgs(constructorCallId, 0, constructorCallId)
+                    } else {
+                        extractExpressionBody(overloadId, realFunctionLocId).also { returnId ->
+                            extractRawMethodAccess(
+                                f,
+                                realFunctionLocId,
+                                f.returnType,
+                                overloadId,
+                                returnId,
+                                0,
+                                returnId,
+                                f.valueParameters.size,
+                                { argParentId, idxOffset ->
+                                    extractNormalArgs(argParentId, idxOffset, returnId)
+                                },
+                                f.dispatchReceiverParameter?.type,
+                                f.dispatchReceiverParameter?.let { { callId ->
+                                    extractThisAccess(it.type, overloadId, callId, -1, returnId, realFunctionLocId)
+                                } },
+                                f.extensionReceiverParameter?.let { { argParentId ->
+                                    val syntheticParamId = useValueParameter(it, overloadId)
+                                    extractVariableAccess(syntheticParamId, it.type, realFunctionLocId, argParentId, 0, overloadId, returnId)
+                                } }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        val paramList: MutableList<IrElement> = f.valueParameters.toMutableList()
+        for (n in (paramList.size - 1) downTo 0) {
+            (paramList[n] as? IrValueParameter)?.defaultValue?.expression?.let {
+                paramList[n] = it // Replace the last parameter that has a default with that default value.
+                extractGeneratedOverload(paramList)
+            }
+        }
+    }
+
+    private fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, extractOrigin: Boolean = true, overriddenAttributes: OverriddenFunctionAttributes? = null): Label<out DbCallable>  {
         with("function", f) {
-            DeclarationStackAdjuster(f).use {
+            DeclarationStackAdjuster(f, overriddenAttributes).use {
 
                 val javaCallable = getJavaCallable(f)
                 getFunctionTypeParameters(f).mapIndexed { idx, tp -> extractTypeParameter(tp, idx, (javaCallable as? JavaTypeParameterListOwner)?.typeParameters?.getOrNull(idx)) }
 
                 val id =
-                    idOverride
+                    overriddenAttributes?.id
                         ?: // If this is a class that would ordinarily be replaced by a Java equivalent (e.g. kotlin.Map -> java.util.Map),
                            // don't replace here, really extract the Kotlin version:
                            useFunction<DbCallable>(f, parentId, classTypeArgsIncludingOuterClasses, noReplace = true)
 
                 val sourceDeclaration =
-                    if (typeSubstitution != null && idOverride == null)
-                        useFunction(f)
-                    else
-                        id
+                    overriddenAttributes?.sourceDeclarationId ?:
+                        if (typeSubstitution != null && overriddenAttributes?.id == null)
+                            useFunction(f)
+                        else
+                            id
 
                 val extReceiver = f.extensionReceiverParameter
                 val idxOffset = if (extReceiver != null) 1 else 0
-                val paramTypes = f.valueParameters.mapIndexed { i, vp ->
-                    extractValueParameter(vp, id, i + idxOffset, typeSubstitution, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, locOverride)
+                val fParameters = overriddenAttributes?.valueParameters ?: f.valueParameters
+                val paramTypes = fParameters.mapIndexed { i, vp ->
+                    extractValueParameter(vp, id, i + idxOffset, typeSubstitution, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, overriddenAttributes?.sourceLoc)
                 }
                 val allParamTypes = if (extReceiver != null) {
                     val extendedType = useType(extReceiver.type)
                     tw.writeKtExtensionFunctions(id.cast<DbMethod>(), extendedType.javaResult.id, extendedType.kotlinResult.id)
 
-                    val t = extractValueParameter(extReceiver, id, 0, null, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, locOverride)
+                    val t = extractValueParameter(extReceiver, id, 0, null, sourceDeclaration, classTypeArgsIncludingOuterClasses, extractTypeAccess = extractMethodAndParameterTypeAccesses, overriddenAttributes?.sourceLoc)
                     listOf(t) + paramTypes
                 } else {
                     paramTypes
@@ -860,7 +967,7 @@ open class KotlinFileExtractor(
                 val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false, (javaCallable as? JavaMethod)?.returnType)
                 val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
 
-                val locId = locOverride ?: getLocation(f, classTypeArgsIncludingOuterClasses)
+                val locId = overriddenAttributes?.sourceLoc ?: getLocation(f, classTypeArgsIncludingOuterClasses)
 
                 if (f.symbol is IrConstructorSymbol) {
                     val unitType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
@@ -2688,7 +2795,7 @@ open class KotlinFileExtractor(
                 is IrDelegatingConstructorCall -> {
                     val stmtParent = parent.stmt(e, callable)
 
-                    val irCallable = declarationStack.peek()
+                    val irCallable = declarationStack.peek().first
 
                     val delegatingClass = e.symbol.owner.parent
                     val currentClass = irCallable.parent
@@ -2790,7 +2897,7 @@ open class KotlinFileExtractor(
                     extractLoop(e, parent, callable)
                 }
                 is IrInstanceInitializerCall -> {
-                    val irConstructor = declarationStack.peek() as? IrConstructor
+                    val irConstructor = declarationStack.peek().first as? IrConstructor
                     if (irConstructor == null) {
                         logger.errorElement("IrInstanceInitializerCall outside constructor", e)
                         return
@@ -3274,10 +3381,19 @@ open class KotlinFileExtractor(
             extractTypeAccessRecursive(irType, locId, it, 0)
         }
 
+    private fun extractThisAccess(irType: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>, locId: Label<out DbLocation>) =
+        tw.getFreshIdLabel<DbThisaccess>().also {
+            val type = useType(irType)
+            tw.writeExprs_thisaccess(it, type.javaResult.id, parent, idx)
+            tw.writeExprsKotlinType(it, type.kotlinResult.id)
+            tw.writeHasLocation(it, locId)
+            tw.writeCallableEnclosingExpr(it, callable)
+            tw.writeStatementEnclosingExpr(it, enclosingStmt)
+        }
+
     private fun extractThisAccess(e: IrGetValue, exprParent: ExprParent, callable: Label<out DbCallable>) {
-        val containingDeclaration = declarationStack.peek()
+        val containingDeclaration = declarationStack.peek().first
         val locId = tw.getLocation(e)
-        val type = useType(e.type)
 
         if (containingDeclaration.shouldExtractAsStatic && containingDeclaration.parentClassOrNull?.isNonCompanionObject == true) {
             // Use of `this` in a non-companion object member that will be lowered to a static function -- replace with a reference
@@ -3287,13 +3403,7 @@ open class KotlinFileExtractor(
                 extractStaticTypeAccessQualifier(containingDeclaration, varAccessId, locId, callable, exprParent.enclosingStmt)
             }
         } else {
-            val id = tw.getFreshIdLabel<DbThisaccess>()
-
-            tw.writeExprs_thisaccess(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-            tw.writeExprsKotlinType(id, type.kotlinResult.id)
-            tw.writeHasLocation(id, locId)
-            tw.writeCallableEnclosingExpr(id, callable)
-            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+            val id = extractThisAccess(e.type, callable, exprParent.parent, exprParent.idx, exprParent.enclosingStmt, locId)
 
             fun extractTypeAccess(parent: IrClass) {
                 extractTypeAccessRecursive(parent.typeWith(listOf()), locId, id, 0, callable, exprParent.enclosingStmt)
@@ -3770,7 +3880,7 @@ open class KotlinFileExtractor(
                 constructorBlock = tw.getFreshIdLabel()
             )
 
-            val declarationParent = declarationStack.peekAsDeclarationParent(propertyReferenceExpr) ?: return
+            val declarationParent = peekDeclStackAsDeclarationParent(propertyReferenceExpr) ?: return
             val prefix = if (kPropertyClass.owner.name.asString().startsWith("KMutableProperty")) "Mutable" else ""
             val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.${prefix}PropertyReference${kPropertyType.arguments.size - 1}"))?.owner?.typeWith()
                 ?: pluginContext.irBuiltIns.anyType
@@ -3977,7 +4087,7 @@ open class KotlinFileExtractor(
             if (fnInterfaceType == null) {
                 logger.warnElement("Cannot find functional interface type for function reference", functionReferenceExpr)
             } else {
-                val declarationParent = declarationStack.peekAsDeclarationParent(functionReferenceExpr) ?: return
+                val declarationParent = peekDeclStackAsDeclarationParent(functionReferenceExpr) ?: return
                 // `FunctionReference` base class is required, because that's implementing `KFunction`.
                 val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.FunctionReference"))?.owner?.typeWith()
                     ?: pluginContext.irBuiltIns.anyType
@@ -4586,7 +4696,7 @@ open class KotlinFileExtractor(
                     val locId = tw.getLocation(e)
                     val helper = GeneratedClassHelper(locId, ids)
 
-                    val declarationParent = declarationStack.peekAsDeclarationParent(e) ?: return
+                    val declarationParent = peekDeclStackAsDeclarationParent(e) ?: return
                     val classId = extractGeneratedClass(ids, listOf(pluginContext.irBuiltIns.anyType, e.typeOperand), locId, e, declarationParent)
 
                     // add field
@@ -4610,7 +4720,7 @@ open class KotlinFileExtractor(
                     // we would need to compose generic type substitutions -- for example, if we're implementing
                     // T UnaryOperator<T>.apply(T t) here, we would need to compose substitutions so we can implement
                     // the real underlying R Function<T, R>.apply(T t).
-                    forceExtractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, ids.function, tw.getLocation(e))
+                    forceExtractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, overriddenAttributes = OverriddenFunctionAttributes(id = ids.function, sourceLoc = tw.getLocation(e)))
 
                     if (st.isSuspendFunctionOrKFunction()) {
                         addModifiers(ids.function, "suspend")
@@ -4798,13 +4908,19 @@ open class KotlinFileExtractor(
         }
     }
 
-    // todo: calculating the enclosing ref type could be done through this, instead of walking up the declaration parent chain
-    private val declarationStack = DeclarationStack()
+    private inner class DeclarationStackAdjuster(val declaration: IrDeclaration, val overriddenAttributes: OverriddenFunctionAttributes? = null): Closeable {
+        init {
+            declarationStack.push(declaration, overriddenAttributes)
+        }
+        override fun close() {
+            declarationStack.pop()
+        }
+    }
 
-    private inner class DeclarationStack {
-        private val stack: Stack<IrDeclaration> = Stack()
+    class DeclarationStack {
+        private val stack: Stack<Pair<IrDeclaration, OverriddenFunctionAttributes?>> = Stack()
 
-        fun push(item: IrDeclaration) = stack.push(item)
+        fun push(item: IrDeclaration, overriddenAttributes: OverriddenFunctionAttributes?) = stack.push(Pair(item, overriddenAttributes))
 
         fun pop() = stack.pop()
 
@@ -4812,28 +4928,23 @@ open class KotlinFileExtractor(
 
         fun peek() = stack.peek()
 
-        fun peekAsDeclarationParent(elementToReportOn: IrElement): IrDeclarationParent? {
-            val trapWriter = tw
-            if (isEmpty() && trapWriter is SourceFileTrapWriter) {
-                // If the current declaration is used as a parent, we might end up with an empty stack. In this case, the source file is the parent.
-                return trapWriter.irFile
-            }
-
-            val dp = peek() as? IrDeclarationParent
-            if (dp == null) {
-                logger.errorElement("Couldn't find current declaration parent", elementToReportOn)
-            }
-            return dp
-        }
+        fun findOverriddenAttributes(f: IrFunction) =
+            stack.firstOrNull { it.first == f } ?.second
     }
 
-    private inner class DeclarationStackAdjuster(declaration: IrDeclaration): Closeable {
-        init {
-            declarationStack.push(declaration)
+    data class OverriddenFunctionAttributes(val id: Label<out DbCallable>? = null, val sourceDeclarationId: Label<out DbCallable>? = null, val sourceLoc: Label<DbLocation>? = null, val valueParameters: List<IrValueParameter>? = null)
+
+    private fun peekDeclStackAsDeclarationParent(elementToReportOn: IrElement): IrDeclarationParent? {
+        val trapWriter = tw
+        if (declarationStack.isEmpty() && trapWriter is SourceFileTrapWriter) {
+            // If the current declaration is used as a parent, we might end up with an empty stack. In this case, the source file is the parent.
+            return trapWriter.irFile
         }
-        override fun close() {
-            declarationStack.pop()
-        }
+
+        val dp = declarationStack.peek().first as? IrDeclarationParent
+        if (dp == null)
+            logger.errorElement("Couldn't find current declaration parent", elementToReportOn)
+        return dp
     }
 
     private enum class CompilerGeneratedKinds(val kind: Int) {
@@ -4845,5 +4956,6 @@ open class KotlinFileExtractor(
         DELEGATED_PROPERTY_GETTER(6),
         DELEGATED_PROPERTY_SETTER(7),
         JVMSTATIC_PROXY_METHOD(8),
+        JVMOVERLOADS_METHOD(9),
     }
 }

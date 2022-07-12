@@ -38,7 +38,6 @@ open class KotlinUsesExtractor(
     val pluginContext: IrPluginContext,
     val globalExtensionState: KotlinExtractorGlobalState
 ) {
-
     val javaLangObject by lazy {
         val result = pluginContext.referenceClass(FqName("java.lang.Object"))?.owner
         result?.let { extractExternalClassLater(it) }
@@ -128,18 +127,24 @@ open class KotlinUsesExtractor(
             return this
         }
 
+        val newDeclarationStack =
+            if (this is KotlinFileExtractor)
+                this.declarationStack
+            else
+                KotlinFileExtractor.DeclarationStack()
+
         if (clsFile == null || isExternalDeclaration(cls)) {
             val filePath = getIrClassBinaryPath(cls)
             val newTrapWriter = tw.makeFileTrapWriter(filePath, true)
             val newLoggerTrapWriter = logger.tw.makeFileTrapWriter(filePath, false)
             val newLogger = FileLogger(logger.loggerBase, newLoggerTrapWriter)
-            return KotlinFileExtractor(newLogger, newTrapWriter, filePath, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState)
+            return KotlinFileExtractor(newLogger, newTrapWriter, filePath, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, newDeclarationStack, globalExtensionState)
         }
 
         val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, true)
         val newLoggerTrapWriter = logger.tw.makeSourceFileTrapWriter(clsFile, false)
         val newLogger = FileLogger(logger.loggerBase, newLoggerTrapWriter)
-        return KotlinFileExtractor(newLogger, newTrapWriter, clsFile.path, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState)
+        return KotlinFileExtractor(newLogger, newTrapWriter, clsFile.path, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, newDeclarationStack, globalExtensionState)
     }
 
     // The Kotlin compiler internal representation of Outer<T>.Inner<S>.InnerInner<R> is InnerInner<R, S, T>. This function returns just `R`.
@@ -1027,14 +1032,18 @@ open class KotlinUsesExtractor(
      * looked up the parent ID ourselves, we would get as ID for
      * `java.lang.Throwable`, which isn't what we want. So we have to
      * allow it to be passed in.
-    */
+     *
+     * `maybeParameterList` can be supplied to override the function's
+     * value parameters; this is used for generating labels of overloads
+     * that omit one or more parameters that has a default value specified.
+     */
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+    fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, maybeParameterList: List<IrValueParameter>? = null) =
         getFunctionLabel(
             f.parent,
             maybeParentId,
             getFunctionShortName(f).nameInDB,
-            f.valueParameters,
+            maybeParameterList ?: f.valueParameters,
             getAdjustedReturnType(f),
             f.extensionReceiverParameter,
             getFunctionTypeParameters(f),
@@ -1437,6 +1446,12 @@ open class KotlinUsesExtractor(
 
     fun getTypeParameterParentLabel(param: IrTypeParameter) =
         param.parent.let {
+            (it as? IrFunction)?.let { fn ->
+                if (this is KotlinFileExtractor)
+                    this.declarationStack.findOverriddenAttributes(fn)?.id
+                else
+                    null
+            } ?:
             when (it) {
                 is IrClass -> useClassSource(it)
                 is IrFunction -> useFunction(it, noReplace = true)
@@ -1574,13 +1589,21 @@ open class KotlinUsesExtractor(
      */
     fun getValueParameterLabel(vp: IrValueParameter, parent: Label<out DbCallable>?): String {
         val declarationParent = vp.parent
-        val parentId = parent ?: useDeclarationParent(declarationParent, false)
+        val overriddenParentAttributes = (declarationParent as? IrFunction)?.let {
+            if (this is KotlinFileExtractor)
+                this.declarationStack.findOverriddenAttributes(it)
+            else
+                null
+        }
+        val parentId = parent ?: overriddenParentAttributes?.id ?: useDeclarationParent(declarationParent, false)
 
-        val idx = if (declarationParent is IrFunction && declarationParent.extensionReceiverParameter != null)
+        val idxBase = overriddenParentAttributes?.valueParameters?.indexOf(vp) ?: vp.index
+        val idxOffset = if (declarationParent is IrFunction && declarationParent.extensionReceiverParameter != null)
             // For extension functions increase the index to match what the java extractor sees:
-            vp.index + 1
+            1
         else
-            vp.index
+            0
+        val idx = idxBase + idxOffset
 
         if (idx < 0) {
             // We're not extracting this and this@TYPE parameters of functions:
