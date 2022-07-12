@@ -21,11 +21,13 @@ private string stringIndexedMember(string name, string index) {
 class AstNode extends TAstNode {
   string toString() { result = this.getAPrimaryQlClass() }
 
-  /**
-   * Gets the location of the AST node.
-   */
+  /** Gets the location of the AST node. */
   cached
-  Location getLocation() {
+  Location getLocation() { result = this.getFullLocation() } // overriden in some subclasses
+
+  /** Gets the location that spans the entire AST node. */
+  cached
+  final Location getFullLocation() {
     exists(QL::AstNode node | not node instanceof QL::ParExpr |
       node = toQL(this) and
       result = node.getLocation()
@@ -434,6 +436,8 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
 
   ClasslessPredicate() { this = TClasslessPredicate(pred) }
 
+  override Location getLocation() { result = pred.getName().getLocation() }
+
   /**
    * Gets the aliased value if this predicate is an alias
    * E.g. for `predicate foo = Module::bar/2;` gets `Module::bar/2`.
@@ -483,6 +487,8 @@ class ClassPredicate extends TClassPredicate, Predicate {
   QL::MemberPredicate pred;
 
   ClassPredicate() { this = TClassPredicate(pred) }
+
+  override Location getLocation() { result = pred.getName().getLocation() }
 
   override string getName() { result = pred.getName().getValue() }
 
@@ -701,6 +707,8 @@ class Module extends TModule, ModuleDeclaration {
 
   Module() { this = TModule(mod) }
 
+  override Location getLocation() { result = mod.getName().getLocation() }
+
   override string getAPrimaryQlClass() { result = "Module" }
 
   override string getName() { result = mod.getName().getChild().getValue() }
@@ -783,6 +791,8 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   QL::Dataclass cls;
 
   Class() { this = TClass(cls) }
+
+  override Location getLocation() { result = cls.getName().getLocation() }
 
   override string getAPrimaryQlClass() { result = "Class" }
 
@@ -871,6 +881,8 @@ class NewType extends TNewType, TypeDeclaration, ModuleDeclaration {
 
   NewType() { this = TNewType(type) }
 
+  override Location getLocation() { result = type.getName().getLocation() }
+
   override string getName() { result = type.getName().getValue() }
 
   override string getAPrimaryQlClass() { result = "NewType" }
@@ -895,6 +907,8 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
   QL::DatatypeBranch branch;
 
   NewTypeBranch() { this = TNewTypeBranch(branch) }
+
+  override Location getLocation() { result = branch.getName().getLocation() }
 
   override string getAPrimaryQlClass() { result = "NewTypeBranch" }
 

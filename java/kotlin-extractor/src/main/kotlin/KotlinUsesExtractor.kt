@@ -111,14 +111,26 @@ open class KotlinUsesExtractor(
     }
     data class TypeResults(val javaResult: TypeResult<DbType>, val kotlinResult: TypeResult<DbKt_type>)
 
-    fun useType(t: IrType, context: TypeContext = TypeContext.OTHER) =
+    fun useType(t: IrType, context: TypeContext = TypeContext.OTHER): TypeResults {
         when(t) {
-            is IrSimpleType -> useSimpleType(t, context)
+            is IrSimpleType -> return useSimpleType(t, context)
             else -> {
                 logger.error("Unrecognised IrType: " + t.javaClass)
-                TypeResults(TypeResult(fakeLabel(), "unknown", "unknown"), TypeResult(fakeLabel(), "unknown", "unknown"))
+                return extractErrorType()
             }
         }
+    }
+
+    private fun extractErrorType(): TypeResults {
+        val typeId = tw.getLabelFor<DbErrortype>("@\"errorType\"") {
+            tw.writeError_type(it)
+        }
+        val kotlinTypeId = tw.getLabelFor<DbKt_nullable_type>("@\"errorKotlinType\"") {
+            tw.writeKt_nullable_types(it, typeId)
+        }
+        return TypeResults(TypeResult(typeId, null, "<CodeQL error type>"),
+                           TypeResult(kotlinTypeId, null, "<CodeQL error type>"))
+    }
 
     fun getJavaEquivalentClass(c: IrClass) =
         getJavaEquivalentClassId(c)?.let { pluginContext.referenceClass(it.asSingleFqName()) }?.owner
