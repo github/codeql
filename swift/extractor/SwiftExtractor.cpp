@@ -18,6 +18,7 @@
 #include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/trap/TrapOutput.h"
 #include "swift/extractor/visitors/SwiftVisitor.h"
+#include "swift/extractor/infra/ExclusiveFile.h"
 
 using namespace codeql;
 
@@ -52,7 +53,7 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
   }
 }
 
-static std::string getTrapFilename(swift::ModuleDecl& module, swift::SourceFile* primaryFile) {
+static std::string getFilename(swift::ModuleDecl& module, swift::SourceFile* primaryFile) {
   if (primaryFile) {
     return primaryFile->getFilename().str();
   }
@@ -80,39 +81,29 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
                                 swift::CompilerInstance& compiler,
                                 swift::ModuleDecl& module,
                                 swift::SourceFile* primaryFile = nullptr) {
-  // The extractor can be called several times from different processes with
-  // the same input file(s)
-  // We are using PID to avoid concurrent access
-  // TODO: find a more robust approach to avoid collisions?
-  auto name = getTrapFilename(module, primaryFile);
-  llvm::StringRef filename(name);
-  std::string tempTrapName = filename.str() + '.' + std::to_string(getpid()) + ".trap";
+  auto filename = getFilename(module, primaryFile);
   llvm::SmallString<PATH_MAX> tempTrapPath(config.getTempTrapDir());
-  llvm::sys::path::append(tempTrapPath, tempTrapName);
+  llvm::SmallString<PATH_MAX> trapPath(config.trapDir);
+  llvm::sys::path::append(tempTrapPath, llvm::sys::path::filename(filename + ".trap"));
+  llvm::sys::path::append(trapPath, filename + ".trap");
 
-  llvm::StringRef tempTrapParent = llvm::sys::path::parent_path(tempTrapPath);
-  if (std::error_code ec = llvm::sys::fs::create_directories(tempTrapParent)) {
-    std::cerr << "Cannot create temp trap directory '" << tempTrapParent.str()
-              << "': " << ec.message() << "\n";
+  // The extractor can be called several times from different processes with
+  // the same input file(s). Using `ExclusiveFile` the first process will win, and the following
+  // will just skip the work
+  ExclusiveFile trapStream{tempTrapPath.str().str(), trapPath.str().str()};
+  if (!trapStream.owned()) {
+    // another process arrived first, nothing to do for us
     return;
   }
 
-  std::ofstream trapStream(tempTrapPath.str().str());
-  if (!trapStream) {
-    std::error_code ec;
-    ec.assign(errno, std::generic_category());
-    std::cerr << "Cannot create temp trap file '" << tempTrapPath.str().str()
-              << "': " << ec.message() << "\n";
-    return;
-  }
   trapStream << "/* extractor-args:\n";
-  for (auto opt : config.frontendOptions) {
+  for (const auto& opt : config.frontendOptions) {
     trapStream << "  " << std::quoted(opt) << " \\\n";
   }
   trapStream << "\n*/\n";
 
   trapStream << "/* swift-frontend-args:\n";
-  for (auto opt : config.patchedFrontendOptions) {
+  for (const auto& opt : config.patchedFrontendOptions) {
     trapStream << "  " << std::quoted(opt) << " \\\n";
   }
   trapStream << "\n*/\n";
@@ -146,24 +137,7 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
     trap.assignKey(fileLabel, name.str().str());
     trap.emit(FilesTrap{fileLabel, name.str().str()});
   }
-
-  // TODO: Pick a better name to avoid collisions
-  std::string trapName = filename.str() + ".trap";
-  llvm::SmallString<PATH_MAX> trapPath(config.trapDir);
-  llvm::sys::path::append(trapPath, trapName);
-
-  llvm::StringRef trapParent = llvm::sys::path::parent_path(trapPath);
-  if (std::error_code ec = llvm::sys::fs::create_directories(trapParent)) {
-    std::cerr << "Cannot create trap directory '" << trapParent.str() << "': " << ec.message()
-              << "\n";
-    return;
-  }
-
-  // TODO: The last process wins. Should we do better than that?
-  if (std::error_code ec = llvm::sys::fs::rename(tempTrapPath, trapPath)) {
-    std::cerr << "Cannot rename temp trap file '" << tempTrapPath.str().str() << "' -> '"
-              << trapPath.str().str() << "': " << ec.message() << "\n";
-  }
+  trapStream.commit();
 }
 
 static std::unordered_set<std::string> collectInputFilenames(swift::CompilerInstance& compiler) {
