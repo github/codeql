@@ -171,8 +171,8 @@ class AnalysedExpr extends Expr {
     this.inCondition() and
     (
       this.(Assignment).getLValue() = v.getAnAccess() or
-      exists(Initializer i | this.getEnclosingStmt() = i.getEnclosingStmt() and v = i.getDeclaration())
-    ) 
+      this.(ConditionDeclExpr).getVariableAccess() = v.getAnAccess()
+    )
   }
 
   /**
