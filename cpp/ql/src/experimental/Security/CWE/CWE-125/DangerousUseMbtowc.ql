@@ -234,4 +234,4 @@ where
   findUseMultibyteCharacter(exp, msg) or
   findUseStringConversion(exp, msg, 1, 0, 2, ["mbstowcs", "_mbstowcs_l", "mbsrtowcs"]) or
   findUseStringConversion(exp, msg, 2, 4, 5, ["MultiByteToWideChar", "WideCharToMultiByte"])
-select exp, msg + exp.getEnclosingFunction().getName()
+select exp, msg
