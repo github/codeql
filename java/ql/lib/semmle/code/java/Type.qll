@@ -666,6 +666,14 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   }
 }
 
+/**
+ * An `ErrorType` is generated when CodeQL is unable to correctly
+ * extract a type.
+ */
+class ErrorType extends RefType, @errortype {
+  override string getAPrimaryQlClass() { result = "ErrorType" }
+}
+
 /** A type that is the same as its source declaration. */
 class SrcRefType extends RefType {
   SrcRefType() { this.isSourceDeclaration() }

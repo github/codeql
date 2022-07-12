@@ -332,14 +332,6 @@ modifiers(
   string nodeName: string ref
 );
 
-/**
- * An errortype is used when the extractor is unable to extract a type
- * correctly for some reason.
- */
-error_type(
-  unique int id: @errortype
-);
-
 classes(
   unique int id: @class,
   string nodeName: string ref,
@@ -1020,13 +1012,13 @@ javadocText(
 @classorinterfaceorpackage = @classorinterface | @package;
 @classorinterfaceorcallable = @classorinterface | @callable;
 @boundedtype = @typevariable | @wildcard;
-@reftype = @classorinterface | @array | @boundedtype | @errortype;
+@reftype = @classorinterface | @array | @boundedtype;
 @classorarray = @class | @array;
 @type = @primitive | @reftype;
 @callable = @method | @constructor;
 
 /** A program element that has a name. */
-@element = @package | @modifier | @annotation | @errortype |
+@element = @package | @modifier | @annotation |
            @locatableElement;
 
 @locatableElement = @file | @primitive | @class | @interface | @method | @constructor | @param | @exception | @field |
