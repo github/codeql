@@ -42,27 +42,16 @@ predicate isAlphanumeric(string char) {
 predicate overlap(RegExpCharacterRange a, RegExpCharacterRange b) {
   exists(RegExpCharacterClass clz |
     a = clz.getAChild() and
-    b = clz.getAChild()
+    b = clz.getAChild() and
+    a != b
   |
-    // b contains the lower end of a
     exists(int alow, int ahigh, int blow, int bhigh |
       isRange(a, alow, ahigh) and
       isRange(b, blow, bhigh) and
-      blow <= alow and
-      bhigh >= ahigh
-    )
-    or
-    // b contains the upper end of a
-    exists(int blow, int bhigh, int alow, int ahigh |
-      isRange(a, alow, ahigh) and
-      isRange(b, blow, bhigh) and
-      blow <= ahigh and
-      bhigh >= ahigh
+      alow <= bhigh and
+      blow <= ahigh
     )
   )
-  or
-  // symmetric overlap
-  overlap(b, a)
 }
 
 /**
@@ -106,8 +95,8 @@ class OverlyWideRange extends RegExpCharacterRange {
       toCodePoint("9") >= low and
       toCodePoint("A") <= high
       or
-      // any non-alpha numeric as part of the range
-      not isAlphanumeric([low, high].toUnicode())
+      // a non-alphanumeric char as part of the range boundaries
+      exists(int bound | bound = [low, high] | not isAlphanumeric(bound.toUnicode()))
     ) and
     // allowlist for known ranges
     not this = allowedWideRanges()
@@ -141,20 +130,12 @@ private string getInRange(string low, string high) {
 /** A module computing an equivalent character class for an overly wide range. */
 module RangePrinter {
   bindingset[char]
+  bindingset[result]
   private string next(string char) {
     exists(int prev, int next |
       prev.toUnicode() = char and
       next.toUnicode() = result and
       next = prev + 1
-    )
-  }
-
-  bindingset[char]
-  private string prev(string char) {
-    exists(int prev, int next |
-      prev.toUnicode() = char and
-      next.toUnicode() = result and
-      next = prev - 1
     )
   }
 
@@ -176,7 +157,7 @@ module RangePrinter {
     result = cut
     or
     cut = ["A", "a", "0"] and
-    result = prev(cut)
+    next(result) = cut
   }
 
   /** Gets the cutoff char used for a given `part` of a range when pretty-printing it. */
@@ -209,13 +190,13 @@ module RangePrinter {
     or
     // middle
     part >= 1 and
-    part < parts(range) and
+    part < parts(range) - 1 and
     low = lowCut(cutoff(range, part - 1)) and
     high = highCut(cutoff(range, part))
     or
     // last.
-    part = parts(range) and
-    low = lowCut(cutoff(range, part - 2)) and
+    part = parts(range) - 1 and
+    low = lowCut(cutoff(range, part - 1)) and
     range.isRange(_, high)
   }
 
@@ -223,11 +204,7 @@ module RangePrinter {
   bindingset[char]
   private string escape(string char) {
     exists(string reg | reg = "(\\[|\\]|\\\\|-|/)" |
-      char.regexpMatch(reg) and
-      result = "\\" + char
-      or
-      not char.regexpMatch(reg) and
-      result = char
+      if char.regexpMatch(reg) then result = "\\" + char else result = char
     )
   }
 
@@ -247,16 +224,19 @@ module RangePrinter {
   /** Gets the entire pretty printed equivalent range. */
   string printEquivalentCharClass(OverlyWideRange range) {
     result =
-      "[" +
-        strictconcat(string r, int part |
-          r = printEquivalentCharClass(range, part)
-        |
-          r order by part
-        ) + "]"
+      strictconcat(string r, int part |
+        r = "[" and part = -1 and exists(range)
+        or
+        r = printEquivalentCharClass(range, part)
+        or
+        r = "]" and part = parts(range)
+      |
+        r order by part
+      )
   }
 }
 
-/** Gets a char range that is suspiciously because of `reason`. */
+/** Gets a char range that is overly large because of `reason`. */
 RegExpCharacterRange getABadRange(string reason, int priority) {
   priority = 0 and
   reason = "is equivalent to " + result.(OverlyWideRange).printEquivalent()
@@ -285,7 +265,6 @@ RegExpCharacterRange getABadRange(string reason, int priority) {
 
 /** Holds if `range` matches suspiciously many characters. */
 predicate problem(RegExpCharacterRange range, string reason) {
-  range = getABadRange(_, _) and
   reason =
     strictconcat(string m, int priority |
       range = getABadRange(m, priority)
