@@ -69,8 +69,8 @@ private class EncryptedBlobClientBuilderSafeEncryptionVersionConfig extends Data
 }
 
 /**
- * Holds if the call `call` is an object creation for a class `EncryptedBlobClientBuilder`
- * that takes `versionArg` as the argument for the version, and the version number is safe
+ * Holds if `call` is an object creation for a class `EncryptedBlobClientBuilder`
+ * that takes `versionArg` as the argument specifying the encryption version, and that version is safe.
  */
 predicate isCreatingSafeAzureClientSideEncryptionObject(Call call, Class c, Expr versionArg) {
   isCreatingAzureClientSideEncryptionObjectNewVersion(call, c, versionArg) and
