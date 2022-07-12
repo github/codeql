@@ -3,9 +3,9 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>User supplied file paths can often pose security risks if a program does not correctly handle them. In particular, if a user 
-is meant to access files under a certain directory but does not enters a path under that directory, they can gain access to 
-(and potentially modify/delete) unexpected, possibly sensitive resources. </p>
+<p>User supplied file paths can often pose security risks if a program does not handle them correctly. In particular, if a user 
+is meant to access files under a certain directory but does not enter a path under that directory, they can 
+unexpectedly gain access to (and potentially modify/delete) possibly sensitive resources. </p>
 
 <p>Suppose a program is to only accept paths that point to files/folders within directory <code>DIR</code>. 
 To ensure that a user supplied path, say <code>SUBDIR</code>, is a subdirectory of <code>DIR</code>, the 
