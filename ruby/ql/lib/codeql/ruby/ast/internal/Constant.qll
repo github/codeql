@@ -552,5 +552,10 @@ predicate isArrayExpr(Expr e, ArrayLiteralCfgNode arr) {
   // We map from A to a via ConstantReadAccess::getValue, yielding the Expr a.
   // To get to [...] we need to go via getSource(ExprCfgNode e), so we find a
   // CFG node for a and call `isArrayConstant`.
-  isArrayConstant(e.getAControlFlowNode(), arr)
+  //
+  // The use of `forex` is intended to ensure that a is an array constant in all
+  // control flow paths.
+  // Note(hmac): I don't think this is necessary, as `getSource` will not return
+  // results if the source is a phi node.
+  forex(ExprCfgNode n | n = e.getAControlFlowNode() | isArrayConstant(n, arr))
 }

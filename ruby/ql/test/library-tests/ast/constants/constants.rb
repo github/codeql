@@ -80,3 +80,8 @@ A = [1, 2, 3]
 B = a
 C = A
 b = B
+
+if condition
+  c = b
+end
+c # not recognised
