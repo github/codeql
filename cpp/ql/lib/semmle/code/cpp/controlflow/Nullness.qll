@@ -46,7 +46,7 @@ predicate nullCheckExpr(Expr checkExpr, Variable var) {
     or
     exists(LogicalAndExpr op, AnalysedExpr child |
       expr = op and
-      (op.getLeftOperand() = child or op.getRightOperand() = child) and
+      op.getAnOperand() = child and
       nullCheckExpr(child, v)
     )
     or
@@ -99,7 +99,7 @@ predicate validCheckExpr(Expr checkExpr, Variable var) {
     or
     exists(LogicalAndExpr op, AnalysedExpr child |
       expr = op and
-      (op.getLeftOperand() = child or op.getRightOperand() = child) and
+      op.getAnOperand() = child and
       validCheckExpr(child, v)
     )
     or
