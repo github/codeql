@@ -44,20 +44,11 @@ predicate overlap(RegExpCharacterRange a, RegExpCharacterRange b) {
     a = clz.getAChild() and
     b = clz.getAChild()
   |
-    // b contains the lower end of a
     exists(int alow, int ahigh, int blow, int bhigh |
       isRange(a, alow, ahigh) and
       isRange(b, blow, bhigh) and
-      blow <= alow and
-      bhigh >= ahigh
-    )
-    or
-    // b contains the upper end of a
-    exists(int blow, int bhigh, int alow, int ahigh |
-      isRange(a, alow, ahigh) and
-      isRange(b, blow, bhigh) and
-      blow <= ahigh and
-      bhigh >= ahigh
+      alow <= bhigh and
+      blow <= ahigh
     )
   )
   or
