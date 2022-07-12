@@ -14,10 +14,15 @@ getTarget
 | Foo.qll:31:5:31:12 | PredicateCall | Foo.qll:24:13:24:18 | ClasslessPredicate alias0 |
 | Foo.qll:36:36:36:65 | MemberCall | file://:0:0:0:0 | replaceAll |
 | Foo.qll:38:39:38:67 | MemberCall | file://:0:0:0:0 | regexpCapture |
+| MultiResolve.qll:14:25:14:35 | PredicateCall | MultiResolve.qll:1:11:1:13 | ClasslessPredicate foo |
+| MultiResolve.qll:14:25:14:35 | PredicateCall | MultiResolve.qll:12:11:12:15 | ClasslessPredicate myFoo |
+| MultiResolve.qll:23:7:23:18 | PredicateCall | MultiResolve.qll:17:13:17:15 | ClasslessPredicate bar |
+| MultiResolve.qll:41:30:41:47 | MemberCall | MultiResolve.qll:31:13:31:15 | ClassPredicate foo |
+| MultiResolve.qll:49:3:49:12 | PredicateCall | MultiResolve.qll:45:13:45:15 | ClasslessPredicate foo |
+| MultiResolve.qll:53:30:53:47 | MemberCall | MultiResolve.qll:37:13:37:15 | ClassPredicate foo |
+| MultiResolve.qll:56:5:56:14 | MemberCall | MultiResolve.qll:53:22:53:24 | ClassPredicate foo |
 | Overrides.qll:8:30:8:39 | MemberCall | Overrides.qll:6:7:6:9 | ClassPredicate bar |
-| Overrides.qll:16:39:16:48 | MemberCall | Overrides.qll:6:7:6:9 | ClassPredicate bar |
 | Overrides.qll:16:39:16:48 | MemberCall | Overrides.qll:14:16:14:18 | ClassPredicate bar |
-| Overrides.qll:24:39:24:48 | MemberCall | Overrides.qll:6:7:6:9 | ClassPredicate bar |
 | Overrides.qll:24:39:24:48 | MemberCall | Overrides.qll:22:16:22:18 | ClassPredicate bar |
 | Overrides.qll:28:3:28:9 | MemberCall | Overrides.qll:6:7:6:9 | ClassPredicate bar |
 | Overrides.qll:29:3:29:10 | MemberCall | Overrides.qll:8:13:8:15 | ClassPredicate baz |
@@ -43,5 +48,6 @@ exprPredicate
 | Foo.qll:26:22:26:31 | predicate | Foo.qll:20:13:20:20 | ClasslessPredicate myThing2 |
 | Foo.qll:47:55:47:62 | predicate | Foo.qll:42:20:42:25 | NewTypeBranch MkRoot |
 | Foo.qll:47:65:47:70 | predicate | Foo.qll:44:19:44:22 | ClasslessPredicate edge |
+| MultiResolve.qll:12:19:12:23 | predicate | MultiResolve.qll:1:11:1:13 | ClasslessPredicate foo |
 | ParamModules.qll:4:18:4:25 | predicate | ParamModules.qll:2:23:2:28 | ClasslessPredicate fooSig |
 | ParamModules.qll:10:34:10:40 | predicate | ParamModules.qll:8:13:8:17 | ClasslessPredicate myFoo |
