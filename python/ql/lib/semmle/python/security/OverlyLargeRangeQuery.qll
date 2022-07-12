@@ -75,13 +75,13 @@ predicate overlapsWithCharEscape(RegExpCharacterRange range, RegExpCharacterClas
     range.isRange(low, high)
   |
     escape.getValue() = "w" and
-    inRange(low, high).regexpMatch("\\w")
+    getInRange(low, high).regexpMatch("\\w")
     or
     escape.getValue() = "d" and
-    inRange(low, high).regexpMatch("\\d")
+    getInRange(low, high).regexpMatch("\\d")
     or
     escape.getValue() = "s" and
-    inRange(low, high).regexpMatch("\\s")
+    getInRange(low, high).regexpMatch("\\s")
   )
 }
 
@@ -109,7 +109,7 @@ class OverlyWideRange extends RegExpCharacterRange {
       // any non-alpha numeric as part of the range
       not isAlphanumeric([low, high].toUnicode())
     ) and
-    // some cases I want to exclude from being flagged
+    // allowlist for known ranges
     not this = allowedWideRanges()
   }
 
@@ -125,16 +125,16 @@ RegExpCharacterRange allowedWideRanges() {
   // the same with " " and "!". " " is the first printable character, and "!" is the first non-white-space printable character.
   result.isRange([" ", "!"], _)
   or
-  // I've seen this often enough, looks OK.
+  // the `[@-_]` range is intentional
   result.isRange("@", "_")
   or
   // starting from the zero byte is a good indication that it's purposely matching a large range.
   result.isRange(0.toUnicode(), _)
 }
 
-/** Gets all chars between (and including) `low` and `high`. */
+/** Gets a char between (and including) `low` and `high`. */
 bindingset[low, high]
-private string inRange(string low, string high) {
+private string getInRange(string low, string high) {
   result = [toCodePoint(low) .. toCodePoint(high)].toUnicode()
 }
 
@@ -239,7 +239,8 @@ module RangePrinter {
         isAlphanumeric(high)
       then result = low + "-" + high
       else
-        result = strictconcat(string char | char = inRange(low, high) | escape(char) order by char)
+        result =
+          strictconcat(string char | char = getInRange(low, high) | escape(char) order by char)
     )
   }
 
