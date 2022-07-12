@@ -14,19 +14,54 @@ import python
 import semmle.python.ApiGraphs
 
 predicate isUnsafeClientSideAzureStorageEncryptionViaAttributes(Call call, AttrNode node) {
-  exists(ControlFlowNode ctrlFlowNode, AssignStmt astmt, Attribute a |
+  exists(
+    API::Node n, API::Node n2, Attribute a, AssignStmt astmt, API::Node uploadBlob,
+    ControlFlowNode ctrlFlowNode, string s
+  |
+    s in ["key_encryption_key", "key_resolver_function"] and
+    n =
+      API::moduleImport("azure")
+          .getMember("storage")
+          .getMember("blob")
+          .getMember("BlobClient")
+          .getReturn()
+          .getMember(s) and
+    n2 =
+      API::moduleImport("azure")
+          .getMember("storage")
+          .getMember("blob")
+          .getMember("BlobClient")
+          .getReturn()
+          .getMember("upload_blob") and
+    n.getAUse().asExpr() = a and
     astmt.getATarget() = a and
-    a.getAttr() in ["key_encryption_key", "key_resolver_function"] and
     a.getAFlowNode() = node and
+    uploadBlob =
+      API::moduleImport("azure")
+          .getMember("storage")
+          .getMember("blob")
+          .getMember("BlobClient")
+          .getReturn()
+          .getMember("upload_blob") and
+    uploadBlob.getACall().asExpr() = call and
+    ctrlFlowNode = call.getAFlowNode() and
     node.strictlyReaches(ctrlFlowNode) and
     node != ctrlFlowNode and
-    call.getAChildNode().(Attribute).getAttr() = "upload_blob" and
-    ctrlFlowNode = call.getAFlowNode() and
-    not astmt.getValue() instanceof None and
-    not exists(AssignStmt astmt2, Attribute a2, AttrNode encryptionVersionSet, StrConst uc |
+    not exists(
+      AssignStmt astmt2, Attribute a2, AttrNode encryptionVersionSet, StrConst uc,
+      API::Node encryptionVersion
+    |
       uc = astmt2.getValue() and
       uc.getText() in ["'2.0'", "2.0"] and
-      a2.getAttr() = "encryption_version" and
+      encryptionVersion =
+        API::moduleImport("azure")
+            .getMember("storage")
+            .getMember("blob")
+            .getMember("BlobClient")
+            .getReturn()
+            .getMember("encryption_version") and
+      encryptionVersion.getAUse().asExpr() = a2 and
+      astmt2.getATarget() = a2 and
       a2.getAFlowNode() = encryptionVersionSet and
       encryptionVersionSet.strictlyReaches(ctrlFlowNode)
     )
