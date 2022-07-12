@@ -48,7 +48,7 @@ predicate isCreatingAzureClientSideEncryptionObjectNewVersion(Call call, Class c
 }
 
 /**
- * A config that tracks `EncryptedBlobClientBuilder.version` argument initialization.
+ * A dataflow config that tracks `EncryptedBlobClientBuilder.version` argument initialization.
  */
 private class EncryptedBlobClientBuilderEncryptionVersionConfig extends DataFlow::Configuration {
   EncryptedBlobClientBuilderEncryptionVersionConfig() {
