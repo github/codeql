@@ -93,6 +93,7 @@
 | test.cpp:92:11:92:16 | ... = ... | test.cpp:93:10:93:10 | x | IR only |
 | test.cpp:92:15:92:16 | 10 | test.cpp:92:11:92:16 | ... = ... | IR only |
 | test.cpp:92:15:92:16 | 10 | test.cpp:93:10:93:10 | x | IR only |
+| test.cpp:92:15:92:16 | 10 | test.cpp:180:9:180:10 | 10 | AST only |
 | test.cpp:93:10:93:10 | x | test.cpp:92:11:92:16 | ... = ... | IR only |
 | test.cpp:93:10:93:10 | x | test.cpp:92:15:92:16 | 10 | IR only |
 | test.cpp:105:11:105:12 | (Base *)... | test.cpp:105:11:105:12 | (Base *)... | AST only |
@@ -127,3 +128,17 @@
 | test.cpp:147:7:147:7 | y | test.cpp:145:15:145:15 | y | AST only |
 | test.cpp:149:15:149:15 | x | test.cpp:144:15:144:15 | x | IR only |
 | test.cpp:156:3:156:17 | ... = ... | test.cpp:156:3:156:17 | ... = ... | AST only |
+| test.cpp:172:7:172:14 | ... = ... | test.cpp:172:7:172:14 | ... = ... | AST only |
+| test.cpp:178:11:178:11 | (const vector)... | test.cpp:178:11:178:11 | (const vector)... | AST only |
+| test.cpp:178:11:178:11 | (const vector)... | test.cpp:179:11:179:11 | (const vector)... | AST only |
+| test.cpp:178:11:178:11 | (const vector)... | test.cpp:181:11:181:11 | (const vector)... | AST only |
+| test.cpp:178:13:178:16 | call to size | test.cpp:179:13:179:16 | call to size | IR only |
+| test.cpp:179:11:179:11 | (const vector)... | test.cpp:178:11:178:11 | (const vector)... | AST only |
+| test.cpp:179:11:179:11 | (const vector)... | test.cpp:179:11:179:11 | (const vector)... | AST only |
+| test.cpp:179:11:179:11 | (const vector)... | test.cpp:181:11:181:11 | (const vector)... | AST only |
+| test.cpp:179:13:179:16 | call to size | test.cpp:178:13:178:16 | call to size | IR only |
+| test.cpp:180:5:180:7 | call to set | test.cpp:180:5:180:7 | call to set | AST only |
+| test.cpp:180:9:180:10 | 10 | test.cpp:92:15:92:16 | 10 | AST only |
+| test.cpp:181:11:181:11 | (const vector)... | test.cpp:178:11:178:11 | (const vector)... | AST only |
+| test.cpp:181:11:181:11 | (const vector)... | test.cpp:179:11:179:11 | (const vector)... | AST only |
+| test.cpp:181:11:181:11 | (const vector)... | test.cpp:181:11:181:11 | (const vector)... | AST only |

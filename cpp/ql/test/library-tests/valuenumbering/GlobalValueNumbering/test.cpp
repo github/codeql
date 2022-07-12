@@ -157,3 +157,26 @@ void test_read_global_different(int n) {
 
   int d = global_a->x;
 }
+
+// crude mock for function call testing
+namespace std {
+  class vector {
+    int m_size;
+    int data;
+  public:
+    int size() const {
+      return m_size;
+    }
+
+    void set(int x) {
+      data = x;
+    }
+  };
+}
+
+void test_vector_size(std::vector v) {
+  int a = v.size();
+  int b = v.size();
+  v.set(10);
+  int c = v.size();
+}

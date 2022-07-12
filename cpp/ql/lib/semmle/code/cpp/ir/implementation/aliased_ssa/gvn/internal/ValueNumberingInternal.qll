@@ -1,6 +1,10 @@
 private import ValueNumberingImports
 
 newtype TValueNumber =
+  TGetterCallValueNumber(IRFunction irFunc, TValueNumber thisArgument, TValueNumber thisPointee) {
+    getterCallValueNumber(_, irFunc, thisArgument, thisPointee)
+    // this needs to consider the side-effect operand for `this`
+  } or
   TVariableAddressValueNumber(IRFunction irFunc, Language::AST ast) {
     variableAddressValueNumber(_, irFunc, ast)
   } or
@@ -93,6 +97,12 @@ private predicate numberableInstruction(Instruction instr) {
   instr instanceof CongruentCopyInstruction
   or
   instr instanceof LoadTotalOverlapInstruction
+  or
+  instr instanceof CallInstruction
+}
+
+private predicate getterCall(CallInstruction instr) {
+  instr.getStaticCallTarget().hasQualifiedName("std", "vector", "size")
 }
 
 private predicate filteredNumberableInstruction(Instruction instr) {
@@ -112,6 +122,19 @@ private predicate filteredNumberableInstruction(Instruction instr) {
     count(instr.(InheritanceConversionInstruction).getBaseClass()) != 1 or
     count(instr.(InheritanceConversionInstruction).getDerivedClass()) != 1
   )
+  or
+  instr instanceof CallInstruction and
+  not getterCall(instr)
+}
+
+private predicate getterCallValueNumber(
+  CallInstruction call, IRFunction target, TValueNumber thisArgument, TValueNumber thisPointee
+) {
+  getterCall(call) and
+  call.getStaticCallTarget() = target.getFunction() and
+  tvalueNumber(call.getThisArgument()) = thisArgument and
+  tvalueNumber(call.getAParameterSideEffect(-1).(ReadSideEffectInstruction).getSideEffect()) =
+    thisPointee
 }
 
 private predicate variableAddressValueNumber(
@@ -305,6 +328,11 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
       exists(IRType type, TValueNumber memOperand, TValueNumber operand |
         loadTotalOverlapValueNumber(instr, irFunc, type, memOperand, operand) and
         result = TLoadTotalOverlapValueNumber(irFunc, type, memOperand, operand)
+      )
+      or
+      exists(IRFunction target, TValueNumber thisArgument, TValueNumber thisPointee |
+        getterCallValueNumber(instr, target, thisArgument, thisPointee) and
+        result = TGetterCallValueNumber(target, thisArgument, thisPointee)
       )
       or
       // The value number of a copy is just the value number of its source value.

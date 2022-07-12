@@ -72,6 +72,8 @@ class ValueNumber extends TValueNumber {
     or
     this instanceof TLoadTotalOverlapValueNumber and result = "LoadTotalOverlap"
     or
+    this instanceof TGetterCallValueNumber and result = "GetterCall"
+    or
     this instanceof TUniqueValueNumber and result = "Unique"
   }
 }
