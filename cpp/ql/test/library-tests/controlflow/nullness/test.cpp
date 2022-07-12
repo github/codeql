@@ -4,7 +4,7 @@ long __builtin_expect(long);
      
 void f(int *v) {
     int *w;
-    bool b;
+    bool b, c;
 
     if (v) {}
     if (!v) {}
@@ -19,5 +19,7 @@ void f(int *v) {
     if (true && !v) {}
     if (!v && true) {}
     if (b = !v) {}
-    if (b = !v; b) {}
+    if (c = !v; c) {}
+    if (int *x = v; x) {}
+    if (int *y = v) {}
 }
