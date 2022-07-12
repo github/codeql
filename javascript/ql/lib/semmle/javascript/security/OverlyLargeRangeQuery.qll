@@ -42,7 +42,8 @@ predicate isAlphanumeric(string char) {
 predicate overlap(RegExpCharacterRange a, RegExpCharacterRange b) {
   exists(RegExpCharacterClass clz |
     a = clz.getAChild() and
-    b = clz.getAChild()
+    b = clz.getAChild() and
+    a != b
   |
     exists(int alow, int ahigh, int blow, int bhigh |
       isRange(a, alow, ahigh) and
