@@ -1,6 +1,6 @@
 /**
  * @name Partial Path Traversal Vulnerability
- * @description A misuse of the String `startsWith` method as a guard to protect against path traversal is insufficient.
+ * @description A prefix used to check that a canonicalised path falls within another must be slash-terminated.
  * @kind problem
  * @problem.severity error
  * @security-severity 9.3
