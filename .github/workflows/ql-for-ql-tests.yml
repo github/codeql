@@ -5,10 +5,12 @@ on:
     branches: [main]
     paths:
       - "ql/**"
+      - codeql-workspace.yml
   pull_request:
     branches: [main]
     paths:
       - "ql/**"
+      - codeql-workspace.yml
 
 env:
   CARGO_TERM_COLOR: always
@@ -17,13 +19,13 @@ jobs:
   qltest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@erik-krogh/ql
+        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
         with:
           languages: javascript # does not matter
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
@@ -34,7 +36,7 @@ jobs:
         run: |
           cd ql;
           codeqlpath=$(dirname ${{ steps.find-codeql.outputs.codeql-path }});
-          env "PATH=$PATH:$codeqlpath" ./create-extractor-pack.sh
+          env "PATH=$PATH:$codeqlpath" ./scripts/create-extractor-pack.sh
       - name: Run QL tests
         run: |
           "${CODEQL}" test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}/ql/extractor-pack" --consistency-queries ql/ql/consistency-queries ql/ql/test

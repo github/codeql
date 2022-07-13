@@ -74,7 +74,7 @@ module Koa {
      * Gets a reference to a request parameter defined by this route handler.
      */
     DataFlow::Node getARequestParameterAccess() {
-      none() // overriden in subclasses.
+      none() // overridden in subclasses.
     }
 
     /**

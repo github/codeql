@@ -55,7 +55,7 @@ private class FragmentInjectionSinkModels extends SinkModelCsv {
           "attach;(Fragment);;Argument[0]", "replace;(int,Class,Bundle);;Argument[1]",
           "replace;(int,Fragment);;Argument[1]", "replace;(int,Class,Bundle,String);;Argument[1]",
           "replace;(int,Fragment,String);;Argument[1]",
-        ] + ";fragment-injection"
+        ] + ";fragment-injection;manual"
   }
 }
 

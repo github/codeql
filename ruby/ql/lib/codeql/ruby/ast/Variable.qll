@@ -1,7 +1,6 @@
 /** Provides classes for modeling program variables. */
 
 private import codeql.ruby.AST
-private import codeql.Locations
 private import internal.AST
 private import internal.TreeSitter
 private import internal.Variable
@@ -117,7 +116,7 @@ class VariableAccess extends Expr instanceof VariableAccessImpl {
   predicate isImplicitWrite() {
     implicitWriteAccess(toGenerated(this))
     or
-    this = any(SimpleParameterSynthImpl p).getDefininingAccess()
+    this = any(SimpleParameterSynthImpl p).getDefiningAccess()
     or
     this = any(HashPattern p).getValue(_)
     or
@@ -182,6 +181,17 @@ class GlobalVariableReadAccess extends GlobalVariableAccess, VariableReadAccess 
 /** An access to an instance variable. */
 class InstanceVariableAccess extends VariableAccess instanceof InstanceVariableAccessImpl {
   final override string getAPrimaryQlClass() { result = "InstanceVariableAccess" }
+
+  /**
+   * Gets the synthetic receiver (`self`) of this instance variable access.
+   */
+  final SelfVariableAccess getReceiver() { synthChild(this, 0, result) }
+
+  final override AstNode getAChild(string pred) {
+    result = VariableAccess.super.getAChild(pred)
+    or
+    pred = "getReceiver" and result = this.getReceiver()
+  }
 }
 
 /** An access to an instance variable where the value is updated. */

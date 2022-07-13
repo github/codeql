@@ -34,7 +34,7 @@ class IdorTaint extends TaintTracking::Configuration {
 }
 
 /**
- * A sanitizer for values that have succesfully been compared to another value.
+ * A sanitizer for values that have successfully been compared to another value.
  */
 class EqualityGuard extends TaintTracking::SanitizerGuardNode, ValueNode {
   override EqualityTest astNode;

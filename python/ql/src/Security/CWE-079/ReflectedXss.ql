@@ -14,10 +14,10 @@
  */
 
 import python
-import semmle.python.security.dataflow.ReflectedXSS
+import semmle.python.security.dataflow.ReflectedXssQuery
 import DataFlow::PathGraph
 
-from ReflectedXss::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to $@.",
   source.getNode(), "a user-provided value"

@@ -6,7 +6,6 @@
 
 import javascript
 private import semmle.javascript.security.SensitiveActions
-private import semmle.javascript.frameworks.CryptoLibraries
 
 module InsufficientPasswordHash {
   /**

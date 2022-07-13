@@ -10,16 +10,16 @@ jobs:
 
     steps:
     - name: Clone self (github/codeql)
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: script
     - name: Clone self (github/codeql) for analysis
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: codeqlModels
         fetch-depth: 0
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: 3.8
     - name: Download CodeQL CLI
@@ -35,7 +35,7 @@ jobs:
         echo $CLI
         PATH="$PATH:$CLI" python script/misc/scripts/library-coverage/generate-timeseries.py codeqlModels
     - name: Upload timeseries CSV
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: framework-coverage-timeseries
         path: framework-coverage-timeseries-*.csv

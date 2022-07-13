@@ -169,4 +169,39 @@ namespace My.Qltest
             set { throw null; }
         }
     }
+
+    public class G
+    {
+        void M1()
+        {
+            var o = new object();
+            Sink(GeneratedFlow(o));
+        }
+
+        void M2()
+        {
+            var o1 = new object();
+            Sink(GeneratedFlowArgs(o1, null));
+
+            var o2 = new object();
+            Sink(GeneratedFlowArgs(null, o2));
+        }
+
+        void M3()
+        {
+            var o1 = new object();
+            Sink(MixedFlowArgs(o1, null));
+
+            var o2 = new object();
+            Sink(MixedFlowArgs(null, o2));
+        }
+
+        object GeneratedFlow(object o) => throw null;
+
+        object GeneratedFlowArgs(object o1, object o2) => throw null;
+
+        object MixedFlowArgs(object o1, object o2) => throw null;
+
+        static void Sink(object o) { }
+    }
 }

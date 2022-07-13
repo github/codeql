@@ -3,6 +3,8 @@ import codeql.ruby.frameworks.ActiveRecord
 
 query predicate activeRecordModelClasses(ActiveRecordModelClass cls) { any() }
 
+query predicate activeRecordInstances(ActiveRecordInstance i) { any() }
+
 query predicate activeRecordSqlExecutionRanges(ActiveRecordSqlExecutionRange range) { any() }
 
 query predicate activeRecordModelClassMethodCalls(ActiveRecordModelClassMethodCall call) { any() }

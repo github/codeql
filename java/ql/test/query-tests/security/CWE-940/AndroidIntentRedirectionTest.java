@@ -40,13 +40,23 @@ public class AndroidIntentRedirectionTest extends Activity {
         sendStickyOrderedBroadcastAsUser(intent, null, null, null, 0, null, null); // $ hasAndroidIntentRedirection
         // @formatter:on
 
+        // Sanitizing only the package or the class still allows redirecting
+        // to non-exported activities in the same package
+        // or activities with the same name in other packages, respectively.
         if (intent.getComponent().getPackageName().equals("something")) {
-            startActivity(intent); // Safe - sanitized
+            startActivity(intent); // $ hasAndroidIntentRedirection
         } else {
             startActivity(intent); // $ hasAndroidIntentRedirection
         }
         if (intent.getComponent().getClassName().equals("something")) {
-            startActivity(intent); // Safe - sanitized
+            startActivity(intent); // $ hasAndroidIntentRedirection
+        } else {
+            startActivity(intent); // $ hasAndroidIntentRedirection
+        }
+
+        if (intent.getComponent().getPackageName().equals("something")
+                && intent.getComponent().getClassName().equals("something")) {
+            startActivity(intent); // Safe
         } else {
             startActivity(intent); // $ hasAndroidIntentRedirection
         }
@@ -94,8 +104,7 @@ public class AndroidIntentRedirectionTest extends Activity {
             }
             {
                 Intent fwdIntent = new Intent();
-                ComponentName component =
-                        new ComponentName("", intent.getStringExtra("className"));
+                ComponentName component = new ComponentName("", intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
                 startActivity(fwdIntent); // $ hasAndroidIntentRedirection
             }

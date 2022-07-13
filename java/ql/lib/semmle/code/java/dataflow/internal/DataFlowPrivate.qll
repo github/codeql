@@ -161,6 +161,14 @@ predicate clearsContent(Node n, Content c) {
 }
 
 /**
+ * Holds if the value that is being tracked is expected to be stored inside content `c`
+ * at node `n`.
+ */
+predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
+}
+
+/**
  * Gets a representative (boxed) type for `t` for the purpose of pruning
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
@@ -218,7 +226,7 @@ predicate compatibleTypes(Type t1, Type t2) {
 
 /** A node that performs a type cast. */
 class CastNode extends ExprNode {
-  CastNode() { this.getExpr() instanceof CastExpr }
+  CastNode() { this.getExpr() instanceof CastingExpr }
 }
 
 private newtype TDataFlowCallable =
@@ -309,7 +317,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   /** Gets the data flow node that this call targets. */
   Node getReceiver() { result = receiver }
 
-  override DataFlowCallable getEnclosingCallable() { result = c }
+  override DataFlowCallable getEnclosingCallable() { result.asCallable() = c }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
@@ -370,7 +378,7 @@ predicate forceHighPrecision(Content c) {
 predicate nodeIsHidden(Node n) {
   n instanceof SummaryNode
   or
-  n.(ParameterNode).isParameterOf(any(SummarizedCallable c).asCallable(), _)
+  n.(ParameterNode).isParameterOf(any(SummarizedCallable c), _)
 }
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface

@@ -6,6 +6,7 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 private import semmle.python.types.Extensions
+private import semmle.python.internal.CachedStages
 
 /* Use this version for speed */
 class CfgOrigin extends @py_object {
@@ -274,7 +275,6 @@ module PointsToInternal {
   }
 
   /** Holds if `var` refers to `(value, origin)` given the context `context`. */
-  pragma[noinline]
   cached
   predicate variablePointsTo(
     EssaVariable var, PointsToContext context, ObjectInternal value, CfgOrigin origin
@@ -924,6 +924,7 @@ private module InterModulePointsTo {
   }
 }
 
+cached
 module InterProceduralPointsTo {
   cached
   predicate call(CallNode call, PointsToContext caller, ObjectInternal value) {
@@ -938,7 +939,7 @@ module InterProceduralPointsTo {
     PointsToInternal::pointsTo(call.getFunction(), caller, value, _)
   }
 
-  pragma[noinline]
+  cached
   predicate call_points_to(
     CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin
   ) {
@@ -987,7 +988,7 @@ module InterProceduralPointsTo {
   }
 
   /** Points-to for parameter. `def foo(param): ...`. */
-  pragma[noinline]
+  cached
   predicate parameter_points_to(
     ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin
   ) {
@@ -1034,6 +1035,7 @@ module InterProceduralPointsTo {
     )
   }
 
+  cached
   predicate selfMethodCall(
     SelfCallsiteRefinement def, PointsToContext caller, Function func, PointsToContext callee
   ) {
@@ -1104,6 +1106,7 @@ module InterProceduralPointsTo {
    * that the number of position arguments (including expansion of `*` argument) exceeds the number of positional arguments by
    * `length` and that the excess arguments start at `start`.
    */
+  cached
   predicate varargs_tuple(
     CallNode call, PointsToContext caller, Function scope, PointsToContext callee, int start,
     int length
@@ -1117,7 +1120,7 @@ module InterProceduralPointsTo {
   }
 
   /** Holds if for function scope `func` in context `callee` the `*` parameter will hold the empty tuple. */
-  predicate varargs_empty_tuple(Function func, PointsToContext callee) {
+  private predicate varargs_empty_tuple(Function func, PointsToContext callee) {
     exists(CallNode call, PointsToContext caller, int parameter_offset |
       callsite_calls_function(call, caller, func, callee, parameter_offset) and
       func.getPositionalParameterCount() - parameter_offset >=
@@ -1136,6 +1139,7 @@ module InterProceduralPointsTo {
    * Holds if the `n`th argument in call `call` with context `caller` points-to `value` from `origin`, including values in tuples
    * expanded by a `*` argument. For example, for the call `f('a', *(`x`,`y`))` the arguments are `('a', 'x', y')`
    */
+  cached
   predicate positional_argument_points_to(
     CallNode call, int n, PointsToContext caller, ObjectInternal value, ControlFlowNode origin
   ) {
@@ -1163,7 +1167,7 @@ module InterProceduralPointsTo {
   }
 
   /** Holds if the parameter definition `def` points-to `value` from `origin` given the context `context` */
-  predicate positional_parameter_points_to(
+  private predicate positional_parameter_points_to(
     ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin
   ) {
     exists(CallNode call, int argument, PointsToContext caller, Function func, int offset |
@@ -1312,7 +1316,7 @@ module InterProceduralPointsTo {
    * `var = ...; foo(); use(var)`
    * Where var may be redefined in call to `foo` if `var` escapes (is global or non-local).
    */
-  pragma[noinline]
+  cached
   predicate callsite_points_to(
     CallsiteRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin
   ) {
@@ -2125,7 +2129,7 @@ module Conditionals {
 /** INTERNAL: Do not use. */
 predicate declaredAttributeVar(PythonClassObjectInternal cls, string name, EssaVariable var) {
   name = var.getName() and
-  var.getAUse() = cls.getScope().getANormalExit()
+  pragma[only_bind_into](pragma[only_bind_into](var).getAUse()) = cls.getScope().getANormalExit()
 }
 
 cached
@@ -2552,10 +2556,11 @@ module AttributePointsTo {
     f.isLoad() and var.getASourceUse() = f.(AttrNode).getObject(name)
   }
 
-  pragma[nomagic]
+  cached
   predicate variableAttributePointsTo(
     EssaVariable var, Context context, string name, ObjectInternal value, CfgOrigin origin
   ) {
+    Stages::DataFlow::ref() and
     definitionAttributePointsTo(var.getDefinition(), context, name, value, origin)
     or
     exists(EssaVariable prev |

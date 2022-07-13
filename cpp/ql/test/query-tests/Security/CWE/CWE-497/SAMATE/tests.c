@@ -67,6 +67,6 @@ void CWE535_Info_Exposure_Shell_Error__w32_char_01_bad()
             printLine("Unable to login.");
         }
         /* FLAW: Write sensitive data to stderr */
-        fprintf(stderr, "User attempted access with password: %s\n", password); // [NOT DETECTED]
+        fprintf(stderr, "User attempted access with password: %s\n", password);
     }
 }

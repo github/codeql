@@ -43,6 +43,12 @@ predicate hasName(Element e, string name) {
   arrays(e, name, _, _, _)
   or
   modifiers(e, name)
+  or
+  kt_type_alias(e, name, _)
+  or
+  ktProperties(e, name)
+  or
+  e instanceof ErrorType and name = "<CodeQL error type>"
 }
 
 /**
@@ -192,7 +198,7 @@ class Location extends @location {
 }
 
 private predicate hasSourceLocation(Top l, Location loc, File f) {
-  hasLocation(l, loc) and f = loc.getFile() and f.getExtension() = "java"
+  hasLocation(l, loc) and f = loc.getFile() and f.isSourceFile()
 }
 
 cached

@@ -50,8 +50,9 @@ predicate implicitAssignmentNode(Ruby::AstNode n) {
 
 /** Holds if `n` is inside a parameter. */
 predicate implicitParameterAssignmentNode(Ruby::AstNode n, Callable::Range c) {
-  n = c.getParameter(_)
-  or
+  n = c.getParameter(_) or
+  n = c.(Ruby::Block).getParameters().getLocals(_) or
+  n = c.(Ruby::DoBlock).getParameters().getLocals(_) or
   implicitParameterAssignmentNode(n.getParent().(Ruby::DestructuredParameter), c)
 }
 
@@ -406,7 +407,11 @@ import Cached
 
 /** Holds if this scope inherits `name` from an outer scope `outer`. */
 private predicate inherits(Scope::Range scope, string name, Scope::Range outer) {
-  (scope instanceof Ruby::Block or scope instanceof Ruby::DoBlock) and
+  (
+    scope instanceof Ruby::Block or
+    scope instanceof Ruby::DoBlock or
+    scope instanceof Ruby::Lambda
+  ) and
   not scopeDefinesParameterVariable(scope, name, _) and
   (
     outer = scope.getOuterScope() and

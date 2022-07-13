@@ -13,7 +13,6 @@ private import TranslatedExpr
 private import TranslatedStmt
 private import desugar.Foreach
 private import TranslatedFunction
-private import experimental.ir.Util
 private import experimental.ir.internal.IRCSharpLanguage as Language
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
@@ -46,6 +45,9 @@ module Raw {
 
   cached
   predicate functionHasIR(Callable callable) { exists(getTranslatedFunction(callable)) }
+
+  cached
+  predicate varHasIRFunc(Field field) { none() }
 
   cached
   predicate hasInstruction(TranslatedElement element, InstructionTag tag) {

@@ -1,4 +1,4 @@
 const foo = require("foo");
 
 while(foo)
-  foo = foo.foo; /* use (member foo (member exports (module foo))) */ /* use (member foo (member foo (member exports (module foo)))) */
+  foo = foo.foo; /* use=moduleImport("foo").getMember("exports").getMember("foo") */ /* use=moduleImport("foo").getMember("exports").getMember("foo").getMember("foo") */

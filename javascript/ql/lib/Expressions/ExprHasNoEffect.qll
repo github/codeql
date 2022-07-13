@@ -4,7 +4,6 @@
 
 import javascript
 import DOMProperties
-import semmle.javascript.frameworks.xUnit
 
 /**
  * Holds if `e` appears in a syntactic context where its value is discarded.
@@ -38,6 +37,8 @@ predicate inVoidContext(Expr e) {
   )
   or
   exists(LogicalBinaryExpr logical | e = logical.getRightOperand() and inVoidContext(logical))
+  or
+  exists(ConditionalExpr cond | e = cond.getABranch() | inVoidContext(cond))
 }
 
 /**

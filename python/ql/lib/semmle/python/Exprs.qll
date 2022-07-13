@@ -1,6 +1,7 @@
 import python
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.objects.ObjectInternal
+private import semmle.python.internal.CachedStages
 
 /** An expression */
 class Expr extends Expr_, AstNode {
@@ -8,7 +9,11 @@ class Expr extends Expr_, AstNode {
   override Scope getScope() { py_scopes(this, result) }
 
   /** Gets a textual representation of this element. */
-  override string toString() { result = "Expression" }
+  cached
+  override string toString() {
+    Stages::AST::ref() and
+    result = "Expression"
+  }
 
   /** Gets the module in which this expression occurs */
   Module getEnclosingModule() { result = this.getScope().getEnclosingModule() }
@@ -184,7 +189,16 @@ class Call extends Call_ {
    */
   Keyword getKeyword(int index) {
     result = this.getNamedArg(index) and
-    not exists(DictUnpacking d, int lower | d = this.getNamedArg(lower) and lower < index)
+    (
+      not exists(this.getMinimumUnpackingIndex())
+      or
+      index <= this.getMinimumUnpackingIndex()
+    )
+  }
+
+  /** Gets the minimum index (if any) at which a dictionary unpacking (`**foo`) occurs in this call. */
+  private int getMinimumUnpackingIndex() {
+    result = min(int i | this.getNamedArg(i) instanceof DictUnpacking)
   }
 
   /**

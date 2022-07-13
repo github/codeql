@@ -2342,7 +2342,7 @@ attrArgPositional
 | System.Number.BigInteger | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
 | System.Number.BigInteger | [ObsoleteAttribute(...)] | 1 | True |
 | System.Number.BigInteger._blocks | [FixedBufferAttribute(...)] | 0 | System.UInt32 |
-| System.Number.BigInteger._blocks | [FixedBufferAttribute(...)] | 1 | 115 |
+| System.Number.BigInteger._blocks | [FixedBufferAttribute(...)] | 1 | 116 |
 | System.Number.DiyFp | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |
 | System.Number.DiyFp | [ObsoleteAttribute(...)] | 1 | True |
 | System.Number.NumberBuffer | [ObsoleteAttribute(...)] | 0 | Types with embedded references are not supported in this version of your compiler. |

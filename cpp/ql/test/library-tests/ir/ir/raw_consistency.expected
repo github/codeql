@@ -1,8 +1,4 @@
 missingOperand
-| ir.cpp:1688:24:1690:5 | Store: Unknown literal | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1688:24:1690:5 | Store: Unknown literal | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1689:28:1689:54 | Store: Unknown literal | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
-| ir.cpp:1689:28:1689:54 | Store: Unknown literal | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -11,10 +7,6 @@ duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 | ../../../include/memory.h:68:25:68:33 | CopyValue: (reference to) | Instruction 'CopyValue: (reference to)' has no successors in function '$@'. | ../../../include/memory.h:67:5:67:5 | void std::unique_ptr<int, std::default_delete<int>>::~unique_ptr() | void std::unique_ptr<int, std::default_delete<int>>::~unique_ptr() |
-| ir.cpp:1688:24:1690:5 | FieldAddress: {...} | Instruction 'FieldAddress: {...}' has no successors in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1688:24:1690:5 | FieldAddress: {...} | Instruction 'FieldAddress: {...}' has no successors in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1689:28:1689:54 | FieldAddress: {...} | Instruction 'FieldAddress: {...}' has no successors in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
-| ir.cpp:1689:28:1689:54 | FieldAddress: {...} | Instruction 'FieldAddress: {...}' has no successors in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -26,25 +18,8 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 | ir.cpp:1486:8:1486:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1486:8:1486:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
-| ir.cpp:1683:34:1683:34 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1683:43:1683:43 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1688:10:1688:21 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1688:24:1690:5 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1688:24:1690:5 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1688:24:1690:5 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1688:24:1690:5 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1688:24:1690:5 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1688:24:1690:5 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1688:24:1690:5 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1688:46:1688:46 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
-| ir.cpp:1689:14:1689:25 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
-| ir.cpp:1689:28:1689:54 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
-| ir.cpp:1689:28:1689:54 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
-| ir.cpp:1689:28:1689:54 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
-| ir.cpp:1689:28:1689:54 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
-| ir.cpp:1689:28:1689:54 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
-| ir.cpp:1689:28:1689:54 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
-| ir.cpp:1689:28:1689:54 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
+| ir.cpp:1751:51:1751:51 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1750:5:1750:34 | int implicit_copy_constructor_test(CopyConstructorTestNonVirtualClass const&, CopyConstructorTestVirtualClass const&) | int implicit_copy_constructor_test(CopyConstructorTestNonVirtualClass const&, CopyConstructorTestVirtualClass const&) |
+| ir.cpp:1752:48:1752:48 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:1750:5:1750:34 | int implicit_copy_constructor_test(CopyConstructorTestNonVirtualClass const&, CopyConstructorTestVirtualClass const&) | int implicit_copy_constructor_test(CopyConstructorTestNonVirtualClass const&, CopyConstructorTestVirtualClass const&) |
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
@@ -52,6 +27,7 @@ invalidOverlap
 nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
+nonUniqueIRVariable
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

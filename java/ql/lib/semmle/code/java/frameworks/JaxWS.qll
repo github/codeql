@@ -330,7 +330,7 @@ private class JaxRsUrlRedirectSink extends SinkModelCsv {
   override predicate row(string row) {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;Response;true;" + ["seeOther", "temporaryRedirect"] +
-        ";;;Argument[0];url-redirect"
+        ";;;Argument[0];url-redirect;manual"
   }
 }
 
@@ -343,7 +343,7 @@ private class ResponseModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;Response;false;" + ["accepted", "fromResponse", "ok"] +
-        ";;;Argument[0];ReturnValue;taint"
+        ";;;Argument[0];ReturnValue;taint;manual"
   }
 }
 
@@ -362,13 +362,14 @@ private class ResponseBuilderModel extends SummaryModelCsv {
           "allow", "cacheControl", "contentLocation", "cookie", "encoding", "entity", "expires",
           "header", "language", "lastModified", "link", "links", "location", "replaceAll", "status",
           "tag", "type", "variant", "variants"
-        ] + ";;;Argument[-1];ReturnValue;value"
+        ] + ";;;Argument[-1];ReturnValue;value;manual"
     or
     row =
       ["javax", "jakarta"] + ".ws.rs.core;Response$ResponseBuilder;true;" +
         [
-          "build;;;Argument[-1];ReturnValue;taint", "entity;;;Argument[0];Argument[-1];taint",
-          "clone;;;Argument[-1];ReturnValue;taint"
+          "build;;;Argument[-1];ReturnValue;taint;manual",
+          "entity;;;Argument[0];Argument[-1];taint;manual",
+          "clone;;;Argument[-1];ReturnValue;taint;manual"
         ]
   }
 }
@@ -385,28 +386,28 @@ private class HttpHeadersModel extends SummaryModelCsv {
         [
           "getAcceptableLanguages", "getAcceptableMediaTypes", "getCookies", "getHeaderString",
           "getLanguage", "getMediaType", "getRequestHeader", "getRequestHeaders"
-        ] + ";;;Argument[-1];ReturnValue;taint"
+        ] + ";;;Argument[-1];ReturnValue;taint;manual"
   }
 }
 
 /**
- * Model MultivaluedMap, which extends Map<K, List<V>> and provides a few extra helper methods.
+ * Model MultivaluedMap, which extends `Map<K, List<V>>` and provides a few extra helper methods.
  */
 private class MultivaluedMapModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;MultivaluedMap;true;" +
         [
-          "add;;;Argument[0];Argument[-1].MapKey;value",
-          "add;;;Argument[1];Argument[-1].MapValue.Element;value",
-          "addAll;;;Argument[0];Argument[-1].MapKey;value",
-          "addAll;(Object,List);;Argument[1].Element;Argument[-1].MapValue.Element;value",
-          "addAll;(Object,Object[]);;Argument[1].ArrayElement;Argument[-1].MapValue.Element;value",
-          "addFirst;;;Argument[0];Argument[-1].MapKey;value",
-          "addFirst;;;Argument[1];Argument[-1].MapValue.Element;value",
-          "getFirst;;;Argument[-1].MapValue.Element;ReturnValue;value",
-          "putSingle;;;Argument[0];Argument[-1].MapKey;value",
-          "putSingle;;;Argument[1];Argument[-1].MapValue.Element;value"
+          "add;;;Argument[0];Argument[-1].MapKey;value;manual",
+          "add;;;Argument[1];Argument[-1].MapValue.Element;value;manual",
+          "addAll;;;Argument[0];Argument[-1].MapKey;value;manual",
+          "addAll;(Object,List);;Argument[1].Element;Argument[-1].MapValue.Element;value;manual",
+          "addAll;(Object,Object[]);;Argument[1].ArrayElement;Argument[-1].MapValue.Element;value;manual",
+          "addFirst;;;Argument[0];Argument[-1].MapKey;value;manual",
+          "addFirst;;;Argument[1];Argument[-1].MapValue.Element;value;manual",
+          "getFirst;;;Argument[-1].MapValue.Element;ReturnValue;value;manual",
+          "putSingle;;;Argument[0];Argument[-1].MapKey;value;manual",
+          "putSingle;;;Argument[1];Argument[-1].MapValue.Element;value;manual"
         ]
   }
 }
@@ -419,8 +420,8 @@ private class AbstractMultivaluedMapModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;AbstractMultivaluedMap;false;AbstractMultivaluedMap;;;" +
         [
-          "Argument[0].MapKey;Argument[-1].MapKey;value",
-          "Argument[0].MapValue;Argument[-1].MapValue;value"
+          "Argument[0].MapKey;Argument[-1].MapKey;value;manual",
+          "Argument[0].MapValue;Argument[-1].MapValue;value;manual"
         ]
   }
 }
@@ -433,10 +434,10 @@ private class MultivaluedHashMapModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;MultivaluedHashMap;false;MultivaluedHashMap;" +
         [
-          "(Map);;Argument[0].MapKey;Argument[-1].MapKey;value",
-          "(Map);;Argument[0].MapValue;Argument[-1].MapValue.Element;value",
-          "(MultivaluedMap);;Argument[0].MapKey;Argument[-1].MapKey;value",
-          "(MultivaluedMap);;Argument[0].MapValue;Argument[-1].MapValue;value"
+          "(Map);;Argument[0].MapKey;Argument[-1].MapKey;value;manual",
+          "(Map);;Argument[0].MapValue;Argument[-1].MapValue.Element;value;manual",
+          "(MultivaluedMap);;Argument[0].MapKey;Argument[-1].MapKey;value;manual",
+          "(MultivaluedMap);;Argument[0].MapValue;Argument[-1].MapValue;value;manual"
         ]
   }
 }
@@ -448,7 +449,7 @@ private class PathSegmentModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;PathSegment;true;" + ["getMatrixParameters", "getPath"] +
-        ";;;Argument[-1];ReturnValue;taint"
+        ";;;Argument[-1];ReturnValue;taint;manual"
   }
 }
 
@@ -460,16 +461,17 @@ private class UriInfoModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;UriInfo;true;" +
         [
-          "getAbsolutePath;;;Argument[-1];ReturnValue;taint",
-          "getAbsolutePathBuilder;;;Argument[-1];ReturnValue;taint",
-          "getPath;;;Argument[-1];ReturnValue;taint",
-          "getPathParameters;;;Argument[-1];ReturnValue;taint",
-          "getPathSegments;;;Argument[-1];ReturnValue;taint",
-          "getQueryParameters;;;Argument[-1];ReturnValue;taint",
-          "getRequestUri;;;Argument[-1];ReturnValue;taint",
-          "getRequestUriBuilder;;;Argument[-1];ReturnValue;taint",
-          "relativize;;;Argument[0];ReturnValue;taint", "resolve;;;Argument[-1];ReturnValue;taint",
-          "resolve;;;Argument[0];ReturnValue;taint"
+          "getAbsolutePath;;;Argument[-1];ReturnValue;taint;manual",
+          "getAbsolutePathBuilder;;;Argument[-1];ReturnValue;taint;manual",
+          "getPath;;;Argument[-1];ReturnValue;taint;manual",
+          "getPathParameters;;;Argument[-1];ReturnValue;taint;manual",
+          "getPathSegments;;;Argument[-1];ReturnValue;taint;manual",
+          "getQueryParameters;;;Argument[-1];ReturnValue;taint;manual",
+          "getRequestUri;;;Argument[-1];ReturnValue;taint;manual",
+          "getRequestUriBuilder;;;Argument[-1];ReturnValue;taint;manual",
+          "relativize;;;Argument[0];ReturnValue;taint;manual",
+          "resolve;;;Argument[-1];ReturnValue;taint;manual",
+          "resolve;;;Argument[0];ReturnValue;taint;manual"
         ]
   }
 }
@@ -482,14 +484,14 @@ private class CookieModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;Cookie;" +
         [
-          "true;getDomain;;;Argument[-1];ReturnValue;taint",
-          "true;getName;;;Argument[-1];ReturnValue;taint",
-          "true;getPath;;;Argument[-1];ReturnValue;taint",
-          "true;getValue;;;Argument[-1];ReturnValue;taint",
-          "true;getVersion;;;Argument[-1];ReturnValue;taint",
-          "true;toString;;;Argument[-1];ReturnValue;taint",
-          "false;Cookie;;;Argument[0..4];Argument[-1];taint",
-          "false;valueOf;;;Argument[0];ReturnValue;taint"
+          "true;getDomain;;;Argument[-1];ReturnValue;taint;manual",
+          "true;getName;;;Argument[-1];ReturnValue;taint;manual",
+          "true;getPath;;;Argument[-1];ReturnValue;taint;manual",
+          "true;getValue;;;Argument[-1];ReturnValue;taint;manual",
+          "true;getVersion;;;Argument[-1];ReturnValue;taint;manual",
+          "true;toString;;;Argument[-1];ReturnValue;taint;manual",
+          "false;Cookie;;;Argument[0..4];Argument[-1];taint;manual",
+          "false;valueOf;;;Argument[0];ReturnValue;taint;manual"
         ]
   }
 }
@@ -502,12 +504,12 @@ private class NewCookieModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;NewCookie;" +
         [
-          "true;getComment;;;Argument[-1];ReturnValue;taint",
-          "true;getExpiry;;;Argument[-1];ReturnValue;taint",
-          "true;getMaxAge;;;Argument[-1];ReturnValue;taint",
-          "true;toCookie;;;Argument[-1];ReturnValue;taint",
-          "false;NewCookie;;;Argument[0..9];Argument[-1];taint",
-          "false;valueOf;;;Argument[0];ReturnValue;taint"
+          "true;getComment;;;Argument[-1];ReturnValue;taint;manual",
+          "true;getExpiry;;;Argument[-1];ReturnValue;taint;manual",
+          "true;getMaxAge;;;Argument[-1];ReturnValue;taint;manual",
+          "true;toCookie;;;Argument[-1];ReturnValue;taint;manual",
+          "false;NewCookie;;;Argument[0..9];Argument[-1];taint;manual",
+          "false;valueOf;;;Argument[0];ReturnValue;taint;manual"
         ]
   }
 }
@@ -520,12 +522,12 @@ private class FormModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;Form;" +
         [
-          "false;Form;;;Argument[0].MapKey;Argument[-1];taint",
-          "false;Form;;;Argument[0].MapValue.Element;Argument[-1];taint",
-          "false;Form;;;Argument[0..1];Argument[-1];taint",
-          "true;asMap;;;Argument[-1];ReturnValue;taint",
-          "true;param;;;Argument[0..1];Argument[-1];taint",
-          "true;param;;;Argument[-1];ReturnValue;value"
+          "false;Form;;;Argument[0].MapKey;Argument[-1];taint;manual",
+          "false;Form;;;Argument[0].MapValue.Element;Argument[-1];taint;manual",
+          "false;Form;;;Argument[0..1];Argument[-1];taint;manual",
+          "true;asMap;;;Argument[-1];ReturnValue;taint;manual",
+          "true;param;;;Argument[0..1];Argument[-1];taint;manual",
+          "true;param;;;Argument[-1];ReturnValue;value;manual"
         ]
   }
 }
@@ -538,8 +540,8 @@ private class GenericEntityModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;GenericEntity;" +
         [
-          "false;GenericEntity;;;Argument[0];Argument[-1];taint",
-          "true;getEntity;;;Argument[-1];ReturnValue;taint"
+          "false;GenericEntity;;;Argument[0];Argument[-1];taint;manual",
+          "true;getEntity;;;Argument[-1];ReturnValue;taint;manual"
         ]
   }
 }
@@ -553,12 +555,12 @@ private class MediaTypeModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;MediaType;" +
         [
-          "false;MediaType;;;Argument[0..2];Argument[-1];taint",
-          "true;getParameters;;;Argument[-1];ReturnValue;taint",
-          "true;getSubtype;;;Argument[-1];ReturnValue;taint",
-          "true;getType;;;Argument[-1];ReturnValue;taint",
-          "false;valueOf;;;Argument[0];ReturnValue;taint",
-          "true;withCharset;;;Argument[-1];ReturnValue;taint"
+          "false;MediaType;;;Argument[0..2];Argument[-1];taint;manual",
+          "true;getParameters;;;Argument[-1];ReturnValue;taint;manual",
+          "true;getSubtype;;;Argument[-1];ReturnValue;taint;manual",
+          "true;getType;;;Argument[-1];ReturnValue;taint;manual",
+          "false;valueOf;;;Argument[0];ReturnValue;taint;manual",
+          "true;withCharset;;;Argument[-1];ReturnValue;taint;manual"
         ]
   }
 }
@@ -571,70 +573,72 @@ private class UriBuilderModel extends SummaryModelCsv {
     row =
       ["javax", "jakarta"] + ".ws.rs.core;UriBuilder;" +
         [
-          "true;build;;;Argument[0].ArrayElement;ReturnValue;taint",
-          "true;build;;;Argument[-1];ReturnValue;taint",
-          "true;buildFromEncoded;;;Argument[0].ArrayElement;ReturnValue;taint",
-          "true;buildFromEncoded;;;Argument[-1];ReturnValue;taint",
-          "true;buildFromEncodedMap;;;Argument[0].MapKey;ReturnValue;taint",
-          "true;buildFromEncodedMap;;;Argument[0].MapValue;ReturnValue;taint",
-          "true;buildFromEncodedMap;;;Argument[-1];ReturnValue;taint",
-          "true;buildFromMap;;;Argument[0].MapKey;ReturnValue;taint",
-          "true;buildFromMap;;;Argument[0].MapValue;ReturnValue;taint",
-          "true;buildFromMap;;;Argument[-1];ReturnValue;taint",
-          "true;clone;;;Argument[-1];ReturnValue;taint",
-          "true;fragment;;;Argument[0];ReturnValue;taint",
-          "true;fragment;;;Argument[-1];ReturnValue;value",
-          "false;fromLink;;;Argument[0];ReturnValue;taint",
-          "false;fromPath;;;Argument[0];ReturnValue;taint",
-          "false;fromUri;;;Argument[0];ReturnValue;taint",
-          "true;host;;;Argument[0];ReturnValue;taint", "true;host;;;Argument[-1];ReturnValue;value",
-          "true;matrixParam;;;Argument[0];ReturnValue;taint",
-          "true;matrixParam;;;Argument[1].ArrayElement;ReturnValue;taint",
-          "true;matrixParam;;;Argument[-1];ReturnValue;value",
-          "true;path;;;Argument[0..1];ReturnValue;taint",
-          "true;path;;;Argument[-1];ReturnValue;value",
-          "true;queryParam;;;Argument[0];ReturnValue;taint",
-          "true;queryParam;;;Argument[1].ArrayElement;ReturnValue;taint",
-          "true;queryParam;;;Argument[-1];ReturnValue;value",
-          "true;replaceMatrix;;;Argument[0];ReturnValue;taint",
-          "true;replaceMatrix;;;Argument[-1];ReturnValue;value",
-          "true;replaceMatrixParam;;;Argument[0];ReturnValue;taint",
-          "true;replaceMatrixParam;;;Argument[1].ArrayElement;ReturnValue;taint",
-          "true;replaceMatrixParam;;;Argument[-1];ReturnValue;value",
-          "true;replacePath;;;Argument[0];ReturnValue;taint",
-          "true;replacePath;;;Argument[-1];ReturnValue;value",
-          "true;replaceQuery;;;Argument[0];ReturnValue;taint",
-          "true;replaceQuery;;;Argument[-1];ReturnValue;value",
-          "true;replaceQueryParam;;;Argument[0];ReturnValue;taint",
-          "true;replaceQueryParam;;;Argument[1].ArrayElement;ReturnValue;taint",
-          "true;replaceQueryParam;;;Argument[-1];ReturnValue;value",
-          "true;resolveTemplate;;;Argument[0..2];ReturnValue;taint",
-          "true;resolveTemplate;;;Argument[-1];ReturnValue;value",
-          "true;resolveTemplateFromEncoded;;;Argument[0..1];ReturnValue;taint",
-          "true;resolveTemplateFromEncoded;;;Argument[-1];ReturnValue;value",
-          "true;resolveTemplates;;;Argument[0].MapKey;ReturnValue;taint",
-          "true;resolveTemplates;;;Argument[0].MapValue;ReturnValue;taint",
-          "true;resolveTemplates;;;Argument[-1];ReturnValue;value",
-          "true;resolveTemplatesFromEncoded;;;Argument[0].MapKey;ReturnValue;taint",
-          "true;resolveTemplatesFromEncoded;;;Argument[0].MapValue;ReturnValue;taint",
-          "true;resolveTemplatesFromEncoded;;;Argument[-1];ReturnValue;value",
-          "true;scheme;;;Argument[0];ReturnValue;taint",
-          "true;scheme;;;Argument[-1];ReturnValue;value",
-          "true;schemeSpecificPart;;;Argument[0];ReturnValue;taint",
-          "true;schemeSpecificPart;;;Argument[-1];ReturnValue;value",
-          "true;segment;;;Argument[0].ArrayElement;ReturnValue;taint",
-          "true;segment;;;Argument[-1];ReturnValue;value",
-          "true;toTemplate;;;Argument[-1];ReturnValue;taint",
-          "true;uri;;;Argument[0];ReturnValue;taint", "true;uri;;;Argument[-1];ReturnValue;value",
-          "true;userInfo;;;Argument[0];ReturnValue;taint",
-          "true;userInfo;;;Argument[-1];ReturnValue;value"
+          "true;build;;;Argument[0].ArrayElement;ReturnValue;taint;manual",
+          "true;build;;;Argument[-1];ReturnValue;taint;manual",
+          "true;buildFromEncoded;;;Argument[0].ArrayElement;ReturnValue;taint;manual",
+          "true;buildFromEncoded;;;Argument[-1];ReturnValue;taint;manual",
+          "true;buildFromEncodedMap;;;Argument[0].MapKey;ReturnValue;taint;manual",
+          "true;buildFromEncodedMap;;;Argument[0].MapValue;ReturnValue;taint;manual",
+          "true;buildFromEncodedMap;;;Argument[-1];ReturnValue;taint;manual",
+          "true;buildFromMap;;;Argument[0].MapKey;ReturnValue;taint;manual",
+          "true;buildFromMap;;;Argument[0].MapValue;ReturnValue;taint;manual",
+          "true;buildFromMap;;;Argument[-1];ReturnValue;taint;manual",
+          "true;clone;;;Argument[-1];ReturnValue;taint;manual",
+          "true;fragment;;;Argument[0];ReturnValue;taint;manual",
+          "true;fragment;;;Argument[-1];ReturnValue;value;manual",
+          "false;fromLink;;;Argument[0];ReturnValue;taint;manual",
+          "false;fromPath;;;Argument[0];ReturnValue;taint;manual",
+          "false;fromUri;;;Argument[0];ReturnValue;taint;manual",
+          "true;host;;;Argument[0];ReturnValue;taint;manual",
+          "true;host;;;Argument[-1];ReturnValue;value;manual",
+          "true;matrixParam;;;Argument[0];ReturnValue;taint;manual",
+          "true;matrixParam;;;Argument[1].ArrayElement;ReturnValue;taint;manual",
+          "true;matrixParam;;;Argument[-1];ReturnValue;value;manual",
+          "true;path;;;Argument[0..1];ReturnValue;taint;manual",
+          "true;path;;;Argument[-1];ReturnValue;value;manual",
+          "true;queryParam;;;Argument[0];ReturnValue;taint;manual",
+          "true;queryParam;;;Argument[1].ArrayElement;ReturnValue;taint;manual",
+          "true;queryParam;;;Argument[-1];ReturnValue;value;manual",
+          "true;replaceMatrix;;;Argument[0];ReturnValue;taint;manual",
+          "true;replaceMatrix;;;Argument[-1];ReturnValue;value;manual",
+          "true;replaceMatrixParam;;;Argument[0];ReturnValue;taint;manual",
+          "true;replaceMatrixParam;;;Argument[1].ArrayElement;ReturnValue;taint;manual",
+          "true;replaceMatrixParam;;;Argument[-1];ReturnValue;value;manual",
+          "true;replacePath;;;Argument[0];ReturnValue;taint;manual",
+          "true;replacePath;;;Argument[-1];ReturnValue;value;manual",
+          "true;replaceQuery;;;Argument[0];ReturnValue;taint;manual",
+          "true;replaceQuery;;;Argument[-1];ReturnValue;value;manual",
+          "true;replaceQueryParam;;;Argument[0];ReturnValue;taint;manual",
+          "true;replaceQueryParam;;;Argument[1].ArrayElement;ReturnValue;taint;manual",
+          "true;replaceQueryParam;;;Argument[-1];ReturnValue;value;manual",
+          "true;resolveTemplate;;;Argument[0..2];ReturnValue;taint;manual",
+          "true;resolveTemplate;;;Argument[-1];ReturnValue;value;manual",
+          "true;resolveTemplateFromEncoded;;;Argument[0..1];ReturnValue;taint;manual",
+          "true;resolveTemplateFromEncoded;;;Argument[-1];ReturnValue;value;manual",
+          "true;resolveTemplates;;;Argument[0].MapKey;ReturnValue;taint;manual",
+          "true;resolveTemplates;;;Argument[0].MapValue;ReturnValue;taint;manual",
+          "true;resolveTemplates;;;Argument[-1];ReturnValue;value;manual",
+          "true;resolveTemplatesFromEncoded;;;Argument[0].MapKey;ReturnValue;taint;manual",
+          "true;resolveTemplatesFromEncoded;;;Argument[0].MapValue;ReturnValue;taint;manual",
+          "true;resolveTemplatesFromEncoded;;;Argument[-1];ReturnValue;value;manual",
+          "true;scheme;;;Argument[0];ReturnValue;taint;manual",
+          "true;scheme;;;Argument[-1];ReturnValue;value;manual",
+          "true;schemeSpecificPart;;;Argument[0];ReturnValue;taint;manual",
+          "true;schemeSpecificPart;;;Argument[-1];ReturnValue;value;manual",
+          "true;segment;;;Argument[0].ArrayElement;ReturnValue;taint;manual",
+          "true;segment;;;Argument[-1];ReturnValue;value;manual",
+          "true;toTemplate;;;Argument[-1];ReturnValue;taint;manual",
+          "true;uri;;;Argument[0];ReturnValue;taint;manual",
+          "true;uri;;;Argument[-1];ReturnValue;value;manual",
+          "true;userInfo;;;Argument[0];ReturnValue;taint;manual",
+          "true;userInfo;;;Argument[-1];ReturnValue;value;manual"
         ]
   }
 }
 
 private class JaxRsUrlOpenSink extends SinkModelCsv {
   override predicate row(string row) {
-    row = ["javax", "jakarta"] + ".ws.rs.client;Client;true;target;;;Argument[0];open-url"
+    row = ["javax", "jakarta"] + ".ws.rs.client;Client;true;target;;;Argument[0];open-url;manual"
   }
 }
 
@@ -795,6 +799,6 @@ private class ContainerRequestContextModel extends SourceModelCsv {
         [
           "getAcceptableLanguages", "getAcceptableMediaTypes", "getCookies", "getEntityStream",
           "getHeaders", "getHeaderString", "getLanguage", "getMediaType", "getUriInfo"
-        ] + ";;;ReturnValue;remote"
+        ] + ";;;ReturnValue;remote;manual"
   }
 }

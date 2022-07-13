@@ -6,8 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ir.cpp:1688:24:1690:5 | FieldAddress: {...} | Instruction 'FieldAddress: {...}' has no successors in function '$@'. | ir.cpp:1683:6:1683:20 | void captured_lambda(int, int&, int&&) | void captured_lambda(int, int&, int&&) |
-| ir.cpp:1689:28:1689:54 | FieldAddress: {...} | Instruction 'FieldAddress: {...}' has no successors in function '$@'. | ir.cpp:1688:46:1688:46 | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const | void (void captured_lambda(int, int&, int&&))::(lambda [] type at line 1688, col. 25)::operator()() const |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -25,6 +23,7 @@ invalidOverlap
 nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
+nonUniqueIRVariable
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

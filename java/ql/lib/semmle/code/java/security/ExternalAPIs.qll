@@ -20,7 +20,7 @@ private class DefaultSafeExternalApiMethod extends SafeExternalApiMethod {
   DefaultSafeExternalApiMethod() {
     this instanceof EqualsMethod
     or
-    this.getName().regexpMatch("size|length|compareTo|getClass|lastIndexOf")
+    this.hasName(["size", "length", "compareTo", "getClass", "lastIndexOf"])
     or
     this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "Validate")
     or
@@ -42,7 +42,7 @@ private class DefaultSafeExternalApiMethod extends SafeExternalApiMethod {
     this.getName() = "isDigit"
     or
     this.getDeclaringType().hasQualifiedName("java.lang", "String") and
-    this.getName().regexpMatch("equalsIgnoreCase|regionMatches")
+    this.hasName(["equalsIgnoreCase", "regionMatches"])
     or
     this.getDeclaringType().hasQualifiedName("java.lang", "Boolean") and
     this.getName() = "parseBoolean"
@@ -51,7 +51,7 @@ private class DefaultSafeExternalApiMethod extends SafeExternalApiMethod {
     this.getName() = "closeQuietly"
     or
     this.getDeclaringType().hasQualifiedName("org.springframework.util", "StringUtils") and
-    this.getName().regexpMatch("hasText|isEmpty")
+    this.hasName(["hasText", "isEmpty"])
   }
 }
 

@@ -29,6 +29,8 @@ module Private {
 
   class CastExpr = RU::ExprNode::CastExpr;
 
+  class CastingExpr = CastExpr;
+
   class Type = CS::Type;
 
   class Expr = CS::ControlFlow::Nodes::ExprNode;

@@ -9,7 +9,6 @@ private import experimental.ir.implementation.internal.OperandTag
 private import experimental.ir.implementation.raw.internal.InstructionTag
 private import experimental.ir.implementation.raw.internal.TranslatedElement
 private import experimental.ir.implementation.raw.internal.TranslatedExpr
-private import experimental.ir.Util
 private import experimental.ir.internal.CSharpType
 private import experimental.ir.internal.IRCSharpLanguage as Language
 private import TranslatedExprBase

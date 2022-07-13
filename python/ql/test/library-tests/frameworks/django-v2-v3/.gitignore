@@ -1,0 +1,5 @@
+db.sqlite3
+
+# The testapp/migrations/ folder needs to be comitted to git,
+# but we don't care to store the actual migrations
+testapp/migrations/

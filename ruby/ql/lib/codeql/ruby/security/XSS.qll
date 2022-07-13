@@ -36,9 +36,11 @@ private module Shared {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for "server-side cross-site scripting" vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   private class ErbOutputMethodCallArgumentNode extends DataFlow::Node {
     private MethodCall call;
@@ -93,13 +95,13 @@ private module Shared {
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
+  class StringConstCompareAsSanitizer extends Sanitizer, StringConstCompareBarrier { }
 
   /**
    * An inclusion check against an array of constant strings, considered as a sanitizer-guard.
    */
-  class StringConstArrayInclusionCallAsSanitizerGuard extends SanitizerGuard,
-    StringConstArrayInclusionCall { }
+  class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
+    StringConstArrayInclusionCallBarrier { }
 
   /**
    * A `VariableWriteAccessCfgNode` that is not succeeded (locally) by another
@@ -141,7 +143,7 @@ private module Shared {
     exists(RenderCall call, Pair kvPair |
       call.getLocals().getAKeyValuePair() = kvPair and
       kvPair.getValue() = value and
-      kvPair.getKey().getConstantValue().isStringOrSymbol(hashKey) and
+      kvPair.getKey().getConstantValue().isStringlikeValue(hashKey) and
       call.getTemplateFile() = erb
     )
   }
@@ -154,7 +156,7 @@ private module Shared {
       argNode.asExpr() = refNode.getArgument(0) and
       refNode.getReceiver().getExpr().(MethodCall).getMethodName() = "local_assigns" and
       argNode.getALocalSource() = DataFlow::exprNode(strNode) and
-      strNode.getExpr().getConstantValue().isStringOrSymbol(hashKey) and
+      strNode.getExpr().getConstantValue().isStringlikeValue(hashKey) and
       erb = refNode.getFile()
     )
   }
@@ -274,8 +276,12 @@ module ReflectedXss {
   /** A sanitizer for stored XSS vulnerabilities. */
   class Sanitizer = Shared::Sanitizer;
 
-  /** A sanitizer guard for stored XSS vulnerabilities. */
-  class SanitizerGuard = Shared::SanitizerGuard;
+  /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
+   * A sanitizer guard for stored XSS vulnerabilities.
+   */
+  deprecated class SanitizerGuard = Shared::SanitizerGuard;
 
   /**
    * An additional step that is preserves dataflow in the context of reflected XSS.
@@ -329,8 +335,12 @@ module StoredXss {
   /** A sanitizer for stored XSS vulnerabilities. */
   class Sanitizer = Shared::Sanitizer;
 
-  /** A sanitizer guard for stored XSS vulnerabilities. */
-  class SanitizerGuard = Shared::SanitizerGuard;
+  /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
+   * A sanitizer guard for stored XSS vulnerabilities.
+   */
+  deprecated class SanitizerGuard = Shared::SanitizerGuard;
 
   /**
    * An additional step that preserves dataflow in the context of stored XSS.

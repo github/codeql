@@ -98,7 +98,7 @@ class GetSocketFactory extends Method {
   }
 }
 
-/** The `createSSLEngine` method of the class `javax.net.ssl.SSLContext` */
+/** The `createSSLEngine` method of the class `javax.net.ssl.SSLContext`. */
 class CreateSslEngineMethod extends Method {
   CreateSslEngineMethod() {
     this.hasName("createSSLEngine") and
@@ -120,7 +120,7 @@ class SetHostnameVerifierMethod extends Method {
   }
 }
 
-/** The `setDefaultHostnameVerifier` method of the class `javax.net.ssl.HttpsUrlConnection`. */
+/** The `setDefaultHostnameVerifier` method of the class `javax.net.ssl.HttpsURLConnection`. */
 class SetDefaultHostnameVerifierMethod extends Method {
   SetDefaultHostnameVerifierMethod() {
     this.hasName("setDefaultHostnameVerifier") and
@@ -152,7 +152,7 @@ class SslUnwrapMethod extends Method {
   }
 }
 
-/** The `getSession` method of the class `javax.net.ssl.SSLSession`.select */
+/** The `getSession` method of the class `javax.net.ssl.SSLSession`. */
 class GetSslSessionMethod extends Method {
   GetSslSessionMethod() {
     this.hasName("getSession") and

@@ -5,6 +5,7 @@ private import semmle.python.types.Builtins
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
+private import semmle.python.internal.CachedStages
 
 /**
  * Internal type backing `ObjectInternal` and `Value`
@@ -242,7 +243,7 @@ predicate class_method(
  * Holds if the literal corresponding to the control flow node `n` has class `cls`.
  *
  * Helper predicate for `literal_instantiation`. Prevents a bad join with
- * `PointsToContext::appliesTo` from occuring.
+ * `PointsToContext::appliesTo` from occurring.
  */
 pragma[nomagic]
 private predicate literal_node_class(ControlFlowNode n, ClassObjectInternal cls) {

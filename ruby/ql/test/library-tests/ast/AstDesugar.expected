@@ -65,18 +65,18 @@ calls/calls.rb:
 #  314|     getStmt: [SetterMethodCall] call to foo=
 #  314|       getReceiver: [SelfVariableAccess] self
 #  314|       getArgument: [AssignExpr] ... = ...
-#  314|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #  314|         getAnOperand/getRightOperand: [IntegerLiteral] 10
+#  314|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #  314|     getStmt: [LocalVariableAccess] __synth__0
 #  315| [AssignExpr] ... = ...
 #  315|   getDesugared: [StmtSequence] ...
 #  315|     getStmt: [SetterMethodCall] call to []=
 #  315|       getReceiver: [MethodCall] call to foo
 #  315|         getReceiver: [SelfVariableAccess] self
-#  315|       getArgument: [AssignExpr] ... = ...
-#  315|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
-#  315|         getAnOperand/getRightOperand: [IntegerLiteral] 10
 #  315|       getArgument: [IntegerLiteral] 0
+#  315|       getArgument: [AssignExpr] ... = ...
+#  315|         getAnOperand/getRightOperand: [IntegerLiteral] 10
+#  315|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #  315|     getStmt: [LocalVariableAccess] __synth__0
 #  316| [AssignExpr] ... = ...
 #  316|   getDesugared: [StmtSequence] ...
@@ -279,6 +279,38 @@ calls/calls.rb:
 #  340|             getArgument: [IntegerLiteral] 4
 #  340|             getArgument: [IntegerLiteral] 5
 #  340|             getArgument: [IntegerLiteral] 6
+#  362| [MethodCall] call to empty?
+#  362|   getDesugared: [StmtSequence] ...
+#  362|     getStmt: [AssignExpr] ... = ...
+#  362|       getAnOperand/getRightOperand: [MethodCall] call to list
+#  362|         getReceiver: [SelfVariableAccess] self
+#  362|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
+#  362|     getStmt: [IfExpr] if ...
+#  362|       getBranch/getElse: [MethodCall] call to empty?
+#  362|         getReceiver: [LocalVariableAccess] __synth__0__1
+#  362|       getBranch/getThen: [NilLiteral] nil
+#  362|       getCondition: [MethodCall] call to ==
+#  362|         getArgument: [LocalVariableAccess] __synth__0__1
+#  362|         getReceiver: [NilLiteral] nil
+#  364| [MethodCall] call to bar
+#  364|   getDesugared: [StmtSequence] ...
+#  364|     getStmt: [AssignExpr] ... = ...
+#  364|       getAnOperand/getRightOperand: [MethodCall] call to foo
+#  364|         getReceiver: [SelfVariableAccess] self
+#  364|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0__1
+#  364|     getStmt: [IfExpr] if ...
+#  364|       getBranch/getElse: [MethodCall] call to bar
+#  364|         getReceiver: [LocalVariableAccess] __synth__0__1
+#  364|         getArgument: [IntegerLiteral] 1
+#  364|         getArgument: [IntegerLiteral] 2
+#  364|         getBlock: [BraceBlock] { ... }
+#  364|           getParameter: [SimpleParameter] x
+#  364|             getDefiningAccess: [LocalVariableAccess] x
+#  364|           getStmt: [LocalVariableAccess] x
+#  364|       getBranch/getThen: [NilLiteral] nil
+#  364|       getCondition: [MethodCall] call to ==
+#  364|         getArgument: [LocalVariableAccess] __synth__0__1
+#  364|         getReceiver: [NilLiteral] nil
 control/cases.rb:
 #   90| [ArrayLiteral] %w(...)
 #   90|   getDesugared: [MethodCall] call to []
@@ -804,8 +836,10 @@ operations/operations.rb:
 #   89| [AssignAddExpr] ... += ...
 #   89|   getDesugared: [AssignExpr] ... = ...
 #   89|     getAnOperand/getLeftOperand: [InstanceVariableAccess] @x
+#   89|       getReceiver: [SelfVariableAccess] self
 #   89|     getAnOperand/getRightOperand: [AddExpr] ... + ...
 #   89|       getAnOperand/getLeftOperand/getReceiver: [InstanceVariableAccess] @x
+#   89|         getReceiver: [SelfVariableAccess] self
 #   89|       getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 2
 #   92| [AssignDivExpr] ... /= ...
 #   92|   getDesugared: [AssignExpr] ... = ...
@@ -857,76 +891,76 @@ gems/test.gemspec:
 #    2|     getStmt: [SetterMethodCall] call to name=
 #    2|       getReceiver: [LocalVariableAccess] s
 #    2|       getArgument: [AssignExpr] ... = ...
-#    2|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    2|         getAnOperand/getRightOperand: [StringLiteral] "test"
 #    2|           getComponent: [StringTextComponent] test
+#    2|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    2|     getStmt: [LocalVariableAccess] __synth__0
 #    3| [AssignExpr] ... = ...
 #    3|   getDesugared: [StmtSequence] ...
 #    3|     getStmt: [SetterMethodCall] call to version=
 #    3|       getReceiver: [LocalVariableAccess] s
 #    3|       getArgument: [AssignExpr] ... = ...
-#    3|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    3|         getAnOperand/getRightOperand: [StringLiteral] "0.0.0"
 #    3|           getComponent: [StringTextComponent] 0.0.0
+#    3|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    3|     getStmt: [LocalVariableAccess] __synth__0
 #    4| [AssignExpr] ... = ...
 #    4|   getDesugared: [StmtSequence] ...
 #    4|     getStmt: [SetterMethodCall] call to summary=
 #    4|       getReceiver: [LocalVariableAccess] s
 #    4|       getArgument: [AssignExpr] ... = ...
-#    4|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    4|         getAnOperand/getRightOperand: [StringLiteral] "foo!"
 #    4|           getComponent: [StringTextComponent] foo!
+#    4|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    4|     getStmt: [LocalVariableAccess] __synth__0
 #    5| [AssignExpr] ... = ...
 #    5|   getDesugared: [StmtSequence] ...
 #    5|     getStmt: [SetterMethodCall] call to description=
 #    5|       getReceiver: [LocalVariableAccess] s
 #    5|       getArgument: [AssignExpr] ... = ...
-#    5|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    5|         getAnOperand/getRightOperand: [StringLiteral] "A test"
 #    5|           getComponent: [StringTextComponent] A test
+#    5|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    5|     getStmt: [LocalVariableAccess] __synth__0
 #    6| [AssignExpr] ... = ...
 #    6|   getDesugared: [StmtSequence] ...
 #    6|     getStmt: [SetterMethodCall] call to authors=
 #    6|       getReceiver: [LocalVariableAccess] s
 #    6|       getArgument: [AssignExpr] ... = ...
-#    6|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    6|         getAnOperand/getRightOperand: [ArrayLiteral] [...]
 #    6|           getDesugared: [MethodCall] call to []
 #    6|             getReceiver: [ConstantReadAccess] Array
 #    6|             getArgument: [StringLiteral] "Mona Lisa"
 #    6|               getComponent: [StringTextComponent] Mona Lisa
+#    6|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    6|     getStmt: [LocalVariableAccess] __synth__0
 #    7| [AssignExpr] ... = ...
 #    7|   getDesugared: [StmtSequence] ...
 #    7|     getStmt: [SetterMethodCall] call to email=
 #    7|       getReceiver: [LocalVariableAccess] s
 #    7|       getArgument: [AssignExpr] ... = ...
-#    7|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    7|         getAnOperand/getRightOperand: [StringLiteral] "mona@example.com"
 #    7|           getComponent: [StringTextComponent] mona@example.com
+#    7|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    7|     getStmt: [LocalVariableAccess] __synth__0
 #    8| [AssignExpr] ... = ...
 #    8|   getDesugared: [StmtSequence] ...
 #    8|     getStmt: [SetterMethodCall] call to files=
 #    8|       getReceiver: [LocalVariableAccess] s
 #    8|       getArgument: [AssignExpr] ... = ...
-#    8|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    8|         getAnOperand/getRightOperand: [ArrayLiteral] [...]
 #    8|           getDesugared: [MethodCall] call to []
 #    8|             getReceiver: [ConstantReadAccess] Array
 #    8|             getArgument: [StringLiteral] "lib/test.rb"
 #    8|               getComponent: [StringTextComponent] lib/test.rb
+#    8|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    8|     getStmt: [LocalVariableAccess] __synth__0
 #    9| [AssignExpr] ... = ...
 #    9|   getDesugared: [StmtSequence] ...
 #    9|     getStmt: [SetterMethodCall] call to homepage=
 #    9|       getReceiver: [LocalVariableAccess] s
 #    9|       getArgument: [AssignExpr] ... = ...
-#    9|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    9|         getAnOperand/getRightOperand: [StringLiteral] "https://github.com/github/cod..."
 #    9|           getComponent: [StringTextComponent] https://github.com/github/codeql-ruby
+#    9|         getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__0
 #    9|     getStmt: [LocalVariableAccess] __synth__0

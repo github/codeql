@@ -45,9 +45,20 @@ module ArrayTaintTracking {
     )
     or
     // `array.reduce` with tainted value in callback
+    // The callback parameters are: (previousValue, currentValue, currentIndex, array)
     call.(DataFlow::MethodCallNode).getMethodName() = "reduce" and
-    pred = call.getArgument(0).(DataFlow::FunctionNode).getAReturn() and // Require the argument to be a closure to avoid spurious call/return flow
-    succ = call
+    exists(DataFlow::FunctionNode callback |
+      callback = call.getArgument(0) // Require the argument to be a closure to avoid spurious call/return flow
+    |
+      pred = callback.getAReturn() and
+      succ = call
+      or
+      pred = call.getReceiver() and
+      succ = callback.getParameter([1, 3]) // into currentValue or array
+      or
+      pred = [call.getArgument(1), callback.getAReturn()] and
+      succ = callback.getParameter(0) // into previousValue
+    )
     or
     // `array.push(e)`, `array.unshift(e)`: if `e` is tainted, then so is `array`.
     pred = call.getAnArgument() and
@@ -64,7 +75,7 @@ module ArrayTaintTracking {
     succ.(DataFlow::SourceNode).getAMethodCall("splice") = call
     or
     // `e = array.pop()`, `e = array.shift()`, or similar: if `array` is tainted, then so is `e`.
-    call.(DataFlow::MethodCallNode).calls(pred, ["pop", "shift", "slice", "splice"]) and
+    call.(DataFlow::MethodCallNode).calls(pred, ["pop", "shift", "slice", "splice", "at"]) and
     succ = call
     or
     // `e = Array.from(x)`: if `x` is tainted, then so is `e`.
@@ -188,13 +199,13 @@ private module ArrayDataFlow {
   }
 
   /**
-   * A step for retrieving an element from an array using `.pop()` or `.shift()`.
+   * A step for retrieving an element from an array using `.pop()`, `.shift()`, or `.at()`.
    * E.g. `array.pop()`.
    */
   private class ArrayPopStep extends DataFlow::SharedFlowStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
       exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = ["pop", "shift"] and
+        call.getMethodName() = ["pop", "shift", "at"] and
         prop = arrayElement() and
         obj = call.getReceiver() and
         element = call

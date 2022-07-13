@@ -3,6 +3,20 @@ import codeql.ruby.DataFlow
 import TestUtilities.InlineExpectationsTest
 import codeql.ruby.ApiGraphs
 
+class CustomEntryPointCall extends API::EntryPoint {
+  CustomEntryPointCall() { this = "CustomEntryPointCall" }
+
+  override DataFlow::CallNode getACall() { result.getMethodName() = "customEntryPointCall" }
+}
+
+class CustomEntryPointUse extends API::EntryPoint {
+  CustomEntryPointUse() { this = "CustomEntryPointUse" }
+
+  override DataFlow::LocalSourceNode getAUse() {
+    result.(DataFlow::CallNode).getMethodName() = "customEntryPointUse"
+  }
+}
+
 class ApiUseTest extends InlineExpectationsTest {
   ApiUseTest() { this = "ApiUseTest" }
 
@@ -12,10 +26,13 @@ class ApiUseTest extends InlineExpectationsTest {
     l = n.getLocation() and
     (
       tag = "use" and
-      n = a.getAUse()
+      n = a.getAValueReachableFromSource()
       or
       tag = "def" and
-      n = a.getARhs()
+      n = a.asSink()
+      or
+      tag = "call" and
+      n = a.(API::MethodAccessNode).getCallNode()
     )
   }
 

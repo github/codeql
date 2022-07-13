@@ -3,7 +3,6 @@
  */
 
 import Expr
-import semmle.code.csharp.Callable
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.TypeRef
 

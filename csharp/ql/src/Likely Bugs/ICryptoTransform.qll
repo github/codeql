@@ -1,6 +1,4 @@
 import csharp
-import semmle.code.csharp.dataflow.DataFlow
-import csharp
 
 class ImplementsICryptoTransform extends Class {
   ImplementsICryptoTransform() {

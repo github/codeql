@@ -12,7 +12,6 @@
  */
 
 import java
-import semmle.code.java.JDKAnnotations
 import semmle.code.java.Collections
 import semmle.code.java.Maps
 import semmle.code.java.frameworks.javaee.ejb.EJB
@@ -97,5 +96,4 @@ where
   not exceptions(c, f) and
   reason = nonSerialReason(f.getType())
 select f,
-  "This field is in a serializable class, " + " but is not serializable itself because " + reason +
-    "."
+  "This field is in a serializable class, but is not serializable itself because " + reason + "."

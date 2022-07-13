@@ -1,4 +1,5 @@
 import python
+private import semmle.python.internal.CachedStages
 
 /** A syntactic node (Class, Function, Module, Expr, Stmt or Comprehension) corresponding to a flow node */
 abstract class AstNode extends AstNode_ {
@@ -17,9 +18,14 @@ abstract class AstNode extends AstNode_ {
    * NOTE: For some statements and other purely syntactic elements,
    * there may not be a `ControlFlowNode`
    */
-  ControlFlowNode getAFlowNode() { py_flow_bb_node(result, this, _, _) }
+  cached
+  ControlFlowNode getAFlowNode() {
+    Stages::AST::ref() and
+    py_flow_bb_node(result, this, _, _)
+  }
 
   /** Gets the location for this AST node */
+  cached
   Location getLocation() { none() }
 
   /**
@@ -35,6 +41,7 @@ abstract class AstNode extends AstNode_ {
    * Expr.getASubExpression(), Stmt.getASubStatement(), Stmt.getASubExpression() or
    * Scope.getAStmt().
    */
+  cached
   abstract AstNode getAChildNode();
 
   /**
@@ -44,12 +51,16 @@ abstract class AstNode extends AstNode_ {
    * Expr.getASubExpression(), Stmt.getASubStatement(), Stmt.getASubExpression() or
    * Scope.getAStmt() applied to the parent.
    */
-  AstNode getParentNode() { result.getAChildNode() = this }
+  cached
+  AstNode getParentNode() {
+    Stages::AST::ref() and
+    result.getAChildNode() = this
+  }
 
   /** Whether this contains `inner` syntactically */
   predicate contains(AstNode inner) { this.getAChildNode+() = inner }
 
-  pragma[noinline]
+  pragma[nomagic]
   private predicate containsInScope(AstNode inner, Scope scope) {
     this.contains(inner) and
     not inner instanceof Scope and
@@ -106,9 +117,16 @@ class Comprehension extends Comprehension_, AstNode {
 
   override string toString() { result = "Comprehension" }
 
-  override Location getLocation() { result = Comprehension_.super.getLocation() }
+  override Location getLocation() {
+    Stages::AST::ref() and
+    result = Comprehension_.super.getLocation()
+  }
 
-  override AstNode getAChildNode() { result = this.getASubExpression() }
+  pragma[nomagic]
+  override AstNode getAChildNode() {
+    Stages::AST::ref() and
+    result = this.getASubExpression()
+  }
 
   Expr getASubExpression() {
     result = this.getIter() or

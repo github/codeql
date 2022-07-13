@@ -1,4 +1,4 @@
-import codeql.ruby.security.performance.RegExpTreeView
+import codeql.ruby.Regexp
 
 query predicate groupName(RegExpGroup g, string name) { name = g.getName() }
 

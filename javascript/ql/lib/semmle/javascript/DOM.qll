@@ -430,6 +430,12 @@ module DOM {
     result.hasUnderlyingType("Element")
     or
     result.hasUnderlyingType(any(string s | s.matches("HTML%Element")))
+    or
+    exists(DataFlow::ClassNode cls |
+      cls.getASuperClassNode().getALocalSource() =
+        DataFlow::globalVarRef(any(string s | s.matches("HTML%Element"))) and
+      result = cls.getAnInstanceReference()
+    )
   }
 
   module LocationSource {

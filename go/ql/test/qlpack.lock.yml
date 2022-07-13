@@ -1,0 +1,6 @@
+---
+dependencies:
+  codeql/suite-helpers:
+    version: 0.0.2
+compiled: false
+lockVersion: 1.0.0

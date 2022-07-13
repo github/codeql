@@ -31,6 +31,9 @@ class UsersController < ActionController::Base
     
     # GOOD
     Bar.const_get(code)
+
+    # BAD
+    eval(Regexp.escape(code))
   end
 
   def update

@@ -14,7 +14,7 @@ class JsonStringifyCall extends DataFlow::CallNode {
       callee =
         DataFlow::moduleMember(["json3", "json5", "flatted", "teleport-javascript", "json-cycle"],
           "stringify") or
-      callee = API::moduleImport("replicator").getInstance().getMember("encode").getAnImmediateUse() or
+      callee = API::moduleImport("replicator").getInstance().getMember("encode").asSource() or
       callee =
         DataFlow::moduleImport([
             "json-stringify-safe", "json-stable-stringify", "stringify-object",

@@ -3,14 +3,13 @@
  */
 
 import javascript
-import semmle.javascript.Promises
 
 module SQL {
   /** A string-valued expression that is interpreted as a SQL command. */
   abstract class SqlString extends Expr { }
 
   private class SqlStringFromModel extends SqlString {
-    SqlStringFromModel() { this = ModelOutput::getASinkNode("sql-injection").getARhs().asExpr() }
+    SqlStringFromModel() { this = ModelOutput::getASinkNode("sql-injection").asSink().asExpr() }
   }
 
   /**
@@ -110,7 +109,7 @@ private module MySql {
     Credentials() {
       exists(API::Node callee, string prop |
         callee in [createConnection(), createPool()] and
-        this = callee.getParameter(0).getMember(prop).getARhs().asExpr() and
+        this = callee.getParameter(0).getMember(prop).asSink().asExpr() and
         (
           prop = "user" and kind = "user name"
           or
@@ -201,7 +200,7 @@ private module Postgres {
     QueryString() {
       this = any(QueryCall qc).getAQueryArgument().asExpr()
       or
-      this = API::moduleImport("pg-cursor").getParameter(0).getARhs().asExpr()
+      this = API::moduleImport("pg-cursor").getParameter(0).asSink().asExpr()
     }
   }
 
@@ -211,9 +210,9 @@ private module Postgres {
 
     Credentials() {
       exists(string prop |
-        this = [newClient(), newPool()].getParameter(0).getMember(prop).getARhs().asExpr()
+        this = [newClient(), newPool()].getParameter(0).getMember(prop).asSink().asExpr()
         or
-        this = pgPromise().getParameter(0).getMember(prop).getARhs().asExpr()
+        this = pgPromise().getParameter(0).getMember(prop).asSink().asExpr()
       |
         prop = "user" and kind = "user name"
         or
@@ -384,7 +383,7 @@ private module Sqlite {
   /** A call to a Sqlite query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
-      this = getAChainingQueryCall().getAnImmediateUse()
+      this = getAChainingQueryCall().asSource()
       or
       this = database().getMember("prepare").getACall()
     }
@@ -441,7 +440,8 @@ private module MsSql {
     override TaggedTemplateExpr astNode;
 
     QueryTemplateExpr() {
-      mssql().getMember("query").getAUse() = DataFlow::valueNode(astNode.getTag())
+      mssql().getMember("query").getAValueReachableFromSource() =
+        DataFlow::valueNode(astNode.getTag())
     }
 
     override DataFlow::Node getAResult() {
@@ -495,7 +495,7 @@ private module MsSql {
           or
           callee = mssql().getMember("ConnectionPool")
         ) and
-        this = callee.getParameter(0).getMember(prop).getARhs().asExpr() and
+        this = callee.getParameter(0).getMember(prop).asSink().asExpr() and
         (
           prop = "user" and kind = "user name"
           or
@@ -565,6 +565,10 @@ private module SpannerCsv {
           "@google-cloud/spanner;~SqlExecutorDirect;@google-cloud/spanner;Database;Member[run,runPartitionedUpdate,runStream]",
           "@google-cloud/spanner;~SqlExecutorDirect;@google-cloud/spanner;Transaction;Member[run,runStream,runUpdate]",
           "@google-cloud/spanner;~SqlExecutorDirect;@google-cloud/spanner;BatchTransaction;Member[createQueryPartitions]",
+          "@google-cloud/spanner;~SpannerObject;@google-cloud/spanner;v1.SpannerClient;",
+          "@google-cloud/spanner;~SpannerObject;@google-cloud/spanner;Database;",
+          "@google-cloud/spanner;~SpannerObject;@google-cloud/spanner;Transaction;",
+          "@google-cloud/spanner;~SpannerObject;@google-cloud/spanner;Snapshot;",
         ]
     }
   }
@@ -584,21 +588,14 @@ private module SpannerCsv {
   }
 
   class SpannerSources extends ModelInput::SourceModelCsv {
-    string spannerClass() { result = ["v1.SpannerClient", "Database", "Transaction", "Snapshot",] }
-
-    string resultPath() {
-      result =
-        [
-          "Member[executeSql].Argument[0..].Parameter[1]",
-          "Member[executeSql].ReturnValue.Awaited.Member[0]", "Member[run].ReturnValue.Awaited",
-          "Member[run].Argument[0..].Parameter[1]",
-        ]
-    }
-
     override predicate row(string row) {
       row =
-        "@google-cloud/spanner;" + this.spannerClass() + ";" + this.resultPath() +
-          ";database-access-result"
+        [
+          "@google-cloud/spanner;~SpannerObject;Member[executeSql].Argument[0..].Parameter[1];database-access-result",
+          "@google-cloud/spanner;~SpannerObject;Member[executeSql].ReturnValue.Awaited.Member[0];database-access-result",
+          "@google-cloud/spanner;~SpannerObject;Member[run].ReturnValue.Awaited;database-access-result",
+          "@google-cloud/spanner;~SpannerObject;Member[run].Argument[0..].Parameter[1];database-access-result",
+        ]
     }
   }
 }

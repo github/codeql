@@ -139,7 +139,7 @@ class JAXAnnotationReflectivelyConstructedClass extends ReflectivelyConstructedC
 
 class DeserializedClass extends ReflectivelyConstructedClass {
   DeserializedClass() {
-    exists(CastExpr cast, ReadObjectMethod readObject |
+    exists(CastingExpr cast, ReadObjectMethod readObject |
       cast.getExpr().(MethodAccess).getMethod() = readObject
     |
       hasDescendant(cast.getType(), this)

@@ -10,7 +10,6 @@
 
 import cpp
 import NtohlArrayNoBound
-import semmle.code.cpp.dataflow.DataFlow
 
 from NetworkToBufferSizeConfiguration bufConfig, DataFlow::Node source, DataFlow::Node sink
 where bufConfig.hasFlow(source, sink)

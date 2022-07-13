@@ -5,6 +5,7 @@
 import python
 private import SsaCompute
 import semmle.python.essa.Definitions
+private import semmle.python.internal.CachedStages
 
 /** An (enhanced) SSA variable derived from `SsaSourceVariable`. */
 class EssaVariable extends TEssaDefinition {
@@ -270,6 +271,7 @@ class PhiFunction extends EssaDefinition, TPhiFunction {
   /** Gets the input variable for this phi node on the edge `pred` -> `this.getBasicBlock()`, if any. */
   cached
   EssaVariable getInput(BasicBlock pred) {
+    Stages::AST::ref() and
     result.getDefinition() = this.reachingDefinition(pred)
     or
     result.getDefinition() = this.inputEdgeRefinement(pred)
@@ -496,13 +498,13 @@ private EssaVariable potential_input(EssaNodeRefinement ref) {
 
 /** An assignment to a variable `v = val` */
 class AssignmentDefinition extends EssaNodeDefinition {
+  ControlFlowNode value;
+
   AssignmentDefinition() {
-    SsaSource::assignment_definition(this.getSourceVariable(), this.getDefiningNode(), _)
+    SsaSource::assignment_definition(this.getSourceVariable(), this.getDefiningNode(), value)
   }
 
-  ControlFlowNode getValue() {
-    SsaSource::assignment_definition(this.getSourceVariable(), this.getDefiningNode(), result)
-  }
+  ControlFlowNode getValue() { result = value }
 
   override string getRepresentation() { result = this.getValue().getNode().toString() }
 
@@ -762,7 +764,8 @@ class CallsiteRefinement extends EssaNodeRefinement {
 /** An implicit (possible) modification of the object referred at a method call */
 class MethodCallsiteRefinement extends EssaNodeRefinement {
   MethodCallsiteRefinement() {
-    SsaSource::method_call_refinement(this.getSourceVariable(), _, this.getDefiningNode()) and
+    SsaSource::method_call_refinement(pragma[only_bind_into](this.getSourceVariable()), _,
+      this.getDefiningNode()) and
     not this instanceof SingleSuccessorGuard
   }
 

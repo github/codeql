@@ -18,7 +18,7 @@ import Chaining
 
 predicate checkedMethodCall(MethodAccess ma) {
   relevantMethodCall(ma, _) and
-  not ma.getParent() instanceof ExprStmt
+  not ma instanceof ValueDiscardingExpr
 }
 
 /**

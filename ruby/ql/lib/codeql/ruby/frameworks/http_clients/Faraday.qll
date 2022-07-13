@@ -38,14 +38,14 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range {
       ] and
     requestNode =
       connectionNode.getReturn(["get", "head", "delete", "post", "put", "patch", "trace"]) and
-    requestUse = requestNode.getAnImmediateUse() and
-    connectionUse = connectionNode.getAnImmediateUse() and
+    requestUse = requestNode.asSource() and
+    connectionUse = connectionNode.asSource() and
     this = requestUse.asExpr().getExpr()
   }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 
-  override DataFlow::Node getURL() {
+  override DataFlow::Node getAUrlPart() {
     result = requestUse.getArgument(0) or
     result = connectionUse.(DataFlow::CallNode).getArgument(0) or
     result = connectionUse.(DataFlow::CallNode).getKeywordArgument("url")
@@ -58,7 +58,8 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range {
     // or
     // `{ ssl: { verify_mode: OpenSSL::SSL::VERIFY_NONE } }`
     exists(DataFlow::Node arg, int i |
-      i > 0 and arg = connectionNode.getAUse().(DataFlow::CallNode).getArgument(i)
+      i > 0 and
+      arg = connectionNode.getAValueReachableFromSource().(DataFlow::CallNode).getArgument(i)
     |
       // Either passed as an individual key:value argument, e.g.:
       // Faraday.new(..., ssl: {...})
@@ -96,7 +97,7 @@ private predicate isSslOptionsPairDisablingValidation(CfgNodes::ExprNodes::PairC
 /** Holds if `node` represents the symbol literal with the given `valueText`. */
 private predicate isSymbolLiteral(DataFlow::Node node, string valueText) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol(valueText) and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue(valueText) and
     literal.flowsTo(node)
   )
 }
@@ -132,7 +133,11 @@ private predicate isVerifyModeNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
     key.asExpr() = p.getKey() and
     value.asExpr() = p.getValue() and
     isSymbolLiteral(key, "verify_mode") and
-    value = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse()
+    value =
+      API::getTopLevelMember("OpenSSL")
+          .getMember("SSL")
+          .getMember("VERIFY_NONE")
+          .getAValueReachableFromSource()
   )
 }
 

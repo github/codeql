@@ -106,9 +106,9 @@ predicate isKnownLibrarySink(DataFlow::Node n) {
  * Holds if the node `n` is known as the predecessor in a modeled flow step.
  */
 predicate isKnownStepSrc(DataFlow::Node n) {
-  any(TaintTracking::AdditionalTaintStep s).step(n, _) or
-  any(DataFlow::AdditionalFlowStep s).step(n, _) or
-  any(DataFlow::AdditionalFlowStep s).step(n, _, _, _)
+  TaintTracking::sharedTaintStep(n, _) or
+  DataFlow::SharedFlowStep::step(n, _) or
+  DataFlow::SharedFlowStep::step(n, _, _, _)
 }
 
 /**

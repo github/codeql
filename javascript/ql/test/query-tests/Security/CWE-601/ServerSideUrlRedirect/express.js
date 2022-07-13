@@ -145,3 +145,17 @@ app.get("foo", (req, res) => {
 app.get("bar", ({query}, res) => {
   res.redirect(query.foo); // NOT OK
 })
+
+app.get('/some/path', function(req, res) {
+  let target = req.param("target");
+  
+  if (SAFE_TARGETS.hasOwnProperty(target))
+    res.redirect(target); // OK: request parameter is checked against whitelist
+  else
+    res.redirect(target); // NOT OK
+
+  if (Object.hasOwn(SAFE_TARGETS, target))
+    res.redirect(target); // OK: request parameter is checked against whitelist
+  else
+    res.redirect(target); // NOT OK
+});

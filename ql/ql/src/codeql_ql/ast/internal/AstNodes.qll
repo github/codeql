@@ -83,9 +83,11 @@ class TExpr =
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
-class TModuleRef = TImport or TModuleExpr;
+class TTypeRef = TImport or TModuleExpr or TType;
 
 class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
+
+class TSignatureExpr = TPredicateExpr or TType;
 
 /** DEPRECATED: Alias for TYamlNode */
 deprecated class TYAMLNode = TYamlNode;
@@ -204,7 +206,7 @@ QL::AstNode toQL(AST::AstNode n) {
 class TPredicate =
   TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation or TNewTypeBranch;
 
-class TPredOrBuiltin = TPredicate or TNewTypeBranch or TBuiltin;
+class TPredOrBuiltin = TPredicate or TBuiltin;
 
 class TBuiltin = TBuiltinClassless or TBuiltinMember;
 
@@ -229,4 +231,6 @@ module AstConsistency {
     not node instanceof YAML::YAMLNode and // parents for YAML doens't work
     not (node instanceof QLDoc and node.getLocation().getFile().getExtension() = "dbscheme") // qldoc in dbschemes are not hooked up
   }
+
+  query predicate nonUniqueParent(AstNode node) { count(node.getParent()) >= 2 }
 }

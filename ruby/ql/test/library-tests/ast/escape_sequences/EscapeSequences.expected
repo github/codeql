@@ -89,12 +89,12 @@ stringlikeLiterals
 | escapes.rb:38:1:38:6 | "\\C-?" | C-? | string |
 | escapes.rb:43:5:43:9 | "\\\\." | \\. | string |
 | escapes.rb:44:1:44:6 | "#{...}" | \\. | string |
-| escapes.rb:48:1:48:4 | /\\n/ | \\n | string |
-| escapes.rb:49:1:49:4 | /\\p/ | \\p | string |
-| escapes.rb:50:1:50:8 | /\\u0061/ | \\u0061 | string |
+| escapes.rb:48:1:48:4 | /\\n/ | \\n | regexp |
+| escapes.rb:49:1:49:4 | /\\p/ | \\p | regexp |
+| escapes.rb:50:1:50:8 | /\\u0061/ | \\u0061 | regexp |
 | escapes.rb:53:5:53:9 | "\\\\." | \\. | string |
-| escapes.rb:54:5:54:8 | /\\./ | \\. | string |
-| escapes.rb:55:1:55:10 | /#{...}#{...}/ | \\.\\. | string |
+| escapes.rb:54:5:54:8 | /\\./ | \\. | regexp |
+| escapes.rb:55:1:55:10 | /#{...}#{...}/ | \\.\\. | regexp |
 | escapes.rb:58:4:58:9 | "foo \\n" | foo\\n | string |
 | escapes.rb:58:11:58:13 | "bar" | bar | string |
 | escapes.rb:61:1:61:5 | :"\\'" | ' | symbol |

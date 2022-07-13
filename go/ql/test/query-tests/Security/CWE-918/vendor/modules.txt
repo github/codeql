@@ -1,0 +1,15 @@
+# github.com/gobwas/ws v1.0.3
+## explicit
+github.com/gobwas/ws
+# github.com/gorilla/websocket v1.4.2
+## explicit
+github.com/gorilla/websocket
+# github.com/sacOO7/gowebsocket v0.0.0-20180719182212-1436bb906a4e
+## explicit
+github.com/sacOO7/gowebsocket
+# golang.org/x/net v0.0.0-20200421231249-e086a090c8fd
+## explicit
+golang.org/x/net
+# nhooyr.io/websocket v1.8.5
+## explicit
+nhooyr.io/websocket

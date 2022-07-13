@@ -1,0 +1,11 @@
+| MissingRegexpAnchor.go:11:8:11:38 | "https?://www\\\\.example\\\\.com/" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| main.go:9:15:9:20 | `^a\|b` | Misleading operator precedence. The subexpression '^a' is anchored, but the other parts of this regular expression are not. |
+| main.go:12:15:12:22 | `^a\|b\|c` | Misleading operator precedence. The subexpression '^a' is anchored, but the other parts of this regular expression are not. |
+| main.go:18:15:18:22 | `^a\|(b)` | Misleading operator precedence. The subexpression '^a' is anchored, but the other parts of this regular expression are not. |
+| main.go:20:15:20:24 | `^(a)\|(b)` | Misleading operator precedence. The subexpression '^(a)' is anchored, but the other parts of this regular expression are not. |
+| main.go:22:15:22:20 | `a\|b$` | Misleading operator precedence. The subexpression 'b$' is anchored, but the other parts of this regular expression are not. |
+| main.go:25:15:25:22 | `a\|b\|c$` | Misleading operator precedence. The subexpression 'c$' is anchored, but the other parts of this regular expression are not. |
+| main.go:31:15:31:22 | `(a)\|b$` | Misleading operator precedence. The subexpression 'b$' is anchored, but the other parts of this regular expression are not. |
+| main.go:33:15:33:24 | `(a)\|(b)$` | Misleading operator precedence. The subexpression '(b)$' is anchored, but the other parts of this regular expression are not. |
+| main.go:35:15:35:33 | `https?://good.com` | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| main.go:38:15:38:33 | `www\\.example\\.com` | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |

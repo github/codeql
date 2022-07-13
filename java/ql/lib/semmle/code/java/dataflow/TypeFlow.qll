@@ -107,7 +107,7 @@ private predicate step(TypeFlowNode n1, TypeFlowNode n2) {
   or
   n2.asExpr() = n1.asSsa().getAUse()
   or
-  n2.asExpr().(CastExpr).getExpr() = n1.asExpr() and
+  n2.asExpr().(CastingExpr).getExpr() = n1.asExpr() and
   not n2.asExpr().getType() instanceof PrimitiveType
   or
   n2.asExpr().(AssignExpr).getSource() = n1.asExpr() and
@@ -214,7 +214,7 @@ private predicate upcastCand(TypeFlowNode n, RefType t, RefType t1, RefType t2) 
   (
     exists(Variable v | v.getAnAssignedValue() = n.asExpr() and t2 = v.getType().getErasure())
     or
-    exists(CastExpr c | c.getExpr() = n.asExpr() and t2 = c.getType().getErasure())
+    exists(CastingExpr c | c.getExpr() = n.asExpr() and t2 = c.getType().getErasure())
     or
     exists(ReturnStmt ret |
       ret.getResult() = n.asExpr() and t2 = ret.getEnclosingCallable().getReturnType().getErasure()
@@ -272,7 +272,7 @@ private predicate upcastEnhancedForStmt(BaseSsaUpdate v, RefType t) {
 }
 
 private predicate downcastSuccessorAux(
-  CastExpr cast, BaseSsaVariable v, RefType t, RefType t1, RefType t2
+  CastingExpr cast, BaseSsaVariable v, RefType t, RefType t1, RefType t2
 ) {
   cast.getExpr() = v.getAUse() and
   t = cast.getType() and
@@ -284,7 +284,7 @@ private predicate downcastSuccessorAux(
  * Holds if `va` is an access to a value that has previously been downcast to `t`.
  */
 private predicate downcastSuccessor(VarAccess va, RefType t) {
-  exists(CastExpr cast, BaseSsaVariable v, RefType t1, RefType t2 |
+  exists(CastingExpr cast, BaseSsaVariable v, RefType t1, RefType t2 |
     downcastSuccessorAux(pragma[only_bind_into](cast), v, t, t1, t2) and
     t1.getASourceSupertype+() = t2 and
     va = v.getAUse() and
@@ -410,7 +410,7 @@ private predicate irrelevantBound(TypeFlowNode n, RefType t) {
     typeFlow(n, bound) and
     t = bound.getAStrictAncestor() and
     typeBound(t) and
-    typeFlow(n, t) and
+    typeFlow(n, pragma[only_bind_into](t)) and
     not t.getAnAncestor() = bound
     or
     n.getType() = pragma[only_bind_into](bound) and

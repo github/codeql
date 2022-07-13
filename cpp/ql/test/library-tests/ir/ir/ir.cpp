@@ -1690,4 +1690,144 @@ void captured_lambda(int x, int &y, int &&z)
     };
 }
 
+int goto_on_same_line() {
+  int x = 42;
+  goto next; next:
+  return x;
+}
+
+class TrivialLambdaClass {
+public:
+    void m() const {
+        auto l_m_outer = [*this] {
+            m();
+
+            auto l_m_inner = [*this] {
+                m();
+            };
+        };
+    };
+};
+
+void captured_lambda2(TrivialLambdaClass p1, TrivialLambdaClass &p2, TrivialLambdaClass &&p3) {
+    const TrivialLambdaClass l1;
+    const TrivialLambdaClass &l2 = TrivialLambdaClass();
+
+    auto l_outer1 = [p1, p2, p3, l1, l2] {
+        auto l_inner1 = [p1] {};
+    };
+}
+
+class CopyConstructorWithImplicitArgumentClass {
+    int x;
+public:
+    CopyConstructorWithImplicitArgumentClass() {}
+    CopyConstructorWithImplicitArgumentClass(const CopyConstructorWithImplicitArgumentClass &c) {
+        x = c.x;
+    }
+};
+
+class CopyConstructorWithBitwiseCopyClass {
+    int y;
+public:
+    CopyConstructorWithBitwiseCopyClass() {}
+};
+
+class CopyConstructorTestNonVirtualClass :
+        public CopyConstructorWithImplicitArgumentClass,
+        public CopyConstructorWithBitwiseCopyClass {
+public:
+    CopyConstructorTestNonVirtualClass() {}
+};
+
+class CopyConstructorTestVirtualClass :
+        public virtual CopyConstructorWithImplicitArgumentClass,
+        public virtual CopyConstructorWithBitwiseCopyClass {
+public:
+    CopyConstructorTestVirtualClass() {}
+};
+
+int implicit_copy_constructor_test(
+        const CopyConstructorTestNonVirtualClass &x,
+        const CopyConstructorTestVirtualClass &y) {
+    CopyConstructorTestNonVirtualClass cx = x;
+    CopyConstructorTestVirtualClass cy = y;
+}
+
+void if_initialization(int x) {
+    if (int y = x; x + 1) {
+        x = x + y;
+    }
+
+    int w;
+    if (w = x; x + 1) {
+        x = x + w;
+    }
+
+    if (w = x; int w2 = w) {
+        x = x + w;
+    }
+
+    if (int v = x; int v2 = v) {
+        x = x + v;
+    }
+
+    int z = x;
+    if (z) {
+        x = x + z;
+    }
+
+    if (int z2 = z) {
+        x += z2;
+    }
+}
+
+void switch_initialization(int x) {
+    switch (int y = x; x + 1) {
+    default:
+        x = x + y;
+    }
+
+    int w;
+    switch (w = x; x + 1) {
+    default:
+        x = x + w;
+    }
+
+    switch (w = x; int w2 = w) {
+    default:
+        x = x + w;
+    }
+
+    switch (int v = x; int v2 = v) {
+    default:
+        x = x + v;
+    }
+
+    int z = x;
+    switch (z) {
+    default:
+        x = x + z;
+    }
+
+    switch (int z2 = z) {
+    default:
+        x += z2;
+    }
+}
+
+int global_1;
+
+int global_2 = 1;
+
+const int global_3 = 2;
+
+constructor_only global_4(1);
+
+constructor_only global_5 = constructor_only(2);
+
+char *global_string = "global string";
+
+int global_6 = global_2;
+
 // semmle-extractor-options: -std=c++17 --clang

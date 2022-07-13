@@ -1,2 +1,2 @@
 import foo from "@myorg/myotherpkg";
-foo(); /* use (member default (member exports (module @myorg/myotherpkg))) */
+foo(); /* use=moduleImport("@myorg/myotherpkg").getMember("exports").getMember("default") */

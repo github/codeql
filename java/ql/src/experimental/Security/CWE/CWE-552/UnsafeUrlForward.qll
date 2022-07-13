@@ -1,6 +1,9 @@
 import java
-import semmle.code.java.dataflow.FlowSources
+private import experimental.semmle.code.java.frameworks.Jsf
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
+private import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
 
 /** A sink for unsafe URL forward vulnerabilities. */
 abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
@@ -13,6 +16,84 @@ private class RequestDispatcherSink extends UnsafeUrlForwardSink {
   RequestDispatcherSink() {
     exists(MethodAccess ma |
       ma.getMethod() instanceof GetRequestDispatcherMethod and
+      ma.getArgument(0) = this.asExpr()
+    )
+  }
+}
+
+/** The `getResource` method of `Class`. */
+class GetClassResourceMethod extends Method {
+  GetClassResourceMethod() {
+    this.getDeclaringType() instanceof TypeClass and
+    this.hasName("getResource")
+  }
+}
+
+/** The `getResourceAsStream` method of `Class`. */
+class GetClassResourceAsStreamMethod extends Method {
+  GetClassResourceAsStreamMethod() {
+    this.getDeclaringType() instanceof TypeClass and
+    this.hasName("getResourceAsStream")
+  }
+}
+
+/** The `getResource` method of `ClassLoader`. */
+class GetClassLoaderResourceMethod extends Method {
+  GetClassLoaderResourceMethod() {
+    this.getDeclaringType() instanceof ClassLoaderClass and
+    this.hasName("getResource")
+  }
+}
+
+/** The `getResourceAsStream` method of `ClassLoader`. */
+class GetClassLoaderResourceAsStreamMethod extends Method {
+  GetClassLoaderResourceAsStreamMethod() {
+    this.getDeclaringType() instanceof ClassLoaderClass and
+    this.hasName("getResourceAsStream")
+  }
+}
+
+/** The JBoss class `FileResourceManager`. */
+class FileResourceManager extends RefType {
+  FileResourceManager() {
+    this.hasQualifiedName("io.undertow.server.handlers.resource", "FileResourceManager")
+  }
+}
+
+/** The JBoss method `getResource` of `FileResourceManager`. */
+class GetWildflyResourceMethod extends Method {
+  GetWildflyResourceMethod() {
+    this.getDeclaringType().getASupertype*() instanceof FileResourceManager and
+    this.hasName("getResource")
+  }
+}
+
+/** The JBoss class `VirtualFile`. */
+class VirtualFile extends RefType {
+  VirtualFile() { this.hasQualifiedName("org.jboss.vfs", "VirtualFile") }
+}
+
+/** The JBoss method `getChild` of `FileResourceManager`. */
+class GetVirtualFileChildMethod extends Method {
+  GetVirtualFileChildMethod() {
+    this.getDeclaringType().getASupertype*() instanceof VirtualFile and
+    this.hasName("getChild")
+  }
+}
+
+/** An argument to `getResource()` or `getResourceAsStream()`. */
+private class GetResourceSink extends UnsafeUrlForwardSink {
+  GetResourceSink() {
+    sinkNode(this, "open-url")
+    or
+    exists(MethodAccess ma |
+      (
+        ma.getMethod() instanceof GetServletResourceAsStreamMethod or
+        ma.getMethod() instanceof GetFacesResourceAsStreamMethod or
+        ma.getMethod() instanceof GetClassResourceAsStreamMethod or
+        ma.getMethod() instanceof GetClassLoaderResourceAsStreamMethod or
+        ma.getMethod() instanceof GetVirtualFileChildMethod
+      ) and
       ma.getArgument(0) = this.asExpr()
     )
   }
@@ -73,21 +154,24 @@ private class ServletGetPathSource extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [
-        "javax.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote",
-        "jakarta.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote"
+        "javax.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote;manual",
+        "jakarta.servlet.http;HttpServletRequest;true;getServletPath;;;ReturnValue;remote;manual"
       ]
   }
 }
 
-/** Taint model related to `java.nio.file.Path`. */
+/** Taint model related to `java.nio.file.Path` and `io.undertow.server.handlers.resource.Resource`. */
 private class FilePathFlowStep extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint",
-        "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint",
-        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint",
-        "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint"
+        "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint;manual",
+        "io.undertow.server.handlers.resource;Resource;true;getFile;;;Argument[-1];ReturnValue;taint;manual",
+        "io.undertow.server.handlers.resource;Resource;true;getFilePath;;;Argument[-1];ReturnValue;taint;manual",
+        "io.undertow.server.handlers.resource;Resource;true;getPath;;;Argument[-1];ReturnValue;taint;manual"
       ]
   }
 }

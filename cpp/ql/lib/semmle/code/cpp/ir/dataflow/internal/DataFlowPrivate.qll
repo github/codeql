@@ -279,6 +279,12 @@ predicate clearsContent(Node n, Content c) {
   none() // stub implementation
 }
 
+/**
+ * Holds if the value that is being tracked is expected to be stored inside content `c`
+ * at node `n`.
+ */
+predicate expectsContent(Node n, ContentSet c) { none() }
+
 /** Gets the type of `n` used for type pruning. */
 IRType getNodeType(Node n) {
   suppressUnusedNode(n) and

@@ -14,15 +14,15 @@
 
 import python
 private import semmle.python.Concepts
-import semmle.python.security.dataflow.RegexInjection
+import semmle.python.security.dataflow.RegexInjectionQuery
 import DataFlow::PathGraph
 
 from
-  RegexInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
   RegexExecution regexExecution
 where
   config.hasFlowPath(source, sink) and
-  regexExecution = sink.getNode().(RegexInjection::Sink).getRegexExecution()
+  regexExecution = sink.getNode().(Sink).getRegexExecution()
 select sink.getNode(), source, sink,
   "$@ regular expression is constructed from a $@ and executed by $@.", sink.getNode(), "This",
   source.getNode(), "user-provided value", regexExecution, regexExecution.getName()

@@ -48,7 +48,7 @@ module ExternalApiUsedWithUntrustedData {
   }
 
   /** Holds if `node` corresponds to a deep object argument. */
-  private predicate isDeepObjectSink(API::Node node) { node.getARhs() instanceof DeepObjectSink }
+  private predicate isDeepObjectSink(API::Node node) { node.asSink() instanceof DeepObjectSink }
 
   /**
    * A sanitizer for data flowing to an external API.
@@ -165,9 +165,9 @@ module ExternalApiUsedWithUntrustedData {
       not param = base.getReceiver()
     |
       result = param and
-      name = param.getAnImmediateUse().asExpr().(Parameter).getName()
+      name = param.asSource().asExpr().(Parameter).getName()
       or
-      param.getAnImmediateUse().asExpr() instanceof DestructuringPattern and
+      param.asSource().asExpr() instanceof DestructuringPattern and
       result = param.getMember(name)
     )
   }
@@ -219,7 +219,6 @@ module ExternalApiUsedWithUntrustedData {
         or
         exists(string callbackName, int index |
           node = getNamedParameter(base.getParameter(index).getMember(callbackName), paramName) and
-          index != -1 and // ignore receiver
           result =
             basename + ".[callback " + index + " '" + callbackName + "'].[param '" + paramName +
               "']"

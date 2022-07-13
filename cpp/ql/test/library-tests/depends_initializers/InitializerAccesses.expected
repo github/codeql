@@ -1,7 +1,7 @@
 | initializers.cpp:18:8:18:15 | initializer for y | initializers.cpp:18:9:18:9 | x |
 | initializers.cpp:19:8:19:21 | initializer for z | initializers.cpp:19:9:19:9 | x |
 | initializers.cpp:23:8:23:9 | initializer for j | initializers.cpp:23:9:23:9 | i |
-| initializers.cpp:27:8:27:10 | initializer for aax | initializers.cpp:27:9:27:10 | ax |
+| initializers.cpp:27:9:27:10 | initializer for aax | initializers.cpp:27:9:27:10 | ax |
 | initializers.cpp:30:20:30:35 | initializer for myIntArray | initializers.cpp:30:22:30:22 | i |
 | template_static.cpp:9:24:9:24 | initializer for static_c | template_static.cpp:9:24:9:24 | c |
 | template_static.cpp:10:22:10:24 | initializer for static_v | template_static.cpp:10:24:10:24 | v |

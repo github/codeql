@@ -109,16 +109,6 @@ abstract class Configuration extends DataFlow::Configuration {
   /** Holds if taint propagation into `node` is prohibited. */
   predicate isSanitizerIn(DataFlow::Node node) { none() }
 
-  /**
-   * Holds if taint propagation into `node` is prohibited when the flow state is
-   * `state`.
-   */
-  predicate isSanitizerIn(DataFlow::Node node, DataFlow::FlowState state) { none() }
-
-  final override predicate isBarrierIn(DataFlow::Node node, DataFlow::FlowState state) {
-    this.isSanitizerIn(node, state)
-  }
-
   final override predicate isBarrierIn(DataFlow::Node node) { this.isSanitizerIn(node) }
 
   /** Holds if taint propagation out of `node` is prohibited. */
@@ -127,35 +117,34 @@ abstract class Configuration extends DataFlow::Configuration {
   final override predicate isBarrierOut(DataFlow::Node node) { this.isSanitizerOut(node) }
 
   /**
-   * Holds if taint propagation out of `node` is prohibited when the flow state is
-   * `state`.
+   * DEPRECATED: Use `isSanitizer` and `BarrierGuard` module instead.
+   *
+   * Holds if taint propagation through nodes guarded by `guard` is prohibited.
    */
-  predicate isSanitizerOut(DataFlow::Node node, DataFlow::FlowState state) { none() }
+  deprecated predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
-  final override predicate isBarrierOut(DataFlow::Node node, DataFlow::FlowState state) {
-    this.isSanitizerOut(node, state)
-  }
-
-  /** Holds if taint propagation through nodes guarded by `guard` is prohibited. */
-  predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
-
-  final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-    this.isSanitizerGuard(guard) or defaultTaintSanitizerGuard(guard)
+  deprecated final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
+    this.isSanitizerGuard(guard)
   }
 
   /**
+   * DEPRECATED: Use `isSanitizer` and `BarrierGuard` module instead.
+   *
    * Holds if taint propagation through nodes guarded by `guard` is prohibited
    * when the flow state is `state`.
    */
-  predicate isSanitizerGuard(DataFlow::BarrierGuard guard, DataFlow::FlowState state) { none() }
+  deprecated predicate isSanitizerGuard(DataFlow::BarrierGuard guard, DataFlow::FlowState state) {
+    none()
+  }
 
-  final override predicate isBarrierGuard(DataFlow::BarrierGuard guard, DataFlow::FlowState state) {
+  deprecated final override predicate isBarrierGuard(
+    DataFlow::BarrierGuard guard, DataFlow::FlowState state
+  ) {
     this.isSanitizerGuard(guard, state)
   }
 
   /**
-   * Holds if the additional taint propagation step from `node1` to `node2`
-   * must be taken into account in the analysis.
+   * Holds if taint may propagate from `node1` to `node2` in addition to the normal data-flow and taint steps.
    */
   predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
@@ -165,9 +154,8 @@ abstract class Configuration extends DataFlow::Configuration {
   }
 
   /**
-   * Holds if the additional taint propagation step from `node1` to `node2`
-   * must be taken into account in the analysis. This step is only applicable
-   * in `state1` and updates the flow state to `state2`.
+   * Holds if taint may propagate from `node1` to `node2` in addition to the normal data-flow and taint steps.
+   * This step is only applicable in `state1` and updates the flow state to `state2`.
    */
   predicate isAdditionalTaintStep(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
@@ -183,7 +171,7 @@ abstract class Configuration extends DataFlow::Configuration {
     this.isAdditionalTaintStep(node1, state1, node2, state2)
   }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     (this.isSink(node) or this.isAdditionalTaintStep(node, _)) and
     defaultImplicitTaintRead(node, c)
   }

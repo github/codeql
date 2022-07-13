@@ -14,14 +14,11 @@
  */
 
 import cpp
-// We don't actually use the global value numbering library in this query, but without it we end up
-// recomputing the IR.
-private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.MustFlow
 import PathGraph
 
-/** Holds if `f` has a name that we intrepret as evidence of intentionally returning the value of the stack pointer. */
+/** Holds if `f` has a name that we interpret as evidence of intentionally returning the value of the stack pointer. */
 predicate intentionallyReturnsStackPointer(Function f) {
   f.getName().toLowerCase().matches(["%stack%", "%sp%"])
 }

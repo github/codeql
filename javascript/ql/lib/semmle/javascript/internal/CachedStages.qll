@@ -176,6 +176,8 @@ module Stages {
       exists(DataFlow::moduleImport(_))
       or
       exists(any(ReExportDeclaration d).getReExportedModule())
+      or
+      exists(any(Module m).getABulkExportedNode())
     }
   }
 
@@ -238,6 +240,8 @@ module Stages {
       1 = 1
       or
       DataFlow::SharedFlowStep::step(_, _)
+      or
+      exists(any(DataFlow::RegExpCreationNode e).getAReference())
     }
   }
 
@@ -274,6 +278,9 @@ module Stages {
             .getInstance()
             .getReceiver()
             .getPromisedError()
+            .getADecoratedClass()
+            .getADecoratedMember()
+            .getADecoratedParameter()
       )
     }
   }

@@ -1,3 +1,37 @@
+## 0.2.0
+
+### Major Analysis Improvements
+
+* Improved library modeling for the query "Request without certificate validation" (`py/request-without-cert-validation`), so it now also covers `httpx`, `aiohttp.client`, and `urllib3`.
+
+### Minor Analysis Improvements
+
+* The query "Use of a broken or weak cryptographic algorithm" (`py/weak-cryptographic-algorithm`) now reports if a cryptographic operation is potentially insecure due to use of a weak block mode.
+
+## 0.1.4
+
+## 0.1.3
+
+### New Queries
+
+* The query "PAM authorization bypass due to incorrect usage" (`py/pam-auth-bypass`) has been promoted from experimental to the main query pack. Its results will now appear by default. This query was originally [submitted as an experimental query by @porcupineyhairs](https://github.com/github/codeql/pull/8595).
+
+## 0.1.2
+
+### New Queries
+
+* "XML external entity expansion" (`py/xxe`). Results will appear by default. This query was based on [an experimental query by @jorgectf](https://github.com/github/codeql/pull/6112).
+* "XML internal entity expansion" (`py/xml-bomb`). Results will appear by default. This query was based on [an experimental query by @jorgectf](https://github.com/github/codeql/pull/6112).
+* The query "CSRF protection weakened or disabled" (`py/csrf-protection-disabled`) has been implemented. Its results will now appear by default.
+
+## 0.1.1
+
+## 0.1.0
+
+## 0.0.13
+
+## 0.0.12
+
 ## 0.0.11
 
 ### New Queries

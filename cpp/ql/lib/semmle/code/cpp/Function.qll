@@ -38,8 +38,8 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * int z = min(5, 7);
    * ```
    * The full signature of the function called on the last line would be
-   * "min<int>(int, int) -> int", and the full signature of the uninstantiated
-   * template on the first line would be "min<T>(T, T) -> T".
+   * `min<int>(int, int) -> int`, and the full signature of the uninstantiated
+   * template on the first line would be `min<T>(T, T) -> T`.
    */
   string getFullSignature() {
     exists(string name, string templateArgs, string args |

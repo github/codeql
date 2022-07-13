@@ -421,18 +421,34 @@ class TranslatedCatchAnyHandler extends TranslatedHandler {
 class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
   override IfStmt stmt;
 
-  override Instruction getFirstInstruction() { result = getCondition().getFirstInstruction() }
+  override Instruction getFirstInstruction() {
+    if hasInitialization()
+    then result = getInitialization().getFirstInstruction()
+    else result = getFirstConditionInstruction()
+  }
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getCondition()
+    id = 0 and result = getInitialization()
     or
-    id = 1 and result = getThen()
+    id = 1 and result = getCondition()
     or
-    id = 2 and result = getElse()
+    id = 2 and result = getThen()
+    or
+    id = 3 and result = getElse()
+  }
+
+  private predicate hasInitialization() { exists(stmt.getInitialization()) }
+
+  private TranslatedStmt getInitialization() {
+    result = getTranslatedStmt(stmt.getInitialization())
   }
 
   private TranslatedCondition getCondition() {
     result = getTranslatedCondition(stmt.getCondition().getFullyConverted())
+  }
+
+  private Instruction getFirstConditionInstruction() {
+    result = getCondition().getFirstInstruction()
   }
 
   private TranslatedStmt getThen() { result = getTranslatedStmt(stmt.getThen()) }
@@ -456,6 +472,9 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getInitialization() and
+    result = getFirstConditionInstruction()
+    or
     (child = getThen() or child = getElse()) and
     result = getParent().getChildSuccessor(this)
   }
@@ -698,14 +717,28 @@ class TranslatedSwitchStmt extends TranslatedStmt {
     result = getTranslatedExpr(stmt.getExpr().getFullyConverted())
   }
 
+  private Instruction getFirstExprInstruction() { result = getExpr().getFirstInstruction() }
+
   private TranslatedStmt getBody() { result = getTranslatedStmt(stmt.getStmt()) }
 
-  override Instruction getFirstInstruction() { result = getExpr().getFirstInstruction() }
+  override Instruction getFirstInstruction() {
+    if hasInitialization()
+    then result = getInitialization().getFirstInstruction()
+    else result = getFirstExprInstruction()
+  }
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getExpr()
+    id = 0 and result = getInitialization()
     or
-    id = 1 and result = getBody()
+    id = 1 and result = getExpr()
+    or
+    id = 2 and result = getBody()
+  }
+
+  private predicate hasInitialization() { exists(stmt.getInitialization()) }
+
+  private TranslatedStmt getInitialization() {
+    result = getTranslatedStmt(stmt.getInitialization())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -735,6 +768,8 @@ class TranslatedSwitchStmt extends TranslatedStmt {
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getInitialization() and result = getFirstExprInstruction()
+    or
     child = getExpr() and result = getInstruction(SwitchBranchTag())
     or
     child = getBody() and result = getParent().getChildSuccessor(this)

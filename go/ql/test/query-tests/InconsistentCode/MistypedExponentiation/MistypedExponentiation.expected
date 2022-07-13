@@ -1,0 +1,6 @@
+| MistypedExponentiation.go:6:14:6:19 | ...^... | This expression uses the bitwise exclusive-or operator when exponentiation was likely meant. |
+| main.go:15:14:15:18 | ...^... | This expression uses the bitwise exclusive-or operator when exponentiation was likely meant. |
+| main.go:17:14:17:19 | ...^... | This expression uses the bitwise exclusive-or operator when exponentiation was likely meant. |
+| main.go:18:14:18:19 | ...^... | This expression uses the bitwise exclusive-or operator when exponentiation was likely meant. |
+| main.go:19:14:19:21 | ...^... | This expression uses the bitwise exclusive-or operator when exponentiation was likely meant. |
+| main.go:21:14:21:22 | ...^... | This expression uses the bitwise exclusive-or operator when exponentiation was likely meant. |

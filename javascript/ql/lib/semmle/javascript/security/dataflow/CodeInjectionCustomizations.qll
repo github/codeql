@@ -51,8 +51,20 @@ module CodeInjection {
     }
   }
 
+  /** An expression parsed by the `gray-matter` library. */
+  class GrayMatterSink extends Sink {
+    GrayMatterSink() {
+      exists(API::CallNode call |
+        call = DataFlow::moduleImport("gray-matter").getACall() and
+        this = call.getArgument(0) and
+        // if the js/javascript engine is set, then we assume they are set to something safe.
+        not exists(call.getParameter(1).getMember("engines").getMember(["js", "javascript"]))
+      )
+    }
+  }
+
   /**
-   * A template tag occuring in JS code, viewed as a code injection sink.
+   * A template tag occurring in JS code, viewed as a code injection sink.
    */
   class TemplateTagInScriptSink extends Sink {
     TemplateTagInScriptSink() {

@@ -16,7 +16,6 @@ private import common.TranslatedExprBase
 private import desugar.Delegate
 private import desugar.internal.TranslatedCompilerGeneratedCall
 import TranslatedCall
-private import experimental.ir.Util
 private import experimental.ir.internal.IRCSharpLanguage as Language
 
 /**

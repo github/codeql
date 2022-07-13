@@ -34,7 +34,7 @@ module UnsafeHtmlConstruction {
    * A jQuery plugin options object, seen as a source for unsafe HTML constructed from input.
    */
   class JQueryPluginOptionsAsSource extends Source {
-    JQueryPluginOptionsAsSource() { this instanceof UnsafeJQueryPlugin::JQueryPluginOptions }
+    JQueryPluginOptionsAsSource() { this = any(JQuery::JQueryPluginMethod meth).getAParameter() }
   }
 
   /**
@@ -45,7 +45,7 @@ module UnsafeHtmlConstruction {
     /**
      * Gets the kind of vulnerability to report in the alert message.
      *
-     * Defaults to `Cross-site scripting`, but may be overriden for sinks
+     * Defaults to `Cross-site scripting`, but may be overridden for sinks
      * that do not allow script injection, but injection of other undesirable HTML elements.
      */
     abstract string getVulnerabilityKind();
@@ -179,5 +179,19 @@ module UnsafeHtmlConstruction {
     }
 
     override string describe() { result = "Markdown rendering" }
+  }
+
+  /** A test for the value of `typeof x`, restricting the potential types of `x`. */
+  class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+    override EqualityTest astNode;
+    Expr operand;
+    boolean polarity;
+
+    TypeTestGuard() { TaintTracking::isStringTypeGuard(astNode, operand, polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      polarity = outcome and
+      e = operand
+    }
   }
 }

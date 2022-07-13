@@ -50,6 +50,8 @@ module Ruby {
 
   class UnderscoreArg extends @ruby_underscore_arg, AstNode { }
 
+  class UnderscoreCallOperator extends @ruby_underscore_call_operator, AstNode { }
+
   class UnderscoreExpression extends @ruby_underscore_expression, AstNode { }
 
   class UnderscoreLhs extends @ruby_underscore_lhs, AstNode { }
@@ -238,7 +240,7 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Binary" }
 
     /** Gets the node corresponding to the field `left`. */
-    final UnderscoreExpression getLeft() { ruby_binary_def(this, result, _, _) }
+    final AstNode getLeft() { ruby_binary_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `operator`. */
     final string getOperator() {
@@ -350,11 +352,16 @@ module Ruby {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BlockParameters" }
 
+    /** Gets the node corresponding to the field `locals`. */
+    final Identifier getLocals(int i) { ruby_block_parameters_locals(this, i, result) }
+
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { ruby_block_parameters_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_block_parameters_child(this, _, result) }
+    final override AstNode getAFieldOrChild() {
+      ruby_block_parameters_locals(this, _, result) or ruby_block_parameters_child(this, _, result)
+    }
   }
 
   /** A class representing `break` nodes. */
@@ -381,16 +388,20 @@ module Ruby {
     final AstNode getBlock() { ruby_call_block(this, result) }
 
     /** Gets the node corresponding to the field `method`. */
-    final AstNode getMethod() { ruby_call_def(this, result) }
+    final AstNode getMethod() { ruby_call_method(this, result) }
+
+    /** Gets the node corresponding to the field `operator`. */
+    final UnderscoreCallOperator getOperator() { ruby_call_operator(this, result) }
 
     /** Gets the node corresponding to the field `receiver`. */
-    final AstNode getReceiver() { ruby_call_receiver(this, result) }
+    final UnderscorePrimary getReceiver() { ruby_call_receiver(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       ruby_call_arguments(this, result) or
       ruby_call_block(this, result) or
-      ruby_call_def(this, result) or
+      ruby_call_method(this, result) or
+      ruby_call_operator(this, result) or
       ruby_call_receiver(this, result)
     }
   }
@@ -486,10 +497,16 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Comment" }
   }
 
-  /** A class representing `complex` tokens. */
-  class Complex extends @ruby_token_complex, Token {
+  /** A class representing `complex` nodes. */
+  class Complex extends @ruby_complex, AstNode {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Complex" }
+
+    /** Gets the child of this node. */
+    final AstNode getChild() { ruby_complex_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { ruby_complex_def(this, result) }
   }
 
   /** A class representing `conditional` nodes. */
@@ -1199,7 +1216,7 @@ module Ruby {
     }
 
     /** Gets the node corresponding to the field `right`. */
-    final UnderscoreExpression getRight() { ruby_operator_assignment_def(this, _, _, result) }
+    final AstNode getRight() { ruby_operator_assignment_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
@@ -1447,7 +1464,7 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "ScopeResolution" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { ruby_scope_resolution_def(this, result) }
+    final Constant getName() { ruby_scope_resolution_def(this, result) }
 
     /** Gets the node corresponding to the field `scope`. */
     final AstNode getScope() { ruby_scope_resolution_scope(this, result) }
@@ -1908,10 +1925,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "CommentDirective" }
 
     /** Gets the child of this node. */
-    final Comment getChild() { erb_comment_directive_def(this, result) }
+    final Comment getChild() { erb_comment_directive_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_comment_directive_def(this, result) }
+    final override AstNode getAFieldOrChild() { erb_comment_directive_child(this, result) }
   }
 
   /** A class representing `content` tokens. */
@@ -1926,10 +1943,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "Directive" }
 
     /** Gets the child of this node. */
-    final Code getChild() { erb_directive_def(this, result) }
+    final Code getChild() { erb_directive_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_directive_def(this, result) }
+    final override AstNode getAFieldOrChild() { erb_directive_child(this, result) }
   }
 
   /** A class representing `graphql_directive` nodes. */
@@ -1938,10 +1955,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "GraphqlDirective" }
 
     /** Gets the child of this node. */
-    final Code getChild() { erb_graphql_directive_def(this, result) }
+    final Code getChild() { erb_graphql_directive_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_graphql_directive_def(this, result) }
+    final override AstNode getAFieldOrChild() { erb_graphql_directive_child(this, result) }
   }
 
   /** A class representing `output_directive` nodes. */
@@ -1950,10 +1967,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "OutputDirective" }
 
     /** Gets the child of this node. */
-    final Code getChild() { erb_output_directive_def(this, result) }
+    final Code getChild() { erb_output_directive_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_output_directive_def(this, result) }
+    final override AstNode getAFieldOrChild() { erb_output_directive_child(this, result) }
   }
 
   /** A class representing `template` nodes. */

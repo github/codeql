@@ -1,0 +1,4 @@
+| A.kt:4:3:6:3 | always_dom1 |
+| A.kt:8:3:11:3 | always_dom2 |
+| A.kt:13:3:19:3 | always_path |
+| A.kt:21:3:29:3 | always_w_call |

@@ -5,7 +5,6 @@
 
 import csharp
 private import semmle.code.csharp.dataflow.flowsources.Remote
-private import semmle.code.csharp.dataflow.TaintTracking
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.dataflow.FlowSummary
 

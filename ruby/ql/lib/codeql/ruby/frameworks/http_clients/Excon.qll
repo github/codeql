@@ -30,8 +30,8 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
   DataFlow::Node connectionUse;
 
   ExconHttpRequest() {
-    requestUse = requestNode.getAnImmediateUse() and
-    connectionUse = connectionNode.getAnImmediateUse() and
+    requestUse = requestNode.asSource() and
+    connectionUse = connectionNode.asSource() and
     connectionNode =
       [
         // one-off requests
@@ -52,7 +52,7 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 
-  override DataFlow::Node getURL() {
+  override DataFlow::Node getAUrlPart() {
     // For one-off requests, the URL is in the first argument of the request method call.
     // For connection re-use, the URL is split between the first argument of the `new` call
     // and the `path` keyword argument of the request method call.
@@ -66,7 +66,8 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
     // Check for `ssl_verify_peer: false` in the options hash.
     exists(DataFlow::Node arg, int i |
-      i > 0 and arg = connectionNode.getAUse().(DataFlow::CallNode).getArgument(i)
+      i > 0 and
+      arg = connectionNode.getAValueReachableFromSource().(DataFlow::CallNode).getArgument(i)
     |
       argSetsVerifyPeer(arg, false, disablingNode)
     )
@@ -79,7 +80,8 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
       disableCall.asExpr().getASuccessor+() = requestUse.asExpr() and
       disablingNode = disableCall and
       not exists(DataFlow::Node arg, int i |
-        i > 0 and arg = connectionNode.getAUse().(DataFlow::CallNode).getArgument(i)
+        i > 0 and
+        arg = connectionNode.getAValueReachableFromSource().(DataFlow::CallNode).getArgument(i)
       |
         argSetsVerifyPeer(arg, true, _)
       )
@@ -125,7 +127,7 @@ private predicate setsDefaultVerification(DataFlow::CallNode callNode, boolean v
 
 private predicate isSslVerifyPeerLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol("ssl_verify_peer") and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("ssl_verify_peer") and
     literal.flowsTo(node)
   )
 }

@@ -9,6 +9,7 @@
 # qltest projects and artifacts
 */ql/test/**/*.testproj
 */ql/test/**/*.actual
+*/ql/test/**/go.sum
 
 # Visual studio temporaries, except a file used by QL4VS
 .vs/*
@@ -17,8 +18,11 @@
 # Byte-compiled python files
 *.pyc
 
-# python virtual environment folder 
+# python virtual environment folder
 .venv/
+
+# binary files created by pytest-cov
+.coverage
 
 # It's useful (though not required) to be able to unpack codeql in the ql checkout itself
 /codeql/
@@ -30,3 +34,30 @@ csharp/extractor/Semmle.Extraction.CSharp.Driver/Properties/launchSettings.json
 
 # Compiled class file
 *.class
+
+# links created by bazel
+/bazel-*
+
+# local bazel options
+/local.bazelrc
+
+# CLion project files
+/.clwb
+
+# Go build artifacts
+go/build/*
+
+# Go binaries
+go/tools/bin
+go/tools/linux64
+go/tools/osx64
+go/tools/win64
+go/tools/tokenizer.jar
+go/main
+
+# node_modules folders except in the JS test suite
+node_modules/
+!/javascript/ql/test/**/node_modules/
+
+# Temporary folders for working with generated models
+.model-temp

@@ -14,7 +14,6 @@
 
 import csharp
 import semmle.code.asp.WebConfig
-import semmle.code.csharp.XML
 
 class Application_Error extends Method {
   Application_Error() {

@@ -6,7 +6,6 @@
  * otherwise `ServerSideRequestForgeryCustomizations` should be imported instead.
  */
 
-import codeql.ruby.DataFlow::DataFlow::PathGraph
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 import ServerSideRequestForgeryCustomizations::ServerSideRequestForgery
@@ -23,11 +22,13 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  override predicate isSanitizer(DataFlow::Node node) {
+    node instanceof Sanitizer or
+    node instanceof StringConstCompareBarrier or
+    node instanceof StringConstArrayInclusionCallBarrier
+  }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard or
-    guard instanceof StringConstCompare or
-    guard instanceof StringConstArrayInclusionCall
+  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof SanitizerGuard
   }
 }

@@ -1,10 +1,12 @@
 /**
  * @name Capture summary models.
  * @description Finds applicable summary models to be used by other queries.
+ * @kind diagnostic
  * @id java/utils/model-generator/summary-models
+ * @tags model-generator
  */
 
-private import CaptureSummaryModels
+private import internal.CaptureModels
 
 /**
  * Capture fluent APIs that return `this`.

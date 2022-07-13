@@ -28,7 +28,7 @@ class PrintAstConfiguration extends string {
 
 /**
  * Gets the `i`th child of parent.
- * The ordering is location based and pretty arbitary.
+ * The ordering is location based and pretty arbitrary.
  */
 AstNode getAstChild(PrintAstNode parent, int i) {
   result =

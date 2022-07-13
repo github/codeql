@@ -73,8 +73,24 @@ class Location extends @location {
 
   /** Holds if `this` comes on a line strictly before `l`. */
   pragma[inline]
-  predicate isBefore(Location l) {
-    this.getFile() = l.getFile() and this.getEndLine() < l.getStartLine()
+  predicate isBefore(Location l) { this.isBefore(l, false) }
+
+  /**
+   * Holds if `this` comes strictly before `l`. The boolean `sameLine` is
+   * true if `l` is on the same line as `this`, but starts at a later column.
+   * Otherwise, `sameLine` is false.
+   */
+  pragma[inline]
+  predicate isBefore(Location l, boolean sameLine) {
+    this.getFile() = l.getFile() and
+    (
+      sameLine = false and
+      this.getEndLine() < l.getStartLine()
+      or
+      sameLine = true and
+      this.getEndLine() = l.getStartLine() and
+      this.getEndColumn() < l.getStartColumn()
+    )
   }
 
   /** Holds if location `l` is completely contained within this one. */

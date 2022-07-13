@@ -6,7 +6,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
-import semmle.javascript.security.dataflow.Xss
+import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 
 module UnsafeJQueryPlugin {
   private import DataFlow::FlowLabel

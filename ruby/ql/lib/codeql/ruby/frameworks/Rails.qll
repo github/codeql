@@ -63,11 +63,7 @@ private module Config {
       )
       or
       // `Rails.application.config`
-      this =
-        API::getTopLevelMember("Rails")
-            .getReturn("application")
-            .getReturn("config")
-            .getAnImmediateUse()
+      this = API::getTopLevelMember("Rails").getReturn("application").getReturn("config").asSource()
       or
       // `Rails.application.configure { ... config ... }`
       // `Rails::Application.configure { ... config ... }`
@@ -164,7 +160,7 @@ private module Settings {
    * A node that sets a Stringlike value.
    */
   class StringlikeSetting extends LiteralSetting {
-    override ConstantValue::ConstantStringValue value;
+    override ConstantValue::ConstantStringlikeValue value;
   }
 
   /**
@@ -172,12 +168,11 @@ private module Settings {
    */
   class NillableStringlikeSetting extends LiteralSetting {
     NillableStringlikeSetting() {
-      value instanceof ConstantValue::ConstantStringValue or
-      value instanceof ConstantValue::ConstantSymbolValue or
+      value instanceof ConstantValue::ConstantStringlikeValue or
       value instanceof ConstantValue::ConstantNilValue
     }
 
-    string getStringValue() { result = value.getStringOrSymbol() }
+    string getStringValue() { result = value.getStringlikeValue() }
 
     predicate isNilValue() { value.isNil() }
   }

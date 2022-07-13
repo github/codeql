@@ -6,11 +6,8 @@ groupNumber
 | regexp.rb:46:2:46:6 | (foo) | 1 |
 | regexp.rb:47:4:47:8 | (o\|b) | 1 |
 | regexp.rb:48:2:48:9 | (a\|b\|cd) | 1 |
-| regexp.rb:49:2:49:7 | (?::+) | 1 |
-| regexp.rb:52:2:52:11 | (?<id>\\w+) | 1 |
 | regexp.rb:53:2:53:12 | (?'foo'fo+) | 1 |
 | regexp.rb:56:2:56:5 | (a+) | 1 |
-| regexp.rb:57:2:57:11 | (?<qux>q+) | 1 |
 term
 | regexp.rb:5:2:5:4 | abc | RegExpConstant,RegExpNormalChar |
 | regexp.rb:8:2:8:2 | a | RegExpConstant,RegExpNormalChar |
@@ -111,7 +108,7 @@ term
 | regexp.rb:43:2:43:3 | \\b | RegExpSpecialChar |
 | regexp.rb:43:2:43:7 | \\b!a\\B | RegExpSequence |
 | regexp.rb:43:4:43:5 | !a | RegExpConstant,RegExpNormalChar |
-| regexp.rb:43:6:43:7 | \\B | RegExpSpecialChar |
+| regexp.rb:43:6:43:7 | \\B | RegExpNonWordBoundary |
 | regexp.rb:46:2:46:6 | (foo) | RegExpGroup |
 | regexp.rb:46:2:46:7 | (foo)* | RegExpStar |
 | regexp.rb:46:2:46:10 | (foo)*bar | RegExpSequence |

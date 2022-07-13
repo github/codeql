@@ -822,6 +822,62 @@ private class CollectionContent extends Content, TCollectionContent {
 }
 
 /**
+ * An entity that represents a set of `Content`s.
+ *
+ * The set may be interpreted differently depending on whether it is
+ * stored into (`getAStoreContent`) or read from (`getAReadContent`).
+ */
+class ContentSet instanceof Content {
+  /** Gets a content that may be stored into when storing into this set. */
+  Content getAStoreContent() { result = this }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() { result = this }
+
+  /** Gets a textual representation of this content set. */
+  string toString() { result = super.toString() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    super.hasLocationInfo(path, sl, sc, el, ec)
+  }
+}
+
+/**
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
+ */
+signature predicate guardChecksSig(GuardCondition g, Expr e, boolean branch);
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  ExprNode getABarrierNode() {
+    exists(GuardCondition g, SsaDefinition def, Variable v, boolean branch |
+      result.getExpr() = def.getAUse(v) and
+      guardChecks(g, def.getAUse(v), branch) and
+      g.controls(result.getExpr().getBasicBlock(), branch)
+    )
+  }
+}
+
+/**
+ * DEPRECATED: Use `BarrierGuard` module instead.
+ *
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -830,7 +886,7 @@ private class CollectionContent extends Content, TCollectionContent {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends GuardCondition {
+deprecated class BarrierGuard extends GuardCondition {
   /** Override this predicate to hold if this guard validates `e` upon evaluating to `b`. */
   abstract predicate checks(Expr e, boolean b);
 

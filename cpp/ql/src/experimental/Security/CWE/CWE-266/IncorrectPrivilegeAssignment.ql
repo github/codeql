@@ -16,7 +16,6 @@
  */
 
 import cpp
-import semmle.code.cpp.exprs.BitwiseOperation
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**
@@ -59,7 +58,7 @@ where
       // unfortunately cannot use numeric value here because // O_CREAT is defined differently on different OSes:
       // https://github.com/red/red/blob/92feb0c0d5f91e087ab35fface6906afbf99b603/runtime/definitions.reds#L477-L491
       // this may introduce false negatives
-      fctmp.getArgument(1).(BitwiseOrExpr).getAChild*().getValueText().matches("O_CREAT") or
+      fctmp.getArgument(1).(BitwiseOrExpr).getAChild*().getValueText() = "O_CREAT" or
       fctmp.getArgument(1).getValueText().matches("%O_CREAT%")
     ) and
     fctmp.getNumberOfArguments() = 2 and

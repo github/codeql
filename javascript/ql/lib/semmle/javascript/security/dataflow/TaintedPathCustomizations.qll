@@ -681,7 +681,7 @@ module TaintedPath {
             .getMember(["pdf", "screenshot"])
             .getParameter(0)
             .getMember("path")
-            .getARhs()
+            .asSink()
     }
   }
 
@@ -702,7 +702,7 @@ module TaintedPath {
             .getACall()
             .getParameter(1)
             .getMember("config")
-            .getARhs()
+            .asSink()
     }
   }
 
@@ -716,7 +716,7 @@ module TaintedPath {
             .getMember(["readPackageAsync", "readPackageSync"])
             .getParameter(0)
             .getMember("cwd")
-            .getARhs()
+            .asSink()
     }
   }
 
@@ -726,8 +726,8 @@ module TaintedPath {
   private class ShellCwdSink extends TaintedPath::Sink {
     ShellCwdSink() {
       exists(SystemCommandExecution sys, API::Node opts |
-        opts.getARhs() = sys.getOptionsArg() and // assuming that an API::Node exists here.
-        this = opts.getMember("cwd").getARhs()
+        opts.asSink() = sys.getOptionsArg() and // assuming that an API::Node exists here.
+        this = opts.getMember("cwd").asSink()
       )
     }
   }
@@ -850,7 +850,7 @@ module TaintedPath {
 
   /**
    * Holds if we should include a step from `src -> dst` with labels `srclabel -> dstlabel`, and the
-   * standard taint step `src -> dst` should be suppresesd.
+   * standard taint step `src -> dst` should be suppressed.
    */
   private predicate isPosixPathStep(
     DataFlow::Node src, DataFlow::Node dst, Label::PosixPath srclabel, Label::PosixPath dstlabel

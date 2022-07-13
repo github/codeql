@@ -1,4 +1,4 @@
-import codeql.ruby.security.performance.RegExpTreeView
+import codeql.ruby.Regexp
 
 query predicate nonUniqueChild(RegExpParent parent, int i, RegExpTerm child) {
   child = parent.getChild(i) and

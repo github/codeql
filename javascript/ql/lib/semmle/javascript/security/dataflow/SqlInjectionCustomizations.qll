@@ -51,7 +51,7 @@ module SqlInjection {
       this = any(LdapJS::ClientCall call).getArgument(0)
       or
       // A search options object, which contains a filter and a baseDN.
-      this = any(LdapJS::SearchOptions opt).getARhs()
+      this = any(LdapJS::SearchOptions opt).asSink()
       or
       // A call to "parseDN", which parses a DN from a string.
       this = LdapJS::ldapjs().getMember("parseDN").getACall().getArgument(0)

@@ -141,8 +141,9 @@ public class Fetcher {
                 entryPath = entryPath.subpath(1, entryPath.getNameCount());
 
                 String filename = entryPath.getFileName().toString();
-                if (!filename.endsWith(".d.ts") && !filename.equals("package.json")) {
-                    continue; // Only extract .d.ts files and package.json
+                if (!filename.endsWith(".d.ts") && !filename.endsWith(".d.mts") && !filename.endsWith(".d.cts")
+                        && !filename.equals("package.json")) {
+                    continue; // Only extract .d.ts, .d.mts, .d.cts files, and package.json
                 }
                 relativePaths.add(entryPath);
                 Path outputFile = destDir.resolve(entryPath);

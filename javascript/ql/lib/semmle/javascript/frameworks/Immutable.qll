@@ -16,9 +16,7 @@ private module Immutable {
   private class ImmutableGlobalEntry extends API::EntryPoint {
     ImmutableGlobalEntry() { this = "ImmutableGlobalEntry" }
 
-    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("Immutable") }
-
-    override DataFlow::Node getARhs() { none() }
+    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("Immutable") }
   }
 
   /**
@@ -27,7 +25,7 @@ private module Immutable {
   API::Node immutableImport() {
     result = API::moduleImport("immutable")
     or
-    result = any(ImmutableGlobalEntry i).getNode()
+    result = any(ImmutableGlobalEntry i).getANode()
   }
 
   /**

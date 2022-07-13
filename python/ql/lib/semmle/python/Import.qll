@@ -1,5 +1,6 @@
 import python
 private import semmle.python.types.Builtins
+private import semmle.python.internal.CachedStages
 
 /**
  * An alias in an import statement, the `mod as name` part of `import mod as name`. May be artificial;
@@ -183,7 +184,7 @@ class Import extends Import_ {
    * For example, for the import statement `import bar` which
    * is a relative import in package "foo", this would return
    * "foo.bar".
-   * The import statment `from foo import bar` would return
+   * The import statement `from foo import bar` would return
    * `foo` and `foo.bar`
    */
   string getAnImportedModuleName() {
@@ -203,7 +204,9 @@ class Import extends Import_ {
 /** An import * statement */
 class ImportStar extends ImportStar_ {
   /* syntax: from modname import * */
+  cached
   ImportExpr getModuleExpr() {
+    Stages::AST::ref() and
     result = this.getModule()
     or
     result = this.getModule().(ImportMember).getModule()
