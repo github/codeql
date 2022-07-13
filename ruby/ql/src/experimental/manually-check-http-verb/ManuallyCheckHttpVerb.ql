@@ -18,7 +18,15 @@ import codeql.ruby.frameworks.ActionController
 class Request extends DataFlow::CallNode {
   Request() {
     this.getMethodName() = "request" and
-    this.asExpr().getExpr() instanceof ActionControllerActionMethod
+    this.asExpr().getExpr().getEnclosingMethod() instanceof ActionControllerActionMethod
+  }
+}
+
+// `request.env`
+class RequestEnvMethod extends DataFlow::CallNode {
+  RequestEnvMethod() {
+    this.getMethodName() = "env" and
+    any(Request r).flowsTo(this.getReceiver())
   }
 }
 

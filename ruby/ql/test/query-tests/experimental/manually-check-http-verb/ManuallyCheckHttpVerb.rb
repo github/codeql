@@ -8,35 +8,40 @@ class ExampleController < ActionController::Base
 
   # Should find
   def other_action
-    if request.env['REQUEST_METHOD'] == "GET"
+    method = request.env['REQUEST_METHOD']
+    if method == "GET"
       Resource.find(id: params[:id])
     end
   end
 
   # Should find
   def foo
-    if request.request_method == "GET"
+    method = request.request_method
+    if method == "GET"
       Resource.find(id: params[:id])
     end
   end
 
   # Should find
   def bar
-    if request.method == "GET"
+    method = request.method
+    if method == "GET"
       Resource.find(id: params[:id])
     end
   end
 
   # Should find
   def baz
-    if request.raw_request_method == "GET"
+    method = request.raw_request_method
+    if method == "GET"
       Resource.find(id: params[:id])
     end
   end
 
     # Should find
     def foobarbaz
-      if request.request_method_symbol == :GET
+      method = request.request_method_symbol
+      if method == :GET
         Resource.find(id: params[:id])
       end
     end
