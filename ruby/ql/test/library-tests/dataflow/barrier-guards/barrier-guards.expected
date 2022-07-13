@@ -8,6 +8,7 @@ oldStyleBarrierGuards
 | barrier-guards.rb:37:4:37:20 | call to include? | barrier-guards.rb:38:5:38:7 | foo | barrier-guards.rb:37:17:37:19 | foo | true |
 | barrier-guards.rb:43:4:43:15 | ... == ... | barrier-guards.rb:45:9:45:11 | foo | barrier-guards.rb:43:4:43:6 | foo | true |
 | barrier-guards.rb:70:4:70:21 | call to include? | barrier-guards.rb:71:5:71:7 | foo | barrier-guards.rb:70:18:70:20 | foo | true |
+| barrier-guards.rb:82:4:82:25 | ... != ... | barrier-guards.rb:83:5:83:7 | foo | barrier-guards.rb:82:15:82:17 | foo | true |
 newStyleBarrierGuards
 | barrier-guards.rb:4:5:4:7 | foo |
 | barrier-guards.rb:10:5:10:7 | foo |
@@ -17,3 +18,5 @@ newStyleBarrierGuards
 | barrier-guards.rb:38:5:38:7 | foo |
 | barrier-guards.rb:45:9:45:11 | foo |
 | barrier-guards.rb:71:5:71:7 | foo |
+| barrier-guards.rb:83:5:83:7 | foo |
+| barrier-guards.rb:91:5:91:7 | foo |

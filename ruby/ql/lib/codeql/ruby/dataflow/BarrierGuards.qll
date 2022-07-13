@@ -6,6 +6,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.internal.Constant
+private import codeql.ruby.InclusionTests
 
 private predicate stringConstCompare(CfgNodes::ExprCfgNode g, CfgNode e, boolean branch) {
   exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode c |
@@ -72,18 +73,19 @@ deprecated class StringConstCompare extends DataFlow::BarrierGuard,
 }
 
 private predicate stringConstArrayInclusionCall(CfgNodes::ExprCfgNode g, CfgNode e, boolean branch) {
-  exists(CfgNodes::ExprNodes::MethodCallCfgNode mc |
-    mc = g and
-    mc.getExpr().getMethodName() = "include?" and
-    mc.getArgument(0) = e
+  exists(InclusionTest t |
+    t.asExpr() = g and
+    e = t.getContainedNode().asExpr() and
+    branch = t.getPolarity()
   |
-    exists(ExprNodes::ArrayLiteralCfgNode arr | isArrayConstant(mc.getReceiver(), arr) |
+    exists(ExprNodes::ArrayLiteralCfgNode arr |
+      isArrayConstant(t.getContainerNode().asExpr(), arr)
+    |
       forall(ExprCfgNode elem | elem = arr.getAnArgument() |
         elem instanceof ExprNodes::StringLiteralCfgNode
       )
     )
-  ) and
-  branch = true
+  )
 }
 
 /**
@@ -126,7 +128,7 @@ deprecated class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
   CfgNodes::ExprNodes::MethodCallCfgNode {
   private CfgNode checkedNode;
 
-  StringConstArrayInclusionCall() { stringConstArrayInclusionCall(this, checkedNode, _) }
+  StringConstArrayInclusionCall() { stringConstArrayInclusionCall(this, checkedNode, true) }
 
   override predicate checks(CfgNode expr, boolean branch) { expr = checkedNode and branch = true }
 }

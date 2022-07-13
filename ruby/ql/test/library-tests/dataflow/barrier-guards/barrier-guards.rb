@@ -79,6 +79,18 @@ else
     foo
 end
 
+if foos.index(foo) != nil
+    foo
+else
+    foo
+end
+
+if foos.index(foo)r == nil
+    foo
+else
+    foo
+end
+
 bars = ["bar"]
 
 if condition
