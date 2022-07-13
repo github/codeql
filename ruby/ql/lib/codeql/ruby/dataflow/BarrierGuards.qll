@@ -64,19 +64,7 @@ deprecated class StringConstCompare extends DataFlow::BarrierGuard,
   // The value of the condition that results in the node being validated.
   private boolean checkedBranch;
 
-  StringConstCompare() {
-    exists(CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode |
-      this.getExpr() instanceof EqExpr and checkedBranch = true
-      or
-      this.getExpr() instanceof CaseEqExpr and checkedBranch = true
-      or
-      this.getExpr() instanceof NEExpr and checkedBranch = false
-    |
-      this.getLeftOperand() = strLitNode and this.getRightOperand() = checkedNode
-      or
-      this.getLeftOperand() = checkedNode and this.getRightOperand() = strLitNode
-    )
-  }
+  StringConstCompare() { stringConstCompare(this, checkedNode, checkedBranch) }
 
   override predicate checks(CfgNode expr, boolean branch) {
     expr = checkedNode and branch = checkedBranch
@@ -138,15 +126,7 @@ deprecated class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
   CfgNodes::ExprNodes::MethodCallCfgNode {
   private CfgNode checkedNode;
 
-  StringConstArrayInclusionCall() {
-    this.getMethodName() = "include?" and
-    this.getArgument(0) = checkedNode and
-    exists(ExprNodes::ArrayLiteralCfgNode arr | isArrayConstant(this.getReceiver(), arr) |
-      forall(ExprCfgNode elem | elem = arr.getAnArgument() |
-        elem instanceof ExprNodes::StringLiteralCfgNode
-      )
-    )
-  }
+  StringConstArrayInclusionCall() { stringConstArrayInclusionCall(this, checkedNode, _) }
 
   override predicate checks(CfgNode expr, boolean branch) { expr = checkedNode and branch = true }
 }
