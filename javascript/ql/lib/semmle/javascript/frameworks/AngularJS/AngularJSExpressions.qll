@@ -15,11 +15,11 @@ import javascript
 abstract class NgSourceProvider extends Locatable {
   /**
    * Holds if this element provides the source as `src` for an AngularJS expression at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
+   * The location spans column `startColumn` of line `startLine` to
+   * column `endColumn` of line `endLine` in file `filepath`.
    */
   abstract predicate providesSourceAt(
-    string src, string path, int startLine, int startColumn, int endLine, int endColumn
+    string src, string filepath, int startLine, int startColumn, int endLine, int endColumn
   );
 
   /**

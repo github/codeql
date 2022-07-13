@@ -831,7 +831,7 @@ module TaintTracking {
     }
 
     /**
-     * Holds if the property `loadStep` should be copied from the object `pred` to the property `storeStep` of object `succ`.
+     * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
      *
      * This step is used to copy the value of our pseudo-property that can later be accessed using a `get` or `getAll` call.
      * For an expression `url.searchParams`, the property `hiddenUrlPseudoProperty()` from the `url` object is stored in the property `getableUrlPseudoProperty()` on `url.searchParams`.

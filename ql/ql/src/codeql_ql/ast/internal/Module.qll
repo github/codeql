@@ -263,7 +263,7 @@ boolean getPublicBool(AstNode n) {
 /**
  * Holds if `container` defines module `m` with name `name`.
  *
- * `m` may be defined either directly or through `import`s.
+ * `m` may be defined either directly or through imports.
  */
 private predicate definesModule(
   ContainerOrModule container, string name, ContainerOrModule m, boolean public

@@ -229,7 +229,7 @@ module Routing {
     }
 
     /**
-     * Holds if `node` has processed the incoming request strictly prior to this node.
+     * Holds if `guard` has processed the incoming request strictly prior to this node.
      */
     pragma[inline]
     private predicate isGuardedByNodeInternal(Node guard) {
