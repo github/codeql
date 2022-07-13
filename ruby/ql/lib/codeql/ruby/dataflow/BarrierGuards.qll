@@ -84,13 +84,16 @@ deprecated class StringConstCompare extends DataFlow::BarrierGuard,
 }
 
 private predicate stringConstArrayInclusionCall(CfgNodes::ExprCfgNode g, CfgNode e, boolean branch) {
-  exists(CfgNodes::ExprNodes::MethodCallCfgNode mc, ArrayLiteral aLit |
+  exists(CfgNodes::ExprNodes::MethodCallCfgNode mc |
     mc = g and
     mc.getExpr().getMethodName() = "include?" and
-    [mc.getExpr().getReceiver(), mc.getExpr().getReceiver().(ConstantReadAccess).getValue()] = aLit
-  |
-    forall(Expr elem | elem = aLit.getAnElement() | elem instanceof StringLiteral) and
     mc.getArgument(0) = e
+  |
+    exists(ExprNodes::ArrayLiteralCfgNode arr | isArrayConstant(mc.getReceiver(), arr) |
+      forall(ExprCfgNode elem | elem = arr.getAnArgument() |
+        elem instanceof ExprNodes::StringLiteralCfgNode
+      )
+    )
   ) and
   branch = true
 }
