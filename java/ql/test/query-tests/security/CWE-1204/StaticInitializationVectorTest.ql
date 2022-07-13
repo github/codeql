@@ -1,5 +1,5 @@
 import java
-import experimental.semmle.code.java.security.StaticInitializationVectorQuery
+import semmle.code.java.security.StaticInitializationVectorQuery
 import TestUtilities.InlineExpectationsTest
 
 class StaticInitializationVectorTest extends InlineExpectationsTest {

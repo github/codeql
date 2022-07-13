@@ -17,7 +17,7 @@
  */
 
 import java
-import experimental.semmle.code.java.security.StaticInitializationVectorQuery
+import semmle.code.java.security.StaticInitializationVectorQuery
 import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, StaticInitializationVectorConfig conf
