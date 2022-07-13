@@ -688,7 +688,7 @@ class TypeExpr extends TType, TypeRef {
     // resolve type
     resolveTypeExpr(this, result)
     or
-    // if it resolves to a module
+    // if it resolves to a module,
     exists(FileOrModule mod | resolveModuleRef(this, mod) | result = mod.toType())
   }
 
@@ -1181,7 +1181,7 @@ class Import extends TImport, ModuleMember, TypeRef {
    */
   string getImportString() {
     exists(string selec |
-      not exists(getSelectionName(_)) and selec = ""
+      not exists(this.getSelectionName(_)) and selec = ""
       or
       selec =
         "::" + strictconcat(int i, string q | q = this.getSelectionName(i) | q, "::" order by i)
@@ -2231,9 +2231,7 @@ class ModuleExpr extends TModuleExpr, TypeRef {
     or
     not exists(me.getName()) and result = me.getChild().(QL::SimpleId).getValue()
     or
-    exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
-      result = instantiation.getName().getChild().getValue()
-    )
+    result = me.getAFieldOrChild().(QL::ModuleInstantiation).getName().getChild().getValue()
   }
 
   /**
@@ -2268,9 +2266,7 @@ class ModuleExpr extends TModuleExpr, TypeRef {
    * The result is either a `PredicateExpr` or a `TypeExpr`.
    */
   SignatureExpr getArgument(int i) {
-    exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
-      result.toQL() = instantiation.getChild(i)
-    )
+    result.toQL() = me.getAFieldOrChild().(QL::ModuleInstantiation).getChild(i)
   }
 }
 

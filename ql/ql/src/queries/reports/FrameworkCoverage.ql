@@ -18,11 +18,13 @@ class PackageImportCall extends PredicateCall {
   PackageImportCall() {
     this.getQualifier().getName() = ["API", "DataFlow"] and
     this.getPredicateName() = ["moduleImport", "moduleMember"] and
-    not isExcludedFile(getLocation().getFile())
+    not isExcludedFile(this.getLocation().getFile())
   }
 
   /** Gets the name of a package referenced by this call */
-  string getAPackageName() { result = DataFlow::superNode(getArgument(0)).getAStringValueNoCall() }
+  string getAPackageName() {
+    result = DataFlow::superNode(this.getArgument(0)).getAStringValueNoCall()
+  }
 }
 
 /** Gets a reference to `package` or any transitive member thereof. */
