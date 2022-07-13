@@ -62,5 +62,7 @@ def is_valid_hex_color(color):
         <li>Mitre.org: <a href="https://cwe.mitre.org/data/definitions/20.html">CWE-020</a></li>
         <li>github.com: <a href="https://github.com/advisories/GHSA-g4rg-993r-mgx7">CVE-2021-42740</a></li>
         <li>wh0.github.io: <a href="https://wh0.github.io/2021/10/28/shell-quote-rce-exploiting.html">Exploiting CVE-2021-42740</a></li>
+        <li>ota-meshi.github.io: <a href="https://ota-meshi.github.io/eslint-plugin-regexp/rules/no-obscure-range.html">no-obscure-range</a></li>
+        <li>pboyd.io: <a href="https://pboyd.io/posts/comma-dash-dot/">The regex [,-.]</a></li>
     </references>
 </qhelp>
