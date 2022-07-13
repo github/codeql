@@ -3,23 +3,15 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>User supplied file paths can often pose security risks if a program does not handle them correctly. In particular, if a user 
-is meant to access files under a certain directory but does not enter a path under that directory, they can 
-unexpectedly gain access to (and potentially modify/delete) possibly sensitive resources. </p>
-
-<p>Suppose a program is to only accept paths that point to files/folders within directory <code>DIR</code>. 
-To ensure that a user supplied path, say <code>SUBDIR</code>, is a subdirectory of <code>DIR</code>, the 
-program verifies, using string comparisons, that <code>DIR</code> is a prefix of <code>SUBDIR</code>.
-However, if <code>DIR</code> is not slash-terminated, such a check would not be sufficient. 
-<code>SUBDIR</code> may be allowed to also access siblings of <code>DIR</code> and not 
-just children of <code>DIR</code>, which is a security vulnerability.</p>
-
+<p>A common way to check that a user-supplied path <code>SUBDIR</code> falls inside a directory <code>DIR</code>
+is to use <code>getCanonicalPath()</code> to remove any path-traversal elements and then check that <code>DIR</code>
+is a prefix. However, if <code>DIR</code> is not slash-terminated, this can unexpectedly allow accessing siblings of <code>DIR</code>.</p>
 </overview>
 <recommendation>
 
-<p>If the user should only access items within a certain directory <code>DIR</code>, first ensure that <code>DIR</code> is slash-terminated,
-and then proceed (as normal) to verify that <code>DIR</code> is a prefix of the user-provided path, <code>SUBDIR</code>. Note, Java's <code>getCanonicalPath()</code>
-returns a <b>non</b>-slash-terminated path string, so a <code>"/"</code> must be added to <code>DIR</code> if that method is used. </p>
+<p>If the user should only access items within a certain directory <code>DIR</code>, ensure that <code>DIR</code> is slash-terminated
+before checking that <code>DIR</code> is a prefix of the user-provided path, <code>SUBDIR</code>. Note, Java's <code>getCanonicalPath()</code>
+returns a <b>non</b>-slash-terminated path string, so a slash must be added to <code>DIR</code> if that method is used.</p>
 
 </recommendation>
 <example>
