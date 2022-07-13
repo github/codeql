@@ -533,7 +533,7 @@ predicate isArrayConstant(ExprCfgNode e, ArrayLiteralCfgNode arr) {
 /**
  * Holds if the expression `e` refers to an array constructed from the array literal `arr`.
  */
-predicate isArrayExpr(Expr e, ArrayLiteralCfgNode arr) {
+private predicate isArrayExpr(Expr e, ArrayLiteralCfgNode arr) {
   // e = [...]
   e = arr.getExpr()
   or
