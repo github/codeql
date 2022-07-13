@@ -751,7 +751,7 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
 }
 
 /**
- * Gets a suitable name for the library imported by `import`.
+ * Gets a suitable name for the library imported by `imprt`.
  *
  * For relative imports, this is the snapshot-relative path to the imported module.
  * For non-relative imports, it is the import path itself.
