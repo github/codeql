@@ -14,7 +14,7 @@ private import TranslatedInitialization
  * `entry`.
  */
 TranslatedDeclarationEntry getTranslatedDeclarationEntry(DeclarationEntry entry) {
-  result.getAST() = entry
+  result.getAst() = entry
 }
 
 /**
@@ -37,7 +37,10 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
 
   final override string toString() { result = entry.toString() }
 
-  final override Locatable getAST() { result = entry }
+  final override Locatable getAst() { result = entry }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 }
 
 /**
@@ -223,7 +226,10 @@ class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
 
   final override string toString() { result = "init: " + entry.toString() }
 
-  final override Locatable getAST() { result = entry }
+  final override Locatable getAst() { result = entry }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   final override LocalVariable getVariable() { result = var }
 
@@ -254,7 +260,10 @@ class TranslatedRangeBasedForVariableDeclaration extends TranslatedLocalVariable
 
   override string toString() { result = var.toString() }
 
-  override Locatable getAST() { result = var }
+  override Locatable getAst() { result = var }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   override Function getFunction() { result = forStmt.getEnclosingFunction() }
 
@@ -262,7 +271,7 @@ class TranslatedRangeBasedForVariableDeclaration extends TranslatedLocalVariable
 }
 
 TranslatedConditionDecl getTranslatedConditionDecl(ConditionDeclExpr expr) {
-  result.getAST() = expr
+  result.getAst() = expr
 }
 
 /**
@@ -280,7 +289,10 @@ class TranslatedConditionDecl extends TranslatedLocalVariableDeclaration, TTrans
 
   override string toString() { result = "decl: " + conditionDeclExpr.toString() }
 
-  override Locatable getAST() { result = conditionDeclExpr }
+  override Locatable getAst() { result = conditionDeclExpr }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   override Function getFunction() { result = conditionDeclExpr.getEnclosingFunction() }
 

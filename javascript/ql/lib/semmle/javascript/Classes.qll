@@ -172,7 +172,7 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
   /** Gets the expression denoting the super class of the defined class, if any. */
   override Expr getSuperClass() { result = this.getChildExpr(1) }
 
-  /** Gets the `n`th type from the `implements` clause of this class, starting at 0. */
+  /** Gets the `i`th type from the `implements` clause of this class, starting at 0. */
   override TypeExpr getSuperInterface(int i) {
     // AST indices for super interfaces: -1, -4, -7, ...
     exists(int astIndex | typeexprs(result, _, this, astIndex, _) |
@@ -895,7 +895,14 @@ class SyntheticConstructor extends Function {
  * }
  * ```
  */
-abstract class AccessorMethodDeclaration extends MethodDeclaration { }
+abstract class AccessorMethodDeclaration extends MethodDeclaration {
+  /** Get the corresponding getter (if this is a setter) or setter (if this is a getter). */
+  AccessorMethodDeclaration getOtherAccessor() {
+    getterSetterPair(this, result)
+    or
+    getterSetterPair(result, this)
+  }
+}
 
 /**
  * A concrete accessor method definition in a class, that is, an accessor method with a function body.
@@ -958,6 +965,9 @@ abstract class AccessorMethodSignature extends MethodSignature, AccessorMethodDe
  */
 class GetterMethodDeclaration extends AccessorMethodDeclaration, @property_getter {
   override string getAPrimaryQlClass() { result = "GetterMethodDeclaration" }
+
+  /** Gets the correspinding setter declaration, if any. */
+  SetterMethodDeclaration getCorrespondingSetter() { getterSetterPair(this, result) }
 }
 
 /**
@@ -1020,6 +1030,9 @@ class GetterMethodSignature extends GetterMethodDeclaration, AccessorMethodSigna
  */
 class SetterMethodDeclaration extends AccessorMethodDeclaration, @property_setter {
   override string getAPrimaryQlClass() { result = "SetterMethodDeclaration" }
+
+  /** Gets the correspinding getter declaration, if any. */
+  GetterMethodDeclaration getCorrespondingGetter() { getterSetterPair(result, this) }
 }
 
 /**
@@ -1262,4 +1275,26 @@ class IndexSignature extends @index_signature, MemberSignature {
   }
 
   override string getAPrimaryQlClass() { result = "IndexSignature" }
+}
+
+private boolean getStaticness(AccessorMethodDefinition member) {
+  member.isStatic() and result = true
+  or
+  not member.isStatic() and result = false
+}
+
+pragma[nomagic]
+private AccessorMethodDefinition getAnAccessorFromClass(
+  ClassDefinition cls, string name, boolean static
+) {
+  result = cls.getMember(name) and
+  static = getStaticness(result)
+}
+
+pragma[nomagic]
+private predicate getterSetterPair(GetterMethodDeclaration getter, SetterMethodDeclaration setter) {
+  exists(ClassDefinition cls, string name, boolean static |
+    getter = getAnAccessorFromClass(cls, name, static) and
+    setter = getAnAccessorFromClass(cls, name, static)
+  )
 }

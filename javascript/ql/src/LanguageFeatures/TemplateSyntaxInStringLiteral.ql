@@ -42,10 +42,10 @@ class CandidateStringLiteral extends StringLiteral {
    * Gets an ancestor node of this string literal in the AST that can be reached without
    * stepping over scope elements.
    */
-  ASTNode getIntermediate() {
+  AstNode getIntermediate() {
     result = this
     or
-    exists(ASTNode mid | mid = this.getIntermediate() |
+    exists(AstNode mid | mid = this.getIntermediate() |
       not mid instanceof ScopeElement and
       result = mid.getParent()
     )
@@ -84,10 +84,10 @@ predicate hasObjectProvidingTemplateVariables(CandidateStringLiteral lit) {
  * Gets a declaration of variable `v` in `tl`, where `v` has the given `name` and
  * belongs to `scope`.
  */
-VarDecl getDeclIn(Variable v, Scope s, string name, CandidateTopLevel tl) {
+VarDecl getDeclIn(Variable v, Scope scope, string name, CandidateTopLevel tl) {
   v.getName() = name and
   v.getADeclaration() = result and
-  v.getScope() = s and
+  v.getScope() = scope and
   result.getTopLevel() = tl
 }
 

@@ -664,15 +664,6 @@ class RegExpNormalConstant extends RegExpConstant, @regexp_normal_constant {
 }
 
 /**
- * DEPRECATED. Use `RegExpNormalConstant` instead.
- *
- * This class used to represent an individual normal character but has been superseded by
- * `RegExpNormalConstant`, which represents a sequence of normal characters.
- * There is no longer a separate node for each individual character in a constant.
- */
-deprecated class RegExpNormalChar = RegExpNormalConstant;
-
-/**
  * A hexadecimal character escape in a regular expression.
  *
  * Example:
@@ -999,16 +990,22 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
 }
 
 /**
- * Provides regular expression patterns.
+ * Provides utility predicates related to regular expressions.
  */
 module RegExpPatterns {
   /**
    * Gets a pattern that matches common top-level domain names in lower case.
    */
-  string commonTLD() {
+  string getACommonTld() {
     // according to ranking by http://google.com/search?q=site:.<<TLD>>
     result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
   }
+
+  /**
+   * Gets a pattern that matches common top-level domain names in lower case.
+   * DEPRECATED: use `getACommonTld` instead
+   */
+  deprecated predicate commonTLD = getACommonTld/0;
 }
 
 /**
@@ -1300,8 +1297,8 @@ module RegExp {
   /**
    * A meta character used by HTML.
    */
-  private class HTMLMetaCharacter extends MetaCharacter {
-    HTMLMetaCharacter() { this = ["<", "'", "\""] }
+  private class HtmlMetaCharacter extends MetaCharacter {
+    HtmlMetaCharacter() { this = ["<", "'", "\""] }
   }
 
   /**
@@ -1312,7 +1309,7 @@ module RegExp {
   }
 
   /**
-   * Holds if `term` can match any occurence of `char` within a string (not taking into account
+   * Holds if `term` can match any occurrence of `char` within a string (not taking into account
    * the context in which `term` appears).
    *
    * This predicate is under-approximate and never considers sequences to guarantee a match.

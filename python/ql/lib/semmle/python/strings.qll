@@ -18,9 +18,9 @@ predicate mapping_format(StrConst e) {
  */
 
 private string conversion_specifier_string(StrConst e, int number, int position) {
-  exists(string s, string REGEX | s = e.getText() |
-    REGEX = "%(\\([^)]*\\))?[#0\\- +]*(\\*|[0-9]*)(\\.(\\*|[0-9]*))?(h|H|l|L)?[badiouxXeEfFgGcrs%]" and
-    result = s.regexpFind(REGEX, number, position)
+  exists(string s, string regex | s = e.getText() |
+    regex = "%(\\([^)]*\\))?[#0\\- +]*(\\*|[0-9]*)(\\.(\\*|[0-9]*))?(h|H|l|L)?[badiouxXeEfFgGcrs%]" and
+    result = s.regexpFind(regex, number, position)
   )
 }
 

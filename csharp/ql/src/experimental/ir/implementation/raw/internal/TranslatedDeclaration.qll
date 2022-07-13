@@ -14,7 +14,7 @@ private import common.TranslatedDeclarationBase
  * `entry`.
  */
 TranslatedLocalDeclaration getTranslatedLocalDeclaration(LocalVariableDeclExpr declExpr) {
-  result.getAST() = declExpr
+  result.getAst() = declExpr
 }
 
 /**
@@ -29,7 +29,10 @@ abstract class TranslatedLocalDeclaration extends TranslatedElement, TTranslated
 
   final override string toString() { result = expr.toString() }
 
-  final override Language::AST getAST() { result = expr }
+  final override Language::AST getAst() { result = expr }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Language::AST getAST() { result = this.getAst() }
 }
 
 /**

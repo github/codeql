@@ -38,7 +38,7 @@ class SimpleParameterRealImpl extends SimpleParameterImpl, TSimpleParameterReal 
 class SimpleParameterSynthImpl extends SimpleParameterImpl, TSimpleParameterSynth {
   SimpleParameterSynthImpl() { this = TSimpleParameterSynth(_, _) }
 
-  LocalVariableAccessSynth getDefininingAccess() { synthChild(this, 0, result) }
+  LocalVariableAccessSynth getDefiningAccess() { synthChild(this, 0, result) }
 
   override LocalVariable getVariableImpl() { result = TLocalVariableSynth(this, _) }
 

@@ -4,7 +4,6 @@
 
 import java
 import Dominance
-import semmle.code.java.ControlFlowGraph
 
 /**
  * A control-flow node that represents the start of a basic block.

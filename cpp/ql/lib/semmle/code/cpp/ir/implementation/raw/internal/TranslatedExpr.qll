@@ -11,8 +11,8 @@ private import TranslatedDeclarationEntry
 private import TranslatedElement
 private import TranslatedFunction
 private import TranslatedInitialization
-private import TranslatedFunction
 private import TranslatedStmt
+private import TranslatedGlobalVar
 import TranslatedCall
 
 /**
@@ -74,9 +74,12 @@ abstract class TranslatedExpr extends TranslatedElement {
     expr.isGLValueCategory()
   }
 
-  final override Locatable getAST() { result = expr }
+  final override Locatable getAst() { result = expr }
 
-  final override Function getFunction() { result = expr.getEnclosingFunction() }
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = this.getAst() }
+
+  final override Declaration getFunction() { result = expr.getEnclosingDeclaration() }
 
   /**
    * Gets the expression from which this `TranslatedExpr` is generated.
@@ -86,8 +89,10 @@ abstract class TranslatedExpr extends TranslatedElement {
   /**
    * Gets the `TranslatedFunction` containing this expression.
    */
-  final TranslatedFunction getEnclosingFunction() {
+  final TranslatedRootElement getEnclosingFunction() {
     result = getTranslatedFunction(expr.getEnclosingFunction())
+    or
+    result = getTranslatedVarInit(expr.getEnclosingVariable())
   }
 }
 
@@ -785,7 +790,7 @@ class TranslatedThisExpr extends TranslatedNonConstantExpr {
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = ThisAddressTag() and
-    result = this.getEnclosingFunction().getThisVariable()
+    result = this.getEnclosingFunction().(TranslatedFunction).getThisVariable()
   }
 }
 
@@ -836,7 +841,7 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    result = getIRUserVariable(expr.getEnclosingFunction(), expr.getTarget())
+    result = getIRUserVariable(expr.getEnclosingDeclaration(), expr.getTarget())
   }
 }
 
@@ -1709,7 +1714,7 @@ abstract class TranslatedAllocationSize extends TranslatedExpr, TTranslatedAlloc
 }
 
 TranslatedAllocationSize getTranslatedAllocationSize(NewOrNewArrayExpr newExpr) {
-  result.getAST() = newExpr
+  result.getAst() = newExpr
 }
 
 /**
@@ -1875,7 +1880,7 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
 }
 
 TranslatedAllocatorCall getTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
-  result.getAST() = newExpr
+  result.getAst() = newExpr
 }
 
 /**
@@ -2520,7 +2525,7 @@ class TranslatedVarArgsStart extends TranslatedNonConstantExpr {
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = VarArgsStartEllipsisAddressTag() and
-    result = this.getEnclosingFunction().getEllipsisVariable()
+    result = this.getEnclosingFunction().(TranslatedFunction).getEllipsisVariable()
   }
 
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {

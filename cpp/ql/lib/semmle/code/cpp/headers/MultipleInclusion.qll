@@ -40,19 +40,6 @@ class CorrectIncludeGuard extends IncludeGuardedHeader {
 }
 
 /**
- * DEPRECATED: no longer useful.
- */
-deprecated class NotIncludedGuard extends IncludeGuardedHeader {
-  NotIncludedGuard() { none() }
-
-  /** Gets the `#ifndef` directive used to prevent multiple inclusion of this file. */
-  PreprocessorIfndef getIfndef() { result.getFile() = this }
-
-  /** Gets the `#endif` directive closing this file. */
-  PreprocessorEndif getEndif() { result.getFile() = this }
-}
-
-/**
  * A file with no code in it.
  */
 class EmptyFile extends IncludeGuardedHeader {

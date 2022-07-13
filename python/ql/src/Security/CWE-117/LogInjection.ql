@@ -12,10 +12,10 @@
  */
 
 import python
-import semmle.python.security.dataflow.LogInjection
+import semmle.python.security.dataflow.LogInjectionQuery
 import DataFlow::PathGraph
 
-from LogInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ flows to log entry.", source.getNode(),
   "User-provided value"

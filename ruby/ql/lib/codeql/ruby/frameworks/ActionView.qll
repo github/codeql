@@ -95,7 +95,7 @@ abstract class RenderCall extends MethodCall {
   }
 
   private string getTemplatePathValue() {
-    result = this.getTemplatePathArgument().getConstantValue().getStringOrSymbol()
+    result = this.getTemplatePathArgument().getConstantValue().getStringlikeValue()
   }
 
   // everything up to and including the final slash, but ignoring any leading slash

@@ -445,6 +445,8 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
   override string getPrimaryQLClass() { result = "RegExpAlt" }
 }
 
+class RegExpCharEscape = RegExpEscape;
+
 /**
  * An escaped regular expression term, that is, a regular expression
  * term starting with a backslash, which is not a backreference.
@@ -550,7 +552,7 @@ class RegExpWordBoundary extends RegExpSpecialChar {
 
 /**
  * A character class escape in a regular expression.
- * That is, an escaped charachter that denotes multiple characters.
+ * That is, an escaped character that denotes multiple characters.
  *
  * Examples:
  *
@@ -750,6 +752,9 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
    * not a capture group.
    */
   int getNumber() { result = re.getGroupNumber(start, end) }
+
+  /** Holds if this is a capture group. */
+  predicate isCapture() { exists(this.getNumber()) }
 
   /** Holds if this is a named capture group. */
   predicate isNamed() { exists(this.getName()) }
@@ -995,11 +1000,22 @@ class RegExpBackRef extends RegExpTerm, TRegExpBackRef {
 
   /** Gets the capture group this back reference refers to. */
   RegExpGroup getGroup() {
-    result.getLiteral() = this.getLiteral() and
-    (
-      result.getNumber() = this.getNumber() or
-      result.getName() = this.getName()
-    )
+    this.hasLiteralAndNumber(result.getLiteral(), result.getNumber()) or
+    this.hasLiteralAndName(result.getLiteral(), result.getName())
+  }
+
+  /** Join-order helper for `getGroup`. */
+  pragma[nomagic]
+  private predicate hasLiteralAndNumber(RegExpLiteral literal, int number) {
+    literal = this.getLiteral() and
+    number = this.getNumber()
+  }
+
+  /** Join-order helper for `getGroup`. */
+  pragma[nomagic]
+  private predicate hasLiteralAndName(RegExpLiteral literal, string name) {
+    literal = this.getLiteral() and
+    name = this.getName()
   }
 
   override RegExpTerm getChild(int i) { none() }

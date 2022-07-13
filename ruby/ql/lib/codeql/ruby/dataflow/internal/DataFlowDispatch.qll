@@ -90,7 +90,7 @@ class DataFlowCall extends TDataFlowCall {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -120,11 +120,11 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   /** Gets the data flow node that this call targets. */
   DataFlow::Node getReceiver() { result = receiver }
 
-  override DataFlowCallable getEnclosingCallable() { result = c }
+  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
-  override Location getLocation() { result = c.getLocation() }
+  override EmptyLocation getLocation() { any() }
 }
 
 private class NormalCall extends DataFlowCall, TNormalCall {
@@ -257,7 +257,12 @@ private module Cached {
       name = any(KeywordParameter kp).getName()
       or
       exists(any(Call c).getKeywordArgument(name))
-    }
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
+    } or
+    THashSplatArgumentPosition() or
+    TAnyArgumentPosition() or
+    TAnyKeywordArgumentPosition()
 
   cached
   newtype TParameterPosition =
@@ -266,11 +271,19 @@ private module Cached {
     TPositionalParameterPosition(int pos) {
       pos = any(Parameter p).getPosition()
       or
-      pos in [0 .. 100] // TODO: remove once `Argument[_]` summaries are replaced with `Argument[i..]`
-      or
       FlowSummaryImplSpecific::ParsePositions::isParsedArgumentPosition(_, pos)
     } or
-    TKeywordParameterPosition(string name) { name = any(KeywordParameter kp).getName() }
+    TPositionalParameterLowerBoundPosition(int pos) {
+      FlowSummaryImplSpecific::ParsePositions::isParsedArgumentLowerBoundPosition(_, pos)
+    } or
+    TKeywordParameterPosition(string name) {
+      name = any(KeywordParameter kp).getName()
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
+    } or
+    THashSplatParameterPosition() or
+    TAnyParameterPosition() or
+    TAnyKeywordParameterPosition()
 }
 
 import Cached
@@ -462,8 +475,23 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a positional parameter at position `pos`. */
   predicate isPositional(int pos) { this = TPositionalParameterPosition(pos) }
 
+  /** Holds if this position represents any positional parameter starting from position `pos`. */
+  predicate isPositionalLowerBound(int pos) { this = TPositionalParameterLowerBoundPosition(pos) }
+
   /** Holds if this position represents a keyword parameter named `name`. */
   predicate isKeyword(string name) { this = TKeywordParameterPosition(name) }
+
+  /** Holds if this position represents a hash-splat parameter. */
+  predicate isHashSplat() { this = THashSplatParameterPosition() }
+
+  /**
+   * Holds if this position represents any parameter, except `self` parameters. This
+   * includes both positional, named, and block parameters.
+   */
+  predicate isAny() { this = TAnyParameterPosition() }
+
+  /** Holds if this position represents any positional parameter. */
+  predicate isAnyNamed() { this = TAnyKeywordParameterPosition() }
 
   /** Gets a textual representation of this position. */
   string toString() {
@@ -473,7 +501,15 @@ class ParameterPosition extends TParameterPosition {
     or
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
     or
+    exists(int pos | this.isPositionalLowerBound(pos) and result = "position " + pos + "..")
+    or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
+    or
+    this.isHashSplat() and result = "**"
+    or
+    this.isAny() and result = "any"
+    or
+    this.isAnyNamed() and result = "any-named"
   }
 }
 
@@ -491,6 +527,21 @@ class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a keyword argument named `name`. */
   predicate isKeyword(string name) { this = TKeywordArgumentPosition(name) }
 
+  /**
+   * Holds if this position represents any argument, except `self` arguments. This
+   * includes both positional, named, and block arguments.
+   */
+  predicate isAny() { this = TAnyArgumentPosition() }
+
+  /** Holds if this position represents any positional parameter. */
+  predicate isAnyNamed() { this = TAnyKeywordArgumentPosition() }
+
+  /**
+   * Holds if this position represents a synthesized argument containing all keyword
+   * arguments wrapped in a hash.
+   */
+  predicate isHashSplat() { this = THashSplatArgumentPosition() }
+
   /** Gets a textual representation of this position. */
   string toString() {
     this.isSelf() and result = "self"
@@ -500,11 +551,17 @@ class ArgumentPosition extends TArgumentPosition {
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
+    or
+    this.isAny() and result = "any"
+    or
+    this.isAnyNamed() and result = "any-named"
+    or
+    this.isHashSplat() and result = "**"
   }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
-pragma[inline]
+pragma[nomagic]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isSelf() and apos.isSelf()
   or
@@ -512,5 +569,19 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   exists(int pos | ppos.isPositional(pos) and apos.isPositional(pos))
   or
+  exists(int pos1, int pos2 |
+    ppos.isPositionalLowerBound(pos1) and apos.isPositional(pos2) and pos2 >= pos1
+  )
+  or
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
+  or
+  ppos.isHashSplat() and apos.isHashSplat()
+  or
+  ppos.isAny() and not apos.isSelf()
+  or
+  apos.isAny() and not ppos.isSelf()
+  or
+  ppos.isAnyNamed() and apos.isKeyword(_)
+  or
+  apos.isAnyNamed() and ppos.isKeyword(_)
 }

@@ -24,7 +24,7 @@ private module FabricV1 {
   API::Node fabric() { result = API::moduleImport("fabric") }
 
   /** Provides models for the `fabric` module. */
-  module fabric {
+  module Fabric {
     // -------------------------------------------------------------------------
     // fabric.api
     // -------------------------------------------------------------------------
@@ -32,7 +32,7 @@ private module FabricV1 {
     API::Node api() { result = fabric().getMember("api") }
 
     /** Provides models for the `fabric.api` module */
-    module api {
+    module Api {
       /**
        * A call to either
        * - `fabric.api.local`
@@ -66,7 +66,7 @@ private module FabricV2 {
   API::Node fabric() { result = API::moduleImport("fabric") }
 
   /** Provides models for the `fabric` module. */
-  module fabric {
+  module Fabric {
     // -------------------------------------------------------------------------
     // fabric.connection
     // -------------------------------------------------------------------------
@@ -74,13 +74,13 @@ private module FabricV2 {
     API::Node connection() { result = fabric().getMember("connection") }
 
     /** Provides models for the `fabric.connection` module */
-    module connection {
+    module Connection {
       /**
        * Provides models for the `fabric.connection.Connection` class
        *
        * See https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.
        */
-      module Connection {
+      module ConnectionClass {
         /** Gets a reference to the `fabric.connection.Connection` class. */
         API::Node classRef() {
           result = fabric().getMember("Connection")
@@ -155,7 +155,7 @@ private module FabricV2 {
     private class FabricConnectionRunSudoLocalCall extends SystemCommandExecution::Range,
       DataFlow::CallCfgNode {
       FabricConnectionRunSudoLocalCall() {
-        this.getFunction() = fabric::connection::Connection::instanceRunMethods()
+        this.getFunction() = Fabric::Connection::ConnectionClass::instanceRunMethods()
       }
 
       override DataFlow::Node getCommand() {
@@ -170,16 +170,16 @@ private module FabricV2 {
     API::Node tasks() { result = fabric().getMember("tasks") }
 
     /** Provides models for the `fabric.tasks` module */
-    module tasks {
+    module Tasks {
       /** Gets a reference to the `fabric.tasks.task` decorator. */
       API::Node task() { result in [tasks().getMember("task"), fabric().getMember("task")] }
     }
 
-    class FabricTaskFirstParamConnectionInstance extends fabric::connection::Connection::InstanceSource,
+    class FabricTaskFirstParamConnectionInstance extends Fabric::Connection::ConnectionClass::InstanceSource,
       DataFlow::ParameterNode {
       FabricTaskFirstParamConnectionInstance() {
         exists(Function func |
-          func.getADecorator() = fabric::tasks::task().getAUse().asExpr() and
+          func.getADecorator() = Fabric::Tasks::task().getAValueReachableFromSource().asExpr() and
           this.getParameter() = func.getArg(0)
         )
       }
@@ -192,7 +192,7 @@ private module FabricV2 {
     API::Node group() { result = fabric().getMember("group") }
 
     /** Provides models for the `fabric.group` module */
-    module group {
+    module Group {
       /**
        * Provides models for the `fabric.group.Group` class and its subclasses.
        *
@@ -204,7 +204,7 @@ private module FabricV2 {
        * - https://docs.fabfile.org/en/2.5/api/group.html#fabric.group.SerialGroup
        * - https://docs.fabfile.org/en/2.5/api/group.html#fabric.group.ThreadingGroup
        */
-      module Group {
+      module GroupClass {
         /**
          * A source of instances of a subclass of `fabric.group, extend this class to model new instances.Group`
          *
@@ -236,7 +236,9 @@ private module FabricV2 {
        * See https://docs.fabfile.org/en/2.5/api/group.html#fabric.group.Group.run
        */
       private class FabricGroupRunCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
-        FabricGroupRunCall() { this = fabric::group::Group::subclassInstanceRunMethod().getACall() }
+        FabricGroupRunCall() {
+          this = Fabric::Group::GroupClass::subclassInstanceRunMethod().getACall()
+        }
 
         override DataFlow::Node getCommand() {
           result = [this.getArg(0), this.getArgByName("command")]
@@ -249,7 +251,7 @@ private module FabricV2 {
        * See https://docs.fabfile.org/en/2.5/api/group.html#fabric.group.SerialGroup.
        */
       module SerialGroup {
-        private class ClassInstantiation extends Group::ModeledSubclass {
+        private class ClassInstantiation extends GroupClass::ModeledSubclass {
           ClassInstantiation() {
             this = group().getMember("SerialGroup")
             or
@@ -264,7 +266,7 @@ private module FabricV2 {
        * See https://docs.fabfile.org/en/2.5/api/group.html#fabric.group.ThreadingGroup.
        */
       module ThreadingGroup {
-        private class ClassInstantiation extends Group::ModeledSubclass {
+        private class ClassInstantiation extends GroupClass::ModeledSubclass {
           ClassInstantiation() {
             this = group().getMember("ThreadingGroup")
             or

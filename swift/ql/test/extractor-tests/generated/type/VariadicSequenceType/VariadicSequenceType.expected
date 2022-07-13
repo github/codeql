@@ -1,0 +1,3 @@
+| Int... | getName: | Int... | getCanonicalType: | Array<Int> | getBaseType: | Int |
+| T... | getName: | T... | getCanonicalType: | Array<T> | getBaseType: | T |
+| T... | getName: | T... | getCanonicalType: | Array<\u03c4_0_0> | getBaseType: | T |

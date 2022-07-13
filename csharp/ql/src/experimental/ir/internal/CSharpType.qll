@@ -88,15 +88,6 @@ predicate hasAddressType(int byteSize) {
  */
 predicate hasFunctionAddressType(int byteSize) { byteSize = getTypeSize(any(NullType type)) }
 
-private int getBaseClassSize(ValueOrRefType type) {
-  if exists(type.getBaseClass()) then result = getContentSize(type.getBaseClass()) else result = 0
-}
-
-private int getContentSize(ValueOrRefType type) {
-  result =
-    getBaseClassSize(type) + sum(Field field | not field.isStatic() | getTypeSize(field.getType()))
-}
-
 private predicate isOpaqueType(ValueOrRefType type) {
   type instanceof Struct or
   type instanceof NullableType or

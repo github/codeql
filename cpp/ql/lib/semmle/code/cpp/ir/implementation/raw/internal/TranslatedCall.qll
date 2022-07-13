@@ -175,9 +175,12 @@ abstract class TranslatedSideEffects extends TranslatedElement {
   /** Gets the expression whose side effects are being modeled. */
   abstract Expr getExpr();
 
-  final override Locatable getAST() { result = getExpr() }
+  final override Locatable getAst() { result = getExpr() }
 
-  final override Function getFunction() { result = getExpr().getEnclosingFunction() }
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
+
+  final override Declaration getFunction() { result = getExpr().getEnclosingDeclaration() }
 
   final override TranslatedElement getChild(int i) {
     result =
@@ -372,7 +375,7 @@ abstract class TranslatedSideEffect extends TranslatedElement {
     kind instanceof GotoEdge
   }
 
-  final override Function getFunction() { result = getParent().getFunction() }
+  final override Declaration getFunction() { result = getParent().getFunction() }
 
   final override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
     tag = OnlyInstructionTag() and
@@ -431,13 +434,6 @@ abstract class TranslatedArgumentSideEffect extends TranslatedSideEffect {
   final override int getInstructionIndex(InstructionTag tag) {
     tag = OnlyInstructionTag() and
     result = index
-  }
-
-  /**
-   * Gets the `TranslatedFunction` containing this expression.
-   */
-  final TranslatedFunction getEnclosingFunction() {
-    result = getTranslatedFunction(call.getEnclosingFunction())
   }
 
   final override predicate sideEffectInstruction(Opcode opcode, CppType type) {
@@ -522,7 +518,10 @@ class TranslatedArgumentExprSideEffect extends TranslatedArgumentSideEffect,
     this = TTranslatedArgumentExprSideEffect(call, arg, index, sideEffectOpcode)
   }
 
-  final override Locatable getAST() { result = arg }
+  final override Locatable getAst() { result = arg }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   final override Type getIndirectionType() {
     result = arg.getUnspecifiedType().(DerivedType).getBaseType()
@@ -553,7 +552,10 @@ class TranslatedStructorQualifierSideEffect extends TranslatedArgumentSideEffect
     index = -1
   }
 
-  final override Locatable getAST() { result = call }
+  final override Locatable getAst() { result = call }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   final override Type getIndirectionType() { result = call.getTarget().getDeclaringType() }
 
@@ -574,7 +576,10 @@ class TranslatedCallSideEffect extends TranslatedSideEffect, TTranslatedCallSide
 
   TranslatedCallSideEffect() { this = TTranslatedCallSideEffect(expr, sideEffectOpcode) }
 
-  override Locatable getAST() { result = expr }
+  override Locatable getAst() { result = expr }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   override Expr getPrimaryExpr() { result = expr }
 
@@ -612,7 +617,10 @@ class TranslatedAllocationSideEffect extends TranslatedSideEffect, TTranslatedAl
 
   TranslatedAllocationSideEffect() { this = TTranslatedAllocationSideEffect(expr) }
 
-  override Locatable getAST() { result = expr }
+  override Locatable getAst() { result = expr }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Locatable getAST() { result = getAst() }
 
   override Expr getPrimaryExpr() { result = expr }
 

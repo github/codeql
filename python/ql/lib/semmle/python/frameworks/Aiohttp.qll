@@ -243,7 +243,7 @@ module AiohttpWebModel {
 
   /** A class that has a super-type which is an aiohttp.web View class. */
   class AiohttpViewClassFromSuperClass extends AiohttpViewClass {
-    AiohttpViewClassFromSuperClass() { this.getABase() = View::subclassRef().getAUse().asExpr() }
+    AiohttpViewClassFromSuperClass() { this.getParent() = View::subclassRef().asSource().asExpr() }
   }
 
   /** A class that is used in a route-setup, therefore being considered an aiohttp.web View class. */
@@ -626,7 +626,8 @@ module AiohttpWebModel {
         // and just go with the LHS
         this.asCfgNode() = subscript
       |
-        subscript.getObject() = aiohttpResponseInstance().getMember("cookies").getAUse().asCfgNode() and
+        subscript.getObject() =
+          aiohttpResponseInstance().getMember("cookies").getAValueReachableFromSource().asCfgNode() and
         value.asCfgNode() = subscript.(DefinitionNode).getValue() and
         index.asCfgNode() = subscript.getIndex()
       )
@@ -660,7 +661,7 @@ private module AiohttpClientModel {
     private API::Node instance() { result = classRef().getReturn() }
 
     /** A method call on a ClientSession that sends off a request */
-    private class OutgoingRequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
+    private class OutgoingRequestCall extends HTTP::Client::Request::Range, API::CallNode {
       string methodName;
 
       OutgoingRequestCall() {
@@ -683,8 +684,14 @@ private module AiohttpClientModel {
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
-        // TODO: Look into disabling certificate validation
-        none()
+        exists(API::Node param | param = this.getKeywordParameter(["ssl", "verify_ssl"]) |
+          disablingNode = param.asSink() and
+          argumentOrigin = param.getAValueReachingSink() and
+          // aiohttp.client treats `None` as the default and all other "falsey" values as `False`.
+          argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
+          not argumentOrigin.asExpr() instanceof None
+        )
+        // TODO: Handling of SSLContext passed as ssl/ssl_context arguments
       }
     }
   }

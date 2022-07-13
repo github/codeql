@@ -1,0 +1,3 @@
+| LengthComparisonOffByOne.go:8:14:8:29 | ...<=... | Off-by-one index comparison against length may lead to out-of-bounds $@. | LengthComparisonOffByOne.go:10:6:10:14 | index expression | read |
+| main.go:6:5:6:15 | ...<=... | Off-by-one index comparison against length may lead to out-of-bounds $@. | main.go:7:10:7:13 | index expression | read |
+| main.go:29:5:29:14 | ...>... | Off-by-one index comparison against length may lead to out-of-bounds $@. | main.go:30:10:30:13 | index expression | read |

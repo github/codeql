@@ -42,12 +42,12 @@ private import internal.TranslatedCompilerGeneratedExpr
  * Module that exposes the functions needed for the translation of the `lock` stmt.
  */
 module LockElements {
-  TranslatedLockedVarDecl getLockedVarDecl(LockStmt generatedBy) { result.getAST() = generatedBy }
+  TranslatedLockedVarDecl getLockedVarDecl(LockStmt generatedBy) { result.getAst() = generatedBy }
 
-  TranslatedLockTry getTry(LockStmt generatedBy) { result.getAST() = generatedBy }
+  TranslatedLockTry getTry(LockStmt generatedBy) { result.getAst() = generatedBy }
 
   TranslatedLockWasTakenDecl getLockWasTakenDecl(LockStmt generatedBy) {
-    result.getAST() = generatedBy
+    result.getAst() = generatedBy
   }
 
   int noGeneratedElements() { result = 14 }
@@ -64,14 +64,14 @@ private class TranslatedLockTry extends TranslatedCompilerGeneratedTry,
 
   override TranslatedElement getFinally() {
     exists(TranslatedLockFinally fin |
-      fin.getAST() = generatedBy and
+      fin.getAst() = generatedBy and
       result = fin
     )
   }
 
   override TranslatedElement getBody() {
     exists(TranslatedLockTryBody ltb |
-      ltb.getAST() = generatedBy and
+      ltb.getAst() = generatedBy and
       result = ltb
     )
   }
@@ -89,7 +89,7 @@ private class TranslatedLockTryBody extends TranslatedCompilerGeneratedBlock,
   override TranslatedElement getStmt(int index) {
     index = 0 and
     exists(TranslatedMonitorEnter me |
-      me.getAST() = generatedBy and
+      me.getAst() = generatedBy and
       result = me
     )
     or
@@ -110,7 +110,7 @@ private class TranslatedLockFinally extends TranslatedCompilerGeneratedBlock,
   override TranslatedElement getStmt(int index) {
     index = 0 and
     exists(TranslatedFinallyIf fif |
-      fif.getAST() = generatedBy and
+      fif.getAst() = generatedBy and
       result = fif
     )
   }
@@ -138,7 +138,7 @@ private class TranslatedMonitorExit extends TranslatedCompilerGeneratedCall,
   override TranslatedExprBase getArgument(int id) {
     id = 0 and
     exists(TranslatedMonitorExitVarAcc var |
-      var.getAST() = generatedBy and
+      var.getAst() = generatedBy and
       result = var
     )
   }
@@ -170,13 +170,13 @@ private class TranslatedMonitorEnter extends TranslatedCompilerGeneratedCall,
   override TranslatedExprBase getArgument(int id) {
     id = 0 and
     exists(TranslatedMonitorEnterVarAcc var |
-      var.getAST() = generatedBy and
+      var.getAst() = generatedBy and
       result = var
     )
     or
     id = 1 and
     exists(TranslatedLockWasTakenRefArg refArg |
-      refArg.getAST() = generatedBy and
+      refArg.getAst() = generatedBy and
       result = refArg
     )
   }
@@ -197,7 +197,7 @@ private class TranslatedIfCondition extends TranslatedCompilerGeneratedValueCond
 
   override TranslatedCompilerGeneratedExpr getValueExpr() {
     exists(TranslatedLockWasTakenCondVarAcc condVar |
-      condVar.getAST() = generatedBy and
+      condVar.getAst() = generatedBy and
       result = condVar
     )
   }
@@ -216,14 +216,14 @@ private class TranslatedFinallyIf extends TranslatedCompilerGeneratedIfStmt,
 
   override TranslatedCompilerGeneratedValueCondition getCondition() {
     exists(TranslatedIfCondition cond |
-      cond.getAST() = generatedBy and
+      cond.getAst() = generatedBy and
       result = cond
     )
   }
 
   override TranslatedCompilerGeneratedCall getThen() {
     exists(TranslatedMonitorExit me |
-      me.getAST() = generatedBy and
+      me.getAst() = generatedBy and
       result = me
     )
   }
@@ -271,7 +271,7 @@ private class TranslatedLockWasTakenDecl extends TranslatedCompilerGeneratedDecl
 
   override TranslatedCompilerGeneratedExpr getInitialization() {
     exists(TranslatedWasTakenConst const |
-      const.getAST() = generatedBy and
+      const.getAst() = generatedBy and
       result = const
     )
   }

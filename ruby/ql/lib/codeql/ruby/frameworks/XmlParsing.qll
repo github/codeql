@@ -59,7 +59,7 @@ private class LibXmlRubyXmlParserCall extends XmlParserCall::Range, DataFlow::Ca
     exists(CfgNodes::ExprNodes::PairCfgNode pair |
       pair =
         this.getArgument(1).asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
-      pair.getKey().getConstantValue().isStringOrSymbol("options") and
+      pair.getKey().getConstantValue().isStringlikeValue("options") and
       pair.getValue() =
         [
           trackEnableFeature(TNOENT()), trackEnableFeature(TDTDLOAD()),
@@ -143,7 +143,7 @@ private DataFlow::LocalSourceNode trackFeature(Feature f, boolean enable, TypeTr
     or
     // Use of a constant f
     enable = true and
-    result = parseOptionsModule().getMember(f.getConstantName()).getAUse()
+    result = parseOptionsModule().getMember(f.getConstantName()).getAValueReachableFromSource()
     or
     // Treat `&`, `&=`, `|` and `|=` operators as if they preserve the on/off states
     // of their operands. This is an overapproximation but likely to work well in practice

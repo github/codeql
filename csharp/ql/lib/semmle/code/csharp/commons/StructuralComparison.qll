@@ -87,7 +87,9 @@ private class GvnCons extends Gvn, TGvnCons {
 pragma[noinline]
 private predicate gvnKindDeclaration(Expr e, int kind, boolean isTargetThis, Declaration d) {
   isTargetThis = isTargetThis(e) and
-  d = referenceAttribute(e) and
+  // guard against elements with multiple declaration targets (DB inconsistency),
+  // which may result in a combinatorial explosion
+  d = unique(Declaration d0 | d0 = referenceAttribute(e) | d0) and
   expressions(e, kind, _)
 }
 
@@ -190,13 +192,18 @@ private import Cached
 
 predicate toGvn = toGvnCached/1;
 
+/**
+ * Holds if the control flow elements `x` and `y` are structurally equal.
+ */
 pragma[inline]
-private predicate sameGvn(ControlFlowElement x, ControlFlowElement y) {
+predicate sameGvn(ControlFlowElement x, ControlFlowElement y) {
   pragma[only_bind_into](toGvn(pragma[only_bind_out](x))) =
     pragma[only_bind_into](toGvn(pragma[only_bind_out](y)))
 }
 
 /**
+ * DEPRECATED: Use `sameGvn` instead.
+ *
  * A configuration for performing structural comparisons of program elements
  * (expressions and statements).
  *
@@ -205,7 +212,7 @@ private predicate sameGvn(ControlFlowElement x, ControlFlowElement y) {
  *
  * Each use of the library is identified by a unique string value.
  */
-abstract class StructuralComparisonConfiguration extends string {
+abstract deprecated class StructuralComparisonConfiguration extends string {
   bindingset[this]
   StructuralComparisonConfiguration() { any() }
 
@@ -232,56 +239,4 @@ abstract class StructuralComparisonConfiguration extends string {
    * `candidate(x, y)` must hold.
    */
   predicate same(ControlFlowElement x, ControlFlowElement y) { candidate(x, y) and sameGvn(x, y) }
-}
-
-/**
- * INTERNAL: Do not use.
- *
- * A verbatim copy of the class `StructuralComparisonConfiguration` for internal
- * use.
- *
- * A copy is needed in order to use structural comparison within the standard
- * library without running into caching issues.
- */
-module Internal {
-  // Import all uses of the internal library to make sure caching works
-  private import semmle.code.csharp.controlflow.Guards as G
-
-  /**
-   * A configuration for performing structural comparisons of program elements
-   * (expressions and statements).
-   *
-   * The predicate `candidate()` must be overridden, in order to identify the
-   * elements for which to perform structural comparison.
-   *
-   * Each use of the library is identified by a unique string value.
-   */
-  abstract class InternalStructuralComparisonConfiguration extends string {
-    bindingset[this]
-    InternalStructuralComparisonConfiguration() { any() }
-
-    /**
-     * Holds if elements `x` and `y` are candidates for testing structural
-     * equality.
-     *
-     * Subclasses are expected to override this predicate to identify the
-     * top-level elements which they want to compare. Care should be
-     * taken to avoid identifying too many pairs of elements, as in general
-     * there are very many structurally equal subtrees in a program, and
-     * in order to keep the computation feasible we must focus attention.
-     *
-     * Note that this relation is not expected to be symmetric -- it's
-     * fine to include a pair `(x, y)` but not `(y, x)`.
-     * In fact, not including the symmetrically implied fact will save
-     * half the computation time on the structural comparison.
-     */
-    abstract predicate candidate(ControlFlowElement x, ControlFlowElement y);
-
-    /**
-     * Holds if elements `x` and `y` structurally equal. `x` and `y` must be
-     * flagged as candidates for structural equality, that is,
-     * `candidate(x, y)` must hold.
-     */
-    predicate same(ControlFlowElement x, ControlFlowElement y) { candidate(x, y) and sameGvn(x, y) }
-  }
 }

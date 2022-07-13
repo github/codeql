@@ -14,7 +14,7 @@ class ServletConstructedClass extends ReflectivelyConstructedClass {
     // referred to as a servlet-class in at least one. If no `web.xml` files are found, we assume
     // that XML extraction was not enabled, and therefore consider all `Servlet` classes as live.
     (
-      isWebXMLIncluded()
+      isWebXmlIncluded()
       implies
       exists(WebServletClass servletClass | this = servletClass.getClass())
     )
@@ -29,12 +29,12 @@ class ServletConstructedClass extends ReflectivelyConstructedClass {
  */
 class ServletListenerClass extends ReflectivelyConstructedClass {
   ServletListenerClass() {
-    this.getAnAncestor() instanceof ServletWebXMLListenerType and
+    this.getAnAncestor() instanceof ServletWebXmlListenerType and
     // If we have seen any `web.xml` files, this listener will be considered to be live only if it is
     // referred to as a listener-class in at least one. If no `web.xml` files are found, we assume
     // that XML extraction was not enabled, and therefore consider all listener classes as live.
     (
-      isWebXMLIncluded()
+      isWebXmlIncluded()
       implies
       exists(WebListenerClass listenerClass | this = listenerClass.getClass())
     )
@@ -51,7 +51,7 @@ class ServletFilterClass extends ReflectivelyConstructedClass {
     // If we have seen any `web.xml` files, this filter will be considered to be live only if it is
     // referred to as a filter-class in at least one. If no `web.xml` files are found, we assume
     // that XML extraction was not enabled, and therefore consider all filter classes as live.
-    (isWebXMLIncluded() implies exists(WebFilterClass filterClass | this = filterClass.getClass()))
+    (isWebXmlIncluded() implies exists(WebFilterClass filterClass | this = filterClass.getClass()))
   }
 }
 

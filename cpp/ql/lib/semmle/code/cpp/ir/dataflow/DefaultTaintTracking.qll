@@ -129,11 +129,11 @@ private class FromGlobalVarTaintTrackingCfg extends TaintTracking2::Configuratio
 }
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
-  load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
+  load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
 }
 
 private predicate writesVariable(StoreInstruction store, Variable var) {
-  store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() = var
+  store.getDestinationAddress().(VariableAddressInstruction).getAstVariable() = var
 }
 
 /**
@@ -489,9 +489,9 @@ module TaintedWithPath {
     /** Gets the element that `pathNode` wraps, if any. */
     Element getElementFromPathNode(PathNode pathNode) {
       exists(DataFlow::Node node | node = pathNode.(WrapPathNode).inner().getNode() |
-        result = node.asInstruction().getAST()
+        result = node.asInstruction().getAst()
         or
-        result = node.asOperand().getDef().getAST()
+        result = node.asOperand().getDef().getAst()
       )
       or
       result = pathNode.(EndpointPathNode).inner()

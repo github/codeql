@@ -1,3 +1,3 @@
 import javascript
 
-query predicate test_getParent(Expr e, ASTNode res) { res = e.getParent() }
+query predicate test_getParent(Expr e, AstNode res) { res = e.getParent() }

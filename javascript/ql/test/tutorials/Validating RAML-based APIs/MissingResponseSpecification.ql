@@ -9,17 +9,17 @@ import javascript
 import Osprey
 import RAML
 
-RAMLMethod getSpecification(OspreyMethod om) {
-  exists(RAMLResource rr, File f, string rPath |
+RamlMethod getSpecification(OspreyMethod om) {
+  exists(RamlResource rr, File f, string rPath |
     rr.getLocation().getFile() = f and
-    f = om.getDefinition().getAPI().getSpecFile() and
+    f = om.getDefinition().getApi().getSpecFile() and
     rPath = om.getResourcePath() and
     rr.getPath() = rPath.regexpReplaceAll("/:([^/]+)/", "/{$1}/") and
     result = rr.getMethod(om.getVerb())
   )
 }
 
-from MethodResponseSetStatus mrss, RAMLMethod rm
+from MethodResponseSetStatus mrss, RamlMethod rm
 where
   rm = getSpecification(mrss.getMethod()) and
   not exists(rm.getResponse(mrss.getStatusCode()))

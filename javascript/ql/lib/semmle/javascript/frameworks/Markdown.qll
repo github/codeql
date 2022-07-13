@@ -21,7 +21,10 @@ module Markdown {
     /**
      * Holds if the taint-step preserves HTML.
      */
-    predicate preservesHTML() { any() }
+    predicate preservesHtml() { any() }
+
+    /** DEPRECATED: Alias for preservesHtml */
+    deprecated predicate preservesHTML() { this.preservesHtml() }
   }
 
   private class MarkdownStepAsTaintStep extends TaintTracking::SharedTaintStep {
@@ -160,14 +163,14 @@ module Markdown {
         or
         call = API::moduleImport("markdown-it").getMember("Markdown").getAnInvocation()
       |
-        call.getParameter(0).getMember("html").getARhs().mayHaveBooleanValue(true) and
+        call.getParameter(0).getMember("html").asSink().mayHaveBooleanValue(true) and
         result = call.getReturn()
       )
       or
       exists(API::CallNode call |
         call = markdownIt().getMember(["use", "set", "configure", "enable", "disable"]).getACall() and
         result = call.getReturn() and
-        not call.getParameter(0).getAValueReachingRhs() =
+        not call.getParameter(0).getAValueReachingSink() =
           DataFlow::moduleImport("markdown-it-sanitizer")
       )
     }

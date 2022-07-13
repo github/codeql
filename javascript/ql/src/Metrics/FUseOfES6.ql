@@ -12,4 +12,4 @@
 import ES20xxFeatures
 
 from File f
-select f, count(ASTNode nd | nd.getFile() = f and isES20xxFeature(nd, _, _)) as n order by n desc
+select f, count(AstNode nd | nd.getFile() = f and isES20xxFeature(nd, _, _)) as n order by n desc

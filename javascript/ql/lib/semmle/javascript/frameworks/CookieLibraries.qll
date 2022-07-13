@@ -367,10 +367,10 @@ private module ExpressCookies {
  * In case an array is passed `setHeader("Set-Cookie", [...]` it sets multiple cookies.
  * We model a `CookieWrite` for each array element.
  */
-private class HTTPCookieWrite extends CookieWrites::CookieWrite {
+private class HttpCookieWrite extends CookieWrites::CookieWrite {
   string header;
 
-  HTTPCookieWrite() {
+  HttpCookieWrite() {
     exists(HTTP::CookieDefinition setCookie |
       this.asExpr() = setCookie.getHeaderArgument() and
       not this instanceof DataFlow::ArrayCreationNode

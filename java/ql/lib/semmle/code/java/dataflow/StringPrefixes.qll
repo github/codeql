@@ -34,7 +34,7 @@ private import semmle.code.java.StringFormat
  * A string constant that contains a prefix whose possibly-appended strings are
  * returned by `getAnAppendedExpression`.
  *
- * Extend this class to specify prefixes whose possibly-appended strings should be analysed.
+ * Extend this class to specify prefixes whose possibly-appended strings should be analyzed.
  */
 abstract class InterestingPrefix extends CompileTimeConstantExpr {
   /**

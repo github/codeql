@@ -3,7 +3,7 @@ import semmle.code.java.frameworks.spring.SpringXMLElement
 import semmle.code.java.frameworks.spring.SpringBean
 
 /** A `<replaced-method>` element in a Spring XML file. */
-class SpringReplacedMethod extends SpringXMLElement {
+class SpringReplacedMethod extends SpringXmlElement {
   SpringReplacedMethod() { this.getName() = "replaced-method" }
 
   /** Gets the value of the `name` attribute. */

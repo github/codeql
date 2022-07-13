@@ -7,6 +7,7 @@ import semmle.code.java.frameworks.spring.Spring
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.javase.Http
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.frameworks.Properties
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.dataflow.ExternalFlow
 
@@ -33,11 +34,29 @@ private class DefaultRequestForgeryAdditionalTaintStep extends RequestForgeryAdd
   }
 }
 
+private class TypePropertiesRequestForgeryAdditionalTaintStep extends RequestForgeryAdditionalTaintStep {
+  override predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(MethodAccess ma |
+      // Properties props = new Properties();
+      // props.setProperty("jdbcUrl", tainted);
+      // Propagate tainted value to the qualifier `props`
+      ma.getMethod() instanceof PropertiesSetPropertyMethod and
+      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "jdbcUrl" and
+      pred.asExpr() = ma.getArgument(1) and
+      succ.asExpr() = ma.getQualifier()
+    )
+  }
+}
+
 /** A data flow sink for server-side request forgery (SSRF) vulnerabilities. */
 abstract class RequestForgerySink extends DataFlow::Node { }
 
 private class UrlOpenSinkAsRequestForgerySink extends RequestForgerySink {
   UrlOpenSinkAsRequestForgerySink() { sinkNode(this, "open-url") }
+}
+
+private class JdbcUrlSinkAsRequestForgerySink extends RequestForgerySink {
+  JdbcUrlSinkAsRequestForgerySink() { sinkNode(this, "jdbc-url") }
 }
 
 /** A sanitizer for request forgery vulnerabilities. */

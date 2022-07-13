@@ -265,7 +265,7 @@ class TypeMentionNode extends PrintAstNode, TTypeMentionNode {
   final TypeMention getTypeMention() { result = typeMention }
 
   /**
-   * Gets the `Element` targetted by the `TypeMention`.
+   * Gets the `Element` targeted by the `TypeMention`.
    */
   final Element getTarget() { result = typeMention.getTarget() }
 

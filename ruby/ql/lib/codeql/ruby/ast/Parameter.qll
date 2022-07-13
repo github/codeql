@@ -109,7 +109,7 @@ class NamedParameter extends Parameter, TNamedParameter {
   final VariableAccess getDefiningAccess() {
     result = this.getVariable().getDefiningAccess()
     or
-    result = this.(SimpleParameterSynthImpl).getDefininingAccess()
+    result = this.(SimpleParameterSynthImpl).getDefiningAccess()
   }
 
   override AstNode getAChild(string pred) {

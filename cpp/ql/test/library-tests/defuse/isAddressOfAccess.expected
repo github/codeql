@@ -12,8 +12,12 @@
 | addressOf.cpp:40:15:40:15 | i | non-const address |
 | addressOf.cpp:42:19:42:22 | iref | non-const address |
 | addressOf.cpp:47:12:47:31 | captured | non-const address |
+| addressOf.cpp:47:13:47:13 | (unnamed parameter 0) |  |
+| addressOf.cpp:47:13:47:13 | captured |  |
 | addressOf.cpp:47:19:47:28 | captured |  |
 | addressOf.cpp:48:3:48:4 | f1 | const address |
+| addressOf.cpp:49:13:49:13 | (unnamed parameter 0) |  |
+| addressOf.cpp:49:13:49:13 | captured |  |
 | addressOf.cpp:49:15:49:22 | captured | non-const address |
 | addressOf.cpp:49:27:49:36 | captured |  |
 | addressOf.cpp:50:3:50:4 | f2 | const address |
@@ -245,6 +249,10 @@
 | test.cpp:173:19:173:19 | x | const address |
 | test.cpp:174:20:174:20 | x | const address |
 | test.cpp:175:7:175:7 | x |  |
+| test.cpp:178:8:178:8 | (unnamed parameter 0) |  |
+| test.cpp:178:8:178:8 | (unnamed parameter 0) |  |
+| test.cpp:178:8:178:8 | nested |  |
+| test.cpp:178:8:178:8 | x_ |  |
 | test.cpp:183:38:183:41 | yptr |  |
 | test.cpp:183:48:183:48 | z |  |
 | test.cpp:184:28:184:35 | static_y | non-const address |

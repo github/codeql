@@ -9,7 +9,7 @@ import javascript
  * Provides sources, sinks and sanitizers for reasoning about flow of
  * untrusted data into an external API.
  */
-module ExternalAPIUsedWithUntrustedData {
+module ExternalApiUsedWithUntrustedData {
   /**
    * A source of untrusted data.
    */
@@ -48,7 +48,7 @@ module ExternalAPIUsedWithUntrustedData {
   }
 
   /** Holds if `node` corresponds to a deep object argument. */
-  private predicate isDeepObjectSink(API::Node node) { node.getARhs() instanceof DeepObjectSink }
+  private predicate isDeepObjectSink(API::Node node) { node.asSink() instanceof DeepObjectSink }
 
   /**
    * A sanitizer for data flowing to an external API.
@@ -62,12 +62,15 @@ module ExternalAPIUsedWithUntrustedData {
   /**
    * A package name whose entire API is considered "safe" for the purpose of this query.
    */
-  abstract class SafeExternalAPIPackage extends string {
-    SafeExternalAPIPackage() { exists(API::moduleImport(this)) }
+  abstract class SafeExternalApiPackage extends string {
+    SafeExternalApiPackage() { exists(API::moduleImport(this)) }
   }
 
-  private class DefaultSafeExternalAPIPackage extends SafeExternalAPIPackage {
-    DefaultSafeExternalAPIPackage() {
+  /** DEPRECATED: Alias for SafeExternalApiPackage */
+  deprecated class SafeExternalAPIPackage = SafeExternalApiPackage;
+
+  private class DefaultSafeExternalApiPackage extends SafeExternalApiPackage {
+    DefaultSafeExternalApiPackage() {
       // Promise libraries are safe and generate too much noise if included
       this =
         [
@@ -80,14 +83,17 @@ module ExternalAPIUsedWithUntrustedData {
   /**
    * A function that is considered a "safe" external API from a security perspective.
    */
-  abstract class SafeExternalAPIFunction extends API::Node { }
+  abstract class SafeExternalApiFunction extends API::Node { }
+
+  /** DEPRECATED: Alias for SafeExternalApiFunction */
+  deprecated class SafeExternalAPIFunction = SafeExternalApiFunction;
 
   /** Holds if data read from a use of `f` may originate from an imported package. */
   private predicate mayComeFromLibrary(API::Node f) {
     // base case: import
     exists(string path |
       f = API::moduleImport(path) and
-      not path instanceof SafeExternalAPIPackage and
+      not path instanceof SafeExternalApiPackage and
       // Exclude paths that can be resolved to a file in the project
       not exists(Import imprt |
         imprt.getImportedPath().getValue() = path and exists(imprt.getImportedModule())
@@ -132,10 +138,10 @@ module ExternalAPIUsedWithUntrustedData {
    */
   private predicate nodeIsRelevant(API::Node node) {
     mayComeFromLibrary(node) and
-    not node instanceof SafeExternalAPIFunction
+    not node instanceof SafeExternalApiFunction
     or
     nodeIsRelevant(node.getASuccessor()) and
-    not node = API::moduleImport(any(SafeExternalAPIPackage p))
+    not node = API::moduleImport(any(SafeExternalApiPackage p))
   }
 
   /** Holds if the edge `pred -> succ` may lead to an external API call. */
@@ -159,9 +165,9 @@ module ExternalAPIUsedWithUntrustedData {
       not param = base.getReceiver()
     |
       result = param and
-      name = param.getAnImmediateUse().asExpr().(Parameter).getName()
+      name = param.asSource().asExpr().(Parameter).getName()
       or
-      param.getAnImmediateUse().asExpr() instanceof DestructuringPattern and
+      param.asSource().asExpr() instanceof DestructuringPattern and
       result = param.getMember(name)
     )
   }
@@ -213,7 +219,6 @@ module ExternalAPIUsedWithUntrustedData {
         or
         exists(string callbackName, int index |
           node = getNamedParameter(base.getParameter(index).getMember(callbackName), paramName) and
-          index != -1 and // ignore receiver
           result =
             basename + ".[callback " + index + " '" + callbackName + "'].[param '" + paramName +
               "']"
@@ -368,3 +373,6 @@ module ExternalAPIUsedWithUntrustedData {
     }
   }
 }
+
+/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
+deprecated module ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

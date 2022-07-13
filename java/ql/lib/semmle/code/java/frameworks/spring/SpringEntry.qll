@@ -6,7 +6,7 @@ import semmle.code.java.frameworks.spring.SpringKey
 import semmle.code.java.frameworks.spring.SpringValue
 
 /** An `<entry>` element in Spring XML files. */
-class SpringEntry extends SpringXMLElement {
+class SpringEntry extends SpringXmlElement {
   SpringEntry() { this.getName() = "entry" }
 
   /** Holds if this `entry` has a `key` attribute. */
@@ -64,7 +64,7 @@ class SpringEntry extends SpringXMLElement {
 
   /**
    * Gets the bean pointed to by either the `value-ref` attribute, or a nested
-   * `<ref> or `<idref>` element, whichever is present.
+   * `<ref>` or `<idref>` element, whichever is present.
    */
   SpringBean getValueRefBean() {
     if this.hasValueRefString()

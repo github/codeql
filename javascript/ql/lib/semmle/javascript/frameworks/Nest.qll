@@ -140,18 +140,16 @@ module NestJS {
   private class ValidationNodeEntry extends API::EntryPoint {
     ValidationNodeEntry() { this = "ValidationNodeEntry" }
 
-    override DataFlow::SourceNode getAUse() {
+    override DataFlow::SourceNode getASource() {
       result.(DataFlow::ClassNode).getName() = "ValidationPipe"
     }
-
-    override DataFlow::Node getARhs() { none() }
   }
 
   /** Gets an API node referring to the constructor of `ValidationPipe` */
   private API::Node validationPipe() {
     result = nestjs().getMember("ValidationPipe")
     or
-    result = any(ValidationNodeEntry e).getNode()
+    result = any(ValidationNodeEntry e).getANode()
   }
 
   /**
@@ -181,7 +179,7 @@ module NestJS {
   predicate hasGlobalValidationPipe(Folder folder) {
     exists(DataFlow::CallNode call |
       call.getCalleeName() = "useGlobalPipes" and
-      call.getArgument(0) = validationPipe().getInstance().getAUse() and
+      call.getArgument(0) = validationPipe().getInstance().getAValueReachableFromSource() and
       folder = call.getFile().getParentContainer()
     )
     or
@@ -193,7 +191,7 @@ module NestJS {
           .getAMember()
           .getMember("useFactory")
           .getReturn()
-          .getARhs() = validationPipe().getInstance().getAUse() and
+          .asSink() = validationPipe().getInstance().getAValueReachableFromSource() and
       folder = decorator.getFile().getParentContainer()
     )
     or
@@ -204,7 +202,7 @@ module NestJS {
    * Holds if `param` is affected by a pipe that sanitizes inputs.
    */
   private predicate hasSanitizingPipe(NestJSRequestInput param, boolean dependsOnType) {
-    param.getAPipe() = sanitizingPipe(dependsOnType).getAUse()
+    param.getAPipe() = sanitizingPipe(dependsOnType).getAValueReachableFromSource()
     or
     hasGlobalValidationPipe(param.getFile().getParentContainer()) and
     dependsOnType = true
@@ -395,11 +393,11 @@ module NestJS {
 
     /** Gets a parameter with this decorator applied. */
     DataFlow::ParameterNode getADecoratedParameter() {
-      result.getADecorator() = getReturn().getReturn().getAUse()
+      result.getADecorator() = getReturn().getReturn().getAValueReachableFromSource()
     }
 
     /** Gets a value returned by the decorator's callback, which becomes the value of the decorated parameter. */
-    DataFlow::Node getResult() { result = getParameter(0).getReturn().getARhs() }
+    DataFlow::Node getResult() { result = getParameter(0).getReturn().asSink() }
   }
 
   /**
@@ -427,7 +425,7 @@ module NestJS {
   private class ExpressRequestSource extends Express::RequestSource {
     ExpressRequestSource() {
       this.(DataFlow::ParameterNode).getADecorator() =
-        nestjs().getMember(["Req", "Request"]).getReturn().getAnImmediateUse()
+        nestjs().getMember(["Req", "Request"]).getReturn().asSource()
       or
       this =
         executionContext()
@@ -435,7 +433,7 @@ module NestJS {
             .getReturn()
             .getMember("getRequest")
             .getReturn()
-            .getAnImmediateUse()
+            .asSource()
     }
 
     /**
@@ -452,7 +450,7 @@ module NestJS {
   private class ExpressResponseSource extends Express::ResponseSource {
     ExpressResponseSource() {
       this.(DataFlow::ParameterNode).getADecorator() =
-        nestjs().getMember(["Res", "Response"]).getReturn().getAnImmediateUse()
+        nestjs().getMember(["Res", "Response"]).getReturn().asSource()
     }
 
     /**

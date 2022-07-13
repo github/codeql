@@ -1,6 +1,6 @@
 import python
-private import semmle.python.objects.ObjectAPI
 private import semmle.python.objects.Modules
+private import semmle.python.internal.CachedStages
 
 /**
  * A module. This is the top level element in an AST, corresponding to a source file.
@@ -98,12 +98,6 @@ class Module extends Module_, Scope, AstNode {
 
   /** Gets the metrics for this module */
   ModuleMetrics getMetrics() { result = this }
-
-  /**
-   * Use ModuleObject.getAnImportedModule() instead.
-   * Gets a module imported by this module
-   */
-  deprecated Module getAnImportedModule() { result.getName() = this.getAnImportedModuleName() }
 
   string getAnImportedModuleName() {
     exists(Import i | i.getEnclosingModule() = this | result = i.getAnImportedModuleName())
@@ -227,7 +221,9 @@ private predicate transitively_imported_from_entry_point(File file) {
   )
 }
 
+cached
 string moduleNameFromFile(Container file) {
+  Stages::AST::ref() and
   exists(string basename |
     basename = moduleNameFromBase(file) and
     legalShortName(basename)

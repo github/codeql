@@ -56,13 +56,13 @@ module Electron {
     }
   }
 
-  private API::Node browserObject() { result.getAnImmediateUse() instanceof NewBrowserObject }
+  private API::Node browserObject() { result.asSource() instanceof NewBrowserObject }
 
   /**
    * A data flow node whose value may originate from a browser object instantiation.
    */
   private class BrowserObjectByFlow extends BrowserObject {
-    BrowserObjectByFlow() { browserObject().getAUse() = this }
+    BrowserObjectByFlow() { browserObject().getAValueReachableFromSource() = this }
   }
 
   /**
@@ -188,8 +188,6 @@ module Electron {
      */
     abstract class Range extends NodeJSLib::NodeJSClientRequest::Range { }
   }
-
-  deprecated class CustomElectronClientRequest = ElectronClientRequest::Range;
 
   /**
    * A Node.js-style HTTP or HTTPS request made using `electron.ClientRequest`.

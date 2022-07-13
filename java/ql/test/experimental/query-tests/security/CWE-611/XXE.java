@@ -21,40 +21,29 @@ public class XXE {
 	public void bad1(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ServletInputStream servletInputStream = request.getInputStream();
 		Digester digester = new Digester();
-		digester.parse(servletInputStream); //bad
+		digester.parse(servletInputStream); // bad
 	}
 
 	@PostMapping(value = "bad2")
 	public void bad2(HttpServletRequest request) throws Exception {
-		BufferedReader br = request.getReader();
-		String str = "";
-		StringBuilder listString = new StringBuilder();
-		while ((str = br.readLine()) != null) {
-			listString.append(str).append("\n");
-		}
-		Document document = DocumentHelper.parseText(listString.toString()); //bad
-	}
-
-	@PostMapping(value = "bad3")
-	public void bad3(HttpServletRequest request) throws Exception {
 		ServletInputStream servletInputStream = request.getInputStream();
 		SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
 		Schema schema = factory.newSchema();
 		Validator validator = schema.newValidator();
 		StreamSource source = new StreamSource(servletInputStream);
-		validator.validate(source); //bad
+		validator.validate(source); // bad
+	}
+
+	@PostMapping(value = "bad3")
+	public void bad3(HttpServletRequest request) throws Exception {
+		ServletInputStream servletInputStream = request.getInputStream();
+		XMLDecoder xmlDecoder = new XMLDecoder(servletInputStream);
+		xmlDecoder.readObject(); // bad
 	}
 
 	@PostMapping(value = "bad4")
 	public void bad4(HttpServletRequest request) throws Exception {
-		ServletInputStream servletInputStream = request.getInputStream();
-		XMLDecoder xmlDecoder = new XMLDecoder(servletInputStream);
-		xmlDecoder.readObject(); //bad
-	}
-
-	@PostMapping(value = "bad5")
-	public void bad5(HttpServletRequest request) throws Exception {
-		Document document = ParserHelper.loadDocument(request.getInputStream()); //bad
+		Document document = ParserHelper.loadDocument(request.getInputStream()); // bad
 	}
 
 	@PostMapping(value = "good1")
@@ -87,5 +76,17 @@ public class XXE {
 		validator.setProperty("http://javax.xml.XMLConstants/property/accessExternalSchema", "");
 		StreamSource source = new StreamSource(listString.toString());
 		validator.validate(source);
+	}
+
+	@PostMapping(value = "good3")
+	public void good3(HttpServletRequest request) throws Exception {
+		BufferedReader br = request.getReader();
+		String str = "";
+		StringBuilder listString = new StringBuilder();
+		while ((str = br.readLine()) != null) {
+			listString.append(str).append("\n");
+		}
+		// parseText falls back to a default SAXReader, which is safe
+		Document document = DocumentHelper.parseText(listString.toString()); // Safe
 	}
 }

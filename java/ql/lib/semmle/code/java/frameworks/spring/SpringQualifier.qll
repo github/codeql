@@ -2,7 +2,7 @@ import java
 import semmle.code.java.frameworks.spring.SpringXMLElement
 
 /** A `<qualifier>` element in a Spring XML file. */
-class SpringQualifier extends SpringXMLElement {
+class SpringQualifier extends SpringXmlElement {
   SpringQualifier() { this.getName() = "qualifier" }
 
   /** Gets the name of the Java class of this qualifier. */

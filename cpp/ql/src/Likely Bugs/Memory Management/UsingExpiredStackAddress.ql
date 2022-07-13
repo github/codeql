@@ -19,7 +19,7 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.ir.IR
 
 predicate instructionHasVariable(VariableAddressInstruction vai, StackVariable var, Function f) {
-  var = vai.getASTVariable() and
+  var = vai.getAstVariable() and
   f = vai.getEnclosingFunction() and
   // Pointer-to-member types aren't properly handled in the dbscheme.
   not vai.getResultType() instanceof PointerToMemberType and
@@ -108,7 +108,7 @@ predicate inheritanceConversionTypes(
 
 /** Gets the HashCons value of an address computed by `instr`, if any. */
 TGlobalAddress globalAddress(Instruction instr) {
-  result = TGlobalVariable(instr.(VariableAddressInstruction).getASTVariable())
+  result = TGlobalVariable(instr.(VariableAddressInstruction).getAstVariable())
   or
   not instr instanceof LoadInstruction and
   result = globalAddress(instr.(CopyInstruction).getSourceValue())
@@ -133,7 +133,9 @@ TGlobalAddress globalAddress(Instruction instr) {
   )
   or
   exists(FieldAddressInstruction fai | instr = fai |
-    result = TFieldAddress(globalAddress(fai.getObjectAddress()), fai.getField())
+    result =
+      TFieldAddress(globalAddress(pragma[only_bind_into](fai.getObjectAddress())),
+        pragma[only_bind_out](fai.getField()))
   )
   or
   result = globalAddress(instr.(PointerOffsetInstruction).getLeft())

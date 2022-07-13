@@ -683,8 +683,6 @@ private module ExpressJwt {
  */
 private module NodeRsa {
   private class CreateKey extends CryptographicKeyCreation, API::InvokeNode {
-    CryptographicAlgorithm algorithm;
-
     CreateKey() {
       this = API::moduleImport("node-rsa").getAnInstantiation()
       or

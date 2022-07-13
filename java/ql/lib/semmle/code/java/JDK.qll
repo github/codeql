@@ -4,6 +4,7 @@
 
 import Member
 import semmle.code.java.security.ExternalProcess
+private import semmle.code.java.dataflow.FlowSteps
 
 // --- Standard types ---
 /** The class `java.lang.Object`. */
@@ -35,6 +36,27 @@ class TypeString extends Class {
 /** The `length()` method of the class `java.lang.String`. */
 class StringLengthMethod extends Method {
   StringLengthMethod() { this.hasName("length") and this.getDeclaringType() instanceof TypeString }
+}
+
+/**
+ * The methods on the class `java.lang.String` that are used to perform partial matches with a specified substring or char.
+ */
+class StringPartialMatchMethod extends Method {
+  StringPartialMatchMethod() {
+    this.hasName([
+        "contains", "startsWith", "endsWith", "matches", "indexOf", "lastIndexOf", "regionMatches"
+      ]) and
+    this.getDeclaringType() instanceof TypeString
+  }
+
+  /**
+   * Gets the index of the parameter that is being matched against.
+   */
+  int getMatchParameterIndex() {
+    if this.hasName("regionMatches")
+    then this.getParameterType(result) instanceof TypeString
+    else result = 0
+  }
 }
 
 /** The class `java.lang.StringBuffer`. */
@@ -82,6 +104,11 @@ class TypeClassCastException extends Class {
   TypeClassCastException() { this.hasQualifiedName("java.lang", "ClassCastException") }
 }
 
+/** The class `java.lang.NullPointerException`. */
+class TypeNullPointerException extends Class {
+  TypeNullPointerException() { this.hasQualifiedName("java.lang", "NullPointerException") }
+}
+
 /**
  * The class `java.lang.Class`.
  *
@@ -115,18 +142,6 @@ class TypeNumber extends RefType {
 /** A (reflexive, transitive) subtype of `java.lang.Number`. */
 class NumberType extends RefType {
   NumberType() { exists(TypeNumber number | hasDescendant(number, this)) }
-}
-
-/** A numeric type, including both primitive and boxed types. */
-class NumericType extends Type {
-  NumericType() {
-    exists(string name |
-      name = this.(PrimitiveType).getName() or
-      name = this.(BoxedType).getPrimitiveType().getName()
-    |
-      name.regexpMatch("byte|short|int|long|double|float")
-    )
-  }
 }
 
 /** An immutable type. */
@@ -228,11 +243,13 @@ class MethodSystemGetenv extends Method {
 /**
  * Any method named `getProperty` on class `java.lang.System`.
  */
-class MethodSystemGetProperty extends Method {
+class MethodSystemGetProperty extends ValuePreservingMethod {
   MethodSystemGetProperty() {
     this.hasName("getProperty") and
     this.getDeclaringType() instanceof TypeSystem
   }
+
+  override predicate returnsValue(int arg) { arg = 1 }
 }
 
 /**
@@ -244,6 +261,9 @@ class MethodAccessSystemGetProperty extends MethodAccess {
   /**
    * Holds if this call has a compile-time constant first argument with the value `propertyName`.
    * For example: `System.getProperty("user.dir")`.
+   *
+   * Note: Better to use `semmle.code.java.environment.SystemProperty#getSystemProperty` instead
+   * as that predicate covers ways of accessing the same information via various libraries.
    */
   predicate hasCompileTimeConstantGetPropertyName(string propertyName) {
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName

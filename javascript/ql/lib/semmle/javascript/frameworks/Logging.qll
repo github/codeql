@@ -35,9 +35,7 @@ private module Console {
   private class ConsoleGlobalEntry extends API::EntryPoint {
     ConsoleGlobalEntry() { this = "ConsoleGlobalEntry" }
 
-    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("console") }
-
-    override DataFlow::Node getARhs() { none() }
+    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("console") }
   }
 
   /**
@@ -45,7 +43,7 @@ private module Console {
    */
   private API::Node console() {
     result = API::moduleImport("console") or
-    result = any(ConsoleGlobalEntry e).getNode()
+    result = any(ConsoleGlobalEntry e).getANode()
   }
 
   /**
@@ -123,7 +121,7 @@ private module Winston {
 /**
  * Provides classes for working with [log4js](https://github.com/log4js-node/log4js-node).
  */
-private module log4js {
+private module Log4js {
   /**
    * A call to the log4js logging mechanism.
    */
@@ -352,7 +350,7 @@ private module Pino {
     // `pino` is installed as the "log" property on the request object in `Express` and similar libraries.
     // in `Hapi` the property is "logger".
     exists(HTTP::RequestExpr req, API::Node reqNode |
-      reqNode.getAnImmediateUse() = req.flow().getALocalSource() and
+      reqNode.asSource() = req.flow().getALocalSource() and
       result = reqNode.getMember(["log", "logger"])
     )
   }

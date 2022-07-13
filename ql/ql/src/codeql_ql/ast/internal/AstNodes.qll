@@ -6,6 +6,7 @@ cached
 newtype TAstNode =
   TTopLevel(QL::Ql file) or
   TQLDoc(QL::Qldoc qldoc) or
+  TBlockComment(QL::BlockComment comment) or
   TClasslessPredicate(QL::ClasslessPredicate pred) or
   TVarDecl(QL::VarDecl decl) or
   TFieldDecl(QL::Field field) or
@@ -82,9 +83,14 @@ class TExpr =
 
 class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
-class TModuleRef = TImport or TModuleExpr;
+class TTypeRef = TImport or TModuleExpr or TType;
 
-class TYAMLNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
+class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
+
+class TSignatureExpr = TPredicateExpr or TType;
+
+/** DEPRECATED: Alias for TYamlNode */
+deprecated class TYAMLNode = TYamlNode;
 
 private QL::AstNode toQLFormula(AST::AstNode n) {
   n = TConjunction(result) or
@@ -115,7 +121,7 @@ private QL::AstNode toQLExpr(AST::AstNode n) {
   n = TDontCare(result)
 }
 
-private QL::AstNode toGenerateYAML(AST::AstNode n) {
+private QL::AstNode toGenerateYaml(AST::AstNode n) {
   n = TYamlCommemt(result) or
   n = TYamlEntry(result) or
   n = TYamlKey(result) or
@@ -132,7 +138,7 @@ QL::AstNode toQL(AST::AstNode n) {
   or
   result = toQLFormula(n)
   or
-  result = toGenerateYAML(n)
+  result = toGenerateYaml(n)
   or
   result.(QL::ParExpr).getChild() = toQL(n)
   or
@@ -145,6 +151,8 @@ QL::AstNode toQL(AST::AstNode n) {
   n = TTopLevel(result)
   or
   n = TQLDoc(result)
+  or
+  n = TBlockComment(result)
   or
   n = TClasslessPredicate(result)
   or
@@ -198,7 +206,7 @@ QL::AstNode toQL(AST::AstNode n) {
 class TPredicate =
   TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation or TNewTypeBranch;
 
-class TPredOrBuiltin = TPredicate or TNewTypeBranch or TBuiltin;
+class TPredOrBuiltin = TPredicate or TBuiltin;
 
 class TBuiltin = TBuiltinClassless or TBuiltinMember;
 
@@ -223,4 +231,6 @@ module AstConsistency {
     not node instanceof YAML::YAMLNode and // parents for YAML doens't work
     not (node instanceof QLDoc and node.getLocation().getFile().getExtension() = "dbscheme") // qldoc in dbschemes are not hooked up
   }
+
+  query predicate nonUniqueParent(AstNode node) { count(node.getParent()) >= 2 }
 }

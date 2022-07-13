@@ -51,8 +51,20 @@ module CodeInjection {
     }
   }
 
+  /** An expression parsed by the `gray-matter` library. */
+  class GrayMatterSink extends Sink {
+    GrayMatterSink() {
+      exists(API::CallNode call |
+        call = DataFlow::moduleImport("gray-matter").getACall() and
+        this = call.getArgument(0) and
+        // if the js/javascript engine is set, then we assume they are set to something safe.
+        not exists(call.getParameter(1).getMember("engines").getMember(["js", "javascript"]))
+      )
+    }
+  }
+
   /**
-   * A template tag occuring in JS code, viewed as a code injection sink.
+   * A template tag occurring in JS code, viewed as a code injection sink.
    */
   class TemplateTagInScriptSink extends Sink {
     TemplateTagInScriptSink() {
@@ -208,7 +220,7 @@ module CodeInjection {
    */
   class ReactScriptTag extends Sink {
     ReactScriptTag() {
-      exists(JSXElement element | element.getName() = "script" |
+      exists(JsxElement element | element.getName() = "script" |
         this = element.getBodyElement(_).flow()
       )
     }
@@ -223,7 +235,7 @@ module CodeInjection {
         def.getName().regexpMatch("(?i)on.+") and
         this = def.getValueNode() and
         // JSX event handlers are functions, not strings
-        not def instanceof JSXAttribute
+        not def instanceof JsxAttribute
       )
     }
   }
@@ -231,9 +243,12 @@ module CodeInjection {
   /**
    * A code operator of a NoSQL query as a code injection sink.
    */
-  class NoSQLCodeInjectionSink extends Sink {
-    NoSQLCodeInjectionSink() { any(NoSQL::Query q).getACodeOperator() = this }
+  class NoSqlCodeInjectionSink extends Sink {
+    NoSqlCodeInjectionSink() { any(NoSql::Query q).getACodeOperator() = this }
   }
+
+  /** DEPRECATED: Alias for NoSqlCodeInjectionSink */
+  deprecated class NoSQLCodeInjectionSink = NoSqlCodeInjectionSink;
 
   /**
    * The first argument to `Module.prototype._compile`, considered as a code-injection sink.
@@ -379,5 +394,8 @@ module CodeInjection {
   /**
    * A call to JSON.stringify() seen as a sanitizer.
    */
-  class JSONStringifySanitizer extends Sanitizer, JsonStringifyCall { }
+  class JsonStringifySanitizer extends Sanitizer, JsonStringifyCall { }
+
+  /** DEPRECATED: Alias for JsonStringifySanitizer */
+  deprecated class JSONStringifySanitizer = JsonStringifySanitizer;
 }

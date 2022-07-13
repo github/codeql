@@ -29,8 +29,8 @@ private import RangeAnalysisUtils
  * The SSA logic comes in two versions: the standard SSA and range-analysis RangeSSA.
  * This class provides the range-analysis SSA logic.
  */
-library class RangeSSA extends SSAHelper {
-  RangeSSA() { this = 1 }
+library class RangeSsa extends SsaHelper {
+  RangeSsa() { this = 1 }
 
   /**
    * Add a phi node on the out-edge of a guard.
@@ -39,6 +39,9 @@ library class RangeSSA extends SSAHelper {
     guard_defn(v.getAnAccess(), _, b, _)
   }
 }
+
+/** DEPRECATED: Alias for RangeSsa */
+deprecated class RangeSSA = RangeSsa;
 
 private predicate guard_defn(VariableAccess v, Expr guard, BasicBlock b, boolean branch) {
   guardCondition(guard, v, branch) and
@@ -67,22 +70,22 @@ private predicate guardSuccessor(Expr guard, boolean branch, BasicBlock succ) {
  * nodes.
  */
 class RangeSsaDefinition extends ControlFlowNodeBase {
-  RangeSsaDefinition() { exists(RangeSSA x | x.ssa_defn(_, this, _, _)) }
+  RangeSsaDefinition() { exists(RangeSsa x | x.ssa_defn(_, this, _, _)) }
 
   /**
    * Gets a variable corresponding to a SSA StackVariable defined by
    * this definition.
    */
-  StackVariable getAVariable() { exists(RangeSSA x | x.ssa_defn(result, this, _, _)) }
+  StackVariable getAVariable() { exists(RangeSsa x | x.ssa_defn(result, this, _, _)) }
 
   /**
    * A string representation of the SSA variable represented by the pair
    * `(this, v)`.
    */
-  string toString(StackVariable v) { exists(RangeSSA x | result = x.toString(this, v)) }
+  string toString(StackVariable v) { exists(RangeSsa x | result = x.toString(this, v)) }
 
   /** Gets a use of the SSA variable represented by the pair `(this, v)`. */
-  VariableAccess getAUse(StackVariable v) { exists(RangeSSA x | result = x.getAUse(this, v)) }
+  VariableAccess getAUse(StackVariable v) { exists(RangeSsa x | result = x.getAUse(this, v)) }
 
   /** Gets the control flow node for this definition. */
   ControlFlowNode getDefinition() { result = this }
@@ -91,7 +94,7 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
   BasicBlock getBasicBlock() { result.contains(this.getDefinition()) }
 
   /** Whether this definition is a phi node for variable `v`. */
-  predicate isPhiNode(StackVariable v) { exists(RangeSSA x | x.phi_node(v, this)) }
+  predicate isPhiNode(StackVariable v) { exists(RangeSsa x | x.phi_node(v, this)) }
 
   /**
    * DEPRECATED: Use isGuardPhi/4 instead
@@ -172,6 +175,6 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
    * Holds if this definition of the variable `v` reached the end of the basic block `b`.
    */
   predicate reachesEndOfBB(StackVariable v, BasicBlock b) {
-    exists(RangeSSA x | x.ssaDefinitionReachesEndOfBB(v, this, b))
+    exists(RangeSsa x | x.ssaDefinitionReachesEndOfBB(v, this, b))
   }
 }

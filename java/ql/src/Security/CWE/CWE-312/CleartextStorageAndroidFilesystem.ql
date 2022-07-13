@@ -5,6 +5,7 @@
  *              from chained vulnerabilities.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision medium
  * @id java/android/cleartext-storage-filesystem
  * @tags security

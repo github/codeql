@@ -1,0 +1,24 @@
+# github.com/astaxie/beego v1.12.3
+## explicit
+github.com/astaxie/beego
+# github.com/elazarl/goproxy v0.0.0-20211114080932-d06c3be7c11b
+## explicit
+github.com/elazarl/goproxy
+# github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+## explicit
+github.com/golang/glog
+# github.com/kr/text v0.2.0
+## explicit
+github.com/kr/text
+# github.com/sirupsen/logrus v1.8.1
+## explicit
+github.com/sirupsen/logrus
+# github.com/stretchr/testify v1.6.0
+## explicit
+github.com/stretchr/testify
+# golang.org/x/sys v0.0.0-20200930185726-fdedc70b468f
+## explicit
+golang.org/x/sys
+# k8s.io/klog v1.0.0
+## explicit
+k8s.io/klog

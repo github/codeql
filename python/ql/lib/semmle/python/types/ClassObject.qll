@@ -166,7 +166,7 @@ class ClassObject extends Object {
     not this.failedInference()
   }
 
-  /* Whether this class is abstract. */
+  /** Holds if this class is abstract. */
   predicate isAbstract() {
     this.getMetaClass() = theAbcMetaClassObject()
     or

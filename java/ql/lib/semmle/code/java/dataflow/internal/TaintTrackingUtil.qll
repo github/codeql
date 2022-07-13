@@ -51,22 +51,15 @@ private module Cached {
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
     or
     // Treat container flow as taint for the local taint flow relation
     exists(DataFlow::Content c | containerContent(c) |
       readStep(src, c, sink) or
       storeStep(src, c, sink) or
-      FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink) or
-      FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink)
+      FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink, _) or
+      FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink, _)
     )
-  }
-
-  private predicate containerContent(DataFlow::Content c) {
-    c instanceof DataFlow::ArrayContent or
-    c instanceof DataFlow::CollectionContent or
-    c instanceof DataFlow::MapKeyContent or
-    c instanceof DataFlow::MapValueContent
   }
 
   /**
@@ -119,12 +112,6 @@ private module Cached {
   }
 }
 
-/**
- * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
- * but not in local taint.
- */
-predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
-
 import Cached
 
 private RefType getElementType(RefType container) {
@@ -164,6 +151,8 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   or
   sink.(AssignAddExpr).getSource() = src and sink.getType() instanceof TypeString
   or
+  sink.(StringTemplateExpr).getComponent(_) = src
+  or
   sink.(LogicExpr).getAnOperand() = src
   or
   constructorStep(src, sink)
@@ -195,7 +184,7 @@ private predicate localAdditionalTaintUpdateStep(Expr src, Expr sink) {
 
 private class BulkData extends RefType {
   BulkData() {
-    this.(Array).getElementType().(PrimitiveType).getName().regexpMatch("byte|char")
+    this.(Array).getElementType().(PrimitiveType).hasName(["byte", "char"])
     or
     exists(RefType t | this.getASourceSupertype*() = t |
       t.hasQualifiedName("java.io", "InputStream") or
@@ -326,7 +315,7 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
   exists(Method springResponseEntityOfOk |
     sink.getMethod() = springResponseEntityOfOk and
     springResponseEntityOfOk.getDeclaringType() instanceof SpringResponseEntity and
-    springResponseEntityOfOk.getName().regexpMatch("ok|of") and
+    springResponseEntityOfOk.hasName(["ok", "of"]) and
     tracked = sink.getArgument(0) and
     tracked.getType() instanceof TypeString
   )
@@ -334,7 +323,7 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
   exists(Method springResponseEntityBody |
     sink.getMethod() = springResponseEntityBody and
     springResponseEntityBody.getDeclaringType() instanceof SpringResponseEntityBodyBuilder and
-    springResponseEntityBody.getName().regexpMatch("body") and
+    springResponseEntityBody.hasName("body") and
     tracked = sink.getArgument(0) and
     tracked.getType() instanceof TypeString
   )

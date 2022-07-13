@@ -518,3 +518,57 @@ function usingDefineProperty(dst, src) {
         }
     }
 }
+
+function copyUsingForInAndRest(...args) {
+    const dst = args[0];
+    const src = args[1];
+    for (let key in src) {
+        if (dst[key]) {
+            copyUsingForInAndRest(dst[key], src[key]);
+        } else {
+            dst[key] = src[key]; // NOT OK
+        }
+    }
+}
+
+function forEachPropNoTempVar(obj, callback) {
+    const keys = Object.keys(obj)
+    const len = keys.length
+    for (let i = 0; i < len; i++) {
+        callback(keys[i], obj[keys[i]])
+    }
+}
+
+function mergeUsingCallback3(dst, src) {
+    forEachPropNoTempVar(src, (key, value) => {
+        if (dst[key]) {
+            mergeUsingCallback3(dst[key], value);
+        } else {
+            dst[key] = value; // NOT OK
+        }
+    });
+}
+
+function copyHasOwnProperty2(dst, src) {
+    for (let key in src) {
+        // Guarding the recursive case by dst.hasOwnProperty (or Object.hasOwn) is safe,
+        // since '__proto__' and 'constructor' are not own properties of the destination object.
+        if (Object.hasOwn(dst, key)) {
+            copyHasOwnProperty2(dst[key], src[key]);
+        } else {
+            dst[key] = src[key]; // OK
+        }
+    }
+}
+
+function copyHasOwnProperty3(dst, src) {
+    for (let key in src) {
+        // Guarding the recursive case by dst.hasOwnProperty (or Object.hasOwn) is safe,
+        // since '__proto__' and 'constructor' are not own properties of the destination object.
+        if (_.has(dst, key)) {
+            copyHasOwnProperty3(dst[key], src[key]);
+        } else {
+            dst[key] = src[key]; // OK
+        }
+    }
+}

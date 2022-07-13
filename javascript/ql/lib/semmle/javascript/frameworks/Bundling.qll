@@ -102,9 +102,9 @@ private predicate isBrowserifyDependencyMap(ObjectExpr deps) {
  * Holds if `m` is a function that looks like a bundled module created
  * by Webpack.
  *
- * Parameters must be named either `module` or `exports`,
- * or their name must contain the substring `webpack_require`
- * or `webpack_module_template_argument`.
+ * Parameters must be named either "module" or "exports",
+ * or their name must contain the substring "webpack_require"
+ * or "webpack_module_template_argument".
  */
 private predicate isWebpackModule(FunctionExpr m) {
   forex(Parameter parm | parm = m.getAParameter() |

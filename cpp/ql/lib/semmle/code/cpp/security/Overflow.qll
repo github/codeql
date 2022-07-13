@@ -5,8 +5,6 @@
 
 import cpp
 import semmle.code.cpp.controlflow.Dominance
-// `GlobalValueNumbering` is only imported to prevent IR re-evaluation.
-private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import semmle.code.cpp.controlflow.Guards
@@ -25,6 +23,7 @@ predicate guardedAbs(Operation e, Expr use) {
  * Holds if the value of `use` is guarded to be less than something, and `e`
  * is in code controlled by that guard (where the guard condition held).
  */
+pragma[nomagic]
 predicate guardedLesser(Operation e, Expr use) {
   exists(GuardCondition c | c.ensuresLt(use, _, _, e.getBasicBlock(), true))
   or
@@ -35,6 +34,7 @@ predicate guardedLesser(Operation e, Expr use) {
  * Holds if the value of `use` is guarded to be greater than something, and `e`
  * is in code controlled by that guard (where the guard condition held).
  */
+pragma[nomagic]
 predicate guardedGreater(Operation e, Expr use) {
   exists(GuardCondition c | c.ensuresLt(use, _, _, e.getBasicBlock(), false))
   or

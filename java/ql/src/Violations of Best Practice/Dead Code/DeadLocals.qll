@@ -44,8 +44,8 @@ predicate overwritten(SsaExplicitUpdate ssa) {
     not deadLocal(overwrite) and
     not overwrite.getDefiningExpr() instanceof LocalVariableDeclExpr and
     exists(BasicBlock bb1, BasicBlock bb2, int i, int j |
-      bb1.getNode(i) = ssa.getCFGNode() and
-      bb2.getNode(j) = overwrite.getCFGNode()
+      bb1.getNode(i) = ssa.getCfgNode() and
+      bb2.getNode(j) = overwrite.getCfgNode()
     |
       bb1.getABBSuccessor+() = bb2
       or

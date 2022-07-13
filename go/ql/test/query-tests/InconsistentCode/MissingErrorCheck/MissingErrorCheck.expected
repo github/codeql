@@ -1,0 +1,2 @@
+| tests.go:61:30:61:35 | result | result may be nil here, because $@ may not have been checked. | tests.go:59:10:59:12 | definition of err | err |
+| tests.go:243:27:243:32 | result | result may be nil here, because $@ may not have been checked. | tests.go:241:10:241:12 | definition of err | err |

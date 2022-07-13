@@ -167,20 +167,6 @@ abstract class Configuration extends string {
   }
 
   /**
-   * DEPRECATED: Use `isBarrierEdge` instead.
-   *
-   * Holds if flow from `src` to `trg` is prohibited.
-   */
-  deprecated predicate isBarrier(DataFlow::Node src, DataFlow::Node trg) { none() }
-
-  /**
-   * DEPRECATED: Use `isBarrierEdge` instead.
-   *
-   * Holds if flow with label `lbl` cannot flow from `src` to `trg`.
-   */
-  deprecated predicate isBarrier(DataFlow::Node src, DataFlow::Node trg, FlowLabel lbl) { none() }
-
-  /**
    * Holds if flow from `pred` to `succ` is prohibited.
    */
   predicate isBarrierEdge(DataFlow::Node pred, DataFlow::Node succ) { none() }
@@ -367,7 +353,7 @@ abstract class BarrierGuardNode extends DataFlow::Node {
 }
 
 /**
- * Holds if data flow node `nd` acts as a barrier for data flow.
+ * Holds if data flow node `guard` acts as a barrier for data flow.
  *
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
  */
@@ -396,7 +382,7 @@ private predicate barrierGuardIsRelevant(BarrierGuardNode guard) {
 }
 
 /**
- * Holds if data flow node `nd` acts as a barrier for data flow due to aliasing through
+ * Holds if data flow node `guard` acts as a barrier for data flow due to aliasing through
  * an access path.
  *
  * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
@@ -535,13 +521,6 @@ private predicate isLabeledBarrierEdge(
  */
 abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
   override predicate blocks(boolean outcome, Expr e) { none() }
-
-  /**
-   * DEPRECATED: Use `blocks(outcome, e, label)` or `sanitizes(outcome, e, label)` instead.
-   *
-   * Overriding this predicate has no effect.
-   */
-  deprecated FlowLabel getALabel() { none() }
 }
 
 /**
@@ -1176,7 +1155,7 @@ private predicate appendStep(
 }
 
 /**
- * Holds if a function invoked at `invk` may return an expression into which `input`,
+ * Holds if a function invoked at `output` may return an expression into which `input`,
  * which is either an argument or a definition captured by the function, flows under
  * configuration `cfg`, possibly through callees.
  */
@@ -1386,33 +1365,37 @@ private predicate loadStep(
 
 /**
  * Holds if there is flow to `base.startProp`, and `base.startProp` flows to `nd.endProp` under `cfg/summary`.
+ *
+ * If `onlyRelevantInCall` is true, the `base` object will not be propagated out of return edges, because
+ * the flow that originally reached `base.startProp` used a call edge.
  */
 pragma[nomagic]
 private predicate reachableFromStoreBase(
   string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd,
-  DataFlow::Configuration cfg, PathSummary summary
+  DataFlow::Configuration cfg, PathSummary summary, boolean onlyRelevantInCall
 ) {
   exists(PathSummary s1, PathSummary s2, DataFlow::Node rhs |
-    reachableFromSource(rhs, cfg, s1)
+    reachableFromSource(rhs, cfg, s1) and
+    onlyRelevantInCall = s1.hasCall()
     or
-    reachableFromStoreBase(_, _, _, rhs, cfg, s1)
+    reachableFromStoreBase(_, _, _, rhs, cfg, s1, onlyRelevantInCall)
   |
     storeStep(rhs, nd, startProp, cfg, s2) and
     endProp = startProp and
     base = nd and
     summary =
-      MkPathSummary(false, s1.hasCall().booleanOr(s2.hasCall()), DataFlow::FlowLabel::data(),
-        DataFlow::FlowLabel::data())
+      MkPathSummary(false, s2.hasCall(), DataFlow::FlowLabel::data(), DataFlow::FlowLabel::data())
   )
   or
   exists(PathSummary newSummary, PathSummary oldSummary |
-    reachableFromStoreBaseStep(startProp, endProp, base, nd, cfg, oldSummary, newSummary) and
+    reachableFromStoreBaseStep(startProp, endProp, base, nd, cfg, oldSummary, newSummary,
+      onlyRelevantInCall) and
     summary = oldSummary.appendValuePreserving(newSummary)
   )
 }
 
 /**
- * Holds if `base` is the base of a write to property `prop`, and `nd` is reachable
+ * Holds if `base` is the base of a write to property `endProp`, and `nd` is reachable
  * from `base` under configuration `cfg` (possibly through callees) along a path whose
  * last step is summarized by `newSummary`, and the previous steps are summarized
  * by `oldSummary`.
@@ -1420,14 +1403,16 @@ private predicate reachableFromStoreBase(
 pragma[noinline]
 private predicate reachableFromStoreBaseStep(
   string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd,
-  DataFlow::Configuration cfg, PathSummary oldSummary, PathSummary newSummary
+  DataFlow::Configuration cfg, PathSummary oldSummary, PathSummary newSummary,
+  boolean onlyRelevantInCall
 ) {
   exists(DataFlow::Node mid |
-    reachableFromStoreBase(startProp, endProp, base, mid, cfg, oldSummary) and
-    flowStep(mid, cfg, nd, newSummary)
+    reachableFromStoreBase(startProp, endProp, base, mid, cfg, oldSummary, onlyRelevantInCall) and
+    flowStep(mid, cfg, nd, newSummary) and
+    onlyRelevantInCall.booleanAnd(newSummary.hasReturn()) = false
     or
     exists(string midProp |
-      reachableFromStoreBase(startProp, midProp, base, mid, cfg, oldSummary) and
+      reachableFromStoreBase(startProp, midProp, base, mid, cfg, oldSummary, onlyRelevantInCall) and
       isAdditionalLoadStoreStep(mid, nd, midProp, endProp, cfg) and
       newSummary = PathSummary::level()
     )
@@ -1467,7 +1452,7 @@ private predicate storeToLoad(
     PathSummary s1, PathSummary s2
   |
     storeStep(pred, storeBase, storeProp, cfg, s1) and
-    reachableFromStoreBase(storeProp, loadProp, storeBase, loadBase, cfg, s2) and
+    reachableFromStoreBase(storeProp, loadProp, storeBase, loadBase, cfg, s2, _) and
     oldSummary = s1.appendValuePreserving(s2) and
     loadStep(loadBase, succ, loadProp, cfg, newSummary)
   )
@@ -1773,7 +1758,7 @@ class PathNode extends TPathNode {
     this = MkSinkNode(nd, cfg)
   }
 
-  /** Holds if this path node wraps data-flow node `nd` and configuration `c`. */
+  /** Holds if this path node wraps data-flow node `n` and configuration `c`. */
   predicate wraps(DataFlow::Node n, DataFlow::Configuration c) { nd = n and cfg = c }
 
   /** Gets the underlying configuration of this path node. */
@@ -1888,7 +1873,7 @@ class MidPathNode extends PathNode, MkMidNode {
 
   MidPathNode() { this = MkMidNode(nd, cfg, summary) }
 
-  /** Holds if this path node wraps data-flow node `nd`, configuration `c` and summary `s`. */
+  /** Holds if this path node wraps data-flow node `n`, configuration `c` and summary `s`. */
   predicate wraps(DataFlow::Node n, DataFlow::Configuration c, PathSummary s) {
     nd = n and cfg = c and summary = s
   }
@@ -1992,20 +1977,26 @@ module PathGraph {
 }
 
 /**
- * Gets an operand of the given `&&` operator.
- *
- * We use this to construct the transitive closure over a relation
- * that does not include all of `BinaryExpr.getAnOperand`.
+ * Gets a logical `and` expression, or parenthesized expression, that contains `guard`.
  */
-private Expr getALogicalAndOperand(LogAndExpr e) { result = e.getAnOperand() }
+private Expr getALogicalAndParent(BarrierGuardNode guard) {
+  barrierGuardIsRelevant(guard) and result = guard.asExpr()
+  or
+  result.(LogAndExpr).getAnOperand() = getALogicalAndParent(guard)
+  or
+  result.getUnderlyingValue() = getALogicalAndParent(guard)
+}
 
 /**
- * Gets an operand of the given `||` operator.
- *
- * We use this to construct the transitive closure over a relation
- * that does not include all of `BinaryExpr.getAnOperand`.
+ * Gets a logical `or` expression, or parenthesized expression, that contains `guard`.
  */
-private Expr getALogicalOrOperand(LogOrExpr e) { result = e.getAnOperand() }
+private Expr getALogicalOrParent(BarrierGuardNode guard) {
+  barrierGuardIsRelevant(guard) and result = guard.asExpr()
+  or
+  result.(LogOrExpr).getAnOperand() = getALogicalOrParent(guard)
+  or
+  result.getUnderlyingValue() = getALogicalOrParent(guard)
+}
 
 /**
  * A `BarrierGuardNode` that controls which data flow
@@ -2035,10 +2026,10 @@ private class BarrierGuardFunction extends Function {
         returnExpr = guard.asExpr()
         or
         // ad hoc support for conjunctions:
-        getALogicalAndOperand+(returnExpr) = guard.asExpr() and guardOutcome = true
+        getALogicalAndParent(guard) = returnExpr and guardOutcome = true
         or
         // ad hoc support for disjunctions:
-        getALogicalOrOperand+(returnExpr) = guard.asExpr() and guardOutcome = false
+        getALogicalOrParent(guard) = returnExpr and guardOutcome = false
       |
         exists(SsaExplicitDefinition ssa |
           ssa.getDef().getSource() = returnExpr and

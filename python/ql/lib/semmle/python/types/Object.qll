@@ -1,10 +1,11 @@
 import python
-private import semmle.python.objects.ObjectAPI
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.Builtins
+private import semmle.python.internal.CachedStages
 
 cached
 private predicate is_an_object(@py_object obj) {
+  Stages::DataFlow::ref() and
   /* CFG nodes for numeric literals, all of which have a @py_cobject for the value of that literal */
   obj instanceof ControlFlowNode and
   not obj.(ControlFlowNode).getNode() instanceof IntegerLiteral and
@@ -73,9 +74,11 @@ class Object extends @py_object {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
+  cached
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
+    Stages::DataFlow::ref() and
     this.hasOrigin() and
     this.getOrigin()
         .getLocation()
@@ -93,7 +96,9 @@ class Object extends @py_object {
   Builtin asBuiltin() { result = this }
 
   /** Gets a textual representation of this element. */
+  cached
   string toString() {
+    Stages::DataFlow::ref() and
     not this = undefinedVariable() and
     not this = unknownValue() and
     exists(ClassObject type | type.asBuiltin() = this.asBuiltin().getClass() |
@@ -366,9 +371,6 @@ BuiltinModuleObject theBuiltinModuleObject() { result.asBuiltin() = Builtin::bui
 /** Gets the `sys` module */
 BuiltinModuleObject theSysModuleObject() { result.asBuiltin() = Builtin::special("sys") }
 
-/** DEPRECATED -- Use `Object::builtin(name)` instead. */
-deprecated Object builtin_object(string name) { result = Object::builtin(name) }
-
 /** Gets the built-in object None */
 Object theNoneObject() { result.asBuiltin() = Builtin::special("None") }
 
@@ -389,15 +391,6 @@ Object theIndexErrorType() { result = Object::builtin("IndexError") }
 
 /** Gets the LookupError class */
 Object theLookupErrorType() { result = Object::builtin("LookupError") }
-
-/** DEPRECATED -- Use `Object::quitter(name)` instead. */
-deprecated Object quitterObject(string name) { result = Object::quitter(name) }
-
-/** DEPRECATED -- Use `Object::notImplemented()` instead. */
-deprecated Object theNotImplementedObject() { result = Object::builtin("NotImplemented") }
-
-/** DEPRECATED -- Use `TupleObject::empty()` instead. */
-deprecated Object theEmptyTupleObject() { result = TupleObject::empty() }
 
 module Object {
   Object builtin(string name) { result.asBuiltin() = Builtin::builtin(name) }

@@ -11,7 +11,6 @@
  */
 
 import python
-import semmle.python.SelfAttribute
 import ClassAttributes
 
 predicate undefined_class_attribute(SelfAttributeRead a, CheckClass c, int line, string name) {

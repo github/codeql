@@ -27,13 +27,13 @@ private module Twisted {
    */
   class TwistedResourceSubclass extends Class {
     TwistedResourceSubclass() {
-      this.getABase() =
+      this.getParent() =
         API::moduleImport("twisted")
             .getMember("web")
             .getMember("resource")
             .getMember("Resource")
             .getASubclass*()
-            .getAUse()
+            .asSource()
             .asExpr()
     }
 

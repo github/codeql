@@ -8,7 +8,7 @@
  */
 
 import javascript
-import ExternalAPIUsedWithUntrustedDataCustomizations::ExternalAPIUsedWithUntrustedData
+import ExternalAPIUsedWithUntrustedDataCustomizations::ExternalApiUsedWithUntrustedData
 
 /** Flow label for objects from which a tainted value is reachable. */
 private class ObjectWrapperFlowLabel extends DataFlow::FlowLabel {
@@ -59,17 +59,23 @@ class Configuration extends TaintTracking::Configuration {
 }
 
 /** A node representing data being passed to an external API. */
-class ExternalAPIDataNode extends DataFlow::Node {
-  ExternalAPIDataNode() { this instanceof Sink }
+class ExternalApiDataNode extends DataFlow::Node {
+  ExternalApiDataNode() { this instanceof Sink }
 }
 
+/** DEPRECATED: Alias for ExternalApiDataNode */
+deprecated class ExternalAPIDataNode = ExternalApiDataNode;
+
 /** A node representing untrusted data being passed to an external API. */
-class UntrustedExternalAPIDataNode extends ExternalAPIDataNode {
-  UntrustedExternalAPIDataNode() { any(Configuration c).hasFlow(_, this) }
+class UntrustedExternalApiDataNode extends ExternalApiDataNode {
+  UntrustedExternalApiDataNode() { any(Configuration c).hasFlow(_, this) }
 
   /** Gets a source of untrusted data which is passed to this external API data node. */
   DataFlow::Node getAnUntrustedSource() { any(Configuration c).hasFlow(result, this) }
 }
+
+/** DEPRECATED: Alias for UntrustedExternalApiDataNode */
+deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
 
 /**
  * Name of an external API sink, boxed in a newtype for consistency with other languages.
@@ -83,9 +89,9 @@ private newtype TExternalApi =
   }
 
 /** An external API which is used with untrusted data. */
-class ExternalAPIUsedWithUntrustedData extends TExternalApi {
+class ExternalApiUsedWithUntrustedData extends TExternalApi {
   /** Gets a possibly untrusted use of this external API. */
-  UntrustedExternalAPIDataNode getUntrustedDataNode() {
+  UntrustedExternalApiDataNode getUntrustedDataNode() {
     this = MkExternalApiNode(result.(Sink).getApiName())
   }
 
@@ -97,3 +103,6 @@ class ExternalAPIUsedWithUntrustedData extends TExternalApi {
   /** Gets a textual representation of this element. */
   string toString() { this = MkExternalApiNode(result) }
 }
+
+/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
+deprecated class ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

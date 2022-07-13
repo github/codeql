@@ -50,7 +50,9 @@ predicate dead(RefType dead) {
   // Exclude classes that look like they may be reflectively constructed.
   not dead.getAnAnnotation() instanceof ReflectiveAccessAnnotation and
   // Insist all source ancestors are dead as well.
-  forall(RefType t | t.fromSource() and t = getASuperTypePlus(dead) | dead(t))
+  forall(RefType t | t.fromSource() and t = getASuperTypePlus(dead) | dead(t)) and
+  // Exclude compiler generated classes (e.g. declaring type of adapter functions in Kotlin)
+  not dead.isCompilerGenerated()
 }
 
 from RefType t, string kind

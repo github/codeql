@@ -4,4 +4,4 @@ import semmle.python.web.HttpResponse
 
 from TaintedNode node
 where not node.getLocation().getFile().inStdlib()
-select node.getLocation(), node.getNode().getNode().toString(), node.getTaintKind()
+select node.getLocation(), node.getNode().asAstNode().toString(), node.getTaintKind()

@@ -37,3 +37,12 @@ private class ApacheStrBuilderFluentMethod extends FluentMethod {
     this.getReturnType().(RefType).hasQualifiedName("org.apache.commons.lang3.text", "StrBuilder")
   }
 }
+
+/**
+ * The class `org.apache.commons.lang.SystemUtils` or `org.apache.commons.lang3.SystemUtils`.
+ */
+class TypeApacheSystemUtils extends Class {
+  TypeApacheSystemUtils() {
+    this.hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"], "SystemUtils")
+  }
+}

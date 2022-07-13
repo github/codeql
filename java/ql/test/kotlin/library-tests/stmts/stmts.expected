@@ -1,0 +1,103 @@
+enclosing
+| stmts.kt:3:5:6:5 | <Expr>; | stmts.kt:2:41:20:1 | { ... } |
+| stmts.kt:3:8:4:5 | ... -> ... | stmts.kt:3:5:6:5 | <Expr>; |
+| stmts.kt:3:15:4:5 | { ... } | stmts.kt:3:8:4:5 | ... -> ... |
+| stmts.kt:4:15:5:5 | ... -> ... | stmts.kt:3:5:6:5 | <Expr>; |
+| stmts.kt:4:22:5:5 | { ... } | stmts.kt:4:15:5:5 | ... -> ... |
+| stmts.kt:5:12:6:5 | ... -> ... | stmts.kt:3:5:6:5 | <Expr>; |
+| stmts.kt:5:12:6:5 | { ... } | stmts.kt:5:12:6:5 | ... -> ... |
+| stmts.kt:7:5:8:16 | while (...) | stmts.kt:2:41:20:1 | { ... } |
+| stmts.kt:8:9:8:16 | return ... | stmts.kt:7:5:8:16 | while (...) |
+| stmts.kt:9:5:11:5 | while (...) | stmts.kt:2:41:20:1 | { ... } |
+| stmts.kt:9:18:11:5 | { ... } | stmts.kt:9:5:11:5 | while (...) |
+| stmts.kt:10:9:10:16 | return ... | stmts.kt:9:18:11:5 | { ... } |
+| stmts.kt:12:5:14:18 | do ... while (...) | stmts.kt:12:5:14:18 | { ... } |
+| stmts.kt:12:5:14:18 | { ... } | stmts.kt:2:41:20:1 | { ... } |
+| stmts.kt:12:8:14:5 | { ... } | stmts.kt:12:5:14:18 | do ... while (...) |
+| stmts.kt:13:9:13:16 | return ... | stmts.kt:12:8:14:5 | { ... } |
+| stmts.kt:15:5:15:13 | var ...; | stmts.kt:2:41:20:1 | { ... } |
+| stmts.kt:17:5:17:58 | var ...; | stmts.kt:2:41:20:1 | { ... } |
+| stmts.kt:17:26:17:58 | ... -> ... | stmts.kt:17:5:17:58 | var ...; |
+| stmts.kt:17:26:17:58 | ... -> ... | stmts.kt:17:5:17:58 | var ...; |
+| stmts.kt:17:35:17:43 | { ... } | stmts.kt:17:26:17:58 | ... -> ... |
+| stmts.kt:17:37:17:37 | <Expr>; | stmts.kt:17:35:17:43 | { ... } |
+| stmts.kt:17:50:17:58 | { ... } | stmts.kt:17:26:17:58 | ... -> ... |
+| stmts.kt:17:52:17:52 | <Expr>; | stmts.kt:17:50:17:58 | { ... } |
+| stmts.kt:18:5:18:56 | var ...; | stmts.kt:2:41:20:1 | { ... } |
+| stmts.kt:18:26:18:56 | ... -> ... | stmts.kt:18:5:18:56 | var ...; |
+| stmts.kt:18:26:18:56 | ... -> ... | stmts.kt:18:5:18:56 | var ...; |
+| stmts.kt:18:37:18:37 | <Expr>; | stmts.kt:18:26:18:56 | ... -> ... |
+| stmts.kt:18:52:18:52 | <Expr>; | stmts.kt:18:26:18:56 | ... -> ... |
+| stmts.kt:19:5:19:16 | return ... | stmts.kt:2:41:20:1 | { ... } |
+| stmts.kt:23:11:27:5 | <Label>: ... | stmts.kt:22:27:30:1 | { ... } |
+| stmts.kt:23:11:27:5 | while (...) | stmts.kt:23:11:27:5 | <Label>: ... |
+| stmts.kt:23:27:27:5 | { ... } | stmts.kt:23:11:27:5 | while (...) |
+| stmts.kt:24:9:26:25 | do ... while (...) | stmts.kt:24:9:26:25 | { ... } |
+| stmts.kt:24:9:26:25 | { ... } | stmts.kt:23:27:27:5 | { ... } |
+| stmts.kt:24:13:26:9 | { ... } | stmts.kt:24:9:26:25 | do ... while (...) |
+| stmts.kt:25:13:25:33 | ... -> ... | stmts.kt:25:13:25:33 | <Expr>; |
+| stmts.kt:25:13:25:33 | <Expr>; | stmts.kt:24:13:26:9 | { ... } |
+| stmts.kt:25:24:25:33 | break | stmts.kt:25:13:25:33 | ... -> ... |
+| stmts.kt:28:5:29:16 | while (...) | stmts.kt:22:27:30:1 | { ... } |
+| stmts.kt:29:9:29:16 | continue | stmts.kt:28:5:29:16 | while (...) |
+| stmts.kt:33:5:41:5 | try ... | stmts.kt:32:23:42:1 | { ... } |
+| stmts.kt:33:9:35:5 | { ... } | stmts.kt:33:5:41:5 | try ... |
+| stmts.kt:34:9:34:30 | throw ... | stmts.kt:33:9:35:5 | { ... } |
+| stmts.kt:36:5:38:5 | catch (...) | stmts.kt:33:5:41:5 | try ... |
+| stmts.kt:36:26:38:5 | { ... } | stmts.kt:36:5:38:5 | catch (...) |
+| stmts.kt:37:9:37:16 | return ... | stmts.kt:36:26:38:5 | { ... } |
+| stmts.kt:39:13:41:5 | { ... } | stmts.kt:33:5:41:5 | try ... |
+| stmts.kt:40:9:40:16 | return ... | stmts.kt:39:13:41:5 | { ... } |
+#select
+| stmts.kt:2:41:20:1 | { ... } | BlockStmt |
+| stmts.kt:3:5:6:5 | <Expr>; | ExprStmt |
+| stmts.kt:3:8:4:5 | ... -> ... | WhenBranch |
+| stmts.kt:3:15:4:5 | { ... } | BlockStmt |
+| stmts.kt:4:15:5:5 | ... -> ... | WhenBranch |
+| stmts.kt:4:22:5:5 | { ... } | BlockStmt |
+| stmts.kt:5:12:6:5 | ... -> ... | WhenBranch |
+| stmts.kt:5:12:6:5 | { ... } | BlockStmt |
+| stmts.kt:7:5:8:16 | while (...) | WhileStmt |
+| stmts.kt:8:9:8:16 | return ... | ReturnStmt |
+| stmts.kt:9:5:11:5 | while (...) | WhileStmt |
+| stmts.kt:9:18:11:5 | { ... } | BlockStmt |
+| stmts.kt:10:9:10:16 | return ... | ReturnStmt |
+| stmts.kt:12:5:14:18 | do ... while (...) | DoStmt |
+| stmts.kt:12:5:14:18 | { ... } | BlockStmt |
+| stmts.kt:12:8:14:5 | { ... } | BlockStmt |
+| stmts.kt:13:9:13:16 | return ... | ReturnStmt |
+| stmts.kt:15:5:15:13 | var ...; | LocalVariableDeclStmt |
+| stmts.kt:17:5:17:58 | var ...; | LocalVariableDeclStmt |
+| stmts.kt:17:26:17:58 | ... -> ... | WhenBranch |
+| stmts.kt:17:26:17:58 | ... -> ... | WhenBranch |
+| stmts.kt:17:35:17:43 | { ... } | BlockStmt |
+| stmts.kt:17:37:17:37 | <Expr>; | ExprStmt |
+| stmts.kt:17:50:17:58 | { ... } | BlockStmt |
+| stmts.kt:17:52:17:52 | <Expr>; | ExprStmt |
+| stmts.kt:18:5:18:56 | var ...; | LocalVariableDeclStmt |
+| stmts.kt:18:26:18:56 | ... -> ... | WhenBranch |
+| stmts.kt:18:26:18:56 | ... -> ... | WhenBranch |
+| stmts.kt:18:37:18:37 | <Expr>; | ExprStmt |
+| stmts.kt:18:52:18:52 | <Expr>; | ExprStmt |
+| stmts.kt:19:5:19:16 | return ... | ReturnStmt |
+| stmts.kt:22:27:30:1 | { ... } | BlockStmt |
+| stmts.kt:23:11:27:5 | <Label>: ... | LabeledStmt |
+| stmts.kt:23:11:27:5 | while (...) | WhileStmt |
+| stmts.kt:23:27:27:5 | { ... } | BlockStmt |
+| stmts.kt:24:9:26:25 | do ... while (...) | DoStmt |
+| stmts.kt:24:9:26:25 | { ... } | BlockStmt |
+| stmts.kt:24:13:26:9 | { ... } | BlockStmt |
+| stmts.kt:25:13:25:33 | ... -> ... | WhenBranch |
+| stmts.kt:25:13:25:33 | <Expr>; | ExprStmt |
+| stmts.kt:25:24:25:33 | break | BreakStmt |
+| stmts.kt:28:5:29:16 | while (...) | WhileStmt |
+| stmts.kt:29:9:29:16 | continue | ContinueStmt |
+| stmts.kt:32:23:42:1 | { ... } | BlockStmt |
+| stmts.kt:33:5:41:5 | try ... | TryStmt |
+| stmts.kt:33:9:35:5 | { ... } | BlockStmt |
+| stmts.kt:34:9:34:30 | throw ... | ThrowStmt |
+| stmts.kt:36:5:38:5 | catch (...) | CatchClause |
+| stmts.kt:36:26:38:5 | { ... } | BlockStmt |
+| stmts.kt:37:9:37:16 | return ... | ReturnStmt |
+| stmts.kt:39:13:41:5 | { ... } | BlockStmt |
+| stmts.kt:40:9:40:16 | return ... | ReturnStmt |

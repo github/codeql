@@ -19,48 +19,154 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatc
  */
 module API {
   /**
-   * An abstract representation of a definition or use of an API component such as a Ruby module,
-   * or the result of a method call.
+   * A node in the API graph, representing a value that has crossed the boundary between this
+   * codebase and an external library (or in general, any external codebase).
+   *
+   * ### Basic usage
+   *
+   * API graphs are typically used to identify "API calls", that is, calls to an external function
+   * whose implementation is not necessarily part of the current codebase.
+   *
+   * The most basic use of API graphs is typically as follows:
+   * 1. Start with `API::getTopLevelMember` for the relevant library.
+   * 2. Follow up with a chain of accessors such as `getMethod` describing how to get to the relevant API function.
+   * 3. Map the resulting API graph nodes to data-flow nodes, using `asSource` or `asSink`.
+   *
+   * For example, a simplified way to get arguments to `Foo.bar` would be
+   * ```codeql
+   * API::getTopLevelMember("Foo").getMethod("bar").getParameter(0).asSink()
+   * ```
+   *
+   * The most commonly used accessors are `getMember`, `getMethod`, `getParameter`, and `getReturn`.
+   *
+   * ### API graph nodes
+   *
+   * There are two kinds of nodes in the API graphs, distinguished by who is "holding" the value:
+   * - **Use-nodes** represent values held by the current codebase, which came from an external library.
+   *   (The current codebase is "using" a value that came from the library).
+   * - **Def-nodes** represent values held by the external library, which came from this codebase.
+   *   (The current codebase "defines" the value seen by the library).
+   *
+   * API graph nodes are associated with data-flow nodes in the current codebase.
+   * (Since external libraries are not part of the database, there is no way to associate with concrete
+   * data-flow nodes from the external library).
+   * - **Use-nodes** are associated with data-flow nodes where a value enters the current codebase,
+   *   such as the return value of a call to an external function.
+   * - **Def-nodes** are associated with data-flow nodes where a value leaves the current codebase,
+   *   such as an argument passed in a call to an external function.
+   *
+   *
+   * ### Access paths and edge labels
+   *
+   * Nodes in the API graph are associated with a set of access paths, describing a series of operations
+   * that may be performed to obtain that value.
+   *
+   * For example, the access path `API::getTopLevelMember("Foo").getMethod("bar")` represents the action of
+   * reading the top-level constant `Foo` and then accessing the method `bar` on the resulting object.
+   * It would be associated with a call such as `Foo.bar()`.
+   *
+   * Each edge in the graph is labelled by such an "operation". For an edge `A->B`, the type of the `A` node
+   * determines who is performing the operation, and the type of the `B` node determines who ends up holding
+   * the result:
+   * - An edge starting from a use-node describes what the current codebase is doing to a value that
+   *   came from a library.
+   * - An edge starting from a def-node describes what the external library might do to a value that
+   *   came from the current codebase.
+   * - An edge ending in a use-node means the result ends up in the current codebase (at its associated data-flow node).
+   * - An edge ending in a def-node means the result ends up in external code (its associated data-flow node is
+   *   the place where it was "last seen" in the current codebase before flowing out)
+   *
+   * Because the implementation of the external library is not visible, it is not known exactly what operations
+   * it will perform on values that flow there. Instead, the edges starting from a def-node are operations that would
+   * lead to an observable effect within the current codebase; without knowing for certain if the library will actually perform
+   * those operations. (When constructing these edges, we assume the library is somewhat well-behaved).
+   *
+   * For example, given this snippet:
+   * ```ruby
+   * Foo.bar(->(x) { doSomething(x) })
+   * ```
+   * A callback is passed to the external function `Foo.bar`. We can't know if `Foo.bar` will actually invoke this callback.
+   * But _if_ the library should decide to invoke the callback, then a value will flow into the current codebase via the `x` parameter.
+   * For that reason, an edge is generated representing the argument-passing operation that might be performed by `Foo.bar`.
+   * This edge is going from the def-node associated with the callback to the use-node associated with the parameter `x` of the lambda.
    */
   class Node extends Impl::TApiNode {
     /**
-     * Gets a data-flow node corresponding to a use of the API component represented by this node.
+     * Gets a data-flow node where this value may flow after entering the current codebase.
      *
-     * For example, `Kernel.format "%s world!", "Hello"` is a use of the return of the `format` function of
-     * the `Kernel` module.
-     *
-     * This includes indirect uses found via data flow.
+     * This is similar to `asSource()` but additionally includes nodes that are transitively reachable by data flow.
+     * See `asSource()` for examples.
      */
-    DataFlow::Node getAUse() {
+    DataFlow::Node getAValueReachableFromSource() {
       exists(DataFlow::LocalSourceNode src | Impl::use(this, src) |
         Impl::trackUseNode(src).flowsTo(result)
       )
     }
 
     /**
-     * Gets an immediate use of the API component represented by this node.
+     * Gets a data-flow node where this value enters the current codebase.
      *
-     * Unlike `getAUse()`, this predicate only gets the immediate references, not the indirect uses
-     * found via data flow.
+     * For example:
+     * ```ruby
+     * # API::getTopLevelMember("Foo").asSource()
+     * Foo
+     *
+     * # API::getTopLevelMember("Foo").getMethod("bar").getReturn().asSource()
+     * Foo.bar
+     *
+     * # 'x' is found by:
+     * # API::getTopLevelMember("Foo").getMethod("bar").getBlock().getParameter(0).asSource()
+     * Foo.bar do |x|
+     * end
+     * ```
      */
-    DataFlow::LocalSourceNode getAnImmediateUse() { Impl::use(this, result) }
+    DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
 
     /**
-     * Gets a data-flow node corresponding the value flowing into this API component.
+     * Gets a data-flow node where this value leaves the current codebase and flows into an
+     * external library (or in general, any external codebase).
+     *
+     * Concretely, this corresponds to an argument passed to a call to external code.
+     *
+     * For example:
+     * ```ruby
+     * # 'x' is found by:
+     * # API::getTopLevelMember("Foo").getMethod("bar").getParameter(0).asSink()
+     * Foo.bar(x)
+     *
+     * Foo.bar(-> {
+     *   # 'x' is found by:
+     *   # API::getTopLevelMember("Foo").getMethod("bar").getParameter(0).getReturn().asSink()
+     *   x
+     * })
+     * ```
      */
-    DataFlow::Node getARhs() { Impl::def(this, result) }
+    DataFlow::Node asSink() { Impl::def(this, result) }
 
     /**
-     * Gets a data-flow node that may interprocedurally flow to the value escaping into this API component.
+     * Get a data-flow node that transitively flows to an external library (or in general, any external codebase).
+     *
+     * This is similar to `asSink()` but additionally includes nodes that transitively reach a sink by data flow.
+     * See `asSink()` for examples.
      */
-    DataFlow::Node getAValueReachingRhs() { result = Impl::trackDefNode(this.getARhs()) }
+    DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
+
+    /** DEPRECATED. This predicate has been renamed to `getAValueReachableFromSource()`. */
+    deprecated DataFlow::Node getAUse() { result = this.getAValueReachableFromSource() }
+
+    /** DEPRECATED. This predicate has been renamed to `asSource()`. */
+    deprecated DataFlow::LocalSourceNode getAnImmediateUse() { result = this.asSource() }
+
+    /** DEPRECATED. This predicate has been renamed to `asSink()`. */
+    deprecated DataFlow::Node getARhs() { result = this.asSink() }
+
+    /** DEPRECATED. This predicate has been renamed to `getAValueReachingSink()`. */
+    deprecated DataFlow::Node getAValueReachingRhs() { result = this.getAValueReachingSink() }
 
     /**
      * Gets a call to a method on the receiver represented by this API component.
      */
-    DataFlow::CallNode getAMethodCall(string method) {
-      result = this.getReturn(method).getAnImmediateUse()
-    }
+    DataFlow::CallNode getAMethodCall(string method) { result = this.getReturn(method).asSource() }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -135,7 +241,7 @@ module API {
     /**
      * Gets a `new` call to the function represented by this API component.
      */
-    DataFlow::ExprNode getAnInstantiation() { result = this.getInstance().getAnImmediateUse() }
+    DataFlow::ExprNode getAnInstantiation() { result = this.getInstance().asSource() }
 
     /**
      * Gets a node representing a (direct or indirect) subclass of the class represented by this node.
@@ -266,6 +372,41 @@ module API {
   /** A node corresponding to the method being invoked at a method call. */
   class MethodAccessNode extends Node, Impl::MkMethodAccessNode {
     override string toString() { result = "MethodAccessNode " + tryGetPath(this) }
+
+    /** Gets the call node corresponding to this method access. */
+    DataFlow::CallNode getCallNode() { this = Impl::MkMethodAccessNode(result) }
+  }
+
+  /**
+   * An API entry point.
+   *
+   * By default, API graph nodes are only created for nodes that come from an external
+   * library or escape into an external library. The points where values are cross the boundary
+   * between codebases are called "entry points".
+   *
+   * Anything in the global scope is considered to be an entry point, but
+   * additional entry points may be added by extending this class.
+   */
+  abstract class EntryPoint extends string {
+    bindingset[this]
+    EntryPoint() { any() }
+
+    /** Gets a data-flow node corresponding to a use-node for this entry point. */
+    DataFlow::LocalSourceNode getAUse() { none() }
+
+    /** Gets a data-flow node corresponding to a def-node for this entry point. */
+    DataFlow::Node getARhs() { none() }
+
+    /** Gets a call corresponding to a method access node for this entry point. */
+    DataFlow::CallNode getACall() { none() }
+
+    /** Gets an API-node for this entry point. */
+    API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
+  }
+
+  // Ensure all entry points are imported from ApiGraphs.qll
+  private module ImportEntryPoints {
+    private import codeql.ruby.frameworks.data.ModelsAsData
   }
 
   /** Gets the root node. */
@@ -324,7 +465,7 @@ module API {
 
     /**
      * Holds if `ref` is a use of a node that should have an incoming edge from the root
-     * node labeled `lbl` in the API graph.
+     * node labeled `lbl` in the API graph (not including those from API::EntryPoint).
      */
     pragma[nomagic]
     private predicate useRoot(Label::ApiLabel lbl, DataFlow::Node ref) {
@@ -371,6 +512,10 @@ module API {
       useCandFwd().flowsTo(nd.(DataFlow::CallNode).getReceiver())
       or
       parameterStep(_, defCand(), nd)
+      or
+      nd = any(EntryPoint entry).getAUse()
+      or
+      nd = any(EntryPoint entry).getACall()
     }
 
     /**
@@ -416,6 +561,8 @@ module API {
     private predicate isDef(DataFlow::Node rhs) {
       // If a call node is relevant as a use-node, treat its arguments as def-nodes
       argumentStep(_, useCandFwd(), rhs)
+      or
+      rhs = any(EntryPoint entry).getARhs()
     }
 
     /** Gets a data flow node that flows to the RHS of a def-node. */
@@ -432,36 +579,6 @@ module API {
     /** Gets a data flow node that flows to the RHS of a def-node. */
     private DataFlow::LocalSourceNode defCand() { result = defCand(TypeBackTracker::end()) }
 
-    private Label::ApiLabel getLabelFromArgumentPosition(DataFlowDispatch::ArgumentPosition pos) {
-      exists(int n |
-        pos.isPositional(n) and
-        result = Label::parameter(n)
-      )
-      or
-      exists(string name |
-        pos.isKeyword(name) and
-        result = Label::keywordParameter(name)
-      )
-      or
-      pos.isBlock() and
-      result = Label::blockParameter()
-    }
-
-    private Label::ApiLabel getLabelFromParameterPosition(DataFlowDispatch::ParameterPosition pos) {
-      exists(int n |
-        pos.isPositional(n) and
-        result = Label::parameter(n)
-      )
-      or
-      exists(string name |
-        pos.isKeyword(name) and
-        result = Label::keywordParameter(name)
-      )
-      or
-      pos.isBlock() and
-      result = Label::blockParameter()
-    }
-
     /**
      * Holds if there should be a `lbl`-edge from the given call to an argument.
      */
@@ -471,7 +588,7 @@ module API {
     ) {
       exists(DataFlowDispatch::ArgumentPosition argPos |
         argument.sourceArgumentOf(call.asExpr(), argPos) and
-        lbl = getLabelFromArgumentPosition(argPos)
+        lbl = Label::getLabelFromArgumentPosition(argPos)
       )
     }
 
@@ -484,7 +601,7 @@ module API {
     ) {
       exists(DataFlowDispatch::ParameterPosition paramPos |
         paramNode.isSourceParameterOf(callable.asExpr().getExpr(), paramPos) and
-        lbl = getLabelFromParameterPosition(paramPos)
+        lbl = Label::getLabelFromParameterPosition(paramPos)
       )
     }
 
@@ -565,7 +682,7 @@ module API {
         use(pred, a) and
         use(succ, b) and
         resolveConstant(b.asExpr().getExpr()) = resolveConstantWriteAccess(c) and
-        c.getSuperclassExpr() = a.asExpr().getExpr() and
+        pragma[only_bind_into](c).getSuperclassExpr() = a.asExpr().getExpr() and
         lbl = Label::subclass()
       )
       or
@@ -589,6 +706,17 @@ module API {
             succ = MkDef(rhs)
           )
         )
+      )
+      or
+      exists(EntryPoint entry |
+        pred = root() and
+        lbl = Label::entryPoint(entry)
+      |
+        succ = MkDef(entry.getARhs())
+        or
+        succ = MkUse(entry.getAUse())
+        or
+        succ = MkMethodAccessNode(entry.getACall())
       )
     }
 
@@ -619,7 +747,8 @@ module API {
         or
         any(DataFlowDispatch::ParameterPosition c).isPositional(n)
       } or
-      MkLabelBlockParameter()
+      MkLabelBlockParameter() or
+      MkLabelEntryPoint(EntryPoint name)
   }
 
   /** Provides classes modeling the various edges (labels) in the API graph. */
@@ -636,7 +765,7 @@ module API {
       private import Impl
 
       /** A label for a member, for example a constant. */
-      class LabelMember extends ApiLabel {
+      class LabelMember extends ApiLabel, MkLabelMember {
         private string member;
 
         LabelMember() { this = MkLabelMember(member) }
@@ -648,14 +777,12 @@ module API {
       }
 
       /** A label for a member with an unknown name. */
-      class LabelUnknownMember extends ApiLabel {
-        LabelUnknownMember() { this = MkLabelUnknownMember() }
-
+      class LabelUnknownMember extends ApiLabel, MkLabelUnknownMember {
         override string toString() { result = "getUnknownMember()" }
       }
 
       /** A label for a method. */
-      class LabelMethod extends ApiLabel {
+      class LabelMethod extends ApiLabel, MkLabelMethod {
         private string method;
 
         LabelMethod() { this = MkLabelMethod(method) }
@@ -667,21 +794,17 @@ module API {
       }
 
       /** A label for the return value of a method. */
-      class LabelReturn extends ApiLabel {
-        LabelReturn() { this = MkLabelReturn() }
-
+      class LabelReturn extends ApiLabel, MkLabelReturn {
         override string toString() { result = "getReturn()" }
       }
 
       /** A label for the subclass relationship. */
-      class LabelSubclass extends ApiLabel {
-        LabelSubclass() { this = MkLabelSubclass() }
-
+      class LabelSubclass extends ApiLabel, MkLabelSubclass {
         override string toString() { result = "getASubclass()" }
       }
 
       /** A label for a keyword parameter. */
-      class LabelKeywordParameter extends ApiLabel {
+      class LabelKeywordParameter extends ApiLabel, MkLabelKeywordParameter {
         private string name;
 
         LabelKeywordParameter() { this = MkLabelKeywordParameter(name) }
@@ -693,7 +816,7 @@ module API {
       }
 
       /** A label for a parameter. */
-      class LabelParameter extends ApiLabel {
+      class LabelParameter extends ApiLabel, MkLabelParameter {
         private int n;
 
         LabelParameter() { this = MkLabelParameter(n) }
@@ -705,10 +828,20 @@ module API {
       }
 
       /** A label for a block parameter. */
-      class LabelBlockParameter extends ApiLabel {
-        LabelBlockParameter() { this = MkLabelBlockParameter() }
-
+      class LabelBlockParameter extends ApiLabel, MkLabelBlockParameter {
         override string toString() { result = "getBlock()" }
+      }
+
+      /** A label from the root node to a custom entry point. */
+      class LabelEntryPoint extends ApiLabel, MkLabelEntryPoint {
+        private API::EntryPoint name;
+
+        LabelEntryPoint() { this = MkLabelEntryPoint(name) }
+
+        override string toString() { result = name }
+
+        /** Gets the name of the entry point. */
+        API::EntryPoint getName() { result = name }
       }
     }
 
@@ -735,5 +868,76 @@ module API {
 
     /** Gets the label representing the block argument/parameter. */
     LabelBlockParameter blockParameter() { any() }
+
+    /** Gets the label for the edge from the root node to a custom entry point of the given name. */
+    LabelEntryPoint entryPoint(API::EntryPoint name) { result.getName() = name }
+
+    /** Gets the API graph label corresponding to the given argument position. */
+    Label::ApiLabel getLabelFromArgumentPosition(DataFlowDispatch::ArgumentPosition pos) {
+      exists(int n |
+        pos.isPositional(n) and
+        result = Label::parameter(n)
+      )
+      or
+      exists(string name |
+        pos.isKeyword(name) and
+        result = Label::keywordParameter(name)
+      )
+      or
+      pos.isBlock() and
+      result = Label::blockParameter()
+      or
+      pos.isAny() and
+      (
+        result = Label::parameter(_)
+        or
+        result = Label::keywordParameter(_)
+        or
+        result = Label::blockParameter()
+        // NOTE: `self` should NOT be included, as described in the QLDoc for `isAny()`
+      )
+      or
+      pos.isAnyNamed() and
+      result = Label::keywordParameter(_)
+      //
+      // Note: there is currently no API graph label for `self`.
+      // It was omitted since in practice it means going back to where you came from.
+      // For example, `base.getMethod("foo").getSelf()` would just be `base`.
+      // However, it's possible we'll need it later, for identifying `self` parameters or post-update nodes.
+    }
+
+    /** Gets the API graph label corresponding to the given parameter position. */
+    Label::ApiLabel getLabelFromParameterPosition(DataFlowDispatch::ParameterPosition pos) {
+      exists(int n |
+        pos.isPositional(n) and
+        result = Label::parameter(n)
+      )
+      or
+      exists(string name |
+        pos.isKeyword(name) and
+        result = Label::keywordParameter(name)
+      )
+      or
+      pos.isBlock() and
+      result = Label::blockParameter()
+      or
+      pos.isAny() and
+      (
+        result = Label::parameter(_)
+        or
+        result = Label::keywordParameter(_)
+        or
+        result = Label::blockParameter()
+        // NOTE: `self` should NOT be included, as described in the QLDoc for `isAny()`
+      )
+      or
+      pos.isAnyNamed() and
+      result = Label::keywordParameter(_)
+      //
+      // Note: there is currently no API graph label for `self`.
+      // It was omitted since in practice it means going back to where you came from.
+      // For example, `base.getMethod("foo").getSelf()` would just be `base`.
+      // However, it's possible we'll need it later, for identifying `self` parameters or post-update nodes.
+    }
   }
 }

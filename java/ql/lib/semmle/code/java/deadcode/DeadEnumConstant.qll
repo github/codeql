@@ -1,5 +1,4 @@
 import java
-import semmle.code.java.JDKAnnotations
 
 /**
  * Direct flow of values (i.e. object references) through expressions.

@@ -2,7 +2,7 @@ private import SSAConstructionInternal
 private import OldIR
 private import Alias
 private import SSAConstruction
-private import DebugSSA
+private import DebugSsa
 
 bindingset[offset]
 private string getKeySuffixForOffset(int offset) {

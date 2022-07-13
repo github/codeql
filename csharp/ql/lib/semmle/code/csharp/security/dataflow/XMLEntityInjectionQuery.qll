@@ -28,10 +28,10 @@ abstract class Sink extends DataFlow::ExprNode {
   abstract string getReason();
 }
 
-private class InsecureXMLSink extends Sink {
+private class InsecureXmlSink extends Sink {
   private string reason;
 
-  InsecureXMLSink() {
+  InsecureXmlSink() {
     exists(InsecureXML::InsecureXmlProcessing r | r.isUnsafe(reason) |
       this.getExpr() = r.getAnArgument()
     )

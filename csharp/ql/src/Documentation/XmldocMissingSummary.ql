@@ -1,6 +1,6 @@
 /**
  * @name Missing a summary in documentation comment
- * @description The documentation comment does not contain a '<summary>' tag.
+ * @description The documentation comment does not contain a `<summary>` tag.
  * @kind problem
  * @problem.severity recommendation
  * @precision high

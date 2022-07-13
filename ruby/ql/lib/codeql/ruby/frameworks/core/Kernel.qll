@@ -18,20 +18,15 @@ module Kernel {
    * providing a specific receiver as in `Kernel.exit`.
    */
   class KernelMethodCall extends DataFlow::CallNode {
-    private MethodCall methodCall;
-
     KernelMethodCall() {
-      methodCall = this.asExpr().getExpr() and
+      this = API::getTopLevelMember("Kernel").getAMethodCall(_)
+      or
+      this.asExpr().getExpr() instanceof UnknownMethodCall and
       (
-        this = API::getTopLevelMember("Kernel").getAMethodCall(_)
+        this.getReceiver().asExpr().getExpr() instanceof SelfVariableAccess and
+        isPrivateKernelMethod(this.getMethodName())
         or
-        methodCall instanceof UnknownMethodCall and
-        (
-          this.getReceiver().asExpr().getExpr() instanceof SelfVariableAccess and
-          isPrivateKernelMethod(methodCall.getMethodName())
-          or
-          isPublicKernelMethod(methodCall.getMethodName())
-        )
+        isPublicKernelMethod(this.getMethodName())
       )
     }
   }

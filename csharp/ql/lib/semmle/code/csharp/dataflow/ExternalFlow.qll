@@ -69,6 +69,12 @@
  *    sources "remote" indicates a default remote flow source, and for summaries
  *    "taint" indicates a default additional taint step and "value" indicates a
  *    globally applicable value-preserving step.
+ * 9. The `provenance` column is a tag to indicate the origin of the summary.
+ *    There are two supported values: "generated" and "manual". "generated" means that
+ *    the model has been emitted by the model generator tool and "manual" means
+ *    that the model has been written by hand. This information is used in a heuristic
+ *    for dataflow analysis to determine, if a model or source code should be used for
+ *    determining flow.
  */
 
 import csharp
@@ -86,6 +92,7 @@ private import internal.FlowSummaryImplSpecific
  */
 private module Frameworks {
   private import semmle.code.csharp.frameworks.EntityFramework
+  private import semmle.code.csharp.frameworks.Generated
   private import semmle.code.csharp.frameworks.JsonNET
   private import semmle.code.csharp.frameworks.microsoft.extensions.Primitives
   private import semmle.code.csharp.frameworks.microsoft.VisualBasic
@@ -165,7 +172,7 @@ private predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind
+  string output, string kind, string provenance
 ) {
   exists(string row |
     sourceModel(row) and
@@ -177,14 +184,15 @@ predicate sourceModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = output and
-    row.splitAt(";", 7) = kind
+    row.splitAt(";", 7) = kind and
+    row.splitAt(";", 8) = provenance
   )
 }
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind
+  string input, string kind, string provenance
 ) {
   exists(string row |
     sinkModel(row) and
@@ -196,14 +204,15 @@ predicate sinkModel(
     row.splitAt(";", 4) = signature and
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = kind
+    row.splitAt(";", 7) = kind and
+    row.splitAt(";", 8) = provenance
   )
 }
 
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind
+  string input, string output, string kind, string provenance
 ) {
   exists(string row |
     summaryModel(row) and
@@ -216,14 +225,15 @@ predicate summaryModel(
     row.splitAt(";", 5) = ext and
     row.splitAt(";", 6) = input and
     row.splitAt(";", 7) = output and
-    row.splitAt(";", 8) = kind
+    row.splitAt(";", 8) = kind and
+    row.splitAt(";", 9) = provenance
   )
 }
 
 private predicate relevantNamespace(string namespace) {
-  sourceModel(namespace, _, _, _, _, _, _, _) or
-  sinkModel(namespace, _, _, _, _, _, _, _) or
-  summaryModel(namespace, _, _, _, _, _, _, _, _)
+  sourceModel(namespace, _, _, _, _, _, _, _, _) or
+  sinkModel(namespace, _, _, _, _, _, _, _, _) or
+  summaryModel(namespace, _, _, _, _, _, _, _, _, _)
 }
 
 private predicate namespaceLink(string shortns, string longns) {
@@ -251,25 +261,25 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
     part = "source" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string output |
+        string ext, string output, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        sourceModel(subns, type, subtypes, name, signature, ext, output, kind)
+        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, provenance)
       )
     or
     part = "sink" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input |
+        string ext, string input, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        sinkModel(subns, type, subtypes, name, signature, ext, input, kind)
+        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, provenance)
       )
     or
     part = "summary" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output |
+        string ext, string input, string output, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind)
+        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, provenance)
       )
   )
 }
@@ -278,12 +288,16 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
 module CsvValidation {
   /** Holds if some row in a CSV-based flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
-    exists(string pred, string namespace, string type, string name, string signature, string ext |
-      sourceModel(namespace, type, _, name, signature, ext, _, _) and pred = "source"
+    exists(
+      string pred, string namespace, string type, string name, string signature, string ext,
+      string provenance
+    |
+      sourceModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "source"
       or
-      sinkModel(namespace, type, _, name, signature, ext, _, _) and pred = "sink"
+      sinkModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "sink"
       or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "summary"
+      summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
+      pred = "summary"
     |
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
@@ -299,12 +313,15 @@ module CsvValidation {
       or
       not ext.regexpMatch("|Attribute") and
       msg = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
+      or
+      not provenance = ["manual", "generated"] and
+      msg = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
     or
     exists(string pred, AccessPath input, string part |
-      sinkModel(_, _, _, _, _, _, input, _) and pred = "sink"
+      sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
       or
-      summaryModel(_, _, _, _, _, _, input, _, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(input, part) and
@@ -319,9 +336,9 @@ module CsvValidation {
     )
     or
     exists(string pred, string output, string part |
-      sourceModel(_, _, _, _, _, _, output, _) and pred = "source"
+      sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, _, output, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
     |
       invalidSpecComponent(output, part) and
       not part = "" and
@@ -330,18 +347,18 @@ module CsvValidation {
     )
     or
     exists(string pred, string row, int expect |
-      sourceModel(row) and expect = 8 and pred = "source"
+      sourceModel(row) and expect = 9 and pred = "source"
       or
-      sinkModel(row) and expect = 8 and pred = "sink"
+      sinkModel(row) and expect = 9 and pred = "sink"
       or
-      summaryModel(row) and expect = 9 and pred = "summary"
+      summaryModel(row) and expect = 10 and pred = "summary"
     |
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
         cols != expect and
         msg =
           "Wrong number of columns in " + pred + " model row, expected " + expect + ", got " + cols +
-            "."
+            " in " + row + "."
       )
       or
       exists(string b |
@@ -374,9 +391,9 @@ module CsvValidation {
 private predicate elementSpec(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(namespace, type, subtypes, name, signature, ext, _, _) or
-  sinkModel(namespace, type, subtypes, name, signature, ext, _, _) or
-  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _)
+  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _) or
+  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _) or
+  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
 }
 
 private predicate elementSpec(
@@ -501,6 +518,11 @@ Element interpretElement(
     ext = "Attribute" and result.(Attributable).getAnAttribute().getType() = e
   )
 }
+
+/**
+ * Holds if `c` has a `generated` summary.
+ */
+predicate hasSummary(Callable c, boolean generated) { summaryElement(c, _, _, _, generated) }
 
 cached
 private module Cached {

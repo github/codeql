@@ -5,6 +5,7 @@ on:
     paths:
       - "ruby/**"
       - .github/workflows/ruby-build.yml
+      - codeql-workspace.yml
     branches:
       - main
       - "rc/*"
@@ -12,6 +13,7 @@ on:
     paths:
       - "ruby/**"
       - .github/workflows/ruby-build.yml
+      - codeql-workspace.yml
     branches:
       - main
       - "rc/*"
@@ -38,13 +40,13 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install GNU tar
         if: runner.os == 'macOS'
         run: |
           brew install gnu-tar
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.cargo/registry
@@ -62,17 +64,17 @@ jobs:
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: target/release/ruby-generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: ruby.dbscheme
           path: ruby/ql/lib/ruby.dbscheme
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: TreeSitter.qll
           path: ruby/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: extractor-${{ matrix.os }}
           path: |
@@ -86,7 +88,7 @@ jobs:
     env:
       CODEQL_THREADS: 4 # TODO: remove this once it's set by the CLI
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Fetch CodeQL
         run: |
           LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | grep -v beta | sort --version-sort | tail -1)
@@ -102,7 +104,7 @@ jobs:
           PACK_FOLDER=$(readlink -f target/packs/codeql/ruby-queries/*)
           codeql/codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
           (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec bash -c 'mkdir -p "'"${PACK_FOLDER}"'/$(dirname "{}")"' \; -exec cp "{}" "${PACK_FOLDER}/{}" \;)
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: codeql-ruby-queries
           path: |
@@ -113,20 +115,20 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, compile-queries]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: ruby.dbscheme
           path: ruby/ruby
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: extractor-ubuntu-latest
           path: ruby/linux64
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: extractor-windows-latest
           path: ruby/win64
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: extractor-macos-latest
           path: ruby/osx64
@@ -142,12 +144,12 @@ jobs:
           cp win64/ruby-extractor.exe ruby/tools/win64/extractor.exe
           chmod +x ruby/tools/{linux64,osx64}/{autobuilder,extractor}
           zip -rq codeql-ruby.zip ruby
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: codeql-ruby-pack
           path: ruby/codeql-ruby.zip
           retention-days: 1
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: codeql-ruby-queries
           path: ruby/qlpacks
@@ -159,7 +161,7 @@ jobs:
             ]
           }' > .codeqlmanifest.json
           zip -rq codeql-ruby-bundle.zip .codeqlmanifest.json ruby qlpacks
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: codeql-ruby-bundle
           path: ruby/codeql-ruby-bundle.zip
@@ -177,7 +179,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: [package]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           repository: Shopify/example-ruby-app
           ref: 67a0decc5eb550f3a9228eda53925c3afd40dfe9
@@ -191,7 +193,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         working-directory: ${{ runner.temp }}
       - name: Download Ruby bundle
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: codeql-ruby-bundle
           path: ${{ runner.temp }}

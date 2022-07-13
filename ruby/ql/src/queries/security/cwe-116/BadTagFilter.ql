@@ -16,6 +16,6 @@
 
 import codeql.ruby.security.BadTagFilterQuery
 
-from HTMLMatchingRegExp regexp, string msg
+from HtmlMatchingRegExp regexp, string msg
 where msg = min(string m | isBadRegexpFilter(regexp, m) | m order by m.length(), m) // there might be multiple, we arbitrarily pick the shortest one
 select regexp, msg

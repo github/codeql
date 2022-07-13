@@ -88,7 +88,5 @@ class Values {
         int var_local = final_local; //42
         int var_param = notConstant; //Not constant
         int var_nonfinald_local = var_field; //Not constant
-        String concatenatedString = "a" + "b"; //ab
-        String concatenatedChar = "ab" + 'c'; //abc
     }
 }

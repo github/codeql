@@ -268,7 +268,7 @@ module HTTP {
         string getUrlPattern() {
           exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
             this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getConstantValue().getStringOrSymbol()
+            result = strNode.getExpr().getConstantValue().getStringlikeValue()
           )
         }
 
@@ -288,6 +288,44 @@ module HTTP {
         /** Gets a string that identifies the framework used for this route setup. */
         abstract string getFramework();
       }
+    }
+
+    /**
+     * An access to a user-controlled HTTP request input. For example, the URL or body of a request.
+     * Instances of this class automatically become `RemoteFlowSource`s.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `RequestInputAccess::Range` instead.
+     */
+    class RequestInputAccess extends DataFlow::Node instanceof RequestInputAccess::Range {
+      /**
+       * Gets a string that describes the type of this input.
+       *
+       * This is typically the name of the method that gives rise to this input.
+       */
+      string getSourceType() { result = super.getSourceType() }
+    }
+
+    /** Provides a class for modeling new HTTP request inputs. */
+    module RequestInputAccess {
+      /**
+       * An access to a user-controlled HTTP request input.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `RequestInputAccess` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets a string that describes the type of this input.
+         *
+         * This is typically the name of the method that gives rise to this input.
+         */
+        abstract string getSourceType();
+      }
+    }
+
+    private class RequestInputAccessAsRemoteFlowSource extends RemoteFlowSource::Range instanceof RequestInputAccess {
+      override string getSourceType() { result = this.(RequestInputAccess).getSourceType() }
     }
 
     /**
@@ -343,7 +381,7 @@ module HTTP {
     }
 
     /** A parameter that will receive parts of the url when handling an incoming request. */
-    private class RoutedParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+    private class RoutedParameter extends RequestInputAccess::Range, DataFlow::ParameterNode {
       RequestHandler handler;
 
       RoutedParameter() { this.getParameter() = handler.getARoutedParameter() }
@@ -393,7 +431,7 @@ module HTTP {
         string getMimetype() {
           exists(CfgNodes::ExprNodes::StringlikeLiteralCfgNode strNode |
             this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(strNode) and
-            result = strNode.getExpr().getConstantValue().getStringOrSymbol().splitAt(";", 0)
+            result = strNode.getExpr().getConstantValue().getStringlikeValue().splitAt(";", 0)
           )
           or
           not exists(this.getMimetypeOrContentTypeArg()) and
@@ -447,10 +485,18 @@ module HTTP {
       DataFlow::Node getResponseBody() { result = super.getResponseBody() }
 
       /**
+       * DEPRECATED: Use `getAUrlPart` instead.
+       *
        * Gets a node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
-      DataFlow::Node getURL() { result = super.getURL() }
+      deprecated DataFlow::Node getURL() { result = super.getURL() or result = super.getAUrlPart() }
+
+      /**
+       * Gets a data-flow node that contributes to the URL of the request.
+       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+       */
+      DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
 
       /** Gets a string that identifies the framework used for this request. */
       string getFramework() { result = super.getFramework() }
@@ -478,10 +524,18 @@ module HTTP {
         abstract DataFlow::Node getResponseBody();
 
         /**
+         * DEPRECATED: overwrite `getAUrlPart` instead.
+         *
          * Gets a node that contributes to the URL of the request.
          * Depending on the framework, a request may have multiple nodes which contribute to the URL.
          */
-        abstract DataFlow::Node getURL();
+        deprecated DataFlow::Node getURL() { none() }
+
+        /**
+         * Gets a data-flow node that contributes to the URL of the request.
+         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
+         */
+        abstract DataFlow::Node getAUrlPart();
 
         /** Gets a string that identifies the framework used for this request. */
         abstract string getFramework();
@@ -626,6 +680,35 @@ module OrmInstantiation {
 }
 
 /**
+ * A data flow node that writes persistent data.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `PersistentWriteAccess::Range` instead.
+ */
+class PersistentWriteAccess extends DataFlow::Node instanceof PersistentWriteAccess::Range {
+  /**
+   * Gets the data flow node corresponding to the written value.
+   */
+  DataFlow::Node getValue() { result = super.getValue() }
+}
+
+/** Provides a class for modeling new persistent write access APIs. */
+module PersistentWriteAccess {
+  /**
+   * A data flow node that writes persistent data.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `PersistentWriteAccess` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the data flow node corresponding to the written value.
+     */
+    abstract DataFlow::Node getValue();
+  }
+}
+
+/**
  * A data-flow node that may set or unset Cross-site request forgery protection.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
@@ -732,4 +815,57 @@ module Logging {
     /** Gets an input that is logged. */
     abstract DataFlow::Node getAnInput();
   }
+}
+
+/**
+ * Provides models for cryptographic concepts.
+ *
+ * Note: The `CryptographicAlgorithm` class currently doesn't take weak keys into
+ * consideration for the `isWeak` member predicate. So RSA is always considered
+ * secure, although using a low number of bits will actually make it insecure. We plan
+ * to improve our libraries in the future to more precisely capture this aspect.
+ */
+module Cryptography {
+  // Since we still rely on `isWeak` predicate on `CryptographicOperation` in Ruby, we
+  // modify that part of the shared concept... which means we have to explicitly
+  // re-export everything else.
+  // Using SC shorthand for "Shared Cryptography"
+  import codeql.ruby.internal.ConceptsShared::Cryptography as SC
+
+  class CryptographicAlgorithm = SC::CryptographicAlgorithm;
+
+  class EncryptionAlgorithm = SC::EncryptionAlgorithm;
+
+  class HashingAlgorithm = SC::HashingAlgorithm;
+
+  class PasswordHashingAlgorithm = SC::PasswordHashingAlgorithm;
+
+  /**
+   * A data-flow node that is an application of a cryptographic algorithm. For example,
+   * encryption, decryption, signature-validation.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `CryptographicOperation::Range` instead.
+   */
+  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range {
+    /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
+    deprecated predicate isWeak() { super.isWeak() }
+  }
+
+  /** Provides classes for modeling new applications of a cryptographic algorithms. */
+  module CryptographicOperation {
+    /**
+     * A data-flow node that is an application of a cryptographic algorithm. For example,
+     * encryption, decryption, signature-validation.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `CryptographicOperation` instead.
+     */
+    abstract class Range extends SC::CryptographicOperation::Range {
+      /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
+      deprecated predicate isWeak() { this.getAlgorithm().isWeak() or this.getBlockMode().isWeak() }
+    }
+  }
+
+  class BlockMode = SC::BlockMode;
 }

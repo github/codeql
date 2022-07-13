@@ -15,42 +15,14 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
-/**
- * Gets a call to a method that makes an outgoing request using the `requests` module,
- * such as `requests.get` or `requests.put`, with the specified HTTP verb `verb`
- */
-DataFlow::CallCfgNode outgoingRequestCall(string verb) {
-  verb = HTTP::httpVerbLower() and
-  result = API::moduleImport("requests").getMember(verb).getACall()
-}
-
-/** Gets the "verfiy" argument to a outgoingRequestCall. */
-DataFlow::Node verifyArg(DataFlow::CallCfgNode call) {
-  call = outgoingRequestCall(_) and
-  result = call.getArgByName("verify")
-}
-
-/** Gets a back-reference to the verify argument `arg`. */
-private DataFlow::TypeTrackingNode verifyArgBacktracker(
-  DataFlow::TypeBackTracker t, DataFlow::Node arg
-) {
-  t.start() and
-  arg = verifyArg(_) and
-  result = arg.getALocalSource()
-  or
-  exists(DataFlow::TypeBackTracker t2 | result = verifyArgBacktracker(t2, arg).backtrack(t2, t))
-}
-
-/** Gets a back-reference to the verify argument `arg`. */
-DataFlow::LocalSourceNode verifyArgBacktracker(DataFlow::Node arg) {
-  result = verifyArgBacktracker(DataFlow::TypeBackTracker::end(), arg)
-}
-
-from DataFlow::CallCfgNode call, DataFlow::Node falseyOrigin, string verb
+from
+  HTTP::Client::Request request, DataFlow::Node disablingNode, DataFlow::Node origin, string ending
 where
-  call = outgoingRequestCall(verb) and
-  falseyOrigin = verifyArgBacktracker(verifyArg(call)) and
-  // requests treats `None` as the default and all other "falsey" values as `False`.
-  falseyOrigin.asExpr().(ImmutableLiteral).booleanValue() = false and
-  not falseyOrigin.asExpr() instanceof None
-select call, "Call to requests." + verb + " with verify=$@", falseyOrigin, "False"
+  request.disablesCertificateValidation(disablingNode, origin) and
+  // Showing the origin is only useful when it's a different node than the one disabling
+  // certificate validation, for example in `requests.get(..., verify=arg)`, `arg` would
+  // be the `disablingNode`, and the `origin` would be the place were `arg` got its
+  // value from.
+  if disablingNode = origin then ending = "." else ending = " by the value from $@."
+select request, "This request may run without certificate validation because it is $@" + ending,
+  disablingNode, "disabled here", origin, "here"

@@ -75,7 +75,9 @@ private module ThisFlow {
  * local (intra-procedural) steps.
  */
 pragma[inline]
-predicate localFlow(Node node1, Node node2) { localFlowStep*(node1, node2) }
+predicate localFlow(Node node1, Node node2) { node1 = node2 or localFlowStepPlus(node1, node2) }
+
+private predicate localFlowStepPlus(Node node1, Node node2) = fastTC(localFlowStep/2)(node1, node2)
 
 /**
  * Holds if data can flow from `e1` to `e2` in zero or more
@@ -97,27 +99,43 @@ predicate hasNonlocalValue(FieldRead fr) {
   )
 }
 
-/**
- * Holds if data can flow from `node1` to `node2` in one local step.
- */
-predicate localFlowStep(Node node1, Node node2) {
-  simpleLocalFlowStep(node1, node2)
-  or
-  adjacentUseUse(node1.asExpr(), node2.asExpr())
-  or
-  // Simple flow through library code is included in the exposed local
-  // step relation, even though flow is technically inter-procedural
-  FlowSummaryImpl::Private::Steps::summaryThroughStep(node1, node2, true)
+cached
+private module Cached {
+  /**
+   * Holds if data can flow from `node1` to `node2` in one local step.
+   */
+  cached
+  predicate localFlowStep(Node node1, Node node2) {
+    simpleLocalFlowStep0(node1, node2)
+    or
+    adjacentUseUse(node1.asExpr(), node2.asExpr())
+    or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(node1, node2, _)
+  }
+
+  /**
+   * INTERNAL: do not use.
+   *
+   * This is the local flow predicate that's used as a building block in global
+   * data flow. It may have less flow than the `localFlowStep` predicate.
+   */
+  cached
+  predicate simpleLocalFlowStep(Node node1, Node node2) {
+    simpleLocalFlowStep0(node1, node2)
+    or
+    any(AdditionalValueStep a).step(node1, node2) and
+    pragma[only_bind_out](node1.getEnclosingCallable()) =
+      pragma[only_bind_out](node2.getEnclosingCallable()) and
+    // prevent recursive call
+    (any(AdditionalValueStep a).step(_, _) implies any())
+  }
 }
 
-/**
- * INTERNAL: do not use.
- *
- * This is the local flow predicate that's used as a building block in global
- * data flow. It may have less flow than the `localFlowStep` predicate.
- */
-cached
-predicate simpleLocalFlowStep(Node node1, Node node2) {
+import Cached
+
+private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   TaintTrackingUtil::forceCachingInSameStage() and
   // Variable flow steps through adjacent def-use and use-use pairs.
   exists(SsaExplicitUpdate upd |
@@ -136,7 +154,7 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   not exists(FieldRead fr |
     hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
   ) and
-  not FlowSummaryImpl::Private::Steps::summaryClearsContentArg(node1, _)
+  not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1, _)
   or
   ThisFlow::adjacentThisRefs(node1, node2)
   or
@@ -144,13 +162,19 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   or
   ThisFlow::adjacentThisRefs(node1.(PostUpdateNode).getPreUpdateNode(), node2)
   or
-  node2.asExpr().(CastExpr).getExpr() = node1.asExpr()
+  node2.asExpr().(CastingExpr).getExpr() = node1.asExpr()
   or
   node2.asExpr().(ChooseExpr).getAResultExpr() = node1.asExpr()
   or
   node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
   or
   node2.asExpr().(ArrayCreationExpr).getInit() = node1.asExpr()
+  or
+  node2.asExpr() = any(StmtExpr stmtExpr | node1.asExpr() = stmtExpr.getResultExpr())
+  or
+  node2.asExpr() = any(NotNullExpr nne | node1.asExpr() = nne.getExpr())
+  or
+  node2.asExpr().(WhenExpr).getBranch(_).getAResult() = node1.asExpr()
   or
   exists(MethodAccess ma, ValuePreservingMethod m, int argNo |
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
@@ -160,10 +184,6 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   )
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1, node2, true)
-  or
-  any(AdditionalValueStep a).step(node1, node2) and
-  pragma[only_bind_out](node1.getEnclosingCallable()) =
-    pragma[only_bind_out](node2.getEnclosingCallable())
 }
 
 private newtype TContent =
@@ -257,6 +277,63 @@ class SyntheticFieldContent extends Content, TSyntheticFieldContent {
 }
 
 /**
+ * An entity that represents a set of `Content`s.
+ *
+ * The set may be interpreted differently depending on whether it is
+ * stored into (`getAStoreContent`) or read from (`getAReadContent`).
+ */
+class ContentSet instanceof Content {
+  /** Gets a content that may be stored into when storing into this set. */
+  Content getAStoreContent() { result = this }
+
+  /** Gets a content that may be read from when reading from this set. */
+  Content getAReadContent() { result = this }
+
+  /** Gets a textual representation of this content set. */
+  string toString() { result = super.toString() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    super.hasLocationInfo(path, sl, sc, el, ec)
+  }
+}
+
+/**
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
+ */
+signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() {
+    exists(Guard g, SsaVariable v, boolean branch, RValue use |
+      guardChecks(g, v.getAUse(), branch) and
+      use = v.getAUse() and
+      g.controls(use.getBasicBlock(), branch) and
+      result.asExpr() = use
+    )
+  }
+}
+
+/**
+ * DEPRECATED: Use `BarrierGuard` module instead.
+ *
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -265,7 +342,7 @@ class SyntheticFieldContent extends Content, TSyntheticFieldContent {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends Guard {
+deprecated class BarrierGuard extends Guard {
   /** Holds if this guard validates `e` upon evaluating to `branch`. */
   abstract predicate checks(Expr e, boolean branch);
 

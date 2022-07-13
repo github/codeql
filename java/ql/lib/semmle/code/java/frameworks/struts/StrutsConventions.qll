@@ -53,7 +53,7 @@ private predicate isStrutsConventionPluginUsed(RefType refType) {
   strutsConventionAnnotationUsedInFolder(getSourceFolder(refType.getCompilationUnit()))
   or
   // The struts configuration file for this file sets a convention property
-  getRootXMLFile(refType).getAConstant().getName().matches("struts.convention%")
+  getRootXmlFile(refType).getAConstant().getName().matches("struts.convention%")
   or
   // We've found the POM for this RefType, and it includes a dependency on the convention plugin
   exists(Pom pom |
@@ -68,7 +68,7 @@ private predicate isStrutsConventionPluginUsed(RefType refType) {
  * We guess by identifying the "nearest" `struts.xml` configuration file, i.e. the Struts
  * configuration file with the lowest common ancestor to this file.
  */
-StrutsXMLFile getRootXMLFile(RefType refType) {
+StrutsXmlFile getRootXmlFile(RefType refType) {
   exists(StrutsFolder strutsFolder |
     strutsFolder = refType.getFile().getParentContainer*() and
     strutsFolder.isUnique()
@@ -77,14 +77,17 @@ StrutsXMLFile getRootXMLFile(RefType refType) {
   )
 }
 
+/** DEPRECATED: Alias for getRootXmlFile */
+deprecated StrutsXMLFile getRootXMLFile(RefType refType) { result = getRootXmlFile(refType) }
+
 /**
  * Gets the suffix used for automatically identifying actions when using the convention plugin.
  *
  * If no configuration is supplied, or identified, the default is "Action".
  */
 private string getConventionSuffix(RefType refType) {
-  if exists(getRootXMLFile(refType).getConstantValue("struts.convention.action.suffix"))
-  then result = getRootXMLFile(refType).getConstantValue("struts.convention.action.suffix")
+  if exists(getRootXmlFile(refType).getConstantValue("struts.convention.action.suffix"))
+  then result = getRootXmlFile(refType).getConstantValue("struts.convention.action.suffix")
   else result = "Action"
 }
 

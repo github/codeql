@@ -5,7 +5,6 @@
  * otherwise `RegExpInjectionCustomizations` should be imported instead.
  */
 
-import codeql.ruby.DataFlow::DataFlow::PathGraph
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 import RegExpInjectionCustomizations
@@ -21,7 +20,7 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof RegExpInjection::Sink }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof RegExpInjection::SanitizerGuard
   }
 

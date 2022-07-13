@@ -34,7 +34,7 @@ module UnsafeHtmlConstruction {
    * A jQuery plugin options object, seen as a source for unsafe HTML constructed from input.
    */
   class JQueryPluginOptionsAsSource extends Source {
-    JQueryPluginOptionsAsSource() { this instanceof UnsafeJQueryPlugin::JQueryPluginOptions }
+    JQueryPluginOptionsAsSource() { this = any(JQuery::JQueryPluginMethod meth).getAParameter() }
   }
 
   /**
@@ -45,7 +45,7 @@ module UnsafeHtmlConstruction {
     /**
      * Gets the kind of vulnerability to report in the alert message.
      *
-     * Defaults to `Cross-site scripting`, but may be overriden for sinks
+     * Defaults to `Cross-site scripting`, but may be overridden for sinks
      * that do not allow script injection, but injection of other undesirable HTML elements.
      */
     abstract string getVulnerabilityKind();
@@ -139,17 +139,20 @@ module UnsafeHtmlConstruction {
   /**
    * A string-concatenation of HTML, where the result is used as an XSS sink.
    */
-  class HTMLConcatenationSink extends XssSink, StringOps::HtmlConcatenationLeaf {
-    HTMLConcatenationSink() { isUsedInXssSink(xssSink) = this.getRoot() }
+  class HtmlConcatenationSink extends XssSink, StringOps::HtmlConcatenationLeaf {
+    HtmlConcatenationSink() { isUsedInXssSink(xssSink) = this.getRoot() }
 
     override string describe() { result = "HTML construction" }
   }
 
+  /** DEPRECATED: Alias for HtmlConcatenationSink */
+  deprecated class HTMLConcatenationSink = HtmlConcatenationSink;
+
   /**
    * A string parsed as XML, which is later used in an XSS sink.
    */
-  class XMLParsedSink extends XssSink {
-    XMLParsedSink() {
+  class XmlParsedSink extends XssSink {
+    XmlParsedSink() {
       exists(XML::ParserInvocation parser |
         this.asExpr() = parser.getSourceArgument() and
         isUsedInXssSink(xssSink) = parser.getAResult()
@@ -159,6 +162,9 @@ module UnsafeHtmlConstruction {
     override string describe() { result = "XML parsing" }
   }
 
+  /** DEPRECATED: Alias for XmlParsedSink */
+  deprecated class XMLParsedSink = XmlParsedSink;
+
   /**
    * A string rendered as markdown, where the rendering preserves HTML.
    */
@@ -166,12 +172,26 @@ module UnsafeHtmlConstruction {
     MarkdownSink() {
       exists(DataFlow::Node pred, DataFlow::Node succ, Markdown::MarkdownStep step |
         step.step(pred, succ) and
-        step.preservesHTML() and
+        step.preservesHtml() and
         this = pred and
         succ = isUsedInXssSink(xssSink)
       )
     }
 
     override string describe() { result = "Markdown rendering" }
+  }
+
+  /** A test for the value of `typeof x`, restricting the potential types of `x`. */
+  class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+    override EqualityTest astNode;
+    Expr operand;
+    boolean polarity;
+
+    TypeTestGuard() { TaintTracking::isStringTypeGuard(astNode, operand, polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      polarity = outcome and
+      e = operand
+    }
   }
 }

@@ -42,6 +42,10 @@ abstract class Modifiable extends Element {
   /** Holds if this element has a `final` modifier or is implicitly final. */
   predicate isFinal() { this.hasModifier("final") }
 
+  /** Holds if this element has a `sealed` modifier. */
+  // TODO: `isSealed()` conflicts with `ClassOrInterface.isSealed()`. What name do we want to use here?
+  predicate isSealedKotlin() { this.hasModifier("sealed") }
+
   /** Holds if this element has a `public` modifier or is implicitly public. */
   predicate isPublic() { this.hasModifier("public") }
 
@@ -50,6 +54,12 @@ abstract class Modifiable extends Element {
 
   /** Holds if this element has a `private` modifier or is implicitly private. */
   predicate isPrivate() { this.hasModifier("private") }
+
+  /** Holds if this element has an `internal` modifier. */
+  predicate isInternal() { this.hasModifier("internal") }
+
+  /** Holds if this element has an `inline` modifier. */
+  predicate isInline() { this.hasModifier("inline") }
 
   /** Holds if this element has a `volatile` modifier. */
   predicate isVolatile() { this.hasModifier("volatile") }

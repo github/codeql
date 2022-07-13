@@ -32,7 +32,7 @@ module CharacterEscapes {
    * Holds if `n` is delimited by `delim` and contains `rawStringNode` with the raw string value `raw`.
    */
   private predicate hasRawStringAndQuote(
-    DataFlow::ValueNode n, string delim, ASTNode rawStringNode, string raw
+    DataFlow::ValueNode n, string delim, AstNode rawStringNode, string raw
   ) {
     rawStringNode = n.asExpr() and
     raw = rawStringNode.(StringLiteral).getRawValue() and
@@ -52,7 +52,7 @@ module CharacterEscapes {
    *
    * The character is the `i`th character of `rawStringNode`'s raw string value.
    */
-  string getAnIdentityEscapedCharacter(DataFlow::Node n, ASTNode rawStringNode, int i) {
+  string getAnIdentityEscapedCharacter(DataFlow::Node n, AstNode rawStringNode, int i) {
     exists(string delim, string raw, string additionalEscapeChars |
       hasRawStringAndQuote(n, delim, rawStringNode, raw) and
       if rawStringNode instanceof RegExpLiteral
@@ -75,12 +75,12 @@ module CharacterEscapes {
   }
 
   /**
-   * Gets a character in `n` that is preceded by a single useless backslash, resulting in a likely regular expression mistake explained by `mistake`.
+   * Gets a character in `src` that is preceded by a single useless backslash, resulting in a likely regular expression mistake explained by `mistake`.
    *
    * The character is the `i`th character of the raw string value of `rawStringNode`.
    */
   string getALikelyRegExpPatternMistake(
-    RegExpPatternSource src, string mistake, ASTNode rawStringNode, int i
+    RegExpPatternSource src, string mistake, AstNode rawStringNode, int i
   ) {
     result = getAnIdentityEscapedCharacter(src, rawStringNode, i) and
     (

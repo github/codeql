@@ -54,11 +54,6 @@ module PrototypePollution {
     abstract DataFlow::FlowLabel getAFlowLabel();
 
     /**
-     * DEPRECATED. Override `dependencyInfo` instead.
-     */
-    deprecated Dependency getDependency() { none() }
-
-    /**
      * Holds if `moduleName` is the name of the module that defines this sink,
      * and `location` is the declaration of that dependency.
      *
@@ -119,11 +114,6 @@ module PrototypePollution {
       location = loc
     }
   }
-
-  /**
-   * DEPRECATED. Use `isVulnerableVersionOfDeepExtendCall` or `isVulnerableDeepExtendCallAllVersions` instead.
-   */
-  deprecated predicate isVulnerableDeepExtendCall = isVulnerableVersionOfDeepExtendCall/2;
 
   /**
    * Holds if `call` is vulnerable to prototype pollution because the callee is defined by `dep`.

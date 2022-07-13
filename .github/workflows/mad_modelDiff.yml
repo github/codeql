@@ -27,12 +27,12 @@ jobs:
         slug: ${{fromJson(github.event.inputs.projects || '["apache/commons-codec", "apache/commons-io", "apache/commons-beanutils", "apache/commons-logging", "apache/commons-fileupload", "apache/commons-lang", "apache/commons-validator", "apache/commons-csv", "apache/dubbo"]' )}}
     steps:
       - name: Clone github/codeql from PR
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request
         with:
           path: codeql-pr
       - name: Clone github/codeql from main
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: codeql-main
           ref: main
@@ -61,7 +61,7 @@ jobs:
             DATABASE=$2
             cd codeql-$QL_VARIANT
             SHORTNAME=`basename $DATABASE`
-            python java/ql/src/utils/model-generator/GenerateFlowModel.py $DATABASE $MODELS/${SHORTNAME}.qll
+            python java/ql/src/utils/model-generator/GenerateFlowModel.py --with-summaries --with-sinks $DATABASE $MODELS/${SHORTNAME}.qll
             mv $MODELS/${SHORTNAME}.qll $MODELS/${SHORTNAME}Generated_${QL_VARIANT}.qll
             cd ..
           }
@@ -91,12 +91,12 @@ jobs:
             name="diff_${basename/_main.qll/""}"
             (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
           done
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: models
           path: tmp-models/*.qll
           retention-days: 20
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: diffs
           path: tmp-models/*.html

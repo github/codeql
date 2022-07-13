@@ -9,12 +9,13 @@
  * each security vulnerability.
  */
 
-import semmle.javascript.security.dataflow.NosqlInjection
-import semmle.javascript.security.dataflow.SqlInjection
-import semmle.javascript.security.dataflow.TaintedPath
-import semmle.javascript.security.dataflow.DomBasedXss
-import semmle.javascript.security.dataflow.StoredXss
-import semmle.javascript.security.dataflow.XssThroughDom
+import javascript
+import semmle.javascript.security.dataflow.NosqlInjectionQuery as NosqlInjection
+import semmle.javascript.security.dataflow.SqlInjectionQuery as SqlInjection
+import semmle.javascript.security.dataflow.TaintedPathQuery as TaintedPath
+import semmle.javascript.security.dataflow.DomBasedXssQuery as DomBasedXss
+import semmle.javascript.security.dataflow.StoredXssQuery as StoredXss
+import semmle.javascript.security.dataflow.XssThroughDomQuery as XssThroughDom
 import evaluation.EndToEndEvaluation
 
 int numAlerts(DataFlow::Configuration cfg) {

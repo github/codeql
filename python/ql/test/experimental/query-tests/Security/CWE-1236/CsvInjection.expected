@@ -1,0 +1,19 @@
+edges
+| csv_bad.py:16:16:16:22 | ControlFlowNode for request | csv_bad.py:16:16:16:27 | ControlFlowNode for Attribute |
+| csv_bad.py:16:16:16:27 | ControlFlowNode for Attribute | csv_bad.py:18:24:18:31 | ControlFlowNode for csv_data |
+| csv_bad.py:16:16:16:27 | ControlFlowNode for Attribute | csv_bad.py:19:25:19:32 | ControlFlowNode for csv_data |
+| csv_bad.py:24:16:24:22 | ControlFlowNode for request | csv_bad.py:24:16:24:27 | ControlFlowNode for Attribute |
+| csv_bad.py:24:16:24:27 | ControlFlowNode for Attribute | csv_bad.py:25:46:25:53 | ControlFlowNode for csv_data |
+nodes
+| csv_bad.py:16:16:16:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| csv_bad.py:16:16:16:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| csv_bad.py:18:24:18:31 | ControlFlowNode for csv_data | semmle.label | ControlFlowNode for csv_data |
+| csv_bad.py:19:25:19:32 | ControlFlowNode for csv_data | semmle.label | ControlFlowNode for csv_data |
+| csv_bad.py:24:16:24:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| csv_bad.py:24:16:24:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| csv_bad.py:25:46:25:53 | ControlFlowNode for csv_data | semmle.label | ControlFlowNode for csv_data |
+subpaths
+#select
+| csv_bad.py:18:24:18:31 | ControlFlowNode for csv_data | csv_bad.py:16:16:16:22 | ControlFlowNode for request | csv_bad.py:18:24:18:31 | ControlFlowNode for csv_data | Csv injection might include code from $@. | csv_bad.py:16:16:16:22 | ControlFlowNode for request | this user input |
+| csv_bad.py:19:25:19:32 | ControlFlowNode for csv_data | csv_bad.py:16:16:16:22 | ControlFlowNode for request | csv_bad.py:19:25:19:32 | ControlFlowNode for csv_data | Csv injection might include code from $@. | csv_bad.py:16:16:16:22 | ControlFlowNode for request | this user input |
+| csv_bad.py:25:46:25:53 | ControlFlowNode for csv_data | csv_bad.py:24:16:24:22 | ControlFlowNode for request | csv_bad.py:25:46:25:53 | ControlFlowNode for csv_data | Csv injection might include code from $@. | csv_bad.py:24:16:24:22 | ControlFlowNode for request | this user input |

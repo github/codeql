@@ -440,22 +440,15 @@ class PathNormalizationTest extends InlineExpectationsTest {
 class SafeAccessCheckTest extends InlineExpectationsTest {
   SafeAccessCheckTest() { this = "SafeAccessCheckTest" }
 
-  override string getARelevantTag() { result in ["checks", "branch"] }
+  override string getARelevantTag() { result = "SafeAccessCheck" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(Path::SafeAccessCheck c, DataFlow::Node checks, boolean branch |
-      c.checks(checks.asCfgNode(), branch) and
+    exists(Path::SafeAccessCheck c |
       location = c.getLocation() and
-      (
-        element = checks.toString() and
-        value = prettyNodeForInlineTest(checks) and
-        tag = "checks"
-        or
-        element = branch.toString() and
-        value = branch.toString() and
-        tag = "branch"
-      )
+      element = c.toString() and
+      value = prettyNodeForInlineTest(c) and
+      tag = "SafeAccessCheck"
     )
   }
 }
@@ -487,7 +480,8 @@ class CryptographicOperationTest extends InlineExpectationsTest {
 
   override string getARelevantTag() {
     result in [
-        "CryptographicOperation", "CryptographicOperationInput", "CryptographicOperationAlgorithm"
+        "CryptographicOperation", "CryptographicOperationInput", "CryptographicOperationAlgorithm",
+        "CryptographicOperationBlockMode"
       ]
   }
 
@@ -507,6 +501,10 @@ class CryptographicOperationTest extends InlineExpectationsTest {
         element = cryptoOperation.toString() and
         value = cryptoOperation.getAlgorithm().getName() and
         tag = "CryptographicOperationAlgorithm"
+        or
+        element = cryptoOperation.toString() and
+        value = cryptoOperation.getBlockMode() and
+        tag = "CryptographicOperationBlockMode"
       )
     )
   }
@@ -536,6 +534,57 @@ class HttpClientRequestTest extends InlineExpectationsTest {
       element = req.toString() and
       value = "" and
       tag = "clientRequestCertValidationDisabled"
+    )
+  }
+}
+
+class CsrfProtectionSettingTest extends InlineExpectationsTest {
+  CsrfProtectionSettingTest() { this = "CsrfProtectionSettingTest" }
+
+  override string getARelevantTag() { result = "CsrfProtectionSetting" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Server::CsrfProtectionSetting setting |
+      location = setting.getLocation() and
+      element = setting.toString() and
+      value = setting.getVerificationSetting().toString() and
+      tag = "CsrfProtectionSetting"
+    )
+  }
+}
+
+class CsrfLocalProtectionSettingTest extends InlineExpectationsTest {
+  CsrfLocalProtectionSettingTest() { this = "CsrfLocalProtectionSettingTest" }
+
+  override string getARelevantTag() { result = "CsrfLocalProtection" + ["Enabled", "Disabled"] }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(HTTP::Server::CsrfLocalProtectionSetting p |
+      location = p.getLocation() and
+      element = p.toString() and
+      value = p.getRequestHandler().getName().toString() and
+      if p.csrfEnabled()
+      then tag = "CsrfLocalProtectionEnabled"
+      else tag = "CsrfLocalProtectionDisabled"
+    )
+  }
+}
+
+class XmlParsingTest extends InlineExpectationsTest {
+  XmlParsingTest() { this = "XmlParsingTest" }
+
+  override string getARelevantTag() { result = "xmlVuln" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(location.getFile().getRelativePath()) and
+    exists(XML::XmlParsing parsing, XML::XmlParsingVulnerabilityKind kind |
+      parsing.vulnerableTo(kind) and
+      location = parsing.getLocation() and
+      element = parsing.toString() and
+      value = "'" + kind + "'" and
+      tag = "xmlVuln"
     )
   }
 }

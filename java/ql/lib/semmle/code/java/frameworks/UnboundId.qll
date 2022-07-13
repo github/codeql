@@ -3,8 +3,6 @@
  */
 
 import java
-import semmle.code.java.Type
-import semmle.code.java.Member
 
 /*--- Types ---*/
 /** The interface `com.unboundid.ldap.sdk.ReadOnlySearchRequest`. */
@@ -25,11 +23,14 @@ class TypeUnboundIdLdapFilter extends Class {
 }
 
 /** The class `com.unboundid.ldap.sdk.LDAPConnection`. */
-class TypeUnboundIdLDAPConnection extends Class {
-  TypeUnboundIdLDAPConnection() {
+class TypeUnboundIdLdapConnection extends Class {
+  TypeUnboundIdLdapConnection() {
     this.hasQualifiedName("com.unboundid.ldap.sdk", "LDAPConnection")
   }
 }
+
+/** DEPRECATED: Alias for TypeUnboundIdLdapConnection */
+deprecated class TypeUnboundIdLDAPConnection = TypeUnboundIdLdapConnection;
 
 /*--- Methods ---*/
 /** A method with the name `setBaseDN` declared in `com.unboundid.ldap.sdk.SearchRequest`. */
@@ -89,25 +90,36 @@ class MethodUnboundIdFilterSimplifyFilter extends Method {
 }
 
 /** A method with the name `search` declared in `com.unboundid.ldap.sdk.LDAPConnection`. */
-class MethodUnboundIdLDAPConnectionSearch extends Method {
-  MethodUnboundIdLDAPConnectionSearch() {
-    this.getDeclaringType() instanceof TypeUnboundIdLDAPConnection and
+class MethodUnboundIdLdapConnectionSearch extends Method {
+  MethodUnboundIdLdapConnectionSearch() {
+    this.getDeclaringType() instanceof TypeUnboundIdLdapConnection and
     this.hasName("search")
   }
 }
 
+/** DEPRECATED: Alias for MethodUnboundIdLdapConnectionSearch */
+deprecated class MethodUnboundIdLDAPConnectionSearch = MethodUnboundIdLdapConnectionSearch;
+
 /** A method with the name `asyncSearch` declared in `com.unboundid.ldap.sdk.LDAPConnection`. */
-class MethodUnboundIdLDAPConnectionAsyncSearch extends Method {
-  MethodUnboundIdLDAPConnectionAsyncSearch() {
-    this.getDeclaringType() instanceof TypeUnboundIdLDAPConnection and
+class MethodUnboundIdLdapConnectionAsyncSearch extends Method {
+  MethodUnboundIdLdapConnectionAsyncSearch() {
+    this.getDeclaringType() instanceof TypeUnboundIdLdapConnection and
     this.hasName("asyncSearch")
   }
 }
 
+/** DEPRECATED: Alias for MethodUnboundIdLdapConnectionAsyncSearch */
+deprecated class MethodUnboundIdLDAPConnectionAsyncSearch =
+  MethodUnboundIdLdapConnectionAsyncSearch;
+
 /** A method with the name `searchForEntry` declared in `com.unboundid.ldap.sdk.LDAPConnection`. */
-class MethodUnboundIdLDAPConnectionSearchForEntry extends Method {
-  MethodUnboundIdLDAPConnectionSearchForEntry() {
-    this.getDeclaringType() instanceof TypeUnboundIdLDAPConnection and
+class MethodUnboundIdLdapConnectionSearchForEntry extends Method {
+  MethodUnboundIdLdapConnectionSearchForEntry() {
+    this.getDeclaringType() instanceof TypeUnboundIdLdapConnection and
     this.hasName("searchForEntry")
   }
 }
+
+/** DEPRECATED: Alias for MethodUnboundIdLdapConnectionSearchForEntry */
+deprecated class MethodUnboundIdLDAPConnectionSearchForEntry =
+  MethodUnboundIdLdapConnectionSearchForEntry;

@@ -33,6 +33,8 @@ int getFileExtensionPriority(string ext) {
   ext = "json" and result = 8
   or
   ext = "node" and result = 9
+  or
+  ext = "d.ts" and result = 10
 }
 
 int prioritiesPerCandidate() { result = 3 * (numberOfExtensions() + 1) }
@@ -60,7 +62,7 @@ File loadAsFile(Require req, int rootPriority, int priority) {
  */
 File loadAsDirectory(Require req, int rootPriority, int priority) {
   exists(Folder dir | dir = req.getImportedPath().resolve(rootPriority) |
-    result = resolveMainModule(dir.(NPMPackage).getPackageJSON(), priority) or
+    result = resolveMainModule(dir.(NpmPackage).getPackageJson(), priority) or
     result = tryExtensions(dir, "index", priority - (numberOfExtensions() + 1))
   )
 }
@@ -90,13 +92,13 @@ private string getStem(string name) { result = name.regexpCapture("(.+?)(?:\\.([
 /**
  * Gets the main module described by `pkg` with the given `priority`.
  */
-File resolveMainModule(PackageJSON pkg, int priority) {
+File resolveMainModule(PackageJson pkg, int priority) {
   exists(PathExpr main | main = MainModulePath::of(pkg) |
     result = main.resolve() and priority = 0
     or
     result = tryExtensions(main.resolve(), "index", priority)
     or
-    not exists(main.resolve()) and
+    not main.resolve() instanceof File and
     exists(int n | n = main.getNumComponent() |
       result = tryExtensions(main.resolveUpTo(n - 1), getStem(main.getComponent(n - 1)), priority)
     )
@@ -144,14 +146,17 @@ private string getASrcFolderName() { result = ["ts", "js", "src", "lib"] }
  * module of the package.
  */
 class MainModulePath extends PathExpr, @json_string {
-  PackageJSON pkg;
+  PackageJson pkg;
 
   MainModulePath() { this = pkg.getPropValue(["main", "module"]) }
 
   /** Gets the `package.json` file in which this path occurs. */
-  PackageJSON getPackageJSON() { result = pkg }
+  PackageJson getPackageJson() { result = pkg }
 
-  override string getValue() { result = this.(JSONString).getValue() }
+  /** DEPRECATED: Alias for getPackageJson */
+  deprecated PackageJSON getPackageJSON() { result = getPackageJson() }
+
+  override string getValue() { result = this.(JsonString).getValue() }
 
   override Folder getAdditionalSearchRoot(int priority) {
     priority = 0 and
@@ -160,7 +165,7 @@ class MainModulePath extends PathExpr, @json_string {
 }
 
 module MainModulePath {
-  MainModulePath of(PackageJSON pkg) { result.getPackageJSON() = pkg }
+  MainModulePath of(PackageJson pkg) { result.getPackageJson() = pkg }
 }
 
 /**
@@ -169,17 +174,20 @@ module MainModulePath {
  * For performance reasons this only exists if there is no "main" field in the `package.json` file.
  */
 private class FilesPath extends PathExpr, @json_string {
-  PackageJSON pkg;
+  PackageJson pkg;
 
   FilesPath() {
-    this = pkg.getPropValue("files").(JSONArray).getElementValue(_) and
+    this = pkg.getPropValue("files").(JsonArray).getElementValue(_) and
     not exists(MainModulePath::of(pkg))
   }
 
   /** Gets the `package.json` file in which this path occurs. */
-  PackageJSON getPackageJSON() { result = pkg }
+  PackageJson getPackageJson() { result = pkg }
 
-  override string getValue() { result = this.(JSONString).getValue() }
+  /** DEPRECATED: Alias for getPackageJson */
+  deprecated PackageJSON getPackageJSON() { result = getPackageJson() }
+
+  override string getValue() { result = this.(JsonString).getValue() }
 
   override Folder getAdditionalSearchRoot(int priority) {
     priority = 0 and
@@ -188,5 +196,31 @@ private class FilesPath extends PathExpr, @json_string {
 }
 
 private module FilesPath {
-  FilesPath of(PackageJSON pkg) { result.getPackageJSON() = pkg }
+  FilesPath of(PackageJson pkg) { result.getPackageJson() = pkg }
+}
+
+/**
+ * A JSON string in a `package.json` file specifying the path of the
+ * TypeScript typings entry point.
+ */
+class TypingsModulePathString extends PathString {
+  PackageJson pkg;
+
+  TypingsModulePathString() {
+    this = pkg.getTypings()
+    or
+    not exists(pkg.getTypings()) and
+    this = pkg.getMain().regexpReplaceAll("\\.[mc]?js$", ".d.ts")
+  }
+
+  /** Gets the `package.json` file containing this path. */
+  PackageJson getPackageJson() { result = pkg }
+
+  override Folder getARootFolder() { result = pkg.getFile().getParentContainer() }
+}
+
+/** Companion module to the `TypingsModulePathString` class. */
+module TypingsModulePathString {
+  /** Get the typings path for the given `package.json` file. */
+  TypingsModulePathString of(PackageJson pkg) { result.getPackageJson() = pkg }
 }

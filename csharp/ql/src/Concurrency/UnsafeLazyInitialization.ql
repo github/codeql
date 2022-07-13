@@ -14,24 +14,12 @@
 import csharp
 import semmle.code.csharp.commons.StructuralComparison
 
-class DoubleCheckedLock extends StructuralComparisonConfiguration {
-  DoubleCheckedLock() { this = "double checked lock" }
-
-  override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
-    exists(IfStmt unlockedIf, IfStmt lockedIf, LockStmt lock |
-      x = unlockedIf.getCondition() and
-      y = lockedIf.getCondition() and
-      lock = unlockedIf.getThen().stripSingletonBlocks() and
-      lockedIf.getParent*() = lock.getBlock()
-    )
-  }
-}
-
-predicate doubleCheckedLock(Field field, IfStmt ifs) {
-  exists(DoubleCheckedLock config, LockStmt lock, Expr eq1, Expr eq2 | ifs.getCondition() = eq1 |
-    lock = ifs.getThen().stripSingletonBlocks() and
-    config.same(eq1, eq2) and
-    field.getAnAccess() = eq1.getAChildExpr*()
+predicate doubleCheckedLock(Field field, IfStmt unlockedIf) {
+  exists(LockStmt lock, IfStmt lockedIf |
+    lock = unlockedIf.getThen().stripSingletonBlocks() and
+    lockedIf.getParent*() = lock.getBlock() and
+    sameGvn(unlockedIf.getCondition(), lockedIf.getCondition()) and
+    field.getAnAccess() = unlockedIf.getCondition().getAChildExpr*()
   )
 }
 

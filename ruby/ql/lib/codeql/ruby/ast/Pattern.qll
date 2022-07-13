@@ -1,5 +1,4 @@
 private import codeql.ruby.AST
-private import codeql.Locations
 private import internal.AST
 private import internal.Pattern
 private import internal.TreeSitter
@@ -278,7 +277,7 @@ class HashPattern extends CasePattern, THashPattern {
   /** Gets the value for a given key name. */
   CasePattern getValueByKey(string key) {
     exists(int i |
-      this.getKey(i).getConstantValue().isStringOrSymbol(key) and result = this.getValue(i)
+      this.getKey(i).getConstantValue().isStringlikeValue(key) and result = this.getValue(i)
     )
   }
 

@@ -141,7 +141,7 @@ private predicate isOpaqueType(Type type) {
  * Holds if an `IROpaqueType` with the specified `tag` and `byteSize` should exist.
  */
 predicate hasOpaqueType(Type tag, int byteSize) {
-  isOpaqueType(tag) and byteSize = getTypeSize(tag)
+  isOpaqueType(tag) and byteSize = getTypeSize(tag.getUnspecifiedType())
   or
   tag instanceof UnknownType and Raw::needsUnknownOpaqueType(byteSize)
 }
@@ -153,17 +153,18 @@ private IRType getIRTypeForPRValue(Type type) {
   exists(Type unspecifiedType | unspecifiedType = type.getUnspecifiedType() |
     isOpaqueType(unspecifiedType) and
     exists(IROpaqueType opaqueType | opaqueType = result |
-      opaqueType.getByteSize() = getTypeSize(type) and
+      opaqueType.getByteSize() = getTypeSize(unspecifiedType) and
       opaqueType.getTag() = unspecifiedType
     )
     or
-    unspecifiedType instanceof BoolType and result.(IRBooleanType).getByteSize() = type.getSize()
+    unspecifiedType instanceof BoolType and
+    result.(IRBooleanType).getByteSize() = unspecifiedType.getSize()
     or
     isSignedIntegerType(unspecifiedType) and
-    result.(IRSignedIntegerType).getByteSize() = type.getSize()
+    result.(IRSignedIntegerType).getByteSize() = unspecifiedType.getSize()
     or
     isUnsignedIntegerType(unspecifiedType) and
-    result.(IRUnsignedIntegerType).getByteSize() = type.getSize()
+    result.(IRUnsignedIntegerType).getByteSize() = unspecifiedType.getSize()
     or
     exists(FloatingPointType floatType, IRFloatingPointType irFloatType |
       floatType = unspecifiedType and
@@ -173,7 +174,8 @@ private IRType getIRTypeForPRValue(Type type) {
       irFloatType.getDomain() = floatType.getDomain()
     )
     or
-    isPointerIshType(unspecifiedType) and result.(IRAddressType).getByteSize() = getTypeSize(type)
+    isPointerIshType(unspecifiedType) and
+    result.(IRAddressType).getByteSize() = getTypeSize(unspecifiedType)
     or
     unspecifiedType instanceof FunctionPointerIshType and
     result.(IRFunctionAddressType).getByteSize() = getTypeSize(type)

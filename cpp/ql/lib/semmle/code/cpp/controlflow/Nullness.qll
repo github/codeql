@@ -46,7 +46,7 @@ predicate nullCheckExpr(Expr checkExpr, Variable var) {
     or
     exists(LogicalAndExpr op, AnalysedExpr child |
       expr = op and
-      op.getRightOperand() = child and
+      op.getAnOperand() = child and
       nullCheckExpr(child, v)
     )
     or
@@ -99,7 +99,7 @@ predicate validCheckExpr(Expr checkExpr, Variable var) {
     or
     exists(LogicalAndExpr op, AnalysedExpr child |
       expr = op and
-      op.getRightOperand() = child and
+      op.getAnOperand() = child and
       validCheckExpr(child, v)
     )
     or
@@ -157,15 +157,6 @@ class AnalysedExpr extends Expr {
   }
 
   /**
-   * DEPRECATED: Use `getNonNullSuccessor` instead, which does the same.
-   */
-  deprecated ControlFlowNode getValidSuccessor(LocalScopeVariable v) {
-    this.isValidCheck(v) and result = this.getATrueSuccessor()
-    or
-    this.isNullCheck(v) and result = this.getAFalseSuccessor()
-  }
-
-  /**
    * Holds if this is a `VariableAccess` of `v` nested inside a condition.
    */
   predicate isUse(LocalScopeVariable v) {
@@ -178,7 +169,10 @@ class AnalysedExpr extends Expr {
    */
   predicate isDef(LocalScopeVariable v) {
     this.inCondition() and
-    this.(Assignment).getLValue() = v.getAnAccess()
+    (
+      this.(Assignment).getLValue() = v.getAnAccess() or
+      this.(ConditionDeclExpr).getVariableAccess() = v.getAnAccess()
+    )
   }
 
   /**

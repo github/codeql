@@ -35,7 +35,7 @@ deprecated class ExternalStringSequenceKind extends SequenceKind {
 }
 
 /**
- * An hierachical dictionary or list where the entire structure is externally controlled
+ * An hierarchical dictionary or list where the entire structure is externally controlled
  * This is typically a parsed JSON object.
  */
 deprecated class ExternalJsonKind extends TaintKind {

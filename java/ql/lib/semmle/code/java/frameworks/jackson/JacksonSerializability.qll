@@ -14,13 +14,16 @@ private import semmle.code.java.dataflow.ExternalFlow
 /**
  * A `@com.fasterxml.jackson.annotation.JsonIgnore` annoation.
  */
-class JacksonJSONIgnoreAnnotation extends NonReflectiveAnnotation {
-  JacksonJSONIgnoreAnnotation() {
+class JacksonJsonIgnoreAnnotation extends NonReflectiveAnnotation {
+  JacksonJsonIgnoreAnnotation() {
     exists(AnnotationType anntp | anntp = this.getType() |
       anntp.hasQualifiedName("com.fasterxml.jackson.annotation", "JsonIgnore")
     )
   }
 }
+
+/** DEPRECATED: Alias for JacksonJsonIgnoreAnnotation */
+deprecated class JacksonJSONIgnoreAnnotation = JacksonJsonIgnoreAnnotation;
 
 /** A type whose values may be serialized using the Jackson JSON framework. */
 abstract class JacksonSerializableType extends Type { }
@@ -143,7 +146,7 @@ class JacksonSerializableField extends SerializableField {
       not superType instanceof TypeObject and
       superType.fromSource()
     ) and
-    not this.getAnAnnotation() instanceof JacksonJSONIgnoreAnnotation
+    not this.getAnAnnotation() instanceof JacksonJsonIgnoreAnnotation
   }
 }
 
@@ -155,7 +158,7 @@ class JacksonDeserializableField extends DeserializableField {
       not superType instanceof TypeObject and
       superType.fromSource()
     ) and
-    not this.getAnAnnotation() instanceof JacksonJSONIgnoreAnnotation
+    not this.getAnAnnotation() instanceof JacksonJsonIgnoreAnnotation
   }
 }
 
@@ -283,13 +286,13 @@ private class JacksonModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0].MapValue;ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0].MapValue.Element;ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint",
-        "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint"
+        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0];ReturnValue;taint;manual",
+        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0].MapValue;ReturnValue;taint;manual",
+        "com.fasterxml.jackson.databind;ObjectMapper;true;valueToTree;;;Argument[0].MapValue.Element;ReturnValue;taint;manual",
+        "com.fasterxml.jackson.databind;ObjectMapper;true;convertValue;;;Argument[0];ReturnValue;taint;manual",
+        "com.fasterxml.jackson.databind;ObjectMapper;false;createParser;;;Argument[0];ReturnValue;taint;manual",
+        "com.fasterxml.jackson.databind;ObjectReader;false;createParser;;;Argument[0];ReturnValue;taint;manual",
+        "com.fasterxml.jackson.core;JsonFactory;false;createParser;;;Argument[0];ReturnValue;taint;manual"
       ]
   }
 }

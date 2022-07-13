@@ -13,8 +13,8 @@ import codeql.ruby.TaintTracking
 /**
  * Provides a taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
  */
-module ReflectedXSS {
-  import XSS::ReflectedXSS
+module ReflectedXss {
+  import XSS::ReflectedXss
 
   /**
    * A taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
@@ -28,12 +28,15 @@ module ReflectedXSS {
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       guard instanceof SanitizerGuard
     }
 
     override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-      isAdditionalXSSTaintStep(node1, node2)
+      isAdditionalXssTaintStep(node1, node2)
     }
   }
 }
+
+/** DEPRECATED: Alias for ReflectedXss */
+deprecated module ReflectedXSS = ReflectedXss;

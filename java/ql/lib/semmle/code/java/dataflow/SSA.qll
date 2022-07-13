@@ -920,7 +920,7 @@ class SsaVariable extends TSsaVariable {
   }
 
   /** Gets the `ControlFlowNode` at which this SSA variable is defined. */
-  ControlFlowNode getCFGNode() {
+  ControlFlowNode getCfgNode() {
     this = TSsaPhiNode(_, result) or
     this = TSsaCertainUpdate(_, result, _, _) or
     this = TSsaUncertainUpdate(_, result, _, _) or
@@ -928,14 +928,17 @@ class SsaVariable extends TSsaVariable {
     this = TSsaUntracked(_, result)
   }
 
+  /** DEPRECATED: Alias for getCfgNode */
+  deprecated ControlFlowNode getCFGNode() { result = this.getCfgNode() }
+
   /** Gets a textual representation of this SSA variable. */
   string toString() { none() }
 
   /** Gets the source location for this element. */
-  Location getLocation() { result = this.getCFGNode().getLocation() }
+  Location getLocation() { result = this.getCfgNode().getLocation() }
 
   /** Gets the `BasicBlock` in which this SSA variable is defined. */
-  BasicBlock getBasicBlock() { result = this.getCFGNode().getBasicBlock() }
+  BasicBlock getBasicBlock() { result = this.getCfgNode().getBasicBlock() }
 
   /** Gets an access of this SSA variable. */
   RValue getAUse() {
@@ -990,7 +993,7 @@ class SsaUpdate extends SsaVariable {
 class SsaExplicitUpdate extends SsaUpdate, TSsaCertainUpdate {
   SsaExplicitUpdate() {
     exists(VariableUpdate upd |
-      upd = this.getCFGNode() and getDestVar(upd) = this.getSourceVariable()
+      upd = this.getCfgNode() and getDestVar(upd) = this.getSourceVariable()
     )
   }
 
@@ -998,7 +1001,7 @@ class SsaExplicitUpdate extends SsaUpdate, TSsaCertainUpdate {
 
   /** Gets the `VariableUpdate` defining the SSA variable. */
   VariableUpdate getDefiningExpr() {
-    result = this.getCFGNode() and getDestVar(result) = this.getSourceVariable()
+    result = this.getCfgNode() and getDestVar(result) = this.getSourceVariable()
   }
 }
 
@@ -1018,10 +1021,10 @@ class SsaImplicitUpdate extends SsaUpdate {
   private string getKind() {
     this = TSsaUntracked(_, _) and result = "untracked"
     or
-    certainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCFGNode(), _, _) and
+    certainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCfgNode(), _, _) and
     result = "explicit qualifier"
     or
-    if uncertainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCFGNode(), _, _)
+    if uncertainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCfgNode(), _, _)
     then
       if exists(this.getANonLocalUpdate())
       then result = "nonlocal + nonlocal qualifier"
@@ -1038,7 +1041,7 @@ class SsaImplicitUpdate extends SsaUpdate {
     exists(SsaSourceField f, Callable setter |
       f = this.getSourceVariable() and
       relevantFieldUpdate(setter, f.getField(), result) and
-      updatesNamedField(this.getCFGNode(), f, setter)
+      updatesNamedField(this.getCfgNode(), f, setter)
     )
   }
 
@@ -1051,8 +1054,8 @@ class SsaImplicitUpdate extends SsaUpdate {
    */
   predicate assignsUnknownValue() {
     this = TSsaUntracked(_, _) or
-    certainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCFGNode(), _, _) or
-    uncertainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCFGNode(), _, _)
+    certainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCfgNode(), _, _) or
+    uncertainVariableUpdate(this.getSourceVariable().getQualifier(), this.getCfgNode(), _, _)
   }
 }
 
@@ -1086,7 +1089,7 @@ class SsaImplicitInit extends SsaVariable, TSsaEntryDef {
    */
   predicate isParameterDefinition(Parameter p) {
     this.getSourceVariable() = TLocalVar(p.getCallable(), p) and
-    p.getCallable().getBody() = this.getCFGNode()
+    p.getCallable().getBody() = this.getCfgNode()
   }
 }
 
@@ -1098,7 +1101,7 @@ class SsaPhiNode extends SsaVariable, TSsaPhiNode {
   SsaVariable getAPhiInput() {
     exists(BasicBlock phiPred, TrackedVar v |
       v = this.getSourceVariable() and
-      this.getCFGNode().(BasicBlock).getABBPredecessor() = phiPred and
+      this.getCfgNode().(BasicBlock).getABBPredecessor() = phiPred and
       ssaDefReachesEndOfBlock(v, result, phiPred)
     )
   }
@@ -1111,8 +1114,11 @@ class SsaPhiNode extends SsaVariable, TSsaPhiNode {
   }
 }
 
-private class RefTypeCastExpr extends CastExpr {
-  RefTypeCastExpr() { this.getType() instanceof RefType }
+private class RefTypeCastingExpr extends CastingExpr {
+  RefTypeCastingExpr() {
+    this.getType() instanceof RefType and
+    not this instanceof SafeCastExpr
+  }
 }
 
 /**
@@ -1127,5 +1133,5 @@ Expr sameValue(SsaVariable v, VarAccess va) {
   or
   result.(AssignExpr).getSource() = sameValue(v, va)
   or
-  result.(RefTypeCastExpr).getExpr() = sameValue(v, va)
+  result.(RefTypeCastingExpr).getExpr() = sameValue(v, va)
 }

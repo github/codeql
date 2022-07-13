@@ -21,10 +21,11 @@ private import codeql.ruby.DataFlow
 class NetHttpRequest extends HTTP::Client::Request::Range {
   private DataFlow::CallNode request;
   private DataFlow::Node responseBody;
+  private API::Node requestNode;
 
   NetHttpRequest() {
-    exists(API::Node requestNode, string method |
-      request = requestNode.getAnImmediateUse() and
+    exists(string method |
+      request = requestNode.asSource() and
       this = request.asExpr().getExpr()
     |
       // Net::HTTP.get(...)
@@ -48,10 +49,19 @@ class NetHttpRequest extends HTTP::Client::Request::Range {
   }
 
   /**
-   * Gets the node representing the URL of the request.
-   * Currently unused, but may be useful in future, e.g. to filter out certain requests.
+   * Gets a node that contributes to the URL of the request.
    */
-  override DataFlow::Node getURL() { result = request.getArgument(0) }
+  override DataFlow::Node getAUrlPart() {
+    result = request.getArgument(0)
+    or
+    // Net::HTTP.new(...).get(...)
+    exists(API::Node new |
+      new = API::getTopLevelMember("Net").getMember("HTTP").getInstance() and
+      requestNode = new.getReturn(_)
+    |
+      result = new.asSource().(DataFlow::CallNode).getArgument(0)
+    )
+  }
 
   override DataFlow::Node getResponseBody() { result = responseBody }
 
@@ -63,7 +73,10 @@ class NetHttpRequest extends HTTP::Client::Request::Range {
     //   foo.request(...)
     exists(DataFlow::CallNode setter |
       disablingNode =
-        API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse() and
+        API::getTopLevelMember("OpenSSL")
+            .getMember("SSL")
+            .getMember("VERIFY_NONE")
+            .getAValueReachableFromSource() and
       setter.asExpr().getExpr().(SetterMethodCall).getMethodName() = "verify_mode=" and
       disablingNode = setter.getArgument(0) and
       localFlow(setter.getReceiver(), request.getReceiver())

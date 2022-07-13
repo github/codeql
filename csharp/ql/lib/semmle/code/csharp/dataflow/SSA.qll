@@ -428,11 +428,6 @@ module Ssa {
     }
 
     /**
-     * DEPRECATED: Use `definesAt/3` instead.
-     */
-    deprecated predicate definesAt(ControlFlow::BasicBlock bb, int i) { this.definesAt(_, bb, i) }
-
-    /**
      * Gets the syntax element associated with this SSA definition, if any.
      * This is either an expression, for example `x = 0`, a parameter, or a
      * callable. Phi nodes have no associated syntax element.
@@ -654,14 +649,6 @@ module Ssa {
 
     override Location getLocation() { result = this.getQualifierDefinition().getLocation() }
   }
-
-  /**
-   * An SSA definition that has no actual semantics, but simply serves to
-   * merge or filter data flow.
-   *
-   * Phi nodes are the canonical (and currently only) example.
-   */
-  deprecated class PseudoDefinition = PhiNode;
 
   /**
    * An SSA phi node, that is, a pseudo definition for a variable at a point

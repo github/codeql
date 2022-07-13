@@ -1,0 +1,2 @@
+| A | namespace | test.d.ts:1:19:1:19 | A | test.d.ts:10:14:10:14 | A |
+| A | variable | test.d.ts:1:19:1:19 | A | test.d.ts:10:14:10:14 | A |

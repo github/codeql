@@ -8,4 +8,4 @@
 import experimental.adaptivethreatmodeling.EndpointTypes
 
 from EndpointType type
-select type.getEncoding() as encoding, type.getDescription() as description order by encoding
+select type.getEncoding() as label, type.getDescription() as labelName order by label

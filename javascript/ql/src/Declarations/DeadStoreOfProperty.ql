@@ -101,7 +101,7 @@ predicate isDeadAssignment(string name, DataFlow::PropWrite assign1, DataFlow::P
     noPropAccessBetweenInsideBasicBlock(name, assign1, assign2) or
     noPropAccessBetweenAcrossBasicBlocks(name, assign1, assign2)
   ) and
-  not isDOMProperty(name)
+  not isDomProperty(name)
 }
 
 /**
@@ -154,7 +154,7 @@ predicate maybeAssignsAccessedPropInBlock(DataFlow::PropWrite assign, boolean af
  */
 private module PurityCheck {
   /**
-   * Holds if a ControlFlowNode `c` is before an impure expression inside `bb`.
+   * Holds if `write` is before an impure expression inside `bb`.
    */
   predicate isBeforeImpure(DataFlow::PropWrite write, ReachableBasicBlock bb) {
     getANodeAfterWrite(write, bb).(Expr).isImpure()
@@ -181,7 +181,7 @@ private module PurityCheck {
   }
 
   /**
-   * Holds if a ControlFlowNode `c` is after an impure expression inside `bb`.
+   * Holds if `write` is after an impure expression inside `bb`.
    */
   predicate isAfterImpure(DataFlow::PropWrite write, ReachableBasicBlock bb) {
     getANodeBeforeWrite(write, bb).(Expr).isImpure()

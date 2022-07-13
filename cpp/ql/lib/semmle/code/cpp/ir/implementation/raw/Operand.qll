@@ -18,7 +18,7 @@ private import internal.OperandInternal
  * of `TOperand` that are used in this stage.
  */
 private class TStageOperand =
-  TRegisterOperand or TNonSSAMemoryOperand or TPhiOperand or TChiOperand;
+  TRegisterOperand or TNonSsaMemoryOperand or TPhiOperand or TChiOperand;
 
 /**
  * A known location. Testing `loc instanceof KnownLocation` will account for non existing locations, as
@@ -38,7 +38,7 @@ class Operand extends TStageOperand {
     // Ensure that the operand does not refer to instructions from earlier stages that are unreachable here
     exists(Instruction use, Instruction def | this = registerOperand(use, _, def))
     or
-    exists(Instruction use | this = nonSSAMemoryOperand(use, _))
+    exists(Instruction use | this = nonSsaMemoryOperand(use, _))
     or
     exists(Instruction use, Instruction def, IRBlock predecessorBlock |
       this = phiOperand(use, def, predecessorBlock, _) or
@@ -209,7 +209,7 @@ class Operand extends TStageOperand {
 class MemoryOperand extends Operand {
   cached
   MemoryOperand() {
-    this instanceof TNonSSAMemoryOperand or
+    this instanceof TNonSsaMemoryOperand or
     this instanceof TPhiOperand or
     this instanceof TChiOperand
   }
@@ -249,7 +249,7 @@ class NonPhiOperand extends Operand {
 
   NonPhiOperand() {
     this = registerOperand(useInstr, tag, _) or
-    this = nonSSAMemoryOperand(useInstr, tag) or
+    this = nonSsaMemoryOperand(useInstr, tag) or
     this = chiOperand(useInstr, tag)
   }
 
@@ -299,7 +299,7 @@ class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOpe
 
   cached
   NonPhiMemoryOperand() {
-    this = nonSSAMemoryOperand(useInstr, tag)
+    this = nonSsaMemoryOperand(useInstr, tag)
     or
     this = chiOperand(useInstr, tag)
   }

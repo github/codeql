@@ -22,7 +22,7 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
   API::Node connectionNode;
 
   RestClientHttpRequest() {
-    requestUse = requestNode.getAnImmediateUse() and
+    requestUse = requestNode.asSource() and
     this = requestUse.asExpr().getExpr() and
     (
       connectionNode =
@@ -38,7 +38,7 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
     )
   }
 
-  override DataFlow::Node getURL() {
+  override DataFlow::Node getAUrlPart() {
     result = requestUse.getKeywordArgument("url")
     or
     result = requestUse.getArgument(0) and
@@ -52,7 +52,8 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
     // `RestClient::Resource::new` takes an options hash argument, and we're
     // looking for `{ verify_ssl: OpenSSL::SSL::VERIFY_NONE }`.
     exists(DataFlow::Node arg, int i |
-      i > 0 and arg = connectionNode.getAUse().(DataFlow::CallNode).getArgument(i)
+      i > 0 and
+      arg = connectionNode.getAValueReachableFromSource().(DataFlow::CallNode).getArgument(i)
     |
       // Either passed as an individual key:value argument, e.g.:
       // RestClient::Resource.new(..., verify_ssl: OpenSSL::SSL::VERIFY_NONE)
@@ -79,14 +80,18 @@ private predicate isVerifySslNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
     key.asExpr() = p.getKey() and
     value.asExpr() = p.getValue() and
     isSslVerifyModeLiteral(key) and
-    value = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").getAUse()
+    value =
+      API::getTopLevelMember("OpenSSL")
+          .getMember("SSL")
+          .getMember("VERIFY_NONE")
+          .getAValueReachableFromSource()
   )
 }
 
 /** Holds if `node` can represent the symbol literal `:verify_ssl`. */
 private predicate isSslVerifyModeLiteral(DataFlow::Node node) {
   exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringOrSymbol("verify_ssl") and
+    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("verify_ssl") and
     literal.flowsTo(node)
   )
 }

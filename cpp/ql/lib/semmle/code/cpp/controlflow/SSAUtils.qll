@@ -114,10 +114,10 @@ private predicate live_at_exit_of_bb(StackVariable v, BasicBlock b) {
 
 /** Common SSA logic for standard SSA and range-analysis SSA. */
 cached
-library class SSAHelper extends int {
+library class SsaHelper extends int {
   /* 0 = StandardSSA, 1 = RangeSSA */
   cached
-  SSAHelper() { this in [0 .. 1] }
+  SsaHelper() { this in [0 .. 1] }
 
   /**
    * Override to insert a custom phi node for variable `v` at the start of
@@ -311,3 +311,6 @@ library class SSAHelper extends int {
     ssa_use(v, result, _, _)
   }
 }
+
+/** DEPRECATED: Alias for SsaHelper */
+deprecated class SSAHelper = SsaHelper;

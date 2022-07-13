@@ -1,3 +1,89 @@
+## 0.5.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
+## 0.4.1
+
+## 0.4.0
+
+### Breaking Changes
+
+* `API::moduleImport` no longer has any results for dotted names, such as `API::moduleImport("foo.bar")`. Using `API::moduleImport("foo.bar").getMember("baz").getACall()` previously worked if the Python code was `from foo.bar import baz; baz()`, but not if the code was `import foo.bar; foo.bar.baz()` -- we are making this change to ensure the approach that can handle all cases is always used.
+
+## 0.3.0
+
+### Breaking Changes
+
+* The imports made available from `import python` are no longer exposed under `DataFlow::` after doing `import semmle.python.dataflow.new.DataFlow`, for example using `DataFlow::Add` will now cause a compile error.
+
+### Minor Analysis Improvements
+
+* The modeling of `request.files` in Flask has been fixed, so we now properly handle assignments to local variables (such as `files = request.files; files['key'].filename`).
+* Added taint propagation for `io.StringIO` and `io.BytesIO`. This addition was originally [submitted as part of an experimental query by @jorgectf](https://github.com/github/codeql/pull/6112).
+
+## 0.2.0
+
+### Breaking Changes
+
+* The signature of `allowImplicitRead` on `DataFlow::Configuration` and `TaintTracking::Configuration` has changed from `allowImplicitRead(DataFlow::Node node, DataFlow::Content c)` to `allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c)`.
+
+## 0.1.0
+
+### Breaking Changes
+
+* The recently added flow-state versions of `isBarrierIn`, `isBarrierOut`, `isSanitizerIn`, and `isSanitizerOut` in the data flow and taint tracking libraries have been removed.
+
+### Deprecated APIs
+
+* Queries importing a data-flow configuration from `semmle.python.security.dataflow`
+  should ensure that the imported file ends with `Query`, and only import its top-level
+  module. For example, a query that used `CommandInjection::Configuration` from
+  `semmle.python.security.dataflow.CommandInjection` should from now use `Configuration`
+  from `semmle.python.security.dataflow.CommandInjectionQuery` instead.
+
+### Major Analysis Improvements
+
+* Added data-flow for Django ORM models that are saved in a database (no `models.ForeignKey` support).
+
+### Minor Analysis Improvements
+
+* Improved modeling of Flask `Response` objects, so passing a response body with the keyword argument `response` is now recognized.
+
+## 0.0.13
+
+## 0.0.12
+
+### Breaking Changes
+
+* The flow state variants of `isBarrier` and `isAdditionalFlowStep` are no longer exposed in the taint tracking library. The `isSanitizer` and `isAdditionalTaintStep` predicates should be used instead.
+
+### Deprecated APIs
+
+* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+* Some modules that started with a lowercase letter have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### New Features
+
+* The data flow and taint tracking libraries have been extended with versions of `isBarrierIn`, `isBarrierOut`, and `isBarrierGuard`, respectively `isSanitizerIn`, `isSanitizerOut`, and `isSanitizerGuard`, that support flow states.
+
+### Minor Analysis Improvements
+
+* All deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+
+## 0.0.11
+
+### Minor Analysis Improvements
+
+* Added new SSRF sinks for `httpx`, `pycurl`, `urllib`, `urllib2`, `urllib3`, and `libtaxii`. This improvement was [submitted by @haby0](https://github.com/github/codeql/pull/8275).
+* The regular expression parser now groups sequences of normal characters. This reduces the number of instances of `RegExpNormalChar`.
+* Fixed taint propagation for attribute assignment. In the assignment `x.foo = tainted` we no longer treat the entire object `x` as tainted, just because the attribute `foo` contains tainted data. This leads to slightly fewer false positives.
+* Improved analysis of attributes for data-flow and taint tracking queries, so `getattr`/`setattr` are supported, and a write to an attribute properly stops flow for the old value in that attribute.
+* Added post-update nodes (`DataFlow::PostUpdateNode`) for arguments in calls that can't be resolved.
+
 ## 0.0.10
 
 ### Deprecated APIs

@@ -266,11 +266,11 @@ regexp.rb:
 #   43| [RegExpSequence] \b!a\B
 #-----| 0 -> [RegExpSpecialChar] \b
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] !a
-#-----| 2 -> [RegExpSpecialChar] \B
+#-----| 2 -> [RegExpNonWordBoundary] \B
 
 #   43| [RegExpConstant, RegExpNormalChar] !a
 
-#   43| [RegExpSpecialChar] \B
+#   43| [RegExpNonWordBoundary] \B
 
 #   46| [RegExpGroup] (foo)
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] foo
@@ -485,3 +485,5 @@ regexp.rb:
 #   75| [RegExpNamedCharacterProperty] [:digit:]
 
 #   79| [RegExpConstant, RegExpNormalChar] abc
+
+#   82| [RegExpConstant, RegExpEscape] \u{987

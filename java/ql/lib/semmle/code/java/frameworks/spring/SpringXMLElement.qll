@@ -3,11 +3,11 @@ import semmle.code.java.frameworks.spring.SpringBeanFile
 import semmle.code.java.frameworks.spring.SpringBean
 
 /** A common superclass for all Spring XML elements. */
-class SpringXMLElement extends XMLElement {
-  SpringXMLElement() { this.getFile() instanceof SpringBeanFile }
+class SpringXmlElement extends XMLElement {
+  SpringXmlElement() { this.getFile() instanceof SpringBeanFile }
 
   /** Gets a child of this Spring XML element. */
-  SpringXMLElement getASpringChild() { result = this.getAChild() }
+  SpringXmlElement getASpringChild() { result = this.getAChild() }
 
   /** Gets the bean file of this XML element. */
   SpringBeanFile getSpringBeanFile() { result = this.getFile() }
@@ -27,13 +27,16 @@ class SpringXMLElement extends XMLElement {
   SpringBean getEnclosingBean() {
     if this instanceof SpringBean
     then result = this
-    else result = this.getParent().(SpringXMLElement).getEnclosingBean()
+    else result = this.getParent().(SpringXmlElement).getEnclosingBean()
   }
 
   /**
    * Overridden by subclasses. Used to match `value`, `property` and `ref` elements for similarity.
    */
-  predicate isSimilar(SpringXMLElement other) { none() }
+  predicate isSimilar(SpringXmlElement other) { none() }
 
   string getContentString() { result = this.allCharactersString() }
 }
+
+/** DEPRECATED: Alias for SpringXmlElement */
+deprecated class SpringXMLElement = SpringXmlElement;

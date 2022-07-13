@@ -3,7 +3,6 @@
 import java
 import semmle.code.java.frameworks.JAXB
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.security.CleartextStorageQuery
 import semmle.code.java.security.CleartextStoragePropertiesQuery
 
@@ -74,7 +73,7 @@ private Expr getInstanceInput(DataFlow::Node instance, RefType t) {
   )
 }
 
-private class ClassStoreFlowConfig extends DataFlow2::Configuration {
+private class ClassStoreFlowConfig extends DataFlow::Configuration {
   ClassStoreFlowConfig() { this = "ClassStoreFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ClassStore }

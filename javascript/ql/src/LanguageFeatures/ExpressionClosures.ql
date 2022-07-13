@@ -18,7 +18,7 @@ import javascript
  * Holds if `nd` is a use of deprecated language feature `type`, and `replacement`
  * is the recommended replacement.
  */
-predicate deprecated_feature(ASTNode nd, string type, string replacement) {
+predicate deprecated_feature(AstNode nd, string type, string replacement) {
   exists(FunctionExpr fe | fe = nd and fe.getBody() instanceof Expr |
     type = "expression closures" and replacement = "arrow expressions"
   )
@@ -38,6 +38,6 @@ predicate deprecated_feature(ASTNode nd, string type, string replacement) {
   replacement = "standard method definitions"
 }
 
-from ASTNode depr, string type, string replacement
+from AstNode depr, string type, string replacement
 where deprecated_feature(depr, type, replacement)
 select depr, "Use " + replacement + " instead of " + type + "."

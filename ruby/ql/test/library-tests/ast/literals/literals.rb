@@ -11,20 +11,33 @@ TRUE
 5_678
 0
 0d900
+2147483647 # max value representable by QL's int type
+2147483648 # too large to be representable by an int
 
 # hexadecimal integers
 0x1234
-0xdeadbeef
-0xF00D_face
+0xbeef
+0xF0_0D
+0x000000000000000000ff
+0x7FFF_FFFF # max value representable by QL's int type
+0x80000000  # too large to be represented by an int
+0xdeadbeef  # too large to be represented by an int
+0xF00D_face # too large to be represented by an int
 
 # octal integers
 0123
 0o234
 0O45_6
+0000000000000000000000000000010
+017777777777 # max value representable by QL's int type
+020000000000 # too large to be represented by an int
 
 # binary integers
 0b10010100
 0B011_01101
+0b00000000000000000000000000000000000000011
+0b01111111111111111111111111111111 # max value representable by QL's int type
+0b10000000000000000000000000000000 # too large to be represented by an int
 
 # floating-point numbers
 12.34
@@ -37,10 +50,10 @@ TRUE
 
 # imaginary/complex numbers
 2i
-#3.14i # BAD: parse error
+3.14i
 
 # imaginary & rational
-#1.2ri # BAD: parse error
+1.2ri
 
 # strings
 ""
@@ -124,7 +137,7 @@ BAR = "bar"
 (start..2+3)
 (1..) # 1 to infinity
 (..1) # -infinity to 1
-(0..-1) # BAD: parsed as binary with minus endless range on the LHS
+(0..-1)
 
 # subshell
 `ls -l`

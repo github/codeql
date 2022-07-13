@@ -11,6 +11,7 @@
 | difference::Base | can | does NOT | have implicit copy constructor |
 | difference::OnlyAssign | can NOT | does NOT | have implicit copy constructor |
 | difference::OnlyCtor | can | does | have implicit copy constructor |
+| instantiated_explicit_ctor::Wrapper<int> | can | does NOT | have implicit copy constructor |
 | moves::MoveAssign | can NOT | does NOT | have implicit copy constructor |
 | moves::MoveCtor | can NOT | does NOT | have implicit copy constructor |
 | private_cc::C | can | does NOT | have implicit copy constructor |

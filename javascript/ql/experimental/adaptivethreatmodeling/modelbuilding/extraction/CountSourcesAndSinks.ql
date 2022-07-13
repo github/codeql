@@ -20,7 +20,7 @@ import semmle.javascript.security.dataflow.DeepObjectResourceExhaustionQuery as 
 import semmle.javascript.security.dataflow.DifferentKindsComparisonBypassQuery as DifferentKindsComparisonBypass
 import semmle.javascript.security.dataflow.DomBasedXssQuery as DomBasedXss
 import semmle.javascript.security.dataflow.ExceptionXssQuery as ExceptionXss
-import semmle.javascript.security.dataflow.ExternalAPIUsedWithUntrustedDataQuery as ExternalAPIUsedWithUntrustedData
+import semmle.javascript.security.dataflow.ExternalAPIUsedWithUntrustedDataQuery as ExternalApiUsedWithUntrustedData
 import semmle.javascript.security.dataflow.FileAccessToHttpQuery as FileAccessToHttp
 import semmle.javascript.security.dataflow.HardcodedCredentialsQuery as HardcodedCredentials
 import semmle.javascript.security.dataflow.HardcodedDataInterpretedAsCodeQuery as HardcodedDataInterpretedAsCode

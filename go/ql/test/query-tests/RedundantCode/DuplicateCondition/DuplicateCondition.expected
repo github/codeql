@@ -1,0 +1,2 @@
+| DuplicateCondition.go:6:12:6:25 | ...==... | This condition is a duplicate of $@. | DuplicateCondition.go:4:5:4:18 | ...==... | an earlier condition |
+| tst.go:9:12:9:13 | ok | This condition is a duplicate of $@. | tst.go:8:22:8:23 | ok | an earlier condition |

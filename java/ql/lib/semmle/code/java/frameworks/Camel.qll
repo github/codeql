@@ -12,7 +12,7 @@ import semmle.code.java.frameworks.camel.CamelJavaAnnotations
  */
 class CamelToURI extends string {
   CamelToURI() {
-    exists(SpringCamelXMLToElement toXMLElement | this = toXMLElement.getURI()) or
+    exists(SpringCamelXmlToElement toXmlElement | this = toXmlElement.getURI()) or
     exists(CamelJavaDSLToDecl toJavaDSL | this = toJavaDSL.getURI())
   }
 }
@@ -56,17 +56,17 @@ class CamelToBeanURI extends CamelToURI {
  */
 class CamelTargetClass extends Class {
   CamelTargetClass() {
-    exists(SpringCamelXMLBeanRef camelXMLBeanRef |
+    exists(SpringCamelXmlBeanRef camelXmlBeanRef |
       // A target may be defined by referencing an existing Spring Bean.
-      this = camelXMLBeanRef.getRefBean().getClass()
+      this = camelXmlBeanRef.getRefBean().getClass()
       or
       // A target may be defined by referencing a class, which Apache Camel will create into a bean.
-      this = camelXMLBeanRef.getBeanType()
+      this = camelXmlBeanRef.getBeanType()
     )
     or
     exists(CamelToBeanURI toBeanURI | this = toBeanURI.getRefBean().getClass())
     or
-    exists(SpringCamelXMLMethodElement xmlMethod |
+    exists(SpringCamelXmlMethodElement xmlMethod |
       this = xmlMethod.getRefBean().getClass() or
       this = xmlMethod.getBeanType()
     )

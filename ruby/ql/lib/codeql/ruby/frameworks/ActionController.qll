@@ -33,7 +33,7 @@ class ActionControllerControllerClass extends ClassDeclaration {
         // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
         // treat it separately in case the `ApplicationController` definition is not in the database.
         API::getTopLevelMember("ApplicationController")
-      ].getASubclass().getAUse().asExpr().getExpr()
+      ].getASubclass().getAValueReachableFromSource().asExpr().getExpr()
   }
 
   /**
@@ -126,10 +126,8 @@ abstract class ParamsCall extends MethodCall {
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `params` method.
  */
-class ParamsSource extends RemoteFlowSource::Range {
-  ParamsCall call;
-
-  ParamsSource() { this.asExpr().getExpr() = call }
+class ParamsSource extends HTTP::Server::RequestInputAccess::Range {
+  ParamsSource() { this.asExpr().getExpr() instanceof ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
 }
@@ -145,10 +143,8 @@ abstract class CookiesCall extends MethodCall {
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `cookies` method.
  */
-class CookiesSource extends RemoteFlowSource::Range {
-  CookiesCall call;
-
-  CookiesSource() { this.asExpr().getExpr() = call }
+class CookiesSource extends HTTP::Server::RequestInputAccess::Range {
+  CookiesSource() { this.asExpr().getExpr() instanceof CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
 }
@@ -184,18 +180,31 @@ private class ActionControllerHtmlEscapeCall extends HtmlEscapeCall {
  * specific URL/path or to a different action in this controller.
  */
 class RedirectToCall extends ActionControllerContextCall {
-  RedirectToCall() { this.getMethodName() = "redirect_to" }
+  RedirectToCall() {
+    this.getMethodName() = ["redirect_to", "redirect_back", "redirect_back_or_to"]
+  }
 
   /** Gets the `Expr` representing the URL to redirect to, if any */
-  Expr getRedirectUrl() { result = this.getArgument(0) }
+  Expr getRedirectUrl() {
+    this.getMethodName() = "redirect_back" and result = this.getKeywordArgument("fallback_location")
+    or
+    this.getMethodName() = ["redirect_to", "redirect_back_or_to"] and result = this.getArgument(0)
+  }
 
   /** Gets the `ActionControllerActionMethod` to redirect to, if any */
   ActionControllerActionMethod getRedirectActionMethod() {
-    exists(string methodName |
-      this.getKeywordArgument("action").getConstantValue().isStringOrSymbol(methodName) and
-      methodName = result.getName() and
-      result.getEnclosingModule() = this.getControllerClass()
-    )
+    this.getKeywordArgument("action").getConstantValue().isStringlikeValue(result.getName()) and
+    result.getEnclosingModule() = this.getControllerClass()
+  }
+
+  /**
+   * Holds if this method call allows a redirect to an external host.
+   */
+  predicate allowsExternalRedirect() {
+    // Unless the option allow_other_host is explicitly set to false, assume that external redirects are allowed.
+    // TODO: Take into account `config.action_controller.raise_on_open_redirects`.
+    // TODO: Take into account that this option defaults to false in Rails 7.
+    not this.getKeywordArgument("allow_other_host").getConstantValue().isBoolean(false)
   }
 }
 
@@ -228,7 +237,7 @@ pragma[nomagic]
 private predicate actionControllerHasHelperMethodCall(ActionControllerControllerClass c, string name) {
   exists(MethodCall mc |
     mc.getMethodName() = "helper_method" and
-    mc.getAnArgument().getConstantValue().isStringOrSymbol(name) and
+    mc.getAnArgument().getConstantValue().isStringlikeValue(name) and
     mc.getEnclosingModule() = c
   )
 }
@@ -320,7 +329,7 @@ class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::R
       call.getMethodName() = "skip_forgery_protection"
       or
       call.getMethodName() = "skip_before_action" and
-      call.getAnArgument().getConstantValue().isStringOrSymbol("verify_authenticity_token")
+      call.getAnArgument().getConstantValue().isStringlikeValue("verify_authenticity_token")
     )
   }
 

@@ -14,14 +14,14 @@ newtype TNode =
     not e.getParent*() instanceof Annotation
   } or
   TExplicitParameterNode(Parameter p) {
-    exists(p.getCallable().getBody()) or p.getCallable() = any(SummarizedCallable sc).asCallable()
+    exists(p.getCallable().getBody()) or p.getCallable() instanceof SummarizedCallable
   } or
   TImplicitVarargsArray(Call c) {
     c.getCallee().isVarargs() and
     not exists(Argument arg | arg.getCall() = c and arg.isExplicitVarargsArray())
   } or
   TInstanceParameterNode(Callable c) {
-    (exists(c.getBody()) or c = any(SummarizedCallable sc).asCallable()) and
+    (exists(c.getBody()) or c instanceof SummarizedCallable) and
     not c.isStatic()
   } or
   TImplicitInstanceAccess(InstanceAccessExt ia) { not ia.isExplicit(_) } or
@@ -336,7 +336,7 @@ module Private {
     result.asCallable() = n.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
     result.asCallable() = n.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
     result = nodeGetEnclosingCallable(n.(ImplicitPostUpdateNode).getPreUpdateNode()) or
-    n = TSummaryInternalNode(result, _) or
+    n = TSummaryInternalNode(result.asCallable(), _) or
     result.asFieldScope() = n.(FieldValueNode).getField()
   }
 

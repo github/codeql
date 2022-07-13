@@ -14,13 +14,39 @@ private class ContainerOrModule extends TContainerOrModule {
   ) {
     none()
   }
+
+  /** Gets the kind of this file/module/folder. */
+  string getKind() {
+    this = TFile(_) and result = "file"
+    or
+    this = TModule(_) and result = "module"
+    or
+    this = TFolder(_) and result = "folder"
+  }
+
+  /** Gets the module for this imported module. */
+  Module asModule() { this = TModule(result) }
+
+  /** Gets the file for this file. */
+  File asFile() { this = TFile(result) }
 }
 
 private class TFileOrModule = TFile or TModule;
 
 /** A file or a module. */
 class FileOrModule extends TFileOrModule, ContainerOrModule {
-  abstract File getFile();
+  /** Gets the file that contains this module/file. */
+  File getFile() {
+    result = this.asFile()
+    or
+    result = this.asModule().getLocation().getFile()
+  }
+
+  Type toType() {
+    result.(FileType).getDeclaration().getLocation().getFile() = this.asFile()
+    or
+    result.(ModuleType).getDeclaration() = this.asModule()
+  }
 }
 
 private class File_ extends FileOrModule, TFile {
@@ -43,8 +69,6 @@ private class File_ extends FileOrModule, TFile {
     endline = 0 and
     endcolumn = 0
   }
-
-  override File getFile() { result = f }
 }
 
 private class Folder_ extends ContainerOrModule, TFolder {
@@ -94,8 +118,6 @@ class Module_ extends FileOrModule, TModule {
   ) {
     m.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
-
-  override File getFile() { result = m.getLocation().getFile() }
 }
 
 private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
@@ -191,23 +213,38 @@ private module Cached {
 
   /** Holds if module expression `me` resolves to `m`. */
   cached
-  predicate resolveModuleExpr(ModuleExpr me, FileOrModule m) {
+  predicate resolveModuleRef(TypeRef me, FileOrModule m) {
     not m = TFile(any(File f | f.getExtension() = "ql")) and
-    not exists(me.getQualifier()) and
-    exists(ContainerOrModule enclosing, string name | resolveModuleExprHelper(me, enclosing, name) |
+    not exists(me.(ModuleExpr).getQualifier()) and
+    exists(ContainerOrModule enclosing, string name | resolveModuleRefHelper(me, enclosing, name) |
       definesModule(enclosing, name, m, _)
+    ) and
+    (
+      not me instanceof TypeExpr
+      or
+      // remove some spurious results that can happen with `TypeExpr`
+      me instanceof TypeExpr and
+      m instanceof Module_ and // TypeExpr can only resolve to a Module, and only in some scenarios
+      (
+        // only possible if this is inside a moduleInstantiation.
+        me = any(ModuleExpr mod).getArgument(_).asType()
+        or
+        // or if it's a parameter to a parameterized module
+        me = any(SignatureExpr sig, Module mod | mod.hasParameter(_, _, sig) | sig).asType()
+      )
     )
     or
     exists(FileOrModule mid |
-      resolveModuleExpr(me.getQualifier(), mid) and
-      definesModule(mid, me.getName(), m, true)
+      resolveModuleRef(me.(ModuleExpr).getQualifier(), mid) and
+      definesModule(mid, me.(ModuleExpr).getName(), m, true)
     )
   }
 
   pragma[noinline]
-  private predicate resolveModuleExprHelper(ModuleExpr me, ContainerOrModule enclosing, string name) {
+  private predicate resolveModuleRefHelper(TypeRef me, ContainerOrModule enclosing, string name) {
     enclosing = getEnclosingModule(me).getEnclosing*() and
-    name = me.getName()
+    name = [me.(ModuleExpr).getName(), me.(TypeExpr).getClassName()] and
+    (not me instanceof ModuleExpr or not enclosing instanceof Folder_) // module expressions are not imports, so they can't resolve to a file (which is contained in a folder).
   }
 }
 
@@ -215,7 +252,10 @@ import Cached
 private import NewType
 
 boolean getPublicBool(AstNode n) {
-  if n.(ModuleMember).isPrivate() or n.(NewTypeBranch).getNewType().isPrivate()
+  if
+    n.(ModuleMember).isPrivate() or
+    n.(NewTypeBranch).getNewType().isPrivate() or
+    n.(Module).isPrivate()
   then result = false
   else result = true
 }
@@ -223,7 +263,7 @@ boolean getPublicBool(AstNode n) {
 /**
  * Holds if `container` defines module `m` with name `name`.
  *
- * `m` may be defined either directly or through `import`s.
+ * `m` may be defined either directly or through imports.
  */
 private predicate definesModule(
   ContainerOrModule container, string name, ContainerOrModule m, boolean public
@@ -235,6 +275,22 @@ private predicate definesModule(
     public = true
     or
     m = TModule(any(Module mod | public = getPublicBool(mod)))
+  )
+  or
+  // signature module in a paramertized module
+  exists(Module mod, SignatureExpr sig, TypeExpr ty, int i |
+    mod = container.asModule() and
+    mod.hasParameter(i, name, sig) and
+    public = false and
+    ty = sig.asType()
+  |
+    // resolve to the signature module
+    m = ty.getResolvedModule()
+    or
+    // resolve to the arguments of the instantiated module
+    exists(ModuleExpr inst | inst.getResolvedModule().asModule() = mod |
+      m = inst.getArgument(i).asType().getResolvedModule()
+    )
   )
   or
   // import X
@@ -258,7 +314,7 @@ private predicate definesModule(
   exists(Module alias |
     container = getEnclosingModule(alias) and
     name = alias.getName() and
-    resolveModuleExpr(alias.getAlias(), m) and
+    resolveModuleRef(alias.getAlias(), m) and
     public = getPublicBool(alias)
   )
 }
@@ -267,14 +323,6 @@ module ModConsistency {
   query predicate noResolve(Import imp) {
     not resolve(imp, _) and
     not imp.getLocation()
-        .getFile()
-        .getAbsolutePath()
-        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
-  }
-
-  query predicate noResolveModuleExpr(ModuleExpr me) {
-    not resolveModuleExpr(me, _) and
-    not me.getLocation()
         .getFile()
         .getAbsolutePath()
         .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
@@ -290,9 +338,28 @@ module ModConsistency {
         .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
-  query predicate multipleResolveModuleExpr(ModuleExpr me, int c, ContainerOrModule m) {
-    c = strictcount(ContainerOrModule m0 | resolveModuleExpr(me, m0)) and
-    c > 1 and
-    resolveModuleExpr(me, m)
+  // This can happen with parameterized modules.
+  /*
+   * query predicate multipleResolveModuleRef(ModuleExpr me, int c, ContainerOrModule m) {
+   *    c = strictcount(ContainerOrModule m0 | resolveModuleRef(me, m0)) and
+   *    c > 1 and
+   *    resolveModuleRef(me, m)
+   *  }
+   */
+
+  query predicate noName(AstNode mod) {
+    mod instanceof Module and
+    not exists(mod.(Module).getName())
+    or
+    mod instanceof ModuleExpr and
+    not exists(mod.(ModuleExpr).getName())
+  }
+
+  query predicate nonUniqueName(AstNode mod) {
+    mod instanceof Module and
+    count(mod.(Module).getName()) >= 2
+    or
+    mod instanceof ModuleExpr and
+    count(mod.(ModuleExpr).getName()) >= 2
   }
 }

@@ -100,12 +100,12 @@ As a consequence, ``A != B`` has a very different meaning to the :ref:`negation 
       - ``1 = [1 .. 2]`` holds, because ``1 = 1``.
       - ``not 1 = [1 .. 2]`` doesn't hold, because there is a common value (``1``).
 
-#. Compare ``1`` and ``none()`` (the "empty set"):
-      - ``1 != none()`` doesn't hold, because there are no values in ``none()``, so no values
+#. Compare ``1`` and ``int empty() { none() }`` (a predicate defining the empty set of integers):
+      - ``1 != empty()`` doesn't hold, because there are no values in ``empty()``, so no values
         that are not equal to ``1``.
-      - ``1 = none()`` also doesn't hold, because there are no values in ``none()``, so no values
+      - ``1 = empty()`` also doesn't hold, because there are no values in ``empty()``, so no values
         that are equal to ``1``.
-      - ``not 1 = none()`` holds, because there are no common values.
+      - ``not 1 = empty()`` holds, because there are no common values.
 
 .. index:: instanceof
 .. _type-checks:
@@ -295,8 +295,47 @@ necessary, since they highlight the default precedence. You usually only add par
 override the default precedence, but you can also add them to make your code easier to read
 (even if they aren't required).
 
+QL also has two nullary connectives indicating the always true formula,
+``any()``, and the always false formula, ``none()``.
+
 The logical connectives in QL work similarly to Boolean connectives in other programming
 languages. Here is a brief overview:
+
+.. index:: any, true
+.. _true:
+
+``any()``
+=========
+
+The built-in predicate ``any()`` is a formula that always holds.
+
+**Example**
+
+The following predicate defines the set of all expressions.
+
+.. code-block:: ql
+
+    Expr allExpressions() {
+      any()
+    }
+
+.. index:: none, false
+.. _false:
+
+``none()``
+==========
+
+The built-in predicate ``none()`` is a formula that never holds.
+
+**Example**
+
+The following predicate defines the empty set of integers.
+
+.. code-block:: ql
+
+    int emptySet() {
+      none()
+    }
 
 .. index:: not, negation
 .. _negation:

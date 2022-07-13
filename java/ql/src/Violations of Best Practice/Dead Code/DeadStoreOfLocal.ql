@@ -24,7 +24,7 @@ predicate flowStep(Expr decl, Expr init) {
     init = f.getAnAssignedValue()
   )
   or
-  decl.(CastExpr).getExpr() = init
+  decl.(CastingExpr).getExpr() = init
 }
 
 predicate excludedInit(Type t, Expr decl) {

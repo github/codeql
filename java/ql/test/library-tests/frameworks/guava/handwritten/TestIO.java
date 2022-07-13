@@ -94,7 +94,7 @@ class TestIO {
         sink(ByteStreams.newDataInput(btaint())); // $numTaintFlow=1
         sink(ByteStreams.newDataInput(btaint(), 0)); // $numTaintFlow=1
         sink(ByteStreams.newDataInput(btaint())); // $numTaintFlow=1
-        sink(ByteStreams.newDataInput(btaint()).readLine()); // $ MISSING:numTaintFlow=1
+        sink(ByteStreams.newDataInput(btaint()).readLine()); // $numTaintFlow=1
         sink(ByteStreams.newDataInput(new ByteArrayInputStream(btaint()))); // $numTaintFlow=1
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         out.write(btaint());
@@ -136,6 +136,6 @@ class TestIO {
         new CountingInputStream(itaint()).read(buf, 0, 42); 
         sink(buf); // $numTaintFlow=1
         sink(new LittleEndianDataInputStream(itaint())); // $numTaintFlow=1
-        sink(new LittleEndianDataInputStream(itaint()).readUTF()); // $ MISSING:numTaintFlow=1
+        sink(new LittleEndianDataInputStream(itaint()).readUTF()); // $numTaintFlow=1
     }
 }

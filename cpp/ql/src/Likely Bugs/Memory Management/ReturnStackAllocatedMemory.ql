@@ -14,14 +14,11 @@
  */
 
 import cpp
-// We don't actually use the global value numbering library in this query, but without it we end up
-// recomputing the IR.
-private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.MustFlow
 import PathGraph
 
-/** Holds if `f` has a name that we intrepret as evidence of intentionally returning the value of the stack pointer. */
+/** Holds if `f` has a name that we interpret as evidence of intentionally returning the value of the stack pointer. */
 predicate intentionallyReturnsStackPointer(Function f) {
   f.getName().toLowerCase().matches(["%stack%", "%sp%"])
 }
@@ -34,7 +31,7 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
     exists(VariableAddressInstruction var, Function func |
       var = source.asInstruction() and
       func = var.getEnclosingFunction() and
-      var.getASTVariable() instanceof StackVariable and
+      var.getAstVariable() instanceof StackVariable and
       // Pointer-to-member types aren't properly handled in the dbscheme.
       not var.getResultType() instanceof PointerToMemberType and
       // Rule out FPs caused by extraction errors.
@@ -77,12 +74,13 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
 
 from
   MustFlowPathNode source, MustFlowPathNode sink, VariableAddressInstruction var,
-  ReturnStackAllocatedMemoryConfig conf
+  ReturnStackAllocatedMemoryConfig conf, Function f
 where
   conf.hasFlowPath(source, sink) and
   source.getNode().asInstruction() = var and
   // Only raise an alert if we're returning from the _same_ callable as the on that
   // declared the stack variable.
-  var.getEnclosingFunction() = sink.getNode().getEnclosingCallable()
-select sink.getNode(), source, sink, "May return stack-allocated memory from $@.", var.getAST(),
-  var.getAST().toString()
+  var.getEnclosingFunction() = pragma[only_bind_into](f) and
+  sink.getNode().getEnclosingCallable() = pragma[only_bind_into](f)
+select sink.getNode(), source, sink, "May return stack-allocated memory from $@.", var.getAst(),
+  var.getAst().toString()

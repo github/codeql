@@ -22,7 +22,7 @@ private import semmle.javascript.internal.CachedStages
  * abs(-42);
  * ```
  */
-class ASTNode extends @ast_node, NodeInStmtContainer {
+class AstNode extends @ast_node, NodeInStmtContainer {
   override Location getLocation() { hasLocation(this, result) }
 
   override File getFile() {
@@ -84,7 +84,7 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
    * _Note_: The indices of child nodes are considered an implementation detail and may
    * change between versions of the extractor.
    */
-  ASTNode getChild(int i) {
+  AstNode getChild(int i) {
     result = this.getChildExpr(i) or
     result = this.getChildStmt(i) or
     properties(result, this, i, _, _) or
@@ -101,7 +101,7 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
   TypeExpr getChildTypeExpr(int i) { typeexprs(result, _, this, i, _) }
 
   /** Gets a child node of this node. */
-  ASTNode getAChild() { result = this.getChild(_) }
+  AstNode getAChild() { result = this.getChild(_) }
 
   /** Gets a child expression of this node. */
   Expr getAChildExpr() { result = this.getChildExpr(_) }
@@ -120,7 +120,7 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
 
   /** Gets the parent node of this node, if any. */
   cached
-  ASTNode getParent() { Stages::Ast::ref() and this = result.getAChild() }
+  AstNode getParent() { Stages::Ast::ref() and this = result.getAChild() }
 
   /** Gets the first control flow node belonging to this syntactic entity. */
   ControlFlowNode getFirstControlFlowNode() { result = this }
@@ -183,6 +183,9 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
     this instanceof TypeExpr
   }
 }
+
+/** DEPRECATED: Alias for AstNode */
+deprecated class ASTNode = AstNode;
 
 /**
  * Holds if the given file is a `.d.ts` file.
@@ -334,7 +337,10 @@ class EventHandlerCode extends @event_handler, CodeInAttribute { }
  * <a href="javascript:alert('hi')">Click me</a>
  * ```
  */
-class JavaScriptURL extends @javascript_url, CodeInAttribute { }
+class JavaScriptUrl extends @javascript_url, CodeInAttribute { }
+
+/** DEPRECATED: Alias for JavaScriptUrl */
+deprecated class JavaScriptURL = JavaScriptUrl;
 
 /**
  * A toplevel syntactic entity containing Closure-style externs definitions.
@@ -361,7 +367,7 @@ class Externs extends TopLevel {
  * i = 9
  * ```
  */
-class ExprOrStmt extends @expr_or_stmt, ControlFlowNode, ASTNode { }
+class ExprOrStmt extends @expr_or_stmt, ControlFlowNode, AstNode { }
 
 /**
  * A program element that contains statements, but isn't itself
@@ -375,7 +381,7 @@ class ExprOrStmt extends @expr_or_stmt, ControlFlowNode, ASTNode { }
  * }
  * ```
  */
-class StmtContainer extends @stmt_container, ASTNode {
+class StmtContainer extends @stmt_container, AstNode {
   /** Gets the innermost enclosing container in which this container is nested. */
   cached
   StmtContainer getEnclosingContainer() { none() }
@@ -405,7 +411,7 @@ class StmtContainer extends @stmt_container, ASTNode {
    * For scripts or modules, this is the container itself; for functions,
    * it is the function body.
    */
-  ASTNode getBody() { result = this }
+  AstNode getBody() { result = this }
 
   /**
    * Gets the (unique) entry node of the control flow graph for this toplevel or function.
@@ -470,7 +476,7 @@ module AST {
    * function id(x) { return x; }    // function declaration
    * ```
    */
-  class ValueNode extends ASTNode, @dataflownode {
+  class ValueNode extends AstNode, @dataflownode {
     /** Gets type inference results for this element. */
     DataFlow::AnalyzedNode analyze() { result = DataFlow::valueNode(this).analyze() }
 

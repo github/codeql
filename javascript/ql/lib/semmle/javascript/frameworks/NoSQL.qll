@@ -3,9 +3,9 @@
  */
 
 import javascript
-import semmle.javascript.Promises
 
-module NoSQL {
+/** Provides classes for modeling NoSQL query sinks. */
+module NoSql {
   /** An expression that is interpreted as a NoSQL query. */
   abstract class Query extends Expr {
     /** Gets an expression that is interpreted as a code operator in this query. */
@@ -13,11 +13,14 @@ module NoSQL {
   }
 }
 
+/** DEPRECATED: Alias for NoSql */
+deprecated module NoSQL = NoSql;
+
 /**
  * Gets a value that has been assigned to the "$where" property of an object that flows to `queryArg`.
  */
 private DataFlow::Node getADollarWhereProperty(API::Node queryArg) {
-  result = queryArg.getMember("$where").getARhs()
+  result = queryArg.getMember("$where").asSink()
 }
 
 /**
@@ -78,7 +81,7 @@ private module MongoDB {
   /**
    * An expression that is interpreted as a MongoDB query.
    */
-  class Query extends NoSQL::Query {
+  class Query extends NoSql::Query {
     QueryCall qc;
 
     Query() { this = qc.getAQueryArgument().asExpr() }
@@ -415,7 +418,7 @@ private module Mongoose {
             param = f.getParameter(0).getParameter(1)
           |
             exists(DataFlow::MethodCallNode pred |
-              // limitation: look at the previous method call	
+              // limitation: look at the previous method call
               Query::MethodSignatures::returnsDocumentQuery(pred.getMethodName(), asArray) and
               pred.getAMethodCall() = f.getACall()
             )
@@ -498,7 +501,7 @@ private module Mongoose {
 
     Credentials() {
       exists(string prop |
-        this = createConnection().getParameter(3).getMember(prop).getARhs().asExpr()
+        this = createConnection().getParameter(3).getMember(prop).asSink().asExpr()
       |
         prop = "user" and kind = "user name"
         or
@@ -512,10 +515,10 @@ private module Mongoose {
   /**
    * An expression that is interpreted as a (part of a) MongoDB query.
    */
-  class MongoDBQueryPart extends NoSQL::Query {
+  class MongoDBQueryPart extends NoSql::Query {
     MongooseFunction f;
 
-    MongoDBQueryPart() { this = f.getQueryArgument().getARhs().asExpr() }
+    MongoDBQueryPart() { this = f.getQueryArgument().asSink().asExpr() }
 
     override DataFlow::Node getACodeOperator() {
       result = getADollarWhereProperty(f.getQueryArgument())
@@ -537,7 +540,7 @@ private module Mongoose {
 
     override DataFlow::Node getAQueryArgument() {
       // NB: the complete information is not easily accessible for deeply chained calls
-      f.getQueryArgument().getARhs() = result
+      f.getQueryArgument().asSink() = result
     }
 
     override DataFlow::Node getAResult() {
@@ -580,11 +583,11 @@ private module Minimongo {
    */
   module CollectionMethodSignatures {
     /**
-     * Holds if Collection method `name` interprets parameter `n` as a query.
+     * Holds if Collection method `name` interprets parameter `queryArgIdx` as a query.
      */
-    predicate interpretsArgumentAsQuery(string m, int queryArgIdx) {
+    predicate interpretsArgumentAsQuery(string name, int queryArgIdx) {
       // implements most of the MongoDB interface
-      MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
+      MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(name, queryArgIdx)
     }
   }
 
@@ -619,7 +622,7 @@ private module Minimongo {
   /**
    * An expression that is interpreted as a Minimongo query.
    */
-  class Query extends NoSQL::Query {
+  class Query extends NoSql::Query {
     QueryCall qc;
 
     Query() { this = qc.getAQueryArgument().asExpr() }
@@ -679,7 +682,7 @@ private module MarsDB {
   /**
    * An expression that is interpreted as a MarsDB query.
    */
-  class Query extends NoSQL::Query {
+  class Query extends NoSql::Query {
     QueryCall qc;
 
     Query() { this = qc.getAQueryArgument().asExpr() }
@@ -763,11 +766,11 @@ private module Redis {
   /**
    * An expression that is interpreted as a key in a Node Redis call.
    */
-  class RedisKeyArgument extends NoSQL::Query {
+  class RedisKeyArgument extends NoSql::Query {
     RedisKeyArgument() {
       exists(string method, int argIndex |
         QuerySignatures::argumentIsAmbiguousKey(method, argIndex) and
-        this = redis().getMember(method).getParameter(argIndex).getARhs().asExpr()
+        this = redis().getMember(method).getParameter(argIndex).asSink().asExpr()
       )
     }
   }

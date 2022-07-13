@@ -23,7 +23,7 @@ newtype TRegExpPatternMistake =
    * by `mistake`.
    */
   TIdentityEscapeInStringMistake(
-    RegExpPatternSource src, string char, string mistake, ASTNode rawStringNode, int index
+    RegExpPatternSource src, string char, string mistake, AstNode rawStringNode, int index
   ) {
     char = getALikelyRegExpPatternMistake(src, mistake, rawStringNode, index)
   } or
@@ -32,7 +32,7 @@ newtype TRegExpPatternMistake =
    * regular expression string `src`, indicating intent to use the
    * word-boundary assertion '\b'.
    */
-  TBackspaceInStringMistake(RegExpPatternSource src, ASTNode rawStringNode, int index) {
+  TBackspaceInStringMistake(RegExpPatternSource src, AstNode rawStringNode, int index) {
     exists(string raw, string cooked |
       exists(StringLiteral lit | lit = rawStringNode |
         rawStringNode = src.asExpr() and
@@ -91,7 +91,7 @@ class RegExpPatternMistake extends TRegExpPatternMistake {
   /** Gets a textual representation of this element. */
   string toString() { result = getMessage() }
 
-  abstract ASTNode getRawStringNode();
+  abstract AstNode getRawStringNode();
 
   abstract RegExpPatternSource getSrc();
 
@@ -109,7 +109,7 @@ class IdentityEscapeInStringMistake extends RegExpPatternMistake, TIdentityEscap
   string char;
   string mistake;
   int index;
-  ASTNode rawStringNode;
+  AstNode rawStringNode;
 
   IdentityEscapeInStringMistake() {
     this = TIdentityEscapeInStringMistake(src, char, mistake, rawStringNode, index)
@@ -123,7 +123,7 @@ class IdentityEscapeInStringMistake extends RegExpPatternMistake, TIdentityEscap
 
   override RegExpPatternSource getSrc() { result = src }
 
-  override ASTNode getRawStringNode() { result = rawStringNode }
+  override AstNode getRawStringNode() { result = rawStringNode }
 }
 
 /**
@@ -133,7 +133,7 @@ class IdentityEscapeInStringMistake extends RegExpPatternMistake, TIdentityEscap
 class BackspaceInStringMistake extends RegExpPatternMistake, TBackspaceInStringMistake {
   RegExpPatternSource src;
   int index;
-  ASTNode rawStringNode;
+  AstNode rawStringNode;
 
   BackspaceInStringMistake() { this = TBackspaceInStringMistake(src, rawStringNode, index) }
 
@@ -145,7 +145,7 @@ class BackspaceInStringMistake extends RegExpPatternMistake, TBackspaceInStringM
 
   override RegExpPatternSource getSrc() { result = src }
 
-  override ASTNode getRawStringNode() { result = rawStringNode }
+  override AstNode getRawStringNode() { result = rawStringNode }
 }
 
 from RegExpPatternMistake mistake

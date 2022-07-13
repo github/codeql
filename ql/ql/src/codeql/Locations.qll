@@ -6,7 +6,7 @@ import files.FileSystem
  * A location as given by a file, a start line, a start column,
  * an end line, and an end column.
  *
- * For more information about locations see [LGTM locations](https://lgtm.com/help/ql/locations).
+ * For more information about locations see [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
 class Location extends @location {
   /** Gets the file for this location. */
@@ -28,6 +28,7 @@ class Location extends @location {
   int getNumLines() { result = getEndLine() - getStartLine() + 1 }
 
   /** Gets a textual representation of this element. */
+  cached
   string toString() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
@@ -40,7 +41,7 @@ class Location extends @location {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

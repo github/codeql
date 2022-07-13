@@ -8,7 +8,7 @@
  * Extend `SpecialMethod::Potential` to capture more cases.
  */
 
-import python
+private import python
 
 /** A control flow node which might correspond to a special method call. */
 class PotentialSpecialMethodCallNode extends ControlFlowNode {

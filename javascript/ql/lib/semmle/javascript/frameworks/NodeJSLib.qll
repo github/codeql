@@ -168,9 +168,9 @@ module NodeJSLib {
     string kind;
 
     RequestInputAccess() {
-      // `req.url`
-      kind = "url" and
-      this.asExpr().(PropAccess).accesses(request, "url")
+      // `req.url` / `req.body`
+      kind = ["url", "body"] and
+      this.asExpr().(PropAccess).accesses(request, kind)
       or
       exists(PropAccess headers |
         // `req.headers.cookie`
@@ -474,17 +474,17 @@ module NodeJSLib {
    * that receives the data.
    *
    * We determine this by looking for an externs declaration for
-   * `fs.methodName` where the `i`th parameter's name is `data` or
+   * `fs.methodName` where the `i`th parameter's name (`paramName`) is `data` or
    * `buffer` or a `callback`.
    */
-  private predicate fsDataParam(string methodName, int i, string n) {
+  private predicate fsDataParam(string methodName, int i, string paramName) {
     exists(ExternalMemberDecl decl, Function f, JSDocParamTag p |
       decl.hasQualifiedName("fs", methodName) and
       f = decl.getInit() and
       p.getDocumentedParameter() = f.getParameter(i).getAVariable() and
-      n = p.getName().toLowerCase()
+      paramName = p.getName().toLowerCase()
     |
-      n = "data" or n = "buffer" or n = "callback"
+      paramName = ["data", "buffer", "callback"]
     )
   }
 
@@ -739,7 +739,7 @@ module NodeJSLib {
         methodName = ["execFile", "execFileSync", "spawn", "spawnSync", "fork"]
       ) and
       // all of the above methods take the command as their first argument
-      result = this.getParameter(0).getARhs()
+      result = this.getParameter(0).asSink()
     }
 
     override DataFlow::Node getACommandArgument() { result = this.getACommandArgument(_) }
@@ -751,7 +751,7 @@ module NodeJSLib {
     override DataFlow::Node getArgumentList() {
       methodName = ["execFile", "execFileSync", "fork", "spawn", "spawnSync"] and
       // all of the above methods take the argument list as their second argument
-      result = this.getParameter(1).getARhs()
+      result = this.getParameter(1).asSink()
     }
 
     override predicate isSync() { methodName.matches("%Sync") }
@@ -759,7 +759,7 @@ module NodeJSLib {
     override DataFlow::Node getOptionsArg() {
       not result.getALocalSource() instanceof DataFlow::FunctionNode and // looks like callback
       not result.getALocalSource() instanceof DataFlow::ArrayCreationNode and // looks like argumentlist
-      not result = this.getParameter(0).getARhs() and
+      not result = this.getParameter(0).asSink() and
       // fork/spawn and all sync methos always has options as the last argument
       if
         methodName.matches("fork%") or
@@ -768,7 +768,7 @@ module NodeJSLib {
       then result = this.getLastArgument()
       else
         // the rest (exec/execFile) has the options argument as their second last.
-        result = this.getParameter(this.getNumArgument() - 2).getARhs()
+        result = this.getParameter(this.getNumArgument() - 2).asSink()
     }
   }
 
@@ -800,11 +800,6 @@ module NodeJSLib {
     HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
   }
-
-  /**
-   * DEPRECATED Use `VmModuleMemberInvocation` instead.
-   */
-  deprecated class VmModuleMethodCall = VmModuleMemberInvocation;
 
   /**
    * An invocation of a member from module `vm`
@@ -863,8 +858,6 @@ module NodeJSLib {
      */
     abstract class Range extends ClientRequest::Range { }
   }
-
-  deprecated class CustomNodeJSClientRequest = NodeJSClientRequest::Range;
 
   /**
    * A model of a URL request in the Node.js `http` library.
@@ -1077,7 +1070,7 @@ module NodeJSLib {
    */
   private class EventEmitterSubClass extends DataFlow::ClassNode {
     EventEmitterSubClass() {
-      this.getASuperClassNode() = getAnEventEmitterImport().getAUse() or
+      this.getASuperClassNode() = getAnEventEmitterImport().getAValueReachableFromSource() or
       this.getADirectSuperClass() instanceof EventEmitterSubClass
     }
   }

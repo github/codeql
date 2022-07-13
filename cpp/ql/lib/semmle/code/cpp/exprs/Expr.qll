@@ -49,6 +49,9 @@ class Expr extends StmtParent, @expr {
   /** Gets the enclosing variable of this expression, if any. */
   Variable getEnclosingVariable() { result = exprEnclosingElement(this) }
 
+  /** Gets the enclosing variable or function of this expression. */
+  Declaration getEnclosingDeclaration() { result = exprEnclosingElement(this) }
+
   /** Gets a child of this expression. */
   Expr getAChild() { exists(int n | result = this.getChild(n)) }
 
@@ -113,13 +116,6 @@ class Expr extends StmtParent, @expr {
    * stripped and typedefs have been resolved.
    */
   Type getUnspecifiedType() { result = this.getType().getUnspecifiedType() }
-
-  /**
-   * Gets an integer indicating the type of expression that this represents.
-   *
-   * DEPRECATED: use the subclasses of `Expr` rather than relying on this predicate.
-   */
-  deprecated int getKind() { exprs(underlyingElement(this), result, _) }
 
   /** Gets a textual representation of this expression. */
   override string toString() { none() }

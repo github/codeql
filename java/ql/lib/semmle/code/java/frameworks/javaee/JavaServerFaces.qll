@@ -67,8 +67,8 @@ class FacesComponent extends Class {
       )
       or
       // Or in an XML file
-      exists(FacesConfigComponentClass componentClassXML |
-        this = componentClassXML.getFacesComponentClass()
+      exists(FacesConfigComponentClass componentClassXml |
+        this = componentClassXml.getFacesComponentClass()
       )
     )
   }
