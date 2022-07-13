@@ -44,7 +44,10 @@ private string getAMentionedNonParameter(Predicate p) {
   not result.toLowerCase() = getAParameterName(p).toLowerCase() and
   // keywords
   not result =
-    ["true", "false", "NaN", "this", "forall", "exists", "null", "break", "return", "not"] and
+    [
+      "true", "false", "NaN", "this", "forall", "exists", "null", "break", "return", "not", "if",
+      "then", "else", "import"
+    ] and
   not result = any(Aggregate a).getKind() and // min, max, sum, count, etc.
   not result = getMentionedThings(p.getLocation().getFile()) and
   not result = any(Annotation a).getName() and // private, final, etc.
@@ -66,7 +69,7 @@ private string getMentionedThings(File file) {
 private string getAnUndocumentedParameter(Predicate p) {
   result = getAParameterName(p) and
   not result.toLowerCase() = getADocumentedParameter(p).toLowerCase() and
-  not result = ["config", "conf", "cfg"] and // DataFlow configurations are often undocumented, and that's fine.
+  not result = ["config", "conf", "cfg", "t", "t2"] and // DataFlow configurations / type-trackers are often undocumented, and that's fine.
   not (
     // "the given" often refers to the first parameter.
     p.getQLDoc().getContents().regexpMatch("(?s).*\\bthe given\\b.*") and
@@ -85,7 +88,7 @@ private string getMentionedNonParameters(Predicate p) {
 }
 
 from Predicate p
-where not p.getLocation().getFile().getBaseName() = "Aliases.qll" // these are OK
+where not p.getLocation().getFile().getBaseName() in ["Aliases.qll", "TreeSitter.qll"] // these are OK
 select p,
   "The QLDoc has no documentation for " + getUndocumentedParameters(p) + ", but the QLDoc mentions "
     + getMentionedNonParameters(p)
