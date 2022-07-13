@@ -244,7 +244,6 @@ RegExpCharacterRange getABadRange(string reason, int priority) {
   priority = 1 and
   exists(RegExpCharacterRange other |
     reason = "overlaps with " + other + " in the same character class" and
-    result != other and
     rankRange(result) < rankRange(other) and
     overlap(result, other)
   )
