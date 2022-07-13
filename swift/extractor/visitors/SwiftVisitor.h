@@ -15,7 +15,7 @@ class SwiftVisitor : private SwiftDispatcher {
   using SwiftDispatcher::SwiftDispatcher;
 
   template <typename T>
-  void extract(T* entity) {
+  void extract(const T& entity) {
     fetchLabel(entity);
   }
 

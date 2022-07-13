@@ -8,6 +8,7 @@
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/SwiftTagTraits.h"
 #include "swift/extractor/trap/generated/TrapClasses.h"
+#include "swift/extractor/infra/FilePath.h"
 
 namespace codeql {
 
@@ -17,6 +18,24 @@ namespace codeql {
 // Since SwiftDispatcher sees all the AST nodes, it also attaches a location to every 'locatable'
 // node (AST nodes that are not types: declarations, statements, expressions, etc.).
 class SwiftDispatcher {
+  // types to be supported by assignNewLabel/fetchLabel need to be listed here
+  using Store = TrapLabelStore<const swift::Decl*,
+                               const swift::Stmt*,
+                               const swift::StmtCondition*,
+                               const swift::StmtConditionElement*,
+                               const swift::CaseLabelItem*,
+                               const swift::Expr*,
+                               const swift::Pattern*,
+                               const swift::TypeRepr*,
+                               const swift::TypeBase*,
+                               FilePath>;
+
+  template <typename E>
+  static constexpr bool IsStorable = std::is_constructible_v<Store::Handle, const E&>;
+
+  template <typename E>
+  static constexpr bool IsLocatable = std::is_base_of_v<LocatableTag, TrapTagOf<E>>;
+
  public:
   // all references and pointers passed as parameters to this constructor are supposed to outlive
   // the SwiftDispatcher
@@ -27,7 +46,12 @@ class SwiftDispatcher {
       : sourceManager{sourceManager},
         trap{trap},
         currentModule{currentModule},
-        currentPrimarySourceFile{currentPrimarySourceFile} {}
+        currentPrimarySourceFile{currentPrimarySourceFile} {
+    if (currentPrimarySourceFile) {
+      // we make sure the file is in the trap output even if the source is empty
+      fetchLabel(getFilePath(currentPrimarySourceFile->getFilename()));
+    }
+  }
 
   template <typename Entry>
   void emit(const Entry& entry) {
@@ -61,9 +85,11 @@ class SwiftDispatcher {
   // This method gives a TRAP label for already emitted AST node.
   // If the AST node was not emitted yet, then the emission is dispatched to a corresponding
   // visitor (see `visit(T *)` methods below).
-  template <typename E>
-  TrapLabelOf<E> fetchLabel(E* e) {
-    assert(e && "trying to fetch a label on nullptr, maybe fetchOptionalLabel is to be used?");
+  template <typename E, std::enable_if_t<IsStorable<E>>* = nullptr>
+  TrapLabelOf<E> fetchLabel(const E& e) {
+    if constexpr (std::is_constructible_v<bool, const E&>) {
+      assert(e && "fetching a label on a null entity, maybe fetchOptionalLabel is to be used?");
+    }
     // this is required so we avoid any recursive loop: a `fetchLabel` during the visit of `e` might
     // end up calling `fetchLabel` on `e` itself, so we want the visit of `e` to call `fetchLabel`
     // only after having called `assignNewLabel` on `e`.
@@ -76,7 +102,7 @@ class SwiftDispatcher {
     visit(e);
     // TODO when everything is moved to structured C++ classes, this should be moved to createEntry
     if (auto l = store.get(e)) {
-      if constexpr (!std::is_base_of_v<swift::TypeBase, E>) {
+      if constexpr (IsLocatable<E>) {
         attachLocation(e, *l);
       }
       return *l;
@@ -93,15 +119,16 @@ class SwiftDispatcher {
     return fetchLabelFromUnion<AstNodeTag>(node);
   }
 
-  TrapLabel<ConditionElementTag> fetchLabel(const swift::StmtConditionElement& element) {
-    return fetchLabel(&element);
+  template <typename E, std::enable_if_t<IsStorable<E*>>* = nullptr>
+  TrapLabelOf<E> fetchLabel(const E& e) {
+    return fetchLabel(&e);
   }
 
   // Due to the lazy emission approach, we must assign a label to a corresponding AST node before
   // it actually gets emitted to handle recursive cases such as recursive calls, or recursive type
   // declarations
-  template <typename E, typename... Args>
-  TrapLabelOf<E> assignNewLabel(E* e, Args&&... args) {
+  template <typename E, typename... Args, std::enable_if_t<IsStorable<E>>* = nullptr>
+  TrapLabelOf<E> assignNewLabel(const E& e, Args&&... args) {
     assert(waitingForNewLabel == Store::Handle{e} && "assignNewLabel called on wrong entity");
     auto label = trap.createLabel<TrapTagOf<E>>(std::forward<Args>(args)...);
     store.insert(e, label);
@@ -109,20 +136,20 @@ class SwiftDispatcher {
     return label;
   }
 
-  template <typename E, typename... Args, std::enable_if_t<!std::is_pointer_v<E>>* = nullptr>
+  template <typename E, typename... Args, std::enable_if_t<IsStorable<E*>>* = nullptr>
   TrapLabelOf<E> assignNewLabel(const E& e, Args&&... args) {
     return assignNewLabel(&e, std::forward<Args>(args)...);
   }
 
   // convenience methods for structured C++ creation
-  template <typename E, typename... Args, std::enable_if_t<!std::is_pointer_v<E>>* = nullptr>
+  template <typename E, typename... Args>
   auto createEntry(const E& e, Args&&... args) {
-    return TrapClassOf<E>{assignNewLabel(&e, std::forward<Args>(args)...)};
+    return TrapClassOf<E>{assignNewLabel(e, std::forward<Args>(args)...)};
   }
 
   // used to create a new entry for entities that should not be cached
   // an example is swift::Argument, that are created on the fly and thus have no stable pointer
-  template <typename E, typename... Args, std::enable_if_t<!std::is_pointer_v<E>>* = nullptr>
+  template <typename E, typename... Args>
   auto createUncachedEntry(const E& e, Args&&... args) {
     auto label = trap.createLabel<TrapTagOf<E>>(std::forward<Args>(args)...);
     attachLocation(&e, label);
@@ -206,17 +233,6 @@ class SwiftDispatcher {
   }
 
  private:
-  // types to be supported by assignNewLabel/fetchLabel need to be listed here
-  using Store = TrapLabelStore<swift::Decl,
-                               swift::Stmt,
-                               swift::StmtCondition,
-                               swift::StmtConditionElement,
-                               swift::CaseLabelItem,
-                               swift::Expr,
-                               swift::Pattern,
-                               swift::TypeRepr,
-                               swift::TypeBase>;
-
   void attachLocation(swift::SourceLoc start,
                       swift::SourceLoc end,
                       TrapLabel<LocatableTag> locatableLabel) {
@@ -224,16 +240,16 @@ class SwiftDispatcher {
       // invalid locations seem to come from entities synthesized by the compiler
       return;
     }
-    std::string filepath = getFilepath(start);
-    auto fileLabel = trap.createLabel<FileTag>(filepath);
-    // TODO: do not emit duplicate trap entries for Files
-    trap.emit(FilesTrap{fileLabel, filepath});
-    auto [startLine, startColumn] = sourceManager.getLineAndColumnInBuffer(start);
-    auto [endLine, endColumn] = sourceManager.getLineAndColumnInBuffer(end);
-    auto locLabel = trap.createLabel<LocationTag>('{', fileLabel, "}:", startLine, ':', startColumn,
-                                                  ':', endLine, ':', endColumn);
-    trap.emit(LocationsTrap{locLabel, fileLabel, startLine, startColumn, endLine, endColumn});
-    trap.emit(LocatableLocationsTrap{locatableLabel, locLabel});
+    auto file = getFilePath(sourceManager.getDisplayNameForLoc(start));
+    Location entry{{}};
+    entry.file = fetchLabel(file);
+    std::tie(entry.start_line, entry.start_column) = sourceManager.getLineAndColumnInBuffer(start);
+    std::tie(entry.end_line, entry.end_column) = sourceManager.getLineAndColumnInBuffer(end);
+    entry.id = trap.createLabel<LocationTag>('{', entry.file, "}:", entry.start_line, ':',
+                                             entry.start_column, ':', entry.end_line, ':',
+                                             entry.end_column);
+    emit(entry);
+    emit(LocatableLocationsTrap{locatableLabel, entry.id});
   }
 
   template <typename Tag, typename... Ts>
@@ -256,21 +272,18 @@ class SwiftDispatcher {
     return false;
   }
 
-  std::string getFilepath(swift::SourceLoc loc) {
+  static FilePath getFilePath(llvm::StringRef path) {
     // TODO: this needs more testing
     // TODO: check canonicaliztion of names on a case insensitive filesystems
     // TODO: make symlink resolution conditional on CODEQL_PRESERVE_SYMLINKS=true
-    auto displayName = sourceManager.getDisplayNameForLoc(loc);
     llvm::SmallString<PATH_MAX> realPath;
-    if (std::error_code ec = llvm::sys::fs::real_path(displayName, realPath)) {
-      std::cerr << "Cannot get real path: '" << displayName.str() << "': " << ec.message() << "\n";
+    if (std::error_code ec = llvm::sys::fs::real_path(path, realPath)) {
+      std::cerr << "Cannot get real path: '" << path.str() << "': " << ec.message() << "\n";
       return {};
     }
     return realPath.str().str();
   }
 
-  // TODO: The following methods are supposed to redirect TRAP emission to correpsonding visitors,
-  // which are to be introduced in follow-up PRs
   virtual void visit(swift::Decl* decl) = 0;
   virtual void visit(swift::Stmt* stmt) = 0;
   virtual void visit(const swift::StmtCondition* cond) = 0;
@@ -280,6 +293,12 @@ class SwiftDispatcher {
   virtual void visit(swift::Pattern* pattern) = 0;
   virtual void visit(swift::TypeRepr* type) = 0;
   virtual void visit(swift::TypeBase* type) = 0;
+
+  void visit(const FilePath& file) {
+    auto entry = createEntry(file);
+    entry.name = file.path;
+    emit(entry);
+  }
 
   const swift::SourceManager& sourceManager;
   TrapDomain& trap;
