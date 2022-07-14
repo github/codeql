@@ -38,6 +38,14 @@ class ExampleController < ActionController::Base
     end
   end
 
+  # Should not find
+  def baz2
+    method = request.raw_request_method
+    if some_other_function == "GET"
+      Resource.find(id: params[:id])
+    end
+  end
+
     # Should find
     def foobarbaz
       method = request.request_method_symbol
@@ -56,7 +64,15 @@ class ExampleController < ActionController::Base
     end
   end
 
-
+  # Should not find
+  def resource_action
+    case request.random_method
+    when "GET"
+      Resource.find(id: params[:id])
+    when "POST"
+      Resource.new(id: params[:id], details: params[:details])
+    end
+  end
 end
 
 class SafeController < ActionController::Base
