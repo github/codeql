@@ -36,12 +36,14 @@ using SILBoxTypeReprTag = SilBoxTypeReprTag;
 
 MAP_TAG(Stmt);
 MAP_TAG(StmtCondition);
+MAP_TYPE_TO_TAG(StmtConditionElement, ConditionElementTag);
 MAP_TAG(CaseLabelItem);
 #define ABSTRACT_STMT(CLASS, PARENT) MAP_SUBTAG(CLASS##Stmt, PARENT)
 #define STMT(CLASS, PARENT) ABSTRACT_STMT(CLASS, PARENT)
 #include <swift/AST/StmtNodes.def>
 
 MAP_TAG(Expr);
+MAP_TAG(Argument);
 #define ABSTRACT_EXPR(CLASS, PARENT) MAP_SUBTAG(CLASS##Expr, PARENT)
 #define EXPR(CLASS, PARENT) ABSTRACT_EXPR(CLASS, PARENT)
 #include <swift/AST/ExprNodes.def>
