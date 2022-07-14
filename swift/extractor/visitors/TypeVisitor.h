@@ -9,7 +9,7 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
   using TypeVisitorBase<TypeVisitor>::TypeVisitorBase;
 
   void visit(swift::TypeBase* type);
-  void visit(const swift::TypeRepr& typeRepr, swift::Type type);
+  codeql::TypeRepr translateTypeRepr(const swift::TypeRepr& typeRepr, swift::Type type);
 
   void visitProtocolType(swift::ProtocolType* type);
   void visitEnumType(swift::EnumType* type);

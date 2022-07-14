@@ -27,7 +27,7 @@ class SwiftVisitor : private SwiftDispatcher {
   void visit(swift::Pattern* pattern) override { patternVisitor.visit(pattern); }
   void visit(swift::TypeBase* type) override { typeVisitor.visit(type); }
   void visit(swift::TypeRepr* typeRepr, swift::Type type) override {
-    typeVisitor.visit(*typeRepr, type);
+    emit(typeVisitor.translateTypeRepr(*typeRepr, type));
   }
 
   DeclVisitor declVisitor{*this};
