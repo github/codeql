@@ -48,6 +48,7 @@ and does not depend on the contents of the arrays.
 </li>
  
 <li>
+  HMAC:
   <a href="https://datatracker.ietf.org/doc/html/rfc2104.html">RFC 2104</a>
 </li>
 </references>
