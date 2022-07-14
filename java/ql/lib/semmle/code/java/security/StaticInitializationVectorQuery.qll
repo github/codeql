@@ -9,15 +9,14 @@ private predicate initializedWithConstants(ArrayCreationExpr array) {
   // creating an array without an initializer, for example `new byte[8]`
   not exists(array.getInit())
   or
-  // creating a multidimensional array with an initializer like `{ new byte[8], new byte[16] }`
-  // This works around https://github.com/github/codeql/issues/6552 -- change me once there is
-  // a better way to distinguish nested initializers that create zero-filled arrays
-  // (e.g. `new byte[1]`) from those with an initializer list (`new byte[] { 1 }` or just `{ 1 }`)
-  array.getInit().getAnInit().getAChildExpr() instanceof IntegerLiteral
-  or
-  // creating an array wit an initializer like `new byte[] { 1, 2 }`
-  forex(Expr element | element = array.getInit().getAnInit() |
+  initializedWithConstantsHelper(array.getInit())
+}
+
+private predicate initializedWithConstantsHelper(ArrayInit arInit) {
+  forex(Expr element | element = arInit.getAnInit() |
     element instanceof CompileTimeConstantExpr
+    or
+    initializedWithConstantsHelper(element)
   )
 }
 
