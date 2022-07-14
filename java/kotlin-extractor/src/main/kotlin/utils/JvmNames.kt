@@ -55,7 +55,7 @@ private val specialFunctions = mapOf(
 
 private val specialFunctionShortNames = specialFunctions.keys.map { it.functionName }.toSet()
 
-fun getSpecialJvmName(f: IrFunction): String? {
+private fun getSpecialJvmName(f: IrFunction): String? {
     if (specialFunctionShortNames.contains(f.name) && f is IrSimpleFunction) {
         f.allOverridden(true).forEach { overriddenFunc ->
             overriddenFunc.parentClassOrNull?.fqNameWhenAvailable?.let { parentFqName ->

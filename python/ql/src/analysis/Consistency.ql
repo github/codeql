@@ -5,7 +5,7 @@
  */
 
 import python
-import DefinitionTracking
+import analysis.DefinitionTracking
 
 predicate uniqueness_error(int number, string what, string problem) {
   what in [

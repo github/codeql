@@ -18,7 +18,7 @@ import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.MustFlow
 import PathGraph
 
-/** Holds if `f` has a name that we intrepret as evidence of intentionally returning the value of the stack pointer. */
+/** Holds if `f` has a name that we interpret as evidence of intentionally returning the value of the stack pointer. */
 predicate intentionallyReturnsStackPointer(Function f) {
   f.getName().toLowerCase().matches(["%stack%", "%sp%"])
 }

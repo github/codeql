@@ -5793,6 +5793,8 @@ predicate typos(string wrong, string right) {
   or
   wrong = "paramters" and right = "parameters"
   or
+  wrong = "parametarized" and right = "parameterized"
+  or
   wrong = "paranthesis" and right = "parenthesis"
   or
   wrong = "paraphenalia" and right = "paraphernalia"

@@ -180,7 +180,7 @@ private Path resolveUpTo(PathString p, int n, Folder root, boolean inTS) {
 }
 
 /**
- * Gets the `i`th component of the path `str`, where `base` is the resolved path one level up.
+ * Gets the `n`th component of the path `str`, where `base` is the resolved path one level up.
  * Supports that the root directory might be compiled output from TypeScript.
  * `inTS` is true if the result is TypeScript that is compiled into the path specified by `str`.
  */
@@ -227,7 +227,7 @@ private module TypeScriptOutDir {
   }
 
   /**
-   * Gets the `outDir` option from a tsconfig file from the folder `parent`.
+   * Gets the "outDir" option from a `tsconfig` file from the folder `parent`.
    */
   private string getOutDir(JsonObject tsconfig, Folder parent) {
     tsconfig.getFile().getBaseName().regexpMatch("tsconfig.*\\.json") and

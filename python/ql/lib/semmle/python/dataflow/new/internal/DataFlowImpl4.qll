@@ -428,7 +428,7 @@ private predicate localFlowStep(NodeEx node1, NodeEx node2, Configuration config
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    simpleLocalFlowStepExt(n1, n2) and
+    simpleLocalFlowStepExt(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     stepFilter(node1, node2, config)
   )
   or
@@ -447,7 +447,7 @@ private predicate additionalLocalFlowStep(NodeEx node1, NodeEx node2, Configurat
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    config.isAdditionalFlowStep(n1, n2) and
+    config.isAdditionalFlowStep(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config)
   )
@@ -466,7 +466,7 @@ private predicate additionalLocalStateStep(
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    config.isAdditionalFlowStep(n1, s1, n2, s2) and
+    config.isAdditionalFlowStep(pragma[only_bind_into](n1), s1, pragma[only_bind_into](n2), s2) and
     getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config) and
     not stateBarrier(node1, s1, config) and
@@ -481,7 +481,7 @@ private predicate jumpStep(NodeEx node1, NodeEx node2, Configuration config) {
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    jumpStepCached(n1, n2) and
+    jumpStepCached(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     stepFilter(node1, node2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
   )
@@ -494,7 +494,7 @@ private predicate additionalJumpStep(NodeEx node1, NodeEx node2, Configuration c
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    config.isAdditionalFlowStep(n1, n2) and
+    config.isAdditionalFlowStep(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
@@ -507,7 +507,7 @@ private predicate additionalJumpStateStep(
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    config.isAdditionalFlowStep(n1, s1, n2, s2) and
+    config.isAdditionalFlowStep(pragma[only_bind_into](n1), s1, pragma[only_bind_into](n2), s2) and
     getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config) and
     not stateBarrier(node1, s1, config) and
@@ -518,7 +518,7 @@ private predicate additionalJumpStateStep(
 
 pragma[nomagic]
 private predicate readSet(NodeEx node1, ContentSet c, NodeEx node2, Configuration config) {
-  readSet(node1.asNode(), c, node2.asNode()) and
+  readSet(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode())) and
   stepFilter(node1, node2, config)
   or
   exists(Node n |
@@ -562,7 +562,8 @@ pragma[nomagic]
 private predicate store(
   NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType, Configuration config
 ) {
-  store(node1.asNode(), tc, node2.asNode(), contentType) and
+  store(pragma[only_bind_into](node1.asNode()), tc, pragma[only_bind_into](node2.asNode()),
+    contentType) and
   read(_, tc.getContent(), _, config) and
   stepFilter(node1, node2, config)
 }

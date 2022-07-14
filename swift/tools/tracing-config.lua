@@ -67,9 +67,6 @@ function RegisterExtractorPack(id)
           return nil
         end
 
-        -- Skip actions in which we cannot extract anything
-        if compilerArguments.argv[1] == '-merge-modules' then return nil end
-
         strip_unsupported_args(compilerArguments.argv)
         insert_resource_dir_if_needed(compilerPath, compilerArguments.argv)
 

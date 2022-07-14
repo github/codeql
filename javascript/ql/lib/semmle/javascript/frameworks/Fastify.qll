@@ -299,7 +299,7 @@ module Fastify {
   }
 
   /**
-   * Holds if `rh` uses `plugin`.
+   * Holds if `rh` uses `middleware`.
    */
   private predicate usesMiddleware(RouteHandler rh, DataFlow::SourceNode middleware) {
     exists(RouteSetup setup |

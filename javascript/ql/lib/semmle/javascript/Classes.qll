@@ -172,7 +172,7 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
   /** Gets the expression denoting the super class of the defined class, if any. */
   override Expr getSuperClass() { result = this.getChildExpr(1) }
 
-  /** Gets the `n`th type from the `implements` clause of this class, starting at 0. */
+  /** Gets the `i`th type from the `implements` clause of this class, starting at 0. */
   override TypeExpr getSuperInterface(int i) {
     // AST indices for super interfaces: -1, -4, -7, ...
     exists(int astIndex | typeexprs(result, _, this, astIndex, _) |

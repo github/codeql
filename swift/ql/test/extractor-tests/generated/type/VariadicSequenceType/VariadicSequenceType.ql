@@ -2,12 +2,11 @@
 import codeql.swift.elements
 import TestUtils
 
-from VariadicSequenceType x, string getDiagnosticsName, Type getCanonicalType, Type getBaseType
+from VariadicSequenceType x, string getName, Type getCanonicalType, Type getBaseType
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getDiagnosticsName = x.getDiagnosticsName() and
+  getName = x.getName() and
   getCanonicalType = x.getCanonicalType() and
   getBaseType = x.getBaseType()
-select x, "getDiagnosticsName:", getDiagnosticsName, "getCanonicalType:", getCanonicalType,
-  "getBaseType:", getBaseType
+select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getBaseType:", getBaseType

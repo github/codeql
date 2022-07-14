@@ -106,6 +106,10 @@ module ClientSideUrlRedirect {
       ) and
       xss = true
       or
+      // A call to `navigation.navigate`
+      this = DataFlow::globalVarRef("navigation").getAMethodCall("navigate").getArgument(0) and
+      xss = true
+      or
       // An assignment to `location`
       exists(Assignment assgn | isLocation(assgn.getTarget()) and astNode = assgn.getRhs()) and
       xss = true

@@ -2,12 +2,12 @@
 import codeql.swift.elements
 import TestUtils
 
-from ExistentialType x, string getDiagnosticsName, Type getCanonicalType, Type getConstraint
+from ExistentialType x, string getName, Type getCanonicalType, Type getConstraint
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getDiagnosticsName = x.getDiagnosticsName() and
+  getName = x.getName() and
   getCanonicalType = x.getCanonicalType() and
   getConstraint = x.getConstraint()
-select x, "getDiagnosticsName:", getDiagnosticsName, "getCanonicalType:", getCanonicalType,
-  "getConstraint:", getConstraint
+select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getConstraint:",
+  getConstraint
