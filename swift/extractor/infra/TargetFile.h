@@ -24,7 +24,8 @@ class TargetFile {
   ~TargetFile() { commit(); }
 
   TargetFile(TargetFile&& other) = default;
-  TargetFile& operator=(TargetFile&& other);
+  // move assignment deleted as non-trivial and not needed
+  TargetFile& operator=(TargetFile&& other) = delete;
 
   template <typename T>
   TargetFile& operator<<(T&& value) {

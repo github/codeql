@@ -67,16 +67,6 @@ std::optional<TargetFile> TargetFile::create(std::string_view target,
   return std::nullopt;
 }
 
-TargetFile& TargetFile::operator=(TargetFile&& other) {
-  if (this != &other) {
-    commit();
-    workingPath = std::move(other.workingPath);
-    targetPath = std::move(other.targetPath);
-    out = std::move(other.out);
-  }
-  return *this;
-}
-
 void TargetFile::commit() {
   if (out.is_open()) {
     out.close();
