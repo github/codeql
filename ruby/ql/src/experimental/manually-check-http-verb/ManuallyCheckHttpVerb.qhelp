@@ -16,8 +16,8 @@
   </recommendation>
   
   <references>
-    <p>
+    <li>
       See https://guides.rubyonrails.org/routing.html for more information.
-    </p>
+    </li>
   </references>
 </qhelp>
