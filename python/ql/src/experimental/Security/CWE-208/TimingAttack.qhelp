@@ -46,6 +46,10 @@ and does not depend on the contents of the arrays.
 <li>
   <a href="https://docs.python.org/3/library/hmac.html#hmac.compare_digest">hmac.compare_digest() method</a>
 </li>
+ 
+<li>
+  <a href="https://datatracker.ietf.org/doc/html/rfc2104.html">RFC 2104</a>
+</li>
 </references>
 
 </qhelp>
