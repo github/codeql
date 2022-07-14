@@ -30,7 +30,7 @@ where
   return = return(c) and
   base = base(c) and
   return != base and
-  // We aren't restricted anyway from the sorounding code.
+  // We aren't restricted anyway from the surrounding code.
   not superClass*(base) = return and
   not exists(InstanceOf inst |
     inst.getExpr() = c and
