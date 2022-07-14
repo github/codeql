@@ -63,7 +63,7 @@ std::optional<TargetFile> TargetFile::create(std::string_view target,
                                              std::string_view targetDir,
                                              std::string_view workingDir) {
   TargetFile ret{target, targetDir, workingDir};
-  if (ret.init()) return {std::move(ret)};
+  if (ret.init()) return ret;
   return std::nullopt;
 }
 
