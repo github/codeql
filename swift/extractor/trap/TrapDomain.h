@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+#include <sstream>
+
 #include "swift/extractor/trap/TrapLabel.h"
 #include "swift/extractor/infra/TargetFile.h"
 

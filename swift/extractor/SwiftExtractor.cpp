@@ -1,11 +1,7 @@
 #include "SwiftExtractor.h"
 
-#include <filesystem>
-#include <fstream>
 #include <iostream>
-#include <sstream>
 #include <memory>
-#include <unistd.h>
 #include <unordered_set>
 #include <queue>
 
