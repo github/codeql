@@ -29,7 +29,6 @@ where
   c = closureCall() and
   return = return(c) and
   base = base(c) and
-  return != base and
   // We aren't restricted anyway from the surrounding code.
   not superClass*(base) = return and
   not exists(InstanceOf inst |
@@ -43,8 +42,8 @@ where
     superClass*(operand.getType().getDeclaration()) = return
   ) and
   // If the result is used in a call, then we only flag if the "closure in the middle" could be removed.
-  not exists(MemberCall memberCall | memberCall.getBase() = c |
-    not exists(ClassPredicate pred |
+  forall(MemberCall memberCall | memberCall.getBase() = c |
+    exists(ClassPredicate pred |
       pred = superClass*(base).getClassPredicate(memberCall.getMemberName()) and
       memberCall.getNumberOfArguments() = pred.getArity()
     )
