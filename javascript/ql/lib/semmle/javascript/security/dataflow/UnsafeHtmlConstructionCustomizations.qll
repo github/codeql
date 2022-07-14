@@ -80,7 +80,7 @@ module UnsafeHtmlConstruction {
     t.start() and
     result = sink
     or
-    exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, isUsedInXssSink(t2, sink)))
+    exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, isUsedInXssSink(t2, sink)))
     or
     exists(DataFlow::TypeBackTracker t2 |
       t.continue() = t2 and
