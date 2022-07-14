@@ -642,7 +642,7 @@ open class KotlinFileExtractor(
             if (extractTypeAccess) {
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
             }
-            val syntheticParameterNames = (vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true
+            val syntheticParameterNames = vp.origin == IrDeclarationOrigin.UNDERSCORE_PARAMETER || ((vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true)
             return extractValueParameter(id, substitutedType, vp.name.asString(), location, parent, idx, useValueParameter(vp, parentSourceDeclaration), vp.isVararg, syntheticParameterNames)
         }
     }
