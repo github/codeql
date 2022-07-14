@@ -9,22 +9,14 @@
 
 import ql
 
-string getComment(AstNode node) {
-  result = node.(QLDoc).getContents()
-  or
-  result = node.(BlockComment).getContents()
-  or
-  result = node.(LineComment).getContents()
-}
-
 /** Gets a word used in `node` */
-string getWord(AstNode node) { result = getComment(node).regexpFind("\\b[A-Za-z]+\\b", _, _) }
+string getWord(Comment node) { result = node.getContents().regexpFind("\\b[A-Za-z]+\\b", _, _) }
 
-AstNode hasRepeatedWord(string word) {
+Comment hasRepeatedWord(string word) {
   word = getWord(result) and
-  getComment(result).regexpMatch(".*\\b" + word + "\\s+" + word + "\\b.*")
+  result.getContents().regexpMatch(".*\\b" + word + "\\s+" + word + "\\b.*")
 }
 
-from AstNode comment, string word
+from Comment comment, string word
 where comment = hasRepeatedWord(word)
 select comment, "The comment repeats " + word + "."

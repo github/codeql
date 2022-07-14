@@ -90,6 +90,8 @@ class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYa
 
 class TSignatureExpr = TPredicateExpr or TType;
 
+class TComment = TQLDoc or TBlockComment or TLineComment;
+
 /** DEPRECATED: Alias for TYamlNode */
 deprecated class TYAMLNode = TYamlNode;
 

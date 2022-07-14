@@ -156,34 +156,38 @@ class TopLevel extends TTopLevel, AstNode {
   override QLDoc getQLDoc() { result = this.getMember(0) }
 }
 
-class QLDoc extends TQLDoc, AstNode {
+abstract class Comment extends AstNode, TComment {
+  abstract string getContents();
+}
+
+class QLDoc extends TQLDoc, Comment {
   QL::Qldoc qldoc;
 
   QLDoc() { this = TQLDoc(qldoc) }
 
-  string getContents() { result = qldoc.getValue() }
+  override string getContents() { result = qldoc.getValue() }
 
   override string getAPrimaryQlClass() { result = "QLDoc" }
 
   override AstNode getParent() { result.getQLDoc() = this }
 }
 
-class BlockComment extends TBlockComment, AstNode {
+class BlockComment extends TBlockComment, Comment {
   QL::BlockComment comment;
 
   BlockComment() { this = TBlockComment(comment) }
 
-  string getContents() { result = comment.getValue() }
+  override string getContents() { result = comment.getValue() }
 
   override string getAPrimaryQlClass() { result = "BlockComment" }
 }
 
-class LineComment extends TLineComment, AstNode {
+class LineComment extends TLineComment, Comment {
   QL::LineComment comment;
 
   LineComment() { this = TLineComment(comment) }
 
-  string getContents() { result = comment.getValue() }
+  override string getContents() { result = comment.getValue() }
 
   override string getAPrimaryQlClass() { result = "LineComment" }
 }
