@@ -71,7 +71,7 @@ class CallNode extends LocalSourceNode, ExprNode {
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
   ExprNode getKeywordArgument(string name) { result.getExprNode() = node.getKeywordArgument(name) }
 
-  /** Gets the name of the the method called by the method call (if any) corresponding to this data-flow node */
+  /** Gets the name of the method called by the method call (if any) corresponding to this data-flow node */
   string getMethodName() { result = node.getExpr().(MethodCall).getMethodName() }
 
   /** Gets the number of arguments of this call. */
