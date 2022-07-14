@@ -74,14 +74,14 @@ class RequestGet extends DataFlow::CallNode {
 
 class HttpVerbConfig extends TaintTracking::Configuration {
   HttpVerbConfig() { this = "HttpVerbConfig" }
-    
+
   override predicate isSource(DataFlow::Node source) {
-      source instanceof RequestMethod or
-      source instanceof RequestRequestMethod or
-      source instanceof RequestEnvMethod or
-      source instanceof RequestRawRequestMethod or
-      source instanceof RequestRequestMethodSymbol or
-      source instanceof RequestGet
+    source instanceof RequestMethod or
+    source instanceof RequestRequestMethod or
+    source instanceof RequestEnvMethod or
+    source instanceof RequestRawRequestMethod or
+    source instanceof RequestRequestMethodSymbol or
+    source instanceof RequestGet
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -92,4 +92,5 @@ class HttpVerbConfig extends TaintTracking::Configuration {
 
 from HttpVerbConfig config, DataFlow::Node source, DataFlow::Node sink
 where config.hasFlow(source, sink)
-select sink.asExpr().getExpr(), source, sink, "Manually checking HTTP verbs is an indication that multiple requests are routed to the same controller action. This could lead to bypassing necessary authorization methods and other protections, like CSRF protection. Prefer using different controller actions for each HTTP method and relying Rails routing to handle mappting resources and verbs to specific methods."
+select sink.asExpr().getExpr(), source, sink,
+  "Manually checking HTTP verbs is an indication that multiple requests are routed to the same controller action. This could lead to bypassing necessary authorization methods and other protections, like CSRF protection. Prefer using different controller actions for each HTTP method and relying Rails routing to handle mappting resources and verbs to specific methods."
