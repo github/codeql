@@ -40,7 +40,7 @@ module ActiveSupport {
        * Flow summary for methods which transform the receiver in some way, possibly preserving taint.
        */
       private class StringTransformSummary extends SummarizedCallable {
-        // We're modelling a lot of different methods, so we make up a name for this summary.
+        // We're modeling a lot of different methods, so we make up a name for this summary.
         StringTransformSummary() { this = "ActiveSupportStringTransform" }
 
         override MethodCall getACall() {

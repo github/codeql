@@ -91,11 +91,11 @@ predicate isPropertyObserverElement(
 }
 
 class ControlFlowElement extends TControlFlowElement {
-  string toString() { none() } // overriden in subclasses
+  string toString() { none() } // overridden in subclasses
 
   AstNode asAstNode() { none() }
 
-  Location getLocation() { none() } // overriden in subclasses
+  Location getLocation() { none() } // overridden in subclasses
 }
 
 class AstElement extends ControlFlowElement, TAstElement {

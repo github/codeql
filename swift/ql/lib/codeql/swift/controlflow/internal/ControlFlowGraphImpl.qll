@@ -286,7 +286,7 @@ module Stmts {
       astLast(ast.getAnElement().getPattern().getFullyUnresolved(), last, c) and
       not c.(MatchingCompletion).isMatch()
       or
-      // Stop if we sucesfully evaluated all the conditionals
+      // Stop if we successfully evaluated all the conditionals
       (
         astLast(ast.getLastElement().getBoolean().getFullyConverted(), last, c)
         or
@@ -470,7 +470,7 @@ module Stmts {
       }
 
       final override predicate first(ControlFlowElement first) {
-        // Unlike most other statements, `foreach` statements are not modelled in
+        // Unlike most other statements, `foreach` statements are not modeled in
         // pre-order, because we use the `foreach` node itself to represent the
         // emptiness test that determines whether to execute the loop body
         astFirst(ast.getSequence().getFullyConverted(), first)
@@ -605,7 +605,7 @@ module Stmts {
         c.(MatchingCompletion).isNonMatch()
         or
         // Or because, there is no guard (in which case we can also finish the evaluation
-        // here on a succesful match).
+        // here on a successful match).
         c.(MatchingCompletion).isMatch() and
         not ast.hasGuard()
       )

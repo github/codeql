@@ -245,7 +245,7 @@ module Routing {
      */
     pragma[inline]
     private predicate isGuardedByNodeInternal(Node guard) {
-      // Look for a common ancestor `fork` whose child leading to `guard` ("base1") preceeds
+      // Look for a common ancestor `fork` whose child leading to `guard` ("base1") precedes
       // the child leading to `this` ("base2").
       //
       // Schematically:

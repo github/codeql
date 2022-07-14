@@ -1671,7 +1671,7 @@ class MulExpr extends @mulexpr, ArithmeticBinaryExpr {
 }
 
 /**
- * A divison or quotient expression using `/`.
+ * A division or quotient expression using `/`.
  *
  * Examples:
  *
