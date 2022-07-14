@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Using a case-sensitive regular expression path in a middleware route enables an attacker to bypass that middleware
+when accessing an endpoint with a case-insensitive path.
+Paths specified using a string are case-insensitive, whereas regular expressions are case-sensitive by default.
+</p>
+</overview>
+
+<recommendation>
+<p>
+When using a regular expression as a middleware path, make sure the regular expression is
+case-insensitive by adding the <code>i</code> flag.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example restricts access to paths in the <code>/admin</code> path to users logged in as
+administrators:
+</p>
+<sample src="examples/CaseSensitiveMiddlewarePath.js" />
+<p>
+A path such as <code>/admin/users/45</code> can only be accessed by an administrator. However, the path
+<code>/ADMIN/USERS/45</code> can be accessed by anyone because the upper-case path doesn't match the case-sensitive regular expression, whereas
+Express considers it to match the path string <code>/admin/users</code>.
+</p>
+<p>
+The issue can be fixed by adding the <code>i</code> flag to the regular expression:
+</p>
+<sample src="examples/CaseSensitiveMiddlewarePathGood.js" />
+</example>
+
+<references>
+<li>
+MDN
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#advanced_searching_with_flags">Regular Expression Flags</a>.
+</li>
+</references>
+</qhelp>
