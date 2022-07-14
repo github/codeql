@@ -176,3 +176,13 @@ jobs:
         with:
           name: ql-for-ql.sarif
           path: ql-for-ql.sarif
+      - name: Split out the sarif file into langs
+        run: |
+          mkdir split-sarif
+          node ./ql/scripts/split-sarif.js ql-for-ql.sarif split-sarif
+      - name: Upload langs as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ql-for-ql-langs
+          path: split-sarif
+          retention-days: 1
