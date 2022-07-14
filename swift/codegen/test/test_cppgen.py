@@ -165,5 +165,18 @@ def test_classes_with_dirs(generate_grouped):
     }
 
 
+def test_cpp_skip_pragma(generate):
+    assert generate([
+        schema.Class(name="A", properties=[
+            schema.SingleProperty("x", "foo"),
+            schema.SingleProperty("y", "bar", pragmas=["x", "cpp_skip", "y"]),
+        ])
+    ]) == [
+        cpp.Class(name="A", final=True, trap_name="As", fields=[
+            cpp.Field("x", "foo"),
+        ]),
+    ]
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

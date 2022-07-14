@@ -13,14 +13,18 @@ _directories:
   stmt: Stmt$
 
 Element:
-  is_unknown: predicate
+  is_unknown:
+    type: predicate
+    _pragma: cpp_skip  # this is emitted using trap entries directly
   _pragma: qltest_skip
 
 File:
   name: string
 
 Locatable:
-  location: Location?
+  location:
+    type: Location?
+    _pragma: cpp_skip  # this is emitted using trap entries directly
   _pragma: qltest_skip
 
 Location:

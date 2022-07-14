@@ -6,7 +6,7 @@
 import javascript
 
 /**
- * Holds if `nd` is a use of a feature introduced in ECMAScript version `ver`
+ * Holds if `nd` is a use of a feature introduced in ECMAScript `version`
  * from the given category.
  *
  * Categories are taken from Kangax' [ECMAScript 6 compatibility table]
