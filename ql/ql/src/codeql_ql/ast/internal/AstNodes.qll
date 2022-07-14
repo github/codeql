@@ -7,6 +7,7 @@ newtype TAstNode =
   TTopLevel(QL::Ql file) or
   TQLDoc(QL::Qldoc qldoc) or
   TBlockComment(QL::BlockComment comment) or
+  TLineComment(QL::LineComment comment) or
   TClasslessPredicate(QL::ClasslessPredicate pred) or
   TVarDecl(QL::VarDecl decl) or
   TFieldDecl(QL::Field field) or
@@ -153,6 +154,8 @@ QL::AstNode toQL(AST::AstNode n) {
   n = TQLDoc(result)
   or
   n = TBlockComment(result)
+  or
+  n = TLineComment(result)
   or
   n = TClasslessPredicate(result)
   or

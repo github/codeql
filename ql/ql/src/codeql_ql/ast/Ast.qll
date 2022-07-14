@@ -178,6 +178,16 @@ class BlockComment extends TBlockComment, AstNode {
   override string getAPrimaryQlClass() { result = "BlockComment" }
 }
 
+class LineComment extends TLineComment, AstNode {
+  QL::LineComment comment;
+
+  LineComment() { this = TLineComment(comment) }
+
+  string getContents() { result = comment.getValue() }
+
+  override string getAPrimaryQlClass() { result = "LineComment" }
+}
+
 /**
  * The `from, where, select` part of a QL query.
  */
