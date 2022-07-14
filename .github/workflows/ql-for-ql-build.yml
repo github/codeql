@@ -10,9 +10,10 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  queries:
-    runs-on: ubuntu-latest
+  all-the-things:
+    runs-on: ubuntu-latest-xl
     steps:
+      ### Build the queries ###
       - uses: actions/checkout@v3
       - name: Find codeql
         id: find-codeql
@@ -48,11 +49,7 @@ jobs:
           name: query-pack-zip
           path: ${{ runner.temp }}/query-pack.zip
 
-  extractors:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
+      ### Build the extractor ###
       - name: Cache entire extractor
         id: cache-extractor
         uses: actions/cache@v3
@@ -96,15 +93,8 @@ jobs:
             ql/target/release/ql-extractor
             ql/target/release/ql-extractor.exe
           retention-days: 1
-  package:
-    runs-on: ubuntu-latest
 
-    needs:
-      - extractors
-      - queries
-
-    steps:
-      - uses: actions/checkout@v3
+      ### Package the queries and extractor ###
       - uses: actions/download-artifact@v3
         with:
           name: query-pack-zip
@@ -132,16 +122,8 @@ jobs:
           name: codeql-ql-pack
           path: codeql-ql.zip
           retention-days: 1
-  analyze:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        folder: [cpp, csharp, java, javascript, python, ql, ruby, swift, go]
 
-    needs:
-      - package
-
-    steps:
+      ### Run the analysis ###
       - name: Download pack
         uses: actions/download-artifact@v3
         with:
@@ -161,12 +143,8 @@ jobs:
         env:
           PACK: ${{ runner.temp }}/pack
 
-      - name: Checkout repository
-        uses: actions/checkout@v3
       - name: Create CodeQL config file
         run: |
-          echo "paths:" > ${CONF}
-          echo "  - ${FOLDER}" >> ${CONF}
           echo "paths-ignore:" >> ${CONF}
           echo "  - ql/ql/test" >> ${CONF} 
           echo "disable-default-queries: true" >> ${CONF}
@@ -176,7 +154,6 @@ jobs:
           cat ${CONF}
         env: 
           CONF: ./ql-for-ql-config.yml
-          FOLDER: ${{ matrix.folder }}
       - name: Initialize CodeQL
         uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
         with:
@@ -187,39 +164,14 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@aa93aea877e5fb8841bcb1193f672abf6e9f2980
         with: 
-          category: "ql-for-ql-${{ matrix.folder }}"
+          category: "ql-for-ql"
       - name: Copy sarif file to CWD
-        run: cp ../results/ql.sarif ./${{ matrix.folder }}.sarif
+        run: cp ../results/ql.sarif ./ql-for-ql.sarif
       - name: Fixup the $scema in sarif  # Until https://github.com/microsoft/sarif-vscode-extension/pull/436/ is part in a stable release
         run: |
-          sed -i 's/\$schema.*/\$schema": "https:\/\/raw.githubusercontent.com\/oasis-tcs\/sarif-spec\/master\/Schemata\/sarif-schema-2.1.0",/' ${{ matrix.folder }}.sarif 
+          sed -i 's/\$schema.*/\$schema": "https:\/\/raw.githubusercontent.com\/oasis-tcs\/sarif-spec\/master\/Schemata\/sarif-schema-2.1.0",/' ql-for-ql.sarif 
       - name: Sarif as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.folder }}.sarif
-          path: ${{ matrix.folder }}.sarif
-
-  combine:
-    runs-on: ubuntu-latest
-    needs:
-      - analyze
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Make a folder for artifacts. 
-        run: mkdir -p results
-      - name: Download all sarif files
-        uses: actions/download-artifact@v3
-        with: 
-            path: results
-      - uses: actions/setup-node@v3
-        with:
-            node-version: 16
-      - name: Combine all sarif files
-        run: | 
-          node ./ql/scripts/merge-sarif.js results/**/*.sarif combined.sarif
-      - name: Upload combined sarif file
-        uses: actions/upload-artifact@v3
-        with:
-            name: combined.sarif
-            path: combined.sarif
+          name: ql-for-ql.sarif
+          path: ql-for-ql.sarif
