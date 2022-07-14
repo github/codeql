@@ -14,9 +14,12 @@ string getWord(Comment node) { result = node.getContents().regexpFind("\\b[A-Za-
 
 Comment hasRepeatedWord(string word) {
   word = getWord(result) and
-  result.getContents().regexpMatch(".*\\b" + word + "\\s+" + word + "\\b.*")
+  result.getContents().regexpMatch(".*[\\s]" + word + "\\s+" + word + "[\\s.,].*")
 }
 
 from Comment comment, string word
-where comment = hasRepeatedWord(word)
+where
+  comment = hasRepeatedWord(word) and
+  // lots of these, and I can't just change old dbschemes.
+  not (word = "type" and comment.getLocation().getFile().getExtension() = "dbscheme")
 select comment, "The comment repeats " + word + "."
