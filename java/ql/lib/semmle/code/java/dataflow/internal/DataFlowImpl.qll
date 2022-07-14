@@ -1112,10 +1112,11 @@ private predicate flowOutOfCallNodeCand1(
   DataFlowCall call, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow, Configuration config
 ) {
   flowOutOfCallNodeCand1(call, ret, out, config) and
-  exists(int b, int j |
-    b = branch(ret, config) and
+  exists(int j | //int b, 
+    //b = branch(ret, config) and
     j = join(out, config) and
-    if b.minimum(j) <= config.fieldFlowBranchLimit()
+    // if b.minimum(j) <= config.fieldFlowBranchLimit()
+    if j <= config.fieldFlowBranchLimit()
     then allowsFieldFlow = true
     else allowsFieldFlow = false
   )
@@ -1131,10 +1132,11 @@ private predicate flowIntoCallNodeCand1(
   DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, Configuration config
 ) {
   flowIntoCallNodeCand1(call, arg, p, config) and
-  exists(int b, int j |
+  exists(int b | //, int j |
     b = branch(arg, config) and
-    j = join(p, config) and
-    if b.minimum(j) <= config.fieldFlowBranchLimit()
+    // j = join(p, config) and
+    // if b.minimum(j) <= config.fieldFlowBranchLimit()
+    if b <= config.fieldFlowBranchLimit()
     then allowsFieldFlow = true
     else allowsFieldFlow = false
   )
@@ -1384,8 +1386,9 @@ private module MkStage<StageSig PrevStage> {
       exists(ArgNodeEx arg, boolean allowsFieldFlow |
         fwdFlow(arg, state, outercc, argAp, ap, config) and
         flowIntoCall(call, arg, p, allowsFieldFlow, config) and
-        innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
-        if allowsFieldFlow = false then ap instanceof ApNil else any()
+        innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc)
+        // and
+        // if allowsFieldFlow = false then ap instanceof ApNil else any()
       )
     }
 
@@ -1400,8 +1403,9 @@ private module MkStage<StageSig PrevStage> {
         fwdFlow(ret, state, innercc, argAp, ap, config) and
         flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
         inner = ret.getEnclosingCallable() and
-        ccOut = getCallContextReturn(inner, call, innercc) and
-        if allowsFieldFlow = false then ap instanceof ApNil else any()
+        ccOut = getCallContextReturn(inner, call, innercc)
+        // and
+        // if allowsFieldFlow = false then ap instanceof ApNil else any()
       )
     }
 
@@ -1412,7 +1416,7 @@ private module MkStage<StageSig PrevStage> {
       exists(RetNodeEx ret, boolean allowsFieldFlow, CcCall ccc |
         fwdFlow(ret, state, ccc, apSome(argAp), ap, config) and
         flowThroughOutOfCall(call, ccc, ret, out, allowsFieldFlow, config) and
-        if allowsFieldFlow = false then ap instanceof ApNil else any()
+        if allowsFieldFlow = false then ap instanceof ApNil and argAp instanceof ApNil else any()
       )
     }
 
@@ -1598,8 +1602,9 @@ private module MkStage<StageSig PrevStage> {
     ) {
       exists(NodeEx out, boolean allowsFieldFlow |
         revFlow(out, state, toReturn, returnAp, ap, config) and
-        flowOutOfCall(call, ret, out, allowsFieldFlow, config) and
-        if allowsFieldFlow = false then ap instanceof ApNil else any()
+        flowOutOfCall(call, ret, out, allowsFieldFlow, config)
+        // and
+        // if allowsFieldFlow = false then ap instanceof ApNil else any()
       )
     }
 
@@ -1609,8 +1614,9 @@ private module MkStage<StageSig PrevStage> {
     ) {
       exists(ParamNodeEx p, boolean allowsFieldFlow |
         revFlow(p, state, false, returnAp, ap, config) and
-        flowIntoCall(_, arg, p, allowsFieldFlow, config) and
-        if allowsFieldFlow = false then ap instanceof ApNil else any()
+        flowIntoCall(_, arg, p, allowsFieldFlow, config)
+        // and
+        // if allowsFieldFlow = false then ap instanceof ApNil else any()
       )
     }
 
@@ -1621,7 +1627,7 @@ private module MkStage<StageSig PrevStage> {
       exists(ParamNodeEx p, boolean allowsFieldFlow |
         revFlow(p, state, true, apSome(returnAp), ap, config) and
         flowThroughIntoCall(call, arg, p, allowsFieldFlow, config) and
-        if allowsFieldFlow = false then ap instanceof ApNil else any()
+        if allowsFieldFlow = false then ap instanceof ApNil and returnAp instanceof ApNil else any()
       )
     }
 
