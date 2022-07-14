@@ -7,21 +7,21 @@
 <p>
 Using a case-sensitive regular expression path in a middleware route enables an attacker to bypass that middleware
 when accessing an endpoint with a case-insensitive path.
-Paths specified using a string are case insensitive, whereas regular expressions are case sensitive by default.
+Paths specified using a string are case-insensitive, whereas regular expressions are case-sensitive by default.
 </p>
 </overview>
 
 <recommendation>
 <p>
 When using a regular expression as a middleware path, make sure the regular expression is
-case insensitive by adding the <code>i</code> flag.
+case-insensitive by adding the <code>i</code> flag.
 </p>
 </recommendation>
 
 <example>
 <p>
 The following example restricts access to paths in the <code>/admin</code> path to users logged in as
-an administrator:
+administrators:
 </p>
 <sample src="examples/CaseSensitiveMiddlewarePath.js" />
 <p>

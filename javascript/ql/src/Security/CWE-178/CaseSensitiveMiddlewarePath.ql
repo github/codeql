@@ -1,6 +1,6 @@
 /**
  * @name Case-sensitive middleware path
- * @description Middleware with case-sensitive paths do not protect endpoints with case-insensitive paths
+ * @description Middleware with case-sensitive paths do not protect endpoints with case-insensitive paths.
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.3
