@@ -2,28 +2,29 @@
 
 #include <string>
 #include <fstream>
-#include <iostream>
-#include <cstdio>
+#include <optional>
 #include <cerrno>
-#include <system_error>
-#include <sstream>
 
 namespace codeql {
 
-// Only the first process trying to open an `TargetFile` for a given `target` is allowed to do
-// so, all others will have an instance with `good() == false` and failing on any other operation.
+// Only the first process trying to create a `TargetFile` for a given `target` is allowed to do
+// so, all others will have `create` return `std::nullopt`.
 // The content streamed to the `TargetFile` is written to `workingDir/target`, and is moved onto
-// `targetDir/target` only when `commit()` is called
+// `targetDir/target` on destruction.
 class TargetFile {
   std::string workingPath;
   std::string targetPath;
   std::ofstream out;
 
  public:
-  TargetFile(std::string_view target, std::string_view targetDir, std::string_view workingDir);
+  static std::optional<TargetFile> create(std::string_view target,
+                                          std::string_view targetDir,
+                                          std::string_view workingDir);
 
-  bool good() const;
-  void commit();
+  ~TargetFile() { commit(); }
+
+  TargetFile(TargetFile&& other) = default;
+  TargetFile& operator=(TargetFile&& other);
 
   template <typename T>
   TargetFile& operator<<(T&& value) {
@@ -34,7 +35,11 @@ class TargetFile {
   }
 
  private:
+  TargetFile(std::string_view target, std::string_view targetDir, std::string_view workingDir);
+
+  bool init();
   void checkOutput(const char* action);
+  void commit();
 };
 
 }  // namespace codeql

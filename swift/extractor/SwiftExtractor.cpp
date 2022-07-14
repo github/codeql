@@ -77,6 +77,20 @@ static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& modul
   return ret;
 }
 
+static void dumpArgs(TargetFile& out, const SwiftExtractorConfiguration& config) {
+  out << "/* extractor-args:\n";
+  for (const auto& opt : config.frontendOptions) {
+    out << "  " << std::quoted(opt) << " \\\n";
+  }
+  out << "\n*/\n";
+
+  out << "/* swift-frontend-args:\n";
+  for (const auto& opt : config.patchedFrontendOptions) {
+    out << "  " << std::quoted(opt) << " \\\n";
+  }
+  out << "\n*/\n";
+}
+
 static void extractDeclarations(const SwiftExtractorConfiguration& config,
                                 swift::CompilerInstance& compiler,
                                 swift::ModuleDecl& module,
@@ -86,25 +100,13 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   // The extractor can be called several times from different processes with
   // the same input file(s). Using `TargetFile` the first process will win, and the following
   // will just skip the work
-  TargetFile trapStream{filename + ".trap", config.trapDir, config.getTempTrapDir()};
-  if (!trapStream.good()) {
+  auto trapTarget = TargetFile::create(filename + ".trap", config.trapDir, config.getTempTrapDir());
+  if (!trapTarget) {
     // another process arrived first, nothing to do for us
     return;
   }
-
-  trapStream << "/* extractor-args:\n";
-  for (const auto& opt : config.frontendOptions) {
-    trapStream << "  " << std::quoted(opt) << " \\\n";
-  }
-  trapStream << "\n*/\n";
-
-  trapStream << "/* swift-frontend-args:\n";
-  for (const auto& opt : config.patchedFrontendOptions) {
-    trapStream << "  " << std::quoted(opt) << " \\\n";
-  }
-  trapStream << "\n*/\n";
-
-  TrapDomain trap{trapStream};
+  dumpArgs(*trapTarget, config);
+  TrapDomain trap{*trapTarget};
 
   // TODO: move default location emission elsewhere, possibly in a separate global trap file
   // the following cannot conflict with actual files as those have an absolute path starting with /
@@ -129,7 +131,6 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
     auto fileLabel = trap.createLabel<FileTag>(name.str().str());
     trap.emit(FilesTrap{fileLabel, name.str().str()});
   }
-  trapStream.commit();
 }
 
 static std::unordered_set<std::string> collectInputFilenames(swift::CompilerInstance& compiler) {
