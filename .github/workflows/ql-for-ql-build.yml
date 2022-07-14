@@ -10,7 +10,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  all-the-things:
+  analyze:
     runs-on: ubuntu-latest-xl
     steps:
       ### Build the queries ###
@@ -147,6 +147,7 @@ jobs:
         run: |
           echo "paths-ignore:" >> ${CONF}
           echo "  - ql/ql/test" >> ${CONF} 
+          echo "  - \"*/ql/lib/upgrades/\"" >> ${CONF} 
           echo "disable-default-queries: true" >> ${CONF}
           echo "packs:" >> ${CONF}
           echo "  - codeql/ql" >> ${CONF}
