@@ -2,6 +2,9 @@
 - queries: .
 - apply: lgtm-selectors.yml
   from: codeql/suite-helpers
+# Include contextual queries from csharp-all
+- queries: .
+  from: codeql/csharp-all
 # These are only for IDE use.
 - exclude:
     tags contain:

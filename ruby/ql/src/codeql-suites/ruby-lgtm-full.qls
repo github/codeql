@@ -2,6 +2,9 @@
 - queries: .
 - apply: lgtm-selectors.yml
   from: codeql/suite-helpers
+# Include contextual queries from ruby-all
+- queries: .
+  from: codeql/ruby-all
 # These are only for IDE use.
 - exclude:
     tags contain:
@@ -9,4 +12,3 @@
       - ide-contextual-queries/local-references
 - include:
     id: rb/lines-of-code-in-files
-

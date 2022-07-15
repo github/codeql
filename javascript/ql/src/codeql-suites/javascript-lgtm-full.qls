@@ -2,6 +2,9 @@
 - queries: .
 - apply: lgtm-selectors.yml
   from: codeql/suite-helpers
+# Include contextual queries from javascript-all
+- queries: .
+  from: codeql/javascript-all
 # These are only for IDE use.
 - exclude:
     tags contain:

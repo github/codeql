@@ -3,6 +3,9 @@
 - apply: lgtm-selectors.yml
   from: codeql/suite-helpers
 - apply: codeql-suites/exclude-slow-queries.yml
+# Include contextual queries from cpp-all
+- queries: .
+  from: codeql/cpp-all
 # These are only for IDE use.
 - exclude:
     tags contain:
