@@ -323,6 +323,7 @@ AppliedPropertyWrapperExpr:
   _extends: Expr
 
 Argument:
+  _extends: Locatable
   label: string
   _children:
     expr: Expr
