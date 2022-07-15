@@ -7,26 +7,22 @@ void StmtVisitor::visitLabeledStmt(swift::LabeledStmt* stmt) {
   emitLabeledStmt(stmt, label);
 }
 
-void StmtVisitor::visitStmtCondition(swift::StmtCondition* cond) {
-  auto label = dispatcher_.assignNewLabel(cond);
-  dispatcher_.emit(StmtConditionsTrap{label});
-  unsigned index = 0;
-  for (const auto& cond : *cond) {
-    auto condLabel = dispatcher_.createLabel<ConditionElementTag>();
-    dispatcher_.attachLocation(cond, condLabel);
-    dispatcher_.emit(ConditionElementsTrap{condLabel});
-    dispatcher_.emit(StmtConditionElementsTrap{label, index++, condLabel});
-    if (auto boolean = cond.getBooleanOrNull()) {
-      auto elementLabel = dispatcher_.fetchLabel(boolean);
-      dispatcher_.emit(ConditionElementBooleansTrap{condLabel, elementLabel});
-    } else if (auto pattern = cond.getPatternOrNull()) {
-      auto patternLabel = dispatcher_.fetchLabel(pattern);
-      auto initilizerLabel = dispatcher_.fetchLabel(cond.getInitializer());
-      dispatcher_.emit(ConditionElementPatternsTrap{condLabel, patternLabel});
-      dispatcher_.emit(ConditionElementInitializersTrap{condLabel, initilizerLabel});
-    }
-    /// TODO: Implement availability
+codeql::StmtCondition StmtVisitor::translateStmtCondition(const swift::StmtCondition& cond) {
+  auto entry = dispatcher_.createEntry(cond);
+  entry.elements = dispatcher_.fetchRepeatedLabels(cond);
+  return entry;
+}
+
+codeql::ConditionElement StmtVisitor::translateStmtConditionElement(
+    const swift::StmtConditionElement& element) {
+  auto entry = dispatcher_.createEntry(element);
+  if (auto boolean = element.getBooleanOrNull()) {
+    entry.boolean = dispatcher_.fetchLabel(boolean);
+  } else if (auto pattern = element.getPatternOrNull()) {
+    entry.pattern = dispatcher_.fetchLabel(pattern);
+    entry.initializer = dispatcher_.fetchLabel(element.getInitializer());
   }
+  return entry;
 }
 
 void StmtVisitor::visitLabeledConditionalStmt(swift::LabeledConditionalStmt* stmt) {

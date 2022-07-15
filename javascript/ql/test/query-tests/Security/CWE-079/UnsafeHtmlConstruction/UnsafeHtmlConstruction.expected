@@ -50,6 +50,12 @@ nodes
 | main.js:79:34:79:36 | val |
 | main.js:81:35:81:37 | val |
 | main.js:81:35:81:37 | val |
+| main.js:89:21:89:21 | x |
+| main.js:90:23:90:23 | x |
+| main.js:90:23:90:23 | x |
+| main.js:93:43:93:43 | x |
+| main.js:93:43:93:43 | x |
+| main.js:94:31:94:31 | x |
 | typed.ts:1:39:1:39 | s |
 | typed.ts:1:39:1:39 | s |
 | typed.ts:2:29:2:29 | s |
@@ -115,6 +121,11 @@ edges
 | main.js:79:34:79:36 | val | main.js:81:35:81:37 | val |
 | main.js:79:34:79:36 | val | main.js:81:35:81:37 | val |
 | main.js:79:34:79:36 | val | main.js:81:35:81:37 | val |
+| main.js:89:21:89:21 | x | main.js:90:23:90:23 | x |
+| main.js:89:21:89:21 | x | main.js:90:23:90:23 | x |
+| main.js:93:43:93:43 | x | main.js:94:31:94:31 | x |
+| main.js:93:43:93:43 | x | main.js:94:31:94:31 | x |
+| main.js:94:31:94:31 | x | main.js:89:21:89:21 | x |
 | typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s |
 | typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s |
 | typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s |
@@ -141,5 +152,6 @@ edges
 | main.js:62:19:62:31 | settings.name | main.js:56:28:56:34 | options | main.js:62:19:62:31 | settings.name | $@ based on $@ might later cause $@. | main.js:62:19:62:31 | settings.name | HTML construction | main.js:56:28:56:34 | options | library input | main.js:62:11:62:40 | "<b>" + ...  "</b>" | cross-site scripting |
 | main.js:67:63:67:69 | attrVal | main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal | $@ based on $@ might later cause $@. | main.js:67:63:67:69 | attrVal | HTML construction | main.js:66:35:66:41 | attrVal | library input | main.js:67:47:67:78 | "<img a ...  "\\"/>" | cross-site scripting |
 | main.js:81:35:81:37 | val | main.js:79:34:79:36 | val | main.js:81:35:81:37 | val | $@ based on $@ might later cause $@. | main.js:81:35:81:37 | val | HTML construction | main.js:79:34:79:36 | val | library input | main.js:81:24:81:49 | "<span> ... /span>" | cross-site scripting |
+| main.js:90:23:90:23 | x | main.js:93:43:93:43 | x | main.js:90:23:90:23 | x | $@ based on $@ might later cause $@. | main.js:90:23:90:23 | x | HTML construction | main.js:93:43:93:43 | x | library input | main.js:94:20:94:32 | createHTML(x) | cross-site scripting |
 | typed.ts:2:29:2:29 | s | typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s | $@ based on $@ might later cause $@. | typed.ts:2:29:2:29 | s | HTML construction | typed.ts:1:39:1:39 | s | library input | typed.ts:3:31:3:34 | html | cross-site scripting |
 | typed.ts:8:40:8:40 | s | typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s | $@ based on $@ might later cause $@. | typed.ts:8:40:8:40 | s | HTML construction | typed.ts:6:43:6:43 | s | library input | typed.ts:8:29:8:52 | "<span> ... /span>" | cross-site scripting |
