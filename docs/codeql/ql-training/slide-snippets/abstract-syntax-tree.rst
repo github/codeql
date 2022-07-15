@@ -14,24 +14,6 @@ The basic representation of an analyzed program is an *abstract syntax tree (AST
 
 .. container:: ast-graph
      
-      .. graphviz::
-         
-            digraph {
-            graph [ dpi = 1000 ]
-            node [shape=polygon,sides=4,color=blue4,style="filled,rounded",   fontname=consolas,fontcolor=white]
-            a [label=<TryStmt>]
-            b [label=<CatchClause>]
-            c [label=<...>,color=white,fontcolor=black]
-            d [label=<LocalVariable<BR />DeclExpr>]
-            e [label=<...>,color=white,fontcolor=black]
-            f [label=<...>,color=white,fontcolor=black]
-            g [label=<...>,color=white,fontcolor=black]
-   
-            a -> {b, c}
-            b -> {d, e}
-            d -> {f, g}
-         }
-
 
 .. note::
 

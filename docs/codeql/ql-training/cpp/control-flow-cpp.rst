@@ -61,23 +61,6 @@ Control flow graphs
 
   Possible execution order is usually represented by a *control flow graph*:
 
-   .. graphviz::
-      
-         digraph {
-         graph [ dpi = 1000 ]
-         node [shape=polygon,sides=4,color=blue4,style="filled,rounded",fontname=consolas,fontcolor=white]
-         a [label=<if<BR /><FONT POINT-SIZE="10">IfStmt</FONT>>]
-         b [label=<x<BR /><FONT POINT-SIZE="10">VariableAccess</FONT>>]
-         c [label=<1<BR /><FONT POINT-SIZE="10">Literal</FONT>>]
-         d [label=<2<BR /><FONT POINT-SIZE="10">Literal</FONT>>]
-         e [label=<return<BR /><FONT POINT-SIZE="10">ReturnStmt</FONT>>]
-         f [label=<return<BR /><FONT POINT-SIZE="10">ReturnStmt</FONT>>]
-
-         a -> b
-         b -> {c, d}
-         c -> e
-         d -> f
-      }
 
 .. note::
 

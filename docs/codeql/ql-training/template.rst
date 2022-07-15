@@ -115,19 +115,6 @@ Columns and graphs
    Graphs can be built from text using a ``.. graphviz directive``.
    See the source file for details.   
 
-   .. graphviz::
-       
-      digraph {
-      graph [ dpi = 1000 ]
-      node [shape=polygon,sides=4,color=blue4,style="filled,rounded",   fontname=consolas,fontcolor=white]
-      a [label=<tainted<BR /><FONT POINT-SIZE="10">ParameterNode</FONT>>]
-      b [label=<tainted<BR /><FONT POINT-SIZE="10">ExprNode</FONT>>]
-      c [label=<x<BR /><FONT POINT-SIZE="10">ExprNode</FONT>>]
-      d [label=<x<BR /><FONT POINT-SIZE="10">ExprNode</FONT>>]   
-      a -> b
-      b -> {c, d}   
-      }
-
 .. You can indicate a new concept by using a purple slide background
 
 .. rst-class:: background2
