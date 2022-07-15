@@ -12,9 +12,6 @@ The basic representation of an analyzed program is an *abstract syntax tree (AST
      } catch (AnException e) {
      }
 
-.. container:: ast-graph
-     
-
 .. note::
 
   When writing queries it is important to have in mind the underlying representation of the program which is stored in the database. Typically queries make use of the “AST” representation of the program - a tree structure where program elements are nested within other program elements.
