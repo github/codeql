@@ -33,7 +33,7 @@ predicate isUnsafeClientSideAzureStorageEncryptionViaAttributes(Call call, AttrN
           .getMember("BlobClient")
           .getReturn()
           .getMember("upload_blob") and
-    n.getAUse().asExpr() = a and
+    n.getAValueReachableFromSource().asExpr() = a and
     astmt.getATarget() = a and
     a.getAFlowNode() = node and
     uploadBlob =
@@ -60,7 +60,7 @@ predicate isUnsafeClientSideAzureStorageEncryptionViaAttributes(Call call, AttrN
             .getMember("BlobClient")
             .getReturn()
             .getMember("encryption_version") and
-      encryptionVersion.getAUse().asExpr() = a2 and
+      encryptionVersion.getAValueReachableFromSource().asExpr() = a2 and
       astmt2.getATarget() = a2 and
       a2.getAFlowNode() = encryptionVersionSet and
       encryptionVersionSet.strictlyReaches(ctrlFlowNode)
