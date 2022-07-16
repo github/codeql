@@ -74,7 +74,7 @@ private class EncryptedBlobClientBuilderSafeEncryptionVersionConfig extends Data
  */
 predicate isCreatingSafeAzureClientSideEncryptionObject(Call call, Class c, Expr versionArg) {
   isCreatingAzureClientSideEncryptionObjectNewVersion(call, c, versionArg) and
-  exists(EncryptedBlobClientBuilderEncryptionVersionConfig config, DataFlow::Node sink |
+  exists(EncryptedBlobClientBuilderSafeEncryptionVersionConfig config, DataFlow::Node sink |
     sink.asExpr() = versionArg
   |
     config.hasFlow(_, sink)
