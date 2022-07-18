@@ -212,8 +212,8 @@ class EssaEdgeRefinement extends EssaDefinition, TEssaEdgeDefinition {
   /** Gets the SSA variable to which this refinement applies. */
   EssaVariable getInput() {
     exists(SsaSourceVariable var, EssaDefinition def |
-      var = this.getSourceVariable() and
-      var = def.getSourceVariable() and
+      pragma[only_bind_into](var) = this.getSourceVariable() and
+      pragma[only_bind_into](var) = def.getSourceVariable() and
       def.reachesEndOfBlock(this.getPredecessor()) and
       result.getDefinition() = def
     )
