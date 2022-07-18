@@ -569,7 +569,6 @@ UnresolvedMemberExpr:
 
 UnresolvedPatternExpr:
   _extends: Expr
-  _pragma: qltest_skip  # we should really never extract these
   _children:
     sub_pattern: Pattern
 
