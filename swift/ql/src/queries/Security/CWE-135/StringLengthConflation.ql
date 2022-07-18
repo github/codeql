@@ -74,7 +74,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
             paramName = "at"
           ) and
           c.getName() = className and
-          c.getAMember() = funcDecl and // TODO: will this even work if its defined in a parent class?
+          c.getAMember() = funcDecl and
           call.getFunction().(ApplyExpr).getStaticTarget() = funcDecl and
           flowstate = "String" // `String` length flowing into `NSString`
         )
