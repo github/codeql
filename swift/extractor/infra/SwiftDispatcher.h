@@ -28,6 +28,7 @@ class SwiftDispatcher {
                                const swift::Pattern*,
                                const swift::TypeRepr*,
                                const swift::TypeBase*,
+                               const swift::IfConfigClause*,
                                FilePath>;
 
   template <typename E>
@@ -167,6 +168,15 @@ class SwiftDispatcher {
     attachLocation(locatable->getStartLoc(), locatable->getEndLoc(), locatableLabel);
   }
 
+  void attachLocation(const swift::IfConfigClause* clause, TrapLabel<LocatableTag> locatableLabel) {
+    attachLocation(clause->Loc, clause->Loc, locatableLabel);
+  }
+
+  // Emits a Location TRAP entry and attaches it to a `Locatable` trap label for a given `SourceLoc`
+  void attachLocation(swift::SourceLoc loc, TrapLabel<LocatableTag> locatableLabel) {
+    attachLocation(loc, loc, locatableLabel);
+  }
+
   // Emits a Location TRAP entry for a list of swift entities and attaches it to a `Locatable` trap
   // label
   template <typename Locatable>
@@ -284,7 +294,11 @@ class SwiftDispatcher {
     return realPath.str().str();
   }
 
+  // TODO: for const correctness these should consistently be `const` (and maybe const references
+  // as we don't expect `nullptr` here. However `swift::ASTVisitor` and `swift::TypeVisitor` do not
+  // accept const pointers
   virtual void visit(swift::Decl* decl) = 0;
+  virtual void visit(const swift::IfConfigClause* clause) = 0;
   virtual void visit(swift::Stmt* stmt) = 0;
   virtual void visit(const swift::StmtCondition* cond) = 0;
   virtual void visit(const swift::StmtConditionElement* cond) = 0;
