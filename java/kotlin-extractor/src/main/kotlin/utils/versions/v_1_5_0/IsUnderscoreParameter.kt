@@ -9,4 +9,11 @@ import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 @OptIn(ObsoleteDescriptorBasedAPI::class)
 fun isUnderscoreParameter(vp: IrValueParameter) =
-    DescriptorToSourceUtils.getSourceFromDescriptor(vp.descriptor)?.safeAs<KtParameter>()?.isSingleUnderscore == true
+    try {
+        DescriptorToSourceUtils.getSourceFromDescriptor(vp.descriptor)
+            ?.safeAs<KtParameter>()?.isSingleUnderscore == true
+    } catch(e: NotImplementedError) {
+        // Some kinds of descriptor throw in `getSourceFromDescriptor` as that method is not normally expected to
+        // be applied to synthetic functions.
+        false
+    }
