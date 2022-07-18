@@ -667,11 +667,11 @@ void ExprVisitor::emitLookupExpr(const swift::LookupExpr* expr, TrapLabel<Lookup
     dispatcher_.emit(LookupExprMembersTrap{label, declLabel});
   }
 }
+
 codeql::UnresolvedPatternExpr ExprVisitor::translateUnresolvedPatternExpr(
     swift::UnresolvedPatternExpr& expr) {
   auto entry = dispatcher_.createEntry(expr);
   entry.sub_pattern = dispatcher_.fetchLabel(expr.getSubPattern());
   return entry;
 }
-
 }  // namespace codeql

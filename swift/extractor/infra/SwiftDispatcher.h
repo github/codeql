@@ -78,7 +78,7 @@ class SwiftDispatcher {
     waitingForNewLabel = e;
     visit(e);
     if (auto l = store.get(e)) {
-      if constexpr (std::is_base_of_v<LocatableTag, TrapTagOf<E>>) {
+      if constexpr (!std::is_base_of_v<swift::TypeBase, E>) {
         attachLocation(e, *l);
       }
       return *l;
@@ -285,8 +285,9 @@ class SwiftDispatcher {
     return realPath.str().str();
   }
 
-  // TODO: The following methods are supposed to redirect TRAP emission to correpsonding visitors,
-  // which are to be introduced in follow-up PRs
+  // TODO: for const correctness these should consistently be `const` (and maybe const references
+  // as we don't expect `nullptr` here. However `swift::ASTVisitor` and `swift::TypeVisitor` do not
+  // accept const pointers
   virtual void visit(swift::Decl* decl) = 0;
   virtual void visit(const swift::IfConfigClause* clause) = 0;
   virtual void visit(swift::Stmt* stmt) = 0;
