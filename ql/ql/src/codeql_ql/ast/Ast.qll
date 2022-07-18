@@ -21,11 +21,13 @@ private string stringIndexedMember(string name, string index) {
 class AstNode extends TAstNode {
   string toString() { result = this.getAPrimaryQlClass() }
 
-  /**
-   * Gets the location of the AST node.
-   */
+  /** Gets the location of the AST node. */
   cached
-  Location getLocation() {
+  Location getLocation() { result = this.getFullLocation() } // overriden in some subclasses
+
+  /** Gets the location that spans the entire AST node. */
+  cached
+  final Location getFullLocation() {
     exists(QL::AstNode node | not node instanceof QL::ParExpr |
       node = toQL(this) and
       result = node.getLocation()
@@ -434,6 +436,8 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
 
   ClasslessPredicate() { this = TClasslessPredicate(pred) }
 
+  override Location getLocation() { result = pred.getName().getLocation() }
+
   /**
    * Gets the aliased value if this predicate is an alias
    * E.g. for `predicate foo = Module::bar/2;` gets `Module::bar/2`.
@@ -483,6 +487,8 @@ class ClassPredicate extends TClassPredicate, Predicate {
   QL::MemberPredicate pred;
 
   ClassPredicate() { this = TClassPredicate(pred) }
+
+  override Location getLocation() { result = pred.getName().getLocation() }
 
   override string getName() { result = pred.getName().getValue() }
 
@@ -682,7 +688,7 @@ class TypeExpr extends TType, TypeRef {
     // resolve type
     resolveTypeExpr(this, result)
     or
-    // if it resolves to a module
+    // if it resolves to a module,
     exists(FileOrModule mod | resolveModuleRef(this, mod) | result = mod.toType())
   }
 
@@ -700,6 +706,8 @@ class Module extends TModule, ModuleDeclaration {
   QL::Module mod;
 
   Module() { this = TModule(mod) }
+
+  override Location getLocation() { result = mod.getName().getLocation() }
 
   override string getAPrimaryQlClass() { result = "Module" }
 
@@ -783,6 +791,8 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   QL::Dataclass cls;
 
   Class() { this = TClass(cls) }
+
+  override Location getLocation() { result = cls.getName().getLocation() }
 
   override string getAPrimaryQlClass() { result = "Class" }
 
@@ -871,6 +881,8 @@ class NewType extends TNewType, TypeDeclaration, ModuleDeclaration {
 
   NewType() { this = TNewType(type) }
 
+  override Location getLocation() { result = type.getName().getLocation() }
+
   override string getName() { result = type.getName().getValue() }
 
   override string getAPrimaryQlClass() { result = "NewType" }
@@ -895,6 +907,8 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
   QL::DatatypeBranch branch;
 
   NewTypeBranch() { this = TNewTypeBranch(branch) }
+
+  override Location getLocation() { result = branch.getName().getLocation() }
 
   override string getAPrimaryQlClass() { result = "NewTypeBranch" }
 
@@ -1167,7 +1181,7 @@ class Import extends TImport, ModuleMember, TypeRef {
    */
   string getImportString() {
     exists(string selec |
-      not exists(getSelectionName(_)) and selec = ""
+      not exists(this.getSelectionName(_)) and selec = ""
       or
       selec =
         "::" + strictconcat(int i, string q | q = this.getSelectionName(i) | q, "::" order by i)
@@ -2217,9 +2231,7 @@ class ModuleExpr extends TModuleExpr, TypeRef {
     or
     not exists(me.getName()) and result = me.getChild().(QL::SimpleId).getValue()
     or
-    exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
-      result = instantiation.getName().getChild().getValue()
-    )
+    result = me.getAFieldOrChild().(QL::ModuleInstantiation).getName().getChild().getValue()
   }
 
   /**
@@ -2254,9 +2266,7 @@ class ModuleExpr extends TModuleExpr, TypeRef {
    * The result is either a `PredicateExpr` or a `TypeExpr`.
    */
   SignatureExpr getArgument(int i) {
-    exists(QL::ModuleInstantiation instantiation | instantiation.getParent() = me |
-      result.toQL() = instantiation.getChild(i)
-    )
+    result.toQL() = me.getAFieldOrChild().(QL::ModuleInstantiation).getChild(i)
   }
 }
 

@@ -43,7 +43,7 @@ module Railties {
 
     override DataFlow::Node getAnArgument() { result = this.getArgument([0, 1]) }
 
-    override predicate isShellInterpreted(DataFlow::Node arg) { any() }
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
   }
 
   /**
@@ -57,6 +57,6 @@ module Railties {
 
     override DataFlow::Node getAnArgument() { result = this.getArgument(0) }
 
-    override predicate isShellInterpreted(DataFlow::Node arg) { any() }
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
   }
 }

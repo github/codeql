@@ -413,8 +413,12 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   /** Gets a direct or indirect supertype of this type, including itself. */
   RefType getAnAncestor() { hasDescendant(result, this) }
 
-  /** Gets a direct or indirect supertype of this type, not including itself. */
-  RefType getAStrictAncestor() { result = this.getAnAncestor() and result != this }
+  /**
+   * Gets a direct or indirect supertype of this type.
+   * This does not including itself, unless this type is part of a cycle
+   * in the type hierarchy.
+   */
+  RefType getAStrictAncestor() { result = this.getASupertype().getAnAncestor() }
 
   /**
    * Gets the source declaration of a direct supertype of this type, excluding itself.
@@ -664,6 +668,14 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
     result.getASourceSupertype*() = erase(this) and
     result.getASourceSupertype*() = erase(other)
   }
+}
+
+/**
+ * An `ErrorType` is generated when CodeQL is unable to correctly
+ * extract a type.
+ */
+class ErrorType extends RefType, @errortype {
+  override string getAPrimaryQlClass() { result = "ErrorType" }
 }
 
 /** A type that is the same as its source declaration. */

@@ -611,11 +611,11 @@ void ExprVisitor::fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr
 }
 
 TrapLabel<ArgumentTag> ExprVisitor::emitArgument(const swift::Argument& arg) {
-  auto argLabel = dispatcher_.createLabel<ArgumentTag>();
-  assert(arg.getExpr() && "Argument has getExpr");
-  dispatcher_.emit(
-      ArgumentsTrap{argLabel, arg.getLabel().str().str(), dispatcher_.fetchLabel(arg.getExpr())});
-  return argLabel;
+  auto entry = dispatcher_.createUncachedEntry(arg);
+  entry.label = arg.getLabel().str().str();
+  entry.expr = dispatcher_.fetchLabel(arg.getExpr());
+  dispatcher_.emit(entry);
+  return entry.id;
 }
 
 void ExprVisitor::emitImplicitConversionExpr(swift::ImplicitConversionExpr* expr,

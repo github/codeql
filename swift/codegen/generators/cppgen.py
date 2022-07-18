@@ -65,7 +65,7 @@ class Processor:
         return cpp.Class(
             name=name,
             bases=[self._get_class(b) for b in cls.bases],
-            fields=[_get_field(cls, p) for p in cls.properties],
+            fields=[_get_field(cls, p) for p in cls.properties if "cpp_skip" not in p.pragmas],
             final=not cls.derived,
             trap_name=trap_name,
         )
