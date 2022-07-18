@@ -14,7 +14,7 @@ left behind and must be dealt with by hand.
 
 import pathlib
 from dataclasses import dataclass, field
-from typing import List, ClassVar
+from typing import List, ClassVar, Union
 
 import inflection
 
@@ -151,3 +151,93 @@ class PropertyTester:
 @dataclass
 class MissingTestInstructions:
     template: ClassVar = 'ql_test_missing'
+
+
+class Ipa:
+    @dataclass
+    class Class:
+        is_final: ClassVar = False
+
+        name: str
+        first: bool = False
+
+    @dataclass
+    class FinalClass(Class):
+        is_final: ClassVar = True
+        is_ipa_from: ClassVar = False
+        is_ipa_on: ClassVar = False
+        is_db: ClassVar = False
+
+        @property
+        def is_ipa(self):
+            return self.is_ipa_on or self.is_ipa_from
+
+    @dataclass
+    class Param:
+        param: str
+        type: str
+        first: bool = False
+
+    @dataclass
+    class FinalClassIpaFrom(FinalClass):
+        is_ipa_from: ClassVar = True
+
+        type: str = None
+
+        @property
+        def params(self):
+            return [Ipa.Param("id", self.type, first=True)]
+
+    @dataclass
+    class FinalClassIpaOn(FinalClass):
+        is_ipa_on: ClassVar = True
+
+        params: List["Ipa.Param"] = field(default_factory=list)
+
+        def __post_init__(self):
+            if self.params:
+                self.params[0].first = True
+
+    @dataclass
+    class FinalClassDb(FinalClass):
+        is_db: ClassVar = True
+
+        subtracted_ipa_types: List["Ipa.Class"] = field(default_factory=list)
+
+        def subtract_type(self, type: str):
+            self.subtracted_ipa_types.append(Ipa.Class(type, first=not self.subtracted_ipa_types))
+
+        @property
+        def has_subtracted_ipa_types(self):
+            return bool(self.subtracted_ipa_types)
+
+        @property
+        def db_id(self):
+            return "@" + inflection.underscore(self.name)
+
+    @dataclass
+    class NonFinalClass(Class):
+        derived: List["Ipa.Class"] = field(default_factory=list)
+
+        def __post_init__(self):
+            self.derived = [Ipa.Class(c) for c in self.derived]
+            if self.derived:
+                self.derived[0].first = True
+
+    @dataclass
+    class Types:
+        template: ClassVar = "ql_ipa_types"
+
+        root: str
+        final_classes: List["Ipa.FinalClass"] = field(default_factory=list)
+        non_final_classes: List["Ipa.NonFinalClass"] = field(default_factory=list)
+
+        def __post_init__(self):
+            if self.final_classes:
+                self.final_classes[0].first = True
+
+    @dataclass
+    class ConstructorStub:
+        template: ClassVar = "ql_ipa_constructor_stub"
+
+        cls: Union["Ipa.FinalClassIpaFrom", "Ipa.FinalClassIpaOn"]

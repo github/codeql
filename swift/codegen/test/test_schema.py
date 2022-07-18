@@ -303,5 +303,34 @@ A:
 """)
 
 
+def test_ipa_class_from(load):
+    ret = load("""
+MyClass:
+    _ipa:
+        from: A
+""")
+    assert ret.classes == [
+        schema.Class(root_name, derived={'MyClass'}),
+        schema.Class('MyClass', bases={root_name}, ipa=schema.IpaInfo(from_class="A")),
+    ]
+
+
+def test_ipa_class_on(load):
+    ret = load("""
+MyClass:
+    _ipa:
+        on: 
+            x: A
+            y: int
+""")
+    assert ret.classes == [
+        schema.Class(root_name, derived={'MyClass'}),
+        schema.Class('MyClass', bases={root_name}, ipa=schema.IpaInfo(on_arguments={"x": "A", "y": "int"})),
+    ]
+
+
+# TODO rejection tests and implementation for malformed `_ipa` clauses
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

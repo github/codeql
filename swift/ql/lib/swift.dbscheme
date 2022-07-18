@@ -768,6 +768,7 @@ arguments(  //dir=expr
 @apply_expr =
   @binary_expr
 | @call_expr
+| @method_call_expr
 | @postfix_unary_expr
 | @prefix_unary_expr
 | @self_apply_expr
@@ -1552,6 +1553,11 @@ optional_try_exprs(  //dir=expr
 
 try_exprs(  //dir=expr
   unique int id: @try_expr
+);
+
+method_call_exprs(  //dir=expr
+  unique int id: @method_call_expr,
+  int qualifier: @expr ref
 );
 
 binary_exprs(  //dir=expr

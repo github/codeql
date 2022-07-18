@@ -792,6 +792,12 @@ OptionalTryExpr:
 TryExpr:
   _extends: AnyTryExpr
 
+MethodCallExpr:
+  _extends: ApplyExpr
+  _ipa:
+    from: CallExpr
+  qualifier: Expr
+
 BinaryExpr:
   _extends: ApplyExpr
 

@@ -80,6 +80,28 @@ def get_ql_class(cls: schema.Class):
     )
 
 
+def _to_db_type(x: str) -> str:
+    if x[0].isupper():
+        return "@" + inflection.underscore(x)
+    return x
+
+
+_final_db_class_lookup = {}
+
+
+def get_ql_ipa_class(cls: schema.Class):
+    if cls.derived:
+        return ql.Ipa.NonFinalClass(name=cls.name, derived=sorted(cls.derived))
+    if cls.ipa and cls.ipa.from_class:
+        source = cls.ipa.from_class
+        _final_db_class_lookup.setdefault(source, ql.Ipa.FinalClassDb(source)).subtract_type(cls.name)
+        return ql.Ipa.FinalClassIpaFrom(name=cls.name, type=_to_db_type(source))
+    if cls.ipa and cls.ipa.on_arguments:
+        return ql.Ipa.FinalClassIpaOn(name=cls.name,
+                                      params=[ql.Ipa.Param(k, _to_db_type(v)) for k, v in cls.ipa.on_arguments.items()])
+    return _final_db_class_lookup.setdefault(cls.name, ql.Ipa.FinalClassDb(cls.name))
+
+
 def get_import(file: pathlib.Path, swift_dir: pathlib.Path):
     stem = file.relative_to(swift_dir / "ql/lib").with_suffix("")
     return str(stem).replace("/", ".")
@@ -96,7 +118,9 @@ def get_classes_used_by(cls: ql.Class):
     return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper()))
 
 
-_generated_stub_re = re.compile(r"private import .*\n\nclass \w+ extends \w+ \{[ \n]\}", re.MULTILINE)
+_generated_stub_re = re.compile(r"\n*private import .*\n+class \w+ extends \w+ \{[ \n]?\}"
+                                "|"
+                                r"\n*predicate construct\w+\(.*?\) \{ none\(\) \}", re.MULTILINE)
 
 
 def _is_generated_stub(file):
@@ -112,6 +136,7 @@ def _is_generated_stub(file):
         line_threshold = 5
         first_lines = list(itertools.islice(contents, line_threshold))
         if len(first_lines) == line_threshold or not _generated_stub_re.match("".join(first_lines)):
+            print("".join(first_lines))
             raise ModifiedStubMarkedAsGeneratedError(
                 f"{file.name} stub was modified but is still marked as generated")
         return True
@@ -149,12 +174,14 @@ def _get_all_properties_to_be_tested(cls: ql.Class, lookup: typing.Dict[str, ql.
             yield ql.PropertyForTest(p.getter, p.type, p.is_single, p.is_predicate, p.is_repeated)
 
 
+def _partition_iter(x, pred):
+    x1, x2 = itertools.tee(x)
+    return filter(pred, x1), itertools.filterfalse(pred, x2)
+
+
 def _partition(l, pred):
     """ partitions a list according to boolean predicate """
-    res = ([], [])
-    for x in l:
-        res[not pred(x)].append(x)
-    return res
+    return map(list, _partition_iter(l, pred))
 
 
 def _is_in_qltest_collapsed_hierachy(cls: ql.Class, lookup: typing.Dict[str, ql.Class]):
@@ -184,10 +211,10 @@ def generate(opts, renderer):
     existing |= {q for q in test_out.rglob(missing_test_source_filename)}
 
     data = schema.load(input)
+    data.classes.sort(key=lambda cls: (cls.dir, cls.name))
 
     classes = [get_ql_class(cls) for cls in data.classes]
     lookup = {cls.name: cls for cls in classes}
-    classes.sort(key=lambda cls: (cls.dir, cls.name))
     imports = {}
 
     for c in classes:
@@ -227,6 +254,24 @@ def generate(opts, renderer):
         for p in partial_props:
             renderer.render(ql.PropertyTester(class_name=c.name,
                                               property=p), test_dir / f"{c.name}_{p.getter}.ql")
+
+    final_ipa_types = []
+    non_final_ipa_types = []
+    constructor_imports = []
+    for cls in data.classes:
+        ipa_type = get_ql_ipa_class(cls)
+        if ipa_type.is_final:
+            final_ipa_types.append(ipa_type)
+            if ipa_type.is_ipa:
+                stub_file = stub_out / cls.dir / f"{cls.name}Constructor.qll"
+                if not stub_file.is_file() or _is_generated_stub(stub_file):
+                    renderer.render(ql.Ipa.ConstructorStub(ipa_type), stub_file)
+                constructor_imports.append(get_import(stub_file, opts.swift_dir))
+        else:
+            non_final_ipa_types.append(ipa_type)
+
+    renderer.render(ql.Ipa.Types(schema.root_class_name, final_ipa_types, non_final_ipa_types), out / "IpaTypes.qll")
+    renderer.render(ql.ImportList(constructor_imports), out / "IpaConstructors.qll")
 
     renderer.cleanup(existing)
     if opts.ql_format:

@@ -1,0 +1,23 @@
+private import codeql.swift.elements.IpaConstructors
+
+cached module Cached {
+  cached newtype T{{root}} =
+    {{#final_classes}}
+    {{^first}}
+    or
+    {{/first}}
+    {{#is_ipa_from}}
+    T{{name}}({{type}} id) { construct{{name}}(id) }
+    {{/is_ipa_from}}
+    {{#is_ipa_on}}
+    T{{name}}({{#params}}{{^first}}, {{/first}}{{type}} {{param}}{{/params}}) { construct{{name}}({{#params}}{{^first}}, {{/first}}{{param}}{{/params}}) }
+    {{/is_ipa_on}}
+    {{#is_db}}
+    T{{name}}({{db_id}} id){{#has_subtracted_ipa_types}} { {{#subtracted_ipa_types}}{{^first}} and {{/first}}not construct{{name}}(id){{/subtracted_ipa_types}} }{{/has_subtracted_ipa_types}}
+    {{/is_db}}
+    {{/final_classes}}
+
+  {{#non_final_classes}}
+  class T{{name}} = {{#derived}}{{^first}} or {{/first}}T{{name}}{{/derived}};
+  {{/non_final_classes}}
+}

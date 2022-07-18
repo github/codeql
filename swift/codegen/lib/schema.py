@@ -2,7 +2,6 @@
 
 import pathlib
 import re
-import typing
 from dataclasses import dataclass, field
 from typing import List, Set, Union, Dict, ClassVar
 
@@ -58,6 +57,12 @@ class PredicateProperty(Property):
 
 
 @dataclass
+class IpaInfo:
+    from_class: str = None
+    on_arguments: Dict[str, str] = None
+
+
+@dataclass
 class Class:
     name: str
     bases: Set[str] = field(default_factory=set)
@@ -65,6 +70,7 @@ class Class:
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
     pragmas: List[str] = field(default_factory=list)
+    ipa: IpaInfo = None
 
 
 @dataclass
@@ -107,6 +113,11 @@ def _parse_property(name: str, data: Union[str, Dict[str, _StrOrList]], is_child
         return SingleProperty(name, type, is_child=is_child, pragmas=pragmas)
 
 
+def _parse_ipa(data: Dict[str, Union[str, Dict[str, str]]]):
+    return IpaInfo(from_class=data.get("from"),
+                   on_arguments=data.get(True))  # 'on' is parsed as boolean True in yaml
+
+
 class _DirSelector:
     """ Default output subdirectory selector for generated QL files, based on the `_directories` global field"""
 
@@ -145,6 +156,8 @@ def load(path):
                 cls.properties.extend(_parse_property(kk, vv, is_child=True) for kk, vv in v.items())
             elif k == "_pragma":
                 cls.pragmas = _auto_list(v)
+            elif k == "_ipa":
+                cls.ipa = _parse_ipa(v)
             else:
                 raise Error(f"unknown metadata {k} for class {name}")
         if not cls.bases and cls.name != root_class_name:
