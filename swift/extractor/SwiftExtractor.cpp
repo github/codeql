@@ -1,11 +1,7 @@
 #include "SwiftExtractor.h"
 
-#include <filesystem>
-#include <fstream>
 #include <iostream>
-#include <sstream>
 #include <memory>
-#include <unistd.h>
 #include <unordered_set>
 #include <queue>
 
@@ -16,8 +12,9 @@
 #include <llvm/Support/Path.h>
 
 #include "swift/extractor/trap/generated/TrapClasses.h"
-#include "swift/extractor/trap/TrapOutput.h"
+#include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/visitors/SwiftVisitor.h"
+#include "swift/extractor/infra/TargetFile.h"
 
 using namespace codeql;
 
@@ -52,7 +49,7 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
   }
 }
 
-static std::string getTrapFilename(swift::ModuleDecl& module, swift::SourceFile* primaryFile) {
+static std::string getFilename(swift::ModuleDecl& module, swift::SourceFile* primaryFile) {
   if (primaryFile) {
     return primaryFile->getFilename().str();
   }
@@ -76,60 +73,45 @@ static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& modul
   return ret;
 }
 
+static void dumpArgs(TargetFile& out, const SwiftExtractorConfiguration& config) {
+  out << "/* extractor-args:\n";
+  for (const auto& opt : config.frontendOptions) {
+    out << "  " << std::quoted(opt) << " \\\n";
+  }
+  out << "\n*/\n";
+
+  out << "/* swift-frontend-args:\n";
+  for (const auto& opt : config.patchedFrontendOptions) {
+    out << "  " << std::quoted(opt) << " \\\n";
+  }
+  out << "\n*/\n";
+}
+
 static void extractDeclarations(const SwiftExtractorConfiguration& config,
                                 swift::CompilerInstance& compiler,
                                 swift::ModuleDecl& module,
                                 swift::SourceFile* primaryFile = nullptr) {
+  auto filename = getFilename(module, primaryFile);
+
   // The extractor can be called several times from different processes with
-  // the same input file(s)
-  // We are using PID to avoid concurrent access
-  // TODO: find a more robust approach to avoid collisions?
-  auto name = getTrapFilename(module, primaryFile);
-  llvm::StringRef filename(name);
-  std::string tempTrapName = filename.str() + '.' + std::to_string(getpid()) + ".trap";
-  llvm::SmallString<PATH_MAX> tempTrapPath(config.getTempTrapDir());
-  llvm::sys::path::append(tempTrapPath, tempTrapName);
-
-  llvm::StringRef tempTrapParent = llvm::sys::path::parent_path(tempTrapPath);
-  if (std::error_code ec = llvm::sys::fs::create_directories(tempTrapParent)) {
-    std::cerr << "Cannot create temp trap directory '" << tempTrapParent.str()
-              << "': " << ec.message() << "\n";
+  // the same input file(s). Using `TargetFile` the first process will win, and the following
+  // will just skip the work
+  auto trapTarget = TargetFile::create(filename + ".trap", config.trapDir, config.getTempTrapDir());
+  if (!trapTarget) {
+    // another process arrived first, nothing to do for us
     return;
   }
-
-  std::ofstream trapStream(tempTrapPath.str().str());
-  if (!trapStream) {
-    std::error_code ec;
-    ec.assign(errno, std::generic_category());
-    std::cerr << "Cannot create temp trap file '" << tempTrapPath.str().str()
-              << "': " << ec.message() << "\n";
-    return;
-  }
-  trapStream << "/* extractor-args:\n";
-  for (auto opt : config.frontendOptions) {
-    trapStream << "  " << std::quoted(opt) << " \\\n";
-  }
-  trapStream << "\n*/\n";
-
-  trapStream << "/* swift-frontend-args:\n";
-  for (auto opt : config.patchedFrontendOptions) {
-    trapStream << "  " << std::quoted(opt) << " \\\n";
-  }
-  trapStream << "\n*/\n";
-
-  TrapOutput trap{trapStream};
-  TrapArena arena{};
+  dumpArgs(*trapTarget, config);
+  TrapDomain trap{*trapTarget};
 
   // TODO: move default location emission elsewhere, possibly in a separate global trap file
-  auto unknownFileLabel = arena.allocateLabel<FileTag>();
   // the following cannot conflict with actual files as those have an absolute path starting with /
-  trap.assignKey(unknownFileLabel, "unknown");
+  auto unknownFileLabel = trap.createLabel<FileTag>("unknown");
+  auto unknownLocationLabel = trap.createLabel<LocationTag>("unknown");
   trap.emit(FilesTrap{unknownFileLabel});
-  auto unknownLocationLabel = arena.allocateLabel<LocationTag>();
-  trap.assignKey(unknownLocationLabel, "unknown");
   trap.emit(LocationsTrap{unknownLocationLabel, unknownFileLabel});
 
-  SwiftVisitor visitor(compiler.getSourceMgr(), arena, trap, module, primaryFile);
+  SwiftVisitor visitor(compiler.getSourceMgr(), trap, module, primaryFile);
   auto topLevelDecls = getTopLevelDecls(module, primaryFile);
   for (auto decl : topLevelDecls) {
     visitor.extract(decl);
@@ -142,27 +124,8 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
     // fact that the file was extracted
     llvm::SmallString<PATH_MAX> name(filename);
     llvm::sys::fs::make_absolute(name);
-    auto fileLabel = arena.allocateLabel<FileTag>();
-    trap.assignKey(fileLabel, name.str().str());
+    auto fileLabel = trap.createLabel<FileTag>(name.str().str());
     trap.emit(FilesTrap{fileLabel, name.str().str()});
-  }
-
-  // TODO: Pick a better name to avoid collisions
-  std::string trapName = filename.str() + ".trap";
-  llvm::SmallString<PATH_MAX> trapPath(config.trapDir);
-  llvm::sys::path::append(trapPath, trapName);
-
-  llvm::StringRef trapParent = llvm::sys::path::parent_path(trapPath);
-  if (std::error_code ec = llvm::sys::fs::create_directories(trapParent)) {
-    std::cerr << "Cannot create trap directory '" << trapParent.str() << "': " << ec.message()
-              << "\n";
-    return;
-  }
-
-  // TODO: The last process wins. Should we do better than that?
-  if (std::error_code ec = llvm::sys::fs::rename(tempTrapPath, trapPath)) {
-    std::cerr << "Cannot rename temp trap file '" << tempTrapPath.str().str() << "' -> '"
-              << trapPath.str().str() << "': " << ec.message() << "\n";
   }
 }
 

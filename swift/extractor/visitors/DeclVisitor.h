@@ -14,6 +14,11 @@ namespace codeql {
 class DeclVisitor : public AstVisitorBase<DeclVisitor> {
  public:
   using AstVisitorBase<DeclVisitor>::AstVisitorBase;
+  using AstVisitorBase<DeclVisitor>::visit;
+
+  void visit(const swift::IfConfigClause* clause) {
+    dispatcher_.emit(translateIfConfigClause(*clause));
+  }
 
   std::variant<codeql::ConcreteFuncDecl, codeql::ConcreteFuncDeclsTrap> translateFuncDecl(
       const swift::FuncDecl& decl);
@@ -52,6 +57,8 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   codeql::ExtensionDecl translateExtensionDecl(const swift::ExtensionDecl& decl);
   codeql::ImportDecl translateImportDecl(const swift::ImportDecl& decl);
   std::optional<codeql::ModuleDecl> translateModuleDecl(const swift::ModuleDecl& decl);
+  codeql::IfConfigDecl translateIfConfigDecl(const swift::IfConfigDecl& decl);
+  codeql::IfConfigClause translateIfConfigClause(const swift::IfConfigClause& clause);
 
  private:
   std::string mangledName(const swift::ValueDecl& decl);
