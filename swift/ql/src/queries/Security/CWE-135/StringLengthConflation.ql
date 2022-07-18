@@ -41,87 +41,83 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node node, string flowstate) {
-    exists(CallExpr call, string paramName, int arg |
+    exists(CallExpr call, string funcName, string paramName, int arg |
       // arguments to method calls...
-      exists(string className, string methodName, ClassDecl c, AbstractFunctionDecl f |
+      exists(string className, ClassDecl c, AbstractFunctionDecl f |
         (
           // `NSRange.init`
           className = "NSRange" and
-          methodName = "init(location:length:)" and
+          funcName = "init(location:length:)" and
           paramName = ["location", "length"]
           or
           // `NSString.character`
           className = ["NSString", "NSMutableString"] and
-          methodName = "character(at:)" and
+          funcName = "character(at:)" and
           paramName = "at"
           or
           // `NSString.character`
           className = ["NSString", "NSMutableString"] and
-          methodName = "substring(from:)" and
+          funcName = "substring(from:)" and
           paramName = "from"
           or
           // `NSString.character`
           className = ["NSString", "NSMutableString"] and
-          methodName = "substring(to:)" and
+          funcName = "substring(to:)" and
           paramName = "to"
           or
           // `NSMutableString.insert`
           className = "NSMutableString" and
-          methodName = "insert(_:at:)" and
+          funcName = "insert(_:at:)" and
           paramName = "at"
         ) and
         c.getName() = className and
         c.getAMember() = f and // TODO: will this even work if its defined in a parent class?
         call.getFunction().(ApplyExpr).getStaticTarget() = f and
-        f.getName() = methodName and
+        f.getName() = funcName and
         f.getParam(pragma[only_bind_into](arg)).getName() = paramName and
         call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
         flowstate = "String" // `String` length flowing into `NSString`
       )
       or
       // arguments to function calls...
-      exists(string funcName |
-        // `NSMakeRange`
-        funcName = "NSMakeRange(_:_:)" and
-        paramName = ["loc", "len"] and
-        call.getStaticTarget().getName() = funcName and
-        call.getStaticTarget().getParam(pragma[only_bind_into](arg)).getName() = paramName and
-        call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
-        flowstate = "String" // `String` length flowing into `NSString`
-      )
+      // `NSMakeRange`
+      funcName = "NSMakeRange(_:_:)" and
+      paramName = ["loc", "len"] and
+      call.getStaticTarget().getName() = funcName and
+      call.getStaticTarget().getParam(pragma[only_bind_into](arg)).getName() = paramName and
+      call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
+      flowstate = "String" // `String` length flowing into `NSString`
       or
       // arguments to function calls...
-      exists(string funcName |
-        (
-          // `String.dropFirst`, `String.dropLast`, `String.removeFirst`, `String.removeLast`
-          funcName = ["dropFirst(_:)", "dropLast(_:)", "removeFirst(_:)", "removeLast(_:)"] and
-          paramName = "k"
-          or
-          // `String.prefix`, `String.suffix`
-          funcName = ["prefix(_:)", "suffix(_:)"] and
-          paramName = "maxLength"
-          or
-          // `String.Index.init`
-          funcName = "init(encodedOffset:)" and
-          paramName = "offset"
-          or
-          // `String.index`
-          funcName = ["index(_:offsetBy:)", "index(_:offsetBy:limitBy:)"] and
-          paramName = "n"
-          or
-          // `String.formIndex`
-          funcName = ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and
-          paramName = "distance"
-        ) and
-        call.getFunction().(ApplyExpr).getStaticTarget().getName() = funcName and
-        call.getFunction()
-            .(ApplyExpr)
-            .getStaticTarget()
-            .getParam(pragma[only_bind_into](arg))
-            .getName() = paramName and
-        call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
-        flowstate = "NSString" // `NSString` length flowing into `String`
-      )
+      (
+        // `String.dropFirst`, `String.dropLast`, `String.removeFirst`, `String.removeLast`
+        funcName = ["dropFirst(_:)", "dropLast(_:)", "removeFirst(_:)", "removeLast(_:)"] and
+        paramName = "k"
+        or
+        // `String.prefix`, `String.suffix`
+        funcName = ["prefix(_:)", "suffix(_:)"] and
+        paramName = "maxLength"
+        or
+        // `String.Index.init`
+        funcName = "init(encodedOffset:)" and
+        paramName = "offset"
+        or
+        // `String.index`
+        funcName = ["index(_:offsetBy:)", "index(_:offsetBy:limitBy:)"] and
+        paramName = "n"
+        or
+        // `String.formIndex`
+        funcName = ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and
+        paramName = "distance"
+      ) and
+      call.getFunction().(ApplyExpr).getStaticTarget().getName() = funcName and
+      call.getFunction()
+          .(ApplyExpr)
+          .getStaticTarget()
+          .getParam(pragma[only_bind_into](arg))
+          .getName() = paramName and
+      call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
+      flowstate = "NSString" // `NSString` length flowing into `String`
     )
   }
 
