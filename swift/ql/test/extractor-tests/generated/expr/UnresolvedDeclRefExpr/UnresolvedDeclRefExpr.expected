@@ -1,0 +1,10 @@
+| unresolved_decl_ref.swift:4:5:4:5 | FOO (unresolved) |
+| unresolved_decl_ref.swift:4:9:4:9 | && (unresolved) |
+| unresolved_decl_ref.swift:4:12:4:12 | os (unresolved) |
+| unresolved_decl_ref.swift:4:15:4:15 | Windows (unresolved) |
+| unresolved_decl_ref.swift:5:1:5:1 | print (unresolved) |
+| unresolved_decl_ref.swift:6:9:6:9 | BAR (unresolved) |
+| unresolved_decl_ref.swift:6:13:6:13 | \|\| (unresolved) |
+| unresolved_decl_ref.swift:6:16:6:16 | arch (unresolved) |
+| unresolved_decl_ref.swift:6:21:6:21 | i386 (unresolved) |
+| unresolved_decl_ref.swift:9:1:9:1 | print (unresolved) |

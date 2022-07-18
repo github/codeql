@@ -84,6 +84,13 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
   codeql::BridgeFromObjCExpr translateBridgeFromObjCExpr(const swift::BridgeFromObjCExpr& expr);
   codeql::DotSelfExpr translateDotSelfExpr(const swift::DotSelfExpr& expr);
   codeql::ErrorExpr translateErrorExpr(const swift::ErrorExpr& expr);
+  // The following function requires a non-const parameter because:
+  // * `swift::UnresolvedPatternExpr::getSubPattern` has a `const`-qualified overload returning
+  //   `const swift::Pattern*`
+  // * `swift::ASTVisitor` only visits non-const pointers
+  // either we accept this, or we fix constness, e.g. by providing `visit` on `const` pointers
+  // in `VisitorBase`, or by doing a `const_cast` in `SwifDispatcher::fetchLabel`
+  codeql::UnresolvedPatternExpr translateUnresolvedPatternExpr(swift::UnresolvedPatternExpr& expr);
 
  private:
   void fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,
