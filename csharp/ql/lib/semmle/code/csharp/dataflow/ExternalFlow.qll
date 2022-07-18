@@ -377,6 +377,7 @@ module CsvValidation {
     exists(string row, string kind | sinkModel(row) |
       kind = row.splitAt(";", 7) and
       not kind = ["code", "sql", "xss", "remote", "html"] and
+      not kind.matches("encryption-%") and
       msg = "Invalid kind \"" + kind + "\" in sink model."
     )
     or
