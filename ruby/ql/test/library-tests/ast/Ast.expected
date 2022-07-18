@@ -1762,6 +1762,12 @@ escape_sequences/escapes.rb:
 #   93|   getStmt: [SymbolLiteral] :"\C-?"
 #   93|     getComponent: [StringEscapeSequenceComponent] \C
 #   93|     getComponent: [StringTextComponent] -?
+misc/iso-8859-15.rb:
+#    1| [Toplevel] iso-8859-15.rb
+#    4|   getStmt: [MethodCall] call to print
+#    4|     getReceiver: [SelfVariableAccess] self
+#    4|     getArgument: [StringLiteral] "EUR = €"
+#    4|       getComponent: [StringTextComponent] EUR = €
 literals/literals.rb:
 #    1| [Toplevel] literals.rb
 #    2|   getStmt: [NilLiteral] nil
