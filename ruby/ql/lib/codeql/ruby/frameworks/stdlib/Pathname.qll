@@ -22,7 +22,7 @@ module Pathname {
    * puts pn.read
    * ```
    *
-   * there are three `PathnameInstance`s – the call to `Pathname.new`, the
+   * there are three `PathnameInstance`s - the call to `Pathname.new`, the
    * assignment `pn = ...`, and the read access to `pn` on the second line.
    *
    * Every `PathnameInstance` is considered to be a `FileNameSource`.
