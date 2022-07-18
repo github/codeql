@@ -309,12 +309,13 @@ private module JQueryClientRequest {
   /**
    * Gets a node referring to the response contained in an `jqXHR` object.
    */
-  private DataFlow::SourceNode getAResponseNodeFromAnXHRObject(DataFlow::SourceNode obj) {
+  private DataFlow::SourceNode getAResponseNodeFromAnXHRObject(DataFlow::SourceNode jqXHR) {
     result =
-      obj.getAPropertyRead(any(string s |
-          s = "responseText" or
-          s = "responseXML"
-        ))
+      jqXHR
+          .getAPropertyRead(any(string s |
+              s = "responseText" or
+              s = "responseXML"
+            ))
   }
 
   /**

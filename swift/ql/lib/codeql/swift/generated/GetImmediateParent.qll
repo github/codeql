@@ -28,6 +28,12 @@ Element getAnImmediateChild(Element e) {
       or
       enum_element_decl_params(e, _, x)
       or
+      if_config_clause_conditions(e, x)
+      or
+      if_config_clause_elements(e, _, x)
+      or
+      if_config_decl_clauses(e, _, x)
+      or
       pattern_binding_decl_inits(e, _, x)
       or
       pattern_binding_decl_patterns(e, _, x)
@@ -141,6 +147,8 @@ Element getAnImmediateChild(Element e) {
       type_expr_type_reprs(e, x)
       or
       unresolved_dot_exprs(e, x, _)
+      or
+      unresolved_pattern_exprs(e, x)
       or
       vararg_expansion_exprs(e, x)
       or

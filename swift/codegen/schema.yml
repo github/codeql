@@ -12,14 +12,18 @@ _directories:
   stmt: Stmt$
 
 Element:
-  is_unknown: predicate
+  is_unknown:
+    type: predicate
+    _pragma: cpp_skip  # this is emitted using trap entries directly
   _pragma: qltest_skip
 
 File:
   name: string
 
 Locatable:
-  location: Location?
+  location:
+    type: Location?
+    _pragma: cpp_skip  # this is emitted using trap entries directly
   _pragma: qltest_skip
 
 Location:
@@ -270,6 +274,16 @@ EnumCaseDecl:
 
 IfConfigDecl:
   _extends: Decl
+  _children:
+    clauses: IfConfigClause*
+
+IfConfigClause:
+  _extends: Locatable
+  _children:
+    condition: Expr?
+    elements: AstNode*
+  is_active: predicate
+  _dir: decl
 
 ImportDecl:
   _extends: Decl
@@ -319,6 +333,7 @@ AppliedPropertyWrapperExpr:
   _extends: Expr
 
 Argument:
+  _extends: Locatable
   label: string
   _children:
     expr: Expr
@@ -544,7 +559,6 @@ TypeExpr:
 UnresolvedDeclRefExpr:
   _extends: Expr
   name: string?
-  _pragma: qltest_skip  # we should really never extract these
 
 UnresolvedDotExpr:
   _extends: Expr
@@ -559,7 +573,8 @@ UnresolvedMemberExpr:
 
 UnresolvedPatternExpr:
   _extends: Expr
-  _pragma: qltest_skip  # we should really never extract these
+  _children:
+    sub_pattern: Pattern
 
 UnresolvedSpecializeExpr:
   _extends: Expr

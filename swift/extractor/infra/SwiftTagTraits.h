@@ -35,17 +35,20 @@ using SILTokenTypeTag = SilTokenTypeTag;
 
 MAP_TAG(Stmt);
 MAP_TAG(StmtCondition);
+MAP_TYPE_TO_TAG(StmtConditionElement, ConditionElementTag);
 MAP_TAG(CaseLabelItem);
 #define ABSTRACT_STMT(CLASS, PARENT) MAP_SUBTAG(CLASS##Stmt, PARENT)
 #define STMT(CLASS, PARENT) ABSTRACT_STMT(CLASS, PARENT)
 #include <swift/AST/StmtNodes.def>
 
 MAP_TAG(Expr);
+MAP_TAG(Argument);
 #define ABSTRACT_EXPR(CLASS, PARENT) MAP_SUBTAG(CLASS##Expr, PARENT)
 #define EXPR(CLASS, PARENT) ABSTRACT_EXPR(CLASS, PARENT)
 #include <swift/AST/ExprNodes.def>
 
 MAP_TAG(Decl);
+MAP_TAG(IfConfigClause);
 #define ABSTRACT_DECL(CLASS, PARENT) MAP_SUBTAG(CLASS##Decl, PARENT)
 #define DECL(CLASS, PARENT) ABSTRACT_DECL(CLASS, PARENT)
 #include <swift/AST/DeclNodes.def>
