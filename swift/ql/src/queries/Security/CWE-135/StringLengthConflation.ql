@@ -41,9 +41,11 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node node, string flowstate) {
-    exists(CallExpr call, string funcName, string paramName, int arg |
+    exists(
+      AbstractFunctionDecl funcDecl, CallExpr call, string funcName, string paramName, int arg
+    |
       // arguments to method calls...
-      exists(string className, ClassDecl c, AbstractFunctionDecl f |
+      exists(string className, ClassDecl c |
         (
           // `NSRange.init`
           className = "NSRange" and
@@ -71,10 +73,10 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
           paramName = "at"
         ) and
         c.getName() = className and
-        c.getAMember() = f and // TODO: will this even work if its defined in a parent class?
-        call.getFunction().(ApplyExpr).getStaticTarget() = f and
-        f.getName() = funcName and
-        f.getParam(pragma[only_bind_into](arg)).getName() = paramName and
+        c.getAMember() = funcDecl and // TODO: will this even work if its defined in a parent class?
+        call.getFunction().(ApplyExpr).getStaticTarget() = funcDecl and
+        funcDecl.getName() = funcName and
+        funcDecl.getParam(pragma[only_bind_into](arg)).getName() = paramName and
         call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
         flowstate = "String" // `String` length flowing into `NSString`
       )
@@ -83,8 +85,9 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       // `NSMakeRange`
       funcName = "NSMakeRange(_:_:)" and
       paramName = ["loc", "len"] and
-      call.getStaticTarget().getName() = funcName and
-      call.getStaticTarget().getParam(pragma[only_bind_into](arg)).getName() = paramName and
+      call.getStaticTarget() = funcDecl and
+      funcDecl.getName() = funcName and
+      funcDecl.getParam(pragma[only_bind_into](arg)).getName() = paramName and
       call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
       flowstate = "String" // `String` length flowing into `NSString`
       or
@@ -110,12 +113,9 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
         funcName = ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and
         paramName = "distance"
       ) and
-      call.getFunction().(ApplyExpr).getStaticTarget().getName() = funcName and
-      call.getFunction()
-          .(ApplyExpr)
-          .getStaticTarget()
-          .getParam(pragma[only_bind_into](arg))
-          .getName() = paramName and
+      call.getFunction().(ApplyExpr).getStaticTarget() = funcDecl and
+      funcDecl.getName() = funcName and
+      funcDecl.getParam(pragma[only_bind_into](arg)).getName() = paramName and
       call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
       flowstate = "NSString" // `NSString` length flowing into `String`
     )
