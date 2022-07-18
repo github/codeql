@@ -86,7 +86,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
         call.getStaticTarget() = funcDecl and
         flowstate = "String" // `String` length flowing into `NSString`
         or
-        // arguments to function calls...
+        // arguments to method calls...
         (
           // `String.dropFirst`, `String.dropLast`, `String.removeFirst`, `String.removeLast`
           funcName = ["dropFirst(_:)", "dropLast(_:)", "removeFirst(_:)", "removeLast(_:)"] and
@@ -111,6 +111,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
         call.getFunction().(ApplyExpr).getStaticTarget() = funcDecl and
         flowstate = "NSString" // `NSString` length flowing into `String`
       ) and
+      // match up `funcName`, `paramName`, `arg`, `node`.
       funcDecl.getName() = funcName and
       funcDecl.getParam(pragma[only_bind_into](arg)).getName() = paramName and
       call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr()
