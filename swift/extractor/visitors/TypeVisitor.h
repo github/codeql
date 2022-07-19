@@ -68,6 +68,7 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
   codeql::BuiltinUnsafeValueBufferType translateBuiltinUnsafeValueBufferType(
       const swift::BuiltinUnsafeValueBufferType& type);
   codeql::BuiltinVectorType translateBuiltinVectorType(const swift::BuiltinVectorType& type);
+  codeql::OpenedArchetypeType translateOpenedArchetypeType(const swift::OpenedArchetypeType& type);
 
  private:
   void fillType(const swift::TypeBase& type, codeql::Type& entry);
