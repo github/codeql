@@ -39,5 +39,8 @@ In the second (good) example, only certificates signed by a certain public key a
 </example>
 
 <references>
+<li>
+<a href="https://developer.android.com/reference/android/webkit/WebViewClient?hl=en#onReceivedSslError(android.webkit.WebView,%20android.webkit.SslErrorHandler,%20android.net.http.SslError)">WebViewClient.onReceivedSslError documentation</a>.
+</li>
 </references>
 </qhelp>
