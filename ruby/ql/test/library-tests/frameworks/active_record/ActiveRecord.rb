@@ -67,6 +67,22 @@ class BazController < BarController
   def yet_another_handler
     Admin.delete_by(params[:admin_condition])
   end
+
+  def create1
+    Admin.create(params)
+  end
+
+  def create2
+    Admin.create(name: params[:name])
+  end
+
+  def update1
+    Admin.update(params)
+  end
+
+  def update2
+    Admin.update(name: params[:name])
+  end
 end
 
 class AnnotatedController < ActionController::Base
