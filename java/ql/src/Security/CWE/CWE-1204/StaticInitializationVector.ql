@@ -4,6 +4,7 @@
  *              Otherwise, if the same IV is used with a the same secret key then the same plaintext results in same ciphertext, which weakens the encryption.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @id java/static-initialization-vector
  * @tags security
