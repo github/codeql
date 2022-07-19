@@ -164,4 +164,26 @@ public class StaticInitializationVector {
         cipher.update(plaintext);
         return cipher.doFinal();
     }
+
+    public byte[] generate(int size) throws Exception { 
+        if (size == 0) { 
+            return new byte[0];
+        }
+        byte[] randomBytes = new byte[size];
+        SecureRandom.getInstanceStrong().nextBytes(randomBytes);
+        return randomBytes;
+    }
+
+    // GOOD: AES-CBC with a random IV
+    public byte[] encryptWithGeneratedIvByteArray(byte[] key, byte[] plaintext) throws Exception {
+        byte[] iv = generate(16);
+
+        IvParameterSpec ivSpec = new IvParameterSpec(iv);
+        SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
+
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); 
+        cipher.update(plaintext);
+        return cipher.doFinal();
+    }
 }
