@@ -90,7 +90,7 @@ class HttpVerbConfig extends TaintTracking::Configuration {
   }
 }
 
-from HttpVerbConfig config, DataFlow::Node source, DataFlow::Node sink
-where config.hasFlow(source, sink)
-select sink.asExpr().getExpr(), source, sink,
+from HttpVerbConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlow(source.getNode(), sink.getNode())
+select sink.getNode(), source, sink,
   "Manually checking HTTP verbs is an indication that multiple requests are routed to the same controller action. This could lead to bypassing necessary authorization methods and other protections, like CSRF protection. Prefer using different controller actions for each HTTP method and relying Rails routing to handle mappting resources and verbs to specific methods."
