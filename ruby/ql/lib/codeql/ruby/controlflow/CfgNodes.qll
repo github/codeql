@@ -357,6 +357,14 @@ module ExprNodes {
       )
     }
 
+    /**
+     * Gets the `nth` positional argument of this call.
+     * Unlike `getArgument`, this excludes keyword arguments.
+     */
+    final ExprCfgNode getPositionalArgument(int n) {
+      result = this.getArgument(n) and not result instanceof PairCfgNode
+    }
+
     /** Gets the number of arguments of this call. */
     final int getNumberOfArguments() { result = e.getNumberOfArguments() }
 
