@@ -358,7 +358,7 @@ module ExprNodes {
     }
 
     /**
-     * Gets the `nth` positional argument of this call.
+     * Gets the `n`th positional argument of this call.
      * Unlike `getArgument`, this excludes keyword arguments.
      */
     final ExprCfgNode getPositionalArgument(int n) {

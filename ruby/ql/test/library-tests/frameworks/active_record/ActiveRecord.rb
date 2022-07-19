@@ -73,15 +73,23 @@ class BazController < BarController
   end
 
   def create2
-    Admin.create(name: params[:name])
+    Admin.create(name: params[:name], password: params[:password])
+  end
+
+  def create3
+    Admin.create({name: params[:name], password: params[:password]})
   end
 
   def update1
-    Admin.update(params)
+    Admin.update(1, params)
   end
 
   def update2
-    Admin.update(name: params[:name])
+    Admin.update(1, name: params[:name], password: params[:password])
+  end
+
+  def update3
+    Admin.update(1, {name: params[:name], password: params[:password]})
   end
 end
 

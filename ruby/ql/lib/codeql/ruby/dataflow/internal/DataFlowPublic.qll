@@ -72,7 +72,7 @@ class CallNode extends LocalSourceNode, ExprNode {
   ExprNode getKeywordArgument(string name) { result.getExprNode() = node.getKeywordArgument(name) }
 
   /**
-   * Gets the `nth` positional argument of this call.
+   * Gets the `n`th positional argument of this call.
    * Unlike `getArgument`, this excludes keyword arguments.
    */
   final ExprNode getPositionalArgument(int n) {
