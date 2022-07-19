@@ -26,9 +26,22 @@ class ImportTimeScope extends Scope {
 
   /** Gets the global variable that is used during lookup, should `var` be undefined. */
   GlobalVariable getOuterVariable(LocalVariable var) {
-    this instanceof Class and
-    var.getScope() = this and
-    result.getScope() = this.getEnclosingModule() and
-    var.getId() = result.getId()
+    exists(string name |
+      class_var_scope(this, name, var) and
+      global_var_scope(name, this.getEnclosingModule(), result)
+    )
   }
+}
+
+pragma[nomagic]
+private predicate global_var_scope(string name, Scope scope, GlobalVariable var) {
+  var.getScope() = scope and
+  var.getId() = name
+}
+
+pragma[nomagic]
+private predicate class_var_scope(Scope scope, string name, LocalVariable var) {
+  var.getScope() = scope and
+  scope instanceof Class and
+  var.getId() = name
 }
