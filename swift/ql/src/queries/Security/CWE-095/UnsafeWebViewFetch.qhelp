@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>TODO</p>
+
+</overview>
+<recommendation>
+
+<p>TODO</p>
+
+</recommendation>
+<example>
+
+<p>TODO</p>
+
+<sample src="StringLengthConflationBad.swift" />
+
+<p>TODO</p>
+
+<sample src="StringLengthConflationGood.swift" />
+
+</example>
+<references>
+
+<li>
+  <a href="TODO">TODO</a>
+</li>
+
+</references>
+</qhelp>
