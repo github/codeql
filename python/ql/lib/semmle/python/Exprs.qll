@@ -647,6 +647,8 @@ class StrConst extends Str_, ImmutableLiteral {
   }
 
   override Object getLiteralObject() { none() }
+
+  override string toString() { result = "StrConst" }
 }
 
 private predicate name_consts(Name_ n, string id) {

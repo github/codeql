@@ -21,8 +21,8 @@ edges
 | test.py:43:9:43:9 | ControlFlowNode for x [Tuple element at index 1] | test.py:43:9:43:12 | ControlFlowNode for Subscript |
 | test.py:43:9:43:12 | ControlFlowNode for Subscript | test.py:44:10:44:10 | ControlFlowNode for y |
 | test.py:55:9:55:14 | ControlFlowNode for SOURCE | test.py:56:10:56:10 | ControlFlowNode for x |
-| test.py:61:9:61:16 | ControlFlowNode for Str | test.py:62:10:62:10 | ControlFlowNode for x |
-| test.py:66:9:66:17 | ControlFlowNode for Str | test.py:67:10:67:10 | ControlFlowNode for x |
+| test.py:61:9:61:16 | ControlFlowNode for StrConst | test.py:62:10:62:10 | ControlFlowNode for x |
+| test.py:66:9:66:17 | ControlFlowNode for StrConst | test.py:67:10:67:10 | ControlFlowNode for x |
 | test.py:71:9:71:10 | ControlFlowNode for IntegerLiteral | test.py:72:10:72:10 | ControlFlowNode for x |
 | test.py:76:9:76:12 | ControlFlowNode for FloatLiteral | test.py:77:10:77:10 | ControlFlowNode for x |
 | test.py:87:10:87:15 | ControlFlowNode for SOURCE | test.py:88:10:88:10 | ControlFlowNode for x |
@@ -416,9 +416,9 @@ nodes
 | test.py:44:10:44:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
 | test.py:55:9:55:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:56:10:56:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:61:9:61:16 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
+| test.py:61:9:61:16 | ControlFlowNode for StrConst | semmle.label | ControlFlowNode for StrConst |
 | test.py:62:10:62:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:66:9:66:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
+| test.py:66:9:66:17 | ControlFlowNode for StrConst | semmle.label | ControlFlowNode for StrConst |
 | test.py:67:10:67:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:71:9:71:10 | ControlFlowNode for IntegerLiteral | semmle.label | ControlFlowNode for IntegerLiteral |
 | test.py:72:10:72:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
@@ -865,8 +865,8 @@ subpaths
 | datamodel.py:159:6:159:17 | ControlFlowNode for Attribute | datamodel.py:152:14:152:19 | ControlFlowNode for SOURCE | datamodel.py:159:6:159:17 | ControlFlowNode for Attribute | Flow found |
 | test.py:44:10:44:10 | ControlFlowNode for y | test.py:42:21:42:26 | ControlFlowNode for SOURCE | test.py:44:10:44:10 | ControlFlowNode for y | Flow found |
 | test.py:56:10:56:10 | ControlFlowNode for x | test.py:55:9:55:14 | ControlFlowNode for SOURCE | test.py:56:10:56:10 | ControlFlowNode for x | Flow found |
-| test.py:62:10:62:10 | ControlFlowNode for x | test.py:61:9:61:16 | ControlFlowNode for Str | test.py:62:10:62:10 | ControlFlowNode for x | Flow found |
-| test.py:67:10:67:10 | ControlFlowNode for x | test.py:66:9:66:17 | ControlFlowNode for Str | test.py:67:10:67:10 | ControlFlowNode for x | Flow found |
+| test.py:62:10:62:10 | ControlFlowNode for x | test.py:61:9:61:16 | ControlFlowNode for StrConst | test.py:62:10:62:10 | ControlFlowNode for x | Flow found |
+| test.py:67:10:67:10 | ControlFlowNode for x | test.py:66:9:66:17 | ControlFlowNode for StrConst | test.py:67:10:67:10 | ControlFlowNode for x | Flow found |
 | test.py:72:10:72:10 | ControlFlowNode for x | test.py:71:9:71:10 | ControlFlowNode for IntegerLiteral | test.py:72:10:72:10 | ControlFlowNode for x | Flow found |
 | test.py:77:10:77:10 | ControlFlowNode for x | test.py:76:9:76:12 | ControlFlowNode for FloatLiteral | test.py:77:10:77:10 | ControlFlowNode for x | Flow found |
 | test.py:88:10:88:10 | ControlFlowNode for x | test.py:87:10:87:15 | ControlFlowNode for SOURCE | test.py:88:10:88:10 | ControlFlowNode for x | Flow found |
