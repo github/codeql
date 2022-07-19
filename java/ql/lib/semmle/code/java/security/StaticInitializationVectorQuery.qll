@@ -84,7 +84,12 @@ private class ArrayUpdateConfig extends TaintTracking2::Configuration {
 private class StaticInitializationVectorSource extends DataFlow::Node {
   StaticInitializationVectorSource() {
     exists(StaticByteArrayCreation array | array = this.asExpr() |
-      not exists(ArrayUpdateConfig config | config.hasFlow(DataFlow2::exprNode(array), _))
+      not exists(ArrayUpdateConfig config | config.hasFlow(DataFlow2::exprNode(array), _)) and
+      // Reduce FPs from utility methods that return an empty array in an exceptional case
+      not exists(ReturnStmt ret |
+        array.getADimension().(CompileTimeConstantExpr).getIntValue() = 0 and
+        DataFlow::localExprFlow(array, ret.getResult())
+      )
     )
   }
 }
