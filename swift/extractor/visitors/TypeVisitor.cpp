@@ -1,4 +1,5 @@
 #include "swift/extractor/visitors/TypeVisitor.h"
+
 namespace codeql {
 void TypeVisitor::visit(swift::TypeBase* type) {
   TypeVisitorBase<TypeVisitor>::visit(type);
@@ -368,4 +369,10 @@ codeql::BuiltinVectorType TypeVisitor::translateBuiltinVectorType(
   return createTypeEntry(type);
 }
 
+codeql::OpenedArchetypeType TypeVisitor::translateOpenedArchetypeType(
+    const swift::OpenedArchetypeType& type) {
+  auto entry = createTypeEntry(type);
+  fillArchetypeType(type, entry);
+  return entry;
+}
 }  // namespace codeql

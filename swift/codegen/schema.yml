@@ -274,6 +274,16 @@ EnumCaseDecl:
 
 IfConfigDecl:
   _extends: Decl
+  _children:
+    clauses: IfConfigClause*
+
+IfConfigClause:
+  _extends: Locatable
+  _children:
+    condition: Expr?
+    elements: AstNode*
+  is_active: predicate
+  _dir: decl
 
 ImportDecl:
   _extends: Decl
@@ -550,7 +560,6 @@ TypeExpr:
 UnresolvedDeclRefExpr:
   _extends: Expr
   name: string?
-  _pragma: qltest_skip  # we should really never extract these
 
 UnresolvedDotExpr:
   _extends: Expr
@@ -565,7 +574,8 @@ UnresolvedMemberExpr:
 
 UnresolvedPatternExpr:
   _extends: Expr
-  _pragma: qltest_skip  # we should really never extract these
+  _children:
+    sub_pattern: Pattern
 
 UnresolvedSpecializeExpr:
   _extends: Expr

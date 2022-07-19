@@ -374,6 +374,9 @@ module ExprNodes {
     MethodCallCfgNode() { super.getExpr() instanceof MethodCall }
 
     override MethodCall getExpr() { result = super.getExpr() }
+
+    /** Gets the name of this method call. */
+    string getMethodName() { result = this.getExpr().getMethodName() }
   }
 
   private class CaseExprChildMapping extends ExprChildMapping, CaseExpr {

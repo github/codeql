@@ -109,6 +109,12 @@ exprValue
 | constants/constants.rb:63:19:63:20 | 45 | 45 | int |
 | constants/constants.rb:65:19:65:35 | FOURTY_FIVE | 45 | int |
 | constants/constants.rb:71:18:71:19 | 46 | 46 | int |
+| constants/constants.rb:78:6:78:6 | 1 | 1 | int |
+| constants/constants.rb:78:9:78:9 | 2 | 2 | int |
+| constants/constants.rb:78:12:78:12 | 3 | 3 | int |
+| constants/constants.rb:79:6:79:6 | 1 | 1 | int |
+| constants/constants.rb:79:9:79:9 | 2 | 2 | int |
+| constants/constants.rb:79:12:79:12 | 3 | 3 | int |
 | control/cases.rb:2:5:2:5 | 0 | 0 | int |
 | control/cases.rb:3:5:3:5 | 0 | 0 | int |
 | control/cases.rb:4:5:4:5 | 0 | 0 | int |
@@ -1004,6 +1010,12 @@ exprCfgNodeValue
 | constants/constants.rb:63:19:63:20 | 45 | 45 | int |
 | constants/constants.rb:65:19:65:35 | FOURTY_FIVE | 45 | int |
 | constants/constants.rb:71:18:71:19 | 46 | 46 | int |
+| constants/constants.rb:78:6:78:6 | 1 | 1 | int |
+| constants/constants.rb:78:9:78:9 | 2 | 2 | int |
+| constants/constants.rb:78:12:78:12 | 3 | 3 | int |
+| constants/constants.rb:79:6:79:6 | 1 | 1 | int |
+| constants/constants.rb:79:9:79:9 | 2 | 2 | int |
+| constants/constants.rb:79:12:79:12 | 3 | 3 | int |
 | control/cases.rb:2:5:2:5 | 0 | 0 | int |
 | control/cases.rb:3:5:3:5 | 0 | 0 | int |
 | control/cases.rb:4:5:4:5 | 0 | 0 | int |
