@@ -28,6 +28,9 @@ module Actions {
     /** Gets the `jobs` mapping from job IDs to job definitions in this workflow. */
     YAMLMapping getJobs() { result = this.lookup("jobs") }
 
+    /** Gets the name of the workflow */
+    string getName() { result = this.lookup("name").(YAMLString).getValue() }
+
     /** Gets the name of the workflow file. */
     string getFileName() { result = this.getFile().getBaseName() }
 
@@ -129,6 +132,9 @@ module Actions {
 
     /** Gets the value of the `if` field in this step, if any. */
     StepIf getIf() { result.getStep() = this }
+
+    /** Gets the id of the step field, if any. */
+    string getId() { result = this.lookup("id").(YAMLString).getValue() }
   }
 
   /**
