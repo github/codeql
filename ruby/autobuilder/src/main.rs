@@ -19,6 +19,7 @@ fn main() -> std::io::Result<()> {
         .arg("--include-extension=.erb")
         .arg("--include-extension=.gemspec")
         .arg("--include=**/Gemfile")
+        .arg("--exclude=**/.git")
         .arg("--size-limit=5m")
         .arg("--language=ruby")
         .arg("--working-dir=.")

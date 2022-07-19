@@ -13,8 +13,7 @@ sourceLocationPrefix(
 // from codegen/schema.yml
 
 @element =
-  @argument
-| @callable
+  @callable
 | @file
 | @generic_context
 | @iterable_decl_context
@@ -34,8 +33,10 @@ files(
 );
 
 @locatable =
-  @ast_node
+  @argument
+| @ast_node
 | @condition_element
+| @if_config_clause
 ;
 
 #keyset[id]
@@ -643,6 +644,35 @@ if_config_decls(  //dir=decl
   unique int id: @if_config_decl
 );
 
+#keyset[id, index]
+if_config_decl_clauses(  //dir=decl
+  int id: @if_config_decl ref,
+  int index: int ref,
+  int clause: @if_config_clause ref
+);
+
+if_config_clauses(  //dir=decl
+  unique int id: @if_config_clause
+);
+
+#keyset[id]
+if_config_clause_conditions(  //dir=decl
+  int id: @if_config_clause ref,
+  int condition: @expr ref
+);
+
+#keyset[id, index]
+if_config_clause_elements(  //dir=decl
+  int id: @if_config_clause ref,
+  int index: int ref,
+  int element: @ast_node ref
+);
+
+#keyset[id]
+if_config_clause_is_active(  //dir=decl
+  int id: @if_config_clause ref
+);
+
 import_decls(  //dir=decl
   unique int id: @import_decl,
   int module: @module_decl ref
@@ -1141,7 +1171,8 @@ unresolved_member_exprs(  //dir=expr
 );
 
 unresolved_pattern_exprs(  //dir=expr
-  unique int id: @unresolved_pattern_expr
+  unique int id: @unresolved_pattern_expr,
+  int sub_pattern: @pattern ref
 );
 
 unresolved_specialize_exprs(  //dir=expr

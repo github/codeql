@@ -29,7 +29,7 @@ class VisitorBase {
  public:                                                                                          \
   void visit##CLASS##KIND(swift::CLASS##KIND* e) {                                                \
     using TranslateResult = std::invoke_result_t<decltype(&CrtpSubclass::translate##CLASS##KIND), \
-                                                 CrtpSubclass, swift::CLASS##KIND>;               \
+                                                 CrtpSubclass, swift::CLASS##KIND&>;              \
     constexpr bool hasTranslateImplementation = !std::is_same_v<TranslateResult, void>;           \
     if constexpr (hasTranslateImplementation) {                                                   \
       dispatcher_.emit(static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(*e));             \

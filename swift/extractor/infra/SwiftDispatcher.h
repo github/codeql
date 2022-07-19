@@ -4,9 +4,8 @@
 #include <swift/Basic/SourceManager.h>
 #include <llvm/Support/FileSystem.h>
 
-#include "swift/extractor/trap/TrapArena.h"
 #include "swift/extractor/trap/TrapLabelStore.h"
-#include "swift/extractor/trap/TrapOutput.h"
+#include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/SwiftTagTraits.h"
 #include "swift/extractor/trap/generated/TrapClasses.h"
 
@@ -22,12 +21,10 @@ class SwiftDispatcher {
   // all references and pointers passed as parameters to this constructor are supposed to outlive
   // the SwiftDispatcher
   SwiftDispatcher(const swift::SourceManager& sourceManager,
-                  TrapArena& arena,
-                  TrapOutput& trap,
+                  TrapDomain& trap,
                   swift::ModuleDecl& currentModule,
                   swift::SourceFile* currentPrimarySourceFile = nullptr)
       : sourceManager{sourceManager},
-        arena{arena},
         trap{trap},
         currentModule{currentModule},
         currentPrimarySourceFile{currentPrimarySourceFile} {}
@@ -77,6 +74,7 @@ class SwiftDispatcher {
     }
     waitingForNewLabel = e;
     visit(e);
+    // TODO when everything is moved to structured C++ classes, this should be moved to createEntry
     if (auto l = store.get(e)) {
       if constexpr (!std::is_base_of_v<swift::TypeBase, E>) {
         attachLocation(e, *l);
@@ -95,13 +93,21 @@ class SwiftDispatcher {
     return fetchLabelFromUnion<AstNodeTag>(node);
   }
 
+  TrapLabel<IfConfigClauseTag> fetchLabel(const swift::IfConfigClause& clause) {
+    return fetchLabel(&clause);
+  }
+
+  TrapLabel<ConditionElementTag> fetchLabel(const swift::StmtConditionElement& element) {
+    return fetchLabel(&element);
+  }
+
   // Due to the lazy emission approach, we must assign a label to a corresponding AST node before
   // it actually gets emitted to handle recursive cases such as recursive calls, or recursive type
   // declarations
   template <typename E, typename... Args>
   TrapLabelOf<E> assignNewLabel(E* e, Args&&... args) {
     assert(waitingForNewLabel == Store::Handle{e} && "assignNewLabel called on wrong entity");
-    auto label = createLabel<TrapTagOf<E>>(std::forward<Args>(args)...);
+    auto label = trap.createLabel<TrapTagOf<E>>(std::forward<Args>(args)...);
     store.insert(e, label);
     waitingForNewLabel = std::monostate{};
     return label;
@@ -118,18 +124,13 @@ class SwiftDispatcher {
     return TrapClassOf<E>{assignNewLabel(&e, std::forward<Args>(args)...)};
   }
 
-  template <typename Tag>
-  TrapLabel<Tag> createLabel() {
-    auto ret = arena.allocateLabel<Tag>();
-    trap.assignStar(ret);
-    return ret;
-  }
-
-  template <typename Tag, typename... Args>
-  TrapLabel<Tag> createLabel(Args&&... args) {
-    auto ret = arena.allocateLabel<Tag>();
-    trap.assignKey(ret, std::forward<Args>(args)...);
-    return ret;
+  // used to create a new entry for entities that should not be cached
+  // an example is swift::Argument, that are created on the fly and thus have no stable pointer
+  template <typename E, typename... Args, std::enable_if_t<!std::is_pointer_v<E>>* = nullptr>
+  auto createUncachedEntry(const E& e, Args&&... args) {
+    auto label = trap.createLabel<TrapTagOf<E>>(std::forward<Args>(args)...);
+    attachLocation(&e, label);
+    return TrapClassOf<E>{label};
   }
 
   template <typename Locatable>
@@ -141,6 +142,15 @@ class SwiftDispatcher {
   template <typename Locatable>
   void attachLocation(Locatable* locatable, TrapLabel<LocatableTag> locatableLabel) {
     attachLocation(locatable->getStartLoc(), locatable->getEndLoc(), locatableLabel);
+  }
+
+  void attachLocation(const swift::IfConfigClause* clause, TrapLabel<LocatableTag> locatableLabel) {
+    attachLocation(clause->Loc, clause->Loc, locatableLabel);
+  }
+
+  // Emits a Location TRAP entry and attaches it to a `Locatable` trap label for a given `SourceLoc`
+  void attachLocation(swift::SourceLoc loc, TrapLabel<LocatableTag> locatableLabel) {
+    attachLocation(loc, loc, locatableLabel);
   }
 
   // Emits a Location TRAP entry for a list of swift entities and attaches it to a `Locatable` trap
@@ -213,11 +223,13 @@ class SwiftDispatcher {
   using Store = TrapLabelStore<swift::Decl,
                                swift::Stmt,
                                swift::StmtCondition,
+                               swift::StmtConditionElement,
                                swift::CaseLabelItem,
                                swift::Expr,
                                swift::Pattern,
                                swift::TypeRepr,
-                               swift::TypeBase>;
+                               swift::TypeBase,
+                               swift::IfConfigClause>;
 
   void attachLocation(swift::SourceLoc start,
                       swift::SourceLoc end,
@@ -227,13 +239,13 @@ class SwiftDispatcher {
       return;
     }
     std::string filepath = getFilepath(start);
-    auto fileLabel = createLabel<FileTag>(filepath);
+    auto fileLabel = trap.createLabel<FileTag>(filepath);
     // TODO: do not emit duplicate trap entries for Files
     trap.emit(FilesTrap{fileLabel, filepath});
     auto [startLine, startColumn] = sourceManager.getLineAndColumnInBuffer(start);
     auto [endLine, endColumn] = sourceManager.getLineAndColumnInBuffer(end);
-    auto locLabel = createLabel<LocationTag>('{', fileLabel, "}:", startLine, ':', startColumn, ':',
-                                             endLine, ':', endColumn);
+    auto locLabel = trap.createLabel<LocationTag>('{', fileLabel, "}:", startLine, ':', startColumn,
+                                                  ':', endLine, ':', endColumn);
     trap.emit(LocationsTrap{locLabel, fileLabel, startLine, startColumn, endLine, endColumn});
     trap.emit(LocatableLocationsTrap{locatableLabel, locLabel});
   }
@@ -271,11 +283,14 @@ class SwiftDispatcher {
     return realPath.str().str();
   }
 
-  // TODO: The following methods are supposed to redirect TRAP emission to correpsonding visitors,
-  // which are to be introduced in follow-up PRs
+  // TODO: for const correctness these should consistently be `const` (and maybe const references
+  // as we don't expect `nullptr` here. However `swift::ASTVisitor` and `swift::TypeVisitor` do not
+  // accept const pointers
   virtual void visit(swift::Decl* decl) = 0;
+  virtual void visit(const swift::IfConfigClause* clause) = 0;
   virtual void visit(swift::Stmt* stmt) = 0;
-  virtual void visit(swift::StmtCondition* cond) = 0;
+  virtual void visit(const swift::StmtCondition* cond) = 0;
+  virtual void visit(const swift::StmtConditionElement* cond) = 0;
   virtual void visit(swift::CaseLabelItem* item) = 0;
   virtual void visit(swift::Expr* expr) = 0;
   virtual void visit(swift::Pattern* pattern) = 0;
@@ -283,8 +298,7 @@ class SwiftDispatcher {
   virtual void visit(swift::TypeBase* type) = 0;
 
   const swift::SourceManager& sourceManager;
-  TrapArena& arena;
-  TrapOutput& trap;
+  TrapDomain& trap;
   Store store;
   Store::Handle waitingForNewLabel{std::monostate{}};
   swift::ModuleDecl& currentModule;
