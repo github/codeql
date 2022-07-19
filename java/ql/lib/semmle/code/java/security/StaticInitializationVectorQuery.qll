@@ -1,3 +1,5 @@
+/** Definitions for the Static Initialization Vector query. */
+
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
@@ -73,9 +75,7 @@ private class ArrayUpdateConfig extends TaintTracking2::Configuration {
     source.asExpr() instanceof StaticByteArrayCreation
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(ArrayUpdate update | update.getArray() = sink.asExpr())
-  }
+  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ArrayUpdate upd).getArray() }
 }
 
 /**
