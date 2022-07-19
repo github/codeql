@@ -24,8 +24,8 @@ import DataFlow::PathGraph
  * A configuration that tracks data flow from cryptographic operations
  * to equality test
  */
-class PossibleTimingAttackAgainstSignature extends TaintTracking::Configuration {
-  PossibleTimingAttackAgainstSignature() { this = "PossibleTimingAttackAgainstSignature" }
+class PossibleTimingAttackAgainstHash extends TaintTracking::Configuration {
+  PossibleTimingAttackAgainstHash() { this = "PossibleTimingAttackAgainstHash" }
 
   override predicate isSource(DataFlow::Node source) {
     source = API::moduleImport("hmac").getMember("digest").getACall() or
