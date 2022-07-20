@@ -7,14 +7,14 @@ import java.nio.file.Files;
 
 public class PartialPathTraversalTest {
     public void esapiExample(File dir, File parent) throws IOException {
-        if (!dir.getCanonicalPath().startsWith(parent.getCanonicalPath())) {
+        if (!dir.getCanonicalPath().startsWith(parent.getCanonicalPath())) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     void foo1(File dir, File parent) throws IOException {
-        (dir.getCanonicalPath()).startsWith((parent.getCanonicalPath()));
+        (dir.getCanonicalPath()).startsWith((parent.getCanonicalPath())); // $hasTaintFlow
     }
 
     void foo2(File dir, File parent) throws IOException {
@@ -26,31 +26,31 @@ public class PartialPathTraversalTest {
 
     void foo3(File dir, File parent) throws IOException {
         String parentPath = parent.getCanonicalPath();
-        if (!dir.getCanonicalPath().startsWith(parentPath)) {
+        if (!dir.getCanonicalPath().startsWith(parentPath)) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }
 
     void foo4(File dir) throws IOException {
-        if (!dir.getCanonicalPath().startsWith("/usr" + "/dir")) {
+        if (!dir.getCanonicalPath().startsWith("/usr" + "/dir")) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }
 
     void foo5(File dir, File parent) throws IOException {
         String canonicalPath = dir.getCanonicalPath();
-        if (!canonicalPath.startsWith(parent.getCanonicalPath())) {
+        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }
 
     void foo6(File dir, File parent) throws IOException {
         String canonicalPath = dir.getCanonicalPath();
-        if (!canonicalPath.startsWith(parent.getCanonicalPath())) {
+        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
         String canonicalPath2 = dir.getCanonicalPath();
-        if (!canonicalPath2.startsWith(parent.getCanonicalPath())) {
+        if (!canonicalPath2.startsWith(parent.getCanonicalPath())) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }
@@ -58,10 +58,10 @@ public class PartialPathTraversalTest {
     void foo7(File dir, File parent) throws IOException {
         String canonicalPath = dir.getCanonicalPath();
         String canonicalPath2 = dir.getCanonicalPath();
-        if (!canonicalPath.startsWith(parent.getCanonicalPath())) {
+        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
-        if (!canonicalPath2.startsWith(parent.getCanonicalPath())) {
+        if (!canonicalPath2.startsWith(parent.getCanonicalPath())) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }
@@ -72,7 +72,7 @@ public class PartialPathTraversalTest {
 
     void foo8(File parent) throws IOException {
         String canonicalPath = getChild().getCanonicalPath();
-        if (!canonicalPath.startsWith(parent.getCanonicalPath())) {
+        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { 
             throw new IOException("Invalid directory: " + getChild().getCanonicalPath());
         }
     }
@@ -91,7 +91,7 @@ public class PartialPathTraversalTest {
 
     void foo11(File dir, File parent) throws IOException {
         String parentCanonical = parent.getCanonicalPath();
-        if (!dir.getCanonicalPath().startsWith(parentCanonical)) {
+        if (!dir.getCanonicalPath().startsWith(parentCanonical)) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }
@@ -99,10 +99,10 @@ public class PartialPathTraversalTest {
     void foo12(File dir, File parent) throws IOException {
         String parentCanonical = parent.getCanonicalPath();
         String parentCanonical2 = parent.getCanonicalPath();
-        if (!dir.getCanonicalPath().startsWith(parentCanonical)) {
+        if (!dir.getCanonicalPath().startsWith(parentCanonical)) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
-        if (!dir.getCanonicalPath().startsWith(parentCanonical2)) {
+        if (!dir.getCanonicalPath().startsWith(parentCanonical2)) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }
@@ -116,7 +116,7 @@ public class PartialPathTraversalTest {
 
     void foo14(File dir, File parent) throws IOException {
         String parentCanonical = parent.getCanonicalPath() + separatorChar;
-        if (!dir.getCanonicalPath().startsWith(parentCanonical)) {
+        if (!dir.getCanonicalPath().startsWith(parentCanonical)) { 
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }
@@ -170,7 +170,7 @@ public class PartialPathTraversalTest {
 
     void foo19(File dir, File parent) throws IOException {
         String parentCanonical = parent.getCanonicalPath() + "/potato";
-        if (!dir.getCanonicalPath().startsWith(parentCanonical)) {
+        if (!dir.getCanonicalPath().startsWith(parentCanonical)) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }
@@ -188,7 +188,7 @@ public class PartialPathTraversalTest {
         String filePath = sb.toString();
         File encodedFile = new File(filePath);
         try {
-            if (!encodedFile.getCanonicalPath().startsWith(cacheDir.getCanonicalPath())) {
+            if (!encodedFile.getCanonicalPath().startsWith(cacheDir.getCanonicalPath())) { // $hasTaintFlow 
                 return null;
             }
             return Files.newInputStream(encodedFile.toPath());
@@ -206,7 +206,7 @@ public class PartialPathTraversalTest {
 
     void foo22(File dir, File dir2, File parent, boolean conditional) throws IOException {
         String canonicalPath = conditional ? dir.getCanonicalPath() : dir2.getCanonicalPath();
-        if (!canonicalPath.startsWith(parent.getCanonicalPath())) {
+        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }
