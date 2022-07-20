@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 | NoSummaries;PublicClassFlow;false;PublicReturn;(System.Object);;Argument[0];ReturnValue;taint;generated |
 | Summaries;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;taint;generated |
 | Summaries;BasicFlow;false;ReturnField;();;Argument[this];ReturnValue;taint;generated |
@@ -109,3 +110,78 @@
 | Summaries;OperatorFlow;false;OperatorFlow;(System.Object);;Argument[0];Argument[Qualifier].Field[Summaries.OperatorFlow.Field];generated:value |
 | Summaries;OperatorFlow;false;op_Addition;(Summaries.OperatorFlow,Summaries.OperatorFlow);;Argument[0];ReturnValue;generated:value |
 >>>>>>> f190f2932d (C#: Field-sensitive flow summary generation)
+||||||| parent of 9c9fe65e9d (C#/Java: Print generated as provenance for summary models.)
+| NoSummaries;PublicClassFlow;false;PublicReturn;(System.Object);;Argument[0];ReturnValue;generated:value |
+| Summaries;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;generated:value |
+| Summaries;BasicFlow;false;ReturnField;();;Argument[Qualifier].SyntheticField[Summaries.BasicFlow.tainted];ReturnValue;generated:value |
+| Summaries;BasicFlow;false;ReturnParam0;(System.String,System.Object);;Argument[0];ReturnValue;generated:value |
+| Summaries;BasicFlow;false;ReturnParam1;(System.String,System.Object);;Argument[1];ReturnValue;generated:value |
+| Summaries;BasicFlow;false;ReturnParamMultiple;(System.Object,System.Object);;Argument[0];ReturnValue;generated:value |
+| Summaries;BasicFlow;false;ReturnParamMultiple;(System.Object,System.Object);;Argument[1];ReturnValue;generated:value |
+| Summaries;BasicFlow;false;ReturnSubstring;(System.String);;Argument[0];ReturnValue;generated:taint |
+| Summaries;BasicFlow;false;ReturnThis;(System.Object);;Argument[Qualifier];ReturnValue;generated:value |
+| Summaries;BasicFlow;false;SetField;(System.String);;Argument[0];Argument[Qualifier].SyntheticField[Summaries.BasicFlow.tainted];generated:value |
+| Summaries;CollectionFlow;false;AddFieldToList;(System.Collections.Generic.List<System.String>);;Argument[Qualifier].SyntheticField[Summaries.CollectionFlow.tainted];Argument[0].Element;generated:value |
+| Summaries;CollectionFlow;false;AddToList;(System.Collections.Generic.List<System.Object>,System.Object);;Argument[1];Argument[0].Element;generated:value |
+| Summaries;CollectionFlow;false;AssignFieldToArray;(System.Object[]);;Argument[Qualifier].SyntheticField[Summaries.CollectionFlow.tainted];Argument[0].Element;generated:value |
+| Summaries;CollectionFlow;false;AssignToArray;(System.Object,System.Object[]);;Argument[0];Argument[1].Element;generated:value |
+| Summaries;CollectionFlow;false;ReturnArrayElement;(System.Object[]);;Argument[0].Element;ReturnValue;generated:value |
+| Summaries;CollectionFlow;false;ReturnFieldInAList;();;Argument[Qualifier].SyntheticField[Summaries.CollectionFlow.tainted];ReturnValue.Element;generated:value |
+| Summaries;CollectionFlow;false;ReturnListElement;(System.Collections.Generic.List<System.Object>);;Argument[0].Element;ReturnValue;generated:value |
+| Summaries;DerivedClass1Flow;false;ReturnParam1;(System.String,System.String);;Argument[1];ReturnValue;generated:value |
+| Summaries;DerivedClass2Flow;false;ReturnParam0;(System.String,System.Int32);;Argument[0];ReturnValue;generated:value |
+| Summaries;DerivedClass2Flow;false;ReturnParam;(System.Object);;Argument[0];ReturnValue;generated:value |
+| Summaries;EqualsGetHashCodeNoFlow;false;Equals;(System.String);;Argument[0];ReturnValue;generated:value |
+| Summaries;GenericFlow<>;false;AddFieldToGenericList;(System.Collections.Generic.List<T>);;Argument[Qualifier].SyntheticField[Summaries.GenericFlow<>.tainted];Argument[0].Element;generated:value |
+| Summaries;GenericFlow<>;false;AddToGenericList<>;(System.Collections.Generic.List<S>,S);;Argument[1];Argument[0].Element;generated:value |
+| Summaries;GenericFlow<>;false;ReturnFieldInGenericList;();;Argument[Qualifier].SyntheticField[Summaries.GenericFlow<>.tainted];ReturnValue.Element;generated:value |
+| Summaries;GenericFlow<>;false;ReturnGenericElement<>;(System.Collections.Generic.List<S>);;Argument[0].Element;ReturnValue;generated:value |
+| Summaries;GenericFlow<>;false;ReturnGenericField;();;Argument[Qualifier].SyntheticField[Summaries.GenericFlow<>.tainted];ReturnValue;generated:value |
+| Summaries;GenericFlow<>;false;ReturnGenericParam<>;(S);;Argument[0];ReturnValue;generated:value |
+| Summaries;GenericFlow<>;false;SetGenericField;(T);;Argument[0];Argument[Qualifier].SyntheticField[Summaries.GenericFlow<>.tainted];generated:value |
+| Summaries;IEnumerableFlow;false;ReturnFieldInIEnumerable;();;Argument[Qualifier].SyntheticField[Summaries.IEnumerableFlow.tainted];ReturnValue.Element;generated:value |
+| Summaries;IEnumerableFlow;false;ReturnIEnumerable;(System.Collections.Generic.IEnumerable<System.String>);;Argument[0];ReturnValue;generated:value |
+| Summaries;IEnumerableFlow;false;ReturnIEnumerableElement;(System.Collections.Generic.IEnumerable<System.Object>);;Argument[0].Element;ReturnValue;generated:value |
+| Summaries;NestedFieldFlow;false;Move;();;Argument[Qualifier].Field[Summaries.NestedFieldFlow.FieldA];ReturnValue.Field[Summaries.NestedFieldFlow.FieldB];generated:value |
+| Summaries;NestedFieldFlow;false;MoveNested;();;Argument[Qualifier].Field[Summaries.NestedFieldFlow.FieldB].Field[Summaries.NestedFieldFlow.FieldA];ReturnValue.Field[Summaries.NestedFieldFlow.FieldB].Field[Summaries.NestedFieldFlow.FieldA];generated:value |
+| Summaries;NestedFieldFlow;false;ReverseFields;();;Argument[Qualifier].Field[Summaries.NestedFieldFlow.FieldA].Field[Summaries.NestedFieldFlow.FieldB];ReturnValue.Field[Summaries.NestedFieldFlow.FieldB].Field[Summaries.NestedFieldFlow.FieldA];generated:value |
+| Summaries;OperatorFlow;false;OperatorFlow;(System.Object);;Argument[0];Argument[Qualifier].Field[Summaries.OperatorFlow.Field];generated:value |
+| Summaries;OperatorFlow;false;op_Addition;(Summaries.OperatorFlow,Summaries.OperatorFlow);;Argument[0];ReturnValue;generated:value |
+=======
+| NoSummaries;PublicClassFlow;false;PublicReturn;(System.Object);;Argument[0];ReturnValue;value;generated |
+| Summaries;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;value;generated |
+| Summaries;BasicFlow;false;ReturnField;();;Argument[Qualifier].SyntheticField[Summaries.BasicFlow.tainted];ReturnValue;value;generated |
+| Summaries;BasicFlow;false;ReturnParam0;(System.String,System.Object);;Argument[0];ReturnValue;value;generated |
+| Summaries;BasicFlow;false;ReturnParam1;(System.String,System.Object);;Argument[1];ReturnValue;value;generated |
+| Summaries;BasicFlow;false;ReturnParamMultiple;(System.Object,System.Object);;Argument[0];ReturnValue;value;generated |
+| Summaries;BasicFlow;false;ReturnParamMultiple;(System.Object,System.Object);;Argument[1];ReturnValue;value;generated |
+| Summaries;BasicFlow;false;ReturnSubstring;(System.String);;Argument[0];ReturnValue;taint;generated |
+| Summaries;BasicFlow;false;ReturnThis;(System.Object);;Argument[Qualifier];ReturnValue;value;generated |
+| Summaries;BasicFlow;false;SetField;(System.String);;Argument[0];Argument[Qualifier].SyntheticField[Summaries.BasicFlow.tainted];value;generated |
+| Summaries;CollectionFlow;false;AddFieldToList;(System.Collections.Generic.List<System.String>);;Argument[Qualifier].SyntheticField[Summaries.CollectionFlow.tainted];Argument[0].Element;value;generated |
+| Summaries;CollectionFlow;false;AddToList;(System.Collections.Generic.List<System.Object>,System.Object);;Argument[1];Argument[0].Element;value;generated |
+| Summaries;CollectionFlow;false;AssignFieldToArray;(System.Object[]);;Argument[Qualifier].SyntheticField[Summaries.CollectionFlow.tainted];Argument[0].Element;value;generated |
+| Summaries;CollectionFlow;false;AssignToArray;(System.Object,System.Object[]);;Argument[0];Argument[1].Element;value;generated |
+| Summaries;CollectionFlow;false;ReturnArrayElement;(System.Object[]);;Argument[0].Element;ReturnValue;value;generated |
+| Summaries;CollectionFlow;false;ReturnFieldInAList;();;Argument[Qualifier].SyntheticField[Summaries.CollectionFlow.tainted];ReturnValue.Element;value;generated |
+| Summaries;CollectionFlow;false;ReturnListElement;(System.Collections.Generic.List<System.Object>);;Argument[0].Element;ReturnValue;value;generated |
+| Summaries;DerivedClass1Flow;false;ReturnParam1;(System.String,System.String);;Argument[1];ReturnValue;value;generated |
+| Summaries;DerivedClass2Flow;false;ReturnParam0;(System.String,System.Int32);;Argument[0];ReturnValue;value;generated |
+| Summaries;DerivedClass2Flow;false;ReturnParam;(System.Object);;Argument[0];ReturnValue;value;generated |
+| Summaries;EqualsGetHashCodeNoFlow;false;Equals;(System.String);;Argument[0];ReturnValue;value;generated |
+| Summaries;GenericFlow<>;false;AddFieldToGenericList;(System.Collections.Generic.List<T>);;Argument[Qualifier].SyntheticField[Summaries.GenericFlow<>.tainted];Argument[0].Element;value;generated |
+| Summaries;GenericFlow<>;false;AddToGenericList<>;(System.Collections.Generic.List<S>,S);;Argument[1];Argument[0].Element;value;generated |
+| Summaries;GenericFlow<>;false;ReturnFieldInGenericList;();;Argument[Qualifier].SyntheticField[Summaries.GenericFlow<>.tainted];ReturnValue.Element;value;generated |
+| Summaries;GenericFlow<>;false;ReturnGenericElement<>;(System.Collections.Generic.List<S>);;Argument[0].Element;ReturnValue;value;generated |
+| Summaries;GenericFlow<>;false;ReturnGenericField;();;Argument[Qualifier].SyntheticField[Summaries.GenericFlow<>.tainted];ReturnValue;value;generated |
+| Summaries;GenericFlow<>;false;ReturnGenericParam<>;(S);;Argument[0];ReturnValue;value;generated |
+| Summaries;GenericFlow<>;false;SetGenericField;(T);;Argument[0];Argument[Qualifier].SyntheticField[Summaries.GenericFlow<>.tainted];value;generated |
+| Summaries;IEnumerableFlow;false;ReturnFieldInIEnumerable;();;Argument[Qualifier].SyntheticField[Summaries.IEnumerableFlow.tainted];ReturnValue.Element;value;generated |
+| Summaries;IEnumerableFlow;false;ReturnIEnumerable;(System.Collections.Generic.IEnumerable<System.String>);;Argument[0];ReturnValue;value;generated |
+| Summaries;IEnumerableFlow;false;ReturnIEnumerableElement;(System.Collections.Generic.IEnumerable<System.Object>);;Argument[0].Element;ReturnValue;value;generated |
+| Summaries;NestedFieldFlow;false;Move;();;Argument[Qualifier].Field[Summaries.NestedFieldFlow.FieldA];ReturnValue.Field[Summaries.NestedFieldFlow.FieldB];value;generated |
+| Summaries;NestedFieldFlow;false;MoveNested;();;Argument[Qualifier].Field[Summaries.NestedFieldFlow.FieldB].Field[Summaries.NestedFieldFlow.FieldA];ReturnValue.Field[Summaries.NestedFieldFlow.FieldB].Field[Summaries.NestedFieldFlow.FieldA];value;generated |
+| Summaries;NestedFieldFlow;false;ReverseFields;();;Argument[Qualifier].Field[Summaries.NestedFieldFlow.FieldA].Field[Summaries.NestedFieldFlow.FieldB];ReturnValue.Field[Summaries.NestedFieldFlow.FieldB].Field[Summaries.NestedFieldFlow.FieldA];value;generated |
+| Summaries;OperatorFlow;false;OperatorFlow;(System.Object);;Argument[0];Argument[Qualifier].Field[Summaries.OperatorFlow.Field];value;generated |
+| Summaries;OperatorFlow;false;op_Addition;(Summaries.OperatorFlow,Summaries.OperatorFlow);;Argument[0];ReturnValue;value;generated |
+>>>>>>> 9c9fe65e9d (C#/Java: Print generated as provenance for summary models.)
