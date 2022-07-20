@@ -34,7 +34,7 @@ namespace JsonWebTokenHandlerTest
                 RequireExpirationTime = false,      // BUG
                 ValidateTokenReplay = false,
                 RequireSignedTokens = false,
-                RequireAudience = false,
+                RequireAudience = false,            // BUG
                 SaveSigninToken = false
             };
         }
