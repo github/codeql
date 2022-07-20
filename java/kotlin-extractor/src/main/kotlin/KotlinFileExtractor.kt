@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
+import org.jetbrains.kotlin.config.JvmAnalysisFlags
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.java.JavaVisibilities
 import org.jetbrains.kotlin.ir.IrElement
@@ -828,10 +829,56 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun needsInterfaceForwarder(f: IrFunction) =
+        // forAllMethodsWithBody means -Xjvm-default=all or all-compatibility, in which case real Java default interfaces are used, and we don't need to do anything.
+        // Otherwise, for a method inheriting a default, we need to create a synthetic method like `int f(int x) { return super.InterfaceWithDefault.f(x); }`, because
+        // kotlinc will generate a public method and Java callers may directly target it.
+        // (NB. kotlinc's actual implementation strategy is different -- it makes an inner class called InterfaceWithDefault$DefaultImpls and stores the default methods
+        // there to allow default method usage in Java < 8, but this is hopefully niche.
+        !pluginContext.languageVersionSettings.getFlag(JvmAnalysisFlags.jvmDefaultMode).forAllMethodsWithBody &&
+                f.realOverrideTarget.let { it != f && it.parentClassOrNull?.isInterface == true }
+
+    private fun makeInterfaceForwarder(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+        forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses).also { functionId ->
+            tw.writeCompiler_generated(functionId, CompilerGeneratedKinds.INTERFACE_FORWARDER.kind)
+            if (extractBody) {
+                val realFunctionLocId = tw.getLocation(f)
+                val inheritedDefaultFunction = f.realOverrideTarget
+                val defaultDefiningInterfaceType = (inheritedDefaultFunction.parentClassOrNull ?: return functionId).typeWith()
+
+                extractExpressionBody(functionId, realFunctionLocId).also { returnId ->
+                    extractRawMethodAccess(
+                        f,
+                        realFunctionLocId,
+                        f.returnType,
+                        functionId,
+                        returnId,
+                        0,
+                        returnId,
+                        f.valueParameters.size,
+                        { argParentId, idxOffset ->
+                            f.valueParameters.mapIndexed { idx, param ->
+                                val syntheticParamId = useValueParameter(param, functionId)
+                                extractVariableAccess(syntheticParamId, param.type, realFunctionLocId, argParentId, idxOffset + idx, functionId, returnId)
+                            }
+                        },
+                        f.dispatchReceiverParameter?.type,
+                        { callId ->
+                            extractSuperAccess(defaultDefiningInterfaceType, functionId, callId, -1, returnId, realFunctionLocId)
+                        },
+                        null
+                    )
+                }
+            }
+        }
+
     private fun extractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        if (isFake(f))
-            null
-        else {
+        if (isFake(f)) {
+            if (needsInterfaceForwarder(f))
+                makeInterfaceForwarder(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses)
+            else
+                null
+        } else {
             forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses).also {
                 // The defaults-forwarder function is a static utility, not a member, so we only need to extract this for the unspecialised instance of this class.
                 if (classTypeArgsIncludingOuterClasses.isNullOrEmpty())
@@ -1202,7 +1249,9 @@ open class KotlinFileExtractor(
 
     private fun extractProperty(p: IrProperty, parentId: Label<out DbReftype>, extractBackingField: Boolean, extractFunctionBodies: Boolean, extractPrivateMembers: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
         with("property", p) {
-            if (isFake(p)) return
+            fun needsInterfaceForwarderQ(f: IrFunction?) = f?.let { needsInterfaceForwarder(f) } ?: false
+
+            if (isFake(p) && !needsInterfaceForwarderQ(p.getter) && !needsInterfaceForwarderQ(p.setter)) return
 
             DeclarationStackAdjuster(p).use {
 
@@ -5373,6 +5422,7 @@ open class KotlinFileExtractor(
         DELEGATED_PROPERTY_SETTER(7),
         JVMSTATIC_PROXY_METHOD(8),
         JVMOVERLOADS_METHOD(9),
-        DEFAULT_ARGUMENTS_METHOD(10)
+        DEFAULT_ARGUMENTS_METHOD(10),
+        INTERFACE_FORWARDER(11),
     }
 }

@@ -1,0 +1,6 @@
+| User.java:11:15:11:15 | 2 | User.java:11:10:11:16 | g(...) |
+| User.java:15:15:15:15 | 5 | User.java:15:10:15:16 | g(...) |
+| noforwards.kt:3:13:3:13 | 4 | User.java:14:10:14:15 | f(...) |
+| noforwards.kt:8:13:8:13 | 6 | User.java:16:10:16:18 | getX(...) |
+| test.kt:3:13:3:13 | 1 | User.java:10:10:10:15 | f(...) |
+| test.kt:8:13:8:13 | 3 | User.java:12:10:12:18 | getX(...) |

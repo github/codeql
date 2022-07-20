@@ -67,6 +67,8 @@ class Element extends @element, Top {
       i = 9 and result = "Forwarder for a @JvmOverloads-annotated function"
       or
       i = 10 and result = "Forwarder for Kotlin calls that need default arguments filling in"
+      or
+      i = 11 and result = "Forwarder for a Kotlin class inheriting an interface default method"
     )
   }
 }
