@@ -1,3 +1,9 @@
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/ruby-all` package.
+
 ## 0.2.0
 
 ### New Queries
