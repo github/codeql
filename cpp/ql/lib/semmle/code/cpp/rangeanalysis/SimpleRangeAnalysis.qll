@@ -1118,24 +1118,39 @@ private predicate exprIsUsedAsBool(Expr expr) {
 }
 
 /**
+ * Helper predicate for `boolConversionLowerBound` / `boolConversionUpperBound`.
+ */
+private float boolConversionLowerBound0(Expr expr) {
+  exprIsUsedAsBool(expr) and
+  result = getTruncatedLowerBounds(expr)
+}
+
+/**
+ * Helper predicate for `boolConversionLowerBound` / `boolConversionUpperBound`.
+ */
+private float boolConversionUpperBound0(Expr expr) {
+  exprIsUsedAsBool(expr) and
+  result = getTruncatedUpperBounds(expr)
+}
+
+/**
  * Gets the lower bound of the conversion `(bool)expr`. If we can prove that
  * the value of `expr` is never 0 then `lb = 1`. Otherwise `lb = 0`.
  */
 private float boolConversionLowerBound(Expr expr) {
   // Case 1: if the range for `expr` includes the value 0,
   // then `result = 0`.
-  exprIsUsedAsBool(expr) and
-  exists(float lb | lb = getTruncatedLowerBounds(expr) and not lb > 0) and
-  exists(float ub | ub = getTruncatedUpperBounds(expr) and not ub < 0) and
+  exists(float lb | lb = boolConversionLowerBound0(expr) and not lb > 0) and
+  exists(float ub | ub = boolConversionUpperBound0(expr) and not ub < 0) and
   result = 0
   or
   // Case 2a: if the range for `expr` does not include the value 0,
   // then `result = 1`.
-  exprIsUsedAsBool(expr) and getTruncatedLowerBounds(expr) > 0 and result = 1
+  boolConversionLowerBound0(expr) > 0 and result = 1
   or
   // Case 2b: if the range for `expr` does not include the value 0,
   // then `result = 1`.
-  exprIsUsedAsBool(expr) and getTruncatedUpperBounds(expr) < 0 and result = 1
+  boolConversionUpperBound0(expr) < 0 and result = 1
   or
   // Case 3: the type of `expr` is not arithmetic. For example, it might
   // be a pointer.
@@ -1149,22 +1164,20 @@ private float boolConversionLowerBound(Expr expr) {
 private float boolConversionUpperBound(Expr expr) {
   // Case 1a: if the upper bound of the operand is <= 0, then the upper
   // bound might be 0.
-  exprIsUsedAsBool(expr) and getTruncatedUpperBounds(expr) <= 0 and result = 0
+  boolConversionUpperBound0(expr) <= 0 and result = 0
   or
   // Case 1b: if the upper bound of the operand is not <= 0, then the upper
   // bound is 1.
-  exprIsUsedAsBool(expr) and
-  exists(float ub | ub = getTruncatedUpperBounds(expr) and not ub <= 0) and
+  exists(float ub | ub = boolConversionUpperBound0(expr) and not ub <= 0) and
   result = 1
   or
   // Case 2a: if the lower bound of the operand is >= 0, then the upper
   // bound might be 0.
-  exprIsUsedAsBool(expr) and getTruncatedLowerBounds(expr) >= 0 and result = 0
+  boolConversionLowerBound0(expr) >= 0 and result = 0
   or
   // Case 2b: if the lower bound of the operand is not >= 0, then the upper
   // bound is 1.
-  exprIsUsedAsBool(expr) and
-  exists(float lb | lb = getTruncatedLowerBounds(expr) and not lb >= 0) and
+  exists(float lb | lb = boolConversionLowerBound0(expr) and not lb >= 0) and
   result = 1
   or
   // Case 3: the type of `expr` is not arithmetic. For example, it might
