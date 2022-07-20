@@ -1,3 +1,9 @@
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/python-all` package.
+
 ## 0.2.0
 
 ### Major Analysis Improvements
