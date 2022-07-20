@@ -104,14 +104,6 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   dumpArgs(*trapTarget, config);
   TrapDomain trap{*trapTarget};
 
-  // TODO: remove this and recreate it with IPA when we have that
-  // the following cannot conflict with actual files as those have an absolute path starting with /
-  File unknownFileEntry{trap.createLabel<FileTag>("unknown")};
-  Location unknownLocationEntry{trap.createLabel<LocationTag>("unknown")};
-  unknownLocationEntry.file = unknownFileEntry.id;
-  trap.emit(unknownFileEntry);
-  trap.emit(unknownLocationEntry);
-
   SwiftVisitor visitor(compiler.getSourceMgr(), trap, module, primaryFile);
   auto topLevelDecls = getTopLevelDecls(module, primaryFile);
   for (auto decl : topLevelDecls) {

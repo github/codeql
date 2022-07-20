@@ -94,11 +94,6 @@ def test_class_has_first_property_marked():
     assert cls.properties == expected
 
 
-def test_class_db_id():
-    cls = ql.Class("ThisIsMyClass")
-    assert cls.db_id == "@this_is_my_class"
-
-
 def test_root_class():
     cls = ql.Class("Class")
     assert cls.root

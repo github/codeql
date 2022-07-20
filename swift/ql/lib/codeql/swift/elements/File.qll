@@ -4,9 +4,6 @@ class File extends FileBase {
   /** toString */
   override string toString() { result = getAbsolutePath() }
 
-  /** Gets the name of this file. */
-  override string getName() { files(this, result) }
-
   /** Gets the absolute path of this file. */
   string getAbsolutePath() { result = getName() }
 

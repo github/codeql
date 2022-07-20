@@ -3,7 +3,7 @@
 import pathlib
 import re
 from dataclasses import dataclass, field
-from typing import List, Set, Union, Dict, ClassVar
+from typing import List, Set, Union, Dict, ClassVar, Optional
 
 import yaml
 
@@ -58,8 +58,8 @@ class PredicateProperty(Property):
 
 @dataclass
 class IpaInfo:
-    from_class: str = None
-    on_arguments: Dict[str, str] = None
+    from_class: Optional[str] = None
+    on_arguments: Optional[Dict[str, str]] = None
 
 
 @dataclass
@@ -70,12 +70,16 @@ class Class:
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
     pragmas: List[str] = field(default_factory=list)
-    ipa: IpaInfo = None
+    ipa: Optional[IpaInfo] = None
+
+    @property
+    def final(self):
+        return not self.derived
 
 
 @dataclass
 class Schema:
-    classes: List[Class]
+    classes: Dict[str, Class]
     includes: Set[str] = field(default_factory=set)
 
 
@@ -164,4 +168,4 @@ def load(path):
             cls.bases.add(root_class_name)
             classes[root_class_name].derived.add(name)
 
-    return Schema(classes=list(classes.values()), includes=set(data.get("_includes", [])))
+    return Schema(classes=classes, includes=set(data.get("_includes", [])))

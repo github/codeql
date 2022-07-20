@@ -1,4 +1,5 @@
-private import codeql.swift.elements.IpaConstructors
+private import codeql.swift.generated.IpaConstructors
+private import codeql.swift.generated.Db
 
 cached module Cached {
   cached newtype T{{root}} =
@@ -10,14 +11,24 @@ cached module Cached {
     T{{name}}({{type}} id) { construct{{name}}(id) }
     {{/is_ipa_from}}
     {{#is_ipa_on}}
-    T{{name}}({{#params}}{{^first}}, {{/first}}{{type}} {{param}}{{/params}}) { construct{{name}}({{#params}}{{^first}}, {{/first}}{{param}}{{/params}}) }
+    T{{name}}({{#params}}{{^first}}, {{/first}}{{type}} {{param}}{{/params}}){{#has_params}} { construct{{name}}({{#params}}{{^first}}, {{/first}}{{param}}{{/params}}) }{{/has_params}}
     {{/is_ipa_on}}
     {{#is_db}}
-    T{{name}}({{db_id}} id){{#has_subtracted_ipa_types}} { {{#subtracted_ipa_types}}{{^first}} and {{/first}}not construct{{name}}(id){{/subtracted_ipa_types}} }{{/has_subtracted_ipa_types}}
+    T{{name}}(Db::{{name}} id){{#has_subtracted_ipa_types}} { {{#subtracted_ipa_types}}{{^first}} and {{/first}}not construct{{name}}(id){{/subtracted_ipa_types}} }{{/has_subtracted_ipa_types}}
     {{/is_db}}
     {{/final_classes}}
 
   {{#non_final_classes}}
   class T{{name}} = {{#derived}}{{^first}} or {{/first}}T{{name}}{{/derived}};
   {{/non_final_classes}}
+
+  cached TElement fromDbInstance(Db::Element e) {
+    none()
+    {{#final_classes}}
+    {{^is_ipa_on}}
+    or
+    result = T{{name}}(e)
+    {{/is_ipa_on}}
+    {{/final_classes}}
+  }
 }

@@ -19,6 +19,15 @@ Element:
 
 File:
   name: string
+  _pragma: qltest_collapse_hierarchy
+
+DbFile:
+  _extends: File
+
+UnknownFile:
+  _extends: File
+  _ipa:
+    on: {}
 
 Locatable:
   location:
@@ -32,7 +41,15 @@ Location:
   start_column: int
   end_line: int
   end_column: int
-  _pragma: qltest_skip
+  _pragma: [qltest_skip, qltest_collapse_hierarchy]
+
+DbLocation:
+  _extends: Location
+
+UnknownLocation:
+  _extends: Location
+  _ipa:
+    on: {}
 
 Type:
   name: string
@@ -792,11 +809,11 @@ OptionalTryExpr:
 TryExpr:
   _extends: AnyTryExpr
 
-MethodCallExpr:
-  _extends: ApplyExpr
-  _ipa:
-    from: CallExpr
-  qualifier: Expr
+#MethodCallExpr:
+#  _extends: ApplyExpr
+#  _ipa:
+#    from: CallExpr
+#  qualifier: Expr
 
 BinaryExpr:
   _extends: ApplyExpr
