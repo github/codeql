@@ -1,0 +1,31 @@
+edges
+| DotRegexServlet.java:11:30:11:46 | PROTECTED_PATTERN : String | DotRegexServlet.java:20:31:20:47 | PROTECTED_PATTERN |
+| DotRegexServlet.java:11:30:11:46 | PROTECTED_PATTERN : String | DotRegexServlet.java:50:36:50:52 | PROTECTED_PATTERN |
+| DotRegexServlet.java:11:30:11:46 | PROTECTED_PATTERN : String | DotRegexServlet.java:64:37:64:53 | PROTECTED_PATTERN |
+| DotRegexServlet.java:11:50:11:64 | "/protected/.*" : String | DotRegexServlet.java:11:30:11:46 | PROTECTED_PATTERN : String |
+| DotRegexServlet.java:18:19:18:39 | getPathInfo(...) : String | DotRegexServlet.java:21:25:21:30 | source |
+| DotRegexServlet.java:33:19:33:39 | getPathInfo(...) : String | DotRegexServlet.java:36:25:36:30 | source |
+| DotRegexServlet.java:48:19:48:39 | getPathInfo(...) : String | DotRegexServlet.java:50:21:50:26 | source |
+| DotRegexServlet.java:62:19:62:39 | getPathInfo(...) : String | DotRegexServlet.java:64:56:64:61 | source |
+| DotRegexServlet.java:76:19:76:39 | getPathInfo(...) : String | DotRegexServlet.java:79:25:79:30 | source |
+nodes
+| DotRegexServlet.java:11:30:11:46 | PROTECTED_PATTERN : String | semmle.label | PROTECTED_PATTERN : String |
+| DotRegexServlet.java:11:50:11:64 | "/protected/.*" : String | semmle.label | "/protected/.*" : String |
+| DotRegexServlet.java:18:19:18:39 | getPathInfo(...) : String | semmle.label | getPathInfo(...) : String |
+| DotRegexServlet.java:20:31:20:47 | PROTECTED_PATTERN | semmle.label | PROTECTED_PATTERN |
+| DotRegexServlet.java:21:25:21:30 | source | semmle.label | source |
+| DotRegexServlet.java:33:19:33:39 | getPathInfo(...) : String | semmle.label | getPathInfo(...) : String |
+| DotRegexServlet.java:36:25:36:30 | source | semmle.label | source |
+| DotRegexServlet.java:48:19:48:39 | getPathInfo(...) : String | semmle.label | getPathInfo(...) : String |
+| DotRegexServlet.java:50:21:50:26 | source | semmle.label | source |
+| DotRegexServlet.java:50:36:50:52 | PROTECTED_PATTERN | semmle.label | PROTECTED_PATTERN |
+| DotRegexServlet.java:62:19:62:39 | getPathInfo(...) : String | semmle.label | getPathInfo(...) : String |
+| DotRegexServlet.java:64:37:64:53 | PROTECTED_PATTERN | semmle.label | PROTECTED_PATTERN |
+| DotRegexServlet.java:64:56:64:61 | source | semmle.label | source |
+| DotRegexServlet.java:76:19:76:39 | getPathInfo(...) : String | semmle.label | getPathInfo(...) : String |
+| DotRegexServlet.java:79:25:79:30 | source | semmle.label | source |
+subpaths
+#select
+| DotRegexServlet.java:21:25:21:30 | source | DotRegexServlet.java:18:19:18:39 | getPathInfo(...) : String | DotRegexServlet.java:21:25:21:30 | source | Potentially authentication bypass due to $@. | DotRegexServlet.java:18:19:18:39 | getPathInfo(...) | user-provided value |
+| DotRegexServlet.java:50:21:50:26 | source | DotRegexServlet.java:48:19:48:39 | getPathInfo(...) : String | DotRegexServlet.java:50:21:50:26 | source | Potentially authentication bypass due to $@. | DotRegexServlet.java:48:19:48:39 | getPathInfo(...) | user-provided value |
+| DotRegexServlet.java:64:56:64:61 | source | DotRegexServlet.java:62:19:62:39 | getPathInfo(...) : String | DotRegexServlet.java:64:56:64:61 | source | Potentially authentication bypass due to $@. | DotRegexServlet.java:62:19:62:39 | getPathInfo(...) | user-provided value |
