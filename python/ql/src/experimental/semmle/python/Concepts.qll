@@ -15,6 +15,36 @@ private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 private import semmle.python.Concepts
 
+/** Provides classes for modeling cryptography operation related APIs. */
+module CryptographicOperation {
+  /**
+   * A data-flow node that collects methods taking input.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `CryptographicOperation` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the data.
+     */
+    abstract DataFlow::Node getAnInput();
+  }
+} 
+
+/**
+ * A data flow node for cryptography operation.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `CryptographicOperation::Range` instead.
+ */
+class CryptographicOperation extends DataFlow::Node {
+  CryptographicOperation::Range range;
+
+  CryptographicOperation() { this = range }
+
+  DataFlow::Node getAnInput() { result = range.getAnInput() }
+}	
+
 /** Provides classes for modeling copying file related APIs. */
 module CopyFile {
   /**
