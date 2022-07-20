@@ -5,6 +5,27 @@ private import semmle.python.dataflow.new.TaintTracking3
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 
+class ProduceHashCall extends DataFlow::CallCfgNode {
+  ProduceHashCall() {
+    this = API::moduleImport("hmac").getMember("digest").getACall() or
+    this =
+       API::moduleImport("hmac")
+          .getMember("new")
+          .getReturn()
+          .getMember(["digest", "hexdigest"])
+          .getACall() or
+    this =
+      API::moduleImport("hashlib")
+          .getMember([
+              "new", "sha1", "sha224", "sha256", "sha384", "sha512", "blake2b", "blake2s", "md5"
+            ])
+          .getReturn()
+          .getMember(["digest", "hexdigest"])
+          .getACall()
+  }
+
+}
+
 /** A data flow sink for comparison. */
 class CompareSink extends DataFlow::Node {
   CompareSink() {
@@ -126,21 +147,7 @@ class UserInputMsgConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink = API::moduleImport("hmac").getMember("digest").getACall() or
-    sink =
-      API::moduleImport("hmac")
-          .getMember("new")
-          .getReturn()
-          .getMember(["digest", "hexdigest"])
-          .getACall() or
-    sink =
-      API::moduleImport("hashlib")
-          .getMember([
-              "new", "sha1", "sha224", "sha256", "sha384", "sha512", "blake2b", "blake2s", "md5"
-            ])
-          .getReturn()
-          .getMember(["digest", "hexdigest"])
-          .getACall()
+    sink = any(CryptographicOperation cryptography).getAnInput()
   }
 }
 
