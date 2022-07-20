@@ -90,14 +90,20 @@ abstract class Configuration extends string {
   /** Holds if data flow out of `node` is prohibited. */
   predicate isBarrierOut(Node node) { none() }
 
-  /** Holds if data flow through nodes guarded by `guard` is prohibited. */
-  predicate isBarrierGuard(BarrierGuard guard) { none() }
+  /**
+   * DEPRECATED: Use `isBarrier` and `BarrierGuard` module instead.
+   *
+   * Holds if data flow through nodes guarded by `guard` is prohibited.
+   */
+  deprecated predicate isBarrierGuard(BarrierGuard guard) { none() }
 
   /**
+   * DEPRECATED: Use `isBarrier` and `BarrierGuard` module instead.
+   *
    * Holds if data flow through nodes guarded by `guard` is prohibited when
    * the flow state is `state`
    */
-  predicate isBarrierGuard(BarrierGuard guard, FlowState state) { none() }
+  deprecated predicate isBarrierGuard(BarrierGuard guard, FlowState state) { none() }
 
   /**
    * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
@@ -335,6 +341,29 @@ private predicate outBarrier(NodeEx node, Configuration config) {
   )
 }
 
+/** A bridge class to access the deprecated `isBarrierGuard`. */
+private class BarrierGuardGuardedNodeBridge extends Unit {
+  abstract predicate guardedNode(Node n, Configuration config);
+
+  abstract predicate guardedNode(Node n, FlowState state, Configuration config);
+}
+
+private class BarrierGuardGuardedNode extends BarrierGuardGuardedNodeBridge {
+  deprecated override predicate guardedNode(Node n, Configuration config) {
+    exists(BarrierGuard g |
+      config.isBarrierGuard(g) and
+      n = g.getAGuardedNode()
+    )
+  }
+
+  deprecated override predicate guardedNode(Node n, FlowState state, Configuration config) {
+    exists(BarrierGuard g |
+      config.isBarrierGuard(g, state) and
+      n = g.getAGuardedNode()
+    )
+  }
+}
+
 pragma[nomagic]
 private predicate fullBarrier(NodeEx node, Configuration config) {
   exists(Node n | node.asNode() = n |
@@ -348,10 +377,7 @@ private predicate fullBarrier(NodeEx node, Configuration config) {
     not config.isSink(n) and
     not config.isSink(n, _)
     or
-    exists(BarrierGuard g |
-      config.isBarrierGuard(g) and
-      n = g.getAGuardedNode()
-    )
+    any(BarrierGuardGuardedNodeBridge b).guardedNode(n, config)
   )
 }
 
@@ -360,10 +386,7 @@ private predicate stateBarrier(NodeEx node, FlowState state, Configuration confi
   exists(Node n | node.asNode() = n |
     config.isBarrier(n, state)
     or
-    exists(BarrierGuard g |
-      config.isBarrierGuard(g, state) and
-      n = g.getAGuardedNode()
-    )
+    any(BarrierGuardGuardedNodeBridge b).guardedNode(n, state, config)
   )
 }
 
@@ -405,7 +428,7 @@ private predicate localFlowStep(NodeEx node1, NodeEx node2, Configuration config
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    simpleLocalFlowStepExt(n1, n2) and
+    simpleLocalFlowStepExt(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     stepFilter(node1, node2, config)
   )
   or
@@ -424,7 +447,7 @@ private predicate additionalLocalFlowStep(NodeEx node1, NodeEx node2, Configurat
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    config.isAdditionalFlowStep(n1, n2) and
+    config.isAdditionalFlowStep(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config)
   )
@@ -443,7 +466,7 @@ private predicate additionalLocalStateStep(
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    config.isAdditionalFlowStep(n1, s1, n2, s2) and
+    config.isAdditionalFlowStep(pragma[only_bind_into](n1), s1, pragma[only_bind_into](n2), s2) and
     getNodeEnclosingCallable(n1) = getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config) and
     not stateBarrier(node1, s1, config) and
@@ -458,7 +481,7 @@ private predicate jumpStep(NodeEx node1, NodeEx node2, Configuration config) {
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    jumpStepCached(n1, n2) and
+    jumpStepCached(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     stepFilter(node1, node2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
   )
@@ -471,7 +494,7 @@ private predicate additionalJumpStep(NodeEx node1, NodeEx node2, Configuration c
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    config.isAdditionalFlowStep(n1, n2) and
+    config.isAdditionalFlowStep(pragma[only_bind_into](n1), pragma[only_bind_into](n2)) and
     getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config) and
     not config.getAFeature() instanceof FeatureEqualSourceSinkCallContext
@@ -484,7 +507,7 @@ private predicate additionalJumpStateStep(
   exists(Node n1, Node n2 |
     node1.asNode() = n1 and
     node2.asNode() = n2 and
-    config.isAdditionalFlowStep(n1, s1, n2, s2) and
+    config.isAdditionalFlowStep(pragma[only_bind_into](n1), s1, pragma[only_bind_into](n2), s2) and
     getNodeEnclosingCallable(n1) != getNodeEnclosingCallable(n2) and
     stepFilter(node1, node2, config) and
     not stateBarrier(node1, s1, config) and
@@ -495,7 +518,7 @@ private predicate additionalJumpStateStep(
 
 pragma[nomagic]
 private predicate readSet(NodeEx node1, ContentSet c, NodeEx node2, Configuration config) {
-  readSet(node1.asNode(), c, node2.asNode()) and
+  readSet(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode())) and
   stepFilter(node1, node2, config)
   or
   exists(Node n |
@@ -539,7 +562,8 @@ pragma[nomagic]
 private predicate store(
   NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType, Configuration config
 ) {
-  store(node1.asNode(), tc, node2.asNode(), contentType) and
+  store(pragma[only_bind_into](node1.asNode()), tc, pragma[only_bind_into](node2.asNode()),
+    contentType) and
   read(_, tc.getContent(), _, config) and
   stepFilter(node1, node2, config)
 }
@@ -3854,16 +3878,11 @@ class PathNode extends TPathNode {
   /** Gets the associated configuration. */
   Configuration getConfiguration() { none() }
 
-  private PathNode getASuccessorIfHidden() {
-    this.(PathNodeImpl).isHidden() and
-    result = this.(PathNodeImpl).getASuccessorImpl()
-  }
-
   /** Gets a successor of this node, if any. */
   final PathNode getASuccessor() {
-    result = this.(PathNodeImpl).getASuccessorImpl().getASuccessorIfHidden*() and
-    not this.(PathNodeImpl).isHidden() and
-    not result.(PathNodeImpl).isHidden()
+    result = this.(PathNodeImpl).getANonHiddenSuccessor() and
+    reach(this) and
+    reach(result)
   }
 
   /** Holds if this node is a source. */
@@ -3871,7 +3890,18 @@ class PathNode extends TPathNode {
 }
 
 abstract private class PathNodeImpl extends PathNode {
-  abstract PathNode getASuccessorImpl();
+  abstract PathNodeImpl getASuccessorImpl();
+
+  private PathNodeImpl getASuccessorIfHidden() {
+    this.isHidden() and
+    result = this.getASuccessorImpl()
+  }
+
+  final PathNodeImpl getANonHiddenSuccessor() {
+    result = this.getASuccessorImpl().getASuccessorIfHidden*() and
+    not this.isHidden() and
+    not result.isHidden()
+  }
 
   abstract NodeEx getNodeEx();
 
@@ -3914,15 +3944,17 @@ abstract private class PathNodeImpl extends PathNode {
 }
 
 /** Holds if `n` can reach a sink. */
-private predicate directReach(PathNode n) {
-  n instanceof PathNodeSink or directReach(n.getASuccessor())
+private predicate directReach(PathNodeImpl n) {
+  n instanceof PathNodeSink or directReach(n.getANonHiddenSuccessor())
 }
 
 /** Holds if `n` can reach a sink or is used in a subpath that can reach a sink. */
 private predicate reach(PathNode n) { directReach(n) or Subpaths::retReach(n) }
 
 /** Holds if `n1.getASuccessor() = n2` and `n2` can reach a sink. */
-private predicate pathSucc(PathNode n1, PathNode n2) { n1.getASuccessor() = n2 and directReach(n2) }
+private predicate pathSucc(PathNodeImpl n1, PathNode n2) {
+  n1.getANonHiddenSuccessor() = n2 and directReach(n2)
+}
 
 private predicate pathSuccPlus(PathNode n1, PathNode n2) = fastTC(pathSucc/2)(n1, n2)
 
@@ -3931,7 +3963,7 @@ private predicate pathSuccPlus(PathNode n1, PathNode n2) = fastTC(pathSucc/2)(n1
  */
 module PathGraph {
   /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-  query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b and reach(a) and reach(b) }
+  query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b }
 
   /** Holds if `n` is a node in the graph of data flow path explanations. */
   query predicate nodes(PathNode n, string key, string val) {
@@ -4049,7 +4081,7 @@ private class PathNodeSink extends PathNodeImpl, TPathNodeSink {
 
   override Configuration getConfiguration() { result = config }
 
-  override PathNode getASuccessorImpl() { none() }
+  override PathNodeImpl getASuccessorImpl() { none() }
 
   override predicate isSource() { sourceNode(node, state, config) }
 }
@@ -4365,8 +4397,8 @@ private module Subpaths {
   }
 
   pragma[nomagic]
-  private predicate hasSuccessor(PathNode pred, PathNodeMid succ, NodeEx succNode) {
-    succ = pred.getASuccessor() and
+  private predicate hasSuccessor(PathNodeImpl pred, PathNodeMid succ, NodeEx succNode) {
+    succ = pred.getANonHiddenSuccessor() and
     succNode = succ.getNodeEx()
   }
 
@@ -4375,9 +4407,9 @@ private module Subpaths {
    * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
    * `ret -> out` is summarized as the edge `arg -> out`.
    */
-  predicate subpaths(PathNode arg, PathNodeImpl par, PathNodeImpl ret, PathNode out) {
+  predicate subpaths(PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNode out) {
     exists(ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout, PathNodeMid out0 |
-      pragma[only_bind_into](arg).getASuccessor() = pragma[only_bind_into](out0) and
+      pragma[only_bind_into](arg).getANonHiddenSuccessor() = pragma[only_bind_into](out0) and
       subpaths03(pragma[only_bind_into](arg), p, localStepToHidden*(ret), o, sout, apout) and
       hasSuccessor(pragma[only_bind_into](arg), par, p) and
       not ret.isHidden() and
@@ -4390,12 +4422,12 @@ private module Subpaths {
   /**
    * Holds if `n` can reach a return node in a summarized subpath that can reach a sink.
    */
-  predicate retReach(PathNode n) {
+  predicate retReach(PathNodeImpl n) {
     exists(PathNode out | subpaths(_, _, n, out) | directReach(out) or retReach(out))
     or
-    exists(PathNode mid |
+    exists(PathNodeImpl mid |
       retReach(mid) and
-      n.getASuccessor() = mid and
+      n.getANonHiddenSuccessor() = mid and
       not subpaths(_, mid, _, _)
     )
   }
