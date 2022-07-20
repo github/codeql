@@ -184,7 +184,7 @@ Stmt:
 
 TypeRepr:
   _extends: AstNode
-  type: Type
+  type: Type?  # type can be absent on unresolved entities
 
 FunctionType:
   _extends: AnyFunctionType

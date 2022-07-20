@@ -473,7 +473,12 @@ expr_types(  //dir=expr
 ;
 
 type_reprs(  //dir=type
-  unique int id: @type_repr,
+  unique int id: @type_repr
+);
+
+#keyset[id]
+type_repr_types(  //dir=type
+  int id: @type_repr ref,
   int type_: @type ref
 );
 

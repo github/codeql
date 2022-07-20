@@ -7,8 +7,10 @@ class TypeReprBase extends @type_repr, AstNode {
 
   Type getType() {
     exists(Type x |
-      type_reprs(this, x) and
+      type_repr_types(this, x) and
       result = x.resolve()
     )
   }
+
+  predicate hasType() { exists(getType()) }
 }

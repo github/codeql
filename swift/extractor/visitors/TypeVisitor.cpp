@@ -11,7 +11,7 @@ void TypeVisitor::visit(swift::TypeBase* type) {
 
 codeql::TypeRepr TypeVisitor::translateTypeRepr(const swift::TypeRepr& typeRepr, swift::Type type) {
   auto entry = dispatcher_.createEntry(typeRepr);
-  entry.type = dispatcher_.fetchLabel(type);
+  entry.type = dispatcher_.fetchOptionalLabel(type);
   return entry;
 }
 
