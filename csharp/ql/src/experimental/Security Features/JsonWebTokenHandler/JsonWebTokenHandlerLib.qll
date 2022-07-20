@@ -189,7 +189,7 @@ class CallableAlwaysReturnsTrueHigherPrecision extends CallableAlwaysReturnsTrue
       )
       or
       exists(LambdaExpr le, Call call, CallableAlwaysReturnsTrueHigherPrecision cat | this = le |
-        call = le.getExpressionBody() and
+        le.canReturn(call) and
         cat.getACall() = call
       )
     )
@@ -217,7 +217,7 @@ class TokenValidationParametersPropertyWriteToValidationDelegatedIssuerValidator
 private class CallableReturnsStringAndArg0IsString extends Callable {
   CallableReturnsStringAndArg0IsString() {
     this.getReturnType() instanceof StringType and
-    this.getParameter(0).getType().toString() = "String"
+    this.getParameter(0).getType() instanceof StringType
   }
 }
 
@@ -227,7 +227,7 @@ private class CallableReturnsStringAndArg0IsString extends Callable {
 class CallableAlwaysReturnsParameter0 extends CallableReturnsStringAndArg0IsString {
   CallableAlwaysReturnsParameter0() {
     forall(ReturnStmt rs | rs.getEnclosingCallable() = this |
-      rs.getChild(0) = this.getParameter(0).getAnAccess()
+      rs.getExpr() = this.getParameter(0).getAnAccess()
     ) and
     exists(ReturnStmt rs | rs.getEnclosingCallable() = this)
     or
