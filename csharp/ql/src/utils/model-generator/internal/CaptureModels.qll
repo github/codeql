@@ -132,6 +132,8 @@ string captureThroughFlow(TargetApi api) {
     config.hasFlow(p, reads, returnNodeExt, stores, preservesValue) and
     returnNodeExt.getEnclosingCallable() = api and
     input = parameterNodeAsInput(p) + printAccessPath(reads) and
+    reads.getLength() <= 1 and
+    stores.getLength() <= 1 and
     output = returnNodeAsOutput(returnNodeExt) + printAccessPath(stores) and
     input != output and
     (if preservesValue = true then kind = "value" else kind = "taint") and

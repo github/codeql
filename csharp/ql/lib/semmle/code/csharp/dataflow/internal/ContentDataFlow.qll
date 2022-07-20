@@ -273,6 +273,13 @@ module ContentDataFlow {
     /** Gets the tail of this access path, if any. */
     AccessPath getTail() { this = TAccessPathCons(_, result) }
 
+    /** Gets the length of this access path. */
+    int getLength() {
+      this = TAccessPathNil() and result = 0
+      or
+      exists(AccessPath tail | this = TAccessPathCons(_, tail) and result = 1 + tail.getLength())
+    }
+
     /**
      * Gets a textual representation of this access path.
      *
