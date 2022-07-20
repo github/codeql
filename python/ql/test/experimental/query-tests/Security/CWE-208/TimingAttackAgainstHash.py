@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
-@Desc   ：Timing Attack Against Signature
+@Desc   ：Timing Attack Against Hash
 """
 import hashlib
 import hmac
