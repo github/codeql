@@ -14,4 +14,7 @@ public class Lib<T> {
   public List<? extends T> returnsExtends() { return null; } 
   public List<? super T> returnsSuper() { return null; }
 
+  public void takesArray(T[] ts) { }
+  public T[] returnsArray() { return null; }
+
 }
