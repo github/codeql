@@ -101,7 +101,7 @@ predicate isRelevantType(CS::Type t) {
  * Holds if content `c` is either a field or synthetic field of a relevant type
  * or a container like content.
  */
-predicate isRelevantContent(DataFlow::Content c) {
+predicate isRelevantContentSpecific(DataFlow::Content c) {
   isRelevantType(c.(DataFlow::FieldContent).getField().getType())
   or
   exists(CS::TrivialProperty p |
@@ -232,8 +232,6 @@ predicate taintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   not nodeTo.asExpr() instanceof CS::ElementAccess and
   not DataFlowPrivate::readStep(nodeFrom, DataFlowPrivate::TElementContent(), nodeTo)
 }
-
-int accessPathLimit() { result = 2 }
 
 /**
  * Holds if the step from `node1` to `node2` should be taken into account when

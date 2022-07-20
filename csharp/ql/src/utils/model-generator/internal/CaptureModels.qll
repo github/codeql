@@ -4,7 +4,6 @@
  */
 
 private import CaptureModelsSpecific
-private import CaptureModelsSpecific as CaptureModelsSpecific
 
 class TargetApi = TargetApiSpecific;
 
@@ -102,10 +101,10 @@ class ThroughFlowConfig extends ContentDataFlow::Configuration {
     result instanceof DataFlow::FeatureEqualSourceSinkCallContext
   }
 
-  final override int accessPathLimit() { result = CaptureModelsSpecific::accessPathLimit() }
+  final override int accessPathLimit() { result = 2 }
 
   final override predicate isRelevantContent(DataFlow::ContentSet c) {
-    CaptureModelsSpecific::isRelevantContent(c)
+    isRelevantContentSpecific(c)
   }
 }
 

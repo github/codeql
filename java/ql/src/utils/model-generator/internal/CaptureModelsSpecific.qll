@@ -4,7 +4,6 @@
 
 private import java as J
 private import semmle.code.java.dataflow.internal.DataFlowNodes
-// private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow as ContainerFlow
 private import semmle.code.java.dataflow.DataFlow as Df
 private import semmle.code.java.dataflow.TaintTracking as Tt
@@ -65,7 +64,7 @@ private predicate isRelevantForModels(J::Callable api) {
  * Holds if content `c` is either a field or synthetic field of a relevant type
  * or a container like content.
  */
-predicate isRelevantContent(DataFlow::Content c) {
+predicate isRelevantContentSpecific(DataFlow::Content c) {
   isRelevantType(c.(DataFlow::FieldContent).getField().getType()) or
   isRelevantType(c.(DataFlow::SyntheticFieldContent).getField().getType()) or
   DataFlowPrivate::containerContent(c)
@@ -290,8 +289,6 @@ predicate taintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   TaintTrackingUtil::defaultAdditionalTaintStep(nodeFrom, nodeTo) and
   not DataFlowPrivate::readStep(nodeFrom, _, nodeTo)
 }
-
-int accessPathLimit() { result = 2 }
 
 /**
  * Holds if the step from `node1` to `node2` should be taken into account when
