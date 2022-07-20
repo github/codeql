@@ -26,23 +26,7 @@ import DataFlow::PathGraph
 class PossibleTimingAttackAgainstHash extends TaintTracking::Configuration {
   PossibleTimingAttackAgainstHash() { this = "PossibleTimingAttackAgainstHash" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source = API::moduleImport("hmac").getMember("digest").getACall() or
-    source =
-      API::moduleImport("hmac")
-          .getMember("new")
-          .getReturn()
-          .getMember(["digest", "hexdigest"])
-          .getACall() or
-    source =
-      API::moduleImport("hashlib")
-          .getMember([
-              "new", "sha1", "sha224", "sha256", "sha384", "sha512", "blake2b", "blake2s", "md5"
-            ])
-          .getReturn()
-          .getMember(["digest", "hexdigest"])
-          .getACall()
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof ProduceHashCall }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof CompareSink }
 }
