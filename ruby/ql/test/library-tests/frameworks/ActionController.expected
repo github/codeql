@@ -2,6 +2,7 @@ actionControllerControllerClasses
 | ActiveRecord.rb:23:1:39:3 | FooController |
 | ActiveRecord.rb:41:1:64:3 | BarController |
 | ActiveRecord.rb:66:1:70:3 | BazController |
+| ActiveRecord.rb:72:1:80:3 | AnnotatedController |
 | app/controllers/comments_controller.rb:1:1:7:3 | CommentsController |
 | app/controllers/foo/bars_controller.rb:3:1:39:3 | BarsController |
 | app/controllers/photos_controller.rb:1:1:4:3 | PhotosController |
@@ -12,6 +13,8 @@ actionControllerActionMethods
 | ActiveRecord.rb:42:3:47:5 | some_other_request_handler |
 | ActiveRecord.rb:49:3:63:5 | safe_paths |
 | ActiveRecord.rb:67:3:69:5 | yet_another_handler |
+| ActiveRecord.rb:73:3:75:5 | index |
+| ActiveRecord.rb:77:3:79:5 | unsafe_action |
 | app/controllers/comments_controller.rb:2:3:3:5 | index |
 | app/controllers/comments_controller.rb:5:3:6:5 | show |
 | app/controllers/foo/bars_controller.rb:5:3:7:5 | index |
@@ -38,6 +41,7 @@ paramsCalls
 | ActiveRecord.rb:59:12:59:17 | call to params |
 | ActiveRecord.rb:62:15:62:20 | call to params |
 | ActiveRecord.rb:68:21:68:26 | call to params |
+| ActiveRecord.rb:78:59:78:64 | call to params |
 | app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
 | app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
 | app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
@@ -57,6 +61,7 @@ paramsSources
 | ActiveRecord.rb:59:12:59:17 | call to params |
 | ActiveRecord.rb:62:15:62:20 | call to params |
 | ActiveRecord.rb:68:21:68:26 | call to params |
+| ActiveRecord.rb:78:59:78:64 | call to params |
 | app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
 | app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
 | app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
