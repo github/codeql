@@ -4,6 +4,7 @@ private import semmle.python.dataflow.new.TaintTracking2
 private import semmle.python.dataflow.new.TaintTracking3
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
+private import experimental.semmle.python.Concepts
 
 class ProduceHashCall extends DataFlow::CallCfgNode {
   ProduceHashCall() {
