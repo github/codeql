@@ -36,7 +36,8 @@ private predicate isRelevantForModels(CS::Callable api) {
   api.getDeclaringType().getNamespace().getQualifiedName() != "" and
   not api instanceof CS::ConversionOperator and
   not api instanceof Util::MainMethod and
-  not isHigherOrder(api)
+  not isHigherOrder(api) and
+  not api instanceof CS::Destructor
 }
 
 /**
