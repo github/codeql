@@ -1,3 +1,4 @@
+summary
 | Microsoft.AspNetCore.Authentication.OAuth.Claims;ClaimActionCollection;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Generic.IEnumerator<>.Current];value;manual |
 | Microsoft.AspNetCore.Authentication.OAuth.Claims;ClaimActionCollection;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value;manual |
 | Microsoft.AspNetCore.Components.RenderTree;ArrayBuilderSegment<>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Generic.IEnumerator<>.Current];value;manual |
@@ -11472,3 +11473,4 @@
 | System;ValueTuple<>;false;ToString;();;Argument[this];ReturnValue;taint;generated |
 | System;ValueTuple<>;false;ValueTuple;(T1);;Argument[0];Argument[this].Field[System.ValueTuple<>.Item1];value;manual |
 | System;ValueTuple<>;false;get_Item;(System.Int32);;Argument[this].Field[System.ValueTuple<>.Item1];ReturnValue;value;manual |
+negativeSummary
