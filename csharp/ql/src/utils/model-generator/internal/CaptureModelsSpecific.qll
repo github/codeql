@@ -55,6 +55,8 @@ class TargetApiSpecific extends DotNet::Callable {
 
 predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
 
+predicate asPartialNegativeModel = DataFlowPrivate::Csv::asPartialNegativeModel/1;
+
 /**
  * Holds for type `t` for fields that are relevant as an intermediate
  * read or write step in the data flow analysis.

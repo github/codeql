@@ -5,12 +5,13 @@
  *
  * The CSV specification has the following columns:
  * - Sources:
- *   `namespace; type; subtypes; name; signature; ext; output; kind`
+ *   `namespace; type; subtypes; name; signature; ext; output; kind; provenance`
  * - Sinks:
- *   `namespace; type; subtypes; name; signature; ext; input; kind`
+ *   `namespace; type; subtypes; name; signature; ext; input; kind; provenance`
  * - Summaries:
- *   `namespace; type; subtypes; name; signature; ext; input; output; kind`
- *
+ *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
+ * - Negative Summaries:
+ *   `namespace; type; name; signature; provenance`
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
  * 1. The `namespace` column selects a namespace.
@@ -163,11 +164,23 @@ class SummaryModelCsv extends Unit {
   abstract predicate row(string row);
 }
 
+/**
+ * A unit class for adding negative summary model rows.
+ *
+ * Extend this class to add additional flow summary definitions.
+ */
+class NegativeSummaryModelCsv extends Unit {
+  /** Holds if `row` specifies a negative summary definition. */
+  abstract predicate row(string row);
+}
+
 private predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
 
 private predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
 
 private predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
+
+private predicate negativeSummaryModel(string row) { any(NegativeSummaryModelCsv s).row(row) }
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
@@ -227,6 +240,20 @@ predicate summaryModel(
     row.splitAt(";", 7) = output and
     row.splitAt(";", 8) = kind and
     row.splitAt(";", 9) = provenance
+  )
+}
+
+/** Holds is a summary model exists indicating there is no flow for the given parameters. */
+predicate negativeSummaryModel(
+  string namespace, string type, string name, string signature, string provenance
+) {
+  exists(string row |
+    negativeSummaryModel(row) and
+    row.splitAt(";", 0) = namespace and
+    row.splitAt(";", 1) = type and
+    row.splitAt(";", 2) = name and
+    row.splitAt(";", 3) = signature and
+    row.splitAt(";", 4) = provenance
   )
 }
 
@@ -298,6 +325,10 @@ module CsvValidation {
       or
       summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
       pred = "summary"
+      or
+      negativeSummaryModel(namespace, type, name, signature, provenance) and
+      ext = "" and
+      pred = "nonesummary"
     |
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
@@ -392,9 +423,13 @@ module CsvValidation {
 private predicate elementSpec(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _) or
-  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _) or
+  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _)
+  or
+  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _)
+  or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  negativeSummaryModel(namespace, type, name, signature, _) and ext = "" and subtypes = false
 }
 
 private predicate elementSpec(
@@ -508,7 +543,7 @@ private Element interpretElement0(
   )
 }
 
-/** Gets the source/sink/summary element corresponding to the supplied parameters. */
+/** Gets the source/sink/summary/negativesummary element corresponding to the supplied parameters. */
 Element interpretElement(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
