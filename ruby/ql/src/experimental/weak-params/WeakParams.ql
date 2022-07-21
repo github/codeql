@@ -39,7 +39,7 @@ class WeakParams extends DataFlow::CallNode {
   WeakParams() {
     this.getReceiver() instanceof ActionControllerRequest and
     this.getMethodName() =
-      ["path_parametes", "query_parameters", "request_parameters", "GET", "POST"]
+      ["path_parameters", "query_parameters", "request_parameters", "GET", "POST"]
   }
 }
 
