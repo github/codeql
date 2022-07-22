@@ -273,7 +273,7 @@ dependencies = [
  "tracing",
  "tracing-subscriber",
  "tree-sitter",
- "tree-sitter-ql",
+ "tree-sitter-ql 0.19.0 (git+https://github.com/erik-krogh/tree-sitter-ql.git?rev=343cc5873e20510586ade803659ef8ce153bd603)",
 ]
 
 [[package]]
@@ -284,7 +284,7 @@ dependencies = [
  "node-types",
  "tracing",
  "tracing-subscriber",
- "tree-sitter-ql",
+ "tree-sitter-ql 0.19.0 (git+https://github.com/tree-sitter/tree-sitter-ql.git)",
 ]
 
 [[package]]
@@ -515,6 +515,15 @@ dependencies = [
 name = "tree-sitter-ql"
 version = "0.19.0"
 source = "git+https://github.com/erik-krogh/tree-sitter-ql.git?rev=343cc5873e20510586ade803659ef8ce153bd603#343cc5873e20510586ade803659ef8ce153bd603"
+dependencies = [
+ "cc",
+ "tree-sitter",
+]
+
+[[package]]
+name = "tree-sitter-ql"
+version = "0.19.0"
+source = "git+https://github.com/tree-sitter/tree-sitter-ql.git#24c72ad09f05982df4085c481d9b02ba9e79e7fc"
 dependencies = [
  "cc",
  "tree-sitter",
