@@ -270,10 +270,10 @@ dependencies = [
  "regex",
  "tracing",
  "tracing-subscriber",
- "tree-sitter 0.19.5",
- "tree-sitter-ql 0.19.0 (git+https://github.com/tausbn/tree-sitter-ql.git?rev=2f3fd6f89ca8b2373740d294950a04b9d8e4cdff)",
+ "tree-sitter 0.20.8",
+ "tree-sitter-ql",
  "tree-sitter-ql-dbscheme",
- "tree-sitter-ql-yaml",
+ "tree-sitter-ql-yaml 0.19.0 (git+https://github.com/tausbn/tree-sitter-ql.git?rev=c9d7d8de9fab75f39d5bc7bdf3a6e5151bb9b3bd)",
 ]
 
 [[package]]
@@ -284,9 +284,9 @@ dependencies = [
  "node-types",
  "tracing",
  "tracing-subscriber",
- "tree-sitter-ql 0.19.0 (git+https://github.com/tree-sitter/tree-sitter-ql.git)",
+ "tree-sitter-ql",
  "tree-sitter-ql-dbscheme",
- "tree-sitter-ql-yaml",
+ "tree-sitter-ql-yaml 0.19.0 (git+https://github.com/tausbn/tree-sitter-ql.git?rev=6fe85436702c92b0245d2b91908a12d6b0341f4c)",
 ]
 
 [[package]]
@@ -526,15 +526,6 @@ dependencies = [
 [[package]]
 name = "tree-sitter-ql"
 version = "0.19.0"
-source = "git+https://github.com/tausbn/tree-sitter-ql.git?rev=2f3fd6f89ca8b2373740d294950a04b9d8e4cdff#2f3fd6f89ca8b2373740d294950a04b9d8e4cdff"
-dependencies = [
- "cc",
- "tree-sitter 0.19.5",
-]
-
-[[package]]
-name = "tree-sitter-ql"
-version = "0.19.0"
 source = "git+https://github.com/tree-sitter/tree-sitter-ql.git#24c72ad09f05982df4085c481d9b02ba9e79e7fc"
 dependencies = [
  "cc",
@@ -544,10 +535,10 @@ dependencies = [
 [[package]]
 name = "tree-sitter-ql-dbscheme"
 version = "0.0.1"
-source = "git+https://github.com/tausbn/tree-sitter-ql-dbscheme.git#fe7107f2cf350569e35fcfd5587aab35d1b2d25b"
+source = "git+https://github.com/tausbn/tree-sitter-ql-dbscheme.git#ad0c1485aa1e61b727a986d82c7fab4cd21ca723"
 dependencies = [
  "cc",
- "tree-sitter 0.19.5",
+ "tree-sitter 0.20.8",
 ]
 
 [[package]]
@@ -557,6 +548,15 @@ source = "git+https://github.com/tausbn/tree-sitter-ql.git?rev=6fe85436702c92b02
 dependencies = [
  "cc",
  "tree-sitter 0.19.5",
+]
+
+[[package]]
+name = "tree-sitter-ql-yaml"
+version = "0.19.0"
+source = "git+https://github.com/tausbn/tree-sitter-ql.git?rev=c9d7d8de9fab75f39d5bc7bdf3a6e5151bb9b3bd#c9d7d8de9fab75f39d5bc7bdf3a6e5151bb9b3bd"
+dependencies = [
+ "cc",
+ "tree-sitter 0.20.8",
 ]
 
 [[package]]
