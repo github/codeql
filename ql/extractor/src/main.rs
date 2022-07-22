@@ -85,7 +85,13 @@ fn main() -> std::io::Result<()> {
     let file_list = fs::File::open(file_list)?;
 
     let language = tree_sitter_ql::language();
+    let dbscheme = tree_sitter_ql_dbscheme::language();
+    let yaml = tree_sitter_ql_yaml::language();
     let schema = node_types::read_node_types_str("ql", tree_sitter_ql::NODE_TYPES)?;
+    let dbscheme_schema =
+        node_types::read_node_types_str("dbscheme", tree_sitter_ql_dbscheme::NODE_TYPES)?;
+    let yaml_schema = node_types::read_node_types_str("yaml", tree_sitter_ql_yaml::NODE_TYPES)?;
+
     let lines: std::io::Result<Vec<String>> = std::io::BufReader::new(file_list).lines().collect();
     let lines = lines?;
     lines
@@ -105,15 +111,37 @@ fn main() -> std::io::Result<()> {
             let source = std::fs::read(&path)?;
             let code_ranges = vec![];
             let mut trap_writer = trap::Writer::new();
-            extractor::extract(
-                language,
-                "ql",
-                &schema,
-                &mut trap_writer,
-                &path,
-                &source,
-                &code_ranges,
-            )?;
+            if line.ends_with(".dbscheme") {
+                extractor::extract(
+                    dbscheme,
+                    "dbscheme",
+                    &dbscheme_schema,
+                    &mut trap_writer,
+                    &path,
+                    &source,
+                    &code_ranges,
+                )?
+            } else if line.ends_with(".qlpack.yml") {
+                extractor::extract(
+                    yaml,
+                    "yaml",
+                    &yaml_schema,
+                    &mut trap_writer,
+                    &path,
+                    &source,
+                    &code_ranges,
+                )?
+            } else {
+                extractor::extract(
+                    language,
+                    "ql",
+                    &schema,
+                    &mut trap_writer,
+                    &path,
+                    &source,
+                    &code_ranges,
+                )?
+            }
             std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
             std::fs::copy(&path, &src_archive_file)?;
             write_trap(&trap_dir, path, &trap_writer, trap_compression)
