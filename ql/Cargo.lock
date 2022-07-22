@@ -272,7 +272,7 @@ dependencies = [
  "regex",
  "tracing",
  "tracing-subscriber",
- "tree-sitter",
+ "tree-sitter 0.19.5",
  "tree-sitter-ql 0.19.0 (git+https://github.com/erik-krogh/tree-sitter-ql.git?rev=343cc5873e20510586ade803659ef8ce153bd603)",
 ]
 
@@ -285,6 +285,8 @@ dependencies = [
  "tracing",
  "tracing-subscriber",
  "tree-sitter-ql 0.19.0 (git+https://github.com/tree-sitter/tree-sitter-ql.git)",
+ "tree-sitter-ql-dbscheme",
+ "tree-sitter-ql-yaml",
 ]
 
 [[package]]
@@ -512,12 +514,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "tree-sitter"
+version = "0.20.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "268bf3e3ca0c09e5d21b59c2638e12cb6dcf7ea2681250a696a2d0936cb57ba0"
+dependencies = [
+ "cc",
+ "regex",
+]
+
+[[package]]
 name = "tree-sitter-ql"
 version = "0.19.0"
 source = "git+https://github.com/erik-krogh/tree-sitter-ql.git?rev=343cc5873e20510586ade803659ef8ce153bd603#343cc5873e20510586ade803659ef8ce153bd603"
 dependencies = [
  "cc",
- "tree-sitter",
+ "tree-sitter 0.19.5",
 ]
 
 [[package]]
@@ -526,7 +538,25 @@ version = "0.19.0"
 source = "git+https://github.com/tree-sitter/tree-sitter-ql.git#24c72ad09f05982df4085c481d9b02ba9e79e7fc"
 dependencies = [
  "cc",
- "tree-sitter",
+ "tree-sitter 0.19.5",
+]
+
+[[package]]
+name = "tree-sitter-ql-dbscheme"
+version = "0.0.1"
+source = "git+https://github.com/tausbn/tree-sitter-ql-dbscheme.git#c1b8b7609077b49781f55fe140b8b4e71a5e634a"
+dependencies = [
+ "cc",
+ "tree-sitter 0.20.8",
+]
+
+[[package]]
+name = "tree-sitter-ql-yaml"
+version = "0.19.0"
+source = "git+https://github.com/tausbn/tree-sitter-ql.git?rev=6fe85436702c92b0245d2b91908a12d6b0341f4c#6fe85436702c92b0245d2b91908a12d6b0341f4c"
+dependencies = [
+ "cc",
+ "tree-sitter 0.19.5",
 ]
 
 [[package]]

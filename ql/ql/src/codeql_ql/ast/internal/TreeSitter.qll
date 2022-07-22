@@ -1281,3 +1281,472 @@ module QL {
     final override AstNode getAFieldOrChild() { ql_variable_def(this, result) }
   }
 }
+
+module Dbscheme {
+  /** The base class for all AST nodes */
+  class AstNode extends @dbscheme_ast_node {
+    /** Gets a string representation of this element. */
+    string toString() { result = this.getAPrimaryQlClass() }
+
+    /** Gets the location of this element. */
+    final L::Location getLocation() { dbscheme_ast_node_info(this, _, _, result) }
+
+    /** Gets the parent of this element. */
+    final AstNode getParent() { dbscheme_ast_node_info(this, result, _, _) }
+
+    /** Gets the index of this node among the children of its parent. */
+    final int getParentIndex() { dbscheme_ast_node_info(this, _, result, _) }
+
+    /** Gets a field or child node of this node. */
+    AstNode getAFieldOrChild() { none() }
+
+    /** Gets the name of the primary QL class for this element. */
+    string getAPrimaryQlClass() { result = "???" }
+
+    /** Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs. */
+    string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
+  }
+
+  /** A token. */
+  class Token extends @dbscheme_token, AstNode {
+    /** Gets the value of this token. */
+    final string getValue() { dbscheme_tokeninfo(this, _, result) }
+
+    /** Gets a string representation of this element. */
+    final override string toString() { result = this.getValue() }
+
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "Token" }
+  }
+
+  /** A reserved word. */
+  class ReservedWord extends @dbscheme_reserved_word, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ReservedWord" }
+  }
+
+  /** A class representing `annotName` tokens. */
+  class AnnotName extends @dbscheme_token_annot_name, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "AnnotName" }
+  }
+
+  /** A class representing `annotation` nodes. */
+  class Annotation extends @dbscheme_annotation, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Annotation" }
+
+    /** Gets the node corresponding to the field `argsAnnotation`. */
+    final ArgsAnnotation getArgsAnnotation() { dbscheme_annotation_args_annotation(this, result) }
+
+    /** Gets the node corresponding to the field `simpleAnnotation`. */
+    final AnnotName getSimpleAnnotation() { dbscheme_annotation_simple_annotation(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      dbscheme_annotation_args_annotation(this, result) or
+      dbscheme_annotation_simple_annotation(this, result)
+    }
+  }
+
+  /** A class representing `argsAnnotation` nodes. */
+  class ArgsAnnotation extends @dbscheme_args_annotation, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ArgsAnnotation" }
+
+    /** Gets the node corresponding to the field `name`. */
+    final AnnotName getName() { dbscheme_args_annotation_def(this, result) }
+
+    /** Gets the `i`th child of this node. */
+    final SimpleId getChild(int i) { dbscheme_args_annotation_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      dbscheme_args_annotation_def(this, result) or dbscheme_args_annotation_child(this, _, result)
+    }
+  }
+
+  /** A class representing `block_comment` tokens. */
+  class BlockComment extends @dbscheme_token_block_comment, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "BlockComment" }
+  }
+
+  /** A class representing `boolean` tokens. */
+  class Boolean extends @dbscheme_token_boolean, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Boolean" }
+  }
+
+  /** A class representing `branch` nodes. */
+  class Branch extends @dbscheme_branch, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Branch" }
+
+    /** Gets the node corresponding to the field `qldoc`. */
+    final Qldoc getQldoc() { dbscheme_branch_qldoc(this, result) }
+
+    /** Gets the `i`th child of this node. */
+    final AstNode getChild(int i) { dbscheme_branch_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      dbscheme_branch_qldoc(this, result) or dbscheme_branch_child(this, _, result)
+    }
+  }
+
+  /** A class representing `caseDecl` nodes. */
+  class CaseDecl extends @dbscheme_case_decl, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "CaseDecl" }
+
+    /** Gets the node corresponding to the field `base`. */
+    final Dbtype getBase() { dbscheme_case_decl_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `discriminator`. */
+    final SimpleId getDiscriminator() { dbscheme_case_decl_def(this, _, result) }
+
+    /** Gets the `i`th child of this node. */
+    final Branch getChild(int i) { dbscheme_case_decl_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      dbscheme_case_decl_def(this, result, _) or
+      dbscheme_case_decl_def(this, _, result) or
+      dbscheme_case_decl_child(this, _, result)
+    }
+  }
+
+  /** A class representing `colType` nodes. */
+  class ColType extends @dbscheme_col_type, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ColType" }
+
+    /** Gets the child of this node. */
+    final AstNode getChild() { dbscheme_col_type_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { dbscheme_col_type_def(this, result) }
+  }
+
+  /** A class representing `column` nodes. */
+  class Column extends @dbscheme_column, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Column" }
+
+    /** Gets the node corresponding to the field `colName`. */
+    final SimpleId getColName() { dbscheme_column_def(this, result, _, _) }
+
+    /** Gets the node corresponding to the field `colType`. */
+    final ColType getColType() { dbscheme_column_def(this, _, result, _) }
+
+    /** Gets the node corresponding to the field `isRef`. */
+    final Ref getIsRef() { dbscheme_column_is_ref(this, result) }
+
+    /** Gets the node corresponding to the field `isUnique`. */
+    final Unique getIsUnique() { dbscheme_column_is_unique(this, result) }
+
+    /** Gets the node corresponding to the field `qldoc`. */
+    final Qldoc getQldoc() { dbscheme_column_qldoc(this, result) }
+
+    /** Gets the node corresponding to the field `reprType`. */
+    final ReprType getReprType() { dbscheme_column_def(this, _, _, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      dbscheme_column_def(this, result, _, _) or
+      dbscheme_column_def(this, _, result, _) or
+      dbscheme_column_is_ref(this, result) or
+      dbscheme_column_is_unique(this, result) or
+      dbscheme_column_qldoc(this, result) or
+      dbscheme_column_def(this, _, _, result)
+    }
+  }
+
+  /** A class representing `date` tokens. */
+  class Date extends @dbscheme_token_date, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Date" }
+  }
+
+  /** A class representing `dbscheme` nodes. */
+  class Dbscheme extends @dbscheme_dbscheme, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Dbscheme" }
+
+    /** Gets the `i`th child of this node. */
+    final Entry getChild(int i) { dbscheme_dbscheme_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { dbscheme_dbscheme_child(this, _, result) }
+  }
+
+  /** A class representing `dbtype` tokens. */
+  class Dbtype extends @dbscheme_token_dbtype, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Dbtype" }
+  }
+
+  /** A class representing `entry` nodes. */
+  class Entry extends @dbscheme_entry, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Entry" }
+
+    /** Gets the child of this node. */
+    final AstNode getChild() { dbscheme_entry_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { dbscheme_entry_def(this, result) }
+  }
+
+  /** A class representing `float` tokens. */
+  class Float extends @dbscheme_token_float, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Float" }
+  }
+
+  /** A class representing `int` tokens. */
+  class Int extends @dbscheme_token_int, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Int" }
+  }
+
+  /** A class representing `integer` tokens. */
+  class Integer extends @dbscheme_token_integer, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Integer" }
+  }
+
+  /** A class representing `line_comment` tokens. */
+  class LineComment extends @dbscheme_token_line_comment, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "LineComment" }
+  }
+
+  /** A class representing `qldoc` tokens. */
+  class Qldoc extends @dbscheme_token_qldoc, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Qldoc" }
+  }
+
+  /** A class representing `ref` tokens. */
+  class Ref extends @dbscheme_token_ref, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Ref" }
+  }
+
+  /** A class representing `reprType` nodes. */
+  class ReprType extends @dbscheme_repr_type, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ReprType" }
+
+    /** Gets the `i`th child of this node. */
+    final AstNode getChild(int i) { dbscheme_repr_type_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { dbscheme_repr_type_child(this, _, result) }
+  }
+
+  /** A class representing `simpleId` tokens. */
+  class SimpleId extends @dbscheme_token_simple_id, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "SimpleId" }
+  }
+
+  /** A class representing `string` tokens. */
+  class String extends @dbscheme_token_string, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "String" }
+  }
+
+  /** A class representing `table` nodes. */
+  class Table extends @dbscheme_table, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Table" }
+
+    /** Gets the node corresponding to the field `tableName`. */
+    final TableName getTableName() { dbscheme_table_def(this, result) }
+
+    /** Gets the `i`th child of this node. */
+    final AstNode getChild(int i) { dbscheme_table_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      dbscheme_table_def(this, result) or dbscheme_table_child(this, _, result)
+    }
+  }
+
+  /** A class representing `tableName` nodes. */
+  class TableName extends @dbscheme_table_name, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "TableName" }
+
+    /** Gets the child of this node. */
+    final SimpleId getChild() { dbscheme_table_name_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { dbscheme_table_name_def(this, result) }
+  }
+
+  /** A class representing `unionDecl` nodes. */
+  class UnionDecl extends @dbscheme_union_decl, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "UnionDecl" }
+
+    /** Gets the node corresponding to the field `base`. */
+    final Dbtype getBase() { dbscheme_union_decl_def(this, result) }
+
+    /** Gets the `i`th child of this node. */
+    final Dbtype getChild(int i) { dbscheme_union_decl_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      dbscheme_union_decl_def(this, result) or dbscheme_union_decl_child(this, _, result)
+    }
+  }
+
+  /** A class representing `unique` tokens. */
+  class Unique extends @dbscheme_token_unique, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Unique" }
+  }
+
+  /** A class representing `varchar` tokens. */
+  class Varchar extends @dbscheme_token_varchar, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Varchar" }
+  }
+}
+
+module Yaml {
+  /** The base class for all AST nodes */
+  class AstNode extends @yaml_ast_node {
+    /** Gets a string representation of this element. */
+    string toString() { result = this.getAPrimaryQlClass() }
+
+    /** Gets the location of this element. */
+    final L::Location getLocation() { yaml_ast_node_info(this, _, _, result) }
+
+    /** Gets the parent of this element. */
+    final AstNode getParent() { yaml_ast_node_info(this, result, _, _) }
+
+    /** Gets the index of this node among the children of its parent. */
+    final int getParentIndex() { yaml_ast_node_info(this, _, result, _) }
+
+    /** Gets a field or child node of this node. */
+    AstNode getAFieldOrChild() { none() }
+
+    /** Gets the name of the primary QL class for this element. */
+    string getAPrimaryQlClass() { result = "???" }
+
+    /** Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs. */
+    string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
+  }
+
+  /** A token. */
+  class Token extends @yaml_token, AstNode {
+    /** Gets the value of this token. */
+    final string getValue() { yaml_tokeninfo(this, _, result) }
+
+    /** Gets a string representation of this element. */
+    final override string toString() { result = this.getValue() }
+
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "Token" }
+  }
+
+  /** A reserved word. */
+  class ReservedWord extends @yaml_reserved_word, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ReservedWord" }
+  }
+
+  /** A class representing `comment` nodes. */
+  class Comment extends @yaml_comment, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Comment" }
+
+    /** Gets the child of this node. */
+    final Value getChild() { yaml_comment_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { yaml_comment_def(this, result) }
+  }
+
+  /** A class representing `entry` nodes. */
+  class Entry extends @yaml_entry, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Entry" }
+
+    /** Gets the child of this node. */
+    final AstNode getChild() { yaml_entry_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { yaml_entry_def(this, result) }
+  }
+
+  /** A class representing `key` nodes. */
+  class Key extends @yaml_key__, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Key" }
+
+    /** Gets the `i`th child of this node. */
+    final AstNode getChild(int i) { yaml_key_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { yaml_key_child(this, _, result) }
+  }
+
+  /** A class representing `keyvaluepair` nodes. */
+  class Keyvaluepair extends @yaml_keyvaluepair, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Keyvaluepair" }
+
+    /** Gets the node corresponding to the field `key`. */
+    final Key getKey() { yaml_keyvaluepair_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `value`. */
+    final Value getValue() { yaml_keyvaluepair_def(this, _, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      yaml_keyvaluepair_def(this, result, _) or yaml_keyvaluepair_def(this, _, result)
+    }
+  }
+
+  /** A class representing `listitem` nodes. */
+  class Listitem extends @yaml_listitem, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Listitem" }
+
+    /** Gets the child of this node. */
+    final Value getChild() { yaml_listitem_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { yaml_listitem_def(this, result) }
+  }
+
+  /** A class representing `simpleId` tokens. */
+  class SimpleId extends @yaml_token_simple_id, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "SimpleId" }
+  }
+
+  /** A class representing `value` tokens. */
+  class Value extends @yaml_token_value, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Value" }
+  }
+
+  /** A class representing `yaml` nodes. */
+  class Yaml extends @yaml_yaml, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Yaml" }
+
+    /** Gets the `i`th child of this node. */
+    final Entry getChild(int i) { yaml_yaml_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { yaml_yaml_child(this, _, result) }
+  }
+}
