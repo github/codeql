@@ -22,8 +22,12 @@ public class DotRegexServlet extends HttpServlet {
 
 		if (m.matches()) {
 			// Protected page - check access token and redirect to login page
-		} else {
-			// Not protected page - render content
+			if (!request.getSession().getAttribute("secAttr").equals("secValue")) {
+				response.sendRedirect("/login.html");
+				return;
+			} else {
+				// Not protected page - render content
+			}
 		}
 	}
 
@@ -37,22 +41,30 @@ public class DotRegexServlet extends HttpServlet {
 
 		if (m.matches()) {
 			// Protected page - check access token and redirect to login page
-		} else {
-			// Not protected page - render content
+			if (!request.getSession().getAttribute("secAttr").equals("secValue")) {
+				response.sendRedirect("/login.html");
+				return;
+			} else {
+				// Not protected page - render content
+			}
 		}
 	}
 
 	// BAD: A string with line return e.g. `/protected/%0axyz` can bypass the path check
 	protected void doGet3(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String source = request.getPathInfo();
+		String source = request.getRequestURI();
 
 		boolean matches = source.matches(PROTECTED_PATTERN);
 
 		if (matches) {
 			// Protected page - check access token and redirect to login page
-		} else {
-			// Not protected page - render content
+			if (!request.getSession().getAttribute("secAttr").equals("secValue")) {
+				response.sendRedirect("/login.html");
+				return;
+			} else {
+				// Not protected page - render content
+			}
 		}
 	}
 
@@ -65,8 +77,12 @@ public class DotRegexServlet extends HttpServlet {
 
 		if (matches) {
 			// Protected page - check access token and redirect to login page
-		} else {
-			// Not protected page - render content
+			if (!request.getSession().getAttribute("secAttr").equals("secValue")) {
+				response.sendRedirect("/login.html");
+				return;
+			} else {
+				// Not protected page - render content
+			}
 		}
 	}
 
@@ -80,8 +96,12 @@ public class DotRegexServlet extends HttpServlet {
 
 		if (m.matches()) {
 			// Protected page - check access token and redirect to login page
-		} else {
-			// Not protected page - render content
+			if (!request.getSession().getAttribute("secAttr").equals("secValue")) {
+				response.sendRedirect("/login.html");
+				return;
+			} else {
+				// Not protected page - render content
+			}
 		}
 	}
 }

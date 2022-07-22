@@ -12,20 +12,37 @@
  */
 
 import java
+import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.UrlRedirect
 import DataFlow::PathGraph
 import Regex
+
+/** Source model of remote flow source with servlets. */
+private class GetServletUriSource extends SourceModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.servlet.http;HttpServletRequest;false;getPathInfo;();;ReturnValue;uri-path;manual",
+        "javax.servlet.http;HttpServletRequest;false;getPathTranslated;();;ReturnValue;uri-path;manual",
+        "javax.servlet.http;HttpServletRequest;false;getRequestURI;();;ReturnValue;uri-path;manual",
+        "javax.servlet.http;HttpServletRequest;false;getRequestURL;();;ReturnValue;uri-path;manual",
+        "javax.servlet.http;HttpServletRequest;false;getServletPath;();;ReturnValue;uri-path;manual"
+      ]
+  }
+}
 
 /**
  * `.` without a `\` prefix, which is likely not a character literal in regex
  */
 class PermissiveDotStr extends StringLiteral {
   PermissiveDotStr() {
-    // Find `.` in a string that is not prefixed with `\`
+    // Find `.` in a string that is not prefixed with `\` and ends with `.*` (no suffix like file extension)
     exists(string s, int i | this.getValue() = s |
-      s.indexOf(".") = i and
-      not s.charAt(i - 1) = "\\"
+      s.indexOf(".*") = i and
+      not s.charAt(i - 1) = "\\" and
+      s.length() = i + 2
     )
   }
 }
@@ -86,9 +103,26 @@ class PermissiveDotRegexConfig extends DataFlow::Configuration {
 class MatchRegexConfiguration extends TaintTracking::Configuration {
   MatchRegexConfiguration() { this = "PermissiveDotRegex::MatchRegexConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) { sourceNode(source, "uri-path") }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof MatchRegexSink }
+  override predicate isSink(DataFlow::Node sink) {
+    sink instanceof MatchRegexSink and
+    exists(
+      Guard guard, Expr se, Expr ce // used in a condition to control url redirect, which is a typical security enforcement
+    |
+      (
+        sink.asExpr() = ce.(MethodAccess).getQualifier() or
+        sink.asExpr() = ce.(MethodAccess).getAnArgument() or
+        sink.asExpr() = ce
+      ) and
+      (
+        DataFlow::localExprFlow(ce, guard.(MethodAccess).getQualifier()) or
+        DataFlow::localExprFlow(ce, guard.(MethodAccess).getAnArgument())
+      ) and
+      DataFlow::exprNode(se) instanceof UrlRedirectSink and
+      guard.controls(se.getBasicBlock(), true)
+    )
+  }
 }
 
 from

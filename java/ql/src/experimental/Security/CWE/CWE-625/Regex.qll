@@ -95,4 +95,3 @@ class PatternMatcherRegexSink extends MatchRegexSink {
     )
   }
 }
-
