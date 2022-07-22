@@ -95,39 +95,18 @@ private class StaticInitializationVectorSource extends DataFlow::Node {
 }
 
 /**
- * A config that tracks initialization of a cipher for encryption.
- */
-private class EncryptionModeConfig extends TaintTracking2::Configuration {
-  EncryptionModeConfig() { this = "EncryptionModeConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source
-        .asExpr()
-        .(FieldRead)
-        .getField()
-        .hasQualifiedName("javax.crypto", "Cipher", "ENCRYPT_MODE")
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m.hasQualifiedName("javax.crypto", "Cipher", "init") and
-      ma.getArgument(0) = sink.asExpr()
-    )
-  }
-}
-
-/**
  * A sink that initializes a cipher for encryption with unsafe parameters.
  */
 private class EncryptionInitializationSink extends DataFlow::Node {
   EncryptionInitializationSink() {
-    exists(MethodAccess ma, Method m, EncryptionModeConfig config | m = ma.getMethod() |
+    exists(MethodAccess ma, Method m, FieldRead fr | m = ma.getMethod() |
       m.hasQualifiedName("javax.crypto", "Cipher", "init") and
       m.getParameterType(2)
           .(RefType)
           .hasQualifiedName("java.security.spec", "AlgorithmParameterSpec") and
-      ma.getArgument(2) = this.asExpr() and
-      config.hasFlowToExpr(ma.getArgument(0))
+      fr.getField().hasQualifiedName("javax.crypto", "Cipher", "ENCRYPT_MODE") and
+      DataFlow::localExprFlow(fr, ma.getArgument(0)) and
+      ma.getArgument(2) = this.asExpr()
     )
   }
 }
