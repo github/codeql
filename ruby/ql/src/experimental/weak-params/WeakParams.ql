@@ -7,7 +7,7 @@
  * @precision medium
  * @id rb/weak-params
  * @tags security
- *       external/cwe/cwe-223
+ *       external/cwe/cwe-352
  */
 
 import ruby
