@@ -48,17 +48,13 @@ lazy_static! {
 }
 
 fn encoding_from_name(encoding_name: &str) -> Option<&(dyn encoding::Encoding + Send + Sync)> {
-    match encoding::label::encoding_from_whatwg_label(&encoding_name) {
-        Some(e) => return Some(e),
-        None => {
-            if let Some(cap) = CP_NUMBER.captures(&encoding_name) {
-                return encoding::label::encoding_from_windows_code_page(
-                    str::parse(cap.get(1).unwrap().as_str()).unwrap(),
-                );
-            } else {
-                return None;
-            }
-        }
+    match encoding::label::encoding_from_whatwg_label(encoding_name) {
+        s @ Some(_) => s,
+        None => CP_NUMBER.captures(encoding_name).and_then(|cap| {
+            encoding::label::encoding_from_windows_code_page(
+                str::parse(cap.get(1).unwrap().as_str()).unwrap(),
+            )
+        }),
     }
 }
 
