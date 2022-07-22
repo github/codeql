@@ -5,7 +5,7 @@
 <overview>
 <p>
 If the <code>onReceivedSslError</code> method of an Android <code>WebViewClient</code> always calls <code>proceed</code> on the given <code>SslErrorHandler</code>, it trusts any certificate. 
-This allows an attacker to perform a machine-in-the-middle attack against the application, therefore breaking any security Transport Layer Security (TLS) gives.
+This allows an attacker to perform a man-in-the-middle attack against the application, therefore breaking any security Transport Layer Security (TLS) gives.
 </p>
 
 <p>
