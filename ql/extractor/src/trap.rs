@@ -61,12 +61,15 @@ impl Writer {
 
     pub fn write_to_file(&self, path: &Path, compression: Compression) -> std::io::Result<()> {
         let trap_file = std::fs::File::create(path)?;
-        let mut trap_file = BufWriter::new(trap_file);
         match compression {
-            Compression::None => self.write_trap_entries(&mut trap_file),
+            Compression::None => {
+                let mut trap_file = BufWriter::new(trap_file);
+                self.write_trap_entries(&mut trap_file)
+            }
             Compression::Gzip => {
-                let mut compressed_writer = GzEncoder::new(trap_file, flate2::Compression::fast());
-                self.write_trap_entries(&mut compressed_writer)
+                let trap_file = GzEncoder::new(trap_file, flate2::Compression::fast());
+                let mut trap_file = BufWriter::new(trap_file);
+                self.write_trap_entries(&mut trap_file)
             }
         }
     }
