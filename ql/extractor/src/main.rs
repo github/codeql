@@ -121,7 +121,7 @@ fn main() -> std::io::Result<()> {
                     &source,
                     &code_ranges,
                 )?
-            } else if line.ends_with(".qlpack.yml") {
+            } else if line.ends_with("qlpack.yml") {
                 extractor::extract(
                     yaml,
                     "yaml",
