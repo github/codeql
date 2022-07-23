@@ -74,13 +74,12 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
 
 from
   MustFlowPathNode source, MustFlowPathNode sink, VariableAddressInstruction var,
-  ReturnStackAllocatedMemoryConfig conf, Function f
+  ReturnStackAllocatedMemoryConfig conf
 where
-  conf.hasFlowPath(source, sink) and
+  conf.hasFlowPath(pragma[only_bind_into](source), pragma[only_bind_into](sink)) and
   source.getNode().asInstruction() = var and
   // Only raise an alert if we're returning from the _same_ callable as the on that
   // declared the stack variable.
-  var.getEnclosingFunction() = pragma[only_bind_into](f) and
-  sink.getNode().getEnclosingCallable() = pragma[only_bind_into](f)
+  var.getEnclosingFunction() = sink.getNode().getEnclosingCallable()
 select sink.getNode(), source, sink, "May return stack-allocated memory from $@.", var.getAst(),
   var.getAst().toString()
