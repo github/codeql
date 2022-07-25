@@ -119,28 +119,27 @@ pub fn extract(
     source: &[u8],
     ranges: &[Range],
 ) -> std::io::Result<()> {
-    let path_str = format!("{}", path.display());
     let span = span!(
         Level::TRACE,
         "extract",
-        file = %path_str
+        file = %path.display()
     );
 
     let _enter = span.enter();
 
-    info!("extracting: {}", path_str);
+    info!("extracting: {}", path.display());
 
     let mut parser = Parser::new();
     parser.set_language(language).unwrap();
     parser.set_included_ranges(ranges).unwrap();
     let tree = parser.parse(&source, None).expect("Failed to parse file");
-    trap_writer.comment(format!("Auto-generated TRAP file for {}", path_str));
+    trap_writer.comment(format!("Auto-generated TRAP file for {}", path.display()));
     let file_label = populate_file(trap_writer, path);
     let mut visitor = Visitor {
         source,
         trap_writer,
         // TODO: should we handle path strings that are not valid UTF8 better?
-        path: &path_str,
+        path: format!("{}", path.display()),
         file_label,
         toplevel_child_counter: 0,
         stack: Vec::new(),
@@ -200,7 +199,7 @@ struct ChildNode {
 
 struct Visitor<'a> {
     /// The file path of the source code (as string)
-    path: &'a str,
+    path: String,
     /// The label to use whenever we need to refer to the `@file` entity of this
     /// source file.
     file_label: trap::Label,
