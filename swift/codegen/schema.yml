@@ -7,8 +7,7 @@ _includes:
 _directories:
   decl: Decl$|Context$
   pattern: Pattern$
-  type: Type$
-  typerepr: TypeRepr$
+  type: Type(Repr)?$
   expr: Expr$
   stmt: Stmt$
 
@@ -185,6 +184,7 @@ Stmt:
 
 TypeRepr:
   _extends: AstNode
+  type: Type?  # type can be absent on unresolved entities
 
 FunctionType:
   _extends: AnyFunctionType
@@ -406,7 +406,6 @@ EnumIsCaseExpr:
   _extends: Expr
   _children:
     sub_expr: Expr
-    type_repr: TypeRepr
     element: EnumElementDecl
 
 ErrorExpr:
@@ -457,7 +456,7 @@ KeyPathDotExpr:
 KeyPathExpr:
   _extends: Expr
   _children:
-    parsed_root: Expr?
+    root: TypeRepr?
     parsed_path: Expr?
 
 LazyInitializerExpr:
@@ -1177,87 +1176,3 @@ FloatLiteralExpr:
 IntegerLiteralExpr:
   _extends: NumberLiteralExpr
   string_value: string
-
-ErrorTypeRepr:
-  _extends: TypeRepr
-
-AttributedTypeRepr:
-  _extends: TypeRepr
-
-IdentTypeRepr:
-  _extends: TypeRepr
-
-ComponentIdentTypeRepr:
-  _extends: IdentTypeRepr
-
-SimpleIdentTypeRepr:
-  _extends: ComponentIdentTypeRepr
-
-GenericIdentTypeRepr:
-  _extends: ComponentIdentTypeRepr
-
-CompoundIdentTypeRepr:
-  _extends: IdentTypeRepr
-
-FunctionTypeRepr:
-  _extends: TypeRepr
-
-ArrayTypeRepr:
-  _extends: TypeRepr
-
-DictionaryTypeRepr:
-  _extends: TypeRepr
-
-OptionalTypeRepr:
-  _extends: TypeRepr
-
-ImplicitlyUnwrappedOptionalTypeRepr:
-  _extends: TypeRepr
-
-TupleTypeRepr:
-  _extends: TypeRepr
-
-CompositionTypeRepr:
-  _extends: TypeRepr
-
-MetatypeTypeRepr:
-  _extends: TypeRepr
-
-ProtocolTypeRepr:
-  _extends: TypeRepr
-
-OpaqueReturnTypeRepr:
-  _extends: TypeRepr
-
-NamedOpaqueReturnTypeRepr:
-  _extends: TypeRepr
-
-ExistentialTypeRepr:
-  _extends: TypeRepr
-
-PlaceholderTypeRepr:
-  _extends: TypeRepr
-
-SpecifierTypeRepr:
-  _extends: TypeRepr
-
-InOutTypeRepr:
-  _extends: SpecifierTypeRepr
-
-SharedTypeRepr:
-  _extends: SpecifierTypeRepr
-
-OwnedTypeRepr:
-  _extends: SpecifierTypeRepr
-
-IsolatedTypeRepr:
-  _extends: SpecifierTypeRepr
-
-CompileTimeConstTypeRepr:
-  _extends: SpecifierTypeRepr
-
-FixedTypeRepr:
-  _extends: TypeRepr
-
-SilBoxTypeRepr:
-  _extends: TypeRepr

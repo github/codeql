@@ -14,7 +14,6 @@ using SILBlockStorageTypeTag = SilBlockStorageTypeTag;
 using SILBoxTypeTag = SilBoxTypeTag;
 using SILFunctionTypeTag = SilFunctionTypeTag;
 using SILTokenTypeTag = SilTokenTypeTag;
-using SILBoxTypeReprTag = SilBoxTypeReprTag;
 
 #define MAP_TYPE_TO_TAG(TYPE, TAG)           \
   template <>                                \
@@ -60,9 +59,6 @@ MAP_TAG(Pattern);
 #include <swift/AST/PatternNodes.def>
 
 MAP_TAG(TypeRepr);
-#define ABSTRACT_TYPEREPR(CLASS, PARENT) MAP_SUBTAG(CLASS##TypeRepr, PARENT)
-#define TYPEREPR(CLASS, PARENT) ABSTRACT_TYPEREPR(CLASS, PARENT)
-#include <swift/AST/TypeReprNodes.def>
 
 MAP_TYPE_TO_TAG(TypeBase, TypeTag);
 #define ABSTRACT_TYPE(CLASS, PARENT) MAP_SUBTAG(CLASS##Type, PARENT)
