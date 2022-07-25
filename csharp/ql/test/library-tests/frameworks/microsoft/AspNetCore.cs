@@ -10,7 +10,7 @@ public class HomeController
 }
 
 // derived from Microsoft.AspNetCore.Mvc.Controller which has suffix "Controller"
-public class HomeController1 : Controller 
+public class HomeController1 : Controller
 {
     public string Index()
     {
@@ -74,7 +74,7 @@ public abstract class NotHomeController2 : Controller
     }
 }
 
-// contains generic paramiters
+// contains generic parameters
 public class NotHomeController3<T> : Controller
 {
     public string Index()

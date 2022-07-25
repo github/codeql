@@ -196,12 +196,8 @@ class MicrosoftAspNetCoreMvcControllerBaseClass extends Class {
  */
 class MicrosoftAspNetCoreMvcController extends Class {
   MicrosoftAspNetCoreMvcController() {
-    exists(Assembly a, string name |
-      a.getName() = name and
-      (
-        name = "Microsoft.AspNetCore.Mvc.Core" or
-        name = "Microsoft.AspNetCore.Mvc.ViewFeatures"
-      )
+    exists(Assembly a |
+      a.getName() = ["Microsoft.AspNetCore.Mvc.Core", "Microsoft.AspNetCore.Mvc.ViewFeatures"]
     ) and
     this.isPublic() and
     not this.isAbstract() and
