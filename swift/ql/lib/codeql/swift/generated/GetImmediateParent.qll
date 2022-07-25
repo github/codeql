@@ -17,23 +17,25 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(Callable).getImmediateBody()
   or
-  result = e.(Argument).getImmediateExpr()
+  result = e.(AbstractStorageDecl).getImmediateAccessorDecl(_)
   or
-  result = e.(ConditionElement).getImmediateBoolean()
+  result = e.(EnumCaseDecl).getImmediateElement(_)
   or
-  result = e.(ConditionElement).getImmediatePattern()
-  or
-  result = e.(ConditionElement).getImmediateInitializer()
+  result = e.(EnumElementDecl).getImmediateParam(_)
   or
   result = e.(IfConfigClause).getImmediateCondition()
   or
   result = e.(IfConfigClause).getImmediateElement(_)
   or
-  result = e.(CaseLabelItem).getImmediatePattern()
+  result = e.(IfConfigDecl).getImmediateClause(_)
   or
-  result = e.(CaseLabelItem).getImmediateGuard()
+  result = e.(PatternBindingDecl).getImmediateInit(_)
   or
-  result = e.(StmtCondition).getImmediateElement(_)
+  result = e.(PatternBindingDecl).getImmediatePattern(_)
+  or
+  result = e.(SubscriptDecl).getImmediateParam(_)
+  or
+  result = e.(TopLevelCodeDecl).getImmediateBody()
   or
   result = e.(AnyTryExpr).getImmediateSubExpr()
   or
@@ -41,25 +43,21 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(ApplyExpr).getImmediateArgument(_)
   or
+  result = e.(Argument).getImmediateExpr()
+  or
+  result = e.(ArrayExpr).getImmediateElement(_)
+  or
   result = e.(AssignExpr).getImmediateDest()
   or
   result = e.(AssignExpr).getImmediateSource()
   or
   result = e.(BindOptionalExpr).getImmediateSubExpr()
   or
-  result = e.(BindingPattern).getImmediateSubPattern()
-  or
-  result = e.(BraceStmt).getImmediateElement(_)
-  or
   result = e.(CaptureListExpr).getImmediateBindingDecl(_)
   or
   result = e.(CaptureListExpr).getImmediateClosureBody()
   or
-  result = e.(CaseStmt).getImmediateBody()
-  or
-  result = e.(CaseStmt).getImmediateLabel(_)
-  or
-  result = e.(DeferStmt).getImmediateBody()
+  result = e.(DictionaryExpr).getImmediateElement(_)
   or
   result = e.(DotSyntaxBaseIgnoredExpr).getImmediateQualifier()
   or
@@ -67,23 +65,15 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(DynamicTypeExpr).getImmediateBaseExpr()
   or
-  result = e.(EnumCaseDecl).getImmediateElement(_)
-  or
-  result = e.(EnumElementPattern).getImmediateSubPattern()
-  or
   result = e.(EnumIsCaseExpr).getImmediateSubExpr()
   or
   result = e.(EnumIsCaseExpr).getImmediateElement()
   or
   result = e.(ExplicitCastExpr).getImmediateSubExpr()
   or
-  result = e.(ExprPattern).getImmediateSubExpr()
-  or
   result = e.(ForceValueExpr).getImmediateSubExpr()
   or
   result = e.(IdentityExpr).getImmediateSubExpr()
-  or
-  result = e.(IfConfigDecl).getImmediateClause(_)
   or
   result = e.(IfExpr).getImmediateCondition()
   or
@@ -95,9 +85,11 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(InOutExpr).getImmediateSubExpr()
   or
-  result = e.(IsPattern).getImmediateCastTypeRepr()
+  result = e.(InterpolatedStringLiteralExpr).getImmediateInterpolationCountExpr()
   or
-  result = e.(IsPattern).getImmediateSubPattern()
+  result = e.(InterpolatedStringLiteralExpr).getImmediateLiteralCapacityExpr()
+  or
+  result = e.(InterpolatedStringLiteralExpr).getImmediateAppendingExpr()
   or
   result = e.(KeyPathApplicationExpr).getImmediateBase()
   or
@@ -129,41 +121,25 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(OptionalEvaluationExpr).getImmediateSubExpr()
   or
-  result = e.(OptionalSomePattern).getImmediateSubPattern()
-  or
-  result = e.(ParenPattern).getImmediateSubPattern()
-  or
-  result = e.(PatternBindingDecl).getImmediateInit(_)
-  or
-  result = e.(PatternBindingDecl).getImmediatePattern(_)
-  or
   result = e.(RebindSelfInConstructorExpr).getImmediateSubExpr()
   or
   result = e.(RebindSelfInConstructorExpr).getImmediateSelf()
   or
-  result = e.(ReturnStmt).getImmediateResult()
+  result = e.(SelfApplyExpr).getImmediateBaseExpr()
   or
   result = e.(SequenceExpr).getImmediateElement(_)
+  or
+  result = e.(SubscriptExpr).getImmediateArgument(_)
   or
   result = e.(TapExpr).getImmediateSubExpr()
   or
   result = e.(TapExpr).getImmediateBody()
   or
-  result = e.(ThrowStmt).getImmediateSubExpr()
-  or
-  result = e.(TopLevelCodeDecl).getImmediateBody()
-  or
   result = e.(TupleElementExpr).getImmediateSubExpr()
   or
   result = e.(TupleExpr).getImmediateElement(_)
   or
-  result = e.(TuplePattern).getImmediateElement(_)
-  or
   result = e.(TypeExpr).getImmediateTypeRepr()
-  or
-  result = e.(TypedPattern).getImmediateSubPattern()
-  or
-  result = e.(TypedPattern).getImmediateTypeRepr()
   or
   result = e.(UnresolvedDotExpr).getImmediateBase()
   or
@@ -171,21 +147,49 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(VarargExpansionExpr).getImmediateSubExpr()
   or
-  result = e.(YieldStmt).getImmediateResult(_)
+  result = e.(BindingPattern).getImmediateSubPattern()
   or
-  result = e.(AbstractStorageDecl).getImmediateAccessorDecl(_)
+  result = e.(EnumElementPattern).getImmediateSubPattern()
   or
-  result = e.(ArrayExpr).getImmediateElement(_)
+  result = e.(ExprPattern).getImmediateSubExpr()
   or
-  result = e.(DictionaryExpr).getImmediateElement(_)
+  result = e.(IsPattern).getImmediateCastTypeRepr()
+  or
+  result = e.(IsPattern).getImmediateSubPattern()
+  or
+  result = e.(OptionalSomePattern).getImmediateSubPattern()
+  or
+  result = e.(ParenPattern).getImmediateSubPattern()
+  or
+  result = e.(TuplePattern).getImmediateElement(_)
+  or
+  result = e.(TypedPattern).getImmediateSubPattern()
+  or
+  result = e.(TypedPattern).getImmediateTypeRepr()
+  or
+  result = e.(BraceStmt).getImmediateElement(_)
+  or
+  result = e.(CaseLabelItem).getImmediatePattern()
+  or
+  result = e.(CaseLabelItem).getImmediateGuard()
+  or
+  result = e.(CaseStmt).getImmediateBody()
+  or
+  result = e.(CaseStmt).getImmediateLabel(_)
+  or
+  result = e.(ConditionElement).getImmediateBoolean()
+  or
+  result = e.(ConditionElement).getImmediatePattern()
+  or
+  result = e.(ConditionElement).getImmediateInitializer()
+  or
+  result = e.(DeferStmt).getImmediateBody()
   or
   result = e.(DoCatchStmt).getImmediateBody()
   or
   result = e.(DoCatchStmt).getImmediateCatch(_)
   or
   result = e.(DoStmt).getImmediateBody()
-  or
-  result = e.(EnumElementDecl).getImmediateParam(_)
   or
   result = e.(ForEachStmt).getImmediatePattern()
   or
@@ -195,11 +199,11 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(ForEachStmt).getImmediateBody()
   or
-  result = e.(InterpolatedStringLiteralExpr).getImmediateInterpolationCountExpr()
+  result = e.(GuardStmt).getImmediateBody()
   or
-  result = e.(InterpolatedStringLiteralExpr).getImmediateLiteralCapacityExpr()
+  result = e.(IfStmt).getImmediateThen()
   or
-  result = e.(InterpolatedStringLiteralExpr).getImmediateAppendingExpr()
+  result = e.(IfStmt).getImmediateElse()
   or
   result = e.(LabeledConditionalStmt).getImmediateCondition()
   or
@@ -207,23 +211,19 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(RepeatWhileStmt).getImmediateBody()
   or
-  result = e.(SelfApplyExpr).getImmediateBaseExpr()
+  result = e.(ReturnStmt).getImmediateResult()
   or
-  result = e.(SubscriptExpr).getImmediateArgument(_)
+  result = e.(StmtCondition).getImmediateElement(_)
   or
   result = e.(SwitchStmt).getImmediateExpr()
   or
   result = e.(SwitchStmt).getImmediateCase(_)
   or
-  result = e.(GuardStmt).getImmediateBody()
-  or
-  result = e.(IfStmt).getImmediateThen()
-  or
-  result = e.(IfStmt).getImmediateElse()
-  or
-  result = e.(SubscriptDecl).getImmediateParam(_)
+  result = e.(ThrowStmt).getImmediateSubExpr()
   or
   result = e.(WhileStmt).getImmediateBody()
+  or
+  result = e.(YieldStmt).getImmediateResult(_)
 }
 
 /**

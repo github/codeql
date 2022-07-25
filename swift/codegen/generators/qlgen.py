@@ -201,7 +201,7 @@ def _is_under_qltest_collapsed_hierachy(cls: schema.Class, lookup: typing.Dict[s
 
 def _should_skip_qltest(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
     return "qltest_skip" in cls.pragmas or not (
-            cls.final or "qltest_collapse_hierarchy" in cls.pragmas) or _is_under_qltest_collapsed_hierachy(
+        cls.final or "qltest_collapse_hierarchy" in cls.pragmas) or _is_under_qltest_collapsed_hierachy(
         cls, lookup)
 
 

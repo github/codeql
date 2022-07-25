@@ -199,9 +199,9 @@ def test_single_property(generate_classes):
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(name="MyObject", final=True,
                                   properties=[
-                             ql.Property(singular="Foo", type="bar", tablename="my_objects",
-                                         tableparams=["this", "result"]),
-                         ])),
+                                      ql.Property(singular="Foo", type="bar", tablename="my_objects",
+                                                  tableparams=["this", "result"]),
+                                  ])),
     }
 
 
@@ -216,13 +216,13 @@ def test_single_properties(generate_classes):
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(name="MyObject", final=True,
                                   properties=[
-                             ql.Property(singular="One", type="x", tablename="my_objects",
-                                         tableparams=["this", "result", "_", "_"]),
-                             ql.Property(singular="Two", type="y", tablename="my_objects",
-                                         tableparams=["this", "_", "result", "_"]),
-                             ql.Property(singular="Three", type="z", tablename="my_objects",
-                                         tableparams=["this", "_", "_", "result"]),
-                         ])),
+                                      ql.Property(singular="One", type="x", tablename="my_objects",
+                                                  tableparams=["this", "result", "_", "_"]),
+                                      ql.Property(singular="Two", type="y", tablename="my_objects",
+                                                  tableparams=["this", "_", "result", "_"]),
+                                      ql.Property(singular="Three", type="z", tablename="my_objects",
+                                                  tableparams=["this", "_", "_", "result"]),
+                                  ])),
     }
 
 
