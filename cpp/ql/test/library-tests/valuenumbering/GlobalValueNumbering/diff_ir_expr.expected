@@ -1,15 +1,20 @@
 | test.cpp:5:3:5:13 | ... = ... | test.cpp:5:3:5:13 | ... = ... | AST only |
 | test.cpp:6:3:6:13 | ... = ... | test.cpp:6:3:6:13 | ... = ... | AST only |
 | test.cpp:7:3:7:7 | ... = ... | test.cpp:7:3:7:7 | ... = ... | AST only |
+| test.cpp:10:16:10:16 | 1 | test.cpp:176:7:176:7 | 1 | AST only |
+| test.cpp:10:16:10:16 | 1 | test.cpp:178:7:178:7 | 1 | AST only |
 | test.cpp:16:3:16:24 | ... = ... | test.cpp:16:3:16:24 | ... = ... | AST only |
 | test.cpp:17:3:17:24 | ... = ... | test.cpp:17:3:17:24 | ... = ... | AST only |
 | test.cpp:18:3:18:7 | ... = ... | test.cpp:18:3:18:7 | ... = ... | AST only |
+| test.cpp:21:16:21:16 | 2 | test.cpp:176:10:176:10 | 2 | AST only |
+| test.cpp:21:16:21:16 | 2 | test.cpp:178:10:178:10 | 2 | AST only |
 | test.cpp:29:3:29:3 | x | test.cpp:31:3:31:3 | x | IR only |
 | test.cpp:29:3:29:24 | ... = ... | test.cpp:29:3:29:24 | ... = ... | AST only |
 | test.cpp:30:3:30:17 | call to change_global02 | test.cpp:30:3:30:17 | call to change_global02 | AST only |
 | test.cpp:31:3:31:3 | x | test.cpp:29:3:29:3 | x | IR only |
 | test.cpp:31:3:31:24 | ... = ... | test.cpp:31:3:31:24 | ... = ... | AST only |
 | test.cpp:32:3:32:7 | ... = ... | test.cpp:32:3:32:7 | ... = ... | AST only |
+| test.cpp:35:16:35:16 | 3 | test.cpp:177:7:177:7 | 3 | AST only |
 | test.cpp:43:3:43:3 | x | test.cpp:45:3:45:3 | x | IR only |
 | test.cpp:43:3:43:24 | ... = ... | test.cpp:43:3:43:24 | ... = ... | AST only |
 | test.cpp:43:7:43:24 | ... + ... | test.cpp:45:7:45:24 | ... + ... | IR only |
@@ -127,3 +132,33 @@
 | test.cpp:147:7:147:7 | y | test.cpp:145:15:145:15 | y | AST only |
 | test.cpp:149:15:149:15 | x | test.cpp:144:15:144:15 | x | IR only |
 | test.cpp:156:3:156:17 | ... = ... | test.cpp:156:3:156:17 | ... = ... | AST only |
+| test.cpp:166:18:166:20 | (const char *)... | test.cpp:166:18:166:20 | (const char *)... | AST only |
+| test.cpp:166:18:166:20 | (const char *)... | test.cpp:167:18:167:20 | (const char *)... | AST only |
+| test.cpp:166:18:166:20 | (const char *)... | test.cpp:173:18:173:20 | (const char *)... | AST only |
+| test.cpp:167:18:167:20 | (const char *)... | test.cpp:166:18:166:20 | (const char *)... | AST only |
+| test.cpp:167:18:167:20 | (const char *)... | test.cpp:167:18:167:20 | (const char *)... | AST only |
+| test.cpp:167:18:167:20 | (const char *)... | test.cpp:173:18:173:20 | (const char *)... | AST only |
+| test.cpp:168:18:168:20 | (const char *)... | test.cpp:168:18:168:20 | (const char *)... | AST only |
+| test.cpp:168:18:168:20 | (const char *)... | test.cpp:169:18:169:20 | (const char *)... | AST only |
+| test.cpp:168:18:168:20 | (const char *)... | test.cpp:171:15:171:17 | (const char *)... | AST only |
+| test.cpp:168:18:168:20 | (const char *)... | test.cpp:174:18:174:20 | (const char *)... | AST only |
+| test.cpp:169:18:169:20 | (const char *)... | test.cpp:168:18:168:20 | (const char *)... | AST only |
+| test.cpp:169:18:169:20 | (const char *)... | test.cpp:169:18:169:20 | (const char *)... | AST only |
+| test.cpp:169:18:169:20 | (const char *)... | test.cpp:171:15:171:17 | (const char *)... | AST only |
+| test.cpp:169:18:169:20 | (const char *)... | test.cpp:174:18:174:20 | (const char *)... | AST only |
+| test.cpp:171:15:171:17 | (const char *)... | test.cpp:168:18:168:20 | (const char *)... | AST only |
+| test.cpp:171:15:171:17 | (const char *)... | test.cpp:169:18:169:20 | (const char *)... | AST only |
+| test.cpp:171:15:171:17 | (const char *)... | test.cpp:171:15:171:17 | (const char *)... | AST only |
+| test.cpp:171:15:171:17 | (const char *)... | test.cpp:174:18:174:20 | (const char *)... | AST only |
+| test.cpp:173:18:173:20 | (const char *)... | test.cpp:166:18:166:20 | (const char *)... | AST only |
+| test.cpp:173:18:173:20 | (const char *)... | test.cpp:167:18:167:20 | (const char *)... | AST only |
+| test.cpp:173:18:173:20 | (const char *)... | test.cpp:173:18:173:20 | (const char *)... | AST only |
+| test.cpp:174:18:174:20 | (const char *)... | test.cpp:168:18:168:20 | (const char *)... | AST only |
+| test.cpp:174:18:174:20 | (const char *)... | test.cpp:169:18:169:20 | (const char *)... | AST only |
+| test.cpp:174:18:174:20 | (const char *)... | test.cpp:171:15:171:17 | (const char *)... | AST only |
+| test.cpp:174:18:174:20 | (const char *)... | test.cpp:174:18:174:20 | (const char *)... | AST only |
+| test.cpp:176:7:176:7 | 1 | test.cpp:10:16:10:16 | 1 | AST only |
+| test.cpp:176:10:176:10 | 2 | test.cpp:21:16:21:16 | 2 | AST only |
+| test.cpp:177:7:177:7 | 3 | test.cpp:35:16:35:16 | 3 | AST only |
+| test.cpp:178:7:178:7 | 1 | test.cpp:10:16:10:16 | 1 | AST only |
+| test.cpp:178:10:178:10 | 2 | test.cpp:21:16:21:16 | 2 | AST only |

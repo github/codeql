@@ -157,3 +157,23 @@ void test_read_global_different(int n) {
 
   int d = global_a->x;
 }
+
+int strlen(const char *str);
+char *strcat(char *dst, const char *src);
+int add(int a, int b);
+
+void test_func_value_numbering(char *dst, char *src) {
+  int a = strlen(dst);
+  int b = strlen(dst); // same as previous line
+  int c = strlen(src);
+  int d = strlen(src); // same as previous line
+
+  strcat(dst, src);
+
+  int e = strlen(dst); // different from a and b
+  int f = strlen(src); // same as c and d
+
+  add(1, 2);
+  add(3, 4);
+  add(1, 2); // same as two lines earlier
+}
