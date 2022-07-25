@@ -41,7 +41,88 @@ newtype TValueNumber =
   ) {
     loadTotalOverlapValueNumber(_, irFunc, type, memOperand, operand)
   } or
+  TCallValueNumber(TCallPartialValueNumber vn) { callValueNumber(_, _, vn) } or
   TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
+
+newtype TCallPartialValueNumber =
+  TNilArgument() or
+  TArgument(TCallPartialValueNumber head, TValueNumber arg) {
+    exists(CallInstruction call, int index |
+      callArgValueNumber(call, index, arg) and
+      callPartialValueNumber(call, index, head)
+    )
+  }
+
+predicate callValueNumber(CallInstruction call, int index, TCallPartialValueNumber vn) {
+  index = max(int n | callArgRank(call, n, _) | n) and
+  exists(TCallPartialValueNumber head, TValueNumber arg |
+    callPartialValueNumber(call, index, head) and
+    callArgValueNumber(call, index, arg) and
+    vn = TArgument(head, arg)
+  )
+  or
+  not exists(int n | callArgRank(call, n, _)) and
+  index = -1 and
+  vn = TNilArgument()
+}
+
+predicate callPartialValueNumber(CallInstruction call, int index, TCallPartialValueNumber head) {
+  index = 1 and head = TNilArgument()
+  or
+  exists(TCallPartialValueNumber prev, TValueNumber prevVN |
+    callPartialValueNumber(call, index - 1, prev) and
+    callArgValueNumber(call, index - 1, prevVN) and
+    head = TArgument(prev, prevVN)
+  )
+}
+
+/**
+ */
+predicate callArgValueNumber(CallInstruction call, int index, TValueNumber arg) {
+  exists(Instruction instr |
+    callArgRank(call, index, instr) and
+    arg = tvalueNumber(instr)
+  )
+}
+
+/**
+ * Holds if `arg` is the `index`th element in `call`'s extended argument list, including the `this`
+ * argument and side-effect reads.
+ */
+predicate callArgRank(CallInstruction call, int index, Instruction arg) {
+  arg =
+    rank[index](int argIndex, boolean isEffect, Instruction instr |
+      exists(CallSideEffectInstruction cse |
+        cse.getPrimaryInstruction() = call and
+        cse.getSideEffectOperand().getAnyDef() = instr and
+        argIndex = -2 and
+        isEffect = false
+      )
+      or
+      exists(CallReadSideEffectInstruction cse |
+        cse.getPrimaryInstruction() = call and
+        cse.getSideEffectOperand().getAnyDef() = instr and
+        argIndex = -2 and
+        isEffect = false
+      )
+      or
+      instr = call.getThisArgument() and
+      argIndex = -1 and
+      isEffect = false
+      or
+      instr = call.getPositionalArgument(argIndex) and
+      isEffect = false
+      or
+      exists(ReadSideEffectInstruction read |
+        read.getPrimaryInstruction() = call and
+        read.getSideEffectOperand().getDef() = instr and
+        read.getIndex() = argIndex and
+        isEffect = true
+      )
+    |
+      instr order by argIndex, isEffect
+    )
+}
 
 /**
  * A `CopyInstruction` whose source operand's value is congruent to the definition of that source
@@ -93,6 +174,8 @@ private predicate numberableInstruction(Instruction instr) {
   instr instanceof CongruentCopyInstruction
   or
   instr instanceof LoadTotalOverlapInstruction
+  or
+  instr instanceof CallInstruction
 }
 
 private predicate filteredNumberableInstruction(Instruction instr) {
@@ -309,6 +392,11 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
       or
       // The value number of a copy is just the value number of its source value.
       result = tvalueNumber(instr.(CongruentCopyInstruction).getSourceValue())
+      or
+      exists(TCallPartialValueNumber pvn |
+        callValueNumber(instr, _, pvn) and
+        result = TCallValueNumber(pvn)
+      )
     )
   )
 }
