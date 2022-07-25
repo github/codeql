@@ -37,9 +37,7 @@ module Public {
     }
   }
 
-  class CallNode extends Node {
-    CallNode() { this instanceof CallInstruction }
-  }
+  class CallNode extends Node, CallInstruction { }
 
   class Callable extends IRFunction { }
 
