@@ -5,6 +5,7 @@ extern crate lazy_static;
 extern crate num_cpus;
 
 use clap::arg;
+use flate2::write::GzEncoder;
 use rayon::prelude::*;
 use std::borrow::Cow;
 use std::fs;
