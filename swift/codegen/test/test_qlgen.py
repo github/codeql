@@ -101,7 +101,7 @@ def _filter_generated_classes(ret, output_test_files=False):
             str(f): ret[ql_test_output_path() / f]
             for f in test_files
         }
-    base_files -= {pathlib.Path("IpaTypes.qll"), pathlib.Path("IpaConstructors.qll")}
+    base_files -= {pathlib.Path(f"{name}.qll") for name in ("Db", "IpaTypes", "IpaConstructors")}
     assert stub_files == base_files
     return {
         str(f): (ret[stub_path() / f], ret[ql_output_path() / f])
@@ -131,6 +131,8 @@ def test_empty(generate):
         children_file(): ql.GetParentImplementation(),
         ql_output_path() / "IpaTypes.qll": ql.Ipa.Types(schema.root_class_name),
         ql_output_path() / "IpaConstructors.qll": ql.ImportList(),
+        ql_output_path() / "Db.qll": ql.DbClasses(),
+        ql_output_path() / "Db.qll": ql.DbClasses(),
     }
 
 
@@ -139,7 +141,7 @@ def test_one_empty_class(generate_classes):
         schema.Class("A")
     ]) == {
         "A.qll": (ql.Stub(name="A", base_import=gen_import_prefix + "A"),
-                  ql.Class(name="A", final=True, fields=[ql.Field('id', type='@a')])),
+                  ql.Class(name="A", final=True)),
     }
 
 
@@ -157,7 +159,7 @@ def test_hierarchy(generate_classes):
         "C.qll": (ql.Stub(name="C", base_import=gen_import_prefix + "C"),
                   ql.Class(name="C", bases=["A"], imports=[stub_import_prefix + "A"])),
         "D.qll": (ql.Stub(name="D", base_import=gen_import_prefix + "D"),
-                  ql.Class(name="D", final=True, bases=["B", "C"], fields=[ql.Field("id", type="@d")],
+                  ql.Class(name="D", final=True, bases=["B", "C"],
                            imports=[stub_import_prefix + cls for cls in "BC"])),
     }
 
@@ -183,7 +185,7 @@ def test_hierarchy_children(generate_children_implementations):
                      stub_import_prefix + "A"]),
                  ql.Class(name="C", bases=["A"], imports=[
                      stub_import_prefix + "A"]),
-                 ql.Class(name="D", final=True, bases=["B", "C"], fields=[ql.Field("id", type="@d")],
+                 ql.Class(name="D", final=True, bases=["B", "C"],
                           imports=[stub_import_prefix + cls for cls in "BC"]),
                  ],
     )
@@ -195,10 +197,10 @@ def test_single_property(generate_classes):
             schema.SingleProperty("foo", "bar")]),
     ]) == {
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-                         ql.Class(name="MyObject", final=True, fields=[ql.Field("id", type="@my_object")],
+                         ql.Class(name="MyObject", final=True,
                                   properties=[
                              ql.Property(singular="Foo", type="bar", tablename="my_objects",
-                                         tableparams=["id", "result"]),
+                                         tableparams=["this", "result"]),
                          ])),
     }
 
@@ -212,14 +214,14 @@ def test_single_properties(generate_classes):
         ]),
     ]) == {
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-                         ql.Class(name="MyObject", final=True, fields=[ql.Field("id", type="@my_object")],
+                         ql.Class(name="MyObject", final=True,
                                   properties=[
                              ql.Property(singular="One", type="x", tablename="my_objects",
-                                         tableparams=["id", "result", "_", "_"]),
+                                         tableparams=["this", "result", "_", "_"]),
                              ql.Property(singular="Two", type="y", tablename="my_objects",
-                                         tableparams=["id", "_", "result", "_"]),
+                                         tableparams=["this", "_", "result", "_"]),
                              ql.Property(singular="Three", type="z", tablename="my_objects",
-                                         tableparams=["id", "_", "_", "result"]),
+                                         tableparams=["this", "_", "_", "result"]),
                          ])),
     }
 
@@ -231,9 +233,9 @@ def test_optional_property(generate_classes, is_child):
             schema.OptionalProperty("foo", "bar", is_child=is_child)]),
     ]) == {
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-                         ql.Class(name="MyObject", final=True, fields=[ql.Field("id", type="@my_object")], properties=[
+                         ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="Foo", type="bar", tablename="my_object_foos",
-                                         tableparams=["id", "result"],
+                                         tableparams=["this", "result"],
                                          is_optional=True, is_child=is_child),
                          ])),
     }
@@ -246,9 +248,9 @@ def test_repeated_property(generate_classes, is_child):
             schema.RepeatedProperty("foo", "bar", is_child=is_child)]),
     ]) == {
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-                         ql.Class(name="MyObject", final=True, fields=[ql.Field("id", type="@my_object")], properties=[
+                         ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
-                                         tableparams=["id", "index", "result"], is_child=is_child),
+                                         tableparams=["this", "index", "result"], is_child=is_child),
                          ])),
     }
 
@@ -260,9 +262,9 @@ def test_repeated_optional_property(generate_classes, is_child):
             schema.RepeatedOptionalProperty("foo", "bar", is_child=is_child)]),
     ]) == {
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-                         ql.Class(name="MyObject", final=True, fields=[ql.Field("id", type="@my_object")], properties=[
+                         ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
-                                         tableparams=["id", "index", "result"], is_optional=True,
+                                         tableparams=["this", "index", "result"], is_optional=True,
                                          is_child=is_child),
                          ])),
     }
@@ -274,9 +276,9 @@ def test_predicate_property(generate_classes):
             schema.PredicateProperty("is_foo")]),
     ]) == {
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-                         ql.Class(name="MyObject", final=True, fields=[ql.Field("id", type="@my_object")], properties=[
+                         ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="isFoo", type="predicate", tablename="my_object_is_foo",
-                                         tableparams=["id"],
+                                         tableparams=["this"],
                                          is_predicate=True),
                          ])),
     }
@@ -291,15 +293,15 @@ def test_single_class_property(generate_classes, is_child):
     ]) == {
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(
-            name="MyObject", final=True, fields=[ql.Field("id", type="@my_object")], imports=[stub_import_prefix + "Bar"], properties=[
+            name="MyObject", final=True, imports=[stub_import_prefix + "Bar"], properties=[
                 ql.Property(singular="Foo", type="Bar", tablename="my_objects",
                             tableparams=[
-                                "id", "result"],
+                                "this", "result"],
                             is_child=is_child),
             ],
         )),
         "Bar.qll": (ql.Stub(name="Bar", base_import=gen_import_prefix + "Bar"),
-                    ql.Class(name="Bar", final=True, fields=[ql.Field("id", type="@bar")])),
+                    ql.Class(name="Bar", final=True)),
     }
 
 
@@ -312,7 +314,7 @@ def test_class_dir(generate_classes):
         f"{dir}/A.qll": (ql.Stub(name="A", base_import=gen_import_prefix + "another.rel.path.A"),
                          ql.Class(name="A", dir=dir)),
         "B.qll": (ql.Stub(name="B", base_import=gen_import_prefix + "B"),
-                  ql.Class(name="B", final=True, fields=[ql.Field("id", type="@b")], bases=["A"],
+                  ql.Class(name="B", final=True, bases=["A"],
                            imports=[stub_import_prefix + "another.rel.path.A"])),
     }
 

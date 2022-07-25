@@ -79,7 +79,7 @@ class Class:
     qltest_skip: bool = False
     qltest_collapse_hierarchy: bool = False
     qltest_uncollapse_hierarchy: bool = False
-    has_db_id: bool = False
+    has_db_id: bool = True
     ipa: bool = False
 
     def __post_init__(self):

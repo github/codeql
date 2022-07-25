@@ -218,18 +218,19 @@ def generate(opts, renderer):
     existing |= {q for q in test_out.rglob(missing_test_source_filename)}
 
     data = schema.load(input)
-    inheritance_graph = {name: cls.bases for name, cls in data.classes.items()}
-    input_classes = [data.classes[name] for name in toposort_flatten(inheritance_graph)]
 
-    classes = [get_ql_class(cls, data.classes) for cls in input_classes]
+    classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items()}
     imports = {}
 
-    renderer.render(ql.DbClasses(cls for cls in classes if not cls.ipa), out / "Db.qll")
+    inheritance_graph = {name: cls.bases for name, cls in data.classes.items()}
+    db_classes = [classes[name] for name in toposort_flatten(inheritance_graph) if not classes[name].ipa]
+    renderer.render(ql.DbClasses(db_classes), out / "Db.qll")
 
-    for c in classes:
+    classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
+    for c in classes_by_dir_and_name:
         imports[c.name] = get_import(stub_out / c.path, opts.swift_dir)
 
-    for c in classes:
+    for c in classes.values():
         qll = out / c.path.with_suffix(".qll")
         c.imports = [imports[t] for t in get_classes_used_by(c)]
         renderer.render(c, qll)
@@ -243,10 +244,9 @@ def generate(opts, renderer):
     include_file = stub_out.with_suffix(".qll")
     renderer.render(ql.ImportList(list(imports.values())), include_file)
 
-    renderer.render(ql.GetParentImplementation(
-        classes), out / 'GetImmediateParent.qll')
+    renderer.render(ql.GetParentImplementation(classes_by_dir_and_name), out / 'GetImmediateParent.qll')
 
-    for c in input_classes:
+    for c in data.classes.values():
         if _should_skip_qltest(c, data.classes):
             continue
         test_dir = test_out / c.dir / c.name
@@ -267,7 +267,7 @@ def generate(opts, renderer):
     final_ipa_types = []
     non_final_ipa_types = []
     constructor_imports = []
-    for cls in input_classes:
+    for cls in sorted(data.classes.values(), key=lambda cls: (cls.dir, cls.name)):
         ipa_type = get_ql_ipa_class(cls)
         if ipa_type.is_final:
             final_ipa_types.append(ipa_type)

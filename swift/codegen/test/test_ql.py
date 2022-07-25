@@ -21,7 +21,7 @@ def test_property_has_first_table_param_marked():
 ])
 def test_property_is_a_class(type, expected):
     tableparams = ["a", "result", "b"]
-    expected_tableparams = ["a", "x" if expected else "result", "b"]
+    expected_tableparams = ["a", "result" if expected else "result", "b"]
     prop = ql.Property("Prop", type, tableparams=tableparams)
     assert prop.type_is_class is expected
     assert [p.param for p in prop.tableparams] == expected_tableparams
@@ -46,7 +46,7 @@ def test_property_indefinite_article(name, expected_getter):
     ("X", True),
 ])
 def test_property_is_repeated(plural, expected):
-    prop = ql.Property("foo", "Foo", "props", ["x"], plural=plural)
+    prop = ql.Property("foo", "Foo", "props", ["result"], plural=plural)
     assert prop.is_repeated is expected
 
 
@@ -58,12 +58,12 @@ def test_property_is_repeated(plural, expected):
     (False, True, None, False),
 ])
 def test_property_is_single(is_optional, is_predicate, plural, expected):
-    prop = ql.Property("foo", "Foo", "props", ["x"], plural=plural, is_predicate=is_predicate, is_optional=is_optional)
+    prop = ql.Property("foo", "Foo", "props", ["result"], plural=plural, is_predicate=is_predicate, is_optional=is_optional)
     assert prop.is_single is expected
 
 
 def test_property_no_plural_no_indefinite_getter():
-    prop = ql.Property("Prop", "Foo", "props", ["x"])
+    prop = ql.Property("Prop", "Foo", "props", ["result"])
     assert prop.indefinite_getter is None
 
 
