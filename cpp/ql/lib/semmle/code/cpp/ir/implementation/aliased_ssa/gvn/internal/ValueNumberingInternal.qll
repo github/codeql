@@ -92,6 +92,20 @@ predicate callArgValueNumber(CallInstruction call, int index, TValueNumber arg) 
 predicate callArgRank(CallInstruction call, int index, Instruction arg) {
   arg =
     rank[index](int argIndex, boolean isEffect, Instruction instr |
+      exists(CallSideEffectInstruction cse |
+        cse.getPrimaryInstruction() = call and
+        cse.getSideEffectOperand().getAnyDef() = instr and
+        argIndex = -2 and
+        isEffect = false
+      )
+      or
+      exists(CallReadSideEffectInstruction cse |
+        cse.getPrimaryInstruction() = call and
+        cse.getSideEffectOperand().getAnyDef() = instr and
+        argIndex = -2 and
+        isEffect = false
+      )
+      or
       instr = call.getThisArgument() and
       argIndex = -1 and
       isEffect = false

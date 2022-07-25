@@ -1712,6 +1712,15 @@ class SideEffectInstruction extends Instruction {
  */
 class CallSideEffectInstruction extends SideEffectInstruction {
   CallSideEffectInstruction() { this.getOpcode() instanceof Opcode::CallSideEffect }
+
+  /** Gets the operand for the value that will be read by this instruction */
+  final SideEffectOperand getSideEffectOperand() {
+    result = this.getAnOperand()
+  }
+
+  final Instruction getSideEffect() {
+    result = this.getAnOperand().getDef()
+  }
 }
 
 /**
@@ -1723,6 +1732,15 @@ class CallSideEffectInstruction extends SideEffectInstruction {
  */
 class CallReadSideEffectInstruction extends SideEffectInstruction {
   CallReadSideEffectInstruction() { this.getOpcode() instanceof Opcode::CallReadSideEffect }
+  
+  /** Gets the operand for the value that will be read by this instruction */
+  final SideEffectOperand getSideEffectOperand() {
+    result = this.getAnOperand()
+  }
+
+  final Instruction getSideEffect() {
+    result = this.getAnOperand().getDef()
+  }
 }
 
 /**
