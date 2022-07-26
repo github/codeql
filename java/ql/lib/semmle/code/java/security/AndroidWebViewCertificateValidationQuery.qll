@@ -14,13 +14,6 @@ class OnReceivedSslErrorMethod extends Method {
   Parameter handlerArg() { result = this.getParameter(1) }
 }
 
-/** A call to `SslErrorHandler.cancel` */
-private class SslCancelCall extends MethodAccess {
-  SslCancelCall() {
-    this.getMethod().hasQualifiedName("android.webkit", "SslErrorHandler", "cancel")
-  }
-}
-
 /** A call to `SslErrorHandler.proceed` */
 private class SslProceedCall extends MethodAccess {
   SslProceedCall() {
@@ -30,6 +23,7 @@ private class SslProceedCall extends MethodAccess {
 
 /** Holds if `m` trusts all certificates by calling `SslErrorHandler.proceed` unconditionally. */
 predicate trustsAllCerts(OnReceivedSslErrorMethod m) {
-  exists(SslProceedCall pr | pr.getQualifier().(VarAccess).getVariable() = m.handlerArg()) and
-  not exists(SslCancelCall ca | ca.getQualifier().(VarAccess).getVariable() = m.handlerArg())
+  exists(SslProceedCall pr | pr.getQualifier().(VarAccess).getVariable() = m.handlerArg() |
+    pr.getBasicBlock().bbPostDominates(m.getBody().getBasicBlock())
+  )
 }
