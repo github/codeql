@@ -121,7 +121,7 @@ class BuiltInNoOp extends BuiltInOperation, @noopexpr {
 /**
  * A C/C++ `__builtin_offsetof` built-in operation (used by some implementations
  * of `offsetof`).  The operation retains its semantics even in the presence
- * of an overloaded `operator &`).  This is a GNU/Clang extension.
+ * of an overloaded `operator &`).  This is a gcc/clang extension.
  * ```
  * struct S {
  *   int a, b;
@@ -492,6 +492,23 @@ class BuiltInOperationBuiltInShuffleVector extends BuiltInOperation, @builtinshu
   override string toString() { result = "__builtin_shufflevector" }
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationBuiltInShuffleVector" }
+}
+
+/**
+ * A gcc `__builtin_shuffle` expression.
+ *
+ * It outputs a permutation of elements from one or two input vectors.
+ * Please see https://gcc.gnu.org/onlinedocs/gcc/Vector-Extensions.html
+ * for more information.
+ * ```
+ * // Concatenate every other element of 4-element vectors V1 and V2.
+ * V3 = __builtin_shufflevector(V1, V2, {0, 2, 4, 6});
+ * ```
+ */
+class BuiltInOperationBuiltInShuffle extends BuiltInOperation, @builtinshuffle {
+  override string toString() { result = "__builtin_shuffle" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationBuiltInShuffle" }
 }
 
 /**
@@ -946,7 +963,7 @@ class BuiltInOperationIsFinal extends BuiltInOperation, @isfinalexpr {
 }
 
 /**
- * The `__builtin_choose_expr` expression.  This is a GNU/Clang extension.
+ * The `__builtin_choose_expr` expression.  This is a gcc/clang extension.
  *
  * The expression functions similarly to the ternary `?:` operator, except
  * that it is evaluated at compile-time.

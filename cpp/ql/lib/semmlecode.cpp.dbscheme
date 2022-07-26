@@ -1654,6 +1654,7 @@ case @expr.kind of
 | 331 = @isaggregate
 | 332 = @hasuniqueobjectrepresentations
 | 333 = @builtinbitcast
+| 334 = @builtinshuffle
 ;
 
 @var_args_expr = @vastartexpr
@@ -1719,6 +1720,7 @@ case @expr.kind of
             | @isaggregate
             | @hasuniqueobjectrepresentations
             | @builtinbitcast
+            | @builtinshuffle
             ;
 
 new_allocated_type(
