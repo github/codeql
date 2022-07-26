@@ -3,6 +3,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.TaintTracking2
 private import semmle.python.dataflow.new.TaintTracking3
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.DataFlow2
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 
@@ -48,10 +49,10 @@ private predicate existsFailFastCheck(Expr firstInput, Expr secondInput) {
 }
 
 /** A sink that compares input using fail fast check. */
-class NonConstantTimeComparisonOfHashSink extends DataFlow::Node {
+class NonConstantTimeComparisonSink extends DataFlow::Node {
   Expr anotherParameter;
 
-  NonConstantTimeComparisonOfHashSink() {
+  NonConstantTimeComparisonSink() {
     existsFailFastCheck(this.asExpr(), anotherParameter) and
     not anotherParameter.isConstant() 
   }
@@ -64,19 +65,16 @@ class NonConstantTimeComparisonOfHashSink extends DataFlow::Node {
   }
 }
 
-/** A sink that compares input using fail fast check. */
-class NonConstantTimeComparisonOfSecretSink extends DataFlow::Node {
-  Expr anotherParameter;
+/** A data flow source of the secret obtained. */
+class SecretSource extends DataFlow::Node {
+  CredentialExpr secret;
 
-  NonConstantTimeComparisonOfSecretSink() {
-    existsFailFastCheck(this.asExpr(), anotherParameter) and
-    not anotherParameter.isConstant() 
-  }
+  SecretSource() { secret = this.asExpr() }
 
-  /** Holds if remote user input was used in the comparison. */
+  /** Holds if the source of secret was remote user input. */
   predicate includesUserInput() {
     exists(UserInputSecretConfig config |
-      config.hasFlowTo(DataFlow2::exprNode(anotherParameter))
+      config.hasFlowTo(DataFlow2::exprNode(secret))
     )
   }
 }
@@ -188,7 +186,7 @@ class UserInputSecretConfig extends TaintTracking2::Configuration {
 /**
  * A config that tracks data flow from remote user input to Equality test
  */
-class UserInputInComparisonConfig extends TaintTracking3::Configuration {
+class UserInputInComparisonConfig extends TaintTracking2::Configuration {
   UserInputInComparisonConfig() { this = "UserInputInComparisonConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
