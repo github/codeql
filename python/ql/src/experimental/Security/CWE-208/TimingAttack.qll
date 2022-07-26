@@ -2,10 +2,11 @@ private import python
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.TaintTracking2
 private import semmle.python.dataflow.new.TaintTracking3
+private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
-private import experimental.semmle.python.Concepts
 
+/** A data flow source of the hash obtained */
 class ProduceHashCall extends DataFlow::CallCfgNode {
   ProduceHashCall() {
     this = API::moduleImport("hmac").getMember("digest").getACall() or
@@ -28,9 +29,8 @@ class ProduceHashCall extends DataFlow::CallCfgNode {
 }
 
 /** A data flow sink for comparison. */
-class CompareSink extends DataFlow::Node {
-  CompareSink() {
-    exists(Compare compare |
+private predicate existsFailFastCheck(Expr firstInput, Expr secondInput) {
+  exists(Compare compare |
       (
         compare.getOp(0) instanceof Eq or
         compare.getOp(0) instanceof NotEq or
@@ -38,10 +38,45 @@ class CompareSink extends DataFlow::Node {
         compare.getOp(0) instanceof NotIn
       ) and
       (
-        compare.getLeft() = this.asExpr()
+        compare.getLeft() = firstInput and
+        compare.getComparator(0) = secondInput
         or
-        compare.getComparator(0) = this.asExpr()
+        compare.getLeft() = secondInput and
+        compare.getComparator(0) = firstInput       
       )
+  )
+}
+
+/** A sink that compares input using fail fast check. */
+class NonConstantTimeComparisonOfHashSink extends DataFlow::Node {
+  Expr anotherParameter;
+
+  NonConstantTimeComparisonOfHashSink() {
+    existsFailFastCheck(this.asExpr(), anotherParameter) and
+    not anotherParameter.isConstant() 
+  }
+
+  /** Holds if remote user input was used in the comparison. */
+  predicate includesUserInput() {
+    exists(UserInputInComparisonConfig config |
+      config.hasFlowTo(DataFlow2::exprNode(anotherParameter))
+    )
+  }
+}
+
+/** A sink that compares input using fail fast check. */
+class NonConstantTimeComparisonOfSecretSink extends DataFlow::Node {
+  Expr anotherParameter;
+
+  NonConstantTimeComparisonOfSecretSink() {
+    existsFailFastCheck(this.asExpr(), anotherParameter) and
+    not anotherParameter.isConstant() 
+  }
+
+  /** Holds if remote user input was used in the comparison. */
+  predicate includesUserInput() {
+    exists(UserInputSecretConfig config |
+      config.hasFlowTo(DataFlow2::exprNode(anotherParameter))
     )
   }
 }
@@ -140,19 +175,6 @@ private string sensitiveheaders() {
 }
 
 /**
- * A config that tracks data flow from remote user input to cryptographic operations
- */
-class UserInputMsgConfig extends TaintTracking::Configuration {
-  UserInputMsgConfig() { this = "UserInputMsgConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink = any(CryptographicOperation cryptography).getAnInput()
-  }
-}
-
-/**
  * A config that tracks data flow from remote user input to Variable that hold sensitive info
  */
 class UserInputSecretConfig extends TaintTracking2::Configuration {
@@ -171,5 +193,11 @@ class UserInputInComparisonConfig extends TaintTracking3::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof CompareSink }
+  override predicate isSink(DataFlow::Node sink) { 
+    exists(Compare cmp, Expr left, Expr right, Cmpop cmpop |
+      cmpop.getSymbol() = ["==", "in", "is not", "!="] and
+      cmp.compares(left, cmpop, right) and
+      sink.asExpr() = [left, right]
+    )
+  }
 }
