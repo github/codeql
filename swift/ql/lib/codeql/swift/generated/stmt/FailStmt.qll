@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.stmt.Stmt
 
-class FailStmtBase extends Cached::TFailStmt, Stmt {
-  final override Db::FailStmt asDbInstance() { this = Cached::TFailStmt(result) }
-
+class FailStmtBase extends Ipa::TFailStmt, Stmt {
   override string getAPrimaryQlClass() { result = "FailStmt" }
 }

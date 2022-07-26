@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class OpaqueValueExprBase extends Cached::TOpaqueValueExpr, Expr {
-  final override Db::OpaqueValueExpr asDbInstance() { this = Cached::TOpaqueValueExpr(result) }
-
+class OpaqueValueExprBase extends Ipa::TOpaqueValueExpr, Expr {
   override string getAPrimaryQlClass() { result = "OpaqueValueExpr" }
 }

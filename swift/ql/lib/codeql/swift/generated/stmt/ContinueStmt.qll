@@ -3,17 +3,15 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.stmt.Stmt
 
-class ContinueStmtBase extends Cached::TContinueStmt, Stmt {
-  final override Db::ContinueStmt asDbInstance() { this = Cached::TContinueStmt(result) }
-
+class ContinueStmtBase extends Ipa::TContinueStmt, Stmt {
   override string getAPrimaryQlClass() { result = "ContinueStmt" }
 
-  string getTargetName() { result = asDbInstance().(Db::ContinueStmt).getTargetName() }
+  string getTargetName() { result = Ipa::toDbInstance(this).(Db::ContinueStmt).getTargetName() }
 
   final predicate hasTargetName() { exists(getTargetName()) }
 
   Stmt getImmediateTarget() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ContinueStmt).getTarget())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ContinueStmt).getTarget())
   }
 
   final Stmt getTarget() { result = getImmediateTarget().resolve() }

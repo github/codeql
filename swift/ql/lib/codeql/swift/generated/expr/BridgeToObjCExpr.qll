@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class BridgeToObjCExprBase extends Cached::TBridgeToObjCExpr, ImplicitConversionExpr {
-  final override Db::BridgeToObjCExpr asDbInstance() { this = Cached::TBridgeToObjCExpr(result) }
-
+class BridgeToObjCExprBase extends Ipa::TBridgeToObjCExpr, ImplicitConversionExpr {
   override string getAPrimaryQlClass() { result = "BridgeToObjCExpr" }
 }

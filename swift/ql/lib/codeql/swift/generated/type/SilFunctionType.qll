@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class SilFunctionTypeBase extends Cached::TSilFunctionType, Type {
-  final override Db::SilFunctionType asDbInstance() { this = Cached::TSilFunctionType(result) }
-
+class SilFunctionTypeBase extends Ipa::TSilFunctionType, Type {
   override string getAPrimaryQlClass() { result = "SilFunctionType" }
 }

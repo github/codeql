@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinBridgeObjectTypeBase extends Cached::TBuiltinBridgeObjectType, BuiltinType {
-  final override Db::BuiltinBridgeObjectType asDbInstance() {
-    this = Cached::TBuiltinBridgeObjectType(result)
-  }
-
+class BuiltinBridgeObjectTypeBase extends Ipa::TBuiltinBridgeObjectType, BuiltinType {
   override string getAPrimaryQlClass() { result = "BuiltinBridgeObjectType" }
 }

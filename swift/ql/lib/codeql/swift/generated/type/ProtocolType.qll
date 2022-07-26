@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.NominalType
 
-class ProtocolTypeBase extends Cached::TProtocolType, NominalType {
-  final override Db::ProtocolType asDbInstance() { this = Cached::TProtocolType(result) }
-
+class ProtocolTypeBase extends Ipa::TProtocolType, NominalType {
   override string getAPrimaryQlClass() { result = "ProtocolType" }
 }

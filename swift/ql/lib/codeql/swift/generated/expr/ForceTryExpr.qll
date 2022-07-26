@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.AnyTryExpr
 
-class ForceTryExprBase extends Cached::TForceTryExpr, AnyTryExpr {
-  final override Db::ForceTryExpr asDbInstance() { this = Cached::TForceTryExpr(result) }
-
+class ForceTryExprBase extends Ipa::TForceTryExpr, AnyTryExpr {
   override string getAPrimaryQlClass() { result = "ForceTryExpr" }
 }

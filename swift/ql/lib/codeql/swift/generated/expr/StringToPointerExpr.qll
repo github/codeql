@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class StringToPointerExprBase extends Cached::TStringToPointerExpr, ImplicitConversionExpr {
-  final override Db::StringToPointerExpr asDbInstance() {
-    this = Cached::TStringToPointerExpr(result)
-  }
-
+class StringToPointerExprBase extends Ipa::TStringToPointerExpr, ImplicitConversionExpr {
   override string getAPrimaryQlClass() { result = "StringToPointerExpr" }
 }

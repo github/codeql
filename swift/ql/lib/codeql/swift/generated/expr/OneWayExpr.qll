@@ -3,13 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class OneWayExprBase extends Cached::TOneWayExpr, Expr {
-  final override Db::OneWayExpr asDbInstance() { this = Cached::TOneWayExpr(result) }
-
+class OneWayExprBase extends Ipa::TOneWayExpr, Expr {
   override string getAPrimaryQlClass() { result = "OneWayExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::OneWayExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::OneWayExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

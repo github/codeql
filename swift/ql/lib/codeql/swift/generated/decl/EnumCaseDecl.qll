@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.EnumElementDecl
 
-class EnumCaseDeclBase extends Cached::TEnumCaseDecl, Decl {
-  final override Db::EnumCaseDecl asDbInstance() { this = Cached::TEnumCaseDecl(result) }
-
+class EnumCaseDeclBase extends Ipa::TEnumCaseDecl, Decl {
   override string getAPrimaryQlClass() { result = "EnumCaseDecl" }
 
   EnumElementDecl getImmediateElement(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::EnumCaseDecl).getElement(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::EnumCaseDecl).getElement(index))
   }
 
   final EnumElementDecl getElement(int index) { result = getImmediateElement(index).resolve() }

@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.type.TypeRepr
 
-class KeyPathExprBase extends Cached::TKeyPathExpr, Expr {
-  final override Db::KeyPathExpr asDbInstance() { this = Cached::TKeyPathExpr(result) }
-
+class KeyPathExprBase extends Ipa::TKeyPathExpr, Expr {
   override string getAPrimaryQlClass() { result = "KeyPathExpr" }
 
   TypeRepr getImmediateRoot() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::KeyPathExpr).getRoot())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::KeyPathExpr).getRoot())
   }
 
   final TypeRepr getRoot() { result = getImmediateRoot().resolve() }
@@ -18,7 +16,7 @@ class KeyPathExprBase extends Cached::TKeyPathExpr, Expr {
   final predicate hasRoot() { exists(getRoot()) }
 
   Expr getImmediateParsedPath() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::KeyPathExpr).getParsedPath())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::KeyPathExpr).getParsedPath())
   }
 
   final Expr getParsedPath() { result = getImmediateParsedPath().resolve() }

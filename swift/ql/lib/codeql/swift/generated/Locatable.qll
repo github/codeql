@@ -4,9 +4,9 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.Element
 import codeql.swift.elements.Location
 
-class LocatableBase extends Cached::TLocatable, Element {
+class LocatableBase extends Ipa::TLocatable, Element {
   Location getImmediateLocation() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::Locatable).getLocation())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Locatable).getLocation())
   }
 
   final Location getLocation() { result = getImmediateLocation().resolve() }

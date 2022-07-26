@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.File
 
-class DbFileBase extends Cached::TDbFile, File {
-  final override Db::DbFile asDbInstance() { this = Cached::TDbFile(result) }
-
+class DbFileBase extends Ipa::TDbFile, File {
   override string getAPrimaryQlClass() { result = "DbFile" }
 }

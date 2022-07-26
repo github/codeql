@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.ArchetypeType
 
-class OpaqueTypeArchetypeTypeBase extends Cached::TOpaqueTypeArchetypeType, ArchetypeType {
-  final override Db::OpaqueTypeArchetypeType asDbInstance() {
-    this = Cached::TOpaqueTypeArchetypeType(result)
-  }
-
+class OpaqueTypeArchetypeTypeBase extends Ipa::TOpaqueTypeArchetypeType, ArchetypeType {
   override string getAPrimaryQlClass() { result = "OpaqueTypeArchetypeType" }
 }

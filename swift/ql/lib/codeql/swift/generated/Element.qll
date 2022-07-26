@@ -2,7 +2,7 @@
 private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 
-class ElementBase extends Cached::TElement {
+class ElementBase extends Ipa::TElement {
   string toString() { none() } // overridden by subclasses
 
   string getAPrimaryQlClass() { none() } // overridden by subclasses
@@ -17,7 +17,5 @@ class ElementBase extends Cached::TElement {
     result = getResolveStep().resolve()
   }
 
-  Db::Element asDbInstance() { none() }
-
-  predicate isUnknown() { asDbInstance().(Db::Element).isUnknown() }
+  predicate isUnknown() { Ipa::toDbInstance(this).(Db::Element).isUnknown() }
 }

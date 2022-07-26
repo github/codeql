@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class SilTokenTypeBase extends Cached::TSilTokenType, Type {
-  final override Db::SilTokenType asDbInstance() { this = Cached::TSilTokenType(result) }
-
+class SilTokenTypeBase extends Ipa::TSilTokenType, Type {
   override string getAPrimaryQlClass() { result = "SilTokenType" }
 }

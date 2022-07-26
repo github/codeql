@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.DynamicLookupExpr
 
-class DynamicSubscriptExprBase extends Cached::TDynamicSubscriptExpr, DynamicLookupExpr {
-  final override Db::DynamicSubscriptExpr asDbInstance() {
-    this = Cached::TDynamicSubscriptExpr(result)
-  }
-
+class DynamicSubscriptExprBase extends Ipa::TDynamicSubscriptExpr, DynamicLookupExpr {
   override string getAPrimaryQlClass() { result = "DynamicSubscriptExpr" }
 }

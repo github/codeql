@@ -3,10 +3,8 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.pattern.Pattern
 
-class BoolPatternBase extends Cached::TBoolPattern, Pattern {
-  final override Db::BoolPattern asDbInstance() { this = Cached::TBoolPattern(result) }
-
+class BoolPatternBase extends Ipa::TBoolPattern, Pattern {
   override string getAPrimaryQlClass() { result = "BoolPattern" }
 
-  boolean getValue() { result = asDbInstance().(Db::BoolPattern).getValue() }
+  boolean getValue() { result = Ipa::toDbInstance(this).(Db::BoolPattern).getValue() }
 }

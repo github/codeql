@@ -3,4 +3,4 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class SugarTypeBase extends Cached::TSugarType, Type { }
+class SugarTypeBase extends Ipa::TSugarType, Type { }

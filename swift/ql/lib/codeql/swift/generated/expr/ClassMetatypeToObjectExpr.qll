@@ -3,11 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class ClassMetatypeToObjectExprBase extends Cached::TClassMetatypeToObjectExpr,
-  ImplicitConversionExpr {
-  final override Db::ClassMetatypeToObjectExpr asDbInstance() {
-    this = Cached::TClassMetatypeToObjectExpr(result)
-  }
-
+class ClassMetatypeToObjectExprBase extends Ipa::TClassMetatypeToObjectExpr, ImplicitConversionExpr {
   override string getAPrimaryQlClass() { result = "ClassMetatypeToObjectExpr" }
 }

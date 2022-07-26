@@ -3,13 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class TupleTypeBase extends Cached::TTupleType, Type {
-  final override Db::TupleType asDbInstance() { this = Cached::TTupleType(result) }
-
+class TupleTypeBase extends Ipa::TTupleType, Type {
   override string getAPrimaryQlClass() { result = "TupleType" }
 
   Type getImmediateType(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TupleType).getType(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TupleType).getType(index))
   }
 
   final Type getType(int index) { result = getImmediateType(index).resolve() }
@@ -18,7 +16,7 @@ class TupleTypeBase extends Cached::TTupleType, Type {
 
   final int getNumberOfTypes() { result = count(getAType()) }
 
-  string getName(int index) { result = asDbInstance().(Db::TupleType).getName(index) }
+  string getName(int index) { result = Ipa::toDbInstance(this).(Db::TupleType).getName(index) }
 
   final string getAName() { result = getName(_) }
 

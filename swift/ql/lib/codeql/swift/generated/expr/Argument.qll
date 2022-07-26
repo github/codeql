@@ -4,15 +4,13 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.Locatable
 
-class ArgumentBase extends Cached::TArgument, Locatable {
-  final override Db::Argument asDbInstance() { this = Cached::TArgument(result) }
-
+class ArgumentBase extends Ipa::TArgument, Locatable {
   override string getAPrimaryQlClass() { result = "Argument" }
 
-  string getLabel() { result = asDbInstance().(Db::Argument).getLabel() }
+  string getLabel() { result = Ipa::toDbInstance(this).(Db::Argument).getLabel() }
 
   Expr getImmediateExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::Argument).getExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Argument).getExpr())
   }
 
   final Expr getExpr() { result = getImmediateExpr().resolve() }

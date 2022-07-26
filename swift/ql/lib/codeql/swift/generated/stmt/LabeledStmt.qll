@@ -3,8 +3,8 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.stmt.Stmt
 
-class LabeledStmtBase extends Cached::TLabeledStmt, Stmt {
-  string getLabel() { result = asDbInstance().(Db::LabeledStmt).getLabel() }
+class LabeledStmtBase extends Ipa::TLabeledStmt, Stmt {
+  string getLabel() { result = Ipa::toDbInstance(this).(Db::LabeledStmt).getLabel() }
 
   final predicate hasLabel() { exists(getLabel()) }
 }

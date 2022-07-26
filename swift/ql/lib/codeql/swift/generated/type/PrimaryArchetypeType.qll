@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.ArchetypeType
 
-class PrimaryArchetypeTypeBase extends Cached::TPrimaryArchetypeType, ArchetypeType {
-  final override Db::PrimaryArchetypeType asDbInstance() {
-    this = Cached::TPrimaryArchetypeType(result)
-  }
-
+class PrimaryArchetypeTypeBase extends Ipa::TPrimaryArchetypeType, ArchetypeType {
   override string getAPrimaryQlClass() { result = "PrimaryArchetypeType" }
 }

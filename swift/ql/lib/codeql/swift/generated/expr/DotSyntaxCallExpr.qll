@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.SelfApplyExpr
 
-class DotSyntaxCallExprBase extends Cached::TDotSyntaxCallExpr, SelfApplyExpr {
-  final override Db::DotSyntaxCallExpr asDbInstance() { this = Cached::TDotSyntaxCallExpr(result) }
-
+class DotSyntaxCallExprBase extends Ipa::TDotSyntaxCallExpr, SelfApplyExpr {
   override string getAPrimaryQlClass() { result = "DotSyntaxCallExpr" }
 }

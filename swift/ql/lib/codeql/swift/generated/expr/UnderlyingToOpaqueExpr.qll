@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class UnderlyingToOpaqueExprBase extends Cached::TUnderlyingToOpaqueExpr, ImplicitConversionExpr {
-  final override Db::UnderlyingToOpaqueExpr asDbInstance() {
-    this = Cached::TUnderlyingToOpaqueExpr(result)
-  }
-
+class UnderlyingToOpaqueExprBase extends Ipa::TUnderlyingToOpaqueExpr, ImplicitConversionExpr {
   override string getAPrimaryQlClass() { result = "UnderlyingToOpaqueExpr" }
 }

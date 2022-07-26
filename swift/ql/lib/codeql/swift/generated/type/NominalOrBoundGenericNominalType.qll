@@ -3,5 +3,5 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.AnyGenericType
 
-class NominalOrBoundGenericNominalTypeBase extends Cached::TNominalOrBoundGenericNominalType,
+class NominalOrBoundGenericNominalTypeBase extends Ipa::TNominalOrBoundGenericNominalType,
   AnyGenericType { }

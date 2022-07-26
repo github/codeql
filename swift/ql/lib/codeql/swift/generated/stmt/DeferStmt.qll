@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.stmt.Stmt
 
-class DeferStmtBase extends Cached::TDeferStmt, Stmt {
-  final override Db::DeferStmt asDbInstance() { this = Cached::TDeferStmt(result) }
-
+class DeferStmtBase extends Ipa::TDeferStmt, Stmt {
   override string getAPrimaryQlClass() { result = "DeferStmt" }
 
   BraceStmt getImmediateBody() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DeferStmt).getBody())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DeferStmt).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

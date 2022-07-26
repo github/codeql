@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class KeyPathDotExprBase extends Cached::TKeyPathDotExpr, Expr {
-  final override Db::KeyPathDotExpr asDbInstance() { this = Cached::TKeyPathDotExpr(result) }
-
+class KeyPathDotExprBase extends Ipa::TKeyPathDotExpr, Expr {
   override string getAPrimaryQlClass() { result = "KeyPathDotExpr" }
 }

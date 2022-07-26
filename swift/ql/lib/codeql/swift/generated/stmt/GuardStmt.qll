@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.stmt.LabeledConditionalStmt
 
-class GuardStmtBase extends Cached::TGuardStmt, LabeledConditionalStmt {
-  final override Db::GuardStmt asDbInstance() { this = Cached::TGuardStmt(result) }
-
+class GuardStmtBase extends Ipa::TGuardStmt, LabeledConditionalStmt {
   override string getAPrimaryQlClass() { result = "GuardStmt" }
 
   BraceStmt getImmediateBody() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::GuardStmt).getBody())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::GuardStmt).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

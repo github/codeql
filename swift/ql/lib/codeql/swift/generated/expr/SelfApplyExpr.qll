@@ -4,9 +4,9 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ApplyExpr
 import codeql.swift.elements.expr.Expr
 
-class SelfApplyExprBase extends Cached::TSelfApplyExpr, ApplyExpr {
+class SelfApplyExprBase extends Ipa::TSelfApplyExpr, ApplyExpr {
   Expr getImmediateBaseExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::SelfApplyExpr).getBaseExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SelfApplyExpr).getBaseExpr())
   }
 
   final Expr getBaseExpr() { result = getImmediateBaseExpr().resolve() }

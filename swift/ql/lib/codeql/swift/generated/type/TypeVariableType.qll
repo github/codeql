@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class TypeVariableTypeBase extends Cached::TTypeVariableType, Type {
-  final override Db::TypeVariableType asDbInstance() { this = Cached::TTypeVariableType(result) }
-
+class TypeVariableTypeBase extends Ipa::TTypeVariableType, Type {
   override string getAPrimaryQlClass() { result = "TypeVariableType" }
 }

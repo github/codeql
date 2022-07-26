@@ -3,11 +3,7 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class ForeignObjectConversionExprBase extends Cached::TForeignObjectConversionExpr,
+class ForeignObjectConversionExprBase extends Ipa::TForeignObjectConversionExpr,
   ImplicitConversionExpr {
-  final override Db::ForeignObjectConversionExpr asDbInstance() {
-    this = Cached::TForeignObjectConversionExpr(result)
-  }
-
   override string getAPrimaryQlClass() { result = "ForeignObjectConversionExpr" }
 }

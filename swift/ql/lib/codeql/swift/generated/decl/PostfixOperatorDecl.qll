@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.OperatorDecl
 
-class PostfixOperatorDeclBase extends Cached::TPostfixOperatorDecl, OperatorDecl {
-  final override Db::PostfixOperatorDecl asDbInstance() {
-    this = Cached::TPostfixOperatorDecl(result)
-  }
-
+class PostfixOperatorDeclBase extends Ipa::TPostfixOperatorDecl, OperatorDecl {
   override string getAPrimaryQlClass() { result = "PostfixOperatorDecl" }
 }

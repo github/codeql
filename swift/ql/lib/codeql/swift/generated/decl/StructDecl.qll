@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.NominalTypeDecl
 
-class StructDeclBase extends Cached::TStructDecl, NominalTypeDecl {
-  final override Db::StructDecl asDbInstance() { this = Cached::TStructDecl(result) }
-
+class StructDeclBase extends Ipa::TStructDecl, NominalTypeDecl {
   override string getAPrimaryQlClass() { result = "StructDecl" }
 }

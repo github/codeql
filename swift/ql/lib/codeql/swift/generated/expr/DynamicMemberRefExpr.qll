@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.DynamicLookupExpr
 
-class DynamicMemberRefExprBase extends Cached::TDynamicMemberRefExpr, DynamicLookupExpr {
-  final override Db::DynamicMemberRefExpr asDbInstance() {
-    this = Cached::TDynamicMemberRefExpr(result)
-  }
-
+class DynamicMemberRefExprBase extends Ipa::TDynamicMemberRefExpr, DynamicLookupExpr {
   override string getAPrimaryQlClass() { result = "DynamicMemberRefExpr" }
 }

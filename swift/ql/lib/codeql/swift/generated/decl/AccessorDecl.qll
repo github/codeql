@@ -3,16 +3,14 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.FuncDecl
 
-class AccessorDeclBase extends Cached::TAccessorDecl, FuncDecl {
-  final override Db::AccessorDecl asDbInstance() { this = Cached::TAccessorDecl(result) }
-
+class AccessorDeclBase extends Ipa::TAccessorDecl, FuncDecl {
   override string getAPrimaryQlClass() { result = "AccessorDecl" }
 
-  predicate isGetter() { asDbInstance().(Db::AccessorDecl).isGetter() }
+  predicate isGetter() { Ipa::toDbInstance(this).(Db::AccessorDecl).isGetter() }
 
-  predicate isSetter() { asDbInstance().(Db::AccessorDecl).isSetter() }
+  predicate isSetter() { Ipa::toDbInstance(this).(Db::AccessorDecl).isSetter() }
 
-  predicate isWillSet() { asDbInstance().(Db::AccessorDecl).isWillSet() }
+  predicate isWillSet() { Ipa::toDbInstance(this).(Db::AccessorDecl).isWillSet() }
 
-  predicate isDidSet() { asDbInstance().(Db::AccessorDecl).isDidSet() }
+  predicate isDidSet() { Ipa::toDbInstance(this).(Db::AccessorDecl).isDidSet() }
 }

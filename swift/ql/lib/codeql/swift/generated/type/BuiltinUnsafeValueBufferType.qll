@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinUnsafeValueBufferTypeBase extends Cached::TBuiltinUnsafeValueBufferType, BuiltinType {
-  final override Db::BuiltinUnsafeValueBufferType asDbInstance() {
-    this = Cached::TBuiltinUnsafeValueBufferType(result)
-  }
-
+class BuiltinUnsafeValueBufferTypeBase extends Ipa::TBuiltinUnsafeValueBufferType, BuiltinType {
   override string getAPrimaryQlClass() { result = "BuiltinUnsafeValueBufferType" }
 }

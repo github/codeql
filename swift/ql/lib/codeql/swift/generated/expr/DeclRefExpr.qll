@@ -5,19 +5,18 @@ import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.type.Type
 
-class DeclRefExprBase extends Cached::TDeclRefExpr, Expr {
-  final override Db::DeclRefExpr asDbInstance() { this = Cached::TDeclRefExpr(result) }
-
+class DeclRefExprBase extends Ipa::TDeclRefExpr, Expr {
   override string getAPrimaryQlClass() { result = "DeclRefExpr" }
 
   Decl getImmediateDecl() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DeclRefExpr).getDecl())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DeclRefExpr).getDecl())
   }
 
   final Decl getDecl() { result = getImmediateDecl().resolve() }
 
   Type getImmediateReplacementType(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DeclRefExpr).getReplacementType(index))
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DeclRefExpr).getReplacementType(index))
   }
 
   final Type getReplacementType(int index) { result = getImmediateReplacementType(index).resolve() }
@@ -27,12 +26,14 @@ class DeclRefExprBase extends Cached::TDeclRefExpr, Expr {
   final int getNumberOfReplacementTypes() { result = count(getAReplacementType()) }
 
   predicate hasDirectToStorageSemantics() {
-    asDbInstance().(Db::DeclRefExpr).hasDirectToStorageSemantics()
+    Ipa::toDbInstance(this).(Db::DeclRefExpr).hasDirectToStorageSemantics()
   }
 
   predicate hasDirectToImplementationSemantics() {
-    asDbInstance().(Db::DeclRefExpr).hasDirectToImplementationSemantics()
+    Ipa::toDbInstance(this).(Db::DeclRefExpr).hasDirectToImplementationSemantics()
   }
 
-  predicate hasOrdinarySemantics() { asDbInstance().(Db::DeclRefExpr).hasOrdinarySemantics() }
+  predicate hasOrdinarySemantics() {
+    Ipa::toDbInstance(this).(Db::DeclRefExpr).hasOrdinarySemantics()
+  }
 }

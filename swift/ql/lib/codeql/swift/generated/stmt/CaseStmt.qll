@@ -5,19 +5,17 @@ import codeql.swift.elements.stmt.CaseLabelItem
 import codeql.swift.elements.stmt.Stmt
 import codeql.swift.elements.decl.VarDecl
 
-class CaseStmtBase extends Cached::TCaseStmt, Stmt {
-  final override Db::CaseStmt asDbInstance() { this = Cached::TCaseStmt(result) }
-
+class CaseStmtBase extends Ipa::TCaseStmt, Stmt {
   override string getAPrimaryQlClass() { result = "CaseStmt" }
 
   Stmt getImmediateBody() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::CaseStmt).getBody())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaseStmt).getBody())
   }
 
   final Stmt getBody() { result = getImmediateBody().resolve() }
 
   CaseLabelItem getImmediateLabel(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::CaseStmt).getLabel(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaseStmt).getLabel(index))
   }
 
   final CaseLabelItem getLabel(int index) { result = getImmediateLabel(index).resolve() }
@@ -27,7 +25,7 @@ class CaseStmtBase extends Cached::TCaseStmt, Stmt {
   final int getNumberOfLabels() { result = count(getALabel()) }
 
   VarDecl getImmediateVariable(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::CaseStmt).getVariable(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaseStmt).getVariable(index))
   }
 
   final VarDecl getVariable(int index) { result = getImmediateVariable(index).resolve() }

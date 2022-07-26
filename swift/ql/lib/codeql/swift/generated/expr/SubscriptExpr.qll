@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Argument
 import codeql.swift.elements.expr.LookupExpr
 
-class SubscriptExprBase extends Cached::TSubscriptExpr, LookupExpr {
-  final override Db::SubscriptExpr asDbInstance() { this = Cached::TSubscriptExpr(result) }
-
+class SubscriptExprBase extends Ipa::TSubscriptExpr, LookupExpr {
   override string getAPrimaryQlClass() { result = "SubscriptExpr" }
 
   Argument getImmediateArgument(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::SubscriptExpr).getArgument(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SubscriptExpr).getArgument(index))
   }
 
   final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }
@@ -20,12 +18,14 @@ class SubscriptExprBase extends Cached::TSubscriptExpr, LookupExpr {
   final int getNumberOfArguments() { result = count(getAnArgument()) }
 
   predicate hasDirectToStorageSemantics() {
-    asDbInstance().(Db::SubscriptExpr).hasDirectToStorageSemantics()
+    Ipa::toDbInstance(this).(Db::SubscriptExpr).hasDirectToStorageSemantics()
   }
 
   predicate hasDirectToImplementationSemantics() {
-    asDbInstance().(Db::SubscriptExpr).hasDirectToImplementationSemantics()
+    Ipa::toDbInstance(this).(Db::SubscriptExpr).hasDirectToImplementationSemantics()
   }
 
-  predicate hasOrdinarySemantics() { asDbInstance().(Db::SubscriptExpr).hasOrdinarySemantics() }
+  predicate hasOrdinarySemantics() {
+    Ipa::toDbInstance(this).(Db::SubscriptExpr).hasOrdinarySemantics()
+  }
 }

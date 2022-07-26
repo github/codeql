@@ -4,9 +4,10 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.AccessorDecl
 import codeql.swift.elements.decl.ValueDecl
 
-class AbstractStorageDeclBase extends Cached::TAbstractStorageDecl, ValueDecl {
+class AbstractStorageDeclBase extends Ipa::TAbstractStorageDecl, ValueDecl {
   AccessorDecl getImmediateAccessorDecl(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::AbstractStorageDecl).getAccessorDecl(index))
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::AbstractStorageDecl).getAccessorDecl(index))
   }
 
   final AccessorDecl getAccessorDecl(int index) {

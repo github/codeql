@@ -4,27 +4,23 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 
-class OpenExistentialExprBase extends Cached::TOpenExistentialExpr, Expr {
-  final override Db::OpenExistentialExpr asDbInstance() {
-    this = Cached::TOpenExistentialExpr(result)
-  }
-
+class OpenExistentialExprBase extends Ipa::TOpenExistentialExpr, Expr {
   override string getAPrimaryQlClass() { result = "OpenExistentialExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::OpenExistentialExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::OpenExistentialExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
   Expr getImmediateExistential() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::OpenExistentialExpr).getExistential())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::OpenExistentialExpr).getExistential())
   }
 
   final Expr getExistential() { result = getImmediateExistential().resolve() }
 
   OpaqueValueExpr getImmediateOpaqueExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::OpenExistentialExpr).getOpaqueExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::OpenExistentialExpr).getOpaqueExpr())
   }
 
   final OpaqueValueExpr getOpaqueExpr() { result = getImmediateOpaqueExpr().resolve() }

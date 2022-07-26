@@ -3,4 +3,4 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class CollectionExprBase extends Cached::TCollectionExpr, Expr { }
+class CollectionExprBase extends Ipa::TCollectionExpr, Expr { }

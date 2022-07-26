@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.AnyFunctionType
 
-class FunctionTypeBase extends Cached::TFunctionType, AnyFunctionType {
-  final override Db::FunctionType asDbInstance() { this = Cached::TFunctionType(result) }
-
+class FunctionTypeBase extends Ipa::TFunctionType, AnyFunctionType {
   override string getAPrimaryQlClass() { result = "FunctionType" }
 }

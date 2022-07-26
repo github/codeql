@@ -3,11 +3,7 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class ExistentialMetatypeToObjectExprBase extends Cached::TExistentialMetatypeToObjectExpr,
+class ExistentialMetatypeToObjectExprBase extends Ipa::TExistentialMetatypeToObjectExpr,
   ImplicitConversionExpr {
-  final override Db::ExistentialMetatypeToObjectExpr asDbInstance() {
-    this = Cached::TExistentialMetatypeToObjectExpr(result)
-  }
-
   override string getAPrimaryQlClass() { result = "ExistentialMetatypeToObjectExpr" }
 }

@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.IfConfigClause
 
-class IfConfigDeclBase extends Cached::TIfConfigDecl, Decl {
-  final override Db::IfConfigDecl asDbInstance() { this = Cached::TIfConfigDecl(result) }
-
+class IfConfigDeclBase extends Ipa::TIfConfigDecl, Decl {
   override string getAPrimaryQlClass() { result = "IfConfigDecl" }
 
   IfConfigClause getImmediateClause(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::IfConfigDecl).getClause(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfConfigDecl).getClause(index))
   }
 
   final IfConfigClause getClause(int index) { result = getImmediateClause(index).resolve() }

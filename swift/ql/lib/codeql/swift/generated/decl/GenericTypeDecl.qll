@@ -4,4 +4,4 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.TypeDecl
 
-class GenericTypeDeclBase extends Cached::TGenericTypeDecl, GenericContext, TypeDecl { }
+class GenericTypeDeclBase extends Ipa::TGenericTypeDecl, GenericContext, TypeDecl { }

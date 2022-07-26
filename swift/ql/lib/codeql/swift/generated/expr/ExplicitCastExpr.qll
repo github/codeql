@@ -3,9 +3,9 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class ExplicitCastExprBase extends Cached::TExplicitCastExpr, Expr {
+class ExplicitCastExprBase extends Ipa::TExplicitCastExpr, Expr {
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ExplicitCastExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ExplicitCastExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

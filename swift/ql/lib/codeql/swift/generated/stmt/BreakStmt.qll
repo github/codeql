@@ -3,17 +3,15 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.stmt.Stmt
 
-class BreakStmtBase extends Cached::TBreakStmt, Stmt {
-  final override Db::BreakStmt asDbInstance() { this = Cached::TBreakStmt(result) }
-
+class BreakStmtBase extends Ipa::TBreakStmt, Stmt {
   override string getAPrimaryQlClass() { result = "BreakStmt" }
 
-  string getTargetName() { result = asDbInstance().(Db::BreakStmt).getTargetName() }
+  string getTargetName() { result = Ipa::toDbInstance(this).(Db::BreakStmt).getTargetName() }
 
   final predicate hasTargetName() { exists(getTargetName()) }
 
   Stmt getImmediateTarget() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::BreakStmt).getTarget())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::BreakStmt).getTarget())
   }
 
   final Stmt getTarget() { result = getImmediateTarget().resolve() }

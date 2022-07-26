@@ -5,19 +5,17 @@ import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.LabeledStmt
 
-class SwitchStmtBase extends Cached::TSwitchStmt, LabeledStmt {
-  final override Db::SwitchStmt asDbInstance() { this = Cached::TSwitchStmt(result) }
-
+class SwitchStmtBase extends Ipa::TSwitchStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "SwitchStmt" }
 
   Expr getImmediateExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::SwitchStmt).getExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SwitchStmt).getExpr())
   }
 
   final Expr getExpr() { result = getImmediateExpr().resolve() }
 
   CaseStmt getImmediateCase(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::SwitchStmt).getCase(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SwitchStmt).getCase(index))
   }
 
   final CaseStmt getCase(int index) { result = getImmediateCase(index).resolve() }

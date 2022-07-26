@@ -3,14 +3,10 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class UnresolvedDeclRefExprBase extends Cached::TUnresolvedDeclRefExpr, Expr {
-  final override Db::UnresolvedDeclRefExpr asDbInstance() {
-    this = Cached::TUnresolvedDeclRefExpr(result)
-  }
-
+class UnresolvedDeclRefExprBase extends Ipa::TUnresolvedDeclRefExpr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedDeclRefExpr" }
 
-  string getName() { result = asDbInstance().(Db::UnresolvedDeclRefExpr).getName() }
+  string getName() { result = Ipa::toDbInstance(this).(Db::UnresolvedDeclRefExpr).getName() }
 
   final predicate hasName() { exists(getName()) }
 }

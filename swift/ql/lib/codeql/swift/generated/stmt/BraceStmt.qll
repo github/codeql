@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.stmt.Stmt
 
-class BraceStmtBase extends Cached::TBraceStmt, Stmt {
-  final override Db::BraceStmt asDbInstance() { this = Cached::TBraceStmt(result) }
-
+class BraceStmtBase extends Ipa::TBraceStmt, Stmt {
   override string getAPrimaryQlClass() { result = "BraceStmt" }
 
   AstNode getImmediateElement(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::BraceStmt).getElement(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::BraceStmt).getElement(index))
   }
 
   final AstNode getElement(int index) { result = getImmediateElement(index).resolve() }

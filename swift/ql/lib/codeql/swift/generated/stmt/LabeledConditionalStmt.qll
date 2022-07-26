@@ -4,9 +4,10 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.stmt.StmtCondition
 
-class LabeledConditionalStmtBase extends Cached::TLabeledConditionalStmt, LabeledStmt {
+class LabeledConditionalStmtBase extends Ipa::TLabeledConditionalStmt, LabeledStmt {
   StmtCondition getImmediateCondition() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::LabeledConditionalStmt).getCondition())
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::LabeledConditionalStmt).getCondition())
   }
 
   final StmtCondition getCondition() { result = getImmediateCondition().resolve() }

@@ -5,19 +5,17 @@ import codeql.swift.elements.AstNode
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 
-class CaseLabelItemBase extends Cached::TCaseLabelItem, AstNode {
-  final override Db::CaseLabelItem asDbInstance() { this = Cached::TCaseLabelItem(result) }
-
+class CaseLabelItemBase extends Ipa::TCaseLabelItem, AstNode {
   override string getAPrimaryQlClass() { result = "CaseLabelItem" }
 
   Pattern getImmediatePattern() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::CaseLabelItem).getPattern())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaseLabelItem).getPattern())
   }
 
   final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
   Expr getImmediateGuard() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::CaseLabelItem).getGuard())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaseLabelItem).getGuard())
   }
 
   final Expr getGuard() { result = getImmediateGuard().resolve() }

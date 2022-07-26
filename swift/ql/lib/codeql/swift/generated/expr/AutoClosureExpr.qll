@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.AbstractClosureExpr
 
-class AutoClosureExprBase extends Cached::TAutoClosureExpr, AbstractClosureExpr {
-  final override Db::AutoClosureExpr asDbInstance() { this = Cached::TAutoClosureExpr(result) }
-
+class AutoClosureExprBase extends Ipa::TAutoClosureExpr, AbstractClosureExpr {
   override string getAPrimaryQlClass() { result = "AutoClosureExpr" }
 }

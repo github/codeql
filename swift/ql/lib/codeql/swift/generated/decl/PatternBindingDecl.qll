@@ -5,15 +5,11 @@ import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 
-class PatternBindingDeclBase extends Cached::TPatternBindingDecl, Decl {
-  final override Db::PatternBindingDecl asDbInstance() {
-    this = Cached::TPatternBindingDecl(result)
-  }
-
+class PatternBindingDeclBase extends Ipa::TPatternBindingDecl, Decl {
   override string getAPrimaryQlClass() { result = "PatternBindingDecl" }
 
   Expr getImmediateInit(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::PatternBindingDecl).getInit(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::PatternBindingDecl).getInit(index))
   }
 
   final Expr getInit(int index) { result = getImmediateInit(index).resolve() }
@@ -23,7 +19,7 @@ class PatternBindingDeclBase extends Cached::TPatternBindingDecl, Decl {
   final Expr getAnInit() { result = getInit(_) }
 
   Pattern getImmediatePattern(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::PatternBindingDecl).getPattern(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::PatternBindingDecl).getPattern(index))
   }
 
   final Pattern getPattern(int index) { result = getImmediatePattern(index).resolve() }

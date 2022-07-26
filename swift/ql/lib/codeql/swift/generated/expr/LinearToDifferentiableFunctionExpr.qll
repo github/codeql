@@ -3,11 +3,7 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class LinearToDifferentiableFunctionExprBase extends Cached::TLinearToDifferentiableFunctionExpr,
+class LinearToDifferentiableFunctionExprBase extends Ipa::TLinearToDifferentiableFunctionExpr,
   ImplicitConversionExpr {
-  final override Db::LinearToDifferentiableFunctionExpr asDbInstance() {
-    this = Cached::TLinearToDifferentiableFunctionExpr(result)
-  }
-
   override string getAPrimaryQlClass() { result = "LinearToDifferentiableFunctionExpr" }
 }

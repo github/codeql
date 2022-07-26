@@ -3,11 +3,7 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinRawUnsafeContinuationTypeBase extends Cached::TBuiltinRawUnsafeContinuationType,
+class BuiltinRawUnsafeContinuationTypeBase extends Ipa::TBuiltinRawUnsafeContinuationType,
   BuiltinType {
-  final override Db::BuiltinRawUnsafeContinuationType asDbInstance() {
-    this = Cached::TBuiltinRawUnsafeContinuationType(result)
-  }
-
   override string getAPrimaryQlClass() { result = "BuiltinRawUnsafeContinuationType" }
 }

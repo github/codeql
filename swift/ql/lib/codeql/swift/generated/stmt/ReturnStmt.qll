@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 
-class ReturnStmtBase extends Cached::TReturnStmt, Stmt {
-  final override Db::ReturnStmt asDbInstance() { this = Cached::TReturnStmt(result) }
-
+class ReturnStmtBase extends Ipa::TReturnStmt, Stmt {
   override string getAPrimaryQlClass() { result = "ReturnStmt" }
 
   Expr getImmediateResult() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ReturnStmt).getResult())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ReturnStmt).getResult())
   }
 
   final Expr getResult() { result = getImmediateResult().resolve() }

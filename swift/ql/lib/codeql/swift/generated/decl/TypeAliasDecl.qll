@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.GenericTypeDecl
 
-class TypeAliasDeclBase extends Cached::TTypeAliasDecl, GenericTypeDecl {
-  final override Db::TypeAliasDecl asDbInstance() { this = Cached::TTypeAliasDecl(result) }
-
+class TypeAliasDeclBase extends Ipa::TTypeAliasDecl, GenericTypeDecl {
   override string getAPrimaryQlClass() { result = "TypeAliasDecl" }
 }

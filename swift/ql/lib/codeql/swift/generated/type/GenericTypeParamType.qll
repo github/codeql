@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.SubstitutableType
 
-class GenericTypeParamTypeBase extends Cached::TGenericTypeParamType, SubstitutableType {
-  final override Db::GenericTypeParamType asDbInstance() {
-    this = Cached::TGenericTypeParamType(result)
-  }
-
+class GenericTypeParamTypeBase extends Ipa::TGenericTypeParamType, SubstitutableType {
   override string getAPrimaryQlClass() { result = "GenericTypeParamType" }
 }

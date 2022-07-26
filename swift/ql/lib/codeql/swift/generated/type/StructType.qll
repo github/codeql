@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.NominalType
 
-class StructTypeBase extends Cached::TStructType, NominalType {
-  final override Db::StructType asDbInstance() { this = Cached::TStructType(result) }
-
+class StructTypeBase extends Ipa::TStructType, NominalType {
   override string getAPrimaryQlClass() { result = "StructType" }
 }

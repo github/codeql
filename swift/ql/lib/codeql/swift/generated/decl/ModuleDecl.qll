@@ -3,12 +3,10 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.TypeDecl
 
-class ModuleDeclBase extends Cached::TModuleDecl, TypeDecl {
-  final override Db::ModuleDecl asDbInstance() { this = Cached::TModuleDecl(result) }
-
+class ModuleDeclBase extends Ipa::TModuleDecl, TypeDecl {
   override string getAPrimaryQlClass() { result = "ModuleDecl" }
 
-  predicate isBuiltinModule() { asDbInstance().(Db::ModuleDecl).isBuiltinModule() }
+  predicate isBuiltinModule() { Ipa::toDbInstance(this).(Db::ModuleDecl).isBuiltinModule() }
 
-  predicate isSystemModule() { asDbInstance().(Db::ModuleDecl).isSystemModule() }
+  predicate isSystemModule() { Ipa::toDbInstance(this).(Db::ModuleDecl).isSystemModule() }
 }

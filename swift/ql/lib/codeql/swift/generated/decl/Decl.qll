@@ -3,4 +3,4 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.AstNode
 
-class DeclBase extends Cached::TDecl, AstNode { }
+class DeclBase extends Ipa::TDecl, AstNode { }

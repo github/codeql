@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.decl.Decl
 
-class TopLevelCodeDeclBase extends Cached::TTopLevelCodeDecl, Decl {
-  final override Db::TopLevelCodeDecl asDbInstance() { this = Cached::TTopLevelCodeDecl(result) }
-
+class TopLevelCodeDeclBase extends Ipa::TTopLevelCodeDecl, Decl {
   override string getAPrimaryQlClass() { result = "TopLevelCodeDecl" }
 
   BraceStmt getImmediateBody() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TopLevelCodeDecl).getBody())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TopLevelCodeDecl).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.type.SugarType
 import codeql.swift.elements.type.Type
 
-class ParenTypeBase extends Cached::TParenType, SugarType {
-  final override Db::ParenType asDbInstance() { this = Cached::TParenType(result) }
-
+class ParenTypeBase extends Ipa::TParenType, SugarType {
   override string getAPrimaryQlClass() { result = "ParenType" }
 
   Type getImmediateType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ParenType).getType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ParenType).getType())
   }
 
   final Type getType() { result = getImmediateType().resolve() }

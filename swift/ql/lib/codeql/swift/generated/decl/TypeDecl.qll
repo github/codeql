@@ -4,11 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 import codeql.swift.elements.decl.ValueDecl
 
-class TypeDeclBase extends Cached::TTypeDecl, ValueDecl {
-  string getName() { result = asDbInstance().(Db::TypeDecl).getName() }
+class TypeDeclBase extends Ipa::TTypeDecl, ValueDecl {
+  string getName() { result = Ipa::toDbInstance(this).(Db::TypeDecl).getName() }
 
   Type getImmediateBaseType(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TypeDecl).getBaseType(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TypeDecl).getBaseType(index))
   }
 
   final Type getBaseType(int index) { result = getImmediateBaseType(index).resolve() }

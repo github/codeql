@@ -4,9 +4,9 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.type.SyntaxSugarType
 import codeql.swift.elements.type.Type
 
-class UnarySyntaxSugarTypeBase extends Cached::TUnarySyntaxSugarType, SyntaxSugarType {
+class UnarySyntaxSugarTypeBase extends Ipa::TUnarySyntaxSugarType, SyntaxSugarType {
   Type getImmediateBaseType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::UnarySyntaxSugarType).getBaseType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::UnarySyntaxSugarType).getBaseType())
   }
 
   final Type getBaseType() { result = getImmediateBaseType().resolve() }

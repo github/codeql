@@ -3,11 +3,7 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class UnresolvedTypeConversionExprBase extends Cached::TUnresolvedTypeConversionExpr,
+class UnresolvedTypeConversionExprBase extends Ipa::TUnresolvedTypeConversionExpr,
   ImplicitConversionExpr {
-  final override Db::UnresolvedTypeConversionExpr asDbInstance() {
-    this = Cached::TUnresolvedTypeConversionExpr(result)
-  }
-
   override string getAPrimaryQlClass() { result = "UnresolvedTypeConversionExpr" }
 }

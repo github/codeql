@@ -3,14 +3,10 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.AnyBuiltinIntegerType
 
-class BuiltinIntegerTypeBase extends Cached::TBuiltinIntegerType, AnyBuiltinIntegerType {
-  final override Db::BuiltinIntegerType asDbInstance() {
-    this = Cached::TBuiltinIntegerType(result)
-  }
-
+class BuiltinIntegerTypeBase extends Ipa::TBuiltinIntegerType, AnyBuiltinIntegerType {
   override string getAPrimaryQlClass() { result = "BuiltinIntegerType" }
 
-  int getWidth() { result = asDbInstance().(Db::BuiltinIntegerType).getWidth() }
+  int getWidth() { result = Ipa::toDbInstance(this).(Db::BuiltinIntegerType).getWidth() }
 
   final predicate hasWidth() { exists(getWidth()) }
 }

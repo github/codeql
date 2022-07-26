@@ -4,23 +4,20 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.ParamDecl
 
-class DefaultArgumentExprBase extends Cached::TDefaultArgumentExpr, Expr {
-  final override Db::DefaultArgumentExpr asDbInstance() {
-    this = Cached::TDefaultArgumentExpr(result)
-  }
-
+class DefaultArgumentExprBase extends Ipa::TDefaultArgumentExpr, Expr {
   override string getAPrimaryQlClass() { result = "DefaultArgumentExpr" }
 
   ParamDecl getImmediateParamDecl() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DefaultArgumentExpr).getParamDecl())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DefaultArgumentExpr).getParamDecl())
   }
 
   final ParamDecl getParamDecl() { result = getImmediateParamDecl().resolve() }
 
-  int getParamIndex() { result = asDbInstance().(Db::DefaultArgumentExpr).getParamIndex() }
+  int getParamIndex() { result = Ipa::toDbInstance(this).(Db::DefaultArgumentExpr).getParamIndex() }
 
   Expr getImmediateCallerSideDefault() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DefaultArgumentExpr).getCallerSideDefault())
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DefaultArgumentExpr).getCallerSideDefault())
   }
 
   final Expr getCallerSideDefault() { result = getImmediateCallerSideDefault().resolve() }

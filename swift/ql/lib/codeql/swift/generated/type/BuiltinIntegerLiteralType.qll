@@ -3,11 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.AnyBuiltinIntegerType
 
-class BuiltinIntegerLiteralTypeBase extends Cached::TBuiltinIntegerLiteralType,
-  AnyBuiltinIntegerType {
-  final override Db::BuiltinIntegerLiteralType asDbInstance() {
-    this = Cached::TBuiltinIntegerLiteralType(result)
-  }
-
+class BuiltinIntegerLiteralTypeBase extends Ipa::TBuiltinIntegerLiteralType, AnyBuiltinIntegerType {
   override string getAPrimaryQlClass() { result = "BuiltinIntegerLiteralType" }
 }

@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.NominalTypeDecl
 
-class ClassDeclBase extends Cached::TClassDecl, NominalTypeDecl {
-  final override Db::ClassDecl asDbInstance() { this = Cached::TClassDecl(result) }
-
+class ClassDeclBase extends Ipa::TClassDecl, NominalTypeDecl {
   override string getAPrimaryQlClass() { result = "ClassDecl" }
 }

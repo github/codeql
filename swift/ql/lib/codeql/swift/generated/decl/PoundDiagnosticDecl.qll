@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.Decl
 
-class PoundDiagnosticDeclBase extends Cached::TPoundDiagnosticDecl, Decl {
-  final override Db::PoundDiagnosticDecl asDbInstance() {
-    this = Cached::TPoundDiagnosticDecl(result)
-  }
-
+class PoundDiagnosticDeclBase extends Ipa::TPoundDiagnosticDecl, Decl {
   override string getAPrimaryQlClass() { result = "PoundDiagnosticDecl" }
 }

@@ -4,19 +4,17 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.AbstractFunctionDecl
 import codeql.swift.elements.expr.Expr
 
-class ObjCSelectorExprBase extends Cached::TObjCSelectorExpr, Expr {
-  final override Db::ObjCSelectorExpr asDbInstance() { this = Cached::TObjCSelectorExpr(result) }
-
+class ObjCSelectorExprBase extends Ipa::TObjCSelectorExpr, Expr {
   override string getAPrimaryQlClass() { result = "ObjCSelectorExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ObjCSelectorExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ObjCSelectorExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
   AbstractFunctionDecl getImmediateMethod() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ObjCSelectorExpr).getMethod())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ObjCSelectorExpr).getMethod())
   }
 
   final AbstractFunctionDecl getMethod() { result = getImmediateMethod().resolve() }

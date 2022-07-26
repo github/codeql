@@ -5,13 +5,11 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.Locatable
 import codeql.swift.elements.pattern.Pattern
 
-class ConditionElementBase extends Cached::TConditionElement, Locatable {
-  final override Db::ConditionElement asDbInstance() { this = Cached::TConditionElement(result) }
-
+class ConditionElementBase extends Ipa::TConditionElement, Locatable {
   override string getAPrimaryQlClass() { result = "ConditionElement" }
 
   Expr getImmediateBoolean() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ConditionElement).getBoolean())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ConditionElement).getBoolean())
   }
 
   final Expr getBoolean() { result = getImmediateBoolean().resolve() }
@@ -19,7 +17,7 @@ class ConditionElementBase extends Cached::TConditionElement, Locatable {
   final predicate hasBoolean() { exists(getBoolean()) }
 
   Pattern getImmediatePattern() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ConditionElement).getPattern())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ConditionElement).getPattern())
   }
 
   final Pattern getPattern() { result = getImmediatePattern().resolve() }
@@ -27,7 +25,7 @@ class ConditionElementBase extends Cached::TConditionElement, Locatable {
   final predicate hasPattern() { exists(getPattern()) }
 
   Expr getImmediateInitializer() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ConditionElement).getInitializer())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ConditionElement).getInitializer())
   }
 
   final Expr getInitializer() { result = getImmediateInitializer().resolve() }

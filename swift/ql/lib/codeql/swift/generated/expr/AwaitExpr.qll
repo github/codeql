@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.IdentityExpr
 
-class AwaitExprBase extends Cached::TAwaitExpr, IdentityExpr {
-  final override Db::AwaitExpr asDbInstance() { this = Cached::TAwaitExpr(result) }
-
+class AwaitExprBase extends Ipa::TAwaitExpr, IdentityExpr {
   override string getAPrimaryQlClass() { result = "AwaitExpr" }
 }

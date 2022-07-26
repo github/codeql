@@ -3,16 +3,14 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class UnresolvedDotExprBase extends Cached::TUnresolvedDotExpr, Expr {
-  final override Db::UnresolvedDotExpr asDbInstance() { this = Cached::TUnresolvedDotExpr(result) }
-
+class UnresolvedDotExprBase extends Ipa::TUnresolvedDotExpr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedDotExpr" }
 
   Expr getImmediateBase() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::UnresolvedDotExpr).getBase())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::UnresolvedDotExpr).getBase())
   }
 
   final Expr getBase() { result = getImmediateBase().resolve() }
 
-  string getName() { result = asDbInstance().(Db::UnresolvedDotExpr).getName() }
+  string getName() { result = Ipa::toDbInstance(this).(Db::UnresolvedDotExpr).getName() }
 }

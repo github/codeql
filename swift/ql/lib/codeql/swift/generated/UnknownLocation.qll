@@ -3,6 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.Location
 
-class UnknownLocationBase extends Cached::TUnknownLocation, Location {
+class UnknownLocationBase extends Ipa::TUnknownLocation, Location {
   override string getAPrimaryQlClass() { result = "UnknownLocation" }
 }

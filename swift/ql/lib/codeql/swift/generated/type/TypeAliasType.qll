@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.type.SugarType
 import codeql.swift.elements.decl.TypeAliasDecl
 
-class TypeAliasTypeBase extends Cached::TTypeAliasType, SugarType {
-  final override Db::TypeAliasType asDbInstance() { this = Cached::TTypeAliasType(result) }
-
+class TypeAliasTypeBase extends Ipa::TTypeAliasType, SugarType {
   override string getAPrimaryQlClass() { result = "TypeAliasType" }
 
   TypeAliasDecl getImmediateDecl() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TypeAliasType).getDecl())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TypeAliasType).getDecl())
   }
 
   final TypeAliasDecl getDecl() { result = getImmediateDecl().resolve() }

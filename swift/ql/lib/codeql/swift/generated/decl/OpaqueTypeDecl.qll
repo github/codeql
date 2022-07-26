@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.GenericTypeDecl
 
-class OpaqueTypeDeclBase extends Cached::TOpaqueTypeDecl, GenericTypeDecl {
-  final override Db::OpaqueTypeDecl asDbInstance() { this = Cached::TOpaqueTypeDecl(result) }
-
+class OpaqueTypeDeclBase extends Ipa::TOpaqueTypeDecl, GenericTypeDecl {
   override string getAPrimaryQlClass() { result = "OpaqueTypeDecl" }
 }

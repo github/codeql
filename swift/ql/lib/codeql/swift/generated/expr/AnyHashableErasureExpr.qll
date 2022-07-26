@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class AnyHashableErasureExprBase extends Cached::TAnyHashableErasureExpr, ImplicitConversionExpr {
-  final override Db::AnyHashableErasureExpr asDbInstance() {
-    this = Cached::TAnyHashableErasureExpr(result)
-  }
-
+class AnyHashableErasureExprBase extends Ipa::TAnyHashableErasureExpr, ImplicitConversionExpr {
   override string getAPrimaryQlClass() { result = "AnyHashableErasureExpr" }
 }

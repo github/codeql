@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class ModuleTypeBase extends Cached::TModuleType, Type {
-  final override Db::ModuleType asDbInstance() { this = Cached::TModuleType(result) }
-
+class ModuleTypeBase extends Ipa::TModuleType, Type {
   override string getAPrimaryQlClass() { result = "ModuleType" }
 }

@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.stmt.Stmt
 
-class PoundAssertStmtBase extends Cached::TPoundAssertStmt, Stmt {
-  final override Db::PoundAssertStmt asDbInstance() { this = Cached::TPoundAssertStmt(result) }
-
+class PoundAssertStmtBase extends Ipa::TPoundAssertStmt, Stmt {
   override string getAPrimaryQlClass() { result = "PoundAssertStmt" }
 }

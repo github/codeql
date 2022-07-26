@@ -4,15 +4,15 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Argument
 import codeql.swift.elements.expr.Expr
 
-class ApplyExprBase extends Cached::TApplyExpr, Expr {
+class ApplyExprBase extends Ipa::TApplyExpr, Expr {
   Expr getImmediateFunction() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ApplyExpr).getFunction())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ApplyExpr).getFunction())
   }
 
   final Expr getFunction() { result = getImmediateFunction().resolve() }
 
   Argument getImmediateArgument(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ApplyExpr).getArgument(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ApplyExpr).getArgument(index))
   }
 
   final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }

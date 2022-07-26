@@ -4,16 +4,14 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.ConstructorDecl
 import codeql.swift.elements.expr.Expr
 
-class OtherConstructorDeclRefExprBase extends Cached::TOtherConstructorDeclRefExpr, Expr {
-  final override Db::OtherConstructorDeclRefExpr asDbInstance() {
-    this = Cached::TOtherConstructorDeclRefExpr(result)
-  }
-
+class OtherConstructorDeclRefExprBase extends Ipa::TOtherConstructorDeclRefExpr, Expr {
   override string getAPrimaryQlClass() { result = "OtherConstructorDeclRefExpr" }
 
   ConstructorDecl getImmediateConstructorDecl() {
     result =
-      Cached::fromDbInstance(asDbInstance().(Db::OtherConstructorDeclRefExpr).getConstructorDecl())
+      Ipa::fromDbInstance(Ipa::toDbInstance(this)
+            .(Db::OtherConstructorDeclRefExpr)
+            .getConstructorDecl())
   }
 
   final ConstructorDecl getConstructorDecl() { result = getImmediateConstructorDecl().resolve() }

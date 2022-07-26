@@ -5,15 +5,15 @@ import codeql.swift.elements.decl.ProtocolDecl
 import codeql.swift.elements.type.SubstitutableType
 import codeql.swift.elements.type.Type
 
-class ArchetypeTypeBase extends Cached::TArchetypeType, SubstitutableType {
+class ArchetypeTypeBase extends Ipa::TArchetypeType, SubstitutableType {
   Type getImmediateInterfaceType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ArchetypeType).getInterfaceType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ArchetypeType).getInterfaceType())
   }
 
   final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
 
   Type getImmediateSuperclass() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ArchetypeType).getSuperclass())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ArchetypeType).getSuperclass())
   }
 
   final Type getSuperclass() { result = getImmediateSuperclass().resolve() }
@@ -21,7 +21,7 @@ class ArchetypeTypeBase extends Cached::TArchetypeType, SubstitutableType {
   final predicate hasSuperclass() { exists(getSuperclass()) }
 
   ProtocolDecl getImmediateProtocol(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ArchetypeType).getProtocol(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ArchetypeType).getProtocol(index))
   }
 
   final ProtocolDecl getProtocol(int index) { result = getImmediateProtocol(index).resolve() }

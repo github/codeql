@@ -4,4 +4,4 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.Callable
 import codeql.swift.elements.expr.Expr
 
-class AbstractClosureExprBase extends Cached::TAbstractClosureExpr, Callable, Expr { }
+class AbstractClosureExprBase extends Ipa::TAbstractClosureExpr, Callable, Expr { }

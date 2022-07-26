@@ -5,19 +5,17 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.stmt.Stmt
 
-class RepeatWhileStmtBase extends Cached::TRepeatWhileStmt, LabeledStmt {
-  final override Db::RepeatWhileStmt asDbInstance() { this = Cached::TRepeatWhileStmt(result) }
-
+class RepeatWhileStmtBase extends Ipa::TRepeatWhileStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "RepeatWhileStmt" }
 
   Expr getImmediateCondition() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::RepeatWhileStmt).getCondition())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::RepeatWhileStmt).getCondition())
   }
 
   final Expr getCondition() { result = getImmediateCondition().resolve() }
 
   Stmt getImmediateBody() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::RepeatWhileStmt).getBody())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::RepeatWhileStmt).getBody())
   }
 
   final Stmt getBody() { result = getImmediateBody().resolve() }

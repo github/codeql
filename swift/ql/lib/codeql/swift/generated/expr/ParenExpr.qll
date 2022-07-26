@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.IdentityExpr
 
-class ParenExprBase extends Cached::TParenExpr, IdentityExpr {
-  final override Db::ParenExpr asDbInstance() { this = Cached::TParenExpr(result) }
-
+class ParenExprBase extends Ipa::TParenExpr, IdentityExpr {
   override string getAPrimaryQlClass() { result = "ParenExpr" }
 }

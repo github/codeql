@@ -3,12 +3,10 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.NumberLiteralExpr
 
-class IntegerLiteralExprBase extends Cached::TIntegerLiteralExpr, NumberLiteralExpr {
-  final override Db::IntegerLiteralExpr asDbInstance() {
-    this = Cached::TIntegerLiteralExpr(result)
-  }
-
+class IntegerLiteralExprBase extends Ipa::TIntegerLiteralExpr, NumberLiteralExpr {
   override string getAPrimaryQlClass() { result = "IntegerLiteralExpr" }
 
-  string getStringValue() { result = asDbInstance().(Db::IntegerLiteralExpr).getStringValue() }
+  string getStringValue() {
+    result = Ipa::toDbInstance(this).(Db::IntegerLiteralExpr).getStringValue()
+  }
 }

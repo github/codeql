@@ -6,16 +6,12 @@ import codeql.swift.elements.expr.LiteralExpr
 import codeql.swift.elements.expr.OpaqueValueExpr
 import codeql.swift.elements.expr.TapExpr
 
-class InterpolatedStringLiteralExprBase extends Cached::TInterpolatedStringLiteralExpr, LiteralExpr {
-  final override Db::InterpolatedStringLiteralExpr asDbInstance() {
-    this = Cached::TInterpolatedStringLiteralExpr(result)
-  }
-
+class InterpolatedStringLiteralExprBase extends Ipa::TInterpolatedStringLiteralExpr, LiteralExpr {
   override string getAPrimaryQlClass() { result = "InterpolatedStringLiteralExpr" }
 
   OpaqueValueExpr getImmediateInterpolationExpr() {
     result =
-      Cached::fromDbInstance(asDbInstance()
+      Ipa::fromDbInstance(Ipa::toDbInstance(this)
             .(Db::InterpolatedStringLiteralExpr)
             .getInterpolationExpr())
   }
@@ -28,7 +24,7 @@ class InterpolatedStringLiteralExprBase extends Cached::TInterpolatedStringLiter
 
   Expr getImmediateInterpolationCountExpr() {
     result =
-      Cached::fromDbInstance(asDbInstance()
+      Ipa::fromDbInstance(Ipa::toDbInstance(this)
             .(Db::InterpolatedStringLiteralExpr)
             .getInterpolationCountExpr())
   }
@@ -39,7 +35,7 @@ class InterpolatedStringLiteralExprBase extends Cached::TInterpolatedStringLiter
 
   Expr getImmediateLiteralCapacityExpr() {
     result =
-      Cached::fromDbInstance(asDbInstance()
+      Ipa::fromDbInstance(Ipa::toDbInstance(this)
             .(Db::InterpolatedStringLiteralExpr)
             .getLiteralCapacityExpr())
   }
@@ -50,7 +46,9 @@ class InterpolatedStringLiteralExprBase extends Cached::TInterpolatedStringLiter
 
   TapExpr getImmediateAppendingExpr() {
     result =
-      Cached::fromDbInstance(asDbInstance().(Db::InterpolatedStringLiteralExpr).getAppendingExpr())
+      Ipa::fromDbInstance(Ipa::toDbInstance(this)
+            .(Db::InterpolatedStringLiteralExpr)
+            .getAppendingExpr())
   }
 
   final TapExpr getAppendingExpr() { result = getImmediateAppendingExpr().resolve() }

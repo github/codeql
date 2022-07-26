@@ -4,9 +4,10 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.Element
 import codeql.swift.elements.decl.GenericTypeParamDecl
 
-class GenericContextBase extends Cached::TGenericContext, Element {
+class GenericContextBase extends Ipa::TGenericContext, Element {
   GenericTypeParamDecl getImmediateGenericTypeParam(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::GenericContext).getGenericTypeParam(index))
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::GenericContext).getGenericTypeParam(index))
   }
 
   final GenericTypeParamDecl getGenericTypeParam(int index) {

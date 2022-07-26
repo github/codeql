@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.AnyGenericType
 
-class UnboundGenericTypeBase extends Cached::TUnboundGenericType, AnyGenericType {
-  final override Db::UnboundGenericType asDbInstance() {
-    this = Cached::TUnboundGenericType(result)
-  }
-
+class UnboundGenericTypeBase extends Ipa::TUnboundGenericType, AnyGenericType {
   override string getAPrimaryQlClass() { result = "UnboundGenericType" }
 }

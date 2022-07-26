@@ -3,13 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class InOutExprBase extends Cached::TInOutExpr, Expr {
-  final override Db::InOutExpr asDbInstance() { this = Cached::TInOutExpr(result) }
-
+class InOutExprBase extends Ipa::TInOutExpr, Expr {
   override string getAPrimaryQlClass() { result = "InOutExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::InOutExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::InOutExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

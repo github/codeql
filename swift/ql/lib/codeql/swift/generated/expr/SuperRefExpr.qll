@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.VarDecl
 
-class SuperRefExprBase extends Cached::TSuperRefExpr, Expr {
-  final override Db::SuperRefExpr asDbInstance() { this = Cached::TSuperRefExpr(result) }
-
+class SuperRefExprBase extends Ipa::TSuperRefExpr, Expr {
   override string getAPrimaryQlClass() { result = "SuperRefExpr" }
 
   VarDecl getImmediateSelf() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::SuperRefExpr).getSelf())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SuperRefExpr).getSelf())
   }
 
   final VarDecl getSelf() { result = getImmediateSelf().resolve() }

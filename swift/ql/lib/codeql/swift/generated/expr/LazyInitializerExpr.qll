@@ -3,15 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class LazyInitializerExprBase extends Cached::TLazyInitializerExpr, Expr {
-  final override Db::LazyInitializerExpr asDbInstance() {
-    this = Cached::TLazyInitializerExpr(result)
-  }
-
+class LazyInitializerExprBase extends Ipa::TLazyInitializerExpr, Expr {
   override string getAPrimaryQlClass() { result = "LazyInitializerExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::LazyInitializerExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::LazyInitializerExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

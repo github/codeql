@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.LiteralExpr
 
-class RegexLiteralExprBase extends Cached::TRegexLiteralExpr, LiteralExpr {
-  final override Db::RegexLiteralExpr asDbInstance() { this = Cached::TRegexLiteralExpr(result) }
-
+class RegexLiteralExprBase extends Ipa::TRegexLiteralExpr, LiteralExpr {
   override string getAPrimaryQlClass() { result = "RegexLiteralExpr" }
 }

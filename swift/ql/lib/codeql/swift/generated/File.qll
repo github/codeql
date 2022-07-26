@@ -3,6 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.Element
 
-class FileBase extends Cached::TFile, Element {
-  string getName() { result = asDbInstance().(Db::File).getName() }
+class FileBase extends Ipa::TFile, Element {
+  string getName() { result = Ipa::toDbInstance(this).(Db::File).getName() }
 }

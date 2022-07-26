@@ -3,13 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class SequenceExprBase extends Cached::TSequenceExpr, Expr {
-  final override Db::SequenceExpr asDbInstance() { this = Cached::TSequenceExpr(result) }
-
+class SequenceExprBase extends Ipa::TSequenceExpr, Expr {
   override string getAPrimaryQlClass() { result = "SequenceExpr" }
 
   Expr getImmediateElement(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::SequenceExpr).getElement(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SequenceExpr).getElement(index))
   }
 
   final Expr getElement(int index) { result = getImmediateElement(index).resolve() }

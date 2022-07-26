@@ -4,15 +4,12 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 
-class UnresolvedPatternExprBase extends Cached::TUnresolvedPatternExpr, Expr {
-  final override Db::UnresolvedPatternExpr asDbInstance() {
-    this = Cached::TUnresolvedPatternExpr(result)
-  }
-
+class UnresolvedPatternExprBase extends Ipa::TUnresolvedPatternExpr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedPatternExpr" }
 
   Pattern getImmediateSubPattern() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::UnresolvedPatternExpr).getSubPattern())
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::UnresolvedPatternExpr).getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

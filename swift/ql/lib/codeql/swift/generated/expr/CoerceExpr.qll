@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ExplicitCastExpr
 
-class CoerceExprBase extends Cached::TCoerceExpr, ExplicitCastExpr {
-  final override Db::CoerceExpr asDbInstance() { this = Cached::TCoerceExpr(result) }
-
+class CoerceExprBase extends Ipa::TCoerceExpr, ExplicitCastExpr {
   override string getAPrimaryQlClass() { result = "CoerceExpr" }
 }

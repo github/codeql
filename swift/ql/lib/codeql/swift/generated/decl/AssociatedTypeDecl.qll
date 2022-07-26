@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.AbstractTypeParamDecl
 
-class AssociatedTypeDeclBase extends Cached::TAssociatedTypeDecl, AbstractTypeParamDecl {
-  final override Db::AssociatedTypeDecl asDbInstance() {
-    this = Cached::TAssociatedTypeDecl(result)
-  }
-
+class AssociatedTypeDeclBase extends Ipa::TAssociatedTypeDecl, AbstractTypeParamDecl {
   override string getAPrimaryQlClass() { result = "AssociatedTypeDecl" }
 }

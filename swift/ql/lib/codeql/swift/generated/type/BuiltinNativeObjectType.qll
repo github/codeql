@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinNativeObjectTypeBase extends Cached::TBuiltinNativeObjectType, BuiltinType {
-  final override Db::BuiltinNativeObjectType asDbInstance() {
-    this = Cached::TBuiltinNativeObjectType(result)
-  }
-
+class BuiltinNativeObjectTypeBase extends Ipa::TBuiltinNativeObjectType, BuiltinType {
   override string getAPrimaryQlClass() { result = "BuiltinNativeObjectType" }
 }

@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class ErrorExprBase extends Cached::TErrorExpr, Expr {
-  final override Db::ErrorExpr asDbInstance() { this = Cached::TErrorExpr(result) }
-
+class ErrorExprBase extends Ipa::TErrorExpr, Expr {
   override string getAPrimaryQlClass() { result = "ErrorExpr" }
 }

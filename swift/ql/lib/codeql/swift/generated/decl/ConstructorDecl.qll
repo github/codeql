@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.AbstractFunctionDecl
 
-class ConstructorDeclBase extends Cached::TConstructorDecl, AbstractFunctionDecl {
-  final override Db::ConstructorDecl asDbInstance() { this = Cached::TConstructorDecl(result) }
-
+class ConstructorDeclBase extends Ipa::TConstructorDecl, AbstractFunctionDecl {
   override string getAPrimaryQlClass() { result = "ConstructorDecl" }
 }

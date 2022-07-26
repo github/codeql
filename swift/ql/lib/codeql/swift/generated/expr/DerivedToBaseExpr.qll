@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class DerivedToBaseExprBase extends Cached::TDerivedToBaseExpr, ImplicitConversionExpr {
-  final override Db::DerivedToBaseExpr asDbInstance() { this = Cached::TDerivedToBaseExpr(result) }
-
+class DerivedToBaseExprBase extends Ipa::TDerivedToBaseExpr, ImplicitConversionExpr {
   override string getAPrimaryQlClass() { result = "DerivedToBaseExpr" }
 }

@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinFloatTypeBase extends Cached::TBuiltinFloatType, BuiltinType {
-  final override Db::BuiltinFloatType asDbInstance() { this = Cached::TBuiltinFloatType(result) }
-
+class BuiltinFloatTypeBase extends Ipa::TBuiltinFloatType, BuiltinType {
   override string getAPrimaryQlClass() { result = "BuiltinFloatType" }
 }

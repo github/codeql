@@ -3,10 +3,10 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.VarDecl
 
-class ConcreteVarDeclBase extends Cached::TConcreteVarDecl, VarDecl {
-  final override Db::ConcreteVarDecl asDbInstance() { this = Cached::TConcreteVarDecl(result) }
-
+class ConcreteVarDeclBase extends Ipa::TConcreteVarDecl, VarDecl {
   override string getAPrimaryQlClass() { result = "ConcreteVarDecl" }
 
-  int getIntroducerInt() { result = asDbInstance().(Db::ConcreteVarDecl).getIntroducerInt() }
+  int getIntroducerInt() {
+    result = Ipa::toDbInstance(this).(Db::ConcreteVarDecl).getIntroducerInt()
+  }
 }

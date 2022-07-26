@@ -4,19 +4,17 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.EnumElementDecl
 import codeql.swift.elements.expr.Expr
 
-class EnumIsCaseExprBase extends Cached::TEnumIsCaseExpr, Expr {
-  final override Db::EnumIsCaseExpr asDbInstance() { this = Cached::TEnumIsCaseExpr(result) }
-
+class EnumIsCaseExprBase extends Ipa::TEnumIsCaseExpr, Expr {
   override string getAPrimaryQlClass() { result = "EnumIsCaseExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::EnumIsCaseExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::EnumIsCaseExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
   EnumElementDecl getImmediateElement() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::EnumIsCaseExpr).getElement())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::EnumIsCaseExpr).getElement())
   }
 
   final EnumElementDecl getElement() { result = getImmediateElement().resolve() }

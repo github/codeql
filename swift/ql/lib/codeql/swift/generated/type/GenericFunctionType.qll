@@ -4,15 +4,12 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.type.AnyFunctionType
 import codeql.swift.elements.type.GenericTypeParamType
 
-class GenericFunctionTypeBase extends Cached::TGenericFunctionType, AnyFunctionType {
-  final override Db::GenericFunctionType asDbInstance() {
-    this = Cached::TGenericFunctionType(result)
-  }
-
+class GenericFunctionTypeBase extends Ipa::TGenericFunctionType, AnyFunctionType {
   override string getAPrimaryQlClass() { result = "GenericFunctionType" }
 
   GenericTypeParamType getImmediateGenericParam(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::GenericFunctionType).getGenericParam(index))
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::GenericFunctionType).getGenericParam(index))
   }
 
   final GenericTypeParamType getGenericParam(int index) {

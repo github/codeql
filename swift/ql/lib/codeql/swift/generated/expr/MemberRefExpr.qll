@@ -3,18 +3,18 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.LookupExpr
 
-class MemberRefExprBase extends Cached::TMemberRefExpr, LookupExpr {
-  final override Db::MemberRefExpr asDbInstance() { this = Cached::TMemberRefExpr(result) }
-
+class MemberRefExprBase extends Ipa::TMemberRefExpr, LookupExpr {
   override string getAPrimaryQlClass() { result = "MemberRefExpr" }
 
   predicate hasDirectToStorageSemantics() {
-    asDbInstance().(Db::MemberRefExpr).hasDirectToStorageSemantics()
+    Ipa::toDbInstance(this).(Db::MemberRefExpr).hasDirectToStorageSemantics()
   }
 
   predicate hasDirectToImplementationSemantics() {
-    asDbInstance().(Db::MemberRefExpr).hasDirectToImplementationSemantics()
+    Ipa::toDbInstance(this).(Db::MemberRefExpr).hasDirectToImplementationSemantics()
   }
 
-  predicate hasOrdinarySemantics() { asDbInstance().(Db::MemberRefExpr).hasOrdinarySemantics() }
+  predicate hasOrdinarySemantics() {
+    Ipa::toDbInstance(this).(Db::MemberRefExpr).hasOrdinarySemantics()
+  }
 }

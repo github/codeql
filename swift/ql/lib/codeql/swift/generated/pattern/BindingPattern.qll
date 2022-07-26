@@ -3,13 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.pattern.Pattern
 
-class BindingPatternBase extends Cached::TBindingPattern, Pattern {
-  final override Db::BindingPattern asDbInstance() { this = Cached::TBindingPattern(result) }
-
+class BindingPatternBase extends Ipa::TBindingPattern, Pattern {
   override string getAPrimaryQlClass() { result = "BindingPattern" }
 
   Pattern getImmediateSubPattern() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::BindingPattern).getSubPattern())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::BindingPattern).getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

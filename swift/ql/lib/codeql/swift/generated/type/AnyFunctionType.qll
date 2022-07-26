@@ -3,15 +3,15 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class AnyFunctionTypeBase extends Cached::TAnyFunctionType, Type {
+class AnyFunctionTypeBase extends Ipa::TAnyFunctionType, Type {
   Type getImmediateResult() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::AnyFunctionType).getResult())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::AnyFunctionType).getResult())
   }
 
   final Type getResult() { result = getImmediateResult().resolve() }
 
   Type getImmediateParamType(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::AnyFunctionType).getParamType(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::AnyFunctionType).getParamType(index))
   }
 
   final Type getParamType(int index) { result = getImmediateParamType(index).resolve() }
@@ -21,14 +21,14 @@ class AnyFunctionTypeBase extends Cached::TAnyFunctionType, Type {
   final int getNumberOfParamTypes() { result = count(getAParamType()) }
 
   string getParamLabel(int index) {
-    result = asDbInstance().(Db::AnyFunctionType).getParamLabel(index)
+    result = Ipa::toDbInstance(this).(Db::AnyFunctionType).getParamLabel(index)
   }
 
   final string getAParamLabel() { result = getParamLabel(_) }
 
   final int getNumberOfParamLabels() { result = count(getAParamLabel()) }
 
-  predicate isThrowing() { asDbInstance().(Db::AnyFunctionType).isThrowing() }
+  predicate isThrowing() { Ipa::toDbInstance(this).(Db::AnyFunctionType).isThrowing() }
 
-  predicate isAsync() { asDbInstance().(Db::AnyFunctionType).isAsync() }
+  predicate isAsync() { Ipa::toDbInstance(this).(Db::AnyFunctionType).isAsync() }
 }

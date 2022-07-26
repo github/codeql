@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.stmt.LabeledConditionalStmt
 import codeql.swift.elements.stmt.Stmt
 
-class WhileStmtBase extends Cached::TWhileStmt, LabeledConditionalStmt {
-  final override Db::WhileStmt asDbInstance() { this = Cached::TWhileStmt(result) }
-
+class WhileStmtBase extends Ipa::TWhileStmt, LabeledConditionalStmt {
   override string getAPrimaryQlClass() { result = "WhileStmt" }
 
   Stmt getImmediateBody() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::WhileStmt).getBody())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::WhileStmt).getBody())
   }
 
   final Stmt getBody() { result = getImmediateBody().resolve() }

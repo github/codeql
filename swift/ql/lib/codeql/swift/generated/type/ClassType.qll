@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.NominalType
 
-class ClassTypeBase extends Cached::TClassType, NominalType {
-  final override Db::ClassType asDbInstance() { this = Cached::TClassType(result) }
-
+class ClassTypeBase extends Ipa::TClassType, NominalType {
   override string getAPrimaryQlClass() { result = "ClassType" }
 }

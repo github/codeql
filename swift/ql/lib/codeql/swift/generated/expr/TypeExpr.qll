@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.type.TypeRepr
 
-class TypeExprBase extends Cached::TTypeExpr, Expr {
-  final override Db::TypeExpr asDbInstance() { this = Cached::TTypeExpr(result) }
-
+class TypeExprBase extends Ipa::TTypeExpr, Expr {
   override string getAPrimaryQlClass() { result = "TypeExpr" }
 
   TypeRepr getImmediateTypeRepr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TypeExpr).getTypeRepr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TypeExpr).getTypeRepr())
   }
 
   final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }

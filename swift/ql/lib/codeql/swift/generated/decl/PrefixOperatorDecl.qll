@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.OperatorDecl
 
-class PrefixOperatorDeclBase extends Cached::TPrefixOperatorDecl, OperatorDecl {
-  final override Db::PrefixOperatorDecl asDbInstance() {
-    this = Cached::TPrefixOperatorDecl(result)
-  }
-
+class PrefixOperatorDeclBase extends Ipa::TPrefixOperatorDecl, OperatorDecl {
   override string getAPrimaryQlClass() { result = "PrefixOperatorDecl" }
 }

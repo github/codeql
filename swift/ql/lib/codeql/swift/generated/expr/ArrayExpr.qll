@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.CollectionExpr
 import codeql.swift.elements.expr.Expr
 
-class ArrayExprBase extends Cached::TArrayExpr, CollectionExpr {
-  final override Db::ArrayExpr asDbInstance() { this = Cached::TArrayExpr(result) }
-
+class ArrayExprBase extends Ipa::TArrayExpr, CollectionExpr {
   override string getAPrimaryQlClass() { result = "ArrayExpr" }
 
   Expr getImmediateElement(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ArrayExpr).getElement(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ArrayExpr).getElement(index))
   }
 
   final Expr getElement(int index) { result = getImmediateElement(index).resolve() }

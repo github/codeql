@@ -5,21 +5,19 @@ import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.ModuleDecl
 import codeql.swift.elements.decl.ValueDecl
 
-class ImportDeclBase extends Cached::TImportDecl, Decl {
-  final override Db::ImportDecl asDbInstance() { this = Cached::TImportDecl(result) }
-
+class ImportDeclBase extends Ipa::TImportDecl, Decl {
   override string getAPrimaryQlClass() { result = "ImportDecl" }
 
-  predicate isExported() { asDbInstance().(Db::ImportDecl).isExported() }
+  predicate isExported() { Ipa::toDbInstance(this).(Db::ImportDecl).isExported() }
 
   ModuleDecl getImmediateModule() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ImportDecl).getModule())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ImportDecl).getModule())
   }
 
   final ModuleDecl getModule() { result = getImmediateModule().resolve() }
 
   ValueDecl getImmediateDeclaration(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ImportDecl).getDeclaration(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ImportDecl).getDeclaration(index))
   }
 
   final ValueDecl getDeclaration(int index) { result = getImmediateDeclaration(index).resolve() }

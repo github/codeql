@@ -3,13 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class DynamicTypeExprBase extends Cached::TDynamicTypeExpr, Expr {
-  final override Db::DynamicTypeExpr asDbInstance() { this = Cached::TDynamicTypeExpr(result) }
-
+class DynamicTypeExprBase extends Ipa::TDynamicTypeExpr, Expr {
   override string getAPrimaryQlClass() { result = "DynamicTypeExpr" }
 
   Expr getImmediateBaseExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DynamicTypeExpr).getBaseExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DynamicTypeExpr).getBaseExpr())
   }
 
   final Expr getBaseExpr() { result = getImmediateBaseExpr().resolve() }

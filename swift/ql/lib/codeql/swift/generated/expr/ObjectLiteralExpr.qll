@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.LiteralExpr
 
-class ObjectLiteralExprBase extends Cached::TObjectLiteralExpr, LiteralExpr {
-  final override Db::ObjectLiteralExpr asDbInstance() { this = Cached::TObjectLiteralExpr(result) }
-
+class ObjectLiteralExprBase extends Ipa::TObjectLiteralExpr, LiteralExpr {
   override string getAPrimaryQlClass() { result = "ObjectLiteralExpr" }
 }

@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class LinearFunctionExprBase extends Cached::TLinearFunctionExpr, ImplicitConversionExpr {
-  final override Db::LinearFunctionExpr asDbInstance() {
-    this = Cached::TLinearFunctionExpr(result)
-  }
-
+class LinearFunctionExprBase extends Ipa::TLinearFunctionExpr, ImplicitConversionExpr {
   override string getAPrimaryQlClass() { result = "LinearFunctionExpr" }
 }

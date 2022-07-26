@@ -3,12 +3,8 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.BuiltinLiteralExpr
 
-class MagicIdentifierLiteralExprBase extends Cached::TMagicIdentifierLiteralExpr, BuiltinLiteralExpr {
-  final override Db::MagicIdentifierLiteralExpr asDbInstance() {
-    this = Cached::TMagicIdentifierLiteralExpr(result)
-  }
-
+class MagicIdentifierLiteralExprBase extends Ipa::TMagicIdentifierLiteralExpr, BuiltinLiteralExpr {
   override string getAPrimaryQlClass() { result = "MagicIdentifierLiteralExpr" }
 
-  string getKind() { result = asDbInstance().(Db::MagicIdentifierLiteralExpr).getKind() }
+  string getKind() { result = Ipa::toDbInstance(this).(Db::MagicIdentifierLiteralExpr).getKind() }
 }

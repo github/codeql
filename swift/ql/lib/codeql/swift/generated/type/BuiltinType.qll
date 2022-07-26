@@ -3,4 +3,4 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class BuiltinTypeBase extends Cached::TBuiltinType, Type { }
+class BuiltinTypeBase extends Ipa::TBuiltinType, Type { }

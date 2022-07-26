@@ -3,6 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.Decl
 
-class OperatorDeclBase extends Cached::TOperatorDecl, Decl {
-  string getName() { result = asDbInstance().(Db::OperatorDecl).getName() }
+class OperatorDeclBase extends Ipa::TOperatorDecl, Decl {
+  string getName() { result = Ipa::toDbInstance(this).(Db::OperatorDecl).getName() }
 }

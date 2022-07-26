@@ -5,7 +5,7 @@ private import codeql.swift.generated.Db
 import {{.}}
 {{/imports}}
 
-class {{name}}Base extends Cached::T{{name}}{{#bases}}, {{.}}{{/bases}} {
+class {{name}}Base extends Ipa::T{{name}}{{#bases}}, {{.}}{{/bases}} {
   {{#root}}
   string toString() { none() } // overridden by subclasses
 
@@ -20,14 +20,8 @@ class {{name}}Base extends Cached::T{{name}}{{#bases}}, {{.}}{{/bases}} {
     or
     result = getResolveStep().resolve()
   }
-
-  Db::Element asDbInstance() { none() }
   {{/root}}
   {{#final}}
-  {{#has_db_id}}
-  final override Db::{{name}} asDbInstance() { this = Cached::T{{name}}(result) }
-  {{/has_db_id}}
-
   override string getAPrimaryQlClass() { result = "{{name}}" }
   {{/final}}
   {{#properties}}
@@ -35,7 +29,7 @@ class {{name}}Base extends Cached::T{{name}}{{#bases}}, {{.}}{{/bases}} {
   {{#type_is_class}}
   {{type}} getImmediate{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
     {{#has_db_id}}
-    result = Cached::fromDbInstance(asDbInstance().(Db::{{name}}).{{getter}}({{#is_repeated}}index{{/is_repeated}}))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::{{name}}).{{getter}}({{#is_repeated}}index{{/is_repeated}}))
     {{/has_db_id}}
     {{^has_db_id}}
     none()
@@ -50,7 +44,7 @@ class {{name}}Base extends Cached::T{{name}}{{#bases}}, {{.}}{{/bases}} {
   {{^type_is_class}}
   {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
     {{#has_db_id}}
-    {{^is_predicate}}result = {{/is_predicate}}asDbInstance().(Db::{{name}}).{{getter}}({{#is_repeated}}index{{/is_repeated}})
+    {{^is_predicate}}result = {{/is_predicate}}Ipa::toDbInstance(this).(Db::{{name}}).{{getter}}({{#is_repeated}}index{{/is_repeated}})
     {{/has_db_id}}
     {{^has_db_id}}
     none()

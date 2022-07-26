@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.Location
 
-class DbLocationBase extends Cached::TDbLocation, Location {
-  final override Db::DbLocation asDbInstance() { this = Cached::TDbLocation(result) }
-
+class DbLocationBase extends Ipa::TDbLocation, Location {
   override string getAPrimaryQlClass() { result = "DbLocation" }
 }

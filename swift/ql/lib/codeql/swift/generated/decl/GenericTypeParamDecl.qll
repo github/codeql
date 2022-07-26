@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.AbstractTypeParamDecl
 
-class GenericTypeParamDeclBase extends Cached::TGenericTypeParamDecl, AbstractTypeParamDecl {
-  final override Db::GenericTypeParamDecl asDbInstance() {
-    this = Cached::TGenericTypeParamDecl(result)
-  }
-
+class GenericTypeParamDeclBase extends Ipa::TGenericTypeParamDecl, AbstractTypeParamDecl {
   override string getAPrimaryQlClass() { result = "GenericTypeParamDecl" }
 }

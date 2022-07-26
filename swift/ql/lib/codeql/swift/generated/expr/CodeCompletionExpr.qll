@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class CodeCompletionExprBase extends Cached::TCodeCompletionExpr, Expr {
-  final override Db::CodeCompletionExpr asDbInstance() {
-    this = Cached::TCodeCompletionExpr(result)
-  }
-
+class CodeCompletionExprBase extends Ipa::TCodeCompletionExpr, Expr {
   override string getAPrimaryQlClass() { result = "CodeCompletionExpr" }
 }

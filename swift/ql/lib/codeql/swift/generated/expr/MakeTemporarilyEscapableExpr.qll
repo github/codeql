@@ -4,23 +4,21 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 
-class MakeTemporarilyEscapableExprBase extends Cached::TMakeTemporarilyEscapableExpr, Expr {
-  final override Db::MakeTemporarilyEscapableExpr asDbInstance() {
-    this = Cached::TMakeTemporarilyEscapableExpr(result)
-  }
-
+class MakeTemporarilyEscapableExprBase extends Ipa::TMakeTemporarilyEscapableExpr, Expr {
   override string getAPrimaryQlClass() { result = "MakeTemporarilyEscapableExpr" }
 
   OpaqueValueExpr getImmediateEscapingClosure() {
     result =
-      Cached::fromDbInstance(asDbInstance().(Db::MakeTemporarilyEscapableExpr).getEscapingClosure())
+      Ipa::fromDbInstance(Ipa::toDbInstance(this)
+            .(Db::MakeTemporarilyEscapableExpr)
+            .getEscapingClosure())
   }
 
   final OpaqueValueExpr getEscapingClosure() { result = getImmediateEscapingClosure().resolve() }
 
   Expr getImmediateNonescapingClosure() {
     result =
-      Cached::fromDbInstance(asDbInstance()
+      Ipa::fromDbInstance(Ipa::toDbInstance(this)
             .(Db::MakeTemporarilyEscapableExpr)
             .getNonescapingClosure())
   }
@@ -28,7 +26,8 @@ class MakeTemporarilyEscapableExprBase extends Cached::TMakeTemporarilyEscapable
   final Expr getNonescapingClosure() { result = getImmediateNonescapingClosure().resolve() }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::MakeTemporarilyEscapableExpr).getSubExpr())
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::MakeTemporarilyEscapableExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

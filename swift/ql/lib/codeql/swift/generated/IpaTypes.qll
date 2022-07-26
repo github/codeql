@@ -2,7 +2,7 @@ private import codeql.swift.generated.IpaConstructors
 private import codeql.swift.generated.Db
 
 cached
-module Cached {
+module Ipa {
   cached
   newtype TElement =
     TDbFile(Db::DbFile id) or
@@ -865,4 +865,7 @@ module Cached {
     or
     result = TWeakStorageType(e)
   }
+
+  cached
+  Db::Element toDbInstance(TElement e) { e = fromDbInstance(result) }
 }

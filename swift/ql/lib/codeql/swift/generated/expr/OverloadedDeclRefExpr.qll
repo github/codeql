@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.OverloadSetRefExpr
 
-class OverloadedDeclRefExprBase extends Cached::TOverloadedDeclRefExpr, OverloadSetRefExpr {
-  final override Db::OverloadedDeclRefExpr asDbInstance() {
-    this = Cached::TOverloadedDeclRefExpr(result)
-  }
-
+class OverloadedDeclRefExprBase extends Ipa::TOverloadedDeclRefExpr, OverloadSetRefExpr {
   override string getAPrimaryQlClass() { result = "OverloadedDeclRefExpr" }
 }

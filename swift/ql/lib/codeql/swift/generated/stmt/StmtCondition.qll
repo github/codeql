@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.stmt.ConditionElement
 
-class StmtConditionBase extends Cached::TStmtCondition, AstNode {
-  final override Db::StmtCondition asDbInstance() { this = Cached::TStmtCondition(result) }
-
+class StmtConditionBase extends Ipa::TStmtCondition, AstNode {
   override string getAPrimaryQlClass() { result = "StmtCondition" }
 
   ConditionElement getImmediateElement(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::StmtCondition).getElement(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::StmtCondition).getElement(index))
   }
 
   final ConditionElement getElement(int index) { result = getImmediateElement(index).resolve() }

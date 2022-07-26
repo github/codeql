@@ -3,13 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class InOutTypeBase extends Cached::TInOutType, Type {
-  final override Db::InOutType asDbInstance() { this = Cached::TInOutType(result) }
-
+class InOutTypeBase extends Ipa::TInOutType, Type {
   override string getAPrimaryQlClass() { result = "InOutType" }
 
   Type getImmediateObjectType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::InOutType).getObjectType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::InOutType).getObjectType())
   }
 
   final Type getObjectType() { result = getImmediateObjectType().resolve() }

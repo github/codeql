@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.Decl
 
-class MissingMemberDeclBase extends Cached::TMissingMemberDecl, Decl {
-  final override Db::MissingMemberDecl asDbInstance() { this = Cached::TMissingMemberDecl(result) }
-
+class MissingMemberDeclBase extends Ipa::TMissingMemberDecl, Decl {
   override string getAPrimaryQlClass() { result = "MissingMemberDecl" }
 }

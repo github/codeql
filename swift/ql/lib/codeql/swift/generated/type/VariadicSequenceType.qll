@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.UnarySyntaxSugarType
 
-class VariadicSequenceTypeBase extends Cached::TVariadicSequenceType, UnarySyntaxSugarType {
-  final override Db::VariadicSequenceType asDbInstance() {
-    this = Cached::TVariadicSequenceType(result)
-  }
-
+class VariadicSequenceTypeBase extends Ipa::TVariadicSequenceType, UnarySyntaxSugarType {
   override string getAPrimaryQlClass() { result = "VariadicSequenceType" }
 }

@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.ReferenceStorageType
 
-class WeakStorageTypeBase extends Cached::TWeakStorageType, ReferenceStorageType {
-  final override Db::WeakStorageType asDbInstance() { this = Cached::TWeakStorageType(result) }
-
+class WeakStorageTypeBase extends Ipa::TWeakStorageType, ReferenceStorageType {
   override string getAPrimaryQlClass() { result = "WeakStorageType" }
 }

@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.CheckedCastExpr
 
-class IsExprBase extends Cached::TIsExpr, CheckedCastExpr {
-  final override Db::IsExpr asDbInstance() { this = Cached::TIsExpr(result) }
-
+class IsExprBase extends Ipa::TIsExpr, CheckedCastExpr {
   override string getAPrimaryQlClass() { result = "IsExpr" }
 }

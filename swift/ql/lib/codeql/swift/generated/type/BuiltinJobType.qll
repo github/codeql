@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinJobTypeBase extends Cached::TBuiltinJobType, BuiltinType {
-  final override Db::BuiltinJobType asDbInstance() { this = Cached::TBuiltinJobType(result) }
-
+class BuiltinJobTypeBase extends Ipa::TBuiltinJobType, BuiltinType {
   override string getAPrimaryQlClass() { result = "BuiltinJobType" }
 }

@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.UnarySyntaxSugarType
 
-class OptionalTypeBase extends Cached::TOptionalType, UnarySyntaxSugarType {
-  final override Db::OptionalType asDbInstance() { this = Cached::TOptionalType(result) }
-
+class OptionalTypeBase extends Ipa::TOptionalType, UnarySyntaxSugarType {
   override string getAPrimaryQlClass() { result = "OptionalType" }
 }

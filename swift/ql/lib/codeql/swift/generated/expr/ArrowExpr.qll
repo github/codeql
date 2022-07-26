@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class ArrowExprBase extends Cached::TArrowExpr, Expr {
-  final override Db::ArrowExpr asDbInstance() { this = Cached::TArrowExpr(result) }
-
+class ArrowExprBase extends Ipa::TArrowExpr, Expr {
   override string getAPrimaryQlClass() { result = "ArrowExpr" }
 }

@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.UnarySyntaxSugarType
 
-class ArraySliceTypeBase extends Cached::TArraySliceType, UnarySyntaxSugarType {
-  final override Db::ArraySliceType asDbInstance() { this = Cached::TArraySliceType(result) }
-
+class ArraySliceTypeBase extends Ipa::TArraySliceType, UnarySyntaxSugarType {
   override string getAPrimaryQlClass() { result = "ArraySliceType" }
 }

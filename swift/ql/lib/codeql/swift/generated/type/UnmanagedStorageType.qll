@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.ReferenceStorageType
 
-class UnmanagedStorageTypeBase extends Cached::TUnmanagedStorageType, ReferenceStorageType {
-  final override Db::UnmanagedStorageType asDbInstance() {
-    this = Cached::TUnmanagedStorageType(result)
-  }
-
+class UnmanagedStorageTypeBase extends Ipa::TUnmanagedStorageType, ReferenceStorageType {
   override string getAPrimaryQlClass() { result = "UnmanagedStorageType" }
 }

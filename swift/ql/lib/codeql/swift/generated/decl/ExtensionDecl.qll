@@ -6,13 +6,11 @@ import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.IterableDeclContext
 import codeql.swift.elements.decl.NominalTypeDecl
 
-class ExtensionDeclBase extends Cached::TExtensionDecl, Decl, GenericContext, IterableDeclContext {
-  final override Db::ExtensionDecl asDbInstance() { this = Cached::TExtensionDecl(result) }
-
+class ExtensionDeclBase extends Ipa::TExtensionDecl, Decl, GenericContext, IterableDeclContext {
   override string getAPrimaryQlClass() { result = "ExtensionDecl" }
 
   NominalTypeDecl getImmediateExtendedTypeDecl() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ExtensionDecl).getExtendedTypeDecl())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ExtensionDecl).getExtendedTypeDecl())
   }
 
   final NominalTypeDecl getExtendedTypeDecl() { result = getImmediateExtendedTypeDecl().resolve() }

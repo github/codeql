@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class UnresolvedTypeBase extends Cached::TUnresolvedType, Type {
-  final override Db::UnresolvedType asDbInstance() { this = Cached::TUnresolvedType(result) }
-
+class UnresolvedTypeBase extends Ipa::TUnresolvedType, Type {
   override string getAPrimaryQlClass() { result = "UnresolvedType" }
 }

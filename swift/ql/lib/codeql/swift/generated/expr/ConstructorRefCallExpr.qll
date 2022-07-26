@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.SelfApplyExpr
 
-class ConstructorRefCallExprBase extends Cached::TConstructorRefCallExpr, SelfApplyExpr {
-  final override Db::ConstructorRefCallExpr asDbInstance() {
-    this = Cached::TConstructorRefCallExpr(result)
-  }
-
+class ConstructorRefCallExprBase extends Ipa::TConstructorRefCallExpr, SelfApplyExpr {
   override string getAPrimaryQlClass() { result = "ConstructorRefCallExpr" }
 }

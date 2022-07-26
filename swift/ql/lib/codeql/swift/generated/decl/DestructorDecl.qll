@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.AbstractFunctionDecl
 
-class DestructorDeclBase extends Cached::TDestructorDecl, AbstractFunctionDecl {
-  final override Db::DestructorDecl asDbInstance() { this = Cached::TDestructorDecl(result) }
-
+class DestructorDeclBase extends Ipa::TDestructorDecl, AbstractFunctionDecl {
   override string getAPrimaryQlClass() { result = "DestructorDecl" }
 }

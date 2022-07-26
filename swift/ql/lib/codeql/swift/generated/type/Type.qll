@@ -4,11 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.Element
 import codeql.swift.elements.type.Type
 
-class TypeBase extends Cached::TType, Element {
-  string getName() { result = asDbInstance().(Db::Type).getName() }
+class TypeBase extends Ipa::TType, Element {
+  string getName() { result = Ipa::toDbInstance(this).(Db::Type).getName() }
 
   Type getImmediateCanonicalType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::Type).getCanonicalType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Type).getCanonicalType())
   }
 
   final Type getCanonicalType() { result = getImmediateCanonicalType().resolve() }

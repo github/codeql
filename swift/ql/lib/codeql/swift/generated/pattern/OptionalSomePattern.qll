@@ -3,15 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.pattern.Pattern
 
-class OptionalSomePatternBase extends Cached::TOptionalSomePattern, Pattern {
-  final override Db::OptionalSomePattern asDbInstance() {
-    this = Cached::TOptionalSomePattern(result)
-  }
-
+class OptionalSomePatternBase extends Ipa::TOptionalSomePattern, Pattern {
   override string getAPrimaryQlClass() { result = "OptionalSomePattern" }
 
   Pattern getImmediateSubPattern() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::OptionalSomePattern).getSubPattern())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::OptionalSomePattern).getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

@@ -3,12 +3,8 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class UnresolvedMemberExprBase extends Cached::TUnresolvedMemberExpr, Expr {
-  final override Db::UnresolvedMemberExpr asDbInstance() {
-    this = Cached::TUnresolvedMemberExpr(result)
-  }
-
+class UnresolvedMemberExprBase extends Ipa::TUnresolvedMemberExpr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedMemberExpr" }
 
-  string getName() { result = asDbInstance().(Db::UnresolvedMemberExpr).getName() }
+  string getName() { result = Ipa::toDbInstance(this).(Db::UnresolvedMemberExpr).getName() }
 }

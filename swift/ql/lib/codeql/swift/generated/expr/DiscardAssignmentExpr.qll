@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class DiscardAssignmentExprBase extends Cached::TDiscardAssignmentExpr, Expr {
-  final override Db::DiscardAssignmentExpr asDbInstance() {
-    this = Cached::TDiscardAssignmentExpr(result)
-  }
-
+class DiscardAssignmentExprBase extends Ipa::TDiscardAssignmentExpr, Expr {
   override string getAPrimaryQlClass() { result = "DiscardAssignmentExpr" }
 }

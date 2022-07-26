@@ -4,21 +4,17 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.EnumElementDecl
 import codeql.swift.elements.pattern.Pattern
 
-class EnumElementPatternBase extends Cached::TEnumElementPattern, Pattern {
-  final override Db::EnumElementPattern asDbInstance() {
-    this = Cached::TEnumElementPattern(result)
-  }
-
+class EnumElementPatternBase extends Ipa::TEnumElementPattern, Pattern {
   override string getAPrimaryQlClass() { result = "EnumElementPattern" }
 
   EnumElementDecl getImmediateElement() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::EnumElementPattern).getElement())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::EnumElementPattern).getElement())
   }
 
   final EnumElementDecl getElement() { result = getImmediateElement().resolve() }
 
   Pattern getImmediateSubPattern() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::EnumElementPattern).getSubPattern())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::EnumElementPattern).getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

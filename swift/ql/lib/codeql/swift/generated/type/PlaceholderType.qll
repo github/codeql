@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class PlaceholderTypeBase extends Cached::TPlaceholderType, Type {
-  final override Db::PlaceholderType asDbInstance() { this = Cached::TPlaceholderType(result) }
-
+class PlaceholderTypeBase extends Ipa::TPlaceholderType, Type {
   override string getAPrimaryQlClass() { result = "PlaceholderType" }
 }

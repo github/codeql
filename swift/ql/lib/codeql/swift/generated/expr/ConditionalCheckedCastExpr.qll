@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.CheckedCastExpr
 
-class ConditionalCheckedCastExprBase extends Cached::TConditionalCheckedCastExpr, CheckedCastExpr {
-  final override Db::ConditionalCheckedCastExpr asDbInstance() {
-    this = Cached::TConditionalCheckedCastExpr(result)
-  }
-
+class ConditionalCheckedCastExprBase extends Ipa::TConditionalCheckedCastExpr, CheckedCastExpr {
   override string getAPrimaryQlClass() { result = "ConditionalCheckedCastExpr" }
 }

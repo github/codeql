@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ApplyExpr
 
-class CallExprBase extends Cached::TCallExpr, ApplyExpr {
-  final override Db::CallExpr asDbInstance() { this = Cached::TCallExpr(result) }
-
+class CallExprBase extends Ipa::TCallExpr, ApplyExpr {
   override string getAPrimaryQlClass() { result = "CallExpr" }
 }

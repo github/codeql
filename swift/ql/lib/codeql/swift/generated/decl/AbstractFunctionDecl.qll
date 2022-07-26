@@ -5,7 +5,7 @@ import codeql.swift.elements.Callable
 import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.ValueDecl
 
-class AbstractFunctionDeclBase extends Cached::TAbstractFunctionDecl, Callable, GenericContext,
+class AbstractFunctionDeclBase extends Ipa::TAbstractFunctionDecl, Callable, GenericContext,
   ValueDecl {
-  string getName() { result = asDbInstance().(Db::AbstractFunctionDecl).getName() }
+  string getName() { result = Ipa::toDbInstance(this).(Db::AbstractFunctionDecl).getName() }
 }

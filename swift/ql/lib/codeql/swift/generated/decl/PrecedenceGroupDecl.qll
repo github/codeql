@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.Decl
 
-class PrecedenceGroupDeclBase extends Cached::TPrecedenceGroupDecl, Decl {
-  final override Db::PrecedenceGroupDecl asDbInstance() {
-    this = Cached::TPrecedenceGroupDecl(result)
-  }
-
+class PrecedenceGroupDeclBase extends Ipa::TPrecedenceGroupDecl, Decl {
   override string getAPrimaryQlClass() { result = "PrecedenceGroupDecl" }
 }

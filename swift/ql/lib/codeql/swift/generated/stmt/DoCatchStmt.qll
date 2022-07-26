@@ -5,19 +5,17 @@ import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.stmt.Stmt
 
-class DoCatchStmtBase extends Cached::TDoCatchStmt, LabeledStmt {
-  final override Db::DoCatchStmt asDbInstance() { this = Cached::TDoCatchStmt(result) }
-
+class DoCatchStmtBase extends Ipa::TDoCatchStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "DoCatchStmt" }
 
   Stmt getImmediateBody() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DoCatchStmt).getBody())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DoCatchStmt).getBody())
   }
 
   final Stmt getBody() { result = getImmediateBody().resolve() }
 
   CaseStmt getImmediateCatch(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DoCatchStmt).getCatch(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DoCatchStmt).getCatch(index))
   }
 
   final CaseStmt getCatch(int index) { result = getImmediateCatch(index).resolve() }

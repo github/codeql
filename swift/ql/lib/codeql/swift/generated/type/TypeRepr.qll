@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.type.Type
 
-class TypeReprBase extends Cached::TTypeRepr, AstNode {
-  final override Db::TypeRepr asDbInstance() { this = Cached::TTypeRepr(result) }
-
+class TypeReprBase extends Ipa::TTypeRepr, AstNode {
   override string getAPrimaryQlClass() { result = "TypeRepr" }
 
   Type getImmediateType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TypeRepr).getType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TypeRepr).getType())
   }
 
   final Type getType() { result = getImmediateType().resolve() }

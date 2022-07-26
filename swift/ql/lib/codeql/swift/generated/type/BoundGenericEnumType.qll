@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.BoundGenericType
 
-class BoundGenericEnumTypeBase extends Cached::TBoundGenericEnumType, BoundGenericType {
-  final override Db::BoundGenericEnumType asDbInstance() {
-    this = Cached::TBoundGenericEnumType(result)
-  }
-
+class BoundGenericEnumTypeBase extends Ipa::TBoundGenericEnumType, BoundGenericType {
   override string getAPrimaryQlClass() { result = "BoundGenericEnumType" }
 }

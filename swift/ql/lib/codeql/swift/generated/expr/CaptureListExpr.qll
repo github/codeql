@@ -5,13 +5,12 @@ import codeql.swift.elements.expr.ClosureExpr
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.PatternBindingDecl
 
-class CaptureListExprBase extends Cached::TCaptureListExpr, Expr {
-  final override Db::CaptureListExpr asDbInstance() { this = Cached::TCaptureListExpr(result) }
-
+class CaptureListExprBase extends Ipa::TCaptureListExpr, Expr {
   override string getAPrimaryQlClass() { result = "CaptureListExpr" }
 
   PatternBindingDecl getImmediateBindingDecl(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::CaptureListExpr).getBindingDecl(index))
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaptureListExpr).getBindingDecl(index))
   }
 
   final PatternBindingDecl getBindingDecl(int index) {
@@ -23,7 +22,7 @@ class CaptureListExprBase extends Cached::TCaptureListExpr, Expr {
   final int getNumberOfBindingDecls() { result = count(getABindingDecl()) }
 
   ClosureExpr getImmediateClosureBody() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::CaptureListExpr).getClosureBody())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaptureListExpr).getClosureBody())
   }
 
   final ClosureExpr getClosureBody() { result = getImmediateClosureBody().resolve() }

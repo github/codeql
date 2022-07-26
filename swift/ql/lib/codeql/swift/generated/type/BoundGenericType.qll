@@ -4,9 +4,9 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.type.NominalOrBoundGenericNominalType
 import codeql.swift.elements.type.Type
 
-class BoundGenericTypeBase extends Cached::TBoundGenericType, NominalOrBoundGenericNominalType {
+class BoundGenericTypeBase extends Ipa::TBoundGenericType, NominalOrBoundGenericNominalType {
   Type getImmediateArgType(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::BoundGenericType).getArgType(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::BoundGenericType).getArgType(index))
   }
 
   final Type getArgType(int index) { result = getImmediateArgType(index).resolve() }

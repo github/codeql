@@ -3,25 +3,23 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class IfExprBase extends Cached::TIfExpr, Expr {
-  final override Db::IfExpr asDbInstance() { this = Cached::TIfExpr(result) }
-
+class IfExprBase extends Ipa::TIfExpr, Expr {
   override string getAPrimaryQlClass() { result = "IfExpr" }
 
   Expr getImmediateCondition() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::IfExpr).getCondition())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfExpr).getCondition())
   }
 
   final Expr getCondition() { result = getImmediateCondition().resolve() }
 
   Expr getImmediateThenExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::IfExpr).getThenExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfExpr).getThenExpr())
   }
 
   final Expr getThenExpr() { result = getImmediateThenExpr().resolve() }
 
   Expr getImmediateElseExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::IfExpr).getElseExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfExpr).getElseExpr())
   }
 
   final Expr getElseExpr() { result = getImmediateElseExpr().resolve() }

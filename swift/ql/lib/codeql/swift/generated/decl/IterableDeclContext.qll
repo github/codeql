@@ -4,9 +4,9 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.Element
 
-class IterableDeclContextBase extends Cached::TIterableDeclContext, Element {
+class IterableDeclContextBase extends Ipa::TIterableDeclContext, Element {
   Decl getImmediateMember(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::IterableDeclContext).getMember(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IterableDeclContext).getMember(index))
   }
 
   final Decl getMember(int index) { result = getImmediateMember(index).resolve() }

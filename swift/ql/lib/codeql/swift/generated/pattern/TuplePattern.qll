@@ -3,13 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.pattern.Pattern
 
-class TuplePatternBase extends Cached::TTuplePattern, Pattern {
-  final override Db::TuplePattern asDbInstance() { this = Cached::TTuplePattern(result) }
-
+class TuplePatternBase extends Ipa::TTuplePattern, Pattern {
   override string getAPrimaryQlClass() { result = "TuplePattern" }
 
   Pattern getImmediateElement(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TuplePattern).getElement(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TuplePattern).getElement(index))
   }
 
   final Pattern getElement(int index) { result = getImmediateElement(index).resolve() }

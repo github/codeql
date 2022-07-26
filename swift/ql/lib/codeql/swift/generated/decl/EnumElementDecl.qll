@@ -4,15 +4,13 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.ParamDecl
 import codeql.swift.elements.decl.ValueDecl
 
-class EnumElementDeclBase extends Cached::TEnumElementDecl, ValueDecl {
-  final override Db::EnumElementDecl asDbInstance() { this = Cached::TEnumElementDecl(result) }
-
+class EnumElementDeclBase extends Ipa::TEnumElementDecl, ValueDecl {
   override string getAPrimaryQlClass() { result = "EnumElementDecl" }
 
-  string getName() { result = asDbInstance().(Db::EnumElementDecl).getName() }
+  string getName() { result = Ipa::toDbInstance(this).(Db::EnumElementDecl).getName() }
 
   ParamDecl getImmediateParam(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::EnumElementDecl).getParam(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::EnumElementDecl).getParam(index))
   }
 
   final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }

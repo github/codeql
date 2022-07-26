@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.CollectionExpr
 import codeql.swift.elements.expr.Expr
 
-class DictionaryExprBase extends Cached::TDictionaryExpr, CollectionExpr {
-  final override Db::DictionaryExpr asDbInstance() { this = Cached::TDictionaryExpr(result) }
-
+class DictionaryExprBase extends Ipa::TDictionaryExpr, CollectionExpr {
   override string getAPrimaryQlClass() { result = "DictionaryExpr" }
 
   Expr getImmediateElement(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DictionaryExpr).getElement(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DictionaryExpr).getElement(index))
   }
 
   final Expr getElement(int index) { result = getImmediateElement(index).resolve() }

@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.pattern.Pattern
 
-class AnyPatternBase extends Cached::TAnyPattern, Pattern {
-  final override Db::AnyPattern asDbInstance() { this = Cached::TAnyPattern(result) }
-
+class AnyPatternBase extends Ipa::TAnyPattern, Pattern {
   override string getAPrimaryQlClass() { result = "AnyPattern" }
 }

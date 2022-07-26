@@ -4,9 +4,9 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.type.Type
 
-class ValueDeclBase extends Cached::TValueDecl, Decl {
+class ValueDeclBase extends Ipa::TValueDecl, Decl {
   Type getImmediateInterfaceType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ValueDecl).getInterfaceType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ValueDecl).getInterfaceType())
   }
 
   final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }

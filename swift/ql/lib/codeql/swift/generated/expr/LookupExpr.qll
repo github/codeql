@@ -4,15 +4,15 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.expr.Expr
 
-class LookupExprBase extends Cached::TLookupExpr, Expr {
+class LookupExprBase extends Ipa::TLookupExpr, Expr {
   Expr getImmediateBaseExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::LookupExpr).getBaseExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::LookupExpr).getBaseExpr())
   }
 
   final Expr getBaseExpr() { result = getImmediateBaseExpr().resolve() }
 
   Decl getImmediateMember() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::LookupExpr).getMember())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::LookupExpr).getMember())
   }
 
   final Decl getMember() { result = getImmediateMember().resolve() }

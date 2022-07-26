@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.AnyTryExpr
 
-class OptionalTryExprBase extends Cached::TOptionalTryExpr, AnyTryExpr {
-  final override Db::OptionalTryExpr asDbInstance() { this = Cached::TOptionalTryExpr(result) }
-
+class OptionalTryExprBase extends Ipa::TOptionalTryExpr, AnyTryExpr {
   override string getAPrimaryQlClass() { result = "OptionalTryExpr" }
 }

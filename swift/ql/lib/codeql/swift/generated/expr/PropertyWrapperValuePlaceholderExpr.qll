@@ -3,11 +3,7 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class PropertyWrapperValuePlaceholderExprBase extends Cached::TPropertyWrapperValuePlaceholderExpr,
+class PropertyWrapperValuePlaceholderExprBase extends Ipa::TPropertyWrapperValuePlaceholderExpr,
   Expr {
-  final override Db::PropertyWrapperValuePlaceholderExpr asDbInstance() {
-    this = Cached::TPropertyWrapperValuePlaceholderExpr(result)
-  }
-
   override string getAPrimaryQlClass() { result = "PropertyWrapperValuePlaceholderExpr" }
 }

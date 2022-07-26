@@ -4,19 +4,17 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.type.SyntaxSugarType
 import codeql.swift.elements.type.Type
 
-class DictionaryTypeBase extends Cached::TDictionaryType, SyntaxSugarType {
-  final override Db::DictionaryType asDbInstance() { this = Cached::TDictionaryType(result) }
-
+class DictionaryTypeBase extends Ipa::TDictionaryType, SyntaxSugarType {
   override string getAPrimaryQlClass() { result = "DictionaryType" }
 
   Type getImmediateKeyType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DictionaryType).getKeyType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DictionaryType).getKeyType())
   }
 
   final Type getKeyType() { result = getImmediateKeyType().resolve() }
 
   Type getImmediateValueType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DictionaryType).getValueType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DictionaryType).getValueType())
   }
 
   final Type getValueType() { result = getImmediateValueType().resolve() }

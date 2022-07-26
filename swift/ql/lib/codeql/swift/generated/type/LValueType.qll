@@ -3,13 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class LValueTypeBase extends Cached::TLValueType, Type {
-  final override Db::LValueType asDbInstance() { this = Cached::TLValueType(result) }
-
+class LValueTypeBase extends Ipa::TLValueType, Type {
   override string getAPrimaryQlClass() { result = "LValueType" }
 
   Type getImmediateObjectType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::LValueType).getObjectType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::LValueType).getObjectType())
   }
 
   final Type getObjectType() { result = getImmediateObjectType().resolve() }

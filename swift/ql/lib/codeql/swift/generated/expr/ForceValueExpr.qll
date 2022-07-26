@@ -3,13 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class ForceValueExprBase extends Cached::TForceValueExpr, Expr {
-  final override Db::ForceValueExpr asDbInstance() { this = Cached::TForceValueExpr(result) }
-
+class ForceValueExprBase extends Ipa::TForceValueExpr, Expr {
   override string getAPrimaryQlClass() { result = "ForceValueExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ForceValueExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ForceValueExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

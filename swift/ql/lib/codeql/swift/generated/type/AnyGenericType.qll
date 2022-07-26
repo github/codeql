@@ -4,9 +4,9 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.type.Type
 
-class AnyGenericTypeBase extends Cached::TAnyGenericType, Type {
+class AnyGenericTypeBase extends Ipa::TAnyGenericType, Type {
   Type getImmediateParent() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::AnyGenericType).getParent())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::AnyGenericType).getParent())
   }
 
   final Type getParent() { result = getImmediateParent().resolve() }
@@ -14,7 +14,7 @@ class AnyGenericTypeBase extends Cached::TAnyGenericType, Type {
   final predicate hasParent() { exists(getParent()) }
 
   Decl getImmediateDeclaration() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::AnyGenericType).getDeclaration())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::AnyGenericType).getDeclaration())
   }
 
   final Decl getDeclaration() { result = getImmediateDeclaration().resolve() }

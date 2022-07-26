@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class EditorPlaceholderExprBase extends Cached::TEditorPlaceholderExpr, Expr {
-  final override Db::EditorPlaceholderExpr asDbInstance() {
-    this = Cached::TEditorPlaceholderExpr(result)
-  }
-
+class EditorPlaceholderExprBase extends Ipa::TEditorPlaceholderExpr, Expr {
   override string getAPrimaryQlClass() { result = "EditorPlaceholderExpr" }
 }

@@ -4,19 +4,18 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.stmt.Stmt
 
-class FallthroughStmtBase extends Cached::TFallthroughStmt, Stmt {
-  final override Db::FallthroughStmt asDbInstance() { this = Cached::TFallthroughStmt(result) }
-
+class FallthroughStmtBase extends Ipa::TFallthroughStmt, Stmt {
   override string getAPrimaryQlClass() { result = "FallthroughStmt" }
 
   CaseStmt getImmediateFallthroughSource() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::FallthroughStmt).getFallthroughSource())
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::FallthroughStmt).getFallthroughSource())
   }
 
   final CaseStmt getFallthroughSource() { result = getImmediateFallthroughSource().resolve() }
 
   CaseStmt getImmediateFallthroughDest() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::FallthroughStmt).getFallthroughDest())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::FallthroughStmt).getFallthroughDest())
   }
 
   final CaseStmt getFallthroughDest() { result = getImmediateFallthroughDest().resolve() }

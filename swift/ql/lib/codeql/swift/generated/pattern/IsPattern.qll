@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.type.TypeRepr
 
-class IsPatternBase extends Cached::TIsPattern, Pattern {
-  final override Db::IsPattern asDbInstance() { this = Cached::TIsPattern(result) }
-
+class IsPatternBase extends Ipa::TIsPattern, Pattern {
   override string getAPrimaryQlClass() { result = "IsPattern" }
 
   TypeRepr getImmediateCastTypeRepr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::IsPattern).getCastTypeRepr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IsPattern).getCastTypeRepr())
   }
 
   final TypeRepr getCastTypeRepr() { result = getImmediateCastTypeRepr().resolve() }
@@ -18,7 +16,7 @@ class IsPatternBase extends Cached::TIsPattern, Pattern {
   final predicate hasCastTypeRepr() { exists(getCastTypeRepr()) }
 
   Pattern getImmediateSubPattern() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::IsPattern).getSubPattern())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IsPattern).getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

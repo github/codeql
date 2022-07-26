@@ -3,11 +3,7 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class ConditionalBridgeFromObjCExprBase extends Cached::TConditionalBridgeFromObjCExpr,
+class ConditionalBridgeFromObjCExprBase extends Ipa::TConditionalBridgeFromObjCExpr,
   ImplicitConversionExpr {
-  final override Db::ConditionalBridgeFromObjCExpr asDbInstance() {
-    this = Cached::TConditionalBridgeFromObjCExpr(result)
-  }
-
   override string getAPrimaryQlClass() { result = "ConditionalBridgeFromObjCExpr" }
 }

@@ -5,13 +5,11 @@ import codeql.swift.elements.AstNode
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.Locatable
 
-class IfConfigClauseBase extends Cached::TIfConfigClause, Locatable {
-  final override Db::IfConfigClause asDbInstance() { this = Cached::TIfConfigClause(result) }
-
+class IfConfigClauseBase extends Ipa::TIfConfigClause, Locatable {
   override string getAPrimaryQlClass() { result = "IfConfigClause" }
 
   Expr getImmediateCondition() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::IfConfigClause).getCondition())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfConfigClause).getCondition())
   }
 
   final Expr getCondition() { result = getImmediateCondition().resolve() }
@@ -19,7 +17,7 @@ class IfConfigClauseBase extends Cached::TIfConfigClause, Locatable {
   final predicate hasCondition() { exists(getCondition()) }
 
   AstNode getImmediateElement(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::IfConfigClause).getElement(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfConfigClause).getElement(index))
   }
 
   final AstNode getElement(int index) { result = getImmediateElement(index).resolve() }
@@ -28,5 +26,5 @@ class IfConfigClauseBase extends Cached::TIfConfigClause, Locatable {
 
   final int getNumberOfElements() { result = count(getAnElement()) }
 
-  predicate isActive() { asDbInstance().(Db::IfConfigClause).isActive() }
+  predicate isActive() { Ipa::toDbInstance(this).(Db::IfConfigClause).isActive() }
 }

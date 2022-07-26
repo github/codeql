@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class ErrorTypeBase extends Cached::TErrorType, Type {
-  final override Db::ErrorType asDbInstance() { this = Cached::TErrorType(result) }
-
+class ErrorTypeBase extends Ipa::TErrorType, Type {
   override string getAPrimaryQlClass() { result = "ErrorType" }
 }

@@ -3,15 +3,12 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class ProtocolCompositionTypeBase extends Cached::TProtocolCompositionType, Type {
-  final override Db::ProtocolCompositionType asDbInstance() {
-    this = Cached::TProtocolCompositionType(result)
-  }
-
+class ProtocolCompositionTypeBase extends Ipa::TProtocolCompositionType, Type {
   override string getAPrimaryQlClass() { result = "ProtocolCompositionType" }
 
   Type getImmediateMember(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ProtocolCompositionType).getMember(index))
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ProtocolCompositionType).getMember(index))
   }
 
   final Type getMember(int index) { result = getImmediateMember(index).resolve() }

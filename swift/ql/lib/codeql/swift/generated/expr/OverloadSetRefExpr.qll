@@ -3,4 +3,4 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class OverloadSetRefExprBase extends Cached::TOverloadSetRefExpr, Expr { }
+class OverloadSetRefExprBase extends Ipa::TOverloadSetRefExpr, Expr { }

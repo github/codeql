@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinExecutorTypeBase extends Cached::TBuiltinExecutorType, BuiltinType {
-  final override Db::BuiltinExecutorType asDbInstance() {
-    this = Cached::TBuiltinExecutorType(result)
-  }
-
+class BuiltinExecutorTypeBase extends Ipa::TBuiltinExecutorType, BuiltinType {
   override string getAPrimaryQlClass() { result = "BuiltinExecutorType" }
 }

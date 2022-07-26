@@ -6,25 +6,23 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.pattern.Pattern
 
-class ForEachStmtBase extends Cached::TForEachStmt, LabeledStmt {
-  final override Db::ForEachStmt asDbInstance() { this = Cached::TForEachStmt(result) }
-
+class ForEachStmtBase extends Ipa::TForEachStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "ForEachStmt" }
 
   Pattern getImmediatePattern() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ForEachStmt).getPattern())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ForEachStmt).getPattern())
   }
 
   final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
   Expr getImmediateSequence() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ForEachStmt).getSequence())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ForEachStmt).getSequence())
   }
 
   final Expr getSequence() { result = getImmediateSequence().resolve() }
 
   Expr getImmediateWhere() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ForEachStmt).getWhere())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ForEachStmt).getWhere())
   }
 
   final Expr getWhere() { result = getImmediateWhere().resolve() }
@@ -32,7 +30,7 @@ class ForEachStmtBase extends Cached::TForEachStmt, LabeledStmt {
   final predicate hasWhere() { exists(getWhere()) }
 
   BraceStmt getImmediateBody() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ForEachStmt).getBody())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ForEachStmt).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.AnyMetatypeType
 
-class MetatypeTypeBase extends Cached::TMetatypeType, AnyMetatypeType {
-  final override Db::MetatypeType asDbInstance() { this = Cached::TMetatypeType(result) }
-
+class MetatypeTypeBase extends Ipa::TMetatypeType, AnyMetatypeType {
   override string getAPrimaryQlClass() { result = "MetatypeType" }
 }

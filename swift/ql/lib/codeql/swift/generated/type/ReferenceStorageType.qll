@@ -3,9 +3,10 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class ReferenceStorageTypeBase extends Cached::TReferenceStorageType, Type {
+class ReferenceStorageTypeBase extends Ipa::TReferenceStorageType, Type {
   Type getImmediateReferentType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ReferenceStorageType).getReferentType())
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ReferenceStorageType).getReferentType())
   }
 
   final Type getReferentType() { result = getImmediateReferentType().resolve() }

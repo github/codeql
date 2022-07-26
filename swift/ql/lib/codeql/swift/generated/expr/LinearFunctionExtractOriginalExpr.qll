@@ -3,11 +3,7 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class LinearFunctionExtractOriginalExprBase extends Cached::TLinearFunctionExtractOriginalExpr,
+class LinearFunctionExtractOriginalExprBase extends Ipa::TLinearFunctionExtractOriginalExpr,
   ImplicitConversionExpr {
-  final override Db::LinearFunctionExtractOriginalExpr asDbInstance() {
-    this = Cached::TLinearFunctionExtractOriginalExpr(result)
-  }
-
   override string getAPrimaryQlClass() { result = "LinearFunctionExtractOriginalExpr" }
 }

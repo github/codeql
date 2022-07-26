@@ -5,9 +5,9 @@ import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.Element
 import codeql.swift.elements.decl.ParamDecl
 
-class CallableBase extends Cached::TCallable, Element {
+class CallableBase extends Ipa::TCallable, Element {
   ParamDecl getImmediateParam(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::Callable).getParam(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Callable).getParam(index))
   }
 
   final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
@@ -17,7 +17,7 @@ class CallableBase extends Cached::TCallable, Element {
   final int getNumberOfParams() { result = count(getAParam()) }
 
   BraceStmt getImmediateBody() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::Callable).getBody())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Callable).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

@@ -6,13 +6,11 @@ import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.ParamDecl
 import codeql.swift.elements.type.Type
 
-class SubscriptDeclBase extends Cached::TSubscriptDecl, AbstractStorageDecl, GenericContext {
-  final override Db::SubscriptDecl asDbInstance() { this = Cached::TSubscriptDecl(result) }
-
+class SubscriptDeclBase extends Ipa::TSubscriptDecl, AbstractStorageDecl, GenericContext {
   override string getAPrimaryQlClass() { result = "SubscriptDecl" }
 
   ParamDecl getImmediateParam(int index) {
-    result = Cached::fromDbInstance(asDbInstance().(Db::SubscriptDecl).getParam(index))
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SubscriptDecl).getParam(index))
   }
 
   final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
@@ -22,7 +20,7 @@ class SubscriptDeclBase extends Cached::TSubscriptDecl, AbstractStorageDecl, Gen
   final int getNumberOfParams() { result = count(getAParam()) }
 
   Type getImmediateElementType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::SubscriptDecl).getElementType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SubscriptDecl).getElementType())
   }
 
   final Type getElementType() { result = getImmediateElementType().resolve() }

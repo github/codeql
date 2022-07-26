@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinRawPointerTypeBase extends Cached::TBuiltinRawPointerType, BuiltinType {
-  final override Db::BuiltinRawPointerType asDbInstance() {
-    this = Cached::TBuiltinRawPointerType(result)
-  }
-
+class BuiltinRawPointerTypeBase extends Ipa::TBuiltinRawPointerType, BuiltinType {
   override string getAPrimaryQlClass() { result = "BuiltinRawPointerType" }
 }

@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class SilBoxTypeBase extends Cached::TSilBoxType, Type {
-  final override Db::SilBoxType asDbInstance() { this = Cached::TSilBoxType(result) }
-
+class SilBoxTypeBase extends Ipa::TSilBoxType, Type {
   override string getAPrimaryQlClass() { result = "SilBoxType" }
 }

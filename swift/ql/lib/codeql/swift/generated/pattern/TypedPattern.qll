@@ -4,19 +4,17 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.type.TypeRepr
 
-class TypedPatternBase extends Cached::TTypedPattern, Pattern {
-  final override Db::TypedPattern asDbInstance() { this = Cached::TTypedPattern(result) }
-
+class TypedPatternBase extends Ipa::TTypedPattern, Pattern {
   override string getAPrimaryQlClass() { result = "TypedPattern" }
 
   Pattern getImmediateSubPattern() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TypedPattern).getSubPattern())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TypedPattern).getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 
   TypeRepr getImmediateTypeRepr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TypedPattern).getTypeRepr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TypedPattern).getTypeRepr())
   }
 
   final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }

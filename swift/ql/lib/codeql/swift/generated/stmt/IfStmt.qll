@@ -4,16 +4,18 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.stmt.LabeledConditionalStmt
 import codeql.swift.elements.stmt.Stmt
 
-class IfStmtBase extends Cached::TIfStmt, LabeledConditionalStmt {
-  final override Db::IfStmt asDbInstance() { this = Cached::TIfStmt(result) }
-
+class IfStmtBase extends Ipa::TIfStmt, LabeledConditionalStmt {
   override string getAPrimaryQlClass() { result = "IfStmt" }
 
-  Stmt getImmediateThen() { result = Cached::fromDbInstance(asDbInstance().(Db::IfStmt).getThen()) }
+  Stmt getImmediateThen() {
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfStmt).getThen())
+  }
 
   final Stmt getThen() { result = getImmediateThen().resolve() }
 
-  Stmt getImmediateElse() { result = Cached::fromDbInstance(asDbInstance().(Db::IfStmt).getElse()) }
+  Stmt getImmediateElse() {
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfStmt).getElse())
+  }
 
   final Stmt getElse() { result = getImmediateElse().resolve() }
 

@@ -3,13 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class DynamicSelfTypeBase extends Cached::TDynamicSelfType, Type {
-  final override Db::DynamicSelfType asDbInstance() { this = Cached::TDynamicSelfType(result) }
-
+class DynamicSelfTypeBase extends Ipa::TDynamicSelfType, Type {
   override string getAPrimaryQlClass() { result = "DynamicSelfType" }
 
   Type getImmediateStaticSelfType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DynamicSelfType).getStaticSelfType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DynamicSelfType).getStaticSelfType())
   }
 
   final Type getStaticSelfType() { result = getImmediateStaticSelfType().resolve() }

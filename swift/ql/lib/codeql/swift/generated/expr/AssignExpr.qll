@@ -3,19 +3,17 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class AssignExprBase extends Cached::TAssignExpr, Expr {
-  final override Db::AssignExpr asDbInstance() { this = Cached::TAssignExpr(result) }
-
+class AssignExprBase extends Ipa::TAssignExpr, Expr {
   override string getAPrimaryQlClass() { result = "AssignExpr" }
 
   Expr getImmediateDest() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::AssignExpr).getDest())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::AssignExpr).getDest())
   }
 
   final Expr getDest() { result = getImmediateDest().resolve() }
 
   Expr getImmediateSource() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::AssignExpr).getSource())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::AssignExpr).getSource())
   }
 
   final Expr getSource() { result = getImmediateSource().resolve() }

@@ -3,4 +3,4 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.AbstractFunctionDecl
 
-class FuncDeclBase extends Cached::TFuncDecl, AbstractFunctionDecl { }
+class FuncDeclBase extends Ipa::TFuncDecl, AbstractFunctionDecl { }

@@ -5,13 +5,11 @@ import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.VarDecl
 
-class TapExprBase extends Cached::TTapExpr, Expr {
-  final override Db::TapExpr asDbInstance() { this = Cached::TTapExpr(result) }
-
+class TapExprBase extends Ipa::TTapExpr, Expr {
   override string getAPrimaryQlClass() { result = "TapExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TapExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TapExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
@@ -19,13 +17,13 @@ class TapExprBase extends Cached::TTapExpr, Expr {
   final predicate hasSubExpr() { exists(getSubExpr()) }
 
   BraceStmt getImmediateBody() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TapExpr).getBody())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TapExpr).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }
 
   VarDecl getImmediateVar() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TapExpr).getVar())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TapExpr).getVar())
   }
 
   final VarDecl getVar() { result = getImmediateVar().resolve() }

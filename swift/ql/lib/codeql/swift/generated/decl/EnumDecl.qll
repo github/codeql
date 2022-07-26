@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.NominalTypeDecl
 
-class EnumDeclBase extends Cached::TEnumDecl, NominalTypeDecl {
-  final override Db::EnumDecl asDbInstance() { this = Cached::TEnumDecl(result) }
-
+class EnumDeclBase extends Ipa::TEnumDecl, NominalTypeDecl {
   override string getAPrimaryQlClass() { result = "EnumDecl" }
 }

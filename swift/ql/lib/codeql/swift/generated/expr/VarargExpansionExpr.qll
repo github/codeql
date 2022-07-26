@@ -3,15 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class VarargExpansionExprBase extends Cached::TVarargExpansionExpr, Expr {
-  final override Db::VarargExpansionExpr asDbInstance() {
-    this = Cached::TVarargExpansionExpr(result)
-  }
-
+class VarargExpansionExprBase extends Ipa::TVarargExpansionExpr, Expr {
   override string getAPrimaryQlClass() { result = "VarargExpansionExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::VarargExpansionExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::VarargExpansionExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

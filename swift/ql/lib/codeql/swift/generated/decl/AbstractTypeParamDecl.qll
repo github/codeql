@@ -3,4 +3,4 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.TypeDecl
 
-class AbstractTypeParamDeclBase extends Cached::TAbstractTypeParamDecl, TypeDecl { }
+class AbstractTypeParamDeclBase extends Ipa::TAbstractTypeParamDecl, TypeDecl { }

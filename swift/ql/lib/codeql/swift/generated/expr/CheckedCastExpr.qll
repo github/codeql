@@ -3,4 +3,4 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ExplicitCastExpr
 
-class CheckedCastExprBase extends Cached::TCheckedCastExpr, ExplicitCastExpr { }
+class CheckedCastExprBase extends Ipa::TCheckedCastExpr, ExplicitCastExpr { }

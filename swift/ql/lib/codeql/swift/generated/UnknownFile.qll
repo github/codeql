@@ -3,6 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.File
 
-class UnknownFileBase extends Cached::TUnknownFile, File {
+class UnknownFileBase extends Ipa::TUnknownFile, File {
   override string getAPrimaryQlClass() { result = "UnknownFile" }
 }

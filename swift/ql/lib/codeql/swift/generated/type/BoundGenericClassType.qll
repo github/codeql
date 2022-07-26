@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.BoundGenericType
 
-class BoundGenericClassTypeBase extends Cached::TBoundGenericClassType, BoundGenericType {
-  final override Db::BoundGenericClassType asDbInstance() {
-    this = Cached::TBoundGenericClassType(result)
-  }
-
+class BoundGenericClassTypeBase extends Ipa::TBoundGenericClassType, BoundGenericType {
   override string getAPrimaryQlClass() { result = "BoundGenericClassType" }
 }

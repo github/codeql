@@ -3,11 +3,7 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class CovariantFunctionConversionExprBase extends Cached::TCovariantFunctionConversionExpr,
+class CovariantFunctionConversionExprBase extends Ipa::TCovariantFunctionConversionExpr,
   ImplicitConversionExpr {
-  final override Db::CovariantFunctionConversionExpr asDbInstance() {
-    this = Cached::TCovariantFunctionConversionExpr(result)
-  }
-
   override string getAPrimaryQlClass() { result = "CovariantFunctionConversionExpr" }
 }

@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class DestructureTupleExprBase extends Cached::TDestructureTupleExpr, ImplicitConversionExpr {
-  final override Db::DestructureTupleExpr asDbInstance() {
-    this = Cached::TDestructureTupleExpr(result)
-  }
-
+class DestructureTupleExprBase extends Ipa::TDestructureTupleExpr, ImplicitConversionExpr {
   override string getAPrimaryQlClass() { result = "DestructureTupleExpr" }
 }

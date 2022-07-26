@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinVectorTypeBase extends Cached::TBuiltinVectorType, BuiltinType {
-  final override Db::BuiltinVectorType asDbInstance() { this = Cached::TBuiltinVectorType(result) }
-
+class BuiltinVectorTypeBase extends Ipa::TBuiltinVectorType, BuiltinType {
   override string getAPrimaryQlClass() { result = "BuiltinVectorType" }
 }

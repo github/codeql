@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class ArchetypeToSuperExprBase extends Cached::TArchetypeToSuperExpr, ImplicitConversionExpr {
-  final override Db::ArchetypeToSuperExpr asDbInstance() {
-    this = Cached::TArchetypeToSuperExpr(result)
-  }
-
+class ArchetypeToSuperExprBase extends Ipa::TArchetypeToSuperExpr, ImplicitConversionExpr {
   override string getAPrimaryQlClass() { result = "ArchetypeToSuperExpr" }
 }

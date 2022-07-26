@@ -4,22 +4,20 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.type.ArchetypeType
 import codeql.swift.elements.decl.AssociatedTypeDecl
 
-class NestedArchetypeTypeBase extends Cached::TNestedArchetypeType, ArchetypeType {
-  final override Db::NestedArchetypeType asDbInstance() {
-    this = Cached::TNestedArchetypeType(result)
-  }
-
+class NestedArchetypeTypeBase extends Ipa::TNestedArchetypeType, ArchetypeType {
   override string getAPrimaryQlClass() { result = "NestedArchetypeType" }
 
   ArchetypeType getImmediateParent() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::NestedArchetypeType).getParent())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::NestedArchetypeType).getParent())
   }
 
   final ArchetypeType getParent() { result = getImmediateParent().resolve() }
 
   AssociatedTypeDecl getImmediateAssociatedTypeDeclaration() {
     result =
-      Cached::fromDbInstance(asDbInstance().(Db::NestedArchetypeType).getAssociatedTypeDeclaration())
+      Ipa::fromDbInstance(Ipa::toDbInstance(this)
+            .(Db::NestedArchetypeType)
+            .getAssociatedTypeDeclaration())
   }
 
   final AssociatedTypeDecl getAssociatedTypeDeclaration() {

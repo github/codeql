@@ -3,8 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ApplyExpr
 
-class PrefixUnaryExprBase extends Cached::TPrefixUnaryExpr, ApplyExpr {
-  final override Db::PrefixUnaryExpr asDbInstance() { this = Cached::TPrefixUnaryExpr(result) }
-
+class PrefixUnaryExprBase extends Ipa::TPrefixUnaryExpr, ApplyExpr {
   override string getAPrimaryQlClass() { result = "PrefixUnaryExpr" }
 }

@@ -4,13 +4,11 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
 
-class ExprPatternBase extends Cached::TExprPattern, Pattern {
-  final override Db::ExprPattern asDbInstance() { this = Cached::TExprPattern(result) }
-
+class ExprPatternBase extends Ipa::TExprPattern, Pattern {
   override string getAPrimaryQlClass() { result = "ExprPattern" }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ExprPattern).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ExprPattern).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

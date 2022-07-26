@@ -4,13 +4,12 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.OperatorDecl
 import codeql.swift.elements.decl.PrecedenceGroupDecl
 
-class InfixOperatorDeclBase extends Cached::TInfixOperatorDecl, OperatorDecl {
-  final override Db::InfixOperatorDecl asDbInstance() { this = Cached::TInfixOperatorDecl(result) }
-
+class InfixOperatorDeclBase extends Ipa::TInfixOperatorDecl, OperatorDecl {
   override string getAPrimaryQlClass() { result = "InfixOperatorDecl" }
 
   PrecedenceGroupDecl getImmediatePrecedenceGroup() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::InfixOperatorDecl).getPrecedenceGroup())
+    result =
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::InfixOperatorDecl).getPrecedenceGroup())
   }
 
   final PrecedenceGroupDecl getPrecedenceGroup() {

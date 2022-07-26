@@ -3,12 +3,8 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.BuiltinLiteralExpr
 
-class BooleanLiteralExprBase extends Cached::TBooleanLiteralExpr, BuiltinLiteralExpr {
-  final override Db::BooleanLiteralExpr asDbInstance() {
-    this = Cached::TBooleanLiteralExpr(result)
-  }
-
+class BooleanLiteralExprBase extends Ipa::TBooleanLiteralExpr, BuiltinLiteralExpr {
   override string getAPrimaryQlClass() { result = "BooleanLiteralExpr" }
 
-  boolean getValue() { result = asDbInstance().(Db::BooleanLiteralExpr).getValue() }
+  boolean getValue() { result = Ipa::toDbInstance(this).(Db::BooleanLiteralExpr).getValue() }
 }

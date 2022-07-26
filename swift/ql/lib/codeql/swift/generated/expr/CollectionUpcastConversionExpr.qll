@@ -3,11 +3,7 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class CollectionUpcastConversionExprBase extends Cached::TCollectionUpcastConversionExpr,
+class CollectionUpcastConversionExprBase extends Ipa::TCollectionUpcastConversionExpr,
   ImplicitConversionExpr {
-  final override Db::CollectionUpcastConversionExpr asDbInstance() {
-    this = Cached::TCollectionUpcastConversionExpr(result)
-  }
-
   override string getAPrimaryQlClass() { result = "CollectionUpcastConversionExpr" }
 }

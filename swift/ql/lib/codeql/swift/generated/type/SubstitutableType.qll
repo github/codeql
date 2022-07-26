@@ -3,4 +3,4 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.type.Type
 
-class SubstitutableTypeBase extends Cached::TSubstitutableType, Type { }
+class SubstitutableTypeBase extends Ipa::TSubstitutableType, Type { }

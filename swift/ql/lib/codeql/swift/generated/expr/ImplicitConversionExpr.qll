@@ -3,9 +3,9 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class ImplicitConversionExprBase extends Cached::TImplicitConversionExpr, Expr {
+class ImplicitConversionExprBase extends Ipa::TImplicitConversionExpr, Expr {
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ImplicitConversionExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ImplicitConversionExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

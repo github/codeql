@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class UnresolvedSpecializeExprBase extends Cached::TUnresolvedSpecializeExpr, Expr {
-  final override Db::UnresolvedSpecializeExpr asDbInstance() {
-    this = Cached::TUnresolvedSpecializeExpr(result)
-  }
-
+class UnresolvedSpecializeExprBase extends Ipa::TUnresolvedSpecializeExpr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedSpecializeExpr" }
 }

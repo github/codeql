@@ -3,11 +3,7 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class DifferentiableFunctionExtractOriginalExprBase extends Cached::TDifferentiableFunctionExtractOriginalExpr,
+class DifferentiableFunctionExtractOriginalExprBase extends Ipa::TDifferentiableFunctionExtractOriginalExpr,
   ImplicitConversionExpr {
-  final override Db::DifferentiableFunctionExtractOriginalExpr asDbInstance() {
-    this = Cached::TDifferentiableFunctionExtractOriginalExpr(result)
-  }
-
   override string getAPrimaryQlClass() { result = "DifferentiableFunctionExtractOriginalExpr" }
 }

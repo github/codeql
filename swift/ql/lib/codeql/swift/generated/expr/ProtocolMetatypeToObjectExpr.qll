@@ -3,11 +3,7 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class ProtocolMetatypeToObjectExprBase extends Cached::TProtocolMetatypeToObjectExpr,
+class ProtocolMetatypeToObjectExprBase extends Ipa::TProtocolMetatypeToObjectExpr,
   ImplicitConversionExpr {
-  final override Db::ProtocolMetatypeToObjectExpr asDbInstance() {
-    this = Cached::TProtocolMetatypeToObjectExpr(result)
-  }
-
   override string getAPrimaryQlClass() { result = "ProtocolMetatypeToObjectExpr" }
 }

@@ -3,10 +3,6 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class InjectIntoOptionalExprBase extends Cached::TInjectIntoOptionalExpr, ImplicitConversionExpr {
-  final override Db::InjectIntoOptionalExpr asDbInstance() {
-    this = Cached::TInjectIntoOptionalExpr(result)
-  }
-
+class InjectIntoOptionalExprBase extends Ipa::TInjectIntoOptionalExpr, ImplicitConversionExpr {
   override string getAPrimaryQlClass() { result = "InjectIntoOptionalExpr" }
 }

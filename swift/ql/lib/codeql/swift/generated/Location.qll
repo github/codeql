@@ -4,18 +4,18 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.Element
 import codeql.swift.elements.File
 
-class LocationBase extends Cached::TLocation, Element {
+class LocationBase extends Ipa::TLocation, Element {
   File getImmediateFile() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::Location).getFile())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Location).getFile())
   }
 
   final File getFile() { result = getImmediateFile().resolve() }
 
-  int getStartLine() { result = asDbInstance().(Db::Location).getStartLine() }
+  int getStartLine() { result = Ipa::toDbInstance(this).(Db::Location).getStartLine() }
 
-  int getStartColumn() { result = asDbInstance().(Db::Location).getStartColumn() }
+  int getStartColumn() { result = Ipa::toDbInstance(this).(Db::Location).getStartColumn() }
 
-  int getEndLine() { result = asDbInstance().(Db::Location).getEndLine() }
+  int getEndLine() { result = Ipa::toDbInstance(this).(Db::Location).getEndLine() }
 
-  int getEndColumn() { result = asDbInstance().(Db::Location).getEndColumn() }
+  int getEndColumn() { result = Ipa::toDbInstance(this).(Db::Location).getEndColumn() }
 }

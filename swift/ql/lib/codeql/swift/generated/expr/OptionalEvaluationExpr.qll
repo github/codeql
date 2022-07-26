@@ -3,15 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class OptionalEvaluationExprBase extends Cached::TOptionalEvaluationExpr, Expr {
-  final override Db::OptionalEvaluationExpr asDbInstance() {
-    this = Cached::TOptionalEvaluationExpr(result)
-  }
-
+class OptionalEvaluationExprBase extends Ipa::TOptionalEvaluationExpr, Expr {
   override string getAPrimaryQlClass() { result = "OptionalEvaluationExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::OptionalEvaluationExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::OptionalEvaluationExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

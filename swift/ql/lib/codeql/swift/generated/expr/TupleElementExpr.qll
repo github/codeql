@@ -3,16 +3,14 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class TupleElementExprBase extends Cached::TTupleElementExpr, Expr {
-  final override Db::TupleElementExpr asDbInstance() { this = Cached::TTupleElementExpr(result) }
-
+class TupleElementExprBase extends Ipa::TTupleElementExpr, Expr {
   override string getAPrimaryQlClass() { result = "TupleElementExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::TupleElementExpr).getSubExpr())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TupleElementExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
-  int getIndex() { result = asDbInstance().(Db::TupleElementExpr).getIndex() }
+  int getIndex() { result = Ipa::toDbInstance(this).(Db::TupleElementExpr).getIndex() }
 }

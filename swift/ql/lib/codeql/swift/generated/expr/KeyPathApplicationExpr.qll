@@ -3,21 +3,17 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.Expr
 
-class KeyPathApplicationExprBase extends Cached::TKeyPathApplicationExpr, Expr {
-  final override Db::KeyPathApplicationExpr asDbInstance() {
-    this = Cached::TKeyPathApplicationExpr(result)
-  }
-
+class KeyPathApplicationExprBase extends Ipa::TKeyPathApplicationExpr, Expr {
   override string getAPrimaryQlClass() { result = "KeyPathApplicationExpr" }
 
   Expr getImmediateBase() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::KeyPathApplicationExpr).getBase())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::KeyPathApplicationExpr).getBase())
   }
 
   final Expr getBase() { result = getImmediateBase().resolve() }
 
   Expr getImmediateKeyPath() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::KeyPathApplicationExpr).getKeyPath())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::KeyPathApplicationExpr).getKeyPath())
   }
 
   final Expr getKeyPath() { result = getImmediateKeyPath().resolve() }

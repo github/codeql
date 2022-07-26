@@ -3,13 +3,11 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.pattern.Pattern
 
-class ParenPatternBase extends Cached::TParenPattern, Pattern {
-  final override Db::ParenPattern asDbInstance() { this = Cached::TParenPattern(result) }
-
+class ParenPatternBase extends Ipa::TParenPattern, Pattern {
   override string getAPrimaryQlClass() { result = "ParenPattern" }
 
   Pattern getImmediateSubPattern() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::ParenPattern).getSubPattern())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ParenPattern).getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

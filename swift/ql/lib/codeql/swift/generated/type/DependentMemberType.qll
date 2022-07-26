@@ -4,22 +4,18 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.decl.AssociatedTypeDecl
 import codeql.swift.elements.type.Type
 
-class DependentMemberTypeBase extends Cached::TDependentMemberType, Type {
-  final override Db::DependentMemberType asDbInstance() {
-    this = Cached::TDependentMemberType(result)
-  }
-
+class DependentMemberTypeBase extends Ipa::TDependentMemberType, Type {
   override string getAPrimaryQlClass() { result = "DependentMemberType" }
 
   Type getImmediateBaseType() {
-    result = Cached::fromDbInstance(asDbInstance().(Db::DependentMemberType).getBaseType())
+    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DependentMemberType).getBaseType())
   }
 
   final Type getBaseType() { result = getImmediateBaseType().resolve() }
 
   AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
     result =
-      Cached::fromDbInstance(asDbInstance().(Db::DependentMemberType).getAssociatedTypeDecl())
+      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DependentMemberType).getAssociatedTypeDecl())
   }
 
   final AssociatedTypeDecl getAssociatedTypeDecl() {

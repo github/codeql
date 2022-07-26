@@ -3,4 +3,4 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.expr.LiteralExpr
 
-class BuiltinLiteralExprBase extends Cached::TBuiltinLiteralExpr, LiteralExpr { }
+class BuiltinLiteralExprBase extends Ipa::TBuiltinLiteralExpr, LiteralExpr { }

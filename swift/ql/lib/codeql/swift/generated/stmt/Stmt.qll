@@ -3,4 +3,4 @@ private import codeql.swift.generated.IpaTypes
 private import codeql.swift.generated.Db
 import codeql.swift.elements.AstNode
 
-class StmtBase extends Cached::TStmt, AstNode { }
+class StmtBase extends Ipa::TStmt, AstNode { }
