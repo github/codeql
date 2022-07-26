@@ -258,4 +258,7 @@ void f(void) {
     bool b_is_assignable1 = __is_assignable(a_struct,a_struct);
     bool b_is_assignable2 = __is_assignable(a_struct,empty);
     bool b_is_assignable3 = __is_assignable(a_struct,int);
+
+    bool b_is_aggregate1 = __is_aggregate(a_struct);
+    bool b_is_aggregate2 = __is_aggregate(int);
 }

@@ -173,7 +173,7 @@ class BuiltInOperationHasAssign extends BuiltInOperation, @hasassignexpr {
  *
  * Returns `true` if the type has a copy constructor.
  * ```
- * std::integral_constant< bool, __has_copy(_Tp)> hc;
+ * std::integral_constant<bool, __has_copy(_Tp)> hc;
  * ```
  */
 class BuiltInOperationHasCopy extends BuiltInOperation, @hascopyexpr {
@@ -189,7 +189,7 @@ class BuiltInOperationHasCopy extends BuiltInOperation, @hascopyexpr {
  * Returns `true` if a copy assignment operator has an empty exception
  * specification.
  * ```
- * std::integral_constant< bool, __has_nothrow_assign(_Tp)> hnta;
+ * std::integral_constant<bool, __has_nothrow_assign(_Tp)> hnta;
  * ```
  */
 class BuiltInOperationHasNoThrowAssign extends BuiltInOperation, @hasnothrowassign {
@@ -220,7 +220,7 @@ class BuiltInOperationHasNoThrowConstructor extends BuiltInOperation, @hasnothro
  *
  * Returns `true` if the copy constructor has an empty exception specification.
  * ```
- * std::integral_constant< bool, __has_nothrow_copy(MyType) >;
+ * std::integral_constant<bool, __has_nothrow_copy(MyType) >;
  * ```
  */
 class BuiltInOperationHasNoThrowCopy extends BuiltInOperation, @hasnothrowcopy {
@@ -266,7 +266,7 @@ class BuiltInOperationHasTrivialConstructor extends BuiltInOperation, @hastrivia
  *
  * Returns true if the type has a trivial copy constructor.
  * ```
- * std::integral_constant< bool, __has_trivial_copy(MyType) > htc;
+ * std::integral_constant<bool, __has_trivial_copy(MyType)> htc;
  * ```
  */
 class BuiltInOperationHasTrivialCopy extends BuiltInOperation, @hastrivialcopy {
@@ -468,7 +468,7 @@ class BuiltInOperationIsUnion extends BuiltInOperation, @isunionexpr {
  * ```
  * template<typename _Tp1, typename _Tp2>
  *   struct types_compatible
- *   : public integral_constant<bool, __builtin_types_compatible_p(_Tp1, _Tp2) >
+ *   : public integral_constant<bool, __builtin_types_compatible_p(_Tp1, _Tp2)>
  *   { };
  * ```
  */
@@ -547,7 +547,7 @@ class BuiltInOperationBuiltInAddressOf extends UnaryOperation, BuiltInOperation,
  * ```
  * template<typename T, typename... Args>
  *   struct is_trivially_constructible
- *   : public integral_constant<bool, __is_trivially_constructible(T, Args...) >
+ *   : public integral_constant<bool, __is_trivially_constructible(T, Args...)>
  *   { };
  * ```
  */
@@ -701,7 +701,7 @@ class BuiltInOperationIsTriviallyCopyable extends BuiltInOperation, @istrivially
  *
  * ```
  * template <typename _Tp>
- * std::integral_constant< bool, __is_literal_type(_Tp)> ilt;
+ * std::integral_constant<bool, __is_literal_type(_Tp)> ilt;
  * ```
  */
 class BuiltInOperationIsLiteralType extends BuiltInOperation, @isliteraltypeexpr {
@@ -718,7 +718,7 @@ class BuiltInOperationIsLiteralType extends BuiltInOperation, @isliteraltypeexpr
  * compiler, with semantics of the `memcpy` operation.
  * ```
  * template <typename _Tp>
- * std::integral_constant< bool, __has_trivial_move_constructor(_Tp)> htmc;
+ * std::integral_constant<bool, __has_trivial_move_constructor(_Tp)> htmc;
  * ```
  */
 class BuiltInOperationHasTrivialMoveConstructor extends BuiltInOperation,
@@ -736,7 +736,7 @@ class BuiltInOperationHasTrivialMoveConstructor extends BuiltInOperation,
  * ```
  * template<typename T>
  *   struct has_trivial_move_assign
- *   : public integral_constant<bool, __has_trivial_move_assign(T) >
+ *   : public integral_constant<bool, __has_trivial_move_assign(T)>
  *   { };
  * ```
  */
@@ -771,7 +771,7 @@ class BuiltInOperationHasNothrowMoveAssign extends BuiltInOperation, @hasnothrow
  * ```
  * template<typename T, typename... Args>
  *   struct is_constructible
- *   : public integral_constant<bool, __is_constructible(T, Args...) >
+ *   : public integral_constant<bool, __is_constructible(T, Args...)>
  *   { };
  * ```
  */
@@ -935,7 +935,7 @@ class BuiltInOperationIsValueClass extends BuiltInOperation, @isvalueclassexpr {
  * ```
  * template<typename T>
  *   struct is_final
- *   : public integral_constant<bool, __is_final(T) >
+ *   : public integral_constant<bool, __is_final(T)>
  *   { };
  * ```
  */
@@ -990,4 +990,18 @@ class BuiltInComplexOperation extends BuiltInOperation, @builtincomplex {
 
   /** Gets the operand corresponding to the imaginary part of the complex number. */
   Expr getImaginaryOperand() { this.hasChild(result, 1) }
+}
+
+/**
+ * A C++ `__is_aggregate` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if the type has is an aggregate type.
+ * ```
+ * std::integral_constant<bool, __is_aggregate(_Tp)> ia;
+ * ``` */
+class BuiltInOperationIsAggregate extends BuiltInOperation, @isaggregate {
+  override string toString() { result = "__is_aggregate" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsAggregate" }
 }

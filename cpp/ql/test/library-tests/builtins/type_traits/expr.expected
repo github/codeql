@@ -305,3 +305,7 @@
 | ms.cpp:260:29:260:57 | __is_assignable | a_struct,int | 0 |
 | ms.cpp:260:29:260:57 | a_struct |  | <none> |
 | ms.cpp:260:29:260:57 | int |  | <none> |
+| ms.cpp:262:28:262:51 | __is_aggregate | a_struct | 1 |
+| ms.cpp:262:28:262:51 | a_struct |  | <none> |
+| ms.cpp:263:28:263:46 | __is_aggregate | int | 0 |
+| ms.cpp:263:28:263:46 | int |  | <none> |

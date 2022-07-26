@@ -1651,6 +1651,7 @@ case @expr.kind of
 | 328 = @co_yield
 | 329 = @temp_init
 | 330 = @isassignable
+| 331 = @isaggregate
 ;
 
 @var_args_expr = @vastartexpr
@@ -1713,6 +1714,7 @@ case @expr.kind of
             | @builtinchooseexpr
             | @builtincomplex
             | @isassignable
+            | @isaggregate
             ;
 
 new_allocated_type(
