@@ -18,4 +18,3 @@ private import experimental.semmle.python.frameworks.CopyFile
 private import experimental.semmle.python.frameworks.Sendgrid
 private import experimental.semmle.python.libraries.FlaskMail
 private import experimental.semmle.python.libraries.SmtpLib
-private import experimental.semmle.python.frameworks.CryptographicOperation
