@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 
 public class DotRegexServlet extends HttpServlet {
@@ -101,6 +102,48 @@ public class DotRegexServlet extends HttpServlet {
 				return;
 			} else {
 				// Not protected page - render content
+			}
+		}
+	}
+
+	// BAD: A string with line return e.g. `/protected/%0dxyz` can bypass the path check
+	protected void doGet6(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String source = request.getPathInfo();
+
+		Pattern p = Pattern.compile(PROTECTED_PATTERN);
+		Matcher m = p.matcher(source);
+
+		if (m.matches()) {
+			// Protected page - check access token and redirect to login page
+			if (!request.getSession().getAttribute("secAttr").equals("secValue")) {
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login");
+				dispatcher.forward(request, response);
+			} else {
+				// Not protected page - render content
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(source);
+				dispatcher.forward(request, response);
+			}
+		}
+	}
+
+	// GOOD: A string with line return e.g. `/protected/%0dxyz` cannot bypass the path check
+	protected void doGet7(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String source = request.getPathInfo();
+
+		Pattern p = Pattern.compile(PROTECTED_PATTERN, Pattern.DOTALL);
+		Matcher m = p.matcher(source);
+
+		if (m.matches()) {
+			// Protected page - check access token and redirect to login page
+			if (!request.getSession().getAttribute("secAttr").equals("secValue")) {
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login");
+				dispatcher.forward(request, response);
+			} else {
+				// Not protected page - render content
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(source);
+				dispatcher.include(request, response);
 			}
 		}
 	}

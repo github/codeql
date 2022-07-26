@@ -33,6 +33,24 @@ private class GetServletUriSource extends SourceModelCsv {
   }
 }
 
+/** Sink model of servlet dispatcher. */
+private class UrlDispatchSink extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "javax.servlet;RequestDispatcher;false;forward;;;Argument[-1];url-dispatch;manual",
+        "javax.servlet;RequestDispatcher;false;include;;;Argument[-1];url-dispatch;manual"
+      ]
+  }
+}
+
+/** Sink model of servlet filter. */
+private class UrlFilterSink extends SinkModelCsv {
+  override predicate row(string row) {
+    row = ["javax.servlet;FilterChain;true;doFilter;;;Argument[-1];url-filter;manual"]
+  }
+}
+
 /**
  * `.` without a `\` prefix, which is likely not a character literal in regex
  */
@@ -119,7 +137,11 @@ class MatchRegexConfiguration extends TaintTracking::Configuration {
         DataFlow::localExprFlow(ce, guard.(MethodAccess).getQualifier()) or
         DataFlow::localExprFlow(ce, guard.(MethodAccess).getAnArgument())
       ) and
-      DataFlow::exprNode(se) instanceof UrlRedirectSink and
+      (
+        DataFlow::exprNode(se) instanceof UrlRedirectSink or
+        sinkNode(DataFlow::exprNode(se), "url-dispatch") or
+        sinkNode(DataFlow::exprNode(se), "url-filter")
+      ) and
       guard.controls(se.getBasicBlock(), true)
     )
   }
