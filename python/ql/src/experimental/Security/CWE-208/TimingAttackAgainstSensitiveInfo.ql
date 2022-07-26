@@ -31,7 +31,7 @@ from ClientSuppliedSecretConfig config, DataFlow::PathNode source, DataFlow::Pat
 where config.hasFlowPath(source, sink)
   config.hasFlowPath(source, sink) and
   (
-    source.getNode().(SecretSource).includesUserInput() and
+    source.getNode().(SecretSource).includesUserInput() or
     sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
   )
 select sink.getNode(), source, sink, "Timing attack against $@ validation.", source.getNode(),
