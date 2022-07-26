@@ -829,14 +829,18 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun isKotlinDefinedInterface(cls: IrClass?) =
+        cls != null && cls.isInterface && cls.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
+
     private fun needsInterfaceForwarder(f: IrFunction) =
         // forAllMethodsWithBody means -Xjvm-default=all or all-compatibility, in which case real Java default interfaces are used, and we don't need to do anything.
-        // Otherwise, for a method inheriting a default, we need to create a synthetic method like `int f(int x) { return super.InterfaceWithDefault.f(x); }`, because
-        // kotlinc will generate a public method and Java callers may directly target it.
+        // Otherwise, for a Kotlin-defined method inheriting a Kotlin-defined default, we need to create a synthetic method like
+        // `int f(int x) { return super.InterfaceWithDefault.f(x); }`, because kotlinc will generate a public method and Java callers may directly target it.
         // (NB. kotlinc's actual implementation strategy is different -- it makes an inner class called InterfaceWithDefault$DefaultImpls and stores the default methods
         // there to allow default method usage in Java < 8, but this is hopefully niche.
         !pluginContext.languageVersionSettings.getFlag(JvmAnalysisFlags.jvmDefaultMode).forAllMethodsWithBody &&
-                f.realOverrideTarget.let { it != f && it.parentClassOrNull?.isInterface == true }
+                f.parentClassOrNull?.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB &&
+                f.realOverrideTarget.let { it != f && isKotlinDefinedInterface(it.parentClassOrNull) }
 
     private fun makeInterfaceForwarder(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
         forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses).also { functionId ->
