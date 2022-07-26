@@ -1023,3 +1023,18 @@ class BuiltInOperationHasUniqueObjectRepresentations extends BuiltInOperation,
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationHasUniqueObjectRepresentations" }
 }
+
+/**
+ * A C/C++ `__builtin_bit_cast` built-in operation (used by some implementations
+ * of `std::bit_cast`).
+ *
+ * Performs a bit cast from a value to a type.
+ * ```
+ * __builtin_bit_cast(Type, value);
+ * ```
+ */
+class BuiltInBitCast extends BuiltInOperation, @builtinbitcast {
+  override string toString() { result = "__builtin_bit_cast" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInBitCast" }
+}
