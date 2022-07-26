@@ -1,8 +1,0 @@
-edges
-| TimingAttackAgainstSignature.py:13:12:13:47 | ControlFlowNode for Attribute() | TimingAttackAgainstSignature.py:19:19:19:48 | ControlFlowNode for sign() |
-nodes
-| TimingAttackAgainstSignature.py:13:12:13:47 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| TimingAttackAgainstSignature.py:19:19:19:48 | ControlFlowNode for sign() | semmle.label | ControlFlowNode for sign() |
-subpaths
-#select
-| TimingAttackAgainstSignature.py:19:19:19:48 | ControlFlowNode for sign() | TimingAttackAgainstSignature.py:13:12:13:47 | ControlFlowNode for Attribute() | TimingAttackAgainstSignature.py:19:19:19:48 | ControlFlowNode for sign() | Possible Timing attack against $@ validation. | TimingAttackAgainstSignature.py:13:12:13:47 | ControlFlowNode for Attribute() | TimingAttackAgainstSignature.py:13:12:13:47 | ControlFlowNode for Attribute() |
