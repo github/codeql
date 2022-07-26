@@ -25,12 +25,12 @@ import DataFlow::PathGraph
 class TimingAttackAgainsthash extends TaintTracking::Configuration {
   TimingAttackAgainsthash() { this = "TimingAttackAgainsthash" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UserInputMsgConfig }
+  override predicate isSource(DataFlow::Node source) { source instanceof ProduceHashCall }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UserInputInComparisonConfig }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 }
 
 from TimingAttackAgainsthash config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+where config.hasFlowPath(source, sink) and sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
 select sink.getNode(), source, sink, "Timing attack against $@ validation.", source,
   source.getNode()
