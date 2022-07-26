@@ -28,7 +28,7 @@ class ClientSuppliedSecretConfig extends TaintTracking::Configuration {
 }
 
 from ClientSuppliedSecretConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+where 
   config.hasFlowPath(source, sink) and
   (
     source.getNode().(SecretSource).includesUserInput() or
