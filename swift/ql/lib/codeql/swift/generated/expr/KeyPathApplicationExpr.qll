@@ -7,13 +7,19 @@ class KeyPathApplicationExprBase extends Ipa::TKeyPathApplicationExpr, Expr {
   override string getAPrimaryQlClass() { result = "KeyPathApplicationExpr" }
 
   Expr getImmediateBase() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::KeyPathApplicationExpr).getBase())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertKeyPathApplicationExprToDb(this)
+            .(Db::KeyPathApplicationExpr)
+            .getBase())
   }
 
   final Expr getBase() { result = getImmediateBase().resolve() }
 
   Expr getImmediateKeyPath() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::KeyPathApplicationExpr).getKeyPath())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertKeyPathApplicationExprToDb(this)
+            .(Db::KeyPathApplicationExpr)
+            .getKeyPath())
   }
 
   final Expr getKeyPath() { result = getImmediateKeyPath().resolve() }

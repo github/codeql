@@ -8,7 +8,10 @@ class SubscriptExprBase extends Ipa::TSubscriptExpr, LookupExpr {
   override string getAPrimaryQlClass() { result = "SubscriptExpr" }
 
   Argument getImmediateArgument(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SubscriptExpr).getArgument(index))
+    result =
+      Ipa::convertArgumentFromDb(Ipa::convertSubscriptExprToDb(this)
+            .(Db::SubscriptExpr)
+            .getArgument(index))
   }
 
   final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }
@@ -18,14 +21,14 @@ class SubscriptExprBase extends Ipa::TSubscriptExpr, LookupExpr {
   final int getNumberOfArguments() { result = count(getAnArgument()) }
 
   predicate hasDirectToStorageSemantics() {
-    Ipa::toDbInstance(this).(Db::SubscriptExpr).hasDirectToStorageSemantics()
+    Ipa::convertSubscriptExprToDb(this).(Db::SubscriptExpr).hasDirectToStorageSemantics()
   }
 
   predicate hasDirectToImplementationSemantics() {
-    Ipa::toDbInstance(this).(Db::SubscriptExpr).hasDirectToImplementationSemantics()
+    Ipa::convertSubscriptExprToDb(this).(Db::SubscriptExpr).hasDirectToImplementationSemantics()
   }
 
   predicate hasOrdinarySemantics() {
-    Ipa::toDbInstance(this).(Db::SubscriptExpr).hasOrdinarySemantics()
+    Ipa::convertSubscriptExprToDb(this).(Db::SubscriptExpr).hasOrdinarySemantics()
   }
 }

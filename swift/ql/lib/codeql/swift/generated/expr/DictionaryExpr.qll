@@ -8,7 +8,10 @@ class DictionaryExprBase extends Ipa::TDictionaryExpr, CollectionExpr {
   override string getAPrimaryQlClass() { result = "DictionaryExpr" }
 
   Expr getImmediateElement(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DictionaryExpr).getElement(index))
+    result =
+      Ipa::convertExprFromDb(Ipa::convertDictionaryExprToDb(this)
+            .(Db::DictionaryExpr)
+            .getElement(index))
   }
 
   final Expr getElement(int index) { result = getImmediateElement(index).resolve() }

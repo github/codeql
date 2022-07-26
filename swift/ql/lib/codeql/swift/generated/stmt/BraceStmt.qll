@@ -8,7 +8,8 @@ class BraceStmtBase extends Ipa::TBraceStmt, Stmt {
   override string getAPrimaryQlClass() { result = "BraceStmt" }
 
   AstNode getImmediateElement(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::BraceStmt).getElement(index))
+    result =
+      Ipa::convertAstNodeFromDb(Ipa::convertBraceStmtToDb(this).(Db::BraceStmt).getElement(index))
   }
 
   final AstNode getElement(int index) { result = getImmediateElement(index).resolve() }

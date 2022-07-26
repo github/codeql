@@ -7,7 +7,7 @@ class OneWayExprBase extends Ipa::TOneWayExpr, Expr {
   override string getAPrimaryQlClass() { result = "OneWayExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::OneWayExpr).getSubExpr())
+    result = Ipa::convertExprFromDb(Ipa::convertOneWayExprToDb(this).(Db::OneWayExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

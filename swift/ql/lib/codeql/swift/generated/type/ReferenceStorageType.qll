@@ -6,7 +6,9 @@ import codeql.swift.elements.type.Type
 class ReferenceStorageTypeBase extends Ipa::TReferenceStorageType, Type {
   Type getImmediateReferentType() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ReferenceStorageType).getReferentType())
+      Ipa::convertTypeFromDb(Ipa::convertReferenceStorageTypeToDb(this)
+            .(Db::ReferenceStorageType)
+            .getReferentType())
   }
 
   final Type getReferentType() { result = getImmediateReferentType().resolve() }

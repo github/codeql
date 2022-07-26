@@ -8,7 +8,8 @@ class SuperRefExprBase extends Ipa::TSuperRefExpr, Expr {
   override string getAPrimaryQlClass() { result = "SuperRefExpr" }
 
   VarDecl getImmediateSelf() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SuperRefExpr).getSelf())
+    result =
+      Ipa::convertVarDeclFromDb(Ipa::convertSuperRefExprToDb(this).(Db::SuperRefExpr).getSelf())
   }
 
   final VarDecl getSelf() { result = getImmediateSelf().resolve() }

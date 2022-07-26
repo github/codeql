@@ -8,13 +8,17 @@ class EnumIsCaseExprBase extends Ipa::TEnumIsCaseExpr, Expr {
   override string getAPrimaryQlClass() { result = "EnumIsCaseExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::EnumIsCaseExpr).getSubExpr())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertEnumIsCaseExprToDb(this).(Db::EnumIsCaseExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
   EnumElementDecl getImmediateElement() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::EnumIsCaseExpr).getElement())
+    result =
+      Ipa::convertEnumElementDeclFromDb(Ipa::convertEnumIsCaseExprToDb(this)
+            .(Db::EnumIsCaseExpr)
+            .getElement())
   }
 
   final EnumElementDecl getElement() { result = getImmediateElement().resolve() }

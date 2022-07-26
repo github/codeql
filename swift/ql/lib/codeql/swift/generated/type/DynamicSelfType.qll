@@ -7,7 +7,10 @@ class DynamicSelfTypeBase extends Ipa::TDynamicSelfType, Type {
   override string getAPrimaryQlClass() { result = "DynamicSelfType" }
 
   Type getImmediateStaticSelfType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DynamicSelfType).getStaticSelfType())
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertDynamicSelfTypeToDb(this)
+            .(Db::DynamicSelfType)
+            .getStaticSelfType())
   }
 
   final Type getStaticSelfType() { result = getImmediateStaticSelfType().resolve() }

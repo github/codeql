@@ -6,7 +6,8 @@ import codeql.swift.elements.type.Type
 
 class AnyGenericTypeBase extends Ipa::TAnyGenericType, Type {
   Type getImmediateParent() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::AnyGenericType).getParent())
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertAnyGenericTypeToDb(this).(Db::AnyGenericType).getParent())
   }
 
   final Type getParent() { result = getImmediateParent().resolve() }
@@ -14,7 +15,10 @@ class AnyGenericTypeBase extends Ipa::TAnyGenericType, Type {
   final predicate hasParent() { exists(getParent()) }
 
   Decl getImmediateDeclaration() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::AnyGenericType).getDeclaration())
+    result =
+      Ipa::convertDeclFromDb(Ipa::convertAnyGenericTypeToDb(this)
+            .(Db::AnyGenericType)
+            .getDeclaration())
   }
 
   final Decl getDeclaration() { result = getImmediateDeclaration().resolve() }

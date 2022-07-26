@@ -8,7 +8,8 @@ class KeyPathExprBase extends Ipa::TKeyPathExpr, Expr {
   override string getAPrimaryQlClass() { result = "KeyPathExpr" }
 
   TypeRepr getImmediateRoot() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::KeyPathExpr).getRoot())
+    result =
+      Ipa::convertTypeReprFromDb(Ipa::convertKeyPathExprToDb(this).(Db::KeyPathExpr).getRoot())
   }
 
   final TypeRepr getRoot() { result = getImmediateRoot().resolve() }
@@ -16,7 +17,8 @@ class KeyPathExprBase extends Ipa::TKeyPathExpr, Expr {
   final predicate hasRoot() { exists(getRoot()) }
 
   Expr getImmediateParsedPath() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::KeyPathExpr).getParsedPath())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertKeyPathExprToDb(this).(Db::KeyPathExpr).getParsedPath())
   }
 
   final Expr getParsedPath() { result = getImmediateParsedPath().resolve() }

@@ -5,10 +5,10 @@ import codeql.swift.elements.Element
 import codeql.swift.elements.type.Type
 
 class TypeBase extends Ipa::TType, Element {
-  string getName() { result = Ipa::toDbInstance(this).(Db::Type).getName() }
+  string getName() { result = Ipa::convertTypeToDb(this).(Db::Type).getName() }
 
   Type getImmediateCanonicalType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Type).getCanonicalType())
+    result = Ipa::convertTypeFromDb(Ipa::convertTypeToDb(this).(Db::Type).getCanonicalType())
   }
 
   final Type getCanonicalType() { result = getImmediateCanonicalType().resolve() }

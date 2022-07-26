@@ -10,7 +10,10 @@ class ExtensionDeclBase extends Ipa::TExtensionDecl, Decl, GenericContext, Itera
   override string getAPrimaryQlClass() { result = "ExtensionDecl" }
 
   NominalTypeDecl getImmediateExtendedTypeDecl() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ExtensionDecl).getExtendedTypeDecl())
+    result =
+      Ipa::convertNominalTypeDeclFromDb(Ipa::convertExtensionDeclToDb(this)
+            .(Db::ExtensionDecl)
+            .getExtendedTypeDecl())
   }
 
   final NominalTypeDecl getExtendedTypeDecl() { result = getImmediateExtendedTypeDecl().resolve() }

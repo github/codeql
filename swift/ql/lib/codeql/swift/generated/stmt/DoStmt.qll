@@ -8,7 +8,7 @@ class DoStmtBase extends Ipa::TDoStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "DoStmt" }
 
   BraceStmt getImmediateBody() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DoStmt).getBody())
+    result = Ipa::convertBraceStmtFromDb(Ipa::convertDoStmtToDb(this).(Db::DoStmt).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

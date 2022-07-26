@@ -8,14 +8,19 @@ class DependentMemberTypeBase extends Ipa::TDependentMemberType, Type {
   override string getAPrimaryQlClass() { result = "DependentMemberType" }
 
   Type getImmediateBaseType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DependentMemberType).getBaseType())
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertDependentMemberTypeToDb(this)
+            .(Db::DependentMemberType)
+            .getBaseType())
   }
 
   final Type getBaseType() { result = getImmediateBaseType().resolve() }
 
   AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DependentMemberType).getAssociatedTypeDecl())
+      Ipa::convertAssociatedTypeDeclFromDb(Ipa::convertDependentMemberTypeToDb(this)
+            .(Db::DependentMemberType)
+            .getAssociatedTypeDecl())
   }
 
   final AssociatedTypeDecl getAssociatedTypeDecl() {

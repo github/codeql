@@ -7,7 +7,10 @@ class VarargExpansionExprBase extends Ipa::TVarargExpansionExpr, Expr {
   override string getAPrimaryQlClass() { result = "VarargExpansionExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::VarargExpansionExpr).getSubExpr())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertVarargExpansionExprToDb(this)
+            .(Db::VarargExpansionExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

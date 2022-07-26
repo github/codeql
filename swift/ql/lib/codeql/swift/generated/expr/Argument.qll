@@ -7,10 +7,10 @@ import codeql.swift.elements.Locatable
 class ArgumentBase extends Ipa::TArgument, Locatable {
   override string getAPrimaryQlClass() { result = "Argument" }
 
-  string getLabel() { result = Ipa::toDbInstance(this).(Db::Argument).getLabel() }
+  string getLabel() { result = Ipa::convertArgumentToDb(this).(Db::Argument).getLabel() }
 
   Expr getImmediateExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Argument).getExpr())
+    result = Ipa::convertExprFromDb(Ipa::convertArgumentToDb(this).(Db::Argument).getExpr())
   }
 
   final Expr getExpr() { result = getImmediateExpr().resolve() }

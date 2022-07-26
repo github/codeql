@@ -8,13 +8,13 @@ class IfStmtBase extends Ipa::TIfStmt, LabeledConditionalStmt {
   override string getAPrimaryQlClass() { result = "IfStmt" }
 
   Stmt getImmediateThen() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfStmt).getThen())
+    result = Ipa::convertStmtFromDb(Ipa::convertIfStmtToDb(this).(Db::IfStmt).getThen())
   }
 
   final Stmt getThen() { result = getImmediateThen().resolve() }
 
   Stmt getImmediateElse() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfStmt).getElse())
+    result = Ipa::convertStmtFromDb(Ipa::convertIfStmtToDb(this).(Db::IfStmt).getElse())
   }
 
   final Stmt getElse() { result = getImmediateElse().resolve() }

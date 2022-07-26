@@ -9,13 +9,14 @@ class CaseStmtBase extends Ipa::TCaseStmt, Stmt {
   override string getAPrimaryQlClass() { result = "CaseStmt" }
 
   Stmt getImmediateBody() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaseStmt).getBody())
+    result = Ipa::convertStmtFromDb(Ipa::convertCaseStmtToDb(this).(Db::CaseStmt).getBody())
   }
 
   final Stmt getBody() { result = getImmediateBody().resolve() }
 
   CaseLabelItem getImmediateLabel(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaseStmt).getLabel(index))
+    result =
+      Ipa::convertCaseLabelItemFromDb(Ipa::convertCaseStmtToDb(this).(Db::CaseStmt).getLabel(index))
   }
 
   final CaseLabelItem getLabel(int index) { result = getImmediateLabel(index).resolve() }
@@ -25,7 +26,8 @@ class CaseStmtBase extends Ipa::TCaseStmt, Stmt {
   final int getNumberOfLabels() { result = count(getALabel()) }
 
   VarDecl getImmediateVariable(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaseStmt).getVariable(index))
+    result =
+      Ipa::convertVarDeclFromDb(Ipa::convertCaseStmtToDb(this).(Db::CaseStmt).getVariable(index))
   }
 
   final VarDecl getVariable(int index) { result = getImmediateVariable(index).resolve() }

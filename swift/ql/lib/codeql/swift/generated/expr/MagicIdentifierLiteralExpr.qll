@@ -6,5 +6,8 @@ import codeql.swift.elements.expr.BuiltinLiteralExpr
 class MagicIdentifierLiteralExprBase extends Ipa::TMagicIdentifierLiteralExpr, BuiltinLiteralExpr {
   override string getAPrimaryQlClass() { result = "MagicIdentifierLiteralExpr" }
 
-  string getKind() { result = Ipa::toDbInstance(this).(Db::MagicIdentifierLiteralExpr).getKind() }
+  string getKind() {
+    result =
+      Ipa::convertMagicIdentifierLiteralExprToDb(this).(Db::MagicIdentifierLiteralExpr).getKind()
+  }
 }

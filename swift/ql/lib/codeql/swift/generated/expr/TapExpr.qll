@@ -9,7 +9,7 @@ class TapExprBase extends Ipa::TTapExpr, Expr {
   override string getAPrimaryQlClass() { result = "TapExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TapExpr).getSubExpr())
+    result = Ipa::convertExprFromDb(Ipa::convertTapExprToDb(this).(Db::TapExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
@@ -17,13 +17,13 @@ class TapExprBase extends Ipa::TTapExpr, Expr {
   final predicate hasSubExpr() { exists(getSubExpr()) }
 
   BraceStmt getImmediateBody() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TapExpr).getBody())
+    result = Ipa::convertBraceStmtFromDb(Ipa::convertTapExprToDb(this).(Db::TapExpr).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }
 
   VarDecl getImmediateVar() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TapExpr).getVar())
+    result = Ipa::convertVarDeclFromDb(Ipa::convertTapExprToDb(this).(Db::TapExpr).getVar())
   }
 
   final VarDecl getVar() { result = getImmediateVar().resolve() }

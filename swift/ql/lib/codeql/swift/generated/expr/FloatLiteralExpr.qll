@@ -7,6 +7,6 @@ class FloatLiteralExprBase extends Ipa::TFloatLiteralExpr, NumberLiteralExpr {
   override string getAPrimaryQlClass() { result = "FloatLiteralExpr" }
 
   string getStringValue() {
-    result = Ipa::toDbInstance(this).(Db::FloatLiteralExpr).getStringValue()
+    result = Ipa::convertFloatLiteralExprToDb(this).(Db::FloatLiteralExpr).getStringValue()
   }
 }

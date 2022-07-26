@@ -6,13 +6,14 @@ import codeql.swift.elements.expr.Expr
 
 class ApplyExprBase extends Ipa::TApplyExpr, Expr {
   Expr getImmediateFunction() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ApplyExpr).getFunction())
+    result = Ipa::convertExprFromDb(Ipa::convertApplyExprToDb(this).(Db::ApplyExpr).getFunction())
   }
 
   final Expr getFunction() { result = getImmediateFunction().resolve() }
 
   Argument getImmediateArgument(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ApplyExpr).getArgument(index))
+    result =
+      Ipa::convertArgumentFromDb(Ipa::convertApplyExprToDb(this).(Db::ApplyExpr).getArgument(index))
   }
 
   final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }

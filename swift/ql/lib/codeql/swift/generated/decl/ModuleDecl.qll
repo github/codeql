@@ -6,7 +6,9 @@ import codeql.swift.elements.decl.TypeDecl
 class ModuleDeclBase extends Ipa::TModuleDecl, TypeDecl {
   override string getAPrimaryQlClass() { result = "ModuleDecl" }
 
-  predicate isBuiltinModule() { Ipa::toDbInstance(this).(Db::ModuleDecl).isBuiltinModule() }
+  predicate isBuiltinModule() {
+    Ipa::convertModuleDeclToDb(this).(Db::ModuleDecl).isBuiltinModule()
+  }
 
-  predicate isSystemModule() { Ipa::toDbInstance(this).(Db::ModuleDecl).isSystemModule() }
+  predicate isSystemModule() { Ipa::convertModuleDeclToDb(this).(Db::ModuleDecl).isSystemModule() }
 }

@@ -6,5 +6,5 @@ import codeql.swift.elements.pattern.Pattern
 class NamedPatternBase extends Ipa::TNamedPattern, Pattern {
   override string getAPrimaryQlClass() { result = "NamedPattern" }
 
-  string getName() { result = Ipa::toDbInstance(this).(Db::NamedPattern).getName() }
+  string getName() { result = Ipa::convertNamedPatternToDb(this).(Db::NamedPattern).getName() }
 }

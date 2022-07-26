@@ -10,19 +10,21 @@ class ForEachStmtBase extends Ipa::TForEachStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "ForEachStmt" }
 
   Pattern getImmediatePattern() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ForEachStmt).getPattern())
+    result =
+      Ipa::convertPatternFromDb(Ipa::convertForEachStmtToDb(this).(Db::ForEachStmt).getPattern())
   }
 
   final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
   Expr getImmediateSequence() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ForEachStmt).getSequence())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertForEachStmtToDb(this).(Db::ForEachStmt).getSequence())
   }
 
   final Expr getSequence() { result = getImmediateSequence().resolve() }
 
   Expr getImmediateWhere() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ForEachStmt).getWhere())
+    result = Ipa::convertExprFromDb(Ipa::convertForEachStmtToDb(this).(Db::ForEachStmt).getWhere())
   }
 
   final Expr getWhere() { result = getImmediateWhere().resolve() }
@@ -30,7 +32,8 @@ class ForEachStmtBase extends Ipa::TForEachStmt, LabeledStmt {
   final predicate hasWhere() { exists(getWhere()) }
 
   BraceStmt getImmediateBody() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ForEachStmt).getBody())
+    result =
+      Ipa::convertBraceStmtFromDb(Ipa::convertForEachStmtToDb(this).(Db::ForEachStmt).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

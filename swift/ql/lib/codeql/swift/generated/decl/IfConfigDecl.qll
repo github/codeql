@@ -8,7 +8,10 @@ class IfConfigDeclBase extends Ipa::TIfConfigDecl, Decl {
   override string getAPrimaryQlClass() { result = "IfConfigDecl" }
 
   IfConfigClause getImmediateClause(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfConfigDecl).getClause(index))
+    result =
+      Ipa::convertIfConfigClauseFromDb(Ipa::convertIfConfigDeclToDb(this)
+            .(Db::IfConfigDecl)
+            .getClause(index))
   }
 
   final IfConfigClause getClause(int index) { result = getImmediateClause(index).resolve() }

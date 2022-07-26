@@ -5,7 +5,10 @@ import codeql.swift.elements.expr.Expr
 
 class ImplicitConversionExprBase extends Ipa::TImplicitConversionExpr, Expr {
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ImplicitConversionExpr).getSubExpr())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertImplicitConversionExprToDb(this)
+            .(Db::ImplicitConversionExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

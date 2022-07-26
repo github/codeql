@@ -8,13 +8,19 @@ class EnumElementPatternBase extends Ipa::TEnumElementPattern, Pattern {
   override string getAPrimaryQlClass() { result = "EnumElementPattern" }
 
   EnumElementDecl getImmediateElement() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::EnumElementPattern).getElement())
+    result =
+      Ipa::convertEnumElementDeclFromDb(Ipa::convertEnumElementPatternToDb(this)
+            .(Db::EnumElementPattern)
+            .getElement())
   }
 
   final EnumElementDecl getElement() { result = getImmediateElement().resolve() }
 
   Pattern getImmediateSubPattern() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::EnumElementPattern).getSubPattern())
+    result =
+      Ipa::convertPatternFromDb(Ipa::convertEnumElementPatternToDb(this)
+            .(Db::EnumElementPattern)
+            .getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

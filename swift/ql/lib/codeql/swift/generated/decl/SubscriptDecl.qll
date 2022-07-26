@@ -10,7 +10,10 @@ class SubscriptDeclBase extends Ipa::TSubscriptDecl, AbstractStorageDecl, Generi
   override string getAPrimaryQlClass() { result = "SubscriptDecl" }
 
   ParamDecl getImmediateParam(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SubscriptDecl).getParam(index))
+    result =
+      Ipa::convertParamDeclFromDb(Ipa::convertSubscriptDeclToDb(this)
+            .(Db::SubscriptDecl)
+            .getParam(index))
   }
 
   final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
@@ -20,7 +23,10 @@ class SubscriptDeclBase extends Ipa::TSubscriptDecl, AbstractStorageDecl, Generi
   final int getNumberOfParams() { result = count(getAParam()) }
 
   Type getImmediateElementType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SubscriptDecl).getElementType())
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertSubscriptDeclToDb(this)
+            .(Db::SubscriptDecl)
+            .getElementType())
   }
 
   final Type getElementType() { result = getImmediateElementType().resolve() }

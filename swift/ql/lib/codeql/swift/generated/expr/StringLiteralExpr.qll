@@ -6,5 +6,7 @@ import codeql.swift.elements.expr.BuiltinLiteralExpr
 class StringLiteralExprBase extends Ipa::TStringLiteralExpr, BuiltinLiteralExpr {
   override string getAPrimaryQlClass() { result = "StringLiteralExpr" }
 
-  string getValue() { result = Ipa::toDbInstance(this).(Db::StringLiteralExpr).getValue() }
+  string getValue() {
+    result = Ipa::convertStringLiteralExprToDb(this).(Db::StringLiteralExpr).getValue()
+  }
 }

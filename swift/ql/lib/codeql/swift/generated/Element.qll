@@ -17,5 +17,5 @@ class ElementBase extends Ipa::TElement {
     result = getResolveStep().resolve()
   }
 
-  predicate isUnknown() { Ipa::toDbInstance(this).(Db::Element).isUnknown() }
+  predicate isUnknown() { Ipa::convertElementToDb(this).(Db::Element).isUnknown() }
 }

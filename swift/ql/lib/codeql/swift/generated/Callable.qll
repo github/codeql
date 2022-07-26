@@ -7,7 +7,8 @@ import codeql.swift.elements.decl.ParamDecl
 
 class CallableBase extends Ipa::TCallable, Element {
   ParamDecl getImmediateParam(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Callable).getParam(index))
+    result =
+      Ipa::convertParamDeclFromDb(Ipa::convertCallableToDb(this).(Db::Callable).getParam(index))
   }
 
   final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
@@ -17,7 +18,7 @@ class CallableBase extends Ipa::TCallable, Element {
   final int getNumberOfParams() { result = count(getAParam()) }
 
   BraceStmt getImmediateBody() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Callable).getBody())
+    result = Ipa::convertBraceStmtFromDb(Ipa::convertCallableToDb(this).(Db::Callable).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

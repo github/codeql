@@ -229,6 +229,7 @@ class Ipa:
     @dataclass
     class NonFinalClass(Class):
         derived: List["Ipa.Class"] = field(default_factory=list)
+        root: bool = False
 
         def __post_init__(self):
             self.derived = [Ipa.Class(c) for c in self.derived]

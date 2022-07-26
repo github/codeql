@@ -7,7 +7,10 @@ class OptionalSomePatternBase extends Ipa::TOptionalSomePattern, Pattern {
   override string getAPrimaryQlClass() { result = "OptionalSomePattern" }
 
   Pattern getImmediateSubPattern() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::OptionalSomePattern).getSubPattern())
+    result =
+      Ipa::convertPatternFromDb(Ipa::convertOptionalSomePatternToDb(this)
+            .(Db::OptionalSomePattern)
+            .getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

@@ -8,7 +8,7 @@ class TypeReprBase extends Ipa::TTypeRepr, AstNode {
   override string getAPrimaryQlClass() { result = "TypeRepr" }
 
   Type getImmediateType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TypeRepr).getType())
+    result = Ipa::convertTypeFromDb(Ipa::convertTypeReprToDb(this).(Db::TypeRepr).getType())
   }
 
   final Type getType() { result = getImmediateType().resolve() }

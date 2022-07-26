@@ -8,16 +8,20 @@ import codeql.swift.elements.decl.ValueDecl
 class ImportDeclBase extends Ipa::TImportDecl, Decl {
   override string getAPrimaryQlClass() { result = "ImportDecl" }
 
-  predicate isExported() { Ipa::toDbInstance(this).(Db::ImportDecl).isExported() }
+  predicate isExported() { Ipa::convertImportDeclToDb(this).(Db::ImportDecl).isExported() }
 
   ModuleDecl getImmediateModule() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ImportDecl).getModule())
+    result =
+      Ipa::convertModuleDeclFromDb(Ipa::convertImportDeclToDb(this).(Db::ImportDecl).getModule())
   }
 
   final ModuleDecl getModule() { result = getImmediateModule().resolve() }
 
   ValueDecl getImmediateDeclaration(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ImportDecl).getDeclaration(index))
+    result =
+      Ipa::convertValueDeclFromDb(Ipa::convertImportDeclToDb(this)
+            .(Db::ImportDecl)
+            .getDeclaration(index))
   }
 
   final ValueDecl getDeclaration(int index) { result = getImmediateDeclaration(index).resolve() }

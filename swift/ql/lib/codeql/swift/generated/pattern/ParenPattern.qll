@@ -7,7 +7,10 @@ class ParenPatternBase extends Ipa::TParenPattern, Pattern {
   override string getAPrimaryQlClass() { result = "ParenPattern" }
 
   Pattern getImmediateSubPattern() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ParenPattern).getSubPattern())
+    result =
+      Ipa::convertPatternFromDb(Ipa::convertParenPatternToDb(this)
+            .(Db::ParenPattern)
+            .getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

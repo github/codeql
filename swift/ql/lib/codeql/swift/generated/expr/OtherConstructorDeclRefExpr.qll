@@ -9,7 +9,7 @@ class OtherConstructorDeclRefExprBase extends Ipa::TOtherConstructorDeclRefExpr,
 
   ConstructorDecl getImmediateConstructorDecl() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this)
+      Ipa::convertConstructorDeclFromDb(Ipa::convertOtherConstructorDeclRefExprToDb(this)
             .(Db::OtherConstructorDeclRefExpr)
             .getConstructorDecl())
   }

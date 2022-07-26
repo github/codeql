@@ -7,7 +7,7 @@ class InOutTypeBase extends Ipa::TInOutType, Type {
   override string getAPrimaryQlClass() { result = "InOutType" }
 
   Type getImmediateObjectType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::InOutType).getObjectType())
+    result = Ipa::convertTypeFromDb(Ipa::convertInOutTypeToDb(this).(Db::InOutType).getObjectType())
   }
 
   final Type getObjectType() { result = getImmediateObjectType().resolve() }

@@ -8,7 +8,7 @@ class ParenTypeBase extends Ipa::TParenType, SugarType {
   override string getAPrimaryQlClass() { result = "ParenType" }
 
   Type getImmediateType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ParenType).getType())
+    result = Ipa::convertTypeFromDb(Ipa::convertParenTypeToDb(this).(Db::ParenType).getType())
   }
 
   final Type getType() { result = getImmediateType().resolve() }

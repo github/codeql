@@ -9,7 +9,10 @@ class PatternBindingDeclBase extends Ipa::TPatternBindingDecl, Decl {
   override string getAPrimaryQlClass() { result = "PatternBindingDecl" }
 
   Expr getImmediateInit(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::PatternBindingDecl).getInit(index))
+    result =
+      Ipa::convertExprFromDb(Ipa::convertPatternBindingDeclToDb(this)
+            .(Db::PatternBindingDecl)
+            .getInit(index))
   }
 
   final Expr getInit(int index) { result = getImmediateInit(index).resolve() }
@@ -19,7 +22,10 @@ class PatternBindingDeclBase extends Ipa::TPatternBindingDecl, Decl {
   final Expr getAnInit() { result = getInit(_) }
 
   Pattern getImmediatePattern(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::PatternBindingDecl).getPattern(index))
+    result =
+      Ipa::convertPatternFromDb(Ipa::convertPatternBindingDeclToDb(this)
+            .(Db::PatternBindingDecl)
+            .getPattern(index))
   }
 
   final Pattern getPattern(int index) { result = getImmediatePattern(index).resolve() }

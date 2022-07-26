@@ -7,10 +7,15 @@ class UnresolvedDotExprBase extends Ipa::TUnresolvedDotExpr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedDotExpr" }
 
   Expr getImmediateBase() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::UnresolvedDotExpr).getBase())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertUnresolvedDotExprToDb(this)
+            .(Db::UnresolvedDotExpr)
+            .getBase())
   }
 
   final Expr getBase() { result = getImmediateBase().resolve() }
 
-  string getName() { result = Ipa::toDbInstance(this).(Db::UnresolvedDotExpr).getName() }
+  string getName() {
+    result = Ipa::convertUnresolvedDotExprToDb(this).(Db::UnresolvedDotExpr).getName()
+  }
 }

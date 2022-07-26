@@ -6,7 +6,8 @@ import codeql.swift.elements.type.Type
 
 class ValueDeclBase extends Ipa::TValueDecl, Decl {
   Type getImmediateInterfaceType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ValueDecl).getInterfaceType())
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertValueDeclToDb(this).(Db::ValueDecl).getInterfaceType())
   }
 
   final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }

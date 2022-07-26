@@ -8,13 +8,17 @@ class DictionaryTypeBase extends Ipa::TDictionaryType, SyntaxSugarType {
   override string getAPrimaryQlClass() { result = "DictionaryType" }
 
   Type getImmediateKeyType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DictionaryType).getKeyType())
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertDictionaryTypeToDb(this).(Db::DictionaryType).getKeyType())
   }
 
   final Type getKeyType() { result = getImmediateKeyType().resolve() }
 
   Type getImmediateValueType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DictionaryType).getValueType())
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertDictionaryTypeToDb(this)
+            .(Db::DictionaryType)
+            .getValueType())
   }
 
   final Type getValueType() { result = getImmediateValueType().resolve() }

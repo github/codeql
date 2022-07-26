@@ -7,7 +7,8 @@ class TupleExprBase extends Ipa::TTupleExpr, Expr {
   override string getAPrimaryQlClass() { result = "TupleExpr" }
 
   Expr getImmediateElement(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TupleExpr).getElement(index))
+    result =
+      Ipa::convertExprFromDb(Ipa::convertTupleExprToDb(this).(Db::TupleExpr).getElement(index))
   }
 
   final Expr getElement(int index) { result = getImmediateElement(index).resolve() }

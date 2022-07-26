@@ -5,10 +5,11 @@ import codeql.swift.elements.type.Type
 import codeql.swift.elements.decl.ValueDecl
 
 class TypeDeclBase extends Ipa::TTypeDecl, ValueDecl {
-  string getName() { result = Ipa::toDbInstance(this).(Db::TypeDecl).getName() }
+  string getName() { result = Ipa::convertTypeDeclToDb(this).(Db::TypeDecl).getName() }
 
   Type getImmediateBaseType(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TypeDecl).getBaseType(index))
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertTypeDeclToDb(this).(Db::TypeDecl).getBaseType(index))
   }
 
   final Type getBaseType(int index) { result = getImmediateBaseType(index).resolve() }

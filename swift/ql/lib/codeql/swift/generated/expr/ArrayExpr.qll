@@ -8,7 +8,8 @@ class ArrayExprBase extends Ipa::TArrayExpr, CollectionExpr {
   override string getAPrimaryQlClass() { result = "ArrayExpr" }
 
   Expr getImmediateElement(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ArrayExpr).getElement(index))
+    result =
+      Ipa::convertExprFromDb(Ipa::convertArrayExprToDb(this).(Db::ArrayExpr).getElement(index))
   }
 
   final Expr getElement(int index) { result = getImmediateElement(index).resolve() }

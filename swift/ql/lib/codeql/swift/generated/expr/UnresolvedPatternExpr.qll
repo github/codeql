@@ -9,7 +9,9 @@ class UnresolvedPatternExprBase extends Ipa::TUnresolvedPatternExpr, Expr {
 
   Pattern getImmediateSubPattern() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::UnresolvedPatternExpr).getSubPattern())
+      Ipa::convertPatternFromDb(Ipa::convertUnresolvedPatternExprToDb(this)
+            .(Db::UnresolvedPatternExpr)
+            .getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

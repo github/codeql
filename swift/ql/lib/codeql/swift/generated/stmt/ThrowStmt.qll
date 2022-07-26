@@ -8,7 +8,7 @@ class ThrowStmtBase extends Ipa::TThrowStmt, Stmt {
   override string getAPrimaryQlClass() { result = "ThrowStmt" }
 
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ThrowStmt).getSubExpr())
+    result = Ipa::convertExprFromDb(Ipa::convertThrowStmtToDb(this).(Db::ThrowStmt).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

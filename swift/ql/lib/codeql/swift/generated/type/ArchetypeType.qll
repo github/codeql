@@ -7,13 +7,17 @@ import codeql.swift.elements.type.Type
 
 class ArchetypeTypeBase extends Ipa::TArchetypeType, SubstitutableType {
   Type getImmediateInterfaceType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ArchetypeType).getInterfaceType())
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertArchetypeTypeToDb(this)
+            .(Db::ArchetypeType)
+            .getInterfaceType())
   }
 
   final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
 
   Type getImmediateSuperclass() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ArchetypeType).getSuperclass())
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertArchetypeTypeToDb(this).(Db::ArchetypeType).getSuperclass())
   }
 
   final Type getSuperclass() { result = getImmediateSuperclass().resolve() }
@@ -21,7 +25,10 @@ class ArchetypeTypeBase extends Ipa::TArchetypeType, SubstitutableType {
   final predicate hasSuperclass() { exists(getSuperclass()) }
 
   ProtocolDecl getImmediateProtocol(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ArchetypeType).getProtocol(index))
+    result =
+      Ipa::convertProtocolDeclFromDb(Ipa::convertArchetypeTypeToDb(this)
+            .(Db::ArchetypeType)
+            .getProtocol(index))
   }
 
   final ProtocolDecl getProtocol(int index) { result = getImmediateProtocol(index).resolve() }

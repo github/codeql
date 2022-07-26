@@ -6,5 +6,7 @@ import codeql.swift.elements.expr.Expr
 class UnresolvedMemberExprBase extends Ipa::TUnresolvedMemberExpr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedMemberExpr" }
 
-  string getName() { result = Ipa::toDbInstance(this).(Db::UnresolvedMemberExpr).getName() }
+  string getName() {
+    result = Ipa::convertUnresolvedMemberExprToDb(this).(Db::UnresolvedMemberExpr).getName()
+  }
 }

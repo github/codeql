@@ -8,7 +8,9 @@ class ProtocolCompositionTypeBase extends Ipa::TProtocolCompositionType, Type {
 
   Type getImmediateMember(int index) {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ProtocolCompositionType).getMember(index))
+      Ipa::convertTypeFromDb(Ipa::convertProtocolCompositionTypeToDb(this)
+            .(Db::ProtocolCompositionType)
+            .getMember(index))
   }
 
   final Type getMember(int index) { result = getImmediateMember(index).resolve() }

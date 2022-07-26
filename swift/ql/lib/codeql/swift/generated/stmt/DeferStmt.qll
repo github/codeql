@@ -8,7 +8,7 @@ class DeferStmtBase extends Ipa::TDeferStmt, Stmt {
   override string getAPrimaryQlClass() { result = "DeferStmt" }
 
   BraceStmt getImmediateBody() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DeferStmt).getBody())
+    result = Ipa::convertBraceStmtFromDb(Ipa::convertDeferStmtToDb(this).(Db::DeferStmt).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

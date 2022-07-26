@@ -6,7 +6,9 @@ import codeql.swift.elements.type.AnyBuiltinIntegerType
 class BuiltinIntegerTypeBase extends Ipa::TBuiltinIntegerType, AnyBuiltinIntegerType {
   override string getAPrimaryQlClass() { result = "BuiltinIntegerType" }
 
-  int getWidth() { result = Ipa::toDbInstance(this).(Db::BuiltinIntegerType).getWidth() }
+  int getWidth() {
+    result = Ipa::convertBuiltinIntegerTypeToDb(this).(Db::BuiltinIntegerType).getWidth()
+  }
 
   final predicate hasWidth() { exists(getWidth()) }
 }

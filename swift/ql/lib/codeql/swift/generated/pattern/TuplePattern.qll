@@ -7,7 +7,10 @@ class TuplePatternBase extends Ipa::TTuplePattern, Pattern {
   override string getAPrimaryQlClass() { result = "TuplePattern" }
 
   Pattern getImmediateElement(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TuplePattern).getElement(index))
+    result =
+      Ipa::convertPatternFromDb(Ipa::convertTuplePatternToDb(this)
+            .(Db::TuplePattern)
+            .getElement(index))
   }
 
   final Pattern getElement(int index) { result = getImmediateElement(index).resolve() }

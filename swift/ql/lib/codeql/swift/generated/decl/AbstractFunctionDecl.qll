@@ -7,5 +7,7 @@ import codeql.swift.elements.decl.ValueDecl
 
 class AbstractFunctionDeclBase extends Ipa::TAbstractFunctionDecl, Callable, GenericContext,
   ValueDecl {
-  string getName() { result = Ipa::toDbInstance(this).(Db::AbstractFunctionDecl).getName() }
+  string getName() {
+    result = Ipa::convertAbstractFunctionDeclToDb(this).(Db::AbstractFunctionDecl).getName()
+  }
 }

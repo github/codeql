@@ -9,7 +9,9 @@ class GenericFunctionTypeBase extends Ipa::TGenericFunctionType, AnyFunctionType
 
   GenericTypeParamType getImmediateGenericParam(int index) {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::GenericFunctionType).getGenericParam(index))
+      Ipa::convertGenericTypeParamTypeFromDb(Ipa::convertGenericFunctionTypeToDb(this)
+            .(Db::GenericFunctionType)
+            .getGenericParam(index))
   }
 
   final GenericTypeParamType getGenericParam(int index) {

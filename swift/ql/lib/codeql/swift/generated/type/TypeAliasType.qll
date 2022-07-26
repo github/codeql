@@ -8,7 +8,10 @@ class TypeAliasTypeBase extends Ipa::TTypeAliasType, SugarType {
   override string getAPrimaryQlClass() { result = "TypeAliasType" }
 
   TypeAliasDecl getImmediateDecl() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TypeAliasType).getDecl())
+    result =
+      Ipa::convertTypeAliasDeclFromDb(Ipa::convertTypeAliasTypeToDb(this)
+            .(Db::TypeAliasType)
+            .getDecl())
   }
 
   final TypeAliasDecl getDecl() { result = getImmediateDecl().resolve() }

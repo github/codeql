@@ -6,5 +6,5 @@ import codeql.swift.elements.decl.VarDecl
 class ParamDeclBase extends Ipa::TParamDecl, VarDecl {
   override string getAPrimaryQlClass() { result = "ParamDecl" }
 
-  predicate isInout() { Ipa::toDbInstance(this).(Db::ParamDecl).isInout() }
+  predicate isInout() { Ipa::convertParamDeclToDb(this).(Db::ParamDecl).isInout() }
 }

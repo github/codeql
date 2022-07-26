@@ -8,7 +8,10 @@ class StmtConditionBase extends Ipa::TStmtCondition, AstNode {
   override string getAPrimaryQlClass() { result = "StmtCondition" }
 
   ConditionElement getImmediateElement(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::StmtCondition).getElement(index))
+    result =
+      Ipa::convertConditionElementFromDb(Ipa::convertStmtConditionToDb(this)
+            .(Db::StmtCondition)
+            .getElement(index))
   }
 
   final ConditionElement getElement(int index) { result = getImmediateElement(index).resolve() }

@@ -7,7 +7,7 @@ class InOutExprBase extends Ipa::TInOutExpr, Expr {
   override string getAPrimaryQlClass() { result = "InOutExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::InOutExpr).getSubExpr())
+    result = Ipa::convertExprFromDb(Ipa::convertInOutExprToDb(this).(Db::InOutExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

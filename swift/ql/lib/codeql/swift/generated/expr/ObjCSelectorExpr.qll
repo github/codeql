@@ -8,13 +8,19 @@ class ObjCSelectorExprBase extends Ipa::TObjCSelectorExpr, Expr {
   override string getAPrimaryQlClass() { result = "ObjCSelectorExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ObjCSelectorExpr).getSubExpr())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertObjCSelectorExprToDb(this)
+            .(Db::ObjCSelectorExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
   AbstractFunctionDecl getImmediateMethod() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ObjCSelectorExpr).getMethod())
+    result =
+      Ipa::convertAbstractFunctionDeclFromDb(Ipa::convertObjCSelectorExprToDb(this)
+            .(Db::ObjCSelectorExpr)
+            .getMethod())
   }
 
   final AbstractFunctionDecl getMethod() { result = getImmediateMethod().resolve() }

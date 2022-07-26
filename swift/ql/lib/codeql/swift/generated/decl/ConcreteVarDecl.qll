@@ -7,6 +7,6 @@ class ConcreteVarDeclBase extends Ipa::TConcreteVarDecl, VarDecl {
   override string getAPrimaryQlClass() { result = "ConcreteVarDecl" }
 
   int getIntroducerInt() {
-    result = Ipa::toDbInstance(this).(Db::ConcreteVarDecl).getIntroducerInt()
+    result = Ipa::convertConcreteVarDeclToDb(this).(Db::ConcreteVarDecl).getIntroducerInt()
   }
 }

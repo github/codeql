@@ -7,7 +7,10 @@ class BindOptionalExprBase extends Ipa::TBindOptionalExpr, Expr {
   override string getAPrimaryQlClass() { result = "BindOptionalExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::BindOptionalExpr).getSubExpr())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertBindOptionalExprToDb(this)
+            .(Db::BindOptionalExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

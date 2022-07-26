@@ -8,7 +8,7 @@ class GuardStmtBase extends Ipa::TGuardStmt, LabeledConditionalStmt {
   override string getAPrimaryQlClass() { result = "GuardStmt" }
 
   BraceStmt getImmediateBody() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::GuardStmt).getBody())
+    result = Ipa::convertBraceStmtFromDb(Ipa::convertGuardStmtToDb(this).(Db::GuardStmt).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

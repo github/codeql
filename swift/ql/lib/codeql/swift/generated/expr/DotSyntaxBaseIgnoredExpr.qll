@@ -8,14 +8,18 @@ class DotSyntaxBaseIgnoredExprBase extends Ipa::TDotSyntaxBaseIgnoredExpr, Expr 
 
   Expr getImmediateQualifier() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DotSyntaxBaseIgnoredExpr).getQualifier())
+      Ipa::convertExprFromDb(Ipa::convertDotSyntaxBaseIgnoredExprToDb(this)
+            .(Db::DotSyntaxBaseIgnoredExpr)
+            .getQualifier())
   }
 
   final Expr getQualifier() { result = getImmediateQualifier().resolve() }
 
   Expr getImmediateSubExpr() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DotSyntaxBaseIgnoredExpr).getSubExpr())
+      Ipa::convertExprFromDb(Ipa::convertDotSyntaxBaseIgnoredExprToDb(this)
+            .(Db::DotSyntaxBaseIgnoredExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

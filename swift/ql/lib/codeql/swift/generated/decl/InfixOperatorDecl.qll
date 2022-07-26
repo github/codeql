@@ -9,7 +9,9 @@ class InfixOperatorDeclBase extends Ipa::TInfixOperatorDecl, OperatorDecl {
 
   PrecedenceGroupDecl getImmediatePrecedenceGroup() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::InfixOperatorDecl).getPrecedenceGroup())
+      Ipa::convertPrecedenceGroupDeclFromDb(Ipa::convertInfixOperatorDeclToDb(this)
+            .(Db::InfixOperatorDecl)
+            .getPrecedenceGroup())
   }
 
   final PrecedenceGroupDecl getPrecedenceGroup() {

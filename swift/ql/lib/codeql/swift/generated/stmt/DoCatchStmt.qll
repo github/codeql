@@ -9,13 +9,14 @@ class DoCatchStmtBase extends Ipa::TDoCatchStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "DoCatchStmt" }
 
   Stmt getImmediateBody() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DoCatchStmt).getBody())
+    result = Ipa::convertStmtFromDb(Ipa::convertDoCatchStmtToDb(this).(Db::DoCatchStmt).getBody())
   }
 
   final Stmt getBody() { result = getImmediateBody().resolve() }
 
   CaseStmt getImmediateCatch(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DoCatchStmt).getCatch(index))
+    result =
+      Ipa::convertCaseStmtFromDb(Ipa::convertDoCatchStmtToDb(this).(Db::DoCatchStmt).getCatch(index))
   }
 
   final CaseStmt getCatch(int index) { result = getImmediateCatch(index).resolve() }

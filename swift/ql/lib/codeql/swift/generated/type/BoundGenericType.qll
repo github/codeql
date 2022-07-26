@@ -6,7 +6,10 @@ import codeql.swift.elements.type.Type
 
 class BoundGenericTypeBase extends Ipa::TBoundGenericType, NominalOrBoundGenericNominalType {
   Type getImmediateArgType(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::BoundGenericType).getArgType(index))
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertBoundGenericTypeToDb(this)
+            .(Db::BoundGenericType)
+            .getArgType(index))
   }
 
   final Type getArgType(int index) { result = getImmediateArgType(index).resolve() }

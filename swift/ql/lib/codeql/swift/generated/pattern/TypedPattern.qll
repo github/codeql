@@ -8,13 +8,17 @@ class TypedPatternBase extends Ipa::TTypedPattern, Pattern {
   override string getAPrimaryQlClass() { result = "TypedPattern" }
 
   Pattern getImmediateSubPattern() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TypedPattern).getSubPattern())
+    result =
+      Ipa::convertPatternFromDb(Ipa::convertTypedPatternToDb(this)
+            .(Db::TypedPattern)
+            .getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 
   TypeRepr getImmediateTypeRepr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TypedPattern).getTypeRepr())
+    result =
+      Ipa::convertTypeReprFromDb(Ipa::convertTypedPatternToDb(this).(Db::TypedPattern).getTypeRepr())
   }
 
   final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }

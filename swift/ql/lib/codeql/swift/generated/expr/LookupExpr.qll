@@ -6,13 +6,13 @@ import codeql.swift.elements.expr.Expr
 
 class LookupExprBase extends Ipa::TLookupExpr, Expr {
   Expr getImmediateBaseExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::LookupExpr).getBaseExpr())
+    result = Ipa::convertExprFromDb(Ipa::convertLookupExprToDb(this).(Db::LookupExpr).getBaseExpr())
   }
 
   final Expr getBaseExpr() { result = getImmediateBaseExpr().resolve() }
 
   Decl getImmediateMember() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::LookupExpr).getMember())
+    result = Ipa::convertDeclFromDb(Ipa::convertLookupExprToDb(this).(Db::LookupExpr).getMember())
   }
 
   final Decl getMember() { result = getImmediateMember().resolve() }

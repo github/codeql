@@ -8,19 +8,28 @@ class OpenExistentialExprBase extends Ipa::TOpenExistentialExpr, Expr {
   override string getAPrimaryQlClass() { result = "OpenExistentialExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::OpenExistentialExpr).getSubExpr())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertOpenExistentialExprToDb(this)
+            .(Db::OpenExistentialExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
   Expr getImmediateExistential() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::OpenExistentialExpr).getExistential())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertOpenExistentialExprToDb(this)
+            .(Db::OpenExistentialExpr)
+            .getExistential())
   }
 
   final Expr getExistential() { result = getImmediateExistential().resolve() }
 
   OpaqueValueExpr getImmediateOpaqueExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::OpenExistentialExpr).getOpaqueExpr())
+    result =
+      Ipa::convertOpaqueValueExprFromDb(Ipa::convertOpenExistentialExprToDb(this)
+            .(Db::OpenExistentialExpr)
+            .getOpaqueExpr())
   }
 
   final OpaqueValueExpr getOpaqueExpr() { result = getImmediateOpaqueExpr().resolve() }

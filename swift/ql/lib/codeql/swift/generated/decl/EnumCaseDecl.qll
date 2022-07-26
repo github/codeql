@@ -8,7 +8,10 @@ class EnumCaseDeclBase extends Ipa::TEnumCaseDecl, Decl {
   override string getAPrimaryQlClass() { result = "EnumCaseDecl" }
 
   EnumElementDecl getImmediateElement(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::EnumCaseDecl).getElement(index))
+    result =
+      Ipa::convertEnumElementDeclFromDb(Ipa::convertEnumCaseDeclToDb(this)
+            .(Db::EnumCaseDecl)
+            .getElement(index))
   }
 
   final EnumElementDecl getElement(int index) { result = getImmediateElement(index).resolve() }

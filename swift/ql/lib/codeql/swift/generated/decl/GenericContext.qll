@@ -7,7 +7,9 @@ import codeql.swift.elements.decl.GenericTypeParamDecl
 class GenericContextBase extends Ipa::TGenericContext, Element {
   GenericTypeParamDecl getImmediateGenericTypeParam(int index) {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::GenericContext).getGenericTypeParam(index))
+      Ipa::convertGenericTypeParamDeclFromDb(Ipa::convertGenericContextToDb(this)
+            .(Db::GenericContext)
+            .getGenericTypeParam(index))
   }
 
   final GenericTypeParamDecl getGenericTypeParam(int index) {

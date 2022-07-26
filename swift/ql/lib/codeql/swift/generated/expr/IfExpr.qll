@@ -7,19 +7,19 @@ class IfExprBase extends Ipa::TIfExpr, Expr {
   override string getAPrimaryQlClass() { result = "IfExpr" }
 
   Expr getImmediateCondition() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfExpr).getCondition())
+    result = Ipa::convertExprFromDb(Ipa::convertIfExprToDb(this).(Db::IfExpr).getCondition())
   }
 
   final Expr getCondition() { result = getImmediateCondition().resolve() }
 
   Expr getImmediateThenExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfExpr).getThenExpr())
+    result = Ipa::convertExprFromDb(Ipa::convertIfExprToDb(this).(Db::IfExpr).getThenExpr())
   }
 
   final Expr getThenExpr() { result = getImmediateThenExpr().resolve() }
 
   Expr getImmediateElseExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfExpr).getElseExpr())
+    result = Ipa::convertExprFromDb(Ipa::convertIfExprToDb(this).(Db::IfExpr).getElseExpr())
   }
 
   final Expr getElseExpr() { result = getImmediateElseExpr().resolve() }

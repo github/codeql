@@ -9,13 +9,17 @@ class RepeatWhileStmtBase extends Ipa::TRepeatWhileStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "RepeatWhileStmt" }
 
   Expr getImmediateCondition() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::RepeatWhileStmt).getCondition())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertRepeatWhileStmtToDb(this)
+            .(Db::RepeatWhileStmt)
+            .getCondition())
   }
 
   final Expr getCondition() { result = getImmediateCondition().resolve() }
 
   Stmt getImmediateBody() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::RepeatWhileStmt).getBody())
+    result =
+      Ipa::convertStmtFromDb(Ipa::convertRepeatWhileStmtToDb(this).(Db::RepeatWhileStmt).getBody())
   }
 
   final Stmt getBody() { result = getImmediateBody().resolve() }

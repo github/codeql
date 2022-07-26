@@ -93,7 +93,7 @@ _final_db_class_lookup = {}
 
 def get_ql_ipa_class(cls: schema.Class):
     if cls.derived:
-        return ql.Ipa.NonFinalClass(name=cls.name, derived=sorted(cls.derived))
+        return ql.Ipa.NonFinalClass(name=cls.name, derived=sorted(cls.derived), root=(cls.name == schema.root_class_name))
     if cls.ipa and cls.ipa.from_class is not None:
         source = cls.ipa.from_class
         _final_db_class_lookup.setdefault(source, ql.Ipa.FinalClassDb(source)).subtract_type(cls.name)
@@ -276,7 +276,7 @@ def generate(opts, renderer):
                 if not stub_file.is_file() or _is_generated_stub(stub_file):
                     renderer.render(ql.Ipa.ConstructorStub(ipa_type), stub_file)
                 constructor_imports.append(get_import(stub_file, opts.swift_dir))
-        elif cls.name != schema.root_class_name:
+        else:
             non_final_ipa_types.append(ipa_type)
 
     renderer.render(ql.Ipa.Types(schema.root_class_name, final_ipa_types, non_final_ipa_types), out / "IpaTypes.qll")

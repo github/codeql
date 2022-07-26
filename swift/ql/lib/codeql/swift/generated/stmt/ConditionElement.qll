@@ -9,7 +9,10 @@ class ConditionElementBase extends Ipa::TConditionElement, Locatable {
   override string getAPrimaryQlClass() { result = "ConditionElement" }
 
   Expr getImmediateBoolean() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ConditionElement).getBoolean())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertConditionElementToDb(this)
+            .(Db::ConditionElement)
+            .getBoolean())
   }
 
   final Expr getBoolean() { result = getImmediateBoolean().resolve() }
@@ -17,7 +20,10 @@ class ConditionElementBase extends Ipa::TConditionElement, Locatable {
   final predicate hasBoolean() { exists(getBoolean()) }
 
   Pattern getImmediatePattern() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ConditionElement).getPattern())
+    result =
+      Ipa::convertPatternFromDb(Ipa::convertConditionElementToDb(this)
+            .(Db::ConditionElement)
+            .getPattern())
   }
 
   final Pattern getPattern() { result = getImmediatePattern().resolve() }
@@ -25,7 +31,10 @@ class ConditionElementBase extends Ipa::TConditionElement, Locatable {
   final predicate hasPattern() { exists(getPattern()) }
 
   Expr getImmediateInitializer() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ConditionElement).getInitializer())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertConditionElementToDb(this)
+            .(Db::ConditionElement)
+            .getInitializer())
   }
 
   final Expr getInitializer() { result = getImmediateInitializer().resolve() }

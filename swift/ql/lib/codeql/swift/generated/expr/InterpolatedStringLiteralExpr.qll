@@ -11,7 +11,7 @@ class InterpolatedStringLiteralExprBase extends Ipa::TInterpolatedStringLiteralE
 
   OpaqueValueExpr getImmediateInterpolationExpr() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this)
+      Ipa::convertOpaqueValueExprFromDb(Ipa::convertInterpolatedStringLiteralExprToDb(this)
             .(Db::InterpolatedStringLiteralExpr)
             .getInterpolationExpr())
   }
@@ -24,7 +24,7 @@ class InterpolatedStringLiteralExprBase extends Ipa::TInterpolatedStringLiteralE
 
   Expr getImmediateInterpolationCountExpr() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this)
+      Ipa::convertExprFromDb(Ipa::convertInterpolatedStringLiteralExprToDb(this)
             .(Db::InterpolatedStringLiteralExpr)
             .getInterpolationCountExpr())
   }
@@ -35,7 +35,7 @@ class InterpolatedStringLiteralExprBase extends Ipa::TInterpolatedStringLiteralE
 
   Expr getImmediateLiteralCapacityExpr() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this)
+      Ipa::convertExprFromDb(Ipa::convertInterpolatedStringLiteralExprToDb(this)
             .(Db::InterpolatedStringLiteralExpr)
             .getLiteralCapacityExpr())
   }
@@ -46,7 +46,7 @@ class InterpolatedStringLiteralExprBase extends Ipa::TInterpolatedStringLiteralE
 
   TapExpr getImmediateAppendingExpr() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this)
+      Ipa::convertTapExprFromDb(Ipa::convertInterpolatedStringLiteralExprToDb(this)
             .(Db::InterpolatedStringLiteralExpr)
             .getAppendingExpr())
   }

@@ -6,5 +6,5 @@ import codeql.swift.elements.pattern.Pattern
 class BoolPatternBase extends Ipa::TBoolPattern, Pattern {
   override string getAPrimaryQlClass() { result = "BoolPattern" }
 
-  boolean getValue() { result = Ipa::toDbInstance(this).(Db::BoolPattern).getValue() }
+  boolean getValue() { result = Ipa::convertBoolPatternToDb(this).(Db::BoolPattern).getValue() }
 }

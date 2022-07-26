@@ -5,7 +5,8 @@ import codeql.swift.elements.expr.Expr
 
 class IdentityExprBase extends Ipa::TIdentityExpr, Expr {
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IdentityExpr).getSubExpr())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertIdentityExprToDb(this).(Db::IdentityExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

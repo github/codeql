@@ -6,5 +6,7 @@ import codeql.swift.elements.expr.BuiltinLiteralExpr
 class BooleanLiteralExprBase extends Ipa::TBooleanLiteralExpr, BuiltinLiteralExpr {
   override string getAPrimaryQlClass() { result = "BooleanLiteralExpr" }
 
-  boolean getValue() { result = Ipa::toDbInstance(this).(Db::BooleanLiteralExpr).getValue() }
+  boolean getValue() {
+    result = Ipa::convertBooleanLiteralExprToDb(this).(Db::BooleanLiteralExpr).getValue()
+  }
 }

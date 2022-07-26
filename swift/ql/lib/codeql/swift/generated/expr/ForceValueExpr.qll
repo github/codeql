@@ -7,7 +7,8 @@ class ForceValueExprBase extends Ipa::TForceValueExpr, Expr {
   override string getAPrimaryQlClass() { result = "ForceValueExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ForceValueExpr).getSubExpr())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertForceValueExprToDb(this).(Db::ForceValueExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

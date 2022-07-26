@@ -8,16 +8,23 @@ class DefaultArgumentExprBase extends Ipa::TDefaultArgumentExpr, Expr {
   override string getAPrimaryQlClass() { result = "DefaultArgumentExpr" }
 
   ParamDecl getImmediateParamDecl() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DefaultArgumentExpr).getParamDecl())
+    result =
+      Ipa::convertParamDeclFromDb(Ipa::convertDefaultArgumentExprToDb(this)
+            .(Db::DefaultArgumentExpr)
+            .getParamDecl())
   }
 
   final ParamDecl getParamDecl() { result = getImmediateParamDecl().resolve() }
 
-  int getParamIndex() { result = Ipa::toDbInstance(this).(Db::DefaultArgumentExpr).getParamIndex() }
+  int getParamIndex() {
+    result = Ipa::convertDefaultArgumentExprToDb(this).(Db::DefaultArgumentExpr).getParamIndex()
+  }
 
   Expr getImmediateCallerSideDefault() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DefaultArgumentExpr).getCallerSideDefault())
+      Ipa::convertExprFromDb(Ipa::convertDefaultArgumentExprToDb(this)
+            .(Db::DefaultArgumentExpr)
+            .getCallerSideDefault())
   }
 
   final Expr getCallerSideDefault() { result = getImmediateCallerSideDefault().resolve() }

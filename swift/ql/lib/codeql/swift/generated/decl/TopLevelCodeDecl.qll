@@ -8,7 +8,10 @@ class TopLevelCodeDeclBase extends Ipa::TTopLevelCodeDecl, Decl {
   override string getAPrimaryQlClass() { result = "TopLevelCodeDecl" }
 
   BraceStmt getImmediateBody() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TopLevelCodeDecl).getBody())
+    result =
+      Ipa::convertBraceStmtFromDb(Ipa::convertTopLevelCodeDeclToDb(this)
+            .(Db::TopLevelCodeDecl)
+            .getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

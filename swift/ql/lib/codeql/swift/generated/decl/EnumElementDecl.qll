@@ -7,10 +7,15 @@ import codeql.swift.elements.decl.ValueDecl
 class EnumElementDeclBase extends Ipa::TEnumElementDecl, ValueDecl {
   override string getAPrimaryQlClass() { result = "EnumElementDecl" }
 
-  string getName() { result = Ipa::toDbInstance(this).(Db::EnumElementDecl).getName() }
+  string getName() {
+    result = Ipa::convertEnumElementDeclToDb(this).(Db::EnumElementDecl).getName()
+  }
 
   ParamDecl getImmediateParam(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::EnumElementDecl).getParam(index))
+    result =
+      Ipa::convertParamDeclFromDb(Ipa::convertEnumElementDeclToDb(this)
+            .(Db::EnumElementDecl)
+            .getParam(index))
   }
 
   final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }

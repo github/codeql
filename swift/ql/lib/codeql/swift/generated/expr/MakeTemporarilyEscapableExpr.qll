@@ -9,7 +9,7 @@ class MakeTemporarilyEscapableExprBase extends Ipa::TMakeTemporarilyEscapableExp
 
   OpaqueValueExpr getImmediateEscapingClosure() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this)
+      Ipa::convertOpaqueValueExprFromDb(Ipa::convertMakeTemporarilyEscapableExprToDb(this)
             .(Db::MakeTemporarilyEscapableExpr)
             .getEscapingClosure())
   }
@@ -18,7 +18,7 @@ class MakeTemporarilyEscapableExprBase extends Ipa::TMakeTemporarilyEscapableExp
 
   Expr getImmediateNonescapingClosure() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this)
+      Ipa::convertExprFromDb(Ipa::convertMakeTemporarilyEscapableExprToDb(this)
             .(Db::MakeTemporarilyEscapableExpr)
             .getNonescapingClosure())
   }
@@ -27,7 +27,9 @@ class MakeTemporarilyEscapableExprBase extends Ipa::TMakeTemporarilyEscapableExp
 
   Expr getImmediateSubExpr() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::MakeTemporarilyEscapableExpr).getSubExpr())
+      Ipa::convertExprFromDb(Ipa::convertMakeTemporarilyEscapableExprToDb(this)
+            .(Db::MakeTemporarilyEscapableExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

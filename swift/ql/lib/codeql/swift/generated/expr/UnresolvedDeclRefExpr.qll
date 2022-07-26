@@ -6,7 +6,9 @@ import codeql.swift.elements.expr.Expr
 class UnresolvedDeclRefExprBase extends Ipa::TUnresolvedDeclRefExpr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedDeclRefExpr" }
 
-  string getName() { result = Ipa::toDbInstance(this).(Db::UnresolvedDeclRefExpr).getName() }
+  string getName() {
+    result = Ipa::convertUnresolvedDeclRefExprToDb(this).(Db::UnresolvedDeclRefExpr).getName()
+  }
 
   final predicate hasName() { exists(getName()) }
 }

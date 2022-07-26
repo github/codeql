@@ -9,13 +9,15 @@ class CaseLabelItemBase extends Ipa::TCaseLabelItem, AstNode {
   override string getAPrimaryQlClass() { result = "CaseLabelItem" }
 
   Pattern getImmediatePattern() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaseLabelItem).getPattern())
+    result =
+      Ipa::convertPatternFromDb(Ipa::convertCaseLabelItemToDb(this).(Db::CaseLabelItem).getPattern())
   }
 
   final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
   Expr getImmediateGuard() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaseLabelItem).getGuard())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertCaseLabelItemToDb(this).(Db::CaseLabelItem).getGuard())
   }
 
   final Expr getGuard() { result = getImmediateGuard().resolve() }

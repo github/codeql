@@ -9,14 +9,16 @@ class DeclRefExprBase extends Ipa::TDeclRefExpr, Expr {
   override string getAPrimaryQlClass() { result = "DeclRefExpr" }
 
   Decl getImmediateDecl() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DeclRefExpr).getDecl())
+    result = Ipa::convertDeclFromDb(Ipa::convertDeclRefExprToDb(this).(Db::DeclRefExpr).getDecl())
   }
 
   final Decl getDecl() { result = getImmediateDecl().resolve() }
 
   Type getImmediateReplacementType(int index) {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DeclRefExpr).getReplacementType(index))
+      Ipa::convertTypeFromDb(Ipa::convertDeclRefExprToDb(this)
+            .(Db::DeclRefExpr)
+            .getReplacementType(index))
   }
 
   final Type getReplacementType(int index) { result = getImmediateReplacementType(index).resolve() }
@@ -26,14 +28,14 @@ class DeclRefExprBase extends Ipa::TDeclRefExpr, Expr {
   final int getNumberOfReplacementTypes() { result = count(getAReplacementType()) }
 
   predicate hasDirectToStorageSemantics() {
-    Ipa::toDbInstance(this).(Db::DeclRefExpr).hasDirectToStorageSemantics()
+    Ipa::convertDeclRefExprToDb(this).(Db::DeclRefExpr).hasDirectToStorageSemantics()
   }
 
   predicate hasDirectToImplementationSemantics() {
-    Ipa::toDbInstance(this).(Db::DeclRefExpr).hasDirectToImplementationSemantics()
+    Ipa::convertDeclRefExprToDb(this).(Db::DeclRefExpr).hasDirectToImplementationSemantics()
   }
 
   predicate hasOrdinarySemantics() {
-    Ipa::toDbInstance(this).(Db::DeclRefExpr).hasOrdinarySemantics()
+    Ipa::convertDeclRefExprToDb(this).(Db::DeclRefExpr).hasOrdinarySemantics()
   }
 }

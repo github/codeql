@@ -7,7 +7,7 @@ class TupleTypeBase extends Ipa::TTupleType, Type {
   override string getAPrimaryQlClass() { result = "TupleType" }
 
   Type getImmediateType(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TupleType).getType(index))
+    result = Ipa::convertTypeFromDb(Ipa::convertTupleTypeToDb(this).(Db::TupleType).getType(index))
   }
 
   final Type getType(int index) { result = getImmediateType(index).resolve() }
@@ -16,7 +16,9 @@ class TupleTypeBase extends Ipa::TTupleType, Type {
 
   final int getNumberOfTypes() { result = count(getAType()) }
 
-  string getName(int index) { result = Ipa::toDbInstance(this).(Db::TupleType).getName(index) }
+  string getName(int index) {
+    result = Ipa::convertTupleTypeToDb(this).(Db::TupleType).getName(index)
+  }
 
   final string getAName() { result = getName(_) }
 

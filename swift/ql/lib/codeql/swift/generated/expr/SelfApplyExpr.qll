@@ -6,7 +6,8 @@ import codeql.swift.elements.expr.Expr
 
 class SelfApplyExprBase extends Ipa::TSelfApplyExpr, ApplyExpr {
   Expr getImmediateBaseExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SelfApplyExpr).getBaseExpr())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertSelfApplyExprToDb(this).(Db::SelfApplyExpr).getBaseExpr())
   }
 
   final Expr getBaseExpr() { result = getImmediateBaseExpr().resolve() }

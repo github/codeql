@@ -7,17 +7,19 @@ import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.type.Type
 
 class VarDeclBase extends Ipa::TVarDecl, AbstractStorageDecl {
-  string getName() { result = Ipa::toDbInstance(this).(Db::VarDecl).getName() }
+  string getName() { result = Ipa::convertVarDeclToDb(this).(Db::VarDecl).getName() }
 
   Type getImmediateType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::VarDecl).getType())
+    result = Ipa::convertTypeFromDb(Ipa::convertVarDeclToDb(this).(Db::VarDecl).getType())
   }
 
   final Type getType() { result = getImmediateType().resolve() }
 
   Type getImmediateAttachedPropertyWrapperType() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::VarDecl).getAttachedPropertyWrapperType())
+      Ipa::convertTypeFromDb(Ipa::convertVarDeclToDb(this)
+            .(Db::VarDecl)
+            .getAttachedPropertyWrapperType())
   }
 
   final Type getAttachedPropertyWrapperType() {
@@ -27,7 +29,8 @@ class VarDeclBase extends Ipa::TVarDecl, AbstractStorageDecl {
   final predicate hasAttachedPropertyWrapperType() { exists(getAttachedPropertyWrapperType()) }
 
   Pattern getImmediateParentPattern() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::VarDecl).getParentPattern())
+    result =
+      Ipa::convertPatternFromDb(Ipa::convertVarDeclToDb(this).(Db::VarDecl).getParentPattern())
   }
 
   final Pattern getParentPattern() { result = getImmediateParentPattern().resolve() }
@@ -35,7 +38,8 @@ class VarDeclBase extends Ipa::TVarDecl, AbstractStorageDecl {
   final predicate hasParentPattern() { exists(getParentPattern()) }
 
   Expr getImmediateParentInitializer() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::VarDecl).getParentInitializer())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertVarDeclToDb(this).(Db::VarDecl).getParentInitializer())
   }
 
   final Expr getParentInitializer() { result = getImmediateParentInitializer().resolve() }

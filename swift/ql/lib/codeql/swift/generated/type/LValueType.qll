@@ -7,7 +7,8 @@ class LValueTypeBase extends Ipa::TLValueType, Type {
   override string getAPrimaryQlClass() { result = "LValueType" }
 
   Type getImmediateObjectType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::LValueType).getObjectType())
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertLValueTypeToDb(this).(Db::LValueType).getObjectType())
   }
 
   final Type getObjectType() { result = getImmediateObjectType().resolve() }

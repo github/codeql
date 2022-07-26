@@ -8,7 +8,8 @@ class YieldStmtBase extends Ipa::TYieldStmt, Stmt {
   override string getAPrimaryQlClass() { result = "YieldStmt" }
 
   Expr getImmediateResult(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::YieldStmt).getResult(index))
+    result =
+      Ipa::convertExprFromDb(Ipa::convertYieldStmtToDb(this).(Db::YieldStmt).getResult(index))
   }
 
   final Expr getResult(int index) { result = getImmediateResult(index).resolve() }

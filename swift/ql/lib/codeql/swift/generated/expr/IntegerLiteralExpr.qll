@@ -7,6 +7,6 @@ class IntegerLiteralExprBase extends Ipa::TIntegerLiteralExpr, NumberLiteralExpr
   override string getAPrimaryQlClass() { result = "IntegerLiteralExpr" }
 
   string getStringValue() {
-    result = Ipa::toDbInstance(this).(Db::IntegerLiteralExpr).getStringValue()
+    result = Ipa::convertIntegerLiteralExprToDb(this).(Db::IntegerLiteralExpr).getStringValue()
   }
 }

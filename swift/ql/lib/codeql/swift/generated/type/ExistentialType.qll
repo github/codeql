@@ -7,7 +7,10 @@ class ExistentialTypeBase extends Ipa::TExistentialType, Type {
   override string getAPrimaryQlClass() { result = "ExistentialType" }
 
   Type getImmediateConstraint() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ExistentialType).getConstraint())
+    result =
+      Ipa::convertTypeFromDb(Ipa::convertExistentialTypeToDb(this)
+            .(Db::ExistentialType)
+            .getConstraint())
   }
 
   final Type getConstraint() { result = getImmediateConstraint().resolve() }

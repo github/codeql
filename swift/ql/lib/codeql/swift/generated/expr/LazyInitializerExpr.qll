@@ -7,7 +7,10 @@ class LazyInitializerExprBase extends Ipa::TLazyInitializerExpr, Expr {
   override string getAPrimaryQlClass() { result = "LazyInitializerExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::LazyInitializerExpr).getSubExpr())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertLazyInitializerExprToDb(this)
+            .(Db::LazyInitializerExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

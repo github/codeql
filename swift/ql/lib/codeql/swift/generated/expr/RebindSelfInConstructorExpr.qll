@@ -9,14 +9,18 @@ class RebindSelfInConstructorExprBase extends Ipa::TRebindSelfInConstructorExpr,
 
   Expr getImmediateSubExpr() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::RebindSelfInConstructorExpr).getSubExpr())
+      Ipa::convertExprFromDb(Ipa::convertRebindSelfInConstructorExprToDb(this)
+            .(Db::RebindSelfInConstructorExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
   VarDecl getImmediateSelf() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::RebindSelfInConstructorExpr).getSelf())
+      Ipa::convertVarDeclFromDb(Ipa::convertRebindSelfInConstructorExprToDb(this)
+            .(Db::RebindSelfInConstructorExpr)
+            .getSelf())
   }
 
   final VarDecl getSelf() { result = getImmediateSelf().resolve() }

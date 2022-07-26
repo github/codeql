@@ -8,7 +8,8 @@ class IsPatternBase extends Ipa::TIsPattern, Pattern {
   override string getAPrimaryQlClass() { result = "IsPattern" }
 
   TypeRepr getImmediateCastTypeRepr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IsPattern).getCastTypeRepr())
+    result =
+      Ipa::convertTypeReprFromDb(Ipa::convertIsPatternToDb(this).(Db::IsPattern).getCastTypeRepr())
   }
 
   final TypeRepr getCastTypeRepr() { result = getImmediateCastTypeRepr().resolve() }
@@ -16,7 +17,8 @@ class IsPatternBase extends Ipa::TIsPattern, Pattern {
   final predicate hasCastTypeRepr() { exists(getCastTypeRepr()) }
 
   Pattern getImmediateSubPattern() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IsPattern).getSubPattern())
+    result =
+      Ipa::convertPatternFromDb(Ipa::convertIsPatternToDb(this).(Db::IsPattern).getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

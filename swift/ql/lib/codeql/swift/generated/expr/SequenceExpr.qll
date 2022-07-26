@@ -7,7 +7,8 @@ class SequenceExprBase extends Ipa::TSequenceExpr, Expr {
   override string getAPrimaryQlClass() { result = "SequenceExpr" }
 
   Expr getImmediateElement(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SequenceExpr).getElement(index))
+    result =
+      Ipa::convertExprFromDb(Ipa::convertSequenceExprToDb(this).(Db::SequenceExpr).getElement(index))
   }
 
   final Expr getElement(int index) { result = getImmediateElement(index).resolve() }

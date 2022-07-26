@@ -8,7 +8,7 @@ class WhileStmtBase extends Ipa::TWhileStmt, LabeledConditionalStmt {
   override string getAPrimaryQlClass() { result = "WhileStmt" }
 
   Stmt getImmediateBody() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::WhileStmt).getBody())
+    result = Ipa::convertStmtFromDb(Ipa::convertWhileStmtToDb(this).(Db::WhileStmt).getBody())
   }
 
   final Stmt getBody() { result = getImmediateBody().resolve() }

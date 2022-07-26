@@ -6,16 +6,16 @@ import codeql.swift.elements.File
 
 class LocationBase extends Ipa::TLocation, Element {
   File getImmediateFile() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Location).getFile())
+    result = Ipa::convertFileFromDb(Ipa::convertLocationToDb(this).(Db::Location).getFile())
   }
 
   final File getFile() { result = getImmediateFile().resolve() }
 
-  int getStartLine() { result = Ipa::toDbInstance(this).(Db::Location).getStartLine() }
+  int getStartLine() { result = Ipa::convertLocationToDb(this).(Db::Location).getStartLine() }
 
-  int getStartColumn() { result = Ipa::toDbInstance(this).(Db::Location).getStartColumn() }
+  int getStartColumn() { result = Ipa::convertLocationToDb(this).(Db::Location).getStartColumn() }
 
-  int getEndLine() { result = Ipa::toDbInstance(this).(Db::Location).getEndLine() }
+  int getEndLine() { result = Ipa::convertLocationToDb(this).(Db::Location).getEndLine() }
 
-  int getEndColumn() { result = Ipa::toDbInstance(this).(Db::Location).getEndColumn() }
+  int getEndColumn() { result = Ipa::convertLocationToDb(this).(Db::Location).getEndColumn() }
 }

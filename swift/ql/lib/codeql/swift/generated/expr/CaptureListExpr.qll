@@ -10,7 +10,9 @@ class CaptureListExprBase extends Ipa::TCaptureListExpr, Expr {
 
   PatternBindingDecl getImmediateBindingDecl(int index) {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaptureListExpr).getBindingDecl(index))
+      Ipa::convertPatternBindingDeclFromDb(Ipa::convertCaptureListExprToDb(this)
+            .(Db::CaptureListExpr)
+            .getBindingDecl(index))
   }
 
   final PatternBindingDecl getBindingDecl(int index) {
@@ -22,7 +24,10 @@ class CaptureListExprBase extends Ipa::TCaptureListExpr, Expr {
   final int getNumberOfBindingDecls() { result = count(getABindingDecl()) }
 
   ClosureExpr getImmediateClosureBody() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::CaptureListExpr).getClosureBody())
+    result =
+      Ipa::convertClosureExprFromDb(Ipa::convertCaptureListExprToDb(this)
+            .(Db::CaptureListExpr)
+            .getClosureBody())
   }
 
   final ClosureExpr getClosureBody() { result = getImmediateClosureBody().resolve() }

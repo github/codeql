@@ -8,7 +8,8 @@ class ExprPatternBase extends Ipa::TExprPattern, Pattern {
   override string getAPrimaryQlClass() { result = "ExprPattern" }
 
   Expr getImmediateSubExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ExprPattern).getSubExpr())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertExprPatternToDb(this).(Db::ExprPattern).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

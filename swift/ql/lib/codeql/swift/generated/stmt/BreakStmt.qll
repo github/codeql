@@ -6,12 +6,14 @@ import codeql.swift.elements.stmt.Stmt
 class BreakStmtBase extends Ipa::TBreakStmt, Stmt {
   override string getAPrimaryQlClass() { result = "BreakStmt" }
 
-  string getTargetName() { result = Ipa::toDbInstance(this).(Db::BreakStmt).getTargetName() }
+  string getTargetName() {
+    result = Ipa::convertBreakStmtToDb(this).(Db::BreakStmt).getTargetName()
+  }
 
   final predicate hasTargetName() { exists(getTargetName()) }
 
   Stmt getImmediateTarget() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::BreakStmt).getTarget())
+    result = Ipa::convertStmtFromDb(Ipa::convertBreakStmtToDb(this).(Db::BreakStmt).getTarget())
   }
 
   final Stmt getTarget() { result = getImmediateTarget().resolve() }

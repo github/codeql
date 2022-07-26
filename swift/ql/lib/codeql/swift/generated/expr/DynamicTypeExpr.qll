@@ -7,7 +7,10 @@ class DynamicTypeExprBase extends Ipa::TDynamicTypeExpr, Expr {
   override string getAPrimaryQlClass() { result = "DynamicTypeExpr" }
 
   Expr getImmediateBaseExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::DynamicTypeExpr).getBaseExpr())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertDynamicTypeExprToDb(this)
+            .(Db::DynamicTypeExpr)
+            .getBaseExpr())
   }
 
   final Expr getBaseExpr() { result = getImmediateBaseExpr().resolve() }

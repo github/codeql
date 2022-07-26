@@ -8,7 +8,7 @@ class TypeExprBase extends Ipa::TTypeExpr, Expr {
   override string getAPrimaryQlClass() { result = "TypeExpr" }
 
   TypeRepr getImmediateTypeRepr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::TypeExpr).getTypeRepr())
+    result = Ipa::convertTypeReprFromDb(Ipa::convertTypeExprToDb(this).(Db::TypeExpr).getTypeRepr())
   }
 
   final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }

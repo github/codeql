@@ -9,7 +9,10 @@ class IfConfigClauseBase extends Ipa::TIfConfigClause, Locatable {
   override string getAPrimaryQlClass() { result = "IfConfigClause" }
 
   Expr getImmediateCondition() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfConfigClause).getCondition())
+    result =
+      Ipa::convertExprFromDb(Ipa::convertIfConfigClauseToDb(this)
+            .(Db::IfConfigClause)
+            .getCondition())
   }
 
   final Expr getCondition() { result = getImmediateCondition().resolve() }
@@ -17,7 +20,10 @@ class IfConfigClauseBase extends Ipa::TIfConfigClause, Locatable {
   final predicate hasCondition() { exists(getCondition()) }
 
   AstNode getImmediateElement(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::IfConfigClause).getElement(index))
+    result =
+      Ipa::convertAstNodeFromDb(Ipa::convertIfConfigClauseToDb(this)
+            .(Db::IfConfigClause)
+            .getElement(index))
   }
 
   final AstNode getElement(int index) { result = getImmediateElement(index).resolve() }
@@ -26,5 +32,5 @@ class IfConfigClauseBase extends Ipa::TIfConfigClause, Locatable {
 
   final int getNumberOfElements() { result = count(getAnElement()) }
 
-  predicate isActive() { Ipa::toDbInstance(this).(Db::IfConfigClause).isActive() }
+  predicate isActive() { Ipa::convertIfConfigClauseToDb(this).(Db::IfConfigClause).isActive() }
 }

@@ -7,14 +7,14 @@ class MemberRefExprBase extends Ipa::TMemberRefExpr, LookupExpr {
   override string getAPrimaryQlClass() { result = "MemberRefExpr" }
 
   predicate hasDirectToStorageSemantics() {
-    Ipa::toDbInstance(this).(Db::MemberRefExpr).hasDirectToStorageSemantics()
+    Ipa::convertMemberRefExprToDb(this).(Db::MemberRefExpr).hasDirectToStorageSemantics()
   }
 
   predicate hasDirectToImplementationSemantics() {
-    Ipa::toDbInstance(this).(Db::MemberRefExpr).hasDirectToImplementationSemantics()
+    Ipa::convertMemberRefExprToDb(this).(Db::MemberRefExpr).hasDirectToImplementationSemantics()
   }
 
   predicate hasOrdinarySemantics() {
-    Ipa::toDbInstance(this).(Db::MemberRefExpr).hasOrdinarySemantics()
+    Ipa::convertMemberRefExprToDb(this).(Db::MemberRefExpr).hasOrdinarySemantics()
   }
 }

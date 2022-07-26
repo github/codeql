@@ -6,7 +6,7 @@ import codeql.swift.elements.type.Type
 
 class ExprBase extends Ipa::TExpr, AstNode {
   Type getImmediateType() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Expr).getType())
+    result = Ipa::convertTypeFromDb(Ipa::convertExprToDb(this).(Db::Expr).getType())
   }
 
   final Type getType() { result = getImmediateType().resolve() }

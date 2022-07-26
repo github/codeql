@@ -6,7 +6,8 @@ import codeql.swift.elements.Location
 
 class LocatableBase extends Ipa::TLocatable, Element {
   Location getImmediateLocation() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::Locatable).getLocation())
+    result =
+      Ipa::convertLocationFromDb(Ipa::convertLocatableToDb(this).(Db::Locatable).getLocation())
   }
 
   final Location getLocation() { result = getImmediateLocation().resolve() }

@@ -4,5 +4,5 @@ private import codeql.swift.generated.Db
 import codeql.swift.elements.Element
 
 class FileBase extends Ipa::TFile, Element {
-  string getName() { result = Ipa::toDbInstance(this).(Db::File).getName() }
+  string getName() { result = Ipa::convertFileToDb(this).(Db::File).getName() }
 }

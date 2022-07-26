@@ -6,12 +6,15 @@ import codeql.swift.elements.stmt.Stmt
 class ContinueStmtBase extends Ipa::TContinueStmt, Stmt {
   override string getAPrimaryQlClass() { result = "ContinueStmt" }
 
-  string getTargetName() { result = Ipa::toDbInstance(this).(Db::ContinueStmt).getTargetName() }
+  string getTargetName() {
+    result = Ipa::convertContinueStmtToDb(this).(Db::ContinueStmt).getTargetName()
+  }
 
   final predicate hasTargetName() { exists(getTargetName()) }
 
   Stmt getImmediateTarget() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ContinueStmt).getTarget())
+    result =
+      Ipa::convertStmtFromDb(Ipa::convertContinueStmtToDb(this).(Db::ContinueStmt).getTarget())
   }
 
   final Stmt getTarget() { result = getImmediateTarget().resolve() }

@@ -8,7 +8,7 @@ class ReturnStmtBase extends Ipa::TReturnStmt, Stmt {
   override string getAPrimaryQlClass() { result = "ReturnStmt" }
 
   Expr getImmediateResult() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::ReturnStmt).getResult())
+    result = Ipa::convertExprFromDb(Ipa::convertReturnStmtToDb(this).(Db::ReturnStmt).getResult())
   }
 
   final Expr getResult() { result = getImmediateResult().resolve() }

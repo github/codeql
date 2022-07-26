@@ -9,13 +9,14 @@ class SwitchStmtBase extends Ipa::TSwitchStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "SwitchStmt" }
 
   Expr getImmediateExpr() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SwitchStmt).getExpr())
+    result = Ipa::convertExprFromDb(Ipa::convertSwitchStmtToDb(this).(Db::SwitchStmt).getExpr())
   }
 
   final Expr getExpr() { result = getImmediateExpr().resolve() }
 
   CaseStmt getImmediateCase(int index) {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::SwitchStmt).getCase(index))
+    result =
+      Ipa::convertCaseStmtFromDb(Ipa::convertSwitchStmtToDb(this).(Db::SwitchStmt).getCase(index))
   }
 
   final CaseStmt getCase(int index) { result = getImmediateCase(index).resolve() }

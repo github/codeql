@@ -9,13 +9,18 @@ class FallthroughStmtBase extends Ipa::TFallthroughStmt, Stmt {
 
   CaseStmt getImmediateFallthroughSource() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::FallthroughStmt).getFallthroughSource())
+      Ipa::convertCaseStmtFromDb(Ipa::convertFallthroughStmtToDb(this)
+            .(Db::FallthroughStmt)
+            .getFallthroughSource())
   }
 
   final CaseStmt getFallthroughSource() { result = getImmediateFallthroughSource().resolve() }
 
   CaseStmt getImmediateFallthroughDest() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::FallthroughStmt).getFallthroughDest())
+    result =
+      Ipa::convertCaseStmtFromDb(Ipa::convertFallthroughStmtToDb(this)
+            .(Db::FallthroughStmt)
+            .getFallthroughDest())
   }
 
   final CaseStmt getFallthroughDest() { result = getImmediateFallthroughDest().resolve() }

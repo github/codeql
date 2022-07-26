@@ -7,7 +7,9 @@ import codeql.swift.elements.stmt.StmtCondition
 class LabeledConditionalStmtBase extends Ipa::TLabeledConditionalStmt, LabeledStmt {
   StmtCondition getImmediateCondition() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::LabeledConditionalStmt).getCondition())
+      Ipa::convertStmtConditionFromDb(Ipa::convertLabeledConditionalStmtToDb(this)
+            .(Db::LabeledConditionalStmt)
+            .getCondition())
   }
 
   final StmtCondition getCondition() { result = getImmediateCondition().resolve() }

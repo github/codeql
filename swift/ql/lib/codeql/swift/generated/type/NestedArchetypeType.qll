@@ -8,14 +8,17 @@ class NestedArchetypeTypeBase extends Ipa::TNestedArchetypeType, ArchetypeType {
   override string getAPrimaryQlClass() { result = "NestedArchetypeType" }
 
   ArchetypeType getImmediateParent() {
-    result = Ipa::fromDbInstance(Ipa::toDbInstance(this).(Db::NestedArchetypeType).getParent())
+    result =
+      Ipa::convertArchetypeTypeFromDb(Ipa::convertNestedArchetypeTypeToDb(this)
+            .(Db::NestedArchetypeType)
+            .getParent())
   }
 
   final ArchetypeType getParent() { result = getImmediateParent().resolve() }
 
   AssociatedTypeDecl getImmediateAssociatedTypeDeclaration() {
     result =
-      Ipa::fromDbInstance(Ipa::toDbInstance(this)
+      Ipa::convertAssociatedTypeDeclFromDb(Ipa::convertNestedArchetypeTypeToDb(this)
             .(Db::NestedArchetypeType)
             .getAssociatedTypeDeclaration())
   }
