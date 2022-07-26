@@ -17,7 +17,7 @@ import TimingAttack
 import DataFlow::PathGraph
 
 /**
- * Taint-tracking configuration tracing flow from obtaining a client Secret to a unsafe Comparison.
+ * A configuration tracing flow from obtaining a client Secret to a unsafe Comparison.
  */
 class ClientSuppliedSecretConfig extends TaintTracking::Configuration {
   ClientSuppliedSecretConfig() { this = "ClientSuppliedSecretConfig" }
