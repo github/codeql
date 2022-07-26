@@ -309,3 +309,7 @@
 | ms.cpp:262:28:262:51 | a_struct |  | <none> |
 | ms.cpp:263:28:263:46 | __is_aggregate | int | 0 |
 | ms.cpp:263:28:263:46 | int |  | <none> |
+| ms.cpp:265:49:265:88 | __has_unique_object_representations | int | 1 |
+| ms.cpp:265:49:265:88 | int |  | <none> |
+| ms.cpp:266:49:266:90 | __has_unique_object_representations | float | 0 |
+| ms.cpp:266:49:266:90 | float |  | <none> |

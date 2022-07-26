@@ -1652,6 +1652,7 @@ case @expr.kind of
 | 329 = @temp_init
 | 330 = @isassignable
 | 331 = @isaggregate
+| 332 = @hasuniqueobjectrepresentations
 ;
 
 @var_args_expr = @vastartexpr
@@ -1715,6 +1716,7 @@ case @expr.kind of
             | @builtincomplex
             | @isassignable
             | @isaggregate
+            | @hasuniqueobjectrepresentations
             ;
 
 new_allocated_type(

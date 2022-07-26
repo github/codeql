@@ -999,9 +999,27 @@ class BuiltInComplexOperation extends BuiltInOperation, @builtincomplex {
  * Returns `true` if the type has is an aggregate type.
  * ```
  * std::integral_constant<bool, __is_aggregate(_Tp)> ia;
- * ``` */
+ * ```
+ */
 class BuiltInOperationIsAggregate extends BuiltInOperation, @isaggregate {
   override string toString() { result = "__is_aggregate" }
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationIsAggregate" }
+}
+
+/**
+ * A C++ `__has_unique_object_representations` built-in operation (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if the type is trivially copyable and if the object representation
+ * is unique for two objects with the same value.
+ * ```
+ * bool v = __has_unique_object_representations(MyType);
+ * ```
+ */
+class BuiltInOperationHasUniqueObjectRepresentations extends BuiltInOperation,
+  @hasuniqueobjectrepresentations {
+  override string toString() { result = "__has_unique_object_representations" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasUniqueObjectRepresentations" }
 }
