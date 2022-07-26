@@ -24,7 +24,7 @@ class ClientSuppliedSecretConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof CompareSink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonOfSecretSink }
 }
 
 from ClientSuppliedSecretConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
