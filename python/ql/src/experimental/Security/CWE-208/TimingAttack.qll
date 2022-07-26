@@ -71,7 +71,7 @@ class SecretSource extends DataFlow::Node {
 
   SecretSource() { secret = this.asExpr() }
 
-  /** Holds if the source of secret was remote user input. */
+  /** Holds if the secret was deliverd by remote user. */
   predicate includesUserInput() {
     exists(UserInputSecretConfig config |
       config.hasFlowTo(DataFlow2::exprNode(secret))
