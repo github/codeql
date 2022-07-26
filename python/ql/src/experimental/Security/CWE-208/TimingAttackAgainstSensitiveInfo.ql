@@ -22,12 +22,17 @@ import DataFlow::PathGraph
 class ClientSuppliedSecretConfig extends TaintTracking::Configuration {
   ClientSuppliedSecretConfig() { this = "ClientSuppliedSecretConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
+  override predicate isSource(DataFlow::Node source) { source instanceof SecretSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonOfSecretSink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 }
 
 from ClientSuppliedSecretConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
+  config.hasFlowPath(source, sink) and
+  (
+    source.getNode().(SecretSource).includesUserInput() and
+    sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
+  )
 select sink.getNode(), source, sink, "Timing attack against $@ validation.", source.getNode(),
   "client-supplied token"
