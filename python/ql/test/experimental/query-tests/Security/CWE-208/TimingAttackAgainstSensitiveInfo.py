@@ -12,13 +12,13 @@ app = Flask(__name__)
 def check_credentials():
     if request.method == 'POST':
         password = request.form['pwd']
-        return password == "token"
+        return password == sec
     
 @app.route('/good')
-def check_credentials(password):
+def check_credentials(sec):
     if request.method == 'POST':
         password = request.form['pwd']
-        return constant_time_string_compare(password, "token")
+        return constant_time_string_compare(password, sec)
 
 def constant_time_string_compare(a, b):
     if len(a) != len(b):
