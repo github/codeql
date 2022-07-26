@@ -4604,6 +4604,17 @@ literals/literals.rb:
 #  193|    cat file.txt
 #  193|   
 #  195|   1: [HeredocEnd] SCRIPT
+misc/iso-8859-15.rb:
+#    1| [Program] Program
+#    4|   0: [Call] Call
+#    4|     0: [Identifier] print
+#    4|     1: [ArgumentList] ArgumentList
+#    4|       0: [String] String
+#    4|         0: [ReservedWord] "
+#    4|         1: [StringContent] EUR = €
+#    4|         2: [ReservedWord] "
+#    1| [Comment] #! /usr/bin/ruby
+#    2| [Comment] # coding: iso-8859-15
 misc/misc.erb:
 #    2| [Program] Program
 #    2|   0: [Call] Call

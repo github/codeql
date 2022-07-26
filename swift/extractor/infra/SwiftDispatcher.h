@@ -86,8 +86,8 @@ class SwiftDispatcher {
   // This method gives a TRAP label for already emitted AST node.
   // If the AST node was not emitted yet, then the emission is dispatched to a corresponding
   // visitor (see `visit(T *)` methods below).
-  template <typename E, std::enable_if_t<IsStorable<E>>* = nullptr>
-  TrapLabelOf<E> fetchLabel(const E& e) {
+  template <typename E, typename... Args, std::enable_if_t<IsStorable<E>>* = nullptr>
+  TrapLabelOf<E> fetchLabel(const E& e, Args&&... args) {
     if constexpr (std::is_constructible_v<bool, const E&>) {
       assert(e && "fetching a label on a null entity, maybe fetchOptionalLabel is to be used?");
     }
@@ -100,7 +100,7 @@ class SwiftDispatcher {
       return *l;
     }
     waitingForNewLabel = e;
-    visit(e);
+    visit(e, std::forward<Args>(args)...);
     // TODO when everything is moved to structured C++ classes, this should be moved to createEntry
     if (auto l = store.get(e)) {
       if constexpr (IsLocatable<E>) {
@@ -192,10 +192,10 @@ class SwiftDispatcher {
   // return `std::optional(fetchLabel(arg))` if arg converts to true, otherwise std::nullopt
   // universal reference `Arg&&` is used to catch both temporary and non-const references, not
   // for perfect forwarding
-  template <typename Arg>
-  auto fetchOptionalLabel(Arg&& arg) -> std::optional<decltype(fetchLabel(arg))> {
+  template <typename Arg, typename... Args>
+  auto fetchOptionalLabel(Arg&& arg, Args&&... args) -> std::optional<decltype(fetchLabel(arg))> {
     if (arg) {
-      return fetchLabel(arg);
+      return fetchLabel(arg, std::forward<Args>(args)...);
     }
     return std::nullopt;
   }
@@ -275,9 +275,15 @@ class SwiftDispatcher {
 
   template <typename Tag, typename T, typename... Ts>
   bool fetchLabelFromUnionCase(const llvm::PointerUnion<Ts...> u, TrapLabel<Tag>& output) {
-    if (auto e = u.template dyn_cast<T>()) {
-      output = fetchLabel(e);
-      return true;
+    // we rely on the fact that when we extract `ASTNode` instances (which only happens
+    // on `BraceStmt` elements), we cannot encounter a standalone `TypeRepr` there, so we skip
+    // this case; extracting `TypeRepr`s here would be problematic as we would not be able to
+    // provide the corresponding type
+    if constexpr (!std::is_same_v<T, swift::TypeRepr*>) {
+      if (auto e = u.template dyn_cast<T>()) {
+        output = fetchLabel(e);
+        return true;
+      }
     }
     return false;
   }
@@ -305,7 +311,7 @@ class SwiftDispatcher {
   virtual void visit(swift::CaseLabelItem* item) = 0;
   virtual void visit(swift::Expr* expr) = 0;
   virtual void visit(swift::Pattern* pattern) = 0;
-  virtual void visit(swift::TypeRepr* type) = 0;
+  virtual void visit(swift::TypeRepr* typeRepr, swift::Type type) = 0;
   virtual void visit(swift::TypeBase* type) = 0;
 
   void visit(const FilePath& file) {

@@ -717,6 +717,7 @@ exprValue
 | literals/literals.rb:198:8:198:8 | 5 | 5 | int |
 | literals/literals.rb:199:2:199:2 | :y | :y | symbol |
 | literals/literals.rb:199:7:199:7 | :Z | :Z | symbol |
+| misc/iso-8859-15.rb:4:7:4:17 | "EUR = \u20ac" | EUR = \u20ac | string |
 | misc/misc.erb:2:15:2:37 | "main_include_admin.js" | main_include_admin.js | string |
 | misc/misc.rb:1:7:1:11 | "bar" | bar | string |
 | misc/misc.rb:3:7:3:9 | foo | foo | string |
@@ -1592,6 +1593,7 @@ exprCfgNodeValue
 | literals/literals.rb:198:8:198:8 | 5 | 5 | int |
 | literals/literals.rb:199:2:199:2 | :y | :y | symbol |
 | literals/literals.rb:199:7:199:7 | :Z | :Z | symbol |
+| misc/iso-8859-15.rb:4:7:4:17 | "EUR = \u20ac" | EUR = \u20ac | string |
 | misc/misc.erb:2:15:2:37 | "main_include_admin.js" | main_include_admin.js | string |
 | misc/misc.rb:1:7:1:11 | "bar" | bar | string |
 | misc/misc.rb:3:7:3:9 | foo | foo | string |

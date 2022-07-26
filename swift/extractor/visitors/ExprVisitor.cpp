@@ -188,9 +188,8 @@ void ExprVisitor::visitEnumIsCaseExpr(swift::EnumIsCaseExpr* expr) {
   assert(expr->getCaseTypeRepr() && "EnumIsCaseExpr has CaseTypeRepr");
   assert(expr->getEnumElement() && "EnumIsCaseExpr has EnumElement");
   auto subExpr = dispatcher_.fetchLabel(expr->getSubExpr());
-  auto typeRepr = dispatcher_.fetchLabel(expr->getCaseTypeRepr());
   auto enumElement = dispatcher_.fetchLabel(expr->getEnumElement());
-  dispatcher_.emit(EnumIsCaseExprsTrap{label, subExpr, typeRepr, enumElement});
+  dispatcher_.emit(EnumIsCaseExprsTrap{label, subExpr, enumElement});
 }
 
 void ExprVisitor::visitMakeTemporarilyEscapableExpr(swift::MakeTemporarilyEscapableExpr* expr) {
@@ -288,7 +287,9 @@ void ExprVisitor::visitErasureExpr(swift::ErasureExpr* expr) {
 
 codeql::TypeExpr ExprVisitor::translateTypeExpr(const swift::TypeExpr& expr) {
   TypeExpr entry{dispatcher_.assignNewLabel(expr)};
-  entry.type_repr = dispatcher_.fetchOptionalLabel(expr.getTypeRepr());
+  if (expr.getTypeRepr() && expr.getInstanceType()) {
+    entry.type_repr = dispatcher_.fetchLabel(expr.getTypeRepr(), expr.getInstanceType());
+  }
   return entry;
 }
 
@@ -478,9 +479,14 @@ void ExprVisitor::visitKeyPathExpr(swift::KeyPathExpr* expr) {
       auto pathLabel = dispatcher_.fetchLabel(path);
       dispatcher_.emit(KeyPathExprParsedPathsTrap{label, pathLabel});
     }
-    if (auto root = expr->getParsedRoot()) {
-      auto rootLabel = dispatcher_.fetchLabel(root);
-      dispatcher_.emit(KeyPathExprParsedRootsTrap{label, rootLabel});
+    // TODO maybe move this logic to QL?
+    if (auto rootTypeRepr = expr->getRootType()) {
+      auto keyPathType = expr->getType()->getAs<swift::BoundGenericClassType>();
+      assert(keyPathType && "KeyPathExpr must have BoundGenericClassType");
+      auto keyPathTypeArgs = keyPathType->getGenericArgs();
+      assert(keyPathTypeArgs.size() != 0 && "KeyPathExpr type must have generic args");
+      auto rootLabel = dispatcher_.fetchLabel(rootTypeRepr, keyPathTypeArgs[0]);
+      dispatcher_.emit(KeyPathExprRootsTrap{label, rootLabel});
     }
   }
 }

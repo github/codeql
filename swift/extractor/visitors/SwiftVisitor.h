@@ -5,7 +5,6 @@
 #include "swift/extractor/visitors/ExprVisitor.h"
 #include "swift/extractor/visitors/StmtVisitor.h"
 #include "swift/extractor/visitors/TypeVisitor.h"
-#include "swift/extractor/visitors/TypeReprVisitor.h"
 #include "swift/extractor/visitors/PatternVisitor.h"
 
 namespace codeql {
@@ -32,13 +31,14 @@ class SwiftVisitor : private SwiftDispatcher {
   void visit(swift::CaseLabelItem* item) override { stmtVisitor.visitCaseLabelItem(item); }
   void visit(swift::Expr* expr) override { exprVisitor.visit(expr); }
   void visit(swift::Pattern* pattern) override { patternVisitor.visit(pattern); }
-  void visit(swift::TypeRepr* type) override { typeReprVisitor.visit(type); }
   void visit(swift::TypeBase* type) override { typeVisitor.visit(type); }
+  void visit(swift::TypeRepr* typeRepr, swift::Type type) override {
+    emit(typeVisitor.translateTypeRepr(*typeRepr, type));
+  }
 
   DeclVisitor declVisitor{*this};
   ExprVisitor exprVisitor{*this};
   StmtVisitor stmtVisitor{*this};
-  TypeReprVisitor typeReprVisitor{*this};
   TypeVisitor typeVisitor{*this};
   PatternVisitor patternVisitor{*this};
 };

@@ -8,7 +8,7 @@ reflection.kt:
 #   46|           0: [TypeAccess] String
 #   47|       5: [BlockStmt] { ... }
 #   47|         0: [ReturnStmt] return ...
-#   47|           0: [MethodAccess] get(...)
+#   47|           0: [MethodAccess] charAt(...)
 #   47|             -1: [ExtensionReceiverAccess] this
 #   47|             0: [SubExpr] ... - ...
 #   47|               0: [MethodAccess] length(...)
