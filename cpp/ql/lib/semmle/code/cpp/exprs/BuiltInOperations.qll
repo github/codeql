@@ -612,13 +612,10 @@ class BuiltInOperationIsTriviallyDestructible extends BuiltInOperation, @istrivi
  * The `__is_trivially_assignable` built-in operation (used by some
  * implementations of the `<type_traits>` header).
  *
- * Returns `true` if the assignment operator `C::operator =(const C& c)` is
- * trivial.
+ * Returns `true` if the assignment operator `C::operator =(const D& d)` is
+ * trivial (i.e., it will not call any operation that is non-trivial).
  * ```
- * template<typename T>
- *   struct is_trivially_assignable
- *   : public integral_constant<bool, __is_trivially_assignable(T) >
- *   { };
+ * bool v = __is_trivially_assignable(MyType1, MyType2);
  * ```
  */
 class BuiltInOperationIsTriviallyAssignable extends BuiltInOperation, @istriviallyassignableexpr {
@@ -631,16 +628,32 @@ class BuiltInOperationIsTriviallyAssignable extends BuiltInOperation, @istrivial
  * The `__is_nothrow_assignable` built-in operation (used by some
  * implementations of the `<type_traits>` header).
  *
- * Returns true if there exists a `C::operator =(const C& c) nothrow`
+ * Returns true if there exists a `C::operator =(const D& d) nothrow`
  * assignment operator (i.e, with an empty exception specification).
  * ```
- * bool v = __is_nothrow_assignable(MyType);
+ * bool v = __is_nothrow_assignable(MyType1, MyType2);
  * ```
  */
 class BuiltInOperationIsNothrowAssignable extends BuiltInOperation, @isnothrowassignableexpr {
   override string toString() { result = "__is_nothrow_assignable" }
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationIsNothrowAssignable" }
+}
+
+/**
+ * The `__is_assignable` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns true if there exists a `C::operator =(const D& d)` assignment
+ * operator.
+ * ```
+ * bool v = __is_assignable(MyType1, MyType2);
+ * ```
+ */
+class BuiltInOperationIsAssignable extends BuiltInOperation, @isassignable {
+  override string toString() { result = "__is_assignable" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsAssignable" }
 }
 
 /**

@@ -1650,6 +1650,7 @@ case @expr.kind of
 | 327 = @co_await
 | 328 = @co_yield
 | 329 = @temp_init
+| 330 = @isassignable
 ;
 
 @var_args_expr = @vastartexpr
@@ -1711,6 +1712,7 @@ case @expr.kind of
             | @isfinalexpr
             | @builtinchooseexpr
             | @builtincomplex
+            | @isassignable
             ;
 
 new_allocated_type(

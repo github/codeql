@@ -296,3 +296,12 @@
 | ms.cpp:255:24:255:43 | a_struct |  | <none> |
 | ms.cpp:256:24:256:49 | __is_final | a_final_struct | 1 |
 | ms.cpp:256:24:256:49 | a_final_struct |  | <none> |
+| ms.cpp:258:29:258:62 | __is_assignable | a_struct,a_struct | 1 |
+| ms.cpp:258:29:258:62 | a_struct |  | <none> |
+| ms.cpp:258:29:258:62 | a_struct |  | <none> |
+| ms.cpp:259:29:259:59 | __is_assignable | a_struct,empty | 0 |
+| ms.cpp:259:29:259:59 | a_struct |  | <none> |
+| ms.cpp:259:29:259:59 | empty |  | <none> |
+| ms.cpp:260:29:260:57 | __is_assignable | a_struct,int | 0 |
+| ms.cpp:260:29:260:57 | a_struct |  | <none> |
+| ms.cpp:260:29:260:57 | int |  | <none> |
