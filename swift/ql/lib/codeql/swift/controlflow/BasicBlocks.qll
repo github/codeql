@@ -6,6 +6,8 @@ private import internal.ControlFlowGraphImpl
 private import internal.ControlFlowElements
 private import CfgNodes
 private import SuccessorTypes
+private import codeql.swift.generated.Db
+private import codeql.swift.generated.IpaTypes
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
@@ -195,9 +197,12 @@ class ExitBasicBlock extends BasicBlock {
 }
 
 private module JoinBlockPredecessors {
-  private predicate id(AstNode x, AstNode y) { x = y }
+  private predicate id(Db::AstNode x, Db::AstNode y) { x = y }
 
-  private predicate idOf(AstNode x, int y) = equivalenceRelation(id/2)(x, y)
+  private predicate idOfDbAstNode(Db::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
+
+  // TODO does not work if we use "ipa on" entities...
+  private predicate idOf(AstNode x, int y) { idOfDbAstNode(Ipa::convertAstNodeToDb(x), y) }
 
   private AstNode projctToAst(ControlFlowElement n) {
     result = n.asAstNode()

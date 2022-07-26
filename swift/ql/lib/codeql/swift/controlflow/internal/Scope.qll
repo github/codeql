@@ -1,8 +1,9 @@
 private import swift
 private import codeql.swift.generated.GetImmediateParent
+private import codeql.swift.generated.IpaTypes
 
 module CallableBase {
-  class TypeRange = @abstract_function_decl or @key_path_expr or @closure_expr;
+  class TypeRange = Ipa::TAbstractFunctionDecl or Ipa::TKeyPathExpr or Ipa::TClosureExpr;
 
   class Range extends Scope::Range, TypeRange { }
 }

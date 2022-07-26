@@ -214,20 +214,20 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #   29| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #   29| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #   33| case ...
 #-----|  -> ... is ...
 
 #   33| ... is ...
-#-----|  -> .error1
-
-#   33| ... is ...
 #-----| no-match -> ... is ...
 #-----| match -> 0
+
+#   33| ... is ...
+#-----|  -> .error1
 
 #   33| .error1
 #-----| no-match -> ... is ...
@@ -281,11 +281,11 @@ cfg.swift:
 #-----|  -> ... is ...
 
 #   37| ... is ...
-#-----|  -> ... is ...
-
-#   37| ... is ...
 #-----| match -> print(_:separator:terminator:)
 #-----| no-match -> case ...
+
+#   37| ... is ...
+#-----|  -> ... is ...
 
 #   38| print(_:separator:terminator:)
 #-----|  -> MyError
@@ -306,10 +306,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #   38| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #   38| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #   39| case ...
 #-----|  -> let ...
@@ -318,10 +318,10 @@ cfg.swift:
 #-----| match -> let ...
 
 #   39| let ...
-#-----| match -> print(_:separator:terminator:)
+#-----|  -> error
 
 #   39| let ...
-#-----|  -> error
+#-----| match -> print(_:separator:terminator:)
 
 #   40| print(_:separator:terminator:)
 #-----|  -> "..."
@@ -342,10 +342,10 @@ cfg.swift:
 #-----|  -> [...]
 
 #   40| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #   40| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #   42| return ...
 #-----| return -> exit tryCatch(x:) (normal)
@@ -1560,10 +1560,10 @@ cfg.swift:
 #-----|  -> return ...
 
 #  146| _
-#-----|  -> _
+#-----| match -> false
 
 #  146| _
-#-----| match -> false
+#-----|  -> _
 
 #  146| case ...
 #-----|  -> _
@@ -1610,10 +1610,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  166| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  166| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  169| defer { ... }
 #-----|  -> defer { ... }
@@ -1637,10 +1637,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  170| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  170| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  173| defer { ... }
 #-----|  -> print(_:separator:terminator:)
@@ -1664,10 +1664,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  174| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  174| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  175| defer { ... }
 #-----|  -> print(_:separator:terminator:)
@@ -1691,10 +1691,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  176| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  176| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  181| enter m1(x:)
 #-----|  -> m1(x:)
@@ -1751,10 +1751,10 @@ cfg.swift:
 #-----|  -> [...]
 
 #  183| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  183| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  183| x is greater than 2
 #-----|  -> (Any) ...
@@ -1872,10 +1872,10 @@ cfg.swift:
 #-----|  -> [...]
 
 #  186| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  186| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  186| x is 1
 #-----|  -> (Any) ...
@@ -1899,10 +1899,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  189| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  189| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  193| enter m2(b:)
 #-----|  -> m2(b:)
@@ -2243,10 +2243,10 @@ cfg.swift:
 #-----|  -> [...]
 
 #  231| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  231| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  231| true
 #-----|  -> (Any) ...
@@ -2270,10 +2270,10 @@ cfg.swift:
 #-----|  -> [...]
 
 #  234| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  234| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  234| done
 #-----|  -> (Any) ...
@@ -2345,10 +2345,10 @@ cfg.swift:
 #-----|  -> [...]
 
 #  239| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  239| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  239| b1 or b2
 #-----|  -> (Any) ...
@@ -4073,10 +4073,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  301| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  301| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  301| x
 #-----|  -> (Int) ...
@@ -4163,10 +4163,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  308| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  308| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  308| x
 #-----|  -> (Int) ...
@@ -4273,10 +4273,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  316| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  316| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  318| print(_:separator:terminator:)
 #-----|  -> Done
@@ -4297,10 +4297,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  318| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  318| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  321| enter labeledLoop(x:)
 #-----|  -> labeledLoop(x:)
@@ -4391,10 +4391,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  324| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  324| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  324| x
 #-----|  -> (Int) ...
@@ -4501,10 +4501,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  332| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  332| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  334| print(_:separator:terminator:)
 #-----|  -> Done
@@ -4525,10 +4525,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  334| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  334| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  338| enter testRepeat(x:)
 #-----|  -> testRepeat(x:)
@@ -4566,10 +4566,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  340| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  340| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  340| x
 #-----|  -> (Int) ...
@@ -4847,10 +4847,10 @@ cfg.swift:
 #-----|  -> exit { ... }
 
 #  368| { ... }
-#-----|  -> return ...
+#-----|  -> { ... }
 
 #  368| { ... }
-#-----|  -> { ... }
+#-----|  -> return ...
 
 #  368| { ... }
 #-----|  -> z
@@ -5104,10 +5104,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  386| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  386| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  394| (unnamed function decl)
 
