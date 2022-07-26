@@ -28,7 +28,7 @@ class PossibleTimingAttackAgainstHash extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof ProduceHashCall }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof CompareSink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonOfHashSink }
 }
 
 from PossibleTimingAttackAgainstHash config, DataFlow::PathNode source, DataFlow::PathNode sink
