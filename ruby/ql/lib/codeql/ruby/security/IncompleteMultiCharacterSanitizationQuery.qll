@@ -60,7 +60,7 @@ pragma[noinline]
 private DangerousPrefixSubstring getADangerousMatchedChar(EmptyReplaceRegExpTerm t) {
   t.isNullable() and result = ""
   or
-  result = t.getAMatch()
+  result = t.getAMatchedString()
   or
   // A substring matched by some character class. This is only used to match the "word" part of a HTML tag (e.g. "iframe" in "<iframe").
   exists(ReDoSUtil::CharacterClass cc |
@@ -123,14 +123,14 @@ private predicate matchesDangerousPrefix(EmptyReplaceRegExpTerm t, string prefix
     kind = "path injection" and
     prefix = ["/..", "../"] and
     // If the regex is matching explicit path components, it is unlikely that it's being used as a sanitizer.
-    not t.getSuccessor*().getAMatch().regexpMatch("(?is).*[a-z0-9_-].*")
+    not t.getSuccessor*().getAMatchedString().regexpMatch("(?is).*[a-z0-9_-].*")
     or
     kind = "HTML element injection" and
     (
       // comments
       prefix = "<!--" and
       // If the regex is matching explicit textual content of an HTML comment, it is unlikely that it's being used as a sanitizer.
-      not t.getSuccessor*().getAMatch().regexpMatch("(?is).*[a-z0-9_].*")
+      not t.getSuccessor*().getAMatchedString().regexpMatch("(?is).*[a-z0-9_].*")
       or
       // specific tags
       // the `cript|scrip` case has been observed in the wild several times
@@ -148,11 +148,11 @@ private predicate matchesDangerousPrefix(EmptyReplaceRegExpTerm t, string prefix
     ] and
   (
     // explicit matching: `onclick` and `ng-bind`
-    t.getAMatch().regexpMatch("(?i)" + prefix + "[a-z]+")
+    t.getAMatchedString().regexpMatch("(?i)" + prefix + "[a-z]+")
     or
     // regexp-based matching: `on[a-z]+`
     exists(EmptyReplaceRegExpTerm start | start = t.getAChild() |
-      start.getAMatch().regexpMatch("(?i)[^a-z]*" + prefix) and
+      start.getAMatchedString().regexpMatch("(?i)[^a-z]*" + prefix) and
       isCommonWordMatcher(start.getSuccessor())
     )
   )
