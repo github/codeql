@@ -76,16 +76,19 @@ func test(s: String) {
 
     let range5 = NSRange(location: 0, length: ns.length) // GOOD
     let range6 = NSRange(location: 0, length: s.count) // BAD: String length used in NSMakeRange
-    print("NSRange '\(range5.description)' / '\(range6.description)'")
+    let range7 = NSRange(location: 0, length: s.utf8.count) // BAD: String.utf8  length used in NSMakeRange [NOT DETECTED]
+    let range8 = NSRange(location: 0, length: s.utf16.count) // BAD: String.utf16 length used in NSMakeRange [NOT DETECTED]
+    let range9 = NSRange(location: 0, length: s.unicodeScalars.count) // BAD: String.unicodeScalars length used in NSMakeRange [NOT DETECTED]
+    print("NSRange '\(range5.description)' / '\(range6.description)' '\(range7.description)' '\(range8.description)' '\(range9.description)'")
 
     // --- converting Range to NSRange ---
 
-    let range7 = s.startIndex ..< s.endIndex
-    let range8 = NSRange(range7, in: s) // GOOD
-    let location = s.distance(from: s.startIndex, to: range7.lowerBound)
-    let length = s.distance(from: range7.lowerBound, to: range7.upperBound)
-    let range9 = NSRange(location: location, length: length) // BAD [NOT DETECTED]
-    print("NSRange '\(range8.description)' / '\(range9.description)'")
+    let range10 = s.startIndex ..< s.endIndex
+    let range11 = NSRange(range10, in: s) // GOOD
+    let location = s.distance(from: s.startIndex, to: range10.lowerBound)
+    let length = s.distance(from: range10.lowerBound, to: range10.upperBound)
+    let range12 = NSRange(location: location, length: length) // BAD [NOT DETECTED]
+    print("NSRange '\(range11.description)' / '\(range12.description)'")
 
     // --- String operations using an integer directly ---
 
