@@ -24,6 +24,12 @@ class StringLengthConflationFlowState extends string {
     this = "String" and singular = "a String"
     or
     this = "NSString" and singular = "an NSString"
+    or
+    this = "String.utf8" and singular = "a String.utf8"
+    or
+    this = "String.utf16" and singular = "a String.utf16"
+    or
+    this = "String.unicodeScalars" and singular = "a String.unicodeScalars"
   }
 
   /**
@@ -55,6 +61,30 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       member.getMember().(VarDecl).getName() = "length" and
       node.asExpr() = member and
       flowstate = "NSString"
+    )
+    or
+    // result of a call to `String.utf8.count`
+    exists(MemberRefExpr member |
+      member.getBaseExpr().getType().getName() = "String.UTF8View" and
+      member.getMember().(VarDecl).getName() = "count" and
+      node.asExpr() = member and
+      flowstate = "String.utf8"
+    )
+    or
+    // result of a call to `String.utf16.count`
+    exists(MemberRefExpr member |
+      member.getBaseExpr().getType().getName() = "String.UTF16View" and
+      member.getMember().(VarDecl).getName() = "count" and
+      node.asExpr() = member and
+      flowstate = "String.utf16"
+    )
+    or
+    // result of a call to `String.unicodeScalars.count`
+    exists(MemberRefExpr member |
+      member.getBaseExpr().getType().getName() = "String.UnicodeScalarView" and
+      member.getMember().(VarDecl).getName() = "count" and
+      node.asExpr() = member and
+      flowstate = "String.unicodeScalars"
     )
   }
 

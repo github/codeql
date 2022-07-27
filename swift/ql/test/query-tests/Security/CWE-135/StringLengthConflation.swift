@@ -51,9 +51,9 @@ func test(s: String) {
 
     let ix1 = String.Index(encodedOffset: s.count) // GOOD
     let ix2 = String.Index(encodedOffset: ns.length) // BAD: NSString length used in String.Index
-    let ix3 = String.Index(encodedOffset: s.utf8.count) // BAD: String.utf8 length used in String.Index [NOT DETECTED]
-    let ix4 = String.Index(encodedOffset: s.utf16.count) // BAD: String.utf16 length used in String.Index [NOT DETECTED]
-    let ix5 = String.Index(encodedOffset: s.unicodeScalars.count) // BAD: string.unicodeScalars length used in String.Index [NOT DETECTED]
+    let ix3 = String.Index(encodedOffset: s.utf8.count) // BAD: String.utf8 length used in String.Index
+    let ix4 = String.Index(encodedOffset: s.utf16.count) // BAD: String.utf16 length used in String.Index
+    let ix5 = String.Index(encodedOffset: s.unicodeScalars.count) // BAD: string.unicodeScalars length used in String.Index
     print("String.Index '\(ix1.encodedOffset)' / '\(ix2.encodedOffset)' '\(ix3.encodedOffset)' '\(ix4.encodedOffset)' '\(ix5.encodedOffset)'")
 
     let ix6 = s.index(s.startIndex, offsetBy: s.count / 2) // GOOD
@@ -76,9 +76,9 @@ func test(s: String) {
 
     let range5 = NSRange(location: 0, length: ns.length) // GOOD
     let range6 = NSRange(location: 0, length: s.count) // BAD: String length used in NSMakeRange
-    let range7 = NSRange(location: 0, length: s.utf8.count) // BAD: String.utf8  length used in NSMakeRange [NOT DETECTED]
-    let range8 = NSRange(location: 0, length: s.utf16.count) // BAD: String.utf16 length used in NSMakeRange [NOT DETECTED]
-    let range9 = NSRange(location: 0, length: s.unicodeScalars.count) // BAD: String.unicodeScalars length used in NSMakeRange [NOT DETECTED]
+    let range7 = NSRange(location: 0, length: s.utf8.count) // BAD: String.utf8  length used in NSMakeRange
+    let range8 = NSRange(location: 0, length: s.utf16.count) // BAD: String.utf16 length used in NSMakeRange
+    let range9 = NSRange(location: 0, length: s.unicodeScalars.count) // BAD: String.unicodeScalars length used in NSMakeRange
     print("NSRange '\(range5.description)' / '\(range6.description)' '\(range7.description)' '\(range8.description)' '\(range9.description)'")
 
     // --- converting Range to NSRange ---
