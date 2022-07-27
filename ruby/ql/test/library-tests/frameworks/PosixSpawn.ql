@@ -5,11 +5,13 @@ import codeql.ruby.DataFlow
 query predicate systemCalls(
   PosixSpawn::SystemCall call, DataFlow::Node arg, boolean shellInterpreted
 ) {
-  arg = call.getAnArgument() and
-  if call.isShellInterpreted(arg) then shellInterpreted = true else shellInterpreted = false
+  call.isShellInterpreted(arg) and shellInterpreted = true
+  or
+  not call.isShellInterpreted(arg) and arg = call.getAnArgument() and shellInterpreted = false
 }
 
 query predicate childCalls(PosixSpawn::ChildCall call, DataFlow::Node arg, boolean shellInterpreted) {
-  arg = call.getAnArgument() and
-  if call.isShellInterpreted(arg) then shellInterpreted = true else shellInterpreted = false
+  call.isShellInterpreted(arg) and shellInterpreted = true
+  or
+  not call.isShellInterpreted(arg) and arg = call.getAnArgument() and shellInterpreted = false
 }

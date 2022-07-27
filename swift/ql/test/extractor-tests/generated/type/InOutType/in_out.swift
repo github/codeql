@@ -8,5 +8,5 @@ struct S {
   mutating func bar() {}
 }
 
-var s: S
+var s: S = S()
 s.bar()

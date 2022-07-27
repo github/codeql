@@ -137,7 +137,7 @@ class IOOrFileWriteMethodCall extends IOOrFileMethodCall {
       receiverKind = "class" and
       api = ["IO", "File"] and
       this = API::getTopLevelMember(api).getAMethodCall(methodName) and
-      methodName = ["binwrite", "write"] and
+      methodName = ["binwrite", "write", "atomic_write"] and
       dataNode = this.getArgument(1)
       or
       // e.g. `{IO,File}.new("foo.txt", "a+).puts("hello")`

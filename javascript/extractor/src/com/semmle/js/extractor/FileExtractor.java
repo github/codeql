@@ -217,9 +217,6 @@ public class FileExtractor {
       }
 
       private boolean hasBadFileHeader(File f, String lcExt, ExtractorConfig config) {
-        if (!".ts".equals(lcExt)) {
-          return false;
-        }
         try (FileInputStream fis = new FileInputStream(f)) {
           byte[] bytes = new byte[fileHeaderSize];
           int length = fis.read(bytes);

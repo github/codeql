@@ -21,10 +21,10 @@ import semmle.python.ApiGraphs
 
 private DataFlow::Node getNode(API::Node nd, string kind) {
   kind = "def" and
-  result = nd.getARhs()
+  result = nd.asSink()
   or
   kind = "use" and
-  result = nd.getAUse()
+  result = nd.getAValueReachableFromSource()
 }
 
 private string getLocStr(Location loc) {

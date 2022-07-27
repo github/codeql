@@ -68,7 +68,7 @@ fun getIrClassVirtualFile(irClass: IrClass): VirtualFile? {
     return null
 }
 
-fun getRawIrClassBinaryPath(irClass: IrClass) =
+private fun getRawIrClassBinaryPath(irClass: IrClass) =
     getIrClassVirtualFile(irClass)?.let {
         val path = it.path
         if(it.fileSystem.protocol == StandardFileSystems.JRT_PROTOCOL)

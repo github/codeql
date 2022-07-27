@@ -336,6 +336,18 @@ constants/constants.rb:
 #   20|       getComponent: [StringTextComponent] Chuck
 #   20|     getArgument: [StringLiteral] "Dave"
 #   20|       getComponent: [StringTextComponent] Dave
+#   78| [ArrayLiteral] [...]
+#   78|   getDesugared: [MethodCall] call to []
+#   78|     getReceiver: [ConstantReadAccess] Array
+#   78|     getArgument: [IntegerLiteral] 1
+#   78|     getArgument: [IntegerLiteral] 2
+#   78|     getArgument: [IntegerLiteral] 3
+#   79| [ArrayLiteral] [...]
+#   79|   getDesugared: [MethodCall] call to []
+#   79|     getReceiver: [ConstantReadAccess] Array
+#   79|     getArgument: [IntegerLiteral] 1
+#   79|     getArgument: [IntegerLiteral] 2
+#   79|     getArgument: [IntegerLiteral] 3
 escape_sequences/escapes.rb:
 #   58| [ArrayLiteral] %w(...)
 #   58|   getDesugared: [MethodCall] call to []

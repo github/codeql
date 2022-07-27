@@ -59,7 +59,7 @@ module CfgScope {
   private class KeyPathScope extends Range_ instanceof KeyPathExpr {
     AstControlFlowTree tree;
 
-    KeyPathScope() { tree.getAst() = this.getParsedRoot().getFullyConverted() }
+    KeyPathScope() { tree.getAst() = this }
 
     final override predicate entry(ControlFlowElement first) { first(tree, first) }
 
@@ -836,9 +836,6 @@ module Patterns {
       // Note: `getSubPattern` only has a result if the `is` pattern is of the form `pattern as type`.
       i = 0 and
       result.asAstNode() = ast.getSubPattern().getFullyUnresolved()
-      or
-      i = 1 and
-      result.asAstNode() = ast.getCastTypeRepr()
     }
   }
 
@@ -946,6 +943,37 @@ module Decls {
     }
   }
 
+  /**
+   * The control-flow of a type declaration. This is necessary to skip past local type
+   * declarations that occur inside bodies like in:
+   * ```swift
+   * func foo() -> Int {
+   *   let x = 42
+   *   class C {}
+   *   return x
+   * }
+   * ```
+   */
+  private class TypeDeclTree extends AstLeafTree {
+    override TypeDecl ast;
+  }
+
+  /**
+   * The control-flow of a function declaration. This is necessary to skip past local function
+   * declarations that occur inside bodies like in:
+   * ```swift
+   * func foo() -> Int {
+   *   let x = 42
+   *   func bar() { ... }
+   *   return x
+   * }
+   * ```
+   */
+  private class AbstractFunctionDeclTree extends AstLeafTree {
+    override AbstractFunctionDecl ast;
+  }
+
+  /** The control-flow of a function declaration body. */
   class FuncDeclTree extends StandardPreOrderTree, TFuncDeclElement {
     AbstractFunctionDecl ast;
 
@@ -1573,8 +1601,14 @@ module Exprs {
 
     final override ControlFlowElement getChildElement(int i) {
       result.asAstNode() = ast.getSubExpr().getFullyConverted() and i = 0
-      or
-      result.asAstNode() = ast.getTypeRepr().getFullyUnresolved() and i = 1
+    }
+  }
+
+  private class IsTree extends AstStandardPostOrderTree {
+    override IsExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = ast.getSubExpr().getFullyConverted() and i = 0
     }
   }
 

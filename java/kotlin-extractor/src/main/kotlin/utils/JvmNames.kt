@@ -51,11 +51,13 @@ private val specialFunctions = mapOf(
     makeDescription(FqName("java.lang.Number"), "toFloat") to "floatValue",
     makeDescription(StandardNames.FqNames.number.toSafe(), "toDouble") to "doubleValue",
     makeDescription(FqName("java.lang.Number"), "toDouble") to "doubleValue",
+    makeDescription(StandardNames.FqNames.string.toSafe(), "get") to "charAt",
+    makeDescription(FqName("java.lang.String"), "get") to "charAt",
 )
 
 private val specialFunctionShortNames = specialFunctions.keys.map { it.functionName }.toSet()
 
-fun getSpecialJvmName(f: IrFunction): String? {
+private fun getSpecialJvmName(f: IrFunction): String? {
     if (specialFunctionShortNames.contains(f.name) && f is IrSimpleFunction) {
         f.allOverridden(true).forEach { overriddenFunc ->
             overriddenFunc.parentClassOrNull?.fqNameWhenAvailable?.let { parentFqName ->

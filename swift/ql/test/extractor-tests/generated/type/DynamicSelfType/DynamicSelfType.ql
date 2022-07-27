@@ -2,12 +2,12 @@
 import codeql.swift.elements
 import TestUtils
 
-from DynamicSelfType x, string getDiagnosticsName, Type getCanonicalType, Type getStaticSelfType
+from DynamicSelfType x, string getName, Type getCanonicalType, Type getStaticSelfType
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getDiagnosticsName = x.getDiagnosticsName() and
+  getName = x.getName() and
   getCanonicalType = x.getCanonicalType() and
   getStaticSelfType = x.getStaticSelfType()
-select x, "getDiagnosticsName:", getDiagnosticsName, "getCanonicalType:", getCanonicalType,
-  "getStaticSelfType:", getStaticSelfType
+select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getStaticSelfType:",
+  getStaticSelfType

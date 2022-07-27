@@ -80,7 +80,7 @@ module UnsafeHtmlConstruction {
     t.start() and
     result = sink
     or
-    exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, isUsedInXssSink(t2, sink)))
+    exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, isUsedInXssSink(t2, sink)))
     or
     exists(DataFlow::TypeBackTracker t2 |
       t.continue() = t2 and
@@ -179,5 +179,19 @@ module UnsafeHtmlConstruction {
     }
 
     override string describe() { result = "Markdown rendering" }
+  }
+
+  /** A test for the value of `typeof x`, restricting the potential types of `x`. */
+  class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+    override EqualityTest astNode;
+    Expr operand;
+    boolean polarity;
+
+    TypeTestGuard() { TaintTracking::isStringTypeGuard(astNode, operand, polarity) }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      polarity = outcome and
+      e = operand
+    }
   }
 }

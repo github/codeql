@@ -30,7 +30,7 @@ class ModifiedStubMarkedAsGeneratedError(Error):
 def get_ql_property(cls: schema.Class, prop: schema.Property):
     common_args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
-        skip_qltest="skip_qltest" in prop.pragmas,
+        qltest_skip="qltest_skip" in prop.pragmas,
         is_child=prop.is_child,
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
@@ -69,13 +69,14 @@ def get_ql_property(cls: schema.Class, prop: schema.Property):
 
 
 def get_ql_class(cls: schema.Class):
+    pragmas = {k: True for k in cls.pragmas if k.startswith("ql")}
     return ql.Class(
         name=cls.name,
         bases=cls.bases,
         final=not cls.derived,
         properties=[get_ql_property(cls, p) for p in cls.properties],
         dir=cls.dir,
-        skip_qltest="skip_qltest" in cls.pragmas,
+        **pragmas,
     )
 
 
@@ -143,7 +144,7 @@ def _get_all_properties_to_be_tested(cls: ql.Class, lookup: typing.Dict[str, ql.
     # deduplicate using id
     already_seen = set()
     for c, p in _get_all_properties(cls, lookup):
-        if not (c.skip_qltest or p.skip_qltest or id(p) in already_seen):
+        if not (c.qltest_skip or p.qltest_skip or id(p) in already_seen):
             already_seen.add(id(p))
             yield ql.PropertyForTest(p.getter, p.type, p.is_single, p.is_predicate, p.is_repeated)
 
@@ -154,6 +155,20 @@ def _partition(l, pred):
     for x in l:
         res[not pred(x)].append(x)
     return res
+
+
+def _is_in_qltest_collapsed_hierachy(cls: ql.Class, lookup: typing.Dict[str, ql.Class]):
+    return cls.qltest_collapse_hierarchy or _is_under_qltest_collapsed_hierachy(cls, lookup)
+
+
+def _is_under_qltest_collapsed_hierachy(cls: ql.Class, lookup: typing.Dict[str, ql.Class]):
+    return not cls.qltest_uncollapse_hierarchy and any(
+        _is_in_qltest_collapsed_hierachy(lookup[b], lookup) for b in cls.bases)
+
+
+def _should_skip_qltest(cls: ql.Class, lookup: typing.Dict[str, ql.Class]):
+    return cls.qltest_skip or not (cls.final or cls.qltest_collapse_hierarchy) or _is_under_qltest_collapsed_hierachy(
+        cls, lookup)
 
 
 def generate(opts, renderer):
@@ -196,7 +211,7 @@ def generate(opts, renderer):
         classes), out / 'GetImmediateParent.qll')
 
     for c in classes:
-        if not c.final or c.skip_qltest:
+        if _should_skip_qltest(c, lookup):
             continue
         test_dir = test_out / c.path
         test_dir.mkdir(parents=True, exist_ok=True)
