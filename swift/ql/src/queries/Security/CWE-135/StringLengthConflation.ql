@@ -15,6 +15,24 @@ import codeql.swift.dataflow.DataFlow
 import DataFlow::PathGraph
 
 /**
+ * A flow state for this query, which is a type of Swift string encoding.
+ */
+class StringLengthConflationFlowState extends string {
+  string singular;
+
+  StringLengthConflationFlowState() {
+    this = "String" and singular = "a String"
+    or
+    this = "NSString" and singular = "an NSString"
+  }
+
+  /**
+   * Gets text for the singular form of this flow state.
+   */
+  string getSingular() { result = singular }
+}
+
+/**
  * A configuration for tracking string lengths originating from source that is
  * a `String` or an `NSString` object, to a sink of a different kind that
  * expects an incompatible measure of length.
@@ -40,7 +58,11 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node node, string flowstate) {
+  /**
+   * Holds if `node` is a sink and `flowstate` is the *correct* flow state for
+   * that sink. We actually want to report incorrect flow states.
+   */
+  predicate isSinkImpl(DataFlow::Node node, string flowstate) {
     // arguments to method calls...
     exists(
       string className, string methodName, string paramName, ClassDecl c, AbstractFunctionDecl f,
@@ -78,7 +100,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       f.getName() = methodName and
       f.getParam(pragma[only_bind_into](arg)).getName() = paramName and
       call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
-      flowstate = "String" // `String` length flowing into `NSString`
+      flowstate = "NSString"
     )
     or
     // arguments to function calls...
@@ -89,7 +111,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
       call.getStaticTarget().getName() = funcName and
       call.getStaticTarget().getParam(pragma[only_bind_into](arg)).getName() = paramName and
       call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
-      flowstate = "String" // `String` length flowing into `NSString`
+      flowstate = "NSString"
     )
     or
     // arguments to function calls...
@@ -122,7 +144,16 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
           .getParam(pragma[only_bind_into](arg))
           .getName() = paramName and
       call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr() and
-      flowstate = "NSString" // `NSString` length flowing into `String`
+      flowstate = "String"
+    )
+  }
+
+  override predicate isSink(DataFlow::Node node, string flowstate) {
+    // Permit any *incorrect* flowstate, as those are the results the query
+    // should report.
+    exists(string correctFlowState |
+      isSinkImpl(node, correctFlowState) and
+      flowstate.(StringLengthConflationFlowState) != correctFlowState
     )
   }
 
@@ -134,15 +165,13 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
 
 from
   StringLengthConflationConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  string flowstate, string message
+  StringLengthConflationFlowState sourceFlowState, StringLengthConflationFlowState sinkFlowstate,
+  string message
 where
   config.hasFlowPath(source, sink) and
-  config.isSink(sink.getNode(), flowstate) and
-  (
-    flowstate = "String" and
-    message = "This String length is used in an NSString, but it may not be equivalent."
-    or
-    flowstate = "NSString" and
-    message = "This NSString length is used in a String, but it may not be equivalent."
-  )
+  config.isSource(source.getNode(), sourceFlowState) and
+  config.isSinkImpl(sink.getNode(), sinkFlowstate) and
+  message =
+    "This " + sourceFlowState + " length is used in " + sinkFlowstate.getSingular() +
+      ", but it may not be equivalent."
 select sink.getNode(), source, sink, message
