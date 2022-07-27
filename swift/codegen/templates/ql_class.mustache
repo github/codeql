@@ -29,7 +29,7 @@ class {{name}}Base extends Ipa::T{{name}}{{#bases}}, {{.}}{{/bases}} {
   {{#type_is_class}}
   {{type}} getImmediate{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
     {{#has_db_id}}
-    result = Ipa::convert{{type}}FromDb(Ipa::convert{{name}}ToDb(this).(Db::{{name}}).{{getter}}({{#is_repeated}}index{{/is_repeated}}))
+    result = Ipa::convert{{type}}FromDb(Ipa::convert{{name}}ToDb(this){{^root}}.(Db::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}}))
     {{/has_db_id}}
     {{^has_db_id}}
     none()
@@ -44,7 +44,7 @@ class {{name}}Base extends Ipa::T{{name}}{{#bases}}, {{.}}{{/bases}} {
   {{^type_is_class}}
   {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
     {{#has_db_id}}
-    {{^is_predicate}}result = {{/is_predicate}}Ipa::convert{{name}}ToDb(this).(Db::{{name}}).{{getter}}({{#is_repeated}}index{{/is_repeated}})
+    {{^is_predicate}}result = {{/is_predicate}}Ipa::convert{{name}}ToDb(this){{^root}}.(Db::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}})
     {{/has_db_id}}
     {{^has_db_id}}
     none()
