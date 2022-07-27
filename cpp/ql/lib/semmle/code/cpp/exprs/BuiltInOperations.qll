@@ -502,7 +502,8 @@ class BuiltInOperationBuiltInShuffleVector extends BuiltInOperation, @builtinshu
  * for more information.
  * ```
  * // Concatenate every other element of 4-element vectors V1 and V2.
- * V3 = __builtin_shufflevector(V1, V2, {0, 2, 4, 6});
+ * M = {0, 2, 4, 6};
+ * V3 = __builtin_shuffle(V1, V2, M);
  * ```
  */
 class BuiltInOperationBuiltInShuffle extends BuiltInOperation, @builtinshuffle {
