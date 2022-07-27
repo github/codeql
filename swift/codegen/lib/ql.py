@@ -171,13 +171,13 @@ class Ipa:
     @dataclass
     class FinalClass(Class):
         is_final: ClassVar = True
-        is_ipa_from: ClassVar = False
-        is_ipa_on: ClassVar = False
+        is_derived_ipa: ClassVar = False
+        is_fresh_ipa: ClassVar = False
         is_db: ClassVar = False
 
         @property
         def is_ipa(self):
-            return self.is_ipa_on or self.is_ipa_from
+            return self.is_fresh_ipa or self.is_derived_ipa
 
     @dataclass
     class Param:
@@ -186,19 +186,7 @@ class Ipa:
         first: bool = False
 
     @dataclass
-    class FinalClassIpaFrom(FinalClass):
-        is_ipa_from: ClassVar = True
-
-        type: str = None
-
-        @property
-        def params(self):
-            return [Ipa.Param("id", self.type, first=True)]
-
-    @dataclass
-    class FinalClassIpaOn(FinalClass):
-        is_ipa_on: ClassVar = True
-
+    class FinalClassIpa(FinalClass):
         params: List["Ipa.Param"] = field(default_factory=list)
 
         def __post_init__(self):
@@ -210,6 +198,14 @@ class Ipa:
             return bool(self.params)
 
     @dataclass
+    class FinalClassDerivedIpa(FinalClassIpa):
+        is_derived_ipa: ClassVar = True
+
+    @dataclass
+    class FinalClassFreshIpa(FinalClassIpa):
+        is_fresh_ipa: ClassVar = True
+
+    @dataclass
     class FinalClassDb(FinalClass):
         is_db: ClassVar = True
 
@@ -219,11 +215,11 @@ class Ipa:
             self.subtracted_ipa_types.append(Ipa.Class(type, first=not self.subtracted_ipa_types))
 
         @property
-        def has_subtracted_ipa_types(self):
+        def has_subtracted_ipa_types(self) -> bool:
             return bool(self.subtracted_ipa_types)
 
         @property
-        def db_id(self):
+        def db_id(self) -> str:
             return "@" + inflection.underscore(self.name)
 
     @dataclass
@@ -252,4 +248,4 @@ class Ipa:
     class ConstructorStub:
         template: ClassVar = "ql_ipa_constructor_stub"
 
-        cls: Union["Ipa.FinalClassIpaFrom", "Ipa.FinalClassIpaOn"]
+        cls: Union["Ipa.FinalClassDerivedIpa", "Ipa.FinalClassFreshIpa"]

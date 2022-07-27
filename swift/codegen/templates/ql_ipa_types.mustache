@@ -7,12 +7,9 @@ cached module Ipa {
     {{^first}}
     or
     {{/first}}
-    {{#is_ipa_from}}
-    T{{name}}(Db::{{type}} id) { construct{{name}}(id) }
-    {{/is_ipa_from}}
-    {{#is_ipa_on}}
+    {{#is_ipa}}
     T{{name}}({{#params}}{{^first}}, {{/first}}{{type}} {{param}}{{/params}}){{#has_params}} { construct{{name}}({{#params}}{{^first}}, {{/first}}{{param}}{{/params}}) }{{/has_params}}
-    {{/is_ipa_on}}
+    {{/is_ipa}}
     {{#is_db}}
     T{{name}}(Db::{{name}} id){{#has_subtracted_ipa_types}} { {{#subtracted_ipa_types}}{{^first}} and {{/first}}not construct{{name}}(id){{/subtracted_ipa_types}} }{{/has_subtracted_ipa_types}}
     {{/is_db}}
@@ -26,12 +23,12 @@ cached module Ipa {
 
   {{#final_classes}}
   cached T{{name}} convert{{name}}FromDb(Db::Element e) {
-    {{^is_ipa_on}}
+    {{^is_fresh_ipa}}
     result = T{{name}}(e)
-    {{/is_ipa_on}}
-    {{#is_ipa_on}}
+    {{/is_fresh_ipa}}
+    {{#is_fresh_ipa}}
     none()
-    {{/is_ipa_on}}
+    {{/is_fresh_ipa}}
   }
   {{/final_classes}}
 
@@ -48,12 +45,12 @@ cached module Ipa {
 
   {{#final_classes}}
   cached Db::Element convert{{name}}ToDb(T{{name}} e) {
-    {{^is_ipa_on}}
+    {{^is_fresh_ipa}}
     e = T{{name}}(result)
-    {{/is_ipa_on}}
-    {{#is_ipa_on}}
+    {{/is_fresh_ipa}}
+    {{#is_fresh_ipa}}
     none()
-    {{/is_ipa_on}}
+    {{/is_fresh_ipa}}
   }
   {{/final_classes}}
 

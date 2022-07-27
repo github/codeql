@@ -67,8 +67,6 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(EnumIsCaseExpr).getImmediateSubExpr()
   or
-  result = e.(EnumIsCaseExpr).getImmediateElement()
-  or
   result = e.(ExplicitCastExpr).getImmediateSubExpr()
   or
   result = e.(ForceValueExpr).getImmediateSubExpr()

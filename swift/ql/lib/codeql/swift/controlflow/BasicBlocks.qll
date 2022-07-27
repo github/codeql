@@ -201,10 +201,10 @@ private module JoinBlockPredecessors {
 
   private predicate idOfDbAstNode(Db::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
-  // TODO does not work if we use "ipa on" entities...
+  // TODO does not work if fresh ipa entities (`ipa: on:`) turn out to be first of the block
   private predicate idOf(AstNode x, int y) { idOfDbAstNode(Ipa::convertAstNodeToDb(x), y) }
 
-  private AstNode projctToAst(ControlFlowElement n) {
+  private AstNode projectToAst(ControlFlowElement n) {
     result = n.asAstNode()
     or
     isPropertyGetterElement(n, _, result)
@@ -219,7 +219,7 @@ private module JoinBlockPredecessors {
   }
 
   int getId(JoinBlockPredecessor jbp) {
-    idOf(projctToAst(jbp.getFirstNode().(CfgNode).getNode()), result)
+    idOf(projectToAst(jbp.getFirstNode().(CfgNode).getNode()), result)
     or
     idOf(jbp.(EntryBasicBlock).getScope(), result)
   }

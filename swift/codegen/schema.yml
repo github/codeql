@@ -423,7 +423,7 @@ EnumIsCaseExpr:
   _extends: Expr
   _children:
     sub_expr: Expr
-    element: EnumElementDecl
+  element: EnumElementDecl
 
 ErrorExpr:
   _extends: Expr

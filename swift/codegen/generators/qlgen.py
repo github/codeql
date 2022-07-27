@@ -84,7 +84,7 @@ def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
 
 def _to_db_type(x: str) -> str:
     if x[0].isupper():
-        return "@" + inflection.underscore(x)
+        return "Db::" + x
     return x
 
 
@@ -93,14 +93,15 @@ _final_db_class_lookup = {}
 
 def get_ql_ipa_class(cls: schema.Class):
     if cls.derived:
-        return ql.Ipa.NonFinalClass(name=cls.name, derived=sorted(cls.derived), root=(cls.name == schema.root_class_name))
+        return ql.Ipa.NonFinalClass(name=cls.name, derived=sorted(cls.derived),
+                                    root=(cls.name == schema.root_class_name))
     if cls.ipa and cls.ipa.from_class is not None:
         source = cls.ipa.from_class
         _final_db_class_lookup.setdefault(source, ql.Ipa.FinalClassDb(source)).subtract_type(cls.name)
-        return ql.Ipa.FinalClassIpaFrom(name=cls.name, type=_to_db_type(source))
+        return ql.Ipa.FinalClassDerivedIpa(name=cls.name, params=[ql.Ipa.Param("id", _to_db_type(source))])
     if cls.ipa and cls.ipa.on_arguments is not None:
-        return ql.Ipa.FinalClassIpaOn(name=cls.name,
-                                      params=[ql.Ipa.Param(k, _to_db_type(v)) for k, v in cls.ipa.on_arguments.items()])
+        return ql.Ipa.FinalClassFreshIpa(name=cls.name, params=[ql.Ipa.Param(k, _to_db_type(v)) for k, v in
+                                                                cls.ipa.on_arguments.items()])
     return _final_db_class_lookup.setdefault(cls.name, ql.Ipa.FinalClassDb(cls.name))
 
 
@@ -120,9 +121,11 @@ def get_classes_used_by(cls: ql.Class):
     return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper()))
 
 
-_generated_stub_re = re.compile(r"\n*private import .*\n+class \w+ extends \w+ \{[ \n]?\}"
+_generated_stub_re = re.compile(r"\n*private import .*\n+("
+                                r"class \w+ extends \w+ \{[ \n]?\}"
                                 "|"
-                                r"\n*predicate construct\w+\(.*?\) \{ none\(\) \}", re.MULTILINE)
+                                r"predicate construct\w+\(.*?\) \{ none\(\) \}"
+                                ")", re.MULTILINE)
 
 
 def _is_generated_stub(file):
@@ -271,7 +274,7 @@ def generate(opts, renderer):
         ipa_type = get_ql_ipa_class(cls)
         if ipa_type.is_final:
             final_ipa_types.append(ipa_type)
-            if ipa_type.is_ipa_from or (ipa_type.is_ipa_on and ipa_type.has_params):
+            if ipa_type.is_ipa and ipa_type.has_params:
                 stub_file = stub_out / cls.dir / f"{cls.name}Constructor.qll"
                 if not stub_file.is_file() or _is_generated_stub(stub_file):
                     renderer.render(ql.Ipa.ConstructorStub(ipa_type), stub_file)
