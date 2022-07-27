@@ -1,5 +1,5 @@
 /**
- * Provides classes for modeling built-in operations.  Built-in operations are
+ * Provides classes for modeling built-in operations. Built-in operations are
  * typically compiler specific and are used by libraries and generated code.
  */
 
@@ -120,8 +120,8 @@ class BuiltInNoOp extends BuiltInOperation, @noopexpr {
 
 /**
  * A C/C++ `__builtin_offsetof` built-in operation (used by some implementations
- * of `offsetof`).  The operation retains its semantics even in the presence
- * of an overloaded `operator &`).  This is a gcc/clang extension.
+ * of `offsetof`). The operation retains its semantics even in the presence
+ * of an overloaded `operator &`). This is a gcc/clang extension.
  * ```
  * struct S {
  *   int a, b;
@@ -137,8 +137,8 @@ class BuiltInOperationBuiltInOffsetOf extends BuiltInOperation, @offsetofexpr {
 
 /**
  * A C/C++ `__INTADDR__` built-in operation (used by some implementations
- * of `offsetof`).  The operation retains its semantics even in the presence
- * of an overloaded `operator &`).  This is an EDG extension.
+ * of `offsetof`). The operation retains its semantics even in the presence
+ * of an overloaded `operator &`). This is an EDG extension.
  * ```
  * struct S {
  *   int a, b;
@@ -479,8 +479,7 @@ class BuiltInOperationBuiltInTypesCompatibleP extends BuiltInOperation, @typesco
 /**
  * A clang `__builtin_shufflevector` expression.
  *
- * It outputs a permutation of elements from one or two input vectors.
- * Please see
+ * It outputs a permutation of elements from one or two input vectors. See
  * https://releases.llvm.org/3.7.0/tools/clang/docs/LanguageExtensions.html#langext-builtin-shufflevector
  * for more information.
  * ```
@@ -498,7 +497,7 @@ class BuiltInOperationBuiltInShuffleVector extends BuiltInOperation, @builtinshu
  * A gcc `__builtin_shuffle` expression.
  *
  * It outputs a permutation of elements from one or two input vectors.
- * Please see https://gcc.gnu.org/onlinedocs/gcc/Vector-Extensions.html
+ * See https://gcc.gnu.org/onlinedocs/gcc/Vector-Extensions.html
  * for more information.
  * ```
  * // Concatenate every other element of 4-element vectors V1 and V2.
@@ -516,7 +515,7 @@ class BuiltInOperationBuiltInShuffle extends BuiltInOperation, @builtinshuffle {
  * A clang `__builtin_convertvector` expression.
  *
  * Allows for conversion of vectors of equal element count and compatible
- * element types. Please see
+ * element types. See
  * https://releases.llvm.org/3.7.0/tools/clang/docs/LanguageExtensions.html#builtin-convertvector
  * for more information.
  * ```
@@ -679,10 +678,9 @@ class BuiltInOperationIsAssignable extends BuiltInOperation, @isassignable {
  * of the `<type_traits>` header).
  *
  * Returns `true` if the type is a primitive type, or a `class`, `struct` or
- * `union` WITHOUT (1) virtual functions or base classes, (2) reference member
- * variable or (3) multiple occurrences of base `class` objects, among other
- * restrictions.  Please see
- * https://en.cppreference.com/w/cpp/named_req/StandardLayoutType
+ * `union` without (1) virtual functions or base classes, (2) reference member
+ * variable, or (3) multiple occurrences of base `class` objects, among other
+ * restrictions. See https://en.cppreference.com/w/cpp/named_req/StandardLayoutType
  * for more information.
  * ```
  * bool v = __is_standard_layout(MyType);
@@ -699,7 +697,7 @@ class BuiltInOperationIsStandardLayout extends BuiltInOperation, @isstandardlayo
  * implementations of the `<type_traits>` header).
  *
  * Returns `true` if instances of this type can be copied by trivial
- * means.  The copying is done in a manner similar to the `memcpy`
+ * means. The copying is done in a manner similar to the `memcpy`
  * function.
  */
 class BuiltInOperationIsTriviallyCopyable extends BuiltInOperation, @istriviallycopyableexpr {
@@ -713,7 +711,7 @@ class BuiltInOperationIsTriviallyCopyable extends BuiltInOperation, @istrivially
  * the `<type_traits>` header).
  *
  * Returns `true` if the type is a scalar type, a reference type or an array of
- * literal types, among others. Please see
+ * literal types, among others. See
  * https://en.cppreference.com/w/cpp/named_req/LiteralType
  * for more information.
  *
@@ -816,7 +814,7 @@ class BuiltInOperationIsNothrowConstructible extends BuiltInOperation, @isnothro
 }
 
 /**
- * The `__has_finalizer` built-in operation.  This is a Microsoft extension.
+ * The `__has_finalizer` built-in operation. This is a Microsoft extension.
  *
  * Returns `true` if the type defines a _finalizer_ `C::!C(void)`, to be called
  * from either the regular destructor or the garbage collector.
@@ -831,10 +829,10 @@ class BuiltInOperationHasFinalizer extends BuiltInOperation, @hasfinalizerexpr {
 }
 
 /**
- * The `__is_delegate` built-in operation.  This is a Microsoft extension.
+ * The `__is_delegate` built-in operation. This is a Microsoft extension.
  *
  * Returns `true` if the function has been declared as a `delegate`, used in
- * message forwarding.  Please see
+ * message forwarding. See
  * https://docs.microsoft.com/en-us/cpp/extensions/delegate-cpp-component-extensions
  * for more information.
  */
@@ -845,9 +843,9 @@ class BuiltInOperationIsDelegate extends BuiltInOperation, @isdelegateexpr {
 }
 
 /**
- * The `__is_interface_class` built-in operation.  This is a Microsoft extension.
+ * The `__is_interface_class` built-in operation. This is a Microsoft extension.
  *
- * Returns `true` if the type has been declared as an `interface`.  Please see
+ * Returns `true` if the type has been declared as an `interface`. See
  * https://docs.microsoft.com/en-us/cpp/extensions/interface-class-cpp-component-extensions
  * for more information.
  */
@@ -858,9 +856,9 @@ class BuiltInOperationIsInterfaceClass extends BuiltInOperation, @isinterfacecla
 }
 
 /**
- * The `__is_ref_array` built-in operation.  This is a Microsoft extension.
+ * The `__is_ref_array` built-in operation. This is a Microsoft extension.
  *
- * Returns `true` if the object passed in is a _platform array_.  Please see
+ * Returns `true` if the object passed in is a _platform array_. See
  * https://docs.microsoft.com/en-us/cpp/extensions/arrays-cpp-component-extensions
  * for more information.
  * ```
@@ -875,9 +873,9 @@ class BuiltInOperationIsRefArray extends BuiltInOperation, @isrefarrayexpr {
 }
 
 /**
- * The `__is_ref_class` built-in operation.  This is a Microsoft extension.
+ * The `__is_ref_class` built-in operation. This is a Microsoft extension.
  *
- * Returns `true` if the type is a _reference class_.  Please see
+ * Returns `true` if the type is a _reference class_. See
  * https://docs.microsoft.com/en-us/cpp/extensions/classes-and-structs-cpp-component-extensions
  * for more information.
  * ```
@@ -892,10 +890,10 @@ class BuiltInOperationIsRefClass extends BuiltInOperation, @isrefclassexpr {
 }
 
 /**
- * The `__is_sealed` built-in operation.  This is a Microsoft extension.
+ * The `__is_sealed` built-in operation. This is a Microsoft extension.
  *
  * Returns `true` if a given class or virtual function is marked as `sealed`,
- * meaning that it cannot be extended or overridden.  The `sealed` keyword
+ * meaning that it cannot be extended or overridden. The `sealed` keyword
  * is similar to the C++11 `final` keyword.
  * ```
  * ref class X sealed {
@@ -910,7 +908,7 @@ class BuiltInOperationIsSealed extends BuiltInOperation, @issealedexpr {
 }
 
 /**
- * The `__is_simple_value_class` built-in operation.  This is a Microsoft extension.
+ * The `__is_simple_value_class` built-in operation. This is a Microsoft extension.
  *
  * Returns `true` if passed a value type that contains no references to the
  * garbage-collected heap.
@@ -929,9 +927,9 @@ class BuiltInOperationIsSimpleValueClass extends BuiltInOperation, @issimplevalu
 }
 
 /**
- * The `__is_value_class` built-in operation.  This is a Microsoft extension.
+ * The `__is_value_class` built-in operation. This is a Microsoft extension.
  *
- * Returns `true` if passed a value type.  Please see
+ * Returns `true` if passed a value type. See
  * https://docs.microsoft.com/en-us/cpp/extensions/classes-and-structs-cpp-component-extensions
  * For more information.
  * ```
@@ -964,7 +962,7 @@ class BuiltInOperationIsFinal extends BuiltInOperation, @isfinalexpr {
 }
 
 /**
- * The `__builtin_choose_expr` expression.  This is a gcc/clang extension.
+ * The `__builtin_choose_expr` expression. This is a gcc/clang extension.
  *
  * The expression functions similarly to the ternary `?:` operator, except
  * that it is evaluated at compile-time.
