@@ -117,11 +117,11 @@ func testUIWebView() {
 	let remoteString = getRemoteData()
 
 	webview.loadHTMLString(localString, baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString(getRemoteData(), baseURL: nil) // BAD: HTML contains remote input, may access local secrets [NOT DETECTED]
-	webview.loadHTMLString(remoteString, baseURL: nil) // BAD [NOT DETECTED]
+	webview.loadHTMLString(getRemoteData(), baseURL: nil) // BAD: HTML contains remote input, may access local secrets
+	webview.loadHTMLString(remoteString, baseURL: nil) // BAD
 
 	webview.loadHTMLString("<html>" + localStringFragment + "</html>", baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString("<html>" + remoteString + "</html>", baseURL: nil) // BAD [NOT DETECTED]
+	webview.loadHTMLString("<html>" + remoteString + "</html>", baseURL: nil) // BAD
 
 	webview.loadHTMLString("<html>\(localStringFragment)</html>", baseURL: nil) // GOOD: the HTML data is local
 	webview.loadHTMLString("<html>\(remoteString)</html>", baseURL: nil) // BAD [NOT DETECTED]
@@ -164,11 +164,11 @@ func testWKWebView() {
 	let remoteString = getRemoteData()
 
 	webview.loadHTMLString(localString, baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString(getRemoteData(), baseURL: nil) // BAD [NOT DETECTED]
-	webview.loadHTMLString(remoteString, baseURL: nil) // BAD [NOT DETECTED]
+	webview.loadHTMLString(getRemoteData(), baseURL: nil) // BAD
+	webview.loadHTMLString(remoteString, baseURL: nil) // BAD
 
 	webview.loadHTMLString("<html>" + localStringFragment + "</html>", baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString("<html>" + remoteString + "</html>", baseURL: nil) // BAD [NOT DETECTED]
+	webview.loadHTMLString("<html>" + remoteString + "</html>", baseURL: nil) // BAD
 
 	webview.loadHTMLString("<html>\(localStringFragment)</html>", baseURL: nil) // GOOD: the HTML data is local
 	webview.loadHTMLString("<html>\(remoteString)</html>", baseURL: nil) // BAD [NOT DETECTED]
