@@ -53,14 +53,12 @@ private class DangerousPrefixSubstring extends string {
  */
 private DangerousPrefix getADangerousMatchedPrefix(EmptyReplaceRegExpTerm t) {
   result = getADangerousMatchedPrefixSubstring(t) and
-  not exists(EmptyReplaceRegExpTerm pred |
-    pred = t.getPredecessor+() and not pred.matchesEmptyString()
-  )
+  not exists(EmptyReplaceRegExpTerm pred | pred = t.getPredecessor+() and not pred.isNullable())
 }
 
 pragma[noinline]
 private DangerousPrefixSubstring getADangerousMatchedChar(EmptyReplaceRegExpTerm t) {
-  t.matchesEmptyString() and result = ""
+  t.isNullable() and result = ""
   or
   result = t.getAMatch()
   or
@@ -191,7 +189,7 @@ predicate hasResult(
     replace = regexp.getCall() and
     dangerous.getRootTerm() = regexp and
     // skip leading optional elements
-    not dangerous.matchesEmptyString() and
+    not dangerous.isNullable() and
     // only warn about the longest match
     prefix = max(string m | matchesDangerousPrefix(dangerous, m, kind) | m order by m.length(), m) and
     // only warn once per kind
@@ -199,7 +197,7 @@ predicate hasResult(
       other = dangerous.getAChild+() or other = dangerous.getPredecessor+()
     |
       matchesDangerousPrefix(other, _, kind) and
-      not other.matchesEmptyString()
+      not other.isNullable()
     ) and
     not exists(RETV::RegExpCaret c | regexp = c.getRootTerm()) and
     not exists(RETV::RegExpDollar d | regexp = d.getRootTerm()) and

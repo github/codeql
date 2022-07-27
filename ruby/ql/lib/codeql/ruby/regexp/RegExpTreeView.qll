@@ -270,7 +270,7 @@ class RegExpTerm extends RegExpParent {
   override string getAPrimaryQlClass() { result = "RegExpTerm" }
 
   /** Holds if this regular expression term can match the empty string. */
-  predicate matchesEmptyString() { none() }
+  predicate isNullable() { none() }
 
   /** Gets a string matched by this regular expression. */
   string getAMatch() { none() }
@@ -333,7 +333,7 @@ class RegExpStar extends InfiniteRepetitionQuantifier {
 
   override string getAPrimaryQlClass() { result = "RegExpStar" }
 
-  override predicate matchesEmptyString() { any() }
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -350,7 +350,7 @@ class RegExpPlus extends InfiniteRepetitionQuantifier {
 
   override string getAPrimaryQlClass() { result = "RegExpPlus" }
 
-  override predicate matchesEmptyString() { this.getAChild().matchesEmptyString() }
+  override predicate isNullable() { this.getAChild().isNullable() }
 }
 
 /**
@@ -367,7 +367,7 @@ class RegExpOpt extends RegExpQuantifier {
 
   override string getAPrimaryQlClass() { result = "RegExpOpt" }
 
-  override predicate matchesEmptyString() { any() }
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -407,9 +407,7 @@ class RegExpRange extends RegExpQuantifier {
   /** Gets the lower bound of the range. */
   int getLowerBound() { result = this.getLower().toInt() }
 
-  override predicate matchesEmptyString() {
-    this.getAChild().matchesEmptyString() or this.getLowerBound() = 0
-  }
+  override predicate isNullable() { this.getAChild().isNullable() or this.getLowerBound() = 0 }
 }
 
 /**
@@ -457,8 +455,8 @@ class RegExpSequence extends RegExpTerm, TRegExpSequence {
 
   override string getAPrimaryQlClass() { result = "RegExpSequence" }
 
-  override predicate matchesEmptyString() {
-    forall(RegExpTerm child | child = this.getAChild() | child.matchesEmptyString())
+  override predicate isNullable() {
+    forall(RegExpTerm child | child = this.getAChild() | child.isNullable())
   }
 
   // Why can't we use concat(...) with language[monotonicAggregates] here instead?
@@ -540,7 +538,7 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
 
   override string getAPrimaryQlClass() { result = "RegExpAlt" }
 
-  override predicate matchesEmptyString() { this.getAChild().matchesEmptyString() }
+  override predicate isNullable() { this.getAChild().isNullable() }
 }
 
 class RegExpCharEscape = RegExpEscape;
@@ -616,7 +614,7 @@ class RegExpEscape extends RegExpNormalChar {
 class RegExpWordBoundary extends RegExpSpecialChar {
   RegExpWordBoundary() { this.getChar() = "\\b" }
 
-  override predicate matchesEmptyString() { none() }
+  override predicate isNullable() { none() }
 }
 
 /**
@@ -646,7 +644,7 @@ class RegExpCharacterClassEscape extends RegExpEscape {
 
   override string getAPrimaryQlClass() { result = "RegExpCharacterClassEscape" }
 
-  override predicate matchesEmptyString() { none() }
+  override predicate isNullable() { none() }
 }
 
 /**
@@ -704,7 +702,7 @@ class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
 
   override string getAPrimaryQlClass() { result = "RegExpCharacterClass" }
 
-  override predicate matchesEmptyString() { none() }
+  override predicate isNullable() { none() }
 
   override string getAMatch() { not this.isInverted() and result = this.getAChild().getAMatch() }
 }
@@ -747,7 +745,7 @@ class RegExpCharacterRange extends RegExpTerm, TRegExpCharacterRange {
 
   override string getAPrimaryQlClass() { result = "RegExpCharacterRange" }
 
-  override predicate matchesEmptyString() { none() }
+  override predicate isNullable() { none() }
 }
 
 /**
@@ -820,7 +818,7 @@ class RegExpConstant extends RegExpTerm {
 
   override string getAPrimaryQlClass() { result = "RegExpConstant" }
 
-  override predicate matchesEmptyString() { none() }
+  override predicate isNullable() { none() }
 
   override string getAMatch() { result = this.getValue() }
 }
@@ -871,7 +869,7 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
 
   override string getAPrimaryQlClass() { result = "RegExpGroup" }
 
-  override predicate matchesEmptyString() { this.getAChild().matchesEmptyString() }
+  override predicate isNullable() { this.getAChild().isNullable() }
 
   override string getAMatch() { result = this.getAChild().getAMatch() }
 }
@@ -922,7 +920,7 @@ class RegExpDot extends RegExpSpecialChar {
 
   override string getAPrimaryQlClass() { result = "RegExpDot" }
 
-  override predicate matchesEmptyString() { none() }
+  override predicate isNullable() { none() }
 }
 
 /**
@@ -954,7 +952,7 @@ class RegExpDollar extends RegExpAnchor {
 
   override string getAPrimaryQlClass() { result = "RegExpDollar" }
 
-  override predicate matchesEmptyString() { any() }
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -971,7 +969,7 @@ class RegExpCaret extends RegExpAnchor {
 
   override string getAPrimaryQlClass() { result = "RegExpCaret" }
 
-  override predicate matchesEmptyString() { any() }
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -990,7 +988,7 @@ class RegExpZeroWidthMatch extends RegExpGroup {
 
   override string getAPrimaryQlClass() { result = "RegExpZeroWidthMatch" }
 
-  override predicate matchesEmptyString() { any() }
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -1017,7 +1015,7 @@ class RegExpSubPattern extends RegExpZeroWidthMatch {
     )
   }
 
-  override predicate matchesEmptyString() { any() }
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -1046,7 +1044,7 @@ class RegExpPositiveLookahead extends RegExpLookahead {
 
   override string getAPrimaryQlClass() { result = "RegExpPositiveLookahead" }
 
-  override predicate matchesEmptyString() { any() }
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -1143,7 +1141,7 @@ class RegExpBackRef extends RegExpTerm, TRegExpBackRef {
 
   override string getAPrimaryQlClass() { result = "RegExpBackRef" }
 
-  override predicate matchesEmptyString() { this.getGroup().matchesEmptyString() }
+  override predicate isNullable() { this.getGroup().isNullable() }
 }
 
 /**
