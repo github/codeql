@@ -26,7 +26,6 @@ nodes
 | StringLengthConflation.swift:72:33:72:35 | .count | semmle.label | .count |
 | StringLengthConflation.swift:78:47:78:49 | .count | semmle.label | .count |
 | StringLengthConflation.swift:79:47:79:54 | .count | semmle.label | .count |
-| StringLengthConflation.swift:80:47:80:55 | .count | semmle.label | .count |
 | StringLengthConflation.swift:81:47:81:64 | .count | semmle.label | .count |
 | StringLengthConflation.swift:96:28:96:31 | .length :  | semmle.label | .length :  |
 | StringLengthConflation.swift:96:28:96:40 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
@@ -65,7 +64,6 @@ subpaths
 | StringLengthConflation.swift:72:33:72:35 | .count | StringLengthConflation.swift:72:33:72:35 | .count | StringLengthConflation.swift:72:33:72:35 | .count | This String length is used in an NSString, but it may not be equivalent. |
 | StringLengthConflation.swift:78:47:78:49 | .count | StringLengthConflation.swift:78:47:78:49 | .count | StringLengthConflation.swift:78:47:78:49 | .count | This String length is used in an NSString, but it may not be equivalent. |
 | StringLengthConflation.swift:79:47:79:54 | .count | StringLengthConflation.swift:79:47:79:54 | .count | StringLengthConflation.swift:79:47:79:54 | .count | This String.utf8 length is used in an NSString, but it may not be equivalent. |
-| StringLengthConflation.swift:80:47:80:55 | .count | StringLengthConflation.swift:80:47:80:55 | .count | StringLengthConflation.swift:80:47:80:55 | .count | This String.utf16 length is used in an NSString, but it may not be equivalent. |
 | StringLengthConflation.swift:81:47:81:64 | .count | StringLengthConflation.swift:81:47:81:64 | .count | StringLengthConflation.swift:81:47:81:64 | .count | This String.unicodeScalars length is used in an NSString, but it may not be equivalent. |
 | StringLengthConflation.swift:96:28:96:40 | ... call to -(_:_:) ... | StringLengthConflation.swift:96:28:96:31 | .length :  | StringLengthConflation.swift:96:28:96:40 | ... call to -(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
 | StringLengthConflation.swift:100:27:100:39 | ... call to -(_:_:) ... | StringLengthConflation.swift:100:27:100:30 | .length :  | StringLengthConflation.swift:100:27:100:39 | ... call to -(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
