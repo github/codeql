@@ -26,7 +26,8 @@ struct ToTrapClassFunctor;
 }  // namespace detail
 
 template <typename T>
-using TrapTagOf = typename detail::ToTagOverride<std::remove_const_t<T>>::type;
+using TrapTagOf =
+    typename detail::ToTagOverride<std::remove_const_t<std::remove_pointer_t<T>>>::type;
 
 template <typename T>
 using TrapLabelOf = TrapLabel<TrapTagOf<T>>;

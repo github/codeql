@@ -59,7 +59,7 @@ module CfgScope {
   private class KeyPathScope extends Range_ instanceof KeyPathExpr {
     AstControlFlowTree tree;
 
-    KeyPathScope() { tree.getAst() = this.getParsedRoot().getFullyConverted() }
+    KeyPathScope() { tree.getAst() = this }
 
     final override predicate entry(ControlFlowElement first) { first(tree, first) }
 
@@ -836,9 +836,6 @@ module Patterns {
       // Note: `getSubPattern` only has a result if the `is` pattern is of the form `pattern as type`.
       i = 0 and
       result.asAstNode() = ast.getSubPattern().getFullyUnresolved()
-      or
-      i = 1 and
-      result.asAstNode() = ast.getCastTypeRepr()
     }
   }
 
@@ -1604,8 +1601,14 @@ module Exprs {
 
     final override ControlFlowElement getChildElement(int i) {
       result.asAstNode() = ast.getSubExpr().getFullyConverted() and i = 0
-      or
-      result.asAstNode() = ast.getTypeRepr().getFullyUnresolved() and i = 1
+    }
+  }
+
+  private class IsTree extends AstStandardPostOrderTree {
+    override IsExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = ast.getSubExpr().getFullyConverted() and i = 0
     }
   }
 

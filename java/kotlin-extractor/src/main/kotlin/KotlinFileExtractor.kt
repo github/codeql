@@ -888,6 +888,10 @@ open class KotlinFileExtractor(
                     if (shortName.nameInDB != shortName.kotlinName) {
                         tw.writeKtFunctionOriginalNames(methodId, shortName.kotlinName)
                     }
+
+                    if (f.hasInterfaceParent() && f.body != null) {
+                        addModifiers(id, "default") // The actual output class file may or may not have this modifier, depending on the -Xjvm-default setting.
+                    }
                 }
 
                 tw.writeHasLocation(id, locId)
@@ -1386,7 +1390,8 @@ open class KotlinFileExtractor(
         dispatchReceiver: IrExpression?,
         extensionReceiver: IrExpression?,
         typeArguments: List<IrType> = listOf(),
-        extractClassTypeArguments: Boolean = false) {
+        extractClassTypeArguments: Boolean = false,
+        superQualifierSymbol: IrClassSymbol? = null) {
 
         val locId = tw.getLocation(callsite)
 
@@ -1404,7 +1409,8 @@ open class KotlinFileExtractor(
             dispatchReceiver?.let { { callId -> extractExpressionExpr(dispatchReceiver, enclosingCallable, callId, -1, enclosingStmt) } },
             extensionReceiver?.let { { argParent -> extractExpressionExpr(extensionReceiver, enclosingCallable, argParent, 0, enclosingStmt) } },
             typeArguments,
-            extractClassTypeArguments
+            extractClassTypeArguments,
+            superQualifierSymbol
         )
 
     }
@@ -1424,7 +1430,8 @@ open class KotlinFileExtractor(
         extractDispatchReceiver: ((Label<out DbExpr>) -> Unit)?,
         extractExtensionReceiver: ((Label<out DbExpr>) -> Unit)?,
         typeArguments: List<IrType> = listOf(),
-        extractClassTypeArguments: Boolean = false) {
+        extractClassTypeArguments: Boolean = false,
+        superQualifierSymbol: IrClassSymbol? = null) {
 
         val callTarget = syntacticCallTarget.target.realOverrideTarget
         val id = tw.getFreshIdLabel<DbMethodaccess>()
@@ -1483,6 +1490,8 @@ open class KotlinFileExtractor(
 
             if (callTarget.shouldExtractAsStatic) {
                 extractStaticTypeAccessQualifier(callTarget, id, locId, enclosingCallable, enclosingStmt)
+            } else if (superQualifierSymbol != null) {
+                extractSuperAccess(superQualifierSymbol.typeWith(), enclosingCallable, id, -1, enclosingStmt, locId)
             } else if (extractDispatchReceiver != null) {
                 extractDispatchReceiver(id)
             }
@@ -1744,7 +1753,7 @@ open class KotlinFileExtractor(
                     else
                         listOf()
 
-                extractRawMethodAccess(syntacticCallTarget, c, callable, parent, idx, enclosingStmt, (0 until c.valueArgumentsCount).map { c.getValueArgument(it) }, c.dispatchReceiver, c.extensionReceiver, typeArgs, extractClassTypeArguments)
+                extractRawMethodAccess(syntacticCallTarget, c, callable, parent, idx, enclosingStmt, (0 until c.valueArgumentsCount).map { c.getValueArgument(it) }, c.dispatchReceiver, c.extensionReceiver, typeArgs, extractClassTypeArguments, c.superQualifierSymbol)
             }
 
             fun extractSpecialEnumFunction(fnName: String){
@@ -2124,7 +2133,13 @@ open class KotlinFileExtractor(
                 }
                 isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "iterator") && c.origin == IrStatementOrigin.FOR_LOOP_ITERATOR -> {
                     findTopLevelFunctionOrWarn("kotlin.jvm.internal.iterator", "kotlin.jvm.internal.ArrayIteratorKt", c)?.let { iteratorFn ->
-                        extractRawMethodAccess(iteratorFn, c, callable, parent, idx, enclosingStmt, listOf(c.dispatchReceiver), null, null, listOf((c.dispatchReceiver!!.type as IrSimpleType).arguments.first().typeOrNull!!))
+                        val typeArgs = (c.dispatchReceiver!!.type as IrSimpleType).arguments.map {
+                            when(it) {
+                                is IrTypeProjection -> it.type
+                                else -> pluginContext.irBuiltIns.anyNType
+                            }
+                        }
+                        extractRawMethodAccess(iteratorFn, c, callable, parent, idx, enclosingStmt, listOf(c.dispatchReceiver), null, null, typeArgs)
                     }
                 }
                 isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "get") && c.origin == IrStatementOrigin.GET_ARRAY_ELEMENT -> {
@@ -3059,6 +3074,17 @@ open class KotlinFileExtractor(
             return
         }
     }
+
+    private fun extractSuperAccess(irType: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>, locId: Label<out DbLocation>) =
+        tw.getFreshIdLabel<DbSuperaccess>().also {
+            val type = useType(irType)
+            tw.writeExprs_superaccess(it, type.javaResult.id, parent, idx)
+            tw.writeExprsKotlinType(it, type.kotlinResult.id)
+            tw.writeHasLocation(it, locId)
+            tw.writeCallableEnclosingExpr(it, callable)
+            tw.writeStatementEnclosingExpr(it, enclosingStmt)
+            extractTypeAccessRecursive(irType, locId, it, 0)
+        }
 
     private fun extractThisAccess(e: IrGetValue, exprParent: ExprParent, callable: Label<out DbCallable>) {
         val containingDeclaration = declarationStack.peek()
@@ -4014,7 +4040,7 @@ open class KotlinFileExtractor(
     /**
      * Extracts a single wildcard type access expression with no enclosing callable and statement.
      */
-    private fun extractWildcardTypeAccess(type: TypeResults, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
+    private fun extractWildcardTypeAccess(type: TypeResults, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
         val id = tw.getFreshIdLabel<DbWildcardtypeaccess>()
         tw.writeExprs_wildcardtypeaccess(id, type.javaResult.id, parent, idx)
         tw.writeExprsKotlinType(id, type.kotlinResult.id)
@@ -4025,7 +4051,7 @@ open class KotlinFileExtractor(
     /**
      * Extracts a single type access expression with no enclosing callable and statement.
      */
-    private fun extractTypeAccess(type: TypeResults, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
+    private fun extractTypeAccess(type: TypeResults, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
         // TODO: elementForLocation allows us to give some sort of
         //   location, but a proper location for the type access will
         //   require upstream changes
@@ -4051,7 +4077,7 @@ open class KotlinFileExtractor(
      * `extractTypeAccessRecursive` if the argument is invariant.
      * No enclosing callable and statement is extracted, this is useful for type access extraction in field declarations.
      */
-    private fun extractWildcardTypeAccessRecursive(t: IrTypeArgument, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int) {
+    private fun extractWildcardTypeAccessRecursive(t: IrTypeArgument, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int) {
         val typeLabels by lazy { TypeResults(getTypeArgumentLabel(t), TypeResult(fakeKotlinType(), "TODO", "TODO")) }
         when (t) {
             is IrStarProjection -> extractWildcardTypeAccess(typeLabels, location, parent, idx)
@@ -4071,7 +4097,7 @@ open class KotlinFileExtractor(
      * Extracts a type access expression and its child type access expressions in case of a generic type. Nested generics are also handled.
      * No enclosing callable and statement is extracted, this is useful for type access extraction in field declarations.
      */
-    private fun extractTypeAccessRecursive(t: IrType, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
+    private fun extractTypeAccessRecursive(t: IrType, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
         val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx)
         if (t is IrSimpleType) {
             t.arguments.forEachIndexed { argIdx, arg ->

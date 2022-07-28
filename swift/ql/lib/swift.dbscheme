@@ -36,6 +36,7 @@ files(
   @argument
 | @ast_node
 | @condition_element
+| @if_config_clause
 ;
 
 #keyset[id]
@@ -471,27 +472,15 @@ expr_types(  //dir=expr
 | @yield_stmt
 ;
 
-@type_repr =
-  @array_type_repr
-| @attributed_type_repr
-| @composition_type_repr
-| @dictionary_type_repr
-| @error_type_repr
-| @existential_type_repr
-| @fixed_type_repr
-| @function_type_repr
-| @ident_type_repr
-| @implicitly_unwrapped_optional_type_repr
-| @metatype_type_repr
-| @named_opaque_return_type_repr
-| @opaque_return_type_repr
-| @optional_type_repr
-| @placeholder_type_repr
-| @protocol_type_repr
-| @sil_box_type_repr
-| @specifier_type_repr
-| @tuple_type_repr
-;
+type_reprs(  //dir=type
+  unique int id: @type_repr
+);
+
+#keyset[id]
+type_repr_types(  //dir=type
+  int id: @type_repr ref,
+  int type_: @type ref
+);
 
 function_types(  //dir=type
   unique int id: @function_type
@@ -641,6 +630,35 @@ enum_case_decl_elements(  //dir=decl
 
 if_config_decls(  //dir=decl
   unique int id: @if_config_decl
+);
+
+#keyset[id, index]
+if_config_decl_clauses(  //dir=decl
+  int id: @if_config_decl ref,
+  int index: int ref,
+  int clause: @if_config_clause ref
+);
+
+if_config_clauses(  //dir=decl
+  unique int id: @if_config_clause
+);
+
+#keyset[id]
+if_config_clause_conditions(  //dir=decl
+  int id: @if_config_clause ref,
+  int condition: @expr ref
+);
+
+#keyset[id, index]
+if_config_clause_elements(  //dir=decl
+  int id: @if_config_clause ref,
+  int index: int ref,
+  int element: @ast_node ref
+);
+
+#keyset[id]
+if_config_clause_is_active(  //dir=decl
+  int id: @if_config_clause ref
 );
 
 import_decls(  //dir=decl
@@ -865,7 +883,6 @@ editor_placeholder_exprs(  //dir=expr
 enum_is_case_exprs(  //dir=expr
   unique int id: @enum_is_case_expr,
   int sub_expr: @expr ref,
-  int type_repr: @type_repr ref,
   int element: @enum_element_decl ref
 );
 
@@ -969,9 +986,9 @@ key_path_exprs(  //dir=expr
 );
 
 #keyset[id]
-key_path_expr_parsed_roots(  //dir=expr
+key_path_expr_roots(  //dir=expr
   int id: @key_path_expr ref,
-  int parsed_root: @expr ref
+  int root: @type_repr ref
 );
 
 #keyset[id]
@@ -1141,7 +1158,8 @@ unresolved_member_exprs(  //dir=expr
 );
 
 unresolved_pattern_exprs(  //dir=expr
-  unique int id: @unresolved_pattern_expr
+  unique int id: @unresolved_pattern_expr,
+  int sub_pattern: @pattern ref
 );
 
 unresolved_specialize_exprs(  //dir=expr
@@ -2176,122 +2194,4 @@ float_literal_exprs(  //dir=expr
 integer_literal_exprs(  //dir=expr
   unique int id: @integer_literal_expr,
   string string_value: string ref
-);
-
-error_type_reprs(  //dir=typerepr
-  unique int id: @error_type_repr
-);
-
-attributed_type_reprs(  //dir=typerepr
-  unique int id: @attributed_type_repr
-);
-
-@ident_type_repr =
-  @component_ident_type_repr
-| @compound_ident_type_repr
-;
-
-@component_ident_type_repr =
-  @generic_ident_type_repr
-| @simple_ident_type_repr
-;
-
-simple_ident_type_reprs(  //dir=typerepr
-  unique int id: @simple_ident_type_repr
-);
-
-generic_ident_type_reprs(  //dir=typerepr
-  unique int id: @generic_ident_type_repr
-);
-
-compound_ident_type_reprs(  //dir=typerepr
-  unique int id: @compound_ident_type_repr
-);
-
-function_type_reprs(  //dir=typerepr
-  unique int id: @function_type_repr
-);
-
-array_type_reprs(  //dir=typerepr
-  unique int id: @array_type_repr
-);
-
-dictionary_type_reprs(  //dir=typerepr
-  unique int id: @dictionary_type_repr
-);
-
-optional_type_reprs(  //dir=typerepr
-  unique int id: @optional_type_repr
-);
-
-implicitly_unwrapped_optional_type_reprs(  //dir=typerepr
-  unique int id: @implicitly_unwrapped_optional_type_repr
-);
-
-tuple_type_reprs(  //dir=typerepr
-  unique int id: @tuple_type_repr
-);
-
-composition_type_reprs(  //dir=typerepr
-  unique int id: @composition_type_repr
-);
-
-metatype_type_reprs(  //dir=typerepr
-  unique int id: @metatype_type_repr
-);
-
-protocol_type_reprs(  //dir=typerepr
-  unique int id: @protocol_type_repr
-);
-
-opaque_return_type_reprs(  //dir=typerepr
-  unique int id: @opaque_return_type_repr
-);
-
-named_opaque_return_type_reprs(  //dir=typerepr
-  unique int id: @named_opaque_return_type_repr
-);
-
-existential_type_reprs(  //dir=typerepr
-  unique int id: @existential_type_repr
-);
-
-placeholder_type_reprs(  //dir=typerepr
-  unique int id: @placeholder_type_repr
-);
-
-@specifier_type_repr =
-  @compile_time_const_type_repr
-| @in_out_type_repr
-| @isolated_type_repr
-| @owned_type_repr
-| @shared_type_repr
-;
-
-in_out_type_reprs(  //dir=typerepr
-  unique int id: @in_out_type_repr
-);
-
-shared_type_reprs(  //dir=typerepr
-  unique int id: @shared_type_repr
-);
-
-owned_type_reprs(  //dir=typerepr
-  unique int id: @owned_type_repr
-);
-
-isolated_type_reprs(  //dir=typerepr
-  unique int id: @isolated_type_repr
-);
-
-compile_time_const_type_reprs(  //dir=typerepr
-  unique int id: @compile_time_const_type_repr
-);
-
-fixed_type_reprs(  //dir=typerepr
-  unique int id: @fixed_type_repr
-);
-
-sil_box_type_reprs(  //dir=typerepr
-  unique int id: @sil_box_type_repr
 );
