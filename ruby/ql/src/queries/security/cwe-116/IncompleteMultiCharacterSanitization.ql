@@ -17,8 +17,11 @@ import ruby
 import codeql.ruby.frameworks.core.String
 import codeql.ruby.DataFlow
 import codeql.ruby.security.IncompleteMultiCharacterSanitizationQuery
+import codeql.ruby.security.IncompleteMultiCharacterSanitizationSpecific as Specific
 
-from StringSubstitutionCall replace, EmptyReplaceRegExpTerm dangerous, string prefix, string kind
+from
+  StringSubstitutionCall replace, Specific::EmptyReplaceRegExpTerm dangerous, string prefix,
+  string kind
 where hasResult(replace, dangerous, prefix, kind)
 select replace, "This string may still contain $@, which may cause a " + kind + " vulnerability.",
   dangerous, prefix
