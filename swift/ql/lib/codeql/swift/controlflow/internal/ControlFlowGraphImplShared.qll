@@ -881,7 +881,12 @@ import Cached
  * graph is restricted to nodes from `RelevantNode`.
  */
 module TestOutput {
-  abstract class RelevantNode extends Node { }
+  abstract class RelevantNode extends Node {
+    /**
+     * Gets a string used to resolve ties in node and edge ordering.
+     */
+    string getOrderDisambuigation() { result = "" }
+  }
 
   query predicate nodes(RelevantNode n, string attr, string val) {
     attr = "semmle.order" and
@@ -894,7 +899,8 @@ module TestOutput {
             p
             order by
               l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
-              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), p.toString()
+              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), p.toString(),
+              p.getOrderDisambuigation()
           )
       ).toString()
   }
@@ -916,7 +922,8 @@ module TestOutput {
             s
             order by
               l.getFile().getBaseName(), l.getFile().getAbsolutePath(), l.getStartLine(),
-              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), t.toString(), s.toString()
+              l.getStartColumn(), l.getEndLine(), l.getEndColumn(), t.toString(), s.toString(),
+              s.getOrderDisambuigation()
           )
       ).toString()
   }
