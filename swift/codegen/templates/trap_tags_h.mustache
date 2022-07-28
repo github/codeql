@@ -7,7 +7,7 @@ namespace codeql {
 
 // {{id}}
 struct {{name}}Tag {{#has_bases}}: {{#bases}}{{^first}}, {{/first}}{{base}}Tag{{/bases}} {{/has_bases}}{
-  static constexpr const char* prefix = "{{index}}";
+  static constexpr const char* prefix = "{{name}}";
 };
 {{/tags}}
 }
