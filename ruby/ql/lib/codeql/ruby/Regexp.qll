@@ -92,20 +92,32 @@ private class ParsedStringRegExp extends RegExp {
   override string getFlags() { none() }
 }
 
+/** Provides a class for modelling regular expression interpretations. */
+module RegExpInterpretation {
+  /**
+   * Nodes that are not regular expression literals, but are used in places that
+   * may interpret them regular expressions. Typically these are strings that flow
+   * to method calls like `RegExp.new`.
+   */
+  abstract class Range extends DataFlow::Node { }
+}
+
 /**
- * Holds if `source` may be interpreted as a regular expression.
+ * Nodes interpreted as regular expressions via various standard library methods.
  */
-private predicate isInterpretedAsRegExp(DataFlow::Node source) {
-  // The first argument to an invocation of `Regexp.new` or `Regexp.compile`.
-  source = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]).getArgument(0)
-  or
-  // The argument of a call that coerces the argument to a regular expression.
-  exists(DataFlow::CallNode mce |
-    mce.getMethodName() = ["match", "match?"] and
-    source = mce.getArgument(0) and
-    // exclude https://ruby-doc.org/core-2.4.0/Regexp.html#method-i-match
-    not mce.getReceiver().asExpr().getExpr() instanceof AST::RegExpLiteral
-  )
+class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
+  StdLibRegExpInterpretation() {
+    // The first argument to an invocation of `Regexp.new` or `Regexp.compile`.
+    this = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]).getArgument(0)
+    or
+    // The argument of a call that coerces the argument to a regular expression.
+    exists(DataFlow::CallNode mce |
+      mce.getMethodName() = ["match", "match?"] and
+      this = mce.getArgument(0) and
+      // exclude https://ruby-doc.org/core-2.4.0/Regexp.html#method-i-match
+      not mce.getReceiver().asExpr().getExpr() instanceof AST::RegExpLiteral
+    )
+  }
 }
 
 private class RegExpConfiguration extends Configuration {
@@ -120,7 +132,7 @@ private class RegExpConfiguration extends Configuration {
       )
   }
 
-  override predicate isSink(DataFlow::Node sink) { isInterpretedAsRegExp(sink) }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof RegExpInterpretation::Range }
 
   override predicate isSanitizer(DataFlow::Node node) {
     // stop flow if `node` is receiver of
