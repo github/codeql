@@ -1,9 +1,7 @@
 import java
 
 class SrcLiteral extends Literal {
-  SrcLiteral() {
-    this.getCompilationUnit().fromSource()
-  }
+  SrcLiteral() { this.getCompilationUnit().fromSource() }
 }
 
 from SrcLiteral l

@@ -1,9 +1,7 @@
 import semmle.code.java.Expr
 
 class SrcFloatingPointLiteral extends FloatLiteral {
-  SrcFloatingPointLiteral() {
-    this.getCompilationUnit().fromSource()
-  }
+  SrcFloatingPointLiteral() { this.getCompilationUnit().fromSource() }
 }
 
 from FloatLiteral lit
