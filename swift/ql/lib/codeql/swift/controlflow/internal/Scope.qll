@@ -1,6 +1,6 @@
 private import swift
 private import codeql.swift.generated.GetImmediateParent
-private import codeql.swift.generated.IpaTypes
+private import codeql.swift.generated.Ipa
 
 module CallableBase {
   class TypeRange = Ipa::TAbstractFunctionDecl or Ipa::TKeyPathExpr or Ipa::TClosureExpr;

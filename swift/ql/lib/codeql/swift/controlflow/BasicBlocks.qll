@@ -7,7 +7,7 @@ private import internal.ControlFlowElements
 private import CfgNodes
 private import SuccessorTypes
 private import codeql.swift.generated.Db
-private import codeql.swift.generated.IpaTypes
+private import codeql.swift.generated.Ipa
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes

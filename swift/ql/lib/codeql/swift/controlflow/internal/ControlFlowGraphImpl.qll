@@ -33,7 +33,7 @@
 
 private import swift
 private import codeql.swift.controlflow.ControlFlowGraph
-private import codeql.swift.generated.IpaTypes
+private import codeql.swift.generated.Ipa
 private import Completion
 private import Scope
 import ControlFlowGraphImplShared

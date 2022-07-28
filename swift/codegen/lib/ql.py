@@ -79,7 +79,6 @@ class Class:
     qltest_skip: bool = False
     qltest_collapse_hierarchy: bool = False
     qltest_uncollapse_hierarchy: bool = False
-    has_db_id: bool = True
     ipa: bool = False
 
     def __post_init__(self):
@@ -96,9 +95,8 @@ class Class:
         return self.dir / self.name
 
     @property
-    def db_id(self) -> Optional[str]:
-        if self.has_db_id:
-            return "@" + inflection.underscore(self.name)
+    def db_id(self):
+        return "@" + inflection.underscore(self.name)
 
 
 @dataclass
