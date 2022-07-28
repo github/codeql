@@ -223,11 +223,11 @@ cfg.swift:
 #-----|  -> ... is ...
 
 #   33| ... is ...
-#-----| no-match -> ... is ...
-#-----| match -> 0
+#-----|  -> .error1
 
 #   33| ... is ...
-#-----|  -> .error1
+#-----| no-match -> ... is ...
+#-----| match -> 0
 
 #   33| .error1
 #-----| no-match -> ... is ...
@@ -252,11 +252,11 @@ cfg.swift:
 #-----|  -> ... is ...
 
 #   35| ... is ...
-#-----| match -> withParam
-#-----| no-match -> case ...
+#-----|  -> .error3(...)
 
 #   35| ... is ...
-#-----|  -> .error3(...)
+#-----| match -> withParam
+#-----| no-match -> case ...
 
 #   35| .error3(...)
 #-----| no-match -> ... is ...
@@ -281,11 +281,11 @@ cfg.swift:
 #-----|  -> ... is ...
 
 #   37| ... is ...
-#-----| match -> print(_:separator:terminator:)
-#-----| no-match -> case ...
+#-----|  -> ... is ...
 
 #   37| ... is ...
-#-----|  -> ... is ...
+#-----| match -> print(_:separator:terminator:)
+#-----| no-match -> case ...
 
 #   38| print(_:separator:terminator:)
 #-----|  -> MyError
@@ -318,10 +318,10 @@ cfg.swift:
 #-----| match -> let ...
 
 #   39| let ...
-#-----|  -> error
+#-----| match -> print(_:separator:terminator:)
 
 #   39| let ...
-#-----| match -> print(_:separator:terminator:)
+#-----|  -> error
 
 #   40| print(_:separator:terminator:)
 #-----|  -> "..."
@@ -379,10 +379,10 @@ cfg.swift:
 #-----|  -> exit { ... }
 
 #   46| { ... }
-#-----|  -> return ...
+#-----|  -> +(_:_:)
 
 #   46| { ... }
-#-----|  -> +(_:_:)
+#-----|  -> return ...
 
 #   47| return ...
 #-----| return -> exit { ... } (normal)
@@ -428,10 +428,10 @@ cfg.swift:
 #-----|  -> exit f(y:)
 
 #   52| f(y:)
-#-----|  -> f(y:)
+#-----|  -> y
 
 #   52| f(y:)
-#-----|  -> y
+#-----|  -> f(y:)
 
 #   52| y
 #-----|  -> +(_:_:)
@@ -489,10 +489,10 @@ cfg.swift:
 #-----|  -> exit { ... }
 
 #   59| { ... }
-#-----|  -> return ...
+#-----|  -> y
 
 #   59| { ... }
-#-----|  -> y
+#-----|  -> return ...
 
 #   60| y
 #-----|  -> +(_:_:)
@@ -533,10 +533,10 @@ cfg.swift:
 #-----|  -> x1
 
 #   65| x1
-#-----| match -> createClosure1(s:)
+#-----|  -> x2
 
 #   65| x1
-#-----|  -> x2
+#-----| match -> createClosure1(s:)
 
 #   65| createClosure1(s:)
 #-----|  -> 
@@ -554,10 +554,10 @@ cfg.swift:
 #-----|  -> x2
 
 #   66| x2
-#-----| match -> createClosure2(x:)
+#-----|  -> x3
 
 #   66| x2
-#-----|  -> x3
+#-----| match -> createClosure2(x:)
 
 #   66| createClosure2(x:)
 #-----|  -> 0
@@ -578,10 +578,10 @@ cfg.swift:
 #-----|  -> x3
 
 #   67| x3
-#-----| match -> createClosure3(x:)
+#-----|  -> exit callClosures() (normal)
 
 #   67| x3
-#-----|  -> exit callClosures() (normal)
+#-----| match -> createClosure3(x:)
 
 #   67| createClosure3(x:)
 #-----|  -> 0
@@ -616,10 +616,10 @@ cfg.swift:
 #-----|  -> n
 
 #   71| n
-#-----| match -> ... as ...
+#-----|  -> n
 
 #   71| n
-#-----|  -> n
+#-----| match -> ... as ...
 
 #   71| ... as ...
 #-----| match -> init
@@ -663,10 +663,10 @@ cfg.swift:
 #-----|  -> nBang
 
 #   76| nBang
-#-----| match -> maybeParseInt(s:)
+#-----|  -> n
 
 #   76| nBang
-#-----|  -> n
+#-----| match -> maybeParseInt(s:)
 
 #   76| maybeParseInt(s:)
 #-----|  -> 42
@@ -684,10 +684,10 @@ cfg.swift:
 #-----|  -> n
 
 #   77| n
-#-----| match -> maybeParseInt(s:)
+#-----|  -> +(_:_:)
 
 #   77| n
-#-----|  -> +(_:_:)
+#-----| match -> maybeParseInt(s:)
 
 #   77| maybeParseInt(s:)
 #-----|  -> 42
@@ -746,19 +746,19 @@ cfg.swift:
 #-----|  -> temp
 
 #   82| temp
-#-----| match -> 10
+#-----|  -> add(a:)
 
 #   82| temp
-#-----|  -> add(a:)
+#-----| match -> 10
 
 #   82| 10
 #-----|  -> var ... = ...
 
 #   84| add(a:)
-#-----|  -> addOptional(a:)
+#-----|  -> a
 
 #   84| add(a:)
-#-----|  -> a
+#-----|  -> addOptional(a:)
 
 #   84| enter add(a:)
 #-----|  -> add(a:)
@@ -799,10 +799,10 @@ cfg.swift:
 #-----|  -> ... call to +(_:_:) ...
 
 #   88| addOptional(a:)
-#-----|  -> add(a:)
+#-----|  -> a
 
 #   88| addOptional(a:)
-#-----|  -> a
+#-----|  -> add(a:)
 
 #   88| enter addOptional(a:)
 #-----|  -> addOptional(a:)
@@ -840,10 +840,10 @@ cfg.swift:
 #-----|  -> tempOptional
 
 #   93| tempOptional
-#-----| match -> ... as ...
+#-----|  -> addOptional(a:)
 
 #   93| tempOptional
-#-----|  -> addOptional(a:)
+#-----| match -> ... as ...
 
 #   93| ... as ...
 #-----| match -> 10
@@ -993,10 +993,10 @@ cfg.swift:
 #-----|  -> c
 
 #  110| c
-#-----| match -> init
+#-----|  -> n1
 
 #  110| c
-#-----|  -> n1
+#-----| match -> init
 
 #  110| C.Type
 #-----|  -> call to init
@@ -1017,10 +1017,10 @@ cfg.swift:
 #-----|  -> n1
 
 #  111| n1
-#-----| match -> c
+#-----|  -> n2
 
 #  111| n1
-#-----|  -> n2
+#-----| match -> c
 
 #  111| c
 #-----|  -> getter for .myInt
@@ -1032,10 +1032,10 @@ cfg.swift:
 #-----|  -> n2
 
 #  112| n2
-#-----| match -> c
+#-----|  -> n3
 
 #  112| n2
-#-----|  -> n3
+#-----| match -> c
 
 #  112| c
 #-----|  -> .self
@@ -1050,10 +1050,10 @@ cfg.swift:
 #-----|  -> n3
 
 #  113| n3
-#-----| match -> getMyInt()
+#-----|  -> n4
 
 #  113| n3
-#-----|  -> n4
+#-----| match -> getMyInt()
 
 #  113| c
 #-----|  -> call to getMyInt()
@@ -1071,10 +1071,10 @@ cfg.swift:
 #-----|  -> n4
 
 #  114| n4
-#-----| match -> getMyInt()
+#-----|  -> n5
 
 #  114| n4
-#-----|  -> n5
+#-----| match -> getMyInt()
 
 #  114| c
 #-----|  -> .self
@@ -1095,10 +1095,10 @@ cfg.swift:
 #-----|  -> n5
 
 #  116| n5
-#-----| match -> param
+#-----|  -> n6
 
 #  116| n5
-#-----|  -> n6
+#-----| match -> param
 
 #  116| param
 #-----|  -> getter for .myInt
@@ -1110,10 +1110,10 @@ cfg.swift:
 #-----|  -> n6
 
 #  117| n6
-#-----| match -> param
+#-----|  -> n7
 
 #  117| n6
-#-----|  -> n7
+#-----| match -> param
 
 #  117| param
 #-----|  -> .self
@@ -1128,10 +1128,10 @@ cfg.swift:
 #-----|  -> n7
 
 #  118| n7
-#-----| match -> getMyInt()
+#-----|  -> n8
 
 #  118| n7
-#-----|  -> n8
+#-----| match -> getMyInt()
 
 #  118| param
 #-----|  -> call to getMyInt()
@@ -1149,10 +1149,10 @@ cfg.swift:
 #-----|  -> n8
 
 #  119| n8
-#-----| match -> getMyInt()
+#-----|  -> n9
 
 #  119| n8
-#-----|  -> n9
+#-----| match -> getMyInt()
 
 #  119| param
 #-----|  -> .self
@@ -1173,10 +1173,10 @@ cfg.swift:
 #-----|  -> n9
 
 #  121| n9
-#-----| match -> inoutParam
+#-----|  -> n10
 
 #  121| n9
-#-----|  -> n10
+#-----| match -> inoutParam
 
 #  121| (C) ...
 #-----|  -> getter for .myInt
@@ -1191,10 +1191,10 @@ cfg.swift:
 #-----|  -> n10
 
 #  122| n10
-#-----| match -> inoutParam
+#-----|  -> n11
 
 #  122| n10
-#-----|  -> n11
+#-----| match -> inoutParam
 
 #  122| inoutParam
 #-----|  -> .self
@@ -1212,10 +1212,10 @@ cfg.swift:
 #-----|  -> n11
 
 #  123| n11
-#-----| match -> getMyInt()
+#-----|  -> n12
 
 #  123| n11
-#-----|  -> n12
+#-----| match -> getMyInt()
 
 #  123| (C) ...
 #-----|  -> call to getMyInt()
@@ -1236,10 +1236,10 @@ cfg.swift:
 #-----|  -> n12
 
 #  124| n12
-#-----| match -> getMyInt()
+#-----|  -> n13
 
 #  124| n12
-#-----|  -> n13
+#-----| match -> getMyInt()
 
 #  124| inoutParam
 #-----|  -> .self
@@ -1263,10 +1263,10 @@ cfg.swift:
 #-----|  -> n13
 
 #  126| n13
-#-----| match -> opt
+#-----|  -> n14
 
 #  126| n13
-#-----|  -> n14
+#-----| match -> opt
 
 #  126| opt
 #-----|  -> ...!
@@ -1281,10 +1281,10 @@ cfg.swift:
 #-----|  -> n14
 
 #  127| n14
-#-----| match -> opt
+#-----|  -> n15
 
 #  127| n14
-#-----|  -> n15
+#-----| match -> opt
 
 #  127| opt
 #-----|  -> ...!
@@ -1302,10 +1302,10 @@ cfg.swift:
 #-----|  -> n15
 
 #  128| n15
-#-----| match -> getMyInt()
+#-----|  -> n16
 
 #  128| n15
-#-----|  -> n16
+#-----| match -> getMyInt()
 
 #  128| opt
 #-----|  -> ...!
@@ -1326,10 +1326,10 @@ cfg.swift:
 #-----|  -> n16
 
 #  129| n16
-#-----| match -> getMyInt()
+#-----|  -> n17
 
 #  129| n16
-#-----|  -> n17
+#-----| match -> getMyInt()
 
 #  129| opt
 #-----|  -> ...!
@@ -1353,10 +1353,10 @@ cfg.swift:
 #-----|  -> n17
 
 #  131| n17
-#-----| match -> opt
+#-----|  -> n18
 
 #  131| n17
-#-----|  -> n18
+#-----| match -> opt
 
 #  131| opt
 #-----|  -> ...?
@@ -1377,10 +1377,10 @@ cfg.swift:
 #-----|  -> n18
 
 #  132| n18
-#-----| match -> opt
+#-----|  -> n19
 
 #  132| n18
-#-----|  -> n19
+#-----| match -> opt
 
 #  132| opt
 #-----|  -> ...?
@@ -1404,10 +1404,10 @@ cfg.swift:
 #-----|  -> n19
 
 #  133| n19
-#-----| match -> getMyInt()
+#-----|  -> n20
 
 #  133| n19
-#-----|  -> n20
+#-----| match -> getMyInt()
 
 #  133| opt
 #-----|  -> ...?
@@ -1434,10 +1434,10 @@ cfg.swift:
 #-----|  -> n20
 
 #  134| n20
-#-----| match -> getMyInt()
+#-----|  -> exit testMemberRef(param:inoutParam:opt:) (normal)
 
 #  134| n20
-#-----|  -> exit testMemberRef(param:inoutParam:opt:) (normal)
+#-----| match -> getMyInt()
 
 #  134| opt
 #-----|  -> ...?
@@ -2374,10 +2374,10 @@ cfg.swift:
 #-----|  -> c
 
 #  244| c
-#-----| match -> +(_:_:)
+#-----|  -> d
 
 #  244| c
-#-----|  -> d
+#-----| match -> +(_:_:)
 
 #  244| a
 #-----|  -> b
@@ -2401,10 +2401,10 @@ cfg.swift:
 #-----|  -> d
 
 #  245| d
-#-----| match -> -(_:_:)
+#-----|  -> e
 
 #  245| d
-#-----|  -> e
+#-----| match -> -(_:_:)
 
 #  245| a
 #-----|  -> b
@@ -2428,10 +2428,10 @@ cfg.swift:
 #-----|  -> e
 
 #  246| e
-#-----| match -> *(_:_:)
+#-----|  -> f
 
 #  246| e
-#-----|  -> f
+#-----| match -> *(_:_:)
 
 #  246| a
 #-----|  -> b
@@ -2455,10 +2455,10 @@ cfg.swift:
 #-----|  -> f
 
 #  247| f
-#-----| match -> /(_:_:)
+#-----|  -> g
 
 #  247| f
-#-----|  -> g
+#-----| match -> /(_:_:)
 
 #  247| a
 #-----|  -> b
@@ -2482,10 +2482,10 @@ cfg.swift:
 #-----|  -> g
 
 #  248| g
-#-----| match -> %(_:_:)
+#-----|  -> h
 
 #  248| g
-#-----|  -> h
+#-----| match -> %(_:_:)
 
 #  248| a
 #-----|  -> b
@@ -2509,10 +2509,10 @@ cfg.swift:
 #-----|  -> h
 
 #  249| h
-#-----| match -> &(_:_:)
+#-----|  -> i
 
 #  249| h
-#-----|  -> i
+#-----| match -> &(_:_:)
 
 #  249| a
 #-----|  -> b
@@ -2536,10 +2536,10 @@ cfg.swift:
 #-----|  -> i
 
 #  250| i
-#-----| match -> |(_:_:)
+#-----|  -> j
 
 #  250| i
-#-----|  -> j
+#-----| match -> |(_:_:)
 
 #  250| a
 #-----|  -> b
@@ -2563,10 +2563,10 @@ cfg.swift:
 #-----|  -> j
 
 #  251| j
-#-----| match -> ^(_:_:)
+#-----|  -> k
 
 #  251| j
-#-----|  -> k
+#-----| match -> ^(_:_:)
 
 #  251| a
 #-----|  -> b
@@ -2590,10 +2590,10 @@ cfg.swift:
 #-----|  -> k
 
 #  252| k
-#-----| match -> <<(_:_:)
+#-----|  -> l
 
 #  252| k
-#-----|  -> l
+#-----| match -> <<(_:_:)
 
 #  252| a
 #-----|  -> b
@@ -2617,10 +2617,10 @@ cfg.swift:
 #-----|  -> l
 
 #  253| l
-#-----| match -> >>(_:_:)
+#-----|  -> o
 
 #  253| l
-#-----|  -> o
+#-----| match -> >>(_:_:)
 
 #  253| a
 #-----|  -> b
@@ -2644,10 +2644,10 @@ cfg.swift:
 #-----|  -> o
 
 #  254| o
-#-----| match -> ==(_:_:)
+#-----|  -> p
 
 #  254| o
-#-----|  -> p
+#-----| match -> ==(_:_:)
 
 #  254| a
 #-----|  -> b
@@ -2671,10 +2671,10 @@ cfg.swift:
 #-----|  -> p
 
 #  255| p
-#-----| match -> !=(_:_:)
+#-----|  -> q
 
 #  255| p
-#-----|  -> q
+#-----| match -> !=(_:_:)
 
 #  255| a
 #-----|  -> b
@@ -2698,10 +2698,10 @@ cfg.swift:
 #-----|  -> q
 
 #  256| q
-#-----| match -> <(_:_:)
+#-----|  -> r
 
 #  256| q
-#-----|  -> r
+#-----| match -> <(_:_:)
 
 #  256| a
 #-----|  -> b
@@ -2725,10 +2725,10 @@ cfg.swift:
 #-----|  -> r
 
 #  257| r
-#-----| match -> <=(_:_:)
+#-----|  -> s
 
 #  257| r
-#-----|  -> s
+#-----| match -> <=(_:_:)
 
 #  257| a
 #-----|  -> b
@@ -2752,10 +2752,10 @@ cfg.swift:
 #-----|  -> s
 
 #  258| s
-#-----| match -> >(_:_:)
+#-----|  -> t
 
 #  258| s
-#-----|  -> t
+#-----| match -> >(_:_:)
 
 #  258| a
 #-----|  -> b
@@ -2779,10 +2779,10 @@ cfg.swift:
 #-----|  -> t
 
 #  259| t
-#-----| match -> >=(_:_:)
+#-----|  -> exit binaryExprs(a:b:) (normal)
 
 #  259| t
-#-----|  -> exit binaryExprs(a:b:) (normal)
+#-----| match -> >=(_:_:)
 
 #  259| a
 #-----|  -> b
@@ -2840,10 +2840,10 @@ cfg.swift:
 #-----|  -> a
 
 #  267| a
-#-----| match -> 0
+#-----|  -> a
 
 #  267| a
-#-----|  -> a
+#-----| match -> 0
 
 #  267| [...]
 #-----|  -> var ... = ...
@@ -3203,10 +3203,10 @@ cfg.swift:
 #-----|  -> tupleWithA
 
 #  280| tupleWithA
-#-----| match -> a
+#-----|  -> b
 
 #  280| tupleWithA
-#-----|  -> b
+#-----| match -> a
 
 #  280| (...)
 #-----|  -> var ... = ...
@@ -3290,10 +3290,10 @@ cfg.swift:
 #-----|  -> b
 
 #  282| b
-#-----| match -> 0
+#-----|  -> b
 
 #  282| b
-#-----|  -> b
+#-----| match -> 0
 
 #  282| [...]
 #-----|  -> var ... = ...
@@ -3821,34 +3821,34 @@ cfg.swift:
 #-----|  -> a1
 
 #  295| a1
-#-----| match -> a2
-
-#  295| a1
 #-----|  -> a2
 
-#  295| a2
-#-----| match -> a3
+#  295| a1
+#-----| match -> a2
 
 #  295| a2
 #-----|  -> a3
 
-#  295| a3
-#-----| match -> a4
+#  295| a2
+#-----| match -> a3
 
 #  295| a3
 #-----|  -> a4
 
-#  295| a4
-#-----| match -> a5
+#  295| a3
+#-----| match -> a4
 
 #  295| a4
 #-----|  -> a5
 
-#  295| a5
-#-----| match -> tupleWithA
+#  295| a4
+#-----| match -> a5
 
 #  295| a5
 #-----|  -> +(_:_:)
+
+#  295| a5
+#-----| match -> tupleWithA
 
 #  295| ((Int, Int, Int, Int, Int)) ...
 #-----|  -> var ... = ...
@@ -4632,10 +4632,10 @@ cfg.swift:
 #-----|  -> x
 
 #  346| x
-#-----| match -> 0
+#-----|  -> while ... { ... }
 
 #  346| x
-#-----|  -> while ... { ... }
+#-----| match -> 0
 
 #  346| 0
 #-----|  -> var ... = ...
@@ -4847,13 +4847,13 @@ cfg.swift:
 #-----|  -> exit { ... }
 
 #  368| { ... }
-#-----|  -> { ... }
+#-----|  -> z
 
 #  368| { ... }
 #-----|  -> return ...
 
 #  368| { ... }
-#-----|  -> z
+#-----|  -> { ... }
 
 #  368| z
 #-----| match -> +(_:_:)
@@ -5397,10 +5397,10 @@ cfg.swift:
 #-----|  -> myLocalVar
 
 #  428| myLocalVar
-#-----| match -> ... as ...
+#-----|  -> 0
 
 #  428| myLocalVar
-#-----|  -> 0
+#-----| match -> ... as ...
 
 #  428| ... as ...
 #-----| match -> var ... = ...
@@ -5576,13 +5576,13 @@ cfg.swift:
 #-----|  -> kpGet_b_x
 
 #  456| kpGet_b_x
+#-----|  -> kpGet_bs_0_x
+
+#  456| kpGet_b_x
+#-----|  -> kpGet_bs_0_x
+
+#  456| kpGet_b_x
 #-----| match -> #keyPath(...)
-
-#  456| kpGet_b_x
-#-----|  -> kpGet_bs_0_x
-
-#  456| kpGet_b_x
-#-----|  -> kpGet_bs_0_x
 
 #  456| #keyPath(...)
 #-----|  -> var ... = ...
@@ -5609,7 +5609,10 @@ cfg.swift:
 #-----|  -> kpGet_bs_0_x
 
 #  457| kpGet_bs_0_x
-#-----| match -> #keyPath(...)
+#-----|  -> kpGet_mayB_force_x
+
+#  457| kpGet_bs_0_x
+#-----|  -> kpGet_mayB_force_x
 
 #  457| kpGet_bs_0_x
 #-----|  -> kpGet_mayB_force_x
@@ -5618,10 +5621,7 @@ cfg.swift:
 #-----| match -> #keyPath(...)
 
 #  457| kpGet_bs_0_x
-#-----|  -> kpGet_mayB_force_x
-
-#  457| kpGet_bs_0_x
-#-----|  -> kpGet_mayB_force_x
+#-----| match -> #keyPath(...)
 
 #  457| #keyPath(...)
 #-----|  -> var ... = ...
@@ -5654,25 +5654,25 @@ cfg.swift:
 #-----|  -> kpGet_mayB_force_x
 
 #  458| kpGet_mayB_force_x
+#-----|  -> kpGet_mayB_x
+
+#  458| kpGet_mayB_force_x
+#-----|  -> kpGet_mayB_x
+
+#  458| kpGet_mayB_force_x
+#-----|  -> kpGet_mayB_x
+
+#  458| kpGet_mayB_force_x
+#-----|  -> kpGet_mayB_x
+
+#  458| kpGet_mayB_force_x
 #-----| match -> #keyPath(...)
 
 #  458| kpGet_mayB_force_x
-#-----|  -> kpGet_mayB_x
-
-#  458| kpGet_mayB_force_x
 #-----| match -> #keyPath(...)
 
 #  458| kpGet_mayB_force_x
-#-----|  -> kpGet_mayB_x
-
-#  458| kpGet_mayB_force_x
 #-----| match -> #keyPath(...)
-
-#  458| kpGet_mayB_force_x
-#-----|  -> kpGet_mayB_x
-
-#  458| kpGet_mayB_force_x
-#-----|  -> kpGet_mayB_x
 
 #  458| #keyPath(...)
 #-----|  -> var ... = ...
@@ -5711,7 +5711,16 @@ cfg.swift:
 #-----|  -> kpGet_mayB_x
 
 #  459| kpGet_mayB_x
-#-----| match -> #keyPath(...)
+#-----|  -> apply_kpGet_b_x
+
+#  459| kpGet_mayB_x
+#-----|  -> apply_kpGet_b_x
+
+#  459| kpGet_mayB_x
+#-----|  -> apply_kpGet_b_x
+
+#  459| kpGet_mayB_x
+#-----|  -> apply_kpGet_b_x
 
 #  459| kpGet_mayB_x
 #-----|  -> apply_kpGet_b_x
@@ -5720,22 +5729,13 @@ cfg.swift:
 #-----| match -> #keyPath(...)
 
 #  459| kpGet_mayB_x
-#-----|  -> apply_kpGet_b_x
+#-----| match -> #keyPath(...)
 
 #  459| kpGet_mayB_x
 #-----| match -> #keyPath(...)
 
 #  459| kpGet_mayB_x
-#-----|  -> apply_kpGet_b_x
-
-#  459| kpGet_mayB_x
 #-----| match -> #keyPath(...)
-
-#  459| kpGet_mayB_x
-#-----|  -> apply_kpGet_b_x
-
-#  459| kpGet_mayB_x
-#-----|  -> apply_kpGet_b_x
 
 #  459| #keyPath(...)
 #-----|  -> var ... = ...
@@ -5777,7 +5777,16 @@ cfg.swift:
 #-----|  -> apply_kpGet_b_x
 
 #  461| apply_kpGet_b_x
-#-----| match -> a
+#-----|  -> apply_kpGet_bs_0_x
+
+#  461| apply_kpGet_b_x
+#-----|  -> apply_kpGet_bs_0_x
+
+#  461| apply_kpGet_b_x
+#-----|  -> apply_kpGet_bs_0_x
+
+#  461| apply_kpGet_b_x
+#-----|  -> apply_kpGet_bs_0_x
 
 #  461| apply_kpGet_b_x
 #-----|  -> apply_kpGet_bs_0_x
@@ -5786,25 +5795,16 @@ cfg.swift:
 #-----| match -> a
 
 #  461| apply_kpGet_b_x
-#-----|  -> apply_kpGet_bs_0_x
+#-----| match -> a
 
 #  461| apply_kpGet_b_x
 #-----| match -> a
 
 #  461| apply_kpGet_b_x
-#-----|  -> apply_kpGet_bs_0_x
-
-#  461| apply_kpGet_b_x
 #-----| match -> a
 
 #  461| apply_kpGet_b_x
-#-----|  -> apply_kpGet_bs_0_x
-
-#  461| apply_kpGet_b_x
 #-----| match -> a
-
-#  461| apply_kpGet_b_x
-#-----|  -> apply_kpGet_bs_0_x
 
 #  461| a
 #-----|  -> kpGet_b_x
@@ -5882,7 +5882,16 @@ cfg.swift:
 #-----|  -> apply_kpGet_bs_0_x
 
 #  462| apply_kpGet_bs_0_x
-#-----| match -> a
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  462| apply_kpGet_bs_0_x
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  462| apply_kpGet_bs_0_x
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  462| apply_kpGet_bs_0_x
+#-----|  -> apply_kpGet_mayB_force_x
 
 #  462| apply_kpGet_bs_0_x
 #-----|  -> apply_kpGet_mayB_force_x
@@ -5891,25 +5900,16 @@ cfg.swift:
 #-----| match -> a
 
 #  462| apply_kpGet_bs_0_x
-#-----|  -> apply_kpGet_mayB_force_x
+#-----| match -> a
 
 #  462| apply_kpGet_bs_0_x
 #-----| match -> a
 
 #  462| apply_kpGet_bs_0_x
-#-----|  -> apply_kpGet_mayB_force_x
-
-#  462| apply_kpGet_bs_0_x
 #-----| match -> a
 
 #  462| apply_kpGet_bs_0_x
-#-----|  -> apply_kpGet_mayB_force_x
-
-#  462| apply_kpGet_bs_0_x
 #-----| match -> a
-
-#  462| apply_kpGet_bs_0_x
-#-----|  -> apply_kpGet_mayB_force_x
 
 #  462| a
 #-----|  -> kpGet_bs_0_x
@@ -5987,7 +5987,16 @@ cfg.swift:
 #-----|  -> apply_kpGet_mayB_force_x
 
 #  463| apply_kpGet_mayB_force_x
-#-----| match -> a
+#-----|  -> apply_kpGet_mayB_x
+
+#  463| apply_kpGet_mayB_force_x
+#-----|  -> apply_kpGet_mayB_x
+
+#  463| apply_kpGet_mayB_force_x
+#-----|  -> apply_kpGet_mayB_x
+
+#  463| apply_kpGet_mayB_force_x
+#-----|  -> apply_kpGet_mayB_x
 
 #  463| apply_kpGet_mayB_force_x
 #-----|  -> apply_kpGet_mayB_x
@@ -5996,25 +6005,16 @@ cfg.swift:
 #-----| match -> a
 
 #  463| apply_kpGet_mayB_force_x
-#-----|  -> apply_kpGet_mayB_x
+#-----| match -> a
 
 #  463| apply_kpGet_mayB_force_x
 #-----| match -> a
 
 #  463| apply_kpGet_mayB_force_x
-#-----|  -> apply_kpGet_mayB_x
-
-#  463| apply_kpGet_mayB_force_x
 #-----| match -> a
 
 #  463| apply_kpGet_mayB_force_x
-#-----|  -> apply_kpGet_mayB_x
-
-#  463| apply_kpGet_mayB_force_x
 #-----| match -> a
-
-#  463| apply_kpGet_mayB_force_x
-#-----|  -> apply_kpGet_mayB_x
 
 #  463| a
 #-----|  -> kpGet_mayB_force_x
@@ -6090,15 +6090,15 @@ cfg.swift:
 
 #  464| var ... = ...
 #-----|  -> apply_kpGet_mayB_x
-
-#  464| apply_kpGet_mayB_x
-#-----| match -> a
 
 #  464| apply_kpGet_mayB_x
 #-----|  -> exit test(a:) (normal)
 
 #  464| apply_kpGet_mayB_x
-#-----| match -> a
+
+#  464| apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
 
 #  464| apply_kpGet_mayB_x
 
@@ -6106,16 +6106,16 @@ cfg.swift:
 #-----| match -> a
 
 #  464| apply_kpGet_mayB_x
+#-----| match -> a
 
 #  464| apply_kpGet_mayB_x
 #-----| match -> a
 
 #  464| apply_kpGet_mayB_x
-
-#  464| apply_kpGet_mayB_x
 #-----| match -> a
 
 #  464| apply_kpGet_mayB_x
+#-----| match -> a
 
 #  464| a
 #-----|  -> kpGet_mayB_x
