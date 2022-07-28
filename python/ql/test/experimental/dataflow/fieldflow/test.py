@@ -194,6 +194,128 @@ def test_bound_method_call():
     ux(None)
     SINK_F(foo.x) # $ SPURIOUS: flow="SOURCE, l:-4 -> foo.x"
 
+
+# ------------------------------------------------------------------------------
+# Crosstalk test -- using different function based on conditional
+# ------------------------------------------------------------------------------
+
+class CrosstalkTestX:
+    def __init__(self):
+        self.x = None
+        self.y = None
+
+    def setx(self, value):
+        self.x = value
+
+    def setvalue(self, value):
+        self.x = value
+
+
+class CrosstalkTestY:
+    def __init__(self):
+        self.x = None
+        self.y = None
+
+    def sety(self ,value):
+        self.y = value
+
+    def setvalue(self, value):
+        self.y = value
+
+
+@expects(8) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_no_crosstalk_reference(cond=True):
+    objx = CrosstalkTestX()
+    SINK_F(objx.x)
+    SINK_F(objx.y)
+
+    objy = CrosstalkTestY()
+    SINK_F(objy.x)
+    SINK_F(objy.y)
+
+    if cond:
+        objx.setvalue(SOURCE)
+    else:
+        objy.setvalue(SOURCE)
+
+    SINK(objx.x) # $ flow="SOURCE, l:-4 -> objx.x"
+    SINK_F(objx.y)
+    SINK_F(objy.x)
+    SINK_F(objy.y) # $ flow="SOURCE, l:-5 -> objy.y"
+
+
+@expects(8) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_potential_crosstalk_different_name(cond=True):
+    objx = CrosstalkTestX()
+    SINK_F(objx.x)
+    SINK_F(objx.y)
+
+    objy = CrosstalkTestY()
+    SINK_F(objy.x)
+    SINK_F(objy.y)
+
+    if cond:
+        func = objx.setx
+    else:
+        func = objy.sety
+
+    func(SOURCE)
+
+    SINK(objx.x) # $ MISSING: flow="SOURCE, l:-2 -> objx.x"
+    SINK_F(objx.y)
+    SINK_F(objy.x)
+    SINK_F(objy.y) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
+
+
+@expects(8) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_potential_crosstalk_same_name(cond=True):
+    objx = CrosstalkTestX()
+    SINK_F(objx.x)
+    SINK_F(objx.y)
+
+    objy = CrosstalkTestY()
+    SINK_F(objy.x)
+    SINK_F(objy.y)
+
+    if cond:
+        func = objx.setvalue
+    else:
+        func = objy.setvalue
+
+    func(SOURCE)
+
+    SINK(objx.x) # $ MISSING: flow="SOURCE, l:-2 -> objx.x"
+    SINK_F(objx.y)
+    SINK_F(objy.x)
+    SINK_F(objy.y) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
+
+
+@expects(10) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_potential_crosstalk_same_name_object_reference(cond=True):
+    objx = CrosstalkTestX()
+    SINK_F(objx.x)
+    SINK_F(objx.y)
+
+    objy = CrosstalkTestY()
+    SINK_F(objy.x)
+    SINK_F(objy.y)
+
+    if cond:
+        obj = objx
+    else:
+        obj = objy
+
+    obj.setvalue(SOURCE)
+
+    SINK(objx.x) # $ MISSING: flow="SOURCE, l:-2 -> objx.x"
+    SINK_F(objx.y)
+    SINK_F(objy.x)
+    SINK_F(objy.y) # $ MISSING: flow="SOURCE, l:-5 -> objy.y"
+
+    SINK(obj.x) # $ flow="SOURCE, l:-7 -> obj.x"
+    SINK_F(obj.y) # $ flow="SOURCE, l:-8 -> obj.y"
+
+
 # ------------------------------------------------------------------------------
 # Global scope
 # ------------------------------------------------------------------------------
