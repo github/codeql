@@ -179,6 +179,16 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
     )
   }
 
+  override predicate isSink(DataFlow::Node node, string flowstate) {
+    // Permit any *incorrect* flowstate, as those are the results the query
+    // should report.
+    exists(string correctFlowState |
+      isSinkImpl(node, correctFlowState) and
+      flowstate.(StringLengthConflationFlowState).getEquivClass() !=
+        correctFlowState.(StringLengthConflationFlowState).getEquivClass()
+    )
+  }
+
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // allow flow through `+`, `-`, `*` etc.
     node2.asExpr().(ArithmeticOperation).getAnOperand() = node1.asExpr()
