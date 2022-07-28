@@ -6,8 +6,7 @@
 
 ### Minor Analysis Improvements
 
-* The JUnit5 version of `AssertNotNull` is now recognized, which removes
-  related false positives in the nullness queries.
+* The JUnit5 version of `AssertNotNull` is now recognized, which removes related false positives in the nullness queries.
 * Added data flow models for `java.util.Scanner`.
 
 ## 0.3.1
