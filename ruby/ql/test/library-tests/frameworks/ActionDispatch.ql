@@ -1,6 +1,10 @@
 private import ruby
 private import codeql.ruby.frameworks.ActionDispatch
 private import codeql.ruby.frameworks.ActionController
+private import codeql.ruby.ApiGraphs
+private import codeql.ruby.frameworks.data.ModelsAsData
+private import codeql.ruby.DataFlow
+private import codeql.ruby.Regexp as RE
 
 query predicate actionDispatchRoutes(
   ActionDispatch::Routing::Route r, string method, string path, string controller, string action
@@ -23,4 +27,14 @@ query predicate underscore(string input, string output) {
       "Foo", "FooBar", "Foo::Bar", "FooBar::Baz", "Foo::Bar::Baz", "Foo::Bar::BazQuux", "invalid",
       "HTTPServerRequest", "LotsOfCapitalLetters"
     ]
+}
+
+query predicate mimeTypeInstances(API::Node n) {
+  n = ModelOutput::getATypeNode("actiondispatch", "Mime::Type")
+}
+
+query predicate mimeTypeMatchRegExpInterpretations(
+  ActionDispatch::MimeTypeMatchRegExpInterpretation s
+) {
+  any()
 }
