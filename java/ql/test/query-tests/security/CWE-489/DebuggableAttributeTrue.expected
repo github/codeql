@@ -1,1 +1,1 @@
-| TestTrue.xml:7:5:17:30 | debuggable=true | Warning: 'android:debuggable=true' set |
+| TestTrue.xml:7:5:17:30 | debuggable=true | Warning: debuggable attribute enabled |
