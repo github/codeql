@@ -197,7 +197,8 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   // Variable flow steps through adjacent def-use and use-use pairs.
   exists(SsaExplicitUpdate upd |
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
-    upd.getDefiningExpr().(AssignOp) = node1.asExpr()
+    upd.getDefiningExpr().(AssignOp) = node1.asExpr() or
+    upd.getDefiningExpr() = node1.(CatchParameterNode).getVariable()
   |
     node2.asExpr() = upd.getAFirstUse() and
     not capturedVariableRead(node2)
@@ -236,6 +237,8 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
     node2.(FlowSummaryNode).getSummaryNode(), true)
   or
   captureValueStep(node1, node2)
+  or
+  ExceptionFlow::localStep(node1, node2)
 }
 
 /**
@@ -245,7 +248,7 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
  */
 class Content extends TContent {
   /** Gets the type of the contained data for the purpose of type pruning. */
-  abstract DataFlowType getType();
+  abstract Type getType();
 
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -270,7 +273,7 @@ class FieldContent extends Content, TFieldContent {
 
   InstanceField getField() { result = f }
 
-  override DataFlowType getType() { result = getErasedRepr(f.getType()) }
+  override Type getType() { result = getErasedRepr0(f.getType()) }
 
   override string toString() { result = f.toString() }
 
@@ -281,28 +284,28 @@ class FieldContent extends Content, TFieldContent {
 
 /** A reference through an array. */
 class ArrayContent extends Content, TArrayContent {
-  override DataFlowType getType() { result instanceof TypeObject }
+  override Type getType() { result instanceof TypeObject }
 
   override string toString() { result = "[]" }
 }
 
 /** A reference through the contents of some collection-like container. */
 class CollectionContent extends Content, TCollectionContent {
-  override DataFlowType getType() { result instanceof TypeObject }
+  override Type getType() { result instanceof TypeObject }
 
   override string toString() { result = "<element>" }
 }
 
 /** A reference through a map key. */
 class MapKeyContent extends Content, TMapKeyContent {
-  override DataFlowType getType() { result instanceof TypeObject }
+  override Type getType() { result instanceof TypeObject }
 
   override string toString() { result = "<map.key>" }
 }
 
 /** A reference through a map value. */
 class MapValueContent extends Content, TMapValueContent {
-  override DataFlowType getType() { result instanceof TypeObject }
+  override Type getType() { result instanceof TypeObject }
 
   override string toString() { result = "<map.value>" }
 }
@@ -315,7 +318,7 @@ class CapturedVariableContent extends Content, TCapturedVariableContent {
 
   CapturedVariable getVariable() { result = v }
 
-  override DataFlowType getType() { result = getErasedRepr(v.(Variable).getType()) }
+  override Type getType() { result = getErasedRepr0(v.(Variable).getType()) }
 
   override string toString() { result = v.toString() }
 }
@@ -328,7 +331,7 @@ class SyntheticFieldContent extends Content, TSyntheticFieldContent {
 
   SyntheticField getField() { result = s }
 
-  override DataFlowType getType() { result = getErasedRepr(s.getType()) }
+  override Type getType() { result = getErasedRepr0(s.getType()) }
 
   override string toString() { result = s.toString() }
 }

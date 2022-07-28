@@ -5,6 +5,7 @@
 import java
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowUtil
+private import internal.DataFlowPrivate
 
 class SummaryComponent = Impl::Public::SummaryComponent;
 
@@ -28,7 +29,7 @@ module SummaryComponent {
   SummaryComponent mapValue() { result = content(any(MapValueContent c)) }
 
   /** Gets a summary component that represents the return value of a call. */
-  SummaryComponent return() { result = return(_) }
+  SummaryComponent return() { result = return(any(NormalReturnKind n)) }
 }
 
 class SummaryComponentStack = Impl::Public::SummaryComponentStack;
