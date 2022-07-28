@@ -36,7 +36,7 @@ int main()
 	{
 		int i = 0;
 
-		scanf("%d", &i); // GOOD: we assume the initialization of `i` is a reasonable default
+		scanf("%d", &i); // BAD
 		use(i);
 	}
 
@@ -79,7 +79,7 @@ int main()
 	{
 		int i;
 
-		if (scanf("%d", &i) != 0) // GOOD (just barely)
+		if (scanf("%d", &i) != 0) // BAD: scanf can return -1 [NOT DETECTED]
 		{
 			use(i);
 		}
@@ -88,7 +88,7 @@ int main()
 	{
 		int i;
 
-		if (scanf("%d", &i) == 0) // BAD: checks return value incorrectly
+		if (scanf("%d", &i) == 0) // BAD: checks return value incorrectly [NOT DETECTED]
 		{
 			use(i);
 		}
@@ -119,7 +119,7 @@ int main()
 	{
 		int i, j;
 
-		if (scanf("%d %d", &i) >= 1) // BAD: checks return value incorrectly
+		if (scanf("%d %d", &i, &j) >= 1) // BAD: checks return value incorrectly [NOT DETECTED]
 		{
 			use(i);
 			use(j);
@@ -132,7 +132,7 @@ int main()
 		int i;
 		i = 0;
 
-		scanf("%d", &i); // GOOD
+		scanf("%d", &i); // BAD
 		use(i);
 	}
 
@@ -140,7 +140,7 @@ int main()
 		int i;
 
 		set_by_ref(i);
-		scanf("%d", &i); // GOOD: we have to assume `i` was initialized
+		scanf("%d", &i); // BAD
 		use(i);
 	}
 
@@ -148,7 +148,7 @@ int main()
 		int i;
 
 		set_by_ptr(&i);
-		scanf("%d", &i); // GOOD: we have to assume `i` was initialized
+		scanf("%d", &i); // BAD
 		use(i);
 	}
 
@@ -162,6 +162,16 @@ int main()
 
 		scanf("%d", &i); // BAD: `i` may not have been initialized
 		use(i);
+	}
+
+	// --- different use ---
+	
+	{
+		int i;
+		int *ptr_i = &i;
+
+		scanf("%d", &i); // BAD: may not have written `i`
+		use(*ptr_i);
 	}
 
 	// --- weird formatting strings ---
