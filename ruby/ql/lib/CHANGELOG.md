@@ -3,7 +3,7 @@
 ### Minor Analysis Improvements
 
 * Calls to `Arel.sql` are now recognised as propagating taint from their argument.
-- Calls to `ActiveRecord::Relation#annotate` are now recognized as`SqlExecution`s so that it will be considered as a sink for queries like rb/sql-injection.
+* Calls to `ActiveRecord::Relation#annotate` are now recognized as `SqlExecution`s so that it will be considered as a sink for queries like rb/sql-injection.
 
 ## 0.3.1
 
