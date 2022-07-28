@@ -4,6 +4,7 @@
 
 import ruby
 import codeql.ruby.security.IncompleteMultiCharacterSanitizationQuery as Query
+import codeql.ruby.security.IncompleteMultiCharacterSanitizationSpecific as Specific
 import codeql.ruby.frameworks.core.String
 import TestUtilities.InlineExpectationsTest
 
@@ -20,7 +21,7 @@ class Test extends InlineExpectationsTest {
 
 predicate hasResult(Location location, string element, string value) {
   exists(
-    StringSubstitutionCall replace, Query::EmptyReplaceRegExpTerm dangerous, string prefix,
+    StringSubstitutionCall replace, Specific::EmptyReplaceRegExpTerm dangerous, string prefix,
     string kind
   |
     replace.getLocation() = location and
