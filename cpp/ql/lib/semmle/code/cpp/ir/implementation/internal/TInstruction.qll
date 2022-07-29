@@ -34,7 +34,7 @@ newtype TInstruction =
     AliasedSSA::SSA::hasPhiInstruction(blockStartInstr, memoryLocation)
   } or
   TAliasedSsaChiInstruction(TRawInstruction primaryInstruction) {
-    not Elim::removeableSideEffect(primaryInstruction) and
+    not AliasedSSA::removedInstruction(primaryInstruction) and
     AliasedSSA::SSA::hasChiInstruction(primaryInstruction)
   } or
   TAliasedSsaUnreachedInstruction(IRFunctionBase irFunc) {

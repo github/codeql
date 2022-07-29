@@ -7,3 +7,9 @@ import semmle.code.cpp.ir.implementation.internal.TInstruction::UnaliasedSsaInst
 import semmle.code.cpp.ir.internal.IRCppLanguage as Language
 import SimpleSSA as Alias
 import semmle.code.cpp.ir.implementation.internal.TOperand::UnaliasedSsaOperands as SSAOperands
+
+predicate removedInstruction(Reachability::ReachableInstruction instr) { none() }
+
+class OldBlock = Reachability::ReachableBlock;
+
+class OldInstruction = Reachability::ReachableInstruction;

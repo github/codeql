@@ -7,3 +7,9 @@ import experimental.ir.implementation.internal.TInstruction::UnaliasedSsaInstruc
 import experimental.ir.internal.IRCSharpLanguage as Language
 import SimpleSSA as Alias
 import experimental.ir.implementation.internal.TOperand::UnaliasedSsaOperands as SSAOperands
+
+predicate removedInstruction(Reachability::ReachableInstruction instr) { none() }
+
+class OldBlock = Reachability::ReachableBlock;
+
+class OldInstruction = Reachability::ReachableInstruction;

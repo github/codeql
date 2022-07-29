@@ -17,3 +17,5 @@ module SSA {
 
   predicate hasUnreachedInstruction(IRFunctionBase irFunc) { none() }
 }
+
+predicate removedInstruction(TRawInstruction instr) { none() }

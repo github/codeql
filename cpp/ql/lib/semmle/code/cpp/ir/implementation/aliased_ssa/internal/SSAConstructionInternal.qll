@@ -6,3 +6,14 @@ import semmle.code.cpp.ir.implementation.internal.TInstruction::AliasedSsaInstru
 import semmle.code.cpp.ir.internal.IRCppLanguage as Language
 import AliasedSSA as Alias
 import semmle.code.cpp.ir.implementation.internal.TOperand::AliasedSsaOperands as SSAOperands
+private import SideEffectElimination as Elim
+
+predicate removedInstruction(Reachability::ReachableInstruction instr) {
+  Elim::removeableSideEffect(instr)
+}
+
+class OldBlock = Reachability::ReachableBlock;
+
+class OldInstruction extends Reachability::ReachableInstruction {
+  OldInstruction() { not Elim::removeableSideEffect(this) }
+}
