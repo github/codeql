@@ -115,7 +115,9 @@ codeql::PatternBindingDecl DeclVisitor::translatePatternBindingDecl(
 
 std::optional<codeql::ConcreteVarDecl> DeclVisitor::translateVarDecl(const swift::VarDecl& decl) {
   std::optional<codeql::ConcreteVarDecl> entry;
-  if (decl.getDeclContext()->isLocalContext()) {
+  // We do not deduplicate variables from non-swift (PCM, clang modules) modules as the mangler
+  // crashes sometimes
+  if (decl.getDeclContext()->isLocalContext() || decl.getModuleContext()->isNonSwiftModule()) {
     entry.emplace(dispatcher_.assignNewLabel(decl));
   } else {
     entry = createNamedEntry(decl);
@@ -295,6 +297,14 @@ std::string DeclVisitor::mangledName(const swift::ValueDecl& decl) {
   // name
   if (decl.getKind() == swift::DeclKind::Module) {
     return static_cast<const swift::ModuleDecl&>(decl).getRealName().str().str();
+  }
+  // In cases like this (when coming from PCM)
+  //  typealias CFXMLTree = CFTree
+  //  typealias CFXMLTreeRef = CFXMLTree
+  // mangleAnyDecl mangles both CFXMLTree and CFXMLTreeRef into 'So12CFXMLTreeRefa'
+  // which is not correct and causes inconsistencies. mangleEntity makes these two distinct
+  if (decl.getKind() == swift::DeclKind::TypeAlias) {
+    return mangler.mangleEntity(&decl);
   }
   // prefix adds a couple of special symbols, we don't necessary need them
   return mangler.mangleAnyDecl(&decl, /* prefix = */ false);
