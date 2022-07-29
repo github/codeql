@@ -18,6 +18,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.UrlRedirect
 import DataFlow::PathGraph
 import Regex
+import SpringUrlRedirect
 
 /** Source model of remote flow source with servlets. */
 private class GetServletUriSource extends SourceModelCsv {
@@ -48,6 +49,30 @@ private class UrlDispatchSink extends SinkModelCsv {
 private class UrlFilterSink extends SinkModelCsv {
   override predicate row(string row) {
     row = ["javax.servlet;FilterChain;true;doFilter;;;Argument[-1];url-filter;manual"]
+  }
+}
+
+/** A Spring framework annotation indicating remote uri user input. */
+class SpringUriInputAnnotation extends Annotation {
+  SpringUriInputAnnotation() {
+    exists(AnnotationType a |
+      a = this.getType() and
+      a.getPackage().getName() = "org.springframework.web.bind.annotation"
+    |
+      (
+        a.hasName("PathVariable") or
+        a.hasName("RequestParam")
+      )
+    )
+  }
+}
+
+class SpringUriInputParameterSource extends DataFlow::Node {
+  SpringUriInputParameterSource() {
+    this.asParameter() =
+      any(SpringRequestMappingParameter srmp |
+        srmp.getAnAnnotation() instanceof SpringUriInputAnnotation
+      )
   }
 }
 
@@ -121,7 +146,10 @@ class PermissiveDotRegexConfig extends DataFlow::Configuration {
 class MatchRegexConfiguration extends TaintTracking::Configuration {
   MatchRegexConfiguration() { this = "PermissiveDotRegex::MatchRegexConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) { sourceNode(source, "uri-path") }
+  override predicate isSource(DataFlow::Node source) {
+    sourceNode(source, "uri-path") or // Servlet uri source
+    source instanceof SpringUriInputParameterSource // Spring uri source
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof MatchRegexSink and
@@ -140,7 +168,8 @@ class MatchRegexConfiguration extends TaintTracking::Configuration {
       (
         DataFlow::exprNode(se) instanceof UrlRedirectSink or
         sinkNode(DataFlow::exprNode(se), "url-dispatch") or
-        sinkNode(DataFlow::exprNode(se), "url-filter")
+        sinkNode(DataFlow::exprNode(se), "url-filter") or
+        DataFlow::exprNode(se) instanceof SpringUrlRedirectSink
       ) and
       guard.controls(se.getBasicBlock(), true)
     )
