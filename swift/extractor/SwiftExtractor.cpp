@@ -56,8 +56,10 @@ static std::string getFilename(swift::ModuleDecl& module, swift::SourceFile* pri
   }
   // PCM clang module
   if (module.isNonSwiftModule()) {
-    // Several modules with different name might come from .pcm (clang module) files
+    // Several modules with different names might come from .pcm (clang module) files
     // In this case we want to differentiate them
+    // Moreover, pcm files may come from caches located in different directories, but are
+    // unambiguously identified by the base file name, so we can discard the absolute directory
     std::string filename = "/pcms/"s + llvm::sys::path::filename(module.getModuleFilename()).str();
     filename += "-";
     filename += module.getName().str();
@@ -175,9 +177,8 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
   // extracted from source with more information. We do this by creating empty trap files.
   // TargetFile semantics will ensure any following run trying to extract that swiftmodule will just
   // skip doing it
-  auto outputModuleTrapSuffix = "-" + compiler.getMainModule()->getName().str().str() + ".trap";
   for (const auto& output : config.outputSwiftModules) {
-    TargetFile::create(output + outputModuleTrapSuffix, config.trapDir, config.getTempTrapDir());
+    TargetFile::create(output, config.trapDir, config.getTempTrapDir());
   }
   for (auto& module : modules) {
     bool isFromSourceFile = false;
