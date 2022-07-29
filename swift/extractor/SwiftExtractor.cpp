@@ -178,7 +178,7 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
   // TargetFile semantics will ensure any following run trying to extract that swiftmodule will just
   // skip doing it
   for (const auto& output : config.outputSwiftModules) {
-    TargetFile::create(output, config.trapDir, config.getTempTrapDir());
+    TargetFile::create(output + ".trap", config.trapDir, config.getTempTrapDir());
   }
   for (auto& module : modules) {
     bool isFromSourceFile = false;
