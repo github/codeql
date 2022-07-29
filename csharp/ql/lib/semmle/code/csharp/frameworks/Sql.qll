@@ -39,7 +39,8 @@ class IDbCommandConstructionSqlExpr extends SqlExpr, ObjectCreation {
           .hasQualifiedName([
               // Known sealed classes:
               "System.Data.SqlClient.SqlCommand", "System.Data.Odbc.OdbcCommand",
-              "System.Data.OleDb.OleDbCommand", "System.Data.EntityClient.EntityCommand"
+              "System.Data.OleDb.OleDbCommand", "System.Data.EntityClient.EntityCommand",
+              "System.Data.SQLite.SQLiteCommand"
             ])
     )
   }
@@ -67,7 +68,11 @@ private class IDbCommandConstructionSinkModelCsv extends SinkModelCsv {
         // EntityCommand
         "System.Data.EntityClient;EntityCommand;false;EntityCommand;(System.String);;Argument[0];sql;manual",
         "System.Data.EntityClient;EntityCommand;false;EntityCommand;(System.String,System.Data.EntityClient.EntityConnection);;Argument[0];sql;manual",
-        "System.Data.EntityClient;EntityCommand;false;EntityCommand;(System.String,System.Data.EntityClient.EntityConnection,System.Data.EntityClient.EntityTransaction);;Argument[0];sql;manual"
+        "System.Data.EntityClient;EntityCommand;false;EntityCommand;(System.String,System.Data.EntityClient.EntityConnection,System.Data.EntityClient.EntityTransaction);;Argument[0];sql;manual",
+        // SQLiteCommand
+        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String);;Argument[0];sql;manual",
+        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String,System.Data.SQLite.SQLiteConnection);;Argument[0];sql;manual",
+        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String,System.Data.SQLite.SQLiteConnection,System.Data.SQLite.SQLiteTransaction);;Argument[0];sql;manual",
       ]
   }
 }
