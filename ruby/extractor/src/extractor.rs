@@ -1,6 +1,6 @@
 use crate::trap;
+use indexmap::IndexMap;
 use node_types::{EntryKind, Field, NodeTypeMap, Storage, TypeName};
-use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fmt;
 use std::path::Path;
@@ -134,7 +134,6 @@ pub fn extract(
     parser.set_language(language).unwrap();
     parser.set_included_ranges(ranges).unwrap();
     let tree = parser.parse(&source, None).expect("Failed to parse file");
-    trap_writer.comment(format!("Auto-generated TRAP file for {}", path_str));
     let file_label = populate_file(trap_writer, path);
     let mut visitor = Visitor::new(
         source,
@@ -414,7 +413,7 @@ impl<'a> Visitor<'a> {
         child_nodes: &[ChildNode],
         parent_id: trap::Label,
     ) -> Option<Vec<trap::Arg>> {
-        let mut map: Map<&Option<String>, (&Field, Vec<trap::Arg>)> = Map::new();
+        let mut map: IndexMap<&Option<String>, (&Field, Vec<trap::Arg>)> = IndexMap::new();
         for field in fields {
             map.insert(&field.name, (field, Vec::new()));
         }

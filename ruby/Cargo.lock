@@ -416,6 +416,7 @@ dependencies = [
  "clap",
  "encoding",
  "flate2",
+ "indexmap",
  "lazy_static",
  "node-types",
  "num_cpus",
