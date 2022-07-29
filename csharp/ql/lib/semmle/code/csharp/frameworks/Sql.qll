@@ -77,13 +77,19 @@ private class IDbCommandConstructionSinkModelCsv extends SinkModelCsv {
   }
 }
 
-/** A construction of an `SqlDataAdapter` object. */
+/** A construction of an `Adapter` object. */
 private class SqlDataAdapterConstructionSinkModelCsv extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
+        // SqlDataAdapter
         "System.Data.SqlClient;SqlDataAdapter;false;SqlDataAdapter;(System.String,System.String);;Argument[0];sql;manual",
-        "System.Data.SqlClient;SqlDataAdapter;false;SqlDataAdapter;(System.String,System.Data.SqlClient.SqlConnection);;Argument[0];sql;manual"
+        "System.Data.SqlClient;SqlDataAdapter;false;SqlDataAdapter;(System.String,System.Data.SqlClient.SqlConnection);;Argument[0];sql;manual",
+        // SQLiteDataAdapter
+        "System.Data.SQLite;SQLiteDataAdapter;false;SQLiteDataAdapter;(System.Data.SQLite.SQLiteCommand);;Argument[0];sql;manual",
+        "System.Data.SQLite;SQLiteDataAdapter;false;SQLiteDataAdapter;(System.String,System.Data.SQLite.SQLiteConnection);;Argument[0];sql;manual",
+        "System.Data.SQLite;SQLiteDataAdapter;false;SQLiteDataAdapter;(System.String,System.String);;Argument[0];sql;manual",
+        "System.Data.SQLite;SQLiteDataAdapter;false;SQLiteDataAdapter;(System.String,System.String,System.Boolean);;Argument[0];sql;manual",
       ]
   }
 }
