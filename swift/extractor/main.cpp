@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
       codeql::rewriteOutputsInPlace(configuration, configuration.patchedFrontendOptions);
   codeql::ensureDirectoriesForNewPathsExist(remapping);
   codeql::storeRemappingForVFS(configuration, remapping);
-  configuration.outputSwiftModules = codeql::getOutputSwiftModules(remapping);
+  codeql::lockOutputSwiftModuleTraps(configuration, remapping);
 
   std::vector<const char*> args;
   for (auto& arg : configuration.patchedFrontendOptions) {

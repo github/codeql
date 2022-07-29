@@ -29,7 +29,7 @@ void storeRemappingForVFS(const SwiftExtractorConfiguration& config,
 // This is separate from storeRemappingForVFS as we also collect files produced by other processes.
 std::vector<std::string> collectVFSFiles(const SwiftExtractorConfiguration& config);
 
-// Returns a list of output remapped swift module files
-std::vector<std::string> getOutputSwiftModules(
-    const std::unordered_map<std::string, std::string>& remapping);
+// Creates empty trap files for output swiftmodule files
+void lockOutputSwiftModuleTraps(const SwiftExtractorConfiguration& config,
+                                const std::unordered_map<std::string, std::string>& remapping);
 }  // namespace codeql

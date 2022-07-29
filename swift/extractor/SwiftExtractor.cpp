@@ -14,7 +14,7 @@
 #include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/visitors/SwiftVisitor.h"
-#include "swift/extractor/infra/TargetFile.h"
+#include "swift/extractor/TargetTrapFile.h"
 
 using namespace codeql;
 using namespace std::string_literals;
@@ -80,20 +80,6 @@ static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& modul
   return ret;
 }
 
-static void dumpArgs(TargetFile& out, const SwiftExtractorConfiguration& config) {
-  out << "/* extractor-args:\n";
-  for (const auto& opt : config.frontendOptions) {
-    out << "  " << std::quoted(opt) << " \\\n";
-  }
-  out << "\n*/\n";
-
-  out << "/* swift-frontend-args:\n";
-  for (const auto& opt : config.patchedFrontendOptions) {
-    out << "  " << std::quoted(opt) << " \\\n";
-  }
-  out << "\n*/\n";
-}
-
 static void extractDeclarations(const SwiftExtractorConfiguration& config,
                                 swift::CompilerInstance& compiler,
                                 swift::ModuleDecl& module,
@@ -103,12 +89,11 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   // The extractor can be called several times from different processes with
   // the same input file(s). Using `TargetFile` the first process will win, and the following
   // will just skip the work
-  auto trapTarget = TargetFile::create(filename + ".trap", config.trapDir, config.getTempTrapDir());
+  auto trapTarget = createTargetTrapFile(config, filename);
   if (!trapTarget) {
     // another process arrived first, nothing to do for us
     return;
   }
-  dumpArgs(*trapTarget, config);
   TrapDomain trap{*trapTarget};
 
   // TODO: remove this and recreate it with IPA when we have that
@@ -172,14 +157,6 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
   auto inputFiles = collectInputFilenames(compiler);
   auto modules = collectModules(compiler);
 
-  // we want to make sure any following extractor run will not try to extract things from
-  // the swiftmodule files we are creating in this run, as those things will already have been
-  // extracted from source with more information. We do this by creating empty trap files.
-  // TargetFile semantics will ensure any following run trying to extract that swiftmodule will just
-  // skip doing it
-  for (const auto& output : config.outputSwiftModules) {
-    TargetFile::create(output + ".trap", config.trapDir, config.getTempTrapDir());
-  }
   for (auto& module : modules) {
     bool isFromSourceFile = false;
     for (auto file : module->getFiles()) {
