@@ -296,6 +296,14 @@ std::string DeclVisitor::mangledName(const swift::ValueDecl& decl) {
   if (decl.getKind() == swift::DeclKind::Module) {
     return static_cast<const swift::ModuleDecl&>(decl).getRealName().str().str();
   }
+  // In cases like this (when coming from PCM)
+  //  typealias CFXMLTree = CFTree
+  //  typealias CFXMLTreeRef = CFXMLTree
+  // mangleAnyDecl mangles both CFXMLTree and CFXMLTreeRef into 'So12CFXMLTreeRefa'
+  // which is not correct and causes inconsistencies. mangleEntity makes these two distinct
+  if (decl.getKind() == swift::DeclKind::TypeAlias) {
+    return mangler.mangleEntity(&decl);
+  }
   // prefix adds a couple of special symbols, we don't necessary need them
   return mangler.mangleAnyDecl(&decl, /* prefix = */ false);
 }
