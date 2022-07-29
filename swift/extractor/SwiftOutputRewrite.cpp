@@ -163,7 +163,7 @@ static std::vector<std::string> computeModuleAliases(llvm::StringRef modulePath,
 namespace codeql {
 
 std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
-    SwiftExtractorConfiguration& config,
+    const SwiftExtractorConfiguration& config,
     std::vector<std::string>& CLIArgs) {
   std::unordered_map<std::string, std::string> remapping;
 
@@ -322,6 +322,16 @@ std::vector<std::string> collectVFSFiles(const SwiftExtractorConfiguration& conf
   }
 
   return overlays;
+}
+std::vector<std::string> getOutputSwiftModules(
+    const std::unordered_map<std::string, std::string>& remapping) {
+  std::vector<std::string> ret;
+  for (const auto& [oldPath, newPath] : remapping) {
+    if (llvm::StringRef(oldPath).endswith(".swiftmodule")) {
+      ret.push_back(oldPath);
+    }
+  }
+  return ret;
 }
 
 }  // namespace codeql

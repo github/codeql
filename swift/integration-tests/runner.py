@@ -62,6 +62,8 @@ def main(opts):
         ]
         if opts.check_databases:
             cmd.append("--check-databases")
+        else:
+            cmd.append("--no-check-databases")
         if opts.learn:
             cmd.append("--learn")
         cmd.extend(str(t.parent) for t in succesful_db_creation)

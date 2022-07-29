@@ -165,22 +165,31 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
   auto inputFiles = collectInputFilenames(compiler);
   auto modules = collectModules(compiler);
 
+  // we want to make sure any following extractor run will not try to extract things from
+  // the swiftmodule files we are creating in this run, as those things will already have been
+  // extracted from source with more information. We do this by creating empty trap files.
+  // TargetFile semantics will ensure any following run trying to extract that swiftmodule will just
+  // skip doing it
+  auto outputModuleTrapSuffix = "-" + compiler.getMainModule()->getName().str().str() + ".trap";
+  for (const auto& output : config.outputSwiftModules) {
+    TargetFile::create(output + outputModuleTrapSuffix, config.trapDir, config.getTempTrapDir());
+  }
   for (auto& module : modules) {
-    // We only extract system and builtin modules here as the other "user" modules can be built
-    // during the build process and then re-used at a later stage. In this case, we extract the
-    // user code twice: once during the module build in a form of a source file, and then as
-    // a pre-built module during building of the dependent source files.
-    if (module->isSystemModule() || module->isBuiltinModule()) {
-      extractDeclarations(config, compiler, *module);
-    } else {
-      for (auto file : module->getFiles()) {
-        auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
-        if (!sourceFile || inputFiles.count(sourceFile->getFilename().str()) == 0) {
-          continue;
-        }
-        archiveFile(config, *sourceFile);
-        extractDeclarations(config, compiler, *module, sourceFile);
+    bool isFromSourceFile = false;
+    for (auto file : module->getFiles()) {
+      auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
+      if (!sourceFile) {
+        continue;
       }
+      isFromSourceFile = true;
+      if (inputFiles.count(sourceFile->getFilename().str()) == 0) {
+        continue;
+      }
+      archiveFile(config, *sourceFile);
+      extractDeclarations(config, compiler, *module, sourceFile);
+    }
+    if (!isFromSourceFile) {
+      extractDeclarations(config, compiler, *module);
     }
   }
 }
