@@ -18,7 +18,8 @@ class TokenValidationParametersPropertyWriteToBypassSensitiveValidation extends 
       p.getAnAccess() = this and
       c.getAProperty() = p and
       p.getName() in [
-          "ValidateIssuer", "ValidateAudience", "ValidateLifetime", "RequireExpirationTime", "RequireAudience"
+          "ValidateIssuer", "ValidateAudience", "ValidateLifetime", "RequireExpirationTime",
+          "RequireAudience"
         ]
     )
   }
@@ -38,9 +39,9 @@ class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation 
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(Assignment a | 
-      sink.asExpr() = a.getRValue()
-      and a.getLValue() instanceof TokenValidationParametersPropertyWrite
+    exists(Assignment a |
+      sink.asExpr() = a.getRValue() and
+      a.getLValue() instanceof TokenValidationParametersPropertyWrite
     )
   }
 }
@@ -139,9 +140,11 @@ class TokenValidationParametersPropertyWriteToValidationDelegated extends Proper
  * Holds if the callable has a return statement and it always returns true for all such statements
  */
 predicate callableHasAReturnStmtAndAlwaysReturnsTrue(Callable c) {
-  c.getReturnType().toString() = "Boolean" and
+  c.getReturnType() instanceof BoolType and
+  not callableMayThrowException(c) and
   forall(ReturnStmt rs | rs.getEnclosingCallable() = c |
-    rs.getChildExpr(0).(BoolLiteral).getBoolValue() = true
+    rs.getNumberOfChildren() = 1 and
+    isExpressionAlwaysTrue(rs.getChildExpr(0))
   ) and
   exists(ReturnStmt rs | rs.getEnclosingCallable() = c)
 }
@@ -149,8 +152,16 @@ predicate callableHasAReturnStmtAndAlwaysReturnsTrue(Callable c) {
 /**
  * Holds if the lambda expression `le` always returns true
  */
-predicate lambdaExprReturnsOnlyLiteralTrue(LambdaExpr le) {
+predicate lambdaExprReturnsOnlyLiteralTrue(AnonymousFunctionExpr le) {
   le.getExpressionBody().(BoolLiteral).getBoolValue() = true
+  or
+  // special scenarios where the expression is not a `BoolLiteral`, but it will evaluatue to `true`
+  exists(Expr e | le.getExpressionBody() = e |
+    not e instanceof Call and
+    not e instanceof Literal and
+    e.getType() instanceof BoolType and
+    e.getValue() = "true"
+  )
 }
 
 class CallableAlwaysReturnsTrue extends Callable {
@@ -159,9 +170,12 @@ class CallableAlwaysReturnsTrue extends Callable {
     or
     lambdaExprReturnsOnlyLiteralTrue(this)
     or
-    exists(LambdaExpr le, Call call, CallableAlwaysReturnsTrue cat | this = le |
+    exists(AnonymousFunctionExpr le, Call call, CallableAlwaysReturnsTrue cat, Callable callable |
+      this = le
+    |
+      callable.getACall() = call and
       call = le.getExpressionBody() and
-      cat.getACall() = call
+      callableHasAReturnStmtAndAlwaysReturnsTrue(callable)
     )
   }
 }
@@ -188,9 +202,15 @@ class CallableAlwaysReturnsTrueHigherPrecision extends CallableAlwaysReturnsTrue
         callable instanceof CallableAlwaysReturnsTrueHigherPrecision
       )
       or
-      exists(LambdaExpr le, Call call, CallableAlwaysReturnsTrueHigherPrecision cat | this = le |
+      exists(AnonymousFunctionExpr le, Call call, CallableAlwaysReturnsTrueHigherPrecision cat |
+        this = le
+      |
         le.canReturn(call) and
         cat.getACall() = call
+      )
+      or
+      exists(LambdaExpr le | le = this |
+        le.getBody() instanceof CallableAlwaysReturnsTrueHigherPrecision
       )
     )
   }
@@ -231,7 +251,7 @@ class CallableAlwaysReturnsParameter0 extends CallableReturnsStringAndArg0IsStri
     ) and
     exists(ReturnStmt rs | rs.getEnclosingCallable() = this)
     or
-    exists(LambdaExpr le, Call call, CallableAlwaysReturnsParameter0 cat | this = le |
+    exists(AnonymousFunctionExpr le, Call call, CallableAlwaysReturnsParameter0 cat | this = le |
       call = le.getExpressionBody() and
       cat.getACall() = call
     )
@@ -251,7 +271,9 @@ class CallableAlwaysReturnsParameter0MayThrowExceptions extends CallableReturnsS
     ) and
     exists(ReturnStmt rs | rs.getEnclosingCallable() = this)
     or
-    exists(LambdaExpr le, Call call, CallableAlwaysReturnsParameter0MayThrowExceptions cat |
+    exists(
+      AnonymousFunctionExpr le, Call call, CallableAlwaysReturnsParameter0MayThrowExceptions cat
+    |
       this = le
     |
       call = le.getExpressionBody() and
@@ -262,4 +284,32 @@ class CallableAlwaysReturnsParameter0MayThrowExceptions extends CallableReturnsS
     or
     this.getBody() = this.getParameter(0).getAnAccess()
   }
+}
+
+/**
+ * Hold if the `Expr` e is a `BoolLiteral` with value true,
+ * the expression has a predictable value == `true`,
+ * or if it is a `ConditionalExpr` where the `then` and `else` expressions meet `isExpressionAlwaysTrue` criteria
+ */
+predicate isExpressionAlwaysTrue(Expr e) {
+  e.(BoolLiteral).getBoolValue() = true
+  or
+  e.(Expr).getValue() = "true"
+  or
+  e instanceof ConditionalExpr and
+  isExpressionAlwaysTrue(e.(ConditionalExpr).getThen()) and
+  isExpressionAlwaysTrue(e.(ConditionalExpr).getElse())
+  or
+  exists(Callable callable |
+    callableHasAReturnStmtAndAlwaysReturnsTrue(callable) and
+    callable.getACall() = e
+  )
+}
+
+/**
+ * Holds if the `Callable` c throws any exception other than `ThrowsArgumentNullException`
+ */
+predicate callableMayThrowException(Callable c) {
+  exists(ThrowStmt thre | c = thre.getEnclosingCallable()) and
+  not callableOnlyThrowsArgumentNullException(c)
 }

@@ -109,7 +109,29 @@ namespace JsonWebTokenHandlerTest
                     return true;
                 };
 
+            tokenValidationParamsBaseline.LifetimeValidator = (notBefore, expires, securityToken, validationParameters) => ValidateLifetime02(securityToken, validationParameters); // GOOD
+            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => {return securityToken is null?false:true; }; // GOOD
+            
+            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => { return true; }; // BUG 
+            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => !false ; // BUG
+            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => { return securityToken is null?true:true; }; // BUG
+            tokenValidationParamsBaseline.AudienceValidator = (IEnumerable<string> audiences, SecurityToken securityToken, TokenValidationParameters validationParameters) => { return ValidateLifetimeAlwaysTrue(securityToken, validationParameters);}; //BUG
+            tokenValidationParamsBaseline.AudienceValidator = (audiences, securityToken, validationParameters) => ValidateLifetimeAlwaysTrue(securityToken, validationParameters); //BUG
+
         }
 
+        internal static bool ValidateLifetime02(
+            SecurityToken token,
+            TokenValidationParameters validationParameters)
+        {
+            return token is null?false:true;
+        }
+
+        internal static bool ValidateLifetimeAlwaysTrue02(
+            SecurityToken token,
+            TokenValidationParameters validationParameters)
+        {
+            return !false;
+        }
     }
 }

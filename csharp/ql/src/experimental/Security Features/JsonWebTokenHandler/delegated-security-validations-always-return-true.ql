@@ -19,6 +19,5 @@ from
   TokenValidationParametersPropertyWriteToValidationDelegated tv, Assignment a,
   CallableAlwaysReturnsTrueHigherPrecision e
 where a.getLValue() = tv and a.getRValue().getAChild*() = e
-select tv,
-  "JsonWebTokenHandler security-sensitive property $@ is being delegated to $@.",
-  tv, tv.getTarget().toString(), e, "a callable that always returns \"true\""
+select tv, "JsonWebTokenHandler security-sensitive property $@ is being delegated to $@.", tv,
+  tv.getTarget().toString(), e, "a callable that always returns \"true\""
