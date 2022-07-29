@@ -17,6 +17,7 @@
 #include "swift/extractor/infra/TargetFile.h"
 
 using namespace codeql;
+using namespace std::string_literals;
 
 static void archiveFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
   if (std::error_code ec = llvm::sys::fs::create_directories(config.trapDir)) {
@@ -53,12 +54,16 @@ static std::string getFilename(swift::ModuleDecl& module, swift::SourceFile* pri
   if (primaryFile) {
     return primaryFile->getFilename().str();
   }
-  // Several modules with different name might come from .pcm (clang module) files
-  // In this case we want to differentiate them
-  std::string filename = module.getModuleFilename().str();
-  filename += "-";
-  filename += module.getName().str();
-  return filename;
+  // PCM clang module
+  if (module.isNonSwiftModule()) {
+    // Several modules with different name might come from .pcm (clang module) files
+    // In this case we want to differentiate them
+    std::string filename = "/pcms/"s + llvm::sys::path::filename(module.getModuleFilename()).str();
+    filename += "-";
+    filename += module.getName().str();
+    return filename;
+  }
+  return module.getModuleFilename().str();
 }
 
 static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& module,
