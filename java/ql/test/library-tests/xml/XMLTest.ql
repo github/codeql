@@ -1,8 +1,8 @@
 import semmle.code.xml.XML
 import TestUtilities.InlineExpectationsTest
 
-class XMLTest extends InlineExpectationsTest {
-  XMLTest() { this = "XMLTest" }
+class XmlTest extends InlineExpectationsTest {
+  XmlTest() { this = "XmlTest" }
 
   override string getARelevantTag() { result = "hasXmlResult" }
 
