@@ -1,0 +1,10 @@
+edges
+| StackTraceExposure.rb:11:10:11:17 | call to caller :  | StackTraceExposure.rb:12:12:12:13 | bt |
+nodes
+| StackTraceExposure.rb:6:12:6:22 | call to backtrace | semmle.label | call to backtrace |
+| StackTraceExposure.rb:11:10:11:17 | call to caller :  | semmle.label | call to caller :  |
+| StackTraceExposure.rb:12:12:12:13 | bt | semmle.label | bt |
+subpaths
+#select
+| StackTraceExposure.rb:6:12:6:22 | call to backtrace | StackTraceExposure.rb:6:12:6:22 | call to backtrace | StackTraceExposure.rb:6:12:6:22 | call to backtrace | $@ can be exposed to an external user. | StackTraceExposure.rb:6:12:6:22 | call to backtrace | Error information |
+| StackTraceExposure.rb:12:12:12:13 | bt | StackTraceExposure.rb:11:10:11:17 | call to caller :  | StackTraceExposure.rb:12:12:12:13 | bt | $@ can be exposed to an external user. | StackTraceExposure.rb:11:10:11:17 | call to caller | Error information |
