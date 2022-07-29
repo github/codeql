@@ -56,8 +56,8 @@ newtype TCallPartialValueNumber =
 predicate callValueNumber(CallInstruction call, int index, TCallPartialValueNumber vn) {
   index = max(int n | callArgRank(call, n, _) | n) and
   exists(TCallPartialValueNumber head, TValueNumber arg |
-    callPartialValueNumber(call, index, head) and
-    callArgValueNumber(call, index, arg) and
+    callPartialValueNumber(call, index, pragma[only_bind_out](head)) and
+    callArgValueNumber(call, index, pragma[only_bind_into](arg)) and
     vn = TArgument(head, arg)
   )
   or
@@ -67,11 +67,11 @@ predicate callValueNumber(CallInstruction call, int index, TCallPartialValueNumb
 }
 
 predicate callPartialValueNumber(CallInstruction call, int index, TCallPartialValueNumber head) {
-  index = 1 and head = TNilArgument()
+  index = 1 and head = TNilArgument() and exists(call)
   or
   exists(TCallPartialValueNumber prev, TValueNumber prevVN |
-    callPartialValueNumber(call, index - 1, prev) and
-    callArgValueNumber(call, index - 1, prevVN) and
+    callPartialValueNumber(call, index - 1,  pragma[only_bind_out](prev)) and
+    callArgValueNumber(call, index - 1, pragma[only_bind_into](prevVN)) and
     head = TArgument(prev, prevVN)
   )
 }
