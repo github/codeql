@@ -83,13 +83,11 @@ codeql::PrecedenceGroupDecl DeclVisitor::translatePrecedenceGroupDecl(
   return entry;
 }
 
-std::optional<codeql::ParamDecl> DeclVisitor::translateParamDecl(const swift::ParamDecl& decl) {
-  auto entry = createNamedEntry(decl);
-  if (!entry) {
-    return std::nullopt;
-  }
-  fillVarDecl(decl, *entry);
-  entry->is_inout = decl.isInOut();
+codeql::ParamDecl DeclVisitor::translateParamDecl(const swift::ParamDecl& decl) {
+  // TODO: deduplicate
+  ParamDecl entry{dispatcher_.assignNewLabel(decl)};
+  fillVarDecl(decl, entry);
+  entry.is_inout = decl.isInOut();
   return entry;
 }
 
@@ -113,18 +111,11 @@ codeql::PatternBindingDecl DeclVisitor::translatePatternBindingDecl(
   return entry;
 }
 
-std::optional<codeql::ConcreteVarDecl> DeclVisitor::translateVarDecl(const swift::VarDecl& decl) {
-  std::optional<codeql::ConcreteVarDecl> entry;
-  if (decl.getDeclContext()->isLocalContext()) {
-    entry.emplace(dispatcher_.assignNewLabel(decl));
-  } else {
-    entry = createNamedEntry(decl);
-    if (!entry) {
-      return std::nullopt;
-    }
-  }
-  entry->introducer_int = static_cast<uint8_t>(decl.getIntroducer());
-  fillVarDecl(decl, *entry);
+codeql::ConcreteVarDecl DeclVisitor::translateVarDecl(const swift::VarDecl& decl) {
+  // TODO: deduplicate all non-local variables
+  ConcreteVarDecl entry{dispatcher_.assignNewLabel(decl)};
+  entry.introducer_int = static_cast<uint8_t>(decl.getIntroducer());
+  fillVarDecl(decl, entry);
   return entry;
 }
 
