@@ -7,7 +7,7 @@
  * @tags security
  *       external/cwe/cwe-489
  * @precision very-high
- * @security-severity
+ * @security-severity 0.1
  */
 
 import java
