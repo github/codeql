@@ -21,4 +21,5 @@ where
 //not androidXmlAttr.getLocation().toString().matches("%build%") // my original query - 2 MRVA results
 //not androidXmlAttr.getLocation().toString().matches("%/build%") // 11 MRVA results
 //not androidXmlAttr.getLocation().getFile().getAbsolutePath().matches("%build%") // 2 MRVA results...
+// comment for test commit to new branch
 select androidXmlAttr, "The 'debuggable' attribute is enabled."
