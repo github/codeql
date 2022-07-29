@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "swift/extractor/infra/TargetFile.h"
+
 namespace codeql {
 struct SwiftExtractorConfiguration {
   // The location for storing TRAP files to be imported by CodeQL engine.
@@ -33,4 +35,5 @@ struct SwiftExtractorConfiguration {
   // overall extraction process.
   std::string getTempArtifactDir() const { return scratchDir + "/swift-extraction-artifacts"; }
 };
+
 }  // namespace codeql

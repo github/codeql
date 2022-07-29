@@ -14,7 +14,7 @@
 #include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/visitors/SwiftVisitor.h"
-#include "swift/extractor/infra/TargetFile.h"
+#include "swift/extractor/TargetTrapFile.h"
 
 using namespace codeql;
 using namespace std::string_literals;
@@ -56,8 +56,10 @@ static std::string getFilename(swift::ModuleDecl& module, swift::SourceFile* pri
   }
   // PCM clang module
   if (module.isNonSwiftModule()) {
-    // Several modules with different name might come from .pcm (clang module) files
+    // Several modules with different names might come from .pcm (clang module) files
     // In this case we want to differentiate them
+    // Moreover, pcm files may come from caches located in different directories, but are
+    // unambiguously identified by the base file name, so we can discard the absolute directory
     std::string filename = "/pcms/"s + llvm::sys::path::filename(module.getModuleFilename()).str();
     filename += "-";
     filename += module.getName().str();
@@ -78,20 +80,6 @@ static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& modul
   return ret;
 }
 
-static void dumpArgs(TargetFile& out, const SwiftExtractorConfiguration& config) {
-  out << "/* extractor-args:\n";
-  for (const auto& opt : config.frontendOptions) {
-    out << "  " << std::quoted(opt) << " \\\n";
-  }
-  out << "\n*/\n";
-
-  out << "/* swift-frontend-args:\n";
-  for (const auto& opt : config.patchedFrontendOptions) {
-    out << "  " << std::quoted(opt) << " \\\n";
-  }
-  out << "\n*/\n";
-}
-
 static void extractDeclarations(const SwiftExtractorConfiguration& config,
                                 swift::CompilerInstance& compiler,
                                 swift::ModuleDecl& module,
@@ -101,12 +89,11 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   // The extractor can be called several times from different processes with
   // the same input file(s). Using `TargetFile` the first process will win, and the following
   // will just skip the work
-  auto trapTarget = TargetFile::create(filename + ".trap", config.trapDir, config.getTempTrapDir());
+  auto trapTarget = createTargetTrapFile(config, filename);
   if (!trapTarget) {
     // another process arrived first, nothing to do for us
     return;
   }
-  dumpArgs(*trapTarget, config);
   TrapDomain trap{*trapTarget};
 
   // TODO: remove this and recreate it with IPA when we have that
@@ -171,21 +158,21 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
   auto modules = collectModules(compiler);
 
   for (auto& module : modules) {
-    // We only extract system and builtin modules here as the other "user" modules can be built
-    // during the build process and then re-used at a later stage. In this case, we extract the
-    // user code twice: once during the module build in a form of a source file, and then as
-    // a pre-built module during building of the dependent source files.
-    if (module->isSystemModule() || module->isBuiltinModule()) {
-      extractDeclarations(config, compiler, *module);
-    } else {
-      for (auto file : module->getFiles()) {
-        auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
-        if (!sourceFile || inputFiles.count(sourceFile->getFilename().str()) == 0) {
-          continue;
-        }
-        archiveFile(config, *sourceFile);
-        extractDeclarations(config, compiler, *module, sourceFile);
+    bool isFromSourceFile = false;
+    for (auto file : module->getFiles()) {
+      auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
+      if (!sourceFile) {
+        continue;
       }
+      isFromSourceFile = true;
+      if (inputFiles.count(sourceFile->getFilename().str()) == 0) {
+        continue;
+      }
+      archiveFile(config, *sourceFile);
+      extractDeclarations(config, compiler, *module, sourceFile);
+    }
+    if (!isFromSourceFile) {
+      extractDeclarations(config, compiler, *module);
     }
   }
 }
