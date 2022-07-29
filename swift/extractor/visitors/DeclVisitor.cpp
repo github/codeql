@@ -115,7 +115,9 @@ codeql::PatternBindingDecl DeclVisitor::translatePatternBindingDecl(
 
 std::optional<codeql::ConcreteVarDecl> DeclVisitor::translateVarDecl(const swift::VarDecl& decl) {
   std::optional<codeql::ConcreteVarDecl> entry;
-  if (decl.getDeclContext()->isLocalContext()) {
+  // We do not deduplicate variables from non-swift (PCM, clang modules) modules as the mangler
+  // crashes sometimes
+  if (decl.getDeclContext()->isLocalContext() || decl.getModuleContext()->isNonSwiftModule()) {
     entry.emplace(dispatcher_.assignNewLabel(decl));
   } else {
     entry = createNamedEntry(decl);
