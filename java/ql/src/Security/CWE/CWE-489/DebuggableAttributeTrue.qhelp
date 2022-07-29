@@ -4,35 +4,31 @@
 <qhelp>
 
 <overview>
-<p>The <code>debuggable</code> attribute in the application section of the AndroidManifest.xml file should
-never be enabled in production builds.</p>
-
-<p>ADD MORE/EDIT?</p>
+<p>When a debugger is enabled it could allow for entry points in the application or reveal sensitive information.</p>
 
 </overview>
 <recommendation>
 
-<p>Make sure that the <code>debuggable</code> attribute is set to false in production builds.</p>
+<p>In Android applications either set the <code>android:debuggable</code> attribute to <code>false</code>
+or do not include it in the manifest. The default value when not included is <code>false</code>.</p>
 
 </recommendation>
 <example>
 
-<p>In the example below, the <code>debuggable</code> attribute is set to <code>true</code>.</p>
+<p>In the example below, the <code>android:debuggable</code> attribute is set to <code>true</code>.</p>
 
+<sample src="DebuggableTrue.xml" />
 
-<p>The corrected version sets the <code>debuggable</code> attribute to <code>false</code>.</p>
+<p>The corrected version sets the <code>android:debuggable</code> attribute to <code>false</code>.</p>
 
+<sample src="DebuggableFalse.xml" />
 
 </example>
 <references>
 
 <li>
-  Java SE Documentation:
-  <a href="https://www.oracle.com/java/technologies/javase/codeconventions-statements.html#15395">Compound Statements</a>.
-</li>
-<li>
-  Wikipedia:
-  <a href="https://en.wikipedia.org/wiki/Indentation_style">Indentation style</a>.
+  Android Developers:
+  <a href="https://developer.android.com/guide/topics/manifest/application-element#debug">The android:debuggable attribute</a>.
 </li>
 
 </references>
