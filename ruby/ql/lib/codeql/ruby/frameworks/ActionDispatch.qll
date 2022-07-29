@@ -953,10 +953,14 @@ module ActionDispatch {
     private string anyHttpMethod() { result = ["get", "post", "put", "patch", "delete"] }
 
     /**
-     * The inverse of `pluralize`
-     * photos => photo
-     * stories => story
-     * not_plural => not_plural
+     * The inverse of `pluralize`. If `input` is a plural word, it returns the
+     * singular version.
+     *
+     * Examples:
+     *
+     * - photos -> photo
+     * - stories -> story
+     * - not_plural -> not_plural
      */
     bindingset[input]
     private string singularize(string input) {

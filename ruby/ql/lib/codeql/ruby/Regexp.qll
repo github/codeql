@@ -92,12 +92,12 @@ private class ParsedStringRegExp extends RegExp {
   override string getFlags() { none() }
 }
 
-/** Provides a class for modelling regular expression interpretations. */
+/** Provides a class for modeling regular expression interpretations. */
 module RegExpInterpretation {
   /**
-   * Nodes that are not regular expression literals, but are used in places that
-   * may interpret them regular expressions. Typically these are strings that flow
-   * to method calls like `RegExp.new`.
+   * A node that is not a regular expression literal, but is used in places that
+   * may interpret it as one. Instances of this class are typically strings that
+   * flow to method calls like `RegExp.new`.
    */
   abstract class Range extends DataFlow::Node { }
 }
