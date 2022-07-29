@@ -37,6 +37,11 @@ namespace TestSqlite
             adapter = new SQLiteDataAdapter(untrustedData.Text, connectionString);
             result = new DataSet();
             adapter.Fill(result);
+
+            // BAD: untrusted data is not sanitized.
+            adapter = new SQLiteDataAdapter(cmd);
+            result = new DataSet();
+            adapter.Fill(result);
         }
     }
 }
