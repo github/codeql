@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.happybirthday">
 
-    <!-- Not Safe: 'debuggable' set to true -->
+    <!-- Not Safe: 'android:debuggable' set to true -->
     <application
         android:debuggable="true"
         android:allowBackup="true"
