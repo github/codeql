@@ -71,6 +71,15 @@ impl Writer {
                 let mut trap_file = BufWriter::new(trap_file);
                 self.write_trap_entries(&mut trap_file)
             }
+            Compression::Brotli => {
+                let params = brotli::enc::BrotliEncoderParams {
+                    quality: 3,
+                    ..Default::default()
+                };
+                let trap_file = brotli::CompressorWriter::with_params(trap_file, 4096, &params);
+                let mut trap_file = BufWriter::new(trap_file);
+                self.write_trap_entries(&mut trap_file)
+            }
         }
     }
 
@@ -221,6 +230,7 @@ fn limit_string(string: &str, max_size: usize) -> &str {
 pub enum Compression {
     None,
     Gzip,
+    Brotli,
 }
 
 impl Compression {
@@ -229,12 +239,12 @@ impl Compression {
             Ok(method) => match Compression::from_string(&method) {
                 Some(c) => c,
                 None => {
-                    tracing::error!("Unknown compression method '{}'; using gzip.", &method);
-                    Compression::Gzip
+                    tracing::error!("Unknown compression method '{}'; using brotli.", &method);
+                    Compression::Brotli
                 }
             },
             // Default compression method if the env var isn't set:
-            Err(_) => Compression::Gzip,
+            Err(_) => Compression::Brotli,
         }
     }
 
@@ -242,6 +252,7 @@ impl Compression {
         match s.to_lowercase().as_ref() {
             "none" => Some(Compression::None),
             "gzip" => Some(Compression::Gzip),
+            "brotli" => Some(Compression::Brotli),
             _ => None,
         }
     }
@@ -250,6 +261,7 @@ impl Compression {
         match self {
             Compression::None => "trap",
             Compression::Gzip => "trap.gz",
+            Compression::Brotli => "trap.br",
         }
     }
 }
