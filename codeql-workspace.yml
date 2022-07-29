@@ -13,7 +13,7 @@ provide:
   # users can uncomment the following line and place a custom ML model
   # in the corresponding pack to test a custom ML model within their local
   # checkout.
-  # - "javascript/ql/experimental/adaptivethreatmodeling/model/qlpack.yml"
+  - "javascript/ql/experimental/adaptivethreatmodeling/model/qlpack.yml"
   - "javascript/ql/experimental/adaptivethreatmodeling/modelbuilding/qlpack.yml"
   - "javascript/ql/experimental/adaptivethreatmodeling/src/qlpack.yml"
   - "csharp/ql/campaigns/Solorigate/lib/qlpack.yml"

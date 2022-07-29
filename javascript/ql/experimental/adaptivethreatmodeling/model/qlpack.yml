@@ -4,4 +4,4 @@ groups:
     - javascript
     - experimental
 mlModels:
-    - "resources/*.codeqlmodel"
+    - "resources/red_cartoon.codeqlmodel"
