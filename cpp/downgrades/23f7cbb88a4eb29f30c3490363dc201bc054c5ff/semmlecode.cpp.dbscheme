@@ -1650,11 +1650,6 @@ case @expr.kind of
 | 327 = @co_await
 | 328 = @co_yield
 | 329 = @temp_init
-| 330 = @isassignable
-| 331 = @isaggregate
-| 332 = @hasuniqueobjectrepresentations
-| 333 = @builtinbitcast
-| 334 = @builtinshuffle
 ;
 
 @var_args_expr = @vastartexpr
@@ -1716,11 +1711,6 @@ case @expr.kind of
             | @isfinalexpr
             | @builtinchooseexpr
             | @builtincomplex
-            | @isassignable
-            | @isaggregate
-            | @hasuniqueobjectrepresentations
-            | @builtinbitcast
-            | @builtinshuffle
             ;
 
 new_allocated_type(

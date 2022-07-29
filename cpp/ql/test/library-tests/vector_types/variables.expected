@@ -13,6 +13,12 @@
 | file://:0:0:0:0 | gp_offset | gp_offset | file://:0:0:0:0 | unsigned int | 4 |
 | file://:0:0:0:0 | overflow_arg_area | overflow_arg_area | file://:0:0:0:0 | void * | 8 |
 | file://:0:0:0:0 | reg_save_area | reg_save_area | file://:0:0:0:0 | void * | 8 |
+| vector_types2.cpp:5:7:5:7 | a | a | vector_types2.cpp:2:13:2:15 | v4i | 16 |
+| vector_types2.cpp:6:7:6:7 | b | b | vector_types2.cpp:2:13:2:15 | v4i | 16 |
+| vector_types2.cpp:7:7:7:12 | mask_1 | mask_1 | vector_types2.cpp:2:13:2:15 | v4i | 16 |
+| vector_types2.cpp:8:7:8:12 | mask_2 | mask_2 | vector_types2.cpp:2:13:2:15 | v4i | 16 |
+| vector_types2.cpp:10:7:10:11 | res_1 | res_1 | vector_types2.cpp:2:13:2:15 | v4i | 16 |
+| vector_types2.cpp:11:7:11:11 | res_2 | res_2 | vector_types2.cpp:2:13:2:15 | v4i | 16 |
 | vector_types.cpp:9:21:9:21 | x | x | vector_types.cpp:6:15:6:17 | v4f | 16 |
 | vector_types.cpp:14:18:14:20 | lhs | lhs | vector_types.cpp:6:15:6:17 | v4f | 16 |
 | vector_types.cpp:14:27:14:29 | rhs | rhs | vector_types.cpp:6:15:6:17 | v4f | 16 |
