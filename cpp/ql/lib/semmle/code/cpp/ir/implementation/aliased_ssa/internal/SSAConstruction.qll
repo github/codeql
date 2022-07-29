@@ -11,8 +11,11 @@ private import NewIR
 
 private class OldBlock = Reachability::ReachableBlock;
 
-private class OldInstruction = Reachability::ReachableInstruction;
+private class OldInstruction extends Reachability::ReachableInstruction {
+  OldInstruction() { not Elim::removeableSideEffect(this)}
+}
 
+private import SideEffectElimination as Elim
 import Cached
 
 cached
@@ -58,7 +61,9 @@ private module Cached {
 
   cached
   predicate hasInstruction(TStageInstruction instr) {
-    instr instanceof TRawInstruction and instr instanceof OldInstruction
+    instr instanceof TRawInstruction and
+    instr instanceof OldInstruction and
+    not Elim::removeableSideEffect(instr)
     or
     instr = phiInstruction(_, _)
     or
@@ -382,7 +387,14 @@ private module Cached {
         (
           if Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind)
           then result = unreachedInstruction(instruction.getEnclosingIRFunction())
-          else result = getNewInstruction(oldInstruction.getSuccessor(kind))
+          else
+            if Elim::removeableSideEffect(oldInstruction.getSuccessor(kind))
+            then
+              // the only removed nodes are side-effect writes, but those may have Chi nodes
+              // skip to the following instruction in the old IR, which won't be removed
+              // if we start skipping specific side effects, this may no longer hold
+              result = getNewInstruction(oldInstruction.getSuccessor(kind).getSuccessor(kind))
+            else result = getNewInstruction(oldInstruction.getSuccessor(kind))
         )
       )
       or
