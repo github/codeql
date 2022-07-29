@@ -2,7 +2,7 @@ using System;
 
 namespace TestSqlite
 {
-
+    using System.Data;
     using System.Data.SQLite;
     using System.Web.UI.WebControls;
 
@@ -22,6 +22,21 @@ namespace TestSqlite
                 cmd = new SQLiteCommand(untrustedData.Text, connection);
             }
 
+            SQLiteDataAdapter adapter;
+            DataSet result;
+
+            // BAD: untrusted data is not sanitized.
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                adapter = new SQLiteDataAdapter(untrustedData.Text, connection);
+                result = new DataSet();
+                adapter.Fill(result);
+            }
+
+            // BAD: untrusted data is not sanitized.
+            adapter = new SQLiteDataAdapter(untrustedData.Text, connectionString);
+            result = new DataSet();
+            adapter.Fill(result);
         }
     }
 }
