@@ -1,5 +1,5 @@
 <manifest ... >
-    <!-- BAD: 'android:debuggable' set to true -->
+    <!-- BAD: 'android:debuggable' set to 'true' -->
     <application
         android:debuggable="true">
         <activity ... >

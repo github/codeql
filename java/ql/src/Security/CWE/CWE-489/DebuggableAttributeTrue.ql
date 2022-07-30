@@ -17,9 +17,5 @@ from AndroidXmlAttribute androidXmlAttr
 where
   androidXmlAttr.getName() = "debuggable" and
   androidXmlAttr.getValue() = "true" and
-  not androidXmlAttr.getLocation().getFile().getAbsolutePath().matches("%/build%") // USE THIS (from speaking with Tony) - 11 MRVA results
-//not androidXmlAttr.getLocation().toString().matches("%build%") // my original query - 2 MRVA results
-//not androidXmlAttr.getLocation().toString().matches("%/build%") // 11 MRVA results
-//not androidXmlAttr.getLocation().getFile().getAbsolutePath().matches("%build%") // 2 MRVA results...
-// comment for test commit to new branch
-select androidXmlAttr, "The 'debuggable' attribute is enabled."
+  not androidXmlAttr.getLocation().getFile().getRelativePath().matches("%/build%")
+select androidXmlAttr, "The 'android:debuggable' attribute is enabled."
