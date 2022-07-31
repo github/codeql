@@ -294,6 +294,11 @@ class ConstantReadAccess extends ConstantAccess {
   Expr getValue() { result = getConstantReadAccessValue(this) }
 
   final override string getAPrimaryQlClass() { result = "ConstantReadAccess" }
+
+  /**
+   * Gets a fully qualified name for this constant.
+   */
+  string getAQualifiedName() { TResolved(result) = resolveConstantReadAccess(this) }
 }
 
 /**
