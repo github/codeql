@@ -117,7 +117,7 @@ predicate findUseCharacterConversion(Expr exp, string msg) {
 predicate findUseMultibyteCharacter(Expr exp, string msg) {
   exists(ArrayType arrayType, ArrayExpr arrayExpr |
     arrayExpr = exp and
-    arrayExpr.getArrayBase().(VariableAccess).getTarget().getADeclarationEntry().getType() =
+    arrayExpr.getArrayBase().getType() =
       arrayType and
     (
       exists(AssignExpr assZero, SizeofExprOperator sizeofArray, Expr oneValue |
