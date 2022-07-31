@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.happybirthday">
 
-    <!-- Not Safe: 'android:debuggable' set to true -->
-    <application
+    <!-- $ hasDebuggableAttributeEnabled --> <application
         android:debuggable="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
