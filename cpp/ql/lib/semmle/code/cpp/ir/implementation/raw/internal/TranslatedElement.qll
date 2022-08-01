@@ -947,7 +947,7 @@ abstract class TranslatedElement extends TTranslatedElement {
 }
 
 /**
- * Represents the IR translation of a root element, either a function or a global variable.
+ * The IR translation of a root element, either a function or a global variable.
  */
 abstract class TranslatedRootElement extends TranslatedElement {
   TranslatedRootElement() {
