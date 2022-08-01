@@ -7,7 +7,7 @@ runs:
       shell: bash
       run: |
         gh extension install github/gh-codeql
-        gh codeql set-channel release
+        gh codeql set-channel nightly
         gh codeql version
         gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"
       env:
