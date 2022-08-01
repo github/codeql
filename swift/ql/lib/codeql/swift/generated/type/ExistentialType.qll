@@ -3,4 +3,11 @@ import codeql.swift.elements.type.Type
 
 class ExistentialTypeBase extends @existential_type, Type {
   override string getAPrimaryQlClass() { result = "ExistentialType" }
+
+  Type getConstraint() {
+    exists(Type x |
+      existential_types(this, x) and
+      result = x.resolve()
+    )
+  }
 }

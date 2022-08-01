@@ -1,0 +1,8 @@
+edges
+nodes
+| StringLengthConflation.swift:72:33:72:35 | .count | semmle.label | .count |
+| StringLengthConflation.swift:78:47:78:49 | .count | semmle.label | .count |
+subpaths
+#select
+| StringLengthConflation.swift:72:33:72:35 | .count | StringLengthConflation.swift:72:33:72:35 | .count | StringLengthConflation.swift:72:33:72:35 | .count | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:78:47:78:49 | .count | StringLengthConflation.swift:78:47:78:49 | .count | StringLengthConflation.swift:78:47:78:49 | .count | This String length is used in an NSString, but it may not be equivalent. |

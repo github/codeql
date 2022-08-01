@@ -127,12 +127,12 @@ A:
 
 
 def test_lowercase_rejected(load):
-    with pytest.raises(AssertionError):
+    with pytest.raises(schema.Error):
         load("aLowercase: {}")
 
 
 def test_digit_rejected(load):
-    with pytest.raises(AssertionError):
+    with pytest.raises(schema.Error):
         load("1digit: {}")
 
 
@@ -195,11 +195,111 @@ A:
 
 @pytest.mark.parametrize("type", ["string", "int", "boolean", "predicate"])
 def test_builtin_and_predicate_children_not_allowed(load, type):
-    with pytest.raises(AssertionError):
+    with pytest.raises(schema.Error):
         load(f"""
 A:
     _children:
         x: {type}
+""")
+
+
+def test_property_with_explicit_type(load):
+    ret = load("""
+A:
+    x: 
+      type: string*
+""")
+    assert ret.classes == [
+        schema.Class(root_name, derived={'A'}),
+        schema.Class('A', bases={root_name}, properties=[
+            schema.RepeatedProperty('x', 'string'),
+        ]),
+    ]
+
+
+def test_property_with_explicit_type_and_pragmas(load):
+    ret = load("""
+A:
+    x: 
+      type: string*
+      _pragma: [foo, bar]
+""")
+    assert ret.classes == [
+        schema.Class(root_name, derived={'A'}),
+        schema.Class('A', bases={root_name}, properties=[
+            schema.RepeatedProperty('x', 'string', pragmas=["foo", "bar"]),
+        ]),
+    ]
+
+
+def test_property_with_explicit_type_and_one_pragma(load):
+    ret = load("""
+A:
+    x: 
+      type: string*
+      _pragma: foo
+""")
+    assert ret.classes == [
+        schema.Class(root_name, derived={'A'}),
+        schema.Class('A', bases={root_name}, properties=[
+            schema.RepeatedProperty('x', 'string', pragmas=["foo"]),
+        ]),
+    ]
+
+
+def test_property_with_explicit_type_and_unknown_metadata(load):
+    with pytest.raises(schema.Error):
+        load("""
+A:
+    x: 
+      type: string*
+      _what_is_this: [foo, bar]
+""")
+
+
+def test_property_with_dict_without_explicit_type(load):
+    with pytest.raises(schema.Error):
+        load("""
+A:
+    x: 
+      typo: string*
+""")
+
+
+def test_class_with_pragmas(load):
+    ret = load("""
+A:
+    x: string*
+    _pragma: [foo, bar]
+""")
+    assert ret.classes == [
+        schema.Class(root_name, derived={'A'}),
+        schema.Class('A', bases={root_name}, properties=[
+            schema.RepeatedProperty('x', 'string'),
+        ], pragmas=["foo", "bar"]),
+    ]
+
+
+def test_class_with_one_pragma(load):
+    ret = load("""
+A:
+    x: string*
+    _pragma: foo
+""")
+    assert ret.classes == [
+        schema.Class(root_name, derived={'A'}),
+        schema.Class('A', bases={root_name}, properties=[
+            schema.RepeatedProperty('x', 'string'),
+        ], pragmas=["foo"]),
+    ]
+
+
+def test_class_with_unknown_metadata(load):
+    with pytest.raises(schema.Error):
+        load("""
+A:
+    x: string*
+    _foobar: yeah
 """)
 
 

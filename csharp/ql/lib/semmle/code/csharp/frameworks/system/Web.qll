@@ -180,8 +180,8 @@ private class SystemWebHttpServerUtilityFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Web;HttpServerUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint",
-        "System.Web;HttpServerUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint"
+        "System.Web;HttpServerUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint;manual",
+        "System.Web;HttpServerUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint;manual"
       ]
   }
 }
@@ -208,17 +208,17 @@ private class SystemWebHttpUtilityFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Web;HttpUtility;false;HtmlAttributeEncode;(System.String);;Argument[0];ReturnValue;taint",
-        "System.Web;HttpUtility;false;HtmlAttributeEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint",
-        "System.Web;HttpUtility;false;HtmlEncode;(System.Object);;Argument[0];ReturnValue;taint",
-        "System.Web;HttpUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint",
-        "System.Web;HttpUtility;false;HtmlEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint",
-        "System.Web;HttpUtility;false;JavaScriptStringEncode;(System.String);;Argument[0];ReturnValue;taint",
-        "System.Web;HttpUtility;false;JavaScriptStringEncode;(System.String,System.Boolean);;Argument[0];ReturnValue;taint",
-        "System.Web;HttpUtility;false;UrlEncode;(System.Byte[]);;Argument[0];ReturnValue;taint",
-        "System.Web;HttpUtility;false;UrlEncode;(System.Byte[],System.Int32,System.Int32);;Argument[0];ReturnValue;taint",
-        "System.Web;HttpUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint",
-        "System.Web;HttpUtility;false;UrlEncode;(System.String,System.Text.Encoding);;Argument[0];ReturnValue;taint"
+        "System.Web;HttpUtility;false;HtmlAttributeEncode;(System.String);;Argument[0];ReturnValue;taint;manual",
+        "System.Web;HttpUtility;false;HtmlAttributeEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint;manual",
+        "System.Web;HttpUtility;false;HtmlEncode;(System.Object);;Argument[0];ReturnValue;taint;manual",
+        "System.Web;HttpUtility;false;HtmlEncode;(System.String);;Argument[0];ReturnValue;taint;manual",
+        "System.Web;HttpUtility;false;HtmlEncode;(System.String,System.IO.TextWriter);;Argument[0];ReturnValue;taint;manual",
+        "System.Web;HttpUtility;false;JavaScriptStringEncode;(System.String);;Argument[0];ReturnValue;taint;manual",
+        "System.Web;HttpUtility;false;JavaScriptStringEncode;(System.String,System.Boolean);;Argument[0];ReturnValue;taint;manual",
+        "System.Web;HttpUtility;false;UrlEncode;(System.Byte[]);;Argument[0];ReturnValue;taint;manual",
+        "System.Web;HttpUtility;false;UrlEncode;(System.Byte[],System.Int32,System.Int32);;Argument[0];ReturnValue;taint;manual",
+        "System.Web;HttpUtility;false;UrlEncode;(System.String);;Argument[0];ReturnValue;taint;manual",
+        "System.Web;HttpUtility;false;UrlEncode;(System.String,System.Text.Encoding);;Argument[0];ReturnValue;taint;manual"
       ]
   }
 }
@@ -242,8 +242,8 @@ private class SystemWebHttpCookieFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Web;HttpCookie;false;get_Value;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Web;HttpCookie;false;get_Values;();;Argument[Qualifier];ReturnValue;taint"
+        "System.Web;HttpCookie;false;get_Value;();;Argument[Qualifier];ReturnValue;taint;manual",
+        "System.Web;HttpCookie;false;get_Values;();;Argument[Qualifier];ReturnValue;taint;manual"
       ]
   }
 }

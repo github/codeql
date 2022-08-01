@@ -158,7 +158,7 @@ class Content extends TContent {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
@@ -231,27 +231,39 @@ class SyntheticFieldContent extends Content, TSyntheticFieldContent {
 }
 
 /**
- * A guard that validates some expression.
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
  *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * When using a data-flow or taint-flow configuration `cfg`, it is important
- * that any classes extending BarrierGuard in scope which are not used in `cfg`
- * are disjoint from any classes extending BarrierGuard in scope which are used
- * in `cfg`.
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
  */
-abstract class BarrierGuard extends Node {
-  /** Holds if this guard validates `e` upon evaluating to `branch`. */
-  abstract predicate checks(Expr e, boolean branch);
+signature predicate guardChecksSig(Node g, Expr e, boolean branch);
 
-  /** Gets a node guarded by this guard. */
-  final Node getAGuardedNode() {
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() {
+    exists(Node g, ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields var |
+      result = var.getAUse()
+    |
+      guards(g, guard, nd, var) and
+      guard.dominates(result.getBasicBlock())
+    )
+  }
+
+  /**
+   * Gets a node that is safely guarded by the given guard check.
+   */
+  Node getABarrierNodeForGuard(Node guardCheck) {
     exists(ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields var |
       result = var.getAUse()
     |
-      this.guards(guard, nd, var) and
+      guards(guardCheck, guard, nd, var) and
       guard.dominates(result.getBasicBlock())
     )
   }
@@ -263,25 +275,25 @@ abstract class BarrierGuard extends Node {
    * This predicate exists to enforce a good join order in `getAGuardedNode`.
    */
   pragma[noinline]
-  private predicate guards(ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields ap) {
-    this.guards(guard, nd) and nd = ap.getAUse()
+  private predicate guards(Node g, ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields ap) {
+    guards(g, guard, nd) and nd = ap.getAUse()
   }
 
   /**
    * Holds if `guard` markes a point in the control-flow graph where this node
    * is known to validate `nd`.
    */
-  private predicate guards(ControlFlow::ConditionGuardNode guard, Node nd) {
+  private predicate guards(Node g, ControlFlow::ConditionGuardNode guard, Node nd) {
     exists(boolean branch |
-      this.checks(nd.asExpr(), branch) and
-      guard.ensures(this, branch)
+      guardChecks(g, nd.asExpr(), branch) and
+      guard.ensures(g, branch)
     )
     or
     exists(
       Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p, CallNode c,
       Node resNode, Node check, boolean outcome
     |
-      this.guardingCall(f, inp, outp, p, c, nd, resNode) and
+      guardingCall(g, f, inp, outp, p, c, nd, resNode) and
       p.checkOn(check, outcome, resNode) and
       guard.ensures(pragma[only_bind_into](check), outcome)
     )
@@ -289,10 +301,10 @@ abstract class BarrierGuard extends Node {
 
   pragma[noinline]
   private predicate guardingCall(
-    Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p, CallNode c, Node nd,
-    Node resNode
+    Node g, Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p, CallNode c,
+    Node nd, Node resNode
   ) {
-    this.guardingFunction(f, inp, outp, p) and
+    guardingFunction(g, f, inp, outp, p) and
     c = f.getACall() and
     nd = inp.getNode(c) and
     localFlow(pragma[only_bind_out](outp.getNode(c)), resNode)
@@ -308,7 +320,7 @@ abstract class BarrierGuard extends Node {
    * `false`, `nil` or a non-`nil` value.)
    */
   private predicate guardingFunction(
-    Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p
+    Node g, Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p
   ) {
     exists(FuncDecl fd, Node arg, Node ret |
       fd.getFunction() = f and
@@ -317,7 +329,7 @@ abstract class BarrierGuard extends Node {
       (
         // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
         exists(ControlFlow::ConditionGuardNode guard |
-          this.guards(guard, arg) and
+          guards(g, guard, arg) and
           guard.dominates(ret.getBasicBlock())
         |
           exists(boolean b |
@@ -336,12 +348,12 @@ abstract class BarrierGuard extends Node {
         // or "return !someBarrierGuard(arg) && otherCond(...)"
         exists(boolean outcome |
           ret = getUniqueOutputNode(fd, outp) and
-          this.checks(arg.asExpr(), outcome) and
+          guardChecks(g, arg.asExpr(), outcome) and
           // This predicate's contract is (p holds of ret ==> arg is checked),
           // (and we have (this has outcome ==> arg is checked))
           // but p.checkOn(ret, outcome, this) gives us (ret has outcome ==> p holds of this),
           // so we need to swap outcome and (specifically boolean) p:
-          DataFlow::booleanProperty(outcome).checkOn(ret, p.asBoolean(), this)
+          DataFlow::booleanProperty(outcome).checkOn(ret, p.asBoolean(), g)
         )
         or
         // Case: a function like "return guardProxy(arg)"
@@ -351,7 +363,7 @@ abstract class BarrierGuard extends Node {
           DataFlow::Property outpProp
         |
           ret = getUniqueOutputNode(fd, outp) and
-          this.guardingFunction(f2, inp2, outp2, outpProp) and
+          guardingFunction(g, f2, inp2, outp2, outpProp) and
           c = f2.getACall() and
           arg = inp2.getNode(c) and
           (
@@ -366,6 +378,34 @@ abstract class BarrierGuard extends Node {
       )
     )
   }
+}
+
+/**
+ * DEPRECATED: Use `BarrierGuard` module instead.
+ *
+ * A guard that validates some expression.
+ *
+ * To use this in a configuration, extend the class and provide a
+ * characteristic predicate precisely specifying the guard, and override
+ * `checks` to specify what is being validated and in which branch.
+ *
+ * When using a data-flow or taint-flow configuration `cfg`, it is important
+ * that any classes extending BarrierGuard in scope which are not used in `cfg`
+ * are disjoint from any classes extending BarrierGuard in scope which are used
+ * in `cfg`.
+ */
+abstract deprecated class BarrierGuard extends Node {
+  /** Holds if this guard validates `e` upon evaluating to `branch`. */
+  abstract predicate checks(Expr e, boolean branch);
+
+  /** Gets a node guarded by this guard. */
+  final Node getAGuardedNode() {
+    result = BarrierGuard<barrierGuardChecks/3>::getABarrierNodeForGuard(this)
+  }
+}
+
+deprecated private predicate barrierGuardChecks(Node g, Expr e, boolean branch) {
+  g.(BarrierGuard).checks(e, branch)
 }
 
 DataFlow::Node getUniqueOutputNode(FuncDecl fd, FunctionOutput outp) {

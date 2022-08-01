@@ -33,7 +33,7 @@ methodWithDuplicate
 | AbstractList | indexOf | Object |
 | AbstractList | lastIndexOf | Object |
 | AbstractList | listIterator | int |
-| AbstractList | removeAt | int |
+| AbstractList | remove | int |
 | AbstractList | removeRange | int |
 | AbstractList | set | E |
 | AbstractList | set | int |
@@ -48,7 +48,7 @@ methodWithDuplicate
 | AbstractList<E> | indexOf | Object |
 | AbstractList<E> | lastIndexOf | Object |
 | AbstractList<E> | listIterator | int |
-| AbstractList<E> | removeAt | int |
+| AbstractList<E> | remove | int |
 | AbstractList<E> | removeRange | int |
 | AbstractList<E> | set | E |
 | AbstractList<E> | set | int |
@@ -90,7 +90,7 @@ methodWithDuplicate
 | AbstractMutableCollection | add | E |
 | AbstractMutableList | add | E |
 | AbstractMutableList | add | int |
-| AbstractMutableList | removeAt | int |
+| AbstractMutableList | remove | int |
 | AbstractMutableList | set | E |
 | AbstractMutableList | set | int |
 | AbstractMutableMap | put | K |
@@ -383,8 +383,8 @@ methodWithDuplicate
 | MutableList | addAll | int |
 | MutableList | listIterator | int |
 | MutableList | remove | Object |
+| MutableList | remove | int |
 | MutableList | removeAll | Collection<?> |
-| MutableList | removeAt | int |
 | MutableList | replaceAll | UnaryOperator<E> |
 | MutableList | retainAll | Collection<?> |
 | MutableList | set | E |

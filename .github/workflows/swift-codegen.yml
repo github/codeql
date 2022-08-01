@@ -15,18 +15,22 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/fetch-codeql
       - uses: bazelbuild/setup-bazelisk@v2
+      - uses: actions/setup-python@v3
+      - uses: pre-commit/action@v3.0.0
+        name: Check that python code is properly formatted
+        with:
+          extra_args: autopep8 --all-files
       - name: Run unit tests
         run: |
           bazel test //swift/codegen/test --test_output=errors
-      - name: Check that QL generated code was checked in
-        run: |
-          bazel run //swift/codegen
-          git add swift
-          git diff --exit-code --stat HEAD
+      - uses: pre-commit/action@v3.0.0
+        name: Check that QL generated code was checked in
+        with:
+          extra_args: swift-codegen --all-files
       - name: Generate C++ files
         run: |
-          bazel run //swift/codegen:codegen -- --generate=trap,cpp --cpp-output=$PWD/swift-generated-headers
+          bazel run //swift/codegen:codegen -- --generate=trap,cpp --cpp-output=$PWD/swift-generated-cpp-files
       - uses: actions/upload-artifact@v3
         with:
-          name: swift-generated-headers
-          path: swift-generated-headers/*.h
+          name: swift-generated-cpp-files
+          path: swift-generated-cpp-files/**

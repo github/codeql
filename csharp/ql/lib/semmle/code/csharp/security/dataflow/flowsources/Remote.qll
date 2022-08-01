@@ -171,6 +171,23 @@ class ActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
 /** A data flow source of remote user input (ASP.NET Core). */
 abstract class AspNetCoreRemoteFlowSource extends RemoteFlowSource { }
 
+/**
+ * Data flow for AST.NET Core.
+ *
+ * Flow is defined from any ASP.NET Core remote source object to any of its member
+ * properties.
+ */
+private class AspNetCoreRemoteFlowSourceMember extends TaintTracking::TaintedMember {
+  AspNetCoreRemoteFlowSourceMember() {
+    this.getDeclaringType() = any(AspNetCoreRemoteFlowSource source).getType() and
+    this.isPublic() and
+    not this.isStatic() and
+    exists(Property p | p = this |
+      p.isAutoImplemented() and p.getGetter().isPublic() and p.getSetter().isPublic()
+    )
+  }
+}
+
 /** A data flow source of remote user input (ASP.NET query collection). */
 class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFlow::ExprNode {
   AspNetCoreQueryRemoteFlowSource() {
@@ -196,7 +213,7 @@ class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFl
 }
 
 /** A parameter to a `Mvc` controller action method, viewed as a source of remote user input. */
-class AspNetCoreActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
+class AspNetCoreActionMethodParameter extends AspNetCoreRemoteFlowSource, DataFlow::ParameterNode {
   AspNetCoreActionMethodParameter() {
     exists(Parameter p |
       p = this.getParameter() and

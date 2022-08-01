@@ -2,6 +2,11 @@ private import swift
 private import DataFlowPrivate
 private import DataFlowPublic
 private import codeql.swift.controlflow.ControlFlowGraph
+private import codeql.swift.controlflow.CfgNodes
+private import codeql.swift.controlflow.internal.Scope
+private import FlowSummaryImpl as FlowSummaryImpl
+private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
+private import codeql.swift.dataflow.FlowSummary as FlowSummary
 
 newtype TReturnKind =
   TNormalReturnKind() or
@@ -48,26 +53,87 @@ class ParamReturnKind extends ReturnKind, TParamReturnKind {
  * defined in library code.
  */
 class DataFlowCallable extends TDataFlowCallable {
-  AbstractFunctionDecl func;
+  CfgScope scope;
 
-  DataFlowCallable() { this = TDataFlowFunc(func) }
+  DataFlowCallable() { this = TDataFlowFunc(scope) }
 
   /** Gets a textual representation of this callable. */
-  string toString() { result = func.toString() }
+  string toString() { result = scope.toString() }
 
   /** Gets the location of this callable. */
-  Location getLocation() { result = func.getLocation() }
+  Location getLocation() { result = scope.getLocation() }
+
+  Callable::TypeRange getUnderlyingCallable() { result = scope }
 }
+
+cached
+newtype TDataFlowCall =
+  TNormalCall(ApplyExprCfgNode call) or
+  TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
+    FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
+  }
 
 /**
  * A call. This includes calls from source code, as well as call(back)s
  * inside library callables with a flow summary.
  */
-class DataFlowCall extends ExprNode {
-  DataFlowCall() { this.asExpr() instanceof CallExpr }
-
+class DataFlowCall extends TDataFlowCall {
   /** Gets the enclosing callable. */
-  DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(this.getCfgNode().getScope()) }
+  DataFlowCallable getEnclosingCallable() { none() }
+
+  /** Gets the underlying source code call, if any. */
+  ApplyExprCfgNode asCall() { none() }
+
+  /** Gets a textual representation of this call. */
+  string toString() { none() }
+
+  /** Gets the location of this call. */
+  Location getLocation() { none() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
+
+private class NormalCall extends DataFlowCall, TNormalCall {
+  private ApplyExprCfgNode apply;
+
+  NormalCall() { this = TNormalCall(apply) }
+
+  override ApplyExprCfgNode asCall() { result = apply }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(apply.getScope()) }
+
+  override string toString() { result = apply.toString() }
+
+  override Location getLocation() { result = apply.getLocation() }
+}
+
+class SummaryCall extends DataFlowCall, TSummaryCall {
+  private FlowSummaryImpl::Public::SummarizedCallable c;
+  private Node receiver;
+
+  SummaryCall() { this = TSummaryCall(c, receiver) }
+
+  /** Gets the data flow node that this call targets. */
+  Node getReceiver() { result = receiver }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result = TDataFlowFunc(c.getEnclosingFunction())
+  }
+
+  override string toString() { result = "[summary] call to " + receiver + " in " + c }
+
+  override UnknownLocation getLocation() { any() }
 }
 
 cached
@@ -78,7 +144,7 @@ private module Cached {
   /** Gets a viable run-time target for the call `call`. */
   cached
   DataFlowCallable viableCallable(DataFlowCall call) {
-    result = TDataFlowFunc(call.asExpr().(CallExpr).getStaticTarget())
+    result = TDataFlowFunc(call.asCall().getStaticTarget())
   }
 
   cached
@@ -115,6 +181,12 @@ class ParameterPosition extends TParameterPosition {
 
 class PositionalParameterPosition extends ParameterPosition, TPositionalParameter {
   int getIndex() { this = TPositionalParameter(result) }
+
+  override string toString() { result = this.getIndex().toString() }
+}
+
+class ThisParameterPosition extends ParameterPosition, TThisParameter {
+  override string toString() { result = "this" }
 }
 
 /** An argument position. */
@@ -125,6 +197,12 @@ class ArgumentPosition extends TArgumentPosition {
 
 class PositionalArgumentPosition extends ArgumentPosition, TPositionalArgument {
   int getIndex() { this = TPositionalArgument(result) }
+
+  override string toString() { result = this.getIndex().toString() }
+}
+
+class ThisArgumentPosition extends ArgumentPosition, TThisArgument {
+  override string toString() { result = "this" }
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */

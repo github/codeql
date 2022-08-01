@@ -75,11 +75,14 @@ private class StepsFromModel extends ModelInput::SummaryModelCsv {
         ";;Member[Foo].Method[blockArg].Argument[block].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
         ";;Member[Foo].Method[namedArg];Argument[foo:];ReturnValue;taint",
         ";;Member[Foo].Method[anyArg];Argument[any];ReturnValue;taint",
+        ";;Member[Foo].Method[anyNamedArg];Argument[any-named];ReturnValue;taint",
         ";;Member[Foo].Method[anyPositionFromOne];Argument[1..];ReturnValue;taint",
         ";;Member[Foo].Method[intoNamedCallback];Argument[0];Argument[foo:].Parameter[0];taint",
         ";;Member[Foo].Method[intoNamedParameter];Argument[0];Argument[0].Parameter[foo:];taint",
         ";;Member[Foo].Method[startInNamedCallback].Argument[foo:].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
         ";;Member[Foo].Method[startInNamedParameter].Argument[0].Parameter[foo:].Method[preserveTaint];Argument[0];ReturnValue;taint",
+        ";;Member[Foo].Instance.Method[flowToAnyArg];Argument[0];Argument[any];taint",
+        ";;Member[Foo].Instance.Method[flowToSelf];Argument[0];Argument[self];taint",
         ";any;Method[matchedByName];Argument[0];ReturnValue;taint",
         ";any;Method[matchedByNameRcv];Argument[self];ReturnValue;taint",
         ";any;Method[withElementOne];Argument[self].WithElement[1];ReturnValue;value",
@@ -115,14 +118,21 @@ private class InvalidTypeModel extends ModelInput::TypeModelCsv {
 }
 
 private class SinkFromModel extends ModelInput::SinkModelCsv {
-  override predicate row(string row) { row = "test;FooOrBar;Method[method].Argument[0];test-sink" }
+  override predicate row(string row) {
+    row =
+      [
+        "test;FooOrBar;Method[method].Argument[0];test-sink", //
+        ";;Member[Foo].Method[sinkAnyArg].Argument[any];test-sink", //
+        ";;Member[Foo].Method[sinkAnyNamedArg].Argument[any-named];test-sink", //
+      ]
+  }
 }
 
 class CustomValueSink extends DefaultValueFlowConf {
   override predicate isSink(DataFlow::Node sink) {
     super.isSink(sink)
     or
-    sink = ModelOutput::getASinkNode("test-sink").getARhs()
+    sink = ModelOutput::getASinkNode("test-sink").asSink()
   }
 }
 
@@ -130,7 +140,7 @@ class CustomTaintSink extends DefaultTaintFlowConf {
   override predicate isSink(DataFlow::Node sink) {
     super.isSink(sink)
     or
-    sink = ModelOutput::getASinkNode("test-sink").getARhs()
+    sink = ModelOutput::getASinkNode("test-sink").asSink()
   }
 }
 

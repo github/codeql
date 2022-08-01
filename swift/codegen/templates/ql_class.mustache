@@ -14,7 +14,7 @@ class {{name}}Base extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
 
   {{name}}Base getResolveStep() { none() } // overridden by subclasses
 
-  {{name}}Base resolve() {
+  final {{name}}Base resolve() {
     not exists(getResolveStep()) and result = this
     or
     result = getResolveStep().resolve()

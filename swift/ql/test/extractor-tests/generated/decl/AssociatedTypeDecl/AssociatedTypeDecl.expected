@@ -1,0 +1,2 @@
+| associated_type.swift:2:5:2:20 | Bar | getInterfaceType: | Self.Bar.Type | getName: | Bar |
+| associated_type.swift:3:5:3:25 | Baz | getInterfaceType: | Self.Baz.Type | getName: | Baz |

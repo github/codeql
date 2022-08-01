@@ -34,7 +34,7 @@ module UnsafeHtmlConstruction {
    * A jQuery plugin options object, seen as a source for unsafe HTML constructed from input.
    */
   class JQueryPluginOptionsAsSource extends Source {
-    JQueryPluginOptionsAsSource() { this instanceof UnsafeJQueryPlugin::JQueryPluginOptions }
+    JQueryPluginOptionsAsSource() { this = any(JQuery::JQueryPluginMethod meth).getAParameter() }
   }
 
   /**

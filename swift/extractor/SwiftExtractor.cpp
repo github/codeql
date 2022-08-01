@@ -6,15 +6,17 @@
 #include <sstream>
 #include <memory>
 #include <unistd.h>
+#include <unordered_set>
 
 #include <swift/AST/SourceFile.h>
+#include <swift/Basic/FileTypes.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 
 #include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/trap/TrapOutput.h"
-#include "swift/extractor/SwiftVisitor.h"
+#include "swift/extractor/visitors/SwiftVisitor.h"
 
 using namespace codeql;
 
@@ -49,14 +51,17 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
   }
 }
 
-static void extractFile(const SwiftExtractorConfiguration& config,
-                        swift::CompilerInstance& compiler,
-                        swift::SourceFile& file) {
+static void extractDeclarations(const SwiftExtractorConfiguration& config,
+                                llvm::ArrayRef<swift::Decl*> topLevelDecls,
+                                swift::CompilerInstance& compiler,
+                                swift::ModuleDecl& module,
+                                swift::SourceFile* primaryFile = nullptr) {
   // The extractor can be called several times from different processes with
   // the same input file(s)
   // We are using PID to avoid concurrent access
   // TODO: find a more robust approach to avoid collisions?
-  std::string tempTrapName = file.getFilename().str() + '.' + std::to_string(getpid()) + ".trap";
+  llvm::StringRef filename = primaryFile ? primaryFile->getFilename() : module.getModuleFilename();
+  std::string tempTrapName = filename.str() + '.' + std::to_string(getpid()) + ".trap";
   llvm::SmallString<PATH_MAX> tempTrapPath(config.trapDir);
   llvm::sys::path::append(tempTrapPath, tempTrapName);
 
@@ -84,7 +89,7 @@ static void extractFile(const SwiftExtractorConfiguration& config,
   TrapOutput trap{trapStream};
   TrapArena arena{};
 
-  // TODO move default location emission elsewhere, possibly in a separate global trap file
+  // TODO: move default location emission elsewhere, possibly in a separate global trap file
   auto unknownFileLabel = arena.allocateLabel<FileTag>();
   // the following cannot conflict with actual files as those have an absolute path starting with /
   trap.assignKey(unknownFileLabel, "unknown");
@@ -93,22 +98,22 @@ static void extractFile(const SwiftExtractorConfiguration& config,
   trap.assignKey(unknownLocationLabel, "unknown");
   trap.emit(LocationsTrap{unknownLocationLabel, unknownFileLabel});
 
-  // In the case of emtpy files, the dispatcher is not called, but we still want to 'record' the
-  // fact that the file was extracted
-  // TODO: to be moved elsewhere
-  llvm::SmallString<PATH_MAX> srcFilePath(file.getFilename());
-  llvm::sys::fs::make_absolute(srcFilePath);
-  auto fileLabel = arena.allocateLabel<FileTag>();
-  trap.assignKey(fileLabel, srcFilePath.str().str());
-  trap.emit(FilesTrap{fileLabel, srcFilePath.str().str()});
-
-  SwiftVisitor visitor(compiler.getSourceMgr(), arena, trap);
-  for (swift::Decl* decl : file.getTopLevelDecls()) {
+  SwiftVisitor visitor(compiler.getSourceMgr(), arena, trap, module, primaryFile);
+  for (auto decl : topLevelDecls) {
     visitor.extract(decl);
+  }
+  if (topLevelDecls.empty()) {
+    // In the case of empty files, the dispatcher is not called, but we still want to 'record' the
+    // fact that the file was extracted
+    llvm::SmallString<PATH_MAX> name(filename);
+    llvm::sys::fs::make_absolute(name);
+    auto fileLabel = arena.allocateLabel<FileTag>();
+    trap.assignKey(fileLabel, name.str().str());
+    trap.emit(FilesTrap{fileLabel, name.str().str()});
   }
 
   // TODO: Pick a better name to avoid collisions
-  std::string trapName = file.getFilename().str() + ".trap";
+  std::string trapName = filename.str() + ".trap";
   llvm::SmallString<PATH_MAX> trapPath(config.trapDir);
   llvm::sys::path::append(trapPath, trapName);
 
@@ -121,10 +126,36 @@ static void extractFile(const SwiftExtractorConfiguration& config,
 
 void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
                                swift::CompilerInstance& compiler) {
-  // The extraction will only work if one (or more) `-primary-file` CLI option is provided, which
-  // is what always happen in case of `swift build` and `xcodebuild`
-  for (auto s : compiler.getPrimarySourceFiles()) {
-    archiveFile(config, *s);
-    extractFile(config, compiler, *s);
+  // The frontend can be called in many different ways.
+  // At each invocation we only extract system and builtin modules and any input source files that
+  // have an output associated with them.
+  std::unordered_set<std::string> sourceFiles;
+  auto inputFiles = compiler.getInvocation().getFrontendOptions().InputsAndOutputs.getAllInputs();
+  for (auto& input : inputFiles) {
+    if (input.getType() == swift::file_types::TY_Swift && !input.outputFilename().empty()) {
+      sourceFiles.insert(input.getFileName());
+    }
+  }
+
+  for (auto& [_, module] : compiler.getASTContext().getLoadedModules()) {
+    // We only extract system and builtin modules here as the other "user" modules can be built
+    // during the build process and then re-used at a later stage. In this case, we extract the
+    // user code twice: once during the module build in a form of a source file, and then as
+    // a pre-built module during building of the dependent source files.
+    if (module->isSystemModule() || module->isBuiltinModule()) {
+      llvm::SmallVector<swift::Decl*> decls;
+      module->getTopLevelDecls(decls);
+      // TODO: pass ModuleDecl directly when we have module extraction in place?
+      extractDeclarations(config, decls, compiler, *module);
+    } else {
+      for (auto file : module->getFiles()) {
+        auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
+        if (!sourceFile || sourceFiles.count(sourceFile->getFilename().str()) == 0) {
+          continue;
+        }
+        archiveFile(config, *sourceFile);
+        extractDeclarations(config, sourceFile->getTopLevelDecls(), compiler, *module, sourceFile);
+      }
+    }
   }
 }
