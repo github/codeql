@@ -8,11 +8,6 @@
  * @precision high
  * @tags security
  *       external/cwe/cwe-253
- *       external/microsoft/C6214
- *       external/microsoft/C6215
- *       external/microsoft/C6216
- *       external/microsoft/C6217
- *       external/microsoft/C6230
  */
 
 import cpp
