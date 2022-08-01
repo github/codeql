@@ -13,6 +13,11 @@ runs:
       shell: bash
       run: echo "GA_CODEQL_CLI_PLATFORM=osx64" >> $GITHUB_ENV
 
+    - name: Select platform - Windows
+      if: runner.os == 'Windows'
+      shell: bash
+      run: echo "GA_CODEQL_CLI_PLATFORM=win64" >> $GITHUB_ENV
+
     - name: Fetch CodeQL
       shell: bash
       run: |
