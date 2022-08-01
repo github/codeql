@@ -50,7 +50,7 @@ def test_non_eq2():
     if not ts == "safe":
         ensure_tainted(ts) # $ tainted
     else:
-        ensure_not_tainted(ts) # $ SPURIOUS: tainted
+        ensure_not_tainted(ts)
 
 
 def test_in_list():
@@ -157,7 +157,7 @@ def test_not_in2():
     if not ts in ["safe", "also_safe"]:
         ensure_tainted(ts) # $ tainted
     else:
-        ensure_not_tainted(ts) # $ SPURIOUS: tainted
+        ensure_not_tainted(ts)
 
 
 def is_safe(x):
