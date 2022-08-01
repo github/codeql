@@ -44,7 +44,7 @@ newtype TValueNumber =
   TCallValueNumber(TCallPartialValueNumber vn) { callValueNumber(_, _, vn) } or
   TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
 
-newtype TCallPartialValueNumber =
+private newtype TCallPartialValueNumber =
   TNilArgument() or
   TArgument(TCallPartialValueNumber head, TValueNumber arg) {
     exists(CallInstruction call, int index |
@@ -53,7 +53,7 @@ newtype TCallPartialValueNumber =
     )
   }
 
-predicate callValueNumber(CallInstruction call, int index, TCallPartialValueNumber vn) {
+private predicate callValueNumber(CallInstruction call, int index, TCallPartialValueNumber vn) {
   index = max(int n | callArgRank(call, n, _) | n) and
   exists(TCallPartialValueNumber head, TValueNumber arg |
     callPartialValueNumber(call, index, pragma[only_bind_out](head)) and
@@ -61,16 +61,17 @@ predicate callValueNumber(CallInstruction call, int index, TCallPartialValueNumb
     vn = TArgument(head, arg)
   )
   or
+  not call.getResultIRType() instanceof IRVoidType and
   not exists(int n | callArgRank(call, n, _)) and
   index = -1 and
   vn = TNilArgument()
 }
 
-predicate callPartialValueNumber(CallInstruction call, int index, TCallPartialValueNumber head) {
-  index = 1 and head = TNilArgument() and exists(call)
+private predicate callPartialValueNumber(CallInstruction call, int index, TCallPartialValueNumber head) {
+  index = 1 and head = TNilArgument() and not call.getResultIRType() instanceof IRVoidType
   or
   exists(TCallPartialValueNumber prev, TValueNumber prevVN |
-    callPartialValueNumber(call, index - 1,  pragma[only_bind_out](prev)) and
+    callPartialValueNumber(call, index - 1, pragma[only_bind_out](prev)) and
     callArgValueNumber(call, index - 1, pragma[only_bind_into](prevVN)) and
     head = TArgument(prev, prevVN)
   )
@@ -78,7 +79,8 @@ predicate callPartialValueNumber(CallInstruction call, int index, TCallPartialVa
 
 /**
  */
-predicate callArgValueNumber(CallInstruction call, int index, TValueNumber arg) {
+private predicate callArgValueNumber(CallInstruction call, int index, TValueNumber arg) {
+  not call.getResultIRType() instanceof IRVoidType and
   exists(Instruction instr |
     callArgRank(call, index, instr) and
     arg = tvalueNumber(instr)
@@ -89,21 +91,21 @@ predicate callArgValueNumber(CallInstruction call, int index, TValueNumber arg) 
  * Holds if `arg` is the `index`th element in `call`'s extended argument list, including the `this`
  * argument and side-effect reads.
  */
-predicate callArgRank(CallInstruction call, int index, Instruction arg) {
+private predicate callArgRank(CallInstruction call, int index, Instruction arg) {
   arg =
     rank[index](int argIndex, boolean isEffect, Instruction instr |
       exists(CallSideEffectInstruction cse |
         cse.getPrimaryInstruction() = call and
         cse.getSideEffectOperand().getAnyDef() = instr and
         argIndex = -2 and
-        isEffect = false
+        isEffect = true
       )
       or
       exists(CallReadSideEffectInstruction cse |
         cse.getPrimaryInstruction() = call and
         cse.getSideEffectOperand().getAnyDef() = instr and
         argIndex = -2 and
-        isEffect = false
+        isEffect = true
       )
       or
       instr = call.getThisArgument() and
@@ -115,7 +117,7 @@ predicate callArgRank(CallInstruction call, int index, Instruction arg) {
       or
       exists(ReadSideEffectInstruction read |
         read.getPrimaryInstruction() = call and
-        read.getSideEffectOperand().getDef() = instr and
+        read.getSideEffectOperand().getAnyDef() = instr and
         read.getIndex() = argIndex and
         isEffect = true
       )

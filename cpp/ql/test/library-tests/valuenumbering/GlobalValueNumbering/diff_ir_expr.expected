@@ -10,8 +10,7 @@
 | test.cpp:21:16:21:16 | 2 | test.cpp:178:10:178:10 | 2 | AST only |
 | test.cpp:29:3:29:3 | x | test.cpp:31:3:31:3 | x | IR only |
 | test.cpp:29:3:29:24 | ... = ... | test.cpp:29:3:29:24 | ... = ... | AST only |
-| test.cpp:30:3:30:17 | call to change_global02 | test.cpp:77:20:77:28 | call to getAValue | IR only |
-| test.cpp:30:3:30:17 | call to change_global02 | test.cpp:80:9:80:17 | call to getAValue | IR only |
+| test.cpp:30:3:30:17 | call to change_global02 | test.cpp:30:3:30:17 | call to change_global02 | AST only |
 | test.cpp:31:3:31:3 | x | test.cpp:29:3:29:3 | x | IR only |
 | test.cpp:31:3:31:24 | ... = ... | test.cpp:31:3:31:24 | ... = ... | AST only |
 | test.cpp:32:3:32:7 | ... = ... | test.cpp:32:3:32:7 | ... = ... | AST only |
@@ -78,21 +77,15 @@
 | test.cpp:59:17:59:20 | (int)... | test.cpp:59:17:59:20 | (int)... | AST only |
 | test.cpp:59:17:59:20 | (int)... | test.cpp:88:12:88:12 | 0 | AST only |
 | test.cpp:62:5:62:12 | ... ++ | test.cpp:62:5:62:12 | ... ++ | AST only |
-| test.cpp:77:20:77:28 | call to getAValue | test.cpp:30:3:30:17 | call to change_global02 | IR only |
 | test.cpp:77:20:77:28 | call to getAValue | test.cpp:79:7:79:7 | v | IR only |
-| test.cpp:77:20:77:28 | call to getAValue | test.cpp:80:9:80:17 | call to getAValue | IR only |
 | test.cpp:77:20:77:30 | (signed short)... | test.cpp:77:20:77:30 | (signed short)... | AST only |
 | test.cpp:77:20:77:30 | (signed short)... | test.cpp:79:7:79:7 | v | AST only |
 | test.cpp:79:7:79:7 | (int)... | test.cpp:79:7:79:7 | (int)... | AST only |
 | test.cpp:79:7:79:7 | v | test.cpp:77:20:77:28 | call to getAValue | IR only |
 | test.cpp:79:7:79:7 | v | test.cpp:77:20:77:30 | (signed short)... | AST only |
-| test.cpp:79:7:79:7 | v | test.cpp:80:9:80:17 | call to getAValue | IR only |
 | test.cpp:79:11:79:20 | (int)... | test.cpp:79:11:79:20 | (int)... | AST only |
 | test.cpp:79:24:79:33 | (int)... | test.cpp:79:24:79:33 | (int)... | AST only |
 | test.cpp:80:5:80:19 | ... = ... | test.cpp:80:5:80:19 | ... = ... | AST only |
-| test.cpp:80:9:80:17 | call to getAValue | test.cpp:30:3:30:17 | call to change_global02 | IR only |
-| test.cpp:80:9:80:17 | call to getAValue | test.cpp:77:20:77:28 | call to getAValue | IR only |
-| test.cpp:80:9:80:17 | call to getAValue | test.cpp:79:7:79:7 | v | IR only |
 | test.cpp:80:9:80:19 | (signed short)... | test.cpp:80:9:80:19 | (signed short)... | AST only |
 | test.cpp:88:3:88:20 | ... = ... | test.cpp:88:3:88:20 | ... = ... | AST only |
 | test.cpp:88:12:88:12 | 0 | test.cpp:44:9:44:9 | 0 | AST only |
@@ -140,12 +133,10 @@
 | test.cpp:149:15:149:15 | x | test.cpp:144:15:144:15 | x | IR only |
 | test.cpp:156:3:156:17 | ... = ... | test.cpp:156:3:156:17 | ... = ... | AST only |
 | test.cpp:166:11:166:16 | call to strlen | test.cpp:167:11:167:16 | call to strlen | IR only |
-| test.cpp:166:11:166:16 | call to strlen | test.cpp:173:11:173:16 | call to strlen | IR only |
 | test.cpp:166:18:166:20 | (const char *)... | test.cpp:166:18:166:20 | (const char *)... | AST only |
 | test.cpp:166:18:166:20 | (const char *)... | test.cpp:167:18:167:20 | (const char *)... | AST only |
 | test.cpp:166:18:166:20 | (const char *)... | test.cpp:173:18:173:20 | (const char *)... | AST only |
 | test.cpp:167:11:167:16 | call to strlen | test.cpp:166:11:166:16 | call to strlen | IR only |
-| test.cpp:167:11:167:16 | call to strlen | test.cpp:173:11:173:16 | call to strlen | IR only |
 | test.cpp:167:18:167:20 | (const char *)... | test.cpp:166:18:166:20 | (const char *)... | AST only |
 | test.cpp:167:18:167:20 | (const char *)... | test.cpp:167:18:167:20 | (const char *)... | AST only |
 | test.cpp:167:18:167:20 | (const char *)... | test.cpp:173:18:173:20 | (const char *)... | AST only |
@@ -165,8 +156,6 @@
 | test.cpp:171:15:171:17 | (const char *)... | test.cpp:169:18:169:20 | (const char *)... | AST only |
 | test.cpp:171:15:171:17 | (const char *)... | test.cpp:171:15:171:17 | (const char *)... | AST only |
 | test.cpp:171:15:171:17 | (const char *)... | test.cpp:174:18:174:20 | (const char *)... | AST only |
-| test.cpp:173:11:173:16 | call to strlen | test.cpp:166:11:166:16 | call to strlen | IR only |
-| test.cpp:173:11:173:16 | call to strlen | test.cpp:167:11:167:16 | call to strlen | IR only |
 | test.cpp:173:18:173:20 | (const char *)... | test.cpp:166:18:166:20 | (const char *)... | AST only |
 | test.cpp:173:18:173:20 | (const char *)... | test.cpp:167:18:167:20 | (const char *)... | AST only |
 | test.cpp:173:18:173:20 | (const char *)... | test.cpp:173:18:173:20 | (const char *)... | AST only |
@@ -176,10 +165,8 @@
 | test.cpp:174:18:174:20 | (const char *)... | test.cpp:169:18:169:20 | (const char *)... | AST only |
 | test.cpp:174:18:174:20 | (const char *)... | test.cpp:171:15:171:17 | (const char *)... | AST only |
 | test.cpp:174:18:174:20 | (const char *)... | test.cpp:174:18:174:20 | (const char *)... | AST only |
-| test.cpp:176:3:176:5 | call to add | test.cpp:178:3:178:5 | call to add | IR only |
 | test.cpp:176:7:176:7 | 1 | test.cpp:10:16:10:16 | 1 | AST only |
 | test.cpp:176:10:176:10 | 2 | test.cpp:21:16:21:16 | 2 | AST only |
 | test.cpp:177:7:177:7 | 3 | test.cpp:35:16:35:16 | 3 | AST only |
-| test.cpp:178:3:178:5 | call to add | test.cpp:176:3:176:5 | call to add | IR only |
 | test.cpp:178:7:178:7 | 1 | test.cpp:10:16:10:16 | 1 | AST only |
 | test.cpp:178:10:178:10 | 2 | test.cpp:21:16:21:16 | 2 | AST only |

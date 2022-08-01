@@ -237,7 +237,6 @@ test.cpp:
 #   30|     r30_1(glval<unknown>)       = FunctionAddress[change_global02] : 
 #   30|         valnum = unique
 #   30|     v30_2(void)                 = Call[change_global02]            : func:r30_1
-#   30|         valnum = r77_3, r80_2, v30_2
 #   30|     m30_3(unknown)              = ^CallSideEffect                  : ~m25_4
 #   30|         valnum = unique
 #   30|     m30_4(unknown)              = Chi                              : total:m25_4, partial:m30_3
@@ -591,19 +590,19 @@ test.cpp:
 #   77|     r77_2(glval<unknown>)       = FunctionAddress[getAValue]  : 
 #   77|         valnum = unique
 #   77|     r77_3(int)                  = Call[getAValue]             : func:r77_2
-#   77|         valnum = r77_3, r80_2, v30_2
+#   77|         valnum = unique
 #   77|     m77_4(unknown)              = ^CallSideEffect             : ~m75_4
 #   77|         valnum = unique
 #   77|     m77_5(unknown)              = Chi                         : total:m75_4, partial:m77_4
 #   77|         valnum = unique
 #   77|     r77_6(signed short)         = Convert                     : r77_3
-#   77|         valnum = m77_7, m80_7, r77_6, r79_2, r80_5
+#   77|         valnum = m77_7, r77_6, r79_2
 #   77|     m77_7(signed short)         = Store[v]                    : &:r77_1, r77_6
-#   77|         valnum = m77_7, m80_7, r77_6, r79_2, r80_5
+#   77|         valnum = m77_7, r77_6, r79_2
 #   79|     r79_1(glval<signed short>)  = VariableAddress[v]          : 
 #   79|         valnum = r77_1, r79_1, r80_6
 #   79|     r79_2(signed short)         = Load[v]                     : &:r79_1, m77_7
-#   79|         valnum = m77_7, m80_7, r77_6, r79_2, r80_5
+#   79|         valnum = m77_7, r77_6, r79_2
 #   79|     r79_3(int)                  = Convert                     : r79_2
 #   79|         valnum = unique
 #   79|     r79_4(glval<two_values *>)  = VariableAddress[vals]       : 
@@ -638,17 +637,17 @@ test.cpp:
 #   80|     r80_1(glval<unknown>)      = FunctionAddress[getAValue] : 
 #   80|         valnum = unique
 #   80|     r80_2(int)                 = Call[getAValue]            : func:r80_1
-#   80|         valnum = r77_3, r80_2, v30_2
+#   80|         valnum = unique
 #   80|     m80_3(unknown)             = ^CallSideEffect            : ~m77_5
 #   80|         valnum = unique
 #   80|     m80_4(unknown)             = Chi                        : total:m77_5, partial:m80_3
 #   80|         valnum = unique
 #   80|     r80_5(signed short)        = Convert                    : r80_2
-#   80|         valnum = m77_7, m80_7, r77_6, r79_2, r80_5
+#   80|         valnum = m80_7, r80_5
 #   80|     r80_6(glval<signed short>) = VariableAddress[v]         : 
 #   80|         valnum = r77_1, r79_1, r80_6
 #   80|     m80_7(signed short)        = Store[v]                   : &:r80_6, r80_5
-#   80|         valnum = m77_7, m80_7, r77_6, r79_2, r80_5
+#   80|         valnum = m80_7, r80_5
 #-----|   Goto -> Block 2
 
 #   82|   Block 2
@@ -1147,6 +1146,43 @@ test.cpp:
 #  152|     v152_8(void)       = AliasedUse                : ~m156_7
 #  152|     v152_9(void)       = ExitFunction              : 
 
+#  163| int add(int, int)
+#  163|   Block 0
+#  163|     v163_1(void)        = EnterFunction            : 
+#  163|     m163_2(unknown)     = AliasedDefinition        : 
+#  163|         valnum = unique
+#  163|     m163_3(unknown)     = InitializeNonLocal       : 
+#  163|         valnum = unique
+#  163|     m163_4(unknown)     = Chi                      : total:m163_2, partial:m163_3
+#  163|         valnum = unique
+#  163|     r163_5(glval<int>)  = VariableAddress[a]       : 
+#  163|         valnum = r163_10, r163_5
+#  163|     m163_6(int)         = InitializeParameter[a]   : &:r163_5
+#  163|         valnum = m163_6, r163_11
+#  163|     r163_7(glval<int>)  = VariableAddress[b]       : 
+#  163|         valnum = r163_12, r163_7
+#  163|     m163_8(int)         = InitializeParameter[b]   : &:r163_7
+#  163|         valnum = m163_8, r163_13
+#  163|     r163_9(glval<int>)  = VariableAddress[#return] : 
+#  163|         valnum = r163_16, r163_9
+#  163|     r163_10(glval<int>) = VariableAddress[a]       : 
+#  163|         valnum = r163_10, r163_5
+#  163|     r163_11(int)        = Load[a]                  : &:r163_10, m163_6
+#  163|         valnum = m163_6, r163_11
+#  163|     r163_12(glval<int>) = VariableAddress[b]       : 
+#  163|         valnum = r163_12, r163_7
+#  163|     r163_13(int)        = Load[b]                  : &:r163_12, m163_8
+#  163|         valnum = m163_8, r163_13
+#  163|     r163_14(int)        = Add                      : r163_11, r163_13
+#  163|         valnum = m163_15, r163_14
+#  163|     m163_15(int)        = Store[#return]           : &:r163_9, r163_14
+#  163|         valnum = m163_15, r163_14
+#  163|     r163_16(glval<int>) = VariableAddress[#return] : 
+#  163|         valnum = r163_16, r163_9
+#  163|     v163_17(void)       = ReturnValue              : &:r163_16, m163_15
+#  163|     v163_18(void)       = AliasedUse               : m163_3
+#  163|     v163_19(void)       = ExitFunction             : 
+
 #  165| void test_func_value_numbering(char*, char*)
 #  165|   Block 0
 #  165|     v165_1(void)           = EnterFunction                : 
@@ -1183,10 +1219,10 @@ test.cpp:
 #  166|     r166_5(char *)         = Convert                      : r166_4
 #  166|         valnum = r166_5, r167_5, r173_5
 #  166|     r166_6(int)            = Call[strlen]                 : func:r166_2, 0:r166_5
-#  166|         valnum = m166_8, m167_8, m173_8, r166_6, r167_6, r173_6
+#  166|         valnum = m166_8, m167_8, r166_6, r167_6
 #  166|     v166_7(void)           = ^BufferReadSideEffect[0]     : &:r166_5, ~m165_8
 #  166|     m166_8(int)            = Store[a]                     : &:r166_1, r166_6
-#  166|         valnum = m166_8, m167_8, m173_8, r166_6, r167_6, r173_6
+#  166|         valnum = m166_8, m167_8, r166_6, r167_6
 #  167|     r167_1(glval<int>)     = VariableAddress[b]           : 
 #  167|         valnum = unique
 #  167|     r167_2(glval<unknown>) = FunctionAddress[strlen]      : 
@@ -1198,10 +1234,10 @@ test.cpp:
 #  167|     r167_5(char *)         = Convert                      : r167_4
 #  167|         valnum = r166_5, r167_5, r173_5
 #  167|     r167_6(int)            = Call[strlen]                 : func:r167_2, 0:r167_5
-#  167|         valnum = m166_8, m167_8, m173_8, r166_6, r167_6, r173_6
+#  167|         valnum = m166_8, m167_8, r166_6, r167_6
 #  167|     v167_7(void)           = ^BufferReadSideEffect[0]     : &:r167_5, ~m165_8
 #  167|     m167_8(int)            = Store[b]                     : &:r167_1, r167_6
-#  167|         valnum = m166_8, m167_8, m173_8, r166_6, r167_6, r173_6
+#  167|         valnum = m166_8, m167_8, r166_6, r167_6
 #  168|     r168_1(glval<int>)     = VariableAddress[c]           : 
 #  168|         valnum = unique
 #  168|     r168_2(glval<unknown>) = FunctionAddress[strlen]      : 
@@ -1263,10 +1299,10 @@ test.cpp:
 #  173|     r173_5(char *)         = Convert                      : r173_4
 #  173|         valnum = r166_5, r167_5, r173_5
 #  173|     r173_6(int)            = Call[strlen]                 : func:r173_2, 0:r173_5
-#  173|         valnum = m166_8, m167_8, m173_8, r166_6, r167_6, r173_6
+#  173|         valnum = m173_8, r173_6
 #  173|     v173_7(void)           = ^BufferReadSideEffect[0]     : &:r173_5, ~m171_11
 #  173|     m173_8(int)            = Store[e]                     : &:r173_1, r173_6
-#  173|         valnum = m166_8, m167_8, m173_8, r166_6, r167_6, r173_6
+#  173|         valnum = m173_8, r173_6
 #  174|     r174_1(glval<int>)     = VariableAddress[f]           : 
 #  174|         valnum = unique
 #  174|     r174_2(glval<unknown>) = FunctionAddress[strlen]      : 
@@ -1290,10 +1326,6 @@ test.cpp:
 #  176|         valnum = r176_3, r178_3
 #  176|     r176_4(int)            = Call[add]                    : func:r176_1, 0:r176_2, 1:r176_3
 #  176|         valnum = r176_4, r178_4
-#  176|     m176_5(unknown)        = ^CallSideEffect              : ~m165_4
-#  176|         valnum = unique
-#  176|     m176_6(unknown)        = Chi                          : total:m165_4, partial:m176_5
-#  176|         valnum = unique
 #  177|     r177_1(glval<unknown>) = FunctionAddress[add]         : 
 #  177|         valnum = unique
 #  177|     r177_2(int)            = Constant[3]                  : 
@@ -1301,10 +1333,6 @@ test.cpp:
 #  177|     r177_3(int)            = Constant[4]                  : 
 #  177|         valnum = unique
 #  177|     r177_4(int)            = Call[add]                    : func:r177_1, 0:r177_2, 1:r177_3
-#  177|         valnum = unique
-#  177|     m177_5(unknown)        = ^CallSideEffect              : ~m176_6
-#  177|         valnum = unique
-#  177|     m177_6(unknown)        = Chi                          : total:m176_6, partial:m177_5
 #  177|         valnum = unique
 #  178|     r178_1(glval<unknown>) = FunctionAddress[add]         : 
 #  178|         valnum = unique
@@ -1314,13 +1342,9 @@ test.cpp:
 #  178|         valnum = r176_3, r178_3
 #  178|     r178_4(int)            = Call[add]                    : func:r178_1, 0:r178_2, 1:r178_3
 #  178|         valnum = r176_4, r178_4
-#  178|     m178_5(unknown)        = ^CallSideEffect              : ~m177_6
-#  178|         valnum = unique
-#  178|     m178_6(unknown)        = Chi                          : total:m177_6, partial:m178_5
-#  178|         valnum = unique
 #  179|     v179_1(void)           = NoOp                         : 
 #  165|     v165_13(void)          = ReturnIndirection[dst]       : &:r165_7, m171_11
 #  165|     v165_14(void)          = ReturnIndirection[src]       : &:r165_11, m165_12
 #  165|     v165_15(void)          = ReturnVoid                   : 
-#  165|     v165_16(void)          = AliasedUse                   : ~m178_6
+#  165|     v165_16(void)          = AliasedUse                   : m165_3
 #  165|     v165_17(void)          = ExitFunction                 : 

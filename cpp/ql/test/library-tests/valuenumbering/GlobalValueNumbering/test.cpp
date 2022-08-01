@@ -160,7 +160,7 @@ void test_read_global_different(int n) {
 
 int strlen(const char *str);
 char *strcat(char *dst, const char *src);
-int add(int a, int b);
+int add(int a, int b) { return a+b; }
 
 void test_func_value_numbering(char *dst, char *src) {
   int a = strlen(dst);
