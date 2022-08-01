@@ -5,6 +5,7 @@ on:
     paths:
       - "swift/**"
       - .github/workflows/swift-integration-tests.yml
+      - .github/actions/fetch-codeql
       - codeql-workspace.yml
     branches:
       - main
