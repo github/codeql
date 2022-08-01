@@ -25,9 +25,7 @@ jobs:
         uses: ./.github/actions/fetch-codeql
       - name: Build modeled package list
         run: |
-          CLI=$(realpath "codeql-cli/codeql")
-          echo $CLI
-          PATH="$PATH:$CLI" python script/misc/scripts/library-coverage/generate-timeseries.py codeqlModels
+          python script/misc/scripts/library-coverage/generate-timeseries.py codeqlModels
       - name: Upload timeseries CSV
         uses: actions/upload-artifact@v3
         with:
