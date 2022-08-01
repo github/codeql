@@ -5,6 +5,7 @@ on:
     paths:
       - "*/ql/lib/**"
       - .github/workflows/check-qldoc.yml
+      - .github/actions/fetch-codeql
     branches:
       - main
       - "rc/*"

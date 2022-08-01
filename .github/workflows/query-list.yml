@@ -10,6 +10,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/query-list.yml'
+      - '.github/actions/fetch-codeql'
       - 'misc/scripts/generate-code-scanning-query-list.py'
 
 jobs:
