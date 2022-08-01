@@ -12,7 +12,7 @@ class DebuggableAttributeTrueTest extends InlineExpectationsTest {
     exists(AndroidXmlAttribute androidXmlAttr |
       androidXmlAttr.getName() = "debuggable" and
       androidXmlAttr.getValue() = "true" and
-      not androidXmlAttr.getLocation().getFile().getRelativePath().matches("%/build%")
+      not androidXmlAttr.getLocation().getFile().getRelativePath().matches("%build%")
     |
       androidXmlAttr.getLocation() = location and
       element = androidXmlAttr.toString() and
