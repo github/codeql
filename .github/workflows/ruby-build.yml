@@ -5,6 +5,7 @@ on:
     paths:
       - "ruby/**"
       - .github/workflows/ruby-build.yml
+      - .github/actions/fetch-codeql
       - codeql-workspace.yml
     branches:
       - main
@@ -13,6 +14,7 @@ on:
     paths:
       - "ruby/**"
       - .github/workflows/ruby-build.yml
+      - .github/actions/fetch-codeql
       - codeql-workspace.yml
     branches:
       - main
@@ -175,11 +177,13 @@ jobs:
     needs: [package]
     steps:
       - uses: actions/checkout@v3
+      - name: Fetch CodeQL
+        uses: ./.github/actions/fetch-codeql
+
+      - uses: actions/checkout@v3
         with:
           repository: Shopify/example-ruby-app
           ref: 67a0decc5eb550f3a9228eda53925c3afd40dfe9
-      - name: Fetch CodeQL
-        uses: ./.github/actions/fetch-codeql
 
       - name: Download Ruby bundle
         uses: actions/download-artifact@v3
