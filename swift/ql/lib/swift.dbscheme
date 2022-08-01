@@ -264,7 +264,8 @@ l_value_types(  //dir=type
 );
 
 module_types(  //dir=type
-  unique int id: @module_type
+  unique int id: @module_type,
+  int module: @module_decl ref
 );
 
 placeholder_types(  //dir=type
