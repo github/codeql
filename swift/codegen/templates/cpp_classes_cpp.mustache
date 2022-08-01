@@ -24,10 +24,10 @@ void {{name}}::emit({{^final}}TrapLabel<{{name}}Tag> id, {{/final}}std::ostream&
   {{#is_repeated}}
   for (auto i = 0u; i < {{field_name}}.size(); ++i) {
     {{^is_optional}}
-    out << {{trap_name}}Trap{id, i, {{field_name}}[i]};
+    out << {{trap_name}}Trap{id, i, {{field_name}}[i]} << '\n';
     {{/is_optional}}
     {{#is_optional}}
-    if ({{field_name}}[i]) out << {{trap_name}}Trap{id, i, *{{field_name}}[i]};
+    if ({{field_name}}[i]) out << {{trap_name}}Trap{id, i, *{{field_name}}[i]} << '\n';
     {{/is_optional}}
   }
   {{/is_repeated}}

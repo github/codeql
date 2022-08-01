@@ -9,7 +9,7 @@ class UnitTestClass extends TestScope, Class {
       testCaseString.matches("%TestCase") and
       testCaseClass = any(API::Node mod).getMember(testCaseString)
     |
-      this.getParent() = testCaseClass.getASubclass*().getAnImmediateUse().asExpr()
+      this.getParent() = testCaseClass.getASubclass*().asSource().asExpr()
     )
   }
 }

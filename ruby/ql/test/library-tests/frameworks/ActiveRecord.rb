@@ -68,3 +68,13 @@ class BazController < BarController
     Admin.delete_by(params[:admin_condition])
   end
 end
+
+class AnnotatedController < ActionController::Base
+  def index
+    users = User.annotate("this is a safe annotation")
+  end
+
+  def unsafe_action
+    users = User.annotate("this is an unsafe annotation:#{params[:comment]}")
+  end
+end

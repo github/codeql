@@ -51,7 +51,7 @@ private predicate sharedPreferencesInput(DataFlow::Node editor, Expr input) {
   exists(MethodAccess m |
     m.getMethod() instanceof PutSharedPreferenceMethod and
     input = m.getArgument(1) and
-    editor.asExpr() = m.getQualifier()
+    editor.asExpr() = m.getQualifier().getUnderlyingExpr()
   )
 }
 
@@ -61,7 +61,7 @@ private predicate sharedPreferencesInput(DataFlow::Node editor, Expr input) {
  */
 private predicate sharedPreferencesStore(DataFlow::Node editor, MethodAccess m) {
   m.getMethod() instanceof StoreSharedPreferenceMethod and
-  editor.asExpr() = m.getQualifier()
+  editor.asExpr() = m.getQualifier().getUnderlyingExpr()
 }
 
 /** Flow from `SharedPreferences.Editor` to either a setter or a store method. */

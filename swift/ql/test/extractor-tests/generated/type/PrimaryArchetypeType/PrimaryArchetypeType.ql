@@ -2,15 +2,12 @@
 import codeql.swift.elements
 import TestUtils
 
-from
-  PrimaryArchetypeType x, string getDiagnosticsName, Type getCanonicalType, string getName,
-  Type getInterfaceType
+from PrimaryArchetypeType x, string getName, Type getCanonicalType, Type getInterfaceType
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getDiagnosticsName = x.getDiagnosticsName() and
-  getCanonicalType = x.getCanonicalType() and
   getName = x.getName() and
+  getCanonicalType = x.getCanonicalType() and
   getInterfaceType = x.getInterfaceType()
-select x, "getDiagnosticsName:", getDiagnosticsName, "getCanonicalType:", getCanonicalType,
-  "getName:", getName, "getInterfaceType:", getInterfaceType
+select x, "getName:", getName, "getCanonicalType:", getCanonicalType, "getInterfaceType:",
+  getInterfaceType

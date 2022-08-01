@@ -8,4 +8,10 @@ public class OuterNotGeneric {
 
   }
 
+  public InnerGeneric<String> getInnerGeneric() {
+
+    return new InnerGeneric<String>();
+
+  }
+
 }

@@ -1653,7 +1653,7 @@ module DataFlow {
   }
 
   /**
-   * Holds if the flow information for this node is incomplete.
+   * Holds if the flow information for the node `nd`.
    *
    * This predicate holds if there may be a source flow node from which data flows into
    * this node, but that node is not a result of `getALocalSource()` due to analysis incompleteness.

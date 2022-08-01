@@ -1,10 +1,10 @@
 /**
  * @name String length conflation
  * @description Using a length value from an `NSString` in a `String`, or a count from a `String` in an `NSString`, may cause unexpected behavior.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
- * @precision TODO
+ * @precision high
  * @id swift/string-length-conflation
  * @tags security
  *       external/cwe/cwe-135
@@ -14,70 +14,113 @@ import swift
 import codeql.swift.dataflow.DataFlow
 import DataFlow::PathGraph
 
+/**
+ * A configuration for tracking string lengths originating from source that is
+ * a `String` or an `NSString` object, to a sink of a different kind that
+ * expects an incompatible measure of length.
+ */
 class StringLengthConflationConfiguration extends DataFlow::Configuration {
   StringLengthConflationConfiguration() { this = "StringLengthConflationConfiguration" }
 
   override predicate isSource(DataFlow::Node node, string flowstate) {
-    // result of a call to to `String.count`
+    // result of a call to `String.count`
     exists(MemberRefExpr member |
       member.getBaseExpr().getType().getName() = "String" and
       member.getMember().(VarDecl).getName() = "count" and
       node.asExpr() = member and
       flowstate = "String"
     )
+    or
+    // result of a call to `NSString.length`
+    exists(MemberRefExpr member |
+      member.getBaseExpr().getType().getName() = ["NSString", "NSMutableString"] and
+      member.getMember().(VarDecl).getName() = "length" and
+      node.asExpr() = member and
+      flowstate = "NSString"
+    )
   }
 
   override predicate isSink(DataFlow::Node node, string flowstate) {
-    // arguments to method calls...
     exists(
-      string className, string methodName, string paramName, ClassDecl c, AbstractFunctionDecl f,
-      CallExpr call, int arg
+      AbstractFunctionDecl funcDecl, CallExpr call, string funcName, string paramName, int arg
     |
       (
-        // `NSRange.init`
-        className = "NSRange" and
-        methodName = "init(location:length:)" and
-        paramName = ["location", "length"]
+        // arguments to method calls...
+        exists(string className, ClassDecl c |
+          (
+            // `NSRange.init`
+            className = "NSRange" and
+            funcName = "init(location:length:)" and
+            paramName = ["location", "length"]
+            or
+            // `NSString.character`
+            className = ["NSString", "NSMutableString"] and
+            funcName = "character(at:)" and
+            paramName = "at"
+            or
+            // `NSString.character`
+            className = ["NSString", "NSMutableString"] and
+            funcName = "substring(from:)" and
+            paramName = "from"
+            or
+            // `NSString.character`
+            className = ["NSString", "NSMutableString"] and
+            funcName = "substring(to:)" and
+            paramName = "to"
+            or
+            // `NSMutableString.insert`
+            className = "NSMutableString" and
+            funcName = "insert(_:at:)" and
+            paramName = "at"
+          ) and
+          c.getName() = className and
+          c.getAMember() = funcDecl and
+          call.getFunction().(ApplyExpr).getStaticTarget() = funcDecl and
+          flowstate = "String" // `String` length flowing into `NSString`
+        )
         or
-        // `NSString.character`
-        className = ["NSString", "NSMutableString"] and
-        methodName = "character(at:)" and
-        paramName = "at"
+        // arguments to function calls...
+        // `NSMakeRange`
+        funcName = "NSMakeRange(_:_:)" and
+        paramName = ["loc", "len"] and
+        call.getStaticTarget() = funcDecl and
+        flowstate = "String" // `String` length flowing into `NSString`
         or
-        // `NSString.character`
-        className = ["NSString", "NSMutableString"] and
-        methodName = "substring(from:)" and
-        paramName = "from"
-        or
-        // `NSString.character`
-        className = ["NSString", "NSMutableString"] and
-        methodName = "substring(to:)" and
-        paramName = "to"
-        or
-        // `NSMutableString.insert`
-        className = "NSMutableString" and
-        methodName = "insert(_:at:)" and
-        paramName = "at"
+        // arguments to method calls...
+        (
+          // `String.dropFirst`, `String.dropLast`, `String.removeFirst`, `String.removeLast`
+          funcName = ["dropFirst(_:)", "dropLast(_:)", "removeFirst(_:)", "removeLast(_:)"] and
+          paramName = "k"
+          or
+          // `String.prefix`, `String.suffix`
+          funcName = ["prefix(_:)", "suffix(_:)"] and
+          paramName = "maxLength"
+          or
+          // `String.Index.init`
+          funcName = "init(encodedOffset:)" and
+          paramName = "offset"
+          or
+          // `String.index`
+          funcName = ["index(_:offsetBy:)", "index(_:offsetBy:limitBy:)"] and
+          paramName = "n"
+          or
+          // `String.formIndex`
+          funcName = ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and
+          paramName = "distance"
+        ) and
+        call.getFunction().(ApplyExpr).getStaticTarget() = funcDecl and
+        flowstate = "NSString" // `NSString` length flowing into `String`
       ) and
-      c.getName() = className and
-      c.getAMember() = f and // TODO: will this even work if its defined in a parent class?
-      call.getFunction().(ApplyExpr).getStaticTarget() = f and
-      f.getName() = methodName and
-      f.getParam(arg).getName() = paramName and
-      call.getArgument(arg).getExpr() = node.asExpr() and
-      flowstate = "String" // `String` length flowing into `NSString`
+      // match up `funcName`, `paramName`, `arg`, `node`.
+      funcDecl.getName() = funcName and
+      funcDecl.getParam(pragma[only_bind_into](arg)).getName() = paramName and
+      call.getArgument(pragma[only_bind_into](arg)).getExpr() = node.asExpr()
     )
-    or
-    // arguments to function calls...
-    exists(string funcName, string paramName, CallExpr call, int arg |
-      // `NSMakeRange`
-      funcName = "NSMakeRange(_:_:)" and
-      paramName = ["loc", "len"] and
-      call.getStaticTarget().getName() = funcName and
-      call.getStaticTarget().getParam(arg).getName() = paramName and
-      call.getArgument(arg).getExpr() = node.asExpr() and
-      flowstate = "String" // `String` length flowing into `NSString`
-    )
+  }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // allow flow through `+`, `-`, `*` etc.
+    node2.asExpr().(ArithmeticOperation).getAnOperand() = node1.asExpr()
   }
 }
 

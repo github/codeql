@@ -18,4 +18,4 @@ where
     usesFieldBasedInstanceof(c, any(TypeExpr te | te.getResolvedType() = type), _, _)
   ) and
   message = "consider defining $@ as non-extending subtype of $@"
-select c, message, c, c.getName(), type, type.getName()
+select c, message, c, c.getName(), type.getDeclaration(), type.getName()

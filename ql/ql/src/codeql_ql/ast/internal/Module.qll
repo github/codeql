@@ -218,6 +218,20 @@ private module Cached {
     not exists(me.(ModuleExpr).getQualifier()) and
     exists(ContainerOrModule enclosing, string name | resolveModuleRefHelper(me, enclosing, name) |
       definesModule(enclosing, name, m, _)
+    ) and
+    (
+      not me instanceof TypeExpr
+      or
+      // remove some spurious results that can happen with `TypeExpr`
+      me instanceof TypeExpr and
+      m instanceof Module_ and // TypeExpr can only resolve to a Module, and only in some scenarios
+      (
+        // only possible if this is inside a moduleInstantiation.
+        me = any(ModuleExpr mod).getArgument(_).asType()
+        or
+        // or if it's a parameter to a parameterized module
+        me = any(SignatureExpr sig, Module mod | mod.hasParameter(_, _, sig) | sig).asType()
+      )
     )
     or
     exists(FileOrModule mid |
@@ -229,7 +243,8 @@ private module Cached {
   pragma[noinline]
   private predicate resolveModuleRefHelper(TypeRef me, ContainerOrModule enclosing, string name) {
     enclosing = getEnclosingModule(me).getEnclosing*() and
-    name = [me.(ModuleExpr).getName(), me.(TypeExpr).getClassName()]
+    name = [me.(ModuleExpr).getName(), me.(TypeExpr).getClassName()] and
+    (not me instanceof ModuleExpr or not enclosing instanceof Folder_) // module expressions are not imports, so they can't resolve to a file (which is contained in a folder).
   }
 }
 
@@ -248,7 +263,7 @@ boolean getPublicBool(AstNode n) {
 /**
  * Holds if `container` defines module `m` with name `name`.
  *
- * `m` may be defined either directly or through `import`s.
+ * `m` may be defined either directly or through imports.
  */
 private predicate definesModule(
   ContainerOrModule container, string name, ContainerOrModule m, boolean public
@@ -332,7 +347,19 @@ module ModConsistency {
    *  }
    */
 
-  query predicate noName(Module mod) { not exists(mod.getName()) }
+  query predicate noName(AstNode mod) {
+    mod instanceof Module and
+    not exists(mod.(Module).getName())
+    or
+    mod instanceof ModuleExpr and
+    not exists(mod.(ModuleExpr).getName())
+  }
 
-  query predicate nonUniqueName(Module mod) { count(mod.getName()) >= 2 }
+  query predicate nonUniqueName(AstNode mod) {
+    mod instanceof Module and
+    count(mod.(Module).getName()) >= 2
+    or
+    mod instanceof ModuleExpr and
+    count(mod.(ModuleExpr).getName()) >= 2
+  }
 }

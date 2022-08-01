@@ -1,8 +1,74 @@
 edges
+| StringLengthConflation2.swift:37:34:37:36 | .count :  | StringLengthConflation2.swift:37:34:37:44 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:60:47:60:50 | .length :  | StringLengthConflation.swift:60:47:60:59 | ... call to /(_:_:) ... |
+| StringLengthConflation.swift:66:33:66:36 | .length :  | StringLengthConflation.swift:66:33:66:45 | ... call to /(_:_:) ... |
+| StringLengthConflation.swift:93:28:93:31 | .length :  | StringLengthConflation.swift:93:28:93:40 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:97:27:97:30 | .length :  | StringLengthConflation.swift:97:27:97:39 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:101:25:101:28 | .length :  | StringLengthConflation.swift:101:25:101:37 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:105:25:105:28 | .length :  | StringLengthConflation.swift:105:25:105:37 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:111:23:111:26 | .length :  | StringLengthConflation.swift:111:23:111:35 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:117:22:117:25 | .length :  | StringLengthConflation.swift:117:22:117:34 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:122:34:122:36 | .count :  | StringLengthConflation.swift:122:34:122:44 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:123:36:123:38 | .count :  | StringLengthConflation.swift:123:36:123:46 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:128:36:128:38 | .count :  | StringLengthConflation.swift:128:36:128:46 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:129:38:129:40 | .count :  | StringLengthConflation.swift:129:38:129:48 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:134:34:134:36 | .count :  | StringLengthConflation.swift:134:34:134:44 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:135:36:135:38 | .count :  | StringLengthConflation.swift:135:36:135:46 | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:141:28:141:30 | .count :  | StringLengthConflation.swift:141:28:141:38 | ... call to -(_:_:) ... |
 nodes
+| StringLengthConflation2.swift:37:34:37:36 | .count :  | semmle.label | .count :  |
+| StringLengthConflation2.swift:37:34:37:44 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:53:43:53:46 | .length | semmle.label | .length |
+| StringLengthConflation.swift:60:47:60:50 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:60:47:60:59 | ... call to /(_:_:) ... | semmle.label | ... call to /(_:_:) ... |
+| StringLengthConflation.swift:66:33:66:36 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:66:33:66:45 | ... call to /(_:_:) ... | semmle.label | ... call to /(_:_:) ... |
 | StringLengthConflation.swift:72:33:72:35 | .count | semmle.label | .count |
 | StringLengthConflation.swift:78:47:78:49 | .count | semmle.label | .count |
+| StringLengthConflation.swift:93:28:93:31 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:93:28:93:40 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:97:27:97:30 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:97:27:97:39 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:101:25:101:28 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:101:25:101:37 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:105:25:105:28 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:105:25:105:37 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:111:23:111:26 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:111:23:111:35 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:117:22:117:25 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:117:22:117:34 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:122:34:122:36 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:122:34:122:44 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:123:36:123:38 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:123:36:123:46 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:128:36:128:38 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:128:36:128:46 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:129:38:129:40 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:129:38:129:48 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:134:34:134:36 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:134:34:134:44 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:135:36:135:38 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:135:36:135:46 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
+| StringLengthConflation.swift:141:28:141:30 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:141:28:141:38 | ... call to -(_:_:) ... | semmle.label | ... call to -(_:_:) ... |
 subpaths
 #select
+| StringLengthConflation2.swift:37:34:37:44 | ... call to -(_:_:) ... | StringLengthConflation2.swift:37:34:37:36 | .count :  | StringLengthConflation2.swift:37:34:37:44 | ... call to -(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:53:43:53:46 | .length | StringLengthConflation.swift:53:43:53:46 | .length | StringLengthConflation.swift:53:43:53:46 | .length | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:60:47:60:59 | ... call to /(_:_:) ... | StringLengthConflation.swift:60:47:60:50 | .length :  | StringLengthConflation.swift:60:47:60:59 | ... call to /(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:66:33:66:45 | ... call to /(_:_:) ... | StringLengthConflation.swift:66:33:66:36 | .length :  | StringLengthConflation.swift:66:33:66:45 | ... call to /(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
 | StringLengthConflation.swift:72:33:72:35 | .count | StringLengthConflation.swift:72:33:72:35 | .count | StringLengthConflation.swift:72:33:72:35 | .count | This String length is used in an NSString, but it may not be equivalent. |
 | StringLengthConflation.swift:78:47:78:49 | .count | StringLengthConflation.swift:78:47:78:49 | .count | StringLengthConflation.swift:78:47:78:49 | .count | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:93:28:93:40 | ... call to -(_:_:) ... | StringLengthConflation.swift:93:28:93:31 | .length :  | StringLengthConflation.swift:93:28:93:40 | ... call to -(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:97:27:97:39 | ... call to -(_:_:) ... | StringLengthConflation.swift:97:27:97:30 | .length :  | StringLengthConflation.swift:97:27:97:39 | ... call to -(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:101:25:101:37 | ... call to -(_:_:) ... | StringLengthConflation.swift:101:25:101:28 | .length :  | StringLengthConflation.swift:101:25:101:37 | ... call to -(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:105:25:105:37 | ... call to -(_:_:) ... | StringLengthConflation.swift:105:25:105:28 | .length :  | StringLengthConflation.swift:105:25:105:37 | ... call to -(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:111:23:111:35 | ... call to -(_:_:) ... | StringLengthConflation.swift:111:23:111:26 | .length :  | StringLengthConflation.swift:111:23:111:35 | ... call to -(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:117:22:117:34 | ... call to -(_:_:) ... | StringLengthConflation.swift:117:22:117:25 | .length :  | StringLengthConflation.swift:117:22:117:34 | ... call to -(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:122:34:122:44 | ... call to -(_:_:) ... | StringLengthConflation.swift:122:34:122:36 | .count :  | StringLengthConflation.swift:122:34:122:44 | ... call to -(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:123:36:123:46 | ... call to -(_:_:) ... | StringLengthConflation.swift:123:36:123:38 | .count :  | StringLengthConflation.swift:123:36:123:46 | ... call to -(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:128:36:128:46 | ... call to -(_:_:) ... | StringLengthConflation.swift:128:36:128:38 | .count :  | StringLengthConflation.swift:128:36:128:46 | ... call to -(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:129:38:129:48 | ... call to -(_:_:) ... | StringLengthConflation.swift:129:38:129:40 | .count :  | StringLengthConflation.swift:129:38:129:48 | ... call to -(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:134:34:134:44 | ... call to -(_:_:) ... | StringLengthConflation.swift:134:34:134:36 | .count :  | StringLengthConflation.swift:134:34:134:44 | ... call to -(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:135:36:135:46 | ... call to -(_:_:) ... | StringLengthConflation.swift:135:36:135:38 | .count :  | StringLengthConflation.swift:135:36:135:46 | ... call to -(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:141:28:141:38 | ... call to -(_:_:) ... | StringLengthConflation.swift:141:28:141:30 | .count :  | StringLengthConflation.swift:141:28:141:38 | ... call to -(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |

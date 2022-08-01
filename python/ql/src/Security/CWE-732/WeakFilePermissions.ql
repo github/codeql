@@ -36,13 +36,13 @@ string permissive_permission(int p) {
 
 predicate chmod_call(API::CallNode call, string name, int mode) {
   call = API::moduleImport("os").getMember("chmod").getACall() and
-  mode = call.getParameter(1, "mode").getAValueReachingRhs().asExpr().(IntegerLiteral).getValue() and
+  mode = call.getParameter(1, "mode").getAValueReachingSink().asExpr().(IntegerLiteral).getValue() and
   name = "chmod"
 }
 
 predicate open_call(API::CallNode call, string name, int mode) {
   call = API::moduleImport("os").getMember("open").getACall() and
-  mode = call.getParameter(2, "mode").getAValueReachingRhs().asExpr().(IntegerLiteral).getValue() and
+  mode = call.getParameter(2, "mode").getAValueReachingSink().asExpr().(IntegerLiteral).getValue() and
   name = "open"
 }
 

@@ -9,7 +9,6 @@
  * @msrc.severity important
  * @tags security
  *       external/cwe/cwe-428
- *       external/microsoft/C6277
  */
 
 import cpp

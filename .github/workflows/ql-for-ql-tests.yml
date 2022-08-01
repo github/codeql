@@ -36,7 +36,7 @@ jobs:
         run: |
           cd ql;
           codeqlpath=$(dirname ${{ steps.find-codeql.outputs.codeql-path }});
-          env "PATH=$PATH:$codeqlpath" ./create-extractor-pack.sh
+          env "PATH=$PATH:$codeqlpath" ./scripts/create-extractor-pack.sh
       - name: Run QL tests
         run: |
           "${CODEQL}" test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}/ql/extractor-pack" --consistency-queries ql/ql/consistency-queries ql/ql/test

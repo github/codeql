@@ -133,6 +133,11 @@ private Expr sqlFragmentArgument(MethodCall call) {
       or
       methodName = "reload" and
       result = call.getKeywordArgument("lock")
+      or
+      // Calls to `annotate` can be used to add block comments to SQL queries. These are potentially vulnerable to
+      // SQLi if user supplied input is passed in as an argument.
+      methodName = "annotate" and
+      result = call.getArgument(_)
     )
   )
 }
@@ -330,12 +335,13 @@ class ActiveRecordInstance extends DataFlow::Node {
   ActiveRecordModelClass getClass() { result = instantiation.getClass() }
 }
 
-// A call whose receiver may be an active record model object
-private class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
+/** A call whose receiver may be an active record model object */
+class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
   private ActiveRecordInstance instance;
 
   ActiveRecordInstanceMethodCall() { this.getReceiver() = instance }
 
+  /** Gets the `ActiveRecordInstance` that is the receiver of this call. */
   ActiveRecordInstance getInstance() { result = instance }
 }
 
