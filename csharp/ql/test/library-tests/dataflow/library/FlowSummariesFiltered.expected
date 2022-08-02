@@ -2714,6 +2714,12 @@
 | System.IO;FileNotFoundException;false;GetObjectData;(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext);;Argument[Qualifier];Argument[0];taint;generated |
 | System.IO;FileNotFoundException;false;ToString;();;Argument[Qualifier];ReturnValue;taint;generated |
 | System.IO;FileNotFoundException;false;get_Message;();;Argument[Qualifier];ReturnValue;taint;generated |
+| System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode);;Argument[0];Argument[Qualifier];taint;manual |
+| System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess);;Argument[0];Argument[Qualifier];taint;manual |
+| System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare);;Argument[0];Argument[Qualifier];taint;manual |
+| System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32);;Argument[0];Argument[Qualifier];taint;manual |
+| System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.Boolean);;Argument[0];Argument[Qualifier];taint;manual |
+| System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.IO.FileOptions);;Argument[0];Argument[Qualifier];taint;manual |
 | System.IO;FileStream;false;FlushAsync;(System.Threading.CancellationToken);;Argument[0];ReturnValue;taint;generated |
 | System.IO;FileStream;false;ReadAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;generated |
 | System.IO;FileStream;false;ReadAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);;Argument[Qualifier];ReturnValue;taint;generated |
