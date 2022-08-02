@@ -4,7 +4,11 @@ cached
 predicate toBeTested(Element e) {
   e instanceof File
   or
-  exists(ModuleDecl m | m = e and not m.isBuiltinModule() and not m.isSystemModule())
+  exists(ModuleDecl m |
+    not m.isBuiltinModule() and
+    not m.isSystemModule() and
+    (m = e or m.getInterfaceType() = e)
+  )
   or
   exists(Locatable loc |
     loc.getLocation().getFile().getName().matches("%swift/ql/test%") and

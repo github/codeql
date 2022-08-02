@@ -215,7 +215,7 @@ class SwiftDispatcher {
 
   template <typename... Args>
   void emitDebugInfo(const Args&... args) {
-    trap.debug(std::forward<Args>(args)...);
+    trap.debug(args...);
   }
 
   // In order to not emit duplicated entries for declarations, we restrict emission to only
@@ -315,7 +315,7 @@ class SwiftDispatcher {
   virtual void visit(swift::TypeBase* type) = 0;
 
   void visit(const FilePath& file) {
-    auto entry = createEntry(file);
+    auto entry = createEntry(file, file.path);
     entry.name = file.path;
     emit(entry);
   }

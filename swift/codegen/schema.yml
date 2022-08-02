@@ -112,6 +112,7 @@ LValueType:
 
 ModuleType:
   _extends: Type
+  module: ModuleDecl
 
 PlaceholderType:
   _extends: Type

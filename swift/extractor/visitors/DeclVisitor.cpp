@@ -83,11 +83,13 @@ codeql::PrecedenceGroupDecl DeclVisitor::translatePrecedenceGroupDecl(
   return entry;
 }
 
-codeql::ParamDecl DeclVisitor::translateParamDecl(const swift::ParamDecl& decl) {
-  // TODO: deduplicate
-  ParamDecl entry{dispatcher_.assignNewLabel(decl)};
-  fillVarDecl(decl, entry);
-  entry.is_inout = decl.isInOut();
+std::optional<codeql::ParamDecl> DeclVisitor::translateParamDecl(const swift::ParamDecl& decl) {
+  auto entry = createNamedEntry(decl);
+  if (!entry) {
+    return std::nullopt;
+  }
+  fillVarDecl(decl, *entry);
+  entry->is_inout = decl.isInOut();
   return entry;
 }
 
@@ -111,11 +113,20 @@ codeql::PatternBindingDecl DeclVisitor::translatePatternBindingDecl(
   return entry;
 }
 
-codeql::ConcreteVarDecl DeclVisitor::translateVarDecl(const swift::VarDecl& decl) {
-  // TODO: deduplicate all non-local variables
-  ConcreteVarDecl entry{dispatcher_.assignNewLabel(decl)};
-  entry.introducer_int = static_cast<uint8_t>(decl.getIntroducer());
-  fillVarDecl(decl, entry);
+std::optional<codeql::ConcreteVarDecl> DeclVisitor::translateVarDecl(const swift::VarDecl& decl) {
+  std::optional<codeql::ConcreteVarDecl> entry;
+  // We do not deduplicate variables from non-swift (PCM, clang modules) modules as the mangler
+  // crashes sometimes
+  if (decl.getDeclContext()->isLocalContext() || decl.getModuleContext()->isNonSwiftModule()) {
+    entry.emplace(dispatcher_.assignNewLabel(decl));
+  } else {
+    entry = createNamedEntry(decl);
+    if (!entry) {
+      return std::nullopt;
+    }
+  }
+  entry->introducer_int = static_cast<uint8_t>(decl.getIntroducer());
+  fillVarDecl(decl, *entry);
   return entry;
 }
 
@@ -284,11 +295,30 @@ std::string DeclVisitor::mangledName(const swift::ValueDecl& decl) {
   // ASTMangler::mangleAnyDecl crashes when called on `ModuleDecl`
   // TODO find a more unique string working also when different modules are compiled with the same
   // name
+  std::ostringstream ret;
   if (decl.getKind() == swift::DeclKind::Module) {
-    return static_cast<const swift::ModuleDecl&>(decl).getRealName().str().str();
+    ret << static_cast<const swift::ModuleDecl&>(decl).getRealName().str().str();
+  } else if (decl.getKind() == swift::DeclKind::TypeAlias) {
+    // In cases like this (when coming from PCM)
+    //  typealias CFXMLTree = CFTree
+    //  typealias CFXMLTreeRef = CFXMLTree
+    // mangleAnyDecl mangles both CFXMLTree and CFXMLTreeRef into 'So12CFXMLTreeRefa'
+    // which is not correct and causes inconsistencies. mangleEntity makes these two distinct
+    // prefix adds a couple of special symbols, we don't necessary need them
+    ret << mangler.mangleEntity(&decl);
+  } else {
+    // prefix adds a couple of special symbols, we don't necessary need them
+    ret << mangler.mangleAnyDecl(&decl, /* prefix = */ false);
   }
-  // prefix adds a couple of special symbols, we don't necessary need them
-  return mangler.mangleAnyDecl(&decl, /* prefix = */ false);
+  // there can be separate declarations (`VarDecl` or `AccessorDecl`) which are effectively the same
+  // (with equal mangled name) but come from different clang modules. This is the case for example
+  // for glibc constants like `L_SET` that appear in both `SwiftGlibc` and `CDispatch`.
+  // For the moment, we sidestep the problem by making them separate entities in the DB
+  // TODO find a more solid solution
+  if (decl.getModuleContext()->isNonSwiftModule()) {
+    ret << '_' << decl.getModuleContext()->getRealName().str().str();
+  }
+  return ret.str();
 }
 
 void DeclVisitor::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
