@@ -4539,6 +4539,18 @@ literals/literals.rb:
 #  199|       0: [HashKeySymbol] Z
 #  199|       1: [ReservedWord] :
 #  199|     4: [ReservedWord] }
+#  201|   135: [String] String
+#  201|     0: [ReservedWord] "
+#  201|     1: [StringContent] @foo: 
+#  201|     2: [Interpolation] Interpolation
+#  201|       0: [InstanceVariable] @foo
+#  201|     3: [StringContent]  @@bar: 
+#  201|     4: [Interpolation] Interpolation
+#  201|       0: [ClassVariable] @@bar
+#  201|     5: [StringContent]  $_: 
+#  201|     6: [Interpolation] Interpolation
+#  201|       0: [GlobalVariable] $_
+#  201|     7: [ReservedWord] "
 #    1| [Comment] # boolean values and nil
 #    9| [Comment] # decimal integers
 #   14| [Comment] # max value representable by QL's int type
@@ -4640,14 +4652,9 @@ literals/literals.rb:
 #  188| [Comment] # TODO: the parser currently does not handle single quoted heredocs correctly
 #  189| [HeredocBody] HeredocBody
 #  189|   0: [HeredocContent] 
-#  189|    text without 
-#  190|   1: [Interpolation] Interpolation
-#  190|     0: [ReservedWord] #{
-#  190|     1: [Identifier] interpolation
-#  190|     2: [ReservedWord] }
-#  190|   2: [HeredocContent]  !
-#  190|   
-#  191|   3: [HeredocEnd] DOC
+#  189|    text without #{ interpolation } !
+#  189|   
+#  191|   1: [HeredocEnd] DOC
 #  193| [HeredocBody] HeredocBody
 #  193|   0: [HeredocContent] 
 #  193|    cat file.txt

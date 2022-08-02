@@ -197,3 +197,5 @@ SCRIPT
 x = 42
 {x:, y:5}
 {y: , Z:}
+
+"@foo: #@foo @@bar: #@@bar $_: #$_"
