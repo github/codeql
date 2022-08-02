@@ -71,6 +71,15 @@ module TaintedPath {
   }
 
   /**
+   * A numeric-typed node, considered a sanitizer for path traversal.
+   */
+  class NumericSanitizer extends Sanitizer {
+    NumericSanitizer() {
+      this.getType() instanceof NumericType or this.getType() instanceof BoolType
+    }
+  }
+
+  /**
    * A call to `filepath.Rel`, considered as a sanitizer for path traversal.
    */
   class FilepathRelSanitizer extends Sanitizer {
