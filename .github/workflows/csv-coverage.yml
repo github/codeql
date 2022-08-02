@@ -29,7 +29,7 @@ jobs:
         uses: ./.github/actions/fetch-codeql
       - name: Build modeled package list
         run: |
-          PATH="$PATH:codeql-cli/codeql" python script/misc/scripts/library-coverage/generate-report.py ci codeqlModels script
+          python script/misc/scripts/library-coverage/generate-report.py ci codeqlModels script
       - name: Upload CSV package list
         uses: actions/upload-artifact@v3
         with:
