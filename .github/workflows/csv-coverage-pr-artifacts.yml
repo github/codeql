@@ -5,7 +5,7 @@ on:
     paths:
       - ".github/workflows/csv-coverage-pr-comment.yml"
       - ".github/workflows/csv-coverage-pr-artifacts.yml"
-      - ".github/actions/fetch-codeql"
+      - ".github/actions/fetch-codeql/action.yml"
       - "*/ql/src/**/*.ql"
       - "*/ql/src/**/*.qll"
       - "*/ql/lib/**/*.ql"
