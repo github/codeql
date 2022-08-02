@@ -201,6 +201,21 @@ private class SystemIOFileStreamSourceModelCsv extends SourceModelCsv {
   }
 }
 
+/** Data flow for `System.IO.FileStream`. */
+private class SystemIOFileStreamSummaryModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.IO.FileOptions);;Argument[0];Argument[Qualifier];taint;manual",
+        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32);;Argument[0];Argument[Qualifier];taint;manual",
+        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare);;Argument[0];Argument[Qualifier];taint;manual",
+        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.Boolean);;Argument[0];Argument[Qualifier];taint;manual",
+        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess);;Argument[0];Argument[Qualifier];taint;manual",
+        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode);;Argument[0];Argument[Qualifier];taint;manual",
+      ]
+  }
+}
+
 /** Data flow for `System.IO.StreamReader`. */
 private class SystemIOStreamSummaryModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
