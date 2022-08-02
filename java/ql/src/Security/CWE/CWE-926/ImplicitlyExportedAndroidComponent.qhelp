@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>TODO: Replace the following
+When a debugger is enabled it could allow for entry points in the application or reveal sensitive information.</p>
+
+</overview>
+<recommendation>
+
+<p>TODO: Replace the following
+In Android applications either set the <code>android:debuggable</code> attribute to <code>false</code>
+or do not include it in the manifest. The default value when not included is <code>false</code>.</p>
+
+</recommendation>
+<example>
+
+<p>TODO: Replace the following
+In the example below, the <code>android:debuggable</code> attribute is set to <code>true</code>.</p>
+
+<!--<sample src="DebuggableTrue.xml" />-->
+
+<p>The corrected version sets the <code>android:debuggable</code> attribute to <code>false</code>.</p>
+
+<!--<sample src="DebuggableFalse.xml" />-->
+
+</example>
+<references>
+
+<li>
+  TODO: REPLACE LINKS. Android Developers:
+  <a href="https://developer.android.com/guide/topics/manifest/application-element#debug">The android:debuggable attribute</a>.
+</li>
+
+</references>
+</qhelp>
