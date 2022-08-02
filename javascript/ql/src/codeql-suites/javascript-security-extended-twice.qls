@@ -1,0 +1,8 @@
+- description: Security-extended-twice queries for JavaScript
+- queries: .
+- apply: security-extended-twice-selectors.yml
+  from: codeql/suite-helpers
+# javascript special case: the ml-powered queries are still an opt-in feature
+- exclude:
+    query path:
+      - /^experimental\/adaptivethreatmodeling\/.*/

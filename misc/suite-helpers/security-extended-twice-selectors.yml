@@ -1,0 +1,8 @@
+- description: Selectors for selecting the security-extended-twice queries for a language
+- apply: security-extended-selectors.yml
+# also include the community-contributed security queries
+- include:
+    query path:
+      - /^experimental\/.*/
+    tags contain:
+      - security
