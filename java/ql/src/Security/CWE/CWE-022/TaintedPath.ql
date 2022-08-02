@@ -34,7 +34,12 @@ class TaintedPathConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(Expr e | e = sink.asExpr() | e = any(PathCreation p).getAnInput() and not guarded(e))
+    (
+      sink.asExpr() = any(PathCreation p).getAnInput()
+      or
+      sinkNode(sink, "create-file")
+    ) and
+    not guarded(sink.asExpr())
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
