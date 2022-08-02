@@ -30,6 +30,10 @@ or do not include it in the manifest. The default value when not included is <co
   Android Developers:
   <a href="https://developer.android.com/guide/topics/manifest/application-element#debug">The android:debuggable attribute</a>.
 </li>
+<li>
+  Android Developers:
+  <a href="https://developer.android.com/studio/debug#enable-debug">Enable debugging</a>.
+</li>
 
 </references>
 </qhelp>
