@@ -1,8 +1,24 @@
 edges
 | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... |
+| SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream |
+| SecondOrderSqlInjection.cs:35:42:35:76 | object creation of type StreamReader : StreamReader | SecondOrderSqlInjection.cs:38:35:38:36 | access to local variable sr : StreamReader |
+| SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream | SecondOrderSqlInjection.cs:35:42:35:76 | object creation of type StreamReader : StreamReader |
+| SecondOrderSqlInjection.cs:38:35:38:36 | access to local variable sr : StreamReader | SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String |
+| SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String | SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String |
+| SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String | SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String |
+| SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String | SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql |
 nodes
 | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | semmle.label | ... + ... |
 | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | semmle.label | call to method GetString : String |
+| SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | semmle.label | object creation of type FileStream : FileStream |
+| SecondOrderSqlInjection.cs:35:42:35:76 | object creation of type StreamReader : StreamReader | semmle.label | object creation of type StreamReader : StreamReader |
+| SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream | semmle.label | access to local variable fs : FileStream |
+| SecondOrderSqlInjection.cs:38:35:38:36 | access to local variable sr : StreamReader | semmle.label | access to local variable sr : StreamReader |
+| SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String | semmle.label | call to method ReadLine : String |
+| SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String | semmle.label | access to local variable sql : String |
+| SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String | semmle.label | call to method Trim : String |
+| SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql | semmle.label | access to local variable sql |
 subpaths
 #select
 | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | $@ flows to here and is used in an SQL query. | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString | Stored user-provided value |
+| SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql | SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql | $@ flows to here and is used in an SQL query. | SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream | Stored user-provided value |
