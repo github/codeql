@@ -49,9 +49,7 @@ class TaintedPathConfig extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, PathCreation p, TaintedPathConfig conf
-where
-  sink.getNode().asExpr() = p.getAnInput() and
-  conf.hasFlowPath(source, sink)
-select p, source, sink, "$@ flows to here and is used in a path.", source.getNode(),
+from DataFlow::PathNode source, DataFlow::PathNode sink, TaintedPathConfig conf
+where conf.hasFlowPath(source, sink)
+select sink, source, sink, "$@ flows to here and is used in a path.", source.getNode(),
   "User-provided value"
