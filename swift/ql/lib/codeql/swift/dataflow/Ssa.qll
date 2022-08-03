@@ -39,6 +39,11 @@ module Ssa {
         read2 = bb2.getNode(i2)
       )
     }
+
+    cached
+    predicate lastRefRedef(BasicBlock bb, int i, Definition next) {
+      SsaImplCommon::lastRefRedef(this, bb, i, next)
+    }
   }
 
   cached
