@@ -97,7 +97,7 @@ class UnsafeWebViewFetchConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node node) {
     node instanceof Sink or
-    node.asExpr() = any(Sink s).getBaseURL()
+    node.asExpr() = any(Sink s).getBaseUrl()
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
