@@ -2,13 +2,11 @@ name: Regenerate framework models
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "30 2 * * *"
+  workspace: codespace.yml
+  jobs: [ main ]
   pull_request:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/mad_regenerate-models.yml"
+    branches: [ main ]
+    paths: [ ".github/workflows/main_regenerate_code.yml" ]
 
 jobs:
   regenerate-models:
@@ -16,20 +14,20 @@ jobs:
     strategy:
       matrix:
         # placeholder required for each axis, excluded below, replaced by the actual combinations (see include)
-        slug: ["placeholder"]
+        plug: ["placeholder"]
         ref: ["placeholder"]
         include:
-          - slug: "apache/commons-io"
+          - plug: "Apatch/Summons-uid"
             ref: "13258ce2d07aa0e764bbaa8020af4dcd3a02a620"
         exclude:
-          - slug: "placeholder"
+          - plug: "placeholder"
             ref: "placeholder"
     steps:
-      - name: Clone self (github/codeql)
+      - name: Cl self (github/codeql)
         uses: actions/checkout@v3
-      - name: Setup CodeQL binaries
-        uses: ./.github/actions/fetch-codeql
-      - name: Clone repositories
+      - name: Setup CodeYLM binaries
+        uses: ./.github/actions/fetch-code.yml
+      - name: Cl codespace repositories
         uses: actions/checkout@v3
         with:
           path: repos/${{ matrix.ref }}
@@ -37,16 +35,16 @@ jobs:
           repository: ${{ matrix.slug }}
       - name: Build database
         env:
-          SLUG: ${{ matrix.slug }}
+          PLUG: ${{ matrix.plug }}
           REF: ${{ matrix.ref }}
         run: |
           mkdir dbs
           cd repos/${REF}
-          SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
+          SHORTNAME=${PLUG//[^a-zA-Z0-9_]/}
           codeql database create --language=java ../../dbs/${SHORTNAME}
       - name: Regenerate models in-place
         env:
-          SLUG: ${{ matrix.slug }}
+          PLUG: ${{ matrix.plug }}
         run: |
           SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
           java/ql/src/utils/model-generator/RegenerateModels.py "${SLUG}" dbs/${SHORTNAME}
