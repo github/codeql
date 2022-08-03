@@ -96,7 +96,8 @@ class UnsafeWebViewFetchConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node node) {
-    node instanceof Sink
+    node instanceof Sink or
+    node.asExpr() = any(Sink s).getBaseURL()
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -111,6 +112,16 @@ class UnsafeWebViewFetchConfig extends TaintTracking::Configuration {
     // allow flow through string concatenation.
     // TODO: this should probably be part of TaintTracking.
     node2.asExpr().(AddExpr).getAnOperand() = node1.asExpr()
+    or
+    // allow flow through `URL.init`.
+    exists(CallExpr call, ClassDecl c, AbstractFunctionDecl f |
+      c.getName() = "URL" and
+      c.getAMember() = f and
+      f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
+      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      node1.asExpr() = call.getArgument(_).getExpr() and
+      node2.asExpr() = call
+    )
   }
 }
 
@@ -124,5 +135,9 @@ where
     // base URL is nil
     sink.getBaseURL() instanceof NilLiteralExpr and
     message = "Tainted data is used in a WebView fetch without restricting the base URL."
+    or
+    // base URL is tainted
+    config.hasFlow(_, any(DataFlow::Node n | n.asExpr() = sink.getBaseURL())) and
+    message = "Tainted data is used in a WebView fetch with a tainted base URL."
   )
 select sinkNode, sourceNode, sinkNode, message
