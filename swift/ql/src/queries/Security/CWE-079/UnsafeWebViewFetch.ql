@@ -137,7 +137,7 @@ where
     message = "Tainted data is used in a WebView fetch without restricting the base URL."
     or
     // base URL is tainted
-    config.hasFlow(_, any(DataFlow::Node n | n.asExpr() = sink.getBaseUrl())) and
+    config.hasFlowToExpr(sink.getBaseUrl()) and
     message = "Tainted data is used in a WebView fetch with a tainted base URL."
   )
 select sink, sourceNode, sinkNode, message
