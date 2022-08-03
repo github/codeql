@@ -9,6 +9,7 @@
 private import AST
 private import codeql.ruby.Regexp as RE
 private import codeql.ruby.ast.internal.Synthesis
+private import ast.internal.AST
 
 /**
  * The query can extend this class to control which nodes are printed.
@@ -112,13 +113,22 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
     )
   }
 
+  private int getSynthAstNodeIndex() {
+    not astNode.isSynthesized() and result = -10
+    or
+    astNode = getSynthChild(astNode.getParent(), result)
+  }
+
   override int getOrder() {
     this =
       rank[result](PrintRegularAstNode p, Location l, File f |
         l = p.getLocation() and
         f = l.getFile()
       |
-        p order by f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), l.getStartColumn()
+        p
+        order by
+          f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), l.getStartColumn(),
+          l.getEndLine(), l.getEndColumn(), p.getSynthAstNodeIndex()
       )
   }
 
