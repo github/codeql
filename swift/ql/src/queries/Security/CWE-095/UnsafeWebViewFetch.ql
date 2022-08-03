@@ -3,7 +3,7 @@
  * @description TODO
  * @kind path-problem
  * @problem.severity warning
- * @security-severity TODO
+ * @security-severity 6.1
  * @precision high
  * @id swift/unsafe-webview-fetch
  * @tags security
