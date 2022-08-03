@@ -22,12 +22,7 @@ class AndroidManifestXmlFile extends XMLFile {
   /**
    * Holds if this Android manifest file is located in a build directory.
    */
-  predicate isInBuildDirectory() {
-    exists(AndroidManifestXmlFile file |
-      file = this.getFile() and
-      file.getRelativePath().matches("%build%")
-    )
-  }
+  predicate isInBuildDirectory() { this.getFile().getRelativePath().matches("%build%") }
 }
 
 /**
@@ -65,19 +60,7 @@ class AndroidApplicationXmlElement extends XMLElement {
   /**
    * Holds if this application element has the attribute `android:debuggable` set to `true`.
    */
-  predicate isDebuggable() {
-    exists(AndroidXmlAttribute attr |
-      this.getAnAttribute() = attr and
-      attr.getName() = "debuggable" and
-      attr.getValue() = "true"
-    )
-  }
-
-  /**
-   * Overrides the getFile() predicate of the XMLElement class to get the
-   * AndroidManifest.xml file itself.
-   */
-  override AndroidManifestXmlFile getFile() { result = super.getFile() }
+  predicate isDebuggable() { this.getAttributeValue("debuggable") = "true" }
 }
 
 /**
