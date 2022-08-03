@@ -12,7 +12,7 @@ class ProduceHashCall extends DataFlow::CallCfgNode {
   ProduceHashCall() {
     this = API::moduleImport("hmac").getMember("digest").getACall() or
     this =
-       API::moduleImport("hmac")
+      API::moduleImport("hmac")
           .getMember("new")
           .getReturn()
           .getMember(["digest", "hexdigest"])
@@ -26,25 +26,24 @@ class ProduceHashCall extends DataFlow::CallCfgNode {
           .getMember(["digest", "hexdigest"])
           .getACall()
   }
-
 }
 
 /** A data flow sink for comparison. */
 private predicate existsFailFastCheck(Expr firstInput, Expr secondInput) {
   exists(Compare compare |
-      (
-        compare.getOp(0) instanceof Eq or
-        compare.getOp(0) instanceof NotEq or
-        compare.getOp(0) instanceof In or
-        compare.getOp(0) instanceof NotIn
-      ) and
-      (
-        compare.getLeft() = firstInput and
-        compare.getComparator(0) = secondInput
-        or
-        compare.getLeft() = secondInput and
-        compare.getComparator(0) = firstInput       
-      )
+    (
+      compare.getOp(0) instanceof Eq or
+      compare.getOp(0) instanceof NotEq or
+      compare.getOp(0) instanceof In or
+      compare.getOp(0) instanceof NotIn
+    ) and
+    (
+      compare.getLeft() = firstInput and
+      compare.getComparator(0) = secondInput
+      or
+      compare.getLeft() = secondInput and
+      compare.getComparator(0) = firstInput
+    )
   )
 }
 
@@ -54,7 +53,7 @@ class NonConstantTimeComparisonSink extends DataFlow::Node {
 
   NonConstantTimeComparisonSink() {
     existsFailFastCheck(this.asExpr(), anotherParameter) and
-    not anotherParameter.isConstant() 
+    not anotherParameter.isConstant()
   }
 
   /** Holds if remote user input was used in the comparison. */
@@ -73,9 +72,7 @@ class SecretSource extends DataFlow::Node {
 
   /** Holds if the secret was deliverd by remote user. */
   predicate includesUserInput() {
-    exists(UserInputSecretConfig config |
-      config.hasFlowTo(DataFlow2::exprNode(secret))
-    )
+    exists(UserInputSecretConfig config | config.hasFlowTo(DataFlow2::exprNode(secret)))
   }
 }
 
@@ -191,7 +188,7 @@ class UserInputInComparisonConfig extends TaintTracking2::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { 
+  override predicate isSink(DataFlow::Node sink) {
     exists(Compare cmp, Expr left, Expr right, Cmpop cmpop |
       cmpop.getSymbol() = ["==", "in", "is not", "!="] and
       cmp.compares(left, cmpop, right) and
