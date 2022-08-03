@@ -48,6 +48,10 @@ private string asSummaryModel(TargetApi api, string input, string output, string
       + "generated"
 }
 
+string asNegativeSummaryModel(TargetApi api) { result = asPartialNegativeModel(api) + "generated" }
+
+predicate partialNegativeModel = asPartialNegativeModel/1;
+
 /**
  * Gets the value summary model for `api` with `input` and `output`.
  */
