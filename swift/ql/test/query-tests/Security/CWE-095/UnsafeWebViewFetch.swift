@@ -201,6 +201,17 @@ func testWKWebView() {
 	webview.load(remoteData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: remoteURL!) // BAD [NOT DETECTED]
 }
 
+func testQHelpExamples() {
+	let webview = UIWebView()
+	let htmlData = getRemoteData()
+
+	// ...
+
+	webview.loadHTMLString(htmlData, baseURL: nil) // BAD
+	webview.loadHTMLString(htmlData, baseURL: URL(string: "about:blank")) // GOOD
+}
+
 testSimpleFlows()
 testUIWebView()
 testWKWebView()
+testQHelpExamples()

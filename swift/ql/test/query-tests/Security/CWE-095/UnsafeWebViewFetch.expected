@@ -3,6 +3,7 @@ edges
 | UnsafeWebViewFetch.swift:94:10:94:37 | try ... :  | UnsafeWebViewFetch.swift:120:25:120:39 | call to getRemoteData() |
 | UnsafeWebViewFetch.swift:94:10:94:37 | try ... :  | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  |
 | UnsafeWebViewFetch.swift:94:10:94:37 | try ... :  | UnsafeWebViewFetch.swift:167:25:167:39 | call to getRemoteData() |
+| UnsafeWebViewFetch.swift:94:10:94:37 | try ... :  | UnsafeWebViewFetch.swift:206:17:206:31 | call to getRemoteData() :  |
 | UnsafeWebViewFetch.swift:94:14:94:37 | call to ... :  | UnsafeWebViewFetch.swift:94:10:94:37 | try ... :  |
 | UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:121:25:121:25 | remoteString |
 | UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:124:25:124:51 | ... call to +(_:_:) ... |
@@ -28,6 +29,8 @@ edges
 | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:188:48:188:58 | ...! |
 | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:200:90:200:99 | ...! |
 | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:201:91:201:100 | ...! |
+| UnsafeWebViewFetch.swift:206:17:206:31 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:210:25:210:25 | htmlData |
+| UnsafeWebViewFetch.swift:206:17:206:31 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:211:25:211:25 | htmlData |
 nodes
 | UnsafeWebViewFetch.swift:94:10:94:37 | try ... :  | semmle.label | try ... :  |
 | UnsafeWebViewFetch.swift:94:14:94:37 | call to ... :  | semmle.label | call to ... :  |
@@ -59,6 +62,9 @@ nodes
 | UnsafeWebViewFetch.swift:188:48:188:58 | ...! | semmle.label | ...! |
 | UnsafeWebViewFetch.swift:200:90:200:99 | ...! | semmle.label | ...! |
 | UnsafeWebViewFetch.swift:201:91:201:100 | ...! | semmle.label | ...! |
+| UnsafeWebViewFetch.swift:206:17:206:31 | call to getRemoteData() :  | semmle.label | call to getRemoteData() :  |
+| UnsafeWebViewFetch.swift:210:25:210:25 | htmlData | semmle.label | htmlData |
+| UnsafeWebViewFetch.swift:211:25:211:25 | htmlData | semmle.label | htmlData |
 subpaths
 #select
 | UnsafeWebViewFetch.swift:120:25:120:39 | call to getRemoteData() | UnsafeWebViewFetch.swift:94:14:94:37 | call to ... :  | UnsafeWebViewFetch.swift:120:25:120:39 | call to getRemoteData() | Tainted data is used in a WebView fetch without restricting the base URL. |
@@ -71,3 +77,4 @@ subpaths
 | UnsafeWebViewFetch.swift:171:25:171:51 | ... call to +(_:_:) ... | UnsafeWebViewFetch.swift:94:14:94:37 | call to ... :  | UnsafeWebViewFetch.swift:171:25:171:51 | ... call to +(_:_:) ... | Tainted data is used in a WebView fetch without restricting the base URL. |
 | UnsafeWebViewFetch.swift:186:25:186:25 | remoteString | UnsafeWebViewFetch.swift:94:14:94:37 | call to ... :  | UnsafeWebViewFetch.swift:186:25:186:25 | remoteString | Tainted data is used in a WebView fetch with a tainted base URL. |
 | UnsafeWebViewFetch.swift:188:25:188:25 | remoteString | UnsafeWebViewFetch.swift:94:14:94:37 | call to ... :  | UnsafeWebViewFetch.swift:188:25:188:25 | remoteString | Tainted data is used in a WebView fetch with a tainted base URL. |
+| UnsafeWebViewFetch.swift:210:25:210:25 | htmlData | UnsafeWebViewFetch.swift:94:14:94:37 | call to ... :  | UnsafeWebViewFetch.swift:210:25:210:25 | htmlData | Tainted data is used in a WebView fetch without restricting the base URL. |

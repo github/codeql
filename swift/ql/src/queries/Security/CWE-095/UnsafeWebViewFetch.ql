@@ -1,6 +1,6 @@
 /**
  * @name Unsafe WebView fetch
- * @description TODO
+ * @description Fetching data in a WebView without restricting the base URL may allow an attacker to access sensitive local data, or enable cross-site scripting attack.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 6.1
