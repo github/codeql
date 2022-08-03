@@ -13,9 +13,8 @@
 import java
 import semmle.code.xml.AndroidManifest
 
-from AndroidXmlAttribute androidXmlAttr
+from AndroidApplicationXmlElement androidAppElem
 where
-  androidXmlAttr.getName() = "debuggable" and
-  androidXmlAttr.getValue() = "true" and
-  not androidXmlAttr.getLocation().getFile().getRelativePath().matches("%build%")
-select androidXmlAttr, "The 'android:debuggable' attribute is enabled."
+  androidAppElem.isDebuggable() and
+  not androidAppElem.getFile().isInBuildDirectory()
+select androidAppElem.getAttribute("debuggable"), "The 'android:debuggable' attribute is enabled."

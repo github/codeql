@@ -2,20 +2,19 @@ import java
 import semmle.code.xml.AndroidManifest
 import TestUtilities.InlineExpectationsTest
 
-class DebuggableAttributeTrueTest extends InlineExpectationsTest {
-  DebuggableAttributeTrueTest() { this = "DebuggableAttributeEnabledTest" }
+class DebuggableAttributeEnabledTest extends InlineExpectationsTest {
+  DebuggableAttributeEnabledTest() { this = "DebuggableAttributeEnabledTest" }
 
   override string getARelevantTag() { result = "hasDebuggableAttributeEnabled" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasDebuggableAttributeEnabled" and
-    exists(AndroidXmlAttribute androidXmlAttr |
-      androidXmlAttr.getName() = "debuggable" and
-      androidXmlAttr.getValue() = "true" and
-      not androidXmlAttr.getLocation().getFile().getRelativePath().matches("%build%")
+    exists(AndroidApplicationXmlElement androidAppElem |
+      androidAppElem.isDebuggable() and
+      not androidAppElem.getFile().isInBuildDirectory()
     |
-      androidXmlAttr.getLocation() = location and
-      element = androidXmlAttr.toString() and
+      androidAppElem.getAttribute("debuggable").getLocation() = location and
+      element = androidAppElem.getAttribute("debuggable").toString() and
       value = ""
     )
   }
