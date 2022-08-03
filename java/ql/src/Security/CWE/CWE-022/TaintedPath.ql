@@ -50,7 +50,21 @@ class TaintedPathConfig extends TaintTracking::Configuration {
   }
 }
 
+/**
+ * Gets the data-flow node at which to report a path ending at `sink`.
+ *
+ * Previously this query flagged alerts exclusively at `PathCreation` sites,
+ * so to avoid perturbing existing alerts, where a `PathCreation` exists we
+ * continue to report there; otherwise we report directly at `sink`.
+ */
+DataFlow::Node getReportingNode(DataFlow::Node sink) {
+  any(TaintedPathConfig c).hasFlowTo(sink) and
+  if exists(PathCreation pc | pc.getAnInput() = sink.asExpr())
+  then result.asExpr() = any(PathCreation pc | pc.getAnInput() = sink.asExpr())
+  else result = sink
+}
+
 from DataFlow::PathNode source, DataFlow::PathNode sink, TaintedPathConfig conf
 where conf.hasFlowPath(source, sink)
-select sink, source, sink, "$@ flows to here and is used in a path.", source.getNode(),
-  "User-provided value"
+select getReportingNode(sink.getNode()), source, sink, "$@ flows to here and is used in a path.",
+  source.getNode(), "User-provided value"
