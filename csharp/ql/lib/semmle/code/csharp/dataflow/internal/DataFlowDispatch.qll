@@ -4,7 +4,6 @@ private import dotnet
 private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowPublic
 private import DataFlowPrivate
-private import semmle.code.csharp.controlflow.internal.Splitting
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 private import semmle.code.csharp.dataflow.ExternalFlow
@@ -22,7 +21,13 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
  */
 DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
   exists(DotNet::Callable unboundDecl | unboundDecl = c.getUnboundDeclaration() |
-    result.hasBody() and
+    (
+      result.hasBody()
+      or
+      // take synthesized bodies into account, e.g. implicit constructors
+      // with field initializer assignments
+      result = any(ControlFlow::Nodes::ElementNode n).getEnclosingCallable()
+    ) and
     if unboundDecl.getFile().fromSource()
     then
       // C# callable with C# implementation in the database
@@ -40,16 +45,6 @@ DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
         // C# callable without C# implementation in the database
         unboundDecl.matchesHandle(result.(CIL::Callable))
   )
-  or
-  result = c.getUnboundDeclaration() and
-  isDefaultConstructorWithMemberInit(result)
-}
-
-private predicate isDefaultConstructorWithMemberInit(InstanceConstructor c) {
-  c.isUnboundDeclaration() and
-  c.getFile().fromSource() and
-  not c.hasBody() and
-  InitializerSplitting::constructorInitializes(c, _)
 }
 
 /**
