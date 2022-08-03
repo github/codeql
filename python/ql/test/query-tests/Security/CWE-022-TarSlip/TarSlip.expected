@@ -7,8 +7,6 @@ edges
 | tarslip.py:40:7:40:39 | ControlFlowNode for Attribute() | tarslip.py:41:24:41:26 | ControlFlowNode for tar |
 | tarslip.py:56:7:56:39 | ControlFlowNode for Attribute() | tarslip.py:57:5:57:9 | GSSA Variable entry |
 | tarslip.py:57:5:57:9 | GSSA Variable entry | tarslip.py:59:21:59:25 | ControlFlowNode for entry |
-| tarslip.py:79:7:79:39 | ControlFlowNode for Attribute() | tarslip.py:80:5:80:9 | GSSA Variable entry |
-| tarslip.py:80:5:80:9 | GSSA Variable entry | tarslip.py:82:21:82:25 | ControlFlowNode for entry |
 nodes
 | tarslip.py:12:7:12:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | tarslip.py:13:1:13:3 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
@@ -23,9 +21,6 @@ nodes
 | tarslip.py:56:7:56:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | tarslip.py:57:5:57:9 | GSSA Variable entry | semmle.label | GSSA Variable entry |
 | tarslip.py:59:21:59:25 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
-| tarslip.py:79:7:79:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| tarslip.py:80:5:80:9 | GSSA Variable entry | semmle.label | GSSA Variable entry |
-| tarslip.py:82:21:82:25 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
 subpaths
 #select
 | tarslip.py:13:1:13:3 | ControlFlowNode for tar | tarslip.py:12:7:12:39 | ControlFlowNode for Attribute() | tarslip.py:13:1:13:3 | ControlFlowNode for tar | Extraction of tarfile from $@ | tarslip.py:12:7:12:39 | ControlFlowNode for Attribute() | a potentially untrusted source |
@@ -33,4 +28,3 @@ subpaths
 | tarslip.py:37:17:37:21 | ControlFlowNode for entry | tarslip.py:33:7:33:39 | ControlFlowNode for Attribute() | tarslip.py:37:17:37:21 | ControlFlowNode for entry | Extraction of tarfile from $@ | tarslip.py:33:7:33:39 | ControlFlowNode for Attribute() | a potentially untrusted source |
 | tarslip.py:41:24:41:26 | ControlFlowNode for tar | tarslip.py:40:7:40:39 | ControlFlowNode for Attribute() | tarslip.py:41:24:41:26 | ControlFlowNode for tar | Extraction of tarfile from $@ | tarslip.py:40:7:40:39 | ControlFlowNode for Attribute() | a potentially untrusted source |
 | tarslip.py:59:21:59:25 | ControlFlowNode for entry | tarslip.py:56:7:56:39 | ControlFlowNode for Attribute() | tarslip.py:59:21:59:25 | ControlFlowNode for entry | Extraction of tarfile from $@ | tarslip.py:56:7:56:39 | ControlFlowNode for Attribute() | a potentially untrusted source |
-| tarslip.py:82:21:82:25 | ControlFlowNode for entry | tarslip.py:79:7:79:39 | ControlFlowNode for Attribute() | tarslip.py:82:21:82:25 | ControlFlowNode for entry | Extraction of tarfile from $@ | tarslip.py:79:7:79:39 | ControlFlowNode for Attribute() | a potentially untrusted source |
