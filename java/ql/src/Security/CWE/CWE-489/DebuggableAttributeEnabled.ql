@@ -16,5 +16,5 @@ import semmle.code.xml.AndroidManifest
 from AndroidApplicationXmlElement androidAppElem
 where
   androidAppElem.isDebuggable() and
-  not androidAppElem.getFile().isInBuildDirectory()
+  not androidAppElem.getFile().(AndroidManifestXmlFile).isInBuildDirectory()
 select androidAppElem.getAttribute("debuggable"), "The 'android:debuggable' attribute is enabled."

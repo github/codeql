@@ -11,7 +11,7 @@ class DebuggableAttributeEnabledTest extends InlineExpectationsTest {
     tag = "hasDebuggableAttributeEnabled" and
     exists(AndroidApplicationXmlElement androidAppElem |
       androidAppElem.isDebuggable() and
-      not androidAppElem.getFile().isInBuildDirectory()
+      not androidAppElem.getFile().(AndroidManifestXmlFile).isInBuildDirectory()
     |
       androidAppElem.getAttribute("debuggable").getLocation() = location and
       element = androidAppElem.getAttribute("debuggable").toString() and
