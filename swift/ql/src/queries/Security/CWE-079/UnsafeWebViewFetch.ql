@@ -119,7 +119,7 @@ class UnsafeWebViewFetchConfig extends TaintTracking::Configuration {
       c.getAMember() = f and
       f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
       call.getFunction().(ApplyExpr).getStaticTarget() = f and
-      node1.asExpr() = call.getArgument(_).getExpr() and
+      node1.asExpr() = call.getAnArgument().getExpr() and
       node2.asExpr() = call
     )
   }
@@ -140,4 +140,4 @@ where
     config.hasFlow(_, any(DataFlow::Node n | n.asExpr() = sink.getBaseUrl())) and
     message = "Tainted data is used in a WebView fetch with a tainted base URL."
   )
-select sinkNode, sourceNode, sinkNode, message
+select sink, sourceNode, sinkNode, message
