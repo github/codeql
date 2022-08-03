@@ -9,6 +9,7 @@
 private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.csharp.dataflow.NegativeSummary
 private import ExternalApi
 
 private predicate getRelevantUsages(ExternalApi api, int usages) {
