@@ -7,8 +7,8 @@
  * @precision high
  * @id swift/unsafe-webview-fetch
  * @tags security
- *       external/cwe/cwe-095
  *       external/cwe/cwe-079
+ *       external/cwe/cwe-095
  *       external/cwe/cwe-749
  */
 
