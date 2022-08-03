@@ -23,8 +23,8 @@ import codeql.swift.frameworks.StandardLibrary.String
  * A taint source that is `String(contentsOf:)`.
  * TODO: this shouldn't be needed when `StringSource` in `String.qll` is working.
  */
-class StringContentsOfURLSource extends RemoteFlowSource {
-  StringContentsOfURLSource() {
+class StringContentsOfUrlSource extends RemoteFlowSource {
+  StringContentsOfUrlSource() {
     exists(CallExpr call, AbstractFunctionDecl f |
       call.getFunction().(ApplyExpr).getStaticTarget() = f and
       f.getName() = "init(contentsOf:)" and
@@ -41,12 +41,12 @@ class StringContentsOfURLSource extends RemoteFlowSource {
  * to `UIWebView.loadHTMLString`.
  */
 class Sink extends DataFlow::Node {
-  Expr baseURL;
+  Expr baseUrl;
 
   Sink() {
     exists(
       AbstractFunctionDecl funcDecl, CallExpr call, string funcName, string paramName, int arg,
-      int baseURLarg
+      int baseUrlArg
     |
       // arguments to method calls...
       exists(string className, ClassDecl c |
@@ -75,19 +75,19 @@ class Sink extends DataFlow::Node {
       funcDecl.getParam(pragma[only_bind_into](arg)).getName() = paramName and
       call.getArgument(pragma[only_bind_into](arg)).getExpr() = this.asExpr() and
       // match up `baseURLArg`
-      funcDecl.getParam(pragma[only_bind_into](baseURLarg)).getName() = "baseURL" and
-      call.getArgument(pragma[only_bind_into](baseURLarg)).getExpr() = baseURL
+      funcDecl.getParam(pragma[only_bind_into](baseUrlArg)).getName() = "baseURL" and
+      call.getArgument(pragma[only_bind_into](baseUrlArg)).getExpr() = baseUrl
     )
   }
 
   /**
    * Gets the `baseURL` argument associated with this sink.
    */
-  Expr getBaseURL() { result = baseURL }
+  Expr getBaseUrl() { result = baseUrl }
 }
 
 /**
- * Taint configuration from taint sources to sinks (and `baseURL` arguments)
+ * A taint configuration from taint sources to sinks (and `baseURL` arguments)
  * for this query.
  */
 class UnsafeWebViewFetchConfig extends TaintTracking::Configuration {
@@ -133,11 +133,11 @@ where
   sink = sinkNode.getNode() and
   (
     // base URL is nil
-    sink.getBaseURL() instanceof NilLiteralExpr and
+    sink.getBaseUrl() instanceof NilLiteralExpr and
     message = "Tainted data is used in a WebView fetch without restricting the base URL."
     or
     // base URL is tainted
-    config.hasFlow(_, any(DataFlow::Node n | n.asExpr() = sink.getBaseURL())) and
+    config.hasFlow(_, any(DataFlow::Node n | n.asExpr() = sink.getBaseUrl())) and
     message = "Tainted data is used in a WebView fetch with a tainted base URL."
   )
 select sinkNode, sourceNode, sinkNode, message
