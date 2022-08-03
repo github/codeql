@@ -1,51 +1,56 @@
+/** Provides classes to reason about partial path traversal vulnerabilities. */
+
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.environment.SystemProperty
 
-class MethodStringStartsWith extends Method {
+private class MethodStringStartsWith extends Method {
   MethodStringStartsWith() {
     this.getDeclaringType() instanceof TypeString and
     this.hasName("startsWith")
   }
 }
 
-class MethodFileGetCanonicalPath extends Method {
+private class MethodFileGetCanonicalPath extends Method {
   MethodFileGetCanonicalPath() {
     this.getDeclaringType() instanceof TypeFile and
     this.hasName("getCanonicalPath")
   }
 }
 
-class MethodAccessFileGetCanonicalPath extends MethodAccess {
+private class MethodAccessFileGetCanonicalPath extends MethodAccess {
   MethodAccessFileGetCanonicalPath() { this.getMethod() instanceof MethodFileGetCanonicalPath }
 }
 
-abstract class FileSeparatorExpr extends Expr { }
+private abstract class FileSeparatorExpr extends Expr { }
 
-class SystemPropFileSeparatorExpr extends FileSeparatorExpr {
+private class SystemPropFileSeparatorExpr extends FileSeparatorExpr {
   SystemPropFileSeparatorExpr() { this = getSystemProperty("file.separator") }
 }
 
-class StringLiteralFileSeparatorExpr extends FileSeparatorExpr, StringLiteral {
+private class StringLiteralFileSeparatorExpr extends FileSeparatorExpr, StringLiteral {
   StringLiteralFileSeparatorExpr() {
     this.getValue().matches("%/") or this.getValue().matches("%\\")
   }
 }
 
-class CharacterLiteralFileSeparatorExpr extends FileSeparatorExpr, CharacterLiteral {
+private class CharacterLiteralFileSeparatorExpr extends FileSeparatorExpr, CharacterLiteral {
   CharacterLiteralFileSeparatorExpr() { this.getValue() = "/" or this.getValue() = "\\" }
 }
 
-class FileSeparatorAppend extends AddExpr {
+private class FileSeparatorAppend extends AddExpr {
   FileSeparatorAppend() { this.getRightOperand() instanceof FileSeparatorExpr }
 }
 
-predicate isSafe(Expr expr) {
+private predicate isSafe(Expr expr) {
   DataFlow::localExprFlow(any(Expr e |
       e instanceof FileSeparatorAppend or e instanceof FileSeparatorExpr
     ), expr)
 }
 
+/**
+ * A method access that returns a boolean that incorrectly guards against Partial Path Traversal.
+ */
 class PartialPathTraversalMethodAccess extends MethodAccess {
   PartialPathTraversalMethodAccess() {
     this.getMethod() instanceof MethodStringStartsWith and
