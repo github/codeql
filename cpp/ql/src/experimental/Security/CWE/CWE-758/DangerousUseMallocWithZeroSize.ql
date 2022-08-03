@@ -40,14 +40,13 @@ predicate existsChecksorSet(FunctionCall fc) {
       ae.getASuccessor*() = fc
     )
     or
-    exists(GuardCondition gc, Expr bound, Expr val |
+    exists(GuardCondition gc, Expr bound |
       (
         globalValueNumber(fc.getArgument(0)) = globalValueNumber(bound) or
         fc.getArgument(0).(VariableAccess).getTarget() = bound.(VariableAccess).getTarget()
       ) and
       (
-        val.getValue() = ["0", "1"] and
-        (
+        exists(Expr val | val.getValue() = ["0", "1"] |
           gc.ensuresEq(bound, val, _, fc.getBasicBlock(), _) or
           gc.ensuresEq(val, bound, _, fc.getBasicBlock(), _) or
           gc.ensuresLt(bound, val, _, fc.getBasicBlock(), _) or
