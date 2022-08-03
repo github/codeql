@@ -15,6 +15,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.security.PathCreation
 import DataFlow::PathGraph
 import TaintedPathCommon
