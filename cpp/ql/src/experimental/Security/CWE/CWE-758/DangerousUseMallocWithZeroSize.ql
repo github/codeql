@@ -13,6 +13,7 @@
 import cpp
 import semmle.code.cpp.commons.Exclusions
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
+import semmle.code.cpp.controlflow.Guards
 
 /** Holds if there is a bitwise operation, initialization, assignment or test of the first function argument. */
 predicate existsChecksorSet(FunctionCall fc) {
@@ -39,15 +40,21 @@ predicate existsChecksorSet(FunctionCall fc) {
       ae.getASuccessor*() = fc
     )
     or
-    exists(IfStmt ifs, ComparisonOperation co, Expr ec |
-      ifs.getCondition().getAChild*() = co and
-      co.hasOperands(fc.getArgument(0).(VariableAccess).getTarget().getAnAccess(), ec) and
-      exists(Expr etmp |
-        etmp.getValue() = ["0", "1"] and
+    exists(GuardCondition gc, Expr bound, Expr val |
+      (
+        globalValueNumber(fc.getArgument(0)) = globalValueNumber(bound) or
+        fc.getArgument(0).(VariableAccess).getTarget() = bound.(VariableAccess).getTarget()
+      ) and
+      (
+        val.getValue() = ["0", "1"] and
         (
-          ec = etmp or
-          globalValueNumber(ec) = globalValueNumber(etmp)
+          gc.ensuresEq(bound, val, _, fc.getBasicBlock(), _) or
+          gc.ensuresEq(val, bound, _, fc.getBasicBlock(), _) or
+          gc.ensuresLt(bound, val, _, fc.getBasicBlock(), _) or
+          gc.ensuresLt(val, bound, _, fc.getBasicBlock(), _)
         )
+        or
+        gc = globalValueNumber(bound).getAnExpr()
       )
     )
   )
@@ -162,4 +169,39 @@ where
       "The length of the memory allocation function parameter is related to the call to the read from file function or can be equal to zero."
   ) and
   dangerousUseBufferAndSize(fc)
+  or
+  fc.getTarget().getAnAttribute().hasName("noreturn") and
+  exists(ReturnStmt rs | fc.getTarget().getEntryPoint().getASuccessor+() = rs) and
+  msg =
+    "The compiler may optimize the code after calling this function, resulting in undefined behavior."
+  or
+  exists(int firstargument, int secondargument |
+    firstargument != secondargument and
+    globalValueNumber(fc.getArgument(firstargument)) =
+      globalValueNumber(fc.getArgument(secondargument)) and
+    (
+      fc.getTarget()
+          .hasName([
+              "memcmp", "memcpy", "memmove", "strcmp", "strncmp", "strcpy", "wcscmp", "wcsncmp",
+              "wcscpy"
+            ]) and
+      firstargument = 0 and
+      secondargument = 1
+      or
+      exists(FunctionCall overfc |
+        fc.getTarget().getEntryPoint().getASuccessor+() = overfc and
+        overfc
+            .getTarget()
+            .hasName([
+                "memcmp", "memcpy", "memmove", "strcmp", "strncmp", "strcpy", "wcscmp", "wcsncmp",
+                "wcscpy"
+              ]) and
+        fc.getTarget().getParameter(firstargument).getAnAccess().getTarget() =
+          overfc.getArgument(0).(VariableAccess).getTarget() and
+        fc.getTarget().getParameter(secondargument).getAnAccess().getTarget() =
+          overfc.getArgument(1).(VariableAccess).getTarget()
+      )
+    )
+  ) and
+  msg = "Using the equal arguments in this function can lead to unexpected results."
 select fc, msg
