@@ -71,10 +71,10 @@ module TaintedPath {
   }
 
   /**
-   * A numeric-typed node, considered a sanitizer for path traversal.
+   * A numeric- or boolean-typed node, considered a sanitizer for path traversal.
    */
-  class NumericSanitizer extends Sanitizer {
-    NumericSanitizer() {
+  class NumericOrBooleanSanitizer extends Sanitizer {
+    NumericOrBooleanSanitizer() {
       this.getType() instanceof NumericType or this.getType() instanceof BoolType
     }
   }
