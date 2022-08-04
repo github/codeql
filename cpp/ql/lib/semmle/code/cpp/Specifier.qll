@@ -256,7 +256,7 @@ class AttributeArgument extends Element, @attribute_arg {
 
   /**
    * Gets the text for the value of this argument, if its value is
-   * a string or a number.
+   * a constant or token.
    */
   string getValueText() { attribute_arg_value(underlyingElement(this), result) }
 
