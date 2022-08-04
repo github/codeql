@@ -89,6 +89,8 @@ private string getInvalidModelColumnCount() {
     sinkModel(row) and expect = 9 and pred = "sink"
     or
     summaryModel(row) and expect = 10 and pred = "summary"
+    or
+    negativeSummaryModel(row) and expect = 5 and pred = "negative summary"
   |
     exists(int cols |
       cols = 1 + max(int n | exists(row.splitAt(";", n))) and
