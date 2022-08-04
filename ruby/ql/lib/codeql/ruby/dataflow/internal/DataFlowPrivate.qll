@@ -227,6 +227,7 @@ private module Cached {
     } or
     TSelfParameterNode(MethodBase m) or
     TBlockParameterNode(MethodBase m) or
+    TSynthHashSplatParameterNode(MethodBase m) { m.getAParameter() instanceof KeywordParameter } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
       n instanceof Argument or
       n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
@@ -240,12 +241,13 @@ private module Cached {
     TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
       FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
     } or
-    THashSplatArgumentsNode(CfgNodes::ExprNodes::CallCfgNode c) {
+    TSynthHashSplatArgumentsNode(CfgNodes::ExprNodes::CallCfgNode c) {
       exists(Argument arg | arg.isArgumentOf(c, any(ArgumentPosition pos | pos.isKeyword(_))))
     }
 
   class TParameterNode =
-    TNormalParameterNode or TBlockParameterNode or TSelfParameterNode or TSummaryParameterNode;
+    TNormalParameterNode or TBlockParameterNode or TSelfParameterNode or
+        TSynthHashSplatParameterNode or TSummaryParameterNode;
 
   private predicate defaultValueFlow(NamedParameter p, ExprNode e) {
     p.(OptionalParameter).getDefaultValue() = e.getExprNode().getExpr()
@@ -328,18 +330,21 @@ private module Cached {
 
   cached
   predicate isLocalSourceNode(Node n) {
-    n instanceof ParameterNode
-    or
-    n instanceof PostUpdateNodes::ExprPostUpdateNode
-    or
-    // Nodes that can't be reached from another entry definition or expression.
-    not reachedFromExprOrEntrySsaDef(n)
-    or
-    // Ensure all entry SSA definitions are local sources -- for parameters, this
-    // is needed by type tracking. Note that when the parameter has a default value,
-    // it will be reachable from an expression (the default value) and therefore
-    // won't be caught by the rule above.
-    entrySsaDefinition(n)
+    not n instanceof SynthHashSplatParameterNode and
+    (
+      n instanceof ParameterNode
+      or
+      n instanceof PostUpdateNodes::ExprPostUpdateNode
+      or
+      // Nodes that can't be reached from another entry definition or expression.
+      not reachedFromExprOrEntrySsaDef(n)
+      or
+      // Ensure all entry SSA definitions are local sources -- for parameters, this
+      // is needed by type tracking. Note that when the parameter has a default value,
+      // it will be reachable from an expression (the default value) and therefore
+      // won't be caught by the rule above.
+      entrySsaDefinition(n)
+    )
   }
 
   cached
@@ -415,7 +420,9 @@ predicate nodeIsHidden(Node n) {
   or
   n instanceof SynthReturnNode
   or
-  n instanceof HashSplatArgumentsNode
+  n instanceof SynthHashSplatParameterNode
+  or
+  n instanceof SynthHashSplatArgumentsNode
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
@@ -570,6 +577,74 @@ private module ParameterNodes {
     }
   }
 
+  /**
+   * For all methods containing keyword parameters, we construct a synthesized
+   * (hidden) parameter node to contain all keyword arguments. This allows us
+   * to handle cases like
+   *
+   * ```rb
+   * def foo(p1:, p2:)
+   *   sink(p1)
+   *   sink(p2)
+   * end
+   *
+   * args = {:p1 => taint(1), :p2 => taint(2) }
+   * foo(**args)
+   * ```
+   *
+   * by adding read steps out of the synthesized parameter node to the relevant
+   * keyword parameters.
+   *
+   * Note that this will introduce a bit of redundancy in cases like
+   *
+   * ```rb
+   * foo(p1: taint(1), p2: taint(2))
+   * ```
+   *
+   * where direct keyword matching is possible, since we construct a synthesized hash
+   * splat argument (`SynthHashSplatArgumentsNode`) at the call site, which means that
+   * `taint(1)` will flow into `p1` both via normal keyword matching and via the synthesized
+   * nodes (and similarly for `p2`). However, this redunancy is OK since
+   *  (a) it means that type-tracking through keyword arguments also works in most cases,
+   *  (b) read/store steps can be avoided when direct keyword matching is possible, and
+   *      hence access path limits are not a concern, and
+   *  (c) since the synthesized nodes are hidden, the reported data-flow paths will be
+   *      collapsed anyway.
+   */
+  class SynthHashSplatParameterNode extends ParameterNodeImpl, TSynthHashSplatParameterNode {
+    private MethodBase method;
+
+    SynthHashSplatParameterNode() { this = TSynthHashSplatParameterNode(method) }
+
+    final Callable getMethod() { result = method }
+
+    /**
+     * Gets a keyword parameter that will be the result of reading `c` out of this
+     * synthesized node.
+     */
+    NormalParameterNode getAKeywordParameter(ContentSet c) {
+      exists(KeywordParameter p |
+        p = result.getParameter() and
+        p = method.getAParameter()
+      |
+        c = getKeywordContent(p.getName()) or
+        c.isSingleton(TUnknownElementContent())
+      )
+    }
+
+    override Parameter getParameter() { none() }
+
+    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
+      c = method and pos.isHashSplat()
+    }
+
+    override CfgScope getCfgScope() { result = method }
+
+    override Location getLocationImpl() { result = method.getLocation() }
+
+    override string toStringImpl() { result = "**kwargs" }
+  }
+
   /** A parameter for a library callable with a flow summary. */
   class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
     private FlowSummaryImpl::Public::SummarizedCallable sc;
@@ -689,10 +764,10 @@ private module ArgumentNodes {
    * part of the method signature, such that those cannot end up in the hash-splat
    * parameter.
    */
-  class HashSplatArgumentsNode extends ArgumentNode, THashSplatArgumentsNode {
+  class SynthHashSplatArgumentsNode extends ArgumentNode, TSynthHashSplatArgumentsNode {
     CfgNodes::ExprNodes::CallCfgNode c;
 
-    HashSplatArgumentsNode() { this = THashSplatArgumentsNode(c) }
+    SynthHashSplatArgumentsNode() { this = TSynthHashSplatArgumentsNode(c) }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       this.sourceArgumentOf(call.asCall(), pos)
@@ -704,10 +779,10 @@ private module ArgumentNodes {
     }
   }
 
-  private class HashSplatArgumentsNodeImpl extends NodeImpl, THashSplatArgumentsNode {
+  private class SynthHashSplatArgumentsNodeImpl extends NodeImpl, TSynthHashSplatArgumentsNode {
     CfgNodes::ExprNodes::CallCfgNode c;
 
-    HashSplatArgumentsNodeImpl() { this = THashSplatArgumentsNode(c) }
+    SynthHashSplatArgumentsNodeImpl() { this = TSynthHashSplatArgumentsNode(c) }
 
     override CfgScope getCfgScope() { result = c.getExpr().getCfgScope() }
 
@@ -929,7 +1004,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   // Wrap all keyword arguments in a synthesized hash-splat argument node
   exists(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition keywordPos, string name |
-    node2 = THashSplatArgumentsNode(call) and
+    node2 = TSynthHashSplatArgumentsNode(call) and
     node1.asExpr().(Argument).isArgumentOf(call, keywordPos) and
     keywordPos.isKeyword(name) and
     c = getKeywordContent(name)
@@ -961,6 +1036,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
           ct.getName() = "@" + call.getExpr().getMethodName()
         ))
     )
+  or
+  node2 = node1.(SynthHashSplatParameterNode).getAKeywordParameter(c)
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
 }
