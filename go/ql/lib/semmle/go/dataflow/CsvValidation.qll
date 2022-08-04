@@ -36,7 +36,13 @@ private string getInvalidModelOutput() {
   )
 }
 
-private string getInvalidModelKind() { none() }
+private string getInvalidModelKind() {
+  exists(string row, string kind | summaryModel(row) |
+    kind = row.splitAt(";", 8) and
+    not kind = ["taint", "value"] and
+    result = "Invalid kind \"" + kind + "\" in summary model."
+  )
+}
 
 private string getInvalidModelSubtype() {
   exists(string pred, string row, int expect |
