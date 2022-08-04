@@ -29,7 +29,7 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
     certain = true
   )
   or
-  exists(CallExpr call, Argument arg |
+  exists(ApplyExpr call, Argument arg |
     arg.getExpr().(InOutExpr).getSubExpr() = v.getAnAccess() and
     call.getAnArgument() = arg and
     bb.getNode(i).getNode().asAstNode() = call and

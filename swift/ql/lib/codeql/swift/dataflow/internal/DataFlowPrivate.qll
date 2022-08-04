@@ -203,7 +203,7 @@ abstract class ArgumentNode extends Node {
 
 private module ArgumentNodes {
   class NormalArgumentNode extends ExprNode, ArgumentNode {
-    NormalArgumentNode() { exists(CallExpr call | call.getAnArgument().getExpr() = this.asExpr()) }
+    NormalArgumentNode() { exists(ApplyExpr call | call.getAnArgument().getExpr() = this.asExpr()) }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       call.asCall().getArgument(pos.(PositionalArgumentPosition).getIndex()).getExpr() =
