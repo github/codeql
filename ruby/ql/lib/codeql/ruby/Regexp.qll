@@ -103,7 +103,7 @@ module RegExpInterpretation {
 }
 
 /**
- * Nodes interpreted as regular expressions via various standard library methods.
+ * A node interpreted as a regular expression.
  */
 class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
   StdLibRegExpInterpretation() {
