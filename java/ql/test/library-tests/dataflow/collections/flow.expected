@@ -14,3 +14,5 @@
 | Test.java:84:18:84:24 | tainted | Test.java:85:10:85:29 | getProperty(...) |
 | Test.java:84:18:84:24 | tainted | Test.java:86:10:86:45 | getProperty(...) |
 | Test.java:89:35:89:41 | tainted | Test.java:89:10:89:42 | getProperty(...) |
+| Test.java:94:26:94:32 | tainted | Test.java:95:10:95:29 | getProperty(...) |
+| Test.java:94:26:94:32 | tainted | Test.java:96:10:96:45 | getProperty(...) |
