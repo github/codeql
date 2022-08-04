@@ -899,6 +899,7 @@ case @attribute_arg.kind of
 | 1 = @attribute_arg_token
 | 2 = @attribute_arg_constant
 | 3 = @attribute_arg_type
+| 4 = @attribute_arg_constant_expr
 ;
 
 attribute_arg_value(
@@ -909,6 +910,10 @@ attribute_arg_type(
     unique int arg: @attribute_arg ref,
     int type_id: @type ref
 );
+attribute_arg_constant(
+    unique int arg: @attribute_arg ref,
+    int constant: @expr ref
+)
 attribute_arg_name(
     unique int arg: @attribute_arg ref,
     string name: string ref
