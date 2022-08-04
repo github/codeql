@@ -116,7 +116,7 @@ private string getInvalidModelSignature() {
     or
     negativeSummaryModel(namespace, type, name, signature, provenance) and
     ext = "" and
-    pred = "nonesummary"
+    pred = "negative summary"
   |
     not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
     result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
