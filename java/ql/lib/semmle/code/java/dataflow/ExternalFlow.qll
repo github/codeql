@@ -428,13 +428,17 @@ private class SummaryModelCsvBase extends SummaryModelCsv {
   }
 }
 
-private predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
+/** Holds if `row` is a source model. */
+predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
 
-private predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
+/** Holds if `row` is a sink model. */
+predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
 
-private predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
+/** Holds if `row` is a summary model. */
+predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 
-private predicate negativeSummaryModel(string row) { any(NegativeSummaryModelCsv s).row(row) }
+/** Holds if `row` is negative summary model. */
+predicate negativeSummaryModel(string row) { any(NegativeSummaryModelCsv s).row(row) }
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
@@ -569,123 +573,6 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
         summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, provenance)
       )
   )
-}
-
-/** Provides a query predicate to check the CSV data for validation errors. */
-module CsvValidation {
-  /** Holds if some row in a CSV-based flow model appears to contain typos. */
-  query predicate invalidModelRow(string msg) {
-    exists(
-      string pred, string namespace, string type, string name, string signature, string ext,
-      string provenance
-    |
-      sourceModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "source"
-      or
-      sinkModel(namespace, type, _, name, signature, ext, _, _, provenance) and pred = "sink"
-      or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance) and
-      pred = "summary"
-      or
-      negativeSummaryModel(namespace, type, name, signature, provenance) and
-      ext = "" and
-      pred = "nonesummary"
-    |
-      not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
-      msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
-      or
-      not type.regexpMatch("[a-zA-Z0-9_\\$<>]+") and
-      msg = "Dubious type \"" + type + "\" in " + pred + " model."
-      or
-      not name.regexpMatch("[a-zA-Z0-9_]*") and
-      msg = "Dubious name \"" + name + "\" in " + pred + " model."
-      or
-      not signature.regexpMatch("|\\([a-zA-Z0-9_\\.\\$<>,\\[\\]]*\\)") and
-      msg = "Dubious signature \"" + signature + "\" in " + pred + " model."
-      or
-      not ext.regexpMatch("|Annotated") and
-      msg = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
-      or
-      not provenance = ["manual", "generated"] and
-      msg = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
-    )
-    or
-    exists(string pred, string input, string part |
-      sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
-      or
-      summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
-    |
-      (
-        invalidSpecComponent(input, part) and
-        not part = "" and
-        not (part = "Argument" and pred = "sink") and
-        not parseArg(part, _)
-        or
-        part = input.(AccessPath).getToken(0) and
-        parseParam(part, _)
-      ) and
-      msg = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
-    )
-    or
-    exists(string pred, string output, string part |
-      sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
-      or
-      summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
-    |
-      invalidSpecComponent(output, part) and
-      not part = "" and
-      not (part = ["Argument", "Parameter"] and pred = "source") and
-      msg = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
-    )
-    or
-    exists(string pred, string row, int expect |
-      sourceModel(row) and expect = 9 and pred = "source"
-      or
-      sinkModel(row) and expect = 9 and pred = "sink"
-      or
-      summaryModel(row) and expect = 10 and pred = "summary"
-    |
-      exists(int cols |
-        cols = 1 + max(int n | exists(row.splitAt(";", n))) and
-        cols != expect and
-        msg =
-          "Wrong number of columns in " + pred + " model row, expected " + expect + ", got " + cols +
-            " in " + row + "."
-      )
-      or
-      exists(string b |
-        b = row.splitAt(";", 2) and
-        not b = ["true", "false"] and
-        msg = "Invalid boolean \"" + b + "\" in " + pred + " model."
-      )
-    )
-    or
-    exists(string row, string kind | summaryModel(row) |
-      kind = row.splitAt(";", 8) and
-      not kind = ["taint", "value"] and
-      msg = "Invalid kind \"" + kind + "\" in summary model."
-    )
-    or
-    exists(string row, string kind | sinkModel(row) |
-      kind = row.splitAt(";", 7) and
-      not kind =
-        [
-          "open-url", "jndi-injection", "ldap", "sql", "jdbc-url", "logging", "mvel", "xpath",
-          "groovy", "xss", "ognl-injection", "intent-start", "pending-intent-sent",
-          "url-open-stream", "url-redirect", "create-file", "write-file", "set-hostname-verifier",
-          "header-splitting", "information-leak", "xslt", "jexl", "bean-validation"
-        ] and
-      not kind.matches("regex-use%") and
-      not kind.matches("qltest%") and
-      msg = "Invalid kind \"" + kind + "\" in sink model."
-    )
-    or
-    exists(string row, string kind | sourceModel(row) |
-      kind = row.splitAt(";", 7) and
-      not kind = ["remote", "contentprovider", "android-widget", "android-external-storage-dir"] and
-      not kind.matches("qltest%") and
-      msg = "Invalid kind \"" + kind + "\" in source model."
-    )
-  }
 }
 
 pragma[nomagic]

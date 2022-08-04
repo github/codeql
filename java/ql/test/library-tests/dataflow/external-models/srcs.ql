@@ -1,7 +1,7 @@
 import java
+import semmle.code.java.dataflow.CsvValidation
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
-import CsvValidation
 
 class SourceModelTest extends SourceModelCsv {
   override predicate row(string row) {
