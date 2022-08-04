@@ -94,8 +94,7 @@ private string getInvalidModelColumnCount() {
   )
 }
 
-/** Holds if some row in a CSV-based flow model appears to contain typos. */
-query predicate invalidModelRow(string msg) {
+private string getInvalidModelSignature() {
   exists(
     string pred, string namespace, string type, string name, string signature, string ext,
     string provenance
@@ -112,31 +111,30 @@ query predicate invalidModelRow(string msg) {
     pred = "negative summary"
   |
     not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
-    msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
+    result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
     or
     not type.regexpMatch("[a-zA-Z0-9_<>,\\+]+") and
-    msg = "Dubious type \"" + type + "\" in " + pred + " model."
+    result = "Dubious type \"" + type + "\" in " + pred + " model."
     or
     not name.regexpMatch("[a-zA-Z0-9_<>,]*") and
-    msg = "Dubious member name \"" + name + "\" in " + pred + " model."
+    result = "Dubious member name \"" + name + "\" in " + pred + " model."
     or
     not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+\\*,\\[\\]]*\\)") and
-    msg = "Dubious signature \"" + signature + "\" in " + pred + " model."
+    result = "Dubious signature \"" + signature + "\" in " + pred + " model."
     or
     not ext.regexpMatch("|Attribute") and
-    msg = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
+    result = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
     or
     not provenance = ["manual", "generated"] and
-    msg = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
+    result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
   )
-  or
-  msg = getInvalidModelInput()
-  or
-  msg = getInvalidModelOutput()
-  or
-  msg = getInvalidModelSubtype()
-  or
-  msg = getInvalidModelColumnCount()
-  or
-  msg = getInvalidModelKind()
+}
+
+/** Holds if some row in a CSV-based flow model appears to contain typos. */
+query predicate invalidModelRow(string msg) {
+  msg =
+    [
+      getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
+      getInvalidModelSubtype(), getInvalidModelColumnCount(), getInvalidModelKind()
+    ]
 }
