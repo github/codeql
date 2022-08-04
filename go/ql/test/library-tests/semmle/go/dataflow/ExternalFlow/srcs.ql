@@ -1,6 +1,6 @@
 import go
 import semmle.go.dataflow.ExternalFlow
-import CsvValidation
+import semmle.go.dataflow.CsvValidation
 
 class SourceModelTest extends SourceModelCsv {
   override predicate row(string row) {

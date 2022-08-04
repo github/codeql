@@ -1,7 +1,7 @@
 import go
+import semmle.go.dataflow.CsvValidation
 import semmle.go.dataflow.ExternalFlow
 import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-import CsvValidation
 
 class SummaryModelTest extends SummaryModelCsv {
   override predicate row(string row) {

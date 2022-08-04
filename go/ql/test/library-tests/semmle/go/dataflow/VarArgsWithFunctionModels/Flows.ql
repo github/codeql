@@ -1,6 +1,6 @@
 import go
+import semmle.go.dataflow.CsvValidation
 import semmle.go.dataflow.ExternalFlow
-import CsvValidation
 // import DataFlow::PartialPathGraph
 import TestUtilities.InlineExpectationsTest
 
