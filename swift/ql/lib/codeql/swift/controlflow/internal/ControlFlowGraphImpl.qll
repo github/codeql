@@ -100,7 +100,7 @@ module Stmts {
 
     // Note: If the brace statement is the body of a `TapExpr`, the first element is the variable
     // declaration (see https://github.com/apple/swift/blob/main/include/swift/AST/Expr.h#L848)
-    // that's initialized by the `Tapxpr`. In `TapExprTre` we've already visited this declaration,
+    // that's initialized by the `TapExpr`. In `TapExprTree` we've already visited this declaration,
     // along with its initializer. So we skip the first element here.
     private AstNode getFirstElement() {
       if this.isBodyOfTapExpr() then result = ast.getElement(1) else result = ast.getFirstElement()
