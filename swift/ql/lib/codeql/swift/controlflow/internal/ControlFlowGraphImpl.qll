@@ -96,21 +96,31 @@ module Stmts {
 
     override predicate propagatesAbnormal(ControlFlowElement node) { none() }
 
+    private predicate isBodyOfTapExpr() { any(TapExpr tap).getBody() = ast }
+
+    // Note: If the brace statement is the body of a `TapExpr`, the first element is the variable
+    // declaration (see https://github.com/apple/swift/blob/main/include/swift/AST/Expr.h#L848)
+    // that's initialized by the `Tapxpr`. In `TapExprTre` we've already visited this declaration,
+    // along with its initializer. So we skip the first element here.
+    private AstNode getFirstElement() {
+      if this.isBodyOfTapExpr() then result = ast.getElement(1) else result = ast.getFirstElement()
+    }
+
     override predicate first(ControlFlowElement first) {
       this.firstInner(first)
       or
-      not exists(ast.getFirstElement()) and first.asAstNode() = ast
+      not exists(this.getFirstElement()) and first.asAstNode() = ast
     }
 
     override predicate last(ControlFlowElement last, Completion c) {
       this.lastInner(last, c)
       or
-      not exists(ast.getFirstElement()) and
+      not exists(this.getFirstElement()) and
       last.asAstNode() = ast and
       c instanceof SimpleCompletion
     }
 
-    predicate firstInner(ControlFlowElement first) { astFirst(ast.getFirstElement(), first) }
+    predicate firstInner(ControlFlowElement first) { astFirst(this.getFirstElement(), first) }
 
     /** Gets the body of the i'th `defer` statement. */
     private BraceStmt getDeferStmtBody(int i) {
@@ -1334,8 +1344,32 @@ module Exprs {
     override InterpolatedStringLiteralExpr ast;
 
     final override ControlFlowElement getChildElement(int i) {
-      none() // TODO
+      i = 0 and
+      result.asAstNode() = ast.getAppendingExpr().getFullyConverted()
     }
+  }
+
+  private class TapExprTree extends AstStandardPostOrderTree {
+    override TapExpr ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and
+      result.asAstNode() = ast.getVar()
+      or
+      i = 1 and
+      result.asAstNode() = ast.getSubExpr().getFullyConverted()
+      or
+      // Note: The CFG for the body will skip the first element in the
+      // body because it's guarenteed to be the variable declaration
+      // that we've already visited at i = 0. See the explanation
+      // in `BraceStmtTree` for why this is necessary.
+      i = 2 and
+      result.asAstNode() = ast.getBody()
+    }
+  }
+
+  private class OpaqueValueExprTree extends AstLeafTree {
+    override OpaqueValueExpr ast;
   }
 
   module DeclRefExprs {
