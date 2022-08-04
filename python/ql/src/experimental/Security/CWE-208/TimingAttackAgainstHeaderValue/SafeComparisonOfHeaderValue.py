@@ -8,10 +8,10 @@
 from flask import Flask
 from flask import request
 
-@app.route('/good1')
+@app.route('/good')
 def good1():
-    Secret = request.headers.get('X-Auth-Token')    
-    if not hmac.compare_digest("secret", "token"):
+    secret = request.headers.get('X-Auth-Token')    
+    if not hmac.compare_digest(secret, "token"):
         raise Exception('bad token')
     return 'good'
 
