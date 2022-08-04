@@ -81,6 +81,8 @@ private string getInvalidModelColumnCount() {
     sinkModel(row) and expect = 9 and pred = "sink"
     or
     summaryModel(row) and expect = 10 and pred = "summary"
+    or
+    negativeSummaryModel(row) and expect = 5 and pred = "negative summary"
   |
     exists(int cols |
       cols = 1 + max(int n | exists(row.splitAt(";", n))) and
@@ -107,7 +109,7 @@ query predicate invalidModelRow(string msg) {
     or
     negativeSummaryModel(namespace, type, name, signature, provenance) and
     ext = "" and
-    pred = "nonesummary"
+    pred = "negative summary"
   |
     not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
     msg = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
