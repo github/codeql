@@ -29,12 +29,12 @@ and does not depend on the contents of the arrays.
 <p>
   The following example uses <code>==</code> which is a fail fast check for validating a secret.
 </p>
-<sample src="UnsafeComparison.py" />
+<sample src="UnsafeComparisonOfSensitiveInfo.py" />
 
 <p> 
   The next example use a safe constant-time algorithm for validating a secret:
 </p>
-<sample src="SafeComparison.py" />
+<sample src="SafeComparisonOfSensitiveInfo.py" />
 </example>
 
 <references>
@@ -46,11 +46,7 @@ and does not depend on the contents of the arrays.
 <li>
   <a href="https://docs.python.org/3/library/hmac.html#hmac.compare_digest">hmac.compare_digest() method</a>
 </li>
- 
-<li>
-  HMAC:
-  <a href="https://datatracker.ietf.org/doc/html/rfc2104.html">RFC 2104</a>
-</li>
+
 </references>
 
 </qhelp>
