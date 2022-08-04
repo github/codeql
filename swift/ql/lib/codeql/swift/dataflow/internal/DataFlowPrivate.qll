@@ -5,7 +5,6 @@ private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.controlflow.CfgNodes
 private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.BasicBlocks
-private import codeql.swift.dataflow.internal.SsaImplCommon as SsaImpl
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
@@ -51,7 +50,7 @@ private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
 }
 
 private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
-  exists(BasicBlock bb, int i | SsaImpl::lastRefRedef(def, bb, i, next) |
+  exists(BasicBlock bb, int i | def.lastRefRedef(bb, i, next) |
     def.definesAt(_, bb, i) and
     def = nodeFrom.asDefinition()
   )
