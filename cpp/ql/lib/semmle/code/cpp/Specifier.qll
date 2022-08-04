@@ -12,7 +12,7 @@ private import semmle.code.cpp.internal.ResolveClass
 class Specifier extends Element, @specifier {
   /** Gets a dummy location for the specifier. */
   override Location getLocation() {
-    suppressUnusedThis(this) and
+    exists(this) and
     result instanceof UnknownDefaultLocation
   }
 
@@ -300,5 +300,3 @@ class AttributeArgument extends Element, @attribute_arg {
       )
   }
 }
-
-private predicate suppressUnusedThis(Specifier s) { any() }
