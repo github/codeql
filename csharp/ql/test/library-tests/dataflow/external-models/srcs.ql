@@ -1,8 +1,8 @@
 import csharp
 import DataFlow
+import semmle.code.csharp.dataflow.CsvValidation
 import semmle.code.csharp.dataflow.ExternalFlow
 import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-import CsvValidation
 
 class SourceModelTest extends SourceModelCsv {
   override predicate row(string row) {

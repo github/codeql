@@ -3,9 +3,9 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.ExternalFlow
 import DataFlow::PathGraph
-import CsvValidation
+import semmle.code.csharp.dataflow.CsvValidation
+import semmle.code.csharp.dataflow.ExternalFlow
 
 class SummaryModelTest extends SummaryModelCsv {
   override predicate row(string row) {
