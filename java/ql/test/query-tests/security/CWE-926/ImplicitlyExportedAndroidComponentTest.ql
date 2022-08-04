@@ -2,21 +2,20 @@ import java
 import semmle.code.xml.AndroidManifest
 import TestUtilities.InlineExpectationsTest
 
-// TODO: update for implicit export query
-class DebuggableAttributeTrueTest extends InlineExpectationsTest {
-  DebuggableAttributeTrueTest() { this = "DebuggableAttributeEnabledTest" }
+class ImplicitlyExportedAndroidComponentTest extends InlineExpectationsTest {
+  ImplicitlyExportedAndroidComponentTest() { this = "ImplicitlyExportedAndroidComponentTest" }
 
-  override string getARelevantTag() { result = "hasDebuggableAttributeEnabled" }
+  override string getARelevantTag() { result = "hasImplicitExport" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "hasDebuggableAttributeEnabled" and
-    exists(AndroidXmlAttribute androidXmlAttr |
-      androidXmlAttr.getName() = "debuggable" and
-      androidXmlAttr.getValue() = "true" and
-      not androidXmlAttr.getLocation().getFile().getRelativePath().matches("%build%")
+    tag = "hasImplicitExport" and
+    exists(AndroidComponentXmlElement compElem, AndroidIntentFilterXmlElement intFiltElem |
+      not compElem.hasAttribute("exported") and
+      //compElem.getAnIntentFilterElement() instanceof AndroidIntentFilterXmlElement
+      not intFiltElem.getParent() = compElem
     |
-      androidXmlAttr.getLocation() = location and
-      element = androidXmlAttr.toString() and
+      compElem.getLocation() = location and
+      element = compElem.toString() and
       value = ""
     )
   }
