@@ -1,6 +1,6 @@
 package com.semmle.js.extractor;
 
-import java.io.File;
+import static com.semmle.js.extractor.ExtractorOptionsUtil.readExtractorOption;import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.ProcessBuilder.Redirect;
@@ -218,6 +218,7 @@ public class AutoBuild {
     this.LGTM_SRC = toRealPath(getPathFromEnvVar("LGTM_SRC"));
     this.SEMMLE_DIST = Paths.get(EnvironmentVariables.getExtractorRoot());
     this.outputConfig = new ExtractorOutputConfig(LegacyLanguage.JAVASCRIPT);
+    warn("Saw TRAP cache configured to: " + readExtractorOption("trap", "cache", "dir"));
     this.trapCache = ITrapCache.fromExtractorOptions();
     this.typeScriptMode =
         getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.FULL);
