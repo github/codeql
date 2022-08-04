@@ -65,10 +65,7 @@ private module Cached {
     TExprNode(CfgNode n, Expr e) { hasExprNode(n, e) } or
     TSsaDefinitionNode(Ssa::Definition def) or
     TInoutReturnNode(ParamDecl param) { param.isInout() } or
-    TInOutUpdateNode(ParamDecl param, CallExpr call) {
-      param.isInout() and
-      call.getStaticTarget() = param.getDeclaringFunction()
-    } or
+    TInOutUpdateNode(Argument arg) { arg.getExpr() instanceof InOutExpr } or
     TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state)
 
   private predicate hasExprNode(CfgNode n, Expr e) {
@@ -281,23 +278,22 @@ private module OutNodes {
   }
 
   class InOutUpdateNode extends OutNode, TInOutUpdateNode, NodeImpl {
-    ParamDecl param;
-    CallExpr call;
+    Argument arg;
 
-    InOutUpdateNode() { this = TInOutUpdateNode(param, call) }
+    InOutUpdateNode() { this = TInOutUpdateNode(arg) }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      result.asCall().getExpr() = call and
-      kind.(ParamReturnKind).getIndex() = param.getIndex()
+      result.asCall().getExpr() = arg.getApplyExpr() and
+      kind.(ParamReturnKind).getIndex() = arg.getIndex()
     }
 
     override DataFlowCallable getEnclosingCallable() {
       result = this.getCall(_).getEnclosingCallable()
     }
 
-    override Location getLocationImpl() { result = call.getLocation() }
+    override Location getLocationImpl() { result = arg.getLocation() }
 
-    override string toStringImpl() { result = param.toString() }
+    override string toStringImpl() { result = arg.toString() }
   }
 }
 

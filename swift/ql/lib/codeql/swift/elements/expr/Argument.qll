@@ -5,4 +5,6 @@ class Argument extends ArgumentBase {
   override string toString() { result = this.getLabel() + ": " + this.getExpr().toString() }
 
   int getIndex() { any(ApplyExpr apply).getArgument(result) = this }
+
+  ApplyExpr getApplyExpr() { result.getAnArgument() = this }
 }
