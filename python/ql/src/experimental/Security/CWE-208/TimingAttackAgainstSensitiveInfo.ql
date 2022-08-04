@@ -13,7 +13,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import TimingAttack
+import experimental.semmle.python.security.TimingAttack
 import DataFlow::PathGraph
 
 /**
