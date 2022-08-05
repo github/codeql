@@ -5,7 +5,7 @@ on:
     paths:
       - "swift/**"
       - .github/workflows/swift-codegen.yml
-      - .github/actions/fetch-codeql
+      - .github/actions/fetch-codeql/action.yml
     branches:
       - main
 

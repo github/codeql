@@ -29,7 +29,7 @@ jobs:
         uses: ./.github/actions/fetch-codeql
       - name: Generate coverage files
         run: |
-          PATH="$PATH:codeql-cli/codeql" python ql/misc/scripts/library-coverage/generate-report.py ci ql ql
+          python ql/misc/scripts/library-coverage/generate-report.py ci ql ql
 
       - name: Create pull request with changes
         env:

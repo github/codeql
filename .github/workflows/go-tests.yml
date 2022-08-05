@@ -4,7 +4,7 @@ on:
     paths:
       - "go/**"
       - .github/workflows/go-tests.yml
-      - .github/actions/fetch-codeql
+      - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
 jobs:
   test-linux:
@@ -30,12 +30,12 @@ jobs:
       - name: Build
         run: |
           cd go
-          env make
+          make
 
       - name: Check that all QL and Go code is autoformatted
         run: |
           cd go
-          env make check-formatting
+          make check-formatting
 
       - name: Compile qhelp files to markdown
         run: |
@@ -51,7 +51,7 @@ jobs:
       - name: Test
         run: |
           cd go
-          env make test
+          make test
 
   test-mac:
     name: Test MacOS

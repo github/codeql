@@ -5,7 +5,7 @@ on:
     paths:
       - ".github/workflows/csv-coverage-pr-comment.yml"
       - ".github/workflows/csv-coverage-pr-artifacts.yml"
-      - ".github/actions/fetch-codeql"
+      - ".github/actions/fetch-codeql/action.yml"
       - "*/ql/src/**/*.ql"
       - "*/ql/src/**/*.qll"
       - "*/ql/lib/**/*.ql"
@@ -51,14 +51,14 @@ jobs:
       - name: Generate CSV files on merge commit of the PR
         run: |
           echo "Running generator on merge"
-          PATH="$PATH:codeql-cli/codeql" python merge/misc/scripts/library-coverage/generate-report.py ci merge merge
+          python merge/misc/scripts/library-coverage/generate-report.py ci merge merge
           mkdir out_merge
           cp framework-coverage-*.csv out_merge/
           cp framework-coverage-*.rst out_merge/
       - name: Generate CSV files on base commit of the PR
         run: |
           echo "Running generator on base"
-          PATH="$PATH:codeql-cli/codeql" python base/misc/scripts/library-coverage/generate-report.py ci base base
+          python base/misc/scripts/library-coverage/generate-report.py ci base base
           mkdir out_base
           cp framework-coverage-*.csv out_base/
           cp framework-coverage-*.rst out_base/

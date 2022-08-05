@@ -52,6 +52,18 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
     )
   }
 
+  //  We disable flow into callables in this query as we'd otherwise get a result on this piece of code:
+  //   ```cpp
+  //  int* id(int* px) {
+  //   return px; // this returns the local variable `x`, but it's fine as the local variable isn't declared in this scope.
+  //  }
+  //  void f() {
+  //   int x;
+  //   int* px = id(&x);
+  //  }
+  //   ```
+  override predicate allowInterproceduralFlow() { none() }
+
   /**
    * This configuration intentionally conflates addresses of fields and their object, and pointer offsets
    * with their base pointer as this allows us to detect cases where an object's address flows to a
@@ -77,9 +89,6 @@ from
   ReturnStackAllocatedMemoryConfig conf
 where
   conf.hasFlowPath(pragma[only_bind_into](source), pragma[only_bind_into](sink)) and
-  source.getNode().asInstruction() = var and
-  // Only raise an alert if we're returning from the _same_ callable as the on that
-  // declared the stack variable.
-  var.getEnclosingFunction() = sink.getNode().getEnclosingCallable()
+  source.getNode().asInstruction() = var
 select sink.getNode(), source, sink, "May return stack-allocated memory from $@.", var.getAst(),
   var.getAst().toString()
