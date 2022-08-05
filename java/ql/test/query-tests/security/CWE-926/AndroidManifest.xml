@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HappyBirthday"
         tools:targetApi="31">  <!-- test -->
-        <!-- $ hasImplicitExport --> <activity
+        <!-- Safe: category LAUNCHER --> <activity
             android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application> <!-- test -->
+
+        <!-- $ hasImplicitExport --> <activity
+            android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+    </application>
 
 </manifest>
