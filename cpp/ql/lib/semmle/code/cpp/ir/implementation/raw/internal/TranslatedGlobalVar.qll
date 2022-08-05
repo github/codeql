@@ -65,7 +65,7 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
       result = this.getInstruction(InitializerVariableAddressTag())
       or
       tag = InitializerVariableAddressTag() and
-      result = getChild(1).getFirstInstruction()
+      result = this.getChild(1).getFirstInstruction()
       or
       tag = ReturnTag() and
       result = this.getInstruction(AliasedUseTag())
