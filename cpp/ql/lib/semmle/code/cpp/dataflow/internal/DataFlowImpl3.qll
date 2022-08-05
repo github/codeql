@@ -1936,7 +1936,9 @@ private module Stage2Param implements MkStage<Stage1>::StageParam {
   predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
 }
 
-private module Stage2 = MkStage<Stage1>::Stage<Stage2Param>;
+private module Stage2 implements StageSig {
+  import MkStage<Stage1>::Stage<Stage2Param>
+}
 
 pragma[nomagic]
 private predicate flowOutOfCallNodeCand2(
@@ -2210,7 +2212,9 @@ private module Stage3Param implements MkStage<Stage2>::StageParam {
   }
 }
 
-private module Stage3 = MkStage<Stage2>::Stage<Stage3Param>;
+private module Stage3 implements StageSig {
+  import MkStage<Stage2>::Stage<Stage3Param>
+}
 
 /**
  * Holds if `argApf` is recorded as the summary context for flow reaching `node`
