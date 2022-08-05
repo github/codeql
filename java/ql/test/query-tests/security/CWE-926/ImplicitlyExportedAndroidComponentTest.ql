@@ -9,13 +9,9 @@ class ImplicitlyExportedAndroidComponentTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasImplicitExport" and
-    exists(AndroidComponentXmlElement compElem, AndroidIntentFilterXmlElement intFiltElem |
-      not compElem.hasAttribute("exported") and
-      //compElem.getAnIntentFilterElement() instanceof AndroidIntentFilterXmlElement
-      not intFiltElem.getParent() = compElem
-    |
-      compElem.getLocation() = location and
-      element = compElem.toString() and
+    exists(AndroidComponentXmlElement compElement | compElement.isImplicitlyExported() |
+      compElement.getLocation() = location and
+      element = compElement.toString() and
       value = ""
     )
   }

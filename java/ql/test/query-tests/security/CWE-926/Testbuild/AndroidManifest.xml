@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <!-- $ hasImplicitExport --> <activity
+        <!-- Safe: in build directory --> <activity
             android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -5,30 +5,27 @@
 
 <overview>
 <p>The Android manifest file defines configuration settings for Android applications.
-In this file, the <code>android:debuggable</code> attribute of the <code>application</code> element can be used to
-define whether or not the application can be debugged. When set to <code>true</code>, this attribute will allow the
-application to be debugged even when running on a device in user mode.</p>
+In this file, components can be declared with intent filters which specify the types of intents the component can respond to.
+If the <code>android:exported</code> attribute is omitted from the component when an intent filter is included,
+then the component will be implicitly exported.</p>
 
-<p>When a debugger is enabled it could allow for entry points in the application or reveal sensitive information.
-As a result, <code>android:debuggable</code> should only be enabled during development and should be disabled in
-production builds.</p>
+<p>An implicitly exported component could allow for improper access to the component and its data.</p>
 
 </overview>
 <recommendation>
 
-<p>In Android applications either set the <code>android:debuggable</code> attribute to <code>false</code>
-or do not include it in the manifest. The default value when not included is <code>false</code>.</p>
+<p>Explicitly set the <code>android:exported</code> attribute for every component or use permissions to limit access to the component.</p>
 
 </recommendation>
 <example>
 
-<p>In the example below, the <code>android:debuggable</code> attribute is set to <code>true</code>.</p>
+<p>In the example below, the component <code>android:exported</code> attribute is omitted when an intent filter is used.</p>
 
-<!--<sample src="DebuggableTrue.xml" />-->
+<sample src="ExampleBad.xml" />
 
-<p>The corrected version sets the <code>android:debuggable</code> attribute to <code>false</code>.</p>
+<p>A corrected version sets the <code>android:exported</code> attribute to <code>false</code>.</p>
 
-<!--<sample src="DebuggableFalse.xml" />-->
+<sample src="ExampleGood.xml" />
 
 </example>
 <references>
@@ -39,11 +36,19 @@ or do not include it in the manifest. The default value when not included is <co
 </li>
 <li>
   Android Developers:
-  <a href="https://developer.android.com/guide/topics/manifest/application-element#debug">The android:debuggable attribute</a>.
+  <a href="https://developer.android.com/guide/topics/manifest/intent-filter-element">intent-filter-element</a>.
 </li>
 <li>
   Android Developers:
-  <a href="https://developer.android.com/studio/debug#enable-debug">Enable debugging</a>.
+  <a href="https://developer.android.com/guide/topics/manifest/activity-element#exported">The android:exported attribute</a>.
+</li>
+<li>
+  Android Developers:
+  <a href="https://developer.android.com/guide/topics/manifest/activity-element#prmsn">The android:permission attribute</a>.
+</li>
+<li>
+  Android Developers:
+  <a href="https://developer.android.com/about/versions/12/behavior-changes-12#exported">Safer component exporting</a>.
 </li>
 
 </references>
