@@ -1,6 +1,3 @@
 import java
 import TestUtilities.InlineFlowTest
-
-class AsyncTaskTest extends InlineFlowTest {
-  override TaintTracking::Configuration getTaintFlowConfig() { none() }
-}
+import semmle.code.java.dataflow.FlowSteps
