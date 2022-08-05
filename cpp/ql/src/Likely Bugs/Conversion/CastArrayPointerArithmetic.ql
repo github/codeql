@@ -25,8 +25,11 @@ class CastToPointerArithFlow extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node node) {
     not node.asExpr() instanceof Conversion and
-    introducesNewField(node.asExpr().getType().(DerivedType).getBaseType(),
-      node.asExpr().getConversion*().getType().(DerivedType).getBaseType())
+    exists(DerivedType dt, DerivedType conv |
+      dt = pragma[only_bind_out](node.asExpr().getType()) and
+      conv = pragma[only_bind_out](node.asExpr().getConversion*().getType()) and
+      introducesNewField(dt.getBaseType(), conv.getBaseType())
+    )
   }
 
   override predicate isSink(DataFlow::Node node) {
