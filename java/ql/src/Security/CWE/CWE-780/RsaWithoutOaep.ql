@@ -11,8 +11,9 @@
  */
 
 import java
+import semmle.code.java.security.Encryption
 import semmle.code.java.security.RsaWithoutOaepQuery
 
-from MethodAccess ma
-where rsaWithoutOaepCall(ma)
-select ma, "This instance of RSA does not use OAEP padding."
+from CryptoAlgoSpec c
+where rsaWithoutOaepCall(c)
+select c, "This instance of RSA does not use OAEP padding."

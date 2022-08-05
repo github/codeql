@@ -10,10 +10,10 @@ class HasResult extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasResult" and
     value = "" and
-    exists(MethodAccess ma |
-      rsaWithoutOaepCall(ma) and
-      location = ma.getLocation() and
-      element = ma.toString()
+    exists(CryptoAlgoSpec c |
+      rsaWithoutOaepCall(c) and
+      location = c.getLocation() and
+      element = c.toString()
     )
   }
 }
