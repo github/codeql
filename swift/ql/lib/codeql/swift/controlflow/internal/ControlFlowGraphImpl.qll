@@ -1349,17 +1349,21 @@ module Exprs {
     }
   }
 
+  /** Control-flow for a `TapExpr`. See the QLDoc for `TapExpr` for the semantics of a `TapExpr`. */
   private class TapExprTree extends AstStandardPostOrderTree {
     override TapExpr ast;
 
     final override ControlFlowElement getChildElement(int i) {
+      // We first visit the local variable declaration.
       i = 0 and
       result.asAstNode() = ast.getVar()
       or
+      // Then we visit the expression that gives the local variable its initial value.
       i = 1 and
       result.asAstNode() = ast.getSubExpr().getFullyConverted()
       or
-      // Note: The CFG for the body will skip the first element in the
+      // And finally, we visit the body that potentially mutates the local variable.
+      // Note that the CFG for the body will skip the first element in the
       // body because it's guarenteed to be the variable declaration
       // that we've already visited at i = 0. See the explanation
       // in `BraceStmtTree` for why this is necessary.
