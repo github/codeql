@@ -77,8 +77,6 @@ private class AsyncTaskInit extends Callable {
 
 /** A call to the `execute` or `executeOnExecutor` methods of the `android.os.AsyncTask` class. */
 private class ExecuteAsyncTaskMethodAccess extends MethodAccess {
-  Argument paramsArgument;
-
   ExecuteAsyncTaskMethodAccess() {
     this.getMethod().hasName(["execute", "executeOnExecutor"]) and
     this.getMethod().getDeclaringType().getSourceDeclaration().getASourceSupertype*() instanceof
