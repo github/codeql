@@ -3,6 +3,7 @@
  * @description Using RSA encryption without OAEP padding can lead to a padding oracle attack, weakening the encryption.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @id java/rsa-without-oaep
  * @tags security
