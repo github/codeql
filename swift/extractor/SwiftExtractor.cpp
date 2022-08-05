@@ -104,10 +104,25 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   trap.emit(unknownFileEntry);
   trap.emit(unknownLocationEntry);
 
+  std::vector<swift::Token> comments;
+  if (primaryFile && primaryFile->getBufferID().hasValue()) {
+    auto& sourceManager = compiler.getSourceMgr();
+    auto tokens = swift::tokenize(compiler.getInvocation().getLangOptions(), sourceManager,
+                                  primaryFile->getBufferID().getValue());
+    for (auto& token : tokens) {
+      if (token.getKind() == swift::tok::comment) {
+        comments.push_back(token);
+      }
+    }
+  }
+
   SwiftVisitor visitor(compiler.getSourceMgr(), trap, module, primaryFile);
   auto topLevelDecls = getTopLevelDecls(module, primaryFile);
   for (auto decl : topLevelDecls) {
     visitor.extract(decl);
+  }
+  for (auto& comment : comments) {
+    visitor.extract(comment);
   }
 }
 

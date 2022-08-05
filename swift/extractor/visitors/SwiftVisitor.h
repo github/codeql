@@ -17,6 +17,7 @@ class SwiftVisitor : private SwiftDispatcher {
   void extract(const T& entity) {
     fetchLabel(entity);
   }
+  void extract(swift::Token& comment) { emitComment(comment); }
 
  private:
   void visit(swift::Decl* decl) override { declVisitor.visit(decl); }
