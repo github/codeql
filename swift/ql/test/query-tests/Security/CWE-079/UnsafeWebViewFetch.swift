@@ -124,7 +124,7 @@ func testUIWebView() {
 	webview.loadHTMLString("<html>" + remoteString + "</html>", baseURL: nil) // BAD
 
 	webview.loadHTMLString("<html>\(localStringFragment)</html>", baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString("<html>\(remoteString)</html>", baseURL: nil) // BAD [NOT DETECTED]
+	webview.loadHTMLString("<html>\(remoteString)</html>", baseURL: nil) // BAD
 
 	let localSafeURL = URL(string: "about:blank")
 	let localURL = URL(string: "http://example.com/")
@@ -171,7 +171,7 @@ func testWKWebView() {
 	webview.loadHTMLString("<html>" + remoteString + "</html>", baseURL: nil) // BAD
 
 	webview.loadHTMLString("<html>\(localStringFragment)</html>", baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString("<html>\(remoteString)</html>", baseURL: nil) // BAD [NOT DETECTED]
+	webview.loadHTMLString("<html>\(remoteString)</html>", baseURL: nil) // BAD
 
 	let localSafeURL = URL(string: "about:blank")
 	let localURL = URL(string: "http://example.com/")

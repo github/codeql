@@ -324,7 +324,6 @@ cfg.swift:
 #-----|  -> error
 
 #   40| print(_:separator:terminator:)
-#-----|  -> "..."
 
 #   40| call to print(_:separator:terminator:)
 #-----|  -> 0
@@ -341,11 +340,63 @@ cfg.swift:
 #   40| (Any) ...
 #-----|  -> [...]
 
+#   40| OpaqueValueExpr
+
+#   40| TapExpr
+#-----|  -> "..."
+
+#   40| Unknown error 
+#-----|  -> call to ...
+
 #   40| [...]
 #-----|  -> default separator
 
 #   40| [...]
 #-----|  -> [...]
+
+#   40| call to ...
+#-----|  -> appendInterpolation(_:)
+
+#   40| $interpolation
+#-----|  -> &...
+
+#   40| &...
+#-----|  -> call to appendLiteral(_:)
+
+#   40| call to appendLiteral(_:)
+#-----|  -> Unknown error 
+
+#   40| $interpolation
+#-----|  -> &...
+
+#   40| &...
+#-----|  -> call to appendInterpolation(_:)
+
+#   40| appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#   40| call to appendInterpolation(_:)
+#-----|  -> error
+
+#   40| call to ...
+
+#   40| error
+#-----|  -> call to ...
+
+#   40| 
+#-----|  -> call to ...
+
+#   40| $interpolation
+#-----|  -> &...
+
+#   40| &...
+#-----|  -> call to appendLiteral(_:)
+
+#   40| call to ...
+#-----|  -> TapExpr
+
+#   40| call to appendLiteral(_:)
+#-----|  -> 
 
 #   42| return ...
 #-----| return -> exit tryCatch(x:) (normal)
@@ -2817,13 +2868,178 @@ cfg.swift:
 #-----|  -> y
 
 #  262| y
-#-----|  -> "..."
 
 #  263| return ...
 #-----| return -> exit interpolatedString(x:y:) (normal)
 
+#  263| 
+#-----|  -> call to ...
+
 #  263| "..."
 #-----|  -> return ...
+
+#  263| OpaqueValueExpr
+
+#  263| TapExpr
+#-----|  -> "..."
+
+#  263| call to ...
+#-----|  -> appendInterpolation(_:)
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendLiteral(_:)
+
+#  263| call to appendLiteral(_:)
+#-----|  -> 
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendInterpolation(_:)
+
+#  263| appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendInterpolation(_:)
+#-----|  -> x
+
+#  263| call to ...
+
+#  263| x
+#-----|  -> call to ...
+
+#  263|  + 
+#-----|  -> call to ...
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendLiteral(_:)
+
+#  263| call to ...
+#-----|  -> appendInterpolation(_:)
+
+#  263| call to appendLiteral(_:)
+#-----|  ->  + 
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendInterpolation(_:)
+
+#  263| appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendInterpolation(_:)
+#-----|  -> y
+
+#  263| call to ...
+
+#  263| y
+#-----|  -> call to ...
+
+#  263|  is equal to 
+#-----|  -> call to ...
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendLiteral(_:)
+
+#  263| call to ...
+#-----|  -> appendInterpolation(_:)
+
+#  263| call to appendLiteral(_:)
+#-----|  ->  is equal to 
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendInterpolation(_:)
+
+#  263| appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendInterpolation(_:)
+#-----|  -> +(_:_:)
+
+#  263| call to ...
+
+#  263| x
+#-----|  -> y
+
+#  263| ... call to +(_:_:) ...
+#-----|  -> call to ...
+
+#  263| +(_:_:)
+#-----|  -> Int.Type
+
+#  263| Int.Type
+#-----|  -> call to +(_:_:)
+
+#  263| call to +(_:_:)
+#-----|  -> x
+
+#  263| y
+#-----|  -> ... call to +(_:_:) ...
+
+#  263|  and here is a zero: 
+#-----|  -> call to ...
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendLiteral(_:)
+
+#  263| call to ...
+#-----|  -> appendInterpolation(_:)
+
+#  263| call to appendLiteral(_:)
+#-----|  ->  and here is a zero: 
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendInterpolation(_:)
+
+#  263| appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendInterpolation(_:)
+#-----|  -> returnZero()
+
+#  263| call to ...
+
+#  263| returnZero()
+#-----|  -> call to returnZero()
+
+#  263| call to returnZero()
+#-----|  -> call to ...
+
+#  263| 
+#-----|  -> call to ...
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendLiteral(_:)
+
+#  263| call to ...
+#-----|  -> TapExpr
+
+#  263| call to appendLiteral(_:)
+#-----|  -> 
 
 #  266| enter testSubscriptExpr()
 #-----|  -> testSubscriptExpr()
