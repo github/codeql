@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HappyBirthday"
+        android:permission="android.permission.SEND_SMS"
         tools:targetApi="31">  <!-- test -->
         <!-- Safe: category LAUNCHER --> <activity
             android:name=".MainActivity">
