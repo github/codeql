@@ -34,6 +34,10 @@ Location:
   end_column: int
   _pragma: qltest_skip
 
+Comment:
+  _extends: Locatable
+  text: string
+
 Type:
   name: string
   canonical_type: Type

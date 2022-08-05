@@ -3,6 +3,7 @@
 #include <swift/AST/SourceFile.h>
 #include <swift/Basic/SourceManager.h>
 #include <llvm/Support/FileSystem.h>
+#include <swift/Parse/Token.h>
 
 #include "swift/extractor/trap/TrapLabelStore.h"
 #include "swift/extractor/trap/TrapDomain.h"
@@ -240,6 +241,12 @@ class SwiftDispatcher {
       return currentPrimarySourceFile == context->getParentSourceFile();
     }
     return false;
+  }
+
+  void emitComment(swift::Token& comment) {
+    CommentsTrap entry{trap.createLabel<CommentTag>(), comment.getRawText().str()};
+    trap.emit(entry);
+    attachLocation(comment.getRange().getStart(), comment.getRange().getEnd(), entry.id);
   }
 
  private:

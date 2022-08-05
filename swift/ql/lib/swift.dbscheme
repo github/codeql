@@ -35,6 +35,7 @@ files(
 @locatable =
   @argument
 | @ast_node
+| @comment
 | @condition_element
 | @if_config_clause
 ;
@@ -52,6 +53,11 @@ locations(
   int start_column: int ref,
   int end_line: int ref,
   int end_column: int ref
+);
+
+comments(
+  unique int id: @comment,
+  string text: string ref
 );
 
 @type =
