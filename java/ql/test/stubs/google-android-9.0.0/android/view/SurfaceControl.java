@@ -14,6 +14,12 @@ public class SurfaceControl implements Parcelable
     public boolean isValid(){ return false; }
     public int describeContents(){ return 0; }
     public static Parcelable.Creator<SurfaceControl> CREATOR = null;
+    public static int BUFFER_TRANSFORM_IDENTITY = 0;
+    public static int BUFFER_TRANSFORM_MIRROR_HORIZONTAL = 0;
+    public static int BUFFER_TRANSFORM_MIRROR_VERTICAL = 0;
+    public static int BUFFER_TRANSFORM_ROTATE_180 = 0;
+    public static int BUFFER_TRANSFORM_ROTATE_270 = 0;
+    public static int BUFFER_TRANSFORM_ROTATE_90 = 0;
     public void readFromParcel(Parcel p0){}
     public void release(){}
     public void writeToParcel(Parcel p0, int p1){}
