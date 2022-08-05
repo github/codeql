@@ -125,6 +125,8 @@ class ApplyExprCfgNode extends ExprCfgNode {
   }
 
   AbstractFunctionDecl getStaticTarget() { result = e.getStaticTarget() }
+
+  Expr getFunction() { result = e.getFunction() }
 }
 
 class CallExprCfgNode extends ApplyExprCfgNode {

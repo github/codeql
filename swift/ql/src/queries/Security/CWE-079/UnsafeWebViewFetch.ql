@@ -17,24 +17,6 @@ import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
 import codeql.swift.dataflow.FlowSources
 import DataFlow::PathGraph
-import codeql.swift.frameworks.StandardLibrary.String
-
-/**
- * A taint source that is `String(contentsOf:)`.
- * TODO: this shouldn't be needed when `StringSource` in `String.qll` is working.
- */
-class StringContentsOfUrlSource extends RemoteFlowSource {
-  StringContentsOfUrlSource() {
-    exists(CallExpr call, AbstractFunctionDecl f |
-      call.getFunction().(ApplyExpr).getStaticTarget() = f and
-      f.getName() = "init(contentsOf:)" and
-      f.getParam(0).getType().getName() = "URL" and
-      this.asExpr() = call
-    )
-  }
-
-  override string getSourceType() { result = "" }
-}
 
 /**
  * A sink that is a candidate result for this query, such as certain arguments
