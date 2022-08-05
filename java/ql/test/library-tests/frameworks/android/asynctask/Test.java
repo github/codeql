@@ -35,9 +35,13 @@ public class Test {
         }
     }
 
-    class TestConstructorTask extends AsyncTask<Object, Object, Object> {
+    static class TestConstructorTask extends AsyncTask<Object, Object, Object> {
         private Object field;
         private Object safeField;
+        private Object initField;
+        {
+            initField = Test.source("init");
+        }
 
         public TestConstructorTask(Object field, Object safeField) {
             this.field = field;
@@ -49,6 +53,7 @@ public class Test {
             sink(params[0]); // $ hasTaintFlow=params
             sink(field); // $ hasValueFlow=constructor
             sink(safeField); // Safe
+            sink(initField); // $ hasValueFlow=init
             return params[0];
         }
 
@@ -57,6 +62,7 @@ public class Test {
             sink(param); // $ hasTaintFlow=params
             sink(field); // $ hasValueFlow=constructor
             sink(safeField); // Safe
+            sink(initField); // $ hasValueFlow=init
         }
 
     }
