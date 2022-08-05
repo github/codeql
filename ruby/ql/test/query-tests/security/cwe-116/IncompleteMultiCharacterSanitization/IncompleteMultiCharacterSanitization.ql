@@ -3,9 +3,9 @@
  */
 
 import ruby
+import codeql.ruby.regexp.RegExpTreeView as RETV
+import codeql.ruby.DataFlow
 import codeql.ruby.security.IncompleteMultiCharacterSanitizationQuery as Query
-import codeql.ruby.security.IncompleteMultiCharacterSanitizationSpecific as Specific
-import codeql.ruby.frameworks.core.String
 import TestUtilities.InlineExpectationsTest
 
 class Test extends InlineExpectationsTest {
@@ -20,15 +20,12 @@ class Test extends InlineExpectationsTest {
 }
 
 predicate hasResult(Location location, string element, string value) {
-  exists(
-    StringSubstitutionCall replace, Specific::EmptyReplaceRegExpTerm dangerous, string prefix,
-    string kind
-  |
+  exists(DataFlow::Node replace, RETV::RegExpTerm dangerous, string prefix, string kind |
     replace.getLocation() = location and
     element = replace.toString() and
     value = shortKind(kind)
   |
-    Query::hasResult(replace, dangerous, prefix, kind)
+    Query::problems(replace, dangerous, prefix, kind)
   )
 }
 

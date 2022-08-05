@@ -12,7 +12,7 @@ private import codeql.ruby.security.IncompleteMultiCharacterSanitization
  * `dangerous` which matches a dangerous string beginning with `prefix`, in
  * attempt to avoid a vulnerability of kind `kind`.
  */
-predicate hasResult(
+query predicate problems(
   StringSubstitutionCall replace, EmptyReplaceRegExpTerm dangerous, string prefix, string kind
 ) {
   exists(EmptyReplaceRegExpTerm regexp |

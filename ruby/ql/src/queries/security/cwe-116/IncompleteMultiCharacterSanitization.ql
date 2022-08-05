@@ -13,15 +13,11 @@
  *       external/cwe/cwe-116
  */
 
-import ruby
-import codeql.ruby.frameworks.core.String
 import codeql.ruby.DataFlow
-import codeql.ruby.security.IncompleteMultiCharacterSanitizationQuery
-import codeql.ruby.security.IncompleteMultiCharacterSanitizationSpecific as Specific
+import codeql.ruby.security.IncompleteMultiCharacterSanitizationQuery as Query
+import codeql.ruby.regexp.RegExpTreeView
 
-from
-  StringSubstitutionCall replace, Specific::EmptyReplaceRegExpTerm dangerous, string prefix,
-  string kind
-where hasResult(replace, dangerous, prefix, kind)
+from DataFlow::Node replace, RegExpTerm dangerous, string prefix, string kind
+where Query::problems(replace, dangerous, prefix, kind)
 select replace, "This string may still contain $@, which may cause a " + kind + " vulnerability.",
   dangerous, prefix
