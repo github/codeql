@@ -403,6 +403,7 @@ private module DefCached {
   private predicate isDefImpl(
     Operand address, Instruction base, int ind, boolean addressDependsOnField, boolean certain
   ) {
+    DataFlowImplCommon::forceCachingInSameStage() and
     ind = 0 and
     address.getDef() = base and
     isSourceVariableBase(base) and
@@ -471,6 +472,7 @@ private module UseCached {
   }
 
   private predicate isUseImpl(Operand operand, Instruction base, int ind) {
+    DataFlowImplCommon::forceCachingInSameStage() and
     ind = 0 and
     operand.getDef() = base and
     isSourceVariableBase(base)

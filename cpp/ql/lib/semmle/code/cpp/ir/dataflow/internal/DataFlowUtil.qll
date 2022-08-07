@@ -1021,18 +1021,6 @@ private predicate modelFlow(Node nodeFrom, Node nodeTo) {
 }
 
 /**
- * Holds if the result is a side effect for instruction `call` on argument
- * index `argument`. This helper predicate makes it easy to join on both of
- * these columns at once, avoiding pathological join orders in case the
- * argument index should get joined first.
- */
-pragma[noinline]
-SideEffectInstruction getSideEffectFor(CallInstruction call, int argument) {
-  call = result.getPrimaryInstruction() and
-  argument = result.(IndexedInstruction).getIndex()
-}
-
-/**
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
