@@ -157,3 +157,46 @@ private predicate isCommonWordMatcher(RegExpTerm t) {
         .getValue() = "w"
   )
 }
+
+/**
+ * Holds if `replace` has a pattern argument containing a regular expression
+ * `dangerous` which matches a dangerous string beginning with `prefix`, in an
+ * attempt to avoid a vulnerability of kind `kind`.
+ */
+predicate isResult(
+  StringSubstitutionCall replace, EmptyReplaceRegExpTerm dangerous, string prefix, string kind
+) {
+  exists(EmptyReplaceRegExpTerm regexp |
+    replace = regexp.getCall() and
+    dangerous.getRootTerm() = regexp and
+    // skip leading optional elements
+    not dangerous.isNullable() and
+    // only warn about the longest match
+    prefix = max(string m | matchesDangerousPrefix(dangerous, m, kind) | m order by m.length(), m) and
+    // only warn once per kind
+    not exists(EmptyReplaceRegExpTerm other |
+      other = dangerous.getAChild+() or other = dangerous.getPredecessor+()
+    |
+      matchesDangerousPrefix(other, _, kind) and
+      not other.isNullable()
+    ) and
+    // avoid anchored terms
+    not exists(RegExpAnchor a | regexp = a.getRootTerm()) and
+    // Don't flag replace operations that are called repeatedly in a loop, as they can actually work correctly.
+    not replace.flowsTo(replace.getReceiver+())
+  )
+}
+
+/**
+ * Holds if `replace` has a pattern argument containing a regular expression
+ * `dangerous` which matches a dangerous string beginning with `prefix`. `msg`
+ * is the alert we report.
+ */
+query predicate problems(
+  StringSubstitutionCall replace, string msg, EmptyReplaceRegExpTerm dangerous, string prefix
+) {
+  exists(string kind |
+    isResult(replace, dangerous, prefix, kind) and
+    msg = "This string may still contain $@, which may cause a " + kind + " vulnerability."
+  )
+}

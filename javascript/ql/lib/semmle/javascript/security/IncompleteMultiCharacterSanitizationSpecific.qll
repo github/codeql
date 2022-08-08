@@ -5,6 +5,8 @@
 import javascript
 import semmle.javascript.security.performance.ReDoSUtil as ReDoSUtil
 
+class StringSubstitutionCall = StringReplaceCall;
+
 /**
  * A regexp term that matches substrings that should be replaced with the empty string.
  */
@@ -15,4 +17,9 @@ class EmptyReplaceRegExpTerm extends RegExpTerm {
       this = replace.getRegExp().getRoot().getAChild*()
     )
   }
+
+  /**
+   * Get the substitution call that uses this regexp term.
+   */
+  StringSubstitutionCall getCall() { this = result.getRegExp().getRoot() }
 }
