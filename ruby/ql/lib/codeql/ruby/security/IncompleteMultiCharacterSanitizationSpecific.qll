@@ -2,7 +2,7 @@
  * Provides language-specific predicates for reasoning about improper multi-character sanitization.
  */
 
-private import codeql.ruby.frameworks.core.String
+import codeql.ruby.frameworks.core.String
 import codeql.ruby.regexp.RegExpTreeView
 import codeql.ruby.security.performance.ReDoSUtil as ReDoSUtil
 

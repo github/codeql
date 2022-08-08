@@ -5,7 +5,7 @@
 import ruby
 import codeql.ruby.regexp.RegExpTreeView as RETV
 import codeql.ruby.DataFlow
-import codeql.ruby.security.IncompleteMultiCharacterSanitizationQuery as Query
+import codeql.ruby.security.IncompleteMultiCharacterSanitization as Query
 import TestUtilities.InlineExpectationsTest
 
 class Test extends InlineExpectationsTest {
@@ -25,7 +25,7 @@ predicate hasResult(Location location, string element, string value) {
     element = replace.toString() and
     value = shortKind(kind)
   |
-    Query::problems(replace, dangerous, prefix, kind)
+    Query::isResult(replace, dangerous, prefix, kind)
   )
 }
 
