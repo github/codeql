@@ -10,7 +10,7 @@ edition = "2018"
 flate2 = "1.0"
 node-types = { path = "../node-types" }
 tree-sitter = ">= 0.19, < 0.21"
-tree-sitter-ql = { git = "https://github.com/tree-sitter/tree-sitter-ql.git", rev = "24c72ad09f05982df4085c481d9b02ba9e79e7fc"}
+tree-sitter-ql = { git = "https://github.com/erik-krogh/tree-sitter-ql.git", rev = "8d8db63b205d5345d9acbac3a728c1f0fce92fbb"}
 tree-sitter-ql-dbscheme = { git = "https://github.com/tausbn/tree-sitter-ql-dbscheme.git", rev = "ad0c1485aa1e61b727a986d82c7fab4cd21ca723"}
 tree-sitter-ql-yaml = {git = "https://github.com/tausbn/tree-sitter-ql.git", rev = "c9d7d8de9fab75f39d5bc7bdf3a6e5151bb9b3bd"}
 clap = "2.33"
