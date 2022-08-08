@@ -121,14 +121,19 @@ open class KotlinUsesExtractor(
         }
     }
 
-    private fun extractErrorType(): TypeResults {
+    private fun extractJavaErrorType(): TypeResult<DbErrortype> {
         val typeId = tw.getLabelFor<DbErrortype>("@\"errorType\"") {
             tw.writeError_type(it)
         }
+        return TypeResult(typeId, null, "<CodeQL error type>")
+    }
+
+    private fun extractErrorType(): TypeResults {
+        val javaResult = extractJavaErrorType()
         val kotlinTypeId = tw.getLabelFor<DbKt_nullable_type>("@\"errorKotlinType\"") {
-            tw.writeKt_nullable_types(it, typeId)
+            tw.writeKt_nullable_types(it, javaResult.id)
         }
-        return TypeResults(TypeResult(typeId, null, "<CodeQL error type>"),
+        return TypeResults(javaResult,
                            TypeResult(kotlinTypeId, null, "<CodeQL error type>"))
     }
 
@@ -719,7 +724,7 @@ open class KotlinUsesExtractor(
             }
             else -> {
                 logger.error("Unrecognised IrSimpleType: " + s.javaClass + ": " + s.render())
-                return TypeResults(TypeResult(fakeLabel(), "unknown", "unknown"), TypeResult(fakeLabel(), "unknown", "unknown"))
+                return extractErrorType()
             }
         }
     }
@@ -1276,7 +1281,7 @@ open class KotlinUsesExtractor(
             }
             else -> {
                 logger.error("Unexpected type argument.")
-                return TypeResult(fakeLabel(), "unknown", "unknown")
+                return extractJavaErrorType()
             }
         }
     }
