@@ -33,7 +33,7 @@ class ActionControllerControllerClass extends ClassDeclaration {
         // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
         // treat it separately in case the `ApplicationController` definition is not in the database.
         API::getTopLevelMember("ApplicationController")
-      ].getASubclass().getAUse().asExpr().getExpr()
+      ].getASubclass().getAValueReachableFromSource().asExpr().getExpr()
   }
 
   /**
@@ -83,7 +83,7 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
    * Gets a route to this handler, if one exists.
    * May return multiple results.
    */
-  ActionDispatch::Route getARoute() {
+  ActionDispatch::Routing::Route getARoute() {
     exists(string name |
       isRoute(result, name, controllerClass) and
       isActionControllerMethod(this, name, controllerClass)
@@ -93,10 +93,10 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
 
 pragma[nomagic]
 private predicate isRoute(
-  ActionDispatch::Route route, string name, ActionControllerControllerClass controllerClass
+  ActionDispatch::Routing::Route route, string name, ActionControllerControllerClass controllerClass
 ) {
   route.getController() + "_controller" =
-    ActionDispatch::underscore(namespaceDeclaration(controllerClass)) and
+    ActionDispatch::Routing::underscore(namespaceDeclaration(controllerClass)) and
   name = route.getAction()
 }
 
@@ -180,18 +180,31 @@ private class ActionControllerHtmlEscapeCall extends HtmlEscapeCall {
  * specific URL/path or to a different action in this controller.
  */
 class RedirectToCall extends ActionControllerContextCall {
-  RedirectToCall() { this.getMethodName() = "redirect_to" }
+  RedirectToCall() {
+    this.getMethodName() = ["redirect_to", "redirect_back", "redirect_back_or_to"]
+  }
 
   /** Gets the `Expr` representing the URL to redirect to, if any */
-  Expr getRedirectUrl() { result = this.getArgument(0) }
+  Expr getRedirectUrl() {
+    this.getMethodName() = "redirect_back" and result = this.getKeywordArgument("fallback_location")
+    or
+    this.getMethodName() = ["redirect_to", "redirect_back_or_to"] and result = this.getArgument(0)
+  }
 
   /** Gets the `ActionControllerActionMethod` to redirect to, if any */
   ActionControllerActionMethod getRedirectActionMethod() {
-    exists(string methodName |
-      this.getKeywordArgument("action").getConstantValue().isStringlikeValue(methodName) and
-      methodName = result.getName() and
-      result.getEnclosingModule() = this.getControllerClass()
-    )
+    this.getKeywordArgument("action").getConstantValue().isStringlikeValue(result.getName()) and
+    result.getEnclosingModule() = this.getControllerClass()
+  }
+
+  /**
+   * Holds if this method call allows a redirect to an external host.
+   */
+  predicate allowsExternalRedirect() {
+    // Unless the option allow_other_host is explicitly set to false, assume that external redirects are allowed.
+    // TODO: Take into account `config.action_controller.raise_on_open_redirects`.
+    // TODO: Take into account that this option defaults to false in Rails 7.
+    not this.getKeywordArgument("allow_other_host").getConstantValue().isBoolean(false)
   }
 }
 

@@ -56,13 +56,14 @@ class Node extends TNode {
  * `ControlFlow::Node`s.
  */
 class ExprNode extends Node, TExprNode {
-  ExprCfgNode expr;
+  CfgNode n;
+  Expr expr;
 
-  ExprNode() { this = TExprNode(expr) }
+  ExprNode() { this = TExprNode(n, expr) }
 
-  override Expr asExpr() { result = expr.getNode().asAstNode() }
+  override Expr asExpr() { result = expr }
 
-  override ControlFlowNode getCfgNode() { result = expr }
+  override ControlFlowNode getCfgNode() { result = n }
 }
 
 /**
@@ -153,22 +154,10 @@ class ContentSet extends Content {
 }
 
 /**
- * A guard that validates some expression.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * It is important that all extending classes in scope are disjoint.
+ * DEPRECATED: Do not use.
  */
-abstract class BarrierGuard extends DataFlowExpr {
+abstract deprecated class BarrierGuard extends DataFlowExpr {
   BarrierGuard() { none() }
-
-  /** Holds if this guard controls block `b` upon evaluating to `branch`. */
-  private predicate controlsBlock(BasicBlock bb, boolean branch) { none() }
-
-  /** Holds if this guard validates `expr` upon evaluating to `branch`. */
-  abstract predicate checks(ControlFlowNode expr, boolean branch);
 
   final Node getAGuardedNode() { none() }
 }

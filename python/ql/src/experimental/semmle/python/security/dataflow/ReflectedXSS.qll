@@ -23,12 +23,10 @@ class ReflectedXssConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink = any(EmailSender email).getHtmlBody() }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StringConstCompare
-  }
-
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     sanitizer = any(HtmlEscaping esc).getOutput()
+    or
+    sanitizer instanceof StringConstCompareBarrier
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {

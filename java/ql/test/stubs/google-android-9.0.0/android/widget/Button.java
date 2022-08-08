@@ -1,42 +1,20 @@
-/*
- * Copyright (C) 2006 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
+// Generated automatically from android.widget.Button for testing purposes
 
 package android.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.PointerIcon;
+import android.widget.TextView;
 
-public class Button extends TextView {
-  public Button(Context context) {
-    super(null);
-  }
-
-  public Button(Context context, AttributeSet attrs) {
-    super(null);
-  }
-
-  public Button(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(null);
-  }
-
-  public Button(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    super(null);
-  }
-
-  @Override
-  public CharSequence getAccessibilityClassName() {
-    return null;
-  }
-
+public class Button extends TextView
+{
+    protected Button() {}
+    public Button(Context p0){}
+    public Button(Context p0, AttributeSet p1){}
+    public Button(Context p0, AttributeSet p1, int p2){}
+    public Button(Context p0, AttributeSet p1, int p2, int p3){}
+    public CharSequence getAccessibilityClassName(){ return null; }
+    public PointerIcon onResolvePointerIcon(MotionEvent p0, int p1){ return null; }
 }

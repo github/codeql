@@ -165,7 +165,7 @@ class KotlinExtractorGlobalState {
     // doesn't have a map as that plugin doesn't generate them. If and when these are used more widely additional maps
     // should be added here.
     val syntheticToRealClassMap = HashMap<IrClass, IrClass?>()
-    val syntheticToRealFunctionMap = HashMap<IrSimpleFunction, IrSimpleFunction?>()
+    val syntheticToRealFunctionMap = HashMap<IrFunction, IrFunction?>()
     val syntheticToRealFieldMap = HashMap<IrField, IrField?>()
 }
 

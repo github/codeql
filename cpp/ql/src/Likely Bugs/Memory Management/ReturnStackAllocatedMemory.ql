@@ -18,7 +18,7 @@ import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.MustFlow
 import PathGraph
 
-/** Holds if `f` has a name that we intrepret as evidence of intentionally returning the value of the stack pointer. */
+/** Holds if `f` has a name that we interpret as evidence of intentionally returning the value of the stack pointer. */
 predicate intentionallyReturnsStackPointer(Function f) {
   f.getName().toLowerCase().matches(["%stack%", "%sp%"])
 }
@@ -52,6 +52,18 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
     )
   }
 
+  //  We disable flow into callables in this query as we'd otherwise get a result on this piece of code:
+  //   ```cpp
+  //  int* id(int* px) {
+  //   return px; // this returns the local variable `x`, but it's fine as the local variable isn't declared in this scope.
+  //  }
+  //  void f() {
+  //   int x;
+  //   int* px = id(&x);
+  //  }
+  //   ```
+  override predicate allowInterproceduralFlow() { none() }
+
   /**
    * This configuration intentionally conflates addresses of fields and their object, and pointer offsets
    * with their base pointer as this allows us to detect cases where an object's address flows to a
@@ -74,13 +86,9 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
 
 from
   MustFlowPathNode source, MustFlowPathNode sink, VariableAddressInstruction var,
-  ReturnStackAllocatedMemoryConfig conf, Function f
+  ReturnStackAllocatedMemoryConfig conf
 where
-  conf.hasFlowPath(source, sink) and
-  source.getNode().asInstruction() = var and
-  // Only raise an alert if we're returning from the _same_ callable as the on that
-  // declared the stack variable.
-  var.getEnclosingFunction() = pragma[only_bind_into](f) and
-  sink.getNode().getEnclosingCallable() = pragma[only_bind_into](f)
+  conf.hasFlowPath(pragma[only_bind_into](source), pragma[only_bind_into](sink)) and
+  source.getNode().asInstruction() = var
 select sink.getNode(), source, sink, "May return stack-allocated memory from $@.", var.getAst(),
   var.getAst().toString()

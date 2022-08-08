@@ -20,21 +20,34 @@ abstract class FlagKind extends string {
   bindingset[result]
   abstract string getAFlagName();
 
+  private predicate flagFlowStepTC(DataFlow::Node node1, DataFlow::Node node2) {
+    node2 = node1 and
+    isFlagWithName(node1)
+    or
+    exists(DataFlow::Node nodeMid |
+      flagFlowStep(nodeMid, node2) and
+      flagFlowStepTC(node1, nodeMid)
+    )
+  }
+
+  private predicate isFlagWithName(DataFlow::Node flag) {
+    exists(VarAccess v | v.getVariable().getName() = getAFlagName() |
+      flag.asExpr() = v and v.getType() instanceof FlagType
+    )
+    or
+    exists(StringLiteral s | s.getValue() = getAFlagName() | flag.asExpr() = s)
+    or
+    exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() |
+      flag.asExpr() = ma and
+      ma.getType() instanceof FlagType
+    )
+  }
+
   /** Gets a node representing a (likely) security flag. */
   DataFlow::Node getAFlag() {
     exists(DataFlow::Node flag |
-      exists(VarAccess v | v.getVariable().getName() = getAFlagName() |
-        flag.asExpr() = v and v.getType() instanceof FlagType
-      )
-      or
-      exists(StringLiteral s | s.getValue() = getAFlagName() | flag.asExpr() = s)
-      or
-      exists(MethodAccess ma | ma.getMethod().getName() = getAFlagName() |
-        flag.asExpr() = ma and
-        ma.getType() instanceof FlagType
-      )
-    |
-      flagFlowStep*(flag, result)
+      isFlagWithName(flag) and
+      flagFlowStepTC(flag, result)
     )
   }
 }

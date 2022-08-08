@@ -22,6 +22,11 @@ where
   or
   PredConsistency::noResolvePredicateExpr(node) and msg = "PredConsistency::noResolvePredicateExpr"
   or
+  PredConsistency::multipleResolveCall(node, _, _) and msg = "PredConsistency::multipleResolveCall"
+  or
+  PredConsistency::multipleResolvePredicateExpr(node, _, _) and
+  msg = "PredConsistency::multipleResolvePredicateExpr"
+  or
   TypeConsistency::exprNoType(node) and msg = "TypeConsistency::exprNoType"
   or
   TypeConsistency::varDefNoType(node) and msg = "TypeConsistency::varDefNoType"
@@ -33,11 +38,15 @@ where
   or
   AstConsistency::nonTotalGetParent(node) and msg = "AstConsistency::nonTotalGetParent"
   or
+  AstConsistency::nonUniqueParent(node) and msg = "AstConsistency::nonUniqueParent"
+  or
   TypeConsistency::noResolve(node) and msg = "TypeConsistency::noResolve"
   or
   ModConsistency::noResolve(node) and msg = "ModConsistency::noResolve"
   or
-  ModConsistency::noResolveModuleExpr(node) and msg = "ModConsistency::noResolveModuleExpr"
+  ModConsistency::noName(node) and msg = "ModConsistency::noName"
+  or
+  ModConsistency::nonUniqueName(node) and msg = "ModConsistency::nonUniqueName"
   or
   VarConsistency::noFieldDef(node) and msg = "VarConsistency::noFieldDef"
   or

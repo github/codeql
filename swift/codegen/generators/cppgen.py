@@ -12,6 +12,7 @@ Each class in the schema gets a corresponding `struct` in `TrapClasses.h`, where
 """
 
 import functools
+import pathlib
 from typing import Dict
 
 import inflection
@@ -64,18 +65,26 @@ class Processor:
         return cpp.Class(
             name=name,
             bases=[self._get_class(b) for b in cls.bases],
-            fields=[_get_field(cls, p) for p in cls.properties],
+            fields=[_get_field(cls, p) for p in cls.properties if "cpp_skip" not in p.pragmas],
             final=not cls.derived,
             trap_name=trap_name,
         )
 
     def get_classes(self):
-        inheritance_graph = {k: cls.bases for k, cls in self._classmap.items()}
-        return [self._get_class(cls) for cls in toposort_flatten(inheritance_graph)]
+        grouped = {pathlib.Path(): {}}
+        for k, cls in self._classmap.items():
+            grouped.setdefault(cls.dir, {}).update({k: cls})
+        ret = {}
+        for dir, map in grouped.items():
+            inheritance_graph = {k: {b for b in cls.bases if b in map} for k, cls in map.items()}
+            ret[dir] = [self._get_class(cls) for cls in toposort_flatten(inheritance_graph)]
+        return ret
 
 
 def generate(opts, renderer):
     assert opts.cpp_output
     processor = Processor({cls.name: cls for cls in schema.load(opts.schema).classes})
     out = opts.cpp_output
-    renderer.render(cpp.ClassList(processor.get_classes(), opts.schema), out / f"TrapClasses.h")
+    for dir, classes in processor.get_classes().items():
+        include_parent = (dir != pathlib.Path())
+        renderer.render(cpp.ClassList(classes, opts.schema, include_parent), out / dir / "TrapClasses")

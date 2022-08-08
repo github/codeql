@@ -14,8 +14,8 @@ calls
 | test.kt:22:15:22:33 | setter(...) | test.kt:12:1:25:1 | user | test.kt:0:0:0:0 | TestKt | file:///!unknown-binary-location/Generic.class:0:0:0:0 | setter | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<? super String> |
 | test.kt:23:15:23:22 | getter(...) | test.kt:12:1:25:1 | user | test.kt:0:0:0:0 | TestKt | file:///!unknown-binary-location/Generic.class:0:0:0:0 | getter | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<? super String> |
 constructors
-| Generic2.class:0:0:0:0 | Generic2<? extends String> | Generic2.class:0:0:0:0 | Generic2<? extends String> | Generic2<? extends String>(java.lang.String) | ? extends String | void | Test.java:1:7:1:14 | Generic2 | Test.java:3:10:3:17 | Generic2 |
-| Generic2.class:0:0:0:0 | Generic2<? super String> | Generic2.class:0:0:0:0 | Generic2<? super String> | Generic2<? super String>(java.lang.Object) | ? super String | void | Test.java:1:7:1:14 | Generic2 | Test.java:3:10:3:17 | Generic2 |
+| Generic2.class:0:0:0:0 | Generic2<? extends String> | Generic2.class:0:0:0:0 | Generic2<? extends String> | Generic2<? extends String>(<nulltype>) | <nulltype> | void | Test.java:1:7:1:14 | Generic2 | Test.java:3:10:3:17 | Generic2 |
+| Generic2.class:0:0:0:0 | Generic2<? super String> | Generic2.class:0:0:0:0 | Generic2<? super String> | Generic2<? super String>(java.lang.String) | String | void | Test.java:1:7:1:14 | Generic2 | Test.java:3:10:3:17 | Generic2 |
 | Generic2.class:0:0:0:0 | Generic2<String> | Generic2.class:0:0:0:0 | Generic2<String> | Generic2<String>(java.lang.String) | String | void | Test.java:1:7:1:14 | Generic2 | Test.java:3:10:3:17 | Generic2 |
 | Test.java:1:7:1:14 | Generic2 | Test.java:3:10:3:17 | Generic2 | Generic2(java.lang.Object) | T | void | Test.java:1:7:1:14 | Generic2 | Test.java:3:10:3:17 | Generic2 |
 | Test.java:14:14:14:17 | Test | Test.java:14:14:14:17 | Test | Test() | No parameters | void | Test.java:14:14:14:17 | Test | Test.java:14:14:14:17 | Test |
@@ -34,14 +34,14 @@ refTypes
 | test.kt:1:1:10:1 | Generic |
 | test.kt:1:15:1:15 | T |
 #select
-| Generic2.class:0:0:0:0 | Generic2<? extends String> | Generic2.class:0:0:0:0 | getter | getter() | No parameters | ? extends String | Test.java:1:7:1:14 | Generic2 | Test.java:9:5:9:10 | getter |
-| Generic2.class:0:0:0:0 | Generic2<? extends String> | Generic2.class:0:0:0:0 | identity | identity(java.lang.String) | ? extends String | ? extends String | Test.java:1:7:1:14 | Generic2 | Test.java:8:5:8:12 | identity |
-| Generic2.class:0:0:0:0 | Generic2<? extends String> | Generic2.class:0:0:0:0 | identity2 | identity2(java.lang.String) | ? extends String | ? extends String | Test.java:1:7:1:14 | Generic2 | Test.java:7:5:7:13 | identity2 |
-| Generic2.class:0:0:0:0 | Generic2<? extends String> | Generic2.class:0:0:0:0 | setter | setter(java.lang.String) | ? extends String | void | Test.java:1:7:1:14 | Generic2 | Test.java:10:8:10:13 | setter |
-| Generic2.class:0:0:0:0 | Generic2<? super String> | Generic2.class:0:0:0:0 | getter | getter() | No parameters | ? super String | Test.java:1:7:1:14 | Generic2 | Test.java:9:5:9:10 | getter |
-| Generic2.class:0:0:0:0 | Generic2<? super String> | Generic2.class:0:0:0:0 | identity | identity(java.lang.Object) | ? super String | ? super String | Test.java:1:7:1:14 | Generic2 | Test.java:8:5:8:12 | identity |
-| Generic2.class:0:0:0:0 | Generic2<? super String> | Generic2.class:0:0:0:0 | identity2 | identity2(java.lang.Object) | ? super String | ? super String | Test.java:1:7:1:14 | Generic2 | Test.java:7:5:7:13 | identity2 |
-| Generic2.class:0:0:0:0 | Generic2<? super String> | Generic2.class:0:0:0:0 | setter | setter(java.lang.Object) | ? super String | void | Test.java:1:7:1:14 | Generic2 | Test.java:10:8:10:13 | setter |
+| Generic2.class:0:0:0:0 | Generic2<? extends String> | Generic2.class:0:0:0:0 | getter | getter() | No parameters | String | Test.java:1:7:1:14 | Generic2 | Test.java:9:5:9:10 | getter |
+| Generic2.class:0:0:0:0 | Generic2<? extends String> | Generic2.class:0:0:0:0 | identity | identity(<nulltype>) | <nulltype> | String | Test.java:1:7:1:14 | Generic2 | Test.java:8:5:8:12 | identity |
+| Generic2.class:0:0:0:0 | Generic2<? extends String> | Generic2.class:0:0:0:0 | identity2 | identity2(<nulltype>) | <nulltype> | String | Test.java:1:7:1:14 | Generic2 | Test.java:7:5:7:13 | identity2 |
+| Generic2.class:0:0:0:0 | Generic2<? extends String> | Generic2.class:0:0:0:0 | setter | setter(<nulltype>) | <nulltype> | void | Test.java:1:7:1:14 | Generic2 | Test.java:10:8:10:13 | setter |
+| Generic2.class:0:0:0:0 | Generic2<? super String> | Generic2.class:0:0:0:0 | getter | getter() | No parameters | Object | Test.java:1:7:1:14 | Generic2 | Test.java:9:5:9:10 | getter |
+| Generic2.class:0:0:0:0 | Generic2<? super String> | Generic2.class:0:0:0:0 | identity | identity(java.lang.String) | String | Object | Test.java:1:7:1:14 | Generic2 | Test.java:8:5:8:12 | identity |
+| Generic2.class:0:0:0:0 | Generic2<? super String> | Generic2.class:0:0:0:0 | identity2 | identity2(java.lang.String) | String | Object | Test.java:1:7:1:14 | Generic2 | Test.java:7:5:7:13 | identity2 |
+| Generic2.class:0:0:0:0 | Generic2<? super String> | Generic2.class:0:0:0:0 | setter | setter(java.lang.String) | String | void | Test.java:1:7:1:14 | Generic2 | Test.java:10:8:10:13 | setter |
 | Generic2.class:0:0:0:0 | Generic2<String> | Generic2.class:0:0:0:0 | getter | getter() | No parameters | String | Test.java:1:7:1:14 | Generic2 | Test.java:9:5:9:10 | getter |
 | Generic2.class:0:0:0:0 | Generic2<String> | Generic2.class:0:0:0:0 | identity | identity(java.lang.String) | String | String | Test.java:1:7:1:14 | Generic2 | Test.java:8:5:8:12 | identity |
 | Generic2.class:0:0:0:0 | Generic2<String> | Generic2.class:0:0:0:0 | identity2 | identity2(java.lang.String) | String | String | Test.java:1:7:1:14 | Generic2 | Test.java:7:5:7:13 | identity2 |

@@ -3,4 +3,8 @@ import codeql.swift.elements.expr.Expr
 
 class UnresolvedDeclRefExprBase extends @unresolved_decl_ref_expr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedDeclRefExpr" }
+
+  string getName() { unresolved_decl_ref_expr_names(this, result) }
+
+  predicate hasName() { exists(getName()) }
 }

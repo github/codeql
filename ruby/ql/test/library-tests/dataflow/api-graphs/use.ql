@@ -26,10 +26,10 @@ class ApiUseTest extends InlineExpectationsTest {
     l = n.getLocation() and
     (
       tag = "use" and
-      n = a.getAUse()
+      n = a.getAValueReachableFromSource()
       or
       tag = "def" and
-      n = a.getARhs()
+      n = a.asSink()
       or
       tag = "call" and
       n = a.(API::MethodAccessNode).getCallNode()

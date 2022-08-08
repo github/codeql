@@ -71,6 +71,14 @@ class CallNode extends LocalSourceNode, ExprNode {
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
   ExprNode getKeywordArgument(string name) { result.getExprNode() = node.getKeywordArgument(name) }
 
+  /**
+   * Gets the `n`th positional argument of this call.
+   * Unlike `getArgument`, this excludes keyword arguments.
+   */
+  final ExprNode getPositionalArgument(int n) {
+    result.getExprNode() = node.getPositionalArgument(n)
+  }
+
   /** Gets the name of the the method called by the method call (if any) corresponding to this data-flow node */
   string getMethodName() { result = node.getExpr().(MethodCall).getMethodName() }
 
@@ -335,6 +343,66 @@ class ContentSet extends TContentSet {
 }
 
 /**
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
+ */
+signature predicate guardChecksSig(CfgNodes::ExprCfgNode g, CfgNode e, boolean branch);
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() {
+    exists(
+      CfgNodes::ExprCfgNode g, boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def
+    |
+      def.getARead() = testedNode and
+      def.getARead() = result.asExpr() and
+      guardChecks(g, testedNode, branch) and
+      guardControlsBlock(g, result.asExpr().getBasicBlock(), branch)
+    )
+    or
+    result.asExpr() = getAMaybeGuardedCapturedDef().getARead()
+  }
+
+  /**
+   * Gets an implicit entry definition for a captured variable that
+   * may be guarded, because a call to the capturing callable is guarded.
+   *
+   * This is restricted to calls where the variable is captured inside a
+   * block.
+   */
+  private Ssa::Definition getAMaybeGuardedCapturedDef() {
+    exists(
+      CfgNodes::ExprCfgNode g, boolean branch, CfgNodes::ExprCfgNode testedNode,
+      Ssa::Definition def, CfgNodes::ExprNodes::CallCfgNode call
+    |
+      def.getARead() = testedNode and
+      guardChecks(g, testedNode, branch) and
+      SsaImpl::captureFlowIn(call, def, result) and
+      guardControlsBlock(g, call.getBasicBlock(), branch) and
+      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
+    )
+  }
+}
+
+/** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
+private predicate guardControlsBlock(CfgNodes::ExprCfgNode guard, BasicBlock bb, boolean branch) {
+  exists(ConditionBlock conditionBlock, SuccessorTypes::BooleanSuccessor s |
+    guard = conditionBlock.getLastNode() and
+    s.getValue() = branch and
+    conditionBlock.controls(bb, s)
+  )
+}
+
+/**
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -343,7 +411,7 @@ class ContentSet extends TContentSet {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-abstract class BarrierGuard extends CfgNodes::ExprCfgNode {
+abstract deprecated class BarrierGuard extends CfgNodes::ExprCfgNode {
   private ConditionBlock conditionBlock;
 
   BarrierGuard() { this = conditionBlock.getLastNode() }
