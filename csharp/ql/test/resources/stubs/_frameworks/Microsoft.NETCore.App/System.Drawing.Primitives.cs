@@ -4,7 +4,7 @@ namespace System
 {
     namespace Drawing
     {
-        // Generated from `System.Drawing.Color` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.Color` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Color : System.IEquatable<System.Drawing.Color>
         {
             public static bool operator !=(System.Drawing.Color left, System.Drawing.Color right) => throw null;
@@ -145,6 +145,7 @@ namespace System
             public static System.Drawing.Color PowderBlue { get => throw null; }
             public static System.Drawing.Color Purple { get => throw null; }
             public System.Byte R { get => throw null; }
+            public static System.Drawing.Color RebeccaPurple { get => throw null; }
             public static System.Drawing.Color Red { get => throw null; }
             public static System.Drawing.Color RosyBrown { get => throw null; }
             public static System.Drawing.Color RoyalBlue { get => throw null; }
@@ -178,7 +179,7 @@ namespace System
             public static System.Drawing.Color YellowGreen { get => throw null; }
         }
 
-        // Generated from `System.Drawing.ColorTranslator` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.ColorTranslator` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class ColorTranslator
         {
             public static System.Drawing.Color FromHtml(string htmlColor) => throw null;
@@ -189,7 +190,7 @@ namespace System
             public static int ToWin32(System.Drawing.Color c) => throw null;
         }
 
-        // Generated from `System.Drawing.KnownColor` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.KnownColor` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum KnownColor
         {
             ActiveBorder,
@@ -334,6 +335,7 @@ namespace System
             Plum,
             PowderBlue,
             Purple,
+            RebeccaPurple,
             Red,
             RosyBrown,
             RoyalBlue,
@@ -368,7 +370,7 @@ namespace System
             YellowGreen,
         }
 
-        // Generated from `System.Drawing.Point` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.Point` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Point : System.IEquatable<System.Drawing.Point>
         {
             public static bool operator !=(System.Drawing.Point left, System.Drawing.Point right) => throw null;
@@ -398,7 +400,7 @@ namespace System
             public static implicit operator System.Drawing.PointF(System.Drawing.Point p) => throw null;
         }
 
-        // Generated from `System.Drawing.PointF` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.PointF` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct PointF : System.IEquatable<System.Drawing.PointF>
         {
             public static bool operator !=(System.Drawing.PointF left, System.Drawing.PointF right) => throw null;
@@ -415,15 +417,19 @@ namespace System
             public override int GetHashCode() => throw null;
             public bool IsEmpty { get => throw null; }
             // Stub generator skipped constructor 
+            public PointF(System.Numerics.Vector2 vector) => throw null;
             public PointF(float x, float y) => throw null;
             public static System.Drawing.PointF Subtract(System.Drawing.PointF pt, System.Drawing.Size sz) => throw null;
             public static System.Drawing.PointF Subtract(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
             public override string ToString() => throw null;
+            public System.Numerics.Vector2 ToVector2() => throw null;
             public float X { get => throw null; set => throw null; }
             public float Y { get => throw null; set => throw null; }
+            public static explicit operator System.Numerics.Vector2(System.Drawing.PointF point) => throw null;
+            public static explicit operator System.Drawing.PointF(System.Numerics.Vector2 vector) => throw null;
         }
 
-        // Generated from `System.Drawing.Rectangle` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.Rectangle` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Rectangle : System.IEquatable<System.Drawing.Rectangle>
         {
             public static bool operator !=(System.Drawing.Rectangle left, System.Drawing.Rectangle right) => throw null;
@@ -465,7 +471,7 @@ namespace System
             public int Y { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Drawing.RectangleF` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.RectangleF` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct RectangleF : System.IEquatable<System.Drawing.RectangleF>
         {
             public static bool operator !=(System.Drawing.RectangleF left, System.Drawing.RectangleF right) => throw null;
@@ -493,19 +499,23 @@ namespace System
             public void Offset(float x, float y) => throw null;
             // Stub generator skipped constructor 
             public RectangleF(System.Drawing.PointF location, System.Drawing.SizeF size) => throw null;
+            public RectangleF(System.Numerics.Vector4 vector) => throw null;
             public RectangleF(float x, float y, float width, float height) => throw null;
             public float Right { get => throw null; }
             public System.Drawing.SizeF Size { get => throw null; set => throw null; }
             public override string ToString() => throw null;
+            public System.Numerics.Vector4 ToVector4() => throw null;
             public float Top { get => throw null; }
             public static System.Drawing.RectangleF Union(System.Drawing.RectangleF a, System.Drawing.RectangleF b) => throw null;
             public float Width { get => throw null; set => throw null; }
             public float X { get => throw null; set => throw null; }
             public float Y { get => throw null; set => throw null; }
+            public static explicit operator System.Numerics.Vector4(System.Drawing.RectangleF rectangle) => throw null;
+            public static explicit operator System.Drawing.RectangleF(System.Numerics.Vector4 vector) => throw null;
             public static implicit operator System.Drawing.RectangleF(System.Drawing.Rectangle r) => throw null;
         }
 
-        // Generated from `System.Drawing.Size` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.Size` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Size : System.IEquatable<System.Drawing.Size>
         {
             public static bool operator !=(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
@@ -538,7 +548,7 @@ namespace System
             public static implicit operator System.Drawing.SizeF(System.Drawing.Size p) => throw null;
         }
 
-        // Generated from `System.Drawing.SizeF` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.SizeF` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct SizeF : System.IEquatable<System.Drawing.SizeF>
         {
             public static bool operator !=(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
@@ -558,16 +568,20 @@ namespace System
             // Stub generator skipped constructor 
             public SizeF(System.Drawing.PointF pt) => throw null;
             public SizeF(System.Drawing.SizeF size) => throw null;
+            public SizeF(System.Numerics.Vector2 vector) => throw null;
             public SizeF(float width, float height) => throw null;
             public static System.Drawing.SizeF Subtract(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
             public System.Drawing.PointF ToPointF() => throw null;
             public System.Drawing.Size ToSize() => throw null;
             public override string ToString() => throw null;
+            public System.Numerics.Vector2 ToVector2() => throw null;
             public float Width { get => throw null; set => throw null; }
             public static explicit operator System.Drawing.PointF(System.Drawing.SizeF size) => throw null;
+            public static explicit operator System.Numerics.Vector2(System.Drawing.SizeF size) => throw null;
+            public static explicit operator System.Drawing.SizeF(System.Numerics.Vector2 vector) => throw null;
         }
 
-        // Generated from `System.Drawing.SystemColors` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.SystemColors` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class SystemColors
         {
             public static System.Drawing.Color ActiveBorder { get => throw null; }

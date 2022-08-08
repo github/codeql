@@ -6,14 +6,14 @@ namespace Microsoft
     {
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.SessionMiddlewareExtensions` in `Microsoft.AspNetCore.Session, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Builder.SessionMiddlewareExtensions` in `Microsoft.AspNetCore.Session, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class SessionMiddlewareExtensions
             {
-                public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseSession(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, Microsoft.AspNetCore.Builder.SessionOptions options) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseSession(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
+                public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseSession(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, Microsoft.AspNetCore.Builder.SessionOptions options) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.SessionOptions` in `Microsoft.AspNetCore.Session, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Builder.SessionOptions` in `Microsoft.AspNetCore.Session, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SessionOptions
             {
                 public Microsoft.AspNetCore.Http.CookieBuilder Cookie { get => throw null; set => throw null; }
@@ -25,7 +25,7 @@ namespace Microsoft
         }
         namespace Session
         {
-            // Generated from `Microsoft.AspNetCore.Session.DistributedSession` in `Microsoft.AspNetCore.Session, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Session.DistributedSession` in `Microsoft.AspNetCore.Session, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DistributedSession : Microsoft.AspNetCore.Http.ISession
             {
                 public void Clear() => throw null;
@@ -40,34 +40,34 @@ namespace Microsoft
                 public bool TryGetValue(string key, out System.Byte[] value) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Session.DistributedSessionStore` in `Microsoft.AspNetCore.Session, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Session.DistributedSessionStore` in `Microsoft.AspNetCore.Session, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DistributedSessionStore : Microsoft.AspNetCore.Session.ISessionStore
             {
                 public Microsoft.AspNetCore.Http.ISession Create(string sessionKey, System.TimeSpan idleTimeout, System.TimeSpan ioTimeout, System.Func<bool> tryEstablishSession, bool isNewSessionKey) => throw null;
                 public DistributedSessionStore(Microsoft.Extensions.Caching.Distributed.IDistributedCache cache, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Session.ISessionStore` in `Microsoft.AspNetCore.Session, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Session.ISessionStore` in `Microsoft.AspNetCore.Session, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ISessionStore
             {
                 Microsoft.AspNetCore.Http.ISession Create(string sessionKey, System.TimeSpan idleTimeout, System.TimeSpan ioTimeout, System.Func<bool> tryEstablishSession, bool isNewSessionKey);
             }
 
-            // Generated from `Microsoft.AspNetCore.Session.SessionDefaults` in `Microsoft.AspNetCore.Session, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Session.SessionDefaults` in `Microsoft.AspNetCore.Session, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class SessionDefaults
             {
                 public static string CookieName;
                 public static string CookiePath;
             }
 
-            // Generated from `Microsoft.AspNetCore.Session.SessionFeature` in `Microsoft.AspNetCore.Session, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Session.SessionFeature` in `Microsoft.AspNetCore.Session, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SessionFeature : Microsoft.AspNetCore.Http.Features.ISessionFeature
             {
                 public Microsoft.AspNetCore.Http.ISession Session { get => throw null; set => throw null; }
                 public SessionFeature() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Session.SessionMiddleware` in `Microsoft.AspNetCore.Session, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Session.SessionMiddleware` in `Microsoft.AspNetCore.Session, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SessionMiddleware
             {
                 public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
@@ -80,11 +80,11 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.SessionServiceCollectionExtensions` in `Microsoft.AspNetCore.Session, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.Extensions.DependencyInjection.SessionServiceCollectionExtensions` in `Microsoft.AspNetCore.Session, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class SessionServiceCollectionExtensions
             {
-                public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddSession(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.Builder.SessionOptions> configure) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddSession(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
+                public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddSession(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.Builder.SessionOptions> configure) => throw null;
             }
 
         }
