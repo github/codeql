@@ -5,9 +5,9 @@
 
 <overview>
 <p>The Android manifest file defines configuration settings for Android applications.
-In this file, components can be declared with intent filters which specify the types of intents the component can respond to.
-If the <code>android:exported</code> attribute is omitted from the component when an intent filter is included,
-then the component will be implicitly exported.</p>
+In this file, components can be declared with intent filters which specify what the components can do and what types
+of intents the components can respond to. If the <code>android:exported</code> attribute is omitted from the component
+when an intent filter is included, then the component will be implicitly exported.</p>
 
 <p>An implicitly exported component could allow for improper access to the component and its data.</p>
 
@@ -19,7 +19,7 @@ then the component will be implicitly exported.</p>
 </recommendation>
 <example>
 
-<p>In the example below, the component <code>android:exported</code> attribute is omitted when an intent filter is used.</p>
+<p>In the example below, the <code>android:exported</code> attribute is omitted when an intent filter is used.</p>
 
 <sample src="ExampleBad.xml" />
 
@@ -36,7 +36,7 @@ then the component will be implicitly exported.</p>
 </li>
 <li>
   Android Developers:
-  <a href="https://developer.android.com/guide/topics/manifest/intent-filter-element">intent-filter-element</a>.
+  <a href="https://developer.android.com/guide/topics/manifest/intent-filter-element">The &lt;intent-filter&gt; element</a>.
 </li>
 <li>
   Android Developers:
