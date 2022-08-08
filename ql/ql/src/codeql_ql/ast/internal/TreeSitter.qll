@@ -602,15 +602,15 @@ module QL {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ImportModuleExpr" }
 
-    /** Gets the node corresponding to the field `name`. */
-    final SimpleId getName(int i) { ql_import_module_expr_name(this, i, result) }
+    /** Gets the node corresponding to the field `qualName`. */
+    final SimpleId getQualName(int i) { ql_import_module_expr_qual_name(this, i, result) }
 
     /** Gets the child of this node. */
-    final QualModuleExpr getChild() { ql_import_module_expr_def(this, result) }
+    final ModuleExpr getChild() { ql_import_module_expr_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      ql_import_module_expr_name(this, _, result) or ql_import_module_expr_def(this, result)
+      ql_import_module_expr_qual_name(this, _, result) or ql_import_module_expr_def(this, result)
     }
   }
 
@@ -954,18 +954,6 @@ module QL {
   class Qldoc extends @ql_token_qldoc, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Qldoc" }
-  }
-
-  /** A class representing `qualModuleExpr` nodes. */
-  class QualModuleExpr extends @ql_qual_module_expr, AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "QualModuleExpr" }
-
-    /** Gets the node corresponding to the field `name`. */
-    final SimpleId getName(int i) { ql_qual_module_expr_name(this, i, result) }
-
-    /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_qual_module_expr_name(this, _, result) }
   }
 
   /** A class representing `qualifiedRhs` nodes. */

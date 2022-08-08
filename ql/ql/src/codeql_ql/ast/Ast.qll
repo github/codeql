@@ -1175,13 +1175,27 @@ class Import extends TImport, ModuleMember, TypeRef {
   string importedAs() { result = imp.getChild(1).(QL::ModuleName).getChild().getValue() }
 
   /**
-   * Gets the `i`th selected name from the imported module.
+   * Gets the qualified name of the module selected in the import statement.
    * E.g. for
    * `import foo.bar::Baz::Qux`
-   * It is true that `getSelectionName(0) = "Baz"` and `getSelectionName(1) = "Qux"`.
+   * It is true that `getSelectionName() = "Baz::Qux"`.
+   *
+   * Does NOT include type arguments!
    */
-  string getSelectionName(int i) {
-    result = imp.getChild(0).(QL::ImportModuleExpr).getName(i).getValue()
+  string getSelectionName() { result = getModuleExpr().getQualifiedName() }
+
+  /**
+   * Gets the module expression selected in the import statement.
+   * E.g. for
+   * `import foo.Bar::Baz::Qux`
+   * The module expression is the `Bar::Baz::Qux` part.
+   */
+  ModuleExpr getModuleExpr() { toQL(result) = imp.getChild(0).(QL::ImportModuleExpr).getChild() }
+
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = directMember("getModuleExpr") and result = this.getModuleExpr()
   }
 
   /**
@@ -1191,27 +1205,25 @@ class Import extends TImport, ModuleMember, TypeRef {
    * It is true that `getQualifiedName(0) = "foo"` and `getQualifiedName(1) = "bar"`.
    */
   string getQualifiedName(int i) {
-    result = imp.getChild(0).(QL::ImportModuleExpr).getChild().getName(i).getValue()
+    result = imp.getChild(0).(QL::ImportModuleExpr).getQualName(i).getValue()
   }
 
   /**
-   * Gets the full string specifying the module being imported.
+   * Gets a full string specifying the module being imported.
+   *
+   * Does NOT include type arguments!
    */
   string getImportString() {
-    exists(string selec |
-      not exists(this.getSelectionName(_)) and selec = ""
+    exists(string qual |
+      not exists(this.getQualifiedName(_)) and qual = ""
       or
-      selec =
-        "::" + strictconcat(int i, string q | q = this.getSelectionName(i) | q, "::" order by i)
+      qual = strictconcat(int i, string q | q = this.getQualifiedName(i) | q, "." order by i) + "."
     |
-      result =
-        strictconcat(int i, string q | q = this.getQualifiedName(i) | q, "." order by i) + selec
+      result = qual + this.getSelectionName()
     )
   }
 
-  override Type getResolvedType() {
-    exists(FileOrModule mod | resolve(this, mod) | result = mod.toType())
-  }
+  override Type getResolvedType() { result = this.getModuleExpr().getResolvedType() }
 }
 
 /** A formula, such as `x = 6 and y < 5`. */
@@ -2285,6 +2297,19 @@ class ModuleExpr extends TModuleExpr, TypeRef {
    */
   SignatureExpr getArgument(int i) {
     result.toQL() = me.getAFieldOrChild().(QL::ModuleInstantiation).getChild(i)
+  }
+
+  /**
+   * Gets the qualified name for this module expression, which does not include the type arguments.
+   */
+  string getQualifiedName() {
+    exists(string qual |
+      not exists(this.getQualifier()) and qual = ""
+      or
+      qual = this.getQualifier().getQualifiedName() + "::"
+    |
+      result = qual + this.getName()
+    )
   }
 }
 
