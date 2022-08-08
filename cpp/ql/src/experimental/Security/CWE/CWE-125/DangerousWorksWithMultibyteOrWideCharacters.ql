@@ -1,8 +1,8 @@
 /**
- * @name Dangerous use mbtowc.
- * @description Using function mbtowc with an invalid length argument can result in an out-of-bounds access error or unexpected result.
+ * @name Dangerous use convert function.
+ * @description Using convert function with an invalid length argument can result in an out-of-bounds access error or unexpected result.
  * @kind problem
- * @id cpp/dangerous-use-mbtowc
+ * @id cpp/dangerous-use-convert-function
  * @problem.severity warning
  * @precision medium
  * @tags correctness
@@ -117,8 +117,7 @@ predicate findUseCharacterConversion(Expr exp, string msg) {
 predicate findUseMultibyteCharacter(Expr exp, string msg) {
   exists(ArrayType arrayType, ArrayExpr arrayExpr |
     arrayExpr = exp and
-    arrayExpr.getArrayBase().getType() =
-      arrayType and
+    arrayExpr.getArrayBase().getType() = arrayType and
     (
       exists(AssignExpr assZero, SizeofExprOperator sizeofArray, Expr oneValue |
         oneValue.getValue() = "1" and
