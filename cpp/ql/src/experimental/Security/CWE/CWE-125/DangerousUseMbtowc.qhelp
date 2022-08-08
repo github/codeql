@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p> Using function <code>mbtowc</code> with an invalid length argument can result in an out-of-bounds access error or unexpected result. If you are sure you are working with a null-terminated string, use the length macros, if not, use the correctly computed length.</p>
+<p> Using a function to convert multibyte or wide characters with an invalid length argument may result in an out-of-range access error or unexpected results.</p>
 
 </overview>
 
