@@ -11,6 +11,6 @@ clap = "2.33"
 node-types = { path = "../node-types" }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
-tree-sitter-ql = { git = "https://github.com/erik-krogh/tree-sitter-ql.git", rev = "8d8db63b205d5345d9acbac3a728c1f0fce92fbb"}
-tree-sitter-ql-dbscheme = { git = "https://github.com/tausbn/tree-sitter-ql-dbscheme.git", rev = "ad0c1485aa1e61b727a986d82c7fab4cd21ca723"}
-tree-sitter-ql-yaml = {git = "https://github.com/tausbn/tree-sitter-ql.git", rev = "c9d7d8de9fab75f39d5bc7bdf3a6e5151bb9b3bd"}
+tree-sitter-ql = { git = "https://github.com/erik-krogh/tree-sitter-ql.git", rev = "dcf0139af9908dbc53efa96408b017133d19e6b2"}
+tree-sitter-ql-dbscheme = { git = "https://github.com/erik-krogh/tree-sitter-ql-dbscheme.git", rev = "cecfb9764621e32661a44ee08ce0b0cebf22a85b"}
+tree-sitter-ql-yaml = {git = "https://github.com/erik-krogh/tree-sitter-ql.git", rev = "c40acb02d4910e82354606ec5b422d074be024f3"}
