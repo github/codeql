@@ -227,7 +227,9 @@ private module Cached {
     } or
     TSelfParameterNode(MethodBase m) or
     TBlockParameterNode(MethodBase m) or
-    TSynthHashSplatParameterNode(MethodBase m) { m.getAParameter() instanceof KeywordParameter } or
+    TSynthHashSplatParameterNode(DataFlowCallable c) {
+      isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
+    } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
       n instanceof Argument or
       n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
@@ -477,10 +479,13 @@ private module ParameterNodes {
   abstract class ParameterNodeImpl extends NodeImpl {
     abstract Parameter getParameter();
 
-    abstract predicate isSourceParameterOf(Callable c, ParameterPosition pos);
+    abstract predicate isParameterOf(DataFlowCallable c, ParameterPosition pos);
 
-    predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      this.isSourceParameterOf(c.asCallable(), pos)
+    final predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
+      exists(DataFlowCallable callable |
+        this.isParameterOf(callable, pos) and
+        c = callable.asCallable()
+      )
     }
   }
 
@@ -495,21 +500,23 @@ private module ParameterNodes {
 
     override Parameter getParameter() { result = parameter }
 
-    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
-      exists(int i | pos.isPositional(i) and c.getParameter(i) = parameter |
-        parameter instanceof SimpleParameter
-        or
-        parameter instanceof OptionalParameter
-      )
-      or
-      parameter =
-        any(KeywordParameter kp |
-          c.getAParameter() = kp and
-          pos.isKeyword(kp.getName())
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      exists(Callable callable | callable = c.asCallable() |
+        exists(int i | pos.isPositional(i) and callable.getParameter(i) = parameter |
+          parameter instanceof SimpleParameter
+          or
+          parameter instanceof OptionalParameter
         )
-      or
-      parameter = c.getAParameter().(HashSplatParameter) and
-      pos.isHashSplat()
+        or
+        parameter =
+          any(KeywordParameter kp |
+            callable.getAParameter() = kp and
+            pos.isKeyword(kp.getName())
+          )
+        or
+        parameter = callable.getAParameter().(HashSplatParameter) and
+        pos.isHashSplat()
+      )
     }
 
     override CfgScope getCfgScope() { result = parameter.getCallable() }
@@ -532,8 +539,8 @@ private module ParameterNodes {
 
     override Parameter getParameter() { none() }
 
-    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
-      method = c and pos.isSelf()
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      method = c.asCallable() and pos.isSelf()
     }
 
     override CfgScope getCfgScope() { result = method }
@@ -558,8 +565,8 @@ private module ParameterNodes {
       result = method.getAParameter() and result instanceof BlockParameter
     }
 
-    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
-      c = method and pos.isBlock()
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c.asCallable() = method and pos.isBlock()
     }
 
     override CfgScope getCfgScope() { result = method }
@@ -612,37 +619,36 @@ private module ParameterNodes {
    *      collapsed anyway.
    */
   class SynthHashSplatParameterNode extends ParameterNodeImpl, TSynthHashSplatParameterNode {
-    private MethodBase method;
+    private DataFlowCallable callable;
 
-    SynthHashSplatParameterNode() { this = TSynthHashSplatParameterNode(method) }
-
-    final Callable getMethod() { result = method }
+    SynthHashSplatParameterNode() { this = TSynthHashSplatParameterNode(callable) }
 
     /**
      * Gets a keyword parameter that will be the result of reading `c` out of this
      * synthesized node.
      */
-    NormalParameterNode getAKeywordParameter(ContentSet c) {
-      exists(KeywordParameter p |
-        p = result.getParameter() and
-        p = method.getAParameter()
+    ParameterNode getAKeywordParameter(ContentSet c) {
+      exists(string name |
+        isParameterNode(result, callable, any(ParameterPosition p | p.isKeyword(name)))
       |
-        c = getKeywordContent(p.getName()) or
+        c = getKeywordContent(name) or
         c.isSingleton(TUnknownElementContent())
       )
     }
 
-    override Parameter getParameter() { none() }
+    final override Parameter getParameter() { none() }
 
-    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
-      c = method and pos.isHashSplat()
+    final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c = callable and pos.isHashSplat()
     }
 
-    override CfgScope getCfgScope() { result = method }
+    final override CfgScope getCfgScope() { result = callable.asCallable() }
 
-    override Location getLocationImpl() { result = method.getLocation() }
+    final override DataFlowCallable getEnclosingCallable() { result = callable }
 
-    override string toStringImpl() { result = "**kwargs" }
+    final override Location getLocationImpl() { result = callable.getLocation() }
+
+    final override string toStringImpl() { result = "**kwargs" }
   }
 
   /** A parameter for a library callable with a flow summary. */
@@ -653,8 +659,6 @@ private module ParameterNodes {
     SummaryParameterNode() { this = TSummaryParameterNode(sc, pos_) }
 
     override Parameter getParameter() { none() }
-
-    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       sc = c.asLibraryCallable() and pos = pos_
