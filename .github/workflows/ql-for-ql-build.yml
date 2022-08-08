@@ -40,6 +40,7 @@ jobs:
           "${CODEQL}" pack create
           cd .codeql/pack/codeql/ql/0.0.0
           zip "${PACKZIP}" -r .
+          rm -rf *
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
           PACKZIP: ${{ runner.temp }}/query-pack.zip
@@ -117,6 +118,7 @@ jobs:
           fi
           cd pack
           zip -rq ../codeql-ql.zip .
+          rm -rf *
       - uses: actions/upload-artifact@v3
         with:
           name: codeql-ql-pack
