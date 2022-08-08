@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.3
- * @precision high
+ * @precision medium
  * @id java/partial-path-traversal-from-remote
  * @tags security
  *       external/cwe/cwe-023
