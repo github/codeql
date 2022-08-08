@@ -12,5 +12,5 @@ node-types = { path = "../node-types" }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
 tree-sitter-ql = { git = "https://github.com/erik-krogh/tree-sitter-ql.git", rev = "dcf0139af9908dbc53efa96408b017133d19e6b2"}
-tree-sitter-ql-dbscheme = { git = "https://github.com/erik-krogh/tree-sitter-ql-dbscheme.git", rev = "cecfb9764621e32661a44ee08ce0b0cebf22a85b"}
-tree-sitter-ql-yaml = {git = "https://github.com/erik-krogh/tree-sitter-ql.git", rev = "c40acb02d4910e82354606ec5b422d074be024f3"}
+tree-sitter-ql-dbscheme = { git = "https://github.com/erik-krogh/tree-sitter-ql-dbscheme.git", rev = "63e1344353f63931e88bfbc2faa2e78e1421b213"}
+tree-sitter-ql-yaml = {git = "https://github.com/erik-krogh/tree-sitter-ql.git", rev = "cf704bf3671e1ae148e173464fb65a4d2bbf5f99"}
