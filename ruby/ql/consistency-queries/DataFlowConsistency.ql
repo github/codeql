@@ -10,6 +10,6 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     or
     n instanceof SummaryNode
     or
-    n instanceof SynthHashSplatArgumentsNode
+    n instanceof SynthHashSplatArgumentNode
   }
 }

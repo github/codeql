@@ -241,7 +241,7 @@ private module Cached {
     TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
       FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
     } or
-    TSynthHashSplatArgumentsNode(CfgNodes::ExprNodes::CallCfgNode c) {
+    TSynthHashSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) {
       exists(Argument arg | arg.isArgumentOf(c, any(ArgumentPosition pos | pos.isKeyword(_))))
     }
 
@@ -422,7 +422,7 @@ predicate nodeIsHidden(Node n) {
   or
   n instanceof SynthHashSplatParameterNode
   or
-  n instanceof SynthHashSplatArgumentsNode
+  n instanceof SynthHashSplatArgumentNode
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
@@ -602,7 +602,7 @@ private module ParameterNodes {
    * ```
    *
    * where direct keyword matching is possible, since we construct a synthesized hash
-   * splat argument (`SynthHashSplatArgumentsNode`) at the call site, which means that
+   * splat argument (`SynthHashSplatArgumentNode`) at the call site, which means that
    * `taint(1)` will flow into `p1` both via normal keyword matching and via the synthesized
    * nodes (and similarly for `p2`). However, this redunancy is OK since
    *  (a) it means that type-tracking through keyword arguments also works in most cases,
@@ -764,10 +764,10 @@ private module ArgumentNodes {
    * part of the method signature, such that those cannot end up in the hash-splat
    * parameter.
    */
-  class SynthHashSplatArgumentsNode extends ArgumentNode, TSynthHashSplatArgumentsNode {
+  class SynthHashSplatArgumentNode extends ArgumentNode, TSynthHashSplatArgumentNode {
     CfgNodes::ExprNodes::CallCfgNode c;
 
-    SynthHashSplatArgumentsNode() { this = TSynthHashSplatArgumentsNode(c) }
+    SynthHashSplatArgumentNode() { this = TSynthHashSplatArgumentNode(c) }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       this.sourceArgumentOf(call.asCall(), pos)
@@ -779,10 +779,10 @@ private module ArgumentNodes {
     }
   }
 
-  private class SynthHashSplatArgumentsNodeImpl extends NodeImpl, TSynthHashSplatArgumentsNode {
+  private class SynthHashSplatArgumentNodeImpl extends NodeImpl, TSynthHashSplatArgumentNode {
     CfgNodes::ExprNodes::CallCfgNode c;
 
-    SynthHashSplatArgumentsNodeImpl() { this = TSynthHashSplatArgumentsNode(c) }
+    SynthHashSplatArgumentNodeImpl() { this = TSynthHashSplatArgumentNode(c) }
 
     override CfgScope getCfgScope() { result = c.getExpr().getCfgScope() }
 
@@ -1004,7 +1004,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   // Wrap all keyword arguments in a synthesized hash-splat argument node
   exists(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition keywordPos, string name |
-    node2 = TSynthHashSplatArgumentsNode(call) and
+    node2 = TSynthHashSplatArgumentNode(call) and
     node1.asExpr().(Argument).isArgumentOf(call, keywordPos) and
     keywordPos.isKeyword(name) and
     c = getKeywordContent(name)
