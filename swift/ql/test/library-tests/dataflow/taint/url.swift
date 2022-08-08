@@ -15,12 +15,12 @@ func taintThroughURL() {
 	let urlTainted = URL(string: tainted)!
 
 	sink(arg: urlClean)
-	sink(arg: urlTainted) // tainted [NOT DETECTED]
+	sink(arg: urlTainted) // tainted
 
 	sink(arg: URL(string: clean, relativeTo: nil)!)
-	sink(arg: URL(string: tainted, relativeTo: nil)!) // tainted [NOT DETECTED]
+	sink(arg: URL(string: tainted, relativeTo: nil)!) // tainted
 	sink(arg: URL(string: clean, relativeTo: urlClean)!)
-	sink(arg: URL(string: clean, relativeTo: urlTainted)!) // tainted [NOT DETECTED]
+	sink(arg: URL(string: clean, relativeTo: urlTainted)!) // tainted
 
 	if let x = URL(string: clean) {
 		sink(arg: x)
@@ -36,5 +36,5 @@ func taintThroughURL() {
 
 	var urlTainted2 : URL!
 	urlTainted2 = URL(string: tainted)
-	sink(arg: urlTainted2) // tainted [NOT DETECTED]
+	sink(arg: urlTainted2) // tainted
 }

@@ -36,10 +36,31 @@ private module Cached {
       nodeTo.asDefinition().(Ssa::WriteDefinition).isInoutDef(e)
     )
     or
+    // allow flow through `try!` and similar constructs
+    // TODO: this should probably be part of DataFlow / TaintTracking?
+    nodeFrom.asExpr() = nodeTo.asExpr().(AnyTryExpr).getSubExpr()
+    or
+    // allow flow through `!`
+    // TODO: this should probably be part of DataFlow / TaintTracking?
+    nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
+    or
     // Flow from the computation of the interpolated string literal to the result of the interpolation.
     exists(InterpolatedStringLiteralExpr interpolated |
       nodeTo.asExpr() = interpolated and
       nodeFrom.asExpr() = interpolated.getAppendingExpr()
+    )
+    or
+    // allow flow through string concatenation.
+    nodeTo.asExpr().(AddExpr).getAnOperand() = nodeFrom.asExpr()
+    or
+    // allow flow through `URL.init`.
+    exists(CallExpr call, ClassDecl c, AbstractFunctionDecl f |
+      c.getName() = "URL" and
+      c.getAMember() = f and
+      f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
+      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      nodeFrom.asExpr() = call.getAnArgument().getExpr() and
+      nodeTo.asExpr() = call
     )
   }
 

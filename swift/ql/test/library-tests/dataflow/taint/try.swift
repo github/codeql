@@ -6,7 +6,7 @@ func taintThroughTry() {
 	do
 	{
 		sink(arg: try clean())
-		sink(arg: try source()) // tainted [NOT DETECTED]
+		sink(arg: try source()) // tainted
 	} catch {
 		// ...
 	}

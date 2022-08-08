@@ -31,12 +31,12 @@ func taintThroughStringConcatenation() {
   sink(arg: tainted) // tainted
 
   sink(arg: clean + clean)
-  sink(arg: clean + tainted) // tainted [NOT DETECTED]
-  sink(arg: tainted + clean) // tainted [NOT DETECTED]
-  sink(arg: tainted + tainted) // tainted [NOT DETECTED]
+  sink(arg: clean + tainted) // tainted
+  sink(arg: tainted + clean) // tainted
+  sink(arg: tainted + tainted) // tainted
 
   sink(arg: ">" + clean + "<")
-  sink(arg: ">" + tainted + "<") // tainted [NOT DETECTED]
+  sink(arg: ">" + tainted + "<") // tainted
 
   var str = "abc"
 
