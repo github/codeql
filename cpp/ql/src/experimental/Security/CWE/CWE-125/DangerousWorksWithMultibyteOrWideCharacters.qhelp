@@ -9,7 +9,7 @@
 
 <example>
 <p>The following example shows the erroneous and corrected method of using function mbtowc.</p>
-<sample src="DangerousUseMbtowc.cpp" />
+<sample src="DangerousWorksWithMultibyteOrWideCharacters.cpp" />
 
 </example>
 <references>
