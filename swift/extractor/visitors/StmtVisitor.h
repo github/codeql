@@ -1,6 +1,7 @@
 #pragma once
 
 #include "swift/extractor/visitors/VisitorBase.h"
+#include "swift/extractor/trap/generated/stmt/TrapClasses.h"
 
 namespace codeql {
 
@@ -9,7 +10,9 @@ class StmtVisitor : public AstVisitorBase<StmtVisitor> {
   using AstVisitorBase<StmtVisitor>::AstVisitorBase;
 
   void visitLabeledStmt(swift::LabeledStmt* stmt);
-  void visitStmtCondition(swift::StmtCondition* cond);
+  codeql::StmtCondition translateStmtCondition(const swift::StmtCondition& cond);
+  codeql::ConditionElement translateStmtConditionElement(
+      const swift::StmtConditionElement& element);
   void visitLabeledConditionalStmt(swift::LabeledConditionalStmt* stmt);
   void visitCaseLabelItem(swift::CaseLabelItem* labelItem);
   void visitBraceStmt(swift::BraceStmt* stmt);

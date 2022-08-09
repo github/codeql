@@ -5,6 +5,7 @@ on:
     paths:
       - "javascript/ql/experimental/adaptivethreatmodeling/**"
       - .github/workflows/js-ml-tests.yml
+      - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
     branches:
       - main
@@ -13,6 +14,7 @@ on:
     paths:
       - "javascript/ql/experimental/adaptivethreatmodeling/**"
       - .github/workflows/js-ml-tests.yml
+      - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
   workflow_dispatch:
 

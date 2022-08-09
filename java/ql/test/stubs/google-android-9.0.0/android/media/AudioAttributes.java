@@ -11,10 +11,12 @@ public class AudioAttributes implements Parcelable
     public String toString(){ return null; }
     public boolean areHapticChannelsMuted(){ return false; }
     public boolean equals(Object p0){ return false; }
+    public boolean isContentSpatialized(){ return false; }
     public int describeContents(){ return 0; }
     public int getAllowedCapturePolicy(){ return 0; }
     public int getContentType(){ return 0; }
     public int getFlags(){ return 0; }
+    public int getSpatializationBehavior(){ return 0; }
     public int getUsage(){ return 0; }
     public int getVolumeControlStream(){ return 0; }
     public int hashCode(){ return 0; }
@@ -30,6 +32,8 @@ public class AudioAttributes implements Parcelable
     public static int FLAG_AUDIBILITY_ENFORCED = 0;
     public static int FLAG_HW_AV_SYNC = 0;
     public static int FLAG_LOW_LATENCY = 0;
+    public static int SPATIALIZATION_BEHAVIOR_AUTO = 0;
+    public static int SPATIALIZATION_BEHAVIOR_NEVER = 0;
     public static int USAGE_ALARM = 0;
     public static int USAGE_ASSISTANCE_ACCESSIBILITY = 0;
     public static int USAGE_ASSISTANCE_NAVIGATION_GUIDANCE = 0;

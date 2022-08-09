@@ -29,7 +29,7 @@ where
   call = paramikoSSHClientInstance().getMember("set_missing_host_key_policy").getACall() and
   arg in [call.getArg(0), call.getArgByName("policy")] and
   (
-    arg = unsafe_paramiko_policy(name).getAUse() or
-    arg = unsafe_paramiko_policy(name).getReturn().getAUse()
+    arg = unsafe_paramiko_policy(name).getAValueReachableFromSource() or
+    arg = unsafe_paramiko_policy(name).getReturn().getAValueReachableFromSource()
   )
 select call, "Setting missing host key policy to " + name + " may be unsafe."

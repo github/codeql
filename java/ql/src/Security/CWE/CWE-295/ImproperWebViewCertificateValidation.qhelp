@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If the <code>onReceivedSslError</code> method of an Android <code>WebViewClient</code> always calls <code>proceed</code> on the given <code>SslErrorHandler</code>, it trusts any certificate. 
+This allows an attacker to perform a machine-in-the-middle attack against the application, therefore breaking any security Transport Layer Security (TLS) gives.
+</p>
+
+<p>
+An attack might look like this:
+</p>
+
+<ol>
+  <li>The vulnerable application connects to <code>https://example.com</code>.</li>
+  <li>The attacker intercepts this connection and presents a valid, self-signed certificate for <code>https://example.com</code>.</li>
+  <li>The vulnerable application calls the <code>onReceivedSslError</code> method to check whether it should trust the certificate.</li>
+  <li>The <code>onReceivedSslError</code> method of your <code>WebViewClient</code> calls <code>SslErrorHandler.proceed</code>.</li>
+  <li>The vulnerable application accepts the certificate and proceeds with the connection since your <code>WevViewClient</code> trusted it by proceeding.</li>
+  <li>The attacker can now read the data your application sends to <code>https://example.com</code> and/or alter its replies while the application thinks the connection is secure.</li>
+</ol>
+</overview>
+
+<recommendation>
+<p>
+Do not use a call <code>SslerrorHandler.proceed</code> unconditionally. 
+If you have to use a self-signed certificate, only accept that certificate, not all certificates. 
+</p>
+
+</recommendation>
+
+<example>
+<p>
+In the first (bad) example, the <code>WebViewClient</code> trusts all certificates by always calling <code>SslErrorHandler.proceed</code>. 
+In the second (good) example, only certificates signed by a certain public key are accepted.
+</p>
+<sample src="ImproperWebViewCertificateValidation.java" />
+</example>
+
+<references>
+<li>
+<a href="https://developer.android.com/reference/android/webkit/WebViewClient?hl=en#onReceivedSslError(android.webkit.WebView,%20android.webkit.SslErrorHandler,%20android.net.http.SslError)">WebViewClient.onReceivedSslError documentation</a>.
+</li>
+</references>
+</qhelp>

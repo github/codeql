@@ -25,6 +25,20 @@ module Users
       # AssignAttributeCall
       user.name = "U14"
       user.save
+
+      # TouchAllCall
+      User.touch_all
+      User.touch_all(time: time)
+
+      # UpdateLikeClassMethodCall
+      attrs = {name: "U15"}
+      User.update(8, attrs)
+      User.update!(8, attrs)
+
+      # CreateLikeClassMethodCall
+      User.create(attrs)
+      User.create!(attrs)
+      User.insert(attrs)
     end
 
     def get_uid

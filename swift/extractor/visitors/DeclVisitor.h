@@ -4,6 +4,7 @@
 #include <swift/AST/ASTMangler.h>
 
 #include "swift/extractor/visitors/VisitorBase.h"
+#include "swift/extractor/trap/generated/decl/TrapClasses.h"
 
 namespace codeql {
 
@@ -13,6 +14,11 @@ namespace codeql {
 class DeclVisitor : public AstVisitorBase<DeclVisitor> {
  public:
   using AstVisitorBase<DeclVisitor>::AstVisitorBase;
+  using AstVisitorBase<DeclVisitor>::visit;
+
+  void visit(const swift::IfConfigClause* clause) {
+    dispatcher_.emit(translateIfConfigClause(*clause));
+  }
 
   std::variant<codeql::ConcreteFuncDecl, codeql::ConcreteFuncDeclsTrap> translateFuncDecl(
       const swift::FuncDecl& decl);
@@ -24,10 +30,10 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   codeql::PostfixOperatorDecl translatePostfixOperatorDecl(const swift::PostfixOperatorDecl& decl);
   codeql::InfixOperatorDecl translateInfixOperatorDecl(const swift::InfixOperatorDecl& decl);
   codeql::PrecedenceGroupDecl translatePrecedenceGroupDecl(const swift::PrecedenceGroupDecl& decl);
-  codeql::ParamDecl translateParamDecl(const swift::ParamDecl& decl);
+  std::optional<codeql::ParamDecl> translateParamDecl(const swift::ParamDecl& decl);
   codeql::TopLevelCodeDecl translateTopLevelCodeDecl(const swift::TopLevelCodeDecl& decl);
   codeql::PatternBindingDecl translatePatternBindingDecl(const swift::PatternBindingDecl& decl);
-  codeql::ConcreteVarDecl translateVarDecl(const swift::VarDecl& decl);
+  std::optional<codeql::ConcreteVarDecl> translateVarDecl(const swift::VarDecl& decl);
   std::variant<codeql::StructDecl, codeql::StructDeclsTrap> translateStructDecl(
       const swift::StructDecl& decl);
   std::variant<codeql::ClassDecl, codeql::ClassDeclsTrap> translateClassDecl(
@@ -49,6 +55,10 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
       const swift::AccessorDecl& decl);
   std::optional<codeql::SubscriptDecl> translateSubscriptDecl(const swift::SubscriptDecl& decl);
   codeql::ExtensionDecl translateExtensionDecl(const swift::ExtensionDecl& decl);
+  codeql::ImportDecl translateImportDecl(const swift::ImportDecl& decl);
+  std::optional<codeql::ModuleDecl> translateModuleDecl(const swift::ModuleDecl& decl);
+  codeql::IfConfigDecl translateIfConfigDecl(const swift::IfConfigDecl& decl);
+  codeql::IfConfigClause translateIfConfigClause(const swift::IfConfigClause& clause);
 
  private:
   std::string mangledName(const swift::ValueDecl& decl);
@@ -64,6 +74,15 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   void fillValueDecl(const swift::ValueDecl& decl, codeql::ValueDecl& entry);
   void fillAbstractStorageDecl(const swift::AbstractStorageDecl& decl,
                                codeql::AbstractStorageDecl& entry);
+
+  template <typename D>
+  std::optional<TrapClassOf<D>> createNamedEntry(const D& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (dispatcher_.shouldEmitDeclBody(decl)) {
+      return TrapClassOf<D>{id};
+    }
+    return std::nullopt;
+  }
 
  private:
   swift::Mangle::ASTMangler mangler;

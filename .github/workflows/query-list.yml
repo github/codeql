@@ -10,6 +10,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/query-list.yml'
+      - '.github/actions/fetch-codeql/action.yml'
       - 'misc/scripts/generate-code-scanning-query-list.py'
 
 jobs:
@@ -29,8 +30,6 @@ jobs:
     - name: Download CodeQL CLI
       # Look under the `codeql` directory, as this is where we checked out the `github/codeql` repo
       uses: ./codeql/.github/actions/fetch-codeql
-    - name: Unzip CodeQL CLI
-      run: unzip -d codeql-cli codeql-linux64.zip
     - name: Build code scanning query list
       run: |
         python codeql/misc/scripts/generate-code-scanning-query-list.py > code-scanning-query-list.csv

@@ -164,7 +164,7 @@ private module CryptodomeModel {
               .getMember("Cipher")
               .getMember(cipherName)
               .getMember(modeName)
-              .getAUse()
+              .getAValueReachableFromSource()
       |
         result = modeName.splitAt("_", 1)
       )

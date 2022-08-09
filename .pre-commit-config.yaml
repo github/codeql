@@ -15,6 +15,12 @@ repos:
       - id: clang-format
         files: ^swift/.*\.(h|c|cpp)$
 
+  - repo: https://github.com/pre-commit/mirrors-autopep8
+    rev: v1.6.0
+    hooks:
+      - id: autopep8
+        files: ^swift/codegen/.*\.py
+
   - repo: local
     hooks:
       - id: codeql-format

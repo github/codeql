@@ -65,7 +65,12 @@ class DataFlowCallable extends TDataFlowCallable {
   string toString() { result = [this.asCallable().toString(), this.asLibraryCallable()] }
 
   /** Gets the location of this callable. */
-  Location getLocation() { result = this.asCallable().getLocation() }
+  Location getLocation() {
+    result = this.asCallable().getLocation()
+    or
+    this instanceof TLibraryCallable and
+    result instanceof EmptyLocation
+  }
 }
 
 /**

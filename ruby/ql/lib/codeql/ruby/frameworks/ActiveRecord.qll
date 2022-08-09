@@ -54,7 +54,7 @@ class ActiveRecordModelClass extends ClassDeclaration {
         // In Rails applications `ApplicationRecord` typically extends `ActiveRecord::Base`, but we
         // treat it separately in case the `ApplicationRecord` definition is not in the database.
         API::getTopLevelMember("ApplicationRecord")
-      ].getASubclass().getAUse().asExpr().getExpr()
+      ].getASubclass().getAValueReachableFromSource().asExpr().getExpr()
   }
 
   // Gets the class declaration for this class and all of its super classes
@@ -133,6 +133,11 @@ private Expr sqlFragmentArgument(MethodCall call) {
       or
       methodName = "reload" and
       result = call.getKeywordArgument("lock")
+      or
+      // Calls to `annotate` can be used to add block comments to SQL queries. These are potentially vulnerable to
+      // SQLi if user supplied input is passed in as an argument.
+      methodName = "annotate" and
+      result = call.getArgument(_)
     )
   )
 }
@@ -330,12 +335,13 @@ class ActiveRecordInstance extends DataFlow::Node {
   ActiveRecordModelClass getClass() { result = instantiation.getClass() }
 }
 
-// A call whose receiver may be an active record model object
-private class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
+/** A call whose receiver may be an active record model object */
+class ActiveRecordInstanceMethodCall extends DataFlow::CallNode {
   private ActiveRecordInstance instance;
 
   ActiveRecordInstanceMethodCall() { this.getReceiver() = instance }
 
+  /** Gets the `ActiveRecordInstance` that is the receiver of this call. */
   ActiveRecordInstance getInstance() { result = instance }
 }
 
@@ -358,15 +364,6 @@ private module Persistence {
     )
   }
 
-  /**
-   * Holds if `call` has a keyword argument of with value `value`.
-   */
-  private predicate keywordArgumentWithValue(DataFlow::CallNode call, DataFlow::ExprNode value) {
-    exists(ExprNodes::PairCfgNode pair | pair = call.getArgument(_).asExpr() |
-      value.asExpr() = pair.getValue()
-    )
-  }
-
   /** A call to e.g. `User.create(name: "foo")` */
   private class CreateLikeCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
     CreateLikeCall() {
@@ -380,8 +377,12 @@ private module Persistence {
 
     override DataFlow::Node getValue() {
       // attrs as hash elements in arg0
-      hashArgumentWithValue(this, 0, result) or
-      keywordArgumentWithValue(this, result)
+      hashArgumentWithValue(this, 0, result)
+      or
+      result = this.getKeywordArgument(_)
+      or
+      result = this.getPositionalArgument(0) and
+      not result.asExpr() instanceof ExprNodes::HashLiteralCfgNode
     }
   }
 
@@ -393,11 +394,19 @@ private module Persistence {
     }
 
     override DataFlow::Node getValue() {
-      keywordArgumentWithValue(this, result)
+      // User.update(1, name: "foo")
+      result = this.getKeywordArgument(_)
+      or
+      // User.update(1, params)
+      exists(int n | n > 0 |
+        result = this.getPositionalArgument(n) and
+        not result.asExpr() instanceof ExprNodes::ArrayLiteralCfgNode
+      )
       or
       // Case where 2 array args are passed - the first an array of IDs, and the
       // second an array of hashes - each hash corresponding to an ID in the
       // first array.
+      // User.update([1,2,3], [{name: "foo"}, {name: "bar"}])
       exists(ExprNodes::ArrayLiteralCfgNode hashesArray |
         this.getArgument(0).asExpr() instanceof ExprNodes::ArrayLiteralCfgNode and
         hashesArray = this.getArgument(1).asExpr()
@@ -410,6 +419,28 @@ private module Persistence {
         )
       )
     }
+  }
+
+  /**
+   *  A call to `ActiveRecord::Relation#touch_all`, which updates the `updated_at`
+   *  attribute on all records in the relation, setting it to the current time or
+   *  the time specified. If passed additional attribute names, they will also be
+   *  updated with the time.
+   *  Examples:
+   *  ```rb
+   * Person.all.touch_all
+   * Person.where(name: "David").touch_all
+   * Person.all.touch_all(:created_at)
+   * Person.all.touch_all(time: Time.new(2020, 5, 16, 0, 0, 0))
+   * ```
+   */
+  private class TouchAllCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
+    TouchAllCall() {
+      exists(this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass()) and
+      this.getMethodName() = "touch_all"
+    }
+
+    override DataFlow::Node getValue() { result = this.getKeywordArgument("time") }
   }
 
   /** A call to e.g. `User.insert_all([{name: "foo"}, {name: "bar"}])` */
@@ -444,8 +475,12 @@ private module Persistence {
       // attrs as hash elements in arg0
       hashArgumentWithValue(this, 0, result)
       or
+      // attrs as variable in arg0
+      result = this.getPositionalArgument(0) and
+      not result.asExpr() instanceof ExprNodes::HashLiteralCfgNode
+      or
       // keyword arg
-      keywordArgumentWithValue(this, result)
+      result = this.getKeywordArgument(_)
     }
   }
 

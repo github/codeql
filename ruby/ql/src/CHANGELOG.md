@@ -1,3 +1,26 @@
+## 0.3.1
+
+### New Queries
+
+* Added a new experimental query, `rb/manually-checking-http-verb`, to detect cases when the HTTP verb for an incoming request is checked and then used as part of control flow.
+* Added a new experimental query, `rb/weak-params`, to detect cases when the rails strong parameters pattern isn't followed and values flow into persistent store writes.
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/ruby-all` package.
+
+## 0.2.0
+
+### New Queries
+
+* Added a new query, `rb/improper-memoization`. The query finds cases where the parameter of a memoization method is not used in the memoization key.
+
+### Minor Analysis Improvements
+
+* The query "Use of a broken or weak cryptographic algorithm" (`rb/weak-cryptographic-algorithm`) now reports if a cryptographic operation is potentially insecure due to use of a weak block mode.
+
 ## 0.1.4
 
 ## 0.1.3

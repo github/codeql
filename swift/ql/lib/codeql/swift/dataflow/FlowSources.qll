@@ -11,6 +11,9 @@ abstract class RemoteFlowSource extends Node {
   abstract string getSourceType();
 }
 
+/**
+ * A data flow source of remote user input that is defined through 'models as data'.
+ */
 private class ExternalRemoteFlowSource extends RemoteFlowSource {
   ExternalRemoteFlowSource() { sourceNode(this, "remote") }
 

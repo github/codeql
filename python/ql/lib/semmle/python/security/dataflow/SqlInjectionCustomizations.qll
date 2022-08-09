@@ -67,6 +67,6 @@ module SqlInjection {
 
   /** A sink for sql-injection from model data. */
   private class DataAsSqlSink extends Sink {
-    DataAsSqlSink() { this = ModelOutput::getASinkNode("sql-injection").getARhs() }
+    DataAsSqlSink() { this = ModelOutput::getASinkNode("sql-injection").asSink() }
   }
 }

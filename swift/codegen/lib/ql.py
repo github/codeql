@@ -37,7 +37,7 @@ class Property:
     is_optional: bool = False
     is_predicate: bool = False
     is_child: bool = False
-    skip_qltest: bool = False
+    qltest_skip: bool = False
 
     def __post_init__(self):
         if self.tableparams:
@@ -79,7 +79,9 @@ class Class:
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
     imports: List[str] = field(default_factory=list)
-    skip_qltest: bool = False
+    qltest_skip: bool = False
+    qltest_collapse_hierarchy: bool = False
+    qltest_uncollapse_hierarchy: bool = False
 
     def __post_init__(self):
         self.bases = sorted(self.bases)

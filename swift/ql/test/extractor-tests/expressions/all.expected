@@ -123,8 +123,6 @@
 | expressions.swift:54:1:54:1 | _ | DiscardAssignmentExpr |
 | expressions.swift:54:1:54:8 |  ... = ... | AssignExpr |
 | expressions.swift:54:5:54:8 | #keyPath(...) | KeyPathExpr |
-| expressions.swift:54:6:54:6 | (no string representation) | TypeExpr |
-| expressions.swift:54:6:54:8 | ... .x | UnresolvedDotExpr |
 | expressions.swift:58:16:58:16 | 1234 | IntegerLiteralExpr |
 | expressions.swift:59:1:59:1 | unsafeFunction(pointer:) | DeclRefExpr |
 | expressions.swift:59:1:59:34 | call to unsafeFunction(pointer:) | CallExpr |
@@ -242,5 +240,3 @@
 | expressions.swift:154:22:154:56 | \\...[...] | KeyPathApplicationExpr |
 | expressions.swift:154:33:154:33 | keyPathB | DeclRefExpr |
 | expressions.swift:154:52:154:55 | #keyPath(...) | KeyPathExpr |
-| expressions.swift:154:53:154:53 | (no string representation) | TypeExpr |
-| expressions.swift:154:53:154:55 | ... .x | UnresolvedDotExpr |

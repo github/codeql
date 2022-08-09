@@ -2,7 +2,8 @@
  * A library providing uniform access to various assertion frameworks.
  *
  * Currently supports `org.junit.Assert`, `junit.framework.*`,
- * `com.google.common.base.Preconditions`, and `java.util.Objects`.
+ * `org.junit.jupiter.api.Assertions`, `com.google.common.base.Preconditions`,
+ * and `java.util.Objects`.
  */
 
 import java
@@ -17,7 +18,11 @@ private newtype AssertKind =
 private predicate assertionMethod(Method m, AssertKind kind) {
   exists(RefType junit |
     m.getDeclaringType() = junit and
-    (junit.hasQualifiedName("org.junit", "Assert") or junit.hasQualifiedName("junit.framework", _))
+    (
+      junit.hasQualifiedName("org.junit", "Assert") or
+      junit.hasQualifiedName("junit.framework", _) or
+      junit.hasQualifiedName("org.junit.jupiter.api", "Assertions")
+    )
   |
     m.hasName("assertNotNull") and kind = AssertKindNotNull()
     or

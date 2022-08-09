@@ -1,3 +1,26 @@
+## 0.5.2
+
+## 0.5.1
+
+### Deprecated APIs
+
+- The documentation of API graphs (the `API` module) has been expanded, and some of the members predicates of `API::Node`
+  have been renamed as follows:
+  - `getAnImmediateUse` -> `asSource`
+  - `getARhs` -> `asSink`
+  - `getAUse` -> `getAValueReachableFromSource`
+  - `getAValueReachingRhs` -> `getAValueReachingSink`
+
+### Minor Analysis Improvements
+
+* Improved modeling of sensitive data sources, so common words like `certain` and `secretary` are no longer considered a certificate and a secret (respectively).
+
+## 0.5.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
 ## 0.4.1
 
 ## 0.4.0

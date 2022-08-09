@@ -831,7 +831,7 @@ module TaintTracking {
     }
 
     /**
-     * Holds if the property `loadStep` should be copied from the object `pred` to the property `storeStep` of object `succ`.
+     * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
      *
      * This step is used to copy the value of our pseudo-property that can later be accessed using a `get` or `getAll` call.
      * For an expression `url.searchParams`, the property `hiddenUrlPseudoProperty()` from the `url` object is stored in the property `getableUrlPseudoProperty()` on `url.searchParams`.
@@ -1123,6 +1123,19 @@ module TaintTracking {
     exists(Expr str, TypeofExpr typeof | test.hasOperands(str, typeof) |
       str.mayHaveStringValue(tag) and
       typeof.getOperand() = operand
+    )
+  }
+
+  /** A test for the value of `typeof x`, restricting the potential types of `x`. */
+  predicate isStringTypeGuard(EqualityTest test, Expr operand, boolean polarity) {
+    exists(TypeofTag tag | TaintTracking::isTypeofGuard(test, operand, tag) |
+      // typeof x === "string" sanitizes `x` when it evaluates to false
+      tag = "string" and
+      polarity = test.getPolarity().booleanNot()
+      or
+      // typeof x === "object" sanitizes `x` when it evaluates to true
+      tag != "string" and
+      polarity = test.getPolarity()
     )
   }
 

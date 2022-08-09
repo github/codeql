@@ -79,7 +79,7 @@ void test1()
 
 		send(sock, mysql_get_client_info(), val(), val()); // BAD
 		send(sock, buffer, val(), val()); // BAD
-		send(sock, global1, val(), val()); // BAD [NOT DETECTED]
+		send(sock, global1, val(), val()); // BAD
 		send(sock, global2, val(), val()); // GOOD: not system data
 	}
 
