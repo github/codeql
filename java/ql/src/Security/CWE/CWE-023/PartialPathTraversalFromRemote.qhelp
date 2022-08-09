@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<include src="PartialPathTraversalOverview.inc.qhelp"> 
+<include src="PartialPathTraversalOverview.inc.qhelp"/> 
 <p>See also <code>java/partial-path-traversal</code>, which is similar to this query, 
 but may also flag non-remotely-exploitable instances of Partial Path Traversal.</p>
 </overview>
