@@ -26,7 +26,7 @@ module ProductFlow {
     ) {
       isSourcePair(source1.getNode(), source2.getNode()) and
       isSinkPair(sink1.getNode(), sink2.getNode()) and
-      reachablePair(this, source1, source2, sink1, sink2)
+      reachablePair2(this, source1, source2, sink1, sink2)
     }
   }
 
@@ -51,6 +51,10 @@ module ProductFlow {
 
     override predicate isSink(DataFlow::Node sink) {
       exists(Configuration conf | conf.isSinkPair(_, sink))
+    }
+
+    override int explorationLimit() {
+        result = 10
     }
   }
 
