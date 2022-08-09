@@ -66,8 +66,8 @@ namespace Microsoft
             // Generated from `Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy` in `Microsoft.AspNetCore.CookiePolicy, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public enum HttpOnlyPolicy
             {
-                Always,
                 None,
+                Always,
             }
 
         }
