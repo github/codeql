@@ -6,7 +6,6 @@ private import semmle.code.cpp.models.interfaces.SideEffect
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
-private import semmle.code.cpp.ir.dataflow.internal.SsaInternals as Ssa
 private import semmle.code.cpp.models.Models
 
 /**

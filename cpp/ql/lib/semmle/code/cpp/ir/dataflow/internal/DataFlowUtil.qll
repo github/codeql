@@ -60,7 +60,7 @@ private module Cached {
     TInstructionNode(Instruction i) { not Ssa::ignoreInstruction(i) } or
     TOperandNode(Operand op) { not Ssa::ignoreOperand(op) } or
     TVariableNode(Variable var) or
-    TPostFieldUpdateNode(Ssa::Def def, FieldAddress fieldAddress) {
+    TPostFieldUpdateNode(Ssa::DefImpl def, FieldAddress fieldAddress) {
       hasPostFieldUpdateNode(def, fieldAddress)
     } or
     TSsaPhiNode(Ssa::PhiNode phi) or
@@ -83,7 +83,7 @@ class FieldAddress extends Operand {
   Operand getAUse() { result = fai.getAUse() }
 }
 
-private predicate hasPostFieldUpdateNode(Ssa::Def def, FieldAddress fieldAddress) {
+private predicate hasPostFieldUpdateNode(Ssa::DefImpl def, FieldAddress fieldAddress) {
   not Ssa::ignoreOperand(fieldAddress) and
   isPostFieldUpdateNode(def, fieldAddress)
 }
@@ -139,7 +139,7 @@ private predicate conversionFlowStepIncludeLoads(Operand opFrom, Operand opTo) {
   opTo.getDef().(LoadInstruction).getSourceAddressOperand() = opFrom
 }
 
-private predicate isPostFieldUpdateNode(Ssa::Def def, FieldAddress fieldAddress) {
+private predicate isPostFieldUpdateNode(Ssa::DefImpl def, FieldAddress fieldAddress) {
   conversionFlowStepIncludeLoads*(fieldAddress, def.getAddressOperand())
 }
 
@@ -334,13 +334,13 @@ class OperandNode extends Node, TOperandNode {
 }
 
 class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
-  Ssa::Def def;
+  Ssa::DefImpl def;
   FieldAddress fieldAddress;
 
   PostFieldUpdateNode() { this = TPostFieldUpdateNode(def, fieldAddress) }
 
   /** Gets the underlying instruction. */
-  Ssa::Def getDef() { result = def }
+  Ssa::DefImpl getDef() { result = def }
 
   override Function getFunction() { result = this.getDef().getAddress().getEnclosingFunction() }
 
@@ -364,6 +364,7 @@ class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
 
   override Location getLocationImpl() { result = fieldAddress.getLocation() }
 
+  // override string toStringImpl() { result = this.getPreUpdateNode().toStringImpl() + " [post update]" }
   override string toStringImpl() { result = this.getUpdatedField() + " [post update]" }
 }
 
@@ -548,6 +549,7 @@ class IndirectOperand extends Node, TIndirectOperand {
   final override Location getLocationImpl() { result = this.getOperand().getLocation() }
 
   override string toStringImpl() {
+    // result = instructionNode(this.getOperand().getDef()).toStringImpl() + "[" + this.getIndex() + "]"
     result = instructionNode(this.getOperand().getDef()).toStringImpl() + " indirection"
   }
 }
@@ -572,6 +574,7 @@ class IndirectInstruction extends Node, TIndirectInstruction {
   final override Location getLocationImpl() { result = this.getInstruction().getLocation() }
 
   override string toStringImpl() {
+    // result = instructionNode(this.getInstruction()).toStringImpl() + "[" + this.getIndex() + "]"
     result = instructionNode(this.getInstruction()).toStringImpl() + " indirection"
   }
 }
@@ -955,8 +958,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Reverse flow: data that flows from the definition node back into the indirection returned
   // by a function. This allows data to flow 'in' through references returned by a modeled
   // function such as `operator[]`.
-  exists(Ssa::Def def |
-    Ssa::nodeToDefOrUse(nodeFrom, def) and
+  exists(Ssa::DefImpl def |
+    Ssa::defToNodeImpl(nodeFrom, def) and
     nodeHasOperand(nodeTo.(IndirectReturnOutNode), def.getAddressOperand(), _)
   )
 }

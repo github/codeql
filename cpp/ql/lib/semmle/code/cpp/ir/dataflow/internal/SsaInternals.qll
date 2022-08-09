@@ -259,7 +259,7 @@ private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVari
   v.getIndirection() = ind
 }
 
-abstract private class DefImpl extends DefOrUseImpl {
+abstract class DefImpl extends DefOrUseImpl {
   abstract predicate isCertain();
 
   abstract int getIndirection();
@@ -291,7 +291,7 @@ class NonCallDef extends DefImpl, TNonCallDef {
 
   override Instruction getDefiningInstruction() { isNonCallDef(_, result, address, _, _, _, _) }
 
-  override string toString() { result = "NonCallDef" }
+  override string toString() { result = address + "[" + ind + "]" }
 
   override IRBlock getBlock() { result = this.getDefiningInstruction().getBlock() }
 
@@ -333,7 +333,7 @@ class CallDef extends DefImpl, TCallDef {
 
   override int getIndirection() { isCallDef(_, address, _, result, ind, _) }
 
-  override string toString() { result = "CallDef" }
+  override string toString() { result = address + "[" + ind + "]" }
 
   override IRBlock getBlock() { result = this.getDefiningInstruction().getBlock() }
 
@@ -439,7 +439,7 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
 
   Operand getOperand() { result = operand }
 
-  override string toString() { result = "UseImpl" }
+  override string toString() { result = operand + "[" + ind + "]" }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     operand.getUse() = block.getInstruction(index)
@@ -556,10 +556,12 @@ private predicate outNodeToCallDef(IndirectArgumentOutNode nodeFrom, CallDef def
   nodeFrom.getDef() = def
 }
 
-private predicate defToNode(Node nodeFrom, DefOrUse def) {
-  nodeToNonCallDef(nodeFrom, def.asDefOrUse())
+private predicate defToNode(Node nodeFrom, DefOrUse def) { defToNodeImpl(nodeFrom, def.asDefOrUse()) }
+
+predicate defToNodeImpl(Node nodeFrom, DefOrUseImpl def) {
+  nodeToNonCallDef(nodeFrom, def)
   or
-  outNodeToCallDef(nodeFrom, def.asDefOrUse())
+  outNodeToCallDef(nodeFrom, def)
 }
 
 predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
@@ -579,10 +581,20 @@ predicate defUseFlow(Node nodeFrom, Node nodeTo) {
   )
 }
 
+// predicate postNodeDefUseFlow(PostFieldUpdateNode pfun, Node nodeTo) {
+//   exists(UseOrPhi use1, UseOrPhi use2, Node pre |
+//     not isQualifierFor(any(FieldAddress fa), pfun.getFieldAddress()) and
+//     pre = pfun.getPreUpdateNode() and
+//     useToNode(use1, pre) and
+//     adjacentDefRead(use1, use2) and
+//     useToNode(use2, nodeTo)
+//   )
+// }
 predicate postNodeDefUseFlow(PostFieldUpdateNode pfun, Node nodeTo) {
-  exists(Def def, UseOrPhi use |
+  exists(DefImpl defImpl, Def def, UseOrPhi use |
     not isQualifierFor(any(FieldAddress fa), pfun.getFieldAddress()) and
-    def = pfun.getDef() and
+    defImpl = pfun.getDef() and
+    def.asDefOrUse() = defImpl and
     adjacentDefRead(def, use) and
     useToNode(use, nodeTo)
   )
@@ -647,7 +659,14 @@ module SsaCached {
 }
 
 private newtype TSsaDefOrUse =
-  TDefOrUse(DefOrUseImpl defOrUse) or
+  TDefOrUse(DefOrUseImpl defOrUse) {
+    defOrUse instanceof UseImpl
+    or
+    exists(Definition def, SourceVariable sv, IRBlock bb, int i |
+      def.definesAt(sv, bb, i) and
+      defOrUse.(DefImpl).hasIndexInBlock(bb, i, sv)
+    )
+  } or
   TPhi(PhiNode phi)
 
 abstract private class SsaDefOrUse extends TSsaDefOrUse {
@@ -692,6 +711,13 @@ class UseOrPhi extends SsaDefOrUse {
   final override Location getLocation() {
     result = this.asDefOrUse().getLocation() or result = this.(Phi).getLocation()
   }
+
+  override string toString() {
+    result = this.asDefOrUse().toString()
+    or
+    this instanceof Phi and
+    result = "Phi"
+  }
 }
 
 class Def extends DefOrUse {
@@ -707,6 +733,8 @@ class Def extends DefOrUse {
   predicate addressDependsOnField() { defOrUse.addressDependsOnField() }
 
   Instruction getDefiningInstruction() { result = defOrUse.getDefiningInstruction() }
+
+  override string toString() { result = this.asDefOrUse().toString() + " (def)" }
 }
 
 import SsaCached

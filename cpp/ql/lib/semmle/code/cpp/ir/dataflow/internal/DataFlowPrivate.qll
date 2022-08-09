@@ -339,7 +339,7 @@ private predicate nodeHasInstruction(Node node, Instruction instr, int index) {
 predicate storeStep(Node node1, FieldContent f, PostFieldUpdateNode node2) {
   // This is the first field following a store operation.
   not isQualifierFor(node2.getFieldAddress(), _) and
-  exists(Ssa::Def def, int index1, int numberOfLoads |
+  exists(Ssa::DefImpl def, int index1, int numberOfLoads |
     def.getDefiningInstruction() instanceof StoreInstruction and
     nodeHasInstruction(node1, def.getDefiningInstruction(), pragma[only_bind_into](index1)) and
     node2.getDef() = def and
