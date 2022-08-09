@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../../ServiceStack.Common/6.2.0/ServiceStack.Common.csproj" />
-    <ProjectReference Include="../../System.Memory/4.5.4/System.Memory.csproj" />
     <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
   </ItemGroup>
 </Project>
