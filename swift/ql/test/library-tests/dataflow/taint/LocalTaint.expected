@@ -1,3 +1,11 @@
+| data.swift:12:6:12:6 | WriteDef | data.swift:16:12:16:12 | dataClean |
+| data.swift:12:18:12:36 | call to ... | data.swift:12:6:12:6 | WriteDef |
+| data.swift:13:6:13:6 | WriteDef | data.swift:14:26:14:26 | dataTainted |
+| data.swift:13:20:13:38 | call to ... | data.swift:13:6:13:6 | WriteDef |
+| data.swift:14:6:14:6 | WriteDef | data.swift:18:12:18:12 | dataTainted2 |
+| data.swift:14:21:14:37 | call to ... | data.swift:14:6:14:6 | WriteDef |
+| data.swift:14:26:14:26 | dataTainted | data.swift:17:12:17:12 | dataTainted |
+| data.swift:16:12:16:12 | dataClean | data.swift:20:33:20:33 | dataClean |
 | file://:0:0:0:0 | Phi | string.swift:7:14:7:14 | $interpolation |
 | file://:0:0:0:0 | Phi | string.swift:9:14:9:14 | $interpolation |
 | file://:0:0:0:0 | Phi | string.swift:11:14:11:14 | $interpolation |
