@@ -7,6 +7,6 @@
 <p>See also <code>java/partial-path-traversal-from-remote</code>, which is similar to this query but only flags instances with evidence of remote exploitability</p>
 </overview>
 
-<include src="PartialPathTraversalRemainder.inc.qhelp">
+<include src="PartialPathTraversalRemainder.inc.qhelp"/>
 
 </qhelp>
