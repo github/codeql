@@ -618,7 +618,9 @@ private class ActiveRecordAssociationMethodCall extends DataFlow::CallNode {
       (
         assoc.isCollection() and
         (
-          this.getMethodName() = pluralize(model) + ["", "=", "<<"]
+          this.getMethodName() = pluralize(model) + ["", "="]
+          or
+          this.getMethodName() = "<<"
           or
           this.getMethodName() = model + ["_ids", "_ids="]
         )
