@@ -115,7 +115,7 @@ class TopLevel extends TTopLevel, AstNode {
   ModuleMember getAMember() { result = this.getMember(_) }
 
   /** Gets the `i`'th member of this top-level module. */
-  ModuleMember getMember(int i) { toQL(result) = file.getChild(i).(QL::ModuleMember).getChild(_) }
+  ModuleMember getMember(int i) { toQL(result) = file.getChild(i).getChild(_) }
 
   /** Gets a top-level import in this module. */
   Import getAnImport() { result = this.getAMember() }
