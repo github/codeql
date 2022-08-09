@@ -52,10 +52,6 @@ module ProductFlow {
     override predicate isSink(DataFlow::Node sink) {
       exists(Configuration conf | conf.isSinkPair(_, sink))
     }
-
-    override int explorationLimit() {
-        result = 10
-    }
   }
 
   predicate reachablePair1(
@@ -67,7 +63,7 @@ module ProductFlow {
     exists(DataFlow::PathNode mid1 |
       reachablePair1(conf, source1, source2, mid1, node2) and
       mid1.getASuccessor() = node1 and
-      mid1.getNode().getFunction() = node1.getNode().getFunction()
+      mid1.getNode().getEnclosingCallable() = node1.getNode().getEnclosingCallable()
     )
   }
 
@@ -80,7 +76,7 @@ module ProductFlow {
     exists(DataFlow2::PathNode mid2 |
       reachablePair2(conf, source1, source2, node1, mid2) and
       mid2.getASuccessor() = node2 and
-      mid2.getNode().getFunction() = node2.getNode().getFunction()
+      mid2.getNode().getEnclosingCallable() = node2.getNode().getEnclosingCallable()
     )
   }
 
@@ -92,10 +88,10 @@ module ProductFlow {
       reachablePair2(conf, source1, source2, mid1, mid2) and
       mid1.getASuccessor() = node1 and
       mid2.getASuccessor() = node2 and
-      mid1.getNode().getFunction() = funcMid and // TODO: recursive function weirdness?
-      mid2.getNode().getFunction() = funcMid and
-      node1.getNode().getFunction() = func and
-      node2.getNode().getFunction() = func and
+      mid1.getNode().getEnclosingCallable() = funcMid and // TODO: recursive function weirdness?
+      mid2.getNode().getEnclosingCallable() = funcMid and
+      node1.getNode().getEnclosingCallable() = func and
+      node2.getNode().getEnclosingCallable() = func and
       funcMid != func
     )
   }

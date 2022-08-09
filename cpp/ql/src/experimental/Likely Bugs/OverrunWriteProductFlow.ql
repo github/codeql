@@ -10,10 +10,10 @@ class StringSizeConfiguration extends ProductFlow::Configuration {
 
   override predicate isSourcePair(DataFlow::Node bufSource, DataFlow::Node sizeSource) {
     exists(
-      GVN sizeGVN // TODO: use-use flow instead of GVN
+      GVN sizeGvn // TODO: use-use flow instead of GVN
     |
-      bufSource.asConvertedExpr().(AllocationExpr).getSizeExpr() = sizeGVN.getAnExpr() and
-      sizeSource.asConvertedExpr() = sizeGVN.getAnExpr()
+      bufSource.asConvertedExpr().(AllocationExpr).getSizeExpr() = sizeGvn.getAnExpr() and
+      sizeSource.asConvertedExpr() = sizeGvn.getAnExpr()
     )
   }
 
@@ -26,6 +26,9 @@ class StringSizeConfiguration extends ProductFlow::Configuration {
   }
 }
 
-from StringSizeConfiguration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2, DataFlow::PathNode sink1, DataFlow2::PathNode sink2
+// we don't actually check correctness yet. Right now the query just finds relevant source/sink pairs.
+from
+  StringSizeConfiguration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
+  DataFlow::PathNode sink1, DataFlow2::PathNode sink2
 where conf.hasFlowPath(source1, source2, sink1, sink2)
 select source1, source2, sink1, sink2
