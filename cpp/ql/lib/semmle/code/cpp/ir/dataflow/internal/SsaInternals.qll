@@ -1,5 +1,4 @@
 private import SsaImplCommon as Ssa
-private import cpp as Cpp
 private import semmle.code.cpp.ir.IR
 private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
@@ -8,6 +7,9 @@ private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
 private import semmle.code.cpp.ir.implementation.raw.internal.SideEffects as SideEffects
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import DataFlowPrivate
+private import ssa0.SsaImplCommon as SsaImplCommon0
+private import ssa0.SsaInternals as SsaInternals0
+import semmle.code.cpp.ir.dataflow.internal.SsaInternalsCommon
 
 int getMaxIndirectionsForType(Type type) {
   result = SourceVariables::countIndirectionsForCppType(getTypeForGLValue(type))
@@ -132,18 +134,6 @@ private module SourceVariables {
 
 import SourceVariables
 
-predicate ignoreOperand(Operand operand) {
-  operand = any(Instruction instr | ignoreInstruction(instr)).getAnOperand()
-}
-
-predicate ignoreInstruction(Instruction instr) {
-  instr instanceof WriteSideEffectInstruction or
-  instr instanceof PhiInstruction or
-  instr instanceof ReadSideEffectInstruction or
-  instr instanceof ChiInstruction or
-  instr instanceof InitializeIndirectionInstruction
-}
-
 predicate hasIndirectOperand(Operand op, int index) {
   exists(CppType type, int m |
     not ignoreOperand(op) and
@@ -170,25 +160,6 @@ private newtype TDefOrUseImpl =
     isUse(_, operand, _, _, index) and
     not isNonCallDef(_, _, operand, _, _, _, _)
   }
-
-bindingset[isGLValue]
-private CppType getThisType(Cpp::MemberFunction f, boolean isGLValue) {
-  result.hasType(f.getTypeOfThis(), isGLValue)
-}
-
-cached
-private CppType getResultLanguageType(Instruction i) {
-  if i.(VariableAddressInstruction).getIRVariable() instanceof IRThisVariable
-  then
-    if i.isGLValue()
-    then result = getThisType(i.getEnclosingFunction(), true)
-    else result = getThisType(i.getEnclosingFunction(), false)
-  else result = i.getResultLanguageType()
-}
-
-private CppType getLanguageType(Operand operand) {
-  result = getResultLanguageType(operand.getDef())
-}
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
   /** Gets a textual representation of this element. */
@@ -556,7 +527,9 @@ private predicate outNodeToCallDef(IndirectArgumentOutNode nodeFrom, CallDef def
   nodeFrom.getDef() = def
 }
 
-private predicate defToNode(Node nodeFrom, DefOrUse def) { defToNodeImpl(nodeFrom, def.asDefOrUse()) }
+private predicate defToNode(Node nodeFrom, DefOrUse def) {
+  defToNodeImpl(nodeFrom, def.asDefOrUse())
+}
 
 predicate defToNodeImpl(Node nodeFrom, DefOrUseImpl def) {
   nodeToNonCallDef(nodeFrom, def)
@@ -616,12 +589,28 @@ predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
   )
 }
 
+SsaInternals0::SourceVariable getOldSourceVariable(SourceVariable v) {
+  v.getBaseVariable().(BaseIRVariable).getIRVariable() =
+    result.getBaseVariable().(SsaInternals0::BaseIRVariable).getIRVariable()
+  or
+  v.getBaseVariable().(BaseCallVariable).getCallInstruction() =
+    result.getBaseVariable().(SsaInternals0::BaseCallVariable).getCallInstruction()
+}
+
+predicate variableWriteCand(IRBlock bb, int i, SourceVariable v) {
+  exists(SsaInternals0::Def def, SsaInternals0::SourceVariable v0 |
+    def.asDefOrUse().hasIndexInBlock(bb, i, v0) and
+    v0 = getOldSourceVariable(v)
+  )
+}
+
 /**
  * Holds if the `i`'th write in block `bb` writes to the variable `v`.
  * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
  */
 predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
   DataFlowImplCommon::forceCachingInSameStage() and
+  variableWriteCand(bb, i, v) and
   exists(DefImpl def |
     def.hasIndexInBlock(bb, i, v) and
     (if def.isCertain() then certain = true else certain = false)
