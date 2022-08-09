@@ -391,5 +391,6 @@ module ModConsistency {
     not i.getResolvedModule().getEnclosing*().asModule().hasParameter(_, _, _)
   }
 
-  query predicate noResolve(Import i) { not exists(i.getResolvedModule()) }
+  // not a query predicate, because this fails when running qltests, but it passes on the real thing (so it's used in EmptyConsistencies.ql)
+  predicate noResolve(Import i) { not exists(i.getResolvedModule()) }
 }
