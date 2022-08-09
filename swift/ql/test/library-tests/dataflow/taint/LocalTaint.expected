@@ -119,3 +119,58 @@
 | string.swift:21:18:21:18 | $interpolation | string.swift:21:18:21:18 | &... |
 | string.swift:21:18:21:18 | : &... | string.swift:21:18:21:18 | WriteDef |
 | string.swift:21:18:21:18 | WriteDef | string.swift:21:13:21:13 | TapExpr |
+| string.swift:27:7:27:7 | WriteDef | string.swift:30:13:30:13 | clean |
+| string.swift:27:15:27:15 | abcdef | string.swift:27:7:27:7 | WriteDef |
+| string.swift:28:7:28:7 | WriteDef | string.swift:31:13:31:13 | tainted |
+| string.swift:28:17:28:25 | call to source2() | string.swift:28:7:28:7 | WriteDef |
+| string.swift:30:13:30:13 | clean | string.swift:33:13:33:13 | clean |
+| string.swift:31:13:31:13 | tainted | string.swift:34:21:34:21 | tainted |
+| string.swift:33:13:33:13 | clean | string.swift:33:21:33:21 | clean |
+| string.swift:33:21:33:21 | clean | string.swift:34:13:34:13 | clean |
+| string.swift:34:13:34:13 | clean | string.swift:35:23:35:23 | clean |
+| string.swift:34:21:34:21 | tainted | string.swift:35:13:35:13 | tainted |
+| string.swift:35:13:35:13 | tainted | string.swift:36:13:36:13 | tainted |
+| string.swift:35:23:35:23 | clean | string.swift:38:19:38:19 | clean |
+| string.swift:36:13:36:13 | tainted | string.swift:36:23:36:23 | tainted |
+| string.swift:36:23:36:23 | tainted | string.swift:39:19:39:19 | tainted |
+| string.swift:41:7:41:7 | WriteDef | string.swift:43:13:43:13 | str |
+| string.swift:41:13:41:13 | abc | string.swift:41:7:41:7 | WriteDef |
+| string.swift:43:13:43:13 | str | string.swift:45:3:45:3 | str |
+| string.swift:45:3:45:3 | : &... | string.swift:45:3:45:10 | WriteDef |
+| string.swift:45:3:45:3 | str | string.swift:45:3:45:3 | &... |
+| string.swift:45:3:45:10 | WriteDef | string.swift:46:13:46:13 | str |
+| string.swift:46:13:46:13 | str | string.swift:48:3:48:3 | str |
+| string.swift:48:3:48:3 | : &... | string.swift:48:3:48:18 | WriteDef |
+| string.swift:48:3:48:3 | str | string.swift:48:3:48:3 | &... |
+| string.swift:48:3:48:18 | WriteDef | string.swift:49:13:49:13 | str |
+| string.swift:51:7:51:7 | WriteDef | string.swift:53:13:53:13 | str2 |
+| string.swift:51:14:51:14 | abc | string.swift:51:7:51:7 | WriteDef |
+| string.swift:53:13:53:13 | str2 | string.swift:55:3:55:3 | str2 |
+| string.swift:55:3:55:3 | : &... | string.swift:55:3:55:8 | WriteDef |
+| string.swift:55:3:55:3 | str2 | string.swift:55:3:55:3 | &... |
+| string.swift:55:3:55:8 | WriteDef | string.swift:56:13:56:13 | str2 |
+| string.swift:56:13:56:13 | str2 | string.swift:58:3:58:3 | str2 |
+| string.swift:58:3:58:3 | : &... | string.swift:58:3:58:8 | WriteDef |
+| string.swift:58:3:58:3 | str2 | string.swift:58:3:58:3 | &... |
+| string.swift:58:3:58:8 | WriteDef | string.swift:59:13:59:13 | str2 |
+| string.swift:59:13:59:13 | str2 | string.swift:69:13:69:13 | str2 |
+| string.swift:61:7:61:7 | WriteDef | string.swift:63:13:63:13 | str3 |
+| string.swift:61:14:61:14 | abc | string.swift:61:7:61:7 | WriteDef |
+| string.swift:63:13:63:13 | str3 | string.swift:65:3:65:3 | str3 |
+| string.swift:65:3:65:3 | : &... | string.swift:65:3:65:8 | WriteDef |
+| string.swift:65:3:65:3 | str3 | string.swift:65:3:65:3 | &... |
+| string.swift:65:3:65:8 | WriteDef | string.swift:66:13:66:13 | str3 |
+| string.swift:66:13:66:13 | str3 | string.swift:68:3:68:3 | str3 |
+| string.swift:68:3:68:3 | str3 | string.swift:68:3:68:3 | &... |
+| string.swift:73:7:73:7 | WriteDef | string.swift:77:20:77:20 | clean |
+| string.swift:73:15:73:15 |  | string.swift:73:7:73:7 | WriteDef |
+| string.swift:74:7:74:7 | WriteDef | string.swift:78:20:78:20 | tainted |
+| string.swift:74:17:74:25 | call to source2() | string.swift:74:7:74:7 | WriteDef |
+| string.swift:75:7:75:7 | WriteDef | string.swift:79:20:79:20 | taintedInt |
+| string.swift:75:20:75:27 | call to source() | string.swift:75:7:75:7 | WriteDef |
+| string.swift:77:20:77:20 | clean | string.swift:81:31:81:31 | clean |
+| string.swift:78:20:78:20 | tainted | string.swift:82:31:82:31 | tainted |
+| string.swift:81:31:81:31 | clean | string.swift:84:13:84:13 | clean |
+| string.swift:82:31:82:31 | tainted | string.swift:85:13:85:13 | tainted |
+| string.swift:84:13:84:13 | clean | string.swift:87:13:87:13 | clean |
+| string.swift:85:13:85:13 | tainted | string.swift:88:13:88:13 | tainted |

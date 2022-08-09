@@ -4,6 +4,7 @@ edges
 | string.swift:5:11:5:18 | call to source() :  | string.swift:11:13:11:13 | "..." |
 | string.swift:5:11:5:18 | call to source() :  | string.swift:16:13:16:13 | "..." |
 | string.swift:5:11:5:18 | call to source() :  | string.swift:18:13:18:13 | "..." |
+| string.swift:28:17:28:25 | call to source2() :  | string.swift:31:13:31:13 | tainted |
 nodes
 | string.swift:5:11:5:18 | call to source() :  | semmle.label | call to source() :  |
 | string.swift:7:13:7:13 | "..." | semmle.label | "..." |
@@ -11,6 +12,8 @@ nodes
 | string.swift:11:13:11:13 | "..." | semmle.label | "..." |
 | string.swift:16:13:16:13 | "..." | semmle.label | "..." |
 | string.swift:18:13:18:13 | "..." | semmle.label | "..." |
+| string.swift:28:17:28:25 | call to source2() :  | semmle.label | call to source2() :  |
+| string.swift:31:13:31:13 | tainted | semmle.label | tainted |
 subpaths
 #select
 | string.swift:7:13:7:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:7:13:7:13 | "..." | result |
@@ -18,3 +21,4 @@ subpaths
 | string.swift:11:13:11:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:11:13:11:13 | "..." | result |
 | string.swift:16:13:16:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:16:13:16:13 | "..." | result |
 | string.swift:18:13:18:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:18:13:18:13 | "..." | result |
+| string.swift:31:13:31:13 | tainted | string.swift:28:17:28:25 | call to source2() :  | string.swift:31:13:31:13 | tainted | result |
