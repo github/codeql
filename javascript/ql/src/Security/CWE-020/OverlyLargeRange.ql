@@ -1,6 +1,6 @@
 /**
- * @name Overly large regular expression range
- * @description Overly permissive regular expression ranges may cause regular expressions to match more than anticipated.
+ * @name Overly permissive regular expression range
+ * @description Overly permissive regular expression ranges match a wider range of characters than intended.
  *              This may allow an attacker to bypass a filter or sanitizer.
  * @kind problem
  * @problem.severity warning
