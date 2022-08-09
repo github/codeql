@@ -40,56 +40,56 @@ activeRecordInstances
 | associations.rb:29:1:29:7 | author2 |
 | associations.rb:29:1:29:13 | call to posts |
 | associations.rb:29:18:29:22 | post2 |
-| associations.rb:33:1:33:5 | post2 |
-| associations.rb:33:1:33:14 | call to comments |
-| associations.rb:33:1:33:21 | call to create |
-| associations.rb:35:1:35:7 | author1 |
-| associations.rb:35:1:35:13 | call to posts |
-| associations.rb:35:1:35:20 | call to reload |
-| associations.rb:35:1:35:27 | call to create |
-| associations.rb:37:1:37:5 | post1 |
-| associations.rb:38:1:38:5 | post1 |
-| associations.rb:40:1:40:7 | author1 |
-| associations.rb:40:1:40:13 | call to posts |
-| associations.rb:40:1:40:25 | call to push |
-| associations.rb:40:20:40:24 | post2 |
-| associations.rb:41:1:41:7 | author1 |
-| associations.rb:41:1:41:13 | call to posts |
-| associations.rb:41:1:41:27 | call to concat |
-| associations.rb:41:22:41:26 | post2 |
+| associations.rb:35:1:35:5 | post2 |
+| associations.rb:35:1:35:14 | call to comments |
+| associations.rb:35:1:35:21 | call to create |
+| associations.rb:37:1:37:7 | author1 |
+| associations.rb:37:1:37:13 | call to posts |
+| associations.rb:37:1:37:20 | call to reload |
+| associations.rb:37:1:37:27 | call to create |
+| associations.rb:39:1:39:5 | post1 |
+| associations.rb:40:1:40:5 | post1 |
 | associations.rb:42:1:42:7 | author1 |
 | associations.rb:42:1:42:13 | call to posts |
-| associations.rb:42:1:42:19 | call to build |
+| associations.rb:42:1:42:25 | call to push |
+| associations.rb:42:20:42:24 | post2 |
 | associations.rb:43:1:43:7 | author1 |
 | associations.rb:43:1:43:13 | call to posts |
-| associations.rb:43:1:43:20 | call to create |
+| associations.rb:43:1:43:27 | call to concat |
+| associations.rb:43:22:43:26 | post2 |
 | associations.rb:44:1:44:7 | author1 |
 | associations.rb:44:1:44:13 | call to posts |
-| associations.rb:44:1:44:21 | call to create! |
+| associations.rb:44:1:44:19 | call to build |
 | associations.rb:45:1:45:7 | author1 |
 | associations.rb:45:1:45:13 | call to posts |
-| associations.rb:45:1:45:20 | call to delete |
+| associations.rb:45:1:45:20 | call to create |
 | associations.rb:46:1:46:7 | author1 |
 | associations.rb:46:1:46:13 | call to posts |
-| associations.rb:46:1:46:24 | call to delete_all |
+| associations.rb:46:1:46:21 | call to create! |
 | associations.rb:47:1:47:7 | author1 |
 | associations.rb:47:1:47:13 | call to posts |
-| associations.rb:47:1:47:21 | call to destroy |
+| associations.rb:47:1:47:20 | call to delete |
 | associations.rb:48:1:48:7 | author1 |
 | associations.rb:48:1:48:13 | call to posts |
-| associations.rb:48:1:48:25 | call to destroy_all |
+| associations.rb:48:1:48:24 | call to delete_all |
 | associations.rb:49:1:49:7 | author1 |
 | associations.rb:49:1:49:13 | call to posts |
-| associations.rb:49:1:49:22 | call to distinct |
-| associations.rb:49:1:49:36 | call to find |
+| associations.rb:49:1:49:21 | call to destroy |
 | associations.rb:50:1:50:7 | author1 |
 | associations.rb:50:1:50:13 | call to posts |
-| associations.rb:50:1:50:19 | call to reset |
-| associations.rb:50:1:50:33 | call to find |
+| associations.rb:50:1:50:25 | call to destroy_all |
 | associations.rb:51:1:51:7 | author1 |
 | associations.rb:51:1:51:13 | call to posts |
-| associations.rb:51:1:51:20 | call to reload |
-| associations.rb:51:1:51:34 | call to find |
+| associations.rb:51:1:51:22 | call to distinct |
+| associations.rb:51:1:51:36 | call to find |
+| associations.rb:52:1:52:7 | author1 |
+| associations.rb:52:1:52:13 | call to posts |
+| associations.rb:52:1:52:19 | call to reset |
+| associations.rb:52:1:52:33 | call to find |
+| associations.rb:53:1:53:7 | author1 |
+| associations.rb:53:1:53:13 | call to posts |
+| associations.rb:53:1:53:20 | call to reload |
+| associations.rb:53:1:53:34 | call to find |
 activeRecordSqlExecutionRanges
 | ActiveRecord.rb:9:33:9:67 | "name='#{...}' and pass='#{...}'" |
 | ActiveRecord.rb:19:16:19:24 | condition |
@@ -168,34 +168,34 @@ activeRecordModelInstantiations
 | associations.rb:27:9:27:21 | call to posts | associations.rb:5:1:9:3 | Post |
 | associations.rb:27:9:27:28 | call to create | associations.rb:5:1:9:3 | Post |
 | associations.rb:29:1:29:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:33:1:33:14 | call to comments | associations.rb:15:1:17:3 | Comment |
-| associations.rb:33:1:33:21 | call to create | associations.rb:15:1:17:3 | Comment |
-| associations.rb:35:1:35:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:35:1:35:20 | call to reload | associations.rb:5:1:9:3 | Post |
-| associations.rb:40:1:40:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:40:1:40:25 | call to push | associations.rb:5:1:9:3 | Post |
-| associations.rb:41:1:41:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:41:1:41:27 | call to concat | associations.rb:5:1:9:3 | Post |
+| associations.rb:35:1:35:14 | call to comments | associations.rb:15:1:17:3 | Comment |
+| associations.rb:35:1:35:21 | call to create | associations.rb:15:1:17:3 | Comment |
+| associations.rb:37:1:37:13 | call to posts | associations.rb:5:1:9:3 | Post |
+| associations.rb:37:1:37:20 | call to reload | associations.rb:5:1:9:3 | Post |
 | associations.rb:42:1:42:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:42:1:42:19 | call to build | associations.rb:5:1:9:3 | Post |
+| associations.rb:42:1:42:25 | call to push | associations.rb:5:1:9:3 | Post |
 | associations.rb:43:1:43:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:43:1:43:20 | call to create | associations.rb:5:1:9:3 | Post |
+| associations.rb:43:1:43:27 | call to concat | associations.rb:5:1:9:3 | Post |
 | associations.rb:44:1:44:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:44:1:44:21 | call to create! | associations.rb:5:1:9:3 | Post |
+| associations.rb:44:1:44:19 | call to build | associations.rb:5:1:9:3 | Post |
 | associations.rb:45:1:45:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:45:1:45:20 | call to delete | associations.rb:5:1:9:3 | Post |
+| associations.rb:45:1:45:20 | call to create | associations.rb:5:1:9:3 | Post |
 | associations.rb:46:1:46:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:46:1:46:24 | call to delete_all | associations.rb:5:1:9:3 | Post |
+| associations.rb:46:1:46:21 | call to create! | associations.rb:5:1:9:3 | Post |
 | associations.rb:47:1:47:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:47:1:47:21 | call to destroy | associations.rb:5:1:9:3 | Post |
+| associations.rb:47:1:47:20 | call to delete | associations.rb:5:1:9:3 | Post |
 | associations.rb:48:1:48:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:48:1:48:25 | call to destroy_all | associations.rb:5:1:9:3 | Post |
+| associations.rb:48:1:48:24 | call to delete_all | associations.rb:5:1:9:3 | Post |
 | associations.rb:49:1:49:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:49:1:49:22 | call to distinct | associations.rb:5:1:9:3 | Post |
+| associations.rb:49:1:49:21 | call to destroy | associations.rb:5:1:9:3 | Post |
 | associations.rb:50:1:50:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:50:1:50:19 | call to reset | associations.rb:5:1:9:3 | Post |
+| associations.rb:50:1:50:25 | call to destroy_all | associations.rb:5:1:9:3 | Post |
 | associations.rb:51:1:51:13 | call to posts | associations.rb:5:1:9:3 | Post |
-| associations.rb:51:1:51:20 | call to reload | associations.rb:5:1:9:3 | Post |
+| associations.rb:51:1:51:22 | call to distinct | associations.rb:5:1:9:3 | Post |
+| associations.rb:52:1:52:13 | call to posts | associations.rb:5:1:9:3 | Post |
+| associations.rb:52:1:52:19 | call to reset | associations.rb:5:1:9:3 | Post |
+| associations.rb:53:1:53:13 | call to posts | associations.rb:5:1:9:3 | Post |
+| associations.rb:53:1:53:20 | call to reload | associations.rb:5:1:9:3 | Post |
 persistentWriteAccesses
 | ActiveRecord.rb:72:5:72:24 | call to create | ActiveRecord.rb:72:18:72:23 | call to params |
 | ActiveRecord.rb:76:5:76:66 | call to create | ActiveRecord.rb:76:24:76:36 | ...[...] |
