@@ -102,10 +102,10 @@ void test9()
 	wchar_t buf2[20];
 	const wchar_t *str = L"01234567890123456789";
 
-	wcsxfrm_l(buf1, str, sizeof(buf1), nullptr); // (bad, but not a strncpyflippedargs bug)
-	wcsxfrm_l(buf1, str, sizeof(buf1) / sizeof(wchar_t), nullptr);
+	wcsxfrm_l(buf1, str, sizeof(buf1), nullptr);					// BAD (but not a StrncpyFlippedArgs bug)
+	wcsxfrm_l(buf1, str, sizeof(buf1) / sizeof(wchar_t), nullptr);	// GOOD
 	wcsxfrm_l(buf1, str, wcslen(str), nullptr);						// BAD
 	wcsxfrm_l(buf1, str, wcslen(str) + 1, nullptr);					// BAD
 	wcsxfrm_l(buf1, buf2, sizeof(buf2), nullptr);					// BAD
-	wcsxfrm_l(buf1, buf2, sizeof(buf2) / sizeof(wchar_t), nullptr); // BAD [NOT DETECTED]
+	wcsxfrm_l(buf1, buf2, sizeof(buf2) / sizeof(wchar_t), nullptr); // BAD
 }
