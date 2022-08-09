@@ -8,6 +8,6 @@
 but may also flag non-remotely-exploitable instances of Partial Path Traversal.</p>
 </overview>
 
-<include src="PartialPathTraversalRemainder.inc.qhelp">
+<include src="PartialPathTraversalRemainder.inc.qhelp"/>
 
 </qhelp>
