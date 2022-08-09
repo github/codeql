@@ -12,6 +12,7 @@ on:
       - main
     paths:
       - ".github/workflows/csv-coverage-metrics.yml"
+      - ".github/actions/fetch-codeql/action.yml"
 
 jobs:
   publish-java:

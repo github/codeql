@@ -133,6 +133,11 @@ private Expr sqlFragmentArgument(MethodCall call) {
       or
       methodName = "reload" and
       result = call.getKeywordArgument("lock")
+      or
+      // Calls to `annotate` can be used to add block comments to SQL queries. These are potentially vulnerable to
+      // SQLi if user supplied input is passed in as an argument.
+      methodName = "annotate" and
+      result = call.getArgument(_)
     )
   )
 }
@@ -359,15 +364,6 @@ private module Persistence {
     )
   }
 
-  /**
-   * Holds if `call` has a keyword argument with value `value`.
-   */
-  private predicate keywordArgumentWithValue(DataFlow::CallNode call, DataFlow::ExprNode value) {
-    exists(ExprNodes::PairCfgNode pair | pair = call.getArgument(_).asExpr() |
-      value.asExpr() = pair.getValue()
-    )
-  }
-
   /** A call to e.g. `User.create(name: "foo")` */
   private class CreateLikeCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
     CreateLikeCall() {
@@ -381,8 +377,12 @@ private module Persistence {
 
     override DataFlow::Node getValue() {
       // attrs as hash elements in arg0
-      hashArgumentWithValue(this, 0, result) or
-      keywordArgumentWithValue(this, result)
+      hashArgumentWithValue(this, 0, result)
+      or
+      result = this.getKeywordArgument(_)
+      or
+      result = this.getPositionalArgument(0) and
+      not result.asExpr() instanceof ExprNodes::HashLiteralCfgNode
     }
   }
 
@@ -394,11 +394,19 @@ private module Persistence {
     }
 
     override DataFlow::Node getValue() {
-      keywordArgumentWithValue(this, result)
+      // User.update(1, name: "foo")
+      result = this.getKeywordArgument(_)
+      or
+      // User.update(1, params)
+      exists(int n | n > 0 |
+        result = this.getPositionalArgument(n) and
+        not result.asExpr() instanceof ExprNodes::ArrayLiteralCfgNode
+      )
       or
       // Case where 2 array args are passed - the first an array of IDs, and the
       // second an array of hashes - each hash corresponding to an ID in the
       // first array.
+      // User.update([1,2,3], [{name: "foo"}, {name: "bar"}])
       exists(ExprNodes::ArrayLiteralCfgNode hashesArray |
         this.getArgument(0).asExpr() instanceof ExprNodes::ArrayLiteralCfgNode and
         hashesArray = this.getArgument(1).asExpr()
@@ -467,8 +475,12 @@ private module Persistence {
       // attrs as hash elements in arg0
       hashArgumentWithValue(this, 0, result)
       or
+      // attrs as variable in arg0
+      result = this.getPositionalArgument(0) and
+      not result.asExpr() instanceof ExprNodes::HashLiteralCfgNode
+      or
       // keyword arg
-      keywordArgumentWithValue(this, result)
+      result = this.getKeywordArgument(_)
     }
   }
 

@@ -357,6 +357,14 @@ module ExprNodes {
       )
     }
 
+    /**
+     * Gets the `n`th positional argument of this call.
+     * Unlike `getArgument`, this excludes keyword arguments.
+     */
+    final ExprCfgNode getPositionalArgument(int n) {
+      result = this.getArgument(n) and not result instanceof PairCfgNode
+    }
+
     /** Gets the number of arguments of this call. */
     final int getNumberOfArguments() { result = e.getNumberOfArguments() }
 
@@ -374,6 +382,9 @@ module ExprNodes {
     MethodCallCfgNode() { super.getExpr() instanceof MethodCall }
 
     override MethodCall getExpr() { result = super.getExpr() }
+
+    /** Gets the name of this method call. */
+    string getMethodName() { result = this.getExpr().getMethodName() }
   }
 
   private class CaseExprChildMapping extends ExprChildMapping, CaseExpr {

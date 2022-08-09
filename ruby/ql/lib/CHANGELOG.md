@@ -1,3 +1,19 @@
+## 0.3.2
+
+### Minor Analysis Improvements
+
+* Calls to `Arel.sql` are now recognised as propagating taint from their argument.
+* Calls to `ActiveRecord::Relation#annotate` are now recognized as `SqlExecution`s so that it will be considered as a sink for queries like rb/sql-injection.
+
+## 0.3.1
+
+### Minor Analysis Improvements
+
+* Fixed a bug causing every expression in the database to be considered a system-command execution sink when calls to any of the following methods exist:
+  * The `spawn`, `fspawn`, `popen4`, `pspawn`, `system`, `_pspawn` methods and the backtick operator from the `POSIX::spawn` gem.
+  * The `execute_command`, `rake`, `rails_command`, and `git` methods in `Rails::Generation::Actions`.
+* Improved modeling of sensitive data sources, so common words like `certain` and `secretary` are no longer considered a certificate and a secret (respectively).
+
 ## 0.3.0
 
 ### Deprecated APIs

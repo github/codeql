@@ -83,7 +83,6 @@ class TagBase:
 class Tag:
     name: str
     bases: List[TagBase]
-    index: int
     id: str
 
     def __post_init__(self):

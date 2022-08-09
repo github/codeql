@@ -12,33 +12,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJSON(github.event) }}
-      run: echo "$GITHUB_CONTEXT"
-    - name: Clone self (github/codeql)
-      uses: actions/checkout@v3
-      with:
-        path: ql
-        fetch-depth: 0
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.8
-    - name: Download CodeQL CLI
-      env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-         gh release download --repo "github/codeql-cli-binaries" --pattern "codeql-linux64.zip"
-    - name: Unzip CodeQL CLI
-      run: unzip -d codeql-cli codeql-linux64.zip
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github.event) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Clone self (github/codeql)
+        uses: actions/checkout@v3
+        with:
+          path: ql
+          fetch-depth: 0
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - name: Download CodeQL CLI
+        uses: ./ql/.github/actions/fetch-codeql
+      - name: Generate coverage files
+        run: |
+          python ql/misc/scripts/library-coverage/generate-report.py ci ql ql
 
-    - name: Generate coverage files
-      run: |
-        PATH="$PATH:codeql-cli/codeql" python ql/misc/scripts/library-coverage/generate-report.py ci ql ql
-
-    - name: Create pull request with changes
-      env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        python ql/misc/scripts/library-coverage/create-pr.py ql "$GITHUB_REPOSITORY"
+      - name: Create pull request with changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python ql/misc/scripts/library-coverage/create-pr.py ql "$GITHUB_REPOSITORY"

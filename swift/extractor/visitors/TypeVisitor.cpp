@@ -1,4 +1,5 @@
 #include "swift/extractor/visitors/TypeVisitor.h"
+
 namespace codeql {
 void TypeVisitor::visit(swift::TypeBase* type) {
   TypeVisitorBase<TypeVisitor>::visit(type);
@@ -6,6 +7,12 @@ void TypeVisitor::visit(swift::TypeBase* type) {
   auto canonical = type->getCanonicalType().getPointer();
   auto canonicalLabel = (canonical == type) ? label : dispatcher_.fetchLabel(canonical);
   dispatcher_.emit(TypesTrap{label, type->getString(), canonicalLabel});
+}
+
+codeql::TypeRepr TypeVisitor::translateTypeRepr(const swift::TypeRepr& typeRepr, swift::Type type) {
+  auto entry = dispatcher_.createEntry(typeRepr);
+  entry.type = dispatcher_.fetchOptionalLabel(type);
+  return entry;
 }
 
 void TypeVisitor::visitProtocolType(swift::ProtocolType* type) {
@@ -368,4 +375,20 @@ codeql::BuiltinVectorType TypeVisitor::translateBuiltinVectorType(
   return createTypeEntry(type);
 }
 
+codeql::OpenedArchetypeType TypeVisitor::translateOpenedArchetypeType(
+    const swift::OpenedArchetypeType& type) {
+  auto entry = createTypeEntry(type);
+  fillArchetypeType(type, entry);
+  return entry;
+}
+
+codeql::ModuleType TypeVisitor::translateModuleType(const swift::ModuleType& type) {
+  auto key = type.getModule()->getRealName().str().str();
+  if (type.getModule()->isNonSwiftModule()) {
+    key += "|clang";
+  }
+  auto entry = createTypeEntry(type, key);
+  entry.module = dispatcher_.fetchLabel(type.getModule());
+  return entry;
+}
 }  // namespace codeql

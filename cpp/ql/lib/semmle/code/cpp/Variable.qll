@@ -6,6 +6,7 @@ import semmle.code.cpp.Element
 import semmle.code.cpp.exprs.Access
 import semmle.code.cpp.Initializer
 private import semmle.code.cpp.internal.ResolveClass
+private import semmle.code.cpp.internal.ResolveGlobalVariable
 
 /**
  * A C/C++ variable. For example, in the following code there are four
@@ -32,6 +33,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * can have multiple declarations.
  */
 class Variable extends Declaration, @variable {
+  Variable() { isVariable(underlyingElement(this)) }
+
   override string getAPrimaryQlClass() { result = "Variable" }
 
   /** Gets the initializer of this variable, if any. */

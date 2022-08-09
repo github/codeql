@@ -1,5 +1,6 @@
 #include "SwiftOutputRewrite.h"
 #include "swift/extractor/SwiftExtractorConfiguration.h"
+#include "swift/extractor/TargetTrapFile.h"
 
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
@@ -163,7 +164,7 @@ static std::vector<std::string> computeModuleAliases(llvm::StringRef modulePath,
 namespace codeql {
 
 std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
-    SwiftExtractorConfiguration& config,
+    const SwiftExtractorConfiguration& config,
     std::vector<std::string>& CLIArgs) {
   std::unordered_map<std::string, std::string> remapping;
 
@@ -322,6 +323,19 @@ std::vector<std::string> collectVFSFiles(const SwiftExtractorConfiguration& conf
   }
 
   return overlays;
+}
+
+void lockOutputSwiftModuleTraps(const SwiftExtractorConfiguration& config,
+                                const std::unordered_map<std::string, std::string>& remapping) {
+  for (const auto& [oldPath, newPath] : remapping) {
+    if (llvm::StringRef(oldPath).endswith(".swiftmodule")) {
+      if (auto target = createTargetTrapFile(config, oldPath)) {
+        *target << "// trap file deliberately empty\n"
+                   "// this swiftmodule was created during the build, so its entities must have"
+                   " been extracted directly from source files";
+      }
+    }
+  }
 }
 
 }  // namespace codeql
