@@ -1,20 +1,20 @@
 edges
-| test.swift:5:11:5:18 | call to source() :  | test.swift:7:13:7:13 | "..." |
-| test.swift:5:11:5:18 | call to source() :  | test.swift:9:13:9:13 | "..." |
-| test.swift:5:11:5:18 | call to source() :  | test.swift:11:13:11:13 | "..." |
-| test.swift:5:11:5:18 | call to source() :  | test.swift:16:13:16:13 | "..." |
-| test.swift:5:11:5:18 | call to source() :  | test.swift:18:13:18:13 | "..." |
+| string.swift:5:11:5:18 | call to source() :  | string.swift:7:13:7:13 | "..." |
+| string.swift:5:11:5:18 | call to source() :  | string.swift:9:13:9:13 | "..." |
+| string.swift:5:11:5:18 | call to source() :  | string.swift:11:13:11:13 | "..." |
+| string.swift:5:11:5:18 | call to source() :  | string.swift:16:13:16:13 | "..." |
+| string.swift:5:11:5:18 | call to source() :  | string.swift:18:13:18:13 | "..." |
 nodes
-| test.swift:5:11:5:18 | call to source() :  | semmle.label | call to source() :  |
-| test.swift:7:13:7:13 | "..." | semmle.label | "..." |
-| test.swift:9:13:9:13 | "..." | semmle.label | "..." |
-| test.swift:11:13:11:13 | "..." | semmle.label | "..." |
-| test.swift:16:13:16:13 | "..." | semmle.label | "..." |
-| test.swift:18:13:18:13 | "..." | semmle.label | "..." |
+| string.swift:5:11:5:18 | call to source() :  | semmle.label | call to source() :  |
+| string.swift:7:13:7:13 | "..." | semmle.label | "..." |
+| string.swift:9:13:9:13 | "..." | semmle.label | "..." |
+| string.swift:11:13:11:13 | "..." | semmle.label | "..." |
+| string.swift:16:13:16:13 | "..." | semmle.label | "..." |
+| string.swift:18:13:18:13 | "..." | semmle.label | "..." |
 subpaths
 #select
-| test.swift:7:13:7:13 | "..." | test.swift:5:11:5:18 | call to source() :  | test.swift:7:13:7:13 | "..." | result |
-| test.swift:9:13:9:13 | "..." | test.swift:5:11:5:18 | call to source() :  | test.swift:9:13:9:13 | "..." | result |
-| test.swift:11:13:11:13 | "..." | test.swift:5:11:5:18 | call to source() :  | test.swift:11:13:11:13 | "..." | result |
-| test.swift:16:13:16:13 | "..." | test.swift:5:11:5:18 | call to source() :  | test.swift:16:13:16:13 | "..." | result |
-| test.swift:18:13:18:13 | "..." | test.swift:5:11:5:18 | call to source() :  | test.swift:18:13:18:13 | "..." | result |
+| string.swift:7:13:7:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:7:13:7:13 | "..." | result |
+| string.swift:9:13:9:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:9:13:9:13 | "..." | result |
+| string.swift:11:13:11:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:11:13:11:13 | "..." | result |
+| string.swift:16:13:16:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:16:13:16:13 | "..." | result |
+| string.swift:18:13:18:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:18:13:18:13 | "..." | result |
