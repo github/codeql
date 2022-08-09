@@ -1147,8 +1147,7 @@ namespace ServiceStack
     public class LongRange : System.IEquatable<ServiceStack.LongRange>
     {
         public static bool operator !=(ServiceStack.LongRange left, ServiceStack.LongRange right) => throw null;
-        public virtual ServiceStack.LongRange<Clone>$() => throw null;
-    public static bool operator ==(ServiceStack.LongRange left, ServiceStack.LongRange right) => throw null;
+        public static bool operator ==(ServiceStack.LongRange left, ServiceStack.LongRange right) => throw null;
         public void Deconstruct(out System.Int64 from, out System.Int64? to) => throw null;
         protected virtual System.Type EqualityContract { get => throw null; }
         public virtual bool Equals(ServiceStack.LongRange other) => throw null;
@@ -1226,8 +1225,7 @@ namespace ServiceStack
     public class NameValue : System.IEquatable<ServiceStack.NameValue>
     {
         public static bool operator !=(ServiceStack.NameValue left, ServiceStack.NameValue right) => throw null;
-        public virtual ServiceStack.NameValue<Clone>$() => throw null;
-    public static bool operator ==(ServiceStack.NameValue left, ServiceStack.NameValue right) => throw null;
+        public static bool operator ==(ServiceStack.NameValue left, ServiceStack.NameValue right) => throw null;
         public void Deconstruct(out string name, out string value) => throw null;
         protected virtual System.Type EqualityContract { get => throw null; }
         public virtual bool Equals(ServiceStack.NameValue other) => throw null;

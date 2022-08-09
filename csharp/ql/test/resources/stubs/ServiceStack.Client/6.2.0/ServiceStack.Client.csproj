@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Microsoft.Extensions.Http/6.0.0/Microsoft.Extensions.Http.csproj" />
     <ProjectReference Include="../../ServiceStack.Interfaces/6.2.0/ServiceStack.Interfaces.csproj" />
     <ProjectReference Include="../../ServiceStack.Text/6.2.0/ServiceStack.Text.csproj" />
     <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />

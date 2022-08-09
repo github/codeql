@@ -478,17 +478,6 @@ namespace ServiceStack
 
     // Generated from `ServiceStack.AdminUi` in `ServiceStack, Version=6.0.0.0, Culture=neutral, PublicKeyToken=null; ServiceStack.Client, Version=6.0.0.0, Culture=neutral, PublicKeyToken=null`
     [System.Flags]
-    public class AdminUi
-    {
-        All,
-    Logging,
-    None,
-    Users,
-    Validation,
-}
-
-    // Generated from `ServiceStack.AdminUi` in `ServiceStack, Version=6.0.0.0, Culture=neutral, PublicKeyToken=null; ServiceStack.Client, Version=6.0.0.0, Culture=neutral, PublicKeyToken=null`
-    [System.Flags]
     public enum AdminUi
     {
         All,
