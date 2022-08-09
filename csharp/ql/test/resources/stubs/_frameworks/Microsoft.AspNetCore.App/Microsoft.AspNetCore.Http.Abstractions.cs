@@ -178,9 +178,9 @@ namespace Microsoft
             // Generated from `Microsoft.AspNetCore.Http.CookieSecurePolicy` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public enum CookieSecurePolicy
             {
-                Always,
-                None,
                 SameAsRequest,
+                Always,
+                None
             }
 
             // Generated from `Microsoft.AspNetCore.Http.Endpoint` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
