@@ -188,10 +188,10 @@ module FlowFromSource {
 
     Query getQuery() { result = q }
 
-    /** The sinks are the endpoints we're extracting. */
+    /** Holds if `sink` is an endpoint we're extracting. */
     override predicate isSink(DataFlow::Node sink) { sink = getAnEndpoint(q) }
 
-    /** The sinks are the endpoints we're extracting. */
+    /** Holds if `sink` is an endpoint we're extracting. */
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel lbl) {
       sink = getAnEndpoint(q) and exists(lbl)
     }
