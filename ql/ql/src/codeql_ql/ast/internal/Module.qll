@@ -388,9 +388,19 @@ module ModConsistency {
       not exists(mod.asModule().getAlias())
     ) >= 2 and
     // paramerized modules are not treated nicely, so we ignore them here.
-    not i.getResolvedModule().getEnclosing*().asModule().hasParameter(_, _, _)
+    not i.getResolvedModule().getEnclosing*().asModule().hasParameter(_, _, _) and
+    not i.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 
   // not a query predicate, because this fails when running qltests, but it passes on the real thing (so it's used in EmptyConsistencies.ql)
-  predicate noResolve(Import i) { not exists(i.getResolvedModule()) }
+  predicate noResolve(Import i) {
+    not exists(i.getResolvedModule()) and
+    not i.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
+  }
 }
