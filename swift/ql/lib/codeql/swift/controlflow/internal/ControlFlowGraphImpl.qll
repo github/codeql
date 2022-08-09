@@ -1676,8 +1676,8 @@ module Exprs {
     }
   }
 
-  private class TryTree extends AstStandardPostOrderTree {
-    override TryExpr ast;
+  private class AnyTryTree extends AstStandardPostOrderTree {
+    override AnyTryExpr ast;
 
     override ControlFlowElement getChildElement(int i) {
       i = 0 and
