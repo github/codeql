@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: 3.8
       - name: Download CodeQL CLI
-        uses: ./.github/actions/fetch-codeql
+        uses: ./ql/.github/actions/fetch-codeql
       - name: Generate coverage files
         run: |
           python ql/misc/scripts/library-coverage/generate-report.py ci ql ql
