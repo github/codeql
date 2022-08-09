@@ -2488,7 +2488,7 @@ module YAML {
     YamlListItem getListItem() { toGenerateYaml(result).getParent() = yamle }
 
     /** Gets the value of this YAML entry. */
-    YAMLValue getValue() {
+    YamlValue getValue() {
       exists(Yaml::Keyvaluepair pair |
         pair.getParent() = yamle and
         result = TYamlValue(pair.getValue())
@@ -2510,7 +2510,7 @@ module YAML {
     /**
      * Gets the value of this YAML key.
      */
-    YAMLValue getValue() {
+    YamlValue getValue() {
       exists(Yaml::Keyvaluepair pair |
         pair.getKey() = yamlkey and result = TYamlValue(pair.getValue())
       )
@@ -2549,7 +2549,7 @@ module YAML {
     /**
      * Gets the value of this YAML list item.
      */
-    YAMLValue getValue() { result = TYamlValue(yamllistitem.getChild()) }
+    YamlValue getValue() { result = TYamlValue(yamllistitem.getChild()) }
 
     override string getAPrimaryQlClass() { result = "YamlListItem" }
   }
@@ -2558,12 +2558,12 @@ module YAML {
   deprecated class YAMLListItem = YamlListItem;
 
   /** A YAML value. */
-  class YAMLValue extends TYamlValue, YAMLNode {
+  class YamlValue extends TYamlValue, YAMLNode {
     Yaml::Value yamlvalue;
 
-    YAMLValue() { this = TYamlValue(yamlvalue) }
+    YamlValue() { this = TYamlValue(yamlvalue) }
 
-    override string getAPrimaryQlClass() { result = "YAMLValue" }
+    override string getAPrimaryQlClass() { result = "YamlValue" }
 
     /** Gets the value of this YAML value. */
     string getValue() { result = yamlvalue.getValue() }
