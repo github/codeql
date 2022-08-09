@@ -1182,7 +1182,7 @@ class Import extends TImport, ModuleMember, TypeRef {
    *
    * Does NOT include type arguments!
    */
-  string getSelectionName() { result = getModuleExpr().getQualifiedName() }
+  string getSelectionName() { result = this.getModuleExpr().getQualifiedName() }
 
   /**
    * Gets the module expression selected in the import statement.
