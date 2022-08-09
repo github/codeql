@@ -28,7 +28,7 @@ post2 = author2.posts.create
 
 author2.posts << post2
 
-
+post1.author = author2
 
 # The final method call in this chain should not be recognised as an
 # instantiation.
