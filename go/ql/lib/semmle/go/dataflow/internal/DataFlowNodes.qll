@@ -634,9 +634,7 @@ module Public {
     predicate isReceiverOf(MethodDecl m) { parm.isReceiverOf(m) }
   }
 
-  private Node getADirectlyWrittenNode() {
-    exists(Write w | w.writesField(result, _, _) or w.writesElement(result, _, _))
-  }
+  private Node getADirectlyWrittenNode() { exists(Write w | w.writesComponent(result, _)) }
 
   private DataFlow::Node getAccessPathPredecessor(DataFlow::Node node) {
     result = node.(PointerDereferenceNode).getOperand()
