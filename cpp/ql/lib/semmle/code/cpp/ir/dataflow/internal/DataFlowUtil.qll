@@ -1046,6 +1046,7 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
 pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
+cached
 private newtype TContent =
   TFieldContent(Field f, int index) {
     index = [1 .. Ssa::getMaxIndirectionsForType(f.getUnspecifiedType())] and

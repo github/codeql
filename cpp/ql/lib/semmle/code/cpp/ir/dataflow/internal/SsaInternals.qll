@@ -4,38 +4,13 @@ private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.models.interfaces.Allocation as Alloc
 private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
-private import semmle.code.cpp.ir.implementation.raw.internal.SideEffects as SideEffects
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import DataFlowPrivate
 private import ssa0.SsaImplCommon as SsaImplCommon0
 private import ssa0.SsaInternals as SsaInternals0
 import semmle.code.cpp.ir.dataflow.internal.SsaInternalsCommon
 
-int getMaxIndirectionsForType(Type type) {
-  result = SourceVariables::countIndirectionsForCppType(getTypeForGLValue(type))
-}
-
 private module SourceVariables {
-  int countIndirectionsForCppType(LanguageType langType) {
-    exists(Type type | langType.hasType(type, true) |
-      result = 1 + countIndirections(type.getUnspecifiedType())
-    )
-    or
-    exists(Type type | langType.hasType(type, false) |
-      result = countIndirections(type.getUnspecifiedType())
-    )
-  }
-
-  private int countIndirections(Type t) {
-    result =
-      1 +
-        countIndirections([t.(Cpp::PointerType).getBaseType(), t.(Cpp::ReferenceType).getBaseType()])
-    or
-    not t instanceof Cpp::PointerType and
-    not t instanceof Cpp::ReferenceType and
-    result = 0
-  }
-
   int getMaxIndirectionForIRVariable(IRVariable var) {
     exists(Type type, boolean isGLValue |
       var.getLanguageType().hasType(type, isGLValue) and
@@ -45,39 +20,11 @@ private module SourceVariables {
     )
   }
 
-  newtype TBaseSourceVariable =
-    TBaseIRVariable(IRVariable var) or
-    TBaseCallVariable(CallInstruction call)
+  class BaseSourceVariable = SsaInternals0::BaseSourceVariable;
 
-  abstract class BaseSourceVariable extends TBaseSourceVariable {
-    abstract string toString();
+  class BaseIRVariable = SsaInternals0::BaseIRVariable;
 
-    abstract Type getType();
-  }
-
-  class BaseIRVariable extends BaseSourceVariable, TBaseIRVariable {
-    IRVariable var;
-
-    IRVariable getIRVariable() { result = var }
-
-    BaseIRVariable() { this = TBaseIRVariable(var) }
-
-    override string toString() { result = var.toString() }
-
-    override Type getType() { result = var.getType() }
-  }
-
-  class BaseCallVariable extends BaseSourceVariable, TBaseCallVariable {
-    CallInstruction call;
-
-    BaseCallVariable() { this = TBaseCallVariable(call) }
-
-    CallInstruction getCallInstruction() { result = call }
-
-    override string toString() { result = "Call" }
-
-    override Type getType() { result = call.getResultType() }
-  }
+  class BaseCallVariable = SsaInternals0::BaseCallVariable;
 
   cached
   private newtype TSourceVariable =
@@ -330,84 +277,6 @@ class CallDef extends DefImpl, TCallDef {
   }
 }
 
-cached
-private module DefCached {
-  cached
-  predicate isCallDef(
-    CallInstruction call, Operand address, Instruction base, int ind, int index,
-    boolean addressDependsOnField
-  ) {
-    exists(int ind0, CppType addressType, int mAddress, int argumentIndex |
-      if argumentIndex = -1
-      then not call.getStaticCallTarget() instanceof Cpp::ConstMemberFunction
-      else not SideEffects::isConstPointerLike(any(Type t | addressType.hasType(t, _)))
-    |
-      address = call.getArgumentOperand(argumentIndex) and
-      isDefImpl(address, base, ind0, addressDependsOnField, _) and
-      addressType = getLanguageType(address) and
-      mAddress = countIndirectionsForCppType(addressType) and
-      ind = [ind0 + 1 .. mAddress + ind0] and
-      index = ind - (ind0 + 1)
-    )
-  }
-
-  cached
-  predicate isNonCallDef(
-    boolean certain, Instruction instr, Operand address, Instruction base, int ind, int index,
-    boolean addressDependsOnField
-  ) {
-    exists(int ind0, CppType type, int m |
-      address =
-        [
-          instr.(StoreInstruction).getDestinationAddressOperand(),
-          instr.(InitializeParameterInstruction).getAnOperand(),
-          instr.(InitializeDynamicAllocationInstruction).getAllocationAddressOperand()
-        ] and
-      isDefImpl(address, base, ind0, addressDependsOnField, certain) and
-      type = getLanguageType(address) and
-      m = countIndirectionsForCppType(type) and
-      ind = [ind0 + 1 .. ind0 + m] and
-      index = ind - (ind0 + 1)
-    )
-  }
-
-  private predicate isPointerOrField(Instruction instr) {
-    instr instanceof PointerArithmeticInstruction
-    or
-    instr instanceof FieldAddressInstruction
-  }
-
-  private predicate isDefImpl(
-    Operand address, Instruction base, int ind, boolean addressDependsOnField, boolean certain
-  ) {
-    DataFlowImplCommon::forceCachingInSameStage() and
-    ind = 0 and
-    address.getDef() = base and
-    isSourceVariableBase(base) and
-    addressDependsOnField = false and
-    certain = true
-    or
-    exists(Operand mid, boolean isField0, boolean isField1, boolean certain0 |
-      isDefImpl(mid, base, ind, isField0, certain0) and
-      conversionFlow(mid, address, isField1, _) and
-      addressDependsOnField = isField0.booleanOr(isField1) and
-      if isPointerOrField(address.getDef()) then certain = false else certain = certain0
-    )
-    or
-    exists(int ind0 |
-      isDefImpl(address.getDef().(LoadInstruction).getSourceAddressOperand(), base, ind0,
-        addressDependsOnField, certain)
-      or
-      isDefImpl(address.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0,
-        addressDependsOnField, certain)
-    |
-      if addressDependsOnField = true then ind = ind0 else ind0 = ind - 1
-    )
-  }
-}
-
-private import DefCached
-
 class UseImpl extends DefOrUseImpl, TUseImpl {
   Operand operand;
   int ind;
@@ -431,48 +300,6 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
   override int getIndex() { result = ind }
 
   override Instruction getBase() { isUse(_, operand, result, _, ind) }
-}
-
-cached
-private module UseCached {
-  cached
-  predicate isUse(boolean certain, Operand op, Instruction base, int ind, int index) {
-    not ignoreOperand(op) and
-    certain = true and
-    exists(LanguageType type, int m, int ind0 |
-      type = getLanguageType(op) and
-      m = countIndirectionsForCppType(type) and
-      isUseImpl(op, base, ind0) and
-      ind = [ind0 .. m + ind0] and
-      index = ind - ind0
-    )
-  }
-
-  private predicate isUseImpl(Operand operand, Instruction base, int ind) {
-    DataFlowImplCommon::forceCachingInSameStage() and
-    ind = 0 and
-    operand.getDef() = base and
-    isSourceVariableBase(base)
-    or
-    exists(Operand mid |
-      isUseImpl(mid, base, ind) and
-      conversionFlowStepExcludeFields(mid, operand, false)
-    )
-    or
-    exists(int ind0 |
-      isUseImpl(operand.getDef().(LoadInstruction).getSourceAddressOperand(), base, ind0)
-      or
-      isUseImpl(operand.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0)
-    |
-      ind0 = ind - 1
-    )
-  }
-}
-
-private import UseCached
-
-private predicate isSourceVariableBase(Instruction i) {
-  i instanceof VariableAddressInstruction or i instanceof CallInstruction
 }
 
 private predicate adjacentDefRead0(DefOrUse defOrUse1, SsaDefOrUse defOrUse2) {
