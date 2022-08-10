@@ -81,30 +81,6 @@ class UnsafeWebViewFetchConfig extends TaintTracking::Configuration {
     node instanceof Sink or
     node.asExpr() = any(Sink s).getBaseUrl()
   }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // allow flow through `try!` and similar constructs
-    // TODO: this should probably be part of DataFlow / TaintTracking.
-    node1.asExpr() = node2.asExpr().(AnyTryExpr).getSubExpr()
-    or
-    // allow flow through `!`
-    // TODO: this should probably be part of DataFlow / TaintTracking.
-    node1.asExpr() = node2.asExpr().(ForceValueExpr).getSubExpr()
-    or
-    // allow flow through string concatenation.
-    // TODO: this should probably be part of TaintTracking.
-    node2.asExpr().(AddExpr).getAnOperand() = node1.asExpr()
-    or
-    // allow flow through `URL.init`.
-    exists(CallExpr call, ClassDecl c, AbstractFunctionDecl f |
-      c.getName() = "URL" and
-      c.getAMember() = f and
-      f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
-      call.getFunction().(ApplyExpr).getStaticTarget() = f and
-      node1.asExpr() = call.getAnArgument().getExpr() and
-      node2.asExpr() = call
-    )
-  }
 }
 
 from

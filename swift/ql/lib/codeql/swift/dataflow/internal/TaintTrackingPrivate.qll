@@ -41,6 +41,23 @@ private module Cached {
       nodeTo.asExpr() = interpolated and
       nodeFrom.asExpr() = interpolated.getAppendingExpr()
     )
+    or
+    // allow flow through string concatenation.
+    exists(AddExpr ae |
+      ae.getAnOperand() = nodeFrom.asExpr() and
+      ae = nodeTo.asExpr() and
+      ae.getType().getName() = "String"
+    )
+    or
+    // allow flow through `URL.init`.
+    exists(CallExpr call, ClassDecl c, AbstractFunctionDecl f |
+      c.getName() = "URL" and
+      c.getAMember() = f and
+      f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
+      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      nodeFrom.asExpr() = call.getAnArgument().getExpr() and
+      nodeTo.asExpr() = call
+    )
   }
 
   /**
