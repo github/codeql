@@ -4,5 +4,5 @@ class SrcFloatingPointLiteral extends FloatLiteral {
   SrcFloatingPointLiteral() { this.getCompilationUnit().fromSource() }
 }
 
-from FloatLiteral lit
+from SrcFloatingPointLiteral lit
 select lit, lit.getValue(), lit.getFloatValue()
