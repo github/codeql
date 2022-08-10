@@ -1,0 +1,17 @@
+| string.swift:7:13:7:13 | "..." | Unexpected result: taintedFromLine=5 |
+| string.swift:9:13:9:13 | "..." | Unexpected result: taintedFromLine=5 |
+| string.swift:11:13:11:13 | "..." | Unexpected result: taintedFromLine=5 |
+| string.swift:16:13:16:13 | "..." | Unexpected result: taintedFromLine=5 |
+| string.swift:18:13:18:13 | "..." | Unexpected result: taintedFromLine=5 |
+| string.swift:31:13:31:13 | tainted | Unexpected result: taintedFromLine=28 |
+| string.swift:34:13:34:21 | ... call to +(_:_:) ... | Unexpected result: taintedFromLine=28 |
+| string.swift:35:13:35:23 | ... call to +(_:_:) ... | Unexpected result: taintedFromLine=28 |
+| string.swift:36:13:36:23 | ... call to +(_:_:) ... | Unexpected result: taintedFromLine=28 |
+| string.swift:39:13:39:29 | ... call to +(_:_:) ... | Unexpected result: taintedFromLine=28 |
+| try.swift:9:13:9:24 | try ... | Unexpected result: taintedFromLine=9 |
+| try.swift:15:12:15:24 | try! ... | Unexpected result: taintedFromLine=15 |
+| try.swift:18:12:18:27 | ...! | Unexpected result: taintedFromLine=18 |
+| url.swift:18:12:18:12 | urlTainted | Unexpected result: taintedFromLine=13 |
+| url.swift:21:12:21:49 | ...! | Unexpected result: taintedFromLine=13 |
+| url.swift:23:12:23:54 | ...! | Unexpected result: taintedFromLine=13 |
+| url.swift:39:12:39:12 | ...! | Unexpected result: taintedFromLine=13 |
