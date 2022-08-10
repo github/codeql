@@ -70,8 +70,8 @@ int arrayExprFixedSize(Expr e) {
 }
 
 from
-  StrcpyFunction f, FunctionCall fc, int argDest, int argSrc, int argLimit, int charSize, Access copyDest,
-  Access copySource, string name, string nth
+  StrcpyFunction f, FunctionCall fc, int argDest, int argSrc, int argLimit, int charSize,
+  Access copyDest, Access copySource, string name, string nth
 where
   f = fc.getTarget() and
   argDest = f.getParamDest() and
