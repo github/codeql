@@ -116,6 +116,11 @@ private module UnusedSourceSinkInterpretation {
 
   /** An entity used to interpret a source/sink specification. */
   class InterpretNode extends AstNode_ {
+    // InterpretNode is going away, this is just a dummy implementation.
+    // However, we have some old location tests picking them up, so we
+    // explicitly define them to not exist.
+    InterpretNode() { none() }
+
     /** Gets the element that this node corresponds to, if any. */
     SourceOrSinkElement asElement() { none() }
 
