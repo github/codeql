@@ -81,10 +81,7 @@ private class VisibilityModifier extends MethodModifier {
 
   VisibilityModifier() {
     this.getMethodName() =
-      [
-        "public", "private", "protected", "public_class_method", "private_class_method",
-        "protected_class_method"
-      ] and
+      ["public", "private", "protected", "public_class_method", "private_class_method"] and
     namespace.getStmt(position) = this
   }
 
@@ -103,7 +100,7 @@ private class VisibilityModifier extends MethodModifier {
     this.getMethodName() = ["private", "private_class_method"] and
     result = "private"
     or
-    this.getMethodName() = ["protected", "protected_class_method"] and
+    this.getMethodName() = ["protected"] and
     result = "protected"
   }
 }
