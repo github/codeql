@@ -31,19 +31,6 @@ class ArraySizeConfiguration extends ProductFlow::Configuration {
   }
 }
 
-predicate hasFlow1(DataFlow::PathNode source, DataFlow::PathNode sink) {
-  any(ProductFlow::Conf1 conf).hasFlowPath(source, sink)
-}
-
-predicate hasFlow2(DataFlow2::PathNode source, DataFlow2::PathNode sink) {
-    any(ProductFlow::Conf2 conf).hasFlowPath(source, sink)
-  }
-
-
-  predicate hasPartialFlow2(DataFlow2::PartialPathNode source, DataFlow2::PartialPathNode sink) {
-    any(ProductFlow::Conf2 conf).hasPartialFlow(source, sink, _)
-  }
-
 from ArraySizeConfiguration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2, DataFlow::PathNode sink1, DataFlow2::PathNode sink2
 where conf.hasFlowPath(source1, source2, sink1, sink2)
 select source1, source2, sink1, sink2
