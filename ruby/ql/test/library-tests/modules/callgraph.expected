@@ -196,6 +196,7 @@ getTarget
 | private.rb:2:3:3:5 | call to private | calls.rb:109:5:109:20 | private |
 | private.rb:10:3:10:19 | call to private | calls.rb:109:5:109:20 | private |
 | private.rb:12:3:12:9 | call to private | calls.rb:109:5:109:20 | private |
+| private.rb:41:3:41:9 | call to private | calls.rb:109:5:109:20 | private |
 | private.rb:50:1:50:5 | call to new | calls.rb:114:5:114:16 | new |
 | private.rb:51:1:51:5 | call to new | calls.rb:114:5:114:16 | new |
 | private.rb:52:1:52:5 | call to new | calls.rb:114:5:114:16 | new |
@@ -290,6 +291,7 @@ unresolvedCall
 | modules_rec.rb:11:1:11:9 | call to prepend |
 | private.rb:23:3:24:5 | call to private_class_method |
 | private.rb:28:3:28:32 | call to private_class_method |
+| private.rb:30:3:30:11 | call to protected |
 | private.rb:50:1:50:14 | call to private1 |
 | private.rb:51:1:51:14 | call to private2 |
 | private.rb:52:1:52:14 | call to private3 |
@@ -316,6 +318,7 @@ privateMethod
 | private.rb:17:3:18:5 | private4 |
 | private.rb:23:24:24:5 | private5 |
 | private.rb:26:3:27:5 | private6 |
+| private.rb:43:3:44:5 | private7 |
 | private.rb:47:1:48:3 | private_on_main |
 | private.rb:59:11:60:5 | private1 |
 | private.rb:65:3:66:5 | private2 |
@@ -392,6 +395,9 @@ publicMethod
 | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar |
 | private.rb:5:3:6:5 | public |
 | private.rb:20:3:21:5 | public2 |
+| private.rb:38:3:39:5 | public3 |
 | private.rb:62:3:63:5 | public |
 | private.rb:87:3:89:5 | call_m1 |
 protectedMethods
+| private.rb:32:3:33:5 | protected1 |
+| private.rb:35:3:36:5 | protected2 |

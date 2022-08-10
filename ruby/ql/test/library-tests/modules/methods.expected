@@ -53,6 +53,9 @@ getMethod
 | private.rb:1:1:45:3 | E | private2 | private.rb:8:3:9:5 | private2 |
 | private.rb:1:1:45:3 | E | private3 | private.rb:14:3:15:5 | private3 |
 | private.rb:1:1:45:3 | E | private4 | private.rb:17:3:18:5 | private4 |
+| private.rb:1:1:45:3 | E | private7 | private.rb:43:3:44:5 | private7 |
+| private.rb:1:1:45:3 | E | protected1 | private.rb:32:3:33:5 | protected1 |
+| private.rb:1:1:45:3 | E | protected2 | private.rb:35:3:36:5 | protected2 |
 | private.rb:1:1:45:3 | E | public | private.rb:5:3:6:5 | public |
 | private.rb:58:1:76:3 | F | private1 | private.rb:59:11:60:5 | private1 |
 | private.rb:58:1:76:3 | F | private2 | private.rb:65:3:66:5 | private2 |
@@ -435,7 +438,10 @@ lookupMethod
 | private.rb:1:1:45:3 | E | private2 | private.rb:8:3:9:5 | private2 |
 | private.rb:1:1:45:3 | E | private3 | private.rb:14:3:15:5 | private3 |
 | private.rb:1:1:45:3 | E | private4 | private.rb:17:3:18:5 | private4 |
+| private.rb:1:1:45:3 | E | private7 | private.rb:43:3:44:5 | private7 |
 | private.rb:1:1:45:3 | E | private_on_main | private.rb:47:1:48:3 | private_on_main |
+| private.rb:1:1:45:3 | E | protected1 | private.rb:32:3:33:5 | protected1 |
+| private.rb:1:1:45:3 | E | protected2 | private.rb:35:3:36:5 | protected2 |
 | private.rb:1:1:45:3 | E | public | private.rb:5:3:6:5 | public |
 | private.rb:1:1:45:3 | E | puts | calls.rb:102:5:102:30 | puts |
 | private.rb:1:1:45:3 | E | to_s | calls.rb:169:5:170:7 | to_s |
