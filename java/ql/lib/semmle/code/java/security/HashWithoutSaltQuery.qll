@@ -184,7 +184,7 @@ private class MessageDigestUsedOnceConfig extends DataFlow2::Configuration {
     state2 instanceof MessageDigestUnsalted
   }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     // Allow arbitrary implicit field read steps to allow wrapper methods that may go through fields to work.
     // For example, in a case like:
     // ```
@@ -205,7 +205,7 @@ private class MessageDigestUsedOnceConfig extends DataFlow2::Configuration {
     // but as it acts on a field of its class then the access path of the `sha256` node includes that field.
     // Since flow state changing steps don't work through access paths, we strip the access path by adding implicit reads.
     this.isAdditionalFlowStep(node, _, _, _) and
-    c instanceof DataFlow::FieldContent
+    c.getAReadContent() instanceof DataFlow::FieldContent
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -253,7 +253,7 @@ private class MessageDigestSaltedConfig extends DataFlow2::Configuration {
     state2 instanceof MessageDigestSallted
   }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::Content c) {
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     // Allow arbitrary implicit field read steps to allow wrapper methods that may go through fields to work.
     // See the comment in `MessageDigestUsedOnceConfig.allowImplicitRead` for an example of why this is necassary.
     this.isAdditionalFlowStep(node, _, _, _) and
