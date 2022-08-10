@@ -335,7 +335,7 @@ module Expressions {
       // ```csharp
       // new Dictionary<int, string>() { [0] = "Zero", [1] = "One", [2] = "Two" }
       // ```
-      // need special treatment, because the the accesses `[0]`, `[1]`, and `[2]`
+      // need special treatment, because the accesses `[0]`, `[1]`, and `[2]`
       // have no qualifier.
       this = any(MemberInitializer mi).getLValue()
     }

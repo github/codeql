@@ -78,7 +78,7 @@ private class Folder_ extends ContainerOrModule, TFolder {
 
   override ContainerOrModule getEnclosing() {
     result = TFolder(f.getParentContainer()) and
-    // if this the the root, then we stop.
+    // if this the root, then we stop.
     not exists(f.getFile("qlpack.yml"))
   }
 
