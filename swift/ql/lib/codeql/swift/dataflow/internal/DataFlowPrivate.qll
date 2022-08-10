@@ -106,6 +106,12 @@ private module Cached {
       //or
       // step from previous read to Phi node
       localFlowSsaInput(nodeFrom, def, nodeTo.asDefinition())
+      or
+      // flow through `try!` and similar constructs
+      nodeFrom.asExpr() = nodeTo.asExpr().(AnyTryExpr).getSubExpr()
+      or
+      // flow through `!`
+      nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
     )
     or
     exists(ParamReturnKind kind, ExprCfgNode arg |

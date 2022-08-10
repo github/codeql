@@ -36,14 +36,6 @@ private module Cached {
       nodeTo.asDefinition().(Ssa::WriteDefinition).isInoutDef(e)
     )
     or
-    // allow flow through `try!` and similar constructs
-    // TODO: this should probably be part of DataFlow / TaintTracking?
-    nodeFrom.asExpr() = nodeTo.asExpr().(AnyTryExpr).getSubExpr()
-    or
-    // allow flow through `!`
-    // TODO: this should probably be part of DataFlow / TaintTracking?
-    nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
-    or
     // Flow from the computation of the interpolated string literal to the result of the interpolation.
     exists(InterpolatedStringLiteralExpr interpolated |
       nodeTo.asExpr() = interpolated and
