@@ -8,4 +8,4 @@ query predicate privateMethod(MethodBase m) { m.isPrivate() }
 
 query predicate publicMethod(MethodBase m) { m.isPublic() }
 
-query predicate protectedMethods(MethodBase m) { m.isProtected() }
+query predicate protectedMethod(MethodBase m) { m.isProtected() }
