@@ -78,4 +78,14 @@ public class Test {
       sink(x18); // Flow
     });
   }
+
+  public void run4() {
+    Properties p = new Properties();
+    p.put("key", tainted);
+    sink(p.getProperty("key")); // Flow
+    sink(p.getProperty("key", "defaultValue")); // Flow
+    
+    Properties clean = new Properties();
+    sink(clean.getProperty("key", tainted)); // Flow
+  }
 }

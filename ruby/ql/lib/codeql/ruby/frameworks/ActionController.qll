@@ -83,7 +83,7 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
    * Gets a route to this handler, if one exists.
    * May return multiple results.
    */
-  ActionDispatch::Route getARoute() {
+  ActionDispatch::Routing::Route getARoute() {
     exists(string name |
       isRoute(result, name, controllerClass) and
       isActionControllerMethod(this, name, controllerClass)
@@ -93,10 +93,10 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
 
 pragma[nomagic]
 private predicate isRoute(
-  ActionDispatch::Route route, string name, ActionControllerControllerClass controllerClass
+  ActionDispatch::Routing::Route route, string name, ActionControllerControllerClass controllerClass
 ) {
   route.getController() + "_controller" =
-    ActionDispatch::underscore(namespaceDeclaration(controllerClass)) and
+    ActionDispatch::Routing::underscore(namespaceDeclaration(controllerClass)) and
   name = route.getAction()
 }
 

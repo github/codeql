@@ -7,20 +7,23 @@ _includes:
 _directories:
   decl: Decl$|Context$
   pattern: Pattern$
-  type: Type$
-  typerepr: TypeRepr$
+  type: Type(Repr)?$
   expr: Expr$
   stmt: Stmt$
 
 Element:
-  is_unknown: predicate
+  is_unknown:
+    type: predicate
+    _pragma: cpp_skip  # this is emitted using trap entries directly
   _pragma: qltest_skip
 
 File:
   name: string
 
 Locatable:
-  location: Location?
+  location:
+    type: Location?
+    _pragma: cpp_skip  # this is emitted using trap entries directly
   _pragma: qltest_skip
 
 Location:
@@ -30,6 +33,10 @@ Location:
   end_line: int
   end_column: int
   _pragma: qltest_skip
+
+Comment:
+  _extends: Locatable
+  text: string
 
 Type:
   name: string
@@ -109,6 +116,7 @@ LValueType:
 
 ModuleType:
   _extends: Type
+  module: ModuleDecl
 
 PlaceholderType:
   _extends: Type
@@ -181,6 +189,7 @@ Stmt:
 
 TypeRepr:
   _extends: AstNode
+  type: Type?  # type can be absent on unresolved entities
 
 FunctionType:
   _extends: AnyFunctionType
@@ -270,9 +279,22 @@ EnumCaseDecl:
 
 IfConfigDecl:
   _extends: Decl
+  _children:
+    clauses: IfConfigClause*
+
+IfConfigClause:
+  _extends: Locatable
+  _children:
+    condition: Expr?
+    elements: AstNode*
+  is_active: predicate
+  _dir: decl
 
 ImportDecl:
   _extends: Decl
+  is_exported: predicate
+  module: ModuleDecl
+  declarations: ValueDecl*
 
 MissingMemberDecl:
   _extends: Decl
@@ -316,6 +338,7 @@ AppliedPropertyWrapperExpr:
   _extends: Expr
 
 Argument:
+  _extends: Locatable
   label: string
   _children:
     expr: Expr
@@ -388,7 +411,6 @@ EnumIsCaseExpr:
   _extends: Expr
   _children:
     sub_expr: Expr
-    type_repr: TypeRepr
     element: EnumElementDecl
 
 ErrorExpr:
@@ -439,7 +461,7 @@ KeyPathDotExpr:
 KeyPathExpr:
   _extends: Expr
   _children:
-    parsed_root: Expr?
+    root: TypeRepr?
     parsed_path: Expr?
 
 LazyInitializerExpr:
@@ -542,7 +564,6 @@ TypeExpr:
 UnresolvedDeclRefExpr:
   _extends: Expr
   name: string?
-  _pragma: qltest_skip  # we should really never extract these
 
 UnresolvedDotExpr:
   _extends: Expr
@@ -557,7 +578,8 @@ UnresolvedMemberExpr:
 
 UnresolvedPatternExpr:
   _extends: Expr
-  _pragma: qltest_skip  # we should really never extract these
+  _children:
+    sub_pattern: Pattern
 
 UnresolvedSpecializeExpr:
   _extends: Expr
@@ -1067,6 +1089,8 @@ GenericTypeDecl:
 
 ModuleDecl:
   _extends: TypeDecl
+  is_builtin_module: predicate
+  is_system_module: predicate
 
 ConstructorRefCallExpr:
   _extends: SelfApplyExpr
@@ -1157,87 +1181,3 @@ FloatLiteralExpr:
 IntegerLiteralExpr:
   _extends: NumberLiteralExpr
   string_value: string
-
-ErrorTypeRepr:
-  _extends: TypeRepr
-
-AttributedTypeRepr:
-  _extends: TypeRepr
-
-IdentTypeRepr:
-  _extends: TypeRepr
-
-ComponentIdentTypeRepr:
-  _extends: IdentTypeRepr
-
-SimpleIdentTypeRepr:
-  _extends: ComponentIdentTypeRepr
-
-GenericIdentTypeRepr:
-  _extends: ComponentIdentTypeRepr
-
-CompoundIdentTypeRepr:
-  _extends: IdentTypeRepr
-
-FunctionTypeRepr:
-  _extends: TypeRepr
-
-ArrayTypeRepr:
-  _extends: TypeRepr
-
-DictionaryTypeRepr:
-  _extends: TypeRepr
-
-OptionalTypeRepr:
-  _extends: TypeRepr
-
-ImplicitlyUnwrappedOptionalTypeRepr:
-  _extends: TypeRepr
-
-TupleTypeRepr:
-  _extends: TypeRepr
-
-CompositionTypeRepr:
-  _extends: TypeRepr
-
-MetatypeTypeRepr:
-  _extends: TypeRepr
-
-ProtocolTypeRepr:
-  _extends: TypeRepr
-
-OpaqueReturnTypeRepr:
-  _extends: TypeRepr
-
-NamedOpaqueReturnTypeRepr:
-  _extends: TypeRepr
-
-ExistentialTypeRepr:
-  _extends: TypeRepr
-
-PlaceholderTypeRepr:
-  _extends: TypeRepr
-
-SpecifierTypeRepr:
-  _extends: TypeRepr
-
-InOutTypeRepr:
-  _extends: SpecifierTypeRepr
-
-SharedTypeRepr:
-  _extends: SpecifierTypeRepr
-
-OwnedTypeRepr:
-  _extends: SpecifierTypeRepr
-
-IsolatedTypeRepr:
-  _extends: SpecifierTypeRepr
-
-CompileTimeConstTypeRepr:
-  _extends: SpecifierTypeRepr
-
-FixedTypeRepr:
-  _extends: TypeRepr
-
-SilBoxTypeRepr:
-  _extends: TypeRepr

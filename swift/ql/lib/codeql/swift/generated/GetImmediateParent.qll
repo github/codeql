@@ -28,6 +28,12 @@ Element getAnImmediateChild(Element e) {
       or
       enum_element_decl_params(e, _, x)
       or
+      if_config_clause_conditions(e, x)
+      or
+      if_config_clause_elements(e, _, x)
+      or
+      if_config_decl_clauses(e, _, x)
+      or
       pattern_binding_decl_inits(e, _, x)
       or
       pattern_binding_decl_patterns(e, _, x)
@@ -64,11 +70,9 @@ Element getAnImmediateChild(Element e) {
       or
       dynamic_type_exprs(e, x)
       or
-      enum_is_case_exprs(e, x, _, _)
+      enum_is_case_exprs(e, x, _)
       or
-      enum_is_case_exprs(e, _, x, _)
-      or
-      enum_is_case_exprs(e, _, _, x)
+      enum_is_case_exprs(e, _, x)
       or
       explicit_cast_exprs(e, x)
       or
@@ -96,7 +100,7 @@ Element getAnImmediateChild(Element e) {
       or
       key_path_application_exprs(e, _, x)
       or
-      key_path_expr_parsed_roots(e, x)
+      key_path_expr_roots(e, x)
       or
       key_path_expr_parsed_paths(e, x)
       or
@@ -143,6 +147,8 @@ Element getAnImmediateChild(Element e) {
       type_expr_type_reprs(e, x)
       or
       unresolved_dot_exprs(e, x, _)
+      or
+      unresolved_pattern_exprs(e, x)
       or
       vararg_expansion_exprs(e, x)
       or

@@ -18,5 +18,6 @@ where
   m.getFile().isKotlinSourceFile() and
   // TODO: This ought to have visibility information
   not m.getName() = "<clinit>" and
-  count(visibility(m)) != 1
+  count(visibility(m)) != 1 and
+  not (count(visibility(m)) = 2 and visibility(m) = "public" and visibility(m) = "internal") // This is a reasonable result, since the JVM symbol is declared public, but Kotlin metadata flags it as internal
 select m, concat(visibility(m), ", ")

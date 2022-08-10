@@ -203,7 +203,7 @@ private AstNode classUnion() {
 
 private AstNode benign() {
   not result.getLocation().getFile().getExtension() = ["ql", "qll"] or // ignore dbscheme files
-  result instanceof BlockComment or
+  result instanceof Comment or
   not exists(result.toString()) or // <- invalid code
   // cached-stages pattern
   result.(Module).getAMember().(ClasslessPredicate).getName() = "forceStage" or

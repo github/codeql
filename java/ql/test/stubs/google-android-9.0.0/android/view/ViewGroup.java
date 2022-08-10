@@ -258,6 +258,27 @@ abstract public class ViewGroup extends View implements ViewManager, ViewParent
         public static int WRAP_CONTENT = 0;
         public void resolveLayoutDirection(int p0){}
     }
+    static public class MarginLayoutParams extends ViewGroup.LayoutParams
+    {
+        protected MarginLayoutParams() {}
+        public MarginLayoutParams(Context p0, AttributeSet p1){}
+        public MarginLayoutParams(ViewGroup.LayoutParams p0){}
+        public MarginLayoutParams(ViewGroup.MarginLayoutParams p0){}
+        public MarginLayoutParams(int p0, int p1){}
+        public boolean isMarginRelative(){ return false; }
+        public int bottomMargin = 0;
+        public int getLayoutDirection(){ return 0; }
+        public int getMarginEnd(){ return 0; }
+        public int getMarginStart(){ return 0; }
+        public int leftMargin = 0;
+        public int rightMargin = 0;
+        public int topMargin = 0;
+        public void resolveLayoutDirection(int p0){}
+        public void setLayoutDirection(int p0){}
+        public void setMarginEnd(int p0){}
+        public void setMarginStart(int p0){}
+        public void setMargins(int p0, int p1, int p2, int p3){}
+    }
     static public interface OnHierarchyChangeListener
     {
         void onChildViewAdded(View p0, View p1);

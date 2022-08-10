@@ -7,6 +7,7 @@ newtype TAstNode =
   TTopLevel(QL::Ql file) or
   TQLDoc(QL::Qldoc qldoc) or
   TBlockComment(QL::BlockComment comment) or
+  TLineComment(QL::LineComment comment) or
   TClasslessPredicate(QL::ClasslessPredicate pred) or
   TVarDecl(QL::VarDecl decl) or
   TFieldDecl(QL::Field field) or
@@ -89,6 +90,8 @@ class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYa
 
 class TSignatureExpr = TPredicateExpr or TType;
 
+class TComment = TQLDoc or TBlockComment or TLineComment;
+
 /** DEPRECATED: Alias for TYamlNode */
 deprecated class TYAMLNode = TYamlNode;
 
@@ -153,6 +156,8 @@ QL::AstNode toQL(AST::AstNode n) {
   n = TQLDoc(result)
   or
   n = TBlockComment(result)
+  or
+  n = TLineComment(result)
   or
   n = TClasslessPredicate(result)
   or

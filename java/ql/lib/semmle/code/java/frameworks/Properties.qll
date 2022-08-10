@@ -10,13 +10,11 @@ class TypeProperty extends Class {
 }
 
 /** The `getProperty` method of the class `java.util.Properties`. */
-class PropertiesGetPropertyMethod extends ValuePreservingMethod {
+class PropertiesGetPropertyMethod extends Method {
   PropertiesGetPropertyMethod() {
     getDeclaringType() instanceof TypeProperty and
     hasName("getProperty")
   }
-
-  override predicate returnsValue(int arg) { arg = 1 }
 }
 
 /** The `get` method of the class `java.util.Properties`. */

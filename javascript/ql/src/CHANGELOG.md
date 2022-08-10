@@ -1,3 +1,16 @@
+## 0.3.1
+
+### New Queries
+
+- A new query "Case-sensitive middleware path" (`js/case-sensitive-middleware-path`) has been added.
+  It highlights middleware routes that can be bypassed due to having a case-sensitive regular expression path.
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/javascript-all` package.
+
 ## 0.2.0
 
 ### Minor Analysis Improvements

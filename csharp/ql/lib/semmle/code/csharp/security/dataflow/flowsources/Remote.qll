@@ -172,19 +172,19 @@ class ActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
 abstract class AspNetCoreRemoteFlowSource extends RemoteFlowSource { }
 
 /**
- * Data flow for AST.NET Core.
+ * Data flow for ASP.NET Core.
  *
  * Flow is defined from any ASP.NET Core remote source object to any of its member
  * properties.
  */
-private class AspNetCoreRemoteFlowSourceMember extends TaintTracking::TaintedMember {
+private class AspNetCoreRemoteFlowSourceMember extends TaintTracking::TaintedMember, Property {
   AspNetCoreRemoteFlowSourceMember() {
     this.getDeclaringType() = any(AspNetCoreRemoteFlowSource source).getType() and
     this.isPublic() and
     not this.isStatic() and
-    exists(Property p | p = this |
-      p.isAutoImplemented() and p.getGetter().isPublic() and p.getSetter().isPublic()
-    )
+    this.isAutoImplemented() and
+    this.getGetter().isPublic() and
+    this.getSetter().isPublic()
   }
 }
 

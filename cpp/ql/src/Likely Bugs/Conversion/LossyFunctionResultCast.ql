@@ -44,7 +44,7 @@ predicate whiteListWrapped(FunctionCall fc) {
 
 from FunctionCall c, FloatingPointType t1, IntegralType t2
 where
-  t1 = c.getTarget().getType().getUnderlyingType() and
+  pragma[only_bind_into](t1) = c.getTarget().getType().getUnderlyingType() and
   t2 = c.getActualType() and
   c.hasImplicitConversion() and
   not whiteListWrapped(c)

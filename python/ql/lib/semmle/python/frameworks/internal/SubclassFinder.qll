@@ -74,9 +74,7 @@ private module NotExposed {
   }
 
   /** DEPRECATED: Alias for fullyQualifiedToApiGraphPath */
-  deprecated string fullyQualifiedToAPIGraphPath(string fullyQaulified) {
-    result = fullyQualifiedToApiGraphPath(fullyQaulified)
-  }
+  deprecated predicate fullyQualifiedToAPIGraphPath = fullyQualifiedToApiGraphPath/1;
 
   bindingset[this]
   abstract class FindSubclassesSpec extends string {

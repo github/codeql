@@ -7,7 +7,6 @@
  * @id cpp/inconsistent-loop-direction
  * @tags correctness
  *       external/cwe/cwe-835
- *       external/microsoft/6293
  * @msrc.severity important
  */
 

@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
 import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
 import org.jetbrains.kotlin.builtins.StandardNames
+import org.jetbrains.kotlin.codegen.JvmCodegenUtil
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.*
@@ -23,8 +24,10 @@ import org.jetbrains.kotlin.load.java.BuiltinMethodsWithSpecialGenericSignature
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.*
+import org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.name.NameUtils
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -108,14 +111,31 @@ open class KotlinUsesExtractor(
     }
     data class TypeResults(val javaResult: TypeResult<DbType>, val kotlinResult: TypeResult<DbKt_type>)
 
-    fun useType(t: IrType, context: TypeContext = TypeContext.OTHER) =
+    fun useType(t: IrType, context: TypeContext = TypeContext.OTHER): TypeResults {
         when(t) {
-            is IrSimpleType -> useSimpleType(t, context)
+            is IrSimpleType -> return useSimpleType(t, context)
             else -> {
                 logger.error("Unrecognised IrType: " + t.javaClass)
-                TypeResults(TypeResult(fakeLabel(), "unknown", "unknown"), TypeResult(fakeLabel(), "unknown", "unknown"))
+                return extractErrorType()
             }
         }
+    }
+
+    private fun extractJavaErrorType(): TypeResult<DbErrortype> {
+        val typeId = tw.getLabelFor<DbErrortype>("@\"errorType\"") {
+            tw.writeError_type(it)
+        }
+        return TypeResult(typeId, null, "<CodeQL error type>")
+    }
+
+    private fun extractErrorType(): TypeResults {
+        val javaResult = extractJavaErrorType()
+        val kotlinTypeId = tw.getLabelFor<DbKt_nullable_type>("@\"errorKotlinType\"") {
+            tw.writeKt_nullable_types(it, javaResult.id)
+        }
+        return TypeResults(javaResult,
+                           TypeResult(kotlinTypeId, null, "<CodeQL error type>"))
+    }
 
     fun getJavaEquivalentClass(c: IrClass) =
         getJavaEquivalentClassId(c)?.let { pluginContext.referenceClass(it.asSingleFqName()) }?.owner
@@ -704,7 +724,7 @@ open class KotlinUsesExtractor(
             }
             else -> {
                 logger.error("Unrecognised IrSimpleType: " + s.javaClass + ": " + s.render())
-                return TypeResults(TypeResult(fakeLabel(), "unknown", "unknown"), TypeResult(fakeLabel(), "unknown", "unknown"))
+                return extractErrorType()
             }
         }
     }
@@ -754,11 +774,25 @@ open class KotlinUsesExtractor(
 
     data class FunctionNames(val nameInDB: String, val kotlinName: String)
 
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
+    private fun getJvmModuleName(f: IrFunction) =
+        NameUtils.sanitizeAsJavaIdentifier(
+            getJvmModuleNameForDeserializedDescriptor(f.descriptor) ?: JvmCodegenUtil.getModuleName(pluginContext.moduleDescriptor)
+        )
+
     fun getFunctionShortName(f: IrFunction) : FunctionNames {
         if (f.origin == IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA || f.isAnonymousFunction)
             return FunctionNames(
                 OperatorNameConventions.INVOKE.asString(),
                 OperatorNameConventions.INVOKE.asString())
+
+        fun getSuffixIfInternal() =
+            if (f.visibility == DescriptorVisibilities.INTERNAL) {
+                "\$" + getJvmModuleName(f)
+            } else {
+                ""
+            }
+
         (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
             val propName = it.owner.name.asString()
             val getter = it.owner.getter
@@ -774,35 +808,26 @@ open class KotlinUsesExtractor(
                 }
             }
 
-            when (f) {
-                getter -> {
-                    val defaultFunctionName = JvmAbi.getterName(propName)
-                    val defaultDbName = if (getter.visibility == DescriptorVisibilities.PRIVATE && getter.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR) {
-                        // In JVM these functions don't exist, instead the backing field is accessed directly
-                        defaultFunctionName + "\$private"
-                    } else {
-                        defaultFunctionName
-                    }
-                    return FunctionNames(getJvmName(getter) ?: defaultDbName, defaultFunctionName)
-                }
-                setter -> {
-                    val defaultFunctionName = JvmAbi.setterName(propName)
-                    val defaultDbName = if (setter.visibility == DescriptorVisibilities.PRIVATE && setter.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR) {
-                        // In JVM these functions don't exist, instead the backing field is accessed directly
-                        defaultFunctionName + "\$private"
-                    } else {
-                        defaultFunctionName
-                    }
-                    return FunctionNames(getJvmName(setter) ?: defaultDbName, defaultFunctionName)
-                }
+            val maybeFunctionName = when (f) {
+                getter -> JvmAbi.getterName(propName)
+                setter -> JvmAbi.setterName(propName)
                 else -> {
                     logger.error(
                         "Function has a corresponding property, but is neither the getter nor the setter"
                     )
+                    null
                 }
             }
+            maybeFunctionName?.let { defaultFunctionName ->
+                val suffix = if (f.visibility == DescriptorVisibilities.PRIVATE && f.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR) {
+                    "\$private"
+                } else {
+                    getSuffixIfInternal()
+                }
+                return FunctionNames(getJvmName(f) ?: "$defaultFunctionName$suffix", defaultFunctionName)
+            }
         }
-        return FunctionNames(getJvmName(f) ?: f.name.asString(), f.name.asString())
+        return FunctionNames(getJvmName(f) ?: "${f.name.asString()}${getSuffixIfInternal()}", f.name.asString())
     }
 
     // This excludes class type parameters that show up in (at least) constructors' typeParameters list.
@@ -1256,7 +1281,7 @@ open class KotlinUsesExtractor(
             }
             else -> {
                 logger.error("Unexpected type argument.")
-                return TypeResult(fakeLabel(), "unknown", "unknown")
+                return extractJavaErrorType()
             }
         }
     }

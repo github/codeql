@@ -29,15 +29,3 @@ class IntLabel<T>(val i: Int): Label<T> {
 class StringLabel<T>(val name: String): Label<T> {
     override fun toString(): String = "#$name"
 }
-
-// TODO: Remove this and all of its uses
-fun <T> fakeLabel(): Label<T> {
-    if (false) {
-        println("Fake label")
-    } else {
-        val sw = StringWriter()
-        Exception().printStackTrace(PrintWriter(sw))
-        println("Fake label from:\n$sw")
-    }
-    return IntLabel(0)
-}

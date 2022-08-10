@@ -583,11 +583,11 @@ private module Minimongo {
    */
   module CollectionMethodSignatures {
     /**
-     * Holds if Collection method `name` interprets parameter `n` as a query.
+     * Holds if Collection method `name` interprets parameter `queryArgIdx` as a query.
      */
-    predicate interpretsArgumentAsQuery(string m, int queryArgIdx) {
+    predicate interpretsArgumentAsQuery(string name, int queryArgIdx) {
       // implements most of the MongoDB interface
-      MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
+      MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(name, queryArgIdx)
     }
   }
 

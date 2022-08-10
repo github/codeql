@@ -200,6 +200,7 @@ cfg.swift:
 #-----|  -> Did not throw.
 
 #   29| call to print(_:separator:terminator:)
+#-----|  -> mightThrow(x:)
 
 #   29| default separator
 #-----|  -> default terminator
@@ -217,6 +218,43 @@ cfg.swift:
 #-----|  -> default separator
 
 #   29| [...]
+#-----|  -> [...]
+
+#   30| try! ...
+#-----|  -> print(_:separator:terminator:)
+
+#   30| mightThrow(x:)
+#-----|  -> 0
+
+#   30| call to mightThrow(x:)
+#-----|  -> try! ...
+#-----| exception -> case ...
+
+#   30| 0
+#-----|  -> call to mightThrow(x:)
+
+#   31| print(_:separator:terminator:)
+#-----|  -> Still did not throw.
+
+#   31| call to print(_:separator:terminator:)
+#-----|  -> 0
+
+#   31| default separator
+#-----|  -> default terminator
+
+#   31| default terminator
+#-----|  -> call to print(_:separator:terminator:)
+
+#   31| (Any) ...
+#-----|  -> [...]
+
+#   31| Still did not throw.
+#-----|  -> (Any) ...
+
+#   31| [...]
+#-----|  -> default separator
+
+#   31| [...]
 #-----|  -> [...]
 
 #   33| case ...
@@ -281,14 +319,11 @@ cfg.swift:
 #-----|  -> ... is ...
 
 #   37| ... is ...
-#-----|  -> SimpleIdentTypeRepr
+#-----|  -> ... is ...
 
 #   37| ... is ...
 #-----| match -> print(_:separator:terminator:)
 #-----| no-match -> case ...
-
-#   37| SimpleIdentTypeRepr
-#-----|  -> ... is ...
 
 #   38| print(_:separator:terminator:)
 #-----|  -> MyError
@@ -327,7 +362,6 @@ cfg.swift:
 #-----|  -> error
 
 #   40| print(_:separator:terminator:)
-#-----|  -> "..."
 
 #   40| call to print(_:separator:terminator:)
 #-----|  -> 0
@@ -344,11 +378,63 @@ cfg.swift:
 #   40| (Any) ...
 #-----|  -> [...]
 
+#   40| OpaqueValueExpr
+
+#   40| TapExpr
+#-----|  -> "..."
+
+#   40| Unknown error 
+#-----|  -> call to ...
+
 #   40| [...]
 #-----|  -> default separator
 
 #   40| [...]
 #-----|  -> [...]
+
+#   40| call to ...
+#-----|  -> appendInterpolation(_:)
+
+#   40| $interpolation
+#-----|  -> &...
+
+#   40| &...
+#-----|  -> call to appendLiteral(_:)
+
+#   40| call to appendLiteral(_:)
+#-----|  -> Unknown error 
+
+#   40| $interpolation
+#-----|  -> &...
+
+#   40| &...
+#-----|  -> call to appendInterpolation(_:)
+
+#   40| appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#   40| call to appendInterpolation(_:)
+#-----|  -> error
+
+#   40| call to ...
+
+#   40| error
+#-----|  -> call to ...
+
+#   40| 
+#-----|  -> call to ...
+
+#   40| $interpolation
+#-----|  -> &...
+
+#   40| &...
+#-----|  -> call to appendLiteral(_:)
+
+#   40| call to ...
+#-----|  -> TapExpr
+
+#   40| call to appendLiteral(_:)
+#-----|  -> 
 
 #   42| return ...
 #-----| return -> exit tryCatch(x:) (normal)
@@ -2820,13 +2906,178 @@ cfg.swift:
 #-----|  -> y
 
 #  262| y
-#-----|  -> "..."
 
 #  263| return ...
 #-----| return -> exit interpolatedString(x:y:) (normal)
 
+#  263| 
+#-----|  -> call to ...
+
 #  263| "..."
 #-----|  -> return ...
+
+#  263| OpaqueValueExpr
+
+#  263| TapExpr
+#-----|  -> "..."
+
+#  263| call to ...
+#-----|  -> appendInterpolation(_:)
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendLiteral(_:)
+
+#  263| call to appendLiteral(_:)
+#-----|  -> 
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendInterpolation(_:)
+
+#  263| appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendInterpolation(_:)
+#-----|  -> x
+
+#  263| call to ...
+
+#  263| x
+#-----|  -> call to ...
+
+#  263|  + 
+#-----|  -> call to ...
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendLiteral(_:)
+
+#  263| call to ...
+#-----|  -> appendInterpolation(_:)
+
+#  263| call to appendLiteral(_:)
+#-----|  ->  + 
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendInterpolation(_:)
+
+#  263| appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendInterpolation(_:)
+#-----|  -> y
+
+#  263| call to ...
+
+#  263| y
+#-----|  -> call to ...
+
+#  263|  is equal to 
+#-----|  -> call to ...
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendLiteral(_:)
+
+#  263| call to ...
+#-----|  -> appendInterpolation(_:)
+
+#  263| call to appendLiteral(_:)
+#-----|  ->  is equal to 
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendInterpolation(_:)
+
+#  263| appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendInterpolation(_:)
+#-----|  -> +(_:_:)
+
+#  263| call to ...
+
+#  263| x
+#-----|  -> y
+
+#  263| ... call to +(_:_:) ...
+#-----|  -> call to ...
+
+#  263| +(_:_:)
+#-----|  -> Int.Type
+
+#  263| Int.Type
+#-----|  -> call to +(_:_:)
+
+#  263| call to +(_:_:)
+#-----|  -> x
+
+#  263| y
+#-----|  -> ... call to +(_:_:) ...
+
+#  263|  and here is a zero: 
+#-----|  -> call to ...
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendLiteral(_:)
+
+#  263| call to ...
+#-----|  -> appendInterpolation(_:)
+
+#  263| call to appendLiteral(_:)
+#-----|  ->  and here is a zero: 
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendInterpolation(_:)
+
+#  263| appendInterpolation(_:)
+#-----|  -> $interpolation
+
+#  263| call to appendInterpolation(_:)
+#-----|  -> returnZero()
+
+#  263| call to ...
+
+#  263| returnZero()
+#-----|  -> call to returnZero()
+
+#  263| call to returnZero()
+#-----|  -> call to ...
+
+#  263| 
+#-----|  -> call to ...
+
+#  263| $interpolation
+#-----|  -> &...
+
+#  263| &...
+#-----|  -> call to appendLiteral(_:)
+
+#  263| call to ...
+#-----|  -> TapExpr
+
+#  263| call to appendLiteral(_:)
+#-----|  -> 
 
 #  266| enter testSubscriptExpr()
 #-----|  -> testSubscriptExpr()
@@ -5093,6 +5344,7 @@ cfg.swift:
 #-----|  -> Did not throw.
 
 #  386| call to print(_:separator:terminator:)
+#-----|  -> mightThrow(x:)
 
 #  386| default separator
 #-----|  -> default terminator
@@ -5111,6 +5363,49 @@ cfg.swift:
 
 #  386| [...]
 #-----|  -> [...]
+
+#  387| try! ...
+#-----|  -> print(_:separator:terminator:)
+
+#  387| mightThrow(x:)
+#-----|  -> 0
+
+#  387| call to mightThrow(x:)
+#-----| exception -> exit doWithoutCatch(x:) (normal)
+#-----|  -> try! ...
+
+#  387| 0
+#-----|  -> call to mightThrow(x:)
+
+#  388| print(_:separator:terminator:)
+#-----|  -> Still did not throw.
+
+#  388| call to print(_:separator:terminator:)
+#-----|  -> 0
+
+#  388| default separator
+#-----|  -> default terminator
+
+#  388| default terminator
+#-----|  -> call to print(_:separator:terminator:)
+
+#  388| (Any) ...
+#-----|  -> [...]
+
+#  388| Still did not throw.
+#-----|  -> (Any) ...
+
+#  388| [...]
+#-----|  -> default separator
+
+#  388| [...]
+#-----|  -> [...]
+
+#  390| return ...
+#-----| return -> exit doWithoutCatch(x:) (normal)
+
+#  390| 0
+#-----|  -> return ...
 
 #  394| (unnamed function decl)
 
@@ -5575,14 +5870,38 @@ cfg.swift:
 #  456| var ... = ...
 #-----|  -> kpGet_b_x
 
+#  456| var ... = ...
+#-----|  -> kpGet_b_x
+
 #  456| kpGet_b_x
 #-----| match -> #keyPath(...)
 
 #  456| kpGet_b_x
 #-----|  -> kpGet_bs_0_x
 
+#  456| kpGet_b_x
+#-----|  -> kpGet_bs_0_x
+
 #  456| #keyPath(...)
 #-----|  -> var ... = ...
+
+#  456| #keyPath(...)
+#-----|  -> var ... = ...
+#-----|  -> exit #keyPath(...) (normal)
+
+#  456| enter #keyPath(...)
+#-----|  -> #keyPath(...)
+
+#  456| exit #keyPath(...)
+
+#  456| exit #keyPath(...) (normal)
+#-----|  -> exit #keyPath(...)
+
+#  457| var ... = ...
+#-----|  -> kpGet_bs_0_x
+
+#  457| var ... = ...
+#-----|  -> kpGet_bs_0_x
 
 #  457| var ... = ...
 #-----|  -> kpGet_bs_0_x
@@ -5593,8 +5912,41 @@ cfg.swift:
 #  457| kpGet_bs_0_x
 #-----|  -> kpGet_mayB_force_x
 
+#  457| kpGet_bs_0_x
+#-----| match -> #keyPath(...)
+
+#  457| kpGet_bs_0_x
+#-----|  -> kpGet_mayB_force_x
+
+#  457| kpGet_bs_0_x
+#-----|  -> kpGet_mayB_force_x
+
 #  457| #keyPath(...)
 #-----|  -> var ... = ...
+
+#  457| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  457| #keyPath(...)
+#-----|  -> var ... = ...
+#-----|  -> exit #keyPath(...) (normal)
+
+#  457| enter #keyPath(...)
+#-----|  -> #keyPath(...)
+
+#  457| exit #keyPath(...)
+
+#  457| exit #keyPath(...) (normal)
+#-----|  -> exit #keyPath(...)
+
+#  458| var ... = ...
+#-----|  -> kpGet_mayB_force_x
+
+#  458| var ... = ...
+#-----|  -> kpGet_mayB_force_x
+
+#  458| var ... = ...
+#-----|  -> kpGet_mayB_force_x
 
 #  458| var ... = ...
 #-----|  -> kpGet_mayB_force_x
@@ -5605,8 +5957,53 @@ cfg.swift:
 #  458| kpGet_mayB_force_x
 #-----|  -> kpGet_mayB_x
 
+#  458| kpGet_mayB_force_x
+#-----| match -> #keyPath(...)
+
+#  458| kpGet_mayB_force_x
+#-----|  -> kpGet_mayB_x
+
+#  458| kpGet_mayB_force_x
+#-----| match -> #keyPath(...)
+
+#  458| kpGet_mayB_force_x
+#-----|  -> kpGet_mayB_x
+
+#  458| kpGet_mayB_force_x
+#-----|  -> kpGet_mayB_x
+
 #  458| #keyPath(...)
 #-----|  -> var ... = ...
+
+#  458| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  458| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  458| #keyPath(...)
+#-----|  -> var ... = ...
+#-----|  -> exit #keyPath(...) (normal)
+
+#  458| enter #keyPath(...)
+#-----|  -> #keyPath(...)
+
+#  458| exit #keyPath(...)
+
+#  458| exit #keyPath(...) (normal)
+#-----|  -> exit #keyPath(...)
+
+#  459| var ... = ...
+#-----|  -> kpGet_mayB_x
+
+#  459| var ... = ...
+#-----|  -> kpGet_mayB_x
+
+#  459| var ... = ...
+#-----|  -> kpGet_mayB_x
+
+#  459| var ... = ...
+#-----|  -> kpGet_mayB_x
 
 #  459| var ... = ...
 #-----|  -> kpGet_mayB_x
@@ -5617,8 +6014,62 @@ cfg.swift:
 #  459| kpGet_mayB_x
 #-----|  -> apply_kpGet_b_x
 
+#  459| kpGet_mayB_x
+#-----| match -> #keyPath(...)
+
+#  459| kpGet_mayB_x
+#-----|  -> apply_kpGet_b_x
+
+#  459| kpGet_mayB_x
+#-----| match -> #keyPath(...)
+
+#  459| kpGet_mayB_x
+#-----|  -> apply_kpGet_b_x
+
+#  459| kpGet_mayB_x
+#-----| match -> #keyPath(...)
+
+#  459| kpGet_mayB_x
+#-----|  -> apply_kpGet_b_x
+
+#  459| kpGet_mayB_x
+#-----|  -> apply_kpGet_b_x
+
 #  459| #keyPath(...)
 #-----|  -> var ... = ...
+
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
+
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
+#-----|  -> exit #keyPath(...) (normal)
+
+#  459| enter #keyPath(...)
+#-----|  -> #keyPath(...)
+
+#  459| exit #keyPath(...)
+
+#  459| exit #keyPath(...) (normal)
+#-----|  -> exit #keyPath(...)
+
+#  461| var ... = ...
+#-----|  -> apply_kpGet_b_x
+
+#  461| var ... = ...
+#-----|  -> apply_kpGet_b_x
+
+#  461| var ... = ...
+#-----|  -> apply_kpGet_b_x
+
+#  461| var ... = ...
+#-----|  -> apply_kpGet_b_x
 
 #  461| var ... = ...
 #-----|  -> apply_kpGet_b_x
@@ -5629,8 +6080,56 @@ cfg.swift:
 #  461| apply_kpGet_b_x
 #-----|  -> apply_kpGet_bs_0_x
 
+#  461| apply_kpGet_b_x
+#-----| match -> a
+
+#  461| apply_kpGet_b_x
+#-----|  -> apply_kpGet_bs_0_x
+
+#  461| apply_kpGet_b_x
+#-----| match -> a
+
+#  461| apply_kpGet_b_x
+#-----|  -> apply_kpGet_bs_0_x
+
+#  461| apply_kpGet_b_x
+#-----| match -> a
+
+#  461| apply_kpGet_b_x
+#-----|  -> apply_kpGet_bs_0_x
+
+#  461| apply_kpGet_b_x
+#-----| match -> a
+
+#  461| apply_kpGet_b_x
+#-----|  -> apply_kpGet_bs_0_x
+
 #  461| a
 #-----|  -> kpGet_b_x
+
+#  461| a
+#-----|  -> kpGet_b_x
+
+#  461| a
+#-----|  -> kpGet_b_x
+
+#  461| a
+#-----|  -> kpGet_b_x
+
+#  461| a
+#-----|  -> kpGet_b_x
+
+#  461| \...[...]
+#-----|  -> var ... = ...
+
+#  461| \...[...]
+#-----|  -> var ... = ...
+
+#  461| \...[...]
+#-----|  -> var ... = ...
+
+#  461| \...[...]
+#-----|  -> var ... = ...
 
 #  461| \...[...]
 #-----|  -> var ... = ...
@@ -5638,8 +6137,44 @@ cfg.swift:
 #  461| (WritableKeyPath<A, Int>) ...
 #-----|  -> \...[...]
 
+#  461| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  461| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  461| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  461| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
 #  461| kpGet_b_x
 #-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  461| kpGet_b_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  461| kpGet_b_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  461| kpGet_b_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  461| kpGet_b_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  462| var ... = ...
+#-----|  -> apply_kpGet_bs_0_x
+
+#  462| var ... = ...
+#-----|  -> apply_kpGet_bs_0_x
+
+#  462| var ... = ...
+#-----|  -> apply_kpGet_bs_0_x
+
+#  462| var ... = ...
+#-----|  -> apply_kpGet_bs_0_x
 
 #  462| var ... = ...
 #-----|  -> apply_kpGet_bs_0_x
@@ -5650,8 +6185,56 @@ cfg.swift:
 #  462| apply_kpGet_bs_0_x
 #-----|  -> apply_kpGet_mayB_force_x
 
+#  462| apply_kpGet_bs_0_x
+#-----| match -> a
+
+#  462| apply_kpGet_bs_0_x
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  462| apply_kpGet_bs_0_x
+#-----| match -> a
+
+#  462| apply_kpGet_bs_0_x
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  462| apply_kpGet_bs_0_x
+#-----| match -> a
+
+#  462| apply_kpGet_bs_0_x
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  462| apply_kpGet_bs_0_x
+#-----| match -> a
+
+#  462| apply_kpGet_bs_0_x
+#-----|  -> apply_kpGet_mayB_force_x
+
 #  462| a
 #-----|  -> kpGet_bs_0_x
+
+#  462| a
+#-----|  -> kpGet_bs_0_x
+
+#  462| a
+#-----|  -> kpGet_bs_0_x
+
+#  462| a
+#-----|  -> kpGet_bs_0_x
+
+#  462| a
+#-----|  -> kpGet_bs_0_x
+
+#  462| \...[...]
+#-----|  -> var ... = ...
+
+#  462| \...[...]
+#-----|  -> var ... = ...
+
+#  462| \...[...]
+#-----|  -> var ... = ...
+
+#  462| \...[...]
+#-----|  -> var ... = ...
 
 #  462| \...[...]
 #-----|  -> var ... = ...
@@ -5659,8 +6242,44 @@ cfg.swift:
 #  462| (WritableKeyPath<A, Int>) ...
 #-----|  -> \...[...]
 
+#  462| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  462| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  462| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  462| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
 #  462| kpGet_bs_0_x
 #-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  462| kpGet_bs_0_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  462| kpGet_bs_0_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  462| kpGet_bs_0_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  462| kpGet_bs_0_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  463| var ... = ...
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  463| var ... = ...
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  463| var ... = ...
+#-----|  -> apply_kpGet_mayB_force_x
+
+#  463| var ... = ...
+#-----|  -> apply_kpGet_mayB_force_x
 
 #  463| var ... = ...
 #-----|  -> apply_kpGet_mayB_force_x
@@ -5671,8 +6290,56 @@ cfg.swift:
 #  463| apply_kpGet_mayB_force_x
 #-----|  -> apply_kpGet_mayB_x
 
+#  463| apply_kpGet_mayB_force_x
+#-----| match -> a
+
+#  463| apply_kpGet_mayB_force_x
+#-----|  -> apply_kpGet_mayB_x
+
+#  463| apply_kpGet_mayB_force_x
+#-----| match -> a
+
+#  463| apply_kpGet_mayB_force_x
+#-----|  -> apply_kpGet_mayB_x
+
+#  463| apply_kpGet_mayB_force_x
+#-----| match -> a
+
+#  463| apply_kpGet_mayB_force_x
+#-----|  -> apply_kpGet_mayB_x
+
+#  463| apply_kpGet_mayB_force_x
+#-----| match -> a
+
+#  463| apply_kpGet_mayB_force_x
+#-----|  -> apply_kpGet_mayB_x
+
 #  463| a
 #-----|  -> kpGet_mayB_force_x
+
+#  463| a
+#-----|  -> kpGet_mayB_force_x
+
+#  463| a
+#-----|  -> kpGet_mayB_force_x
+
+#  463| a
+#-----|  -> kpGet_mayB_force_x
+
+#  463| a
+#-----|  -> kpGet_mayB_force_x
+
+#  463| \...[...]
+#-----|  -> var ... = ...
+
+#  463| \...[...]
+#-----|  -> var ... = ...
+
+#  463| \...[...]
+#-----|  -> var ... = ...
+
+#  463| \...[...]
+#-----|  -> var ... = ...
 
 #  463| \...[...]
 #-----|  -> var ... = ...
@@ -5680,8 +6347,44 @@ cfg.swift:
 #  463| (WritableKeyPath<A, Int>) ...
 #-----|  -> \...[...]
 
+#  463| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  463| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  463| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
+#  463| (WritableKeyPath<A, Int>) ...
+#-----|  -> \...[...]
+
 #  463| kpGet_mayB_force_x
 #-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  463| kpGet_mayB_force_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  463| kpGet_mayB_force_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  463| kpGet_mayB_force_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  463| kpGet_mayB_force_x
+#-----|  -> (WritableKeyPath<A, Int>) ...
+
+#  464| var ... = ...
+#-----|  -> apply_kpGet_mayB_x
+
+#  464| var ... = ...
+#-----|  -> apply_kpGet_mayB_x
+
+#  464| var ... = ...
+#-----|  -> apply_kpGet_mayB_x
+
+#  464| var ... = ...
+#-----|  -> apply_kpGet_mayB_x
 
 #  464| var ... = ...
 #-----|  -> apply_kpGet_mayB_x
@@ -5692,14 +6395,82 @@ cfg.swift:
 #  464| apply_kpGet_mayB_x
 #-----|  -> exit test(a:) (normal)
 
+#  464| apply_kpGet_mayB_x
+#-----| match -> a
+
+#  464| apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
+#-----| match -> a
+
+#  464| apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
+#-----| match -> a
+
+#  464| apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
+#-----| match -> a
+
+#  464| apply_kpGet_mayB_x
+
+#  464| a
+#-----|  -> kpGet_mayB_x
+
+#  464| a
+#-----|  -> kpGet_mayB_x
+
+#  464| a
+#-----|  -> kpGet_mayB_x
+
+#  464| a
+#-----|  -> kpGet_mayB_x
+
 #  464| a
 #-----|  -> kpGet_mayB_x
 
 #  464| \...[...]
 #-----|  -> var ... = ...
 
+#  464| \...[...]
+#-----|  -> var ... = ...
+
+#  464| \...[...]
+#-----|  -> var ... = ...
+
+#  464| \...[...]
+#-----|  -> var ... = ...
+
+#  464| \...[...]
+#-----|  -> var ... = ...
+
 #  464| (KeyPath<A, Int?>) ...
 #-----|  -> \...[...]
+
+#  464| (KeyPath<A, Int?>) ...
+#-----|  -> \...[...]
+
+#  464| (KeyPath<A, Int?>) ...
+#-----|  -> \...[...]
+
+#  464| (KeyPath<A, Int?>) ...
+#-----|  -> \...[...]
+
+#  464| (KeyPath<A, Int?>) ...
+#-----|  -> \...[...]
+
+#  464| kpGet_mayB_x
+#-----|  -> (KeyPath<A, Int?>) ...
+
+#  464| kpGet_mayB_x
+#-----|  -> (KeyPath<A, Int?>) ...
+
+#  464| kpGet_mayB_x
+#-----|  -> (KeyPath<A, Int?>) ...
+
+#  464| kpGet_mayB_x
+#-----|  -> (KeyPath<A, Int?>) ...
 
 #  464| kpGet_mayB_x
 #-----|  -> (KeyPath<A, Int?>) ...
