@@ -47,6 +47,51 @@ predicate allocExpr(Expr alloc, string kind) {
   not alloc.isFromUninstantiatedTemplate(_)
 }
 
+/** Holds if `n` is a dataflow node that is reachable from allocation. */
+private predicate flowsFromAllocExpr(DataFlow::Node n) {
+  allocExprOrIndirect(n.asExpr(), _)
+  or
+  exists(DataFlow::Node n0 |
+    flowsFromAllocExpr(n0) and
+    DataFlow::localFlowStep(n0, n)
+  )
+}
+
+/**
+ * Holds if `n` is a dataflow node that:
+ * - Is reachable from allocation, and
+ * - Eventually reaches an expression that is returned by a `ReturnStmt`.
+ */
+private predicate flowsToReturn(DataFlow::Node n) {
+  flowsFromAllocExpr(n) and
+  (
+    n.asExpr() = any(ReturnStmt rtn).getExpr()
+    or
+    exists(DataFlow::Node n2 |
+      flowsToReturn(n2) and
+      DataFlow::localFlowStep(n, n2)
+    )
+  )
+}
+
+/**
+ * Same as `DataFlow::localFlowStep`, but restricted to nodes
+ * that are on a path from some allocation to some `ReturnStmt`.
+ */
+private predicate localFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+  flowsToReturn(n1) and
+  flowsToReturn(n2) and
+  DataFlow::localFlowStep(n1, n2)
+}
+
+/** Holds if `ReturnStmt` may return the value of an allocation with kind `kind`. */
+private predicate localExprFlow(ReturnStmt rtn, string kind) {
+  exists(Expr e |
+    allocExprOrIndirect(e, kind) and
+    localFlowStep*(DataFlow::exprNode(e), DataFlow::exprNode(rtn.getExpr()))
+  )
+}
+
 /**
  * Holds if `alloc` is a use of `malloc` or `new`, or a function
  * wrapping one of those.  `kind` is a string describing the type
@@ -59,14 +104,7 @@ predicate allocExprOrIndirect(Expr alloc, string kind) {
   exists(ReturnStmt rtn |
     // indirect alloc via function call
     alloc.(FunctionCall).getTarget() = rtn.getEnclosingFunction() and
-    (
-      allocExprOrIndirect(rtn.getExpr(), kind)
-      or
-      exists(Expr e |
-        allocExprOrIndirect(e, kind) and
-        DataFlow::localExprFlow(e, rtn.getExpr())
-      )
-    )
+    localExprFlow(rtn, kind)
   )
 }
 
