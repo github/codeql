@@ -143,6 +143,13 @@ private predicate messageDigestFlowStep(
   )
 }
 
+/** Holds if `ty` either is or transitively contains a field that is a `MessageDigest`. */
+private predicate containsMessageDigest(Class ty) {
+  ty.getASourceSupertype*().hasQualifiedName("java.security", "MessageDigest")
+  or
+  containsMessageDigest(ty.getASourceSupertype*().getAField().getType())
+}
+
 /**
  * Holds if `node` is the qualifier of a call to `MessageDigest.digest`.
  * `hasArg` is true if this call has an argument, and `isPassword` is true if this call could add a password to the digest.
@@ -209,10 +216,14 @@ private class MessageDigestUsedOnceConfig extends DataFlow2::Configuration {
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // Allow arbitrary field reads to balance out the implicit reads added above.
+    // Allow arbitrary field reads of fields that contain a MessageDigest; to balance out the implicit reads added above.
     // For example, in the example above, after the call to `update`, there is flow to the `sha256` node
     // at state `MessageDigestUnsalted` with an empty accss path; which we would like to be able to follow through to the field `sha256.md`.
-    exists(FieldRead fr | node1 = DataFlow::getFieldQualifier(fr) and node2.asExpr() = fr)
+    exists(FieldRead fr |
+      node1 = DataFlow::getFieldQualifier(fr) and
+      node2.asExpr() = fr and
+      containsMessageDigest(fr.getType())
+    )
   }
 }
 
@@ -261,8 +272,12 @@ private class MessageDigestSaltedConfig extends DataFlow2::Configuration {
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // Allow flow through arbitrary field reads to balance out the implicit reads added above
-    exists(FieldRead fr | node1 = DataFlow::getFieldQualifier(fr) and node2.asExpr() = fr)
+    // Allow flow through arbitrary field reads of fields that contain a MessageDigest to balance out the implicit reads added above
+    exists(FieldRead fr |
+      node1 = DataFlow::getFieldQualifier(fr) and
+      node2.asExpr() = fr and
+      containsMessageDigest(fr.getType())
+    )
   }
 }
 
