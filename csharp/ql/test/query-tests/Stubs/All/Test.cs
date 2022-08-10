@@ -134,6 +134,34 @@ namespace Test
 
         public Class9.Nested NestedInstance { get; } = new Class9.Nested(1);
     }
+
+    public enum Enum1
+    {
+        None1,
+        Some11,
+        Some12
+    }
+
+    public enum Enum2
+    {
+        None2 = 2,
+        Some21 = 1,
+        Some22 = 3
+    }
+
+    public enum Enum3
+    {
+        Some32,
+        Some31,
+        None3
+    }
+
+    public enum Enum4
+    {
+        Some41 = 7,
+        None4 = 2,
+        Some42 = 6
+    }
 }
 
 namespace A1
