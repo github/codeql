@@ -108,11 +108,13 @@ private module Cached {
       localFlowSsaInput(nodeFrom, def, nodeTo.asDefinition())
     )
     or
+    // flow through writes to inout parameters
     exists(ParamReturnKind kind, ExprCfgNode arg |
       arg = nodeFrom.(InOutUpdateNode).getCall(kind).asCall().getArgument(kind.getIndex()) and
       nodeTo.asDefinition().(Ssa::WriteDefinition).isInoutDef(arg)
     )
     or
+    // flow through `&` (inout argument)
     nodeFrom.asExpr() = nodeTo.asExpr().(InOutExpr).getSubExpr()
     or
     // flow through `try!` and similar constructs
