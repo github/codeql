@@ -7,3 +7,5 @@ query predicate unresolvedCall(Call call) { not exists(call.getATarget()) }
 query predicate privateMethod(MethodBase m) { m.isPrivate() }
 
 query predicate publicMethod(MethodBase m) { m.isPublic() }
+
+query predicate protectedMethods(MethodBase m) { m.isProtected() }

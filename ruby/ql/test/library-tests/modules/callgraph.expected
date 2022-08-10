@@ -394,3 +394,4 @@ publicMethod
 | private.rb:20:3:21:5 | public2 |
 | private.rb:46:3:47:5 | public |
 | private.rb:71:3:73:5 | call_m1 |
+protectedMethods
