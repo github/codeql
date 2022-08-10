@@ -16,65 +16,44 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch
  * in `Array.qll`.
  */
 module Hash {
-  // cannot use API graphs due to negative recursion
-  private predicate isHashLiteralPair(Pair pair, ConstantValue key) {
-    key = DataFlow::Content::getKnownElementIndex(pair.getKey()) and
-    pair = any(MethodCall mc | mc.getMethodName() = "[]").getAnArgument()
-  }
-
-  private class HashLiteralSymbolSummary extends SummarizedCallable {
-    private ConstantValue::ConstantSymbolValue symbol;
-
-    HashLiteralSymbolSummary() {
-      isHashLiteralPair(_, symbol) and
-      this = "Hash.[" + symbol.serialize() + "]"
-    }
-
-    final override MethodCall getACall() {
-      result = API::getTopLevelMember("Hash").getAMethodCall("[]").getExprNode().getExpr() and
-      exists(result.getKeywordArgument(symbol.getSymbol()))
-    }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      // { symbol: x }
-      input = "Argument[" + symbol.getSymbol() + ":]" and
-      output = "ReturnValue.Element[" + symbol.serialize() + "]" and
-      preservesValue = true
-    }
-  }
-
-  private class HashLiteralNonSymbolSummary extends SummarizedCallable {
-    private ConstantValue key;
-
-    HashLiteralNonSymbolSummary() {
-      this = "Hash.[]" and
-      isHashLiteralPair(_, key) and
+  /**
+   * Holds if `key` is used as the non-symbol key in a hash literal. For example
+   *
+   * ```rb
+   * {
+   *   :a => 1, # symbol
+   *   "b" => 2 # non-symbol, "b" is the key
+   * }
+   * ```
+   */
+  private predicate isHashLiteralNonSymbolKey(ConstantValue key) {
+    exists(Pair pair |
+      key = DataFlow::Content::getKnownElementIndex(pair.getKey()) and
+      // cannot use API graphs due to negative recursion
+      pair = any(MethodCall mc | mc.getMethodName() = "[]").getAnArgument() and
       not key.isSymbol(_)
-    }
+    )
+  }
+
+  private class HashLiteralSummary extends SummarizedCallable {
+    HashLiteralSummary() { this = "Hash.[]" }
 
     final override MethodCall getACall() {
-      result = API::getTopLevelMember("Hash").getAMethodCall("[]").getExprNode().getExpr() and
-      isHashLiteralPair(result.getAnArgument(), key)
+      result = API::getTopLevelMember("Hash").getAMethodCall("[]").getExprNode().getExpr()
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       // { 'nonsymbol' => x }
-      input = "Argument[0..].PairValue[" + key.serialize() + "]" and
-      output = "ReturnValue.Element[" + key.serialize() + "]" and
-      preservesValue = true
-    }
-  }
-
-  private class HashLiteralHashSplatSummary extends SummarizedCallable {
-    HashLiteralHashSplatSummary() { this = "Hash.[**]" }
-
-    final override MethodCall getACall() {
-      result = API::getTopLevelMember("Hash").getAMethodCall("[]").getExprNode().getExpr() and
-      result.getAnArgument() instanceof HashSplatExpr
-    }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      // { **hash }
+      exists(ConstantValue key |
+        isHashLiteralNonSymbolKey(key) and
+        input = "Argument[0..].PairValue[" + key.serialize() + "]" and
+        output = "ReturnValue.Element[" + key.serialize() + "]" and
+        preservesValue = true
+      )
+      or
+      // { symbol: x }
+      // we make use of the special `hash-splat` argument kind, which contains all keyword
+      // arguments wrapped in an implicit hash, as well as explicit hash splat arguments
       input = "Argument[hash-splat].WithElement[any]" and
       output = "ReturnValue" and
       preservesValue = true
