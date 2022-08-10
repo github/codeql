@@ -100,7 +100,7 @@ private class VisibilityModifier extends MethodModifier {
     this.getMethodName() = ["private", "private_class_method"] and
     result = "private"
     or
-    this.getMethodName() = ["protected"] and
+    this.getMethodName() = "protected" and
     result = "protected"
   }
 }
