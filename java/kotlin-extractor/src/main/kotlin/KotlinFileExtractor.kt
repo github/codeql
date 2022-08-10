@@ -4,6 +4,7 @@ import com.github.codeql.comments.CommentExtractor
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.functionN
 import com.github.codeql.utils.versions.getIrStubFromDescriptor
+import com.github.codeql.utils.versions.isUnderscoreParameter
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.parents
@@ -642,7 +643,7 @@ open class KotlinFileExtractor(
             if (extractTypeAccess) {
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
             }
-            val syntheticParameterNames = (vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true
+            val syntheticParameterNames = isUnderscoreParameter(vp) || ((vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true)
             return extractValueParameter(id, substitutedType, vp.name.asString(), location, parent, idx, useValueParameter(vp, parentSourceDeclaration), vp.isVararg, syntheticParameterNames)
         }
     }
