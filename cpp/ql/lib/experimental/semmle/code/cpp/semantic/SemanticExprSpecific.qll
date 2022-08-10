@@ -212,12 +212,6 @@ module SemanticExprConfig {
   }
 
   class Bound instanceof IRBound::Bound {
-    Bound() {
-      this instanceof IRBound::ZeroBound
-      or
-      this.(IRBound::ValueNumberBound).getValueNumber().getAnInstruction() instanceof SsaVariable
-    }
-
     string toString() { result = super.toString() }
 
     final Location getLocation() { result = super.getLocation() }
