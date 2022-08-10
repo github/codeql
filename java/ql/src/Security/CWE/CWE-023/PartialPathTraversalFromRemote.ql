@@ -11,6 +11,7 @@
  */
 
 import semmle.code.java.security.PartialPathTraversalQuery
+import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where any(PartialPathTraversalFromRemoteConfig config).hasFlowPath(source, sink)
