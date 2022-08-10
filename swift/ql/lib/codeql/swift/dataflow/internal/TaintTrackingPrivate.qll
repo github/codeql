@@ -43,7 +43,11 @@ private module Cached {
     )
     or
     // allow flow through string concatenation.
-    nodeTo.asExpr().(AddExpr).getAnOperand() = nodeFrom.asExpr()
+    exists(AddExpr ae |
+      ae.getAnOperand() = nodeFrom.asExpr() and
+      ae = nodeTo.asExpr() and
+      ae.getType().getName() = "String"
+    )
     or
     // allow flow through `URL.init`.
     exists(CallExpr call, ClassDecl c, AbstractFunctionDecl f |
