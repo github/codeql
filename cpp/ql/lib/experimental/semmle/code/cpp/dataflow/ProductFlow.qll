@@ -30,6 +30,7 @@ module ProductFlow {
   }
 
   private import Internal
+
   module Internal {
     class Conf1 extends DataFlow::Configuration {
       Conf1() { this = "Conf1" }
@@ -54,7 +55,9 @@ module ProductFlow {
       }
 
       override predicate isSink(DataFlow::Node sink) {
-        exists(Configuration conf | conf.isSinkPair(_, sink))
+        exists(Configuration conf, DataFlow::Node sink1 |
+          conf.isSinkPair(sink1, sink) and any(Conf1 c).hasFlow(_, sink1)
+        )
       }
     }
   }
