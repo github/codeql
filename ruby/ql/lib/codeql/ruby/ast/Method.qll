@@ -36,8 +36,25 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
     result = BodyStmt.super.getAChild(pred)
   }
 
+  /**
+   * Holds if this method is public.
+   * Methods are public by default.
+   */
+  predicate isPublic() {
+    forall(VisibilityModifier m | m = this.getVisibilityModifier() | m.getVisibility() = "public")
+  }
+
   /** Holds if this method is private. */
-  predicate isPrivate() { none() }
+  predicate isPrivate() { this.getVisibilityModifier().getVisibility() = "private" }
+
+  /** Holds if this method is protected. */
+  predicate isProtected() { this.getVisibilityModifier().getVisibility() = "protected" }
+
+  /**
+   * Gets the visibility modifier that defines the visibility of this method, if
+   * one exists.
+   */
+  VisibilityModifier getVisibilityModifier() { none() }
 }
 
 /**
@@ -47,45 +64,40 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
 private class MethodModifier extends MethodCall {
   /** Gets the name of the method that this call applies to. */
   Expr getMethodArgument() { result = this.getArgument(0) }
-
-  /** Holds if this call modifies a method with name `name` in namespace `n`. */
-  pragma[noinline]
-  predicate modifiesMethod(Namespace n, string name) {
-    this = n.getAStmt() and
-    [
-      this.getMethodArgument().getConstantValue().getStringlikeValue(),
-      this.getMethodArgument().(MethodBase).getName()
-    ] = name
-  }
 }
 
-/** A call to `private` or `private_class_method`. */
-private class Private extends MethodModifier {
+/** A method call that sets the visibility of other methods. */
+private class VisibilityModifier extends MethodModifier {
   private Namespace namespace;
   private int position;
 
-  Private() { this.getMethodName() = "private" and namespace.getStmt(position) = this }
-
-  override predicate modifiesMethod(Namespace n, string name) {
-    n = namespace and
-    (
-      // def foo
-      // ...
-      // private :foo
-      super.modifiesMethod(n, name)
-      or
-      // private
-      // ...
-      // def foo
-      not exists(this.getMethodArgument()) and
-      exists(MethodBase m, int i | n.getStmt(i) = m and m.getName() = name and i > position)
-    )
+  VisibilityModifier() {
+    this.getMethodName() =
+      [
+        "public", "private", "protected", "public_class_method", "private_class_method",
+        "protected_class_method"
+      ] and
+    namespace.getStmt(position) = this
   }
-}
 
-/** A call to `private_class_method`. */
-private class PrivateClassMethod extends MethodModifier {
-  PrivateClassMethod() { this.getMethodName() = "private_class_method" }
+  /**
+   * Holds if this modifier changes the "ambient" visibility - i.e. the default
+   * visibility of any subsequent method definitions.
+   */
+  predicate modifiesAmbientVisibility() {
+    this.getMethodName() = ["public", "private", "protected"] and
+    this.getNumberOfArguments() = 0
+  }
+
+  string getVisibility() {
+    this.getMethodName() = ["public", "public_class_method"] and result = "public"
+    or
+    this.getMethodName() = ["private", "private_class_method"] and
+    result = "private"
+    or
+    this.getMethodName() = ["protected", "protected_class_method"] and
+    result = "protected"
+  }
 }
 
 /** A normal method. */
@@ -140,28 +152,41 @@ class Method extends MethodBase, TMethod {
    * ```
    */
   override predicate isPrivate() {
-    exists(Namespace n, string name |
-      any(Private p).modifiesMethod(n, name) and
-      isDeclaredIn(this, n, name)
-    )
+    this.getVisibilityModifier().getVisibility() = "private"
     or
     // Top-level methods are private members of the Object class
     this.getEnclosingModule() instanceof Toplevel
   }
+
+  override predicate isPublic() { super.isPublic() and not this.isPrivate() }
 
   final override Parameter getParameter(int n) {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
   final override string toString() { result = this.getName() }
-}
 
-/**
- * Holds if the method `m` has name `name` and is declared in namespace `n`.
- */
-pragma[noinline]
-private predicate isDeclaredIn(MethodBase m, Namespace n, string name) {
-  n = m.getEnclosingModule() and name = m.getName()
+  override VisibilityModifier getVisibilityModifier() {
+    result.getEnclosingModule() = this.getEnclosingModule() and
+    (
+      result.getMethodArgument() = this
+      or
+      result.getMethodArgument().getConstantValue().getStringlikeValue() = this.getName()
+    )
+    or
+    exists(Namespace n, int methodPos | n.getStmt(methodPos) = this |
+      // The relevant visibility modifier is the closest call that occurs before
+      // the definition of `m` (typically this means higher up the file).
+      result =
+        max(int modifierPos, VisibilityModifier modifier |
+          modifier.modifiesAmbientVisibility() and
+          n.getStmt(modifierPos) = modifier and
+          modifierPos < methodPos
+        |
+          modifier order by modifierPos
+        )
+    )
+  }
 }
 
 /** A singleton method. */
@@ -216,10 +241,14 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
    * end
    * ```
    */
-  override predicate isPrivate() {
-    exists(Namespace n, string name |
-      any(PrivateClassMethod p).modifiesMethod(n, name) and
-      isDeclaredIn(this, n, name)
+  override predicate isPrivate() { super.isPrivate() }
+
+  override VisibilityModifier getVisibilityModifier() {
+    result.getEnclosingModule() = this.getEnclosingModule() and
+    (
+      result.getMethodArgument() = this
+      or
+      result.getMethodArgument().getConstantValue().getStringlikeValue() = this.getName()
     )
   }
 }
