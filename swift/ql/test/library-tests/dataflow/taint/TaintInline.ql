@@ -1,7 +1,3 @@
-/**
- * @kind path-problem
- */
-
 import swift
 import codeql.swift.dataflow.TaintTracking
 import codeql.swift.dataflow.DataFlow::DataFlow
@@ -25,7 +21,7 @@ class TestConfiguration extends TaintTracking::Configuration {
 }
 
 class TaintTest extends InlineExpectationsTest {
-  TaintTest() { this = "taintedFromLine" }
+  TaintTest() { this = "TaintTest" }
 
   override string getARelevantTag() { result = "taintedFromLine" }
 
