@@ -40,15 +40,23 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
    * Holds if this method is public.
    * Methods are public by default.
    */
-  predicate isPublic() {
-    forall(VisibilityModifier m | m = this.getVisibilityModifier() | m.getVisibility() = "public")
-  }
+  predicate isPublic() { this.getVisibility() = "public" }
 
   /** Holds if this method is private. */
-  predicate isPrivate() { this.getVisibilityModifier().getVisibility() = "private" }
+  predicate isPrivate() { this.getVisibility() = "private" }
 
   /** Holds if this method is protected. */
-  predicate isProtected() { this.getVisibilityModifier().getVisibility() = "protected" }
+  predicate isProtected() { this.getVisibility() = "protected" }
+
+  /**
+   * Gets a string describing the visibility of this method.
+   * This is either 'public', 'private' or 'protected'.
+   */
+  string getVisibility() {
+    result = this.getVisibilityModifier().getVisibility()
+    or
+    not exists(this.getVisibilityModifier()) and result = "public"
+  }
 
   /**
    * Gets the visibility modifier that defines the visibility of this method, if
@@ -151,20 +159,25 @@ class Method extends MethodBase, TMethod {
    * end
    * ```
    */
-  override predicate isPrivate() {
-    this.getVisibilityModifier().getVisibility() = "private"
-    or
-    // Top-level methods are private members of the Object class
-    this.getEnclosingModule() instanceof Toplevel
-  }
-
-  override predicate isPublic() { super.isPublic() and not this.isPrivate() }
+  override predicate isPrivate() { super.isPrivate() }
 
   final override Parameter getParameter(int n) {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
   final override string toString() { result = this.getName() }
+
+  override string getVisibility() {
+    result = this.getVisibilityModifier().getVisibility()
+    or
+    this.getEnclosingModule() instanceof Toplevel and
+    not exists(this.getVisibilityModifier()) and
+    result = "private"
+    or
+    not this.getEnclosingModule() instanceof Toplevel and
+    not exists(this.getVisibilityModifier()) and
+    result = "public"
+  }
 
   override VisibilityModifier getVisibilityModifier() {
     result.getEnclosingModule() = this.getEnclosingModule() and
