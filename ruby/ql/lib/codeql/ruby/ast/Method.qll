@@ -66,24 +66,17 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
 }
 
 /**
- * A method call which modifies another method in some way.
+ * A method call that sets the visibility of other methods.
  * For example, `private :foo` makes the method `foo` private.
  */
-private class MethodModifier extends MethodCall {
-  /** Gets the name of the method that this call applies to. */
-  Expr getMethodArgument() { result = this.getArgument(0) }
-}
-
-/** A method call that sets the visibility of other methods. */
-private class VisibilityModifier extends MethodModifier {
-  private Namespace namespace;
-  private int position;
-
+private class VisibilityModifier extends MethodCall {
   VisibilityModifier() {
     this.getMethodName() =
-      ["public", "private", "protected", "public_class_method", "private_class_method"] and
-    namespace.getStmt(position) = this
+      ["public", "private", "protected", "public_class_method", "private_class_method"]
   }
+
+  /** Gets the name of the method that this call applies to. */
+  Expr getMethodArgument() { result = this.getArgument(0) }
 
   /**
    * Holds if this modifier changes the "ambient" visibility - i.e. the default
