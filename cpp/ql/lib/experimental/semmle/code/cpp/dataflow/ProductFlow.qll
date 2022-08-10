@@ -24,37 +24,42 @@ module ProductFlow {
       DataFlow::PathNode source1, DataFlow2::PathNode source2, DataFlow::PathNode sink1,
       DataFlow2::PathNode sink2
     ) {
-      isSourcePair(source1.getNode(), source2.getNode()) and
       isSinkPair(sink1.getNode(), sink2.getNode()) and
       reachablePair2(this, source1, source2, sink1, sink2)
     }
   }
 
-  class Conf1 extends DataFlow::Configuration {
-    Conf1() { this = "Conf1" }
+  private import Internal
+  module Internal {
+    class Conf1 extends DataFlow::Configuration {
+      Conf1() { this = "Conf1" }
 
-    override predicate isSource(DataFlow::Node source) {
-      exists(Configuration conf | conf.isSourcePair(source, _))
+      override predicate isSource(DataFlow::Node source) {
+        exists(Configuration conf | conf.isSourcePair(source, _))
+      }
+
+      override predicate isSink(DataFlow::Node sink) {
+        exists(Configuration conf | conf.isSinkPair(sink, _))
+      }
     }
 
-    override predicate isSink(DataFlow::Node sink) {
-      exists(Configuration conf | conf.isSinkPair(sink, _))
+    class Conf2 extends DataFlow2::Configuration {
+      Conf2() { this = "Conf2" }
+
+      override predicate isSource(DataFlow::Node source) {
+        exists(Configuration conf, DataFlow::Node source1 |
+          conf.isSourcePair(source1, source) and
+          any(Conf1 c).hasFlow(source1, _)
+        )
+      }
+
+      override predicate isSink(DataFlow::Node sink) {
+        exists(Configuration conf | conf.isSinkPair(_, sink))
+      }
     }
   }
 
-  class Conf2 extends DataFlow2::Configuration {
-    Conf2() { this = "Conf2" }
-
-    override predicate isSource(DataFlow::Node source) {
-      exists(Configuration conf | conf.isSourcePair(_, source))
-    }
-
-    override predicate isSink(DataFlow::Node sink) {
-      exists(Configuration conf | conf.isSinkPair(_, sink))
-    }
-  }
-
-  predicate reachablePair1(
+  private predicate reachablePair1(
     Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
     DataFlow::PathNode node1, DataFlow2::PathNode node2
   ) {
@@ -67,7 +72,7 @@ module ProductFlow {
     )
   }
 
-  predicate reachablePair2(
+  private predicate reachablePair2(
     Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
     DataFlow::PathNode node1, DataFlow2::PathNode node2
   ) {
@@ -80,7 +85,7 @@ module ProductFlow {
     )
   }
 
-  predicate interprocStep(
+  private predicate interprocStep(
     Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
     DataFlow::PathNode node1, DataFlow2::PathNode node2
   ) {
@@ -96,7 +101,7 @@ module ProductFlow {
     )
   }
 
-  predicate reachablePair(
+  private predicate reachablePair(
     Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
     DataFlow::PathNode node1, DataFlow2::PathNode node2
   ) {
