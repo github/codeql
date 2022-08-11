@@ -16,10 +16,10 @@ namespace Microsoft
         namespace Hosting
         {
             // Generated from `Microsoft.Extensions.Hosting.BackgroundServiceExceptionBehavior` in `Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public enum BackgroundServiceExceptionBehavior
+            public enum BackgroundServiceExceptionBehavior : int
             {
-                Ignore,
-                StopHost,
+                Ignore = 1,
+                StopHost = 0,
             }
 
             // Generated from `Microsoft.Extensions.Hosting.ConsoleLifetimeOptions` in `Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

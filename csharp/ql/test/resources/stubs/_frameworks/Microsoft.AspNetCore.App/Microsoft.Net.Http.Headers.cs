@@ -365,12 +365,12 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.Net.Http.Headers.SameSiteMode` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum SameSiteMode
+                public enum SameSiteMode : int
                 {
-                    Lax,
-                    None,
-                    Strict,
-                    Unspecified,
+                    Lax = 1,
+                    None = 0,
+                    Strict = 2,
+                    Unspecified = -1,
                 }
 
                 // Generated from `Microsoft.Net.Http.Headers.SetCookieHeaderValue` in `Microsoft.Net.Http.Headers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

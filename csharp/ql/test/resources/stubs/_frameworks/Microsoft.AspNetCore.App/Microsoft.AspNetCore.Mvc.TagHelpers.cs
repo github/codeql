@@ -9,11 +9,11 @@ namespace Microsoft
             namespace Rendering
             {
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.ValidationSummary` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum ValidationSummary
+                public enum ValidationSummary : int
                 {
-                    All,
-                    ModelOnly,
-                    None,
+                    All = 2,
+                    ModelOnly = 1,
+                    None = 0,
                 }
 
             }
@@ -263,10 +263,10 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.PersistenceMode` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum PersistenceMode
+                public enum PersistenceMode : int
                 {
-                    Server,
-                    WebAssembly,
+                    Server = 0,
+                    WebAssembly = 1,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.RenderAtEndOfFormTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

@@ -668,18 +668,18 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Components.RenderTree.RenderTreeEditType` in `Microsoft.AspNetCore.Components, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum RenderTreeEditType
+                public enum RenderTreeEditType : int
                 {
-                    PermutationListEnd,
-                    PermutationListEntry,
-                    PrependFrame,
-                    RemoveAttribute,
-                    RemoveFrame,
-                    SetAttribute,
-                    StepIn,
-                    StepOut,
-                    UpdateMarkup,
-                    UpdateText,
+                    PermutationListEnd = 10,
+                    PermutationListEntry = 9,
+                    PrependFrame = 1,
+                    RemoveAttribute = 4,
+                    RemoveFrame = 2,
+                    SetAttribute = 3,
+                    StepIn = 6,
+                    StepOut = 7,
+                    UpdateMarkup = 8,
+                    UpdateText = 5,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame` in `Microsoft.AspNetCore.Components, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -711,17 +711,17 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrameType` in `Microsoft.AspNetCore.Components, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum RenderTreeFrameType
+                public enum RenderTreeFrameType : short
                 {
-                    Attribute,
-                    Component,
-                    ComponentReferenceCapture,
-                    Element,
-                    ElementReferenceCapture,
-                    Markup,
-                    None,
-                    Region,
-                    Text,
+                    Attribute = 3,
+                    Component = 4,
+                    ComponentReferenceCapture = 7,
+                    Element = 1,
+                    ElementReferenceCapture = 6,
+                    Markup = 8,
+                    None = 0,
+                    Region = 5,
+                    Text = 2,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Components.RenderTree.Renderer` in `Microsoft.AspNetCore.Components, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
