@@ -1,4 +1,4 @@
-/** Definitions for the RSE without OAEP query */
+/** Definitions for the RSA without OAEP query */
 
 import java
 import Encryption
