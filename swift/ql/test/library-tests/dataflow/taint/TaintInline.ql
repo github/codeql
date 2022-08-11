@@ -5,7 +5,7 @@ import TestUtilities.InlineExpectationsTest
 class TaintTest extends InlineExpectationsTest {
   TaintTest() { this = "TaintTest" }
 
-  override string getARelevantTag() { result = "taintedFromLine" }
+  override string getARelevantTag() { result = "tainted" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(TestConfiguration config, Node source, Node sink, Expr sinkExpr |
@@ -13,7 +13,7 @@ class TaintTest extends InlineExpectationsTest {
       sinkExpr = sink.asExpr() and
       location = sinkExpr.getLocation() and
       element = sinkExpr.toString() and
-      tag = "taintedFromLine" and
+      tag = "tainted" and
       value = source.asExpr().getLocation().getStartLine().toString()
     )
   }
