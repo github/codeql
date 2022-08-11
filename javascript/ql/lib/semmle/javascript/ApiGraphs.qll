@@ -533,8 +533,9 @@ module API {
 
   /** Gets a node corresponding to an import of module `m`. */
   Node moduleImport(string m) {
-    result = Impl::MkModuleImport(m) or
-    result = Impl::MkModuleImport(m).(Node).getMember("default")
+    result = Internal::getAModuleImportRaw(m)
+    or
+    result = ModelOutput::getATypeNode(m, "")
   }
 
   /** Gets a node corresponding to an export of module `m`. */
@@ -544,6 +545,22 @@ module API {
   module Node {
     /** Gets a node whose type has the given qualified name. */
     Node ofType(string moduleName, string exportedName) {
+      result = Internal::getANodeOfTypeRaw(moduleName, exportedName)
+      or
+      result = ModelOutput::getATypeNode(moduleName, exportedName)
+    }
+  }
+
+  /** Provides access to API graph nodes without taking into account types from models. */
+  module Internal {
+    /** Gets a node corresponding to an import of module `m` without taking into account types from models. */
+    Node getAModuleImportRaw(string m) {
+      result = Impl::MkModuleImport(m) or
+      result = Impl::MkModuleImport(m).(Node).getMember("default")
+    }
+
+    /** Gets a node whose type has the given qualified name, not including types from models. */
+    Node getANodeOfTypeRaw(string moduleName, string exportedName) {
       result = Impl::MkTypeUse(moduleName, exportedName).(Node).getInstance()
     }
   }
