@@ -6,7 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| file://:0:0:0:0 | InitializeIndirection: (unnamed parameter 0) | Instruction 'InitializeIndirection: (unnamed parameter 0)' has no successors in function '$@'. | ir.cpp:1834:11:1834:11 | block_assignment::A& block_assignment::A::operator=(block_assignment::A&&) | block_assignment::A& block_assignment::A::operator=(block_assignment::A&&) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

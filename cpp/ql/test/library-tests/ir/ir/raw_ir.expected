@@ -9799,42 +9799,38 @@ ir.cpp:
 
 # 1834| block_assignment::A& block_assignment::A::operator=(block_assignment::A&&)
 # 1834|   Block 0
-# 1834|     v1834_1(void)           = EnterFunction                                : 
-# 1834|     mu1834_2(unknown)       = AliasedDefinition                            : 
-# 1834|     mu1834_3(unknown)       = InitializeNonLocal                           : 
-# 1834|     r1834_4(glval<unknown>) = VariableAddress[#this]                       : 
-# 1834|     mu1834_5(glval<A>)      = InitializeParameter[#this]                   : &:r1834_4
-# 1834|     r1834_6(glval<A>)       = Load[#this]                                  : &:r1834_4, ~m?
-# 1834|     mu1834_7(A)             = InitializeIndirection[#this]                 : &:r1834_6
-#-----|     r0_1(glval<A &&>)       = VariableAddress[(unnamed parameter 0)]       : 
-#-----|     mu0_2(A &&)             = InitializeParameter[(unnamed parameter 0)]   : &:r0_1
-#-----|     r0_3(A &&)              = Load[(unnamed parameter 0)]                  : &:r0_1, ~m?
-#-----|     mu0_4(unknown)          = InitializeIndirection[(unnamed parameter 0)] : &:r0_3
-
-#-----|   Block 1
-#-----|     r0_5(glval<unknown>)           = VariableAddress[#this] : 
-#-----|     r0_6(A *)                      = Load[#this]            : &:r0_5, ~m?
-#-----|     r0_7(glval<enum <unnamed>[1]>) = FieldAddress[e]        : r0_6
-
-#-----|   Block 2
-#-----|     r0_8(glval<A &&>)               = VariableAddress[(unnamed parameter 0)] : 
-#-----|     r0_9(A &&)                      = Load[(unnamed parameter 0)]            : &:r0_8, ~m?
-#-----|     r0_10(glval<A>)                 = CopyValue                              : r0_9
-#-----|     r0_11(glval<enum <unnamed>[1]>) = FieldAddress[e]                        : r0_10
-
-#-----|   Block 3
-#-----|     r0_12(glval<A &>)     = VariableAddress[#return]                 : 
-#-----|     r0_13(glval<unknown>) = VariableAddress[#this]                   : 
-#-----|     r0_14(A *)            = Load[#this]                              : &:r0_13, ~m?
-#-----|     r0_15(glval<A>)       = CopyValue                                : r0_14
-#-----|     r0_16(A &)            = CopyValue                                : r0_15
-#-----|     mu0_17(A &)           = Store[#return]                           : &:r0_12, r0_16
-# 1834|     v1834_8(void)         = ReturnIndirection[#this]                 : &:r1834_6, ~m?
-#-----|     v0_18(void)           = ReturnIndirection[(unnamed parameter 0)] : &:r0_3, ~m?
-# 1834|     r1834_9(glval<A &>)   = VariableAddress[#return]                 : 
-# 1834|     v1834_10(void)        = ReturnValue                              : &:r1834_9, ~m?
-# 1834|     v1834_11(void)        = AliasedUse                               : ~m?
-# 1834|     v1834_12(void)        = ExitFunction                             : 
+# 1834|     v1834_1(void)                   = EnterFunction                                : 
+# 1834|     mu1834_2(unknown)               = AliasedDefinition                            : 
+# 1834|     mu1834_3(unknown)               = InitializeNonLocal                           : 
+# 1834|     r1834_4(glval<unknown>)         = VariableAddress[#this]                       : 
+# 1834|     mu1834_5(glval<A>)              = InitializeParameter[#this]                   : &:r1834_4
+# 1834|     r1834_6(glval<A>)               = Load[#this]                                  : &:r1834_4, ~m?
+# 1834|     mu1834_7(A)                     = InitializeIndirection[#this]                 : &:r1834_6
+#-----|     r0_1(glval<A &&>)               = VariableAddress[(unnamed parameter 0)]       : 
+#-----|     mu0_2(A &&)                     = InitializeParameter[(unnamed parameter 0)]   : &:r0_1
+#-----|     r0_3(A &&)                      = Load[(unnamed parameter 0)]                  : &:r0_1, ~m?
+#-----|     mu0_4(unknown)                  = InitializeIndirection[(unnamed parameter 0)] : &:r0_3
+#-----|     r0_5(glval<unknown>)            = VariableAddress[#this]                       : 
+#-----|     r0_6(A *)                       = Load[#this]                                  : &:r0_5, ~m?
+#-----|     r0_7(glval<enum <unnamed>[1]>)  = FieldAddress[e]                              : r0_6
+#-----|     r0_8(glval<A &&>)               = VariableAddress[(unnamed parameter 0)]       : 
+#-----|     r0_9(A &&)                      = Load[(unnamed parameter 0)]                  : &:r0_8, ~m?
+#-----|     r0_10(glval<A>)                 = CopyValue                                    : r0_9
+#-----|     r0_11(glval<enum <unnamed>[1]>) = FieldAddress[e]                              : r0_10
+#-----|     r0_12(enum <unnamed>[1])        = Load[?]                                      : &:r0_11, ~m?
+#-----|     mu0_13(enum <unnamed>[1])       = Store[?]                                     : &:r0_7, r0_12
+#-----|     r0_14(glval<A &>)               = VariableAddress[#return]                     : 
+#-----|     r0_15(glval<unknown>)           = VariableAddress[#this]                       : 
+#-----|     r0_16(A *)                      = Load[#this]                                  : &:r0_15, ~m?
+#-----|     r0_17(glval<A>)                 = CopyValue                                    : r0_16
+#-----|     r0_18(A &)                      = CopyValue                                    : r0_17
+#-----|     mu0_19(A &)                     = Store[#return]                               : &:r0_14, r0_18
+# 1834|     v1834_8(void)                   = ReturnIndirection[#this]                     : &:r1834_6, ~m?
+#-----|     v0_20(void)                     = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, ~m?
+# 1834|     r1834_9(glval<A &>)             = VariableAddress[#return]                     : 
+# 1834|     v1834_10(void)                  = ReturnValue                                  : &:r1834_9, ~m?
+# 1834|     v1834_11(void)                  = AliasedUse                                   : ~m?
+# 1834|     v1834_12(void)                  = ExitFunction                                 : 
 
 # 1839| block_assignment::B& block_assignment::B::operator=(block_assignment::B&&)
 # 1839|   Block 0
