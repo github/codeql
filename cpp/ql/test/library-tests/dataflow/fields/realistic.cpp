@@ -62,8 +62,8 @@ int main(int argc, char** argv) {
         // There is no flow to the following two `sink` calls because the
         // source is the _pointer_ returned by `user_input` rather than the
         // _data_ to which it points.
-        sink((void*)foo.bar[i].baz->userInput.buffer); // $ MISSING: ir,ast
-        sink((void*)dst); // ir MISSING: ast
+        sink((void*)foo.bar[i].baz->userInput.buffer); // $ ir MISSING: ast
+        sink((void*)dst); // $ ir MISSING: ast
         i++;
     }
     return 0;

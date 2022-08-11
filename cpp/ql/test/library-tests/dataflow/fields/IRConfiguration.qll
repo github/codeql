@@ -9,6 +9,8 @@ class IRConf extends Configuration {
     or
     src.asExpr().(Call).getTarget().hasName("user_input")
     or
+    src.(IndirectReturnOutNode).getCallInstruction().getStaticCallTarget().hasName("user_input")
+    or
     exists(FunctionCall fc |
       fc.getAnArgument() = src.asDefiningArgument() and
       fc.getTarget().hasName("argument_source")
