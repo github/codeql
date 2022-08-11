@@ -1364,7 +1364,7 @@ module Exprs {
       or
       // And finally, we visit the body that potentially mutates the local variable.
       // Note that the CFG for the body will skip the first element in the
-      // body because it's guarenteed to be the variable declaration
+      // body because it's guaranteed to be the variable declaration
       // that we've already visited at i = 0. See the explanation
       // in `BraceStmtTree` for why this is necessary.
       i = 2 and
