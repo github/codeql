@@ -54,7 +54,7 @@ not used in any context, unlike the "petStore" bean.
 <references>
 <li>
 Spring Framework Reference Documentation 4.2:
-<a href="http://docs.spring.io/spring/docs/4.2.3.RELEASE/spring-framework-reference/html/beans.html#beans-definition">6.3 Bean overview</a>.
+<a href="https://docs.spring.io/spring/docs/4.2.3.RELEASE/spring-framework-reference/html/beans.html#beans-definition">6.3 Bean overview</a>.
 </li>
 </references>
 </qhelp>

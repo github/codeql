@@ -31,7 +31,7 @@ which all the <code>import</code> statements are at the top.</p>
 
 <li>
 Spring Framework Reference Documentation 3.0:
-<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-factory-xml-import">3.2.2.1 Composing XML-based configuration metadata</a>.
+<a href="https://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-factory-xml-import">3.2.2.1 Composing XML-based configuration metadata</a>.
 </li>
 
 

@@ -47,7 +47,7 @@ package javax.ws.rs.core;
  *
  * @author Paul Sandoz
  * @author Marc Hadley
- * @see <a href="http://www.ietf.org/rfc/rfc2109.txt">IETF RFC 2109</a>
+ * @see <a href="https://www.ietf.org/rfc/rfc2109.txt">IETF RFC 2109</a>
  * @since 1.0
  */
 public class Cookie {

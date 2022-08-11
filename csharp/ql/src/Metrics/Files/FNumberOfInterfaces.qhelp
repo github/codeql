@@ -14,7 +14,7 @@ compartmentalizing each interface into its own source file.</p>
 </recommendation>
 <references>
 
-  <li>MSDN. C# Programming Guide. <a href="http://msdn.microsoft.com/en-us/library/vstudio/ms173156.aspx">Interfaces</a>.</li>
+  <li>MSDN. C# Programming Guide. <a href="https://msdn.microsoft.com/en-us/library/vstudio/ms173156.aspx">Interfaces</a>.</li>
 
 </references>
 </qhelp>

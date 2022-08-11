@@ -26,7 +26,7 @@ considered sufficient. The second example uses 2048 bits, which is currently con
 </example>
 <references>
 
-<li>NIST, FIPS 140 Annex a: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf">
+<li>NIST, FIPS 140 Annex a: <a href="https://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf">
 Approved Security Functions</a>.</li>
 <li>NIST, SP 800-131A: <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf">
 Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>

@@ -50,7 +50,7 @@ which cannot be checked by the XML parser. The <code>orderService</code> bean is
 
 <li>
 Spring Framework Reference Documentation 3.0:
-<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-value-element">3.4.2.1 Straight values (primitives, Strings, and so on)</a>.
+<a href="https://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-value-element">3.4.2.1 Straight values (primitives, Strings, and so on)</a>.
 </li>
 
 

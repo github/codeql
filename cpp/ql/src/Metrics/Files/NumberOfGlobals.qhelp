@@ -20,10 +20,10 @@ as well as functions into classes.</p>
 <references>
 
 <li>
-  <a href="http://www.learncpp.com/cpp-tutorial/42-global-variables/">Global variables</a>
+  <a href="https://www.learncpp.com/cpp-tutorial/42-global-variables/">Global variables</a>
 </li>
 <li>
-  <a href="http://www-h.eng.cam.ac.uk/help/tpl/languages/C++/globals.html">C++: Global warning</a>
+  <a href="https://www-h.eng.cam.ac.uk/help/tpl/languages/C++/globals.html">C++: Global warning</a>
 </li>
 <li>
   <a href="https://www.securecoding.cert.org/confluence/display/c/DCL19-C.+Minimize+the+scope+of+variables+and+functions">Minimize the scope of variables and functions</a>

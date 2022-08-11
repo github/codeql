@@ -32,7 +32,7 @@ match that of the extension method.
 </example>
 <references>
 
-<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Liskov_substitution_principle">Liskov Substitution Principle</a>, <a href="http://en.wikipedia.org/wiki/Method_overriding#Python">Method overriding</a>.</li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Liskov_substitution_principle">Liskov Substitution Principle</a>, <a href="https://en.wikipedia.org/wiki/Method_overriding#Python">Method overriding</a>.</li>
 
 
 </references>

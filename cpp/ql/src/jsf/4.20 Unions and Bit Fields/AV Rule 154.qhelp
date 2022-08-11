@@ -34,7 +34,7 @@ The first field should also be declared to be unsigned.
   AV Rule 154, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
 </li>
 <li>
-  C++ reference: <a href="http://en.cppreference.com/w/cpp/language/bit_field">Bit Fields</a>
+  C++ reference: <a href="https://en.cppreference.com/w/cpp/language/bit_field">Bit Fields</a>
 </li>
 </references>
 </qhelp>

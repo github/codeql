@@ -34,8 +34,8 @@ will be raised. Adding a <code>__getitem__</code> method to the
 </example>
 <references>
 
-  <li>Python: <a href="http://docs.python.org/reference/expressions.html#membership-test-details">Membership test details</a>.</li>
-  <li>Python: <a href="http://docs.python.org/reference/datamodel.html#object.__contains__">The __contains__ method</a>.</li>
+  <li>Python: <a href="https://docs.python.org/reference/expressions.html#membership-test-details">Membership test details</a>.</li>
+  <li>Python: <a href="https://docs.python.org/reference/datamodel.html#object.__contains__">The __contains__ method</a>.</li>
 
 
 </references>

@@ -29,7 +29,7 @@ class. It should be a method on its own that takes <code>a</code> and <code>b</c
 </example>
 <references>
 
-  <li>Python: <a href="http://docs.python.org/tutorial/classes.html">Classes</a>.</li>
+  <li>Python: <a href="https://docs.python.org/tutorial/classes.html">Classes</a>.</li>
 
 </references>
 </qhelp>

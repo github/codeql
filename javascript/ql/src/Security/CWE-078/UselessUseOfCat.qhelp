@@ -38,7 +38,7 @@ and if the input is user-controlled, a command injection attack can happen.</p>
 
 <li>OWASP: <a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.</li>
 <li>Node.js: <a href="https://nodejs.org/api/fs.html">File System API</a>.</li>
-<li><a href="http://porkmail.org/era/unix/award.html#cat">The Useless Use of Cat Award</a>.</li>
+<li><a href="https://porkmail.org/era/unix/award.html#cat">The Useless Use of Cat Award</a>.</li>
 
 
 </references>

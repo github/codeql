@@ -53,7 +53,7 @@ This can be fixed by adding the default value as shown below. The default value 
 
 </example>
 <references>
-<li>The Hitchhiker’s Guide to Python: <a href="http://docs.python-guide.org/en/latest/writing/gotchas/#late-binding-closures">Late Binding Closures</a></li>
+<li>The Hitchhiker’s Guide to Python: <a href="https://docs.python-guide.org/en/latest/writing/gotchas/#late-binding-closures">Late Binding Closures</a></li>
 <li>Python Language Reference: <a href="https://docs.python.org/reference/executionmodel.html#naming-and-binding">Naming and binding</a></li>
 
 </references>

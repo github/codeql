@@ -26,7 +26,7 @@ Using the return value is misleading in subsequent code.
 </example>
 <references>
 
-  <li>Python Library Reference: <a href="http://docs.python.org/library/constants.html#None">None</a>.</li>
+  <li>Python Library Reference: <a href="https://docs.python.org/library/constants.html#None">None</a>.</li>
 
 </references>
 </qhelp>

@@ -22,12 +22,12 @@ public modules, functions, classes and methods.</p>
 </recommendation>
 <references>
 
-<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Comment_%28computer_programming%29#Need_for_comments">
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Comment_%28computer_programming%29#Need_for_comments">
 Need for comments</a>.</li>
-<li>Python PEP 8: <a href="http://www.python.org/dev/peps/pep-0008/#comments">Comments</a>.</li>
-<li>Python for Beginners: <a href="http://www.pythonforbeginners.com/basics/python-docstrings/">
+<li>Python PEP 8: <a href="https://www.python.org/dev/peps/pep-0008/#comments">Comments</a>.</li>
+<li>Python for Beginners: <a href="https://www.pythonforbeginners.com/basics/python-docstrings/">
 Python Docstrings</a>.</li>
-<li>Python PEP 257: <a href="http://www.python.org/dev/peps/pep-0257/">Docstring Conventions</a>.</li>
+<li>Python PEP 257: <a href="https://www.python.org/dev/peps/pep-0257/">Docstring Conventions</a>.</li>
 
 
 </references>

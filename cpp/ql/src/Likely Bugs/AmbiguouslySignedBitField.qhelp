@@ -32,7 +32,7 @@ Declare all members of the bit field with explicit signedness.
   AV Rule 154, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
 </li>
 <li>
-  <a href="http://en.cppreference.com/w/cpp/language/bit_field">C++ Bit Fields</a>
+  <a href="https://en.cppreference.com/w/cpp/language/bit_field">C++ Bit Fields</a>
 </li>
 
 

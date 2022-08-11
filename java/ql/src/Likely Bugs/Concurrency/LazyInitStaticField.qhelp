@@ -39,11 +39,11 @@ approach of using a static initializer to initialize <code>resource</code>.</p>
 <references>
 
 
-    <li>University of Maryland Department of Computer Science: <a href="http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html">The "Double-Checked Locking is Broken" Declaration</a>.</li>
+    <li>University of Maryland Department of Computer Science: <a href="https://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html">The "Double-Checked Locking is Broken" Declaration</a>.</li>
 
 
 <!--
-<p>Wikipedia article on the <a href="http://en.wikipedia.org/wiki/Double-checked_locking">Double-Checked Locking Pattern</a></p>
+<p>Wikipedia article on the <a href="https://en.wikipedia.org/wiki/Double-checked_locking">Double-Checked Locking Pattern</a></p>
 -->
 
 </references>

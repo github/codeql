@@ -62,7 +62,7 @@ the <code>__getitem__</code> method.
 </example>
 <references>
 
-<li>Python Language Reference: <a href="http://docs.python.org/dev/reference/datamodel.html#special-method-names">Special Method Names</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/dev/reference/datamodel.html#special-method-names">Special Method Names</a>.</li>
 <li>Python Library Reference: <a href="https://docs.python.org/2/library/exceptions.html">Exceptions</a>.</li>
 
 

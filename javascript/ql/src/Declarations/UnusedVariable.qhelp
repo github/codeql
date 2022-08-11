@@ -62,7 +62,7 @@ the export statement is a default export, this variable is unused and can be eli
 <references>
 
 
-<li>Coding Horror: <a href="http://blog.codinghorror.com/code-smells/">Code Smells</a>.</li>
+<li>Coding Horror: <a href="https://blog.codinghorror.com/code-smells/">Code Smells</a>.</li>
 <li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en/docs/web/JavaScript/Reference/Operators/function#Named_function_expression">Named function expressions</a>.</li>
 <li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export#Using_the_default_export">Using the default export</a>.</li>
 

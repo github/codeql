@@ -31,8 +31,8 @@
      </example>
 
      <references>
-       <li>Flask Quickstart Documentation: <a href="http://flask.pocoo.org/docs/1.0/quickstart/#debug-mode">Debug Mode</a>.</li>
-       <li>Werkzeug Documentation: <a href="http://werkzeug.pocoo.org/docs/0.14/debug/">Debugging Applications</a>.</li>
+       <li>Flask Quickstart Documentation: <a href="https://flask.pocoo.org/docs/1.0/quickstart/#debug-mode">Debug Mode</a>.</li>
+       <li>Werkzeug Documentation: <a href="https://werkzeug.pocoo.org/docs/0.14/debug/">Debugging Applications</a>.</li>
      </references>
 
 </qhelp>

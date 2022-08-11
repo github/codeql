@@ -53,7 +53,7 @@ assign it an initial value, which also serves to document its expected type:
 </example>
 <references>
 
-<li>JSLint Error Explanations: <a href="http://jslinterrors.com/expected-an-assignment-or-function-call">Expected an assignment or function call</a>.</li>
+<li>JSLint Error Explanations: <a href="https://jslinterrors.com/expected-an-assignment-or-function-call">Expected an assignment or function call</a>.</li>
 
 
 </references>

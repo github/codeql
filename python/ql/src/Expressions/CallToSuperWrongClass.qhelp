@@ -38,7 +38,7 @@ skips <code>StatusSymbol.__init__()</code>.
 <references>
 
     <li>Python Standard Library: <a href="https://docs.python.org/2/library/functions.html#super">super</a>.</li>
-    <li>Artima Developer: <a href="http://www.artima.com/weblogs/viewpost.jsp?thread=236275">Things to Know About Python Super</a>.</li>
+    <li>Artima Developer: <a href="https://www.artima.com/weblogs/viewpost.jsp?thread=236275">Things to Know About Python Super</a>.</li>
 
 
 </references>

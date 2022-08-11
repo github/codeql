@@ -384,7 +384,7 @@ SlideDeck.prototype.loadConfig_ = function(config) {
           '">' + p.gplus.replace(/https?:\/\//, '') + '</a>' : '';
 
       var twitter = p.twitter ? '<span>twitter</span>' +
-          '<a href="http://twitter.com/' + p.twitter + '">' +
+          '<a href="https://twitter.com/' + p.twitter + '">' +
           p.twitter + '</a>' : '';
 
       var www = p.www ? '<span>www</span><a href="' + p.www +

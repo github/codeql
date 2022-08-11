@@ -58,9 +58,9 @@ public:
 </example>
 <references>
 
-  <li>Dr Dobb's Journal: <a href="http://www.drdobbs.com/delegating-constructors/184401647">
+  <li>Dr Dobb's Journal: <a href="https://www.drdobbs.com/delegating-constructors/184401647">
     Delegating constructors?</a></li>
-  <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/C%2B%2B11#Object_construction_improvement">
+  <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/C%2B%2B11#Object_construction_improvement">
     Object construction improvement in C++11</a>.</li>
 
 

@@ -26,9 +26,9 @@ assignment in line 9.</p>
 </example>
 <references>
 
-  <li>Python: <a href="http://docs.python.org/reference/simple_stmts.html#assignment-statements">Assignment statements</a>,
-  <a href="http://docs.python.org/reference/simple_stmts.html#the-import-statement">The import statement</a>.</li>
-  <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/modules.html#importing-from-a-package">Importing * from a package</a>.</li>
+  <li>Python: <a href="https://docs.python.org/reference/simple_stmts.html#assignment-statements">Assignment statements</a>,
+  <a href="https://docs.python.org/reference/simple_stmts.html#the-import-statement">The import statement</a>.</li>
+  <li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/modules.html#importing-from-a-package">Importing * from a package</a>.</li>
 
 </references>
 </qhelp>

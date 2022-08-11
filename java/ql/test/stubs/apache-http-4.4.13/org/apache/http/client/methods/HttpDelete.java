@@ -33,7 +33,7 @@ import java.net.URI;
  * HTTP DELETE method
  * <p>
  * The HTTP DELETE method is defined in section 9.7 of
- * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
+ * <a href="https://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
  * <blockquote>
  * The DELETE method requests that the origin server delete the resource
  * identified by the Request-URI. [...] The client cannot

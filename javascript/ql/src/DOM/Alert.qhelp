@@ -20,7 +20,7 @@ may also indicate unfinished code.
 
 <p>
 Use one of the HTML-based dialog box widgets offered by frameworks such as
-<a href="http://jqueryui.com">jQuery UI</a>, and consider using a non-modal dialog box where possible.
+<a href="https://jqueryui.com">jQuery UI</a>, and consider using a non-modal dialog box where possible.
 </p>
 
 </recommendation>

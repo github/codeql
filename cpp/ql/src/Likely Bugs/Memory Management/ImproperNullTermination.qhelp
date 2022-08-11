@@ -41,7 +41,7 @@ the call to <code>strcat</code>.
 <references>
 
   <li>B. Chess and J. West, <em>Secure Programming with Static Analysis</em>, 6.2 Maintaining the Null Terminator. Addison-Wesley. 2007.</li>
-  <li>Linux Programmer's Manual: <a href="http://man7.org/linux/man-pages/man3/strncat.3.html">STRCAT(3)</a>.</li>
+  <li>Linux Programmer's Manual: <a href="https://man7.org/linux/man-pages/man3/strncat.3.html">STRCAT(3)</a>.</li>
 
 </references>
 </qhelp>

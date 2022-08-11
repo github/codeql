@@ -27,8 +27,8 @@ for ease of comprehension.
 </example>
 <references>
 
-<li>Python PEP 8: <a href="http://www.python.org/dev/peps/pep-0008/#function-and-method-arguments">Function and method arguments</a>.</li>
-<li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/classes.html">Classes</a>.</li>
+<li>Python PEP 8: <a href="https://www.python.org/dev/peps/pep-0008/#function-and-method-arguments">Function and method arguments</a>.</li>
+<li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/classes.html">Classes</a>.</li>
 
 
 </references>

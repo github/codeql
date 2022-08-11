@@ -41,7 +41,7 @@ import org.apache.http.util.Args;
  * HTTP OPTIONS method.
  * <p>
  * The HTTP OPTIONS method is defined in section 9.2 of
- * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
+ * <a href="https://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
  * </p>
  * <blockquote>
  *  The OPTIONS method represents a request for information about the

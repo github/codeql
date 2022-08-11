@@ -22,7 +22,7 @@ object. This is an error and the return method should be removed.</p>
 </example>
 <references>
 
-  <li>Python: <a href="http://docs.python.org/2.7/reference/datamodel.html#object.__init__">The __init__ method</a>.</li>
+  <li>Python: <a href="https://docs.python.org/2.7/reference/datamodel.html#object.__init__">The __init__ method</a>.</li>
 
 </references>
 </qhelp>

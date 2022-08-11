@@ -34,11 +34,11 @@ the same bean defined using nested <code>value</code> elements.</p>
 
 <li>
 ONJava:
-<a href="http://www.onjava.com/pub/a/onjava/2006/01/25/spring-xml-configuration-best-practices.html?page=1">Twelve Best Practices for Spring XML Configurations</a>. 
+<a href="https://www.onjava.com/pub/a/onjava/2006/01/25/spring-xml-configuration-best-practices.html?page=1">Twelve Best Practices for Spring XML Configurations</a>. 
 </li>
 <li>
 Spring Framework Reference Documentation 3.0:
-<a href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-value-element">3.4.2.1 Straight values (primitives, Strings, and so on)</a>.
+<a href="https://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-value-element">3.4.2.1 Straight values (primitives, Strings, and so on)</a>.
 </li>
 
 

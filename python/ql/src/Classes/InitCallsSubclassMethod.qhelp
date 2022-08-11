@@ -33,8 +33,8 @@ object creation.
 
 <li>CERT Secure Coding: <a href="https://www.securecoding.cert.org/confluence/display/java/MET05-J.+Ensure+that+constructors+do+not+call+overridable+methods">
 Rule MET05-J</a>. Although this is a Java rule it applies to most object-oriented languages.</li>
-<li>Python Standard Library: <a href="http://docs.python.org/library/functions.html#staticmethod">Static methods</a>.</li>
-<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>
+<li>Python Standard Library: <a href="https://docs.python.org/library/functions.html#staticmethod">Static methods</a>.</li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>
 
 
 

@@ -33,7 +33,7 @@ To guard against XXE attacks, the <code>noent</code> option should be omitted or
 <code>false</code>. This means that no entity expansion is undertaken at all, not even for standard
 internal entities such as <code>&amp;amp;</code> or <code>&amp;gt;</code>. If desired, these
 entities can be expanded in a separate step using utility functions provided by libraries such
-as <a href="http://underscorejs.org/#unescape">underscore</a>,
+as <a href="https://underscorejs.org/#unescape">underscore</a>,
 <a href="https://lodash.com/docs/4.17.15#unescape">lodash</a> or
 <a href="https://github.com/mathiasbynens/he">he</a>.
 </p>

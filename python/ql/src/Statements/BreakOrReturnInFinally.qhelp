@@ -22,9 +22,9 @@ that the resulting behavior is correct.</p>
 <references>
 
 <li>
-Python Language Reference: <a href="http://docs.python.org/2.7/reference/compound_stmts.html#the-try-statement">
-The try statement</a>, <a href="http://docs.python.org/2/reference/simple_stmts.html#break">
-The break statement</a>, <a href="http://docs.python.org/2/reference/simple_stmts.html#return">
+Python Language Reference: <a href="https://docs.python.org/2.7/reference/compound_stmts.html#the-try-statement">
+The try statement</a>, <a href="https://docs.python.org/2/reference/simple_stmts.html#break">
+The break statement</a>, <a href="https://docs.python.org/2/reference/simple_stmts.html#return">
 The return statement</a>.</li>
 
 

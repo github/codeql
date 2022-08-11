@@ -27,7 +27,7 @@ public class DecoderException extends Exception {
     /**
      * Declares the Serial Version Uid.
      *
-     * @see <a href="http://c2.com/cgi/wiki?AlwaysDeclareSerialVersionUid">Always Declare Serial Version Uid</a>
+     * @see <a href="https://c2.com/cgi/wiki?AlwaysDeclareSerialVersionUid">Always Declare Serial Version Uid</a>
      */
     private static final long serialVersionUID = 1L;
 

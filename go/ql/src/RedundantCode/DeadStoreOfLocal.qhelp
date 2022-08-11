@@ -39,7 +39,7 @@ use <code>_</code>.
 </example>
 
 <references>
-<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Dead_store">Dead store</a>.</li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Dead_store">Dead store</a>.</li>
 <li>The Go Programming Language Specification: <a href="https://golang.org/ref/spec#Blank_identifier">Blank identifier</a>.</li>
 </references>
 </qhelp>

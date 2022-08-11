@@ -23,7 +23,7 @@ before <code>x</code> is used. This makes the first assignment useless.</p>
 </example>
 <references>
 
-    <li>Python: <a href="http://docs.python.org/reference/simple_stmts.html#assignment-statements">Assignment statements</a>.</li>
+    <li>Python: <a href="https://docs.python.org/reference/simple_stmts.html#assignment-statements">Assignment statements</a>.</li>
 
 </references>
 </qhelp>

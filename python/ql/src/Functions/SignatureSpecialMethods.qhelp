@@ -27,7 +27,7 @@ is a <code>Point</code> then it will fail with a <code>TypeError</code>.
 </example>
 <references>
 
-<li>Python Language Reference: <a href="http://docs.python.org/dev/reference/datamodel.html#special-method-names">Special Method Names</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/dev/reference/datamodel.html#special-method-names">Special Method Names</a>.</li>
 
 
 </references>

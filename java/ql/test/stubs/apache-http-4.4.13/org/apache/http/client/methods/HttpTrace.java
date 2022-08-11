@@ -33,7 +33,7 @@ import java.net.URI;
  * HTTP TRACE method.
  * <p>
  * The HTTP TRACE method is defined in section 9.6 of
- * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
+ * <a href="https://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
  * </p>
  * <blockquote>
  *  The TRACE method is used to invoke a remote, application-layer loop-

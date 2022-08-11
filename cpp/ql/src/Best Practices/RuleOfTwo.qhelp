@@ -38,14 +38,14 @@ should never be called.
 <references>
 
 <li>
-  <a href="http://en.wikipedia.org/wiki/Rule_of_three_(C%2B%2B_programming)">Rule of Three [Wikipedia]</a>
+  <a href="https://en.wikipedia.org/wiki/Rule_of_three_(C%2B%2B_programming)">Rule of Three [Wikipedia]</a>
 </li>
 <li>
-  <a href="http://www.artima.com/cppsource/bigtwo.html">The Law of The Big Two</a>
+  <a href="https://www.artima.com/cppsource/bigtwo.html">The Law of The Big Two</a>
 </li>
 <li>
-  cppreference.com: <a href="http://en.cppreference.com/w/cpp/language/copy_constructor">copy constructor</a>
-  and <a href="http://en.cppreference.com/w/cpp/language/copy_assignment">copy assignment</a>
+  cppreference.com: <a href="https://en.cppreference.com/w/cpp/language/copy_constructor">copy constructor</a>
+  and <a href="https://en.cppreference.com/w/cpp/language/copy_assignment">copy assignment</a>
 </li>
 
 

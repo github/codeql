@@ -39,7 +39,7 @@
 
     <p>
       Alternatively, the header can be set by a proxy.  As an example,
-      a <a href="http://www.haproxy.org/">HAProxy</a> configuration
+      a <a href="https://www.haproxy.org/">HAProxy</a> configuration
       should contain: <code>rspadd X-Frame-Options:\ DENY</code> to
       set the header automatically.
     </p>

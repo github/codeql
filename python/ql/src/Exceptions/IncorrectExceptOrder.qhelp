@@ -37,8 +37,8 @@ subsequent handler from ever executing.</p>
 </example>
 <references>
 
-<li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/compound_stmts.html#try">The try statement</a>, 
-<a href="http://docs.python.org/2.7/reference/executionmodel.html#exceptions">Exceptions</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/2.7/reference/compound_stmts.html#try">The try statement</a>, 
+<a href="https://docs.python.org/2.7/reference/executionmodel.html#exceptions">Exceptions</a>.</li>
 
 
 </references>

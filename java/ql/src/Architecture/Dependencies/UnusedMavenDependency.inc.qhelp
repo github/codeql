@@ -29,7 +29,7 @@ and the dependency should be restored.</p>
 
 <references>
 <li>Apache Maven Project:
-<a href="http://maven.apache.org/pom.html#Dependencies">Maven POM Reference: Dependencies</a>.
+<a href="https://maven.apache.org/pom.html#Dependencies">Maven POM Reference: Dependencies</a>.
 </li>
 </references>
 </qhelp>

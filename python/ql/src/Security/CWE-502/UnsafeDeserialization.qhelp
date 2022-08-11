@@ -56,7 +56,7 @@ OWASP guidance on deserializing objects:
 </li>
 <li>
 Talks by Chris Frohoff &amp; Gabriel Lawrence:
-<a href="http://frohoff.github.io/appseccali-marshalling-pickles/">
+<a href="https://frohoff.github.io/appseccali-marshalling-pickles/">
 AppSecCali 2015: Marshalling Pickles - how deserializing objects will ruin your day</a>
 </li>
 </references>

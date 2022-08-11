@@ -39,7 +39,7 @@ package org.apache.http;
  * "http://www.w3.org/Protocols/rfc2616/rfc2616-sec2.html#sec2.2">Section
  * 2.2</a> and <a href=
  * "http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.6">Section
- * 3.6</a> of <a href="http://www.w3.org/Protocols/rfc2616/rfc2616.txt">RFC
+ * 3.6</a> of <a href="https://www.w3.org/Protocols/rfc2616/rfc2616.txt">RFC
  * 2616</a>
  * </p>
  * <h>2.2 Basic Rules</h>

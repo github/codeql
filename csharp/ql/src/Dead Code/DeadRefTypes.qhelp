@@ -18,7 +18,7 @@ outside the project.</p>
 </example>
 <references>
 
-  <li>MSDN, Code Analysis for Managed Code, <a href="http://msdn.microsoft.com/en-us/library/ms182265.aspx">CA1812: Avoid uninstantiated internal classes</a>.</li>
+  <li>MSDN, Code Analysis for Managed Code, <a href="https://msdn.microsoft.com/en-us/library/ms182265.aspx">CA1812: Avoid uninstantiated internal classes</a>.</li>
 
 </references>
 </qhelp>

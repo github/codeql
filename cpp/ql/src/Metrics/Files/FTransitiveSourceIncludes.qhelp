@@ -29,10 +29,10 @@ they are contributing to unnecessarily long build times and creating artificial 
 <references>
 
 <li>
-  <a href="http://www.learncpp.com/cpp-tutorial/19-header-files/">Header files</a>
+  <a href="https://www.learncpp.com/cpp-tutorial/19-header-files/">Header files</a>
 </li>
 <li>
-  <a href="http://www.drdobbs.com/cpp/decoupling-c-header-files/212701130">Decoupling C Header Files</a>
+  <a href="https://www.drdobbs.com/cpp/decoupling-c-header-files/212701130">Decoupling C Header Files</a>
 </li>
 <li>
   <a href="https://accu.org/journals/overload/14/72/griffiths_1995/">C++ Best Practice -

@@ -18,8 +18,8 @@ At the end of the loop, convert the list to a string by using <code>''.join(list
 <references>
 
 
-<li>Python Standard Library: <a href="http://docs.python.org/library/string.html#string.join">The str.join method</a>.</li>
-<li>Python Frequently Asked Questions: <a href="http://docs.python.org/3/faq/programming.html#what-is-the-most-efficient-way-to-concatenate-many-strings-together">
+<li>Python Standard Library: <a href="https://docs.python.org/library/string.html#string.join">The str.join method</a>.</li>
+<li>Python Frequently Asked Questions: <a href="https://docs.python.org/3/faq/programming.html#what-is-the-most-efficient-way-to-concatenate-many-strings-together">
 What is the most efficient way to concatenate many strings together?</a>.</li>
 
 

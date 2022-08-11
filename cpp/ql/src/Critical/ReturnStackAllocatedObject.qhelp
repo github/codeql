@@ -31,7 +31,7 @@ heap-allocated memory.
 </example>
 
 <references>
-<li>cplusplus.com: <a href="http://www.cplusplus.com/doc/tutorial/pointers/">Pointers</a>.</li>
+<li>cplusplus.com: <a href="https://www.cplusplus.com/doc/tutorial/pointers/">Pointers</a>.</li>
 <li>The craft of coding: <a href="https://craftofcoding.wordpress.com/2015/12/07/memory-in-c-the-stack-the-heap-and-static/">Memory in C - the stack, the heap, and static</a>.</li>
 </references>
 </qhelp>

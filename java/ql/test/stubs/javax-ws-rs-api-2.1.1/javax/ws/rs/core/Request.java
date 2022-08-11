@@ -31,7 +31,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
  * {@code ResponseBuilder} instance will have an appropriate status and will also include a {@code Vary} header if the
  * {@link #selectVariant(List)} method was called prior to to calling {@code evaluatePreconditions}. It is the
  * responsibility of the caller to check the status and add additional metadata if required. E.g., see
- * <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.5">HTTP/1.1, section 10.3.5</a> for details
+ * <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.5">HTTP/1.1, section 10.3.5</a> for details
  * of the headers that are expected to accompany a {@code 304 Not Modified} response.
  *
  * @author Paul Sandoz

@@ -26,8 +26,8 @@ since that also does a type test internally.</p>
 </example>
 <references>
 
-  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/scekt9xw(v=vs.71).aspx">is</a></li>
-  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/cscsdfbt(v=vs.71).aspx">as</a></li>
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/scekt9xw(v=vs.71).aspx">is</a></li>
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/cscsdfbt(v=vs.71).aspx">as</a></li>
 
 </references>
 </qhelp>

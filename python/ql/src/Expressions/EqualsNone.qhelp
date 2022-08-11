@@ -26,8 +26,8 @@ function because it uses an identity comparison.</p>
 <references>
 
 
-<li>Python Language Reference: <a href="http://docs.python.org/reference/expressions.html#is">Comparisons</a>, 
-<a href="http://docs.python.org/reference/datamodel.html#object.__eq__">object.__eq__</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/reference/expressions.html#is">Comparisons</a>, 
+<a href="https://docs.python.org/reference/datamodel.html#object.__eq__">object.__eq__</a>.</li>
 
 
 </references>

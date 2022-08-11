@@ -36,7 +36,7 @@ import java.net.URI;
  * HTTP GET method.
  * <p>
  * The HTTP GET method is defined in section 9.3 of
- * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>: <blockquote> The
+ * <a href="https://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>: <blockquote> The
  * GET method means retrieve whatever information (in the form of an entity) is
  * identified by the Request-URI. If the Request-URI refers to a data-producing
  * process, it is the produced data which shall be returned as the entity in the

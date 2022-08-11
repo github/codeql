@@ -33,7 +33,7 @@ import java.net.URI;
  * HTTP HEAD method.
  * <p>
  * The HTTP HEAD method is defined in section 9.4 of
- * <a href="http://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
+ * <a href="https://www.ietf.org/rfc/rfc2616.txt">RFC2616</a>:
  * </p>
  * <blockquote>
  * The HEAD method is identical to GET except that the server MUST NOT

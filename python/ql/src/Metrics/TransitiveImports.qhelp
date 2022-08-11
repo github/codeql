@@ -17,7 +17,7 @@ well-defined role.</p>
 </recommendation>
 <references>
 
-<li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.
+<li>Python Language Reference: <a href="https://docs.python.org/2/reference/simple_stmts.html#import">The import statement</a>.
 </li><li>M. Fowler, <em>Refactoring</em>. Addison-Wesley, 1999.</li>
 <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_refactoring">Code refactoring</a>.</li>
 

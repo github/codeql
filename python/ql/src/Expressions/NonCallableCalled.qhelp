@@ -32,8 +32,8 @@ which will fail with a  <code>TypeError</code>.
 </example>
 <references>
 
-  <li>Python Standard Library: <a href="http://docs.python.org/2/library/functions.html#callable">callable</a>.</li>
-  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/datamodel.html#object.__call__">object.__call__</a>.</li>
+  <li>Python Standard Library: <a href="https://docs.python.org/2/library/functions.html#callable">callable</a>.</li>
+  <li>Python Language Reference: <a href="https://docs.python.org/2/reference/datamodel.html#object.__call__">object.__call__</a>.</li>
 
 </references>
 </qhelp>

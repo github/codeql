@@ -27,10 +27,10 @@ An assignment is only flagged if its right hand side is a compile-time constant.
 <references>
 
 <li>
-  Tutorialspoint - The C++ Programming Language: <a href="http://www.tutorialspoint.com/cplusplus/cpp_operators.htm">Operators in C++</a>
+  Tutorialspoint - The C++ Programming Language: <a href="https://www.tutorialspoint.com/cplusplus/cpp_operators.htm">Operators in C++</a>
 </li>
 <li>
-  Wikipedia: <a href="http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Comparison_operators.2Frelational_operators">Operators in C and C++</a>
+  Wikipedia: <a href="https://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B#Comparison_operators.2Frelational_operators">Operators in C and C++</a>
 </li>
 
 

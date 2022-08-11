@@ -63,10 +63,10 @@ some are after the final <code>#endif</code>. All three of these things must be 
   <a href="https://wiki.sei.cmu.edu/confluence/display/c/PRE06-C.+Enclose+header+files+in+an+include+guard">PRE06-C. Enclose header files in an inclusion guard</a>
 </li>
 <li>
-  <a href="http://www.learncpp.com/cpp-tutorial/19-header-files/">Header files</a>
+  <a href="https://www.learncpp.com/cpp-tutorial/19-header-files/">Header files</a>
 </li>
 <li>
-  <a href="http://www.cplusplus.com/forum/articles/10627/">Headers and Includes: Why and How</a>
+  <a href="https://www.cplusplus.com/forum/articles/10627/">Headers and Includes: Why and How</a>
 </li>
 <li>
   <a href="https://gcc.gnu.org/onlinedocs/cppinternals/Guard-Macros.html">The Multiple-Include Optimization</a>

@@ -21,7 +21,7 @@ then removing it will make code more readable. If the static variable is needed 
 <references>
 
 <li>
-  <a href="http://www.tutorialspoint.com/cplusplus/cpp_variable_scope.htm">Variable scope</a>
+  <a href="https://www.tutorialspoint.com/cplusplus/cpp_variable_scope.htm">Variable scope</a>
 </li>
 <li>
   <a href="https://www.securecoding.cert.org/confluence/display/c/MSC12-C.+Detect+and+remove+code+that+has+no+effect+or+is+never+executed">Detect and remove code that has no effect</a>

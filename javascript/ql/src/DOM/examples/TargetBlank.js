@@ -1,1 +1,1 @@
-var link = <a href="http://example.com" target="_blank">Example</a>;
+var link = <a href="https://example.com" target="_blank">Example</a>;

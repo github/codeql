@@ -29,8 +29,8 @@ of <code>subprocess.call()</code> to a temporary variable, and to assert that va
 </example>
 <references>
 
-<li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#assert">The assert statement</a>.</li>
-<li>TutorialsPoint, Python Programming: <a href="http://www.tutorialspoint.com/python/assertions_in_python.htm">Assertions in Python</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/2/reference/simple_stmts.html#assert">The assert statement</a>.</li>
+<li>TutorialsPoint, Python Programming: <a href="https://www.tutorialspoint.com/python/assertions_in_python.htm">Assertions in Python</a>.</li>
 
 
 </references>

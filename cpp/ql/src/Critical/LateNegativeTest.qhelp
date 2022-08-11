@@ -38,7 +38,7 @@ If the value cannot be negative, the test should be removed.
 </example>
 
 <references>
-<li>cplusplus.com: <a href="http://www.cplusplus.com/doc/tutorial/pointers/">Pointers</a>.</li>
+<li>cplusplus.com: <a href="https://www.cplusplus.com/doc/tutorial/pointers/">Pointers</a>.</li>
 <li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/ARR30-C.+Do+not+form+or+use+out-of-bounds+pointers+or+array+subscripts">ARR30-C. Do not form or use out-of-bounds pointers or array subscripts</a>.</li>
 </references>
 </qhelp>

@@ -15,7 +15,7 @@ If the block already contains other statements then the <code>pass</code> statem
 </recommendation>
 <references>
 
-  <li>Python: <a href="http://docs.python.org/2/tutorial/controlflow.html#pass-statements">pass</a>.</li>
+  <li>Python: <a href="https://docs.python.org/2/tutorial/controlflow.html#pass-statements">pass</a>.</li>
 
 </references>
 </qhelp>

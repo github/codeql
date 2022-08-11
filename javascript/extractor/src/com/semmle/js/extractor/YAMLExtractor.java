@@ -25,7 +25,7 @@ import org.yaml.snakeyaml.resolver.Resolver;
 /**
  * Extractor for populating YAML files.
  *
- * <p>The extractor uses <a href="http://www.snakeyaml.org/">SnakeYAML</a> to parse YAML.
+ * <p>The extractor uses <a href="https://www.snakeyaml.org/">SnakeYAML</a> to parse YAML.
  */
 public class YAMLExtractor implements IExtractor {
   /** The tables constituting the YAML dbscheme. */

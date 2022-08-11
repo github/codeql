@@ -68,7 +68,7 @@
 	</example>
 
 	<references>
-		<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
 		<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/API/RandomSource/getRandomValues">RandomSource.getRandomValues</a>.</li>
 		<li>NodeJS: <a href="https://nodejs.org/api/crypto.html#crypto_crypto_randombytes_size_callback">crypto.randomBytes</a></li>
 	</references>
