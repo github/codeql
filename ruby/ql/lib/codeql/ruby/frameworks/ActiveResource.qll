@@ -38,6 +38,7 @@ module ActiveResource {
       this.getSuperclassExpr() = model.getAValueReachableFromSource().asExpr().getExpr()
     }
 
+    /** Gets the API node for this model */
     API::Node getModelApiNode() { result = model }
 
     SiteAssignCall getASiteAssignment() { result.getModelClass() = this }
@@ -66,6 +67,7 @@ module ActiveResource {
       this = classMethodCall(model, _)
     }
 
+    /** Gets the model class for this call. */
     ModelClass getModelClass() { result.getModelApiNode() = model }
   }
 
@@ -79,13 +81,15 @@ module ActiveResource {
     SiteAssignCall() { model = modelApiNode() and this = classMethodCall(model, "site=") }
 
     /**
-     * A node that contributes to the URLs used for HTTP requests by the parent
+     * Gets a node that contributes to the URLs used for HTTP requests by the parent
      * class.
      */
     DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
 
+    /** Gets the model class for this call. */
     ModelClass getModelClass() { result.getModelApiNode() = model }
 
+    /** Holds if this site value specifies HTTP rather than HTTPS. */
     predicate disablesCertificateValidation() {
       this.getAUrlPart().asExpr().getConstantValue().getString().regexpMatch("^http(^s)")
     }
@@ -154,6 +158,7 @@ module ActiveResource {
       )
     }
 
+    /** Gets the model class for this instance. */
     ModelClass getModelClass() { result = cls }
   }
 
@@ -165,9 +170,11 @@ module ActiveResource {
 
     ModelInstanceMethodCall() { this.getReceiver() = i }
 
+    /** Gets the model instance for this call. */
     ModelInstance getInstance() { result = i }
 
-    ModelClass getModelClass() { result = this.getReceiver().(ModelInstance).getModelClass() }
+    /** Gets the model class for this call. */
+    ModelClass getModelClass() { result = i.getModelClass() }
   }
 
   /**
@@ -185,6 +192,7 @@ module ActiveResource {
       )
     }
 
+    /** Gets the model class for this collection. */
     ModelClass getModelClass() { result = classMethodCall.getModelClass() }
   }
 
@@ -194,6 +202,7 @@ module ActiveResource {
   class CollectionCall extends DataFlow::CallNode {
     CollectionCall() { this.getReceiver() instanceof Collection }
 
+    /** Gets the collection for this call. */
     Collection getCollection() { result = this.getReceiver() }
   }
 
