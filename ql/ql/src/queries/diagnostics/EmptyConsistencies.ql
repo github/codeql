@@ -63,7 +63,6 @@ where
       .matches("%/" +
           [
             "docs", // docs is not meant to compile on it's own
-            "swift", // Swift has lots of code that doesn't compile
             "ql/ql/test" // the QL-for-QL tests are not meant to compile
           ] + "/%")
 select node, msg
