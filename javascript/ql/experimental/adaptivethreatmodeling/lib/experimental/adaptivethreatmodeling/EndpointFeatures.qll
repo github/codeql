@@ -193,17 +193,7 @@ private module FunctionNames {
 /** Get a name of a supported generic token-based feature. */
 string getASupportedFeatureName() {
   // allowlist of vetted features that are permitted in production
-  result =
-    any(EndpointFeature f |
-      f instanceof EnclosingFunctionName or
-      f instanceof CalleeName or
-      f instanceof ReceiverName or
-      f instanceof ArgumentIndex or
-      f instanceof CalleeApiName or
-      f instanceof CalleeAccessPath or
-      f instanceof CalleeAccessPathWithStructuralInfo or
-      f instanceof EnclosingFunctionBody
-    ).getName()
+  result = any(EndpointFeature f).getName()
 }
 
 /**
@@ -223,12 +213,7 @@ predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string feat
  */
 private newtype TEndpointFeature =
   TEnclosingFunctionName() or
-  TCalleeName() or
   TReceiverName() or
-  TArgumentIndex() or
-  TCalleeApiName() or
-  TCalleeAccessPath() or
-  TCalleeAccessPathWithStructuralInfo() or
   TEnclosingFunctionBody() or
   TFileImports() or
   TCalleeImports() or
@@ -241,7 +226,7 @@ private newtype TEndpointFeature =
   TStringConcatenatedWith()
 
 /**
- * An implementation of an endpoint feature: produces feature names and values for used in ML.
+ * An implementation of an endpoint feature: produces feature names and values for use in ML.
  */
 abstract class EndpointFeature extends TEndpointFeature {
   /**
@@ -272,22 +257,6 @@ class EnclosingFunctionName extends EndpointFeature, TEnclosingFunctionName {
 }
 
 /**
- * The feature for the name of the function being called, e.g. in a call `Artist.findOne(...)`, this is `findOne`.
- */
-class CalleeName extends EndpointFeature, TCalleeName {
-  override string getName() { result = "calleeName" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    result =
-      strictconcat(DataFlow::CallNode call, string component |
-        endpoint = call.getAnArgument() and component = call.getCalleeName()
-      |
-        component, " "
-      )
-  }
-}
-
-/**
  * The feature for the name of the receiver of the call, e.g. in a call `Artist.findOne(...)`, this is `Artist`.
  */
 class ReceiverName extends EndpointFeature, TReceiverName {
@@ -300,105 +269,6 @@ class ReceiverName extends EndpointFeature, TReceiverName {
         component = call.getReceiver().asExpr().(VarRef).getName()
       |
         component, " "
-      )
-  }
-}
-
-/**
- * The feature for the argument index of the endpoint, e.g. in `f(a, endpoint, b)`, this is 1.
- */
-class ArgumentIndex extends EndpointFeature, TArgumentIndex {
-  override string getName() { result = "argumentIndex" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    result =
-      strictconcat(DataFlow::CallNode call, string component |
-        endpoint = call.getAnArgument() and
-        component = any(int argIndex | call.getArgument(argIndex) = endpoint).toString()
-      |
-        component, " "
-      )
-  }
-}
-
-/**
- * The feature for the name of the API that the function being called originates from, if the function being
- * called originates from an external API. For example, the endpoint here:
- *
- * ```js
- * const mongoose = require('mongoose'),
- *   User = mongoose.model('User', null);
- * User.findOne(ENDPOINT);
- * ```
- */
-class CalleeApiName extends EndpointFeature, TCalleeApiName {
-  override string getName() { result = "calleeApiName" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    result =
-      strictconcat(API::Node apiNode, string component |
-        endpoint = apiNode.getInducingNode().(DataFlow::CallNode).getAnArgument() and
-        AccessPaths::accessPaths(apiNode, false, _, component)
-      |
-        component, " "
-      )
-  }
-}
-
-/**
- * The access path of the function being called, both without structural info, if the
- * function being called originates from an external API. For example, the endpoint here:
- *
- * ```js
- * const mongoose = require('mongoose'),
- *   User = mongoose.model('User', null);
- * User.findOne(ENDPOINT);
- * ```
- *
- * would have a callee access path without structural info of `mongoose model findOne`.
- */
-class CalleeAccessPath extends EndpointFeature, TCalleeAccessPath {
-  override string getName() { result = "calleeAccessPath" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    result =
-      concat(API::Node node, string accessPath |
-        node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
-        AccessPaths::accessPaths(node, false, accessPath, _)
-      |
-        accessPath, " "
-      )
-  }
-}
-
-/**
- * The access path of the function being called, both with structural info, if the
- * function being called originates from an external API. For example, the endpoint here:
- *
- * ```js
- * const mongoose = require('mongoose'),
- *   User = mongoose.model('User', null);
- * User.findOne(ENDPOINT);
- * ```
- *
- * would have a callee access path with structural info of
- * `mongoose member model instanceorreturn member findOne instanceorreturn`
- *
- * These features indicate that the callee comes from (reading the access path backwards) an
- * instance of the `findOne` member of an instance of the `model` member of the `mongoose`
- * external library.
- */
-class CalleeAccessPathWithStructuralInfo extends EndpointFeature,
-  TCalleeAccessPathWithStructuralInfo {
-  override string getName() { result = "calleeAccessPathWithStructuralInfo" }
-
-  override string getValue(DataFlow::Node endpoint) {
-    result =
-      concat(API::Node node, string accessPath |
-        node.getInducingNode().(DataFlow::CallNode).getAnArgument() = endpoint and
-        AccessPaths::accessPaths(node, true, accessPath, _)
-      |
-        accessPath, " "
       )
   }
 }
