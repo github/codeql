@@ -40,7 +40,7 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatc
  */
 bindingset[package]
 predicate isPackageUsed(string package) {
-  // For now everything is modelled as an access path starting at any top-level, so the package name has no effect.
+  // For now everything is modeled as an access path starting at any top-level, so the package name has no effect.
   //
   // We allow an arbitrary package name so that the model can record the name of the package in case it's needed in the future.
   //

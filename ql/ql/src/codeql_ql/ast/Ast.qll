@@ -23,7 +23,7 @@ class AstNode extends TAstNode {
 
   /** Gets the location of the AST node. */
   cached
-  Location getLocation() { result = this.getFullLocation() } // overriden in some subclasses
+  Location getLocation() { result = this.getFullLocation() } // overridden in some subclasses
 
   /** Gets the location that spans the entire AST node. */
   cached
