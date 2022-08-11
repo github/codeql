@@ -1,8 +1,8 @@
 import go
-import semmle.go.dataflow.CsvValidation
 import semmle.go.dataflow.ExternalFlow
 // import DataFlow::PartialPathGraph
 import TestUtilities.InlineExpectationsTest
+import CsvValidation
 
 class SummaryModelTest extends DataFlow::FunctionModel {
   FunctionInput inp;

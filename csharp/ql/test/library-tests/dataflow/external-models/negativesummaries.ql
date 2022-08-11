@@ -3,5 +3,6 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.CsvValidation
+import semmle.code.csharp.dataflow.ExternalFlow
 import semmle.code.csharp.dataflow.NegativeSummary
+import CsvValidation

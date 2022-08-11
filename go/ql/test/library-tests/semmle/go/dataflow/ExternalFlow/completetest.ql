@@ -3,10 +3,10 @@
  */
 
 import go
-import semmle.go.dataflow.CsvValidation
 import semmle.go.dataflow.ExternalFlow
 import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import TestUtilities.InlineFlowTest
+import CsvValidation
 
 class SummaryModelTest extends SummaryModelCsv {
   override predicate row(string row) {
