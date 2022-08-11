@@ -13975,6 +13975,150 @@ ir.cpp:
 # 1815|                 Type = [IntType] int
 # 1815|                 ValueCategory = prvalue(load)
 # 1817|     getStmt(8): [ReturnStmt] return ...
+# 1834| [CopyAssignmentOperator] block_assignment::A& block_assignment::A::operator=(block_assignment::A const&)
+# 1834|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const A &
+# 1834| [MoveAssignmentOperator] block_assignment::A& block_assignment::A::operator=(block_assignment::A&&)
+# 1834|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] A &&
+#-----|   getEntryPoint(): [BlockStmt] { ... }
+#-----|     getStmt(0): [ExprStmt] ExprStmt
+#-----|     getStmt(1): [ReturnStmt] return ...
+#-----|       getExpr(): [PointerDereferenceExpr] * ...
+#-----|           Type = [Class] A
+#-----|           ValueCategory = lvalue
+#-----|         getOperand(): [ThisExpr] this
+#-----|             Type = [PointerType] A *
+#-----|             ValueCategory = prvalue(load)
+#-----|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+#-----|           Type = [LValueReferenceType] A &
+#-----|           ValueCategory = prvalue
+# 1834| [Constructor] void block_assignment::A::A()
+# 1834|   <params>: 
+# 1834| [CopyConstructor] void block_assignment::A::A(block_assignment::A const&)
+# 1834|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const A &
+# 1834| [MoveConstructor] void block_assignment::A::A(block_assignment::A&&)
+# 1834|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] A &&
+# 1836| [VirtualFunction] void block_assignment::A::f()
+# 1836|   <params>: 
+# 1839| [CopyAssignmentOperator] block_assignment::B& block_assignment::B::operator=(block_assignment::B const&)
+# 1839|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const B &
+# 1839| [MoveAssignmentOperator] block_assignment::B& block_assignment::B::operator=(block_assignment::B&&)
+# 1839|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] B &&
+#-----|   getEntryPoint(): [BlockStmt] { ... }
+#-----|     getStmt(0): [ExprStmt] ExprStmt
+# 1839|       getExpr(): [FunctionCall] call to operator=
+# 1839|           Type = [LValueReferenceType] A &
+# 1839|           ValueCategory = prvalue
+# 1839|         getQualifier(): [ThisExpr] this
+# 1839|             Type = [PointerType] B *
+# 1839|             ValueCategory = prvalue(load)
+# 1839|         getArgument(0): [PointerDereferenceExpr] * ...
+# 1839|             Type = [Class] A
+# 1839|             ValueCategory = xvalue
+# 1839|           getOperand(): [AddressOfExpr] & ...
+# 1839|               Type = [PointerType] B *
+# 1839|               ValueCategory = prvalue
+# 1839|             getOperand(): [VariableAccess] (unnamed parameter 0)
+# 1839|                 Type = [RValueReferenceType] B &&
+# 1839|                 ValueCategory = prvalue(load)
+#-----|             getOperand().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                 Type = [Struct] B
+#-----|                 ValueCategory = lvalue
+#-----|           getOperand().getFullyConverted(): [CStyleCast] (A *)...
+#-----|               Conversion = [BaseClassConversion] base class conversion
+#-----|               Type = [PointerType] A *
+#-----|               ValueCategory = prvalue
+#-----|         getQualifier().getFullyConverted(): [CStyleCast] (A *)...
+#-----|             Conversion = [BaseClassConversion] base class conversion
+#-----|             Type = [PointerType] A *
+#-----|             ValueCategory = prvalue
+#-----|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#-----|             Type = [LValueReferenceType] A &
+#-----|             ValueCategory = prvalue
+#-----|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|           Type = [Class] A
+#-----|           ValueCategory = lvalue
+#-----|     getStmt(1): [ReturnStmt] return ...
+#-----|       getExpr(): [PointerDereferenceExpr] * ...
+#-----|           Type = [Struct] B
+#-----|           ValueCategory = lvalue
+#-----|         getOperand(): [ThisExpr] this
+#-----|             Type = [PointerType] B *
+#-----|             ValueCategory = prvalue(load)
+#-----|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+#-----|           Type = [LValueReferenceType] B &
+#-----|           ValueCategory = prvalue
+# 1839| [CopyConstructor] void block_assignment::B::B(block_assignment::B const&)
+# 1839|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const B &
+# 1839| [MoveConstructor] void block_assignment::B::B(block_assignment::B&&)
+# 1839|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] B &&
+# 1840| [Constructor] void block_assignment::B::B(block_assignment::A*)
+# 1840|   <params>: 
+# 1840|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 1840|         Type = [PointerType] A *
+# 1843| [TopLevelFunction] void block_assignment::foo()
+# 1843|   <params>: 
+# 1843|   getEntryPoint(): [BlockStmt] { ... }
+# 1844|     getStmt(0): [DeclStmt] declaration
+# 1844|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
+# 1844|           Type = [Struct] B
+# 1844|         getVariable().getInitializer(): [Initializer] initializer for v
+# 1844|           getExpr(): [ConstructorCall] call to B
+# 1844|               Type = [VoidType] void
+# 1844|               ValueCategory = prvalue
+# 1844|             getArgument(0): [Literal] 0
+# 1844|                 Type = [IntType] int
+# 1844|                 Value = [Literal] 0
+# 1844|                 ValueCategory = prvalue
+# 1844|             getArgument(0).getFullyConverted(): [CStyleCast] (A *)...
+# 1844|                 Conversion = [IntegralToPointerConversion] integral to pointer conversion
+# 1844|                 Type = [PointerType] A *
+# 1844|                 Value = [CStyleCast] 0
+# 1844|                 ValueCategory = prvalue
+# 1845|     getStmt(1): [ExprStmt] ExprStmt
+# 1845|       getExpr(): [FunctionCall] call to operator=
+# 1845|           Type = [LValueReferenceType] B &
+# 1845|           ValueCategory = prvalue
+# 1845|         getQualifier(): [VariableAccess] v
+# 1845|             Type = [Struct] B
+# 1845|             ValueCategory = lvalue
+# 1845|         getArgument(0): [ConstructorCall] call to B
+# 1845|             Type = [VoidType] void
+# 1845|             ValueCategory = prvalue
+# 1845|           getArgument(0): [Literal] 0
+# 1845|               Type = [IntType] int
+# 1845|               Value = [Literal] 0
+# 1845|               ValueCategory = prvalue
+# 1845|           getArgument(0).getFullyConverted(): [CStyleCast] (A *)...
+# 1845|               Conversion = [IntegralToPointerConversion] integral to pointer conversion
+# 1845|               Type = [PointerType] A *
+# 1845|               Value = [CStyleCast] 0
+# 1845|               ValueCategory = prvalue
+# 1845|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1845|             Type = [LValueReferenceType] B &
+# 1845|             ValueCategory = prvalue
+# 1845|           getExpr(): [TemporaryObjectExpr] temporary object
+# 1845|               Type = [Struct] B
+# 1845|               ValueCategory = lvalue
+# 1845|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1845|           Type = [Struct] B
+# 1845|           ValueCategory = lvalue
+# 1846|     getStmt(2): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
