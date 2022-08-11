@@ -28,4 +28,6 @@ class SensitiveLoggerConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     sanitizer.asExpr() instanceof LiveLiteral
   }
+
+  override predicate isSanitizerIn(Node node) { isSource(node) }
 }
