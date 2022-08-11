@@ -22,7 +22,7 @@ private class MethodAccessFileGetCanonicalPath extends MethodAccess {
   MethodAccessFileGetCanonicalPath() { this.getMethod() instanceof MethodFileGetCanonicalPath }
 }
 
-private abstract class FileSeparatorExpr extends Expr { }
+abstract private class FileSeparatorExpr extends Expr { }
 
 private class SystemPropFileSeparatorExpr extends FileSeparatorExpr {
   SystemPropFileSeparatorExpr() { this = getSystemProperty("file.separator") }
