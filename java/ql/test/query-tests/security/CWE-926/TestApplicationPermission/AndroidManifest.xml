@@ -44,7 +44,7 @@
                 <action android:name="android.intent.action.DOCUMENTS_PROVIDER"/>
 
             </intent-filter>
-        </service>
+        </provider>
 
         <!-- Safe: 'android:exported' explicitly set --> <activity
             android:name=".Activity"
@@ -74,7 +74,25 @@
                 <action android:name="android.intent.action.DOCUMENTS_PROVIDER"/>
 
             </intent-filter>
-        </service>
+        </provider>
+
+        <!-- Safe: 'application' element has 'permission' attribute --> <provider
+            android:name=".MyCloudProvider"
+            android:readPermission=".TestRead">
+            <intent-filter>
+                <action android:name="android.intent.action.DOCUMENTS_PROVIDER"/>
+
+            </intent-filter>
+        </provider>
+
+        <!-- Safe: 'application' element has 'permission' attribute --> <provider
+            android:name=".MyCloudProvider"
+            android:writePermission=".TestWrite">
+            <intent-filter>
+                <action android:name="android.intent.action.DOCUMENTS_PROVIDER"/>
+
+            </intent-filter>
+        </provider>
 
         <!-- Safe: has category 'android.intent.category.LAUNCHER' --> <activity
             android:name=".Activity">
