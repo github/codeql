@@ -1,9 +1,10 @@
 | test.cpp:23:3:23:7 | call to scanf | This is a call to scanf. |
 | test.cpp:39:3:39:7 | call to scanf | This is a call to scanf. |
-| test.cpp:48:3:48:8 | call to fscanf | This is a call to scanf. |
-| test.cpp:55:3:55:8 | call to sscanf | This is a call to scanf. |
-| test.cpp:135:3:135:7 | call to scanf | This is a call to scanf. |
-| test.cpp:143:3:143:7 | call to scanf | This is a call to scanf. |
-| test.cpp:151:3:151:7 | call to scanf | This is a call to scanf. |
-| test.cpp:163:3:163:7 | call to scanf | This is a call to scanf. |
-| test.cpp:173:3:173:7 | call to scanf | This is a call to scanf. |
+| test.cpp:56:3:56:7 | call to scanf | This is a call to scanf. |
+| test.cpp:70:3:70:8 | call to fscanf | This is a call to scanf. |
+| test.cpp:77:3:77:8 | call to sscanf | This is a call to scanf. |
+| test.cpp:178:3:178:7 | call to scanf | This is a call to scanf. |
+| test.cpp:186:3:186:7 | call to scanf | This is a call to scanf. |
+| test.cpp:194:3:194:7 | call to scanf | This is a call to scanf. |
+| test.cpp:206:3:206:7 | call to scanf | This is a call to scanf. |
+| test.cpp:216:3:216:7 | call to scanf | This is a call to scanf. |

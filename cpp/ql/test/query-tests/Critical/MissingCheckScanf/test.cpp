@@ -36,8 +36,30 @@ int main()
 	{
 		int i = 0;
 
+		scanf("%d", &i); // BAD. Design choice: already initialized variables shouldn't make a difference.
+		use(i);
+	}
+
+	{
+		int i;
+		use(i);
+
+		if (scanf("%d", &i) == 1) // GOOD: only care about uses after scanf call
+		{
+			use(i);
+		}
+	}
+
+	{
+		int i; // Reused variable
+
 		scanf("%d", &i); // BAD
 		use(i);
+
+		if (scanf("%d", &i) == 1) // GOOD
+		{
+			use(i);
+		}
 	}
 
 	// --- different scanf functions ---
@@ -95,10 +117,22 @@ int main()
 	}
 
 	{
+		int r;
+		int i;
+
+		r = scanf("%d", &i); // GOOD
+
+		if (r >= 1)
+		{
+			use(i);
+		}
+	}
+
+	{
 		bool b;
 		int i;
 
-		b = scanf("%d", &i); // GOOD
+		b = scanf("%d", &i); // BAD [NOT DETECTED]: scanf can return EOF (boolifies true)
 
 		if (b >= 1)
 		{
@@ -107,9 +141,18 @@ int main()
 	}
 
 	{
+		bool b;
+		int i;
+
+		b = scanf("%d", &i); // BAD [NOT DETECTED]
+
+		use(i);
+	}
+
+	{
 		int i, j;
 
-		if (scanf("%d %d", &i) >= 2) // GOOD
+		if (scanf("%d %d", &i) >= 2) // GOOD: `j` is not a scanf arg, so out of scope of MissingCheckScanf
 		{
 			use(i);
 			use(j);
@@ -165,7 +208,7 @@ int main()
 	}
 
 	// --- different use ---
-	
+
 	{
 		int i;
 		int *ptr_i = &i;
@@ -201,5 +244,27 @@ int main()
 		{
 			use(i);
 		}
+	}
+}
+
+// Non-local cases:
+
+bool my_scan_int(int &i)
+{
+	return scanf("%d", &i) == 1; // GOOD
+}
+
+void my_scan_int_test()
+{
+	int i;
+
+	use(i); // GOOD: used before scanf
+
+	my_scan_int(i); // BAD [NOT DETECTED]
+	use(i);
+
+	if (my_scan_int(i)) // GOOD
+	{
+		use(i);
 	}
 }
