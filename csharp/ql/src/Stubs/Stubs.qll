@@ -160,7 +160,7 @@ abstract private class GeneratedType extends Type, GeneratedElement {
 
   private string stubBaseTypesString() {
     if this instanceof Enum
-    then result = ""
+    then result = " : " + this.(Enum).getUnderlyingType().toStringWithTypes()
     else
       if exists(this.getAnInterestingBaseType())
       then
@@ -726,7 +726,7 @@ pragma[noinline]
 private string stubEnumConstant(EnumConstant ec, Assembly assembly) {
   ec instanceof GeneratedMember and
   ec.getALocation() = assembly and
-  result = "    " + escapeIfKeyword(ec.getName()) + "=" + ec.getValue() + ",\n"
+  result = "    " + escapeIfKeyword(ec.getName()) + " = " + ec.getValue() + ",\n"
 }
 
 pragma[noinline]
