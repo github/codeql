@@ -166,6 +166,16 @@ predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPat
   token.getName() = "Call" and
   invoke instanceof API::CallNode and
   invoke instanceof DataFlow::CallNode // Workaround compiler bug
+  or
+  token.getName() = "WithStringArgument" and
+  exists(string operand, string argIndex, string stringValue |
+    operand = token.getAnArgument() and
+    argIndex = operand.splitAt("=", 0) and
+    stringValue = operand.splitAt("=", 1) and
+    invoke
+        .getArgument(AccessPath::parseIntWithArity(argIndex, invoke.getNumArgument()))
+        .getStringValue() = stringValue
+  )
 }
 
 /**
@@ -229,7 +239,8 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
   name =
     [
       "Member", "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue",
-      "NewCall", "Call", "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+      "NewCall", "Call", "DecoratedClass", "DecoratedMember", "DecoratedParameter",
+      "WithStringArgument"
     ]
 }
 
@@ -253,4 +264,8 @@ bindingset[name, argument]
 predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
   name = ["Member"] and
   exists(argument)
+  or
+  name = "WithStringArgument" and
+  exists(argument.indexOf("=")) and
+  exists(AccessPath::parseIntWithArity(argument.splitAt("=", 0), 10))
 }
