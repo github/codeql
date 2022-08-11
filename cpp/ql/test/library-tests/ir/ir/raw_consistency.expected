@@ -7,6 +7,8 @@ duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 | ../../../include/memory.h:68:25:68:33 | CopyValue: (reference to) | Instruction 'CopyValue: (reference to)' has no successors in function '$@'. | ../../../include/memory.h:67:5:67:5 | void std::unique_ptr<int, std::default_delete<int>>::~unique_ptr() | void std::unique_ptr<int, std::default_delete<int>>::~unique_ptr() |
+| file://:0:0:0:0 | FieldAddress: e | Instruction 'FieldAddress: e' has no successors in function '$@'. | ir.cpp:1834:11:1834:11 | block_assignment::A& block_assignment::A::operator=(block_assignment::A&&) | block_assignment::A& block_assignment::A::operator=(block_assignment::A&&) |
+| file://:0:0:0:0 | FieldAddress: e | Instruction 'FieldAddress: e' has no successors in function '$@'. | ir.cpp:1834:11:1834:11 | block_assignment::A& block_assignment::A::operator=(block_assignment::A&&) | block_assignment::A& block_assignment::A::operator=(block_assignment::A&&) |
 | file://:0:0:0:0 | InitializeIndirection: (unnamed parameter 0) | Instruction 'InitializeIndirection: (unnamed parameter 0)' has no successors in function '$@'. | ir.cpp:1834:11:1834:11 | block_assignment::A& block_assignment::A::operator=(block_assignment::A&&) | block_assignment::A& block_assignment::A::operator=(block_assignment::A&&) |
 ambiguousSuccessors
 unexplainedLoop

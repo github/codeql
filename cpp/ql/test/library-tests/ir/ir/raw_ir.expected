@@ -9812,18 +9812,29 @@ ir.cpp:
 #-----|     mu0_4(unknown)          = InitializeIndirection[(unnamed parameter 0)] : &:r0_3
 
 #-----|   Block 1
-#-----|     r0_5(glval<A &>)     = VariableAddress[#return]                 : 
-#-----|     r0_6(glval<unknown>) = VariableAddress[#this]                   : 
-#-----|     r0_7(A *)            = Load[#this]                              : &:r0_6, ~m?
-#-----|     r0_8(glval<A>)       = CopyValue                                : r0_7
-#-----|     r0_9(A &)            = CopyValue                                : r0_8
-#-----|     mu0_10(A &)          = Store[#return]                           : &:r0_5, r0_9
-# 1834|     v1834_8(void)        = ReturnIndirection[#this]                 : &:r1834_6, ~m?
-#-----|     v0_11(void)          = ReturnIndirection[(unnamed parameter 0)] : &:r0_3, ~m?
-# 1834|     r1834_9(glval<A &>)  = VariableAddress[#return]                 : 
-# 1834|     v1834_10(void)       = ReturnValue                              : &:r1834_9, ~m?
-# 1834|     v1834_11(void)       = AliasedUse                               : ~m?
-# 1834|     v1834_12(void)       = ExitFunction                             : 
+#-----|     r0_5(glval<unknown>)           = VariableAddress[#this] : 
+#-----|     r0_6(A *)                      = Load[#this]            : &:r0_5, ~m?
+#-----|     r0_7(glval<enum <unnamed>[1]>) = FieldAddress[e]        : r0_6
+
+#-----|   Block 2
+#-----|     r0_8(glval<A &&>)               = VariableAddress[(unnamed parameter 0)] : 
+#-----|     r0_9(A &&)                      = Load[(unnamed parameter 0)]            : &:r0_8, ~m?
+#-----|     r0_10(glval<A>)                 = CopyValue                              : r0_9
+#-----|     r0_11(glval<enum <unnamed>[1]>) = FieldAddress[e]                        : r0_10
+
+#-----|   Block 3
+#-----|     r0_12(glval<A &>)     = VariableAddress[#return]                 : 
+#-----|     r0_13(glval<unknown>) = VariableAddress[#this]                   : 
+#-----|     r0_14(A *)            = Load[#this]                              : &:r0_13, ~m?
+#-----|     r0_15(glval<A>)       = CopyValue                                : r0_14
+#-----|     r0_16(A &)            = CopyValue                                : r0_15
+#-----|     mu0_17(A &)           = Store[#return]                           : &:r0_12, r0_16
+# 1834|     v1834_8(void)         = ReturnIndirection[#this]                 : &:r1834_6, ~m?
+#-----|     v0_18(void)           = ReturnIndirection[(unnamed parameter 0)] : &:r0_3, ~m?
+# 1834|     r1834_9(glval<A &>)   = VariableAddress[#return]                 : 
+# 1834|     v1834_10(void)        = ReturnValue                              : &:r1834_9, ~m?
+# 1834|     v1834_11(void)        = AliasedUse                               : ~m?
+# 1834|     v1834_12(void)        = ExitFunction                             : 
 
 # 1839| block_assignment::B& block_assignment::B::operator=(block_assignment::B&&)
 # 1839|   Block 0

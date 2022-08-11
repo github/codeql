@@ -13985,6 +13985,24 @@ ir.cpp:
 #-----|         Type = [RValueReferenceType] A &&
 #-----|   getEntryPoint(): [BlockStmt] { ... }
 #-----|     getStmt(0): [ExprStmt] ExprStmt
+#-----|       getExpr(): (no string representation)
+#-----|           Type = [VoidType] void
+#-----|           ValueCategory = prvalue
+#-----|         getLValue(): [PointerFieldAccess] e
+#-----|             Type = [ArrayType] enum <unnamed>[1]
+#-----|             ValueCategory = lvalue
+#-----|           getQualifier(): [ThisExpr] this
+#-----|               Type = [PointerType] A *
+#-----|               ValueCategory = prvalue(load)
+#-----|         getRValue(): [ReferenceFieldAccess] e
+#-----|             Type = [ArrayType] enum <unnamed>[1]
+#-----|             ValueCategory = lvalue
+#-----|           getQualifier(): [VariableAccess] (unnamed parameter 0)
+#-----|               Type = [RValueReferenceType] A &&
+#-----|               ValueCategory = prvalue(load)
+#-----|           getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|               Type = [Class] A
+#-----|               ValueCategory = lvalue
 #-----|     getStmt(1): [ReturnStmt] return ...
 #-----|       getExpr(): [PointerDereferenceExpr] * ...
 #-----|           Type = [Class] A
