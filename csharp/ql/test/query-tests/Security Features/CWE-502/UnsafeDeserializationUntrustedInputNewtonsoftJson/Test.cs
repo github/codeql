@@ -22,6 +22,6 @@ class Test
 
     public static object Deserialize(TextBox data)
     {
-        return JsonConvert.DeserializeObject(data.Text);
+        return JsonConvert.DeserializeObject(data.Text); // OK, not checking if JsonSerializerSettings is set globally with unsafe settings
     }
 }
