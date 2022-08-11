@@ -35,4 +35,10 @@ module SafeUrlFlow {
   private class UnsafeUrlMethodEdge extends SanitizerEdge {
     UnsafeUrlMethodEdge() { this = any(UnsafeUrlMethod um).getACall().getReceiver() }
   }
+  
+  /** Any slicing of the URL, considered as a sanitizer for safe URL flow. */
+  private class StringSlicingEdge extends SanitizerEdge {
+    StringSlicingEdge() { this = any(DataFlow::SliceNode sn) }
+  }
+
 }
