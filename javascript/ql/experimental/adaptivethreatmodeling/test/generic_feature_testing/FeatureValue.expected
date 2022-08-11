@@ -1,20 +1,11 @@
 | test.html:2:61:2:68 | endpoint | CalleeFlexibleAccessPath | $event.target.files.item |
 | test.html:2:61:2:68 | endpoint | InputArgumentIndex | 0 |
-| test.html:2:61:2:68 | endpoint | argumentIndex | 0 |
-| test.html:2:61:2:68 | endpoint | calleeAccessPath |  |
-| test.html:2:61:2:68 | endpoint | calleeAccessPathWithStructuralInfo |  |
-| test.html:2:61:2:68 | endpoint | calleeName | item |
 | test.html:2:61:2:68 | endpoint | contextFunctionInterfaces |  |
 | test.html:2:61:2:68 | endpoint | contextSurroundingFunctionParameters |  |
 | test.html:2:61:2:68 | endpoint | fileImports |  |
 | test.js:6:7:6:14 | endpoint | CalleeFlexibleAccessPath | f |
 | test.js:6:7:6:14 | endpoint | InputArgumentIndex | 0 |
-| test.js:6:7:6:14 | endpoint | argumentIndex | 0 |
-| test.js:6:7:6:14 | endpoint | calleeAccessPath | lib3 |
-| test.js:6:7:6:14 | endpoint | calleeAccessPathWithStructuralInfo | lib3 instanceorreturn |
-| test.js:6:7:6:14 | endpoint | calleeApiName | lib3 |
 | test.js:6:7:6:14 | endpoint | calleeImports | ? lib3 |
-| test.js:6:7:6:14 | endpoint | calleeName | f |
 | test.js:6:7:6:14 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:6:7:6:14 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:6:7:6:14 | endpoint | enclosingFunctionBody | f endpoint 12 f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
@@ -23,8 +14,7 @@
 | test.js:7:11:7:18 | endpoint | CalleeFlexibleAccessPath | f |
 | test.js:7:11:7:18 | endpoint | InputAccessPathFromCallee | 0.p |
 | test.js:7:11:7:18 | endpoint | InputArgumentIndex | 0 |
-| test.js:7:11:7:18 | endpoint | calleeAccessPath |  |
-| test.js:7:11:7:18 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:7:11:7:18 | endpoint | assignedToPropName | p |
 | test.js:7:11:7:18 | endpoint | calleeImports | ? lib3 |
 | test.js:7:11:7:18 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:7:11:7:18 | endpoint | contextSurroundingFunctionParameters | () |
@@ -34,8 +24,7 @@
 | test.js:8:15:8:22 | endpoint | CalleeFlexibleAccessPath | f |
 | test.js:8:15:8:22 | endpoint | InputAccessPathFromCallee | 0.p.q |
 | test.js:8:15:8:22 | endpoint | InputArgumentIndex | 0 |
-| test.js:8:15:8:22 | endpoint | calleeAccessPath |  |
-| test.js:8:15:8:22 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:8:15:8:22 | endpoint | assignedToPropName | q |
 | test.js:8:15:8:22 | endpoint | calleeImports | ? lib3 |
 | test.js:8:15:8:22 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:8:15:8:22 | endpoint | contextSurroundingFunctionParameters | () |
@@ -44,12 +33,7 @@
 | test.js:8:15:8:22 | endpoint | fileImports | foo lib1 lib2 lib3 |
 | test.js:9:9:9:16 | endpoint | CalleeFlexibleAccessPath | o.m |
 | test.js:9:9:9:16 | endpoint | InputArgumentIndex | 0 |
-| test.js:9:9:9:16 | endpoint | argumentIndex | 0 |
-| test.js:9:9:9:16 | endpoint | calleeAccessPath | lib2 m |
-| test.js:9:9:9:16 | endpoint | calleeAccessPathWithStructuralInfo | lib2 member m instanceorreturn |
-| test.js:9:9:9:16 | endpoint | calleeApiName | lib2 |
 | test.js:9:9:9:16 | endpoint | calleeImports | ? lib2 |
-| test.js:9:9:9:16 | endpoint | calleeName | m |
 | test.js:9:9:9:16 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:9:9:9:16 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:9:9:9:16 | endpoint | enclosingFunctionBody | f endpoint 12 f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
@@ -59,8 +43,7 @@
 | test.js:10:13:10:20 | endpoint | CalleeFlexibleAccessPath | o.m |
 | test.js:10:13:10:20 | endpoint | InputAccessPathFromCallee | 0.p |
 | test.js:10:13:10:20 | endpoint | InputArgumentIndex | 0 |
-| test.js:10:13:10:20 | endpoint | calleeAccessPath |  |
-| test.js:10:13:10:20 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:10:13:10:20 | endpoint | assignedToPropName | p |
 | test.js:10:13:10:20 | endpoint | calleeImports | ? lib2 |
 | test.js:10:13:10:20 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:10:13:10:20 | endpoint | contextSurroundingFunctionParameters | () |
@@ -70,8 +53,7 @@
 | test.js:11:17:11:24 | endpoint | CalleeFlexibleAccessPath | o.m |
 | test.js:11:17:11:24 | endpoint | InputAccessPathFromCallee | 0.p.q |
 | test.js:11:17:11:24 | endpoint | InputArgumentIndex | 0 |
-| test.js:11:17:11:24 | endpoint | calleeAccessPath |  |
-| test.js:11:17:11:24 | endpoint | calleeAccessPathWithStructuralInfo |  |
+| test.js:11:17:11:24 | endpoint | assignedToPropName | q |
 | test.js:11:17:11:24 | endpoint | calleeImports | ? lib2 |
 | test.js:11:17:11:24 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:11:17:11:24 | endpoint | contextSurroundingFunctionParameters | () |
@@ -80,8 +62,6 @@
 | test.js:11:17:11:24 | endpoint | fileImports | foo lib1 lib2 lib3 |
 | test.js:12:11:12:18 | endpoint | CalleeFlexibleAccessPath | F |
 | test.js:12:11:12:18 | endpoint | InputArgumentIndex | 0 |
-| test.js:12:11:12:18 | endpoint | calleeAccessPath |  |
-| test.js:12:11:12:18 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:12:11:12:18 | endpoint | calleeImports | lib1 |
 | test.js:12:11:12:18 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:12:11:12:18 | endpoint | contextSurroundingFunctionParameters | () |
@@ -90,12 +70,7 @@
 | test.js:12:11:12:18 | endpoint | fileImports | foo lib1 lib2 lib3 |
 | test.js:13:17:13:24 | endpoint | CalleeFlexibleAccessPath | o.m().m().m |
 | test.js:13:17:13:24 | endpoint | InputArgumentIndex | 0 |
-| test.js:13:17:13:24 | endpoint | argumentIndex | 0 |
-| test.js:13:17:13:24 | endpoint | calleeAccessPath | lib2 m m m |
-| test.js:13:17:13:24 | endpoint | calleeAccessPathWithStructuralInfo | lib2 member m instanceorreturn member m instanceorreturn member m instanceorreturn |
-| test.js:13:17:13:24 | endpoint | calleeApiName | lib2 |
 | test.js:13:17:13:24 | endpoint | calleeImports | ? lib2 |
-| test.js:13:17:13:24 | endpoint | calleeName | m |
 | test.js:13:17:13:24 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:13:17:13:24 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:13:17:13:24 | endpoint | enclosingFunctionBody | f endpoint 12 f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
@@ -103,10 +78,6 @@
 | test.js:13:17:13:24 | endpoint | fileImports | foo lib1 lib2 lib3 |
 | test.js:14:9:14:16 | endpoint | CalleeFlexibleAccessPath | f() |
 | test.js:14:9:14:16 | endpoint | InputArgumentIndex | 0 |
-| test.js:14:9:14:16 | endpoint | argumentIndex | 0 |
-| test.js:14:9:14:16 | endpoint | calleeAccessPath | lib3 |
-| test.js:14:9:14:16 | endpoint | calleeAccessPathWithStructuralInfo | lib3 instanceorreturn instanceorreturn |
-| test.js:14:9:14:16 | endpoint | calleeApiName | lib3 |
 | test.js:14:9:14:16 | endpoint | calleeImports | ? lib3 |
 | test.js:14:9:14:16 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:14:9:14:16 | endpoint | contextSurroundingFunctionParameters | () |
@@ -115,12 +86,7 @@
 | test.js:14:9:14:16 | endpoint | fileImports | foo lib1 lib2 lib3 |
 | test.js:15:12:15:19 | endpoint | CalleeFlexibleAccessPath | o.?.m |
 | test.js:15:12:15:19 | endpoint | InputArgumentIndex | 0 |
-| test.js:15:12:15:19 | endpoint | argumentIndex | 0 |
-| test.js:15:12:15:19 | endpoint | calleeAccessPath | lib2 m |
-| test.js:15:12:15:19 | endpoint | calleeAccessPathWithStructuralInfo | lib2 member member m instanceorreturn |
-| test.js:15:12:15:19 | endpoint | calleeApiName | lib2 |
 | test.js:15:12:15:19 | endpoint | calleeImports | ? lib2 |
-| test.js:15:12:15:19 | endpoint | calleeName | m |
 | test.js:15:12:15:19 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:15:12:15:19 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:15:12:15:19 | endpoint | enclosingFunctionBody | f endpoint 12 f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
@@ -128,12 +94,7 @@
 | test.js:15:12:15:19 | endpoint | fileImports | foo lib1 lib2 lib3 |
 | test.js:16:16:16:23 | endpoint | CalleeFlexibleAccessPath | o.m.?.p.m |
 | test.js:16:16:16:23 | endpoint | InputArgumentIndex | 0 |
-| test.js:16:16:16:23 | endpoint | argumentIndex | 0 |
-| test.js:16:16:16:23 | endpoint | calleeAccessPath | lib2 m p m |
-| test.js:16:16:16:23 | endpoint | calleeAccessPathWithStructuralInfo | lib2 member m member member p member m instanceorreturn |
-| test.js:16:16:16:23 | endpoint | calleeApiName | lib2 |
 | test.js:16:16:16:23 | endpoint | calleeImports | ? lib2 |
-| test.js:16:16:16:23 | endpoint | calleeName | m |
 | test.js:16:16:16:23 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:16:16:16:23 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:16:16:16:23 | endpoint | enclosingFunctionBody | f endpoint 12 f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
@@ -141,10 +102,6 @@
 | test.js:16:16:16:23 | endpoint | fileImports | foo lib1 lib2 lib3 |
 | test.js:17:15:17:22 | endpoint | CalleeFlexibleAccessPath | (await p) |
 | test.js:17:15:17:22 | endpoint | InputArgumentIndex | 0 |
-| test.js:17:15:17:22 | endpoint | argumentIndex | 0 |
-| test.js:17:15:17:22 | endpoint | calleeAccessPath | lib1 p |
-| test.js:17:15:17:22 | endpoint | calleeAccessPathWithStructuralInfo | lib1 member p instanceorreturn |
-| test.js:17:15:17:22 | endpoint | calleeApiName | lib1 |
 | test.js:17:15:17:22 | endpoint | calleeImports | lib1 |
 | test.js:17:15:17:22 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:17:15:17:22 | endpoint | contextSurroundingFunctionParameters | () |
@@ -153,12 +110,7 @@
 | test.js:17:15:17:22 | endpoint | fileImports | foo lib1 lib2 lib3 |
 | test.js:18:27:18:34 | endpoint | CalleeFlexibleAccessPath | import(!).bar.baz |
 | test.js:18:27:18:34 | endpoint | InputArgumentIndex | 0 |
-| test.js:18:27:18:34 | endpoint | argumentIndex | 0 |
-| test.js:18:27:18:34 | endpoint | calleeAccessPath | foo bar baz |
-| test.js:18:27:18:34 | endpoint | calleeAccessPathWithStructuralInfo | foo member bar member baz instanceorreturn |
-| test.js:18:27:18:34 | endpoint | calleeApiName | foo |
 | test.js:18:27:18:34 | endpoint | calleeImports | foo |
-| test.js:18:27:18:34 | endpoint | calleeName | baz |
 | test.js:18:27:18:34 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:18:27:18:34 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:18:27:18:34 | endpoint | enclosingFunctionBody | f endpoint 12 f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
@@ -166,36 +118,23 @@
 | test.js:18:27:18:34 | endpoint | fileImports | foo lib1 lib2 lib3 |
 | test.js:20:13:20:20 | endpoint | CalleeFlexibleAccessPath | bar |
 | test.js:20:13:20:20 | endpoint | InputArgumentIndex | 0 |
-| test.js:20:13:20:20 | endpoint | argumentIndex | 0 |
-| test.js:20:13:20:20 | endpoint | calleeAccessPath | lib1 bar |
-| test.js:20:13:20:20 | endpoint | calleeAccessPathWithStructuralInfo | lib1 member bar instanceorreturn |
-| test.js:20:13:20:20 | endpoint | calleeApiName | lib1 |
 | test.js:20:13:20:20 | endpoint | calleeImports | lib1 |
-| test.js:20:13:20:20 | endpoint | calleeName | bar |
 | test.js:20:13:20:20 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:20:13:20:20 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:20:13:20:20 | endpoint | enclosingFunctionBody | f endpoint 12 f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:20:13:20:20 | endpoint | enclosingFunctionName |  |
 | test.js:20:13:20:20 | endpoint | fileImports | foo lib1 lib2 lib3 |
 | test.js:22:21:22:28 | endpoint | InputArgumentIndex | 0 |
-| test.js:22:21:22:28 | endpoint | argumentIndex | 0 |
-| test.js:22:21:22:28 | endpoint | calleeAccessPath | lib3 |
-| test.js:22:21:22:28 | endpoint | calleeAccessPathWithStructuralInfo | lib3 instanceorreturn |
-| test.js:22:21:22:28 | endpoint | calleeApiName | lib3 |
 | test.js:22:21:22:28 | endpoint | calleeImports | ? lib2 lib3 |
 | test.js:22:21:22:28 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:22:21:22:28 | endpoint | contextSurroundingFunctionParameters | () |
 | test.js:22:21:22:28 | endpoint | enclosingFunctionBody | f endpoint 12 f p endpoint f p q endpoint o m endpoint o m p endpoint o m p q endpoint F endpoint o m m m endpoint f endpoint o x m endpoint o m x p m endpoint p endpoint foo bar baz endpoint foo bar endpoint f f o m endpoint |
 | test.js:22:21:22:28 | endpoint | enclosingFunctionName |  |
 | test.js:22:21:22:28 | endpoint | fileImports | foo lib1 lib2 lib3 |
-| test.js:33:50:33:57 | endpoint | calleeAccessPath |  |
-| test.js:33:50:33:57 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:33:50:33:57 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:33:50:33:57 | endpoint | contextSurroundingFunctionParameters |  |
 | test.js:33:50:33:57 | endpoint | fileImports | foo lib1 lib2 lib3 |
 | test.js:33:50:33:57 | endpoint | stringConcatenatedWith | f() + '<a target="_blank" href="' -endpoint- '"></a>' |
-| test.js:35:18:35:25 | endpoint | calleeAccessPath |  |
-| test.js:35:18:35:25 | endpoint | calleeAccessPathWithStructuralInfo |  |
 | test.js:35:18:35:25 | endpoint | contextFunctionInterfaces | f(?)\nfoo()\ng()\nm() |
 | test.js:35:18:35:25 | endpoint | contextSurroundingFunctionParameters |  |
 | test.js:35:18:35:25 | endpoint | fileImports | foo lib1 lib2 lib3 |
