@@ -16,3 +16,6 @@ import semmle.code.java.security.ImplicitlyExportedAndroidComponent
 from ImplicitlyExportedAndroidComponent impExpAndroidComp
 where impExpAndroidComp.isImplicitlyExported()
 select impExpAndroidComp, "This component is implicitly exported."
+// from ImplicitlyExportedAndroidComponent impExpAndroidComp
+// where exists(impExpAndroidComp)
+// select impExpAndroidComp, "This component is implicitly exported."

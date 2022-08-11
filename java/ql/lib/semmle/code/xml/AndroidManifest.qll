@@ -178,7 +178,7 @@ class AndroidComponentXmlElement extends XmlElement {
   /**
    * Holds if this component element has an `<intent-filter>` child element.
    */
-  predicate hasAnIntentFilterElement() { this.getAChild().hasName("intent-filter") }
+  predicate hasAnIntentFilterElement() { exists(this.getAnIntentFilterElement()) }
 
   /**
    * Gets the value of the `android:name` attribute of this component element.
