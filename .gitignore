@@ -15,6 +15,9 @@
 .vs/*
 !.vs/VSWorkspaceSettings.json
 
+# VSCode temporaries
+.vscode/*.log
+
 # Byte-compiled python files
 *.pyc
 
