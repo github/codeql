@@ -334,7 +334,7 @@ class ContextSurroundingFunctionParameters extends EndpointFeature,
   override string getValue(DataFlow::Node endpoint) {
     result =
       concat(string functionParameterLine, Function f |
-        f = getRelevantFunction(endpoint) and
+        f = this.getRelevantFunction(endpoint) and
         functionParameterLine = SyntacticUtilities::getFunctionParametersFeatureComponent(f)
       |
         functionParameterLine, "\n"
@@ -471,17 +471,6 @@ class ContextFunctionInterfaces extends EndpointFeature, TContextFunctionInterfa
  * Syntactic utilities for feature value computation.
  */
 private module SyntacticUtilities {
-  bindingset[start, end]
-  string renderStringConcatOperands(DataFlow::Node root, int start, int end) {
-    result =
-      concat(int i, string operand |
-        i = [start .. end] and
-        operand = renderStringConcatOperand(StringConcatenation::getOperand(root, i))
-      |
-        operand, " + " order by i
-      )
-  }
-
   string renderStringConcatOperand(DataFlow::Node operand) {
     if exists(unique(string v | operand.mayHaveStringValue(v)))
     then result = "'" + any(string v | operand.mayHaveStringValue(v)) + "'"
@@ -544,7 +533,6 @@ private module SyntacticUtilities {
     result =
       concat(Function func, string line |
         func.getFile() = file and
-        exists(func.getName()) and
         line = func.getName() + getFunctionParametersFeatureComponent(func)
       |
         line, "\n" order by line
