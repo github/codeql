@@ -133,6 +133,89 @@ defined :ref:`above <library-modules>`:
 This defines an explicit module named ``M``. The body of this module defines
 the class ``OneTwo``.
 
+.. _parameterised-modules:
+
+Parameterised modules
+=====================
+
+Parameterised modules are QL's approach to generic programming.
+Similar to explicit modules, parameterised modules are defined within other modules using the keywork ``module``.
+In addition to the module name, parameterised modules define one or more parameters between the name and the module body.
+
+For example, consider the module ``ApplyFooThenBar``, which takes two predicate parameters and defines a new predicate
+that applies them one after the other:
+
+.. code-block:: ql
+
+    module ApplyFooThenBar<transformer/1 foo, transformer/1 bar> {
+      bindingset[x]
+      int apply(int x) {
+        result = bar(foo(x))
+      }
+    }
+
+Parameterised modules cannot be directly referenced.
+Instead, they are instantiated with arguments passed between ``<`` and ``>``.
+Instantiated parameterised modules can be used as a module expression, identical to explicit module references.
+
+For example, we can instantiate ``ApplyFooThenBar`` with two identical arguments ``increment``, creating a module
+containing a predicate that adds 2:
+
+.. code-block:: ql
+
+    bindingset[result] bindingset[x]
+    int increment(int x) { result = x + 1 }
+
+    module IncrementTwice = ApplyFooThenBar<increment/1, increment/1>;
+
+    select IncrementTwice::apply(40) // 42
+
+The parameters of a parameterised module are (meta-)typed with :ref:`signatures <signatures>`.
+
+For example, in the previous two snippets, we relied on the predicate signature ``transformer``:
+
+.. code-block:: ql
+
+    bindingset[x]
+    signature int transformer(int x);
+
+The instantiation of parameterised modules is applicative, meaning that repeated instantiation of a module using
+identical arguments results in the same object. This is particularly relevant for type definitions inside parameterised
+modules as :ref:`classes <classes>` or via :ref:`newtype <algebraic-datatypes>`.
+
+For example, the following generates an error for the second call to ``foo``, but not for the first:
+
+.. code-block:: ql
+
+    bindingset[this]
+    signature class TSig;
+
+    module M<TSig T> {
+      newtype A = B() or C()
+    }
+
+    string foo(M<int>::A a) { ... }
+
+    select foo(M<int>::B()),  // valid: repeated identical instantiation of M does not duplicate A, B, C
+           foo(M<float>::B()) // ERROR: M<float>::B is not compatible with M<int>::A
+
+Module parameters are dependently typed, meaning that signature expressions in parameter definitions can reference
+preceding parameters.
+
+For example, we can declare the signature for ``T2`` dependent on ``T1``, enforcing a subtyping relationship
+between the two parameters:
+
+.. code-block:: ql
+
+    signature class TSig;
+
+    module Extends<TSig T> { signature class Type extends T; }
+
+    module ParameterisedModule<TSig T1, Extends<T1>::Type T2> { ... }
+
+Dependently typed parameters are particularly useful in combination with
+:ref:`parameterised module signatures <parameterised-module-signatures>`.
+
 .. _module-bodies:
 
 Module bodies
