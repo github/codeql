@@ -1450,8 +1450,6 @@ class TranslatedAssignExpr extends TranslatedNonConstantExpr {
       result = this.getLeftOperand().getResult()
   }
 
-  abstract Instruction getStoredValue();
-
   final TranslatedExpr getLeftOperand() {
     result = getTranslatedExpr(expr.getLValue().getFullyConverted())
   }
