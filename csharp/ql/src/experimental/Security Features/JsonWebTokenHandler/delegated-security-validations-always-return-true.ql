@@ -16,8 +16,7 @@ import DataFlow
 import JsonWebTokenHandlerLib
 
 from
-  TokenValidationParametersPropertyWriteToValidationDelegated tv, Assignment a,
-  CallableAlwaysReturnsTrueHigherPrecision e
-where a.getLValue() = tv and a.getRValue().getAChild*() = e
-select tv, "JsonWebTokenHandler security-sensitive property $@ is being delegated to $@.", tv,
-  tv.getTarget().toString(), e, "a callable that always returns \"true\""
+  TokenValidationParametersProperty p , CallableAlwaysReturnsTrueHigherPrecision e
+where e = p.getAnAssignedValue()
+select e, "JsonWebTokenHandler security-sensitive property $@ is being delegated to $@.", p,
+  p.getQualifiedName().toString(), e, "a callable that always returns \"true\""

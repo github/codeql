@@ -2,20 +2,14 @@ import csharp
 import DataFlow
 
 /**
- * An abstract PropertyWrite for `TokenValidationParameters`.
- * Not really necessary anymore, but keeping it in case we want to extend the queries to check on other properties.
+ * A sensitive property for `TokenValidationParameters` that updates the underlying value.
  */
-abstract class TokenValidationParametersPropertyWrite extends PropertyWrite { }
-
-/**
- * An access to a sensitive property for `TokenValidationParameters` that updates the underlying value.
- */
-class TokenValidationParametersPropertyWriteToBypassSensitiveValidation extends TokenValidationParametersPropertyWrite {
-  TokenValidationParametersPropertyWriteToBypassSensitiveValidation() {
+class TokenValidationParametersPropertySensitiveValidation extends Property {
+  TokenValidationParametersPropertySensitiveValidation() {
     exists(Property p, Class c |
       c.hasQualifiedName("Microsoft.IdentityModel.Tokens.TokenValidationParameters")
     |
-      p.getAnAccess() = this and
+      p = this and
       c.getAProperty() = p and
       p.getName() in [
           "ValidateIssuer", "ValidateAudience", "ValidateLifetime", "RequireExpirationTime",
@@ -28,7 +22,7 @@ class TokenValidationParametersPropertyWriteToBypassSensitiveValidation extends 
 /**
  * A dataflow from a `false` value to a write sensitive property for `TokenValidationParameters`.
  */
-class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation extends TaintTracking::Configuration {
+class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation extends DataFlow::Configuration {
   FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation() {
     this = "FlowsToTokenValidationResultIsValidCall"
   }
@@ -41,7 +35,7 @@ class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation 
   override predicate isSink(DataFlow::Node sink) {
     exists(Assignment a |
       sink.asExpr() = a.getRValue() and
-      a.getLValue() instanceof TokenValidationParametersPropertyWrite
+      a.getLValue().(PropertyAccess).getProperty() instanceof TokenValidationParametersPropertySensitiveValidation
     )
   }
 }
@@ -83,7 +77,7 @@ class JsonWebTokenHandlerValidateTokenCall extends MethodCall {
 /**
  * A read access for properties `IsValid` or `Exception` for `Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateToken`
  */
-class TokenValidationResultIsValidCall extends PropertyRead {
+private class TokenValidationResultIsValidCall extends PropertyRead {
   TokenValidationResultIsValidCall() {
     exists(Property p | p.getAnAccess().(PropertyRead) = this |
       p.hasName("IsValid") or
@@ -95,7 +89,7 @@ class TokenValidationResultIsValidCall extends PropertyRead {
 /**
  * Dataflow from the output of `Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateToken` call to access the `IsValid` or `Exception` property
  */
-private class FlowsToTokenValidationResultIsValidCall extends TaintTracking::Configuration {
+private class FlowsToTokenValidationResultIsValidCall extends DataFlow::Configuration {
   FlowsToTokenValidationResultIsValidCall() { this = "FlowsToTokenValidationResultIsValidCall" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -108,25 +102,14 @@ private class FlowsToTokenValidationResultIsValidCall extends TaintTracking::Con
 }
 
 /**
- * Holds if the call to `Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateToken` flows to any `IsValid` or `Exception` property access
+ * A security-sensitive property for `Microsoft.IdentityModel.Tokens.TokenValidationParameters`
  */
-predicate hasAFlowToTokenValidationResultIsValidCall(JsonWebTokenHandlerValidateTokenCall call) {
-  exists(FlowsToTokenValidationResultIsValidCall config, DataFlow::Node source |
-    call = source.asExpr()
-  |
-    config.hasFlow(source, _)
-  )
-}
-
-/**
- * A property write for security-sensitive properties for `Microsoft.IdentityModel.Tokens.TokenValidationParameters`
- */
-class TokenValidationParametersPropertyWriteToValidationDelegated extends PropertyWrite {
-  TokenValidationParametersPropertyWriteToValidationDelegated() {
+class TokenValidationParametersProperty extends Property {
+  TokenValidationParametersProperty() {
     exists(Property p, Class c |
       c.hasQualifiedName("Microsoft.IdentityModel.Tokens.TokenValidationParameters")
     |
-      p.getAnAccess() = this and
+      p = this and
       c.getAProperty() = p and
       p.getName() in [
           "SignatureValidator", "TokenReplayValidator", "AlgorithmValidator", "AudienceValidator",
@@ -170,7 +153,7 @@ class CallableAlwaysReturnsTrue extends Callable {
     or
     lambdaExprReturnsOnlyLiteralTrue(this)
     or
-    exists(AnonymousFunctionExpr le, Call call, CallableAlwaysReturnsTrue cat, Callable callable |
+    exists(AnonymousFunctionExpr le, Call call, Callable callable |
       this = le
     |
       callable.getACall() = call and
@@ -212,21 +195,6 @@ class CallableAlwaysReturnsTrueHigherPrecision extends CallableAlwaysReturnsTrue
       exists(LambdaExpr le | le = this |
         le.getBody() instanceof CallableAlwaysReturnsTrueHigherPrecision
       )
-    )
-  }
-}
-
-/**
- * A property Write for the `IssuerValidator` property for `Microsoft.IdentityModel.Tokens.TokenValidationParameters`
- */
-class TokenValidationParametersPropertyWriteToValidationDelegatedIssuerValidator extends PropertyWrite {
-  TokenValidationParametersPropertyWriteToValidationDelegatedIssuerValidator() {
-    exists(Property p, Class c |
-      c.hasQualifiedName("Microsoft.IdentityModel.Tokens.TokenValidationParameters")
-    |
-      p.getAnAccess() = this and
-      c.getAProperty() = p and
-      p.hasName("IssuerValidator")
     )
   }
 }
