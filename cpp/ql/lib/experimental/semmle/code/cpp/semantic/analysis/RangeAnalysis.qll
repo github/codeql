@@ -342,7 +342,7 @@ private class ConvertOrBoxExpr extends SemUnaryExpr {
  * A cast that can be ignored for the purpose of range analysis.
  */
 private class SafeCastExpr extends ConvertOrBoxExpr {
-  SafeCastExpr() { conversionCannotOverflow(getTrackedType(getOperand()), getTrackedType(this)) }
+  SafeCastExpr() { conversionCannotOverflow(getTrackedType(pragma[only_bind_into](getOperand())), getTrackedType(this)) }
 }
 
 /**

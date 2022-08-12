@@ -169,7 +169,9 @@ module SemanticExprConfig {
 
     final override predicate hasRead(SsaVariable v) {
       exists(IR::Operand operand |
-        operand.getDef() = v and not operand instanceof IR::PhiInputOperand
+        operand.getDef() = v and
+        not operand instanceof IR::PhiInputOperand and
+        operand.getUse().getBlock() = block
       )
     }
   }
