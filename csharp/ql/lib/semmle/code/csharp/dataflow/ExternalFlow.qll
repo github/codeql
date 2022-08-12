@@ -247,7 +247,7 @@ predicate summaryModel(
   )
 }
 
-/** Holds is a summary model exists indicating there is no flow for the given parameters. */
+/** Holds if a summary model exists indicating there is no flow for the given parameters. */
 predicate negativeSummaryModel(
   string namespace, string type, string name, string signature, string provenance
 ) {
