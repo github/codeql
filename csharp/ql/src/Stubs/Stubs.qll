@@ -502,21 +502,28 @@ private string stubClassName(Type t) {
                       else
                         if t instanceof TupleType
                         then
-                          if t.(TupleType).getArity() < 2
-                          then result = stubClassName(t.(TupleType).getUnderlyingType())
-                          else
-                            result =
-                              "(" +
-                                concat(int i, Type element |
-                                  element = t.(TupleType).getElementType(i)
-                                |
-                                  stubClassName(element), "," order by i
-                                ) + ")"
+                          exists(TupleType tt | tt = t |
+                            if tt.getArity() < 2
+                            then result = stubClassName(tt.getUnderlyingType())
+                            else
+                              result =
+                                "(" +
+                                  concat(int i, Type element |
+                                    element = tt.getElementType(i)
+                                  |
+                                    stubClassName(element), "," order by i
+                                  ) + ")"
+                          )
                         else
                           if t instanceof FunctionPointerType
                           then
-                            exists(CallingConvention callconvention, string calltext |
-                              callconvention = t.(FunctionPointerType).getCallingConvention() and
+                            exists(
+                              FunctionPointerType fpt, CallingConvention callconvention,
+                              string calltext
+                            |
+                              fpt = t
+                            |
+                              callconvention = fpt.getCallingConvention() and
                               (
                                 if callconvention instanceof UnmanagedCallingConvention
                                 then calltext = "unmanaged"
@@ -525,10 +532,10 @@ private string stubClassName(Type t) {
                               result =
                                 "delegate* " + calltext + "<" +
                                   concat(int i, Parameter p |
-                                    p = t.(FunctionPointerType).getParameter(i)
+                                    p = fpt.getParameter(i)
                                   |
                                     stubClassName(p.getType()) + "," order by i
-                                  ) + stubClassName(t.(FunctionPointerType).getReturnType()) + ">"
+                                  ) + stubClassName(fpt.getReturnType()) + ">"
                             )
                           else
                             if t instanceof ValueOrRefType
