@@ -722,8 +722,6 @@ class CalleeFlexibleAccessPath extends EndpointFeature, TCalleeFlexibleAccessPat
  *
  * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
  *
- * This feature, together with `InputArgumentIndex` is intended as a far superior version of the `ArgumentIndexFeature`.
- *
  * Examples:
  * ```
  * foo({ bar: endpoint }); // -> bar
