@@ -27,10 +27,15 @@ class ArraySizeConfiguration extends ProductFlow::Configuration {
       pai.getRight() = index and
       pai.getLeft() = sink1.asInstruction() and
       bounded(index, b, delta, true) and
-      sink2.asInstruction() = b.getInstruction())
+      sink2.asInstruction() = b.getInstruction() and
+      delta >= 0
+    )
   }
 }
 
-from ArraySizeConfiguration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2, DataFlow::PathNode sink1, DataFlow2::PathNode sink2
+from
+  ArraySizeConfiguration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
+  DataFlow::PathNode sink1, DataFlow2::PathNode sink2
 where conf.hasFlowPath(source1, source2, sink1, sink2)
+// TODO: pull delta out and display it
 select source1, source2, sink1, sink2

@@ -28,21 +28,21 @@ void test2(int size) {
     array_t arr = mk_array(size);
 
     for (int i = 0; i < arr.size; i++) {
-        arr.p[i] = 0;
+        arr.p[i] = 0; // GOOD
     }
 
     for (int i = 0; i <= arr.size; i++) {
-        arr.p[i] = i;
+        arr.p[i] = i; // BAD
     }
 }
 
 void test3_callee(array_t arr) {
     for (int i = 0; i < arr.size; i++) {
-        arr.p[i] = 0;
+        arr.p[i] = 0; // GOOD
     }
 
     for (int i = 0; i <= arr.size; i++) {
-        arr.p[i] = i;
+        arr.p[i] = i; // BAD
     }
 }
 
@@ -56,11 +56,11 @@ void test4(int size) {
     arr.p = malloc(size);
 
     for (int i = 0; i < arr.size; i++) {
-        arr.p[i] = 0;
+        arr.p[i] = 0; // GOOD
     }
 
     for (int i = 0; i <= arr.size; i++) {
-        arr.p[i] = i;
+        arr.p[i] = i; // BAD
     }
 }
 
@@ -76,21 +76,21 @@ void test5(int size) {
     array_t *arr = mk_array_p(size);
 
     for (int i = 0; i < arr->size; i++) {
-        arr->p[i] = 0;
+        arr->p[i] = 0; // GOOD
     }
 
     for (int i = 0; i <= arr->size; i++) {
-        arr->p[i] = i;
+        arr->p[i] = i; // BAD
     }
 }
 
 void test6_callee(array_t *arr) {
     for (int i = 0; i < arr->size; i++) {
-        arr->p[i] = 0;
+        arr->p[i] = 0; // GOOD
     }
 
     for (int i = 0; i <= arr->size; i++) {
-        arr->p[i] = i;
+        arr->p[i] = i; // BAD
     }
 }
 
