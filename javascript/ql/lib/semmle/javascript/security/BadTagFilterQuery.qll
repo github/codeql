@@ -7,6 +7,8 @@ import regexp.RegexpMatching
 /**
  * Holds if the regexp `root` should be tested against `str`.
  * Implements the `isRegexpMatchingCandidateSig` signature from `RegexpMatching`.
+ * `ignorePrefix` toggles whether the regular expression should be treated as accepting any prefix if it's unanchored.
+ * `testWithGroups` toggles whether it's tested which groups are filled by a given input string.
  */
 private predicate isBadTagFilterCandidate(
   RootTerm root, string str, boolean ignorePrefix, boolean testWithGroups

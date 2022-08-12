@@ -267,10 +267,12 @@ int distBackFromEnd(StateTuple r, StateTuple end) =
  * and there is a distance of `dist` from `tuple` to the nearest end-tuple `(pivot, succ, succ)`,
  * and a path from a start-state to `tuple` follows the transitions in `trace`.
  */
-private predicate isReachableFromStartTuple(State pivot, State succ, StateTuple r, Trace w, int rem) {
+private predicate isReachableFromStartTuple(
+  State pivot, State succ, StateTuple tuple, Trace trace, int dist
+) {
   exists(InputSymbol s1, InputSymbol s2, InputSymbol s3, Trace v |
-    isReachableFromStartTuple(pivot, succ, v, s1, s2, s3, r, rem) and
-    w = Step(s1, s2, s3, v)
+    isReachableFromStartTuple(pivot, succ, v, s1, s2, s3, tuple, dist) and
+    trace = Step(s1, s2, s3, v)
   )
 }
 
