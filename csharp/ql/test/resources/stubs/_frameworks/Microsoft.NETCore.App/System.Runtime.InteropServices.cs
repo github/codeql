@@ -1924,11 +1924,11 @@ namespace System
 
 
                     // Generated from `System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal+UnhandledExceptionPropagationHandler` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                    public delegate delegate* unmanaged<System.IntPtr, void> UnhandledExceptionPropagationHandler(System.Exception exception, System.RuntimeMethodHandle lastMethod, out System.IntPtr context);
+                    unsafe public delegate delegate* unmanaged<System.IntPtr, void> UnhandledExceptionPropagationHandler(System.Exception exception, System.RuntimeMethodHandle lastMethod, out System.IntPtr context);
 
 
                     public static System.Runtime.InteropServices.GCHandle CreateReferenceTrackingHandle(object obj, out System.Span<System.IntPtr> taggedMemory) => throw null;
-                    public static void Initialize(delegate* unmanaged<void> beginEndCallback, delegate* unmanaged<System.IntPtr, int> isReferencedCallback, delegate* unmanaged<System.IntPtr, void> trackedObjectEnteredFinalization, System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.UnhandledExceptionPropagationHandler unhandledExceptionPropagationHandler) => throw null;
+                    unsafe public static void Initialize(delegate* unmanaged<void> beginEndCallback, delegate* unmanaged<System.IntPtr, int> isReferencedCallback, delegate* unmanaged<System.IntPtr, void> trackedObjectEnteredFinalization, System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.UnhandledExceptionPropagationHandler unhandledExceptionPropagationHandler) => throw null;
                     public static void SetMessageSendCallback(System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.MessageSendFunction msgSendFunction, System.IntPtr func) => throw null;
                     public static void SetMessageSendPendingException(System.Exception exception) => throw null;
                 }
