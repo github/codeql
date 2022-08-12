@@ -162,6 +162,12 @@ namespace Test
         None4 = 2,
         Some42 = 6
     }
+
+    public enum EnumLong : long
+    {
+        Some = 223372036854775807,
+        None = 10
+    }
 }
 
 namespace A1
