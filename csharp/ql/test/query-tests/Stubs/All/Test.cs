@@ -135,6 +135,11 @@ namespace Test
         public Class9.Nested NestedInstance { get; } = new Class9.Nested(1);
     }
 
+    public class Class10
+    {
+        unsafe public void M1(delegate* unmanaged<System.IntPtr, void> f) => throw null;
+    }
+
     public enum Enum1
     {
         None1,
