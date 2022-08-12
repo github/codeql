@@ -2,7 +2,7 @@
 
 private import semmle.code.xml.AndroidManifest
 
-/** Represents an implicitly exported Android component */
+/** An implicitly exported Android component */
 class ImplicitlyExportedAndroidComponent extends AndroidComponentXmlElement {
   ImplicitlyExportedAndroidComponent() {
     not this.hasExportedAttribute() and
