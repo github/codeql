@@ -76,7 +76,7 @@ Folder getAPackageJsonFolder() { result = any(PackageJson json).getFile().getPar
  * the current working folder, or the root folder.
  * All of these might cause information to be leaked.
  *
- * For the first case it is assumed that the presence of a `package.json` file means that a `node_modules` folder can also exist.
+ * For the first case it is assumed that the presence of a `package.json` file means that a "node_modules" folder can also exist.
  *
  * For the root/home/working folder, they contain so much information that they must leak information somehow (e.g. ssh keys in the `~/.ssh` folder).
  */

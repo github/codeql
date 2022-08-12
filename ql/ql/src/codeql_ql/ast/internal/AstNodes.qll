@@ -7,6 +7,7 @@ newtype TAstNode =
   TTopLevel(QL::Ql file) or
   TQLDoc(QL::Qldoc qldoc) or
   TBlockComment(QL::BlockComment comment) or
+  TLineComment(QL::LineComment comment) or
   TClasslessPredicate(QL::ClasslessPredicate pred) or
   TVarDecl(QL::VarDecl decl) or
   TFieldDecl(QL::Field field) or
@@ -89,6 +90,8 @@ class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYa
 
 class TSignatureExpr = TPredicateExpr or TType;
 
+class TComment = TQLDoc or TBlockComment or TLineComment;
+
 /** DEPRECATED: Alias for TYamlNode */
 deprecated class TYAMLNode = TYamlNode;
 
@@ -153,6 +156,8 @@ QL::AstNode toQL(AST::AstNode n) {
   n = TQLDoc(result)
   or
   n = TBlockComment(result)
+  or
+  n = TLineComment(result)
   or
   n = TClasslessPredicate(result)
   or
@@ -228,7 +233,7 @@ module AstConsistency {
     not exists(node.getParent()) and
     not node.getLocation().getStartColumn() = 1 and // startcolumn = 1 <=> top level in file <=> fine to have no parent
     exists(node.toString()) and // <- there are a few parse errors in "global-data-flow-java-1.ql", this way we filter them out.
-    not node instanceof YAML::YAMLNode and // parents for YAML doens't work
+    not node instanceof YAML::YAMLNode and // parents for YAML doesn't work
     not (node instanceof QLDoc and node.getLocation().getFile().getExtension() = "dbscheme") // qldoc in dbschemes are not hooked up
   }
 

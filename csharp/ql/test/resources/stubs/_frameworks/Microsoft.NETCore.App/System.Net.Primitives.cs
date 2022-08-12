@@ -4,7 +4,7 @@ namespace System
 {
     namespace Net
     {
-        // Generated from `System.Net.AuthenticationSchemes` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.AuthenticationSchemes` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
         public enum AuthenticationSchemes
         {
@@ -17,7 +17,7 @@ namespace System
             Ntlm,
         }
 
-        // Generated from `System.Net.Cookie` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.Cookie` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Cookie
         {
             public string Comment { get => throw null; set => throw null; }
@@ -43,7 +43,7 @@ namespace System
             public int Version { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Net.CookieCollection` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.CookieCollection` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CookieCollection : System.Collections.Generic.ICollection<System.Net.Cookie>, System.Collections.Generic.IEnumerable<System.Net.Cookie>, System.Collections.Generic.IReadOnlyCollection<System.Net.Cookie>, System.Collections.ICollection, System.Collections.IEnumerable
         {
             public void Add(System.Net.Cookie cookie) => throw null;
@@ -64,7 +64,7 @@ namespace System
             public object SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.Net.CookieContainer` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.CookieContainer` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CookieContainer
         {
             public void Add(System.Net.Cookie cookie) => throw null;
@@ -79,6 +79,7 @@ namespace System
             public const int DefaultCookieLengthLimit = default;
             public const int DefaultCookieLimit = default;
             public const int DefaultPerDomainCookieLimit = default;
+            public System.Net.CookieCollection GetAllCookies() => throw null;
             public string GetCookieHeader(System.Uri uri) => throw null;
             public System.Net.CookieCollection GetCookies(System.Uri uri) => throw null;
             public int MaxCookieSize { get => throw null; set => throw null; }
@@ -86,7 +87,7 @@ namespace System
             public void SetCookies(System.Uri uri, string cookieHeader) => throw null;
         }
 
-        // Generated from `System.Net.CookieException` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.CookieException` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CookieException : System.FormatException, System.Runtime.Serialization.ISerializable
         {
             public CookieException() => throw null;
@@ -95,7 +96,7 @@ namespace System
             void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
         }
 
-        // Generated from `System.Net.CredentialCache` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.CredentialCache` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CredentialCache : System.Collections.IEnumerable, System.Net.ICredentials, System.Net.ICredentialsByHost
         {
             public void Add(System.Uri uriPrefix, string authType, System.Net.NetworkCredential cred) => throw null;
@@ -110,7 +111,7 @@ namespace System
             public void Remove(string host, int port, string authenticationType) => throw null;
         }
 
-        // Generated from `System.Net.DecompressionMethods` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.DecompressionMethods` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
         public enum DecompressionMethods
         {
@@ -121,7 +122,7 @@ namespace System
             None,
         }
 
-        // Generated from `System.Net.DnsEndPoint` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.DnsEndPoint` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DnsEndPoint : System.Net.EndPoint
         {
             public override System.Net.Sockets.AddressFamily AddressFamily { get => throw null; }
@@ -134,7 +135,7 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Net.EndPoint` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.EndPoint` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class EndPoint
         {
             public virtual System.Net.Sockets.AddressFamily AddressFamily { get => throw null; }
@@ -143,7 +144,7 @@ namespace System
             public virtual System.Net.SocketAddress Serialize() => throw null;
         }
 
-        // Generated from `System.Net.HttpStatusCode` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.HttpStatusCode` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum HttpStatusCode
         {
             Accepted,
@@ -214,28 +215,29 @@ namespace System
             VariantAlsoNegotiates,
         }
 
-        // Generated from `System.Net.HttpVersion` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.HttpVersion` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class HttpVersion
         {
             public static System.Version Unknown;
             public static System.Version Version10;
             public static System.Version Version11;
             public static System.Version Version20;
+            public static System.Version Version30;
         }
 
-        // Generated from `System.Net.ICredentials` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.ICredentials` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ICredentials
         {
             System.Net.NetworkCredential GetCredential(System.Uri uri, string authType);
         }
 
-        // Generated from `System.Net.ICredentialsByHost` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.ICredentialsByHost` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ICredentialsByHost
         {
             System.Net.NetworkCredential GetCredential(string host, int port, string authenticationType);
         }
 
-        // Generated from `System.Net.IPAddress` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.IPAddress` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class IPAddress
         {
             public System.Int64 Address { get => throw null; set => throw null; }
@@ -261,6 +263,7 @@ namespace System
             public bool IsIPv6Multicast { get => throw null; }
             public bool IsIPv6SiteLocal { get => throw null; }
             public bool IsIPv6Teredo { get => throw null; }
+            public bool IsIPv6UniqueLocal { get => throw null; }
             public static bool IsLoopback(System.Net.IPAddress address) => throw null;
             public static System.Net.IPAddress Loopback;
             public System.Net.IPAddress MapToIPv4() => throw null;
@@ -279,7 +282,7 @@ namespace System
             public bool TryWriteBytes(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
         }
 
-        // Generated from `System.Net.IPEndPoint` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.IPEndPoint` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class IPEndPoint : System.Net.EndPoint
         {
             public System.Net.IPAddress Address { get => throw null; set => throw null; }
@@ -300,7 +303,7 @@ namespace System
             public static bool TryParse(string s, out System.Net.IPEndPoint result) => throw null;
         }
 
-        // Generated from `System.Net.IWebProxy` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.IWebProxy` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IWebProxy
         {
             System.Net.ICredentials Credentials { get; set; }
@@ -308,7 +311,7 @@ namespace System
             bool IsBypassed(System.Uri host);
         }
 
-        // Generated from `System.Net.NetworkCredential` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.NetworkCredential` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class NetworkCredential : System.Net.ICredentials, System.Net.ICredentialsByHost
         {
             public string Domain { get => throw null; set => throw null; }
@@ -324,7 +327,7 @@ namespace System
             public string UserName { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Net.SocketAddress` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.SocketAddress` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SocketAddress
         {
             public override bool Equals(object comparand) => throw null;
@@ -337,7 +340,7 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Net.TransportContext` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Net.TransportContext` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class TransportContext
         {
             public abstract System.Security.Authentication.ExtendedProtection.ChannelBinding GetChannelBinding(System.Security.Authentication.ExtendedProtection.ChannelBindingKind kind);
@@ -346,7 +349,7 @@ namespace System
 
         namespace Cache
         {
-            // Generated from `System.Net.Cache.RequestCacheLevel` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.Cache.RequestCacheLevel` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum RequestCacheLevel
             {
                 BypassCache,
@@ -358,7 +361,7 @@ namespace System
                 Revalidate,
             }
 
-            // Generated from `System.Net.Cache.RequestCachePolicy` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.Cache.RequestCachePolicy` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RequestCachePolicy
             {
                 public System.Net.Cache.RequestCacheLevel Level { get => throw null; }
@@ -370,7 +373,7 @@ namespace System
         }
         namespace NetworkInformation
         {
-            // Generated from `System.Net.NetworkInformation.IPAddressCollection` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IPAddressCollection` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IPAddressCollection : System.Collections.Generic.ICollection<System.Net.IPAddress>, System.Collections.Generic.IEnumerable<System.Net.IPAddress>, System.Collections.IEnumerable
             {
                 public virtual void Add(System.Net.IPAddress address) => throw null;
@@ -389,7 +392,7 @@ namespace System
         }
         namespace Security
         {
-            // Generated from `System.Net.Security.AuthenticationLevel` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.Security.AuthenticationLevel` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum AuthenticationLevel
             {
                 MutualAuthRequested,
@@ -397,7 +400,7 @@ namespace System
                 None,
             }
 
-            // Generated from `System.Net.Security.SslPolicyErrors` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.Security.SslPolicyErrors` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum SslPolicyErrors
             {
@@ -410,7 +413,7 @@ namespace System
         }
         namespace Sockets
         {
-            // Generated from `System.Net.Sockets.AddressFamily` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.Sockets.AddressFamily` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum AddressFamily
             {
                 AppleTalk,
@@ -448,7 +451,7 @@ namespace System
                 VoiceView,
             }
 
-            // Generated from `System.Net.Sockets.SocketError` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.Sockets.SocketError` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum SocketError
             {
                 AccessDenied,
@@ -500,7 +503,7 @@ namespace System
                 WouldBlock,
             }
 
-            // Generated from `System.Net.Sockets.SocketException` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.Sockets.SocketException` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SocketException : System.ComponentModel.Win32Exception
             {
                 public override int ErrorCode { get => throw null; }
@@ -517,7 +520,7 @@ namespace System
     {
         namespace Authentication
         {
-            // Generated from `System.Security.Authentication.CipherAlgorithmType` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Authentication.CipherAlgorithmType` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum CipherAlgorithmType
             {
                 Aes,
@@ -532,7 +535,7 @@ namespace System
                 TripleDes,
             }
 
-            // Generated from `System.Security.Authentication.ExchangeAlgorithmType` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Authentication.ExchangeAlgorithmType` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum ExchangeAlgorithmType
             {
                 DiffieHellman,
@@ -541,7 +544,7 @@ namespace System
                 RsaSign,
             }
 
-            // Generated from `System.Security.Authentication.HashAlgorithmType` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Authentication.HashAlgorithmType` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum HashAlgorithmType
             {
                 Md5,
@@ -552,7 +555,7 @@ namespace System
                 Sha512,
             }
 
-            // Generated from `System.Security.Authentication.SslProtocols` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Authentication.SslProtocols` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum SslProtocols
             {
@@ -568,7 +571,7 @@ namespace System
 
             namespace ExtendedProtection
             {
-                // Generated from `System.Security.Authentication.ExtendedProtection.ChannelBinding` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Security.Authentication.ExtendedProtection.ChannelBinding` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public abstract class ChannelBinding : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
                 {
                     protected ChannelBinding() : base(default(bool)) => throw null;
@@ -576,7 +579,7 @@ namespace System
                     public abstract int Size { get; }
                 }
 
-                // Generated from `System.Security.Authentication.ExtendedProtection.ChannelBindingKind` in `System.Net.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Security.Authentication.ExtendedProtection.ChannelBindingKind` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum ChannelBindingKind
                 {
                     Endpoint,

@@ -348,7 +348,7 @@ module ExprNodes {
     /** Gets an argument of this call. */
     final ExprCfgNode getAnArgument() { result = this.getArgument(_) }
 
-    /** Gets the the keyword argument whose key is `keyword` of this call. */
+    /** Gets the keyword argument whose key is `keyword` of this call. */
     final ExprCfgNode getKeywordArgument(string keyword) {
       exists(PairCfgNode n |
         e.hasCfgChild(e.getAnArgument(), this, n) and

@@ -13,8 +13,8 @@ private class GuavaCollectCsv extends SummaryModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-        // Methods depending on lambda flow are not currently modelled
-        // Methods depending on stronger aliasing properties than we support are also not modelled.
+        // Methods depending on lambda flow are not currently modeled
+        // Methods depending on stronger aliasing properties than we support are also not modeled.
         "com.google.common.collect;ArrayListMultimap;true;create;(Multimap);;Argument[0].MapKey;ReturnValue.MapKey;value;manual",
         "com.google.common.collect;ArrayListMultimap;true;create;(Multimap);;Argument[0].MapValue;ReturnValue.MapValue;value;manual",
         "com.google.common.collect;ArrayTable;true;create;(Iterable,Iterable);;Argument[0].Element;ReturnValue.SyntheticField[com.google.common.collect.Table.rowKey];value;manual",

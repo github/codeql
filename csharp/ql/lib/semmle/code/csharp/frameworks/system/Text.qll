@@ -120,9 +120,9 @@ private class SystemTextStringBuilderFlowModelCsv extends SummaryModelCsv {
         "System.Text;StringBuilder;false;AppendLine;();;Argument[Qualifier];ReturnValue;value;manual",
         "System.Text;StringBuilder;false;AppendLine;(System.String);;Argument[0];Argument[Qualifier].Element;value;manual",
         "System.Text;StringBuilder;false;AppendLine;(System.String);;Argument[Qualifier];ReturnValue;value;manual",
-        "System.Text;StringBuilder;false;StringBuilder;(System.String);;Argument[0];ReturnValue.Element;value;manual",
-        "System.Text;StringBuilder;false;StringBuilder;(System.String,System.Int32);;Argument[0];ReturnValue.Element;value;manual",
-        "System.Text;StringBuilder;false;StringBuilder;(System.String,System.Int32,System.Int32,System.Int32);;Argument[0];ReturnValue.Element;value;manual",
+        "System.Text;StringBuilder;false;StringBuilder;(System.String);;Argument[0];Argument[Qualifier].Element;value;manual",
+        "System.Text;StringBuilder;false;StringBuilder;(System.String,System.Int32);;Argument[0];Argument[Qualifier].Element;value;manual",
+        "System.Text;StringBuilder;false;StringBuilder;(System.String,System.Int32,System.Int32,System.Int32);;Argument[0];Argument[Qualifier].Element;value;manual",
         "System.Text;StringBuilder;false;ToString;();;Argument[Qualifier].Element;ReturnValue;taint;manual",
         "System.Text;StringBuilder;false;ToString;(System.Int32,System.Int32);;Argument[Qualifier].Element;ReturnValue;taint;manual",
       ]

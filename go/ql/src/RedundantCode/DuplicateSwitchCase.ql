@@ -13,7 +13,7 @@
 
 import go
 
-/** Gets the global value number of of `e`, which is the `i`th case label of `switch`. */
+/** Gets the global value number of `e`, which is the `i`th case label of `switch`. */
 GVN switchCaseGVN(SwitchStmt switch, int i, Expr e) {
   e = switch.getCase(i).getExpr(0) and result = e.getGlobalValueNumber()
 }

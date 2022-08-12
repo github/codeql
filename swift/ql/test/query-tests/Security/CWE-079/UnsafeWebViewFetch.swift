@@ -100,13 +100,13 @@ func getRemoteData() -> String {
 func testSimpleFlows() {
 	let webview = UIWebView()
 
-	webview.loadHTMLString(try! String(contentsOf: URL(string: "http://example.com/")!), baseURL: nil) // BAD [NOT DETECTED]
+	webview.loadHTMLString(try! String(contentsOf: URL(string: "http://example.com/")!), baseURL: nil) // BAD
 
 	let data = try! String(contentsOf: URL(string: "http://example.com/")!)
-	webview.loadHTMLString(data, baseURL: nil) // BAD [NOT DETECTED]
+	webview.loadHTMLString(data, baseURL: nil) // BAD
 
 	let url = URL(string: "http://example.com/")
-	webview.loadHTMLString(try! String(contentsOf: url!), baseURL: nil) // BAD [NOT DETECTED]
+	webview.loadHTMLString(try! String(contentsOf: url!), baseURL: nil) // BAD
 }
 
 func testUIWebView() {

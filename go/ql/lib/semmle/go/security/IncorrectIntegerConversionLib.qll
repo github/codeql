@@ -98,7 +98,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
       ) and
       // `effectiveBitSize` could be any value between 0 and 64, but we
       // can round it up to the nearest size of an integer type without
-      // changing behaviour.
+      // changing behavior.
       sourceBitSize = min(int b | b in [0, 8, 16, 32, 64] and b >= effectiveBitSize)
     )
   }

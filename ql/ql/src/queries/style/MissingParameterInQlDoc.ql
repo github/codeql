@@ -46,7 +46,7 @@ private string getAMentionedNonParameter(Predicate p) {
   not result =
     [
       "true", "false", "NaN", "this", "forall", "exists", "null", "break", "return", "not", "if",
-      "then", "else", "import"
+      "then", "else", "import", "async"
     ] and
   not result = any(Aggregate a).getKind() and // min, max, sum, count, etc.
   not result = getMentionedThings(p.getLocation().getFile()) and

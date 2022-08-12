@@ -65,7 +65,7 @@ class ExternalAPIDataNode extends DataFlow::Node {
       this = call.getReceiver() and
       i = -1
     ) and
-    // Not defined in the code that is being analysed
+    // Not defined in the code that is being analyzed
     not exists(call.getACallee().getBody()) and
     // Not a function pointer, unless it's declared at package scope
     not isProbableLocalFunctionPointer(call) and
@@ -124,7 +124,7 @@ Package getAPackageWithFunctionModels() {
 Package getAPackageWithModels() {
   result = getAPackageWithFunctionModels()
   or
-  // An incomplete list of packages which have been modelled but do not have any function models
+  // An incomplete list of packages which have been modeled but do not have any function models
   result.getPath() in [
       Logrus::packagePath(), GolangOrgXNetWebsocket::packagePath(), GorillaWebsocket::packagePath()
     ]
