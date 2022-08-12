@@ -139,7 +139,6 @@ class AndroidPermissionXmlAttribute extends XmlAttribute {
   AndroidPermissionXmlAttribute() {
     this.getNamespace().getPrefix() = "android" and
     this.getName() = ["permission", "readPermission", "writePermission"]
-    //this.getName() = ["permission"]
   }
 
   /** Holds if this is an `android:permission` attribute. */
