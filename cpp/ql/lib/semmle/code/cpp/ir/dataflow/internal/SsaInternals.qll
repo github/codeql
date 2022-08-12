@@ -107,8 +107,14 @@ predicate hasIndirectInstruction(Instruction instr, int index) {
 
 cached
 private newtype TDefOrUseImpl =
-  TNonCallDef(Operand address, int index) { isNonCallDef(_, _, address, _, _, index, _) } or
-  TCallDef(Operand address, int index) { isCallDef(_, address, _, _, index, _) } or
+  TNonCallDef(Operand address, int index) {
+    isNonCallDef(_, _, address, _, _, index, _) // and
+    // any(SsaInternals0::Def def).getAddressOperand() = address
+  } or
+  TCallDef(Operand address, int index) {
+    isCallDef(_, address, _, _, index, _) // and
+    // any(SsaInternals0::Def def).getAddressOperand() = address
+  } or
   TUseImpl(Operand operand, int index) {
     isUse(_, operand, _, _, index) and
     not isNonCallDef(_, _, operand, _, _, _, _)
@@ -308,8 +314,14 @@ private predicate adjacentDefRead0(DefOrUse defOrUse1, SsaDefOrUse defOrUse2) {
   |
     exists(IRBlock bb2, int i2 |
       adjacentDefRead(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
-        pragma[only_bind_into](bb2), pragma[only_bind_into](i2)) and
-      defOrUse2.asDefOrUse().hasIndexInBlock(bb2, i2, v)
+        pragma[only_bind_into](bb2), pragma[only_bind_into](i2))
+    |
+      // Pick the use if there's a user at the location
+      defOrUse2.asDefOrUse().(UseImpl).hasIndexInBlock(bb2, i2, v)
+      or
+      // And otherwise, pick a def at the location
+      not any(UseImpl use | use = defOrUse2.asDefOrUse()).hasIndexInBlock(bb2, i2, v) and
+      defOrUse2.asDefOrUse().(DefImpl).hasIndexInBlock(bb2, i2, v)
     )
     or
     exists(PhiNode phi, Ssa::Definition inp |
@@ -321,6 +333,11 @@ private predicate adjacentDefRead0(DefOrUse defOrUse1, SsaDefOrUse defOrUse2) {
 }
 
 private predicate adjacentDefReadStep(Def def, SsaDefOrUse defOrUse) {
+  // Only step if there's no use at the same location as `def`.
+  exists(IRBlock block, int i, SourceVariable sv |
+    def.asDefOrUse().hasIndexInBlock(block, i, sv) and
+    not any(UseImpl use).hasIndexInBlock(block, i, sv)
+  ) and
   adjacentDefRead0(def, defOrUse)
 }
 
@@ -335,8 +352,7 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
 private predicate useToNode(UseOrPhi use, Node nodeTo) {
   exists(UseImpl useImpl | useImpl = use.asDefOrUse() |
     useImpl.getIndex() = 0 and
-    // TODO: Can we use nodeTo.asOperand here to avoid going "backwards"?
-    nodeTo.asInstruction() = useImpl.getOperand().getDef()
+    nodeTo.asOperand() = useImpl.getOperand()
     or
     exists(int index |
       index = useImpl.getIndex() and

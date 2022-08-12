@@ -25,7 +25,13 @@ class IRFlowTest extends InlineExpectationsTest {
     exists(IRDataFlow::Node source, IRDataFlow::Node sink, IRDataFlow::Configuration conf, int n |
       tag = "ir" and
       conf.hasFlow(source, sink) and
-      n = strictcount(IRDataFlow::Node otherSource | conf.hasFlow(otherSource, sink)) and
+      n =
+        strictcount(int line |
+          exists(IRDataFlow::Node otherSource |
+            otherSource.getLocation().getStartLine() = line and
+            conf.hasFlow(otherSource, sink)
+          )
+        ) and
       (
         n = 1 and value = ""
         or
@@ -53,7 +59,13 @@ class AstFlowTest extends InlineExpectationsTest {
     |
       tag = "ast" and
       conf.hasFlow(source, sink) and
-      n = strictcount(ASTDataFlow::Node otherSource | conf.hasFlow(otherSource, sink)) and
+      n =
+        strictcount(int line |
+          exists(ASTDataFlow::Node otherSource |
+            otherSource.getLocation().getStartLine() = line and
+            conf.hasFlow(otherSource, sink)
+          )
+        ) and
       (
         n = 1 and value = ""
         or

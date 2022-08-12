@@ -23,6 +23,10 @@
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:15:75:18 | call to atoi |
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:20:75:25 | call to getenv |
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:20:75:45 | (const char *)... |
+| test.cpp:75:20:75:25 | call to getenv | test.cpp:76:9:76:11 | len |
+| test.cpp:75:20:75:25 | call to getenv | test.cpp:77:36:77:38 | (unsigned long)... |
+| test.cpp:75:20:75:25 | call to getenv | test.cpp:77:36:77:38 | len |
+| test.cpp:75:20:75:25 | call to getenv | test.cpp:77:36:77:55 | ... * ... |
 | test.cpp:83:28:83:33 | call to getenv | test.cpp:83:28:83:33 | call to getenv |
 | test.cpp:83:28:83:33 | call to getenv | test.cpp:83:28:83:46 | (const char *)... |
 | test.cpp:83:28:83:33 | call to getenv | test.cpp:86:15:86:22 | userName |
