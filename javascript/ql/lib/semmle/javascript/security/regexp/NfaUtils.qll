@@ -1027,7 +1027,7 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
     predicate reachesOnlyRejectableSuffixes(State fork, string w) {
       isReDoSCandidate(fork, w) and
       forex(State next | next = process(fork, w, w.length() - 1) | isLikelyRejectable(next)) and
-      not epsilonSucc*(getProcessPrevious(fork, _, w)) = AcceptAnySuffix(_) // we stop `process(..)` early if we can, check here if it happened.
+      not getProcessPrevious(fork, _, w) = acceptsAnySuffix() // we stop `process(..)` early if we can, check here if it happened.
     }
 
     /**
@@ -1284,7 +1284,7 @@ module Concretizer<CharTree Impl> {
   private predicate isRelevant(Node n) {
     isARelevantEnd(n)
     or
-    exists(Node prev | isRelevant(prev) | n = getPrev(prev))
+    exists(Node succ | isRelevant(succ) | n = getPrev(succ))
   }
 
   /** Holds if `n` is a root with no predecessors. */
@@ -1299,19 +1299,15 @@ module Concretizer<CharTree Impl> {
   }
 
   /** Gets an ancestor of `end`, where `end` is a node that should have a result in `concretize`. */
-  private Node getANodeInLongChain(Node end) {
-    isARelevantEnd(end) and result = end
-    or
-    exists(Node prev | prev = getANodeInLongChain(end) | result = getPrev(prev))
-  }
+  private Node getAnAncestor(Node end) { isARelevantEnd(end) and result = getPrev*(end) }
 
   /** Gets the `i`th character on the path from the root to `n`. */
   pragma[noinline]
   private string getPrefixChar(Node n, int i) {
-    exists(Node prev |
-      result = getChar(prev) and
-      prev = getANodeInLongChain(n) and
-      i = nodeDepth(prev)
+    exists(Node ancestor |
+      result = getChar(ancestor) and
+      ancestor = getAnAncestor(n) and
+      i = nodeDepth(ancestor)
     )
   }
 
