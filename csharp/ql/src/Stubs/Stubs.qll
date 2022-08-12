@@ -513,12 +513,30 @@ private string stubClassName(Type t) {
                                   stubClassName(element), "," order by i
                                 ) + ")"
                         else
-                          if t instanceof ValueOrRefType
+                          if t instanceof FunctionPointerType
                           then
-                            result =
-                              stubQualifiedNamePrefix(t) + t.getUndecoratedName() +
-                                stubGenericArguments(t)
-                          else result = "<error>"
+                            exists(CallingConvention callconvention, string calltext |
+                              callconvention = t.(FunctionPointerType).getCallingConvention() and
+                              (
+                                if callconvention instanceof UnmanagedCallingConvention
+                                then calltext = "unmanaged"
+                                else calltext = ""
+                              ) and
+                              result =
+                                "delegate* " + calltext + "<" +
+                                  concat(int i, Parameter p |
+                                    p = t.(FunctionPointerType).getParameter(i)
+                                  |
+                                    stubClassName(p.getType()) + "," order by i
+                                  ) + stubClassName(t.(FunctionPointerType).getReturnType()) + ">"
+                            )
+                          else
+                            if t instanceof ValueOrRefType
+                            then
+                              result =
+                                stubQualifiedNamePrefix(t) + t.getUndecoratedName() +
+                                  stubGenericArguments(t)
+                            else result = "<error>"
 }
 
 language[monotonicAggregates]

@@ -936,6 +936,16 @@ class VarArgsCallingConvention extends CallingConvention {
 }
 
 /**
+ * Unmanaged calling convention that indicates that the specifics
+ * are encoded as modopts.
+ */
+class UnmanagedCallingConvention extends CallingConvention {
+  UnmanagedCallingConvention() { this = MkCallingConvention(9) }
+
+  override string toString() { result = "UnmanagedCallingConvention" }
+}
+
+/**
  * A function pointer type, for example
  *
  * ```csharp
