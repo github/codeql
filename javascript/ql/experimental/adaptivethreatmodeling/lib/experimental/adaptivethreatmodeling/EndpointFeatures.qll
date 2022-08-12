@@ -192,7 +192,6 @@ private module FunctionNames {
 
 /** Get a name of a supported generic token-based feature. */
 string getASupportedFeatureName() {
-  // allowlist of vetted features that are permitted in production
   result = any(EndpointFeature f).getName()
 }
 
@@ -226,18 +225,18 @@ private newtype TEndpointFeature =
   TStringConcatenatedWith()
 
 /**
- * An implementation of an endpoint feature: produces feature names and values for use in ML.
+ * An implementation of an endpoint feature: defines feature-name/value tuples for use in ML.
  */
 abstract class EndpointFeature extends TEndpointFeature {
   /**
    * Gets the name of the feature. Used by the ML model.
-   * Changes to the name of a feature requires training the model again.
+   * Names are coupled to models: changing the name of a feature requires retraining the model.
    */
   abstract string getName();
 
   /**
    * Gets the value of the feature. Used by the ML model.
-   * Changes to the value of a feature requires training the model again.
+   * Models are trained based on feature values, so changing the value of a feature requires retraining the model.
    */
   abstract string getValue(DataFlow::Node endpoint);
 
@@ -275,7 +274,7 @@ class ReceiverName extends EndpointFeature, TReceiverName {
 
 /**
  * The feature for the natural language tokens from the function that encloses the endpoint in
- *    the order that they appear in the source code.
+ * the order that they appear in the source code.
  */
 class EnclosingFunctionBody extends EndpointFeature, TEnclosingFunctionBody {
   override string getName() { result = "enclosingFunctionBody" }
@@ -322,6 +321,8 @@ class FileImports extends EndpointFeature, TFileImports {
  * }
  * ```
  * In the above example, the feature for the marked endpoint has value '(a, b)\n(c, d)'.
+ * The line breaks act as a separator between the parameters of different functions but
+ * will be treated by tokenization as if they were spaces.
  */
 class ContextSurroundingFunctionParameters extends EndpointFeature,
   TContextSurroundingFunctionParameters {
@@ -345,12 +346,14 @@ class ContextSurroundingFunctionParameters extends EndpointFeature,
 }
 
 /**
- * The feature that gives the name an endpoint is assigned to (if any).
+ * The feature that gives the name of any properties an endpoint is assigned to (if any).
  *
  * ### Example
  * ```javascript
  * const div = document.createElement('div');
  * div.innerHTML = endpoint; // feature value is 'innerHTML'
+ * 
+ * foo({x: endpoint}); // feature value is 'x'
  * ```
  */
 class AssignedToPropName extends EndpointFeature, TAssignedToPropName {
@@ -364,12 +367,13 @@ class AssignedToPropName extends EndpointFeature, TAssignedToPropName {
 }
 
 /**
- * The feature that shows the text an endpoint is being concatenated with.class
+ * The feature that shows the text an endpoint is being concatenated with.
  *
  * ### Example
  *
  * ```javascript
- * const x = 'foo' + endpoint + 'bar'; // feature value is `'foo' -endpoint- 'bar'`
+ * const x = 'foo' + endpoint + 'bar'; // feature value is `'foo' -endpoint- 'bar'
+ * ```
  */
 class StringConcatenatedWith extends EndpointFeature, TStringConcatenatedWith {
   override string getName() { result = "stringConcatenatedWith" }
@@ -456,8 +460,6 @@ class CalleeImports extends EndpointFeature, TCalleeImports {
  *   ...
  * }
  * ```
- *
- * The feature value for the marked endpoint will be `f(a, b, c)\ng(x, y, z)\nh(u, v)`.
  */
 class ContextFunctionInterfaces extends EndpointFeature, TContextFunctionInterfaces {
   override string getName() { result = "contextFunctionInterfaces" }
@@ -471,6 +473,10 @@ class ContextFunctionInterfaces extends EndpointFeature, TContextFunctionInterfa
  * Syntactic utilities for feature value computation.
  */
 private module SyntacticUtilities {
+  /**
+   * Renders an operand in a string concatenation by surrounding a constant in quotes, and
+   * by using `getSimpleAccessPath` for everything else.
+   */
   string renderStringConcatOperand(DataFlow::Node operand) {
     if exists(unique(string v | operand.mayHaveStringValue(v)))
     then result = "'" + any(string v | operand.mayHaveStringValue(v)) + "'"
@@ -555,7 +561,7 @@ private module SyntacticUtilities {
    * - direct arguments
    * - properties of (nested) objects that are arguments
    *
-   * Unknown cases and property names results in `?`.
+   * Unknown cases and property names result in `?`.
    */
   string getSimpleParameterAccessPath(DataFlow::Node node) {
     if exists(DataFlow::CallNode call | node = call.getArgument(_))
@@ -569,7 +575,7 @@ private module SyntacticUtilities {
    * Supports:
    * - properties of (nested) objects
    *
-   * Unknown cases and property names results in `?`.
+   * Unknown cases and property names result in `?`.
    */
   string getSimplePropertyAccessPath(DataFlow::Node node) {
     if exists(ObjectExpr o | o.getAProperty().getInit().getUnderlyingValue() = node.asExpr())
@@ -617,6 +623,17 @@ private module SyntacticUtilities {
    * - invocations
    *
    * Unknown cases and property names results in `?`.
+   * 
+   * # Examples
+   * 
+   *  - The node `x.foo` will have the simple access path `x.foo`.
+   *  - In the following file, the simple access path will be `import("./foo").bar.baz`:
+   * 
+   * ```javascript
+   * import * as lib from "./foo"
+   * console.log(lib.bar.baz());
+   * //          ^^^^^^^^^^^ node
+   * 
    */
   string getSimpleAccessPath(DataFlow::Node node) {
     exists(Expr e | e = node.asExpr().getUnderlyingValue() |
@@ -661,7 +678,16 @@ private module SyntacticUtilities {
     if exists(i.getImportedPath().getValue())
     then
       exists(string p | p = i.getImportedPath().getValue() |
-        if p.matches(".%") then result = "\"p\"" else result = "!" // hide absolute imports from the ML training
+        // Hide absolute imports from ML training data.
+        // ============================================
+        // There is the hypothesis that exposing absolute imports to the model
+        // might lead to bad generalization. For example, the model might learn
+        // to strongly associate a specific database client with sinks and no
+        // longer be able to flag sinks when data flow is broken.
+        // Placing this logic so deeply within the feature extraction code is
+        // perhaps a bit of a hack and it is a use case to consider when refactoring
+        // endpoint filters/data extraction.
+        if p.matches(".%") then result = "\"p\"" else result = "!"
       )
     else result = getUnknownSymbol()
   }
@@ -687,8 +713,6 @@ private module SyntacticUtilities {
  * The feature for the access path of the callee node of a call that has an argument that "contains" the endpoint.
  *
  * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
- *
- * This feature is intended as a superior version of the many `Callee*` features.
  *
  * Examples:
  * ```
@@ -745,8 +769,6 @@ class InputAccessPathFromCallee extends EndpointFeature, TInputAccessPathFromCal
  * The feature for how the index of an argument that "contains" and endpoint.
  *
  * "Containment" is syntactic, and currently means that the endpoint is an argument to the call, or that the endpoint is a (nested) property value of an argument.
- *
- * This feature is intended as a superior version of the `ArgumentIndexFeature`.
  *
  * Examples:
  * ```
