@@ -57,6 +57,8 @@ def get_single_version(fakeVersionOutput = None):
     raise Exception(f'No suitable kotlinc version found for {current_version} (got {versionOutput}; know about {str(many_versions)})')
 
 def get_latest_url():
+    if ci_version not in many_versions:
+        raise Exception('CI version must be one of many_versions')
     url = 'https://github.com/JetBrains/kotlin/releases/download/v' + ci_version + '/kotlin-compiler-' + ci_version + '.zip'
     return url
 
