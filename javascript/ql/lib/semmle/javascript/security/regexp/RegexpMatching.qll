@@ -32,14 +32,6 @@ signature predicate isRegexpMatchingCandidateSig(
  * and the results can be read from the `matches` and `fillsCaptureGroup` predicates.
  */
 module RegexpMatching<isRegexpMatchingCandidateSig/4 isCandidate> {
-  private predicate test(RootTerm reg, string str, boolean ignorePrefix) {
-    isCandidate(reg, str, ignorePrefix, false)
-  }
-
-  private predicate testWithGroups(RootTerm reg, string str, boolean ignorePrefix) {
-    isCandidate(reg, str, ignorePrefix, true)
-  }
-
   /**
    * Gets a state the regular expression `reg` can be in after matching the `i`th char in `str`.
    * The regular expression is modeled as a non-determistic finite automaton,
@@ -123,7 +115,7 @@ module RegexpMatching<isRegexpMatchingCandidateSig/4 isCandidate> {
    */
   private State getAStateThatReachesAccept(RootTerm reg, int i, string str, boolean ignorePrefix) {
     // base case, reaches an accepting state from the last state in `getAState(..)`
-    testWithGroups(reg, str, ignorePrefix) and
+    isCandidate(reg, str, ignorePrefix, true) and
     i = str.length() - 1 and
     result = getAState(reg, i, str, ignorePrefix) and
     epsilonSucc*(result) = Accept(_)
