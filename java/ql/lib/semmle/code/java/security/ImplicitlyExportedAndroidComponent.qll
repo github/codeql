@@ -9,10 +9,10 @@ class ImplicitlyExportedAndroidComponent extends AndroidComponentXmlElement {
     this.hasAnIntentFilterElement() and
     not this.getAnIntentFilterElement().getACategoryElement().getCategoryName() =
       "android.intent.category.LAUNCHER" and
+    not this.getAnIntentFilterElement().getAnActionElement().getActionName() =
+      "android.intent.action.MAIN" and
     not this.requiresPermissions() and
     not this.getParent().(AndroidApplicationXmlElement).requiresPermissions() and
-    not this.getFile().(AndroidManifestXmlFile).isInBuildDirectory() //and
-    //not this.getAnIntentFilterElement().getAnActionElement().getActionName() =
-    //  "android.intent.action.MAIN"
+    not this.getFile().(AndroidManifestXmlFile).isInBuildDirectory()
   }
 }
