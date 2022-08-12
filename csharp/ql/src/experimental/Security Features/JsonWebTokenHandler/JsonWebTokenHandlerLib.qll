@@ -230,24 +230,14 @@ class CallableAlwaysReturnsParameter0 extends CallableReturnsStringAndArg0IsStri
  */
 class CallableAlwaysReturnsParameter0MayThrowExceptions extends CallableReturnsStringAndArg0IsString {
   CallableAlwaysReturnsParameter0MayThrowExceptions() {
-    callableOnlyThrowsArgumentNullException(this) and
-    forall(ReturnStmt rs | rs.getEnclosingCallable() = this |
-      rs.getChild(0) = this.getParameter(0).getAnAccess()
-    ) and
-    exists(ReturnStmt rs | rs.getEnclosingCallable() = this)
+    forex(Expr ret | this.canReturn(ret) |
+    ret = this.getParameter(0).getAnAccess()
     or
-    exists(
-      AnonymousFunctionExpr le, Call call, CallableAlwaysReturnsParameter0MayThrowExceptions cat
-    |
-      this = le
-    |
-      call = le.getExpressionBody() and
-      cat.getACall() = call and
-      callableOnlyThrowsArgumentNullException(le) and
-      callableOnlyThrowsArgumentNullException(cat)
+    exists(CallableAlwaysReturnsParameter0MayThrowExceptions c |
+      ret = c.getACall() and
+      ret.(Call).getArgument(0) = this.getParameter(0).getAnAccess()
     )
-    or
-    this.getBody() = this.getParameter(0).getAnAccess()
+  )
   }
 }
 
