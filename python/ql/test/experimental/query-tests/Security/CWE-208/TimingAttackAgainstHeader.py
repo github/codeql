@@ -5,7 +5,7 @@
 """
 from flask import Flask
 from flask import request
-from django.utils.crypto import constant_time_compare
+import hmac
 
 app = Flask(__name__)
 
@@ -17,7 +17,7 @@ def bad1():
 
 @app.route('/good')
 def good1(): 
-    if not constant_time_compare(Secret, "token"):
+    if not hmac.compare_digest(Secret, "token"):
         raise Exception('bad token')
     return 'good1'
  
