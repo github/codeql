@@ -60,7 +60,13 @@ class AndroidApplicationXmlElement extends XMLElement {
   /**
    * Holds if this application element has the attribute `android:debuggable` set to `true`.
    */
-  predicate isDebuggable() { this.getAttributeValue("debuggable") = "true" }
+  predicate isDebuggable() {
+    exists(AndroidXmlAttribute attr |
+      this.getAnAttribute() = attr and
+      attr.getName() = "debuggable" and
+      attr.getValue() = "true"
+    )
+  }
 }
 
 /**
