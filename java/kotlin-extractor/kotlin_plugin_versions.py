@@ -21,6 +21,7 @@ def version_string_to_tuple(version):
     m = re.match(r'([0-9]+)\.([0-9]+)\.([0-9]+)(.*)', version)
     return tuple([int(m.group(i)) for i in range(1, 4)] + [m.group(4)])
 
+# Version numbers in the list need to be in semantically increasing order
 many_versions = [ '1.4.32', '1.5.0', '1.5.10', '1.5.21', '1.5.31', '1.6.10', '1.6.20', '1.7.0' ]
 
 many_versions_tuples = [version_string_to_tuple(v) for v in many_versions]
