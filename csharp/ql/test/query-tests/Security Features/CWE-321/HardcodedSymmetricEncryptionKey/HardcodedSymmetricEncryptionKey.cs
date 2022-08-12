@@ -46,11 +46,34 @@ namespace HardcodedSymmetricEncryptionKey
             // GOOD (this function hashes password)
             var de = DecryptWithPassword(ct, c, iv);
 
+            // BAD: hard-coded password passed to Decrypt
+            var de1 = Decrypt(ct, c, iv);
+
             // BAD [NOT DETECTED]
             CreateCryptographicKey(null, byteArrayFromString);
 
             // GOOD
             CreateCryptographicKey(null, File.ReadAllBytes("secret.key"));
+        }
+
+        public static string Decrypt(byte[] cipherText, byte[] password, byte[] IV)
+        {
+            byte[] rawPlaintext;
+            var salt = new byte[] { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 };
+
+            using (Aes aes = new AesManaged())
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, aes.CreateDecryptor(password, IV), CryptoStreamMode.Write))
+                    {
+                        cs.Write(cipherText, 0, cipherText.Length);
+                    }
+                    rawPlaintext = ms.ToArray();
+                }
+
+                return Encoding.Unicode.GetString(rawPlaintext);
+            }
         }
 
         public static string DecryptWithPassword(byte[] cipherText, byte[] password, byte[] IV)

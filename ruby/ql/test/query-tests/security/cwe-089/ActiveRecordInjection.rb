@@ -137,3 +137,17 @@ class BazController < BarController
     Admin.delete_by(params[:admin_condition])
   end
 end
+
+class AnnotatedController < ActionController::Base
+  def index
+    name = params[:user_name]
+    # GOOD: string literal arguments not controlled by user are safe for annotations
+    users = User.annotate("this is a safe annotation").find_by(user_name: name)
+  end
+
+  def unsafe_action
+    name = params[:user_name]
+    # BAD: user input passed into annotations are vulnerable to SQLi
+    users = User.annotate("this is an unsafe annotation:#{params[:comment]}").find_by(user_name: name)
+  end
+end

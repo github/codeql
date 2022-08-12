@@ -1,3 +1,22 @@
+## 0.3.1
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/csharp-all` package.
+
+## 0.2.0
+
+### Query Metadata Changes
+
+* The `kind` query metadata was changed to `diagnostic` on `cs/compilation-error`, `cs/compilation-message`, `cs/extraction-error`, and `cs/extraction-message`.
+
+### Minor Analysis Improvements
+
+* The syntax of the (source|sink|summary)model CSV format has been changed slightly for Java and C#. A new column called `provenance` has been introduced, where the allowed values are `manual` and `generated`. The value used to indicate whether a model as been written by hand (`manual`) or create by the CSV model generator (`generated`).
+* All auto implemented public properties with public getters and setters on ASP.NET Core remote flow sources are now also considered to be tainted.
+
 ## 0.1.4
 
 ## 0.1.3

@@ -528,15 +528,54 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
 }
 
 /**
+ * Gets a node that controls whether other nodes are evaluated.
+ *
+ * In the base case, this is the last node of `conditionBlock`, and `flipped` is `false`.
+ * This definition accounts for (short circuting) `and`- and `or`-expressions, as the structure
+ * of basic blocks will reflect their semantics.
+ *
+ * However, in the program
+ * ```python
+ * if not is_safe(path):
+ *   return
+ * ```
+ * the last node in the `ConditionBlock` is `not is_safe(path)`.
+ *
+ * We would like to consider also `is_safe(path)` a guard node, albeit with `flipped` being `true`.
+ * Thus we recurse through `not`-expressions.
+ */
+ControlFlowNode guardNode(ConditionBlock conditionBlock, boolean flipped) {
+  // Base case: the last node truly does determine which successor is chosen
+  result = conditionBlock.getLastNode() and
+  flipped = false
+  or
+  // Recursive case: if a guard node is a `not`-expression,
+  // the operand is also a guard node, but with inverted polarity.
+  exists(UnaryExprNode notNode |
+    result = notNode.getOperand() and
+    notNode.getNode().getOp() instanceof Not
+  |
+    notNode = guardNode(conditionBlock, flipped.booleanNot())
+  )
+}
+
+/**
  * A node that controls whether other nodes are evaluated.
+ *
+ * The field `flipped` allows us to match `GuardNode`s underneath
+ * `not`-expressions and still choose the appropriate branch.
  */
 class GuardNode extends ControlFlowNode {
   ConditionBlock conditionBlock;
+  boolean flipped;
 
-  GuardNode() { this = conditionBlock.getLastNode() }
+  GuardNode() { this = guardNode(conditionBlock, flipped) }
 
   /** Holds if this guard controls block `b` upon evaluating to `branch`. */
-  predicate controlsBlock(BasicBlock b, boolean branch) { conditionBlock.controls(b, branch) }
+  predicate controlsBlock(BasicBlock b, boolean branch) {
+    branch in [true, false] and
+    conditionBlock.controls(b, branch.booleanXor(flipped))
+  }
 }
 
 /**

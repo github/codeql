@@ -1,3 +1,23 @@
+## 0.3.1
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/java-all` package.
+
+### New Queries
+
+* A new query "Improper verification of intent by broadcast receiver" (`java/improper-intent-verification`) has been added. 
+  This query finds instances of Android `BroadcastReceiver`s that don't verify the action string of received intents when registered
+  to receive system intents.
+
+## 0.2.0
+
+### Minor Analysis Improvements
+
+* The query `java/log-injection` now reports problems at the source (user-controlled data) instead of at the ultimate logging call. This was changed because user functions that wrap the ultimate logging call could result in most alerts being reported in an uninformative location.
+
 ## 0.1.4
 
 ## 0.1.3

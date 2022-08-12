@@ -596,9 +596,12 @@ class ParenthesisExpr extends Conversion, @parexpr {
 }
 
 /**
- * A C/C++ expression that has not been resolved.
+ * A C/C++ expression that could not be resolved, or that can no longer be
+ * represented due to a database upgrade or downgrade.
  *
- * It is assigned `ErroneousType` as its type.
+ * If the expression could not be resolved, it has type `ErroneousType`. In the
+ * case of a database upgrade or downgrade, the original type from before the
+ * upgrade or downgrade is kept if that type can be represented.
  */
 class ErrorExpr extends Expr, @errorexpr {
   override string toString() { result = "<error expr>" }

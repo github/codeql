@@ -50,7 +50,7 @@ private DataFlow::Node endsInCodeInjectionSink(DataFlow::TypeBackTracker t) {
     not result instanceof StringOps::ConcatenationRoot // the heuristic CodeInjection sink looks for string-concats, we are not interrested in those here.
   )
   or
-  exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, endsInCodeInjectionSink(t2)))
+  exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, endsInCodeInjectionSink(t2)))
 }
 
 /**

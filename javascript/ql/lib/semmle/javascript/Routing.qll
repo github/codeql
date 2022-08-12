@@ -148,6 +148,18 @@ module Routing {
       this instanceof MkRouter
     }
 
+    /**
+     * Like `mayResumeDispatch` but without the assumption that functions with an unknown
+     * implementation invoke their continuation.
+     */
+    predicate definitelyResumesDispatch() {
+      this.getLastChild().definitelyResumesDispatch()
+      or
+      exists(this.(RouteHandler).getAContinuationInvocation())
+      or
+      this instanceof MkRouter
+    }
+
     /** Gets the parent of this node, provided that this node may invoke its continuation. */
     private Node getContinuationParent() {
       result = this.getParent() and
@@ -229,11 +241,11 @@ module Routing {
     }
 
     /**
-     * Holds if `node` has processed the incoming request strictly prior to this node.
+     * Holds if `guard` has processed the incoming request strictly prior to this node.
      */
     pragma[inline]
     private predicate isGuardedByNodeInternal(Node guard) {
-      // Look for a common ancestor `fork` whose child leading to `guard` ("base1") preceeds
+      // Look for a common ancestor `fork` whose child leading to `guard` ("base1") precedes
       // the child leading to `this` ("base2").
       //
       // Schematically:

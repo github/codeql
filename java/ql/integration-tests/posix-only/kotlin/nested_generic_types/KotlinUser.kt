@@ -22,6 +22,15 @@ class User {
     val result4 = d.identity("goodbye")
     val result5 = e.returnSixth(1, "hello", 1.0f, 1.0, 1L, 1.toShort())
 
+    val innerGetterTest = OuterGeneric<String>().getInnerNotGeneric()
+    val innerGetterTest2 = OuterNotGeneric().getInnerGeneric()
+
+    val tpv = TypeParamVisibility<String>()
+    val visibleBecauseInner = tpv.getVisibleBecauseInner();
+    val visibleBecauseInnerIndirect = tpv.getVisibleBecauseInnerIndirect()
+    val notVisibleBecauseStatic = tpv.getNotVisibleBecauseStatic()
+    val notVisibleBecauseStaticIndirect = tpv.getNotVisibleBecauseStaticIndirect()
+
   }
 
 }

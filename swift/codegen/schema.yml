@@ -7,21 +7,24 @@ _includes:
 _directories:
   decl: Decl$|Context$
   pattern: Pattern$
-  type: Type$
-  typerepr: TypeRepr$
+  type: Type(Repr)?$
   expr: Expr$
   stmt: Stmt$
 
 Element:
-  is_unknown: predicate
-  _pragma: skip_qltest
+  is_unknown:
+    type: predicate
+    _pragma: cpp_skip  # this is emitted using trap entries directly
+  _pragma: qltest_skip
 
 File:
   name: string
 
 Locatable:
-  location: Location?
-  _pragma: skip_qltest
+  location:
+    type: Location?
+    _pragma: cpp_skip  # this is emitted using trap entries directly
+  _pragma: qltest_skip
 
 Location:
   file: File
@@ -29,10 +32,14 @@ Location:
   start_column: int
   end_line: int
   end_column: int
-  _pragma: skip_qltest
+  _pragma: qltest_skip
+
+Comment:
+  _extends: Locatable
+  text: string
 
 Type:
-  diagnostics_name: string
+  name: string
   canonical_type: Type
 
 IterableDeclContext:
@@ -85,6 +92,7 @@ AnyMetatypeType:
 
 BuiltinType:
   _extends: Type
+  _pragma: qltest_collapse_hierarchy
 
 DependentMemberType:
   _extends: Type
@@ -108,12 +116,14 @@ LValueType:
 
 ModuleType:
   _extends: Type
+  module: ModuleDecl
 
 PlaceholderType:
   _extends: Type
 
 ProtocolCompositionType:
   _extends: Type
+  members: Type*
 
 ExistentialType:
   _extends: Type
@@ -179,6 +189,7 @@ Stmt:
 
 TypeRepr:
   _extends: AstNode
+  type: Type?  # type can be absent on unresolved entities
 
 FunctionType:
   _extends: AnyFunctionType
@@ -243,14 +254,12 @@ WeakStorageType:
 
 ArchetypeType:
   _extends: SubstitutableType
-  name: string
   interface_type: Type
   superclass: Type?
   protocols: ProtocolDecl*
 
 GenericTypeParamType:
   _extends: SubstitutableType
-  name: string
 
 ParenType:
   _extends: SugarType
@@ -270,9 +279,22 @@ EnumCaseDecl:
 
 IfConfigDecl:
   _extends: Decl
+  _children:
+    clauses: IfConfigClause*
+
+IfConfigClause:
+  _extends: Locatable
+  _children:
+    condition: Expr?
+    elements: AstNode*
+  is_active: predicate
+  _dir: decl
 
 ImportDecl:
   _extends: Decl
+  is_exported: predicate
+  module: ModuleDecl
+  declarations: ValueDecl*
 
 MissingMemberDecl:
   _extends: Decl
@@ -316,6 +338,7 @@ AppliedPropertyWrapperExpr:
   _extends: Expr
 
 Argument:
+  _extends: Locatable
   label: string
   _children:
     expr: Expr
@@ -388,12 +411,11 @@ EnumIsCaseExpr:
   _extends: Expr
   _children:
     sub_expr: Expr
-    type_repr: TypeRepr
     element: EnumElementDecl
 
 ErrorExpr:
   _extends: Expr
-  _pragma: skip_qltest  # unexpected emission
+  _pragma: qltest_skip  # unexpected emission
 
 ExplicitCastExpr:
   _extends: Expr
@@ -439,7 +461,7 @@ KeyPathDotExpr:
 KeyPathExpr:
   _extends: Expr
   _children:
-    parsed_root: Expr?
+    root: TypeRepr?
     parsed_path: Expr?
 
 LazyInitializerExpr:
@@ -468,7 +490,7 @@ ObjCSelectorExpr:
   _children:
     sub_expr: Expr
   method: AbstractFunctionDecl
-  _pragma: skip_qltest  # to be tested in integration tests
+  _pragma: qltest_skip  # to be tested in integration tests
 
 OneWayExpr:
   _extends: Expr
@@ -510,7 +532,7 @@ SequenceExpr:
   _extends: Expr
   _children:
     elements: Expr*
-  _pragma: skip_qltest  # we should really never extract these, as these should be resolved to trees of operations
+  _pragma: qltest_skip  # we should really never extract these, as these should be resolved to trees of operations
 
 SuperRefExpr:
   _extends: Expr
@@ -542,7 +564,6 @@ TypeExpr:
 UnresolvedDeclRefExpr:
   _extends: Expr
   name: string?
-  _pragma: skip_qltest  # we should really never extract these
 
 UnresolvedDotExpr:
   _extends: Expr
@@ -553,15 +574,16 @@ UnresolvedDotExpr:
 UnresolvedMemberExpr:
   _extends: Expr
   name: string
-  _pragma: skip_qltest  # we should really never extract these
+  _pragma: qltest_skip  # we should really never extract these
 
 UnresolvedPatternExpr:
   _extends: Expr
-  _pragma: skip_qltest  # we should really never extract these
+  _children:
+    sub_pattern: Pattern
 
 UnresolvedSpecializeExpr:
   _extends: Expr
-  _pragma: skip_qltest  # we should really never extract these
+  _pragma: qltest_skip  # we should really never extract these
 
 VarargExpansionExpr:
   _extends: Expr
@@ -698,6 +720,7 @@ BuiltinIntegerLiteralType:
 
 BuiltinIntegerType:
   _extends: AnyBuiltinIntegerType
+  _pragma: qltest_uncollapse_hierarchy
   width: int?
 
 NestedArchetypeType:
@@ -830,11 +853,11 @@ ArrayToPointerExpr:
 
 BridgeFromObjCExpr:
   _extends: ImplicitConversionExpr
-  _pragma: skip_qltest  # to be tested in integration tests
+  _pragma: qltest_skip  # to be tested in integration tests
 
 BridgeToObjCExpr:
   _extends: ImplicitConversionExpr
-  _pragma: skip_qltest  # to be tested in integration tests
+  _pragma: qltest_skip  # to be tested in integration tests
 
 ClassMetatypeToObjectExpr:
   _extends: ImplicitConversionExpr
@@ -844,7 +867,7 @@ CollectionUpcastConversionExpr:
 
 ConditionalBridgeFromObjCExpr:
   _extends: ImplicitConversionExpr
-  _pragma: skip_qltest  # to be tested in integration tests
+  _pragma: qltest_skip  # to be tested in integration tests
 
 CovariantFunctionConversionExpr:
   _extends: ImplicitConversionExpr
@@ -1066,6 +1089,8 @@ GenericTypeDecl:
 
 ModuleDecl:
   _extends: TypeDecl
+  is_builtin_module: predicate
+  is_system_module: predicate
 
 ConstructorRefCallExpr:
   _extends: SelfApplyExpr
@@ -1156,87 +1181,3 @@ FloatLiteralExpr:
 IntegerLiteralExpr:
   _extends: NumberLiteralExpr
   string_value: string
-
-ErrorTypeRepr:
-  _extends: TypeRepr
-
-AttributedTypeRepr:
-  _extends: TypeRepr
-
-IdentTypeRepr:
-  _extends: TypeRepr
-
-ComponentIdentTypeRepr:
-  _extends: IdentTypeRepr
-
-SimpleIdentTypeRepr:
-  _extends: ComponentIdentTypeRepr
-
-GenericIdentTypeRepr:
-  _extends: ComponentIdentTypeRepr
-
-CompoundIdentTypeRepr:
-  _extends: IdentTypeRepr
-
-FunctionTypeRepr:
-  _extends: TypeRepr
-
-ArrayTypeRepr:
-  _extends: TypeRepr
-
-DictionaryTypeRepr:
-  _extends: TypeRepr
-
-OptionalTypeRepr:
-  _extends: TypeRepr
-
-ImplicitlyUnwrappedOptionalTypeRepr:
-  _extends: TypeRepr
-
-TupleTypeRepr:
-  _extends: TypeRepr
-
-CompositionTypeRepr:
-  _extends: TypeRepr
-
-MetatypeTypeRepr:
-  _extends: TypeRepr
-
-ProtocolTypeRepr:
-  _extends: TypeRepr
-
-OpaqueReturnTypeRepr:
-  _extends: TypeRepr
-
-NamedOpaqueReturnTypeRepr:
-  _extends: TypeRepr
-
-ExistentialTypeRepr:
-  _extends: TypeRepr
-
-PlaceholderTypeRepr:
-  _extends: TypeRepr
-
-SpecifierTypeRepr:
-  _extends: TypeRepr
-
-InOutTypeRepr:
-  _extends: SpecifierTypeRepr
-
-SharedTypeRepr:
-  _extends: SpecifierTypeRepr
-
-OwnedTypeRepr:
-  _extends: SpecifierTypeRepr
-
-IsolatedTypeRepr:
-  _extends: SpecifierTypeRepr
-
-CompileTimeConstTypeRepr:
-  _extends: SpecifierTypeRepr
-
-FixedTypeRepr:
-  _extends: TypeRepr
-
-SilBoxTypeRepr:
-  _extends: TypeRepr

@@ -39,6 +39,11 @@ module Ssa {
         read2 = bb2.getNode(i2)
       )
     }
+
+    cached
+    predicate lastRefRedef(BasicBlock bb, int i, Definition next) {
+      SsaImplCommon::lastRefRedef(this, bb, i, next)
+    }
   }
 
   cached
@@ -75,7 +80,7 @@ module Ssa {
     cached
     predicate isInoutDef(ExprCfgNode argument) {
       exists(
-        CallExpr c, BasicBlock bb, int blockIndex, int argIndex, VarDecl v, InOutExpr argExpr // TODO: use CFG node for assignment expr
+        ApplyExpr c, BasicBlock bb, int blockIndex, int argIndex, VarDecl v, InOutExpr argExpr // TODO: use CFG node for assignment expr
       |
         this.definesAt(v, bb, blockIndex) and
         bb.getNode(blockIndex).getNode().asAstNode() = c and

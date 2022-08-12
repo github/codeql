@@ -1,3 +1,13 @@
+## 0.3.1
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/cpp-all` package.
+
+## 0.2.0
+
 ## 0.1.4
 
 ## 0.1.3

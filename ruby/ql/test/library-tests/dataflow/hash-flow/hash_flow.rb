@@ -68,6 +68,14 @@ def m3()
     hash4 = Hash[:a, taint(3.4), :b, 1]
     sink(hash4[:a]) # $ hasValueFlow=3.4
     sink(hash4[:b])
+
+    hash5 = Hash["a" => taint(3.5), "b" => 1]
+    sink(hash5["a"]) # $ hasValueFlow=3.5
+    sink(hash5["b"])
+
+    hash6 = Hash[{"a" => taint(3.6), "b" => 1}]
+    sink(hash6["a"]) # $ hasValueFlow=3.6
+    sink(hash6["b"])
 end
 
 m3()

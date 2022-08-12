@@ -273,6 +273,41 @@ predicate builtin_name_points_to(string name, Object value, ClassObject cls) {
   value = Object::builtin(name) and cls.asBuiltin() = value.asBuiltin().getClass()
 }
 
+pragma[nomagic]
+private predicate essa_var_scope(SsaSourceVariable var, Scope pred_scope, EssaVariable pred_var) {
+  BaseFlow::reaches_exit(pred_var) and
+  pred_var.getScope() = pred_scope and
+  var = pred_var.getSourceVariable()
+}
+
+pragma[nomagic]
+private predicate scope_entry_def_scope(
+  SsaSourceVariable var, Scope succ_scope, ScopeEntryDefinition succ_def
+) {
+  var = succ_def.getSourceVariable() and
+  succ_def.getScope() = succ_scope
+}
+
+pragma[nomagic]
+private predicate step_through_init(Scope succ_scope, Scope pred_scope, Scope init) {
+  init.getName() = "__init__" and
+  init.precedes(succ_scope) and
+  pred_scope.precedes(init)
+}
+
+pragma[nomagic]
+private predicate scope_entry_value_transfer_through_init(
+  EssaVariable pred_var, Scope pred_scope, ScopeEntryDefinition succ_def, Scope succ_scope
+) {
+  exists(SsaSourceVariable var, Scope init |
+    var instanceof GlobalVariable and
+    essa_var_scope(var, pragma[only_bind_into](pred_scope), pred_var) and
+    scope_entry_def_scope(var, succ_scope, succ_def) and
+    step_through_init(succ_scope, pragma[only_bind_into](pred_scope), init) and
+    not var.(Variable).getAStore().getScope() = init
+  )
+}
+
 module BaseFlow {
   predicate reaches_exit(EssaVariable var) { var.getAUse() = var.getScope().getANormalExit() }
 
@@ -283,27 +318,15 @@ module BaseFlow {
   ) {
     Stages::DataFlow::ref() and
     exists(SsaSourceVariable var |
-      reaches_exit(pred_var) and
-      pred_var.getScope() = pred_scope and
-      var = pred_var.getSourceVariable() and
-      var = succ_def.getSourceVariable() and
-      succ_def.getScope() = succ_scope
+      essa_var_scope(var, pred_scope, pred_var) and
+      scope_entry_def_scope(var, succ_scope, succ_def)
     |
       pred_scope.precedes(succ_scope)
-      or
-      /*
-       * If an `__init__` method does not modify the global variable, then
-       * we can skip it and take the value directly from the module.
-       */
-
-      exists(Scope init |
-        init.getName() = "__init__" and
-        init.precedes(succ_scope) and
-        pred_scope.precedes(init) and
-        not var.(Variable).getAStore().getScope() = init and
-        var instanceof GlobalVariable
-      )
     )
+    or
+    // If an `__init__` method does not modify the global variable, then
+    // we can skip it and take the value directly from the module.
+    scope_entry_value_transfer_through_init(pred_var, pred_scope, succ_def, succ_scope)
   }
 }
 

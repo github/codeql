@@ -54,7 +54,7 @@ methodWithDuplicate
 | AbstractList<E> | set | int |
 | AbstractList<E> | subList | int |
 | AbstractList<E> | subListRangeCheck | int |
-| AbstractMap | containsEntry | Entry<?,?> |
+| AbstractMap | containsEntry$kotlin_stdlib | Entry<?,?> |
 | AbstractMap | containsKey | Object |
 | AbstractMap | containsValue | Object |
 | AbstractMap | equals | Object |
@@ -79,7 +79,7 @@ methodWithDuplicate
 | AbstractMap<K,V> | put | V |
 | AbstractMap<K,V> | putAll | Map<? extends K,? extends V> |
 | AbstractMap<K,V> | remove | Object |
-| AbstractMap<String,String> | containsEntry | Entry<?,?> |
+| AbstractMap<String,String> | containsEntry$kotlin_stdlib | Entry<?,?> |
 | AbstractMap<String,String> | containsKey | Object |
 | AbstractMap<String,String> | containsValue | Object |
 | AbstractMap<String,String> | equals | Object |

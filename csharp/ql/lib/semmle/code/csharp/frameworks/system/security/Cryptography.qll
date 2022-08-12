@@ -42,3 +42,23 @@ private class SystemSecurityCryptographyOidCollectionFlowModelCsv extends Summar
       ]
   }
 }
+
+/** Sinks for `System.Security.Cryptography`. */
+private class SystemSecurityCryptographySinkModelCsv extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "System.Security.Cryptography;SymmetricAlgorithm;true;CreateEncryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-encryptor;manual",
+        "System.Security.Cryptography;SymmetricAlgorithm;true;CreateDecryptor;(System.Byte[],System.Byte[]);;Argument[0];encryption-decryptor;manual",
+        "System.Security.Cryptography;SymmetricAlgorithm;true;set_Key;(System.Byte[]);;Argument[0];encryption-keyprop;manual",
+      ]
+  }
+}
+
+/** Sinks for `Windows.Security.Cryptography.Core`. */
+private class WindowsSecurityCryptographyCoreSinkModelCsv extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      "Windows.Security.Cryptography.Core;SymmetricKeyAlgorithmProvider;false;CreateSymmetricKey;(Windows.Storage.Streams.IBuffer);;Argument[0];encryption-symmetrickey;manual"
+  }
+}

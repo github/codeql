@@ -8,6 +8,8 @@ public class OuterGeneric<T> {
 
   }
 
+  public InnerNotGeneric getInnerNotGeneric() { return null; }
+
   public class InnerGeneric<S> {
 
     public <R> InnerGeneric(R r) { }

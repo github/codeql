@@ -144,6 +144,9 @@ predicate whitelisted(UnusedLocal v) {
   // exclude variables mentioned in JSDoc comments in externs
   mentionedInJSDocComment(v)
   or
+  // the attributes in .vue files are not extracted, so we can get false positives in those.
+  v.getADeclaration().getFile().getExtension() = "vue"
+  or
   // exclude variables used to filter out unwanted properties
   isPropertyFilter(v)
   or

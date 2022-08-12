@@ -1,0 +1,35 @@
+name: "Swift: Run Integration Tests"
+
+on:
+  pull_request:
+    paths:
+      - "swift/**"
+      - .github/workflows/swift-integration-tests.yml
+      - .github/actions/fetch-codeql/action.yml
+      - codeql-workspace.yml
+    branches:
+      - main
+defaults:
+  run:
+    working-directory: swift
+
+jobs:
+  integration-tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-20.04
+#          - macos-latest  TODO
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/fetch-codeql
+      - uses: bazelbuild/setup-bazelisk@v2
+      - uses: actions/setup-python@v3
+      - name: Build Swift extractor
+        run: |
+          bazel run //swift:create-extractor-pack
+      - name: Run integration tests
+        run: |
+          python integration-tests/runner.py

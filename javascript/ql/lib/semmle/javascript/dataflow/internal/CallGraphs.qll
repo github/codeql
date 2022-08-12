@@ -190,7 +190,7 @@ module CallGraph {
   }
 
   /**
-   * Holds if `ref` installs an accessor on an object. Such property writes should not
+   * Holds if `write` installs an accessor on an object. Such property writes should not
    * be considered calls to an accessor.
    */
   pragma[nomagic]

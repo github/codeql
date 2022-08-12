@@ -86,11 +86,10 @@ def generate(opts, renderer):
         renderer.render(cpp.TrapList(entries, opts.dbscheme), out / dir / "TrapEntries")
 
     tags = []
-    for index, tag in enumerate(toposort_flatten(tag_graph)):
+    for tag in toposort_flatten(tag_graph):
         tags.append(cpp.Tag(
             name=get_tag_name(tag),
             bases=[get_tag_name(b) for b in sorted(tag_graph[tag])],
-            index=index,
             id=tag,
         ))
     renderer.render(cpp.TagList(tags, opts.dbscheme), out / "TrapTags")
