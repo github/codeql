@@ -28,18 +28,10 @@ signature predicate isRegexpMatchingCandidateSig(
  * A module for determining if a regexp matches a given string,
  * and reasoning about which capture groups are filled by a given string.
  *
- * The module parameter `isRegexpMatchingCandidateSig` determines which string should be tested,
+ * The module parameter `isCandidate` determines which strings should be tested,
  * and the results can be read from the `matches` and `fillsCaptureGroup` predicates.
  */
 module RegexpMatching<isRegexpMatchingCandidateSig/4 isCandidate> {
-  private predicate test(RootTerm reg, string str, boolean ignorePrefix) {
-    isCandidate(reg, str, ignorePrefix, false)
-  }
-
-  private predicate testWithGroups(RootTerm reg, string str, boolean ignorePrefix) {
-    isCandidate(reg, str, ignorePrefix, true)
-  }
-
   /**
    * Gets a state the regular expression `reg` can be in after matching the `i`th char in `str`.
    * The regular expression is modeled as a non-determistic finite automaton,
@@ -50,11 +42,7 @@ module RegexpMatching<isRegexpMatchingCandidateSig/4 isCandidate> {
   private State getAState(RootTerm reg, int i, string str, boolean ignorePrefix) {
     // start state, the -1 position before any chars have been matched
     i = -1 and
-    (
-      test(reg, str, ignorePrefix)
-      or
-      testWithGroups(reg, str, ignorePrefix)
-    ) and
+    isCandidate(reg, str, ignorePrefix, _) and
     result.getRepr().getRootTerm() = reg and
     isStartState(result)
     or
@@ -109,13 +97,7 @@ module RegexpMatching<isRegexpMatchingCandidateSig/4 isCandidate> {
   // The `getAnInputSymbolMatching` relation specialized to the chars that exists in strings tested by a `MatchedRegExp`.
   pragma[noinline]
   private InputSymbol specializedGetAnInputSymbolMatching(string char) {
-    exists(string s, RootTerm r |
-      test(r, s, _)
-      or
-      testWithGroups(r, s, _)
-    |
-      char = s.charAt(_)
-    ) and
+    exists(string s, RootTerm r | isCandidate(r, s, _, _) | char = s.charAt(_)) and
     result = getAnInputSymbolMatching(char)
   }
 
@@ -124,7 +106,7 @@ module RegexpMatching<isRegexpMatchingCandidateSig/4 isCandidate> {
    * Starts with an accepting state as found by `getAState` and searches backwards
    * to the start state through the reachable states (as found by `getAState`).
    *
-   * This predicate holds the invariant that the result state can be reached with `i` steps from a start state,
+   * This predicate satisfies the invariant that the result state can be reached with `i` steps from a start state,
    * and an accepting state can be found after (`str.length() - 1 - i`) steps from the result.
    * The result state is therefore always on a valid path where `reg` accepts `str`.
    *
@@ -133,7 +115,7 @@ module RegexpMatching<isRegexpMatchingCandidateSig/4 isCandidate> {
    */
   private State getAStateThatReachesAccept(RootTerm reg, int i, string str, boolean ignorePrefix) {
     // base case, reaches an accepting state from the last state in `getAState(..)`
-    testWithGroups(reg, str, ignorePrefix) and
+    isCandidate(reg, str, ignorePrefix, true) and
     i = str.length() - 1 and
     result = getAState(reg, i, str, ignorePrefix) and
     epsilonSucc*(result) = Accept(_)
@@ -154,7 +136,7 @@ module RegexpMatching<isRegexpMatchingCandidateSig/4 isCandidate> {
   }
 
   /**
-   * Holds if `reg` matches `str`, where `str` is either in the `test` or `testWithGroups` predicate.
+   * Holds if `reg` matches `str`, where `str` is in the `isCandidate` predicate.
    */
   predicate matches(RootTerm reg, string str) {
     exists(State state | state = getAState(reg, str.length() - 1, str, _) |

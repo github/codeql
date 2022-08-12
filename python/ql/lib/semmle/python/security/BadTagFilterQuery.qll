@@ -49,6 +49,9 @@ class HtmlMatchingRegExp extends RootTerm {
   }
 }
 
+/** DEPRECATED: Alias for HtmlMatchingRegExp */
+deprecated class HTMLMatchingRegExp = HtmlMatchingRegExp;
+
 /**
  * Holds if `regexp` matches some HTML tags, but misses some HTML tags that it should match.
  *

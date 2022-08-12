@@ -351,7 +351,7 @@ predicate isReDoSCandidate(State state, string pump) { isPumpable(_, state, pump
 /**
  * Holds if repetitions of `pump` at `t` will cause polynomial backtracking.
  */
-predicate polynimalReDoS(RegExpTerm t, string pump, string prefixMsg, RegExpTerm prev) {
+predicate polynomialReDoS(RegExpTerm t, string pump, string prefixMsg, RegExpTerm prev) {
   exists(State s, State pivot |
     ReDoSPruning<isReDoSCandidate/2>::hasReDoSResult(t, pump, s, prefixMsg) and
     isPumpable(pivot, s, _) and
@@ -363,7 +363,7 @@ predicate polynimalReDoS(RegExpTerm t, string pump, string prefixMsg, RegExpTerm
  * Gets a message for why `term` can cause polynomial backtracking.
  */
 string getReasonString(RegExpTerm term, string pump, string prefixMsg, RegExpTerm prev) {
-  polynimalReDoS(term, pump, prefixMsg, prev) and
+  polynomialReDoS(term, pump, prefixMsg, prev) and
   result =
     "Strings " + prefixMsg + "with many repetitions of '" + pump +
       "' can start matching anywhere after the start of the preceeding " + prev
