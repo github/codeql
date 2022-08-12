@@ -246,17 +246,14 @@ private class CallableReturnsStringAndArg0IsString extends Callable {
  */
 class CallableAlwaysReturnsParameter0 extends CallableReturnsStringAndArg0IsString {
   CallableAlwaysReturnsParameter0() {
-    forall(ReturnStmt rs | rs.getEnclosingCallable() = this |
-      rs.getExpr() = this.getParameter(0).getAnAccess()
-    ) and
-    exists(ReturnStmt rs | rs.getEnclosingCallable() = this)
-    or
-    exists(AnonymousFunctionExpr le, Call call, CallableAlwaysReturnsParameter0 cat | this = le |
-      call = le.getExpressionBody() and
-      cat.getACall() = call
+    forex(Expr ret | this.canReturn(ret) |
+      ret = this.getParameter(0).getAnAccess()
+      or
+      exists(CallableAlwaysReturnsParameter0 c |
+        ret = c.getACall() and
+        ret.(Call).getArgument(0) = this.getParameter(0).getAnAccess()
+      )
     )
-    or
-    this.getBody() = this.getParameter(0).getAnAccess()
   }
 }
 
