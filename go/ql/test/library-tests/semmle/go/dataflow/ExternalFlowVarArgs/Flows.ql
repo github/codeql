@@ -1,7 +1,7 @@
 import go
 import semmle.go.dataflow.ExternalFlow
-import TestUtilities.InlineExpectationsTest
 import CsvValidation
+import TestUtilities.InlineExpectationsTest
 
 class SummaryModelTest extends SummaryModelCsv {
   override predicate row(string row) {
