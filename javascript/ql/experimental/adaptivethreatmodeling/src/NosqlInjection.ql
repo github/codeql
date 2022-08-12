@@ -10,6 +10,10 @@
  * @description Building a database query from user-controlled sources is vulnerable to insertion of
  *              malicious code by the user.
  * @kind path-problem
+ * @problem.severity error
+ * @security-severity 8.8
+ * @id js/ml-powered-ref/nosql-injection
+ * @tags experimental security
  */
 
 import javascript
