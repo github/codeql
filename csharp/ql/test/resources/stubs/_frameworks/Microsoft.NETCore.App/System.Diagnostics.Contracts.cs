@@ -75,14 +75,14 @@ namespace System
             }
 
             // Generated from `System.Diagnostics.Contracts.ContractFailureKind` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ContractFailureKind
+            public enum ContractFailureKind : int
             {
-                Assert,
-                Assume,
-                Invariant,
-                Postcondition,
-                PostconditionOnException,
-                Precondition,
+                Assert = 4,
+                Assume = 5,
+                Invariant = 3,
+                Postcondition = 1,
+                PostconditionOnException = 2,
+                Precondition = 0,
             }
 
             // Generated from `System.Diagnostics.Contracts.ContractInvariantMethodAttribute` in `System.Diagnostics.Contracts, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

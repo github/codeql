@@ -8,14 +8,14 @@ namespace System
         {
             // Generated from `System.Xml.Serialization.CodeGenerationOptions` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CodeGenerationOptions
+            public enum CodeGenerationOptions : int
             {
-                EnableDataBinding,
-                GenerateNewAsync,
-                GenerateOldAsync,
-                GenerateOrder,
-                GenerateProperties,
-                None,
+                EnableDataBinding = 16,
+                GenerateNewAsync = 2,
+                GenerateOldAsync = 4,
+                GenerateOrder = 8,
+                GenerateProperties = 1,
+                None = 0,
             }
 
             // Generated from `System.Xml.Serialization.CodeIdentifier` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -339,11 +339,11 @@ namespace System
 
             // Generated from `System.Xml.Serialization.XmlMappingAccess` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum XmlMappingAccess
+            public enum XmlMappingAccess : int
             {
-                None,
-                Read,
-                Write,
+                None = 0,
+                Read = 1,
+                Write = 2,
             }
 
             // Generated from `System.Xml.Serialization.XmlMemberMapping` in `System.Xml.XmlSerializer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

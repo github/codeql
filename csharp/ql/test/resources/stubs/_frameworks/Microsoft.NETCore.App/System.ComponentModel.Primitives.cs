@@ -127,11 +127,11 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.DesignerSerializationVisibility` in `System.ComponentModel.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DesignerSerializationVisibility
+        public enum DesignerSerializationVisibility : int
         {
-            Content,
-            Hidden,
-            Visible,
+            Content = 2,
+            Hidden = 0,
+            Visible = 1,
         }
 
         // Generated from `System.ComponentModel.DesignerSerializationVisibilityAttribute` in `System.ComponentModel.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -331,11 +331,11 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.RefreshProperties` in `System.ComponentModel.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum RefreshProperties
+        public enum RefreshProperties : int
         {
-            All,
-            None,
-            Repaint,
+            All = 1,
+            None = 0,
+            Repaint = 2,
         }
 
         // Generated from `System.ComponentModel.RefreshPropertiesAttribute` in `System.ComponentModel.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

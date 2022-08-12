@@ -96,21 +96,21 @@ namespace System
             }
 
             // Generated from `System.IO.Pipes.PipeDirection` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PipeDirection
+            public enum PipeDirection : int
             {
-                In,
-                InOut,
-                Out,
+                In = 1,
+                InOut = 3,
+                Out = 2,
             }
 
             // Generated from `System.IO.Pipes.PipeOptions` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum PipeOptions
+            public enum PipeOptions : int
             {
-                Asynchronous,
-                CurrentUserOnly,
-                None,
-                WriteThrough,
+                Asynchronous = 1073741824,
+                CurrentUserOnly = 536870912,
+                None = 0,
+                WriteThrough = -2147483648,
             }
 
             // Generated from `System.IO.Pipes.PipeStream` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -162,10 +162,10 @@ namespace System
             public delegate void PipeStreamImpersonationWorker();
 
             // Generated from `System.IO.Pipes.PipeTransmissionMode` in `System.IO.Pipes, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PipeTransmissionMode
+            public enum PipeTransmissionMode : int
             {
-                Byte,
-                Message,
+                Byte = 0,
+                Message = 1,
             }
 
         }

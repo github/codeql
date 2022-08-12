@@ -380,13 +380,13 @@ namespace System
 
         // Generated from `System.Xml.XmlDictionaryReaderQuotaTypes` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum XmlDictionaryReaderQuotaTypes
+        public enum XmlDictionaryReaderQuotaTypes : int
         {
-            MaxArrayLength,
-            MaxBytesPerRead,
-            MaxDepth,
-            MaxNameTableCharCount,
-            MaxStringContentLength,
+            MaxArrayLength = 4,
+            MaxBytesPerRead = 8,
+            MaxDepth = 1,
+            MaxNameTableCharCount = 16,
+            MaxStringContentLength = 2,
         }
 
         // Generated from `System.Xml.XmlDictionaryReaderQuotas` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
