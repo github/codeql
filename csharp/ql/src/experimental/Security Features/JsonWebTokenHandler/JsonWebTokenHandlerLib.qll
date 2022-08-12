@@ -76,7 +76,7 @@ class JsonWebTokenHandlerValidateTokenMethod extends Method {
  */
 class JsonWebTokenHandlerValidateTokenCall extends MethodCall {
   JsonWebTokenHandlerValidateTokenCall() {
-    exists(JsonWebTokenHandlerValidateTokenMethod m | m.getACall() = this)
+    this.getTarget() instanceof JsonWebTokenHandlerValidateTokenMethod
   }
 }
 
