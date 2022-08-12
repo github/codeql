@@ -1,6 +1,7 @@
 import cpp
 import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysis
 import experimental.semmle.code.cpp.semantic.Semantic
+import experimental.semmle.code.cpp.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR as IR
 import TestUtilities.InlineExpectationsTest
 
@@ -37,7 +38,7 @@ private string getBoundString(SemBound b, int delta) {
   b instanceof SemZeroBound and result = delta.toString()
   or
   result =
-    strictconcat(b.(SemSsaBound).getAVariable().(IR::Instruction).getAst().toString(), ":") +
+    strictconcat(b.(SemSsaBound).getAVariable().(SemanticExprConfig::SsaVariable).asInstruction().getAst().toString(), ":") +
       getOffsetString(delta)
 }
 
