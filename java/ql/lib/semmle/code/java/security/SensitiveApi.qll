@@ -1,5 +1,5 @@
 /**
- * Provides predicates definining methods that consume sensitive data, such as usernames and passwords.
+ * Provides predicates defining methods that consume sensitive data, such as usernames and passwords.
  */
 
 import java
