@@ -60,11 +60,16 @@ private module Cached {
     TInstructionNode(Instruction i) { not Ssa::ignoreInstruction(i) } or
     TOperandNode(Operand op) { not Ssa::ignoreOperand(op) } or
     TVariableNode(Variable var) or
-    TPostFieldUpdateNode(Ssa::DefImpl def, FieldAddress fieldAddress) {
-      hasPostFieldUpdateNode(def, fieldAddress)
+    TPostFieldUpdateNode(FieldAddress operand, int index) {
+      index =
+        [0 .. Ssa::countIndirectionsForCppType(operand.getObjectAddress().getResultLanguageType()) -
+            1]
     } or
     TSsaPhiNode(Ssa::PhiNode phi) or
-    TIndirectArgumentOutNode(Ssa::CallDef callDef) or
+    TIndirectArgumentOutNode(ArgumentOperand operand, int index) {
+      Ssa::isModifiableByCall(operand) and
+      index = [0 .. Ssa::countIndirectionsForCppType(operand.getLanguageType()) - 1]
+    } or
     TIndirectOperand(Operand op, int index) { Ssa::hasIndirectOperand(op, index) } or
     TIndirectInstruction(Instruction instr, int index) { Ssa::hasIndirectInstruction(instr, index) }
 }
@@ -83,9 +88,16 @@ class FieldAddress extends Operand {
   Operand getAUse() { result = fai.getAUse() }
 }
 
-private predicate hasPostFieldUpdateNode(Ssa::DefImpl def, FieldAddress fieldAddress) {
-  not Ssa::ignoreOperand(fieldAddress) and
-  isPostFieldUpdateNode(def, fieldAddress)
+class PointerArithmeticAddress extends Operand {
+  PointerArithmeticInstruction pai;
+
+  PointerArithmeticAddress() { pai = this.getDef() }
+
+  Instruction getBaseAddress() { result = pai.getLeft() }
+
+  Operand getBaseAddressOperand() { result = pai.getLeftOperand() }
+
+  Operand getAUse() { result = pai.getAUse() }
 }
 
 private predicate conversionFlow0(Operand opFrom, Operand opTo) {
@@ -125,29 +137,6 @@ predicate conversionFlowStepExcludeFields(
   Operand opFrom, Operand opTo, boolean hasPointerArithOffset
 ) {
   conversionFlow(opFrom, opTo, false, hasPointerArithOffset)
-}
-
-private predicate conversionFlowStepExcludeFieldsIncludeLoads(Operand opFrom, Operand opTo) {
-  conversionFlowStepExcludeFields(opFrom, opTo, _)
-  or
-  opTo.getDef().(LoadInstruction).getSourceAddressOperand() = opFrom
-}
-
-private predicate conversionFlowStepIncludeLoads(Operand opFrom, Operand opTo) {
-  conversionFlow(opFrom, opTo, _, _)
-  or
-  opTo.getDef().(LoadInstruction).getSourceAddressOperand() = opFrom
-}
-
-private predicate isPostFieldUpdateNode(Ssa::DefImpl def, FieldAddress fieldAddress) {
-  conversionFlowStepIncludeLoads*(fieldAddress, def.getAddressOperand())
-}
-
-/**
- * Holds if `operand` is a qualifier (skipping conversions and loads) of `fa2`.
- */
-predicate isQualifierFor(Operand operand, FieldAddress fa2) {
-  conversionFlowStepExcludeFieldsIncludeLoads*(operand, fa2.getObjectAddressOperand())
 }
 
 private import Cached
@@ -334,38 +323,36 @@ class OperandNode extends Node, TOperandNode {
 }
 
 class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
-  Ssa::DefImpl def;
+  int index;
   FieldAddress fieldAddress;
 
-  PostFieldUpdateNode() { this = TPostFieldUpdateNode(def, fieldAddress) }
+  PostFieldUpdateNode() { this = TPostFieldUpdateNode(fieldAddress, index) }
 
-  /** Gets the underlying instruction. */
-  Ssa::DefImpl getDef() { result = def }
-
-  override Function getFunction() { result = this.getDef().getAddress().getEnclosingFunction() }
+  override Function getFunction() { result = fieldAddress.getUse().getEnclosingFunction() }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override IRType getType() { result = this.getDef().getAddress().getResultIRType() }
+  override IRType getType() { result = fieldAddress.getIRType() }
 
   FieldAddress getFieldAddress() { result = fieldAddress }
 
   Field getUpdatedField() { result = fieldAddress.getField() }
 
+  int getIndex() { result = index }
+
   override Node getPreUpdateNode() {
-    exists(int index |
-      index = def.getIndex() + 1 and
-      hasOperandAndIndex(result, fieldAddress.getObjectAddressOperand(),
-        pragma[only_bind_into](index))
-    )
+    hasOperandAndIndex(result, pragma[only_bind_into](fieldAddress).getObjectAddressOperand(),
+      index + 1)
   }
 
-  override Expr getDefinedExpr() { result = def.getAddress().getUnconvertedResultExpression() }
+  override Expr getDefinedExpr() {
+    result = fieldAddress.getObjectAddress().getUnconvertedResultExpression()
+  }
 
   override Location getLocationImpl() { result = fieldAddress.getLocation() }
 
   // override string toStringImpl() { result = this.getPreUpdateNode().toStringImpl() + " [post update]" }
-  override string toStringImpl() { result = this.getUpdatedField() + " [post update]" }
+  override string toStringImpl() { result = this.getPreUpdateNode() + " [post update]" }
 }
 
 /**
@@ -468,55 +455,49 @@ class IndirectReturnNode extends IndirectOperand {
 }
 
 class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdateNode {
-  Ssa::CallDef def;
-  CallInstruction call;
+  ArgumentOperand operand;
+  int index;
 
-  IndirectArgumentOutNode() {
-    // TODO: Prettify this
-    this = TIndirectArgumentOutNode(def) and
-    def.getDefiningInstruction() = defOfSimpleOutNode(call)
+  IndirectArgumentOutNode() { this = TIndirectArgumentOutNode(operand, index) }
+
+  int getIndex() { result = index }
+
+  int getArgumentIndex() {
+    exists(CallInstruction call | call.getArgumentOperand(result) = operand)
   }
 
-  int getIndex() { result = def.getIndex() }
+  Operand getAddressOperand() { result = operand }
 
-  int getArgumentIndex() { call.getArgumentOperand(result) = def.getAddressOperand() }
-
-  // CallInstruction getCallInstruction() { result = call }
-  Instruction getPrimaryInstruction() { result = call }
+  CallInstruction getCallInstruction() { result.getAnArgumentOperand() = operand }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Function getFunction() { result = call.getEnclosingFunction() }
-
-  Ssa::CallDef getDef() { result = def }
+  override Function getFunction() { result = this.getCallInstruction().getEnclosingFunction() }
 
   override IRType getType() { result instanceof IRVoidType }
 
-  override Node getPreUpdateNode() {
-    exists(int index |
-      index = def.getIndex() + 1 and
-      hasOperandAndIndex(result, def.getAddressOperand(), pragma[only_bind_into](index))
-    )
-  }
+  override Node getPreUpdateNode() { hasOperandAndIndex(result, operand, index + 1) }
 
   override string toStringImpl() {
     // This string should be unique enough to be helpful but common enough to
     // avoid storing too many different strings.
-    result = call.getStaticCallTarget().getName() + " output argument"
+    result = this.getCallInstruction().getStaticCallTarget().getName() + " output argument"
     or
-    not exists(call.getStaticCallTarget()) and
+    not exists(this.getCallInstruction().getStaticCallTarget()) and
     result = "output argument"
   }
 
-  override Location getLocationImpl() { result = def.getLocation() }
+  override Location getLocationImpl() { result = operand.getLocation() }
 }
 
 class IndirectReturnOutNode extends Node {
   CallInstruction call;
 
   IndirectReturnOutNode() {
+    exists(TIndirectInstruction(call, this.(IndirectOperand).getIndex())) and
     operandForfullyConvertedCall(this.(IndirectOperand).getOperand(), call)
     or
+    exists(TIndirectInstruction(call, this.(IndirectInstruction).getIndex())) and
     instructionForfullyConvertedCall(this.(IndirectInstruction).getInstruction(), call)
   }
 
@@ -802,11 +783,11 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
  */
 class DefinitionByReferenceNode extends IndirectArgumentOutNode {
   /** Gets the unconverted argument corresponding to this node. */
-  Expr getArgument() { result = def.getAddress().getUnconvertedResultExpression() }
+  Expr getArgument() { result = this.getAddressOperand().getDef().getUnconvertedResultExpression() }
 
   /** Gets the parameter through which this value is assigned. */
   Parameter getParameter() {
-    result = call.getStaticCallTarget().getParameter(this.getArgumentIndex())
+    result = this.getCallInstruction().getStaticCallTarget().getParameter(this.getArgumentIndex())
   }
 }
 
@@ -950,7 +931,7 @@ private predicate indirectionInstructionFlow(IndirectInstruction nodeFrom, Indir
 cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Post update node -> Node flow
-  Ssa::postNodeDefUseFlow(nodeFrom, nodeTo)
+  Ssa::defUseFlow(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
   or
   // Def-use flow
   Ssa::defUseFlow(nodeFrom, nodeTo)
@@ -976,9 +957,15 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Reverse flow: data that flows from the definition node back into the indirection returned
   // by a function. This allows data to flow 'in' through references returned by a modeled
   // function such as `operator[]`.
-  exists(Ssa::DefImpl def |
-    Ssa::defToNodeImpl(nodeFrom, def) and
-    nodeHasOperand(nodeTo.(IndirectReturnOutNode), def.getAddressOperand(), _)
+  exists(Operand address, int index |
+    nodeHasOperand(nodeTo.(IndirectReturnOutNode), address, index)
+  |
+    exists(StoreInstruction store |
+      nodeHasInstruction(nodeFrom, store, index - 1) and
+      store.getDestinationAddressOperand() = address
+    )
+    or
+    Ssa::outNodeHasAddressAndIndex(nodeFrom, address, index - 1)
   )
 }
 

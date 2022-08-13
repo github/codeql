@@ -12,7 +12,7 @@ private import semmle.code.cpp.ir.dataflow.internal.SsaInternalsCommon
 private module SourceVariables {
   newtype TBaseSourceVariable =
     TBaseIRVariable(IRVariable var) or
-    TBaseCallVariable(CallInstruction call)
+    TBaseCallVariable(AllocationInstruction call)
 
   abstract class BaseSourceVariable extends TBaseSourceVariable {
     abstract string toString();
@@ -33,11 +33,11 @@ private module SourceVariables {
   }
 
   class BaseCallVariable extends BaseSourceVariable, TBaseCallVariable {
-    CallInstruction call;
+    AllocationInstruction call;
 
     BaseCallVariable() { this = TBaseCallVariable(call) }
 
-    CallInstruction getCallInstruction() { result = call }
+    AllocationInstruction getCallInstruction() { result = call }
 
     override string toString() { result = call.toString() }
 
@@ -46,7 +46,7 @@ private module SourceVariables {
 
   private newtype TSourceVariable =
     TSourceIRVariable(BaseIRVariable baseVar) or
-    TCallVariable(CallInstruction call)
+    TCallVariable(AllocationInstruction call)
 
   abstract class SourceVariable extends TSourceVariable {
     abstract string toString();
@@ -67,11 +67,11 @@ private module SourceVariables {
   }
 
   class CallVariable extends SourceVariable, TCallVariable {
-    CallInstruction call;
+    AllocationInstruction call;
 
     CallVariable() { this = TCallVariable(call) }
 
-    CallInstruction getCall() { result = call }
+    AllocationInstruction getCall() { result = call }
 
     override BaseCallVariable getBaseVariable() { result.getCallInstruction() = call }
 
@@ -82,11 +82,10 @@ private module SourceVariables {
 import SourceVariables
 
 private newtype TDefOrUseImpl =
-  TNonCallDef(Operand address) { isNonCallDef(_, _, address, _, _, _, _) } or
-  TCallDef(Operand address) { isCallDef(_, address, _, _, _, _) } or
+  TDefImpl(Operand address) { isDef(_, _, address, _, _, _) } or
   TUseImpl(Operand operand) {
     isUse(_, operand, _, _, _) and
-    not isNonCallDef(_, _, operand, _, _, _, _)
+    not isDef(_, _, operand, _, _, _)
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
@@ -153,26 +152,16 @@ private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVari
   v.getBaseVariable() = bv
 }
 
-abstract class DefImpl extends DefOrUseImpl {
-  abstract predicate isCertain();
-
-  abstract Operand getAddressOperand();
-
-  final Instruction getAddress() { result = this.getAddressOperand().getDef() }
-
-  abstract Instruction getDefiningInstruction();
-}
-
-class NonCallDef extends DefImpl, TNonCallDef {
+class DefImpl extends DefOrUseImpl, TDefImpl {
   Operand address;
 
-  NonCallDef() { this = TNonCallDef(address) }
+  DefImpl() { this = TDefImpl(address) }
 
-  override Instruction getBase() { isNonCallDef(_, _, address, result, _, _, _) }
+  override Instruction getBase() { isDef(_, _, address, result, _, _) }
 
-  override Operand getAddressOperand() { result = address }
+  Operand getAddressOperand() { result = address }
 
-  override Instruction getDefiningInstruction() { isNonCallDef(_, result, address, _, _, _, _) }
+  Instruction getDefiningInstruction() { isDef(_, result, address, _, _, _) }
 
   override string toString() { result = address.toString() }
 
@@ -184,37 +173,7 @@ class NonCallDef extends DefImpl, TNonCallDef {
     this.getDefiningInstruction() = block.getInstruction(index)
   }
 
-  override predicate isCertain() { isNonCallDef(true, _, address, _, _, _, _) }
-}
-
-class CallDef extends DefImpl, TCallDef {
-  Operand address;
-
-  CallDef() { this = TCallDef(address) }
-
-  override Instruction getBase() { isCallDef(_, address, result, _, _, _) }
-
-  override Operand getAddressOperand() { result = address }
-
-  override Instruction getDefiningInstruction() {
-    exists(CallInstruction call | isCallDef(call, address, _, _, _, _) |
-      instructionForfullyConvertedCall(result, call)
-      or
-      operandForfullyConvertedCall(any(Operand op | result = op.getDef()), call)
-    )
-  }
-
-  override string toString() { result = address.toString() }
-
-  override IRBlock getBlock() { result = this.getDefiningInstruction().getBlock() }
-
-  override Cpp::Location getLocation() { result = address.getLocation() }
-
-  final override predicate hasIndexInBlock(IRBlock block, int index) {
-    this.getDefiningInstruction() = block.getInstruction(index)
-  }
-
-  override predicate isCertain() { none() }
+  predicate isCertain() { isDef(true, _, address, _, _, _) }
 }
 
 class UseImpl extends DefOrUseImpl, TUseImpl {
@@ -333,7 +292,7 @@ class Def extends DefOrUse {
 
   Operand getAddressOperand() { result = defOrUse.getAddressOperand() }
 
-  Instruction getAddress() { result = defOrUse.getAddress() }
+  Instruction getAddress() { result = this.getAddressOperand().getDef() }
 
   Instruction getDefiningInstruction() { result = defOrUse.getDefiningInstruction() }
 

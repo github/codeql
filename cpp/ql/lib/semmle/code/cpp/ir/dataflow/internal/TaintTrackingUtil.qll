@@ -30,6 +30,13 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   instructionToOperandTaintStep(nodeFrom.asInstruction(), nodeTo.asOperand())
   or
   modeledTaintStep(nodeFrom, nodeTo)
+  or
+  exists(IndirectInstruction indInstr, PointerArithmeticInstruction pai |
+    indInstr.getInstruction() = pai and
+    nodeFrom.asOperand() = pai.getAnOperand() and
+    nodeTo = indInstr and
+    indInstr.getIndex() = 1
+  )
 }
 
 // private predicate indirectionTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -85,7 +92,7 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
   // The `CopyInstruction` case is also present in non-taint data flow, but
   // that uses `getDef` rather than `getAnyDef`. For taint, we want flow
   // from a definition of `myStruct` to a `myStruct.myField` expression.
-  instrTo.(CopyInstruction).getSourceValueOperand() = opFrom
+  instrTo.(LoadInstruction).getSourceAddressOperand() = opFrom
   or
   // Unary instructions tend to preserve enough information in practice that we
   // want taint to flow through.
@@ -287,7 +294,12 @@ private predicate step(Node node1, Node node2, string msg) {
 }
 
 private predicate isSource(Node source) {
-  source.(IndirectReturnOutNode).getCallInstruction().getStaticCallTarget().hasName("source")
+  exists(FunctionCall fc |
+    fc = source.asExpr() and
+    fc.getTarget().getName() = "source"
+  )
+  // source.asExpr().(Call).getTarget().hasName("source")
+  // source.(IndirectReturnOutNode).getCallInstruction().getStaticCallTarget().hasName("source")
 }
 
 private predicate stepFwd(Node node1, Node node2) {
@@ -297,5 +309,35 @@ private predicate stepFwd(Node node1, Node node2) {
   exists(Node mid |
     stepFwd(node1, mid) and
     step(mid, node2, _)
+  )
+}
+
+private predicate isSink(DataFlow::Node sink) {
+  exists(FunctionCall call | call.getTarget().getName() = "sink" |
+    sink.asExpr() = call.getAnArgument()
+  )
+}
+
+private predicate stepRev(Node node1, Node node2) {
+  stepFwd(_, node1) and
+  stepFwd(_, node2) and
+  (
+    node1 = node2 and
+    isSink(node2)
+    or
+    exists(Node mid |
+      stepRev(mid, node2) and
+      step(node1, mid, _)
+    )
+  )
+}
+
+private predicate step2(Node node1, Node node2, string msg) {
+  stepRev(node1, _) and
+  stepRev(node2, _) and
+  (
+    DataFlow::localFlowStep(node1, node2) and msg = "."
+    or
+    localAdditionalTaintStep(node1, node2) and msg = "taint"
   )
 }

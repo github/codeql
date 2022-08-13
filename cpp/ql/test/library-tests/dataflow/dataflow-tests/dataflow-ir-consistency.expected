@@ -30,12 +30,6 @@ unreachableNodeCCtx
 localCallNodes
 postIsNotPre
 postHasUniquePre
-| lambdas.cpp:20:10:24:2 | t [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| lambdas.cpp:20:10:24:2 | u [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| lambdas.cpp:20:10:24:2 | v [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| lambdas.cpp:20:11:20:11 | t [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| lambdas.cpp:20:11:20:11 | u [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| lambdas.cpp:20:11:20:11 | v [post update] | PostUpdateNode should have one pre-update node but has 0. |
 uniquePostUpdate
 postIsInSameCallable
 reverseRead

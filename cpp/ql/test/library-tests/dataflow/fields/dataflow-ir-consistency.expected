@@ -33,75 +33,19 @@ unreachableNodeCCtx
 localCallNodes
 postIsNotPre
 postHasUniquePre
-| A.cpp:25:13:25:13 | c [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| A.cpp:27:28:27:28 | c [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| A.cpp:100:9:100:9 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| A.cpp:142:10:142:10 | c [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| A.cpp:143:13:143:13 | b [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| A.cpp:183:7:183:10 | head [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| A.cpp:184:13:184:16 | next [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| B.cpp:35:13:35:17 | elem1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| B.cpp:36:13:36:17 | elem2 [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| B.cpp:46:13:46:16 | box1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| C.cpp:22:9:22:22 | s1 [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| C.cpp:24:11:24:12 | s3 [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| D.cpp:9:21:9:24 | elem [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| D.cpp:11:29:11:32 | elem [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| D.cpp:16:21:16:23 | box [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| D.cpp:18:29:18:31 | box [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| D.cpp:30:8:30:10 | box [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| D.cpp:30:13:30:16 | elem [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| D.cpp:44:19:44:22 | elem [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| D.cpp:57:5:57:12 | boxfield [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| D.cpp:58:5:58:12 | boxfield [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| D.cpp:58:15:58:17 | box [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| D.cpp:58:20:58:23 | elem [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| arrays.cpp:36:5:36:10 | nested [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| arrays.cpp:36:12:36:14 | arr [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| arrays.cpp:36:19:36:22 | data [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| arrays.cpp:42:5:42:12 | indirect [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| arrays.cpp:42:15:42:17 | arr [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| arrays.cpp:42:22:42:25 | data [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| arrays.cpp:48:5:48:12 | indirect [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| arrays.cpp:48:15:48:17 | ptr [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| arrays.cpp:48:22:48:25 | data [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| by_reference.cpp:12:8:12:8 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| by_reference.cpp:16:11:16:11 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| by_reference.cpp:84:10:84:10 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| by_reference.cpp:88:9:88:9 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| by_reference.cpp:104:22:104:22 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| by_reference.cpp:108:24:108:24 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| by_reference.cpp:124:21:124:21 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| by_reference.cpp:128:23:128:23 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| conflated.cpp:45:34:45:43 | next [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| conflated.cpp:53:7:53:10 | next [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| qualifiers.cpp:9:36:9:36 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| qualifiers.cpp:12:56:12:56 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| qualifiers.cpp:13:57:13:57 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| qualifiers.cpp:22:23:22:23 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| qualifiers.cpp:42:25:42:25 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| qualifiers.cpp:47:27:47:27 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| realistic.cpp:49:13:49:15 | bar [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| realistic.cpp:49:20:49:22 | baz [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:20:17:20:36 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:20:17:20:36 | b [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:26:23:29:3 | nestedAB [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:26:23:29:3 | nestedAB [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:26:23:29:3 | pointerAB [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:27:5:27:23 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:27:5:27:23 | b [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:40:17:40:36 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:40:17:40:36 | b [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:41:23:44:3 | nestedAB [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:41:23:44:3 | nestedAB [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:41:23:44:3 | pointerAB [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:42:5:42:23 | a [post update] | PostUpdateNode should have one pre-update node but has 0. |
-| struct_init.c:42:5:42:23 | b [post update] | PostUpdateNode should have one pre-update node but has 0. |
 uniquePostUpdate
 | aliasing.cpp:70:11:70:11 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
 | aliasing.cpp:77:11:77:11 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
 | aliasing.cpp:84:11:84:11 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
 | aliasing.cpp:91:11:91:11 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
+| complex.cpp:22:3:22:5 | this indirection | Node has multiple PostUpdateNodes. |
+| complex.cpp:25:7:25:7 | this indirection | Node has multiple PostUpdateNodes. |
+| complex.cpp:42:10:42:14 | inner indirection | Node has multiple PostUpdateNodes. |
+| complex.cpp:43:10:43:14 | inner indirection | Node has multiple PostUpdateNodes. |
+| complex.cpp:53:6:53:10 | inner indirection | Node has multiple PostUpdateNodes. |
+| complex.cpp:54:6:54:10 | inner indirection | Node has multiple PostUpdateNodes. |
+| complex.cpp:55:6:55:10 | inner indirection | Node has multiple PostUpdateNodes. |
+| complex.cpp:56:6:56:10 | inner indirection | Node has multiple PostUpdateNodes. |
 | struct_init.c:26:16:26:20 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
 | struct_init.c:41:16:41:20 | VariableAddress indirection | Node has multiple PostUpdateNodes. |
 postIsInSameCallable
@@ -153,10 +97,14 @@ reverseRead
 | E.cpp:30:23:30:26 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | E.cpp:32:10:32:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:70:11:70:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:73:8:73:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:77:11:77:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:80:8:80:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:84:11:84:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:87:8:87:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:91:11:91:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:92:3:92:3 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:93:8:93:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:111:16:111:16 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:141:15:141:15 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:147:16:147:19 | Unary | Origin of readStep is missing a PostUpdateNode. |
@@ -164,16 +112,22 @@ reverseRead
 | aliasing.cpp:164:15:164:15 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:175:16:175:17 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:175:19:175:19 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:176:8:176:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:181:16:181:17 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:181:19:181:19 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:182:8:182:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:187:16:187:17 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:187:19:187:19 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:189:8:189:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:194:16:194:17 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:194:19:194:19 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:196:8:196:11 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:200:16:200:18 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:200:21:200:21 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:201:8:201:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:205:16:205:18 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | aliasing.cpp:205:21:205:21 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:206:8:206:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | arrays.cpp:36:3:36:3 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | arrays.cpp:36:5:36:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | arrays.cpp:37:8:37:8 | Unary | Origin of readStep is missing a PostUpdateNode. |
@@ -245,7 +199,9 @@ reverseRead
 | complex.cpp:56:3:56:4 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | complex.cpp:56:6:56:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | conflated.cpp:54:3:54:4 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| conflated.cpp:55:8:55:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | conflated.cpp:60:3:60:4 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| conflated.cpp:61:8:61:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | qualifiers.cpp:23:10:23:14 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | qualifiers.cpp:23:16:23:20 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | qualifiers.cpp:28:10:28:14 | Unary | Origin of readStep is missing a PostUpdateNode. |
@@ -266,6 +222,18 @@ reverseRead
 | realistic.cpp:54:16:54:25 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | realistic.cpp:54:27:54:29 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | realistic.cpp:54:32:54:40 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| realistic.cpp:55:12:55:14 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| realistic.cpp:55:12:55:21 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| realistic.cpp:55:23:55:25 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| realistic.cpp:57:88:57:90 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| realistic.cpp:57:88:57:97 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| realistic.cpp:57:99:57:101 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| realistic.cpp:60:21:60:23 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| realistic.cpp:60:21:60:30 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| realistic.cpp:60:32:60:34 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| realistic.cpp:60:55:60:57 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| realistic.cpp:60:55:60:64 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| realistic.cpp:60:66:60:68 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | realistic.cpp:61:21:61:23 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | realistic.cpp:61:21:61:30 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | realistic.cpp:61:32:61:34 | Unary | Origin of readStep is missing a PostUpdateNode. |
@@ -273,6 +241,7 @@ reverseRead
 | realistic.cpp:65:21:65:30 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | realistic.cpp:65:32:65:34 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | realistic.cpp:65:37:65:45 | Unary | Origin of readStep is missing a PostUpdateNode. |
+| simple.cpp:79:16:79:17 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | simple.cpp:83:9:83:10 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | struct_init.c:15:8:15:9 | Unary | Origin of readStep is missing a PostUpdateNode. |
 | struct_init.c:16:8:16:9 | Unary | Origin of readStep is missing a PostUpdateNode. |

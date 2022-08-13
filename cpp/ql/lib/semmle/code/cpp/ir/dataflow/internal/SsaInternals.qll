@@ -31,7 +31,7 @@ private module SourceVariables {
     TSourceIRVariable(BaseIRVariable baseVar, int ind) {
       ind = [0 .. getMaxIndirectionForIRVariable(baseVar.getIRVariable())]
     } or
-    TCallVariable(CallInstruction call, int ind) {
+    TCallVariable(AllocationInstruction call, int ind) {
       ind = [0 .. countIndirectionsForCppType(getResultLanguageType(call))]
     }
 
@@ -67,11 +67,11 @@ private module SourceVariables {
   }
 
   class CallVariable extends SourceVariable, TCallVariable {
-    CallInstruction call;
+    AllocationInstruction call;
 
     CallVariable() { this = TCallVariable(call, ind) }
 
-    CallInstruction getCall() { result = call }
+    AllocationInstruction getCall() { result = call }
 
     override BaseCallVariable getBaseVariable() { result.getCallInstruction() = call }
 
@@ -107,17 +107,13 @@ predicate hasIndirectInstruction(Instruction instr, int index) {
 
 cached
 private newtype TDefOrUseImpl =
-  TNonCallDef(Operand address, int index) {
-    isNonCallDef(_, _, address, _, _, index, _) // and
-    // any(SsaInternals0::Def def).getAddressOperand() = address
-  } or
-  TCallDef(Operand address, int index) {
-    isCallDef(_, address, _, _, index, _) // and
-    // any(SsaInternals0::Def def).getAddressOperand() = address
+  TDefImpl(Operand address, int index) {
+    isDef(_, _, address, _, _, index) and
+    any(SsaInternals0::Def def).getAddressOperand() = address
   } or
   TUseImpl(Operand operand, int index) {
     isUse(_, operand, _, _, index) and
-    not isNonCallDef(_, _, operand, _, _, _, _)
+    not isDef(_, _, operand, _, _, _)
   }
 
 abstract private class DefOrUseImpl extends TDefOrUseImpl {
@@ -189,39 +185,23 @@ private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVari
   v.getIndirection() = ind
 }
 
-abstract class DefImpl extends DefOrUseImpl {
-  abstract predicate isCertain();
-
-  abstract int getIndirection();
-
-  abstract Operand getAddressOperand();
-
-  final Instruction getAddress() { result = this.getAddressOperand().getDef() }
-
-  abstract Instruction getDefiningInstruction();
-
-  abstract predicate addressDependsOnField();
-
-  abstract DefImpl incrementIndexBy(int d);
-}
-
-class NonCallDef extends DefImpl, TNonCallDef {
+class DefImpl extends DefOrUseImpl, TDefImpl {
   Operand address;
   int ind;
 
-  NonCallDef() { this = TNonCallDef(address, ind) }
+  DefImpl() { this = TDefImpl(address, ind) }
 
-  override Instruction getBase() { isNonCallDef(_, _, address, result, _, _, _) }
+  override Instruction getBase() { isDef(_, _, address, result, _, _) }
 
-  override Operand getAddressOperand() { result = address }
+  Operand getAddressOperand() { result = address }
 
-  override int getIndirection() { isNonCallDef(_, _, address, _, result, ind, _) }
+  int getIndirection() { isDef(_, _, address, _, result, ind) }
 
   override int getIndex() { result = ind }
 
-  override Instruction getDefiningInstruction() { isNonCallDef(_, result, address, _, _, _, _) }
+  Instruction getDefiningInstruction() { isDef(_, result, address, _, _, _) }
 
-  override string toString() { result = "NonCallDef" }
+  override string toString() { result = "DefImpl" }
 
   override IRBlock getBlock() { result = this.getDefiningInstruction().getBlock() }
 
@@ -231,56 +211,7 @@ class NonCallDef extends DefImpl, TNonCallDef {
     this.getDefiningInstruction() = block.getInstruction(index)
   }
 
-  override predicate isCertain() { isNonCallDef(true, _, address, _, _, ind, _) }
-
-  override predicate addressDependsOnField() { isNonCallDef(_, _, address, _, _, ind, true) }
-
-  override NonCallDef incrementIndexBy(int d) {
-    result.getAddressOperand() = address and
-    result.getIndex() = ind + d
-  }
-}
-
-class CallDef extends DefImpl, TCallDef {
-  Operand address;
-  int ind;
-
-  CallDef() { this = TCallDef(address, ind) }
-
-  override int getIndex() { result = ind }
-
-  override Instruction getBase() { isCallDef(_, address, result, _, _, _) }
-
-  override Operand getAddressOperand() { result = address }
-
-  override Instruction getDefiningInstruction() {
-    exists(CallInstruction call | isCallDef(call, address, _, _, _, _) |
-      instructionForfullyConvertedCall(result, call)
-      or
-      operandForfullyConvertedCall(any(Operand op | result = op.getDef()), call)
-    )
-  }
-
-  override int getIndirection() { isCallDef(_, address, _, result, ind, _) }
-
-  override string toString() { result = "CallDef" }
-
-  override IRBlock getBlock() { result = this.getDefiningInstruction().getBlock() }
-
-  override Cpp::Location getLocation() { result = address.getLocation() }
-
-  final override predicate hasIndexInBlock(IRBlock block, int index) {
-    this.getDefiningInstruction() = block.getInstruction(index)
-  }
-
-  override predicate isCertain() { none() }
-
-  override predicate addressDependsOnField() { isCallDef(_, address, _, _, _, true) }
-
-  override CallDef incrementIndexBy(int d) {
-    result.getAddressOperand() = address and
-    result.getIndex() = ind + d
-  }
+  predicate isCertain() { isDef(true, _, address, _, _, ind) }
 }
 
 class UseImpl extends DefOrUseImpl, TUseImpl {
@@ -306,9 +237,13 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
   override int getIndex() { result = ind }
 
   override Instruction getBase() { isUse(_, operand, result, _, ind) }
+
+  predicate isCertain() { isUse(true, operand, _, _, ind) }
+
+  predicate isUncertain() { isUse(false, operand, _, _, ind) }
 }
 
-private predicate adjacentDefRead0(DefOrUse defOrUse1, SsaDefOrUse defOrUse2) {
+predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
   exists(IRBlock bb1, int i1, SourceVariable v |
     defOrUse1.asDefOrUse().hasIndexInBlock(bb1, i1, v)
   |
@@ -316,36 +251,14 @@ private predicate adjacentDefRead0(DefOrUse defOrUse1, SsaDefOrUse defOrUse2) {
       adjacentDefRead(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
         pragma[only_bind_into](bb2), pragma[only_bind_into](i2))
     |
-      // Pick the use if there's a user at the location
-      defOrUse2.asDefOrUse().(UseImpl).hasIndexInBlock(bb2, i2, v)
-      or
-      // And otherwise, pick a def at the location
-      not any(UseImpl use | use = defOrUse2.asDefOrUse()).hasIndexInBlock(bb2, i2, v) and
-      defOrUse2.asDefOrUse().(DefImpl).hasIndexInBlock(bb2, i2, v)
+      use.asDefOrUse().(UseImpl).hasIndexInBlock(bb2, i2, v)
     )
     or
     exists(PhiNode phi, Ssa::Definition inp |
       inp.definesAt(v, bb1, i1) and
       phiHasInputFromBlock(phi, inp, _) and
-      defOrUse2.asPhi() = phi
+      use.asPhi() = phi
     )
-  )
-}
-
-private predicate adjacentDefReadStep(Def def, SsaDefOrUse defOrUse) {
-  // Only step if there's no use at the same location as `def`.
-  exists(IRBlock block, int i, SourceVariable sv |
-    def.asDefOrUse().hasIndexInBlock(block, i, sv) and
-    not any(UseImpl use).hasIndexInBlock(block, i, sv)
-  ) and
-  adjacentDefRead0(def, defOrUse)
-}
-
-predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
-  exists(SsaDefOrUse mid | adjacentDefRead0(defOrUse1, mid) |
-    adjacentDefReadStep+(mid, use) // implies `mid instanceof Def`
-    or
-    mid = use // implies `mid instanceof Use` or `mid instanceof Phi`
   )
 }
 
@@ -364,7 +277,7 @@ private predicate useToNode(UseOrPhi use, Node nodeTo) {
   nodeTo.(SsaPhiNode).getPhiNode() = use.asPhi()
 }
 
-private predicate nodeToNonCallDef(Node nodeFrom, NonCallDef def) {
+private predicate nodeToDef(Node nodeFrom, DefImpl def) {
   def.getIndex() = 0 and
   def.getDefiningInstruction() = nodeFrom.asInstruction()
   or
@@ -372,21 +285,19 @@ private predicate nodeToNonCallDef(Node nodeFrom, NonCallDef def) {
   hasInstructionAndIndex(nodeFrom, def.getDefiningInstruction(), def.getIndex())
 }
 
-private predicate outNodeToCallDef(IndirectArgumentOutNode nodeFrom, CallDef def) {
-  nodeFrom.getDef() = def
+pragma[noinline]
+predicate outNodeHasAddressAndIndex(IndirectArgumentOutNode out, Operand address, int index) {
+  out.getAddressOperand() = address and
+  out.getIndex() = index
 }
 
 private predicate defToNode(Node nodeFrom, DefOrUse def) {
   defToNodeImpl(nodeFrom, def.asDefOrUse())
 }
 
-predicate defToNodeImpl(Node nodeFrom, DefOrUseImpl def) {
-  nodeToNonCallDef(nodeFrom, def)
-  or
-  outNodeToCallDef(nodeFrom, def)
-}
+predicate defToNodeImpl(Node nodeFrom, DefOrUseImpl def) { nodeToDef(nodeFrom, def) }
 
-predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
+private predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
   // Node -> Def
   defToNode(nodeFrom, defOrUse)
   or
@@ -394,21 +305,27 @@ predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
   useToNode(defOrUse, nodeFrom)
 }
 
-predicate defUseFlow(Node nodeFrom, Node nodeTo) {
-  exists(DefOrUse defOrUse1, UseOrPhi use |
-    not defOrUse1.asDefOrUse().(DefImpl).addressDependsOnField() and
-    nodeToDefOrUse(nodeFrom, defOrUse1) and
-    adjacentDefRead(defOrUse1, use) and
-    useToNode(use, nodeTo)
+// TODO: Prettify this
+pragma[inline]
+private predicate adjustForPointerArith(Node nodeFrom, Node adjusted) {
+  nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
+  (
+    hasOperandAndIndex(adjusted,
+      nodeFrom.(IndirectOperand).getOperand().(PointerArithmeticAddress).getBaseAddressOperand(),
+      nodeFrom.(IndirectOperand).getIndex())
+    or
+    not nodeFrom.(IndirectOperand).getOperand() instanceof PointerArithmeticAddress and
+    adjusted = nodeFrom
   )
+  or
+  not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
+  adjusted = nodeFrom
 }
 
-predicate postNodeDefUseFlow(PostFieldUpdateNode pfun, Node nodeTo) {
-  exists(DefImpl defImpl, Def def, UseOrPhi use |
-    not isQualifierFor(any(FieldAddress fa), pfun.getFieldAddress()) and
-    defImpl = pfun.getDef() and
-    def.asDefOrUse() = defImpl and
-    adjacentDefRead(def, use) and
+predicate defUseFlow(Node nodeFrom, Node nodeTo) {
+  exists(DefOrUse defOrUse1, UseOrPhi use, Node node | adjustForPointerArith(nodeFrom, node) |
+    nodeToDefOrUse(node, defOrUse1) and
+    adjacentDefRead(defOrUse1, use) and
     useToNode(use, nodeTo)
   )
 }
@@ -451,9 +368,8 @@ predicate variableWriteCand(IRBlock bb, int i, SourceVariable v) {
 predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
   DataFlowImplCommon::forceCachingInSameStage() and
   variableWriteCand(bb, i, v) and
-  exists(DefImpl def |
-    def.hasIndexInBlock(bb, i, v) and
-    (if def.isCertain() then certain = true else certain = false)
+  exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
+    if def.isCertain() then certain = true else certain = false
   )
 }
 
@@ -462,15 +378,8 @@ predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
  * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
  */
 predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
-  exists(UseImpl use |
-    use.hasIndexInBlock(bb, i, v) and
-    certain = true
-  )
-  or
-  exists(DefImpl def |
-    def.hasIndexInBlock(bb, i, v) and
-    not def.isCertain() and
-    certain = false
+  exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
+    if use.isCertain() then certain = true else certain = false
   )
 }
 
@@ -547,12 +456,10 @@ class Def extends DefOrUse {
 
   Operand getAddressOperand() { result = defOrUse.getAddressOperand() }
 
-  Instruction getAddress() { result = defOrUse.getAddress() }
+  Instruction getAddress() { result = this.getAddressOperand().getDef() }
 
   pragma[inline]
   int getIndex() { pragma[only_bind_into](result) = pragma[only_bind_out](defOrUse).getIndex() }
-
-  predicate addressDependsOnField() { defOrUse.addressDependsOnField() }
 
   Instruction getDefiningInstruction() { result = defOrUse.getDefiningInstruction() }
 }

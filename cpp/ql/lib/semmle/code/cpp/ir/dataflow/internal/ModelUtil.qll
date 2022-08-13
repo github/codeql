@@ -6,6 +6,7 @@
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
+private import SsaInternals as Ssa
 
 /**
  * Gets the instruction that goes into `input` for `call`.
@@ -41,7 +42,7 @@ Node callOutput(CallInstruction call, FunctionOutput output) {
   exists(int index, int ind |
     result.(IndirectArgumentOutNode).getArgumentIndex() = index and
     result.(IndirectArgumentOutNode).getIndex() + 1 = ind and
-    result.(IndirectArgumentOutNode).getPrimaryInstruction() = call and
+    result.(IndirectArgumentOutNode).getCallInstruction() = call and
     output.isParameterDerefOrQualifierObject(index, ind)
   )
   or
@@ -84,7 +85,9 @@ Node callOutput(CallInstruction call, FunctionOutput output, int d) {
     or
     // The side effect of a call on the value pointed to by an argument or qualifier
     // TODO: Why d - 1?
-    result.(IndirectArgumentOutNode).getDef() =
-      n.(IndirectArgumentOutNode).getDef().incrementIndexBy(d - 1)
+    exists(Operand operand, int index |
+      Ssa::outNodeHasAddressAndIndex(n, operand, index) and
+      Ssa::outNodeHasAddressAndIndex(result, operand, index + d - 1)
+    )
   )
 }

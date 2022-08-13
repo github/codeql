@@ -122,10 +122,7 @@ class IndirectionPosition extends Position, TIndirectionPosition {
 newtype TPosition =
   TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index)) } or
   TIndirectionPosition(int argumentIndex, int index) {
-    exists(IndirectOperand operand, CallInstruction call |
-      operand.getOperand() = call.getArgumentOperand(argumentIndex) and
-      operand.getIndex() = index
-    )
+    hasOperandAndIndex(_, any(CallInstruction call).getArgumentOperand(argumentIndex), index)
   }
 
 private newtype TReturnKind =
@@ -175,10 +172,11 @@ class ReturnNode extends Node instanceof IndirectReturnNode {
   abstract ReturnKind getKind();
 }
 
-private predicate nonFieldDef(Ssa::Def def, IRVariable v) {
-  not def.addressDependsOnField() and
-  not def.getDefiningInstruction() instanceof InitializeParameterInstruction and
-  v = def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable()
+private predicate hasNonInitializeParameterDef(IRVariable v) {
+  exists(Ssa::Def def |
+    not def.getDefiningInstruction() instanceof InitializeParameterInstruction and
+    v = def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable()
+  )
 }
 
 class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
@@ -187,7 +185,7 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
       returnInd.hasIndex(argumentIndex) and
       this.getAddressOperand() = returnInd.getSourceAddressOperand() and
       result = TIndirectReturnKind(argumentIndex, this.getIndex() - 1) and
-      nonFieldDef(_, returnInd.getIRVariable())
+      hasNonInitializeParameterDef(returnInd.getIRVariable())
     )
     or
     this.getAddressOperand() = any(ReturnValueInstruction r).getReturnAddressOperand() and
@@ -251,20 +249,10 @@ predicate instructionForfullyConvertedCall(Instruction instr, CallInstruction ca
   )
 }
 
-// TODO: This is very ugly
 private predicate simpleOutNode(Node node, CallInstruction call) {
   operandForfullyConvertedCall(node.asOperand(), call)
   or
   instructionForfullyConvertedCall(node.asInstruction(), call)
-}
-
-// TODO: This is very ugly
-Instruction defOfSimpleOutNode(CallInstruction call) {
-  exists(Node node | simpleOutNode(node, call) |
-    result = node.asInstruction()
-    or
-    result = node.asOperand().getDef()
-  )
 }
 
 /** A data flow node that represents the output of a call. */
@@ -300,7 +288,7 @@ private class IndirectCallOutNode extends OutNode, IndirectReturnOutNode {
 }
 
 private class SideEffectOutNode extends OutNode, IndirectArgumentOutNode {
-  override DataFlowCall getCall() { result = call }
+  override DataFlowCall getCall() { result = this.getCallInstruction() }
 
   override ReturnKind getReturnKind() {
     result = TIndirectReturnKind(this.getArgumentIndex(), this.getIndex())
@@ -323,29 +311,18 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  */
 predicate jumpStep(Node n1, Node n2) { none() }
 
-pragma[noinline]
-private predicate nodeHasInstruction(Node node, Instruction instr, int index) {
-  node.asInstruction() = instr and index = 0
-  or
-  node.(IndirectInstruction).getInstruction() = instr and
-  index = node.(IndirectInstruction).getIndex()
-}
-
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
 predicate storeStep(Node node1, FieldContent f, PostFieldUpdateNode node2) {
-  // This is the first field following a store operation.
-  not isQualifierFor(node2.getFieldAddress(), _) and
-  exists(Ssa::DefImpl def, int index1, int numberOfLoads |
-    def.getDefiningInstruction() instanceof StoreInstruction and
-    nodeHasInstruction(node1, def.getDefiningInstruction(), pragma[only_bind_into](index1)) and
-    node2.getDef() = def and
+  exists(int index1, int numberOfLoads, StoreInstruction store |
+    nodeHasInstruction(node1, store, pragma[only_bind_into](index1)) and
     f.getField() = node2.getUpdatedField() and
-    def.getIndex() = 0 and
-    numberOfLoadsFromOperand(node2.getFieldAddress(), def.getAddressOperand(), numberOfLoads) and
+    node2.getIndex() = 0 and
+    numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
+      numberOfLoads) and
     f.getIndirection() = 1 + index1 + numberOfLoads
   )
 }
@@ -377,6 +354,14 @@ predicate nodeHasOperand(Node node, Operand operand, int index) {
   node.asOperand() = operand and index = 0
   or
   hasOperandAndIndex(node, operand, index)
+}
+
+pragma[noinline]
+predicate nodeHasInstruction(Node node, Instruction instr, int index) {
+  node.asInstruction() = instr and index = 0
+  or
+  node.(IndirectInstruction).getInstruction() = instr and
+  index = node.(IndirectInstruction).getIndex()
 }
 
 /**
@@ -500,4 +485,90 @@ private class MyConsistencyConfiguration extends Consistency::ConsistencyConfigu
     // complex to model here.
     any()
   }
+}
+
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
+
+private predicate into(ArgumentNode node1, ParameterNode node2) {
+  exists(CallInstruction call, ParameterPosition pos |
+    node1.argumentOf(call, pos) and
+    node2.isParameterOf(call.getStaticCallTarget(), pos)
+  )
+}
+
+private predicate outOf(
+  DataFlowImplCommon::ReturnNodeExt node1, DataFlowImplCommon::OutNodeExt node2, string msg
+) {
+  exists(DataFlowImplCommon::ReturnKindExt kind |
+    node1.getKind() = kind and
+    kind.getAnOutNode(any(CallInstruction call |
+        call.getStaticCallTarget() = node1.getEnclosingCallable()
+      )) = node2 and
+    msg = kind.toString()
+  )
+}
+
+private predicate argumentValueFlowsThrough(ArgumentNode n2, Content c, OutNode n1) {
+  exists(Node mid1, ParameterNode p, ReturnNode r, Node mid2 |
+    into(n2, p) and
+    simpleLocalFlowStep*(p, mid2) and
+    readStep(mid2, c, mid1) and
+    simpleLocalFlowStep*(mid1, r) and
+    outOf(r, n1, _)
+  )
+}
+
+private predicate step(Node node1, Node node2, string msg) {
+  stepFwd(_, node1) and
+  not isBarrier(node1) and
+  not isBarrier(node2) and
+  (
+    simpleLocalFlowStep(node1, node2) and msg = "."
+    or
+    exists(Content c, string after | after = c.toString() |
+      readStep(node1, c, node2) and msg = "Read " + after
+      or
+      storeStep(node1, c, node2) and msg = "Store " + after
+      or
+      exists(Node n1, Node n2 |
+        n1 = node1.(PostUpdateNode).getPreUpdateNode() and
+        n2 = node2.(PostUpdateNode).getPreUpdateNode() and
+        readStep(n2, c, n1) and
+        msg = "Reverse read " + c
+      )
+      or
+      exists(OutNode n1, ArgumentNode n2 |
+        n2 = node2.(PostUpdateNode).getPreUpdateNode() and
+        n1 = node1.(PostUpdateNode).getPreUpdateNode() and
+        argumentValueFlowsThrough(n2, c, n1) and
+        msg = "Through " + after
+      )
+    )
+    or
+    into(node1, node2) and msg = "into"
+    or
+    outOf(node1, node2, msg)
+  )
+}
+
+private predicate isBarrier(Node node) {
+  // node.asExpr().(Cpp::VariableAccess).getTarget().hasName("barrier")
+  none()
+}
+
+private predicate isSource(Node source) {
+  exists(Cpp::FunctionCall fc |
+    fc.getTarget().hasName("source") and
+    source.asExpr() = fc
+  )
+}
+
+private predicate stepFwd(Node node1, Node node2) {
+  node1 = node2 and
+  isSource(node1)
+  or
+  exists(Node mid |
+    stepFwd(node1, mid) and
+    step(mid, node2, _)
+  )
 }
