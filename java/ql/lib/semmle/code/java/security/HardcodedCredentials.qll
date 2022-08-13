@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates relating to hardcoded credentials.
+ */
+
 import java
 import SensitiveApi
 
