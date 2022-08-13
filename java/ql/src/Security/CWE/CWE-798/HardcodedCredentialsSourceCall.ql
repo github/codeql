@@ -11,7 +11,7 @@
  */
 
 import java
-import semmle.code.java.security.HardcodedCredentialsSourceCall
+import semmle.code.java.security.HardcodedCredentialsSourceCallQuery
 import DataFlow::PathGraph
 
 from

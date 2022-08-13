@@ -6,8 +6,8 @@ public class HardcodedApacheFtpCredentials {
 	public static void main(FTPClient client) {
     // BAD: Hardcoded credentials used for the session username and/or password.
     try {
-      client.login("username", "password");
-      client.login("username", "password", "blah");
+      client.login("username", "password"); // $ HardcodedCredentialsApiCall $ HardcodedCredentialsSourceCall
+      client.login("username", "password", "blah"); // $ HardcodedCredentialsApiCall $ HardcodedCredentialsSourceCall
     } catch(IOException e) { }
 	}
 }
