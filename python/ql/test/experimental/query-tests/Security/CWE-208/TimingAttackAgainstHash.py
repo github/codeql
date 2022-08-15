@@ -5,7 +5,6 @@
 """
 import hashlib
 import hmac
-from django.utils.crypto import constant_time_compare
 
 key = "e179017a-62b0-4996-8a38-e91aa9f1"
 
