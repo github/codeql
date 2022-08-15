@@ -996,15 +996,14 @@ test_StandardRouteHandler
 test_RequestInputAccess
 | src/express3.js:5:14:5:32 | req.param("header") | parameter | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:5:35:5:50 | req.param("val") | parameter | src/express3.js:4:23:7:1 | functio ... al");\\n} |
-| src/express4.js:5:9:5:11 | foo | parameter | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
-| src/express4.js:5:14:5:21 | bar: baz | parameter | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
-| src/express4.js:6:18:6:31 | req.query[foo] | parameter | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
-| src/express4.js:7:18:7:39 | req.que ... hing()] | parameter | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
+| src/express4.js:5:27:5:35 | req.query | parameter | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
+| src/express4.js:6:18:6:26 | req.query | parameter | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
+| src/express4.js:7:18:7:26 | req.query | parameter | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:5:16:5:34 | req.param("target") | parameter | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:6:26:6:44 | req.param("target") | parameter | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:23:3:23:10 | req.body | body | src/express.js:22:30:32:1 | functio ... ar');\\n} |
-| src/express.js:24:3:24:16 | req.params.foo | parameter | src/express.js:22:30:32:1 | functio ... ar');\\n} |
-| src/express.js:25:3:25:15 | req.query.bar | parameter | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/express.js:24:3:24:12 | req.params | parameter | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/express.js:25:3:25:11 | req.query | parameter | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:26:3:26:9 | req.url | url | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:27:3:27:17 | req.originalUrl | url | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:28:3:28:16 | req.get("foo") | header | src/express.js:22:30:32:1 | functio ... ar');\\n} |
@@ -1016,7 +1015,7 @@ test_RequestInputAccess
 | src/express.js:50:3:50:32 | req.hea ... erName] | header | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:7:2:7:8 | req.url | url | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/params.js:4:35:4:39 | value | parameter | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
-| src/params.js:5:17:5:28 | req.query.xx | parameter | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
+| src/params.js:5:17:5:25 | req.query | parameter | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:6:17:6:24 | req.body | body | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/passport.js:28:2:28:9 | req.body | body | src/passport.js:27:4:29:1 | functio ... ccss`\\n} |
 test_SetCookie

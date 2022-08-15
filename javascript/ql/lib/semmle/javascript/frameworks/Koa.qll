@@ -288,28 +288,20 @@ module Koa {
     string kind;
 
     RequestInputAccess() {
-      kind = "parameter" and
-      this = getAQueryParameterAccess(rh)
-      or
-      kind = "parameter" and
-      this = rh.getARequestParameterAccess()
-      or
       exists(Expr e | rh.getARequestOrContextExpr() = e |
+        kind = "parameter" and
+        this = e.flow().(DataFlow::SourceNode).getAPropertyRead(["query", "parameter"])
+        or
         // `ctx.request.url`, `ctx.request.originalUrl`, or `ctx.request.href`
-        exists(string propName |
-          kind = "url" and
-          this.asExpr().(PropAccess).accesses(e, propName)
-        |
-          propName = "url"
-          or
-          propName = "originalUrl"
-          or
-          propName = "href"
-        )
+        kind = "url" and
+        this.asExpr().(PropAccess).accesses(e, ["url", "originalUrl", "href"])
         or
         // params, when handler is registered by `koa-router` or similar.
         kind = "parameter" and
         this.asExpr().(PropAccess).accesses(e, "params")
+        or
+        kind = "parameter" and
+        rh.getARequestParameterAccess() = this
         or
         // `ctx.request.body`
         e instanceof RequestExpr and
@@ -335,15 +327,9 @@ module Koa {
 
     override string getKind() { result = kind }
 
-    override predicate isUserControlledObject() { this = getAQueryParameterAccess(rh) }
-  }
-
-  private DataFlow::Node getAQueryParameterAccess(RouteHandler rh) {
-    // `ctx.query.name` or `ctx.request.query.name`
-    exists(PropAccess q |
-      q.accesses(rh.getARequestOrContextExpr(), "query") and
-      result = q.flow().(DataFlow::SourceNode).getAPropertyRead()
-    )
+    override predicate isUserControlledObject() {
+      this.(DataFlow::PropRead).getPropertyName() = "query"
+    }
   }
 
   /**

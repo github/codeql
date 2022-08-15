@@ -37,15 +37,15 @@ requestInputAccess
 | body | local/routes.ts:71:31:71:35 | files |
 | parameter | global/validation.ts:6:22:6:33 | validatedObj |
 | parameter | global/validation.ts:6:56:6:66 | unvalidated |
-| parameter | local/customDecorator.ts:6:12:6:41 | request ... ryParam |
+| parameter | local/customDecorator.ts:6:12:6:24 | request.query |
 | parameter | local/customPipe.ts:5:15:5:19 | value |
 | parameter | local/customPipe.ts:13:15:13:19 | value |
 | parameter | local/routes.ts:27:17:27:17 | x |
 | parameter | local/routes.ts:28:14:28:21 | queryObj |
 | parameter | local/routes.ts:29:20:29:23 | name |
-| parameter | local/routes.ts:35:31:35:43 | req.query.abc |
+| parameter | local/routes.ts:35:31:35:39 | req.query |
 | parameter | local/routes.ts:54:29:54:34 | target |
-| parameter | local/routes.ts:62:14:62:24 | req.query.x |
+| parameter | local/routes.ts:62:14:62:22 | req.query |
 | parameter | local/validation.ts:6:44:6:55 | validatedObj |
 | parameter | local/validation.ts:11:38:11:49 | validatedObj |
 | parameter | local/validation.ts:17:22:17:33 | validatedObj |

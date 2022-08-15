@@ -38,7 +38,7 @@ firebaseVal
 | tst.js:22:3:22:15 | x.after.val() |
 | tst.js:61:36:61:36 | x |
 requestInputAccess
-| tst.js:72:52:72:65 | req.params.foo |
+| tst.js:72:52:72:61 | req.params |
 responseSendArgument
 | tst.js:72:52:72:65 | req.params.foo |
 routeHandler

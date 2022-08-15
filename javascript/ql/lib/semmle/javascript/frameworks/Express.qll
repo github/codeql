@@ -561,22 +561,12 @@ module Express {
     exists(DataFlow::TypeTracker t2 | result = queryRef(req, t2).track(t2, t))
   }
 
-  /** Gets a data flow node referring to `req.query`. */
-  private DataFlow::SourceNode queryRef(RequestSource req) {
-    result = queryRef(req, DataFlow::TypeTracker::end())
-  }
-
   /** Gets a data flow node referring to `req.params`. */
   private DataFlow::SourceNode paramsRef(RequestSource req, DataFlow::TypeTracker t) {
     t.start() and
     result = req.ref().getAPropertyRead("params")
     or
     exists(DataFlow::TypeTracker t2 | result = paramsRef(req, t2).track(t2, t))
-  }
-
-  /** Gets a data flow node referring to `req.params`. */
-  private DataFlow::SourceNode paramsRef(RequestSource req) {
-    result = paramsRef(req, DataFlow::TypeTracker::end())
   }
 
   /**
@@ -587,10 +577,10 @@ module Express {
     string kind;
 
     RequestInputAccess() {
-      kind = "parameter" and
-      this = [queryRef(request), paramsRef(request)].getAPropertyRead()
-      or
       exists(DataFlow::SourceNode ref | ref = request.ref() |
+        kind = "parameter" and
+        this = ref.getAPropertyRead(["query", "params"])
+        or
         kind = "parameter" and
         this = ref.getAMethodCall("param")
         or
@@ -628,12 +618,9 @@ module Express {
       kind = "body" and
       forall(ExpressLibraries::BodyParser bodyParser | bodyParser.producesUserControlledObjects())
       or
-      kind = "parameter" and
-      this = request.ref().getAMethodCall("param")
-      or
       // `req.query.name`
       kind = "parameter" and
-      this = queryRef(request).getAPropertyRead()
+      this = request.ref().getAPropertyRead(["query"])
     }
   }
 
