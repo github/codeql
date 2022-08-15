@@ -19,7 +19,7 @@ def bad():
 def good():
     if request.method == 'POST':
         password = request.form['pwd']
-        return constant_time_string_compare(password, "1234")
+        return constant_time_compare(password, "1234")
     
 if __name__ == '__main__':
     app.debug = True
