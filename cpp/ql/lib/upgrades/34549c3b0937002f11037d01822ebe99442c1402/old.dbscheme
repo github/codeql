@@ -1302,7 +1302,7 @@ funbind(
 
 @assign_op_expr = @assign_arith_expr | @assign_bitwise_expr
 
-@assign_expr = @assignexpr | @assign_op_expr | @blockassignexpr
+@assign_expr = @assignexpr | @assign_op_expr
 
 /*
   case @allocator.form of
@@ -1660,7 +1660,6 @@ case @expr.kind of
 | 332 = @hasuniqueobjectrepresentations
 | 333 = @builtinbitcast
 | 334 = @builtinshuffle
-| 335 = @blockassignexpr
 ;
 
 @var_args_expr = @vastartexpr
