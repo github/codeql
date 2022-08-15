@@ -1,6 +1,0 @@
-| ../src/eval_no_problem.py | does not have splitting |
-| ../src/isfile_no_problem.py | does not have splitting |
-| ../src/simple_no_problem.py | does not have splitting |
-| ../src/urandom_no_if_no_problem.py | does not have splitting |
-| ../src/urandom_no_import_no_problem.py | does not have splitting |
-| ../src/urandom_problem.py | does not have splitting |
