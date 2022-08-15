@@ -82,7 +82,7 @@ def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
 
 def _to_db_type(x: str) -> str:
     if x[0].isupper():
-        return "Db::" + x
+        return "Raw::" + x
     return x
 
 
@@ -225,7 +225,7 @@ def generate(opts, renderer):
 
     inheritance_graph = {name: cls.bases for name, cls in data.classes.items()}
     db_classes = [classes[name] for name in toposort_flatten(inheritance_graph) if not classes[name].ipa]
-    renderer.render(ql.DbClasses(db_classes), out / "Db.qll")
+    renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")
 
     classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
     for c in classes_by_dir_and_name:

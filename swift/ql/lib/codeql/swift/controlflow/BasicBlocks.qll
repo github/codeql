@@ -6,7 +6,7 @@ private import internal.ControlFlowGraphImpl
 private import internal.ControlFlowElements
 private import CfgNodes
 private import SuccessorTypes
-private import codeql.swift.generated.Db
+private import codeql.swift.generated.Raw
 private import codeql.swift.generated.Synth
 
 /**
@@ -197,9 +197,9 @@ class ExitBasicBlock extends BasicBlock {
 }
 
 private module JoinBlockPredecessors {
-  private predicate id(Db::AstNode x, Db::AstNode y) { x = y }
+  private predicate id(Raw::AstNode x, Raw::AstNode y) { x = y }
 
-  private predicate idOfDbAstNode(Db::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
+  private predicate idOfDbAstNode(Raw::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
   // TODO does not work if fresh ipa entities (`ipa: on:`) turn out to be first of the block
   private predicate idOf(AstNode x, int y) { idOfDbAstNode(Synth::convertAstNodeToDb(x), y) }

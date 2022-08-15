@@ -1,4 +1,4 @@
-module Db {
+module Raw {
   {{#classes}}
   class {{name}} extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
     {{#root}}string toString() { none() }{{/root}}
