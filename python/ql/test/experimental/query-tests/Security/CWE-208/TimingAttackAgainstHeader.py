@@ -10,16 +10,17 @@ import hmac
 app = Flask(__name__)
 
 @app.route('/bad')
-def bad1():
-    if not request.headers.get('X-Auth-Token') == "key":
+def bad():
+    if not request.headers.get('X-Auth-Token') == "token":
         raise Exception('bad token')
-    return 'bad1'
+    return 'bad'
 
 @app.route('/good')
-def good1(): 
+def good(): 
+    Secret = request.headers.get('X-Auth-Token')
     if not hmac.compare_digest(Secret, "token"):
         raise Exception('bad token')
-    return 'good1'
+    return 'good'
  
 if __name__ == '__main__':
     app.debug = True
