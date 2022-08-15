@@ -38,12 +38,10 @@ indeed slash-terminated, the user supplying <code>dir</code> can only access chi
 </example>
 <references>
 
-<li>
-OWASP:
+<li>OWASP:
 <a href="https://owasp.org/www-community/attacks/Path_Traversal">Partial Path Traversal</a>.</li>
 <li>CVE-2022-23457:
 <a href="https://github.com/ESAPI/esapi-java-legacy/blob/develop/documentation/GHSL-2022-008_The_OWASP_Enterprise_Security_API.md"> ESAPI Vulnerability Report</a>.</li>
-</li>
 
 </references>
 
