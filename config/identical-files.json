@@ -507,6 +507,12 @@
     "python/ql/lib/semmle/python/security/BadTagFilterQuery.qll",
     "ruby/ql/lib/codeql/ruby/security/BadTagFilterQuery.qll"
   ],
+  "OverlyLargeRange Python/JS/Ruby/Java": [
+    "javascript/ql/lib/semmle/javascript/security/OverlyLargeRangeQuery.qll",
+    "python/ql/lib/semmle/python/security/OverlyLargeRangeQuery.qll",
+    "ruby/ql/lib/codeql/ruby/security/OverlyLargeRangeQuery.qll",
+    "java/ql/lib/semmle/code/java/security/OverlyLargeRangeQuery.qll"
+  ],
   "CFG": [
     "csharp/ql/lib/semmle/code/csharp/controlflow/internal/ControlFlowGraphImplShared.qll",
     "ruby/ql/lib/codeql/ruby/controlflow/internal/ControlFlowGraphImplShared.qll",
