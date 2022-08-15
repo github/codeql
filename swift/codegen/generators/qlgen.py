@@ -89,23 +89,26 @@ def _to_db_type(x: str) -> str:
 _final_db_class_lookup = {}
 
 
+def get_ql_ipa_class_db(name: str) -> ql.Synth.FinalClassDb:
+    return _final_db_class_lookup.setdefault(name, ql.Synth.FinalClassDb(name=name,
+                                                                         params=[
+                                                                             ql.Synth.Param("id", _to_db_type(name))]))
+
+
 def get_ql_ipa_class(cls: schema.Class):
     if cls.derived:
         return ql.Synth.NonFinalClass(name=cls.name, derived=sorted(cls.derived),
                                       root=(cls.name == schema.root_class_name))
     if cls.ipa and cls.ipa.from_class is not None:
         source = cls.ipa.from_class
-        _final_db_class_lookup.setdefault(source, ql.Synth.FinalClassDb(source)).subtract_type(cls.name)
+        get_ql_ipa_class_db(source).subtract_type(cls.name)
         return ql.Synth.FinalClassDerivedIpa(name=cls.name,
                                              params=[ql.Synth.Param("id", _to_db_type(source))])
     if cls.ipa and cls.ipa.on_arguments is not None:
         return ql.Synth.FinalClassFreshIpa(name=cls.name,
                                            params=[ql.Synth.Param(k, _to_db_type(v))
                                                    for k, v in cls.ipa.on_arguments.items()])
-    ret = ql.Synth.FinalClassDb(name=cls.name,
-                                params=[ql.Synth.Param("id", _to_db_type(cls.name))])
-    _final_db_class_lookup[cls.name] = ret
-    return ret
+    return get_ql_ipa_class_db(cls.name)
 
 
 def get_import(file: pathlib.Path, swift_dir: pathlib.Path):
