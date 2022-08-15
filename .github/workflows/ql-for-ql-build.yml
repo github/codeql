@@ -163,6 +163,11 @@ jobs:
           languages: ql
           db-location: ${{ runner.temp }}/db
           config-file: ./ql-for-ql-config.yml
+      - name: Move pack cache
+        run: |
+          cp -r ${PACK}/.cache ql/ql/src/.cache
+        env:
+          PACK: ${{ runner.temp }}/pack
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@71a8b35ff4c80fcfcd05bc1cd932fe3c08f943ca
