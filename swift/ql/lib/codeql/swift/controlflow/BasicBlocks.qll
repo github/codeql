@@ -7,7 +7,7 @@ private import internal.ControlFlowElements
 private import CfgNodes
 private import SuccessorTypes
 private import codeql.swift.generated.Db
-private import codeql.swift.generated.Ipa
+private import codeql.swift.generated.Synth
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
@@ -202,7 +202,7 @@ private module JoinBlockPredecessors {
   private predicate idOfDbAstNode(Db::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
   // TODO does not work if fresh ipa entities (`ipa: on:`) turn out to be first of the block
-  private predicate idOf(AstNode x, int y) { idOfDbAstNode(Ipa::convertAstNodeToDb(x), y) }
+  private predicate idOf(AstNode x, int y) { idOfDbAstNode(Synth::convertAstNodeToDb(x), y) }
 
   private AstNode projectToAst(ControlFlowElement n) {
     result = n.asAstNode()

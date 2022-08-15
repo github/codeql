@@ -26,7 +26,7 @@ DbFile:
 
 UnknownFile:
   _extends: File
-  _ipa:
+  _synth:
     on: {}
 
 Locatable:
@@ -48,7 +48,7 @@ DbLocation:
 
 UnknownLocation:
   _extends: Location
-  _ipa:
+  _synth:
     on: {}
 
 Comment:
@@ -816,7 +816,7 @@ TryExpr:
 
 #MethodCallExpr:
 #  _extends: ApplyExpr
-#  _ipa:
+#  _synth:
 #    from: CallExpr
 #  qualifier: Expr
 

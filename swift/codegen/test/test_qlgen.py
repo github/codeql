@@ -101,7 +101,7 @@ def _filter_generated_classes(ret, output_test_files=False):
             str(f): ret[ql_test_output_path() / f]
             for f in test_files
         }
-    base_files -= {pathlib.Path(f"{name}.qll") for name in ("Db", "Ipa", "IpaConstructors")}
+    base_files -= {pathlib.Path(f"{name}.qll") for name in ("Db", "Synth", "SynthConstructors")}
     assert stub_files == base_files
     return {
         str(f): (ret[stub_path() / f], ret[ql_output_path() / f])
@@ -129,8 +129,8 @@ def test_empty(generate):
     assert generate([]) == {
         import_file(): ql.ImportList(),
         children_file(): ql.GetParentImplementation(),
-        ql_output_path() / "Ipa.qll": ql.Ipa.Types(schema.root_class_name),
-        ql_output_path() / "IpaConstructors.qll": ql.ImportList(),
+        ql_output_path() / "Synth.qll": ql.Synth.Types(schema.root_class_name),
+        ql_output_path() / "SynthConstructors.qll": ql.ImportList(),
         ql_output_path() / "Db.qll": ql.DbClasses(),
         ql_output_path() / "Db.qll": ql.DbClasses(),
     }

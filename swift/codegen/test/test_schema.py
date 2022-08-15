@@ -306,7 +306,7 @@ A:
 def test_ipa_class_from(load):
     ret = load("""
 MyClass:
-    _ipa:
+    _synth:
         from: A
 """)
     assert ret.classes == {
@@ -318,7 +318,7 @@ MyClass:
 def test_ipa_class_on(load):
     ret = load("""
 MyClass:
-    _ipa:
+    _synth:
         on: 
             x: A
             y: int
@@ -329,7 +329,7 @@ MyClass:
     }
 
 
-# TODO rejection tests and implementation for malformed `_ipa` clauses
+# TODO rejection tests and implementation for malformed `_synth` clauses
 
 
 if __name__ == '__main__':

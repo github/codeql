@@ -1,8 +1,8 @@
-private import codeql.swift.generated.IpaConstructors
+private import codeql.swift.generated.SynthConstructors
 private import codeql.swift.generated.Db
 
 cached
-module Ipa {
+module Synth {
   cached
   newtype TElement =
     TComment(Db::Comment id) or

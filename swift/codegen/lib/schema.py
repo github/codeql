@@ -160,7 +160,7 @@ def load(path):
                 cls.properties.extend(_parse_property(kk, vv, is_child=True) for kk, vv in v.items())
             elif k == "_pragma":
                 cls.pragmas = _auto_list(v)
-            elif k == "_ipa":
+            elif k == "_synth":
                 cls.ipa = _parse_ipa(v)
             else:
                 raise Error(f"unknown metadata {k} for class {name}")

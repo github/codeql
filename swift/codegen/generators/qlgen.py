@@ -91,16 +91,16 @@ _final_db_class_lookup = {}
 
 def get_ql_ipa_class(cls: schema.Class):
     if cls.derived:
-        return ql.Ipa.NonFinalClass(name=cls.name, derived=sorted(cls.derived),
-                                    root=(cls.name == schema.root_class_name))
+        return ql.Synth.NonFinalClass(name=cls.name, derived=sorted(cls.derived),
+                                      root=(cls.name == schema.root_class_name))
     if cls.ipa and cls.ipa.from_class is not None:
         source = cls.ipa.from_class
-        _final_db_class_lookup.setdefault(source, ql.Ipa.FinalClassDb(source)).subtract_type(cls.name)
-        return ql.Ipa.FinalClassDerivedIpa(name=cls.name, params=[ql.Ipa.Param("id", _to_db_type(source))])
+        _final_db_class_lookup.setdefault(source, ql.Synth.FinalClassDb(source)).subtract_type(cls.name)
+        return ql.Synth.FinalClassDerivedIpa(name=cls.name, params=[ql.Synth.Param("id", _to_db_type(source))])
     if cls.ipa and cls.ipa.on_arguments is not None:
-        return ql.Ipa.FinalClassFreshIpa(name=cls.name, params=[ql.Ipa.Param(k, _to_db_type(v)) for k, v in
-                                                                cls.ipa.on_arguments.items()])
-    return _final_db_class_lookup.setdefault(cls.name, ql.Ipa.FinalClassDb(cls.name))
+        return ql.Synth.FinalClassFreshIpa(name=cls.name, params=[ql.Synth.Param(k, _to_db_type(v)) for k, v in
+                                                                  cls.ipa.on_arguments.items()])
+    return _final_db_class_lookup.setdefault(cls.name, ql.Synth.FinalClassDb(cls.name))
 
 
 def get_import(file: pathlib.Path, swift_dir: pathlib.Path):
@@ -275,13 +275,13 @@ def generate(opts, renderer):
             if ipa_type.is_ipa and ipa_type.has_params:
                 stub_file = stub_out / cls.dir / f"{cls.name}Constructor.qll"
                 if not stub_file.is_file() or _is_generated_stub(stub_file):
-                    renderer.render(ql.Ipa.ConstructorStub(ipa_type), stub_file)
+                    renderer.render(ql.Synth.ConstructorStub(ipa_type), stub_file)
                 constructor_imports.append(get_import(stub_file, opts.swift_dir))
         else:
             non_final_ipa_types.append(ipa_type)
 
-    renderer.render(ql.Ipa.Types(schema.root_class_name, final_ipa_types, non_final_ipa_types), out / "Ipa.qll")
-    renderer.render(ql.ImportList(constructor_imports), out / "IpaConstructors.qll")
+    renderer.render(ql.Synth.Types(schema.root_class_name, final_ipa_types, non_final_ipa_types), out / "Synth.qll")
+    renderer.render(ql.ImportList(constructor_imports), out / "SynthConstructors.qll")
 
     renderer.cleanup(existing)
     if opts.ql_format:

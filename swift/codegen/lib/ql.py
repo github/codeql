@@ -158,7 +158,7 @@ class MissingTestInstructions:
     template: ClassVar = 'ql_test_missing'
 
 
-class Ipa:
+class Synth:
     @dataclass
     class Class:
         is_final: ClassVar = False
@@ -185,7 +185,7 @@ class Ipa:
 
     @dataclass
     class FinalClassIpa(FinalClass):
-        params: List["Ipa.Param"] = field(default_factory=list)
+        params: List["Synth.Param"] = field(default_factory=list)
 
         def __post_init__(self):
             if self.params:
@@ -207,10 +207,10 @@ class Ipa:
     class FinalClassDb(FinalClass):
         is_db: ClassVar = True
 
-        subtracted_ipa_types: List["Ipa.Class"] = field(default_factory=list)
+        subtracted_ipa_types: List["Synth.Class"] = field(default_factory=list)
 
         def subtract_type(self, type: str):
-            self.subtracted_ipa_types.append(Ipa.Class(type, first=not self.subtracted_ipa_types))
+            self.subtracted_ipa_types.append(Synth.Class(type, first=not self.subtracted_ipa_types))
 
         @property
         def has_subtracted_ipa_types(self) -> bool:
@@ -222,11 +222,11 @@ class Ipa:
 
     @dataclass
     class NonFinalClass(Class):
-        derived: List["Ipa.Class"] = field(default_factory=list)
+        derived: List["Synth.Class"] = field(default_factory=list)
         root: bool = False
 
         def __post_init__(self):
-            self.derived = [Ipa.Class(c) for c in self.derived]
+            self.derived = [Synth.Class(c) for c in self.derived]
             if self.derived:
                 self.derived[0].first = True
 
@@ -235,8 +235,8 @@ class Ipa:
         template: ClassVar = "ql_ipa_types"
 
         root: str
-        final_classes: List["Ipa.FinalClass"] = field(default_factory=list)
-        non_final_classes: List["Ipa.NonFinalClass"] = field(default_factory=list)
+        final_classes: List["Synth.FinalClass"] = field(default_factory=list)
+        non_final_classes: List["Synth.NonFinalClass"] = field(default_factory=list)
 
         def __post_init__(self):
             if self.final_classes:
@@ -246,4 +246,4 @@ class Ipa:
     class ConstructorStub:
         template: ClassVar = "ql_ipa_constructor_stub"
 
-        cls: Union["Ipa.FinalClassDerivedIpa", "Ipa.FinalClassFreshIpa"]
+        cls: Union["Synth.FinalClassDerivedIpa", "Synth.FinalClassFreshIpa"]
