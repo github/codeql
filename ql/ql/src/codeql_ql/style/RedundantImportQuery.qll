@@ -35,6 +35,7 @@ predicate importsFromSameFolder(Import a, Import b) {
 predicate problem(Import imp, Import redundant, string message) {
   not exists(imp.importedAs()) and
   not exists(redundant.importedAs()) and
+  not exists(imp.getModuleExpr().getQualifier*().getArgument(_)) and // any type-arguments, and we ignore, they might be different.
   // skip the top-level language files, they have redundant imports, and that's fine.
   not exists(imp.getLocation().getFile().getParentContainer().getFile("qlpack.yml")) and
   // skip the DataFlowImpl.qll and similar, they have redundant imports in some copies.

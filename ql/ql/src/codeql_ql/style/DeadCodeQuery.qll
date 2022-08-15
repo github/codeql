@@ -83,6 +83,8 @@ private AstNode aliveStep(AstNode prev) {
   //
   // The recursive cases.
   //
+  result = prev.(Import).getModuleExpr()
+  or
   result.getEnclosingPredicate() = prev
   or
   result = prev.(Call).getTarget()
