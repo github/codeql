@@ -5,6 +5,7 @@
 """
 from flask import Flask
 from flask import request
+from django.utils.crypto import constant_time_compare
 
 app = Flask(__name__)
 
@@ -19,17 +20,6 @@ def good():
     if request.method == 'POST':
         password = request.form['pwd']
         return constant_time_string_compare(password, "1234")
-
-def constant_time_string_compare(a, b):
-    if len(a) != len(b):
-        return False
-
-    result = 0
-
-    for x, y in zip(a, b):
-        result |= ord(x) ^ ord(y)
-
-    return result == 0
     
 if __name__ == '__main__':
     app.debug = True
