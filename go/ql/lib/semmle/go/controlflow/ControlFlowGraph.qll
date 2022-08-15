@@ -169,10 +169,10 @@ module ControlFlow {
     /**
      * Holds if this node writes `rhs` to `channel`.
      */
-    predicate writesToChannel(DataFlow::Node channel, DataFlow::Node rhs) {
+    predicate writesToChannel(DataFlow::ExprNode channel, DataFlow::ExprNode rhs) {
       exists(SendStmt send |
-        send.getChannel() = channel.(DataFlow::ExprNode).asExpr() and
-        send.getValue() = rhs.(DataFlow::ExprNode).asExpr()
+        send.getChannel() = channel.asExpr() and
+        send.getValue() = rhs.asExpr()
       )
     }
 
