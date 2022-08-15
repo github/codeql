@@ -153,6 +153,17 @@ predicate lengthMayBeEquealZero(FunctionCall fc) {
   )
 }
 
+predicate controlArguments(FunctionCall fc) {
+  exists(GuardCondition gc, Expr valfirstargument, Expr valsecondargument |
+    globalValueNumber(fc.getArgument(0)) = globalValueNumber(valfirstargument) and
+    globalValueNumber(fc.getArgument(1)) = globalValueNumber(valsecondargument) and
+    (
+      gc.ensuresEq(valfirstargument, valsecondargument, _, fc.getBasicBlock(), _) or
+      gc.ensuresEq(valsecondargument, valfirstargument, _, fc.getBasicBlock(), _)
+    )
+  )
+}
+
 from FunctionCall fc, string msg
 where
   fc.getTarget().hasGlobalOrStdName(["malloc", "kmalloc"]) and
@@ -178,12 +189,15 @@ where
     firstargument != secondargument and
     globalValueNumber(fc.getArgument(firstargument)) =
       globalValueNumber(fc.getArgument(secondargument)) and
+    not globalValueNumber(fc.getArgument(firstargument)).getAnExpr().isConstant() and
+    not globalValueNumber(fc.getArgument(secondargument)).getAnExpr().isConstant() and
     (
       fc.getTarget()
           .hasName([
               "memcmp", "memcpy", "memmove", "strcmp", "strncmp", "strcpy", "wcscmp", "wcsncmp",
               "wcscpy"
             ]) and
+      not controlArguments(fc) and
       firstargument = 0 and
       secondargument = 1
       or
@@ -195,6 +209,7 @@ where
                 "memcmp", "memcpy", "memmove", "strcmp", "strncmp", "strcpy", "wcscmp", "wcsncmp",
                 "wcscpy"
               ]) and
+        not controlArguments(overfc) and
         fc.getTarget().getParameter(firstargument).getAnAccess().getTarget() =
           overfc.getArgument(0).(VariableAccess).getTarget() and
         fc.getTarget().getParameter(secondargument).getAnAccess().getTarget() =
