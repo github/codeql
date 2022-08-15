@@ -93,7 +93,7 @@ private string getStem(string name) { result = name.regexpCapture("(.+?)(?:\\.([
  * Gets the main module described by `pkg` with the given `priority`.
  */
 File resolveMainModule(PackageJson pkg, int priority) {
-  exists(PathExpr main | main = MainModulePath::of(pkg) |
+  exists(PathExpr main | main = MainModulePath::of(pkg, ".") |
     result = main.resolve() and priority = 0
     or
     result = tryExtensions(main.resolve(), "index", priority)
@@ -142,20 +142,35 @@ File resolveMainModule(PackageJson pkg, int priority) {
 private string getASrcFolderName() { result = ["ts", "js", "src", "lib"] }
 
 /**
- * A JSON string in a `package.json` file specifying the path of the main
- * module of the package.
+ * A JSON string in a `package.json` file specifying the path of one of the exported
+ * modules of the package.
  */
 class MainModulePath extends PathExpr, @json_string {
   PackageJson pkg;
+  string relativePath;
 
   MainModulePath() {
+    relativePath = "." and
     this = pkg.getPropValue(["main", "module"])
     or
-    this = getAJsonChild*(pkg.getPropValue("exports"))
+    // { "exports": "path" } is sugar for { "exports": { ".": "path" }}
+    relativePath = "." and
+    this = pkg.getPropValue("exports")
+    or
+    exists(JsonValue val | val = pkg.getPropValue("exports").getPropValue(relativePath) |
+      // Either specified directly as a string: { "./path": "./path.js" }
+      this = val
+      or
+      // Or by module type: { "./path": { "require": "./path.cjs", ... }}
+      this = val.getPropValue(_)
+    )
   }
 
   /** Gets the `package.json` file in which this path occurs. */
   PackageJson getPackageJson() { result = pkg }
+
+  /** Gets the relative path under which this is exported, usually starting with a `.`. */
+  string getRelativePath() { result = relativePath }
 
   /** DEPRECATED: Alias for getPackageJson */
   deprecated PackageJSON getPackageJSON() { result = getPackageJson() }
@@ -168,11 +183,15 @@ class MainModulePath extends PathExpr, @json_string {
   }
 }
 
-/** Gets the value of a property from the JSON object `obj`. */
-private JsonValue getAJsonChild(JsonObject obj) { result = obj.getPropValue(_) }
-
 module MainModulePath {
-  MainModulePath of(PackageJson pkg) { result.getPackageJson() = pkg }
+  /** Gets the path to the main entry point of `pkg`. */
+  MainModulePath of(PackageJson pkg) { result = of(pkg, ".") }
+
+  /** Gets the path to the file exported from `pkg` as `relativePath`. */
+  MainModulePath of(PackageJson pkg, string relativePath) {
+    result.getPackageJson() = pkg and
+    result.getRelativePath() = relativePath
+  }
 }
 
 /**
@@ -185,7 +204,7 @@ private class FilesPath extends PathExpr, @json_string {
 
   FilesPath() {
     this = pkg.getPropValue("files").(JsonArray).getElementValue(_) and
-    not exists(MainModulePath::of(pkg))
+    not exists(MainModulePath::of(pkg, _))
   }
 
   /** Gets the `package.json` file in which this path occurs. */
