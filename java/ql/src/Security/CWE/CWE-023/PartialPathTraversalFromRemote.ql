@@ -1,5 +1,5 @@
 /**
- * @name Partial Path Traversal Vulnerability From Remote
+ * @name Partial path traversal vulnerability from remote
  * @description A prefix used to check that a canonicalised path falls within another must be slash-terminated.
  * @kind path-problem
  * @problem.severity error

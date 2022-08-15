@@ -1,5 +1,5 @@
 /**
- * @name Partial Path Traversal Vulnerability
+ * @name Partial path traversal vulnerability
  * @description A prefix used to check that a canonicalised path falls within another must be slash-terminated.
  * @kind problem
  * @problem.severity error

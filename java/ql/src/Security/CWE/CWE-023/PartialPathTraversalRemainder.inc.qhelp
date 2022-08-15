@@ -17,7 +17,7 @@ returns a <b>non</b>-slash-terminated path string, so a slash must be added to <
 
 In this example, the <code>if</code> statement checks if <code>parent.getCanonicalPath()</code> 
 is a prefix of <code>dir.getCanonicalPath()</code>. However, <code>parent.getCanonicalPath()</code> is 
-not slash-terminated. So, the user that supplies <code>dir</code> may be allowed to access siblings of <code>parent</code> 
+not slash-terminated.  This means that users that supply <code>dir</code> may be also allowed to access siblings of <code>parent</code> 
 and not just children of <code>parent</code>, which is a security issue.
 
 </p>
@@ -40,9 +40,9 @@ indeed slash-terminated, the user supplying <code>dir</code> can only access chi
 
 <li>
 OWASP:
-<a href="https://owasp.org/www-community/attacks/Path_Traversal">Partial Path Traversal</a>.
-CVE-2022-23457:
-<a href="https://github.com/ESAPI/esapi-java-legacy/blob/develop/documentation/GHSL-2022-008_The_OWASP_Enterprise_Security_API.md"> ESAPI Vulnerability Report</a>
+<a href="https://owasp.org/www-community/attacks/Path_Traversal">Partial Path Traversal</a>.</li>
+<li>CVE-2022-23457:
+<a href="https://github.com/ESAPI/esapi-java-legacy/blob/develop/documentation/GHSL-2022-008_The_OWASP_Enterprise_Security_API.md"> ESAPI Vulnerability Report</a>.</li>
 </li>
 
 </references>
