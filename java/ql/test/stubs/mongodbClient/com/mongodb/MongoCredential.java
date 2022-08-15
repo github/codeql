@@ -50,7 +50,7 @@ public final class MongoCredential {
         return null;
     }
 
-    public static MongoCredential createMongoCRCredential​(String userName, String database, char[] password) {
+    public static MongoCredential createMongoCRCredential(String userName, String database, char[] password) {
         // Deprecated function removed in most recent releases of the Mongo driver.
         return null;
     }
