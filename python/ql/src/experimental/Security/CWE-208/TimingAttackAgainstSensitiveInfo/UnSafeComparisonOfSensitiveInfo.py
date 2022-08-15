@@ -8,7 +8,7 @@ from flask import Flask
 from flask import request
 
 @app.route('/bad', methods = ['POST', 'GET'])
-def bad(password):
+def bad():
     if request.method == 'POST':
         password = request.form['pwd']
         return password == "test"
