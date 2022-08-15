@@ -191,9 +191,7 @@ private module FunctionNames {
 }
 
 /** Get a name of a supported generic token-based feature. */
-string getASupportedFeatureName() {
-  result = any(EndpointFeature f).getName()
-}
+string getASupportedFeatureName() { result = any(EndpointFeature f).getName() }
 
 /**
  * Generic token-based features for ATM.
@@ -352,7 +350,7 @@ class ContextSurroundingFunctionParameters extends EndpointFeature,
  * ```javascript
  * const div = document.createElement('div');
  * div.innerHTML = endpoint; // feature value is 'innerHTML'
- * 
+ *
  * foo({x: endpoint}); // feature value is 'x'
  * ```
  */
@@ -623,17 +621,16 @@ private module SyntacticUtilities {
    * - invocations
    *
    * Unknown cases and property names results in `?`.
-   * 
+   *
    * # Examples
-   * 
+   *
    *  - The node `x.foo` will have the simple access path `x.foo`.
    *  - In the following file, the simple access path will be `import("./foo").bar.baz`:
-   * 
+   *
    * ```javascript
    * import * as lib from "./foo"
    * console.log(lib.bar.baz());
    * //          ^^^^^^^^^^^ node
-   * 
    */
   string getSimpleAccessPath(DataFlow::Node node) {
     exists(Expr e | e = node.asExpr().getUnderlyingValue() |
