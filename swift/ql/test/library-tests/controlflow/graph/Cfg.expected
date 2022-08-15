@@ -252,10 +252,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #   31| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #   31| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #   33| case ...
 #-----|  -> ... is ...
@@ -5396,10 +5396,10 @@ cfg.swift:
 #-----|  -> (Any) ...
 
 #  388| [...]
-#-----|  -> default separator
+#-----|  -> [...]
 
 #  388| [...]
-#-----|  -> [...]
+#-----|  -> default separator
 
 #  390| return ...
 #-----| return -> exit doWithoutCatch(x:) (normal)
