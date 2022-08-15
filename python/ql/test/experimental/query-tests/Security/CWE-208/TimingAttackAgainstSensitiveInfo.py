@@ -8,17 +8,17 @@ from flask import request
 
 app = Flask(__name__)
 
-@app.route('/bad')
-def check_credentials():
+@app.route('/bad', methods = ['POST', 'GET'])
+def bad():
     if request.method == 'POST':
         password = request.form['pwd']
-        return password == sec
+        return password == "1234"
     
-@app.route('/good')
-def check_credentials(sec):
+@app.route('/good', methods = ['POST', 'GET'])
+def good():
     if request.method == 'POST':
         password = request.form['pwd']
-        return constant_time_string_compare(password, sec)
+        return constant_time_string_compare(password, "1234")
 
 def constant_time_string_compare(a, b):
     if len(a) != len(b):
