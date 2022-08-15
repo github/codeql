@@ -10,7 +10,7 @@ from flask import request
 import hmac
 
 @app.route('/good')
-def good1():
+def good():
     secret = request.headers.get('X-Auth-Token')    
     if not hmac.compare_digest(secret, "token"):
         raise Exception('bad token')
