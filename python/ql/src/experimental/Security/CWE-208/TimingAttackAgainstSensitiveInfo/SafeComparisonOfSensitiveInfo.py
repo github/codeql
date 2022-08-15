@@ -15,3 +15,7 @@ def bad():
     if request.method == 'POST':
         password = request.form['pwd']
         return hmac.compare_digest(password, "1234")
+    
+if __name__ == '__main__':
+    app.debug = True
+    app.run() 
