@@ -37,7 +37,7 @@ jobs:
         if: steps.cache-queries.outputs.cache-hit != 'true'
         run: |
           cd ql/ql/src
-          "${CODEQL}" pack create
+          "${CODEQL}" pack create -j 16
           cd .codeql/pack/codeql/ql/0.0.0
           zip "${PACKZIP}" -r .
           rm -rf *
