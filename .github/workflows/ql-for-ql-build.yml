@@ -151,8 +151,8 @@ jobs:
           echo "  - ql/ql/test" >> ${CONF} 
           echo "  - \"*/ql/lib/upgrades/\"" >> ${CONF} 
           echo "disable-default-queries: true" >> ${CONF}
-          echo "packs:" >> ${CONF}
-          echo "  - codeql/ql" >> ${CONF}
+          echo "queries:" >> ${CONF}
+          echo "  - uses: ./ql/ql/src/codeql-suites/ql-code-scanning.qls" >> ${CONF}
           echo "Config file: "
           cat ${CONF}
         env: 
