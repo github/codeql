@@ -1501,7 +1501,7 @@ class TranslatedBlockAssignExpr extends TranslatedNonConstantExpr {
   }
 
   final override Instruction getFirstInstruction() {
-    // The operand evaluation order should since block assignments behave like memcpy.
+    // The operand evaluation order should not matter since block assignments behave like memcpy.
     result = this.getLeftOperand().getFirstInstruction()
   }
 
