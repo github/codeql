@@ -5,6 +5,18 @@ FILE *ef;
 void *malloc(size_t size);
 size_t strlen(const char *str);
 char * strcpy( char * destptr, const char * srcptr );
+void* memcpy( void *dest, const void *src, size_t count );
+void* memmove( void* dest, const void* src, size_t count );
+#define my_copy(a, b)      (void)(((a) != (b)) && memcpy((b), (a), sizeof(a)))
+int memcmp(const void *buf1, const void *buf2, size_t count);
+int strncmp( const void * string1, const void * string2, size_t num );
+size_t strlen( unsigned char * string );
+void abort(void);
+void exit (int state);
+namespace std
+{
+	int exit(int state);
+}
 void free(void *ptr);
 unsigned long copy_from_user (void * to, void * from, unsigned long n);
 int fread(char *buf, int size, int count, FILE *fp);
@@ -239,9 +251,6 @@ void badTest7(char buf[],FILE *f1)
 }
 
 
-int memcmp(const void *buf1, const void *buf2, size_t count);
-int strncmp( const void * string1, const void * string2, size_t num );
-size_t strlen( unsigned char * string );
 
 int mymemcmp(const void *buf1, const void *buf2, size_t count)
 {
@@ -326,11 +335,47 @@ int ngoodTest1(unsigned char *pass,unsigned char*sec,int met){
   }
     return ret;
 }
-void abort(void);
-void exit (int state);
-namespace std
+int mystrncmp2(size_t num, const void * string1, const void * string2 )
 {
-	int exit(int state);
+    if(string1!=string2)
+        return strncmp(string1, string2, num);
+    return 0;
+}
+int ngoodTest2(unsigned char *pass,unsigned char*sec,int met){
+  int ret=0;
+  int len;
+  len = strlen(sec);
+  ret = mystrncmp2(len, pass, pass); // GOOD
+  return ret;
+}
+void ngoodTest3(unsigned char *pass,unsigned char*sec){
+  my_copy(pass,sec); // GOOD
+}
+void ngoodTest3o(unsigned char *pass,unsigned char*sec){
+    ngoodTest3(pass,pass); // GOOD
+}
+int ngoodTest4(unsigned char *pass,unsigned char*sec,int met){
+    int ret=0;
+    int len;
+    len = strlen(sec);
+    char* buf1=NULL;
+    char* buf2=NULL;
+    if(buf1&&buf2)
+        mymemcmp1(buf1,len,buf2); // GOOD
+    return ret;
+}
+int mystrncmp3(size_t num, const void * string1, const void * string2 )
+{
+    if(string1)
+        return strncmp(string1, string2, num);
+    return 0;
+}
+int ngoodTest5(unsigned char *pass,unsigned char*sec,int met){
+  int ret=0;
+  int len;
+  len = strlen(sec);
+  ret = mystrncmp3(len, NULL, NULL); // GOOD
+  return ret;
 }
 [[noreturn]] void nbadTest2(int i) {
   if (i > 0)
