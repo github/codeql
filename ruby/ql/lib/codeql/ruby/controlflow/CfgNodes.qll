@@ -348,13 +348,21 @@ module ExprNodes {
     /** Gets an argument of this call. */
     final ExprCfgNode getAnArgument() { result = this.getArgument(_) }
 
-    /** Gets the the keyword argument whose key is `keyword` of this call. */
+    /** Gets the keyword argument whose key is `keyword` of this call. */
     final ExprCfgNode getKeywordArgument(string keyword) {
       exists(PairCfgNode n |
         e.hasCfgChild(e.getAnArgument(), this, n) and
         n.getKey().getExpr().getConstantValue().isSymbol(keyword) and
         result = n.getValue()
       )
+    }
+
+    /**
+     * Gets the `n`th positional argument of this call.
+     * Unlike `getArgument`, this excludes keyword arguments.
+     */
+    final ExprCfgNode getPositionalArgument(int n) {
+      result = this.getArgument(n) and not result instanceof PairCfgNode
     }
 
     /** Gets the number of arguments of this call. */

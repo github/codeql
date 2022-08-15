@@ -96,7 +96,7 @@ private module Cached {
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
     or
-    // Although flow through collections is modelled precisely using stores/reads, we still
+    // Although flow through collections is modeled precisely using stores/reads, we still
     // allow flow out of a _tainted_ collection. This is needed in order to support taint-
     // tracking configurations where the source is a collection.
     exists(DataFlow::ContentSet c | readStep(nodeFrom, c, nodeTo) |

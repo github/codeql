@@ -889,7 +889,7 @@ private class YamlDotNetDeserializerDeserializeMethodSink extends ConstructorOrS
 }
 
 /** Newtonsoft.Json.JsonConvert */
-private class NewtonsoftJsonConvertDeserializeObjectMethodSink extends ConstructorOrStaticMethodSink {
+private class NewtonsoftJsonConvertDeserializeObjectMethodSink extends Sink {
   NewtonsoftJsonConvertDeserializeObjectMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and

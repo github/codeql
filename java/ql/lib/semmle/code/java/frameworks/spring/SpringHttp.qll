@@ -160,7 +160,7 @@ private class SpringXssSink extends XSS::XssSink {
     |
       // If a Spring request mapping method is either annotated with @ResponseBody (or equivalent),
       // or returns a HttpEntity or sub-type, then the return value of the method is converted into
-      // a HTTP reponse using a HttpMessageConverter implementation. The implementation is chosen
+      // a HTTP response using a HttpMessageConverter implementation. The implementation is chosen
       // based on the return type of the method, and the Accept header of the request.
       //
       // By default, the only message converter which produces a response which is vulnerable to

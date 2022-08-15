@@ -3,11 +3,14 @@
 package android.view.textclassifier;
 
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Spannable;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.view.textclassifier.TextClassifier;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.function.Function;
 
@@ -29,6 +32,19 @@ public class TextLinks implements Parcelable
     public static int STATUS_NO_LINKS_FOUND = 0;
     public static int STATUS_UNSUPPORTED_CHARACTER = 0;
     public void writeToParcel(Parcel p0, int p1){}
+    static public class Request implements Parcelable
+    {
+        protected Request() {}
+        public Bundle getExtras(){ return null; }
+        public CharSequence getText(){ return null; }
+        public LocaleList getDefaultLocales(){ return null; }
+        public String getCallingPackageName(){ return null; }
+        public TextClassifier.EntityConfig getEntityConfig(){ return null; }
+        public ZonedDateTime getReferenceTime(){ return null; }
+        public int describeContents(){ return 0; }
+        public static Parcelable.Creator<TextLinks.Request> CREATOR = null;
+        public void writeToParcel(Parcel p0, int p1){}
+    }
     static public class TextLink implements Parcelable
     {
         protected TextLink() {}

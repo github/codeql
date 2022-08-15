@@ -381,4 +381,14 @@ codeql::OpenedArchetypeType TypeVisitor::translateOpenedArchetypeType(
   fillArchetypeType(type, entry);
   return entry;
 }
+
+codeql::ModuleType TypeVisitor::translateModuleType(const swift::ModuleType& type) {
+  auto key = type.getModule()->getRealName().str().str();
+  if (type.getModule()->isNonSwiftModule()) {
+    key += "|clang";
+  }
+  auto entry = createTypeEntry(type, key);
+  entry.module = dispatcher_.fetchLabel(type.getModule());
+  return entry;
+}
 }  // namespace codeql

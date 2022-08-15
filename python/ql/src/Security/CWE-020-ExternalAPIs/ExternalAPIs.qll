@@ -35,7 +35,7 @@ private import semmle.python.objects.ObjectInternal
 //    functionality into `BuiltinFunctionValue` and `BuiltinMethodValue`, but will
 //    probably require some more work: for this query, it's totally ok to use
 //    `builtins.open` for the code `open(f)`, but well, it requires a bit of thinking to
-//    figure out if that is desireable in general. I simply skipped a corner here!
+//    figure out if that is desirable in general. I simply skipped a corner here!
 // 4. TaintTrackingPrivate: Nothing else gives us access to `defaultAdditionalTaintStep` :(
 /**
  * A callable that is considered a "safe" external API from a security perspective.

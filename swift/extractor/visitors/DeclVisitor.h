@@ -30,10 +30,10 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   codeql::PostfixOperatorDecl translatePostfixOperatorDecl(const swift::PostfixOperatorDecl& decl);
   codeql::InfixOperatorDecl translateInfixOperatorDecl(const swift::InfixOperatorDecl& decl);
   codeql::PrecedenceGroupDecl translatePrecedenceGroupDecl(const swift::PrecedenceGroupDecl& decl);
-  codeql::ParamDecl translateParamDecl(const swift::ParamDecl& decl);
+  std::optional<codeql::ParamDecl> translateParamDecl(const swift::ParamDecl& decl);
   codeql::TopLevelCodeDecl translateTopLevelCodeDecl(const swift::TopLevelCodeDecl& decl);
   codeql::PatternBindingDecl translatePatternBindingDecl(const swift::PatternBindingDecl& decl);
-  codeql::ConcreteVarDecl translateVarDecl(const swift::VarDecl& decl);
+  std::optional<codeql::ConcreteVarDecl> translateVarDecl(const swift::VarDecl& decl);
   std::variant<codeql::StructDecl, codeql::StructDeclsTrap> translateStructDecl(
       const swift::StructDecl& decl);
   std::variant<codeql::ClassDecl, codeql::ClassDeclsTrap> translateClassDecl(

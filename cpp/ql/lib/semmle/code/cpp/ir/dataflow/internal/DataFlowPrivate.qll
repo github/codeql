@@ -244,7 +244,25 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  * calling context. For example, this would happen with flow through a
  * global or static variable.
  */
-predicate jumpStep(Node n1, Node n2) { none() }
+predicate jumpStep(Node n1, Node n2) {
+  exists(GlobalOrNamespaceVariable v |
+    v =
+      n1.asInstruction()
+          .(StoreInstruction)
+          .getResultAddress()
+          .(VariableAddressInstruction)
+          .getAstVariable() and
+    v = n2.asVariable()
+    or
+    v =
+      n2.asInstruction()
+          .(LoadInstruction)
+          .getSourceAddress()
+          .(VariableAddressInstruction)
+          .getAstVariable() and
+    v = n1.asVariable()
+  )
+}
 
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.

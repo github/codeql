@@ -5,6 +5,7 @@ cached
 module Ipa {
   cached
   newtype TElement =
+    TComment(Db::Comment id) or
     TDbFile(Db::DbFile id) or
     TDbLocation(Db::DbLocation id) or
     TUnknownFile() or
@@ -245,7 +246,7 @@ module Ipa {
 
   class TFile = TDbFile or TUnknownFile;
 
-  class TLocatable = TArgument or TAstNode or TConditionElement or TIfConfigClause;
+  class TLocatable = TArgument or TAstNode or TComment or TConditionElement or TIfConfigClause;
 
   class TLocation = TDbLocation or TUnknownLocation;
 
@@ -400,6 +401,9 @@ module Ipa {
         TUnresolvedType;
 
   class TUnarySyntaxSugarType = TArraySliceType or TOptionalType or TVariadicSequenceType;
+
+  cached
+  TComment convertCommentFromDb(Db::Element e) { result = TComment(e) }
 
   cached
   TDbFile convertDbFileFromDb(Db::Element e) { result = TDbFile(e) }
@@ -1357,6 +1361,8 @@ module Ipa {
     or
     result = convertAstNodeFromDb(e)
     or
+    result = convertCommentFromDb(e)
+    or
     result = convertConditionElementFromDb(e)
     or
     result = convertIfConfigClauseFromDb(e)
@@ -2050,6 +2056,9 @@ module Ipa {
     or
     result = convertVariadicSequenceTypeFromDb(e)
   }
+
+  cached
+  Db::Element convertCommentToDb(TComment e) { e = TComment(result) }
 
   cached
   Db::Element convertDbFileToDb(TDbFile e) { e = TDbFile(result) }
@@ -2988,6 +2997,8 @@ module Ipa {
     result = convertArgumentToDb(e)
     or
     result = convertAstNodeToDb(e)
+    or
+    result = convertCommentToDb(e)
     or
     result = convertConditionElementToDb(e)
     or

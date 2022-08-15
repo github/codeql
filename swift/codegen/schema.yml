@@ -51,6 +51,10 @@ UnknownLocation:
   _ipa:
     on: {}
 
+Comment:
+  _extends: Locatable
+  text: string
+
 Type:
   name: string
   canonical_type: Type
@@ -129,6 +133,7 @@ LValueType:
 
 ModuleType:
   _extends: Type
+  module: ModuleDecl
 
 PlaceholderType:
   _extends: Type

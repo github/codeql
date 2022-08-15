@@ -3,6 +3,7 @@
 #include <swift/AST/SourceFile.h>
 #include <swift/Basic/SourceManager.h>
 #include <llvm/Support/FileSystem.h>
+#include <swift/Parse/Token.h>
 
 #include "swift/extractor/trap/TrapLabelStore.h"
 #include "swift/extractor/trap/TrapDomain.h"
@@ -215,7 +216,7 @@ class SwiftDispatcher {
 
   template <typename... Args>
   void emitDebugInfo(const Args&... args) {
-    trap.debug(std::forward<Args>(args)...);
+    trap.debug(args...);
   }
 
   // In order to not emit duplicated entries for declarations, we restrict emission to only
@@ -240,6 +241,12 @@ class SwiftDispatcher {
       return currentPrimarySourceFile == context->getParentSourceFile();
     }
     return false;
+  }
+
+  void emitComment(swift::Token& comment) {
+    CommentsTrap entry{trap.createLabel<CommentTag>(), comment.getRawText().str()};
+    trap.emit(entry);
+    attachLocation(comment.getRange().getStart(), comment.getRange().getEnd(), entry.id);
   }
 
  private:
@@ -315,7 +322,7 @@ class SwiftDispatcher {
   virtual void visit(swift::TypeBase* type) = 0;
 
   void visit(const FilePath& file) {
-    auto entry = createEntry(file);
+    auto entry = createEntry(file, file.path);
     entry.name = file.path;
     emit(entry);
   }

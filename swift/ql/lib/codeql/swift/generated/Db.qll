@@ -79,6 +79,12 @@ module Db {
 
   class BuiltinType extends @builtin_type, Type { }
 
+  class Comment extends @comment, Locatable {
+    override string toString() { result = "Comment" }
+
+    string getText() { comments(this, result) }
+  }
+
   class ConditionElement extends @condition_element, Locatable {
     override string toString() { result = "ConditionElement" }
 
@@ -145,6 +151,8 @@ module Db {
 
   class ModuleType extends @module_type, Type {
     override string toString() { result = "ModuleType" }
+
+    ModuleDecl getModule() { module_types(this, result) }
   }
 
   class PlaceholderType extends @placeholder_type, Type {

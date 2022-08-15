@@ -92,10 +92,10 @@ abstract private class HtmlAttributeAsNgSourceProvider extends NgSourceProvider,
     endColumn = startColumn + src.length() - 1
   }
 
-  /** The source code of the expression. */
+  /** Gets the source code of the expression. */
   abstract string getSource();
 
-  /** The offset into the attribute where the expression starts. */
+  /** Gets the offset into the attribute where the expression starts. */
   abstract int getOffset();
 
   override DOM::ElementDefinition getEnclosingElement() { result = this.getElement() }

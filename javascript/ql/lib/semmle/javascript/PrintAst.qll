@@ -36,7 +36,7 @@ private predicate isNotNeeded(Locatable el) {
   el.getLocation().getStartLine() = 0 and
   el.getLocation().getStartColumn() = 0
   or
-  // relaxing aggresive type inference.
+  // relaxing aggressive type inference.
   none()
 }
 

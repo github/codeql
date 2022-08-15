@@ -1,6 +1,6 @@
 function RegisterExtractorPack(id)
     local extractor = GetPlatformToolsDirectory() ..
-                          'Semmle.Extraction.CSharp.Driver'
+        'Semmle.Extraction.CSharp.Driver'
     if OperatingSystem == 'windows' then extractor = extractor .. '.exe' end
 
     function DotnetMatcherBuild(compilerName, compilerPath, compilerArguments,
@@ -24,14 +24,14 @@ function RegisterExtractorPack(id)
             -- let's hope that this split matches the escaping rules `dotnet` applies to command line arguments
             -- or, at least, that it is close enough
             argv =
-                NativeArgumentsToArgv(compilerArguments.nativeArgumentPointer)
+            NativeArgumentsToArgv(compilerArguments.nativeArgumentPointer)
         end
         for i, arg in ipairs(argv) do
             -- dotnet options start with either - or / (both are legal)
             local firstCharacter = string.sub(arg, 1, 1)
             if not (firstCharacter == '-') and not (firstCharacter == '/') then
                 Log(1, 'Dotnet subcommand detected: %s', arg)
-                if arg == 'build' then match = true end
+                if arg == 'build' or arg == 'msbuild' then match = true end
                 break
             end
         end
@@ -39,8 +39,8 @@ function RegisterExtractorPack(id)
             return {
                 order = ORDER_REPLACE,
                 invocation = BuildExtractorInvocation(id, compilerPath,
-                                                      compilerPath,
-                                                      compilerArguments, nil, {
+                    compilerPath,
+                    compilerArguments, nil, {
                     '/p:UseSharedCompilation=false'
                 })
             }
@@ -50,44 +50,96 @@ function RegisterExtractorPack(id)
 
     local windowsMatchers = {
         DotnetMatcherBuild,
-        CreatePatternMatcher({'^dotnet%.exe$'}, MatchCompilerName, extractor, {
-            prepend = {'--dotnetexec', '--cil'},
+        CreatePatternMatcher({ '^csc.*%.exe$' }, MatchCompilerName, extractor, {
+            prepend = { '--cil', '--compiler', '"${compiler}"' },
             order = ORDER_BEFORE
         }),
-        CreatePatternMatcher({'^csc.*%.exe$'}, MatchCompilerName, extractor, {
-            prepend = {'--compiler', '"${compiler}"', '--cil'},
-            order = ORDER_BEFORE
-        }),
-        CreatePatternMatcher({'^fakes.*%.exe$', 'moles.*%.exe'},
-                             MatchCompilerName, nil, {trace = false})
+        CreatePatternMatcher({ '^fakes.*%.exe$', 'moles.*%.exe' },
+            MatchCompilerName, nil, { trace = false }),
+        function(compilerName, compilerPath, compilerArguments, _languageId)
+            -- handle cases like `dotnet.exe exec csc.dll <args>`
+            if compilerName ~= 'dotnet.exe' then
+                return nil
+            end
+
+            local seenCompilerCall = false
+            local argv = NativeArgumentsToArgv(compilerArguments.nativeArgumentPointer)
+            local extractorArgs = { '--cil', '--compiler' }
+            for _, arg in ipairs(argv) do
+                if arg:match('csc%.dll$') then
+                    seenCompilerCall = true
+                end
+                if seenCompilerCall then
+                    table.insert(extractorArgs, '"' .. arg .. '"')
+                end
+            end
+
+            if seenCompilerCall then
+                return {
+                    order = ORDER_BEFORE,
+                    invocation = {
+                        path = AbsolutifyExtractorPath(id, extractor),
+                        arguments = {
+                            commandLineString = table.concat(extractorArgs, " ")
+                        }
+                    }
+                }
+            end
+            return nil
+        end
     }
     local posixMatchers = {
         DotnetMatcherBuild,
-        CreatePatternMatcher({'^mono', '^dotnet$'}, MatchCompilerName,
-                             extractor, {
-            prepend = {'--dotnetexec', '--cil'},
-            order = ORDER_BEFORE
-        }),
-        CreatePatternMatcher({'^mcs%.exe$', '^csc%.exe$'}, MatchCompilerName,
-                             extractor, {
-            prepend = {'--compiler', '"${compiler}"', '--cil'},
+        CreatePatternMatcher({ '^mcs%.exe$', '^csc%.exe$' }, MatchCompilerName,
+            extractor, {
+            prepend = { '--cil', '--compiler', '"${compiler}"' },
             order = ORDER_BEFORE
         }), function(compilerName, compilerPath, compilerArguments, _languageId)
             if MatchCompilerName('^msbuild$', compilerName, compilerPath,
-                                 compilerArguments) or
+                compilerArguments) or
                 MatchCompilerName('^xbuild$', compilerName, compilerPath,
-                                  compilerArguments) then
+                    compilerArguments) then
                 return {
                     order = ORDER_REPLACE,
                     invocation = BuildExtractorInvocation(id, compilerPath,
-                                                          compilerPath,
-                                                          compilerArguments,
-                                                          nil, {
+                        compilerPath,
+                        compilerArguments,
+                        nil, {
                         '/p:UseSharedCompilation=false'
                     })
 
                 }
             end
+        end, function(compilerName, compilerPath, compilerArguments, _languageId)
+            -- handle cases like `dotnet exec csc.dll <args>` and `mono(-sgen64) csc.exe <args>`
+            if compilerName ~= 'dotnet' and not compilerName:match('^mono') then
+                return nil
+            end
+
+            local seenCompilerCall = false
+            local argv = compilerArguments.argv
+            local extractorArgs = { '--cil', '--compiler' }
+            for _, arg in ipairs(argv) do
+                if arg:match('csc%.dll$') or arg:match('csc%.exe$') or arg:match('mcs%.exe$') then
+                    seenCompilerCall = true
+                end
+                if seenCompilerCall then
+                    table.insert(extractorArgs, arg)
+                end
+            end
+
+            if seenCompilerCall then
+                return {
+                    order = ORDER_BEFORE,
+                    invocation = {
+                        path = AbsolutifyExtractorPath(id, extractor),
+                        arguments = {
+                            argv = extractorArgs
+                        }
+                    }
+                }
+            end
+            return nil
         end
     }
     if OperatingSystem == 'windows' then
@@ -99,4 +151,4 @@ end
 
 -- Return a list of minimum supported versions of the configuration file format
 -- return one entry per supported major version.
-function GetCompatibleVersions() return {'1.0.0'} end
+function GetCompatibleVersions() return { '1.0.0' } end

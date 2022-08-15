@@ -11,6 +11,7 @@ private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Public
 private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
+private import codeql.swift.controlflow.CfgNodes
 
 class SummarizedCallableBase = AbstractFunctionDecl;
 
@@ -153,7 +154,9 @@ class InterpretNode extends TInterpretNode {
   DataFlowCallable asCallable() { result.getUnderlyingCallable() = this.asElement() }
 
   /** Gets the target of this call, if any. */
-  AbstractFunctionDecl getCallTarget() { result = this.asCall().asCall().getStaticTarget() }
+  AbstractFunctionDecl getCallTarget() {
+    result = this.asCall().asCall().getFunction().(ApplyExpr).getStaticTarget()
+  }
 
   /** Gets a textual representation of this node. */
   string toString() {

@@ -49,6 +49,7 @@ unknown_files(
 @locatable =
   @argument
 | @ast_node
+| @comment
 | @condition_element
 | @if_config_clause
 ;
@@ -80,6 +81,11 @@ db_locations(
 
 unknown_locations(
   unique int id: @unknown_location
+);
+
+comments(
+  unique int id: @comment,
+  string text: string ref
 );
 
 @type =
@@ -292,7 +298,8 @@ l_value_types(  //dir=type
 );
 
 module_types(  //dir=type
-  unique int id: @module_type
+  unique int id: @module_type,
+  int module: @module_decl ref
 );
 
 placeholder_types(  //dir=type

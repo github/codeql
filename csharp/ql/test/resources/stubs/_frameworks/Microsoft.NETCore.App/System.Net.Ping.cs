@@ -6,7 +6,7 @@ namespace System
     {
         namespace NetworkInformation
         {
-            // Generated from `System.Net.NetworkInformation.IPStatus` in `System.Net.Ping, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.IPStatus` in `System.Net.Ping, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum IPStatus
             {
                 BadDestination,
@@ -35,7 +35,7 @@ namespace System
                 UnrecognizedNextHeader,
             }
 
-            // Generated from `System.Net.NetworkInformation.Ping` in `System.Net.Ping, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.Ping` in `System.Net.Ping, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Ping : System.ComponentModel.Component
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -69,17 +69,17 @@ namespace System
                 public System.Threading.Tasks.Task<System.Net.NetworkInformation.PingReply> SendPingAsync(string hostNameOrAddress, int timeout, System.Byte[] buffer, System.Net.NetworkInformation.PingOptions options) => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.PingCompletedEventArgs` in `System.Net.Ping, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.PingCompletedEventArgs` in `System.Net.Ping, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PingCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
             {
                 internal PingCompletedEventArgs() : base(default(System.Exception), default(bool), default(object)) => throw null;
                 public System.Net.NetworkInformation.PingReply Reply { get => throw null; }
             }
 
-            // Generated from `System.Net.NetworkInformation.PingCompletedEventHandler` in `System.Net.Ping, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.PingCompletedEventHandler` in `System.Net.Ping, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void PingCompletedEventHandler(object sender, System.Net.NetworkInformation.PingCompletedEventArgs e);
 
-            // Generated from `System.Net.NetworkInformation.PingException` in `System.Net.Ping, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.PingException` in `System.Net.Ping, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PingException : System.InvalidOperationException
             {
                 protected PingException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
@@ -87,7 +87,7 @@ namespace System
                 public PingException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Net.NetworkInformation.PingOptions` in `System.Net.Ping, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.PingOptions` in `System.Net.Ping, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PingOptions
             {
                 public bool DontFragment { get => throw null; set => throw null; }
@@ -96,7 +96,7 @@ namespace System
                 public int Ttl { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Net.NetworkInformation.PingReply` in `System.Net.Ping, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Net.NetworkInformation.PingReply` in `System.Net.Ping, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PingReply
             {
                 public System.Net.IPAddress Address { get => throw null; }

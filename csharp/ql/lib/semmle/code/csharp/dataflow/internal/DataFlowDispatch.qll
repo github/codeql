@@ -21,7 +21,13 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
  */
 DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
   exists(DotNet::Callable unboundDecl | unboundDecl = c.getUnboundDeclaration() |
-    result.hasBody() and
+    (
+      result.hasBody()
+      or
+      // take synthesized bodies into account, e.g. implicit constructors
+      // with field initializer assignments
+      result = any(ControlFlow::Nodes::ElementNode n).getEnclosingCallable()
+    ) and
     if unboundDecl.getFile().fromSource()
     then
       // C# callable with C# implementation in the database
