@@ -7,7 +7,7 @@ import semmle.code.java.dataflow.DataFlow
 import HardcodedCredentials
 
 /**
- * Tracks flow from a hard-coded credential in a call to a sensitive Java API which may compromise security.
+ * A data-flow configuration that tracks flow from a hard-coded credential in a call to a sensitive Java API which may compromise security.
  */
 class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
   HardcodedCredentialApiCallConfiguration() { this = "HardcodedCredentialApiCallConfiguration" }
