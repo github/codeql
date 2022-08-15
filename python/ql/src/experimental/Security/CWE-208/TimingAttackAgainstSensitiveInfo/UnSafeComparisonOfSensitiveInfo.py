@@ -7,9 +7,11 @@
 from flask import Flask
 from flask import request
 
-@app.route('/bad')
-def check_credentials(password):
-    return password == "token"
+@app.route('/bad', methods = ['POST', 'GET'])
+def bad(password):
+    if request.method == 'POST':
+        password = request.form['pwd']
+        return password == "test"
     
 if __name__ == '__main__':
     app.debug = True
